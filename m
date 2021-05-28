@@ -2,52 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 499B9394146
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 May 2021 12:41:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F5AA394229
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 May 2021 13:48:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fs1Sm2p1gz3060
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 May 2021 20:41:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fs2xs4cM4z302G
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 May 2021 21:48:17 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Dx654HFa;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Dx654HFa;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=kaod.org (client-ip=205.139.111.44;
- helo=us-smtp-delivery-44.mimecast.com; envelope-from=groug@kaod.org;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=jolsa@redhat.com;
  receiver=<UNKNOWN>)
-X-Greylist: delayed 307 seconds by postgrey-1.36 at boromir;
- Fri, 28 May 2021 20:41:07 AEST
-Received: from us-smtp-delivery-44.mimecast.com
- (us-smtp-delivery-44.mimecast.com [205.139.111.44])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=Dx654HFa; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=Dx654HFa; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [170.10.133.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fs1SM4fKSz2xxn
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 May 2021 20:41:07 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fs2xL6qXYz2yhF
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 May 2021 21:47:48 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1622202464;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=JdNPT60WeIlr9DU58kYYVhqhWBLJtqZ96yO8cbacEw8=;
+ b=Dx654HFaDRNkQkwpNSWxSH51BQjXviziKggiDlp6AhmNpNdQkZ0wgWmM7l7R8dzwQ55NQd
+ bBCRSX/1d31iKeOO7bVGLtfmigBu0Cx6EMtawSf7nf/EJswGMFIqXVXNLb46Dk3jxSjkuP
+ LT/uiJyhRBZntYpvh/CwWBG0nTemPl0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1622202464;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=JdNPT60WeIlr9DU58kYYVhqhWBLJtqZ96yO8cbacEw8=;
+ b=Dx654HFaDRNkQkwpNSWxSH51BQjXviziKggiDlp6AhmNpNdQkZ0wgWmM7l7R8dzwQ55NQd
+ bBCRSX/1d31iKeOO7bVGLtfmigBu0Cx6EMtawSf7nf/EJswGMFIqXVXNLb46Dk3jxSjkuP
+ LT/uiJyhRBZntYpvh/CwWBG0nTemPl0=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-65-Ps_qvJW5N_eb3aGhV2t7Vg-1; Fri, 28 May 2021 06:34:40 -0400
-X-MC-Unique: Ps_qvJW5N_eb3aGhV2t7Vg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
- [10.5.11.13])
+ us-mta-18-J-MsoSSLN76i5GJLOqfRSg-1; Fri, 28 May 2021 07:47:42 -0400
+X-MC-Unique: J-MsoSSLN76i5GJLOqfRSg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
+ [10.5.11.15])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7CAC8800D55;
- Fri, 28 May 2021 10:34:38 +0000 (UTC)
-Received: from bahia.lan (ovpn-112-128.ams2.redhat.com [10.36.112.128])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B1FB56E419;
- Fri, 28 May 2021 10:34:36 +0000 (UTC)
-Date: Fri, 28 May 2021 12:34:35 +0200
-From: Greg Kurz <groug@kaod.org>
-To: Roman Bolshakov <r.bolshakov@yadro.com>
-Subject: Re: [PATCH] Revert "powerpc: Switch to relative jump labels"
-Message-ID: <20210528123435.04e475de@bahia.lan>
-In-Reply-To: <20210528012943.23192-1-r.bolshakov@yadro.com>
-References: <20210528012943.23192-1-r.bolshakov@yadro.com>
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 37E4E802938;
+ Fri, 28 May 2021 11:47:41 +0000 (UTC)
+Received: from krava (unknown [10.40.192.177])
+ by smtp.corp.redhat.com (Postfix) with SMTP id 291805D767;
+ Fri, 28 May 2021 11:47:35 +0000 (UTC)
+Date: Fri, 28 May 2021 13:47:35 +0200
+From: Jiri Olsa <jolsa@redhat.com>
+To: Daniel Borkmann <daniel@iogearbox.net>
+Subject: Re: [PATCH v2] lockdown,selinux: avoid bogus SELinux lockdown
+ permission checks
+Message-ID: <YLDYV3ot7vroWW9o@krava>
+References: <20210517092006.803332-1-omosnace@redhat.com>
+ <CAHC9VhTasra0tU=bKwVqAwLRYaC+hYakirRz0Mn5jbVMuDkwrA@mail.gmail.com>
+ <01135120-8bf7-df2e-cff0-1d73f1f841c3@iogearbox.net>
+ <4fee8c12-194f-3f85-e28b-f7f24ab03c91@iogearbox.net>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: kaod.org
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4fee8c12-194f-3f85-e28b-f7f24ab03c91@iogearbox.net>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,132 +86,245 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anastasia Kovaleva <a.kovaleva@yadro.com>, linux@yadro.com,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Paul Moore <paul@paul-moore.com>, selinux@vger.kernel.org,
+ netdev@vger.kernel.org, Stephen Smalley <stephen.smalley.work@gmail.com>,
+ James Morris <jmorris@namei.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Ondrej Mosnacek <omosnace@redhat.com>,
+ Casey Schaufler <casey@schaufler-ca.com>,
+ linux-security-module@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+ linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org, andrii.nakryiko@gmail.com,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 28 May 2021 04:29:43 +0300
-Roman Bolshakov <r.bolshakov@yadro.com> wrote:
+On Fri, May 28, 2021 at 11:56:02AM +0200, Daniel Borkmann wrote:
 
-> This reverts commit b0b3b2c78ec075cec4721986a95abbbac8c3da4f.
->=20
-> Otherwise, direct kernel boot with initramfs no longer works in QEMU.
-> It's broken in some bizarre way because a valid initramfs is not
-> recognized anymore:
->=20
->   Found initrd at 0xc000000001f70000:0xc000000003d61d64
->   rootfs image is not initramfs (XZ-compressed data is corrupt); looks li=
-ke an initrd
->=20
-> The issue is observed on v5.13-rc3 if the kernel is built with
-> defconfig, GCC 7.5.0 and GNU ld 2.32.0.
->=20
-> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Reported-by: Anastasia Kovaleva <a.kovaleva@yadro.com>
-> Signed-off-by: Roman Bolshakov <r.bolshakov@yadro.com>
+SNIP
+
+> Ondrej / Paul / Jiri: at least for the BPF tracing case specifically (I haven't looked
+> at the rest but it's also kind of independent), the attached fix should address both
+> reported issues, please take a look & test.
+> 
+> Thanks a lot,
+> Daniel
+
+> From 5893ad528dc0a0a68933b8f2a81b18d3f539660d Mon Sep 17 00:00:00 2001
+> From: Daniel Borkmann <daniel@iogearbox.net>
+> Date: Fri, 28 May 2021 09:16:31 +0000
+> Subject: [PATCH bpf] bpf, audit, lockdown: Fix bogus SELinux lockdown permission checks
+> 
+> Commit 59438b46471a ("security,lockdown,selinux: implement SELinux lockdown")
+> added an implementation of the locked_down LSM hook to SELinux, with the aim
+> to restrict which domains are allowed to perform operations that would breach
+> lockdown. This is indirectly also getting audit subsystem involved to report
+> events. The latter is problematic, as reported by Ondrej and Serhei, since it
+> can bring down the whole system via audit:
+> 
+>   i) The audit events that are triggered due to calls to security_locked_down()
+>      can OOM kill a machine, see below details [0].
+> 
+>  ii) It seems to be causing a deadlock via slow_avc_audit() -> audit_log_end()
+>      when presumingly trying to wake up kauditd [1].
+> 
+> Fix both at the same time by taking a completely different approach, that is,
+> move the check into the program verification phase where we actually retrieve
+> the func proto. This also reliably gets the task (current) that is trying to
+> install the tracing program, e.g. bpftrace/bcc/perf/systemtap/etc, and it also
+> fixes the OOM since we're moving this out of the BPF helpers which can be called
+> millions of times per second.
+> 
+> [0] https://bugzilla.redhat.com/show_bug.cgi?id=1955585, Jakub Hrozek says:
+> 
+>   I starting seeing this with F-34. When I run a container that is traced with
+>   BPF to record the syscalls it is doing, auditd is flooded with messages like:
+> 
+>   type=AVC msg=audit(1619784520.593:282387): avc:  denied  { confidentiality }
+>     for pid=476 comm="auditd" lockdown_reason="use of bpf to read kernel RAM"
+>       scontext=system_u:system_r:auditd_t:s0 tcontext=system_u:system_r:auditd_t:s0
+>         tclass=lockdown permissive=0
+> 
+>   This seems to be leading to auditd running out of space in the backlog buffer
+>   and eventually OOMs the machine.
+> 
+>   [...]
+>   auditd running at 99% CPU presumably processing all the messages, eventually I get:
+>   Apr 30 12:20:42 fedora kernel: audit: backlog limit exceeded
+>   Apr 30 12:20:42 fedora kernel: audit: backlog limit exceeded
+>   Apr 30 12:20:42 fedora kernel: audit: audit_backlog=2152579 > audit_backlog_limit=64
+>   Apr 30 12:20:42 fedora kernel: audit: audit_backlog=2152626 > audit_backlog_limit=64
+>   Apr 30 12:20:42 fedora kernel: audit: audit_backlog=2152694 > audit_backlog_limit=64
+>   Apr 30 12:20:42 fedora kernel: audit: audit_lost=6878426 audit_rate_limit=0 audit_backlog_limit=64
+>   Apr 30 12:20:45 fedora kernel: oci-seccomp-bpf invoked oom-killer: gfp_mask=0x100cca(GFP_HIGHUSER_MOVABLE), order=0, oom_score_adj=-1000
+>   Apr 30 12:20:45 fedora kernel: CPU: 0 PID: 13284 Comm: oci-seccomp-bpf Not tainted 5.11.12-300.fc34.x86_64 #1
+>   Apr 30 12:20:45 fedora kernel: Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-2.fc32 04/01/2014
+>   [...]
+> 
+> [1] https://lore.kernel.org/linux-audit/CANYvDQN7H5tVp47fbYcRasv4XF07eUbsDwT_eDCHXJUj43J7jQ@mail.gmail.com/,
+>     Serhei Makarov says:
+> 
+>   Upstream kernel 5.11.0-rc7 and later was found to deadlock during a
+>   bpf_probe_read_compat() call within a sched_switch tracepoint. The problem
+>   is reproducible with the reg_alloc3 testcase from SystemTap's BPF backend
+>   testsuite on x86_64 as well as the runqlat,runqslower tools from bcc on
+>   ppc64le. Example stack trace:
+> 
+>   [...]
+>   [  730.868702] stack backtrace:
+>   [  730.869590] CPU: 1 PID: 701 Comm: in:imjournal Not tainted, 5.12.0-0.rc2.20210309git144c79ef3353.166.fc35.x86_64 #1
+>   [  730.871605] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.13.0-2.fc32 04/01/2014
+>   [  730.873278] Call Trace:
+>   [  730.873770]  dump_stack+0x7f/0xa1
+>   [  730.874433]  check_noncircular+0xdf/0x100
+>   [  730.875232]  __lock_acquire+0x1202/0x1e10
+>   [  730.876031]  ? __lock_acquire+0xfc0/0x1e10
+>   [  730.876844]  lock_acquire+0xc2/0x3a0
+>   [  730.877551]  ? __wake_up_common_lock+0x52/0x90
+>   [  730.878434]  ? lock_acquire+0xc2/0x3a0
+>   [  730.879186]  ? lock_is_held_type+0xa7/0x120
+>   [  730.880044]  ? skb_queue_tail+0x1b/0x50
+>   [  730.880800]  _raw_spin_lock_irqsave+0x4d/0x90
+>   [  730.881656]  ? __wake_up_common_lock+0x52/0x90
+>   [  730.882532]  __wake_up_common_lock+0x52/0x90
+>   [  730.883375]  audit_log_end+0x5b/0x100
+>   [  730.884104]  slow_avc_audit+0x69/0x90
+>   [  730.884836]  avc_has_perm+0x8b/0xb0
+>   [  730.885532]  selinux_lockdown+0xa5/0xd0
+>   [  730.886297]  security_locked_down+0x20/0x40
+>   [  730.887133]  bpf_probe_read_compat+0x66/0xd0
+>   [  730.887983]  bpf_prog_250599c5469ac7b5+0x10f/0x820
+>   [  730.888917]  trace_call_bpf+0xe9/0x240
+>   [  730.889672]  perf_trace_run_bpf_submit+0x4d/0xc0
+>   [  730.890579]  perf_trace_sched_switch+0x142/0x180
+>   [  730.891485]  ? __schedule+0x6d8/0xb20
+>   [  730.892209]  __schedule+0x6d8/0xb20
+>   [  730.892899]  schedule+0x5b/0xc0
+>   [  730.893522]  exit_to_user_mode_prepare+0x11d/0x240
+>   [  730.894457]  syscall_exit_to_user_mode+0x27/0x70
+>   [  730.895361]  entry_SYSCALL_64_after_hwframe+0x44/0xae
+>   [...]
+> 
+> Fixes: 59438b46471a ("security,lockdown,selinux: implement SELinux lockdown")
+> Reported-by: Ondrej Mosnacek <omosnace@redhat.com>
+> Reported-by: Jakub Hrozek <jhrozek@redhat.com>
+> Reported-by: Serhei Makarov <smakarov@redhat.com>
+> Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+> Cc: Stephen Smalley <sds@tycho.nsa.gov>
+> Cc: Jerome Marchand <jmarchan@redhat.com>
+> Cc: Frank Eigler <fche@redhat.com>
+> Cc: Jiri Olsa <jolsa@redhat.com>
+> Cc: Paul Moore <paul@paul-moore.com>
+
+found the original server and reproduced.. this patch fixes it for me 
+
+Tested-by: Jiri Olsa <jolsa@redhat.com>
+
+thanks,
+jirka
+
 > ---
-
-I'm observing the very same issue and reverting the offending commit
-fixes it indeed. Until someone has investigated the root cause, this
-looks like a reasonable bug fix to me.
-
-Reviewed-by: Greg Kurz <groug@kaod.org>
-
-and
-
-Tested-by: Greg Kurz <groug@kaod.org>
-
->  arch/powerpc/Kconfig                  |  1 -
->  arch/powerpc/include/asm/jump_label.h | 21 +++++++++++++++------
->  arch/powerpc/kernel/jump_label.c      |  4 ++--
->  3 files changed, 17 insertions(+), 9 deletions(-)
->=20
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 088dd2afcfe4..59e0d55ee01d 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -189,7 +189,6 @@ config PPC
->  =09select HAVE_ARCH_HUGE_VMALLOC=09=09if HAVE_ARCH_HUGE_VMAP
->  =09select HAVE_ARCH_HUGE_VMAP=09=09if PPC_BOOK3S_64 && PPC_RADIX_MMU
->  =09select HAVE_ARCH_JUMP_LABEL
-> -=09select HAVE_ARCH_JUMP_LABEL_RELATIVE
->  =09select HAVE_ARCH_KASAN=09=09=09if PPC32 && PPC_PAGE_SHIFT <=3D 14
->  =09select HAVE_ARCH_KASAN_VMALLOC=09=09if PPC32 && PPC_PAGE_SHIFT <=3D 1=
-4
->  =09select HAVE_ARCH_KFENCE=09=09=09if PPC32
-> diff --git a/arch/powerpc/include/asm/jump_label.h b/arch/powerpc/include=
-/asm/jump_label.h
-> index 2d5c6bec2b4f..09297ec9fa52 100644
-> --- a/arch/powerpc/include/asm/jump_label.h
-> +++ b/arch/powerpc/include/asm/jump_label.h
-> @@ -20,8 +20,7 @@ static __always_inline bool arch_static_branch(struct s=
-tatic_key *key, bool bran
->  =09asm_volatile_goto("1:\n\t"
->  =09=09 "nop # arch_static_branch\n\t"
->  =09=09 ".pushsection __jump_table,  \"aw\"\n\t"
-> -=09=09 ".long 1b - ., %l[l_yes] - .\n\t"
-> -=09=09 JUMP_ENTRY_TYPE "%c0 - .\n\t"
-> +=09=09 JUMP_ENTRY_TYPE "1b, %l[l_yes], %c0\n\t"
->  =09=09 ".popsection \n\t"
->  =09=09 : :  "i" (&((char *)key)[branch]) : : l_yes);
-> =20
-> @@ -35,8 +34,7 @@ static __always_inline bool arch_static_branch_jump(str=
-uct static_key *key, bool
->  =09asm_volatile_goto("1:\n\t"
->  =09=09 "b %l[l_yes] # arch_static_branch_jump\n\t"
->  =09=09 ".pushsection __jump_table,  \"aw\"\n\t"
-> -=09=09 ".long 1b - ., %l[l_yes] - .\n\t"
-> -=09=09 JUMP_ENTRY_TYPE "%c0 - .\n\t"
-> +=09=09 JUMP_ENTRY_TYPE "1b, %l[l_yes], %c0\n\t"
->  =09=09 ".popsection \n\t"
->  =09=09 : :  "i" (&((char *)key)[branch]) : : l_yes);
-> =20
-> @@ -45,12 +43,23 @@ static __always_inline bool arch_static_branch_jump(s=
-truct static_key *key, bool
->  =09return true;
->  }
-> =20
-> +#ifdef CONFIG_PPC64
-> +typedef u64 jump_label_t;
-> +#else
-> +typedef u32 jump_label_t;
-> +#endif
-> +
-> +struct jump_entry {
-> +=09jump_label_t code;
-> +=09jump_label_t target;
-> +=09jump_label_t key;
-> +};
-> +
->  #else
->  #define ARCH_STATIC_BRANCH(LABEL, KEY)=09=09\
->  1098:=09nop;=09=09=09=09=09\
->  =09.pushsection __jump_table, "aw";=09\
-> -=09.long 1098b - ., LABEL - .;=09=09\
-> -=09FTR_ENTRY_LONG KEY;=09=09=09\
-> +=09FTR_ENTRY_LONG 1098b, LABEL, KEY;=09\
->  =09.popsection
->  #endif
-> =20
-> diff --git a/arch/powerpc/kernel/jump_label.c b/arch/powerpc/kernel/jump_=
-label.c
-> index ce87dc5ea23c..144858027fa3 100644
-> --- a/arch/powerpc/kernel/jump_label.c
-> +++ b/arch/powerpc/kernel/jump_label.c
-> @@ -11,10 +11,10 @@
->  void arch_jump_label_transform(struct jump_entry *entry,
->  =09=09=09       enum jump_label_type type)
+>  kernel/bpf/helpers.c     |  6 ++++--
+>  kernel/trace/bpf_trace.c | 36 +++++++++++++-----------------------
+>  2 files changed, 17 insertions(+), 25 deletions(-)
+> 
+> diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+> index 73443498d88f..6f6e090c5310 100644
+> --- a/kernel/bpf/helpers.c
+> +++ b/kernel/bpf/helpers.c
+> @@ -1069,11 +1069,13 @@ bpf_base_func_proto(enum bpf_func_id func_id)
+>  	case BPF_FUNC_probe_read_user:
+>  		return &bpf_probe_read_user_proto;
+>  	case BPF_FUNC_probe_read_kernel:
+> -		return &bpf_probe_read_kernel_proto;
+> +		return security_locked_down(LOCKDOWN_BPF_READ) < 0 ?
+> +		       NULL : &bpf_probe_read_kernel_proto;
+>  	case BPF_FUNC_probe_read_user_str:
+>  		return &bpf_probe_read_user_str_proto;
+>  	case BPF_FUNC_probe_read_kernel_str:
+> -		return &bpf_probe_read_kernel_str_proto;
+> +		return security_locked_down(LOCKDOWN_BPF_READ) < 0 ?
+> +		       NULL : &bpf_probe_read_kernel_str_proto;
+>  	case BPF_FUNC_snprintf_btf:
+>  		return &bpf_snprintf_btf_proto;
+>  	case BPF_FUNC_snprintf:
+> diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+> index d2d7cf6cfe83..3df43d89d642 100644
+> --- a/kernel/trace/bpf_trace.c
+> +++ b/kernel/trace/bpf_trace.c
+> @@ -215,16 +215,10 @@ const struct bpf_func_proto bpf_probe_read_user_str_proto = {
+>  static __always_inline int
+>  bpf_probe_read_kernel_common(void *dst, u32 size, const void *unsafe_ptr)
 >  {
-> -=09struct ppc_inst *addr =3D (struct ppc_inst *)jump_entry_code(entry);
-> +=09struct ppc_inst *addr =3D (struct ppc_inst *)(unsigned long)entry->co=
-de;
-> =20
->  =09if (type =3D=3D JUMP_LABEL_JMP)
-> -=09=09patch_branch(addr, jump_entry_target(entry), 0);
-> +=09=09patch_branch(addr, entry->target, 0);
->  =09else
->  =09=09patch_instruction(addr, ppc_inst(PPC_INST_NOP));
+> -	int ret = security_locked_down(LOCKDOWN_BPF_READ);
+> +	int ret = copy_from_kernel_nofault(dst, unsafe_ptr, size);
+>  
+>  	if (unlikely(ret < 0))
+> -		goto fail;
+> -	ret = copy_from_kernel_nofault(dst, unsafe_ptr, size);
+> -	if (unlikely(ret < 0))
+> -		goto fail;
+> -	return ret;
+> -fail:
+> -	memset(dst, 0, size);
+> +		memset(dst, 0, size);
+>  	return ret;
 >  }
+>  
+> @@ -246,11 +240,6 @@ const struct bpf_func_proto bpf_probe_read_kernel_proto = {
+>  static __always_inline int
+>  bpf_probe_read_kernel_str_common(void *dst, u32 size, const void *unsafe_ptr)
+>  {
+> -	int ret = security_locked_down(LOCKDOWN_BPF_READ);
+> -
+> -	if (unlikely(ret < 0))
+> -		goto fail;
+> -
+>  	/*
+>  	 * The strncpy_from_kernel_nofault() call will likely not fill the
+>  	 * entire buffer, but that's okay in this circumstance as we're probing
+> @@ -260,13 +249,10 @@ bpf_probe_read_kernel_str_common(void *dst, u32 size, const void *unsafe_ptr)
+>  	 * code altogether don't copy garbage; otherwise length of string
+>  	 * is returned that can be used for bpf_perf_event_output() et al.
+>  	 */
+> -	ret = strncpy_from_kernel_nofault(dst, unsafe_ptr, size);
+> -	if (unlikely(ret < 0))
+> -		goto fail;
+> +	int ret = strncpy_from_kernel_nofault(dst, unsafe_ptr, size);
+>  
+> -	return ret;
+> -fail:
+> -	memset(dst, 0, size);
+> +	if (unlikely(ret < 0))
+> +		memset(dst, 0, size);
+>  	return ret;
+>  }
+>  
+> @@ -1011,16 +997,20 @@ bpf_tracing_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
+>  	case BPF_FUNC_probe_read_user:
+>  		return &bpf_probe_read_user_proto;
+>  	case BPF_FUNC_probe_read_kernel:
+> -		return &bpf_probe_read_kernel_proto;
+> +		return security_locked_down(LOCKDOWN_BPF_READ) < 0 ?
+> +		       NULL : &bpf_probe_read_kernel_proto;
+>  	case BPF_FUNC_probe_read_user_str:
+>  		return &bpf_probe_read_user_str_proto;
+>  	case BPF_FUNC_probe_read_kernel_str:
+> -		return &bpf_probe_read_kernel_str_proto;
+> +		return security_locked_down(LOCKDOWN_BPF_READ) < 0 ?
+> +		       NULL : &bpf_probe_read_kernel_str_proto;
+>  #ifdef CONFIG_ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
+>  	case BPF_FUNC_probe_read:
+> -		return &bpf_probe_read_compat_proto;
+> +		return security_locked_down(LOCKDOWN_BPF_READ) < 0 ?
+> +		       NULL : &bpf_probe_read_compat_proto;
+>  	case BPF_FUNC_probe_read_str:
+> -		return &bpf_probe_read_compat_str_proto;
+> +		return security_locked_down(LOCKDOWN_BPF_READ) < 0 ?
+> +		       NULL : &bpf_probe_read_compat_str_proto;
+>  #endif
+>  #ifdef CONFIG_CGROUPS
+>  	case BPF_FUNC_get_current_cgroup_id:
+> -- 
+> 2.27.0
+> 
 
