@@ -1,70 +1,101 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C97B2393E2B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 May 2021 09:48:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA326393E35
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 May 2021 09:54:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FrxdW60bKz30FJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 May 2021 17:48:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Frxlh5Gmgz30CS
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 May 2021 17:54:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=Ioy3+gdj;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cS0TRI5w;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::532;
- helo=mail-pg1-x532.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=Ioy3+gdj; dkim-atps=neutral
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com
- [IPv6:2607:f8b0:4864:20::532])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=cS0TRI5w; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Frxd21zvzz2yXZ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 May 2021 17:48:19 +1000 (AEST)
-Received: by mail-pg1-x532.google.com with SMTP id m124so1880921pgm.13
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 May 2021 00:48:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=O0+UwnOWvhSyGbBwcAEHiHt/a9TX3pdq1WbWKHN5EuQ=;
- b=Ioy3+gdjVJR/KfLWt23WSFZ2Dx+8j5GXUUC7fJJ5j3y+uqLpXt2el1n3+stYLzsP2j
- wnL4bi9Aig0GwKBHWOvLCJgUlEPauUIB145FdM0Flc2GdziP0E8kfqt/g8iwMM7c526b
- o3rd3YunoOYwtrRitD9sJgwdiNPTnvSkiTXqE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=O0+UwnOWvhSyGbBwcAEHiHt/a9TX3pdq1WbWKHN5EuQ=;
- b=J7W18+MM5LbiDWJtOZ4yyY3zzf4VmQNIBo2cTr3wCJY5wJaFHpQcBGmEzHkjBg6MTr
- /8Tf23urc9TFp/1dTkFIHxQBg83DmHIwbm3gX6mLM25qRjE2njuUwYrHf3SX1lma50t+
- On4yyFLi0rZezFhA0o+3FXO+FepO3te/lZaN0rc6EOdPmLpCKTjvUbFkssoj39dkbaY6
- 2HjpTPkqCbPQiywzrXjx8f/iCqZH73E/ie8odGdM+q5jJr2cZEzI45OFowkHY+WawVIf
- ODmi+inlHGx/PATrWtBFcl8Ip4jcE2Xk55uPOuEzcPAZpy/37lJ9h6PQDewa+Qfc9Eua
- m32g==
-X-Gm-Message-State: AOAM533g3P9F3jV2U+ng41TFzcijieeVyZ2sufvULeuUL7N5ibV9YifU
- OnLORsbd0OIPfvxlOelV6w4YlLuHJsZPRg==
-X-Google-Smtp-Source: ABdhPJyTr1ocIMHMFCx0LqeziOyVL5kjtNaZ+FYK9S2iAj82/vXJrggoGr61Vw7HBJu8hKS0R2g8JA==
-X-Received: by 2002:a05:6a00:24d4:b029:2da:8e01:f07f with SMTP id
- d20-20020a056a0024d4b02902da8e01f07fmr2593270pfv.44.1622188093772; 
- Fri, 28 May 2021 00:48:13 -0700 (PDT)
-Received: from localhost ([101.178.215.23])
- by smtp.gmail.com with ESMTPSA id d3sm3713492pfn.141.2021.05.28.00.48.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 May 2021 00:48:13 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: linuxppc-dev@lists.ozlabs.org, kasan-dev@googlegroups.com,
- christophe.leroy@csgroup.eu
-Subject: [PATCH] powerpc: make show_stack's stack walking KASAN-safe
-Date: Fri, 28 May 2021 17:48:06 +1000
-Message-Id: <20210528074806.1311297-1-dja@axtens.net>
-X-Mailer: git-send-email 2.27.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Frxl72lkMz2xxq
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 May 2021 17:53:38 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 14S7jRS1067321; Fri, 28 May 2021 03:53:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=E07mYIrIbcD8S7M7I/zguYPr5COGTFcFtbpS8VoDEuI=;
+ b=cS0TRI5w0TsO9jbFZAPrrmyXaYSz+ddYGsrRB4Yzib6Uz0Y7i8FumMl5eTlu4EklCfdI
+ waMu0CYUUPRCTdQT7Xic0COYw5Ob6Cb70i+P8v9QcqaAaCbflrr+dlptgfqXhPQJWcP7
+ NI9AU3HGouxPBGOkSd6mVh/5yrskkzuixr0zfJZqvpeaQeHWs+Up8RLgRMQPh+GIzw+U
+ ahewgUkkC4xdeOM7Le7t5jw7UnAawP4kY5sHx4HuqPihctZGSSIW5JcYKEIXAAU6J6zY
+ ctiSuSWdilUArnZosXn45KXz3cEMGeEb1++WO0CbNwIEewcTZrMNeYSMdPVFs9CDIM+x Vg== 
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 38tvdn0659-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 28 May 2021 03:53:11 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 14S7mLG8019243;
+ Fri, 28 May 2021 07:53:10 GMT
+Received: from b03cxnp08028.gho.boulder.ibm.com
+ (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+ by ppma03dal.us.ibm.com with ESMTP id 38s1vamsve-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 28 May 2021 07:53:10 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 14S7r9xB34341194
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 28 May 2021 07:53:09 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EA6E1BE068;
+ Fri, 28 May 2021 07:53:08 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 790F7BE04F;
+ Fri, 28 May 2021 07:53:02 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.199.32.139])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Fri, 28 May 2021 07:53:02 +0000 (GMT)
+Subject: Re: [RFC v2 4/4] powerpc/papr_scm: Add cpu hotplug support for nvdimm
+ pmu device
+To: Peter Zijlstra <peterz@infradead.org>
+References: <20210525132216.1239259-1-kjain@linux.ibm.com>
+ <20210525132216.1239259-5-kjain@linux.ibm.com>
+ <YK0G1nmvhOPimRay@hirez.programming.kicks-ass.net>
+ <b89d1954-638b-34c0-2d79-5d1ce4e72a3a@linux.ibm.com>
+ <YK4Ho7e+LCqjYA2X@hirez.programming.kicks-ass.net>
+From: kajoljain <kjain@linux.ibm.com>
+Message-ID: <ab7ee13b-fccf-4366-c18c-f63ddf0552e2@linux.ibm.com>
+Date: Fri, 28 May 2021 13:23:00 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <YK4Ho7e+LCqjYA2X@hirez.programming.kicks-ass.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 0MXISzsXWyIm5rY7s9lJENnNmh6HXMYm
+X-Proofpoint-ORIG-GUID: 0MXISzsXWyIm5rY7s9lJENnNmh6HXMYm
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-05-28_03:2021-05-27,
+ 2021-05-28 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 phishscore=0
+ mlxlogscore=959 malwarescore=0 clxscore=1015 impostorscore=0 mlxscore=0
+ suspectscore=0 adultscore=0 lowpriorityscore=0 priorityscore=1501
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2105280049
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,69 +107,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Daniel Axtens <dja@axtens.net>
+Cc: santosh@fossix.org, maddy@linux.vnet.ibm.com, ira.weiny@intel.com,
+ linux-nvdimm@lists.01.org, rnsastry@linux.ibm.com,
+ linux-kernel@vger.kernel.org, atrajeev@linux.vnet.ibm.com,
+ aneesh.kumar@linux.ibm.com, vaibhav@linux.ibm.com, dan.j.williams@intel.com,
+ linuxppc-dev@lists.ozlabs.org, tglx@linutronix.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Make our stack-walking code KASAN-safe by using READ_ONCE_NOCHECK -
-generic code, arm64, s390 and x86 all do this for similar sorts of
-reasons: when unwinding a stack, we might touch memory that KASAN has
-marked as being out-of-bounds. In ppc64 KASAN development, I hit this
-sometimes when checking for an exception frame - because we're checking
-an arbitrary offset into the stack frame.
 
-See commit 20955746320e ("s390/kasan: avoid false positives during stack
-unwind"), commit bcaf669b4bdb ("arm64: disable kasan when accessing
-frame->fp in unwind_frame"), commit 91e08ab0c851 ("x86/dumpstack:
-Prevent KASAN false positive warnings") and commit 6e22c8366416
-("tracing, kasan: Silence Kasan warning in check_stack of stack_tracer").
 
-Signed-off-by: Daniel Axtens <dja@axtens.net>
----
- arch/powerpc/kernel/process.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+On 5/26/21 2:02 PM, Peter Zijlstra wrote:
+> On Wed, May 26, 2021 at 12:56:58PM +0530, kajoljain wrote:
+>> On 5/25/21 7:46 PM, Peter Zijlstra wrote:
+>>> On Tue, May 25, 2021 at 06:52:16PM +0530, Kajol Jain wrote:
+> 
+>>>> It adds cpumask to designate a cpu to make HCALL to
+>>>> collect the counter data for the nvdimm device and
+>>>> update ABI documentation accordingly.
+>>>>
+>>>> Result in power9 lpar system:
+>>>> command:# cat /sys/devices/nmem0/cpumask
+>>>> 0
+>>>
+>>> Is this specific to the papr thing, or should this be in generic nvdimm
+>>> code?
+>>
+>> This code is not specific to papr device and we can move it to
+>> generic nvdimm interface. But do we need to add some checks on whether
+>> any arch/platform specific driver want that support or we can assume 
+>> that this will be something needed by all platforms?
+> 
+> I'm a complete NVDIMM n00b, but to me it would appear they would have to
+> conform to the normal memory hierarchy and would thus always be
+> per-node.
+> 
+> Also, if/when deviation from this rule is observed, we can always
+> rework/extend this. For now I think it would make sense to have the
+> per-node ness of the thing expressed in the generic layer.
+> 
 
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 89e34aa273e2..430cf06f9406 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -2151,8 +2151,8 @@ void show_stack(struct task_struct *tsk, unsigned long *stack,
- 			break;
- 
- 		stack = (unsigned long *) sp;
--		newsp = stack[0];
--		ip = stack[STACK_FRAME_LR_SAVE];
-+		newsp = READ_ONCE_NOCHECK(stack[0]);
-+		ip = READ_ONCE_NOCHECK(stack[STACK_FRAME_LR_SAVE]);
- 		if (!firstframe || ip != lr) {
- 			printk("%s["REG"] ["REG"] %pS",
- 				loglvl, sp, ip, (void *)ip);
-@@ -2170,17 +2170,19 @@ void show_stack(struct task_struct *tsk, unsigned long *stack,
- 		 * See if this is an exception frame.
- 		 * We look for the "regshere" marker in the current frame.
- 		 */
--		if (validate_sp(sp, tsk, STACK_FRAME_WITH_PT_REGS)
--		    && stack[STACK_FRAME_MARKER] == STACK_FRAME_REGS_MARKER) {
-+		if (validate_sp(sp, tsk, STACK_FRAME_WITH_PT_REGS) &&
-+		    (READ_ONCE_NOCHECK(stack[STACK_FRAME_MARKER]) ==
-+		     STACK_FRAME_REGS_MARKER)) {
- 			struct pt_regs *regs = (struct pt_regs *)
- 				(sp + STACK_FRAME_OVERHEAD);
- 
--			lr = regs->link;
-+			lr = READ_ONCE_NOCHECK(regs->link);
- 			printk("%s--- interrupt: %lx at %pS\n",
--			       loglvl, regs->trap, (void *)regs->nip);
-+			       loglvl, READ_ONCE_NOCHECK(regs->trap),
-+			       (void *)READ_ONCE_NOCHECK(regs->nip));
- 			__show_regs(regs);
- 			printk("%s--- interrupt: %lx\n",
--			       loglvl, regs->trap);
-+			       loglvl, READ_ONCE_NOCHECK(regs->trap));
- 
- 			firstframe = 1;
- 		}
--- 
-2.27.0
+Hi Peter,
+  Thanks for the suggestion, I will send new RFC patchset with these changes.
 
+Thanks,
+Kajol Jain
