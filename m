@@ -2,47 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDFE5393E05
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 May 2021 09:36:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C97B2393E2B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 May 2021 09:48:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FrxMl6bmtz309L
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 May 2021 17:36:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FrxdW60bKz30FJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 May 2021 17:48:47 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=Ioy3+gdj;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com;
- envelope-from=wangkefeng.wang@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FrxMP19mNz2xxq
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 May 2021 17:36:32 +1000 (AEST)
-Received: from dggeml716-chm.china.huawei.com (unknown [172.30.72.53])
- by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4FrxFx2wgGzWntx;
- Fri, 28 May 2021 15:31:49 +0800 (CST)
-Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
- dggeml716-chm.china.huawei.com (10.3.17.127) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2176.2; Fri, 28 May 2021 15:36:25 +0800
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Fri, 28 May 2021 15:36:24 +0800
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v2] mm: generalize ZONE_[DMA|DMA32]
-Date: Fri, 28 May 2021 15:45:57 +0800
-Message-ID: <20210528074557.17768-1-wangkefeng.wang@huawei.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20210527143047.123611-1-wangkefeng.wang@huawei.com>
-References: <20210527143047.123611-1-wangkefeng.wang@huawei.com>
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::532;
+ helo=mail-pg1-x532.google.com; envelope-from=dja@axtens.net;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=Ioy3+gdj; dkim-atps=neutral
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com
+ [IPv6:2607:f8b0:4864:20::532])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Frxd21zvzz2yXZ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 May 2021 17:48:19 +1000 (AEST)
+Received: by mail-pg1-x532.google.com with SMTP id m124so1880921pgm.13
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 May 2021 00:48:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=O0+UwnOWvhSyGbBwcAEHiHt/a9TX3pdq1WbWKHN5EuQ=;
+ b=Ioy3+gdjVJR/KfLWt23WSFZ2Dx+8j5GXUUC7fJJ5j3y+uqLpXt2el1n3+stYLzsP2j
+ wnL4bi9Aig0GwKBHWOvLCJgUlEPauUIB145FdM0Flc2GdziP0E8kfqt/g8iwMM7c526b
+ o3rd3YunoOYwtrRitD9sJgwdiNPTnvSkiTXqE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=O0+UwnOWvhSyGbBwcAEHiHt/a9TX3pdq1WbWKHN5EuQ=;
+ b=J7W18+MM5LbiDWJtOZ4yyY3zzf4VmQNIBo2cTr3wCJY5wJaFHpQcBGmEzHkjBg6MTr
+ /8Tf23urc9TFp/1dTkFIHxQBg83DmHIwbm3gX6mLM25qRjE2njuUwYrHf3SX1lma50t+
+ On4yyFLi0rZezFhA0o+3FXO+FepO3te/lZaN0rc6EOdPmLpCKTjvUbFkssoj39dkbaY6
+ 2HjpTPkqCbPQiywzrXjx8f/iCqZH73E/ie8odGdM+q5jJr2cZEzI45OFowkHY+WawVIf
+ ODmi+inlHGx/PATrWtBFcl8Ip4jcE2Xk55uPOuEzcPAZpy/37lJ9h6PQDewa+Qfc9Eua
+ m32g==
+X-Gm-Message-State: AOAM533g3P9F3jV2U+ng41TFzcijieeVyZ2sufvULeuUL7N5ibV9YifU
+ OnLORsbd0OIPfvxlOelV6w4YlLuHJsZPRg==
+X-Google-Smtp-Source: ABdhPJyTr1ocIMHMFCx0LqeziOyVL5kjtNaZ+FYK9S2iAj82/vXJrggoGr61Vw7HBJu8hKS0R2g8JA==
+X-Received: by 2002:a05:6a00:24d4:b029:2da:8e01:f07f with SMTP id
+ d20-20020a056a0024d4b02902da8e01f07fmr2593270pfv.44.1622188093772; 
+ Fri, 28 May 2021 00:48:13 -0700 (PDT)
+Received: from localhost ([101.178.215.23])
+ by smtp.gmail.com with ESMTPSA id d3sm3713492pfn.141.2021.05.28.00.48.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 28 May 2021 00:48:13 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: linuxppc-dev@lists.ozlabs.org, kasan-dev@googlegroups.com,
+ christophe.leroy@csgroup.eu
+Subject: [PATCH] powerpc: make show_stack's stack walking KASAN-safe
+Date: Fri, 28 May 2021 17:48:06 +1000
+Message-Id: <20210528074806.1311297-1-dja@axtens.net>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.175.113.25]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpemm500001.china.huawei.com (7.185.36.107)
-X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,380 +76,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, linux-ia64@vger.kernel.org,
- Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org,
- sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
- Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org,
- Russell King <linux@armlinux.org.uk>, Mike Rapoport <rppt@linux.ibm.com>,
- Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- linux-m68k@lists.linux-m68k.org, Borislav Petkov <bp@alien8.de>,
- linux-arm-kernel@lists.infradead.org, Richard Henderson <rth@twiddle.net>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-mips@vger.kernel.org,
- Palmer Dabbelt <palmer@dabbelt.com>, linux-alpha@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-ZONE_[DMA|DMA32] configs have duplicate definitions on platforms
-that subscribe them. Instead, just make them generic options which
-can be selected on applicable platforms.
+Make our stack-walking code KASAN-safe by using READ_ONCE_NOCHECK -
+generic code, arm64, s390 and x86 all do this for similar sorts of
+reasons: when unwinding a stack, we might touch memory that KASAN has
+marked as being out-of-bounds. In ppc64 KASAN development, I hit this
+sometimes when checking for an exception frame - because we're checking
+an arbitrary offset into the stack frame.
 
-Also only x86/arm64 architectures could enable both ZONE_DMA and
-ZONE_DMA32 if EXPERT, add ARCH_HAS_ZONE_DMA_SET to make dma zone
-configurable and visible on the two architectures.
+See commit 20955746320e ("s390/kasan: avoid false positives during stack
+unwind"), commit bcaf669b4bdb ("arm64: disable kasan when accessing
+frame->fp in unwind_frame"), commit 91e08ab0c851 ("x86/dumpstack:
+Prevent KASAN false positive warnings") and commit 6e22c8366416
+("tracing, kasan: Silence Kasan warning in check_stack of stack_tracer").
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Richard Henderson <rth@twiddle.net>
-Cc: Russell King <linux@armlinux.org.uk>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com> # for arm64
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org> # for m68k
-Acked-by: Mike Rapoport <rppt@linux.ibm.com>
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+Signed-off-by: Daniel Axtens <dja@axtens.net>
 ---
-v2:
--i386 can't enable ZONE_DMA32, fix it.
--make ZONE_DMA default y on X86 as before.
--collect ACKs
+ arch/powerpc/kernel/process.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
- arch/alpha/Kconfig                     |  5 +----
- arch/arm/Kconfig                       |  3 ---
- arch/arm64/Kconfig                     |  9 +--------
- arch/ia64/Kconfig                      |  4 +---
- arch/m68k/Kconfig                      |  5 +----
- arch/microblaze/Kconfig                |  4 +---
- arch/mips/Kconfig                      |  7 -------
- arch/powerpc/Kconfig                   |  4 ----
- arch/powerpc/platforms/Kconfig.cputype |  1 +
- arch/riscv/Kconfig                     |  5 +----
- arch/s390/Kconfig                      |  4 +---
- arch/sparc/Kconfig                     |  5 +----
- arch/x86/Kconfig                       | 15 ++-------------
- mm/Kconfig                             | 12 ++++++++++++
- 14 files changed, 23 insertions(+), 60 deletions(-)
-
-diff --git a/arch/alpha/Kconfig b/arch/alpha/Kconfig
-index 5998106faa60..6a69a14c4825 100644
---- a/arch/alpha/Kconfig
-+++ b/arch/alpha/Kconfig
-@@ -40,6 +40,7 @@ config ALPHA
- 	select MMU_GATHER_NO_RANGE
- 	select SET_FS
- 	select SPARSEMEM_EXTREME if SPARSEMEM
-+	select ZONE_DMA
- 	help
- 	  The Alpha is a 64-bit general-purpose processor designed and
- 	  marketed by the Digital Equipment Corporation of blessed memory,
-@@ -65,10 +66,6 @@ config GENERIC_CALIBRATE_DELAY
- 	bool
- 	default y
+diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+index 89e34aa273e2..430cf06f9406 100644
+--- a/arch/powerpc/kernel/process.c
++++ b/arch/powerpc/kernel/process.c
+@@ -2151,8 +2151,8 @@ void show_stack(struct task_struct *tsk, unsigned long *stack,
+ 			break;
  
--config ZONE_DMA
--	bool
--	default y
--
- config GENERIC_ISA_DMA
- 	bool
- 	default y
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 24804f11302d..000c3f80b58e 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -218,9 +218,6 @@ config GENERIC_CALIBRATE_DELAY
- config ARCH_MAY_HAVE_PC_FDC
- 	bool
+ 		stack = (unsigned long *) sp;
+-		newsp = stack[0];
+-		ip = stack[STACK_FRAME_LR_SAVE];
++		newsp = READ_ONCE_NOCHECK(stack[0]);
++		ip = READ_ONCE_NOCHECK(stack[STACK_FRAME_LR_SAVE]);
+ 		if (!firstframe || ip != lr) {
+ 			printk("%s["REG"] ["REG"] %pS",
+ 				loglvl, sp, ip, (void *)ip);
+@@ -2170,17 +2170,19 @@ void show_stack(struct task_struct *tsk, unsigned long *stack,
+ 		 * See if this is an exception frame.
+ 		 * We look for the "regshere" marker in the current frame.
+ 		 */
+-		if (validate_sp(sp, tsk, STACK_FRAME_WITH_PT_REGS)
+-		    && stack[STACK_FRAME_MARKER] == STACK_FRAME_REGS_MARKER) {
++		if (validate_sp(sp, tsk, STACK_FRAME_WITH_PT_REGS) &&
++		    (READ_ONCE_NOCHECK(stack[STACK_FRAME_MARKER]) ==
++		     STACK_FRAME_REGS_MARKER)) {
+ 			struct pt_regs *regs = (struct pt_regs *)
+ 				(sp + STACK_FRAME_OVERHEAD);
  
--config ZONE_DMA
--	bool
--
- config ARCH_SUPPORTS_UPROBES
- 	def_bool y
+-			lr = regs->link;
++			lr = READ_ONCE_NOCHECK(regs->link);
+ 			printk("%s--- interrupt: %lx at %pS\n",
+-			       loglvl, regs->trap, (void *)regs->nip);
++			       loglvl, READ_ONCE_NOCHECK(regs->trap),
++			       (void *)READ_ONCE_NOCHECK(regs->nip));
+ 			__show_regs(regs);
+ 			printk("%s--- interrupt: %lx\n",
+-			       loglvl, regs->trap);
++			       loglvl, READ_ONCE_NOCHECK(regs->trap));
  
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 9f1d8566bbf9..42794474f37f 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -42,6 +42,7 @@ config ARM64
- 	select ARCH_HAS_SYSCALL_WRAPPER
- 	select ARCH_HAS_TEARDOWN_DMA_OPS if IOMMU_SUPPORT
- 	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
-+	select ARCH_HAS_ZONE_DMA_SET if EXPERT
- 	select ARCH_HAVE_ELF_PROT
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
- 	select ARCH_INLINE_READ_LOCK if !PREEMPTION
-@@ -307,14 +308,6 @@ config GENERIC_CSUM
- config GENERIC_CALIBRATE_DELAY
- 	def_bool y
- 
--config ZONE_DMA
--	bool "Support DMA zone" if EXPERT
--	default y
--
--config ZONE_DMA32
--	bool "Support DMA32 zone" if EXPERT
--	default y
--
- config ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE
- 	def_bool y
- 
-diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
-index 279252e3e0f7..fd8503a0088a 100644
---- a/arch/ia64/Kconfig
-+++ b/arch/ia64/Kconfig
-@@ -60,6 +60,7 @@ config IA64
- 	select NUMA if !FLATMEM
- 	select PCI_MSI_ARCH_FALLBACKS if PCI_MSI
- 	select SET_FS
-+	select ZONE_DMA32
- 	default y
- 	help
- 	  The Itanium Processor Family is Intel's 64-bit successor to
-@@ -72,9 +73,6 @@ config 64BIT
- 	select ATA_NONSTANDARD if ATA
- 	default y
- 
--config ZONE_DMA32
--	def_bool y
--
- config MMU
- 	bool
- 	default y
-diff --git a/arch/m68k/Kconfig b/arch/m68k/Kconfig
-index 372e4e69c43a..05a729c6ad7f 100644
---- a/arch/m68k/Kconfig
-+++ b/arch/m68k/Kconfig
-@@ -34,6 +34,7 @@ config M68K
- 	select SET_FS
- 	select UACCESS_MEMCPY if !MMU
- 	select VIRT_TO_BUS
-+	select ZONE_DMA
- 
- config CPU_BIG_ENDIAN
- 	def_bool y
-@@ -62,10 +63,6 @@ config TIME_LOW_RES
- config NO_IOPORT_MAP
- 	def_bool y
- 
--config ZONE_DMA
--	bool
--	default y
--
- config HZ
- 	int
- 	default 1000 if CLEOPATRA
-diff --git a/arch/microblaze/Kconfig b/arch/microblaze/Kconfig
-index 0660f47012bc..14a67a42fcae 100644
---- a/arch/microblaze/Kconfig
-+++ b/arch/microblaze/Kconfig
-@@ -43,6 +43,7 @@ config MICROBLAZE
- 	select MMU_GATHER_NO_RANGE
- 	select SPARSE_IRQ
- 	select SET_FS
-+	select ZONE_DMA
- 
- # Endianness selection
- choice
-@@ -60,9 +61,6 @@ config CPU_LITTLE_ENDIAN
- 
- endchoice
- 
--config ZONE_DMA
--	def_bool y
--
- config ARCH_HAS_ILOG2_U32
- 	def_bool n
- 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index ed51970c08e7..430d5324f1af 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -3277,13 +3277,6 @@ config I8253
- 	select CLKSRC_I8253
- 	select CLKEVT_I8253
- 	select MIPS_EXTERNAL_TIMER
--
--config ZONE_DMA
--	bool
--
--config ZONE_DMA32
--	bool
--
- endmenu
- 
- config TRAD_SIGNALS
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 088dd2afcfe4..0f78bb383a12 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -403,10 +403,6 @@ config PPC_ADV_DEBUG_DAC_RANGE
- config PPC_DAWR
- 	bool
- 
--config ZONE_DMA
--	bool
--	default y if PPC_BOOK3E_64
--
- config PGTABLE_LEVELS
- 	int
- 	default 2 if !PPC64
-diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-index f998e655b570..7d271de8fcbd 100644
---- a/arch/powerpc/platforms/Kconfig.cputype
-+++ b/arch/powerpc/platforms/Kconfig.cputype
-@@ -111,6 +111,7 @@ config PPC_BOOK3E_64
- 	select PPC_FPU # Make it a choice ?
- 	select PPC_SMP_MUXED_IPI
- 	select PPC_DOORBELL
-+	select ZONE_DMA
- 
- endchoice
- 
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index a8ad8eb76120..d29643dee126 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -103,6 +103,7 @@ config RISCV
- 	select SYSCTL_EXCEPTION_TRACE
- 	select THREAD_INFO_IN_TASK
- 	select UACCESS_MEMCPY if !MMU
-+	select ZONE_DMA32 if 64BIT
- 
- config ARCH_MMAP_RND_BITS_MIN
- 	default 18 if 64BIT
-@@ -132,10 +133,6 @@ config MMU
- 	  Select if you want MMU-based virtualised addressing space
- 	  support by paged memory management. If unsure, say 'Y'.
- 
--config ZONE_DMA32
--	bool
--	default y if 64BIT
--
- config VA_BITS
- 	int
- 	default 32 if 32BIT
-diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-index b4c7c34069f8..daab9d56957a 100644
---- a/arch/s390/Kconfig
-+++ b/arch/s390/Kconfig
-@@ -2,9 +2,6 @@
- config MMU
- 	def_bool y
- 
--config ZONE_DMA
--	def_bool y
--
- config CPU_BIG_ENDIAN
- 	def_bool y
- 
-@@ -210,6 +207,7 @@ config S390
- 	select THREAD_INFO_IN_TASK
- 	select TTY
- 	select VIRT_CPU_ACCOUNTING
-+	select ZONE_DMA
- 	# Note: keep the above list sorted alphabetically
- 
- config SCHED_OMIT_FRAME_POINTER
-diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
-index 164a5254c91c..39679664cc9a 100644
---- a/arch/sparc/Kconfig
-+++ b/arch/sparc/Kconfig
-@@ -59,6 +59,7 @@ config SPARC32
- 	select CLZ_TAB
- 	select HAVE_UID16
- 	select OLD_SIGACTION
-+	select ZONE_DMA
- 
- config SPARC64
- 	def_bool 64BIT
-@@ -141,10 +142,6 @@ config HIGHMEM
- 	default y if SPARC32
- 	select KMAP_LOCAL
- 
--config ZONE_DMA
--	bool
--	default y if SPARC32
--
- config GENERIC_ISA_DMA
- 	bool
- 	default y if SPARC32
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 0045e1b44190..11cf8a0d6800 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -33,6 +33,7 @@ config X86_64
- 	select NEED_DMA_MAP_STATE
- 	select SWIOTLB
- 	select ARCH_HAS_ELFCORE_COMPAT
-+	select ZONE_DMA32
- 
- config FORCE_DYNAMIC_FTRACE
- 	def_bool y
-@@ -93,6 +94,7 @@ config X86
- 	select ARCH_HAS_SYSCALL_WRAPPER
- 	select ARCH_HAS_UBSAN_SANITIZE_ALL
- 	select ARCH_HAS_DEBUG_WX
-+	select ARCH_HAS_ZONE_DMA_SET if EXPERT
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
- 	select ARCH_MIGHT_HAVE_ACPI_PDC		if ACPI
- 	select ARCH_MIGHT_HAVE_PC_PARPORT
-@@ -343,9 +345,6 @@ config ARCH_SUSPEND_POSSIBLE
- config ARCH_WANT_GENERAL_HUGETLB
- 	def_bool y
- 
--config ZONE_DMA32
--	def_bool y if X86_64
--
- config AUDIT_ARCH
- 	def_bool y if X86_64
- 
-@@ -393,16 +392,6 @@ config CC_HAS_SANE_STACKPROTECTOR
- 
- menu "Processor type and features"
- 
--config ZONE_DMA
--	bool "DMA memory allocation support" if EXPERT
--	default y
--	help
--	  DMA memory allocation support allows devices with less than 32-bit
--	  addressing to allocate within the first 16MB of address space.
--	  Disable if no such devices will be used.
--
--	  If unsure, say Y.
--
- config SMP
- 	bool "Symmetric multi-processing support"
- 	help
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 02d44e3420f5..16930f40f293 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -789,6 +789,18 @@ config ARCH_HAS_CACHE_LINE_SIZE
- config ARCH_HAS_PTE_DEVMAP
- 	bool
- 
-+config ARCH_HAS_ZONE_DMA_SET
-+	bool
-+
-+config ZONE_DMA
-+	bool "Support DMA zone" if ARCH_HAS_ZONE_DMA_SET
-+	default y if ARM64 || X86
-+
-+config ZONE_DMA32
-+	bool "Support DMA32 zone" if ARCH_HAS_ZONE_DMA_SET
-+	depends on !X86_32
-+	default y if ARM64
-+
- config ZONE_DEVICE
- 	bool "Device memory (pmem, HMM, etc...) hotplug support"
- 	depends on MEMORY_HOTPLUG
+ 			firstframe = 1;
+ 		}
 -- 
-2.26.2
+2.27.0
 
