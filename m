@@ -2,99 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AA46393CAE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 May 2021 07:22:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9102E393DE6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 May 2021 09:29:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FrtNK3hyTz307k
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 May 2021 15:22:09 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Tl66sh/s;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FrxBj4rLXz30HP
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 May 2021 17:29:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=iogearbox.net (client-ip=213.133.104.62;
+ helo=www62.your-server.de; envelope-from=daniel@iogearbox.net;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Tl66sh/s; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+X-Greylist: delayed 1098 seconds by postgrey-1.36 at boromir;
+ Fri, 28 May 2021 17:28:41 AEST
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FrtMm1cB9z2yRJ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 May 2021 15:21:39 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 14S53P5d186076; Fri, 28 May 2021 01:21:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=2T0XzvV0pPf+MKmPLbiuR872pRn1L7YO1Df+f+WOp8s=;
- b=Tl66sh/syuwOYr/rf2XuZjv1zJXYlnIQC+Nr4hWXV+DpLSbrHasRyPSBvoRfDfGhbDK6
- 5h6Gj6Mpvzui1ggem5uVtPK/Fo6tzYYZJOo79KjaTiYhaIdb8eLeH7gJ9AN8LU/c7Oai
- gSMmKtQx35DY5Owb+dzgldHJSFMrqsVSPJ5cTOHCsJ8q4xnA4qBTCAyIQH4SB1HJb5fE
- DoGTz/N9npsQ8EnBe2qTdzxqA/ANxN5/ERs/syjanEbvwS9++/ts8wrikT9WMpc/XTHb
- f3oCP7gZya0Pj57/8NZEJmqa44D+ULubG0hyJGWG58NAd3ph+jp+D5UUFoYnfljp7gaw fg== 
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0b-001b2d01.pphosted.com with ESMTP id 38tse9gyve-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 28 May 2021 01:21:11 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 14S58pxl003148;
- Fri, 28 May 2021 05:21:09 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma04ams.nl.ibm.com with ESMTP id 38s1r49j41-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 28 May 2021 05:21:09 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 14S5L6Dm33685844
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 28 May 2021 05:21:06 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 483314C046;
- Fri, 28 May 2021 05:21:06 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id ADDC84C044;
- Fri, 28 May 2021 05:21:03 +0000 (GMT)
-Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Fri, 28 May 2021 05:21:03 +0000 (GMT)
-Date: Fri, 28 May 2021 10:51:03 +0530
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Valentin Schneider <valentin.schneider@arm.com>
-Subject: Re: [PATCH 1/3] sched/topology: Allow archs to populate distance map
-Message-ID: <20210528052103.GN2633526@linux.vnet.ibm.com>
-References: <20210520154427.1041031-1-srikar@linux.vnet.ibm.com>
- <20210520154427.1041031-2-srikar@linux.vnet.ibm.com>
- <YKaw33d71FpHjGnR@hirez.programming.kicks-ass.net>
- <20210521023802.GE2633526@linux.vnet.ibm.com>
- <YKdr0g6+eIHncqej@hirez.programming.kicks-ass.net>
- <20210521092830.GF2633526@linux.vnet.ibm.com>
- <87k0no6wuu.mognet@arm.com>
- <20210524161829.GL2633526@linux.vnet.ibm.com>
- <87h7irglm9.mognet@arm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FrxBK4GqPz2xxq
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 May 2021 17:28:41 +1000 (AEST)
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+ by www62.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+ (Exim 4.92.3) (envelope-from <daniel@iogearbox.net>)
+ id 1lmWd4-0004Br-Bp; Fri, 28 May 2021 09:09:58 +0200
+Received: from [85.7.101.30] (helo=linux.home)
+ by sslproxy03.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+ (Exim 4.92) (envelope-from <daniel@iogearbox.net>)
+ id 1lmWd4-000WOo-1p; Fri, 28 May 2021 09:09:58 +0200
+Subject: Re: [PATCH v2] lockdown,selinux: avoid bogus SELinux lockdown
+ permission checks
+To: Paul Moore <paul@paul-moore.com>, Ondrej Mosnacek <omosnace@redhat.com>
+References: <20210517092006.803332-1-omosnace@redhat.com>
+ <CAHC9VhTasra0tU=bKwVqAwLRYaC+hYakirRz0Mn5jbVMuDkwrA@mail.gmail.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
+Message-ID: <01135120-8bf7-df2e-cff0-1d73f1f841c3@iogearbox.net>
+Date: Fri, 28 May 2021 09:09:57 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <87h7irglm9.mognet@arm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: u7QPXlkhZCRvKSlvx5XFp9HLC8oENy07
-X-Proofpoint-ORIG-GUID: u7QPXlkhZCRvKSlvx5XFp9HLC8oENy07
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-05-28_02:2021-05-27,
- 2021-05-28 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0
- mlxlogscore=520 lowpriorityscore=0 clxscore=1015 phishscore=0
- priorityscore=1501 spamscore=0 bulkscore=0 adultscore=0 mlxscore=0
- impostorscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2104190000 definitions=main-2105280032
+In-Reply-To: <CAHC9VhTasra0tU=bKwVqAwLRYaC+hYakirRz0Mn5jbVMuDkwrA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.103.2/26183/Thu May 27 13:07:49 2021)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,76 +57,154 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Gautham R Shenoy <ego@linux.vnet.ibm.com>,
- Vincent Guittot <vincent.guittot@linaro.org>, Rik van Riel <riel@surriel.com>,
- Peter Zijlstra <peterz@infradead.org>, linuxppc-dev@lists.ozlabs.org,
- Scott Cheloha <cheloha@linux.ibm.com>,
- Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>,
- LKML <linux-kernel@vger.kernel.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Thomas Gleixner <tglx@linutronix.de>, Mel Gorman <mgorman@techsingularity.net>,
- Ingo Molnar <mingo@kernel.org>
+Cc: jolsa@redhat.com, selinux@vger.kernel.org, netdev@vger.kernel.org,
+ Stephen Smalley <stephen.smalley.work@gmail.com>,
+ James Morris <jmorris@namei.org>, Steven Rostedt <rostedt@goodmis.org>,
+ linux-kernel@vger.kernel.org, Casey Schaufler <casey@schaufler-ca.com>,
+ linux-security-module@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+ linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Valentin Schneider <valentin.schneider@arm.com> [2021-05-25 11:21:02]:
-
-> On 24/05/21 21:48, Srikar Dronamraju wrote:
-> > * Valentin Schneider <valentin.schneider@arm.com> [2021-05-24 15:16:09]:
-> >> Ok so from your arch you can figure out the *size* of the set of unique
-> >> distances, but not the individual node_distance(a, b)... That's quite
-> >> unfortunate.
-> >
-> > Yes, thats true.
-> >
-> >>
-> >> I suppose one way to avoid the hook would be to write some "fake" distance
-> >> values into your distance_lookup_table[] for offline nodes using your
-> >> distance_ref_point_depth thing, i.e. ensure an iteration of
-> >> node_distance(a, b) covers all distance values [1]. You can then keep patch
-> >> 3 around, and that should roughly be it.
-> >>
-> >
-> > Yes, this would suffice but to me its not very clean.
-> > static int found[distance_ref_point_depth];
-> >
-> > for_each_node(node){
-> >       int i, nd, distance = LOCAL_DISTANCE;
-> >               goto out;
-> >
-> >       nd = node_distance(node, first_online_node)
-> >       for (i=0; i < distance_ref_point_depth; i++, distance *= 2) {
-> >               if (node_online) {
-> >                       if (distance != nd)
-> >                               continue;
-> >                       found[i] ++;
-> >                       break;
-> >               }
-> >               if (found[i])
-> >                       continue;
-> >               distance_lookup_table[node][i] = distance_lookup_table[first_online_node][i];
-> >               found[i] ++;
-> >               break;
-> >       }
-> > }
-> >
-> > But do note: We are setting a precedent for node distance between two nodes
-> > to change.
-> >
+On 5/28/21 3:37 AM, Paul Moore wrote:
+> On Mon, May 17, 2021 at 5:22 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
+>>
+>> Commit 59438b46471a ("security,lockdown,selinux: implement SELinux
+>> lockdown") added an implementation of the locked_down LSM hook to
+>> SELinux, with the aim to restrict which domains are allowed to perform
+>> operations that would breach lockdown.
+>>
+>> However, in several places the security_locked_down() hook is called in
+>> situations where the current task isn't doing any action that would
+>> directly breach lockdown, leading to SELinux checks that are basically
+>> bogus.
+>>
+>> Since in most of these situations converting the callers such that
+>> security_locked_down() is called in a context where the current task
+>> would be meaningful for SELinux is impossible or very non-trivial (and
+>> could lead to TOCTOU issues for the classic Lockdown LSM
+>> implementation), fix this by modifying the hook to accept a struct cred
+>> pointer as argument, where NULL will be interpreted as a request for a
+>> "global", task-independent lockdown decision only. Then modify SELinux
+>> to ignore calls with cred == NULL.
 > 
-> Indeed. AFAICT it's that or the unique-distance-values hook :/
+> I'm not overly excited about skipping the access check when cred is
+> NULL.  Based on the description and the little bit that I've dug into
+> thus far it looks like using SECINITSID_KERNEL as the subject would be
+> much more appropriate.  *Something* (the kernel in most of the
+> relevant cases it looks like) is requesting that a potentially
+> sensitive disclosure be made, and ignoring it seems like the wrong
+> thing to do.  Leaving the access control intact also provides a nice
+> avenue to audit these requests should users want to do that.
 
-Peter, Valentin, Michael,
+I think the rationale/workaround for ignoring calls with cred == NULL (or the previous
+patch with the unimplemented hook) from Ondrej was two-fold, at least speaking for his
+seen tracing cases:
 
-Can you please let me know which approach you would want me to follow.
+   i) The audit events that are triggered due to calls to security_locked_down()
+      can OOM kill a machine, see below details [0].
 
-Or do let me know any other alternative solutions that you would want me to
-try.
+  ii) It seems to be causing a deadlock via slow_avc_audit() -> audit_log_end()
+      when presumingly trying to wake up kauditd [1].
 
+How would your suggestion above solve both i) and ii)?
 
--- 
-Thanks and Regards
-Srikar Dronamraju
+[0] https://bugzilla.redhat.com/show_bug.cgi?id=1955585 :
+
+   I starting seeing this with F-34. When I run a container that is traced with eBPF
+   to record the syscalls it is doing, auditd is flooded with messages like:
+
+   type=AVC msg=audit(1619784520.593:282387): avc:  denied  { confidentiality } for
+    pid=476 comm="auditd" lockdown_reason="use of bpf to read kernel RAM"
+     scontext=system_u:system_r:auditd_t:s0 tcontext=system_u:system_r:auditd_t:s0 tclass=lockdown permissive=0
+
+   This seems to be leading to auditd running out of space in the backlog buffer and
+   eventually OOMs the machine.
+
+   auditd running at 99% CPU presumably processing all the messages, eventually I get:
+   Apr 30 12:20:42 fedora kernel: audit: backlog limit exceeded
+   Apr 30 12:20:42 fedora kernel: audit: backlog limit exceeded
+   Apr 30 12:20:42 fedora kernel: audit: audit_backlog=2152579 > audit_backlog_limit=64
+   Apr 30 12:20:42 fedora kernel: audit: audit_backlog=2152626 > audit_backlog_limit=64
+   Apr 30 12:20:42 fedora kernel: audit: audit_backlog=2152694 > audit_backlog_limit=64
+   Apr 30 12:20:42 fedora kernel: audit: audit_lost=6878426 audit_rate_limit=0 audit_backlog_limit=64
+   Apr 30 12:20:45 fedora kernel: oci-seccomp-bpf invoked oom-killer: gfp_mask=0x100cca(GFP_HIGHUSER_MOVABLE), order=0, oom_score_adj=-1000
+   Apr 30 12:20:45 fedora kernel: CPU: 0 PID: 13284 Comm: oci-seccomp-bpf Not tainted 5.11.12-300.fc34.x86_64 #1
+   Apr 30 12:20:45 fedora kernel: Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-2.fc32 04/01/2014
+
+[1] https://lore.kernel.org/linux-audit/CANYvDQN7H5tVp47fbYcRasv4XF07eUbsDwT_eDCHXJUj43J7jQ@mail.gmail.com/ :
+
+   Upstream kernel 5.11.0-rc7 and later was found to deadlock during a bpf_probe_read_compat()
+   call within a sched_switch tracepoint. The problem is reproducible with the reg_alloc3
+   testcase from SystemTap's BPF backend testsuite on x86_64 as well as the runqlat,runqslower
+   tools from bcc on ppc64le. Example stack trace from [1]:
+
+   [  730.868702] stack backtrace:
+   [  730.869590] CPU: 1 PID: 701 Comm: in:imjournal Not tainted, 5.12.0-0.rc2.20210309git144c79ef3353.166.fc35.x86_64 #1
+   [  730.871605] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.13.0-2.fc32 04/01/2014
+   [  730.873278] Call Trace:
+   [  730.873770]  dump_stack+0x7f/0xa1
+   [  730.874433]  check_noncircular+0xdf/0x100
+   [  730.875232]  __lock_acquire+0x1202/0x1e10
+   [  730.876031]  ? __lock_acquire+0xfc0/0x1e10
+   [  730.876844]  lock_acquire+0xc2/0x3a0
+   [  730.877551]  ? __wake_up_common_lock+0x52/0x90
+   [  730.878434]  ? lock_acquire+0xc2/0x3a0
+   [  730.879186]  ? lock_is_held_type+0xa7/0x120
+   [  730.880044]  ? skb_queue_tail+0x1b/0x50
+   [  730.880800]  _raw_spin_lock_irqsave+0x4d/0x90
+   [  730.881656]  ? __wake_up_common_lock+0x52/0x90
+   [  730.882532]  __wake_up_common_lock+0x52/0x90
+   [  730.883375]  audit_log_end+0x5b/0x100
+   [  730.884104]  slow_avc_audit+0x69/0x90
+   [  730.884836]  avc_has_perm+0x8b/0xb0
+   [  730.885532]  selinux_lockdown+0xa5/0xd0
+   [  730.886297]  security_locked_down+0x20/0x40
+   [  730.887133]  bpf_probe_read_compat+0x66/0xd0
+   [  730.887983]  bpf_prog_250599c5469ac7b5+0x10f/0x820
+   [  730.888917]  trace_call_bpf+0xe9/0x240
+   [  730.889672]  perf_trace_run_bpf_submit+0x4d/0xc0
+   [  730.890579]  perf_trace_sched_switch+0x142/0x180
+   [  730.891485]  ? __schedule+0x6d8/0xb20
+   [  730.892209]  __schedule+0x6d8/0xb20
+   [  730.892899]  schedule+0x5b/0xc0
+   [  730.893522]  exit_to_user_mode_prepare+0x11d/0x240
+   [  730.894457]  syscall_exit_to_user_mode+0x27/0x70
+   [  730.895361]  entry_SYSCALL_64_after_hwframe+0x44/0xae
+
+>> Since most callers will just want to pass current_cred() as the cred
+>> parameter, rename the hook to security_cred_locked_down() and provide
+>> the original security_locked_down() function as a simple wrapper around
+>> the new hook.
+[...]
+> 
+>> 3. kernel/trace/bpf_trace.c:bpf_probe_read_kernel{,_str}_common()
+>>       Called when a BPF program calls a helper that could leak kernel
+>>       memory. The task context is not relevant here, since the program
+>>       may very well be run in the context of a different task than the
+>>       consumer of the data.
+>>       See: https://bugzilla.redhat.com/show_bug.cgi?id=1955585
+> 
+> The access control check isn't so much who is consuming the data, but
+> who is requesting a potential violation of a "lockdown", yes?  For
+> example, the SELinux policy rule for the current lockdown check looks
+> something like this:
+> 
+>    allow <who> <who> : lockdown { <reason> };
+> 
+> It seems to me that the task context is relevant here and performing
+> the access control check based on the task's domain is correct.
+This doesn't make much sense to me, it's /not/ the task 'requesting a potential
+violation of a "lockdown"', but rather the running tracing program which is e.g.
+inspecting kernel data structures around the triggered event. If I understood
+you correctly, having an 'allow' check on, say, httpd would be rather odd since
+things like perf/bcc/bpftrace/systemtap/etc is installing the tracing probe instead.
+
+Meaning, if we would /not/ trace such events (like in the prior mentioned syscall
+example), then there is also no call to the security_locked_down() from that same/
+unmodified application.
+
+Thanks,
+Daniel
