@@ -2,69 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD186393FA0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 May 2021 11:13:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ABB7393FA4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 May 2021 11:13:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FrzVx6jt8z3dh3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 May 2021 19:13:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FrzWX23nqz3dkN
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 May 2021 19:13:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=lSoboG8t;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=KlC59Q89;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1035;
- helo=mail-pj1-x1035.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::631;
+ helo=mail-pl1-x631.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=lSoboG8t; dkim-atps=neutral
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com
- [IPv6:2607:f8b0:4864:20::1035])
+ header.s=20161025 header.b=KlC59Q89; dkim-atps=neutral
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com
+ [IPv6:2607:f8b0:4864:20::631])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FrzPT6LBVz300T
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 May 2021 19:08:29 +1000 (AEST)
-Received: by mail-pj1-x1035.google.com with SMTP id q6so2171309pjj.2
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 May 2021 02:08:29 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FrzPY0t5tz3bwZ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 May 2021 19:08:33 +1000 (AEST)
+Received: by mail-pl1-x631.google.com with SMTP id v13so1321275ple.9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 May 2021 02:08:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=cUEbB1uxydd11jDkucwIfUU2Dj7cII3oAzBBJlkL/QU=;
- b=lSoboG8tpdJv4KS0a7P39fwC7DcRRmfH6xAxTphPgUrJaYoZF2yRQxBmdMVJyrXIzh
- 4jNX3OOeEIvO2xUmFSPYxC5by7c0CgquXgFuRNp9cteTfh8JMMwPdxgG55+AKPMif+7T
- D00rs9DM8xSjjmBNFuNmjIhCZlgU/YDTuauycbQF/K84iCn52Emm8ThKNK0fkrGA4y0q
- tTr+iuBHC5bI5/5F6w9LCQZOYttr3v0by8LPe6/TfB5SD0mx7HZU8Ly2n1xcQ7AzF1X7
- KL1Q5vSXg3C4dYb5hqxjxxX0OAlA892UnmLluSVM2iAx4Fprji179epbIyxCrtlhAU/l
- jQSw==
+ bh=90UbIhNw44kMuPFz5PZ0UyL76p1SAQF9XbdrCoVC4mU=;
+ b=KlC59Q894TGyiqIL/PDRDeSNxIVSdnTihZ/Zllgx5Yz2DOYXhq6T/2xH8l1Bu8W8nk
+ hCxocXQR8B8Rfv+PrkLp42a0fdNdMMt/R5xjp+lpagguIezP5APqfJ/WMcIFr31uRK+r
+ hpqP8/dzjQeuxmIYqkqEXISExK7/CBg23fj/q3T08IF8r66291cLRDGySRc6OhfUjlMJ
+ fKqt9Az6AjfF79+AW4rTk7jv6Fndv8W03SBqItQGuFq7zS1XEyhddQvxt7S9hroHGfzA
+ Hv1evA67jvOjY05jlEXvMa+fbIBeXJlcG+wTt09PUhT2zvcW7f9GA/vpDA2gkfTgVntX
+ nvXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=cUEbB1uxydd11jDkucwIfUU2Dj7cII3oAzBBJlkL/QU=;
- b=B6KYFQs7W4+6XEYe/2hyK9HNRXvMXfv2T/e/wQMp3PrHXxBFXhMpG6mSxqxtHrArf/
- YzcweoL1IuhQEvwwWGvPFrAoMMUUgBa6cZ/UmwnFmqmJPCTQga35XGNQrAWUM7/1WuVf
- WM6bhxyAVE6V64EeUggU+nj4XTzzyzx6tBfGLwDsm0KDgQ2stxBNregnryzUVUVIVKFO
- njRMq+T1leknW294bnAFa+QpqY+nZyL7HNrupiSY+quOWkjQtnYDbIdJMOj7obW6f8o/
- 4STiR079PhbBdwUQ0jB/UukH2yAymc+PoZnaDcWETK5vCSncvAH1/qD/CHeZIiOznWCT
- dzGw==
-X-Gm-Message-State: AOAM533ncZPyYJlQ5jK/XIkcVw/sogm8X4AXQ/dh9QQ8JwnNO/b9ptm1
- saN8ZpWxRvZzKOmyzFFc6NgJw20Zfb0=
-X-Google-Smtp-Source: ABdhPJxrdarisH3hRxOuOV/WACSmAma1toX2dQ1LHiSLNjDGJKN08q6xHrQGCE+EM+hCtjt3nHlTnw==
-X-Received: by 2002:a17:90a:a116:: with SMTP id
- s22mr3319681pjp.155.1622192908044; 
- Fri, 28 May 2021 02:08:28 -0700 (PDT)
+ bh=90UbIhNw44kMuPFz5PZ0UyL76p1SAQF9XbdrCoVC4mU=;
+ b=J5wfzRZC5nhZDh/MXFLxcMVkqqjnn+9oDyJjOU0w8oIOtIFSSmCT2Je324inq6k0yT
+ I1AV3Mi8Q9hxWfcXXZTbJEOBYcIFcvKdK4vFMGsgGS2bCQ9KAFMeoWdLOjhY7hQngxhc
+ oCmzNI1Z1d642jyW0uY73xuS8EbLuZgxkYWErSOxXRXJ4vkgdnl9onxJiGQXoeO12meI
+ eq9uB6UV8hiJYdP0Fy5oEr29l3FIIf+GSvb328pJ3dAMyzsi4dazDMtkNyKzq3nOJHl1
+ frjdrc9aAOnxGmFQZGk+9+/zRvDCbtLH6QtsNAkNz3cJ6tjoxNWZRsU4Gc6ryVBZ5qpn
+ hVrw==
+X-Gm-Message-State: AOAM532z8kS/W11kyqW3DyApvsPevtNH9O6ZNAv3TBSjWk0VzI5MopUT
+ 52Z43UqbqBxLCl+e7JZvX5jp1tLnDb8=
+X-Google-Smtp-Source: ABdhPJyOwoTcLd94aC0PGsSFhJqhLMIumtYVoLm57MiU1Ek3I8rZdur7L3qApayMee95/MqoRHq9AQ==
+X-Received: by 2002:a17:90b:4b8f:: with SMTP id
+ lr15mr3458363pjb.30.1622192910627; 
+ Fri, 28 May 2021 02:08:30 -0700 (PDT)
 Received: from bobo.ibm.com (124-169-110-219.tpgi.com.au. [124.169.110.219])
- by smtp.gmail.com with ESMTPSA id a2sm3624183pfv.156.2021.05.28.02.08.25
+ by smtp.gmail.com with ESMTPSA id a2sm3624183pfv.156.2021.05.28.02.08.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 May 2021 02:08:27 -0700 (PDT)
+ Fri, 28 May 2021 02:08:30 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org
-Subject: [PATCH v7 11/32] KVM: PPC: Book3S HV P9: Move xive vcpu context
- management into kvmhv_p9_guest_entry
-Date: Fri, 28 May 2021 19:07:31 +1000
-Message-Id: <20210528090752.3542186-12-npiggin@gmail.com>
+Subject: [PATCH v7 12/32] KVM: PPC: Book3S HV P9: Move radix MMU switching
+ instructions together
+Date: Fri, 28 May 2021 19:07:32 +1000
+Message-Id: <20210528090752.3542186-13-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210528090752.3542186-1-npiggin@gmail.com>
 References: <20210528090752.3542186-1-npiggin@gmail.com>
@@ -87,47 +87,154 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Move the xive management up so the low level register switching can be
-pushed further down in a later patch. XIVE MMIO CI operations can run in
-higher level code with machine checks, tracing, etc., available.
+Switching the MMU from radix<->radix mode is tricky particularly as the
+MMU can remain enabled and requires a certain sequence of SPR updates.
+Move these together into their own functions.
+
+This also includes the radix TLB check / flush because it's tied in to
+MMU switching due to tlbiel getting LPID from LPIDR.
 
 Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kvm/book3s_hv.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ arch/powerpc/kvm/book3s_hv.c | 62 ++++++++++++++++++++++++------------
+ 1 file changed, 41 insertions(+), 21 deletions(-)
 
 diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index d82ff7fe8ac7..bb326cfcf173 100644
+index bb326cfcf173..3ec1dc1bad16 100644
 --- a/arch/powerpc/kvm/book3s_hv.c
 +++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -3558,15 +3558,11 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
- 	 */
- 	mtspr(SPRN_HDEC, hdec);
+@@ -3478,12 +3478,49 @@ static noinline void kvmppc_run_core(struct kvmppc_vcore *vc)
+ 	trace_kvmppc_run_core(vc, 1);
+ }
  
--	kvmppc_xive_push_vcpu(vcpu);
--
- 	mtspr(SPRN_SRR0, vcpu->arch.shregs.srr0);
- 	mtspr(SPRN_SRR1, vcpu->arch.shregs.srr1);
- 
- 	trap = __kvmhv_vcpu_entry_p9(vcpu);
- 
--	kvmppc_xive_pull_vcpu(vcpu);
--
- 	/* Advance host PURR/SPURR by the amount used by guest */
- 	purr = mfspr(SPRN_PURR);
- 	spurr = mfspr(SPRN_SPURR);
-@@ -3764,7 +3760,10 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
- 			trap = 0;
- 		}
- 	} else {
-+		kvmppc_xive_push_vcpu(vcpu);
- 		trap = kvmhv_load_hv_regs_and_go(vcpu, time_limit, lpcr);
-+		kvmppc_xive_pull_vcpu(vcpu);
++static void switch_mmu_to_guest_radix(struct kvm *kvm, struct kvm_vcpu *vcpu, u64 lpcr)
++{
++	struct kvmppc_vcore *vc = vcpu->arch.vcore;
++	struct kvm_nested_guest *nested = vcpu->arch.nested;
++	u32 lpid;
 +
++	lpid = nested ? nested->shadow_lpid : kvm->arch.lpid;
++
++	/*
++	 * All the isync()s are overkill but trivially follow the ISA
++	 * requirements. Some can likely be replaced with justification
++	 * comment for why they are not needed.
++	 */
++	isync();
++	mtspr(SPRN_LPID, lpid);
++	isync();
++	mtspr(SPRN_LPCR, lpcr);
++	isync();
++	mtspr(SPRN_PID, vcpu->arch.pid);
++	isync();
++
++	/* TLBIEL must have LPIDR set, so set guest LPID before flushing. */
++	kvmppc_check_need_tlb_flush(kvm, vc->pcpu, nested);
++}
++
++static void switch_mmu_to_host_radix(struct kvm *kvm, u32 pid)
++{
++	isync();
++	mtspr(SPRN_PID, pid);
++	isync();
++	mtspr(SPRN_LPID, kvm->arch.host_lpid);
++	isync();
++	mtspr(SPRN_LPCR, kvm->arch.host_lpcr);
++	isync();
++}
++
+ /*
+  * Load up hypervisor-mode registers on P9.
+  */
+ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
+ 				     unsigned long lpcr)
+ {
++	struct kvm *kvm = vcpu->kvm;
+ 	struct kvmppc_vcore *vc = vcpu->arch.vcore;
+ 	s64 hdec;
+ 	u64 tb, purr, spurr;
+@@ -3535,7 +3572,6 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	}
+ 	mtspr(SPRN_CIABR, vcpu->arch.ciabr);
+ 	mtspr(SPRN_IC, vcpu->arch.ic);
+-	mtspr(SPRN_PID, vcpu->arch.pid);
+ 
+ 	mtspr(SPRN_PSSCR, vcpu->arch.psscr | PSSCR_EC |
+ 	      (local_paca->kvm_hstate.fake_suspend << PSSCR_FAKE_SUSPEND_LG));
+@@ -3549,8 +3585,7 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
+ 
+ 	mtspr(SPRN_AMOR, ~0UL);
+ 
+-	mtspr(SPRN_LPCR, lpcr);
+-	isync();
++	switch_mmu_to_guest_radix(kvm, vcpu, lpcr);
+ 
+ 	/*
+ 	 * P9 suppresses the HDEC exception when LPCR[HDICE] = 0,
+@@ -3593,7 +3628,6 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
+ 		mtspr(SPRN_DAWR1, host_dawr1);
+ 		mtspr(SPRN_DAWRX1, host_dawrx1);
+ 	}
+-	mtspr(SPRN_PID, host_pidr);
+ 
+ 	/*
+ 	 * Since this is radix, do a eieio; tlbsync; ptesync sequence in
+@@ -3608,9 +3642,6 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	if (cpu_has_feature(CPU_FTR_ARCH_31))
+ 		asm volatile(PPC_CP_ABORT);
+ 
+-	mtspr(SPRN_LPID, vcpu->kvm->arch.host_lpid);	/* restore host LPID */
+-	isync();
+-
+ 	vc->dpdes = mfspr(SPRN_DPDES);
+ 	vc->vtb = mfspr(SPRN_VTB);
+ 	mtspr(SPRN_DPDES, 0);
+@@ -3627,7 +3658,8 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
  	}
  
- 	vcpu->arch.slb_max = 0;
+ 	mtspr(SPRN_HDEC, 0x7fffffff);
+-	mtspr(SPRN_LPCR, vcpu->kvm->arch.host_lpcr);
++
++	switch_mmu_to_host_radix(kvm, host_pidr);
+ 
+ 	return trap;
+ }
+@@ -4181,7 +4213,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+ {
+ 	struct kvm_run *run = vcpu->run;
+ 	int trap, r, pcpu;
+-	int srcu_idx, lpid;
++	int srcu_idx;
+ 	struct kvmppc_vcore *vc;
+ 	struct kvm *kvm = vcpu->kvm;
+ 	struct kvm_nested_guest *nested = vcpu->arch.nested;
+@@ -4255,13 +4287,6 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	vc->vcore_state = VCORE_RUNNING;
+ 	trace_kvmppc_run_core(vc, 0);
+ 
+-	if (cpu_has_feature(CPU_FTR_HVMODE)) {
+-		lpid = nested ? nested->shadow_lpid : kvm->arch.lpid;
+-		mtspr(SPRN_LPID, lpid);
+-		isync();
+-		kvmppc_check_need_tlb_flush(kvm, pcpu, nested);
+-	}
+-
+ 	guest_enter_irqoff();
+ 
+ 	srcu_idx = srcu_read_lock(&kvm->srcu);
+@@ -4280,11 +4305,6 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+ 
+ 	srcu_read_unlock(&kvm->srcu, srcu_idx);
+ 
+-	if (cpu_has_feature(CPU_FTR_HVMODE)) {
+-		mtspr(SPRN_LPID, kvm->arch.host_lpid);
+-		isync();
+-	}
+-
+ 	set_irq_happened(trap);
+ 
+ 	kvmppc_set_host_core(pcpu);
 -- 
 2.23.0
 
