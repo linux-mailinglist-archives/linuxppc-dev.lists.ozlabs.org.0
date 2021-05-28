@@ -2,69 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1437393FC6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 May 2021 11:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1985393FC7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 May 2021 11:21:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Frzh454CRz3dKJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 May 2021 19:21:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FrzhY0H4Kz3dTj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 May 2021 19:21:33 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=E6ClE/cn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=T4l6vfKO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::629;
- helo=mail-pl1-x629.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102a;
+ helo=mail-pj1-x102a.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=E6ClE/cn; dkim-atps=neutral
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com
- [IPv6:2607:f8b0:4864:20::629])
+ header.s=20161025 header.b=T4l6vfKO; dkim-atps=neutral
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com
+ [IPv6:2607:f8b0:4864:20::102a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FrzQJ2VKpz3bT7
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 May 2021 19:09:12 +1000 (AEST)
-Received: by mail-pl1-x629.google.com with SMTP id s4so1315360plg.12
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 May 2021 02:09:11 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FrzQL42LKz309T
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 May 2021 19:09:14 +1000 (AEST)
+Received: by mail-pj1-x102a.google.com with SMTP id f8so2188616pjh.0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 May 2021 02:09:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=lkhh+7+Ov19CpD2BZ2TpSp5T+9kMV12xhYDKRJk5AtI=;
- b=E6ClE/cnOwN19XjSaIrA2ToB1juk5hyxB8Pi6uYNUSTzCs6xUE2lnSwTa8Z5mu0YLf
- odxIjd+rKmFzeCfSn4uhXneiDDMWrGUN7bL3mAsATxCuEqYELSFUpyLBOxF1r9dhXues
- gUbzi/qQONtvhOkMgvCHZj3Gu+9BZvUPBicw47iriC7JsSWJr4jFA7YLdTxToQmZESVk
- UYyuAz/np+j9HgkkAUJIclstCAqx5bu2Z+K34dsCfm8Tj65lNnYgJFE9e8pk/GggcESv
- 7hKPgYWUgDI+9bu73xRCCaqZ5RxVLAIetlR53JUTITEMKtM+12+QYqa4kmq33zmIsxCY
- VTcw==
+ bh=r5usDmW6ESlSNZYJloJenDWYeT5fTs1KfX9oWvwN0Tg=;
+ b=T4l6vfKOzrTwgLtf4lwiNSgAdN7Ofkwn++hG1WFYmxPm5SM+XFBIrTYHqQXTl01vTM
+ U7zPBEptuSnLPCdcH/cLXkyWZzBL7/xn6PTeESp0wTaTuoQzypo+2/XUfMnq8heVvMva
+ MyvWK0eqDBWJkOVK1yNqCijufVZKAilnbwv4FHykZi4zQzfBmGzYqCxi4g216DfO51OQ
+ fF6zOiQbCdN6vX1/5tAN3AelM1hOCX8BX6Z2Kbf4yOGHp5kM3hqb5krsbpZ0HovwGA81
+ lqMNX1SMILIVzwCivCpkWXYg4kZzg/8ugA+hzrSXbSg1RHAEOA2R9ChDUlDgw3vw/cq8
+ Cm4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=lkhh+7+Ov19CpD2BZ2TpSp5T+9kMV12xhYDKRJk5AtI=;
- b=ANoq/43BXFOUkrfZ8l3crTER6+fxJUjN5u2/jI3bzwzkHLhni9/5MjASujfOEwf9l9
- JtlWAZ+PKL4kB1/xhk2hJHNPQkzsmCebLNwAArBfna9HB6XhdGkmY3JKNTzLjN65QnSx
- tC+UE+UycCJDzyUy8kzldrgkFyFIBkUqzoDDY+hnw/NNXGroJGKItHOHCYUSkVQpoMbe
- 5VfQi0W1x6+PUARlfjCzY8VorS/y9AcIyLsEWu/pGTqYbzqG3bu+FH8yjjnI5qUL8wbK
- pHGyG07PoknRoTVi/n0FErS8yhNRw4du+C0Vi+Z0pEOelT2oDbFyBzqHccEyhhlLNZQw
- wKnw==
-X-Gm-Message-State: AOAM533KVETE+9rsriWxa9Ky8HOai0iAhpoudrXq1syXPhH2uwg4o95/
- nCL/+REl/mV+nrE9+mCdLEs4bJdrX+g=
-X-Google-Smtp-Source: ABdhPJziDElpszUtRsQGuRpyUjxSJUJ/OdMWEFjxR3whjFKzDjOLE8WqHG258haY9+6ev2AwbGi9Nw==
-X-Received: by 2002:a17:90a:ba8b:: with SMTP id
- t11mr3426534pjr.106.1622192949815; 
- Fri, 28 May 2021 02:09:09 -0700 (PDT)
+ bh=r5usDmW6ESlSNZYJloJenDWYeT5fTs1KfX9oWvwN0Tg=;
+ b=sKAnvUuh3qgiYRs9e94ijyjIaFIRCy8sOg9teJMp6JYac0F2TcL+U5wajHU7CH9SSl
+ sVlC/+nP0BlZYmyDxwqh/FqVsyw3lOd1Mo9vmaFoysp/RgN8QZmAl1JdmhPCWZkfDGYj
+ tEuJVjF8EOdo0F4jyccd8ePRTp7XspIb1AHZZEN+UgtHG+BSPt+DpVOc8Z9ZZ6rP8IZu
+ 7CmXC/Up0r8TNCvniH7Rx2cJsSmtmTXdTQQo1m1jiWF8LUjqJft3g4bLu6Ra8/mhfVfc
+ foPbMPAiDhKp3AayNnIO2hC/GSw/VXpl39R1OVBYfltMNpzlzDnU8IsyWssKHguJXdGu
+ CYRA==
+X-Gm-Message-State: AOAM533Csr/H5/2RYpKFTUkDSSZTsgqVtkd/rauRwZbdufQTUqvy7sT+
+ Unw102pyoTUNETWO98oTngE=
+X-Google-Smtp-Source: ABdhPJxg3py6r6PbIYgriPSH4VxMmO5Hz4JTIfPWk36XWCKecIn01YQwl8VGeTZO7cy61V8Emi8hRg==
+X-Received: by 2002:a17:90a:ba07:: with SMTP id
+ s7mr3290362pjr.129.1622192952110; 
+ Fri, 28 May 2021 02:09:12 -0700 (PDT)
 Received: from bobo.ibm.com (124-169-110-219.tpgi.com.au. [124.169.110.219])
- by smtp.gmail.com with ESMTPSA id a2sm3624183pfv.156.2021.05.28.02.09.07
+ by smtp.gmail.com with ESMTPSA id a2sm3624183pfv.156.2021.05.28.02.09.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 May 2021 02:09:09 -0700 (PDT)
+ Fri, 28 May 2021 02:09:11 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org
-Subject: [PATCH v7 28/32] KVM: PPC: Book3S HV: add virtual mode handlers for
- HPT hcalls and page faults
-Date: Fri, 28 May 2021 19:07:48 +1000
-Message-Id: <20210528090752.3542186-29-npiggin@gmail.com>
+Subject: [PATCH v7 29/32] KVM: PPC: Book3S HV P9: Reflect userspace hcalls to
+ hash guests to support PR KVM
+Date: Fri, 28 May 2021 19:07:49 +1000
+Message-Id: <20210528090752.3542186-30-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210528090752.3542186-1-npiggin@gmail.com>
 References: <20210528090752.3542186-1-npiggin@gmail.com>
@@ -86,258 +86,53 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In order to support hash guests in the P9 path (which does not do real
-mode hcalls or page fault handling), these real-mode hash specific
-interrupts need to be implemented in virt mode.
+The reflection of sc 1 interrupts from guest PR=1 to the guest kernel is
+required to support a hash guest running PR KVM where its guest is
+making hcalls with sc 1.
+
+In preparation for hash guest support, add this hcall reflection to the
+P9 path. The P7/8 path does this in its realmode hcall handler
+(sc_1_fast_return).
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kvm/book3s_hv.c        | 145 ++++++++++++++++++++++++++--
- arch/powerpc/kvm/book3s_hv_rm_mmu.c |   8 ++
- 2 files changed, 144 insertions(+), 9 deletions(-)
+ arch/powerpc/kvm/book3s_hv.c | 22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
 diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 9ba77747bf00..dee740a3ace9 100644
+index dee740a3ace9..493f67f27d06 100644
 --- a/arch/powerpc/kvm/book3s_hv.c
 +++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -939,6 +939,52 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
- 		return RESUME_HOST;
- 
- 	switch (req) {
-+	case H_REMOVE:
-+		ret = kvmppc_h_remove(vcpu, kvmppc_get_gpr(vcpu, 4),
-+					kvmppc_get_gpr(vcpu, 5),
-+					kvmppc_get_gpr(vcpu, 6));
-+		if (ret == H_TOO_HARD)
-+			return RESUME_HOST;
-+		break;
-+	case H_ENTER:
-+		ret = kvmppc_h_enter(vcpu, kvmppc_get_gpr(vcpu, 4),
-+					kvmppc_get_gpr(vcpu, 5),
-+					kvmppc_get_gpr(vcpu, 6),
-+					kvmppc_get_gpr(vcpu, 7));
-+		if (ret == H_TOO_HARD)
-+			return RESUME_HOST;
-+		break;
-+	case H_READ:
-+		ret = kvmppc_h_read(vcpu, kvmppc_get_gpr(vcpu, 4),
-+					kvmppc_get_gpr(vcpu, 5));
-+		if (ret == H_TOO_HARD)
-+			return RESUME_HOST;
-+		break;
-+	case H_CLEAR_MOD:
-+		ret = kvmppc_h_clear_mod(vcpu, kvmppc_get_gpr(vcpu, 4),
-+					kvmppc_get_gpr(vcpu, 5));
-+		if (ret == H_TOO_HARD)
-+			return RESUME_HOST;
-+		break;
-+	case H_CLEAR_REF:
-+		ret = kvmppc_h_clear_ref(vcpu, kvmppc_get_gpr(vcpu, 4),
-+					kvmppc_get_gpr(vcpu, 5));
-+		if (ret == H_TOO_HARD)
-+			return RESUME_HOST;
-+		break;
-+	case H_PROTECT:
-+		ret = kvmppc_h_protect(vcpu, kvmppc_get_gpr(vcpu, 4),
-+					kvmppc_get_gpr(vcpu, 5),
-+					kvmppc_get_gpr(vcpu, 6));
-+		if (ret == H_TOO_HARD)
-+			return RESUME_HOST;
-+		break;
-+	case H_BULK_REMOVE:
-+		ret = kvmppc_h_bulk_remove(vcpu);
-+		if (ret == H_TOO_HARD)
-+			return RESUME_HOST;
-+		break;
-+
- 	case H_CEDE:
- 		break;
- 	case H_PROD:
-@@ -1138,6 +1184,7 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
- 	default:
- 		return RESUME_HOST;
- 	}
-+	WARN_ON_ONCE(ret == H_TOO_HARD);
- 	kvmppc_set_gpr(vcpu, 3, ret);
- 	vcpu->arch.hcall_needed = 0;
- 	return RESUME_GUEST;
-@@ -1438,22 +1485,102 @@ static int kvmppc_handle_exit_hv(struct kvm_vcpu *vcpu,
- 	 * We get these next two if the guest accesses a page which it thinks
- 	 * it has mapped but which is not actually present, either because
- 	 * it is for an emulated I/O device or because the corresonding
--	 * host page has been paged out.  Any other HDSI/HISI interrupts
--	 * have been handled already.
-+	 * host page has been paged out.
-+	 *
-+	 * Any other HDSI/HISI interrupts have been handled already for P7/8
-+	 * guests. For POWER9 hash guests not using rmhandlers, basic hash
-+	 * fault handling is done here.
- 	 */
--	case BOOK3S_INTERRUPT_H_DATA_STORAGE:
--		r = RESUME_PAGE_FAULT;
--		if (vcpu->arch.fault_dsisr == HDSISR_CANARY)
-+	case BOOK3S_INTERRUPT_H_DATA_STORAGE: {
-+		unsigned long vsid;
-+		long err;
-+
-+		if (vcpu->arch.fault_dsisr == HDSISR_CANARY) {
- 			r = RESUME_GUEST; /* Just retry if it's the canary */
-+			break;
-+		}
-+
-+		if (kvm_is_radix(vcpu->kvm) || !cpu_has_feature(CPU_FTR_ARCH_300)) {
-+			/*
-+			 * Radix doesn't require anything, and pre-ISAv3.0 hash
-+			 * already attempted to handle this in rmhandlers. The
-+			 * hash fault handling below is v3 only (it uses ASDR
-+			 * via fault_gpa).
-+			 */
-+			r = RESUME_PAGE_FAULT;
-+			break;
-+		}
-+
-+		if (!(vcpu->arch.fault_dsisr & (DSISR_NOHPTE | DSISR_PROTFAULT))) {
-+			kvmppc_core_queue_data_storage(vcpu,
-+				vcpu->arch.fault_dar, vcpu->arch.fault_dsisr);
-+			r = RESUME_GUEST;
-+			break;
-+		}
-+
-+		if (!(vcpu->arch.shregs.msr & MSR_DR))
-+			vsid = vcpu->kvm->arch.vrma_slb_v;
-+		else
-+			vsid = vcpu->arch.fault_gpa;
-+
-+		err = kvmppc_hpte_hv_fault(vcpu, vcpu->arch.fault_dar,
-+				vsid, vcpu->arch.fault_dsisr, true);
-+		if (err == 0) {
-+			r = RESUME_GUEST;
-+		} else if (err == -1 || err == -2) {
-+			r = RESUME_PAGE_FAULT;
-+		} else {
-+			kvmppc_core_queue_data_storage(vcpu,
-+				vcpu->arch.fault_dar, err);
-+			r = RESUME_GUEST;
-+		}
- 		break;
--	case BOOK3S_INTERRUPT_H_INST_STORAGE:
-+	}
-+	case BOOK3S_INTERRUPT_H_INST_STORAGE: {
-+		unsigned long vsid;
-+		long err;
-+
- 		vcpu->arch.fault_dar = kvmppc_get_pc(vcpu);
- 		vcpu->arch.fault_dsisr = vcpu->arch.shregs.msr &
- 			DSISR_SRR1_MATCH_64S;
--		if (vcpu->arch.shregs.msr & HSRR1_HISI_WRITE)
--			vcpu->arch.fault_dsisr |= DSISR_ISSTORE;
--		r = RESUME_PAGE_FAULT;
-+		if (kvm_is_radix(vcpu->kvm) || !cpu_has_feature(CPU_FTR_ARCH_300)) {
-+			/*
-+			 * Radix doesn't require anything, and pre-ISAv3.0 hash
-+			 * already attempted to handle this in rmhandlers. The
-+			 * hash fault handling below is v3 only (it uses ASDR
-+			 * via fault_gpa).
-+			 */
-+			if (vcpu->arch.shregs.msr & HSRR1_HISI_WRITE)
-+				vcpu->arch.fault_dsisr |= DSISR_ISSTORE;
-+			r = RESUME_PAGE_FAULT;
-+			break;
-+		}
-+
-+		if (!(vcpu->arch.fault_dsisr & SRR1_ISI_NOPT)) {
-+			kvmppc_core_queue_inst_storage(vcpu,
-+				vcpu->arch.fault_dsisr);
-+			r = RESUME_GUEST;
-+			break;
-+		}
-+
-+		if (!(vcpu->arch.shregs.msr & MSR_IR))
-+			vsid = vcpu->kvm->arch.vrma_slb_v;
-+		else
-+			vsid = vcpu->arch.fault_gpa;
-+
-+		err = kvmppc_hpte_hv_fault(vcpu, vcpu->arch.fault_dar,
-+				vsid, vcpu->arch.fault_dsisr, false);
-+		if (err == 0) {
-+			r = RESUME_GUEST;
-+		} else if (err == -1) {
-+			r = RESUME_PAGE_FAULT;
-+		} else {
-+			kvmppc_core_queue_inst_storage(vcpu, err);
-+			r = RESUME_GUEST;
-+		}
- 		break;
-+	}
-+
- 	/*
- 	 * This occurs if the guest executes an illegal instruction.
- 	 * If the guest debug is disabled, generate a program interrupt
-diff --git a/arch/powerpc/kvm/book3s_hv_rm_mmu.c b/arch/powerpc/kvm/book3s_hv_rm_mmu.c
-index 7a0f12404e0e..9b8c2c41fa5f 100644
---- a/arch/powerpc/kvm/book3s_hv_rm_mmu.c
-+++ b/arch/powerpc/kvm/book3s_hv_rm_mmu.c
-@@ -398,6 +398,7 @@ long kvmppc_h_enter(struct kvm_vcpu *vcpu, unsigned long flags,
- 				 vcpu->arch.pgdir, true,
- 				 &vcpu->arch.regs.gpr[4]);
- }
-+EXPORT_SYMBOL_GPL(kvmppc_h_enter);
- 
- #ifdef __BIG_ENDIAN__
- #define LOCK_TOKEN	(*(u32 *)(&get_paca()->lock_token))
-@@ -542,6 +543,7 @@ long kvmppc_h_remove(struct kvm_vcpu *vcpu, unsigned long flags,
- 	return kvmppc_do_h_remove(vcpu->kvm, flags, pte_index, avpn,
- 				  &vcpu->arch.regs.gpr[4]);
- }
-+EXPORT_SYMBOL_GPL(kvmppc_h_remove);
- 
- long kvmppc_h_bulk_remove(struct kvm_vcpu *vcpu)
- {
-@@ -660,6 +662,7 @@ long kvmppc_h_bulk_remove(struct kvm_vcpu *vcpu)
- 
- 	return ret;
- }
-+EXPORT_SYMBOL_GPL(kvmppc_h_bulk_remove);
- 
- long kvmppc_h_protect(struct kvm_vcpu *vcpu, unsigned long flags,
- 		      unsigned long pte_index, unsigned long avpn)
-@@ -730,6 +733,7 @@ long kvmppc_h_protect(struct kvm_vcpu *vcpu, unsigned long flags,
- 
- 	return H_SUCCESS;
- }
-+EXPORT_SYMBOL_GPL(kvmppc_h_protect);
- 
- long kvmppc_h_read(struct kvm_vcpu *vcpu, unsigned long flags,
- 		   unsigned long pte_index)
-@@ -770,6 +774,7 @@ long kvmppc_h_read(struct kvm_vcpu *vcpu, unsigned long flags,
- 	}
- 	return H_SUCCESS;
- }
-+EXPORT_SYMBOL_GPL(kvmppc_h_read);
- 
- long kvmppc_h_clear_ref(struct kvm_vcpu *vcpu, unsigned long flags,
- 			unsigned long pte_index)
-@@ -818,6 +823,7 @@ long kvmppc_h_clear_ref(struct kvm_vcpu *vcpu, unsigned long flags,
- 	unlock_hpte(hpte, v & ~HPTE_V_HVLOCK);
- 	return ret;
- }
-+EXPORT_SYMBOL_GPL(kvmppc_h_clear_ref);
- 
- long kvmppc_h_clear_mod(struct kvm_vcpu *vcpu, unsigned long flags,
- 			unsigned long pte_index)
-@@ -865,6 +871,7 @@ long kvmppc_h_clear_mod(struct kvm_vcpu *vcpu, unsigned long flags,
- 	unlock_hpte(hpte, v & ~HPTE_V_HVLOCK);
- 	return ret;
- }
-+EXPORT_SYMBOL_GPL(kvmppc_h_clear_mod);
- 
- static int kvmppc_get_hpa(struct kvm_vcpu *vcpu, unsigned long mmu_seq,
- 			  unsigned long gpa, int writing, unsigned long *hpa,
-@@ -1283,3 +1290,4 @@ long kvmppc_hpte_hv_fault(struct kvm_vcpu *vcpu, unsigned long addr,
- 
- 	return -1;		/* send fault up to host kernel mode */
- }
-+EXPORT_SYMBOL_GPL(kvmppc_hpte_hv_fault);
+@@ -1457,13 +1457,23 @@ static int kvmppc_handle_exit_hv(struct kvm_vcpu *vcpu,
+ 			 * Guest userspace executed sc 1. This can only be
+ 			 * reached by the P9 path because the old path
+ 			 * handles this case in realmode hcall handlers.
+-			 *
+-			 * Radix guests can not run PR KVM or nested HV hash
+-			 * guests which might run PR KVM, so this is always
+-			 * a privilege fault. Send a program check to guest
+-			 * kernel.
+ 			 */
+-			kvmppc_core_queue_program(vcpu, SRR1_PROGPRIV);
++			if (!kvmhv_vcpu_is_radix(vcpu)) {
++				/*
++				 * A guest could be running PR KVM, so this
++				 * may be a PR KVM hcall. It must be reflected
++				 * to the guest kernel as a sc interrupt.
++				 */
++				kvmppc_core_queue_syscall(vcpu);
++			} else {
++				/*
++				 * Radix guests can not run PR KVM or nested HV
++				 * hash guests which might run PR KVM, so this
++				 * is always a privilege fault. Send a program
++				 * check to guest kernel.
++				 */
++				kvmppc_core_queue_program(vcpu, SRR1_PROGPRIV);
++			}
+ 			r = RESUME_GUEST;
+ 			break;
+ 		}
 -- 
 2.23.0
 
