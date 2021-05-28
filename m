@@ -2,68 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECC1F393B1C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 May 2021 03:38:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76A27393B1B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 May 2021 03:38:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FrnQW0MG6z2yss
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 May 2021 11:38:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FrnQ33k2Qz30Gt
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 May 2021 11:38:19 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=yadro.com header.i=@yadro.com header.a=rsa-sha256 header.s=mta-01 header.b=bPQK6f9g;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=paul-moore-com.20150623.gappssmtp.com header.i=@paul-moore-com.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=POerS0Ux;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=yadro.com (client-ip=89.207.88.252; helo=mta-01.yadro.com;
- envelope-from=r.bolshakov@yadro.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=yadro.com header.i=@yadro.com header.a=rsa-sha256
- header.s=mta-01 header.b=bPQK6f9g; dkim-atps=neutral
-X-Greylist: delayed 496 seconds by postgrey-1.36 at boromir;
- Fri, 28 May 2021 11:38:15 AEST
-Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=paul-moore.com
+ (client-ip=2a00:1450:4864:20::630; helo=mail-ej1-x630.google.com;
+ envelope-from=paul@paul-moore.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=paul-moore-com.20150623.gappssmtp.com
+ header.i=@paul-moore-com.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=POerS0Ux; dkim-atps=neutral
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com
+ [IPv6:2a00:1450:4864:20::630])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FrnPz1NbNz307W
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 May 2021 11:38:14 +1000 (AEST)
-Received: from localhost (unknown [127.0.0.1])
- by mta-01.yadro.com (Postfix) with ESMTP id 9F6E041319;
- Fri, 28 May 2021 01:29:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
- content-type:content-type:content-transfer-encoding:mime-version
- :x-mailer:message-id:date:date:subject:subject:from:from
- :received:received:received; s=mta-01; t=1622165395; x=
- 1623979796; bh=l5WIiBz2759Ce4tmaO9TSfEOtVvDNp1wIVB46uYGKLY=; b=b
- PQK6f9gWCVuzSZHlOo7ZMXmmd3A4ivlBDJ0Xj80L8JuyINf/LM0HD5KBkzw8kDxE
- JkqRvYA0HLuGffQSyY2rSCJNzWu3I8TS6RsSdgiAOh3A9dbZZxBL9etvWDVISTuB
- KpIobEcVK58gScINBJQktrfxVsC76dQGP8Y7f1lpyQ=
-X-Virus-Scanned: amavisd-new at yadro.com
-Received: from mta-01.yadro.com ([127.0.0.1])
- by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id BPGWXwyZgHh8; Fri, 28 May 2021 04:29:55 +0300 (MSK)
-Received: from T-EXCH-03.corp.yadro.com (t-exch-03.corp.yadro.com
- [172.17.100.103])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
- (No client certificate requested)
- by mta-01.yadro.com (Postfix) with ESMTPS id BCEA7411D9;
- Fri, 28 May 2021 04:29:54 +0300 (MSK)
-Received: from localhost (172.17.204.212) by T-EXCH-03.corp.yadro.com
- (172.17.100.103) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Fri, 28
- May 2021 04:29:54 +0300
-From: Roman Bolshakov <r.bolshakov@yadro.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>,
- <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH] Revert "powerpc: Switch to relative jump labels"
-Date: Fri, 28 May 2021 04:29:43 +0300
-Message-ID: <20210528012943.23192-1-r.bolshakov@yadro.com>
-X-Mailer: git-send-email 2.31.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FrnPY0SvKz2xxq
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 May 2021 11:37:51 +1000 (AEST)
+Received: by mail-ej1-x630.google.com with SMTP id ss26so2968608ejb.5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 May 2021 18:37:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=OCl/OoNf08gbSAkv21GdMjWI/U5EK/VtpzFkOjaRXDc=;
+ b=POerS0Ux4ct2bWMhkrOhHCReDGmKwGq49OtylDhjF9lBGQePK0TFjOCijyW8C1Kp/o
+ Xh/madiE0TnJlXbz8A9quFOg+/RI5jAUOif+6JsRURl3t/ze4YQnI44921ViT1tdrrM4
+ HjuPpQdlOCOYZPPbHCLCzTx/HQU+AEBcGTknBjcNeZrWDZ8YoRD7/wVOL3h3fMalQU3w
+ RHKDeBAQIYl6E/bgA3OnVAijXoVpCgmqz+qBj1zfhN7HjvWBWklw9U4UDflAOFogdwNn
+ LQdislTgKFgkdjsNn26pf+B5s1Ifqow6EwLkeFnrksRVYEWkqLWG9JczSwAXar565r2c
+ BXqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=OCl/OoNf08gbSAkv21GdMjWI/U5EK/VtpzFkOjaRXDc=;
+ b=sycy9h5AGVgHeyDjEjSTYl7H4LPbCfhJ3m2sfLtVgq2JQz8G4fhNGDB/lhsgOp+vsP
+ B2XIYaQxwEzdcK1qA4bginZSQNCamA+YMV7Kily13hOEvnvhOfVW+oozEioknW6NsnDo
+ /WR4UIsguLZi0nqYQkWl/MwfvBQPOgDeYxHzYJmnV7jpDGlMMlV5jXcTJRAmQLIYcwl2
+ ae1x21dnoLeJ4JL1iMNu7np8ry3bjQLRF9i7QIio6KzwTiVOm0SObVSPO0x9cc1gvgXL
+ yqy8liQh0c/UOvT66dtMbW0j5T+HXFAVqymakq1txmCz5BpyVExsh4Bo7L32fzQUcEGC
+ 9rTw==
+X-Gm-Message-State: AOAM531ZOIwP316LzLqaEeNsMlKeDSZeeciSzRF9znXJKfmG0/UUyLR7
+ t0d09ODSXLlksH4QlWHIXQHhtf+SRQPbuhRJF85f
+X-Google-Smtp-Source: ABdhPJxLOItL9vdGc/YxGb4zM3gCgphGyyxSx8AHRjJ/9K0sjs3QF6XIJzfJvXSrGS6ej4rkXclv/bfnao0YEc+kFow=
+X-Received: by 2002:a17:906:b2ce:: with SMTP id
+ cf14mr6910759ejb.178.1622165863989; 
+ Thu, 27 May 2021 18:37:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [172.17.204.212]
-X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
- T-EXCH-03.corp.yadro.com (172.17.100.103)
+References: <20210517092006.803332-1-omosnace@redhat.com>
+In-Reply-To: <20210517092006.803332-1-omosnace@redhat.com>
+From: Paul Moore <paul@paul-moore.com>
+Date: Thu, 27 May 2021 21:37:33 -0400
+Message-ID: <CAHC9VhTasra0tU=bKwVqAwLRYaC+hYakirRz0Mn5jbVMuDkwrA@mail.gmail.com>
+Subject: Re: [PATCH v2] lockdown,selinux: avoid bogus SELinux lockdown
+ permission checks
+To: Ondrej Mosnacek <omosnace@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,112 +77,152 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Roman Bolshakov <r.bolshakov@yadro.com>,
- Anastasia Kovaleva <a.kovaleva@yadro.com>, linux@yadro.com
+Cc: selinux@vger.kernel.org, netdev@vger.kernel.org,
+ Stephen Smalley <stephen.smalley.work@gmail.com>,
+ James Morris <jmorris@namei.org>, Steven Rostedt <rostedt@goodmis.org>,
+ linux-kernel@vger.kernel.org, Casey Schaufler <casey@schaufler-ca.com>,
+ linux-security-module@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+ linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This reverts commit b0b3b2c78ec075cec4721986a95abbbac8c3da4f.
+On Mon, May 17, 2021 at 5:22 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
+>
+> Commit 59438b46471a ("security,lockdown,selinux: implement SELinux
+> lockdown") added an implementation of the locked_down LSM hook to
+> SELinux, with the aim to restrict which domains are allowed to perform
+> operations that would breach lockdown.
+>
+> However, in several places the security_locked_down() hook is called in
+> situations where the current task isn't doing any action that would
+> directly breach lockdown, leading to SELinux checks that are basically
+> bogus.
+>
+> Since in most of these situations converting the callers such that
+> security_locked_down() is called in a context where the current task
+> would be meaningful for SELinux is impossible or very non-trivial (and
+> could lead to TOCTOU issues for the classic Lockdown LSM
+> implementation), fix this by modifying the hook to accept a struct cred
+> pointer as argument, where NULL will be interpreted as a request for a
+> "global", task-independent lockdown decision only. Then modify SELinux
+> to ignore calls with cred == NULL.
 
-Otherwise, direct kernel boot with initramfs no longer works in QEMU.
-It's broken in some bizarre way because a valid initramfs is not
-recognized anymore:
+I'm not overly excited about skipping the access check when cred is
+NULL.  Based on the description and the little bit that I've dug into
+thus far it looks like using SECINITSID_KERNEL as the subject would be
+much more appropriate.  *Something* (the kernel in most of the
+relevant cases it looks like) is requesting that a potentially
+sensitive disclosure be made, and ignoring it seems like the wrong
+thing to do.  Leaving the access control intact also provides a nice
+avenue to audit these requests should users want to do that.
 
-  Found initrd at 0xc000000001f70000:0xc000000003d61d64
-  rootfs image is not initramfs (XZ-compressed data is corrupt); looks like an initrd
+Those users that generally don't care can grant kernel_t all the
+necessary permissions without much policy.
 
-The issue is observed on v5.13-rc3 if the kernel is built with
-defconfig, GCC 7.5.0 and GNU ld 2.32.0.
+> Since most callers will just want to pass current_cred() as the cred
+> parameter, rename the hook to security_cred_locked_down() and provide
+> the original security_locked_down() function as a simple wrapper around
+> the new hook.
 
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reported-by: Anastasia Kovaleva <a.kovaleva@yadro.com>
-Signed-off-by: Roman Bolshakov <r.bolshakov@yadro.com>
----
- arch/powerpc/Kconfig                  |  1 -
- arch/powerpc/include/asm/jump_label.h | 21 +++++++++++++++------
- arch/powerpc/kernel/jump_label.c      |  4 ++--
- 3 files changed, 17 insertions(+), 9 deletions(-)
+I know you and Casey went back and forth on this in v1, but I agree
+with Casey that having two LSM hooks here is a mistake.  I know it
+makes backports hard, but spoiler alert: maintaining complex software
+over any non-trivial period of time is hard, reeeeally hard sometimes
+;)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 088dd2afcfe4..59e0d55ee01d 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -189,7 +189,6 @@ config PPC
- 	select HAVE_ARCH_HUGE_VMALLOC		if HAVE_ARCH_HUGE_VMAP
- 	select HAVE_ARCH_HUGE_VMAP		if PPC_BOOK3S_64 && PPC_RADIX_MMU
- 	select HAVE_ARCH_JUMP_LABEL
--	select HAVE_ARCH_JUMP_LABEL_RELATIVE
- 	select HAVE_ARCH_KASAN			if PPC32 && PPC_PAGE_SHIFT <= 14
- 	select HAVE_ARCH_KASAN_VMALLOC		if PPC32 && PPC_PAGE_SHIFT <= 14
- 	select HAVE_ARCH_KFENCE			if PPC32
-diff --git a/arch/powerpc/include/asm/jump_label.h b/arch/powerpc/include/asm/jump_label.h
-index 2d5c6bec2b4f..09297ec9fa52 100644
---- a/arch/powerpc/include/asm/jump_label.h
-+++ b/arch/powerpc/include/asm/jump_label.h
-@@ -20,8 +20,7 @@ static __always_inline bool arch_static_branch(struct static_key *key, bool bran
- 	asm_volatile_goto("1:\n\t"
- 		 "nop # arch_static_branch\n\t"
- 		 ".pushsection __jump_table,  \"aw\"\n\t"
--		 ".long 1b - ., %l[l_yes] - .\n\t"
--		 JUMP_ENTRY_TYPE "%c0 - .\n\t"
-+		 JUMP_ENTRY_TYPE "1b, %l[l_yes], %c0\n\t"
- 		 ".popsection \n\t"
- 		 : :  "i" (&((char *)key)[branch]) : : l_yes);
- 
-@@ -35,8 +34,7 @@ static __always_inline bool arch_static_branch_jump(struct static_key *key, bool
- 	asm_volatile_goto("1:\n\t"
- 		 "b %l[l_yes] # arch_static_branch_jump\n\t"
- 		 ".pushsection __jump_table,  \"aw\"\n\t"
--		 ".long 1b - ., %l[l_yes] - .\n\t"
--		 JUMP_ENTRY_TYPE "%c0 - .\n\t"
-+		 JUMP_ENTRY_TYPE "1b, %l[l_yes], %c0\n\t"
- 		 ".popsection \n\t"
- 		 : :  "i" (&((char *)key)[branch]) : : l_yes);
- 
-@@ -45,12 +43,23 @@ static __always_inline bool arch_static_branch_jump(struct static_key *key, bool
- 	return true;
- }
- 
-+#ifdef CONFIG_PPC64
-+typedef u64 jump_label_t;
-+#else
-+typedef u32 jump_label_t;
-+#endif
-+
-+struct jump_entry {
-+	jump_label_t code;
-+	jump_label_t target;
-+	jump_label_t key;
-+};
-+
- #else
- #define ARCH_STATIC_BRANCH(LABEL, KEY)		\
- 1098:	nop;					\
- 	.pushsection __jump_table, "aw";	\
--	.long 1098b - ., LABEL - .;		\
--	FTR_ENTRY_LONG KEY;			\
-+	FTR_ENTRY_LONG 1098b, LABEL, KEY;	\
- 	.popsection
- #endif
- 
-diff --git a/arch/powerpc/kernel/jump_label.c b/arch/powerpc/kernel/jump_label.c
-index ce87dc5ea23c..144858027fa3 100644
---- a/arch/powerpc/kernel/jump_label.c
-+++ b/arch/powerpc/kernel/jump_label.c
-@@ -11,10 +11,10 @@
- void arch_jump_label_transform(struct jump_entry *entry,
- 			       enum jump_label_type type)
- {
--	struct ppc_inst *addr = (struct ppc_inst *)jump_entry_code(entry);
-+	struct ppc_inst *addr = (struct ppc_inst *)(unsigned long)entry->code;
- 
- 	if (type == JUMP_LABEL_JMP)
--		patch_branch(addr, jump_entry_target(entry), 0);
-+		patch_branch(addr, entry->target, 0);
- 	else
- 		patch_instruction(addr, ppc_inst(PPC_INST_NOP));
- }
+> The callers migrated to the new hook, passing NULL as cred:
+> 1. arch/powerpc/xmon/xmon.c
+>      Here the hook seems to be called from non-task context and is only
+>      used for redacting some sensitive values from output sent to
+>      userspace.
+
+This definitely sounds like kernel_t based on the description above.
+
+> 2. fs/tracefs/inode.c:tracefs_create_file()
+>      Here the call is used to prevent creating new tracefs entries when
+>      the kernel is locked down. Assumes that locking down is one-way -
+>      i.e. if the hook returns non-zero once, it will never return zero
+>      again, thus no point in creating these files.
+
+More kernel_t.
+
+> 3. kernel/trace/bpf_trace.c:bpf_probe_read_kernel{,_str}_common()
+>      Called when a BPF program calls a helper that could leak kernel
+>      memory. The task context is not relevant here, since the program
+>      may very well be run in the context of a different task than the
+>      consumer of the data.
+>      See: https://bugzilla.redhat.com/show_bug.cgi?id=1955585
+
+The access control check isn't so much who is consuming the data, but
+who is requesting a potential violation of a "lockdown", yes?  For
+example, the SELinux policy rule for the current lockdown check looks
+something like this:
+
+  allow <who> <who> : lockdown { <reason> };
+
+It seems to me that the task context is relevant here and performing
+the access control check based on the task's domain is correct.  If we
+are also concerned about who has access to this sensitive information
+once it has been determined that the task can cause it to be sent, we
+should have another check point for that, assuming the access isn't
+already covered by another check/hook.
+
+> 4. net/xfrm/xfrm_user.c:copy_to_user_*()
+>      Here a cryptographic secret is redacted based on the value returned
+>      from the hook. There are two possible actions that may lead here:
+>      a) A netlink message XFRM_MSG_GETSA with NLM_F_DUMP set - here the
+>         task context is relevant, since the dumped data is sent back to
+>         the current task.
+
+If the task context is relevant we should use it.
+
+>      b) When deleting an SA via XFRM_MSG_DELSA, the dumped SAs are
+>         broadcasted to tasks subscribed to XFRM events - here the
+>         SELinux check is not meningful as the current task's creds do
+>         not represent the tasks that could potentially see the secret.
+
+This looks very similar to the BPF hook discussed above, I believe my
+comments above apply here as well.
+
+>      It really doesn't seem worth it to try to preserve the check in the
+>      a) case ...
+
+After you've read all of the above I hope you can understand why I
+disagree with this.
+
+>      ... since the eventual leak can be circumvented anyway via b)
+
+I don't follow the statement above ... ?  However I'm not sure it
+matters much considering my other concerns.
+
+>      plus there is no way for the task to indicate that it doesn't care
+>      about the actual key value, so the check could generate a lot of
+>      noise.
+>
+> Improvements-suggested-by: Casey Schaufler <casey@schaufler-ca.com>
+> Fixes: 59438b46471a ("security,lockdown,selinux: implement SELinux lockdown")
+> Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+> ---
+>
+> v2:
+> - change to a single hook based on suggestions by Casey Schaufler
+>
+> v1: https://lore.kernel.org/lkml/20210507114048.138933-1-omosnace@redhat.com/
+>
+>  arch/powerpc/xmon/xmon.c      |  4 ++--
+>  fs/tracefs/inode.c            |  2 +-
+>  include/linux/lsm_hook_defs.h |  3 ++-
+>  include/linux/lsm_hooks.h     |  3 ++-
+>  include/linux/security.h      | 11 ++++++++---
+>  kernel/trace/bpf_trace.c      |  4 ++--
+>  net/xfrm/xfrm_user.c          |  2 +-
+>  security/lockdown/lockdown.c  |  5 +++--
+>  security/security.c           |  6 +++---
+>  security/selinux/hooks.c      | 12 +++++++++---
+>  10 files changed, 33 insertions(+), 19 deletions(-)
+
 -- 
-2.31.1
-
+paul moore
+www.paul-moore.com
