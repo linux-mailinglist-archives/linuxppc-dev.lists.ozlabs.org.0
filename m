@@ -1,75 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E0AE394DC6
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 May 2021 20:49:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EAD3394E68
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 May 2021 00:45:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FsrFK414fz309g
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 May 2021 04:49:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FsxTr5gsGz30BM
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 May 2021 08:45:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=paul-moore-com.20150623.gappssmtp.com header.i=@paul-moore-com.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=egZtDVPv;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=dabbelt-com.20150623.gappssmtp.com header.i=@dabbelt-com.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=i6A/A7Wo;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=paul-moore.com
- (client-ip=2a00:1450:4864:20::535; helo=mail-ed1-x535.google.com;
- envelope-from=paul@paul-moore.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=dabbelt.com (client-ip=2607:f8b0:4864:20::630;
+ helo=mail-pl1-x630.google.com; envelope-from=palmer@dabbelt.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=paul-moore-com.20150623.gappssmtp.com
- header.i=@paul-moore-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=egZtDVPv; dkim-atps=neutral
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com
- [IPv6:2a00:1450:4864:20::535])
+ unprotected) header.d=dabbelt-com.20150623.gappssmtp.com
+ header.i=@dabbelt-com.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=i6A/A7Wo; dkim-atps=neutral
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com
+ [IPv6:2607:f8b0:4864:20::630])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FsrDm41gbz2yRy
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 May 2021 04:48:54 +1000 (AEST)
-Received: by mail-ed1-x535.google.com with SMTP id t3so8620618edc.7
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 May 2021 11:48:53 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FsxTL3YcQz2xts
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 May 2021 08:45:07 +1000 (AEST)
+Received: by mail-pl1-x630.google.com with SMTP id h12so3329778plf.11
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 May 2021 15:45:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=PxkN5674Gdo7C/DvFwdmRlPrHnz0qD2VW7zEeao9HA0=;
- b=egZtDVPv+pEmzpQcYmGqbrNNZyRf7Aqgebz64H8qjXLqaTKcUwlR3bcfeOXQVoQ0/I
- 7zwI+0FvRjoKaxZUkV7/qMK527UOii8JwIHXsmWt3289bVTzi9jLS7DrylJywuRK85RH
- XBY1R3AHPL69XeC7SFpUqb6jYFOv1/r8nNtp8fKORkkIuxQaK7l7pwk6KrKXFhlZQCGE
- EcOZJePRxsnnGa9NxCm+Hg9bBxdVgKUxA06srzViIJ8xJs6i38G7NVkfnqvzrPg5uWam
- tPUgQZGd1V/osaT50MNDtOL3E3SbY3nnfIen9INxBSbFY2ZNJ5UWnlfEyLDqOf4fSzeX
- BIxQ==
+ d=dabbelt-com.20150623.gappssmtp.com; s=20150623;
+ h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
+ :content-transfer-encoding;
+ bh=fi0vV/kF+CsBKSccmeD5rhECNTR0UPRdkNUxlQCOu6o=;
+ b=i6A/A7Wom+6pM1tUHC83JTgbW35vAvfXx8K69AJbPi1Hu/Vb0nH15InB2zoG8ZDzdQ
+ wyTBY3U0HJRoTiWmeiELkZo8IlIEQpbtxhPLlDwbwTu5KrE2OZK6I9i4TquPmiDzLKaZ
+ lWaUa6IiJZ4IdVi4mMrObXbQxU+uFt/0xoo6VREZafKrAi8RhlSA2l/0g0f1E7BQprVc
+ LUBKUKXZVmPO42ZwXG36UdQdpYQDxr//afSU5dtEAOqeLHHGSGBSksTq3rke61+tSSdV
+ TJUFnuj/q+8xLHDGp7pIK7VmhyuBz6JN3dgmiB2eMZZ8ib50W6AoMcDGRzX/zruYiNmO
+ qKkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=PxkN5674Gdo7C/DvFwdmRlPrHnz0qD2VW7zEeao9HA0=;
- b=ag1e415KX9sqnVfIorTIkdb8vDo2ulXfEBxAhrEvUlH6F+PJ0zRIAneQ9Er4xDKuOd
- sDWoBYwvtvrJCahpvMWoBXEL8C/uv64MBvhgP99/kUbHUSRbTM3Psm75EjRiJqMzHj21
- mmEwkMBKfxTGiW6y4ej8XJo6i+bfPnIVRUk87g1eNaRaveDbZYLCMvbX8DqPBQqbxPSS
- 0bTgiLKKZFDy1WQg8mHPIkCDGfGQzLVt11+2IqkTZszV6/k25oPyCxFuqTemHHEyiTQz
- At+8UQdRnxeY5/WTNUFdfElcjIVy3g6vOuRQ4eYlVd6LpPFYxyTVlHWGcEGRwgX8XA9m
- PB6A==
-X-Gm-Message-State: AOAM531MUKx2nNPUNp93sTBYCCj+AwLiLJI+x6ZeBv8o7ly3NIl0L4zH
- 3oZB8GTsSO61jtX/GUpJatCS2uapOIdFyKc9chcI
-X-Google-Smtp-Source: ABdhPJyUKpixSoshzQJyPJqEx0bgxxFA8s58ydUH/2LXx1S03FTwjdX+rXFI9WK5gl/+d4oHpjX3EfrlNm+PVmnhJgQ=
-X-Received: by 2002:a05:6402:430b:: with SMTP id
- m11mr16690557edc.31.1622314124071; 
- Sat, 29 May 2021 11:48:44 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210517092006.803332-1-omosnace@redhat.com>
- <CAHC9VhTasra0tU=bKwVqAwLRYaC+hYakirRz0Mn5jbVMuDkwrA@mail.gmail.com>
- <01135120-8bf7-df2e-cff0-1d73f1f841c3@iogearbox.net>
- <CAHC9VhR-kYmMA8gsqkiL5=poN9FoL-uCyx1YOLCoG2hRiUBYug@mail.gmail.com>
- <c7c2d7e1-e253-dce0-d35c-392192e4926e@iogearbox.net>
-In-Reply-To: <c7c2d7e1-e253-dce0-d35c-392192e4926e@iogearbox.net>
-From: Paul Moore <paul@paul-moore.com>
-Date: Sat, 29 May 2021 14:48:33 -0400
-Message-ID: <CAHC9VhS1XRZjKcTFgH1+n5uA-CeT+9BeSP5jvT2+RE5ougLpUg@mail.gmail.com>
-Subject: Re: [PATCH v2] lockdown,selinux: avoid bogus SELinux lockdown
- permission checks
-To: Daniel Borkmann <daniel@iogearbox.net>
-Content-Type: text/plain; charset="UTF-8"
+ h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
+ :mime-version:content-transfer-encoding;
+ bh=fi0vV/kF+CsBKSccmeD5rhECNTR0UPRdkNUxlQCOu6o=;
+ b=kNZUyr3KK8UXXFzf1X+WC7UacmBCXzqEL2F2ALzIflLIwHDXTdd4AJotFxBHjGD03p
+ lVuwfp+m/9z05sMZv1xZ2hOEiWVXVwmLsSx7Z/l7ab5gjL9XmvqkVv52G3/ueWSUhuXE
+ bdKVXEHgrXxUr+ON1Lu82i16Ogz9k/gg0QpbxhjF13p3DCDxpYvzEevqJP9CN3KRJcwh
+ sOZxNzJeTc5azdoGPqFuXesGaaqAKtPZFYuxgeuuIOoDReZ4nkBTOG8GPKl4r/36zLJS
+ GK4CsqUJk03sScuRxk0j0UEB6LCK5vdLwDRopj84C/MTsnCjX/UtmoWHPHCCmulIucmP
+ 2Zcw==
+X-Gm-Message-State: AOAM530xbAiwtYcVFBuou8EJTLMuuIpIpS5Y0DKU8CMO7toW4DGZcbNv
+ v8SM6Gzo5PeQj9XQ0BdukurFGg==
+X-Google-Smtp-Source: ABdhPJxEkcHSt/r0RUtDB7tfrUNpUFiVQ7CCqmPtNOJYrpOwquBntTt3/OkdihRXgW+frUet54s5gQ==
+X-Received: by 2002:a17:90a:9411:: with SMTP id
+ r17mr11310055pjo.49.1622328303013; 
+ Sat, 29 May 2021 15:45:03 -0700 (PDT)
+Received: from localhost (76-210-143-223.lightspeed.sntcca.sbcglobal.net.
+ [76.210.143.223])
+ by smtp.gmail.com with ESMTPSA id m24sm7313476pfa.125.2021.05.29.15.45.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 29 May 2021 15:45:02 -0700 (PDT)
+Date: Sat, 29 May 2021 15:45:02 -0700 (PDT)
+X-Google-Original-Date: Sat, 29 May 2021 15:37:56 PDT (-0700)
+Subject: Re: [PATCH] docs: kernel-parameters: mark numa=off is supported by a
+ bundle of architectures
+In-Reply-To: <20210524051715.13604-1-song.bao.hua@hisilicon.com>
+From: Palmer Dabbelt <palmer@dabbelt.com>
+To: song.bao.hua@hisilicon.com
+Message-ID: <mhng-145d2f8a-0697-4fff-a579-bce952033f25@palmerdabbelt-glaptop>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,78 +84,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jolsa@redhat.com, selinux@vger.kernel.org, netdev@vger.kernel.org,
- Stephen Smalley <stephen.smalley.work@gmail.com>,
- Ondrej Mosnacek <omosnace@redhat.com>, Steven Rostedt <rostedt@goodmis.org>,
- James Morris <jmorris@namei.org>, Casey Schaufler <casey@schaufler-ca.com>,
- linux-security-module@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
- linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: song.bao.hua@hisilicon.com, aou@eecs.berkeley.edu,
+ linux-doc@vger.kernel.org, catalin.marinas@arm.com, corbet@lwn.net,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, paulus@samba.org,
+ Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org,
+ will@kernel.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 28, 2021 at 2:28 PM Daniel Borkmann <daniel@iogearbox.net> wrote:
-> In the case of tracing, it's different. You install small programs that are
-> triggered when certain events fire. Random example from bpftrace's README [0],
-> you want to generate a histogram of syscall counts by program. One-liner is:
+On Sun, 23 May 2021 22:17:15 PDT (-0700), song.bao.hua@hisilicon.com wrote:
+> risc-v and arm64 support numa=off by common arch_numa_init()
+> in drivers/base/arch_numa.c. x86, ppc, mips, sparc support it
+> by arch-level early_param.
+> numa=off is widely used in linux distributions. it is better
+> to document it.
 >
->    bpftrace -e 'tracepoint:raw_syscalls:sys_enter { @[comm] = count(); }'
+> Signed-off-by: Barry Song <song.bao.hua@hisilicon.com>
+> ---
+>  Documentation/admin-guide/kernel-parameters.txt | 3 +++
+>  1 file changed, 3 insertions(+)
 >
-> bpftrace then goes and generates a BPF prog from this internally. One way of
-> doing it could be to call bpf_get_current_task() helper and then access
-> current->comm via one of bpf_probe_read_kernel{,_str}() helpers ...
+> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+> index cb89dbdedc46..a388fbdaa2ec 100644
+> --- a/Documentation/admin-guide/kernel-parameters.txt
+> +++ b/Documentation/admin-guide/kernel-parameters.txt
+> @@ -3513,6 +3513,9 @@
+>
+>  	nr_uarts=	[SERIAL] maximum number of UARTs to be registered.
+>
+> +	numa=off 	[KNL, ARM64, PPC, RISCV, SPARC, X86] Disable NUMA, Only
+> +			set up a single NUMA node spanning all memory.
+> +
+>  	numa_balancing=	[KNL,ARM64,PPC,RISCV,S390,X86] Enable or disable automatic
+>  			NUMA balancing.
+>  			Allowed values are enable and disable
 
-I think we can all agree that the BPF tracing is a bit chaotic in the
-sense that the tracing programs can be executed in various
-places/contexts and that presents some challenges with respect to
-access control and auditing.  If you are following the io_uring stuff
-that is going on now you can see a little of what is required to make
-audit work properly in the various io_uring contexts and that is
-relatively small compared to what is possible with BPF tracing.  Of
-course this assumes I've managed to understand bpf tracing properly
-this morning, and I very well may still be missing points and/or
-confused about some of the important details.  Corrections are
-welcome.
+Acked-by: Palmer Dabbelt <palmerdabbelt@google.com>
 
-Daniel's patch side steps that worry by just doing the lockdown
-permission check when the BPF program is loaded, but that isn't a
-great solution if the policy changes afterward.  I was hoping there
-might be some way to perform the permission check as needed, but the
-more I look the more that appears to be difficult, if not impossible
-(once again, corrections are welcome).
-
-I'm now wondering if the right solution here is to make use of the LSM
-notifier mechanism.  I'm not yet entirely sure if this would work from
-a BPF perspective, but I could envision the BPF subsystem registering
-a LSM notification callback via register_blocking_lsm_notifier(), see
-if Infiniband code as an example, and then when the LSM(s) policy
-changes the BPF subsystem would get a notification and it could
-revalidate the existing BPF programs and take block/remove/whatever
-the offending BPF programs.  This obviously requires a few things
-which I'm not sure are easily done, or even possible:
-
-1. Somehow the BPF programs would need to be "marked" at
-load/verification time with respect to their lockdown requirements so
-that decisions can be made later.  Perhaps a flag in bpf_prog_aux?
-
-2. While it looks like it should be possible to iterate over all of
-the loaded BPF programs in the LSM notifier callback via
-idr_for_each(prog_idr, ...), it is not clear to me if it is possible
-to safely remove, or somehow disable, BPF programs once they have been
-loaded.  Hopefully the BPF folks can help answer that question.
-
-3. Disabling of BPF programs might be preferable to removing them
-entirely on LSM policy changes as it would be possible to make the
-lockdown state less restrictive at a future point in time, allowing
-for the BPF program to be executed again.  Once again, not sure if
-this is even possible.
-
-Related, the lockdown LSM should probably also grow LSM notifier
-support similar to selinux_lsm_notifier_avc_callback(), for example
-either lock_kernel_down() or lockdown_write() might want to do a
-call_blocking_lsm_notifier(LSM_POLICY_CHANGE, NULL) call.
-
--- 
-paul moore
-www.paul-moore.com
+Thanks!
