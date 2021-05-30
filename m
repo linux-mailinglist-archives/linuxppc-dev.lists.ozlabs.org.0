@@ -2,96 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F531394FEB
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 May 2021 08:50:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C57A395141
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 May 2021 16:08:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ft8Dr2KMHz2yxY
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 May 2021 16:50:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FtKy52THZz30Bq
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 May 2021 00:07:57 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=JGU6Qunl;
+	dkim=pass (1024-bit key; unprotected) header.d=yadro.com header.i=@yadro.com header.a=rsa-sha256 header.s=mta-01 header.b=qnQLCirU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.53;
- helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=JGU6Qunl; 
- dkim-atps=neutral
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de
- [85.215.255.53])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=yadro.com (client-ip=89.207.88.252; helo=mta-01.yadro.com;
+ envelope-from=r.bolshakov@yadro.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=yadro.com header.i=@yadro.com header.a=rsa-sha256
+ header.s=mta-01 header.b=qnQLCirU; dkim-atps=neutral
+Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Ft8DF5K2xz2xvQ
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 May 2021 16:49:31 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; t=1622357350; cv=none;
- d=strato.com; s=strato-dkim-0002;
- b=SDGISMNF5AhJDcRi0hRuHpnsMC/8JlcSylVUyeFODFGOvCWVPySv1WUHSYZde+EaBG
- 17gE51H2xqm/6SDTI/MgqX1sBb+RmDKFJH9XN+WZoUuvVuIhjPzc0vuGs036imP1/uDh
- Tl7D/n8wi0K0wUm5DnpQMJVFpxag2NIAMv9p+suvFuvPJ2+JCr1c41bivldMsFlES+cz
- CAciFLmfX7JU+9RtuJSQO/hPbJyTy+JvJkNjxjStFbPgcKK3Kp6XncyvFAKaLRCS5lBG
- Aijp327SPJ9aiyHO6XWmhI9TFyN9Hn8dGMmO6PmP0YbnPdw5zKPMxG2k+QoZ7QWYSd2V
- H8dg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1622357350;
- s=strato-dkim-0002; d=strato.com;
- h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
- From:Subject:Sender;
- bh=WRXVmiroGZ+6WgAUp6EaN5e8szeqUQhfW9upgdZTFkE=;
- b=Obd+PwVB89qls5iAMkRZxnUAsK8iQ8Nn208D2Hs0NgRGjjjU/Ky33fQJ2MM/jE2cdZ
- No4Wp57QXdgLvzW0KEywrlKW+RS34A1RwqwGWXajV0IxNs0l1VOggupBUAfdYgmATdVH
- SsvGc/xNJi8yQuLI4RlSPPF+TZIvar6rm270eyOqz9JkdtGqr6IHaGQiVgHk2NH1qsNb
- x4jyttMgb2MdSB5ruUOu9Wabc9SNRmjd/Yx4Ctr3DtA1jurg687X375XJ0yaWL7Nks1p
- OjHR3Wx3kkiJaJKOSi14ra/tfCnlt5EeFwSS+9yR7Sicp7+tMfqUJdNGA5kdHKI+tsqi
- mSKw==
-ARC-Authentication-Results: i=1; strato.com;
-    dkim=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1622357350;
- s=strato-dkim-0002; d=xenosoft.de;
- h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
- From:Subject:Sender;
- bh=WRXVmiroGZ+6WgAUp6EaN5e8szeqUQhfW9upgdZTFkE=;
- b=JGU6Qunlk2k9DY769tcpOZYgwDpL1EdgGZplO2DsEVGVFmgxIc9HnA5pup89KP3G9W
- 6lx55EVKyNmQf/Fe7Nr5kFBMX7DCnzqhCopZdq4Cn7fbWMKLbIVX0fYRGUfJUoBvPJnv
- qUFqLtaXFY50pvvIMIRajnUxNN1kX5ORAgP71H22Gx3QlB/hbRso5Yrlon8kSyMeDQno
- QEMS3zku1Wgc1WlTWHhrIJc7vkpBUO4TKgqs/NOTtYjWm2j1ZRjpgxlpMLSZ8XNR9LGG
- aGNIG6J+Ciq+xDD9A8zKI1L6O2JbT6YSFIqiw9EaINlu/Ynt0XDXGMO+nED+p5fwxh3t
- K7nQ==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhUJhBnUfFi1Ts+UyTUShcsiNoeag=="
-X-RZG-CLASS-ID: mo00
-Received: from Christians-iMac.fritz.box by smtp.strato.de (RZmta 47.26.3 AUTH)
- with ESMTPSA id Y04da1x4U6nA6kX
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Sun, 30 May 2021 08:49:10 +0200 (CEST)
-Subject: Re: [FSL P50x0] KVM HV doesn't work anymore
-To: Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- "kvm-ppc@vger.kernel.org" <kvm-ppc@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-References: <04526309-4653-3349-b6de-e7640c2258d6@xenosoft.de>
- <34617b1b-e213-668b-05f6-6fce7b549bf0@xenosoft.de>
- <9af2c1c9-2caf-120b-2f97-c7722274eee3@csgroup.eu>
- <199da427-9511-34fe-1a9e-08e24995ea85@xenosoft.de>
- <1621236734.xfc1uw04eb.astroid@bobo.none>
- <e6ed7674-3df9-ec3e-8bcf-dcd8ff0fecf8@xenosoft.de>
- <1621410977.cgh0d6nvlo.astroid@bobo.none>
- <acf63821-2030-90fa-f178-b2baeb0c4784@xenosoft.de>
- <1621464963.g8v9ejlhyh.astroid@bobo.none>
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-Message-ID: <91b8ea0f-0666-7bf7-a526-b3d4f183d4d6@xenosoft.de>
-Date: Sun, 30 May 2021 08:49:09 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.10.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FtKxd2zsNz2xfx
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 May 2021 00:07:33 +1000 (AEST)
+Received: from localhost (unknown [127.0.0.1])
+ by mta-01.yadro.com (Postfix) with ESMTP id DE812412E5;
+ Sun, 30 May 2021 14:07:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
+ in-reply-to:content-disposition:content-type:content-type
+ :mime-version:references:message-id:subject:subject:from:from
+ :date:date:received:received:received; s=mta-01; t=1622383648;
+ x=1624198049; bh=0IZCgUlLHX+G3/AJ9rVIa600Eqe8fDU7CQygMhOTG2s=; b=
+ qnQLCirU8vuIRpmh2yGAm4NVfw10yWCg0e3EoF8kv6Yu5DCaDTNOHE258E+dQ1JP
+ pnQmCe7fQZseu/j9ns9g4j36Oqg6V7buDZ5r63fBmIuiehTiEIW4C+S8/eIlSRDF
+ qyQGlb3mTe30YBA3bCAZS1qsmG8xVz5EasOKdc9E794=
+X-Virus-Scanned: amavisd-new at yadro.com
+Received: from mta-01.yadro.com ([127.0.0.1])
+ by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id dbp0Ye_1WFHA; Sun, 30 May 2021 17:07:28 +0300 (MSK)
+Received: from T-EXCH-03.corp.yadro.com (t-exch-03.corp.yadro.com
+ [172.17.100.103])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mta-01.yadro.com (Postfix) with ESMTPS id 065BE4128A;
+ Sun, 30 May 2021 17:07:24 +0300 (MSK)
+Received: from localhost (172.22.1.233) by T-EXCH-03.corp.yadro.com
+ (172.17.100.103) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id 15.1.669.32; Sun, 30
+ May 2021 17:07:24 +0300
+Date: Sun, 30 May 2021 17:07:23 +0300
+From: Roman Bolshakov <r.bolshakov@yadro.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] Revert "powerpc: Switch to relative jump labels"
+Message-ID: <YLOcG55/gCNuMsBU@SPB-NB-133.local>
+References: <20210528012943.23192-1-r.bolshakov@yadro.com>
+ <87pmxah1h6.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <1621464963.g8v9ejlhyh.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: de-DE
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <87pmxah1h6.fsf@mpe.ellerman.id.au>
+X-Originating-IP: [172.22.1.233]
+X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
+ T-EXCH-03.corp.yadro.com (172.17.100.103)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,82 +73,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- mad skateman <madskateman@gmail.com>, Christian Zigotzky <info@xenosoft.de>
+Cc: linuxppc-dev@lists.ozlabs.org, linux@yadro.com,
+ Paul Mackerras <paulus@samba.org>, Anastasia Kovaleva <a.kovaleva@yadro.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 20 May 21 at 01:07am, Nicholas Piggin wrote:
-> Excerpts from Christian Zigotzky's message of May 19, 2021 9:52 pm:
->> On 19 May 2021 at 09:57 am, Nicholas Piggin wrote:
->>> Excerpts from Christian Zigotzky's message of May 17, 2021 7:42 pm:
->>>> On 17 May 2021 at 09:42am, Nicholas Piggin wrote:
->>>>> Excerpts from Christian Zigotzky's message of May 15, 2021 11:46 pm:
->>>>>> I tried it but it doesn't solve the issue. The uImage works without
->>>>>> KVM
->>>>>> HV in a virtual e5500 QEMU machine.
->>>>> Any more progress with this? I would say that bisect might have just
->>>>> been a bit unstable and maybe by chance some things did not crash so
->>>>> it's pointing to the wrong patch.
->>>>>
->>>>> Upstream merge of powerpc-5.13-1 was good and powerpc-5.13-2 was bad?
->>>>>
->>>>> Between that looks like some KVM MMU rework. You could try the patch
->>>>> before this one b1c5356e873c ("KVM: PPC: Convert to the gfn-based MMU
->>>>> notifier callbacks"). That won't revert cleanly so just try run the
->>>>> tree at that point. If it works, test the patch and see if it fails.
->>>>>
->>>>> Thanks,
->>>>> Nick
->>>> Hi Nick,
->>>>
->>>> Thanks a lot for your answer. Yes, there is a little bit of progress.
->>>> The RC2 of kernel 5.13 successfully boots with -smp 3 in a virtual e5500
->>>> QEMU machine.
->>>> -smp 4 doesn't work anymore since the PowerPC updates 5.13-2. I used
->>>> -smp 4 before 5.13 because my FSL P5040 machine has 4 cores.
->>>>
->>>> Could you please post a patch for reverting the commit before
->>>> b1c5356e873c ("KVM: PPC: Convert to the gfn-based MMU notifier callbacks")?
->>> You could `git checkout b1c5356e873c~1`
->>>
->>> Thanks,
->>> Nick
->> Hi Nick,
->>
->> Thanks for your answer. I checked out the commit b1c5356e873c~1 (HEAD is
->> now at d923ff258423 KVM: MIPS/MMU: Convert to the gfn-based MMU notifier
->> callbacks).
->> The kernel boots with '-smp 4' without any problems.
->> After that I patched with the probable first bad commit (KVM: PPC:
->> Convert to the gfn-based MMU notifier callbacks). The kernel also boots
->> with this patch. That means, this isn't the first bad commit.
->> Further information:
->> https://forum.hyperion-entertainment.com/viewtopic.php?p=53267#p53267
-> Hmm, okay that probably rules out those notifier changes then.
->
-> Can you remind me were you able to rule these out as suspects?
->
-> 8f6cc75a97d1 powerpc: move norestart trap flag to bit 0
-> 8dc7f0229b78 powerpc: remove partial register save logic
-> c45ba4f44f6b powerpc: clean up do_page_fault
-> d738ee8d56de powerpc/64e/interrupt: handle bad_page_fault in C
-> ceff77efa4f8 powerpc/64e/interrupt: Use new interrupt context tracking scheme
-> 097157e16cf8 powerpc/64e/interrupt: reconcile irq soft-mask state in C
-> 3db8aa10de9a powerpc/64e/interrupt: NMI save irq soft-mask state in C
-> 0c2472de23ae powerpc/64e/interrupt: use new interrupt return
-> dc6231821a14 powerpc/interrupt: update common interrupt code for
-> 4228b2c3d20e powerpc/64e/interrupt: always save nvgprs on interrupt
-> 5a5a893c4ad8 powerpc/syscall: switch user_exit_irqoff and trace_hardirqs_off order
->
-> Thanks,
-> Nick
-Hi Nick,
+On Sat, May 29, 2021 at 09:39:49AM +1000, Michael Ellerman wrote:
+> Roman Bolshakov <r.bolshakov@yadro.com> writes:
+> > This reverts commit b0b3b2c78ec075cec4721986a95abbbac8c3da4f.
+> >
+> > Otherwise, direct kernel boot with initramfs no longer works in QEMU.
+> > It's broken in some bizarre way because a valid initramfs is not
+> > recognized anymore:
+> >
+> >   Found initrd at 0xc000000001f70000:0xc000000003d61d64
+> >   rootfs image is not initramfs (XZ-compressed data is corrupt); looks like an initrd
+> >
+> > The issue is observed on v5.13-rc3 if the kernel is built with
+> > defconfig, GCC 7.5.0 and GNU ld 2.32.0.
+> 
+> Are you able to try a different compiler?
 
-Thanks for your answer. Smp 4 still doesn't work on quad core e5500 
-CPUs. I use -smp 3 currently. Shall I checkout the commits above (in 
-your last answer) and test them? Do you prefer a commit for testing?
+Hi Michael,
 
-Thanks,
-Christian
+I've just tried GCC 9.3.1 and the result is the same.
+
+The offending patch has assembly inlines, they typically go through
+binutils/GAS and it might also be a case when older binutils doesn't
+implement something properly (i've seen this on x86 and arm).
+
+> I test booting qemu constantly, but I don't use GCC 7.5.
+>
+> And what qemu version are you using?
+> 
+
+QEMU 3.1.1, but I've also tried 6.0.50 (QEMU master, 62c0ac5041e913) and
+it fails the same way.
+
+> 
+> I assume your initramfs is compressed with XZ? How large is it
+> compressed?
+> 
+
+Yes, XZ. initramfs size is 30 MB (around 100 MB cpio size).
+
+It's interesting that the issue doesn't happen if I pass initramfs from
+host (11MB), then the initramfs can be recognized. It might be related
+to initramfs size then and bigger initramfs that used to work no longer
+work with v5.13-rc3.
+
+So, I've created a small initramfs using only static busybox (2.7M
+uncompressed, 960K compressed with xz). No error is produced and it
+boots fine.
+
+If I add a dummy file (11M off /dev/urandom) to the small busybox
+initramfs, it boots and the init is started but I'm seeing the error:
+
+  rootfs image is not initramfs (XZ-compressed data is corrupt); looks like an initrd
+
+sha1sum of the file inside initramfs doesn't match sha1sum on the host.
+
+  guest # sha1sum dummy
+  407c347e671ddd00f69df12b3368048bad0ebf0c  dummy
+  # QEMU: Terminated
+  host $ sha1sum dummy
+  ed8494b3eecab804960ceba2c497270eed0b0cd1  dummy
+
+sha1sum is the same in the guest and on the host for 10M dummy file:
+
+  guest # sha1sum dummy
+  43855f7a772a28cce91da9eb8f86f53bc807631f  dummy
+  # QEMU: Terminated
+  host $ sha1sum dummy
+  43855f7a772a28cce91da9eb8f86f53bc807631f  dummy
+
+That might explain why bigger initramfs (or initramfs with bigger files)
+doesn't boot - because some files might appear corrupted inside the guest.
+
+Here're the sources of the initrd along with 11M dummy file:
+  https://drive.yadro.com/s/W8HdbPnaKmPPwK4
+
+I've compressed it with:
+  $ find . 2>/dev/null | cpio -ocR 0:0 | xz  --check=crc32 > ../initrd-dummy.xz
+
+Hope this helps,
+Roman
