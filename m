@@ -2,66 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84CD63955CF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 May 2021 09:13:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C11483955DA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 May 2021 09:15:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FtmjP5n31z302m
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 May 2021 17:13:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ftmlg0jnCz304L
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 May 2021 17:15:27 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Tp9Af5PZ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=KsJ+LNsM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::830;
- helo=mail-qt1-x830.google.com; envelope-from=shengjiu.wang@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::82e;
+ helo=mail-qt1-x82e.google.com; envelope-from=shengjiu.wang@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Tp9Af5PZ; dkim-atps=neutral
-Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com
- [IPv6:2607:f8b0:4864:20::830])
+ header.s=20161025 header.b=KsJ+LNsM; dkim-atps=neutral
+Received: from mail-qt1-x82e.google.com (mail-qt1-x82e.google.com
+ [IPv6:2607:f8b0:4864:20::82e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Ftmhz3KcTz2xgL
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 May 2021 17:13:06 +1000 (AEST)
-Received: by mail-qt1-x830.google.com with SMTP id a15so7384579qta.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 May 2021 00:13:05 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Ftml93M8Fz2xZm
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 May 2021 17:15:01 +1000 (AEST)
+Received: by mail-qt1-x82e.google.com with SMTP id s12so7357776qta.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 May 2021 00:15:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=yPnIo42plkwFrQDyxV2qx/s2cknNkAGZDVtx3wbOgvs=;
- b=Tp9Af5PZOT1pgH/udgKZCP5uYa6IETW7cLxSNlICLKoZBpazH6eoBaMbErfh4PiY69
- ZoKenJXw/hfXSNe3QTHHJUOulDCKS4mckM2v7xUz0AOKJN1X9z60aWCOU0dQq64zOmPb
- 0OpX/Ls4vxYX6evECby6KGRXXXDYsg+Xr9cRcYcNtFWyxrBv2DUM7dToHqzcGahi2O1d
- mBWjAiXxxToWo7fkbaCA9oZRU/qc0/TATOekuO6BMXH+cKvTks/F+m3jJvi06JOFV2A3
- y1r3BKbP6+Ws0j3BfJkL/fwFd2tT8q48cSXfLZOh9/s4RQkhqPwK01T/4grlfIVPRV8C
- 0T+w==
+ :cc; bh=cCshEX+xv/4SLU2fpFIKz4mOrOPFgrWQEiDI3gvxWCU=;
+ b=KsJ+LNsMU7c4m6OF9/SQ64CxWH3Mtnf0VOMuFU3UOZVpbTxN5pOi+NXIzz2IJBVX8h
+ VpuOk1e3s9DXPsVcQVtRLBXvGKSR6sjzvD3aCtH8qI5hg6jgYk/3YfuSroi7tybw9Deo
+ IU9xXAxq+hLd7cKb3eRWra77WTIEQwfpix6LS3STrUpyv+cEog5iV06hMuuXZ7FiRDgO
+ m5BCLsddtVkB6l+pRSBObY6dQaz85QMfRD3gqCfXCyOtezDOZVVav/SqxEX+LAp3bTX1
+ mCEptSvETYOWh626Dxji0xnZbsJn+n2f4/ZcFNkuXvCsj3axiRxVBN6y2yG5FNQfOZWE
+ AVIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=yPnIo42plkwFrQDyxV2qx/s2cknNkAGZDVtx3wbOgvs=;
- b=n4mVNOrHww2rz/dp4hnc6fVSjekExxcKOBOLyiE3XkPXmq5tKpNICSsN3M+vXe9Ar7
- R9HKw1krGHpSn0VabRxJrMajdnGcVdh+24Jq4VJU/j9OLxptVmCQnQrXV6eGSqp/am41
- L3Q8KKcKfyfexcAIzmRCKimPVeJ1bA8JkqZGoyEo36PV+XOo+7Knwi72LN0JpfDSFj2M
- gdPHfaoyLHyU/lIf6n2ngwHuNLNeud12i3Pj6A8anepNRkNLWCEn80truyml0K6RnOAt
- Q6S+1ASY9uWTYfwF8qmV68c971PEj49HBuAej75CfOhOhHztfIFOfywcPRQTzMqdmFp4
- lJOg==
-X-Gm-Message-State: AOAM532M+ZFC4+SqEHmpYsugzHPjlFmEKgMufbEXj5LEKkSymliij/qU
- e7xcs/fGfIFZECHXy46TFVRKvsNrBrenJeT1tjE=
-X-Google-Smtp-Source: ABdhPJwqutod0yLild77qYJkxAUuP6UWl9+wI+5CsvXM3euJPYCcMm5SprLhD6u2aBWc3gjpwazA7aQ94EnX1pITFQc=
-X-Received: by 2002:ac8:5197:: with SMTP id c23mr13620903qtn.292.1622445183449; 
- Mon, 31 May 2021 00:13:03 -0700 (PDT)
+ bh=cCshEX+xv/4SLU2fpFIKz4mOrOPFgrWQEiDI3gvxWCU=;
+ b=DYD8EW0ZlOtakNDN1PHWbnEf1Qd3jyVJQFLcnpls5ZBSmekggCA+H13xcNDQO8XCUc
+ P4MBBUL638Rixwavw/C/O+MIOdSvBpjxEs3vV3mIEYgudLeCVOU7SbeGOHBa4HrKF5tZ
+ Y5TykaNd1gCh1ZqACcn8AG2Mf4iPvP4GmpJUHHU9THI4AE+EcIkjBiGbCkRVXpadKGGp
+ DWLOLhqRN1Pqvg5HyVpy6aN4uFFJGpDVa7UBWe6/8qfzfFSoDnrDXPPI7FSEbv8M3r4n
+ FD3M0mcCH7f2e4UJV0t5//INCpxiR7WXmb/GWB+XUFUlTCtG48JVaZJi1R+zk9BrnMH1
+ VoOA==
+X-Gm-Message-State: AOAM533u5CaKVYgtIiVPSTMFJq121wcXxHsgvDvBm780wxEcZ9wyMNjx
+ rVsMQt3sGInhJz1sPW6OEvDS8r/9JTn3kN4Ojpw=
+X-Google-Smtp-Source: ABdhPJy7JbLQBxo12CX0FUQPlIy48WVrz/mKCLthCxTBWukeUjgX6kfkepSU7NBI7LmBSGpXwXp6RuAgKrZDFg569uA=
+X-Received: by 2002:ac8:570a:: with SMTP id 10mr13619650qtw.360.1622445296129; 
+ Mon, 31 May 2021 00:14:56 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210527163409.22049-1-nicolas.cavallari@green-communications.fr>
-In-Reply-To: <20210527163409.22049-1-nicolas.cavallari@green-communications.fr>
+References: <1622113652-56646-1-git-send-email-zou_wei@huawei.com>
+In-Reply-To: <1622113652-56646-1-git-send-email-zou_wei@huawei.com>
 From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Mon, 31 May 2021 15:12:52 +0800
-Message-ID: <CAA+D8APeigNMB4gTNTTVE4-vj0J9y5DEh+3P7p9iTZq1KdGuPg@mail.gmail.com>
-Subject: Re: [PATCH] ASoC: fsl-asoc-card: Set .owner attribute when
- registering card.
-To: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
+Date: Mon, 31 May 2021 15:14:45 +0800
+Message-ID: <CAA+D8AOzEUfbCCjhJbEwXav_WWqn_aPX-0krJQ_bOJQiDJu58A@mail.gmail.com>
+Subject: Re: [PATCH -next] ASoC: imx-rpmsg: fix platform_no_drv_owner.cocci
+ warnings
+To: Zou Wei <zou_wei@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -74,57 +74,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, Timur Tabi <timur@kernel.org>,
- Xiubo Li <Xiubo.Lee@gmail.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
- Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>,
- Mark Brown <broonie@kernel.org>, Fabio Estevam <festevam@gmail.com>,
- linux-kernel <linux-kernel@vger.kernel.org>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-kernel <linux-kernel@vger.kernel.org>, Timur Tabi <timur@kernel.org>,
+ Xiubo Li <Xiubo.Lee@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Takashi Iwai <tiwai@suse.com>,
+ Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>,
+ Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>,
+ NXP Linux Team <linux-imx@nxp.com>, Sascha Hauer <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 28, 2021 at 12:35 AM Nicolas Cavallari
-<nicolas.cavallari@green-communications.fr> wrote:
+On Thu, May 27, 2021 at 6:48 PM Zou Wei <zou_wei@huawei.com> wrote:
 >
-> Otherwise, when compiled as module, a WARN_ON is triggered:
+> ./sound/soc/fsl/imx-rpmsg.c:140:3-8: No need to set .owner here. The core will do it.
 >
-> WARNING: CPU: 0 PID: 5 at sound/core/init.c:208 snd_card_new+0x310/0x39c [snd]
-> [...]
-> CPU: 0 PID: 5 Comm: kworker/0:0 Not tainted 5.10.39 #1
-> Hardware name: Freescale i.MX6 Quad/DualLite (Device Tree)
-> Workqueue: events deferred_probe_work_func
-> [<c0111988>] (unwind_backtrace) from [<c010c8ac>] (show_stack+0x10/0x14)
-> [<c010c8ac>] (show_stack) from [<c092784c>] (dump_stack+0xdc/0x104)
-> [<c092784c>] (dump_stack) from [<c0129710>] (__warn+0xd8/0x114)
-> [<c0129710>] (__warn) from [<c0922a48>] (warn_slowpath_fmt+0x5c/0xc4)
-> [<c0922a48>] (warn_slowpath_fmt) from [<bf0496f8>] (snd_card_new+0x310/0x39c [snd])
-> [<bf0496f8>] (snd_card_new [snd]) from [<bf1d7df8>] (snd_soc_bind_card+0x334/0x9c4 [snd_soc_core])
-> [<bf1d7df8>] (snd_soc_bind_card [snd_soc_core]) from [<bf1e9cd8>] (devm_snd_soc_register_card+0x30/0x6c [snd_soc_core])
-> [<bf1e9cd8>] (devm_snd_soc_register_card [snd_soc_core]) from [<bf22d964>] (fsl_asoc_card_probe+0x550/0xcc8 [snd_soc_fsl_asoc_card])
-> [<bf22d964>] (fsl_asoc_card_probe [snd_soc_fsl_asoc_card]) from [<c060c930>] (platform_drv_probe+0x48/0x98)
-> [...]
+>  Remove .owner field if calls are used which set it automatically
 >
-> Signed-off-by: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
+> Generated by: scripts/coccinelle/api/platform_no_drv_owner.cocci
+>
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Zou Wei <zou_wei@huawei.com>
 
 Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
 
 > ---
->  sound/soc/fsl/fsl-asoc-card.c | 1 +
->  1 file changed, 1 insertion(+)
+>  sound/soc/fsl/imx-rpmsg.c | 1 -
+>  1 file changed, 1 deletion(-)
 >
-> diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
-> index c62bfd1c3ac7..4f55b316cf0f 100644
-> --- a/sound/soc/fsl/fsl-asoc-card.c
-> +++ b/sound/soc/fsl/fsl-asoc-card.c
-> @@ -744,6 +744,7 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
->         /* Initialize sound card */
->         priv->pdev = pdev;
->         priv->card.dev = &pdev->dev;
-> +       priv->card.owner = THIS_MODULE;
->         ret = snd_soc_of_parse_card_name(&priv->card, "model");
->         if (ret) {
->                 snprintf(priv->name, sizeof(priv->name), "%s-audio",
+> diff --git a/sound/soc/fsl/imx-rpmsg.c b/sound/soc/fsl/imx-rpmsg.c
+> index 5a9a470..f0cae8c 100644
+> --- a/sound/soc/fsl/imx-rpmsg.c
+> +++ b/sound/soc/fsl/imx-rpmsg.c
+> @@ -137,7 +137,6 @@ static int imx_rpmsg_probe(struct platform_device *pdev)
+>  static struct platform_driver imx_rpmsg_driver = {
+>         .driver = {
+>                 .name = "imx-audio-rpmsg",
+> -               .owner = THIS_MODULE,
+>                 .pm = &snd_soc_pm_ops,
+>         },
+>         .probe = imx_rpmsg_probe,
 > --
-> 2.32.0.rc0
+> 2.6.2
 >
