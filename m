@@ -2,56 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93638396BAD
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Jun 2021 04:56:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93201396D4E
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Jun 2021 08:23:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FvGym6Y5zz2ymR
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Jun 2021 12:56:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FvMYS6f5Yz304N
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Jun 2021 16:23:40 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=mgyJJS7M;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=W4LHJGrO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62f;
+ helo=mail-pl1-x62f.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=mgyJJS7M; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=W4LHJGrO; dkim-atps=neutral
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com
+ [IPv6:2607:f8b0:4864:20::62f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FvGyL2YyYz2yXX
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Jun 2021 12:56:25 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4FvGy61k79z9sWF;
- Tue,  1 Jun 2021 12:56:13 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1622516184;
- bh=iY7MeF5kJVTgb76PGSIe64N6mVxLFvLQ+P911N0MgIM=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=mgyJJS7Mpwj0xHxjTQUJCbxWXBqEpx7u6kJmlJrory1kepRlcJMq86u8b7CRC0TBx
- 2eKAPApa1yyT+8Bx3Nq7xXqq+U0aoxEZ+zVk8LZNufbS19MjY54JklUeikWPo3saVu
- rZYPlntAMlPhhFnF6Z4PsS/40mD9BayKN5dAP0deDvSFY91SZJGkqyvQLfTKpVKAj7
- nHaMrjkuyFLjQPzypNJGHxewO6DV/mxxi6HJjuKa/Hbn4YkWBejjdidjhax1ODsJHB
- 2xtaQQzhaLoYsK439xsAx0/uvUVbRJkkNCZEwtolQgis+ZjvEfMSx7TFq4rv4vlYtC
- mKEDQ5CYN2DQw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Kefeng Wang <wangkefeng.wang@huawei.com>, Andrew Morton
- <akpm@linux-foundation.org>
-Subject: Re: [PATCH v2] mm: generalize ZONE_[DMA|DMA32]
-In-Reply-To: <20210528074557.17768-1-wangkefeng.wang@huawei.com>
-References: <20210527143047.123611-1-wangkefeng.wang@huawei.com>
- <20210528074557.17768-1-wangkefeng.wang@huawei.com>
-Date: Tue, 01 Jun 2021 12:56:10 +1000
-Message-ID: <87k0negunp.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FvMY00rZ5z2yWt
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Jun 2021 16:23:15 +1000 (AEST)
+Received: by mail-pl1-x62f.google.com with SMTP id e15so6331197plh.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 May 2021 23:23:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=R9w3VBsyynBzvrOKhGUnor+2tF9n4dKvU0meQmd4evY=;
+ b=W4LHJGrOxmR9j6iCI+qXHFE0u44HsMkEPSrrEziVpXFsxYWySDL75LZQzT+eozQx6/
+ P8LxHQ5OcolPa8nnCg84G8q8lEuhN3sQtaXAEoIMKiECXWrX5Vuw3h4AHSktWZjfXT3k
+ GOKZ0H0zkcANaZBcbker5dcVfOvLYKdCyfXLoDJp37S9pO8j43wTpw0HSoIiilA472e8
+ lUiH99RrUo829uszk+oFNeq6ezF9ZkpTUWhsSaQGJb0GLvo4XJD5RW65i1NKgEZ5dLdC
+ 5TQBZGZWAP2c+ZS749kKFePyP69Nwzx2DPvyhAXBMdUg1OrSZQXOMSJ2NweUTxt6SIg+
+ 3ANQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=R9w3VBsyynBzvrOKhGUnor+2tF9n4dKvU0meQmd4evY=;
+ b=T+i36+G9iBZ52E11MmzLQCoJTOTcJQ6p0ndepVvbm9ZHbSV8HxFeOFB8vwydiuTQeW
+ ItcJDNuFhT3wwYA4hDlR89t4M7oX0lSx5P3kHgPB5PkSSu+s93NyxDcUyXjZan3l5+Wo
+ vSdB2Ll9m169cY1LVB5FFmBFAuHad7A49cPAbcyl4/mAwNx6wEO9EfTconaXfxU+XxJF
+ B+AaotRfmEdjl99svpoV0cic5gAvYDDkfxkbjiNbN6DhEXORAman4lqnqp1v6gkZFhxE
+ JNu7+B8tCp5jaGuxo2P03svR6S3cXOZsitpVjRdYaUUXGI9BCX8Yi6BBaBPaebFBOBtv
+ 1rYg==
+X-Gm-Message-State: AOAM5331C1EzrhDXd6vdRU8VDSLMkVITr4mIhZDBcZtZvKq1LMt6qeYA
+ uElTPAlBsxd+lw9g9LN+WC+APLsh7KY=
+X-Google-Smtp-Source: ABdhPJxdBCBt6kjcsuYhTACpiaI01k2nCclazEEWA4VvIVS22YbO1VZ/TPZyZ/KCQQgJxi56faaOqw==
+X-Received: by 2002:a17:902:f68c:b029:102:e6b5:f8c8 with SMTP id
+ l12-20020a170902f68cb0290102e6b5f8c8mr12494108plg.70.1622528591450; 
+ Mon, 31 May 2021 23:23:11 -0700 (PDT)
+Received: from bobo.ibm.com (60-241-69-122.static.tpgi.com.au. [60.241.69.122])
+ by smtp.gmail.com with ESMTPSA id h1sm12519100pfh.72.2021.05.31.23.23.07
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 31 May 2021 23:23:11 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH v3 0/4] shoot lazy tlbs
+Date: Tue,  1 Jun 2021 16:22:59 +1000
+Message-Id: <20210601062303.3932513-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,61 +78,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, linux-ia64@vger.kernel.org,
- Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org,
- sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
- Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org,
- Russell King <linux@armlinux.org.uk>, Mike Rapoport <rppt@linux.ibm.com>,
- Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- linux-m68k@lists.linux-m68k.org, Borislav Petkov <bp@alien8.de>,
- linux-arm-kernel@lists.infradead.org, Richard Henderson <rth@twiddle.net>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-mips@vger.kernel.org,
- Palmer Dabbelt <palmer@dabbelt.com>, linux-alpha@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: linux-arch@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>,
+ linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+ linux-mm@kvack.org, Andy Lutomirski <luto@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Kefeng Wang <wangkefeng.wang@huawei.com> writes:
-> ZONE_[DMA|DMA32] configs have duplicate definitions on platforms
-> that subscribe them. Instead, just make them generic options which
-> can be selected on applicable platforms.
->
-> Also only x86/arm64 architectures could enable both ZONE_DMA and
-> ZONE_DMA32 if EXPERT, add ARCH_HAS_ZONE_DMA_SET to make dma zone
-> configurable and visible on the two architectures.
->
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: Palmer Dabbelt <palmer@dabbelt.com>
-> Cc: Richard Henderson <rth@twiddle.net>
-> Cc: Russell King <linux@armlinux.org.uk>
-> Acked-by: Catalin Marinas <catalin.marinas@arm.com> # for arm64
-> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org> # for m68k
-> Acked-by: Mike Rapoport <rppt@linux.ibm.com>
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> ---
-> v2:
-> -i386 can't enable ZONE_DMA32, fix it.
-> -make ZONE_DMA default y on X86 as before.
-> -collect ACKs
->
->  arch/alpha/Kconfig                     |  5 +----
->  arch/arm/Kconfig                       |  3 ---
->  arch/arm64/Kconfig                     |  9 +--------
->  arch/ia64/Kconfig                      |  4 +---
->  arch/m68k/Kconfig                      |  5 +----
->  arch/microblaze/Kconfig                |  4 +---
->  arch/mips/Kconfig                      |  7 -------
->  arch/powerpc/Kconfig                   |  4 ----
->  arch/powerpc/platforms/Kconfig.cputype |  1 +
+There haven't been objections to the series since last posting, this
+is just a rebase and tidies up a few comments minor patch rearranging.
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Thanks,
+Nick
 
-cheers
+Nicholas Piggin (4):
+  lazy tlb: introduce lazy mm refcount helper functions
+  lazy tlb: allow lazy tlb mm switching to be configurable
+  lazy tlb: shoot lazies, a non-refcounting lazy tlb option
+  powerpc/64s: enable MMU_LAZY_TLB_SHOOTDOWN
+
+ arch/Kconfig                         | 38 ++++++++++++
+ arch/arm/mach-rpc/ecard.c            |  2 +-
+ arch/powerpc/Kconfig                 |  1 +
+ arch/powerpc/kernel/smp.c            |  2 +-
+ arch/powerpc/mm/book3s64/radix_tlb.c |  4 +-
+ fs/exec.c                            |  4 +-
+ include/linux/sched/mm.h             | 20 +++++++
+ kernel/cpu.c                         |  2 +-
+ kernel/exit.c                        |  2 +-
+ kernel/fork.c                        | 52 ++++++++++++++++
+ kernel/kthread.c                     | 11 ++--
+ kernel/sched/core.c                  | 88 ++++++++++++++++++++--------
+ kernel/sched/sched.h                 |  4 +-
+ 13 files changed, 192 insertions(+), 38 deletions(-)
+
+-- 
+2.23.0
+
