@@ -2,47 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7A34396D9B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Jun 2021 08:53:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E48B9396DE2
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Jun 2021 09:23:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FvND90dPMz302l
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Jun 2021 16:53:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FvNtD1sLxz2yXX
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Jun 2021 17:23:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=hisilicon.com (client-ip=45.249.212.187;
- helo=szxga01-in.huawei.com; envelope-from=zhangshaokun@hisilicon.com;
- receiver=<UNKNOWN>)
-X-Greylist: delayed 972 seconds by postgrey-1.36 at boromir;
- Tue, 01 Jun 2021 16:53:26 AEST
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FvNCp6cWlz2yXX
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Jun 2021 16:53:22 +1000 (AEST)
-Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.53])
- by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4FvMlT49QGzWqM5
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Jun 2021 14:32:21 +0800 (CST)
-Received: from dggpeml500023.china.huawei.com (7.185.36.114) by
- dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Tue, 1 Jun 2021 14:36:37 +0800
-Received: from localhost.localdomain (10.69.192.56) by
- dggpeml500023.china.huawei.com (7.185.36.114) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Tue, 1 Jun 2021 14:36:37 +0800
-From: Shaokun Zhang <zhangshaokun@hisilicon.com>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH] selftests/powerpc: Remove the repeated declaration
-Date: Tue, 1 Jun 2021 14:36:25 +0800
-Message-ID: <1622529385-5938-1-git-send-email-zhangshaokun@hisilicon.com>
-X-Mailer: git-send-email 2.7.4
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FvNss46cdz2yXX
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Jun 2021 17:22:53 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 4FvNsg5K2JzBDlZ;
+ Tue,  1 Jun 2021 09:22:47 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id KCSf2hoQB7ao; Tue,  1 Jun 2021 09:22:47 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FvNsg4QcCzBDlT;
+ Tue,  1 Jun 2021 09:22:47 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 82DAF8B765;
+ Tue,  1 Jun 2021 09:22:47 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id oR-q5SgmhKex; Tue,  1 Jun 2021 09:22:47 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 34D5D8B7AE;
+ Tue,  1 Jun 2021 09:22:47 +0200 (CEST)
+Subject: Re: [PATCH] powerpc: make show_stack's stack walking KASAN-safe
+To: Daniel Axtens <dja@axtens.net>, linuxppc-dev@lists.ozlabs.org,
+ kasan-dev@googlegroups.com
+References: <20210528074806.1311297-1-dja@axtens.net>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <19442f8a-43b2-b51d-b1ad-3d27bb5fac49@csgroup.eu>
+Date: Tue, 1 Jun 2021 09:22:46 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.2
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.69.192.56]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpeml500023.china.huawei.com (7.185.36.114)
-X-CFilter-Loop: Reflected
+In-Reply-To: <20210528074806.1311297-1-dja@axtens.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,33 +63,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Shaokun Zhang <zhangshaokun@hisilicon.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Function 'event_ebb_init' and 'event_leader_ebb_init' are declared
-twice in the header file, so remove the repeated declaration.
 
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Shaokun Zhang <zhangshaokun@hisilicon.com>
----
- tools/testing/selftests/powerpc/pmu/ebb/ebb.h | 2 --
- 1 file changed, 2 deletions(-)
 
-diff --git a/tools/testing/selftests/powerpc/pmu/ebb/ebb.h b/tools/testing/selftests/powerpc/pmu/ebb/ebb.h
-index b5bc2b616075..2c803b5b48d6 100644
---- a/tools/testing/selftests/powerpc/pmu/ebb/ebb.h
-+++ b/tools/testing/selftests/powerpc/pmu/ebb/ebb.h
-@@ -55,8 +55,6 @@ void ebb_global_disable(void);
- bool ebb_is_supported(void);
- void ebb_freeze_pmcs(void);
- void ebb_unfreeze_pmcs(void);
--void event_ebb_init(struct event *e);
--void event_leader_ebb_init(struct event *e);
- int count_pmc(int pmc, uint32_t sample_period);
- void dump_ebb_state(void);
- void dump_summary_ebb_state(void);
--- 
-2.7.4
+Le 28/05/2021 à 09:48, Daniel Axtens a écrit :
+> Make our stack-walking code KASAN-safe by using READ_ONCE_NOCHECK -
+> generic code, arm64, s390 and x86 all do this for similar sorts of
+> reasons: when unwinding a stack, we might touch memory that KASAN has
+> marked as being out-of-bounds. In ppc64 KASAN development, I hit this
+> sometimes when checking for an exception frame - because we're checking
+> an arbitrary offset into the stack frame.
+> 
+> See commit 20955746320e ("s390/kasan: avoid false positives during stack
+> unwind"), commit bcaf669b4bdb ("arm64: disable kasan when accessing
+> frame->fp in unwind_frame"), commit 91e08ab0c851 ("x86/dumpstack:
+> Prevent KASAN false positive warnings") and commit 6e22c8366416
+> ("tracing, kasan: Silence Kasan warning in check_stack of stack_tracer").
+> 
+> Signed-off-by: Daniel Axtens <dja@axtens.net>
+> ---
+>   arch/powerpc/kernel/process.c | 16 +++++++++-------
+>   1 file changed, 9 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+> index 89e34aa273e2..430cf06f9406 100644
+> --- a/arch/powerpc/kernel/process.c
+> +++ b/arch/powerpc/kernel/process.c
+> @@ -2151,8 +2151,8 @@ void show_stack(struct task_struct *tsk, unsigned long *stack,
+>   			break;
+>   
+>   		stack = (unsigned long *) sp;
+> -		newsp = stack[0];
+> -		ip = stack[STACK_FRAME_LR_SAVE];
+> +		newsp = READ_ONCE_NOCHECK(stack[0]);
+> +		ip = READ_ONCE_NOCHECK(stack[STACK_FRAME_LR_SAVE]);
+>   		if (!firstframe || ip != lr) {
+>   			printk("%s["REG"] ["REG"] %pS",
+>   				loglvl, sp, ip, (void *)ip);
+> @@ -2170,17 +2170,19 @@ void show_stack(struct task_struct *tsk, unsigned long *stack,
+>   		 * See if this is an exception frame.
+>   		 * We look for the "regshere" marker in the current frame.
+>   		 */
+> -		if (validate_sp(sp, tsk, STACK_FRAME_WITH_PT_REGS)
+> -		    && stack[STACK_FRAME_MARKER] == STACK_FRAME_REGS_MARKER) {
+> +		if (validate_sp(sp, tsk, STACK_FRAME_WITH_PT_REGS) &&
+> +		    (READ_ONCE_NOCHECK(stack[STACK_FRAME_MARKER]) ==
+> +		     STACK_FRAME_REGS_MARKER)) {
+>   			struct pt_regs *regs = (struct pt_regs *)
+>   				(sp + STACK_FRAME_OVERHEAD);
+>   
+> -			lr = regs->link;
+> +			lr = READ_ONCE_NOCHECK(regs->link);
+>   			printk("%s--- interrupt: %lx at %pS\n",
+> -			       loglvl, regs->trap, (void *)regs->nip);
+> +			       loglvl, READ_ONCE_NOCHECK(regs->trap),
+> +			       (void *)READ_ONCE_NOCHECK(regs->nip));
+>   			__show_regs(regs);
+>   			printk("%s--- interrupt: %lx\n",
+> -			       loglvl, regs->trap);
+> +			       loglvl, READ_ONCE_NOCHECK(regs->trap));
 
+Actually you read regs->trap twice now. Can you use a local var and really read it only once ?
+
+>   
+>   			firstframe = 1;
+>   		}
+> 
