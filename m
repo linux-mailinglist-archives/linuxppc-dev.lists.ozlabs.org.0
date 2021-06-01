@@ -2,96 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE76539749F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Jun 2021 15:52:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FE953975B0
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Jun 2021 16:42:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FvYWR1JZrz3091
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Jun 2021 23:52:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FvZd40L8pz303n
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 00:42:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BaMnAF6s;
+	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=XWES3O+i;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::102b;
+ helo=mail-pj1-x102b.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=BaMnAF6s; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=XWES3O+i; dkim-atps=neutral
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com
+ [IPv6:2607:f8b0:4864:20::102b])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FvYVx6Mqhz2yXX
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Jun 2021 23:52:09 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 151DX2xm090255; Tue, 1 Jun 2021 09:51:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : subject :
- to : cc : references : in-reply-to : message-id : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=mDnV0LUjr/nkxsZMowZ68RPaqejWJLV3R5OTVuMBWNI=;
- b=BaMnAF6sQzBcj+g7At8P2++bnm48aNRufByTQtZpFZG+1GGHHLizMiNSoZVfT0zxpH8Z
- mzycO6ktXnqLyA+yLqtKExRlXZkiERVMG/bD5AFgQpz1fIViCx2wgFMUKIwZzQ2zI4fX
- kAHTc72fvqhIKm65NjPgJD/0cRiVKjrJ8lLCcjZ8f9U0WayAzILcoqeRaTy+N1+a9oG/
- y0AEPYx8mUUZiYi5RvMY/BOUb2A5+gXTo8RIcOpHA98i/IO//1zuv5K0B00bK6g0Bm5j
- eisRC3lRNef/wfH8FsNhM6RrxRb7FJM25VCumGaq9GBT4BNCHOzDdPMzK9oniCaESUeM sw== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0b-001b2d01.pphosted.com with ESMTP id 38wntd8qty-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 01 Jun 2021 09:51:33 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 151DmZ5N020259;
- Tue, 1 Jun 2021 13:51:31 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma06ams.nl.ibm.com with ESMTP id 38ucvh9rm8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 01 Jun 2021 13:51:31 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 151DpTDD14352894
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 1 Jun 2021 13:51:29 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 839B6A4051;
- Tue,  1 Jun 2021 13:51:29 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B093AA4053;
- Tue,  1 Jun 2021 13:51:28 +0000 (GMT)
-Received: from localhost (unknown [9.85.73.71])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  1 Jun 2021 13:51:28 +0000 (GMT)
-Date: Tue, 01 Jun 2021 19:21:27 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [RFC PATCH 2/6] powerpc/trace: Add support for stack tracer
-To: Torsten Duwe <duwe@suse.de>, Michael Ellerman <mpe@ellerman.id.au>,
- Michal Suchanek <msuchanek@suse.de>, Steven Rostedt <rostedt@goodmis.org>
-References: <cover.1621577151.git.naveen.n.rao@linux.vnet.ibm.com>
- <6ed4941e8ff48729a14b24c8e0d0f876fe8f22e0.1621577151.git.naveen.n.rao@linux.vnet.ibm.com>
-In-Reply-To: <6ed4941e8ff48729a14b24c8e0d0f876fe8f22e0.1621577151.git.naveen.n.rao@linux.vnet.ibm.com>
-User-Agent: astroid/v0.15-23-gcdc62b30 (https://github.com/astroidmail/astroid)
-Message-Id: <1622555131.dct16s656o.naveen@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: mvcbIP1VvixYC1v_n35mv_aOznNrkNu6
-X-Proofpoint-GUID: mvcbIP1VvixYC1v_n35mv_aOznNrkNu6
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FvZcd3NGYz2yWT
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Jun 2021 00:42:07 +1000 (AEST)
+Received: by mail-pj1-x102b.google.com with SMTP id
+ jz2-20020a17090b14c2b0290162cf0b5a35so1531762pjb.5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Jun 2021 07:42:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:subject:in-reply-to:references:date:message-id:mime-version;
+ bh=g1SoAE64xXP0ozqgBwlWSdkAycLuZY+SSCoJ8hssJgw=;
+ b=XWES3O+ix+pIyBEfkQ9QWlpHZLBDerJ6G5ArqlGnmmJb9ijV3spOxvie6x8dqd5sla
+ hF3n+JYdrQoai98r2qGgBUJHViMoVyHme9ZC54vnJur8qRboFD61iwtx6k1RFsi7zqHA
+ ++zBGcy0WRh+BOXKUn3Tps6hrvI4ylG/TCFog=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=g1SoAE64xXP0ozqgBwlWSdkAycLuZY+SSCoJ8hssJgw=;
+ b=UNQgjxAjrf/78pswVwuFm4LZ6lTx43CxIB/5lSJrOLiwyFVOfdfsKXqmxGMgoaj/14
+ flZkkuB43hx1pp492MspZEsQf8jE9kgyufrHzhQtujzV7WzZnWQGs5TGsFaeKB8t9JaQ
+ a+yklVzCPgmAf+R/2KEVwaUrxidOBX6tFmtr3srFobONUTLUx2dKSUICKobjQyt3rU7D
+ iTRZwv8o2BKa1JVCvA72VilLKwrFTisRW9w1LrPqH916lt7UjfdjhchGtduHP0GtBEmH
+ t1hN9zejj0NOLcB+xHRPFTpt0PE7lA+WZUBIswgOufQYekCD4km7y4TbwiUDC5YmGJ0N
+ IOGA==
+X-Gm-Message-State: AOAM533eGnDu7KsZsk8VLuJ+R5n/gJ9ZyXIElIeDN1iem9tBFzFsJSTV
+ a/vemlibPL6dt6SzWhba8ZAW2w==
+X-Google-Smtp-Source: ABdhPJxS2/C395/CpEufwla4aWTxaVVwc5HSTSjRzEXatVXr0Wcb3gTro93V6IpgGorXqiU1HSn0jg==
+X-Received: by 2002:a17:90b:689:: with SMTP id m9mr243555pjz.102.1622558523820; 
+ Tue, 01 Jun 2021 07:42:03 -0700 (PDT)
+Received: from localhost ([101.178.215.23])
+ by smtp.gmail.com with ESMTPSA id m12sm13586079pjq.53.2021.06.01.07.42.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 01 Jun 2021 07:42:03 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, christophe.leroy@csgroup.eu,
+ kasan-dev@googlegroups.com, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc: make show_stack's stack walking KASAN-safe
+In-Reply-To: <1622539981.k2ctwb25pa.naveen@linux.ibm.com>
+References: <20210528074806.1311297-1-dja@axtens.net>
+ <1622539981.k2ctwb25pa.naveen@linux.ibm.com>
+Date: Wed, 02 Jun 2021 00:42:00 +1000
+Message-ID: <87y2bty7d3.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-06-01_06:2021-06-01,
- 2021-06-01 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 malwarescore=0
- phishscore=0 spamscore=0 lowpriorityscore=0 priorityscore=1501
- suspectscore=0 mlxlogscore=999 impostorscore=0 clxscore=1015 adultscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2106010092
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,63 +77,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Naveen N. Rao wrote:
-> +
-> +unsigned long ftrace_get_traced_func_if_no_stackframe(unsigned long ip, =
-unsigned long *stack)
-> +{
-> +	if (!is_ftrace_entry(ip))
-> +		return 0;
-> +
-> +	if (IS_ENABLED(CONFIG_PPC32))
-> +		return stack[11]; /* see MCOUNT_SAVE_FRAME */
-> +
-> +	if (!IS_ENABLED(CONFIG_MPROFILE_KERNEL))
-> +		return 0;
-> +
-> +	return stack[(STACK_FRAME_OVERHEAD + offsetof(struct pt_regs, nip)) / s=
-izeof(unsigned long)];
+"Naveen N. Rao" <naveen.n.rao@linux.ibm.com> writes:
 
-Looking at Daniel's patch to address KASAN errors with our stack walk=20
-code in show_stack() [*], I realized that I am not validating the stack=20
-pointer here for the above accesses...
+> Daniel Axtens wrote:
+>> Make our stack-walking code KASAN-safe by using READ_ONCE_NOCHECK -
+>> generic code, arm64, s390 and x86 all do this for similar sorts of
+>> reasons: when unwinding a stack, we might touch memory that KASAN has
+>> marked as being out-of-bounds. In ppc64 KASAN development, I hit this
+>> sometimes when checking for an exception frame - because we're checking
+>> an arbitrary offset into the stack frame.
+>> 
+>> See commit 20955746320e ("s390/kasan: avoid false positives during stack
+>> unwind"), commit bcaf669b4bdb ("arm64: disable kasan when accessing
+>> frame->fp in unwind_frame"), commit 91e08ab0c851 ("x86/dumpstack:
+>> Prevent KASAN false positive warnings") and commit 6e22c8366416
+>> ("tracing, kasan: Silence Kasan warning in check_stack of stack_tracer").
+>> 
+>> Signed-off-by: Daniel Axtens <dja@axtens.net>
+>> ---
+>>  arch/powerpc/kernel/process.c | 16 +++++++++-------
+>>  1 file changed, 9 insertions(+), 7 deletions(-)
+>> 
+>> diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+>> index 89e34aa273e2..430cf06f9406 100644
+>> --- a/arch/powerpc/kernel/process.c
+>> +++ b/arch/powerpc/kernel/process.c
+>> @@ -2151,8 +2151,8 @@ void show_stack(struct task_struct *tsk, unsigned long *stack,
+>>  			break;
+>>  
+>>  		stack = (unsigned long *) sp;
+>> -		newsp = stack[0];
+>> -		ip = stack[STACK_FRAME_LR_SAVE];
+>> +		newsp = READ_ONCE_NOCHECK(stack[0]);
+>> +		ip = READ_ONCE_NOCHECK(stack[STACK_FRAME_LR_SAVE]);
+>
+> Just curious:
+> Given that we validate the stack pointer before these accesses, can we 
+> annotate show_stack() with __no_sanitize_address instead?
+>
+> I ask because we have other places where we walk the stack: 
+> arch_stack_walk(), as well as in perf callchain. Similar changes will be 
+> needed there as well.
 
-[*] http://lkml.kernel.org/r/20210528074806.1311297-1-dja@axtens.net
+Oh good points. Yes, it probably makes most sense to mark all the
+functions with __no_sanitize_address, that resolves Christophe's issue
+as well. I'll send a v2.
 
-> +}
-> +
-> +#ifdef CONFIG_STACK_TRACER
-> +void stack_get_trace(unsigned long traced_ip,
-> +		     unsigned long *stack_ref __maybe_unused,
-> +		     unsigned long stack_size __maybe_unused,
-> +		     int *tracer_frame)
-> +{
-> +	unsigned long sp, newsp, top, ip;
-> +	int ftrace_call_found =3D 0;
-> +	unsigned long *stack;
-> +	int i =3D 0;
-> +
-> +	sp =3D current_stack_frame();
-> +	top =3D (unsigned long)task_stack_page(current) + THREAD_SIZE;
-> +
-> +	while (validate_sp(sp, current, STACK_FRAME_OVERHEAD) && i < STACK_TRAC=
-E_ENTRIES) {
-> +		stack =3D (unsigned long *) sp;
-> +		newsp =3D stack[0];
-> +		ip =3D stack[STACK_FRAME_LR_SAVE];
-> +
-> +		if (ftrace_call_found) {
-> +			stack_dump_trace[i] =3D ip;
-> +			stack_trace_index[i++] =3D top - sp;
-> +		}
+Kind regards,
+Daniel
 
-And I need to make the above accesses bypass KASAN as well.
-
-
-- Naveen
-
+>
+>
+> - Naveen
