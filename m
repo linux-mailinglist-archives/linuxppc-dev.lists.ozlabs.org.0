@@ -2,94 +2,94 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F0B539707F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Jun 2021 11:41:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D08C39749A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Jun 2021 15:48:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FvRxK6MkLz308c
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Jun 2021 19:41:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FvYR037Wkz3002
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Jun 2021 23:48:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RptHl9sO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel-dk.20150623.gappssmtp.com header.i=@kernel-dk.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=SJMAgBW5;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.ibm.com;
+ smtp.mailfrom=kernel.dk (client-ip=2607:f8b0:4864:20::232;
+ helo=mail-oi1-x232.google.com; envelope-from=axboe@kernel.dk;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=RptHl9sO; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=kernel-dk.20150623.gappssmtp.com
+ header.i=@kernel-dk.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=SJMAgBW5; dkim-atps=neutral
+Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com
+ [IPv6:2607:f8b0:4864:20::232])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FvRwq5kKSz2yXZ
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Jun 2021 19:40:43 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 1519WiXH170898; Tue, 1 Jun 2021 05:40:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : subject :
- to : references : in-reply-to : mime-version : message-id : content-type :
- content-transfer-encoding; s=pp1;
- bh=HS7GLo4YPRH9AQ/D6Y/8pCOpDeDKHLzs46UL2AE4h3g=;
- b=RptHl9sO1biR+I6gm3QMJdyMAXDVaaIuNdm2ZHCwoJFMZsS6kP4lIqs5Vrt19rosQV++
- XF7uoZ1QU3sOQn+lWRyB92JEkghpQMRQkOMkvblr7UcwzoD7LOlrGsBb73+NI0N4VynO
- OepZeLevFKewRoBEOXrBxKjgwhhEEsp4L5q+XqlmR+SuBw6cvDWclzcZnwBjqbBiFGrp
- TY2Zy7gkMRRaMQwOm8dLPaWmvddAJGQ/wWBBPupZ17Dsbrwj/0c5lCnKeIkKsIClPbYs
- UR3stzdTj5ImoNAFQhAejvQeGt+YFZDfEougxRF9LNlHKuUMrpyfnv8PXzb4pwaGPELF VQ== 
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0a-001b2d01.pphosted.com with ESMTP id 38whnn1ddu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 01 Jun 2021 05:40:29 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1519cSNJ011666;
- Tue, 1 Jun 2021 09:40:28 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma04fra.de.ibm.com with ESMTP id 38ud880v2v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 01 Jun 2021 09:40:27 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 1519dri133882440
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 1 Jun 2021 09:39:53 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8D4944C044;
- Tue,  1 Jun 2021 09:40:25 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F332B4C04E;
- Tue,  1 Jun 2021 09:40:24 +0000 (GMT)
-Received: from localhost (unknown [9.85.73.71])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  1 Jun 2021 09:40:24 +0000 (GMT)
-Date: Tue, 01 Jun 2021 15:10:23 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-Subject: Re: [PATCH] powerpc: make show_stack's stack walking KASAN-safe
-To: christophe.leroy@csgroup.eu, Daniel Axtens <dja@axtens.net>,
- kasan-dev@googlegroups.com, linuxppc-dev@lists.ozlabs.org
-References: <20210528074806.1311297-1-dja@axtens.net>
-In-Reply-To: <20210528074806.1311297-1-dja@axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FvYQS4BtRz2xfk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Jun 2021 23:48:13 +1000 (AEST)
+Received: by mail-oi1-x232.google.com with SMTP id c3so15523481oic.8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Jun 2021 06:48:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=QlGkt7fWsHM9mcKdq1bDx/YwBl/iUUk0WEjc5rg04fY=;
+ b=SJMAgBW5mswAe1ZmlZlRdAFuvYPDEVLqi723Nnx1S4FLz3Yy3Tj3lQWVdZ0F6Qr4eS
+ SMIy05Vpx5EU+XswU9cem+w+MzG0a62ahvk23Tf2SUyNvaWPkh1rlmu3OkVCdEssPf8k
+ xwwmCV/LazyU6UjgCMJxdw//dP9UOpzUM54yyNCR3QG30hScN/IqdhxGg71hNvOalyX+
+ pO6I2f3s4rBYqGHOnzUAspl9mEOwDLA0qywJ9pSLvD5fVKPzw+UNtHhfYY4OA0aw1ASO
+ zcdxwDDiGjJD5VEZLuOr0Rlq6ubnYTbGW3SYaGllJ+Xvfy3vmm5YD3DkNvXi1rVEGPqw
+ 8g9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=QlGkt7fWsHM9mcKdq1bDx/YwBl/iUUk0WEjc5rg04fY=;
+ b=oevwK0EkqT8HTX/N1HaujCnyAx62pCEt5MT35aseOh07BFmmtNZa8UWI+a3S9Z/JaZ
+ LtV5t95Dq6pOKr1GYsXUlv+OmWVZCEl4ziPi0ApETRztVnZqzhM6ljQZ+4nQfvkWufkx
+ A4WgybT0AyLSTEkfxJdPqUo1Jckd1SNmw0D+IVm0znTk+MABg9ZA3suOPatYXwBDf8Zk
+ f7XeUOPqL3jxP7C+6hzJjZYqxu4zdE/D7YpTXWG9IXpY/tTtD7MgkEREhwA+WGuqLIrY
+ r/XlxotX9xAqR0aa08BpfqBoYjYu+gS85IDOvzKqUyL+qNRXfP5n83FqMj8AdGJvKqd9
+ 7LWA==
+X-Gm-Message-State: AOAM530wu0M4AFPqyGzZ6x/+l/g81Js3tdtJHCZSTFCQldMgZylTMJUC
+ aiqnc9Jv5TZsQhmV1Jb4t8+1gw==
+X-Google-Smtp-Source: ABdhPJyRtEOQYxSXItYfv2Xv0el0nwhIYWVK6zfd5YIEz7fo5+/L3t2bxzT7qaz6PyG5RR7CPJmZJA==
+X-Received: by 2002:a05:6808:245:: with SMTP id
+ m5mr18302900oie.6.1622555290008; 
+ Tue, 01 Jun 2021 06:48:10 -0700 (PDT)
+Received: from [192.168.1.134] ([198.8.77.61])
+ by smtp.gmail.com with ESMTPSA id i4sm3456045oih.13.2021.06.01.06.48.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 01 Jun 2021 06:48:09 -0700 (PDT)
+Subject: Re: simplify gendisk and request_queue allocation for bio based
+ drivers
+To: Christoph Hellwig <hch@lst.de>, Geert Uytterhoeven
+ <geert@linux-m68k.org>, Chris Zankel <chris@zankel.net>,
+ Max Filippov <jcmvbkbc@gmail.com>,
+ Philipp Reisner <philipp.reisner@linbit.com>,
+ Lars Ellenberg <lars.ellenberg@linbit.com>, Jim Paris <jim@jtan.com>,
+ Joshua Morris <josh.h.morris@us.ibm.com>,
+ Philip Kelleher <pjk1939@linux.ibm.com>, Minchan Kim <minchan@kernel.org>,
+ Nitin Gupta <ngupta@vflare.org>, Matias Bjorling <mb@lightnvm.io>,
+ Coly Li <colyli@suse.de>, Mike Snitzer <snitzer@redhat.com>,
+ Song Liu <song@kernel.org>, Maxim Levitsky <maximlevitsky@gmail.com>,
+ Alex Dubov <oakad@yahoo.com>, Ulf Hansson <ulf.hansson@linaro.org>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>
+References: <20210521055116.1053587-1-hch@lst.de>
+From: Jens Axboe <axboe@kernel.dk>
+Message-ID: <a5d7127f-b422-5556-6810-cf4c98c038ac@kernel.dk>
+Date: Tue, 1 Jun 2021 07:48:09 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-User-Agent: astroid/v0.15-23-gcdc62b30 (https://github.com/astroidmail/astroid)
-Message-Id: <1622539981.k2ctwb25pa.naveen@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: vaCDV2d8Q2KLE_33lWuk3O89PWR4ogFg
-X-Proofpoint-GUID: vaCDV2d8Q2KLE_33lWuk3O89PWR4ogFg
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-06-01_05:2021-05-31,
- 2021-06-01 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- bulkscore=0 mlxscore=0 lowpriorityscore=0 mlxlogscore=999 suspectscore=0
- clxscore=1011 phishscore=0 adultscore=0 malwarescore=0 spamscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2106010064
+In-Reply-To: <20210521055116.1053587-1-hch@lst.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,52 +101,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-bcache@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+ linux-raid@vger.kernel.org, nvdimm@lists.linux.dev, linux-s390@vger.kernel.org,
+ linux-mmc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ linux-nvme@lists.infradead.org, linux-block@vger.kernel.org,
+ dm-devel@redhat.com, linuxppc-dev@lists.ozlabs.org, drbd-dev@lists.linbit.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Daniel Axtens wrote:
-> Make our stack-walking code KASAN-safe by using READ_ONCE_NOCHECK -
-> generic code, arm64, s390 and x86 all do this for similar sorts of
-> reasons: when unwinding a stack, we might touch memory that KASAN has
-> marked as being out-of-bounds. In ppc64 KASAN development, I hit this
-> sometimes when checking for an exception frame - because we're checking
-> an arbitrary offset into the stack frame.
->=20
-> See commit 20955746320e ("s390/kasan: avoid false positives during stack
-> unwind"), commit bcaf669b4bdb ("arm64: disable kasan when accessing
-> frame->fp in unwind_frame"), commit 91e08ab0c851 ("x86/dumpstack:
-> Prevent KASAN false positive warnings") and commit 6e22c8366416
-> ("tracing, kasan: Silence Kasan warning in check_stack of stack_tracer").
->=20
-> Signed-off-by: Daniel Axtens <dja@axtens.net>
-> ---
->  arch/powerpc/kernel/process.c | 16 +++++++++-------
->  1 file changed, 9 insertions(+), 7 deletions(-)
->=20
-> diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.=
-c
-> index 89e34aa273e2..430cf06f9406 100644
-> --- a/arch/powerpc/kernel/process.c
-> +++ b/arch/powerpc/kernel/process.c
-> @@ -2151,8 +2151,8 @@ void show_stack(struct task_struct *tsk, unsigned l=
-ong *stack,
->  			break;
-> =20
->  		stack =3D (unsigned long *) sp;
-> -		newsp =3D stack[0];
-> -		ip =3D stack[STACK_FRAME_LR_SAVE];
-> +		newsp =3D READ_ONCE_NOCHECK(stack[0]);
-> +		ip =3D READ_ONCE_NOCHECK(stack[STACK_FRAME_LR_SAVE]);
+On 5/20/21 11:50 PM, Christoph Hellwig wrote:
+> Hi all,
+> 
+> this series is the first part of cleaning up lifetimes and allocation of
+> the gendisk and request_queue structure.  It adds a new interface to
+> allocate the disk and queue together for bio based drivers, and a helper
+> for cleanup/free them when a driver is unloaded or a device is removed.
+> 
+> Together this removes the need to treat the gendisk and request_queue
+> as separate entities for bio based drivers.
 
-Just curious:
-Given that we validate the stack pointer before these accesses, can we=20
-annotate show_stack() with __no_sanitize_address instead?
+Applied, thanks.
 
-I ask because we have other places where we walk the stack:=20
-arch_stack_walk(), as well as in perf callchain. Similar changes will be=20
-needed there as well.
-
-
-- Naveen
+-- 
+Jens Axboe
 
