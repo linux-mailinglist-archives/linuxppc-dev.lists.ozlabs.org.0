@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1F46398285
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 09:03:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E688239828E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 09:04:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fw0PH1s6Hz3fKb
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 17:03:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fw0Pt1RJQz3fQm
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 17:04:18 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=BmfFZoZg;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=zGlrfHSC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,33 +19,33 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=BmfFZoZg; 
+ header.s=bombadil.20210309 header.b=zGlrfHSC; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fw0D55XDcz2yxn
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Jun 2021 16:55:49 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fw0DB5Xkmz3c0T
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Jun 2021 16:55:54 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=dPXgPagX0YUjFpHkmb7+BJvE2rgQGNh10xmKRHSEoBw=; b=BmfFZoZgZc3og4CmFwOmdLx19i
- QO/EHgrku+yvgdhYC17jfB1aTEH3npIjzEWzSTOP+FtfRG47SoCYsd6XDZdDvG8QFc30baslGnBO5
- 603qv1a5lD3zj6piDqc7/7HezJHswlQmBy2hQzdsqi+Pq2AqXMvtz6CZelFZP4OuEsOQ481G/g0oe
- 2D5d45xL9+Y8IhSZ0SJ7QgmfDd59y+PvwieZLqYIaXHXwCMZQBwPlFGdwrK57V7ShUrkG8V37WJ3E
- EOpP42tJMZNBze5kjBlU3735zuT501c+A9ju4eeM4xto97GnaI9ogfZqwLOqhLmVBPmt6XU0UdEOR
- G7vAYXaA==;
+ bh=nI/ZQsUq4UAVWWD+XlWiGZNbHY/pEUl6HaoFswHnuQ4=; b=zGlrfHSC/oppIdruF4aRva3o8B
+ wtEFmwSmcFHEhWITeGFtHuY9Wo10P04noPv6NDlI408bgIBJRkVwwSNa+XWLEAJlAJuKZOmEWMLIK
+ ypzvochOmpTNDSw00TOxKnVYokteVrnhgtmSr1j1yBWFdJc27AJBjUNwKpISp0vKiLy2jjLimY0Ek
+ 6P9TdCUkFiGBNMeFMPeq+ck3KCV/5OtDAHAEJPXDdOXuVm3Wp8pMIeYa4M2y0KOxO5BAOQxPKiJkk
+ QtHEQ5wWjrHNPSLHnxZaMHUkkPwojUCno1EhOKjx/cVHeiOj1wg20mdo5EoURfDorHUaeAxyeZdGp
+ 7/lZ2gHg==;
 Received: from shol69.static.otenet.gr ([83.235.170.67] helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1loKmj-00260g-93; Wed, 02 Jun 2021 06:55:26 +0000
+ id 1loKmo-002647-90; Wed, 02 Jun 2021 06:55:31 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 20/30] nullb: use blk_mq_alloc_disk
-Date: Wed,  2 Jun 2021 09:53:35 +0300
-Message-Id: <20210602065345.355274-21-hch@lst.de>
+Subject: [PATCH 21/30] pd: use blk_mq_alloc_disk and blk_cleanup_disk
+Date: Wed,  2 Jun 2021 09:53:36 +0300
+Message-Id: <20210602065345.355274-22-hch@lst.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210602065345.355274-1-hch@lst.de>
 References: <20210602065345.355274-1-hch@lst.de>
@@ -90,32 +90,69 @@ request_queue allocation.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- drivers/block/null_blk/main.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/block/paride/pd.c | 30 ++++++++++++------------------
+ 1 file changed, 12 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
-index d8e098f1e5b5..74fb2ec63219 100644
---- a/drivers/block/null_blk/main.c
-+++ b/drivers/block/null_blk/main.c
-@@ -1851,13 +1851,12 @@ static int null_add_dev(struct nullb_device *dev)
+diff --git a/drivers/block/paride/pd.c b/drivers/block/paride/pd.c
+index 828a45ffe0e7..3b2b8e872beb 100644
+--- a/drivers/block/paride/pd.c
++++ b/drivers/block/paride/pd.c
+@@ -879,18 +879,6 @@ static void pd_probe_drive(struct pd_unit *disk)
+ {
+ 	struct gendisk *p;
  
- 		rv = -ENOMEM;
- 		nullb->tag_set->timeout = 5 * HZ;
--		nullb->q = blk_mq_init_queue_data(nullb->tag_set, nullb);
--		if (IS_ERR(nullb->q))
--			goto out_cleanup_tags;
--		nullb->disk = alloc_disk_node(1, nullb->dev->home_node);
--		if (!nullb->disk)
-+		nullb->disk = blk_mq_alloc_disk(nullb->tag_set, nullb);
-+		if (IS_ERR(nullb->disk)) {
-+			rv = PTR_ERR(nullb->disk);
- 			goto out_cleanup_disk;
--		nullb->disk->queue = nullb->q;
-+		}
-+		nullb->q = nullb->disk->queue;
- 	} else if (dev->queue_mode == NULL_Q_BIO) {
- 		rv = -ENOMEM;
- 		nullb->disk = blk_alloc_disk(nullb->dev->home_node);
+-	p = alloc_disk(1 << PD_BITS);
+-	if (!p)
+-		return;
+-
+-	strcpy(p->disk_name, disk->name);
+-	p->fops = &pd_fops;
+-	p->major = major;
+-	p->first_minor = (disk - pd) << PD_BITS;
+-	p->events = DISK_EVENT_MEDIA_CHANGE;
+-	disk->gd = p;
+-	p->private_data = disk;
+-
+ 	memset(&disk->tag_set, 0, sizeof(disk->tag_set));
+ 	disk->tag_set.ops = &pd_mq_ops;
+ 	disk->tag_set.cmd_size = sizeof(struct pd_req);
+@@ -903,14 +891,21 @@ static void pd_probe_drive(struct pd_unit *disk)
+ 	if (blk_mq_alloc_tag_set(&disk->tag_set))
+ 		return;
+ 
+-	p->queue = blk_mq_init_queue(&disk->tag_set);
+-	if (IS_ERR(p->queue)) {
++	p = blk_mq_alloc_disk(&disk->tag_set, disk);
++	if (!p) {
+ 		blk_mq_free_tag_set(&disk->tag_set);
+-		p->queue = NULL;
+ 		return;
+ 	}
++	disk->gd = p;
++
++	strcpy(p->disk_name, disk->name);
++	p->fops = &pd_fops;
++	p->major = major;
++	p->first_minor = (disk - pd) << PD_BITS;
++	p->minors = 1 << PD_BITS;
++	p->events = DISK_EVENT_MEDIA_CHANGE;
++	p->private_data = disk;
+ 
+-	p->queue->queuedata = disk;
+ 	blk_queue_max_hw_sectors(p->queue, cluster);
+ 	blk_queue_bounce_limit(p->queue, BLK_BOUNCE_HIGH);
+ 
+@@ -1019,9 +1014,8 @@ static void __exit pd_exit(void)
+ 		if (p) {
+ 			disk->gd = NULL;
+ 			del_gendisk(p);
+-			blk_cleanup_queue(p->queue);
+ 			blk_mq_free_tag_set(&disk->tag_set);
+-			put_disk(p);
++			blk_cleanup_disk(p);
+ 			pi_release(disk->pi);
+ 		}
+ 	}
 -- 
 2.30.2
 
