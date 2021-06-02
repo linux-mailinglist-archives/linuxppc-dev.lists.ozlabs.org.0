@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E08D9398294
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 09:05:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1D3339829A
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 09:06:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fw0RN1BVqz3fGb
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 17:05:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fw0Rs0hzyz3fs4
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 17:06:01 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=r98dDxDi;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=hKOfYl8Y;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,33 +19,33 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=r98dDxDi; 
+ header.s=bombadil.20210309 header.b=hKOfYl8Y; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fw0DT2knTz3c3r
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Jun 2021 16:56:09 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fw0DW73PHz3c3k
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Jun 2021 16:56:11 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=yE8r2l5ezl7YxULOvA5WBGUgnr1EKs2E6TVb/drKQds=; b=r98dDxDiRvwlhNhs3T+1sVCcmx
- 9LSO0JAkx53106Z5FUQCYz3et9mT695nE04/mTWwxr/+e0qSYn8Q1H1hjEWJdvuJc3pumGMIBHyUT
- t4W4GpkPuUNrdOHpe0KYFnWLvVAzI+WQwBh+pEi7U6I9KnMAFAlHPJRr4BSXUOn39VZTgNc5w2jvT
- YFMKttfQVUSu/qkAB2YLyqtpsqykpUWPfHXrpKaBY5Lxa/Kceg/Y0XBAcrgpyvG0PgFSkx/IaoPgV
- NvObxijOnNz7w1Y0/FNOweKAbiF8uEg9oHb82XorMJoTWx9Agt4jviXSvoy73IZqfJrU1acBTcolk
- E0JQevww==;
+ bh=Nt6wErfubiqnYVzweXP3z8/rIFCiMtQahAHnZtmIiWQ=; b=hKOfYl8YkpHQsdsCJlgWZugO4N
+ 8fA3EUPkn9+TcsNuxwOAiqb3mNj8IytqoaliRlOJGLTV2vKpHMO6rQ1hlUlt0+Mkm+c5R/1hkmkn7
+ oTHREX9ZW78opJHrkSMxB5aCt3NEqpb+8QhNRYh4/wvPcfO1Rb2/ZQR+g2Eo/Q/BlHFp+u+PN1zzV
+ pUp3mo54MUYKztGaP64TzrsyiDi6S2vcUaJtmVAkviIbIqZRFaDYaSgCXtB5+UEr/Ho31XLAOGGlI
+ c+6ImRaQZ98uKF5v5kiT9CbtO1B6knRIsPn1hDSDTVU+kF579t+oYPcuUhzdK5Z+yGE/Xb+qFY58k
+ TDv/4cKQ==;
 Received: from shol69.static.otenet.gr ([83.235.170.67] helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1loKn1-0026HM-J4; Wed, 02 Jun 2021 06:55:44 +0000
+ id 1loKn5-0026La-Sd; Wed, 02 Jun 2021 06:55:48 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 24/30] sx8: use blk_mq_alloc_disk and blk_cleanup_disk
-Date: Wed,  2 Jun 2021 09:53:39 +0300
-Message-Id: <20210602065345.355274-25-hch@lst.de>
+Subject: [PATCH 25/30] xen-blkfront: use blk_mq_alloc_disk and blk_cleanup_disk
+Date: Wed,  2 Jun 2021 09:53:40 +0300
+Message-Id: <20210602065345.355274-26-hch@lst.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210602065345.355274-1-hch@lst.de>
 References: <20210602065345.355274-1-hch@lst.de>
@@ -90,63 +90,152 @@ request_queue allocation.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- drivers/block/sx8.c | 23 +++++++----------------
- 1 file changed, 7 insertions(+), 16 deletions(-)
+ drivers/block/xen-blkfront.c | 96 +++++++++++++++---------------------
+ 1 file changed, 39 insertions(+), 57 deletions(-)
 
-diff --git a/drivers/block/sx8.c b/drivers/block/sx8.c
-index 2cdf2771f8e8..f01f860b0e62 100644
---- a/drivers/block/sx8.c
-+++ b/drivers/block/sx8.c
-@@ -1343,32 +1343,25 @@ static int carm_init_disk(struct carm_host *host, unsigned int port_no)
+diff --git a/drivers/block/xen-blkfront.c b/drivers/block/xen-blkfront.c
+index f2c1aedcdf5a..8d49f8fa98bb 100644
+--- a/drivers/block/xen-blkfront.c
++++ b/drivers/block/xen-blkfront.c
+@@ -968,48 +968,6 @@ static void blkif_set_queue_limits(struct blkfront_info *info)
+ 	blk_queue_dma_alignment(rq, 511);
+ }
+ 
+-static int xlvbd_init_blk_queue(struct gendisk *gd, u16 sector_size,
+-				unsigned int physical_sector_size)
+-{
+-	struct request_queue *rq;
+-	struct blkfront_info *info = gd->private_data;
+-
+-	memset(&info->tag_set, 0, sizeof(info->tag_set));
+-	info->tag_set.ops = &blkfront_mq_ops;
+-	info->tag_set.nr_hw_queues = info->nr_rings;
+-	if (HAS_EXTRA_REQ && info->max_indirect_segments == 0) {
+-		/*
+-		 * When indirect descriptior is not supported, the I/O request
+-		 * will be split between multiple request in the ring.
+-		 * To avoid problems when sending the request, divide by
+-		 * 2 the depth of the queue.
+-		 */
+-		info->tag_set.queue_depth =  BLK_RING_SIZE(info) / 2;
+-	} else
+-		info->tag_set.queue_depth = BLK_RING_SIZE(info);
+-	info->tag_set.numa_node = NUMA_NO_NODE;
+-	info->tag_set.flags = BLK_MQ_F_SHOULD_MERGE;
+-	info->tag_set.cmd_size = sizeof(struct blkif_req);
+-	info->tag_set.driver_data = info;
+-
+-	if (blk_mq_alloc_tag_set(&info->tag_set))
+-		return -EINVAL;
+-	rq = blk_mq_init_queue(&info->tag_set);
+-	if (IS_ERR(rq)) {
+-		blk_mq_free_tag_set(&info->tag_set);
+-		return PTR_ERR(rq);
+-	}
+-
+-	rq->queuedata = info;
+-	info->rq = gd->queue = rq;
+-	info->gd = gd;
+-	info->sector_size = sector_size;
+-	info->physical_sector_size = physical_sector_size;
+-	blkif_set_queue_limits(info);
+-
+-	return 0;
+-}
+-
+ static const char *flush_info(struct blkfront_info *info)
  {
- 	struct carm_port *port = &host->port[port_no];
- 	struct gendisk *disk;
--	struct request_queue *q;
+ 	if (info->feature_flush && info->feature_fua)
+@@ -1146,12 +1104,36 @@ static int xlvbd_alloc_gendisk(blkif_sector_t capacity,
  
- 	port->host = host;
- 	port->port_no = port_no;
+ 	err = xlbd_reserve_minors(minor, nr_minors);
+ 	if (err)
+-		goto out;
++		return err;
+ 	err = -ENODEV;
  
--	disk = alloc_disk(CARM_MINORS_PER_MAJOR);
--	if (!disk)
--		return -ENOMEM;
-+	disk = blk_mq_alloc_disk(&host->tag_set, port);
-+	if (IS_ERR(disk))
-+		return PTR_ERR(disk);
+-	gd = alloc_disk(nr_minors);
+-	if (gd == NULL)
+-		goto release;
++	memset(&info->tag_set, 0, sizeof(info->tag_set));
++	info->tag_set.ops = &blkfront_mq_ops;
++	info->tag_set.nr_hw_queues = info->nr_rings;
++	if (HAS_EXTRA_REQ && info->max_indirect_segments == 0) {
++		/*
++		 * When indirect descriptior is not supported, the I/O request
++		 * will be split between multiple request in the ring.
++		 * To avoid problems when sending the request, divide by
++		 * 2 the depth of the queue.
++		 */
++		info->tag_set.queue_depth =  BLK_RING_SIZE(info) / 2;
++	} else
++		info->tag_set.queue_depth = BLK_RING_SIZE(info);
++	info->tag_set.numa_node = NUMA_NO_NODE;
++	info->tag_set.flags = BLK_MQ_F_SHOULD_MERGE;
++	info->tag_set.cmd_size = sizeof(struct blkif_req);
++	info->tag_set.driver_data = info;
++
++	err = blk_mq_alloc_tag_set(&info->tag_set);
++	if (err)
++		goto out_release_minors;
++
++	gd = blk_mq_alloc_disk(&info->tag_set, info);
++	if (IS_ERR(gd)) {
++		err = PTR_ERR(gd);
++		goto out_free_tag_set;
++	}
  
- 	port->disk = disk;
- 	sprintf(disk->disk_name, DRV_NAME "/%u",
- 		(unsigned int)host->id * CARM_MAX_PORTS + port_no);
- 	disk->major = host->major;
- 	disk->first_minor = port_no * CARM_MINORS_PER_MAJOR;
-+	disk->minors = CARM_MINORS_PER_MAJOR;
- 	disk->fops = &carm_bd_ops;
- 	disk->private_data = port;
+ 	strcpy(gd->disk_name, DEV_NAME);
+ 	ptr = encode_disk_name(gd->disk_name + sizeof(DEV_NAME) - 1, offset);
+@@ -1164,14 +1146,16 @@ static int xlvbd_alloc_gendisk(blkif_sector_t capacity,
  
--	q = blk_mq_init_queue(&host->tag_set);
--	if (IS_ERR(q))
--		return PTR_ERR(q);
--
--	blk_queue_max_segments(q, CARM_MAX_REQ_SG);
--	blk_queue_segment_boundary(q, CARM_SG_BOUNDARY);
--
--	q->queuedata = port;
--	disk->queue = q;
-+	blk_queue_max_segments(disk->queue, CARM_MAX_REQ_SG);
-+	blk_queue_segment_boundary(disk->queue, CARM_SG_BOUNDARY);
+ 	gd->major = XENVBD_MAJOR;
+ 	gd->first_minor = minor;
++	gd->minors = nr_minors;
+ 	gd->fops = &xlvbd_block_fops;
+ 	gd->private_data = info;
+ 	set_capacity(gd, capacity);
+ 
+-	if (xlvbd_init_blk_queue(gd, sector_size, physical_sector_size)) {
+-		del_gendisk(gd);
+-		goto release;
+-	}
++	info->rq = gd->queue;
++	info->gd = gd;
++	info->sector_size = sector_size;
++	info->physical_sector_size = physical_sector_size;
++	blkif_set_queue_limits(info);
+ 
+ 	xlvbd_flush(info);
+ 
+@@ -1186,9 +1170,10 @@ static int xlvbd_alloc_gendisk(blkif_sector_t capacity,
+ 
  	return 0;
+ 
+- release:
++out_free_tag_set:
++	blk_mq_free_tag_set(&info->tag_set);
++out_release_minors:
+ 	xlbd_release_minors(minor, nr_minors);
+- out:
+ 	return err;
  }
  
-@@ -1382,9 +1375,7 @@ static void carm_free_disk(struct carm_host *host, unsigned int port_no)
+@@ -1217,12 +1202,9 @@ static void xlvbd_release_gendisk(struct blkfront_info *info)
+ 	nr_minors = info->gd->minors;
+ 	xlbd_release_minors(minor, nr_minors);
  
- 	if (disk->flags & GENHD_FL_UP)
- 		del_gendisk(disk);
--	if (disk->queue)
--		blk_cleanup_queue(disk->queue);
--	put_disk(disk);
-+	blk_cleanup_disk(disk);
+-	blk_cleanup_queue(info->rq);
+-	blk_mq_free_tag_set(&info->tag_set);
+-	info->rq = NULL;
+-
+-	put_disk(info->gd);
++	blk_cleanup_disk(info->gd);
+ 	info->gd = NULL;
++	blk_mq_free_tag_set(&info->tag_set);
  }
  
- static int carm_init_shm(struct carm_host *host)
+ /* Already hold rinfo->ring_lock. */
 -- 
 2.30.2
 
