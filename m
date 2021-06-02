@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6B83398268
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 09:01:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B34BC39826A
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 09:02:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fw0Ln0sqJz3dvX
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 17:01:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fw0MN6TS5z3c6h
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 17:02:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=2Ev1PQ3i;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=FBI391Am;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,33 +19,33 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=2Ev1PQ3i; 
+ header.s=bombadil.20210309 header.b=FBI391Am; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fw0Cb0nwBz3btS
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Jun 2021 16:55:23 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fw0Ch5YGGz3bvh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Jun 2021 16:55:28 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=yxB3CToEvB1AGII3Fhuj66pLyS4oXdc/Ax4ufYJhDmU=; b=2Ev1PQ3iAXTcAu7Nm/w91IlhBi
- XlySTC28St0acrPx9XgYMlbiWgHgwnXpAO7fssa+3RO6s6w1gNt/L0bRJxPAncGQ3wVJ/bZBHhsGL
- uVoo++YnZjLmVwV7/fA+A/a3WTVeZ7Iox3GoTmd7i9BvdmfF+QzgThe8cp3OM151RtbpSjuGYv1qk
- Z49auwfLnjtdi4znRE+V/2lHNnnW9JmtU9bmCTyqdsOZLGP/YzUu+pzLr8O4OJgs++QcKu78dpSPH
- xBu4qqzNSfKG6LxxIT8EjfGs2NvFuwBi/8BGzrjd39Z06zSSm1tbNqLwSjr7IrytRt6ttKelR32cD
- obDFH8eg==;
+ bh=JLPBr5a4Ln5tpVtARufaz5Rx9DFRvnAc8JDCRXj5CBM=; b=FBI391AmGpCGer8nPkf12dCy+o
+ eIEdbU42pvJv3rPD9dFUDNG20907L9ASE2fIQkUHxjUoIi8PgAItnVYsfQZ6hIztO2P1/v5yAnQCY
+ AEIEL8vqjQuYY/yLZNb4GnSP5PvUwFzpizHw+fRWs4gY52j0aZwRyeKYcxL1PkeJAHD+Jt16XML9Y
+ 6k/bwePGimCyBX6ZWlmiXus1eyEpeartBYIhWxPwfdF5ffOhB85DbtrRd+aBJwu9lstkJ64aPi30u
+ wP4A8hbv0iVNdk/AGNcCWJHaTuex2I57tAI1/KazjM7mVhow4NChmgEaGqXE5WnMhD7z0Peh8k1rH
+ SZflGEZA==;
 Received: from shol69.static.otenet.gr ([83.235.170.67] helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1loKmM-0025j3-HR; Wed, 02 Jun 2021 06:55:03 +0000
+ id 1loKmR-0025lm-Ax; Wed, 02 Jun 2021 06:55:08 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 15/30] blk-mq: remove blk_mq_init_sq_queue
-Date: Wed,  2 Jun 2021 09:53:30 +0300
-Message-Id: <20210602065345.355274-16-hch@lst.de>
+Subject: [PATCH 16/30] aoe: use blk_mq_alloc_disk and blk_cleanup_disk
+Date: Wed,  2 Jun 2021 09:53:31 +0300
+Message-Id: <20210602065345.355274-17-hch@lst.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210602065345.355274-1-hch@lst.de>
 References: <20210602065345.355274-1-hch@lst.de>
@@ -85,62 +85,122 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-All users are gone now.
+Use blk_mq_alloc_disk and blk_cleanup_disk to simplify the gendisk and
+request_queue allocation.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- block/blk-mq.c         | 22 ----------------------
- include/linux/blk-mq.h |  4 ----
- 2 files changed, 26 deletions(-)
+ drivers/block/aoe/aoeblk.c | 33 ++++++++++++---------------------
+ drivers/block/aoe/aoedev.c |  3 +--
+ 2 files changed, 13 insertions(+), 23 deletions(-)
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 1e6036e6fd66..25e25177c2b1 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -3156,28 +3156,6 @@ struct gendisk *__blk_mq_alloc_disk(struct blk_mq_tag_set *set, void *queuedata)
- }
- EXPORT_SYMBOL(__blk_mq_alloc_disk);
+diff --git a/drivers/block/aoe/aoeblk.c b/drivers/block/aoe/aoeblk.c
+index c34e71b0c4a9..06b360f7123a 100644
+--- a/drivers/block/aoe/aoeblk.c
++++ b/drivers/block/aoe/aoeblk.c
+@@ -338,14 +338,13 @@ static const struct blk_mq_ops aoeblk_mq_ops = {
+ 	.queue_rq	= aoeblk_queue_rq,
+ };
  
--/*
-- * Helper for setting up a queue with mq ops, given queue depth, and
-- * the passed in mq ops flags.
-- */
--struct request_queue *blk_mq_init_sq_queue(struct blk_mq_tag_set *set,
--					   const struct blk_mq_ops *ops,
--					   unsigned int queue_depth,
--					   unsigned int set_flags)
--{
+-/* alloc_disk and add_disk can sleep */
++/* blk_mq_alloc_disk and add_disk can sleep */
+ void
+ aoeblk_gdalloc(void *vp)
+ {
+ 	struct aoedev *d = vp;
+ 	struct gendisk *gd;
+ 	mempool_t *mp;
 -	struct request_queue *q;
--	int ret;
--
--	ret = blk_mq_alloc_sq_tag_set(set, ops, queue_depth, set_flags);
--	if (ret)
--		return ERR_PTR(ret);
--	q = blk_mq_init_queue(set);
--	if (IS_ERR(q))
--		blk_mq_free_tag_set(set);
--	return q;
--}
--EXPORT_SYMBOL(blk_mq_init_sq_queue);
--
- static struct blk_mq_hw_ctx *blk_mq_alloc_and_init_hctx(
- 		struct blk_mq_tag_set *set, struct request_queue *q,
- 		int hctx_idx, int node)
-diff --git a/include/linux/blk-mq.h b/include/linux/blk-mq.h
-index f496c6c5b5d2..02a4aab0aeac 100644
---- a/include/linux/blk-mq.h
-+++ b/include/linux/blk-mq.h
-@@ -443,10 +443,6 @@ struct request_queue *blk_mq_init_queue_data(struct blk_mq_tag_set *set,
- 		void *queuedata);
- int blk_mq_init_allocated_queue(struct blk_mq_tag_set *set,
- 		struct request_queue *q);
--struct request_queue *blk_mq_init_sq_queue(struct blk_mq_tag_set *set,
--						const struct blk_mq_ops *ops,
--						unsigned int queue_depth,
--						unsigned int set_flags);
- void blk_mq_unregister_dev(struct device *, struct request_queue *);
+ 	struct blk_mq_tag_set *set;
+ 	ulong flags;
+ 	int late = 0;
+@@ -362,19 +361,12 @@ aoeblk_gdalloc(void *vp)
+ 	if (late)
+ 		return;
  
- int blk_mq_alloc_tag_set(struct blk_mq_tag_set *set);
+-	gd = alloc_disk(AOE_PARTITIONS);
+-	if (gd == NULL) {
+-		pr_err("aoe: cannot allocate disk structure for %ld.%d\n",
+-			d->aoemajor, d->aoeminor);
+-		goto err;
+-	}
+-
+ 	mp = mempool_create(MIN_BUFS, mempool_alloc_slab, mempool_free_slab,
+ 		buf_pool_cache);
+ 	if (mp == NULL) {
+ 		printk(KERN_ERR "aoe: cannot allocate bufpool for %ld.%d\n",
+ 			d->aoemajor, d->aoeminor);
+-		goto err_disk;
++		goto err;
+ 	}
+ 
+ 	set = &d->tag_set;
+@@ -391,12 +383,11 @@ aoeblk_gdalloc(void *vp)
+ 		goto err_mempool;
+ 	}
+ 
+-	q = blk_mq_init_queue(set);
+-	if (IS_ERR(q)) {
++	gd = blk_mq_alloc_disk(set, d);
++	if (IS_ERR(gd)) {
+ 		pr_err("aoe: cannot allocate block queue for %ld.%d\n",
+ 			d->aoemajor, d->aoeminor);
+-		blk_mq_free_tag_set(set);
+-		goto err_mempool;
++		goto err_tagset;
+ 	}
+ 
+ 	spin_lock_irqsave(&d->lock, flags);
+@@ -405,16 +396,16 @@ aoeblk_gdalloc(void *vp)
+ 	WARN_ON(d->flags & DEVFL_TKILL);
+ 	WARN_ON(d->gd);
+ 	WARN_ON(d->flags & DEVFL_UP);
+-	blk_queue_max_hw_sectors(q, BLK_DEF_MAX_SECTORS);
+-	blk_queue_io_opt(q, SZ_2M);
++	blk_queue_max_hw_sectors(gd->queue, BLK_DEF_MAX_SECTORS);
++	blk_queue_io_opt(gd->queue, SZ_2M);
+ 	d->bufpool = mp;
+-	d->blkq = gd->queue = q;
+-	q->queuedata = d;
++	d->blkq = gd->queue;
+ 	d->gd = gd;
+ 	if (aoe_maxsectors)
+-		blk_queue_max_hw_sectors(q, aoe_maxsectors);
++		blk_queue_max_hw_sectors(gd->queue, aoe_maxsectors);
+ 	gd->major = AOE_MAJOR;
+ 	gd->first_minor = d->sysminor;
++	gd->minors = AOE_PARTITIONS;
+ 	gd->fops = &aoe_bdops;
+ 	gd->private_data = d;
+ 	set_capacity(gd, d->ssize);
+@@ -435,10 +426,10 @@ aoeblk_gdalloc(void *vp)
+ 	spin_unlock_irqrestore(&d->lock, flags);
+ 	return;
+ 
++err_tagset:
++	blk_mq_free_tag_set(set);
+ err_mempool:
+ 	mempool_destroy(mp);
+-err_disk:
+-	put_disk(gd);
+ err:
+ 	spin_lock_irqsave(&d->lock, flags);
+ 	d->flags &= ~DEVFL_GD_NOW;
+diff --git a/drivers/block/aoe/aoedev.c b/drivers/block/aoe/aoedev.c
+index e2ea2356da06..c5753c6bfe80 100644
+--- a/drivers/block/aoe/aoedev.c
++++ b/drivers/block/aoe/aoedev.c
+@@ -277,9 +277,8 @@ freedev(struct aoedev *d)
+ 	if (d->gd) {
+ 		aoedisk_rm_debugfs(d);
+ 		del_gendisk(d->gd);
+-		put_disk(d->gd);
++		blk_cleanup_disk(d->gd);
+ 		blk_mq_free_tag_set(&d->tag_set);
+-		blk_cleanup_queue(d->blkq);
+ 	}
+ 	t = d->targets;
+ 	e = t + d->ntargets;
 -- 
 2.30.2
 
