@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F6F039826D
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 09:02:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80A4739826F
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 09:02:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fw0Mr57b2z3bvs
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 17:02:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fw0NJ623wz3f87
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 17:02:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=sGyQUwx4;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=re781XvQ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,33 +19,33 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=sGyQUwx4; 
+ header.s=bombadil.20210309 header.b=re781XvQ; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fw0Cn72SGz3bx5
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Jun 2021 16:55:33 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fw0Cv4wfkz3by1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Jun 2021 16:55:39 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=whkiEYkd/RZIFiccnNyVDQBt5GosCsybR61i2OE/TAs=; b=sGyQUwx4y9mBLuKjtVUp+c2wE9
- QKndoQI8+lVj5QubiuPxijfodshDbI28HmJC7XZxoK1I3O/xDGWqqWfWHPGGuhE/xYEpYPaljJGG0
- Fr4gr1lXEhUJVsLAp4MvKyynYGbSyA4OVlnSrYZiKU1gb2XC/QCckw8whfLsI+GKqp2G0C8FEKneP
- do3Abzx9O1Apmvm5lGswbnuiBjA19TYT3MinqZLYbcCGK2VKfmLyeYtMwiBKm8hatOP3dxWqLa5yK
- W7GKvYBzqn1hQiPqfJxptmiWvUrY4I54If9aEuYVsVn2eDAvQ6qCfhLBxQm3PYYJuSGatkU1tnAjt
- EHt0T+HQ==;
+ bh=Ay3+BGPlRqdc0EFLNjvSyNAlCXYv7F/E4ZKoFdkW+qs=; b=re781XvQTLqNz+tW0K+eeLN126
+ ZHdsuYJ2Awc6hKt5NXrxWVcF1gLtmPmqrRoYM1HI43jkn7Qf75wWP01UlBu2V2sY61J+OM/Etw42Y
+ +/Y9bV0NZSR7XSiaIB3hoA5FplO+Knn8VPNUx84Za0n+grjUeqHa7Ia2Y6hM5luzozyZJ8Is3hs5t
+ 0f1bIF+gL/yS4tMtIJDr7RZZ0gaHP+N8QcEaL1x8gVuo08fsq6poeekNRuls+ivPNI9U2B65ypj48
+ yQjKdXwi7x17Mz91bhzCLHhe29vJAUjBIJ8vYze0d6zCgmUka+cbdrK9DUBsKkhmarGXEPYZxI+5z
+ n/v3EyXw==;
 Received: from shol69.static.otenet.gr ([83.235.170.67] helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1loKmW-0025pH-8N; Wed, 02 Jun 2021 06:55:12 +0000
+ id 1loKma-0025sw-BW; Wed, 02 Jun 2021 06:55:17 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 17/30] floppy: use blk_mq_alloc_disk and blk_cleanup_disk
-Date: Wed,  2 Jun 2021 09:53:32 +0300
-Message-Id: <20210602065345.355274-18-hch@lst.de>
+Subject: [PATCH 18/30] loop: use blk_mq_alloc_disk and blk_cleanup_disk
+Date: Wed,  2 Jun 2021 09:53:33 +0300
+Message-Id: <20210602065345.355274-19-hch@lst.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210602065345.355274-1-hch@lst.de>
 References: <20210602065345.355274-1-hch@lst.de>
@@ -90,52 +90,69 @@ request_queue allocation.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- drivers/block/floppy.c | 20 +++++---------------
- 1 file changed, 5 insertions(+), 15 deletions(-)
+ drivers/block/loop.c | 19 ++++++-------------
+ 1 file changed, 6 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/block/floppy.c b/drivers/block/floppy.c
-index 8a9d22207c59..cbed9776f285 100644
---- a/drivers/block/floppy.c
-+++ b/drivers/block/floppy.c
-@@ -4491,23 +4491,15 @@ static bool floppy_available(int drive)
- static int floppy_alloc_disk(unsigned int drive, unsigned int type)
- {
- 	struct gendisk *disk;
--	int err;
--
--	disk = alloc_disk(1);
--	if (!disk)
--		return -ENOMEM;
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index 95c570f5923f..3f40e673a101 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -2117,12 +2117,12 @@ static int loop_add(struct loop_device **l, int i)
+ 	if (err)
+ 		goto out_free_idr;
  
--	disk->queue = blk_mq_init_queue(&tag_sets[drive]);
--	if (IS_ERR(disk->queue)) {
--		err = PTR_ERR(disk->queue);
--		disk->queue = NULL;
--		put_disk(disk);
--		return err;
--	}
-+	disk = blk_mq_alloc_disk(&tag_sets[drive], NULL);
-+	if (IS_ERR(disk))
-+		return PTR_ERR(disk);
- 
- 	blk_queue_max_hw_sectors(disk->queue, 64);
- 	disk->major = FLOPPY_MAJOR;
- 	disk->first_minor = TOMINOR(drive) | (type << 2);
-+	disk->minors = 1;
- 	disk->fops = &floppy_fops;
- 	disk->events = DISK_EVENT_MEDIA_CHANGE;
- 	if (type)
-@@ -4727,10 +4719,8 @@ static int __init do_floppy_init(void)
- 		if (!disks[drive][0])
- 			break;
- 		del_timer_sync(&motor_off_timer[drive]);
--		blk_cleanup_queue(disks[drive][0]->queue);
--		disks[drive][0]->queue = NULL;
-+		blk_cleanup_disk(disks[drive][0]);
- 		blk_mq_free_tag_set(&tag_sets[drive]);
--		put_disk(disks[drive][0]);
+-	lo->lo_queue = blk_mq_init_queue(&lo->tag_set);
+-	if (IS_ERR(lo->lo_queue)) {
+-		err = PTR_ERR(lo->lo_queue);
++	disk = lo->lo_disk = blk_mq_alloc_disk(&lo->tag_set, lo);
++	if (IS_ERR(disk)) {
++		err = PTR_ERR(disk);
+ 		goto out_cleanup_tags;
  	}
- 	return err;
+-	lo->lo_queue->queuedata = lo;
++	lo->lo_queue = lo->lo_disk->queue;
+ 
+ 	blk_queue_max_hw_sectors(lo->lo_queue, BLK_DEF_MAX_SECTORS);
+ 
+@@ -2134,11 +2134,6 @@ static int loop_add(struct loop_device **l, int i)
+ 	 */
+ 	blk_queue_flag_set(QUEUE_FLAG_NOMERGES, lo->lo_queue);
+ 
+-	err = -ENOMEM;
+-	disk = lo->lo_disk = alloc_disk(1 << part_shift);
+-	if (!disk)
+-		goto out_free_queue;
+-
+ 	/*
+ 	 * Disable partition scanning by default. The in-kernel partition
+ 	 * scanning can be requested individually per-device during its
+@@ -2166,6 +2161,7 @@ static int loop_add(struct loop_device **l, int i)
+ 	spin_lock_init(&lo->lo_lock);
+ 	disk->major		= LOOP_MAJOR;
+ 	disk->first_minor	= i << part_shift;
++	disk->minors		= 1 << part_shift;
+ 	disk->fops		= &lo_fops;
+ 	disk->private_data	= lo;
+ 	disk->queue		= lo->lo_queue;
+@@ -2174,8 +2170,6 @@ static int loop_add(struct loop_device **l, int i)
+ 	*l = lo;
+ 	return lo->lo_number;
+ 
+-out_free_queue:
+-	blk_cleanup_queue(lo->lo_queue);
+ out_cleanup_tags:
+ 	blk_mq_free_tag_set(&lo->tag_set);
+ out_free_idr:
+@@ -2189,9 +2183,8 @@ static int loop_add(struct loop_device **l, int i)
+ static void loop_remove(struct loop_device *lo)
+ {
+ 	del_gendisk(lo->lo_disk);
+-	blk_cleanup_queue(lo->lo_queue);
+ 	blk_mq_free_tag_set(&lo->tag_set);
+-	put_disk(lo->lo_disk);
++	blk_cleanup_disk(lo->lo_disk);
+ 	mutex_destroy(&lo->lo_mutex);
+ 	kfree(lo);
  }
 -- 
 2.30.2
