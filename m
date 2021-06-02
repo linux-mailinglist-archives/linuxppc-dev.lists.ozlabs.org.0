@@ -2,51 +2,96 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C253139883F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 13:26:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFCBB39885B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 13:27:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fw6Cs0D9dz309T
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 21:26:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fw6Fp1lsPz308V
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 21:27:42 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=KrxTDsXn;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.222.42; helo=mail-ua1-f42.google.com;
- envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com
- [209.85.222.42])
+ smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.52;
+ helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
+ header.s=strato-dkim-0002 header.b=KrxTDsXn; 
+ dkim-atps=neutral
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de
+ [85.215.255.52])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fw6CT2G6pz2yWQ
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Jun 2021 21:25:40 +1000 (AEST)
-Received: by mail-ua1-f42.google.com with SMTP id p1so1063694uam.13
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Jun 2021 04:25:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=AV6hHV9w+Q9HOaDxt1MduQbvvUP04JEJ1UZD5l/XTkY=;
- b=Xlu1D+AIot5W/vTN/0f9Lm9VkXtDJhx91aeVBIK1wlRLzg+Z7/BfKXbEjjlywB/xTL
- ES3bpjtfiA3Sy630dzHTuFY170wGJ6D3n6zbr0CEyeYqnsnjcSr8n5NZFgPocH34MQPm
- f1QpDyBBCKY6qs+Lt+CBNECkJ5mhdd04MCsPYl5geAurjxkCD7r14+t5mUPahUD+qnh/
- e7GASacUNdpsoc8zimSTlENOoxxZT6ylepm9N99Af3wGCHK/6RYJMtyLa/7HlUqJIv/O
- LwedCJrJGUm8Riea0O6bIiPnG+Ee/0JYpurZNskrQl+ELl145LyObCfD7khlbRCLHK9r
- dISA==
-X-Gm-Message-State: AOAM531Xseo7aizFVldLPZuQi3UxL9ou6ETvS/AM/qmMJ0fOpTnhaiTL
- 9hI8dYDFSF3NpvaHbdCfJUJDzti1jTsk6pYOUSc=
-X-Google-Smtp-Source: ABdhPJyzzWa9paQxXHYFBMFScAZBlkmtyILKANDBBOx9rPPA/yxyu03vLu3qpQ9izu7tVqpx2AMkJo4APWbgLQB/p8I=
-X-Received: by 2002:ab0:26d8:: with SMTP id b24mr14134972uap.58.1622633136111; 
- Wed, 02 Jun 2021 04:25:36 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fw6FF3ccyz2yWQ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Jun 2021 21:27:11 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; t=1622633197; cv=none;
+ d=strato.com; s=strato-dkim-0002;
+ b=qKWL67xEH4Fs/7G/O+5jYXPRzXQtmoiQvDQiLXUBwS4d2taCcU86oDAsDtANifW0+P
+ w6xb3TQueUu8w8Df/WYvZLBJX1miANGtgbglWElomLPQxwFRWJvZxTivV6yyMHZwEIuv
+ v2M76pspPHjDAA0Y89/JNbtokMnb1GZa8OocgOc0Kw/toMJosgM0zpk2fPp0OjgyPkeW
+ kwo/WNci4rul+wrrjy5mR1SyqT2YYfB6aXH65WkXuTIah98w3pdRmFJXnkBi4+5NC26/
+ s6e9rLCH9M3/ydy8/04aWwOTVyG1+UJgbKV0FSE8wBw6Mk9gbN6cxJvWXglaBRxFblQ1
+ 7lQg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1622633197;
+ s=strato-dkim-0002; d=strato.com;
+ h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
+ From:Subject:Sender;
+ bh=jB6LHubYTK9MHDb6zr9KaVILv3xD3DGRVwdD6lXExXU=;
+ b=KLowtl7xiCKb1hDcmeFa2qWL+gZHlt3udoohMsbrCy4oRK15xBR4bWQyYyuGGp1/ul
+ Fz0p7yoZZQrZNWeoaJwnbDT6N+k7tsnhchiCV1maUd99+rt0f81hWyWQk0ev6CFbfKKq
+ Nd5bwGYFXh9SBWMLEmM+DF6/e9e4+gIQ2rZxp15tGorC33zRmL19N9igV+TiN+JbRzVA
+ b2WXxcoLvx1/tBDOyNkAXAJK2HUpMAZNXKuFWhkYu5G0y+AdJxoKx5H7WnglKXKZu2UX
+ oDPwre+04Qt+AzAOilcPiFq+vgRgzi0wZxt+JQF0zhZQNLGhMXT2Hc6uilPpJA8jUgZQ
+ mJ3w==
+ARC-Authentication-Results: i=1; strato.com;
+    dkim=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1622633197;
+ s=strato-dkim-0002; d=xenosoft.de;
+ h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
+ From:Subject:Sender;
+ bh=jB6LHubYTK9MHDb6zr9KaVILv3xD3DGRVwdD6lXExXU=;
+ b=KrxTDsXnAC4iFk9oplz3l9L8vIjXT+I0MqZhR+0yas47+BI+yOhdOv24zvVGNBO2I7
+ hyEIg8g43sEm8/VOJIxC2HcHrGu7+3xtZ0K2upMwYH9FD/EtOl+Pq+ZLhJkTP7oAzhBT
+ hQ1oenmo/WMQ2Ig1fhgck2rM3nfKsaP1EH5f5ziScDn/C77kQNQkzChubxfHAvJmDmbv
+ Kff1lqPeYThv7A90yb3srOeuKCeYw0pqmGFXf7+LJyhbzYZZ6VT59vn8S/4WgBnky55R
+ v32itJDUYAVKBUARrHpQZakK9tIsoMOZKdjyidkH6o3b6zvTmUTdm/14xxtkI8KGoxgf
+ PLnw==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPgBLnq1lFHSB+0Wnf9zTVpJV4NjwA=="
+X-RZG-CLASS-ID: mo00
+Received: from Christians-iMac.fritz.box by smtp.strato.de (RZmta 47.27.2 AUTH)
+ with ESMTPSA id g069fax52BQZ202
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Wed, 2 Jun 2021 13:26:35 +0200 (CEST)
+Subject: Re: [FSL P50x0] KVM HV doesn't work anymore
+To: Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "kvm-ppc@vger.kernel.org" <kvm-ppc@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+References: <04526309-4653-3349-b6de-e7640c2258d6@xenosoft.de>
+ <34617b1b-e213-668b-05f6-6fce7b549bf0@xenosoft.de>
+ <9af2c1c9-2caf-120b-2f97-c7722274eee3@csgroup.eu>
+ <199da427-9511-34fe-1a9e-08e24995ea85@xenosoft.de>
+ <1621236734.xfc1uw04eb.astroid@bobo.none>
+ <e6ed7674-3df9-ec3e-8bcf-dcd8ff0fecf8@xenosoft.de>
+ <1621410977.cgh0d6nvlo.astroid@bobo.none>
+ <acf63821-2030-90fa-f178-b2baeb0c4784@xenosoft.de>
+ <1621464963.g8v9ejlhyh.astroid@bobo.none>
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Message-ID: <f437d727-8bc7-6467-6134-4e84942628f1@xenosoft.de>
+Date: Wed, 2 Jun 2021 13:26:35 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.10.2
 MIME-Version: 1.0
-References: <20210602105348.13387-1-rppt@kernel.org>
- <20210602105348.13387-5-rppt@kernel.org>
-In-Reply-To: <20210602105348.13387-5-rppt@kernel.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 2 Jun 2021 13:25:24 +0200
-Message-ID: <CAMuHMdUUzMNcWNXCjwZmH-VBC+jH1ShBpeg6EBCdRXv3mwHxsQ@mail.gmail.com>
-Subject: Re: [PATCH 4/9] m68k: remove support for DISCONTIGMEM
-To: Mike Rapoport <rppt@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <1621464963.g8v9ejlhyh.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: de-DE
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,105 +103,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
- Linux-sh list <linux-sh@vger.kernel.org>,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- Linux MM <linux-mm@kvack.org>, sparclinux <sparclinux@vger.kernel.org>,
- linux-riscv <linux-riscv@lists.infradead.org>,
- Linux-Arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
- Mike Rapoport <rppt@linux.ibm.com>, Matt Turner <mattst88@gmail.com>,
- arcml <linux-snps-arc@lists.infradead.org>,
- "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>,
- Arnd Bergmann <arnd@arndb.de>, linux-m68k <linux-m68k@lists.linux-m68k.org>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Richard Henderson <rth@twiddle.net>, Vineet Gupta <vgupta@synopsys.com>,
- kexec@lists.infradead.org,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- alpha <linux-alpha@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ mad skateman <madskateman@gmail.com>, Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Mike,
-
-On Wed, Jun 2, 2021 at 12:54 PM Mike Rapoport <rppt@kernel.org> wrote:
-> From: Mike Rapoport <rppt@linux.ibm.com>
+On 20 May 2021 at 01:07am, Nicholas Piggin wrote:
+> Hmm, okay that probably rules out those notifier changes then.
+> Can you remind me were you able to rule these out as suspects?
 >
-> DISCONTIGMEM was replaced by FLATMEM with freeing of the unused memory map
-> in v5.11.
+> 8f6cc75a97d1 powerpc: move norestart trap flag to bit 0
+> 8dc7f0229b78 powerpc: remove partial register save logic
+> c45ba4f44f6b powerpc: clean up do_page_fault
+> d738ee8d56de powerpc/64e/interrupt: handle bad_page_fault in C
+> ceff77efa4f8 powerpc/64e/interrupt: Use new interrupt context tracking scheme
+> 097157e16cf8 powerpc/64e/interrupt: reconcile irq soft-mask state in C
+> 3db8aa10de9a powerpc/64e/interrupt: NMI save irq soft-mask state in C
+> 0c2472de23ae powerpc/64e/interrupt: use new interrupt return
+> dc6231821a14 powerpc/interrupt: update common interrupt code for
+> 4228b2c3d20e powerpc/64e/interrupt: always save nvgprs on interrupt
+> 5a5a893c4ad8 powerpc/syscall: switch user_exit_irqoff and trace_hardirqs_off order
 >
-> Remove the support for DISCONTIGMEM entirely.
->
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> Thanks,
+> Nick
+Hi Nick,
 
-Thanks for your patch!
+I tested these commits above today and all works with -smp 4. [1]
 
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Smp 4 still doesn't work with the RC4 of kernel 5.13 on quad core e5500 
+CPUs with KVM HV. I use -smp 3 currently.
 
-> --- a/arch/m68k/include/asm/page_mm.h
-> +++ b/arch/m68k/include/asm/page_mm.h
-> @@ -126,25 +126,7 @@ static inline void *__va(unsigned long x)
->
->  extern int m68k_virt_to_node_shift;
->
-> -#ifndef CONFIG_DISCONTIGMEM
->  #define __virt_to_node(addr)   (&pg_data_map[0])
+What shall I test next?
 
-With pg_data_map[] removed, this definition can go as well.
-Seems to be a leftover from 1008a11590b966b4 ("m68k: switch to MEMBLOCK
- + NO_BOOTMEM")
+Thanks,
+Christian
 
-There are a few more:
-arch/m68k/include/asm/mmzone.h:extern pg_data_t pg_data_map[];
-arch/m68k/include/asm/mmzone.h:#define NODE_DATA(nid)
-(&pg_data_map[nid])
-
-> -#else
-> -extern struct pglist_data *pg_data_table[];
-> -
-> -static inline __attribute_const__ int __virt_to_node_shift(void)
-> -{
-> -       int shift;
-> -
-> -       asm (
-> -               "1:     moveq   #0,%0\n"
-> -               m68k_fixup(%c1, 1b)
-> -               : "=d" (shift)
-> -               : "i" (m68k_fixup_vnode_shift));
-> -       return shift;
-> -}
-> -
-> -#define __virt_to_node(addr)   (pg_data_table[(unsigned long)(addr) >> __virt_to_node_shift()])
-> -#endif
-
-> --- a/arch/m68k/mm/init.c
-> +++ b/arch/m68k/mm/init.c
-> @@ -44,28 +44,8 @@ EXPORT_SYMBOL(empty_zero_page);
->
->  int m68k_virt_to_node_shift;
->
-> -#ifdef CONFIG_DISCONTIGMEM
-> -pg_data_t pg_data_map[MAX_NUMNODES];
-> -EXPORT_SYMBOL(pg_data_map);
-> -
-> -pg_data_t *pg_data_table[65];
-> -EXPORT_SYMBOL(pg_data_table);
-> -#endif
-> -
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+[1] https://forum.hyperion-entertainment.com/viewtopic.php?p=53367#p53367
