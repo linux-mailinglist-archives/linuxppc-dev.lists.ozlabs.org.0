@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68F6F397DEC
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 03:10:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DF0C397DEA
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 03:09:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FvrYg5Rxtz3cBx
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 11:10:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FvrXh3nhmz3c1L
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 11:09:40 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=merlin.20170209 header.b=moZ15tk5;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=merlin.20170209 header.b=Nz6X0Tw6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,37 +18,37 @@ Authentication-Results: lists.ozlabs.org;
  envelope-from=geoff@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=merlin.20170209 header.b=moZ15tk5; 
+ header.s=merlin.20170209 header.b=Nz6X0Tw6; 
  dkim-atps=neutral
 Received: from merlin.infradead.org (merlin.infradead.org
  [IPv6:2001:8b0:10b:1234::107])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FvrWG4SYMz2yYS
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Jun 2021 11:08:23 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FvrWH4CrNz2ykQ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Jun 2021 11:08:24 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=merlin.20170209; h=Date:Cc:To:Subject:From:References:
  In-Reply-To:Message-Id:Sender:Reply-To:MIME-Version:Content-Type:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=ViBTZOEd/HJwgYvmi4ILDxz2gH7hn6gPs/QGbkBhmFM=; b=moZ15tk5h/G5bDncxcUxaIq6ju
- ZkxGRK2vgoU2PF3wTcsiJj+F639lVA3h3DSimygfob1JZP9aLRZKPK3Rh80ybg7MYPbpuKPoNOIQ3
- 6lfzk81HQlw/e6AfHEk7k7xXAuNe2Tp6uwk+vV8H32NBVwn9upPEU6MTGCNBCHbbae3MHkY1CF5Dn
- 6xqo5J6JX6Mc32TTahiMyPuSmouio1RCbWj9IlUpuevbY6wYL67ej4RR0dMJ/30XPcfy/FhPDFmh0
- 7xiaDXmT3yjPOBzbZehKEofr9mfFe3WU8xw/u793A7CIoI3TVY8jjPbQq3Yh4piLyJ+cFzs+g1oiW
- VPNjMcSg==;
+ bh=STxaxHZrc2prNRJ981YHlxVA6f5nemOp0VpYZSq/p1s=; b=Nz6X0Tw680ByyKZ+ds9pW9aC9i
+ D3l0ILRxKySux4V1bXZzp/uHQWfmtfYoutpn8Yryq+oOSFdRaodHsoffiJSpIWyT20GjGhu9p9l6A
+ uH4WQDlFZckttM6bJ2kPmnwUG9DPURpGDo3OpCIzdKv4X+wgI6I2O7DriUW/mjqg1Laglw+ZIYsjD
+ lY33/g7eV2xH5dAnKcMxs6/QUnfyG4pIQz3U+iZTtDZfzI7xlrR7cHn5CxLp4rDwNdvz3CiOHm1ww
+ 2jNLDRkwS9mrEo8kWc7pUM8xoqHVCHqi/RDDJvKIlR4qTAx693L/md0worjna78E271mIb+zrj9Lx
+ gqXsvBag==;
 Received: from geoff by merlin.infradead.org with local (Exim 4.94.2 #2 (Red
- Hat Linux)) id 1loFMi-00102h-B0; Wed, 02 Jun 2021 01:08:12 +0000
-Message-Id: <0ce4b6969a08094a747bd382dbfd30b72ebc192d.1622577339.git.geoff@infradead.org>
+ Hat Linux)) id 1loFMj-001037-RW; Wed, 02 Jun 2021 01:08:14 +0000
+Message-Id: <562d0c9ea0100a30c3b186bcc7adb34b0bbd2cd7.1622577339.git.geoff@infradead.org>
 In-Reply-To: <cover.1622577339.git.geoff@infradead.org>
 References: <cover.1622577339.git.geoff@infradead.org>
 From: Geoff Levand <geoff@infradead.org>
 Patch-Date: Tue, 1 Jun 2021 12:27:43 -0700
-Subject: [PATCH 1/5] powerpc/ps3: Add CONFIG_PS3_VERBOSE_RESULT option
+Subject: [PATCH 3/5] powerpc/ps3: Add dma_mask to ps3_dma_region
 To: Michael Ellerman <mpe@ellerman.id.au>, David@lists.ozlabs.org,
 	S.Miller@lists.ozlabs.org,
 	" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>"@lists.ozlabs.org
-Date: Wed, 02 Jun 2021 01:08:12 +0000
+Date: Wed, 02 Jun 2021 01:08:13 +0000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,49 +65,82 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-To aid debugging, add a new PS3 kernel config option
-PS3_VERBOSE_RESULT that, when enabled, will print more
-verbose messages for the result of LV1 hypercalls.
+Commit f959dcd6ddfd29235030e8026471ac1b022ad2b0 (dma-direct: Fix
+potential NULL pointer dereference) added a null check on the
+dma_mask pointer of the kernel's device structure.
+
+Add a dma_mask variable to the ps3_dma_region structure and set
+the device structure's dma_mask pointer to point to this new variable.
+
+Fixes runtime errors like these:
+
+  ps3_system_bus_match:349: dev=8.0(sb_01), drv=8.0(ps3flash): match
+  WARNING: CPU: 0 PID: 1 at kernel/dma/mapping.c:151
+  ps3flash sb_01: ps3stor_setup:193: map DMA region failed
 
 Signed-off-by: Geoff Levand <geoff@infradead.org>
 ---
- arch/powerpc/include/asm/ps3.h     | 2 +-
- arch/powerpc/platforms/ps3/Kconfig | 9 +++++++++
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ arch/powerpc/include/asm/ps3.h  |  2 ++
+ arch/powerpc/platforms/ps3/mm.c | 12 ++++++++++++
+ 2 files changed, 14 insertions(+)
 
 diff --git a/arch/powerpc/include/asm/ps3.h b/arch/powerpc/include/asm/ps3.h
-index e646c7f218bc..7df145901def 100644
+index 7df145901def..8a0d8fb35328 100644
 --- a/arch/powerpc/include/asm/ps3.h
 +++ b/arch/powerpc/include/asm/ps3.h
-@@ -232,7 +232,7 @@ enum lv1_result {
+@@ -71,6 +71,7 @@ struct ps3_dma_region_ops;
+  * @bus_addr: The 'translated' bus address of the region.
+  * @len: The length in bytes of the region.
+  * @offset: The offset from the start of memory of the region.
++ * @dma_mask: Device dma_mask.
+  * @ioid: The IOID of the device who owns this region
+  * @chunk_list: Opaque variable used by the ioc page manager.
+  * @region_ops: struct ps3_dma_region_ops - dma region operations
+@@ -85,6 +86,7 @@ struct ps3_dma_region {
+ 	enum ps3_dma_region_type region_type;
+ 	unsigned long len;
+ 	unsigned long offset;
++	u64 dma_mask;
  
- static inline const char* ps3_result(int result)
+ 	/* driver variables  (set by ps3_dma_region_create) */
+ 	unsigned long bus_addr;
+diff --git a/arch/powerpc/platforms/ps3/mm.c b/arch/powerpc/platforms/ps3/mm.c
+index d094321964fb..a81eac35d900 100644
+--- a/arch/powerpc/platforms/ps3/mm.c
++++ b/arch/powerpc/platforms/ps3/mm.c
+@@ -6,6 +6,7 @@
+  *  Copyright 2006 Sony Corp.
+  */
+ 
++#include <linux/dma-mapping.h>
+ #include <linux/kernel.h>
+ #include <linux/export.h>
+ #include <linux/memblock.h>
+@@ -1118,6 +1119,7 @@ int ps3_dma_region_init(struct ps3_system_bus_device *dev,
+ 	enum ps3_dma_region_type region_type, void *addr, unsigned long len)
  {
--#if defined(DEBUG) || defined(PS3_VERBOSE_RESULT)
-+#if defined(DEBUG) || defined(PS3_VERBOSE_RESULT) || defined(CONFIG_PS3_VERBOSE_RESULT)
- 	switch (result) {
- 	case LV1_SUCCESS:
- 		return "LV1_SUCCESS (0)";
-diff --git a/arch/powerpc/platforms/ps3/Kconfig b/arch/powerpc/platforms/ps3/Kconfig
-index e32406e918d0..ebed94942d39 100644
---- a/arch/powerpc/platforms/ps3/Kconfig
-+++ b/arch/powerpc/platforms/ps3/Kconfig
-@@ -85,6 +85,15 @@ config PS3_SYS_MANAGER
- 	  This support is required for PS3 system control.  In
- 	  general, all users will say Y or M.
+ 	unsigned long lpar_addr;
++	int result;
  
-+config PS3_VERBOSE_RESULT
-+	bool "PS3 Verbose LV1 hypercall results" if PS3_ADVANCED
-+	depends on PPC_PS3
-+	help
-+	  Enables more verbose log mesages for LV1 hypercall results.
+ 	lpar_addr = addr ? ps3_mm_phys_to_lpar(__pa(addr)) : 0;
+ 
+@@ -1129,6 +1131,16 @@ int ps3_dma_region_init(struct ps3_system_bus_device *dev,
+ 		r->offset -= map.r1.offset;
+ 	r->len = len ? len : ALIGN(map.total, 1 << r->page_size);
+ 
++	dev->core.dma_mask = &r->dma_mask;
 +
-+	  If in doubt, say N here and reduce the size of the kernel by a
-+	  small amount.
++	result = dma_set_mask_and_coherent(&dev->core, DMA_BIT_MASK(32));
 +
- config PS3_REPOSITORY_WRITE
- 	bool "PS3 Repository write support" if PS3_ADVANCED
- 	depends on PPC_PS3
++	if (result < 0) {
++		dev_err(&dev->core, "%s:%d: dma_set_mask_and_coherent failed: %d\n",
++			__func__, __LINE__, result);
++		return result;
++	}
++
+ 	switch (dev->dev_type) {
+ 	case PS3_DEVICE_TYPE_SB:
+ 		r->region_ops =  (USE_DYNAMIC_DMA)
 -- 
 2.25.1
 
