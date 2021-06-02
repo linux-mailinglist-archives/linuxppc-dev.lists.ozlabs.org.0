@@ -2,57 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 325813982AD
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 09:07:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18F2239836A
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 09:44:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fw0Tq43TVz3gG0
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 17:07:43 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=RmhbmeEg;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fw1JX3V29z2xfd
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 17:44:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+e38fb55258da4e18a096+6492+infradead.org+hch@bombadil.srs.infradead.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=RmhbmeEg; 
- dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fw0Dv4NkBz3bns
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Jun 2021 16:56:31 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
- :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=ZrMEf0Ls9F+Osx12fthB6jYFp7YA2RuOfcMRudkR5eo=; b=RmhbmeEgAua7D4yc0CN6m+daMw
- ggu55W3yOtqsYbnSz5c1dfLFQJ9ncvb9hc3nNvkXY6f0gcSGMOhLStwUwb0UQrJ1aG7h0ZSUng/WX
- es/ejunr+apwEHWPUWRQDfPQvgeX1hrHlUl4NOb5oItwm7czJQwirbV+FChfRP7dM0qxLnCRqVmgI
- bA1/+LYF3tWUOd/53KL9zns/VStS5lpZkIiq55Ah7xS6m/8ryTxd0+2JtSdNyv1ovCOilXcKoWuJr
- 8KfLwtubqhZXD6/OkB2mdwrFmz8NTFBmkmZB+9B1+iGvFIgntGiUljL/AChzeEhq1iCnrHX8J/lkd
- xKgRqjOg==;
-Received: from shol69.static.otenet.gr ([83.235.170.67] helo=localhost)
- by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1loKnR-0026ec-A8; Wed, 02 Jun 2021 06:56:10 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 30/30] z2ram: use blk_mq_alloc_disk and blk_cleanup_disk
-Date: Wed,  2 Jun 2021 09:53:45 +0300
-Message-Id: <20210602065345.355274-31-hch@lst.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210602065345.355274-1-hch@lst.de>
-References: <20210602065345.355274-1-hch@lst.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fw1JB09YGz2xZH
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Jun 2021 17:44:21 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 4Fw1J12j0hzBCJg;
+ Wed,  2 Jun 2021 09:44:17 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 8FGfsZLeU5Ok; Wed,  2 Jun 2021 09:44:17 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4Fw1J04z0FzBCP1;
+ Wed,  2 Jun 2021 09:44:16 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9275C8B7D4;
+ Wed,  2 Jun 2021 09:44:16 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id RFZfY_rbGftx; Wed,  2 Jun 2021 09:44:16 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 25BA58B771;
+ Wed,  2 Jun 2021 09:44:16 +0200 (CEST)
+Subject: Re: [PATCH] powerpc/8xx: select CPM1 for MPC8XXFADS
+To: trix@redhat.com, mpe@ellerman.id.au, benh@kernel.crashing.org,
+ paulus@samba.org
+References: <20210601175304.2634549-1-trix@redhat.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <50ed000a-c1af-8552-9d35-771b3bc131e5@csgroup.eu>
+Date: Wed, 2 Jun 2021 09:44:15 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.2
 MIME-Version: 1.0
+In-Reply-To: <20210601175304.2634549-1-trix@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,71 +63,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Justin Sanders <justin@coraid.com>, Vignesh Raghavendra <vigneshr@ti.com>,
- Mike Snitzer <snitzer@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Jason Wang <jasowang@redhat.com>, virtualization@lists.linux-foundation.org,
- dm-devel@redhat.com, "Md. Haris Iqbal" <haris.iqbal@ionos.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>, Jack Wang <jinpu.wang@ionos.com>,
- Tim Waugh <tim@cyberelk.net>, linux-s390@vger.kernel.org,
- Alex Dubov <oakad@yahoo.com>, Richard Weinberger <richard@nod.at>,
- Christian Borntraeger <borntraeger@de.ibm.com>, xen-devel@lists.xenproject.org,
- Ilya Dryomov <idryomov@gmail.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- Heiko Carstens <hca@linux.ibm.com>, Josef Bacik <josef@toxicpanda.com>,
- Denis Efremov <efremov@linux.com>, nbd@other.debian.org,
- linux-block@vger.kernel.org, ceph-devel@vger.kernel.org,
- Maxim Levitsky <maximlevitsky@gmail.com>, Geoff Levand <geoff@infradead.org>,
- linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org,
- =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use blk_mq_alloc_disk and blk_cleanup_disk to simplify the gendisk and
-request_queue allocation.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- drivers/block/z2ram.c | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/block/z2ram.c b/drivers/block/z2ram.c
-index c1d20818e649..a8968d9e759b 100644
---- a/drivers/block/z2ram.c
-+++ b/drivers/block/z2ram.c
-@@ -323,27 +323,20 @@ static const struct blk_mq_ops z2_mq_ops = {
- 
- static int z2ram_register_disk(int minor)
- {
--	struct request_queue *q;
- 	struct gendisk *disk;
- 
--	disk = alloc_disk(1);
--	if (!disk)
--		return -ENOMEM;
--
--	q = blk_mq_init_queue(&tag_set);
--	if (IS_ERR(q)) {
--		put_disk(disk);
--		return PTR_ERR(q);
--	}
-+	disk = blk_mq_alloc_disk(&tag_set, NULL);
-+	if (IS_ERR(disk))
-+		return PTR_ERR(disk);
- 
- 	disk->major = Z2RAM_MAJOR;
- 	disk->first_minor = minor;
-+	disk->minors = 1;
- 	disk->fops = &z2_fops;
- 	if (minor)
- 		sprintf(disk->disk_name, "z2ram%d", minor);
- 	else
- 		sprintf(disk->disk_name, "z2ram");
--	disk->queue = q;
- 
- 	z2ram_gendisk[minor] = disk;
- 	add_disk(disk);
--- 
-2.30.2
+Le 01/06/2021 à 19:53, trix@redhat.com a écrit :
+> From: Tom Rix <trix@redhat.com>
+> 
+> With MPC8XXFADS, there is this linker error
+> ppc64-linux-ld: m8xx_setup.o: in function `cpm_cascade':
+> m8xx_setup.c: undefined reference to `cpm_get_irq'
 
+It looks like this config item is stale, it doesn't build any board support, there is no 
+define_machine() for this config item, no file is linked to that config item.
+
+I think you should just remove that item from the possible choices.
+
+Christophe
+
+
+> 
+> cpm_get_irq() is conditionally complied by CPM1
+> So add a select, like the other plaforms
+> 
+> Signed-off-by: Tom Rix <trix@redhat.com>
+> ---
+>   arch/powerpc/platforms/8xx/Kconfig | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/powerpc/platforms/8xx/Kconfig b/arch/powerpc/platforms/8xx/Kconfig
+> index 60cc5b537a98..919082cdb2f1 100644
+> --- a/arch/powerpc/platforms/8xx/Kconfig
+> +++ b/arch/powerpc/platforms/8xx/Kconfig
+> @@ -10,6 +10,7 @@ choice
+>   
+>   config MPC8XXFADS
+>   	bool "FADS"
+> +	select CPM1
+>   
+>   config MPC86XADS
+>   	bool "MPC86XADS"
+> 
