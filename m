@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73CF839821A
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 08:56:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3E523981F2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 08:56:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fw0F75lHkz3cBm
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 16:56:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fw0Dh1G6cz3c66
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 16:56:20 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=Ht4009yU;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=gnk1MFf6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,33 +19,33 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=Ht4009yU; 
+ header.s=bombadil.20210309 header.b=gnk1MFf6; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fw0Bg3hC2z2yxv
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fw0Bg1J6Nz2yxL
  for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Jun 2021 16:54:35 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=Yi0gWgny8DlRPvb2CPLj2qpffFrZ3FaoaK+2w2W5Ero=; b=Ht4009yUCSzO+7+WkZSpPv8/pg
- DF4TuO/V/1LnprDJA3jlEhqFaXKBH7nFqyPlLMER9C4xGoA29+zO97djThq/H5WGD+qvf9L+NXUS+
- NF+wjIhh/npg/q4yZwzJ2XU8Rh/TBSfn+u/dM7E/U9YdPLNk9qDr3C//ieS4lZI5LRisQPRidcs0K
- 1KxMYlyEV+r/yTnMeO4E9D5sjO0i2VDyXsAV0BqYgFAku1jAbz09LqX7rvILnxpnxFg/tBckuBSOC
- E+KSpkcLJ/UGUgdvZ89eU6BxLq+pC8HlqDRtF4O6vNTYENtcydGYMepxD+bizsH8Il7O6KAzLt54A
- NMGPi+1w==;
+ bh=9pvQ9WWixoN79V+IFrwZ0yGtfnJdYnRvQElOajEUx4E=; b=gnk1MFf6oC2iDvM0lQExGF55IT
+ Fu4WEOCNNJ9mVEtVcIDrtrwvLS92XEx/Y9jJNPlMZzP3mxVH717a4VCLxOLSslRLKspq6OAA9D5yw
+ EQDkVL09aPuAvCsSUDM3ZFzSxHOeCU6gBkEfhYQCCehrU9uW68j9GkCyo7Ds0V43zhcXAh05TNWGS
+ LhXZW/q9HT26Y7QKqOeqywIxRBtkOI49AYNNeXwG3akyX15CxDIe0h/fq/1eJkZhMao+G/fiRrulm
+ dyrb+u0WyEaL8vr4wMg0Ys8BKcowBJnF+Zn2V2osWkSUWM27u+JhH6YkPr+2yh9LuvxLx7wgsnTfO
+ l9Bduvjw==;
 Received: from shol69.static.otenet.gr ([83.235.170.67] helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1loKlS-0025JJ-Ew; Wed, 02 Jun 2021 06:54:07 +0000
+ id 1loKlW-0025KS-9M; Wed, 02 Jun 2021 06:54:10 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 03/30] blk-mq: add the blk_mq_alloc_disk APIs
-Date: Wed,  2 Jun 2021 09:53:18 +0300
-Message-Id: <20210602065345.355274-4-hch@lst.de>
+Subject: [PATCH 04/30] virtio-blk: use blk_mq_alloc_disk
+Date: Wed,  2 Jun 2021 09:53:19 +0300
+Message-Id: <20210602065345.355274-5-hch@lst.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210602065345.355274-1-hch@lst.de>
 References: <20210602065345.355274-1-hch@lst.de>
@@ -85,68 +85,87 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a new API to allocate a gendisk including the request_queue for use
-with blk-mq based drivers.  This is to avoid boilerplate code in drivers.
+Use the blk_mq_alloc_disk API to simplify the gendisk and request_queue
+allocation.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- block/blk-mq.c         | 19 +++++++++++++++++++
- include/linux/blk-mq.h | 12 ++++++++++++
- 2 files changed, 31 insertions(+)
+ drivers/block/virtio_blk.c | 26 +++++++-------------------
+ 1 file changed, 7 insertions(+), 19 deletions(-)
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 6112741e1ff9..1e6036e6fd66 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -3137,6 +3137,25 @@ struct request_queue *blk_mq_init_queue(struct blk_mq_tag_set *set)
- }
- EXPORT_SYMBOL(blk_mq_init_queue);
+diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
+index b9fa3ef5b57c..e4bd3b1fc3c2 100644
+--- a/drivers/block/virtio_blk.c
++++ b/drivers/block/virtio_blk.c
+@@ -749,13 +749,6 @@ static int virtblk_probe(struct virtio_device *vdev)
+ 	if (err)
+ 		goto out_free_vblk;
  
-+struct gendisk *__blk_mq_alloc_disk(struct blk_mq_tag_set *set, void *queuedata)
-+{
-+	struct request_queue *q;
-+	struct gendisk *disk;
-+
-+	q = blk_mq_init_queue_data(set, queuedata);
-+	if (IS_ERR(q))
-+		return ERR_CAST(q);
-+
-+	disk = __alloc_disk_node(0, set->numa_node);
-+	if (!disk) {
-+		blk_cleanup_queue(q);
-+		return ERR_PTR(-ENOMEM);
-+	}
-+	disk->queue = q;
-+	return disk;
-+}
-+EXPORT_SYMBOL(__blk_mq_alloc_disk);
-+
- /*
-  * Helper for setting up a queue with mq ops, given queue depth, and
-  * the passed in mq ops flags.
-diff --git a/include/linux/blk-mq.h b/include/linux/blk-mq.h
-index 73750b2838d2..f496c6c5b5d2 100644
---- a/include/linux/blk-mq.h
-+++ b/include/linux/blk-mq.h
-@@ -426,6 +426,18 @@ enum {
- 	((policy & ((1 << BLK_MQ_F_ALLOC_POLICY_BITS) - 1)) \
- 		<< BLK_MQ_F_ALLOC_POLICY_START_BIT)
+-	/* FIXME: How many partitions?  How long is a piece of string? */
+-	vblk->disk = alloc_disk(1 << PART_BITS);
+-	if (!vblk->disk) {
+-		err = -ENOMEM;
+-		goto out_free_vq;
+-	}
+-
+ 	/* Default queue sizing is to fill the ring. */
+ 	if (likely(!virtblk_queue_depth)) {
+ 		queue_depth = vblk->vqs[0].vq->num_free;
+@@ -779,21 +772,20 @@ static int virtblk_probe(struct virtio_device *vdev)
  
-+#define blk_mq_alloc_disk(set, queuedata)				\
-+({									\
-+	static struct lock_class_key __key;				\
-+	struct gendisk *__disk = __blk_mq_alloc_disk(set, queuedata);	\
-+									\
-+	if (__disk)							\
-+		lockdep_init_map(&__disk->lockdep_map,			\
-+			"(bio completion)", &__key, 0);			\
-+	__disk;								\
-+})
-+struct gendisk *__blk_mq_alloc_disk(struct blk_mq_tag_set *set,
-+		void *queuedata);
- struct request_queue *blk_mq_init_queue(struct blk_mq_tag_set *);
- struct request_queue *blk_mq_init_queue_data(struct blk_mq_tag_set *set,
- 		void *queuedata);
+ 	err = blk_mq_alloc_tag_set(&vblk->tag_set);
+ 	if (err)
+-		goto out_put_disk;
++		goto out_free_vq;
+ 
+-	q = blk_mq_init_queue(&vblk->tag_set);
+-	if (IS_ERR(q)) {
+-		err = -ENOMEM;
++	vblk->disk = blk_mq_alloc_disk(&vblk->tag_set, vblk);
++	if (IS_ERR(vblk->disk)) {
++		err = PTR_ERR(vblk->disk);
+ 		goto out_free_tags;
+ 	}
+-	vblk->disk->queue = q;
+-
+-	q->queuedata = vblk;
++	q = vblk->disk->queue;
+ 
+ 	virtblk_name_format("vd", index, vblk->disk->disk_name, DISK_NAME_LEN);
+ 
+ 	vblk->disk->major = major;
+ 	vblk->disk->first_minor = index_to_minor(index);
++	vblk->disk->minors = 1 << PART_BITS;
+ 	vblk->disk->private_data = vblk;
+ 	vblk->disk->fops = &virtblk_fops;
+ 	vblk->disk->flags |= GENHD_FL_EXT_DEVT;
+@@ -892,8 +884,6 @@ static int virtblk_probe(struct virtio_device *vdev)
+ 
+ out_free_tags:
+ 	blk_mq_free_tag_set(&vblk->tag_set);
+-out_put_disk:
+-	put_disk(vblk->disk);
+ out_free_vq:
+ 	vdev->config->del_vqs(vdev);
+ 	kfree(vblk->vqs);
+@@ -913,8 +903,7 @@ static void virtblk_remove(struct virtio_device *vdev)
+ 	flush_work(&vblk->config_work);
+ 
+ 	del_gendisk(vblk->disk);
+-	blk_cleanup_queue(vblk->disk->queue);
+-
++	blk_cleanup_disk(vblk->disk);
+ 	blk_mq_free_tag_set(&vblk->tag_set);
+ 
+ 	mutex_lock(&vblk->vdev_mutex);
+@@ -925,7 +914,6 @@ static void virtblk_remove(struct virtio_device *vdev)
+ 	/* Virtqueues are stopped, nothing can use vblk->vdev anymore. */
+ 	vblk->vdev = NULL;
+ 
+-	put_disk(vblk->disk);
+ 	vdev->config->del_vqs(vdev);
+ 	kfree(vblk->vqs);
+ 
 -- 
 2.30.2
 
