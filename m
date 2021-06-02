@@ -1,51 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BC6739877B
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 12:58:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ADCA3987B6
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 13:08:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fw5c073F3z3dFb
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 20:58:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fw5r14g28z3095
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 21:08:49 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Rwy3DGcM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=DSMn1WG0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=Rwy3DGcM; 
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=DSMn1WG0; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fw5X520LFz308C
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Jun 2021 20:55:01 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id DBD8F613BF;
- Wed,  2 Jun 2021 10:54:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1622631298;
- bh=ma/qPYp7mz82OJZAZmF/GEYKPcXEUWNTcgVQZOnLIC4=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Rwy3DGcMOCdGl1BLxWRESW8Uz2imlSdwuk91sxxsj/H9opw1w+6+yWIBsY4N81oU6
- Jnm/dcGgHXHUrbIwZIAg5uD1itVHgEPuALDY/B3YSh5UQ/z761Id/aDmauneXVEDL5
- 69c1KFHepoBfEshBv03/Wr9rfvHp56Ll7H9UPRuHGRszGTWYUdMwU9muOky+tf/fjI
- rlD/NKYRhruG6ApGfVr1GJKPRF3Riz2/M20IfBuWqadyMGaqb4S7f23z6QwqkgDbsF
- Ia9IAP4UtPixyM4Di5Qpb+lKPFRKJRpfvFK/Xdp9lGmMHM4nam66sJNOVuGfstBtOZ
- f6Ljf6ZpQcEcQ==
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 9/9] mm: replace CONFIG_FLAT_NODE_MEM_MAP with CONFIG_FLATMEM
-Date: Wed,  2 Jun 2021 13:53:48 +0300
-Message-Id: <20210602105348.13387-10-rppt@kernel.org>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20210602105348.13387-1-rppt@kernel.org>
-References: <20210602105348.13387-1-rppt@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fw5qb2Npbz2yZF
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Jun 2021 21:08:26 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Fw5qX5hdPz9sCD;
+ Wed,  2 Jun 2021 21:08:24 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1622632105;
+ bh=IMyZmrDIAgMUzwTxOPoPRs0AW/oFM2vmxwOL5ZFB9j8=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=DSMn1WG0DQ5pHQ3IeCVr1q212M7f2G4ckZTq6X91jxyjebm/XGUwksO9bUBKYrJxi
+ Y3M9RMD9K2kex1LLwdlsMeg3fcgKLSvLJbiOHgeztsbCQyXLiYz5JYS6Mv1ouTFRXO
+ ue0s3vWJpLsfjqz1YVH1vzeJH7s8P2na7Co6rOED0Q8varKiwV7AcKrLZPYEJV7La0
+ rMP8yvOVL3iIWzhTBbWMOJ9TCymKwwlcitlsGVcyAAXFs36aGhmwJMpGkafZjrHlqm
+ zEwYvnwJKz+iktV79dmrNVt95tRU0mQwfCbC+d91iIFxYGinx/6qXQaSIsYTpdNB/l
+ 8pTXa+kLoK9fg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc/stacktrace: fix raise_backtrace_ipi() logic
+In-Reply-To: <20210527011550.235443-1-nathanl@linux.ibm.com>
+References: <20210527011550.235443-1-nathanl@linux.ibm.com>
+Date: Wed, 02 Jun 2021 21:08:20 +1000
+Message-ID: <87eedkh6cb.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,133 +61,197 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mm@kvack.org, sparclinux@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
- linux-doc@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Matt Turner <mattst88@gmail.com>,
- linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org,
- Arnd Bergmann <arnd@arndb.de>, linux-m68k@lists.linux-m68k.org,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- linux-arm-kernel@lists.infradead.org, Richard Henderson <rth@twiddle.net>,
- Vineet Gupta <vgupta@synopsys.com>, kexec@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
+Cc: ldufour@linux.ibm.com, paulus@samba.org, clg@kaod.org, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Mike Rapoport <rppt@linux.ibm.com>
+Nathan Lynch <nathanl@linux.ibm.com> writes:
+> When smp_send_safe_nmi_ipi() indicates that the target CPU has
+> responded to the IPI, skip the remote paca inspection
+> fallback. Otherwise both the sending and target CPUs attempt the
+> backtrace, usually creating a misleading ("didn't respond to backtrace
+> IPI" is wrong) and interleaved mess:
 
-After removal of the DISCONTIGMEM memory model the FLAT_NODE_MEM_MAP
-configuration option is equivalent to FLATMEM.
+Thanks for fixing my bugs for me :)
 
-Drop CONFIG_FLAT_NODE_MEM_MAP and use CONFIG_FLATMEM instead.
+> [ 1658.929157][    C7] rcu: Stack dump where RCU GP kthread last ran:
+> [ 1658.929223][    C7] Sending NMI from CPU 7 to CPUs 1:
+> [ 1658.929303][    C1] NMI backtrace for cpu 1
+> [ 1658.929303][    C7] CPU 1 didn't respond to backtrace IPI, inspecting paca.
+> [ 1658.929362][    C1] CPU: 1 PID: 325 Comm: kworker/1:1H Tainted: G        W   E     5.13.0-rc2+ #46
+> [ 1658.929405][    C7] irq_soft_mask: 0x01 in_mce: 0 in_nmi: 0 current: 325 (kworker/1:1H)
+> [ 1658.929465][    C1] Workqueue: events_highpri test_work_fn [test_lockup]
+> [ 1658.929549][    C7] Back trace of paca->saved_r1 (0xc0000000057fb400) (possibly stale):
+> [ 1658.929592][    C1] NIP:  c00000000002cf50 LR: c008000000820178 CTR: c00000000002cfa0
+>
+> Verified using the test_lockup module, e.g.
+>
+> $ echo 5 > /sys/module/rcupdate/parameters/rcu_cpu_stall_timeout
+> $ insmod test_lockup.ko time_secs=1 iterations=10 state=R lock_rcu \
+>   touch_softlockup all_cpus
+>
+> Fixes: 5cc05910f26e ("powerpc/64s: Wire up arch_trigger_cpumask_backtrace()")
+> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+> ---
+>  arch/powerpc/kernel/stacktrace.c | 11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/powerpc/kernel/stacktrace.c b/arch/powerpc/kernel/stacktrace.c
+> index 1deb1bf331dd..e0ccc5a46d7e 100644
+> --- a/arch/powerpc/kernel/stacktrace.c
+> +++ b/arch/powerpc/kernel/stacktrace.c
+> @@ -174,11 +174,14 @@ static void raise_backtrace_ipi(cpumask_t *mask)
+>  {
+>  	unsigned int cpu;
+>  
+> +	if (cpumask_test_cpu(smp_processor_id(), mask)) {
+> +		handle_backtrace_ipi(NULL);
+> +		cpumask_clear_cpu(smp_processor_id(), mask);
+> +	}
+> +
+>  	for_each_cpu(cpu, mask) {
+> -		if (cpu == smp_processor_id())
+> -			handle_backtrace_ipi(NULL);
+> -		else
+> -			smp_send_safe_nmi_ipi(cpu, handle_backtrace_ipi, 5 * USEC_PER_SEC);
+> +		if (smp_send_safe_nmi_ipi(cpu, handle_backtrace_ipi, 5 * USEC_PER_SEC))
+> +			cpumask_clear_cpu(cpu, mask);
 
-Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
----
- include/linux/mmzone.h | 4 ++--
- kernel/crash_core.c    | 2 +-
- mm/Kconfig             | 4 ----
- mm/page_alloc.c        | 6 +++---
- mm/page_ext.c          | 2 +-
- 5 files changed, 7 insertions(+), 11 deletions(-)
+I think there's still a race here, but instead of causing us to emit a
+spurious "didn't respond" trace, it could lead to us failing to emit a
+proper trace when we should.
 
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index ad42f440c704..2698cdbfbf75 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -775,7 +775,7 @@ typedef struct pglist_data {
- 	struct zonelist node_zonelists[MAX_ZONELISTS];
+It's hard to follow this code, but mask above is backtrace_mask from
+lib/nmi_backtrace.c, because of:
+
+void nmi_trigger_cpumask_backtrace(const cpumask_t *mask,
+				   bool exclude_self,
+				   void (*raise)(cpumask_t *mask))
+{
+	int i, this_cpu = get_cpu();
+
+	cpumask_copy(to_cpumask(backtrace_mask), mask);
+                                ^^^^^^^^^^^^^^
+	...
+
+	if (!cpumask_empty(to_cpumask(backtrace_mask))) {
+		pr_info("Sending NMI from CPU %d to CPUs %*pbl:\n",
+			this_cpu, nr_cpumask_bits, to_cpumask(backtrace_mask));
+		raise(to_cpumask(backtrace_mask));
+                                 ^^^^^^^^^^^^^^
+
+And raise there is raise_backtrace_ipi() (the function we're patching).
+
+On the receiving CPU we end up executing:
+
+int smp_handle_nmi_ipi(struct pt_regs *regs)
+{
+	...
+	nmi_ipi_lock_start(&flags);
+	if (cpumask_test_cpu(me, &nmi_ipi_pending_mask)) {
+		cpumask_clear_cpu(me, &nmi_ipi_pending_mask);
+		fn = READ_ONCE(nmi_ipi_function);
+                ...
+	}
+	nmi_ipi_unlock_end(&flags);
+
+	if (fn)
+		fn(regs);
+
+
+The key detail being that we drop the nmi lock before calling fn, which
+means the calling CPU can return back to raise_backtrace_ipi() before fn
+is called.
+
+In our case fn is handle_backtrace_ipi() which just calls nmi_cpu_backtrace().
+
+Which does:
+
+bool nmi_cpu_backtrace(struct pt_regs *regs)
+{
+	int cpu = smp_processor_id();
+
+	if (cpumask_test_cpu(cpu, to_cpumask(backtrace_mask))) {
+        	...
+		pr_warn("NMI backtrace for cpu %d\n", cpu);
+		if (regs)
+			show_regs(regs);
+		else
+			dump_stack();
+
+
+ie. if the CPU has been cleared from backtrace_mask it doesn't emit a
+stack trace.
+
+So we could end up with the following interleaving:
+
+
+CPU0								CPU1
+====								====
+if (smp_send_safe_nmi_ipi(cpu, handle_backtrace_ipi, ...
+   								// smp_handle_nmi_ipi()
+								fn = READ_ONCE(nmi_ipi_function);
+								...
+								nmi_ipi_unlock_end(&flags);
+// in smp_send_safe_nmi_ipi()
+nmi_ipi_lock();
+while (!cpumask_empty(&nmi_ipi_pending_mask)) {
+...
+nmi_ipi_unlock_end(&flags);
+return ret;
+
+	cpumask_clear_cpu(cpu, mask);
+			       					fn(regs)
+								// -> nmi_cpu_backtrace()
+								if (cpumask_test_cpu(cpu, to_cpumask(backtrace_mask))) {
+
+
+But like I said, it's not easy to follow, so maybe I missed something
+along the way.
+
+
+To solve it I think we want to avoid clearing a CPU from the mask unless
+we know that the IPI failed for that CPU. That way there's no risk of
+suppressing a trace from a CPU that successfully handles the IPI, and we
+know we've waited 5 seconds for CPUs that fail to handle the IPI.
+
+I don't think we want to allocate a whole new cpumask to track which
+CPUs have failed to respond, but I don't think we need to. We can just
+synchronously handle them.
+
+Something like below.
+
+cheers
+
+
+diff --git a/arch/powerpc/kernel/stacktrace.c b/arch/powerpc/kernel/stacktrace.c
+index 1deb1bf331dd..980e87f7ae7a 100644
+--- a/arch/powerpc/kernel/stacktrace.c
++++ b/arch/powerpc/kernel/stacktrace.c
+@@ -172,17 +172,19 @@ static void handle_backtrace_ipi(struct pt_regs *regs)
  
- 	int nr_zones; /* number of populated zones in this node */
--#ifdef CONFIG_FLAT_NODE_MEM_MAP	/* means !SPARSEMEM */
-+#ifdef CONFIG_FLATMEM	/* means !SPARSEMEM */
- 	struct page *node_mem_map;
- #ifdef CONFIG_PAGE_EXTENSION
- 	struct page_ext *node_page_ext;
-@@ -865,7 +865,7 @@ typedef struct pglist_data {
- 
- #define node_present_pages(nid)	(NODE_DATA(nid)->node_present_pages)
- #define node_spanned_pages(nid)	(NODE_DATA(nid)->node_spanned_pages)
--#ifdef CONFIG_FLAT_NODE_MEM_MAP
-+#ifdef CONFIG_FLATMEM
- #define pgdat_page_nr(pgdat, pagenr)	((pgdat)->node_mem_map + (pagenr))
- #else
- #define pgdat_page_nr(pgdat, pagenr)	pfn_to_page((pgdat)->node_start_pfn + (pagenr))
-diff --git a/kernel/crash_core.c b/kernel/crash_core.c
-index 53eb8bc6026d..2b8446ea7105 100644
---- a/kernel/crash_core.c
-+++ b/kernel/crash_core.c
-@@ -483,7 +483,7 @@ static int __init crash_save_vmcoreinfo_init(void)
- 	VMCOREINFO_OFFSET(page, compound_head);
- 	VMCOREINFO_OFFSET(pglist_data, node_zones);
- 	VMCOREINFO_OFFSET(pglist_data, nr_zones);
--#ifdef CONFIG_FLAT_NODE_MEM_MAP
-+#ifdef CONFIG_FLATMEM
- 	VMCOREINFO_OFFSET(pglist_data, node_mem_map);
- #endif
- 	VMCOREINFO_OFFSET(pglist_data, node_start_pfn);
-diff --git a/mm/Kconfig b/mm/Kconfig
-index bffe4bd859f3..ded98fb859ab 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -55,10 +55,6 @@ config FLATMEM
- 	def_bool y
- 	depends on !SPARSEMEM || FLATMEM_MANUAL
- 
--config FLAT_NODE_MEM_MAP
--	def_bool y
--	depends on !SPARSEMEM
--
- #
- # SPARSEMEM_EXTREME (which is the default) does some bootmem
- # allocations when sparse_init() is called.  If this cannot
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 8f08135d3eb4..f039736541eb 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -6444,7 +6444,7 @@ static void __meminit zone_init_free_lists(struct zone *zone)
- 	}
- }
- 
--#if !defined(CONFIG_FLAT_NODE_MEM_MAP)
-+#if !defined(CONFIG_FLATMEM)
- /*
-  * Only struct pages that correspond to ranges defined by memblock.memory
-  * are zeroed and initialized by going through __init_single_page() during
-@@ -7241,7 +7241,7 @@ static void __init free_area_init_core(struct pglist_data *pgdat)
- 	}
- }
- 
--#ifdef CONFIG_FLAT_NODE_MEM_MAP
-+#ifdef CONFIG_FLATMEM
- static void __ref alloc_node_mem_map(struct pglist_data *pgdat)
+ static void raise_backtrace_ipi(cpumask_t *mask)
  {
- 	unsigned long __maybe_unused start = 0;
-@@ -7289,7 +7289,7 @@ static void __ref alloc_node_mem_map(struct pglist_data *pgdat)
- }
- #else
- static void __ref alloc_node_mem_map(struct pglist_data *pgdat) { }
--#endif /* CONFIG_FLAT_NODE_MEM_MAP */
-+#endif /* CONFIG_FLATMEM */
++	struct paca_struct *p;
+ 	unsigned int cpu;
  
- #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
- static inline void pgdat_set_deferred_range(pg_data_t *pgdat)
-diff --git a/mm/page_ext.c b/mm/page_ext.c
-index df6f74aac8e1..293b2685fc48 100644
---- a/mm/page_ext.c
-+++ b/mm/page_ext.c
-@@ -191,7 +191,7 @@ void __init page_ext_init_flatmem(void)
- 	panic("Out of memory");
- }
+ 	for_each_cpu(cpu, mask) {
+-		if (cpu == smp_processor_id())
++		if (cpu == smp_processor_id()) {
+ 			handle_backtrace_ipi(NULL);
+-		else
+-			smp_send_safe_nmi_ipi(cpu, handle_backtrace_ipi, 5 * USEC_PER_SEC);
+-	}
++			continue;
++		}
  
--#else /* CONFIG_FLAT_NODE_MEM_MAP */
-+#else /* CONFIG_FLATMEM */
+-	for_each_cpu(cpu, mask) {
+-		struct paca_struct *p = paca_ptrs[cpu];
++		if (smp_send_safe_nmi_ipi(cpu, handle_backtrace_ipi, 5 * USEC_PER_SEC))
++			continue;
++
++		p = paca_ptrs[cpu];
  
- struct page_ext *lookup_page_ext(const struct page *page)
- {
--- 
-2.28.0
-
+ 		cpumask_clear_cpu(cpu, mask);
+ 
