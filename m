@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF8CE3981A5
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 08:54:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3F923981E2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 08:55:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fw0C30Bhmz308j
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 16:54:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fw0D52L5Sz301v
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 16:55:49 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=RfiXqx1b;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=iGVLX51P;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,33 +19,34 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=RfiXqx1b; 
+ header.s=bombadil.20210309 header.b=iGVLX51P; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fw0BY3wRvz2xvc
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Jun 2021 16:54:26 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fw0Bb5Mf5z2xvc
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Jun 2021 16:54:31 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=SnRF2RasuO3TzWzCcWD7psRmahwH4O2DjzNGyzgJCxM=; b=RfiXqx1buYxjqGM6Ru6s2uXbtK
- szP8Lp35KdwoBLpRViL7iCBQHBOTXZ4Qu5LJOvN43OaaHCTJwbYuBSl2SqXNEe3Ty441iVm62zV/q
- FK7bqtRTYnR/sNzxWhxA2AWxTTSYR0R47li/OgrbNqJ/z/C247XNi+vyVCBUJz2HWLNRhHDg9jROf
- W37wVhanz0woIFa4DI1Hiypd6xGuMEzMDW+t6oSvgQDur5ioE4KQTAUXWM04CshX1rW4l4k5bAsYt
- fMWsLaqDTkxSQegnpPyUc9dgQ8DJelIKHSJsddjUREuKapJzcCJM+AP8gSr/w6bRFlEnBsoDVPXvd
- WWIbvGOQ==;
+ bh=myJzdG0UY+YhduciAvl62vV0+eYIWXuf0viapKKEim4=; b=iGVLX51PspxKKCnzMpC4EouJj5
+ B2zrb4+pSV9mnMrSg79gkg0MGmfd8cZ1WB50YixRgjFbx4kOwp4juWx6b16UoCxx1LpymNY6Yk0x8
+ 1nzXicL+0dUmecEKqHWZqBXMyeC2V5zboJkZLT8Z5vqTYJk/8WfYA9rvi3yfvAsJVwtzqljPiu8AS
+ Za/PcTal9v5fdMjqkHRd71J1Y7Beckc40vm4RzsUt68TBw5T15mRNRvzTDicRFuks4v90WQ7UfdEb
+ 6GRv3x0E21udpoMdOjy7ckRjA7wLy9iC+PnSFHrTfG3ucQpfezI0IJkNiWgyB2fdem2B9y0l01OTl
+ 3C4E0UGA==;
 Received: from shol69.static.otenet.gr ([83.235.170.67] helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1loKlG-0025Fb-J7; Wed, 02 Jun 2021 06:53:55 +0000
+ id 1loKlL-0025I2-Rr; Wed, 02 Jun 2021 06:54:00 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 01/30] blk-mq: factor out a blk_mq_alloc_sq_tag_set helper
-Date: Wed,  2 Jun 2021 09:53:16 +0300
-Message-Id: <20210602065345.355274-2-hch@lst.de>
+Subject: [PATCH 02/30] blk-mq: improve the blk_mq_init_allocated_queue
+ interface
+Date: Wed,  2 Jun 2021 09:53:17 +0300
+Message-Id: <20210602065345.355274-3-hch@lst.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210602065345.355274-1-hch@lst.de>
 References: <20210602065345.355274-1-hch@lst.de>
@@ -85,84 +86,171 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Factour out a helper to initialize a simple single hw queue tag_set from
-blk_mq_init_sq_queue.  This will allow to phase out blk_mq_init_sq_queue
-in favor of a more symmetric and general API.
+Don't return the passed in request_queue but a normal error code, and
+drop the elevator_init argument in favor of just calling elevator_init_mq
+directly from dm-rq.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- block/blk-mq.c         | 32 ++++++++++++++++++--------------
- include/linux/blk-mq.h |  3 +++
- 2 files changed, 21 insertions(+), 14 deletions(-)
+ block/blk-mq.c           | 36 ++++++++++++++----------------------
+ block/blk.h              |  1 -
+ block/elevator.c         |  2 +-
+ drivers/md/dm-rq.c       |  9 +++------
+ include/linux/blk-mq.h   |  5 ++---
+ include/linux/elevator.h |  1 +
+ 6 files changed, 21 insertions(+), 33 deletions(-)
 
 diff --git a/block/blk-mq.c b/block/blk-mq.c
-index f11d4018ce2e..eaacfa963a73 100644
+index eaacfa963a73..6112741e1ff9 100644
 --- a/block/blk-mq.c
 +++ b/block/blk-mq.c
-@@ -3152,24 +3152,12 @@ struct request_queue *blk_mq_init_sq_queue(struct blk_mq_tag_set *set,
- 	struct request_queue *q;
- 	int ret;
+@@ -3115,21 +3115,18 @@ void blk_mq_release(struct request_queue *q)
+ struct request_queue *blk_mq_init_queue_data(struct blk_mq_tag_set *set,
+ 		void *queuedata)
+ {
+-	struct request_queue *uninit_q, *q;
++	struct request_queue *q;
++	int ret;
  
--	memset(set, 0, sizeof(*set));
--	set->ops = ops;
--	set->nr_hw_queues = 1;
--	set->nr_maps = 1;
--	set->queue_depth = queue_depth;
--	set->numa_node = NUMA_NO_NODE;
--	set->flags = set_flags;
+-	uninit_q = blk_alloc_queue(set->numa_node);
+-	if (!uninit_q)
++	q = blk_alloc_queue(set->numa_node);
++	if (!q)
+ 		return ERR_PTR(-ENOMEM);
+-	uninit_q->queuedata = queuedata;
 -
--	ret = blk_mq_alloc_tag_set(set);
-+	ret = blk_mq_alloc_sq_tag_set(set, ops, queue_depth, set_flags);
- 	if (ret)
- 		return ERR_PTR(ret);
+-	/*
+-	 * Initialize the queue without an elevator. device_add_disk() will do
+-	 * the initialization.
+-	 */
+-	q = blk_mq_init_allocated_queue(set, uninit_q, false);
+-	if (IS_ERR(q))
+-		blk_cleanup_queue(uninit_q);
 -
- 	q = blk_mq_init_queue(set);
--	if (IS_ERR(q)) {
-+	if (IS_ERR(q))
- 		blk_mq_free_tag_set(set);
--		return q;
--	}
--
++	q->queuedata = queuedata;
++	ret = blk_mq_init_allocated_queue(set, q);
++	if (ret) {
++		blk_cleanup_queue(q);
++		return ERR_PTR(ret);
++	}
  	return q;
  }
- EXPORT_SYMBOL(blk_mq_init_sq_queue);
-@@ -3589,6 +3577,22 @@ int blk_mq_alloc_tag_set(struct blk_mq_tag_set *set)
+ EXPORT_SYMBOL_GPL(blk_mq_init_queue_data);
+@@ -3273,9 +3270,8 @@ static void blk_mq_realloc_hw_ctxs(struct blk_mq_tag_set *set,
+ 	mutex_unlock(&q->sysfs_lock);
  }
- EXPORT_SYMBOL(blk_mq_alloc_tag_set);
  
-+/* allocate and initialize a tagset for a simple single-queue device */
-+int blk_mq_alloc_sq_tag_set(struct blk_mq_tag_set *set,
-+		const struct blk_mq_ops *ops, unsigned int queue_depth,
-+		unsigned int set_flags)
-+{
-+	memset(set, 0, sizeof(*set));
-+	set->ops = ops;
-+	set->nr_hw_queues = 1;
-+	set->nr_maps = 1;
-+	set->queue_depth = queue_depth;
-+	set->numa_node = NUMA_NO_NODE;
-+	set->flags = set_flags;
-+	return blk_mq_alloc_tag_set(set);
-+}
-+EXPORT_SYMBOL_GPL(blk_mq_alloc_sq_tag_set);
-+
- void blk_mq_free_tag_set(struct blk_mq_tag_set *set)
+-struct request_queue *blk_mq_init_allocated_queue(struct blk_mq_tag_set *set,
+-						  struct request_queue *q,
+-						  bool elevator_init)
++int blk_mq_init_allocated_queue(struct blk_mq_tag_set *set,
++		struct request_queue *q)
  {
- 	int i, j;
+ 	/* mark the queue as mq asap */
+ 	q->mq_ops = set->ops;
+@@ -3325,11 +3321,7 @@ struct request_queue *blk_mq_init_allocated_queue(struct blk_mq_tag_set *set,
+ 	blk_mq_init_cpu_queues(q, set->nr_hw_queues);
+ 	blk_mq_add_queue_tag_set(set, q);
+ 	blk_mq_map_swqueue(q);
+-
+-	if (elevator_init)
+-		elevator_init_mq(q);
+-
+-	return q;
++	return 0;
+ 
+ err_hctxs:
+ 	kfree(q->queue_hw_ctx);
+@@ -3340,7 +3332,7 @@ struct request_queue *blk_mq_init_allocated_queue(struct blk_mq_tag_set *set,
+ 	q->poll_cb = NULL;
+ err_exit:
+ 	q->mq_ops = NULL;
+-	return ERR_PTR(-ENOMEM);
++	return -ENOMEM;
+ }
+ EXPORT_SYMBOL(blk_mq_init_allocated_queue);
+ 
+diff --git a/block/blk.h b/block/blk.h
+index 3440142f029b..d3fa47af3607 100644
+--- a/block/blk.h
++++ b/block/blk.h
+@@ -192,7 +192,6 @@ void blk_account_io_done(struct request *req, u64 now);
+ 
+ void blk_insert_flush(struct request *rq);
+ 
+-void elevator_init_mq(struct request_queue *q);
+ int elevator_switch_mq(struct request_queue *q,
+ 			      struct elevator_type *new_e);
+ void __elevator_exit(struct request_queue *, struct elevator_queue *);
+diff --git a/block/elevator.c b/block/elevator.c
+index 440699c28119..06e203426410 100644
+--- a/block/elevator.c
++++ b/block/elevator.c
+@@ -693,7 +693,7 @@ void elevator_init_mq(struct request_queue *q)
+ 		elevator_put(e);
+ 	}
+ }
+-
++EXPORT_SYMBOL_GPL(elevator_init_mq); /* only for dm-rq */
+ 
+ /*
+  * switch to new_e io scheduler. be careful not to introduce deadlocks -
+diff --git a/drivers/md/dm-rq.c b/drivers/md/dm-rq.c
+index 9c3bc3711b33..0dbd48cbdff9 100644
+--- a/drivers/md/dm-rq.c
++++ b/drivers/md/dm-rq.c
+@@ -530,7 +530,6 @@ static const struct blk_mq_ops dm_mq_ops = {
+ 
+ int dm_mq_init_request_queue(struct mapped_device *md, struct dm_table *t)
+ {
+-	struct request_queue *q;
+ 	struct dm_target *immutable_tgt;
+ 	int err;
+ 
+@@ -557,12 +556,10 @@ int dm_mq_init_request_queue(struct mapped_device *md, struct dm_table *t)
+ 	if (err)
+ 		goto out_kfree_tag_set;
+ 
+-	q = blk_mq_init_allocated_queue(md->tag_set, md->queue, true);
+-	if (IS_ERR(q)) {
+-		err = PTR_ERR(q);
++	err = blk_mq_init_allocated_queue(md->tag_set, md->queue);
++	if (err)
+ 		goto out_tag_set;
+-	}
+-
++	elevator_init_mq(md->queue);
+ 	return 0;
+ 
+ out_tag_set:
 diff --git a/include/linux/blk-mq.h b/include/linux/blk-mq.h
-index 359486940fa0..bb950fc669ef 100644
+index bb950fc669ef..73750b2838d2 100644
 --- a/include/linux/blk-mq.h
 +++ b/include/linux/blk-mq.h
-@@ -439,6 +439,9 @@ struct request_queue *blk_mq_init_sq_queue(struct blk_mq_tag_set *set,
- void blk_mq_unregister_dev(struct device *, struct request_queue *);
+@@ -429,9 +429,8 @@ enum {
+ struct request_queue *blk_mq_init_queue(struct blk_mq_tag_set *);
+ struct request_queue *blk_mq_init_queue_data(struct blk_mq_tag_set *set,
+ 		void *queuedata);
+-struct request_queue *blk_mq_init_allocated_queue(struct blk_mq_tag_set *set,
+-						  struct request_queue *q,
+-						  bool elevator_init);
++int blk_mq_init_allocated_queue(struct blk_mq_tag_set *set,
++		struct request_queue *q);
+ struct request_queue *blk_mq_init_sq_queue(struct blk_mq_tag_set *set,
+ 						const struct blk_mq_ops *ops,
+ 						unsigned int queue_depth,
+diff --git a/include/linux/elevator.h b/include/linux/elevator.h
+index dcb2f9022c1d..783ecb3cb77a 100644
+--- a/include/linux/elevator.h
++++ b/include/linux/elevator.h
+@@ -120,6 +120,7 @@ extern void elv_merged_request(struct request_queue *, struct request *,
+ extern bool elv_attempt_insert_merge(struct request_queue *, struct request *);
+ extern struct request *elv_former_request(struct request_queue *, struct request *);
+ extern struct request *elv_latter_request(struct request_queue *, struct request *);
++void elevator_init_mq(struct request_queue *q);
  
- int blk_mq_alloc_tag_set(struct blk_mq_tag_set *set);
-+int blk_mq_alloc_sq_tag_set(struct blk_mq_tag_set *set,
-+		const struct blk_mq_ops *ops, unsigned int queue_depth,
-+		unsigned int set_flags);
- void blk_mq_free_tag_set(struct blk_mq_tag_set *set);
- 
- void blk_mq_flush_plug_list(struct blk_plug *plug, bool from_schedule);
+ /*
+  * io scheduler registration
 -- 
 2.30.2
 
