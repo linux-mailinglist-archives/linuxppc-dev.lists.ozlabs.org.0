@@ -1,76 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FD1D397B65
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Jun 2021 22:47:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A7F3397DE9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 03:09:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fvkkg377Nz2ysq
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 06:47:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FvrXG2gJSz3bw0
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 11:09:18 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=paul-moore-com.20150623.gappssmtp.com header.i=@paul-moore-com.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=a7qjHsKT;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=merlin.20170209 header.b=MwZdZDEB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=paul-moore.com
- (client-ip=2a00:1450:4864:20::529; helo=mail-ed1-x529.google.com;
- envelope-from=paul@paul-moore.com; receiver=<UNKNOWN>)
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1234::107; helo=merlin.infradead.org;
+ envelope-from=geoff@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=paul-moore-com.20150623.gappssmtp.com
- header.i=@paul-moore-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=a7qjHsKT; dkim-atps=neutral
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com
- [IPv6:2a00:1450:4864:20::529])
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=merlin.20170209 header.b=MwZdZDEB; 
+ dkim-atps=neutral
+Received: from merlin.infradead.org (merlin.infradead.org
+ [IPv6:2001:8b0:10b:1234::107])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FvkkC3ZRDz2yjJ
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Jun 2021 06:47:29 +1000 (AEST)
-Received: by mail-ed1-x529.google.com with SMTP id dj8so189727edb.6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Jun 2021 13:47:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=tTNIBzYtON70L8W0i/P9C9vefa2RWt2U+aq2jjrO0Nw=;
- b=a7qjHsKTaqa3sWrWdZ5Gh9wO8wYHYyLL1wPg/UcCE7WulKyadI3xcZi7iFuzK0u1Ce
- IkSY1GVr6EEc8j3nyeg4ebI1UMrBkZhJ4VQc/fi9aoa2EltyNevU04GfDQ5ppE1IbA8B
- o/MByBqkj1YE9ylhArUoRCj0NUDDOzKmyG/jCGVAasz7umc4Dr4Pd/t6Eyy7zlYWliQq
- 4ArqLMbKLawihtbRZaRj6YUhJNMF+wo/VNZBxG78x6i56+dgCU1YWPsuNdHxjOGUGzvK
- bHh6Y91IphMkFIda1nqGEdYuSLZ6RDd4IGBJvo9dx8WnU2kK8sOcCJ9N7gn+NW/tjSkf
- aJhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=tTNIBzYtON70L8W0i/P9C9vefa2RWt2U+aq2jjrO0Nw=;
- b=W7gFZ+wqAkxYFJSr5IXjgsumvp8R7iBLalSwQbZ5Y6qj+tmY5HEaU6M7ahw1gLHpBw
- PXidkY+kDHwVSnBZTyObeiRMLx/gomioHG7JG+NlV3p2ZDpSAfgzvHz0cNJ6XO8AaPmd
- +P3ABTA4S7B9qmriX9KtHlBFHFdfrQegY+hYX7drK0MfhdjijarrOsWpbdqhHnX1cJ/f
- DZJneWOU/teibjYRTtYvPIi+gzopxK01+1YIilwGb9tQFRa8kPaAK+k4aCnA+qxaTuNU
- 6pAN0Gy0LR1lyFkoM27ybRSAiJ+nWL5AXuVgGYtbkrLTrgpCy6SZTV5HarflQsa40Rnf
- mTRw==
-X-Gm-Message-State: AOAM530d0CcNoDFtOYTag37lutetn2Ko3NcocovRli+IPuzJPlVXIUTa
- 73zbQMdF1YnW8q9X9EsPSL4eQZ1i++7p2cq20SdU
-X-Google-Smtp-Source: ABdhPJwU7tcZXG/Pm25o7D7/1VUxLtr+XnMQYQgFFvc5bxqJe1U1fscpsf+4cHErKF2itcPOfxYxe2ICVSz4Nvu1ZGs=
-X-Received: by 2002:aa7:d84e:: with SMTP id f14mr21519965eds.12.1622580442071; 
- Tue, 01 Jun 2021 13:47:22 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210517092006.803332-1-omosnace@redhat.com>
- <CAHC9VhTasra0tU=bKwVqAwLRYaC+hYakirRz0Mn5jbVMuDkwrA@mail.gmail.com>
- <01135120-8bf7-df2e-cff0-1d73f1f841c3@iogearbox.net>
- <CAHC9VhR-kYmMA8gsqkiL5=poN9FoL-uCyx1YOLCoG2hRiUBYug@mail.gmail.com>
- <c7c2d7e1-e253-dce0-d35c-392192e4926e@iogearbox.net>
- <CAHC9VhS1XRZjKcTFgH1+n5uA-CeT+9BeSP5jvT2+RE5ougLpUg@mail.gmail.com>
- <2e541bdc-ae21-9a07-7ac7-6c6a4dda09e8@iogearbox.net>
-In-Reply-To: <2e541bdc-ae21-9a07-7ac7-6c6a4dda09e8@iogearbox.net>
-From: Paul Moore <paul@paul-moore.com>
-Date: Tue, 1 Jun 2021 16:47:10 -0400
-Message-ID: <CAHC9VhT464vr9sWxqY3PRB4DAccz=LvRMLgWBsSViWMR0JJvOQ@mail.gmail.com>
-Subject: Re: [PATCH v2] lockdown,selinux: avoid bogus SELinux lockdown
- permission checks
-To: Daniel Borkmann <daniel@iogearbox.net>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FvrWH0t1rz2ykM
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Jun 2021 11:08:23 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=merlin.20170209; h=Date:Cc:To:Subject:From:Message-Id:
+ Sender:Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:
+ Content-ID:Content-Description:In-Reply-To:References;
+ bh=bGOXjl45VUTLODftVWfvoDeh/WmFH4qkX4gdmJCwboE=; b=MwZdZDEBWLvsxNu63dXFfadjzI
+ UUC6D+QJdvHbBXZmzlzcPeQRRWXbSoxaGNzGaiK6EgcEGn7NCH/b3oECeDyWbpJN0C71Bm5FLkI0k
+ Bbxtp1r5GDFA1hdf4phWW0IbjCgubbYTT/5afqoeMakmLqmKBb6frqcQFq/s1VHpm0D53au72visK
+ 313/jkjcvkWVXMEF7YQo/N0polJ7d8yzEchJLw21/EOxLydRqxudlYqyhq9jyYuF/FOy5/yzfMVOp
+ /xdDLG9/KVs4XUzvdn/Y9bq8bowaxfAHsvbXM0oF8PSIjpXRpSyToW9gvjZVouDG26wB0neVJh1rX
+ Na0xe95A==;
+Received: from geoff by merlin.infradead.org with local (Exim 4.94.2 #2 (Red
+ Hat Linux)) id 1loFMh-00102Z-RX; Wed, 02 Jun 2021 01:08:12 +0000
+Message-Id: <cover.1622577339.git.geoff@infradead.org>
+From: Geoff Levand <geoff@infradead.org>
+Patch-Date: Tue, 1 Jun 2021 12:55:39 -0700
+Subject: [PATCH 0/5] DMA fixes for PS3 device drivers
+To: Michael Ellerman <mpe@ellerman.id.au>, David@lists.ozlabs.org,
+	S.Miller@lists.ozlabs.org,
+	" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>"@lists.ozlabs.org
+Date: Wed, 02 Jun 2021 01:08:11 +0000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,128 +58,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jolsa@redhat.com, selinux@vger.kernel.org, netdev@vger.kernel.org,
- Stephen Smalley <stephen.smalley.work@gmail.com>,
- Ondrej Mosnacek <omosnace@redhat.com>, Steven Rostedt <rostedt@goodmis.org>,
- James Morris <jmorris@namei.org>, Casey Schaufler <casey@schaufler-ca.com>,
- linux-security-module@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
- linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 31, 2021 at 4:24 AM Daniel Borkmann <daniel@iogearbox.net> wrote:
-> On 5/29/21 8:48 PM, Paul Moore wrote:
-> [...]
-> > Daniel's patch side steps that worry by just doing the lockdown
-> > permission check when the BPF program is loaded, but that isn't a
-> > great solution if the policy changes afterward.  I was hoping there
-> > might be some way to perform the permission check as needed, but the
-> > more I look the more that appears to be difficult, if not impossible
-> > (once again, corrections are welcome).
->
-> Your observation is correct, will try to clarify below a bit.
->
-> > I'm now wondering if the right solution here is to make use of the LSM
-> > notifier mechanism.  I'm not yet entirely sure if this would work from
-> > a BPF perspective, but I could envision the BPF subsystem registering
-> > a LSM notification callback via register_blocking_lsm_notifier(), see
-> > if Infiniband code as an example, and then when the LSM(s) policy
-> > changes the BPF subsystem would get a notification and it could
-> > revalidate the existing BPF programs and take block/remove/whatever
-> > the offending BPF programs.  This obviously requires a few things
-> > which I'm not sure are easily done, or even possible:
-> >
-> > 1. Somehow the BPF programs would need to be "marked" at
-> > load/verification time with respect to their lockdown requirements so
-> > that decisions can be made later.  Perhaps a flag in bpf_prog_aux?
-> >
-> > 2. While it looks like it should be possible to iterate over all of
-> > the loaded BPF programs in the LSM notifier callback via
-> > idr_for_each(prog_idr, ...), it is not clear to me if it is possible
-> > to safely remove, or somehow disable, BPF programs once they have been
-> > loaded.  Hopefully the BPF folks can help answer that question.
-> >
-> > 3. Disabling of BPF programs might be preferable to removing them
-> > entirely on LSM policy changes as it would be possible to make the
-> > lockdown state less restrictive at a future point in time, allowing
-> > for the BPF program to be executed again.  Once again, not sure if
-> > this is even possible.
->
-> Part of why this gets really complex/impossible is that BPF programs in
-> the kernel are reference counted from various sides, be it that there
-> are references from user space to them (fd from application, BPF fs, or
-> BPF links), hooks where they are attached to as well as tail call maps
-> where one BPF prog calls into another. There is currently also no global
-> infra of some sort where you could piggy back to atomically keep track of
-> all the references in a list or such. And the other thing is that BPF progs
-> have no ownership that is tied to a specific task after they have been
-> loaded. Meaning, once they are loaded into the kernel by an application
-> and attached to a specific hook, they can remain there potentially until
-> reboot of the node, so lifecycle of the user space application != lifecycle
-> of the BPF program.
+Hi,
 
-I don't think the disjoint lifecycle or lack of task ownership is a
-deal breaker from a LSM perspective as the LSMs can stash whatever
-info they need in the security pointer during the program allocation
-hook, e.g. selinux_bpf_prog_alloc() saves the security domain which
-allocates/loads the BPF program.
+This is a set of patches that fix various DMA related problems in the PS3
+device drivers, and add better error checking and improved message logging.
 
-The thing I'm worried about would be the case where a LSM policy
-change requires that an existing BPF program be removed or disabled.
-I'm guessing based on the refcounting that there is not presently a
-clean way to remove a BPF program from the system, but is this
-something we could resolve?  If we can't safely remove a BPF program
-from the system, can we replace/swap it with an empty/NULL BPF
-program?
+The gelic network driver had a number of problems and most of the changes are
+in it's sources.
 
-> It's maybe best to compare this aspect to kernel modules in the sense that
-> you have an application that loads it into the kernel (insmod, etc, where
-> you could also enforce lockdown signature check), but after that, they can
-> be managed by other entities as well (implicitly refcounted from kernel,
-> removed by other applications, etc).
+Please consider.
 
-Well, I guess we could consider BPF programs as out-of-tree kernel
-modules that potentially do very odd and dangerous things, e.g.
-performing access control checks *inside* access control checks ...
-but yeah, I get your point at a basic level, I just think that
-comparing BPF programs to kernel modules is a not-so-great comparison
-in general.
+-Geoff
 
-> My understanding of the lockdown settings are that users have options
-> to select/enforce a lockdown level of CONFIG_LOCK_DOWN_KERNEL_FORCE_{INTEGRITY,
-> CONFIDENTIALITY} at compilation time, they have a lockdown={integrity|
-> confidentiality} boot-time parameter, /sys/kernel/security/lockdown,
-> and then more fine-grained policy via 59438b46471a ("security,lockdown,selinux:
-> implement SELinux lockdown"). Once you have set a global policy level,
-> you cannot revert back to a less strict mode.
+The following changes since commit 8124c8a6b35386f73523d27eacb71b5364a68c4c:
 
-I don't recall there being anything in the SELinux lockdown support
-that prevents a newly loaded policy from allowing a change in the
-lockdown level, either stricter or more permissive, for a given
-domain.  Looking quickly at the code, that still seems to be the case.
+  Linux 5.13-rc4 (2021-05-30 11:58:25 -1000)
 
-The SELinux lockdown access controls function independently of the
-global build and runtime lockdown configuration.
+are available in the Git repository at:
 
-> So the SELinux policy is
-> specifically tied around tasks to further restrict applications in respect
-> to the global policy.
+  git://git.kernel.org/pub/scm/linux/kernel/git/geoff/ps3-linux.git for-merge-gelic
 
-As a reminder, there is no guarantee that both the SELinux and
-lockdown LSM are both loaded and active at runtime, it is possible
-that only SELinux is active.  If SELinux is the only LSM enforcing
-lockdown access controls, there is no global lockdown setting, it is
-determined per-domain.
+for you to fetch changes up to 4adcfc9735bf8d1987d2bc82e914be154f2ffad8:
 
-> I presume that would mean for those users that majority
-> of tasks have the confidentiality option set via SELinux with just a few
-> necessary using the integrity global policy. So overall the enforcing
-> option when BPF program is loaded is the only really sensible option to
-> me given only there we have the valid current task where such policy can
-> be enforced.
+  net/ps3_gelic: Cleanups, improve logging (2021-06-01 12:27:43 -0700)
 
---
-paul moore
-www.paul-moore.com
+----------------------------------------------------------------
+Geoff Levand (5):
+      powerpc/ps3: Add CONFIG_PS3_VERBOSE_RESULT option
+      powerpc/ps3: Warn on PS3 device errors
+      powerpc/ps3: Add dma_mask to ps3_dma_region
+      net/ps3_gelic: Add gelic_descr structures
+      net/ps3_gelic: Cleanups, improve logging
+
+ arch/powerpc/include/asm/ps3.h               |   4 +-
+ arch/powerpc/platforms/ps3/Kconfig           |   9 +
+ arch/powerpc/platforms/ps3/mm.c              |  12 +
+ arch/powerpc/platforms/ps3/system-bus.c      |   9 +-
+ drivers/net/ethernet/toshiba/ps3_gelic_net.c | 968 +++++++++++++++------------
+ drivers/net/ethernet/toshiba/ps3_gelic_net.h |  24 +-
+ drivers/ps3/ps3-vuart.c                      |   2 +-
+ drivers/ps3/ps3av.c                          |  22 +-
+ 8 files changed, 598 insertions(+), 452 deletions(-)
+
+-- 
+2.25.1
+
