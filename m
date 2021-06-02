@@ -1,51 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EFB739814F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 08:42:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 480843981BA
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 08:55:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fvzww5kjBz30Bc
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 16:42:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fw0Cd4413z3btt
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 16:55:25 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=BI35Myps;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+e38fb55258da4e18a096+6492+infradead.org+hch@bombadil.srs.infradead.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=bombadil.20210309 header.b=BI35Myps; 
+ dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FvzwY2CH3z2xdM
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Jun 2021 16:42:17 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4FvzwL6RhKzB4DW;
- Wed,  2 Jun 2021 08:42:10 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id H9CVo9TAdrt0; Wed,  2 Jun 2021 08:42:10 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FvzwL5ZXSzB4DS;
- Wed,  2 Jun 2021 08:42:10 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B3D578B7D3;
- Wed,  2 Jun 2021 08:42:10 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id vz9d4AYzKUVS; Wed,  2 Jun 2021 08:42:10 +0200 (CEST)
-Received: from po15610vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 695928B771;
- Wed,  2 Jun 2021 08:42:10 +0200 (CEST)
-Received: by po15610vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 3147364064; Wed,  2 Jun 2021 06:42:10 +0000 (UTC)
-Message-Id: <169310e08152aa1d96c979770291d165ec6896ae.1622616032.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH] powerpc/44x: Implement Kernel Userspace Exec Protection (KUEP)
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Wed,  2 Jun 2021 06:42:10 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fw0BY6nNtz2y6F
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Jun 2021 16:54:28 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+ MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+ Content-ID:Content-Description:In-Reply-To:References;
+ bh=GNz/Hu0V5gogSB4co5eOK6xP1gnr1qh2/gA3KL3Dtxg=; b=BI35MypsV5ujI5j9LOM8ffKO3O
+ PPR2xJ+smyVf1yBqrB22os7cElpqLd6BGSF+LAFux1FWghPPtYUh71lumcyGTaH+GySHaNY4TdhS/
+ AV4vc/JIVMat63n8MdcbvA03bNT/GrAfqDiF7ptTNcphdfH4Gmp4s374edZksMq4302Y5G3rKEHTv
+ zkjAvx0fvVtUm2B/6XY5TSPrkqQmnos5aAqRHBWaQFtoEeGLkMCCmRvVNoipNM5EQcjvqqNXgrxv+
+ Uv5yjt1xCW0uwaWbb4vvYLNz6VSHAG5NmTU3avE4Jh6rqZRN77aCtw5TtcxU3fh9zr5QCwFWGydth
+ c/21yB+g==;
+Received: from shol69.static.otenet.gr ([83.235.170.67] helo=localhost)
+ by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1loKlB-0025F3-IY; Wed, 02 Jun 2021 06:53:50 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: Jens Axboe <axboe@kernel.dk>
+Subject: simplify gendisk and request_queue allocation for blk-mq based drivers
+Date: Wed,  2 Jun 2021 09:53:15 +0300
+Message-Id: <20210602065345.355274-1-hch@lst.de>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,95 +62,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Justin Sanders <justin@coraid.com>, Vignesh Raghavendra <vigneshr@ti.com>,
+ Mike Snitzer <snitzer@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, virtualization@lists.linux-foundation.org,
+ dm-devel@redhat.com, "Md. Haris Iqbal" <haris.iqbal@ionos.com>,
+ Miquel Raynal <miquel.raynal@bootlin.com>, Jack Wang <jinpu.wang@ionos.com>,
+ Tim Waugh <tim@cyberelk.net>, linux-s390@vger.kernel.org,
+ Alex Dubov <oakad@yahoo.com>, Richard Weinberger <richard@nod.at>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, xen-devel@lists.xenproject.org,
+ Ilya Dryomov <idryomov@gmail.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Josef Bacik <josef@toxicpanda.com>,
+ Denis Efremov <efremov@linux.com>, nbd@other.debian.org,
+ linux-block@vger.kernel.org, ceph-devel@vger.kernel.org,
+ Maxim Levitsky <maximlevitsky@gmail.com>, Geoff Levand <geoff@infradead.org>,
+ linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org,
+ =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Powerpc 44x has two bits for exec protection in TLBs: one
-for user (UX) and one for superviser (SX).
+Hi all,
 
-Clear SX on user pages in TLB miss handlers to provide KUEP.
+this series is the scond part of cleaning up lifetimes and allocation of
+the gendisk and request_queue structure.  It adds a new interface to
+allocate the disk and queue together for blk based drivers, and uses that
+in all drivers that do not have any caveats in their gendisk and
+request_queue lifetime rules.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/include/asm/nohash/32/mmu-44x.h |  1 +
- arch/powerpc/kernel/head_44x.S               |  8 ++++++++
- arch/powerpc/mm/nohash/44x.c                 | 13 +++++++++++++
- arch/powerpc/platforms/Kconfig.cputype       |  1 +
- 4 files changed, 23 insertions(+)
-
-diff --git a/arch/powerpc/include/asm/nohash/32/mmu-44x.h b/arch/powerpc/include/asm/nohash/32/mmu-44x.h
-index 2d92a39d8f2e..43ceca128531 100644
---- a/arch/powerpc/include/asm/nohash/32/mmu-44x.h
-+++ b/arch/powerpc/include/asm/nohash/32/mmu-44x.h
-@@ -113,6 +113,7 @@ typedef struct {
- 
- /* patch sites */
- extern s32 patch__tlb_44x_hwater_D, patch__tlb_44x_hwater_I;
-+extern s32 patch__tlb_44x_kuep, patch__tlb_47x_kuep;
- 
- #endif /* !__ASSEMBLY__ */
- 
-diff --git a/arch/powerpc/kernel/head_44x.S b/arch/powerpc/kernel/head_44x.S
-index 5c106ac36626..2cfb496df615 100644
---- a/arch/powerpc/kernel/head_44x.S
-+++ b/arch/powerpc/kernel/head_44x.S
-@@ -532,6 +532,10 @@ finish_tlb_load_44x:
- 	andi.	r10,r12,_PAGE_USER		/* User page ? */
- 	beq	1f				/* nope, leave U bits empty */
- 	rlwimi	r11,r11,3,26,28			/* yes, copy S bits to U */
-+#ifdef CONFIG_PPC_KUEP
-+0:	rlwinm	r11,r11,0,~PPC44x_TLB_SX	/* Clear SX if User page */
-+	patch_site 0b, patch__tlb_44x_kuep
-+#endif
- 1:	tlbwe	r11,r13,PPC44x_TLB_ATTRIB	/* Write ATTRIB */
- 
- 	/* Done...restore registers and get out of here.
-@@ -743,6 +747,10 @@ finish_tlb_load_47x:
- 	andi.	r10,r12,_PAGE_USER		/* User page ? */
- 	beq	1f				/* nope, leave U bits empty */
- 	rlwimi	r11,r11,3,26,28			/* yes, copy S bits to U */
-+#ifdef CONFIG_PPC_KUEP
-+0:	rlwinm	r11,r11,0,~PPC47x_TLB2_SX	/* Clear SX if User page */
-+	patch_site 0b, patch__tlb_47x_kuep
-+#endif
- 1:	tlbwe	r11,r13,2
- 
- 	/* Done...restore registers and get out of here.
-diff --git a/arch/powerpc/mm/nohash/44x.c b/arch/powerpc/mm/nohash/44x.c
-index 3d6ae7c72412..7da6d1e9fc9b 100644
---- a/arch/powerpc/mm/nohash/44x.c
-+++ b/arch/powerpc/mm/nohash/44x.c
-@@ -239,3 +239,16 @@ void __init mmu_init_secondary(int cpu)
- 	}
- }
- #endif /* CONFIG_SMP */
-+
-+#ifdef CONFIG_PPC_KUEP
-+void __init setup_kuep(bool disabled)
-+{
-+	if (disabled)
-+		patch_instruction_site(&patch__tlb_44x_kuep, ppc_inst(PPC_RAW_NOP()));
-+	else
-+		pr_info("Activating Kernel Userspace Execution Prevention\n");
-+
-+	if (IS_ENABLED(CONFIG_PPC_47x) && disabled)
-+		patch_instruction_site(&patch__tlb_47x_kuep, ppc_inst(PPC_RAW_NOP()));
-+}
-+#endif
-diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-index 885140055b7a..226c821f1fcd 100644
---- a/arch/powerpc/platforms/Kconfig.cputype
-+++ b/arch/powerpc/platforms/Kconfig.cputype
-@@ -61,6 +61,7 @@ config 44x
- 	select 4xx_SOC
- 	select HAVE_PCI
- 	select PHYS_64BIT
-+	select PPC_HAVE_KUEP
- 
- endchoice
- 
--- 
-2.25.0
-
+Diffstat:
+ block/blk-mq.c                      |   91 +++++++++++++++-------------------
+ block/blk.h                         |    1 
+ block/elevator.c                    |    2 
+ drivers/block/amiflop.c             |   16 +-----
+ drivers/block/aoe/aoeblk.c          |   33 ++++--------
+ drivers/block/aoe/aoedev.c          |    3 -
+ drivers/block/ataflop.c             |   16 +-----
+ drivers/block/floppy.c              |   20 +------
+ drivers/block/loop.c                |   19 ++-----
+ drivers/block/nbd.c                 |   53 +++++++------------
+ drivers/block/null_blk/main.c       |   11 +---
+ drivers/block/paride/pcd.c          |   19 +++----
+ drivers/block/paride/pd.c           |   30 ++++-------
+ drivers/block/paride/pf.c           |   18 ++----
+ drivers/block/ps3disk.c             |   36 +++++--------
+ drivers/block/rbd.c                 |   52 ++++++-------------
+ drivers/block/rnbd/rnbd-clt.c       |   35 +++----------
+ drivers/block/sunvdc.c              |   47 ++++-------------
+ drivers/block/swim.c                |   34 +++++-------
+ drivers/block/swim3.c               |   33 +++++-------
+ drivers/block/sx8.c                 |   23 ++------
+ drivers/block/virtio_blk.c          |   26 ++-------
+ drivers/block/xen-blkfront.c        |   96 ++++++++++++++----------------------
+ drivers/block/z2ram.c               |   15 +----
+ drivers/cdrom/gdrom.c               |   45 +++++++---------
+ drivers/md/dm-rq.c                  |    9 +--
+ drivers/memstick/core/ms_block.c    |   25 +++------
+ drivers/memstick/core/mspro_block.c |   26 ++++-----
+ drivers/mtd/mtd_blkdevs.c           |   48 ++++++++----------
+ drivers/mtd/ubi/block.c             |   68 ++++++++++---------------
+ drivers/s390/block/scm_blk.c        |   21 ++-----
+ include/linux/blk-mq.h              |   24 ++++++---
+ include/linux/elevator.h            |    1 
+ 33 files changed, 386 insertions(+), 610 deletions(-)
