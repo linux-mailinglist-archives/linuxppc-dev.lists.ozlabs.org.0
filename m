@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0E4D3982A3
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 09:06:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 102F13982A8
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 09:07:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fw0Sv1V6Hz2xvc
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 17:06:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fw0TM2V3Lz3c0v
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 17:07:19 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=uyZhEjeE;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=0A/jGm6O;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,33 +19,33 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=uyZhEjeE; 
+ header.s=bombadil.20210309 header.b=0A/jGm6O; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fw0Df74Z6z3c5l
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Jun 2021 16:56:18 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fw0Dk4LfCz3c6g
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Jun 2021 16:56:22 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=t0ZfpA7/b1tuSB9Qdmm+6Pkt4GtuM/+pFYP7xY239G0=; b=uyZhEjeEW990KkF+Rai7xjxEUV
- 5bWN+uUzqHopzatrtAIE4foiriDdqCyVhGFR6vrU02JeY+SQh7ATWFUZXA3UpyDJcgDYSDLhQXP9V
- RbuXa4k+DVNm7KNjqg4cbdIBM1Va/6aZbjJtQTnqImkNPJ0qKqmBir0MJFXK6gK5PvPfEwCxj1xmD
- dJgu840EtdLj1HHThtV37MaOh3u42wXScgCL7y9GVONAhUdX9SrS6vntka8Pn6bww45YDmPKVYARg
- M/UkenAPSpkgf5JK1kNXiSwoq6fWJ8kR9bHE+sA5X31QgA+XlZSlp6YoKzXnGG50xif3YpnMjuZQG
- qCj5Hh3A==;
+ bh=e/ctmVcBKo8/4TfSYThwuDhurHZGsQmtrWLVmP8rYA8=; b=0A/jGm6O4Kj2j/Kx7dvigliFHC
+ rITdmfIP63MHFDu3WSFM5d7dMu7+beFsioI4GrDpda176/3PUgnVrUbqyRWbSjWdcuAiJqiob1gTK
+ AvRYkCVCw9w56bk5jObu58cLFiy6YDR/IPuribWTRblB+Qy/UxnevwGEDkt/f/knnTFZf15Y8vlCM
+ 5ocB4AhVAL+iOilDAuQ8GJXKzc8ZFMa3OISnsDLeHTuB1dBage0GQubfEEJs2dxaTysO0wL6PENPG
+ HsubMhTFqnBjdPbq87DlkaqfHQIsjrwpF/ip3GpPNqk0nBPScEi1aAKtroJznPZbqZYyddYJMUb2K
+ Z/qjGhrw==;
 Received: from shol69.static.otenet.gr ([83.235.170.67] helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1loKnE-0026TF-Pp; Wed, 02 Jun 2021 06:55:57 +0000
+ id 1loKnJ-0026XD-03; Wed, 02 Jun 2021 06:56:01 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 27/30] scm_blk: use blk_mq_alloc_disk and blk_cleanup_disk
-Date: Wed,  2 Jun 2021 09:53:42 +0300
-Message-Id: <20210602065345.355274-28-hch@lst.de>
+Subject: [PATCH 28/30] amiflop: use blk_mq_alloc_disk and blk_cleanup_disk
+Date: Wed,  2 Jun 2021 09:53:43 +0300
+Message-Id: <20210602065345.355274-29-hch@lst.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210602065345.355274-1-hch@lst.de>
 References: <20210602065345.355274-1-hch@lst.de>
@@ -90,69 +90,46 @@ request_queue allocation.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- drivers/s390/block/scm_blk.c | 21 ++++++---------------
- 1 file changed, 6 insertions(+), 15 deletions(-)
+ drivers/block/amiflop.c | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/s390/block/scm_blk.c b/drivers/s390/block/scm_blk.c
-index a4f6f2e62b1d..88cba6212ee2 100644
---- a/drivers/s390/block/scm_blk.c
-+++ b/drivers/s390/block/scm_blk.c
-@@ -462,12 +462,12 @@ int scm_blk_dev_setup(struct scm_blk_dev *bdev, struct scm_device *scmdev)
- 	if (ret)
- 		goto out;
- 
--	rq = blk_mq_init_queue(&bdev->tag_set);
--	if (IS_ERR(rq)) {
--		ret = PTR_ERR(rq);
-+	bdev->gendisk = blk_mq_alloc_disk(&bdev->tag_set, scmdev);
-+	if (IS_ERR(bdev->gendisk)) {
-+		ret = PTR_ERR(bdev->gendisk);
- 		goto out_tag;
- 	}
--	bdev->rq = rq;
-+	rq = bdev->rq = bdev->gendisk->queue;
- 	nr_max_blk = min(scmdev->nr_max_block,
- 			 (unsigned int) (PAGE_SIZE / sizeof(struct aidaw)));
- 
-@@ -477,17 +477,11 @@ int scm_blk_dev_setup(struct scm_blk_dev *bdev, struct scm_device *scmdev)
- 	blk_queue_flag_set(QUEUE_FLAG_NONROT, rq);
- 	blk_queue_flag_clear(QUEUE_FLAG_ADD_RANDOM, rq);
- 
--	bdev->gendisk = alloc_disk(SCM_NR_PARTS);
--	if (!bdev->gendisk) {
--		ret = -ENOMEM;
--		goto out_queue;
--	}
--	rq->queuedata = scmdev;
- 	bdev->gendisk->private_data = scmdev;
- 	bdev->gendisk->fops = &scm_blk_devops;
--	bdev->gendisk->queue = rq;
- 	bdev->gendisk->major = scm_major;
- 	bdev->gendisk->first_minor = devindex * SCM_NR_PARTS;
-+	bdev->gendisk->minors = SCM_NR_PARTS;
- 
- 	len = snprintf(bdev->gendisk->disk_name, DISK_NAME_LEN, "scm");
- 	if (devindex > 25) {
-@@ -504,8 +498,6 @@ int scm_blk_dev_setup(struct scm_blk_dev *bdev, struct scm_device *scmdev)
- 	device_add_disk(&scmdev->dev, bdev->gendisk, NULL);
- 	return 0;
- 
--out_queue:
--	blk_cleanup_queue(rq);
- out_tag:
- 	blk_mq_free_tag_set(&bdev->tag_set);
- out:
-@@ -516,9 +508,8 @@ int scm_blk_dev_setup(struct scm_blk_dev *bdev, struct scm_device *scmdev)
- void scm_blk_dev_cleanup(struct scm_blk_dev *bdev)
+diff --git a/drivers/block/amiflop.c b/drivers/block/amiflop.c
+index 9e2d0c6a3877..8b1714021498 100644
+--- a/drivers/block/amiflop.c
++++ b/drivers/block/amiflop.c
+@@ -1781,15 +1781,13 @@ static int fd_alloc_disk(int drive, int system)
  {
- 	del_gendisk(bdev->gendisk);
--	blk_cleanup_queue(bdev->gendisk->queue);
-+	blk_cleanup_disk(bdev->gendisk);
- 	blk_mq_free_tag_set(&bdev->tag_set);
--	put_disk(bdev->gendisk);
+ 	struct gendisk *disk;
+ 
+-	disk = alloc_disk(1);
+-	if (!disk)
+-		goto out;
+-	disk->queue = blk_mq_init_queue(&unit[drive].tag_set);
+-	if (IS_ERR(disk->queue))
+-		goto out_put_disk;
++	disk = blk_mq_alloc_disk(&unit[drive].tag_set, NULL);
++	if (IS_ERR(disk))
++		return PTR_ERR(disk);
+ 
+ 	disk->major = FLOPPY_MAJOR;
+ 	disk->first_minor = drive + system;
++	disk->minors = 1;
+ 	disk->fops = &floppy_fops;
+ 	disk->events = DISK_EVENT_MEDIA_CHANGE;
+ 	if (system)
+@@ -1802,12 +1800,6 @@ static int fd_alloc_disk(int drive, int system)
+ 	unit[drive].gendisk[system] = disk;
+ 	add_disk(disk);
+ 	return 0;
+-
+-out_put_disk:
+-	disk->queue = NULL;
+-	put_disk(disk);
+-out:
+-	return -ENOMEM;
  }
  
- void scm_blk_set_available(struct scm_blk_dev *bdev)
+ static int fd_alloc_drive(int drive)
 -- 
 2.30.2
 
