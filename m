@@ -1,98 +1,105 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98759399499
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jun 2021 22:35:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0267B3995C1
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Jun 2021 00:11:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FwLPs6bqgz3092
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Jun 2021 06:35:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FwNXS1wlpz308t
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Jun 2021 08:11:20 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RlndGsIB;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PPnd7cbd;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PPnd7cbd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
+ smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=trix@redhat.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=RlndGsIB; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=PPnd7cbd; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=PPnd7cbd; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [170.10.133.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FwLPK4ncRz2yXf
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Jun 2021 06:35:01 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 152KXtwV003966; Wed, 2 Jun 2021 16:34:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=WR4LexuXoTCZFyWiZjqC0zplJ1d+4BlNbURpiGO6aqs=;
- b=RlndGsIBvJlCN8kgc33q9zMJqHUuR+wag5L/7ALiAynCuR7apsehaTMQvOs40noP26BQ
- RakvlWKbBMGGMlUMuf8pfWvX2La3N36yi0liu8xoOAAU0FujMQh3f7KmED9zkOWJNFz7
- ZAuZw5ka4o/HnL2QEWu0VmcQDF9z1a8DEUawrrAEtKJ+T3e2fPzmNLvvUbHvvTjUHx76
- 3Xv/E6jOqjC+l64K7RlNzUlY5J7x2zfpOcRwv81AX1dxWYMw4Dd9FwrOQQELnUTdSxdu
- yfDCGxN9ifbed9kPYlYIjScc8s30Uc8LUhwV0ndL6vB6ibMtGuqrLW4nBXAq8Kz2zlag KQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 38xfkctfjv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Jun 2021 16:34:58 -0400
-Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 152KYvmA009756;
- Wed, 2 Jun 2021 16:34:57 -0400
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
- [169.55.91.170])
- by mx0a-001b2d01.pphosted.com with ESMTP id 38xfkctfjf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Jun 2021 16:34:57 -0400
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 152KT6nW030367;
- Wed, 2 Jun 2021 20:34:56 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma02wdc.us.ibm.com with ESMTP id 38ud89tdd2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Jun 2021 20:34:56 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 152KYu6B24904144
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 2 Jun 2021 20:34:56 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1CA7CAC065;
- Wed,  2 Jun 2021 20:34:56 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 57BE6AC064;
- Wed,  2 Jun 2021 20:34:55 +0000 (GMT)
-Received: from localhost (unknown [9.211.44.140])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTPS;
- Wed,  2 Jun 2021 20:34:54 +0000 (GMT)
-From: Fabiano Rosas <farosas@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
-Subject: Re: [PATCH] KVM: PPC: Book3S HV: Fix TLB management on SMT8 POWER9
- and POWER10 processors
-In-Reply-To: <20210602040441.3984352-1-npiggin@gmail.com>
-References: <20210602040441.3984352-1-npiggin@gmail.com>
-Date: Wed, 02 Jun 2021 17:34:52 -0300
-Message-ID: <875yywvwcz.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FwNWt0lSbz2xfw
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Jun 2021 08:10:47 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1622671842;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=KUjPsHJ5PuL6/0to9YlDMTSAeVkKxMJlKUQySExiimw=;
+ b=PPnd7cbdSdZnyQkwBUNBpTBXHrFVLM+FxRphCu+vSx/o390jD3up818s70L0FDeSJFzUWz
+ vchmeJqF6JLDSZEBxivSYcIaC03yTfHdmGFpPtZBtVTJLZS/fzblZoS35YQrlE5JuI7ieZ
+ gpfD2pPPSf4RPSro6t9R3OczFVQttlA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1622671842;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=KUjPsHJ5PuL6/0to9YlDMTSAeVkKxMJlKUQySExiimw=;
+ b=PPnd7cbdSdZnyQkwBUNBpTBXHrFVLM+FxRphCu+vSx/o390jD3up818s70L0FDeSJFzUWz
+ vchmeJqF6JLDSZEBxivSYcIaC03yTfHdmGFpPtZBtVTJLZS/fzblZoS35YQrlE5JuI7ieZ
+ gpfD2pPPSf4RPSro6t9R3OczFVQttlA=
+Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com
+ [209.85.161.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-388-3fvU7sA4MomEUz6SkDaHcA-1; Wed, 02 Jun 2021 18:10:40 -0400
+X-MC-Unique: 3fvU7sA4MomEUz6SkDaHcA-1
+Received: by mail-oo1-f72.google.com with SMTP id
+ b9-20020a4a87890000b0290248cb841124so178027ooi.4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Jun 2021 15:10:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-transfer-encoding
+ :content-language;
+ bh=KUjPsHJ5PuL6/0to9YlDMTSAeVkKxMJlKUQySExiimw=;
+ b=ttxFHjAYZfNsTX1BB0nW8tCehQ+Ld1yxvGAWZ5ukpeHvfVNO2UqgazD0by1TKf/08M
+ s3+8l3A07otC/MI3s+yma1dWbdtPMgaMqWWrwX/O3dmTuxccvZF4KNEXp9c8Mz48Tw8k
+ NhS5akHZimBM93uNhjDsFResREnU2+Vlt1OfUXpTIHORh781qBf35dBuQMpBzVnIL0MV
+ 3fIbya4gMemor/GSHE+o4rXENbgzKrpFByk1Ze30fimZUrKaIl61e2szQyANYnJYQt8K
+ 91ZqDq35/IQlUaJTO0BMLWIXEVBd0ItjHnDHepb3+9+7rKwXGHctHwMtWuqaTqXwSjDG
+ i+xA==
+X-Gm-Message-State: AOAM530elzMz45nFkG+IM9Mt/Kzlt0okg2Njy7eK18LboI08M95/6nqN
+ 42XfbQbwfV7YuGhH3T1p4jApNZEIUBtrmMehA7X6nw/9pOT4EG05Crj3/pdT7OK1ETQO5qwgyxg
+ fjwR2HiGBmCfANCBmZZCbZuKiqQ==
+X-Received: by 2002:a4a:250e:: with SMTP id g14mr26331503ooa.31.1622671840186; 
+ Wed, 02 Jun 2021 15:10:40 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJz3zxkPypJY+pMoZE8TmBBmrm3L1q7RwDYe8CB03JX/l9KFF+IfYbxpLYjT9JpPttLssjAZEg==
+X-Received: by 2002:a4a:250e:: with SMTP id g14mr26331490ooa.31.1622671840004; 
+ Wed, 02 Jun 2021 15:10:40 -0700 (PDT)
+Received: from localhost.localdomain (075-142-250-213.res.spectrum.com.
+ [75.142.250.213])
+ by smtp.gmail.com with ESMTPSA id 15sm283172oij.26.2021.06.02.15.10.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 02 Jun 2021 15:10:39 -0700 (PDT)
+Subject: Re: [PATCH] powerpc/8xx: select CPM1 for MPC8XXFADS
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, mpe@ellerman.id.au,
+ benh@kernel.crashing.org, paulus@samba.org
+References: <20210601175304.2634549-1-trix@redhat.com>
+ <50ed000a-c1af-8552-9d35-771b3bc131e5@csgroup.eu>
+From: Tom Rix <trix@redhat.com>
+Message-ID: <d50f61b0-e165-b3d3-d278-ef0514ddccc0@redhat.com>
+Date: Wed, 2 Jun 2021 15:10:37 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: HJj4FdsWh6kbQ0-tHnr7-SlX0FnoNEQ0
-X-Proofpoint-ORIG-GUID: aM5Qy0dbzY7ALDs7Yu-xJZlzUSKiwrMn
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-06-02_10:2021-06-02,
- 2021-06-02 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 lowpriorityscore=0
- spamscore=0 bulkscore=0 malwarescore=0 mlxlogscore=999 suspectscore=0
- clxscore=1011 adultscore=0 priorityscore=1501 impostorscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104190000
- definitions=main-2106020129
+In-Reply-To: <50ed000a-c1af-8552-9d35-771b3bc131e5@csgroup.eu>
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=trix@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,140 +111,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>,
- Suraj Jitindar Singh <sjitindarsingh@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
 
-> From: Suraj Jitindar Singh <sjitindarsingh@gmail.com>
+On 6/2/21 12:44 AM, Christophe Leroy wrote:
 >
-> The POWER9 vCPU TLB management code assumes all threads in a core share
-> a TLB, and that TLBIEL execued by one thread will invalidate TLBs for
-> all threads. This is not the case for SMT8 capable POWER9 and POWER10
-> (big core) processors, where the TLB is split between groups of threads.
-> This results in TLB multi-hits, random data corruption, etc.
 >
-> Fix this by introducing cpu_first_tlb_thread_sibling etc., to determine
-> which siblings share TLBs, and use that in the guest TLB flushing code.
+> Le 01/06/2021 à 19:53, trix@redhat.com a écrit :
+>> From: Tom Rix <trix@redhat.com>
+>>
+>> With MPC8XXFADS, there is this linker error
+>> ppc64-linux-ld: m8xx_setup.o: in function `cpm_cascade':
+>> m8xx_setup.c: undefined reference to `cpm_get_irq'
 >
-> [npiggin@gmail.com: add changelog and comment]
+> It looks like this config item is stale, it doesn't build any board 
+> support, there is no define_machine() for this config item, no file is 
+> linked to that config item.
 >
-> Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> I think you should just remove that item from the possible choices.
+>
+Yes, this looks like a dead config and removing it is what to do.
 
-Reviewed-by: Fabiano Rosas <farosas@linux.ibm.com>
+I withdraw this change.
 
-> ---
->  arch/powerpc/include/asm/cputhreads.h | 30 +++++++++++++++++++++++++++
->  arch/powerpc/kvm/book3s_hv.c          | 13 ++++++------
->  arch/powerpc/kvm/book3s_hv_builtin.c  |  2 +-
->  arch/powerpc/kvm/book3s_hv_rm_mmu.c   |  2 +-
->  4 files changed, 39 insertions(+), 8 deletions(-)
+I am looking at sweeping the tree of dead configs.
+
+Up a dir, my finder shows
+
+PPC_MMU_NOHASH_32
+
+is another (maybe) dead config.
+
+Thanks for pointing this out,
+
+Tom
+
+> Christophe
 >
-> diff --git a/arch/powerpc/include/asm/cputhreads.h b/arch/powerpc/include/asm/cputhreads.h
-> index 98c8bd155bf9..b167186aaee4 100644
-> --- a/arch/powerpc/include/asm/cputhreads.h
-> +++ b/arch/powerpc/include/asm/cputhreads.h
-> @@ -98,6 +98,36 @@ static inline int cpu_last_thread_sibling(int cpu)
->  	return cpu | (threads_per_core - 1);
->  }
 >
-> +/*
-> + * tlb_thread_siblings are siblings which share a TLB. This is not
-> + * architected, is not something a hypervisor could emulate and a future
-> + * CPU may change behaviour even in compat mode, so this should only be
-> + * used on PowerNV, and only with care.
-> + */
-> +static inline int cpu_first_tlb_thread_sibling(int cpu)
-> +{
-> +	if (cpu_has_feature(CPU_FTR_ARCH_300) && (threads_per_core == 8))
-> +		return cpu & ~0x6;	/* Big Core */
-> +	else
-> +		return cpu_first_thread_sibling(cpu);
-> +}
-> +
-> +static inline int cpu_last_tlb_thread_sibling(int cpu)
-> +{
-> +	if (cpu_has_feature(CPU_FTR_ARCH_300) && (threads_per_core == 8))
-> +		return cpu | 0x6;	/* Big Core */
-> +	else
-> +		return cpu_last_thread_sibling(cpu);
-> +}
-> +
-> +static inline int cpu_tlb_thread_sibling_step(void)
-> +{
-> +	if (cpu_has_feature(CPU_FTR_ARCH_300) && (threads_per_core == 8))
-> +		return 2;		/* Big Core */
-> +	else
-> +		return 1;
-> +}
-> +
->  static inline u32 get_tensr(void)
->  {
->  #ifdef	CONFIG_BOOKE
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index 28a80d240b76..0a8398a63f80 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -2657,7 +2657,7 @@ static void radix_flush_cpu(struct kvm *kvm, int cpu, struct kvm_vcpu *vcpu)
->  	cpumask_t *cpu_in_guest;
->  	int i;
+>>
+>> cpm_get_irq() is conditionally complied by CPM1
+>> So add a select, like the other plaforms
+>>
+>> Signed-off-by: Tom Rix <trix@redhat.com>
+>> ---
+>>   arch/powerpc/platforms/8xx/Kconfig | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/arch/powerpc/platforms/8xx/Kconfig 
+>> b/arch/powerpc/platforms/8xx/Kconfig
+>> index 60cc5b537a98..919082cdb2f1 100644
+>> --- a/arch/powerpc/platforms/8xx/Kconfig
+>> +++ b/arch/powerpc/platforms/8xx/Kconfig
+>> @@ -10,6 +10,7 @@ choice
+>>     config MPC8XXFADS
+>>       bool "FADS"
+>> +    select CPM1
+>>     config MPC86XADS
+>>       bool "MPC86XADS"
+>>
 >
-> -	cpu = cpu_first_thread_sibling(cpu);
-> +	cpu = cpu_first_tlb_thread_sibling(cpu);
->  	if (nested) {
->  		cpumask_set_cpu(cpu, &nested->need_tlb_flush);
->  		cpu_in_guest = &nested->cpu_in_guest;
-> @@ -2671,9 +2671,10 @@ static void radix_flush_cpu(struct kvm *kvm, int cpu, struct kvm_vcpu *vcpu)
->  	 * the other side is the first smp_mb() in kvmppc_run_core().
->  	 */
->  	smp_mb();
-> -	for (i = 0; i < threads_per_core; ++i)
-> -		if (cpumask_test_cpu(cpu + i, cpu_in_guest))
-> -			smp_call_function_single(cpu + i, do_nothing, NULL, 1);
-> +	for (i = cpu; i <= cpu_last_tlb_thread_sibling(cpu);
-> +					i += cpu_tlb_thread_sibling_step())
-> +		if (cpumask_test_cpu(i, cpu_in_guest))
-> +			smp_call_function_single(i, do_nothing, NULL, 1);
->  }
->
->  static void kvmppc_prepare_radix_vcpu(struct kvm_vcpu *vcpu, int pcpu)
-> @@ -2704,8 +2705,8 @@ static void kvmppc_prepare_radix_vcpu(struct kvm_vcpu *vcpu, int pcpu)
->  	 */
->  	if (prev_cpu != pcpu) {
->  		if (prev_cpu >= 0 &&
-> -		    cpu_first_thread_sibling(prev_cpu) !=
-> -		    cpu_first_thread_sibling(pcpu))
-> +		    cpu_first_tlb_thread_sibling(prev_cpu) !=
-> +		    cpu_first_tlb_thread_sibling(pcpu))
->  			radix_flush_cpu(kvm, prev_cpu, vcpu);
->  		if (nested)
->  			nested->prev_cpu[vcpu->arch.nested_vcpu_id] = pcpu;
-> diff --git a/arch/powerpc/kvm/book3s_hv_builtin.c b/arch/powerpc/kvm/book3s_hv_builtin.c
-> index 7a0e33a9c980..3edc25c89092 100644
-> --- a/arch/powerpc/kvm/book3s_hv_builtin.c
-> +++ b/arch/powerpc/kvm/book3s_hv_builtin.c
-> @@ -800,7 +800,7 @@ void kvmppc_check_need_tlb_flush(struct kvm *kvm, int pcpu,
->  	 * Thus we make all 4 threads use the same bit.
->  	 */
->  	if (cpu_has_feature(CPU_FTR_ARCH_300))
-> -		pcpu = cpu_first_thread_sibling(pcpu);
-> +		pcpu = cpu_first_tlb_thread_sibling(pcpu);
->
->  	if (nested)
->  		need_tlb_flush = &nested->need_tlb_flush;
-> diff --git a/arch/powerpc/kvm/book3s_hv_rm_mmu.c b/arch/powerpc/kvm/book3s_hv_rm_mmu.c
-> index 7af7c70f1468..407dbf21bcbc 100644
-> --- a/arch/powerpc/kvm/book3s_hv_rm_mmu.c
-> +++ b/arch/powerpc/kvm/book3s_hv_rm_mmu.c
-> @@ -67,7 +67,7 @@ static int global_invalidates(struct kvm *kvm)
->  		 * so use the bit for the first thread to represent the core.
->  		 */
->  		if (cpu_has_feature(CPU_FTR_ARCH_300))
-> -			cpu = cpu_first_thread_sibling(cpu);
-> +			cpu = cpu_first_tlb_thread_sibling(cpu);
->  		cpumask_clear_cpu(cpu, &kvm->arch.need_tlb_flush);
->  	}
+
