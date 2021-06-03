@@ -1,67 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4816D39A4BA
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Jun 2021 17:38:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08E3839A4C3
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Jun 2021 17:38:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fwqm62JQQz30CT
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jun 2021 01:37:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FwqmZ2Kk8z3bxS
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jun 2021 01:38:22 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Sczm7Uha;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=XGhrfqnz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::e33;
- helo=mail-vs1-xe33.google.com; envelope-from=ulf.hansson@linaro.org;
+ smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::930;
+ helo=mail-ua1-x930.google.com; envelope-from=ulf.hansson@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=Sczm7Uha; dkim-atps=neutral
-Received: from mail-vs1-xe33.google.com (mail-vs1-xe33.google.com
- [IPv6:2607:f8b0:4864:20::e33])
+ header.s=google header.b=XGhrfqnz; dkim-atps=neutral
+Received: from mail-ua1-x930.google.com (mail-ua1-x930.google.com
+ [IPv6:2607:f8b0:4864:20::930])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fwqlb69tHz2yx9
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fwqlb6Lhzz2yxq
  for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Jun 2021 01:37:29 +1000 (AEST)
-Received: by mail-vs1-xe33.google.com with SMTP id j15so3222580vsf.2
+Received: by mail-ua1-x930.google.com with SMTP id g34so3526447uah.8
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 03 Jun 2021 08:37:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=+W0QahdA5jm5lLp4qGqziVkevJrOYYIsAeli4hbSoMY=;
- b=Sczm7Uhat9CAttKCKONsBvTvpdWX5VANaO58Cd0mJFcJ+A28Gj9YspGmhSWIpVtNS9
- gufvY+CGT5FXDIQfjOQ4ExwQIrmSjUqzpGxTG/ZkK/nXRMIOjYsW6gd0+0ljDlvbLbq6
- AyHgMcG1V7VrDrAancwHixbwlfPPPcOtQ/Us++pps4NpXbaz33l8+avCCapAkCFya/10
- FcaqevmvQJz8RurkVjboQlMdJ4KLmCFgJ9aWml7eHxoV4e7eWIKwWiCmbJjrhvsDE5K2
- PLLnqagHSU8ORkIhfE1C9Sx6ZNkln7FGogf+yyT7tKXsIRL7oAHDTXDC0cZ4GcZV2dc7
- 4ZRQ==
+ :cc; bh=7DKVf+GiS9951bpd4cfEBh88PiRutTQ//wVEud26id8=;
+ b=XGhrfqnzBbfnTVSNkFDv5GHmpnKX09udhfIYlIGvsHf5udWupM3hEeaCuAp1/iGcK2
+ itxazCeDLeGnN0Ew9V7mjQKrXGASjKXLT43xef2dS4qB5N1wZq329ew5d1FZXKKcqiVw
+ 6FD/vr0CrXQkvA5Vx5CUZuiBjtgVFz1ZbiUU7kgR3MEWuPhMcO948V0XjU30zv2QSu9a
+ tohz+jrjUWOtrbk55SyLep3Y8Ie2TFo0EIpc+U1g5ZdabSEhCf2ga/7pzz9IJem82LbC
+ xz7dKg0/t3XaDdcBysnSaVg/DwjADlBkyj4crHUSmvNFlYRf/JXspkWoLbMUskTXooPD
+ 5/eQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=+W0QahdA5jm5lLp4qGqziVkevJrOYYIsAeli4hbSoMY=;
- b=eX4Kr7yrLR806goIntiSmezlBbI/l4xMZCBcqDFWzPmaQ03ySwzstoYFmd+kkZIgJ9
- 9yKoL4uc6hRitsyA/ngVOkUbBG4/08rSxCMjxCeFIvVL1NEts5wyoR+dGAqJoLpZ/2GG
- 07dZ6IqeNFEMn1e/dT3J84vyZxxuIpRgZCVqpxiC3CB/c1ZxEfCzZDTt1Uem5M781GsM
- MRxhuwY7Bm26QjRoN+01XZGFU7JhualMc13oUiekSRh16lmCoTEvY2WPIJTWKFL8aPgP
- gCURbRk+rGutm83fUk3g6KwkhMP1fyYADSslznLRRYgW9ZevdvpIl7Sk7/OYPpqsO7C9
- KeHw==
-X-Gm-Message-State: AOAM531LA74N1QxHN8sCfGFRV7LvFyg3jJlHwf3DvFA/CIaDEdnUs4GB
- j3Y3TwJEG5rFzb8+D3Bmh+8Y61+06syfHIAJm5Ol6g==
-X-Google-Smtp-Source: ABdhPJzM3LSrPJI4FkB0laodTTeEei+m50SowhpqaGtsNgUdvieHcvbYUQloJUD/a79xzNmd816023E4d1PORKHhPJg=
-X-Received: by 2002:a05:6102:3023:: with SMTP id
- v3mr756919vsa.19.1622734639015; 
- Thu, 03 Jun 2021 08:37:19 -0700 (PDT)
+ bh=7DKVf+GiS9951bpd4cfEBh88PiRutTQ//wVEud26id8=;
+ b=Z0ubtxLEkslZge1wkdDTi2WuDvOcsS3i4YZs6F5pL4t4r31/2IDG6pV1GyPk7qHOlO
+ mkijKvhZg56tvf8XjNanfRdvGY9WHsYuRJSKicKnMGGJK0PtTCUprGXgRVLwNNpvLT3J
+ JgDKTE1nsbzr++EKAO0WErMD9qkpVuubvCjaEoAoXgvQog73P/mMyseVvpo0PUbqGroK
+ Uw/tcT9LvW4eoF9vLB9pPKzRALiB7QIowi+wCanCpGWnS28g9WaECgyAEkFOK14dogkX
+ Azb9uI2HeMM3jYHdlJ2mJM2ICKPjgOuMAgLZSOl7atvrcvPk/odN4qVkpDMe3x2OYiPP
+ dzGw==
+X-Gm-Message-State: AOAM531ceVTMA4Oe6YZnLV32w8fhiOguE57BdqLoB6TvYXieM3fjIzH5
+ DknQJdfbh7mfs7zPwXNOugKZ3uyCVby1vxBBy16Tkg==
+X-Google-Smtp-Source: ABdhPJyc/MDglzj7ZqHuKLnfpO6vVPHNJJJjAhghObYaMjdvGQtxzeGy+jhwPjnJIpGZowWwyMtWi1MuD2fSyYUnfEo=
+X-Received: by 2002:ab0:7c5b:: with SMTP id d27mr407242uaw.15.1622734642855;
+ Thu, 03 Jun 2021 08:37:22 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210602065345.355274-1-hch@lst.de>
- <20210602065345.355274-8-hch@lst.de>
-In-Reply-To: <20210602065345.355274-8-hch@lst.de>
+ <20210602065345.355274-9-hch@lst.de>
+In-Reply-To: <20210602065345.355274-9-hch@lst.de>
 From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Thu, 3 Jun 2021 17:36:42 +0200
-Message-ID: <CAPDyKFoJssCnHv5tmG4vJJ9m0Zj5HkMEVYvnsjamvyemusZaUg@mail.gmail.com>
-Subject: Re: [PATCH 07/30] ms_block: use blk_mq_alloc_disk
+Date: Thu, 3 Jun 2021 17:36:45 +0200
+Message-ID: <CAPDyKFoh6HKx2rHHRXvw--Ou53TR2wLFGrKCDuetigxQ8QbvfQ@mail.gmail.com>
+Subject: Re: [PATCH 08/30] mspro: use blk_mq_alloc_disk
 To: Christoph Hellwig <hch@lst.de>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -110,27 +109,27 @@ Uffe
 
 
 > ---
->  drivers/memstick/core/ms_block.c | 25 ++++++++++---------------
->  1 file changed, 10 insertions(+), 15 deletions(-)
+>  drivers/memstick/core/mspro_block.c | 26 +++++++++++---------------
+>  1 file changed, 11 insertions(+), 15 deletions(-)
 >
-> diff --git a/drivers/memstick/core/ms_block.c b/drivers/memstick/core/ms_block.c
-> index 0bacf4268f83..dac258d12aca 100644
-> --- a/drivers/memstick/core/ms_block.c
-> +++ b/drivers/memstick/core/ms_block.c
-> @@ -2110,21 +2110,17 @@ static int msb_init_disk(struct memstick_dev *card)
->         if (msb->disk_id  < 0)
->                 return msb->disk_id;
+> diff --git a/drivers/memstick/core/mspro_block.c b/drivers/memstick/core/mspro_block.c
+> index cf7fe0d58ee7..22778d0e24f5 100644
+> --- a/drivers/memstick/core/mspro_block.c
+> +++ b/drivers/memstick/core/mspro_block.c
+> @@ -1205,21 +1205,17 @@ static int mspro_block_init_disk(struct memstick_dev *card)
+>         if (disk_id < 0)
+>                 return disk_id;
 >
-> -       msb->disk = alloc_disk(0);
+> -       msb->disk = alloc_disk(1 << MSPRO_BLOCK_PART_SHIFT);
 > -       if (!msb->disk) {
 > -               rc = -ENOMEM;
-> +       rc = blk_mq_alloc_sq_tag_set(&msb->tag_set, &msb_mq_ops, 2,
+> +       rc = blk_mq_alloc_sq_tag_set(&msb->tag_set, &mspro_mq_ops, 2,
 > +                                    BLK_MQ_F_SHOULD_MERGE);
 > +       if (rc)
 >                 goto out_release_id;
 > -       }
 >
-> -       msb->queue = blk_mq_init_sq_queue(&msb->tag_set, &msb_mq_ops, 2,
+> -       msb->queue = blk_mq_init_sq_queue(&msb->tag_set, &mspro_mq_ops, 2,
 > -                                               BLK_MQ_F_SHOULD_MERGE);
 > -       if (IS_ERR(msb->queue)) {
 > -               rc = PTR_ERR(msb->queue);
@@ -145,18 +144,22 @@ Uffe
 > -       msb->queue->queuedata = card;
 > +       msb->queue = msb->disk->queue;
 >
->         blk_queue_max_hw_sectors(msb->queue, MS_BLOCK_MAX_PAGES);
->         blk_queue_max_segments(msb->queue, MS_BLOCK_MAX_SEGS);
-> @@ -2135,7 +2131,6 @@ static int msb_init_disk(struct memstick_dev *card)
->         sprintf(msb->disk->disk_name, "msblk%d", msb->disk_id);
->         msb->disk->fops = &msb_bdops;
+>         blk_queue_max_hw_sectors(msb->queue, MSPRO_BLOCK_MAX_PAGES);
+>         blk_queue_max_segments(msb->queue, MSPRO_BLOCK_MAX_SEGS);
+> @@ -1228,10 +1224,10 @@ static int mspro_block_init_disk(struct memstick_dev *card)
+>
+>         msb->disk->major = major;
+>         msb->disk->first_minor = disk_id << MSPRO_BLOCK_PART_SHIFT;
+> +       msb->disk->minors = 1 << MSPRO_BLOCK_PART_SHIFT;
+>         msb->disk->fops = &ms_block_bdops;
+>         msb->usage_count = 1;
 >         msb->disk->private_data = msb;
 > -       msb->disk->queue = msb->queue;
 >
->         capacity = msb->pages_in_block * msb->logical_block_count;
->         capacity *= (msb->page_size / 512);
-> @@ -2155,8 +2150,8 @@ static int msb_init_disk(struct memstick_dev *card)
->         dbg("Disk added");
+>         sprintf(msb->disk->disk_name, "mspblk%d", disk_id);
+>
+> @@ -1247,8 +1243,8 @@ static int mspro_block_init_disk(struct memstick_dev *card)
+>         msb->active = 1;
 >         return 0;
 >
 > -out_put_disk:
@@ -164,8 +167,8 @@ Uffe
 > +out_free_tag_set:
 > +       blk_mq_free_tag_set(&msb->tag_set);
 >  out_release_id:
->         mutex_lock(&msb_disk_lock);
->         idr_remove(&msb_disk_idr, msb->disk_id);
+>         mutex_lock(&mspro_block_disk_lock);
+>         idr_remove(&mspro_block_disk_idr, disk_id);
 > --
 > 2.30.2
 >
