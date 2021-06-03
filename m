@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AD4B39A6B7
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Jun 2021 19:08:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E53C39A6BA
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Jun 2021 19:09:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fwsn33X7qz30BR
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jun 2021 03:08:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FwsnW53D2z3bxT
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jun 2021 03:09:19 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AP0A2u9v;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=I5Yjudvm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,32 +17,32 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=AP0A2u9v; 
+ header.s=k20201202 header.b=I5Yjudvm; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fwsmc3QVTz3004
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fwsmc3Ncdz3001
  for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Jun 2021 03:08:32 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 43D8161405;
- Thu,  3 Jun 2021 17:08:26 +0000 (UTC)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 93F9061402;
+ Thu,  3 Jun 2021 17:08:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1622740107;
- bh=9WxW4QTmRWs0rCdYI7UOG3Yi5cPw0dSS6Du7NcDGoz0=;
+ s=k20201202; t=1622740108;
+ bh=fe6+/LiFiMnPngT/JpTOFadQOWUmdRGhSDMYamPmmdA=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=AP0A2u9v83JkWHPpb75AJmWpDhaZt4OYb4ajwAsw6BO9/qKKqPBCCd2U/gJ8KpeSm
- V4zm4jgNZL3ALiFldzGr0uZlPfesIgo07UbayITk5+eJK0ApFnvCANlCzmGOr1zj1J
- nMxm6QTQuO3GySHf9+jwM7EX4yIJOHnU2leI190hsoWWxKceH6oxpU+/UpDYJ7/rkQ
- DkIrpFkjsoDEeU+6QA+c4nwDB6Yyo+AVPiMt7GVAD1IDLOyL7xIAKtdiUwPYJ36pKD
- 4EeFbbmF22iq/U4glETOCrDrAOvL1eOmQJmJApyugVVhBmJAujAIxXaPRYJVmR26VC
- KNpdMw3n4/jpw==
+ b=I5YjudvmfBMyi2RW/90T9SPkC/uzO9/ALTHK/jcHRA1f558khVSgKDbStgsvuYBY8
+ WiOdlb7Dqa2Is0XzAqRIsqLmQQzJIdZjMK59/AnYOIcTmS8sFv1+aWo9Hbc+jG/9vt
+ uZEdnzDUkspKIx+koAiH9krSlc/ZwnH6fzuKB5jilIiaoLuen7RC2qgl2cdTtcrtqt
+ cEXDrwzBefu3mynEfhJ+RVbp6w4lm2tkiTW/A+nlpgJuvEIs74aoomkrk5qItmOMr0
+ dtBV6B/LZ/uL5aoQ/9Efz9a/bVTHaiwjntNYKUIW8NJWCU3RN6vow9BAOMDZOd/7bB
+ Z/ALvp7YbYKXQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.12 42/43] powerpc/fsl: set fsl,
- i2c-erratum-a004447 flag for P2041 i2c controllers
-Date: Thu,  3 Jun 2021 13:07:32 -0400
-Message-Id: <20210603170734.3168284-42-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.12 43/43] powerpc/fsl: set fsl,
+ i2c-erratum-a004447 flag for P1010 i2c controllers
+Date: Thu,  3 Jun 2021 13:07:33 -0400
+Message-Id: <20210603170734.3168284-43-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210603170734.3168284-1-sashal@kernel.org>
 References: <20210603170734.3168284-1-sashal@kernel.org>
@@ -71,49 +71,40 @@ Sender: "Linuxppc-dev"
 
 From: Chris Packham <chris.packham@alliedtelesis.co.nz>
 
-[ Upstream commit 7adc7b225cddcfd0f346d10144fd7a3d3d9f9ea7 ]
+[ Upstream commit 19ae697a1e4edf1d755b413e3aa38da65e2db23b ]
 
-The i2c controllers on the P2040/P2041 have an erratum where the
-documented scheme for i2c bus recovery will not work (A-004447). A
-different mechanism is needed which is documented in the P2040 Chip
-Errata Rev Q (latest available at the time of writing).
+The i2c controllers on the P1010 have an erratum where the documented
+scheme for i2c bus recovery will not work (A-004447). A different
+mechanism is needed which is documented in the P1010 Chip Errata Rev L.
 
 Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
 Acked-by: Michael Ellerman <mpe@ellerman.id.au>
 Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/boot/dts/fsl/p2041si-post.dtsi | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ arch/powerpc/boot/dts/fsl/p1010si-post.dtsi | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/powerpc/boot/dts/fsl/p2041si-post.dtsi b/arch/powerpc/boot/dts/fsl/p2041si-post.dtsi
-index 872e4485dc3f..ddc018d42252 100644
---- a/arch/powerpc/boot/dts/fsl/p2041si-post.dtsi
-+++ b/arch/powerpc/boot/dts/fsl/p2041si-post.dtsi
-@@ -371,7 +371,23 @@ sdhc@114000 {
+diff --git a/arch/powerpc/boot/dts/fsl/p1010si-post.dtsi b/arch/powerpc/boot/dts/fsl/p1010si-post.dtsi
+index 1b4aafc1f6a2..9716a0484ecf 100644
+--- a/arch/powerpc/boot/dts/fsl/p1010si-post.dtsi
++++ b/arch/powerpc/boot/dts/fsl/p1010si-post.dtsi
+@@ -122,7 +122,15 @@ memory-controller@2000 {
  	};
  
- /include/ "qoriq-i2c-0.dtsi"
-+	i2c@118000 {
+ /include/ "pq3-i2c-0.dtsi"
++	i2c@3000 {
 +		fsl,i2c-erratum-a004447;
 +	};
 +
-+	i2c@118100 {
+ /include/ "pq3-i2c-1.dtsi"
++	i2c@3100 {
 +		fsl,i2c-erratum-a004447;
 +	};
 +
- /include/ "qoriq-i2c-1.dtsi"
-+	i2c@119000 {
-+		fsl,i2c-erratum-a004447;
-+	};
-+
-+	i2c@119100 {
-+		fsl,i2c-erratum-a004447;
-+	};
-+
- /include/ "qoriq-duart-0.dtsi"
- /include/ "qoriq-duart-1.dtsi"
- /include/ "qoriq-gpio-0.dtsi"
+ /include/ "pq3-duart-0.dtsi"
+ /include/ "pq3-espi-0.dtsi"
+ 	spi0: spi@7000 {
 -- 
 2.30.2
 
