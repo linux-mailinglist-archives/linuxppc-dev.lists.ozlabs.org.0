@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39261399DC5
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Jun 2021 11:29:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD777399DC8
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Jun 2021 11:29:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FwgZt4XGzz306N
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Jun 2021 19:29:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FwgbL6RdGz306q
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Jun 2021 19:29:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -14,39 +14,40 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FwgZY6CCcz2yRS
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Jun 2021 19:29:06 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FwgZf0fyBz2yyC
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Jun 2021 19:29:13 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4FwgZR3NMrzBCSt;
- Thu,  3 Jun 2021 11:29:03 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4FwgZS3RNjzBCVN;
+ Thu,  3 Jun 2021 11:29:04 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id Thj5r1GUQOvs; Thu,  3 Jun 2021 11:29:03 +0200 (CEST)
+ with ESMTP id yeQu4tRv2pFu; Thu,  3 Jun 2021 11:29:04 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FwgZR2VJ0zBCR5;
- Thu,  3 Jun 2021 11:29:03 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FwgZS2ZBRzBCP6;
+ Thu,  3 Jun 2021 11:29:04 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 36C578B849;
- Thu,  3 Jun 2021 11:29:03 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 33A9C8B849;
+ Thu,  3 Jun 2021 11:29:04 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id WiTeVHotEaS4; Thu,  3 Jun 2021 11:29:03 +0200 (CEST)
+ with ESMTP id E_hXpElEY8-L; Thu,  3 Jun 2021 11:29:04 +0200 (CEST)
 Received: from po15610vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id DB9348B848;
- Thu,  3 Jun 2021 11:29:02 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id DAA2C8B848;
+ Thu,  3 Jun 2021 11:29:03 +0200 (CEST)
 Received: by po15610vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id B0E246493B; Thu,  3 Jun 2021 09:29:02 +0000 (UTC)
-Message-Id: <4c54997edd3548fa54717915e7c6ebaf60f208c0.1622712515.git.christophe.leroy@csgroup.eu>
+ id B79346493B; Thu,  3 Jun 2021 09:29:03 +0000 (UTC)
+Message-Id: <a5d0759064f3831c6b88af49ef5d3b05ba1c4dad.1622712515.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <4c54997edd3548fa54717915e7c6ebaf60f208c0.1622712515.git.christophe.leroy@csgroup.eu>
+References: <4c54997edd3548fa54717915e7c6ebaf60f208c0.1622712515.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v3 1/6] powerpc/nohash: Refactor update of BDI2000 pointers in
- switch_mmu_context()
+Subject: [PATCH v3 2/6] powerpc/nohash: Convert set_context() to C
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Thu,  3 Jun 2021 09:29:02 +0000 (UTC)
+Date: Thu,  3 Jun 2021 09:29:03 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,208 +64,175 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Instead of duplicating the update of BDI2000 pointers in
-set_context(), do it directly from switch_mmu_context().
+ppc8xx already has set_context() in C.
+
+Other ones have it in assembly. The only thing it does is to
+write the context id into SPRN_PID.
+
+Do it in C.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
-v3: Do it only for nohash platforms, book3s/32 will have its own as part of converting switch_mmu_context() to C.
+v3: Fixed whitespace before tab
 ---
- arch/powerpc/kernel/head_40x.S       | 14 --------------
- arch/powerpc/kernel/head_44x.S       | 16 ----------------
- arch/powerpc/kernel/head_8xx.S       |  7 -------
- arch/powerpc/kernel/head_book3s_32.S |  6 ------
- arch/powerpc/kernel/head_fsl_booke.S | 16 ----------------
- arch/powerpc/mm/nohash/8xx.c         |  6 ------
- arch/powerpc/mm/nohash/mmu_context.c |  8 ++++++++
- arch/powerpc/mm/nohash/tlb_low.S     |  8 --------
- 8 files changed, 8 insertions(+), 73 deletions(-)
+ arch/powerpc/include/asm/mmu_context.h |  1 -
+ arch/powerpc/kernel/head_40x.S         |  7 -------
+ arch/powerpc/kernel/head_44x.S         |  5 -----
+ arch/powerpc/kernel/head_fsl_booke.S   |  5 -----
+ arch/powerpc/mm/nohash/8xx.c           | 25 -------------------------
+ arch/powerpc/mm/nohash/mmu_context.c   | 24 ++++++++++++++++++++++++
+ arch/powerpc/mm/nohash/tlb_low.S       |  5 -----
+ 7 files changed, 24 insertions(+), 48 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/mmu_context.h b/arch/powerpc/include/asm/mmu_context.h
+index 4bc45d3ed8b0..ef6df2681582 100644
+--- a/arch/powerpc/include/asm/mmu_context.h
++++ b/arch/powerpc/include/asm/mmu_context.h
+@@ -57,7 +57,6 @@ static inline bool mm_iommu_is_devmem(struct mm_struct *mm, unsigned long hpa,
+ static inline void mm_iommu_init(struct mm_struct *mm) { }
+ #endif
+ extern void switch_slb(struct task_struct *tsk, struct mm_struct *mm);
+-extern void set_context(unsigned long id, pgd_t *pgd);
+ 
+ #ifdef CONFIG_PPC_BOOK3S_64
+ extern void radix__switch_mmu_context(struct mm_struct *prev,
 diff --git a/arch/powerpc/kernel/head_40x.S b/arch/powerpc/kernel/head_40x.S
-index e1360b88b6cb..7ef1bbc23bed 100644
+index 7ef1bbc23bed..2717aa860cae 100644
 --- a/arch/powerpc/kernel/head_40x.S
 +++ b/arch/powerpc/kernel/head_40x.S
-@@ -703,14 +703,6 @@ _GLOBAL(abort)
+@@ -702,13 +702,6 @@ _GLOBAL(abort)
+         oris    r13,r13,DBCR0_RST_SYSTEM@h
          mtspr   SPRN_DBCR0,r13
  
- _GLOBAL(set_context)
+-_GLOBAL(set_context)
+-	sync
+-	mtspr	SPRN_PID,r3
+-	isync				/* Need an isync to flush shadow */
+-					/* TLBs after changing PID */
+-	blr
 -
--#ifdef CONFIG_BDI_SWITCH
--	/* Context switch the PTE pointer for the Abatron BDI2000.
--	 * The PGDIR is the second parameter.
--	 */
--	lis	r5, abatron_pteptrs@ha
--	stw	r4, abatron_pteptrs@l + 0x4(r5)
--#endif
- 	sync
- 	mtspr	SPRN_PID,r3
- 	isync				/* Need an isync to flush shadow */
-@@ -731,9 +723,3 @@ EXPORT_SYMBOL(empty_zero_page)
- 	.globl	swapper_pg_dir
- swapper_pg_dir:
- 	.space	PGD_TABLE_SIZE
--
--/* Room for two PTE pointers, usually the kernel and current user pointers
-- * to their respective root page table.
-- */
--abatron_pteptrs:
--	.space	8
+ /* We put a few things here that have to be page-aligned. This stuff
+  * goes at the beginning of the data segment, which is page-aligned.
+  */
 diff --git a/arch/powerpc/kernel/head_44x.S b/arch/powerpc/kernel/head_44x.S
-index 5c106ac36626..57509d90e409 100644
+index 57509d90e409..c5bec6a9864b 100644
 --- a/arch/powerpc/kernel/head_44x.S
 +++ b/arch/powerpc/kernel/head_44x.S
-@@ -781,15 +781,6 @@ _GLOBAL(__fixup_440A_mcheck)
+@@ -780,11 +780,6 @@ _GLOBAL(__fixup_440A_mcheck)
+ 	sync
  	blr
  
- _GLOBAL(set_context)
+-_GLOBAL(set_context)
+-	mtspr	SPRN_PID,r3
+-	isync			/* Force context change */
+-	blr
 -
--#ifdef CONFIG_BDI_SWITCH
--	/* Context switch the PTE pointer for the Abatron BDI2000.
--	 * The PGDIR is the second parameter.
--	 */
--	lis	r5, abatron_pteptrs@h
--	ori	r5, r5, abatron_pteptrs@l
--	stw	r4, 0x4(r5)
--#endif
- 	mtspr	SPRN_PID,r3
- 	isync			/* Force context change */
- 	blr
-@@ -1259,13 +1250,6 @@ EXPORT_SYMBOL(empty_zero_page)
- swapper_pg_dir:
- 	.space	PGD_TABLE_SIZE
- 
--/*
-- * Room for two PTE pointers, usually the kernel and current user pointers
-- * to their respective root page table.
-- */
--abatron_pteptrs:
--	.space	8
--
- #ifdef CONFIG_SMP
- 	.align	12
- temp_boot_stack:
-diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
-index 7d445e4342c0..817df9fe7fb3 100644
---- a/arch/powerpc/kernel/head_8xx.S
-+++ b/arch/powerpc/kernel/head_8xx.S
-@@ -804,10 +804,3 @@ EXPORT_SYMBOL(empty_zero_page)
- 	.globl	swapper_pg_dir
- swapper_pg_dir:
- 	.space	PGD_TABLE_SIZE
--
--/* Room for two PTE table pointers, usually the kernel and current user
-- * pointer to their respective root page table (pgdir).
-- */
--	.globl	abatron_pteptrs
--abatron_pteptrs:
--	.space	8
-diff --git a/arch/powerpc/kernel/head_book3s_32.S b/arch/powerpc/kernel/head_book3s_32.S
-index 326262030279..32c27dac9b80 100644
---- a/arch/powerpc/kernel/head_book3s_32.S
-+++ b/arch/powerpc/kernel/head_book3s_32.S
-@@ -1282,9 +1282,3 @@ EXPORT_SYMBOL(empty_zero_page)
- 	.globl	swapper_pg_dir
- swapper_pg_dir:
- 	.space	PGD_TABLE_SIZE
--
--/* Room for two PTE pointers, usually the kernel and current user pointers
-- * to their respective root page table.
-- */
--abatron_pteptrs:
--	.space	8
+ /*
+  * Init CPU state. This is called at boot time or for secondary CPUs
+  * to setup initial TLB entries, setup IVORs, etc...
 diff --git a/arch/powerpc/kernel/head_fsl_booke.S b/arch/powerpc/kernel/head_fsl_booke.S
-index a1a5c3f10dc4..590f34cc5bb2 100644
+index 590f34cc5bb2..ab718fd5e2a2 100644
 --- a/arch/powerpc/kernel/head_fsl_booke.S
 +++ b/arch/powerpc/kernel/head_fsl_booke.S
-@@ -986,15 +986,6 @@ _GLOBAL(abort)
+@@ -985,11 +985,6 @@ _GLOBAL(abort)
+ 	mtspr	SPRN_DBCR0,r13
  	isync
  
- _GLOBAL(set_context)
+-_GLOBAL(set_context)
+-	mtspr	SPRN_PID,r3
+-	isync			/* Force context change */
+-	blr
 -
--#ifdef CONFIG_BDI_SWITCH
--	/* Context switch the PTE pointer for the Abatron BDI2000.
--	 * The PGDIR is the second parameter.
--	 */
--	lis	r5, abatron_pteptrs@h
--	ori	r5, r5, abatron_pteptrs@l
--	stw	r4, 0x4(r5)
--#endif
- 	mtspr	SPRN_PID,r3
- 	isync			/* Force context change */
- 	blr
-@@ -1242,10 +1233,3 @@ EXPORT_SYMBOL(empty_zero_page)
- 	.globl	swapper_pg_dir
- swapper_pg_dir:
- 	.space	PGD_TABLE_SIZE
--
--/*
-- * Room for two PTE pointers, usually the kernel and current user pointers
-- * to their respective root page table.
-- */
--abatron_pteptrs:
--	.space	8
+ #ifdef CONFIG_SMP
+ /* When we get here, r24 needs to hold the CPU # */
+ 	.globl __secondary_start
 diff --git a/arch/powerpc/mm/nohash/8xx.c b/arch/powerpc/mm/nohash/8xx.c
-index 71bfdbedacee..f749acba5473 100644
+index f749acba5473..65e4c8b92657 100644
 --- a/arch/powerpc/mm/nohash/8xx.c
 +++ b/arch/powerpc/mm/nohash/8xx.c
-@@ -224,12 +224,6 @@ void set_context(unsigned long id, pgd_t *pgd)
- {
- 	s16 offset = (s16)(__pa(swapper_pg_dir));
+@@ -212,31 +212,6 @@ void __init setup_initial_memory_limit(phys_addr_t first_memblock_base,
+ 	memblock_set_current_limit(min_t(u64, first_memblock_size, SZ_32M));
+ }
  
--	/* Context switch the PTE pointer for the Abatron BDI2000.
--	 * The PGDIR is passed as second argument.
--	 */
--	if (IS_ENABLED(CONFIG_BDI_SWITCH))
--		abatron_pteptrs[1] = pgd;
+-/*
+- * Set up to use a given MMU context.
+- * id is context number, pgd is PGD pointer.
+- *
+- * We place the physical address of the new task page directory loaded
+- * into the MMU base register, and set the ASID compare register with
+- * the new "context."
+- */
+-void set_context(unsigned long id, pgd_t *pgd)
+-{
+-	s16 offset = (s16)(__pa(swapper_pg_dir));
 -
- 	/* Register M_TWB will contain base address of level 1 table minus the
- 	 * lower part of the kernel PGDIR base address, so that all accesses to
- 	 * level 1 table are done relative to lower part of kernel PGDIR base
+-	/* Register M_TWB will contain base address of level 1 table minus the
+-	 * lower part of the kernel PGDIR base address, so that all accesses to
+-	 * level 1 table are done relative to lower part of kernel PGDIR base
+-	 * address.
+-	 */
+-	mtspr(SPRN_M_TWB, __pa(pgd) - offset);
+-
+-	/* Update context */
+-	mtspr(SPRN_M_CASID, id - 1);
+-	/* sync */
+-	mb();
+-}
+-
+ #ifdef CONFIG_PPC_KUEP
+ void __init setup_kuep(bool disabled)
+ {
 diff --git a/arch/powerpc/mm/nohash/mmu_context.c b/arch/powerpc/mm/nohash/mmu_context.c
-index aac81c9f84a5..eae48635a9ac 100644
+index eae48635a9ac..75dafec50d19 100644
 --- a/arch/powerpc/mm/nohash/mmu_context.c
 +++ b/arch/powerpc/mm/nohash/mmu_context.c
-@@ -50,6 +50,12 @@
+@@ -264,6 +264,30 @@ static void context_check_map(void)
+ static void context_check_map(void) { }
+ #endif
  
- #include <mm/mmu_decl.h>
- 
-+/*
-+ * Room for two PTE table pointers, usually the kernel and current user
-+ * pointer to their respective root page table (pgdir).
-+ */
-+void *abatron_pteptrs[2];
++static void set_context(unsigned long id, pgd_t *pgd)
++{
++	if (IS_ENABLED(CONFIG_PPC_8xx)) {
++		s16 offset = (s16)(__pa(swapper_pg_dir));
 +
- /*
-  * The MPC8xx has only 16 contexts. We rotate through them on each task switch.
-  * A better way would be to keep track of tasks that own contexts, and implement
-@@ -357,6 +363,8 @@ void switch_mmu_context(struct mm_struct *prev, struct mm_struct *next,
- 
- 	/* Flick the MMU and release lock */
- 	pr_hardcont(" -> %d\n", id);
-+	if (IS_ENABLED(CONFIG_BDI_SWITCH))
-+		abatron_pteptrs[1] = next->pgd;
- 	set_context(id, next->pgd);
- 	raw_spin_unlock(&context_lock);
- }
++		/* Register M_TWB will contain base address of level 1 table minus the
++		 * lower part of the kernel PGDIR base address, so that all accesses to
++		 * level 1 table are done relative to lower part of kernel PGDIR base
++		 * address.
++		 */
++		mtspr(SPRN_M_TWB, __pa(pgd) - offset);
++
++		/* Update context */
++		mtspr(SPRN_M_CASID, id - 1);
++		/* sync */
++		mb();
++	} else {
++		if (IS_ENABLED(CONFIG_40x))
++			mb();	/* sync */
++		mtspr(SPRN_PID, id);
++		isync();
++	}
++}
++
+ void switch_mmu_context(struct mm_struct *prev, struct mm_struct *next,
+ 			struct task_struct *tsk)
+ {
 diff --git a/arch/powerpc/mm/nohash/tlb_low.S b/arch/powerpc/mm/nohash/tlb_low.S
-index 68797e072f55..b3d0f0127828 100644
+index b3d0f0127828..4613bf8e9aae 100644
 --- a/arch/powerpc/mm/nohash/tlb_low.S
 +++ b/arch/powerpc/mm/nohash/tlb_low.S
-@@ -362,14 +362,6 @@ _GLOBAL(_tlbivax_bcast)
+@@ -360,11 +360,6 @@ _GLOBAL(_tlbivax_bcast)
+ 	sync
+ 	wrtee	r10
  	blr
- 
- _GLOBAL(set_context)
--#ifdef CONFIG_BDI_SWITCH
--	/* Context switch the PTE pointer for the Abatron BDI2000.
--	 * The PGDIR is the second parameter.
--	 */
--	lis	r5, abatron_pteptrs@h
--	ori	r5, r5, abatron_pteptrs@l
--	stw	r4, 0x4(r5)
--#endif
- 	mtspr	SPRN_PID,r3
- 	isync			/* Force context change */
- 	blr
+-
+-_GLOBAL(set_context)
+-	mtspr	SPRN_PID,r3
+-	isync			/* Force context change */
+-	blr
+ #else
+ #error Unsupported processor type !
+ #endif
 -- 
 2.25.0
 
