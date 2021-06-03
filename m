@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FF57399CE9
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Jun 2021 10:43:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70658399CEB
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Jun 2021 10:43:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FwfZ20gwwz3cRJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Jun 2021 18:43:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FwfZM6Tqpz3cZl
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Jun 2021 18:43:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,39 +16,38 @@ Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FwfXF0sqtz3bpH
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Jun 2021 18:42:05 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FwfXK44mkz3082
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Jun 2021 18:42:09 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4FwfWn41qwzBC5V;
- Thu,  3 Jun 2021 10:41:41 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4FwfWp67N2zBC5K;
+ Thu,  3 Jun 2021 10:41:42 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id StS8y4DhYIag; Thu,  3 Jun 2021 10:41:41 +0200 (CEST)
+ with ESMTP id ZgV7NEuQinUX; Thu,  3 Jun 2021 10:41:42 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FwfWn38j4zBC5Z;
- Thu,  3 Jun 2021 10:41:41 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FwfWp5GnmzB306;
+ Thu,  3 Jun 2021 10:41:42 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 59A6A8B848;
- Thu,  3 Jun 2021 10:41:41 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 82AE18B84A;
+ Thu,  3 Jun 2021 10:41:42 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 3aiEZgVuAnGW; Thu,  3 Jun 2021 10:41:41 +0200 (CEST)
+ with ESMTP id PQUfnj1BGQSo; Thu,  3 Jun 2021 10:41:42 +0200 (CEST)
 Received: from po15610vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id F20738B767;
- Thu,  3 Jun 2021 10:41:40 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 047508B767;
+ Thu,  3 Jun 2021 10:41:42 +0200 (CEST)
 Received: by po15610vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id CBE4264BD2; Thu,  3 Jun 2021 08:41:40 +0000 (UTC)
-Message-Id: <ddc1cfd2ec8f3b2395c6a4d7f2b0c1aa1b1e64fb.1622708530.git.christophe.leroy@csgroup.eu>
+ id D37D464BD2; Thu,  3 Jun 2021 08:41:41 +0000 (UTC)
+Message-Id: <87be72023448dd4e476744ed279b8c04b8d08a1c.1622708530.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <cover.1622708530.git.christophe.leroy@csgroup.eu>
 References: <cover.1622708530.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v2 05/12] powerpc/32s: Simplify calculation of segment
- register content
+Subject: [PATCH v2 06/12] powerpc/32s: Initialise KUAP and KUEP in C
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Thu,  3 Jun 2021 08:41:40 +0000 (UTC)
+Date: Thu,  3 Jun 2021 08:41:41 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,78 +64,92 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-segment register has VSID on bits 8-31.
-Bits 4-7 are reserved, there is no requirement to set them to 0.
+In order to selectively activate KUAP and KUEP in a following patch,
+perform KUAP and KUEP initialisation in C.
 
-VSIDs are calculated from VSID of SR0 by adding 0x111.
-
-Even with highest possible VSID which would be 0xFFFFF0,
-adding 16 times 0x111 results in 0x1001100.
-
-So, the reserved bits are never overflowed, no need to clear
-the reserved bits after each calculation.
+Unlike PPC64, PPC32 doesn't have an early_setup_secondary(),
+so do it in start_secondary().
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/book3s/32/mmu-hash.h | 42 ++++++++++---------
- 1 file changed, 23 insertions(+), 19 deletions(-)
+ arch/powerpc/kernel/head_book3s_32.S | 6 ------
+ arch/powerpc/kernel/smp.c            | 4 ++++
+ arch/powerpc/mm/book3s32/kuap.c      | 6 ++++++
+ arch/powerpc/mm/book3s32/kuep.c      | 6 ++++++
+ 4 files changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/book3s/32/mmu-hash.h b/arch/powerpc/include/asm/book3s/32/mmu-hash.h
-index 583388399b1b..f5be185cbdf8 100644
---- a/arch/powerpc/include/asm/book3s/32/mmu-hash.h
-+++ b/arch/powerpc/include/asm/book3s/32/mmu-hash.h
-@@ -115,28 +115,32 @@ extern s32 patch__flush_hash_B;
- #include <asm/reg.h>
- #include <asm/task_size_32.h>
- 
--#define UPDATE_TWO_USER_SEGMENTS(n) do {		\
--	if (TASK_SIZE > ((n) << 28))			\
--		mtsr(val1, (n) << 28);			\
--	if (TASK_SIZE > (((n) + 1) << 28))		\
--		mtsr(val2, ((n) + 1) << 28);		\
--	val1 = (val1 + 0x222) & 0xf0ffffff;		\
--	val2 = (val2 + 0x222) & 0xf0ffffff;		\
--} while (0)
-+static __always_inline void update_user_segment(u32 n, u32 val)
-+{
-+	if (n << 28 < TASK_SIZE)
-+		mtsr(val + n * 0x111, n << 28);
-+}
- 
- static __always_inline void update_user_segments(u32 val)
+diff --git a/arch/powerpc/kernel/head_book3s_32.S b/arch/powerpc/kernel/head_book3s_32.S
+index db0e2dc25f86..0b82672ff7a6 100644
+--- a/arch/powerpc/kernel/head_book3s_32.S
++++ b/arch/powerpc/kernel/head_book3s_32.S
+@@ -934,12 +934,6 @@ _GLOBAL(load_segment_registers)
+ 	li	r0, NUM_USER_SEGMENTS /* load up user segment register values */
+ 	mtctr	r0		/* for context 0 */
+ 	li	r3, 0		/* Kp = 0, Ks = 0, VSID = 0 */
+-#ifdef CONFIG_PPC_KUEP
+-	oris	r3, r3, SR_NX@h	/* Set Nx */
+-#endif
+-#ifdef CONFIG_PPC_KUAP
+-	oris	r3, r3, SR_KS@h	/* Set Ks */
+-#endif
+ 	li	r4, 0
+ 3:	mtsrin	r3, r4
+ 	addi	r3, r3, 0x111	/* increment VSID */
+diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+index 2e05c783440a..820ae31e0231 100644
+--- a/arch/powerpc/kernel/smp.c
++++ b/arch/powerpc/kernel/smp.c
+@@ -1541,6 +1541,10 @@ void start_secondary(void *unused)
  {
--	int val1 = val;
--	int val2 = (val + 0x111) & 0xf0ffffff;
--
--	UPDATE_TWO_USER_SEGMENTS(0);
--	UPDATE_TWO_USER_SEGMENTS(2);
--	UPDATE_TWO_USER_SEGMENTS(4);
--	UPDATE_TWO_USER_SEGMENTS(6);
--	UPDATE_TWO_USER_SEGMENTS(8);
--	UPDATE_TWO_USER_SEGMENTS(10);
--	UPDATE_TWO_USER_SEGMENTS(12);
--	UPDATE_TWO_USER_SEGMENTS(14);
-+	val &= 0xf0ffffff;
-+
-+	update_user_segment(0, val);
-+	update_user_segment(1, val);
-+	update_user_segment(2, val);
-+	update_user_segment(3, val);
-+	update_user_segment(4, val);
-+	update_user_segment(5, val);
-+	update_user_segment(6, val);
-+	update_user_segment(7, val);
-+	update_user_segment(8, val);
-+	update_user_segment(9, val);
-+	update_user_segment(10, val);
-+	update_user_segment(11, val);
-+	update_user_segment(12, val);
-+	update_user_segment(13, val);
-+	update_user_segment(14, val);
-+	update_user_segment(15, val);
- }
+ 	unsigned int cpu = raw_smp_processor_id();
  
- #endif /* !__ASSEMBLY__ */
++	/* PPC64 calls setup_kup() in early_setup_secondary() */
++	if (IS_ENABLED(CONFIG_PPC32))
++		setup_kup();
++
+ 	mmgrab(&init_mm);
+ 	current->active_mm = &init_mm;
+ 
+diff --git a/arch/powerpc/mm/book3s32/kuap.c b/arch/powerpc/mm/book3s32/kuap.c
+index 1df55392878e..5533ed92ab3d 100644
+--- a/arch/powerpc/mm/book3s32/kuap.c
++++ b/arch/powerpc/mm/book3s32/kuap.c
+@@ -1,9 +1,15 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ 
+ #include <asm/kup.h>
++#include <asm/smp.h>
+ 
+ void __init setup_kuap(bool disabled)
+ {
++	kuap_update_sr(mfsr(0) | SR_KS, 0, TASK_SIZE);
++
++	if (smp_processor_id() != boot_cpuid)
++		return;
++
+ 	pr_info("Activating Kernel Userspace Access Protection\n");
+ 
+ 	if (disabled)
+diff --git a/arch/powerpc/mm/book3s32/kuep.c b/arch/powerpc/mm/book3s32/kuep.c
+index 919595f47e25..3147e2edcf63 100644
+--- a/arch/powerpc/mm/book3s32/kuep.c
++++ b/arch/powerpc/mm/book3s32/kuep.c
+@@ -1,9 +1,15 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ 
+ #include <asm/kup.h>
++#include <asm/smp.h>
+ 
+ void __init setup_kuep(bool disabled)
+ {
++	kuep_lock();
++
++	if (smp_processor_id() != boot_cpuid)
++		return;
++
+ 	pr_info("Activating Kernel Userspace Execution Prevention\n");
+ 
+ 	if (disabled)
 -- 
 2.25.0
 
