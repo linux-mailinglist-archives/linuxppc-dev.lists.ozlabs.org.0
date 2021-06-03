@@ -2,52 +2,106 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89BAB399DCF
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Jun 2021 11:31:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1096239A228
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Jun 2021 15:24:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fwgcr6bXBz3cTk
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Jun 2021 19:31:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fwmp33ptvz3098
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Jun 2021 23:24:27 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QBsI4a6r;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bJvAgi8H;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=trix@redhat.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=QBsI4a6r; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=bJvAgi8H; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FwgZx3Kr8z300C
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Jun 2021 19:29:29 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4FwgZY1n27zBCW7;
- Thu,  3 Jun 2021 11:29:09 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id u1vUvj-3ih22; Thu,  3 Jun 2021 11:29:09 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FwgZX4KxCzBCVQ;
- Thu,  3 Jun 2021 11:29:08 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 519708B849;
- Thu,  3 Jun 2021 11:29:08 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id NZ9C6Wng-c58; Thu,  3 Jun 2021 11:29:08 +0200 (CEST)
-Received: from po15610vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0366D8B848;
- Thu,  3 Jun 2021 11:29:08 +0200 (CEST)
-Received: by po15610vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id D3C616493B; Thu,  3 Jun 2021 09:29:07 +0000 (UTC)
-Message-Id: <0f25109b0e12fdd1e6541dedbb2212cc53526a57.1622712515.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <4c54997edd3548fa54717915e7c6ebaf60f208c0.1622712515.git.christophe.leroy@csgroup.eu>
-References: <4c54997edd3548fa54717915e7c6ebaf60f208c0.1622712515.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v3 6/6] powerpc/nohash: Remove DEBUG_HARDER
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FwmnZ3q7Vz2yj1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Jun 2021 23:24:00 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1622726635;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=I2nBspPjF20/3Fz9Ced5rD4OQmXVJBuSYoh/YGtujCs=;
+ b=QBsI4a6rpbVwFPj25x2EEv9dtL5N6/NVflB9pKgE07YNJTCcceerpqt7b60s75YyNhropZ
+ Wnwra66Ng0nN69GuYoqpIMkbhMnfDJ8/pPzzz9MpRZ06v/6xuJRmAR5B6HXIQZdXnWc/mN
+ XCWLmMdkOj3V9IYl0B3Gy9XzSbdJIUI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1622726636;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=I2nBspPjF20/3Fz9Ced5rD4OQmXVJBuSYoh/YGtujCs=;
+ b=bJvAgi8HzUQdVztQ/S5tabRLOka/Jmq49OZrXO1mGjhqIdC0PRkOtEDivd+PYBx1+bpwLa
+ Ax9eav4pWyNF9PFWmeBbWOQ4Ji77bw25O5vYYlEJcsE02UY1vGE8gHioSslw6apx9nEdM2
+ vWZuxknddPmW5iUerKQgyiFm+8rl0kY=
+Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com
+ [209.85.161.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-209-4QBgF2JgPnOg_pP51tp8_Q-1; Thu, 03 Jun 2021 09:23:53 -0400
+X-MC-Unique: 4QBgF2JgPnOg_pP51tp8_Q-1
+Received: by mail-oo1-f69.google.com with SMTP id
+ i3-20020a4a6f430000b0290248e8fe5cbcso763251oof.5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 03 Jun 2021 06:23:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-transfer-encoding
+ :content-language;
+ bh=I2nBspPjF20/3Fz9Ced5rD4OQmXVJBuSYoh/YGtujCs=;
+ b=E9lM9r7ETuY9C9HoSLD4bndEM8uv0ykiX7IUFGdXiV5m8wOVFH/UwqXr889/O4R0r/
+ r2bgPI87C1cr8muDCOccx0LKSvGcJqY/oz/LvWU/lOpQ5MUgVmMkxz77hQVQCXfun31q
+ vde0+IXwakQGvdB3PMMMl+owF+twIVGArRLylqyrtzbGX0apQcLtPcdy9d2loR+8d95Q
+ +UKB0Qod4uGQyDoCSQ3Xpljye4npeu3kX17xdMxuMf5FGWIi+jZs4VkIWQAeOtLZFFyx
+ UxXZGnMLrUmMbKiVDkMH0ep6iUaUnvPpwaHW7l8pLxxNlUlFOpR4JUz5Dir+NYEuZIq9
+ ERDQ==
+X-Gm-Message-State: AOAM530uaaV8BN0QY21q+RweD1XfUyrSyn2pWVnhlQEoU+7Ycz1m09Tq
+ uIAl0rIIysU3pvdTAidutD8xX7b7q2ky+qLaLvmnT5S1OIvb4zEGNcm75chn/iyykZuF879vj0Y
+ jH5Kf5lADQqHQOgcgQGAXTM4uWwSAo318Yz7iRGKp2Xn5V6dcJ4E6PQ2lgCpqqqzPgAOG+TWE
+X-Received: by 2002:a05:6830:4006:: with SMTP id
+ h6mr5586612ots.348.1622726632501; 
+ Thu, 03 Jun 2021 06:23:52 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJy+9F/VkBceYlmAJQlazH/NI64dO2xB52KTX53ZpD0nVzlCS2Qb1fhML4o9/H0tm/a7+EM6Lw==
+X-Received: by 2002:a05:6830:4006:: with SMTP id
+ h6mr5586593ots.348.1622726632243; 
+ Thu, 03 Jun 2021 06:23:52 -0700 (PDT)
+Received: from localhost.localdomain (075-142-250-213.res.spectrum.com.
+ [75.142.250.213])
+ by smtp.gmail.com with ESMTPSA id q26sm655035otn.0.2021.06.03.06.23.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 03 Jun 2021 06:23:51 -0700 (PDT)
+Subject: Re: [PATCH] powerpc: Remove CONFIG_PPC_MMU_NOHASH_32
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Thu,  3 Jun 2021 09:29:07 +0000 (UTC)
+References: <bf1e074f6fb213a1c4cc4964370bdce4b648d647.1622706812.git.christophe.leroy@csgroup.eu>
+From: Tom Rix <trix@redhat.com>
+Message-ID: <d201a021-fe6f-4240-8ba6-095e1d9badde@redhat.com>
+Date: Thu, 3 Jun 2021 06:23:50 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
+MIME-Version: 1.0
+In-Reply-To: <bf1e074f6fb213a1c4cc4964370bdce4b648d647.1622706812.git.christophe.leroy@csgroup.eu>
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=trix@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,135 +118,39 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DEBUG_HARDER is not user selectable.
 
-Remove it together with related messages.
+On 6/3/21 12:53 AM, Christophe Leroy wrote:
+> Since commit Fixes: 555904d07eef ("powerpc/8xx: MM_SLICE is not needed anymore"),
+> CONFIG_PPC_MMU_NOHASH_32 has not been used.
+>
+> Remove it.
+>
+> Reported-by: Tom Rix <trix@redhat.com>
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-Also remove two pr_devel() messages that should
-likely have been pr_hard().
+Thanks, one less for me to do.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/mm/nohash/mmu_context.c | 32 ----------------------------
- 1 file changed, 32 deletions(-)
+There are about ~100 similar tree wide, I'll be posting these soon.
 
-diff --git a/arch/powerpc/mm/nohash/mmu_context.c b/arch/powerpc/mm/nohash/mmu_context.c
-index d9f590b9e636..920b5b8c770d 100644
---- a/arch/powerpc/mm/nohash/mmu_context.c
-+++ b/arch/powerpc/mm/nohash/mmu_context.c
-@@ -21,19 +21,6 @@
-  *     also clear mm->cpu_vm_mask bits when processes are migrated
-  */
- 
--//#define DEBUG_HARDER
--
--/* We don't use DEBUG because it tends to be compiled in always nowadays
-- * and this would generate way too much output
-- */
--#ifdef DEBUG_HARDER
--#define pr_hard(args...)	printk(KERN_DEBUG args)
--#define pr_hardcont(args...)	printk(KERN_CONT args)
--#else
--#define pr_hard(args...)	do { } while(0)
--#define pr_hardcont(args...)	do { } while(0)
--#endif
--
- #include <linux/kernel.h>
- #include <linux/mm.h>
- #include <linux/init.h>
-@@ -127,7 +114,6 @@ static unsigned int steal_context_smp(unsigned int id)
- 				id = FIRST_CONTEXT;
- 			continue;
- 		}
--		pr_hardcont(" | steal %d from 0x%p", id, mm);
- 
- 		/* Mark this mm has having no context anymore */
- 		mm->context.id = MMU_NO_CONTEXT;
-@@ -169,8 +155,6 @@ static unsigned int steal_all_contexts(void)
- 		/* Pick up the victim mm */
- 		mm = context_mm[id];
- 
--		pr_hardcont(" | steal %d from 0x%p", id, mm);
--
- 		/* Mark this mm as having no context anymore */
- 		mm->context.id = MMU_NO_CONTEXT;
- 		if (id != FIRST_CONTEXT) {
-@@ -202,8 +186,6 @@ static unsigned int steal_context_up(unsigned int id)
- 	/* Pick up the victim mm */
- 	mm = context_mm[id];
- 
--	pr_hardcont(" | steal %d from 0x%p", id, mm);
--
- 	/* Flush the TLB for that context */
- 	local_flush_tlb_mm(mm);
- 
-@@ -251,14 +233,10 @@ void switch_mmu_context(struct mm_struct *prev, struct mm_struct *next,
- 	/* No lockless fast path .. yet */
- 	raw_spin_lock(&context_lock);
- 
--	pr_hard("[%d] activating context for mm @%p, active=%d, id=%d",
--		cpu, next, next->context.active, next->context.id);
--
- 	if (IS_ENABLED(CONFIG_SMP)) {
- 		/* Mark us active and the previous one not anymore */
- 		next->context.active++;
- 		if (prev) {
--			pr_hardcont(" (old=0x%p a=%d)", prev, prev->context.active);
- 			WARN_ON(prev->context.active < 1);
- 			prev->context.active--;
- 		}
-@@ -303,7 +281,6 @@ void switch_mmu_context(struct mm_struct *prev, struct mm_struct *next,
- 	next_context = id + 1;
- 	context_mm[id] = next;
- 	next->context.id = id;
--	pr_hardcont(" | new id=%d,nrf=%d", id, nr_free_contexts);
- 
-  ctxt_ok:
- 
-@@ -311,10 +288,6 @@ void switch_mmu_context(struct mm_struct *prev, struct mm_struct *next,
- 	 * local TLB for it and unmark it before we use it
- 	 */
- 	if (IS_ENABLED(CONFIG_SMP) && test_bit(id, stale_map[cpu])) {
--		pr_hardcont(" | stale flush %d [%d..%d]",
--			    id, cpu_first_thread_sibling(cpu),
--			    cpu_last_thread_sibling(cpu));
--
- 		local_flush_tlb_mm(next);
- 
- 		/* XXX This clear should ultimately be part of local_flush_tlb_mm */
-@@ -326,7 +299,6 @@ void switch_mmu_context(struct mm_struct *prev, struct mm_struct *next,
- 	}
- 
- 	/* Flick the MMU and release lock */
--	pr_hardcont(" -> %d\n", id);
- 	if (IS_ENABLED(CONFIG_BDI_SWITCH))
- 		abatron_pteptrs[1] = next->pgd;
- 	set_context(id, next->pgd);
-@@ -338,8 +310,6 @@ void switch_mmu_context(struct mm_struct *prev, struct mm_struct *next,
-  */
- int init_new_context(struct task_struct *t, struct mm_struct *mm)
- {
--	pr_hard("initing context for mm @%p\n", mm);
--
- 	/*
- 	 * We have MMU_NO_CONTEXT set to be ~0. Hence check
- 	 * explicitly against context.id == 0. This ensures that we properly
-@@ -387,7 +357,6 @@ static int mmu_ctx_cpu_prepare(unsigned int cpu)
- 	if (cpu == boot_cpuid)
- 		return 0;
- 
--	pr_devel("MMU: Allocating stale context map for CPU %d\n", cpu);
- 	stale_map[cpu] = kzalloc(CTX_MAP_SIZE, GFP_KERNEL);
- 	return 0;
- }
-@@ -398,7 +367,6 @@ static int mmu_ctx_cpu_dead(unsigned int cpu)
- 	if (cpu == boot_cpuid)
- 		return 0;
- 
--	pr_devel("MMU: Freeing stale context map for CPU %d\n", cpu);
- 	kfree(stale_map[cpu]);
- 	stale_map[cpu] = NULL;
- 
--- 
-2.25.0
+Tom
+
+> ---
+>   arch/powerpc/platforms/Kconfig.cputype | 4 ----
+>   1 file changed, 4 deletions(-)
+>
+> diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
+> index 885140055b7a..dc7c46f92302 100644
+> --- a/arch/powerpc/platforms/Kconfig.cputype
+> +++ b/arch/powerpc/platforms/Kconfig.cputype
+> @@ -424,10 +424,6 @@ config PPC_MMU_NOHASH
+>   	def_bool y
+>   	depends on !PPC_BOOK3S
+>   
+> -config PPC_MMU_NOHASH_32
+> -	def_bool y
+> -	depends on PPC_MMU_NOHASH && PPC32
+> -
+>   config PPC_BOOK3E_MMU
+>   	def_bool y
+>   	depends on FSL_BOOKE || PPC_BOOK3E
 
