@@ -1,107 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1096239A228
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Jun 2021 15:24:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4816D39A4BA
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Jun 2021 17:38:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fwmp33ptvz3098
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Jun 2021 23:24:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fwqm62JQQz30CT
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jun 2021 01:37:58 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QBsI4a6r;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bJvAgi8H;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Sczm7Uha;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=trix@redhat.com;
+ smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::e33;
+ helo=mail-vs1-xe33.google.com; envelope-from=ulf.hansson@linaro.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=QBsI4a6r; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=bJvAgi8H; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [216.205.24.124])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=Sczm7Uha; dkim-atps=neutral
+Received: from mail-vs1-xe33.google.com (mail-vs1-xe33.google.com
+ [IPv6:2607:f8b0:4864:20::e33])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FwmnZ3q7Vz2yj1
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Jun 2021 23:24:00 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1622726635;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=I2nBspPjF20/3Fz9Ced5rD4OQmXVJBuSYoh/YGtujCs=;
- b=QBsI4a6rpbVwFPj25x2EEv9dtL5N6/NVflB9pKgE07YNJTCcceerpqt7b60s75YyNhropZ
- Wnwra66Ng0nN69GuYoqpIMkbhMnfDJ8/pPzzz9MpRZ06v/6xuJRmAR5B6HXIQZdXnWc/mN
- XCWLmMdkOj3V9IYl0B3Gy9XzSbdJIUI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1622726636;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=I2nBspPjF20/3Fz9Ced5rD4OQmXVJBuSYoh/YGtujCs=;
- b=bJvAgi8HzUQdVztQ/S5tabRLOka/Jmq49OZrXO1mGjhqIdC0PRkOtEDivd+PYBx1+bpwLa
- Ax9eav4pWyNF9PFWmeBbWOQ4Ji77bw25O5vYYlEJcsE02UY1vGE8gHioSslw6apx9nEdM2
- vWZuxknddPmW5iUerKQgyiFm+8rl0kY=
-Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com
- [209.85.161.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-209-4QBgF2JgPnOg_pP51tp8_Q-1; Thu, 03 Jun 2021 09:23:53 -0400
-X-MC-Unique: 4QBgF2JgPnOg_pP51tp8_Q-1
-Received: by mail-oo1-f69.google.com with SMTP id
- i3-20020a4a6f430000b0290248e8fe5cbcso763251oof.5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 03 Jun 2021 06:23:53 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fwqlb69tHz2yx9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Jun 2021 01:37:29 +1000 (AEST)
+Received: by mail-vs1-xe33.google.com with SMTP id j15so3222580vsf.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 03 Jun 2021 08:37:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=+W0QahdA5jm5lLp4qGqziVkevJrOYYIsAeli4hbSoMY=;
+ b=Sczm7Uhat9CAttKCKONsBvTvpdWX5VANaO58Cd0mJFcJ+A28Gj9YspGmhSWIpVtNS9
+ gufvY+CGT5FXDIQfjOQ4ExwQIrmSjUqzpGxTG/ZkK/nXRMIOjYsW6gd0+0ljDlvbLbq6
+ AyHgMcG1V7VrDrAancwHixbwlfPPPcOtQ/Us++pps4NpXbaz33l8+avCCapAkCFya/10
+ FcaqevmvQJz8RurkVjboQlMdJ4KLmCFgJ9aWml7eHxoV4e7eWIKwWiCmbJjrhvsDE5K2
+ PLLnqagHSU8ORkIhfE1C9Sx6ZNkln7FGogf+yyT7tKXsIRL7oAHDTXDC0cZ4GcZV2dc7
+ 4ZRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-transfer-encoding
- :content-language;
- bh=I2nBspPjF20/3Fz9Ced5rD4OQmXVJBuSYoh/YGtujCs=;
- b=E9lM9r7ETuY9C9HoSLD4bndEM8uv0ykiX7IUFGdXiV5m8wOVFH/UwqXr889/O4R0r/
- r2bgPI87C1cr8muDCOccx0LKSvGcJqY/oz/LvWU/lOpQ5MUgVmMkxz77hQVQCXfun31q
- vde0+IXwakQGvdB3PMMMl+owF+twIVGArRLylqyrtzbGX0apQcLtPcdy9d2loR+8d95Q
- +UKB0Qod4uGQyDoCSQ3Xpljye4npeu3kX17xdMxuMf5FGWIi+jZs4VkIWQAeOtLZFFyx
- UxXZGnMLrUmMbKiVDkMH0ep6iUaUnvPpwaHW7l8pLxxNlUlFOpR4JUz5Dir+NYEuZIq9
- ERDQ==
-X-Gm-Message-State: AOAM530uaaV8BN0QY21q+RweD1XfUyrSyn2pWVnhlQEoU+7Ycz1m09Tq
- uIAl0rIIysU3pvdTAidutD8xX7b7q2ky+qLaLvmnT5S1OIvb4zEGNcm75chn/iyykZuF879vj0Y
- jH5Kf5lADQqHQOgcgQGAXTM4uWwSAo318Yz7iRGKp2Xn5V6dcJ4E6PQ2lgCpqqqzPgAOG+TWE
-X-Received: by 2002:a05:6830:4006:: with SMTP id
- h6mr5586612ots.348.1622726632501; 
- Thu, 03 Jun 2021 06:23:52 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJy+9F/VkBceYlmAJQlazH/NI64dO2xB52KTX53ZpD0nVzlCS2Qb1fhML4o9/H0tm/a7+EM6Lw==
-X-Received: by 2002:a05:6830:4006:: with SMTP id
- h6mr5586593ots.348.1622726632243; 
- Thu, 03 Jun 2021 06:23:52 -0700 (PDT)
-Received: from localhost.localdomain (075-142-250-213.res.spectrum.com.
- [75.142.250.213])
- by smtp.gmail.com with ESMTPSA id q26sm655035otn.0.2021.06.03.06.23.51
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 03 Jun 2021 06:23:51 -0700 (PDT)
-Subject: Re: [PATCH] powerpc: Remove CONFIG_PPC_MMU_NOHASH_32
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-References: <bf1e074f6fb213a1c4cc4964370bdce4b648d647.1622706812.git.christophe.leroy@csgroup.eu>
-From: Tom Rix <trix@redhat.com>
-Message-ID: <d201a021-fe6f-4240-8ba6-095e1d9badde@redhat.com>
-Date: Thu, 3 Jun 2021 06:23:50 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=+W0QahdA5jm5lLp4qGqziVkevJrOYYIsAeli4hbSoMY=;
+ b=eX4Kr7yrLR806goIntiSmezlBbI/l4xMZCBcqDFWzPmaQ03ySwzstoYFmd+kkZIgJ9
+ 9yKoL4uc6hRitsyA/ngVOkUbBG4/08rSxCMjxCeFIvVL1NEts5wyoR+dGAqJoLpZ/2GG
+ 07dZ6IqeNFEMn1e/dT3J84vyZxxuIpRgZCVqpxiC3CB/c1ZxEfCzZDTt1Uem5M781GsM
+ MRxhuwY7Bm26QjRoN+01XZGFU7JhualMc13oUiekSRh16lmCoTEvY2WPIJTWKFL8aPgP
+ gCURbRk+rGutm83fUk3g6KwkhMP1fyYADSslznLRRYgW9ZevdvpIl7Sk7/OYPpqsO7C9
+ KeHw==
+X-Gm-Message-State: AOAM531LA74N1QxHN8sCfGFRV7LvFyg3jJlHwf3DvFA/CIaDEdnUs4GB
+ j3Y3TwJEG5rFzb8+D3Bmh+8Y61+06syfHIAJm5Ol6g==
+X-Google-Smtp-Source: ABdhPJzM3LSrPJI4FkB0laodTTeEei+m50SowhpqaGtsNgUdvieHcvbYUQloJUD/a79xzNmd816023E4d1PORKHhPJg=
+X-Received: by 2002:a05:6102:3023:: with SMTP id
+ v3mr756919vsa.19.1622734639015; 
+ Thu, 03 Jun 2021 08:37:19 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <bf1e074f6fb213a1c4cc4964370bdce4b648d647.1622706812.git.christophe.leroy@csgroup.eu>
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=trix@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+References: <20210602065345.355274-1-hch@lst.de>
+ <20210602065345.355274-8-hch@lst.de>
+In-Reply-To: <20210602065345.355274-8-hch@lst.de>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Thu, 3 Jun 2021 17:36:42 +0200
+Message-ID: <CAPDyKFoJssCnHv5tmG4vJJ9m0Zj5HkMEVYvnsjamvyemusZaUg@mail.gmail.com>
+Subject: Re: [PATCH 07/30] ms_block: use blk_mq_alloc_disk
+To: Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,44 +75,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Justin Sanders <justin@coraid.com>, Vignesh Raghavendra <vigneshr@ti.com>,
+ Mike Snitzer <snitzer@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, virtualization@lists.linux-foundation.org,
+ dm-devel@redhat.com, "Md. Haris Iqbal" <haris.iqbal@ionos.com>,
+ Miquel Raynal <miquel.raynal@bootlin.com>, Jack Wang <jinpu.wang@ionos.com>,
+ Tim Waugh <tim@cyberelk.net>, linux-s390@vger.kernel.org,
+ Maxim Levitsky <maximlevitsky@gmail.com>, Richard Weinberger <richard@nod.at>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, xen-devel@lists.xenproject.org,
+ Ilya Dryomov <idryomov@gmail.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alex Dubov <oakad@yahoo.com>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Josef Bacik <josef@toxicpanda.com>,
+ Denis Efremov <efremov@linux.com>, nbd@other.debian.org,
+ linux-block <linux-block@vger.kernel.org>, ceph-devel@vger.kernel.org,
+ Jens Axboe <axboe@kernel.dk>, Geoff Levand <geoff@infradead.org>,
+ linux-mmc <linux-mmc@vger.kernel.org>, linux-mtd@lists.infradead.org,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-On 6/3/21 12:53 AM, Christophe Leroy wrote:
-> Since commit Fixes: 555904d07eef ("powerpc/8xx: MM_SLICE is not needed anymore"),
-> CONFIG_PPC_MMU_NOHASH_32 has not been used.
+On Wed, 2 Jun 2021 at 08:54, Christoph Hellwig <hch@lst.de> wrote:
 >
-> Remove it.
+> Use the blk_mq_alloc_disk API to simplify the gendisk and request_queue
+> allocation.
 >
-> Reported-by: Tom Rix <trix@redhat.com>
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-Thanks, one less for me to do.
+Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-There are about ~100 similar tree wide, I'll be posting these soon.
+Kind regards
+Uffe
 
-Tom
 
 > ---
->   arch/powerpc/platforms/Kconfig.cputype | 4 ----
->   1 file changed, 4 deletions(-)
+>  drivers/memstick/core/ms_block.c | 25 ++++++++++---------------
+>  1 file changed, 10 insertions(+), 15 deletions(-)
 >
-> diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-> index 885140055b7a..dc7c46f92302 100644
-> --- a/arch/powerpc/platforms/Kconfig.cputype
-> +++ b/arch/powerpc/platforms/Kconfig.cputype
-> @@ -424,10 +424,6 @@ config PPC_MMU_NOHASH
->   	def_bool y
->   	depends on !PPC_BOOK3S
->   
-> -config PPC_MMU_NOHASH_32
-> -	def_bool y
-> -	depends on PPC_MMU_NOHASH && PPC32
+> diff --git a/drivers/memstick/core/ms_block.c b/drivers/memstick/core/ms_block.c
+> index 0bacf4268f83..dac258d12aca 100644
+> --- a/drivers/memstick/core/ms_block.c
+> +++ b/drivers/memstick/core/ms_block.c
+> @@ -2110,21 +2110,17 @@ static int msb_init_disk(struct memstick_dev *card)
+>         if (msb->disk_id  < 0)
+>                 return msb->disk_id;
+>
+> -       msb->disk = alloc_disk(0);
+> -       if (!msb->disk) {
+> -               rc = -ENOMEM;
+> +       rc = blk_mq_alloc_sq_tag_set(&msb->tag_set, &msb_mq_ops, 2,
+> +                                    BLK_MQ_F_SHOULD_MERGE);
+> +       if (rc)
+>                 goto out_release_id;
+> -       }
+>
+> -       msb->queue = blk_mq_init_sq_queue(&msb->tag_set, &msb_mq_ops, 2,
+> -                                               BLK_MQ_F_SHOULD_MERGE);
+> -       if (IS_ERR(msb->queue)) {
+> -               rc = PTR_ERR(msb->queue);
+> -               msb->queue = NULL;
+> -               goto out_put_disk;
+> +       msb->disk = blk_mq_alloc_disk(&msb->tag_set, card);
+> +       if (IS_ERR(msb->disk)) {
+> +               rc = PTR_ERR(msb->disk);
+> +               goto out_free_tag_set;
+>         }
 > -
->   config PPC_BOOK3E_MMU
->   	def_bool y
->   	depends on FSL_BOOKE || PPC_BOOK3E
-
+> -       msb->queue->queuedata = card;
+> +       msb->queue = msb->disk->queue;
+>
+>         blk_queue_max_hw_sectors(msb->queue, MS_BLOCK_MAX_PAGES);
+>         blk_queue_max_segments(msb->queue, MS_BLOCK_MAX_SEGS);
+> @@ -2135,7 +2131,6 @@ static int msb_init_disk(struct memstick_dev *card)
+>         sprintf(msb->disk->disk_name, "msblk%d", msb->disk_id);
+>         msb->disk->fops = &msb_bdops;
+>         msb->disk->private_data = msb;
+> -       msb->disk->queue = msb->queue;
+>
+>         capacity = msb->pages_in_block * msb->logical_block_count;
+>         capacity *= (msb->page_size / 512);
+> @@ -2155,8 +2150,8 @@ static int msb_init_disk(struct memstick_dev *card)
+>         dbg("Disk added");
+>         return 0;
+>
+> -out_put_disk:
+> -       put_disk(msb->disk);
+> +out_free_tag_set:
+> +       blk_mq_free_tag_set(&msb->tag_set);
+>  out_release_id:
+>         mutex_lock(&msb_disk_lock);
+>         idr_remove(&msb_disk_idr, msb->disk_id);
+> --
+> 2.30.2
+>
