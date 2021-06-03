@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9813399CF3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Jun 2021 10:45:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFCD0399CF5
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Jun 2021 10:45:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fwfbw6Tv7z3df6
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Jun 2021 18:45:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FwfcH2qJxz30B7
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Jun 2021 18:45:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,38 +16,38 @@ Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FwfXc2ycVz3c0C
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Jun 2021 18:42:24 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FwfXh2sgGz3bwN
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Jun 2021 18:42:28 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4FwfWv3hs1zBC5j;
- Thu,  3 Jun 2021 10:41:47 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4FwfWw412GzBC50;
+ Thu,  3 Jun 2021 10:41:48 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id jq7SXitm_Ewg; Thu,  3 Jun 2021 10:41:47 +0200 (CEST)
+ with ESMTP id TqaRi3W4ZU_J; Thu,  3 Jun 2021 10:41:48 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FwfWt2tl3zBC60;
- Thu,  3 Jun 2021 10:41:46 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FwfWv48j5zBC60;
+ Thu,  3 Jun 2021 10:41:47 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 51B978B848;
- Thu,  3 Jun 2021 10:41:46 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6B33A8B848;
+ Thu,  3 Jun 2021 10:41:47 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id bwCD3RmmrU79; Thu,  3 Jun 2021 10:41:46 +0200 (CEST)
+ with ESMTP id rmc4yPZKRbOe; Thu,  3 Jun 2021 10:41:47 +0200 (CEST)
 Received: from po15610vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 1F5568B767;
- Thu,  3 Jun 2021 10:41:46 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 253D98B767;
+ Thu,  3 Jun 2021 10:41:47 +0200 (CEST)
 Received: by po15610vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id EFB9164BD2; Thu,  3 Jun 2021 08:41:45 +0000 (UTC)
-Message-Id: <86c7c74a3ba5312daea7e9658b096e2bcc6f4b64.1622708530.git.christophe.leroy@csgroup.eu>
+ id 01FE164BD2; Thu,  3 Jun 2021 08:41:46 +0000 (UTC)
+Message-Id: <549214ecf6887d965645e664520d4886663c5ffb.1622708530.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <cover.1622708530.git.christophe.leroy@csgroup.eu>
 References: <cover.1622708530.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v2 10/12] powerpc/32s: Activate KUAP and KUEP by default
+Subject: [PATCH v2 11/12] powerpc/kuap: Remove KUAP_CURRENT_XXX
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Thu,  3 Jun 2021 08:41:45 +0000 (UTC)
+Date: Thu,  3 Jun 2021 08:41:46 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,39 +64,70 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now that KUAP and KUEP have been significantly optimised and can be
-disabled at boot time using 'nosmap' and 'nosmep' kernel parameters,
-them can be active by default like in other powerpc platforms.
+book3s/32 was the only user of KUAP_CURRENT_XXX.
 
-It is still possible to disable them completely in the configuration.
+After rework of book3s/32 KUAP, it is not used anymore.
+
+Remove them.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/platforms/Kconfig.cputype | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/include/asm/book3s/32/kup.h |  1 -
+ arch/powerpc/include/asm/kup.h           | 14 +++-----------
+ 2 files changed, 3 insertions(+), 12 deletions(-)
 
-diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-index 885140055b7a..52f533b19518 100644
---- a/arch/powerpc/platforms/Kconfig.cputype
-+++ b/arch/powerpc/platforms/Kconfig.cputype
-@@ -389,7 +389,7 @@ config PPC_HAVE_KUEP
- config PPC_KUEP
- 	bool "Kernel Userspace Execution Prevention"
- 	depends on PPC_HAVE_KUEP
--	default y if !PPC_BOOK3S_32
-+	default y
- 	help
- 	  Enable support for Kernel Userspace Execution Prevention (KUEP)
+diff --git a/arch/powerpc/include/asm/book3s/32/kup.h b/arch/powerpc/include/asm/book3s/32/kup.h
+index bac7edae64bf..eb5ef59a406b 100644
+--- a/arch/powerpc/include/asm/book3s/32/kup.h
++++ b/arch/powerpc/include/asm/book3s/32/kup.h
+@@ -145,7 +145,6 @@ static __always_inline void allow_user_access(void __user *to, const void __user
+ 		return;
  
-@@ -401,7 +401,7 @@ config PPC_HAVE_KUAP
- config PPC_KUAP
- 	bool "Kernel Userspace Access Protection"
- 	depends on PPC_HAVE_KUAP
--	default y if !PPC_BOOK3S_32
-+	default y
- 	help
- 	  Enable support for Kernel Userspace Access Protection (KUAP)
+ 	BUILD_BUG_ON(!__builtin_constant_p(dir));
+-	BUILD_BUG_ON(dir & ~KUAP_READ_WRITE);
  
+ 	if (!(dir & KUAP_WRITE))
+ 		return;
+diff --git a/arch/powerpc/include/asm/kup.h b/arch/powerpc/include/asm/kup.h
+index 4b94d4293777..2c47feee9482 100644
+--- a/arch/powerpc/include/asm/kup.h
++++ b/arch/powerpc/include/asm/kup.h
+@@ -5,14 +5,6 @@
+ #define KUAP_READ	1
+ #define KUAP_WRITE	2
+ #define KUAP_READ_WRITE	(KUAP_READ | KUAP_WRITE)
+-/*
+- * For prevent_user_access() only.
+- * Use the current saved situation instead of the to/from/size params.
+- * Used on book3s/32
+- */
+-#define KUAP_CURRENT_READ	4
+-#define KUAP_CURRENT_WRITE	8
+-#define KUAP_CURRENT		(KUAP_CURRENT_READ | KUAP_CURRENT_WRITE)
+ 
+ #ifdef CONFIG_PPC_BOOK3S_64
+ #include <asm/book3s/64/kup.h>
+@@ -129,17 +121,17 @@ static inline void prevent_read_write_user(void __user *to, const void __user *f
+ 
+ static inline void prevent_current_access_user(void)
+ {
+-	prevent_user_access(NULL, NULL, ~0UL, KUAP_CURRENT);
++	prevent_user_access(NULL, NULL, ~0UL, KUAP_READ_WRITE);
+ }
+ 
+ static inline void prevent_current_read_from_user(void)
+ {
+-	prevent_user_access(NULL, NULL, ~0UL, KUAP_CURRENT_READ);
++	prevent_user_access(NULL, NULL, ~0UL, KUAP_READ);
+ }
+ 
+ static inline void prevent_current_write_to_user(void)
+ {
+-	prevent_user_access(NULL, NULL, ~0UL, KUAP_CURRENT_WRITE);
++	prevent_user_access(NULL, NULL, ~0UL, KUAP_WRITE);
+ }
+ 
+ #endif /* !__ASSEMBLY__ */
 -- 
 2.25.0
 
