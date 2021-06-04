@@ -2,52 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8743A39BB29
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jun 2021 16:50:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2355739BB3D
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jun 2021 16:54:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FxQfp1PD6z301D
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Jun 2021 00:50:26 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LwwJaCK2;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FxQlc1dllz3bsg
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Jun 2021 00:54:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=LwwJaCK2; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FxQfD15C7z2ylk
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Jun 2021 00:49:56 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3F7C46140B;
- Fri,  4 Jun 2021 14:49:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1622818193;
- bh=rnFSlNaPq8u6wC/6QmquuOa136Onpb4MOEGa2hLgk9I=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=LwwJaCK2IwLxB9kyXGjYKVF9yzkzn7XRMKeQ8X72ltVfnmPF5p41UBu+e+05a9DAy
- tZKeaBQHBAcKLB2Qe5TMvMpTImanf/IJol37sjCQauBE3/upu93O1L0ehCiz24v3Eo
- sgkxYEhJA2jhJ1hXN8nOKaMM///ktUE3ni2XrsbrjomrPUTFManqUNJ/xUZvLqqjSH
- FSVnaCBtBJhMvzfd0MKLff525QxHTp7w4mkKBDT0KOaGgN/fy/0yJ+Z0e/so6SnMiQ
- P2u25M6Qqug84oEiWVQUttGG0bIXa2/7x8ISySiIyeKQCCUonmeBlNLWKV2nP78fa3
- 67XpLaAb4EoHQ==
-Date: Fri, 4 Jun 2021 17:49:41 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Vineet Gupta <Vineet.Gupta1@synopsys.com>
-Subject: Re: [PATCH v2 3/9] arc: remove support for DISCONTIGMEM
-Message-ID: <YLo9hb3yTeh3LBMg@kernel.org>
-References: <20210604064916.26580-1-rppt@kernel.org>
- <20210604064916.26580-4-rppt@kernel.org>
- <f1616f95-f99c-c387-4ed4-88961457a7c6@synopsys.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f1616f95-f99c-c387-4ed4-88961457a7c6@synopsys.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FxQlH4tP5z2xZB
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Jun 2021 00:54:17 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 4FxQl93rzlzBCvf;
+ Fri,  4 Jun 2021 16:54:13 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 5YWQuByLyAJx; Fri,  4 Jun 2021 16:54:13 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FxQl92zbbzBCtv;
+ Fri,  4 Jun 2021 16:54:13 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4E7568B8A9;
+ Fri,  4 Jun 2021 16:54:13 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id e7-5eloLfNFU; Fri,  4 Jun 2021 16:54:13 +0200 (CEST)
+Received: from po15610vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 12C9C8B885;
+ Fri,  4 Jun 2021 16:54:13 +0200 (CEST)
+Received: by po15610vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id D8FA964BDB; Fri,  4 Jun 2021 14:54:12 +0000 (UTC)
+Message-Id: <5ab3a517bc883a2fc905fb2cb5ee9344f37b2cfa.1622818435.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH 1/4] powerpc/32: Interchange r10 and r12 in SYSCALL_ENTRY on
+ non booke
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Fri,  4 Jun 2021 14:54:12 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,172 +58,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
- "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
- "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- Jonathan Corbet <corbet@lwn.net>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- Mike Rapoport <rppt@linux.ibm.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Matt Turner <mattst88@gmail.com>,
- "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>,
- "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
- Arnd Bergmann <arnd@arndb.de>,
- "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- Richard Henderson <rth@twiddle.net>,
- "kexec@lists.infradead.org" <kexec@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 04, 2021 at 02:07:39PM +0000, Vineet Gupta wrote:
-> On 6/3/21 11:49 PM, Mike Rapoport wrote:
-> > From: Mike Rapoport <rppt@linux.ibm.com>
-> >
-> > DISCONTIGMEM was replaced by FLATMEM with freeing of the unused memory map
-> > in v5.11.
-> >
-> > Remove the support for DISCONTIGMEM entirely.
-> >
-> > Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> 
-> Looks non intrusive, but I'd still like to give this a spin on hardware 
-> - considering highmem on ARC has tendency to go sideways ;-)
-> Can you please share a branch !
+To better match booke version of SYSCALL_ENTRY macro, interchange
+r10 and r12 in the non booke version.
 
-Sure:
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/kernel/head_32.h | 34 +++++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
-https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=memory-models/rm-discontig/v2
+diff --git a/arch/powerpc/kernel/head_32.h b/arch/powerpc/kernel/head_32.h
+index a8221ddcbd66..1e55bc054659 100644
+--- a/arch/powerpc/kernel/head_32.h
++++ b/arch/powerpc/kernel/head_32.h
+@@ -142,42 +142,42 @@ _ASM_NOKPROBE_SYMBOL(\name\()_virt)
  
-> Acked-by: Vineet Gupta <vgupta@synopsys.com>
-
-Thanks!
+ .macro SYSCALL_ENTRY trapno
+ 	mfspr	r9, SPRN_SRR1
+-	mfspr	r10, SPRN_SRR0
++	mfspr	r12, SPRN_SRR0
+ 	LOAD_REG_IMMEDIATE(r11, MSR_KERNEL)		/* can take exceptions */
+-	lis	r12, 1f@h
+-	ori	r12, r12, 1f@l
++	lis	r10, 1f@h
++	ori	r10, r10, 1f@l
+ 	mtspr	SPRN_SRR1, r11
+-	mtspr	SPRN_SRR0, r12
+-	mfspr	r12,SPRN_SPRG_THREAD
++	mtspr	SPRN_SRR0, r10
++	mfspr	r10,SPRN_SPRG_THREAD
+ 	mr	r11, r1
+-	lwz	r1,TASK_STACK-THREAD(r12)
+-	tovirt(r12, r12)
++	lwz	r1,TASK_STACK-THREAD(r10)
++	tovirt(r10, r10)
+ 	addi	r1, r1, THREAD_SIZE - INT_FRAME_SIZE
+ 	rfi
+ 1:
+ 	stw	r11,GPR1(r1)
+ 	stw	r11,0(r1)
+ 	mr	r11, r1
+-	stw	r10,_NIP(r11)
+-	mflr	r10
+-	stw	r10, _LINK(r11)
+-	mfcr	r10
+-	rlwinm	r10,r10,0,4,2	/* Clear SO bit in CR */
+-	stw	r10,_CCR(r11)		/* save registers */
++	stw	r12,_NIP(r11)
++	mflr	r12
++	stw	r12, _LINK(r11)
++	mfcr	r12
++	rlwinm	r12,r12,0,4,2	/* Clear SO bit in CR */
++	stw	r12,_CCR(r11)		/* save registers */
+ #ifdef CONFIG_40x
+ 	rlwinm	r9,r9,0,14,12		/* clear MSR_WE (necessary?) */
+ #endif
+-	lis	r10,STACK_FRAME_REGS_MARKER@ha /* exception frame marker */
++	lis	r12,STACK_FRAME_REGS_MARKER@ha /* exception frame marker */
+ 	stw	r2,GPR2(r11)
+-	addi	r10,r10,STACK_FRAME_REGS_MARKER@l
++	addi	r12,r12,STACK_FRAME_REGS_MARKER@l
+ 	stw	r9,_MSR(r11)
+ 	li	r2, \trapno
+-	stw	r10,8(r11)
++	stw	r12,8(r11)
+ 	stw	r2,_TRAP(r11)
+ 	SAVE_GPR(0, r11)
+ 	SAVE_4GPRS(3, r11)
+ 	SAVE_2GPRS(7, r11)
+-	addi	r2,r12,-THREAD
++	addi	r2,r10,-THREAD
+ 	b	transfer_to_syscall		/* jump to handler */
+ .endm
  
-> Thx,
-> -Vineet
-> 
-> > ---
-> >   arch/arc/Kconfig              | 13 ------------
-> >   arch/arc/include/asm/mmzone.h | 40 -----------------------------------
-> >   arch/arc/mm/init.c            |  8 -------
-> >   3 files changed, 61 deletions(-)
-> >   delete mode 100644 arch/arc/include/asm/mmzone.h
-> >
-> > diff --git a/arch/arc/Kconfig b/arch/arc/Kconfig
-> > index 2d98501c0897..d8f51eb8963b 100644
-> > --- a/arch/arc/Kconfig
-> > +++ b/arch/arc/Kconfig
-> > @@ -62,10 +62,6 @@ config SCHED_OMIT_FRAME_POINTER
-> >   config GENERIC_CSUM
-> >   	def_bool y
-> >   
-> > -config ARCH_DISCONTIGMEM_ENABLE
-> > -	def_bool n
-> > -	depends on BROKEN
-> > -
-> >   config ARCH_FLATMEM_ENABLE
-> >   	def_bool y
-> >   
-> > @@ -344,15 +340,6 @@ config ARC_HUGEPAGE_16M
-> >   
-> >   endchoice
-> >   
-> > -config NODES_SHIFT
-> > -	int "Maximum NUMA Nodes (as a power of 2)"
-> > -	default "0" if !DISCONTIGMEM
-> > -	default "1" if DISCONTIGMEM
-> > -	depends on NEED_MULTIPLE_NODES
-> > -	help
-> > -	  Accessing memory beyond 1GB (with or w/o PAE) requires 2 memory
-> > -	  zones.
-> > -
-> >   config ARC_COMPACT_IRQ_LEVELS
-> >   	depends on ISA_ARCOMPACT
-> >   	bool "Setup Timer IRQ as high Priority"
-> > diff --git a/arch/arc/include/asm/mmzone.h b/arch/arc/include/asm/mmzone.h
-> > deleted file mode 100644
-> > index b86b9d1e54dc..000000000000
-> > --- a/arch/arc/include/asm/mmzone.h
-> > +++ /dev/null
-> > @@ -1,40 +0,0 @@
-> > -/* SPDX-License-Identifier: GPL-2.0-only */
-> > -/*
-> > - * Copyright (C) 2016 Synopsys, Inc. (www.synopsys.com)
-> > - */
-> > -
-> > -#ifndef _ASM_ARC_MMZONE_H
-> > -#define _ASM_ARC_MMZONE_H
-> > -
-> > -#ifdef CONFIG_DISCONTIGMEM
-> > -
-> > -extern struct pglist_data node_data[];
-> > -#define NODE_DATA(nid) (&node_data[nid])
-> > -
-> > -static inline int pfn_to_nid(unsigned long pfn)
-> > -{
-> > -	int is_end_low = 1;
-> > -
-> > -	if (IS_ENABLED(CONFIG_ARC_HAS_PAE40))
-> > -		is_end_low = pfn <= virt_to_pfn(0xFFFFFFFFUL);
-> > -
-> > -	/*
-> > -	 * node 0: lowmem:             0x8000_0000   to 0xFFFF_FFFF
-> > -	 * node 1: HIGHMEM w/o  PAE40: 0x0           to 0x7FFF_FFFF
-> > -	 *         HIGHMEM with PAE40: 0x1_0000_0000 to ...
-> > -	 */
-> > -	if (pfn >= ARCH_PFN_OFFSET && is_end_low)
-> > -		return 0;
-> > -
-> > -	return 1;
-> > -}
-> > -
-> > -static inline int pfn_valid(unsigned long pfn)
-> > -{
-> > -	int nid = pfn_to_nid(pfn);
-> > -
-> > -	return (pfn <= node_end_pfn(nid));
-> > -}
-> > -#endif /* CONFIG_DISCONTIGMEM  */
-> > -
-> > -#endif
-> > diff --git a/arch/arc/mm/init.c b/arch/arc/mm/init.c
-> > index 397a201adfe3..abfeef7bf6f8 100644
-> > --- a/arch/arc/mm/init.c
-> > +++ b/arch/arc/mm/init.c
-> > @@ -32,11 +32,6 @@ unsigned long arch_pfn_offset;
-> >   EXPORT_SYMBOL(arch_pfn_offset);
-> >   #endif
-> >   
-> > -#ifdef CONFIG_DISCONTIGMEM
-> > -struct pglist_data node_data[MAX_NUMNODES] __read_mostly;
-> > -EXPORT_SYMBOL(node_data);
-> > -#endif
-> > -
-> >   long __init arc_get_mem_sz(void)
-> >   {
-> >   	return low_mem_sz;
-> > @@ -147,9 +142,6 @@ void __init setup_arch_memory(void)
-> >   	 * to the hole is freed and ARC specific version of pfn_valid()
-> >   	 * handles the hole in the memory map.
-> >   	 */
-> > -#ifdef CONFIG_DISCONTIGMEM
-> > -	node_set_online(1);
-> > -#endif
-> >   
-> >   	min_high_pfn = PFN_DOWN(high_mem_start);
-> >   	max_high_pfn = PFN_DOWN(high_mem_start + high_mem_sz);
-> 
-
 -- 
-Sincerely yours,
-Mike.
+2.25.0
+
