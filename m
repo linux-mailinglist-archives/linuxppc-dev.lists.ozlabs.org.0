@@ -2,54 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC31439BB55
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jun 2021 16:58:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56E7439BC6D
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jun 2021 17:59:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FxQqx1b9pz3ck4
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Jun 2021 00:58:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FxSBl6BRxz3bnn
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Jun 2021 01:59:43 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=merlin.20170209 header.b=p+0DeuMi;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1234::107; helo=merlin.infradead.org;
+ envelope-from=geoff@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=merlin.20170209 header.b=p+0DeuMi; 
+ dkim-atps=neutral
+Received: from merlin.infradead.org (merlin.infradead.org
+ [IPv6:2001:8b0:10b:1234::107])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FxQpd3gBpz3bsg
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Jun 2021 00:57:13 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4FxQpP5bdQzBCvw;
- Fri,  4 Jun 2021 16:57:01 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 0lG_CNElzr9b; Fri,  4 Jun 2021 16:57:01 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FxQpN2hrbzBCvf;
- Fri,  4 Jun 2021 16:57:00 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 42FDD8B8AB;
- Fri,  4 Jun 2021 16:57:00 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id qMsrh7Lk3-hZ; Fri,  4 Jun 2021 16:57:00 +0200 (CEST)
-Received: from po15610vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E02B88B8A9;
- Fri,  4 Jun 2021 16:56:59 +0200 (CEST)
-Received: by po15610vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 8280E64BDB; Fri,  4 Jun 2021 14:56:59 +0000 (UTC)
-Message-Id: <8358ad2102c089ec7ab13a934a37c892ce8219cc.1622818556.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <809d316bf5f1a81acdd69e220c13e716dac24f53.1622818556.git.christophe.leroy@csgroup.eu>
-References: <809d316bf5f1a81acdd69e220c13e716dac24f53.1622818556.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v2 4/4] powerpc/interrupt: Refactor
- interrupt_exit_user_prepare()
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
- npiggin@gmail.com
-Date: Fri,  4 Jun 2021 14:56:59 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FxS9T4jRDz2yx2
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Jun 2021 01:58:34 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=merlin.20170209; h=Date:Cc:To:Subject:From:References:
+ In-Reply-To:Message-Id:Sender:Reply-To:MIME-Version:Content-Type:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=DjliIZ4KNATRPcNKRTDcoYLO3XlB9lnfFLbkU6XUyQA=; b=p+0DeuMibFCjZv9RqyRjhikZsV
+ c6w/hHUjSHbSAlwkfK2i0a760RRqfX9YJbXQQ2NDlFgMciV2DvRu2eWbXxHtVNkhGd0HtSuVhsOKl
+ 02wICKR3sz6XcT9LMu49Sd9XeG9J0+RBGV1CQOrn23g/rw+DdDEl1wtdyo09UZnSPlfVSL3u7TFrh
+ IrSFMt8uu5zqKs7UQBU84GK2mcFvdPk5KX9+lWZKxwfnloOTlHgqO64+JwNYspa6uUlmxulnUZoWb
+ c7je41X8YXxfyx4BApvJb39RJyPa6eNBI0c7bRtwipMOzR1R6D96MEHFLe2bgQaxNkSLBTI8diBeC
+ qBsKAPMQ==;
+Received: from geoff by merlin.infradead.org with local (Exim 4.94.2 #2 (Red
+ Hat Linux)) id 1lpCDJ-001R9K-Ir; Fri, 04 Jun 2021 15:58:25 +0000
+Message-Id: <41509b2da647cd34b1331cc4756c8774b1e284eb.1622822173.git.geoff@infradead.org>
+In-Reply-To: <cover.1622822173.git.geoff@infradead.org>
+References: <cover.1622822173.git.geoff@infradead.org>
+From: Geoff Levand <geoff@infradead.org>
+Patch-Date: Fri, 4 Jun 2021 08:35:45 -0700
+Subject: [PATCH v2 1/2] powerpc/ps3: Add firmware version to sysfs
+To: Michael Ellerman <mpe@ellerman.id.au>
+Date: Fri, 04 Jun 2021 15:58:25 +0000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,102 +58,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-interrupt_exit_user_prepare() is a superset of
-interrupt_exit_user_prepare_main().
+Add a new sysfs entry /sys/firmware/ps3/fw-version that exports
+the PS3's firmware version.
 
-Refactor to avoid code duplication.
+The firmware version is available through an LV1 hypercall, and we've
+been printing it to the boot log, but haven't provided an easy way for
+user utilities to get it.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Geoff Levand <geoff@infradead.org>
 ---
- arch/powerpc/kernel/interrupt.c | 57 ++-------------------------------
- 1 file changed, 3 insertions(+), 54 deletions(-)
+ arch/powerpc/platforms/ps3/setup.c | 43 +++++++++++++++++++++++++++---
+ 1 file changed, 40 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
-index bc3c1892ed80..f5d30323028e 100644
---- a/arch/powerpc/kernel/interrupt.c
-+++ b/arch/powerpc/kernel/interrupt.c
-@@ -385,9 +385,7 @@ notrace unsigned long syscall_exit_restart(unsigned long r3, struct pt_regs *reg
+diff --git a/arch/powerpc/platforms/ps3/setup.c b/arch/powerpc/platforms/ps3/setup.c
+index e9ae5dd03593..3de9145c20bc 100644
+--- a/arch/powerpc/platforms/ps3/setup.c
++++ b/arch/powerpc/platforms/ps3/setup.c
+@@ -36,6 +36,7 @@ DEFINE_MUTEX(ps3_gpu_mutex);
+ EXPORT_SYMBOL_GPL(ps3_gpu_mutex);
  
- notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs)
+ static union ps3_firmware_version ps3_firmware_version;
++static char ps3_firmware_version_str[16];
+ 
+ void ps3_get_firmware_version(union ps3_firmware_version *v)
  {
--	unsigned long ti_flags;
--	unsigned long flags;
--	unsigned long ret = 0;
-+	unsigned long ret;
- 
- 	if (!IS_ENABLED(CONFIG_BOOKE) && !IS_ENABLED(CONFIG_40x))
- 		BUG_ON(!(regs->msr & MSR_RI));
-@@ -401,63 +399,14 @@ notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs)
- 	 */
- 	kuap_assert_locked();
- 
--	local_irq_save(flags);
--
--again:
--	ti_flags = READ_ONCE(current_thread_info()->flags);
--	while (unlikely(ti_flags & (_TIF_USER_WORK_MASK & ~_TIF_RESTORE_TM))) {
--		local_irq_enable(); /* returning to user: may enable */
--		if (ti_flags & _TIF_NEED_RESCHED) {
--			schedule();
--		} else {
--			if (ti_flags & _TIF_SIGPENDING)
--				ret |= _TIF_RESTOREALL;
--			do_notify_resume(regs, ti_flags);
--		}
--		local_irq_disable();
--		ti_flags = READ_ONCE(current_thread_info()->flags);
--	}
--
--	if (IS_ENABLED(CONFIG_PPC_BOOK3S_64) && IS_ENABLED(CONFIG_PPC_FPU)) {
--		if (IS_ENABLED(CONFIG_PPC_TRANSACTIONAL_MEM) &&
--				unlikely((ti_flags & _TIF_RESTORE_TM))) {
--			restore_tm_state(regs);
--		} else {
--			unsigned long mathflags = MSR_FP;
--
--			if (cpu_has_feature(CPU_FTR_VSX))
--				mathflags |= MSR_VEC | MSR_VSX;
--			else if (cpu_has_feature(CPU_FTR_ALTIVEC))
--				mathflags |= MSR_VEC;
--
--			/* See above restore_math comment */
--			if ((regs->msr & mathflags) != mathflags)
--				restore_math(regs);
--		}
--	}
--
--	if (!prep_irq_for_user_exit()) {
--		local_irq_enable();
--		local_irq_disable();
--		goto again;
--	}
--
--	booke_load_dbcr0();
--
--#ifdef CONFIG_PPC_TRANSACTIONAL_MEM
--	local_paca->tm_scratch = regs->msr;
--#endif
-+	local_irq_disable();
- 
--	account_cpu_user_exit();
-+	ret = interrupt_exit_user_prepare_main(regs, 0);
- 
- #ifdef CONFIG_PPC64
- 	regs->exit_result = ret;
- #endif
- 
--	/* Restore user access locks last */
--	kuap_user_restore(regs);
--	kuep_unlock();
--
- 	return ret;
+@@ -182,6 +183,40 @@ static int ps3_set_dabr(unsigned long dabr, unsigned long dabrx)
+ 	return lv1_set_dabr(dabr, dabrx) ? -1 : 0;
  }
  
++static ssize_t ps3_fw_version_show(struct kobject *kobj,
++	struct kobj_attribute *attr, char *buf)
++{
++	return sprintf(buf, "%s", ps3_firmware_version_str);
++}
++
++static int __init ps3_setup_sysfs(void)
++{
++	static struct kobj_attribute attr = __ATTR(fw-version, S_IRUGO,
++		ps3_fw_version_show, NULL);
++	static struct kobject *kobj;
++	int result;
++
++	kobj = kobject_create_and_add("ps3", firmware_kobj);
++
++	if (!kobj) {
++		pr_warn("%s:%d: kobject_create_and_add failed.\n", __func__,
++			__LINE__);
++		return -ENOMEM;
++	}
++
++	result = sysfs_create_file(kobj, &attr.attr);
++
++	if (result) {
++		pr_warn("%s:%d: sysfs_create_file failed.\n", __func__,
++			__LINE__);
++		kobject_put(kobj);
++		return -ENOMEM;
++	}
++
++	return 0;
++}
++core_initcall(ps3_setup_sysfs);
++
+ static void __init ps3_setup_arch(void)
+ {
+ 	u64 tmp;
+@@ -190,9 +225,11 @@ static void __init ps3_setup_arch(void)
+ 
+ 	lv1_get_version_info(&ps3_firmware_version.raw, &tmp);
+ 
+-	printk(KERN_INFO "PS3 firmware version %u.%u.%u\n",
+-	       ps3_firmware_version.major, ps3_firmware_version.minor,
+-	       ps3_firmware_version.rev);
++	snprintf(ps3_firmware_version_str, sizeof(ps3_firmware_version_str),
++		"%u.%u.%u", ps3_firmware_version.major,
++		ps3_firmware_version.minor, ps3_firmware_version.rev);
++
++	printk(KERN_INFO "PS3 firmware version %s\n", ps3_firmware_version_str);
+ 
+ 	ps3_spu_set_platform();
+ 
 -- 
-2.25.0
+2.25.1
+
 
