@@ -2,161 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFE5139BC72
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jun 2021 18:00:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2AE839BD51
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jun 2021 18:35:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FxSCY098Zz3c8V
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Jun 2021 02:00:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FxT0N5dBWz3bsD
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Jun 2021 02:35:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2020-01-29 header.b=JBjkoq5B;
-	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=pSOsq0S6;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lbpEWyPB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oracle.com (client-ip=205.220.165.32;
- helo=mx0a-00069f02.pphosted.com; envelope-from=konrad.wilk@oracle.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=psampat@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
- header.s=corp-2020-01-29 header.b=JBjkoq5B; 
- dkim=pass (1024-bit key;
- unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com
- header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com
- header.b=pSOsq0S6; dkim-atps=neutral
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com
- [205.220.165.32])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=lbpEWyPB; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FxSB92cl2z3bwS
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Jun 2021 01:59:12 +1000 (AEST)
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 154Fwio4026278; Fri, 4 Jun 2021 15:58:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=date : from : to : cc
- : subject : message-id : references : content-type : in-reply-to :
- mime-version; s=corp-2020-01-29;
- bh=5Lwl0zlLLXOjFB6AJtrSZDs8oG/nvzkr5vkS69mpymw=;
- b=JBjkoq5B0+y4xx0mrBmM+YBsWx6GBZiuWTo0t68Rj+0kEx2I0TXAI37v5GAEQpZ7uDR5
- qHRBvZICcT5pPzOv+xMaZyqryXlc469/5dE6IZs17wbYslTmXFa8DF5+IeGgLNYOwpI1
- h7IO4lesHafZAg/rv7SbgkOODi02MpqyoDWSvxcqaD3zuQ+5cefrCWtBgHJWhVKHN/Z2
- +HrK67dMcQXeH3pG/pjCjzMNi8towHjelvS54bqZbTZggBfK8Wh+0mDQ1QJOlN1tEtYg
- 3lJQORmNXavjXsqOxPI/PfW+lTBdyoWC8pGYMwLewkIz6fDPMcyJNcoRnk+2TI0P8eNl gg== 
-Received: from oracle.com (aserp3030.oracle.com [141.146.126.71])
- by mx0b-00069f02.pphosted.com with ESMTP id 38y0j7gf19-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 04 Jun 2021 15:58:44 +0000
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [127.0.0.1])
- by pps.podrdrct (8.16.0.36/8.16.0.36) with SMTP id 154Fwg6h009450;
- Fri, 4 Jun 2021 15:58:42 GMT
-Received: from nam04-dm6-obe.outbound.protection.outlook.com
- (mail-dm6nam08lp2044.outbound.protection.outlook.com [104.47.73.44])
- by aserp3030.oracle.com with ESMTP id 38ubnft1gb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 04 Jun 2021 15:58:42 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=c5535t2svwIRZCrsY0mAHIfQV+E8ZgO4f294j6NmP/t3r/Rtg8rZ15MuHEKajs4mEHp4IQ8HPAhj+K6rD0gFwCLyX4ehtA5XHP2v8aPdF63+cskd5NT4SxtKWI+IInwJzxbJR6t6PdlVcfuxmJtbsH73PVJE0n7luLIWDYd+tUQfIL7VBVrR9QFOt11+pVbYNEM3PTAHdbhQkqKAcM1OHB5CnRog7TPsTwzR0r0hX4/NzmtC/cOdpilleb6YJST38wWiUCgW3Z3aL6QGt1Mz0KQ7wjHLqdvHLgC2eV0EMI+kfVeFy2lSjh/ZiA7O1k7NkYcy6owMDCa8kXh7jGVwdw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5Lwl0zlLLXOjFB6AJtrSZDs8oG/nvzkr5vkS69mpymw=;
- b=GC1lmTOSH/gq572Yg/UfaoxMO6z7nu/6Iqb7W0WMpvLZFY7HHvRfC8IZ9FXGW9FiwMxfH5dszYc6sQcT5LoleHzDxo2FROWDuQne7ChvwaS5og9zlqrs7HIEtBfMBRrvRdVi4XGi5VhE/7yTjc7sl+euCQ3WewNhBzygAOY1mVNAKaq7tMfZ2Sip5TXH7Em8iuadwMonAmykk6140jiTktJspW/kLtti7QdfiqHJqmhuxV1Qcmv2U8In/ndNIt20iJazu8d49UVWVXiVtpTEKzoyZv0aOzW4nvz2/bOrFIqPJrZCeTIVxNuhPuMFdrVV0iMhZ3o394OsFNA8HVJDOw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5Lwl0zlLLXOjFB6AJtrSZDs8oG/nvzkr5vkS69mpymw=;
- b=pSOsq0S6c5cQezvKm5Vq28Gylj76mSmfPbHhvVd0wopwS+rBKUMyiMiVH5RGzkPjgNB3hvlzdo1sKKYjfSd9KwsJb6bWLFyzbxipUnvy5nNxuXUa2Uq84TGrm69di22qZFt+8eTOn21DXZaaRT00lU5uUNVhkHqhA+i9maPc2Rw=
-Authentication-Results: lst.de; dkim=none (message not signed)
- header.d=none;lst.de; dmarc=none action=none header.from=oracle.com;
-Received: from BYAPR10MB2999.namprd10.prod.outlook.com (2603:10b6:a03:85::27)
- by SJ0PR10MB4573.namprd10.prod.outlook.com (2603:10b6:a03:2ac::23)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4195.24; Fri, 4 Jun
- 2021 15:58:40 +0000
-Received: from BYAPR10MB2999.namprd10.prod.outlook.com
- ([fe80::8111:d8f1:c262:808d]) by BYAPR10MB2999.namprd10.prod.outlook.com
- ([fe80::8111:d8f1:c262:808d%6]) with mapi id 15.20.4173.027; Fri, 4 Jun 2021
- 15:58:40 +0000
-Date: Fri, 4 Jun 2021 11:58:34 -0400
-From: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-To: Christoph Hellwig <hch@lst.de>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, jgross@suse.com
-Subject: Re: simplify gendisk and request_queue allocation for blk-mq based
- drivers
-Message-ID: <YLpNqiw0LMkYWUyN@0xbeefdead.lan>
-References: <20210602065345.355274-1-hch@lst.de>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210602065345.355274-1-hch@lst.de>
-X-Originating-IP: [130.44.160.152]
-X-ClientProxiedBy: MN2PR01CA0037.prod.exchangelabs.com (2603:10b6:208:23f::6)
- To BYAPR10MB2999.namprd10.prod.outlook.com
- (2603:10b6:a03:85::27)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FxSzt5Z0Rz2xtv
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Jun 2021 02:35:22 +1000 (AEST)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 154GXAGS036493; Fri, 4 Jun 2021 12:35:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : subject :
+ date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=SoMoZKdx3lAPhbBQ8T1ueZ8fSj+4jtMVAfaUMydvLuE=;
+ b=lbpEWyPBSZ93aF7pPvXhZ/P2kpM6PNyP9Z+urLMo42qWbNUtAwHIHXAKd7zniP0awSS3
+ sleE3kr6cImXq7w9xVrtGTNZxgaE4flM/smsVyMo8exJFWc0NgRQ157AqsqU3/KMtR/2
+ T7TzcbjUueiOsxinexs4pt9Wd+4AZM561HnuPz5yfFgUCoM0Mr5vHBYnhrkthRnsTQCG
+ yzNYkY8qkJi46U2xoAV4EAa62kcJHr/dEfqcuyfSkqiTzXA36XdMiLHeGYrGaXCnWIsu
+ 8VT2G+wAhj9sdnlWsFXBigT84g6mh424HkR58wIEx6TYO5onkeL2LXpO+jJ9x5jVZLyD sg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 38yqburw4q-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 04 Jun 2021 12:35:10 -0400
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 154GXQhP037148;
+ Fri, 4 Jun 2021 12:35:09 -0400
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 38yqburw40-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 04 Jun 2021 12:35:09 -0400
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 154GTFge005656;
+ Fri, 4 Jun 2021 16:35:07 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma01fra.de.ibm.com with ESMTP id 38ud88a1hh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 04 Jun 2021 16:35:07 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 154GZ42933489252
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 4 Jun 2021 16:35:04 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7A49E11C04C;
+ Fri,  4 Jun 2021 16:35:04 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9ABD311C054;
+ Fri,  4 Jun 2021 16:35:02 +0000 (GMT)
+Received: from pratiks-thinkpad.in.ibm.com (unknown [9.85.115.47])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri,  4 Jun 2021 16:35:02 +0000 (GMT)
+From: "Pratik R. Sampat" <psampat@linux.ibm.com>
+To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+ linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, psampat@linux.ibm.com,
+ pratik.r.sampat@gmail.com
+Subject: [RFC] powerpc/pseries: Interface to represent PAPR firmware attributes
+Date: Fri,  4 Jun 2021 22:05:01 +0530
+Message-Id: <20210604163501.51511-1-psampat@linux.ibm.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from 0xbeefdead.lan (130.44.160.152) by
- MN2PR01CA0037.prod.exchangelabs.com (2603:10b6:208:23f::6) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4195.15 via Frontend Transport; Fri, 4 Jun 2021 15:58:36 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 6dde9b11-53fa-45a5-e4e3-08d927719ed5
-X-MS-TrafficTypeDiagnostic: SJ0PR10MB4573:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <SJ0PR10MB457380B60E35ADDCFC95A572893B9@SJ0PR10MB4573.namprd10.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: DHBK1Bd4R0yQf0mbwstUwD7rwPUJpZ9OBXQW78ziXe78KyDV/ay9WxxaENfloeMsvna7ISGWXvd4tGUMEE0hAFJq07vfks3neO5X6BhHhSb03cYDUSZQHXrCquEk5/GydvhOOwJftznFM9p1AJkBu13MtYY7t2/t5i7zm5RMU2KnsH/Uy61Wb7pGr9LfEk5gMIkYWiQijXJz+wDDDH5ZuYuLAl4J0ImmQrPMFSyYuO9OXefsEzSvWPDUhTx2FEbG5DluUitc+JkgRUIVVOyv6oZtmslmx2fEGZ0JH45HZ4yXtoT6ANXJwUndJMqaVwL+NLR5bd/TJjVXjkExroJxC4HW8uy8wLPcnt3WhJhQH4N4lp83G61x7DJHAjxIMHVK/hQtyWrnxDx9SzznUZSxFaGQ4gEWh0NldxkFkjK5Wo2f1ZyCVM2pMEksXUvDJu8jvdpWKvtu72LkdZtNF0d5JLlci6rFbhqGbxSPZta8qUs11ZtiwV577linlXpQy9wl3ZHN6gUpfiOKAU6e9N9/7OwoazJb/xgIbpGCT4hcSSDGE4vXb7tMiPqUFx99nSz5EyohhphRzO5Qp54uBzTdbYYHvurlhAKFZSC2uLQvNrIPOGq2X93TowBkmaVPmGub6LFR8OOOv1TuKZtCkA51M3bogdaVBrVnBelcQEx4rdw=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BYAPR10MB2999.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(346002)(376002)(136003)(366004)(396003)(39860400002)(7416002)(7406005)(66946007)(83380400001)(8936002)(7696005)(52116002)(6506007)(8676002)(956004)(2906002)(86362001)(8886007)(66556008)(5660300002)(54906003)(110136005)(36756003)(55016002)(9686003)(66476007)(38100700002)(26005)(316002)(16526019)(186003)(4326008)(478600001)(38350700002);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?gdpQmfl8El8DPe05/ff+wLw1/KXLxBUk84KmbBsgJrrdeHieFn5LEuqnWl++?=
- =?us-ascii?Q?+UjNgTjJDG0Oy6mts17gW1+WMWYc5sUjhoAGzfgwfT7Pzy2441s4sE3MvxSX?=
- =?us-ascii?Q?SRhf4Ec4wl4gNcjirY4ZZx9nyHsKiuVqsZIiIgvOZV6JtJ/wEtmJxOuFg8nP?=
- =?us-ascii?Q?uKjCrwrGeC3048DWWWWuHEDcmJ6ZiYL6rsQKzrsK0nqgY5Rxqs6sQE3dQNq4?=
- =?us-ascii?Q?CfCfYZsdey83ES59nAWpWzHfBPV3sAkiuolib1v8KFoFh4m19r203lwOpa59?=
- =?us-ascii?Q?SySyMhX/1zZ61W8f+1VN6FTD6szZX2+vTot42u9xJ9dDh0U3eNAxd2iYZn0f?=
- =?us-ascii?Q?FnywpHXicqp7wJ4XxEvvbHwQjO+qRq86gUvS750ntuWPrrC2vv5+b6RZzuES?=
- =?us-ascii?Q?UcXB6tmXaG0UH6hWSpBKxi4Qu+znSclq9GPbpnNHb6uGZthjISahfQtta6L8?=
- =?us-ascii?Q?QENMEq/n3Y8O4nxltdvopsJg4mtGH7XLAIw1TfFd6NGnkMGv+e8uEULBYnah?=
- =?us-ascii?Q?sKsuSSKxj9HW9YLP46ZjPemhaoeHbI0bMhjtc8tA5iddmW0Qp0D1sou4oBx1?=
- =?us-ascii?Q?+NWx0/dEti/pL1xCxKtWgaprT2A+vvp2lNH/Zp9EdpD7pqwSsffeQGQGYkmO?=
- =?us-ascii?Q?JCogfOFRqp8ieYxSSlI7BY6O5f4vs0fr+pOs/di4TE/EuWhelL8x8D4VFENg?=
- =?us-ascii?Q?C10k7BLZfSLJXmQkDkwCUju3JpwBTu20ZSobHfpvuiGl7BhkQAfiy8EJMLmD?=
- =?us-ascii?Q?YBoD5fLwHNzfpBW0nr5lCjOi5onruP7ZRKk/3ddsKzuFkx2PjQDOaEprB8od?=
- =?us-ascii?Q?uLw/m7j6Z7YgqwkScdMQliPMFlaMnWQlKN5/c0leXZ3TayPv8hxil1UBekgP?=
- =?us-ascii?Q?Kpp5KY5GxCcyAZW2yfB8Y4ikwdiKii5dj+yOqOBxN/6JyV2pvazcS9Xsq9Dj?=
- =?us-ascii?Q?Y1DsNtmdsClAPVchPB15A2Yp5/fLM2u7cgMhr8thEdLIV5cUr5UwtEJfUi1L?=
- =?us-ascii?Q?a7P8IQ2zF8beqpIVhRJuUz+bgGvmluPArexdyi8MmDeVuKICYzY1ZylKnltR?=
- =?us-ascii?Q?KS+uaVVX48VeH3aI1YK8YVpLFxAFhM5jGoahx7249NVuqHQitDHE/F3P2Kw9?=
- =?us-ascii?Q?P9TIMyUxY0U6UDewE1YgwVRFm6ucT69PcDuUPD/MDYRo6lQAkknDIWsZIohy?=
- =?us-ascii?Q?aHLmwizL1c8bkLjOlhcRtz0fGX76iiZhkvd7mxf0PIgWOyisyqwjfn8xHlDy?=
- =?us-ascii?Q?lya6vxtBHvC7VyelPVIM4UREFQMtr43M9AGA4WFzaF5J8kQ/Jx+YMPS6tsQ2?=
- =?us-ascii?Q?K//cbST/UVancc9qupZ1eFle?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6dde9b11-53fa-45a5-e4e3-08d927719ed5
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR10MB2999.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2021 15:58:40.2289 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: k8PHQ2bjx/5Yak8THiDXWmeuwC57H+V+YorWNg11QCDMPAuKEJyQpKJy+Bs2B5GcI9L15xw+he/zXw8ra7OaWg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB4573
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=10005
- signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- bulkscore=0 phishscore=0
- spamscore=0 malwarescore=0 mlxscore=0 mlxlogscore=999 suspectscore=0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: liiIzUH6AEi_Hxgrut6y4z5zLqvVUjEA
+X-Proofpoint-ORIG-GUID: lEFYtpG-AMZ8FHb3C2HfkwXH3NOE1aOW
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-06-04_11:2021-06-04,
+ 2021-06-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 phishscore=0
+ impostorscore=0 suspectscore=0 adultscore=0 lowpriorityscore=0 spamscore=0
+ malwarescore=0 bulkscore=0 priorityscore=1501 mlxlogscore=999 mlxscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104190000
- definitions=main-2106040115
-X-Proofpoint-ORIG-GUID: rc9IytYinERt57ZWbGC4hfNK-9DkWPUs
-X-Proofpoint-GUID: rc9IytYinERt57ZWbGC4hfNK-9DkWPUs
+ definitions=main-2106040119
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -168,75 +106,380 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Justin Sanders <justin@coraid.com>, Vignesh Raghavendra <vigneshr@ti.com>,
- Mike Snitzer <snitzer@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Jason Wang <jasowang@redhat.com>, virtualization@lists.linux-foundation.org,
- dm-devel@redhat.com, "Md. Haris Iqbal" <haris.iqbal@ionos.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>, Jack Wang <jinpu.wang@ionos.com>,
- Tim Waugh <tim@cyberelk.net>, linux-s390@vger.kernel.org,
- Maxim Levitsky <maximlevitsky@gmail.com>, Richard Weinberger <richard@nod.at>,
- Christian Borntraeger <borntraeger@de.ibm.com>, xen-devel@lists.xenproject.org,
- Ilya Dryomov <idryomov@gmail.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alex Dubov <oakad@yahoo.com>, Heiko Carstens <hca@linux.ibm.com>,
- Josef Bacik <josef@toxicpanda.com>, Denis Efremov <efremov@linux.com>,
- nbd@other.debian.org, linux-block@vger.kernel.org, ceph-devel@vger.kernel.org,
- Jens Axboe <axboe@kernel.dk>, Geoff Levand <geoff@infradead.org>,
- linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org,
- Roger Pau =?iso-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 02, 2021 at 09:53:15AM +0300, Christoph Hellwig wrote:
-> Hi all,
+Adds a generic interface to represent the energy and frequency related
+PAPR attributes on the system using the new H_CALL
+"H_GET_ENERGY_SCALE_INFO".
 
-Hi!
+H_GET_EM_PARMS H_CALL was previously responsible for exporting this
+information in the lparcfg, however the H_GET_EM_PARMS H_CALL
+will be deprecated P10 onwards.
 
-You wouldn't have a nice git repo to pull so one can test it easily?
+The H_GET_ENERGY_SCALE_INFO H_CALL is of the following call format:
+hcall(
+  uint64 H_GET_ENERGY_SCALE_INFO,  // Get energy scale info
+  uint64 flags,           // Per the flag request
+  uint64 firstAttributeId,// The attribute id
+  uint64 bufferAddress,   // The logical address of the output buffer
+  uint64 bufferSize       // The size in bytes of the output buffer
+);
 
-Thank you!
+This H_CALL can query either all the attributes at once with
+firstAttributeId = 0, flags = 0 as well as query only one attribute
+at a time with firstAttributeId = id
 
-Cc-ing Boris/Juergen - pls see below xen.
-> 
-> this series is the scond part of cleaning up lifetimes and allocation of
-> the gendisk and request_queue structure.  It adds a new interface to
-> allocate the disk and queue together for blk based drivers, and uses that
-> in all drivers that do not have any caveats in their gendisk and
-> request_queue lifetime rules.
-> 
-> Diffstat:
->  block/blk-mq.c                      |   91 +++++++++++++++-------------------
->  block/blk.h                         |    1 
->  block/elevator.c                    |    2 
->  drivers/block/amiflop.c             |   16 +-----
->  drivers/block/aoe/aoeblk.c          |   33 ++++--------
->  drivers/block/aoe/aoedev.c          |    3 -
->  drivers/block/ataflop.c             |   16 +-----
->  drivers/block/floppy.c              |   20 +------
->  drivers/block/loop.c                |   19 ++-----
->  drivers/block/nbd.c                 |   53 +++++++------------
->  drivers/block/null_blk/main.c       |   11 +---
->  drivers/block/paride/pcd.c          |   19 +++----
->  drivers/block/paride/pd.c           |   30 ++++-------
->  drivers/block/paride/pf.c           |   18 ++----
->  drivers/block/ps3disk.c             |   36 +++++--------
->  drivers/block/rbd.c                 |   52 ++++++-------------
->  drivers/block/rnbd/rnbd-clt.c       |   35 +++----------
->  drivers/block/sunvdc.c              |   47 ++++-------------
->  drivers/block/swim.c                |   34 +++++-------
->  drivers/block/swim3.c               |   33 +++++-------
->  drivers/block/sx8.c                 |   23 ++------
->  drivers/block/virtio_blk.c          |   26 ++-------
->  drivers/block/xen-blkfront.c        |   96 ++++++++++++++----------------------
->  drivers/block/z2ram.c               |   15 +----
->  drivers/cdrom/gdrom.c               |   45 +++++++---------
->  drivers/md/dm-rq.c                  |    9 +--
->  drivers/memstick/core/ms_block.c    |   25 +++------
->  drivers/memstick/core/mspro_block.c |   26 ++++-----
->  drivers/mtd/mtd_blkdevs.c           |   48 ++++++++----------
->  drivers/mtd/ubi/block.c             |   68 ++++++++++---------------
->  drivers/s390/block/scm_blk.c        |   21 ++-----
->  include/linux/blk-mq.h              |   24 ++++++---
->  include/linux/elevator.h            |    1 
->  33 files changed, 386 insertions(+), 610 deletions(-)
+The output buffer consists of the following
+1. number of attributes              - 8 bytes
+2. array offset to the data location - 8 bytes
+3. version info                      - 1 byte
+4. A data array of size num attributes, which contains the following:
+  a. attribute ID              - 8 bytes
+  b. attribute value in number - 8 bytes
+  c. attribute name in string  - 64 bytes
+  d. attribute value in string - 64 bytes
+
+The new H_CALL exports information in direct string value format, hence
+a new interface has been introduced in /sys/firmware/papr to export
+this information to userspace in an extensible pass-through format.
+The H_CALL returns the name, numeric value and string value. As string
+values are in human readable format, therefore if the string value
+exists then that is given precedence over the numeric value.
+
+The format of exposing the sysfs information is as follows:
+/sys/firmware/papr/
+  |-- attr_0_name
+  |-- attr_0_val
+  |-- attr_1_name
+  |-- attr_1_val
+...
+
+The energy information that is exported is useful for userspace tools
+such as powerpc-utils. Currently these tools infer the
+"power_mode_data" value in the lparcfg, which in turn is obtained from
+the to be deprecated H_GET_EM_PARMS H_CALL.
+On future platforms, such userspace utilities will have to look at the
+data returned from the new H_CALL being populated in this new sysfs
+interface and report this information directly without the need of
+interpretation.
+
+Signed-off-by: Pratik R. Sampat <psampat@linux.ibm.com>
+---
+ Documentation/ABI/testing/sysfs-firmware-papr |  24 +++
+ arch/powerpc/include/asm/hvcall.h             |  21 +-
+ arch/powerpc/kvm/trace_hv.h                   |   1 +
+ arch/powerpc/platforms/pseries/Makefile       |   3 +-
+ .../pseries/papr_platform_attributes.c        | 203 ++++++++++++++++++
+ 5 files changed, 250 insertions(+), 2 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-firmware-papr
+ create mode 100644 arch/powerpc/platforms/pseries/papr_platform_attributes.c
+
+diff --git a/Documentation/ABI/testing/sysfs-firmware-papr b/Documentation/ABI/testing/sysfs-firmware-papr
+new file mode 100644
+index 000000000000..1c040b44ac3b
+--- /dev/null
++++ b/Documentation/ABI/testing/sysfs-firmware-papr
+@@ -0,0 +1,24 @@
++What:		/sys/firmware/papr
++Date:		June 2021
++Contact:	Linux for PowerPC mailing list <linuxppc-dev@ozlabs.org>
++Description :	Director hosting a set of platform attributes on Linux
++		running as a PAPR guest.
++
++		Each file in a directory contains a platform
++		attribute pertaining to performance/energy-savings
++		mode and processor frequency.
++
++What:		/sys/firmware/papr/attr_X_name
++		/sys/firmware/papr/attr_X_val
++Date:		June 2021
++Contact:	Linux for PowerPC mailing list <linuxppc-dev@ozlabs.org>
++Description:	PAPR attributes directory for POWERVM servers
++
++		This directory provides PAPR information. It
++		contains below sysfs attributes:
++
++		- attr_X_name: File contains the name of
++		attribute X
++
++		- attr_X_val: Numeric/string value of
++		attribute X
+diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
+index e3b29eda8074..19a2a8c77a49 100644
+--- a/arch/powerpc/include/asm/hvcall.h
++++ b/arch/powerpc/include/asm/hvcall.h
+@@ -316,7 +316,8 @@
+ #define H_SCM_PERFORMANCE_STATS 0x418
+ #define H_RPT_INVALIDATE	0x448
+ #define H_SCM_FLUSH		0x44C
+-#define MAX_HCALL_OPCODE	H_SCM_FLUSH
++#define H_GET_ENERGY_SCALE_INFO	0x450
++#define MAX_HCALL_OPCODE	H_GET_ENERGY_SCALE_INFO
+ 
+ /* Scope args for H_SCM_UNBIND_ALL */
+ #define H_UNBIND_SCOPE_ALL (0x1)
+@@ -631,6 +632,24 @@ struct hv_gpci_request_buffer {
+ 	uint8_t bytes[HGPCI_MAX_DATA_BYTES];
+ } __packed;
+ 
++#define MAX_EM_ATTRS	10
++#define MAX_EM_DATA_BYTES \
++	(sizeof(struct energy_scale_attributes) * MAX_EM_ATTRS)
++struct energy_scale_attributes {
++	__be64 attr_id;
++	__be64 attr_value;
++	unsigned char attr_desc[64];
++	unsigned char attr_value_desc[64];
++} __packed;
++
++struct hv_energy_scale_buffer {
++	__be64 num_attr;
++	__be64 array_offset;
++	__u8 data_header_version;
++	unsigned char data[MAX_EM_DATA_BYTES];
++} __packed;
++
++
+ #endif /* __ASSEMBLY__ */
+ #endif /* __KERNEL__ */
+ #endif /* _ASM_POWERPC_HVCALL_H */
+diff --git a/arch/powerpc/kvm/trace_hv.h b/arch/powerpc/kvm/trace_hv.h
+index 830a126e095d..38cd0ed0a617 100644
+--- a/arch/powerpc/kvm/trace_hv.h
++++ b/arch/powerpc/kvm/trace_hv.h
+@@ -115,6 +115,7 @@
+ 	{H_VASI_STATE,			"H_VASI_STATE"}, \
+ 	{H_ENABLE_CRQ,			"H_ENABLE_CRQ"}, \
+ 	{H_GET_EM_PARMS,		"H_GET_EM_PARMS"}, \
++	{H_GET_ENERGY_SCALE_INFO,	"H_GET_ENERGY_SCALE_INFO"}, \
+ 	{H_SET_MPP,			"H_SET_MPP"}, \
+ 	{H_GET_MPP,			"H_GET_MPP"}, \
+ 	{H_HOME_NODE_ASSOCIATIVITY,	"H_HOME_NODE_ASSOCIATIVITY"}, \
+diff --git a/arch/powerpc/platforms/pseries/Makefile b/arch/powerpc/platforms/pseries/Makefile
+index c8a2b0b05ac0..d14fca89ac25 100644
+--- a/arch/powerpc/platforms/pseries/Makefile
++++ b/arch/powerpc/platforms/pseries/Makefile
+@@ -6,7 +6,8 @@ obj-y			:= lpar.o hvCall.o nvram.o reconfig.o \
+ 			   of_helpers.o \
+ 			   setup.o iommu.o event_sources.o ras.o \
+ 			   firmware.o power.o dlpar.o mobility.o rng.o \
+-			   pci.o pci_dlpar.o eeh_pseries.o msi.o
++			   pci.o pci_dlpar.o eeh_pseries.o msi.o \
++			   papr_platform_attributes.o
+ obj-$(CONFIG_SMP)	+= smp.o
+ obj-$(CONFIG_SCANLOG)	+= scanlog.o
+ obj-$(CONFIG_KEXEC_CORE)	+= kexec.o
+diff --git a/arch/powerpc/platforms/pseries/papr_platform_attributes.c b/arch/powerpc/platforms/pseries/papr_platform_attributes.c
+new file mode 100644
+index 000000000000..8818877ff47e
+--- /dev/null
++++ b/arch/powerpc/platforms/pseries/papr_platform_attributes.c
+@@ -0,0 +1,203 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * PowerPC64 LPAR PAPR Information Driver
++ *
++ * This driver creates a sys file at /sys/firmware/papr/ which contains
++ * files keyword - value pairs that specify energy configuration of the system.
++ *
++ * Copyright 2021 IBM Corp.
++ */
++
++#include <linux/module.h>
++#include <linux/types.h>
++#include <linux/errno.h>
++#include <linux/init.h>
++#include <linux/seq_file.h>
++#include <linux/slab.h>
++#include <linux/uaccess.h>
++#include <linux/hugetlb.h>
++#include <asm/lppaca.h>
++#include <asm/hvcall.h>
++#include <asm/firmware.h>
++#include <asm/time.h>
++#include <asm/prom.h>
++#include <asm/vdso_datapage.h>
++#include <asm/vio.h>
++#include <asm/mmu.h>
++#include <asm/machdep.h>
++#include <asm/drmem.h>
++
++#include "pseries.h"
++
++#define MAX_KOBJ_ATTRS	2
++
++struct papr_attr {
++	u64 id;
++	struct kobj_attribute attr;
++} *pgattrs;
++
++struct kobject *papr_kobj;
++struct hv_energy_scale_buffer *em_buf;
++struct energy_scale_attributes *ea;
++
++static ssize_t papr_show_name(struct kobject *kobj,
++			       struct kobj_attribute *attr,
++			       char *buf)
++{
++	struct papr_attr *pattr = container_of(attr, struct papr_attr, attr);
++	int idx, ret = 0;
++
++	/*
++	 * We do not expect the name to change, hence use the old value
++	 * and save a HCALL
++	 */
++	for (idx = 0; idx < be64_to_cpu(em_buf->num_attr); idx++) {
++		if (pattr->id == be64_to_cpu(ea[idx].attr_id)) {
++			ret = sprintf(buf, "%s\n", ea[idx].attr_desc);
++			if (ret < 0)
++				ret = -EIO;
++			break;
++		}
++	}
++
++	return ret;
++}
++
++static ssize_t papr_show_val(struct kobject *kobj,
++			      struct kobj_attribute *attr,
++			      char *buf)
++{
++	struct papr_attr *pattr = container_of(attr, struct papr_attr, attr);
++	struct hv_energy_scale_buffer *t_buf;
++	struct energy_scale_attributes *t_ea;
++	int data_offset, ret = 0;
++
++	t_buf = kmalloc(sizeof(*t_buf), GFP_KERNEL);
++	if (t_buf == NULL)
++		return -ENOMEM;
++
++	ret = plpar_hcall_norets(H_GET_ENERGY_SCALE_INFO, 0,
++				 pattr->id, virt_to_phys(t_buf),
++				 sizeof(*t_buf));
++
++	if (ret != H_SUCCESS) {
++		pr_warn("hcall faiiled: H_GET_ENERGY_SCALE_INFO");
++		goto out;
++	}
++
++	data_offset = be64_to_cpu(t_buf->array_offset) -
++			(sizeof(t_buf->num_attr) +
++			sizeof(t_buf->array_offset) +
++			sizeof(t_buf->data_header_version));
++
++	t_ea = (struct energy_scale_attributes *) &t_buf->data[data_offset];
++
++	/* Prioritize string values over numerical */
++	if (strlen(t_ea->attr_value_desc) != 0)
++		ret = sprintf(buf, "%s\n", t_ea->attr_value_desc);
++	else
++		ret = sprintf(buf, "%llu\n", be64_to_cpu(t_ea->attr_value));
++	if (ret < 0)
++		ret = -EIO;
++out:
++	kfree(t_buf);
++	return ret;
++}
++
++static struct papr_ops_info {
++	const char *attr_name;
++	ssize_t (*show)(struct kobject *kobj, struct kobj_attribute *attr,
++			char *buf);
++} ops_info[MAX_KOBJ_ATTRS] = {
++	{ "name", papr_show_name },
++	{ "val", papr_show_val },
++};
++
++static int __init papr_init(void)
++{
++	uint64_t num_attr;
++	int ret, idx, i, data_offset;
++
++	em_buf = kmalloc(sizeof(*em_buf), GFP_KERNEL);
++	if (em_buf == NULL)
++		return -ENOMEM;
++	/*
++	 * hcall(
++	 * uint64 H_GET_ENERGY_SCALE_INFO,  // Get energy scale info
++	 * uint64 flags,            // Per the flag request
++	 * uint64 firstAttributeId, // The attribute id
++	 * uint64 bufferAddress,    // The logical address of the output buffer
++	 * uint64 bufferSize);	    // The size in bytes of the output buffer
++	 */
++	ret = plpar_hcall_norets(H_GET_ENERGY_SCALE_INFO, 0, 0,
++				 virt_to_phys(em_buf), sizeof(*em_buf));
++
++	if (!firmware_has_feature(FW_FEATURE_LPAR) || ret != H_SUCCESS ||
++	    em_buf->data_header_version != 0x1) {
++		pr_warn("hcall faiiled: H_GET_ENERGY_SCALE_INFO");
++		goto out;
++	}
++
++	num_attr = be64_to_cpu(em_buf->num_attr);
++
++	/*
++	 * Typecast the energy buffer to the attribute structure at the offset
++	 * specified in the buffer
++	 */
++	data_offset = be64_to_cpu(em_buf->array_offset) -
++			(sizeof(em_buf->num_attr) +
++			sizeof(em_buf->array_offset) +
++			sizeof(em_buf->data_header_version));
++
++	ea = (struct energy_scale_attributes *) &em_buf->data[data_offset];
++
++	papr_kobj = kobject_create_and_add("papr", firmware_kobj);
++	if (!papr_kobj) {
++		pr_warn("kobject_create_and_add papr failed\n");
++		goto out_kobj;
++	}
++
++	for (idx = 0; idx < num_attr; idx++) {
++		pgattrs = kcalloc(MAX_KOBJ_ATTRS,
++				  sizeof(*pgattrs),
++				  GFP_KERNEL);
++		if (!pgattrs)
++			goto out_kobj;
++
++		/*
++		 * Create the sysfs attribute hierarchy for each PAPR
++		 * property found
++		 */
++		for (i = 0; i < MAX_KOBJ_ATTRS; i++) {
++			char buf[20];
++
++			pgattrs[i].id = be64_to_cpu(ea[idx].attr_id);
++			sysfs_attr_init(&pgattrs[i].attr.attr);
++			sprintf(buf, "%s_%d_%s", "attr", idx,
++				ops_info[i].attr_name);
++			pgattrs[i].attr.attr.name = buf;
++			pgattrs[i].attr.attr.mode = 0444;
++			pgattrs[i].attr.show = ops_info[i].show;
++
++			if (sysfs_create_file(papr_kobj, &pgattrs[i].attr.attr)) {
++				pr_warn("Failed to create papr file %s\n",
++					 pgattrs[i].attr.attr.name);
++				goto out_pgattrs;
++			}
++		}
++	}
++
++	return 0;
++
++out_pgattrs:
++	for (i = 0; i < MAX_KOBJ_ATTRS; i++)
++		kfree(pgattrs);
++out_kobj:
++	kobject_put(papr_kobj);
++out:
++	kfree(em_buf);
++
++	return -ENOMEM;
++}
++
++machine_device_initcall(pseries, papr_init);
+-- 
+2.30.2
+
