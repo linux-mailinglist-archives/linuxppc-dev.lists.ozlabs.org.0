@@ -1,58 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8588339AF19
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jun 2021 02:34:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CDED39AF1A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jun 2021 02:37:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fx3gN4X3lz3bnY
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jun 2021 10:34:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fx3kQ3NsBz30BC
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jun 2021 10:37:18 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=MTBAZvCi;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Z/y2LRmp;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+ smtp.mailfrom=bugzilla.kernel.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=MTBAZvCi; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=Z/y2LRmp; 
  dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fx3fz2j1wz2yhf
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Jun 2021 10:34:18 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Fx3fr5fzwz9s1l;
- Fri,  4 Jun 2021 10:34:12 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1622766853;
- bh=DlYD7/ikT8YNbVnd2jRpmnUISzjs7MCffewKt+dV8Zk=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=MTBAZvCihWnDtnLJ4HtIxdEG+CsBNWqSCDh/aKFo7J0FQp3ZvmnIfHmaTW0SH6dH6
- TGrEG3/TTlNCiXMXrv6D0sCmHdmIvrPJfUfTgz9D9FkATH8vzrovgkESaE58lSH3IN
- dzxbq9TLirzG8TbrbZCrAQS8QCXgUrCaw6PxYQwkZEiI+QikDUZ9grqCA9pOwcMb+d
- 2aKKsgO608zGTeIdGEFzbrZJXz4QwaREAr7pf4wCncmFchOzU6SBzQhvV4nUpWmzds
- xRK3CRgxmaVj2wmh0TMu/S8nkcHXNik6PCFsv0/4WjoYMPalRswmWl/0T8lVxrBToa
- 7rAvfzwAd8UCA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Geoff Levand <geoff@infradead.org>, "David S. Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH 0/5] DMA fixes for PS3 device drivers
-In-Reply-To: <850d4850-d45a-e22f-d4bb-18bd68a35031@infradead.org>
-References: <cover.1622577339.git.geoff@infradead.org>
- <875yyvh5iy.fsf@mpe.ellerman.id.au>
- <850d4850-d45a-e22f-d4bb-18bd68a35031@infradead.org>
-Date: Fri, 04 Jun 2021 10:34:10 +1000
-Message-ID: <8735tyh3i5.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fx3jw0b7Wz2xv2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Jun 2021 10:36:52 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPS id 6450860C3E
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Jun 2021 00:36:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1622767008;
+ bh=zwg/pGRwpNQhiWTQPwJ9/fC5FIwChNIZvQCSfsTkPMI=;
+ h=From:To:Subject:Date:In-Reply-To:References:From;
+ b=Z/y2LRmpcDZbmhoNMpWpCP0S6aUlKRf3Y927ZgWxWSPEVBaZXOvTNaHxd59kaX4D0
+ 02lE1595NFblhCX6OjjCn9f/BmwtoMB8aRagU5zxsYzKFrLluBo+ciqhTWykTl6VFp
+ wkz6iDomVqOWE3er40cpOvXYpNhibiIpBwFnXQooHg9+LnzZFFI3zEPNXqMphP2F4f
+ G6sIAIcM4ff9ta9MwtK/BLb8AsZ3AIoXCjeacfa/dNdKPq0tlu7vpQ+/yttmQDulPa
+ tdJS+tgw23iyHpvh2IghOlg7TmBIuUm1nMI1y7cfl0kTNv3JKOeK1R2z/wPqo4AeJF
+ 7xnUOUwrggNNg==
+Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
+ id 506E1611C0; Fri,  4 Jun 2021 00:36:48 +0000 (UTC)
+From: bugzilla-daemon@bugzilla.kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 213069] kernel BUG at
+ arch/powerpc/include/asm/book3s/64/hash-4k.h:147! Oops: Exception in kernel
+ mode, sig: 5 [#1]
+Date: Fri, 04 Jun 2021 00:36:48 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: REOPENED
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: bug_status resolution
+Message-ID: <bug-213069-206035-08Jv1J0rzq@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-213069-206035@https.bugzilla.kernel.org/>
+References: <bug-213069-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,43 +79,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Geoff Levand <geoff@infradead.org> writes:
-> Hi Michael,
->
-> On 6/2/21 10:38 PM, Michael Ellerman wrote:
->> Geoff Levand <geoff@infradead.org> writes:
->>> Hi,
->>>
->>> This is a set of patches that fix various DMA related problems in the PS3
->>> device drivers, and add better error checking and improved message logging.
->>>
->>> The gelic network driver had a number of problems and most of the changes are
->>> in it's sources.
->>>
->>> Please consider.
->> 
->> Who are you thinking would merge this?
->> 
->> It's sort of splattered all over the place, but is mostly networking by
->> lines changed.
->> 
->> Maybe patches 3-5 should go via networking and I take 1-2?
->
-> As suggested, I split the V1 series into two separate series, one for
-> powerpc, and one for network.  
+https://bugzilla.kernel.org/show_bug.cgi?id=3D213069
 
-Thanks.
+Erhard F. (erhard_f@mailbox.org) changed:
 
-> I thought it made more sense for patch 3, 'powerpc/ps3: Add dma_mask
-> to ps3_dma_region' to go with the powerpc series, so put it into that
-> series.
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+             Status|RESOLVED                    |REOPENED
+         Resolution|CODE_FIX                    |---
 
-Oh I thought patches 4 and 5 had a dependency on it, but if not yeah
-makes sense for patch 3 to go via the powerpc tree.
+--- Comment #4 from Erhard F. (erhard_f@mailbox.org) ---
+I applied the patch on top of 5.13-rc4 but it didn't work out unfortunately.
 
-cheers
+Still getting the same
+kernel BUG at arch/powerpc/include/asm/book3s/64/hash-4k.h:147!
+Oops: Exception in kernel mode, sig: 5 [#1]
+...
+
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching the assignee of the bug.=
