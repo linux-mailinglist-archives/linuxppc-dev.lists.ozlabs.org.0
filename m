@@ -2,104 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87A4D39C306
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jun 2021 23:53:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 542D539C3F6
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Jun 2021 01:35:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fxc3L17c7z3bsv
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Jun 2021 07:53:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FxfJj4LZ2z3btC
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Jun 2021 09:35:33 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nLB6LdSg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=paul-moore-com.20150623.gappssmtp.com header.i=@paul-moore-com.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=uU0g54LY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=paul-moore.com
+ (client-ip=2a00:1450:4864:20::630; helo=mail-ej1-x630.google.com;
+ envelope-from=paul@paul-moore.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=nLB6LdSg; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=paul-moore-com.20150623.gappssmtp.com
+ header.i=@paul-moore-com.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=uU0g54LY; dkim-atps=neutral
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com
+ [IPv6:2a00:1450:4864:20::630])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fxc2q5hvXz2ywx
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Jun 2021 07:53:23 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 154LY7uD030421; Fri, 4 Jun 2021 17:53:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=3ylY8P2/3DTxRHozCmcFghyxxXy3o1A1gbdKhJJWS3A=;
- b=nLB6LdSgETsUdRdUG9TnN4rHoxBJ1ULcClsAFxOzWK3yQfcEwciEzWCc0BZmSilY/dT0
- GDYS+DadEe8kZBPROmNyWlzlCGnu689y1uQ3C954lFAeO4MUK964L0p0Q6f3F2LgQnGy
- BzbHu4X5hjUjowVGTr590mDoqQOvIkMbM0ljjJoxRmGwTpMlTL6Yl0xg2TwRsyNsSjXY
- QrcNoxzdwl+N9WXy9GG5qPNwahDXzfRa30hdfZbXGhx7EPLDbnkPciUJciPe7Ji9kVb7
- lMPKjVi/hbo1fe5HJ4t/Qe+zY/hnXnO49JrtLtfejEQ8rOC4UfUO0R1HkGqz4mGrCJVJ bg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 38yu8ssmb7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 04 Jun 2021 17:53:12 -0400
-Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 154LZqOH038516;
- Fri, 4 Jun 2021 17:53:11 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 38yu8ssmb0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 04 Jun 2021 17:53:11 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 154LlI42005781;
- Fri, 4 Jun 2021 21:53:11 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
- [9.57.198.27]) by ppma02dal.us.ibm.com with ESMTP id 38ud8afxna-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 04 Jun 2021 21:53:11 +0000
-Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
- [9.57.199.108])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 154LrA6I22151456
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 4 Jun 2021 21:53:10 GMT
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0E074B205F;
- Fri,  4 Jun 2021 21:53:10 +0000 (GMT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AB34AB2065;
- Fri,  4 Jun 2021 21:53:08 +0000 (GMT)
-Received: from sig-9-77-136-17.ibm.com (unknown [9.77.136.17])
- by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Fri,  4 Jun 2021 21:53:08 +0000 (GMT)
-Message-ID: <93586baca94d10ec5658d547b109aaa6a55ff635.camel@linux.ibm.com>
-Subject: Re: [PATCH v4 09/16] powerpc/pseries/vas: Add HCALL wrappers for
- VAS handling
-From: Haren Myneni <haren@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
- linux-crypto@vger.kernel.org, herbert@gondor.apana.org.au,
- npiggin@gmail.com
-Date: Fri, 04 Jun 2021 14:53:06 -0700
-In-Reply-To: <87o8clg83d.fsf@mpe.ellerman.id.au>
-References: <8d219c0816133a8643d650709066cf04c9c77322.camel@linux.ibm.com>
- <f52961e6941803366ecf6239ddb9532680516b78.camel@linux.ibm.com>
- <87o8clg83d.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.2 (3.36.2-1.fc32) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FxfJC1CWvz2yXZ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Jun 2021 09:35:05 +1000 (AEST)
+Received: by mail-ej1-x630.google.com with SMTP id a11so16200375ejf.3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Jun 2021 16:35:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=MQzzcOcvbnGFvPAi734T5k4MKLwQn8Y8iXFH95VGnis=;
+ b=uU0g54LYxDHXzcvQR/hKpB0cyEwvbGqHbvnsnvbFmdk6UcLs6+2bXPWQZkDlcUfBVD
+ UFk71RYzrALfiS42BByrCUTYdPxFexW0D09M+WYbQgXyv+uMIy7SQI1d/WzIRxR2fLb2
+ 2204MdeGaCsBDk/1JobkofP5pnm0AtrLFCVaY7+Q0RHk4dnltJ9fDiessE4hp7yutmZK
+ JcUkoVd6rnJjb6FyLfbrxwBG09JxaAYd7kOM5FYVDvxXB1HqxqXkhJN5pzAwp65rFQdu
+ Wk8otV6CADkEr8L0bXL2m9vrZqGGGpKnW/oy9Su6/GDzIeHvhtjmOglu1Romi3YJ4DKo
+ W/qg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=MQzzcOcvbnGFvPAi734T5k4MKLwQn8Y8iXFH95VGnis=;
+ b=fyDThSDaYZQuQBomiWIsXI2Iq6U1tMMRwjfAChOQoNJXZa4x6aMd0RtVyT3PfEwYGT
+ pm6gWEDbdHqzUclyZZTqYmrUbnv4pa5ygNwve+9FL14xxYtqMNJBs/SyZdHT+XQI/2pt
+ 6O6+gNnic0vI60bGdoRtvdkRhAaiPmSDZ3fmoJOn1N4F2SCUZPr5XLDBwTWD9Uon/OTC
+ mkW8IXJn6L/9XpnZVpJ0iHXJgEdsB416xr9Lq/Ps6FrjtchCwfvywUsImYcvqRcpUqgY
+ 6ReWyfg2ibHgADwsXBq5wcC4sNfe+8u2j328G9ATbzxvnXk0meA++SG4fEfG1nkkq7iY
+ U6cw==
+X-Gm-Message-State: AOAM5303mS7VhhBM6lQePVFz3nsY/QjHXmD83H3ZFjZ5Kd8EGKtWWR+t
+ is+JOgPe8MuJUNDo768kGWAZPubn79dHzLY71bBY
+X-Google-Smtp-Source: ABdhPJxEmIr2UYYN95KehbZ0RcN+JZ7OwjQVEWBb8NNdGaReTrXwS7dCctewrILMSqNYBZDBAOG8pYS6taESK/z81ng=
+X-Received: by 2002:a17:906:4111:: with SMTP id
+ j17mr6526000ejk.488.1622849694355; 
+ Fri, 04 Jun 2021 16:34:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: BpMnBlDZpF-dmGmJA1l5Nm7OH_JwixAR
-X-Proofpoint-GUID: IScL52jMTxVr1CAZqr6naDQN2p-Z7QDD
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-06-04_12:2021-06-04,
- 2021-06-04 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- lowpriorityscore=0 mlxscore=0 priorityscore=1501 suspectscore=0
- bulkscore=0 spamscore=0 malwarescore=0 clxscore=1015 adultscore=0
- phishscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2104190000 definitions=main-2106040148
+References: <20210517092006.803332-1-omosnace@redhat.com>
+ <CAHC9VhTasra0tU=bKwVqAwLRYaC+hYakirRz0Mn5jbVMuDkwrA@mail.gmail.com>
+ <01135120-8bf7-df2e-cff0-1d73f1f841c3@iogearbox.net>
+ <CAHC9VhR-kYmMA8gsqkiL5=poN9FoL-uCyx1YOLCoG2hRiUBYug@mail.gmail.com>
+ <c7c2d7e1-e253-dce0-d35c-392192e4926e@iogearbox.net>
+ <CAHC9VhS1XRZjKcTFgH1+n5uA-CeT+9BeSP5jvT2+RE5ougLpUg@mail.gmail.com>
+ <2e541bdc-ae21-9a07-7ac7-6c6a4dda09e8@iogearbox.net>
+ <CAHC9VhT464vr9sWxqY3PRB4DAccz=LvRMLgWBsSViWMR0JJvOQ@mail.gmail.com>
+ <3ca181e3-df32-9ae0-12c6-efb899b7ce7a@iogearbox.net>
+ <CAHC9VhTuPnPs1wMTmoGUZ4fvyy-es9QJpE7O_yTs2JKos4fgbw@mail.gmail.com>
+ <f4373013-88fb-b839-aaaa-3826548ebd0c@iogearbox.net>
+ <CAHC9VhS=BeGdaAi8Ae5Fx42Fzy_ybkcXwMNcPwK=uuA6=+SRcg@mail.gmail.com>
+ <c59743f6-0000-1b15-bc16-ff761b443aef@iogearbox.net>
+In-Reply-To: <c59743f6-0000-1b15-bc16-ff761b443aef@iogearbox.net>
+From: Paul Moore <paul@paul-moore.com>
+Date: Fri, 4 Jun 2021 19:34:43 -0400
+Message-ID: <CAHC9VhT1JhdRw9P_m3niY-U-vukxTWKTE9q6AMyQ=r_ohpPxMw@mail.gmail.com>
+Subject: Re: [PATCH v2] lockdown,selinux: avoid bogus SELinux lockdown
+ permission checks
+To: Daniel Borkmann <daniel@iogearbox.net>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,369 +89,237 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: jolsa@redhat.com, ast@kernel.org, selinux@vger.kernel.org,
+ netdev@vger.kernel.org, Stephen Smalley <stephen.smalley.work@gmail.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, andrii@kernel.org,
+ Ondrej Mosnacek <omosnace@redhat.com>, Steven Rostedt <rostedt@goodmis.org>,
+ James Morris <jmorris@namei.org>, Casey Schaufler <casey@schaufler-ca.com>,
+ linux-security-module@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+ linux-fsdevel@vger.kernel.org, kuba@kernel.org, bpf@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, davem@davemloft.net,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2021-06-04 at 21:52 +1000, Michael Ellerman wrote:
-> Haren Myneni <haren@linux.ibm.com> writes:
-> > This patch adds the following HCALL wrapper functions to allocate,
-> 
-> Normal spelling is "hcall".
-> 
-> > modify and deallocate VAS windows, and retrieve VAS capabilities.
-> > 
-> > H_ALLOCATE_VAS_WINDOW: Allocate VAS window
-> > H_DEALLOCATE_VAS_WINDOW: Close VAS window
-> > H_MODIFY_VAS_WINDOW: Setup window before using
-> > H_QUERY_VAS_CAPABILITIES: Get VAS capabilities
-> 
-> Please tell us which version of PAPR, and in which section etc.,
-> these
-> are described in.
-> 
-> > Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-> > Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-> > ---
-> >  arch/powerpc/platforms/pseries/vas.c | 217
-> > +++++++++++++++++++++++++++
-> >  1 file changed, 217 insertions(+)
-> >  create mode 100644 arch/powerpc/platforms/pseries/vas.c
-> > 
-> > diff --git a/arch/powerpc/platforms/pseries/vas.c
-> > b/arch/powerpc/platforms/pseries/vas.c
-> > new file mode 100644
-> > index 000000000000..06960151477c
-> > --- /dev/null
-> > +++ b/arch/powerpc/platforms/pseries/vas.c
-> > @@ -0,0 +1,217 @@
-> > +// SPDX-License-Identifier: GPL-2.0-or-later
-> > +/*
-> > + * Copyright 2020-21 IBM Corp.
-> > + */
-> > +
-> > +#define pr_fmt(fmt) "vas: " fmt
-> > +
-> > +#include <linux/module.h>
-> > +#include <linux/kernel.h>
-> > +#include <linux/export.h>
-> > +#include <linux/types.h>
-> > +#include <linux/delay.h>
-> > +#include <linux/slab.h>
-> > +#include <linux/irqdomain.h>
-> > +#include <linux/interrupt.h>
-> > +#include <linux/sched/mm.h>
-> > +#include <linux/mmu_context.h>
-> > +#include <asm/hvcall.h>
-> > +#include <asm/hvconsole.h>
-> > +#include <asm/machdep.h>
-> 
-> Do we need all those headers?
-> 
-> > +#include <asm/plpar_wrappers.h>
-> > +#include <asm/vas.h>
-> > +#include "vas.h"
-> > +
-> > +#define	VAS_INVALID_WIN_ADDRESS	0xFFFFFFFFFFFFFFFFul
-> > +#define	VAS_DEFAULT_DOMAIN_ID	0xFFFFFFFFFFFFFFFFul
-> 
-> Some blank lines for formatting please.
-> 
-> > +/* Authority Mask Register (AMR) value is not supported in */
-> > +/* linux implementation. So pass '0' to modify window HCALL */
-> 
-> Please fix the comment formatting.
-> 
-> > +#define	VAS_AMR_VALUE	0
-> 
-> This is only used in one place. It'd be simpler to just pass 0 and
-> move
-> the comment there.
-> 
-> > +/* phyp allows one credit per window right now */
-> > +#define DEF_WIN_CREDS		1
-> > +
-> > +static int64_t hcall_return_busy_check(int64_t rc)
-> > +{
-> 
-> Please use normal kernel types, ie. s64, or just long.
-> 
-> Same comment throughout.
-> 
-> > +	/* Check if we are stalled for some time */
-> > +	if (H_IS_LONG_BUSY(rc)) {
-> > +		msleep(get_longbusy_msecs(rc));
-> > +		rc = H_BUSY;
-> > +	} else if (rc == H_BUSY) {
-> > +		cond_resched();
-> > +	}
-> > +
-> > +	return rc;
-> > +}
-> > +
-> > +/*
-> > + * Allocate VAS window HCALL
-> > + */
-> > +static int plpar_vas_allocate_window(struct vas_window *win, u64
-> > *domain,
-> > +				     u8 wintype, u16 credits)
-> 
-> You don't have to use the "plpar" prefix for these sort of wrappers.
-> 
-> Just naming them after the hcall would probably be clearer, so:
-> 
->  h_allocate_vas_window(... )
-> 
-> > +{
-> > +	long retbuf[PLPAR_HCALL9_BUFSIZE] = {0};
-> > +	int64_t rc;
-> > +
-> > +	do {
-> > +		rc = plpar_hcall9(H_ALLOCATE_VAS_WINDOW, retbuf,
-> > wintype,
-> > +				  credits, domain[0], domain[1],
-> > domain[2],
-> > +				  domain[3], domain[4], domain[5]);
-> > +
-> > +		rc = hcall_return_busy_check(rc);
-> > +	} while (rc == H_BUSY);
-> > +
-> > +	switch (rc) {
-> > +	case H_SUCCESS:
-> > +		win->winid = retbuf[0];
-> > +		win->lpar.win_addr = retbuf[1];
-> > +		win->lpar.complete_irq = retbuf[2];
-> > +		win->lpar.fault_irq = retbuf[3];
-> 
-> You shouldn't mutate win until you know there is no error.
-> 
-> > +		if (win->lpar.win_addr == VAS_INVALID_WIN_ADDRESS) {
-> > +			pr_err("HCALL(%x): COPY/PASTE is not
-> > supported\n",
-> > +				H_ALLOCATE_VAS_WINDOW);
-> > +			return -ENOTSUPP;
-> > +		}
-> > +		return 0;
-> > +	case H_PARAMETER:
-> > +		pr_err("HCALL(%x): Invalid window type (%u)\n",
-> > +			H_ALLOCATE_VAS_WINDOW, wintype);
-> > +		return -EINVAL;
-> > +	case H_P2:
-> > +		pr_err("HCALL(%x): Credits(%u) exceed maximum window
-> > credits\n",
-> > +			H_ALLOCATE_VAS_WINDOW, credits);
-> > +		return -EINVAL;
-> > +	case H_COP_HW:
-> > +		pr_err("HCALL(%x): User-mode COPY/PASTE is not
-> > supported\n",
-> > +			H_ALLOCATE_VAS_WINDOW);
-> > +		return -ENOTSUPP;
-> > +	case H_RESOURCE:
-> > +		pr_err("HCALL(%x): LPAR credit limit exceeds window
-> > limit\n",
-> > +			H_ALLOCATE_VAS_WINDOW);
-> > +		return -EPERM;
-> > +	case H_CONSTRAINED:
-> > +		pr_err("HCALL(%x): Credits (%u) are not available\n",
-> > +			H_ALLOCATE_VAS_WINDOW, credits);
-> > +		return -EPERM;
-> > +	default:
-> > +		pr_err("HCALL(%x): Unexpected error %lld\n",
-> > +			H_ALLOCATE_VAS_WINDOW, rc);
-> > +		return -EIO;
-> > +	}
-> 
-> Do we really need all these error prints? It's very verbose, and
-> presumably in normal operation none of these are meant to happen
-> anyway.
-> 
-> Can't we just have a single case that prints the error value?
+On Fri, Jun 4, 2021 at 2:02 PM Daniel Borkmann <daniel@iogearbox.net> wrote:
+>
+> On 6/4/21 6:50 AM, Paul Moore wrote:
+> > On Thu, Jun 3, 2021 at 2:53 PM Daniel Borkmann <daniel@iogearbox.net> wrote:
+> [...]
+> >> I did run this entire discussion by both of the other BPF co-maintainers
+> >> (Alexei, Andrii, CC'ed) and together we did further brainstorming on the
+> >> matter on how we could solve this, but couldn't find a sensible & clean
+> >> solution so far.
+> >
+> > Before I jump into the patch below I just want to say that I
+> > appreciate you looking into solutions on the BPF side of things.
+> > However, I voted "no" on this patch previously and since you haven't
+> > really changed it, my "no"/NACK vote remains, at least until we
+> > exhaust a few more options.
+>
+> Just to set the record straight, you previously did neither ACK nor NACK it.
 
-Right, generally we should not see these errors. But few of them are
-failures based on argument(s) passing to hcall. like passing invalid
-window type or credits are not availavble. 
+I think I said it wasn't a great solution.  Perhaps I should have been
+more clear, but I don't like NACK'ing things while we are still
+hashing out possible solutions on the lists.
 
-So can I add error messages for these specific ones and common error
-message for other failures with the error code?
+From my perspective NACK'ing is pretty harsh and I try to leave that
+as a last resort.
 
-case H_PARAMETER:
-   	pr_err("HCALL(%x): Invalid window type (%u)\n",
-		H_ALLOCATE_VAS_WINDOW, wintype);
-case H_CONSTRAINED:
-   	pr_err("HCALL(%x): Credits (%u) are not available\n",
-		H_ALLOCATE_VAS_WINDOW, credits);
-case H_P2:
-	pr_err("HCALL(%x): Credits(%u) exceed maximum window
-credits\n", H_ALLOCATE_VAS_WINDOW, credits);
-default:
-	pr_err("HCALL(%x): failure with error code %d\n", 	
-		H_ALLOCATE_VAS_WINDOW, rc);
+> And
+> again, as summarized earlier, this patch is _fixing_ the majority of the damage
+> caused by 59438b46471a for at least the BPF side of things where users run into this,
+> Ondrej the rest. Everything else can be discussed on top, and so far it seems there
+> is no clean solution in front of us either, not even speaking of one that is small
+> and suitable for _stable_ trees. Let me reiterate where we are: it's not that the
+> original implementation in 9d1f8be5cf42 ("bpf: Restrict bpf when kernel lockdown is
+> in confidentiality mode") was broken, it's that the later added _SELinux_ locked_down
+> hook implementation that is broken, and not other LSMs.
 
+I think there are still options for how to solve this moving forward,
+more on that at the end of the email, and I would like to see if we
+can chase down some of those ideas first.  Maybe the ideas aren't
+practical, or maybe they are practical but not from a -stable
+perspective; we/I don't know until we talk about it.  Based on
+previous experience I'm afraid to ACK a quick-fix without some
+discussion about the proper long-term fix.  If the long-term fix isn't
+suitable for -stable, then we can take a smaller fix just for the
+stable trees.
 
-> 
-> Same comment for the other hcalls.
-> 
-> > +}
-> > +
-> > +/*
-> > + * Deallocate VAS window HCALL.
-> > + */
-> > +static int plpar_vas_deallocate_window(u64 winid)
-> > +{
-> > +	int64_t rc;
-> > +
-> > +	do {
-> > +		rc = plpar_hcall_norets(H_DEALLOCATE_VAS_WINDOW,
-> > winid);
-> > +
-> > +		rc = hcall_return_busy_check(rc);
-> > +	} while (rc == H_BUSY);
-> > +
-> > +	switch (rc) {
-> > +	case H_SUCCESS:
-> > +		return 0;
-> > +	case H_PARAMETER:
-> > +		pr_err("HCALL(%x): Invalid window ID %llu\n",
-> > +			H_DEALLOCATE_VAS_WINDOW, winid);
-> > +		return -EINVAL;
-> > +	case H_STATE:
-> > +		pr_err("HCALL(%x): Window(%llu): Invalid page table
-> > entries\n",
-> > +			H_DEALLOCATE_VAS_WINDOW, winid);
-> > +		return -EPERM;
-> > +	default:
-> > +		pr_err("HCALL(%x): Unexpected error %lld for
-> > window(%llu)\n",
-> > +			H_DEALLOCATE_VAS_WINDOW, rc, winid);
-> > +		return -EIO;
-> > +	}
-> > +}
-> > +
-> > +/*
-> > + * Modify VAS window.
-> > + * After the window is opened with allocate window HCALL,
-> > configure it
-> > + * with flags and LPAR PID before using.
-> > + */
-> > +static int plpar_vas_modify_window(struct vas_window *win)
-> > +{
-> > +	int64_t rc;
-> > +	u32 lpid = mfspr(SPRN_PID);
-> 
-> The lpid would be SPRN_LPID ?
-> But you can't read it from a guest. Is the variable just misnamed?
+> Now you're trying to retrofittingly
+> ask us for hacks at all costs just because of /a/ broken LSM implementation.
 
-yes, not using in pseries code now, but thought LPID is available in
-SPRN_PID - PIDR is SPR48 and access to that in LPAR. Not true?
+This is starting to get a little off the rails now isn't it?  Daniel
+you've always come across as a reasonable person to me, but phrasing
+things like that is inflammatory at best.
 
-"processId : The LPAR process ID to bind to the specified window. This
-parameter is ignored if the “closeWindow” flag is set.
-threadId : The LPAR thread ID to bind to the specified window. This
-parameter is ignored if the “closeWindow”
-flag is set."
+Could the SELinux lockdown hooks have been done better, of course, I
+don't think we are debating that anymore.  New functionality, checks,
+etc. are added to the kernel all the time, and because we're all human
+we screw that up on occasion.  The important part is that we come
+together to fix it, which is what I think we're trying to do here
+(it's what I'm trying to do here).
 
-since TIDR is deprecated on p10, we are not passing threadID
-> 
-> > +
-> > +	/*
-> > +	 * AMR value is not supported in Linux implementation
-> > +	 * phyp ignores it if 0 is passed.
-> > +	 */
-> 
-> Heh, this comment is already here.
-> 
-> Do you mean the Linux VAS implementation doesn't support AMR? Because
-> Linux definitely does use AMR.
+> Maybe
+> another avenue is to just swallow the pill and revert 59438b46471a since it made
+> assumptions that don't work /generally/. And the use case for an application runtime
+> policy change in particular in case of lockdown where users only have 3 choices is
+> extremely tiny/rare, if it's not then something is very wrong in your deployment.
+> Let me ask you this ... are you also planning to address *all* the other cases inside
+> the kernel? If your answer is no, then this entire discussion is pointless.
 
-Linux VAS implementation does not support AMR. The application /
-library has to pass this value with TX_WIN_OPEN ioctl. We do not have
-any use case right now. I will change the above comment to make it
-clear.
+Um, yes?  We were talking about that earlier in the thread before the
+BPF portions of the fix started to dominate the discussion.  Just
+because the BPF portion of the fix has dominated the discussion
+recently doesn't mean the other issues aren't going to be addressed.
 
-phyp added this interface for future reference and AIX may be using it.
+When stuff is busted, I work to fix it.  I think everyone here does.
 
-Thanks
-Haren
-> 
-> > +	do {
-> > +		rc = plpar_hcall_norets(H_MODIFY_VAS_WINDOW, win-
-> > >winid,
-> > +					lpid, 0, VAS_MOD_WIN_FLAGS,
-> > +					VAS_AMR_VALUE);
-> > +
-> > +		rc = hcall_return_busy_check(rc);
-> > +	} while (rc == H_BUSY);
-> > +
-> > +	switch (rc) {
-> > +	case H_SUCCESS:
-> > +		return 0;
-> > +	case H_PARAMETER:
-> > +		pr_err("HCALL(%x): Invalid window ID %u\n",
-> > +			H_MODIFY_VAS_WINDOW, win->winid);
-> > +		return -EINVAL;
-> > +	case H_P2:
-> > +		pr_err("HCALL(%x): Window(%d): Invalid LPAR Process ID
-> > %u\n",
-> > +			H_MODIFY_VAS_WINDOW, lpid, win->winid);
-> > +		return -EINVAL;
-> > +	case H_P3:
-> > +		/* LPAR thread ID is deprecated on P10 */
-> > +		pr_err("HCALL(%x): Invalid LPAR Thread ID for
-> > window(%u)\n",
-> > +			H_MODIFY_VAS_WINDOW, win->winid);
-> > +		return -EINVAL;
-> > +	case H_STATE:
-> > +		pr_err("HCALL(%x): Jobs in progress, Can't modify
-> > window(%u)\n",
-> > +			H_MODIFY_VAS_WINDOW, win->winid);
-> > +		return -EBUSY;
-> > +	default:
-> > +		pr_err("HCALL(%x): Unexpected error %lld for
-> > window(%u)\n",
-> > +			H_MODIFY_VAS_WINDOW, rc, win->winid);
-> > +		return -EIO;
-> > +	}
-> > +}
-> > +
-> > +/*
-> > + * This HCALL is used to determine the capabilities that pHyp
-> > provides.
-> > + * @hcall: H_QUERY_VAS_CAPABILITIES or H_QUERY_NX_CAPABILITIES
-> > + * @query_type: If 0 is passed, phyp returns the overall
-> > capabilities
-> > + *		which provides all feature(s) that are available. Then
-> > + *		query phyp to get the corresponding capabilities for
-> > + *		the specific feature.
-> > + *		Example: H_QUERY_VAS_CAPABILITIES provides VAS GZIP QoS
-> > + *			and VAS GZIP Default capabilities.
-> > + *			H_QUERY_NX_CAPABILITIES provides NX GZIP
-> > + *			capabilities.
-> > + * @result: Return buffer to save capabilities.
-> > + */
-> > +int plpar_vas_query_capabilities(const u64 hcall, u8 query_type,
-> > +					u64 result)
-> > +{
-> > +	int64_t rc;
-> > +
-> > +	rc = plpar_hcall_norets(hcall, query_type, result);
-> > +
-> > +	switch (rc) {
-> > +	case H_SUCCESS:
-> > +		return 0;
-> > +	case H_PARAMETER:
-> > +		pr_err("HCALL(%llx): Invalid query type %u\n", hcall,
-> > +			query_type);
-> > +		return -EINVAL;
-> > +	case H_PRIVILEGE:
-> > +		pr_err("HCALL(%llx): Invalid result buffer 0x%llx\n",
-> > +			hcall, result);
-> > +		return -EACCES;
-> > +	default:
-> > +		pr_err("HCALL(%llx): Unexpected error %lld\n", hcall,
-> > rc);
-> > +		return -EIO;
-> > +	}
-> > +}
-> 
-> cheers
+> >> [PATCH] bpf, lockdown, audit: Fix buggy SELinux lockdown permission checks
+> >>
+> >> Commit 59438b46471a ("security,lockdown,selinux: implement SELinux lockdown")
+> >> added an implementation of the locked_down LSM hook to SELinux, with the aim
+> >> to restrict which domains are allowed to perform operations that would breach
+> >> lockdown. This is indirectly also getting audit subsystem involved to report
+> >> events. The latter is problematic, as reported by Ondrej and Serhei, since it
+> >> can bring down the whole system via audit:
+> >>
+> >>     1) The audit events that are triggered due to calls to security_locked_down()
+> >>        can OOM kill a machine, see below details [0].
+> >>
+> >>     2) It also seems to be causing a deadlock via avc_has_perm()/slow_avc_audit()
+> >>        when trying to wake up kauditd, for example, when using trace_sched_switch()
+> >>        tracepoint, see details in [1]. Triggering this was not via some hypothetical
+> >>        corner case, but with existing tools like runqlat & runqslower from bcc, for
+> >>        example, which make use of this tracepoint. Rough call sequence goes like:
+> >>
+> >>        rq_lock(rq) -> -------------------------+
+> >>          trace_sched_switch() ->               |
+> >>            bpf_prog_xyz() ->                   +-> deadlock
+> >>              selinux_lockdown() ->             |
+> >>                audit_log_end() ->              |
+> >>                  wake_up_interruptible() ->    |
+> >>                    try_to_wake_up() ->         |
+> >>                      rq_lock(rq) --------------+
+> >
+> > Since BPF is a bit of chaotic nightmare in the sense that it basically
+> > out-of-tree kernel code that can be called from anywhere and do pretty
+> > much anything; it presents quite the challenge for those of us worried
+> > about LSM access controls.
+>
+> There is no need to generalize ... for those worried, BPF subsystem has LSM access
+> controls for the syscall since 2017 via afdb09c720b6 ("security: bpf: Add LSM hooks
+> for bpf object related syscall").
 
+We weren't really talking about those hooks in this thread, we're
+talking about the security_locked_down() hooks in the BPF helper
+functions.  The BPF/LSM hooks you mention above have nothing to do
+with that at present, but yes we do have lots of cool LSM hooks that
+allow admins to do lots of cool things with access controls.
+
+Anyway, that was a distraction I started in my last email when I
+shouldn't have.  If I'm going to call you out for inflammatory
+language I should do the same to myself - you have my apology.
+
+> > So let's look at this from a different angle.  Let's look at the two
+> > problems you mention above.
+> >
+> > If we start with the runqueue deadlock we see the main problem is that
+> > audit_log_end() pokes the kauditd_wait waitqueue to ensure the
+> > kauditd_thread thread wakes up and processes the audit queue.  The
+> > audit_log_start() function does something similar, but it is
+> > conditional on a number of factors and isn't as likely to be hit.  If
+> > we relocate these kauditd wakeup calls we can remove the deadlock in
+> > trace_sched_switch().  In the case of CONFIG_AUDITSYSCALL=y we can
+> > probably just move the wakeup to __audit_syscall_exit() and in the
+> > case of CONFIG_AUDITSYSCALL=n we can likely just change the
+> > wait_event_freezable() call in kauditd_thread to a
+> > wait_event_freezable_timeout() call with a HZ timeout (the audit
+> > stream will be much less on these systems anyway so a queue overflow
+> > is much less likely).  I'm building a kernel with these changes now, I
+> > should have something to test when I wake up tomorrow morning.  It
+> > might even provide a bit of a performance boost as we would only be
+> > calling a wakeup function once for each syscall.
+>
+> As other SELinux developers like Ondrej already pointed out to you in
+> this thread:
+>
+>    Actually, I wasn't aware of the deadlock... But calling an LSM hook
+>    [that is backed by a SELinux access check] from within a BPF helper
+>    is calling for all kinds of trouble, so I'm not surprised
+
+Skipping past the phrasing of your comment, like any two people Ondrej
+and I disagree on some things, and this is one of those things.
+Surely the BPF folks never disagree on anything :)
+
+I agree that the current security_locked_down() SELinux hook
+implementation has problems, mostly due to the audit code path, but I
+think it is something we can fix.  Simply throwing our hands up in the
+air in defeat and ripping out the LSM checks in the BPF helpers is
+something I see as a last resort and I think we still have one more
+potential solution to discuss.
+
+The SELinux hook implementation was only a problem because of the
+wakeup call in audit_log_end().  The fact that the hook progressed all
+the way to audit_log_end() for the AVC record shows that the bulk of
+the hook is fine, we just need to remove the wakeup from
+audit_log_end().  To that end, I've been playing with a patch that
+does just that, it removes all of the wakeup calls from the
+audit_log_start() and audit_log_end() functions, I made some small
+tweaks to the patch before I started responding to your email (the
+kernel is compiling as I type this) but I expect to post it to the
+audit list as a RFC tonight or this weekend for review.
+
+> > The other issue is related to security_locked_down() and using the
+> > right subject for the access control check.  As has been pointed out
+> > several times in this thread, the current code uses the current() task
+> > as the subject, which is arguably incorrect for many of the BPF helper
+> > functions.  In the case of BPF, we have talked about using the
+> > credentials of the task which loaded the BPF program instead of
+> > current(), and that does make a certain amount of sense.  Such an
+> > approach should make the security policy easier to develop and
+> > rationalize, leading to a significant decrease in audit records coming
+> > from LSM access denials.  The question is how to implement such a
+> > change.  The current SELinux security_bpf_prog_alloc() hook causes the
+> > newly loaded BPF program to inherit the subject context from the task
+> > which loads the BPF program; if it is possible to reference the
+> > bpf_prog struct, or really just the associated bpf_prog_aux->security
+> > blob, from inside a security_bpf_locked_down() function we use that
+> > subject information to perform the access check.  BPF folks, is there
+> > a way to get that information from within a BPF kernel helper
+> > function?  If it isn't currently possible, could it be made possible
+> > (or something similar)?
+>
+> While this could be a potential avenue, the problem here is that BPF
+> helpers have neither access to the prog struct nor to bpf_prog_aux. As
+> I mentioned earlier, potentially you could go and fix up JITed images
+> for those progs where the credentials of the loading task require this
+> when policy suddenly changes to a more stricter level. I'm not a fan
+> of this though because of the fragility involved here.
+
+FWIW, the JIT hacks sounded awful to me too, I'm not advocating for
+that as a solution.  What I'm thinking of is a sort of "bpf_current"
+that functions similar to current() but could be used from within the
+BPF helpers, and/or the LSMs hooks they call, to reference the
+bpf_prog struct of the currently executing BPF program.  Once again,
+I'm not a kernel BPF expert, but it seems like we could create a
+per-CPU pointer for the bpf_prog struct and assign it as part of the
+__BPF_PROG_RUN macro.  The macro already has the bpf_prog pointer so I
+wouldn't expect that doing a per-CPU pointer assignment wouldn't be
+too costly considering the other things that take place.  Or am I
+missing something important?
+
+> Again, the problem is not limited to BPF at all. kprobes is doing register-
+> time hooks which are equivalent to the one of BPF. Anything in run-time
+> trying to prevent probe_read_kernel by kprobes or BPF is broken by design.
+
+Not being an expert on kprobes I can't really comment on that, but
+right now I'm focused on trying to make things work for the BPF
+helpers.  I suspect that if we can get the SELinux lockdown
+implementation working properly for BPF the solution for kprobes won't
+be far off.
+
+-- 
+paul moore
+www.paul-moore.com
