@@ -2,57 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8514739AF2B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jun 2021 02:42:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3084E39AF4B
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jun 2021 02:59:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fx3rc0JCqz3046
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jun 2021 10:42:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fx4D33gZXz308l
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jun 2021 10:59:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=XCSoOX7+;
+	dkim=pass (2048-bit key; unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.a=rsa-sha256 header.s=mail181024 header.b=KR96dkMM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+ smtp.mailfrom=alliedtelesis.co.nz (client-ip=202.36.163.20;
+ helo=gate2.alliedtelesis.co.nz;
+ envelope-from=chris.packham@alliedtelesis.co.nz; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=XCSoOX7+; 
+ unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz
+ header.a=rsa-sha256 header.s=mail181024 header.b=KR96dkMM; 
  dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz
+ [202.36.163.20])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fx3r95ySpz2xv2
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Jun 2021 10:42:17 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Fx3r76hVPz9s24;
- Fri,  4 Jun 2021 10:42:15 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1622767336;
- bh=DQpYo9q9ZGmy3/Mz9ZsYTiA+IvTCwyCbRWUrvMTeOWg=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=XCSoOX7+qd0hTsKT5E44LzCwxhYBrifdK2aZAP+aS3g3Jkr2lirTl4yXlsasbfpV1
- 0NIqKavfSaGn/V+8EA0FmH3rpG5eBR/UWn8HJbjnpvWY/crHolu/n65SJNszrhRk/+
- 9oJBMq6EJweWntk3gTnGz6NKGowoEF6BTLyFOvshwr+/a6sIqEhABPUf9OMcEQ8S2i
- 2nN5ebs9M1/7a8fUFX/ceCS9JoCRZostRS311xpHia8fHEwiagVGDzFUtNTTX0BZVm
- 3B09zc7XiTN3lI4OUQBhZGBiDzvcF6LIjC7fbXiQgdcoSqlLaiD8WW69Sx6NzYQLuR
- v2gUjE0842asw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fx4CX18Hjz2yhf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Jun 2021 10:59:04 +1000 (AEST)
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 3CDEF806B6;
+ Fri,  4 Jun 2021 12:58:55 +1200 (NZST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+ s=mail181024; t=1622768335;
+ bh=zwNUaTjAbpv1AFg+QPg/Vg7UwSsAWQWNnYKed5KvvTk=;
+ h=From:To:CC:Subject:Date:References:In-Reply-To;
+ b=KR96dkMMQinX+bP65+2Q0rszCTuMvoppTCWuy+gQS4p6ZIGBeItOQ0p3MA77t8/Lu
+ y/FeFVhvYSxOI97mdpXkL9U0U5gQVkUJeRI+MSbI9vCJkzho5VsSzd1v1HReV8zFGX
+ jDY+VVsVte0g97KU0VoYxmywQC4JiP881XWx8A8xzqA3YuQxjPkBv1qHKnrGAf8dlN
+ MHtyFWEYs9sWHIBcvpeT0YrIMXQEBi3xc085hTf6H0AVuKad4l1/QALPvedTpr1lYK
+ Y44s4AczmzuEDySiGOkwBCQjb+cHeiqpEkv+xu7eA6YoVhrjyfBxM/gzSlUwzLZx3p
+ 9BMpXCuFlrAmA==
+Received: from svr-chch-ex1.atlnz.lc (Not Verified[2001:df5:b000:bc8::77]) by
+ svr-chch-seg1.atlnz.lc with Trustwave SEG (v8, 2, 6, 11305)
+ id <B60b97acf0000>; Fri, 04 Jun 2021 12:58:55 +1200
+Received: from svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8)
+ by svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8) with
+ Microsoft SMTP Server (TLS) id 15.0.1497.18; Fri, 4 Jun 2021 12:58:54 +1200
+Received: from svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8]) by
+ svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8%12]) with mapi id
+ 15.00.1497.018; Fri, 4 Jun 2021 12:58:54 +1200
+From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
+To: Michael Ellerman <mpe@ellerman.id.au>, Sasha Levin <sashal@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
 Subject: Re: [PATCH AUTOSEL 5.12 42/43] powerpc/fsl: set
  fsl,i2c-erratum-a004447 flag for P2041 i2c controllers
-In-Reply-To: <20210603170734.3168284-42-sashal@kernel.org>
+Thread-Topic: [PATCH AUTOSEL 5.12 42/43] powerpc/fsl: set
+ fsl,i2c-erratum-a004447 flag for P2041 i2c controllers
+Thread-Index: AQHXWJsTg7j0i+0vFEmVHttQ1zQLv6sCOo2AgAAEpgA=
+Date: Fri, 4 Jun 2021 00:58:54 +0000
+Message-ID: <81ce50f1-73eb-687b-898a-df5f6ac68c5a@alliedtelesis.co.nz>
 References: <20210603170734.3168284-1-sashal@kernel.org>
  <20210603170734.3168284-42-sashal@kernel.org>
-Date: Fri, 04 Jun 2021 10:42:15 +1000
-Message-ID: <87y2bqfok8.fsf@mpe.ellerman.id.au>
+ <87y2bqfok8.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87y2bqfok8.fsf@mpe.ellerman.id.au>
+Accept-Language: en-NZ, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.32.1.11]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <CFC7101B35858B4299C03D6BEAC444BB@atlnz.lc>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain
+X-SEG-SpamProfiler-Analysis: v=2.3 cv=WOcBoUkR c=1 sm=1 tr=0
+ a=Xf/6aR1Nyvzi7BryhOrcLQ==:117 a=xqWC_Br6kY4A:10 a=oKJsc7D3gJEA:10
+ a=IkcTkHD0fZMA:10 a=r6YtysWOX24A:10 a=VwQbUJbxAAAA:8 a=0PHfWf00bOpdARfqvbcA:9
+ a=QEXdDO2ut3YA:10 a=N53muDpBR4cA:10 a=AjGcO6oz07-iQ99wixmX:22
+X-SEG-SpamProfiler-Score: 0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,76 +92,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>,
- Chris Packham <chris.packham@alliedtelesis.co.nz>,
- linuxppc-dev@lists.ozlabs.org, devicetree@vger.kernel.org
+Cc: Wolfram Sang <wsa@kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sasha Levin <sashal@kernel.org> writes:
-> From: Chris Packham <chris.packham@alliedtelesis.co.nz>
->
-> [ Upstream commit 7adc7b225cddcfd0f346d10144fd7a3d3d9f9ea7 ]
->
-> The i2c controllers on the P2040/P2041 have an erratum where the
-> documented scheme for i2c bus recovery will not work (A-004447). A
-> different mechanism is needed which is documented in the P2040 Chip
-> Errata Rev Q (latest available at the time of writing).
->
-> Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
-> Acked-by: Michael Ellerman <mpe@ellerman.id.au>
-> Signed-off-by: Wolfram Sang <wsa@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  arch/powerpc/boot/dts/fsl/p2041si-post.dtsi | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
-
-This patch (and the subsequent one), just set a flag in the device tree.
-
-They have no effect unless you also backport the code change that looks
-for that flag, which was upstream commit:
-
-  8f0cdec8b5fd ("i2c: mpc: implement erratum A-004447 workaround")
-
-AFAICS you haven't picked that one up for any of the stable trees.
-
-I'll defer to Chris & Wolfram on whether it's a good idea to take the
-code change for stable.
-
-I guess it's harmless to pick these two patches, but it's also
-pointless. So I think you either want to take all three, or drop these
-two.
-
-cheers
-
-> diff --git a/arch/powerpc/boot/dts/fsl/p2041si-post.dtsi b/arch/powerpc/boot/dts/fsl/p2041si-post.dtsi
-> index 872e4485dc3f..ddc018d42252 100644
-> --- a/arch/powerpc/boot/dts/fsl/p2041si-post.dtsi
-> +++ b/arch/powerpc/boot/dts/fsl/p2041si-post.dtsi
-> @@ -371,7 +371,23 @@ sdhc@114000 {
->  	};
->  
->  /include/ "qoriq-i2c-0.dtsi"
-> +	i2c@118000 {
-> +		fsl,i2c-erratum-a004447;
-> +	};
-> +
-> +	i2c@118100 {
-> +		fsl,i2c-erratum-a004447;
-> +	};
-> +
->  /include/ "qoriq-i2c-1.dtsi"
-> +	i2c@119000 {
-> +		fsl,i2c-erratum-a004447;
-> +	};
-> +
-> +	i2c@119100 {
-> +		fsl,i2c-erratum-a004447;
-> +	};
-> +
->  /include/ "qoriq-duart-0.dtsi"
->  /include/ "qoriq-duart-1.dtsi"
->  /include/ "qoriq-gpio-0.dtsi"
-> -- 
-> 2.30.2
+DQpPbiA0LzA2LzIxIDEyOjQyIHBtLCBNaWNoYWVsIEVsbGVybWFuIHdyb3RlOg0KPiBTYXNoYSBM
+ZXZpbiA8c2FzaGFsQGtlcm5lbC5vcmc+IHdyaXRlczoNCj4+IEZyb206IENocmlzIFBhY2toYW0g
+PGNocmlzLnBhY2toYW1AYWxsaWVkdGVsZXNpcy5jby5uej4NCj4+DQo+PiBbIFVwc3RyZWFtIGNv
+bW1pdCA3YWRjN2IyMjVjZGRjZmQwZjM0NmQxMDE0NGZkN2EzZDNkOWY5ZWE3IF0NCj4+DQo+PiBU
+aGUgaTJjIGNvbnRyb2xsZXJzIG9uIHRoZSBQMjA0MC9QMjA0MSBoYXZlIGFuIGVycmF0dW0gd2hl
+cmUgdGhlDQo+PiBkb2N1bWVudGVkIHNjaGVtZSBmb3IgaTJjIGJ1cyByZWNvdmVyeSB3aWxsIG5v
+dCB3b3JrIChBLTAwNDQ0NykuIEENCj4+IGRpZmZlcmVudCBtZWNoYW5pc20gaXMgbmVlZGVkIHdo
+aWNoIGlzIGRvY3VtZW50ZWQgaW4gdGhlIFAyMDQwIENoaXANCj4+IEVycmF0YSBSZXYgUSAobGF0
+ZXN0IGF2YWlsYWJsZSBhdCB0aGUgdGltZSBvZiB3cml0aW5nKS4NCj4+DQo+PiBTaWduZWQtb2Zm
+LWJ5OiBDaHJpcyBQYWNraGFtIDxjaHJpcy5wYWNraGFtQGFsbGllZHRlbGVzaXMuY28ubno+DQo+
+PiBBY2tlZC1ieTogTWljaGFlbCBFbGxlcm1hbiA8bXBlQGVsbGVybWFuLmlkLmF1Pg0KPj4gU2ln
+bmVkLW9mZi1ieTogV29sZnJhbSBTYW5nIDx3c2FAa2VybmVsLm9yZz4NCj4+IFNpZ25lZC1vZmYt
+Ynk6IFNhc2hhIExldmluIDxzYXNoYWxAa2VybmVsLm9yZz4NCj4+IC0tLQ0KPj4gICBhcmNoL3Bv
+d2VycGMvYm9vdC9kdHMvZnNsL3AyMDQxc2ktcG9zdC5kdHNpIHwgMTYgKysrKysrKysrKysrKysr
+Kw0KPj4gICAxIGZpbGUgY2hhbmdlZCwgMTYgaW5zZXJ0aW9ucygrKQ0KPiBUaGlzIHBhdGNoIChh
+bmQgdGhlIHN1YnNlcXVlbnQgb25lKSwganVzdCBzZXQgYSBmbGFnIGluIHRoZSBkZXZpY2UgdHJl
+ZS4NCj4NCj4gVGhleSBoYXZlIG5vIGVmZmVjdCB1bmxlc3MgeW91IGFsc28gYmFja3BvcnQgdGhl
+IGNvZGUgY2hhbmdlIHRoYXQgbG9va3MNCj4gZm9yIHRoYXQgZmxhZywgd2hpY2ggd2FzIHVwc3Ry
+ZWFtIGNvbW1pdDoNCj4NCj4gICAgOGYwY2RlYzhiNWZkICgiaTJjOiBtcGM6IGltcGxlbWVudCBl
+cnJhdHVtIEEtMDA0NDQ3IHdvcmthcm91bmQiKQ0KDQpUaGF0IGNoYW5nZSBpdHNlbGYgaXNuJ3Qg
+Y2hlcnJ5LXBpY2sgYWJsZSB3aXRob3V0DQoNCjY1MTcxYjJkZjE1ZSAoImkyYzogbXBjOiBNYWtl
+IHVzZSBvZiBpMmNfcmVjb3Zlcl9idXMoKSIpDQoNCmFuZCBpbiBiZXR3ZWVuIDY1MTcxYjJkZjE1
+ZSBhbmQgOGYwY2RlYzhiNWZkIGFyZSBhIGJ1bmNoIG9mIGNsZWFudXBzIGFuZCANCmEgZmFpcmx5
+IG1ham9yIHJld3JpdGUgd2hpY2ggbWF5IGFsc28gYWZmZWN0IHRoZSBjaGVycnktcGljayBhYmls
+aXR5Lg0KDQo+IEFGQUlDUyB5b3UgaGF2ZW4ndCBwaWNrZWQgdGhhdCBvbmUgdXAgZm9yIGFueSBv
+ZiB0aGUgc3RhYmxlIHRyZWVzLg0KPg0KPiBJJ2xsIGRlZmVyIHRvIENocmlzICYgV29sZnJhbSBv
+biB3aGV0aGVyIGl0J3MgYSBnb29kIGlkZWEgdG8gdGFrZSB0aGUNCj4gY29kZSBjaGFuZ2UgZm9y
+IHN0YWJsZS4NCg0KV2UgaGF2ZSBiZWVuIGRvaW5nIHNvbWUgZXh0cmEgUUEgb24gb3VyIGVuZCBm
+b3IgdGhlICJpMmM6IG1wYzogUmVmYWN0b3IgDQp0byBpbXByb3ZlIHJlc3BvbnNpdmVuZXNzIiBh
+bmQgIlAyMDQwL1AyMDQxIGkyYyByZWNvdmVyeSBlcnJhdHVtIiBzZXJpZXMgDQp3aGljaCBoYXNu
+J3QgdGhyb3duIHVwIGFueSBpc3N1ZXMuIEJ1dCBpdCdzIHN0aWxsIGEgbG90IG9mIG5ldyBjb2Rl
+IGFuZCANCmF0IHNvbWUgcG9pbnQgd2UncmUgZ29pbmcgdG8gcnVuIGludG8gQVBJIGNoYW5nZXMu
+DQoNCkdpdmVuIHRoZSBmYWN0IHRoYXQgaXQncyBzdGFydGluZyB0byBzbm93YmFsbCBvbmUgbWln
+aHQgZXJyIG9uIHRoZSBzaWRlIA0Kb2YgY2F1dGlvbi4NCg0KPiBJIGd1ZXNzIGl0J3MgaGFybWxl
+c3MgdG8gcGljayB0aGVzZSB0d28gcGF0Y2hlcywgYnV0IGl0J3MgYWxzbw0KPiBwb2ludGxlc3Mu
+IFNvIEkgdGhpbmsgeW91IGVpdGhlciB3YW50IHRvIHRha2UgYWxsIHRocmVlLCBvciBkcm9wIHRo
+ZXNlDQo+IHR3by4NCg0KQXQgYSBtaW5pbXVtIHlvdSBuZWVkDQoNCjY1MTcxYjJkZjE1ZSAoImky
+YzogbXBjOiBNYWtlIHVzZSBvZiBpMmNfcmVjb3Zlcl9idXMoKSIpDQo4ZjBjZGVjOGI1ZmQgKCJp
+MmM6IG1wYzogaW1wbGVtZW50IGVycmF0dW0gQS0wMDQ0NDcgd29ya2Fyb3VuZCIpDQo3YWRjN2Iy
+MjVjZGQgKCJwb3dlcnBjL2ZzbDogc2V0IGZzbCxpMmMtZXJyYXR1bS1hMDA0NDQ3IGZsYWcgZm9y
+IFAyMDQxIA0KaTJjIGNvbnRyb2xsZXJzIikNCjE5YWU2OTdhMWU0ZSAoInBvd2VycGMvZnNsOiBz
+ZXQgZnNsLGkyYy1lcnJhdHVtLWEwMDQ0NDcgZmxhZyBmb3IgUDEwMTAgDQppMmMgY29udHJvbGxl
+cnMiKQ0KDQo+IGNoZWVycw0KPg0KPj4gZGlmZiAtLWdpdCBhL2FyY2gvcG93ZXJwYy9ib290L2R0
+cy9mc2wvcDIwNDFzaS1wb3N0LmR0c2kgYi9hcmNoL3Bvd2VycGMvYm9vdC9kdHMvZnNsL3AyMDQx
+c2ktcG9zdC5kdHNpDQo+PiBpbmRleCA4NzJlNDQ4NWRjM2YuLmRkYzAxOGQ0MjI1MiAxMDA2NDQN
+Cj4+IC0tLSBhL2FyY2gvcG93ZXJwYy9ib290L2R0cy9mc2wvcDIwNDFzaS1wb3N0LmR0c2kNCj4+
+ICsrKyBiL2FyY2gvcG93ZXJwYy9ib290L2R0cy9mc2wvcDIwNDFzaS1wb3N0LmR0c2kNCj4+IEBA
+IC0zNzEsNyArMzcxLDIzIEBAIHNkaGNAMTE0MDAwIHsNCj4+ICAgCX07DQo+PiAgIA0KPj4gICAv
+aW5jbHVkZS8gInFvcmlxLWkyYy0wLmR0c2kiDQo+PiArCWkyY0AxMTgwMDAgew0KPj4gKwkJZnNs
+LGkyYy1lcnJhdHVtLWEwMDQ0NDc7DQo+PiArCX07DQo+PiArDQo+PiArCWkyY0AxMTgxMDAgew0K
+Pj4gKwkJZnNsLGkyYy1lcnJhdHVtLWEwMDQ0NDc7DQo+PiArCX07DQo+PiArDQo+PiAgIC9pbmNs
+dWRlLyAicW9yaXEtaTJjLTEuZHRzaSINCj4+ICsJaTJjQDExOTAwMCB7DQo+PiArCQlmc2wsaTJj
+LWVycmF0dW0tYTAwNDQ0NzsNCj4+ICsJfTsNCj4+ICsNCj4+ICsJaTJjQDExOTEwMCB7DQo+PiAr
+CQlmc2wsaTJjLWVycmF0dW0tYTAwNDQ0NzsNCj4+ICsJfTsNCj4+ICsNCj4+ICAgL2luY2x1ZGUv
+ICJxb3JpcS1kdWFydC0wLmR0c2kiDQo+PiAgIC9pbmNsdWRlLyAicW9yaXEtZHVhcnQtMS5kdHNp
+Ig0KPj4gICAvaW5jbHVkZS8gInFvcmlxLWdwaW8tMC5kdHNpIg0KPj4gLS0gDQo+PiAyLjMwLjI=
