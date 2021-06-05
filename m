@@ -1,77 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7123D39C461
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Jun 2021 02:27:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 741D539C46F
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Jun 2021 02:32:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FxgSB67nyz302S
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Jun 2021 10:27:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FxgZ656L9z3bsf
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Jun 2021 10:32:14 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=sVqQhvrI;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=X074mGFT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1030;
- helo=mail-pj1-x1030.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::434;
+ helo=mail-pf1-x434.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=sVqQhvrI; dkim-atps=neutral
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com
- [IPv6:2607:f8b0:4864:20::1030])
+ header.s=20161025 header.b=X074mGFT; dkim-atps=neutral
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com
+ [IPv6:2607:f8b0:4864:20::434])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FxgRl1Rklz2yhf
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Jun 2021 10:26:42 +1000 (AEST)
-Received: by mail-pj1-x1030.google.com with SMTP id
- pi6-20020a17090b1e46b029015cec51d7cdso6751137pjb.5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Jun 2021 17:26:41 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FxgYc38v3z2yhf
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Jun 2021 10:31:46 +1000 (AEST)
+Received: by mail-pf1-x434.google.com with SMTP id s14so7722595pfd.9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Jun 2021 17:31:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=bZWOWnyu5nOe9hcwFfo38NCzqJqFs6QIG+9+6hzf77k=;
- b=sVqQhvrIPUBvhq9HtJAXuH25dYnILW0Sccv/4f3kBtq8+yjB9Q2rlbVMvEFBrhoCwL
- 8mqplKoEyo66t1+0ew+hojihXivOBR9xYtA22CBcYb9h1+P/N5WXqRC6zVN7Yb7hpK6N
- IocfJS0SQ3z3Xd78/cL8L5GZYphnNEXqg9BWMPOa7YD+4p4VteyOP9rpHNHclY8KN3o4
- WRwxq+nCsAJejGBX6AF6CAvv9npAJJHuOBrQ6RUH0u3pKT46ecjUodDLrIJPwIfWMCNx
- FirBG6cPB7pE8mqYmveLri/nAP8JMAY+TC69u0QDfQrjYiJhMN473ti2/BgpztdJQ4W1
- kxmw==
+ bh=MUq6X8/ZPIBrKdk3i3SE6IJReD3LrwPz//1n2EnyP3Q=;
+ b=X074mGFT8XaS9PX3jk/A+Y5QmVPd3uxA8If6/e6C2ICQXasf98PrVS+wNyMdcKxZOo
+ wwms5it3fD0KICYLv/aHwUrWzjADgMkMNSrtqnoM1U4q7EmoiHM5pwy3fUIV3a4s8+C8
+ wrhA8BAUpJqLdkPdUJu/SHhn00mQSsNJ0mkv89Q4YfGcjSxlBG5mrPMqPh2hVz4Bhs6B
+ bCQQAb4VB6h/9n3fRo0BoyqQe3kfi+6y0ay3C0D0nfGkjIQQDvq6yZrBdt45mm509iZO
+ 3QgRiElKJvfAIhmQXn0RAycoT8ThhOBxDkaeTZtqTiXT/4LjMHDMG5U7lBvi9PQtwWs9
+ icVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=bZWOWnyu5nOe9hcwFfo38NCzqJqFs6QIG+9+6hzf77k=;
- b=Uj18RnYL3ZUYaXOlIDDhQBxSp1VpvM7Rwgf5mmb+sUXRTPtMm9Qbm5dr3XZol0/muA
- 3VdX9qEh2rHn37ooIdp49+ov0odV9Oj8Cvswdn5ddOFGGzmvo+OK10zL7relQwUTmPKj
- 1rUj7lpW6twUt7jSAeBZb9GNdmGaiOae9OJBMJIeREw7G6bj62AC2teF9vlKBzRUmEX+
- +VXsuaH3VIN2rFDO9PpQM7VrZQpI4S6cHhbSNKvIc3s3jS03Kx48gR8eWIvprLud+3p3
- FLqLOnwO5imPYlrYbS5bzR50llb22pOUBP2MHarf96TwQFSIYWxBcSE6mNp5Hkzwip6v
- +gyg==
-X-Gm-Message-State: AOAM530y6QzeB0CcTsri6ei/kLiPPgKQOP29aC9kgLwkVxXFSJ3bKhxz
- g9KYdC9ajepPTEc+J+xFMTU=
-X-Google-Smtp-Source: ABdhPJxjr6SRTKqd7M2yn2GGd8wbqclJvvKqlheGcJ1NnTc0q1WibCsKIJKVTsY5Sdd7a6n11TS1OQ==
-X-Received: by 2002:a17:902:f704:b029:f4:228d:4dca with SMTP id
- h4-20020a170902f704b02900f4228d4dcamr7003155plo.26.1622852798616; 
- Fri, 04 Jun 2021 17:26:38 -0700 (PDT)
+ bh=MUq6X8/ZPIBrKdk3i3SE6IJReD3LrwPz//1n2EnyP3Q=;
+ b=cQLi/pgBr5cyBolrFAIZd/K6ZZokZ8CA7UsAMw0OnFoe5xZ+lpuaRJ+DhE8wsgBEmw
+ FFV8AyTChLA9Y+wkakCs5xM6PFRCVcHZn4oT92OpaVWLrbjHmxdPuucsrMg5u4y6qH0B
+ 4Ve1kYY3YioosNTQKgj3OuRedZJFvwCeSHgRckVFvHdPKQZNl7geNu9nl39cpZ3MVmjf
+ MUbvMhW70GJt0BnnvUJondDozG+RpuHD3nNFu5MFMwnJZZILSLSMxpXKxvGfxdLUxhux
+ F3jCxmj9tJLX3TMwHgfbI9AFV+DWM9yqKju2Pk+ajuC7OhD5m2veL4pzGUBqZHtZwkoH
+ ispQ==
+X-Gm-Message-State: AOAM530R0z87KINClCxk7hT5clCvbjJakHEs8XFFeBsOapm9MwPp3ga8
+ IerM9lGMbAVUSI2IVe4xH2w=
+X-Google-Smtp-Source: ABdhPJwXiFnJQj4oLIJsGDkMxLgXqAQTko8IVI1OMYwx/T2aA9dKJF9QIzIoABl91TeiLJyK8K0lMQ==
+X-Received: by 2002:a62:5444:0:b029:2e9:c69d:dc64 with SMTP id
+ i65-20020a6254440000b02902e9c69ddc64mr6841873pfb.32.1622853102671; 
+ Fri, 04 Jun 2021 17:31:42 -0700 (PDT)
 Received: from localhost (60-242-147-73.tpgi.com.au. [60.242.147.73])
- by smtp.gmail.com with ESMTPSA id z17sm2589464pfq.218.2021.06.04.17.26.37
+ by smtp.gmail.com with ESMTPSA id 21sm2480032pfh.103.2021.06.04.17.31.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Jun 2021 17:26:38 -0700 (PDT)
-Date: Sat, 05 Jun 2021 10:26:32 +1000
+ Fri, 04 Jun 2021 17:31:42 -0700 (PDT)
+Date: Sat, 05 Jun 2021 10:31:36 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3 0/4] shoot lazy tlbs
-To: Andrew Morton <akpm@linux-foundation.org>, Andy Lutomirski
- <luto@kernel.org>
-References: <20210601062303.3932513-1-npiggin@gmail.com>
- <603ffd67-3638-4c47-8067-c1bdfdf65f1b@kernel.org>
- <991660c3-c2bf-c303-a55c-7454f0cc45f7@kernel.org>
- <1622851909.wxi3vcx3m8.astroid@bobo.none>
-In-Reply-To: <1622851909.wxi3vcx3m8.astroid@bobo.none>
+Subject: Re: [PATCH v4 04/16] powerpc/vas: Create take/drop pid and mm
+ references
+To: Haren Myneni <haren@linux.ibm.com>, herbert@gondor.apana.org.au,
+ linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ mpe@ellerman.id.au
+References: <8d219c0816133a8643d650709066cf04c9c77322.camel@linux.ibm.com>
+ <16a319614a7ab4ce843f42a49c3ecf68ed03dd36.camel@linux.ibm.com>
+ <1622693213.hz0uqko6dk.astroid@bobo.none>
+ <6a67ebd5f728966312063e132c4f6aba70285c72.camel@linux.ibm.com>
+In-Reply-To: <6a67ebd5f728966312063e132c4f6aba70285c72.camel@linux.ibm.com>
 MIME-Version: 1.0
-Message-Id: <1622852601.xyhcpcfd7y.astroid@bobo.none>
+Message-Id: <1622852830.f2v4xyjvwu.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -85,118 +86,161 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Nicholas Piggin's message of June 5, 2021 10:17 am:
-> Excerpts from Andy Lutomirski's message of June 5, 2021 3:05 am:
->> On 6/4/21 9:54 AM, Andy Lutomirski wrote:
->>> On 5/31/21 11:22 PM, Nicholas Piggin wrote:
->>>> There haven't been objections to the series since last posting, this
->>>> is just a rebase and tidies up a few comments minor patch rearranging.
->>>>
->>>=20
->>> I continue to object to having too many modes.  I like my more generic
->>> improvements better.  Let me try to find some time to email again.
->>>=20
+Excerpts from Haren Myneni's message of June 4, 2021 2:08 pm:
+> On Thu, 2021-06-03 at 14:21 +1000, Nicholas Piggin wrote:
+>> Excerpts from Haren Myneni's message of May 21, 2021 7:31 pm:
+>> > Take pid and mm references when each window opens and drops during
+>> > close. This functionality is needed for powerNV and pseries. So
+>> > this patch defines the existing code as functions in common book3s
+>> > platform vas-api.c
+>> >=20
+>> > Signed-off-by: Haren Myneni <haren@linux.ibm.com>
 >>=20
->> Specifically, this:
+>> Seems like a good idea to put these into their own helper functions.
 >>=20
->> https://git.kernel.org/pub/scm/linux/kernel/git/luto/linux.git/commit/?h=
-=3Dx86/mm
+>> > ---
+>> >  arch/powerpc/include/asm/vas.h              | 25 +++++++++
+>> >  arch/powerpc/platforms/book3s/vas-api.c     | 51
+>> > ++++++++++++++++++
+>> >  arch/powerpc/platforms/powernv/vas-fault.c  | 10 ++--
+>> >  arch/powerpc/platforms/powernv/vas-window.c | 57 ++---------------
+>> > ----
+>> >  arch/powerpc/platforms/powernv/vas.h        |  6 +--
+>> >  5 files changed, 88 insertions(+), 61 deletions(-)
+>> >=20
+>> > diff --git a/arch/powerpc/include/asm/vas.h
+>> > b/arch/powerpc/include/asm/vas.h
+>> > index 668303198772..3f2b02461a76 100644
+>> > --- a/arch/powerpc/include/asm/vas.h
+>> > +++ b/arch/powerpc/include/asm/vas.h
+>> > @@ -5,6 +5,9 @@
+>> > =20
+>> >  #ifndef _ASM_POWERPC_VAS_H
+>> >  #define _ASM_POWERPC_VAS_H
+>> > +#include <linux/sched/mm.h>
+>> > +#include <linux/mmu_context.h>
+>> > +#include <asm/icswx.h>
+>> >  #include <uapi/asm/vas-api.h>
+>> > =20
+>> >  struct vas_window;
+>> > @@ -49,6 +52,17 @@ enum vas_cop_type {
+>> >  	VAS_COP_TYPE_MAX,
+>> >  };
+>> > =20
+>> > +/*
+>> > + * User space VAS windows are opened by tasks and take references
+>> > + * to pid and mm until windows are closed.
+>> > + * Stores pid, mm, and tgid for each window.
+>> > + */
+>> > +struct vas_user_win_ref {
+>> > +	struct pid *pid;	/* PID of owner */
+>> > +	struct pid *tgid;	/* Thread group ID of owner */
+>> > +	struct mm_struct *mm;	/* Linux process mm_struct */
+>> > +};
+>> > +
+>> >  /*
+>> >   * User space window operations used for powernv and powerVM
+>> >   */
+>> > @@ -59,6 +73,16 @@ struct vas_user_win_ops {
+>> >  	int (*close_win)(void *);
+>> >  };
+>> > =20
+>> > +static inline void vas_drop_reference_pid_mm(struct
+>> > vas_user_win_ref *ref)
+>> > +{
+>> > +	/* Drop references to pid and mm */
+>> > +	put_pid(ref->pid);
+>> > +	if (ref->mm) {
+>> > +		mm_context_remove_vas_window(ref->mm);
+>> > +		mmdrop(ref->mm);
+>> > +	}
+>> > +}
+>>=20
+>> You don't have to make up a new name for such a thing because you=20
+>> already have one
+>>=20
+>> put_vas_user_win_ref(struct vas_user_win_ref *ref)
+>>=20
+>>=20
+>> > +
+>> >  /*
+>> >   * Receive window attributes specified by the (in-kernel) owner of
+>> > window.
+>> >   */
+>> > @@ -192,4 +216,5 @@ int vas_register_coproc_api(struct module *mod,
+>> > enum vas_cop_type cop_type,
+>> >  			    struct vas_user_win_ops *vops);
+>> >  void vas_unregister_coproc_api(void);
+>> > =20
+>> > +int vas_reference_pid_mm(struct vas_user_win_ref *task_ref);
+>> >  #endif /* __ASM_POWERPC_VAS_H */
+>> > diff --git a/arch/powerpc/platforms/book3s/vas-api.c
+>> > b/arch/powerpc/platforms/book3s/vas-api.c
+>> > index 6c39320bfb9b..a0141bfb2e4b 100644
+>> > --- a/arch/powerpc/platforms/book3s/vas-api.c
+>> > +++ b/arch/powerpc/platforms/book3s/vas-api.c
+>> > @@ -55,6 +55,57 @@ static char *coproc_devnode(struct device *dev,
+>> > umode_t *mode)
+>> >  	return kasprintf(GFP_KERNEL, "crypto/%s", dev_name(dev));
+>> >  }
+>> > =20
+>> > +/*
+>> > + * Take reference to pid and mm
+>> > + */
+>> > +int vas_reference_pid_mm(struct vas_user_win_ref *task_ref)
+>> > +{
+>>=20
+>> So this is quite different from a typical refcount object in that
+>> it's=20
+>> opening it for access as well. I would split it in two functions, one
+>> matching put_vas_user_win_ref() and appearing in the same place in
+>> code,
+>> which is up to about mmput and another function that adds the window
+>> and
+>> does the CP_ABORT etc... hmm, where do you release tgid?
 >=20
-> That's worse than what powerpc does with the shoot lazies code so=20
-> we wouldn't use it anyway.
+> Basically copied the existing code in to these functions
+> (vas_reference_pid_mm/vas_drop_reference_pid_mm) so that useful for
+> both platforms.=20
 >=20
-> The fact is mm-cpumask and lazy mm is very architecture specific, so I=20
-> don't really see that another "mode" is such a problem, it's for the=20
-> most part "this is what powerpc does" -> "this is what powerpc does".
-> The only mode in the context switch is just "take a ref on the lazy mm"
-> or "don't take a ref". Surely that's not too onerous to add!?
->=20
-> Actually the bigger part of it is actually the no-lazy mmu mode which
-> is not yet used, I thought it was a neat little demonstrator of how code
-> works with/without lazy but I will get rid of that for submission.
+> mm_context_add/remove_vas_window() is also like taking reference. So
+> instead of adding 2 seperate functions, how about naming
+> get/put_vas_user_win_ref()=20
 
-I admit that does add a bit more churn than necessary maybe that was
-the main objection.
+It's actually different though. What I'm asking is the parts where you=20
+interact with core kernel data structure refcounts go into their own=20
+get/put functions.
 
-Here is the entire kernel/sched/core.c change after that is removed.
-Pretty simple now. I'll resubmit.
+Someone who understands that refcounting and looks at the code will care=20
+about those bits, so having them all together I think is helpful. They=20
+don't know about adding vas windows or CP_ABORT.
+
+> Regarding tgid, the reference is taking only with pid, but not tgid.
+> pid reuse can happen only in the case of multithread applications when
+> the child that opened VAS window exits. But these windows will be
+> closed when tgid exists. So do not need tgid reference.
+
+I don't understand you.  The code you added does take a reference to=20
+tgid...
+
+>> > +	/*
+>> > +	 * Window opened by a child thread may not be closed when
+>> > +	 * it exits. So take reference to its pid and release it
+>> > +	 * when the window is free by parent thread.
+>> > +	 * Acquire a reference to the task's pid to make sure
+>> > +	 * pid will not be re-used - needed only for multithread
+>> > +	 * applications.
+>> > +	 */
+>> > +	task_ref->pid =3D get_task_pid(current, PIDTYPE_PID);
+
+My question is, where is this reference released. I can't see it. I'm=20
+asking about existing upstream code really because this patch is just=20
+copying existing code around.
 
 Thanks,
 Nick
-
-
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index e359c76ea2e2..1be0b97e12ec 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -4171,7 +4171,7 @@ static struct rq *finish_task_switch(struct task_stru=
-ct *prev)
- 	__releases(rq->lock)
- {
- 	struct rq *rq =3D this_rq();
--	struct mm_struct *mm =3D rq->prev_mm;
-+	struct mm_struct *mm =3D NULL;
- 	long prev_state;
-=20
- 	/*
-@@ -4190,7 +4190,10 @@ static struct rq *finish_task_switch(struct task_str=
-uct *prev)
- 		      current->comm, current->pid, preempt_count()))
- 		preempt_count_set(FORK_PREEMPT_COUNT);
-=20
--	rq->prev_mm =3D NULL;
-+#ifdef CONFIG_MMU_LAZY_TLB_REFCOUNT
-+	mm =3D rq->prev_lazy_mm;
-+	rq->prev_lazy_mm =3D NULL;
-+#endif
-=20
- 	/*
- 	 * A task struct has one reference for the use as "current".
-@@ -4326,9 +4329,21 @@ context_switch(struct rq *rq, struct task_struct *pr=
-ev,
- 		switch_mm_irqs_off(prev->active_mm, next->mm, next);
-=20
- 		if (!prev->mm) {                        // from kernel
--			/* will mmdrop_lazy_tlb() in finish_task_switch(). */
--			rq->prev_mm =3D prev->active_mm;
-+#ifdef CONFIG_MMU_LAZY_TLB_REFCOUNT
-+			/* Will mmdrop_lazy_tlb() in finish_task_switch(). */
-+			rq->prev_lazy_mm =3D prev->active_mm;
- 			prev->active_mm =3D NULL;
-+#else
-+			/*
-+			 * Without MMU_LAZY_TLB_REFCOUNT there is no lazy
-+			 * tracking (because no rq->prev_lazy_mm) in
-+			 * finish_task_switch, so no mmdrop_lazy_tlb(),
-+			 * so no memory barrier for membarrier (see the
-+			 * membarrier comment in finish_task_switch()).
-+			 * Do it here.
-+			 */
-+			smp_mb();
-+#endif
- 		}
- 	}
-=20
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index a189bec13729..0729cf19a987 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -961,7 +961,9 @@ struct rq {
- 	struct task_struct	*idle;
- 	struct task_struct	*stop;
- 	unsigned long		next_balance;
--	struct mm_struct	*prev_mm;
-+#ifdef CONFIG_MMU_LAZY_TLB_REFCOUNT
-+	struct mm_struct	*prev_lazy_mm;
-+#endif
-=20
- 	unsigned int		clock_update_flags;
- 	u64			clock;
 
