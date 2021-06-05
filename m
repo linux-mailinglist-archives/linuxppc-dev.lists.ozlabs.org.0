@@ -1,80 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 946F539C49C
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Jun 2021 02:43:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9174939C4DE
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Jun 2021 03:42:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FxgqZ17Ftz3bt7
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Jun 2021 10:43:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fxj7g702Yz30BM
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Jun 2021 11:42:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=lbe9wRJP;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=N0fg6MCu;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102a;
- helo=mail-pj1-x102a.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1035;
+ helo=mail-pj1-x1035.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=lbe9wRJP; dkim-atps=neutral
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com
- [IPv6:2607:f8b0:4864:20::102a])
+ header.s=20161025 header.b=N0fg6MCu; dkim-atps=neutral
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com
+ [IPv6:2607:f8b0:4864:20::1035])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fxgq74NNlz2ylk
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Jun 2021 10:43:29 +1000 (AEST)
-Received: by mail-pj1-x102a.google.com with SMTP id
- pi6-20020a17090b1e46b029015cec51d7cdso6765876pjb.5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Jun 2021 17:43:28 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fxj7D2g8lz2xtw
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Jun 2021 11:42:30 +1000 (AEST)
+Received: by mail-pj1-x1035.google.com with SMTP id
+ h12-20020a17090aa88cb029016400fd8ad8so6847075pjq.3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Jun 2021 18:42:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=QHrZR1MpVXC88afIWi4RkzPg8+mZpQ4oEHnl6dd+aO4=;
- b=lbe9wRJPLWPnNabjMpYPCw99mVHpECLlLhx7U/OyHwBZ9MegEZpWOHaYkPdwbviwLg
- xfEdyCwMekbyW6CzqhpcxQk6HrqS7Ctw2+/Dc0N9Md4fi6e/0ShLlo8USBpiVrmfr4RT
- GD6iiZZALn+UyJVAj7NAA+Lf2sjylp8ico+wWwHkqh28uykYPq4NUUun3U9Ctr57SLJ0
- TWlyb4f15ysg2Jxy5YWFDZDk4efLCrTaPeQSz6IXemjDvezQqKVe+s7oULKNof2Mtlpb
- ZXuFp9mG3SbnpAWJFmFM343ojj2XciC0IN30cZT3SAgmSjvR4O8OgzQer9kVeVB3lib2
- tKyA==
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=HN/yxlFRhCXI2lz6pRuRsVES8dA6IrWBhzB/BkiqJsM=;
+ b=N0fg6MCuH9s4HsYj1nxf2+QZ+2ZtLPsunpN49Xp5z9VUsR5/shhK52a/meE/srVFid
+ ft3AwOKvuTu/Ow2IgqFiVkW+hUu4T7Ionoz8cv1WWEoa5akwrzvX7R5m2v5rgExT+PF/
+ 80Sawjo8WzzUNSO196wSDIAJeVG//SnGL/MQYgOknM38h4n7joShRzKzbxANFS1n4ErI
+ 0waMLNoO0AdM0p+GbsvLSeQQaM3zAG+RNT/VsygJupHzRbiVdrvw3HkJXTiRWHSSZE2N
+ SYuLVx7C6U51dFDBdLP7UeYGg5fDNixmKSsgJtcyUcv3cfd2uaIt1Nmq+H0oB3m4TYVt
+ wCMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=QHrZR1MpVXC88afIWi4RkzPg8+mZpQ4oEHnl6dd+aO4=;
- b=rEqW0ZiurTZfnIfflBhgtMcpHWC4oA83xcs37mcTpIP+3QwzGnFzuchWlZtL7M8HDe
- Z67uwHM6Qj3ADtHPRnts05QI7E5VzwbAfZi4gSkM/nuBm4Dkc6axPNZQwALSNIPIUQD7
- pvQkcmCxljKdxcnOyOQg9r5kJmO8oAAjWhgonzVgV6bnZ9CJWG5o6XYqV1KtatdIwOVd
- LyAnVs0KU0XAYynTiglQs7w6xjpr7GO+FmO+PXBuijwDIvPSeztKtT3+/f3DztUmC3lA
- rJWELgbx6jxPlzNWquKeMjssgoGyEC9xmmiZVr5Efnnhc4IVrSoTgRtH0l6N587Hpkzi
- 6Lhw==
-X-Gm-Message-State: AOAM530uBhrYs63XfXNcRDVdsG5ZLt+0ThQlHcdp0p7cBYczGTdfibHK
- Cuvnxm699iHFJjggUP3isp0=
-X-Google-Smtp-Source: ABdhPJxoQauggiRpOgQ8vdVgBZ1ckniDTIw+fRatj5YgB6ghUcmmpQxoxhC4WZDxR2DTtTlX0SR12A==
-X-Received: by 2002:a17:902:988d:b029:ef:68aa:d775 with SMTP id
- s13-20020a170902988db02900ef68aad775mr6749406plp.57.1622853805555; 
- Fri, 04 Jun 2021 17:43:25 -0700 (PDT)
-Received: from localhost (60-242-147-73.tpgi.com.au. [60.242.147.73])
- by smtp.gmail.com with ESMTPSA id 3sm2461847pfm.41.2021.06.04.17.43.24
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=HN/yxlFRhCXI2lz6pRuRsVES8dA6IrWBhzB/BkiqJsM=;
+ b=s41B3Eg864JePWHrM7iVFNIBAbHAvcs+6eVJadfqXUyr8r//oxfoDvlIuQWCff8lwv
+ BJKKNa1OxNYXyLTtz4CHtEDDqO4/05GRa0IG/fYgQ/Lc0wPPHWeu1rQlD9h6EhES8gcG
+ G5hbIy2RxTPQhDuYHkOYKcXDVMomVNknTU9Py/k+I76nGzX+neWKHAcQKfBpJ+A4OB6j
+ aKYkLkQ+rvRPJUkhPWSVPR7HZziTucLdK/nW33uLJdZy+OQI3ANuO+qHuuiZgLaIAmbG
+ /AlNa4LRZusYXu7YpUlXuu/uhO/tOcetwRRZc7JsQX/EUUHvBgtX21BTU1HN9EVyoy/c
+ q/7w==
+X-Gm-Message-State: AOAM531KYVHYjPhuD8rBx8igX0TH+dFSCOsoioWe4RSyV3HvcJyjsmNO
+ eqKLb4fzIAx/8nEKZLwqvAY=
+X-Google-Smtp-Source: ABdhPJzIPBaIsLM9CINwZgXyOGPdZc74cQHpiU2KKEGygcnKSh9Gm9bVFr7pTSjQUx6UdhKyvKVXDg==
+X-Received: by 2002:a17:902:eccb:b029:106:def0:2717 with SMTP id
+ a11-20020a170902eccbb0290106def02717mr7216193plh.66.1622857346021; 
+ Fri, 04 Jun 2021 18:42:26 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com (60-242-147-73.tpgi.com.au. [60.242.147.73])
+ by smtp.gmail.com with ESMTPSA id q68sm5779056pjq.45.2021.06.04.18.42.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 04 Jun 2021 17:43:25 -0700 (PDT)
-Date: Sat, 05 Jun 2021 10:43:19 +1000
+ Fri, 04 Jun 2021 18:42:25 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v4 12/16] powerpc/pseries/vas: Setup IRQ and fault handling
-To: Haren Myneni <haren@linux.ibm.com>, herbert@gondor.apana.org.au,
- linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- mpe@ellerman.id.au
-References: <8d219c0816133a8643d650709066cf04c9c77322.camel@linux.ibm.com>
- <5ac32e4d07bd048e3d687354501d36c334f1c8e0.camel@linux.ibm.com>
- <1622697882.lu1gj10oe8.astroid@bobo.none>
- <ab831a47cae65c67e1fae41acd9dcb8f3c55ac76.camel@linux.ibm.com>
-In-Reply-To: <ab831a47cae65c67e1fae41acd9dcb8f3c55ac76.camel@linux.ibm.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH v4 0/4] shoot lazy tlbs
+Date: Sat,  5 Jun 2021 11:42:12 +1000
+Message-Id: <20210605014216.446867-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Message-Id: <1622853468.3f8ohl3pt0.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,134 +79,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-arch@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>,
+ linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+ linux-mm@kvack.org, Andy Lutomirski <luto@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Haren Myneni's message of June 4, 2021 11:19 am:
-> On Thu, 2021-06-03 at 15:48 +1000, Nicholas Piggin wrote:
->> Excerpts from Haren Myneni's message of May 21, 2021 7:39 pm:
->> > NX generates an interrupt when sees a fault on the user space
->> > buffer and the hypervisor forwards that interrupt to OS. Then
->> > the kernel handles the interrupt by issuing H_GET_NX_FAULT hcall
->> > to retrieve the fault CRB information.
->> >=20
->> > This patch also adds changes to setup and free IRQ per each
->> > window and also handles the fault by updating the CSB.
->> >=20
->> > Signed-off-by: Haren Myneni <haren@linux.ibm.com>
->> > ---
->> >  arch/powerpc/platforms/pseries/vas.c | 111
->> > +++++++++++++++++++++++++++
->> >  1 file changed, 111 insertions(+)
->> >=20
->> > diff --git a/arch/powerpc/platforms/pseries/vas.c
->> > b/arch/powerpc/platforms/pseries/vas.c
->> > index ef0c455f6e93..31dc17573f50 100644
->> > --- a/arch/powerpc/platforms/pseries/vas.c
->> > +++ b/arch/powerpc/platforms/pseries/vas.c
->> > @@ -224,6 +224,62 @@ int plpar_vas_query_capabilities(const u64
->> > hcall, u8 query_type,
->> >  }
->> >  EXPORT_SYMBOL_GPL(plpar_vas_query_capabilities);
->> > =20
->> > +/*
->> > + * HCALL to get fault CRB from pHyp.
->> > + */
->> > +static int plpar_get_nx_fault(u32 winid, u64 buffer)
->> > +{
->> > +	int64_t rc;
->> > +
->> > +	rc =3D plpar_hcall_norets(H_GET_NX_FAULT, winid, buffer);
->> > +
->> > +	switch (rc) {
->> > +	case H_SUCCESS:
->> > +		return 0;
->> > +	case H_PARAMETER:
->> > +		pr_err("HCALL(%x): Invalid window ID %u\n",
->> > H_GET_NX_FAULT,
->> > +		       winid);
->> > +		return -EINVAL;
->> > +	case H_STATE:
->> > +		pr_err("HCALL(%x): No outstanding faults for window ID
->> > %u\n",
->> > +		       H_GET_NX_FAULT, winid);
->> > +		return -EINVAL;
->> > +	case H_PRIVILEGE:
->> > +		pr_err("HCALL(%x): Window(%u): Invalid fault buffer
->> > 0x%llx\n",
->> > +		       H_GET_NX_FAULT, winid, buffer);
->> > +		return -EACCES;
->> > +	default:
->> > +		pr_err("HCALL(%x): Unexpected error %lld for
->> > window(%u)\n",
->> > +		       H_GET_NX_FAULT, rc, winid);
->> > +		return -EIO;
->> > +	}
->> > +}
->>=20
->> Out of curiosity, you get one of these errors and it just drops the
->> interrupt on the floor. Then what happens, I assume everything
->> stops. Should it put some error in the csb, or signal the process or
->> something? Or is there nothing very sane that can be done?
->=20
-> The user space polls on CSB with timout interval. If the kernel or NX
-> does not return, the request will be timeout.
-
-Okay, if there is no sane way it can respond to the different error=20
-cases that's not necessarily unreasonable to just print something in the=20
-kernel log. Hopefully the kernel log would be useful to the=20
-administrator / developer / etc, but that's pretty rarely the case for=20
-Linux errors as it is.
-
-> The hypervisor returns the credit after H_GET_NX_FAULT HCALL is
-> successful. Also one credit is assigned for each window. So in this
-> case, the error is coming from the hypervisor and the application can
-> not issue another request on the same window.=20
->=20
->>=20
->> > +
->> > +/*
->> > + * Handle the fault interrupt.
->> > + * When the fault interrupt is received for each window, query
->> > pHyp to get
->> > + * the fault CRB on the specific fault. Then process the CRB by
->> > updating
->> > + * CSB or send signal if the user space CSB is invalid.
->> > + * Note: pHyp forwards an interrupt for each fault request. So one
->> > fault
->> > + *	CRB to process for each H_GET_NX_FAULT HCALL.
->> > + */
->> > +irqreturn_t pseries_vas_fault_thread_fn(int irq, void *data)
->> > +{
->> > +	struct vas_window *txwin =3D data;
->> > +	struct coprocessor_request_block crb;
->> > +	struct vas_user_win_ref *tsk_ref;
->> > +	int rc;
->> > +
->> > +	rc =3D plpar_get_nx_fault(txwin->winid, (u64)virt_to_phys(&crb));
->> > +	if (!rc) {
->> > +		tsk_ref =3D &txwin->task_ref;
->> > +		vas_dump_crb(&crb);
->>=20
->> This (and existing powernv vas code) is printk()ing a lot of lines
->> per=20
->> fault. This should be pretty normal operation I think? It should
->> avoid
->> filling the kernel logs, if so. Particularly if it can be triggered
->> by=20
->> userspace.
->>=20
->> I know it's existing code, so could be fixed separately from the
->> series.
->=20
-> printk messages are only if HCALL returns failure or kernel issue (ex:
-> not valid window and etc on powerNV). These errors should not be
-> depending on the iser space requests. So generally we should not get
-> these errors. =20
-
-Ah I was looking at dump_crb but that's using pr_devel so that's=20
-probably okay.
+The additional unused config option was a valid criticism, so this now
+purely just toggles refcounting of the lazy tlb mm.
 
 Thanks,
 Nick
+
+Since v3:
+- Removed the extra config option, MMU_LAZY_TLB=n. This can be
+  resurrected if an arch wants it.
+
+Nicholas Piggin (4):
+  lazy tlb: introduce lazy mm refcount helper functions
+  lazy tlb: allow lazy tlb mm refcounting to be configurable
+  lazy tlb: shoot lazies, a non-refcounting lazy tlb option
+  powerpc/64s: enable MMU_LAZY_TLB_SHOOTDOWN
+
+ arch/Kconfig                         | 17 ++++++++++
+ arch/arm/mach-rpc/ecard.c            |  2 +-
+ arch/powerpc/Kconfig                 |  1 +
+ arch/powerpc/kernel/smp.c            |  2 +-
+ arch/powerpc/mm/book3s64/radix_tlb.c |  4 +--
+ fs/exec.c                            |  4 +--
+ include/linux/sched/mm.h             | 20 +++++++++++
+ kernel/cpu.c                         |  2 +-
+ kernel/exit.c                        |  2 +-
+ kernel/fork.c                        | 51 ++++++++++++++++++++++++++++
+ kernel/kthread.c                     | 11 +++---
+ kernel/sched/core.c                  | 35 +++++++++++++------
+ kernel/sched/sched.h                 |  4 ++-
+ 13 files changed, 132 insertions(+), 23 deletions(-)
+
+-- 
+2.23.0
+
