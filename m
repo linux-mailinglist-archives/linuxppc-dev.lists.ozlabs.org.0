@@ -1,33 +1,31 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C05E39CECA
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Jun 2021 14:12:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD3D939CEDA
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Jun 2021 14:16:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fyb3T2KMbz304j
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Jun 2021 22:12:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fyb8l2VXnz3f6X
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Jun 2021 22:16:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
  envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fyb371mMzz2yWy
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  6 Jun 2021 22:12:02 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fyb3M0dYzz308d
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  6 Jun 2021 22:12:15 +1000 (AEST)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4Fyb360Mmgz9sVm; Sun,  6 Jun 2021 22:12:01 +1000 (AEST)
+ id 4Fyb3K6kLPz9svs; Sun,  6 Jun 2021 22:12:13 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>
-In-Reply-To: <7f4aaa479569328a1e5b07c96c08fbca0cd7dd88.1620307890.git.christophe.leroy@csgroup.eu>
-References: <7f4aaa479569328a1e5b07c96c08fbca0cd7dd88.1620307890.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/32s: Remove asm/book3s/32/hash.h
-Message-Id: <162298131735.2353459.10982027333245553692.b4-ty@ellerman.id.au>
+To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
+In-Reply-To: <20210507064225.1556312-1-mpe@ellerman.id.au>
+References: <20210507064225.1556312-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH] selftests/powerpc: Add test of mitigation patching
+Message-Id: <162298131760.2353459.14547002501613438720.b4-ty@ellerman.id.au>
 Date: Sun, 06 Jun 2021 22:08:37 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -43,17 +41,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 6 May 2021 13:32:18 +0000 (UTC), Christophe Leroy wrote:
-> Move the PAGE bits into pgtable.h to be more similar to book3s/64.
+On Fri, 7 May 2021 16:42:25 +1000, Michael Ellerman wrote:
+> We recently discovered some of our mitigation patching was not safe
+> against other CPUs running concurrently.
+> 
+> Add a test which enable/disables all mitigations in a tight loop while
+> also running some stress load. On an unpatched system this almost always
+> leads to an oops and panic/reboot, but we also check if the kernel
+> becomes tainted in case we have a non-fatal oops.
 
 Applied to powerpc/next.
 
-[1/1] powerpc/32s: Remove asm/book3s/32/hash.h
-      https://git.kernel.org/powerpc/c/ca8cc36901e9bdd01d371f6236faf9f61d1325d1
+[1/1] selftests/powerpc: Add test of mitigation patching
+      https://git.kernel.org/powerpc/c/34f7f79827ec4db30cff9001dfba19f496473e8d
 
 cheers
