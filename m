@@ -2,60 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E32CA39CC17
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Jun 2021 03:31:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1A4C39CC2E
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Jun 2021 04:11:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FyJrH0ddgz301J
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Jun 2021 11:31:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FyKkS3gy7z3bsD
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Jun 2021 12:11:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=paul-moore-com.20150623.gappssmtp.com header.i=@paul-moore-com.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=1C/ZT6VO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=paul-moore-com.20150623.gappssmtp.com header.i=@paul-moore-com.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=cwZ2lIKK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (no SPF record) smtp.mailfrom=paul-moore.com
- (client-ip=2a00:1450:4864:20::635; helo=mail-ej1-x635.google.com;
+ (client-ip=2a00:1450:4864:20::533; helo=mail-ed1-x533.google.com;
  envelope-from=paul@paul-moore.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=paul-moore-com.20150623.gappssmtp.com
  header.i=@paul-moore-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=1C/ZT6VO; dkim-atps=neutral
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com
- [IPv6:2a00:1450:4864:20::635])
+ header.s=20150623 header.b=cwZ2lIKK; dkim-atps=neutral
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com
+ [IPv6:2a00:1450:4864:20::533])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FyJqp0yd8z2yxS
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  6 Jun 2021 11:31:16 +1000 (AEST)
-Received: by mail-ej1-x635.google.com with SMTP id k7so20475800ejv.12
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 05 Jun 2021 18:31:15 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FyKjx6zsSz2ym4
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  6 Jun 2021 12:11:16 +1000 (AEST)
+Received: by mail-ed1-x533.google.com with SMTP id w21so15730898edv.3
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 05 Jun 2021 19:11:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=fCe+jGmEAwmTn8B7zS0WgL0TEtprm2eMCt59nOvx6D0=;
- b=1C/ZT6VO9/kFcqfqv3/zGsJrGPbrhEkvKHwxEuzs8VA+HqFgEw+D7iKUER1uKs1Jo/
- WFi9sbz3aeTG7eP+wDUwtqXJxTGLIeLKpe+Neul/K0LwdDBXA6m6MUnx7DVMfVCm0TNl
- 24B6T3B5amn7STxRsQYCiKJoj/OTiS9PdP6TF3DpFYm4CINKKT2/qhFX55q9g5XzM1gW
- IsLV/oz6uv37DVUDE/J4BvW1bzN2zZWz2qp9lhp57jie5gag3PPX2j+mA/S9azmajBOK
- UH4ORdfwCnJ6mSDzr3achqJ+PRt1OuF9IX6S/DKHAy992Bmd7Ocqyxg5RmNb5/eOhu3C
- p9Gg==
+ :cc; bh=nOTcniWTVc9slYXWLxXSv1uRyKmcmZRO+63M/pSzE/U=;
+ b=cwZ2lIKKIQuoesuejMOtqIBw38LWmdJQRco7DTpm+On7hiyFzSIynCDa52d+sLCIqB
+ 2zP8pj4E3rGCuqfhnJ5MRag1NFm53lXVMwQKVQbdijwfbaxWRtV4bmYjHioSZXD6kkwg
+ Dlj3L7D4QLBXl9X//0lK2mPz5kWslHUxKRvcBa2juD05DpNuxQp//Z0f+OYjTO6stdwc
+ EZHN0Y1DxgOncdZ7gzfETOgtK9k4bhYfZebdAtgUMPDxU3VJkT9f7Tfuk6EcJw0zLdbF
+ FqFv+pxxBNtA2aX39hOynje/H5TcETj5t1HDzA84k39g9uwCsZz2riUv/7IvQm3jw6Tq
+ ydjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=fCe+jGmEAwmTn8B7zS0WgL0TEtprm2eMCt59nOvx6D0=;
- b=INymPVnFz4xKyiFHWtGBGHJLm+1+oXLoPJwttYlF7R+SZkJJoxpGGa4FpEJTXexgqy
- 8loZb7uCIHiFi4ifAQU2d61JQ4LtD8lE3N6r6cbQBv3rp+RvNOzaZs0LOsDSzP9ksiNM
- rPdycLkryu44oF1s9Gh6Z30PGRh34cfdkwmTevEmHrPqpIoq/CovpOSOT7jFlFH92kGu
- O+YIXywIYmYF7FU1Zb3yqBsFzDHs4Exu3bYx7b7HQdmX+A9edqrJ0t2giBSxD6XumC6V
- zO/X9C3MHYJANR69nlz0f3TlMlgLKg3LDFBb9OtqAVrKVlp2csy5AJlCy+8tCVHByyNS
- lTEg==
-X-Gm-Message-State: AOAM530nBWR5hiRaSnIFukweYsjwlnbfOJoL/qfOWQ4BZer67l9aA8iB
- BVzgnBzT/dp1jdmkaQcKTXwRy8fwOd/bCFnBUwiJ
-X-Google-Smtp-Source: ABdhPJyhY/AL0NTznJ9xF6JwaBvqMnxz7Ps9n6YMYTY6wpWXUGQF/hzXLj9xr7+Kqv4CWEHA77JSrz2Ou+hnQjZ4Kv8=
-X-Received: by 2002:a17:906:4111:: with SMTP id
- j17mr11223553ejk.488.1622943068465; 
- Sat, 05 Jun 2021 18:31:08 -0700 (PDT)
+ bh=nOTcniWTVc9slYXWLxXSv1uRyKmcmZRO+63M/pSzE/U=;
+ b=oUX5yxhnDdtxZhD0RBLuZFqNkUvtDYuKYYftqZJWIW3/WObt2Kc3mO7zTW/e7WPEXA
+ /l8nXIPtPRlHoZhdPrXOjy6HeeW1l720wqTUdErEwFn6+uOn1UKoxH2VttimyFm9yh/M
+ JQzSiNBq23B/EYo4NFyEAxutuUdJntH3fCfT94RDMg3yzUF8j3dynEqBikzMHN5xzsrO
+ SIQK1xO0xYL2T4jZilN1OByS3z+vkNtQDEVOL0Rhqt96WvPeP7OOAmLmg5/FYxiOz4r1
+ 66AdgB6oRsx6vXCnuBVTmwmsowqCjf18E+vz0Wy6iPGQcwymV6UpX+A1MKliI3EqOn+L
+ Xpfg==
+X-Gm-Message-State: AOAM532jeZ6PpggIKCwkAqA8lWIG3xBj7iNBxVO1kE82YJIxQYWqffU1
+ hKppTVATuHS7fnQu0dHsJXCeeBoIh7Cgq+Gv6p5Z
+X-Google-Smtp-Source: ABdhPJwLR1qKiHaU3a0P90iLeTPVN3ZXpgSHJmVvViAS0IGrSqN4ECheDNlb9g/W/t2kLVz7Gr1DZIJGJ5G/2AgcIkk=
+X-Received: by 2002:a05:6402:348f:: with SMTP id
+ v15mr1175334edc.135.1622945471846; 
+ Sat, 05 Jun 2021 19:11:11 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210517092006.803332-1-omosnace@redhat.com>
  <CAHC9VhTasra0tU=bKwVqAwLRYaC+hYakirRz0Mn5jbVMuDkwrA@mail.gmail.com>
@@ -72,13 +72,15 @@ References: <20210517092006.803332-1-omosnace@redhat.com>
  <c59743f6-0000-1b15-bc16-ff761b443aef@iogearbox.net>
  <CAHC9VhT1JhdRw9P_m3niY-U-vukxTWKTE9q6AMyQ=r_ohpPxMw@mail.gmail.com>
  <CAADnVQ+0bNtDj46Q8s-h=rqJgZz2JaGTeHpbmof3e7fBBQKuDQ@mail.gmail.com>
-In-Reply-To: <CAADnVQ+0bNtDj46Q8s-h=rqJgZz2JaGTeHpbmof3e7fBBQKuDQ@mail.gmail.com>
+ <64552a82-d878-b6e6-e650-52423153b624@schaufler-ca.com>
+ <CAHk-=wiUVqHN76YUwhkjZzwTdjMMJf_zN4+u7vEJjmEGh3recw@mail.gmail.com>
+In-Reply-To: <CAHk-=wiUVqHN76YUwhkjZzwTdjMMJf_zN4+u7vEJjmEGh3recw@mail.gmail.com>
 From: Paul Moore <paul@paul-moore.com>
-Date: Sat, 5 Jun 2021 21:30:57 -0400
-Message-ID: <CAHC9VhQv4xNhHsxpR7wqBsuch2UC=5DPAXTJAtujtF9G8wpfmQ@mail.gmail.com>
+Date: Sat, 5 Jun 2021 22:11:00 -0400
+Message-ID: <CAHC9VhRJDr6HO8NbEwcqcXCgpzyLL7KEmKM=VLXGz0zPJG5iXw@mail.gmail.com>
 Subject: Re: [PATCH v2] lockdown,selinux: avoid bogus SELinux lockdown
  permission checks
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -92,61 +94,72 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Jiri Olsa <jolsa@redhat.com>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, selinux@vger.kernel.org,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ "David S. Miller" <davem@davemloft.net>,
+ SElinux list <selinux@vger.kernel.org>,
  Network Development <netdev@vger.kernel.org>,
  Stephen Smalley <stephen.smalley.work@gmail.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Andrii Nakryiko <andrii@kernel.org>, Ondrej Mosnacek <omosnace@redhat.com>,
- Steven Rostedt <rostedt@goodmis.org>, James Morris <jmorris@namei.org>,
- Casey Schaufler <casey@schaufler-ca.com>,
+ Andrii Nakryiko <andrii@kernel.org>, James Morris <jmorris@namei.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Ondrej Mosnacek <omosnace@redhat.com>,
+ Linux-Fsdevel <linux-fsdevel@vger.kernel.org>,
  LSM List <linux-security-module@vger.kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Linux-Fsdevel <linux-fsdevel@vger.kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Casey Schaufler <casey@schaufler-ca.com>,
  Jakub Kicinski <kuba@kernel.org>, bpf <bpf@vger.kernel.org>,
  ppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "David S. Miller" <davem@davemloft.net>, LKML <linux-kernel@vger.kernel.org>
+ Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+ LKML <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 4, 2021 at 8:08 PM Alexei Starovoitov
-<alexei.starovoitov@gmail.com> wrote:
-> On Fri, Jun 4, 2021 at 4:34 PM Paul Moore <paul@paul-moore.com> wrote:
+On Sat, Jun 5, 2021 at 2:17 PM Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
+> On Sat, Jun 5, 2021 at 11:11 AM Casey Schaufler <casey@schaufler-ca.com> wrote:
 > >
-> > > Again, the problem is not limited to BPF at all. kprobes is doing register-
-> > > time hooks which are equivalent to the one of BPF. Anything in run-time
-> > > trying to prevent probe_read_kernel by kprobes or BPF is broken by design.
-> >
-> > Not being an expert on kprobes I can't really comment on that, but
-> > right now I'm focused on trying to make things work for the BPF
-> > helpers.  I suspect that if we can get the SELinux lockdown
-> > implementation working properly for BPF the solution for kprobes won't
-> > be far off.
+> > You have fallen into a common fallacy. The fact that the "code runs"
+> > does not assure that the "system works right". In the security world
+> > we face this all the time, often with performance expectations. In this
+> > case the BPF design has failed [..]
 >
-> Paul,
+> I think it's the lockdown patches that have failed. They did the wrong
+> thing, they didn't work,
+>
+> The report in question is for a regression.
+>
+> THERE ARE NO VALID ARGUMENTS FOR REGRESSIONS.
 
-Hi Alexei,
+To think I was worried we might end this thread without a bit of CAPS
+LOCK, whew! :)
 
-> Both kprobe and bpf can call probe_read_kernel==copy_from_kernel_nofault
-> from all contexts.
-> Including NMI.
+I don't think anyone in this discussion, even Casey's last comment,
+was denying that there was a problem.  The discussion and the
+disagreements were about what a "proper" fix would be, and how one
+might implement that fix; of course there were different ideas of
+"proper" and implementations vary even when people agree, so things
+were a bit of a mess.  If you want to get upset and shouty, I think
+there are a few things spread across the subsystems involved that
+would be worthy targets, but to say that Casey, myself, or anyone else
+who plays under security/ denied the problem in this thread is not
+fair, or correct, in my opinion.
 
-Thanks, that is helpful.  In hindsight it should have been obvious
-that kprobe/BPF would offer to insert code into the NMI handlers, but
-I don't recall it earlier in the discussion, it's possible I simply
-missed the mention.
+> Honestly, security people need to understand that "not working" is not
+> a success case of security. It's a failure case.
 
-> Most of audit_log_* is not acceptable.
-> Just removing a wakeup is not solving anything.
+I can't pretend to know what all of the "security people" are
+thinking, but I can say with a good degree of certainty that my goal
+is not to crash, panic, kill, or otherwise disable a user's system.
+When it comes to things like the LSM hooks, my goal is to try and make
+sure we have the right hooks in the right places so that admins and
+users have the tools they need to control access to their data and
+systems in the way that they choose.  Sometimes this puts us at odds
+with other subsystems in the kernel, we saw that in this thread, but
+that's to be expected anytime you have competing priorities.  The
+important part is that eventually we figure out some way to move
+forward, and the fact that we are still all making progress and
+putting out new kernel releases is proof that we are finding a way.
+That's what matters to me, and if I was forced to guess, I would
+imagine that matters quite a lot to most of us here.
 
-That's not really fair now is it?  Removing the wakeups in
-audit_log_start() and audit_log_end() does solve some problems,
-although not all of them (i.e. the NMI problem being the 800lb
-gorilla).  Because of the NMI case we're not going to solve the
-LSM/audit case anytime soon so it looks like we are going to have to
-fall back to the patch Daniel proposed.
-
-Acked-by: Paul Moore <paul@paul-moore.com>
-
---
+-- 
 paul moore
 www.paul-moore.com
