@@ -2,46 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF62139D2EE
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Jun 2021 04:27:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C733039D30B
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Jun 2021 04:43:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fyy2R04rvz3btp
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Jun 2021 12:27:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FyyNs1dCSz3btT
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Jun 2021 12:43:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com;
- envelope-from=wangkefeng.wang@huawei.com; receiver=<UNKNOWN>)
+ envelope-from=zou_wei@huawei.com; receiver=<UNKNOWN>)
 Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
  bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fyy2467xSz2yRQ
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Jun 2021 12:27:21 +1000 (AEST)
-Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.57])
- by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Fyxyf67zXzZdPf;
- Mon,  7 Jun 2021 10:24:26 +0800 (CST)
-Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
- dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Mon, 7 Jun 2021 10:27:15 +0800
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Mon, 7 Jun 2021 10:27:14 +0800
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-To: Andrew Morton <akpm@linux-foundation.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v3] mm: add setup_initial_init_mm() helper
-Date: Mon, 7 Jun 2021 10:36:11 +0800
-Message-ID: <20210607023611.159804-1-wangkefeng.wang@huawei.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <YL0+nZPViz5xzxca@kernel.org>
-References: <YL0+nZPViz5xzxca@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FyyNX14STz2xvH
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Jun 2021 12:43:21 +1000 (AEST)
+Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.53])
+ by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4FyyJs5Db8z6vwS;
+ Mon,  7 Jun 2021 10:40:13 +0800 (CST)
+Received: from dggemi762-chm.china.huawei.com (10.1.198.148) by
+ dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.2176.2; Mon, 7 Jun 2021 10:43:12 +0800
+Received: from linux-lmwb.huawei.com (10.175.103.112) by
+ dggemi762-chm.china.huawei.com (10.1.198.148) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2176.2; Mon, 7 Jun 2021 10:43:12 +0800
+From: Zou Wei <zou_wei@huawei.com>
+To: <benh@kernel.crashing.org>, <aik@ozlabs.ru>, <rdunlap@infradead.org>,
+ <unixbhaskar@gmail.com>, <mpe@ellerman.id.au>
+Subject: [PATCH -next] macintosh: Use for_each_child_of_node() macro
+Date: Mon, 7 Jun 2021 11:01:48 +0800
+Message-ID: <1623034908-30525-1-git-send-email-zou_wei@huawei.com>
+X-Mailer: git-send-email 2.6.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Originating-IP: [10.175.113.25]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpemm500001.china.huawei.com (7.185.36.107)
+X-Originating-IP: [10.175.103.112]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggemi762-chm.china.huawei.com (10.1.198.148)
 X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -54,68 +52,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: uclinux-h8-devel@lists.sourceforge.jp, linux-s390@vger.kernel.org,
- Kefeng Wang <wangkefeng.wang@huawei.com>, linux-sh@vger.kernel.org,
- x86@kernel.org, linux-csky@vger.kernel.org, linux-mm@kvack.org,
- linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org,
- linux-riscv@lists.infradead.org, linux-snps-arc@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Zou Wei <zou_wei@huawei.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add setup_initial_init_mm() helper to setup kernel text,
-data and brk.
+Use for_each_child_of_node() macro instead of open coding it.
 
-Cc: linux-snps-arc@lists.infradead.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-csky@vger.kernel.org
-Cc: uclinux-h8-devel@lists.sourceforge.jp
-Cc: linux-m68k@lists.linux-m68k.org
-Cc: openrisc@lists.librecores.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-riscv@lists.infradead.org
-Cc: linux-sh@vger.kernel.org
-Cc: linux-s390@vger.kernel.org
-Cc: x86@kernel.org
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Zou Wei <zou_wei@huawei.com>
 ---
-v3: declaration in mm.h, implemention in init-mm.c
- include/linux/mm.h | 3 +++
- mm/init-mm.c       | 9 +++++++++
- 2 files changed, 12 insertions(+)
+ drivers/macintosh/macio_asic.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index c274f75efcf9..02aa057540b7 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -244,6 +244,9 @@ int __add_to_page_cache_locked(struct page *page, struct address_space *mapping,
+diff --git a/drivers/macintosh/macio_asic.c b/drivers/macintosh/macio_asic.c
+index 49af60b..f552c7c 100644
+--- a/drivers/macintosh/macio_asic.c
++++ b/drivers/macintosh/macio_asic.c
+@@ -474,7 +474,7 @@ static void macio_pci_add_devices(struct macio_chip *chip)
+ 	root_res = &rdev->resource[0];
  
- #define lru_to_page(head) (list_entry((head)->prev, struct page, lru))
- 
-+void setup_initial_init_mm(void *start_code, void *end_code,
-+			   void *end_data, void *brk);
-+
- /*
-  * Linux kernel virtual memory manager primitives.
-  * The idea being to have a "virtual" mm in the same way
-diff --git a/mm/init-mm.c b/mm/init-mm.c
-index 153162669f80..b4a6f38fb51d 100644
---- a/mm/init-mm.c
-+++ b/mm/init-mm.c
-@@ -40,3 +40,12 @@ struct mm_struct init_mm = {
- 	.cpu_bitmap	= CPU_BITS_NONE,
- 	INIT_MM_CONTEXT(init_mm)
- };
-+
-+void setup_initial_init_mm(void *start_code, void *end_code,
-+			   void *end_data, void *brk)
-+{
-+	init_mm.start_code = (unsigned long)start_code;
-+	init_mm.end_code = (unsigned long)end_code;
-+	init_mm.end_data = (unsigned long)end_data;
-+	init_mm.brk = (unsigned long)brk;
-+}
+ 	/* First scan 1st level */
+-	for (np = NULL; (np = of_get_next_child(pnode, np)) != NULL;) {
++	for_each_child_of_node(pnode, np) {
+ 		if (macio_skip_device(np))
+ 			continue;
+ 		of_node_get(np);
+@@ -491,7 +491,7 @@ static void macio_pci_add_devices(struct macio_chip *chip)
+ 	/* Add media bay devices if any */
+ 	if (mbdev) {
+ 		pnode = mbdev->ofdev.dev.of_node;
+-		for (np = NULL; (np = of_get_next_child(pnode, np)) != NULL;) {
++		for_each_child_of_node(pnode, np) {
+ 			if (macio_skip_device(np))
+ 				continue;
+ 			of_node_get(np);
+@@ -504,7 +504,7 @@ static void macio_pci_add_devices(struct macio_chip *chip)
+ 	/* Add serial ports if any */
+ 	if (sdev) {
+ 		pnode = sdev->ofdev.dev.of_node;
+-		for (np = NULL; (np = of_get_next_child(pnode, np)) != NULL;) {
++		for_each_child_of_node(pnode, np) {
+ 			if (macio_skip_device(np))
+ 				continue;
+ 			of_node_get(np);
 -- 
-2.26.2
+2.6.2
 
