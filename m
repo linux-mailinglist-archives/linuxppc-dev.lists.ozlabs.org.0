@@ -2,77 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0DB139DB5A
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Jun 2021 13:30:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7C7339DB71
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Jun 2021 13:35:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FzB4f3QGKz3brv
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Jun 2021 21:30:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FzBBG1Jppz30BC
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Jun 2021 21:35:18 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=l3tb4Ti3;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CajDGsbY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::32f;
- helo=mail-ot1-x32f.google.com; envelope-from=groeck7@gmail.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=l3tb4Ti3; dkim-atps=neutral
-Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com
- [IPv6:2607:f8b0:4864:20::32f])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=CajDGsbY; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FzB450yKTz2xfY
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Jun 2021 21:29:56 +1000 (AEST)
-Received: by mail-ot1-x32f.google.com with SMTP id
- h24-20020a9d64180000b029036edcf8f9a6so16360370otl.3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Jun 2021 04:29:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=ouJCJpb+cVjhmk8j2qfxiU2PiYqfLkfly1jYgo8fmy4=;
- b=l3tb4Ti3/ESiVNC9be61igb7NBBFLs9+KwCCmS9OlfdmYt9uey00TQd3qX11GWioZN
- 1+ht04CVQrf0UM6VxgqDaPTArSmodK3BYXWL0udJ10T612ebj1W+0ybZrwUKDjsQuhz9
- aWq1IA6ZVklOffOiHORlXUO69XDw1ADiZSo4idLvQ6h12ToQK4a3jHvnbUEDNlOV7+01
- LHmOyaDW05UPY+c5NgwRVD0iUH0Ay+szsy6qGJttnnxPj4TS8L4kte71gGZfk7PUgjGH
- YTpNlsQaMR01+gfrJZDGC4WLAe6ZtK5ULr1ZXOXZv/AUuicjXaRdIFWza8lUe7VY4EFm
- 7eVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
- :references:mime-version:content-disposition:in-reply-to;
- bh=ouJCJpb+cVjhmk8j2qfxiU2PiYqfLkfly1jYgo8fmy4=;
- b=NDQSkNdeAVywKnh/R7z1j4ejBIL+rpjbQGgeEyyWMlhY+62E7UOVA/37JQYpEw+YWW
- MxVgZr+HfUQM5x4u8rOWI799inMbW4S+ja/HnauVLgJeRUtqec8jKjWUh+Jhiflsx7L1
- vWzKcNCwRj9r6OeUW3vy71zEhV7IcoUKSk7huif/O8+zCOTHSeI/x7pFXZQFN5HxPv7D
- 0SFH2HK8RlLzYL6wBAIYLm5K8ZBUFbMOIwu9RMxrIDdTHr1kHYNyb/2Hz+1QwkkV8Aba
- LUxbGYcHWJfC8E/4SkGtCW9KbBIJh6GbGgh7VsWjCAMXJILN+mx7AjF7f/jbSI8OUH3e
- 9ydQ==
-X-Gm-Message-State: AOAM533DVJ2f53FZN8igon3cg2qFmYbs3i0I4ip6VUqeFaPL+oDFMX9j
- TzVWWDIV3z4zrPctps1NwAc=
-X-Google-Smtp-Source: ABdhPJwfGgFpT8BfA9ywyPV9GozhTIyRKAxRs5/zwSlum7MqzjvC9UecMC6ghRBNcLEBwvai1toqHQ==
-X-Received: by 2002:a9d:560a:: with SMTP id e10mr13685889oti.353.1623065392393; 
- Mon, 07 Jun 2021 04:29:52 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
- by smtp.gmail.com with ESMTPSA id l9sm2105274oou.43.2021.06.07.04.29.51
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 07 Jun 2021 04:29:51 -0700 (PDT)
-Date: Mon, 7 Jun 2021 04:29:50 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] watchdog: Remove MV64x60 watchdog driver
-Message-ID: <20210607112950.GB314533@roeck-us.net>
-References: <9c2952bcfaec3b1789909eaa36bbce2afbfab7ab.1616085654.git.christophe.leroy@csgroup.eu>
- <31d702e5-22d1-1766-76dd-e24860e5b1a4@roeck-us.net>
- <87im3hk3t2.fsf@mpe.ellerman.id.au>
- <e2a33fc1-f519-653d-9230-b06506b961c5@roeck-us.net>
- <87czsyfo01.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FzB9g6DhYz2xtx
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Jun 2021 21:34:47 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 157BXA5t080975; Mon, 7 Jun 2021 07:34:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : subject :
+ to : cc : references : in-reply-to : mime-version : message-id :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=kYXyPeapcKr/CAlb1TLJGLmpyMcC82ZANcHfhLFwA1s=;
+ b=CajDGsbY6xmsCX4ZqBYHNqfrhjItvi9cQVJxsQAPs8dwdcBbqANf1ivB3hLsEusHQ3Ik
+ bIEa4D8Zq/NMoVOKgHhB36E2fi1OGhD0oI3ND+4wusdK1YqKyngRUsGS+8sxZynTHLg4
+ wZDbwUaHX/q41qBxJ0sOHrTe1W8el7kcirpQjbvs/CXR0K2Y6QaEAI/VXclD3Jnm95Kk
+ 0MZaUGffPDj+gEMVDY7lz4x/H8Ohz1RpRLP7s/ztxXO7T6k9TM6DGSogj7kJ6eXvSOXQ
+ tRtzuGK0zGj5GSVVeVniDvTlbg3aZW5wkp2VKonhxJljbtdXfkRmP3qzjxX59eSKcNCI nQ== 
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 391jjr06d5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 07 Jun 2021 07:34:33 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 157BXBY3007633;
+ Mon, 7 Jun 2021 11:34:31 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma03fra.de.ibm.com with ESMTP id 3900w8rfr8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 07 Jun 2021 11:34:31 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 157BYTJD30015856
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 7 Jun 2021 11:34:29 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5B3B55204F;
+ Mon,  7 Jun 2021 11:34:29 +0000 (GMT)
+Received: from localhost (unknown [9.85.115.25])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id AA71A5204E;
+ Mon,  7 Jun 2021 11:34:28 +0000 (GMT)
+Date: Mon, 07 Jun 2021 17:04:27 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH] powerpc/kprobes: Pass ppc_inst as a pointer to
+ emulate_step() on ppc32
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Michael Ellerman
+ <mpe@ellerman.id.au>
+References: <20210520072909.2901326-1-naveen.n.rao@linux.vnet.ibm.com>
+In-Reply-To: <20210520072909.2901326-1-naveen.n.rao@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87czsyfo01.fsf@mpe.ellerman.id.au>
+User-Agent: astroid/v0.15-23-gcdc62b30 (https://github.com/astroidmail/astroid)
+Message-Id: <1623065577.8oijg4kgxv.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: H9mrY4Fqdj9_DBcTLgbCV75lWVQCdsep
+X-Proofpoint-GUID: H9mrY4Fqdj9_DBcTLgbCV75lWVQCdsep
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-06-07_10:2021-06-04,
+ 2021-06-07 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 mlxscore=0
+ priorityscore=1501 lowpriorityscore=0 suspectscore=0 phishscore=0
+ mlxlogscore=781 bulkscore=0 adultscore=0 impostorscore=0 clxscore=1015
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2106070088
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,51 +99,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-watchdog@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Wim Van Sebroeck <wim@linux-watchdog.org>,
- linuxppc-dev@lists.ozlabs.org,
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 07, 2021 at 11:43:26AM +1000, Michael Ellerman wrote:
-> Guenter Roeck <linux@roeck-us.net> writes:
-> > On 5/17/21 4:17 AM, Michael Ellerman wrote:
-> >> Guenter Roeck <linux@roeck-us.net> writes:
-> >>> On 3/18/21 10:25 AM, Christophe Leroy wrote:
-> >>>> Commit 92c8c16f3457 ("powerpc/embedded6xx: Remove C2K board support")
-> >>>> removed the last selector of CONFIG_MV64X60.
-> >>>>
-> >>>> Therefore CONFIG_MV64X60_WDT cannot be selected anymore and
-> >>>> can be removed.
-> >>>>
-> >>>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> >>>
-> >>> Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-> >>>
-> >>>> ---
-> >>>>   drivers/watchdog/Kconfig       |   4 -
-> >>>>   drivers/watchdog/Makefile      |   1 -
-> >>>>   drivers/watchdog/mv64x60_wdt.c | 324 ---------------------------------
-> >>>>   include/linux/mv643xx.h        |   8 -
-> >>>>   4 files changed, 337 deletions(-)
-> >>>>   delete mode 100644 drivers/watchdog/mv64x60_wdt.c
-> >> 
-> >> I assumed this would go via the watchdog tree, but seems like I
-> >> misinterpreted.
-> >> 
-> >
-> > Wim didn't send a pull request this time around.
-> >
-> > Guenter
-> >
-> >> Should I take this via the powerpc tree for v5.14 ?
-> 
-> I still don't see this in the watchdog tree, should I take it?
-> 
-It is in my personal watchdog-next tree, but afaics Wim hasn't picked any
-of it up yet. Wim ?
+Naveen N. Rao wrote:
+> Trying to use a kprobe on ppc32 results in the below splat:
+>     BUG: Unable to handle kernel data access on read at 0x7c0802a6
+>     Faulting instruction address: 0xc002e9f0
+>     Oops: Kernel access of bad area, sig: 11 [#1]
+>     BE PAGE_SIZE=3D4K PowerPC 44x Platform
+>     Modules linked in:
+>     CPU: 0 PID: 89 Comm: sh Not tainted 5.13.0-rc1-01824-g3a81c0495fdb #7
+>     NIP:  c002e9f0 LR: c0011858 CTR: 00008a47
+>     REGS: c292fd50 TRAP: 0300   Not tainted  (5.13.0-rc1-01824-g3a81c0495=
+fdb)
+>     MSR:  00009000 <EE,ME>  CR: 24002002  XER: 20000000
+>     DEAR: 7c0802a6 ESR: 00000000
+>     <snip>
+>     NIP [c002e9f0] emulate_step+0x28/0x324
+>     LR [c0011858] optinsn_slot+0x128/0x10000
+>     Call Trace:
+>      opt_pre_handler+0x7c/0xb4 (unreliable)
+>      optinsn_slot+0x128/0x10000
+>      ret_from_syscall+0x0/0x28
+>=20
+> The offending instruction is:
+>     81 24 00 00     lwz     r9,0(r4)
+>=20
+> Here, we are trying to load the second argument to emulate_step():
+> struct ppc_inst, which is the instruction to be emulated. On ppc64,
+> structures are passed in registers when passed by value. However, per
+> the ppc32 ABI, structures are always passed to functions as pointers.
+> This isn't being adhered to when setting up the call to emulate_step()
+> in the optprobe trampoline. Fix the same.
+>=20
+> Fixes: eacf4c0202654a ("powerpc: Enable OPTPROBES on PPC32")
+> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+> ---
+>  arch/powerpc/kernel/optprobes.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+
+Christophe,
+Can you confirm if this patch works for you? It would be good if this=20
+can go in v5.13.
+
 
 Thanks,
-Guenter
+Naveen
+
