@@ -1,53 +1,39 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B75339D91A
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Jun 2021 11:53:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F3BD39D986
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Jun 2021 12:21:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fz7wH5ywGz3bsw
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Jun 2021 19:53:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fz8Yc3kJCz3btG
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Jun 2021 20:21:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.132;
+ helo=out30-132.freemail.mail.aliyun.com;
+ envelope-from=jiapeng.chong@linux.alibaba.com; receiver=<UNKNOWN>)
+Received: from out30-132.freemail.mail.aliyun.com
+ (out30-132.freemail.mail.aliyun.com [115.124.30.132])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fz7vz2g7jz2y0L
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Jun 2021 19:52:43 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4Fz7vr17S4zB9k7;
- Mon,  7 Jun 2021 11:52:40 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 4UvNQhhKzusu; Mon,  7 Jun 2021 11:52:40 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4Fz7vr0FtYzB9jy;
- Mon,  7 Jun 2021 11:52:40 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C20038B78F;
- Mon,  7 Jun 2021 11:52:39 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id aT1VFKAxzZko; Mon,  7 Jun 2021 11:52:39 +0200 (CEST)
-Received: from po15610vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
- [172.25.230.103])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A86288B78D;
- Mon,  7 Jun 2021 11:52:38 +0200 (CEST)
-Received: by po15610vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 45F2664C67; Mon,  7 Jun 2021 09:52:38 +0000 (UTC)
-Message-Id: <d2d520231f8082f9c1f7a896af8db1d09565ac84.1623059495.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v3] powerpc: Fixup for v3 "powerpc/nohash: Refactor update of
- BDI2000 pointers in switch_mmu_context()" in next-test
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon,  7 Jun 2021 09:52:38 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fz8YB5x14z2xff
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Jun 2021 20:21:32 +1000 (AEST)
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R171e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04400;
+ MF=jiapeng.chong@linux.alibaba.com; NM=1; PH=DS; RN=6; SR=0;
+ TI=SMTPD_---0Ubb.XAl_1623061255; 
+Received: from
+ j63c13417.sqa.eu95.tbsite.net(mailfrom:jiapeng.chong@linux.alibaba.com
+ fp:SMTPD_---0Ubb.XAl_1623061255) by smtp.aliyun-inc.com(127.0.0.1);
+ Mon, 07 Jun 2021 18:21:14 +0800
+From: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH] powerpc: Fix duplicate included linux/sched/clock.h
+Date: Mon,  7 Jun 2021 18:20:52 +0800
+Message-Id: <1623061252-29404-1-git-send-email-jiapeng.chong@linux.alibaba.com>
+X-Mailer: git-send-email 1.8.3.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,36 +45,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>, paulus@samba.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-As mentionned in history, v3 doesn't apply to book3s/32 so the hunk
-on head_book3s_32.S has to be dropped from the commit mentionned
-in the title.
+Clean up the following includecheck warning:
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
-Michael, tell me if you prefer a v4 of the series.
----
- arch/powerpc/kernel/head_book3s_32.S | 6 ++++++
- 1 file changed, 6 insertions(+)
+./arch/powerpc/kernel/time.c: linux/sched/clock.h is included more than
+once.
 
-diff --git a/arch/powerpc/kernel/head_book3s_32.S b/arch/powerpc/kernel/head_book3s_32.S
-index 32c27dac9b80..326262030279 100644
---- a/arch/powerpc/kernel/head_book3s_32.S
-+++ b/arch/powerpc/kernel/head_book3s_32.S
-@@ -1282,3 +1282,9 @@ EXPORT_SYMBOL(empty_zero_page)
- 	.globl	swapper_pg_dir
- swapper_pg_dir:
- 	.space	PGD_TABLE_SIZE
-+
-+/* Room for two PTE pointers, usually the kernel and current user pointers
-+ * to their respective root page table.
-+ */
-+abatron_pteptrs:
-+	.space	8
+No functional change.
+
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+---
+ arch/powerpc/kernel/time.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
+index b67d93a..2c87620 100644
+--- a/arch/powerpc/kernel/time.c
++++ b/arch/powerpc/kernel/time.c
+@@ -53,7 +53,6 @@
+ #include <linux/of_clk.h>
+ #include <linux/suspend.h>
+ #include <linux/sched/cputime.h>
+-#include <linux/sched/clock.h>
+ #include <linux/processor.h>
+ #include <asm/trace.h>
+ 
 -- 
-2.25.0
+1.8.3.1
 
