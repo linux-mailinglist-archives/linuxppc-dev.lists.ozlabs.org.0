@@ -2,72 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6F7339E7E6
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Jun 2021 21:56:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DBB139E7F0
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Jun 2021 21:56:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FzPJ126Thz309y
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 05:56:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FzPJV6DQxz2yyj
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 05:56:26 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TCQMN63d;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TCQMN63d;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=d2jqychI;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cA3En2pm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
+ smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
  helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=TCQMN63d; 
+ header.s=mimecast20190719 header.b=d2jqychI; 
  dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=TCQMN63d; 
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=cA3En2pm; 
  dkim-atps=neutral
 Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+ (us-smtp-delivery-124.mimecast.com [170.10.133.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FzPHS1pRBz2xvZ
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Jun 2021 05:55:29 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FzPHg3Fttz306k
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Jun 2021 05:55:43 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1623095723;
+ s=mimecast20190719; t=1623095734;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hNXx3Ths1oTEOA9hNeyiO8jC4L6QX9DqzVkXydSHm+0=;
- b=TCQMN63dcNUnXVq2XZztXyCBUrobhHlPaWRG+K6pGLcS0lDfYaPrfs7EPZE7HaTUz6llkC
- Fd3m9G4n46YyqZZYLabwjuNei2CzsTX/YMTLhU8uLgns86j7BZP3jnQdX+AhR/mQmrCkev
- IJwk/jTUqBClEDPUbimbbmjl9g5cspA=
+ bh=Fc+iKS9+ANFB6y1dZFMDW1G21rBUMRkywsva5h/mmrk=;
+ b=d2jqychICLXwfmhIlNdPGjQttvwL1EG8jcDWA1D9NBklbXzDup1kfiBXKCqr2THcEGTYcq
+ CNS68F/ML6KzkbzdxLb/7cI2TrWD+bKukL6OuFDKuYOwsouM3tjh00EhiwbuJPnWrgShOX
+ KAUJxWXNZ4rmi8M+d0WjU2qVVXKuzDY=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1623095723;
+ s=mimecast20190719; t=1623095735;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hNXx3Ths1oTEOA9hNeyiO8jC4L6QX9DqzVkXydSHm+0=;
- b=TCQMN63dcNUnXVq2XZztXyCBUrobhHlPaWRG+K6pGLcS0lDfYaPrfs7EPZE7HaTUz6llkC
- Fd3m9G4n46YyqZZYLabwjuNei2CzsTX/YMTLhU8uLgns86j7BZP3jnQdX+AhR/mQmrCkev
- IJwk/jTUqBClEDPUbimbbmjl9g5cspA=
+ bh=Fc+iKS9+ANFB6y1dZFMDW1G21rBUMRkywsva5h/mmrk=;
+ b=cA3En2pm81mSEnCSLZErzdagFoXulC9zUpozCu2S7UD6DLYXeb9j4B2OADznao33tQt8oA
+ bPjPYYl/6NPBXZG5ULRTjocuncgdao7+49jjOnva3A0O092IeFXQqGNvuuAP+dDgZUCCLG
+ r0NCdR25yIVZKpwbZRDFLdS2UMwWzMc=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-37-wlrRSfp-Po6nz9uuFUjkhA-1; Mon, 07 Jun 2021 15:55:20 -0400
-X-MC-Unique: wlrRSfp-Po6nz9uuFUjkhA-1
+ us-mta-270-lI1-N8yyPdK7mZjPkzUA4A-1; Mon, 07 Jun 2021 15:55:30 -0400
+X-MC-Unique: lI1-N8yyPdK7mZjPkzUA4A-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
  [10.5.11.22])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 215718015F5;
- Mon,  7 Jun 2021 19:55:14 +0000 (UTC)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B4B8810074A6;
+ Mon,  7 Jun 2021 19:55:26 +0000 (UTC)
 Received: from t480s.redhat.com (ovpn-112-9.ams2.redhat.com [10.36.112.9])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 13D0510013C1;
- Mon,  7 Jun 2021 19:55:02 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 6C7381002D71;
+ Mon,  7 Jun 2021 19:55:14 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v1 04/12] mm/memory_hotplug: remove nid parameter from
- arch_remove_memory()
-Date: Mon,  7 Jun 2021 21:54:22 +0200
-Message-Id: <20210607195430.48228-5-david@redhat.com>
+Subject: [PATCH v1 05/12] mm/memory_hotplug: remove nid parameter from
+ remove_memory() and friends
+Date: Mon,  7 Jun 2021 21:54:23 +0200
+Message-Id: <20210607195430.48228-6-david@redhat.com>
 In-Reply-To: <20210607195430.48228-1-david@redhat.com>
 References: <20210607195430.48228-1-david@redhat.com>
 MIME-Version: 1.0
@@ -84,257 +84,280 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michel Lespinasse <michel@lespinasse.org>,
- Kefeng Wang <wangkefeng.wang@huawei.com>, Rich Felker <dalias@libc.org>,
- linux-ia64@vger.kernel.org, Wei Yang <richard.weiyang@linux.alibaba.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Jason Wang <jasowang@redhat.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+Cc: nvdimm@lists.linux.dev, Wei Yang <richard.weiyang@linux.alibaba.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
  virtualization@lists.linux-foundation.org, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- linux-s390@vger.kernel.org, Laurent Dufour <ldufour@linux.ibm.com>,
- Jia He <justin.he@arm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>,
- Christian Borntraeger <borntraeger@de.ibm.com>, linux-sh@vger.kernel.org,
- David Hildenbrand <david@redhat.com>, Ard Biesheuvel <ardb@kernel.org>,
- linux-acpi@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
- linux-arm-kernel@lists.infradead.org, Len Brown <lenb@kernel.org>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>,
- Pavel Tatashin <pasha.tatashin@soleen.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Paul Mackerras <paulus@samba.org>, Laurent Dufour <ldufour@linux.ibm.com>,
+ Dave Jiang <dave.jiang@intel.com>, David Hildenbrand <david@redhat.com>,
+ linux-acpi@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Len Brown <lenb@kernel.org>, Nathan Lynch <nathanl@linux.ibm.com>,
+ Pavel Tatashin <pasha.tatashin@soleen.com>,
  Anshuman Khandual <anshuman.khandual@arm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
- Borislav Petkov <bp@alien8.de>, Sergei Trofimovich <slyfox@gentoo.org>,
- Andy Lutomirski <luto@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
- Michal Hocko <mhocko@kernel.org>, Vitaly Kuznetsov <vkuznets@redhat.com>,
- Vlastimil Babka <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>,
- Christophe Leroy <christophe.leroy@c-s.fr>,
- Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Baoquan He <bhe@redhat.com>,
- Pierre Morel <pmorel@linux.ibm.com>, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- Hui Zhu <teawater@gmail.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Joe Perches <joe@perches.com>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, Marek Kedzierski <mkedzier@redhat.com>,
- Mike Rapoport <rppt@kernel.org>
+ Dan Williams <dan.j.williams@intel.com>, Michal Hocko <mhocko@kernel.org>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Oscar Salvador <osalvador@suse.de>,
+ Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+ Scott Cheloha <cheloha@linux.ibm.com>, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ Hui Zhu <teawater@gmail.com>, Vishal Verma <vishal.l.verma@intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Marek Kedzierski <mkedzier@redhat.com>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The parameter is unused, let's remove it.
+There is only a single user remaining. We can simply try to offline all
+online nodes - which is fast, because we usually span pages and can skip
+such nodes right away.
 
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
 Cc: Michael Ellerman <mpe@ellerman.id.au>
 Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
 Cc: Paul Mackerras <paulus@samba.org>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@de.ibm.com>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: x86@kernel.org
-Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Len Brown <lenb@kernel.org>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Vishal Verma <vishal.l.verma@intel.com>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Jason Wang <jasowang@redhat.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
-Cc: Baoquan He <bhe@redhat.com>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>
 Cc: Laurent Dufour <ldufour@linux.ibm.com>
-Cc: Sergei Trofimovich <slyfox@gentoo.org>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Michel Lespinasse <michel@lespinasse.org>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>
 Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Cc: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-Cc: Joe Perches <joe@perches.com>
-Cc: Pierre Morel <pmorel@linux.ibm.com>
-Cc: Jia He <justin.he@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-ia64@vger.kernel.org
+Cc: Scott Cheloha <cheloha@linux.ibm.com>
+Cc: Anton Blanchard <anton@ozlabs.org>
 Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-s390@vger.kernel.org
-Cc: linux-sh@vger.kernel.org
+Cc: linux-acpi@vger.kernel.org
+Cc: nvdimm@lists.linux.dev
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- arch/arm64/mm/mmu.c            | 3 +--
- arch/ia64/mm/init.c            | 3 +--
- arch/powerpc/mm/mem.c          | 3 +--
- arch/s390/mm/init.c            | 3 +--
- arch/sh/mm/init.c              | 3 +--
- arch/x86/mm/init_32.c          | 3 +--
- arch/x86/mm/init_64.c          | 3 +--
- include/linux/memory_hotplug.h | 3 +--
- mm/memory_hotplug.c            | 4 ++--
- mm/memremap.c                  | 5 +----
- 10 files changed, 11 insertions(+), 22 deletions(-)
+ .../platforms/pseries/hotplug-memory.c        |  9 ++++-----
+ drivers/acpi/acpi_memhotplug.c                |  7 +------
+ drivers/dax/kmem.c                            |  3 +--
+ drivers/virtio/virtio_mem.c                   |  4 ++--
+ include/linux/memory_hotplug.h                | 10 +++++-----
+ mm/memory_hotplug.c                           | 20 +++++++++----------
+ 6 files changed, 23 insertions(+), 30 deletions(-)
 
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index 89b66ef43a0f..c7821013f551 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -1502,8 +1502,7 @@ int arch_add_memory(int nid, u64 start, u64 size,
- 	return ret;
- }
- 
--void arch_remove_memory(int nid, u64 start, u64 size,
--			struct vmem_altmap *altmap)
-+void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
+diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+index 8377f1f7c78e..4a9232ddbefe 100644
+--- a/arch/powerpc/platforms/pseries/hotplug-memory.c
++++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+@@ -286,7 +286,7 @@ static int pseries_remove_memblock(unsigned long base, unsigned long memblock_si
  {
- 	unsigned long start_pfn = start >> PAGE_SHIFT;
- 	unsigned long nr_pages = size >> PAGE_SHIFT;
-diff --git a/arch/ia64/mm/init.c b/arch/ia64/mm/init.c
-index 064a967a7b6e..5c6da8d83c1a 100644
---- a/arch/ia64/mm/init.c
-+++ b/arch/ia64/mm/init.c
-@@ -484,8 +484,7 @@ int arch_add_memory(int nid, u64 start, u64 size,
- 	return ret;
- }
+ 	unsigned long block_sz, start_pfn;
+ 	int sections_per_block;
+-	int i, nid;
++	int i;
  
--void arch_remove_memory(int nid, u64 start, u64 size,
--			struct vmem_altmap *altmap)
-+void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
- {
- 	unsigned long start_pfn = start >> PAGE_SHIFT;
- 	unsigned long nr_pages = size >> PAGE_SHIFT;
-diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-index 043bbeaf407c..fc5c36189c26 100644
---- a/arch/powerpc/mm/mem.c
-+++ b/arch/powerpc/mm/mem.c
-@@ -115,8 +115,7 @@ int __ref arch_add_memory(int nid, u64 start, u64 size,
- 	return rc;
- }
+ 	start_pfn = base >> PAGE_SHIFT;
  
--void __ref arch_remove_memory(int nid, u64 start, u64 size,
--			      struct vmem_altmap *altmap)
-+void __ref arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
- {
- 	unsigned long start_pfn = start >> PAGE_SHIFT;
- 	unsigned long nr_pages = size >> PAGE_SHIFT;
-diff --git a/arch/s390/mm/init.c b/arch/s390/mm/init.c
-index 8ac710de1ab1..d85bd7f5d8dc 100644
---- a/arch/s390/mm/init.c
-+++ b/arch/s390/mm/init.c
-@@ -306,8 +306,7 @@ int arch_add_memory(int nid, u64 start, u64 size,
- 	return rc;
- }
+@@ -297,10 +297,9 @@ static int pseries_remove_memblock(unsigned long base, unsigned long memblock_si
  
--void arch_remove_memory(int nid, u64 start, u64 size,
--			struct vmem_altmap *altmap)
-+void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
- {
- 	unsigned long start_pfn = start >> PAGE_SHIFT;
- 	unsigned long nr_pages = size >> PAGE_SHIFT;
-diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
-index 168d7d4dd735..d74daf68e59e 100644
---- a/arch/sh/mm/init.c
-+++ b/arch/sh/mm/init.c
-@@ -414,8 +414,7 @@ int arch_add_memory(int nid, u64 start, u64 size,
- 	return ret;
- }
+ 	block_sz = pseries_memory_block_size();
+ 	sections_per_block = block_sz / MIN_MEMORY_BLOCK_SIZE;
+-	nid = memory_add_physaddr_to_nid(base);
  
--void arch_remove_memory(int nid, u64 start, u64 size,
--			struct vmem_altmap *altmap)
-+void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
- {
- 	unsigned long start_pfn = PFN_DOWN(start);
- 	unsigned long nr_pages = size >> PAGE_SHIFT;
-diff --git a/arch/x86/mm/init_32.c b/arch/x86/mm/init_32.c
-index 21ffb03f6c72..5e82aafb5b49 100644
---- a/arch/x86/mm/init_32.c
-+++ b/arch/x86/mm/init_32.c
-@@ -801,8 +801,7 @@ int arch_add_memory(int nid, u64 start, u64 size,
- 	return __add_pages(nid, start_pfn, nr_pages, params);
- }
- 
--void arch_remove_memory(int nid, u64 start, u64 size,
--			struct vmem_altmap *altmap)
-+void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
- {
- 	unsigned long start_pfn = start >> PAGE_SHIFT;
- 	unsigned long nr_pages = size >> PAGE_SHIFT;
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index e527d829e1ed..d0296c081607 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -1254,8 +1254,7 @@ kernel_physical_mapping_remove(unsigned long start, unsigned long end)
- 	remove_pagetable(start, end, true, NULL);
- }
- 
--void __ref arch_remove_memory(int nid, u64 start, u64 size,
--			      struct vmem_altmap *altmap)
-+void __ref arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
- {
- 	unsigned long start_pfn = start >> PAGE_SHIFT;
- 	unsigned long nr_pages = size >> PAGE_SHIFT;
-diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-index 571734fd95bd..1d8d09c029c9 100644
---- a/include/linux/memory_hotplug.h
-+++ b/include/linux/memory_hotplug.h
-@@ -142,8 +142,7 @@ static inline bool movable_node_is_enabled(void)
- 	return movable_node_enabled;
- }
- 
--extern void arch_remove_memory(int nid, u64 start, u64 size,
--			       struct vmem_altmap *altmap);
-+extern void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap);
- extern void __remove_pages(unsigned long start_pfn, unsigned long nr_pages,
- 			   struct vmem_altmap *altmap);
- 
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 7206787ac5a9..f9be66bbd847 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1431,7 +1431,7 @@ int __ref add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
- 	/* create memory block devices after memory was added */
- 	ret = create_memory_block_devices(start, size, mhp_altmap.alloc);
- 	if (ret) {
--		arch_remove_memory(nid, start, size, NULL);
-+		arch_remove_memory(start, size, NULL);
- 		goto error;
+ 	for (i = 0; i < sections_per_block; i++) {
+-		__remove_memory(nid, base, MIN_MEMORY_BLOCK_SIZE);
++		__remove_memory(base, MIN_MEMORY_BLOCK_SIZE);
+ 		base += MIN_MEMORY_BLOCK_SIZE;
  	}
  
-@@ -2211,7 +2211,7 @@ static int __ref try_remove_memory(int nid, u64 start, u64 size)
+@@ -386,7 +385,7 @@ static int dlpar_remove_lmb(struct drmem_lmb *lmb)
  
- 	mem_hotplug_begin();
+ 	block_sz = pseries_memory_block_size();
  
--	arch_remove_memory(nid, start, size, altmap);
-+	arch_remove_memory(start, size, altmap);
+-	__remove_memory(mem_block->nid, lmb->base_addr, block_sz);
++	__remove_memory(lmb->base_addr, block_sz);
+ 	put_device(&mem_block->dev);
  
- 	if (IS_ENABLED(CONFIG_ARCH_KEEP_MEMBLOCK)) {
- 		memblock_free(start, size);
-diff --git a/mm/memremap.c b/mm/memremap.c
-index 15a074ffb8d7..ed593bf87109 100644
---- a/mm/memremap.c
-+++ b/mm/memremap.c
-@@ -140,14 +140,11 @@ static void pageunmap_range(struct dev_pagemap *pgmap, int range_id)
- {
- 	struct range *range = &pgmap->ranges[range_id];
- 	struct page *first_page;
--	int nid;
+ 	/* Update memory regions for memory remove */
+@@ -638,7 +637,7 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
  
- 	/* make sure to access a memmap that was actually initialized */
- 	first_page = pfn_to_page(pfn_first(pgmap, range_id));
- 
- 	/* pages are dead and unused, undo the arch mapping */
--	nid = page_to_nid(first_page);
--
- 	mem_hotplug_begin();
- 	remove_pfn_range_from_zone(page_zone(first_page), PHYS_PFN(range->start),
- 				   PHYS_PFN(range_len(range)));
-@@ -155,7 +152,7 @@ static void pageunmap_range(struct dev_pagemap *pgmap, int range_id)
- 		__remove_pages(PHYS_PFN(range->start),
- 			       PHYS_PFN(range_len(range)), NULL);
+ 	rc = dlpar_online_lmb(lmb);
+ 	if (rc) {
+-		__remove_memory(nid, lmb->base_addr, block_sz);
++		__remove_memory(lmb->base_addr, block_sz);
+ 		invalidate_lmb_associativity_index(lmb);
  	} else {
--		arch_remove_memory(nid, range->start, range_len(range),
-+		arch_remove_memory(range->start, range_len(range),
- 				pgmap_altmap(pgmap));
- 		kasan_remove_zero_shadow(__va(range->start), range_len(range));
+ 		lmb->flags |= DRCONF_MEM_ASSIGNED;
+diff --git a/drivers/acpi/acpi_memhotplug.c b/drivers/acpi/acpi_memhotplug.c
+index 8cc195c4c861..1d01d9414c40 100644
+--- a/drivers/acpi/acpi_memhotplug.c
++++ b/drivers/acpi/acpi_memhotplug.c
+@@ -239,19 +239,14 @@ static int acpi_memory_enable_device(struct acpi_memory_device *mem_device)
+ 
+ static void acpi_memory_remove_memory(struct acpi_memory_device *mem_device)
+ {
+-	acpi_handle handle = mem_device->device->handle;
+ 	struct acpi_memory_info *info, *n;
+-	int nid = acpi_get_node(handle);
+ 
+ 	list_for_each_entry_safe(info, n, &mem_device->res_list, list) {
+ 		if (!info->enabled)
+ 			continue;
+ 
+-		if (nid == NUMA_NO_NODE)
+-			nid = memory_add_physaddr_to_nid(info->start_addr);
+-
+ 		acpi_unbind_memory_blocks(info);
+-		__remove_memory(nid, info->start_addr, info->length);
++		__remove_memory(info->start_addr, info->length);
+ 		list_del(&info->list);
+ 		kfree(info);
+ 	}
+diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
+index ac231cc36359..99e0f60c4c26 100644
+--- a/drivers/dax/kmem.c
++++ b/drivers/dax/kmem.c
+@@ -156,8 +156,7 @@ static void dev_dax_kmem_remove(struct dev_dax *dev_dax)
+ 		if (rc)
+ 			continue;
+ 
+-		rc = remove_memory(dev_dax->target_node, range.start,
+-				range_len(&range));
++		rc = remove_memory(range.start, range_len(&range));
+ 		if (rc == 0) {
+ 			release_resource(data->res[i]);
+ 			kfree(data->res[i]);
+diff --git a/drivers/virtio/virtio_mem.c b/drivers/virtio/virtio_mem.c
+index 10ec60d81e84..e327fb878143 100644
+--- a/drivers/virtio/virtio_mem.c
++++ b/drivers/virtio/virtio_mem.c
+@@ -673,7 +673,7 @@ static int virtio_mem_remove_memory(struct virtio_mem *vm, uint64_t addr,
+ 
+ 	dev_dbg(&vm->vdev->dev, "removing memory: 0x%llx - 0x%llx\n", addr,
+ 		addr + size - 1);
+-	rc = remove_memory(vm->nid, addr, size);
++	rc = remove_memory(addr, size);
+ 	if (!rc) {
+ 		atomic64_sub(size, &vm->offline_size);
+ 		/*
+@@ -728,7 +728,7 @@ static int virtio_mem_offline_and_remove_memory(struct virtio_mem *vm,
+ 		"offlining and removing memory: 0x%llx - 0x%llx\n", addr,
+ 		addr + size - 1);
+ 
+-	rc = offline_and_remove_memory(vm->nid, addr, size);
++	rc = offline_and_remove_memory(addr, size);
+ 	if (!rc) {
+ 		atomic64_sub(size, &vm->offline_size);
+ 		/*
+diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
+index 1d8d09c029c9..84f05435e2ae 100644
+--- a/include/linux/memory_hotplug.h
++++ b/include/linux/memory_hotplug.h
+@@ -319,9 +319,9 @@ static inline void pgdat_resize_init(struct pglist_data *pgdat) {}
+ 
+ extern void try_offline_node(int nid);
+ extern int offline_pages(unsigned long start_pfn, unsigned long nr_pages);
+-extern int remove_memory(int nid, u64 start, u64 size);
+-extern void __remove_memory(int nid, u64 start, u64 size);
+-extern int offline_and_remove_memory(int nid, u64 start, u64 size);
++extern int remove_memory(u64 start, u64 size);
++extern void __remove_memory(u64 start, u64 size);
++extern int offline_and_remove_memory(u64 start, u64 size);
+ 
+ #else
+ static inline void try_offline_node(int nid) {}
+@@ -331,12 +331,12 @@ static inline int offline_pages(unsigned long start_pfn, unsigned long nr_pages)
+ 	return -EINVAL;
+ }
+ 
+-static inline int remove_memory(int nid, u64 start, u64 size)
++static inline int remove_memory(u64 start, u64 size)
+ {
+ 	return -EBUSY;
+ }
+ 
+-static inline void __remove_memory(int nid, u64 start, u64 size) {}
++static inline void __remove_memory(u64 start, u64 size) {}
+ #endif /* CONFIG_MEMORY_HOTREMOVE */
+ 
+ extern void set_zone_contiguous(struct zone *zone);
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index f9be66bbd847..9cae42636f3e 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -2157,9 +2157,9 @@ void try_offline_node(int nid)
+ }
+ EXPORT_SYMBOL(try_offline_node);
+ 
+-static int __ref try_remove_memory(int nid, u64 start, u64 size)
++static int __ref try_remove_memory(u64 start, u64 size)
+ {
+-	int rc = 0;
++	int rc = 0, nid;
+ 	struct vmem_altmap mhp_altmap = {};
+ 	struct vmem_altmap *altmap = NULL;
+ 	unsigned long nr_vmemmap_pages;
+@@ -2220,7 +2220,8 @@ static int __ref try_remove_memory(int nid, u64 start, u64 size)
+ 
+ 	release_mem_region_adjustable(start, size);
+ 
+-	try_offline_node(nid);
++	for_each_online_node(nid)
++		try_offline_node(nid);
+ 
+ 	mem_hotplug_done();
+ 	return 0;
+@@ -2228,7 +2229,6 @@ static int __ref try_remove_memory(int nid, u64 start, u64 size)
+ 
+ /**
+  * remove_memory
+- * @nid: the node ID
+  * @start: physical address of the region to remove
+  * @size: size of the region to remove
+  *
+@@ -2236,14 +2236,14 @@ static int __ref try_remove_memory(int nid, u64 start, u64 size)
+  * and online/offline operations before this call, as required by
+  * try_offline_node().
+  */
+-void __remove_memory(int nid, u64 start, u64 size)
++void __remove_memory(u64 start, u64 size)
+ {
+ 
+ 	/*
+ 	 * trigger BUG() if some memory is not offlined prior to calling this
+ 	 * function
+ 	 */
+-	if (try_remove_memory(nid, start, size))
++	if (try_remove_memory(start, size))
+ 		BUG();
+ }
+ 
+@@ -2251,12 +2251,12 @@ void __remove_memory(int nid, u64 start, u64 size)
+  * Remove memory if every memory block is offline, otherwise return -EBUSY is
+  * some memory is not offline
+  */
+-int remove_memory(int nid, u64 start, u64 size)
++int remove_memory(u64 start, u64 size)
+ {
+ 	int rc;
+ 
+ 	lock_device_hotplug();
+-	rc  = try_remove_memory(nid, start, size);
++	rc = try_remove_memory(start, size);
+ 	unlock_device_hotplug();
+ 
+ 	return rc;
+@@ -2316,7 +2316,7 @@ static int try_reonline_memory_block(struct memory_block *mem, void *arg)
+  * unplugged all memory (so it's no longer in use) and want to offline + remove
+  * that memory.
+  */
+-int offline_and_remove_memory(int nid, u64 start, u64 size)
++int offline_and_remove_memory(u64 start, u64 size)
+ {
+ 	const unsigned long mb_count = size / memory_block_size_bytes();
+ 	uint8_t *online_types, *tmp;
+@@ -2352,7 +2352,7 @@ int offline_and_remove_memory(int nid, u64 start, u64 size)
+ 	 * This cannot fail as it cannot get onlined in the meantime.
+ 	 */
+ 	if (!rc) {
+-		rc = try_remove_memory(nid, start, size);
++		rc = try_remove_memory(start, size);
+ 		if (rc)
+ 			pr_err("%s: Failed to remove memory: %d", __func__, rc);
  	}
 -- 
 2.31.1
