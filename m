@@ -2,49 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7288739EA76
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 01:53:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F207639EA77
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 01:53:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FzVYd6v3rz2yxk
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 09:53:09 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=O3jUTkfK;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FzVZ03B02z3bxd
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 09:53:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux-foundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=akpm@linux-foundation.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
- header.a=rsa-sha256 header.s=korg header.b=O3jUTkfK; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com;
+ envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN>)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FzVY92chCz2yhd
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Jun 2021 09:52:45 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 59258610E7;
- Mon,  7 Jun 2021 23:52:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
- s=korg; t=1623109962;
- bh=gZ7ag71htLxjG6QOcoLqIDfNOCltH8Ce826lm+nq7yM=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=O3jUTkfKWL4/blrQFYIsKvIZXWutsz+IbZFBx+OVxX9C2UQpizZpg4Mf4DQHbaXj8
- 8cqwH3XTcwDDzYwhWy9hqH54zSYylz7VJJe6W4x1eGUyFYf47lIimqT0I17baYB21n
- nyCuxTJPuapCk7QNLUVbTOyDs2dwXq0vw1HBGbGQ=
-Date: Mon, 7 Jun 2021 16:52:41 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v4 4/4] powerpc/64s: enable MMU_LAZY_TLB_SHOOTDOWN
-Message-Id: <20210607165241.4dcd4cf63f96437c5650d179@linux-foundation.org>
-In-Reply-To: <20210605014216.446867-5-npiggin@gmail.com>
-References: <20210605014216.446867-1-npiggin@gmail.com>
- <20210605014216.446867-5-npiggin@gmail.com>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FzVYG1mGKz2yjJ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Jun 2021 09:52:48 +1000 (AEST)
+IronPort-SDR: PdEKKWiom0gG1z2JuSfapHc8H9irV4lpQVGRhQg4C4jxmK/sOyDSHprYe8+BebRCoWF/1yWB64
+ eiwAVZwRQm/g==
+X-IronPort-AV: E=McAfee;i="6200,9189,10008"; a="290368378"
+X-IronPort-AV: E=Sophos;i="5.83,256,1616482800"; d="scan'208";a="290368378"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+ by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Jun 2021 16:52:44 -0700
+IronPort-SDR: +eswq4V239YUexroUSETX2OcgDXl5VgubeMsGBVUQ3UVECkD4mKgcQj5OoR5B13rK9iiRn7mcA
+ 8hlnWFuewtmA==
+X-IronPort-AV: E=Sophos;i="5.83,256,1616482800"; d="scan'208";a="634889789"
+Received: from dwillia2-desk3.jf.intel.com (HELO
+ dwillia2-desk3.amr.corp.intel.com) ([10.54.39.25])
+ by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Jun 2021 16:52:43 -0700
+Subject: [PATCH v2] libnvdimm/pmem: Fix blk_cleanup_disk() usage
+From: Dan Williams <dan.j.williams@intel.com>
+To: axboe@kernel.dk
+Date: Mon, 07 Jun 2021 16:52:43 -0700
+Message-ID: <162310994435.1571616.334551212901820961.stgit@dwillia2-desk3.amr.corp.intel.com>
+In-Reply-To: <162310861219.1571453.6561642225122047071.stgit@dwillia2-desk3.amr.corp.intel.com>
+References: <162310861219.1571453.6561642225122047071.stgit@dwillia2-desk3.amr.corp.intel.com>
+User-Agent: StGit/0.18-3-g996c
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -57,20 +53,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Andy Lutomirski <luto@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>, nvdimm@lists.linux.dev,
+ Ulf Hansson <ulf.hansson@linaro.org>, linux-block@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat,  5 Jun 2021 11:42:16 +1000 Nicholas Piggin <npiggin@gmail.com> wrote:
+The queue_to_disk() helper can not be used after del_gendisk()
+communicate @disk via the pgmap->owner.
 
-> On a 16-socket 192-core POWER8 system, a context switching benchmark
-> with as many software threads as CPUs (so each switch will go in and
-> out of idle), upstream can achieve a rate of about 1 million context
-> switches per second. After this patch it goes up to 118 million.
+Otherwise, queue_to_disk() returns NULL resulting in the splat below.
 
-Nice.  Do we have a feel for the benefit on any real-world workloads?
+ Kernel attempted to read user page (330) - exploit attempt? (uid: 0)
+ BUG: Kernel NULL pointer dereference on read at 0x00000330
+ Faulting instruction address: 0xc000000000906344
+ Oops: Kernel access of bad area, sig: 11 [#1]
+ [..]
+ NIP [c000000000906344] pmem_pagemap_cleanup+0x24/0x40
+ LR [c0000000004701d4] memunmap_pages+0x1b4/0x4b0
+ Call Trace:
+ [c000000022cbb9c0] [c0000000009063c8] pmem_pagemap_kill+0x28/0x40 (unreliable)
+ [c000000022cbb9e0] [c0000000004701d4] memunmap_pages+0x1b4/0x4b0
+ [c000000022cbba90] [c0000000008b28a0] devm_action_release+0x30/0x50
+ [c000000022cbbab0] [c0000000008b39c8] release_nodes+0x2f8/0x3e0
+ [c000000022cbbb60] [c0000000008ac440] device_release_driver_internal+0x190/0x2b0
+ [c000000022cbbba0] [c0000000008a8450] unbind_store+0x130/0x170
 
-Could any other architectures benefit from these changes?
+Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+Fixes: 87eb73b2ca7c ("nvdimm-pmem: convert to blk_alloc_disk/blk_cleanup_disk")
+Link: http://lore.kernel.org/r/DFB75BA8-603F-4A35-880B-C5B23EF8FA7D@linux.vnet.ibm.com
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+---
+Changes in v2 Improve the changelog.
+
+ drivers/nvdimm/pmem.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
+index 31f3c4bd6f72..fc6b78dd2d24 100644
+--- a/drivers/nvdimm/pmem.c
++++ b/drivers/nvdimm/pmem.c
+@@ -337,8 +337,9 @@ static void pmem_pagemap_cleanup(struct dev_pagemap *pgmap)
+ {
+ 	struct request_queue *q =
+ 		container_of(pgmap->ref, struct request_queue, q_usage_counter);
++	struct pmem_device *pmem = pgmap->owner;
+ 
+-	blk_cleanup_disk(queue_to_disk(q));
++	blk_cleanup_disk(pmem->disk);
+ }
+ 
+ static void pmem_release_queue(void *pgmap)
+@@ -427,6 +428,7 @@ static int pmem_attach_disk(struct device *dev,
+ 	q = disk->queue;
+ 
+ 	pmem->disk = disk;
++	pmem->pgmap.owner = pmem;
+ 	pmem->pfn_flags = PFN_DEV;
+ 	pmem->pgmap.ref = &q->q_usage_counter;
+ 	if (is_nd_pfn(dev)) {
+
