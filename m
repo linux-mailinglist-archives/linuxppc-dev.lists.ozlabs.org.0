@@ -1,48 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B33B039F486
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 13:03:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECEDB39F4B1
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 13:12:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FznR60sSJz3bvm
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 21:03:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FzndV3F7tz3bsH
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 21:12:30 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qaYxKhnt;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com;
- envelope-from=heying24@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FznQl2Ffpz2xYx
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Jun 2021 21:03:10 +1000 (AEST)
-Received: from dggeme756-chm.china.huawei.com (unknown [172.30.72.53])
- by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4FznL94nw5z6tlq;
- Tue,  8 Jun 2021 18:59:13 +0800 (CST)
-Received: from [10.67.110.136] (10.67.110.136) by
- dggeme756-chm.china.huawei.com (10.3.19.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2176.2; Tue, 8 Jun 2021 19:03:04 +0800
-Subject: Re: [PATCH] powerpc: Fix kernel-jump address for ppc64 wrapper boot
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, <mpe@ellerman.id.au>,
- <benh@kernel.crashing.org>, <paulus@samba.org>, <nathan@kernel.org>, Oliver
- O'Halloran <oohall@gmail.com>
-References: <20210604092228.199588-1-heying24@huawei.com>
- <c80f69d0-44b0-24a6-ce4f-ed5a40514597@csgroup.eu>
-From: He Ying <heying24@huawei.com>
-Message-ID: <c9495dc0-2a1f-8aed-1088-90e2d0baabe0@huawei.com>
-Date: Tue, 8 Jun 2021 19:03:04 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=qaYxKhnt; 
+ dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fznd06LzKz2xfN
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Jun 2021 21:12:04 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Fznct061wz9sW7;
+ Tue,  8 Jun 2021 21:11:57 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1623150723;
+ bh=h1pjcx14WED8GV61yyvX+o5nh/QO2vDigglGzaBUaPo=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=qaYxKhntxn9domJfTp/b7vZheGgvSG04qAi3oPZszcrG9xJ8L8BtLeFBDdkNbhfRZ
+ X8AJHokX7Us9uk+OIikdyp8VwCVfcmpt0jHbXBsbfQ+HEwfgLRBxW3k7uXH4jT5QAg
+ 8xQpuppzCCGEv/fkG3Q1MEqEdqwDa3GgrXCwBwQ3bGGeK2M1OuWRxuc0qtkEr1keBz
+ fDJQZ6qLeVUxjcpDY8AtdZZU3JvH1MC5Y3w/lLqHwiFCGx13AS18HU2Ir33OkNpg2k
+ 8GyFRxa0K5NYJybxWne97z3ZMcKKDCCW4J0WeaoO69Q+XrReDs4uvXduZSTclQX4ku
+ hnEBus8PGkG1w==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 05/12] mm/memory_hotplug: remove nid parameter from
+ remove_memory() and friends
+In-Reply-To: <20210607195430.48228-6-david@redhat.com>
+References: <20210607195430.48228-1-david@redhat.com>
+ <20210607195430.48228-6-david@redhat.com>
+Date: Tue, 08 Jun 2021 21:11:57 +1000
+Message-ID: <87y2bkehky.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <c80f69d0-44b0-24a6-ce4f-ed5a40514597@csgroup.eu>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.110.136]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggeme756-chm.china.huawei.com (10.3.19.102)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,88 +63,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: nvdimm@lists.linux.dev, Wei Yang <richard.weiyang@linux.alibaba.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ virtualization@lists.linux-foundation.org, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, Laurent Dufour <ldufour@linux.ibm.com>,
+ Dave Jiang <dave.jiang@intel.com>, Vishal Verma <vishal.l.verma@intel.com>,
+ David Hildenbrand <david@redhat.com>, linux-acpi@vger.kernel.org,
+ Len Brown <lenb@kernel.org>, Nathan Lynch <nathanl@linux.ibm.com>,
+ Pavel Tatashin <pasha.tatashin@soleen.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Dan Williams <dan.j.williams@intel.com>, Michal Hocko <mhocko@kernel.org>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Oscar Salvador <osalvador@suse.de>,
+ Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+ Scott Cheloha <cheloha@linux.ibm.com>, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ Hui Zhu <teawater@gmail.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Marek Kedzierski <mkedzier@redhat.com>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+David Hildenbrand <david@redhat.com> writes:
+> There is only a single user remaining. We can simply try to offline all
+> online nodes - which is fast, because we usually span pages and can skip
+> such nodes right away.
+
+That makes me slightly nervous, because our big powerpc boxes tend to
+trip on these scaling issues before others.
+
+But the spanned pages check is just:
+
+void try_offline_node(int nid)
+{
+	pg_data_t *pgdat = NODE_DATA(nid);
+        ...
+	if (pgdat->node_spanned_pages)
+		return;
+
+So I guess that's pretty cheap, and it's only O(nodes), which should
+never get that big.
+
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+> Cc: Len Brown <lenb@kernel.org>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: Vishal Verma <vishal.l.verma@intel.com>
+> Cc: Dave Jiang <dave.jiang@intel.com>
+> Cc: "Michael S. Tsirkin" <mst@redhat.com>
+> Cc: Jason Wang <jasowang@redhat.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Nathan Lynch <nathanl@linux.ibm.com>
+> Cc: Laurent Dufour <ldufour@linux.ibm.com>
+> Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+> Cc: Scott Cheloha <cheloha@linux.ibm.com>
+> Cc: Anton Blanchard <anton@ozlabs.org>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-acpi@vger.kernel.org
+> Cc: nvdimm@lists.linux.dev
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>  .../platforms/pseries/hotplug-memory.c        |  9 ++++-----
+>  drivers/acpi/acpi_memhotplug.c                |  7 +------
+>  drivers/dax/kmem.c                            |  3 +--
+>  drivers/virtio/virtio_mem.c                   |  4 ++--
+>  include/linux/memory_hotplug.h                | 10 +++++-----
+>  mm/memory_hotplug.c                           | 20 +++++++++----------
+>  6 files changed, 23 insertions(+), 30 deletions(-)
+>
+> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+> index 8377f1f7c78e..4a9232ddbefe 100644
+> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
+> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+> @@ -286,7 +286,7 @@ static int pseries_remove_memblock(unsigned long base, unsigned long memblock_si
+>  {
+>  	unsigned long block_sz, start_pfn;
+>  	int sections_per_block;
+> -	int i, nid;
+> +	int i;
+>  
+>  	start_pfn = base >> PAGE_SHIFT;
+>  
+> @@ -297,10 +297,9 @@ static int pseries_remove_memblock(unsigned long base, unsigned long memblock_si
+>  
+>  	block_sz = pseries_memory_block_size();
+>  	sections_per_block = block_sz / MIN_MEMORY_BLOCK_SIZE;
+> -	nid = memory_add_physaddr_to_nid(base);
+>  
+>  	for (i = 0; i < sections_per_block; i++) {
+> -		__remove_memory(nid, base, MIN_MEMORY_BLOCK_SIZE);
+> +		__remove_memory(base, MIN_MEMORY_BLOCK_SIZE);
+>  		base += MIN_MEMORY_BLOCK_SIZE;
+>  	}
+>  
+> @@ -386,7 +385,7 @@ static int dlpar_remove_lmb(struct drmem_lmb *lmb)
+>  
+>  	block_sz = pseries_memory_block_size();
+>  
+> -	__remove_memory(mem_block->nid, lmb->base_addr, block_sz);
+> +	__remove_memory(lmb->base_addr, block_sz);
+>  	put_device(&mem_block->dev);
+>  
+>  	/* Update memory regions for memory remove */
+> @@ -638,7 +637,7 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
+>  
+>  	rc = dlpar_online_lmb(lmb);
+>  	if (rc) {
+> -		__remove_memory(nid, lmb->base_addr, block_sz);
+> +		__remove_memory(lmb->base_addr, block_sz);
+>  		invalidate_lmb_associativity_index(lmb);
+>  	} else {
+>  		lmb->flags |= DRCONF_MEM_ASSIGNED;
 
 
-在 2021/6/8 12:55, Christophe Leroy 写道:
->
->
-> Le 04/06/2021 à 11:22, He Ying a écrit :
->>  From "64-bit PowerPC ELF Application Binary Interface Supplement 1.9",
->> we know that the value of a function pointer in a language like C is
->> the address of the function descriptor and the first doubleword
->> of the function descriptor contains the address of the entry point
->> of the function.
->>
->> So, when we want to jump to an address (e.g. addr) to execute for
->> PPC-elf64abi, we should assign the address of addr *NOT* addr itself
->> to the function pointer or system will jump to the wrong address.
->>
->> Link: 
->> https://refspecs.linuxfoundation.org/ELF/ppc64/PPC-elf64abi.html#FUNC-DES
->> Signed-off-by: He Ying <heying24@huawei.com>
->> ---
->>   arch/powerpc/boot/main.c | 9 +++++++++
->>   1 file changed, 9 insertions(+)
->>
->> diff --git a/arch/powerpc/boot/main.c b/arch/powerpc/boot/main.c
->> index cae31a6e8f02..50fd7f11b642 100644
->> --- a/arch/powerpc/boot/main.c
->> +++ b/arch/powerpc/boot/main.c
->> @@ -268,7 +268,16 @@ void start(void)
->>       if (console_ops.close)
->>           console_ops.close();
->>   +#ifdef CONFIG_PPC64_BOOT_WRAPPER
->
-> This kind of need doesn't desserve a #ifdef, see 
-> https://www.kernel.org/doc/html/latest/process/coding-style.html#conditional-compilation
->
-> You can do:
->
->
->     kentry = (kernel_entry_t)(IS_ENABLED(CONFIG_PPC64_BOOT_WRAPPER) ? 
-> &vmlinux.addr : vmlinux.addr);
->
->
-> Or, if you prefer something less compact:
->
->
->     if (IS_ENABLED(CONFIG_PPC64_BOOT_WRAPPER))
->         kentry = (kernel_entry_t) &vmlinux.addr;
->     else
->         kentry = (kernel_entry_t) vmlinux.addr;
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
-Thanks for reviewing. But from Oliver's reply, this patch should be dropped.
-
-Because all ppc platforms will not build wrapper to ppc64be ELF currently.
-
-And ppc64le uses LE ABI (ABIv2) which doesn't use function descriptors.
-
-So this may not be a problem for now.
-
-
-Thanks again.
-
->
->
->> +    /*
->> +     * For PPC-elf64abi, the value of a function pointer is the address
->> +     * of the function descriptor. And the first doubleword of a 
->> function
->> +     * descriptor contains the address of the entry point of the 
->> function.
->> +     */
->> +    kentry = (kernel_entry_t) &vmlinux.addr;
->> +#else
->>       kentry = (kernel_entry_t) vmlinux.addr;
->> +#endif
->>       if (ft_addr) {
->>           if(platform_ops.kentry)
->>               platform_ops.kentry(ft_addr, vmlinux.addr);
->>
-> .
+cheers
