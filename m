@@ -1,61 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8F7339EDE3
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 06:59:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F5D939EDE8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 07:03:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FzdLY0x0Fz3bs6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 14:59:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FzdSF2sg5z3brv
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 15:03:57 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Qj0zU6Fr;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::531;
+ helo=mail-pg1-x531.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Qj0zU6Fr; dkim-atps=neutral
+Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com
+ [IPv6:2607:f8b0:4864:20::531])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FzdLC28cmz2xff
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Jun 2021 14:58:41 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4FzdL70MxYzBDJX;
- Tue,  8 Jun 2021 06:58:39 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 0ojMLzssXtGq; Tue,  8 Jun 2021 06:58:38 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FzdL66X1KzBDJB;
- Tue,  8 Jun 2021 06:58:38 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C44C08B7A8;
- Tue,  8 Jun 2021 06:58:38 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id MQV8Zye4zoCd; Tue,  8 Jun 2021 06:58:38 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0F9238B767;
- Tue,  8 Jun 2021 06:58:37 +0200 (CEST)
-Subject: Re: [PATCH] powerpc/kprobes: Pass ppc_inst as a pointer to
- emulate_step() on ppc32
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <20210520072909.2901326-1-naveen.n.rao@linux.vnet.ibm.com>
- <1623065577.8oijg4kgxv.naveen@linux.ibm.com>
- <d10d599c-065e-6baa-af01-6c099482ece5@csgroup.eu>
- <5affed0d-a86f-43de-6f3e-4a4b8da5ffb2@csgroup.eu>
-Message-ID: <dcababd4-b356-0a2c-febc-c5210b268195@csgroup.eu>
-Date: Tue, 8 Jun 2021 06:58:32 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FzdRn4F1xz2xZW
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Jun 2021 15:03:31 +1000 (AEST)
+Received: by mail-pg1-x531.google.com with SMTP id y12so3747199pgk.6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Jun 2021 22:03:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=Oz+R3buVcrrnFDzHn9gaTiP7O9I196VvCyY7n8MTjhQ=;
+ b=Qj0zU6Fr0jpUWq1TVnW6Vq9oyVKbpzpNCcz96cNtfsqJz+CDt7K9gh/+/hueoYIFbN
+ ZM/YCm965Syrc3IwPHQBX7lzFBHXgYdmislg1DwzfWzzXGYd5iZaU2Q5CWORDT1l17Qq
+ dfEA7HMTXHLBoCkAweTQEYMPgSUX3TSXNnb0wJ6DNNpXDFxxR2/d7OuB7MnaEUzT86fg
+ dJol7Z9Q/NoYLJgkQ2vjhGvSSxIrxKWGAjqaPxM1bfOWSdG9nLzp2242tJXcnrDOFuAd
+ 95x/bDuXR5S1XtzNAb2IKGg6eUVYvhJbv1ynxMxXWZ7c2DwxHSXdGApQzF05Eein06iw
+ UD+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=Oz+R3buVcrrnFDzHn9gaTiP7O9I196VvCyY7n8MTjhQ=;
+ b=Fl8J7p1Yc3y+qLMbAncsB98EQnzMXBhsQ1zjTpETX9V08DaHVpbEFCFcX9VObVAl6s
+ QRFWYBxj75hg1OVACjvvh2eJhzFh1uUjnJZetaOn50fX4FkOHqORpIwZCC5VBctb55nD
+ VuR9vkqYB7/IgDzaw7G4XwDefBdf0fyq3ZZ2ZSeqGklQzDUswvOsUFBLBRxL9kO52+hk
+ NH1ccfCKZ0vRt3Vc9yUu51bf/uN4AwoGyLS0f6sWruFWcoiVX+5jR9lerzPZDD9VVo4F
+ 3tRLw8m4O/nEXw6BEbwwgs/9tqGJYUgCje+Ip0TEE2qD+SlTXKb7mIXGb/T1ONbCHaB9
+ E3Og==
+X-Gm-Message-State: AOAM533BQREsK4nrXFhiQfMkQ2WiuqLvKWqx7cEnxxLItZHwST3B2t3N
+ vmllLGcANO7hJ06M5sGQNC4=
+X-Google-Smtp-Source: ABdhPJwle3Pxzn+G7A586bjy9oaf62duVr7i7OL8cojoZ+xK7XtiSlw8tE1QsborIReIZzoYfqmT/w==
+X-Received: by 2002:a63:2dc2:: with SMTP id
+ t185mr21271238pgt.285.1623128607576; 
+ Mon, 07 Jun 2021 22:03:27 -0700 (PDT)
+Received: from localhost (60-242-147-73.tpgi.com.au. [60.242.147.73])
+ by smtp.gmail.com with ESMTPSA id v22sm9499204pff.105.2021.06.07.22.03.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 07 Jun 2021 22:03:27 -0700 (PDT)
+Date: Tue, 08 Jun 2021 15:03:22 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v7 00/11] Speedup mremap on ppc64
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+References: <20210607055131.156184-1-aneesh.kumar@linux.ibm.com>
+ <CAPa8GCAmgUyqqAcuLC7KxDvDepkqhhvVcwgSGJh92PT+LoMQcw@mail.gmail.com>
+ <3f2b7150-eaba-e1ab-bb88-53a3510727b9@linux.ibm.com>
+In-Reply-To: <3f2b7150-eaba-e1ab-bb88-53a3510727b9@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <5affed0d-a86f-43de-6f3e-4a4b8da5ffb2@csgroup.eu>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Message-Id: <1623128236.wygeaklh5o.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,123 +82,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "kaleshsingh@google.com" <kaleshsingh@google.com>,
+ "joel@joelfernandes.org" <joel@joelfernandes.org>,
+ "Kirill A . Shutemov" <kirill@shutemov.name>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Excerpts from Aneesh Kumar K.V's message of June 8, 2021 2:39 pm:
+> On 6/7/21 3:40 PM, Nick Piggin wrote:
+>> On Monday, 7 June 2021, Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>=20
+>> wrote: This patchset enables MOVE_PMD/MOVE_PUD support on power. This=20
+>> requires the platform to support updating higher-level page tables=20
+>> without updating page table ZjQcmQRYFpfptBannerStart
+>> This Message Is From an External Sender
+>> This message came from outside your organization.
+>> ZjQcmQRYFpfptBannerEnd
+>>=20
+>>=20
+>> On Monday, 7 June 2021, Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com=20
+>> <mailto:aneesh.kumar@linux.ibm.com>> wrote:
+>>=20
+>>=20
+>>     This patchset enables MOVE_PMD/MOVE_PUD support on power. This requi=
+res
+>>     the platform to support updating higher-level page tables without
+>>     updating page table entries. This also needs to invalidate the Page =
+Walk
+>>     Cache on architecture supporting the same.
+>>=20
+>>     Changes from v6:
+>>     * Update ppc64 flush_tlb_range to invalidate page walk cache.
+>>=20
+>>=20
+>> I'd really rather not do this, I'm not sure if micro bench mark captures=
+=20
+>> everything.
+>>=20
+>> Page tables coming from L2/L3 probably aren't the primary purpose or=20
+>> biggest benefit of intermediate level caches.
+>>=20
+>> The situation on POWER with nest mmu (coherent accelerators) is=20
+>> magnified. They have huge page walk cashes to make up for the fact they=20
+>> don't have data caches for walking page tables which makes the=20
+>> invalidation more painful in terms of subsequent misses, but also=20
+>> latency to invalidate (can be order of microseconds whereas a page=20
+>> invalidate is a couple of orders of magnitude faster).
+>>=20
+>=20
+> If we are using NestMMU, we already upgrade that flush to invalidate=20
+> page walk cache right? ie, if we have > PMD_SIZE range, we would upgrade=20
+> the invalidate to a pid flush via
+>=20
+> flush_pid =3D nr_pages > tlb_single_page_flush_ceiling;
 
+Not that we've tuned that parameter for a long time, certainly not with=20
+nMMU probably. Quite possibly it should be higher for nMMU because of=20
+the big TLBs they have. (and what about =3D=3D PMD_SIZE)?
 
-Le 07/06/2021 à 19:36, Christophe Leroy a écrit :
-> 
-> 
-> Le 07/06/2021 à 16:31, Christophe Leroy a écrit :
->>
->>
->> Le 07/06/2021 à 13:34, Naveen N. Rao a écrit :
->>> Naveen N. Rao wrote:
->>>> Trying to use a kprobe on ppc32 results in the below splat:
->>>>     BUG: Unable to handle kernel data access on read at 0x7c0802a6
->>>>     Faulting instruction address: 0xc002e9f0
->>>>     Oops: Kernel access of bad area, sig: 11 [#1]
->>>>     BE PAGE_SIZE=4K PowerPC 44x Platform
->>>>     Modules linked in:
->>>>     CPU: 0 PID: 89 Comm: sh Not tainted 5.13.0-rc1-01824-g3a81c0495fdb #7
->>>>     NIP:  c002e9f0 LR: c0011858 CTR: 00008a47
->>>>     REGS: c292fd50 TRAP: 0300   Not tainted  (5.13.0-rc1-01824-g3a81c0495fdb)
->>>>     MSR:  00009000 <EE,ME>  CR: 24002002  XER: 20000000
->>>>     DEAR: 7c0802a6 ESR: 00000000
->>>>     <snip>
->>>>     NIP [c002e9f0] emulate_step+0x28/0x324
->>>>     LR [c0011858] optinsn_slot+0x128/0x10000
->>>>     Call Trace:
->>>>      opt_pre_handler+0x7c/0xb4 (unreliable)
->>>>      optinsn_slot+0x128/0x10000
->>>>      ret_from_syscall+0x0/0x28
->>>>
->>>> The offending instruction is:
->>>>     81 24 00 00     lwz     r9,0(r4)
->>>>
->>>> Here, we are trying to load the second argument to emulate_step():
->>>> struct ppc_inst, which is the instruction to be emulated. On ppc64,
->>>> structures are passed in registers when passed by value. However, per
->>>> the ppc32 ABI, structures are always passed to functions as pointers.
->>>> This isn't being adhered to when setting up the call to emulate_step()
->>>> in the optprobe trampoline. Fix the same.
->>>>
->>>> Fixes: eacf4c0202654a ("powerpc: Enable OPTPROBES on PPC32")
->>>> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
->>>> ---
->>>>  arch/powerpc/kernel/optprobes.c | 8 ++++++--
->>>>  1 file changed, 6 insertions(+), 2 deletions(-)
->>>
->>> Christophe,
->>> Can you confirm if this patch works for you? It would be good if this can go in v5.13.
->>>
->>
->> I'm trying to use kprobes, but I must be missing something. I have tried to follow the exemple in 
->> kernel's documentation:
->>
->>   # echo 'p:myprobe do_sys_open dfd=%r3' > /sys/kernel/debug/tracing/kprobe_events
->>
->>   # echo 1 > /sys/kernel/debug/tracing/events/kprobes/myprobe/enable
->>
->>   # cat /sys/kernel/debug/kprobes/list
->>
->>   c00122e4  k  kretprobe_trampoline+0x0    [OPTIMIZED]
->>   c018a1b4  k  do_sys_open+0x0    [OPTIMIZED]
->>
->>   # cat /sys/kernel/debug/tracing/tracing_on
->>
->>   1
->>
->>   # cat /sys/kernel/debug/tracing/trace
->>
->> # tracer: nop
->> #
->> # entries-in-buffer/entries-written: 0/0   #P:1
->> #
->> #                                _-----=> irqs-off
->> #                               / _----=> need-resched
->> #                              | / _---=> hardirq/softirq
->> #                              || / _--=> preempt-depth
->> #                              ||| /     delay
->> #           TASK-PID     CPU#  ||||   TIMESTAMP  FUNCTION
->> #              | |         |   ||||      |         |
->>
->>
->>
->> So it looks like I get no event. I can't believe that do_sys_open() is never hit.
->>
->> This is without your patch, so it should Oops ?
->>
->>
->> Then it looks like something is locked up somewhere, because I can't do anything else:
->>
->>   # echo 'p:myprobe2 do_sys_openat2 dfd=%r3' >/sys/kernel/debug/tracing/kprobe_events
->>
->>   -sh: can't create /sys/kernel/debug/tracing/kprobe_events: Device or resource busy
->>
->>   # echo '-:myprobe' > /sys/kernel/debug/tracing/kprobe_events
->>
->>   -sh: can't create /sys/kernel/debug/tracing/kprobe_events: Device or resource busy
->>
->>   # echo > /sys/kernel/debug/tracing/kprobe_events
->>
->>   -sh: can't create /sys/kernel/debug/tracing/kprobe_events: Device or resource busy
->>
->>
-> 
-> Ok, did a new test. Seems like do_sys_open() is really never called.
-> I set the test at do_sys_openat2 , it was not optimised and was working.
-> I set the test at do_sys_openat2+0x10 , it was optimised and crashed.
-> Now I'm going to test the patch.
-> 
-> When I set an event, is that normal that it removes the previous one ? Then we can have only one 
-> event at a time ? And then when that event is enabled we get 'Device or resource busy' when trying 
-> to add a new one ?
-> 
+> =09
+> and if it is PID flush if we are using NestMMU we already upgrade a=20
+> RIC_FLUSH_TLB to RIC_FLUSH_ALL ?
 
-I confirm it doesn't crash anymore and it now works with optimised probes.
+Does P10 still have that bug?
 
-Tested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+At any rate, the core MMU I think still has the same issues just less
+pronounced. PWC invalidates take longer, and PWC should have most
+benefit when CPU data caches are highly used and don't filled with
+page table entries.
+
+Thanks,
+Nick
