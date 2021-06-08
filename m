@@ -1,68 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80F7839F9A6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 16:54:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0172439F9AC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 16:55:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FztYS6sbWz3bwM
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Jun 2021 00:54:20 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=rU2pKJ75;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FztZG1VMrz302f
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Jun 2021 00:55:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::e35;
- helo=mail-vs1-xe35.google.com; envelope-from=jrdr.linux@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=rU2pKJ75; dkim-atps=neutral
-Received: from mail-vs1-xe35.google.com (mail-vs1-xe35.google.com
- [IPv6:2607:f8b0:4864:20::e35])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FztXz1mXtz2yyj
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Jun 2021 00:53:54 +1000 (AEST)
-Received: by mail-vs1-xe35.google.com with SMTP id z15so10995643vsn.13
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 08 Jun 2021 07:53:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=2AJ2s6Swi7DKePDYPTjpM9W7XfKGuXx2NmxnXLQgYSU=;
- b=rU2pKJ75Y3/QHhh8al8WEHFkA1xcRM5SZMWEuWTFwhfJJj/V+31x/44DQ1/ocvOPg+
- HHLB+cX2JzVE7e8VyhwDv4Qz2FVNR+zh+m0OixPYjyc4fzjuukhztIpMy0r4QCqs9ENM
- rx2wn2LyftAjOv4hRMViR3COc1TqDPy9Jwcq9YGNqCboxfBQc5R+uHuQkEmoWcUMg/uD
- GgTRTBH9LOsD2SMP7YGpIDk7kjlQlU6IpzX1idxEjiKF6VTF7R6q/SsI4HkaBei2kO/c
- foGKHLzxbvnAfZr24OLQ0mXOUtMYfCqu0p3aPHXa31jtaApPg9eDz4MFF332lbCsxpOF
- vhTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=2AJ2s6Swi7DKePDYPTjpM9W7XfKGuXx2NmxnXLQgYSU=;
- b=DSPl1M4E1RjW9NgLULgENqtiPdAIuYMXH/aFtjulfjZeQyHW0rwHB7CVlyc5DDmUxr
- xWwNpCYfcX/WcwwqKrW/0xX5p/3v2SSdZbQj+Sg+E5PaLyiBliIgCBn5rFBsZ0bFY9HI
- OSsMU5e0edXAVvByN2B8TRAfLeDg3G8ZOt+WW4xKke+dmVmoM8Pyq38vcsRs7wS3FBWV
- m9UQ/pmmQY6HH6+M5UF2kAC9Dgap9Dy3Kr1uSvSqQsvYYG7k4aKHKkqGTFLMC5U5gvPb
- lkfEjv6J3tXsFrF3vakQsAwlb8W6fphToT7bijqyyXy1f3EBoJwCNdsDsx3GZdUAq1ka
- dcXw==
-X-Gm-Message-State: AOAM5338szCsFqNF1z4qWqgdsdKNrt2lshTAyMAx2M+g2HOke/w2D6Jk
- 0ZYJpWRTWrxru2UHu8bd+7i5WrdWEvSus1YyoJM=
-X-Google-Smtp-Source: ABdhPJyRLWrfWEbRY82WKzbAaqxe+Tz0Rq9l4OoSLSgaPe9ZQ71sH6V/8n9uYyj4peJXY7ySMuwi8lVHUHfIxXWhTlU=
-X-Received: by 2002:a67:ed5a:: with SMTP id m26mr149235vsp.59.1623164030307;
- Tue, 08 Jun 2021 07:53:50 -0700 (PDT)
-MIME-Version: 1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FztYv27Npz2xZJ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Jun 2021 00:54:40 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 4FztYn36F5z9trp;
+ Tue,  8 Jun 2021 16:54:37 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 470n_Hf-Cc4b; Tue,  8 Jun 2021 16:54:37 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FztYl2NxWzBDhb;
+ Tue,  8 Jun 2021 16:54:35 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 338438B7C1;
+ Tue,  8 Jun 2021 16:54:35 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id CBcAUjaryt1b; Tue,  8 Jun 2021 16:54:35 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9FE408B7BF;
+ Tue,  8 Jun 2021 16:54:34 +0200 (CEST)
+Subject: Re: [PATCH v3 resend 11/15] powerpc: convert to
+ setup_initial_init_mm()
+To: Souptick Joarder <jrdr.linux@gmail.com>,
+ Kefeng Wang <wangkefeng.wang@huawei.com>
 References: <20210608083418.137226-1-wangkefeng.wang@huawei.com>
- <20210608083418.137226-2-wangkefeng.wang@huawei.com>
-In-Reply-To: <20210608083418.137226-2-wangkefeng.wang@huawei.com>
-From: Souptick Joarder <jrdr.linux@gmail.com>
-Date: Tue, 8 Jun 2021 20:23:38 +0530
-Message-ID: <CAFqt6zYmCQ=wxEjnOJ6fgJWYQyFajBuxWD=UT_D-WjWUS_4pcw@mail.gmail.com>
-Subject: Re: [PATCH v3 resend 01/15] mm: add setup_initial_init_mm() helper
-To: Kefeng Wang <wangkefeng.wang@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+ <20210608083418.137226-12-wangkefeng.wang@huawei.com>
+ <CAFqt6zZWanzsy=F4LVUkovQE-wqKd0CNG-n=Sx7SBddord6Gcg@mail.gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <215985fd-67d5-731f-743c-ea446b55bb8d@csgroup.eu>
+Date: Tue, 8 Jun 2021 16:54:09 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
+MIME-Version: 1.0
+In-Reply-To: <CAFqt6zZWanzsy=F4LVUkovQE-wqKd0CNG-n=Sx7SBddord6Gcg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,75 +66,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: uclinux-h8-devel@lists.sourceforge.jp, linux-s390@vger.kernel.org,
- linux-sh@vger.kernel.org, X86 ML <x86@kernel.org>,
- linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
- Linux-MM <linux-mm@kvack.org>, linux-m68k@lists.linux-m68k.org,
- openrisc@lists.librecores.org, Andrew Morton <akpm@linux-foundation.org>,
- linux-snps-arc@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+Cc: Linux-MM <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 8, 2021 at 1:56 PM Kefeng Wang <wangkefeng.wang@huawei.com> wrote:
->
-> Add setup_initial_init_mm() helper to setup kernel text,
-> data and brk.
->
-> Cc: linux-snps-arc@lists.infradead.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-csky@vger.kernel.org
-> Cc: uclinux-h8-devel@lists.sourceforge.jp
-> Cc: linux-m68k@lists.linux-m68k.org
-> Cc: openrisc@lists.librecores.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-riscv@lists.infradead.org
-> Cc: linux-sh@vger.kernel.org
-> Cc: linux-s390@vger.kernel.org
-> Cc: x86@kernel.org
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> ---
->  include/linux/mm.h | 3 +++
->  mm/init-mm.c       | 9 +++++++++
->  2 files changed, 12 insertions(+)
->
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index c274f75efcf9..02aa057540b7 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -244,6 +244,9 @@ int __add_to_page_cache_locked(struct page *page, struct address_space *mapping,
->
->  #define lru_to_page(head) (list_entry((head)->prev, struct page, lru))
->
-> +void setup_initial_init_mm(void *start_code, void *end_code,
-> +                          void *end_data, void *brk);
-> +
 
-Gentle query -> is there any limitation to add inline functions in
-setup_arch() functions ?
 
->  /*
->   * Linux kernel virtual memory manager primitives.
->   * The idea being to have a "virtual" mm in the same way
-> diff --git a/mm/init-mm.c b/mm/init-mm.c
-> index 153162669f80..b4a6f38fb51d 100644
-> --- a/mm/init-mm.c
-> +++ b/mm/init-mm.c
-> @@ -40,3 +40,12 @@ struct mm_struct init_mm = {
->         .cpu_bitmap     = CPU_BITS_NONE,
->         INIT_MM_CONTEXT(init_mm)
->  };
-> +
-> +void setup_initial_init_mm(void *start_code, void *end_code,
-> +                          void *end_data, void *brk)
-> +{
-> +       init_mm.start_code = (unsigned long)start_code;
-> +       init_mm.end_code = (unsigned long)end_code;
-> +       init_mm.end_data = (unsigned long)end_data;
-> +       init_mm.brk = (unsigned long)brk;
-> +}
-> --
-> 2.26.2
->
->
+Le 08/06/2021 à 16:36, Souptick Joarder a écrit :
+> On Tue, Jun 8, 2021 at 1:56 PM Kefeng Wang <wangkefeng.wang@huawei.com> wrote:
+>>
+>> Use setup_initial_init_mm() helper to simplify code.
+>>
+>> Note klimit is (unsigned long) _end, with new helper,
+>> will use _end directly.
+> 
+> With this change klimit left with no user in this file and can be
+> moved to some appropriate header.
+> But in a separate series.
+
+I have a patch to remove klimit, see 
+https://patchwork.ozlabs.org/project/linuxppc-dev/patch/9fa9ba6807c17f93f35a582c199c646c4a8bfd9c.1622800638.git.christophe.leroy@csgroup.eu/
+
+Christophe
+
+
+> 
+>>
+>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+>> Cc: linuxppc-dev@lists.ozlabs.org
+>> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+>> ---
+>>   arch/powerpc/kernel/setup-common.c | 5 +----
+>>   1 file changed, 1 insertion(+), 4 deletions(-)
+>>
+>> diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
+>> index 74a98fff2c2f..96697c6e1e16 100644
+>> --- a/arch/powerpc/kernel/setup-common.c
+>> +++ b/arch/powerpc/kernel/setup-common.c
+>> @@ -927,10 +927,7 @@ void __init setup_arch(char **cmdline_p)
+>>
+>>          klp_init_thread_info(&init_task);
+>>
+>> -       init_mm.start_code = (unsigned long)_stext;
+>> -       init_mm.end_code = (unsigned long) _etext;
+>> -       init_mm.end_data = (unsigned long) _edata;
+>> -       init_mm.brk = klimit;
+>> +       setup_initial_init_mm(_stext, _etext, _edata, _end);
+>>
+>>          mm_iommu_init(&init_mm);
+>>          irqstack_early_init();
+>> --
+>> 2.26.2
+>>
+>>
