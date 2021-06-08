@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C44C39EDDF
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 06:56:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8F7339EDE3
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 06:59:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FzdHJ5jRLz3bsv
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 14:56:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FzdLY0x0Fz3bs6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 14:59:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -14,41 +14,45 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FzdGv16WXz2xff
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Jun 2021 14:55:48 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FzdLC28cmz2xff
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Jun 2021 14:58:41 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4FzdGk0tclzBDHZ;
- Tue,  8 Jun 2021 06:55:42 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4FzdL70MxYzBDJX;
+ Tue,  8 Jun 2021 06:58:39 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id OXJV5l2ukwIg; Tue,  8 Jun 2021 06:55:42 +0200 (CEST)
+ with ESMTP id 0ojMLzssXtGq; Tue,  8 Jun 2021 06:58:38 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4FzdGj61yXzBDHG;
- Tue,  8 Jun 2021 06:55:41 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4FzdL66X1KzBDJB;
+ Tue,  8 Jun 2021 06:58:38 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C59B88B7A8;
- Tue,  8 Jun 2021 06:55:41 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C44C08B7A8;
+ Tue,  8 Jun 2021 06:58:38 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 46y0R86zWyBd; Tue,  8 Jun 2021 06:55:41 +0200 (CEST)
+ with ESMTP id MQV8Zye4zoCd; Tue,  8 Jun 2021 06:58:38 +0200 (CEST)
 Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 4924B8B767;
- Tue,  8 Jun 2021 06:55:41 +0200 (CEST)
-Subject: Re: [PATCH] powerpc: Fix kernel-jump address for ppc64 wrapper boot
-To: He Ying <heying24@huawei.com>, mpe@ellerman.id.au,
- benh@kernel.crashing.org, paulus@samba.org, nathan@kernel.org
-References: <20210604092228.199588-1-heying24@huawei.com>
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0F9238B767;
+ Tue,  8 Jun 2021 06:58:37 +0200 (CEST)
+Subject: Re: [PATCH] powerpc/kprobes: Pass ppc_inst as a pointer to
+ emulate_step() on ppc32
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <c80f69d0-44b0-24a6-ce4f-ed5a40514597@csgroup.eu>
-Date: Tue, 8 Jun 2021 06:55:35 +0200
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <20210520072909.2901326-1-naveen.n.rao@linux.vnet.ibm.com>
+ <1623065577.8oijg4kgxv.naveen@linux.ibm.com>
+ <d10d599c-065e-6baa-af01-6c099482ece5@csgroup.eu>
+ <5affed0d-a86f-43de-6f3e-4a4b8da5ffb2@csgroup.eu>
+Message-ID: <dcababd4-b356-0a2c-febc-c5210b268195@csgroup.eu>
+Date: Tue, 8 Jun 2021 06:58:32 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
 MIME-Version: 1.0
-In-Reply-To: <20210604092228.199588-1-heying24@huawei.com>
+In-Reply-To: <5affed0d-a86f-43de-6f3e-4a4b8da5ffb2@csgroup.eu>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -63,68 +67,123 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Le 04/06/2021 à 11:22, He Ying a écrit :
->  From "64-bit PowerPC ELF Application Binary Interface Supplement 1.9",
-> we know that the value of a function pointer in a language like C is
-> the address of the function descriptor and the first doubleword
-> of the function descriptor contains the address of the entry point
-> of the function.
+Le 07/06/2021 à 19:36, Christophe Leroy a écrit :
 > 
-> So, when we want to jump to an address (e.g. addr) to execute for
-> PPC-elf64abi, we should assign the address of addr *NOT* addr itself
-> to the function pointer or system will jump to the wrong address.
 > 
-> Link: https://refspecs.linuxfoundation.org/ELF/ppc64/PPC-elf64abi.html#FUNC-DES
-> Signed-off-by: He Ying <heying24@huawei.com>
-> ---
->   arch/powerpc/boot/main.c | 9 +++++++++
->   1 file changed, 9 insertions(+)
+> Le 07/06/2021 à 16:31, Christophe Leroy a écrit :
+>>
+>>
+>> Le 07/06/2021 à 13:34, Naveen N. Rao a écrit :
+>>> Naveen N. Rao wrote:
+>>>> Trying to use a kprobe on ppc32 results in the below splat:
+>>>>     BUG: Unable to handle kernel data access on read at 0x7c0802a6
+>>>>     Faulting instruction address: 0xc002e9f0
+>>>>     Oops: Kernel access of bad area, sig: 11 [#1]
+>>>>     BE PAGE_SIZE=4K PowerPC 44x Platform
+>>>>     Modules linked in:
+>>>>     CPU: 0 PID: 89 Comm: sh Not tainted 5.13.0-rc1-01824-g3a81c0495fdb #7
+>>>>     NIP:  c002e9f0 LR: c0011858 CTR: 00008a47
+>>>>     REGS: c292fd50 TRAP: 0300   Not tainted  (5.13.0-rc1-01824-g3a81c0495fdb)
+>>>>     MSR:  00009000 <EE,ME>  CR: 24002002  XER: 20000000
+>>>>     DEAR: 7c0802a6 ESR: 00000000
+>>>>     <snip>
+>>>>     NIP [c002e9f0] emulate_step+0x28/0x324
+>>>>     LR [c0011858] optinsn_slot+0x128/0x10000
+>>>>     Call Trace:
+>>>>      opt_pre_handler+0x7c/0xb4 (unreliable)
+>>>>      optinsn_slot+0x128/0x10000
+>>>>      ret_from_syscall+0x0/0x28
+>>>>
+>>>> The offending instruction is:
+>>>>     81 24 00 00     lwz     r9,0(r4)
+>>>>
+>>>> Here, we are trying to load the second argument to emulate_step():
+>>>> struct ppc_inst, which is the instruction to be emulated. On ppc64,
+>>>> structures are passed in registers when passed by value. However, per
+>>>> the ppc32 ABI, structures are always passed to functions as pointers.
+>>>> This isn't being adhered to when setting up the call to emulate_step()
+>>>> in the optprobe trampoline. Fix the same.
+>>>>
+>>>> Fixes: eacf4c0202654a ("powerpc: Enable OPTPROBES on PPC32")
+>>>> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+>>>> ---
+>>>>  arch/powerpc/kernel/optprobes.c | 8 ++++++--
+>>>>  1 file changed, 6 insertions(+), 2 deletions(-)
+>>>
+>>> Christophe,
+>>> Can you confirm if this patch works for you? It would be good if this can go in v5.13.
+>>>
+>>
+>> I'm trying to use kprobes, but I must be missing something. I have tried to follow the exemple in 
+>> kernel's documentation:
+>>
+>>   # echo 'p:myprobe do_sys_open dfd=%r3' > /sys/kernel/debug/tracing/kprobe_events
+>>
+>>   # echo 1 > /sys/kernel/debug/tracing/events/kprobes/myprobe/enable
+>>
+>>   # cat /sys/kernel/debug/kprobes/list
+>>
+>>   c00122e4  k  kretprobe_trampoline+0x0    [OPTIMIZED]
+>>   c018a1b4  k  do_sys_open+0x0    [OPTIMIZED]
+>>
+>>   # cat /sys/kernel/debug/tracing/tracing_on
+>>
+>>   1
+>>
+>>   # cat /sys/kernel/debug/tracing/trace
+>>
+>> # tracer: nop
+>> #
+>> # entries-in-buffer/entries-written: 0/0   #P:1
+>> #
+>> #                                _-----=> irqs-off
+>> #                               / _----=> need-resched
+>> #                              | / _---=> hardirq/softirq
+>> #                              || / _--=> preempt-depth
+>> #                              ||| /     delay
+>> #           TASK-PID     CPU#  ||||   TIMESTAMP  FUNCTION
+>> #              | |         |   ||||      |         |
+>>
+>>
+>>
+>> So it looks like I get no event. I can't believe that do_sys_open() is never hit.
+>>
+>> This is without your patch, so it should Oops ?
+>>
+>>
+>> Then it looks like something is locked up somewhere, because I can't do anything else:
+>>
+>>   # echo 'p:myprobe2 do_sys_openat2 dfd=%r3' >/sys/kernel/debug/tracing/kprobe_events
+>>
+>>   -sh: can't create /sys/kernel/debug/tracing/kprobe_events: Device or resource busy
+>>
+>>   # echo '-:myprobe' > /sys/kernel/debug/tracing/kprobe_events
+>>
+>>   -sh: can't create /sys/kernel/debug/tracing/kprobe_events: Device or resource busy
+>>
+>>   # echo > /sys/kernel/debug/tracing/kprobe_events
+>>
+>>   -sh: can't create /sys/kernel/debug/tracing/kprobe_events: Device or resource busy
+>>
+>>
 > 
-> diff --git a/arch/powerpc/boot/main.c b/arch/powerpc/boot/main.c
-> index cae31a6e8f02..50fd7f11b642 100644
-> --- a/arch/powerpc/boot/main.c
-> +++ b/arch/powerpc/boot/main.c
-> @@ -268,7 +268,16 @@ void start(void)
->   	if (console_ops.close)
->   		console_ops.close();
->   
-> +#ifdef CONFIG_PPC64_BOOT_WRAPPER
-
-This kind of need doesn't desserve a #ifdef, see 
-https://www.kernel.org/doc/html/latest/process/coding-style.html#conditional-compilation
-
-You can do:
-
-
-	kentry = (kernel_entry_t)(IS_ENABLED(CONFIG_PPC64_BOOT_WRAPPER) ? &vmlinux.addr : vmlinux.addr);
-
-
-Or, if you prefer something less compact:
-
-
-	if (IS_ENABLED(CONFIG_PPC64_BOOT_WRAPPER))
-		kentry = (kernel_entry_t) &vmlinux.addr;
-	else
-		kentry = (kernel_entry_t) vmlinux.addr;
-
-
-> +	/*
-> +	 * For PPC-elf64abi, the value of a function pointer is the address
-> +	 * of the function descriptor. And the first doubleword of a function
-> +	 * descriptor contains the address of the entry point of the function.
-> +	 */
-> +	kentry = (kernel_entry_t) &vmlinux.addr;
-> +#else
->   	kentry = (kernel_entry_t) vmlinux.addr;
-> +#endif
->   	if (ft_addr) {
->   		if(platform_ops.kentry)
->   			platform_ops.kentry(ft_addr, vmlinux.addr);
+> Ok, did a new test. Seems like do_sys_open() is really never called.
+> I set the test at do_sys_openat2 , it was not optimised and was working.
+> I set the test at do_sys_openat2+0x10 , it was optimised and crashed.
+> Now I'm going to test the patch.
 > 
+> When I set an event, is that normal that it removes the previous one ? Then we can have only one 
+> event at a time ? And then when that event is enabled we get 'Device or resource busy' when trying 
+> to add a new one ?
+> 
+
+I confirm it doesn't crash anymore and it now works with optimised probes.
+
+Tested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
