@@ -2,78 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0385139FD49
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 19:11:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EAC339FD8A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 19:23:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fzxbp2smcz3btw
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Jun 2021 03:11:34 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=IywdZbGo;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FzxsN4zMsz3bwb
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Jun 2021 03:23:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::22a;
- helo=mail-lj1-x22a.google.com; envelope-from=torvalds@linuxfoundation.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
- header.a=rsa-sha256 header.s=google header.b=IywdZbGo; 
- dkim-atps=neutral
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com
- [IPv6:2a00:1450:4864:20::22a])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FzxbK37M5z301N
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Jun 2021 03:11:07 +1000 (AEST)
-Received: by mail-lj1-x22a.google.com with SMTP id e11so27949419ljn.13
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 08 Jun 2021 10:11:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linux-foundation.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=etyKwyH/Z6zsvIPi36f/jr7sZJSDRryKbRXIKyys1es=;
- b=IywdZbGoCLgy8Pngf2ClQ8CLffHPaiViyi6GgffnbvaGdE1YPmAaJLr0qrF3j5oxea
- DhICDT6RT6i3ONdWc1W/roz/ZwrQHoMVFo/0NAy16CfGpJUb4wN+q8T5qjWqtuaTcnqT
- SIls+fZdW5OfZbDp4dczeg3YLhea/V5jNsSCY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=etyKwyH/Z6zsvIPi36f/jr7sZJSDRryKbRXIKyys1es=;
- b=solts5WEtipu0toglF4FzuoT5yMcrWiyl7mq3HElssM46q89ROj2qoIZvnzSGm2RcG
- c6fCzCdjCI8p4aYSiLUtC/oNUT+JYD66DJtH5HXBbDgEErESrfVuchTv8hzwCzUXHzRA
- 0x2qhQ8d2jImtyExiA0aZAVdewHqZc4bJOExgLRrfAj3qS9sZBGo75U1n9SUgtRxoZRP
- cTUPvQpVJOTd7/j+Cm+0gKIw/JnlCvXfHAIDxhghwqfm7aPy+ZhmihUcXaudX6n+uJC6
- LBzwmnCwQpO/1diVySRS0IrBICBlxjIeMvJHUI4pYRkxcBuZUDTQLibW0b6eOb52pRlj
- ETtw==
-X-Gm-Message-State: AOAM533W7d38Uz8rlkYXQmxNEvUWFX5OzQK9+07Fj2SDVDGmCUp49eif
- N8HmZ/7lu8VMaJEJTmgflYoO0b9mxvXsy0AtTtQ=
-X-Google-Smtp-Source: ABdhPJzWP9qnbMpP5OCqHjK+j/tW9qPal/sy3ERWeRZD8ROemqyrS/v6s3YWwI2LUJa/qZfQ81ppkA==
-X-Received: by 2002:a2e:96c9:: with SMTP id d9mr2344708ljj.0.1623172258149;
- Tue, 08 Jun 2021 10:10:58 -0700 (PDT)
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com.
- [209.85.167.54])
- by smtp.gmail.com with ESMTPSA id x1sm30058lfa.21.2021.06.08.10.10.57
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 08 Jun 2021 10:10:57 -0700 (PDT)
-Received: by mail-lf1-f54.google.com with SMTP id f11so33109368lfq.4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 08 Jun 2021 10:10:57 -0700 (PDT)
-X-Received: by 2002:a05:6512:3f82:: with SMTP id
- x2mr15509421lfa.421.1623172256802; 
- Tue, 08 Jun 2021 10:10:56 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210607055131.156184-1-aneesh.kumar@linux.ibm.com>
- <CAPa8GCAmgUyqqAcuLC7KxDvDepkqhhvVcwgSGJh92PT+LoMQcw@mail.gmail.com>
-In-Reply-To: <CAPa8GCAmgUyqqAcuLC7KxDvDepkqhhvVcwgSGJh92PT+LoMQcw@mail.gmail.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Tue, 8 Jun 2021 10:10:41 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wipa02d8tN-fCYJ=iH915yHtFr6wEDBcOeFtawVVF4niQ@mail.gmail.com>
-Message-ID: <CAHk-=wipa02d8tN-fCYJ=iH915yHtFr6wEDBcOeFtawVVF4niQ@mail.gmail.com>
-Subject: Re: [PATCH v7 00/11] Speedup mremap on ppc64
-To: Nick Piggin <npiggin@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fzxs15dg8z3026
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Jun 2021 03:22:57 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 4Fzxrs618rzBDn2;
+ Tue,  8 Jun 2021 19:22:53 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 8PRSQCAx5M4h; Tue,  8 Jun 2021 19:22:53 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4Fzxrr3xWSzBDnF;
+ Tue,  8 Jun 2021 19:22:52 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 690408B7C2;
+ Tue,  8 Jun 2021 19:22:52 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 4w2f-pULmofi; Tue,  8 Jun 2021 19:22:52 +0200 (CEST)
+Received: from po15610vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 1D0768B7BF;
+ Tue,  8 Jun 2021 19:22:52 +0200 (CEST)
+Received: by po15610vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id B10DF64C49; Tue,  8 Jun 2021 17:22:51 +0000 (UTC)
+Message-Id: <d01028f8166b98584eec536b52f14c5e3f98ff6b.1623172922.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH] powerpc/32: Remove __main()
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Tue,  8 Jun 2021 17:22:51 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,44 +57,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "kaleshsingh@google.com" <kaleshsingh@google.com>,
- "joel@joelfernandes.org" <joel@joelfernandes.org>,
- "Kirill A . Shutemov" <kirill@shutemov.name>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 7, 2021 at 3:10 AM Nick Piggin <npiggin@gmail.com> wrote:
->
-> I'd really rather not do this, I'm not sure if micro benchmark captures everything.
+Comment says that __main() is there to make GCC happy.
 
-I don't much care what powerpc code does _itnernally_ for this
-architecture-specific mis-design issue, but I really don't want to see
-more complex generic interfaces unless you have better hard numbers
-for them.
+It's been there since the implementation of ppc arch in Linux 1.3.45.
 
-So far the numbers are: "no observable difference".
+ppc32 is the only architecture having that. Even ppc64 doesn't have it.
 
-It would have to be not just observable, but actually meaningful for
-me to go "ok, we'll add this crazy flag that nobody else cares about".
+Seems like GCC is still happy without it.
 
-And honestly, from everything I've seen on page table walker caches:
-they are great, but once you start remapping big ranges and
-invallidating megabytes of TLB's, the walker caches just aren't going
-to be your issue.
+Drop it for good.
 
-But: numbers talk.  I'd take the sane generic interfaces as a first
-cut. If somebody then has really compelling numbers, we can _then_
-look at that "optimize for odd page table walker cache situation"
-case.
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/kernel/misc_32.S | 6 ------
+ 1 file changed, 6 deletions(-)
 
-And in the meantime, maybe you can talk to the hardware people and
-tell them that you want the "flush range" capability to work right,
-and that if the walker cache is <i>so</i> important they shouldn't
-have made it a all-or-nothing flush.
+diff --git a/arch/powerpc/kernel/misc_32.S b/arch/powerpc/kernel/misc_32.S
+index 6a076bef2932..39ab15419592 100644
+--- a/arch/powerpc/kernel/misc_32.S
++++ b/arch/powerpc/kernel/misc_32.S
+@@ -388,9 +388,3 @@ _GLOBAL(start_secondary_resume)
+ 	bl	start_secondary
+ 	b	.
+ #endif /* CONFIG_SMP */
+-	
+-/*
+- * This routine is just here to keep GCC happy - sigh...
+- */
+-_GLOBAL(__main)
+-	blr
+-- 
+2.25.0
 
-            Linus
