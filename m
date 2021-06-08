@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9131439FC09
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 18:10:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD34D39FC14
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 18:10:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FzwDm0Ctlz3dP5
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Jun 2021 02:10:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FzwFP0vskz3dbB
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Jun 2021 02:10:33 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=Ay8U/aM3;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=ZySEe4D5;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,34 +19,33 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=Ay8U/aM3; 
+ header.s=bombadil.20210309 header.b=ZySEe4D5; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fzw8z5SWdz301J
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Jun 2021 02:06:43 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fzw960qVmz3bTb
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Jun 2021 02:06:50 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=VJNoOLPDvc5xu3y+i4aVzvsoJRnShX/8Sf+3m5K1BjA=; b=Ay8U/aM3HgzodlZNkVKqaH3JIW
- rTwNhHqPm4zx8CrV68VSyfJaD7NErjIc2oUzYjkIs9qH60mq/BMnxp8EJN08iqshI7VrR+0XMZYxK
- r6n+rW/nWhgNySp15k9UwrXPl6aulxl+1L0jo3+aqxnDVEzscCAdONz+1Xn3H/SVlehWIVCdTgVFm
- W/wh2A4yjifNnmEp5RBmlG+9cTsdu215NSyXUNM8FKf4MEG475xZLKjwhsC3M1jw5A3iT5qMR2ri4
- S/cNoGCUcy6Or054gHSx3OYG4BrmEYkDMfB+2hpC1o17HO8siwvUNYNhF85F5E0B0XNl1UnBV0BOx
- RtiOva8A==;
+ bh=HwW7/FcNSPjoRVBBgiBQclHiHBGFA68ApXQNMgI7IuU=; b=ZySEe4D5FHucQqfuf1IfwHVuKW
+ WEHowatN5Tz2b3Z9grV/ImybjMv//WEMk+nNaqsU/kHB1CkTwBz9uwV6tqL+NLTC16eFXX4KUjdlm
+ KNe+VlkXw296qZipYK9wua0s0mArIUMI5dTf7VnXNQACY7jfkA0ecBfVzsyPgispTyntJziaW50av
+ bxo55suRvkOWzp3BY6bVQf82DwObcQ9EC8uIvE37Y8razpBbm9ai7HDfedZaZTWb5CjY0Y0uFMxvS
+ xqYCerXgjUgMWiaesg9WqaPvdlFa/PXNUX/k+E9vjO/L20OtCWESv7G+isYWlB5y2kI5cj2BK3k6N
+ RoH6CpdA==;
 Received: from [2001:4bb8:192:ff5f:74ed:7c4f:a5ee:8dcb] (helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lqeFN-009Rfa-Dj; Tue, 08 Jun 2021 16:06:34 +0000
+ id 1lqeFQ-009Rge-Pv; Tue, 08 Jun 2021 16:06:37 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 08/16] dm-writecache: use bvec_kmap_local instead of
- bvec_kmap_irq
-Date: Tue,  8 Jun 2021 18:05:55 +0200
-Message-Id: <20210608160603.1535935-9-hch@lst.de>
+Subject: [PATCH 09/16] ps3disk: use memcpy_{from,to}_bvec
+Date: Tue,  8 Jun 2021 18:05:56 +0200
+Message-Id: <20210608160603.1535935-10-hch@lst.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210608160603.1535935-1-hch@lst.de>
 References: <20210608160603.1535935-1-hch@lst.de>
@@ -76,44 +75,47 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There is no need to disable interrupts in bio_copy_block, and the local
-only mappings helps to avoid any sort of problems with stray writes
-into the bio data.
+Use the bvec helpers instead of open coding the copy.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- drivers/md/dm-writecache.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/block/ps3disk.c | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/md/dm-writecache.c b/drivers/md/dm-writecache.c
-index aecc246ade26..93ca454eaca9 100644
---- a/drivers/md/dm-writecache.c
-+++ b/drivers/md/dm-writecache.c
-@@ -1205,14 +1205,13 @@ static void memcpy_flushcache_optimized(void *dest, void *source, size_t size)
- static void bio_copy_block(struct dm_writecache *wc, struct bio *bio, void *data)
- {
- 	void *buf;
--	unsigned long flags;
- 	unsigned size;
- 	int rw = bio_data_dir(bio);
- 	unsigned remaining_size = wc->block_size;
+diff --git a/drivers/block/ps3disk.c b/drivers/block/ps3disk.c
+index ba3ece56cbb3..f2eb0225814f 100644
+--- a/drivers/block/ps3disk.c
++++ b/drivers/block/ps3disk.c
+@@ -84,26 +84,13 @@ static void ps3disk_scatter_gather(struct ps3_storage_device *dev,
+ 	unsigned int offset = 0;
+ 	struct req_iterator iter;
+ 	struct bio_vec bvec;
+-	unsigned int i = 0;
+-	size_t size;
+-	void *buf;
  
- 	do {
- 		struct bio_vec bv = bio_iter_iovec(bio, bio->bi_iter);
--		buf = bvec_kmap_irq(&bv, &flags);
-+		buf = bvec_kmap_local(&bv);
- 		size = bv.bv_len;
- 		if (unlikely(size > remaining_size))
- 			size = remaining_size;
-@@ -1230,7 +1229,7 @@ static void bio_copy_block(struct dm_writecache *wc, struct bio *bio, void *data
- 			memcpy_flushcache_optimized(data, buf, size);
- 		}
- 
+ 	rq_for_each_segment(bvec, req, iter) {
+-		unsigned long flags;
+-		dev_dbg(&dev->sbd.core, "%s:%u: bio %u: %u sectors from %llu\n",
+-			__func__, __LINE__, i, bio_sectors(iter.bio),
+-			iter.bio->bi_iter.bi_sector);
+-
+-		size = bvec.bv_len;
+-		buf = bvec_kmap_irq(&bvec, &flags);
+ 		if (gather)
+-			memcpy(dev->bounce_buf+offset, buf, size);
++			memcpy_from_bvec(dev->bounce_buf + offset, &bvec);
+ 		else
+-			memcpy(buf, dev->bounce_buf+offset, size);
+-		offset += size;
+-		flush_kernel_dcache_page(bvec.bv_page);
 -		bvec_kunmap_irq(buf, &flags);
-+		kunmap_local(buf);
+-		i++;
++			memcpy_to_bvec(&bvec, dev->bounce_buf + offset);
++		offset += bvec.bv_len;
+ 	}
+ }
  
- 		data = (char *)data + size;
- 		remaining_size -= size;
 -- 
 2.30.2
 
