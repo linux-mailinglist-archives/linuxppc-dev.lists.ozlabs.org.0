@@ -2,78 +2,104 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD9D439ED6A
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 06:11:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DE5439EDC3
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 06:40:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FzcHs2dLYz30Bc
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 14:11:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fzcx95wmnz3bnq
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 14:40:29 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=tcYZlrbv;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WU89kPye;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::634;
- helo=mail-pl1-x634.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=tcYZlrbv; dkim-atps=neutral
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com
- [IPv6:2607:f8b0:4864:20::634])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=WU89kPye; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FzcHQ0yS3z2yXX
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Jun 2021 14:11:13 +1000 (AEST)
-Received: by mail-pl1-x634.google.com with SMTP id 11so9901055plk.12
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Jun 2021 21:11:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=fujJUO0q2KI09Gf2Ts/MK4OrEH1MH3pS5M4uIA8d5KY=;
- b=tcYZlrbvJ6bwWx5hOtunH5FlXCQSIc1mB7bzpNZe23fnuXN0P1B9qK3liym3q2fqMF
- TUBPyWK1ZOMpCS5yddkJ84bAoIVftpAefDggUsr/uTdyBxgzLoSfNQgO8rOiBSXxqygT
- GFbGXnJNu5IgI+IGstU3e+dbZmSTU3+aKi63tb64KMuXH0FHCXbVV3RvKJg36CCH1FMk
- IKqtLtxeEw6JgGPC948jypG9g07rOnFHiNY01N8t+NBzZqm0DAIvsdbIQqiGg0jLoAB9
- iXjAI2gZS5Du/dCK9shEQibTPfE88qR6UO3ZkZNZMTDFXB7KAlo11gDoRr6gyUtrDQRk
- cREA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=fujJUO0q2KI09Gf2Ts/MK4OrEH1MH3pS5M4uIA8d5KY=;
- b=Hi6ko3el3SPqMs9cnTg2ugXNTQmgKT9hoK5iXWiw6RlmCpCK9LfqiGYjvpDSIviuqh
- Do5Jr3TC3AfCdV16DirGYXPX4mOHdobcgJB+k+T/9HWxrdEuSelujMszpO97VcEk+M8k
- WBfvbAjN+lzeWTr/kn8adCSZ/+Smou2Oxl3YJYZ+aZUdKXmr2KcqF5t7MYs0+1UuUHrw
- qrhaYRw/6N5HibD8rUKomV6ieRIlR/SrQ1PseI43pJgcy/1Zzf1mNTqEhUleffZ+WON/
- MW8fMgXEjw4FnUYtyKewcf7ooWZlziuxObSVjmtIr+AVz1JkcA6J3jwUAuCoa9q1nQby
- EGfg==
-X-Gm-Message-State: AOAM53025gCuggR9dIFQHtVZh7oakEyXuBcjYaExIa+fTuXaFiquI6Vg
- fCRQ6QTfcLM+3AtcBOwQSpw=
-X-Google-Smtp-Source: ABdhPJxfxri2+uhmnYtzY5IcP7B7q38QCMIjrONmVg0s3CUrHRF1z33+8Ff6Hymls1OmPLXdOM7vxA==
-X-Received: by 2002:a17:90a:8b0d:: with SMTP id
- y13mr4219564pjn.88.1623125469552; 
- Mon, 07 Jun 2021 21:11:09 -0700 (PDT)
-Received: from localhost (60-242-147-73.tpgi.com.au. [60.242.147.73])
- by smtp.gmail.com with ESMTPSA id w79sm2876301pff.21.2021.06.07.21.11.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 07 Jun 2021 21:11:09 -0700 (PDT)
-Date: Tue, 08 Jun 2021 14:11:04 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v4 1/4] lazy tlb: introduce lazy mm refcount helper
- functions
-To: Andrew Morton <akpm@linux-foundation.org>
-References: <20210605014216.446867-1-npiggin@gmail.com>
- <20210605014216.446867-2-npiggin@gmail.com>
- <20210607164934.d453adcc42473e84beb25db3@linux-foundation.org>
- <1623116020.vyls9ehp49.astroid@bobo.none>
- <20210607184805.eddf8eb26b80e8af85d5777e@linux-foundation.org>
-In-Reply-To: <20210607184805.eddf8eb26b80e8af85d5777e@linux-foundation.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fzcwd5NJ3z2xy4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Jun 2021 14:40:00 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 1584WncM091872; Tue, 8 Jun 2021 00:39:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=y6UKFNAlMeCoqG0SMVNwxsvVLtqOf6seSG2nQiVyHqs=;
+ b=WU89kPyejuTszVl5AQlzLfcvWa8l4dk2GVxxIFMf9fZCyet59a8Ks+emWawUiM8U6b3X
+ H0zzeVlEDVrtRnLAuKS90reweirxMIS+QfPNAE21/sddsvdoSUNXZ/uyPJWFP7DvJ0Eh
+ +Cb31b/6deAGvKdjSsIQoUaLwHXkQvG5C/VGu9SsAo0SeaSfUnB54WArIeS+b9ktX5wY
+ aRkOgQCRQkWFjuYYTfbR3J9YxPRxy08Iya+qt9g6upLakzqzhihdCoZ7TurWIryuyThv
+ YwRvaB9jeUGMgcua+fvDukfPapkqo6LsnbZu1rsoeU+fRgr6ueT4m72l2QNrFoWL/XzE kw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 391yr2te6n-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 08 Jun 2021 00:39:44 -0400
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1584XYZx094419;
+ Tue, 8 Jun 2021 00:39:44 -0400
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 391yr2te6d-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 08 Jun 2021 00:39:44 -0400
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1584clEY010183;
+ Tue, 8 Jun 2021 04:39:42 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma06fra.de.ibm.com with ESMTP id 3900hhgppd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 08 Jun 2021 04:39:42 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1584ddBY33095952
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 8 Jun 2021 04:39:39 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 73E284C059;
+ Tue,  8 Jun 2021 04:39:39 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8AD2E4C05C;
+ Tue,  8 Jun 2021 04:39:37 +0000 (GMT)
+Received: from [9.199.43.138] (unknown [9.199.43.138])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  8 Jun 2021 04:39:37 +0000 (GMT)
+Subject: Re: [PATCH v7 00/11] Speedup mremap on ppc64
+To: Nick Piggin <npiggin@gmail.com>
+References: <20210607055131.156184-1-aneesh.kumar@linux.ibm.com>
+ <CAPa8GCAmgUyqqAcuLC7KxDvDepkqhhvVcwgSGJh92PT+LoMQcw@mail.gmail.com>
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Message-ID: <3f2b7150-eaba-e1ab-bb88-53a3510727b9@linux.ibm.com>
+Date: Tue, 8 Jun 2021 10:09:36 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
+In-Reply-To: <CAPa8GCAmgUyqqAcuLC7KxDvDepkqhhvVcwgSGJh92PT+LoMQcw@mail.gmail.com>
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: yHmOaJINt8dkj1ABM1GO2cyw1fBaP23J
+X-Proofpoint-ORIG-GUID: n_ktbhxQyeSJ8-uwD-PcLxBW_JT_-ggm
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Message-Id: <1623125298.bx63h3mopj.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-06-08_01:2021-06-04,
+ 2021-06-08 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 mlxscore=0
+ malwarescore=0 phishscore=0 spamscore=0 suspectscore=0 lowpriorityscore=0
+ mlxlogscore=992 clxscore=1015 priorityscore=1501 impostorscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2106080030
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,89 +111,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org,
- =?iso-8859-1?q?Randy=0A?= Dunlap <rdunlap@infradead.org>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Andy Lutomirski <luto@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "kaleshsingh@google.com" <kaleshsingh@google.com>,
+ "joel@joelfernandes.org" <joel@joelfernandes.org>,
+ "Kirill A . Shutemov" <kirill@shutemov.name>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Andrew Morton's message of June 8, 2021 11:48 am:
-> On Tue, 08 Jun 2021 11:39:56 +1000 Nicholas Piggin <npiggin@gmail.com> wr=
-ote:
->=20
->> > Looks like a functional change.  What's happening here?
->>=20
->> That's kthread_use_mm being clever about the lazy tlb mm. If it happened=
-=20
->> that the kthread had inherited a the lazy tlb mm that happens to be the=20
->> one we want to use here, then we already have a refcount to it via the=20
->> lazy tlb ref.
->>=20
->> So then it doesn't have to touch the refcount, but rather just converts
->> it from the lazy tlb ref to the returned reference. If the lazy tlb mm
->> doesn't get a reference, we can't do that.
->=20
-> Please cover this in the changelog and perhaps a code comment.
->=20
+On 6/7/21 3:40 PM, Nick Piggin wrote:
+> On Monday, 7 June 2021, Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com> 
+> wrote: This patchset enables MOVE_PMD/MOVE_PUD support on power. This 
+> requires the platform to support updating higher-level page tables 
+> without updating page table ZjQcmQRYFpfptBannerStart
+> This Message Is From an External Sender
+> This message came from outside your organization.
+> ZjQcmQRYFpfptBannerEnd
+> 
+> 
+> On Monday, 7 June 2021, Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com 
+> <mailto:aneesh.kumar@linux.ibm.com>> wrote:
+> 
+> 
+>     This patchset enables MOVE_PMD/MOVE_PUD support on power. This requires
+>     the platform to support updating higher-level page tables without
+>     updating page table entries. This also needs to invalidate the Page Walk
+>     Cache on architecture supporting the same.
+> 
+>     Changes from v6:
+>     * Update ppc64 flush_tlb_range to invalidate page walk cache.
+> 
+> 
+> I'd really rather not do this, I'm not sure if micro bench mark captures 
+> everything.
+> 
+> Page tables coming from L2/L3 probably aren't the primary purpose or 
+> biggest benefit of intermediate level caches.
+> 
+> The situation on POWER with nest mmu (coherent accelerators) is 
+> magnified. They have huge page walk cashes to make up for the fact they 
+> don't have data caches for walking page tables which makes the 
+> invalidation more painful in terms of subsequent misses, but also 
+> latency to invalidate (can be order of microseconds whereas a page 
+> invalidate is a couple of orders of magnitude faster).
+> 
 
-Yeah fair enough, I'll even throw in a bug fix as well (your nose was right=
-,=20
-and it was too clever for me by half...)
+If we are using NestMMU, we already upgrade that flush to invalidate 
+page walk cache right? ie, if we have > PMD_SIZE range, we would upgrade 
+the invalidate to a pid flush via
 
-Thanks,
-Nick
+flush_pid = nr_pages > tlb_single_page_flush_ceiling;
+	
+and if it is PID flush if we are using NestMMU we already upgrade a 
+RIC_FLUSH_TLB to RIC_FLUSH_ALL ?
 
---
-Fix a refcounting bug in kthread_use_mm (the mm reference is increased
-unconditionally now, but the lazy tlb refcount is still only dropped only
-if mm !=3D active_mm).
+> Yes it is a deficiency of the ppc invalidation architecture, we are 
+> aware and would like to improve it but for now those is what we have.
+> 
 
-And an update for the changelog:
-
-If a kernel thread's current lazy tlb mm happens to be the one it wants to
-use, then kthread_use_mm() cleverly transfers the mm refcount from the
-lazy tlb mm reference to the returned reference. If the lazy tlb mm
-reference is no longer identical to a normal reference, this trick does not
-work, so that is changed to be explicit about the two references.
-
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- kernel/kthread.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
-
-diff --git a/kernel/kthread.c b/kernel/kthread.c
-index b70e28431a01..5e9797b2d06e 100644
---- a/kernel/kthread.c
-+++ b/kernel/kthread.c
-@@ -1314,6 +1314,11 @@ void kthread_use_mm(struct mm_struct *mm)
- 	WARN_ON_ONCE(!(tsk->flags & PF_KTHREAD));
- 	WARN_ON_ONCE(tsk->mm);
-=20
-+	/*
-+	 * It's possible that tsk->active_mm =3D=3D mm here, but we must
-+	 * still mmgrab(mm) and mmdrop_lazy_tlb(active_mm), because lazy
-+	 * mm may not have its own refcount (see mmgrab/drop_lazy_tlb()).
-+	 */
- 	mmgrab(mm);
-=20
- 	task_lock(tsk);
-@@ -1338,12 +1343,9 @@ void kthread_use_mm(struct mm_struct *mm)
- 	 * memory barrier after storing to tsk->mm, before accessing
- 	 * user-space memory. A full memory barrier for membarrier
- 	 * {PRIVATE,GLOBAL}_EXPEDITED is implicitly provided by
--	 * mmdrop(), or explicitly with smp_mb().
-+	 * mmdrop_lazy_tlb().
- 	 */
--	if (active_mm !=3D mm)
--		mmdrop_lazy_tlb(active_mm);
--	else
--		smp_mb();
-+	mmdrop_lazy_tlb(active_mm);
-=20
- 	to_kthread(tsk)->oldfs =3D force_uaccess_begin();
- }
---=20
-2.23.0
-
+-aneesh
