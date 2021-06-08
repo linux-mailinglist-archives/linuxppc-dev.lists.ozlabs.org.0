@@ -2,46 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F207639EA77
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 01:53:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AA8D39EA8F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 02:07:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FzVZ03B02z3bxd
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 09:53:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FzVsy4tgsz3073
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 10:07:18 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20161025 header.b=aXgiVWDs;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com;
- envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN>)
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::c36;
+ helo=mail-oo1-xc36.google.com; envelope-from=hughd@google.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20161025 header.b=aXgiVWDs; dkim-atps=neutral
+Received: from mail-oo1-xc36.google.com (mail-oo1-xc36.google.com
+ [IPv6:2607:f8b0:4864:20::c36])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FzVYG1mGKz2yjJ
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Jun 2021 09:52:48 +1000 (AEST)
-IronPort-SDR: PdEKKWiom0gG1z2JuSfapHc8H9irV4lpQVGRhQg4C4jxmK/sOyDSHprYe8+BebRCoWF/1yWB64
- eiwAVZwRQm/g==
-X-IronPort-AV: E=McAfee;i="6200,9189,10008"; a="290368378"
-X-IronPort-AV: E=Sophos;i="5.83,256,1616482800"; d="scan'208";a="290368378"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
- by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jun 2021 16:52:44 -0700
-IronPort-SDR: +eswq4V239YUexroUSETX2OcgDXl5VgubeMsGBVUQ3UVECkD4mKgcQj5OoR5B13rK9iiRn7mcA
- 8hlnWFuewtmA==
-X-IronPort-AV: E=Sophos;i="5.83,256,1616482800"; d="scan'208";a="634889789"
-Received: from dwillia2-desk3.jf.intel.com (HELO
- dwillia2-desk3.amr.corp.intel.com) ([10.54.39.25])
- by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jun 2021 16:52:43 -0700
-Subject: [PATCH v2] libnvdimm/pmem: Fix blk_cleanup_disk() usage
-From: Dan Williams <dan.j.williams@intel.com>
-To: axboe@kernel.dk
-Date: Mon, 07 Jun 2021 16:52:43 -0700
-Message-ID: <162310994435.1571616.334551212901820961.stgit@dwillia2-desk3.amr.corp.intel.com>
-In-Reply-To: <162310861219.1571453.6561642225122047071.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <162310861219.1571453.6561642225122047071.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: StGit/0.18-3-g996c
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FzVsV4zpPz2xvB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Jun 2021 10:06:52 +1000 (AEST)
+Received: by mail-oo1-xc36.google.com with SMTP id
+ d27-20020a4a3c1b0000b029024983ef66dbso1791430ooa.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Jun 2021 17:06:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=date:from:to:cc:subject:in-reply-to:message-id:references
+ :mime-version; bh=Bd5L0/RPBE9zDsj0Ysf0Zjs7T2z0nJBAm/sFA95+0hk=;
+ b=aXgiVWDspiCZ+EoqE/VOtnGxSJjzR371qQ+LohuyLiEuG8h5+Ayt2UyEr41d1fuM1g
+ Pr+3Qcg18MEKxgperYAB4lSvQ1ycBOBRlXl7vGerBySrplNVKtYVcZ8qY1M1akT59zJq
+ WhfTiU94ZyhgXInj5e89hY7Z/EkggHAUyWaI75/d9CZiO/U58CxX4cz1SN2IiQJQlJSU
+ KjTXye5tORDo/w7jQogeMwLBsIBOmuBRTCDXZNNIdSQw8IpXXfdMbKR7y3bGpia17tCm
+ 9HJ6265DMSrfyLUKw8FANuh30yGP2s03/ES6ouLDT3WbyvkT36LN3FMS1yMloCfDVbjN
+ w/bA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:in-reply-to:message-id
+ :references:mime-version;
+ bh=Bd5L0/RPBE9zDsj0Ysf0Zjs7T2z0nJBAm/sFA95+0hk=;
+ b=NubxhU2+6bgoxp357KZAXESkXgMFL/SBLU/IYdPyzQmo02U/rRVKWZQpEaJjpyKOgS
+ NLZwojbkNTTASSTDwMVrTA2RL6zE2LaLQ6pXgMCqeCO5uWAYuPZpfN3B9QsC6Bx5Y/g7
+ aPsNljVrjCpbsDIN9deOTeU3EYf0r30yfnWkIjRh/dIJOmEbViQDAy6fmNKA3VDXcLpB
+ dWB4gJvIrQudME8/eTrqXHJ4dx9aEHBwF+RH1FXRZ0TSWMeEuZYrm69RRyxnIHtYrlB2
+ iItqkE8EOJAlMnW0ozpT+wk36I6Df2vFkhkY1YiClEOZ7qpCF48Aaaih7Du710XiAaIo
+ QRLA==
+X-Gm-Message-State: AOAM532S/tXcA+pXToCzsl2+yxhfSsauuozbTiRfo/HEcXn79XxTajQY
+ 8UUXIAXrGLD/nRVU+9jurqd4hPouZRXLMQ==
+X-Google-Smtp-Source: ABdhPJwtNQWc0y6OiSd0xS7Vo8frW9gjk1DExvqYGd2GhK0AZVqHifBjQcBC5o7vd7wj0BtLaQVvcg==
+X-Received: by 2002:a4a:d285:: with SMTP id h5mr5554903oos.71.1623110808129;
+ Mon, 07 Jun 2021 17:06:48 -0700 (PDT)
+Received: from ripple.attlocal.net
+ (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+ by smtp.gmail.com with ESMTPSA id s6sm2681342otk.71.2021.06.07.17.06.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 07 Jun 2021 17:06:47 -0700 (PDT)
+Date: Mon, 7 Jun 2021 17:06:28 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+X-X-Sender: hugh@ripple.anvils
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH v7 01/11] mm/mremap: Fix race between MOVE_PMD mremap
+ and pageout
+In-Reply-To: <20210607055131.156184-2-aneesh.kumar@linux.ibm.com>
+Message-ID: <f789af6-8924-3b83-6f82-c662175af126@google.com>
+References: <20210607055131.156184-1-aneesh.kumar@linux.ibm.com>
+ <20210607055131.156184-2-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,67 +82,177 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>, nvdimm@lists.linux.dev,
- Ulf Hansson <ulf.hansson@linaro.org>, linux-block@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, npiggin@gmail.com,
+ linux-mm@kvack.org, kaleshsingh@google.com, joel@joelfernandes.org,
+ "Kirill A . Shutemov" <kirill@shutemov.name>, akpm@linux-foundation.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The queue_to_disk() helper can not be used after del_gendisk()
-communicate @disk via the pgmap->owner.
+On Mon, 7 Jun 2021, Aneesh Kumar K.V wrote:
 
-Otherwise, queue_to_disk() returns NULL resulting in the splat below.
+> CPU 1				CPU 2					CPU 3
+> 
+> mremap(old_addr, new_addr)      page_shrinker/try_to_unmap_one
+> 
+> mmap_write_lock_killable()
+> 
+> 				addr = old_addr
+> 				lock(pte_ptl)
+> lock(pmd_ptl)
+> pmd = *old_pmd
+> pmd_clear(old_pmd)
+> flush_tlb_range(old_addr)
+> 
+> *new_pmd = pmd
+> 									*new_addr = 10; and fills
+> 									TLB with new addr
+> 									and old pfn
+> 
+> unlock(pmd_ptl)
+> 				ptep_clear_flush()
+> 				old pfn is free.
+> 									Stale TLB entry
+> 
+> Fix this race by holding pmd lock in pageout. This still doesn't handle the race
+> between MOVE_PUD and pageout.
+> 
+> Fixes: 2c91bd4a4e2e ("mm: speed up mremap by 20x on large regions")
+> Link: https://lore.kernel.org/linux-mm/CAHk-=wgXVR04eBNtxQfevontWnP6FDm+oj5vauQXP3S-huwbPw@mail.gmail.com
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 
- Kernel attempted to read user page (330) - exploit attempt? (uid: 0)
- BUG: Kernel NULL pointer dereference on read at 0x00000330
- Faulting instruction address: 0xc000000000906344
- Oops: Kernel access of bad area, sig: 11 [#1]
- [..]
- NIP [c000000000906344] pmem_pagemap_cleanup+0x24/0x40
- LR [c0000000004701d4] memunmap_pages+0x1b4/0x4b0
- Call Trace:
- [c000000022cbb9c0] [c0000000009063c8] pmem_pagemap_kill+0x28/0x40 (unreliable)
- [c000000022cbb9e0] [c0000000004701d4] memunmap_pages+0x1b4/0x4b0
- [c000000022cbba90] [c0000000008b28a0] devm_action_release+0x30/0x50
- [c000000022cbbab0] [c0000000008b39c8] release_nodes+0x2f8/0x3e0
- [c000000022cbbb60] [c0000000008ac440] device_release_driver_internal+0x190/0x2b0
- [c000000022cbbba0] [c0000000008a8450] unbind_store+0x130/0x170
+This seems very wrong to me, to require another level of locking in the
+rmap lookup, just to fix some new pagetable games in mremap.
 
-Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-Fixes: 87eb73b2ca7c ("nvdimm-pmem: convert to blk_alloc_disk/blk_cleanup_disk")
-Link: http://lore.kernel.org/r/DFB75BA8-603F-4A35-880B-C5B23EF8FA7D@linux.vnet.ibm.com
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
-Changes in v2 Improve the changelog.
+But Linus asked "Am I missing something?": neither of you have mentioned
+mremap's take_rmap_locks(), so I hope that already meets your need.  And
+if it needs to be called more often than before (see "need_rmap_locks"),
+that's probably okay.
 
- drivers/nvdimm/pmem.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Hugh
 
-diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
-index 31f3c4bd6f72..fc6b78dd2d24 100644
---- a/drivers/nvdimm/pmem.c
-+++ b/drivers/nvdimm/pmem.c
-@@ -337,8 +337,9 @@ static void pmem_pagemap_cleanup(struct dev_pagemap *pgmap)
- {
- 	struct request_queue *q =
- 		container_of(pgmap->ref, struct request_queue, q_usage_counter);
-+	struct pmem_device *pmem = pgmap->owner;
- 
--	blk_cleanup_disk(queue_to_disk(q));
-+	blk_cleanup_disk(pmem->disk);
- }
- 
- static void pmem_release_queue(void *pgmap)
-@@ -427,6 +428,7 @@ static int pmem_attach_disk(struct device *dev,
- 	q = disk->queue;
- 
- 	pmem->disk = disk;
-+	pmem->pgmap.owner = pmem;
- 	pmem->pfn_flags = PFN_DEV;
- 	pmem->pgmap.ref = &q->q_usage_counter;
- 	if (is_nd_pfn(dev)) {
-
+> ---
+>  include/linux/rmap.h |  9 ++++++---
+>  mm/page_vma_mapped.c | 36 ++++++++++++++++++------------------
+>  2 files changed, 24 insertions(+), 21 deletions(-)
+> 
+> diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+> index def5c62c93b3..272ab0c2b60b 100644
+> --- a/include/linux/rmap.h
+> +++ b/include/linux/rmap.h
+> @@ -207,7 +207,8 @@ struct page_vma_mapped_walk {
+>  	unsigned long address;
+>  	pmd_t *pmd;
+>  	pte_t *pte;
+> -	spinlock_t *ptl;
+> +	spinlock_t *pte_ptl;
+> +	spinlock_t *pmd_ptl;
+>  	unsigned int flags;
+>  };
+>  
+> @@ -216,8 +217,10 @@ static inline void page_vma_mapped_walk_done(struct page_vma_mapped_walk *pvmw)
+>  	/* HugeTLB pte is set to the relevant page table entry without pte_mapped. */
+>  	if (pvmw->pte && !PageHuge(pvmw->page))
+>  		pte_unmap(pvmw->pte);
+> -	if (pvmw->ptl)
+> -		spin_unlock(pvmw->ptl);
+> +	if (pvmw->pte_ptl)
+> +		spin_unlock(pvmw->pte_ptl);
+> +	if (pvmw->pmd_ptl)
+> +		spin_unlock(pvmw->pmd_ptl);
+>  }
+>  
+>  bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw);
+> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+> index 2cf01d933f13..87a2c94c7e27 100644
+> --- a/mm/page_vma_mapped.c
+> +++ b/mm/page_vma_mapped.c
+> @@ -47,8 +47,10 @@ static bool map_pte(struct page_vma_mapped_walk *pvmw)
+>  				return false;
+>  		}
+>  	}
+> -	pvmw->ptl = pte_lockptr(pvmw->vma->vm_mm, pvmw->pmd);
+> -	spin_lock(pvmw->ptl);
+> +	if (USE_SPLIT_PTE_PTLOCKS) {
+> +		pvmw->pte_ptl = pte_lockptr(pvmw->vma->vm_mm, pvmw->pmd);
+> +		spin_lock(pvmw->pte_ptl);
+> +	}
+>  	return true;
+>  }
+>  
+> @@ -162,8 +164,8 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+>  		if (!pvmw->pte)
+>  			return false;
+>  
+> -		pvmw->ptl = huge_pte_lockptr(page_hstate(page), mm, pvmw->pte);
+> -		spin_lock(pvmw->ptl);
+> +		pvmw->pte_ptl = huge_pte_lockptr(page_hstate(page), mm, pvmw->pte);
+> +		spin_lock(pvmw->pte_ptl);
+>  		if (!check_pte(pvmw))
+>  			return not_found(pvmw);
+>  		return true;
+> @@ -179,6 +181,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+>  	if (!pud_present(*pud))
+>  		return false;
+>  	pvmw->pmd = pmd_offset(pud, pvmw->address);
+> +	pvmw->pmd_ptl = pmd_lock(mm, pvmw->pmd);
+>  	/*
+>  	 * Make sure the pmd value isn't cached in a register by the
+>  	 * compiler and used as a stale value after we've observed a
+> @@ -186,7 +189,6 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+>  	 */
+>  	pmde = READ_ONCE(*pvmw->pmd);
+>  	if (pmd_trans_huge(pmde) || is_pmd_migration_entry(pmde)) {
+> -		pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+>  		if (likely(pmd_trans_huge(*pvmw->pmd))) {
+>  			if (pvmw->flags & PVMW_MIGRATION)
+>  				return not_found(pvmw);
+> @@ -206,14 +208,10 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+>  				}
+>  			}
+>  			return not_found(pvmw);
+> -		} else {
+> -			/* THP pmd was split under us: handle on pte level */
+> -			spin_unlock(pvmw->ptl);
+> -			pvmw->ptl = NULL;
+>  		}
+> -	} else if (!pmd_present(pmde)) {
+> -		return false;
+> -	}
+> +	} else if (!pmd_present(pmde))
+> +		return not_found(pvmw);
+> +
+>  	if (!map_pte(pvmw))
+>  		goto next_pte;
+>  	while (1) {
+> @@ -233,19 +231,21 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+>  			/* Did we cross page table boundary? */
+>  			if (pvmw->address % PMD_SIZE == 0) {
+>  				pte_unmap(pvmw->pte);
+> -				if (pvmw->ptl) {
+> -					spin_unlock(pvmw->ptl);
+> -					pvmw->ptl = NULL;
+> +				if (pvmw->pte_ptl) {
+> +					spin_unlock(pvmw->pte_ptl);
+> +					pvmw->pte_ptl = NULL;
+>  				}
+> +				spin_unlock(pvmw->pmd_ptl);
+> +				pvmw->pmd_ptl = NULL;
+>  				goto restart;
+>  			} else {
+>  				pvmw->pte++;
+>  			}
+>  		} while (pte_none(*pvmw->pte));
+>  
+> -		if (!pvmw->ptl) {
+> -			pvmw->ptl = pte_lockptr(mm, pvmw->pmd);
+> -			spin_lock(pvmw->ptl);
+> +		if (USE_SPLIT_PTE_PTLOCKS && !pvmw->pte_ptl) {
+> +			pvmw->pte_ptl = pte_lockptr(mm, pvmw->pmd);
+> +			spin_lock(pvmw->pte_ptl);
+>  		}
+>  	}
+>  }
+> -- 
+> 2.31.1
