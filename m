@@ -2,51 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58FD339F224
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 11:17:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7467139F2AB
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 11:42:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fzl5C5N66z3c5p
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 19:17:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fzldx5sgcz30JY
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 19:42:45 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CBfKZuYB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=shutemov-name.20150623.gappssmtp.com header.i=@shutemov-name.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=u3Oe4L5r;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=shutemov.name
+ (client-ip=2a00:1450:4864:20::135; helo=mail-lf1-x135.google.com;
+ envelope-from=kirill@shutemov.name; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=CBfKZuYB; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=shutemov-name.20150623.gappssmtp.com
+ header.i=@shutemov-name.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=u3Oe4L5r; dkim-atps=neutral
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com
+ [IPv6:2a00:1450:4864:20::135])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fzl1L73n7z306W
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Jun 2021 19:14:30 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B55CA61278;
- Tue,  8 Jun 2021 09:14:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1623143668;
- bh=lDEh/GlZ6IHzCVgoifZXFj4eSjBGzRR223ZmBbEbu7M=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=CBfKZuYBhfUYXhnu1/Q+GcZTRvIyVwqk4OlKe/GEc17t/9vnTzCn3+6STQ5/LrWyP
- 8QFWfCwt8RuCmCYqGrfuMUYMf8TuGEDAHwre0FfL8FXqeF48qkGpvZpcwYFJzt4XGO
- JcyHuTpulyjZnXu14di6K2Cf1M5TiHD6xEeC+2cmnNhaNtpIQyCSjOB8JNJfb/PPQ1
- Wb5J09t+fossaPoReHqWdEdSkJJqD+/z2/L/BHoqjkvy/9MBHHgzSbkeuZ/ex8Dz0T
- 0m07Bad0h9qq0FDqyCIiuAFw81XELQT4ubN6MTX3ywS0SdKnkYIQnokWOfWnAoSsd0
- DZubZDkPDz+fA==
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v3 9/9] mm: replace CONFIG_FLAT_NODE_MEM_MAP with
- CONFIG_FLATMEM
-Date: Tue,  8 Jun 2021 12:13:16 +0300
-Message-Id: <20210608091316.3622-10-rppt@kernel.org>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20210608091316.3622-1-rppt@kernel.org>
-References: <20210608091316.3622-1-rppt@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FzldS2qPwz2xYx
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Jun 2021 19:42:18 +1000 (AEST)
+Received: by mail-lf1-x135.google.com with SMTP id m21so15366464lfg.13
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 08 Jun 2021 02:42:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=shutemov-name.20150623.gappssmtp.com; s=20150623;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=UbrlioUAOAIyVAz7Y1adXjaiDjtyUMWku2wdnzCdoiE=;
+ b=u3Oe4L5rvuo3QWAa2Fa/oNFoEr5gQFIiNX0Bc578VqkXIRhova6+7Rw2hLzmfC+3UP
+ fSLu6F/51qzyA6Aaal9PU1+i7QWP4G2jxT2LxOGlqFxgcyUp03swE7NAbDyHXbLx53xK
+ yXmxz3cEtQGVnR1sABRznZ+WRD/Txxj8wM2iyjxg8dVe680h46fwqWyQnGPWRfN+jfi1
+ yUGxtWvgDpaAWUYzN+LLqdgcmqamN8cAV4cK3j+J1LTxhW1Jt/eOR34KEhcColGMlUfn
+ g05WvF9IexXPHSuFfjzUzg0cNXjQHYRwc2Y0Ik9M/rVQT23Sf7+54B9V9PjaojzswBHD
+ lhUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=UbrlioUAOAIyVAz7Y1adXjaiDjtyUMWku2wdnzCdoiE=;
+ b=iZXluobE4VuO5rNy39jQA1H0eZr5mui5O3/oqKg+m9p/TzQEjOGez3Hdrql6Wi2i/V
+ QGmiw+YxCALX4MnrOt+6O9sO0iwYgtCC9HDAKPQQTNPR/L8FQKBWQjvEOA+AD6mm5Mul
+ bnioaFU5iMaq86ntxe3TetCwEq8TjcrTgaWHy7yPOySNLvgbYtwu0HNTWnlaSOMn+NmA
+ CrsuQnih2SAk0f4yjUbFTJNAz9cS4Ie5xo8NA3trKtCze1yVmaUALwHyvtPQC2PP3Kmq
+ qktWA6jSJfX14VqT1O7qJyOapGlJTYTXek6UWNzPQ1nvmw89Igv7QdWl45mT0N3aLpgu
+ S7rQ==
+X-Gm-Message-State: AOAM533k6SzdmkK4Ba1S2Eb0WBOwTbd9/3Gk2kfTZOJ93LGjfm3MgV5h
+ r0LCJPicebHckGTj5NKUlf507g==
+X-Google-Smtp-Source: ABdhPJzgUi/RGM4e/IJ++ZPnpBCtMa6QQYdBS/7ExIydcQEbhUkmVcoJhLqj/XAeQnHuMoLW0F9k2A==
+X-Received: by 2002:ac2:5493:: with SMTP id t19mr15220380lfk.145.1623145328659; 
+ Tue, 08 Jun 2021 02:42:08 -0700 (PDT)
+Received: from box.localdomain ([86.57.175.117])
+ by smtp.gmail.com with ESMTPSA id v18sm993397ljg.114.2021.06.08.02.42.07
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 08 Jun 2021 02:42:07 -0700 (PDT)
+Received: by box.localdomain (Postfix, from userid 1000)
+ id ABB01102717; Tue,  8 Jun 2021 12:42:22 +0300 (+03)
+Date: Tue, 8 Jun 2021 12:42:22 +0300
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH v7 01/11] mm/mremap: Fix race between MOVE_PMD mremap and
+ pageout
+Message-ID: <20210608094222.xcpvlc3kaq5j5sh3@box.shutemov.name>
+References: <20210607055131.156184-1-aneesh.kumar@linux.ibm.com>
+ <20210607055131.156184-2-aneesh.kumar@linux.ibm.com>
+ <f789af6-8924-3b83-6f82-c662175af126@google.com>
+ <87o8cgokso.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87o8cgokso.fsf@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,133 +87,139 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mm@kvack.org, sparclinux@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
- linux-doc@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Matt Turner <mattst88@gmail.com>,
- linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org,
- Arnd Bergmann <arnd@arndb.de>, linux-m68k@lists.linux-m68k.org,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- linux-arm-kernel@lists.infradead.org, Richard Henderson <rth@twiddle.net>,
- Vineet Gupta <vgupta@synopsys.com>, kexec@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ Hugh Dickins <hughd@google.com>, npiggin@gmail.com, linux-mm@kvack.org,
+ kaleshsingh@google.com, joel@joelfernandes.org, akpm@linux-foundation.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Mike Rapoport <rppt@linux.ibm.com>
+On Tue, Jun 08, 2021 at 01:22:23PM +0530, Aneesh Kumar K.V wrote:
+> 
+> Hi Hugh,
+> 
+> Hugh Dickins <hughd@google.com> writes:
+> 
+> > On Mon, 7 Jun 2021, Aneesh Kumar K.V wrote:
+> >
+> >> CPU 1				CPU 2					CPU 3
+> >> 
+> >> mremap(old_addr, new_addr)      page_shrinker/try_to_unmap_one
+> >> 
+> >> mmap_write_lock_killable()
+> >> 
+> >> 				addr = old_addr
+> >> 				lock(pte_ptl)
+> >> lock(pmd_ptl)
+> >> pmd = *old_pmd
+> >> pmd_clear(old_pmd)
+> >> flush_tlb_range(old_addr)
+> >> 
+> >> *new_pmd = pmd
+> >> 									*new_addr = 10; and fills
+> >> 									TLB with new addr
+> >> 									and old pfn
+> >> 
+> >> unlock(pmd_ptl)
+> >> 				ptep_clear_flush()
+> >> 				old pfn is free.
+> >> 									Stale TLB entry
+> >> 
+> >> Fix this race by holding pmd lock in pageout. This still doesn't handle the race
+> >> between MOVE_PUD and pageout.
+> >> 
+> >> Fixes: 2c91bd4a4e2e ("mm: speed up mremap by 20x on large regions")
+> >> Link: https://lore.kernel.org/linux-mm/CAHk-=wgXVR04eBNtxQfevontWnP6FDm+oj5vauQXP3S-huwbPw@mail.gmail.com
+> >> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> >
+> > This seems very wrong to me, to require another level of locking in the
+> > rmap lookup, just to fix some new pagetable games in mremap.
+> >
+> > But Linus asked "Am I missing something?": neither of you have mentioned
+> > mremap's take_rmap_locks(), so I hope that already meets your need.  And
+> > if it needs to be called more often than before (see "need_rmap_locks"),
+> > that's probably okay.
+> >
+> > Hugh
+> >
+> 
+> Thanks for reviewing the change. I missed the rmap lock in the code
+> path. How about the below change?
+> 
+>     mm/mremap: hold the rmap lock in write mode when moving page table entries.
+>     
+>     To avoid a race between rmap walk and mremap, mremap does take_rmap_locks().
+>     The lock was taken to ensure that rmap walk don't miss a page table entry due to
+>     PTE moves via move_pagetables(). The kernel does further optimization of
+>     this lock such that if we are going to find the newly added vma after the
+>     old vma, the rmap lock is not taken. This is because rmap walk would find the
+>     vmas in the same order and if we don't find the page table attached to
+>     older vma we would find it with the new vma which we would iterate later.
+>     The actual lifetime of the page is still controlled by the PTE lock.
+>     
+>     This patch updates the locking requirement to handle another race condition
+>     explained below with optimized mremap::
+>     
+>     Optmized PMD move
+>     
+>         CPU 1                           CPU 2                                   CPU 3
+>     
+>         mremap(old_addr, new_addr)      page_shrinker/try_to_unmap_one
+>     
+>         mmap_write_lock_killable()
+>     
+>                                         addr = old_addr
+>                                         lock(pte_ptl)
+>         lock(pmd_ptl)
+>         pmd = *old_pmd
+>         pmd_clear(old_pmd)
+>         flush_tlb_range(old_addr)
+>     
+>         *new_pmd = pmd
+>                                                                                 *new_addr = 10; and fills
+>                                                                                 TLB with new addr
+>                                                                                 and old pfn
+>     
+>         unlock(pmd_ptl)
+>                                         ptep_clear_flush()
+>                                         old pfn is free.
+>                                                                                 Stale TLB entry
+>     
+>     Optmized PUD move:
+>     
+>         CPU 1                           CPU 2                                   CPU 3
+>     
+>         mremap(old_addr, new_addr)      page_shrinker/try_to_unmap_one
+>     
+>         mmap_write_lock_killable()
+>     
+>                                         addr = old_addr
+>                                         lock(pte_ptl)
+>         lock(pud_ptl)
+>         pud = *old_pud
+>         pud_clear(old_pud)
+>         flush_tlb_range(old_addr)
+>     
+>         *new_pud = pud
+>                                                                                 *new_addr = 10; and fills
+>                                                                                 TLB with new addr
+>                                                                                 and old pfn
+>     
+>         unlock(pud_ptl)
+>                                         ptep_clear_flush()
+>                                         old pfn is free.
+>                                                                                 Stale TLB entry
+>     
+>     Both the above race condition can be fixed if we force mremap path to take rmap lock.
+>     
+>     Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 
-After removal of the DISCONTIGMEM memory model the FLAT_NODE_MEM_MAP
-configuration option is equivalent to FLATMEM.
+Looks like it should be enough to address the race.
 
-Drop CONFIG_FLAT_NODE_MEM_MAP and use CONFIG_FLATMEM instead.
+It would be nice to understand what is performance overhead of the
+additional locking. Is it still faster to move single PMD page table under
+these locks comparing to moving PTE page table entries without the locks?
 
-Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
----
- include/linux/mmzone.h | 4 ++--
- kernel/crash_core.c    | 2 +-
- mm/Kconfig             | 4 ----
- mm/page_alloc.c        | 6 +++---
- mm/page_ext.c          | 2 +-
- 5 files changed, 7 insertions(+), 11 deletions(-)
-
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index acdc51c7b259..1d5cafe5ccc3 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -777,7 +777,7 @@ typedef struct pglist_data {
- 	struct zonelist node_zonelists[MAX_ZONELISTS];
- 
- 	int nr_zones; /* number of populated zones in this node */
--#ifdef CONFIG_FLAT_NODE_MEM_MAP	/* means !SPARSEMEM */
-+#ifdef CONFIG_FLATMEM	/* means !SPARSEMEM */
- 	struct page *node_mem_map;
- #ifdef CONFIG_PAGE_EXTENSION
- 	struct page_ext *node_page_ext;
-@@ -867,7 +867,7 @@ typedef struct pglist_data {
- 
- #define node_present_pages(nid)	(NODE_DATA(nid)->node_present_pages)
- #define node_spanned_pages(nid)	(NODE_DATA(nid)->node_spanned_pages)
--#ifdef CONFIG_FLAT_NODE_MEM_MAP
-+#ifdef CONFIG_FLATMEM
- #define pgdat_page_nr(pgdat, pagenr)	((pgdat)->node_mem_map + (pagenr))
- #else
- #define pgdat_page_nr(pgdat, pagenr)	pfn_to_page((pgdat)->node_start_pfn + (pagenr))
-diff --git a/kernel/crash_core.c b/kernel/crash_core.c
-index 53eb8bc6026d..2b8446ea7105 100644
---- a/kernel/crash_core.c
-+++ b/kernel/crash_core.c
-@@ -483,7 +483,7 @@ static int __init crash_save_vmcoreinfo_init(void)
- 	VMCOREINFO_OFFSET(page, compound_head);
- 	VMCOREINFO_OFFSET(pglist_data, node_zones);
- 	VMCOREINFO_OFFSET(pglist_data, nr_zones);
--#ifdef CONFIG_FLAT_NODE_MEM_MAP
-+#ifdef CONFIG_FLATMEM
- 	VMCOREINFO_OFFSET(pglist_data, node_mem_map);
- #endif
- 	VMCOREINFO_OFFSET(pglist_data, node_start_pfn);
-diff --git a/mm/Kconfig b/mm/Kconfig
-index bffe4bd859f3..ded98fb859ab 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -55,10 +55,6 @@ config FLATMEM
- 	def_bool y
- 	depends on !SPARSEMEM || FLATMEM_MANUAL
- 
--config FLAT_NODE_MEM_MAP
--	def_bool y
--	depends on !SPARSEMEM
--
- #
- # SPARSEMEM_EXTREME (which is the default) does some bootmem
- # allocations when sparse_init() is called.  If this cannot
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 8f08135d3eb4..f039736541eb 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -6444,7 +6444,7 @@ static void __meminit zone_init_free_lists(struct zone *zone)
- 	}
- }
- 
--#if !defined(CONFIG_FLAT_NODE_MEM_MAP)
-+#if !defined(CONFIG_FLATMEM)
- /*
-  * Only struct pages that correspond to ranges defined by memblock.memory
-  * are zeroed and initialized by going through __init_single_page() during
-@@ -7241,7 +7241,7 @@ static void __init free_area_init_core(struct pglist_data *pgdat)
- 	}
- }
- 
--#ifdef CONFIG_FLAT_NODE_MEM_MAP
-+#ifdef CONFIG_FLATMEM
- static void __ref alloc_node_mem_map(struct pglist_data *pgdat)
- {
- 	unsigned long __maybe_unused start = 0;
-@@ -7289,7 +7289,7 @@ static void __ref alloc_node_mem_map(struct pglist_data *pgdat)
- }
- #else
- static void __ref alloc_node_mem_map(struct pglist_data *pgdat) { }
--#endif /* CONFIG_FLAT_NODE_MEM_MAP */
-+#endif /* CONFIG_FLATMEM */
- 
- #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
- static inline void pgdat_set_deferred_range(pg_data_t *pgdat)
-diff --git a/mm/page_ext.c b/mm/page_ext.c
-index df6f74aac8e1..293b2685fc48 100644
---- a/mm/page_ext.c
-+++ b/mm/page_ext.c
-@@ -191,7 +191,7 @@ void __init page_ext_init_flatmem(void)
- 	panic("Out of memory");
- }
- 
--#else /* CONFIG_FLAT_NODE_MEM_MAP */
-+#else /* CONFIG_FLATMEM */
- 
- struct page_ext *lookup_page_ext(const struct page *page)
- {
 -- 
-2.28.0
-
+ Kirill A. Shutemov
