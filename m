@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F319E39FC16
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 18:10:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6511139FC1A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 18:11:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FzwFr3GkSz3dh5
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Jun 2021 02:10:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FzwGH6Grcz3bsg
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Jun 2021 02:11:19 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=Txr96xyI;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=fAhFUBN7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,33 +19,34 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=Txr96xyI; 
+ header.s=bombadil.20210309 header.b=fAhFUBN7; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fzw9B5TZSz3btf
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fzw9B5z91z3btl
  for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Jun 2021 02:06:54 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=C48nWYMntBNCb294th9G4NnV3ael3h9v9Uxu/7DKsAQ=; b=Txr96xyI42l6bWgyhy/NfFLZ7p
- wI6xYLpds+hPhxaTrtgNxZnsiJneyFLimCdskXsnDubCkPriAk27NWsJax9LORtsrDWA2C3GA/6xN
- 602wRe7RkZl1rmEzH+1/GncJAEJdfVch+jWMYDYmFMLh1ZGElSIhVT05QXchMevqH55gtDpet5Eez
- 5bhhZtmLhLjFJt41xezRVJSCSlZDzbfRO3vmIyigiuRspPpiyPum814CZmYg1wFQdl8OGjwNlZB36
- YrsO9Ox/qF+JmneH2jgu1KoL2bAn/rnXh8B2EVk5sfns8NtGDYfL80iuCGjM/E/MPfGxkZGekLkLW
- evxV+uGg==;
+ bh=rADL90S3oRiyRdCFkcJ9oLhZvXcChQZEzORShMtqGjI=; b=fAhFUBN7Oc5BAEM6sORmoH6JDn
+ sA7j6sp/njH1e/DfVaccAfoQX5UE5IFfNBERRtuswcYno9hlov73RUW8L80YIlgzUZJwT8ma5YmJc
+ mExGOPVRIFR/Nc3HFgNHk6IHOsJDVHbX8oVmEjnj0LkiLvx48A2UatdpveMhgZVrfKszj04iZqH31
+ RehyDVGENeMdIRBKZhmU1IK/Yzlj2kaEVWh8MW2VMYwPaO2VPbLnpdl5fU9GM0J7DoPkDwUeQpPfY
+ 9MDj2/MorS5EwuEz29zobjxozUL9M2dGB6AuzgY11N+r3k1auMeuObPi6fJn/MTove72mkACrAMy8
+ bUrNAULA==;
 Received: from [2001:4bb8:192:ff5f:74ed:7c4f:a5ee:8dcb] (helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lqeFU-009Rhp-30; Tue, 08 Jun 2021 16:06:40 +0000
+ id 1lqeFX-009RiV-I9; Tue, 08 Jun 2021 16:06:44 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 10/16] block: remove bvec_kmap_irq and bvec_kunmap_irq
-Date: Tue,  8 Jun 2021 18:05:57 +0200
-Message-Id: <20210608160603.1535935-11-hch@lst.de>
+Subject: [PATCH 11/16] block: rewrite bio_copy_data_iter to use
+ bvec_kmap_local and memcpy_to_bvec
+Date: Tue,  8 Jun 2021 18:05:58 +0200
+Message-Id: <20210608160603.1535935-12-hch@lst.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210608160603.1535935-1-hch@lst.de>
 References: <20210608160603.1535935-1-hch@lst.de>
@@ -75,73 +76,53 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-These two helpers are entirely unused now.
+Use the proper helpers instead of open coding the copy.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- include/linux/bio.h | 42 ------------------------------------------
- 1 file changed, 42 deletions(-)
+ block/bio.c | 28 ++++++++--------------------
+ 1 file changed, 8 insertions(+), 20 deletions(-)
 
-diff --git a/include/linux/bio.h b/include/linux/bio.h
-index a0b4cfdf62a4..169b14b10c16 100644
---- a/include/linux/bio.h
-+++ b/include/linux/bio.h
-@@ -5,7 +5,6 @@
- #ifndef __LINUX_BIO_H
- #define __LINUX_BIO_H
+diff --git a/block/bio.c b/block/bio.c
+index 1d7abdb83a39..c14d2e66c084 100644
+--- a/block/bio.c
++++ b/block/bio.c
+@@ -1186,27 +1186,15 @@ EXPORT_SYMBOL(bio_advance);
+ void bio_copy_data_iter(struct bio *dst, struct bvec_iter *dst_iter,
+ 			struct bio *src, struct bvec_iter *src_iter)
+ {
+-	struct bio_vec src_bv, dst_bv;
+-	void *src_p, *dst_p;
+-	unsigned bytes;
+-
+ 	while (src_iter->bi_size && dst_iter->bi_size) {
+-		src_bv = bio_iter_iovec(src, *src_iter);
+-		dst_bv = bio_iter_iovec(dst, *dst_iter);
+-
+-		bytes = min(src_bv.bv_len, dst_bv.bv_len);
+-
+-		src_p = kmap_atomic(src_bv.bv_page);
+-		dst_p = kmap_atomic(dst_bv.bv_page);
+-
+-		memcpy(dst_p + dst_bv.bv_offset,
+-		       src_p + src_bv.bv_offset,
+-		       bytes);
+-
+-		kunmap_atomic(dst_p);
+-		kunmap_atomic(src_p);
+-
+-		flush_dcache_page(dst_bv.bv_page);
++		struct bio_vec src_bv = bio_iter_iovec(src, *src_iter);
++		struct bio_vec dst_bv = bio_iter_iovec(dst, *dst_iter);
++		unsigned int bytes = min(src_bv.bv_len, dst_bv.bv_len);
++		void *src_buf;
++
++		src_buf = bvec_kmap_local(&src_bv);
++		memcpy_to_bvec(&dst_bv, src_buf);
++		kunmap_local(src_buf);
  
--#include <linux/highmem.h>
- #include <linux/mempool.h>
- #include <linux/ioprio.h>
- /* struct bio, bio_vec and BIO_* flags are defined in blk_types.h */
-@@ -523,47 +522,6 @@ static inline void bio_clone_blkg_association(struct bio *dst,
- 					      struct bio *src) { }
- #endif	/* CONFIG_BLK_CGROUP */
- 
--#ifdef CONFIG_HIGHMEM
--/*
-- * remember never ever reenable interrupts between a bvec_kmap_irq and
-- * bvec_kunmap_irq!
-- */
--static inline char *bvec_kmap_irq(struct bio_vec *bvec, unsigned long *flags)
--{
--	unsigned long addr;
--
--	/*
--	 * might not be a highmem page, but the preempt/irq count
--	 * balancing is a lot nicer this way
--	 */
--	local_irq_save(*flags);
--	addr = (unsigned long) kmap_atomic(bvec->bv_page);
--
--	BUG_ON(addr & ~PAGE_MASK);
--
--	return (char *) addr + bvec->bv_offset;
--}
--
--static inline void bvec_kunmap_irq(char *buffer, unsigned long *flags)
--{
--	unsigned long ptr = (unsigned long) buffer & PAGE_MASK;
--
--	kunmap_atomic((void *) ptr);
--	local_irq_restore(*flags);
--}
--
--#else
--static inline char *bvec_kmap_irq(struct bio_vec *bvec, unsigned long *flags)
--{
--	return page_address(bvec->bv_page) + bvec->bv_offset;
--}
--
--static inline void bvec_kunmap_irq(char *buffer, unsigned long *flags)
--{
--	*flags = 0;
--}
--#endif
--
- /*
-  * BIO list management for use by remapping drivers (e.g. DM or MD) and loop.
-  *
+ 		bio_advance_iter_single(src, src_iter, bytes);
+ 		bio_advance_iter_single(dst, dst_iter, bytes);
 -- 
 2.30.2
 
