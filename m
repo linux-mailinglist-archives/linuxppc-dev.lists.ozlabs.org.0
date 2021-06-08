@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DE5339FC1D
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 18:12:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36CAB39FC27
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 18:13:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4FzwHj6xcsz3c9B
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Jun 2021 02:12:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FzwJb4CmWz3cGC
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Jun 2021 02:13:19 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=b4Ja1PJt;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=pkj2gwki;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,33 +19,34 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=b4Ja1PJt; 
+ header.s=bombadil.20210309 header.b=pkj2gwki; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fzw9Q5hMhz3049
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Jun 2021 02:07:06 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fzw9W4Y8Bz306Y
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Jun 2021 02:07:11 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=MyECqL7omrkh9N+zg6dzXAPF0qAslqNXJGlcR34EKvY=; b=b4Ja1PJtReL64inLe6q6cCHK2j
- QtsAsUGVqoXMk0uXRjtZKKxZ1KcDPFQ/2E3g7QVHWcya9I0qbV0cZ5SR6kwGsWdFU8pVgJkrBquar
- YxBxkAuHdDeCnhSV/aNvk9DoZDnXfzyOxprW2nqGWTXUdNdrJMmEsIP+Zgda00i5siUaPwCB1GzQY
- HGZo+IiuzOhYzTOjOzinhBZg2wu3GuX+/uVu52zf3xUxqxm/RYdi7Poxkf3mu42ry3kQqBBfvOmgt
- D9NnR40fuODEKp23cRsjGb3lOrICZfro2Zap+kPgitNZaEtEcqM5SUhVJZcVvRhvUJJ9BFQIZlJAi
- Ex1/l4NQ==;
+ bh=TkXSf08FOqBmuFw/ENTFMnI+54X5dnYwOAAHKqJCH8E=; b=pkj2gwkimoVdhfqEChAYFo7k01
+ DnDjBy0Vy9d/v40yq3IoyAtXggh26kXheeh7Q6FS/HWWh00L9VMnx3pZTSNuEiIWOQJz53QqfcsNm
+ R41he7jPnmOndHMbLi8GzQ2PqR2X7YKUx24DmYFyeV0jtN5cWY3DFgwVTdyQu/j5mvfY/cn5L0lv+
+ qwTZ52er/7pZqEAG8sFNOmS+/jQdGymKGMUkboqU4/j+dbP5ihuHIrn6U2L9Zlya2Flw0avFZ5x6P
+ cAWC40p3z6yHiYjkHFC0cXtePrK1w6gWMd17X+w27Mh7NnZ4JJhEo9dxBwnyBMj8OE0w8ksR+yJTw
+ akNFincA==;
 Received: from [2001:4bb8:192:ff5f:74ed:7c4f:a5ee:8dcb] (helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lqeFh-009RlV-DI; Tue, 08 Jun 2021 16:06:54 +0000
+ id 1lqeFk-009Rml-SV; Tue, 08 Jun 2021 16:06:57 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 14/16] block: use memcpy_from_bvec in __blk_queue_bounce
-Date: Tue,  8 Jun 2021 18:06:01 +0200
-Message-Id: <20210608160603.1535935-15-hch@lst.de>
+Subject: [PATCH 15/16] block: use bvec_kmap_local in t10_pi_type1_{prepare,
+ complete}
+Date: Tue,  8 Jun 2021 18:06:02 +0200
+Message-Id: <20210608160603.1535935-16-hch@lst.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210608160603.1535935-1-hch@lst.de>
 References: <20210608160603.1535935-1-hch@lst.de>
@@ -75,50 +76,66 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Rewrite the actual bounce buffering loop in __blk_queue_bounce to that
-the memcpy_to_bvec helper can be used to perform the data copies.
+Using local kmaps slightly reduces the chances to stray writes, and
+the bvec interface cleans up the code a little bit.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- block/bounce.c | 21 +++++++--------------
- 1 file changed, 7 insertions(+), 14 deletions(-)
+ block/t10-pi.c | 16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
 
-diff --git a/block/bounce.c b/block/bounce.c
-index a2fc6326b6c9..b5ad09e07bcf 100644
---- a/block/bounce.c
-+++ b/block/bounce.c
-@@ -243,24 +243,17 @@ void __blk_queue_bounce(struct request_queue *q, struct bio **bio_orig)
- 	 * because the 'bio' is single-page bvec.
- 	 */
- 	for (i = 0, to = bio->bi_io_vec; i < bio->bi_vcnt; to++, i++) {
--		struct page *page = to->bv_page;
-+		struct page *bounce_page;
+diff --git a/block/t10-pi.c b/block/t10-pi.c
+index d910534b3a41..00c203b2a921 100644
+--- a/block/t10-pi.c
++++ b/block/t10-pi.c
+@@ -147,11 +147,10 @@ static void t10_pi_type1_prepare(struct request *rq)
+ 			break;
  
--		if (!PageHighMem(page))
-+		if (!PageHighMem(to->bv_page))
- 			continue;
+ 		bip_for_each_vec(iv, bip, iter) {
+-			void *p, *pmap;
+ 			unsigned int j;
++			void *p;
  
--		to->bv_page = mempool_alloc(&page_pool, GFP_NOIO);
--		inc_zone_page_state(to->bv_page, NR_BOUNCE);
-+		bounce_page = mempool_alloc(&page_pool, GFP_NOIO);
-+		inc_zone_page_state(bounce_page, NR_BOUNCE);
+-			pmap = kmap_atomic(iv.bv_page);
+-			p = pmap + iv.bv_offset;
++			p = bvec_kmap_local(&iv);
+ 			for (j = 0; j < iv.bv_len; j += tuple_sz) {
+ 				struct t10_pi_tuple *pi = p;
  
--		if (rw == WRITE) {
--			char *vto, *vfrom;
+@@ -161,8 +160,7 @@ static void t10_pi_type1_prepare(struct request *rq)
+ 				ref_tag++;
+ 				p += tuple_sz;
+ 			}
 -
--			flush_dcache_page(page);
+-			kunmap_atomic(pmap);
++			kunmap_local(p);
+ 		}
+ 
+ 		bip->bip_flags |= BIP_MAPPED_INTEGRITY;
+@@ -195,11 +193,10 @@ static void t10_pi_type1_complete(struct request *rq, unsigned int nr_bytes)
+ 		struct bvec_iter iter;
+ 
+ 		bip_for_each_vec(iv, bip, iter) {
+-			void *p, *pmap;
+ 			unsigned int j;
++			void *p;
+ 
+-			pmap = kmap_atomic(iv.bv_page);
+-			p = pmap + iv.bv_offset;
++			p = bvec_kmap_local(&iv);
+ 			for (j = 0; j < iv.bv_len && intervals; j += tuple_sz) {
+ 				struct t10_pi_tuple *pi = p;
+ 
+@@ -210,8 +207,7 @@ static void t10_pi_type1_complete(struct request *rq, unsigned int nr_bytes)
+ 				intervals--;
+ 				p += tuple_sz;
+ 			}
 -
--			vto = page_address(to->bv_page) + to->bv_offset;
--			vfrom = kmap_atomic(page) + to->bv_offset;
--			memcpy(vto, vfrom, to->bv_len);
--			kunmap_atomic(vfrom);
--		}
-+		if (rw == WRITE)
-+			memcpy_from_bvec(page_address(bounce_page), to);
-+		to->bv_page = bounce_page;
+-			kunmap_atomic(pmap);
++			kunmap_local(p);
+ 		}
  	}
- 
- 	trace_block_bio_bounce(*bio_orig);
+ }
 -- 
 2.30.2
 
