@@ -2,86 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99CAD39EEF5
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 08:49:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7983339EF9B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 09:30:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fzgnj0Mwrz3bs6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 16:49:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Fzhhs5FTjz302L
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 17:30:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm2 header.b=o1q6X1Oe;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=ksSsurzS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=n9p23/ha;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=russell.cc (client-ip=64.147.123.19;
- helo=wout3-smtp.messagingengine.com; envelope-from=ruscur@russell.cc;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f2f;
+ helo=mail-qv1-xf2f.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256
- header.s=fm2 header.b=o1q6X1Oe; 
- dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm3 header.b=ksSsurzS; 
- dkim-atps=neutral
-Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com
- [64.147.123.19])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=n9p23/ha; dkim-atps=neutral
+Received: from mail-qv1-xf2f.google.com (mail-qv1-xf2f.google.com
+ [IPv6:2607:f8b0:4864:20::f2f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4FzgnC4dVkz2xvZ
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Jun 2021 16:48:47 +1000 (AEST)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
- by mailout.west.internal (Postfix) with ESMTP id A4F5316E5;
- Tue,  8 Jun 2021 02:48:44 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute1.internal (MEProxy); Tue, 08 Jun 2021 02:48:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
- from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding; s=fm2; bh=1x73rjujmY5Y8URd48wDZMmmXS
- LTxHO+zFGtsooBY6Y=; b=o1q6X1Oe0hzoG3sNTP2Nm5h3zI0m/Jb0oN/M4BiWjY
- u6RfpAAOrszRkYSwe+BUMmhgbEYMPlzdPQWsv67kIQDM5bqr3i9sAB8QSv0Vtm40
- JIvjSe/r9kQbr6fY5N7ZZ959gFRT8NZXYTnhd95ZQhADeeClBEV6Jw+8rYF8gZTz
- uuR1LFzBlf1Mb+UZnOnMxsKkwWY0a24lobiPpbGIEHtQjT3Ib4HXoNrCxRCsYZ76
- xnE3IMp7wgnck8vwpeg5faP6CJ/Ml6EoF7qmoPE/i+C7r2J7cT3MZ1elGf/z+jva
- Bz4OY1pp/jHIv34rLbtBnQsNMUjLFLg/Ld3nXsNJmpFQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:content-transfer-encoding:date:from
- :message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=1x73rjujmY5Y8URd4
- 8wDZMmmXSLTxHO+zFGtsooBY6Y=; b=ksSsurzSslZtt8AZwcIcm/zuPF067JsdR
- cEzyv53LsJ29jFwjjEnxJQHWTocEWAIDQ+oj9JWgxr0LKwnhZibXqQczhgguftl/
- 10tT3CQ7ITPfMJTHmGsw+xAUnoRYmU/DOyv+x1dicL+wxXtXKFA+QcB+a6nuanXh
- PKCw9zBldTW956OZph0uQzIi4TzyUTKM6LG8aC4aM86qFUz9NXH2OtsQlfQX2gbC
- 1MmgZNz3jOydGw4gof9qb7hOdHQ3gG+/cpzcMyyvWFRVbbh27gh+N9XMphNusl4w
- cwb/nIpcOQyxGLpcOKerxiGHbTuaAobj8N0pRIMTfc6sw81U1fsRw==
-X-ME-Sender: <xms:yxK_YHnmvqFy9v9tfIZ6fVcpd5hGsFqZ6tDpal7cNLFugFS1ls4SMQ>
- <xme:yxK_YK3z2g5eZKoRjcguQmAc3knUrD4g120o_mDhy3iJYgxKuGerQafQO976n1v90
- oSl3hZfZUqWd-pvww>
-X-ME-Received: <xmr:yxK_YNqGA6v7YMunXzeprJTkuoXvApNphsCXqYKvh3bVf9fL0OBGIBNv9XLJ6Wx10HTW>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrfedtkedguddtfecutefuodetggdotefrod
- ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
- necuuegrihhlohhuthemuceftddtnecufghrlhcuvffnffculdeftddmnecujfgurhephf
- fvufffkffoggfgsedtkeertdertddtnecuhfhrohhmpeftuhhsshgvlhhlucevuhhrrhgv
- hicuoehruhhstghurhesrhhushhsvghllhdrtggtqeenucggtffrrghtthgvrhhnpeelge
- elfedvffekgeevfeelveeftdeilefgudegkeeuhefhvefgffekuefgffekfeenucevlhhu
- shhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehruhhstghurhesrh
- hushhsvghllhdrtggt
-X-ME-Proxy: <xmx:yxK_YPmyg53Bf96gg6hFCMA19inaUINzCYu4Az0yooL8GdL9KZXlCg>
- <xmx:yxK_YF2urosGD0zFOOz6stCV5bgM19gB3Ydrvamev-x0xWfa4pDOQg>
- <xmx:yxK_YOtnqk6qU5lixJhCkkRQhZVu9n0cKiRZemG0KFe1Os2xaB4aJw>
- <xmx:zBK_YG_EdroGVtvogPELyx9bB2SdUibigJdiavhK3V6sKrWVVJfBwA>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 8 Jun 2021 02:48:42 -0400 (EDT)
-From: Russell Currey <ruscur@russell.cc>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] selftests/powerpc: Handle more misreporting cases in
- spectre_v2
-Date: Tue,  8 Jun 2021 16:48:09 +1000
-Message-Id: <20210608064809.199116-1-ruscur@russell.cc>
-X-Mailer: git-send-email 2.32.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4FzhhM6VX7z2yXZ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Jun 2021 17:29:38 +1000 (AEST)
+Received: by mail-qv1-xf2f.google.com with SMTP id 5so17801qvf.1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 08 Jun 2021 00:29:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=mjJ37PmArsSDJUKmBe6EYoic7gWOGcLryXC0FyHwl6U=;
+ b=n9p23/haum6EphyEVQ5DyGGD8//kQWp4SzqvdoDvzUhFGPlrT5NSasjGHw6U3Jl7fE
+ 3aJqwmCFY371QrorKhtxeyP9kKqewth5iSyXZ6ADi0ycDZQJZEJTa1SONQGqrhDVmqi6
+ +bbfr957dW7r4axXOtm0XmDlLVDFFoNeU8cIUVjebPf4CM0j6N7JW2zazbPn9eIZ9Ojz
+ oIM1SfrmHw+Wtzx2cJGbFs9vYvnydfyxvDGts6Lgdx6EKEX9qslQ6t4jxOfNHKW2ihwC
+ rxVmKmqD084M1Q9DOySfpzUODh1emItF032y2TKOLdJRMUYzI+nP2Y27FAJKs4kC80Rt
+ iKIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=mjJ37PmArsSDJUKmBe6EYoic7gWOGcLryXC0FyHwl6U=;
+ b=J7i1IrEaM7eqAHGXNsRa4LXyoY/lbkG40Xa3qbGwPW7ijYrgiMf9UwbWxh8ea0B9EJ
+ fszvZ4WkNdW8pOh32LQZQw4NCpBl1a52rdQC3YLcsFvAzfFl+zwYKjEPVNtwt8bw81uy
+ 3MVDd3I0n+yllveLc4zSf2NmbWwuX6a9RSqqkSM9n6FsJWgJFW9Gwl1kjx42F6fqmmS8
+ DlYBttKJB934do+t0eBA91OVaHAUU5DOk+NOnVyKErcfdzEx8RPpkN81kM7DaknFdGoc
+ x7AsWuohhLbaqqfuCaLYAKK5Hpx+DbsTIZp4Ck681JE98uPy3ksZYmGMQJjYMlv1IieO
+ yX8Q==
+X-Gm-Message-State: AOAM533hog4sC19bQbbBa/P7jQwnnV1gSpwuDoOeHZapdE3SCIdSok3t
+ hgPMTZllMLft+netcnGug1uXhCJWDyX3C28927U=
+X-Google-Smtp-Source: ABdhPJyo+0l3/CHTOa1jT5ydMhO2jKP1hSlIOWWAclutR0PCYMx6AjJEfPZRKrxVAjcmGJv9ggOUNLF1g5gUGV+YTcc=
+X-Received: by 2002:a0c:d809:: with SMTP id h9mr14075712qvj.47.1623137373373; 
+ Tue, 08 Jun 2021 00:29:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210604092228.199588-1-heying24@huawei.com>
+ <CAOSf1CELBh4F334LK6+zy+BPOXKcOm92QZw4g71hQ7oQNa68nw@mail.gmail.com>
+ <9dc8b323-7846-0975-16f0-6e3e447383a4@huawei.com>
+In-Reply-To: <9dc8b323-7846-0975-16f0-6e3e447383a4@huawei.com>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Tue, 8 Jun 2021 17:29:21 +1000
+Message-ID: <CAOSf1CGXp=F2aqP6=c3vhd4e=L7+2_V5mMOpiseAQa7L1NsZ_w@mail.gmail.com>
+Subject: Re: [PATCH] powerpc: Fix kernel-jump address for ppc64 wrapper boot
+To: He Ying <heying24@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,77 +77,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: cascardo@canonical.com, Russell Currey <ruscur@russell.cc>
+Cc: Nathan Chancellor <nathan@kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Paul Mackerras <paulus@samba.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In commit f3054ffd71b5 ("selftests/powerpc: Return skip code for
-spectre_v2"), the spectre_v2 selftest is updated to be aware of cases
-where the vulnerability status reported in sysfs is incorrect, skipping
-the test instead.
+On Tue, Jun 8, 2021 at 4:33 PM He Ying <heying24@huawei.com> wrote:
+>
+> Hello,
+>
+> =E5=9C=A8 2021/6/8 13:26, Oliver O'Halloran =E5=86=99=E9=81=93:
+> > On Fri, Jun 4, 2021 at 7:39 PM He Ying <heying24@huawei.com> wrote:
+> >>  From "64-bit PowerPC ELF Application Binary Interface Supplement 1.9"=
+,
+> >> we know that the value of a function pointer in a language like C is
+> >> the address of the function descriptor and the first doubleword
+> >> of the function descriptor contains the address of the entry point
+> >> of the function.
+> >>
+> >> So, when we want to jump to an address (e.g. addr) to execute for
+> >> PPC-elf64abi, we should assign the address of addr *NOT* addr itself
+> >> to the function pointer or system will jump to the wrong address.
+> > How have you tested this?
+>
+> I tested ppc64-elf big-endian. I changed the Kconfig so that ppc64
+> big-endian
+>
+> selects PPC64_WRAPPER_BOOT. I used qemu to run the cuImage and found
+>
+> the problem. It made me confused. By applying this patch, I found it work=
+s.
+>
+> I thought it works for ppc64le too. So I upstream this patch.
+>
+> >
+> > IIRC the 64bit wrapper is only used for ppc64le builds. For that case
+> > the current code is work because the LE ABI (ABIv2) doesn't use
+> > function descriptors. I think even for a BE kernel we need the current
+> > behaviour because the vmlinux's entry point is screwed up (i.e.
+> > doesn't point a descriptor) and tools in the wild (probably kexec)
+> > expect it to be screwed up.
+>
+> Yes, you're right. PPC64_WRAPPER_BOOT is only used for ppc64le builds
+> currently.
+>
+> LE ABI (ABI v2) doesn't use function descriptors. Is that right? I don't
+> test that. If so,
+>
+> this patch should be dropped. But why does ppc64 have different ABIs? So
+> strange.
 
-This happens because qemu can misrepresent the mitigation status of the
-host to the guest.  If the count cache is disabled in the host, and this
-is correctly reported to the guest, then the guest won't apply
-mitigations.  If the guest is then migrated to a new host where
-mitigations are necessary, it is now vulnerable because it has not
-applied mitigations.
+Yeah, it is strange. When LE support was added the toolchain team took
+the opportunity to revamp the ABI since BE and LE binaries were never
+going to be compatible. IIRC there is a slight performance advantage
+to using v2 since function descriptors added an extra load when
+performing a non-local function call. I think.
 
-That commit only checks for the "Vulnerable" state, but this can apply
-to any mitigation status.  The hardware accelerated flush is a good
-example, because the instruction is a nop on systems with the count
-cache disabled - so the only downside is an inaccurate sysfs entry.
+> If the wrapper is built to ppc64be, my patch is tested right. The entry
+> point in the ELF
+>
+> header is always right so you can assign the header->e_entry to the
+> function pointer
+>
+> and then jump to the entry by calling the function. But in the ppc
+> wrapper, the address
+>
+> is intialized to 0 or malloced to be an address later. In this
+> situation, I think my patch
+>
+> should be right for ppc64be.
 
-Update the selftest to instead check for excessive misses, indicative of
-the count cache being disabled.  Return the skip code so that the
-selftest is not considered failed.
-
-If software flushing is enabled, also warn that these flushes are
-just wasting performance.
-
-Signed-off-by: Russell Currey <ruscur@russell.cc>
----
- .../selftests/powerpc/security/spectre_v2.c   | 24 ++++++++++++-------
- 1 file changed, 15 insertions(+), 9 deletions(-)
-
-diff --git a/tools/testing/selftests/powerpc/security/spectre_v2.c b/tools/testing/selftests/powerpc/security/spectre_v2.c
-index e66f66bc482e..eaa3e0231a7d 100644
---- a/tools/testing/selftests/powerpc/security/spectre_v2.c
-+++ b/tools/testing/selftests/powerpc/security/spectre_v2.c
-@@ -184,17 +184,23 @@ int spectre_v2_test(void)
- 	case COUNT_CACHE_FLUSH_HW:
- 		// These should all not affect userspace branch prediction
- 		if (miss_percent > 15) {
-+			if (miss_percent > 95) {
-+				/*
-+				 * Such a mismatch may be caused by a system being unaware
-+				 * the count cache is disabled.  This may be to enable
-+				 * guest migration between hosts with different settings.
-+				 * Return skip code to avoid detecting this as an error.
-+				 * We are not vulnerable and reporting otherwise, so
-+				 * missing such a mismatch is safe.
-+				 */
-+				printf("Branch misses > 95%% unexpected in this configuration.\n");
-+				printf("Count cache likely disabled without Linux knowing.\n");
-+				if (state == COUNT_CACHE_FLUSH_SW)
-+					printf("WARNING: Kernel performing unnecessary flushes.\n");
-+				return 4;
-+			}
- 			printf("Branch misses > 15%% unexpected in this configuration!\n");
- 			printf("Possible mis-match between reported & actual mitigation\n");
--			/*
--			 * Such a mismatch may be caused by a guest system
--			 * reporting as vulnerable when the host is mitigated.
--			 * Return skip code to avoid detecting this as an error.
--			 * We are not vulnerable and reporting otherwise, so
--			 * missing such a mismatch is safe.
--			 */
--			if (state == VULNERABLE)
--				return 4;
- 
- 			return 1;
- 		}
--- 
-2.32.0
-
+Yeah maybe it's fine. I just have some memories of running into some
+bizzare edge case at some point. It might have been the entrypoint of
+the zImage rather than the vmlinux which had (has?) that problem.
