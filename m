@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16B4C39FBBC
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 18:07:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F31239FBDB
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Jun 2021 18:08:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Fzw9k3MNhz3byt
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Jun 2021 02:07:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4FzwC15TTTz3cG9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Jun 2021 02:08:29 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=fUvQPpV8;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=kTuZKBSr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,33 +19,33 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=fUvQPpV8; 
+ header.s=bombadil.20210309 header.b=kTuZKBSr; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Fzw8n4mLcz3017
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Jun 2021 02:06:28 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Fzw8m6cWpz300K
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Jun 2021 02:06:31 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=oWZyuciTMk9Oz4llaN6cnzbuyETlAwlAW/ZL8WXrlPc=; b=fUvQPpV8AGyBRslM8FvxAa8ee0
- 47eWXK3dNc5ZAlrjmamJRRWC4sOdmEagVUA3hMXNZuGYGNzwXRXZmuJw5/7V0aKWpPkhyG5JQWfi8
- MNcDFWT/E1QnWvENVMH2BpSW3aI00e6CVb4srdu3kf9yHi9p90PlCuCd6rcF486FXU91yUzIEyzFE
- nC6yga6H3TmGZfyKF58vd2+prfBps0sjiiCR+/GmO0Hy6wtuKSXPcIsPMClX6L7dDDJ4i6X5I3BMa
- mqe2VKbNbEqxT/t6/RJdVY6MjtQUfSxayVFScRJ93MuEoWPfuqFPvn/2D0kAPXTOgwbHuMhf1oibN
- KF+gHULA==;
+ bh=OCSR+eGjYhLRS8RAy8MFl9s9L6IyjOgYmb7x7h5BGDk=; b=kTuZKBSrB0mFUHPruJWFctHCV/
+ APCqvbEWKGNzK7EdLxVNJV0M14CczA+OeObXq7gTFWEM+UR7Y5OuFNQ/wAIImIHqbGFPje+jR55eX
+ uGpdOM39AZD3j8luBVj/ZIg+IoYLY02rBnY9ZrHB9QJujM0+SfJPD8dUlyZ2WKSsWaRjzJMftODOh
+ YGvtp3Ki+nr06a/z7EihNPqLTmpvDCJsU8Akh19ugoeeMUP9D5BuYIi18rjTrgGA/rWw2yGsVMd5Y
+ I3zeZctjIYm0IV9n/p/91fmdHrKyqBiB8ZIAo0nilrI8I9oWt+2YI87d9bjA1Fp/buh7NrwGbK93P
+ EFN+gjDw==;
 Received: from [2001:4bb8:192:ff5f:74ed:7c4f:a5ee:8dcb] (helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lqeF7-009Rb7-Hr; Tue, 08 Jun 2021 16:06:18 +0000
+ id 1lqeFA-009Rbt-Qe; Tue, 08 Jun 2021 16:06:21 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 03/16] bvec: fix the include guards for bvec.h
-Date: Tue,  8 Jun 2021 18:05:50 +0200
-Message-Id: <20210608160603.1535935-4-hch@lst.de>
+Subject: [PATCH 04/16] bvec: add a bvec_kmap_local helper
+Date: Tue,  8 Jun 2021 18:05:51 +0200
+Message-Id: <20210608160603.1535935-5-hch@lst.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210608160603.1535935-1-hch@lst.de>
 References: <20210608160603.1535935-1-hch@lst.de>
@@ -75,34 +75,37 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fix the include guards to match the file naming.
+Add a helper to call kmap_local_page on a bvec.  There is no need for
+an unmap helper given that kunmap_local accept any address in the mapped
+page.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- include/linux/bvec.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/linux/bvec.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/include/linux/bvec.h b/include/linux/bvec.h
-index ff832e698efb..883faf5f1523 100644
+index 883faf5f1523..d64d6c0ceb77 100644
 --- a/include/linux/bvec.h
 +++ b/include/linux/bvec.h
-@@ -4,8 +4,8 @@
-  *
-  * Copyright (C) 2001 Ming Lei <ming.lei@canonical.com>
-  */
--#ifndef __LINUX_BVEC_ITER_H
--#define __LINUX_BVEC_ITER_H
-+#ifndef __LINUX_BVEC_H
-+#define __LINUX_BVEC_H
+@@ -7,6 +7,7 @@
+ #ifndef __LINUX_BVEC_H
+ #define __LINUX_BVEC_H
  
++#include <linux/highmem.h>
  #include <linux/bug.h>
  #include <linux/errno.h>
-@@ -183,4 +183,4 @@ static inline void bvec_advance(const struct bio_vec *bvec,
+ #include <linux/limits.h>
+@@ -183,4 +184,9 @@ static inline void bvec_advance(const struct bio_vec *bvec,
  	}
  }
  
--#endif /* __LINUX_BVEC_ITER_H */
-+#endif /* __LINUX_BVEC_H */
++static inline void *bvec_kmap_local(struct bio_vec *bvec)
++{
++	return kmap_local_page(bvec->bv_page) + bvec->bv_offset;
++}
++
+ #endif /* __LINUX_BVEC_H */
 -- 
 2.30.2
 
