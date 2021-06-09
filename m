@@ -1,54 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79E393A0CBF
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Jun 2021 08:52:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EC8E3A0CF9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Jun 2021 09:00:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G0HqM72M4z30JY
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Jun 2021 16:52:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G0J0j5yRNz3bwH
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Jun 2021 17:00:53 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=R3Ua7SSr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=WqmS2PWp;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=R3Ua7SSr; 
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=WqmS2PWp; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G0Hpx241Wz2yx9
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Jun 2021 16:52:25 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id F40D661249;
- Wed,  9 Jun 2021 06:52:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1623221541;
- bh=1NOcR9X1qrsVWC8pZ+WOBsJYlerWmKCJZFjAHZSyi1g=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=R3Ua7SSrAmPcigjQENQSeeEMj920XMPbd0mRAH+B4DHPNXP+taIOYwYUWcVIXb5j6
- VJBySmzsOYZnbE6P4kMoE9ZvUpFBLiddGWhEYtU+E0KEUzEdWHkJqeLVtgBH6jO4C9
- Pe9x2UVR5RoSXUB4d6262LpkrrGlAOAE5RSKB4ZbL931VU3fcHDPQIgBFXazdDNmx0
- KYGm7I3vStPQPXah/NfmgtdSVOkJw8ewGPxvh3kYk2hvG8vZe26iLuJ3PqURc/rI07
- p6tkwWjdfIcQ6IB7Wn8wiS2wG0e2oDGZCpnQAvL+zgWVSStPrtFhj2bz5Vv7w2pP3G
- OCNYfrxKsGSKw==
-Date: Wed, 9 Jun 2021 09:52:08 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v3 8/9] mm: replace CONFIG_NEED_MULTIPLE_NODES with
- CONFIG_NUMA
-Message-ID: <YMBlGBxaWDPV1ouT@kernel.org>
-References: <20210608091316.3622-1-rppt@kernel.org>
- <20210608091316.3622-9-rppt@kernel.org>
- <20210608172544.d9bf17549565d866fbb18451@linux-foundation.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G0J09107Hz2yRQ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Jun 2021 17:00:24 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4G0J050vVJz9sCD;
+ Wed,  9 Jun 2021 17:00:20 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1623222021;
+ bh=NcW9k3mEhFcLnpfdBhTiKVFjQVnBYmdtXkbmWJJSRKs=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=WqmS2PWpYR2KIotfUJDQ4mruJq2/5DeAxRPLE6DXdBW4XXpUeWZ2DWZ8DZ5M4NjCU
+ NaIiQe6BlYswZEV0+OqlOJ90a5y/XJRhBL4RW/Rm3nyh6Vpu3RC8H1esTNRRku3mO7
+ BQec9spRS3vgVLqYQLD5bDdalqxOrvorMgubyn+63J/XPifIWWrP4rFmPJXanDCWZm
+ 8eHGMRD2FMg8q77y7UO62JX6eMFzkAh3DkScoqsMgyDrDABDIqOjKNSAlzlr2+anVm
+ 7RZWRnoOsTaw3wbf/LtuuVx3pY1IEWmW/YJ1tFB8i/c3PUvT6cN+T07buw115w399Y
+ GbXJw9pqAlIsA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 1/1] powerpc/prom_init: Move custom isspace() to its
+ own namespace
+In-Reply-To: <YL5Tm7jZaaQ0POH5@smile.fi.intel.com>
+References: <20210510144925.58195-1-andriy.shevchenko@linux.intel.com>
+ <YL5Tm7jZaaQ0POH5@smile.fi.intel.com>
+Date: Wed, 09 Jun 2021 17:00:16 +1000
+Message-ID: <87o8cfed4v.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210608172544.d9bf17549565d866fbb18451@linux-foundation.org>
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,62 +64,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-m68k@vger.kernel.org, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, linux-mips@vger.kernel.org, linux-mm@kvack.org,
- sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org,
- linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- linux-arm-kernel@lists.infradead.org, Richard Henderson <rth@twiddle.net>,
- Vineet Gupta <vgupta@synopsys.com>, kexec@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Paul Mackerras <paulus@samba.org>, kernel test robot <lkp@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 08, 2021 at 05:25:44PM -0700, Andrew Morton wrote:
-> On Tue,  8 Jun 2021 12:13:15 +0300 Mike Rapoport <rppt@kernel.org> wrote:
-> 
-> > From: Mike Rapoport <rppt@linux.ibm.com>
-> > 
-> > After removal of DISCINTIGMEM the NEED_MULTIPLE_NODES and NUMA
-> > configuration options are equivalent.
-> > 
-> > Drop CONFIG_NEED_MULTIPLE_NODES and use CONFIG_NUMA instead.
-> > 
-> > Done with
-> > 
-> > 	$ sed -i 's/CONFIG_NEED_MULTIPLE_NODES/CONFIG_NUMA/' \
-> > 		$(git grep -wl CONFIG_NEED_MULTIPLE_NODES)
-> > 	$ sed -i 's/NEED_MULTIPLE_NODES/NUMA/' \
-> > 		$(git grep -wl NEED_MULTIPLE_NODES)
-> > 
-> > with manual tweaks afterwards.
-> > 
-> > ...
-> >
-> > --- a/include/linux/mmzone.h
-> > +++ b/include/linux/mmzone.h
-> > @@ -987,7 +987,7 @@ extern int movable_zone;
-> >  #ifdef CONFIG_HIGHMEM
-> >  static inline int zone_movable_is_highmem(void)
-> >  {
-> > -#ifdef CONFIG_NEED_MULTIPLE_NODES
-> > +#ifdef CONFIG_NUMA
-> >  	return movable_zone == ZONE_HIGHMEM;
-> >  #else
-> >  	return (ZONE_MOVABLE - 1) == ZONE_HIGHMEM;
-> 
-> I dropped this hunk - your "mm/mmzone.h: simplify is_highmem_idx()"
-> removed zone_movable_is_highmem().  
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> writes:
+> On Mon, May 10, 2021 at 05:49:25PM +0300, Andy Shevchenko wrote:
+>> If by some reason any of the headers will include ctype.h
+>> we will have a name collision. Avoid this by moving isspace()
+>> to the dedicate namespace.
+>> 
+>> First appearance of the code is in the commit cf68787b68a2
+>> ("powerpc/prom_init: Evaluate mem kernel parameter for early allocation").
+>
+> Any comments on this?
 
-Ah, right.
-Thanks!
+Looks fine. Thanks.
 
--- 
-Sincerely yours,
-Mike.
+I just missed it because it came in a bit early, I tend not to pick
+things up until rc2.
+
+I tweaked the formatting of prom_isxdigit() slightly now that we allow
+100 column lines.
+
+Have put it in my next-test now.
+
+cheers
+
+>> diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+>> index 41ed7e33d897..6845cbbc0cd4 100644
+>> --- a/arch/powerpc/kernel/prom_init.c
+>> +++ b/arch/powerpc/kernel/prom_init.c
+>> @@ -701,13 +701,13 @@ static int __init prom_setprop(phandle node, const char *nodename,
+>>  }
+>>  
+>>  /* We can't use the standard versions because of relocation headaches. */
+>> -#define isxdigit(c)	(('0' <= (c) && (c) <= '9') \
+>> -			 || ('a' <= (c) && (c) <= 'f') \
+>> -			 || ('A' <= (c) && (c) <= 'F'))
+>> +#define prom_isxdigit(c)	(('0' <= (c) && (c) <= '9') \
+>> +				 || ('a' <= (c) && (c) <= 'f') \
+>> +				 || ('A' <= (c) && (c) <= 'F'))
+>>  
+>> -#define isdigit(c)	('0' <= (c) && (c) <= '9')
+>> -#define islower(c)	('a' <= (c) && (c) <= 'z')
+>> -#define toupper(c)	(islower(c) ? ((c) - 'a' + 'A') : (c))
+>> +#define prom_isdigit(c)		('0' <= (c) && (c) <= '9')
+>> +#define prom_islower(c)		('a' <= (c) && (c) <= 'z')
+>> +#define prom_toupper(c)		(prom_islower(c) ? ((c) - 'a' + 'A') : (c))
+>>  
+>>  static unsigned long prom_strtoul(const char *cp, const char **endp)
+>>  {
+>> @@ -716,14 +716,14 @@ static unsigned long prom_strtoul(const char *cp, const char **endp)
+>>  	if (*cp == '0') {
+>>  		base = 8;
+>>  		cp++;
+>> -		if (toupper(*cp) == 'X') {
+>> +		if (prom_toupper(*cp) == 'X') {
+>>  			cp++;
+>>  			base = 16;
+>>  		}
+>>  	}
+>>  
+>> -	while (isxdigit(*cp) &&
+>> -	       (value = isdigit(*cp) ? *cp - '0' : toupper(*cp) - 'A' + 10) < base) {
+>> +	while (prom_isxdigit(*cp) &&
+>> +	       (value = prom_isdigit(*cp) ? *cp - '0' : prom_toupper(*cp) - 'A' + 10) < base) {
+>>  		result = result * base + value;
+>>  		cp++;
+>>  	}
+>> -- 
+>> 2.30.2
+>> 
+>
+> -- 
+> With Best Regards,
+> Andy Shevchenko
