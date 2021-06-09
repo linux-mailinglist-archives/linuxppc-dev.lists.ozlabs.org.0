@@ -2,14 +2,14 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B069F3A1183
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Jun 2021 12:52:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3FB23A11B7
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Jun 2021 12:54:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G0P8J0KK8z3byN
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Jun 2021 20:52:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G0PB11xBSz3bty
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Jun 2021 20:54:17 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=frTfy1YD;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=frTfy1YD;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QwJC1ngm;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QwJC1ngm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,82 +19,82 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=frTfy1YD; 
+ header.s=mimecast20190719 header.b=QwJC1ngm; 
  dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=frTfy1YD; 
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=QwJC1ngm; 
  dkim-atps=neutral
 Received: from us-smtp-delivery-124.mimecast.com
  (us-smtp-delivery-124.mimecast.com [216.205.24.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G0P7m1TB6z2yQy
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Jun 2021 20:52:19 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G0P9V3yRZz3034
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Jun 2021 20:53:50 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1623235936;
+ s=mimecast20190719; t=1623236027;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VZPPxlVuFpma5nN0KBwsgNEj1D60a3U+wCT7M5MPOro=;
- b=frTfy1YDgNqJUa6+Wl1fkhQV/+kPWz532OoTHULtA6AK2s8MFtdjlqiYnbWoeFzINWwnvG
- amzLFXrvHcogwLVEUnozyFlZKUE/1pPMnuK2pUBGbSELEsLE2ZrgaWXRGAM8EKoP6mbosP
- hXIIlMtw1yEzn2UEs0vmRqpLwyhTMnc=
+ bh=JBWPCdmnHsH7qQGe81DFl3a6ru5xcOhjproglm1WObM=;
+ b=QwJC1ngmrfl3sXAyqcrsZkAJM99ohcRxRDGQleZHVOe0QHkYHaLEtaCAAJ18apqDQzAeTB
+ ATFOm9v/nG3u4aAaOUZq6bxxP9i5dTJ63OKEuU5isVlfC7tS5vpOtkRnkcTvWp8KauoKGh
+ t97ao11Pq+vy55nVK0dhgiHxIn+K/wE=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1623235936;
+ s=mimecast20190719; t=1623236027;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VZPPxlVuFpma5nN0KBwsgNEj1D60a3U+wCT7M5MPOro=;
- b=frTfy1YDgNqJUa6+Wl1fkhQV/+kPWz532OoTHULtA6AK2s8MFtdjlqiYnbWoeFzINWwnvG
- amzLFXrvHcogwLVEUnozyFlZKUE/1pPMnuK2pUBGbSELEsLE2ZrgaWXRGAM8EKoP6mbosP
- hXIIlMtw1yEzn2UEs0vmRqpLwyhTMnc=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-389-Ishn2fwRPSazO8IDoji68A-1; Wed, 09 Jun 2021 06:52:14 -0400
-X-MC-Unique: Ishn2fwRPSazO8IDoji68A-1
-Received: by mail-wr1-f71.google.com with SMTP id
- n4-20020a5d42040000b0290119fef97609so757093wrq.18
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 09 Jun 2021 03:52:14 -0700 (PDT)
+ bh=JBWPCdmnHsH7qQGe81DFl3a6ru5xcOhjproglm1WObM=;
+ b=QwJC1ngmrfl3sXAyqcrsZkAJM99ohcRxRDGQleZHVOe0QHkYHaLEtaCAAJ18apqDQzAeTB
+ ATFOm9v/nG3u4aAaOUZq6bxxP9i5dTJ63OKEuU5isVlfC7tS5vpOtkRnkcTvWp8KauoKGh
+ t97ao11Pq+vy55nVK0dhgiHxIn+K/wE=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-453-tGizCar9PBy_9D6AEWFAIw-1; Wed, 09 Jun 2021 06:53:43 -0400
+X-MC-Unique: tGizCar9PBy_9D6AEWFAIw-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ u20-20020a0560001614b02901115c8f2d89so10524596wrb.3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 09 Jun 2021 03:53:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:organization
  :message-id:date:user-agent:mime-version:in-reply-to
  :content-language:content-transfer-encoding;
- bh=VZPPxlVuFpma5nN0KBwsgNEj1D60a3U+wCT7M5MPOro=;
- b=ScnPKNVtfvhIXmJxnWamAmildpdYaBBUL+T2iFXUG3Ryi9bRphpqzu1mxHPBkhc+Hx
- nv89PT7t2DtnoEVYGyEC3vI/oAdfCWwtT4oEH8XX3wIM16/9ghJZdFsaTDSNU7DVzL8V
- +f/ht7YGf7lU1UP9MfzkzgL4SvZX32gE0l1rJ6mIhvpCC+5gsxSx9C/1ddh0bj4X3gyQ
- A/Xearg2kvfev3Ap+oJln7kfuLxwryD6rwBFOzuVGkyMXjblhBmwreu1A+Nr90M7ICC/
- JO1HF6/vAGYEhAwvvi5UABzxAhNnJreRrb8tzrZko53idtsC7GrvcXwmanl3zLDJLM6U
- rUQA==
-X-Gm-Message-State: AOAM532x+2EqCFaRX+7IcCgYdzjEbOR3gehUazupmLsWf05akrQuWKCd
- P587THqTegea1KTVPv5htKaBkle4gLSkyQhZ7Jx0/4kzvXIAb415Bq9DmcrtWTR91JDcDLiEup6
- YVmHhI5eOJDq6RRw/m8WI4Osq5Q==
-X-Received: by 2002:a05:600c:c9:: with SMTP id
- u9mr26528275wmm.156.1623235933571; 
- Wed, 09 Jun 2021 03:52:13 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwOhpm0kR/qb02GnRlZAdwrQqqdavzoWPuk2BGBrMztminfq9lmdrK+j2M/FH+Xh9QtwaeMHg==
-X-Received: by 2002:a05:600c:c9:: with SMTP id
- u9mr26528228wmm.156.1623235933268; 
- Wed, 09 Jun 2021 03:52:13 -0700 (PDT)
+ bh=JBWPCdmnHsH7qQGe81DFl3a6ru5xcOhjproglm1WObM=;
+ b=OdC/AB/BIKMH/tilUcXvOrWcfujcN276eUaZ3oYf9QUo3OvB7GumAmfAtoGknB13Z0
+ cffJ1F7XAnNE1g9/r4odP6B/9/oOufEFqOe1Fpjj/pNwmmySywQi40uuF1qCcRJTkguk
+ ZtHIrIJnOE3PpB7jGsufw0VE4T/gmWl87Ig8zlIOjlSONbDt2E/uA8/xMLHU11YZQ/p/
+ T3yzu/GeBEpL3sYQrD5zkDATUuS+hWkJgY3uLtgwwXUKSw5urkbGvLrVPRw3D97VgUEi
+ nYQ6t4kUWYmz2xFR0u45UtozCRNXwNBLnUKKUfbo3dFAgXNbEtSUyrYCD+blQJpk5bQn
+ GH+w==
+X-Gm-Message-State: AOAM530/IGp2P42z4mx1iGsgsgi3LMky7q7QcuGssu0dZeG89xPxYFkE
+ tlCIxAWoV1Nytij5wSEX1g/PQ13YkGESyT9zP0VbiSRHH7IpC5HdDPKtX8HlvFVt9rGyQ7Y0VS9
+ bWcBCnI8mb6APqYFMS/XkuwN5fw==
+X-Received: by 2002:a05:600c:b50:: with SMTP id
+ k16mr26766724wmr.137.1623236022754; 
+ Wed, 09 Jun 2021 03:53:42 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJytaUEoH1yZlmOCQRNfd+wo+CI/GKYwuDVo1xp/A/CuJsfRh3qeLKHuz3pPcIzWarSKIwDzSA==
+X-Received: by 2002:a05:600c:b50:: with SMTP id
+ k16mr26766696wmr.137.1623236022628; 
+ Wed, 09 Jun 2021 03:53:42 -0700 (PDT)
 Received: from [192.168.3.132] (p5b0c611d.dip0.t-ipconnect.de. [91.12.97.29])
  by smtp.gmail.com with ESMTPSA id
- 89sm25391165wrq.14.2021.06.09.03.52.12
+ v15sm1695174wrw.24.2021.06.09.03.53.41
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 09 Jun 2021 03:52:13 -0700 (PDT)
-Subject: Re: [PATCH 2/9] arc: update comment about HIGHMEM implementation
+ Wed, 09 Jun 2021 03:53:42 -0700 (PDT)
+Subject: Re: [PATCH 3/9] arc: remove support for DISCONTIGMEM
 To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
 References: <20210602105348.13387-1-rppt@kernel.org>
- <20210602105348.13387-3-rppt@kernel.org>
+ <20210602105348.13387-4-rppt@kernel.org>
 From: David Hildenbrand <david@redhat.com>
 Organization: Red Hat
-Message-ID: <2764dca8-f395-f76a-0939-215eccdfd82e@redhat.com>
-Date: Wed, 9 Jun 2021 12:52:11 +0200
+Message-ID: <e9ef94f5-02bc-920b-9e6a-2d234e5bbbc5@redhat.com>
+Date: Wed, 9 Jun 2021 12:53:41 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.10.1
 MIME-Version: 1.0
-In-Reply-To: <20210602105348.13387-3-rppt@kernel.org>
+In-Reply-To: <20210602105348.13387-4-rppt@kernel.org>
 Authentication-Results: relay.mimecast.com;
  auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
 X-Mimecast-Spam-Score: 0
@@ -133,43 +133,14 @@ Sender: "Linuxppc-dev"
 On 02.06.21 12:53, Mike Rapoport wrote:
 > From: Mike Rapoport <rppt@linux.ibm.com>
 > 
-> Arc does not use DISCONTIGMEM to implement high memory, update the comment
-> describing how high memory works to reflect this.
+> DISCONTIGMEM was replaced by FLATMEM with freeing of the unused memory map
+> in v5.11.
+> 
+> Remove the support for DISCONTIGMEM entirely.
 > 
 > Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> ---
->   arch/arc/mm/init.c | 13 +++++--------
->   1 file changed, 5 insertions(+), 8 deletions(-)
-> 
-> diff --git a/arch/arc/mm/init.c b/arch/arc/mm/init.c
-> index e2ed355438c9..397a201adfe3 100644
-> --- a/arch/arc/mm/init.c
-> +++ b/arch/arc/mm/init.c
-> @@ -139,16 +139,13 @@ void __init setup_arch_memory(void)
->   
->   #ifdef CONFIG_HIGHMEM
->   	/*
-> -	 * Populate a new node with highmem
-> -	 *
->   	 * On ARC (w/o PAE) HIGHMEM addresses are actually smaller (0 based)
-> -	 * than addresses in normal ala low memory (0x8000_0000 based).
-> +	 * than addresses in normal aka low memory (0x8000_0000 based).
->   	 * Even with PAE, the huge peripheral space hole would waste a lot of
-> -	 * mem with single mem_map[]. This warrants a mem_map per region design.
-> -	 * Thus HIGHMEM on ARC is imlemented with DISCONTIGMEM.
-> -	 *
-> -	 * DISCONTIGMEM in turns requires multiple nodes. node 0 above is
-> -	 * populated with normal memory zone while node 1 only has highmem
-> +	 * mem with single contiguous mem_map[].
-> +	 * Thus when HIGHMEM on ARC is enabled the memory map corresponding
-> +	 * to the hole is freed and ARC specific version of pfn_valid()
-> +	 * handles the hole in the memory map.
->   	 */
->   #ifdef CONFIG_DISCONTIGMEM
->   	node_set_online(1);
-> 
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
 
 -- 
 Thanks,
