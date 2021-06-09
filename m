@@ -2,53 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 025B23A0BC7
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Jun 2021 07:19:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 633813A0BDB
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Jun 2021 07:30:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G0FlJ3grLz3bs8
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Jun 2021 15:19:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G0G0X6dRvz307W
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Jun 2021 15:30:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=201602 header.b=YiKkOry+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=lKzfwxvZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=dgibson@ozlabs.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
- header.a=rsa-sha256 header.s=201602 header.b=YiKkOry+; 
- dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::82b;
+ helo=mail-qt1-x82b.google.com; envelope-from=leobras.c@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=lKzfwxvZ; dkim-atps=neutral
+Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com
+ [IPv6:2607:f8b0:4864:20::82b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G0Fkq0q7Gz2xvB
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Jun 2021 15:18:42 +1000 (AEST)
-Received: by ozlabs.org (Postfix, from userid 1007)
- id 4G0Fkm3LzRz9sSn; Wed,  9 Jun 2021 15:18:40 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=gibson.dropbear.id.au; s=201602; t=1623215920;
- bh=I2R81KysSK5UMKwKNmC/z1RaD1s+FY3px1l0EvD/X3M=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=YiKkOry+fjLpYXVtDn+f+MROuDDfsmnSSteQ2BUjXqkkw9CVfOKckgZrE8pxnQoTi
- 8G8m9Pdd5a8tHORJV/UsQWhDg7ORlqkr6Kx7erPLic8wrq9dlqw6znhIhXWaC90CRf
- YAvxFipYjrlSblqIwc12wzjF99NwEiAXiqSD4Law=
-Date: Wed, 9 Jun 2021 14:40:59 +1000
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Leonardo =?iso-8859-1?Q?Br=E1s?= <leobras.c@gmail.com>
-Subject: Re: [PATCH v2 1/3] powerpc/mm/hash: Avoid resizing-down HPT on first
- memory hotplug
-Message-ID: <YMBGW3RQOzoQxBqy@yekko>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G0G036881z2ymb
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Jun 2021 15:30:09 +1000 (AEST)
+Received: by mail-qt1-x82b.google.com with SMTP id l17so12973410qtq.12
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 08 Jun 2021 22:30:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=message-id:subject:from:to:cc:date:in-reply-to:references
+ :user-agent:mime-version:content-transfer-encoding;
+ bh=NN7xmTnHOJkFIgJqmIQHYCemTkBXultHJB0UVCrZGJU=;
+ b=lKzfwxvZYmXMio6DxcohP6UZ0VciCjemrQxWd/Wo4qqmgYF2Kw0+5kLAN7z/fwkDKy
+ CMV4dTuWzd4b7yedIkBvfi16W4eG3HU0wDjNVmQrry+FtDpDJmpUKhCjwKWvVedGPIwf
+ +j+c2DPRMfYzvW+kZM4dce49dDqa17muJgH0Vwi+d3ThcjVZ2y25P9KM7fGgM1OQnGwK
+ 1Tpmx6W77SsIcd07ri9QThEVp208q+R33tneycV7Vy4ljxuYwzj0yNAT/7aYbShIon47
+ v2hSeJu/41txZYKiOjqJDfeAuO6rIEJvsMK2IZT5hkdmRIdg+GQ16XfW/F4gzxPrMyI9
+ 9bcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+ :references:user-agent:mime-version:content-transfer-encoding;
+ bh=NN7xmTnHOJkFIgJqmIQHYCemTkBXultHJB0UVCrZGJU=;
+ b=P1BAE/XigqpA4ByhqRrt3PERO0f2X3+nat3bir4ZnSeuecazMEBaPAGc5feqbJkriY
+ j7UeajOIGuLWBLFmtJ0qqrHt2OWE6w79zOtHKUcIfeo+ouAoZYRb0EbJdUIv5jrWtk3j
+ oBS9jOdWOjymKm/rIl+X0S7XV+F1SF93dsxo9OE4seJh+efQmErpu2VYrK+ckS2Y0UJw
+ Pp5VJyWawUylAOyTzUoQ5WMIHlHUTJj7Qw2PZJXwgx9nMM3GZ4qeItzmqwYirkJHrn6N
+ LkqLzspdEVtUyRXoH7YbaDsMvHnAOS762NoSSVEsxRnyreeZ7KVUZlJuNbsELFu/vW1L
+ 1oBw==
+X-Gm-Message-State: AOAM533iWWHnMWy7kuuMZhdxPCpKSlPuJ9c+UBsayMiTWKV5YXDWZE2o
+ 9cVpL56mDj/ST78DPYMGhts=
+X-Google-Smtp-Source: ABdhPJyNarADNIgx5i6021RzYgKXFMSTP9Xz/qNJbnqV2oKGzxx1S0Sz/8dqbhP4KEJgsnRW5BQVUA==
+X-Received: by 2002:ac8:5202:: with SMTP id r2mr19484392qtn.86.1623216605538; 
+ Tue, 08 Jun 2021 22:30:05 -0700 (PDT)
+Received: from ?IPv6:2804:14c:482:87bb::1000? ([2804:14c:482:87bb::1000])
+ by smtp.gmail.com with ESMTPSA id y20sm12122386qtv.64.2021.06.08.22.30.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 08 Jun 2021 22:30:05 -0700 (PDT)
+Message-ID: <fa7a0e981a067445beb1ae01d53db932990717b7.camel@gmail.com>
+Subject: Re: [PATCH v2 3/3] powerpc/mm/hash: Avoid multiple HPT resize-downs
+ on memory hotunplug
+From: Leonardo =?ISO-8859-1?Q?Br=E1s?= <leobras.c@gmail.com>
+To: David Gibson <david@gibson.dropbear.id.au>
+Date: Wed, 09 Jun 2021 02:30:36 -0300
+In-Reply-To: <YL2sjKM7ByS0Xeko@yekko>
 References: <20210430143607.135005-1-leobras.c@gmail.com>
- <20210430143607.135005-2-leobras.c@gmail.com>
- <YL2obsnp4rWbW6CV@yekko>
- <648b382159009c5f4277d9b9c3f896142ea75d6c.camel@gmail.com>
+ <20210430143607.135005-4-leobras.c@gmail.com> <YL2sjKM7ByS0Xeko@yekko>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.40.2 
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="JIXKiScEiqVqxi4e"
-Content-Disposition: inline
-In-Reply-To: <648b382159009c5f4277d9b9c3f896142ea75d6c.camel@gmail.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,117 +94,87 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Mon, 2021-06-07 at 15:20 +1000, David Gibson wrote:
+> On Fri, Apr 30, 2021 at 11:36:10AM -0300, Leonardo Bras wrote:
+> > During memory hotunplug, after each LMB is removed, the HPT may be
+> > resized-down if it would map a max of 4 times the current amount of
+> > memory.
+> > (2 shifts, due to introduced histeresis)
+> > 
+> > It usually is not an issue, but it can take a lot of time if HPT
+> > resizing-down fails. This happens  because resize-down failures
+> > usually repeat at each LMB removal, until there are no more bolted
+> > entries
+> > conflict, which can take a while to happen.
+> > 
+> > This can be solved by doing a single HPT resize at the end of
+> > memory
+> > hotunplug, after all requested entries are removed.
+> > 
+> > To make this happen, it's necessary to temporarily disable all HPT
+> > resize-downs before hotunplug, re-enable them after hotunplug ends,
+> > and then resize-down HPT to the current memory size.
+> > 
+> > As an example, hotunplugging 256GB from a 385GB guest took 621s
+> > without
+> > this patch, and 100s after applied.
+> > 
+> > Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
+> 
+> Hrm.  This looks correct, but it seems overly complicated.
+> 
+> AFAICT, the resize calls that this adds should in practice be the
+> *only* times we call resize, all the calls from the lower level code
+> should be suppressed. 
 
---JIXKiScEiqVqxi4e
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+That's correct.
 
-On Tue, Jun 08, 2021 at 09:52:10PM -0300, Leonardo Br=E1s wrote:
-> On Mon, 2021-06-07 at 15:02 +1000, David Gibson wrote:
-> > On Fri, Apr 30, 2021 at 11:36:06AM -0300, Leonardo Bras wrote:
-> > > Because hypervisors may need to create HPTs without knowing the
-> > > guest
-> > > page size, the smallest used page-size (4k) may be chosen,
-> > > resulting in
-> > > a HPT that is possibly bigger than needed.
-> > >=20
-> > > On a guest with bigger page-sizes, the amount of entries for HTP
-> > > may be
-> > > too high, causing the guest to ask for a HPT resize-down on the
-> > > first
-> > > hotplug.
-> > >=20
-> > > This becomes a problem when HPT resize-down fails, and causes the
-> > > HPT resize to be performed on every LMB added, until HPT size is
-> > > compatible to guest memory size, causing a major slowdown.
-> > >=20
-> > > So, avoiding HPT resizing-down on hot-add significantly improves
-> > > memory
-> > > hotplug times.
-> > >=20
-> > > As an example, hotplugging 256GB on a 129GB guest took 710s without
-> > > this
-> > > patch, and 21s after applied.
-> > >=20
-> > > Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
-> >=20
-> > Sorry it's taken me so long to look at these
-> >=20
-> > I don't love the extra statefulness that the 'shrinking' parameter
-> > adds, but I can't see an elegant way to avoid it, so:
-> >=20
-> > Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
->=20
-> np, thanks for reviewing!
-
-Actually... I take that back.  With the subsequent patches my
-discomfort with the complexity of implementing the batching grew.
-
-I think I can see a simpler way - although it wasn't as clear as I
-thought it might be, without some deep history on this feature.
-
-What's going on here is pretty hard to follow, because it starts in
-arch-specific code (arch/powerpc/platforms/pseries/hotplug-memory.c)
-where it processes the add/remove requests, then goes into generic
-code __add_memory() which eventually emerges back in arch specific
-code (hash__create_section_mapping()).
-
-The HPT resizing calls are in the "inner" arch specific section,
-whereas it's only the outer arch section that has the information to
-batch properly.  The mutex and 'shrinking' parameter in Leonardo's
-code are all about conveying information from the outer to inner
-section.
-
-Now, I think the reason I had the resize calls in the inner section
-was to accomodate the notion that a) pHyp might support resizing in
-future, and it could come in through a different path with its drmgr
-thingy and/or b) bare metal hash architectures might want to implement
-hash resizing, and this would make at least part of the path common.
-
-Given the decreasing relevance of hash MMUs, I think we can now safely
-say neither of these is ever going to happen.
-
-Therefore, we can simplify things by moving the HPT resize calls into
-the pseries LMB code, instead of create/remove_section_mapping.  Then
-to do batching without extra complications we just need this logic for
-all resizes (both add and remove):
-
-	let new_hpt_order =3D expected HPT size for new mem size;
-
-	if (new_hpt_order > current_hpt_order)
-		resize to new_hpt_order
-
-	add/remove memory
-
-	if (new_hpt_order < current_hpt_order - 1)
-		resize to new_hpt_order
+>  In which case can't we just remove those calls
+> entirely, and not deal with the clunky locking and exclusion here.
+> That should also remove the need for the 'shrinking' parameter in
+> 1/3.
 
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+If I get your suggestion correctly, you suggest something like:
+1 - Never calling resize_hpt_for_hotplug() in
+hash__remove_section_mapping(), thus not needing the srinking
+parameter.
+2 - Functions in hotplug-memory.c that call dlpar_remove_lmb() would in
+fact call another function to do the batch resize_hpt_for_hotplug() for
+them
 
---JIXKiScEiqVqxi4e
-Content-Type: application/pgp-signature; name="signature.asc"
+If so, that assumes that no other function that currently calls
+resize_hpt_for_hotplug() under another path, or if they do, it does not
+need to actually resize the HPT.
 
------BEGIN PGP SIGNATURE-----
+Is the above correct?
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmDARlkACgkQbDjKyiDZ
-s5L1tRAAkuor5k1WYVSOmA9nSFxuvGLrZfHFGixzV8D5KZPdlEN7q3n7zx4XYhgl
-OtbvwC6u9+K2C2m6+E4Nj/FWiycRgw7ZIBZgPSMQIzbWV4IB3UaYf72ZKT55E3q8
-UONpFPaoi4xDic9lwMqUhf6vUrZ+l05GKV+osojSsNNxiSGuJ/6aOv301FSfptsK
-D/lXVQYf1X2WLPWYJe2rJO3A/iWkhZ4UX0MrNRtfZ7WrRIFRuV4VCbfWqmcCuhI9
-GBAGxSLB5VKRU8mTXTO1KQPLE32l0S+tknpMhAX/Vwp24E5DQDKoSBZvPIXPdi1q
-QEnQT/5MokHSVd2obB944eLuylN5++PenUDbW/L+P9XyMIgvWJd6sIiFraqKOQNw
-o32NJryjQ413KowxYIYa5vLVStWJ+AcQKVIIouzwKle5mGYSaBwXOh7kUjOMIFxh
-QfNrOxtN5uWarxiVUbnVUM3BB425WJBP31jE+J7YnCi9tXtKAw5XBj2zaa4rxhvY
-EgsUc1p3rz4PuI+jijBYI+KfBsTS6RaueB/LG4Fdl6PhIZuryfabbKSe4vtOLzUJ
-ormnBmFEu9MPSpM3JoSON/UiDgjI1Ywm0W7VjtOyMc2BWXF/7E3gKSg6tMq//ePH
-LaqFXRj6YlieGDbFMwNKr0aeY/KXAvGXsXMFmxYNyNaArZTbvMA=
-=7p9d
------END PGP SIGNATURE-----
+There are some examples of functions that currently call
+resize_hpt_for_hotplug() by another path:
 
---JIXKiScEiqVqxi4e--
+add_memory_driver_managed
+	virtio_mem_add_memory
+	dev_dax_kmem_probe
+
+reserve_additional_memory
+	balloon_process
+	add_ballooned_pages
+
+__add_memory
+	probe_store
+
+__remove_memory
+	pseries_remove_memblock
+
+remove_memory
+	dev_dax_kmem_remove
+	virtio_mem_remove_memory
+
+memunmap_pages
+	pci_p2pdma_add_resource
+	virtio_fs_setup_dax
+
+
+Best regards,
+Leonardo Bras
+
