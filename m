@@ -1,51 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16BA73A0C36
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Jun 2021 08:10:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79E393A0CBF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Jun 2021 08:52:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G0Gv21Yrgz3byT
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Jun 2021 16:10:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G0HqM72M4z30JY
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Jun 2021 16:52:47 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=R3Ua7SSr;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=R3Ua7SSr; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G0Gth0cNKz2xvV
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Jun 2021 16:10:34 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4G0GtZ0x1XzBDJ9;
- Wed,  9 Jun 2021 08:10:30 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id MF3WHZLI9UTZ; Wed,  9 Jun 2021 08:10:30 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4G0GtZ02hkzBCHr;
- Wed,  9 Jun 2021 08:10:30 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D880D8B7CD;
- Wed,  9 Jun 2021 08:10:29 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id pWQworC-cdmm; Wed,  9 Jun 2021 08:10:29 +0200 (CEST)
-Received: from po15610vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 977AC8B7C3;
- Wed,  9 Jun 2021 08:10:29 +0200 (CEST)
-Received: by po15610vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 6914364C62; Wed,  9 Jun 2021 06:10:29 +0000 (UTC)
-Message-Id: <37f41d74faa0c66f90b373e243e8b1ee37a1f6fa.1623219019.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH] powerpc: Move update_power8_hid0() into its only user
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Wed,  9 Jun 2021 06:10:29 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G0Hpx241Wz2yx9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Jun 2021 16:52:25 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id F40D661249;
+ Wed,  9 Jun 2021 06:52:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1623221541;
+ bh=1NOcR9X1qrsVWC8pZ+WOBsJYlerWmKCJZFjAHZSyi1g=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=R3Ua7SSrAmPcigjQENQSeeEMj920XMPbd0mRAH+B4DHPNXP+taIOYwYUWcVIXb5j6
+ VJBySmzsOYZnbE6P4kMoE9ZvUpFBLiddGWhEYtU+E0KEUzEdWHkJqeLVtgBH6jO4C9
+ Pe9x2UVR5RoSXUB4d6262LpkrrGlAOAE5RSKB4ZbL931VU3fcHDPQIgBFXazdDNmx0
+ KYGm7I3vStPQPXah/NfmgtdSVOkJw8ewGPxvh3kYk2hvG8vZe26iLuJ3PqURc/rI07
+ p6tkwWjdfIcQ6IB7Wn8wiS2wG0e2oDGZCpnQAvL+zgWVSStPrtFhj2bz5Vv7w2pP3G
+ OCNYfrxKsGSKw==
+Date: Wed, 9 Jun 2021 09:52:08 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v3 8/9] mm: replace CONFIG_NEED_MULTIPLE_NODES with
+ CONFIG_NUMA
+Message-ID: <YMBlGBxaWDPV1ouT@kernel.org>
+References: <20210608091316.3622-1-rppt@kernel.org>
+ <20210608091316.3622-9-rppt@kernel.org>
+ <20210608172544.d9bf17549565d866fbb18451@linux-foundation.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210608172544.d9bf17549565d866fbb18451@linux-foundation.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,63 +60,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-m68k@vger.kernel.org, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, linux-mips@vger.kernel.org, linux-mm@kvack.org,
+ sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
+ Mike Rapoport <rppt@linux.ibm.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org,
+ linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+ linux-arm-kernel@lists.infradead.org, Richard Henderson <rth@twiddle.net>,
+ Vineet Gupta <vgupta@synopsys.com>, kexec@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-update_power8_hid0() is used only by powernv platform subcore.c
+On Tue, Jun 08, 2021 at 05:25:44PM -0700, Andrew Morton wrote:
+> On Tue,  8 Jun 2021 12:13:15 +0300 Mike Rapoport <rppt@kernel.org> wrote:
+> 
+> > From: Mike Rapoport <rppt@linux.ibm.com>
+> > 
+> > After removal of DISCINTIGMEM the NEED_MULTIPLE_NODES and NUMA
+> > configuration options are equivalent.
+> > 
+> > Drop CONFIG_NEED_MULTIPLE_NODES and use CONFIG_NUMA instead.
+> > 
+> > Done with
+> > 
+> > 	$ sed -i 's/CONFIG_NEED_MULTIPLE_NODES/CONFIG_NUMA/' \
+> > 		$(git grep -wl CONFIG_NEED_MULTIPLE_NODES)
+> > 	$ sed -i 's/NEED_MULTIPLE_NODES/NUMA/' \
+> > 		$(git grep -wl NEED_MULTIPLE_NODES)
+> > 
+> > with manual tweaks afterwards.
+> > 
+> > ...
+> >
+> > --- a/include/linux/mmzone.h
+> > +++ b/include/linux/mmzone.h
+> > @@ -987,7 +987,7 @@ extern int movable_zone;
+> >  #ifdef CONFIG_HIGHMEM
+> >  static inline int zone_movable_is_highmem(void)
+> >  {
+> > -#ifdef CONFIG_NEED_MULTIPLE_NODES
+> > +#ifdef CONFIG_NUMA
+> >  	return movable_zone == ZONE_HIGHMEM;
+> >  #else
+> >  	return (ZONE_MOVABLE - 1) == ZONE_HIGHMEM;
+> 
+> I dropped this hunk - your "mm/mmzone.h: simplify is_highmem_idx()"
+> removed zone_movable_is_highmem().  
 
-Move it there.
+Ah, right.
+Thanks!
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/include/asm/reg.h           | 10 ----------
- arch/powerpc/platforms/powernv/subcore.c | 10 ++++++++++
- 2 files changed, 10 insertions(+), 10 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
-index 3bb01a8779c9..c5a527489ba5 100644
---- a/arch/powerpc/include/asm/reg.h
-+++ b/arch/powerpc/include/asm/reg.h
-@@ -1445,16 +1445,6 @@ extern void scom970_write(unsigned int address, unsigned long value);
- struct pt_regs;
- 
- extern void ppc_save_regs(struct pt_regs *regs);
--
--static inline void update_power8_hid0(unsigned long hid0)
--{
--	/*
--	 *  The HID0 update on Power8 should at the very least be
--	 *  preceded by a SYNC instruction followed by an ISYNC
--	 *  instruction
--	 */
--	asm volatile("sync; mtspr %0,%1; isync":: "i"(SPRN_HID0), "r"(hid0));
--}
- #endif /* __ASSEMBLY__ */
- #endif /* __KERNEL__ */
- #endif /* _ASM_POWERPC_REG_H */
-diff --git a/arch/powerpc/platforms/powernv/subcore.c b/arch/powerpc/platforms/powernv/subcore.c
-index 73207b53dc2b..4fe0594c3f4d 100644
---- a/arch/powerpc/platforms/powernv/subcore.c
-+++ b/arch/powerpc/platforms/powernv/subcore.c
-@@ -169,6 +169,16 @@ static void update_hid_in_slw(u64 hid0)
- 	}
- }
- 
-+static void update_power8_hid0(unsigned long hid0)
-+{
-+	/*
-+	 *  The HID0 update on Power8 should at the very least be
-+	 *  preceded by a SYNC instruction followed by an ISYNC
-+	 *  instruction
-+	 */
-+	asm volatile("sync; mtspr %0,%1; isync":: "i"(SPRN_HID0), "r"(hid0));
-+}
-+
- static void unsplit_core(void)
- {
- 	u64 hid0, mask;
 -- 
-2.25.0
-
+Sincerely yours,
+Mike.
