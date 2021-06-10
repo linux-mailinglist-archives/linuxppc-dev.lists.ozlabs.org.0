@@ -2,68 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA3CF3A2C87
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Jun 2021 15:10:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B2DB3A2C89
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Jun 2021 15:10:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G148L2CfTz3c08
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Jun 2021 23:10:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G148q0kCdz3c5d
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Jun 2021 23:10:35 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=gWxrlLXS;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=FKdGz5Yd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::529;
- helo=mail-pg1-x529.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102f;
+ helo=mail-pj1-x102f.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=gWxrlLXS; dkim-atps=neutral
-Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com
- [IPv6:2607:f8b0:4864:20::529])
+ header.s=20161025 header.b=FKdGz5Yd; dkim-atps=neutral
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com
+ [IPv6:2607:f8b0:4864:20::102f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G147m4jVzz307J
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G147m4dxKz3079
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Jun 2021 23:09:39 +1000 (AEST)
-Received: by mail-pg1-x529.google.com with SMTP id o9so19717155pgd.2
+Received: by mail-pj1-x102f.google.com with SMTP id g4so3654287pjk.0
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Jun 2021 06:09:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=nZQRZ0tonjPCI8SQrIn7GdjJ8AXK3CYGOxRwGSLK+GA=;
- b=gWxrlLXS5eCVyptOs3gLJ1NfVTBXebDMnkJTteFqAdpzf0u20bW2GXSx/79rsLaQLi
- 9Log+jkg/ptnksWxJsPpCnBDC5JcXTV3Ndv0RUv71INVd1YsrjGejF4HETR2HeH5N1lY
- Q/AWjjHH0sUOJyPVfQYBpVvoV6geHJHKFWe3CyIraQJVvp8NBRGawqVmzC2JiszgO99U
- 2tykotAx9XJUe7US9v93VpiLMNNZefpW519kQrlqGTVRHh5fmEPS490BKsGDUQVUSBVd
- IXRM83iFb4+TEzYrS4m0CdPvCuBt1QNV9dxaxQpDlWUTsPeyRvqSAbOpNfhMb9Ducbap
- QtAw==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=KNM7LjNlG7D3yR4PH6b+cf+7c/bYLg6X4ID7/qjSGq4=;
+ b=FKdGz5YdI9bOCvfvQxm5wCEvjQRBJkZzuqLjhxHxQMPb+LzxfBHhxOIBy3gSWICN1e
+ l/YG8+K9xbodjRjkv6BEozDGyqDO8y1HEZpXT6MnbLLjTAM80oYFLSi16p10xbUGRb5f
+ 8FukY5Lw0U6zDoVYjo4YRaDTaEKQH08Cocq+7LUV5WNR8okHjjSqx8WNQdAbd6Ky2FAa
+ HM/Iop7vlXKVUCSBHDITSkwR6TNTPiJpNXNmIVBZN2Ptp6FoodN9VQglwXZAj5Ln5gZ7
+ qOpApi1t6iBKATVbsp3BCS8qqt5E96wantlNbaXQ9RpvUPWT9aKXiMx+wL8hvYhmpI6O
+ xDVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=nZQRZ0tonjPCI8SQrIn7GdjJ8AXK3CYGOxRwGSLK+GA=;
- b=ceRJYgVujjD4CWX4rpWfGEXRqBwyQzdLKKvI3IZ5kNJN5tjx7fCl9+odIJcq4opgX4
- V7wqkkzjIi54qk83awDJlHzHssXxvtYNubMSV4dv1BtmBdPxYGRKzZPNYLrDRVqu2AXQ
- Zhkhu0F2P6gZ1jqoS6AUOEs1dle0CMs5Ot3zKv9KKhidqJhCyWnmDk9YKxvUO+fY/La/
- nI+Kobi2/I4etaRyEwQN2/lHxdvisAt4AgNLWumH62L5tKvGG5s7XRWpDaTE+AT9fqNb
- zZ6S58wxK4Atdm7I/v0dUZTu28mnRG1tZRGTWygRfjJh6hD3eGySblH80e0vkrNCe/2g
- aANA==
-X-Gm-Message-State: AOAM533RIsdV2jZo1eJ/Vjoodb+NkahGUwpX4XyQvNDYC1zegaAGkw/z
- fgZlUxKP4Jv7asX6WKWaFTRMEnHwndE=
-X-Google-Smtp-Source: ABdhPJxr0xbIMNRm0i5p0CkHJN0gIHpZOue86A4BLctCWJRfu0A4vXBMXxtkVPPRpaZLjxfqQ7m3eA==
-X-Received: by 2002:a63:5f8b:: with SMTP id t133mr4813846pgb.411.1623330573690; 
- Thu, 10 Jun 2021 06:09:33 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=KNM7LjNlG7D3yR4PH6b+cf+7c/bYLg6X4ID7/qjSGq4=;
+ b=q+mJEPDayqtd6ISqxOcJwwNqc6qm2aCgau7OP2iwWORIXpnJXteZ/FImLS8gXY29FL
+ HBvF0zSwDQYPUbsLISUOFPV8cldtcuvu3+DReIUiK5fRwd5eeJYUR/hUCZZaTtaWNV46
+ ybserjCO5rA2cSFQyOJucrF97dzCqZSzYWrH0UkTdXc9mc4iRMQL+hsSDDQZJ0FpEomZ
+ dhr73wkYti8FP2QN647rbFJ4KNIK992fHAUp8fXstETvpBS4wKgJcRL1AzcCQpJCwPut
+ KtEzLV2D+UlTCLV2wyxg2Dl1jdV1J8M2sjRS6tXdHwBq+gwEhfjd65lW5BWPTVNvH7Xh
+ eojQ==
+X-Gm-Message-State: AOAM530yTNjDgxI6vk+jEFTBGga+hDgQRMdRRdn50HoQk4UKHwD0TaFD
+ fYyNVhhWHH7gqByHGvd6fRxarG6By+M=
+X-Google-Smtp-Source: ABdhPJw3diJBPB4XgLk0LPyp9Nn58m4zzL2E4DTJevcRJTUbfd/JZ0WSZD48dtHx7oxFD3MLgEw6CQ==
+X-Received: by 2002:a17:90b:3a8c:: with SMTP id
+ om12mr3376065pjb.103.1623330575825; 
+ Thu, 10 Jun 2021 06:09:35 -0700 (PDT)
 Received: from bobo.ibm.com (60-242-147-73.tpgi.com.au. [60.242.147.73])
- by smtp.gmail.com with ESMTPSA id bv3sm7012173pjb.1.2021.06.10.06.09.31
+ by smtp.gmail.com with ESMTPSA id bv3sm7012173pjb.1.2021.06.10.06.09.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Jun 2021 06:09:32 -0700 (PDT)
+ Thu, 10 Jun 2021 06:09:35 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 00/11] powerpc/64: fast interrupt exits
-Date: Thu, 10 Jun 2021 23:09:10 +1000
-Message-Id: <20210610130921.706938-1-npiggin@gmail.com>
+Subject: [PATCH v3 01/11] powerpc: remove interrupt exit helpers unused
+ argument
+Date: Thu, 10 Jun 2021 23:09:11 +1000
+Message-Id: <20210610130921.706938-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
+In-Reply-To: <20210610130921.706938-1-npiggin@gmail.com>
+References: <20210610130921.706938-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -82,106 +86,51 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This series attempts to improve the speed of interrupts and system calls
-in three major ways.
+The msr argument is not used, remove it.
 
-Firstly, the SRR/HSRR registers do not need to be reloaded if they were
-clobbered for the duration of the interrupt and the return NIP and MSR
-did not changed. 64e does not implement this part, but it could quite
-easily.
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/include/asm/asm-prototypes.h | 4 ++--
+ arch/powerpc/kernel/interrupt.c           | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-Secondly, mtmsrd and mtspr are reduced by various means, this is mostly
-specific to 64s.
-
-Lastly, an alternate interrupt return location facility is added for
-soft-masked asynchronous interrupts, and then that's used to set
-everything up for return without having to disable MSR RI or EE.
-
-After this series, the entire system call / interrupt handler fast path
-can execute with no mtsprs and one mtmsrd to enable interrupts
-initially, and the system call vectored path doesn't even need to do
-that. This gives a decent performance benefit. On POWER9 with a
-powernv_defconfig without VIRT_CPU_ACCOUNTING_NATIVE, no meltdown
-workarounds, gettid sc system call goes from 481 -> 344 cycles, gettid
-scv 345->299 cycles, and page fault 1225->1064 cycles.
-
-Changes since v2:
-- KVM PR compile fix
-- Missed SRR clobbers from hcalls causing pseries crashes
-- Add program check recursion test to interrupt entry assert,
-  which prevented pseries crash bug being cleanly reported.
-
-Changes since v1: 
-- Rebased to upstream
-- Reordered paches, updated comments and changelogs.
-- Clean ups, fixed ppc32 compile breakage.
-- Fixed missing srr invalidations in KVM guest entry/exit.
-- Dropped the security fallback rework from the start of the series
-  because it's quite complicated to change. Instead for now the
-  incompatible fallbacks just disable the interrupts-enabled exits.
-
-Thanks,
-Nick
-
-Nicholas Piggin (11):
-  powerpc: remove interrupt exit helpers unused argument
-  powerpc/64s: introduce different functions to return from SRR vs HSRR
-    interrupts
-  powerpc/64s: avoid reloading (H)SRR registers if they are still valid
-  powerpc/64: handle MSR EE and RI in interrupt entry wrapper
-  powerpc/64: move interrupt return asm to interrupt_64.S
-  powerpc/64s: system call avoid setting MSR[RI] until we set MSR[EE]
-  powerpc/64s: save one more register in the masked interrupt handler
-  powerpc/64: allow alternate return locations for soft-masked
-    interrupts
-  powerpc/64: interrupt soft-enable race fix
-  powerpc/64: treat low kernel text as irqs soft-masked
-  powerpc/64: use interrupt restart table to speed up return from
-    interrupt
-
- arch/powerpc/Kconfig.debug                 |   5 +
- arch/powerpc/include/asm/asm-prototypes.h  |   4 +-
- arch/powerpc/include/asm/head-64.h         |   2 +-
- arch/powerpc/include/asm/hw_irq.h          |  23 +-
- arch/powerpc/include/asm/interrupt.h       |  60 +-
- arch/powerpc/include/asm/paca.h            |   7 +
- arch/powerpc/include/asm/ppc_asm.h         |   8 +
- arch/powerpc/include/asm/ptrace.h          |  75 ++-
- arch/powerpc/kernel/asm-offsets.c          |   7 +
- arch/powerpc/kernel/entry_64.S             | 516 --------------
- arch/powerpc/kernel/exceptions-64e.S       |  53 +-
- arch/powerpc/kernel/exceptions-64s.S       | 219 +++---
- arch/powerpc/kernel/fpu.S                  |   2 +
- arch/powerpc/kernel/head_64.S              |   5 +-
- arch/powerpc/kernel/interrupt.c            | 389 +++++++----
- arch/powerpc/kernel/interrupt_64.S         | 749 +++++++++++++++++++++
- arch/powerpc/kernel/irq.c                  |  95 +++
- arch/powerpc/kernel/kgdb.c                 |   2 +-
- arch/powerpc/kernel/kprobes-ftrace.c       |   2 +-
- arch/powerpc/kernel/kprobes.c              |  10 +-
- arch/powerpc/kernel/process.c              |  26 +-
- arch/powerpc/kernel/prom_init.c            |   3 +
- arch/powerpc/kernel/rtas.c                 |  14 +-
- arch/powerpc/kernel/signal.c               |   2 +-
- arch/powerpc/kernel/signal_64.c            |   9 +
- arch/powerpc/kernel/syscalls.c             |   3 +-
- arch/powerpc/kernel/traps.c                |  18 +-
- arch/powerpc/kernel/vector.S               |   6 +-
- arch/powerpc/kernel/vmlinux.lds.S          |  10 +
- arch/powerpc/kvm/book3s_hv.c               |   3 +
- arch/powerpc/kvm/book3s_pr.c               |   2 +
- arch/powerpc/lib/Makefile                  |   2 +-
- arch/powerpc/lib/feature-fixups.c          |  38 +-
- arch/powerpc/lib/restart_table.c           |  29 +
- arch/powerpc/lib/sstep.c                   |   4 +-
- arch/powerpc/math-emu/math.c               |   2 +-
- arch/powerpc/platforms/powernv/opal-call.c |   4 +
- arch/powerpc/platforms/pseries/hvCall.S    |  29 +
- arch/powerpc/sysdev/fsl_pci.c              |   2 +-
- 39 files changed, 1631 insertions(+), 808 deletions(-)
- create mode 100644 arch/powerpc/kernel/interrupt_64.S
- create mode 100644 arch/powerpc/lib/restart_table.c
-
+diff --git a/arch/powerpc/include/asm/asm-prototypes.h b/arch/powerpc/include/asm/asm-prototypes.h
+index 1c7b75834e04..95492655462e 100644
+--- a/arch/powerpc/include/asm/asm-prototypes.h
++++ b/arch/powerpc/include/asm/asm-prototypes.h
+@@ -71,8 +71,8 @@ void __init machine_init(u64 dt_ptr);
+ #endif
+ long system_call_exception(long r3, long r4, long r5, long r6, long r7, long r8, unsigned long r0, struct pt_regs *regs);
+ notrace unsigned long syscall_exit_prepare(unsigned long r3, struct pt_regs *regs, long scv);
+-notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs, unsigned long msr);
+-notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs, unsigned long msr);
++notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs);
++notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs);
+ 
+ long ppc_fadvise64_64(int fd, int advice, u32 offset_high, u32 offset_low,
+ 		      u32 len_high, u32 len_low);
+diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
+index e0938ba298f2..38ae7057d6c2 100644
+--- a/arch/powerpc/kernel/interrupt.c
++++ b/arch/powerpc/kernel/interrupt.c
+@@ -352,7 +352,7 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
+ 	return ret;
+ }
+ 
+-notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs, unsigned long msr)
++notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs)
+ {
+ 	unsigned long ti_flags;
+ 	unsigned long flags;
+@@ -431,7 +431,7 @@ notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs, unsigned
+ 
+ void preempt_schedule_irq(void);
+ 
+-notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs, unsigned long msr)
++notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs)
+ {
+ 	unsigned long flags;
+ 	unsigned long ret = 0;
 -- 
 2.23.0
 
