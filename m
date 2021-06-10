@@ -2,56 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EED93A2EA2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Jun 2021 16:50:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 460D33A2EAC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Jun 2021 16:52:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G16NX6W0Rz3c1V
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 00:50:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G16Qv65bWz30JY
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 00:52:55 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=S/ZFsDcU;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::32e;
+ helo=mail-wm1-x32e.google.com; envelope-from=lijunp213@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=S/ZFsDcU; dkim-atps=neutral
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com
+ [IPv6:2a00:1450:4864:20::32e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G16N33mNfz307n
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jun 2021 00:50:23 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4G16Mt6NybzBBTQ;
- Thu, 10 Jun 2021 16:50:18 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id IgLzEJiZ-597; Thu, 10 Jun 2021 16:50:18 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4G16Mt5QJzzBB9r;
- Thu, 10 Jun 2021 16:50:18 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 375368B81B;
- Thu, 10 Jun 2021 16:50:18 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id DzO9RJN6YzIB; Thu, 10 Jun 2021 16:50:18 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B07968B80F;
- Thu, 10 Jun 2021 16:50:17 +0200 (CEST)
-Subject: Re: [PATCH] btrfs: Disable BTRFS on platforms having 256K pages
-To: Chris Mason <clm@fb.com>
-References: <a16c31f3caf448dda5d9315e056585b6fafc22c5.1623302442.git.christophe.leroy@csgroup.eu>
- <185278AF-1D87-432D-87E9-C86B3223113E@fb.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <cdadf66e-0a6e-4efe-0326-7236c43b2735@csgroup.eu>
-Date: Thu, 10 Jun 2021 16:50:09 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G16QQ36rkz300T
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jun 2021 00:52:29 +1000 (AEST)
+Received: by mail-wm1-x32e.google.com with SMTP id
+ u5-20020a7bc0450000b02901480e40338bso4906029wmc.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Jun 2021 07:52:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=jeNB9kebGsKDKuDyLMLxN2kVS9AOIvWoW2KdfQOv7Vg=;
+ b=S/ZFsDcUkHjZz0Dc59Y2FyQgRMdUd5NEWCTHaSV2yURRDuWUMz7birox7CAoNSJEBR
+ PclwHKJf7MS6I/4BuHvX2AWD/zQQxb31rmo4GPpi1N+9G3D7b5b5rj9ifvyx3y1isUrL
+ k9o+MpV3LdMXD93eonLQ6LvaihyvGtVfroeRvx2xH5VkVUtVQ1/XDvu/6sIzNJYW4u/f
+ k+FhoMET8JSHgum3t8BR4LPJrAKDEjGGxQN+GcrV2H5y4+n16YbtgmEgPdRHja2Vltkx
+ bFrZAYXOqWgeL/ZPaLqIo3q21Qkp6dVNUmlo8CtTqSE+OS4ZNc+mDtPPIlcE4EVJQkOY
+ jKww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=jeNB9kebGsKDKuDyLMLxN2kVS9AOIvWoW2KdfQOv7Vg=;
+ b=gub5dnGprh/xds6LJuMK5jl52jwD/iErLtQMefLx3ya+4nBR6l6iOW5dpNf7kWTso5
+ qG7BqQWQWOu7hxEwpNG5qqne6eMGD8GkjjfmuGgsUSN+fhReEXQt5qgcgFE/VOd5sBLs
+ SSabTRpkamk399na95jLDBBnH0wiSqe7ESj4wVLGv07HUGRD4Hh9YuXSkEDmVFFEKlee
+ j5eq1Sl8KYNGO3hefXzyNNkc4t0JAh2eX5fF/e4U/2j3CaM3PHQYQN/6vBQoFPjr2NeU
+ 72iDzQg3OZ9Tor8ZGbj7LDz+H0+faflagzh50OEO8uxtOCNzm1Q+tyceRb5MjqG5JSMI
+ yTEw==
+X-Gm-Message-State: AOAM530z4S2gdBjnfhJVnPESaZBl9Pxelr5OSG0NwTEYNMmA0CeN51Qo
+ zV3dYnISN8uYNj8iUipv7VUCnBHKOr+rjBGXI74=
+X-Google-Smtp-Source: ABdhPJy3XNdWTKNMu4YNp3T9tPJ/9e/8z7A3BFzYYdr7FGqgUbTF+x1xsEhWT5qL7YN+fL1FuYjy3NHNASb6K7niP4o=
+X-Received: by 2002:a7b:c1c5:: with SMTP id a5mr5637396wmj.134.1623336741913; 
+ Thu, 10 Jun 2021 07:52:21 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <185278AF-1D87-432D-87E9-C86B3223113E@fb.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+References: <20210610125417.3834300-1-wanghai38@huawei.com>
+In-Reply-To: <20210610125417.3834300-1-wanghai38@huawei.com>
+From: Lijun Pan <lijunp213@gmail.com>
+Date: Thu, 10 Jun 2021 09:52:11 -0500
+Message-ID: <CAOhMmr4LQpX79ksQOuZ1ft=M2B4tFOPechV9b_5iJWWL1yekSA@mail.gmail.com>
+Subject: Re: [PATCH net-next] ibmvnic: Use list_for_each_entry() to simplify
+ code in ibmvnic.c
+To: Wang Hai <wanghai38@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,74 +75,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
- Josef Bacik <josef@toxicpanda.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- David Sterba <dsterba@suse.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- linux-btrfs <linux-btrfs@vger.kernel.org>
+Cc: linux-kernel@vger.kernel.org, Thomas Falcon <tlfalcon@linux.ibm.com>,
+ netdev@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Dany Madden <drt@linux.ibm.com>, Jakub Kicinski <kuba@kernel.org>,
+ Sukadev Bhattiprolu <sukadev@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, Jun 10, 2021 at 7:56 AM Wang Hai <wanghai38@huawei.com> wrote:
+>
+> Convert list_for_each() to list_for_each_entry() where
+> applicable. This simplifies the code.
+>
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Wang Hai <wanghai38@huawei.com>
+> ---
 
-
-Le 10/06/2021 à 15:54, Chris Mason a écrit :
-> 
->> On Jun 10, 2021, at 1:23 AM, Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
->>
->> With a config having PAGE_SIZE set to 256K, BTRFS build fails
->> with the following message
->>
->> include/linux/compiler_types.h:326:38: error: call to '__compiletime_assert_791' declared with attribute error: BUILD_BUG_ON failed: (BTRFS_MAX_COMPRESSED % PAGE_SIZE) != 0
->>
->> BTRFS_MAX_COMPRESSED being 128K, BTRFS cannot support platforms with
->> 256K pages at the time being.
->>
->> There are two platforms that can select 256K pages:
->> - hexagon
->> - powerpc
->>
->> Disable BTRFS when 256K page size is selected.
->>
-> 
-> We’ll have other subpage blocksize concerns with 256K pages, but this BTRFS_MAX_COMPRESSED #define is arbitrary.  It’s just trying to have an upper bound on the amount of memory we’ll need to uncompress a single page’s worth of random reads.
-> 
-> We could change it to max(PAGE_SIZE, 128K) or just bump to 256K.
-> 
-
-But if 256K is problematic in other ways, is it worth bumping BTRFS_MAX_COMPRESSED to 256K ?
-
-David, in below mail, said that 256K support would require deaper changes. So disabling BTRFS 
-support seems the easiest solution for the time being, at least for Stable (I forgot the Fixes: tag 
-and the CC: to stable).
-
-On powerpc, 256k pages is a corner case, it requires customised binutils, so I don't think disabling 
-BTRFS is a issue there. For hexagon I don't know.
-
-
-https://lkml.org/lkml/2021/6/9/978
-
-Le 09/06/2021 à 17:22, David Sterba a écrit :
- > On Wed, Jun 09, 2021 at 04:01:20PM +0200, Christophe Leroy wrote:
- >> Le 09/06/2021 à 15:55, kernel test robot a écrit :
- >>> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
- >>> head:   368094df48e680fa51cedb68537408cfa64b788e
- >>> commit: 4eeef098b43242ed145c83fba9989d586d707589 powerpc/44x: Remove STDBINUTILS kconfig option
- >>> date:   4 months ago
- >>> config: powerpc-randconfig-r012-20210609 (attached as .config)
- >>> compiler: powerpc-linux-gcc (GCC) 9.3.0
- >>
- >> That's a BTRFS issue, and not directly linked to the above mentioned commit. Before that commit the
- >> problem was already present.
- >>
- >> Problem is that with 256k PAGE_SIZE, following BUILD_BUG() pops up:
- >>
- >> BUILD_BUG_ON((BTRFS_MAX_COMPRESSED % PAGE_SIZE) != 0)
- >
- > A 256K page is a problem for btrfs, until now I was not even aware
- > there's an architecture supporting that so. That the build fails is
- > probably best thing. Maximum metadata nodesize supported is 64K and
- > having that on a 256K page would need deeper changes, no top of the
- > currently developed subpage changes (that do 4K blocks on 64K pages).
- >
+Acked-by: Lijun Pan <lijunp213@gmail.com>
