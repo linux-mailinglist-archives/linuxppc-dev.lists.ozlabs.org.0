@@ -2,78 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 978843A26E9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Jun 2021 10:25:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 382303A2732
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Jun 2021 10:37:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G0xqQ0rH7z3c31
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Jun 2021 18:25:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G0y5J52DXz3c4J
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Jun 2021 18:37:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=z4oi+Qts;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qxjHDhYi;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::62a;
- helo=mail-pl1-x62a.google.com; envelope-from=viresh.kumar@linaro.org;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=z4oi+Qts; dkim-atps=neutral
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com
- [IPv6:2607:f8b0:4864:20::62a])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=qxjHDhYi; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G0xpY1sftz3097
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Jun 2021 18:24:20 +1000 (AEST)
-Received: by mail-pl1-x62a.google.com with SMTP id h12so593985plf.4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Jun 2021 01:24:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=9brGsoPBB+d+RHY31m7cZqh3sPnjdxBD51bqiyGsmoM=;
- b=z4oi+QtsZIOkUCFtJ2RSljkQbvtIlKWhvmfPM3nkaTcx/SmP2SwZ/OG+gHmMtcJIVI
- Jz+fY/OSo8O9+ELcqVoo7u7WxCuKuZVq4HIvbp2fEaka2FusUdVtB2CaOnVDFdakQq1s
- WgD8eKYVt4xY7SKlklJT0+vTQaaOeIygjrFnC3E8n2TxgASfZSLqW6emrP4ePhogpd3p
- LCP0wfYPCSPY2fDENITlznVP5uwLlXyfFtXxpZyog9xudcUFU5hLh2OauKt2jpqkE710
- p8BQ3NdkFzKdUP8qDnJ5S4CR/6RqEXkcXwAaVGtyWxW6VDOUnL24T7ElbtkSHdIK+Xas
- nWQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=9brGsoPBB+d+RHY31m7cZqh3sPnjdxBD51bqiyGsmoM=;
- b=SL0alYFlNGEHkVvg/MZylwvVS89ADCtfpqCCKzKL3DEf2ZddGlJ3w69OHkyUdFoULL
- u1NTa6+kzq7A1dtqw2QmjRL+bGIveAR1s3XRT0LNoTSCeOyZIuQfi3eCh6ZQ5lAnCuAm
- bo/AGJSb0I27A2LHDy5slZ+nzJs2YUIzOTk+G/GrDkQk2DirVU/fTbzqsuWIYLTbSb56
- QlFA49LyZGGEP66xaaUdgxjP59md6SjISjx0QY+6UNGsGYRCiMPyupxEZFZxm41fQTq0
- ShN0/USt2idjuMFPL0ZdGxl+nek+01eofZgFkE9NK0YbVu6JP91nMswjja1t8YnQBtvW
- NeAg==
-X-Gm-Message-State: AOAM530wFYwCWuRkjMVS5wvKnsdmX3tjEO4sn6nMJaBnfSl2i6ZMTRQv
- 4v6QibqvCXfFy5gaUBtiSh6niw==
-X-Google-Smtp-Source: ABdhPJyL6nxvcvsq34evJFOy65fc9gysLq/3WyEfD7vvQ+tDWp1jEmZFdtmAB1e5fkCXviRh9tP+3g==
-X-Received: by 2002:a17:90a:1141:: with SMTP id
- d1mr2224862pje.56.1623313457758; 
- Thu, 10 Jun 2021 01:24:17 -0700 (PDT)
-Received: from localhost ([136.185.169.128])
- by smtp.gmail.com with ESMTPSA id q13sm1741649pff.13.2021.06.10.01.24.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Jun 2021 01:24:17 -0700 (PDT)
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Rafael Wysocki <rjw@rjwysocki.net>, Qian Cai <quic_qiancai@quicinc.com>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
-Subject: [PATCH 3/5] cpufreq: powerenv: Migrate to ->exit() callback instead
- of ->stop_cpu()
-Date: Thu, 10 Jun 2021 13:53:59 +0530
-Message-Id: <0990172cba066ec7747e479f8f0a2069ae368339.1623313323.git.viresh.kumar@linaro.org>
-X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
-In-Reply-To: <cover.1623313323.git.viresh.kumar@linaro.org>
-References: <cover.1623313323.git.viresh.kumar@linaro.org>
-MIME-Version: 1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G0y4N3sfLz305k
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Jun 2021 18:36:20 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 15A8XPBh084016; Thu, 10 Jun 2021 04:36:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=DBitabiBRhoE/J0HZ2jODXsdwoT6x/60dIp50f/WlPI=;
+ b=qxjHDhYij2nWBqyo2tIfTvbiH957DBXCVEaJ9228RiViYU3SjrnBEylugoZVmuPam25q
+ 2q50LkUpykKH3FYIMdXa/RpzxpUNDfSWj3nUDjibVYulzshra8va2fs6j6OR/KcbKn6O
+ E4QE5z6hWmcNaNEykNGJ9lXNI39kVYa3ZSlSOHZnW5Id01Bt9IfiVQAseymqMhHpner1
+ p0I0ozVlSyBDmfuFGQnt8MUo9h2Oxw4+M+Mur5Cf0l9zuRJCHtxmQSuROgM7ZA8Omkz/
+ xAF9wMwIFuNV3ZvEtaYon2xhAl/0ZcEidCibceG6eQ1YCUD44Nh1LVKVISq7DCFFxxfe zA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 393eps9ct7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 10 Jun 2021 04:36:01 -0400
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 15A8a0Rw092970;
+ Thu, 10 Jun 2021 04:36:01 -0400
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 393eps9csf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 10 Jun 2021 04:36:00 -0400
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15A8X0HB014756;
+ Thu, 10 Jun 2021 08:35:59 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma01wdc.us.ibm.com with ESMTP id 3900w9eh4e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 10 Jun 2021 08:35:59 +0000
+Received: from b03ledav003.gho.boulder.ibm.com
+ (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 15A8ZwZN11993728
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 10 Jun 2021 08:35:58 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 817526A047;
+ Thu, 10 Jun 2021 08:35:58 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CE2D66A04F;
+ Thu, 10 Jun 2021 08:35:54 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.102.3.162])
+ by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu, 10 Jun 2021 08:35:54 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linux-mm@kvack.org, akpm@linux-foundation.org
+Subject: [PATCH 0/6] mremap fixes
+Date: Thu, 10 Jun 2021 14:05:43 +0530
+Message-Id: <20210610083549.386085-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: z0qThnZ4CD026-qKf2517nZCjJvHtn57
+X-Proofpoint-ORIG-GUID: Z3SyftLEtWSN6tZYvUJydc-LoTPW-6T_
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-06-10_03:2021-06-10,
+ 2021-06-10 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0
+ spamscore=0 lowpriorityscore=0 priorityscore=1501 clxscore=1015 mlxscore=0
+ impostorscore=0 mlxlogscore=773 bulkscore=0 adultscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104190000
+ definitions=main-2106100055
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,83 +104,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ionela Voinescu <ionela.voinescu@arm.com>,
- Vincent Guittot <vincent.guittot@linaro.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, npiggin@gmail.com,
+ kaleshsingh@google.com, joel@joelfernandes.org,
+ "Kirill A . Shutemov" <kirill@shutemov.name>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-commit 367dc4aa932b ("cpufreq: Add stop CPU callback to cpufreq_driver
-interface") added the stop_cpu() callback to allow the drivers to do
-clean up before the CPU is completely down and its state cannot be
-modified.
+This patch series is split out series from [PATCH v7 00/11] Speedup mremap on ppc64
+(https://lore.kernel.org/linux-mm/20210607055131.156184-1-aneesh.kumar@linux.ibm.com)
+dropping ppc64 specific changes.
 
-At that time the CPU hotplug framework used to call the cpufreq core's
-registered notifier for different events like CPU_DOWN_PREPARE and
-CPU_POST_DEAD. The stop_cpu() callback was called during the
-CPU_DOWN_PREPARE event.
+I will send the ppc64 specific changes separately once we agree on how to handle the
+TLB flush changes.
 
-This is no longer the case, cpuhp_cpufreq_offline() is called only once
-by the CPU hotplug core now and we don't really need two separate
-callbacks for cpufreq drivers, i.e. stop_cpu() and exit(), as everything
-can be done from the exit() callback itself.
 
-Migrate to using the exit() callback instead of stop_cpu().
+Aneesh Kumar K.V (6):
+  selftest/mremap_test: Update the test to handle pagesize other than 4K
+  selftest/mremap_test: Avoid crash with static build
+  mm/mremap: Convert huge PUD move to separate helper
+  mm/mremap: Don't enable optimized PUD move if page table levels is 2
+  mm/mremap: Use pmd/pud_poplulate to update page table entries
+  mm/mremap: hold the rmap lock in write mode when moving page table
+    entries.
 
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
----
- drivers/cpufreq/powernv-cpufreq.c | 23 +++++++++--------------
- 1 file changed, 9 insertions(+), 14 deletions(-)
+ mm/mremap.c                              |  93 +++++++++++++++---
+ tools/testing/selftests/vm/mremap_test.c | 118 ++++++++++++-----------
+ 2 files changed, 143 insertions(+), 68 deletions(-)
 
-diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
-index e439b43c19eb..005600cef273 100644
---- a/drivers/cpufreq/powernv-cpufreq.c
-+++ b/drivers/cpufreq/powernv-cpufreq.c
-@@ -875,7 +875,15 @@ static int powernv_cpufreq_cpu_init(struct cpufreq_policy *policy)
- 
- static int powernv_cpufreq_cpu_exit(struct cpufreq_policy *policy)
- {
--	/* timer is deleted in cpufreq_cpu_stop() */
-+	struct powernv_smp_call_data freq_data;
-+	struct global_pstate_info *gpstates = policy->driver_data;
-+
-+	freq_data.pstate_id = idx_to_pstate(powernv_pstate_info.min);
-+	freq_data.gpstate_id = idx_to_pstate(powernv_pstate_info.min);
-+	smp_call_function_single(policy->cpu, set_pstate, &freq_data, 1);
-+	if (gpstates)
-+		del_timer_sync(&gpstates->timer);
-+
- 	kfree(policy->driver_data);
- 
- 	return 0;
-@@ -1007,18 +1015,6 @@ static struct notifier_block powernv_cpufreq_opal_nb = {
- 	.priority	= 0,
- };
- 
--static void powernv_cpufreq_stop_cpu(struct cpufreq_policy *policy)
--{
--	struct powernv_smp_call_data freq_data;
--	struct global_pstate_info *gpstates = policy->driver_data;
--
--	freq_data.pstate_id = idx_to_pstate(powernv_pstate_info.min);
--	freq_data.gpstate_id = idx_to_pstate(powernv_pstate_info.min);
--	smp_call_function_single(policy->cpu, set_pstate, &freq_data, 1);
--	if (gpstates)
--		del_timer_sync(&gpstates->timer);
--}
--
- static unsigned int powernv_fast_switch(struct cpufreq_policy *policy,
- 					unsigned int target_freq)
- {
-@@ -1042,7 +1038,6 @@ static struct cpufreq_driver powernv_cpufreq_driver = {
- 	.target_index	= powernv_cpufreq_target_index,
- 	.fast_switch	= powernv_fast_switch,
- 	.get		= powernv_cpufreq_get,
--	.stop_cpu	= powernv_cpufreq_stop_cpu,
- 	.attr		= powernv_cpu_freq_attr,
- };
- 
 -- 
-2.31.1.272.g89b43f80a514
+2.31.1
 
