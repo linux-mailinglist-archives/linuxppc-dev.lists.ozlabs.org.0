@@ -2,91 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E02A83A2747
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Jun 2021 10:39:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B42B3A2A6B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Jun 2021 13:36:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G0y8L2FDBz3dFY
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Jun 2021 18:39:46 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JXAcB2jF;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G124V2gswz3bsf
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Jun 2021 21:36:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=JXAcB2jF; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G0y536k29z30CX
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Jun 2021 18:36:55 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 15A8Y54X036733; Thu, 10 Jun 2021 04:36:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-type :
- content-transfer-encoding; s=pp1;
- bh=gvgp0eZRjG4etnSKooNobKFLTNNg+E2T9ByKunHxpz8=;
- b=JXAcB2jFP6WR6mtUYT3rAJPFEXArjFuPnQbdeZt0t8h53QOiJn5FORNeOnslNXYMSq15
- u0RwqVNCmnQWUjncSPaQqkGtnCqeRZyvH7BtpD0CfwVn7iGtScBq+M9TD6TYIr7OkgB0
- BcakF6folij6LjHuSMoA+/UM04LzuPNxWygFglRsemMZePNof3moT0rBn6T9fWN03zyB
- cU6fZTNW42ncvriNeqcoYhIxK1ubB7f5zeO4blCjfx7HtRkB4k9ewCn07aAhmtZpnGHj
- TSFybowRMyxBeXmgFNBRI5YMlcvEdB90OG1DRcEAl93mSYcZi8H38X/i36XX5IRjDWp3 MQ== 
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0b-001b2d01.pphosted.com with ESMTP id 393esch6h5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 10 Jun 2021 04:36:47 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15A8XrfT015053;
- Thu, 10 Jun 2021 08:36:46 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com
- (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
- by ppma01dal.us.ibm.com with ESMTP id 3900wa00sq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 10 Jun 2021 08:36:46 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 15A8ajGm26935794
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 10 Jun 2021 08:36:45 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 248C4BE053;
- Thu, 10 Jun 2021 08:36:45 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6278FBE051;
- Thu, 10 Jun 2021 08:36:43 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.102.3.162])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 10 Jun 2021 08:36:43 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH] powerpc/mm/book3s64: Fix possible build error
-Date: Thu, 10 Jun 2021 14:06:39 +0530
-Message-Id: <20210610083639.387365-1-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G12446pMKz306C
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Jun 2021 21:36:17 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 4G123v3DB9zBC5V;
+ Thu, 10 Jun 2021 13:36:11 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id wSoijWmDdUVV; Thu, 10 Jun 2021 13:36:11 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4G123v2F7dzBC5R;
+ Thu, 10 Jun 2021 13:36:11 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 391C38B80F;
+ Thu, 10 Jun 2021 13:36:11 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 6_f0uI08IMWG; Thu, 10 Jun 2021 13:36:11 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id ACD238B815;
+ Thu, 10 Jun 2021 13:36:10 +0200 (CEST)
+Subject: Re: [PATCH] powerpc/vdso: Fix multiple issues with sys_call_table
+To: Michael Ellerman <mpe@ellerman.id.au>, Anton Blanchard
+ <anton@ozlabs.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+References: <20200306135705.7f80fcad@kryten.localdomain>
+ <87pnd9duac.fsf@mpe.ellerman.id.au>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <bd19e9b8-a96b-90f8-5a0a-2643a1d860e4@csgroup.eu>
+Date: Thu, 10 Jun 2021 13:36:03 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <87pnd9duac.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: tOKBhPMy3LIqCG_bRcn6pWuWzjy6oCz2
-X-Proofpoint-ORIG-GUID: tOKBhPMy3LIqCG_bRcn6pWuWzjy6oCz2
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-06-10_03:2021-06-10,
- 2021-06-10 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 bulkscore=0
- phishscore=0 priorityscore=1501 mlxlogscore=999 suspectscore=0
- clxscore=1015 mlxscore=0 malwarescore=0 impostorscore=0 lowpriorityscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2106100055
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,84 +65,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: christophe.leroy@c-s.fr, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Update _tlbiel_pid() such that we can avoid build errors like below when
-using this function in other places.
 
-arch/powerpc/mm/book3s64/radix_tlb.c: In function ‘__radix__flush_tlb_range_psize’:
-arch/powerpc/mm/book3s64/radix_tlb.c:114:2: warning: ‘asm’ operand 3 probably does not match constraints
-  114 |  asm volatile(PPC_TLBIEL(%0, %4, %3, %2, %1)
-      |  ^~~
-arch/powerpc/mm/book3s64/radix_tlb.c:114:2: error: impossible constraint in ‘asm’
-make[4]: *** [scripts/Makefile.build:271: arch/powerpc/mm/book3s64/radix_tlb.o] Error 1
-m
 
-With this fix, we can also drop the __always_inline in __radix_flush_tlb_range_psize
-which was added by commit e12d6d7d46a6 ("powerpc/mm/radix: mark __radix__flush_tlb_range_psize() as __always_inline")
+Le 19/03/2020 à 02:10, Michael Ellerman a écrit :
+> Anton Blanchard <anton@ozlabs.org> writes:
+>> The VDSO exports a bitmap of valid syscalls. vdso_setup_syscall_map()
+>> sets this up, but there are both little and big endian bugs. The issue
+>> is with:
+>>
+>>         if (sys_call_table[i] != sys_ni_syscall)
+>>
+>> On little endian, instead of comparing pointers to the two functions,
+>> we compare the first two instructions of each function. If a function
+>> happens to have the same first two instructions as sys_ni_syscall, then
+>> we have a spurious match and mark the instruction as not implemented.
+>> Fix this by removing the inline declarations.
+>>
+>> On big endian we have a further issue where sys_ni_syscall is a function
+>> descriptor and sys_call_table[] holds pointers to the instruction text.
+>> Fix this by using dereference_kernel_function_descriptor().
+>>
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Anton Blanchard <anton@ozlabs.org>
+> 
+> That's some pretty epic breakage.
+> 
+> Is it even worth keeping, or should we just rip it out and declare that
+> the syscall map is junk? Userspace can hardly rely on it given it's been
+> this broken for so long.
+> 
+> If not it would be really nice to have a selftest of this stuff so we
+> can verify it works and not break it again in future.
+> 
 
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- arch/powerpc/mm/book3s64/radix_tlb.c | 26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+The problem on little endian is fixed by https://github.com/linuxppc/linux/commit/bc9d5bfc4 I think.
 
-diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
-index 409e61210789..817a02ef6032 100644
---- a/arch/powerpc/mm/book3s64/radix_tlb.c
-+++ b/arch/powerpc/mm/book3s64/radix_tlb.c
-@@ -291,22 +291,30 @@ static inline void fixup_tlbie_lpid(unsigned long lpid)
- /*
-  * We use 128 set in radix mode and 256 set in hpt mode.
-  */
--static __always_inline void _tlbiel_pid(unsigned long pid, unsigned long ric)
-+static inline void _tlbiel_pid(unsigned long pid, unsigned long ric)
- {
- 	int set;
- 
- 	asm volatile("ptesync": : :"memory");
- 
--	/*
--	 * Flush the first set of the TLB, and if we're doing a RIC_FLUSH_ALL,
--	 * also flush the entire Page Walk Cache.
--	 */
--	__tlbiel_pid(pid, 0, ric);
-+	switch (ric) {
-+	case RIC_FLUSH_PWC:
- 
--	/* For PWC, only one flush is needed */
--	if (ric == RIC_FLUSH_PWC) {
-+		/* For PWC, only one flush is needed */
-+		__tlbiel_pid(pid, 0, RIC_FLUSH_PWC);
- 		ppc_after_tlbiel_barrier();
- 		return;
-+	case RIC_FLUSH_TLB:
-+		__tlbiel_pid(pid, 0, RIC_FLUSH_TLB);
-+		break;
-+	case RIC_FLUSH_ALL:
-+	default:
-+		/*
-+		 * Flush the first set of the TLB, and if
-+		 * we're doing a RIC_FLUSH_ALL, also flush
-+		 * the entire Page Walk Cache.
-+		 */
-+		__tlbiel_pid(pid, 0, RIC_FLUSH_ALL);
- 	}
- 
- 	if (!cpu_has_feature(CPU_FTR_ARCH_31)) {
-@@ -1176,7 +1184,7 @@ void radix__tlb_flush(struct mmu_gather *tlb)
- 	}
- }
- 
--static __always_inline void __radix__flush_tlb_range_psize(struct mm_struct *mm,
-+static void __radix__flush_tlb_range_psize(struct mm_struct *mm,
- 				unsigned long start, unsigned long end,
- 				int psize, bool also_pwc)
- {
--- 
-2.31.1
+On big endian, I can't see any problem. Looks like sys_call_table in a vmlinux generated with 
+ppc64_defconfig contains addresses of items in the opd. So it should be ok, shoudln't it ?
 
+[root@po9473vm linux-powerpc]# powerpc64-linux-objdump -x vmlinux | grep -e " sys_call_table" -e 
+ni_syscall
+c000000000fc0748 g       .rodata	0000000000000000 sys_call_table
+c00000000019fd90 g     F .text	0000000000000028 .sys_ni_syscall
+c000000001cc3678 g     F .opd	0000000000000018 sys_ni_syscall
+
+[root@po9473vm linux-powerpc]# powerpc64-linux-objdump -s -j .rodata vmlinux
+Contents of section .rodata:
+...
+  c000000000fc0740 a610e9ee a3f43156 c0000000 01cc0888  ......1V........
+  c000000000fc0750 c0000000 01cbf5c8 c0000000 01cbe788  ................
+  c000000000fc0760 c0000000 01cf6768 c0000000 01cf6798  ......gh......g.
+  c000000000fc0770 c0000000 01cf6240 c0000000 01cf5dd8  ......b@......].
+  c000000000fc0780 c0000000 01cbf670 c0000000 01cf61e0  .......p......a.
+  c000000000fc0790 c0000000 01cf8490 c0000000 01cf8580  ................
+  c000000000fc07a0 c0000000 01cf7890 c0000000 01cf5e50  ......x.......^P
+  c000000000fc07b0 c0000000 01ccf120 c0000000 01cf8358  ....... .......X
+  c000000000fc07c0 c0000000 01cf6060 c0000000 01cf6108  ......``......a.
+  c000000000fc07d0 c0000000 01cc3678 c0000000 01cc3678  ......6x......6x
+  c000000000fc07e0 c0000000 01cf63a8 c0000000 01cc1680  ......c.........
+  c000000000fc07f0 c0000000 01cfac50 c0000000 01cc3678  .......P......6x
+...
+
+
+Do you agree ?
+
+Christophe
