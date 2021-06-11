@@ -2,39 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B97803A3F96
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 11:53:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 655903A3F88
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 11:52:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G1blT17Q0z3cm6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 19:53:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G1bk65t5lz3byw
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 19:52:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com;
  envelope-from=yangyingliang@huawei.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 1188 seconds by postgrey-1.36 at boromir;
+ Fri, 11 Jun 2021 19:52:25 AEST
 Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
  bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G1bjj0fG0z308N
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jun 2021 19:52:20 +1000 (AEST)
-Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.53])
- by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4G1bCS5l7XzZdll;
- Fri, 11 Jun 2021 17:29:40 +0800 (CST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G1bjj0V6wz303h
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jun 2021 19:52:23 +1000 (AEST)
+Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.55])
+ by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4G1bCC1mPpz6vx1;
+ Fri, 11 Jun 2021 17:29:27 +0800 (CST)
 Received: from dggpeml500017.china.huawei.com (7.185.36.243) by
- dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
+ dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
  15.1.2176.2; Fri, 11 Jun 2021 17:32:32 +0800
 Received: from huawei.com (10.175.103.91) by dggpeml500017.china.huawei.com
  (7.185.36.243) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Fri, 11 Jun
- 2021 17:32:31 +0800
+ 2021 17:32:32 +0800
 From: Yang Yingliang <yangyingliang@huawei.com>
 To: <linux-kernel@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
  <alsa-devel@alsa-project.org>
-Subject: [PATCH -next 6/9] ASoC: fsl_sai: Use
+Subject: [PATCH -next 7/9] ASoC: fsl_spdif: Use
  devm_platform_get_and_ioremap_resource()
-Date: Fri, 11 Jun 2021 17:36:23 +0800
-Message-ID: <20210611093626.579176-7-yangyingliang@huawei.com>
+Date: Fri, 11 Jun 2021 17:36:24 +0800
+Message-ID: <20210611093626.579176-8-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210611093626.579176-1-yangyingliang@huawei.com>
 References: <20210611093626.579176-1-yangyingliang@huawei.com>
@@ -66,22 +68,22 @@ code.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- sound/soc/fsl/fsl_sai.c | 3 +--
+ sound/soc/fsl/fsl_spdif.c | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-index 407a45e48eee..223fcd15bfcc 100644
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -1017,8 +1017,7 @@ static int fsl_sai_probe(struct platform_device *pdev)
+diff --git a/sound/soc/fsl/fsl_spdif.c b/sound/soc/fsl/fsl_spdif.c
+index 2a76714eb8e6..d812a3ff5845 100644
+--- a/sound/soc/fsl/fsl_spdif.c
++++ b/sound/soc/fsl/fsl_spdif.c
+@@ -1355,8 +1355,7 @@ static int fsl_spdif_probe(struct platform_device *pdev)
+ 				spdif_priv->soc->tx_formats;
  
- 	sai->is_lsb_first = of_property_read_bool(np, "lsb-first");
- 
+ 	/* Get the addresses and IRQ */
 -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	base = devm_ioremap_resource(&pdev->dev, res);
-+	base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
- 	if (IS_ERR(base))
- 		return PTR_ERR(base);
+-	regs = devm_ioremap_resource(&pdev->dev, res);
++	regs = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+ 	if (IS_ERR(regs))
+ 		return PTR_ERR(regs);
  
 -- 
 2.25.1
