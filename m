@@ -1,75 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80FFD3A4580
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 17:33:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C9D73A459B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 17:40:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G1lHd73Ccz3fM4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Jun 2021 01:33:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G1lRD6L1jz3c9G
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Jun 2021 01:40:24 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=HhpdzooM;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=UdgbVNlC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::432;
- helo=mail-pf1-x432.google.com; envelope-from=tientzu@chromium.org;
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::82a;
+ helo=mail-qt1-x82a.google.com; envelope-from=tientzu@chromium.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=HhpdzooM; dkim-atps=neutral
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com
- [IPv6:2607:f8b0:4864:20::432])
+ header.s=google header.b=UdgbVNlC; dkim-atps=neutral
+Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com
+ [IPv6:2607:f8b0:4864:20::82a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G1lBS0Fhdz3cc4
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Jun 2021 01:29:19 +1000 (AEST)
-Received: by mail-pf1-x432.google.com with SMTP id g6so4734681pfq.1
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jun 2021 08:29:19 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G1lQd5KJZz3btQ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Jun 2021 01:39:51 +1000 (AEST)
+Received: by mail-qt1-x82a.google.com with SMTP id g12so2906812qtb.2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jun 2021 08:39:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=/h+uMK5EvTU9y/lCGU3ZvCTAZDjSKC/jtJCWXvTsWEE=;
- b=HhpdzooM/9OahuuJNkXbvXBqmvqw8FUa6EKj2BaW6crQMvq/ScwxDhTvwyC0rkCxs+
- qdWlvtSqQ4JGBA/bijy6bpuQWOxgyJPJ9pxnXvbdvDkSLuKEZ1SJkRU0zubFn6wd3k5G
- bES3BFVcePGohMbxPDI0s9cBVMuc2zmUCtVw8=
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=89FDdm5otB6kfSIY1wN8GtI+ciQx5v+glSl+A+k1+x0=;
+ b=UdgbVNlCM2Z2m4AZZMvHuq5iZqq6a6B1k1NgNWN8Vbr0FhlXEkOMcXQOmqkTt81W9l
+ ZZvZ8qEfilw4IVJQmcyphxlOFoGk0yzalYprjSKjTm0i0iDciVsO4hDbAAQ2CGlI10y9
+ ZbSgy3asVidQE8sG2vEkYEnh2JJM0V3DCy6O0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=/h+uMK5EvTU9y/lCGU3ZvCTAZDjSKC/jtJCWXvTsWEE=;
- b=boqsu5Sv/u1aO7Ibc0k4sPvqTM8/xbXMauYDi/+yVLw6fmSnTYTPaA4hAGHUU2qRKA
- 5122rozzgZxvIRrxGRsMTEicg9JpSzV3WenwV1PFnR3Fde412qJ9X9poWMAwaimlHWHz
- SH0EJ2vIEUVk3S5NoS2mqRkqvxvNWfAa0hKJKWb0vIxCUtNJzETWi5kjw9VEH6B0Mu5V
- piigWccgPOp4IvH15Mb0BbWNyty32BTqVl7/dO4A4/HFwjuusAkqRz1IcJ1sp+wbvFmk
- LnLNLRahfJ4oWDWvq6OAsUWDgCv1CEArALxpBHe0lqMI5nxVVp5cjO52t2Df+HC60FW4
- Y05Q==
-X-Gm-Message-State: AOAM5333BMXunvoM2Zk/w00nO6+29b9YFd0sg6YkuYvumgu8eqOIUvwv
- pZnhWWuDwzUykcS6ztM8NLyxrA==
-X-Google-Smtp-Source: ABdhPJxm0sDDpDqGQ8rNYiECVqpZ7eLqxfJ9mC0qI8JX65WyVERI818aqtVbmfi4eNxIlAsNsotgSA==
-X-Received: by 2002:a63:e954:: with SMTP id q20mr1993869pgj.332.1623425356990; 
- Fri, 11 Jun 2021 08:29:16 -0700 (PDT)
-Received: from localhost ([2401:fa00:95:205:33c8:8e01:1161:6797])
- by smtp.gmail.com with UTF8SMTPSA id n11sm5376420pfu.29.2021.06.11.08.29.09
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=89FDdm5otB6kfSIY1wN8GtI+ciQx5v+glSl+A+k1+x0=;
+ b=T0GVKT5kMKocTUAA8+cjLVDlpu1AZ7VtKJi0R4+Bm/0qLG0fxdPsuI0vXmGfPZQiDj
+ c1/3xTfZvqglnRv5lYUQtx+f24hZJSIqr5LfJKffdBcLnQKtCm9DzaJZLI45/97LNHTp
+ jNnM9o6VbJdnV24i7umUhFb4y3POrRRx3kS42Wg5/MNt+pzF6fRi7Ghk+NXQJPAAZOb1
+ dOpkVsOV11O2qvBC3AqYB+9zdtgKDmpOe1goXDwD60DhWqpaAcfQlQoCX9PAoiT//OB9
+ mFmg8590+639vkOU+1gP9/IcWKVQLzi+db8L/JNr/Vo171inN9UjnQdi3Hg0rPdd9fPL
+ eW8g==
+X-Gm-Message-State: AOAM533Apv3LhwtZpIVe8K8m8S+POVy4o1Dz7H3K61zcHxZdHrssDrgu
+ Da3z92rVk5XAwMKWs+x0IqJJrc9kPq+EKA==
+X-Google-Smtp-Source: ABdhPJztDODPqTvBTi5xbVzmZIYpQJfc2jvstxCrVta4ynlcYGgeZuPhy3YdB6FUcOQscT3brRPlLA==
+X-Received: by 2002:ac8:46d1:: with SMTP id h17mr4362024qto.135.1623425986620; 
+ Fri, 11 Jun 2021 08:39:46 -0700 (PDT)
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com.
+ [209.85.160.182])
+ by smtp.gmail.com with ESMTPSA id x66sm4620743qkc.100.2021.06.11.08.39.46
+ for <linuxppc-dev@lists.ozlabs.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 11 Jun 2021 08:29:16 -0700 (PDT)
-From: Claire Chang <tientzu@chromium.org>
-To: Rob Herring <robh+dt@kernel.org>, mpe@ellerman.id.au,
- Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Frank Rowand <frowand.list@gmail.com>,
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, boris.ostrovsky@oracle.com,
- jgross@suse.com, Christoph Hellwig <hch@lst.de>,
- Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: [PATCH v9 14/14] of: Add plumbing for restricted DMA pool
-Date: Fri, 11 Jun 2021 23:26:59 +0800
-Message-Id: <20210611152659.2142983-15-tientzu@chromium.org>
-X-Mailer: git-send-email 2.32.0.272.g935e593368-goog
-In-Reply-To: <20210611152659.2142983-1-tientzu@chromium.org>
-References: <20210611152659.2142983-1-tientzu@chromium.org>
+ Fri, 11 Jun 2021 08:39:46 -0700 (PDT)
+Received: by mail-qt1-f182.google.com with SMTP id z4so2896448qts.4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jun 2021 08:39:46 -0700 (PDT)
+X-Received: by 2002:a05:6638:151:: with SMTP id
+ y17mr4471864jao.128.1623425522838; 
+ Fri, 11 Jun 2021 08:32:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210527125845.1852284-1-tientzu@chromium.org>
+ <20210604174818.GC3703@willie-the-truck>
+ <CALiNf29=z2uBM1ZA_GTu04iFS2dJwH0npdGvid1PL5KQM_HrxA@mail.gmail.com>
+In-Reply-To: <CALiNf29=z2uBM1ZA_GTu04iFS2dJwH0npdGvid1PL5KQM_HrxA@mail.gmail.com>
+From: Claire Chang <tientzu@chromium.org>
+Date: Fri, 11 Jun 2021 23:31:52 +0800
+X-Gmail-Original-Message-ID: <CALiNf29RGoFq7L+t_Bi6TsE-93-=m49DdV6QrVBV=pvoAjKsvw@mail.gmail.com>
+Message-ID: <CALiNf29RGoFq7L+t_Bi6TsE-93-=m49DdV6QrVBV=pvoAjKsvw@mail.gmail.com>
+Subject: Re: [PATCH v8 00/15] Restricted DMA
+To: Will Deacon <will@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,126 +87,94 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Cc: heikki.krogerus@linux.intel.com, thomas.hellstrom@linux.intel.com,
  peterz@infradead.org, joonas.lahtinen@linux.intel.com,
  dri-devel@lists.freedesktop.org, chris@chris-wilson.co.uk,
- grant.likely@arm.com, paulus@samba.org, mingo@kernel.org, jxgao@google.com,
+ grant.likely@arm.com, paulus@samba.org, Frank Rowand <frowand.list@gmail.com>,
+ mingo@kernel.org, Marek Szyprowski <m.szyprowski@samsung.com>,
  sstabellini@kernel.org, Saravana Kannan <saravanak@google.com>,
- xypron.glpk@gmx.de, "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ Joerg Roedel <joro@8bytes.org>,
+ "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ Christoph Hellwig <hch@lst.de>,
  Bartosz Golaszewski <bgolaszewski@baylibre.com>, bskeggs@redhat.com,
  linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
  Thierry Reding <treding@nvidia.com>, intel-gfx@lists.freedesktop.org,
  matthew.auld@intel.com, linux-devicetree <devicetree@vger.kernel.org>,
- daniel@ffwll.ch, airlied@linux.ie, maarten.lankhorst@linux.intel.com,
- linuxppc-dev@lists.ozlabs.org, jani.nikula@linux.intel.com,
- Nicolas Boichat <drinkcat@chromium.org>, rodrigo.vivi@intel.com,
- bhelgaas@google.com, tientzu@chromium.org,
- Dan Williams <dan.j.williams@intel.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Greg KH <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
- lkml <linux-kernel@vger.kernel.org>, tfiga@chromium.org,
+ Jianxiong Gao <jxgao@google.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ maarten.lankhorst@linux.intel.com, airlied@linux.ie,
+ Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org,
+ jani.nikula@linux.intel.com, Rob Herring <robh+dt@kernel.org>,
+ rodrigo.vivi@intel.com, Bjorn Helgaas <bhelgaas@google.com>,
+ boris.ostrovsky@oracle.com,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jgross@suse.com,
+ Nicolas Boichat <drinkcat@chromium.org>, Greg KH <gregkh@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, lkml <linux-kernel@vger.kernel.org>,
+ Tomasz Figa <tfiga@chromium.org>,
  "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
- Jim Quinlan <james.quinlan@broadcom.com>, Robin Murphy <robin.murphy@arm.com>,
- bauerman@linux.ibm.com
+ Jim Quinlan <james.quinlan@broadcom.com>, xypron.glpk@gmx.de,
+ Robin Murphy <robin.murphy@arm.com>, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If a device is not behind an IOMMU, we look up the device node and set
-up the restricted DMA when the restricted-dma-pool is presented.
+v9 here: https://lore.kernel.org/patchwork/cover/1445081/
 
-Signed-off-by: Claire Chang <tientzu@chromium.org>
----
- drivers/of/address.c    | 33 +++++++++++++++++++++++++++++++++
- drivers/of/device.c     |  3 +++
- drivers/of/of_private.h |  6 ++++++
- 3 files changed, 42 insertions(+)
-
-diff --git a/drivers/of/address.c b/drivers/of/address.c
-index 3b2acca7e363..c8066d95ff0e 100644
---- a/drivers/of/address.c
-+++ b/drivers/of/address.c
-@@ -8,6 +8,7 @@
- #include <linux/logic_pio.h>
- #include <linux/module.h>
- #include <linux/of_address.h>
-+#include <linux/of_reserved_mem.h>
- #include <linux/pci.h>
- #include <linux/pci_regs.h>
- #include <linux/sizes.h>
-@@ -1001,6 +1002,38 @@ int of_dma_get_range(struct device_node *np, const struct bus_dma_region **map)
- 	of_node_put(node);
- 	return ret;
- }
-+
-+int of_dma_set_restricted_buffer(struct device *dev, struct device_node *np)
-+{
-+	struct device_node *node, *of_node = dev->of_node;
-+	int count, i;
-+
-+	count = of_property_count_elems_of_size(of_node, "memory-region",
-+						sizeof(u32));
-+	/*
-+	 * If dev->of_node doesn't exist or doesn't contain memory-region, try
-+	 * the OF node having DMA configuration.
-+	 */
-+	if (count <= 0) {
-+		of_node = np;
-+		count = of_property_count_elems_of_size(
-+			of_node, "memory-region", sizeof(u32));
-+	}
-+
-+	for (i = 0; i < count; i++) {
-+		node = of_parse_phandle(of_node, "memory-region", i);
-+		/*
-+		 * There might be multiple memory regions, but only one
-+		 * restricted-dma-pool region is allowed.
-+		 */
-+		if (of_device_is_compatible(node, "restricted-dma-pool") &&
-+		    of_device_is_available(node))
-+			return of_reserved_mem_device_init_by_idx(dev, of_node,
-+								  i);
-+	}
-+
-+	return 0;
-+}
- #endif /* CONFIG_HAS_DMA */
- 
- /**
-diff --git a/drivers/of/device.c b/drivers/of/device.c
-index 1defdf15ba95..ba4656e77502 100644
---- a/drivers/of/device.c
-+++ b/drivers/of/device.c
-@@ -168,6 +168,9 @@ int of_dma_configure_id(struct device *dev, struct device_node *np,
- 	if (IS_ENABLED(CONFIG_SWIOTLB))
- 		swiotlb_set_io_tlb_default_mem(dev);
- 
-+	if (!iommu)
-+		return of_dma_set_restricted_buffer(dev, np);
-+
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(of_dma_configure_id);
-diff --git a/drivers/of/of_private.h b/drivers/of/of_private.h
-index 631489f7f8c0..376462798f7e 100644
---- a/drivers/of/of_private.h
-+++ b/drivers/of/of_private.h
-@@ -163,12 +163,18 @@ struct bus_dma_region;
- #if defined(CONFIG_OF_ADDRESS) && defined(CONFIG_HAS_DMA)
- int of_dma_get_range(struct device_node *np,
- 		const struct bus_dma_region **map);
-+int of_dma_set_restricted_buffer(struct device *dev, struct device_node *np);
- #else
- static inline int of_dma_get_range(struct device_node *np,
- 		const struct bus_dma_region **map)
- {
- 	return -ENODEV;
- }
-+static inline int of_dma_set_restricted_buffer(struct device *dev,
-+					       struct device_node *np)
-+{
-+	return -ENODEV;
-+}
- #endif
- 
- void fdt_init_reserved_mem(void);
--- 
-2.32.0.272.g935e593368-goog
-
+On Mon, Jun 7, 2021 at 11:28 AM Claire Chang <tientzu@chromium.org> wrote:
+>
+> On Sat, Jun 5, 2021 at 1:48 AM Will Deacon <will@kernel.org> wrote:
+> >
+> > Hi Claire,
+> >
+> > On Thu, May 27, 2021 at 08:58:30PM +0800, Claire Chang wrote:
+> > > This series implements mitigations for lack of DMA access control on
+> > > systems without an IOMMU, which could result in the DMA accessing the
+> > > system memory at unexpected times and/or unexpected addresses, possibly
+> > > leading to data leakage or corruption.
+> > >
+> > > For example, we plan to use the PCI-e bus for Wi-Fi and that PCI-e bus is
+> > > not behind an IOMMU. As PCI-e, by design, gives the device full access to
+> > > system memory, a vulnerability in the Wi-Fi firmware could easily escalate
+> > > to a full system exploit (remote wifi exploits: [1a], [1b] that shows a
+> > > full chain of exploits; [2], [3]).
+> > >
+> > > To mitigate the security concerns, we introduce restricted DMA. Restricted
+> > > DMA utilizes the existing swiotlb to bounce streaming DMA in and out of a
+> > > specially allocated region and does memory allocation from the same region.
+> > > The feature on its own provides a basic level of protection against the DMA
+> > > overwriting buffer contents at unexpected times. However, to protect
+> > > against general data leakage and system memory corruption, the system needs
+> > > to provide a way to restrict the DMA to a predefined memory region (this is
+> > > usually done at firmware level, e.g. MPU in ATF on some ARM platforms [4]).
+> > >
+> > > [1a] https://googleprojectzero.blogspot.com/2017/04/over-air-exploiting-broadcoms-wi-fi_4.html
+> > > [1b] https://googleprojectzero.blogspot.com/2017/04/over-air-exploiting-broadcoms-wi-fi_11.html
+> > > [2] https://blade.tencent.com/en/advisories/qualpwn/
+> > > [3] https://www.bleepingcomputer.com/news/security/vulnerabilities-found-in-highly-popular-firmware-for-wifi-chips/
+> > > [4] https://github.com/ARM-software/arm-trusted-firmware/blob/master/plat/mediatek/mt8183/drivers/emi_mpu/emi_mpu.c#L132
+> > >
+> > > v8:
+> > > - Fix reserved-memory.txt and add the reg property in example.
+> > > - Fix sizeof for of_property_count_elems_of_size in
+> > >   drivers/of/address.c#of_dma_set_restricted_buffer.
+> > > - Apply Will's suggestion to try the OF node having DMA configuration in
+> > >   drivers/of/address.c#of_dma_set_restricted_buffer.
+> > > - Fix typo in the comment of drivers/of/address.c#of_dma_set_restricted_buffer.
+> > > - Add error message for PageHighMem in
+> > >   kernel/dma/swiotlb.c#rmem_swiotlb_device_init and move it to
+> > >   rmem_swiotlb_setup.
+> > > - Fix the message string in rmem_swiotlb_setup.
+> >
+> > Thanks for the v8. It works for me out of the box on arm64 under KVM, so:
+> >
+> > Tested-by: Will Deacon <will@kernel.org>
+> >
+> > Note that something seems to have gone wrong with the mail threading, so
+> > the last 5 patches ended up as a separate thread for me. Probably worth
+> > posting again with all the patches in one place, if you can.
+>
+> Thanks for testing.
+>
+> Christoph also added some comments in v7, so I'll prepare v9.
+>
+> >
+> > Cheers,
+> >
+> > Will
