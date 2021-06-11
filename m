@@ -1,76 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3698A3A39C8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 04:31:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AC663A39CE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 04:33:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G1PwR56jJz3c1J
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 12:31:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G1Pyn0dmTz3bvq
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 12:33:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=DpdK8nFi;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=soK2L6Bb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1029;
- helo=mail-pj1-x1029.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::430;
+ helo=mail-pf1-x430.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=DpdK8nFi; dkim-atps=neutral
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com
- [IPv6:2607:f8b0:4864:20::1029])
+ header.s=20161025 header.b=soK2L6Bb; dkim-atps=neutral
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com
+ [IPv6:2607:f8b0:4864:20::430])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G1Pw13yRfz3063
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jun 2021 12:30:39 +1000 (AEST)
-Received: by mail-pj1-x1029.google.com with SMTP id ei4so4820723pjb.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Jun 2021 19:30:38 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G1PyM1p7Rz3034
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jun 2021 12:32:43 +1000 (AEST)
+Received: by mail-pf1-x430.google.com with SMTP id u126so3205218pfu.13
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Jun 2021 19:32:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=e5K1WutpQ4ryjeQEihlJkVsIbkqUeWrgN2WO92sXGZM=;
- b=DpdK8nFit9zJKc3vGDOsEhXvWZneuG0L6UNjz9r3fmVqhTLU4dnCqJI6xxbnq8MKHI
- tVyWV97fRO7s2J2S+U1Yc+6TRH4+8wRl+g0UqNmG5K2W04pojtCFKuKJMzSeelwCUJv3
- KgE5zrTItICTaeUSUe/vbGSZ2EetRqp3QPaxF5hT1pmlYG7mfR3kLDnbr+CHf0NmhcX/
- kqlqsTvbZwGDeqjUbKKLPQenUSLAkEm0MZsvVpZ0yiRT6JqcEAwrYPs6YDzsK45JdUQd
- H9inz2DX3Hf72c0Chfz9tiALQQrqqtyxqtU0ZoOMgXGnK/7xSTn2YputnZ9bJEcSOTZ/
- c6gw==
+ bh=UOW92aC6DkTa48QgwUGsp3h2g6ZPsQbasSzlvBgjQLY=;
+ b=soK2L6BbXZVKYT6oA2EzWgCP9hBQeaKJ7XGF2nyly4PCKroZgSzoJHJjRNDtnPofC1
+ IKPpc8haDqSsqL36iPERWU3bPoQzG9NeQngwMWEH29Xqu39t0lWZYLUe9bNwxv2Yd3v1
+ eCkTbjOPWG2KY7ZT6q3r+VzogSmValMR6uJpPliS32pqdYi3egSOjYMAlgyDMYO52Mc9
+ pkZP0Th3cvp+Vtr2cWeE7WnEVKf57IM0yyUbdgHF02S0LUNlbXN6BMeQPh6BJUz0Ruwv
+ CiIo+WZTC1yqcfzOJSVELjsXR71FmPuAqXVIIK8OnqZ9jUrPvWRPCVsh6Lu6hfwwhH3g
+ GcAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=e5K1WutpQ4ryjeQEihlJkVsIbkqUeWrgN2WO92sXGZM=;
- b=HM2DvtqKP98vdGfrGKjAmAIFoneR51wZe1FO7ZyuMtW9w+BiSaCP8aJKemeZAtnalX
- b04odsUZgvJxmq3xCyH4/SNLv0ZhZM4aP8J4G08f7NOSci2VXl4AwCSvdYbeE70Uk+qQ
- 63Hr69ua3zGlu2IxpupRC4zk3IvtliL9Sf7sWHYJp56YUCKPo1K+o2o7KK8qGErctvhQ
- XaT0iMxQUdjSZ/C2K8esTC0B5C+IrJdAUYi+i/NxjMI6jvVbaLKWcK7Ovk0brzs864sK
- GNsHlrHmQLrlJdDi8q1MXWol54IWTI0W6pc8Qn+TT3uh4w/00a/T7VbIWqZRJV5lzFsD
- zxRg==
-X-Gm-Message-State: AOAM530eB+X2DsqwrFKM6re132LVPXCMBSe3ICWLCRN9vpGQGix20roE
- ojauUZiBOcg1RkGNj8SXHXc=
-X-Google-Smtp-Source: ABdhPJxaL9tsPBJ3ab510EBcjK/c2Pq5L6EHhqrAf9vODjJkZ852MryO6R/xO90ntmz424S6Wxx8Cg==
-X-Received: by 2002:a17:90b:503:: with SMTP id
- r3mr1975950pjz.195.1623378636861; 
- Thu, 10 Jun 2021 19:30:36 -0700 (PDT)
+ bh=UOW92aC6DkTa48QgwUGsp3h2g6ZPsQbasSzlvBgjQLY=;
+ b=XrCwjnvo8FpEgwr7RToYmPt55dPgVTx/tWMuJitmwDCKWuOnUezdPcoe3QGK0oSmNX
+ fbldnE+41XQxf3n3jfrKR+1+UFlbAuBKslYRIN6Ppph9XmCScucrj6ARH2ig62CwW/HV
+ MTPjuFzbpt+qJcYTgWrRZ+l5iE0g6qV8x1SL57AkOb4Qs174Gn1gh1/s1XhVvqFGCEEx
+ mtG8LlsdiYOf+iHfx2z8TOEUa3eIF9jg1GYtvmsvQzcmcDb3L3JDS3iSBUQeA1eveU+c
+ eAujJmztP1MBlICzW0LLvTmcR8a9nIYSy7sojZPW/VY4OAbVCGRoQ/w0yHIHHWpO5yED
+ FpWw==
+X-Gm-Message-State: AOAM530fzVdse1RZNIc8ZDtvKHFXP7vJe8xcqIjtcY5440C41X2J1ZG0
+ E6tC84eFNwqMzB0+vuqF69RbkfHTWlo=
+X-Google-Smtp-Source: ABdhPJwgfmWBVfBMAJSTfEk7UoGj8K6Twg7sGzqbjVToujODcjt2zObXKzxTHUOLAMJm6evNOoIfYA==
+X-Received: by 2002:a63:62c2:: with SMTP id w185mr1380250pgb.76.1623378759533; 
+ Thu, 10 Jun 2021 19:32:39 -0700 (PDT)
 Received: from localhost (60-242-147-73.tpgi.com.au. [60.242.147.73])
- by smtp.gmail.com with ESMTPSA id k136sm3593681pfd.87.2021.06.10.19.30.35
+ by smtp.gmail.com with ESMTPSA id p16sm3580523pgl.60.2021.06.10.19.32.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Jun 2021 19:30:36 -0700 (PDT)
-Date: Fri, 11 Jun 2021 12:30:31 +1000
+ Thu, 10 Jun 2021 19:32:39 -0700 (PDT)
+Date: Fri, 11 Jun 2021 12:32:34 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 2/4] powerpc/interrupt: Refactor
- prep_irq_for_user_exit()
+Subject: Re: [PATCH v2 3/4] powerpc/interrupt: Rename and lightly change
+ syscall_exit_prepare_main()
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
  <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>,
  Paul Mackerras <paulus@samba.org>
 References: <809d316bf5f1a81acdd69e220c13e716dac24f53.1622818556.git.christophe.leroy@csgroup.eu>
- <3fbef68e1cffc0ebbbad1893e4fb9426b0915039.1622818556.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <3fbef68e1cffc0ebbbad1893e4fb9426b0915039.1622818556.git.christophe.leroy@csgroup.eu>
+ <f46e330d3db9ac2567b5a12d170ba8375aa80c1b.1622818556.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <f46e330d3db9ac2567b5a12d170ba8375aa80c1b.1622818556.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-Message-Id: <1623378421.ayihg84s3a.astroid@bobo.none>
+Message-Id: <1623378700.koj918a90m.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -90,71 +89,78 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Excerpts from Christophe Leroy's message of June 5, 2021 12:56 am:
-> prep_irq_for_user_exit() is a superset of
-> prep_irq_for_kernel_enabled_exit().
+> Rename syscall_exit_prepare_main() into interrupt_exit_prepare_main()
 >=20
-> Refactor it.
+> Make it static as it is not used anywhere else.
+>=20
+> Pass it the 'ret' so that it can 'or' it directly instead of
+> oring twice, once inside the function and once outside.
+>=20
+> And remove 'r3' parameter which is not used.
+>=20
+> Also fix a typo where CONFIG_PPC_BOOK3S should be CONFIG_PPC_BOOK3S_64.
 
-I like the refactoring, but now prep_irq_for_user_exit() is calling=20
-prep_irq_for_kernel_enabled_exit(), which seems like the wrong naming.
-
-You could re-name prep_irq_for_kernel_enabled_exit() to
-prep_irq_for_enabled_exit() maybe? Or it could be=20
-__prep_irq_for_enabled_exit() then prep_irq_for_kernel_enabled_exit()
-and prep_irq_for_user_exit() would both call it.
-
-Otherwise
+This all looks good I think. I need to grab this fix from your series.
 
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
 >=20
 > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 > ---
->  arch/powerpc/kernel/interrupt.c | 25 +++++--------------------
->  1 file changed, 5 insertions(+), 20 deletions(-)
+>  arch/powerpc/kernel/interrupt.c | 11 +++++------
+>  1 file changed, 5 insertions(+), 6 deletions(-)
 >=20
 > diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interr=
 upt.c
-> index 539455c62c5b..b6aa80930733 100644
+> index b6aa80930733..bc3c1892ed80 100644
 > --- a/arch/powerpc/kernel/interrupt.c
 > +++ b/arch/powerpc/kernel/interrupt.c
-> @@ -78,29 +78,14 @@ static notrace __always_inline bool prep_irq_for_kern=
-el_enabled_exit(bool restar
->   */
->  static notrace __always_inline bool prep_irq_for_user_exit(void)
->  {
-> -	user_enter_irqoff();
-> -	/* This must be done with RI=3D1 because tracing may touch vmaps */
-> -	trace_hardirqs_on();
-> -
-> -#ifdef CONFIG_PPC32
-> -	__hard_EE_RI_disable();
-> -#else
-> -	if (exit_must_hard_disable())
-> -		__hard_EE_RI_disable();
-> +	bool ret;
-> =20
-> -	/* This pattern matches prep_irq_for_idle */
-> -	if (unlikely(lazy_irq_pending_nocheck())) {
-> -		if (exit_must_hard_disable()) {
-> -			local_paca->irq_happened |=3D PACA_IRQ_HARD_DIS;
-> -			__hard_RI_enable();
-> -		}
-> -		trace_hardirqs_off();
-> +	user_enter_irqoff();
-> +	ret =3D prep_irq_for_kernel_enabled_exit(true);
-> +	if (!ret)
->  		user_exit_irqoff();
-> =20
-> -		return false;
-> -	}
-> -#endif
-> -	return true;
-> +	return ret;
+> @@ -228,11 +228,10 @@ static notrace void booke_load_dbcr0(void)
+>  #endif
 >  }
 > =20
->  /* Has to run notrace because it is entered not completely "reconciled" =
-*/
+> -notrace unsigned long syscall_exit_prepare_main(unsigned long r3,
+> -						struct pt_regs *regs)
+> +static notrace unsigned long
+> +interrupt_exit_user_prepare_main(struct pt_regs *regs, unsigned long ret=
+)
+>  {
+>  	unsigned long ti_flags;
+> -	unsigned long ret =3D 0;
+> =20
+>  again:
+>  	ti_flags =3D READ_ONCE(current_thread_info()->flags);
+> @@ -254,7 +253,7 @@ notrace unsigned long syscall_exit_prepare_main(unsig=
+ned long r3,
+>  		ti_flags =3D READ_ONCE(current_thread_info()->flags);
+>  	}
+> =20
+> -	if (IS_ENABLED(CONFIG_PPC_BOOK3S) && IS_ENABLED(CONFIG_PPC_FPU)) {
+> +	if (IS_ENABLED(CONFIG_PPC_BOOK3S_64) && IS_ENABLED(CONFIG_PPC_FPU)) {
+>  		if (IS_ENABLED(CONFIG_PPC_TRANSACTIONAL_MEM) &&
+>  				unlikely((ti_flags & _TIF_RESTORE_TM))) {
+>  			restore_tm_state(regs);
+> @@ -350,7 +349,7 @@ notrace unsigned long syscall_exit_prepare(unsigned l=
+ong r3,
+>  	}
+> =20
+>  	local_irq_disable();
+> -	ret |=3D syscall_exit_prepare_main(r3, regs);
+> +	ret =3D interrupt_exit_user_prepare_main(regs, ret);
+> =20
+>  #ifdef CONFIG_PPC64
+>  	regs->exit_result =3D ret;
+> @@ -378,7 +377,7 @@ notrace unsigned long syscall_exit_restart(unsigned l=
+ong r3, struct pt_regs *reg
+> =20
+>  	BUG_ON(!user_mode(regs));
+> =20
+> -	regs->exit_result |=3D syscall_exit_prepare_main(r3, regs);
+> +	regs->exit_result =3D interrupt_exit_user_prepare_main(regs, regs->exit=
+_result);
+> =20
+>  	return regs->exit_result;
+>  }
 > --=20
 > 2.25.0
 >=20
