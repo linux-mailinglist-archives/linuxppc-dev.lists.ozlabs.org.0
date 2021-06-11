@@ -1,72 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FB8F3A40EC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 13:11:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EADCE3A4211
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 14:37:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G1dT16n5Bz3c6Q
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 21:11:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G1gMz3mBGz3c3w
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 22:37:19 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Y2Nya1zi;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=2peLsmD6;
+	dkim=fail reason="signature verification failed" header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=3v38kvCK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52f;
- helo=mail-pg1-x52f.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Y2Nya1zi; dkim-atps=neutral
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com
- [IPv6:2607:f8b0:4864:20::52f])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
+ (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
+ envelope-from=dsterba@suse.cz; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256
+ header.s=susede2_rsa header.b=2peLsmD6; 
+ dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256
+ header.s=susede2_ed25519 header.b=3v38kvCK; 
+ dkim-atps=neutral
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G1dSd0lxVz3bpH
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jun 2021 21:11:13 +1000 (AEST)
-Received: by mail-pg1-x52f.google.com with SMTP id i34so2165001pgl.9
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jun 2021 04:11:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=Xh0TM+1nx8h9M9ijCxN00fgzffsVSTNhyhrfqo8z+BQ=;
- b=Y2Nya1ziNhQXyWYlbbktuy9BB7qzK6QeF/19JF9VuTbkYSOa5qkKkO40vyOk8CMfGT
- emUmUOC21vpFra+T4TVveItzxdI2viCTvB9ztkdh0bIsZSN8yvsvogEVhZl/upjt4sXr
- rY+RO3fu+oBR+yq44pjGotqgnID8JjcwnZbEs1P7XyFDWSQp9nrT7+UtXlDIv040h+2F
- fjgC4ZtsT1rcdlo/9pDAwQFHmgCriyZFbAsKCr5gJq4jDkh9RmXtJFB1psbV8fo8j8gm
- Y4ZXnxh9S39eJCV2kU+ai6BDnE9AesHDRW1KRsNUloLOkCPDTQREaeRK0rZx7NRX5MU/
- tcAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=Xh0TM+1nx8h9M9ijCxN00fgzffsVSTNhyhrfqo8z+BQ=;
- b=Rzg+iqcLFKLgDZ/KxDXtiXlf9HJ309+V6Z/NXsLpXFGM9beK0SogOyg/3FxWOIYuGV
- q4/SD8AB+XfFoVcxp8O6C+sXp9AnwJLoiU1LlP6Fe+ZswkG424bTbjVqedQG3wBG1N7s
- /QYHMlZAk4NiWwWqr3GXw0DNVyauOwVcYIXLPQsHZr8FQknhD4NG55gX/kcNIVHHkZTj
- ujSGyPV0BUVas/751fJVAhmngvBH28+LEc0ukR09Oo0dyiy8xm/JSMGivZt/mHsxdA/F
- CfsN3gzn0Avlf48SE92G5f4pkwWyOUAeI/N+5ISMCnjtNHA9gNNALJfdTR4AOMoyRkPZ
- qNVA==
-X-Gm-Message-State: AOAM5302OXhWqSLX73sXYsuzP/jLGsD7gmReNUIN7+1VEICvj1YXOL19
- H41OlN8pYBo4RyEMYHpnlroAGHfxxfs=
-X-Google-Smtp-Source: ABdhPJysRT+ekM+yX+vZLdvABR5hckX2UvW0SzkIeWfhfWLyIijSa7hD8Q11Tq9jGUerce0T9oiy3w==
-X-Received: by 2002:a05:6a00:b8a:b029:2ec:761e:33e3 with SMTP id
- g10-20020a056a000b8ab02902ec761e33e3mr7666418pfj.35.1623409869810; 
- Fri, 11 Jun 2021 04:11:09 -0700 (PDT)
-Received: from bobo.ibm.com (60-242-147-73.tpgi.com.au. [60.242.147.73])
- by smtp.gmail.com with ESMTPSA id z5sm4817165pfa.172.2021.06.11.04.11.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 11 Jun 2021 04:11:09 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/boot: add zImage.lds to targets
-Date: Fri, 11 Jun 2021 21:11:04 +1000
-Message-Id: <20210611111104.1058991-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G1gMT0GH7z3bTh
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jun 2021 22:36:52 +1000 (AEST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+ by smtp-out1.suse.de (Postfix) with ESMTP id 035D321A48;
+ Fri, 11 Jun 2021 12:36:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+ t=1623415008;
+ h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+ cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=WbubFKHB1YFq8+cLZPFZsL/iGgDagPXwRBHcKJ3qDmE=;
+ b=2peLsmD6OKg84vX05jlKeSSzhc+WJwWLotAAvUINC/onEs9TZQ3AbPHeWdfS+bddiLLzh6
+ 0c23UqVPl326Qf2GLCycEtdoY9uZtjge95WU9F1EOEMHDadCrMP+/1vg8CqJ73tLjxiDvw
+ Lz8qAG0S58lqlW3qCvtVoDZc1BMWInk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+ s=susede2_ed25519; t=1623415008;
+ h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+ cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=WbubFKHB1YFq8+cLZPFZsL/iGgDagPXwRBHcKJ3qDmE=;
+ b=3v38kvCKiCtteusW+zZk3tG/vFy89Y7uWUqGSygE7PibOC0N0H5mMQie3rH4X648s2bwn9
+ 4RHgSq2/8HIoKtBQ==
+Received: from ds.suse.cz (ds.suse.cz [10.100.12.205])
+ by relay2.suse.de (Postfix) with ESMTP id ED944A3BB1;
+ Fri, 11 Jun 2021 12:36:47 +0000 (UTC)
+Received: by ds.suse.cz (Postfix, from userid 10065)
+ id D0B2EDA7A2; Fri, 11 Jun 2021 14:34:02 +0200 (CEST)
+Date: Fri, 11 Jun 2021 14:34:02 +0200
+From: David Sterba <dsterba@suse.cz>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] fs: btrfs: Disable BTRFS on platforms having 256K pages
+Message-ID: <20210611123402.GD28158@twin.jikos.cz>
+Mail-Followup-To: dsterba@suse.cz,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
+ David Sterba <dsterba@suse.com>, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-btrfs@vger.kernel.org,
+ linux-hexagon@vger.kernel.org
+References: <a16c31f3caf448dda5d9315e056585b6fafc22c5.1623302442.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a16c31f3caf448dda5d9315e056585b6fafc22c5.1623302442.git.christophe.leroy@csgroup.eu>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,31 +82,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Reply-To: dsterba@suse.cz
+Cc: linux-hexagon@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>,
+ linux-kernel@vger.kernel.org, Chris Mason <clm@fb.com>,
+ David Sterba <dsterba@suse.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-btrfs@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This prevents spurious rebuilds of the lds and then wrappers.
+On Thu, Jun 10, 2021 at 05:23:02AM +0000, Christophe Leroy wrote:
+> With a config having PAGE_SIZE set to 256K, BTRFS build fails
+> with the following message
+> 
+>  include/linux/compiler_types.h:326:38: error: call to '__compiletime_assert_791' declared with attribute error: BUILD_BUG_ON failed: (BTRFS_MAX_COMPRESSED % PAGE_SIZE) != 0
+> 
+> BTRFS_MAX_COMPRESSED being 128K, BTRFS cannot support platforms with
+> 256K pages at the time being.
+> 
+> There are two platforms that can select 256K pages:
+>  - hexagon
+>  - powerpc
+> 
+> Disable BTRFS when 256K page size is selected.
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/boot/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
-index be84a72f8258..405acd2df160 100644
---- a/arch/powerpc/boot/Makefile
-+++ b/arch/powerpc/boot/Makefile
-@@ -229,7 +229,7 @@ $(obj)/wrapper.a: $(obj-wlib) FORCE
- 
- hostprogs	:= addnote hack-coff mktree
- 
--targets		+= $(patsubst $(obj)/%,%,$(obj-boot) wrapper.a)
-+targets		+= $(patsubst $(obj)/%,%,$(obj-boot) wrapper.a) zImage.lds
- extra-y		:= $(obj)/wrapper.a $(obj-plat) $(obj)/empty.o \
- 		   $(obj)/zImage.lds $(obj)/zImage.coff.lds $(obj)/zImage.ps3.lds
- 
--- 
-2.23.0
-
+With updated changelog added to misc-next, thanks.
