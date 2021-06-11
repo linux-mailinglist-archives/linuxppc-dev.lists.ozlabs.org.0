@@ -2,85 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 444B23A39B1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 04:25:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ABD03A39B8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 04:26:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G1Pnv5z3gz3bvk
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 12:25:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G1Pq446DZz3c2Q
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 12:26:24 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=I6ibkR1f;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=I2eukyki;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52e;
- helo=mail-pg1-x52e.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f2d;
+ helo=mail-qv1-xf2d.google.com; envelope-from=shengjiu.wang@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=I6ibkR1f; dkim-atps=neutral
-Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com
- [IPv6:2607:f8b0:4864:20::52e])
+ header.s=20161025 header.b=I2eukyki; dkim-atps=neutral
+Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com
+ [IPv6:2607:f8b0:4864:20::f2d])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G1PnQ31Mmz2xvG
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jun 2021 12:24:58 +1000 (AEST)
-Received: by mail-pg1-x52e.google.com with SMTP id i34so1238736pgl.9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Jun 2021 19:24:57 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G1Ppd2fc9z2xvG
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jun 2021 12:26:01 +1000 (AEST)
+Received: by mail-qv1-xf2d.google.com with SMTP id u14so12892888qvq.6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Jun 2021 19:26:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=lWU4Vw0CGzQdddd7531AABGYy3FLb0CgVBwzysYGHYA=;
- b=I6ibkR1f0h0wumnTnmTl44RwOrJeQ04rA21yaUsHN0zd0m9JbQc+v0uw9/gE62YLcz
- CklpqIuzOcj1S3pvKA+fyfdsheWl3CJLU8H1PfXUHzgCvHpPY8MU7Uf6kfbF181q6pX3
- IunZswNAMoSi/XRgUCBVU4Shg/NRVsElcZGOCgsyIwZh/tF5JmxO9B75pTf8Cwos/oDg
- QKCkxxqQ99Xqc3cI6T8d3fa/sg3VvaNq8s/PoWIP3d5g58z3ARISNbxPnSjXFbElv502
- Kz5K+iVH0j0EojnZqJbI70iPouED4wauLPGM7hg6PlP0gaKyHDdP43A22/CSZvmkeVQV
- kV4Q==
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=7FsXY/TbSGUUDENZzS6CIpHdUvNAOKNKXgpKq5u4rXU=;
+ b=I2eukykiphXFQViXcXYmNXYcayHQieCzV49bgZWYLDdkww6G3d2j0qfqzxreHlnYSI
+ v/HEDSDf02kjpLsUckDsFqDTQoVG0g4s04oX/4cCJ+iN8hs/Ar1nRZ+2CaodIEbP/CQR
+ fBL9nAbihtMYVpgNmymE0y4FaiGGHXBr5JQipolDQ9y1duTTcuOn1biEoOsaWsk4ts0H
+ oBQkD6Wvsz/4nkbP9EEfgsDmbAwS0Voq6kY6jTBaCKZBdIGolFuD8IdP0ZJF3nvQq/sa
+ zglPT+b/jLnTA8hkzYcjo6OcDop+++rp4rdNR5Tk3ceiqO8ntyN9mf6+Ae87R3jMbJI4
+ +t+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=lWU4Vw0CGzQdddd7531AABGYy3FLb0CgVBwzysYGHYA=;
- b=tSDlTgxujvf2S1cOtplmgDm4cdfy+/+r+2lFYyaF82qyBA9zSMy/Ub4/al7707ao27
- Dzh9tz5XGEPlMXbCe3M+ppCE5Wj2YwhK00oj9QWPePPTQlGRn/SIESZlk2zVcl5OAzCL
- iGYNWyYrbAuo53EDees6aJLwOT+lmmZxKMw55LOSwzjPEBKSTFM9R1je6y+W5Cw6EBd+
- TeWWc8ixrLdKcDleXPfzLgD+8QUkmFVy/elSx1mXXlUL0unv5K+oIN+eBvzylXRtj22e
- 31NLFnIfeMC+hyc0GEJyAWoBiTUF9sJ5xDGSowpbaah/DhpfxoSsT5yMsE2/CXw/U6vx
- dppA==
-X-Gm-Message-State: AOAM533UNbJTmLCh/zbS17zppvNN3iubVxztMMg4p29yZJbNsV3yF/eO
- QpPvXsZEzs8AIaIHJo8xGW8=
-X-Google-Smtp-Source: ABdhPJz57Cm9SUiVdKRM7MoGvcOhd0hkvt4CITORQXOWGm2kw0Vh1lSZXAwJIWizsPnbtxdb7qifbQ==
-X-Received: by 2002:a62:5547:0:b029:2ec:8f20:4e2 with SMTP id
- j68-20020a6255470000b02902ec8f2004e2mr5913590pfb.71.1623378294499; 
- Thu, 10 Jun 2021 19:24:54 -0700 (PDT)
-Received: from localhost (60-242-147-73.tpgi.com.au. [60.242.147.73])
- by smtp.gmail.com with ESMTPSA id f17sm3668935pgm.37.2021.06.10.19.24.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Jun 2021 19:24:53 -0700 (PDT)
-Date: Fri, 11 Jun 2021 12:24:48 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [FSL P50x0] KVM HV doesn't work anymore
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Christian Zigotzky
- <chzigotzky@xenosoft.de>, "kvm-ppc@vger.kernel.org"
- <kvm-ppc@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-References: <04526309-4653-3349-b6de-e7640c2258d6@xenosoft.de>
- <34617b1b-e213-668b-05f6-6fce7b549bf0@xenosoft.de>
- <9af2c1c9-2caf-120b-2f97-c7722274eee3@csgroup.eu>
- <199da427-9511-34fe-1a9e-08e24995ea85@xenosoft.de>
- <1621236734.xfc1uw04eb.astroid@bobo.none>
- <e6ed7674-3df9-ec3e-8bcf-dcd8ff0fecf8@xenosoft.de>
- <1621410977.cgh0d6nvlo.astroid@bobo.none>
- <acf63821-2030-90fa-f178-b2baeb0c4784@xenosoft.de>
- <1621464963.g8v9ejlhyh.astroid@bobo.none>
- <f437d727-8bc7-6467-6134-4e84942628f1@xenosoft.de>
- <b3821ab6-f3b4-ee51-93a2-064c09bc4278@xenosoft.de>
-In-Reply-To: <b3821ab6-f3b4-ee51-93a2-064c09bc4278@xenosoft.de>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=7FsXY/TbSGUUDENZzS6CIpHdUvNAOKNKXgpKq5u4rXU=;
+ b=UAdAXdfMM2gQMp3GgyIHdVlXdOTHinYUWpAP9pyHlydwmCDYY08YMQABcxL8uglWJy
+ B5iFaZ8DIOdDir2ADY62c4gdmJZF1N6KwYlyV8YfJt1+WpmL8x2ptY7wxaKgKlNLR7d2
+ b4Gp+t3i5rbVtJzSsTs6HdJqmpV4CKUOjNzML1WuWkcCqmvasc9O9TsKdTTn4pyzk/4t
+ e1ND6/PzVQ2OqWXsqwHxiJdZybAOzLKOenOehwzdr4jAvg2ZH9KkFFAUJsWbjhwW1yTh
+ OV1Gz0Jb/YwwipOjYdpgu2daBBo2gPMwI6okikCe+TCllioQYLXkd2g7YBrzRi8JsDgi
+ 6wFA==
+X-Gm-Message-State: AOAM533dIx+df5X7gPWA1nhGCzsj3W2LLLhHwqaBI8z/v/prK/Ks3I16
+ lXWmfnDUjrCXutDgXYizQMtWrz6WC8NISvbbYhU=
+X-Google-Smtp-Source: ABdhPJxT+CsEUPgmUbbvvdovqN50qvrZPZs4VXtBZa26L9aij/35ZW5rkX2cu6uMHZw3aT20weyVwPl2f64lDccacTM=
+X-Received: by 2002:ad4:576c:: with SMTP id r12mr2699884qvx.28.1623378357051; 
+ Thu, 10 Jun 2021 19:25:57 -0700 (PDT)
 MIME-Version: 1.0
-Message-Id: <1623377186.j5de3q1s8g.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+References: <20210610040037.1064-1-hbut_tan@163.com>
+In-Reply-To: <20210610040037.1064-1-hbut_tan@163.com>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Fri, 11 Jun 2021 10:25:46 +0800
+Message-ID: <CAA+D8AOseYcjf6erSObjkpAhZGJW0VGio-T91kFZ7q0f3PhQPA@mail.gmail.com>
+Subject: Re: [PATCH] ASoC:fsl_spdif:Remove superfluous error message around
+ platform_get_irq()
+To: Zhongjun Tan <hbut_tan@163.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,75 +74,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- mad skateman <madskateman@gmail.com>, Christian Zigotzky <info@xenosoft.de>
+Cc: Tan Zhongjun <tanzhongjun@yulong.com>, alsa-devel@alsa-project.org,
+ Timur Tabi <timur@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Takashi Iwai <tiwai@suse.com>,
+ Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>,
+ Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Fabio Estevam <festevam@gmail.com>,
+ linux-kernel <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Christian Zigotzky's message of June 7, 2021 5:21 pm:
-> On 02 June 2021 at 01:26pm, Christian Zigotzky wrote:
->> On 20 May 2021 at 01:07am, Nicholas Piggin wrote:
->>> Hmm, okay that probably rules out those notifier changes then.
->>> Can you remind me were you able to rule these out as suspects?
->>>
->>> 8f6cc75a97d1 powerpc: move norestart trap flag to bit 0
->>> 8dc7f0229b78 powerpc: remove partial register save logic
->>> c45ba4f44f6b powerpc: clean up do_page_fault
->>> d738ee8d56de powerpc/64e/interrupt: handle bad_page_fault in C
->>> ceff77efa4f8 powerpc/64e/interrupt: Use new interrupt context=20
->>> tracking scheme
->>> 097157e16cf8 powerpc/64e/interrupt: reconcile irq soft-mask state in C
->>> 3db8aa10de9a powerpc/64e/interrupt: NMI save irq soft-mask state in C
->>> 0c2472de23ae powerpc/64e/interrupt: use new interrupt return
->>> dc6231821a14 powerpc/interrupt: update common interrupt code for
->>> 4228b2c3d20e powerpc/64e/interrupt: always save nvgprs on interrupt
->>> 5a5a893c4ad8 powerpc/syscall: switch user_exit_irqoff and=20
->>> trace_hardirqs_off order
->>>
->>> Thanks,
->>> Nick
->> Hi Nick,
->>
->> I tested these commits above today and all works with -smp 4. [1]
->>
->> Smp 4 still doesn't work with the RC4 of kernel 5.13 on quad core=20
->> e5500 CPUs with KVM HV. I use -smp 3 currently.
->>
->> What shall I test next?
->>
->> Thanks,
->> Christian
->>
->> [1] https://forum.hyperion-entertainment.com/viewtopic.php?p=3D53367#p53=
-367
-> Hi All,
->=20
-> I tested the RC5 of kernel 5.13 today. Unfortunately the KVM HV issue=20
-> still exists.
-> I also figured out, that '-smp 2' doesn't work either.
->=20
-> Summary:
->=20
-> -smp 1 -> works
-> -smp 2 -> doesn't work
-> -smp 3 -> works
-> -smp 4 -> doesn't work
+On Thu, Jun 10, 2021 at 12:02 PM Zhongjun Tan <hbut_tan@163.com> wrote:
+>
+> From: Tan Zhongjun <tanzhongjun@yulong.com>
+>
+> The platform_get_irq() prints error message telling that interrupt is
+> missing, hence there is no need to duplicated that message.
+>
+> Signed-off-by: Tan Zhongjun <tanzhongjun@yulong.com>
 
-Sorry, I'm not able to see anything, if the KVM patches were okay and=20
-the 64e interrupt series. I don't know why the -smp behaviour would make
+Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
 
-I can't think of why the -smp behaviour would make a difference except=20
-for a strange race. Doing another bisect might be the only way to get
-to the bottom of it.
-
-But before that you could try get some data about why the guest stops?
-Get some samples of CPU registers when it gets stuck and see if you can
-see if it is stuck in a loop of interupts or something.
-
-I don't know if qemu can log much from KVM execution so you might have
-to just run info registers a dozen times on each CPU (`cpu 1` will=20
-change to CPU 1 in the qemu monitor).
-
-Thanks,
-Nick
+> ---
+>  sound/soc/fsl/fsl_spdif.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+>
+> diff --git a/sound/soc/fsl/fsl_spdif.c b/sound/soc/fsl/fsl_spdif.c
+> index 2a76714eb8e6..29cefd459241 100644
+> --- a/sound/soc/fsl/fsl_spdif.c
+> +++ b/sound/soc/fsl/fsl_spdif.c
+> @@ -1368,10 +1368,8 @@ static int fsl_spdif_probe(struct platform_device *pdev)
+>
+>         for (i = 0; i < spdif_priv->soc->interrupts; i++) {
+>                 irq = platform_get_irq(pdev, i);
+> -               if (irq < 0) {
+> -                       dev_err(&pdev->dev, "no irq for node %s\n", pdev->name);
+> +               if (irq < 0)
+>                         return irq;
+> -               }
+>
+>                 ret = devm_request_irq(&pdev->dev, irq, spdif_isr, 0,
+>                                        dev_name(&pdev->dev), spdif_priv);
+> --
+> 2.17.1
+>
