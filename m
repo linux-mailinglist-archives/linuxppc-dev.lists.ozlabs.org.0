@@ -1,50 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACBE23A3F9C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 11:54:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E39B43A3F3B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 11:40:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G1bmW0hsQz3dck
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 19:54:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G1bS33bd1z3bwS
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 19:40:35 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=K6l4dDzX;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com;
- envelope-from=yangyingliang@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G1bjj0nwLz3093
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jun 2021 19:52:24 +1000 (AEST)
-Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.56])
- by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4G1bCD0Sgkz6w0y;
- Fri, 11 Jun 2021 17:29:28 +0800 (CST)
-Received: from dggpeml500017.china.huawei.com (7.185.36.243) by
- dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Fri, 11 Jun 2021 17:32:33 +0800
-Received: from huawei.com (10.175.103.91) by dggpeml500017.china.huawei.com
- (7.185.36.243) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Fri, 11 Jun
- 2021 17:32:33 +0800
-From: Yang Yingliang <yangyingliang@huawei.com>
-To: <linux-kernel@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
- <alsa-devel@alsa-project.org>
-Subject: [PATCH -next 9/9] ASoC: fsl_xcvr: check return value after calling
- platform_get_resource_byname()
-Date: Fri, 11 Jun 2021 17:36:26 +0800
-Message-ID: <20210611093626.579176-10-yangyingliang@huawei.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210611093626.579176-1-yangyingliang@huawei.com>
-References: <20210611093626.579176-1-yangyingliang@huawei.com>
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62f;
+ helo=mail-pl1-x62f.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=K6l4dDzX; dkim-atps=neutral
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com
+ [IPv6:2607:f8b0:4864:20::62f])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G1bRZ6SQHz3033
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jun 2021 19:40:09 +1000 (AEST)
+Received: by mail-pl1-x62f.google.com with SMTP id 69so2560206plc.5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jun 2021 02:40:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=DG/MZpO/hjtRvZGvdauW0MMB98XC9pxZIIemqr9D2mA=;
+ b=K6l4dDzXLv2kRPUWY+K+kCWFOxlkADsmtqAMwlZC8uBxi/kMiKxvPWGvDZuQyOPmEj
+ U0M+oAk6szrx/Hjyua7kTrCnQjbm9jT9OrD6OTFpcA3hP9GOZhnTLh32K/bb/s0HUEHN
+ QDKYMwkjMCj9Znapr6ItdpAjCpc72EKiQTrcvigX8TJ45XRNRwfHw2tjNNrnGnwWuHcR
+ NSwXrONKzknwFGiQjvo3zKuTnFbnjCtNVnNWg+erbFCYZlSKrOLx+NrFhe7Ri9Y5TpJP
+ p5E3Gkp18DeYOuDqHU1NeZXSF1rvZGsC4l4dSdYe3bi1ZA52sx9PxyVk7CcsoK3Tv3q8
+ Qp1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=DG/MZpO/hjtRvZGvdauW0MMB98XC9pxZIIemqr9D2mA=;
+ b=JASIK/PHeZUMM7kvmw0xdbxPRzaWgTXy/9AK5mLDqTwVqW4a3Sd5KaZlWF6UmzNSl2
+ glrX2YzS50IFicg6Nc4shKw9BzT9P0ChGAn9tDj7ukizgQtDGqLSmh/eB45x14oLEa83
+ NXSBJgnhz0Pd/v9pH5Xb7rlt7lhCdIciKYqofYxOqe5jWu1PHSLxNH/VtZ5o7Pp5L6jZ
+ czJBaqGy3pciROKsaWfLJ7DVleWFM1CxZCsm2WB3ZkP31gruFVZUDlQYVFPDNFS/IXFY
+ 9ZA0OIqrETaLuiEl6hmeT8hwhkEK8MDK62XiJ1fRVE7rVR1+KRQasge+wnYGjBIofIU2
+ pBsg==
+X-Gm-Message-State: AOAM532ukq6rosU4x8EDiP0mugYzW2A7wMkaXOOuYjg689puf8AUjvGx
+ BW9F5p/p77g6jUdrWlbgpQHzF32L4eU=
+X-Google-Smtp-Source: ABdhPJyEwqk0A+dK/0pGaDhp/W57VGpZrx4ClsHT1p6EcCGweSbpc4HRj2nQw5wGt7SiWKInHbF0aw==
+X-Received: by 2002:a17:902:7c92:b029:111:2ca8:3d8e with SMTP id
+ y18-20020a1709027c92b02901112ca83d8emr3093148pll.77.1623404406142; 
+ Fri, 11 Jun 2021 02:40:06 -0700 (PDT)
+Received: from bobo.ibm.com (60-242-147-73.tpgi.com.au. [60.242.147.73])
+ by smtp.gmail.com with ESMTPSA id o139sm4981655pfd.96.2021.06.11.02.40.03
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 11 Jun 2021 02:40:05 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v4 0/2] powerpc/64: Option to use ELF V2 ABI for big-endian
+Date: Fri, 11 Jun 2021 19:39:57 +1000
+Message-Id: <20210611093959.821525-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.175.103.91]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- dggpeml500017.china.huawei.com (7.185.36.243)
-X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,34 +79,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: broonie@kernel.org, timur@kernel.org
+Cc: =?UTF-8?q?Michal=20Such=C3=A1nek?= <msuchanek@suse.de>,
+ linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+ Jessica Yu <jeyu@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-It will cause null-ptr-deref if platform_get_resource_byname() returns NULL,
-we need check the return value.
+Since v3 I added Michael's module check for ELF ABI level. This requires
+a change to core module code. If Jessica is happy with it it could go
+via the powerpc tree.
 
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
----
- sound/soc/fsl/fsl_xcvr.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Thanks,
+Nick
 
-diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
-index df7c189d97dd..2e9061c5ed74 100644
---- a/sound/soc/fsl/fsl_xcvr.c
-+++ b/sound/soc/fsl/fsl_xcvr.c
-@@ -1202,6 +1202,10 @@ static int fsl_xcvr_probe(struct platform_device *pdev)
- 
- 	rx_res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "rxfifo");
- 	tx_res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "txfifo");
-+	if (!rx_res || !tx_res) {
-+		dev_err(dev, "Invalid resource\n");
-+		return -EINVAL;
-+	}
- 	xcvr->dma_prms_rx.chan_name = "rx";
- 	xcvr->dma_prms_tx.chan_name = "tx";
- 	xcvr->dma_prms_rx.addr = rx_res->start;
+Nicholas Piggin (2):
+  module: add elf_check_module_arch for module specific elf arch checks
+  powerpc/64: Option to use ELF V2 ABI for big-endian kernels
+
+ arch/powerpc/Kconfig                | 22 ++++++++++++++++++++++
+ arch/powerpc/Makefile               | 18 ++++++++++++------
+ arch/powerpc/boot/Makefile          |  4 +++-
+ arch/powerpc/include/asm/module.h   | 24 ++++++++++++++++++++++++
+ arch/powerpc/kernel/vdso64/Makefile | 13 +++++++++++++
+ drivers/crypto/vmx/Makefile         |  8 ++++++--
+ drivers/crypto/vmx/ppc-xlate.pl     | 10 ++++++----
+ include/linux/moduleloader.h        |  5 +++++
+ kernel/module.c                     |  2 +-
+ 9 files changed, 92 insertions(+), 14 deletions(-)
+
 -- 
-2.25.1
+2.23.0
 
