@@ -1,68 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ABD03A39B8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 04:26:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 830283A39BE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 04:27:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G1Pq446DZz3c2Q
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 12:26:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G1Pr274JTz3c4Z
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 12:27:14 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=I2eukyki;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=K61ueDjS;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f2d;
- helo=mail-qv1-xf2d.google.com; envelope-from=shengjiu.wang@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52b;
+ helo=mail-pg1-x52b.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=I2eukyki; dkim-atps=neutral
-Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com
- [IPv6:2607:f8b0:4864:20::f2d])
+ header.s=20161025 header.b=K61ueDjS; dkim-atps=neutral
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com
+ [IPv6:2607:f8b0:4864:20::52b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G1Ppd2fc9z2xvG
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jun 2021 12:26:01 +1000 (AEST)
-Received: by mail-qv1-xf2d.google.com with SMTP id u14so12892888qvq.6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Jun 2021 19:26:00 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G1Pqd4Kyyz3063
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jun 2021 12:26:53 +1000 (AEST)
+Received: by mail-pg1-x52b.google.com with SMTP id n12so1225856pgs.13
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Jun 2021 19:26:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=7FsXY/TbSGUUDENZzS6CIpHdUvNAOKNKXgpKq5u4rXU=;
- b=I2eukykiphXFQViXcXYmNXYcayHQieCzV49bgZWYLDdkww6G3d2j0qfqzxreHlnYSI
- v/HEDSDf02kjpLsUckDsFqDTQoVG0g4s04oX/4cCJ+iN8hs/Ar1nRZ+2CaodIEbP/CQR
- fBL9nAbihtMYVpgNmymE0y4FaiGGHXBr5JQipolDQ9y1duTTcuOn1biEoOsaWsk4ts0H
- oBQkD6Wvsz/4nkbP9EEfgsDmbAwS0Voq6kY6jTBaCKZBdIGolFuD8IdP0ZJF3nvQq/sa
- zglPT+b/jLnTA8hkzYcjo6OcDop+++rp4rdNR5Tk3ceiqO8ntyN9mf6+Ae87R3jMbJI4
- +t+w==
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=lASTtq1Plgoc+ovhi4JOG1rfLsoGZjNrlYTsEEjYDG0=;
+ b=K61ueDjSmueJf2vK4kFVHQCzp0Dvw8cjL2wfSEmQyqBUPzXDee40g1LkClHwz1mP6d
+ 0AhqiPiRi1Ho6DVPEthY60ui8J3uLjmtzs7HRtAjG3KNtSKGw2VyjD69nIvppeooF8QN
+ VgWQmCwGNWdWHSsZq+0bPwqsSb8RGGHG92h+PFYiFzWPFFuWyzOrJDvANwNb4PKQoV3l
+ ZbmWGT5vdBHOvmpQ3yGzTNmk7afgFkrcYUMOdTyRhwRPmgJ4NbFaIfXqcBXCSikAao9t
+ Ot88l7OrYPbTVwpim6V4Ju+NxUdsqS2Fy3MMJgC4h9BjFpyXycH5PAlOZRlBUJb1zh4E
+ 7hRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=7FsXY/TbSGUUDENZzS6CIpHdUvNAOKNKXgpKq5u4rXU=;
- b=UAdAXdfMM2gQMp3GgyIHdVlXdOTHinYUWpAP9pyHlydwmCDYY08YMQABcxL8uglWJy
- B5iFaZ8DIOdDir2ADY62c4gdmJZF1N6KwYlyV8YfJt1+WpmL8x2ptY7wxaKgKlNLR7d2
- b4Gp+t3i5rbVtJzSsTs6HdJqmpV4CKUOjNzML1WuWkcCqmvasc9O9TsKdTTn4pyzk/4t
- e1ND6/PzVQ2OqWXsqwHxiJdZybAOzLKOenOehwzdr4jAvg2ZH9KkFFAUJsWbjhwW1yTh
- OV1Gz0Jb/YwwipOjYdpgu2daBBo2gPMwI6okikCe+TCllioQYLXkd2g7YBrzRi8JsDgi
- 6wFA==
-X-Gm-Message-State: AOAM533dIx+df5X7gPWA1nhGCzsj3W2LLLhHwqaBI8z/v/prK/Ks3I16
- lXWmfnDUjrCXutDgXYizQMtWrz6WC8NISvbbYhU=
-X-Google-Smtp-Source: ABdhPJxT+CsEUPgmUbbvvdovqN50qvrZPZs4VXtBZa26L9aij/35ZW5rkX2cu6uMHZw3aT20weyVwPl2f64lDccacTM=
-X-Received: by 2002:ad4:576c:: with SMTP id r12mr2699884qvx.28.1623378357051; 
- Thu, 10 Jun 2021 19:25:57 -0700 (PDT)
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=lASTtq1Plgoc+ovhi4JOG1rfLsoGZjNrlYTsEEjYDG0=;
+ b=iwwQiGp3HzfP/PbGp1dgnygBAR8iYdZgr/G/1cCLgAj32Jr+5iBFxRhYu+z+qb2DDf
+ SqJ/K19gxgGcO10D6UO66RyYFMKGdwYvw5jwg+qwlPgBWHZtANvpx+EOkG/FYynbQu/D
+ bcAtcSmy1rohhuqEiQKEIw59tbL+vqqj8x7CbFAme+eSCpx104+eOYYCZJOk+qnjzjIZ
+ NQMybkilARU/k9F/iIZniLg83i5tCyNMUoYPhxrnFu0U8cFppjrxhW44/1y1oWRfVqhQ
+ 96ABVVsHsAPZPICWLeehDJNPcySIN+MLkVYyRvA5iFMgJc5gJiFCXYglRidhtb2Az5T6
+ iogg==
+X-Gm-Message-State: AOAM5308eGYQQRvEFjJ+nB9qRS4Xf0m9JRObCxdKxuEevcPkVi8UculP
+ 1W5oV+WiHk7LbYPDGC+/HAQ=
+X-Google-Smtp-Source: ABdhPJz2tV0ph+NxM9/a/7THrV3jaVL5c9vIoPxWJJOJm9S4gqc245s1G+wsmXH5V0BLXDlr2QPUzA==
+X-Received: by 2002:a63:1a0e:: with SMTP id a14mr1312701pga.294.1623378410394; 
+ Thu, 10 Jun 2021 19:26:50 -0700 (PDT)
+Received: from localhost (60-242-147-73.tpgi.com.au. [60.242.147.73])
+ by smtp.gmail.com with ESMTPSA id f3sm8237202pjo.3.2021.06.10.19.26.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 10 Jun 2021 19:26:49 -0700 (PDT)
+Date: Fri, 11 Jun 2021 12:26:44 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2 1/4] powerpc/interrupt: Interchange
+ prep_irq_for_{kernel_enabled/user}_exit()
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>,
+ Paul Mackerras <paulus@samba.org>
+References: <809d316bf5f1a81acdd69e220c13e716dac24f53.1622818556.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <809d316bf5f1a81acdd69e220c13e716dac24f53.1622818556.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-References: <20210610040037.1064-1-hbut_tan@163.com>
-In-Reply-To: <20210610040037.1064-1-hbut_tan@163.com>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Fri, 11 Jun 2021 10:25:46 +0800
-Message-ID: <CAA+D8AOseYcjf6erSObjkpAhZGJW0VGio-T91kFZ7q0f3PhQPA@mail.gmail.com>
-Subject: Re: [PATCH] ASoC:fsl_spdif:Remove superfluous error message around
- platform_get_irq()
-To: Zhongjun Tan <hbut_tan@163.com>
-Content-Type: text/plain; charset="UTF-8"
+Message-Id: <1623378363.09q00gd3lj.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,48 +82,125 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tan Zhongjun <tanzhongjun@yulong.com>, alsa-devel@alsa-project.org,
- Timur Tabi <timur@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Takashi Iwai <tiwai@suse.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>,
- Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>,
- Fabio Estevam <festevam@gmail.com>,
- linux-kernel <linux-kernel@vger.kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 10, 2021 at 12:02 PM Zhongjun Tan <hbut_tan@163.com> wrote:
->
-> From: Tan Zhongjun <tanzhongjun@yulong.com>
->
-> The platform_get_irq() prints error message telling that interrupt is
-> missing, hence there is no need to duplicated that message.
->
-> Signed-off-by: Tan Zhongjun <tanzhongjun@yulong.com>
-
-Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
-
+Excerpts from Christophe Leroy's message of June 5, 2021 12:56 am:
+> prep_irq_for_user_exit() is a superset of
+> prep_irq_for_kernel_enabled_exit(). In order to allow refactoring in
+> following patch, interchange the two as prep_irq_for_user_exit() will
+> call prep_irq_for_kernel_enabled_exit().
+>=20
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 > ---
->  sound/soc/fsl/fsl_spdif.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
->
-> diff --git a/sound/soc/fsl/fsl_spdif.c b/sound/soc/fsl/fsl_spdif.c
-> index 2a76714eb8e6..29cefd459241 100644
-> --- a/sound/soc/fsl/fsl_spdif.c
-> +++ b/sound/soc/fsl/fsl_spdif.c
-> @@ -1368,10 +1368,8 @@ static int fsl_spdif_probe(struct platform_device *pdev)
->
->         for (i = 0; i < spdif_priv->soc->interrupts; i++) {
->                 irq = platform_get_irq(pdev, i);
-> -               if (irq < 0) {
-> -                       dev_err(&pdev->dev, "no irq for node %s\n", pdev->name);
-> +               if (irq < 0)
->                         return irq;
-> -               }
->
->                 ret = devm_request_irq(&pdev->dev, irq, spdif_isr, 0,
->                                        dev_name(&pdev->dev), spdif_priv);
-> --
-> 2.17.1
->
+> This series applies on top of Nic's series to speed up interrupt return o=
+n 64s
+
+Thanks for rebasing it.
+
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+
+>=20
+>  arch/powerpc/kernel/interrupt.c | 32 ++++++++++++++++----------------
+>  1 file changed, 16 insertions(+), 16 deletions(-)
+>=20
+> diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interr=
+upt.c
+> index 74c995a42399..539455c62c5b 100644
+> --- a/arch/powerpc/kernel/interrupt.c
+> +++ b/arch/powerpc/kernel/interrupt.c
+> @@ -40,33 +40,27 @@ static inline bool exit_must_hard_disable(void)
+>  #endif
+> =20
+>  /*
+> - * local irqs must be disabled. Returns false if the caller must re-enab=
+le
+> - * them, check for new work, and try again.
+> - *
+> - * This should be called with local irqs disabled, but if they were prev=
+iously
+> - * enabled when the interrupt handler returns (indicating a process-cont=
+ext /
+> - * synchronous interrupt) then irqs_enabled should be true.
+> + * restartable is true then EE/RI can be left on because interrupts are =
+handled
+> + * with a restart sequence.
+>   */
+> -static notrace __always_inline bool prep_irq_for_user_exit(void)
+> +static notrace __always_inline bool prep_irq_for_kernel_enabled_exit(boo=
+l restartable)
+>  {
+> -	user_enter_irqoff();
+>  	/* This must be done with RI=3D1 because tracing may touch vmaps */
+>  	trace_hardirqs_on();
+> =20
+>  #ifdef CONFIG_PPC32
+>  	__hard_EE_RI_disable();
+>  #else
+> -	if (exit_must_hard_disable())
+> +	if (exit_must_hard_disable() || !restartable)
+>  		__hard_EE_RI_disable();
+> =20
+>  	/* This pattern matches prep_irq_for_idle */
+>  	if (unlikely(lazy_irq_pending_nocheck())) {
+> -		if (exit_must_hard_disable()) {
+> +		if (exit_must_hard_disable() || !restartable) {
+>  			local_paca->irq_happened |=3D PACA_IRQ_HARD_DIS;
+>  			__hard_RI_enable();
+>  		}
+>  		trace_hardirqs_off();
+> -		user_exit_irqoff();
+> =20
+>  		return false;
+>  	}
+> @@ -75,27 +69,33 @@ static notrace __always_inline bool prep_irq_for_user=
+_exit(void)
+>  }
+> =20
+>  /*
+> - * restartable is true then EE/RI can be left on because interrupts are =
+handled
+> - * with a restart sequence.
+> + * local irqs must be disabled. Returns false if the caller must re-enab=
+le
+> + * them, check for new work, and try again.
+> + *
+> + * This should be called with local irqs disabled, but if they were prev=
+iously
+> + * enabled when the interrupt handler returns (indicating a process-cont=
+ext /
+> + * synchronous interrupt) then irqs_enabled should be true.
+>   */
+> -static notrace __always_inline bool prep_irq_for_kernel_enabled_exit(boo=
+l restartable)
+> +static notrace __always_inline bool prep_irq_for_user_exit(void)
+>  {
+> +	user_enter_irqoff();
+>  	/* This must be done with RI=3D1 because tracing may touch vmaps */
+>  	trace_hardirqs_on();
+> =20
+>  #ifdef CONFIG_PPC32
+>  	__hard_EE_RI_disable();
+>  #else
+> -	if (exit_must_hard_disable() || !restartable)
+> +	if (exit_must_hard_disable())
+>  		__hard_EE_RI_disable();
+> =20
+>  	/* This pattern matches prep_irq_for_idle */
+>  	if (unlikely(lazy_irq_pending_nocheck())) {
+> -		if (exit_must_hard_disable() || !restartable) {
+> +		if (exit_must_hard_disable()) {
+>  			local_paca->irq_happened |=3D PACA_IRQ_HARD_DIS;
+>  			__hard_RI_enable();
+>  		}
+>  		trace_hardirqs_off();
+> +		user_exit_irqoff();
+> =20
+>  		return false;
+>  	}
+> --=20
+> 2.25.0
+>=20
+>=20
