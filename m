@@ -1,57 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99CF13A3D4C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 09:36:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 323103A3DAA
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 10:00:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G1Xhb0sDbz30C3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 17:36:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G1YDh5HXDz3c3m
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 18:00:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G1XhD3yv7z3034
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jun 2021 17:35:56 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4G1Xh80Qz8zBCKr;
- Fri, 11 Jun 2021 09:35:52 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id u9a0Peq1v63h; Fri, 11 Jun 2021 09:35:51 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4G1Xh76dGszBCGX;
- Fri, 11 Jun 2021 09:35:51 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C8BDA8B82C;
- Fri, 11 Jun 2021 09:35:51 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id gK3cbO8PtkHc; Fri, 11 Jun 2021 09:35:51 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 55EF18B765;
- Fri, 11 Jun 2021 09:35:51 +0200 (CEST)
-Subject: Re: [PATCH 2/2] powerpc/tm: Avoid SPR flush if TM is disabled
-To: Breno Leitao <leitao@debian.org>, linuxppc-dev@lists.ozlabs.org
-References: <1538423270-17527-1-git-send-email-leitao@debian.org>
- <1538423270-17527-2-git-send-email-leitao@debian.org>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <72d2aedc-7604-3f46-c5c7-34f11455e8aa@csgroup.eu>
-Date: Fri, 11 Jun 2021 09:35:52 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
-MIME-Version: 1.0
-In-Reply-To: <1538423270-17527-2-git-send-email-leitao@debian.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=linux-m68k.org
+ (client-ip=98.124.60.144; helo=kvm5.telegraphics.com.au;
+ envelope-from=fthain@linux-m68k.org; receiver=<UNKNOWN>)
+Received: from kvm5.telegraphics.com.au (kvm5.telegraphics.com.au
+ [98.124.60.144])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4G1YDK4wGYz3089
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jun 2021 18:00:15 +1000 (AEST)
+Received: by kvm5.telegraphics.com.au (Postfix, from userid 502)
+ id 8DE6F29C3A; Fri, 11 Jun 2021 04:00:09 -0400 (EDT)
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
+Message-Id: <a1456e8bbd33ef702e3ff6f14b1bf3919241c62b.1623398307.git.fthain@linux-m68k.org>
+From: Finn Thain <fthain@linux-m68k.org>
+Subject: [PATCH v2] powerpc/tau: Remove superfluous parameter in
+ alloc_workqueue() call
+Date: Fri, 11 Jun 2021 17:58:27 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,60 +38,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, gromero@linux.vnet.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+This avoids an (optional) compiler warning:
 
+arch/powerpc/kernel/tau_6xx.c: In function 'TAU_init':
+arch/powerpc/kernel/tau_6xx.c:204:30: error: too many arguments for format [-Werror=format-extra-args]
+  tau_workq = alloc_workqueue("tau", WQ_UNBOUND, 1, 0);
 
-Le 01/10/2018 à 21:47, Breno Leitao a écrit :
-> There is a bug in the flush_tmregs_to_thread() function, where it forces
-> TM SPRs to be saved to the thread even if the TM facility is disabled.
-> 
-> This bug could be reproduced using a simple test case:
-> 
->    mtspr(SPRN_TEXASR, XX);
->    sleep until load_tm == 0
->    cause a coredump
->    read SPRN_TEXASR in the coredump
-> 
-> In this case, the coredump may contain an invalid SPR, because the
-> current code is flushing live SPRs (Used by the last thread with TM
-> active) into the current thread, overwriting the latest SPRs (which were
-> valid).
-> 
-> This patch checks if TM is enabled for current task before
-> saving the SPRs, otherwise, the TM is lazily disabled and the thread
-> value is already up-to-date and could be used directly, and saving is
-> not required.
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Fixes: b1c6a0a10bfa ("powerpc/tau: Convert from timer to workqueue")
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+---
+Changed since v1:
+ - Improved commit log message.
+---
+ arch/powerpc/kernel/tau_6xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-If this patch is still applicable, it has to be rebased.
+diff --git a/arch/powerpc/kernel/tau_6xx.c b/arch/powerpc/kernel/tau_6xx.c
+index 6c31af7f4fa8..b9a047d92ec0 100644
+--- a/arch/powerpc/kernel/tau_6xx.c
++++ b/arch/powerpc/kernel/tau_6xx.c
+@@ -201,7 +201,7 @@ static int __init TAU_init(void)
+ 	tau_int_enable = IS_ENABLED(CONFIG_TAU_INT) &&
+ 			 !strcmp(cur_cpu_spec->platform, "ppc750");
+ 
+-	tau_workq = alloc_workqueue("tau", WQ_UNBOUND, 1, 0);
++	tau_workq = alloc_workqueue("tau", WQ_UNBOUND, 1);
+ 	if (!tau_workq)
+ 		return -ENOMEM;
+ 
+-- 
+2.26.3
 
-
-> 
-> Fixes: cd63f3cf1d5 ("powerpc/tm: Fix saving of TM SPRs in core dump")
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> ---
->   arch/powerpc/kernel/ptrace.c | 7 ++++++-
->   1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/kernel/ptrace.c b/arch/powerpc/kernel/ptrace.c
-> index 9667666eb18e..e0a2ee865032 100644
-> --- a/arch/powerpc/kernel/ptrace.c
-> +++ b/arch/powerpc/kernel/ptrace.c
-> @@ -138,7 +138,12 @@ static void flush_tmregs_to_thread(struct task_struct *tsk)
->   
->   	if (MSR_TM_SUSPENDED(mfmsr())) {
->   		tm_reclaim_current(TM_CAUSE_SIGNAL);
-> -	} else {
-> +	} else if (tm_enabled(tsk)) {
-> +		/*
-> +		 * Only flush TM SPRs to the thread if TM was enabled,
-> +		 * otherwise (TM lazily disabled), the thread already
-> +		 * contains the latest SPR value
-> +		 */
->   		tm_enable();
->   		tm_save_sprs(&(tsk->thread));
->   	}
-> 
