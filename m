@@ -1,81 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB5043A442E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 16:38:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 363F63A4506
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 17:27:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G1k3N0Xsnz3c3W
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Jun 2021 00:38:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G1l8b5fplz3c4w
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Jun 2021 01:27:43 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=lA1MzuDM;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=glnoPPl5;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::833;
- helo=mail-qt1-x833.google.com; envelope-from=radu.rendec@gmail.com;
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::52b;
+ helo=mail-pg1-x52b.google.com; envelope-from=tientzu@chromium.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=lA1MzuDM; dkim-atps=neutral
-Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com
- [IPv6:2607:f8b0:4864:20::833])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=glnoPPl5; dkim-atps=neutral
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com
+ [IPv6:2607:f8b0:4864:20::52b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G1k2s1chPz3bpL
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Jun 2021 00:37:38 +1000 (AEST)
-Received: by mail-qt1-x833.google.com with SMTP id o20so2703202qtr.8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jun 2021 07:37:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :user-agent:mime-version:content-transfer-encoding;
- bh=+Wbv9MrnNBnZr7ZxUsnP1B/0xtCPqUqS5eWdYlwxuKI=;
- b=lA1MzuDMEMrSCiZNKW7XPKGv7ota0/pp1sh63tA/z+9qt4kBTHotIOyErDI/zasBkl
- QSOjmJscq007aHGlhD4CciO78EQCDEEnJz5NVpsZP/M7Dp6AaBCEw/YGYAacN8+NZHyL
- SfY+BvLdGYzT6krqmgEOIj/aZsxVinlZfe8wX8hwd+N+4cb/bWDMc6H8GafsZGSR6Zas
- 5m7xUj/I8VT3GA2+N2/TE+3y8AGL66QidlYdYtCjnPEUjCiyXILXowayKJDMBkKk3PDk
- t/ZrTcqME6v+WtEuNZNmuVAeQtZEkWUZ37kDNCxY+rwRBjTJCnXy11FR5oy/ytIoFgUf
- hNIw==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G1l86098Kz3bT7
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Jun 2021 01:27:15 +1000 (AEST)
+Received: by mail-pg1-x52b.google.com with SMTP id q15so2729922pgg.12
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jun 2021 08:27:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=HzdTumh9BrSYWktV5WZf7y51LbAaw3C3h39TEtEC61A=;
+ b=glnoPPl5BjuEU+aHwo6DAiEerdZdwKnsli+A2zYzDPxEZiqMUG0n7GdfkjKsK9QW0e
+ 93P4fACu9M1YhL7kJ17IJaADBozzkAYJ7IX93Y7kPx7ZOfCFV+3jbYHpDWgy2cTfANYo
+ 0mhxwlPjX1zbtnhLTHogjuk/5yAGZZVOgaVh4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:user-agent:mime-version:content-transfer-encoding;
- bh=+Wbv9MrnNBnZr7ZxUsnP1B/0xtCPqUqS5eWdYlwxuKI=;
- b=uQinY3O5/KK+ekXVjdqi5FtK/Ct6xlfFLldsY42ib+SLLM0QWtdKAxhn+gEP/nihfq
- ANtPTARovIL7juRDhGuHbTrLQLNlynC8Dd2nWiNmHlQ0dR6SEOzA27xCjEy+j8vCGbU+
- 1Kbzgn7YXHK+no6z6ydH9ei2QjGCojnycQ6XeyVf1Blr9slDKkQeZlO/nqDxkgBCK0rA
- QiVpLwYTy79QH+5KPY/QY09nKaT+Y0r81SjQv80ElzXO7cQ2ZoyUMKuqsS3A+jmGNdZ4
- 5pWOZtayg5WpcZ+G6d2sxAHr5SkWmxCS//dHpDkYs20/k+sy51CkgdKZMSgtor2VQxAT
- iEJw==
-X-Gm-Message-State: AOAM530cspdumG6i+6uZHitvhmeOAb0Y42q30i/7NybRZ7PVwf1ElGLt
- cmvubtsBa0bf5Xh6sj/EWMI=
-X-Google-Smtp-Source: ABdhPJzp8qdgNqhMXQlvaqPGxcO95NuC+Al/hoAMpRSw5l/u1Oe68+tGIDqHK8Rj/e6V2XqS/EiEDQ==
-X-Received: by 2002:ac8:6bcf:: with SMTP id b15mr4185528qtt.338.1623422253055; 
- Fri, 11 Jun 2021 07:37:33 -0700 (PDT)
-Received: from bat.mindbit.ro (cpe00fc8d79db03-cm00fc8d79db00.cpe.net.fido.ca.
- [72.137.118.157])
- by smtp.gmail.com with ESMTPSA id d23sm4251979qto.74.2021.06.11.07.37.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 11 Jun 2021 07:37:32 -0700 (PDT)
-Message-ID: <20b6bdebae736b48814c1d600024546b7c604e3c.camel@gmail.com>
-Subject: Re: [PATCH 0/1] PPC32: fix ptrace() access to FPU registers
-From: Radu Rendec <radu.rendec@gmail.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Daniel Axtens
- <dja@axtens.net>, Andreas Schwab <schwab@linux-m68k.org>
-Date: Fri, 11 Jun 2021 10:37:31 -0400
-In-Reply-To: <39d6eb22-2142-d869-7649-0242cecf5532@csgroup.eu>
-References: <20190610232758.19010-1-radu.rendec@gmail.com>
- <87r27t2el0.fsf@dja-thinkpad.axtens.net>
- <5fcdb5767b7cf4c7d5b7496c0032021e43115d39.camel@gmail.com>
- <87muif2y4l.fsf@dja-thinkpad.axtens.net>
- <fbf9f9cbb99fc40c7d7af86fee3984427c61b799.camel__46559.9162316479$1560860409$gmane$org@gmail.com>
- <875zp2rcip.fsf@igel.home> <87k1di2yxg.fsf@dja-thinkpad.axtens.net>
- <fd936660cde0d5f151b732d0f885ddf0b6ba67eb.camel@gmail.com>
- <39d6eb22-2142-d869-7649-0242cecf5532@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=HzdTumh9BrSYWktV5WZf7y51LbAaw3C3h39TEtEC61A=;
+ b=EITx4jRMmuW2GlvbTilw25Sp/ALFQkGFKDWgjzJVNy5o9TdEJQm30c9qnEq9b6r1AB
+ GZY3yUG15S3CM3rNjTnRfb4U/sPuw2rY8Rj4hmXxyU9RfFztW19XD73P0WipUCsEd1p+
+ 8r1KQn6Hh4FszO7Yy61siFQEdEkW+lZEEuqlRGhkStTKHcxqBYdFoXYNdRUY4eoW8yrR
+ rHX9mOIs4wH/tc4S0J+u0wPmz7Hz3v/CxZjojMitqQ5v42exoLA7RrkiiPanl9i+ODgs
+ A2ZwKUtUZ8lUQ1x1QfTUbOjeHmH9KAO3KErO9HMGGSrQs0QPB3A5rYpGqe+Ar20hpiwY
+ LTug==
+X-Gm-Message-State: AOAM5312zslsmi+kIcdstgJe5kHYSQVVes4u9UvbYFGB5pGZ1nyqZPfO
+ KUKgYRT9t5vBa0JWpB5AWE3MRA==
+X-Google-Smtp-Source: ABdhPJz1S7kolJJDhDCqvr+nlVhh2CsYK+ut0dTmzSatQWDsZRkoRFJesVPfEDUsaDthsVEt0zyWaw==
+X-Received: by 2002:aa7:828f:0:b029:200:6e27:8c8f with SMTP id
+ s15-20020aa7828f0000b02902006e278c8fmr8819226pfm.44.1623425232214; 
+ Fri, 11 Jun 2021 08:27:12 -0700 (PDT)
+Received: from localhost ([2401:fa00:95:205:33c8:8e01:1161:6797])
+ by smtp.gmail.com with UTF8SMTPSA id m18sm5552391pff.88.2021.06.11.08.27.04
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 11 Jun 2021 08:27:11 -0700 (PDT)
+From: Claire Chang <tientzu@chromium.org>
+To: Rob Herring <robh+dt@kernel.org>, mpe@ellerman.id.au,
+ Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Frank Rowand <frowand.list@gmail.com>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, boris.ostrovsky@oracle.com,
+ jgross@suse.com, Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>
+Subject: [PATCH v9 00/14] Restricted DMA 
+Date: Fri, 11 Jun 2021 23:26:45 +0800
+Message-Id: <20210611152659.2142983-1-tientzu@chromium.org>
+X-Mailer: git-send-email 2.32.0.272.g935e593368-goog
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -89,118 +80,145 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
- Oleg Nesterov <oleg@redhat.com>
+Cc: heikki.krogerus@linux.intel.com, thomas.hellstrom@linux.intel.com,
+ peterz@infradead.org, joonas.lahtinen@linux.intel.com,
+ dri-devel@lists.freedesktop.org, chris@chris-wilson.co.uk,
+ grant.likely@arm.com, paulus@samba.org, mingo@kernel.org, jxgao@google.com,
+ sstabellini@kernel.org, Saravana Kannan <saravanak@google.com>,
+ xypron.glpk@gmx.de, "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ Bartosz Golaszewski <bgolaszewski@baylibre.com>, bskeggs@redhat.com,
+ linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
+ Thierry Reding <treding@nvidia.com>, intel-gfx@lists.freedesktop.org,
+ matthew.auld@intel.com, linux-devicetree <devicetree@vger.kernel.org>,
+ daniel@ffwll.ch, airlied@linux.ie, maarten.lankhorst@linux.intel.com,
+ linuxppc-dev@lists.ozlabs.org, jani.nikula@linux.intel.com,
+ Nicolas Boichat <drinkcat@chromium.org>, rodrigo.vivi@intel.com,
+ bhelgaas@google.com, tientzu@chromium.org,
+ Dan Williams <dan.j.williams@intel.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Greg KH <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
+ lkml <linux-kernel@vger.kernel.org>, tfiga@chromium.org,
+ "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+ Jim Quinlan <james.quinlan@broadcom.com>, Robin Murphy <robin.murphy@arm.com>,
+ bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2021-06-11 at 08:02 +0200, Christophe Leroy wrote:
->Le 19/06/2019 à 14:57, Radu Rendec a écrit :
->> On Wed, 2019-06-19 at 10:36 +1000, Daniel Axtens wrote:
->>> Andreas Schwab <
->>> schwab@linux-m68k.org
->>>> writes:
->>>
->>>> On Jun 18 2019, Radu Rendec <
->>>> radu.rendec@gmail.com
->>>>> wrote:
->>>>
->>>>> Since you already have a working setup, it would be nice if you could
->>>>> add a printk to arch_ptrace() to print the address and confirm what I
->>>>> believe happens (by reading the gdb source code).
->>>>
->>>> A ppc32 ptrace syscall goes through compat_arch_ptrace.
->>
->> Right. I completely overlooked that part.
->>
->>> Ah right, and that (in ptrace32.c) contains code that will work:
->>>
->>>
->>> 			/*
->>> 			 * the user space code considers the floating point
->>> 			 * to be an array of unsigned int (32 bits) - the
->>> 			 * index passed in is based on this assumption.
->>> 			 */
->>> 			tmp = ((unsigned int *)child->thread.fp_state.fpr)
->>> 				[FPRINDEX(index)];
->>>
->>> FPRINDEX is defined above to deal with the various manipulations you
->>> need to do.
->>
->> Correct. Basically it does the same that I did in my patch: it divides
->> the index again by 2 (it's already divided by 4 in compat_arch_ptrace()
->> so it ends up divided by 8), then takes the least significant bit and
->> adds it to the index. I take bit 2 of the original address, which is the
->> same thing (because in FPRHALF() the address is already divided by 4).
->>
->> So we have this in ptrace32.c:
->>
->> #define FPRNUMBER(i) (((i) - PT_FPR0) >> 1)
->> #define FPRHALF(i) (((i) - PT_FPR0) & 1)
->> #define FPRINDEX(i) TS_FPRWIDTH * FPRNUMBER(i) * 2 + FPRHALF(i)
->>
->> index = (unsigned long) addr >> 2;
->> (unsigned int *)child->thread.fp_state.fpr)[FPRINDEX(index)]
->>
->>
->> And we have this in my patch:
->>
->> fpidx = (addr - PT_FPR0 * sizeof(long)) / 8;
->> (void *)&child->thread.TS_FPR(fpidx) + (addr & 4)
->>
->>> Radu: I think we want to copy that working code back into ptrace.c.
->>
->> I'm not sure that would work. There's a subtle difference: the code in
->> ptrace32.c is always compiled on a 64-bit kernel and the user space
->> calling it is always 32-bit; on the other hand, the code in ptrace.c can
->> be compiled on either a 64-bit kernel or a 32-bit kernel and the user
->> space calling it always has the same "bitness" as the kernel.
->>
->> One difference is the size of the CPU registers. On 64-bit they are 8
->> byte long and user space knows that and generates 8-byte aligned
->> addresses. So you have to divide the address by 8 to calculate the CPU
->> register index correctly, which compat_arch_ptrace() currently doesn't.
->>
->> Another difference is that on 64-bit `long` is 8 bytes, so user space
->> can read a whole FPU register in a single ptrace call.
->>
->> Now that we are all aware of compat_arch_ptrace() (which handles the
->> special case of a 32-bit process running on a 64-bit kernel) I would say
->> the patch is correct and does the right thing for both 32-bit and 64-bit
->> kernels and processes.
->>
->>> The challenge will be unpicking the awful mess of ifdefs in ptrace.c
->>> and making it somewhat more comprehensible.
->>
->> I'm not sure what ifdefs you're thinking about. The only that are used
->> inside arch_ptrace() are PT_FPR0, PT_FPSCR and TS_FPR, which seem to be
->> correct.
->>
->> But perhaps it would be useful to change my patch and add a comment just
->> before arch_ptrace() that explains how the math is done and that the
->> code must work on both 32-bit and 64-bit, the user space address
->> assumptions, etc.
->>
->> By the way, I'm not sure the code in compat_arch_ptrace() handles
->> PT_FPSCR correctly. It might (just because fpscr is right next to fpr[]
->> in memory - and that's a hack), but I can't figure out if it accesses
->> the right half.
->>
->
->Does the issue still exists ? If yes, the patch has to be rebased.
+This series implements mitigations for lack of DMA access control on
+systems without an IOMMU, which could result in the DMA accessing the
+system memory at unexpected times and/or unexpected addresses, possibly
+leading to data leakage or corruption.
 
-Hard to say. I'm still using 4.9 (stable) on the systems that I created
-the patch for. I tried to rebase, and the patch no longer applies. It
-looks like there have been some changes around that area, notably your
-commit e009fa433542, so it could actually be fixed now.
+For example, we plan to use the PCI-e bus for Wi-Fi and that PCI-e bus is
+not behind an IOMMU. As PCI-e, by design, gives the device full access to
+system memory, a vulnerability in the Wi-Fi firmware could easily escalate
+to a full system exploit (remote wifi exploits: [1a], [1b] that shows a
+full chain of exploits; [2], [3]).
 
-It's been exactly two years since I sent the patch and I don't remember
-all the details. I will have to go back and look. Also, running a recent
-kernel on my PPC32 systems is not an option because there are a bunch of
-custom patches that would have to be ported. I will try in a VM and get
-back to you, hopefully early next week.
+To mitigate the security concerns, we introduce restricted DMA. Restricted
+DMA utilizes the existing swiotlb to bounce streaming DMA in and out of a
+specially allocated region and does memory allocation from the same region.
+The feature on its own provides a basic level of protection against the DMA
+overwriting buffer contents at unexpected times. However, to protect
+against general data leakage and system memory corruption, the system needs
+to provide a way to restrict the DMA to a predefined memory region (this is
+usually done at firmware level, e.g. MPU in ATF on some ARM platforms [4]).
 
-Best regards,
-Radu
+[1a] https://googleprojectzero.blogspot.com/2017/04/over-air-exploiting-broadcoms-wi-fi_4.html
+[1b] https://googleprojectzero.blogspot.com/2017/04/over-air-exploiting-broadcoms-wi-fi_11.html
+[2] https://blade.tencent.com/en/advisories/qualpwn/
+[3] https://www.bleepingcomputer.com/news/security/vulnerabilities-found-in-highly-popular-firmware-for-wifi-chips/
+[4] https://github.com/ARM-software/arm-trusted-firmware/blob/master/plat/mediatek/mt8183/drivers/emi_mpu/emi_mpu.c#L132
+
+v9:
+Address the comments in v7 to
+  - set swiotlb active pool to dev->dma_io_tlb_mem
+  - get rid of get_io_tlb_mem
+  - dig out the device struct for is_swiotlb_active
+  - move debugfs_create_dir out of swiotlb_create_debugfs
+  - do set_memory_decrypted conditionally in swiotlb_init_io_tlb_mem
+  - use IS_ENABLED in kernel/dma/direct.c
+  - fix redefinition of 'of_dma_set_restricted_buffer'
+
+v8:
+- Fix reserved-memory.txt and add the reg property in example.
+- Fix sizeof for of_property_count_elems_of_size in
+  drivers/of/address.c#of_dma_set_restricted_buffer.
+- Apply Will's suggestion to try the OF node having DMA configuration in
+  drivers/of/address.c#of_dma_set_restricted_buffer.
+- Fix typo in the comment of drivers/of/address.c#of_dma_set_restricted_buffer.
+- Add error message for PageHighMem in
+  kernel/dma/swiotlb.c#rmem_swiotlb_device_init and move it to
+  rmem_swiotlb_setup.
+- Fix the message string in rmem_swiotlb_setup.
+https://lore.kernel.org/patchwork/cover/1437112/
+
+v7:
+Fix debugfs, PageHighMem and comment style in rmem_swiotlb_device_init
+https://lore.kernel.org/patchwork/cover/1431031/
+
+v6:
+Address the comments in v5
+https://lore.kernel.org/patchwork/cover/1423201/
+
+v5:
+Rebase on latest linux-next
+https://lore.kernel.org/patchwork/cover/1416899/
+
+v4:
+- Fix spinlock bad magic
+- Use rmem->name for debugfs entry
+- Address the comments in v3
+https://lore.kernel.org/patchwork/cover/1378113/
+
+v3:
+Using only one reserved memory region for both streaming DMA and memory
+allocation.
+https://lore.kernel.org/patchwork/cover/1360992/
+
+v2:
+Building on top of swiotlb.
+https://lore.kernel.org/patchwork/cover/1280705/
+
+v1:
+Using dma_map_ops.
+https://lore.kernel.org/patchwork/cover/1271660/
+
+
+Claire Chang (14):
+  swiotlb: Refactor swiotlb init functions
+  swiotlb: Refactor swiotlb_create_debugfs
+  swiotlb: Set dev->dma_io_tlb_mem to the swiotlb pool used
+  swiotlb: Add restricted DMA pool initialization
+  swiotlb: Update is_swiotlb_buffer to add a struct device argument
+  swiotlb: Update is_swiotlb_active to add a struct device argument
+  swiotlb: Bounce data from/to restricted DMA pool if available
+  swiotlb: Move alloc_size to find_slots
+  swiotlb: Refactor swiotlb_tbl_unmap_single
+  dma-direct: Add a new wrapper __dma_direct_free_pages()
+  swiotlb: Add restricted DMA alloc/free support.
+  dma-direct: Allocate memory from restricted DMA pool if available
+  dt-bindings: of: Add restricted DMA pool
+  of: Add plumbing for restricted DMA pool
+
+ .../reserved-memory/reserved-memory.txt       |  36 ++-
+ drivers/gpu/drm/i915/gem/i915_gem_internal.c  |   2 +-
+ drivers/gpu/drm/nouveau/nouveau_ttm.c         |   2 +-
+ drivers/iommu/dma-iommu.c                     |  12 +-
+ drivers/of/address.c                          |  33 +++
+ drivers/of/device.c                           |   6 +
+ drivers/of/of_private.h                       |   6 +
+ drivers/pci/xen-pcifront.c                    |   2 +-
+ drivers/xen/swiotlb-xen.c                     |   2 +-
+ include/linux/device.h                        |   4 +
+ include/linux/swiotlb.h                       |  45 +++-
+ kernel/dma/Kconfig                            |  14 +
+ kernel/dma/direct.c                           |  62 +++--
+ kernel/dma/direct.h                           |   9 +-
+ kernel/dma/swiotlb.c                          | 242 +++++++++++++-----
+ 15 files changed, 376 insertions(+), 101 deletions(-)
+
+-- 
+2.32.0.272.g935e593368-goog
 
