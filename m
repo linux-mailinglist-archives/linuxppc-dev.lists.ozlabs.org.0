@@ -1,53 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A6883A4D06
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Jun 2021 07:44:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36C4E3A4D17
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Jun 2021 08:19:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G268s3NnHz3c5k
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Jun 2021 15:44:13 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jQzBYFAX;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G26xH5vhwz3c5S
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Jun 2021 16:19:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=jQzBYFAX; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G268N3bHHz3082
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Jun 2021 15:43:48 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 5410B61019;
- Sat, 12 Jun 2021 05:43:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1623476624;
- bh=jXSf9kPU6/p3Pl02zFLTjgmsn62vO+wR89LkyYwqjYE=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=jQzBYFAXgxUH9zPpsPc2S9koB6TyWpzCJ1FcyoOFUPs7glHYtJWXiwaYLZbOYr1MD
- e8dUX72/dMktQcP+MfbQLugr1DigtCWPruv02QxyYGEBDlYcEvhTSF63D1F76zo+eL
- vOmDN5XDSPdJfrU5UpdF1koBNLPwdNgaB2Yne6m3YDq4mBcFE1Twi6f4e9jRCCYQMf
- fXFfPo4RoZ3j+NJMVPgoFRy/0IXayxTFHiwh1+yLk0mxoQNt6KiYCSMshhiOPS7yS1
- 6HDTiCLiwW9bME21jEq92F8Esv4cZpDqtMIPSa1vd/42SwMmpCSE4nvcQy4brkpojX
- 7a11xyl6jl4EA==
-Date: Sat, 12 Jun 2021 08:43:33 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Stephen Brennan <stephen@brennan.io>
-Subject: Re: [PATCH v3 5/9] mm: remove CONFIG_DISCONTIGMEM
-Message-ID: <YMRJhezHRZrbrO0Y@kernel.org>
-References: <20210608091316.3622-1-rppt@kernel.org>
- <20210608091316.3622-6-rppt@kernel.org>
- <87r1h886n7.fsf@stepbren-lnx.us.oracle.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G26ww3Bz5z308n
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Jun 2021 16:18:52 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 4G26wm2nXvzBD9b;
+ Sat, 12 Jun 2021 08:18:48 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id QlCphcttEh5f; Sat, 12 Jun 2021 08:18:48 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4G26wk5B2tzBD9Y;
+ Sat, 12 Jun 2021 08:18:46 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A81AB8B772;
+ Sat, 12 Jun 2021 08:18:46 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id lY-zE4bzAve2; Sat, 12 Jun 2021 08:18:46 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 220D58B763;
+ Sat, 12 Jun 2021 08:18:46 +0200 (CEST)
+Subject: Re: [PATCH v2 08/12] powerpc/32s: Allow disabling KUAP at boot time
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+References: <cover.1622708530.git.christophe.leroy@csgroup.eu>
+ <cd79e8008455fba5395d099f9bb1305c039b931c.1622708530.git.christophe.leroy@csgroup.eu>
+Message-ID: <ee1fb979-3503-2c56-cde5-1ea7eed790d7@csgroup.eu>
+Date: Sat, 12 Jun 2021 08:18:44 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87r1h886n7.fsf@stepbren-lnx.us.oracle.com>
+In-Reply-To: <cd79e8008455fba5395d099f9bb1305c039b931c.1622708530.git.christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,232 +64,153 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mm@kvack.org, sparclinux@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
- linux-doc@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Matt Turner <mattst88@gmail.com>,
- linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org,
- Arnd Bergmann <arnd@arndb.de>, linux-m68k@lists.linux-m68k.org,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- linux-arm-kernel@lists.infradead.org, Richard Henderson <rth@twiddle.net>,
- Vineet Gupta <vgupta@synopsys.com>, kexec@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 11, 2021 at 01:53:48PM -0700, Stephen Brennan wrote:
-> Mike Rapoport <rppt@kernel.org> writes:
-> > From: Mike Rapoport <rppt@linux.ibm.com>
-> >
-> > There are no architectures that support DISCONTIGMEM left.
-> >
-> > Remove the configuration option and the dead code it was guarding in the
-> > generic memory management code.
-> >
-> > Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> > ---
-> >  include/asm-generic/memory_model.h | 37 ++++--------------------------
-> >  include/linux/mmzone.h             |  8 ++++---
-> >  mm/Kconfig                         | 25 +++-----------------
-> >  mm/page_alloc.c                    | 13 -----------
-> >  4 files changed, 12 insertions(+), 71 deletions(-)
-> >
-> > diff --git a/include/asm-generic/memory_model.h b/include/asm-generic/memory_model.h
-> > index 7637fb46ba4f..a2c8ed60233a 100644
-> > --- a/include/asm-generic/memory_model.h
-> > +++ b/include/asm-generic/memory_model.h
-> > @@ -6,47 +6,18 @@
-> >  
-> >  #ifndef __ASSEMBLY__
-> >  
-> > +/*
-> > + * supports 3 memory models.
-> > + */
-> 
-> This comment could either be updated to reflect 2 memory models, or
-> removed entirely.
 
-I counted SPARSE and SPARSE_VMEMMAP as 2.
 
-The code below has three clauses: one for FLATMEM, one for SPARSE and one
-for VMEMMAP.
- 
-> Thanks,
-> Stephen
+Le 03/06/2021 à 10:41, Christophe Leroy a écrit :
+> PPC64 uses MMU features to enable/disable KUAP at boot time.
+> But feature fixups are applied way too early on PPC32.
 > 
-> >  #if defined(CONFIG_FLATMEM)
-> >  
-> >  #ifndef ARCH_PFN_OFFSET
-> >  #define ARCH_PFN_OFFSET		(0UL)
-> >  #endif
-> >  
-> > -#elif defined(CONFIG_DISCONTIGMEM)
-> > -
-> > -#ifndef arch_pfn_to_nid
-> > -#define arch_pfn_to_nid(pfn)	pfn_to_nid(pfn)
-> > -#endif
-> > -
-> > -#ifndef arch_local_page_offset
-> > -#define arch_local_page_offset(pfn, nid)	\
-> > -	((pfn) - NODE_DATA(nid)->node_start_pfn)
-> > -#endif
-> > -
-> > -#endif /* CONFIG_DISCONTIGMEM */
-> > -
-> > -/*
-> > - * supports 3 memory models.
-> > - */
-> > -#if defined(CONFIG_FLATMEM)
-> > -
-> >  #define __pfn_to_page(pfn)	(mem_map + ((pfn) - ARCH_PFN_OFFSET))
-> >  #define __page_to_pfn(page)	((unsigned long)((page) - mem_map) + \
-> >  				 ARCH_PFN_OFFSET)
-> > -#elif defined(CONFIG_DISCONTIGMEM)
-> > -
-> > -#define __pfn_to_page(pfn)			\
-> > -({	unsigned long __pfn = (pfn);		\
-> > -	unsigned long __nid = arch_pfn_to_nid(__pfn);  \
-> > -	NODE_DATA(__nid)->node_mem_map + arch_local_page_offset(__pfn, __nid);\
-> > -})
-> > -
-> > -#define __page_to_pfn(pg)						\
-> > -({	const struct page *__pg = (pg);					\
-> > -	struct pglist_data *__pgdat = NODE_DATA(page_to_nid(__pg));	\
-> > -	(unsigned long)(__pg - __pgdat->node_mem_map) +			\
-> > -	 __pgdat->node_start_pfn;					\
-> > -})
-> >  
-> >  #elif defined(CONFIG_SPARSEMEM_VMEMMAP)
-> >  
-> > @@ -70,7 +41,7 @@
-> >  	struct mem_section *__sec = __pfn_to_section(__pfn);	\
-> >  	__section_mem_map_addr(__sec) + __pfn;		\
-> >  })
-> > -#endif /* CONFIG_FLATMEM/DISCONTIGMEM/SPARSEMEM */
-> > +#endif /* CONFIG_FLATMEM/SPARSEMEM */
-> >  
-> >  /*
-> >   * Convert a physical address to a Page Frame Number and back
-> > diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> > index 0d53eba1c383..700032e99419 100644
-> > --- a/include/linux/mmzone.h
-> > +++ b/include/linux/mmzone.h
-> > @@ -738,10 +738,12 @@ struct zonelist {
-> >  	struct zoneref _zonerefs[MAX_ZONES_PER_ZONELIST + 1];
-> >  };
-> >  
-> > -#ifndef CONFIG_DISCONTIGMEM
-> > -/* The array of struct pages - for discontigmem use pgdat->lmem_map */
-> > +/*
-> > + * The array of struct pages for flatmem.
-> > + * It must be declared for SPARSEMEM as well because there are configurations
-> > + * that rely on that.
-> > + */
-> >  extern struct page *mem_map;
-> > -#endif
-> >  
-> >  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> >  struct deferred_split {
-> > diff --git a/mm/Kconfig b/mm/Kconfig
-> > index 02d44e3420f5..218b96ccc84a 100644
-> > --- a/mm/Kconfig
-> > +++ b/mm/Kconfig
-> > @@ -19,7 +19,7 @@ choice
-> >  
-> >  config FLATMEM_MANUAL
-> >  	bool "Flat Memory"
-> > -	depends on !(ARCH_DISCONTIGMEM_ENABLE || ARCH_SPARSEMEM_ENABLE) || ARCH_FLATMEM_ENABLE
-> > +	depends on !ARCH_SPARSEMEM_ENABLE || ARCH_FLATMEM_ENABLE
-> >  	help
-> >  	  This option is best suited for non-NUMA systems with
-> >  	  flat address space. The FLATMEM is the most efficient
-> > @@ -32,21 +32,6 @@ config FLATMEM_MANUAL
-> >  
-> >  	  If unsure, choose this option (Flat Memory) over any other.
-> >  
-> > -config DISCONTIGMEM_MANUAL
-> > -	bool "Discontiguous Memory"
-> > -	depends on ARCH_DISCONTIGMEM_ENABLE
-> > -	help
-> > -	  This option provides enhanced support for discontiguous
-> > -	  memory systems, over FLATMEM.  These systems have holes
-> > -	  in their physical address spaces, and this option provides
-> > -	  more efficient handling of these holes.
-> > -
-> > -	  Although "Discontiguous Memory" is still used by several
-> > -	  architectures, it is considered deprecated in favor of
-> > -	  "Sparse Memory".
-> > -
-> > -	  If unsure, choose "Sparse Memory" over this option.
-> > -
-> >  config SPARSEMEM_MANUAL
-> >  	bool "Sparse Memory"
-> >  	depends on ARCH_SPARSEMEM_ENABLE
-> > @@ -62,17 +47,13 @@ config SPARSEMEM_MANUAL
-> >  
-> >  endchoice
-> >  
-> > -config DISCONTIGMEM
-> > -	def_bool y
-> > -	depends on (!SELECT_MEMORY_MODEL && ARCH_DISCONTIGMEM_ENABLE) || DISCONTIGMEM_MANUAL
-> > -
-> >  config SPARSEMEM
-> >  	def_bool y
-> >  	depends on (!SELECT_MEMORY_MODEL && ARCH_SPARSEMEM_ENABLE) || SPARSEMEM_MANUAL
-> >  
-> >  config FLATMEM
-> >  	def_bool y
-> > -	depends on (!DISCONTIGMEM && !SPARSEMEM) || FLATMEM_MANUAL
-> > +	depends on !SPARSEMEM || FLATMEM_MANUAL
-> >  
-> >  config FLAT_NODE_MEM_MAP
-> >  	def_bool y
-> > @@ -85,7 +66,7 @@ config FLAT_NODE_MEM_MAP
-> >  #
-> >  config NEED_MULTIPLE_NODES
-> >  	def_bool y
-> > -	depends on DISCONTIGMEM || NUMA
-> > +	depends on NUMA
-> >  
-> >  #
-> >  # SPARSEMEM_EXTREME (which is the default) does some bootmem
-> > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> > index aaa1655cf682..6fc22482eaa8 100644
-> > --- a/mm/page_alloc.c
-> > +++ b/mm/page_alloc.c
-> > @@ -331,20 +331,7 @@ compound_page_dtor * const compound_page_dtors[NR_COMPOUND_DTORS] = {
-> >  
-> >  int min_free_kbytes = 1024;
-> >  int user_min_free_kbytes = -1;
-> > -#ifdef CONFIG_DISCONTIGMEM
-> > -/*
-> > - * DiscontigMem defines memory ranges as separate pg_data_t even if the ranges
-> > - * are not on separate NUMA nodes. Functionally this works but with
-> > - * watermark_boost_factor, it can reclaim prematurely as the ranges can be
-> > - * quite small. By default, do not boost watermarks on discontigmem as in
-> > - * many cases very high-order allocations like THP are likely to be
-> > - * unsupported and the premature reclaim offsets the advantage of long-term
-> > - * fragmentation avoidance.
-> > - */
-> > -int watermark_boost_factor __read_mostly;
-> > -#else
-> >  int watermark_boost_factor __read_mostly = 15000;
-> > -#endif
-> >  int watermark_scale_factor = 10;
-> >  
-> >  static unsigned long nr_kernel_pages __initdata;
-> > -- 
-> > 2.28.0
+> Now that all KUAP related actions are in C following the
+> conversion of KUAP initial setup and context switch in C,
+> static branches can be used to enable/disable KUAP.
 > 
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+>   arch/powerpc/include/asm/book3s/32/kup.h | 27 +++++++++++++++++++++++-
+>   arch/powerpc/mm/book3s32/kuap.c          | 11 ++++++----
+>   2 files changed, 33 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/book3s/32/kup.h b/arch/powerpc/include/asm/book3s/32/kup.h
+> index 2854d970dabe..68fbe28c6d7e 100644
+> --- a/arch/powerpc/include/asm/book3s/32/kup.h
+> +++ b/arch/powerpc/include/asm/book3s/32/kup.h
+> @@ -9,11 +9,12 @@
+>   
+>   #include <linux/jump_label.h>
+>   
+> +extern struct static_key_false disable_kuap_key;
 
--- 
-Sincerely yours,
-Mike.
+Same as 8xx, this needs to be exported for modules.
+
+>   extern struct static_key_false disable_kuep_key;
+>   
+>   static __always_inline bool kuap_is_disabled(void)
+>   {
+> -	return !IS_ENABLED(CONFIG_PPC_KUAP);
+> +	return !IS_ENABLED(CONFIG_PPC_KUAP) || static_branch_unlikely(&disable_kuap_key);
+>   }
+>   
+>   static __always_inline bool kuep_is_disabled(void)
+> @@ -62,6 +63,9 @@ static inline void kuap_save_and_lock(struct pt_regs *regs)
+>   	u32 addr = kuap & 0xf0000000;
+>   	u32 end = kuap << 28;
+>   
+> +	if (kuap_is_disabled())
+> +		return;
+> +
+>   	regs->kuap = kuap;
+>   	if (unlikely(!kuap))
+>   		return;
+> @@ -79,6 +83,9 @@ static inline void kuap_kernel_restore(struct pt_regs *regs, unsigned long kuap)
+>   	u32 addr = regs->kuap & 0xf0000000;
+>   	u32 end = regs->kuap << 28;
+>   
+> +	if (kuap_is_disabled())
+> +		return;
+> +
+>   	current->thread.kuap = regs->kuap;
+>   
+>   	if (unlikely(regs->kuap == kuap))
+> @@ -91,6 +98,9 @@ static inline unsigned long kuap_get_and_assert_locked(void)
+>   {
+>   	unsigned long kuap = current->thread.kuap;
+>   
+> +	if (kuap_is_disabled())
+> +		return 0;
+> +
+>   	WARN_ON_ONCE(IS_ENABLED(CONFIG_PPC_KUAP_DEBUG) && kuap != 0);
+>   
+>   	return kuap;
+> @@ -106,6 +116,9 @@ static __always_inline void allow_user_access(void __user *to, const void __user
+>   {
+>   	u32 addr, end;
+>   
+> +	if (kuap_is_disabled())
+> +		return;
+> +
+>   	BUILD_BUG_ON(!__builtin_constant_p(dir));
+>   	BUILD_BUG_ON(dir & ~KUAP_READ_WRITE);
+>   
+> @@ -128,6 +141,9 @@ static __always_inline void prevent_user_access(void __user *to, const void __us
+>   {
+>   	u32 addr, end;
+>   
+> +	if (kuap_is_disabled())
+> +		return;
+> +
+>   	BUILD_BUG_ON(!__builtin_constant_p(dir));
+>   
+>   	if (dir & KUAP_CURRENT_WRITE) {
+> @@ -159,6 +175,9 @@ static inline unsigned long prevent_user_access_return(void)
+>   	unsigned long end = flags << 28;
+>   	void __user *to = (__force void __user *)addr;
+>   
+> +	if (kuap_is_disabled())
+> +		return 0;
+> +
+>   	if (flags)
+>   		prevent_user_access(to, to, end - addr, KUAP_READ_WRITE);
+>   
+> @@ -171,6 +190,9 @@ static inline void restore_user_access(unsigned long flags)
+>   	unsigned long end = flags << 28;
+>   	void __user *to = (__force void __user *)addr;
+>   
+> +	if (kuap_is_disabled())
+> +		return;
+> +
+>   	if (flags)
+>   		allow_user_access(to, to, end - addr, KUAP_READ_WRITE);
+>   }
+> @@ -181,6 +203,9 @@ bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
+>   	unsigned long begin = regs->kuap & 0xf0000000;
+>   	unsigned long end = regs->kuap << 28;
+>   
+> +	if (kuap_is_disabled())
+> +		return false;
+> +
+>   	return is_write && (address < begin || address >= end);
+>   }
+>   
+> diff --git a/arch/powerpc/mm/book3s32/kuap.c b/arch/powerpc/mm/book3s32/kuap.c
+> index 5533ed92ab3d..a4ce6cdc28e5 100644
+> --- a/arch/powerpc/mm/book3s32/kuap.c
+> +++ b/arch/powerpc/mm/book3s32/kuap.c
+> @@ -3,15 +3,18 @@
+>   #include <asm/kup.h>
+>   #include <asm/smp.h>
+>   
+> +struct static_key_false disable_kuap_key;
+> +
+>   void __init setup_kuap(bool disabled)
+>   {
+> -	kuap_update_sr(mfsr(0) | SR_KS, 0, TASK_SIZE);
+> +	if (!disabled)
+> +		kuap_update_sr(mfsr(0) | SR_KS, 0, TASK_SIZE);
+>   
+>   	if (smp_processor_id() != boot_cpuid)
+>   		return;
+>   
+> -	pr_info("Activating Kernel Userspace Access Protection\n");
+> -
+>   	if (disabled)
+> -		pr_warn("KUAP cannot be disabled yet on 6xx when compiled in\n");
+> +		static_branch_enable(&disable_kuap_key);
+> +	else
+> +		pr_info("Activating Kernel Userspace Access Protection\n");
+>   }
+> 
