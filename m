@@ -2,57 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36C4E3A4D17
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Jun 2021 08:19:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9252C3A4E15
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Jun 2021 11:55:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G26xH5vhwz3c5S
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Jun 2021 16:19:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G2CkW1MN3z3c6N
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Jun 2021 19:55:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=212.227.126.133; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G26ww3Bz5z308n
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Jun 2021 16:18:52 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4G26wm2nXvzBD9b;
- Sat, 12 Jun 2021 08:18:48 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id QlCphcttEh5f; Sat, 12 Jun 2021 08:18:48 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4G26wk5B2tzBD9Y;
- Sat, 12 Jun 2021 08:18:46 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A81AB8B772;
- Sat, 12 Jun 2021 08:18:46 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id lY-zE4bzAve2; Sat, 12 Jun 2021 08:18:46 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 220D58B763;
- Sat, 12 Jun 2021 08:18:46 +0200 (CEST)
-Subject: Re: [PATCH v2 08/12] powerpc/32s: Allow disabling KUAP at boot time
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-References: <cover.1622708530.git.christophe.leroy@csgroup.eu>
- <cd79e8008455fba5395d099f9bb1305c039b931c.1622708530.git.christophe.leroy@csgroup.eu>
-Message-ID: <ee1fb979-3503-2c56-cde5-1ea7eed790d7@csgroup.eu>
-Date: Sat, 12 Jun 2021 08:18:44 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G2Ck42gbYz2yxr
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Jun 2021 19:54:50 +1000 (AEST)
+Received: from mail-wm1-f49.google.com ([209.85.128.49]) by
+ mrelayeu.kundenserver.de (mreue011 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1MfYgC-1lPINR2YXY-00g1oN for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Jun
+ 2021 11:54:45 +0200
+Received: by mail-wm1-f49.google.com with SMTP id b205so4636897wmb.3
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Jun 2021 02:54:44 -0700 (PDT)
+X-Gm-Message-State: AOAM530xSmGm3RGdgvIdAfxf4e8nc387LIxCy5IfNlQ/mJl07P18DK0h
+ uR2cBJt5/WhTIUZwzoTAj+0P0NYxf6VfhPp0Bu0=
+X-Google-Smtp-Source: ABdhPJwn2BYTX5/QkNEs0bR510OlVhGDCvA1jD8WEIHjWsisXpME1WyYu5aNpbTe+mRGf89UPeAHmHX4C3mi2ayVlT0=
+X-Received: by 2002:a1c:c90f:: with SMTP id f15mr24171181wmb.142.1623491684384; 
+ Sat, 12 Jun 2021 02:54:44 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <cd79e8008455fba5395d099f9bb1305c039b931c.1622708530.git.christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+References: <20210612003128.372238-1-leoyang.li@nxp.com>
+In-Reply-To: <20210612003128.372238-1-leoyang.li@nxp.com>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Sat, 12 Jun 2021 11:52:45 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a0K-S+9iHYfs-4AQZOzta6D_jH8Zy32-pfotYncBcJyDg@mail.gmail.com>
+Message-ID: <CAK8P3a0K-S+9iHYfs-4AQZOzta6D_jH8Zy32-pfotYncBcJyDg@mail.gmail.com>
+Subject: Re: [PATCH] usb: gadget: fsl: properly remove remnant of MXC support
+To: Li Yang <leoyang.li@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:QXqoELaXY4BVUIXUX6dx+ZXn8/q4LNtBFBu0XTYB2n4d1bq/OHG
+ p7zzsVFMlHFIMT3boHa/ouB931c6OvbdMXw7ulxJARchlQGN/Pm4I9MsdOFgCTOoHOeb68H
+ T83+/qFbMRg+7uhO/gnVIKm9iGe4fWqF3mmP9RE3fAqZ54JwDDUJD9RL626mr45Wm7y0wmC
+ I8amnEPGTtNoS8eeJhYjA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:f25rtUzznG8=:kl+1p+fyDrNSNW3fhHtOMI
+ vyvC/WMFRbCzCxPSrdiV5RfxsXHJkOBVjHcwyJzry2EBuW/HVUSDuRHotlmTy7Hy2cWzcwbUe
+ IjdgIstQJNCjxhGAZsy2TFZuU5bWpyZII1MAd/iX8oCIKxs4k28lNK+dL3B55z21hY0ok4EKa
+ lTEb+Zn53D03vUegrrkeHK0wkJtB6AHcIVULTTPa6J9VSspTWkHXkkUYAr8kZqqX711UfOe6v
+ YZ/kodIeQUuLgzx8lOZq/LlavI6wWaUgZhLI79z3IGOmcJx4Vy77K2hqxGYwGTStcsyuZoQRk
+ hsfhkhCp+AENs2+qNSrSzJORzStt6MD6QZ4TWJ5PAeY3VK1QxXcP9XG3vETOIQkcFasJG8mXd
+ qXmahNkiRU3kK7AyWC+ghK+iwYYFRZaVEehZN7NAWZTosuitT6T8C0K2ULyEttrR/EukEPslT
+ Fw17Jug4XUdndYerboNf60H3jZQUkkbXIRwm9Oy/fQXBUdDETF5YbcOnYvahpkIgEuO/14JPS
+ deFim3UdSi64Nyi7PLIKUA=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,153 +65,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Felipe Balbi <balbi@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ USB list <linux-usb@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Joel Stanley <joel@jms.id.au>, Fabio Estevam <festevam@gmail.com>,
+ ran.wang_1@nxp.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Sat, Jun 12, 2021 at 2:31 AM Li Yang <leoyang.li@nxp.com> wrote:
+>
+> Commit a390bef7db1f ("usb: gadget: fsl_mxc_udc: Remove the driver")
+> didn't remove all the MXC related stuff which can cause build problem
+> for LS1021 when enabled again in Kconfig.  This patch remove all the
+> remnants.
+>
+> Signed-off-by: Li Yang <leoyang.li@nxp.com>
 
+Looks good to me,
 
-Le 03/06/2021 à 10:41, Christophe Leroy a écrit :
-> PPC64 uses MMU features to enable/disable KUAP at boot time.
-> But feature fixups are applied way too early on PPC32.
-> 
-> Now that all KUAP related actions are in C following the
-> conversion of KUAP initial setup and context switch in C,
-> static branches can be used to enable/disable KUAP.
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->   arch/powerpc/include/asm/book3s/32/kup.h | 27 +++++++++++++++++++++++-
->   arch/powerpc/mm/book3s32/kuap.c          | 11 ++++++----
->   2 files changed, 33 insertions(+), 5 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/book3s/32/kup.h b/arch/powerpc/include/asm/book3s/32/kup.h
-> index 2854d970dabe..68fbe28c6d7e 100644
-> --- a/arch/powerpc/include/asm/book3s/32/kup.h
-> +++ b/arch/powerpc/include/asm/book3s/32/kup.h
-> @@ -9,11 +9,12 @@
->   
->   #include <linux/jump_label.h>
->   
-> +extern struct static_key_false disable_kuap_key;
-
-Same as 8xx, this needs to be exported for modules.
-
->   extern struct static_key_false disable_kuep_key;
->   
->   static __always_inline bool kuap_is_disabled(void)
->   {
-> -	return !IS_ENABLED(CONFIG_PPC_KUAP);
-> +	return !IS_ENABLED(CONFIG_PPC_KUAP) || static_branch_unlikely(&disable_kuap_key);
->   }
->   
->   static __always_inline bool kuep_is_disabled(void)
-> @@ -62,6 +63,9 @@ static inline void kuap_save_and_lock(struct pt_regs *regs)
->   	u32 addr = kuap & 0xf0000000;
->   	u32 end = kuap << 28;
->   
-> +	if (kuap_is_disabled())
-> +		return;
-> +
->   	regs->kuap = kuap;
->   	if (unlikely(!kuap))
->   		return;
-> @@ -79,6 +83,9 @@ static inline void kuap_kernel_restore(struct pt_regs *regs, unsigned long kuap)
->   	u32 addr = regs->kuap & 0xf0000000;
->   	u32 end = regs->kuap << 28;
->   
-> +	if (kuap_is_disabled())
-> +		return;
-> +
->   	current->thread.kuap = regs->kuap;
->   
->   	if (unlikely(regs->kuap == kuap))
-> @@ -91,6 +98,9 @@ static inline unsigned long kuap_get_and_assert_locked(void)
->   {
->   	unsigned long kuap = current->thread.kuap;
->   
-> +	if (kuap_is_disabled())
-> +		return 0;
-> +
->   	WARN_ON_ONCE(IS_ENABLED(CONFIG_PPC_KUAP_DEBUG) && kuap != 0);
->   
->   	return kuap;
-> @@ -106,6 +116,9 @@ static __always_inline void allow_user_access(void __user *to, const void __user
->   {
->   	u32 addr, end;
->   
-> +	if (kuap_is_disabled())
-> +		return;
-> +
->   	BUILD_BUG_ON(!__builtin_constant_p(dir));
->   	BUILD_BUG_ON(dir & ~KUAP_READ_WRITE);
->   
-> @@ -128,6 +141,9 @@ static __always_inline void prevent_user_access(void __user *to, const void __us
->   {
->   	u32 addr, end;
->   
-> +	if (kuap_is_disabled())
-> +		return;
-> +
->   	BUILD_BUG_ON(!__builtin_constant_p(dir));
->   
->   	if (dir & KUAP_CURRENT_WRITE) {
-> @@ -159,6 +175,9 @@ static inline unsigned long prevent_user_access_return(void)
->   	unsigned long end = flags << 28;
->   	void __user *to = (__force void __user *)addr;
->   
-> +	if (kuap_is_disabled())
-> +		return 0;
-> +
->   	if (flags)
->   		prevent_user_access(to, to, end - addr, KUAP_READ_WRITE);
->   
-> @@ -171,6 +190,9 @@ static inline void restore_user_access(unsigned long flags)
->   	unsigned long end = flags << 28;
->   	void __user *to = (__force void __user *)addr;
->   
-> +	if (kuap_is_disabled())
-> +		return;
-> +
->   	if (flags)
->   		allow_user_access(to, to, end - addr, KUAP_READ_WRITE);
->   }
-> @@ -181,6 +203,9 @@ bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
->   	unsigned long begin = regs->kuap & 0xf0000000;
->   	unsigned long end = regs->kuap << 28;
->   
-> +	if (kuap_is_disabled())
-> +		return false;
-> +
->   	return is_write && (address < begin || address >= end);
->   }
->   
-> diff --git a/arch/powerpc/mm/book3s32/kuap.c b/arch/powerpc/mm/book3s32/kuap.c
-> index 5533ed92ab3d..a4ce6cdc28e5 100644
-> --- a/arch/powerpc/mm/book3s32/kuap.c
-> +++ b/arch/powerpc/mm/book3s32/kuap.c
-> @@ -3,15 +3,18 @@
->   #include <asm/kup.h>
->   #include <asm/smp.h>
->   
-> +struct static_key_false disable_kuap_key;
-> +
->   void __init setup_kuap(bool disabled)
->   {
-> -	kuap_update_sr(mfsr(0) | SR_KS, 0, TASK_SIZE);
-> +	if (!disabled)
-> +		kuap_update_sr(mfsr(0) | SR_KS, 0, TASK_SIZE);
->   
->   	if (smp_processor_id() != boot_cpuid)
->   		return;
->   
-> -	pr_info("Activating Kernel Userspace Access Protection\n");
-> -
->   	if (disabled)
-> -		pr_warn("KUAP cannot be disabled yet on 6xx when compiled in\n");
-> +		static_branch_enable(&disable_kuap_key);
-> +	else
-> +		pr_info("Activating Kernel Userspace Access Protection\n");
->   }
-> 
+Acked-by: Arnd Bergmann <arnd@arndb.de>
