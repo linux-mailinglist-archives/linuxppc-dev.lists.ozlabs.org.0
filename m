@@ -2,66 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA4463A4ABB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jun 2021 23:42:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73F673A4BBA
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Jun 2021 02:32:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G1vSq3Llyz3c4B
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Jun 2021 07:42:19 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=brennan.io header.i=stephen@brennan.io header.a=rsa-sha256 header.s=selector01 header.b=VUodxOww;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G1zDz2Vxhz3c6q
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Jun 2021 10:32:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=brennan.io (client-ip=136.143.188.51;
- helo=sender4-of-o51.zoho.com; envelope-from=stephen@brennan.io;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=brennan.io header.i=stephen@brennan.io
- header.a=rsa-sha256 header.s=selector01 header.b=VUodxOww; 
- dkim-atps=neutral
-X-Greylist: delayed 908 seconds by postgrey-1.36 at boromir;
- Sat, 12 Jun 2021 07:09:31 AEST
-Received: from sender4-of-o51.zoho.com (sender4-of-o51.zoho.com
- [136.143.188.51])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=209.85.210.54; helo=mail-ot1-f54.google.com;
+ envelope-from=pku.leo@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com
+ [209.85.210.54])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G1tkz2tR1z2y0L
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Jun 2021 07:09:31 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; t=1623444841; cv=none; 
- d=zohomail.com; s=zohoarc; 
- b=ce8iv3uhoTvb6Q4mp8yAk9ByyP/ztKIi+7b/No/F5R6a8XX6yJLnV1YBkzoUycc7oJWju88UBVC3K0dYBDgPLkQtt0DqzEImhEj/R5z+8wdFbqcETjVaY1Shy9z1laYIr40k6r0T2XaSSC8qDpPn1DMwqrGJiCbn6XQyLCJBeLk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1623444841;
- h=Content-Type:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To;
- bh=AoiLwcmX3pbOV819C0Lo7M/WNWjoO/Lazqk1NS5j5f4=; 
- b=igDgmnMQYOE7OMpajT0d6+VpAk0is3qy1yDPiJ6VaI0g32XYdTLBW4vA2wzLDN0Fr5buSCoBFXJjIDMefERXTBCLx5jD9staWgrZl3S5UIB585+PiTcqJ+66g0aEakFC3AyMhBFBY43YTO9Kxx5kTUKFCto0CGA49vG6REfmPSI=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
- dkim=pass  header.i=brennan.io;
- spf=pass  smtp.mailfrom=stephen@brennan.io;
- dmarc=pass header.from=<stephen@brennan.io>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1623444841; 
- s=selector01; d=brennan.io; i=stephen@brennan.io;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:MIME-Version:Content-Type;
- bh=AoiLwcmX3pbOV819C0Lo7M/WNWjoO/Lazqk1NS5j5f4=;
- b=VUodxOwwNi8y2ZV9XwmfH/FLB5Dutdvekx3lJ+cc3zMogLBOrgoxpvh0Fn5PgteO
- DV4rTlIi8PRtIixHgmUQjDjasTJjwPojeggLpOcOcHRdHq3s5PanSnlFopFMJy1H+Ge
- RNuP8guFfEoTAR0L3QQgAj8N+d01mwEstQBT16Qc=
-Received: from localhost (148.87.23.10 [148.87.23.10]) by mx.zohomail.com
- with SMTPS id 1623444832045346.08477193904275;
- Fri, 11 Jun 2021 13:53:52 -0700 (PDT)
-From: Stephen Brennan <stephen@brennan.io>
-To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v3 5/9] mm: remove CONFIG_DISCONTIGMEM
-In-Reply-To: <20210608091316.3622-6-rppt@kernel.org>
-References: <20210608091316.3622-1-rppt@kernel.org>
- <20210608091316.3622-6-rppt@kernel.org>
-Date: Fri, 11 Jun 2021 13:53:48 -0700
-Message-ID: <87r1h886n7.fsf@stepbren-lnx.us.oracle.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G1zDc6CCzz309P
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Jun 2021 10:32:00 +1000 (AEST)
+Received: by mail-ot1-f54.google.com with SMTP id
+ 66-20020a9d02c80000b02903615edf7c1aso4821211otl.13
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jun 2021 17:31:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=qga+c0C77T21FQKulI0d4f+Rhv/BssoNhwHf+62zha8=;
+ b=Quu9yzGYFuJFIGppI/GgLIsIHQWDIDcF+piTUjw4bCOPOWfjRx5AUKlFE0FJi4dBt6
+ Qi6jFgYAKcPWmjtGHmFYqaGsqP1WI2RsULcb7NyR9s01ywLZv7XOoqlGWc0eVJHRKhe9
+ 33vVEYyJDVnAH4QhYyW9mdbcAn/901JC2zXiO1UheJVdO8oCdOIQc94etVZByz2ozHbm
+ 10LmPLvY3vKwJQnPWm0kEVs5ho57qI3mygxoqRUhbokI2+xNa8dDrJ0MYtVxjLua++rs
+ 7/tUm4/76njqv3P7pdoo7VX2eefq5Z1TOrx2XXQGj18zU73IMnaYOeCwo7TAJ73PBZLk
+ dG+g==
+X-Gm-Message-State: AOAM532l2ZVQyV+K5qQbefpUzU094qseTSE+zJ+7oAFc70pkD5WToViU
+ tM/UnpGpiVTZZPO7rjRjazw=
+X-Google-Smtp-Source: ABdhPJw/Pdj10SN92PG4Bdy28rQf1qV8jsWTF5ft7sQMfDfaPTuxwn/WHn0hzVjI1cjYn56YgHt0fw==
+X-Received: by 2002:a05:6830:3147:: with SMTP id
+ c7mr5204852ots.332.1623457915004; 
+ Fri, 11 Jun 2021 17:31:55 -0700 (PDT)
+Received: from Powerful.. ([2605:a601:aac6:6c00:4376:94a1:82c5:6517])
+ by smtp.gmail.com with ESMTPSA id z6sm1553331oiz.39.2021.06.11.17.31.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 11 Jun 2021 17:31:53 -0700 (PDT)
+From: Li Yang <leoyang.li@nxp.com>
+To: Felipe Balbi <balbi@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Joel Stanley <joel@jms.id.au>
+Subject: [PATCH] usb: gadget: fsl: properly remove remnant of MXC support
+Date: Fri, 11 Jun 2021 19:31:28 -0500
+Message-Id: <20210612003128.372238-1-leoyang.li@nxp.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ZohoMailClient: External
-X-Mailman-Approved-At: Sat, 12 Jun 2021 07:41:32 +1000
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,217 +64,196 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mm@kvack.org, sparclinux@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
- linux-doc@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Matt Turner <mattst88@gmail.com>,
- linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org,
- Arnd Bergmann <arnd@arndb.de>, linux-m68k@lists.linux-m68k.org,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- linux-arm-kernel@lists.infradead.org, Richard Henderson <rth@twiddle.net>,
- Vineet Gupta <vgupta@synopsys.com>, kexec@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
+Cc: arnd@arndb.de, linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, ran.wang_1@nxp.com,
+ Fabio Estevam <festevam@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Mike Rapoport <rppt@kernel.org> writes:
-> From: Mike Rapoport <rppt@linux.ibm.com>
->
-> There are no architectures that support DISCONTIGMEM left.
->
-> Remove the configuration option and the dead code it was guarding in the
-> generic memory management code.
->
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> ---
->  include/asm-generic/memory_model.h | 37 ++++--------------------------
->  include/linux/mmzone.h             |  8 ++++---
->  mm/Kconfig                         | 25 +++-----------------
->  mm/page_alloc.c                    | 13 -----------
->  4 files changed, 12 insertions(+), 71 deletions(-)
->
-> diff --git a/include/asm-generic/memory_model.h b/include/asm-generic/memory_model.h
-> index 7637fb46ba4f..a2c8ed60233a 100644
-> --- a/include/asm-generic/memory_model.h
-> +++ b/include/asm-generic/memory_model.h
-> @@ -6,47 +6,18 @@
->  
->  #ifndef __ASSEMBLY__
->  
-> +/*
-> + * supports 3 memory models.
-> + */
+Commit a390bef7db1f ("usb: gadget: fsl_mxc_udc: Remove the driver")
+didn't remove all the MXC related stuff which can cause build problem
+for LS1021 when enabled again in Kconfig.  This patch remove all the
+remnants.
 
-This comment could either be updated to reflect 2 memory models, or
-removed entirely.
+Signed-off-by: Li Yang <leoyang.li@nxp.com>
+---
+ drivers/usb/gadget/udc/fsl_udc_core.c | 36 +++++----------------------
+ drivers/usb/gadget/udc/fsl_usb2_udc.h | 19 --------------
+ 2 files changed, 6 insertions(+), 49 deletions(-)
 
-Thanks,
-Stephen
+diff --git a/drivers/usb/gadget/udc/fsl_udc_core.c b/drivers/usb/gadget/udc/fsl_udc_core.c
+index 2b357b3f64c0..29fcb9b461d7 100644
+--- a/drivers/usb/gadget/udc/fsl_udc_core.c
++++ b/drivers/usb/gadget/udc/fsl_udc_core.c
+@@ -36,7 +36,6 @@
+ #include <linux/platform_device.h>
+ #include <linux/fsl_devices.h>
+ #include <linux/dmapool.h>
+-#include <linux/delay.h>
+ #include <linux/of_device.h>
+ 
+ #include <asm/byteorder.h>
+@@ -323,13 +322,11 @@ static int dr_controller_setup(struct fsl_udc *udc)
+ 		fsl_writel(tmp, &dr_regs->endptctrl[ep_num]);
+ 	}
+ 	/* Config control enable i/o output, cpu endian register */
+-#ifndef CONFIG_ARCH_MXC
+ 	if (udc->pdata->have_sysif_regs) {
+ 		ctrl = __raw_readl(&usb_sys_regs->control);
+ 		ctrl |= USB_CTRL_IOENB;
+ 		__raw_writel(ctrl, &usb_sys_regs->control);
+ 	}
+-#endif
+ 
+ #if defined(CONFIG_PPC32) && !defined(CONFIG_NOT_COHERENT_CACHE)
+ 	/* Turn on cache snooping hardware, since some PowerPC platforms
+@@ -2153,7 +2150,6 @@ static int fsl_proc_read(struct seq_file *m, void *v)
+ 	tmp_reg = fsl_readl(&dr_regs->endpointprime);
+ 	seq_printf(m, "EP Prime Reg = [0x%x]\n\n", tmp_reg);
+ 
+-#ifndef CONFIG_ARCH_MXC
+ 	if (udc->pdata->have_sysif_regs) {
+ 		tmp_reg = usb_sys_regs->snoop1;
+ 		seq_printf(m, "Snoop1 Reg : = [0x%x]\n\n", tmp_reg);
+@@ -2161,7 +2157,6 @@ static int fsl_proc_read(struct seq_file *m, void *v)
+ 		tmp_reg = usb_sys_regs->control;
+ 		seq_printf(m, "General Control Reg : = [0x%x]\n\n", tmp_reg);
+ 	}
+-#endif
+ 
+ 	/* ------fsl_udc, fsl_ep, fsl_request structure information ----- */
+ 	ep = &udc->eps[0];
+@@ -2412,28 +2407,21 @@ static int fsl_udc_probe(struct platform_device *pdev)
+ 	 */
+ 	if (pdata->init && pdata->init(pdev)) {
+ 		ret = -ENODEV;
+-		goto err_iounmap_noclk;
++		goto err_iounmap;
+ 	}
+ 
+ 	/* Set accessors only after pdata->init() ! */
+ 	fsl_set_accessors(pdata);
+ 
+-#ifndef CONFIG_ARCH_MXC
+ 	if (pdata->have_sysif_regs)
+ 		usb_sys_regs = (void *)dr_regs + USB_DR_SYS_OFFSET;
+-#endif
+-
+-	/* Initialize USB clocks */
+-	ret = fsl_udc_clk_init(pdev);
+-	if (ret < 0)
+-		goto err_iounmap_noclk;
+ 
+ 	/* Read Device Controller Capability Parameters register */
+ 	dccparams = fsl_readl(&dr_regs->dccparams);
+ 	if (!(dccparams & DCCPARAMS_DC)) {
+ 		ERR("This SOC doesn't support device role\n");
+ 		ret = -ENODEV;
+-		goto err_iounmap;
++		goto err_exit;
+ 	}
+ 	/* Get max device endpoints */
+ 	/* DEN is bidirectional ep number, max_ep doubles the number */
+@@ -2442,7 +2430,7 @@ static int fsl_udc_probe(struct platform_device *pdev)
+ 	ret = platform_get_irq(pdev, 0);
+ 	if (ret <= 0) {
+ 		ret = ret ? : -ENODEV;
+-		goto err_iounmap;
++		goto err_exit;
+ 	}
+ 	udc_controller->irq = ret;
+ 
+@@ -2451,7 +2439,7 @@ static int fsl_udc_probe(struct platform_device *pdev)
+ 	if (ret != 0) {
+ 		ERR("cannot request irq %d err %d\n",
+ 				udc_controller->irq, ret);
+-		goto err_iounmap;
++		goto err_exit;
+ 	}
+ 
+ 	/* Initialize the udc structure including QH member and other member */
+@@ -2467,10 +2455,6 @@ static int fsl_udc_probe(struct platform_device *pdev)
+ 		dr_controller_setup(udc_controller);
+ 	}
+ 
+-	ret = fsl_udc_clk_finalize(pdev);
+-	if (ret)
+-		goto err_free_irq;
+-
+ 	/* Setup gadget structure */
+ 	udc_controller->gadget.ops = &fsl_gadget_ops;
+ 	udc_controller->gadget.max_speed = USB_SPEED_HIGH;
+@@ -2530,11 +2514,10 @@ static int fsl_udc_probe(struct platform_device *pdev)
+ 	dma_pool_destroy(udc_controller->td_pool);
+ err_free_irq:
+ 	free_irq(udc_controller->irq, udc_controller);
+-err_iounmap:
++err_exit:
+ 	if (pdata->exit)
+ 		pdata->exit(pdev);
+-	fsl_udc_clk_release();
+-err_iounmap_noclk:
++err_iounmap:
+ 	iounmap(dr_regs);
+ err_release_mem_region:
+ 	if (pdata->operating_mode == FSL_USB2_DR_DEVICE)
+@@ -2561,8 +2544,6 @@ static int fsl_udc_remove(struct platform_device *pdev)
+ 	udc_controller->done = &done;
+ 	usb_del_gadget_udc(&udc_controller->gadget);
+ 
+-	fsl_udc_clk_release();
+-
+ 	/* DR has been stopped in usb_gadget_unregister_driver() */
+ 	remove_proc_file();
+ 
+@@ -2677,10 +2658,6 @@ static int fsl_udc_otg_resume(struct device *dev)
+ --------------------------------------------------------------------------*/
+ static const struct platform_device_id fsl_udc_devtype[] = {
+ 	{
+-		.name = "imx-udc-mx27",
+-	}, {
+-		.name = "imx-udc-mx51",
+-	}, {
+ 		.name = "fsl-usb2-udc",
+ 	}, {
+ 		/* sentinel */
+@@ -2689,7 +2666,6 @@ static const struct platform_device_id fsl_udc_devtype[] = {
+ MODULE_DEVICE_TABLE(platform, fsl_udc_devtype);
+ static struct platform_driver udc_driver = {
+ 	.remove		= fsl_udc_remove,
+-	/* Just for FSL i.mx SoC currently */
+ 	.id_table	= fsl_udc_devtype,
+ 	/* these suspend and resume are not usb suspend and resume */
+ 	.suspend	= fsl_udc_suspend,
+diff --git a/drivers/usb/gadget/udc/fsl_usb2_udc.h b/drivers/usb/gadget/udc/fsl_usb2_udc.h
+index 4ba651ae9048..2efc5a930b48 100644
+--- a/drivers/usb/gadget/udc/fsl_usb2_udc.h
++++ b/drivers/usb/gadget/udc/fsl_usb2_udc.h
+@@ -588,23 +588,4 @@ static inline struct ep_queue_head *get_qh_by_ep(struct fsl_ep *ep)
+ 				USB_DIR_IN) ? 1 : 0];
+ }
+ 
+-struct platform_device;
+-#ifdef CONFIG_ARCH_MXC
+-int fsl_udc_clk_init(struct platform_device *pdev);
+-int fsl_udc_clk_finalize(struct platform_device *pdev);
+-void fsl_udc_clk_release(void);
+-#else
+-static inline int fsl_udc_clk_init(struct platform_device *pdev)
+-{
+-	return 0;
+-}
+-static inline int fsl_udc_clk_finalize(struct platform_device *pdev)
+-{
+-	return 0;
+-}
+-static inline void fsl_udc_clk_release(void)
+-{
+-}
+-#endif
+-
+ #endif
+-- 
+2.30.2
 
->  #if defined(CONFIG_FLATMEM)
->  
->  #ifndef ARCH_PFN_OFFSET
->  #define ARCH_PFN_OFFSET		(0UL)
->  #endif
->  
-> -#elif defined(CONFIG_DISCONTIGMEM)
-> -
-> -#ifndef arch_pfn_to_nid
-> -#define arch_pfn_to_nid(pfn)	pfn_to_nid(pfn)
-> -#endif
-> -
-> -#ifndef arch_local_page_offset
-> -#define arch_local_page_offset(pfn, nid)	\
-> -	((pfn) - NODE_DATA(nid)->node_start_pfn)
-> -#endif
-> -
-> -#endif /* CONFIG_DISCONTIGMEM */
-> -
-> -/*
-> - * supports 3 memory models.
-> - */
-> -#if defined(CONFIG_FLATMEM)
-> -
->  #define __pfn_to_page(pfn)	(mem_map + ((pfn) - ARCH_PFN_OFFSET))
->  #define __page_to_pfn(page)	((unsigned long)((page) - mem_map) + \
->  				 ARCH_PFN_OFFSET)
-> -#elif defined(CONFIG_DISCONTIGMEM)
-> -
-> -#define __pfn_to_page(pfn)			\
-> -({	unsigned long __pfn = (pfn);		\
-> -	unsigned long __nid = arch_pfn_to_nid(__pfn);  \
-> -	NODE_DATA(__nid)->node_mem_map + arch_local_page_offset(__pfn, __nid);\
-> -})
-> -
-> -#define __page_to_pfn(pg)						\
-> -({	const struct page *__pg = (pg);					\
-> -	struct pglist_data *__pgdat = NODE_DATA(page_to_nid(__pg));	\
-> -	(unsigned long)(__pg - __pgdat->node_mem_map) +			\
-> -	 __pgdat->node_start_pfn;					\
-> -})
->  
->  #elif defined(CONFIG_SPARSEMEM_VMEMMAP)
->  
-> @@ -70,7 +41,7 @@
->  	struct mem_section *__sec = __pfn_to_section(__pfn);	\
->  	__section_mem_map_addr(__sec) + __pfn;		\
->  })
-> -#endif /* CONFIG_FLATMEM/DISCONTIGMEM/SPARSEMEM */
-> +#endif /* CONFIG_FLATMEM/SPARSEMEM */
->  
->  /*
->   * Convert a physical address to a Page Frame Number and back
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index 0d53eba1c383..700032e99419 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -738,10 +738,12 @@ struct zonelist {
->  	struct zoneref _zonerefs[MAX_ZONES_PER_ZONELIST + 1];
->  };
->  
-> -#ifndef CONFIG_DISCONTIGMEM
-> -/* The array of struct pages - for discontigmem use pgdat->lmem_map */
-> +/*
-> + * The array of struct pages for flatmem.
-> + * It must be declared for SPARSEMEM as well because there are configurations
-> + * that rely on that.
-> + */
->  extern struct page *mem_map;
-> -#endif
->  
->  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
->  struct deferred_split {
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index 02d44e3420f5..218b96ccc84a 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -19,7 +19,7 @@ choice
->  
->  config FLATMEM_MANUAL
->  	bool "Flat Memory"
-> -	depends on !(ARCH_DISCONTIGMEM_ENABLE || ARCH_SPARSEMEM_ENABLE) || ARCH_FLATMEM_ENABLE
-> +	depends on !ARCH_SPARSEMEM_ENABLE || ARCH_FLATMEM_ENABLE
->  	help
->  	  This option is best suited for non-NUMA systems with
->  	  flat address space. The FLATMEM is the most efficient
-> @@ -32,21 +32,6 @@ config FLATMEM_MANUAL
->  
->  	  If unsure, choose this option (Flat Memory) over any other.
->  
-> -config DISCONTIGMEM_MANUAL
-> -	bool "Discontiguous Memory"
-> -	depends on ARCH_DISCONTIGMEM_ENABLE
-> -	help
-> -	  This option provides enhanced support for discontiguous
-> -	  memory systems, over FLATMEM.  These systems have holes
-> -	  in their physical address spaces, and this option provides
-> -	  more efficient handling of these holes.
-> -
-> -	  Although "Discontiguous Memory" is still used by several
-> -	  architectures, it is considered deprecated in favor of
-> -	  "Sparse Memory".
-> -
-> -	  If unsure, choose "Sparse Memory" over this option.
-> -
->  config SPARSEMEM_MANUAL
->  	bool "Sparse Memory"
->  	depends on ARCH_SPARSEMEM_ENABLE
-> @@ -62,17 +47,13 @@ config SPARSEMEM_MANUAL
->  
->  endchoice
->  
-> -config DISCONTIGMEM
-> -	def_bool y
-> -	depends on (!SELECT_MEMORY_MODEL && ARCH_DISCONTIGMEM_ENABLE) || DISCONTIGMEM_MANUAL
-> -
->  config SPARSEMEM
->  	def_bool y
->  	depends on (!SELECT_MEMORY_MODEL && ARCH_SPARSEMEM_ENABLE) || SPARSEMEM_MANUAL
->  
->  config FLATMEM
->  	def_bool y
-> -	depends on (!DISCONTIGMEM && !SPARSEMEM) || FLATMEM_MANUAL
-> +	depends on !SPARSEMEM || FLATMEM_MANUAL
->  
->  config FLAT_NODE_MEM_MAP
->  	def_bool y
-> @@ -85,7 +66,7 @@ config FLAT_NODE_MEM_MAP
->  #
->  config NEED_MULTIPLE_NODES
->  	def_bool y
-> -	depends on DISCONTIGMEM || NUMA
-> +	depends on NUMA
->  
->  #
->  # SPARSEMEM_EXTREME (which is the default) does some bootmem
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index aaa1655cf682..6fc22482eaa8 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -331,20 +331,7 @@ compound_page_dtor * const compound_page_dtors[NR_COMPOUND_DTORS] = {
->  
->  int min_free_kbytes = 1024;
->  int user_min_free_kbytes = -1;
-> -#ifdef CONFIG_DISCONTIGMEM
-> -/*
-> - * DiscontigMem defines memory ranges as separate pg_data_t even if the ranges
-> - * are not on separate NUMA nodes. Functionally this works but with
-> - * watermark_boost_factor, it can reclaim prematurely as the ranges can be
-> - * quite small. By default, do not boost watermarks on discontigmem as in
-> - * many cases very high-order allocations like THP are likely to be
-> - * unsupported and the premature reclaim offsets the advantage of long-term
-> - * fragmentation avoidance.
-> - */
-> -int watermark_boost_factor __read_mostly;
-> -#else
->  int watermark_boost_factor __read_mostly = 15000;
-> -#endif
->  int watermark_scale_factor = 10;
->  
->  static unsigned long nr_kernel_pages __initdata;
-> -- 
-> 2.28.0
