@@ -2,60 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97E593A58ED
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Jun 2021 16:01:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D2C93A5A1B
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Jun 2021 20:54:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G2x8H228Kz308v
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 00:01:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G33dz00lrz308w
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 04:54:15 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=o+51Gt//;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=JGOFEBDm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=timur@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=o+51Gt//; 
+ smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::12b;
+ helo=mail-lf1-x12b.google.com; envelope-from=torvalds@linuxfoundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.a=rsa-sha256 header.s=google header.b=JGOFEBDm; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com
+ [IPv6:2a00:1450:4864:20::12b])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G2x7l4WLgz2ym5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 00:01:07 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D192A61285
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Jun 2021 14:01:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1623592862;
- bh=0GuJ8MA8YvAb5LFEu1wccuQD+B/n8HPSEdt3rIsJcas=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=o+51Gt//Duy1u56s/dk9eBSqfx7WwhWuvnaaLdrcMaG3LmeZrVtGkRkI0C4u7F+xe
- MxBf0MbTrfv0YH/G6frmBvYzEuaW6sMJahhiCIvqmWnkPBI768dvBpziGRFpQSGnJQ
- Kw7IJpvWeimsERuU/hgc07usgvl1rNQG03BeR0t6imRpYE4d960nqdYjJPaCOl9t6f
- YZyIUp/KPawWcIo6YortJ8GsP/C6ZZ7N4JC6L+MCWK34JxuTCNX+HDy0cm9zJZYQpV
- IF4eKBEJiwc1AqZkcKAiObyK0Xr18kE6SKRBUxzlTr07ucdXnGiyumBZKLXih4B07+
- /5bcHZKbI8W2w==
-Received: by mail-pj1-f49.google.com with SMTP id
- go18-20020a17090b03d2b029016e4ae973f7so7545457pjb.0
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Jun 2021 07:01:02 -0700 (PDT)
-X-Gm-Message-State: AOAM5314ln+ZcU19WpfYOlcYtSDTKpW0o1Lckdlh1klBd4ij6jPsKtFz
- bVc5r+EfLbXN74pLfeAyhpozkTJx8EIEJCOZbkU=
-X-Google-Smtp-Source: ABdhPJyFOyiJWkaOurdmvQmKHDKj6R/+QYd0Y/yarti/BChQroTPj0Zm9Ag2edUHztcoSXwOu7UmDfTXDUlbEeJ5BU4=
-X-Received: by 2002:a17:902:d4c8:b029:102:715b:e3a5 with SMTP id
- o8-20020a170902d4c8b0290102715be3a5mr12622809plg.83.1623592862495; Sun, 13
- Jun 2021 07:01:02 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G33dT1rtRz2xZk
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 04:53:48 +1000 (AEST)
+Received: by mail-lf1-x12b.google.com with SMTP id h4so2445053lfu.8
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Jun 2021 11:53:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux-foundation.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=jIwBuaKEyUe8RPybEEGjfCPj/QP2GIowPZPUUKF9Zo4=;
+ b=JGOFEBDm1r/vyu8Dznn4PgkQZZWr85EZTSQAnko+JKmdIrLZyXiN9aTqjDJtNxuUdV
+ S7oHqQk+bVfMmj7VLfuc+USUe2nhB5mIYNWJDi0FjK5W6kohDOSsk1QcKhyW+Zu2ShV/
+ lJvSJHD1xWrnsdeoPReSdGSt+vPCltoXOb+M4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=jIwBuaKEyUe8RPybEEGjfCPj/QP2GIowPZPUUKF9Zo4=;
+ b=dqUal6sRjizSLsdrflTsPSEgdm65vL5AtdCyDAqTL0CBZaxulcszmeigMC+ThFQbJx
+ YT2W+a8CgUfuzFK26WRURxw/zzQOk8SWNlDhWslbJoJpnD2FJEQUfa1Hk032KtF2EMWy
+ Ndro5OueUCuYeTHSdxdumOUvRc+fwgqYu4t0mHwNOqCioejUHRdhe4lj2DDKZ3cVr42v
+ g0cSScvMxSoj4geCt7qNeRjvhcic8yFC35FjFoloENfVPH/Wh1YkwxpT02Yh+/wJwe3P
+ QdDfZx9rwTtBjIKjpLZjlU7jocKF8sbLrCbZmFDVqE/XSZdY9ra1o+6djkQSfZphqfaf
+ oU1A==
+X-Gm-Message-State: AOAM531U84dORd0Fj9NKWyV9H7SlmntVrK9Y+E8Qk+o8qxkN66392GIS
+ 0YcvdRYJqHkOlH7kTtLXC/AAqKwcxD9YlLV6
+X-Google-Smtp-Source: ABdhPJyHaS03Nw/dQdXNIkdoKaIhVNim6uV6ZGSmy6WRNrWaetLggRT7M5SlAw54qSCPfrww/4V/NQ==
+X-Received: by 2002:ac2:4899:: with SMTP id x25mr9901725lfc.372.1623610417564; 
+ Sun, 13 Jun 2021 11:53:37 -0700 (PDT)
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com.
+ [209.85.167.53])
+ by smtp.gmail.com with ESMTPSA id z139sm1354255lfc.150.2021.06.13.11.53.36
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 13 Jun 2021 11:53:36 -0700 (PDT)
+Received: by mail-lf1-f53.google.com with SMTP id r198so17240276lff.11
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Jun 2021 11:53:36 -0700 (PDT)
+X-Received: by 2002:a05:6512:3d13:: with SMTP id
+ d19mr9490584lfv.41.1623610415825; 
+ Sun, 13 Jun 2021 11:53:35 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210611093626.579176-1-yangyingliang@huawei.com>
- <20210611093626.579176-10-yangyingliang@huawei.com>
-In-Reply-To: <20210611093626.579176-10-yangyingliang@huawei.com>
-From: Timur Tabi <timur@kernel.org>
-Date: Sun, 13 Jun 2021 09:00:25 -0500
-X-Gmail-Original-Message-ID: <CAOZdJXUn9FgdhiPAqbxMrz4tSeqQ_S+L9jkpg48NxCo5Fz7PXQ@mail.gmail.com>
-Message-ID: <CAOZdJXUn9FgdhiPAqbxMrz4tSeqQ_S+L9jkpg48NxCo5Fz7PXQ@mail.gmail.com>
-Subject: Re: [PATCH -next 9/9] ASoC: fsl_xcvr: check return value after
- calling platform_get_resource_byname()
-To: Yang Yingliang <yangyingliang@huawei.com>
+References: <20210610083549.386085-1-aneesh.kumar@linux.ibm.com>
+ <20210610083549.386085-6-aneesh.kumar@linux.ibm.com>
+ <CAHk-=wi+J+iodze9FtjM3Zi4j4OeS+qqbKxME9QN4roxPEXH9Q@mail.gmail.com>
+ <87wnqy9lru.fsf@linux.ibm.com>
+In-Reply-To: <87wnqy9lru.fsf@linux.ibm.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Sun, 13 Jun 2021 11:53:20 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wj+VM6meE26x+UegDdL_F3daMB_7HzA+16D10KYsBJwAQ@mail.gmail.com>
+Message-ID: <CAHk-=wj+VM6meE26x+UegDdL_F3daMB_7HzA+16D10KYsBJwAQ@mail.gmail.com>
+Subject: Re: [PATCH 5/6] mm/mremap: Use pmd/pud_poplulate to update page table
+ entries
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -68,25 +88,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel mailing list <alsa-devel@alsa-project.org>,
- Mark Brown <broonie@kernel.org>,
- PowerPC Mailing List <linuxppc-dev@lists.ozlabs.org>,
- lkml <linux-kernel@vger.kernel.org>, timur@kernel.org
+Cc: Nick Piggin <npiggin@gmail.com>, Linux-MM <linux-mm@kvack.org>,
+ Kalesh Singh <kaleshsingh@google.com>, Joel Fernandes <joel@joelfernandes.org>,
+ "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 11, 2021 at 4:32 AM Yang Yingliang <yangyingliang@huawei.com> wrote:
+On Sun, Jun 13, 2021 at 2:06 AM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
+>
+> IIUC the reason why we do have pmd_pgtable() is that pgtable_t type
+> is arch dependent. On some architecture it is pte_t * and on the other
+> struct page *. The reason being highmem and level 4 page table can
+> be located in highmem.
 
->         rx_res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "rxfifo");
->         tx_res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "txfifo");
-> +       if (!rx_res || !tx_res) {
-> +               dev_err(dev, "Invalid resource\n");
-> +               return -EINVAL;
-> +       }
+Honestly, the same confusion is real - in a different way - about
+pud_page_vaddr().
 
-If platform_get_resource_byname() returns an error, it's probably
-because the name cannot be found.  So I think this error message is
-more accurate:
+I really hate that function.
 
-"could not find rxfifo or txfifo resource"
+Just grep for the uses, and the definitions, to see what I mean. It's crazy.
+
+I'm perfectly happy not having a "pud_pagetable()" function, but that
+cast on pud_page_vaddr() is indicative of real problems.
+
+One solution might be to just say "pud_page_vaddr()" must return a "pmd_t *".
+
+I think it's what all the users actually want anyway.
+
+              Linus
