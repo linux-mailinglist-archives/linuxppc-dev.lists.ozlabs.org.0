@@ -2,65 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 722DA3A6647
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 14:09:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 087F93A678A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 15:15:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G3Vck0ryCz309N
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 22:09:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G3X4b4r0hz309P
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 23:15:27 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=nzArecrR;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Y5DLbytS;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::52b;
- helo=mail-pg1-x52b.google.com; envelope-from=dja@axtens.net;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=nzArecrR; dkim-atps=neutral
-Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com
- [IPv6:2607:f8b0:4864:20::52b])
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=Y5DLbytS; 
+ dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G3VcF36STz2xZm
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 22:09:16 +1000 (AEST)
-Received: by mail-pg1-x52b.google.com with SMTP id l184so8450439pgd.8
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 05:09:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=qAHvMQfZr2aPDxGZrWGMnkryTv3iza4sU9JvuXfV5xE=;
- b=nzArecrR/ZolTpQ1D3E2uwGlPm95pLtdc84tR3qnNbBARekChG1Vp5mwLwfflaOCkD
- JFG+PDB0Ts/0+ESqAxnErlWe3ZNWd5/++sLvEZWlLXLqi+66xjDq9K8/le2SvpLBBR2Z
- ZuqkzO36EJhRXsusyJ4wpfx6dS+yEu70lX6Gs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=qAHvMQfZr2aPDxGZrWGMnkryTv3iza4sU9JvuXfV5xE=;
- b=rGkWnDCOKag/V0lgdjTJYURT1HxfJ37Hpt+ji4xOlBCiDnr6Yi1vnylDxyG9Q63qpo
- teBYXfCNuaDk69M5EAGblpXdOh11fw5HFK1DHfmjFO3LdHzTJjnC991GRDtQPr0pnRpT
- 5X7+R55xQDL594G4K/PxZz1yIAXUf2rpF0f78ck9gmQF3gpoClTo06NuLMrC908MKXKT
- S1dtx+sbk+auFh8k2rfB3Cs49VE8E+0Qomrs7TShfCCVTMt1Hhl0n6IYHPUxZpMaEBAX
- hGxswi6WWIIkQ6n9g9kk782iQpcdginEg3oTI2+EYUXcJGFa5o5ewqFu+lqVxisL8j9t
- Imxg==
-X-Gm-Message-State: AOAM532977sOODbswxvyTPNraANoyyCv/ZoWu3XOx6iS/FQ+QjNIayyX
- fY0bw7mXEDMOOa63Rr12PzcXlbRu2SAGhQ==
-X-Google-Smtp-Source: ABdhPJxjoMV/i+6IeZePorQNFX63V3KBJXBU+59BG6cKPAuomXXvkvu1YkDgIh7FsU1oR0WiN5xkZg==
-X-Received: by 2002:a63:3603:: with SMTP id d3mr16694918pga.346.1623672553329; 
- Mon, 14 Jun 2021 05:09:13 -0700 (PDT)
-Received: from localhost ([203.206.29.204])
- by smtp.gmail.com with ESMTPSA id l201sm12593718pfd.183.2021.06.14.05.09.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 14 Jun 2021 05:09:12 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G3X453Kdwz2yYH
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 23:15:01 +1000 (AEST)
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 4G3X3w29shz9sW4; Mon, 14 Jun 2021 23:14:51 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1623676492;
+ bh=dKgYJaNH70b/MbYnnBHcZW+6OKlmm+b2HEsFvcpFS2E=;
+ h=From:To:Cc:Subject:Date:From;
+ b=Y5DLbytSPJZYYvPR7oI+LhQAu2qp3HzDDX5YE0gk+dwGc8d0o+FByRZH4Iviiet3U
+ BUCp2y0FogVHI5hoMyMwVKFQxr9Je3Fuu5OSx+mt3XD+PrYs/ogEcb5pj1nK64y6uG
+ Y9ILeKhIWu9tHPPlVBZ3Ad4ce72fL9kH2b8tvM9+jWHW9nam5c+Tk0JlskFAKV1RLk
+ Da6+0QotIyLFr2NpPDaOqIZkmiIdoTRJu9w+jRUqzG6yWRtMRv19j1sR39kKF1naHk
+ VTTbryXskcpuRwnhF6bZpY71FKXAhsU3AYb4/KB7BWWT2dd/m90du0zAh0nkZfgtT9
+ J1+vnB8mcJdSQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2] powerpc: make stack walking KASAN-safe
-Date: Mon, 14 Jun 2021 22:09:07 +1000
-Message-Id: <20210614120907.1952321-1-dja@axtens.net>
-X-Mailer: git-send-email 2.27.0
+Subject: [PATCH] powerpc: Fix initrd corruption with relative jump labels
+Date: Mon, 14 Jun 2021 23:14:40 +1000
+Message-Id: <20210614131440.312360-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -74,92 +56,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>,
- Daniel Axtens <dja@axtens.net>
+Cc: r.bolshakov@yadro.com, a.kovaleva@yadro.com, groug@kaod.org, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Make our stack-walking code KASAN-safe by using __no_sanitize_address.
-Generic code, arm64, s390 and x86 all make accesses unchecked for similar
-sorts of reasons: when unwinding a stack, we might touch memory that KASAN
-has marked as being out-of-bounds. In ppc64 KASAN development, I hit this
-sometimes when checking for an exception frame - because we're checking
-an arbitrary offset into the stack frame.
+Commit b0b3b2c78ec0 ("powerpc: Switch to relative jump labels") switched
+us to using relative jump labels. That involves changing the code,
+target and key members in struct jump_entry to be relative to the
+address of the jump_entry, rather than absolute addresses.
 
-See commit 20955746320e ("s390/kasan: avoid false positives during stack
-unwind"), commit bcaf669b4bdb ("arm64: disable kasan when accessing
-frame->fp in unwind_frame"), commit 91e08ab0c851 ("x86/dumpstack:
-Prevent KASAN false positive warnings") and commit 6e22c8366416
-("tracing, kasan: Silence Kasan warning in check_stack of stack_tracer").
+We have two static inlines that create a struct jump_entry,
+arch_static_branch() and arch_static_branch_jump(), as well as an asm
+macro ARCH_STATIC_BRANCH, which is used by the pseries-only hypervisor
+tracing code.
 
-Cc: Naveen N. Rao <naveen.n.rao@linux.ibm.com>
-Signed-off-by: Daniel Axtens <dja@axtens.net>
+Unfortunately we missed updating the key to be a relative reference in
+ARCH_STATIC_BRANCH.
 
+That causes a pseries kernel to have a handful of jump_entry structs
+with bad key values. Instead of being a relative reference they instead
+hold the full address of the key.
+
+However the code doesn't expect that, it still adds the key value to the
+address of the jump_entry (see jump_entry_key()) expecting to get a
+pointer to a key somewhere in kernel data.
+
+The table of jump_entry structs sits in rodata, which comes after the
+kernel text. In a typical build this will be somewhere around 15MB. The
+address of the key will be somewhere in data, typically around 20MB.
+Adding the two values together gets us a pointer somewhere around 45MB.
+
+We then call static_key_set_entries() with that bad pointer and modify
+some members of the struct static_key we think we are pointing at.
+
+A pseries kernel is typically ~30MB in size, so writing to ~45MB won't
+corrupt the kernel itself. However if we're booting with an initrd,
+depending on the size and exact location of the initrd, we can corrupt
+the initrd. Depending on how exactly we corrupt the initrd it can either
+cause the system to not boot, or just corrupt one of the files in the
+initrd.
+
+The fix is simply to make the key value relative to the jump_entry
+struct in the ARCH_STATIC_BRANCH macro.
+
+Fixes: b0b3b2c78ec0 ("powerpc: Switch to relative jump labels")
+Reported-by: Anastasia Kovaleva <a.kovaleva@yadro.com>
+Reported-by: Roman Bolshakov <r.bolshakov@yadro.com>
+Reported-by: Greg Kurz <groug@kaod.org>
+Reported-by: Daniel Axtens <dja@axtens.net>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
+ arch/powerpc/include/asm/jump_label.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-v2: Use __no_sanitize_address, thanks Naveen
----
- arch/powerpc/kernel/process.c    | 5 +++--
- arch/powerpc/kernel/stacktrace.c | 8 ++++----
- arch/powerpc/perf/callchain.c    | 2 +-
- 3 files changed, 8 insertions(+), 7 deletions(-)
-
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 89e34aa273e2..3464064a0b8b 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -2121,8 +2121,9 @@ unsigned long get_wchan(struct task_struct *p)
+diff --git a/arch/powerpc/include/asm/jump_label.h b/arch/powerpc/include/asm/jump_label.h
+index 2d5c6bec2b4f..93ce3ec25387 100644
+--- a/arch/powerpc/include/asm/jump_label.h
++++ b/arch/powerpc/include/asm/jump_label.h
+@@ -50,7 +50,7 @@ static __always_inline bool arch_static_branch_jump(struct static_key *key, bool
+ 1098:	nop;					\
+ 	.pushsection __jump_table, "aw";	\
+ 	.long 1098b - ., LABEL - .;		\
+-	FTR_ENTRY_LONG KEY;			\
++	FTR_ENTRY_LONG KEY - .;			\
+ 	.popsection
+ #endif
  
- static int kstack_depth_to_print = CONFIG_PRINT_STACK_DEPTH;
- 
--void show_stack(struct task_struct *tsk, unsigned long *stack,
--		const char *loglvl)
-+void __no_sanitize_address show_stack(struct task_struct *tsk,
-+				      unsigned long *stack,
-+				      const char *loglvl)
- {
- 	unsigned long sp, ip, lr, newsp;
- 	int count = 0;
-diff --git a/arch/powerpc/kernel/stacktrace.c b/arch/powerpc/kernel/stacktrace.c
-index 1deb1bf331dd..1961e6d5e33b 100644
---- a/arch/powerpc/kernel/stacktrace.c
-+++ b/arch/powerpc/kernel/stacktrace.c
-@@ -23,8 +23,8 @@
- 
- #include <asm/paca.h>
- 
--void arch_stack_walk(stack_trace_consume_fn consume_entry, void *cookie,
--		     struct task_struct *task, struct pt_regs *regs)
-+void __no_sanitize_address arch_stack_walk(stack_trace_consume_fn consume_entry, void *cookie,
-+					   struct task_struct *task, struct pt_regs *regs)
- {
- 	unsigned long sp;
- 
-@@ -61,8 +61,8 @@ void arch_stack_walk(stack_trace_consume_fn consume_entry, void *cookie,
-  *
-  * If the task is not 'current', the caller *must* ensure the task is inactive.
-  */
--int arch_stack_walk_reliable(stack_trace_consume_fn consume_entry,
--			     void *cookie, struct task_struct *task)
-+int __no_sanitize_address arch_stack_walk_reliable(stack_trace_consume_fn consume_entry,
-+						   void *cookie, struct task_struct *task)
- {
- 	unsigned long sp;
- 	unsigned long newsp;
-diff --git a/arch/powerpc/perf/callchain.c b/arch/powerpc/perf/callchain.c
-index 6c028ee513c0..082f6d0308a4 100644
---- a/arch/powerpc/perf/callchain.c
-+++ b/arch/powerpc/perf/callchain.c
-@@ -40,7 +40,7 @@ static int valid_next_sp(unsigned long sp, unsigned long prev_sp)
- 	return 0;
- }
- 
--void
-+void __no_sanitize_address
- perf_callchain_kernel(struct perf_callchain_entry_ctx *entry, struct pt_regs *regs)
- {
- 	unsigned long sp, next_sp;
 -- 
-2.27.0
+2.25.1
 
