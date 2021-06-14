@@ -2,82 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D8EC3A5C60
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 07:22:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E1133A5C72
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 07:26:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G3KZw6PQnz308Z
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 15:22:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G3Kg54Wp5z3c72
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 15:26:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=R2OCkvoG;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NlgIAB8X;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102c;
- helo=mail-pj1-x102c.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=R2OCkvoG; dkim-atps=neutral
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com
- [IPv6:2607:f8b0:4864:20::102c])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=NlgIAB8X; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G3KZQ17rPz2yYQ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 15:22:03 +1000 (AEST)
-Received: by mail-pj1-x102c.google.com with SMTP id
- g6-20020a17090adac6b029015d1a9a6f1aso9797329pjx.1
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Jun 2021 22:22:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=zXRwTbrh/K3eS4GeqF5tVOMDaKs8/nf83b4xU6oNDJA=;
- b=R2OCkvoGtONFbDWj/RF+6QX43RfS6j4nm7n5RT3xRzDDAF2m6hDiPv4AyQibcGScq7
- WKbfsN4ndiaVDGbhPcbc2JjDee3uVX1kzdmoid5CLtIyI8FVKDLonxjG1zpdD3LeEFj+
- UiYGxa7/qCkBm8o7nJ9v9yv+8ZAt1ESH/o9zQEf6FxLyjoa5l3HWVAyk+P97wrQSvT4f
- dUwgZRPfPci9MmR18ygF7fr5mUYtFw2PmOddequIKZdLG1y8Pad2Js1Q4ujLYkZ6AjZO
- ZFtt1SjycSMLUIHILcZibC/u+I2Muyp958VC4YnlLBTsmqzX8wl24hU8zEd0CDx19DhG
- wtvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=zXRwTbrh/K3eS4GeqF5tVOMDaKs8/nf83b4xU6oNDJA=;
- b=CwVqjm7pCC+sZHd9FArnBDmw3MvtjroN4ODzD6WUb+2asCrH91fCs1+6BQpGJk57Ru
- LiGC7HMMAVPgb/chjsxIz0OiLE/kZbsPCdQhUgv1oEANSQLcA4Z+zYAkusix7Unn0XQk
- WJO7JYLze9iLIRBr4DdhvmXkV33RcHPsRfxMXNqevDKCP3oJdLXHmCg/pYkZycqFiTAC
- bgK8njY4rkoKUsiHjl5OeaYDP9Qf5eHaQ8I7s75rNeE4ht2iKgYrUDCxitJy1tVQzkcj
- hUqjOxfKfgn13OI6+z/Mhut18ktwFcl59cmeT58b5474kXVgGdSR3R61m2QHrkDtJ4N8
- PM2w==
-X-Gm-Message-State: AOAM533Ve6wqxX5v0+JSDNJoIDLs5XxIsm8PaASKDlSEpJaG9LzCJiJ1
- 9hIlu9T2AW5g3ZDD4YN0SlQ=
-X-Google-Smtp-Source: ABdhPJysfNmaZR6IzSqs8m/23zdxZolw4jBNOHlHsh5k2TYE2GTWU8+taYxJ1rdglkacUW+L7AVXJA==
-X-Received: by 2002:a17:90a:65c8:: with SMTP id
- i8mr21750401pjs.207.1623648121056; 
- Sun, 13 Jun 2021 22:22:01 -0700 (PDT)
-Received: from localhost (60-242-147-73.tpgi.com.au. [60.242.147.73])
- by smtp.gmail.com with ESMTPSA id t5sm10919034pfe.116.2021.06.13.22.21.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 13 Jun 2021 22:22:00 -0700 (PDT)
-Date: Mon, 14 Jun 2021 15:21:55 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v4 2/4] lazy tlb: allow lazy tlb mm refcounting to be
- configurable
-To: Andrew Morton <akpm@linux-foundation.org>, Andy Lutomirski
- <luto@kernel.org>
-References: <20210605014216.446867-1-npiggin@gmail.com>
- <20210605014216.446867-3-npiggin@gmail.com>
- <8ac1d420-b861-f586-bacf-8c3949e9b5c4@kernel.org>
- <1623629185.fxzl5xdab6.astroid@bobo.none>
- <02e16a2f-2f58-b4f2-d335-065e007bcea2@kernel.org>
- <1623643443.b9twp3txmw.astroid@bobo.none>
- <1623645385.u2cqbcn3co.astroid@bobo.none>
-In-Reply-To: <1623645385.u2cqbcn3co.astroid@bobo.none>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G3Kdk2FpGz309M
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 15:24:58 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 15E53STg172281; Mon, 14 Jun 2021 01:23:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=keDZFp+AOS94T+XpYeMmzhqYXd48Sax5m58L0cJ3JUM=;
+ b=NlgIAB8XzovGFAX5nfLJhkWKp7zNHJTLI5hs+3QHUbuq2QHUYZDfqRcV4StvIu9eWu2x
+ 8HdZuR/SzWaRa95U9Ojw0lfWOIC6jApWPEqxlJkJgSvjBCNUkIDwaTtOTb5kjYJPzc5Q
+ xBY+HrObKEKudroW8T7F5HxuOkb5pD7ln8bnaXuxJzdRpb3ux+spyfIUj3fP/7mizXr0
+ 0m/gqsUakwwit8D+YWlNZ05zmQsstKqdYlqVe9AmEDKD91lJTK8aZBSe2/H+piWpU485
+ cbsxdAbZsIxTjIczg2w/wZkPG2sX74erbdoPXlaeqgj+68cAnmM0mx8EBbZG4awuiEDn BA== 
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 395w164n40-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 14 Jun 2021 01:23:40 -0400
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15E5GqWx004928;
+ Mon, 14 Jun 2021 05:23:38 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma04fra.de.ibm.com with ESMTP id 394mj8rcuw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 14 Jun 2021 05:23:38 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 15E5NYSB34210248
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 14 Jun 2021 05:23:34 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id ADAE052050;
+ Mon, 14 Jun 2021 05:23:34 +0000 (GMT)
+Received: from localhost.localdomain.com (unknown [9.199.33.211])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 5B0535204F;
+ Mon, 14 Jun 2021 05:23:31 +0000 (GMT)
+From: Kajol Jain <kjain@linux.ibm.com>
+To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, nvdimm@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, peterz@infradead.org
+Subject: [PATCH v2 0/4] Add perf interface to expose nvdimm
+Date: Mon, 14 Jun 2021 10:53:22 +0530
+Message-Id: <20210614052326.285710-1-kjain@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: xyMZJ786AF0_98ItiITe5UO6RsxE6GDI
+X-Proofpoint-ORIG-GUID: xyMZJ786AF0_98ItiITe5UO6RsxE6GDI
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Message-Id: <1623647326.0np4yc0lo0.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-06-13_11:2021-06-11,
+ 2021-06-13 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 adultscore=0
+ mlxlogscore=999 suspectscore=0 bulkscore=0 impostorscore=0 spamscore=0
+ priorityscore=1501 malwarescore=0 lowpriorityscore=0 phishscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2106140037
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,161 +95,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org
+Cc: santosh@fossix.org, maddy@linux.vnet.ibm.com, rnsastry@linux.ibm.com,
+ aneesh.kumar@linux.ibm.com, atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com,
+ vaibhav@linux.ibm.com, dan.j.williams@intel.com, ira.weiny@intel.com,
+ tglx@linutronix.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Nicholas Piggin's message of June 14, 2021 2:47 pm:
-> Excerpts from Nicholas Piggin's message of June 14, 2021 2:14 pm:
->> Excerpts from Andy Lutomirski's message of June 14, 2021 1:52 pm:
->>> On 6/13/21 5:45 PM, Nicholas Piggin wrote:
->>>> Excerpts from Andy Lutomirski's message of June 9, 2021 2:20 am:
->>>>> On 6/4/21 6:42 PM, Nicholas Piggin wrote:
->>>>>> Add CONFIG_MMU_TLB_REFCOUNT which enables refcounting of the lazy tl=
-b mm
->>>>>> when it is context switched. This can be disabled by architectures t=
-hat
->>>>>> don't require this refcounting if they clean up lazy tlb mms when th=
-e
->>>>>> last refcount is dropped. Currently this is always enabled, which is
->>>>>> what existing code does, so the patch is effectively a no-op.
->>>>>>
->>>>>> Rename rq->prev_mm to rq->prev_lazy_mm, because that's what it is.
->>>>>
->>>>> I am in favor of this approach, but I would be a lot more comfortable
->>>>> with the resulting code if task->active_mm were at least better
->>>>> documented and possibly even guarded by ifdefs.
->>>>=20
->>>> active_mm is fairly well documented in Documentation/active_mm.rst IMO=
-.
->>>> I don't think anything has changed in 20 years, I don't know what more
->>>> is needed, but if you can add to documentation that would be nice. May=
-be
->>>> moving a bit of that into .c and .h files?
->>>>=20
->>>=20
->>> Quoting from that file:
->>>=20
->>>   - however, we obviously need to keep track of which address space we
->>>     "stole" for such an anonymous user. For that, we have "tsk->active_=
-mm",
->>>     which shows what the currently active address space is.
->>>=20
->>> This isn't even true right now on x86.
->>=20
->> From the perspective of core code, it is. x86 might do something crazy=20
->> with it, but it has to make it appear this way to non-arch code that
->> uses active_mm.
->>=20
->> Is x86's scheme documented?
->>=20
->>> With your patch applied:
->>>=20
->>>  To support all that, the "struct mm_struct" now has two counters: a
->>>  "mm_users" counter that is how many "real address space users" there a=
-re,
->>>  and a "mm_count" counter that is the number of "lazy" users (ie anonym=
-ous
->>>  users) plus one if there are any real users.
->>>=20
->>> isn't even true any more.
->>=20
->> Well yeah but the active_mm concept hasn't changed. The refcounting=20
->> change is hopefully reasonably documented?
->>=20
->>>=20
->>>=20
->>>>> x86 bare metal currently does not need the core lazy mm refcounting, =
-and
->>>>> x86 bare metal *also* does not need ->active_mm.  Under the x86 schem=
-e,
->>>>> if lazy mm refcounting were configured out, ->active_mm could become =
-a
->>>>> dangling pointer, and this makes me extremely uncomfortable.
->>>>>
->>>>> So I tend to think that, depending on config, the core code should
->>>>> either keep ->active_mm [1] alive or get rid of it entirely.
->>>>=20
->>>> I don't actually know what you mean.
->>>>=20
->>>> core code needs the concept of an "active_mm". This is the mm that you=
-r=20
->>>> kernel threads are using, even in the unmerged CONFIG_LAZY_TLB=3Dn pat=
-ch,
->>>> active_mm still points to init_mm for kernel threads.
->>>=20
->>> Core code does *not* need this concept.  First, it's wrong on x86 since
->>> at least 4.15.  Any core code that actually assumes that ->active_mm is
->>> "active" for any sensible definition of the word active is wrong.
->>> Fortunately there is no such code.
->>>=20
->>> I looked through all active_mm references in core code.  We have:
->>>=20
->>> kernel/sched/core.c: it's all refcounting, although it's a bit tangled
->>> with membarrier.
->>>=20
->>> kernel/kthread.c: same.  refcounting and membarrier stuff.
->>>=20
->>> kernel/exit.c: exit_mm() a BUG_ON().
->>>=20
->>> kernel/fork.c: initialization code and a warning.
->>>=20
->>> kernel/cpu.c: cpu offline stuff.  wouldn't be needed if active_mm went =
-away.
->>>=20
->>> fs/exec.c: nothing of interest
->>=20
->> I might not have been clear. Core code doesn't need active_mm if=20
->> active_mm somehow goes away. I'm saying active_mm can't go away because
->> it's needed to support (most) archs that do lazy tlb mm switching.
->>=20
->> The part I don't understand is when you say it can just go away. How?=20
->>=20
->>> I didn't go through drivers, but I maintain my point.  active_mm is
->>> there for refcounting.  So please don't just make it even more confusin=
-g
->>> -- do your performance improvement, but improve the code at the same
->>> time: get rid of active_mm, at least on architectures that opt out of
->>> the refcounting.
->>=20
->> powerpc opts out of the refcounting and can not "get rid of active_mm".
->> Not even in theory.
->=20
-> That is to say, it does do a type of reference management that requires=20
-> active_mm so you can argue it has not entirely opted out of refcounting.
-> But we're not just doing refcounting for the sake of refcounting! That
-> would make no sense.
->=20
-> active_mm is required because that's the mm that we have switched to=20
-> (from core code's perspective), and it is integral to know when to=20
-> switch to a different mm. See how active_mm is a fundamental concept
-> in core code? It's part of the contract between core code and the
-> arch mm context management calls. reference counting follows from there
-> but it's not the _reason_ for this code.
->=20
-> Pretend the reference problem does not exit (whether by refcounting or=20
-> shootdown or garbage collection or whatever). We still can't remove=20
-> active_mm! We need it to know how to call into arch functions like=20
-> switch_mm.
->=20
-> I don't know if you just forgot that critical requirement in your above=20
-> list, or you actually are entirely using x86's mental model for this=20
-> code which is doing something entirely different that does not need it=20
-> at all. If that is the case I really don't mind some cleanup or wrapper=20
-> functions for x86 do entirely do its own thing, but if that's the case
-> you can't criticize core code's use of active_mm due to the current
-> state of x86. It's x86 that needs documentation and cleaning up.
+Patchset adds performance stats reporting support for nvdimm.
+Added interface includes support for pmu register/unregister
+functions. A structure is added called nvdimm_pmu to be used for
+adding arch/platform specific data such as supported events, cpumask
+pmu event functions like event_init/add/read/del.
+User could use the standard perf tool to access perf
+events exposed via pmu.
 
-Ah, that must be where your confusion is coming from: x86's switch_mm=20
-doesn't use prev anywhere, and the reference scheme it is using appears=20
-to be under-documented, although vague references in changelogs suggest=20
-it has not actually "opted out" of active_mm refcounting.
+Added implementation to expose IBM pseries platform nmem*
+device performance stats using this interface.
 
-That's understandable, but please redirect your objections to the proper=20
-place. git blame suggests 3d28ebceaffab.
+Result from power9 pseries lpar with 2 nvdimm device:
+command:# perf list nmem
+  nmem0/cchrhcnt/                                    [Kernel PMU event]
+  nmem0/cchwhcnt/                                    [Kernel PMU event]
+  nmem0/critrscu/                                    [Kernel PMU event]
+  nmem0/ctlresct/                                    [Kernel PMU event]
+  nmem0/ctlrestm/                                    [Kernel PMU event]
+  nmem0/fastwcnt/                                    [Kernel PMU event]
+  nmem0/hostlcnt/                                    [Kernel PMU event]
+  nmem0/hostldur/                                    [Kernel PMU event]
+  nmem0/hostscnt/                                    [Kernel PMU event]
+  nmem0/hostsdur/                                    [Kernel PMU event]
+  nmem0/medrcnt/                                     [Kernel PMU event]
+  nmem0/medrdur/                                     [Kernel PMU event]
+  nmem0/medwcnt/                                     [Kernel PMU event]
+  nmem0/medwdur/                                     [Kernel PMU event]
+  nmem0/memlife/                                     [Kernel PMU event]
+  nmem0/noopstat/                                    [Kernel PMU event]
+  nmem0/ponsecs/                                     [Kernel PMU event]
+  nmem1/cchrhcnt/                                    [Kernel PMU event]
+  nmem1/cchwhcnt/                                    [Kernel PMU event]
+  nmem1/critrscu/                                    [Kernel PMU event]
+  ...
+  nmem1/noopstat/                                    [Kernel PMU event]
+  nmem1/ponsecs/                                     [Kernel PMU event]
 
-Thanks,
-Nick
+Patch1:
+        Introduces the nvdimm_pmu structure
+Patch2:
+	Adds common interface to add arch/platform specific data
+	includes supported events, pmu event functions. It also
+	adds code for cpu hotplug support.
+Patch3:
+        Add code in arch/powerpc/platform/pseries/papr_scm.c to expose
+        nmem* pmu. It fills in the nvdimm_pmu structure with event attrs
+        cpumask andevent functions and then registers the pmu by adding
+        callbacks to register_nvdimm_pmu.
+Patch4:
+        Sysfs documentation patch
+
+Changelog
+---
+PATCH v1 -> PATCH v2
+- Fix hotplug code by adding pmu migration call
+  incase current designated cpu got offline. As
+  pointed by Peter Zijlstra.
+
+- Removed the retun -1 part from cpu hotplug offline
+  function.
+
+- Link to the previous patchset : https://lkml.org/lkml/2021/6/8/500
+---
+Kajol Jain (4):
+  drivers/nvdimm: Add nvdimm pmu structure
+  drivers/nvdimm: Add perf interface to expose nvdimm performance stats
+  powerpc/papr_scm: Add perf interface support
+  powerpc/papr_scm: Document papr_scm sysfs event format entries
+
+ Documentation/ABI/testing/sysfs-bus-papr-pmem |  31 ++
+ arch/powerpc/include/asm/device.h             |   5 +
+ arch/powerpc/platforms/pseries/papr_scm.c     | 365 ++++++++++++++++++
+ drivers/nvdimm/Makefile                       |   1 +
+ drivers/nvdimm/nd_perf.c                      | 230 +++++++++++
+ include/linux/nd.h                            |  46 +++
+ 6 files changed, 678 insertions(+)
+ create mode 100644 drivers/nvdimm/nd_perf.c
+
+-- 
+2.27.0
+
