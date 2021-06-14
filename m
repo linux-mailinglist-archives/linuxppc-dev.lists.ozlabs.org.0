@@ -1,92 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB7D83A5C70
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 07:25:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BDC03A5C77
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 07:27:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G3KfV3XGrz3c1p
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 15:25:38 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qzGazO2k;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G3Khz1FFYz3cDQ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 15:27:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=qzGazO2k; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G3Kd11b0fz2yYQ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 15:24:20 +1000 (AEST)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 15E53iSi095506; Mon, 14 Jun 2021 01:23:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=gXb92jLZltP0TlGgpp4tnPgvWeahwiv76pBDu+u4I1U=;
- b=qzGazO2kJOJCe6de0TuORyD9Dcjv7HccmB7wzLKSmyoeOh+vfmftP110+x7T2QxHKRMX
- RxDtVPj3D5Bm2IcTfOhTS+1cs8Wu6W1KgDUwtM3v77QrEGMDafmhMwu39jWtKAms3pYK
- 14UMVrkDFh7/lpZ9SBRGDmqjgaQkJt9pqe2yKaIvZjNeHt2+R/lVw4WEjHM5n7t+CUud
- owvdVfYOZIkQ+JbdtOjWziF8MsBsmqpTe6JOeQuqEw86qcsiBYm5T8TmBRm0TjBHe46S
- bvfMMCg7ecsxoTyoUl3tfVvWpb1VrhXcS/TsG/J+Huyr5e+W5tiMiCB8AivNHcon8tRc 7A== 
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.107])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3960dyrk3g-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Jun 2021 01:23:55 -0400
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
- by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15E5Gn5E027355;
- Mon, 14 Jun 2021 05:23:52 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma03fra.de.ibm.com with ESMTP id 394mj90ct2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Jun 2021 05:23:52 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 15E5Nni113959548
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 14 Jun 2021 05:23:49 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9CE7752052;
- Mon, 14 Jun 2021 05:23:49 +0000 (GMT)
-Received: from localhost.localdomain.com (unknown [9.199.33.211])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 47D2D5204E;
- Mon, 14 Jun 2021 05:23:46 +0000 (GMT)
-From: Kajol Jain <kjain@linux.ibm.com>
-To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, nvdimm@lists.linux.dev, 
- linux-kernel@vger.kernel.org, peterz@infradead.org
-Subject: [PATCH v2 4/4] powerpc/papr_scm: Document papr_scm sysfs event format
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G3Khf1Vpsz2xtt
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 15:27:27 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 4G3KhV14cZzBDBP;
+ Mon, 14 Jun 2021 07:27:22 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id UWgPplpQZ_8c; Mon, 14 Jun 2021 07:27:22 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4G3KhV017RzBDBC;
+ Mon, 14 Jun 2021 07:27:22 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id E6CCB8B789;
+ Mon, 14 Jun 2021 07:27:21 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id t7pqco8zY48P; Mon, 14 Jun 2021 07:27:21 +0200 (CEST)
+Received: from [172.25.230.102] (po15451.idsi0.si.c-s.fr [172.25.230.102])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B6FFB8B763;
+ Mon, 14 Jun 2021 07:27:21 +0200 (CEST)
+Subject: Re: [PATCH 5/6] mm/mremap: Use pmd/pud_poplulate to update page table
  entries
-Date: Mon, 14 Jun 2021 10:53:26 +0530
-Message-Id: <20210614052326.285710-5-kjain@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210614052326.285710-1-kjain@linux.ibm.com>
-References: <20210614052326.285710-1-kjain@linux.ibm.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Matthew Wilcox <willy@infradead.org>
+References: <20210610083549.386085-1-aneesh.kumar@linux.ibm.com>
+ <20210610083549.386085-6-aneesh.kumar@linux.ibm.com>
+ <CAHk-=wi+J+iodze9FtjM3Zi4j4OeS+qqbKxME9QN4roxPEXH9Q@mail.gmail.com>
+ <87wnqy9lru.fsf@linux.ibm.com> <YMXi6AZm4fPpPKrH@casper.infradead.org>
+ <dd2f0d9d-da78-46a4-78cb-c5cfb7df7f16@linux.ibm.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <d49125f2-ab15-05a8-7982-12cbbfcc4dc9@csgroup.eu>
+Date: Mon, 14 Jun 2021 07:27:19 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
+In-Reply-To: <dd2f0d9d-da78-46a4-78cb-c5cfb7df7f16@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 7FwRtp6goBst1m_1bOMdxu71PcUoKtSf
-X-Proofpoint-ORIG-GUID: 7FwRtp6goBst1m_1bOMdxu71PcUoKtSf
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-06-13_11:2021-06-11,
- 2021-06-13 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 mlxlogscore=999
- suspectscore=0 malwarescore=0 adultscore=0 mlxscore=0 spamscore=0
- clxscore=1015 impostorscore=0 priorityscore=1501 bulkscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2106140037
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,61 +68,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: santosh@fossix.org, maddy@linux.vnet.ibm.com, rnsastry@linux.ibm.com,
- aneesh.kumar@linux.ibm.com, atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com,
- vaibhav@linux.ibm.com, dan.j.williams@intel.com, ira.weiny@intel.com,
- tglx@linutronix.de
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ Nick Piggin <npiggin@gmail.com>, Linux-MM <linux-mm@kvack.org>,
+ Kalesh Singh <kaleshsingh@google.com>, Joel Fernandes <joel@joelfernandes.org>,
+ "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Details is added for the event, cpumask and format attributes
-in the ABI documentation.
 
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
----
- Documentation/ABI/testing/sysfs-bus-papr-pmem | 31 +++++++++++++++++++
- 1 file changed, 31 insertions(+)
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-papr-pmem b/Documentation/ABI/testing/sysfs-bus-papr-pmem
-index 92e2db0e2d3d..be91de341454 100644
---- a/Documentation/ABI/testing/sysfs-bus-papr-pmem
-+++ b/Documentation/ABI/testing/sysfs-bus-papr-pmem
-@@ -59,3 +59,34 @@ Description:
- 		* "CchRHCnt" : Cache Read Hit Count
- 		* "CchWHCnt" : Cache Write Hit Count
- 		* "FastWCnt" : Fast Write Count
-+
-+What:		/sys/devices/nmemX/format
-+Date:		June 2021
-+Contact:	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-nvdimm@lists.01.org,
-+Description:	(RO) Attribute group to describe the magic bits
-+                that go into perf_event_attr.config for a particular pmu.
-+                (See ABI/testing/sysfs-bus-event_source-devices-format).
-+
-+                Each attribute under this group defines a bit range of the
-+                perf_event_attr.config. Supported attribute is listed
-+                below::
-+
-+		    event  = "config:0-4"  - event ID
-+
-+		For example::
-+		    noopstat = "event=0x1"
-+
-+What:		/sys/devices/nmemX/events
-+Date:		June 2021
-+Contact:	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-nvdimm@lists.01.org,
-+Description:    (RO) Attribute group to describe performance monitoring
-+                events specific to papr-scm. Each attribute in this group describes
-+                a single performance monitoring event supported by this nvdimm pmu.
-+                The name of the file is the name of the event.
-+                (See ABI/testing/sysfs-bus-event_source-devices-events).
-+
-+What:		/sys/devices/nmemX/cpumask
-+Date:		June 2021
-+Contact:	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-nvdimm@lists.01.org,
-+Description:	(RO) This sysfs file exposes the cpumask which is designated to make
-+                HCALLs to retrieve nvdimm pmu event counter data.
--- 
-2.27.0
+Le 13/06/2021 à 13:13, Aneesh Kumar K.V a écrit :
+> On 6/13/21 4:20 PM, Matthew Wilcox wrote:
+>> On Sun, Jun 13, 2021 at 02:36:13PM +0530, Aneesh Kumar K.V wrote:
+>>> IIUC the reason why we do have pmd_pgtable() is that pgtable_t type
+>>> is arch dependent. On some architecture it is pte_t * and on the other
+>>> struct page *. The reason being highmem and level 4 page table can
+>>> be located in highmem.
+>>
+>> That is ahistorical.  See 2f569afd9ced9ebec9a6eb3dbf6f83429be0a7b4 --
+>> we have pgtable_t for the benefit of s390's crazy sub-page page table
+>> sizes.
+> 
+> That is also true with ppc64. We do sub-page page table size. I was trying to explain why it can't 
+> be pte_t * everywhere and why we have
+> it as struct page *.
 
+ppc32 as well. On the 8xx, with 16k size pages, the HW still use 4k page tables, so we do use sub-pages.
+
+In order too keep the code simple, we have converted all powerpc to sub-pages for that, allthough 
+some powerpc platforms have only one sub-page per page.
+
+Christophe
