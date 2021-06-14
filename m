@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD7103A5CD3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 08:17:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0D7B3A5CDA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 08:17:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G3Lp12kFWz308w
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 16:17:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G3Lpt435Lz3bvM
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 16:17:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,21 +16,21 @@ Authentication-Results: lists.ozlabs.org;
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G3Lnf6vSnz2yYH
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 16:16:53 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G3LpY5MV0z2yjS
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 16:17:41 +1000 (AEST)
 Received: by verein.lst.de (Postfix, from userid 2407)
- id 6D6E667373; Mon, 14 Jun 2021 08:16:44 +0200 (CEST)
-Date: Mon, 14 Jun 2021 08:16:44 +0200
+ id 2951067373; Mon, 14 Jun 2021 08:17:37 +0200 (CEST)
+Date: Mon, 14 Jun 2021 08:17:36 +0200
 From: Christoph Hellwig <hch@lst.de>
 To: Claire Chang <tientzu@chromium.org>
-Subject: Re: [PATCH v9 01/14] swiotlb: Refactor swiotlb init functions
-Message-ID: <20210614061644.GA28343@lst.de>
+Subject: Re: [PATCH v9 02/14] swiotlb: Refactor swiotlb_create_debugfs
+Message-ID: <20210614061736.GB28343@lst.de>
 References: <20210611152659.2142983-1-tientzu@chromium.org>
- <20210611152659.2142983-2-tientzu@chromium.org>
+ <20210611152659.2142983-3-tientzu@chromium.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210611152659.2142983-2-tientzu@chromium.org>
+In-Reply-To: <20210611152659.2142983-3-tientzu@chromium.org>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -73,21 +73,29 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 11, 2021 at 11:26:46PM +0800, Claire Chang wrote:
-> +	spin_lock_init(&mem->lock);
-> +	for (i = 0; i < mem->nslabs; i++) {
-> +		mem->slots[i].list = IO_TLB_SEGSIZE - io_tlb_offset(i);
-> +		mem->slots[i].orig_addr = INVALID_PHYS_ADDR;
-> +		mem->slots[i].alloc_size = 0;
-> +	}
-> +
-> +	if (memory_decrypted)
-> +		set_memory_decrypted((unsigned long)vaddr, bytes >> PAGE_SHIFT);
-> +	memset(vaddr, 0, bytes);
+On Fri, Jun 11, 2021 at 11:26:47PM +0800, Claire Chang wrote:
+> Split the debugfs creation to make the code reusable for supporting
+> different bounce buffer pools, e.g. restricted DMA pool.
+> 
+> Signed-off-by: Claire Chang <tientzu@chromium.org>
+> ---
+>  kernel/dma/swiotlb.c | 23 ++++++++++++++++-------
+>  1 file changed, 16 insertions(+), 7 deletions(-)
+> 
+> diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+> index 1a1208c81e85..8a3e2b3b246d 100644
+> --- a/kernel/dma/swiotlb.c
+> +++ b/kernel/dma/swiotlb.c
+> @@ -64,6 +64,9 @@
+>  enum swiotlb_force swiotlb_force;
+>  
+>  struct io_tlb_mem *io_tlb_default_mem;
+> +#ifdef CONFIG_DEBUG_FS
+> +static struct dentry *debugfs_dir;
+> +#endif
 
-We don't really need to do this call before the memset.  Which means we
-can just move it to the callers that care instead of having a bool
-argument.
+What about moving this declaration into the main CONFIG_DEBUG_FS block
+near the functions using it?
 
 Otherwise looks good:
 
