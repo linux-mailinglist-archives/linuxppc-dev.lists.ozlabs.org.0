@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3AB73A7257
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 01:08:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 643BF3A7251
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 01:06:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G3nDf3zsJz3bxk
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 09:08:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G3nBW6tKsz303h
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 09:06:27 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=dEJHKYnB;
+	dkim=pass (2048-bit key; secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=ftlze4BO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,33 +17,32 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=paulus@ozlabs.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
- header.s=201707 header.b=dEJHKYnB; dkim-atps=neutral
+ header.s=201707 header.b=ftlze4BO; dkim-atps=neutral
 Received: from ozlabs.org (ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G3n9g0bm2z2ysk
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 09:05:41 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G3n9c3fNRz2ylk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 09:05:39 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 4G3n9b2t3gz9sW7; Tue, 15 Jun 2021 09:05:39 +1000 (AEST)
+ id 4G3n9Z22KXz9sWQ; Tue, 15 Jun 2021 09:05:38 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1003)
- id 4G3n9b25Gwz9sXL; Tue, 15 Jun 2021 09:05:38 +1000 (AEST)
+ id 4G3n9Z1MYRz9sWD; Tue, 15 Jun 2021 09:05:38 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1623711939; bh=sgrM+WScv2wkftWMuivtLDglVOWQ3X1P7FCvile3F3I=;
+ t=1623711938; bh=NVVNIVc21t8Ax9gg8n8KDguZAVUhGCKn/FOAoL57vj0=;
  h=Date:From:To:Subject:References:In-Reply-To:From;
- b=dEJHKYnBRMvOultN+S/gDzpJOfIucZ2HRXrDovy2IE7a1/ZvKpF5FKXAXJW/Bi2ns
- +D+6pbP1LFNVJ8Ios59Cw4zqQ7pwO67NzFplCJVHUEULQB+pQNAQKNIojeroH7YZtZ
- 8ClX5fnN48G7/KCE+Xk+1PQgyFUerw8t/pnOp6XlXkdSGQ5W1urKg5F5+dH/ptZgbS
- z09VPB1R8vK/E0eXCSJGtat9mvSVuzfbO80/wYbZWWVJD26RyoUXsJYJh/nGMUepKx
- rZHV1MUxFmlUEiThTShyKZIO3I4l77NZWfPzpwYbggqEDGlJT9hwH+FdSI/FTSM7NB
- STUxAdYcKDzVA==
-Date: Tue, 15 Jun 2021 09:02:02 +1000
+ b=ftlze4BO0KrP/mRSJOJQs/glirVjxerlHY6v1Sz4PCut4uIDAoYRWsjkLGwaii31n
+ SyW53Ke+19RQ1hf4R4gXkxMQ+dGf/Ve6ypsvUnXToaXYU2/wgZSSE/d4b1/ybRH1rC
+ rLalTTTrBt6n21hpm6V4ixn2zveQbgku+7lKIRq6+aHuem44ZzKKAzYr+zHGpR14xe
+ 3uGLSzvJi/rj3vTXdn0niJ5xpF6i1UOwmIL/xW/N+K1DR3esQj0HnD7pYHOB2lHo85
+ uZAcvlRUuofgnYuvejEdfsYAkwzYXdfJj26kpugKl2DYExfHX+N50JQxCoOJQXrS4W
+ fvj8XPgxhAW1w==
+Date: Tue, 15 Jun 2021 09:02:40 +1000
 From: Paul Mackerras <paulus@ozlabs.org>
 To: linuxppc-dev@ozlabs.org
-Subject: [PATCH 07/11] powerpc: Add support for microwatt's hardware random
- number generator
-Message-ID: <YMff6iLDiCbFQmrW@thinks.paulus.ozlabs.org>
+Subject: [PATCH 08/11] powerpc/microwatt: Add microwatt_defconfig
+Message-ID: <YMfgEPrZDqqxTHgT@thinks.paulus.ozlabs.org>
 References: <YMfeswgEHeXSLOUF@thinks.paulus.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -64,119 +63,116 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is accessed using the DARN instruction and should probably be
-done more generically.
-
 Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
 ---
- arch/powerpc/include/asm/archrandom.h     | 12 +++++-
- arch/powerpc/platforms/microwatt/Kconfig  |  1 +
- arch/powerpc/platforms/microwatt/Makefile |  2 +-
- arch/powerpc/platforms/microwatt/rng.c    | 48 +++++++++++++++++++++++
- 4 files changed, 61 insertions(+), 2 deletions(-)
- create mode 100644 arch/powerpc/platforms/microwatt/rng.c
+ arch/powerpc/configs/microwatt_defconfig | 98 ++++++++++++++++++++++++
+ 1 file changed, 98 insertions(+)
+ create mode 100644 arch/powerpc/configs/microwatt_defconfig
 
-diff --git a/arch/powerpc/include/asm/archrandom.h b/arch/powerpc/include/asm/archrandom.h
-index 9a53e29680f4..e8ae0f7740f9 100644
---- a/arch/powerpc/include/asm/archrandom.h
-+++ b/arch/powerpc/include/asm/archrandom.h
-@@ -8,12 +8,22 @@
- 
- static inline bool __must_check arch_get_random_long(unsigned long *v)
- {
-+	if (ppc_md.get_random_seed)
-+		return ppc_md.get_random_seed(v);
-+
- 	return false;
- }
- 
- static inline bool __must_check arch_get_random_int(unsigned int *v)
- {
--	return false;
-+	unsigned long val;
-+	bool rc;
-+
-+	rc = arch_get_random_long(&val);
-+	if (rc)
-+		*v = val;
-+
-+	return rc;
- }
- 
- static inline bool __must_check arch_get_random_seed_long(unsigned long *v)
-diff --git a/arch/powerpc/platforms/microwatt/Kconfig b/arch/powerpc/platforms/microwatt/Kconfig
-index 50ed0cedb5f1..8f6a81978461 100644
---- a/arch/powerpc/platforms/microwatt/Kconfig
-+++ b/arch/powerpc/platforms/microwatt/Kconfig
-@@ -7,6 +7,7 @@ config PPC_MICROWATT
- 	select PPC_ICP_NATIVE
- 	select PPC_NATIVE
- 	select PPC_UDBG_16550
-+	select ARCH_RANDOM
- 	help
-           This option enables support for FPGA-based Microwatt implementations.
- 
-diff --git a/arch/powerpc/platforms/microwatt/Makefile b/arch/powerpc/platforms/microwatt/Makefile
-index e6885b3b2ee7..116d6d3ad3f0 100644
---- a/arch/powerpc/platforms/microwatt/Makefile
-+++ b/arch/powerpc/platforms/microwatt/Makefile
-@@ -1 +1 @@
--obj-y	+= setup.o
-+obj-y	+= setup.o rng.o
-diff --git a/arch/powerpc/platforms/microwatt/rng.c b/arch/powerpc/platforms/microwatt/rng.c
+diff --git a/arch/powerpc/configs/microwatt_defconfig b/arch/powerpc/configs/microwatt_defconfig
 new file mode 100644
-index 000000000000..3d8ee6eb7dad
+index 000000000000..a08b739123da
 --- /dev/null
-+++ b/arch/powerpc/platforms/microwatt/rng.c
-@@ -0,0 +1,48 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Derived from arch/powerpc/platforms/powernv/rng.c, which is:
-+ * Copyright 2013, Michael Ellerman, IBM Corporation.
-+ */
-+
-+#define pr_fmt(fmt)	"microwatt-rng: " fmt
-+
-+#include <linux/kernel.h>
-+#include <linux/smp.h>
-+#include <asm/archrandom.h>
-+#include <asm/cputable.h>
-+#include <asm/machdep.h>
-+
-+#define DARN_ERR 0xFFFFFFFFFFFFFFFFul
-+
-+int microwatt_get_random_darn(unsigned long *v)
-+{
-+	unsigned long val;
-+
-+	/* Using DARN with L=1 - 64-bit conditioned random number */
-+	asm volatile(PPC_DARN(%0, 1) : "=r"(val));
-+
-+	if (val == DARN_ERR)
-+		return 0;
-+
-+	*v = val;
-+
-+	return 1;
-+}
-+
-+static __init int rng_init(void)
-+{
-+	unsigned long val;
-+	int i;
-+
-+	for (i = 0; i < 10; i++) {
-+		if (microwatt_get_random_darn(&val)) {
-+			ppc_md.get_random_seed = microwatt_get_random_darn;
-+			return 0;
-+		}
-+	}
-+
-+	pr_warn("Unable to use DARN for get_random_seed()\n");
-+
-+	return -EIO;
-+}
-+machine_subsys_initcall(, rng_init);
++++ b/arch/powerpc/configs/microwatt_defconfig
+@@ -0,0 +1,98 @@
++# CONFIG_SWAP is not set
++# CONFIG_CROSS_MEMORY_ATTACH is not set
++CONFIG_HIGH_RES_TIMERS=y
++CONFIG_PREEMPT_VOLUNTARY=y
++CONFIG_TICK_CPU_ACCOUNTING=y
++CONFIG_LOG_BUF_SHIFT=16
++CONFIG_PRINTK_SAFE_LOG_BUF_SHIFT=12
++CONFIG_BLK_DEV_INITRD=y
++CONFIG_CC_OPTIMIZE_FOR_SIZE=y
++CONFIG_KALLSYMS_ALL=y
++CONFIG_EMBEDDED=y
++# CONFIG_VM_EVENT_COUNTERS is not set
++# CONFIG_SLUB_DEBUG is not set
++# CONFIG_COMPAT_BRK is not set
++# CONFIG_SLAB_MERGE_DEFAULT is not set
++CONFIG_PPC64=y
++# CONFIG_PPC_KUEP is not set
++# CONFIG_PPC_KUAP is not set
++CONFIG_CPU_LITTLE_ENDIAN=y
++CONFIG_NR_IRQS=64
++CONFIG_PANIC_TIMEOUT=10
++# CONFIG_PPC_POWERNV is not set
++# CONFIG_PPC_PSERIES is not set
++CONFIG_PPC_MICROWATT=y
++# CONFIG_PPC_OF_BOOT_TRAMPOLINE is not set
++CONFIG_CPU_FREQ=y
++CONFIG_HZ_100=y
++# CONFIG_PPC_MEM_KEYS is not set
++# CONFIG_SECCOMP is not set
++# CONFIG_MQ_IOSCHED_KYBER is not set
++# CONFIG_COREDUMP is not set
++# CONFIG_COMPACTION is not set
++# CONFIG_MIGRATION is not set
++CONFIG_NET=y
++CONFIG_PACKET=y
++CONFIG_PACKET_DIAG=y
++CONFIG_UNIX=y
++CONFIG_UNIX_DIAG=y
++CONFIG_INET=y
++CONFIG_INET_UDP_DIAG=y
++CONFIG_INET_RAW_DIAG=y
++# CONFIG_WIRELESS is not set
++CONFIG_DEVTMPFS=y
++CONFIG_DEVTMPFS_MOUNT=y
++# CONFIG_STANDALONE is not set
++# CONFIG_PREVENT_FIRMWARE_BUILD is not set
++# CONFIG_FW_LOADER is not set
++# CONFIG_ALLOW_DEV_COREDUMP is not set
++CONFIG_MTD=y
++CONFIG_MTD_BLOCK=y
++CONFIG_MTD_PARTITIONED_MASTER=y
++CONFIG_MTD_SPI_NOR=y
++CONFIG_BLK_DEV_LOOP=y
++CONFIG_BLK_DEV_RAM=y
++CONFIG_NETDEVICES=y
++# CONFIG_WLAN is not set
++# CONFIG_INPUT is not set
++# CONFIG_SERIO is not set
++# CONFIG_VT is not set
++CONFIG_SERIAL_8250=y
++# CONFIG_SERIAL_8250_DEPRECATED_OPTIONS is not set
++CONFIG_SERIAL_8250_CONSOLE=y
++CONFIG_SERIAL_OF_PLATFORM=y
++CONFIG_SERIAL_NONSTANDARD=y
++# CONFIG_NVRAM is not set
++CONFIG_RANDOM_TRUST_CPU=y
++CONFIG_SPI=y
++CONFIG_SPI_DEBUG=y
++CONFIG_SPI_BITBANG=y
++CONFIG_SPI_SPIDEV=y
++# CONFIG_HWMON is not set
++# CONFIG_USB_SUPPORT is not set
++# CONFIG_VIRTIO_MENU is not set
++# CONFIG_IOMMU_SUPPORT is not set
++# CONFIG_NVMEM is not set
++CONFIG_EXT4_FS=y
++# CONFIG_FILE_LOCKING is not set
++# CONFIG_DNOTIFY is not set
++# CONFIG_INOTIFY_USER is not set
++# CONFIG_MISC_FILESYSTEMS is not set
++# CONFIG_CRYPTO_HW is not set
++# CONFIG_XZ_DEC_X86 is not set
++# CONFIG_XZ_DEC_IA64 is not set
++# CONFIG_XZ_DEC_ARM is not set
++# CONFIG_XZ_DEC_ARMTHUMB is not set
++# CONFIG_XZ_DEC_SPARC is not set
++CONFIG_PRINTK_TIME=y
++# CONFIG_SYMBOLIC_ERRNAME is not set
++# CONFIG_DEBUG_BUGVERBOSE is not set
++# CONFIG_DEBUG_MISC is not set
++# CONFIG_SCHED_DEBUG is not set
++# CONFIG_FTRACE is not set
++# CONFIG_STRICT_DEVMEM is not set
++CONFIG_PPC_DISABLE_WERROR=y
++CONFIG_XMON=y
++CONFIG_XMON_DEFAULT=y
++# CONFIG_XMON_DEFAULT_RO_MODE is not set
++# CONFIG_RUNTIME_TESTING_MENU is not set
 -- 
 2.31.1
 
