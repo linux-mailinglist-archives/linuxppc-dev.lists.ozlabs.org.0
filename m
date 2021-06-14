@@ -2,108 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 111A23A6511
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 13:33:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF24B3A6603
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 13:50:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G3TpV4kRXz30Bw
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 21:33:06 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bi39KDd9;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bi39KDd9;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G3VB73FMmz3095
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 21:50:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=bi39KDd9; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=bi39KDd9; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [216.205.24.124])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G3Tp01MK8z2yYQ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 21:32:36 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1623670352;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=auek9aYzqwxqvPN9zk1SNV1DLZg48GOMnwlLjvRnYkQ=;
- b=bi39KDd9FhUunwWjZQb69AEhZiXzPaWWULhZvUzc3yQzmNwyGz6pY81ojnizGNJnI7Yjvj
- hpA99jZgzlFb3c9wa/OjUvyrqFqd7Xl1CHPFlmFBVPunQhUpt9kF2IrZnK7RN3nrBhFkfC
- zI1jn1+813TEEFh5p9YJV6JJDefawUg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1623670352;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=auek9aYzqwxqvPN9zk1SNV1DLZg48GOMnwlLjvRnYkQ=;
- b=bi39KDd9FhUunwWjZQb69AEhZiXzPaWWULhZvUzc3yQzmNwyGz6pY81ojnizGNJnI7Yjvj
- hpA99jZgzlFb3c9wa/OjUvyrqFqd7Xl1CHPFlmFBVPunQhUpt9kF2IrZnK7RN3nrBhFkfC
- zI1jn1+813TEEFh5p9YJV6JJDefawUg=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-561-fTFHzd4wNoOgCfE4yJm8wA-1; Mon, 14 Jun 2021 07:32:28 -0400
-X-MC-Unique: fTFHzd4wNoOgCfE4yJm8wA-1
-Received: by mail-wr1-f70.google.com with SMTP id
- z4-20020adfe5440000b0290114f89c9931so6888697wrm.17
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 04:32:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:to:cc:references:from:organization:subject
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=auek9aYzqwxqvPN9zk1SNV1DLZg48GOMnwlLjvRnYkQ=;
- b=fos4yq75X7bFotDsa9oGg1yxQnCVEn9rT2x78MNW7vosR/aYB4usbdJT86Q8SK0B63
- hrjMwh3Owl9E8qhKp8lCRXhG2k3norgmeJQZMlo/fVoNBArlB2dl8TA6tIjdFAKEny1+
- oJZS7DegRSZkuCiM6PCebdmA3p85JcojL/QrKsy7Uw/LTzoGS0RtHSx/+FFrAK3gunut
- yLhgfj+FiDwCklCvlUbvBcZqQ/5in3CAJ97dn5NNEt8prfwAsfIqEPCHCxG7u5Fro3WF
- GhAAewT5RJRpWMS1ptIUpt1SiNQaRVmZ0ul2C41CQBjaXyJwnVGdBN2cH2MTvZsGezdi
- QpmQ==
-X-Gm-Message-State: AOAM531qlpPdyXFXl0Wq8E5kNyNAFSPTlrVdTrRX34bXev1d+YV5Ju88
- bURAZQxyR+mFUBVfsiuRABHv4HDokv/AbfXSFtIhFD2+XX+G5qzdTpCyFxS8RkcnAgshPUsWR8E
- SSEz6Vl/ojgOFsWpuK+z+4t3W6A==
-X-Received: by 2002:a05:600c:198c:: with SMTP id
- t12mr15621499wmq.16.1623670347343; 
- Mon, 14 Jun 2021 04:32:27 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyvMFL31q/BXB05TUCa992j0Wb2DezhZXpGzHT9FW0vrh5G/XgKNYGQVj5KUX7aymkq5w5vWQ==
-X-Received: by 2002:a05:600c:198c:: with SMTP id
- t12mr15621479wmq.16.1623670347138; 
- Mon, 14 Jun 2021 04:32:27 -0700 (PDT)
-Received: from [192.168.3.132] (p5b0c66ca.dip0.t-ipconnect.de. [91.12.102.202])
- by smtp.gmail.com with ESMTPSA id u16sm16870421wru.56.2021.06.14.04.32.26
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 14 Jun 2021 04:32:26 -0700 (PDT)
-To: Zi Yan <ziy@nvidia.com>, Michal Hocko <mhocko@suse.com>
-References: <20210506152623.178731-1-zi.yan@sent.com>
- <fb60eabd-f8ef-2cb1-7338-7725efe3c286@redhat.com>
- <YJUqrOacyqI+kiKW@dhcp22.suse.cz>
- <792d73e2-5d63-74a5-5554-20351d5532ff@redhat.com>
- <746780E5-0288-494D-8B19-538049F1B891@nvidia.com>
- <289DA3C0-9AE5-4992-A35A-C13FCE4D8544@nvidia.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [RFC PATCH 0/7] Memory hotplug/hotremove at subsection size
-Message-ID: <640bd1da-4bcb-cfda-18c0-da0ddb90b661@redhat.com>
-Date: Mon, 14 Jun 2021 13:32:25 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G3V9g4JGFz2yX1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 21:49:40 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 4G3V9X4Z3jzBFJB;
+ Mon, 14 Jun 2021 13:49:36 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id p0uvW_JgQ-vw; Mon, 14 Jun 2021 13:49:36 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4G3V9X3fP1zBFJ8;
+ Mon, 14 Jun 2021 13:49:36 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C6C728B795;
+ Mon, 14 Jun 2021 13:49:34 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id zl3uFT9L_WQI; Mon, 14 Jun 2021 13:49:34 +0200 (CEST)
+Received: from [172.25.230.102] (po15451.idsi0.si.c-s.fr [172.25.230.102])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 98FE48B794;
+ Mon, 14 Jun 2021 13:49:34 +0200 (CEST)
+Subject: Re: [PATCH] powerpc/signal64: Don't read sigaction arguments back
+ from user memory
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <20210610072949.3198522-1-mpe@ellerman.id.au>
+ <1623633444.p3rmbd7eti.astroid@bobo.none>
+ <c677eab1-0ecd-8630-89c0-6fcc35788356@csgroup.eu>
+ <1623649744.mbu8z4p0v5.astroid@bobo.none>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <e84f44e5-46a2-4076-b565-038057329be5@csgroup.eu>
+Date: Mon, 14 Jun 2021 13:49:34 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-In-Reply-To: <289DA3C0-9AE5-4992-A35A-C13FCE4D8544@nvidia.com>
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+In-Reply-To: <1623649744.mbu8z4p0v5.astroid@bobo.none>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -116,123 +67,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, Wei Yang <richard.weiyang@linux.alibaba.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- "Rafael J . Wysocki" <rafael@kernel.org>, x86@kernel.org,
- Dan Williams <dan.j.williams@intel.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Andy Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
- Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
- Oscar Salvador <osalvador@suse.de>
+Cc: cmr@codefail.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 02.06.21 17:56, Zi Yan wrote:
-> On 10 May 2021, at 10:36, Zi Yan wrote:
+
+
+Le 14/06/2021 à 07:49, Nicholas Piggin a écrit :
+> Excerpts from Christophe Leroy's message of June 14, 2021 3:30 pm:
+>>
+>>
+>> Le 14/06/2021 à 03:32, Nicholas Piggin a écrit :
+>>> Excerpts from Michael Ellerman's message of June 10, 2021 5:29 pm:
+>>>> When delivering a signal to a sigaction style handler (SA_SIGINFO), we
+>>>> pass pointers to the siginfo and ucontext via r4 and r5.
+>>>>
+>>>> Currently we populate the values in those registers by reading the
+>>>> pointers out of the sigframe in user memory, even though the values in
+>>>> user memory were written by the kernel just prior:
+>>>>
+>>>>     unsafe_put_user(&frame->info, &frame->pinfo, badframe_block);
+>>>>     unsafe_put_user(&frame->uc, &frame->puc, badframe_block);
+>>>>     ...
+>>>>     if (ksig->ka.sa.sa_flags & SA_SIGINFO) {
+>>>>     	err |= get_user(regs->gpr[4], (unsigned long __user *)&frame->pinfo);
+>>>>     	err |= get_user(regs->gpr[5], (unsigned long __user *)&frame->puc);
+>>>>
+>>>> ie. we write &frame->info into frame->pinfo, and then read frame->pinfo
+>>>> back into r4, and similarly for &frame->uc.
+>>>>
+>>>> The code has always been like this, since linux-fullhistory commit
+>>>> d4f2d95eca2c ("Forward port of 2.4 ppc64 signal changes.").
+>>>>
+>>>> There's no reason for us to read the values back from user memory,
+>>>> rather than just setting the value in the gpr[4/5] directly. In fact
+>>>> reading the value back from user memory opens up the possibility of
+>>>> another user thread changing the values before we read them back.
+>>>> Although any process doing that would be racing against the kernel
+>>>> delivering the signal, and would risk corrupting the stack, so that
+>>>> would be a userspace bug.
+>>>>
+>>>> Note that this is 64-bit only code, so there's no subtlety with the size
+>>>> of pointers differing between kernel and user. Also the frame variable
+>>>> is not modified to point elsewhere during the function.
+>>>>
+>>>> In the past reading the values back from user memory was not costly, but
+>>>> now that we have KUAP on some CPUs it is, so we'd rather avoid it for
+>>>> that reason too.
+>>>>
+>>>> So change the code to just set the values directly, using the same
+>>>> values we have written to the sigframe previously in the function.
+>>>>
+>>>> Note also that this matches what our 32-bit signal code does.
+>>>>
+>>>> Using a version of will-it-scale's signal1_threads that sets SA_SIGINFO,
+>>>> this results in a ~4% increase in signals per second on a Power9, from
+>>>> 229,777 to 239,766.
+>>>
+>>> Good find, nice improvement. Will make it possible to make the error
+>>> handling much nicer too I think.
+>>>
+>>> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+>>>
+>>> You've moved copy_siginfo_to_user right up to the user access unlock,
+>>> could save 2 more KUAP lock/unlocks if we had an unsafe_clear_user. If
+>>> we can move the other user access stuff up as well, the stack frame
+>>> put_user could use unsafe_put_user as well, saving 1 more. Another few
+>>> percent?
+>>
+>> I'm looking at making an 'unsafe' version of copy_siginfo_to_user().
+>> That's straight forward for 'native' signals, but for compat signals that's more tricky.
 > 
->> On 7 May 2021, at 10:00, David Hildenbrand wrote:
->>
->>> On 07.05.21 13:55, Michal Hocko wrote:
->>>> [I haven't read through respective patches due to lack of time but let
->>>>    me comment on the general idea and the underlying justification]
->>>>
->>>> On Thu 06-05-21 17:31:09, David Hildenbrand wrote:
->>>>> On 06.05.21 17:26, Zi Yan wrote:
->>>>>> From: Zi Yan <ziy@nvidia.com>
->>>>>>
->>>>>> Hi all,
->>>>>>
->>>>>> This patchset tries to remove the restriction on memory hotplug/hotremove
->>>>>> granularity, which is always greater or equal to memory section size[1].
->>>>>> With the patchset, kernel is able to online/offline memory at a size independent
->>>>>> of memory section size, as small as 2MB (the subsection size).
->>>>>
->>>>> ... which doesn't make any sense as we can only online/offline whole memory
->>>>> block devices.
->>>>
->>>> Agreed. The subsection thingy is just a hack to workaround pmem
->>>> alignement problems. For the real memory hotplug it is quite hard to
->>>> argue for reasonable hotplug scenarios for very small physical memory
->>>> ranges wrt. to the existing sparsemem memory model.
->>>>
->>>>>> The motivation is to increase MAX_ORDER of the buddy allocator and pageblock
->>>>>> size without increasing memory hotplug/hotremove granularity at the same time,
->>>>>
->>>>> Gah, no. Please no. No.
->>>>
->>>> Agreed. Those are completely independent concepts. MAX_ORDER is can be
->>>> really arbitrary irrespective of the section size with vmemmap sparse
->>>> model. The existing restriction is due to old sparse model not being
->>>> able to do page pointer arithmetic across memory sections. Is there any
->>>> reason to stick with that memory model for an advance feature you are
->>>> working on?
->>
->> No. I just want to increase MAX_ORDER. If the existing restriction can
->> be removed, that will be great.
->>
->>>
->>> I gave it some more thought yesterday. I guess the first thing we should look into is increasing MAX_ORDER and leaving pageblock_order and section size as is -- finding out what we have to tweak to get that up and running. Once we have that in place, we can actually look into better fragmentation avoidance etc. One step at a time.
->>
->> It makes sense to me.
->>
->>>
->>> Because that change itself might require some thought. Requiring that bigger MAX_ORDER depends on SPARSE_VMEMMAP is something reasonable to do.
->>
->> OK, if with SPARSE_VMEMMAP MAX_ORDER can be set to be bigger than
->> SECTION_SIZE, it is perfectly OK to me. Since 1GB THP support, which I
->> want to add ultimately, will require SPARSE_VMEMMAP too (otherwise,
->> all page++ will need to be changed to nth_page(page,1)).
->>
->>>
->>> As stated somewhere here already, we'll have to look into making alloc_contig_range() (and main users CMA and virtio-mem) independent of MAX_ORDER and mainly rely on pageblock_order. The current handling in alloc_contig_range() is far from optimal as we have to isolate a whole MAX_ORDER - 1 page -- and on ZONE_NORMAL we'll fail easily if any part contains something unmovable although we don't even want to allocate that part. I actually have that on my list (to be able to fully support pageblock_order instead of MAX_ORDER -1 chunks in virtio-mem), however didn't have time to look into it.
->>
->> So in your mind, for gigantic page allocation (> MAX_ORDER), alloc_contig_range()
->> should be used instead of buddy allocator while pageblock_order is kept at a small
->> granularity like 2MB. Is that the case? Isn’t it going to have high fail rate
->> when any of the pageblocks within a gigantic page range (like 1GB) becomes unmovable?
->> Are you thinking additional mechanism/policy to prevent such thing happening as
->> an additional step for gigantic page allocation? Like your ZONE_PREFER_MOVABLE idea?
->>
->>>
->>> Further, page onlining / offlining code and early init code most probably also needs care if MAX_ORDER - 1 crosses sections. Memory holes we might suddenly have in MAX_ORDER - 1 pages might become a problem and will have to be handled. Not sure which other code has to be tweaked (compaction? page isolation?).
->>
->> Can you elaborate it a little more? From what I understand, memory holes mean valid
->> PFNs are not contiguous before and after a hole, so pfn++ will not work, but
->> struct pages are still virtually contiguous assuming SPARSE_VMEMMAP, meaning page++
->> would still work. So when MAX_ORDER - 1 crosses sections, additional code would be
->> needed instead of simple pfn++. Is there anything I am missing?
->>
->> BTW, to test a system with memory holes, do you know is there an easy of adding
->> random memory holes to an x86_64 VM, which can help reveal potential missing pieces
->> in the code? Changing BIOS-e820 table might be one way, but I have no idea on
->> how to do it on QEMU.
->>
->>>
->>> Figuring out what needs care itself might take quite some effort.
->>>
->>> One thing I was thinking about as well: The bigger our MAX_ORDER, the slower it could be to allocate smaller pages. If we have 1G pages, splitting them down to 4k then takes 8 additional steps if I'm, not wrong. Of course, that's the worst case. Would be interesting to evaluate.
->>
->> Sure. I am planning to check it too. As a simple start, I am going to run will it scale
->> benchmarks to see if there is any performance difference between different MAX_ORDERs.
+> Ah nice. Native is most important at the moment.
 > 
-> I ran vm-scalablity and memory-related will-it-scale on a server with 256GB memory to
-> see the impact of increasing MAX_ORDER and didn’t see much difference for most of
-> the workloads like page_fault1, page_fault2, and page_fault3 from will-it-scale.
-> But feel free to check the attached complete results and let me know what should be
-> looked into. Thanks.
 
-Right, for will-it-scale it looks like there are mostly minor 
-differences, although I am not sure if the results are really stable 
-(reaching from -6% to +6%). For vm-scalability the numbers seem to vary 
-even more (e.g., stddev of ± 63%), so I have no idea how expressive they 
-are. But I guess for these benchmarks, the net change won't really be 
-significant.
+Finally not so easy. We have a quite efficient clear_user() which uses 'dcbz'. When replacing that 
+by a simplistic unsafe_clear_user() on the same model as unsafe_copy_to_user(), performance are 
+degradated on 32s. Need to implement it more efficiently.
 
-Thanks!
-
--- 
-Thanks,
-
-David / dhildenb
-
+Christophe
