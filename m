@@ -1,78 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB20A3A5BE3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 05:46:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2F9E3A5BE8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 05:53:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G3HSW3N0Nz307q
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 13:46:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G3Hbk37Ddz2yxX
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 13:53:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=f3tQ/EZl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=l+fuc2vw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1033;
- helo=mail-pj1-x1033.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=luto@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=f3tQ/EZl; dkim-atps=neutral
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com
- [IPv6:2607:f8b0:4864:20::1033])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=l+fuc2vw; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G3HS42t3Hz2y0D
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 13:46:26 +1000 (AEST)
-Received: by mail-pj1-x1033.google.com with SMTP id g4so8955894pjk.0
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Jun 2021 20:46:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=uO45wY2elXy+SJVuWP4TdtzLCJGPN/Y8k82mx0Ey9pg=;
- b=f3tQ/EZlA+YBBHoeTBU6hM/os+vs4R/TTvsmwoAGPogWtSBK8yFEj9epQHyDIzWbFP
- P7mJhVls9qJhU7PchiqOsUGLJXw2+14jCozeks6Bf0NbB9B6yvCZ16ctP3rNAUtmCIud
- Ac0iQOzxSOdRqfpe7PD6FTfblHwP6Fbo4EDN7ckQuUbyagWkF9RwMfo8xvw7SDrrO0zl
- CQxwQUzgbZuCX71yUyhQsN8E6Ubar5nSOOI4KdZmMaCO8hVvbufhLwoTYToo41db2HSs
- lHIjwrnbYeeUt1Rmrtvr6vnjQnlebf3pKGsanN7EyEvszWwloj3ZdJs89VBvK0At4b5S
- JeKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=uO45wY2elXy+SJVuWP4TdtzLCJGPN/Y8k82mx0Ey9pg=;
- b=Ah4/FjoWsBF8O5ja2cSf2mAlD0rzAiAEgPg+y1Am30MdJO6ZmVvglpl91UU4SqkcnF
- hSrCB5T1jsIywkB0G9N7bHF7KeKy66gde7yLGf8IpVhr1N9r9ZHhO0WMwIhoydC8+xr/
- 8I6Gu/eqXsrXY7DCzZ9Xuq8W8oi1QhculGaB4PKqme1VxHkMQo7OqyRmS8ixrn3HDm7s
- pb+eSpFVre31dhfGHWgT52ni72FyReBGHs5PebwvGT3i95DInPbdIRXGENiEdEYndoKP
- BZP5jfpa7nfge/OU2JKfTwmKqcgH1vdLtlVz23bEI2REBhnqbjsI5T3keklxS4hFKdOk
- X50g==
-X-Gm-Message-State: AOAM533/6v9UzyCxtbhWL1gn92e5ThCTAI1oIjEvfnx5sVleOU81zn9T
- YFcsZkqDA+Iy4/nMfUxFld8=
-X-Google-Smtp-Source: ABdhPJzHi1T0lTV0lXjlbXRGCCsUCygglwh5MyvmvqMJOa3x2nYsK0xpHmKJbXTuL+kqCc8EnNR8zA==
-X-Received: by 2002:a17:903:2311:b029:115:29a9:a3ee with SMTP id
- d17-20020a1709032311b029011529a9a3eemr14728830plh.46.1623642383687; 
- Sun, 13 Jun 2021 20:46:23 -0700 (PDT)
-Received: from localhost (60-242-147-73.tpgi.com.au. [60.242.147.73])
- by smtp.gmail.com with ESMTPSA id v21sm2857455pfu.77.2021.06.13.20.46.22
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 13 Jun 2021 20:46:23 -0700 (PDT)
-Date: Mon, 14 Jun 2021 13:46:18 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v5 17/17] crypto/nx: Add sysfs interface to export NX
- capabilities
-To: Haren Myneni <haren@linux.ibm.com>, herbert@gondor.apana.org.au,
- linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- mpe@ellerman.id.au
-References: <ed7a09822cf3a2e463f942e5a37309a2365c9d79.camel@linux.ibm.com>
- <8fd529d8612ea47cce69101b62e9498de9324850.camel@linux.ibm.com>
-In-Reply-To: <8fd529d8612ea47cce69101b62e9498de9324850.camel@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G3HbH3HhCz2xtt
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 13:52:43 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B78556120E;
+ Mon, 14 Jun 2021 03:52:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1623642760;
+ bh=Msfsid2dMP0z1xO8rgeqV4lboVmj2pyzEHCvjexUV90=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=l+fuc2vwhawWXWs1SCV0yi4B1tW+hB2XQRLfENdg5Ys2RbOYZ5+3vWLDgJeV2dvUN
+ 3lkkNi3tFXCP2VSW6kSwEjxkaEwY1fksZTTmpJ0dDgb0Q0jWsRLoyXm36tpqP37Rhn
+ b/vCObmFAsixC1JKlr1ynfE+WsRE3Ee0DW8ovYtCQ5lns86k5gK1kr2Id3u+XEeN8R
+ Od1RpSAs/I95p4Xhh0lp3O0JFLgCA8a6RizOqM+8R6XRteWt99s81a/+nv04H/eK1L
+ ZytXE2rBjzDCRpUPIXlhNKYkNVDsDjbiC/CLlwHQ1Qr+jqcB6+a5CyKKEf87VHktjq
+ tSDgapbeoEAxg==
+Subject: Re: [PATCH v4 2/4] lazy tlb: allow lazy tlb mm refcounting to be
+ configurable
+To: Nicholas Piggin <npiggin@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <20210605014216.446867-1-npiggin@gmail.com>
+ <20210605014216.446867-3-npiggin@gmail.com>
+ <8ac1d420-b861-f586-bacf-8c3949e9b5c4@kernel.org>
+ <1623629185.fxzl5xdab6.astroid@bobo.none>
+From: Andy Lutomirski <luto@kernel.org>
+Message-ID: <02e16a2f-2f58-b4f2-d335-065e007bcea2@kernel.org>
+Date: Sun, 13 Jun 2021 20:52:38 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Message-Id: <1623641974.l06sotnvf2.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <1623629185.fxzl5xdab6.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,118 +65,120 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-arch@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Haren Myneni's message of June 13, 2021 9:05 pm:
->=20
-> Changes to export the following NXGZIP capabilities through sysfs:
->=20
-> /sys/devices/vio/ibm,compression-v1/nx_gzip_caps:
-> min_compress_len  /*Recommended minimum compress length in bytes*/
-> min_decompress_len /*Recommended minimum decompress length in bytes*/
-> req_max_processed_len /* Maximum number of bytes processed in one
-> 			request */
->=20
-> NX will return RMA_Reject if the request buffer size is greater
-> than req_max_processed_len.
+On 6/13/21 5:45 PM, Nicholas Piggin wrote:
+> Excerpts from Andy Lutomirski's message of June 9, 2021 2:20 am:
+>> On 6/4/21 6:42 PM, Nicholas Piggin wrote:
+>>> Add CONFIG_MMU_TLB_REFCOUNT which enables refcounting of the lazy tlb mm
+>>> when it is context switched. This can be disabled by architectures that
+>>> don't require this refcounting if they clean up lazy tlb mms when the
+>>> last refcount is dropped. Currently this is always enabled, which is
+>>> what existing code does, so the patch is effectively a no-op.
+>>>
+>>> Rename rq->prev_mm to rq->prev_lazy_mm, because that's what it is.
+>>
+>> I am in favor of this approach, but I would be a lot more comfortable
+>> with the resulting code if task->active_mm were at least better
+>> documented and possibly even guarded by ifdefs.
+> 
+> active_mm is fairly well documented in Documentation/active_mm.rst IMO.
+> I don't think anything has changed in 20 years, I don't know what more
+> is needed, but if you can add to documentation that would be nice. Maybe
+> moving a bit of that into .c and .h files?
+> 
 
-Similar for the previous patch, can userspace sanely use the API without=20
-these capabilities? If not, reorder so the final enable comes last.
+Quoting from that file:
 
-I would put those comments in the code, and make the changelog a little
-higher level, including a reference or example of how userspace uses it,
-which should come with any new userspace ABI.
+  - however, we obviously need to keep track of which address space we
+    "stole" for such an anonymous user. For that, we have "tsk->active_mm",
+    which shows what the currently active address space is.
 
-"Export NX-GZIP capabilities to usrespace in sysfs /sys/devices/vio/...
-directory. These are queried by userspace accelerator libraries to set
-minimum length heuristics and maximum limits on request sizes."
+This isn't even true right now on x86.  With your patch applied:
 
-Something like that. Otherwise looks okay to me.
+ To support all that, the "struct mm_struct" now has two counters: a
+ "mm_users" counter that is how many "real address space users" there are,
+ and a "mm_count" counter that is the number of "lazy" users (ie anonymous
+ users) plus one if there are any real users.
 
-Thanks,
-Nick
+isn't even true any more.
 
->=20
-> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-> Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
-> ---
->  drivers/crypto/nx/nx-common-pseries.c | 43 +++++++++++++++++++++++++++
->  1 file changed, 43 insertions(+)
->=20
-> diff --git a/drivers/crypto/nx/nx-common-pseries.c b/drivers/crypto/nx/nx=
--common-pseries.c
-> index 60b5049ec9f7..db28a84a826c 100644
-> --- a/drivers/crypto/nx/nx-common-pseries.c
-> +++ b/drivers/crypto/nx/nx-common-pseries.c
-> @@ -967,6 +967,36 @@ static struct attribute_group nx842_attribute_group =
-=3D {
->  	.attrs =3D nx842_sysfs_entries,
->  };
-> =20
-> +#define	nxct_caps_read(_name)						\
-> +static ssize_t nxct_##_name##_show(struct device *dev,			\
-> +			struct device_attribute *attr, char *buf)	\
-> +{									\
-> +	return sprintf(buf, "%lld\n", nx_ct_caps._name);		\
-> +}
-> +
-> +#define NXCT_ATTR_RO(_name)						\
-> +	nxct_caps_read(_name);						\
-> +	static struct device_attribute dev_attr_##_name =3D __ATTR(_name,	\
-> +						0444,			\
-> +						nxct_##_name##_show,	\
-> +						NULL);
-> +
-> +NXCT_ATTR_RO(req_max_processed_len);
-> +NXCT_ATTR_RO(min_compress_len);
-> +NXCT_ATTR_RO(min_decompress_len);
-> +
-> +static struct attribute *nxct_caps_sysfs_entries[] =3D {
-> +	&dev_attr_req_max_processed_len.attr,
-> +	&dev_attr_min_compress_len.attr,
-> +	&dev_attr_min_decompress_len.attr,
-> +	NULL,
-> +};
-> +
-> +static struct attribute_group nxct_caps_attr_group =3D {
-> +	.name	=3D	"nx_gzip_caps",
-> +	.attrs	=3D	nxct_caps_sysfs_entries,
-> +};
-> +
->  static struct nx842_driver nx842_pseries_driver =3D {
->  	.name =3D		KBUILD_MODNAME,
->  	.owner =3D	THIS_MODULE,
-> @@ -1056,6 +1086,16 @@ static int nx842_probe(struct vio_dev *viodev,
->  		goto error;
->  	}
-> =20
-> +	if (caps_feat) {
-> +		if (sysfs_create_group(&viodev->dev.kobj,
-> +					&nxct_caps_attr_group)) {
-> +			dev_err(&viodev->dev,
-> +				"Could not create sysfs NX capability entries\n");
-> +			ret =3D -1;
-> +			goto error;
-> +		}
-> +	}
-> +
->  	return 0;
-> =20
->  error_unlock:
-> @@ -1075,6 +1115,9 @@ static void nx842_remove(struct vio_dev *viodev)
->  	pr_info("Removing IBM Power 842 compression device\n");
->  	sysfs_remove_group(&viodev->dev.kobj, &nx842_attribute_group);
-> =20
-> +	if (caps_feat)
-> +		sysfs_remove_group(&viodev->dev.kobj, &nxct_caps_attr_group);
-> +
->  	crypto_unregister_alg(&nx842_pseries_alg);
-> =20
->  	spin_lock_irqsave(&devdata_mutex, flags);
-> --=20
-> 2.18.2
->=20
->=20
->=20
+
+>> x86 bare metal currently does not need the core lazy mm refcounting, and
+>> x86 bare metal *also* does not need ->active_mm.  Under the x86 scheme,
+>> if lazy mm refcounting were configured out, ->active_mm could become a
+>> dangling pointer, and this makes me extremely uncomfortable.
+>>
+>> So I tend to think that, depending on config, the core code should
+>> either keep ->active_mm [1] alive or get rid of it entirely.
+> 
+> I don't actually know what you mean.
+> 
+> core code needs the concept of an "active_mm". This is the mm that your 
+> kernel threads are using, even in the unmerged CONFIG_LAZY_TLB=n patch,
+> active_mm still points to init_mm for kernel threads.
+
+Core code does *not* need this concept.  First, it's wrong on x86 since
+at least 4.15.  Any core code that actually assumes that ->active_mm is
+"active" for any sensible definition of the word active is wrong.
+Fortunately there is no such code.
+
+I looked through all active_mm references in core code.  We have:
+
+kernel/sched/core.c: it's all refcounting, although it's a bit tangled
+with membarrier.
+
+kernel/kthread.c: same.  refcounting and membarrier stuff.
+
+kernel/exit.c: exit_mm() a BUG_ON().
+
+kernel/fork.c: initialization code and a warning.
+
+kernel/cpu.c: cpu offline stuff.  wouldn't be needed if active_mm went away.
+
+fs/exec.c: nothing of interest
+
+I didn't go through drivers, but I maintain my point.  active_mm is
+there for refcounting.  So please don't just make it even more confusing
+-- do your performance improvement, but improve the code at the same
+time: get rid of active_mm, at least on architectures that opt out of
+the refcounting.
+
+
+
+> 
+> We could hide that idea behind an active_mm() function that would always 
+> return &init_mm if mm==NULL, but you still have the concept of an active
+> mm and a pointer that callers must not access after free (because some
+> cases will be CONFIG_LAZY_TLB=y).
+> 
+>> [1] I don't really think it belongs in task_struct at all.  It's not a
+>> property of the task.  It's the *per-cpu* mm that the core code is
+>> keeping alive for lazy purposes.  How about consolidating it with the
+>> copy in rq?
+> 
+> I agree it's conceptually a per-cpu property. I don't know why it was 
+> done this way, maybe it was just convenient and works well for mm and 
+> active_mm to be adjacent. Linus might have a better insight.
+> 
+>> I guess the short summary of my opinion is that I like making this
+>> configurable, but I do not like the state of the code.
+> 
+> I don't think I'd object to moving active_mm to rq and converting all
+> usages to active_mm() while we're there, it would make things a bit
+> more configurable. But I don't see it making core code fundamentally
+> less complex... if you're referring to the x86 mm switching monstrosity,
+> then that's understandable, but I admit I haven't spent enough time
+> looking at it to make a useful comment. A patch would be enlightening,
+> I have the leftover CONFIG_LAZY_TLB=n patch if you were thinking of 
+> building on that I can send it to you.
+> 
+> Thanks,
+> Nick
+> 
+
