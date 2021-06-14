@@ -1,61 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3A383A5DA4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 09:23:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A301E3A5EF3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 11:13:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G3NG36kf7z3bTb
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 17:23:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G3Qj036Fnz3023
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 19:13:08 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=WJ3tpnBE;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::329;
+ helo=mail-wm1-x329.google.com; envelope-from=lee.jones@linaro.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=WJ3tpnBE; dkim-atps=neutral
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com
+ [IPv6:2a00:1450:4864:20::329])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G3NFk23RRz2xYk
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 17:22:46 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4G3NFZ6JhFzBDPc;
- Mon, 14 Jun 2021 09:22:42 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id Zx1WoupozuEn; Mon, 14 Jun 2021 09:22:42 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4G3NFX5MGzzBDGV;
- Mon, 14 Jun 2021 09:22:40 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id AAA618B78A;
- Mon, 14 Jun 2021 09:22:40 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 5oePj3xza3NU; Mon, 14 Jun 2021 09:22:40 +0200 (CEST)
-Received: from [172.25.230.102] (po15451.idsi0.si.c-s.fr [172.25.230.102])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6D92C8B763;
- Mon, 14 Jun 2021 09:22:40 +0200 (CEST)
-Subject: Re: [PATCH] powerpc/signal64: Copy siginfo before changing regs->nip
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <20210608134605.2783677-1-mpe@ellerman.id.au>
- <1623631623.jvh0hlk56m.astroid@bobo.none>
- <1623633868.lnyugcilh9.astroid@bobo.none>
- <759f715b-df1f-847d-d836-2d202c8a7dc4@csgroup.eu>
- <1623649799.9s42wcnyya.astroid@bobo.none>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <a7739358-6dd3-2f5d-50c4-f6b908ab2718@csgroup.eu>
-Date: Mon, 14 Jun 2021 09:22:36 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G3QhT6CmNz2xv8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 19:12:39 +1000 (AEST)
+Received: by mail-wm1-x329.google.com with SMTP id
+ 3-20020a05600c0243b029019f2f9b2b8aso12337580wmj.2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 02:12:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:content-transfer-encoding:in-reply-to;
+ bh=rE75OEJmRkiphAQgbNylsb5lS5RCqZ1mYOeIVhrqISM=;
+ b=WJ3tpnBEfeWF0/kH/8/+lrientdHvkK3PS68x9IVO1JQSI80J/yHCOlh0IsPbvC/8I
+ H0oKk58f/d6u3mGdZ2I/4JFU3VQ2jKNlcURVirhImT8qQwO27j7UMg7n5cRpDhbFAsyQ
+ WBz2vIXdJr/L4A2hYljUyPHoDdib7yk46Od391zO0go6EhSbJu3Y6C4IzuOvABo9TAbI
+ /83Z3taXs2o1IXw819dLQ/mlByGgjGKTGFkeSdOU3y2TKYg9IZzZCsM1JN/W82BQ1B1f
+ 6OiNDqPfBkF6xDlf64u8nG44qMNItoXaIvR5myFDxxc3/D1ojcgDLFi3DMjLazEXA89W
+ 1llg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:content-transfer-encoding
+ :in-reply-to;
+ bh=rE75OEJmRkiphAQgbNylsb5lS5RCqZ1mYOeIVhrqISM=;
+ b=Myztj5ksxUmu2kcdtwFq1TZgq/m5/4G/AyWk/CJFCt7WFgPabNJBcBVtQpkpoGzKew
+ 9bXZHmirVxNaF0gOMcNTrsKTxGYnY4mtbnLt1ODuAhbQXN3wb2I/U6kS5SgiT1d6MSEm
+ f7wAZlqj5IJeNYDGieWZ2XeGHOFyuex27XdROtUONPYlXOGsbh+a8h4ndee2VQTLB5wv
+ /r+b2XvwdpMfLNijtjFD1r6RbDnZwCCXgOIf7reJTj0spxZvQaUlcqMnOTXSsSix8J41
+ DIpQeScqh4Y0CZosfkViGFWtzP9m+uA2Q/2T+52CowGhXDvIoF6fOYb0sWLvb42UU/Nc
+ sN/A==
+X-Gm-Message-State: AOAM5328+6Vj1S8weWaynB5QHtNQfIBLWXIMDbWyTLFHWYUUSjF/PbsE
+ LN/1DnJu5ag0qg4jHrFUyTpOdw==
+X-Google-Smtp-Source: ABdhPJxMA2/SLYA8c9iSQV5GCW8IQfyxI5XFtS2VihpYEMDIJhKH2AYMV290kDl3xx9dJ+TgccNGSg==
+X-Received: by 2002:a1c:dcc3:: with SMTP id t186mr15902760wmg.23.1623661951291; 
+ Mon, 14 Jun 2021 02:12:31 -0700 (PDT)
+Received: from dell ([91.110.221.200])
+ by smtp.gmail.com with ESMTPSA id k16sm12442514wmr.42.2021.06.14.02.12.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 14 Jun 2021 02:12:30 -0700 (PDT)
+Date: Mon, 14 Jun 2021 10:12:28 +0100
+From: Lee Jones <lee.jones@linaro.org>
+To: Christoph Hellwig <hch@infradead.org>
+Subject: Re: [PATCH 00/21] Rid W=1 warnings from IDE
+Message-ID: <20210614091228.GB5285@dell>
+References: <20210602101722.2276638-1-lee.jones@linaro.org>
+ <YL3YMGl9kmtv55B/@infradead.org>
 MIME-Version: 1.0
-In-Reply-To: <1623649799.9s42wcnyya.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <YL3YMGl9kmtv55B/@infradead.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,116 +83,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dja@axtens.net, cmr@codefail.de
+Cc: linux-ide@vger.kernel.org, Mike Waychison <crlf@sun.com>,
+ Paul Mackerras <paulus@samba.org>,
+ "Christopher J. Reimer" <reimer@doe.carleton.ca>, Tim Hockin <thockin@sun.com>,
+ Erik Andersen <andersee@debian.org>, Alan Cox <alan@lxorguk.ukuu.org.uk>,
+ CJ <cjtsai@ali.com.tw>, Sergei Shtylyov <sshtylyov@ru.mvista.com>,
+ Duncan Laurie <void@sun.com>, Scott Snyder <snyder@fnald0.fnal.gov>,
+ Gadi Oxman <gadio@netvision.net.il>, Andre Hedrick <andre@linux-ide.org>,
+ Christian Brunner <chb@muc.de>, Jens Axboe <axboe@suse.de>,
+ or <source@mvista.com>, Benoit Poulot-Cazajous <poulot@chorus.fr>,
+ Robert Bringman <rob@mars.trion.com>, linux-kernel@vger.kernel.org,
+ Clear Zhang <Clear.Zhang@ali.com.tw>, Mark Lord <mlord@pobox.com>,
+ Adrian Sun <a.sun@sun.com>, Frank Tiernan <frankt@promise.com>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Mon, 07 Jun 2021, Christoph Hellwig wrote:
 
+> Please don't touch this code as it is about to be removed entirely.
 
-Le 14/06/2021 à 07:55, Nicholas Piggin a écrit :
-> Excerpts from Christophe Leroy's message of June 14, 2021 3:31 pm:
->>
->>
->> Le 14/06/2021 à 03:29, Nicholas Piggin a écrit :
->>> Excerpts from Nicholas Piggin's message of June 14, 2021 10:47 am:
->>>> Excerpts from Michael Ellerman's message of June 8, 2021 11:46 pm:
->>>>> In commit 96d7a4e06fab ("powerpc/signal64: Rewrite handle_rt_signal64()
->>>>> to minimise uaccess switches") the 64-bit signal code was rearranged to
->>>>> use user_write_access_begin/end().
->>>>>
->>>>> As part of that change the call to copy_siginfo_to_user() was moved
->>>>> later in the function, so that it could be done after the
->>>>> user_write_access_end().
->>>>>
->>>>> In particular it was moved after we modify regs->nip to point to the
->>>>> signal trampoline. That means if copy_siginfo_to_user() fails we exit
->>>>> handle_rt_signal64() with an error but with regs->nip modified, whereas
->>>>> previously we would not modify regs->nip until the copy succeeded.
->>>>>
->>>>> Returning an error from signal delivery but with regs->nip updated
->>>>> leaves the process in a sort of half-delivered state. We do immediately
->>>>> force a SEGV in signal_setup_done(), called from do_signal(), so the
->>>>> process should never run in the half-delivered state.
->>>>>
->>>>> However that SEGV is not delivered until we've gone around to
->>>>> do_notify_resume() again, so it's possible some tracing could observe
->>>>> the half-delivered state.
->>>>>
->>>>> There are other cases where we fail signal delivery with regs partly
->>>>> updated, eg. the write to newsp and SA_SIGINFO, but the latter at least
->>>>> is very unlikely to fail as it reads back from the frame we just wrote
->>>>> to.
->>>>>
->>>>> Looking at other arches they seem to be more careful about leaving regs
->>>>> unchanged until the copy operations have succeeded, and in general that
->>>>> seems like good hygenie.
->>>>>
->>>>> So although the current behaviour is not cleary buggy, it's also not
->>>>> clearly correct. So move the call to copy_siginfo_to_user() up prior to
->>>>> the modification of regs->nip, which is closer to the old behaviour, and
->>>>> easier to reason about.
->>>>
->>>> Good catch, should it still have a Fixes: tag though? Even if it's not
->>>> clearly buggy we want it to be patched.
->>>
->>> Also...
->>>
->>>>>
->>>>> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
->>>>> ---
->>>>>    arch/powerpc/kernel/signal_64.c | 9 ++++-----
->>>>>    1 file changed, 4 insertions(+), 5 deletions(-)
->>>>>
->>>>> diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/signal_64.c
->>>>> index dca66481d0c2..f9e1f5428b9e 100644
->>>>> --- a/arch/powerpc/kernel/signal_64.c
->>>>> +++ b/arch/powerpc/kernel/signal_64.c
->>>>> @@ -902,6 +902,10 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
->>>>>    	unsafe_copy_to_user(&frame->uc.uc_sigmask, set, sizeof(*set), badframe_block);
->>>>>    	user_write_access_end();
->>>>>    
->>>>> +	/* Save the siginfo outside of the unsafe block. */
->>>>> +	if (copy_siginfo_to_user(&frame->info, &ksig->info))
->>>>> +		goto badframe;
->>>>> +
->>>>>    	/* Make sure signal handler doesn't get spurious FP exceptions */
->>>>>    	tsk->thread.fp_state.fpscr = 0;
->>>>>    
->>>>> @@ -915,11 +919,6 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
->>>>>    		regs->nip = (unsigned long) &frame->tramp[0];
->>>>>    	}
->>>>>    
->>>>> -
->>>>> -	/* Save the siginfo outside of the unsafe block. */
->>>>> -	if (copy_siginfo_to_user(&frame->info, &ksig->info))
->>>>> -		goto badframe;
->>>>> -
->>>>>    	/* Allocate a dummy caller frame for the signal handler. */
->>>>>    	newsp = ((unsigned long)frame) - __SIGNAL_FRAMESIZE;
->>>>>    	err |= put_user(regs->gpr[1], (unsigned long __user *)newsp);
->>>
->>> Does the same reasoning apply to this one and the ELF V1 function
->>> descriptor thing? It seems like you could move all of that block
->>> up instead. With your other SA_SIGINFO get_user patch, there would
->>> then be no possibility of error after you start modifying regs.
->>>
->>
->> To move the above in the user access block, we need to open a larger window. At the time being the
->> window opened only contains the 'frame'. 'newsp' points before the 'frame'.
->>
-> 
-> Only by 64/128 bytes though. Is that a problem? Not for 64s. Could it
-> cause more overhead than it saves on other platforms?
+Do you have an ETA for this work?
 
-No it is not a problem at all, just need to not be forgotten, on ppc64 it may go unnoticed, on 32s 
-it will blew up if we forget to enlarge the access window and the access involves a different 256M 
-segment (Very unlikely for sure but ...)
-
-> 
-> For protection, it looks like all the important control data is in the
-> signal frame anyway, this frame is just for stack unwinding?
-
-That's my understanding as well.
-
-Christophe
+-- 
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
