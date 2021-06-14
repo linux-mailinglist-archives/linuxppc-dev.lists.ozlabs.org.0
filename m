@@ -2,104 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F8363A6B4F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 18:09:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3EA13A6B88
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 18:20:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G3bxk56vjz306b
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 02:09:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G3cBP4Nf0z308V
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 02:20:45 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FZEUNK1a;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=B4/PgeQG;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=luto@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=FZEUNK1a; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=B4/PgeQG; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G3bxF65mSz2yX6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 02:09:21 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 15EG4EK8066722; Mon, 14 Jun 2021 12:09:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=n+QxpEM014TwshG0VtGzpDI2olXnbUGiWUlsi9JoC4I=;
- b=FZEUNK1ayw1l8bSUXqVkIW8BAaNgaJ/wBCvJuLb4bNVjlIx32PZHs9CneqxBZnyHJC4r
- ulQhDWGNKGLSuwu9QNJE1LRLQZ1fdwn4ZXA0r7e2XBhM6V1Nzvlfa0HsByOxqwVS+Ex5
- 1jzeTcz0XWskpq2zUJYKUpyyvdI0EBbeys1WBb0KZgzVEu7Qj11LbcPWaCm9XZq5w9aY
- /abhvkksEr+xmgE8mCWjArAXqpLslGoR0Fkj+leLiusuu6R3IEyxD3gZDRch2b9w7rX2
- bCQawGBOst51944vpKZirv8sYrCLLsGYvLTyk2zDsiOKg2mxmIS7La8l0VT+a9fQKXF7 TA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3968p8kuvd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Jun 2021 12:09:01 -0400
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 15EG4LZf067467;
- Mon, 14 Jun 2021 12:09:00 -0400
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3968p8kuub-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Jun 2021 12:09:00 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15EG8w1B019507;
- Mon, 14 Jun 2021 16:08:58 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma06ams.nl.ibm.com with ESMTP id 394m6hs1wq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Jun 2021 16:08:58 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 15EG8tFs33554930
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 14 Jun 2021 16:08:56 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CCCCB4C052;
- Mon, 14 Jun 2021 16:08:55 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1CE074C044;
- Mon, 14 Jun 2021 16:08:46 +0000 (GMT)
-Received: from [9.199.37.120] (unknown [9.199.37.120])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 14 Jun 2021 16:08:45 +0000 (GMT)
-Subject: Re: [mm/mremap] ecf8443e51: vm-scalability.throughput -29.4%
- regression
-To: kernel test robot <oliver.sang@intel.com>
-References: <20210614145536.GB28801@xsang-OptiPlex-9020>
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Message-ID: <a815a022-cf3e-fe4b-ee23-191523ed1980@linux.ibm.com>
-Date: Mon, 14 Jun 2021 21:38:44 +0530
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G3c9t39Zjz2ykG
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 02:20:18 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C6C6D6128C;
+ Mon, 14 Jun 2021 16:20:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1623687613;
+ bh=VKbjFqcQXHNECj3z5tbp39B5D0sPHPpx3bkz7xFj1R8=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=B4/PgeQGk/3y8LrXsnAAk3/UlZ9PJiepC5f7dXKlqO2Ru2jEszjP3ATmmDv6sKchq
+ REt07zCI7OMOHogr6NKfqF/BKiPh89GKz+oXpGvIopIeH5yjcpZjlwoG94Rvm6majW
+ c/u1IRlmdCGE0ixbP4lT7oblapG+NCqlpgPhLhfNItfjUJI6a9H5bc5oCwUJWsH3JR
+ 4w8ioRnJXYNXCqvRfo32fpLkX/xkU6rBhHvWjVVOkqJ8b183XbG1Tdhoa9gvgvrPrS
+ 4bEAq6+CPIZHKEBZeUFyQ6vXJRqQzhwnxbMF9nZ3Reea7U3cFpWPxDu9s1zNs3STyl
+ 3QcPq2Gqs5Bow==
+Subject: Re: [PATCH v4 2/4] lazy tlb: allow lazy tlb mm refcounting to be
+ configurable
+To: Nicholas Piggin <npiggin@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <20210605014216.446867-1-npiggin@gmail.com>
+ <20210605014216.446867-3-npiggin@gmail.com>
+ <8ac1d420-b861-f586-bacf-8c3949e9b5c4@kernel.org>
+ <1623629185.fxzl5xdab6.astroid@bobo.none>
+ <02e16a2f-2f58-b4f2-d335-065e007bcea2@kernel.org>
+ <1623643443.b9twp3txmw.astroid@bobo.none>
+ <1623645385.u2cqbcn3co.astroid@bobo.none>
+ <1623647326.0np4yc0lo0.astroid@bobo.none>
+From: Andy Lutomirski <luto@kernel.org>
+Message-ID: <aecf5bc8-9018-c021-287d-6a975b7a6235@kernel.org>
+Date: Mon, 14 Jun 2021 09:20:12 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
-In-Reply-To: <20210614145536.GB28801@xsang-OptiPlex-9020>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: JldCXgJL5a2CFqaV3FoVchIir4sdoWR-
-X-Proofpoint-ORIG-GUID: U9h-5n8hiO_SNRGUwRzYFXGPSCzYZYqM
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-06-14_10:2021-06-14,
- 2021-06-14 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0
- impostorscore=0 lowpriorityscore=0 suspectscore=0 mlxscore=0 adultscore=0
- priorityscore=1501 clxscore=1011 bulkscore=0 spamscore=0 mlxlogscore=942
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104190000
- definitions=main-2106140102
+In-Reply-To: <1623647326.0np4yc0lo0.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,36 +69,213 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: feng.tang@intel.com, 0day robot <lkp@intel.com>, linux-mm@kvack.org,
- kaleshsingh@google.com, LKML <linux-kernel@vger.kernel.org>, npiggin@gmail.com,
- lkp@lists.01.org, Linus Torvalds <torvalds@linux-foundation.org>,
- zhengjun.xing@linux.intel.com, ying.huang@intel.com, joel@joelfernandes.org,
- "Kirill A . Shutemov" <kirill@shutemov.name>, akpm@linux-foundation.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, Rik van Riel <riel@surriel.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/14/21 8:25 PM, kernel test robot wrote:
-> 
-> 
-> Greeting,
-> 
-> FYI, we noticed a -29.4% regression of vm-scalability.throughput due to commit:
-> 
-> 
-> commit: ecf8443e51a862b261313c2319ab4e4aed9e6b7e ("[PATCH v7 02/11] mm/mremap: Fix race between MOVE_PUD mremap and pageout")
-> url: https://github.com/0day-ci/linux/commits/Aneesh-Kumar-K-V/Speedup-mremap-on-ppc64/20210607-135424
-> base: https://git.kernel.org/cgit/linux/kernel/git/powerpc/linux.git next
-> 
->
-
-We dropped that approach and is now using 
-https://lore.kernel.org/linux-mm/20210610083549.386085-1-aneesh.kumar@linux.ibm.com 
+Replying to several emails at once...
 
 
-Instead of pud lock we are now using rmap lock with mremap.
+On 6/13/21 10:21 PM, Nicholas Piggin wrote:
+> Excerpts from Nicholas Piggin's message of June 14, 2021 2:47 pm:
+>> Excerpts from Nicholas Piggin's message of June 14, 2021 2:14 pm:
+>>> Excerpts from Andy Lutomirski's message of June 14, 2021 1:52 pm:
+>>>> On 6/13/21 5:45 PM, Nicholas Piggin wrote:
+>>>>> Excerpts from Andy Lutomirski's message of June 9, 2021 2:20 am:
+>>>>>> On 6/4/21 6:42 PM, Nicholas Piggin wrote:
+>>>>>>> Add CONFIG_MMU_TLB_REFCOUNT which enables refcounting of the lazy tlb mm
+>>>>>>> when it is context switched. This can be disabled by architectures that
+>>>>>>> don't require this refcounting if they clean up lazy tlb mms when the
+>>>>>>> last refcount is dropped. Currently this is always enabled, which is
+>>>>>>> what existing code does, so the patch is effectively a no-op.
+>>>>>>>
+>>>>>>> Rename rq->prev_mm to rq->prev_lazy_mm, because that's what it is.
+>>>>>>
+>>>>>> I am in favor of this approach, but I would be a lot more comfortable
+>>>>>> with the resulting code if task->active_mm were at least better
+>>>>>> documented and possibly even guarded by ifdefs.
+>>>>>
+>>>>> active_mm is fairly well documented in Documentation/active_mm.rst IMO.
+>>>>> I don't think anything has changed in 20 years, I don't know what more
+>>>>> is needed, but if you can add to documentation that would be nice. Maybe
+>>>>> moving a bit of that into .c and .h files?
+>>>>>
+>>>>
+>>>> Quoting from that file:
+>>>>
+>>>>   - however, we obviously need to keep track of which address space we
+>>>>     "stole" for such an anonymous user. For that, we have "tsk->active_mm",
+>>>>     which shows what the currently active address space is.
+>>>>
+>>>> This isn't even true right now on x86.
+>>>
+>>> From the perspective of core code, it is. x86 might do something crazy 
+>>> with it, but it has to make it appear this way to non-arch code that
+>>> uses active_mm.
+>>>
+>>> Is x86's scheme documented?
 
-Can you check with that series?
+arch/x86/include/asm/tlbflush.h documents it a bit:
 
--aneesh
+        /*
+         * cpu_tlbstate.loaded_mm should match CR3 whenever interrupts
+         * are on.  This means that it may not match current->active_mm,
+         * which will contain the previous user mm when we're in lazy TLB
+         * mode even if we've already switched back to swapper_pg_dir.
+         *
+         * During switch_mm_irqs_off(), loaded_mm will be set to
+         * LOADED_MM_SWITCHING during the brief interrupts-off window
+         * when CR3 and loaded_mm would otherwise be inconsistent.  This
+         * is for nmi_uaccess_okay()'s benefit.
+         */
+
+
+
+>>>
+>>>> With your patch applied:
+>>>>
+>>>>  To support all that, the "struct mm_struct" now has two counters: a
+>>>>  "mm_users" counter that is how many "real address space users" there are,
+>>>>  and a "mm_count" counter that is the number of "lazy" users (ie anonymous
+>>>>  users) plus one if there are any real users.
+>>>>
+>>>> isn't even true any more.
+>>>
+>>> Well yeah but the active_mm concept hasn't changed. The refcounting 
+>>> change is hopefully reasonably documented?
+
+active_mm is *only* refcounting in the core code.  See below.
+
+>>>>
+>>>> I looked through all active_mm references in core code.  We have:
+>>>>
+>>>> kernel/sched/core.c: it's all refcounting, although it's a bit tangled
+>>>> with membarrier.
+>>>>
+>>>> kernel/kthread.c: same.  refcounting and membarrier stuff.
+>>>>
+>>>> kernel/exit.c: exit_mm() a BUG_ON().
+>>>>
+>>>> kernel/fork.c: initialization code and a warning.
+>>>>
+>>>> kernel/cpu.c: cpu offline stuff.  wouldn't be needed if active_mm went away.
+>>>>
+>>>> fs/exec.c: nothing of interest
+>>>
+>>> I might not have been clear. Core code doesn't need active_mm if 
+>>> active_mm somehow goes away. I'm saying active_mm can't go away because
+>>> it's needed to support (most) archs that do lazy tlb mm switching.
+>>>
+>>> The part I don't understand is when you say it can just go away. How? 
+
+#ifdef CONFIG_MMU_TLB_REFCOUNT
+	struct mm_struct *active_mm;
+#endif
+
+>>>
+>>>> I didn't go through drivers, but I maintain my point.  active_mm is
+>>>> there for refcounting.  So please don't just make it even more confusing
+>>>> -- do your performance improvement, but improve the code at the same
+>>>> time: get rid of active_mm, at least on architectures that opt out of
+>>>> the refcounting.
+>>>
+>>> powerpc opts out of the refcounting and can not "get rid of active_mm".
+>>> Not even in theory.
+>>
+>> That is to say, it does do a type of reference management that requires 
+>> active_mm so you can argue it has not entirely opted out of refcounting.
+>> But we're not just doing refcounting for the sake of refcounting! That
+>> would make no sense.
+>>
+>> active_mm is required because that's the mm that we have switched to 
+>> (from core code's perspective), and it is integral to know when to 
+>> switch to a different mm. See how active_mm is a fundamental concept
+>> in core code? It's part of the contract between core code and the
+>> arch mm context management calls. reference counting follows from there
+>> but it's not the _reason_ for this code.
+
+I don't understand what contract you're talking about.  The core code
+maintains an active_mm counter and keeps that mm_struct from
+disappearing.  That's *it*.  The core code does not care that active_mm
+is active, and x86 provides evidence of that -- on x86,
+current->active_mm may well be completely unused.
+
+>>
+>> Pretend the reference problem does not exit (whether by refcounting or 
+>> shootdown or garbage collection or whatever). We still can't remove 
+>> active_mm! We need it to know how to call into arch functions like 
+>> switch_mm.
+
+static inline void do_switch_mm(struct task_struct *prev_task, ...)
+{
+#ifdef CONFIG_MMU_TLB_REFCOUNT
+	switch_mm(...);
+#else
+	switch_mm(fewer parameters);
+	/* or pass NULL or whatever. */
+#endif
+}
+
+>>
+>> I don't know if you just forgot that critical requirement in your above 
+>> list, or you actually are entirely using x86's mental model for this 
+>> code which is doing something entirely different that does not need it 
+>> at all. If that is the case I really don't mind some cleanup or wrapper 
+>> functions for x86 do entirely do its own thing, but if that's the case
+>> you can't criticize core code's use of active_mm due to the current
+>> state of x86. It's x86 that needs documentation and cleaning up.
+> 
+> Ah, that must be where your confusion is coming from: x86's switch_mm 
+> doesn't use prev anywhere, and the reference scheme it is using appears 
+> to be under-documented, although vague references in changelogs suggest 
+> it has not actually "opted out" of active_mm refcounting.
+
+All of this is true, except I don't believe I'm confused.
+
+> 
+> That's understandable, but please redirect your objections to the proper 
+> place. git blame suggests 3d28ebceaffab.
+
+Thanks for the snark.
+
+Here's the situation.
+
+Before that patch, x86 more or less fully used the core scheme.  With
+that patch, x86 has the property that loaded_mm (which is used) either
+points to init_mm (which is permanently live) or to active_mm (which the
+core code keeps alive, which is the whole point).  x86 still uses the
+core active_mm refcounting scheme.  The result is a bit overcomplicated,
+but it works, and it enabled massive improvements to the x86 arch code.
+
+You are proposing a whole new simplification in which an arch can opt in
+to telling the core code that it doesn't need to keep active_mm alive.
+Great!  But now it's possible to get quite confused -- either an
+elaborate dance is needed or current->active_mm could point to freed
+memory.  This is poor design.
+
+I'm entirely in favor of allowing arches to opt out of active_mm
+refcounting.  As you've noticed, it's quite expensive on large systems.
+x86 would opt out, too, if given the opportunity [1].  But I think you
+should do it right.  If an arch opts out of active_mm refcounting, then
+keeping a lazy mm (if any!) alive becomes entirely the arch code's
+responsibility.  Once that happens, task->active_mm is not just a waste
+of 4-8 bytes of memory per task, it's actively harmful -- some code,
+somewhere in the kernel, might dereference it and access freed memory!
+
+So please do your patches right.  By all means add a new config option,
+but make that config option make active_mm go away entirely.  Then it
+can't be misused.
+
+NAK to the current set.
+
+--Andy
+
+[1] Hi Rik!  I think you had benchmarks that made mm refcounting look
+quite bad.  If x86 can opt out of the core scheme, we can just rejigger
+the exit_mm path to force-IPI everyone instead of allowing the paravirt
+code to possibly optimize that path.  Or we can use a hazard pointer
+scheme like my WIP patch.
