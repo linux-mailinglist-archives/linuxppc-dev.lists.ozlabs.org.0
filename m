@@ -2,60 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF24B3A6603
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 13:50:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF57C3A6641
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 14:07:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G3VB73FMmz3095
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 21:50:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G3VZ02CMLz30CS
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 22:07:20 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=frBzwAnJ;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=jeyu@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=frBzwAnJ; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G3V9g4JGFz2yX1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 21:49:40 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4G3V9X4Z3jzBFJB;
- Mon, 14 Jun 2021 13:49:36 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id p0uvW_JgQ-vw; Mon, 14 Jun 2021 13:49:36 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4G3V9X3fP1zBFJ8;
- Mon, 14 Jun 2021 13:49:36 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C6C728B795;
- Mon, 14 Jun 2021 13:49:34 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id zl3uFT9L_WQI; Mon, 14 Jun 2021 13:49:34 +0200 (CEST)
-Received: from [172.25.230.102] (po15451.idsi0.si.c-s.fr [172.25.230.102])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 98FE48B794;
- Mon, 14 Jun 2021 13:49:34 +0200 (CEST)
-Subject: Re: [PATCH] powerpc/signal64: Don't read sigaction arguments back
- from user memory
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <20210610072949.3198522-1-mpe@ellerman.id.au>
- <1623633444.p3rmbd7eti.astroid@bobo.none>
- <c677eab1-0ecd-8630-89c0-6fcc35788356@csgroup.eu>
- <1623649744.mbu8z4p0v5.astroid@bobo.none>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <e84f44e5-46a2-4076-b565-038057329be5@csgroup.eu>
-Date: Mon, 14 Jun 2021 13:49:34 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G3VYZ3vTVz2yXM
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 22:06:58 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A5B4C611BD;
+ Mon, 14 Jun 2021 12:06:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1623672414;
+ bh=Q2MM4OE/VICRfAoB7Alej8C61pteU8OP3UNtKNHFWJk=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=frBzwAnJ6zHGxnI4UWPXOTUCB87KxBhhiG+0T0rvQX/xBVgtn1hKgCdKqyEoLzk5M
+ XX9/xSGDPSWzrgKQ1ZSbNYG45isW7jotLC1aK9yfzSD6qQM4+BRLJ9FrY7Q6pHoJyW
+ v/DDpdcNgTMpleWD8rd65cPLspYigpANxiYJpxSaLHlMAIACHgdAAdwm0GiclVavEn
+ QLXSFBd08OZmcN3ZerK5Ht9PUzcWuyegBjl5qQtia09yJ8v+fzLDFlDePrm5OoTgSQ
+ x6hw30cowSi7PcR3kUpWt6oruoY9yvNzgAt3/JLh7P5h4x+oeVxvtlAH1rKkLrJPBH
+ cAnxe0btDbjYw==
+Date: Mon, 14 Jun 2021 14:06:50 +0200
+From: Jessica Yu <jeyu@kernel.org>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v4 1/2] module: add elf_check_module_arch for module
+ specific elf arch checks
+Message-ID: <YMdGWjBOmcstBwOl@p200300cbcf109700df096d564fe976c3.dip0.t-ipconnect.de>
+References: <20210611093959.821525-1-npiggin@gmail.com>
+ <20210611093959.821525-2-npiggin@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <1623649744.mbu8z4p0v5.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20210611093959.821525-2-npiggin@gmail.com>
+X-OS: Linux p200300cbcf109700df096d564fe976c3.dip0.t-ipconnect.de
+ 5.12.9-1-default x86_64
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,83 +61,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: cmr@codefail.de
+Cc: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
++++ Nicholas Piggin [11/06/21 19:39 +1000]:
+>The elf_check_arch() function is used to test usermode binaries, but
+>kernel modules may have more specific requirements. powerpc would like
+>to test for ABI version compatibility.
+>
+>Add an arch-overridable function elf_check_module_arch() that defaults
+>to elf_check_arch() and use it in elf_validity_check().
+>
+>Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+>[np: split patch, added changelog]
+>Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>---
+> include/linux/moduleloader.h | 5 +++++
+> kernel/module.c              | 2 +-
+> 2 files changed, 6 insertions(+), 1 deletion(-)
+>
+>diff --git a/include/linux/moduleloader.h b/include/linux/moduleloader.h
+>index 9e09d11ffe5b..fdc042a84562 100644
+>--- a/include/linux/moduleloader.h
+>+++ b/include/linux/moduleloader.h
+>@@ -13,6 +13,11 @@
+>  * must be implemented by each architecture.
+>  */
+>
+>+// Allow arch to optionally do additional checking of module ELF header
+>+#ifndef elf_check_module_arch
+>+#define elf_check_module_arch elf_check_arch
+>+#endif
 
+Hi Nicholas,
 
-Le 14/06/2021 à 07:49, Nicholas Piggin a écrit :
-> Excerpts from Christophe Leroy's message of June 14, 2021 3:30 pm:
->>
->>
->> Le 14/06/2021 à 03:32, Nicholas Piggin a écrit :
->>> Excerpts from Michael Ellerman's message of June 10, 2021 5:29 pm:
->>>> When delivering a signal to a sigaction style handler (SA_SIGINFO), we
->>>> pass pointers to the siginfo and ucontext via r4 and r5.
->>>>
->>>> Currently we populate the values in those registers by reading the
->>>> pointers out of the sigframe in user memory, even though the values in
->>>> user memory were written by the kernel just prior:
->>>>
->>>>     unsafe_put_user(&frame->info, &frame->pinfo, badframe_block);
->>>>     unsafe_put_user(&frame->uc, &frame->puc, badframe_block);
->>>>     ...
->>>>     if (ksig->ka.sa.sa_flags & SA_SIGINFO) {
->>>>     	err |= get_user(regs->gpr[4], (unsigned long __user *)&frame->pinfo);
->>>>     	err |= get_user(regs->gpr[5], (unsigned long __user *)&frame->puc);
->>>>
->>>> ie. we write &frame->info into frame->pinfo, and then read frame->pinfo
->>>> back into r4, and similarly for &frame->uc.
->>>>
->>>> The code has always been like this, since linux-fullhistory commit
->>>> d4f2d95eca2c ("Forward port of 2.4 ppc64 signal changes.").
->>>>
->>>> There's no reason for us to read the values back from user memory,
->>>> rather than just setting the value in the gpr[4/5] directly. In fact
->>>> reading the value back from user memory opens up the possibility of
->>>> another user thread changing the values before we read them back.
->>>> Although any process doing that would be racing against the kernel
->>>> delivering the signal, and would risk corrupting the stack, so that
->>>> would be a userspace bug.
->>>>
->>>> Note that this is 64-bit only code, so there's no subtlety with the size
->>>> of pointers differing between kernel and user. Also the frame variable
->>>> is not modified to point elsewhere during the function.
->>>>
->>>> In the past reading the values back from user memory was not costly, but
->>>> now that we have KUAP on some CPUs it is, so we'd rather avoid it for
->>>> that reason too.
->>>>
->>>> So change the code to just set the values directly, using the same
->>>> values we have written to the sigframe previously in the function.
->>>>
->>>> Note also that this matches what our 32-bit signal code does.
->>>>
->>>> Using a version of will-it-scale's signal1_threads that sets SA_SIGINFO,
->>>> this results in a ~4% increase in signals per second on a Power9, from
->>>> 229,777 to 239,766.
->>>
->>> Good find, nice improvement. Will make it possible to make the error
->>> handling much nicer too I think.
->>>
->>> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
->>>
->>> You've moved copy_siginfo_to_user right up to the user access unlock,
->>> could save 2 more KUAP lock/unlocks if we had an unsafe_clear_user. If
->>> we can move the other user access stuff up as well, the stack frame
->>> put_user could use unsafe_put_user as well, saving 1 more. Another few
->>> percent?
->>
->> I'm looking at making an 'unsafe' version of copy_siginfo_to_user().
->> That's straight forward for 'native' signals, but for compat signals that's more tricky.
-> 
-> Ah nice. Native is most important at the moment.
-> 
+Why not make elf_check_module_arch() consistent with the other
+arch-specific functions? Please see module_frob_arch_sections(),
+module_{init,exit}_section(), etc in moduleloader.h. That is, they are
+all __weak functions that are overridable by arches. We can maybe make
+elf_check_module_arch() a weak symbol, available for arches to
+override if they want to perform additional elf checks. Then we don't
+have to have this one-off #define.
 
-Finally not so easy. We have a quite efficient clear_user() which uses 'dcbz'. When replacing that 
-by a simplistic unsafe_clear_user() on the same model as unsafe_copy_to_user(), performance are 
-degradated on 32s. Need to implement it more efficiently.
+Thanks,
 
-Christophe
+Jessica
+
+>+
+> /* Adjust arch-specific sections.  Return 0 on success.  */
+> int module_frob_arch_sections(Elf_Ehdr *hdr,
+> 			      Elf_Shdr *sechdrs,
+>diff --git a/kernel/module.c b/kernel/module.c
+>index 7e78dfabca97..7c3f9b7478dc 100644
+>--- a/kernel/module.c
+>+++ b/kernel/module.c
+>@@ -2946,7 +2946,7 @@ static int elf_validity_check(struct load_info *info)
+>
+> 	if (memcmp(info->hdr->e_ident, ELFMAG, SELFMAG) != 0
+> 	    || info->hdr->e_type != ET_REL
+>-	    || !elf_check_arch(info->hdr)
+>+	    || !elf_check_module_arch(info->hdr)
+> 	    || info->hdr->e_shentsize != sizeof(Elf_Shdr))
+> 		return -ENOEXEC;
+>
+>-- 
+>2.23.0
+>
