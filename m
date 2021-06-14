@@ -2,79 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CE443A6998
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 17:06:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A4673A6B1B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 17:58:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G3ZXR4pqpz30Bq
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 01:06:15 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=WFXINDqa;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G3bhW11Syz3bVD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 01:58:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::131;
- helo=mail-lf1-x131.google.com; envelope-from=torvalds@linuxfoundation.org;
+Authentication-Results: lists.ozlabs.org;
+ spf=softfail (domain owner discourages use of this
+ host) smtp.mailfrom=kaod.org (client-ip=205.139.111.44;
+ helo=us-smtp-delivery-44.mimecast.com; envelope-from=groug@kaod.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
- header.a=rsa-sha256 header.s=google header.b=WFXINDqa; 
- dkim-atps=neutral
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com
- [IPv6:2a00:1450:4864:20::131])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from us-smtp-delivery-44.mimecast.com
+ (us-smtp-delivery-44.mimecast.com [205.139.111.44])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G3ZWv75glz2yYH
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 01:05:46 +1000 (AEST)
-Received: by mail-lf1-x131.google.com with SMTP id k40so21658758lfv.7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 08:05:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linux-foundation.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=G2ifPKFPXw+H1+XH/FElieTkSuvTHAXJjptrAzf+O/o=;
- b=WFXINDqaAXfBVeiL3HnMRcJ+t27wzLTnISKsyZAtOmblsbkkBS4MCZ46zTlpjK4JvE
- /Pf+CdFhiSbVJ/W6e+PMAKVo3D+wnSihIYddEJpNrYHpmPks3H0BOj3zjmhn+6Kz4PNb
- uMNIHC0LKBqWwfD7FT2jfCqBDQsPnct2KsDuI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=G2ifPKFPXw+H1+XH/FElieTkSuvTHAXJjptrAzf+O/o=;
- b=Y6t21zMfMv7iv3u1au1U0Np3dhXAhY2/CybUy456en8Ty7cUFUeESlg+UyfqTv0Uq9
- aNWF7OXUKZIi6yCeRp7tyrrq4IpmLn6wJ0uGPXcHLh0wuMwHraHcSHRvfvws6cW2qAoo
- +X+kBcwTrPm5+zKCJkVg40rmQG488YBjCwrTwJPqrx6jQGFRkv7yy0xeIzxg7oUqzVx4
- v7lueynKI9gPtMJM6Dp3u3EuuIKqjaxn71ptyiXosGHRMQn4whQEGyRp8BCKMNgr271r
- zpsOVRsidg03Gs2lzrrZRQG4MmCoV9lKSDjhhyljmnpDCiLx8wlfH4P/Rczxk0RL10ml
- ksAQ==
-X-Gm-Message-State: AOAM530bvxKkjUxLYfzj+5PVQ1L6ChRkGpDaH2F4uR1hhveSwEVI+YLd
- 3Yy81H4jg7vY77VvhhBhFYH/o7xbRK8lRhWT9OE=
-X-Google-Smtp-Source: ABdhPJwZZsTNZHnjjLHMHCWTFMITRv/Z/dN1dBy4nJxrMNw9yqb5bdHSIJ69RLPplO0vGYX96Yvm/g==
-X-Received: by 2002:a05:6512:507:: with SMTP id
- o7mr12629563lfb.453.1623683137200; 
- Mon, 14 Jun 2021 08:05:37 -0700 (PDT)
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com.
- [209.85.167.50])
- by smtp.gmail.com with ESMTPSA id k23sm858977ljh.129.2021.06.14.08.05.36
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 14 Jun 2021 08:05:37 -0700 (PDT)
-Received: by mail-lf1-f50.google.com with SMTP id h4so6793134lfu.8
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 08:05:36 -0700 (PDT)
-X-Received: by 2002:a2e:a549:: with SMTP id e9mr2705701ljn.411.1623682703202; 
- Mon, 14 Jun 2021 07:58:23 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G3bh601mkz2yX1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 01:57:55 +1000 (AEST)
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-602-KVVs0xxVPwWZkn42gmXfLg-1; Mon, 14 Jun 2021 11:57:44 -0400
+X-MC-Unique: KVVs0xxVPwWZkn42gmXfLg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
+ [10.5.11.13])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 58777101F001;
+ Mon, 14 Jun 2021 15:57:43 +0000 (UTC)
+Received: from bahia.lan (ovpn-112-181.ams2.redhat.com [10.36.112.181])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A916E60871;
+ Mon, 14 Jun 2021 15:57:41 +0000 (UTC)
+Date: Mon, 14 Jun 2021 17:57:40 +0200
+From: Greg Kurz <groug@kaod.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc: Fix initrd corruption with relative jump labels
+Message-ID: <20210614175740.6721fe0a@bahia.lan>
+In-Reply-To: <20210614131440.312360-1-mpe@ellerman.id.au>
+References: <20210614131440.312360-1-mpe@ellerman.id.au>
 MIME-Version: 1.0
-References: <20210607055131.156184-3-aneesh.kumar@linux.ibm.com>
- <20210614145536.GB28801@xsang-OptiPlex-9020>
-In-Reply-To: <20210614145536.GB28801@xsang-OptiPlex-9020>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Mon, 14 Jun 2021 07:58:07 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wg+TcJtrwEUzoht2j0R3+jw=OCqckptdf4Q9vNgCPSpXA@mail.gmail.com>
-Message-ID: <CAHk-=wg+TcJtrwEUzoht2j0R3+jw=OCqckptdf4Q9vNgCPSpXA@mail.gmail.com>
-Subject: Re: [mm/mremap] ecf8443e51: vm-scalability.throughput -29.4%
- regression
-To: kernel test robot <oliver.sang@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=groug@kaod.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: kaod.org
+Content-Type: text/plain; charset=WINDOWS-1252
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,32 +59,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Feng Tang <feng.tang@intel.com>, 0day robot <lkp@intel.com>,
- Linux-MM <linux-mm@kvack.org>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Kalesh Singh <kaleshsingh@google.com>, LKML <linux-kernel@vger.kernel.org>,
- Nick Piggin <npiggin@gmail.com>, lkp@lists.01.org,
- Zhengjun Xing <zhengjun.xing@linux.intel.com>, "Huang,
- Ying" <ying.huang@intel.com>, Joel Fernandes <joel@joelfernandes.org>,
- "Kirill A . Shutemov" <kirill@shutemov.name>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: a.kovaleva@yadro.com, r.bolshakov@yadro.com, linuxppc-dev@lists.ozlabs.org,
+ dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 14, 2021 at 7:39 AM kernel test robot <oliver.sang@intel.com> wrote:
->
+On Mon, 14 Jun 2021 23:14:40 +1000
+Michael Ellerman <mpe@ellerman.id.au> wrote:
 
-> FYI, we noticed a -29.4% regression of vm-scalability.throughput due to commit:
-> ecf8443e51a8 ("[PATCH v7 02/11] mm/mremap: Fix race between MOVE_PUD mremap and pageout")
+> Commit b0b3b2c78ec0 ("powerpc: Switch to relative jump labels") switched
+> us to using relative jump labels. That involves changing the code,
+> target and key members in struct jump_entry to be relative to the
+> address of the jump_entry, rather than absolute addresses.
+>=20
+> We have two static inlines that create a struct jump_entry,
+> arch_static_branch() and arch_static_branch_jump(), as well as an asm
+> macro ARCH_STATIC_BRANCH, which is used by the pseries-only hypervisor
+> tracing code.
+>=20
+> Unfortunately we missed updating the key to be a relative reference in
+> ARCH_STATIC_BRANCH.
+>=20
+> That causes a pseries kernel to have a handful of jump_entry structs
+> with bad key values. Instead of being a relative reference they instead
+> hold the full address of the key.
+>=20
+> However the code doesn't expect that, it still adds the key value to the
+> address of the jump_entry (see jump_entry_key()) expecting to get a
+> pointer to a key somewhere in kernel data.
+>=20
+> The table of jump_entry structs sits in rodata, which comes after the
+> kernel text. In a typical build this will be somewhere around 15MB. The
+> address of the key will be somewhere in data, typically around 20MB.
+> Adding the two values together gets us a pointer somewhere around 45MB.
+>=20
+> We then call static_key_set_entries() with that bad pointer and modify
+> some members of the struct static_key we think we are pointing at.
+>=20
+> A pseries kernel is typically ~30MB in size, so writing to ~45MB won't
+> corrupt the kernel itself. However if we're booting with an initrd,
+> depending on the size and exact location of the initrd, we can corrupt
+> the initrd. Depending on how exactly we corrupt the initrd it can either
+> cause the system to not boot, or just corrupt one of the files in the
+> initrd.
+>=20
+> The fix is simply to make the key value relative to the jump_entry
+> struct in the ARCH_STATIC_BRANCH macro.
+>=20
+> Fixes: b0b3b2c78ec0 ("powerpc: Switch to relative jump labels")
+> Reported-by: Anastasia Kovaleva <a.kovaleva@yadro.com>
+> Reported-by: Roman Bolshakov <r.bolshakov@yadro.com>
+> Reported-by: Greg Kurz <groug@kaod.org>
+> Reported-by: Daniel Axtens <dja@axtens.net>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> ---
 
-Ouch.
+Great thanks for debugging this issue ! I'll try it out tomorrow morning.
 
-I guess it's not a huge surprise, but that's a fairly large regression.
+Cheers,
 
-Probably because the pud lock is just one single lock ("No scalability
-reason to split PUD locks yet").
+--
+Greg
 
-What happens if pud_lockptr() were to do the same thing that pmd_lockptr() does?
+>  arch/powerpc/include/asm/jump_label.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/arch/powerpc/include/asm/jump_label.h b/arch/powerpc/include=
+/asm/jump_label.h
+> index 2d5c6bec2b4f..93ce3ec25387 100644
+> --- a/arch/powerpc/include/asm/jump_label.h
+> +++ b/arch/powerpc/include/asm/jump_label.h
+> @@ -50,7 +50,7 @@ static __always_inline bool arch_static_branch_jump(str=
+uct static_key *key, bool
+>  1098:=09nop;=09=09=09=09=09\
+>  =09.pushsection __jump_table, "aw";=09\
+>  =09.long 1098b - ., LABEL - .;=09=09\
+> -=09FTR_ENTRY_LONG KEY;=09=09=09\
+> +=09FTR_ENTRY_LONG KEY - .;=09=09=09\
+>  =09.popsection
+>  #endif
+> =20
 
-                Linus
