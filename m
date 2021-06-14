@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C0593A5CE9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 08:21:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDC633A5CF0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 08:22:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G3Lv95cR0z3017
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 16:21:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G3Lvb2YJPz3c0J
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jun 2021 16:22:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,21 +16,22 @@ Authentication-Results: lists.ozlabs.org;
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G3Ltq55gzz2yXh
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 16:21:23 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G3LvD6M2Zz2ysk
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 16:21:44 +1000 (AEST)
 Received: by verein.lst.de (Postfix, from userid 2407)
- id B72AF67373; Mon, 14 Jun 2021 08:21:18 +0200 (CEST)
-Date: Mon, 14 Jun 2021 08:21:18 +0200
+ id 2608B68AFE; Mon, 14 Jun 2021 08:21:40 +0200 (CEST)
+Date: Mon, 14 Jun 2021 08:21:39 +0200
 From: Christoph Hellwig <hch@lst.de>
 To: Claire Chang <tientzu@chromium.org>
-Subject: Re: [PATCH v9 04/14] swiotlb: Add restricted DMA pool initialization
-Message-ID: <20210614062118.GD28343@lst.de>
+Subject: Re: [PATCH v9 05/14] swiotlb: Update is_swiotlb_buffer to add a
+ struct device argument
+Message-ID: <20210614062139.GE28343@lst.de>
 References: <20210611152659.2142983-1-tientzu@chromium.org>
- <20210611152659.2142983-5-tientzu@chromium.org>
+ <20210611152659.2142983-6-tientzu@chromium.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210611152659.2142983-5-tientzu@chromium.org>
+In-Reply-To: <20210611152659.2142983-6-tientzu@chromium.org>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -73,10 +74,6 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 11, 2021 at 11:26:49PM +0800, Claire Chang wrote:
-> Add the initialization function to create restricted DMA pools from
-> matching reserved-memory nodes.
+Looks good,
 
-Bisection hazard:  we should only add the new config option when the
-code is actually read to be used.  So this patch should move to the end
-of the series.
+Reviewed-by: Christoph Hellwig <hch@lst.de>
