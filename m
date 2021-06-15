@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77DA23A7F7D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 15:28:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 103763A7FBB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 15:29:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G48Jw0l2Mz3cVC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 23:28:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G48LS58kBz3dLf
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 23:29:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=UvySjDzn;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=PoKYYdGY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,35 +19,34 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=UvySjDzn; 
+ header.s=casper.20170209 header.b=PoKYYdGY; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G48Hm6dBRz3c95
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 23:27:16 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G48JD3KjNz3bwb
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 23:27:40 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=g2VhDbsqU+1BH7ucwppsHj1i0dCrR9dcKJzb5SaYpTo=; b=UvySjDznQ/F22fIfY6ks31l8vl
- AlJAtvZaUYVZ/U0xG7DvMn2QFwU4AdpXf89dIyWNCZuuDIxSQ8zjaEr5gy/s80zp/0UjXRwQFTF1/
- RDZo3gX/ciFau8X9dIxGugAumnxdKSJSSCsa8vQUkvJDNkukJioIld57bWVuRvGJ7cfUcGDVq25Vl
- 19hmSGv6n3TbtG8FeZG0nPNvGqlpTP7bnF/n4nrzMotcrcmLA2ib7XUfZXt7ghfmCKbw62PGQz+gR
- 7a0i66ngnLKcmIHAahI3XqXhWHMOcD/qI38foiyd7hYL3t/iVC1SiV4962oLL/CfbVt7bO2HE/VI9
- 91ifMLzw==;
+ bh=wcPpMDy97xUK1RM10BNiXs7xBvfpVplA66+OJqXXBlc=; b=PoKYYdGYNgKcb1Dj9Q9IOSmwID
+ 7Kj7GzlvQq59r7+2/f5WMOpRRW+ZC41jxWkwj8ZNlkcTOLrn8O375s2Eg4Ly0E3VzmKwtzDtsFt+y
+ m+6oCKbwu3G99/VH9eULMdeur3AsveUeLtF1JKn71UKFoYGv3swhN7URyvuh5jir7P2a/mPwV/7P2
+ jJ8E/5RQNgCqn/uLR9uN8Q3/Mxq0SR2DWTahAW9RBPpiqdmWAN+cYx+VyZ2V1suqukiNuVOLrMIWZ
+ gPbuXrEfQAiHdbNIFl2a120wbipxdYE+49g6khs8IPXOO0i6hHYMRHN8Gx/gllkvjupYKXKSzl3Sd
+ fmhdvWyA==;
 Received: from [2001:4bb8:19b:fdce:9045:1e63:20f0:ca9] (helo=localhost)
  by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lt94v-006nx9-5v; Tue, 15 Jun 2021 13:26:09 +0000
+ id 1lt95F-006nyF-RW; Tue, 15 Jun 2021 13:26:30 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Jens Axboe <axboe@kernel.dk>,
 	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 04/18] MIPS: don't include <linux/genhd.h> in
- <asm/mach-rc32434/rb.h>
-Date: Tue, 15 Jun 2021 15:24:42 +0200
-Message-Id: <20210615132456.753241-5-hch@lst.de>
+Subject: [PATCH 05/18] bvec: fix the include guards for bvec.h
+Date: Tue, 15 Jun 2021 15:24:43 +0200
+Message-Id: <20210615132456.753241-6-hch@lst.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210615132456.753241-1-hch@lst.de>
 References: <20210615132456.753241-1-hch@lst.de>
@@ -68,9 +67,9 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: linux-arch@vger.kernel.org, linux-block@vger.kernel.org,
  Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Chaitanya Kulkarni <chaitanya.kulkarni@wdc.com>,
- Mike Snitzer <snitzer@redhat.com>, Geoff Levand <geoff@infradead.org>,
- linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
+ Bart Van Assche <bvanassche@acm.org>, Mike Snitzer <snitzer@redhat.com>,
+ Geoff Levand <geoff@infradead.org>, linuxppc-dev@lists.ozlabs.org,
+ Chaitanya Kulkarni <chaitanya.kulkarni@wdc.com>, linux-mips@vger.kernel.org,
  Dongsheng Yang <dongsheng.yang@easystack.cn>, linux-kernel@vger.kernel.org,
  "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
  dm-devel@redhat.com, Ilya Dryomov <idryomov@gmail.com>,
@@ -79,29 +78,37 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There is no need to include genhd.h from a random arch header, and not
-doing so prevents the possibility for nasty include loops.
+Fix the include guards to match the file naming.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
 Reviewed-by: Chaitanya Kulkarni <chaitanya.kulkarni@wdc.com>
 Reviewed-by: Ira Weiny <ira.weiny@intel.com>
 ---
- arch/mips/include/asm/mach-rc32434/rb.h | 2 --
- 1 file changed, 2 deletions(-)
+ include/linux/bvec.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/include/asm/mach-rc32434/rb.h b/arch/mips/include/asm/mach-rc32434/rb.h
-index d502673a4f6c..34d179ca020b 100644
---- a/arch/mips/include/asm/mach-rc32434/rb.h
-+++ b/arch/mips/include/asm/mach-rc32434/rb.h
-@@ -7,8 +7,6 @@
- #ifndef __ASM_RC32434_RB_H
- #define __ASM_RC32434_RB_H
+diff --git a/include/linux/bvec.h b/include/linux/bvec.h
+index ff832e698efb..883faf5f1523 100644
+--- a/include/linux/bvec.h
++++ b/include/linux/bvec.h
+@@ -4,8 +4,8 @@
+  *
+  * Copyright (C) 2001 Ming Lei <ming.lei@canonical.com>
+  */
+-#ifndef __LINUX_BVEC_ITER_H
+-#define __LINUX_BVEC_ITER_H
++#ifndef __LINUX_BVEC_H
++#define __LINUX_BVEC_H
  
--#include <linux/genhd.h>
--
- #define REGBASE		0x18000000
- #define IDT434_REG_BASE ((volatile void *) KSEG1ADDR(REGBASE))
- #define UART0BASE	0x58000
+ #include <linux/bug.h>
+ #include <linux/errno.h>
+@@ -183,4 +183,4 @@ static inline void bvec_advance(const struct bio_vec *bvec,
+ 	}
+ }
+ 
+-#endif /* __LINUX_BVEC_ITER_H */
++#endif /* __LINUX_BVEC_H */
 -- 
 2.30.2
 
