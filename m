@@ -2,63 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DED63A7381
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 03:52:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE2183A738A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 04:00:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G3rtC6qS1z3c7J
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 11:52:35 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256 header.s=google header.b=Euy4kMNQ;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G3s3t49dNz3c6F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 12:00:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::72d;
- helo=mail-qk1-x72d.google.com; envelope-from=joel.stan@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256
- header.s=google header.b=Euy4kMNQ; dkim-atps=neutral
-Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com
- [IPv6:2607:f8b0:4864:20::72d])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G3rsl0f4Tz2xtj
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 11:52:10 +1000 (AEST)
-Received: by mail-qk1-x72d.google.com with SMTP id c18so25375819qkc.11
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 18:52:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jms.id.au; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=oWnRdMbzlZ6uCg7kHZeS+mvPo3u6fozJ1gqjgHsyntI=;
- b=Euy4kMNQAlanaDv3HRhIEsHzxm91ku2c5m4d+B6e+Fn3yuOlPYPBOy/4jYmPapq+FH
- sEySXpcOGBuK2bxv79MRMRn2RXEGF7t5Ia2zw4PbIefMgbfsbYH6kRu+xDujLPlxr/n3
- Hl6P5pFW4mSXu6mEk2MZXkI+jDwsFtYwF2Zgg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=oWnRdMbzlZ6uCg7kHZeS+mvPo3u6fozJ1gqjgHsyntI=;
- b=MK7K/DiEyd76VWPn0G/ijIieap2J10EJH4u3J4O+ki2D95m1fV+tqw+qZNFm3wHiCq
- eRCbE88uebTV+LSVZzLGYgT+rHW9Eo5+j3jC7C/qDmNVeU9VWTcSNlNNvzsmAIJP8N9J
- 5EIyr2Z/i9hNv+BtvgHT81ywqxWeD20hzgybfge3uGRYp3nV1FDb/wod80H1PHNiRgfV
- Cq44pnKdxLL3Me8fDRK9+UOtU6bdFABsz0cGKCX+M5B+fuuNWbagkqBux1duLN8UW4yE
- KcP5Cu9EHmMijQz+PmB3SMWsxAvitrrmH/v3JMLzaOSxvAcBPZT0uHYiZhuchfePpTyI
- 4+yw==
-X-Gm-Message-State: AOAM531QKYA8djisKWldGOP6Jf179IJrRaDCTHQP2JsZSDgRzpSqey1w
- dxmmyV2/7SU2YkgcWhlEK+eBRvp37SjWmWOzQjY=
-X-Google-Smtp-Source: ABdhPJylWwTMT1km2sa1BNaT0ATeITR5ItXM/dCgRFMmqLyJFBk85MzUpVFQfZT5ilFgEOotQH+KnaCtXRPVb0QGNFY=
-X-Received: by 2002:a37:9b03:: with SMTP id d3mr18571270qke.273.1623721926602; 
- Mon, 14 Jun 2021 18:52:06 -0700 (PDT)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com;
+ envelope-from=libaokun1@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G3s3W0YgVz2xgN
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 12:00:35 +1000 (AEST)
+Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.53])
+ by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4G3rxZ6km8zXg13;
+ Tue, 15 Jun 2021 09:55:30 +0800 (CST)
+Received: from dggpeml500020.china.huawei.com (7.185.36.88) by
+ dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Tue, 15 Jun 2021 10:00:30 +0800
+Received: from [10.174.177.174] (10.174.177.174) by
+ dggpeml500020.china.huawei.com (7.185.36.88) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Tue, 15 Jun 2021 10:00:29 +0800
+Subject: Re: [PATCH -next] powerpc/spider-pci: Remove set but not used
+ variable 'val'
+To: <arnd@arndb.de>, <mpe@ellerman.id.au>, <benh@kernel.crashing.org>,
+ <paulus@samba.org>, <linuxppc-dev@lists.ozlabs.org>,
+ <linux-kernel@vger.kernel.org>
+References: <20210601085319.140461-1-libaokun1@huawei.com>
+From: "libaokun (A)" <libaokun1@huawei.com>
+Message-ID: <29287300-6b6b-1773-a950-61ea20f1959c@huawei.com>
+Date: Tue, 15 Jun 2021 10:00:29 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.0
 MIME-Version: 1.0
-References: <20210612003128.372238-1-leoyang.li@nxp.com>
-In-Reply-To: <20210612003128.372238-1-leoyang.li@nxp.com>
-From: Joel Stanley <joel@jms.id.au>
-Date: Tue, 15 Jun 2021 01:51:54 +0000
-Message-ID: <CACPK8XfUiiBM=KQiqSJ5uSUpOHLTp_wxhNyEw-gYkTBsZjbZVg@mail.gmail.com>
-Subject: Re: [PATCH] usb: gadget: fsl: properly remove remnant of MXC support
-To: Li Yang <leoyang.li@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20210601085319.140461-1-libaokun1@huawei.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.177.174]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpeml500020.china.huawei.com (7.185.36.88)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,28 +58,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Felipe Balbi <balbi@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Fabio Estevam <festevam@gmail.com>, ran.wang_1@nxp.com,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: yuehaibing@huawei.com, weiyongjun1@huawei.com, yukuai3@huawei.com,
+ yangjihong1@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 12 Jun 2021 at 00:31, Li Yang <leoyang.li@nxp.com> wrote:
+ping
+
+在 2021/6/1 16:53, Baokun Li 写道:
+> Fixes gcc '-Wunused-but-set-variable' warning:
 >
-> Commit a390bef7db1f ("usb: gadget: fsl_mxc_udc: Remove the driver")
-> didn't remove all the MXC related stuff which can cause build problem
-> for LS1021 when enabled again in Kconfig.  This patch remove all the
-> remnants.
+> arch/powerpc/platforms/cell/spider-pci.c: In function 'spiderpci_io_flush':
+> arch/powerpc/platforms/cell/spider-pci.c:28:6: warning:
+> variable ‘val’ set but not used [-Wunused-but-set-variable]
 >
-> Signed-off-by: Li Yang <leoyang.li@nxp.com>
-
-Reviewed-by: Joel Stanley <joel@jms.id.au>
-
-Will you re-submit the kconfig change once this is merged?
-
-Cheers,
-
-Joel
+> It never used since introduction.
+>
+> Signed-off-by: Baokun Li <libaokun1@huawei.com>
+> ---
+>   arch/powerpc/platforms/cell/spider-pci.c | 3 +--
+>   1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/arch/powerpc/platforms/cell/spider-pci.c b/arch/powerpc/platforms/cell/spider-pci.c
+> index 93ea41680f54..a1c293f42a1f 100644
+> --- a/arch/powerpc/platforms/cell/spider-pci.c
+> +++ b/arch/powerpc/platforms/cell/spider-pci.c
+> @@ -25,10 +25,9 @@ struct spiderpci_iowa_private {
+>   static void spiderpci_io_flush(struct iowa_bus *bus)
+>   {
+>   	struct spiderpci_iowa_private *priv;
+> -	u32 val;
+>   
+>   	priv = bus->private;
+> -	val = in_be32(priv->regs + SPIDER_PCI_DUMMY_READ);
+> +	in_be32(priv->regs + SPIDER_PCI_DUMMY_READ);
+>   	iosync();
+>   }
+>   
