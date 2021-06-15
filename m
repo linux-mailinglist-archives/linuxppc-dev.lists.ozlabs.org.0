@@ -1,59 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DEAB3A7380
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 03:51:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DED63A7381
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 03:52:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G3rrV66bnz3dkk
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 11:51:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G3rtC6qS1z3c7J
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 11:52:35 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Ep0XF0NF;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256 header.s=google header.b=Euy4kMNQ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=Ep0XF0NF; 
- dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::72d;
+ helo=mail-qk1-x72d.google.com; envelope-from=joel.stan@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256
+ header.s=google header.b=Euy4kMNQ; dkim-atps=neutral
+Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com
+ [IPv6:2607:f8b0:4864:20::72d])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G3rnz4cgzz3cZx
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 11:48:55 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4G3rnx5X1hz9sCD;
- Tue, 15 Jun 2021 11:48:53 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1623721734;
- bh=Bl3XHAS0bQtI+6g13gkACgICPslVhebB4ZXpE+X695Y=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=Ep0XF0NFMgmx7oI70j7Ccn7QSx4ln77fHPJldlNbo/qwJmwsQXkJGdFjSSYKAzKQz
- il7/UdavTO905wqZRRqzvtTn/zNF2h1WZlaOySLEbyCt+MJUel8Z+LKySzCjueJrAg
- tubenPnGVZKbyfbvs4j1njr8UxP45mNJke8msYpHAWwa50DdHqL12mHXLiuipm5ZlK
- glRriVXjb8aY/WEqIUOPnlx9sSuI50PxJj91i5noJKkRoHNLfiVRbSCuTYA8WRU915
- 1jSptRsjdKJAXcICZjx5nySyznFRceANtPrYXD2CKUmSXEBi9WWl5vGIrbqDcuJCIE
- sSrSNWMPBYPOA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>,
- naveen.n.rao@linux.vnet.ibm.com, jniethe5@gmail.com
-Subject: Re: [PATCH v1 10/12] powerpc/lib/feature-fixups: Use PPC_RAW_xxx()
- macros
-In-Reply-To: <e79cd8e111ca13bf8c61a384bac365aa7e207647.1621506159.git.christophe.leroy@csgroup.eu>
-References: <5d146b31b943e7ad674894421db4feef54804b9b.1621506159.git.christophe.leroy@csgroup.eu>
- <e79cd8e111ca13bf8c61a384bac365aa7e207647.1621506159.git.christophe.leroy@csgroup.eu>
-Date: Tue, 15 Jun 2021 11:48:49 +1000
-Message-ID: <874kdzvqwu.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G3rsl0f4Tz2xtj
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 11:52:10 +1000 (AEST)
+Received: by mail-qk1-x72d.google.com with SMTP id c18so25375819qkc.11
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 18:52:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jms.id.au; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=oWnRdMbzlZ6uCg7kHZeS+mvPo3u6fozJ1gqjgHsyntI=;
+ b=Euy4kMNQAlanaDv3HRhIEsHzxm91ku2c5m4d+B6e+Fn3yuOlPYPBOy/4jYmPapq+FH
+ sEySXpcOGBuK2bxv79MRMRn2RXEGF7t5Ia2zw4PbIefMgbfsbYH6kRu+xDujLPlxr/n3
+ Hl6P5pFW4mSXu6mEk2MZXkI+jDwsFtYwF2Zgg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=oWnRdMbzlZ6uCg7kHZeS+mvPo3u6fozJ1gqjgHsyntI=;
+ b=MK7K/DiEyd76VWPn0G/ijIieap2J10EJH4u3J4O+ki2D95m1fV+tqw+qZNFm3wHiCq
+ eRCbE88uebTV+LSVZzLGYgT+rHW9Eo5+j3jC7C/qDmNVeU9VWTcSNlNNvzsmAIJP8N9J
+ 5EIyr2Z/i9hNv+BtvgHT81ywqxWeD20hzgybfge3uGRYp3nV1FDb/wod80H1PHNiRgfV
+ Cq44pnKdxLL3Me8fDRK9+UOtU6bdFABsz0cGKCX+M5B+fuuNWbagkqBux1duLN8UW4yE
+ KcP5Cu9EHmMijQz+PmB3SMWsxAvitrrmH/v3JMLzaOSxvAcBPZT0uHYiZhuchfePpTyI
+ 4+yw==
+X-Gm-Message-State: AOAM531QKYA8djisKWldGOP6Jf179IJrRaDCTHQP2JsZSDgRzpSqey1w
+ dxmmyV2/7SU2YkgcWhlEK+eBRvp37SjWmWOzQjY=
+X-Google-Smtp-Source: ABdhPJylWwTMT1km2sa1BNaT0ATeITR5ItXM/dCgRFMmqLyJFBk85MzUpVFQfZT5ilFgEOotQH+KnaCtXRPVb0QGNFY=
+X-Received: by 2002:a37:9b03:: with SMTP id d3mr18571270qke.273.1623721926602; 
+ Mon, 14 Jun 2021 18:52:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20210612003128.372238-1-leoyang.li@nxp.com>
+In-Reply-To: <20210612003128.372238-1-leoyang.li@nxp.com>
+From: Joel Stanley <joel@jms.id.au>
+Date: Tue, 15 Jun 2021 01:51:54 +0000
+Message-ID: <CACPK8XfUiiBM=KQiqSJ5uSUpOHLTp_wxhNyEw-gYkTBsZjbZVg@mail.gmail.com>
+Subject: Re: [PATCH] usb: gadget: fsl: properly remove remnant of MXC support
+To: Li Yang <leoyang.li@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,53 +70,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Felipe Balbi <balbi@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Fabio Estevam <festevam@gmail.com>, ran.wang_1@nxp.com,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> diff --git a/arch/powerpc/lib/feature-fixups.c b/arch/powerpc/lib/feature-fixups.c
-> index fe26f2fa0f3f..f0fc521b82ae 100644
-> --- a/arch/powerpc/lib/feature-fixups.c
-> +++ b/arch/powerpc/lib/feature-fixups.c
-> @@ -180,32 +180,31 @@ static void do_stf_exit_barrier_fixups(enum stf_barrier_type types)
->  	start = PTRRELOC(&__start___stf_exit_barrier_fixup);
->  	end = PTRRELOC(&__stop___stf_exit_barrier_fixup);
->  
-> -	instrs[0] = 0x60000000; /* nop */
-> -	instrs[1] = 0x60000000; /* nop */
-> -	instrs[2] = 0x60000000; /* nop */
-> -	instrs[3] = 0x60000000; /* nop */
-> -	instrs[4] = 0x60000000; /* nop */
-> -	instrs[5] = 0x60000000; /* nop */
-> +	instrs[0] = PPC_RAW_NOP();
-> +	instrs[1] = PPC_RAW_NOP();
-> +	instrs[2] = PPC_RAW_NOP();
-> +	instrs[3] = PPC_RAW_NOP();
-> +	instrs[4] = PPC_RAW_NOP();
-> +	instrs[5] = PPC_RAW_NOP();
->  
->  	i = 0;
->  	if (types & STF_BARRIER_FALLBACK || types & STF_BARRIER_SYNC_ORI) {
->  		if (cpu_has_feature(CPU_FTR_HVMODE)) {
-> -			instrs[i++] = 0x7db14ba6; /* mtspr 0x131, r13 (HSPRG1) */
-> -			instrs[i++] = 0x7db04aa6; /* mfspr r13, 0x130 (HSPRG0) */
-> +			instrs[i++] = PPC_RAW_MTSPR(SPRN_HSPRG1, _R13);
-> +			instrs[i++] = PPC_RAW_MFSPR(_R13, SPRN_HSPRG0);
->  		} else {
-> -			instrs[i++] = 0x7db243a6; /* mtsprg 2,r13	*/
-> -			instrs[i++] = 0x7db142a6; /* mfsprg r13,1    */
-> +			instrs[i++] = PPC_RAW_MTSPR(SPRN_SPRG2, _R13);
-> +			instrs[i++] = PPC_RAW_MFSPR(_R13, SPRN_SPRG1);
->  	        }
-> -		instrs[i++] = 0x7c0004ac; /* hwsync		*/
-> -		instrs[i++] = 0xe9ad0000; /* ld r13,0(r13)	*/
-...
-> +		instrs[i++] = PPC_RAW_LD(_R10, _R13, 0);
+On Sat, 12 Jun 2021 at 00:31, Li Yang <leoyang.li@nxp.com> wrote:
+>
+> Commit a390bef7db1f ("usb: gadget: fsl_mxc_udc: Remove the driver")
+> didn't remove all the MXC related stuff which can cause build problem
+> for LS1021 when enabled again in Kconfig.  This patch remove all the
+> remnants.
+>
+> Signed-off-by: Li Yang <leoyang.li@nxp.com>
 
-This conversion was wrong, r13 became r10.
+Reviewed-by: Joel Stanley <joel@jms.id.au>
 
-I fixed it up.
+Will you re-submit the kconfig change once this is merged?
 
-cheers
+Cheers,
+
+Joel
