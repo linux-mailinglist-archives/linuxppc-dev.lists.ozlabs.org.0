@@ -2,105 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7561D3A772E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 08:38:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 591B63A7738
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 08:41:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G3zCW0Fbnz3bv3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 16:37:59 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aciG92Sj;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G3zHP6bsYz308w
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 16:41:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=aciG92Sj; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G3zBz5qqtz302W
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 16:37:31 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 15F6XUQ5027197; Tue, 15 Jun 2021 02:37:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=02GwyeUK1Ad616n3iPIjje3OLiJe7KMwztSOPf/IMe8=;
- b=aciG92SjXjzkgy8kSq5hyWjmOQGHW6FSbDSh8QndlM47ZUHFewQOlx6qGQCAjZ5a2q8M
- Pw4Mhrs8MacOdxi8voYzKyh4IVk4lqSvBv/jhRMT0Pqs8AoF24RDsDPiDrGOUvgs4FhH
- 3OSjFwdf07POE430kz4E3wR2F13krVP1Ng+zysIa/V5ogNuC74dBKN41e8CY+ry2n4f+
- hTbiUz/dJ9hFth42QVnD2boq1N3K7gBDL/yU8djq0Wk1VfFWWAdXZBke3x0bFe5xZ3Or
- 74LWefyMqzDwwmx63P6lgskLBGBcwteu98ahXxcTw3zCzPK3KpnsccNsf6z1GgMehNtX lw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 396n0ftu8c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 15 Jun 2021 02:37:21 -0400
-Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 15F6XUcb027179;
- Tue, 15 Jun 2021 02:37:20 -0400
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
- [169.55.91.170])
- by mx0b-001b2d01.pphosted.com with ESMTP id 396n0ftu82-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 15 Jun 2021 02:37:20 -0400
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15F6W7FE025036;
- Tue, 15 Jun 2021 06:37:20 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com
- (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
- by ppma02wdc.us.ibm.com with ESMTP id 394mj9nfw0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 15 Jun 2021 06:37:20 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 15F6bJvn16777590
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 15 Jun 2021 06:37:19 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0CA15BE065;
- Tue, 15 Jun 2021 06:37:19 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 51294BE05B;
- Tue, 15 Jun 2021 06:37:17 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.160.180.39])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue, 15 Jun 2021 06:37:17 +0000 (GMT)
-Message-ID: <e409750a3bd5f8410d7a8a290c69375486420b93.camel@linux.ibm.com>
-Subject: Re: [PATCH v5 04/17] powerpc/vas: Add platform specific user window
- operations
-From: Haren Myneni <haren@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>, herbert@gondor.apana.org.au,
- linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- mpe@ellerman.id.au
-Date: Mon, 14 Jun 2021 23:37:15 -0700
-In-Reply-To: <1623636838.8tsdy9nisc.astroid@bobo.none>
-References: <ed7a09822cf3a2e463f942e5a37309a2365c9d79.camel@linux.ibm.com>
- <c64fda6e9b684c175cedb3ec448cce7aaf0f4615.camel@linux.ibm.com>
- <1623636838.8tsdy9nisc.astroid@bobo.none>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.2 (3.36.2-1.fc32) 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: ARJQs9xIiTuKBCu0TUgENN226-h1QDb_
-X-Proofpoint-GUID: KFEP1vqnlt5NvFP9jCgVJpQtZh6Bh6Ea
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-06-15_03:2021-06-14,
- 2021-06-15 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 mlxscore=0
- mlxlogscore=999 malwarescore=0 impostorscore=0 phishscore=0 bulkscore=0
- spamscore=0 adultscore=0 suspectscore=0 lowpriorityscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2106150038
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G3zH43p3Sz302W
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 16:41:01 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 4G3zGx6s9lzB9CB;
+ Tue, 15 Jun 2021 08:40:57 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id IH65QaxPJ6dr; Tue, 15 Jun 2021 08:40:57 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4G3zGx5y0QzB9BM;
+ Tue, 15 Jun 2021 08:40:57 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B98838B7A3;
+ Tue, 15 Jun 2021 08:40:57 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 9l20SPmXXWb7; Tue, 15 Jun 2021 08:40:57 +0200 (CEST)
+Received: from po9473vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 814828B7A2;
+ Tue, 15 Jun 2021 08:40:57 +0200 (CEST)
+Received: by po9473vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 43DE56627B; Tue, 15 Jun 2021 06:40:57 +0000 (UTC)
+Message-Id: <b813c1f4d3dab2f51300eac44d99029aa8e57830.1623739212.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH 1/7] powerpc/signal64: Copy siginfo before changing regs->nip
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Tue, 15 Jun 2021 06:40:57 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,304 +57,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2021-06-14 at 12:24 +1000, Nicholas Piggin wrote:
-> Excerpts from Haren Myneni's message of June 13, 2021 8:57 pm:
-> > PowerNV uses registers to open/close VAS windows, and getting the
-> > paste address. Whereas the hypervisor calls are used on PowerVM.
-> > 
-> > This patch adds the platform specific user space window operations
-> > and register with the common VAS user space interface.
-> > 
-> > Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-> > ---
-> >  arch/powerpc/include/asm/vas.h              | 14 +++++-
-> >  arch/powerpc/platforms/book3s/vas-api.c     | 53 +++++++++++++--
-> > ------
-> >  arch/powerpc/platforms/powernv/vas-window.c | 45 ++++++++++++++++-
-> >  3 files changed, 89 insertions(+), 23 deletions(-)
-> > 
-> > diff --git a/arch/powerpc/include/asm/vas.h
-> > b/arch/powerpc/include/asm/vas.h
-> > index bab7891d43f5..85318d7446c7 100644
-> > --- a/arch/powerpc/include/asm/vas.h
-> > +++ b/arch/powerpc/include/asm/vas.h
-> > @@ -5,6 +5,7 @@
-> >  
-> >  #ifndef _ASM_POWERPC_VAS_H
-> >  #define _ASM_POWERPC_VAS_H
-> > +#include <uapi/asm/vas-api.h>
-> >  
-> >  struct vas_window;
-> >  
-> > @@ -48,6 +49,16 @@ enum vas_cop_type {
-> >  	VAS_COP_TYPE_MAX,
-> >  };
-> >  
-> > +/*
-> > + * User space window operations used for powernv and powerVM
-> > + */
-> > +struct vas_user_win_ops {
-> > +	struct vas_window * (*open_win)(struct vas_tx_win_open_attr *,
-> > +				enum vas_cop_type);
-> > +	u64 (*paste_addr)(struct vas_window *);
-> > +	int (*close_win)(struct vas_window *);
-> > +};
-> 
-> This looks better, but rather than pull in uapi and the user API 
-> structure here, could you just pass in vas_id and flags after the
-> common 
-> code does the user copy and verifies the version and other details?
-> 
-> I think it's generally good practice to limit the data that the usre
-> can influence as much as possible. Sorry for not picking up on that
-> earlier.
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-The user space pass vas_tx_win_open_attr struct - use only vas_id and
-flags right now but it can be extended in future with reserve elements.
-So passing the same struct to platform specific API.
+In commit 96d7a4e06fab ("powerpc/signal64: Rewrite handle_rt_signal64()
+to minimise uaccess switches") the 64-bit signal code was rearranged to
+use user_write_access_begin/end().
 
-do you prefer "struct vas_window * (*open_win)(vas_id, flags, cop)" and
-extend later when more elments are used?
+As part of that change the call to copy_siginfo_to_user() was moved
+later in the function, so that it could be done after the
+user_write_access_end().
 
-Thanks
-Haren 
+In particular it was moved after we modify regs->nip to point to the
+signal trampoline. That means if copy_siginfo_to_user() fails we exit
+handle_rt_signal64() with an error but with regs->nip modified, whereas
+previously we would not modify regs->nip until the copy succeeded.
 
-> 
-> If that's changed, then
-> 
-> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-> 
-> Thanks,
-> Nick
-> 
-> > +
-> >  /*
-> >   * Receive window attributes specified by the (in-kernel) owner of
-> > window.
-> >   */
-> > @@ -175,7 +186,8 @@ void vas_unregister_api_powernv(void);
-> >   * used for others in future.
-> >   */
-> >  int vas_register_coproc_api(struct module *mod, enum vas_cop_type
-> > cop_type,
-> > -				const char *name);
-> > +			    const char *name,
-> > +			    const struct vas_user_win_ops *vops);
-> >  void vas_unregister_coproc_api(void);
-> >  
-> >  #endif /* __ASM_POWERPC_VAS_H */
-> > diff --git a/arch/powerpc/platforms/book3s/vas-api.c
-> > b/arch/powerpc/platforms/book3s/vas-api.c
-> > index 72c126d87216..7cfc4b435ae8 100644
-> > --- a/arch/powerpc/platforms/book3s/vas-api.c
-> > +++ b/arch/powerpc/platforms/book3s/vas-api.c
-> > @@ -42,6 +42,7 @@ static struct coproc_dev {
-> >  	dev_t devt;
-> >  	struct class *class;
-> >  	enum vas_cop_type cop_type;
-> > +	const struct vas_user_win_ops *vops;
-> >  } coproc_device;
-> >  
-> >  struct coproc_instance {
-> > @@ -72,11 +73,10 @@ static int coproc_open(struct inode *inode,
-> > struct file *fp)
-> >  static int coproc_ioc_tx_win_open(struct file *fp, unsigned long
-> > arg)
-> >  {
-> >  	void __user *uptr = (void __user *)arg;
-> > -	struct vas_tx_win_attr txattr = {};
-> >  	struct vas_tx_win_open_attr uattr;
-> >  	struct coproc_instance *cp_inst;
-> >  	struct vas_window *txwin;
-> > -	int rc, vasid;
-> > +	int rc;
-> >  
-> >  	cp_inst = fp->private_data;
-> >  
-> > @@ -93,27 +93,20 @@ static int coproc_ioc_tx_win_open(struct file
-> > *fp, unsigned long arg)
-> >  	}
-> >  
-> >  	if (uattr.version != 1) {
-> > -		pr_err("Invalid version\n");
-> > +		pr_err("Invalid window open API version\n");
-> >  		return -EINVAL;
-> >  	}
-> >  
-> > -	vasid = uattr.vas_id;
-> > -
-> > -	vas_init_tx_win_attr(&txattr, cp_inst->coproc->cop_type);
-> > -
-> > -	txattr.lpid = mfspr(SPRN_LPID);
-> > -	txattr.pidr = mfspr(SPRN_PID);
-> > -	txattr.user_win = true;
-> > -	txattr.rsvd_txbuf_count = false;
-> > -	txattr.pswid = false;
-> > -
-> > -	pr_devel("Pid %d: Opening txwin, PIDR %ld\n", txattr.pidr,
-> > -				mfspr(SPRN_PID));
-> > +	if (!cp_inst->coproc->vops && !cp_inst->coproc->vops->open_win) 
-> > {
-> > +		pr_err("VAS API is not registered\n");
-> > +		return -EACCES;
-> > +	}
-> >  
-> > -	txwin = vas_tx_win_open(vasid, cp_inst->coproc->cop_type,
-> > &txattr);
-> > +	txwin = cp_inst->coproc->vops->open_win(&uattr,
-> > +						cp_inst->coproc-
-> > >cop_type);
-> >  	if (IS_ERR(txwin)) {
-> > -		pr_err("%s() vas_tx_win_open() failed, %ld\n",
-> > __func__,
-> > -					PTR_ERR(txwin));
-> > +		pr_err("%s() VAS window open failed, %ld\n", __func__,
-> > +				PTR_ERR(txwin));
-> >  		return PTR_ERR(txwin);
-> >  	}
-> >  
-> > @@ -125,9 +118,15 @@ static int coproc_ioc_tx_win_open(struct file
-> > *fp, unsigned long arg)
-> >  static int coproc_release(struct inode *inode, struct file *fp)
-> >  {
-> >  	struct coproc_instance *cp_inst = fp->private_data;
-> > +	int rc;
-> >  
-> >  	if (cp_inst->txwin) {
-> > -		vas_win_close(cp_inst->txwin);
-> > +		if (cp_inst->coproc->vops &&
-> > +			cp_inst->coproc->vops->close_win) {
-> > +			rc = cp_inst->coproc->vops->close_win(cp_inst-
-> > >txwin);
-> > +			if (rc)
-> > +				return rc;
-> > +		}
-> >  		cp_inst->txwin = NULL;
-> >  	}
-> >  
-> > @@ -168,7 +167,17 @@ static int coproc_mmap(struct file *fp, struct
-> > vm_area_struct *vma)
-> >  		return -EINVAL;
-> >  	}
-> >  
-> > -	vas_win_paste_addr(txwin, &paste_addr, NULL);
-> > +	if (!cp_inst->coproc->vops && !cp_inst->coproc->vops-
-> > >paste_addr) {
-> > +		pr_err("%s(): VAS API is not registered\n", __func__);
-> > +		return -EACCES;
-> > +	}
-> > +
-> > +	paste_addr = cp_inst->coproc->vops->paste_addr(txwin);
-> > +	if (!paste_addr) {
-> > +		pr_err("%s(): Window paste address failed\n",
-> > __func__);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> >  	pfn = paste_addr >> PAGE_SHIFT;
-> >  
-> >  	/* flags, page_prot from cxl_mmap(), except we want cachable */
-> > @@ -208,7 +217,8 @@ static struct file_operations coproc_fops = {
-> >   * extended to other coprocessor types later.
-> >   */
-> >  int vas_register_coproc_api(struct module *mod, enum vas_cop_type
-> > cop_type,
-> > -				const char *name)
-> > +			    const char *name,
-> > +			    const struct vas_user_win_ops *vops)
-> >  {
-> >  	int rc = -EINVAL;
-> >  	dev_t devno;
-> > @@ -230,6 +240,7 @@ int vas_register_coproc_api(struct module *mod,
-> > enum vas_cop_type cop_type,
-> >  	}
-> >  	coproc_device.class->devnode = coproc_devnode;
-> >  	coproc_device.cop_type = cop_type;
-> > +	coproc_device.vops = vops;
-> >  
-> >  	coproc_fops.owner = mod;
-> >  	cdev_init(&coproc_device.cdev, &coproc_fops);
-> > diff --git a/arch/powerpc/platforms/powernv/vas-window.c
-> > b/arch/powerpc/platforms/powernv/vas-window.c
-> > index 41712b4b268e..5162e95c4090 100644
-> > --- a/arch/powerpc/platforms/powernv/vas-window.c
-> > +++ b/arch/powerpc/platforms/powernv/vas-window.c
-> > @@ -16,6 +16,7 @@
-> >  #include <linux/mmu_context.h>
-> >  #include <asm/switch_to.h>
-> >  #include <asm/ppc-opcode.h>
-> > +#include <asm/vas.h>
-> >  #include "vas.h"
-> >  #include "copy-paste.h"
-> >  
-> > @@ -1443,6 +1444,48 @@ struct vas_window
-> > *vas_pswid_to_window(struct vas_instance *vinst,
-> >  	return window;
-> >  }
-> >  
-> > +static struct vas_window *vas_user_win_open(struct
-> > vas_tx_win_open_attr *uattr,
-> > +				enum vas_cop_type cop_type)
-> > +{
-> > +	struct vas_tx_win_attr txattr = {};
-> > +
-> > +	vas_init_tx_win_attr(&txattr, cop_type);
-> > +
-> > +	txattr.lpid = mfspr(SPRN_LPID);
-> > +	txattr.pidr = mfspr(SPRN_PID);
-> > +	txattr.user_win = true;
-> > +	txattr.rsvd_txbuf_count = false;
-> > +	txattr.pswid = false;
-> > +
-> > +	pr_devel("Pid %d: Opening txwin, PIDR %ld\n", txattr.pidr,
-> > +				mfspr(SPRN_PID));
-> > +
-> > +	return vas_tx_win_open(uattr->vas_id, cop_type, &txattr);
-> > +}
-> > +
-> > +static u64 vas_user_win_paste_addr(struct vas_window *win)
-> > +{
-> > +	u64 paste_addr;
-> > +
-> > +	vas_win_paste_addr(win, &paste_addr, NULL);
-> > +
-> > +	return paste_addr;
-> > +}
-> > +
-> > +static int vas_user_win_close(struct vas_window *txwin)
-> > +{
-> > +
-> > +	vas_win_close(txwin);
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static const struct vas_user_win_ops vops =  {
-> > +	.open_win	=	vas_user_win_open,
-> > +	.paste_addr	=	vas_user_win_paste_addr,
-> > +	.close_win	=	vas_user_win_close,
-> > +};
-> > +
-> >  /*
-> >   * Supporting only nx-gzip coprocessor type now, but this API code
-> >   * extended to other coprocessor types later.
-> > @@ -1451,7 +1494,7 @@ int vas_register_api_powernv(struct module
-> > *mod, enum vas_cop_type cop_type,
-> >  			     const char *name)
-> >  {
-> >  
-> > -	return vas_register_coproc_api(mod, cop_type, name);
-> > +	return vas_register_coproc_api(mod, cop_type, name, &vops);
-> >  }
-> >  EXPORT_SYMBOL_GPL(vas_register_api_powernv);
-> >  
-> > -- 
-> > 2.18.2
-> > 
-> > 
-> > 
+Returning an error from signal delivery but with regs->nip updated
+leaves the process in a sort of half-delivered state. We do immediately
+force a SEGV in signal_setup_done(), called from do_signal(), so the
+process should never run in the half-delivered state.
+
+However that SEGV is not delivered until we've gone around to
+do_notify_resume() again, so it's possible some tracing could observe
+the half-delivered state.
+
+There are other cases where we fail signal delivery with regs partly
+updated, eg. the write to newsp and SA_SIGINFO, but the latter at least
+is very unlikely to fail as it reads back from the frame we just wrote
+to.
+
+Looking at other arches they seem to be more careful about leaving regs
+unchanged until the copy operations have succeeded, and in general that
+seems like good hygenie.
+
+So although the current behaviour is not cleary buggy, it's also not
+clearly correct. So move the call to copy_siginfo_to_user() up prior to
+the modification of regs->nip, which is closer to the old behaviour, and
+easier to reason about.
+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/kernel/signal_64.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
+
+diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/signal_64.c
+index dca66481d0c2..f9e1f5428b9e 100644
+--- a/arch/powerpc/kernel/signal_64.c
++++ b/arch/powerpc/kernel/signal_64.c
+@@ -902,6 +902,10 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
+ 	unsafe_copy_to_user(&frame->uc.uc_sigmask, set, sizeof(*set), badframe_block);
+ 	user_write_access_end();
+ 
++	/* Save the siginfo outside of the unsafe block. */
++	if (copy_siginfo_to_user(&frame->info, &ksig->info))
++		goto badframe;
++
+ 	/* Make sure signal handler doesn't get spurious FP exceptions */
+ 	tsk->thread.fp_state.fpscr = 0;
+ 
+@@ -915,11 +919,6 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
+ 		regs->nip = (unsigned long) &frame->tramp[0];
+ 	}
+ 
+-
+-	/* Save the siginfo outside of the unsafe block. */
+-	if (copy_siginfo_to_user(&frame->info, &ksig->info))
+-		goto badframe;
+-
+ 	/* Allocate a dummy caller frame for the signal handler. */
+ 	newsp = ((unsigned long)frame) - __SIGNAL_FRAMESIZE;
+ 	err |= put_user(regs->gpr[1], (unsigned long __user *)newsp);
+-- 
+2.25.0
 
