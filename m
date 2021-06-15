@@ -1,29 +1,29 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 545653A735E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 03:38:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D99B43A734D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 03:36:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G3rYl6Scpz3dYW
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 11:38:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G3rWj33Lbz3023
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 11:36:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com;
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com;
  envelope-from=yangyingliang@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
  bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G3rVc3ZG9z2ysk
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 11:35:35 +1000 (AEST)
-Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.56])
- by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4G3rNl6fZ2zXg03;
- Tue, 15 Jun 2021 09:30:31 +0800 (CST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G3rVc0kj6z2yxk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 11:35:34 +1000 (AEST)
+Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.56])
+ by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4G3rQq48gHz6yqm;
+ Tue, 15 Jun 2021 09:32:19 +0800 (CST)
 Received: from dggpeml500017.china.huawei.com (7.185.36.243) by
- dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
+ dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Tue, 15 Jun 2021 09:35:27 +0800
+ 15.1.2176.2; Tue, 15 Jun 2021 09:35:28 +0800
 Received: from huawei.com (10.175.103.91) by dggpeml500017.china.huawei.com
  (7.185.36.243) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Tue, 15 Jun
@@ -31,10 +31,10 @@ Received: from huawei.com (10.175.103.91) by dggpeml500017.china.huawei.com
 From: Yang Yingliang <yangyingliang@huawei.com>
 To: <linux-kernel@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
  <alsa-devel@alsa-project.org>
-Subject: [PATCH -next v2 6/9] ASoC: fsl_sai: Use
+Subject: [PATCH -next v2 7/9] ASoC: fsl_spdif: Use
  devm_platform_get_and_ioremap_resource()
-Date: Tue, 15 Jun 2021 09:39:19 +0800
-Message-ID: <20210615013922.784296-7-yangyingliang@huawei.com>
+Date: Tue, 15 Jun 2021 09:39:20 +0800
+Message-ID: <20210615013922.784296-8-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210615013922.784296-1-yangyingliang@huawei.com>
 References: <20210615013922.784296-1-yangyingliang@huawei.com>
@@ -66,22 +66,22 @@ code.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- sound/soc/fsl/fsl_sai.c | 3 +--
+ sound/soc/fsl/fsl_spdif.c | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-index 407a45e48eee..223fcd15bfcc 100644
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -1017,8 +1017,7 @@ static int fsl_sai_probe(struct platform_device *pdev)
+diff --git a/sound/soc/fsl/fsl_spdif.c b/sound/soc/fsl/fsl_spdif.c
+index 2a76714eb8e6..d812a3ff5845 100644
+--- a/sound/soc/fsl/fsl_spdif.c
++++ b/sound/soc/fsl/fsl_spdif.c
+@@ -1355,8 +1355,7 @@ static int fsl_spdif_probe(struct platform_device *pdev)
+ 				spdif_priv->soc->tx_formats;
  
- 	sai->is_lsb_first = of_property_read_bool(np, "lsb-first");
- 
+ 	/* Get the addresses and IRQ */
 -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	base = devm_ioremap_resource(&pdev->dev, res);
-+	base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
- 	if (IS_ERR(base))
- 		return PTR_ERR(base);
+-	regs = devm_ioremap_resource(&pdev->dev, res);
++	regs = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+ 	if (IS_ERR(regs))
+ 		return PTR_ERR(regs);
  
 -- 
 2.25.1
