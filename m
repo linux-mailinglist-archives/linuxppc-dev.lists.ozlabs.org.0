@@ -1,48 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 131DD3A88C1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 20:43:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27D173A89D9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 21:57:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G4HJc4Tjgz30HP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 04:43:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G4Jxf5kRyz308t
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 05:57:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com;
+ smtp.mailfrom=intel.com (client-ip=192.55.52.136; helo=mga12.intel.com;
  envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G4HJ85pCKz2yRQ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 04:42:58 +1000 (AEST)
-IronPort-SDR: EdVeiYvUCE/ocNOSQWBM8mjB7sh+OAYKRx+JeY52QOKC6ZVHvFzOw+F+aOC2ZY4GR3cQcqlpLs
- 0WAl2iZ+Bk7w==
-X-IronPort-AV: E=McAfee;i="6200,9189,10016"; a="203028251"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G4JxD3YCvz3067
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 05:56:42 +1000 (AEST)
+IronPort-SDR: J+9a99lVEe1ugskkBouGxgx41OSZaq93UTonD83lVK14dX6hwIn5zSyVO83nXarfn0pHsg2gb6
+ NPVXigVOCA0w==
+X-IronPort-AV: E=McAfee;i="6200,9189,10016"; a="185751583"
 X-IronPort-AV: E=Sophos;i="5.83,276,1616482800"; 
- d="gz'50?scan'50,208,50";a="203028251"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
- by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jun 2021 11:42:53 -0700
-IronPort-SDR: JSlGMViwoQIhXjFPETPgXh74q44sYn7uSjBJAE/0maZe8udXPlr+vaGW3FffhFPafwBerWivNo
- LnLAF07rkHOQ==
+ d="gz'50?scan'50,208,50";a="185751583"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+ by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Jun 2021 12:48:55 -0700
+IronPort-SDR: myZnTRRi8vYjbTQ8wYaEA8v71oJ2JUYkH0FMm31KzdHCsFMmrtM77tc+H7HOHBK04PUZlJPkIW
+ B6nnxocgRsdg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.83,276,1616482800"; 
- d="gz'50?scan'50,208,50";a="452062188"
+ d="gz'50?scan'50,208,50";a="421233826"
 Received: from lkp-server01.sh.intel.com (HELO 4aae0cb4f5b5) ([10.239.97.150])
- by fmsmga008.fm.intel.com with ESMTP; 15 Jun 2021 11:42:51 -0700
+ by orsmga002.jf.intel.com with ESMTP; 15 Jun 2021 12:48:52 -0700
 Received: from kbuild by 4aae0cb4f5b5 with local (Exim 4.92)
  (envelope-from <lkp@intel.com>)
- id 1ltE1T-0000ZY-9z; Tue, 15 Jun 2021 18:42:51 +0000
-Date: Wed, 16 Jun 2021 02:42:39 +0800
+ id 1ltF3M-0000ax-7R; Tue, 15 Jun 2021 19:48:52 +0000
+Date: Wed, 16 Jun 2021 03:48:39 +0800
 From: kernel test robot <lkp@intel.com>
 To: Nicholas Piggin <npiggin@gmail.com>
-Subject: [powerpc:next-test 116/124] arch/powerpc/lib/restart_table.c:13:15:
- warning: no previous prototype for 'search_kernel_restart_table'
-Message-ID: <202106160232.XBpItzfp-lkp@intel.com>
+Subject: [powerpc:next-test 119/124] arch/powerpc/kernel/interrupt.c:378:23:
+ warning: no previous prototype for 'syscall_exit_restart'
+Message-ID: <202106160330.K2Qy43ee-lkp@intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="HcAYCG3uE/tztfnV"
+Content-Type: multipart/mixed; boundary="T4sUOijqQbZv57TR"
 Content-Disposition: inline
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -62,22 +62,22 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---HcAYCG3uE/tztfnV
+--T4sUOijqQbZv57TR
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
 tree:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
 head:   103bf32b0d2dd8b8a4d3d9ebdded5ba4e8263e6a
-commit: 9d1e5f27172b011ed4d07c92c304fa60caef03ff [116/124] powerpc/64: allow alternate return locations for soft-masked interrupts
+commit: 88a293b28ae07acc86b09ebbe8715bcee412a63e [119/124] powerpc/64: use interrupt restart table to speed up return from interrupt
 config: powerpc-allyesconfig (attached as .config)
 compiler: powerpc64-linux-gcc (GCC) 9.3.0
 reproduce (this is a W=1 build):
         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
         chmod +x ~/bin/make.cross
-        # https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/commit/?id=9d1e5f27172b011ed4d07c92c304fa60caef03ff
+        # https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/commit/?id=88a293b28ae07acc86b09ebbe8715bcee412a63e
         git remote add powerpc https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
         git fetch --no-tags powerpc next-test
-        git checkout 9d1e5f27172b011ed4d07c92c304fa60caef03ff
+        git checkout 88a293b28ae07acc86b09ebbe8715bcee412a63e
         # save the attached .config to linux build tree
         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-9.3.0 make.cross ARCH=powerpc 
 
@@ -86,27 +86,59 @@ Reported-by: kernel test robot <lkp@intel.com>
 
 All warnings (new ones prefixed by >>):
 
->> arch/powerpc/lib/restart_table.c:13:15: warning: no previous prototype for 'search_kernel_restart_table' [-Wmissing-prototypes]
-      13 | unsigned long search_kernel_restart_table(unsigned long addr)
-         |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+   arch/powerpc/kernel/interrupt.c:246:23: warning: no previous prototype for 'syscall_exit_prepare_main' [-Wmissing-prototypes]
+     246 | notrace unsigned long syscall_exit_prepare_main(unsigned long r3,
+         |                       ^~~~~~~~~~~~~~~~~~~~~~~~~
+>> arch/powerpc/kernel/interrupt.c:378:23: warning: no previous prototype for 'syscall_exit_restart' [-Wmissing-prototypes]
+     378 | notrace unsigned long syscall_exit_restart(unsigned long r3, struct pt_regs *regs)
+         |                       ^~~~~~~~~~~~~~~~~~~~
+>> arch/powerpc/kernel/interrupt.c:581:23: warning: no previous prototype for 'interrupt_exit_user_restart' [-Wmissing-prototypes]
+     581 | notrace unsigned long interrupt_exit_user_restart(struct pt_regs *regs)
+         |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+>> arch/powerpc/kernel/interrupt.c:601:23: warning: no previous prototype for 'interrupt_exit_kernel_restart' [-Wmissing-prototypes]
+     601 | notrace unsigned long interrupt_exit_kernel_restart(struct pt_regs *regs)
+         |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-vim +/search_kernel_restart_table +13 arch/powerpc/lib/restart_table.c
+vim +/syscall_exit_restart +378 arch/powerpc/kernel/interrupt.c
 
-    11	
-    12	/* Given an address, look for it in the kernel exception table */
-  > 13	unsigned long search_kernel_restart_table(unsigned long addr)
+   376	
+   377	#ifdef CONFIG_PPC64
+ > 378	notrace unsigned long syscall_exit_restart(unsigned long r3, struct pt_regs *regs)
+   379	{
+   380		/*
+   381		 * This is called when detecting a soft-pending interrupt as well as
+   382		 * an alternate-return interrupt. So we can't just have the alternate
+   383		 * return path clear SRR1[MSR] and set PACA_IRQ_HARD_DIS (unless
+   384		 * the soft-pending case were to fix things up as well). RI might be
+   385		 * disabled, in which case it gets re-enabled by __hard_irq_disable().
+   386		 */
+   387		__hard_irq_disable();
+   388		local_paca->irq_happened |= PACA_IRQ_HARD_DIS;
+   389	
+   390		trace_hardirqs_off();
+   391		user_exit_irqoff();
+   392		account_cpu_user_entry();
+   393	
+   394		BUG_ON(!user_mode(regs));
+   395	
+   396		regs->exit_result |= syscall_exit_prepare_main(r3, regs);
+   397	
+   398		return regs->exit_result;
+   399	}
+   400	#endif
+   401	
 
 ---
 0-DAY CI Kernel Test Service, Intel Corporation
 https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
 
---HcAYCG3uE/tztfnV
+--T4sUOijqQbZv57TR
 Content-Type: application/gzip
 Content-Disposition: attachment; filename=".config.gz"
 Content-Transfer-Encoding: base64
 
-H4sICGrtyGAAAy5jb25maWcAlDxZc9w20u/5FVP2y+5DEl1W7NqaB5AEOciQBAWAMxq9sGR5
+H4sICGf+yGAAAy5jb25maWcAlDxZc9w20u/5FVP2y+5DEl1W7NqaB5AEOciQBAWAMxq9sGR5
 7KhWlrw69ov//dcN8GiAGNnrqsRmN9C4Gn1j3v7ydsFenh++Xj/f3lzf3X1ffNnf7x+vn/ef
 Fp9v7/b/WmRyUUuz4Jkwv0Hj8vb+5e/fvz383/7x283i3W/Hp78d/fp4c7JY7x/v93eL9OH+
 8+2XF6Bw+3D/y9tfUlnnoujStNtwpYWsO8MvzfJNT+H87Nc7pPjrl5ubxT+KNP3n4sNvQPIN
@@ -1467,4 +1499,4 @@ exXkHt+nIQVU19LhjYQ2Mje0DfTGHvkdp7dRshkvQdNwoIG7aisFYJk30PHu6HLsIbuP4mVH
 7EmSKFXQdepKIvLiV0iHzf1bIcjEUbN7wHXmpyoGXTK6iqCI7+jgLQ9IyrIP2quKRWzXzErJ
 vjPO/H9gfCAxGr8EAA==
 
---HcAYCG3uE/tztfnV--
+--T4sUOijqQbZv57TR--
