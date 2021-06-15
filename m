@@ -1,52 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12C6F3A757C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 05:59:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C5D43A754E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 05:38:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G3vhN4sT9z3clt
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 13:59:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G3vDh5Q5zz306v
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 13:38:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=201602 header.b=WP7jJxJC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=V4AhZHiG;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=dgibson@ozlabs.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
- header.a=rsa-sha256 header.s=201602 header.b=WP7jJxJC; 
- dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b34;
+ helo=mail-yb1-xb34.google.com; envelope-from=jniethe5@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=V4AhZHiG; dkim-atps=neutral
+Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com
+ [IPv6:2607:f8b0:4864:20::b34])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G3vd70Z7nz303y
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 13:56:26 +1000 (AEST)
-Received: by ozlabs.org (Postfix, from userid 1007)
- id 4G3vcz4m8yz9t10; Tue, 15 Jun 2021 13:56:19 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=gibson.dropbear.id.au; s=201602; t=1623729379;
- bh=13Pn92Rsr/hYhtFrTjnVtB9iZYClobDqpyOkISx6PZo=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=WP7jJxJCEGESvxOdW+XQ9mC5Ax96LrRzHrvNUvOplTyfqJyupMOTxonFP5ksGZF+A
- yQuMIzUcwk5P0qA6rEiE2yi/Gu/4RtfHVovea7iunU13ghHld62rRz4TYK1Pi5r9xQ
- 5Nwn6xAexJcoa506tzsQ4JepCKC84Og0GZPXlx34=
-Date: Tue, 15 Jun 2021 13:21:59 +1000
-From: David Gibson <david@gibson.dropbear.id.au>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [RFC PATCH 6/8] powerpc/pseries: Add a helper for form1 cpu
- distance
-Message-ID: <YMgc1z63ejhHEHsM@yekko>
-References: <20210614164003.196094-1-aneesh.kumar@linux.ibm.com>
- <20210614164003.196094-7-aneesh.kumar@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G3vDF4RDPz2yXK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 13:38:21 +1000 (AEST)
+Received: by mail-yb1-xb34.google.com with SMTP id e10so18455208ybb.7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 20:38:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=/XUOfUqfTAfZKjkDbz8URCssQM6wFC15YP6MEdCsnEs=;
+ b=V4AhZHiGDcSAoKGd4li1VrGqwa0atky1ZWjy4PK8GFIfFPHtirrJIubkGA47nU5ngf
+ FT3KHoby1zmeLQ0m5TnuP0N6Loa8o5p/9CINYfaNY4ZcowUpkG9XPYYHVSRU9dBR64IF
+ WTgFAWAEZyyJ3xBf2hOlC+Q5kvPVN4kzIDkQX9ACe8SuZ0GS7SjLUE2Q0f3iRRWklCAd
+ 41fmORPId7SGei4NTXqqe0LPWdvyfEpJaJ7ChsQjP3rEu2naKL4cssByUFoVrFKCdfza
+ h/peepqZ8l6cBDS2dkyLcjpeeTtFWcGdYLDQwffy95gO0gFVxfaYDjo0YnvDbMN9290b
+ 9aUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=/XUOfUqfTAfZKjkDbz8URCssQM6wFC15YP6MEdCsnEs=;
+ b=ETzVeLk9XSZQjL47/mHEtj9YfxrtscadHkvuJD7uyAnM/TfuThWXfUEfx87aBPkqff
+ 01mLDZLihxLoxd6BwmEth6FLjx+Dm/lbEgN32UBsgv3y/rJrxpQ9oTcKAvDOJJzk0Vgb
+ 5Junw9ZSYaUMIvvOIU09koEny1p6AVLLgSPtzWWTov4uzwRAZt7s11TLjCMIyZokdnId
+ J6KjK7eRFVil3oBhDB5i1jco3W/XaO6G6XCyhEzgEr6nxq7AqXw+/jjDKguoulC6XpuR
+ OzUsiSBOX4L7k1S4brjE/SZBpUe2BVjqh2JYPXPTIcwvAkRwAy9gXCl2dq7Q2GpmzAc2
+ 0Exg==
+X-Gm-Message-State: AOAM533nlp1jkSsUuzwbpc8v+PQjGfBR4zaUejoS6vzUQhwTxs8P/Jyo
+ nl2olpsH7uAYqvAQ74lRkUgUjgfeS4LFBFmpTJY=
+X-Google-Smtp-Source: ABdhPJyQSb9L5NmkZfVMh3Mhm4D7uk1nKnR93vM0a2IUycPGFER5W0DAW1c4sqf7g8PhjXQim3AEFZfCivg8cWkONBo=
+X-Received: by 2002:a25:694d:: with SMTP id e74mr4712799ybc.377.1623728297445; 
+ Mon, 14 Jun 2021 20:38:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="Ltj0sKFFmY8m21Do"
-Content-Disposition: inline
-In-Reply-To: <20210614164003.196094-7-aneesh.kumar@linux.ibm.com>
+References: <cover.1621516826.git.christophe.leroy@csgroup.eu>
+ <d8b155e930b7a9708ca110e8ff0ace6713a7af75.1621516826.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <d8b155e930b7a9708ca110e8ff0ace6713a7af75.1621516826.git.christophe.leroy@csgroup.eu>
+From: Jordan Niethe <jniethe5@gmail.com>
+Date: Tue, 15 Jun 2021 13:38:06 +1000
+Message-ID: <CACzsE9pYG2=FWnxb=gkd2WAFjfy3sLXN8mxsEP26zc7OHgX0Nw@mail.gmail.com>
+Subject: Re: [PATCH v2 04/12] powerpc/inst: Avoid pointer dereferencing in
+ ppc_inst_equal()
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,86 +75,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
---Ltj0sKFFmY8m21Do
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, Jun 14, 2021 at 10:10:01PM +0530, Aneesh Kumar K.V wrote:
-> This helper is only used with the dispatch trace log collection.
-> A later patch will add Form2 affinity support and this change helps
-> in keeping that simpler. Also add a comment explaining we don't expect
-> the code to be called with FORM0
->=20
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-
-Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
-
+On Thu, May 20, 2021 at 11:50 PM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+>
+> Avoid casting/dereferencing ppc_inst() as u64* , check each member
+> of the struct when relevant.
+>
+> And remove the 0xff initialisation of the suffix for non
+> prefixed instruction. An instruction with 0xff as a suffix
+> might be invalid, but still is a prefixed instruction and
+> has to be considered as this.
+>
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 > ---
->  arch/powerpc/mm/numa.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
->=20
-> diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-> index 64caaf07cf82..696e5bfe1414 100644
-> --- a/arch/powerpc/mm/numa.c
-> +++ b/arch/powerpc/mm/numa.c
-> @@ -166,7 +166,7 @@ static void unmap_cpu_from_node(unsigned long cpu)
+>  arch/powerpc/include/asm/inst.h | 19 +++++++++----------
+>  1 file changed, 9 insertions(+), 10 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/inst.h b/arch/powerpc/include/asm/inst.h
+> index fc6adef528a5..5a0740ebf132 100644
+> --- a/arch/powerpc/include/asm/inst.h
+> +++ b/arch/powerpc/include/asm/inst.h
+> @@ -61,7 +61,7 @@ static inline int ppc_inst_primary_opcode(struct ppc_inst x)
 >  }
->  #endif /* CONFIG_HOTPLUG_CPU || CONFIG_PPC_SPLPAR */
-> =20
-> -int cpu_distance(__be32 *cpu1_assoc, __be32 *cpu2_assoc)
-> +static int __cpu_form1_distance(__be32 *cpu1_assoc, __be32 *cpu2_assoc)
+>
+>  #ifdef CONFIG_PPC64
+> -#define ppc_inst(x) ((struct ppc_inst){ .val = (x), .suffix = 0xff })
+> +#define ppc_inst(x) ((struct ppc_inst){ .val = (x) })
+>
+>  #define ppc_inst_prefix(x, y) ((struct ppc_inst){ .val = (x), .suffix = (y) })
+>
+> @@ -72,7 +72,7 @@ static inline u32 ppc_inst_suffix(struct ppc_inst x)
+>
+>  static inline bool ppc_inst_prefixed(struct ppc_inst x)
 >  {
->  	int dist =3D 0;
-> =20
-> @@ -182,6 +182,14 @@ int cpu_distance(__be32 *cpu1_assoc, __be32 *cpu2_as=
-soc)
->  	return dist;
+> -       return ppc_inst_primary_opcode(x) == OP_PREFIX && ppc_inst_suffix(x) != 0xff;
+> +       return ppc_inst_primary_opcode(x) == OP_PREFIX;
 >  }
-> =20
-> +int cpu_distance(__be32 *cpu1_assoc, __be32 *cpu2_assoc)
-> +{
-> +	/* We should not get called with FORM0 */
-> +	VM_WARN_ON(affinity_form =3D=3D FORM0_AFFINITY);
+>
+>  static inline struct ppc_inst ppc_inst_swab(struct ppc_inst x)
+> @@ -93,11 +93,6 @@ static inline struct ppc_inst ppc_inst_read(const struct ppc_inst *ptr)
+>         }
+>  }
+>
+> -static inline bool ppc_inst_equal(struct ppc_inst x, struct ppc_inst y)
+> -{
+> -       return *(u64 *)&x == *(u64 *)&y;
+> -}
+> -
+>  #else
+>
+>  #define ppc_inst(x) ((struct ppc_inst){ .val = x })
+> @@ -124,13 +119,17 @@ static inline struct ppc_inst ppc_inst_read(const struct ppc_inst *ptr)
+>         return *ptr;
+>  }
+>
+> +#endif /* CONFIG_PPC64 */
 > +
-> +	return __cpu_form1_distance(cpu1_assoc, cpu2_assoc);
-> +}
-> +
->  /* must hold reference to node during call */
->  static const __be32 *of_get_associativity(struct device_node *dev)
+>  static inline bool ppc_inst_equal(struct ppc_inst x, struct ppc_inst y)
 >  {
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---Ltj0sKFFmY8m21Do
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmDIHNcACgkQbDjKyiDZ
-s5Ie1Q/9Gg2JCY9Lz4xuRk0/XNB19EiSKe4RH2bg/2EESfvK6WE6yjHATNX/s4xg
-RQJRTOpM5Q94q0NijW25oCQyHoeE6iYkYfFWmCjM/X7KvOkFO4bw92TvCJlRJ8vA
-d3aU5yJqCHeGRTrONMFTTO8CzscNTdLR4zQaMprGWkqqVpsrT5PKCX/Gyl+aacgf
-cSn0FWJH0q6Uqckr96YztQeR/e+fswabmGTRDPBuukq4iHEEYH+Rsku5uV9X6K5p
-xacQPlWnH9c4CcTa3bzQlA7aqiUoEmOVBDyrcB1YhQ8MCxMtOojQ4/AhbbSI395r
-Vqo4DB6YdbZM1Xcugd00zz3XqeHOi0qJtmL/+Quep8OAKcRL5szwvbNQRZzP1V1e
-My21tN/oQpdht3HRJalGptC5MEgBUHN7HhqVg7pITCHFTOtWPVBBr0IsTGOCczWn
-LiJ7JRbLldAB712GImY2OK3Tj+1imPGW9QU7xj0UQpCuKLzGt5XAljDOvBznQs3v
-H1VLx7Y6dhBPkkQPJ/tpVP2XncMKn/eYHxYxwTOkGCbvK6A7LQNpjCtkQLsiFu/1
-XCplFWEnevyQVtg9fZ0DOl90MM9Zk2sb1mxXhrNBkIHoky3n6cOOjArnWgPh5Ucx
-KHqysFFxOfPYCjzzYizrg/hJd351Y0ugMqECnWZE6O/mv4x6A/Y=
-=msmZ
------END PGP SIGNATURE-----
-
---Ltj0sKFFmY8m21Do--
+> -       return ppc_inst_val(x) == ppc_inst_val(y);
+> +       if (ppc_inst_val(x) != ppc_inst_val(y))
+> +               return false;
+> +       if (!ppc_inst_prefixed(x))
+> +               return true;
+> +       return ppc_inst_suffix(x) == ppc_inst_suffix(y);
+>  }
+>
+> -#endif /* CONFIG_PPC64 */
+> -
+>  static inline int ppc_inst_len(struct ppc_inst x)
+>  {
+>         return ppc_inst_prefixed(x) ? 8 : 4;
+> --
+> 2.25.0
+>
+Reviewed by: Jordan Niethe <jniethe5@gmail.com>
