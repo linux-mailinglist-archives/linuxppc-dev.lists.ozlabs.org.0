@@ -1,27 +1,27 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF1383A734B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 03:35:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 288B53A7360
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 03:38:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G3rW04NNbz3bsL
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 11:35:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G3rZ55T5Dz3ddw
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 11:38:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com;
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com;
  envelope-from=yangyingliang@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
  bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G3rVb4w8Vz2ysk
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 11:35:33 +1000 (AEST)
-Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.55])
- by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4G3rQq74qzz6yrF;
- Tue, 15 Jun 2021 09:32:19 +0800 (CST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G3rVc41Njz2yyt
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 11:35:35 +1000 (AEST)
+Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.56])
+ by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4G3rNl73h9zXg08;
+ Tue, 15 Jun 2021 09:30:31 +0800 (CST)
 Received: from dggpeml500017.china.huawei.com (7.185.36.243) by
- dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
+ dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
  15.1.2176.2; Tue, 15 Jun 2021 09:35:28 +0800
 Received: from huawei.com (10.175.103.91) by dggpeml500017.china.huawei.com
@@ -31,10 +31,10 @@ Received: from huawei.com (10.175.103.91) by dggpeml500017.china.huawei.com
 From: Yang Yingliang <yangyingliang@huawei.com>
 To: <linux-kernel@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
  <alsa-devel@alsa-project.org>
-Subject: [PATCH -next v2 8/9] ASoC: fsl_ssi: Use
- devm_platform_get_and_ioremap_resource()
-Date: Tue, 15 Jun 2021 09:39:21 +0800
-Message-ID: <20210615013922.784296-9-yangyingliang@huawei.com>
+Subject: [PATCH -next v2 9/9] ASoC: fsl_xcvr: check return value after calling
+ platform_get_resource_byname()
+Date: Tue, 15 Jun 2021 09:39:22 +0800
+Message-ID: <20210615013922.784296-10-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210615013922.784296-1-yangyingliang@huawei.com>
 References: <20210615013922.784296-1-yangyingliang@huawei.com>
@@ -61,28 +61,29 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use devm_platform_get_and_ioremap_resource() to simplify
-code.
+It will cause null-ptr-deref if platform_get_resource_byname() returns NULL,
+we need check the return value.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- sound/soc/fsl/fsl_ssi.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ sound/soc/fsl/fsl_xcvr.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/sound/soc/fsl/fsl_ssi.c b/sound/soc/fsl/fsl_ssi.c
-index 2b57b60431bb..ecbc1c365d5b 100644
---- a/sound/soc/fsl/fsl_ssi.c
-+++ b/sound/soc/fsl/fsl_ssi.c
-@@ -1503,8 +1503,7 @@ static int fsl_ssi_probe(struct platform_device *pdev)
- 	}
- 	ssi->cpu_dai_drv.name = dev_name(dev);
+diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
+index df7c189d97dd..1330e190e1ff 100644
+--- a/sound/soc/fsl/fsl_xcvr.c
++++ b/sound/soc/fsl/fsl_xcvr.c
+@@ -1202,6 +1202,10 @@ static int fsl_xcvr_probe(struct platform_device *pdev)
  
--	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	iomem = devm_ioremap_resource(dev, res);
-+	iomem = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
- 	if (IS_ERR(iomem))
- 		return PTR_ERR(iomem);
- 	ssi->ssi_phys = res->start;
+ 	rx_res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "rxfifo");
+ 	tx_res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "txfifo");
++	if (!rx_res || !tx_res) {
++		dev_err(dev, "could not find rxfifo or txfifo resource\n");
++		return -EINVAL;
++	}
+ 	xcvr->dma_prms_rx.chan_name = "rx";
+ 	xcvr->dma_prms_tx.chan_name = "tx";
+ 	xcvr->dma_prms_rx.addr = rx_res->start;
 -- 
 2.25.1
 
