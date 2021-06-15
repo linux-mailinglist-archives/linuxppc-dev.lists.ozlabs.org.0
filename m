@@ -1,59 +1,37 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D87CA3A8139
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 15:45:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69C873A8141
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 15:45:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G48hM3jPSz3hZX
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 23:45:07 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RYzFtT3K;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G48hv03pmz3hfS
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 23:45:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=jeyu@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=RYzFtT3K; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=lst.de
+ (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+ receiver=<UNKNOWN>)
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G48bn46ZJz3gjB
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 23:41:09 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id CE7FF61433;
- Tue, 15 Jun 2021 13:41:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1623764466;
- bh=AmuY6XD93X0kTalsW/ktIsUgGaB7gMa/K3RM1ePXtkc=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=RYzFtT3KnyoPmfW+TmI2uQX9IiuXWK9CcJPOirhiZW9JVyPUSaXlaalpKYKzqYn3/
- Tder3II8QhY1R/j7mXF4Ro0AWES0Ln1RrAZwezoweQSq+HESxVvomJSNh7Pv/sn0Vu
- 9DUG46+AUVXI9EFLqva38G6U3m8N6+K25nEeXMYjeshRSqR7agi4iND/sGpiAx87dV
- MI4EAH5cjgkbqqNLXRI+D5/XJcL+mIRuA44aHFX//kejY7qtIZg2OIY7vY8q4H3Uog
- leHERmJ+AEFfxST4ubCCFcfuelZDgvddIxImjSpzYZoMkfXZjZ4h7QyaTMbwChM2AH
- NQcUB4O1Ig0lg==
-Date: Tue, 15 Jun 2021 15:41:00 +0200
-From: Jessica Yu <jeyu@kernel.org>
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Subject: Re: [PATCH v4 1/2] module: add elf_check_module_arch for module
- specific elf arch checks
-Message-ID: <YMit7PZwiB87ig2u@p200300cbcf109700df096d564fe976c3.dip0.t-ipconnect.de>
-References: <20210611093959.821525-1-npiggin@gmail.com>
- <20210611093959.821525-2-npiggin@gmail.com>
- <YMdGWjBOmcstBwOl@p200300cbcf109700df096d564fe976c3.dip0.t-ipconnect.de>
- <1623722110.amu32mwaqs.astroid@bobo.none>
- <YMiaZOqhHck9iy0n@p200300cbcf109700df096d564fe976c3.dip0.t-ipconnect.de>
- <20210615125057.GF5077@gate.crashing.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G48d13tZ9z3h0R
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 23:42:13 +1000 (AEST)
+Received: by verein.lst.de (Postfix, from userid 2407)
+ id 3D5CB67373; Tue, 15 Jun 2021 15:42:09 +0200 (CEST)
+Date: Tue, 15 Jun 2021 15:42:08 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Claire Chang <tientzu@chromium.org>
+Subject: Re: [PATCH v10 10/12] swiotlb: Add restricted DMA alloc/free support
+Message-ID: <20210615134208.GJ20389@lst.de>
+References: <20210615132711.553451-1-tientzu@chromium.org>
+ <20210615132711.553451-11-tientzu@chromium.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210615125057.GF5077@gate.crashing.org>
-X-OS: Linux p200300cbcf109700df096d564fe976c3.dip0.t-ipconnect.de
- 5.12.9-1-default x86_64
+In-Reply-To: <20210615132711.553451-11-tientzu@chromium.org>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,32 +43,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: heikki.krogerus@linux.intel.com, thomas.hellstrom@linux.intel.com,
+ peterz@infradead.org, joonas.lahtinen@linux.intel.com,
+ dri-devel@lists.freedesktop.org, chris@chris-wilson.co.uk,
+ grant.likely@arm.com, paulus@samba.org, Frank Rowand <frowand.list@gmail.com>,
+ mingo@kernel.org, Marek Szyprowski <m.szyprowski@samsung.com>,
+ sstabellini@kernel.org, Saravana Kannan <saravanak@google.com>,
+ Joerg Roedel <joro@8bytes.org>,
+ "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ Christoph Hellwig <hch@lst.de>,
+ Bartosz Golaszewski <bgolaszewski@baylibre.com>, bskeggs@redhat.com,
+ linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
+ Thierry Reding <treding@nvidia.com>, intel-gfx@lists.freedesktop.org,
+ matthew.auld@intel.com, linux-devicetree <devicetree@vger.kernel.org>,
+ jxgao@google.com, daniel@ffwll.ch, Will Deacon <will@kernel.org>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ maarten.lankhorst@linux.intel.com, airlied@linux.ie,
+ Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org,
+ jani.nikula@linux.intel.com, Rob Herring <robh+dt@kernel.org>,
+ rodrigo.vivi@intel.com, bhelgaas@google.com, boris.ostrovsky@oracle.com,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jgross@suse.com,
+ Nicolas Boichat <drinkcat@chromium.org>, Greg KH <gregkh@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, lkml <linux-kernel@vger.kernel.org>,
+ tfiga@chromium.org,
+ "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+ Jim Quinlan <james.quinlan@broadcom.com>, xypron.glpk@gmx.de,
+ Robin Murphy <robin.murphy@arm.com>, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-+++ Segher Boessenkool [15/06/21 07:50 -0500]:
->On Tue, Jun 15, 2021 at 02:17:40PM +0200, Jessica Yu wrote:
->> +int __weak elf_check_module_arch(Elf_Ehdr *hdr)
->> +{
->> +       return 1;
->> +}
->
->But is this a good idea?  It isn't useful to be able to attempt to load
->a module not compiled for your architecture, and it increases the attack
->surface tremendously.  These checks are one of the few things that can
->*not* be weak symbols, imo.
+On Tue, Jun 15, 2021 at 09:27:09PM +0800, Claire Chang wrote:
+> Add the functions, swiotlb_{alloc,free} to support the memory allocation
+> from restricted DMA pool.
+> 
+> The restricted DMA pool is preferred if available.
+> 
+> Note that since coherent allocation needs remapping, one must set up
+> another device coherent pool by shared-dma-pool and use
+> dma_alloc_from_dev_coherent instead for atomic coherent allocation.
 
-Hm, could you please elaborate a bit more? This patchset is adding
-extra Elf header checks specifically for powerpc, and the module
-loader usually provides arch-specific hooks via weak symbols. We are
-just providing an new hook here, which should act as a no-op if it
-isn't used.
+Note: when applied this should go before the next patch to make sure
+bisection works fine.
 
-So if an architecture wants to provide extra header checks, it can do
-so by overriding the new weak symbol. Otherwise, the weak function acts as
-a noop. We also already have the existing elf_check_arch() check for each
-arch and that is *not* a weak symbol.
+>  #ifdef CONFIG_DMA_RESTRICTED_POOL
+> +struct page *swiotlb_alloc(struct device *dev, size_t size)
+> +{
+> +	struct io_tlb_mem *mem = dev->dma_io_tlb_mem;
+> +	phys_addr_t tlb_addr;
+> +	int index;
+> +
+> +	/*
+> +	 * Skip io_tlb_default_mem since swiotlb_alloc doesn't support atomic
+> +	 * coherent allocation. Otherwise might break existing devices.
+> +	 * One must set up another device coherent pool by shared-dma-pool and
+> +	 * use dma_alloc_from_dev_coherent instead for atomic coherent
+> +	 * allocation to avoid mempry remapping.
+
+s/mempry/memory/g
+
+Otherwise looks good:
+
+Reviewed-by: Christoph Hellwig <hch@lst.de>
