@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 506803A8105
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 15:41:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7874C3A8108
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 15:42:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G48cc6Rf3z3gv6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 23:41:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G48d00lshz3h08
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 23:42:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,22 +16,22 @@ Authentication-Results: lists.ozlabs.org;
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G48Xs6Q7Fz3gHj
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 23:38:37 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G48YB4hTMz3gLP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 23:38:54 +1000 (AEST)
 Received: by verein.lst.de (Postfix, from userid 2407)
- id B7C1668B05; Tue, 15 Jun 2021 15:38:32 +0200 (CEST)
-Date: Tue, 15 Jun 2021 15:38:32 +0200
+ id 1FDA367373; Tue, 15 Jun 2021 15:38:50 +0200 (CEST)
+Date: Tue, 15 Jun 2021 15:38:49 +0200
 From: Christoph Hellwig <hch@lst.de>
 To: Claire Chang <tientzu@chromium.org>
-Subject: Re: [PATCH v10 03/12] swiotlb: Set dev->dma_io_tlb_mem to the
- swiotlb pool used
-Message-ID: <20210615133831.GC20389@lst.de>
+Subject: Re: [PATCH v10 04/12] swiotlb: Update is_swiotlb_buffer to add a
+ struct device argument
+Message-ID: <20210615133849.GD20389@lst.de>
 References: <20210615132711.553451-1-tientzu@chromium.org>
- <20210615132711.553451-4-tientzu@chromium.org>
+ <20210615132711.553451-5-tientzu@chromium.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210615132711.553451-4-tientzu@chromium.org>
+In-Reply-To: <20210615132711.553451-5-tientzu@chromium.org>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -73,6 +73,12 @@ Cc: heikki.krogerus@linux.intel.com, thomas.hellstrom@linux.intel.com,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+
+On Tue, Jun 15, 2021 at 09:27:03PM +0800, Claire Chang wrote:
+> Update is_swiotlb_buffer to add a struct device argument. This will be
+> useful later to allow for different pools.
+> 
+> Signed-off-by: Claire Chang <tientzu@chromium.org>
 
 Looks good,
 
