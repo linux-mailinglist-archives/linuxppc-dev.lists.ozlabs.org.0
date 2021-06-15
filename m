@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38FF23A8116
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 15:43:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 759EB3A8117
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 15:43:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G48fH6ckbz3hD4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 23:43:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G48fg1GFlz3hDw
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 23:43:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,22 +16,21 @@ Authentication-Results: lists.ozlabs.org;
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G48Z36K90z3gRm
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 23:39:39 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G48ZH0DMTz3cFv
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 23:39:50 +1000 (AEST)
 Received: by verein.lst.de (Postfix, from userid 2407)
- id 7B81967373; Tue, 15 Jun 2021 15:39:35 +0200 (CEST)
-Date: Tue, 15 Jun 2021 15:39:35 +0200
+ id 4BA0568AFE; Tue, 15 Jun 2021 15:39:46 +0200 (CEST)
+Date: Tue, 15 Jun 2021 15:39:45 +0200
 From: Christoph Hellwig <hch@lst.de>
 To: Claire Chang <tientzu@chromium.org>
-Subject: Re: [PATCH v10 06/12] swiotlb: Use is_dev_swiotlb_force for
- swiotlb data bouncing
-Message-ID: <20210615133935.GF20389@lst.de>
+Subject: Re: [PATCH v10 07/12] swiotlb: Move alloc_size to swiotlb_find_slots
+Message-ID: <20210615133945.GG20389@lst.de>
 References: <20210615132711.553451-1-tientzu@chromium.org>
- <20210615132711.553451-7-tientzu@chromium.org>
+ <20210615132711.553451-8-tientzu@chromium.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210615132711.553451-7-tientzu@chromium.org>
+In-Reply-To: <20210615132711.553451-8-tientzu@chromium.org>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -74,10 +73,9 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 15, 2021 at 09:27:05PM +0800, Claire Chang wrote:
-> Propagate the swiotlb_force setting into io_tlb_default_mem->force and
-> use it to determine whether to bounce the data or not. This will be
-> useful later to allow for different pools.
+On Tue, Jun 15, 2021 at 09:27:06PM +0800, Claire Chang wrote:
+> Rename find_slots to swiotlb_find_slots and move the maintenance of
+> alloc_size to it for better code reusability later.
 > 
 > Signed-off-by: Claire Chang <tientzu@chromium.org>
 
