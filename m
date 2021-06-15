@@ -2,56 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C79463A8142
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 15:45:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1DF33A81A9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 16:02:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G48jK2nGQz3hlC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 23:45:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G494Q3sTGz3c64
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 00:02:30 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=XrN4Q23i;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HLZk5o1O;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=robh@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=XrN4Q23i; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=HLZk5o1O; 
  dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G48gL5xcHz3h0H
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 23:44:14 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4G48gF6cHCz9sWM;
- Tue, 15 Jun 2021 23:44:09 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1623764649;
- bh=xtqwwSoQU2GXY007fuUsGyMlkT0RqYD5zWipvBOk7Zw=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=XrN4Q23iSaU1BcOVZXGAkNLY9+aaza8MHreWFZ0UrEYk6FJo4sTQ+UESeF0jGD/7Y
- se9zpuiYVoyHS3fuU9rpJU1xF0E7J8erI6Kj221fA86/AMUHtYq8a/5EGl5VKrxfWd
- PPnIP/LQ0PeL0vggs/NKDl3PmZTGHsrRYJ8YBaAZqFrEZAs2DQ5gMckQSk+aDozLDI
- OaXWk/Fc4AyLWjWGplmpMjoyF++Mzp4Y720AIlh3IRc3b6ecq0X/G6H0WY2DmVzwRE
- No1b6ND8iBovbMj+A6rHOSH3GYUtD4d6cuelBWIEIu14uHpcQK+C/cMZQ8iUGZrsPF
- UH9efWYk9xHSw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v3 11/11] powerpc/64: use interrupt restart table to
- speed up return from interrupt
-In-Reply-To: <20210610130921.706938-12-npiggin@gmail.com>
-References: <20210610130921.706938-1-npiggin@gmail.com>
- <20210610130921.706938-12-npiggin@gmail.com>
-Date: Tue, 15 Jun 2021 23:44:09 +1000
-Message-ID: <87bl87tf86.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G493w12z8z2yXq
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 00:02:03 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 47A7F61417
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 14:02:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1623765721;
+ bh=QlhAPeeyHHRjIGhNphYkDKi45QaQ5wrJVvOCJ5iwTZk=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=HLZk5o1OlBgpmgNxo3t078PtogHJjxbNiaBMRlwd2BTkB/WBR8vXsVYBqyF+p9ELR
+ 25tMDLO5H37Av/dobs/EnUv0epiWfN1DRzdmonV2WmbiiePuuyRnmmMGquVFkN8NlL
+ 0ulmWZjqmJU8v27pswwRbHqymC8TPZh024JoCTjJFPFtCpzeHQmwtL9U1PjWFNRE7i
+ u5QvonJ5dI3P8UPxmKaow53KojSZjBQrv0U2nGZVQciJ58MStXS73Gtk/yUq/6SA88
+ Y4zC+BAIY8lS1IIOCyLzMVJPYA0ZsjKwuFD5pgL9ZjJTWLv+VTpzKOYQ48v2+DYqZP
+ hHIBiq3hJJWEg==
+Received: by mail-lf1-f42.google.com with SMTP id f30so27276225lfj.1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 07:02:01 -0700 (PDT)
+X-Gm-Message-State: AOAM533NVyLGgWtCn3Z9uB84gAopDk7Wq/dXgbVhnyKJdQMJneUJuiyT
+ GVw+Mn4ErtZpcDxVUZr2ZR21xx29Noc3h4dw+w==
+X-Google-Smtp-Source: ABdhPJxVqI8MHrcAWKd/OVKi4zXYd9o5Ej5sqMSK1SDKoChQIuRHCXHX7nfhLloiCMRd7u65oO394YM97kSgD621jRA=
+X-Received: by 2002:a17:906:85d5:: with SMTP id
+ i21mr20560813ejy.360.1623765708507; 
+ Tue, 15 Jun 2021 07:01:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20210221174930.27324-1-nramas@linux.microsoft.com>
+ <20210221174930.27324-6-nramas@linux.microsoft.com>
+ <CAMuHMdVSuNS4edh-zM0_sbC0i1AAjQ9Y0n_8Mjz=3CALkW4pgg@mail.gmail.com>
+In-Reply-To: <CAMuHMdVSuNS4edh-zM0_sbC0i1AAjQ9Y0n_8Mjz=3CALkW4pgg@mail.gmail.com>
+From: Rob Herring <robh@kernel.org>
+Date: Tue, 15 Jun 2021 08:01:35 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJ2x7zbyP3fAacdfHOWjCVjg6XhraV2YkoBJdZ2jXAMEA@mail.gmail.com>
+Message-ID: <CAL_JsqJ2x7zbyP3fAacdfHOWjCVjg6XhraV2YkoBJdZ2jXAMEA@mail.gmail.com>
+Subject: Re: [PATCH v19 05/13] of: Add a common kexec FDT setup function
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,79 +67,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, tao.li@vivo.com,
+ Mimi Zohar <zohar@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Frank Rowand <frowand.list@gmail.com>, Sasha Levin <sashal@kernel.org>,
+ Stephen Rothwell <sfr@canb.auug.org.au>,
+ Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+ Masahiro Yamada <masahiroy@kernel.org>, James Morris <jmorris@namei.org>,
+ AKASHI Takahiro <takahiro.akashi@linaro.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ "Serge E. Hallyn" <serge@hallyn.com>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, Pavel Tatashin <pasha.tatashin@soleen.com>,
+ Will Deacon <will@kernel.org>,
+ Prakhar Srivastava <prsriva@linux.microsoft.com>,
+ Hsin-Yi Wang <hsinyi@chromium.org>, Allison Randal <allison@lohutok.net>,
+ Christophe Leroy <christophe.leroy@c-s.fr>,
+ Matthias Brugger <mbrugger@suse.com>, balajib@linux.microsoft.com,
+ dmitry.kasatkin@gmail.com,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ James Morse <james.morse@arm.com>, Greg KH <gregkh@linuxfoundation.org>,
+ Joe Perches <joe@perches.com>,
+ linux-integrity <linux-integrity@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
-> diff --git a/arch/powerpc/lib/feature-fixups.c b/arch/powerpc/lib/feature-fixups.c
-> index fe26f2fa0f3f..fbe94e2d5011 100644
-> --- a/arch/powerpc/lib/feature-fixups.c
-> +++ b/arch/powerpc/lib/feature-fixups.c
-> @@ -412,12 +430,19 @@ void do_entry_flush_fixups(enum l1d_flush_type types)
->  	stop_machine(__do_entry_flush_fixups, &types, NULL);
->  }
->  
-> -void do_rfi_flush_fixups(enum l1d_flush_type types)
-> +static int __do_rfi_flush_fixups(void *data)
->  {
-> +	enum l1d_flush_type types = *(enum l1d_flush_type *)data;
->  	unsigned int instrs[3], *dest;
->  	long *start, *end;
->  	int i;
->  
-> +	if (types & L1D_FLUSH_FALLBACK)
-> +		rfi_exit_not_reentrant = true;
-> +	else
-> +		rfi_exit_not_reentrant = false;
-> +	update_interrupt_exit();
+On Tue, Jun 15, 2021 at 6:18 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+>
+> Hi Lakshmi and Rob,
+>
+> On Sun, Feb 21, 2021 at 6:52 PM Lakshmi Ramasubramanian
+> <nramas@linux.microsoft.com> wrote:
+> > From: Rob Herring <robh@kernel.org>
+> >
+> > Both arm64 and powerpc do essentially the same FDT /chosen setup for
+> > kexec.  The differences are either omissions that arm64 should have
+> > or additional properties that will be ignored.  The setup code can be
+> > combined and shared by both powerpc and arm64.
+> >
+> > The differences relative to the arm64 version:
+> >  - If /chosen doesn't exist, it will be created (should never happen).
+> >  - Any old dtb and initrd reserved memory will be released.
+> >  - The new initrd and elfcorehdr are marked reserved.
+> >  - "linux,booted-from-kexec" is set.
+> >
+> > The differences relative to the powerpc version:
+> >  - "kaslr-seed" and "rng-seed" may be set.
+> >  - "linux,elfcorehdr" is set.
+> >  - Any existing "linux,usable-memory-range" is removed.
+> >
+> > Combine the code for setting up the /chosen node in the FDT and updating
+> > the memory reservation for kexec, for powerpc and arm64, in
+> > of_kexec_alloc_and_setup_fdt() and move it to "drivers/of/kexec.c".
+> >
+> > Signed-off-by: Rob Herring <robh@kernel.org>
+> > Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+>
+> > --- /dev/null
+> > +++ b/drivers/of/kexec.c
+>
+> > +/*
+> > + * of_kexec_alloc_and_setup_fdt - Alloc and setup a new Flattened Device Tree
+> > + *
+> > + * @image:             kexec image being loaded.
+> > + * @initrd_load_addr:  Address where the next initrd will be loaded.
+> > + * @initrd_len:                Size of the next initrd, or 0 if there will be none.
+> > + * @cmdline:           Command line for the next kernel, or NULL if there will
+> > + *                     be none.
+> > + * @extra_fdt_size:    Additional size for the new FDT buffer.
+> > + *
+> > + * Return: fdt on success, or NULL errno on error.
+> > + */
+> > +void *of_kexec_alloc_and_setup_fdt(const struct kimage *image,
+> > +                                  unsigned long initrd_load_addr,
+> > +                                  unsigned long initrd_len,
+> > +                                  const char *cmdline, size_t extra_fdt_size)
+> > +{
+>
+> > +       /* Did we boot using an initrd? */
+> > +       prop = fdt_getprop(fdt, chosen_node, "linux,initrd-start", NULL);
+> > +       if (prop) {
+> > +               u64 tmp_start, tmp_end, tmp_size;
+> > +
+> > +               tmp_start = fdt64_to_cpu(*((const fdt64_t *) prop));
+> > +
+> > +               prop = fdt_getprop(fdt, chosen_node, "linux,initrd-end", NULL);
+> > +               if (!prop) {
+> > +                       ret = -EINVAL;
+> > +                       goto out;
+> > +               }
+> > +
+> > +               tmp_end = fdt64_to_cpu(*((const fdt64_t *) prop));
+>
+> Some kernel code assumes "linux,initrd-{start,end}" are 64-bit,
+> other code assumes 32-bit.
 
-This is not happy:
+It can be either. The above code was a merge of arm64 and powerpc both
+of which use 64-bit and still only runs on those arches. It looks like
+some powerpc platforms may use 32-bit, but this would have been broken
+before.
 
-[    0.000000][    T0] ============================================
-[    0.000000][    T0] WARNING: possible recursive locking detected
-[    0.000000][    T0] 5.13.0-rc2-00118-gca433a3a44e3 #1 Not tainted
-[    0.000000][    T0] --------------------------------------------
-[    0.000000][    T0] swapper/0 is trying to acquire lock:
-[    0.000000][    T0] c00000000252fa10 (cpu_hotplug_lock){....}-{0:0}, at: static_key_enable+0x24/0x50
-[    0.000000][    T0]
-[    0.000000][    T0] but task is already holding lock:
-[    0.000000][    T0] c00000000252fa10 (cpu_hotplug_lock){....}-{0:0}, at: stop_machine+0x2c/0x60
-[    0.000000][    T0]
-[    0.000000][    T0] other info that might help us debug this:
-[    0.000000][    T0]  Possible unsafe locking scenario:
-[    0.000000][    T0]
-[    0.000000][    T0]        CPU0
-[    0.000000][    T0]        ----
-[    0.000000][    T0]   lock(cpu_hotplug_lock);
-[    0.000000][    T0]   lock(cpu_hotplug_lock);
-[    0.000000][    T0]
-[    0.000000][    T0]  *** DEADLOCK ***
-[    0.000000][    T0]
-[    0.000000][    T0]  May be due to missing lock nesting notation
-[    0.000000][    T0]
-[    0.000000][    T0] 1 lock held by swapper/0:
-[    0.000000][    T0]  #0: c00000000252fa10 (cpu_hotplug_lock){....}-{0:0}, at: stop_machine+0x2c/0x60
-[    0.000000][    T0]
-[    0.000000][    T0] stack backtrace:
-[    0.000000][    T0] CPU: 0 PID: 0 Comm: swapper Not tainted 5.13.0-rc2-00118-gca433a3a44e3 #1
-[    0.000000][    T0] Call Trace:
-[    0.000000][    T0] [c0000000027db8f0] [c00000000093dd28] dump_stack+0xec/0x144 (unreliable)
-[    0.000000][    T0] [c0000000027db940] [c0000000001ed5b4] __lock_acquire+0x1744/0x28b0
-[    0.000000][    T0] [c0000000027dba70] [c0000000001ef338] lock_acquire+0x128/0x600
-[    0.000000][    T0] [c0000000027dbb70] [c00000000015035c] cpus_read_lock+0x4c/0x170
-[    0.000000][    T0] [c0000000027dbba0] [c0000000003c2594] static_key_enable+0x24/0x50
-[    0.000000][    T0] [c0000000027dbbd0] [c0000000000ae87c] __do_rfi_flush_fixups+0x7c/0x300
-[    0.000000][    T0] [c0000000027dbc80] [c0000000002ab7e4] stop_machine_cpuslocked+0xe4/0x200
-[    0.000000][    T0] [c0000000027dbcf0] [c0000000002ab940] stop_machine+0x40/0x60
-[    0.000000][    T0] [c0000000027dbd30] [c0000000000aef30] do_rfi_flush_fixups+0x30/0x50
-[    0.000000][    T0] [c0000000027dbd60] [c000000000040890] setup_rfi_flush+0xa0/0x140
-[    0.000000][    T0] [c0000000027dbdd0] [c00000000201c6c4] pnv_setup_arch+0x304/0x4ac
-[    0.000000][    T0] [c0000000027dbe60] [c00000000200a31c] setup_arch+0x374/0x3c4
-[    0.000000][    T0] [c0000000027dbee0] [c000000002003d08] start_kernel+0xb0/0x790
-[    0.000000][    T0] [c0000000027dbf90] [c00000000000d79c] start_here_common+0x1c/0x600
-[    0.000000][    T0] rfi-flush: patched 12 locations (fallback displacement flush)
+The code in drivers/of/fdt.c handles either case. We should probably
+refactor early_init_dt_check_for_initrd() and this function to use a
+common routine.
 
+> linux/Documentation/arm/uefi.rst says 64-bit,
+> dt-schema/schemas/chosen.yaml says 32-bit.
 
-cheers
+We should fix that.
+
+Rob
