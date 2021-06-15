@@ -2,68 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 525533A7E19
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 14:20:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 634963A7E03
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 14:18:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G46q16DdFz3c1S
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 22:20:45 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256 header.s=qcdkim header.b=FVx34PJ2;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G46mY6npqz3c65
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 22:18:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=quicinc.com (client-ip=199.106.114.38;
- helo=alexa-out-sd-01.qualcomm.com; envelope-from=quic_qiancai@quicinc.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256
- header.s=qcdkim header.b=FVx34PJ2; dkim-atps=neutral
-X-Greylist: delayed 124 seconds by postgrey-1.36 at boromir;
- Tue, 15 Jun 2021 22:20:20 AEST
-Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com
- [199.106.114.38])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=209.85.217.47; helo=mail-vs1-f47.google.com;
+ envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com
+ [209.85.217.47])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G46pX2BtJz2ymR
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 22:20:20 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
- d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
- t=1623759619; x=1655295619;
- h=subject:to:cc:references:from:message-id:date:
- mime-version:in-reply-to:content-transfer-encoding;
- bh=2p01kvq+G29y436EWXolYoDccfmPacDmDp78aAZq12Q=;
- b=FVx34PJ28vwpVXp4T2PkiiulCORbwZcEkSjbEfXtkjXefL2+1klFelQm
- 8uRuy3A2Adw3pIJ77E8lDMDGnvq4aFz2WJa94Bxqo0jU1sIcWnXr+YK+e
- JaiVxwftH2c5nfYerdyrASz6sA3AyZI9h5dH7h5vqtQ6JX37+WjAFEAoH k=;
-Received: from unknown (HELO ironmsg04-sd.qualcomm.com) ([10.53.140.144])
- by alexa-out-sd-01.qualcomm.com with ESMTP; 15 Jun 2021 05:18:10 -0700
-X-QCInternal: smtphost
-Received: from nasanexm03e.na.qualcomm.com ([10.85.0.48])
- by ironmsg04-sd.qualcomm.com with ESMTP/TLS/AES256-SHA;
- 15 Jun 2021 05:17:57 -0700
-Received: from [10.111.175.185] (10.80.80.8) by nasanexm03e.na.qualcomm.com
- (10.85.0.48) with Microsoft SMTP Server (TLS) id 15.0.1497.18; Tue, 15 Jun
- 2021 05:17:50 -0700
-Subject: Re: [PATCH 0/5] cpufreq: cppc: Fix suspend/resume specific races with
- FIE code
-To: Viresh Kumar <viresh.kumar@linaro.org>
-References: <cover.1623313323.git.viresh.kumar@linaro.org>
- <eaaaf171-5937-e0f2-8447-c1b20b474c62@quicinc.com>
- <20210615075056.dfkbiftuoihtrfpo@vireshk-i7>
-From: Qian Cai <quic_qiancai@quicinc.com>
-Message-ID: <19527d26-526e-6c6f-431d-7b78ed92bb34@quicinc.com>
-Date: Tue, 15 Jun 2021 08:17:49 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G46m70PkGz3bw1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 22:18:14 +1000 (AEST)
+Received: by mail-vs1-f47.google.com with SMTP id f21so9674958vsl.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 05:18:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=jrlwSWatHznx383NLiMm7Z2IuN1e5i6noGzyC8CFebk=;
+ b=sCcUDvpg7l/80uQcFPYHK+++oM4yKcAO/x9lUBQ0VZv72fMx7mZmT4xpAwfNy2hGso
+ RjeZwwhPqt17kPeE9a4ke6F6FOxozZn6HX70ZnWywejRasA4h6+em3GvKL4bFMigbILi
+ cmrW1wwXBCGWL7jTvaEW4ydvYXjAhalf6WSQYk7NWF7GdF2GYDlsmPPXgBLzrnntQpJT
+ p/kIqioG3pSXEclSQrJn91lvp5XWcfRl8rnTRDWc/90CGdKtYPK/PL3Y/JhaiLgAYkEc
+ ppPRngoQVfPIZYMEvYpfz7sLTOysoJqQ++5vmNZ6qWZY6t+LplArcnmdO9BmGhGgQ0gU
+ Lfzg==
+X-Gm-Message-State: AOAM532L/rtsU8Y7CnzC2Jc3b4RjovUWWmaKH6j83LowxjNy+J1/fysM
+ YoTauE1wHVG0FOYd0z5h0fnXW4L7upqPQrXbjI4=
+X-Google-Smtp-Source: ABdhPJyWLBtsARFbraykVxhSly+mYdsijjLf5u4llpgj1CcBtHFQinLCCrvpCrriX7X558sqTXYumrMOgaLjD7ZGGnM=
+X-Received: by 2002:a05:6102:2011:: with SMTP id
+ p17mr4770704vsr.40.1623759490847; 
+ Tue, 15 Jun 2021 05:18:10 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210615075056.dfkbiftuoihtrfpo@vireshk-i7>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanexm03b.na.qualcomm.com (10.85.0.98) To
- nasanexm03e.na.qualcomm.com (10.85.0.48)
+References: <20210221174930.27324-1-nramas@linux.microsoft.com>
+ <20210221174930.27324-6-nramas@linux.microsoft.com>
+In-Reply-To: <20210221174930.27324-6-nramas@linux.microsoft.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 15 Jun 2021 14:17:59 +0200
+Message-ID: <CAMuHMdVSuNS4edh-zM0_sbC0i1AAjQ9Y0n_8Mjz=3CALkW4pgg@mail.gmail.com>
+Subject: Re: [PATCH v19 05/13] of: Add a common kexec FDT setup function
+To: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+ Rob Herring <robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,96 +60,150 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Vincent Guittot <vincent.guittot@linaro.org>,
- linux-doc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
- Dirk Brandewie <dirk.j.brandewie@intel.com>, linux-pm@vger.kernel.org,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Rafael Wysocki <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, Ionela Voinescu <ionela.voinescu@arm.com>,
- Len Brown <lenb@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, tao.li@vivo.com,
+ Mimi Zohar <zohar@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Frank Rowand <frowand.list@gmail.com>, Sasha Levin <sashal@kernel.org>,
+ Stephen Rothwell <sfr@canb.auug.org.au>,
+ Masahiro Yamada <masahiroy@kernel.org>, James Morris <jmorris@namei.org>,
+ AKASHI Takahiro <takahiro.akashi@linaro.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ "Serge E. Hallyn" <serge@hallyn.com>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, Pavel Tatashin <pasha.tatashin@soleen.com>,
+ Will Deacon <will@kernel.org>, prsriva@linux.microsoft.com,
+ Hsin-Yi Wang <hsinyi@chromium.org>, Allison Randal <allison@lohutok.net>,
+ Christophe Leroy <christophe.leroy@c-s.fr>,
+ Matthias Brugger <mbrugger@suse.com>, balajib@linux.microsoft.com,
+ dmitry.kasatkin@gmail.com,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ James Morse <james.morse@arm.com>, Greg KH <gregkh@linuxfoundation.org>,
+ Joe Perches <joe@perches.com>,
+ linux-integrity <linux-integrity@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Lakshmi and Rob,
 
+On Sun, Feb 21, 2021 at 6:52 PM Lakshmi Ramasubramanian
+<nramas@linux.microsoft.com> wrote:
+> From: Rob Herring <robh@kernel.org>
+>
+> Both arm64 and powerpc do essentially the same FDT /chosen setup for
+> kexec.  The differences are either omissions that arm64 should have
+> or additional properties that will be ignored.  The setup code can be
+> combined and shared by both powerpc and arm64.
+>
+> The differences relative to the arm64 version:
+>  - If /chosen doesn't exist, it will be created (should never happen).
+>  - Any old dtb and initrd reserved memory will be released.
+>  - The new initrd and elfcorehdr are marked reserved.
+>  - "linux,booted-from-kexec" is set.
+>
+> The differences relative to the powerpc version:
+>  - "kaslr-seed" and "rng-seed" may be set.
+>  - "linux,elfcorehdr" is set.
+>  - Any existing "linux,usable-memory-range" is removed.
+>
+> Combine the code for setting up the /chosen node in the FDT and updating
+> the memory reservation for kexec, for powerpc and arm64, in
+> of_kexec_alloc_and_setup_fdt() and move it to "drivers/of/kexec.c".
+>
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
 
-On 6/15/2021 3:50 AM, Viresh Kumar wrote:
-> Hi Qian,
-> 
-> First of all thanks for testing this, I need more of your help to test
-> this out :)
-> 
-> FWIW, I did test this on my Hikey board today, with some hacks, and
-> tried multiple insmod/rmmod operations for the driver, and I wasn't
-> able to reproduce the issue you reported. I did enable the list-debug
-> config option.
+> --- /dev/null
+> +++ b/drivers/of/kexec.c
 
-The setup here is an arm64 server with 32 CPUs.
+> +/*
+> + * of_kexec_alloc_and_setup_fdt - Alloc and setup a new Flattened Device Tree
+> + *
+> + * @image:             kexec image being loaded.
+> + * @initrd_load_addr:  Address where the next initrd will be loaded.
+> + * @initrd_len:                Size of the next initrd, or 0 if there will be none.
+> + * @cmdline:           Command line for the next kernel, or NULL if there will
+> + *                     be none.
+> + * @extra_fdt_size:    Additional size for the new FDT buffer.
+> + *
+> + * Return: fdt on success, or NULL errno on error.
+> + */
+> +void *of_kexec_alloc_and_setup_fdt(const struct kimage *image,
+> +                                  unsigned long initrd_load_addr,
+> +                                  unsigned long initrd_len,
+> +                                  const char *cmdline, size_t extra_fdt_size)
+> +{
 
-> 
-> On 14-06-21, 09:48, Qian Cai wrote:
->> Unfortunately, this series looks like needing more works.
->>
->> [  487.773586][    T0] CPU17: Booted secondary processor 0x0000000801 [0x503f0002]
->> [  487.976495][  T670] list_del corruption. next->prev should be ffff009b66e9ec70, but was ffff009b66dfec70
->> [  487.987037][  T670] ------------[ cut here ]------------
->> [  487.992351][  T670] kernel BUG at lib/list_debug.c:54!
->> [  487.997810][  T670] Internal error: Oops - BUG: 0 [#1] SMP
->> [  488.003295][  T670] Modules linked in: cpufreq_userspace xfs loop cppc_cpufreq processor efivarfs ip_tables x_tables ext4 mbcache jbd2 dm_mod igb i2c_algo_bit nvme mlx5_core i2c_core nvme_core firmware_class
->> [  488.021759][  T670] CPU: 1 PID: 670 Comm: cppc_fie Not tainted 5.13.0-rc5-next-20210611+ #46
->> [  488.030190][  T670] Hardware name: MiTAC RAPTOR EV-883832-X3-0001/RAPTOR, BIOS 1.6 06/28/2020
->> [  488.038705][  T670] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO BTYPE=--)
->> [  488.045398][  T670] pc : __list_del_entry_valid+0x154/0x158
->> [  488.050969][  T670] lr : __list_del_entry_valid+0x154/0x158
->> [  488.056534][  T670] sp : ffff8000229afd70
->> [  488.060534][  T670] x29: ffff8000229afd70 x28: ffff0008c8f4f340 x27: dfff800000000000
->> [  488.068361][  T670] x26: ffff009b66e9ec70 x25: ffff800011c8b4d0 x24: ffff0008d4bfe488
->> [  488.076188][  T670] x23: ffff0008c8f4f340 x22: ffff0008c8f4f340 x21: ffff009b6789ec70
->> [  488.084015][  T670] x20: ffff0008d4bfe4c8 x19: ffff009b66e9ec70 x18: ffff0008c8f4fd70
->> [  488.091842][  T670] x17: 20747562202c3037 x16: 6365396536366239 x15: 0000000000000028
->> [  488.099669][  T670] x14: 0000000000000000 x13: 0000000000000001 x12: ffff60136cdd3447
->> [  488.107495][  T670] x11: 1fffe0136cdd3446 x10: ffff60136cdd3446 x9 : ffff8000103ee444
->> [  488.115322][  T670] x8 : ffff009b66e9a237 x7 : 0000000000000001 x6 : ffff009b66e9a230
->> [  488.123149][  T670] x5 : 00009fec9322cbba x4 : ffff60136cdd3447 x3 : 1fffe001191e9e69
->> [  488.130975][  T670] x2 : 0000000000000000 x1 : 0000000000000000 x0 : 0000000000000054
->> [  488.138803][  T670] Call trace:
->> [  488.141935][  T670]  __list_del_entry_valid+0x154/0x158
->> [  488.147153][  T670]  kthread_worker_fn+0x15c/0xda0
-> 
-> This is a strange place to get the issue from. And this is a new
-> issue.
+> +       /* Did we boot using an initrd? */
+> +       prop = fdt_getprop(fdt, chosen_node, "linux,initrd-start", NULL);
+> +       if (prop) {
+> +               u64 tmp_start, tmp_end, tmp_size;
+> +
+> +               tmp_start = fdt64_to_cpu(*((const fdt64_t *) prop));
+> +
+> +               prop = fdt_getprop(fdt, chosen_node, "linux,initrd-end", NULL);
+> +               if (!prop) {
+> +                       ret = -EINVAL;
+> +                       goto out;
+> +               }
+> +
+> +               tmp_end = fdt64_to_cpu(*((const fdt64_t *) prop));
 
-Well, it was still the same exercises with CPU online/offline.
+Some kernel code assumes "linux,initrd-{start,end}" are 64-bit,
+other code assumes 32-bit.
+linux/Documentation/arm/uefi.rst says 64-bit,
+dt-schema/schemas/chosen.yaml says 32-bit.
 
-> 
->> [  488.151939][  T670]  kthread+0x3ac/0x460
->> [  488.155854][  T670]  ret_from_fork+0x10/0x18
->> [  488.160120][  T670] Code: 911e8000 aa1303e1 910a0000 941b595b (d4210000)
->> [  488.166901][  T670] ---[ end trace e637e2d38b2cc087 ]---
->> [  488.172206][  T670] Kernel panic - not syncing: Oops - BUG: Fatal exception
->> [  488.179182][  T670] SMP: stopping secondary CPUs
->> [  489.209347][  T670] SMP: failed to stop secondary CPUs 0-1,10-11,16-17,31
->> [  489.216128][  T][  T670] Memoryn ]---
-> 
-> Can you give details on what exactly did you try to do, to get this ?
-> Normal boot or something more ?
+> +
+> +               /*
+> +                * kexec reserves exact initrd size, while firmware may
+> +                * reserve a multiple of PAGE_SIZE, so check for both.
+> +                */
+> +               tmp_size = tmp_end - tmp_start;
+> +               ret = fdt_find_and_del_mem_rsv(fdt, tmp_start, tmp_size);
+> +               if (ret == -ENOENT)
+> +                       ret = fdt_find_and_del_mem_rsv(fdt, tmp_start,
+> +                                                      round_up(tmp_size, PAGE_SIZE));
+> +               if (ret == -EINVAL)
+> +                       goto out;
+> +       }
+> +
+> +       /* add initrd-* */
+> +       if (initrd_load_addr) {
+> +               ret = fdt_setprop_u64(fdt, chosen_node, FDT_PROP_INITRD_START,
+> +                                     initrd_load_addr);
+> +               if (ret)
+> +                       goto out;
+> +
+> +               ret = fdt_setprop_u64(fdt, chosen_node, FDT_PROP_INITRD_END,
+> +                                     initrd_load_addr + initrd_len);
+> +               if (ret)
+> +                       goto out;
+> +
+> +               ret = fdt_add_mem_rsv(fdt, initrd_load_addr, initrd_len);
+> +               if (ret)
+> +                       goto out;
+> +
+> +       } else {
+> +               ret = fdt_delprop(fdt, chosen_node, FDT_PROP_INITRD_START);
+> +               if (ret && (ret != -FDT_ERR_NOTFOUND))
+> +                       goto out;
+> +
+> +               ret = fdt_delprop(fdt, chosen_node, FDT_PROP_INITRD_END);
+> +               if (ret && (ret != -FDT_ERR_NOTFOUND))
+> +                       goto out;
+> +       }
 
-Basically, it has the cpufreq driver as CPPC and the governor as schedutil. Running a few workloads to get CPU scaling up and down. Later, try to offline all CPUs until the last one and then online all CPUs.
+Gr{oetje,eeting}s,
 
-> 
-> I have made some changes to the way calls were happening, may get this
-> thing sorted. Can you please try this branch ?
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/vireshk/pm.git/log/?h=cpufreq/cppc
-> 
-> I can see one place where race can happen, i.e. between
-> topology_clear_scale_freq_source() and topology_scale_freq_tick(). It
-> is possible that sfd->set_freq_scale() may get called for a previously
-> set handler as there is no protection there.
-> 
-> I will see how to fix that. But I am not sure if the issue reported
-> above comes from there.
-> 
-> Anyway, please give my branch a try, lets see.
+                        Geert
 
-I am hesitate to try this at the moment because this all feel like shooting in the dark. Ideally, you will be able to get access to one of those arm64 servers (Huawei, Ampere, TX2, FJ etc) eventually and really try the same exercises yourself with those debugging options like list debugging and KASAN on. That way you could fix things way efficiently. I could share you the .config once you are there. Last but not least, once you get better narrow down of the issues, I'd hope to see someone else familiar with the code there to get review of those patches first (feel free to Cc me once you are ready to post) before I'll rerun the whole things again. That way we don't waste time on each other backing and forth chasing the shadow.
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
