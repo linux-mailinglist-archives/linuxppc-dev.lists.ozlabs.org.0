@@ -1,102 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD9623A76D2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 07:58:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BBE23A76DE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 08:06:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G3yKy3sd1z3btB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 15:58:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G3yWZ0Fh2z304J
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 16:06:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Y2khVMCD;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=B93koVoz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b2b;
+ helo=mail-yb1-xb2b.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Y2khVMCD; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=B93koVoz; dkim-atps=neutral
+Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com
+ [IPv6:2607:f8b0:4864:20::b2b])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G3yKS2JBWz2yxS
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 15:58:03 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 15F5YKQJ085228; Tue, 15 Jun 2021 01:57:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : content-type :
- mime-version; s=pp1; bh=07tTVPoE4sfLRHIhLI4Los8eIFmg3F1zZiWEuudYp5U=;
- b=Y2khVMCDDXcl2LNDkJ2MD0fQapBBODmupMOpTSzDN+5I7fdTH0RjL0yDvnuLcxC6//4l
- 8kv3jfbo2a4qmaH2AEoEYYheuwW5cT2KgcOGenILiR1U1Kym0gjDbQEkC68LeIt3hbro
- L8EELZ7WAiXlo9f3+exHYtgw78NhCPU7vjZ0EOmp2HNUerY5NIZ4V6iVPpEoRa8fXduZ
- Q9LqzXO3jd72t8dlASK85m6CY3woWkt8nEtduvnwQMj+KRygkgudydAW7KXVSpizlOB1
- okrwT1Dl5fJNFp/aTRO1zQA12OpnVGVEzrSy8ochVsZULUikhkAFob8QMFwQSS7UOb5u tg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 396ng99kc9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 15 Jun 2021 01:57:56 -0400
-Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 15F5YKUt085249;
- Tue, 15 Jun 2021 01:57:55 -0400
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0b-001b2d01.pphosted.com with ESMTP id 396ng99kc6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 15 Jun 2021 01:57:55 -0400
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15F5vtFZ013576;
- Tue, 15 Jun 2021 05:57:55 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com
- (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
- by ppma03wdc.us.ibm.com with ESMTP id 394mj9d997-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 15 Jun 2021 05:57:55 +0000
-Received: from b03ledav002.gho.boulder.ibm.com
- (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 15F5vsA736962744
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 15 Jun 2021 05:57:54 GMT
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 73AF0136059;
- Tue, 15 Jun 2021 05:57:54 +0000 (GMT)
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E331013604F;
- Tue, 15 Jun 2021 05:57:52 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.199.54.82])
- by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue, 15 Jun 2021 05:57:52 +0000 (GMT)
-X-Mailer: emacs 28.0.50 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: David Gibson <david@gibson.dropbear.id.au>
-Subject: Re: [RFC PATCH 8/8] powerpc/papr_scm: Use FORM2 associativity details
-In-Reply-To: <YMgkyfc4g+na5GJZ@yekko>
-References: <20210614164003.196094-1-aneesh.kumar@linux.ibm.com>
- <20210614164003.196094-9-aneesh.kumar@linux.ibm.com>
- <YMgkyfc4g+na5GJZ@yekko>
-Date: Tue, 15 Jun 2021 11:27:50 +0530
-Message-ID: <87czsnoejl.fsf@linux.ibm.com>
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: NDZfzD_75IisM63xnVm-td3lcqfhNeNr
-X-Proofpoint-ORIG-GUID: qjkObLNgRrNaZ2-5vHUekT17dBSt-ZYR
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G3yW25BVTz3021
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 16:06:21 +1000 (AEST)
+Received: by mail-yb1-xb2b.google.com with SMTP id b13so18852610ybk.4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 23:06:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=TbjwGqUHvWaGx5UW+qV3Ea0y3mo5DXpb7BckQX3+/FE=;
+ b=B93koVozP9PzGT3naX34mVmyZTw2rMdAcJuhI+4fxGyMY+1UBwPdYJALvGdmRNTJye
+ Zd2KOpioK10RMAB7eb39VIRapZXHb8hLSbJTulYdoTiVDFlJYY3rjscdo0HuiI6VLrv7
+ RTOxSROa3N1T2N8IwnI20LZrWSsg6YhkVWZx2FUQV9z7NkxOZjBAjsH/Kr+QgFwEuqLw
+ QKC7mUJ2sTu1hlnPlnRyW6WfiuXJp9GpDRM9LAJfr+bHnt3WCjlX5Ec0O+dQyTWgnxru
+ EAWm6whQn7XJUqQ3yCHLovaLfjoZZ7OCrISjnBdWqHi/ooUwKZEFvGDUxYMJUAtVogKZ
+ HDrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=TbjwGqUHvWaGx5UW+qV3Ea0y3mo5DXpb7BckQX3+/FE=;
+ b=t7RRzVN57syKrpL1rJCis/EJUo6+Bl8REu9xXMQm5zBtQ3YeI88poMQwK5sgctUol8
+ H+vyVqvVYLvzuEgd63ZqN0VnAABOnTJlx2XwUP4gzZ5R/UfF19kpDpjtsgFyJVCB82YY
+ vbxaAX7lwOWpyFI4wxmzwQqymtwFPesu/rOJ7eaGFx1eP59wYiiZgQ0e6/9E1ZBEgvaW
+ BOfSgLLg2+oPWIXQ8dcdNrGSnhdUfgj7YSSaqgn+DeAZqu8RViK5rDAY845pwjV4Brbz
+ PgxmLdZb+qMDB1HzwtIJiPwk+3YpK8OURLqVM9YMGwSUzpzOb7MIxVE2Wk7MorxalJub
+ gmZQ==
+X-Gm-Message-State: AOAM5337418VCu2YAEUddRvXQktObofuw3h21C9CCL8oknKRKDzijvLr
+ vXQLYIEwNxaCFdAH2aHuXVAOClqh2sHO4lXsUIwr8zKi
+X-Google-Smtp-Source: ABdhPJxFY2YKVtnpZY/79otGoiiK+9AbRynk+KY/2XGSrdUJY4M/CzydOGcn+GJwAEmQ5yBye4XFIRXpFGa5Cd4AO0k=
+X-Received: by 2002:a25:69ce:: with SMTP id
+ e197mr27996838ybc.265.1623737173769; 
+ Mon, 14 Jun 2021 23:06:13 -0700 (PDT)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-06-15_03:2021-06-14,
- 2021-06-15 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 mlxlogscore=999
- clxscore=1015 malwarescore=0 impostorscore=0 phishscore=0 bulkscore=0
- adultscore=0 priorityscore=1501 lowpriorityscore=0 mlxscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2106150032
+References: <20210607233709.941102-1-jniethe5@gmail.com>
+ <20210607233709.941102-2-jniethe5@gmail.com>
+In-Reply-To: <20210607233709.941102-2-jniethe5@gmail.com>
+From: Jordan Niethe <jniethe5@gmail.com>
+Date: Tue, 15 Jun 2021 16:06:02 +1000
+Message-ID: <CACzsE9oV9s-5E-_ATwj6_E0dvo+nO=wq8YPFsPV983ACtWT8BA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] selftests: Skip TM tests on synthetic TM
+ implementations
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,184 +76,188 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Michael Neuling <mikey@neuling.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-David Gibson <david@gibson.dropbear.id.au> writes:
-
-> On Mon, Jun 14, 2021 at 10:10:03PM +0530, Aneesh Kumar K.V wrote:
->> FORM2 introduce a concept of secondary domain which is identical to the
->> conceept of FORM1 primary domain. Use secondary domain as the numa node
->> when using persistent memory device. For DAX kmem use the logical domain
->> id introduced in FORM2. This new numa node
->> 
->> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->> ---
->>  arch/powerpc/mm/numa.c                    | 28 +++++++++++++++++++++++
->>  arch/powerpc/platforms/pseries/papr_scm.c | 26 +++++++++++++--------
->>  arch/powerpc/platforms/pseries/pseries.h  |  1 +
->>  3 files changed, 45 insertions(+), 10 deletions(-)
->> 
->> diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
->> index 86cd2af014f7..b9ac6d02e944 100644
->> --- a/arch/powerpc/mm/numa.c
->> +++ b/arch/powerpc/mm/numa.c
->> @@ -265,6 +265,34 @@ static int associativity_to_nid(const __be32 *associativity)
->>  	return nid;
->>  }
->>  
->> +int get_primary_and_secondary_domain(struct device_node *node, int *primary, int *secondary)
->> +{
->> +	int secondary_index;
->> +	const __be32 *associativity;
->> +
->> +	if (!numa_enabled) {
->> +		*primary = NUMA_NO_NODE;
->> +		*secondary = NUMA_NO_NODE;
->> +		return 0;
->> +	}
->> +
->> +	associativity = of_get_associativity(node);
->> +	if (!associativity)
->> +		return -ENODEV;
->> +
->> +	if (of_read_number(associativity, 1) >= primary_domain_index) {
->> +		*primary = of_read_number(&associativity[primary_domain_index], 1);
->> +		secondary_index = of_read_number(&distance_ref_points[1], 1);
+On Tue, Jun 8, 2021 at 9:37 AM Jordan Niethe <jniethe5@gmail.com> wrote:
 >
-> Secondary ID is always the second reference point, but primary depends
-> on the length of resources?  That seems very weird.
-
-primary_domain_index is distance_ref_point[0]. With Form2 we would find
-both primary and secondary domain ID same for all resources other than
-persistent memory device. The usage w.r.t. persistent memory is
-explained in patch 7.
-
-With Form2 the primary domainID and secondary domainID are used to identify the NUMA nodes
-the kernel should use when using persistent memory devices. Persistent memory devices
-can also be used as regular memory using DAX KMEM driver and primary domainID indicates
-the numa node number OS should use when using these devices as regular memory. Secondary
-domainID is the numa node number that should be used when using this device as
-persistent memory. In the later case, we are interested in the locality of the
-device to an established numa node. In the above example, if the last row represents a
-persistent memory device/resource, NUMA node number 40 will be used when using the device
-as regular memory and NUMA node number 0 will be the device numa node when using it as
-a persistent memory device.
-
-
+> Transactional Memory was removed from the architecture in ISA v3.1. For
+> threads running in P8/P9 compatibility mode on P10 a synthetic TM
+> implementation is provided. In this implementation, tbegin. always sets
+> cr0 eq meaning the abort handler is always called. This is not an issue
+> as users of TM are expected to have a fallback non transactional way to
+> make forward progress in the abort handler.
 >
->> +		*secondary = of_read_number(&associativity[secondary_index], 1);
->> +	}
->> +	if (*primary == 0xffff || *primary >= nr_node_ids)
->> +		*primary = NUMA_NO_NODE;
->> +
->> +	if (*secondary == 0xffff || *secondary >= nr_node_ids)
->> +		*secondary = NUMA_NO_NODE;
->> +	return 0;
->> +}
->> +
->>  /* Returns the nid associated with the given device tree node,
->>   * or -1 if not found.
->>   */
->> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
->> index ef26fe40efb0..9bf2f1f3ddc5 100644
->> --- a/arch/powerpc/platforms/pseries/papr_scm.c
->> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
->> @@ -18,6 +18,7 @@
->>  #include <asm/plpar_wrappers.h>
->>  #include <asm/papr_pdsm.h>
->>  #include <asm/mce.h>
->> +#include "pseries.h"
->>  
->>  #define BIND_ANY_ADDR (~0ul)
->>  
->> @@ -88,6 +89,8 @@ struct papr_scm_perf_stats {
->>  struct papr_scm_priv {
->>  	struct platform_device *pdev;
->>  	struct device_node *dn;
->> +	int numa_node;
->> +	int target_node;
->>  	uint32_t drc_index;
->>  	uint64_t blocks;
->>  	uint64_t block_size;
->> @@ -923,7 +926,6 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
->>  	struct nd_mapping_desc mapping;
->>  	struct nd_region_desc ndr_desc;
->>  	unsigned long dimm_flags;
->> -	int target_nid, online_nid;
->>  	ssize_t stat_size;
->>  
->>  	p->bus_desc.ndctl = papr_scm_ndctl;
->> @@ -974,10 +976,8 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
->>  	mapping.size = p->blocks * p->block_size; // XXX: potential overflow?
->>  
->>  	memset(&ndr_desc, 0, sizeof(ndr_desc));
->> -	target_nid = dev_to_node(&p->pdev->dev);
->> -	online_nid = numa_map_to_online_node(target_nid);
->> -	ndr_desc.numa_node = online_nid;
->> -	ndr_desc.target_node = target_nid;
->> +	ndr_desc.numa_node = p->numa_node;
->> +	ndr_desc.target_node = p->target_node;
->>  	ndr_desc.res = &p->res;
->>  	ndr_desc.of_node = p->dn;
->>  	ndr_desc.provider_data = p;
->> @@ -1001,9 +1001,6 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
->>  				ndr_desc.res, p->dn);
->>  		goto err;
->>  	}
->> -	if (target_nid != online_nid)
->> -		dev_info(dev, "Region registered with target node %d and online node %d",
->> -			 target_nid, online_nid);
->>  
->>  	mutex_lock(&papr_ndr_lock);
->>  	list_add_tail(&p->region_list, &papr_nd_regions);
->> @@ -1096,7 +1093,7 @@ static int papr_scm_probe(struct platform_device *pdev)
->>  	struct papr_scm_priv *p;
->>  	const char *uuid_str;
->>  	u64 uuid[2];
->> -	int rc;
->> +	int rc, numa_node;
->>  
->>  	/* check we have all the required DT properties */
->>  	if (of_property_read_u32(dn, "ibm,my-drc-index", &drc_index)) {
->> @@ -1119,11 +1116,20 @@ static int papr_scm_probe(struct platform_device *pdev)
->>  		return -ENODEV;
->>  	}
->>  
->> -
->>  	p = kzalloc(sizeof(*p), GFP_KERNEL);
->>  	if (!p)
->>  		return -ENOMEM;
->>  
->> +	if (get_primary_and_secondary_domain(dn, &p->target_node, &numa_node)) {
->> +		dev_err(&pdev->dev, "%pOF: missing NUMA attributes!\n", dn);
->> +		rc = -ENODEV;
->> +		goto err;
->> +	}
->> +	p->numa_node = numa_map_to_online_node(numa_node);
->> +	if (numa_node != p->numa_node)
->> +		dev_info(&pdev->dev, "Region registered with online node %d and device tree node %d",
->> +			 p->numa_node, numa_node);
->> +
->>  	/* Initialize the dimm mutex */
->>  	mutex_init(&p->health_mutex);
->>  
->> diff --git a/arch/powerpc/platforms/pseries/pseries.h b/arch/powerpc/platforms/pseries/pseries.h
->> index 663a0859cf13..9c2a1fc9ded1 100644
->> --- a/arch/powerpc/platforms/pseries/pseries.h
->> +++ b/arch/powerpc/platforms/pseries/pseries.h
->> @@ -114,4 +114,5 @@ void pseries_setup_security_mitigations(void);
->>  void pseries_lpar_read_hblkrm_characteristics(void);
->>  
->>  void update_numa_distance(struct device_node *node);
->> +int get_primary_and_secondary_domain(struct device_node *node, int *primary, int *secondary);
->>  #endif /* _PSERIES_PSERIES_H */
+> As the TM self tests exist only to test TM, no alternative path forward
+> is provided, leading to them timing out and failing on the synthetic TM
+> implementation.
 >
-> -- 
-> David Gibson			| I'll have my music baroque, and my code
-> david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-> 				| _way_ _around_!
-> http://www.ozlabs.org/~dgibson
+> The TEXASR indicates if a transaction failure is due to a synthetic
+> implementation. Check for a synthetic implementation and skip the TM
+> tests if so.
+>
+> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+> ---
+>  .../selftests/powerpc/ptrace/ptrace-tm-gpr.c  |  1 +
+>  .../powerpc/ptrace/ptrace-tm-spd-gpr.c        |  1 +
+>  .../powerpc/ptrace/ptrace-tm-spd-tar.c        |  1 +
+>  .../selftests/powerpc/ptrace/ptrace-tm-tar.c  |  1 +
+>  .../selftests/powerpc/tm/tm-resched-dscr.c    |  1 +
+>  .../selftests/powerpc/tm/tm-signal-stack.c    |  1 +
+>  .../testing/selftests/powerpc/tm/tm-syscall.c |  2 +-
+>  tools/testing/selftests/powerpc/tm/tm.h       | 36 +++++++++++++++++++
+>  8 files changed, 43 insertions(+), 1 deletion(-)
+>
+> diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-gpr.c b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-gpr.c
+> index 7df7100a29be..67ca297c5cca 100644
+> --- a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-gpr.c
+> +++ b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-gpr.c
+> @@ -113,6 +113,7 @@ int ptrace_tm_gpr(void)
+>         int ret, status;
+>
+>         SKIP_IF(!have_htm());
+> +       SKIP_IF(htm_is_synthetic());
+>         shm_id = shmget(IPC_PRIVATE, sizeof(int) * 2, 0777|IPC_CREAT);
+>         pid = fork();
+>         if (pid < 0) {
+> diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-gpr.c b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-gpr.c
+> index 8706bea5d015..6f2bce1b6c5d 100644
+> --- a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-gpr.c
+> +++ b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-gpr.c
+> @@ -119,6 +119,7 @@ int ptrace_tm_spd_gpr(void)
+>         int ret, status;
+>
+>         SKIP_IF(!have_htm());
+> +       SKIP_IF(htm_is_synthetic());
+>         shm_id = shmget(IPC_PRIVATE, sizeof(int) * 3, 0777|IPC_CREAT);
+>         pid = fork();
+>         if (pid < 0) {
+> diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-tar.c b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-tar.c
+> index 2ecfa1158e2b..e112a34fbe59 100644
+> --- a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-tar.c
+> +++ b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-tar.c
+> @@ -129,6 +129,7 @@ int ptrace_tm_spd_tar(void)
+>         int ret, status;
+>
+>         SKIP_IF(!have_htm());
+> +       SKIP_IF(htm_is_synthetic());
+>         shm_id = shmget(IPC_PRIVATE, sizeof(int) * 3, 0777|IPC_CREAT);
+>         pid = fork();
+>         if (pid == 0)
+> diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-tar.c b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-tar.c
+> index 46ef378a15ec..d0db6df0f0ea 100644
+> --- a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-tar.c
+> +++ b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-tar.c
+> @@ -117,6 +117,7 @@ int ptrace_tm_tar(void)
+>         int ret, status;
+>
+>         SKIP_IF(!have_htm());
+> +       SKIP_IF(htm_is_synthetic());
+>         shm_id = shmget(IPC_PRIVATE, sizeof(int) * 2, 0777|IPC_CREAT);
+>         pid = fork();
+>         if (pid == 0)
+> diff --git a/tools/testing/selftests/powerpc/tm/tm-resched-dscr.c b/tools/testing/selftests/powerpc/tm/tm-resched-dscr.c
+> index 4cdb83964bb3..85c940ae6ff8 100644
+> --- a/tools/testing/selftests/powerpc/tm/tm-resched-dscr.c
+> +++ b/tools/testing/selftests/powerpc/tm/tm-resched-dscr.c
+> @@ -40,6 +40,7 @@ int test_body(void)
+>         uint64_t rv, dscr1 = 1, dscr2, texasr;
+>
+>         SKIP_IF(!have_htm());
+> +       SKIP_IF(htm_is_synthetic());
+>
+>         printf("Check DSCR TM context switch: ");
+>         fflush(stdout);
+> diff --git a/tools/testing/selftests/powerpc/tm/tm-signal-stack.c b/tools/testing/selftests/powerpc/tm/tm-signal-stack.c
+> index cdcf8c5bbbc7..68807aac8dd3 100644
+> --- a/tools/testing/selftests/powerpc/tm/tm-signal-stack.c
+> +++ b/tools/testing/selftests/powerpc/tm/tm-signal-stack.c
+> @@ -35,6 +35,7 @@ int tm_signal_stack()
+>         int pid;
+>
+>         SKIP_IF(!have_htm());
+> +       SKIP_IF(htm_is_synthetic());
+>
+>         pid = fork();
+>         if (pid < 0)
+> diff --git a/tools/testing/selftests/powerpc/tm/tm-syscall.c b/tools/testing/selftests/powerpc/tm/tm-syscall.c
+> index becb8207b432..467a6b3134b2 100644
+> --- a/tools/testing/selftests/powerpc/tm/tm-syscall.c
+> +++ b/tools/testing/selftests/powerpc/tm/tm-syscall.c
+> @@ -25,7 +25,6 @@ extern int getppid_tm_suspended(void);
+>  unsigned retries = 0;
+>
+>  #define TEST_DURATION 10 /* seconds */
+> -#define TM_RETRIES 100
+>
+>  pid_t getppid_tm(bool suspend)
+>  {
+> @@ -67,6 +66,7 @@ int tm_syscall(void)
+>         struct timeval end, now;
+>
+>         SKIP_IF(!have_htm_nosc());
+> +       SKIP_IF(htm_is_synthetic());
+>
+>         setbuf(stdout, NULL);
+>
+> diff --git a/tools/testing/selftests/powerpc/tm/tm.h b/tools/testing/selftests/powerpc/tm/tm.h
+> index c5a1e5c163fc..c03c6e778876 100644
+> --- a/tools/testing/selftests/powerpc/tm/tm.h
+> +++ b/tools/testing/selftests/powerpc/tm/tm.h
+> @@ -10,6 +10,9 @@
+>  #include <asm/tm.h>
+>
+>  #include "utils.h"
+> +#include "reg.h"
+> +
+> +#define TM_RETRIES 100
+>
+>  static inline bool have_htm(void)
+>  {
+> @@ -31,6 +34,39 @@ static inline bool have_htm_nosc(void)
+>  #endif
+>  }
+>
+> +/*
+> + * Transactional Memory was removed in ISA 3.1. A synthetic TM implementation
+> + * is provided on P10 for threads running in P8/P9 compatibility  mode. The
+> + * synthetic implementation immediately fails after tbegin. This failure sets
+> + * Bit 7 (Failure Persistent) and Bit 15 (Implementation-specific).
+> + */
+> +static inline bool htm_is_synthetic(void)
+> +{
+> +       int i;
+> +
+> +       /*
+> +        * Per the ISA, the Failure Persistent bit may be incorrect. Try a few
+> +        * times in case we got an Implementation-specific failure on a non ISA
+> +        * v3.1 system. On these systems the Implementation-specific failure
+> +        * should not be persistent.
+> +        */
+> +       for (i = 0; i < TM_RETRIES; i++) {
+> +               asm volatile(
+> +               "tbegin.;"
+> +               "beq 1f;"
+> +               "tend.;"
+> +               "1:"
+> +               :
+> +               :
+> +               : "memory");
+> +
+> +               if ((__builtin_get_texasr() & (TEXASR_FP | TEXASR_IC)) !=
+> +                   (TEXASR_FP | TEXASR_IC))
+> +                       break;
+> +       }
+> +       return i == TM_RETRIES;
+> +}
+> +
+>  static inline long failure_code(void)
+>  {
+>         return __builtin_get_texasru() >> 24;
+> --
+> 2.25.1
+>
+There's a couple more tests that need the same treatment, Will send a
+new version.
