@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E939A3A734E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 03:36:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 545653A735E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 03:38:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G3rX34XYKz3bnT
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 11:36:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G3rYl6Scpz3dYW
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 11:38:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,26 +15,26 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
  bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G3rVc1dDKz2yxq
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 11:35:34 +1000 (AEST)
-Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.54])
- by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4G3rR5075CzZdPC;
- Tue, 15 Jun 2021 09:32:33 +0800 (CST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G3rVc3ZG9z2ysk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 11:35:35 +1000 (AEST)
+Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.56])
+ by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4G3rNl6fZ2zXg03;
+ Tue, 15 Jun 2021 09:30:31 +0800 (CST)
 Received: from dggpeml500017.china.huawei.com (7.185.36.243) by
- dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
+ dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
  15.1.2176.2; Tue, 15 Jun 2021 09:35:27 +0800
 Received: from huawei.com (10.175.103.91) by dggpeml500017.china.huawei.com
  (7.185.36.243) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Tue, 15 Jun
- 2021 09:35:26 +0800
+ 2021 09:35:27 +0800
 From: Yang Yingliang <yangyingliang@huawei.com>
 To: <linux-kernel@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
  <alsa-devel@alsa-project.org>
-Subject: [PATCH -next v2 5/9] ASoC: fsl_micfil: Use
+Subject: [PATCH -next v2 6/9] ASoC: fsl_sai: Use
  devm_platform_get_and_ioremap_resource()
-Date: Tue, 15 Jun 2021 09:39:18 +0800
-Message-ID: <20210615013922.784296-6-yangyingliang@huawei.com>
+Date: Tue, 15 Jun 2021 09:39:19 +0800
+Message-ID: <20210615013922.784296-7-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210615013922.784296-1-yangyingliang@huawei.com>
 References: <20210615013922.784296-1-yangyingliang@huawei.com>
@@ -66,22 +66,22 @@ code.
 
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- sound/soc/fsl/fsl_micfil.c | 3 +--
+ sound/soc/fsl/fsl_sai.c | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
-index 3cf789ed6cbe..8c0c75ce9490 100644
---- a/sound/soc/fsl/fsl_micfil.c
-+++ b/sound/soc/fsl/fsl_micfil.c
-@@ -669,8 +669,7 @@ static int fsl_micfil_probe(struct platform_device *pdev)
- 	}
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index 407a45e48eee..223fcd15bfcc 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -1017,8 +1017,7 @@ static int fsl_sai_probe(struct platform_device *pdev)
  
- 	/* init regmap */
+ 	sai->is_lsb_first = of_property_read_bool(np, "lsb-first");
+ 
 -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	regs = devm_ioremap_resource(&pdev->dev, res);
-+	regs = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
- 	if (IS_ERR(regs))
- 		return PTR_ERR(regs);
+-	base = devm_ioremap_resource(&pdev->dev, res);
++	base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+ 	if (IS_ERR(base))
+ 		return PTR_ERR(base);
  
 -- 
 2.25.1
