@@ -1,128 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F18B83A7573
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 05:55:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 607BB3A757B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 05:58:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G3vbp3fQTz308D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 13:55:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G3vgh0JZYz3cPt
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 13:58:40 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=Gh1/j2qh;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=201602 header.b=QyGa6y0H;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=40.107.2.68; helo=eur02-ve1-obe.outbound.protection.outlook.com;
- envelope-from=leoyang.li@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=dgibson@ozlabs.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256
- header.s=selector2 header.b=Gh1/j2qh; 
+ unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
+ header.a=rsa-sha256 header.s=201602 header.b=QyGa6y0H; 
  dkim-atps=neutral
-Received: from EUR02-VE1-obe.outbound.protection.outlook.com
- (mail-eopbgr20068.outbound.protection.outlook.com [40.107.2.68])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G3vbB1TgYz2yWp
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 13:54:44 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jkaD01B31aJdApm0MTjPhVZR3ydgbT9F+hzqWYkKvv/QwpGLvwoHJy03DDoMKjooTSNM6eDfDcfmMChaN0mICkr9VtmCK4XYfkFFZ2i1OvzJ96XPlcg0Wz1d9WFipt24s+NpGSz87vjzQYxFs3a4AdmmS7kSGrzO3HsQTFWb0fEKo4qNtW4+RBP2wOL7BuADGf/36llQXKly3JTcs2/HgN6AUhuAmhnrRPhS6Q8N+BIj3lQk/fZkiLBVcKeRyZslax6O7EYuNk4/pR3YuHuSoFsevu8nB3tvwBUd/8bF5o0Yg51+ftCBfnUmmmiAVl6aT1fOzQuQ07NSa5bSCUk+xQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XjeOIdQgJTVZ763sYZu286nieJjHnhbQuSePIv+eO+o=;
- b=K7MtJfECxOuxVa0eQT8MzBIU/SUV5Xgg/H6M52xVAFB2I1s4w1FkA4akj2V1GDuF5O/BBMmjgvDp8Lg93xyE0j/1Jz/kJ+Lm8NW7R9/MBfrA0mvY95/WY2SxPUOuJ7QijO0WL2k2S9Bq0N19nTpazR6bnqE9LT5cS6+34GbB5w5+WDGE5Co0Uzv9xnLBd/6d1T7xNQw95I5iD+CuhY1W6IQ9z+zGhHWBpew+fYsX4r7WS3gGhu24NBtYecOdq5+jhtLsAWc+uSrBDsMmVq6Mv3YECSXhg0FThb2twP2IgqBbegA0FIYL4clnj8hBRZwU0374u1BQ7eW76Mr+w3FwpQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XjeOIdQgJTVZ763sYZu286nieJjHnhbQuSePIv+eO+o=;
- b=Gh1/j2qhJqY1FvLnUMBrOTDbevTiE1naGdddnH3QTAG73IqW4AtDhLGixt/sFgjQb53ivIf3LBnBRva48Ewe++pHvZjv+eXAVmLJ7dEyJ+uCCVMxZlRSbikwFfiZX52+KnsnX2317B4FDz2GFNVxYDkKqZP2efgoum2SQmpVuok=
-Received: from VI1PR04MB4478.eurprd04.prod.outlook.com (2603:10a6:803:67::30)
- by VE1PR04MB7246.eurprd04.prod.outlook.com (2603:10a6:800:1ae::24)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4219.23; Tue, 15 Jun
- 2021 03:54:37 +0000
-Received: from VI1PR04MB4478.eurprd04.prod.outlook.com
- ([fe80::f1f8:ff94:2b66:8429]) by VI1PR04MB4478.eurprd04.prod.outlook.com
- ([fe80::f1f8:ff94:2b66:8429%5]) with mapi id 15.20.4219.025; Tue, 15 Jun 2021
- 03:54:36 +0000
-From: Leo Li <leoyang.li@nxp.com>
-To: Joel Stanley <joel@jms.id.au>
-Subject: RE: [PATCH] usb: gadget: fsl: properly remove remnant of MXC support
-Thread-Topic: [PATCH] usb: gadget: fsl: properly remove remnant of MXC support
-Thread-Index: AQHXXyJaPtbrvsFOdEq86ntFi4l5gqsUU8MAgAAhrQA=
-Date: Tue, 15 Jun 2021 03:54:36 +0000
-Message-ID: <VI1PR04MB44782C719DCEA2FF0DB03DBF8F309@VI1PR04MB4478.eurprd04.prod.outlook.com>
-References: <20210612003128.372238-1-leoyang.li@nxp.com>
- <CACPK8XfUiiBM=KQiqSJ5uSUpOHLTp_wxhNyEw-gYkTBsZjbZVg@mail.gmail.com>
-In-Reply-To: <CACPK8XfUiiBM=KQiqSJ5uSUpOHLTp_wxhNyEw-gYkTBsZjbZVg@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: jms.id.au; dkim=none (message not signed)
- header.d=none;jms.id.au; dmarc=none action=none header.from=nxp.com;
-x-originating-ip: [136.49.83.111]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: dbfae566-083c-4f00-81fb-08d92fb14b4a
-x-ms-traffictypediagnostic: VE1PR04MB7246:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <VE1PR04MB724663252FE6FBC5D256E6AF8F309@VE1PR04MB7246.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6790;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: G8mLqLa71ivDpT+PaKgqrddhKKnN9IcvSC+y0En3On9j6uHvdkn28yT+XqR5LV9I5+vDeAQ6HoIn9FJWmyGQiveTWy2O3d0wZIJ9sNNMRlFydOjoAl8mbbCa2ikRgzve05M5EMwI/nq76ujmjhuEQUE6rRnxBw2X2skW08MH/vKiNK0Kxm1VoKXxHj3PLZxkcFsMMHf6PQD2ZibXpC6nt4cE2JGYgJNAvCjh1BnKHI2fyfgGbi+odSDkQsYtt+Jg6HuNFvMxiqwx4NIdo/CwZtX/dIkiZ9AAFYPrnJTjY8MsbRP9yZlhW8CnYqVLnvzdei3nZb7SZHiZzD8Fq2X8I+0u43N4pRH0sMdBHz0hiz8q0TWr09344u99J8VlALMI/0OYFEC+2cSIbuvgbVnKYVxAmCz1L1FpGvCO0kKSBRP/qHpqyZLNY71Y/l8bSJWOMXR0DRyMA0BMtJgT8SAvwlTgFnKhZSXeC7gwsN/1K2s/IkhRJ0t9Oa3xIMz9OAw8d7A8OQPmdXZXuSZN58+uE/ULpNu2cWpnzZTdCCWpSMGCuDM0PtXYclHURHmYfOpqY1yahLXwevOUyOB72u8/Ci9LOs9isdUk5JSpbBpqWB8=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:VI1PR04MB4478.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(396003)(376002)(366004)(136003)(346002)(39860400002)(5660300002)(83380400001)(4744005)(55016002)(66946007)(76116006)(86362001)(9686003)(6916009)(4326008)(33656002)(66476007)(52536014)(71200400001)(6506007)(53546011)(8936002)(122000001)(38100700002)(2906002)(66556008)(64756008)(186003)(8676002)(478600001)(7696005)(54906003)(316002)(66446008)(26005);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?M1VTd01GcE9SN1Q3NTZmUkh0cEtrb0ZuZm5XQ3IzMXp4UlV3YWJaN3dMaUpQ?=
- =?utf-8?B?Y0VIemJKNnpqWWN3TFdHdWh4MWZpbG9XeDI0Sm12ZDVEQ3hHNVRrOG9IVFcy?=
- =?utf-8?B?MmZSbDlpd0E2WGdNN3dudmpaUFVUeFg5OGFCbjV3UTFFQzNBaCtVY0pCSFdu?=
- =?utf-8?B?aG9hajFpWjhkOEpVMVZucXlsbVBpbGJGZU1GdmZhcGQ0ZGJ6QTJkT2FvaXNp?=
- =?utf-8?B?UkVJWXlLYVVickxEK1JrSXB1TjVmMkNNdHVNSkZXVE1WTEltMlpFQnVXYVJH?=
- =?utf-8?B?dkQxZXVkWXdWRFZnT1dZZEY0V3JLTkJFdDVTNXZvZzhNSEtOYkJLeG1EWGxa?=
- =?utf-8?B?N0praDFFenJvUzBrUVd0Qjl3MzArVWUxOTFQKzZ2Q01PYnZndU9uR1NyV2lj?=
- =?utf-8?B?dE9COVVsOVhzSmo1MHVqRm5rKzFSZU9pc0pibmRhSTBWcHRTeVdUNXhXbGdv?=
- =?utf-8?B?RDIxM040dGltQmlRODBFS05FcEJoUUQxcnBXNGh3S3BCMzIycW44c2VkazVO?=
- =?utf-8?B?Z2tyN0N0L0ZIb01IT2Vxd2VZMHZRUjJHU0RRVFNGQVkrenZOTlA4QkF5Q2tW?=
- =?utf-8?B?TDZpZ1NLVDdQZmhoT2o0dmNWOHRSenBWQ1haMWhWTFoyQ1Z5SXlyUk5LcDdw?=
- =?utf-8?B?RWExOFk2c3dBY3JmRVFzMklSam5mUUtBTWl0UE0rSXlsZytOT0c2aXZxenZj?=
- =?utf-8?B?Y3M4WS9MK2NoMVZDRVNjL3JkL0hUdy9vQUo4TEY5WW5NblVPSzF3T2I1T3Zs?=
- =?utf-8?B?djc5NHl4Vi85RXl3dm1ud2hENnVEQXRCNkFScitsS0ZPc3ByN0Z5dnYwR2FH?=
- =?utf-8?B?V2Z0eEkxTWEzRjZGVW41QW1xRjRtUnVhVFMzZDJ6WDNCdkFDMDJTZjgvY0hq?=
- =?utf-8?B?QkhCUGpHNDhOZjRaS2p3alEzdWdpazRWazhaUkdZY0V3VkdxdkJtTU5JY05S?=
- =?utf-8?B?cmYycEl2YzJMYnVlRzZmQUNaZ1g1SVYzcEdTcnRkQkdqT2J6NmdqYm0wNysy?=
- =?utf-8?B?NC9WNW5YQndzcGNYV0hzUHhzS2ROU1hMemppdUIzeEJsT0M3LzhBejVXNVZE?=
- =?utf-8?B?dDhkK3ZDWnJtRTRZZjBDSGtBTGJ5M2ZMUGM2TmZOcGhDQW9YL0ROVnJGZ0Fz?=
- =?utf-8?B?cW5BRm9VZ1lKTlNRNUVlb2w0WXJpMHJYUWlXb04rdmNGSkNmNlcvbWFoWmY3?=
- =?utf-8?B?S0x1NjEvOFpjUURUVVczZEVJVEwrQUpRdWZGVzNKaWdLQlNzK2lNWkhDT0xO?=
- =?utf-8?B?SGp0R2k3RHd4Q09lalNPZzNLS3NrMHE1K0RyaXBmdUdsUVZKQnFZUk1DWE4z?=
- =?utf-8?B?L05KNkJ2cXdoVElQWDhPdlJMVGs5VnpyTjNBV0s0aWZGbHpHZ2hLbk5STDVv?=
- =?utf-8?B?Vkp4OWNVeXNsOHU1bWx5SHF1V096b28xKzJ0MjZVNlpzZXBBa290ZXZJcG96?=
- =?utf-8?B?UzhDemVOUHBjTWN4M3FSek5Vek1rNDkxWWMvZEszU2VqcE1iOU1VcHZqRFYv?=
- =?utf-8?B?WS9qamZWN1FjMkk0bGMvNVJ3bkVFU0wwM2pUYVBTNURSdXlCL3NSbW8rL3c3?=
- =?utf-8?B?YkE4VkNXbGtnczJEVS9vSzM0R3E3Ri95WUVERFRwU2RyQW43VTB3RFZ3Q3g0?=
- =?utf-8?B?ZnhYQWxiOVVxdzZyODUvcDZ2L2svMTVwREw4cmg1QjZsL0lGb0FMVkgrSnN5?=
- =?utf-8?B?Qk9PWm9KK21xMmZkcHVjWU9RYVR3S1U1L3VuN0tUdWF3TkJZdXVjZGhMVlpn?=
- =?utf-8?Q?UBaFL5ZHhAeyYlaQqvgPmlGhipWUg5ei1tAp0nJ?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G3vd23Gjpz302B
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 13:56:22 +1000 (AEST)
+Received: by ozlabs.org (Postfix, from userid 1007)
+ id 4G3vcz5wV5z9t1C; Tue, 15 Jun 2021 13:56:19 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=gibson.dropbear.id.au; s=201602; t=1623729379;
+ bh=BcZ/cg2oFS6uVvN7tRreZRVWXB7LiGmmByS+7ax2kdQ=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=QyGa6y0HZMkZvaRVGrfehV9IJh16+X+BURWawg4SwVWkq3KKB1xAwgI3bGSZU90GP
+ VT/J9ltQhOwsTHRB+7/6BMl51uuGuZ9E05L6ZxG32qnTKf28n2+VrBs8KDR7neXKZe
+ KyaMCGC4ot23sZL3nOoBDkIHv+HEsv3bXfaL/Y0g=
+Date: Tue, 15 Jun 2021 13:55:53 +1000
+From: David Gibson <david@gibson.dropbear.id.au>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Subject: Re: [RFC PATCH 8/8] powerpc/papr_scm: Use FORM2 associativity details
+Message-ID: <YMgkyfc4g+na5GJZ@yekko>
+References: <20210614164003.196094-1-aneesh.kumar@linux.ibm.com>
+ <20210614164003.196094-9-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB4478.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dbfae566-083c-4f00-81fb-08d92fb14b4a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Jun 2021 03:54:36.6787 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: dJEHROcZ+7JL/Q90KTH8/lWekX7QwdV9cDhDPts9j/ptrpJ2sVHjWkUJa7g78CIYD08VHXOaZyNPy4Kk2LJVhA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7246
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="pZUaXjPhWROx3E6P"
+Content-Disposition: inline
+In-Reply-To: <20210614164003.196094-9-aneesh.kumar@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -134,35 +57,204 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Felipe Balbi <balbi@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Ran Wang <ran.wang_1@nxp.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSm9lbCBTdGFubGV5IDxq
-b2VsQGptcy5pZC5hdT4NCj4gU2VudDogTW9uZGF5LCBKdW5lIDE0LCAyMDIxIDg6NTIgUE0NCj4g
-VG86IExlbyBMaSA8bGVveWFuZy5saUBueHAuY29tPg0KPiBDYzogRmVsaXBlIEJhbGJpIDxiYWxi
-aUBrZXJuZWwub3JnPjsgR3JlZyBLcm9haC1IYXJ0bWFuDQo+IDxncmVna2hAbGludXhmb3VuZGF0
-aW9uLm9yZz47IGxpbnV4LXVzYkB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4cHBjLWRldg0KPiA8bGlu
-dXhwcGMtZGV2QGxpc3RzLm96bGFicy5vcmc+OyBMaW51eCBLZXJuZWwgTWFpbGluZyBMaXN0IDxs
-aW51eC0NCj4ga2VybmVsQHZnZXIua2VybmVsLm9yZz47IEFybmQgQmVyZ21hbm4gPGFybmRAYXJu
-ZGIuZGU+OyBSYW4gV2FuZw0KPiA8cmFuLndhbmdfMUBueHAuY29tPjsgRmFiaW8gRXN0ZXZhbSA8
-ZmVzdGV2YW1AZ21haWwuY29tPg0KPiBTdWJqZWN0OiBSZTogW1BBVENIXSB1c2I6IGdhZGdldDog
-ZnNsOiBwcm9wZXJseSByZW1vdmUgcmVtbmFudCBvZiBNWEMNCj4gc3VwcG9ydA0KPiANCj4gT24g
-U2F0LCAxMiBKdW4gMjAyMSBhdCAwMDozMSwgTGkgWWFuZyA8bGVveWFuZy5saUBueHAuY29tPiB3
-cm90ZToNCj4gPg0KPiA+IENvbW1pdCBhMzkwYmVmN2RiMWYgKCJ1c2I6IGdhZGdldDogZnNsX214
-Y191ZGM6IFJlbW92ZSB0aGUgZHJpdmVyIikNCj4gPiBkaWRuJ3QgcmVtb3ZlIGFsbCB0aGUgTVhD
-IHJlbGF0ZWQgc3R1ZmYgd2hpY2ggY2FuIGNhdXNlIGJ1aWxkIHByb2JsZW0NCj4gPiBmb3IgTFMx
-MDIxIHdoZW4gZW5hYmxlZCBhZ2FpbiBpbiBLY29uZmlnLiAgVGhpcyBwYXRjaCByZW1vdmUgYWxs
-IHRoZQ0KPiA+IHJlbW5hbnRzLg0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogTGkgWWFuZyA8bGVv
-eWFuZy5saUBueHAuY29tPg0KPiANCj4gUmV2aWV3ZWQtYnk6IEpvZWwgU3RhbmxleSA8am9lbEBq
-bXMuaWQuYXU+DQo+IA0KPiBXaWxsIHlvdSByZS1zdWJtaXQgdGhlIGtjb25maWcgY2hhbmdlIG9u
-Y2UgdGhpcyBpcyBtZXJnZWQ/DQoNCkkgdGhpbmsgdGhhdCB3ZSBjYW4gcmUtdXNlIHlvdXIgcHJl
-dmlvdXMgcGF0Y2guDQoNCkhpIEdyZWcsDQoNCkNhbiB5b3UgYXBwbHkgdGhlIHJldmVydGVkIEtj
-b25maWcgcGF0Y2ggYWdhaW4/ICBPciBkbyB5b3UgcHJlZmVyIHVzIHRvIHJlLXN1Ym1pdCBpdCBh
-Z2Fpbj8NCg0KUmVnYXJkcywNCkxlbw0K
+
+--pZUaXjPhWROx3E6P
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Jun 14, 2021 at 10:10:03PM +0530, Aneesh Kumar K.V wrote:
+> FORM2 introduce a concept of secondary domain which is identical to the
+> conceept of FORM1 primary domain. Use secondary domain as the numa node
+> when using persistent memory device. For DAX kmem use the logical domain
+> id introduced in FORM2. This new numa node
+>=20
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+>  arch/powerpc/mm/numa.c                    | 28 +++++++++++++++++++++++
+>  arch/powerpc/platforms/pseries/papr_scm.c | 26 +++++++++++++--------
+>  arch/powerpc/platforms/pseries/pseries.h  |  1 +
+>  3 files changed, 45 insertions(+), 10 deletions(-)
+>=20
+> diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+> index 86cd2af014f7..b9ac6d02e944 100644
+> --- a/arch/powerpc/mm/numa.c
+> +++ b/arch/powerpc/mm/numa.c
+> @@ -265,6 +265,34 @@ static int associativity_to_nid(const __be32 *associ=
+ativity)
+>  	return nid;
+>  }
+> =20
+> +int get_primary_and_secondary_domain(struct device_node *node, int *prim=
+ary, int *secondary)
+> +{
+> +	int secondary_index;
+> +	const __be32 *associativity;
+> +
+> +	if (!numa_enabled) {
+> +		*primary =3D NUMA_NO_NODE;
+> +		*secondary =3D NUMA_NO_NODE;
+> +		return 0;
+> +	}
+> +
+> +	associativity =3D of_get_associativity(node);
+> +	if (!associativity)
+> +		return -ENODEV;
+> +
+> +	if (of_read_number(associativity, 1) >=3D primary_domain_index) {
+> +		*primary =3D of_read_number(&associativity[primary_domain_index], 1);
+> +		secondary_index =3D of_read_number(&distance_ref_points[1], 1);
+
+Secondary ID is always the second reference point, but primary depends
+on the length of resources?  That seems very weird.
+
+> +		*secondary =3D of_read_number(&associativity[secondary_index], 1);
+> +	}
+> +	if (*primary =3D=3D 0xffff || *primary >=3D nr_node_ids)
+> +		*primary =3D NUMA_NO_NODE;
+> +
+> +	if (*secondary =3D=3D 0xffff || *secondary >=3D nr_node_ids)
+> +		*secondary =3D NUMA_NO_NODE;
+> +	return 0;
+> +}
+> +
+>  /* Returns the nid associated with the given device tree node,
+>   * or -1 if not found.
+>   */
+> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/pla=
+tforms/pseries/papr_scm.c
+> index ef26fe40efb0..9bf2f1f3ddc5 100644
+> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+> @@ -18,6 +18,7 @@
+>  #include <asm/plpar_wrappers.h>
+>  #include <asm/papr_pdsm.h>
+>  #include <asm/mce.h>
+> +#include "pseries.h"
+> =20
+>  #define BIND_ANY_ADDR (~0ul)
+> =20
+> @@ -88,6 +89,8 @@ struct papr_scm_perf_stats {
+>  struct papr_scm_priv {
+>  	struct platform_device *pdev;
+>  	struct device_node *dn;
+> +	int numa_node;
+> +	int target_node;
+>  	uint32_t drc_index;
+>  	uint64_t blocks;
+>  	uint64_t block_size;
+> @@ -923,7 +926,6 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv =
+*p)
+>  	struct nd_mapping_desc mapping;
+>  	struct nd_region_desc ndr_desc;
+>  	unsigned long dimm_flags;
+> -	int target_nid, online_nid;
+>  	ssize_t stat_size;
+> =20
+>  	p->bus_desc.ndctl =3D papr_scm_ndctl;
+> @@ -974,10 +976,8 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv=
+ *p)
+>  	mapping.size =3D p->blocks * p->block_size; // XXX: potential overflow?
+> =20
+>  	memset(&ndr_desc, 0, sizeof(ndr_desc));
+> -	target_nid =3D dev_to_node(&p->pdev->dev);
+> -	online_nid =3D numa_map_to_online_node(target_nid);
+> -	ndr_desc.numa_node =3D online_nid;
+> -	ndr_desc.target_node =3D target_nid;
+> +	ndr_desc.numa_node =3D p->numa_node;
+> +	ndr_desc.target_node =3D p->target_node;
+>  	ndr_desc.res =3D &p->res;
+>  	ndr_desc.of_node =3D p->dn;
+>  	ndr_desc.provider_data =3D p;
+> @@ -1001,9 +1001,6 @@ static int papr_scm_nvdimm_init(struct papr_scm_pri=
+v *p)
+>  				ndr_desc.res, p->dn);
+>  		goto err;
+>  	}
+> -	if (target_nid !=3D online_nid)
+> -		dev_info(dev, "Region registered with target node %d and online node %=
+d",
+> -			 target_nid, online_nid);
+> =20
+>  	mutex_lock(&papr_ndr_lock);
+>  	list_add_tail(&p->region_list, &papr_nd_regions);
+> @@ -1096,7 +1093,7 @@ static int papr_scm_probe(struct platform_device *p=
+dev)
+>  	struct papr_scm_priv *p;
+>  	const char *uuid_str;
+>  	u64 uuid[2];
+> -	int rc;
+> +	int rc, numa_node;
+> =20
+>  	/* check we have all the required DT properties */
+>  	if (of_property_read_u32(dn, "ibm,my-drc-index", &drc_index)) {
+> @@ -1119,11 +1116,20 @@ static int papr_scm_probe(struct platform_device =
+*pdev)
+>  		return -ENODEV;
+>  	}
+> =20
+> -
+>  	p =3D kzalloc(sizeof(*p), GFP_KERNEL);
+>  	if (!p)
+>  		return -ENOMEM;
+> =20
+> +	if (get_primary_and_secondary_domain(dn, &p->target_node, &numa_node)) {
+> +		dev_err(&pdev->dev, "%pOF: missing NUMA attributes!\n", dn);
+> +		rc =3D -ENODEV;
+> +		goto err;
+> +	}
+> +	p->numa_node =3D numa_map_to_online_node(numa_node);
+> +	if (numa_node !=3D p->numa_node)
+> +		dev_info(&pdev->dev, "Region registered with online node %d and device=
+ tree node %d",
+> +			 p->numa_node, numa_node);
+> +
+>  	/* Initialize the dimm mutex */
+>  	mutex_init(&p->health_mutex);
+> =20
+> diff --git a/arch/powerpc/platforms/pseries/pseries.h b/arch/powerpc/plat=
+forms/pseries/pseries.h
+> index 663a0859cf13..9c2a1fc9ded1 100644
+> --- a/arch/powerpc/platforms/pseries/pseries.h
+> +++ b/arch/powerpc/platforms/pseries/pseries.h
+> @@ -114,4 +114,5 @@ void pseries_setup_security_mitigations(void);
+>  void pseries_lpar_read_hblkrm_characteristics(void);
+> =20
+>  void update_numa_distance(struct device_node *node);
+> +int get_primary_and_secondary_domain(struct device_node *node, int *prim=
+ary, int *secondary);
+>  #endif /* _PSERIES_PSERIES_H */
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--pZUaXjPhWROx3E6P
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmDIJMkACgkQbDjKyiDZ
+s5J9hxAAmgHBW4j/S+qvVvd9K1T5uMzaDBYohLb3NtPknxqwTm7CfMMj1eGOBgcU
+Y7Gj95fckR3YUWGqOI+JucHFihkupQ3+/Wn4EzDlTwqTvcnnVVaGD0YmJaxUgMcF
+WgIVmkj79bhQoWQYOh88d/3u7TtqJMPiXM+imdiLcN+9gP9qvsU7KmTltJEZ1zUp
+rkXkRA8N/8dre6tXTBPiPbnYmeHv6lTZwyfR1gT/ESvqcDl70tBT0YSQSzSrXGQg
+YimqHg7sfWpK+TgDEgFVlrK0WgVN9Ai7r2REe0zXIdHjUtWX3vEfVVksvGGRQVpb
+Qecn4SawqBana+yFJhneiY08CEq63RYUDAyUNaJI6N3TkztYOAXoxNBYc/YnRPhV
+n9XPMR1JlXv6bSZ8Qp260vsoMtIM48Xred19s3RvZqMR9sIKeqg5B0I1uQUut0yo
+bhWNdEGY+jpSFWb6tbEni6RM5sfg/8keUe8deBM2dmIt88dNAoW7z7/5r8qha3uR
+CCRoNK8/Jodlncd2WDztEABO5u0NH0UsUMAB0pv7cQoDYVTGBjRItkTKvRtV/QKA
+eRk35Z9Qk1vXs/URY8ytrq0OLe/zkxNF+Tbg/uHnm16nKnlWdXRlD2GY3c2JnjUt
+60cHVgUjrPfdvWKLExmaxekQ+Bd0DS5W9Tx97+3avMcrlkgBTAk=
+=pQ2q
+-----END PGP SIGNATURE-----
+
+--pZUaXjPhWROx3E6P--
