@@ -1,57 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8E963A7E02
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 14:18:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 525533A7E19
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 14:20:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G46mB3WrWz3c11
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 22:18:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G46q16DdFz3c1S
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 22:20:45 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LecsFWuG;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256 header.s=qcdkim header.b=FVx34PJ2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=jeyu@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=LecsFWuG; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ smtp.mailfrom=quicinc.com (client-ip=199.106.114.38;
+ helo=alexa-out-sd-01.qualcomm.com; envelope-from=quic_qiancai@quicinc.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256
+ header.s=qcdkim header.b=FVx34PJ2; dkim-atps=neutral
+X-Greylist: delayed 124 seconds by postgrey-1.36 at boromir;
+ Tue, 15 Jun 2021 22:20:20 AEST
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com
+ [199.106.114.38])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G46lg4Qr4z30B3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 22:17:51 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8BB3161461;
- Tue, 15 Jun 2021 12:17:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1623759467;
- bh=ZOobHo2nepnalPKzwxZMCxNgrD2fbEDO02BZri0udFo=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=LecsFWuG/QSB8cQA0wl+VtK1EGygYbmMTtzqDUeEE37KPZtK38sFXD9PQbD65I5g7
- wSmKMZp5yG5ePcmD1DEqvYWQgX1Q7zUk4plzIuIhGYiYzGSPe6skB2tA2mbwKbzkjl
- cZTL1s1a6LCZvIcU9PivwcMwCA3eIWnuFoj4I7Yo8dX6nXjTP4xFVvhrSMRH0Wz6FR
- r59G5AG1Iyk4ts5fjH+U63rq3im7DeIPA9HhuSFswSHEWUuvP/t3mtSnoz0LCvA0VF
- V+KIHZsJEutgw8TjPRMf8BuKslPS4Cm+eBMIkkQZWE4z3LEbqHwaxqsBPIpmKYQZE3
- pYOqLQpnq7ukQ==
-Date: Tue, 15 Jun 2021 14:17:40 +0200
-From: Jessica Yu <jeyu@kernel.org>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v4 1/2] module: add elf_check_module_arch for module
- specific elf arch checks
-Message-ID: <YMiaZOqhHck9iy0n@p200300cbcf109700df096d564fe976c3.dip0.t-ipconnect.de>
-References: <20210611093959.821525-1-npiggin@gmail.com>
- <20210611093959.821525-2-npiggin@gmail.com>
- <YMdGWjBOmcstBwOl@p200300cbcf109700df096d564fe976c3.dip0.t-ipconnect.de>
- <1623722110.amu32mwaqs.astroid@bobo.none>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G46pX2BtJz2ymR
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 22:20:20 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+ d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+ t=1623759619; x=1655295619;
+ h=subject:to:cc:references:from:message-id:date:
+ mime-version:in-reply-to:content-transfer-encoding;
+ bh=2p01kvq+G29y436EWXolYoDccfmPacDmDp78aAZq12Q=;
+ b=FVx34PJ28vwpVXp4T2PkiiulCORbwZcEkSjbEfXtkjXefL2+1klFelQm
+ 8uRuy3A2Adw3pIJ77E8lDMDGnvq4aFz2WJa94Bxqo0jU1sIcWnXr+YK+e
+ JaiVxwftH2c5nfYerdyrASz6sA3AyZI9h5dH7h5vqtQ6JX37+WjAFEAoH k=;
+Received: from unknown (HELO ironmsg04-sd.qualcomm.com) ([10.53.140.144])
+ by alexa-out-sd-01.qualcomm.com with ESMTP; 15 Jun 2021 05:18:10 -0700
+X-QCInternal: smtphost
+Received: from nasanexm03e.na.qualcomm.com ([10.85.0.48])
+ by ironmsg04-sd.qualcomm.com with ESMTP/TLS/AES256-SHA;
+ 15 Jun 2021 05:17:57 -0700
+Received: from [10.111.175.185] (10.80.80.8) by nasanexm03e.na.qualcomm.com
+ (10.85.0.48) with Microsoft SMTP Server (TLS) id 15.0.1497.18; Tue, 15 Jun
+ 2021 05:17:50 -0700
+Subject: Re: [PATCH 0/5] cpufreq: cppc: Fix suspend/resume specific races with
+ FIE code
+To: Viresh Kumar <viresh.kumar@linaro.org>
+References: <cover.1623313323.git.viresh.kumar@linaro.org>
+ <eaaaf171-5937-e0f2-8447-c1b20b474c62@quicinc.com>
+ <20210615075056.dfkbiftuoihtrfpo@vireshk-i7>
+From: Qian Cai <quic_qiancai@quicinc.com>
+Message-ID: <19527d26-526e-6c6f-431d-7b78ed92bb34@quicinc.com>
+Date: Tue, 15 Jun 2021 08:17:49 -0400
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <1623722110.amu32mwaqs.astroid@bobo.none>
-X-OS: Linux p200300cbcf109700df096d564fe976c3.dip0.t-ipconnect.de
- 5.12.9-1-default x86_64
+In-Reply-To: <20210615075056.dfkbiftuoihtrfpo@vireshk-i7>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanexm03b.na.qualcomm.com (10.85.0.98) To
+ nasanexm03e.na.qualcomm.com (10.85.0.48)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,96 +75,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, Vincent Guittot <vincent.guittot@linaro.org>,
+ linux-doc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+ Dirk Brandewie <dirk.j.brandewie@intel.com>, linux-pm@vger.kernel.org,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Rafael Wysocki <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, Ionela Voinescu <ionela.voinescu@arm.com>,
+ Len Brown <lenb@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-+++ Nicholas Piggin [15/06/21 12:05 +1000]:
->Excerpts from Jessica Yu's message of June 14, 2021 10:06 pm:
->> +++ Nicholas Piggin [11/06/21 19:39 +1000]:
->>>The elf_check_arch() function is used to test usermode binaries, but
->>>kernel modules may have more specific requirements. powerpc would like
->>>to test for ABI version compatibility.
->>>
->>>Add an arch-overridable function elf_check_module_arch() that defaults
->>>to elf_check_arch() and use it in elf_validity_check().
->>>
->>>Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
->>>[np: split patch, added changelog]
->>>Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->>>---
->>> include/linux/moduleloader.h | 5 +++++
->>> kernel/module.c              | 2 +-
->>> 2 files changed, 6 insertions(+), 1 deletion(-)
->>>
->>>diff --git a/include/linux/moduleloader.h b/include/linux/moduleloader.h
->>>index 9e09d11ffe5b..fdc042a84562 100644
->>>--- a/include/linux/moduleloader.h
->>>+++ b/include/linux/moduleloader.h
->>>@@ -13,6 +13,11 @@
->>>  * must be implemented by each architecture.
->>>  */
->>>
->>>+// Allow arch to optionally do additional checking of module ELF header
->>>+#ifndef elf_check_module_arch
->>>+#define elf_check_module_arch elf_check_arch
->>>+#endif
+
+
+On 6/15/2021 3:50 AM, Viresh Kumar wrote:
+> Hi Qian,
+> 
+> First of all thanks for testing this, I need more of your help to test
+> this out :)
+> 
+> FWIW, I did test this on my Hikey board today, with some hacks, and
+> tried multiple insmod/rmmod operations for the driver, and I wasn't
+> able to reproduce the issue you reported. I did enable the list-debug
+> config option.
+
+The setup here is an arm64 server with 32 CPUs.
+
+> 
+> On 14-06-21, 09:48, Qian Cai wrote:
+>> Unfortunately, this series looks like needing more works.
 >>
->> Hi Nicholas,
->>
->> Why not make elf_check_module_arch() consistent with the other
->> arch-specific functions? Please see module_frob_arch_sections(),
->> module_{init,exit}_section(), etc in moduleloader.h. That is, they are
->> all __weak functions that are overridable by arches. We can maybe make
->> elf_check_module_arch() a weak symbol, available for arches to
->> override if they want to perform additional elf checks. Then we don't
->> have to have this one-off #define.
->
->
->Like this? I like it. Good idea.
+>> [  487.773586][    T0] CPU17: Booted secondary processor 0x0000000801 [0x503f0002]
+>> [  487.976495][  T670] list_del corruption. next->prev should be ffff009b66e9ec70, but was ffff009b66dfec70
+>> [  487.987037][  T670] ------------[ cut here ]------------
+>> [  487.992351][  T670] kernel BUG at lib/list_debug.c:54!
+>> [  487.997810][  T670] Internal error: Oops - BUG: 0 [#1] SMP
+>> [  488.003295][  T670] Modules linked in: cpufreq_userspace xfs loop cppc_cpufreq processor efivarfs ip_tables x_tables ext4 mbcache jbd2 dm_mod igb i2c_algo_bit nvme mlx5_core i2c_core nvme_core firmware_class
+>> [  488.021759][  T670] CPU: 1 PID: 670 Comm: cppc_fie Not tainted 5.13.0-rc5-next-20210611+ #46
+>> [  488.030190][  T670] Hardware name: MiTAC RAPTOR EV-883832-X3-0001/RAPTOR, BIOS 1.6 06/28/2020
+>> [  488.038705][  T670] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO BTYPE=--)
+>> [  488.045398][  T670] pc : __list_del_entry_valid+0x154/0x158
+>> [  488.050969][  T670] lr : __list_del_entry_valid+0x154/0x158
+>> [  488.056534][  T670] sp : ffff8000229afd70
+>> [  488.060534][  T670] x29: ffff8000229afd70 x28: ffff0008c8f4f340 x27: dfff800000000000
+>> [  488.068361][  T670] x26: ffff009b66e9ec70 x25: ffff800011c8b4d0 x24: ffff0008d4bfe488
+>> [  488.076188][  T670] x23: ffff0008c8f4f340 x22: ffff0008c8f4f340 x21: ffff009b6789ec70
+>> [  488.084015][  T670] x20: ffff0008d4bfe4c8 x19: ffff009b66e9ec70 x18: ffff0008c8f4fd70
+>> [  488.091842][  T670] x17: 20747562202c3037 x16: 6365396536366239 x15: 0000000000000028
+>> [  488.099669][  T670] x14: 0000000000000000 x13: 0000000000000001 x12: ffff60136cdd3447
+>> [  488.107495][  T670] x11: 1fffe0136cdd3446 x10: ffff60136cdd3446 x9 : ffff8000103ee444
+>> [  488.115322][  T670] x8 : ffff009b66e9a237 x7 : 0000000000000001 x6 : ffff009b66e9a230
+>> [  488.123149][  T670] x5 : 00009fec9322cbba x4 : ffff60136cdd3447 x3 : 1fffe001191e9e69
+>> [  488.130975][  T670] x2 : 0000000000000000 x1 : 0000000000000000 x0 : 0000000000000054
+>> [  488.138803][  T670] Call trace:
+>> [  488.141935][  T670]  __list_del_entry_valid+0x154/0x158
+>> [  488.147153][  T670]  kthread_worker_fn+0x15c/0xda0
+> 
+> This is a strange place to get the issue from. And this is a new
+> issue.
 
-Yeah! Also, maybe we can alternatively make elf_check_module_arch() a
-separate check entirely so that the powerpc implementation doesn't
-have to include that extra elf_check_arch() call. Something like this maybe?
+Well, it was still the same exercises with CPU online/offline.
 
-diff --git a/include/linux/moduleloader.h b/include/linux/moduleloader.h
-index 9e09d11ffe5b..2f9ebd593b4f 100644
---- a/include/linux/moduleloader.h
-+++ b/include/linux/moduleloader.h
-@@ -39,6 +39,9 @@ bool module_init_section(const char *name);
-   */
-  bool module_exit_section(const char *name);
+> 
+>> [  488.151939][  T670]  kthread+0x3ac/0x460
+>> [  488.155854][  T670]  ret_from_fork+0x10/0x18
+>> [  488.160120][  T670] Code: 911e8000 aa1303e1 910a0000 941b595b (d4210000)
+>> [  488.166901][  T670] ---[ end trace e637e2d38b2cc087 ]---
+>> [  488.172206][  T670] Kernel panic - not syncing: Oops - BUG: Fatal exception
+>> [  488.179182][  T670] SMP: stopping secondary CPUs
+>> [  489.209347][  T670] SMP: failed to stop secondary CPUs 0-1,10-11,16-17,31
+>> [  489.216128][  T][  T670] Memoryn ]---
+> 
+> Can you give details on what exactly did you try to do, to get this ?
+> Normal boot or something more ?
 
-+/* Arch may override to do additional checking of ELF header architecture */
-+int elf_check_module_arch(Elf_Ehdr *hdr);
-+
-  /*
-   * Apply the given relocation to the (simplified) ELF.  Return -error
-   * or 0.
-diff --git a/kernel/module.c b/kernel/module.c
-index fdd6047728df..9963a979ed54 100644
---- a/kernel/module.c
-+++ b/kernel/module.c
-@@ -2923,6 +2923,11 @@ static int validate_section_offset(struct load_info *info, Elf_Shdr *shdr)
-         return 0;
-  }
+Basically, it has the cpufreq driver as CPPC and the governor as schedutil. Running a few workloads to get CPU scaling up and down. Later, try to offline all CPUs until the last one and then online all CPUs.
 
-+int __weak elf_check_module_arch(Elf_Ehdr *hdr)
-+{
-+       return 1;
-+}
-+
-  /*
-   * Sanity checks against invalid binaries, wrong arch, weird elf version.
-   *
-@@ -2941,6 +2946,7 @@ static int elf_validity_check(struct load_info *info)
-         if (memcmp(info->hdr->e_ident, ELFMAG, SELFMAG) != 0
-             || info->hdr->e_type != ET_REL
-             || !elf_check_arch(info->hdr)
-+           || !elf_check_module_arch(info->hdr)
-             || info->hdr->e_shentsize != sizeof(Elf_Shdr))
-                 return -ENOEXEC;
-  
+> 
+> I have made some changes to the way calls were happening, may get this
+> thing sorted. Can you please try this branch ?
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/vireshk/pm.git/log/?h=cpufreq/cppc
+> 
+> I can see one place where race can happen, i.e. between
+> topology_clear_scale_freq_source() and topology_scale_freq_tick(). It
+> is possible that sfd->set_freq_scale() may get called for a previously
+> set handler as there is no protection there.
+> 
+> I will see how to fix that. But I am not sure if the issue reported
+> above comes from there.
+> 
+> Anyway, please give my branch a try, lets see.
 
+I am hesitate to try this at the moment because this all feel like shooting in the dark. Ideally, you will be able to get access to one of those arm64 servers (Huawei, Ampere, TX2, FJ etc) eventually and really try the same exercises yourself with those debugging options like list debugging and KASAN on. That way you could fix things way efficiently. I could share you the .config once you are there. Last but not least, once you get better narrow down of the issues, I'd hope to see someone else familiar with the code there to get review of those patches first (feel free to Cc me once you are ready to post) before I'll rerun the whole things again. That way we don't waste time on each other backing and forth chasing the shadow.
