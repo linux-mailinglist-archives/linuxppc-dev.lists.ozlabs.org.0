@@ -2,80 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC0D33A805B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 15:37:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 643383A80EB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 15:40:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G48W83KgLz3fyb
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 23:37:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G48bX0khhz3gfC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 23:40:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=BkGuougK;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=KMNY2Z73;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::d41;
- helo=mail-io1-xd41.google.com; envelope-from=tientzu@chromium.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=BkGuougK; dkim-atps=neutral
-Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com
- [IPv6:2607:f8b0:4864:20::d41])
+ smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=KMNY2Z73; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G48Mv3B6Nz3djy
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 23:30:51 +1000 (AEST)
-Received: by mail-io1-xd41.google.com with SMTP id k5so33597302iow.12
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 06:30:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=UDZeAXhtUGNxVigPWnCAmqvhZ5xmOZkpwoxu/kotpBc=;
- b=BkGuougKdpvJFSjPDCYcuDM+EfC9+Z6Iw8t63OKFUyvGcy9WEOaTZOyzUjDtlqxxWx
- b+f6+GiSSKCn4V8zlclen8CemZkaZyLB8FJKB0g3go6na2Mkb6J76IEsPQg2PB5YFP++
- oJX8/uFYscqhRRWgaBEXbZGZq7TD88YFqCsf4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=UDZeAXhtUGNxVigPWnCAmqvhZ5xmOZkpwoxu/kotpBc=;
- b=BTdT4p7UFxa/4KVnKwequl5nahhgI9acEKPTX10ZZ0zfZDiDuAyfLnBvMdxW33HpEJ
- NwRHSTswQHQz8zpbG3QAi6jeTz4aJ9WMdUBdOGllWYRBhXtjbH8sjZ206XH36IzDa7Sf
- uAETQceLmM6kYOr3teqvfydoj1flsbo1RjqSfh6iRWiMnrUYcg6s2L+HT+ByCpt/UxAu
- Vhw1dM02m6uUX3O0/8Rs6pUtUWIUvxt4QyFUXAA9HboIG1vOpK8kiwBsbw32Kp5a74ua
- bmCoFtx+OyVVpnvhRD/qYY7qSQVRM4MVYLQvlUfuzYxA/lP/qqWwsf03sECYy0rX2mSE
- EgtA==
-X-Gm-Message-State: AOAM531DngjcGrRhUDtBqgWWuTyEz9QVVxTzSvjnF8cJRjqyyB/DpE+9
- tGPwMS9IHykZ2FeQ6Bc7AzwECPhNfGWjDQ==
-X-Google-Smtp-Source: ABdhPJzwUoU95uplcGwkqYkDoRlFUePN4k8fVzrCEEB4NovgtAeJF1beWwDLGQuk4Pc9aMQxVMW9ww==
-X-Received: by 2002:a6b:b74e:: with SMTP id h75mr18618995iof.125.1623763847390; 
- Tue, 15 Jun 2021 06:30:47 -0700 (PDT)
-Received: from mail-io1-f46.google.com (mail-io1-f46.google.com.
- [209.85.166.46])
- by smtp.gmail.com with ESMTPSA id a19sm9346394ioe.22.2021.06.15.06.30.46
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 15 Jun 2021 06:30:47 -0700 (PDT)
-Received: by mail-io1-f46.google.com with SMTP id p66so41554788iod.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 06:30:46 -0700 (PDT)
-X-Received: by 2002:a05:6e02:219d:: with SMTP id
- j29mr17936278ila.64.1623763835517; 
- Tue, 15 Jun 2021 06:30:35 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G48T81cyNz3fcb
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 23:35:23 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4G48T43GNjz9t1s
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 23:35:20 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1623764120;
+ bh=f+pAIeUvCGS8IgI11tBxPnZcN1hRhb6FByqbKIzyQjI=;
+ h=From:To:Subject:Date:From;
+ b=KMNY2Z73Xu0n28fWb4uCCDJZQ1RhzX7ZT7M6Hxb3ipO6cXGvY4uO4lfUy6sZCZDPw
+ rI/1r9GHcsSd7H6OTRlaug5Xxpt9TQofZpg/AULlHoKtfm8fwyGf+ovlsGyNb1pGy5
+ 0/JZ+EjDEGuFlFBkPU4fMF5WHyn5gvnLh9wb0OQm0i4Na9lMZZSzDMiPrCOcFHCtja
+ S4a3BkzkmoAcvtqc2kvDCVYLH036C8G03VPK/S++QEYvkI5xe4z4Hvuycr3CCK3sj4
+ dfuvAnbW7SaSCXqF0FYlICAkAxDK5xdQOG0RVsxmRMVrU3dZD/gpB+Tbb7oxw2xNS3
+ Bsv3WNmVqVFkA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: Testing with Github Actions
+Date: Tue, 15 Jun 2021 23:35:19 +1000
+Message-ID: <87h7hztfmw.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <20210611152659.2142983-1-tientzu@chromium.org>
-In-Reply-To: <20210611152659.2142983-1-tientzu@chromium.org>
-From: Claire Chang <tientzu@chromium.org>
-Date: Tue, 15 Jun 2021 21:30:24 +0800
-X-Gmail-Original-Message-ID: <CALiNf28fb4rZ0Afun8wAWRYJY4gqc+-vRvDBZT3x2JgSPL_iVQ@mail.gmail.com>
-Message-ID: <CALiNf28fb4rZ0Afun8wAWRYJY4gqc+-vRvDBZT3x2JgSPL_iVQ@mail.gmail.com>
-Subject: Re: [PATCH v9 00/14] Restricted DMA
-To: Rob Herring <robh+dt@kernel.org>, mpe@ellerman.id.au,
- Joerg Roedel <joro@8bytes.org>, 
- Will Deacon <will@kernel.org>, Frank Rowand <frowand.list@gmail.com>, 
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, boris.ostrovsky@oracle.com,
- jgross@suse.com, 
- Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,30 +59,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: heikki.krogerus@linux.intel.com, thomas.hellstrom@linux.intel.com,
- peterz@infradead.org, joonas.lahtinen@linux.intel.com,
- dri-devel@lists.freedesktop.org, chris@chris-wilson.co.uk,
- grant.likely@arm.com, paulus@samba.org, mingo@kernel.org,
- Jianxiong Gao <jxgao@google.com>, sstabellini@kernel.org,
- Saravana Kannan <saravanak@google.com>, xypron.glpk@gmx.de,
- "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
- Bartosz Golaszewski <bgolaszewski@baylibre.com>, bskeggs@redhat.com,
- linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
- Thierry Reding <treding@nvidia.com>, intel-gfx@lists.freedesktop.org,
- matthew.auld@intel.com, linux-devicetree <devicetree@vger.kernel.org>,
- Daniel Vetter <daniel@ffwll.ch>, airlied@linux.ie,
- maarten.lankhorst@linux.intel.com, linuxppc-dev@lists.ozlabs.org,
- jani.nikula@linux.intel.com, Nicolas Boichat <drinkcat@chromium.org>,
- rodrigo.vivi@intel.com, Bjorn Helgaas <bhelgaas@google.com>,
- Dan Williams <dan.j.williams@intel.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Greg KH <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
- lkml <linux-kernel@vger.kernel.org>, Tomasz Figa <tfiga@chromium.org>,
- "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
- Jim Quinlan <james.quinlan@broadcom.com>, Robin Murphy <robin.murphy@arm.com>,
- bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-v10 here: https://lore.kernel.org/patchwork/cover/1446882/
+Hi all,
+
+I've setup automated builds + qemu boot tests using Github Actions.
+
+You can see the results here:
+
+  https://github.com/linuxppc/linux-ci/actions
+
+
+You can use it for testing your own patches before submitting them by
+doing the following:
+
+  - Fork the linuxppc/linux-ci repo on github. (Note not the main linux repository)
+  - Enable GitHub Actions for your forked repository
+  - Add your work on top of the merge branch (or create a branch based on merge)
+  - Push to your fork of linux-ci on GitHub
+  - Results should appear in the Actions tab of your repository
+
+
+Using it is entirely optional, I know not everyone likes to use Github.
+
+But if you're sending a significant number of powerpc patches then
+testing them before submission using this setup can save us all some
+time :)
+
+If you have any problems or questions let me know.
+
+cheers
