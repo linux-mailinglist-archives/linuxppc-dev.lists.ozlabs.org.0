@@ -1,39 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B2EF3A85CA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 17:58:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 384FA3A8629
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 18:13:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G4CfX10GKz3c3Y
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 01:58:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G4Czs5xDzz3c2m
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 02:13:45 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=S3nWv4Yf;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182;
+ helo=linux.microsoft.com; envelope-from=nramas@linux.microsoft.com;
  receiver=<UNKNOWN>)
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G4Cf92nSKz308V
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 01:58:24 +1000 (AEST)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id 757AD67373; Tue, 15 Jun 2021 17:58:17 +0200 (CEST)
-Date: Tue, 15 Jun 2021 17:58:17 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: Re: [PATCH 09/30] mtd_blkdevs: use blk_mq_alloc_disk
-Message-ID: <20210615155817.GA31047@lst.de>
-References: <20210602065345.355274-1-hch@lst.de>
- <20210602065345.355274-10-hch@lst.de>
- <CGME20210615154746eucas1p1321b6f1cf38d21899632e132cf025e61@eucas1p1.samsung.com>
- <13b21a07-b7c7-37db-fdc9-77bf174b6f8f@samsung.com>
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com
+ header.a=rsa-sha256 header.s=default header.b=S3nWv4Yf; 
+ dkim-atps=neutral
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4G4CzN4bWvz3btL
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 02:13:20 +1000 (AEST)
+Received: from nramas-ThinkStation-P520 (c-73-42-176-67.hsd1.wa.comcast.net
+ [73.42.176.67])
+ by linux.microsoft.com (Postfix) with ESMTPSA id 289BF20B83DE;
+ Tue, 15 Jun 2021 09:13:15 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 289BF20B83DE
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+ s=default; t=1623773595;
+ bh=6UtEbcJN/IpvUsLN1GwdJnJrbEZUHAkAxbKrwbhgW78=;
+ h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+ b=S3nWv4Yf1N41H0w1XOSwFPGkr7/xfVoa9sUqWF341iik0xwYxblV16N/Bn7QfL+Gu
+ 4rULT6aNTDRocdECtjebsPLhXgpR5L67WcrQMTYKf/J9N2zaDDOmFqJGxI8/rygbOq
+ LZOJ+ayZrbnAqpTcPicLrwL8cTXwbtOcLdLzJGEk=
+Message-ID: <54efb4fce5aac7efbd0b1b3885e9098b1d4ea745.camel@linux.microsoft.com>
+Subject: Re: [PATCH v19 05/13] of: Add a common kexec FDT setup function
+From: nramas <nramas@linux.microsoft.com>
+To: Rob Herring <robh@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 15 Jun 2021 09:13:14 -0700
+In-Reply-To: <CAL_JsqJ2x7zbyP3fAacdfHOWjCVjg6XhraV2YkoBJdZ2jXAMEA@mail.gmail.com>
+References: <20210221174930.27324-1-nramas@linux.microsoft.com>
+ <20210221174930.27324-6-nramas@linux.microsoft.com>
+ <CAMuHMdVSuNS4edh-zM0_sbC0i1AAjQ9Y0n_8Mjz=3CALkW4pgg@mail.gmail.com>
+ <CAL_JsqJ2x7zbyP3fAacdfHOWjCVjg6XhraV2YkoBJdZ2jXAMEA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <13b21a07-b7c7-37db-fdc9-77bf174b6f8f@samsung.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,53 +60,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Justin Sanders <justin@coraid.com>, Vignesh Raghavendra <vigneshr@ti.com>,
- Mike Snitzer <snitzer@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Jason Wang <jasowang@redhat.com>, virtualization@lists.linux-foundation.org,
- dm-devel@redhat.com, "Md. Haris Iqbal" <haris.iqbal@ionos.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>, Jack Wang <jinpu.wang@ionos.com>,
- Christoph Hellwig <hch@lst.de>, Tim Waugh <tim@cyberelk.net>,
- linux-s390@vger.kernel.org, Maxim Levitsky <maximlevitsky@gmail.com>,
- Richard Weinberger <richard@nod.at>,
- Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, xen-devel@lists.xenproject.org,
- Ilya Dryomov <idryomov@gmail.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alex Dubov <oakad@yahoo.com>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- Heiko Carstens <hca@linux.ibm.com>, Josef Bacik <josef@toxicpanda.com>,
- Denis Efremov <efremov@linux.com>, nbd@other.debian.org,
- linux-block@vger.kernel.org, ceph-devel@vger.kernel.org,
- Jens Axboe <axboe@kernel.dk>, Geoff Levand <geoff@infradead.org>,
- linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org,
- Roger Pau =?iso-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, tao.li@vivo.com,
+ Mimi Zohar <zohar@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Frank Rowand <frowand.list@gmail.com>, Sasha Levin <sashal@kernel.org>,
+ Stephen Rothwell <sfr@canb.auug.org.au>,
+ Masahiro Yamada <masahiroy@kernel.org>, James Morris <jmorris@namei.org>,
+ AKASHI Takahiro <takahiro.akashi@linaro.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ "Serge E. Hallyn" <serge@hallyn.com>, "open list:OPEN FIRMWARE AND
+ FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+ Pavel Tatashin <pasha.tatashin@soleen.com>, Will Deacon <will@kernel.org>,
+ Prakhar Srivastava <prsriva@linux.microsoft.com>,
+ Hsin-Yi Wang <hsinyi@chromium.org>, Allison Randal <allison@lohutok.net>,
+ Christophe Leroy <christophe.leroy@c-s.fr>,
+ Matthias Brugger <mbrugger@suse.com>, balajib@linux.microsoft.com,
+ dmitry.kasatkin@gmail.com,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ James Morse <james.morse@arm.com>, Greg KH <gregkh@linuxfoundation.org>,
+ Joe Perches <joe@perches.com>,
+ linux-integrity <linux-integrity@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 15, 2021 at 05:47:44PM +0200, Marek Szyprowski wrote:
-> Hi,
+On Tue, 2021-06-15 at 08:01 -0600, Rob Herring wrote:
+> On Tue, Jun 15, 2021 at 6:18 AM Geert Uytterhoeven <
+> geert@linux-m68k.org> wrote:
+> > 
+> > > +void *of_kexec_alloc_and_setup_fdt(const struct kimage *image,
+> > > +                                  unsigned long
+> > > initrd_load_addr,
+> > > +                                  unsigned long initrd_len,
+> > > +                                  const char *cmdline, size_t
+> > > extra_fdt_size)
+> > > +{
+> > > +       /* Did we boot using an initrd? */
+> > > +       prop = fdt_getprop(fdt, chosen_node, "linux,initrd-
+> > > start", NULL);
+> > > +       if (prop) {
+> > > +               u64 tmp_start, tmp_end, tmp_size;
+> > > +
+> > > +               tmp_start = fdt64_to_cpu(*((const fdt64_t *)
+> > > prop));
+> > > +
+> > > +               prop = fdt_getprop(fdt, chosen_node,
+> > > "linux,initrd-end", NULL);
+> > > +               if (!prop) {
+> > > +                       ret = -EINVAL;
+> > > +                       goto out;
+> > > +               }
+> > > +
+> > > +               tmp_end = fdt64_to_cpu(*((const fdt64_t *)
+> > > prop));
+> > 
+> > Some kernel code assumes "linux,initrd-{start,end}" are 64-bit,
+> > other code assumes 32-bit.
 > 
-> On 02.06.2021 08:53, Christoph Hellwig wrote:
-> > Use the blk_mq_alloc_disk API to simplify the gendisk and request_queue
-> > allocation.
-> >
-> > Signed-off-by: Christoph Hellwig <hch@lst.de>
+> It can be either. The above code was a merge of arm64 and powerpc
+> both
+> of which use 64-bit and still only runs on those arches. It looks
+> like
+> some powerpc platforms may use 32-bit, but this would have been
+> broken
+> before.
+of_kexec_alloc_and_setup_fdt() is called from elf_64.c (in
+arch/powerpc/kexec) which is for 64-bit powerpc platform only.
+
+thanks,
+ -lakshmi
+
 > 
-> This patch landed in linux-next as commit 6966bb921def ("mtd_blkdevs: 
-> use blk_mq_alloc_disk"). It causes the following regression on my QEMU 
-> arm64 setup:
+> The code in drivers/of/fdt.c handles either case. We should probably
+> refactor early_init_dt_check_for_initrd() and this function to use a
+> common routine.
+> 
+> > linux/Documentation/arm/uefi.rst says 64-bit,
+> > dt-schema/schemas/chosen.yaml says 32-bit.
+> 
+> We should fix that.
+> 
+> Rob
 
-Please try the patch below:
-
-diff --git a/drivers/mtd/mtd_blkdevs.c b/drivers/mtd/mtd_blkdevs.c
-index 5dc4c966ea73..6ce4bc57f919 100644
---- a/drivers/mtd/mtd_blkdevs.c
-+++ b/drivers/mtd/mtd_blkdevs.c
-@@ -382,6 +382,7 @@ int add_mtd_blktrans_dev(struct mtd_blktrans_dev *new)
- 	}
- 
- 	new->disk = gd;
-+	new->rq = new->disk->queue;
- 	gd->private_data = new;
- 	gd->major = tr->major;
- 	gd->first_minor = (new->devnum) << tr->part_bits;
