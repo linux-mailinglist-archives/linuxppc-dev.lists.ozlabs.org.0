@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38E743A791D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 10:35:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 903CA3A7927
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 10:37:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G41pW6Gwrz3clc
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 18:34:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G41sZ166Qz3c7h
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 18:37:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,39 +16,46 @@ Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G41n66vxzz3c08
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 18:33:46 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G41sF14ypz307m
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 18:37:20 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4G41mm2RxRzB8jC;
- Tue, 15 Jun 2021 10:33:28 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4G41s909ymzB8nl;
+ Tue, 15 Jun 2021 10:37:17 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id v6F3RINa3SSx; Tue, 15 Jun 2021 10:33:28 +0200 (CEST)
+ with ESMTP id loeldhMZJ7mB; Tue, 15 Jun 2021 10:37:16 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4G41mj6KzbzB2gh;
- Tue, 15 Jun 2021 10:33:25 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4G41s86Mh8zB8nf;
+ Tue, 15 Jun 2021 10:37:16 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id CEDB08B7AE;
- Tue, 15 Jun 2021 10:33:25 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id CE8E98B7AE;
+ Tue, 15 Jun 2021 10:37:16 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id SY7lQGO-YlRd; Tue, 15 Jun 2021 10:33:25 +0200 (CEST)
-Received: from po9473vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 8E4B78B7A5;
- Tue, 15 Jun 2021 10:33:25 +0200 (CEST)
-Received: by po9473vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 6D67366264; Tue, 15 Jun 2021 08:33:25 +0000 (UTC)
-Message-Id: <1e21c1486087fb1a3c30feafb9371000c860ae13.1623745950.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <8071cd2e2f2bdc0711e6ac435dff4a09ff21fee2.1623745949.git.christophe.leroy@csgroup.eu>
-References: <8071cd2e2f2bdc0711e6ac435dff4a09ff21fee2.1623745949.git.christophe.leroy@csgroup.eu>
+ with ESMTP id u-FejpB8r5DM; Tue, 15 Jun 2021 10:37:16 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 70BB28B7A5;
+ Tue, 15 Jun 2021 10:37:16 +0200 (CEST)
+Subject: Re: [PATCH v2 2/4] powerpc/interrupt: Refactor
+ prep_irq_for_user_exit()
+To: Nicholas Piggin <npiggin@gmail.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>
+References: <809d316bf5f1a81acdd69e220c13e716dac24f53.1622818556.git.christophe.leroy@csgroup.eu>
+ <3fbef68e1cffc0ebbbad1893e4fb9426b0915039.1622818556.git.christophe.leroy@csgroup.eu>
+ <1623378421.ayihg84s3a.astroid@bobo.none>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v3 5/5] powerpc/interrupt: Remove prep_irq_for_user_exit()
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
- npiggin@gmail.com
-Date: Tue, 15 Jun 2021 08:33:25 +0000 (UTC)
+Message-ID: <4f21c7c2-d04b-dcb6-09ad-562a2c3cf88f@csgroup.eu>
+Date: Tue, 15 Jun 2021 10:37:15 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
+MIME-Version: 1.0
+In-Reply-To: <1623378421.ayihg84s3a.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,48 +72,32 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-prep_irq_for_user_exit() has only one caller, squash it
-inside that caller.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/kernel/interrupt.c | 16 +++-------------
- 1 file changed, 3 insertions(+), 13 deletions(-)
 
-diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
-index 05831d99bf26..de335da7ab52 100644
---- a/arch/powerpc/kernel/interrupt.c
-+++ b/arch/powerpc/kernel/interrupt.c
-@@ -75,18 +75,6 @@ static notrace __always_inline bool prep_irq_for_enabled_exit(bool restartable)
- 	return true;
- }
- 
--static notrace __always_inline bool prep_irq_for_user_exit(void)
--{
--	bool ret;
--
--	user_enter_irqoff();
--	ret = prep_irq_for_enabled_exit(true);
--	if (!ret)
--		user_exit_irqoff();
--
--	return ret;
--}
--
- /* Has to run notrace because it is entered not completely "reconciled" */
- notrace long system_call_exception(long r3, long r4, long r5,
- 				   long r6, long r7, long r8,
-@@ -276,7 +264,9 @@ interrupt_exit_user_prepare_main(struct pt_regs *regs, unsigned long ret)
- 		}
- 	}
- 
--	if (!prep_irq_for_user_exit()) {
-+	user_enter_irqoff();
-+	if (!prep_irq_for_enabled_exit(true)) {
-+		user_exit_irqoff();
- 		local_irq_enable();
- 		local_irq_disable();
- 		goto again;
--- 
-2.25.0
+Le 11/06/2021 à 04:30, Nicholas Piggin a écrit :
+> Excerpts from Christophe Leroy's message of June 5, 2021 12:56 am:
+>> prep_irq_for_user_exit() is a superset of
+>> prep_irq_for_kernel_enabled_exit().
+>>
+>> Refactor it.
+> 
+> I like the refactoring, but now prep_irq_for_user_exit() is calling
+> prep_irq_for_kernel_enabled_exit(), which seems like the wrong naming.
+> 
+> You could re-name prep_irq_for_kernel_enabled_exit() to
+> prep_irq_for_enabled_exit() maybe? Or it could be
+> __prep_irq_for_enabled_exit() then prep_irq_for_kernel_enabled_exit()
+> and prep_irq_for_user_exit() would both call it.
 
+I renamed it prep_irq_for_enabled_exit().
+
+And I realised that after patch 4, prep_irq_for_enabled_exit() has become a trivial function used 
+only once.
+
+So I swapped patches 1/2 with patches 3/4 and added a 5th one to squash prep_irq_for_enabled_exit() 
+into its caller.
+
+You didn't have any comment on patch 4 (that is now patch 2) ?
+
+Thanks for the review
+Christophe
