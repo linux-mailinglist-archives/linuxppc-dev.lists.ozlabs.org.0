@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66EBE3A8129
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 15:43:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BDB73A8132
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 15:44:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G48g175HYz3gvX
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 23:43:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G48gP5ybfz3hQp
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 23:44:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,21 +16,21 @@ Authentication-Results: lists.ozlabs.org;
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G48Zb1ChXz3gVM
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 23:40:07 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G48b90Sb8z3dFv
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 23:40:37 +1000 (AEST)
 Received: by verein.lst.de (Postfix, from userid 2407)
- id BE0D967373; Tue, 15 Jun 2021 15:40:02 +0200 (CEST)
-Date: Tue, 15 Jun 2021 15:40:02 +0200
+ id C138F67373; Tue, 15 Jun 2021 15:40:32 +0200 (CEST)
+Date: Tue, 15 Jun 2021 15:40:32 +0200
 From: Christoph Hellwig <hch@lst.de>
 To: Claire Chang <tientzu@chromium.org>
-Subject: Re: [PATCH v10 08/12] swiotlb: Refactor swiotlb_tbl_unmap_single
-Message-ID: <20210615134002.GH20389@lst.de>
+Subject: Re: [PATCH v10 09/12] swiotlb: Add restricted DMA pool initialization
+Message-ID: <20210615134032.GI20389@lst.de>
 References: <20210615132711.553451-1-tientzu@chromium.org>
- <20210615132711.553451-9-tientzu@chromium.org>
+ <20210615132711.553451-10-tientzu@chromium.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210615132711.553451-9-tientzu@chromium.org>
+In-Reply-To: <20210615132711.553451-10-tientzu@chromium.org>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -72,6 +72,20 @@ Cc: heikki.krogerus@linux.intel.com, thomas.hellstrom@linux.intel.com,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+
+On Tue, Jun 15, 2021 at 09:27:08PM +0800, Claire Chang wrote:
+> Add the initialization function to create restricted DMA pools from
+> matching reserved-memory nodes.
+> 
+> Regardless of swiotlb setting, the restricted DMA pool is preferred if
+> available.
+> 
+> The restricted DMA pools provide a basic level of protection against the
+> DMA overwriting buffer contents at unexpected times. However, to protect
+> against general data leakage and system memory corruption, the system
+> needs to provide a way to lock down the memory access, e.g., MPU.
+> 
+> Signed-off-by: Claire Chang <tientzu@chromium.org>
 
 Looks good,
 
