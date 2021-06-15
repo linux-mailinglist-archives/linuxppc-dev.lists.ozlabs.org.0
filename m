@@ -1,70 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BBE23A76DE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 08:06:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8BEC3A76FD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 08:22:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G3yWZ0Fh2z304J
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 16:06:50 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=B93koVoz;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G3ysw2y9jz3bvv
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 16:22:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b2b;
- helo=mail-yb1-xb2b.google.com; envelope-from=jniethe5@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=B93koVoz; dkim-atps=neutral
-Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com
- [IPv6:2607:f8b0:4864:20::b2b])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G3yW25BVTz3021
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 16:06:21 +1000 (AEST)
-Received: by mail-yb1-xb2b.google.com with SMTP id b13so18852610ybk.4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 23:06:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=TbjwGqUHvWaGx5UW+qV3Ea0y3mo5DXpb7BckQX3+/FE=;
- b=B93koVozP9PzGT3naX34mVmyZTw2rMdAcJuhI+4fxGyMY+1UBwPdYJALvGdmRNTJye
- Zd2KOpioK10RMAB7eb39VIRapZXHb8hLSbJTulYdoTiVDFlJYY3rjscdo0HuiI6VLrv7
- RTOxSROa3N1T2N8IwnI20LZrWSsg6YhkVWZx2FUQV9z7NkxOZjBAjsH/Kr+QgFwEuqLw
- QKC7mUJ2sTu1hlnPlnRyW6WfiuXJp9GpDRM9LAJfr+bHnt3WCjlX5Ec0O+dQyTWgnxru
- EAWm6whQn7XJUqQ3yCHLovaLfjoZZ7OCrISjnBdWqHi/ooUwKZEFvGDUxYMJUAtVogKZ
- HDrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=TbjwGqUHvWaGx5UW+qV3Ea0y3mo5DXpb7BckQX3+/FE=;
- b=t7RRzVN57syKrpL1rJCis/EJUo6+Bl8REu9xXMQm5zBtQ3YeI88poMQwK5sgctUol8
- H+vyVqvVYLvzuEgd63ZqN0VnAABOnTJlx2XwUP4gzZ5R/UfF19kpDpjtsgFyJVCB82YY
- vbxaAX7lwOWpyFI4wxmzwQqymtwFPesu/rOJ7eaGFx1eP59wYiiZgQ0e6/9E1ZBEgvaW
- BOfSgLLg2+oPWIXQ8dcdNrGSnhdUfgj7YSSaqgn+DeAZqu8RViK5rDAY845pwjV4Brbz
- PgxmLdZb+qMDB1HzwtIJiPwk+3YpK8OURLqVM9YMGwSUzpzOb7MIxVE2Wk7MorxalJub
- gmZQ==
-X-Gm-Message-State: AOAM5337418VCu2YAEUddRvXQktObofuw3h21C9CCL8oknKRKDzijvLr
- vXQLYIEwNxaCFdAH2aHuXVAOClqh2sHO4lXsUIwr8zKi
-X-Google-Smtp-Source: ABdhPJxFY2YKVtnpZY/79otGoiiK+9AbRynk+KY/2XGSrdUJY4M/CzydOGcn+GJwAEmQ5yBye4XFIRXpFGa5Cd4AO0k=
-X-Received: by 2002:a25:69ce:: with SMTP id
- e197mr27996838ybc.265.1623737173769; 
- Mon, 14 Jun 2021 23:06:13 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G3ysX5SxHz2yQw
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 16:22:22 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 4G3ysN0drbzB8vR;
+ Tue, 15 Jun 2021 08:22:16 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id Q1PNZKJsNX00; Tue, 15 Jun 2021 08:22:16 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4G3ysM5FRGzB8rS;
+ Tue, 15 Jun 2021 08:22:15 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 750DF8B7A3;
+ Tue, 15 Jun 2021 08:22:15 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id PCpz8eCCDujm; Tue, 15 Jun 2021 08:22:15 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0FC088B7A0;
+ Tue, 15 Jun 2021 08:22:15 +0200 (CEST)
+Subject: Re: [PATCH] powerpc/signal64: Don't read sigaction arguments back
+ from user memory
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <20210610072949.3198522-1-mpe@ellerman.id.au>
+ <1623633444.p3rmbd7eti.astroid@bobo.none>
+ <c677eab1-0ecd-8630-89c0-6fcc35788356@csgroup.eu>
+ <1623649744.mbu8z4p0v5.astroid@bobo.none>
+ <e84f44e5-46a2-4076-b565-038057329be5@csgroup.eu>
+Message-ID: <e01caafd-e96d-b31b-8983-4c0a9d285fc8@csgroup.eu>
+Date: Tue, 15 Jun 2021 08:22:13 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-References: <20210607233709.941102-1-jniethe5@gmail.com>
- <20210607233709.941102-2-jniethe5@gmail.com>
-In-Reply-To: <20210607233709.941102-2-jniethe5@gmail.com>
-From: Jordan Niethe <jniethe5@gmail.com>
-Date: Tue, 15 Jun 2021 16:06:02 +1000
-Message-ID: <CACzsE9oV9s-5E-_ATwj6_E0dvo+nO=wq8YPFsPV983ACtWT8BA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] selftests: Skip TM tests on synthetic TM
- implementations
-To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <e84f44e5-46a2-4076-b565-038057329be5@csgroup.eu>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,188 +68,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michael Neuling <mikey@neuling.org>
+Cc: cmr@codefail.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 8, 2021 at 9:37 AM Jordan Niethe <jniethe5@gmail.com> wrote:
->
-> Transactional Memory was removed from the architecture in ISA v3.1. For
-> threads running in P8/P9 compatibility mode on P10 a synthetic TM
-> implementation is provided. In this implementation, tbegin. always sets
-> cr0 eq meaning the abort handler is always called. This is not an issue
-> as users of TM are expected to have a fallback non transactional way to
-> make forward progress in the abort handler.
->
-> As the TM self tests exist only to test TM, no alternative path forward
-> is provided, leading to them timing out and failing on the synthetic TM
-> implementation.
->
-> The TEXASR indicates if a transaction failure is due to a synthetic
-> implementation. Check for a synthetic implementation and skip the TM
-> tests if so.
->
-> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
-> ---
->  .../selftests/powerpc/ptrace/ptrace-tm-gpr.c  |  1 +
->  .../powerpc/ptrace/ptrace-tm-spd-gpr.c        |  1 +
->  .../powerpc/ptrace/ptrace-tm-spd-tar.c        |  1 +
->  .../selftests/powerpc/ptrace/ptrace-tm-tar.c  |  1 +
->  .../selftests/powerpc/tm/tm-resched-dscr.c    |  1 +
->  .../selftests/powerpc/tm/tm-signal-stack.c    |  1 +
->  .../testing/selftests/powerpc/tm/tm-syscall.c |  2 +-
->  tools/testing/selftests/powerpc/tm/tm.h       | 36 +++++++++++++++++++
->  8 files changed, 43 insertions(+), 1 deletion(-)
->
-> diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-gpr.c b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-gpr.c
-> index 7df7100a29be..67ca297c5cca 100644
-> --- a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-gpr.c
-> +++ b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-gpr.c
-> @@ -113,6 +113,7 @@ int ptrace_tm_gpr(void)
->         int ret, status;
->
->         SKIP_IF(!have_htm());
-> +       SKIP_IF(htm_is_synthetic());
->         shm_id = shmget(IPC_PRIVATE, sizeof(int) * 2, 0777|IPC_CREAT);
->         pid = fork();
->         if (pid < 0) {
-> diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-gpr.c b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-gpr.c
-> index 8706bea5d015..6f2bce1b6c5d 100644
-> --- a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-gpr.c
-> +++ b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-gpr.c
-> @@ -119,6 +119,7 @@ int ptrace_tm_spd_gpr(void)
->         int ret, status;
->
->         SKIP_IF(!have_htm());
-> +       SKIP_IF(htm_is_synthetic());
->         shm_id = shmget(IPC_PRIVATE, sizeof(int) * 3, 0777|IPC_CREAT);
->         pid = fork();
->         if (pid < 0) {
-> diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-tar.c b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-tar.c
-> index 2ecfa1158e2b..e112a34fbe59 100644
-> --- a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-tar.c
-> +++ b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-spd-tar.c
-> @@ -129,6 +129,7 @@ int ptrace_tm_spd_tar(void)
->         int ret, status;
->
->         SKIP_IF(!have_htm());
-> +       SKIP_IF(htm_is_synthetic());
->         shm_id = shmget(IPC_PRIVATE, sizeof(int) * 3, 0777|IPC_CREAT);
->         pid = fork();
->         if (pid == 0)
-> diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-tar.c b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-tar.c
-> index 46ef378a15ec..d0db6df0f0ea 100644
-> --- a/tools/testing/selftests/powerpc/ptrace/ptrace-tm-tar.c
-> +++ b/tools/testing/selftests/powerpc/ptrace/ptrace-tm-tar.c
-> @@ -117,6 +117,7 @@ int ptrace_tm_tar(void)
->         int ret, status;
->
->         SKIP_IF(!have_htm());
-> +       SKIP_IF(htm_is_synthetic());
->         shm_id = shmget(IPC_PRIVATE, sizeof(int) * 2, 0777|IPC_CREAT);
->         pid = fork();
->         if (pid == 0)
-> diff --git a/tools/testing/selftests/powerpc/tm/tm-resched-dscr.c b/tools/testing/selftests/powerpc/tm/tm-resched-dscr.c
-> index 4cdb83964bb3..85c940ae6ff8 100644
-> --- a/tools/testing/selftests/powerpc/tm/tm-resched-dscr.c
-> +++ b/tools/testing/selftests/powerpc/tm/tm-resched-dscr.c
-> @@ -40,6 +40,7 @@ int test_body(void)
->         uint64_t rv, dscr1 = 1, dscr2, texasr;
->
->         SKIP_IF(!have_htm());
-> +       SKIP_IF(htm_is_synthetic());
->
->         printf("Check DSCR TM context switch: ");
->         fflush(stdout);
-> diff --git a/tools/testing/selftests/powerpc/tm/tm-signal-stack.c b/tools/testing/selftests/powerpc/tm/tm-signal-stack.c
-> index cdcf8c5bbbc7..68807aac8dd3 100644
-> --- a/tools/testing/selftests/powerpc/tm/tm-signal-stack.c
-> +++ b/tools/testing/selftests/powerpc/tm/tm-signal-stack.c
-> @@ -35,6 +35,7 @@ int tm_signal_stack()
->         int pid;
->
->         SKIP_IF(!have_htm());
-> +       SKIP_IF(htm_is_synthetic());
->
->         pid = fork();
->         if (pid < 0)
-> diff --git a/tools/testing/selftests/powerpc/tm/tm-syscall.c b/tools/testing/selftests/powerpc/tm/tm-syscall.c
-> index becb8207b432..467a6b3134b2 100644
-> --- a/tools/testing/selftests/powerpc/tm/tm-syscall.c
-> +++ b/tools/testing/selftests/powerpc/tm/tm-syscall.c
-> @@ -25,7 +25,6 @@ extern int getppid_tm_suspended(void);
->  unsigned retries = 0;
->
->  #define TEST_DURATION 10 /* seconds */
-> -#define TM_RETRIES 100
->
->  pid_t getppid_tm(bool suspend)
->  {
-> @@ -67,6 +66,7 @@ int tm_syscall(void)
->         struct timeval end, now;
->
->         SKIP_IF(!have_htm_nosc());
-> +       SKIP_IF(htm_is_synthetic());
->
->         setbuf(stdout, NULL);
->
-> diff --git a/tools/testing/selftests/powerpc/tm/tm.h b/tools/testing/selftests/powerpc/tm/tm.h
-> index c5a1e5c163fc..c03c6e778876 100644
-> --- a/tools/testing/selftests/powerpc/tm/tm.h
-> +++ b/tools/testing/selftests/powerpc/tm/tm.h
-> @@ -10,6 +10,9 @@
->  #include <asm/tm.h>
->
->  #include "utils.h"
-> +#include "reg.h"
-> +
-> +#define TM_RETRIES 100
->
->  static inline bool have_htm(void)
->  {
-> @@ -31,6 +34,39 @@ static inline bool have_htm_nosc(void)
->  #endif
->  }
->
-> +/*
-> + * Transactional Memory was removed in ISA 3.1. A synthetic TM implementation
-> + * is provided on P10 for threads running in P8/P9 compatibility  mode. The
-> + * synthetic implementation immediately fails after tbegin. This failure sets
-> + * Bit 7 (Failure Persistent) and Bit 15 (Implementation-specific).
-> + */
-> +static inline bool htm_is_synthetic(void)
-> +{
-> +       int i;
-> +
-> +       /*
-> +        * Per the ISA, the Failure Persistent bit may be incorrect. Try a few
-> +        * times in case we got an Implementation-specific failure on a non ISA
-> +        * v3.1 system. On these systems the Implementation-specific failure
-> +        * should not be persistent.
-> +        */
-> +       for (i = 0; i < TM_RETRIES; i++) {
-> +               asm volatile(
-> +               "tbegin.;"
-> +               "beq 1f;"
-> +               "tend.;"
-> +               "1:"
-> +               :
-> +               :
-> +               : "memory");
-> +
-> +               if ((__builtin_get_texasr() & (TEXASR_FP | TEXASR_IC)) !=
-> +                   (TEXASR_FP | TEXASR_IC))
-> +                       break;
-> +       }
-> +       return i == TM_RETRIES;
-> +}
-> +
->  static inline long failure_code(void)
->  {
->         return __builtin_get_texasru() >> 24;
-> --
-> 2.25.1
->
-There's a couple more tests that need the same treatment, Will send a
-new version.
+
+
+Le 14/06/2021 à 13:49, Christophe Leroy a écrit :
+> 
+> 
+> Le 14/06/2021 à 07:49, Nicholas Piggin a écrit :
+>> Excerpts from Christophe Leroy's message of June 14, 2021 3:30 pm:
+>>>
+>>>
+>>> Le 14/06/2021 à 03:32, Nicholas Piggin a écrit :
+>>>> Excerpts from Michael Ellerman's message of June 10, 2021 5:29 pm:
+>>>>> When delivering a signal to a sigaction style handler (SA_SIGINFO), we
+>>>>> pass pointers to the siginfo and ucontext via r4 and r5.
+>>>>>
+>>>>> Currently we populate the values in those registers by reading the
+>>>>> pointers out of the sigframe in user memory, even though the values in
+>>>>> user memory were written by the kernel just prior:
+>>>>>
+>>>>>     unsafe_put_user(&frame->info, &frame->pinfo, badframe_block);
+>>>>>     unsafe_put_user(&frame->uc, &frame->puc, badframe_block);
+>>>>>     ...
+>>>>>     if (ksig->ka.sa.sa_flags & SA_SIGINFO) {
+>>>>>         err |= get_user(regs->gpr[4], (unsigned long __user *)&frame->pinfo);
+>>>>>         err |= get_user(regs->gpr[5], (unsigned long __user *)&frame->puc);
+>>>>>
+>>>>> ie. we write &frame->info into frame->pinfo, and then read frame->pinfo
+>>>>> back into r4, and similarly for &frame->uc.
+>>>>>
+>>>>> The code has always been like this, since linux-fullhistory commit
+>>>>> d4f2d95eca2c ("Forward port of 2.4 ppc64 signal changes.").
+>>>>>
+>>>>> There's no reason for us to read the values back from user memory,
+>>>>> rather than just setting the value in the gpr[4/5] directly. In fact
+>>>>> reading the value back from user memory opens up the possibility of
+>>>>> another user thread changing the values before we read them back.
+>>>>> Although any process doing that would be racing against the kernel
+>>>>> delivering the signal, and would risk corrupting the stack, so that
+>>>>> would be a userspace bug.
+>>>>>
+>>>>> Note that this is 64-bit only code, so there's no subtlety with the size
+>>>>> of pointers differing between kernel and user. Also the frame variable
+>>>>> is not modified to point elsewhere during the function.
+>>>>>
+>>>>> In the past reading the values back from user memory was not costly, but
+>>>>> now that we have KUAP on some CPUs it is, so we'd rather avoid it for
+>>>>> that reason too.
+>>>>>
+>>>>> So change the code to just set the values directly, using the same
+>>>>> values we have written to the sigframe previously in the function.
+>>>>>
+>>>>> Note also that this matches what our 32-bit signal code does.
+>>>>>
+>>>>> Using a version of will-it-scale's signal1_threads that sets SA_SIGINFO,
+>>>>> this results in a ~4% increase in signals per second on a Power9, from
+>>>>> 229,777 to 239,766.
+>>>>
+>>>> Good find, nice improvement. Will make it possible to make the error
+>>>> handling much nicer too I think.
+>>>>
+>>>> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+>>>>
+>>>> You've moved copy_siginfo_to_user right up to the user access unlock,
+>>>> could save 2 more KUAP lock/unlocks if we had an unsafe_clear_user. If
+>>>> we can move the other user access stuff up as well, the stack frame
+>>>> put_user could use unsafe_put_user as well, saving 1 more. Another few
+>>>> percent?
+>>>
+>>> I'm looking at making an 'unsafe' version of copy_siginfo_to_user().
+>>> That's straight forward for 'native' signals, but for compat signals that's more tricky.
+>>
+>> Ah nice. Native is most important at the moment.
+>>
+> 
+> Finally not so easy. We have a quite efficient clear_user() which uses 'dcbz'. When replacing that 
+> by a simplistic unsafe_clear_user() on the same model as unsafe_copy_to_user(), performance are 
+> degradated on 32s. Need to implement it more efficiently.
+> 
+
+Don't know what I did yesterday. Performance is _not_ degraded, it is improved by 5%. I'll send out 
+a series soon.
