@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FA2B3A808B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 15:38:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A5003A809E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 15:39:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G48Y06LsJz3gHy
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 23:38:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G48YT4rMvz3fHM
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 23:39:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=uRuM4fVd;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=jmkA5X9l;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,34 +19,34 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=uRuM4fVd; 
+ header.s=casper.20170209 header.b=jmkA5X9l; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G48P86Wbsz3dvp
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 23:31:56 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G48PR2VkMz3dxj
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 23:32:11 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=zRzZmxJovNWP/EFjMz2xkLW+5dEQxvGh7lBmreTLBkc=; b=uRuM4fVda8enDlUOjZ2xYnPHDQ
- JWzMtWkW/EZZgMFMDCR/eQG2Ut7yTLgO/LEAy5Uic6iWEJJXUZPgWMXjcSgWgFxixqDfIPkkRRYI6
- D19N1OeqD01RBD5/WaT19t2MCI3fRHsS780KhLY83ifKiuuv6lSyUxCNxGz67IXLEJKD8B9BXOaq1
- qGkxGaz8mzZ5eCOYjfUGQASfQJmKB+h6rtIapQRIBFDKiPWewBnXXvXS4/DMLPbuHY8qg7b+mfggN
- FP2dS19y66JBUWGIOo4xvAhvEG5W/slf5O9Y9Kz92EQs85jftI45d1P7oNsBJ1WaRnm8jQiXw4O5/
- bHZeaE9w==;
+ bh=HbWeEgqptxjWNK7W80q76MsDEy7Zz/e6+B7EWMBgV8Y=; b=jmkA5X9lidmbgX1TkMC9E1s/OX
+ sXzfe8ue9sIAK6INJ5Dl3lX+QBBPPmI0jOn0zqdTG64+Ug3uCS4mu1fPzA3sPAnSVjt4phprDdR2I
+ O5LVEQsfzFmz4kGtFNya2TL+RdF7n66kL7+2hQ7tjO4oqUau9XDLmWGNIL7nCrnq7BlWfvWVzJE1K
+ y5I7lmBSbz/qiHqyOqYSRsxwiAOfwqde4+13GRFm5HJzV5zvZzLr+5GD91nlh1PhrEp8V5rECvLkz
+ OUytNuiBoBQPwp3osxl16+pd+uBoR4YlAHZ3Iyrw3Y3kKHspKXkzXqERVWiK5rR6oycgRXPNi79At
+ PystZgVA==;
 Received: from [2001:4bb8:19b:fdce:9045:1e63:20f0:ca9] (helo=localhost)
  by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lt99A-006oP8-FZ; Tue, 15 Jun 2021 13:30:41 +0000
+ id 1lt99h-006oSj-5Y; Tue, 15 Jun 2021 13:31:04 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Jens Axboe <axboe@kernel.dk>,
 	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 14/18] block: use memcpy_to_bvec in copy_to_high_bio_irq
-Date: Tue, 15 Jun 2021 15:24:52 +0200
-Message-Id: <20210615132456.753241-15-hch@lst.de>
+Subject: [PATCH 15/18] block: use memcpy_from_bvec in bio_copy_kern_endio_read
+Date: Tue, 15 Jun 2021 15:24:53 +0200
+Message-Id: <20210615132456.753241-16-hch@lst.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210615132456.753241-1-hch@lst.de>
 References: <20210615132456.753241-1-hch@lst.de>
@@ -77,58 +77,26 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use memcpy_to_bvec instead of opencoding the logic.
+Use memcpy_from_bvec instead of open coding the logic.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- block/bounce.c | 20 ++------------------
- 1 file changed, 2 insertions(+), 18 deletions(-)
+ block/blk-map.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/block/bounce.c b/block/bounce.c
-index 94081e013c58..7e9e666c04dc 100644
---- a/block/bounce.c
-+++ b/block/bounce.c
-@@ -67,18 +67,6 @@ static __init int init_emergency_pool(void)
+diff --git a/block/blk-map.c b/block/blk-map.c
+index 3743158ddaeb..d1448aaad980 100644
+--- a/block/blk-map.c
++++ b/block/blk-map.c
+@@ -400,7 +400,7 @@ static void bio_copy_kern_endio_read(struct bio *bio)
+ 	struct bvec_iter_all iter_all;
  
- __initcall(init_emergency_pool);
- 
--/*
-- * highmem version, map in to vec
-- */
--static void bounce_copy_vec(struct bio_vec *to, unsigned char *vfrom)
--{
--	unsigned char *vto;
--
--	vto = kmap_atomic(to->bv_page);
--	memcpy(vto + to->bv_offset, vfrom, to->bv_len);
--	kunmap_atomic(vto);
--}
--
- /*
-  * Simple bounce buffer support for highmem pages. Depending on the
-  * queue gfp mask set, *to may or may not be a highmem page. kmap it
-@@ -86,7 +74,6 @@ static void bounce_copy_vec(struct bio_vec *to, unsigned char *vfrom)
-  */
- static void copy_to_high_bio_irq(struct bio *to, struct bio *from)
- {
--	unsigned char *vfrom;
- 	struct bio_vec tovec, fromvec;
- 	struct bvec_iter iter;
- 	/*
-@@ -104,11 +91,8 @@ static void copy_to_high_bio_irq(struct bio *to, struct bio *from)
- 			 * been modified by the block layer, so use the original
- 			 * copy, bounce_copy_vec already uses tovec->bv_len
- 			 */
--			vfrom = page_address(fromvec.bv_page) +
--				tovec.bv_offset;
--
--			bounce_copy_vec(&tovec, vfrom);
--			flush_dcache_page(tovec.bv_page);
-+			memcpy_to_bvec(&tovec, page_address(fromvec.bv_page) +
-+				       tovec.bv_offset);
- 		}
- 		bio_advance_iter(from, &from_iter, tovec.bv_len);
+ 	bio_for_each_segment_all(bvec, bio, iter_all) {
+-		memcpy(p, page_address(bvec->bv_page), bvec->bv_len);
++		memcpy_from_bvec(p, bvec);
+ 		p += bvec->bv_len;
  	}
+ 
 -- 
 2.30.2
 
