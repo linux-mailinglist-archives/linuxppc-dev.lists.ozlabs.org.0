@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 591B63A7738
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 08:41:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D67FE3A773D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 08:41:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G3zHP6bsYz308w
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 16:41:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G3zHl442Nz3bs4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 16:41:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,36 +16,39 @@ Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G3zH43p3Sz302W
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 16:41:01 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G3zH85FdHz3093
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 16:41:08 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4G3zGx6s9lzB9CB;
- Tue, 15 Jun 2021 08:40:57 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4G3zGz6YgjzB9CM;
+ Tue, 15 Jun 2021 08:40:59 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id IH65QaxPJ6dr; Tue, 15 Jun 2021 08:40:57 +0200 (CEST)
+ with ESMTP id 4LSHGgtLUzVC; Tue, 15 Jun 2021 08:40:59 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4G3zGx5y0QzB9BM;
- Tue, 15 Jun 2021 08:40:57 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4G3zGy5lp4zB9BM;
+ Tue, 15 Jun 2021 08:40:58 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B98838B7A3;
- Tue, 15 Jun 2021 08:40:57 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id BB4848B7A3;
+ Tue, 15 Jun 2021 08:40:58 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 9l20SPmXXWb7; Tue, 15 Jun 2021 08:40:57 +0200 (CEST)
+ with ESMTP id iSE_0BqpddPX; Tue, 15 Jun 2021 08:40:58 +0200 (CEST)
 Received: from po9473vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 814828B7A2;
- Tue, 15 Jun 2021 08:40:57 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 79B488B7A2;
+ Tue, 15 Jun 2021 08:40:58 +0200 (CEST)
 Received: by po9473vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 43DE56627B; Tue, 15 Jun 2021 06:40:57 +0000 (UTC)
-Message-Id: <b813c1f4d3dab2f51300eac44d99029aa8e57830.1623739212.git.christophe.leroy@csgroup.eu>
+ id 51AE26627B; Tue, 15 Jun 2021 06:40:58 +0000 (UTC)
+Message-Id: <a2134d0ed504f5ccdd4449487e731a4e244fd13f.1623739212.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <b813c1f4d3dab2f51300eac44d99029aa8e57830.1623739212.git.christophe.leroy@csgroup.eu>
+References: <b813c1f4d3dab2f51300eac44d99029aa8e57830.1623739212.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 1/7] powerpc/signal64: Copy siginfo before changing regs->nip
+Subject: [PATCH 2/7] powerpc/signal64: Don't read sigaction arguments back
+ from user memory
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Tue, 15 Jun 2021 06:40:57 +0000 (UTC)
+Date: Tue, 15 Jun 2021 06:40:58 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,75 +67,73 @@ Sender: "Linuxppc-dev"
 
 From: Michael Ellerman <mpe@ellerman.id.au>
 
-In commit 96d7a4e06fab ("powerpc/signal64: Rewrite handle_rt_signal64()
-to minimise uaccess switches") the 64-bit signal code was rearranged to
-use user_write_access_begin/end().
+When delivering a signal to a sigaction style handler (SA_SIGINFO), we
+pass pointers to the siginfo and ucontext via r4 and r5.
 
-As part of that change the call to copy_siginfo_to_user() was moved
-later in the function, so that it could be done after the
-user_write_access_end().
+Currently we populate the values in those registers by reading the
+pointers out of the sigframe in user memory, even though the values in
+user memory were written by the kernel just prior:
 
-In particular it was moved after we modify regs->nip to point to the
-signal trampoline. That means if copy_siginfo_to_user() fails we exit
-handle_rt_signal64() with an error but with regs->nip modified, whereas
-previously we would not modify regs->nip until the copy succeeded.
+  unsafe_put_user(&frame->info, &frame->pinfo, badframe_block);
+  unsafe_put_user(&frame->uc, &frame->puc, badframe_block);
+  ...
+  if (ksig->ka.sa.sa_flags & SA_SIGINFO) {
+  	err |= get_user(regs->gpr[4], (unsigned long __user *)&frame->pinfo);
+  	err |= get_user(regs->gpr[5], (unsigned long __user *)&frame->puc);
 
-Returning an error from signal delivery but with regs->nip updated
-leaves the process in a sort of half-delivered state. We do immediately
-force a SEGV in signal_setup_done(), called from do_signal(), so the
-process should never run in the half-delivered state.
+ie. we write &frame->info into frame->pinfo, and then read frame->pinfo
+back into r4, and similarly for &frame->uc.
 
-However that SEGV is not delivered until we've gone around to
-do_notify_resume() again, so it's possible some tracing could observe
-the half-delivered state.
+The code has always been like this, since linux-fullhistory commit
+d4f2d95eca2c ("Forward port of 2.4 ppc64 signal changes.").
 
-There are other cases where we fail signal delivery with regs partly
-updated, eg. the write to newsp and SA_SIGINFO, but the latter at least
-is very unlikely to fail as it reads back from the frame we just wrote
-to.
+There's no reason for us to read the values back from user memory,
+rather than just setting the value in the gpr[4/5] directly. In fact
+reading the value back from user memory opens up the possibility of
+another user thread changing the values before we read them back.
+Although any process doing that would be racing against the kernel
+delivering the signal, and would risk corrupting the stack, so that
+would be a userspace bug.
 
-Looking at other arches they seem to be more careful about leaving regs
-unchanged until the copy operations have succeeded, and in general that
-seems like good hygenie.
+Note that this is 64-bit only code, so there's no subtlety with the size
+of pointers differing between kernel and user. Also the frame variable
+is not modified to point elsewhere during the function.
 
-So although the current behaviour is not cleary buggy, it's also not
-clearly correct. So move the call to copy_siginfo_to_user() up prior to
-the modification of regs->nip, which is closer to the old behaviour, and
-easier to reason about.
+In the past reading the values back from user memory was not costly, but
+now that we have KUAP on some CPUs it is, so we'd rather avoid it for
+that reason too.
+
+So change the code to just set the values directly, using the same
+values we have written to the sigframe previously in the function.
+
+Note also that this matches what our 32-bit signal code does.
+
+Using a version of will-it-scale's signal1_threads that sets SA_SIGINFO,
+this results in a ~4% increase in signals per second on a Power9, from
+229,777 to 239,766.
 
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/kernel/signal_64.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ arch/powerpc/kernel/signal_64.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/signal_64.c
-index dca66481d0c2..f9e1f5428b9e 100644
+index f9e1f5428b9e..8b2eb758131c 100644
 --- a/arch/powerpc/kernel/signal_64.c
 +++ b/arch/powerpc/kernel/signal_64.c
-@@ -902,6 +902,10 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
- 	unsafe_copy_to_user(&frame->uc.uc_sigmask, set, sizeof(*set), badframe_block);
- 	user_write_access_end();
- 
-+	/* Save the siginfo outside of the unsafe block. */
-+	if (copy_siginfo_to_user(&frame->info, &ksig->info))
-+		goto badframe;
-+
- 	/* Make sure signal handler doesn't get spurious FP exceptions */
- 	tsk->thread.fp_state.fpscr = 0;
- 
-@@ -915,11 +919,6 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
- 		regs->nip = (unsigned long) &frame->tramp[0];
- 	}
- 
--
--	/* Save the siginfo outside of the unsafe block. */
--	if (copy_siginfo_to_user(&frame->info, &ksig->info))
--		goto badframe;
--
- 	/* Allocate a dummy caller frame for the signal handler. */
- 	newsp = ((unsigned long)frame) - __SIGNAL_FRAMESIZE;
- 	err |= put_user(regs->gpr[1], (unsigned long __user *)newsp);
+@@ -947,8 +947,8 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
+ 	regs->gpr[3] = ksig->sig;
+ 	regs->result = 0;
+ 	if (ksig->ka.sa.sa_flags & SA_SIGINFO) {
+-		err |= get_user(regs->gpr[4], (unsigned long __user *)&frame->pinfo);
+-		err |= get_user(regs->gpr[5], (unsigned long __user *)&frame->puc);
++		regs->gpr[4] = (unsigned long)&frame->info;
++		regs->gpr[5] = (unsigned long)&frame->uc;
+ 		regs->gpr[6] = (unsigned long) frame;
+ 	} else {
+ 		regs->gpr[4] = (unsigned long)&frame->uc.uc_mcontext;
 -- 
 2.25.0
 
