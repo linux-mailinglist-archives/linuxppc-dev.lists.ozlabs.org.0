@@ -1,105 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13F533A7902
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 10:26:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEF2C3A7915
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 10:33:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G41d056x1z3bxQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 18:26:44 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IBiLn1He;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G41n92Rssz308r
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 18:33:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=IBiLn1He; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G41cX6FXzz306l
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 18:26:19 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 15F8K6uM115046; Tue, 15 Jun 2021 04:26:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=+/aoATniHCn7uLv6XA7uiusCXIGmTWde0Q7ehnZuTOU=;
- b=IBiLn1HeUEbToaGHFHh7borAcniltOcSF4LOqqdOHWUNNsNOpNeCfL4qtA2r5raL4Zuq
- 0fnEjY8dfekZx9lkFYojVi40ZQzUG2BcCTI/2EzclloiutylXQjiPtjGVm8x1BxY6QJw
- y4aAakByd3beHvCgwcHvJq8ajmf0/QM2VzcYvZKYW1Q+jYGYIBRSH8TKtiKj5E8ogu6U
- QAuloNquP7LKbUkIfkrV6K87UfJSR4Eq5zHwdkwjpSVhS0TUE7lKpLOuvH0VEtc6vQY8
- oumlgsX/dtSR0zC5thm11AKWPcVzb4tsdaTIdYS5jsEblpPLgUeQ+RTNTbRdss6XLAmN Ng== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 396rktg372-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 15 Jun 2021 04:26:12 -0400
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 15F8KZM8116626;
- Tue, 15 Jun 2021 04:26:12 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 396rktg366-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 15 Jun 2021 04:26:11 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15F88DIh004187;
- Tue, 15 Jun 2021 08:26:09 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma03ams.nl.ibm.com with ESMTP id 394mj8sbm4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 15 Jun 2021 08:26:09 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 15F8Q74S29753798
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 15 Jun 2021 08:26:07 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 56A51A406A;
- Tue, 15 Jun 2021 08:26:07 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3476CA405F;
- Tue, 15 Jun 2021 08:26:06 +0000 (GMT)
-Received: from [9.199.54.82] (unknown [9.199.54.82])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 15 Jun 2021 08:26:05 +0000 (GMT)
-Subject: Re: [RFC PATCH 4/8] powerpc/pseries: Consolidate DLPAR NUMA distance
- update
-To: David Gibson <david@gibson.dropbear.id.au>
-References: <20210614164003.196094-1-aneesh.kumar@linux.ibm.com>
- <20210614164003.196094-5-aneesh.kumar@linux.ibm.com> <YMga6CtDlIB0wLbp@yekko>
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Message-ID: <3b88a869-a865-6505-e4a1-9985811e8e4d@linux.ibm.com>
-Date: Tue, 15 Jun 2021 13:56:05 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
-MIME-Version: 1.0
-In-Reply-To: <YMga6CtDlIB0wLbp@yekko>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 7FyyagEiXO4WmSKgPwvotLWCaf5RASNZ
-X-Proofpoint-GUID: G_sR6orlHz6jL61PMMZIeJRsYKijgOoT
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-06-15_04:2021-06-14,
- 2021-06-15 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0
- impostorscore=0 mlxlogscore=999 clxscore=1015 spamscore=0 phishscore=0
- adultscore=0 lowpriorityscore=0 mlxscore=0 malwarescore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2106150049
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G41mp1XMCz307c
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 18:33:26 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 4G41mf1KvFzB2jf;
+ Tue, 15 Jun 2021 10:33:22 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id QOjuT_NED3GT; Tue, 15 Jun 2021 10:33:22 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4G41mf0PFcz9s4w;
+ Tue, 15 Jun 2021 10:33:22 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id CD7E08B7B5;
+ Tue, 15 Jun 2021 10:33:21 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id wrfP-ZaDscOS; Tue, 15 Jun 2021 10:33:21 +0200 (CEST)
+Received: from po9473vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 7BC9C8B7A5;
+ Tue, 15 Jun 2021 10:33:21 +0200 (CEST)
+Received: by po9473vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 3DE0266264; Tue, 15 Jun 2021 08:33:21 +0000 (UTC)
+Message-Id: <8071cd2e2f2bdc0711e6ac435dff4a09ff21fee2.1623745949.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v3 1/5] powerpc/interrupt: Rename and lightly change
+ syscall_exit_prepare_main()
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ npiggin@gmail.com
+Date: Tue, 15 Jun 2021 08:33:21 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,57 +59,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/15/21 8:43 AM, David Gibson wrote:
-> On Mon, Jun 14, 2021 at 10:09:59PM +0530, Aneesh Kumar K.V wrote:
->> The associativity details of the newly added resourced are collected from
->> the hypervisor via "ibm,configure-connector" rtas call. Update the numa
->> distance details of the newly added numa node after the above call. In
->> later patch we will remove updating NUMA distance when we are looking
->> for node id from associativity array.
->>
->> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->> ---
->>   arch/powerpc/mm/numa.c                        | 41 +++++++++++++++++++
->>   arch/powerpc/platforms/pseries/hotplug-cpu.c  |  2 +
->>   .../platforms/pseries/hotplug-memory.c        |  2 +
->>   arch/powerpc/platforms/pseries/pseries.h      |  1 +
->>   4 files changed, 46 insertions(+)
->>
->> diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
->> index 192067991f8a..fec47981c1ef 100644
->> --- a/arch/powerpc/mm/numa.c
->> +++ b/arch/powerpc/mm/numa.c
->> @@ -287,6 +287,47 @@ int of_node_to_nid(struct device_node *device)
->>   }
->>   EXPORT_SYMBOL(of_node_to_nid);
->>   
->> +static void __initialize_form1_numa_distance(const __be32 *associativity)
->> +{
->> +	int i, nid;
->> +
->> +	if (of_read_number(associativity, 1) >= primary_domain_index) {
->> +		nid = of_read_number(&associativity[primary_domain_index], 1);
->> +
->> +		for (i = 0; i < max_domain_index; i++) {
->> +			const __be32 *entry;
->> +
->> +			entry = &associativity[be32_to_cpu(distance_ref_points[i])];
->> +			distance_lookup_table[nid][i] = of_read_number(entry, 1);
->> +		}
->> +	}
->> +}
-> 
-> This logic is almost identicaly to initialize_distance_lookup_table()
-> - it would be good if they could be consolidated, so it's clear that
-> coldplugged and hotplugged nodes are parsing the NUMA information in
-> the same way.
+Rename syscall_exit_prepare_main() into interrupt_exit_prepare_main()
 
-initialize_distance_lookup_table() gets removed in the next patch.
+Make it static as it is not used anywhere else.
 
--aneesh
+Pass it the 'ret' so that it can 'or' it directly instead of
+oring twice, once inside the function and once outside.
+
+And remove 'r3' parameter which is not used.
+
+Also fix a typo where CONFIG_PPC_BOOK3S should be CONFIG_PPC_BOOK3S_64.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+---
+This series applies on top of Nic's series speeding up interrupt return on 64s
+
+ arch/powerpc/kernel/interrupt.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
+
+diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
+index 74c995a42399..ba2d602d2da6 100644
+--- a/arch/powerpc/kernel/interrupt.c
++++ b/arch/powerpc/kernel/interrupt.c
+@@ -243,11 +243,10 @@ static notrace void booke_load_dbcr0(void)
+ #endif
+ }
+ 
+-notrace unsigned long syscall_exit_prepare_main(unsigned long r3,
+-						struct pt_regs *regs)
++static notrace unsigned long
++interrupt_exit_user_prepare_main(struct pt_regs *regs, unsigned long ret)
+ {
+ 	unsigned long ti_flags;
+-	unsigned long ret = 0;
+ 
+ again:
+ 	ti_flags = READ_ONCE(current_thread_info()->flags);
+@@ -269,7 +268,7 @@ notrace unsigned long syscall_exit_prepare_main(unsigned long r3,
+ 		ti_flags = READ_ONCE(current_thread_info()->flags);
+ 	}
+ 
+-	if (IS_ENABLED(CONFIG_PPC_BOOK3S) && IS_ENABLED(CONFIG_PPC_FPU)) {
++	if (IS_ENABLED(CONFIG_PPC_BOOK3S_64) && IS_ENABLED(CONFIG_PPC_FPU)) {
+ 		if (IS_ENABLED(CONFIG_PPC_TRANSACTIONAL_MEM) &&
+ 				unlikely((ti_flags & _TIF_RESTORE_TM))) {
+ 			restore_tm_state(regs);
+@@ -365,7 +364,7 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
+ 	}
+ 
+ 	local_irq_disable();
+-	ret |= syscall_exit_prepare_main(r3, regs);
++	ret = interrupt_exit_user_prepare_main(regs, ret);
+ 
+ #ifdef CONFIG_PPC64
+ 	regs->exit_result = ret;
+@@ -393,7 +392,7 @@ notrace unsigned long syscall_exit_restart(unsigned long r3, struct pt_regs *reg
+ 
+ 	BUG_ON(!user_mode(regs));
+ 
+-	regs->exit_result |= syscall_exit_prepare_main(r3, regs);
++	regs->exit_result = interrupt_exit_user_prepare_main(regs, regs->exit_result);
+ 
+ 	return regs->exit_result;
+ }
+-- 
+2.25.0
+
