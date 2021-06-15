@@ -2,68 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69AC23A7561
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 05:48:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46B4A3A7563
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 05:49:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G3vRm73LJz302f
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 13:48:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G3vSY6KPVz3bw6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jun 2021 13:49:01 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Mg+8v23p;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Gtt8sv2K;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b32;
- helo=mail-yb1-xb32.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b2d;
+ helo=mail-yb1-xb2d.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Mg+8v23p; dkim-atps=neutral
-Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com
- [IPv6:2607:f8b0:4864:20::b32])
+ header.s=20161025 header.b=Gtt8sv2K; dkim-atps=neutral
+Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com
+ [IPv6:2607:f8b0:4864:20::b2d])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G3vRJ6jrdz2yYQ
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 13:47:56 +1000 (AEST)
-Received: by mail-yb1-xb32.google.com with SMTP id g38so18473842ybi.12
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 20:47:55 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G3vS71lDBz2yjS
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 13:48:38 +1000 (AEST)
+Received: by mail-yb1-xb2d.google.com with SMTP id c14so18507226ybk.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jun 2021 20:48:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=honLpRS5BN/c2OkeqRE0xa+BxqCXma5P6oZc4YqSaPE=;
- b=Mg+8v23pivt6Zp5p5+GDfXoaCDNdSAUyb5ugGA1H4TvgXOxNuc3e+P73Ee2LrcGqdr
- Q9cKeOEF020LWaK3asdbZwnCBnswvyl7yJqQw5+ewetqrkt0XodouzDJ0Zi7RlYLeg7z
- 82S9yycBLPt5+WPIiWkXXEdxWaWns8XQoEzBxpdgqREQeYFsVISK2s5zrJ9MNBrcO3Uk
- 22qUxIfTZBp55zMJfWyLPHiQqixxk873ENISYpesziAAWVrvcZuoWmr44+G4rE4hcFRL
- PORcweIU8HS0Hp8aVdRi2uVVscqlBX3Sj6FRiGGWZ5A73TRoUMx0jQgKZCRpJE1w2fV4
- l5VA==
+ :cc; bh=yin680PxT32vvsFD3cgHVsiUYZwQgvezq1Xoe5O317c=;
+ b=Gtt8sv2KPRSl3UIUPDmkHcCj5XNL9oJgV5f0w/jrE0nVN+X7LEPbj9GYDUSZUOLt59
+ 3+4MSm+kzX1CI1uGiVaMTwsYAjxaniKbGnZQBvQQOMCgjMcIrw7G40ZbTN8dxIyH2vTy
+ dKjtCe62Q/S9r2ydzl4PIPvj4jNGchg1hh5t2ix/VFXfOdANxJNieil5BlOsOVxZpVrs
+ AEthIhdk68OmQIK4voYsCn/fr+djO8sbdGu27V3Zh1eTSj0m0VNFDMbdYmK7lMVsSx9G
+ mlSdeWF4kfTvsg+SO1jRk9voBPSf8IFk2Otha7XhpL6LcpMnVUXbiFCqO22Ss8eqkv4l
+ Fl1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=honLpRS5BN/c2OkeqRE0xa+BxqCXma5P6oZc4YqSaPE=;
- b=mRtVHgsO6A41kEPzddXxaDPWAiYobQEhZQgBv2LguqtQ0sJ+qeWansi1WnCrWsnTEy
- hYDJiE6CVdrmQ8FaQ/fuSWwRMF7euDMF+p3PdH1dNYp44mqbXmFOJNxgAO3PUCli0q7S
- F3Akn/SWdzZa2TGv3QVtW5YEpqoSaMDbeS/KIp4NAjtEIboCBdvsAAoBZHaoEJKmKaH6
- fadgPFusoR+0B0eJwVO9qC5FfdE/MF6jiqMINYOxkMiNUCv1k31jfRIwCrNrCyHv3FO0
- yoHy0MkU02lIhTW3RRWfqDxjWhoZcRAw+yX7eYQmiD3tvYiIUbbOEcsnXYouU7rVkG45
- w3VQ==
-X-Gm-Message-State: AOAM5324EP+HYS05XaMH0uJeJse1zDAx3D/F4N+GFMS8eWaGBN0n9rpb
- mNCUw6N75274AhI2uZvApgUmQ8BIt1sk8/7fi+I=
-X-Google-Smtp-Source: ABdhPJx60/JHwFkAApq2VGhT0raLJZpQSP3Rn44dJUEOtivCEVQESrJ+p6+YiIgMvdLOSAxeMzaxSeSzrDsQsOhh/3Y=
-X-Received: by 2002:a25:694d:: with SMTP id e74mr4751923ybc.377.1623728872887; 
- Mon, 14 Jun 2021 20:47:52 -0700 (PDT)
+ bh=yin680PxT32vvsFD3cgHVsiUYZwQgvezq1Xoe5O317c=;
+ b=S7Tv0e3/5FivBw+HGi+Z4iA4DeUDgKhXAKFCUZbdd+iRqFXFSPWVQK6gd/9n+uv6g6
+ XIeydHsk2fQM+SNxpyFzNXdbdlLztMBGYz5E3GZusuClvwCJpXa6XqvGaF8YJFUw3uDq
+ j0VyfbXNSyAP92pm45uZssRDcGYptQwGqFgHPlSfsTO2q8eOQq4a7p7LfzXRUJCgBgR5
+ LbovRotkQvF0tWNAOy+zEfJ1vCUW4TYg+BZWArnv2FBevHY78BC+sz4K0iZIWzEPs/yL
+ Cqc7eSCBeLIoORZ7j5Tt49yR9AHK8vAsFvpbZEAjHW8hOFsGcAFPCihleNfX6kFvmlbu
+ GdWA==
+X-Gm-Message-State: AOAM533PCyCT+hBrk3RB/vZvzna4N3xv2C8xDbIrae/sRi/K205GDjDn
+ 1MYKGcW3cuHxtEDRdcD8muc6tvxp4yGzZuOw43A=
+X-Google-Smtp-Source: ABdhPJw9ZI06p4bfDSpDF6e0BS6jWeKMJll3l4TO6xyULMQ8kEUfjDXChwtGw/ohDBpgxouXzBoBnVm+ngQlBvjB6Ek=
+X-Received: by 2002:a25:607:: with SMTP id 7mr3224929ybg.343.1623728915277;
+ Mon, 14 Jun 2021 20:48:35 -0700 (PDT)
 MIME-Version: 1.0
 References: <cover.1621516826.git.christophe.leroy@csgroup.eu>
- <7062722b087228e42cbd896e39bfdf526d6a340a.1621516826.git.christophe.leroy@csgroup.eu>
- <871r93vqcb.fsf@mpe.ellerman.id.au>
-In-Reply-To: <871r93vqcb.fsf@mpe.ellerman.id.au>
+ <d54c63dcac6d190e1cc0d2fe3259d6e621928cdf.1621516826.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <d54c63dcac6d190e1cc0d2fe3259d6e621928cdf.1621516826.git.christophe.leroy@csgroup.eu>
 From: Jordan Niethe <jniethe5@gmail.com>
-Date: Tue, 15 Jun 2021 13:47:41 +1000
-Message-ID: <CACzsE9pajbu70rm4AAk8=S1zDj6LCfSwemEd+dhRyPw2F4WF+A@mail.gmail.com>
-Subject: Re: [PATCH v2 08/12] powerpc: Don't use 'struct ppc_inst' to
- reference instruction location
-To: Michael Ellerman <mpe@ellerman.id.au>
+Date: Tue, 15 Jun 2021 13:48:23 +1000
+Message-ID: <CACzsE9qX3TT07QXBECdB4EJq70KGB0UPn3kfk3WfS-jTQgaAvQ@mail.gmail.com>
+Subject: Re: [PATCH v2 09/12] powerpc/inst: Refactor PPC32 and PPC64 versions
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -83,68 +81,103 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 15, 2021 at 12:01 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
+On Thu, May 20, 2021 at 11:50 PM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
 >
-> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> > diff --git a/arch/powerpc/include/asm/inst.h b/arch/powerpc/include/asm/inst.h
-> > index 5a0740ebf132..32d318c3b180 100644
-> > --- a/arch/powerpc/include/asm/inst.h
-> > +++ b/arch/powerpc/include/asm/inst.h
-> > @@ -139,7 +139,7 @@ static inline int ppc_inst_len(struct ppc_inst x)
-> >   * Return the address of the next instruction, if the instruction @value was
-> >   * located at @location.
-> >   */
-> > -static inline struct ppc_inst *ppc_inst_next(void *location, struct ppc_inst *value)
-> > +static inline unsigned int *ppc_inst_next(unsigned int *location, unsigned int *value)
-> >  {
-> >       struct ppc_inst tmp;
-> >
+> ppc_inst() ppc_inst_prefixed() ppc_inst_swab() can easily
+> be made common to both PPC32 and PPC64.
 >
-> It's not visible in the diff, but the rest of the function is:
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+>  arch/powerpc/include/asm/inst.h | 49 +++++++++------------------------
+>  1 file changed, 13 insertions(+), 36 deletions(-)
 >
->         tmp = ppc_inst_read(value);
+> diff --git a/arch/powerpc/include/asm/inst.h b/arch/powerpc/include/asm/inst.h
+> index 32d318c3b180..e009e94e90b2 100644
+> --- a/arch/powerpc/include/asm/inst.h
+> +++ b/arch/powerpc/include/asm/inst.h
+> @@ -60,9 +60,9 @@ static inline int ppc_inst_primary_opcode(struct ppc_inst x)
+>         return ppc_inst_val(x) >> 26;
+>  }
 >
->         return location + ppc_inst_len(tmp);
-> }
+> -#ifdef CONFIG_PPC64
+>  #define ppc_inst(x) ((struct ppc_inst){ .val = (x) })
 >
-> And so changing the type of location from void * to int * changes the
-> result of that addition, ie. previously it was in units of bytes, now
-> it's units of 4 bytes.
+> +#ifdef CONFIG_PPC64
+>  #define ppc_inst_prefix(x, y) ((struct ppc_inst){ .val = (x), .suffix = (y) })
 >
-> To fix it I've kept location as unsigned int *, and added a cast where
-> we do the addition. That way users of the function just see unsigned int *,
-> the cast to void * is an implementation detail.
+>  static inline u32 ppc_inst_suffix(struct ppc_inst x)
+> @@ -70,57 +70,34 @@ static inline u32 ppc_inst_suffix(struct ppc_inst x)
+>         return x.suffix;
+>  }
 >
-> We only have a handful of uses of ppc_inst_len(), so maybe that should
-> change name and return a result in units of int *. But that can be a
-> separate change.
+> -static inline bool ppc_inst_prefixed(struct ppc_inst x)
+> -{
+> -       return ppc_inst_primary_opcode(x) == OP_PREFIX;
+> -}
+> +#else
+> +#define ppc_inst_prefix(x, y) ppc_inst(x)
 >
-> > diff --git a/arch/powerpc/platforms/86xx/mpc86xx_smp.c b/arch/powerpc/platforms/86xx/mpc86xx_smp.c
-> > index 87f524e4b09c..302f2a1e0361 100644
-> > --- a/arch/powerpc/platforms/86xx/mpc86xx_smp.c
-> > +++ b/arch/powerpc/platforms/86xx/mpc86xx_smp.c
-> > @@ -83,7 +83,7 @@ smp_86xx_kick_cpu(int nr)
-> >               mdelay(1);
-> >
-> >       /* Restore the exception vector */
-> > -     patch_instruction((struct ppc_inst *)vector, ppc_inst(save_vector));
-> > +     patch_instruction(vector, ppc_inst(save_vector));
-> >
-> >       local_irq_restore(flags);
-> >
+> -static inline struct ppc_inst ppc_inst_swab(struct ppc_inst x)
+> +static inline u32 ppc_inst_suffix(struct ppc_inst x)
+>  {
+> -       return ppc_inst_prefix(swab32(ppc_inst_val(x)), swab32(ppc_inst_suffix(x)));
+> +       return 0;
+>  }
 >
-> There was another usage in here:
+> +#endif /* CONFIG_PPC64 */
+> +
+>  static inline struct ppc_inst ppc_inst_read(const unsigned int *ptr)
+>  {
+> -       u32 val, suffix;
+> -
+> -       val = *ptr;
+> -       if ((val >> 26) == OP_PREFIX) {
+> -               suffix = *(ptr + 1);
+> -               return ppc_inst_prefix(val, suffix);
+> -       } else {
+> -               return ppc_inst(val);
+> -       }
+> +       if (IS_ENABLED(CONFIG_PPC64) && (*ptr >> 26) == OP_PREFIX)
+> +               return ppc_inst_prefix(*ptr, *(ptr + 1));
+> +       else
+> +               return ppc_inst(*ptr);
+>  }
 >
->         /* Setup fake reset vector to call __secondary_start_mpc86xx. */
->         target = (unsigned long) __secondary_start_mpc86xx;
-> -       patch_branch((struct ppc_inst *)vector, target, BRANCH_SET_LINK);
-> +       patch_branch(vector, target, BRANCH_SET_LINK);
+> -#else
+> -
+> -#define ppc_inst(x) ((struct ppc_inst){ .val = x })
+> -
+> -#define ppc_inst_prefix(x, y) ppc_inst(x)
+> -
+>  static inline bool ppc_inst_prefixed(struct ppc_inst x)
+>  {
+> -       return false;
+> -}
+> -
+> -static inline u32 ppc_inst_suffix(struct ppc_inst x)
+> -{
+> -       return 0;
+> +       return IS_ENABLED(CONFIG_PPC64) && ppc_inst_primary_opcode(x) == OP_PREFIX;
+>  }
 >
->         /* Kick that CPU */
->         smp_86xx_release_core(nr);
+>  static inline struct ppc_inst ppc_inst_swab(struct ppc_inst x)
+>  {
+> -       return ppc_inst(swab32(ppc_inst_val(x)));
+> -}
+> -
+> -static inline struct ppc_inst ppc_inst_read(const unsigned int *ptr)
+> -{
+> -       return ppc_inst(*ptr);
+> +       return ppc_inst_prefix(swab32(ppc_inst_val(x)), swab32(ppc_inst_suffix(x)));
+>  }
 >
-> I fixed it up.
+> -#endif /* CONFIG_PPC64 */
+> -
+>  static inline bool ppc_inst_equal(struct ppc_inst x, struct ppc_inst y)
+>  {
+>         if (ppc_inst_val(x) != ppc_inst_val(y))
+> --
+> 2.25.0
 >
-> cheers
-fwiw
 Reviewed by: Jordan Niethe <jniethe5@gmail.com>
