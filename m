@@ -1,55 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F14A3AA782
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 01:32:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 563073AA793
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 01:39:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G51h82XyZz3c15
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 09:32:56 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=moidIHmW;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G51q85NYnz3bw1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 09:39:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=paulus@ozlabs.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
- header.s=201707 header.b=moidIHmW; dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ envelope-from=srs0=hx3w=lk=kernel.crashing.org=segher@ozlabs.org;
+ receiver=<UNKNOWN>)
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G51gm0rhTz306W
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 09:32:36 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G51pq2f0kz306W
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 09:38:43 +1000 (AEST)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by ozlabs.org (Postfix) with ESMTP id 4G51pp28Y0z9sfG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 09:38:42 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 4G51gl1Q2Wz9sW4; Thu, 17 Jun 2021 09:32:35 +1000 (AEST)
+ id 4G51pp1qBHz9sXN; Thu, 17 Jun 2021 09:38:42 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1003)
- id 4G51gl0s3Yz9sXN; Thu, 17 Jun 2021 09:32:35 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1623886355; bh=5M85ANr7LFR3zPwLLC1F8HJ6b+Cp30QkuPB21v7W57s=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=moidIHmWhDZlq6/NxntyCxKNNZ09s1A+5hJOyzCsDuEjtcu9dlRjhQdK8jUn63Pxl
- 1LEjJUT+8v8gNGeSS1S8ymtp39hsceiRz/B3/FV1vSvhHbXakhZ+sclHXgWNswSBrc
- hvnty7k8ktwgjlqpqNOFpq5GFPQur1nPW+8QhlY9t0HsJ87u8K9bGUzzCNXKCLvb+Q
- pHklLTHp9sk4wsjdkyca7nhJbwYk6FfXSWb4KWpJBB/XUIjtopQrjuI2qDw3u2iNH7
- wOmJPwUtvy7iA+4853FEuOOiUnA7nvE8moWwdUvemiMalMAi+3Q2qZm48GD01fiDgN
- bzyCYaJBPnI6g==
-Date: Thu, 17 Jun 2021 08:24:51 +1000
-From: Paul Mackerras <paulus@ozlabs.org>
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Subject: Re: [PATCH 01/11] powerpc: Add Microwatt platform
-Message-ID: <YMp6MydtCWvpWqYV@thinks.paulus.ozlabs.org>
+Authentication-Results: ozlabs.org;
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by ozlabs.org (Postfix) with ESMTP id 4G51pn521Pz9sW4;
+ Thu, 17 Jun 2021 09:38:40 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 15GNbdo7032516;
+ Wed, 16 Jun 2021 18:37:39 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 15GNbdVo032515;
+ Wed, 16 Jun 2021 18:37:39 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Wed, 16 Jun 2021 18:37:39 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Paul Mackerras <paulus@ozlabs.org>
+Subject: Re: [PATCH 11/11] powerpc/microwatt: Disable interrupts in boot
+ wrapper main program
+Message-ID: <20210616233739.GN5077@gate.crashing.org>
 References: <YMfeswgEHeXSLOUF@thinks.paulus.ozlabs.org>
- <YMfe56vkKKqtc0tQ@thinks.paulus.ozlabs.org>
- <20210616184007.GK5077@gate.crashing.org>
-MIME-Version: 1.0
+ <YMfgt4ndMrtYwWYY@thinks.paulus.ozlabs.org>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210616184007.GK5077@gate.crashing.org>
+In-Reply-To: <YMfgt4ndMrtYwWYY@thinks.paulus.ozlabs.org>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,25 +70,12 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 16, 2021 at 01:40:07PM -0500, Segher Boessenkool wrote:
-> Hi Paul,
-> 
-> On Tue, Jun 15, 2021 at 08:57:43AM +1000, Paul Mackerras wrote:
-> > --- a/arch/powerpc/Kconfig
-> > +++ b/arch/powerpc/Kconfig
-> > @@ -422,7 +422,7 @@ config HUGETLB_PAGE_SIZE_VARIABLE
-> >  
-> >  config MATH_EMULATION
-> >  	bool "Math emulation"
-> > -	depends on 4xx || PPC_8xx || PPC_MPC832x || BOOKE
-> > +	depends on 4xx || PPC_8xx || PPC_MPC832x || BOOKE || PPC_MICROWATT
-> >  	select PPC_FPU_REGS
-> 
-> Why do you need this / want this, since you have FP hardware?
+On Tue, Jun 15, 2021 at 09:05:27AM +1000, Paul Mackerras wrote:
+> This ensures that we don't get a decrementer interrupt arriving before
+> we have set up a handler for it.
 
-The FPU is optional, and doesn't fit in the smaller (-35T) version of
-the Artix-7 that is readily available.
+Maybe add a comment saying this is setting MSR[EE]=0 for that?  Or do
+other bits here matter as well?
 
-I should mention this in the commit message.
 
-Paul.
+Segher
