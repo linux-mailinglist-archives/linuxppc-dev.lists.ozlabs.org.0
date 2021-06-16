@@ -1,77 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 135AC3A92EE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 08:41:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B20583A9313
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 08:49:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G4bF35Nkfz3cNF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 16:41:27 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=iaSacDYc;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G4bQJ2Hy8z3c0k
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 16:49:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::532;
- helo=mail-pg1-x532.google.com; envelope-from=viresh.kumar@linaro.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=iaSacDYc; dkim-atps=neutral
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com
- [IPv6:2607:f8b0:4864:20::532])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G4bDF5kc2z3byT
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 16:40:45 +1000 (AEST)
-Received: by mail-pg1-x532.google.com with SMTP id l184so1149369pgd.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 23:40:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=6a7/7P/WOJQ+/PmIgspG1zB1PV41tmG6f1/nfdy7CoM=;
- b=iaSacDYcEtxx/MsUryuoNYhVhvHu4/YAkds2/zlwCB5k3q0y2bYgm4bQ+SkVbx9+6M
- sL+eo2HDNGjujx3quAQKcufA7TPDTnmQ34Zm2uRuUZQ7EVEg6pRInFALPcFJDi/G4FeU
- JM+8EF3W3lK3P0olWSBysQvMYp5H1p/T1UHp4EwL9eQra+NRK3mWgqSB10pa6Xm0h6mD
- Mtavp70tvXNUNPU0w0yhJAvLA9TN2AN66SDTsI1FKMNlUs76adVIbz6RafNE+/xiteUJ
- k1R4bKmJKLpa2zg5qEmGb0RpLC2SvthSi/zripD16l53LCfCBQ4Cgu8nhWWTxoBznDjc
- MFZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=6a7/7P/WOJQ+/PmIgspG1zB1PV41tmG6f1/nfdy7CoM=;
- b=Pfzt8gDzXzRpYChPcyuVOqsDkk0KuvsHRxjJAfVfu8/Zn9QPTyvPdtNNA3d+7xwJuT
- l/WyFATfU9hMYSKtT0iNm2Lftaz2/xPqtN6+1rtHauvsh9vD0ZWgKOgH6LH0HOuWeDpS
- aFE3WTJTr19k3OUKgqVCPo8l07PXMf+X6DYt7d/2VVnmUnum8O6lMQv85iq9UcorKIZt
- /tvMRswoyuPApE6nSxy99I1ukuhO883yxfRwpA+7kLu7vQYDwZLcffq7fSfX6FLdXspk
- NagRNtIabRWZyUySU2tIsVwhTXLgmwT4p/aYUs/AO620RqBX70sxa8DPo2g/eNFudafO
- ioGA==
-X-Gm-Message-State: AOAM530zrM/yotREqVvdFiqSLm7LXc5DHjsvfLAspaOXkOHL2zTY295X
- Vbrgqo9Psmhu/p4v+2E11jwBiw==
-X-Google-Smtp-Source: ABdhPJxuBDHSvp2jU3VUgo8rb7U+TO6siVyHDNIEpnu25aTr+0eg3ip1eS8kfvE7DLdzHMxtXtjgBA==
-X-Received: by 2002:aa7:949d:0:b029:2ef:d1ca:ddd3 with SMTP id
- z29-20020aa7949d0000b02902efd1caddd3mr8026579pfk.39.1623825642747; 
- Tue, 15 Jun 2021 23:40:42 -0700 (PDT)
-Received: from localhost ([136.185.134.182])
- by smtp.gmail.com with ESMTPSA id s21sm1167876pgo.42.2021.06.15.23.40.41
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Jun 2021 23:40:42 -0700 (PDT)
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Rafael Wysocki <rjw@rjwysocki.net>, Viresh Kumar <viresh.kumar@linaro.org>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
-Subject: [PATCH V2 3/3] cpufreq: powerenv: Migrate to ->exit() callback
- instead of ->stop_cpu()
-Date: Wed, 16 Jun 2021 12:10:28 +0530
-Message-Id: <c1dac4fd3b87d16895acbef6b4894a2d2b38dc83.1623825358.git.viresh.kumar@linaro.org>
-X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
-In-Reply-To: <cover.1623825358.git.viresh.kumar@linaro.org>
-References: <cover.1623825358.git.viresh.kumar@linaro.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G4bPt3z2xz2xYd
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 16:49:03 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 4G4bPl4wqJzB8xR;
+ Wed, 16 Jun 2021 08:48:59 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id oceNjiKKV9Ec; Wed, 16 Jun 2021 08:48:59 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4G4bPl41CbzB8tc;
+ Wed, 16 Jun 2021 08:48:59 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 92DEB8B7CE;
+ Wed, 16 Jun 2021 08:48:59 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 82fPbnDfOuKv; Wed, 16 Jun 2021 08:48:59 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 384E18B7CA;
+ Wed, 16 Jun 2021 08:48:59 +0200 (CEST)
+Subject: Re: Oops (NULL pointer) with 'perf record' of selftest 'null_syscall'
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+References: <c141a18c-b18d-b775-1848-527c35a1c433@csgroup.eu>
+ <3388922c-0224-e4aa-f7b7-4fea43e060f9@linux.ibm.com>
+ <6102EF12-AFB2-48B1-B707-D3F5471EADDB@linux.vnet.ibm.com>
+ <bc2dac10-9e60-e4b7-c376-5ed00f6e227c@csgroup.eu>
+ <f271b0de-20ce-76e2-9c95-921783f111b4@linux.ibm.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <185ab175-952d-beb5-6ec6-d3686a9e2a55@csgroup.eu>
+Date: Wed, 16 Jun 2021 08:48:59 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
+In-Reply-To: <f271b0de-20ce-76e2-9c95-921783f111b4@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -84,82 +67,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Vincent Guittot <vincent.guittot@linaro.org>,
- linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-commit 367dc4aa932b ("cpufreq: Add stop CPU callback to cpufreq_driver
-interface") added the stop_cpu() callback to allow the drivers to do
-clean up before the CPU is completely down and its state can't be
-modified.
 
-At that time the CPU hotplug framework used to call the cpufreq core's
-registered notifier for different events like CPU_DOWN_PREPARE and
-CPU_POST_DEAD. The stop_cpu() callback was called during the
-CPU_DOWN_PREPARE event.
 
-This is no longer the case, cpuhp_cpufreq_offline() is called only once
-by the CPU hotplug core now and we don't really need two separate
-callbacks for cpufreq drivers, i.e. stop_cpu() and exit(), as everything
-can be done from the exit() callback itself.
+Le 16/06/2021 à 08:33, Madhavan Srinivasan a écrit :
+> 
+> On 6/16/21 11:56 AM, Christophe Leroy wrote:
+>>
+>>
+>> Le 16/06/2021 à 05:40, Athira Rajeev a écrit :
+>>>
+>>>
+>>>> On 16-Jun-2021, at 8:53 AM, Madhavan Srinivasan <maddy@linux.ibm.com> wrote:
+>>>>
+>>>>
+>>>> On 6/15/21 8:35 PM, Christophe Leroy wrote:
+>>>>> For your information, I'm getting the following Oops. Detected with 5.13-rc6, it also oopses on 
+>>>>> 5.12 and 5.11.
+>>>>> Runs ok on 5.10. I'm starting bisecting now.
+>>>>
+>>>>
+>>>> Thanks for reporting, got the issue. What has happened in this case is that, pmu device is not 
+>>>> registered
+>>>> and trying to access the instruction point which will land in perf_instruction_pointer(). And 
+>>>> recently I have added
+>>>> a workaround patch for power10 DD1 which has caused this breakage. My bad. We are working on a 
+>>>> fix patch
+>>>> for the same and will post it out. Sorry again.
+>>>>
+>>>
+>>> Hi Christophe,
+>>>
+>>> Can you please try with below patch in your environment and test if it works for you.
+>>>
+>>>  From 55d3afc9369dfbe28a7152c8e9f856c11c7fe43d Mon Sep 17 00:00:00 2001
+>>> From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+>>> Date: Tue, 15 Jun 2021 22:28:11 -0400
+>>> Subject: [PATCH] powerpc/perf: Fix crash with 'perf_instruction_pointer' when
+>>>   pmu is not set
+>>>
+>>> On systems without any specific PMU driver support registered, running
+>>> perf record causes oops:
+>>>
+>>> [   38.841073] NIP [c00000000013af54] perf_instruction_pointer+0x24/0x100
+>>> [   38.841079] LR [c0000000003c7358] perf_prepare_sample+0x4e8/0x820
+>>> [   38.841085] --- interrupt: 300
+>>> [   38.841088] [c00000001cf03440] [c0000000003c6ef8] perf_prepare_sample+0x88/0x820 (unreliable)
+>>> [   38.841096] [c00000001cf034a0] [c0000000003c76d0] perf_event_output_forward+0x40/0xc0
+>>> [   38.841104] [c00000001cf03520] [c0000000003b45e8] __perf_event_overflow+0x88/0x1b0
+>>> [   38.841112] [c00000001cf03570] [c0000000003b480c] perf_swevent_hrtimer+0xfc/0x1a0
+>>> [   38.841119] [c00000001cf03740] [c0000000002399cc] __hrtimer_run_queues+0x17c/0x380
+>>> [   38.841127] [c00000001cf037c0] [c00000000023a5f8] hrtimer_interrupt+0x128/0x2f0
+>>> [   38.841135] [c00000001cf03870] [c00000000002962c] timer_interrupt+0x13c/0x370
+>>> [   38.841143i] [c00000001cf038d0] [c000000000009ba4] decrementer_common_virt+0x1a4/0x1b0
+>>> [   38.841151] --- interrupt: 900 at copypage_power7+0xd4/0x1c0
+>>>
+>>> During perf record session, perf_instruction_pointer() is called to
+>>> capture the sample ip. This function in core-book3s accesses ppmu->flags.
+>>> If a platform specific PMU driver is not registered, ppmu is set to NULL
+>>> and accessing its members results in a crash. Fix this crash by checking
+>>> if ppmu is set.
+>>>
+>>> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+>>> Reported-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>>
+>> Fixes: 2ca13a4cc56c ("powerpc/perf: Use regs->nip when SIAR is zero")
+>> Cc: stable@vger.kernel.org
+>> Tested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Thanks, but just wonder what is the system config and processor version in which you got this fail.
+> Reason, we do have generic-pmu which should kick-in in absence of a platform specific driver.
+> 
 
-Migrate to using the exit() callback instead of stop_cpu().
 
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
----
- drivers/cpufreq/powernv-cpufreq.c | 23 +++++++++--------------
- 1 file changed, 9 insertions(+), 14 deletions(-)
+It's an mpc8321 (book3s/32)
 
-diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
-index e439b43c19eb..005600cef273 100644
---- a/drivers/cpufreq/powernv-cpufreq.c
-+++ b/drivers/cpufreq/powernv-cpufreq.c
-@@ -875,7 +875,15 @@ static int powernv_cpufreq_cpu_init(struct cpufreq_policy *policy)
- 
- static int powernv_cpufreq_cpu_exit(struct cpufreq_policy *policy)
- {
--	/* timer is deleted in cpufreq_cpu_stop() */
-+	struct powernv_smp_call_data freq_data;
-+	struct global_pstate_info *gpstates = policy->driver_data;
-+
-+	freq_data.pstate_id = idx_to_pstate(powernv_pstate_info.min);
-+	freq_data.gpstate_id = idx_to_pstate(powernv_pstate_info.min);
-+	smp_call_function_single(policy->cpu, set_pstate, &freq_data, 1);
-+	if (gpstates)
-+		del_timer_sync(&gpstates->timer);
-+
- 	kfree(policy->driver_data);
- 
- 	return 0;
-@@ -1007,18 +1015,6 @@ static struct notifier_block powernv_cpufreq_opal_nb = {
- 	.priority	= 0,
- };
- 
--static void powernv_cpufreq_stop_cpu(struct cpufreq_policy *policy)
--{
--	struct powernv_smp_call_data freq_data;
--	struct global_pstate_info *gpstates = policy->driver_data;
--
--	freq_data.pstate_id = idx_to_pstate(powernv_pstate_info.min);
--	freq_data.gpstate_id = idx_to_pstate(powernv_pstate_info.min);
--	smp_call_function_single(policy->cpu, set_pstate, &freq_data, 1);
--	if (gpstates)
--		del_timer_sync(&gpstates->timer);
--}
--
- static unsigned int powernv_fast_switch(struct cpufreq_policy *policy,
- 					unsigned int target_freq)
- {
-@@ -1042,7 +1038,6 @@ static struct cpufreq_driver powernv_cpufreq_driver = {
- 	.target_index	= powernv_cpufreq_target_index,
- 	.fast_switch	= powernv_fast_switch,
- 	.get		= powernv_cpufreq_get,
--	.stop_cpu	= powernv_cpufreq_stop_cpu,
- 	.attr		= powernv_cpu_freq_attr,
- };
- 
--- 
-2.31.1.272.g89b43f80a514
-
+Christophe
