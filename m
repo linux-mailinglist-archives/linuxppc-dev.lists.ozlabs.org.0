@@ -2,64 +2,164 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F8593A9EB1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 17:13:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CD533AA1C5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 18:48:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G4pbK75Bsz3c0f
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 01:13:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G4rjQ57fWz3by3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 02:48:26 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BqW78zvf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2020-01-29 header.b=GWtRLNSb;
+	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=ouyHuRMz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=robh@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=oracle.com (client-ip=205.220.177.32;
+ helo=mx0b-00069f02.pphosted.com; envelope-from=martin.petersen@oracle.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=BqW78zvf; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
+ header.s=corp-2020-01-29 header.b=GWtRLNSb; 
+ dkim=pass (1024-bit key;
+ unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com
+ header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com
+ header.b=ouyHuRMz; dkim-atps=neutral
+X-Greylist: delayed 2625 seconds by postgrey-1.36 at boromir;
+ Thu, 17 Jun 2021 02:47:56 AEST
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com
+ [205.220.177.32])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G4pZt2PXBz306n
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 01:12:38 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 2A96360FDB
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 15:12:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1623856354;
- bh=79yfQdKxv3qf+Uv+p6L1hNCWKPz5Fwg5T6U9zNgNXKw=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=BqW78zvfiJFX1WM3aDIknqlHXv25abiaKRQGWflPbVe5mHb8O9l3o/637flx39WEV
- cxE5w+ImnzJWcupRqiIlSCdWw3mWk3Cx9zyVndQ6dkPj5t43AKjeBGVfcpsgenW4vb
- OtKupuD0Ntu2vsfS9jGRg8LEs4BP2xDparQODe4NbrpL5Ifi5OWG2B4/P9HW70cQ+p
- X/YEaHt+LUkVEt4USF3AMG74opsi25veGHPjoUFr0Y86T4K0ypaX1XE8w1CW0XHn0r
- M7bIYHn+eSLwn7g9EpX8Xjv0jQ72wzH8eddElWFaUDVLoyT0S+osdrecHy6yxIijoO
- vHMYPlo4SyQqg==
-Received: by mail-lf1-f41.google.com with SMTP id p17so4913762lfc.6
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 08:12:34 -0700 (PDT)
-X-Gm-Message-State: AOAM530m/TRt5FOCbyLvgU2jIAA3ojKzfG9u+gA35B0xDpRQBjdmxaMn
- d8V/6sx1goJptKcFkTbxmmQ57r9f4faZRC63Mg==
-X-Google-Smtp-Source: ABdhPJxABYnhsAzimi3nTGL6QdJk0DeFkDzt1g0oue+DKcU8vorHRba5UMSdbzxFOM1x2Zy6FOyPf8RPn7FkPhkqUPU=
-X-Received: by 2002:a05:6402:cb0:: with SMTP id
- cn16mr69518edb.165.1623856342407; 
- Wed, 16 Jun 2021 08:12:22 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G4rhr55hKz2yxV
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 02:47:55 +1000 (AEST)
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 15GFvW5i016469; Wed, 16 Jun 2021 16:03:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=to : cc : subject :
+ from : message-id : references : date : in-reply-to : content-type :
+ mime-version; s=corp-2020-01-29;
+ bh=I6llXk1+2G5Smd6EsvMRPJbdlc8J+PwKF4CjMes5MaU=;
+ b=GWtRLNSbnB3yjBuBOgehJCA9ySC6nyFlSSjWXyPxiLhKOo3Q59ZMCIFc9eJyKOgjpEji
+ QS3/sMrt1its0kgjuqwN4hiteRPsqYtyqxcnUUT+sxQH7KZ27JPO1v7VVPZxmyn0zDW+
+ xvVQPyIbvFbrHabePRQWREw10JRLIUc2Dx108xBEafk9bi39BxdeUlLzA9wKlCI8JBj7
+ 7rgRxcGYKQ98g+hRGiC3h5apBz1HhTiDtM+93K7FSKnKkSYingvxnrGoz37czbOKnt/5
+ Zw0QApwiGOuwIS+XwLxrWS48Rt4dp1cLejVXwBAIuA4ni0zZX0gr5cXpnYaG92GdLgkG NA== 
+Received: from oracle.com (aserp3030.oracle.com [141.146.126.71])
+ by mx0b-00069f02.pphosted.com with ESMTP id 396tjdtn5a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 16 Jun 2021 16:03:35 +0000
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [127.0.0.1])
+ by pps.podrdrct (8.16.0.36/8.16.0.36) with SMTP id 15GG3YT3019839;
+ Wed, 16 Jun 2021 16:03:34 GMT
+Received: from nam10-dm6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10lp2102.outbound.protection.outlook.com [104.47.58.102])
+ by aserp3030.oracle.com with ESMTP id 396waukedy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 16 Jun 2021 16:03:34 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=HoX+Ik3wNI5EyD3O+87ZKZhMFlC8ZRP5jLbWVIJ5anGOP+QnxSkGOAQHpUK303bqOEiaIEUd0fUwB4G4Ioz+PIE1BLw6x863coDoSYuVEUfUPCTsot6sVSW4SnTlLKNHiny6eAQh4rPYuUcmfF4tNz/GlHq3z+NEEqwsxJLpVjDdajqCnOjrHycWEtJ7O3I4ioqGXhl7CThkeJQgsZrqxd5Hpz0kb7bJw8zdMWRd+AzYpkVHgaq/3qjuosUiE4rmtBqnFtlDTC3LZN1x9uteAYnLG7pFh83ta0aMWc96AVaVhGyzMtGhN59/5Tn6H/4W1NRCDMERvNRbp68CPuo8ow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=I6llXk1+2G5Smd6EsvMRPJbdlc8J+PwKF4CjMes5MaU=;
+ b=At5jzXjxxAAI8FbgvtOdYd9rWkaUGuVRSrf3bR1M8K6NVIO4LTBKs69ARh20gpxKUpzU4rHfGMbKc7MpFo2qg0VARxyTtfxHz7Pnh79qUcqK7xdP9bSOpdlqTbxl+lkFoXmmxao/xC4h88qVUtu9fnJo0/G1whXqPl3NpYU273j66gYtsM/KVSCpMqqkkixvi4lwwagf8W/PZSKf4GWito/iNlzTa1j2hRnFqqqcRUjwr6MjM1QuE7R75PLQa/bYLWQ8trT+tGwvT0HW0++19omriAolprmQ0EKyWdLmc9c8fqT8pw4tbA34LGafiILcxJUPwXL8bEbRKxKpu5zV3Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=I6llXk1+2G5Smd6EsvMRPJbdlc8J+PwKF4CjMes5MaU=;
+ b=ouyHuRMzxPuIS9HvpAX85DumNgjNvTh+XE/7Ne+n9ks2QvaQ1fpjoc2aq0EcQC6hJx4zIPiW73bvqRzMi3/RFLRCCAm0IIk5Y2MlCc6U8SqozlQp5xC4YfORzBMkfdvdtXvojUmYP5a4R01/cxtYylzNg+WOTpCyKB9DQ7LRCZA=
+Authentication-Results: lst.de; dkim=none (message not signed)
+ header.d=none;lst.de; dmarc=none action=none header.from=oracle.com;
+Received: from PH0PR10MB4759.namprd10.prod.outlook.com (2603:10b6:510:3d::12)
+ by PH0PR10MB4792.namprd10.prod.outlook.com (2603:10b6:510:3d::15)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.18; Wed, 16 Jun
+ 2021 16:03:32 +0000
+Received: from PH0PR10MB4759.namprd10.prod.outlook.com
+ ([fe80::4c61:9532:4af0:8796]) by PH0PR10MB4759.namprd10.prod.outlook.com
+ ([fe80::4c61:9532:4af0:8796%7]) with mapi id 15.20.4242.016; Wed, 16 Jun 2021
+ 16:03:32 +0000
+To: Christoph Hellwig <hch@lst.de>
+Subject: Re: switch the block layer to use kmap_local_page v2
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <yq1wnqt4x1q.fsf@ca-mkp.ca.oracle.com>
+References: <20210615132456.753241-1-hch@lst.de>
+Date: Wed, 16 Jun 2021 12:03:27 -0400
+In-Reply-To: <20210615132456.753241-1-hch@lst.de> (Christoph Hellwig's message
+ of "Tue, 15 Jun 2021 15:24:38 +0200")
+Content-Type: text/plain
+X-Originating-IP: [138.3.200.58]
+X-ClientProxiedBy: BY3PR05CA0051.namprd05.prod.outlook.com
+ (2603:10b6:a03:39b::26) To PH0PR10MB4759.namprd10.prod.outlook.com
+ (2603:10b6:510:3d::12)
 MIME-Version: 1.0
-References: <20210221174930.27324-1-nramas@linux.microsoft.com>
- <20210221174930.27324-6-nramas@linux.microsoft.com>
- <CAMuHMdVSuNS4edh-zM0_sbC0i1AAjQ9Y0n_8Mjz=3CALkW4pgg@mail.gmail.com>
- <CAL_JsqJ2x7zbyP3fAacdfHOWjCVjg6XhraV2YkoBJdZ2jXAMEA@mail.gmail.com>
- <54efb4fce5aac7efbd0b1b3885e9098b1d4ea745.camel@linux.microsoft.com>
- <CAL_JsqJEucP043eViq0Y1kAeqWNTqP5fLjfjz7+ksYx7QP_V5w@mail.gmail.com>
- <87y2basg27.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87y2basg27.fsf@mpe.ellerman.id.au>
-From: Rob Herring <robh@kernel.org>
-Date: Wed, 16 Jun 2021 09:12:10 -0600
-X-Gmail-Original-Message-ID: <CAL_Jsq+6bKsEBLoUXDBXM3FyYoBxmVzg8divwhayVGmHbHLhFQ@mail.gmail.com>
-Message-ID: <CAL_Jsq+6bKsEBLoUXDBXM3FyYoBxmVzg8divwhayVGmHbHLhFQ@mail.gmail.com>
-Subject: Re: [PATCH v19 05/13] of: Add a common kexec FDT setup function
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from ca-mkp.ca.oracle.com (138.3.200.58) by
+ BY3PR05CA0051.namprd05.prod.outlook.com (2603:10b6:a03:39b::26) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4242.9 via Frontend
+ Transport; Wed, 16 Jun 2021 16:03:31 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 21c9dfe5-5cbf-4b3f-6912-08d930e049db
+X-MS-TrafficTypeDiagnostic: PH0PR10MB4792:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <PH0PR10MB4792E6746C4F34A54D13330C8E0F9@PH0PR10MB4792.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:5236;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: KmUD+JEPTsSnCCiZ2ZdhwlfPbiDpM/oYyA9XIn1pnIled7TOnu0tXcktl8cSP2v44KKAlm92+tbYoL7d4o6i1spd8sgzWWAuTYJqG2MXZ+Ib2eLdZe71bk6fbJRGxZx3OHuTEFIm/zgZDsLlrNk9fsEvG1M/gUhP8I/YDA4LyS65bi5rj7wC10fpa7v2/r8IBIXMeYW5ezx/1L7QZlVmJ4hzZw6WYZH5Ne8iq8ilwrbpI3lwSpjgzNKXDRfcy3SAMx8StM0aWo0thKZErsycKbISBHtBeOeUnT26E3tNFM2Twie+E7VVuRj9szvxe9FxH4KXyfXk/TCqKvKTZYr0Put3K6wt4l6pIWKsTB15SAi4jPqZhHS9Qh17XZxK0kYIax8/+/QSCx11rnY8XdiG9RHQn0OpuCP3EnK8Iko0zD2RP5lioUIFZzSjW7CqvaeANaR2MFeLqRtke4UdGSCMZIv9nC+d1E2iW/tr8D6nrdd91tsUmNq/KCdTDnr9tP0sT/Yx5O+yAUK1JUzlYxTA5Vxn65T6usLQVEHi56DHOqdEwUghJc3dFa1TzRdfp4rUBsa00FmKjuU4Z14RNqcfupq60YNCpxe3L56qvKG5FnhO+e5X7zG7i50M0431hlXKHJrkoCgFt5LLEgouvvunqQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH0PR10MB4759.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(366004)(6666004)(6916009)(66556008)(36916002)(52116002)(55016002)(4326008)(66476007)(4744005)(7696005)(5660300002)(7416002)(66946007)(956004)(498600001)(2906002)(8936002)(8676002)(186003)(26005)(38100700002)(83380400001)(86362001)(54906003)(38350700002)(16526019);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?zHmGVe+ALXTJCFUdUHTNkxVmzHeCbrPdieRoU/7tnu8IePI2dRLXAWWWYCnH?=
+ =?us-ascii?Q?WmHPxt89EkrbYoYDKZkQ1hLVF+QzyOiTqZ9NqeLKg32AnReYyOwgSO/h0WAn?=
+ =?us-ascii?Q?bgltbTFldtlUcDoTl3bmoXhMRyg2MsjLDPaX3LuCJEJ0OA4iHdqbx0+sk1bN?=
+ =?us-ascii?Q?bDf2WQNV2eiPaiEwMkmk3mptXrO496x4jufZY+d5UP1DAFOBK7qbL79poPXI?=
+ =?us-ascii?Q?CCK6NHCI4d5xxXeSvHuAy9cPAagT1afOjQ9RuV5u+z1MOVbLo9Hjoi5oHpu3?=
+ =?us-ascii?Q?KQVfVOlA6xomXG6xvN8QsisyWnheVb8WC9wzBI8DGNB82xe8nLU/0SdwGNdz?=
+ =?us-ascii?Q?o8d9P5SIyWHoy5STAPVtG1iBQwHDetSPKlHpuVVIRdoCLqIjSAldWq6BYJ15?=
+ =?us-ascii?Q?0IWwDvF3e5ZhLe6Ss85ivT1sECZ+pJUiM3xPBD/copE/EnG2zKIkMaI6k7yP?=
+ =?us-ascii?Q?I2je3QoHY7L7aj0REPIu0bpSvVcCzR7UpwtuAziBlpzZWGTaXfdrJIp5O+kT?=
+ =?us-ascii?Q?poQT0KTjYPegCeDVACmSYNiC1pttl9gtKS5cxYZmVcTFt9z1MVC0/CsaE+Is?=
+ =?us-ascii?Q?yDDwyueYC63NxymdXMbubi/arKuSXXUa+7eBxDLhVM7q0Uscc2f8mAWYG4Yn?=
+ =?us-ascii?Q?ZUUi2fZ1kTqx3Ji08rERThOhk59iXPRs5+M1ejz2yC+HxpppZEE3/8xXI+fY?=
+ =?us-ascii?Q?Cfr+ZxWZVUi1AHyMfGjiWowurinj3FWYvl/j486bOjKiZccmcUBpxQND9E/6?=
+ =?us-ascii?Q?R7pOYuHye2vGQEZOk+6TQrVTdgBhMvfQUK/x0TDpF3+4K8NDzZRzHJSoc5fy?=
+ =?us-ascii?Q?xpsGKNe9b6lSnhHKkgek+IAUu7u3xTCWdpFuplqrredg/AF1zGaUCimI0kp7?=
+ =?us-ascii?Q?Su8OIAM4UCgyfUfgO5qWct517wkAmbkgCcaKCCV6SxHrHBvQkkyL8fcCjW4c?=
+ =?us-ascii?Q?aa8a3CLoaWd8z4uXlhEJ00sCYhokwepJF+uO7c0J+/xhVAj8DebJoXrRlSxJ?=
+ =?us-ascii?Q?c4WGo0gkMP2MxVEpWU1+TMYb8xBNdGmtEtMZI9o1rAUELNYtBu/Ibhr0Dx89?=
+ =?us-ascii?Q?GAaJ6rDjcTzdyqdPNyo/Qmo+3naKV1JbkEU5RLSSj0joIv4kHlhNNkz9y8df?=
+ =?us-ascii?Q?wb5v+Ui4Xat477qCsd9m3LC5MOU7Say/Vwkujt8kv3o+yfzrMmQfi9Xpf624?=
+ =?us-ascii?Q?JQbQLyc65+9bDgAKNUzaolmoDGpyDBCMHIcwDaO1LYPRRh+CWb6YaQAv9V6p?=
+ =?us-ascii?Q?NKXTJpkXYHhLpAUWP5e7Z41W9tX71NQx9PFxaxyphxnFrSIM+M1VIpmg6ZYm?=
+ =?us-ascii?Q?5bwEFau3mTsQhrv9Zk3RGjAL?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 21c9dfe5-5cbf-4b3f-6912-08d930e049db
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4759.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jun 2021 16:03:32.0614 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: b/7FCid3FO6EEMrDlCLiNW8dwVO0QoyaXBqibk+OAZwll9U4QbE2j7w8UitSVaadOAuqLIWRaSIYs4t+tWqCY4OZAmGxYUmWuRe3e+cb6wg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB4792
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=10016
+ signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
+ suspectscore=0
+ mlxlogscore=999 bulkscore=0 mlxscore=0 spamscore=0 adultscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2106160092
+X-Proofpoint-ORIG-GUID: 287C8opapJSjkChRqFXQvASCFz49YKWV
+X-Proofpoint-GUID: 287C8opapJSjkChRqFXQvASCFz49YKWV
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,104 +171,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, tao.li@vivo.com,
- Mimi Zohar <zohar@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>,
- Frank Rowand <frowand.list@gmail.com>, Sasha Levin <sashal@kernel.org>,
- Stephen Rothwell <sfr@canb.auug.org.au>, nramas <nramas@linux.microsoft.com>,
- Will Deacon <will@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>,
- James Morris <jmorris@namei.org>, AKASHI Takahiro <takahiro.akashi@linaro.org>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- "Serge E. Hallyn" <serge@hallyn.com>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, Pavel Tatashin <pasha.tatashin@soleen.com>,
- Prakhar Srivastava <prsriva@linux.microsoft.com>,
- Hsin-Yi Wang <hsinyi@chromium.org>, Allison Randal <allison@lohutok.net>,
- Christophe Leroy <christophe.leroy@c-s.fr>,
- Matthias Brugger <mbrugger@suse.com>, balajib@linux.microsoft.com,
- dmitry.kasatkin@gmail.com,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- James Morse <james.morse@arm.com>, Greg KH <gregkh@linuxfoundation.org>,
- Joe Perches <joe@perches.com>,
- linux-integrity <linux-integrity@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Mike Snitzer <snitzer@redhat.com>, Geoff Levand <geoff@infradead.org>,
+ linuxppc-dev@lists.ozlabs.org, ceph-devel@vger.kernel.org,
+ linux-mips@vger.kernel.org, Dongsheng Yang <dongsheng.yang@easystack.cn>,
+ linux-kernel@vger.kernel.org, "James
+ E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, dm-devel@redhat.com,
+ linux-arch@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+ Ira Weiny <ira.weiny@intel.com>, Ilya Dryomov <idryomov@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 15, 2021 at 8:23 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
->
-> Rob Herring <robh@kernel.org> writes:
-> > On Tue, Jun 15, 2021 at 10:13 AM nramas <nramas@linux.microsoft.com> wrote:
-> >>
-> >> On Tue, 2021-06-15 at 08:01 -0600, Rob Herring wrote:
-> >> > On Tue, Jun 15, 2021 at 6:18 AM Geert Uytterhoeven <
-> >> > geert@linux-m68k.org> wrote:
-> >> > >
-> >> > > > +void *of_kexec_alloc_and_setup_fdt(const struct kimage *image,
-> >> > > > +                                  unsigned long
-> >> > > > initrd_load_addr,
-> >> > > > +                                  unsigned long initrd_len,
-> >> > > > +                                  const char *cmdline, size_t
-> >> > > > extra_fdt_size)
-> >> > > > +{
-> >> > > > +       /* Did we boot using an initrd? */
-> >> > > > +       prop = fdt_getprop(fdt, chosen_node, "linux,initrd-
-> >> > > > start", NULL);
-> >> > > > +       if (prop) {
-> >> > > > +               u64 tmp_start, tmp_end, tmp_size;
-> >> > > > +
-> >> > > > +               tmp_start = fdt64_to_cpu(*((const fdt64_t *)
-> >> > > > prop));
-> >> > > > +
-> >> > > > +               prop = fdt_getprop(fdt, chosen_node,
-> >> > > > "linux,initrd-end", NULL);
-> >> > > > +               if (!prop) {
-> >> > > > +                       ret = -EINVAL;
-> >> > > > +                       goto out;
-> >> > > > +               }
-> >> > > > +
-> >> > > > +               tmp_end = fdt64_to_cpu(*((const fdt64_t *)
-> >> > > > prop));
-> >> > >
-> >> > > Some kernel code assumes "linux,initrd-{start,end}" are 64-bit,
-> >> > > other code assumes 32-bit.
-> >> >
-> >> > It can be either. The above code was a merge of arm64 and powerpc >> > both
-> >> > of which use 64-bit and still only runs on those arches. It looks >> > like
-> >> > some powerpc platforms may use 32-bit, but this would have been >> > broken
-> >> > before.
->
-> >> of_kexec_alloc_and_setup_fdt() is called from elf_64.c (in
-> >> arch/powerpc/kexec) which is for 64-bit powerpc platform only.
-> >
-> > 64-bit PPC could be writing 32-bit property values. The architecture
-> > size doesn't necessarily matter. And if the values came from the
-> > bootloader, who knows what size it used.
-> >
-> > This code is 32-bit powerpc only?:
-> >
-> > arch/powerpc/boot/main.c-       /* Tell the kernel initrd address via device tree */
-> > arch/powerpc/boot/main.c:       setprop_val(chosen, "linux,initrd-start", (u32)(initrd_addr));
-> > arch/powerpc/boot/main.c-       setprop_val(chosen, "linux,initrd-end", (u32)(initrd_addr+initrd_size));
->
-> Historically that code was always built 32-bit, even when used with a
-> 64-bit kernel.
->
-> These days it is also built 64-bit (for ppc64le).
 
-How it is built is immaterial. It's always writing a 32-bit value due
-to the u32 cast.
+Christoph,
 
-> It looks like the drivers/of/fdt.c code can handle either 64 or 32-bit,
-> so I guess that's why it seems to be working.
+> this series switches the core block layer code and all users of the
+> existing bvec kmap helpers to use kmap_local_page.  Drivers that
+> currently use open coded kmap_atomic calls will converted in a follow
+> on series.
 
-Yes, that works, but that's not the issue. The question is does the
-main.c code run in combination with kexec. The kexec code above
-(copied straight from PPC code) would not work if linux,initrd-* are
-written by the main.c code.
+Looks OK to me.
 
-Rob
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering
