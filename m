@@ -1,101 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFF1A3A90D3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 06:56:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F1163A90DE
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 06:57:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G4Xvp2Bt4z3c5Q
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 14:56:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G4XxJ6PkLz3c9Q
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 14:57:40 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=B2yo8tWQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=CXo9noL0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::532;
+ helo=mail-pg1-x532.google.com; envelope-from=viresh.kumar@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=B2yo8tWQ; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=CXo9noL0; dkim-atps=neutral
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com
+ [IPv6:2607:f8b0:4864:20::532])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G4Xrd4qPyz3bsv
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 14:53:37 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 15G4YPsa149932; Wed, 16 Jun 2021 00:53:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : content-transfer-encoding
- : mime-version; s=pp1; bh=tc89fYQdCp9ax4IUM9ps4kro+EJ0GdbMKmJn/1p3f/I=;
- b=B2yo8tWQi0fpDcJEQeqn8/jntEVlhWXLAi2KxR1K3ANyv+dy5mTP2pQBsgaGl91zGAvh
- hY4VNDHMeMHbDkU2xKTMdj+yy4PoHnw5Mx46zMKgO3obcjihsz5QHafSGlwpDqsx0HAq
- PE/XFc78xDrZMREf2AfAPZFdmfYOY9UrvTkghUwQTobeYTCu+YtBO+PDUkffI7WlF6Ls
- +rdM1QvmgLSeKgzadWFQGH58U8AJm4UA+Ajo/Oc/4ZDSLaBERCNCXyRBKY+u5EC1lvDi
- tMm7kcX7QZWoAAnpY40HzgicjsD0gJAkExcOiuydF/21GnUauHWu3auyF3dtUaIt5ehn Hg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 397a3x0ns8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 16 Jun 2021 00:53:23 -0400
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 15G4ZFqP152620;
- Wed, 16 Jun 2021 00:53:23 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0b-001b2d01.pphosted.com with ESMTP id 397a3x0ns1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 16 Jun 2021 00:53:23 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15G4pdSi025626;
- Wed, 16 Jun 2021 04:53:22 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com
- (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
- by ppma03dal.us.ibm.com with ESMTP id 394mj9vt50-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 16 Jun 2021 04:53:22 +0000
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 15G4rLYt21627344
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 16 Jun 2021 04:53:21 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5A2497805F;
- Wed, 16 Jun 2021 04:53:21 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 896FF7805C;
- Wed, 16 Jun 2021 04:53:13 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.85.71.33])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
- Wed, 16 Jun 2021 04:53:13 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linux-mm@kvack.org, akpm@linux-foundation.org
-Subject: [PATCH v2 6/6] mm/mremap: hold the rmap lock in write mode when
- moving page table entries.
-Date: Wed, 16 Jun 2021 10:22:39 +0530
-Message-Id: <20210616045239.370802-7-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210616045239.370802-1-aneesh.kumar@linux.ibm.com>
-References: <20210616045239.370802-1-aneesh.kumar@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: dG1wX7yp2fpqt8q68AijO8KF2N2e6tsD
-X-Proofpoint-GUID: _IsyhOz3r46yHPOdLz28EYZU4134jYpS
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G4Xws2lhMz2xZL
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 14:57:16 +1000 (AEST)
+Received: by mail-pg1-x532.google.com with SMTP id t9so971932pgn.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 21:57:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=v8hbVhD6RJ1rCqy3ceV7Ta+sxe8bF6UYG1xbjeCTyLE=;
+ b=CXo9noL0vjRA3eeSlrkRI4PbOiCjOgKwZSSX7sptD1zNOPIDuOns5q7fTqxi8EXrvz
+ CwQn8gk0w7d9LOIVVzZFz1S/3FWWvYUDRj3ioS5YpD5PqVQfZXKjBNtBT7QjeOT1fhaW
+ 0u1eLGHz1ULmMf8SjwAdaQrWF58qTQSTwj+wocPYBf5/7bi8DCrBI7janw5BuXb9Ogfe
+ 0OnY7pcvtPgVoKDiN9K9t+fkNm/0aO2gb0L+o3nXxUQz0nL1ejLIgJ7J2dsIvylBherd
+ XC8Wb95OFk7HGH0cY0/gmpmjv368PedwsBTOz6IVkxkt797CuekKMKKmItugq66s2COS
+ wdpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=v8hbVhD6RJ1rCqy3ceV7Ta+sxe8bF6UYG1xbjeCTyLE=;
+ b=PrU2nFSwMOhyWghnaLiain5VBFVhowo+koQfufyVDla2cXNM5mJnS0Gf5MW+drfWXR
+ Od3fFh0ViIKhk81HysJHCGJtWfrFu3JDJxYY4B58FXIF5gJZmHkZsdMI4fjRyLho3cTL
+ V+HV9WzoEOIVomOu5SQ6zoE7augaJucBBD/gQ1MnkoYRjifeFvo46ALQop1JTWpc9PzK
+ 0tE7HILnBRwcTmY/lG8RLgXv2xa6tsvjObi+LdVzUOLNcBfiMEiDyg0VSEgvgWSz+oEX
+ H+cX8r+QSK9YrDuILxGWcVw3Nv68bZBun0m92EVDep5thrhrq5vSiQaY/IoLYODbdxn4
+ CUQw==
+X-Gm-Message-State: AOAM532CZYlRmUkug7K2MgaYlR56mBmShMPj4tNrjfCkT/1p4dZ+Rd1Q
+ zAqylCN2WvmsP/QwdCbx2urd4Q==
+X-Google-Smtp-Source: ABdhPJy6cJ+XpDDStFqxCkawcrPEQQtViQgXyRYzGNQoRG7cyDxZksnDqZhoXVXH0sv3RUuihDLqxw==
+X-Received: by 2002:a63:fa51:: with SMTP id g17mr3156940pgk.340.1623819432365; 
+ Tue, 15 Jun 2021 21:57:12 -0700 (PDT)
+Received: from localhost ([136.185.134.182])
+ by smtp.gmail.com with ESMTPSA id t143sm870957pgb.93.2021.06.15.21.57.11
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 15 Jun 2021 21:57:11 -0700 (PDT)
+Date: Wed, 16 Jun 2021 10:27:09 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Qian Cai <quic_qiancai@quicinc.com>
+Subject: Re: [PATCH 0/5] cpufreq: cppc: Fix suspend/resume specific races
+ with FIE code
+Message-ID: <20210616045709.nudm3ndbipp5nfnv@vireshk-i7>
+References: <cover.1623313323.git.viresh.kumar@linaro.org>
+ <eaaaf171-5937-e0f2-8447-c1b20b474c62@quicinc.com>
+ <20210615075056.dfkbiftuoihtrfpo@vireshk-i7>
+ <19527d26-526e-6c6f-431d-7b78ed92bb34@quicinc.com>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
- definitions=2021-06-15_09:2021-06-15,
- 2021-06-15 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 clxscore=1011
- bulkscore=0 phishscore=0 impostorscore=0 priorityscore=1501 malwarescore=0
- lowpriorityscore=0 mlxscore=0 spamscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104190000
- definitions=main-2106160027
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <19527d26-526e-6c6f-431d-7b78ed92bb34@quicinc.com>
+User-Agent: NeoMutt/20180716-391-311a52
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,94 +84,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Hugh Dickins <hughd@google.com>,
- Linus Torvalds <torvalds@linux-foundation.org>, npiggin@gmail.com,
- kaleshsingh@google.com, joel@joelfernandes.org,
- "Kirill A . Shutemov" <kirill@shutemov.name>, stable@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org,
- "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: linuxppc-dev@lists.ozlabs.org, Vincent Guittot <vincent.guittot@linaro.org>,
+ linux-doc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+ Dirk Brandewie <dirk.j.brandewie@intel.com>, linux-pm@vger.kernel.org,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Rafael Wysocki <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, Ionela Voinescu <ionela.voinescu@arm.com>,
+ Len Brown <lenb@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-To avoid a race between rmap walk and mremap, mremap does take_rmap_locks().
-The lock was taken to ensure that rmap walk don't miss a page table entry due to
-PTE moves via move_pagetables(). The kernel does further optimization of
-this lock such that if we are going to find the newly added vma after the
-old vma, the rmap lock is not taken. This is because rmap walk would find the
-vmas in the same order and if we don't find the page table attached to
-older vma we would find it with the new vma which we would iterate later.
+On 15-06-21, 08:17, Qian Cai wrote:
+> On 6/15/2021 3:50 AM, Viresh Kumar wrote:
+> > This is a strange place to get the issue from. And this is a new
+> > issue.
+> 
+> Well, it was still the same exercises with CPU online/offline.
+> 
+> > 
+> >> [  488.151939][  T670]  kthread+0x3ac/0x460
+> >> [  488.155854][  T670]  ret_from_fork+0x10/0x18
+> >> [  488.160120][  T670] Code: 911e8000 aa1303e1 910a0000 941b595b (d4210000)
+> >> [  488.166901][  T670] ---[ end trace e637e2d38b2cc087 ]---
+> >> [  488.172206][  T670] Kernel panic - not syncing: Oops - BUG: Fatal exception
+> >> [  488.179182][  T670] SMP: stopping secondary CPUs
+> >> [  489.209347][  T670] SMP: failed to stop secondary CPUs 0-1,10-11,16-17,31
+> >> [  489.216128][  T][  T670] Memoryn ]---
+> > 
+> > Can you give details on what exactly did you try to do, to get this ?
+> > Normal boot or something more ?
+> 
+> Basically, it has the cpufreq driver as CPPC and the governor as
+> schedutil. Running a few workloads to get CPU scaling up and down.
+> Later, try to offline all CPUs until the last one and then online
+> all CPUs.
 
-As explained in commit eb66ae030829 ("mremap: properly flush TLB before releasing the page")
-mremap is special in that it doesn't take ownership of the page. The
-optimized version for PUD/PMD aligned mremap also doesn't hold the ptl lock.
-This can result in stale TLB entries as show below.
+Hmm, okay.
 
-This patch updates the rmap locking requirement in mremap to handle the race condition
-explained below with optimized mremap::
+So I basically have very similar setup with 8 cores (1-policy
+per-cpu), the only difference is I don't end up reading the
+performance counters, everything else remains same. So I should see
+issues now just like you, in case there are any.
 
-Optmized PMD move
+Since the insmod/rmmod setup is a bit different, this is what I tried
+today for around an hour with CONFIG_DEBUG_LIST and RCU debugging
+options.
 
-    CPU 1                           CPU 2                                   CPU 3
+while true; do
+    for i in `seq 1 7`;
+    do
+        echo 0 > /sys/devices/system/cpu/cpu$i/online;
+    done;
 
-    mremap(old_addr, new_addr)      page_shrinker/try_to_unmap_one
+    for i in `seq 1 7`;
+    do
+        echo 1 > /sys/devices/system/cpu/cpu$i/online;
+    done;
+done
 
-    mmap_write_lock_killable()
+I don't see any crashes, oops or warnings with latest stuff.
 
-                                    addr = old_addr
-                                    lock(pte_ptl)
-    lock(pmd_ptl)
-    pmd = *old_pmd
-    pmd_clear(old_pmd)
-    flush_tlb_range(old_addr)
+> I am hesitate to try this at the moment because this all feel like
+> shooting in the dark.
 
-    *new_pmd = pmd
-                                                                            *new_addr = 10; and fills
-                                                                            TLB with new addr
-                                                                            and old pfn
+I understand your point and you aren't completely wrong here. It
+wasn't completely in dark but since I am unable to reproduce the issue
+at my end, I asked for help.
 
-    unlock(pmd_ptl)
-                                    ptep_clear_flush()
-                                    old pfn is free.
-                                                                            Stale TLB entry
+FWIW, I think one of the possible cause of corruption of kthread thing
+could have been because of the race in the topology related code. I
+already fixed that in my tree yesterday.
 
-Optimized PUD move also suffers from a similar race.
-Both the above race condition can be fixed if we force mremap path to take rmap lock.
+> Ideally, you will be able to get access to one
+> of those arm64 servers (Huawei, Ampere, TX2, FJ etc) eventually and
+> really try the same exercises yourself with those debugging options
+> like list debugging and KASAN on. That way you could fix things way
+> efficiently.
 
-Cc: stable@vger.kernel.org
-Fixes: 2c91bd4a4e2e ("mm: speed up mremap by 20x on large regions")
-Fixes: c49dd3401802 ("mm: speedup mremap on 1GB or larger regions")
-Link: https://lore.kernel.org/linux-mm/CAHk-=wgXVR04eBNtxQfevontWnP6FDm+oj5vauQXP3S-huwbPw@mail.gmail.com
-Acked-by: Hugh Dickins <hughd@google.com>
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- mm/mremap.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Yeah, I thought of this work being over and I am not a user of it
+normally. I had to enable it for ARM servers and I took help of my
+colleagues (Vincent Guittot and Ionela) for testing the same.
 
-diff --git a/mm/mremap.c b/mm/mremap.c
-index 72fa0491681e..c3cad539a7aa 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -503,7 +503,7 @@ unsigned long move_page_tables(struct vm_area_struct *vma,
- 		} else if (IS_ENABLED(CONFIG_HAVE_MOVE_PUD) && extent == PUD_SIZE) {
- 
- 			if (move_pgt_entry(NORMAL_PUD, vma, old_addr, new_addr,
--					   old_pud, new_pud, need_rmap_locks))
-+					   old_pud, new_pud, true))
- 				continue;
- 		}
- 
-@@ -530,7 +530,7 @@ unsigned long move_page_tables(struct vm_area_struct *vma,
- 			 * moving at the PMD level if possible.
- 			 */
- 			if (move_pgt_entry(NORMAL_PMD, vma, old_addr, new_addr,
--					   old_pmd, new_pmd, need_rmap_locks))
-+					   old_pmd, new_pmd, true))
- 				continue;
- 		}
- 
+I have also asked Vincent to give it a try again.
+
+> I could share you the .config once you are there. Last
+> but not least, once you get better narrow down of the issues, I'd
+> hope to see someone else familiar with the code there to get review
+> of those patches first (feel free to Cc me once you are ready to
+> post) before I'll rerun the whole things again. That way we don't
+> waste time on each other backing and forth chasing the shadow.
+
+I did send the stuff up for review and this last thing (you reported)
+was a different race altogether, so asked for testing without reviews.
+
+Anyway, I am quite sure my tests have covered such issues now. I will
+send out patches again soon.
+
+Thanks Qian.
+
 -- 
-2.31.1
-
+viresh
