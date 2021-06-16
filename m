@@ -1,38 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FBBC3A90EC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 07:00:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 621203A9101
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 07:11:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G4Y0F6spqz3cV7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 15:00:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G4YDl7114z30Cc
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 15:11:03 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=jDOToH5T;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::82f;
+ helo=mail-qt1-x82f.google.com; envelope-from=tientzu@chromium.org;
  receiver=<UNKNOWN>)
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=jDOToH5T; dkim-atps=neutral
+Received: from mail-qt1-x82f.google.com (mail-qt1-x82f.google.com
+ [IPv6:2607:f8b0:4864:20::82f])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G4XzK6Xmbz3dbm
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 14:59:25 +1000 (AEST)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id 9F8EA68AFE; Wed, 16 Jun 2021 06:59:18 +0200 (CEST)
-Date: Wed, 16 Jun 2021 06:59:18 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Claire Chang <tientzu@chromium.org>
-Subject: Re: [PATCH v11 09/12] swiotlb: Add restricted DMA alloc/free support
-Message-ID: <20210616045918.GA27537@lst.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G4YD96JGJz2xbB
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 15:10:31 +1000 (AEST)
+Received: by mail-qt1-x82f.google.com with SMTP id t9so939550qtw.7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 22:10:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=iLn8eUCvJy2CWcSIXe6ohsWZex4qVXD74p7z6FMJPUo=;
+ b=jDOToH5ThQyIZ/Z8kPwh8R97YYJUPgyXIvwYI7ELfesGT1LRFmc0oQizSpW5Du/1jT
+ n8n511S9H2jKWIPPzwbEGsCQVrh6jqMZwL99GOCEoFmIgU2xBUW+YvuQbG8TA+PazhFY
+ uMdw/pNT41Ub0lKjlBja/JS0DV7IUisf06CVE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=iLn8eUCvJy2CWcSIXe6ohsWZex4qVXD74p7z6FMJPUo=;
+ b=NGSjAaeQYTcDZ2YXsnWX7XHXV44Pxhtxd06VwpuJIPPkxiKEXVjoN9oCme+3vSWzPd
+ tjK9I25/GvwhRnAQfg/J58ZpDfNpdXR4HvPDPLDK/Bq1nf4G+r716YOP+ovaZm9rRjaL
+ RTM1+EDY+qjp4AE7e0q4IHm6lU+SAcXz0QLgzYGfahm2dG97CRmFfSDnaGKepu95sZpr
+ f+efRtmC51x1JC/hyztydwL3CNFwqKQr6+qpUetg7SwQeKyjRL5YmgdBwHzhSrd1lsF7
+ MKJF0LzyFvakZ2BPMXTy7IimcGELpPoA5BTrN8yY7cJjbDL8yE/C+1qgcW5oGNEoKMsa
+ FYkw==
+X-Gm-Message-State: AOAM531IgF9wUtXFVLSvDiQm8Czr1MzeLDTNQA9KwNTzvRdRCS3YI1je
+ A/BQtLpjL6+Y4bWh0RloDxxkqmiOcbsB8g==
+X-Google-Smtp-Source: ABdhPJyr21rM0w6aFS/iZDInSs33MXiwDm7C9Rkjnrk/ZMEzRu6J5vnmzmaeinr6YlWwWhGPd94TQA==
+X-Received: by 2002:ac8:7f92:: with SMTP id z18mr3280837qtj.370.1623820226678; 
+ Tue, 15 Jun 2021 22:10:26 -0700 (PDT)
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com.
+ [209.85.222.169])
+ by smtp.gmail.com with ESMTPSA id h17sm623746qtk.23.2021.06.15.22.10.24
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 15 Jun 2021 22:10:25 -0700 (PDT)
+Received: by mail-qk1-f169.google.com with SMTP id 5so1366685qkc.8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 22:10:24 -0700 (PDT)
+X-Received: by 2002:a05:6638:151:: with SMTP id
+ y17mr2452891jao.128.1623820213046; 
+ Tue, 15 Jun 2021 22:10:13 -0700 (PDT)
+MIME-Version: 1.0
 References: <20210616035240.840463-1-tientzu@chromium.org>
  <20210616035240.840463-10-tientzu@chromium.org>
  <CALiNf28=3vqAs+8HsjyBGOiPNR2F3yT6OGnLpZH_AkWqgTqgOA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CALiNf28=3vqAs+8HsjyBGOiPNR2F3yT6OGnLpZH_AkWqgTqgOA@mail.gmail.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+ <20210616045918.GA27537@lst.de>
+In-Reply-To: <20210616045918.GA27537@lst.de>
+From: Claire Chang <tientzu@chromium.org>
+Date: Wed, 16 Jun 2021 13:10:02 +0800
+X-Gmail-Original-Message-ID: <CALiNf2-+vL8rw5fi=DcR=V7d55Ls3-OXoxC87Pvrf1Kz14D_+A@mail.gmail.com>
+Message-ID: <CALiNf2-+vL8rw5fi=DcR=V7d55Ls3-OXoxC87Pvrf1Kz14D_+A@mail.gmail.com>
+Subject: Re: [PATCH v11 09/12] swiotlb: Add restricted DMA alloc/free support
+To: Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,7 +93,6 @@ Cc: heikki.krogerus@linux.intel.com, thomas.hellstrom@linux.intel.com,
  sstabellini@kernel.org, Saravana Kannan <saravanak@google.com>,
  Joerg Roedel <joro@8bytes.org>,
  "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
- Christoph Hellwig <hch@lst.de>,
  Bartosz Golaszewski <bgolaszewski@baylibre.com>, bskeggs@redhat.com,
  linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
  Thierry Reding <treding@nvidia.com>, intel-gfx@lists.freedesktop.org,
@@ -75,10 +115,16 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 16, 2021 at 12:04:16PM +0800, Claire Chang wrote:
-> Just noticed that after propagating swiotlb_force setting into
-> io_tlb_default_mem->force, the memory allocation behavior for
-> swiotlb_force will change (i.e. always skipping arch_dma_alloc and
-> dma_direct_alloc_from_pool).
+On Wed, Jun 16, 2021 at 12:59 PM Christoph Hellwig <hch@lst.de> wrote:
+>
+> On Wed, Jun 16, 2021 at 12:04:16PM +0800, Claire Chang wrote:
+> > Just noticed that after propagating swiotlb_force setting into
+> > io_tlb_default_mem->force, the memory allocation behavior for
+> > swiotlb_force will change (i.e. always skipping arch_dma_alloc and
+> > dma_direct_alloc_from_pool).
+>
+> Yes, I think we need to split a "use_for_alloc" flag from the force flag.
 
-Yes, I think we need to split a "use_for_alloc" flag from the force flag.
+How about splitting is_dev_swiotlb_force into is_swiotlb_force_bounce
+(io_tlb_mem->force_bounce) and is_swiotlb_force_alloc
+(io_tlb_mem->force_alloc)?
