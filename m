@@ -1,52 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B83E93A9CED
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 16:05:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EDDE3A9DC4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 16:40:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G4n5k3QD7z308S
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 00:05:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G4nss5243z3c0b
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 00:40:33 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=R27tZxcr;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=192.55.52.151; helo=mga17.intel.com;
- envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::22c;
+ helo=mail-lj1-x22c.google.com; envelope-from=torvalds@linuxfoundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.a=rsa-sha256 header.s=google header.b=R27tZxcr; 
+ dkim-atps=neutral
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com
+ [IPv6:2a00:1450:4864:20::22c])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G4n5N3v6qz307T
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 00:05:27 +1000 (AEST)
-IronPort-SDR: iCV8lJFW88PyN/QoVN5xjZFRuLtzd/YdGm6TObC+YVFlOMO3AyjY8n9XoKEIbpsjsywm0hPK47
- 48yGC8ADw/rg==
-X-IronPort-AV: E=McAfee;i="6200,9189,10016"; a="186558415"
-X-IronPort-AV: E=Sophos;i="5.83,278,1616482800"; d="scan'208";a="186558415"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
- by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jun 2021 07:05:16 -0700
-IronPort-SDR: dV2AwjTcL1XgrGLea/lTCqvSmWGX79q1zgcOfVt2RnTLz9AGIkyqcnxHK8cmqUz5/bNv8nr2FE
- Ih/VEAxYqCdQ==
-X-IronPort-AV: E=Sophos;i="5.83,278,1616482800"; d="scan'208";a="554048291"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
- by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jun 2021 07:05:13 -0700
-Received: from andy by smile with local (Exim 4.94)
- (envelope-from <andriy.shevchenko@linux.intel.com>)
- id 1ltWAI-002pmh-5s; Wed, 16 Jun 2021 17:05:10 +0300
-Date: Wed, 16 Jun 2021 17:05:10 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH v2 1/1] powerpc/papr_scm: Properly handle UUID types and
- API
-Message-ID: <YMoFFn3J+eUzkUYh@smile.fi.intel.com>
-References: <20210616134303.58185-1-andriy.shevchenko@linux.intel.com>
- <6f895afd-3469-c330-a4da-72db89dba6b3@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G4nsN0Vhtz306Y
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 00:40:06 +1000 (AEST)
+Received: by mail-lj1-x22c.google.com with SMTP id z22so4154616ljh.8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 07:40:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux-foundation.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=/d47Kg6am+HOwfA8CcwjrDqwgXXjZkM4fDSarrEXee4=;
+ b=R27tZxcrYHmoWnqZc4hdloTm/orgeHcKmZqRdd2p+E85Nf/eCtU7FFxx9NDxcjYyP/
+ KqfzRqFAArkfSHARlmb75ATHKGV8UDFHuTeylbe/fc0qfwC7ZmDokm6zN91pVwc2n2eL
+ +wTrPpMu9V2fa8hEcnEMTUVo3eQmmHYc38Xb0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=/d47Kg6am+HOwfA8CcwjrDqwgXXjZkM4fDSarrEXee4=;
+ b=p/ctN7ATuuh8bD4DWG3jRyk7heXGlyIASofylKFN/gX+Ckew3FZiPxlO8e408VYCN8
+ nuuPdsbEBD5SRCAQ/Y7XwQXy45RzD/eGN4iFQZvAm2ov3wrZmZj+IOk3sjqQndPvCGwx
+ TLl9NRXoSfy+RDdNg77KFM4jJh/m73aX949QitF4/Zjo4jb4c01tm20/XeblF6I6he27
+ TBEoisp/Btb4u2bGfRFDa5RpmBGM7P0oAnS6tuS4K6om4sLiNFvIZXiLLSftHWNthijk
+ 3FTRgf2sImt7/EWBU7cjq3TkId0M20dqeyqe0eWhXENdzKaBACaBISR8t0GuyTCe3Pia
+ crkw==
+X-Gm-Message-State: AOAM5306emzRBu9/hUvlyu6QKzOwPFgD4iU3E7l7DOrQI6jj1ikknRxn
+ 0NOh6srpT8Kz2/L5MDH7gNuZuZ9SRS5Zr0sgWZg=
+X-Google-Smtp-Source: ABdhPJz46zC5eRwjAdhmPqG9PwlaMArEqtbqmVJKjWyN7KggqvimgHtBXbmcvCDtJ2dU/Nd1y14Pkw==
+X-Received: by 2002:a2e:b0e8:: with SMTP id h8mr178585ljl.42.1623854396209;
+ Wed, 16 Jun 2021 07:39:56 -0700 (PDT)
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com.
+ [209.85.167.52])
+ by smtp.gmail.com with ESMTPSA id a22sm299433ljm.13.2021.06.16.07.39.55
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 16 Jun 2021 07:39:55 -0700 (PDT)
+Received: by mail-lf1-f52.google.com with SMTP id f30so4781307lfj.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 07:39:55 -0700 (PDT)
+X-Received: by 2002:a05:6512:374b:: with SMTP id
+ a11mr3796636lfs.377.1623854395196; 
+ Wed, 16 Jun 2021 07:39:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6f895afd-3469-c330-a4da-72db89dba6b3@linux.ibm.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20210616045239.370802-1-aneesh.kumar@linux.ibm.com>
+In-Reply-To: <20210616045239.370802-1-aneesh.kumar@linux.ibm.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Wed, 16 Jun 2021 07:39:39 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiDE_K2bEG0DeD7TwWXoJgoNLo7kz45HLo9XCX49Gzgqw@mail.gmail.com>
+Message-ID: <CAHk-=wiDE_K2bEG0DeD7TwWXoJgoNLo7kz45HLo9XCX49Gzgqw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/6] mrermap fixes
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,33 +84,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Oliver O'Halloran <oohall@gmail.com>,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Nick Piggin <npiggin@gmail.com>, Linux-MM <linux-mm@kvack.org>,
+ Kalesh Singh <kaleshsingh@google.com>, Joel Fernandes <joel@joelfernandes.org>,
+ "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 16, 2021 at 07:17:03PM +0530, Aneesh Kumar K.V wrote:
-> On 6/16/21 7:13 PM, Andy Shevchenko wrote:
-> > Parse to and export from UUID own type, before dereferencing.
-> > This also fixes wrong comment (Little Endian UUID is something else)
-> > and should eliminate the direct strict types assignments.
-> > 
-> > Fixes: 43001c52b603 ("powerpc/papr_scm: Use ibm,unit-guid as the iset cookie")
-> > Fixes: 259a948c4ba1 ("powerpc/pseries/scm: Use a specific endian format for storing uuid from the device tree")
-> 
-> Do we need the Fixes: there? It didn't change any functionality right? The
-> format with which we stored cookie1 remains the same with older and newer
-> code. The newer one is better?
+On Tue, Jun 15, 2021 at 9:53 PM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
+>
+> This patch series is split out series from [PATCH v7 00/11] Speedup mremap on ppc64
+> (https://lore.kernel.org/linux-mm/20210607055131.156184-1-aneesh.kumar@linux.ibm.com)
+> dropping ppc64 specific changes.
 
-Depends if you are okay with Sparse warnings.
+Both this and the followup powerpc enablement looks ok to me. Apart
+from the obvious subject line bug ;)
 
-> Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Do we have robot confirmation that this version doesn't have any
+performance regression?
 
-Thanks for review!
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+              Linus
