@@ -1,53 +1,101 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99CDF3A9C17
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 15:38:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C7C23A9C61
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 15:43:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G4mVV1fDsz3c1Y
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 23:38:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G4mc31rSVz30CS
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 23:43:31 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Kw+9EGL6;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mga12.intel.com (client-ip=192.55.52.136; helo=mga12.intel.com;
- envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=psampat@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=Kw+9EGL6; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G4mV46hdcz2ysw
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 23:38:18 +1000 (AEST)
-IronPort-SDR: 0XkXvkNzfJ3dxNUm63U2SGpau0RaHj3Sz51xIHibtITWOQ20CV9WixyVRyhi/3kvHyznUKoSNk
- Ly2WbG3kleZg==
-X-IronPort-AV: E=McAfee;i="6200,9189,10016"; a="185867383"
-X-IronPort-AV: E=Sophos;i="5.83,278,1616482800"; d="scan'208";a="185867383"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
- by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jun 2021 06:38:14 -0700
-IronPort-SDR: BkBI40BZYJIqmAd92J8juCou6h4VCZDnNSF1hrjCtf1OVenWDFpsnilaEUQ5bjV6kDkMrIhtAg
- U0oAN4uWUo3g==
-X-IronPort-AV: E=Sophos;i="5.83,278,1616482800"; d="scan'208";a="637455199"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
- by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jun 2021 06:38:12 -0700
-Received: from andy by smile with local (Exim 4.94)
- (envelope-from <andriy.shevchenko@linux.intel.com>)
- id 1ltVk8-002pSk-Un; Wed, 16 Jun 2021 16:38:08 +0300
-Date: Wed, 16 Jun 2021 16:38:08 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH v1 1/1] powerpc/papr_scm: Properly handle UUID types and
- API
-Message-ID: <YMn+wDYHux16HBhd@smile.fi.intel.com>
-References: <20210415134637.17770-1-andriy.shevchenko@linux.intel.com>
- <af677216-82b4-f1fa-1d90-3d32dabf8583@linux.ibm.com>
- <YHlUNSwm8Ofy9sNr@smile.fi.intel.com>
- <8e724a87-da78-9fc9-073e-cbbfea0ff97e@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G4mbQ2qDrz3bwc
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 23:42:57 +1000 (AEST)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 15GDY2gl055467; Wed, 16 Jun 2021 09:42:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : subject :
+ date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=BnvC9AmBanSlttB1nlOhdd0J404KzEzFF+PWFmcqRRE=;
+ b=Kw+9EGL6WmdP+AXMuo0jDyjhXVXRjMGSzjUzKMZQ/cCGG4bIfu06jA/NyKQlN0Pu22GQ
+ eKlAMuFS3DguuWgnxuQ6JRrQo+Shrap+NX0BFpEK64oqMw1NQFSRVzgyutDJjq55tTtp
+ L+QSwaEstTELITk4MDNkTuU9S/Dry6DgIkxHzUXRwJ1zOCrZolYP4t4aCVITOFSqTmto
+ BBNmX6eyM8e9jpwMgTI1iQXPIRyqu6dh04e2JxxcGG+EsoZiX0Jmw1WYzBy1TStcsR4o
+ wepgtAH5hFXKsuLEXRW73uax2UUHSuxhQjDKYHmA99lPfmKxQR88QQ1ioLXRqlIzfyIQ 0Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 397fuv50ck-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 16 Jun 2021 09:42:47 -0400
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 15GDZ8xQ065342;
+ Wed, 16 Jun 2021 09:42:47 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 397fuv50bv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 16 Jun 2021 09:42:47 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15GDghF1015703;
+ Wed, 16 Jun 2021 13:42:45 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma03ams.nl.ibm.com with ESMTP id 394mj8t4bw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 16 Jun 2021 13:42:45 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 15GDghH532571706
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 16 Jun 2021 13:42:43 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4B5D0A4040;
+ Wed, 16 Jun 2021 13:42:43 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 745DCA4053;
+ Wed, 16 Jun 2021 13:42:41 +0000 (GMT)
+Received: from pratiks-thinkpad.ibmuc.com (unknown [9.79.208.82])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 16 Jun 2021 13:42:41 +0000 (GMT)
+From: "Pratik R. Sampat" <psampat@linux.ibm.com>
+To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+ linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, psampat@linux.ibm.com,
+ pratik.r.sampat@gmail.com
+Subject: [PATCH 0/1] Interface to represent PAPR firmware attributes
+Date: Wed, 16 Jun 2021 19:12:39 +0530
+Message-Id: <20210616134240.62195-1-psampat@linux.ibm.com>
+X-Mailer: git-send-email 2.30.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: CcgbmkiMrkDL3nRBk2D4GdNICS4oLwAG
+X-Proofpoint-GUID: fF7DxLDj24bdstd717FJFOZhZwtcAWZe
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8e724a87-da78-9fc9-073e-cbbfea0ff97e@linux.ibm.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
+ definitions=2021-06-16_07:2021-06-15,
+ 2021-06-16 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ bulkscore=0 adultscore=0 spamscore=0 clxscore=1015 mlxscore=0
+ lowpriorityscore=0 suspectscore=0 mlxlogscore=999 impostorscore=0
+ phishscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2104190000 definitions=main-2106160078
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,91 +107,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oliver O'Halloran <oohall@gmail.com>, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, Vaibhav Jain <vaibhav@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 16, 2021 at 03:05:31PM +0530, Aneesh Kumar K.V wrote:
-> On 4/16/21 2:39 PM, Andy Shevchenko wrote:
-> > On Fri, Apr 16, 2021 at 01:28:21PM +0530, Aneesh Kumar K.V wrote:
-> > > On 4/15/21 7:16 PM, Andy Shevchenko wrote:
-> > > > Parse to and export from UUID own type, before dereferencing.
-> > > > This also fixes wrong comment (Little Endian UUID is something else)
-> > > > and should fix Sparse warnings about assigning strict types to POD.
-> > > > 
-> > > > Fixes: 43001c52b603 ("powerpc/papr_scm: Use ibm,unit-guid as the iset cookie")
-> > > > Fixes: 259a948c4ba1 ("powerpc/pseries/scm: Use a specific endian format for storing uuid from the device tree")
-> > > > Cc: Oliver O'Halloran <oohall@gmail.com>
-> > > > Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> > > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > > > ---
-> > > > Not tested
-> > > >    arch/powerpc/platforms/pseries/papr_scm.c | 13 ++++++++-----
-> > > >    1 file changed, 8 insertions(+), 5 deletions(-)
-> > > > 
-> > > > diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-> > > > index ae6f5d80d5ce..4366e1902890 100644
-> > > > --- a/arch/powerpc/platforms/pseries/papr_scm.c
-> > > > +++ b/arch/powerpc/platforms/pseries/papr_scm.c
-> > > > @@ -1085,8 +1085,9 @@ static int papr_scm_probe(struct platform_device *pdev)
-> > > >    	u32 drc_index, metadata_size;
-> > > >    	u64 blocks, block_size;
-> > > >    	struct papr_scm_priv *p;
-> > > > +	u8 uuid_raw[UUID_SIZE];
-> > > >    	const char *uuid_str;
-> > > > -	u64 uuid[2];
-> > > > +	uuid_t uuid;
-> > > >    	int rc;
-> > > >    	/* check we have all the required DT properties */
-> > > > @@ -1129,16 +1130,18 @@ static int papr_scm_probe(struct platform_device *pdev)
-> > > >    	p->hcall_flush_required = of_property_read_bool(dn, "ibm,hcall-flush-required");
-> > > >    	/* We just need to ensure that set cookies are unique across */
-> > > > -	uuid_parse(uuid_str, (uuid_t *) uuid);
-> > > > +	uuid_parse(uuid_str, &uuid);
-> > > > +
-> > > >    	/*
-> > > >    	 * cookie1 and cookie2 are not really little endian
-> > > > -	 * we store a little endian representation of the
-> > > > +	 * we store a raw buffer representation of the
-> > > >    	 * uuid str so that we can compare this with the label
-> > > >    	 * area cookie irrespective of the endian config with which
-> > > >    	 * the kernel is built.
-> > > >    	 */
-> > > > -	p->nd_set.cookie1 = cpu_to_le64(uuid[0]);
-> > > > -	p->nd_set.cookie2 = cpu_to_le64(uuid[1]);
-> > > > +	export_uuid(uuid_raw, &uuid);
-> > > > +	p->nd_set.cookie1 = get_unaligned_le64(&uuid_raw[0]);
-> > > > +	p->nd_set.cookie2 = get_unaligned_le64(&uuid_raw[8]);
-> > > 
-> > > ok that does the equivalent of cpu_to_le64 there. So we are good. But the
-> > > comment update is missing the details why we did that get_unaligned_le64.
-> > > Maybe raw buffer representation is the correct term?
-> > > Should we add an example in the comment. ie,
-> > 
-> > > /*
-> > >   * Historically we stored the cookie in the below format.
-> > > for a uuid str 72511b67-0b3b-42fd-8d1d-5be3cae8bcaa
-> > > cookie1 was  0xfd423b0b671b5172 cookie2 was 0xaabce8cae35b1d8d
-> > > */
-> > 
-> > I'm fine with the comment. At least it will shed a light on the byte ordering
-> > we are expecting.
-> > 
-> 
-> Will you be sending an update? Also it will be good to list the sparse
-> warning in the commit message?
+RFC --> v1
+RFC: https://lkml.org/lkml/2021/6/4/791
 
-I'll send an update but I rephrase to remove mention of Sparse. I have no
-Sparse build for this architecture.
+Changelog:
+Overhaul in interface design to the following:
+/sys/firmware/papr/energy_scale_info/
+   |-- <id>/
+     |-- desc
+     |-- value
+     |-- value_desc (if exists)
+   |-- <id>/
+     |-- desc
+     |-- value
+     |-- value_desc (if exists)
 
-If you have one, try to build with `make W=1 C=1 CF=-D__CHECK_ENDIAN__ ...`
-which will enable warnings about restricted types assignment.
+Also implemented a POC using this interface for the powerpc-utils'
+ppc64_cpu --frequency command-line tool to utilize this information
+in userspace.
+The POC for the new interface has been hosted here:
+https://github.com/pratiksampat/powerpc-utils/tree/H_GET_ENERGY_SCALE_INFO_v2
+
+Sample output from the powerpc-utils tool is as follows:
+
+# ppc64_cpu --frequency
+Power and Performance Mode: XXXX
+Idle Power Saver Status   : XXXX
+Processor Folding Status  : XXXX --> Printed if Idle power save status is supported
+
+Platform reported frequencies --> Frequencies reported from the platform's H_CALL i.e PAPR interface
+min        :    NNNN GHz
+max        :    NNNN GHz
+static     :    NNNN GHz
+
+Tool Computed frequencies
+min        :    NNNN GHz (cpu XX)
+max        :    NNNN GHz (cpu XX)
+avg        :    NNNN GHz
+
+Pratik R. Sampat (1):
+  powerpc/pseries: Interface to represent PAPR firmware attributes
+
+ .../sysfs-firmware-papr-energy-scale-info     |  26 ++
+ arch/powerpc/include/asm/hvcall.h             |  21 +-
+ arch/powerpc/kvm/trace_hv.h                   |   1 +
+ arch/powerpc/platforms/pseries/Makefile       |   3 +-
+ .../pseries/papr_platform_attributes.c        | 292 ++++++++++++++++++
+ 5 files changed, 341 insertions(+), 2 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-firmware-papr-energy-scale-info
+ create mode 100644 arch/powerpc/platforms/pseries/papr_platform_attributes.c
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.30.2
 
