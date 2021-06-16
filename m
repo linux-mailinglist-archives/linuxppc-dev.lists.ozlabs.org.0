@@ -2,43 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E53CE3A8F62
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 05:27:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8CAC3A8F6E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 05:38:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G4VxM3g3lz3bxm
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 13:27:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G4WBJ2jP1z3c5N
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 13:38:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
+ smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com;
  envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G4Vx025WGz2xYt
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 13:27:06 +1000 (AEST)
-IronPort-SDR: yBl1GdayGxlaeoEzUjWBIfUHfR428nUnaBohLnA9Kk4Rk6UbHUaSuf43vtwM5lXRrwm6qk1Rr2
- h6KJgs75gnXQ==
-X-IronPort-AV: E=McAfee;i="6200,9189,10016"; a="193417834"
-X-IronPort-AV: E=Sophos;i="5.83,277,1616482800"; d="scan'208";a="193417834"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jun 2021 20:27:01 -0700
-IronPort-SDR: Gz+uKiV7xjUlA2noRdewDF3H0Enx/jXWcoaJ8l4OVDKcDyVDytyL6kL4yqKW5uNsO5bZgAMdhb
- jRs8epP4GnJQ==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G4W9X2Y4Zz2yxS
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 13:38:07 +1000 (AEST)
+IronPort-SDR: Lx8wy/xoUcMu3q88Pwd5nf6pTcRdIXbk9uKxH8gb7qExvk8NQd5AtCMTmtwxjD4jUYQWk3rfCI
+ POxrkSfrSZzA==
+X-IronPort-AV: E=McAfee;i="6200,9189,10016"; a="205926743"
+X-IronPort-AV: E=Sophos;i="5.83,277,1616482800"; d="scan'208";a="205926743"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Jun 2021 20:38:02 -0700
+IronPort-SDR: 7MFkeMF5Umu7bSrDeelhmlqg1iUPB9T8c+7wmJJxWHittzO6Z5fJA0xA9SHZHo/PyOlyF//cKi
+ GyAFiEPTwvCw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.83,277,1616482800"; d="scan'208";a="421339443"
+X-IronPort-AV: E=Sophos;i="5.83,277,1616482800"; d="scan'208";a="553900797"
 Received: from lkp-server01.sh.intel.com (HELO 4aae0cb4f5b5) ([10.239.97.150])
- by orsmga002.jf.intel.com with ESMTP; 15 Jun 2021 20:27:00 -0700
+ by orsmga004.jf.intel.com with ESMTP; 15 Jun 2021 20:38:01 -0700
 Received: from kbuild by 4aae0cb4f5b5 with local (Exim 4.92)
  (envelope-from <lkp@intel.com>)
- id 1ltMCh-0000mq-Pe; Wed, 16 Jun 2021 03:26:59 +0000
-Date: Wed, 16 Jun 2021 11:26:30 +0800
+ id 1ltMNM-0000no-Ab; Wed, 16 Jun 2021 03:38:00 +0000
+Date: Wed, 16 Jun 2021 11:37:29 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- 478036c4cd1a16e613a2f883d79c03cf187faacb
-Message-ID: <60c96f66.uqZ0ygIwYoEFaACm%lkp@intel.com>
+Subject: [powerpc:next] BUILD SUCCESS ddf4a7bcd09439e82c4d6f959f4ff6c53f07466f
+Message-ID: <60c971f9.uSpMLn7C3Hpb/29P%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -59,12 +58,12 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: 478036c4cd1a16e613a2f883d79c03cf187faacb  powerpc: Fix initrd corruption with relative jump labels
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+branch HEAD: ddf4a7bcd09439e82c4d6f959f4ff6c53f07466f  powerpc/tau: Remove superfluous parameter in alloc_workqueue() call
 
-elapsed time: 721m
+elapsed time: 730m
 
-configs tested: 153
+configs tested: 146
 configs skipped: 2
 
 The following configs have been built successfully.
@@ -99,8 +98,8 @@ xtensa                  audio_kc705_defconfig
 xtensa                generic_kc705_defconfig
 powerpc                 mpc8540_ads_defconfig
 arm                        oxnas_v6_defconfig
-arm                        multi_v7_defconfig
 s390                                defconfig
+arm                        multi_v7_defconfig
 arm                            lart_defconfig
 sh                          sdk7786_defconfig
 arm                          collie_defconfig
@@ -143,18 +142,10 @@ powerpc                mpc7448_hpc2_defconfig
 powerpc                        fsp2_defconfig
 s390                             alldefconfig
 riscv             nommu_k210_sdcard_defconfig
-powerpc                        warp_defconfig
-powerpc                     tqm8560_defconfig
-powerpc                      ppc44x_defconfig
-m68k                          sun3x_defconfig
-arm                          exynos_defconfig
-sh                           se7343_defconfig
-arm                              alldefconfig
 arm                         hackkit_defconfig
 arm                       imx_v6_v7_defconfig
 powerpc                      katmai_defconfig
 arm                           viper_defconfig
-m68k                             allmodconfig
 s390                          debug_defconfig
 powerpc                 mpc832x_mds_defconfig
 sparc                       sparc64_defconfig
@@ -163,6 +154,7 @@ x86_64                            allnoconfig
 ia64                             allmodconfig
 ia64                                defconfig
 ia64                             allyesconfig
+m68k                             allmodconfig
 m68k                                defconfig
 m68k                             allyesconfig
 nios2                               defconfig
@@ -179,9 +171,9 @@ parisc                              defconfig
 s390                             allyesconfig
 s390                             allmodconfig
 parisc                           allyesconfig
+i386                             allyesconfig
 sparc                            allyesconfig
 sparc                               defconfig
-i386                             allyesconfig
 mips                             allyesconfig
 mips                             allmodconfig
 powerpc                          allyesconfig
