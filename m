@@ -1,37 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F0AC3A9448
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 09:40:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05ADA3A94A9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 10:03:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G4cXw4wv3z3c6H
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 17:40:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G4d3Y5GYHz30B2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 18:03:21 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=QPnQjC/i;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::42e;
+ helo=mail-pf1-x42e.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=QPnQjC/i; dkim-atps=neutral
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com
+ [IPv6:2607:f8b0:4864:20::42e])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G4cXM1WkCz3bwy
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 17:39:46 +1000 (AEST)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id 329CC68B05; Wed, 16 Jun 2021 09:39:42 +0200 (CEST)
-Date: Wed, 16 Jun 2021 09:39:42 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Claire Chang <tientzu@chromium.org>
-Subject: Re: [PATCH v12 09/12] swiotlb: Add restricted DMA alloc/free support
-Message-ID: <20210616073942.GB2326@lst.de>
-References: <20210616062157.953777-1-tientzu@chromium.org>
- <20210616062157.953777-10-tientzu@chromium.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G4d316qlBz306q
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 18:02:52 +1000 (AEST)
+Received: by mail-pf1-x42e.google.com with SMTP id k15so1543715pfp.6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 01:02:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=cw10uFtM6j6ivpIAHKyfGYAPjF+AZvHLGbY1I1Cvnes=;
+ b=QPnQjC/imXfUDfxqjiSI4NF+/NKMtw6Adrdw/ELeXbXZra76qgDP9zC6J1U1y9NOt4
+ u3kgAKeQQuREYzGZQlZMFN4+Pq0lK/VqesWv/DqZLZyDm6UlMjUAZqIob+QtbqgV6ZMS
+ Cop5PE067jtkmcXpYSnRdeBlAyFJ/etIcr1Eo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=cw10uFtM6j6ivpIAHKyfGYAPjF+AZvHLGbY1I1Cvnes=;
+ b=FyhGebutdzaNYAt+ZnDafDkE/7XJDNz3zWd5yjw4H/3KPEWh7hp1HzYfNp2sDl8dWd
+ AZlBDj+LE2GNzeoDHP0UKDZa7rYjpAhDLMpInUQIZ+6plYg6aknellxnNaxhp0k5/yE9
+ nC0l3Q9fbarZ8VVyizE9jTz69xPutOPWSjJpDhu4TbgkY9Qd6URJEzBxS+IaS3aXqcDP
+ h8BTnIxQM6yer7E4qrZUOnEdOrcIM0EusaT1F0PpDcy5Nm1SD5cX/ZzjMhdOjmU3eqjd
+ +7XujitdhQtZ8ai/j5Yw4a/5esoufz/SE9SPqQhi9yVYZer8jOnj5v/9s++cLtKhdi7C
+ Jd2A==
+X-Gm-Message-State: AOAM531ajxnhlWzvvqhRNGvP0XY37dlwPbc5kbBEjm9TDkqkUjJ4a9bB
+ Cte5ZsBhyJpWP+3iIisLeDNuLQ==
+X-Google-Smtp-Source: ABdhPJy5hVPBnk/1qjUJFKWZR7abAM3qeGiX96PaDRnrHnAkkctatxXsM4js2+i2npCAT/eew3P16A==
+X-Received: by 2002:a63:a805:: with SMTP id o5mr3777437pgf.328.1623830569286; 
+ Wed, 16 Jun 2021 01:02:49 -0700 (PDT)
+Received: from localhost ([203.206.29.204])
+ by smtp.gmail.com with ESMTPSA id k19sm1408921pji.32.2021.06.16.01.02.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 16 Jun 2021 01:02:48 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ kasan-dev@googlegroups.com, elver@google.com, akpm@linux-foundation.org,
+ andreyknvl@gmail.com
+Subject: [PATCH v13 0/3] KASAN core changes for ppc64 radix KASAN
+Date: Wed, 16 Jun 2021 18:02:41 +1000
+Message-Id: <20210616080244.51236-1-dja@axtens.net>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210616062157.953777-10-tientzu@chromium.org>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,48 +76,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: heikki.krogerus@linux.intel.com, thomas.hellstrom@linux.intel.com,
- peterz@infradead.org, joonas.lahtinen@linux.intel.com,
- dri-devel@lists.freedesktop.org, chris@chris-wilson.co.uk,
- grant.likely@arm.com, paulus@samba.org, Frank Rowand <frowand.list@gmail.com>,
- mingo@kernel.org, Marek Szyprowski <m.szyprowski@samsung.com>,
- sstabellini@kernel.org, Saravana Kannan <saravanak@google.com>,
- Joerg Roedel <joro@8bytes.org>,
- "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
- Christoph Hellwig <hch@lst.de>,
- Bartosz Golaszewski <bgolaszewski@baylibre.com>, bskeggs@redhat.com,
- linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
- Thierry Reding <treding@nvidia.com>, intel-gfx@lists.freedesktop.org,
- matthew.auld@intel.com, linux-devicetree <devicetree@vger.kernel.org>,
- jxgao@google.com, daniel@ffwll.ch, Will Deacon <will@kernel.org>,
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- maarten.lankhorst@linux.intel.com, airlied@linux.ie,
- Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org,
- jani.nikula@linux.intel.com, Rob Herring <robh+dt@kernel.org>,
- rodrigo.vivi@intel.com, bhelgaas@google.com, boris.ostrovsky@oracle.com,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jgross@suse.com,
- Nicolas Boichat <drinkcat@chromium.org>, Greg KH <gregkh@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, lkml <linux-kernel@vger.kernel.org>,
- tfiga@chromium.org,
- "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
- Jim Quinlan <james.quinlan@broadcom.com>, xypron.glpk@gmx.de,
- Robin Murphy <robin.murphy@arm.com>, bauerman@linux.ibm.com
+Cc: aneesh.kumar@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 16, 2021 at 02:21:54PM +0800, Claire Chang wrote:
-> Add the functions, swiotlb_{alloc,free} and is_swiotlb_for_alloc to
-> support the memory allocation from restricted DMA pool.
-> 
-> The restricted DMA pool is preferred if available.
-> 
-> Note that since coherent allocation needs remapping, one must set up
-> another device coherent pool by shared-dma-pool and use
-> dma_alloc_from_dev_coherent instead for atomic coherent allocation.
-> 
-> Signed-off-by: Claire Chang <tientzu@chromium.org>
+Building on the work of Christophe, Aneesh and Balbir, I've ported
+KASAN to 64-bit Book3S kernels running on the Radix MMU. I've been
+trying this for a while, but we keep having collisions between the
+kasan code in the mm tree and the code I want to put in to the ppc
+tree.
 
-Looks good,
+So this series just contains the kasan core changes that we
+need. These can go in via the mm tree. I will then propose the powerpc
+changes for a later cycle. (The most recent RFC for the powerpc
+changes is in the last series at
+https://lore.kernel.org/linux-mm/20210615014705.2234866-1-dja@axtens.net/
+)
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+v13 applies to next-20210611. There should be no noticeable changes to
+other platforms.
+
+Changes since v12: respond to Marco's review comments - clean up the
+help for ARCH_DISABLE_KASAN_INLINE, and add an arch readiness check to
+the new granule poisioning function. Thanks Marco.
+
+Kind regards,
+Daniel
+
+Daniel Axtens (3):
+  kasan: allow an architecture to disable inline instrumentation
+  kasan: allow architectures to provide an outline readiness check
+  kasan: define and use MAX_PTRS_PER_* for early shadow tables
+
+ include/linux/kasan.h | 18 +++++++++++++++---
+ lib/Kconfig.kasan     | 14 ++++++++++++++
+ mm/kasan/common.c     |  4 ++++
+ mm/kasan/generic.c    |  3 +++
+ mm/kasan/init.c       |  6 +++---
+ mm/kasan/kasan.h      |  4 ++++
+ mm/kasan/shadow.c     |  8 ++++++++
+ 7 files changed, 51 insertions(+), 6 deletions(-)
+
+-- 
+2.30.2
+
