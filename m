@@ -1,62 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 065933A8D2A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 02:03:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FB0A3A8D49
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 02:14:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G4QQ34flGz3bvR
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 10:03:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G4QfY2Gytz3bxK
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 10:14:29 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=rG6PucE0;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tad+jIad;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=luto@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=rG6PucE0; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=tad+jIad; 
  dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G4QPc2RpFz303P
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 10:03:15 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4G4QPY3GL1z9sRf;
- Wed, 16 Jun 2021 10:03:13 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1623801794;
- bh=KmCcyhOsKNECgzYxI+K5ya4vSQmMsByh3se6X2pbJxM=;
- h=From:To:Subject:In-Reply-To:References:Date:From;
- b=rG6PucE0qnbHJUQsvwl61MI2R9+EKUsLHuXThKkh4sR+mivSWBIX8eHcWOAIVQeAV
- hYq5tfNwGZcoeUxw5jEemyogZ5jTLz3BqeMacEF57e6N4c69y0NQ3iaF+wkY9xRLd5
- TM5DHyfPwavFJvWg/0fnbiPmU8iQSo+IY+Fmkm1q0FPI/0MT2rk6WHol+cMCjKU82j
- dZ7/+M1HXINretSGpODV3QZ2TRBg71n1msiqCqEBL6ZKOmMgpQFOTKjaftIkloyCki
- d8evTzOeecYjGmj/qYcDi+DIGb3LF7S2ftniv3ZqxUnit0MHeAEQv3x1pR61hc2T/f
- DvyjZYQDftt/g==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Fabiano Rosas <farosas@linux.ibm.com>, Pratik Sampat
- <psampat@linux.ibm.com>, benh@kernel.crashing.org, paulus@samba.org,
- linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org,
- linux-kernel@vger.kernel.org, pratik.r.sampat@gmail.com
-Subject: Re: [RFC] powerpc/pseries: Interface to represent PAPR firmware
- attributes
-In-Reply-To: <87tum6vb58.fsf@linux.ibm.com>
-References: <20210604163501.51511-1-psampat@linux.ibm.com>
- <87wnr4uhs9.fsf@linux.ibm.com>
- <5c9cb57b-e9d8-0361-8be7-60dc9618db34@linux.ibm.com>
- <87tum6vb58.fsf@linux.ibm.com>
-Date: Wed, 16 Jun 2021 10:03:11 +1000
-Message-ID: <875yyeu14w.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G4Qf63gZcz2xZB
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 10:14:06 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id ADE77611CE;
+ Wed, 16 Jun 2021 00:14:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1623802443;
+ bh=um8wh8sgKUn6UwRW7jW75/IAT6r5mXbKNUqGtm3+9TQ=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=tad+jIad0fSkSU3TYeZdfozEY0+IP4BcGd99jtAGninX/uSmGjkNaW+VGcbqRo6QY
+ fxKXPmkaM1ETjnA2b5tFTq5bGGDl69+3/poGBHtrHnStcHjDCq3QezIEC7nvYsrLJE
+ mL6Vc7GTVEa12EUEPlw3w9+v+GC7GZQgmvqsCvBv1EOujHOUD+iTvfP/tSWp1tzsFY
+ +iUR91oVybd/rjs7xXT7ki9a7wLgLlqFgjH9F05LtRSf+UGo+9lDhEFZiDo+5hHOJU
+ 2+6H0Vac0ZrXGlU5mNMyOPA79LSpxFked9NaOXgT8RON06bwZH5AnWH+P20t/542Il
+ 2KMIR25oTy5mA==
+Subject: Re: [PATCH v4 2/4] lazy tlb: allow lazy tlb mm refcounting to be
+ configurable
+To: Nicholas Piggin <npiggin@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <20210605014216.446867-1-npiggin@gmail.com>
+ <20210605014216.446867-3-npiggin@gmail.com>
+ <8ac1d420-b861-f586-bacf-8c3949e9b5c4@kernel.org>
+ <1623629185.fxzl5xdab6.astroid@bobo.none>
+ <02e16a2f-2f58-b4f2-d335-065e007bcea2@kernel.org>
+ <1623643443.b9twp3txmw.astroid@bobo.none>
+ <1623645385.u2cqbcn3co.astroid@bobo.none>
+ <1623647326.0np4yc0lo0.astroid@bobo.none>
+ <aecf5bc8-9018-c021-287d-6a975b7a6235@kernel.org>
+ <1623715482.4lskm3cx10.astroid@bobo.none>
+From: Andy Lutomirski <luto@kernel.org>
+Message-ID: <3b9eb877-5d1e-d565-5577-575229d18b6e@kernel.org>
+Date: Tue, 15 Jun 2021 17:14:01 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <1623715482.4lskm3cx10.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,63 +71,157 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-arch@vger.kernel.org, Rik van Riel <riel@surriel.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fabiano Rosas <farosas@linux.ibm.com> writes:
-> Pratik Sampat <psampat@linux.ibm.com> writes:
-...
->>>
->>>> The new H_CALL exports information in direct string value format, hence
->>>> a new interface has been introduced in /sys/firmware/papr to export
->>> Hm.. Maybe this should be something less generic than "papr"?
+On 6/14/21 5:55 PM, Nicholas Piggin wrote:
+> Excerpts from Andy Lutomirski's message of June 15, 2021 2:20 am:
+>> Replying to several emails at once...
 >>
->> The interface naming was inspired from /sys/firmware/opal's naming convention.
->> We believed the name PAPR could serve as more generic name to be used by both
->> Linux running on PHYP and linux on KVM.
->
-> Right, I agree with that rationale, but /opal has identifiable elements
-> in it whereas /papr would have the generic "attr_X_name", which does not
-> give much hint about what they are.
->
-> We also expect people to iterate the "attr_X_*" files, so if we decide
-> to add something else under /papr in the future, that would potentially
-> cause issues with any tool that just lists the content of the directory.
->
-> So maybe we should be proactive and put the hcall stuff inside a
-> subdirectory already. /papr/energy_scale_attrs comes to mind, but I
-> don't have a strong opinion on the particular name.
 
-Maybe we should use the descriptive part of the hcall.
+> 
+> So the only documentation relating to the current active_mm value or 
+> refcounting is that it may not match what the x86 specific code is 
+> doing?
+> 
+> All this complexity you accuse me of adding is entirely in x86 code.
+> On other architectures, it's very simple and understandable, and 
+> documented. I don't know how else to explain this.
 
-So H_GET_ENERGY_SCALE_INFO -> ../papr/energy_scale_info/
+And the docs you referred me to will be *wrong* with your patches
+applied.  They are your patches, and they break the semantics.
 
-That should help avoid any naming confusion, because every hcall should
-have a unique name.
+> 
+>>>>>
+>>>>>> With your patch applied:
+>>>>>>
+>>>>>>  To support all that, the "struct mm_struct" now has two counters: a
+>>>>>>  "mm_users" counter that is how many "real address space users" there are,
+>>>>>>  and a "mm_count" counter that is the number of "lazy" users (ie anonymous
+>>>>>>  users) plus one if there are any real users.
+>>>>>>
+>>>>>> isn't even true any more.
+>>>>>
+>>>>> Well yeah but the active_mm concept hasn't changed. The refcounting 
+>>>>> change is hopefully reasonably documented?
+>>
+>> active_mm is *only* refcounting in the core code.  See below.
+> 
+> It's just not. It's passed in to switch_mm. Most architectures except 
+> for x86 require this.
+> 
 
-In future if there's ever a H_GET_ENERGY_SCALE_INFO_2 we would then have
-to decide if we expose that as a separate directory, or more likely we
-would handle that in the kernel and continue to use the existing sysfs
-name.
+Sorry, I was obviously blatantly wrong.  Let me say it differently.
+active_mm does two things:
 
-...
+1. It keeps an mm alive via a refcounting scheme.
 
-> Based on all the new information you provided, I'd say present all the
-> data and group it under the ID:
->
-> /sys/firmware/papr/energy_scale_attrs/
->    |-- <id>/
->      |-- desc
->      |-- value
->      |-- value_desc
->    |-- <id>/
->      |-- desc
->      |-- value
->      |-- value_desc
+2. It passes a parameter to switch_mm() to remind the arch code what the
+most recently switch-to mm was.
 
-Yeah that seems reasonable.
+#2 is basically useless.  An architecture can handle *that* with a
+percpu variable and two lines of code.
 
-I'd think we should just omit the value_desc if it's empty.
+If you are getting rid of functionality #1 in the core code via a new
+arch opt-out, please get rid of #2 as well.  *Especially* because, when
+the arch asks the core code to stop refcounting active_mm, there is
+absolutely nothing guaranteeing that the parameter that the core code
+will pass to switch_mm() points to memory that hasn't been freed and
+reused for another purpose.
 
-cheers
+>>>>> I might not have been clear. Core code doesn't need active_mm if 
+>>>>> active_mm somehow goes away. I'm saying active_mm can't go away because
+>>>>> it's needed to support (most) archs that do lazy tlb mm switching.
+>>>>>
+>>>>> The part I don't understand is when you say it can just go away. How? 
+>>
+>> #ifdef CONFIG_MMU_TLB_REFCOUNT
+>> 	struct mm_struct *active_mm;
+>> #endif
+> 
+> Thanks for returning the snark.
+
+That wasn't intended to be snark.  It was a literal suggestion, and, in
+fact, it's *exactly* what I'm asking you to do to fix your patches.
+
+>> I don't understand what contract you're talking about.  The core code
+>> maintains an active_mm counter and keeps that mm_struct from
+>> disappearing.  That's *it*.  The core code does not care that active_mm
+>> is active, and x86 provides evidence of that -- on x86,
+>> current->active_mm may well be completely unused.
+> 
+> I already acknowledged archs can do their own thing under the covers if 
+> they want.
+
+No.
+
+I am *not* going to write x86 patches that use your feature in a way
+that will cause the core code to pass around a complete garbage pointer
+to an mm_struct that is completely unreferenced and may well be deleted.
+ Doing something private in arch code is one thing.  Doing something
+that causes basic common sense to be violated in core code is another
+thing entirely.
+
+>>
+>> static inline void do_switch_mm(struct task_struct *prev_task, ...)
+>> {
+>> #ifdef CONFIG_MMU_TLB_REFCOUNT
+>> 	switch_mm(...);
+>> #else
+>> 	switch_mm(fewer parameters);
+>> 	/* or pass NULL or whatever. */
+>> #endif
+>> }
+> 
+> And prev_task comes from active_mm, ergo core code requires the concept 
+> of active_mm.
+
+I don't see why this concept is hard.  We are literally quibbling about
+this single line of core code in kernel/sched/core.c:
+
+switch_mm_irqs_off(prev->active_mm, next->mm, next);
+
+This is not rocket science.  There are any number of ways to fix it.
+For example:
+
+#ifdef CONFIG_MMU_TLB_REFCOUNT
+	switch_mm_irqs_off(prev->active_mm, next->mm, next);
+#else
+	switch_mm_irqs_off(NULL, next->mm, next);
+#endif
+
+If you don't like the NULL, then make the signature depend on the config
+option.
+
+What you may not do is what your patch actually does:
+
+switch_mm_irqs_off(random invalid pointer, next->mm, next);
+
+Now maybe it works because powerpc's lifecycle rules happen to keep
+active_mm alive, but I haven't verified it.  x86's lifecycle rules *do not*.
+
+>>>
+>>> That's understandable, but please redirect your objections to the proper 
+>>> place. git blame suggests 3d28ebceaffab.
+>>
+>> Thanks for the snark.
+> 
+> Is it not true? I don't mean that one patch causing all the x86 
+> complexity or even making the situation worse itself. But you seem to be 
+> asking my series to do things that really apply to the x86 changes over
+> the past few years that got us here.
+
+With just my patch from 4.15 applied, task->active_mm points to an
+actual mm_struct, and that mm_struct will not be freed early.  If I opt
+x86 into your patch's new behavior, then task->active_mm may be freed.
+
+akpm, please drop this series until it's fixed.  It's a core change to
+better support arch usecases, but it's unnecessarily fragile, and there
+is already an arch maintainer pointing out that it's inadequate to
+robustly support arch usecases.  There is no reason to merge it in its
+present state.
