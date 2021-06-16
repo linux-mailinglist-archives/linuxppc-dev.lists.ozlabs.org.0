@@ -2,69 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70CD03A90AD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 06:40:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 203C03A90BD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 06:42:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G4XYD167Gz3btF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 14:40:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G4XbN5jsXz3bxZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 14:42:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=BhoZH0Nr;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=lKJIvf6p;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::633;
- helo=mail-pl1-x633.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::62d;
+ helo=mail-pl1-x62d.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=BhoZH0Nr; dkim-atps=neutral
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com
- [IPv6:2607:f8b0:4864:20::633])
+ header.s=google header.b=lKJIvf6p; dkim-atps=neutral
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com
+ [IPv6:2607:f8b0:4864:20::62d])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G4XXj4zlGz2xZW
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 14:39:49 +1000 (AEST)
-Received: by mail-pl1-x633.google.com with SMTP id 11so462791plk.12
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 21:39:48 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G4XZy4Tbhz2xZW
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 14:41:46 +1000 (AEST)
+Received: by mail-pl1-x62d.google.com with SMTP id b12so466372plg.11
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 21:41:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
  h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=5w3M3t3Z4U9itzhliFyQ9k6bBdvkeu8fXdsAtgl3rqo=;
- b=BhoZH0Nr3ZHtpXLjF2kiPY7YRdY/6qIXrextonsCRJ2vn3Ezw0B6jrysimae7W7qYW
- GJT+ozMHK5wtRIoAwyz/ClsSc9N8NjfRoqLmP+nkRlD07lAlZHdxBXpDjiEXhF1kl+MA
- k7rvWoYBPTW3FwCCoyeB+RXgdsINqgpyon4BM=
+ :mime-version; bh=yNLs0De7jThuF+2jQNPxEWOcx6TgeD4ov6vuIyTpd+A=;
+ b=lKJIvf6pt1/GdaW2KeqS7wKBIja3w5kpORjD4jLrNWSEFfEOkW3onHIDqBu0GFngkS
+ lxkWv44pwySHTfYWybvEhaBirmSWSJMqraifs7VnqCLsdljizzbcTlkUb4DkuOyQKb70
+ r/j3tlzKy+Tk59kdBEbDxcnNRfRigkfAmLaJI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
  :message-id:mime-version;
- bh=5w3M3t3Z4U9itzhliFyQ9k6bBdvkeu8fXdsAtgl3rqo=;
- b=Ts3RjyxgHvfSXBSOzcJZvKKoePeuqsNVdKc7WZGnzOjekxRhc5tVIV6zNmhHLFLVpe
- +ZRzoixHoCeVtiHUipzH2tKUBVamV/nTopTqwlQwCbO+EPEzaDaPmEoUEjq2NFDqJJU/
- UqVdYZ2pPBzVCdOPv6ULQDMhBU1BtkGnjq8ghwvYPETg7nipD0+fES3eufE6MvYM6THl
- wOm1VjcOZP/Xpq4r7+3TtETG1W+ql4tY/y8/TEIdx2xYfDDJo5C9jxYwV06hGP/ifOjy
- Fpk2qf2/HmsM8XpKHWT0lDIutHmu4G2ut/3I6/hT3RsMVmt2CaGYTr6vsb6IbQj/lr+q
- 8fIg==
-X-Gm-Message-State: AOAM531k68BTs/VBGIu715oCvv5hyojT65Z7+6UbL89aHGBi5Vb/4BFG
- O7EQFNhTwV29JqvmPhywyEDvxg==
-X-Google-Smtp-Source: ABdhPJxS52+0zEjYNpTjrkU9yDk9Lb9mREVnKzrzxmFtRrSP1pLKGqx/loFfJeSlNx4FwkYBioRzNg==
-X-Received: by 2002:a17:90b:1805:: with SMTP id
- lw5mr2950044pjb.120.1623818383687; 
- Tue, 15 Jun 2021 21:39:43 -0700 (PDT)
+ bh=yNLs0De7jThuF+2jQNPxEWOcx6TgeD4ov6vuIyTpd+A=;
+ b=YPhBa07yGZKWnjy2jwHYEbaVm85aIQEwqaHd1qVvHbgiE48HsI+wRlyYMr1aAwobEs
+ KBQj0H7alfi9QDXn3dpT0ujJgW5COsxYYHLbeWUs6UxvxrglqoLgIuLG4j1LtibnZa9l
+ LIRIbK2/ebGGh6VAhpm1bkNoSagi1plI+qzRZyviCktb2vn8BaduVSB2dpxlHyh1woBf
+ 2ziodQd1J8I/DEhCiKHtopv+HjI73F7K/uucAsPgSu1RA4WFKeN0P1dgFwaQH9Sv+Rhc
+ BSZsCqHG4eZB7+wS1NeBVMEwVCjNFrMVKlMBd9f7vwUuZU8wd6sNDu9CQWbGfMSbRKHy
+ 902A==
+X-Gm-Message-State: AOAM531vRQx9MbCLSTrR0rGwa6BwNnvJgdsm9B7zGBomkHYallI90iet
+ 0gtpwkEIbauuEPJazRP0lCcRZQ==
+X-Google-Smtp-Source: ABdhPJxh2trs7JHKAmnz6ypTMfnczKQwyngda5/fDSTUi8HksJLDs/vs/uzec4cWsIlm+tLEn9utjQ==
+X-Received: by 2002:a17:903:228e:b029:101:af04:4e24 with SMTP id
+ b14-20020a170903228eb0290101af044e24mr7415002plh.3.1623818503317; 
+ Tue, 15 Jun 2021 21:41:43 -0700 (PDT)
 Received: from localhost ([203.206.29.204])
- by smtp.gmail.com with ESMTPSA id f28sm732424pgb.12.2021.06.15.21.39.42
+ by smtp.gmail.com with ESMTPSA id v10sm726962pgb.46.2021.06.15.21.41.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Jun 2021 21:39:43 -0700 (PDT)
+ Tue, 15 Jun 2021 21:41:42 -0700 (PDT)
 From: Daniel Axtens <dja@axtens.net>
 To: Marco Elver <elver@google.com>
-Subject: Re: [PATCH v12 1/6] kasan: allow an architecture to disable inline
- instrumentation
-In-Reply-To: <CANpmjNOa-a=M-EgdkneiWDD0eCF-DELjMFxAeJzGQz6AgCdNWg@mail.gmail.com>
+Subject: Re: [PATCH v12 2/6] kasan: allow architectures to provide an
+ outline readiness check
+In-Reply-To: <CANpmjNN2=gdDBPzYQYsmOtLQVVjSz2qFcwcTMEqB=s_ZWndJLg@mail.gmail.com>
 References: <20210615014705.2234866-1-dja@axtens.net>
- <20210615014705.2234866-2-dja@axtens.net>
- <CANpmjNOa-a=M-EgdkneiWDD0eCF-DELjMFxAeJzGQz6AgCdNWg@mail.gmail.com>
-Date: Wed, 16 Jun 2021 14:39:38 +1000
-Message-ID: <87im2ev2wl.fsf@dja-thinkpad.axtens.net>
+ <20210615014705.2234866-3-dja@axtens.net>
+ <CANpmjNN2=gdDBPzYQYsmOtLQVVjSz2qFcwcTMEqB=s_ZWndJLg@mail.gmail.com>
+Date: Wed, 16 Jun 2021 14:41:39 +1000
+Message-ID: <87fsxiv2t8.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -80,38 +80,31 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: aneesh.kumar@linux.ibm.com, LKML <linux-kernel@vger.kernel.org>,
  Linux Memory Management List <linux-mm@kvack.org>,
- kasan-dev <kasan-dev@googlegroups.com>, linuxppc-dev@lists.ozlabs.org
+ kasan-dev <kasan-dev@googlegroups.com>, linuxppc-dev@lists.ozlabs.org,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Hi Marco,
-
-@@ -12,6 +12,15 @@ config HAVE_ARCH_KASAN_HW_TAGS
->>  config HAVE_ARCH_KASAN_VMALLOC
->>         bool
->>
->> +# Sometimes an architecture might not be able to support inline instrumentation
->> +# but might be able to support outline instrumentation. This option allows an
->> +# arch to prevent inline and stack instrumentation from being enabled.
+>> +       /* Don't touch the shadow memory if arch isn't ready */
+>> +       if (!kasan_arch_is_ready())
+>> +               return;
+>> +
 >
-> This comment could be moved into 'help' of this new config option.
+> What about kasan_poison_last_granule()? kasan_unpoison() currently
+> seems to potentially trip on that.
 
-It could. I did wonder if that made sense given that this is not a user
-selectable option so I'm not sure if the help will ever be visible, but
-I see that we do this sort of thing in Kconfig.kcsan and Kconfig.kgdb.
-I've changed it over.
+Ah the perils of rebasing an old series! I'll re-audit the generic code
+for functions that touch memory and make sure I have covered them all.
 
->> +# ppc64 turns on virtual memory late in boot, after calling into generic code
->> +# like the device-tree parser, so it uses this in conjuntion with a hook in
->> +# outline mode to avoid invalid access early in boot.
->
-> I think the ppc64-related comment isn't necessary and can be moved to
-> arch/ppc64 somewhere, if there isn't one already.
-
-Fair enough. I'll pull it out of this file and look for a good place to
-put the information in arch/powerpc in a later patch/series.
+Thanks for the review.
 
 Kind regards,
 Daniel
 
+>
+> -- 
+> You received this message because you are subscribed to the Google Groups "kasan-dev" group.
+> To unsubscribe from this group and stop receiving emails from it, send an email to kasan-dev+unsubscribe@googlegroups.com.
+> To view this discussion on the web visit https://groups.google.com/d/msgid/kasan-dev/CANpmjNN2%3DgdDBPzYQYsmOtLQVVjSz2qFcwcTMEqB%3Ds_ZWndJLg%40mail.gmail.com.
