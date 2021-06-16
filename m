@@ -1,96 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0D183A90DF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 06:58:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC88D3A90E0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 06:58:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G4Xy83mQYz3dCC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 14:58:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G4Xym34qcz3dL8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 14:58:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oYEahurN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ll10y7zW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=oYEahurN; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ header.s=pp1 header.b=ll10y7zW; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G4Xxh40qyz302g
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 14:58:00 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G4Xxm03jHz3c8d
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 14:58:03 +1000 (AEST)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 15G4XjpX044682; Wed, 16 Jun 2021 00:57:48 -0400
+ 15G4YQWG134736; Wed, 16 Jun 2021 00:57:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
- : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=6QFXMIpx56aVPe42FIhYS6gEte4gefS/3+MLmLscVEA=;
- b=oYEahurNkNvI+wXzKxMMngQr4Lr9FtvJRzSp0CEbEcqBljhjAWwGO2z4YE1inHdwHaeY
- XHGzkeX+L8eshZOeUxR1mwHLHAn/2EVUXii2hSW44nD1Dcn3PrXP1KwteL/bkLjalScv
- OvsDQcmYNDWii/66TZYGjHrAiZl0jtXHX9RGuwDf4Gqwp4W8Sb4RIpur2Znmy4QpVTUH
- djvH5s/WWOUyR+npY6NZoM19/bToDSwSPpc61S91FbxBNOTZp9rmpdgDvDr08x1IRh2C
- cwDC3nr/fpjO8H1ee3BJSVCLr/5W1+1aqh9mQ6bxyWT6f3TV0X0Rny7jmN3uYDm+DYoB rw== 
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=uFyH52Jw94Yxah/lcEj+LnFruW9u0qwlGr1fixilN2A=;
+ b=ll10y7zWiqAWfDSMxdPCv5fX+GjJ8WueYgyFAji7ppYrCfQdhQQUXQ0QmmT0QE50ghU0
+ n4p9ZQwFJJbzgyJJifuatCyfFzWMVacdMwI5Tp8dHzTUG2RspBLFTrZxjjJkf2VjXtt2
+ 4oYgVjwhOrZkd34Jt8E6FhISCk+7Oh+OodM0qX1HjxETbZnW8xAP5AMpjhnh0bf+uKQ5
+ ABHGTl5f8tVOOQDZ6jy/cZUC6abPniTNXk/6JH3imorqQo9tGkxn9f9/GAnc2/rCHu+j
+ o2v8lQy++oE+U19A1JWHdGMEikJ0UYEFeD23s6F/Rj0q6G1lZEGItCC8I92bnxL9JLLM vg== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3978bau3cx-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3978bmb372-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 16 Jun 2021 00:57:47 -0400
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 15G4XhVI044575;
- Wed, 16 Jun 2021 00:57:47 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3978bau3c3-1
+ Wed, 16 Jun 2021 00:57:51 -0400
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 15G4voRp010069;
+ Wed, 16 Jun 2021 00:57:51 -0400
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3978bmb36t-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 16 Jun 2021 00:57:47 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15G4q9Kd031111;
- Wed, 16 Jun 2021 04:57:46 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma02dal.us.ibm.com with ESMTP id 394mj9vt45-1
+ Wed, 16 Jun 2021 00:57:50 -0400
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15G4q6mE022109;
+ Wed, 16 Jun 2021 04:57:50 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
+ [9.57.198.27]) by ppma01dal.us.ibm.com with ESMTP id 394mjacu5k-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 16 Jun 2021 04:57:46 +0000
+ Wed, 16 Jun 2021 04:57:50 +0000
 Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
  [9.57.199.108])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 15G4vjR012976562
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 15G4vnYO28508656
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 16 Jun 2021 04:57:45 GMT
+ Wed, 16 Jun 2021 04:57:49 GMT
 Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 463E9B2064;
+ by IMSVA (Postfix) with ESMTP id 5237BB2065;
+ Wed, 16 Jun 2021 04:57:49 +0000 (GMT)
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E5541B2064;
  Wed, 16 Jun 2021 04:57:45 +0000 (GMT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D5A64B2065;
- Wed, 16 Jun 2021 04:57:41 +0000 (GMT)
 Received: from skywalker.ibmuc.com (unknown [9.85.71.33])
  by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed, 16 Jun 2021 04:57:41 +0000 (GMT)
+ Wed, 16 Jun 2021 04:57:45 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: linux-mm@kvack.org, akpm@linux-foundation.org
-Subject: [PATCH v8 0/3] Speedup mremap on ppc64
-Date: Wed, 16 Jun 2021 10:27:32 +0530
-Message-Id: <20210616045735.374532-1-aneesh.kumar@linux.ibm.com>
+Subject: [PATCH v8 1/3] mm/mremap: Allow arch runtime override
+Date: Wed, 16 Jun 2021 10:27:33 +0530
+Message-Id: <20210616045735.374532-2-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.31.1
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 52VjPeczYuhyj3EBiqUvv48Z1fxnn8O4
-X-Proofpoint-ORIG-GUID: lyhUnfFPqP3LehFaHADZA26T1u-grw1P
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+In-Reply-To: <20210616045735.374532-1-aneesh.kumar@linux.ibm.com>
+References: <20210616045735.374532-1-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 9NAwRxBX7RKa085jJ9kG6zP6htvX5fvB
+X-Proofpoint-GUID: _ChDlK1yfJSED_FD981nr8wi6BOaYspP
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.761
  definitions=2021-06-15_09:2021-06-15,
  2021-06-15 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0
- spamscore=0 impostorscore=0 mlxlogscore=999 clxscore=1015
- priorityscore=1501 mlxscore=0 bulkscore=0 malwarescore=0 adultscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ impostorscore=0 phishscore=0
+ clxscore=1015 spamscore=0 priorityscore=1501 mlxlogscore=999
+ malwarescore=0 mlxscore=0 lowpriorityscore=0 bulkscore=0 adultscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2104190000 definitions=main-2106160027
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -111,55 +113,78 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This patchset enables MOVE_PMD/MOVE_PUD support on power. This requires
-the platform to support updating higher-level page tables without
-updating page table entries. This also needs to invalidate the Page Walk
-Cache on architecture supporting the same.
+Architectures like ppc64 support faster mremap only with radix
+translation. Hence allow a runtime check w.r.t support for fast mremap.
 
-This patchset is dependent on
-https://lore.kernel.org/linux-mm/20210616045239.370802-1-aneesh.kumar@linux.ibm.com/
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+ arch/powerpc/include/asm/tlb.h |  6 ++++++
+ mm/mremap.c                    | 15 ++++++++++++++-
+ 2 files changed, 20 insertions(+), 1 deletion(-)
 
-Changes from v7:
-* Split mremap fixes to a separate series
-
-Changes from v6:
-* Update ppc64 flush_tlb_range to invalidate page walk cache.
-* Add patches to fix race between mremap and page out
-* Add patch to fix build error with page table levels 2
-
-Changes from v5:
-* Drop patch mm/mremap: Move TLB flush outside page table lock
-* Add fixes for race between optimized mremap and page out
-
-Changes from v4:
-* Change function name and arguments based on review feedback.
-
-Changes from v3:
-* Fix build error reported by kernel test robot
-* Address review feedback.
-
-Changes from v2:
-* switch from using mmu_gather to flush_pte_tlb_pwc_range() 
-
-Changes from v1:
-* Rebase to recent upstream
-* Fix build issues with tlb_gather_mmu changes
-
-
-
-Aneesh Kumar K.V (3):
-  mm/mremap: Allow arch runtime override
-  powerpc/book3s64/mm: Update flush_tlb_range to flush page walk cache
-  powerpc/mm: Enable HAVE_MOVE_PMD support
-
- .../include/asm/book3s/64/tlbflush-radix.h    |  2 +
- arch/powerpc/include/asm/tlb.h                |  6 +++
- arch/powerpc/mm/book3s64/radix_hugetlbpage.c  |  8 +++-
- arch/powerpc/mm/book3s64/radix_tlb.c          | 44 ++++++++++++-------
- arch/powerpc/platforms/Kconfig.cputype        |  2 +
- mm/mremap.c                                   | 15 ++++++-
- 6 files changed, 58 insertions(+), 19 deletions(-)
-
+diff --git a/arch/powerpc/include/asm/tlb.h b/arch/powerpc/include/asm/tlb.h
+index 160422a439aa..09a9ae5f3656 100644
+--- a/arch/powerpc/include/asm/tlb.h
++++ b/arch/powerpc/include/asm/tlb.h
+@@ -83,5 +83,11 @@ static inline int mm_is_thread_local(struct mm_struct *mm)
+ }
+ #endif
+ 
++#define arch_supports_page_table_move arch_supports_page_table_move
++static inline bool arch_supports_page_table_move(void)
++{
++	return radix_enabled();
++}
++
+ #endif /* __KERNEL__ */
+ #endif /* __ASM_POWERPC_TLB_H */
+diff --git a/mm/mremap.c b/mm/mremap.c
+index c3cad539a7aa..ca9d345f22e8 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -25,7 +25,7 @@
+ #include <linux/userfaultfd_k.h>
+ 
+ #include <asm/cacheflush.h>
+-#include <asm/tlbflush.h>
++#include <asm/tlb.h>
+ #include <asm/pgalloc.h>
+ 
+ #include "internal.h"
+@@ -210,6 +210,15 @@ static void move_ptes(struct vm_area_struct *vma, pmd_t *old_pmd,
+ 		drop_rmap_locks(vma);
+ }
+ 
++#ifndef arch_supports_page_table_move
++#define arch_supports_page_table_move arch_supports_page_table_move
++static inline bool arch_supports_page_table_move(void)
++{
++	return IS_ENABLED(CONFIG_HAVE_MOVE_PMD) ||
++		IS_ENABLED(CONFIG_HAVE_MOVE_PUD);
++}
++#endif
++
+ #ifdef CONFIG_HAVE_MOVE_PMD
+ static bool move_normal_pmd(struct vm_area_struct *vma, unsigned long old_addr,
+ 		  unsigned long new_addr, pmd_t *old_pmd, pmd_t *new_pmd)
+@@ -218,6 +227,8 @@ static bool move_normal_pmd(struct vm_area_struct *vma, unsigned long old_addr,
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	pmd_t pmd;
+ 
++	if (!arch_supports_page_table_move())
++		return false;
+ 	/*
+ 	 * The destination pmd shouldn't be established, free_pgtables()
+ 	 * should have released it.
+@@ -284,6 +295,8 @@ static bool move_normal_pud(struct vm_area_struct *vma, unsigned long old_addr,
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	pud_t pud;
+ 
++	if (!arch_supports_page_table_move())
++		return false;
+ 	/*
+ 	 * The destination pud shouldn't be established, free_pgtables()
+ 	 * should have released it.
 -- 
 2.31.1
 
