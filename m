@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C03B3A8F56
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 05:22:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99F413A8F53
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 05:21:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G4Vq817xHz3c2p
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 13:22:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G4Vph2BWkz3bwt
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 13:21:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hNxV4V7z;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=B70I5bf5;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,30 +17,31 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=luto@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=hNxV4V7z; 
+ header.s=k20201202 header.b=B70I5bf5; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G4VpD1swDz2ym5
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G4VpD1kVZz2ylk
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 13:21:23 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 76404613DC;
- Wed, 16 Jun 2021 03:21:19 +0000 (UTC)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D051F613C7;
+ Wed, 16 Jun 2021 03:21:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1623813679;
- bh=FjSVK+oLKWCgQcLVc/yxw6eKOykcdskBrRZdDTQATJQ=;
+ s=k20201202; t=1623813681;
+ bh=c1mW/zRWUMzz2nK2JXBUnfYw2Qug1l+u6NJy058tCKU=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=hNxV4V7z+Nf+3L/lZMKFuV3SJ66ggCJ+cspPEUtfvkee+klF0IxtUDpq9DSwO40te
- Y/+8Op9Fj4sCWiK65uZ5EZUH8vS1Ha4lEzTXSwI28v2CGFytvqvS37LLikVoN0cVG8
- 6jMich5fC5pKUGbDFMObsHD8RbVXsawbyksBNUDe2evE4KHmZh18FEckNI+KTuQEUp
- PWpa6XDbLpI7L05XpEjB5MM7gd//a/KYKlt2yWknMaftgoVrL2FGbzOCMguQqyJVD5
- vN6uvOJUdkIa7BI3bE944plKIQ3YtdbreMjZpSiKDnYa1JLRGqwKU4HVbz8WVVuMfY
- WVLB2KuFIkidw==
+ b=B70I5bf52TGkG4s1VVE6Hd7Y7ayRYIqoQY+VCilqwGmR637HAkxETW5LDO2WUAU41
+ JPrMUMhJxEVryOCY1LLy6bILDYQkRx/Up5OfTCeWH1y8+ocLCbPZKDINW09hhWUMhf
+ x/iKZE8FCbJ1rxisppx4MLiLiEzDxLiSKnuAbNbxuObVxTQGxiJsQwt8JbAwy86JJb
+ 5d2zQrZFSt6N3/cbRkVui0tket2wwvCsLk4YOXvILUCJUWirQLDg8Frqib8KziXQLk
+ ysBwfFSYxXKB/Jb9ME6MVI7PetyyF1uTaBSC8eXu4Av1hnsrGlkvApjo+ZhKswSnv/
+ m6AaPR7Pa2FhA==
 From: Andy Lutomirski <luto@kernel.org>
 To: x86@kernel.org
-Subject: [PATCH 6/8] powerpc/membarrier: Remove special barrier on mm switch
-Date: Tue, 15 Jun 2021 20:21:11 -0700
-Message-Id: <d9034f951329830b766feb08099c15b714e08e8f.1623813516.git.luto@kernel.org>
+Subject: [PATCH 8/8] membarrier: Rewrite sync_core_before_usermode() and
+ improve documentation
+Date: Tue, 15 Jun 2021 20:21:13 -0700
+Message-Id: <07a8b963002cb955b7516e61bad19514a3acaa82.1623813516.git.luto@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <cover.1623813516.git.luto@kernel.org>
 References: <cover.1623813516.git.luto@kernel.org>
@@ -57,99 +58,443 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, Peter Zijlstra <peterz@infradead.org>,
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ linux-mm@kvack.org, Peter Zijlstra <peterz@infradead.org>,
  LKML <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
  Dave Hansen <dave.hansen@intel.com>, Paul Mackerras <paulus@samba.org>,
- Andy Lutomirski <luto@kernel.org>,
+ stable@vger.kernel.org, Andy Lutomirski <luto@kernel.org>,
  Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-powerpc did the following on some, but not all, paths through
-switch_mm_irqs_off():
+The old sync_core_before_usermode() comments suggested that a non-icache-syncing
+return-to-usermode instruction is x86-specific and that all other
+architectures automatically notice cross-modified code on return to
+userspace.
 
-       /*
-        * Only need the full barrier when switching between processes.
-        * Barrier when switching from kernel to userspace is not
-        * required here, given that it is implied by mmdrop(). Barrier
-        * when switching from userspace to kernel is not needed after
-        * store to rq->curr.
-        */
-       if (likely(!(atomic_read(&next->membarrier_state) &
-                    (MEMBARRIER_STATE_PRIVATE_EXPEDITED |
-                     MEMBARRIER_STATE_GLOBAL_EXPEDITED)) || !prev))
-               return;
+This is misleading.  The incantation needed to modify code from one
+CPU and execute it on another CPU is highly architecture dependent.
+On x86, according to the SDM, one must modify the code, issue SFENCE
+if the modification was WC or nontemporal, and then issue a "serializing
+instruction" on the CPU that will execute the code.  membarrier() can do
+the latter.
 
-This is puzzling: if !prev, then one might expect that we are switching
-from kernel to user, not user to kernel, which is inconsistent with the
-comment.  But this is all nonsense, because the one and only caller would
-never have prev == NULL and would, in fact, OOPS if prev == NULL.
+On arm64 and powerpc, one must flush the icache and then flush the pipeline
+on the target CPU, although the CPU manuals don't necessarily use this
+language.
 
-In any event, this code is unnecessary, since the new generic
-membarrier_finish_switch_mm() provides the same barrier without arch help.
+So let's drop any pretense that we can have a generic way to define or
+implement membarrier's SYNC_CORE operation and instead require all
+architectures to define the helper and supply their own documentation as to
+how to use it.  This means x86, arm64, and powerpc for now.  Let's also
+rename the function from sync_core_before_usermode() to
+membarrier_sync_core_before_usermode() because the precise flushing details
+may very well be specific to membarrier, and even the concept of
+"sync_core" in the kernel is mostly an x86-ism.
+
+(It may well be the case that, on real x86 processors, synchronizing the
+ icache (which requires no action at all) and "flushing the pipeline" is
+ sufficient, but trying to use this language would be confusing at best.
+ LFENCE does something awfully like "flushing the pipeline", but the SDM
+ does not permit LFENCE as an alternative to a "serializing instruction"
+ for this purpose.)
 
 Cc: Michael Ellerman <mpe@ellerman.id.au>
 Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
 Cc: Paul Mackerras <paulus@samba.org>
 Cc: linuxppc-dev@lists.ozlabs.org
 Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org
 Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: x86@kernel.org
+Cc: stable@vger.kernel.org
+Fixes: 70216e18e519 ("membarrier: Provide core serializing command, *_SYNC_CORE")
 Signed-off-by: Andy Lutomirski <luto@kernel.org>
 ---
- arch/powerpc/include/asm/membarrier.h | 27 ---------------------------
- arch/powerpc/mm/mmu_context.c         |  2 --
- 2 files changed, 29 deletions(-)
- delete mode 100644 arch/powerpc/include/asm/membarrier.h
+ .../membarrier-sync-core/arch-support.txt     | 68 ++++++-------------
+ arch/arm64/include/asm/sync_core.h            | 19 ++++++
+ arch/powerpc/include/asm/sync_core.h          | 14 ++++
+ arch/x86/Kconfig                              |  1 -
+ arch/x86/include/asm/sync_core.h              |  7 +-
+ arch/x86/kernel/alternative.c                 |  2 +-
+ arch/x86/kernel/cpu/mce/core.c                |  2 +-
+ arch/x86/mm/tlb.c                             |  3 +-
+ drivers/misc/sgi-gru/grufault.c               |  2 +-
+ drivers/misc/sgi-gru/gruhandles.c             |  2 +-
+ drivers/misc/sgi-gru/grukservices.c           |  2 +-
+ include/linux/sched/mm.h                      |  1 -
+ include/linux/sync_core.h                     | 21 ------
+ init/Kconfig                                  |  3 -
+ kernel/sched/membarrier.c                     | 15 ++--
+ 15 files changed, 75 insertions(+), 87 deletions(-)
+ create mode 100644 arch/arm64/include/asm/sync_core.h
+ create mode 100644 arch/powerpc/include/asm/sync_core.h
+ delete mode 100644 include/linux/sync_core.h
 
-diff --git a/arch/powerpc/include/asm/membarrier.h b/arch/powerpc/include/asm/membarrier.h
+diff --git a/Documentation/features/sched/membarrier-sync-core/arch-support.txt b/Documentation/features/sched/membarrier-sync-core/arch-support.txt
+index 883d33b265d6..41c9ebcb275f 100644
+--- a/Documentation/features/sched/membarrier-sync-core/arch-support.txt
++++ b/Documentation/features/sched/membarrier-sync-core/arch-support.txt
+@@ -5,51 +5,25 @@
+ #
+ # Architecture requirements
+ #
+-# * arm/arm64/powerpc
+ #
+-# Rely on implicit context synchronization as a result of exception return
+-# when returning from IPI handler, and when returning to user-space.
+-#
+-# * x86
+-#
+-# x86-32 uses IRET as return from interrupt, which takes care of the IPI.
+-# However, it uses both IRET and SYSEXIT to go back to user-space. The IRET
+-# instruction is core serializing, but not SYSEXIT.
+-#
+-# x86-64 uses IRET as return from interrupt, which takes care of the IPI.
+-# However, it can return to user-space through either SYSRETL (compat code),
+-# SYSRETQ, or IRET.
+-#
+-# Given that neither SYSRET{L,Q}, nor SYSEXIT, are core serializing, we rely
+-# instead on write_cr3() performed by switch_mm() to provide core serialization
+-# after changing the current mm, and deal with the special case of kthread ->
+-# uthread (temporarily keeping current mm into active_mm) by issuing a
+-# sync_core_before_usermode() in that specific case.
+-#
+-    -----------------------
+-    |         arch |status|
+-    -----------------------
+-    |       alpha: | TODO |
+-    |         arc: | TODO |
+-    |         arm: |  ok  |
+-    |       arm64: |  ok  |
+-    |        csky: | TODO |
+-    |       h8300: | TODO |
+-    |     hexagon: | TODO |
+-    |        ia64: | TODO |
+-    |        m68k: | TODO |
+-    |  microblaze: | TODO |
+-    |        mips: | TODO |
+-    |       nds32: | TODO |
+-    |       nios2: | TODO |
+-    |    openrisc: | TODO |
+-    |      parisc: | TODO |
+-    |     powerpc: |  ok  |
+-    |       riscv: | TODO |
+-    |        s390: | TODO |
+-    |          sh: | TODO |
+-    |       sparc: | TODO |
+-    |          um: | TODO |
+-    |         x86: |  ok  |
+-    |      xtensa: | TODO |
+-    -----------------------
++# An architecture that wants to support
++# MEMBARRIER_CMD_PRIVATE_EXPEDITED_SYNC_CORE needs to define precisely what it
++# is supposed to do and implement membarrier_sync_core_before_usermode() to
++# make it do that.  Then it can select ARCH_HAS_MEMBARRIER_SYNC_CORE via
++# Kconfig.Unfortunately, MEMBARRIER_CMD_PRIVATE_EXPEDITED_SYNC_CORE is not a
++# fantastic API and may not make sense on all architectures.  Once an
++# architecture meets these requirements,
++#
++# On x86, a program can safely modify code, issue
++# MEMBARRIER_CMD_PRIVATE_EXPEDITED_SYNC_CORE, and then execute that code, via
++# the modified address or an alias, from any thread in the calling process.
++#
++# On arm64, a program can modify code, flush the icache as needed, and issue
++# MEMBARRIER_CMD_PRIVATE_EXPEDITED_SYNC_CORE to force a "context synchronizing
++# event", aka pipeline flush on all CPUs that might run the calling process.
++# Then the program can execute the modified code as long as it is executed
++# from an address consistent with the icache flush and the CPU's cache type.
++#
++# On powerpc, a program can use MEMBARRIER_CMD_PRIVATE_EXPEDITED_SYNC_CORE
++# similarly to arm64.  It would be nice if the powerpc maintainers could
++# add a more clear explanantion.
+diff --git a/arch/arm64/include/asm/sync_core.h b/arch/arm64/include/asm/sync_core.h
+new file mode 100644
+index 000000000000..74996bf533bb
+--- /dev/null
++++ b/arch/arm64/include/asm/sync_core.h
+@@ -0,0 +1,19 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASM_ARM64_SYNC_CORE_H
++#define _ASM_ARM64_SYNC_CORE_H
++
++#include <asm/barrier.h>
++
++/*
++ * On arm64, anyone trying to use membarrier() to handle JIT code is
++ * required to first flush the icache and then do SYNC_CORE.  All that's
++ * needed after the icache flush is to execute a "context synchronization
++ * event".  Right now, ERET does this, and we are guaranteed to ERET before
++ * any user code runs.  If Linux ever programs the CPU to make ERET stop
++ * being a context synchronizing event, then this will need to be adjusted.
++ */
++static inline void membarrier_sync_core_before_usermode(void)
++{
++}
++
++#endif /* _ASM_ARM64_SYNC_CORE_H */
+diff --git a/arch/powerpc/include/asm/sync_core.h b/arch/powerpc/include/asm/sync_core.h
+new file mode 100644
+index 000000000000..589fdb34beab
+--- /dev/null
++++ b/arch/powerpc/include/asm/sync_core.h
+@@ -0,0 +1,14 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASM_POWERPC_SYNC_CORE_H
++#define _ASM_POWERPC_SYNC_CORE_H
++
++#include <asm/barrier.h>
++
++/*
++ * XXX: can a powerpc person put an appropriate comment here?
++ */
++static inline void membarrier_sync_core_before_usermode(void)
++{
++}
++
++#endif /* _ASM_POWERPC_SYNC_CORE_H */
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 0045e1b44190..f010897a1e8a 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -89,7 +89,6 @@ config X86
+ 	select ARCH_HAS_SET_DIRECT_MAP
+ 	select ARCH_HAS_STRICT_KERNEL_RWX
+ 	select ARCH_HAS_STRICT_MODULE_RWX
+-	select ARCH_HAS_SYNC_CORE_BEFORE_USERMODE
+ 	select ARCH_HAS_SYSCALL_WRAPPER
+ 	select ARCH_HAS_UBSAN_SANITIZE_ALL
+ 	select ARCH_HAS_DEBUG_WX
+diff --git a/arch/x86/include/asm/sync_core.h b/arch/x86/include/asm/sync_core.h
+index ab7382f92aff..c665b453969a 100644
+--- a/arch/x86/include/asm/sync_core.h
++++ b/arch/x86/include/asm/sync_core.h
+@@ -89,11 +89,10 @@ static inline void sync_core(void)
+ }
+ 
+ /*
+- * Ensure that a core serializing instruction is issued before returning
+- * to user-mode. x86 implements return to user-space through sysexit,
+- * sysrel, and sysretq, which are not core serializing.
++ * Ensure that the CPU notices any instruction changes before the next time
++ * it returns to usermode.
+  */
+-static inline void sync_core_before_usermode(void)
++static inline void membarrier_sync_core_before_usermode(void)
+ {
+ 	/* With PTI, we unconditionally serialize before running user code. */
+ 	if (static_cpu_has(X86_FEATURE_PTI))
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index 6974b5174495..52ead5f4fcdc 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -17,7 +17,7 @@
+ #include <linux/kprobes.h>
+ #include <linux/mmu_context.h>
+ #include <linux/bsearch.h>
+-#include <linux/sync_core.h>
++#include <asm/sync_core.h>
+ #include <asm/text-patching.h>
+ #include <asm/alternative.h>
+ #include <asm/sections.h>
+diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+index bf7fe87a7e88..4a577980d4d1 100644
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -41,12 +41,12 @@
+ #include <linux/irq_work.h>
+ #include <linux/export.h>
+ #include <linux/set_memory.h>
+-#include <linux/sync_core.h>
+ #include <linux/task_work.h>
+ #include <linux/hardirq.h>
+ 
+ #include <asm/intel-family.h>
+ #include <asm/processor.h>
++#include <asm/sync_core.h>
+ #include <asm/traps.h>
+ #include <asm/tlbflush.h>
+ #include <asm/mce.h>
+diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
+index 59488d663e68..35b622fd2ed1 100644
+--- a/arch/x86/mm/tlb.c
++++ b/arch/x86/mm/tlb.c
+@@ -11,6 +11,7 @@
+ #include <linux/sched/mm.h>
+ 
+ #include <asm/tlbflush.h>
++#include <asm/sync_core.h>
+ #include <asm/mmu_context.h>
+ #include <asm/nospec-branch.h>
+ #include <asm/cache.h>
+@@ -538,7 +539,7 @@ void switch_mm_irqs_off(struct mm_struct *prev, struct mm_struct *next,
+ 			 */
+ 			if (unlikely(atomic_read(&next->membarrier_state) &
+ 				     MEMBARRIER_STATE_PRIVATE_EXPEDITED_SYNC_CORE))
+-				sync_core_before_usermode();
++				membarrier_sync_core_before_usermode();
+ #endif
+ 
+ 			return;
+diff --git a/drivers/misc/sgi-gru/grufault.c b/drivers/misc/sgi-gru/grufault.c
+index 723825524ea0..48fd5b101de1 100644
+--- a/drivers/misc/sgi-gru/grufault.c
++++ b/drivers/misc/sgi-gru/grufault.c
+@@ -20,8 +20,8 @@
+ #include <linux/io.h>
+ #include <linux/uaccess.h>
+ #include <linux/security.h>
+-#include <linux/sync_core.h>
+ #include <linux/prefetch.h>
++#include <asm/sync_core.h>
+ #include "gru.h"
+ #include "grutables.h"
+ #include "grulib.h"
+diff --git a/drivers/misc/sgi-gru/gruhandles.c b/drivers/misc/sgi-gru/gruhandles.c
+index 1d75d5e540bc..c8cba1c1b00f 100644
+--- a/drivers/misc/sgi-gru/gruhandles.c
++++ b/drivers/misc/sgi-gru/gruhandles.c
+@@ -16,7 +16,7 @@
+ #define GRU_OPERATION_TIMEOUT	(((cycles_t) local_cpu_data->itc_freq)*10)
+ #define CLKS2NSEC(c)		((c) *1000000000 / local_cpu_data->itc_freq)
+ #else
+-#include <linux/sync_core.h>
++#include <asm/sync_core.h>
+ #include <asm/tsc.h>
+ #define GRU_OPERATION_TIMEOUT	((cycles_t) tsc_khz*10*1000)
+ #define CLKS2NSEC(c)		((c) * 1000000 / tsc_khz)
+diff --git a/drivers/misc/sgi-gru/grukservices.c b/drivers/misc/sgi-gru/grukservices.c
+index 0ea923fe6371..ce03ff3f7c3a 100644
+--- a/drivers/misc/sgi-gru/grukservices.c
++++ b/drivers/misc/sgi-gru/grukservices.c
+@@ -16,10 +16,10 @@
+ #include <linux/miscdevice.h>
+ #include <linux/proc_fs.h>
+ #include <linux/interrupt.h>
+-#include <linux/sync_core.h>
+ #include <linux/uaccess.h>
+ #include <linux/delay.h>
+ #include <linux/export.h>
++#include <asm/sync_core.h>
+ #include <asm/io_apic.h>
+ #include "gru.h"
+ #include "grulib.h"
+diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
+index c6eebbafadb0..845db11190cd 100644
+--- a/include/linux/sched/mm.h
++++ b/include/linux/sched/mm.h
+@@ -7,7 +7,6 @@
+ #include <linux/sched.h>
+ #include <linux/mm_types.h>
+ #include <linux/gfp.h>
+-#include <linux/sync_core.h>
+ 
+ /*
+  * Routines for handling mm_structs
+diff --git a/include/linux/sync_core.h b/include/linux/sync_core.h
 deleted file mode 100644
-index 6e20bb5c74ea..000000000000
---- a/arch/powerpc/include/asm/membarrier.h
+index 013da4b8b327..000000000000
+--- a/include/linux/sync_core.h
 +++ /dev/null
-@@ -1,27 +0,0 @@
--#ifndef _ASM_POWERPC_MEMBARRIER_H
--#define _ASM_POWERPC_MEMBARRIER_H
+@@ -1,21 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef _LINUX_SYNC_CORE_H
+-#define _LINUX_SYNC_CORE_H
 -
--static inline void membarrier_arch_switch_mm(struct mm_struct *prev,
--					     struct mm_struct *next,
--					     struct task_struct *tsk)
+-#ifdef CONFIG_ARCH_HAS_SYNC_CORE_BEFORE_USERMODE
+-#include <asm/sync_core.h>
+-#else
+-/*
+- * This is a dummy sync_core_before_usermode() implementation that can be used
+- * on all architectures which return to user-space through core serializing
+- * instructions.
+- * If your architecture returns to user-space through non-core-serializing
+- * instructions, you need to write your own functions.
+- */
+-static inline void sync_core_before_usermode(void)
 -{
--	/*
--	 * Only need the full barrier when switching between processes.
--	 * Barrier when switching from kernel to userspace is not
--	 * required here, given that it is implied by mmdrop(). Barrier
--	 * when switching from userspace to kernel is not needed after
--	 * store to rq->curr.
--	 */
--	if (likely(!(atomic_read(&next->membarrier_state) &
--		     (MEMBARRIER_STATE_PRIVATE_EXPEDITED |
--		      MEMBARRIER_STATE_GLOBAL_EXPEDITED)) || !prev))
--		return;
--
--	/*
--	 * The membarrier system call requires a full memory barrier
--	 * after storing to rq->curr, before going back to user-space.
--	 */
--	smp_mb();
 -}
+-#endif
 -
--#endif /* _ASM_POWERPC_MEMBARRIER_H */
-diff --git a/arch/powerpc/mm/mmu_context.c b/arch/powerpc/mm/mmu_context.c
-index a857af401738..8daa95b3162b 100644
---- a/arch/powerpc/mm/mmu_context.c
-+++ b/arch/powerpc/mm/mmu_context.c
-@@ -85,8 +85,6 @@ void switch_mm_irqs_off(struct mm_struct *prev, struct mm_struct *next,
+-#endif /* _LINUX_SYNC_CORE_H */
+-
+diff --git a/init/Kconfig b/init/Kconfig
+index 1ea12c64e4c9..e5d552b0823e 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -2377,9 +2377,6 @@ source "kernel/Kconfig.locks"
+ config ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
+ 	bool
  
- 	if (new_on_cpu)
- 		radix_kvm_prefetch_workaround(next);
--	else
--		membarrier_arch_switch_mm(prev, next, tsk);
+-config ARCH_HAS_SYNC_CORE_BEFORE_USERMODE
+-	bool
+-
+ # It may be useful for an architecture to override the definitions of the
+ # SYSCALL_DEFINE() and __SYSCALL_DEFINEx() macros in <linux/syscalls.h>
+ # and the COMPAT_ variants in <linux/compat.h>, in particular to use a
+diff --git a/kernel/sched/membarrier.c b/kernel/sched/membarrier.c
+index c32c32a2441e..f72a6ab3fac2 100644
+--- a/kernel/sched/membarrier.c
++++ b/kernel/sched/membarrier.c
+@@ -5,6 +5,9 @@
+  * membarrier system call
+  */
+ #include "sched.h"
++#ifdef CONFIG_ARCH_HAS_MEMBARRIER_SYNC_CORE
++#include <asm/sync_core.h>
++#endif
  
+ /*
+  * The basic principle behind the regular memory barrier mode of membarrier()
+@@ -221,6 +224,7 @@ static void ipi_mb(void *info)
+ 	smp_mb();	/* IPIs should be serializing but paranoid. */
+ }
+ 
++#ifdef CONFIG_ARCH_HAS_MEMBARRIER_SYNC_CORE
+ static void ipi_sync_core(void *info)
+ {
  	/*
- 	 * The actual HW switching method differs between the various
+@@ -230,13 +234,14 @@ static void ipi_sync_core(void *info)
+ 	 * the big comment at the top of this file.
+ 	 *
+ 	 * A sync_core() would provide this guarantee, but
+-	 * sync_core_before_usermode() might end up being deferred until
+-	 * after membarrier()'s smp_mb().
++	 * membarrier_sync_core_before_usermode() might end up being deferred
++	 * until after membarrier()'s smp_mb().
+ 	 */
+ 	smp_mb();	/* IPIs should be serializing but paranoid. */
+ 
+-	sync_core_before_usermode();
++	membarrier_sync_core_before_usermode();
+ }
++#endif
+ 
+ static void ipi_rseq(void *info)
+ {
+@@ -368,12 +373,14 @@ static int membarrier_private_expedited(int flags, int cpu_id)
+ 	smp_call_func_t ipi_func = ipi_mb;
+ 
+ 	if (flags == MEMBARRIER_FLAG_SYNC_CORE) {
+-		if (!IS_ENABLED(CONFIG_ARCH_HAS_MEMBARRIER_SYNC_CORE))
++#ifndef CONFIG_ARCH_HAS_MEMBARRIER_SYNC_CORE
+ 			return -EINVAL;
++#else
+ 		if (!(atomic_read(&mm->membarrier_state) &
+ 		      MEMBARRIER_STATE_PRIVATE_EXPEDITED_SYNC_CORE_READY))
+ 			return -EPERM;
+ 		ipi_func = ipi_sync_core;
++#endif
+ 	} else if (flags == MEMBARRIER_FLAG_RSEQ) {
+ 		if (!IS_ENABLED(CONFIG_RSEQ))
+ 			return -EINVAL;
 -- 
 2.31.1
 
