@@ -2,74 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC6263A9260
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 08:28:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05C083A926D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 08:28:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G4Zxw2htgz3dqn
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 16:28:20 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=V/ahoq2v;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G4ZyJ4zChz3cPh
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 16:28:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::532;
- helo=mail-pg1-x532.google.com; envelope-from=tientzu@chromium.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=V/ahoq2v; dkim-atps=neutral
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com
- [IPv6:2607:f8b0:4864:20::532])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G4Zrq2Cp4z3cDX
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 16:23:55 +1000 (AEST)
-Received: by mail-pg1-x532.google.com with SMTP id w31so1126705pga.6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 23:23:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=4psftO+uH/TVnoki1qOI27Xe5kV3FYGMoE+zQAlSb7o=;
- b=V/ahoq2vs8tTy7w+Y5OEwDE5hShbh8znTC5ewffraAkNPn/O4nZhX/k5O/Q4vn+BYw
- sVVqtxW5hQdZQN9GpVNrLf5hjnu+aW1hXGdh6T0neJbe4VzN1V/QXoB+hgAnMu1VsF+r
- sglWPBXIWMNhL2qZeTlT+lltwdWi+fBX8GceE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=4psftO+uH/TVnoki1qOI27Xe5kV3FYGMoE+zQAlSb7o=;
- b=bQ0DzSpqbmacy8QLNhmR3KUNk3qOnV/JESKIcQnrlJDpnnGZwL5fCkFUoLyHN2KLKc
- EQ8A7buSbZb7vg/Sz18Qy0d5ejeXrc78/0VOnW3xiZ9ZfIm7o0lMD1kehG79byKntY3r
- QXv/1XOH4FjGuwdJq/HI/V9kZPrmI2CsbGLk+CBFr2Gef6pOQb3d9ykPG/BR9RPOwkHg
- S5X8lLeNQzlcHbNNBsPMRmWVF0eCiNNgQaqi3IWtqlIttJ1ynNFOzt8/Xj88lSKMxV3i
- KrPfqvQIm2XsJuUqzZXn+P6NewQH6vz6+f+UbZY8/bFPor4DNwAElE7NfDfKYR3GKptC
- jFvg==
-X-Gm-Message-State: AOAM531hX3hED+sse7lo5AipVrHCpP0rtzDqZ4iRCjkbvW3/GSggXtO8
- TxSFONT2jzqBlPvIWtBjIFH0VQ==
-X-Google-Smtp-Source: ABdhPJzGZYWYJboxtRbRv1n6aZlIOVWrHtwOTnE26briGp5Jug1JkMDb00dOZitCigU2dddBDVGa/Q==
-X-Received: by 2002:a62:ae03:0:b029:2f8:b04f:c012 with SMTP id
- q3-20020a62ae030000b02902f8b04fc012mr8079076pff.62.1623824632264; 
- Tue, 15 Jun 2021 23:23:52 -0700 (PDT)
-Received: from localhost ([2401:fa00:95:205:3d52:f252:7393:1992])
- by smtp.gmail.com with UTF8SMTPSA id j13sm1144475pgp.29.2021.06.15.23.23.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 15 Jun 2021 23:23:51 -0700 (PDT)
-From: Claire Chang <tientzu@chromium.org>
-To: Rob Herring <robh+dt@kernel.org>, mpe@ellerman.id.au,
- Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Frank Rowand <frowand.list@gmail.com>,
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, boris.ostrovsky@oracle.com,
- jgross@suse.com, Christoph Hellwig <hch@lst.de>,
- Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: [PATCH v12 12/12] of: Add plumbing for restricted DMA pool
-Date: Wed, 16 Jun 2021 14:21:57 +0800
-Message-Id: <20210616062157.953777-13-tientzu@chromium.org>
-X-Mailer: git-send-email 2.32.0.272.g935e593368-goog
-In-Reply-To: <20210616062157.953777-1-tientzu@chromium.org>
-References: <20210616062157.953777-1-tientzu@chromium.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G4Zwb1XHwz3cFm
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 16:27:09 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 4G4ZwR5hyPzBDp5;
+ Wed, 16 Jun 2021 08:27:03 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id mokktGxeEX1d; Wed, 16 Jun 2021 08:27:03 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4G4ZwR4n3bzBDnw;
+ Wed, 16 Jun 2021 08:27:03 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B4FFA8B7CC;
+ Wed, 16 Jun 2021 08:27:03 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id cT32hOg5FNXZ; Wed, 16 Jun 2021 08:27:03 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5E1538B7CA;
+ Wed, 16 Jun 2021 08:27:03 +0200 (CEST)
+Subject: Re: Oops (NULL pointer) with 'perf record' of selftest 'null_syscall'
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>
+References: <c141a18c-b18d-b775-1848-527c35a1c433@csgroup.eu>
+ <3388922c-0224-e4aa-f7b7-4fea43e060f9@linux.ibm.com>
+ <6102EF12-AFB2-48B1-B707-D3F5471EADDB@linux.vnet.ibm.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <bc2dac10-9e60-e4b7-c376-5ed00f6e227c@csgroup.eu>
+Date: Wed, 16 Jun 2021 08:26:57 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
+In-Reply-To: <6102EF12-AFB2-48B1-B707-D3F5471EADDB@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -82,129 +65,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: heikki.krogerus@linux.intel.com, thomas.hellstrom@linux.intel.com,
- peterz@infradead.org, joonas.lahtinen@linux.intel.com,
- dri-devel@lists.freedesktop.org, chris@chris-wilson.co.uk,
- grant.likely@arm.com, paulus@samba.org, mingo@kernel.org, jxgao@google.com,
- sstabellini@kernel.org, Saravana Kannan <saravanak@google.com>,
- xypron.glpk@gmx.de, "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
- Bartosz Golaszewski <bgolaszewski@baylibre.com>, bskeggs@redhat.com,
- linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
- Thierry Reding <treding@nvidia.com>, intel-gfx@lists.freedesktop.org,
- matthew.auld@intel.com, linux-devicetree <devicetree@vger.kernel.org>,
- daniel@ffwll.ch, airlied@linux.ie, maarten.lankhorst@linux.intel.com,
- linuxppc-dev@lists.ozlabs.org, jani.nikula@linux.intel.com,
- Nicolas Boichat <drinkcat@chromium.org>, rodrigo.vivi@intel.com,
- bhelgaas@google.com, tientzu@chromium.org,
- Dan Williams <dan.j.williams@intel.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Greg KH <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
- lkml <linux-kernel@vger.kernel.org>, tfiga@chromium.org,
- "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
- Jim Quinlan <james.quinlan@broadcom.com>, Robin Murphy <robin.murphy@arm.com>,
- bauerman@linux.ibm.com
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If a device is not behind an IOMMU, we look up the device node and set
-up the restricted DMA when the restricted-dma-pool is presented.
 
-Signed-off-by: Claire Chang <tientzu@chromium.org>
----
- drivers/of/address.c    | 33 +++++++++++++++++++++++++++++++++
- drivers/of/device.c     |  3 +++
- drivers/of/of_private.h |  6 ++++++
- 3 files changed, 42 insertions(+)
 
-diff --git a/drivers/of/address.c b/drivers/of/address.c
-index 73ddf2540f3f..cdf700fba5c4 100644
---- a/drivers/of/address.c
-+++ b/drivers/of/address.c
-@@ -8,6 +8,7 @@
- #include <linux/logic_pio.h>
- #include <linux/module.h>
- #include <linux/of_address.h>
-+#include <linux/of_reserved_mem.h>
- #include <linux/pci.h>
- #include <linux/pci_regs.h>
- #include <linux/sizes.h>
-@@ -1022,6 +1023,38 @@ int of_dma_get_range(struct device_node *np, const struct bus_dma_region **map)
- 	of_node_put(node);
- 	return ret;
- }
-+
-+int of_dma_set_restricted_buffer(struct device *dev, struct device_node *np)
-+{
-+	struct device_node *node, *of_node = dev->of_node;
-+	int count, i;
-+
-+	count = of_property_count_elems_of_size(of_node, "memory-region",
-+						sizeof(u32));
-+	/*
-+	 * If dev->of_node doesn't exist or doesn't contain memory-region, try
-+	 * the OF node having DMA configuration.
-+	 */
-+	if (count <= 0) {
-+		of_node = np;
-+		count = of_property_count_elems_of_size(
-+			of_node, "memory-region", sizeof(u32));
-+	}
-+
-+	for (i = 0; i < count; i++) {
-+		node = of_parse_phandle(of_node, "memory-region", i);
-+		/*
-+		 * There might be multiple memory regions, but only one
-+		 * restricted-dma-pool region is allowed.
-+		 */
-+		if (of_device_is_compatible(node, "restricted-dma-pool") &&
-+		    of_device_is_available(node))
-+			return of_reserved_mem_device_init_by_idx(dev, of_node,
-+								  i);
-+	}
-+
-+	return 0;
-+}
- #endif /* CONFIG_HAS_DMA */
- 
- /**
-diff --git a/drivers/of/device.c b/drivers/of/device.c
-index 6cb86de404f1..e68316836a7a 100644
---- a/drivers/of/device.c
-+++ b/drivers/of/device.c
-@@ -165,6 +165,9 @@ int of_dma_configure_id(struct device *dev, struct device_node *np,
- 
- 	arch_setup_dma_ops(dev, dma_start, size, iommu, coherent);
- 
-+	if (!iommu)
-+		return of_dma_set_restricted_buffer(dev, np);
-+
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(of_dma_configure_id);
-diff --git a/drivers/of/of_private.h b/drivers/of/of_private.h
-index d9e6a324de0a..25cebbed5f02 100644
---- a/drivers/of/of_private.h
-+++ b/drivers/of/of_private.h
-@@ -161,12 +161,18 @@ struct bus_dma_region;
- #if defined(CONFIG_OF_ADDRESS) && defined(CONFIG_HAS_DMA)
- int of_dma_get_range(struct device_node *np,
- 		const struct bus_dma_region **map);
-+int of_dma_set_restricted_buffer(struct device *dev, struct device_node *np);
- #else
- static inline int of_dma_get_range(struct device_node *np,
- 		const struct bus_dma_region **map)
- {
- 	return -ENODEV;
- }
-+static inline int of_dma_set_restricted_buffer(struct device *dev,
-+					       struct device_node *np)
-+{
-+	return -ENODEV;
-+}
- #endif
- 
- #endif /* _LINUX_OF_PRIVATE_H */
--- 
-2.32.0.272.g935e593368-goog
+Le 16/06/2021 à 05:40, Athira Rajeev a écrit :
+> 
+> 
+>> On 16-Jun-2021, at 8:53 AM, Madhavan Srinivasan <maddy@linux.ibm.com> wrote:
+>>
+>>
+>> On 6/15/21 8:35 PM, Christophe Leroy wrote:
+>>> For your information, I'm getting the following Oops. Detected with 5.13-rc6, it also oopses on 5.12 and 5.11.
+>>> Runs ok on 5.10. I'm starting bisecting now.
+>>
+>>
+>> Thanks for reporting, got the issue. What has happened in this case is that, pmu device is not registered
+>> and trying to access the instruction point which will land in perf_instruction_pointer(). And recently I have added
+>> a workaround patch for power10 DD1 which has caused this breakage. My bad. We are working on a fix patch
+>> for the same and will post it out. Sorry again.
+>>
+> 
+> Hi Christophe,
+> 
+> Can you please try with below patch in your environment and test if it works for you.
+> 
+>  From 55d3afc9369dfbe28a7152c8e9f856c11c7fe43d Mon Sep 17 00:00:00 2001
+> From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> Date: Tue, 15 Jun 2021 22:28:11 -0400
+> Subject: [PATCH] powerpc/perf: Fix crash with 'perf_instruction_pointer' when
+>   pmu is not set
+> 
+> On systems without any specific PMU driver support registered, running
+> perf record causes oops:
+> 
+> [   38.841073] NIP [c00000000013af54] perf_instruction_pointer+0x24/0x100
+> [   38.841079] LR [c0000000003c7358] perf_prepare_sample+0x4e8/0x820
+> [   38.841085] --- interrupt: 300
+> [   38.841088] [c00000001cf03440] [c0000000003c6ef8] perf_prepare_sample+0x88/0x820 (unreliable)
+> [   38.841096] [c00000001cf034a0] [c0000000003c76d0] perf_event_output_forward+0x40/0xc0
+> [   38.841104] [c00000001cf03520] [c0000000003b45e8] __perf_event_overflow+0x88/0x1b0
+> [   38.841112] [c00000001cf03570] [c0000000003b480c] perf_swevent_hrtimer+0xfc/0x1a0
+> [   38.841119] [c00000001cf03740] [c0000000002399cc] __hrtimer_run_queues+0x17c/0x380
+> [   38.841127] [c00000001cf037c0] [c00000000023a5f8] hrtimer_interrupt+0x128/0x2f0
+> [   38.841135] [c00000001cf03870] [c00000000002962c] timer_interrupt+0x13c/0x370
+> [   38.841143i] [c00000001cf038d0] [c000000000009ba4] decrementer_common_virt+0x1a4/0x1b0
+> [   38.841151] --- interrupt: 900 at copypage_power7+0xd4/0x1c0
+> 
+> During perf record session, perf_instruction_pointer() is called to
+> capture the sample ip. This function in core-book3s accesses ppmu->flags.
+> If a platform specific PMU driver is not registered, ppmu is set to NULL
+> and accessing its members results in a crash. Fix this crash by checking
+> if ppmu is set.
+> 
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> Reported-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
+Fixes: 2ca13a4cc56c ("powerpc/perf: Use regs->nip when SIAR is zero")
+Cc: stable@vger.kernel.org
+Tested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+
+> ---
+>   arch/powerpc/perf/core-book3s.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
+> index 16d4d1b6a1ff..816756588cb7 100644
+> --- a/arch/powerpc/perf/core-book3s.c
+> +++ b/arch/powerpc/perf/core-book3s.c
+> @@ -2254,7 +2254,7 @@ unsigned long perf_instruction_pointer(struct pt_regs *regs)
+>   	bool use_siar = regs_use_siar(regs);
+>   	unsigned long siar = mfspr(SPRN_SIAR);
+>   
+> -	if (ppmu->flags & PPMU_P10_DD1) {
+> +	if (ppmu && ppmu->flags & PPMU_P10_DD1) {
+>   		if (siar)
+>   			return siar;
+>   		else
+> 
