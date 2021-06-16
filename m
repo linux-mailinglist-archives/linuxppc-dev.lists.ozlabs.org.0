@@ -1,77 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C4073A8E35
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 03:19:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E361F3A8E3B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 03:21:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G4S5N5TQ6z3bwp
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 11:19:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G4S7j4JKHz306n
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 11:21:21 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=S9Eqp1OT;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=HMygLDrr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42b;
- helo=mail-pf1-x42b.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52f;
+ helo=mail-pg1-x52f.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=S9Eqp1OT; dkim-atps=neutral
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com
- [IPv6:2607:f8b0:4864:20::42b])
+ header.s=20161025 header.b=HMygLDrr; dkim-atps=neutral
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com
+ [IPv6:2607:f8b0:4864:20::52f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G4S4x03Yfz2ywx
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 11:18:56 +1000 (AEST)
-Received: by mail-pf1-x42b.google.com with SMTP id u18so822251pfk.11
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 18:18:55 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G4S7D1k3Dz2xZL
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 11:20:56 +1000 (AEST)
+Received: by mail-pg1-x52f.google.com with SMTP id m2so588418pgk.7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 18:20:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=EIKXApFrEura5FRXpVV8f8e+7Zk3a0C0NOTcF/0+y38=;
- b=S9Eqp1OTVx7wOFdzu+drz73pOATwym8k07yNCe3JTGK+5r9YDftTW9eLntozF1aywI
- /tUIkVgoLUzXmWDSytLoRS87Di5Dd6vb+dXo5b63vJHT0UJ20gcDIV17Nhrig8qBtyL/
- hNNyeP3XczFotkj2Bi55+snKJY+zRDEA9aKOwOp2N6gobmxY1CAyueBF9EcTXkhqqM0a
- saeQ3DZO0Eb5Dq3C5XnTRkYdYg0z1V8kIxGhohe6K7JFnYc/mX+hXsfuLuCFdW1KVsMh
- TSKQ2LbyEzFUy+bwxudHvd8YPZp/yRz+WfYstELXunP+o4SlMpGdogetk/BmbHsBvU7M
- qdWQ==
+ h=date:from:subject:to:references:in-reply-to:mime-version:message-id
+ :content-transfer-encoding;
+ bh=5YN+M8gn8L/rr2FIb7cskxHPprqhL8AORkwxQVWX7lY=;
+ b=HMygLDrr3q1q6IW3VYIc5O2SQ3diAnTZesA+c9JBO+SR6UWD8GCaeREkq9fjJBUZZL
+ C/8+n2t3adO8+GYjm87rlHBzhQabIdb3AwauE3qvLOYgHDymbK7PPs/jDhsqHWo8xF8a
+ Vtf5dgQd5Zk9ecaOjdhhYkPtVekXYrF7KWz/XfHnzTBhEj+beLzHHFaQTkfq3XxDP57h
+ WA6ZJTp4EgK5uTuS7qDUrbhnbrFB6bCzgzLtGthsPupjTb2gnZ6fhvlufRbNLNnfBCRz
+ TdR3NOOQGGsngABYrNqy7jMmeQ+4R5ywdGAppm/uSEq5P5/m8wl4uZSmKc4k27/io6bw
+ llpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ h=x-gm-message-state:date:from:subject:to:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=EIKXApFrEura5FRXpVV8f8e+7Zk3a0C0NOTcF/0+y38=;
- b=RJfBt/BUqiLXPUJu4gqWzi+cjtTPHIwXKj9+r2lFBeqR9a9Xpi/q7eZgUWP96/ReEl
- gLFT94yMWwS+JwxgBySGWS+k+sqf5TdPUr8YYVAInB+9H28Kbs7/CV/sBZE/2IN/cUfn
- Tbn2epYXMz/tqTNpK72xED6mNOjkpi2ZuA/dp5g00GieEAs5QDjZRZcyGzCAqjFxmhR0
- DbrKCUoLAEqzS8OQoeCSldNemROkR+it0+ddyWhsoTgG6JjNx+B6d5AUKibetEL5hrDA
- jsy8RksRsmPb4IqSpFPLlorVx7b4vlc401mO1i1xdSQlEwcjRpea/zvx6a7JGw29YOrc
- ETzw==
-X-Gm-Message-State: AOAM533uCHlsAE4478meWbaARVQ9mdUlA9cKouREwS9MJbJhrXa/atrf
- hFZxKlrMs7tM1sZLDfbbl/z6Dpaj/MI=
-X-Google-Smtp-Source: ABdhPJzPzY4tmFQv21hMXSBZ7dDmevVy8o24B5mTkxjvDGi4dChnQmPLE+DFdpZFTdvnOUslgbSwyA==
-X-Received: by 2002:a62:1583:0:b029:2e9:dcb1:148e with SMTP id
- 125-20020a6215830000b02902e9dcb1148emr7119646pfv.0.1623806330636; 
- Tue, 15 Jun 2021 18:18:50 -0700 (PDT)
+ bh=5YN+M8gn8L/rr2FIb7cskxHPprqhL8AORkwxQVWX7lY=;
+ b=TDIODNiYgY4sWta8Syrc2myLz9IMmgX+lkqpoD4V+5Qg8mWwv6+aZgKWFlGX5lNCI+
+ u6MT/82YmoGOrsTS5NzISdO1sYdOGiq+vaC+kwYzaM0iR8m6bsDeWB2qJuo7puoSKcxo
+ BdkD+ooMWCLfbzpBvk42gL6i+iRL9alUyoEw7HPVCsd/vDgKiwu04pLbmBAcKWKMjm1B
+ WmSgIecJNUaBB/O3fujR5yLx7523j4kg7P3YigHxib2JMJXVWq3pWkQA3iclccRyB21G
+ PShZRJe+bqBf9aC/Dwb5tGEtA+q3GS7HEz5y4I4GJrXef8hWhIYaTlCsNqdCU/LbWSy7
+ KeDw==
+X-Gm-Message-State: AOAM531hlt/6LGfbtPDmsB9YnLyWUOh+6XJMTDWQjPThnUipZs8byVwB
+ S0gUM3wn08lwJm0sOAOeeKUsnqVs/bk=
+X-Google-Smtp-Source: ABdhPJyMzryi81WxUI10aH5NKUiyUeuWKkIZP97RA8fIQNuZx3cjXHsezVBYNi1ifANrg3uv/mrDGQ==
+X-Received: by 2002:a65:6543:: with SMTP id a3mr2361968pgw.246.1623806452342; 
+ Tue, 15 Jun 2021 18:20:52 -0700 (PDT)
 Received: from localhost (60-242-147-73.tpgi.com.au. [60.242.147.73])
- by smtp.gmail.com with ESMTPSA id v10sm319100pgb.46.2021.06.15.18.18.49
+ by smtp.gmail.com with ESMTPSA id fs10sm3541055pjb.31.2021.06.15.18.20.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Jun 2021 18:18:50 -0700 (PDT)
-Date: Wed, 16 Jun 2021 11:18:44 +1000
+ Tue, 15 Jun 2021 18:20:52 -0700 (PDT)
+Date: Wed, 16 Jun 2021 11:20:46 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v4 1/2] module: add elf_check_module_arch for module
- specific elf arch checks
-To: Jessica Yu <jeyu@kernel.org>
-References: <20210611093959.821525-1-npiggin@gmail.com>
- <20210611093959.821525-2-npiggin@gmail.com>
- <YMdGWjBOmcstBwOl@p200300cbcf109700df096d564fe976c3.dip0.t-ipconnect.de>
- <1623722110.amu32mwaqs.astroid@bobo.none>
- <YMiaZOqhHck9iy0n@p200300cbcf109700df096d564fe976c3.dip0.t-ipconnect.de>
-In-Reply-To: <YMiaZOqhHck9iy0n@p200300cbcf109700df096d564fe976c3.dip0.t-ipconnect.de>
+Subject: Re: [PATCH v3 11/11] powerpc/64: use interrupt restart table to speed
+ up return from interrupt
+To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
+References: <20210610130921.706938-1-npiggin@gmail.com>
+ <20210610130921.706938-12-npiggin@gmail.com>
+ <87bl87tf86.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87bl87tf86.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Message-Id: <1623805495.qdikm5ks8v.astroid@bobo.none>
+Message-Id: <1623806397.npajv1psxa.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -85,113 +82,109 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal =?iso-8859-1?q?Such=E1nek?= <msuchanek@suse.de>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Jessica Yu's message of June 15, 2021 10:17 pm:
-> +++ Nicholas Piggin [15/06/21 12:05 +1000]:
->>Excerpts from Jessica Yu's message of June 14, 2021 10:06 pm:
->>> +++ Nicholas Piggin [11/06/21 19:39 +1000]:
->>>>The elf_check_arch() function is used to test usermode binaries, but
->>>>kernel modules may have more specific requirements. powerpc would like
->>>>to test for ABI version compatibility.
->>>>
->>>>Add an arch-overridable function elf_check_module_arch() that defaults
->>>>to elf_check_arch() and use it in elf_validity_check().
->>>>
->>>>Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
->>>>[np: split patch, added changelog]
->>>>Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->>>>---
->>>> include/linux/moduleloader.h | 5 +++++
->>>> kernel/module.c              | 2 +-
->>>> 2 files changed, 6 insertions(+), 1 deletion(-)
->>>>
->>>>diff --git a/include/linux/moduleloader.h b/include/linux/moduleloader.=
-h
->>>>index 9e09d11ffe5b..fdc042a84562 100644
->>>>--- a/include/linux/moduleloader.h
->>>>+++ b/include/linux/moduleloader.h
->>>>@@ -13,6 +13,11 @@
->>>>  * must be implemented by each architecture.
->>>>  */
->>>>
->>>>+// Allow arch to optionally do additional checking of module ELF heade=
-r
->>>>+#ifndef elf_check_module_arch
->>>>+#define elf_check_module_arch elf_check_arch
->>>>+#endif
->>>
->>> Hi Nicholas,
->>>
->>> Why not make elf_check_module_arch() consistent with the other
->>> arch-specific functions? Please see module_frob_arch_sections(),
->>> module_{init,exit}_section(), etc in moduleloader.h. That is, they are
->>> all __weak functions that are overridable by arches. We can maybe make
->>> elf_check_module_arch() a weak symbol, available for arches to
->>> override if they want to perform additional elf checks. Then we don't
->>> have to have this one-off #define.
->>
->>
->>Like this? I like it. Good idea.
+Excerpts from Michael Ellerman's message of June 15, 2021 11:44 pm:
+> Nicholas Piggin <npiggin@gmail.com> writes:
+>> diff --git a/arch/powerpc/lib/feature-fixups.c b/arch/powerpc/lib/featur=
+e-fixups.c
+>> index fe26f2fa0f3f..fbe94e2d5011 100644
+>> --- a/arch/powerpc/lib/feature-fixups.c
+>> +++ b/arch/powerpc/lib/feature-fixups.c
+>> @@ -412,12 +430,19 @@ void do_entry_flush_fixups(enum l1d_flush_type typ=
+es)
+>>  	stop_machine(__do_entry_flush_fixups, &types, NULL);
+>>  }
+>> =20
+>> -void do_rfi_flush_fixups(enum l1d_flush_type types)
+>> +static int __do_rfi_flush_fixups(void *data)
+>>  {
+>> +	enum l1d_flush_type types =3D *(enum l1d_flush_type *)data;
+>>  	unsigned int instrs[3], *dest;
+>>  	long *start, *end;
+>>  	int i;
+>> =20
+>> +	if (types & L1D_FLUSH_FALLBACK)
+>> +		rfi_exit_not_reentrant =3D true;
+>> +	else
+>> +		rfi_exit_not_reentrant =3D false;
+>> +	update_interrupt_exit();
 >=20
-> Yeah! Also, maybe we can alternatively make elf_check_module_arch() a
-> separate check entirely so that the powerpc implementation doesn't
-> have to include that extra elf_check_arch() call. Something like this may=
-be?
+> This is not happy:
 
-Yeah we can do that. Would you be okay if it goes via powerpc tree? If=20
-yes, then we should get your Ack (or SOB because it seems to be entirely=20
-your patch now :D)
+Ah, needs a static_key_enable_cpuslocked. I'll fix.
 
 Thanks,
 Nick
 
 >=20
-> diff --git a/include/linux/moduleloader.h b/include/linux/moduleloader.h
-> index 9e09d11ffe5b..2f9ebd593b4f 100644
-> --- a/include/linux/moduleloader.h
-> +++ b/include/linux/moduleloader.h
-> @@ -39,6 +39,9 @@ bool module_init_section(const char *name);
->    */
->   bool module_exit_section(const char *name);
+> [    0.000000][    T0] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D
+> [    0.000000][    T0] WARNING: possible recursive locking detected
+> [    0.000000][    T0] 5.13.0-rc2-00118-gca433a3a44e3 #1 Not tainted
+> [    0.000000][    T0] --------------------------------------------
+> [    0.000000][    T0] swapper/0 is trying to acquire lock:
+> [    0.000000][    T0] c00000000252fa10 (cpu_hotplug_lock){....}-{0:0}, a=
+t: static_key_enable+0x24/0x50
+> [    0.000000][    T0]
+> [    0.000000][    T0] but task is already holding lock:
+> [    0.000000][    T0] c00000000252fa10 (cpu_hotplug_lock){....}-{0:0}, a=
+t: stop_machine+0x2c/0x60
+> [    0.000000][    T0]
+> [    0.000000][    T0] other info that might help us debug this:
+> [    0.000000][    T0]  Possible unsafe locking scenario:
+> [    0.000000][    T0]
+> [    0.000000][    T0]        CPU0
+> [    0.000000][    T0]        ----
+> [    0.000000][    T0]   lock(cpu_hotplug_lock);
+> [    0.000000][    T0]   lock(cpu_hotplug_lock);
+> [    0.000000][    T0]
+> [    0.000000][    T0]  *** DEADLOCK ***
+> [    0.000000][    T0]
+> [    0.000000][    T0]  May be due to missing lock nesting notation
+> [    0.000000][    T0]
+> [    0.000000][    T0] 1 lock held by swapper/0:
+> [    0.000000][    T0]  #0: c00000000252fa10 (cpu_hotplug_lock){....}-{0:=
+0}, at: stop_machine+0x2c/0x60
+> [    0.000000][    T0]
+> [    0.000000][    T0] stack backtrace:
+> [    0.000000][    T0] CPU: 0 PID: 0 Comm: swapper Not tainted 5.13.0-rc2=
+-00118-gca433a3a44e3 #1
+> [    0.000000][    T0] Call Trace:
+> [    0.000000][    T0] [c0000000027db8f0] [c00000000093dd28] dump_stack+0=
+xec/0x144 (unreliable)
+> [    0.000000][    T0] [c0000000027db940] [c0000000001ed5b4] __lock_acqui=
+re+0x1744/0x28b0
+> [    0.000000][    T0] [c0000000027dba70] [c0000000001ef338] lock_acquire=
++0x128/0x600
+> [    0.000000][    T0] [c0000000027dbb70] [c00000000015035c] cpus_read_lo=
+ck+0x4c/0x170
+> [    0.000000][    T0] [c0000000027dbba0] [c0000000003c2594] static_key_e=
+nable+0x24/0x50
+> [    0.000000][    T0] [c0000000027dbbd0] [c0000000000ae87c] __do_rfi_flu=
+sh_fixups+0x7c/0x300
+> [    0.000000][    T0] [c0000000027dbc80] [c0000000002ab7e4] stop_machine=
+_cpuslocked+0xe4/0x200
+> [    0.000000][    T0] [c0000000027dbcf0] [c0000000002ab940] stop_machine=
++0x40/0x60
+> [    0.000000][    T0] [c0000000027dbd30] [c0000000000aef30] do_rfi_flush=
+_fixups+0x30/0x50
+> [    0.000000][    T0] [c0000000027dbd60] [c000000000040890] setup_rfi_fl=
+ush+0xa0/0x140
+> [    0.000000][    T0] [c0000000027dbdd0] [c00000000201c6c4] pnv_setup_ar=
+ch+0x304/0x4ac
+> [    0.000000][    T0] [c0000000027dbe60] [c00000000200a31c] setup_arch+0=
+x374/0x3c4
+> [    0.000000][    T0] [c0000000027dbee0] [c000000002003d08] start_kernel=
++0xb0/0x790
+> [    0.000000][    T0] [c0000000027dbf90] [c00000000000d79c] start_here_c=
+ommon+0x1c/0x600
+> [    0.000000][    T0] rfi-flush: patched 12 locations (fallback displace=
+ment flush)
 >=20
-> +/* Arch may override to do additional checking of ELF header architectur=
-e */
-> +int elf_check_module_arch(Elf_Ehdr *hdr);
-> +
->   /*
->    * Apply the given relocation to the (simplified) ELF.  Return -error
->    * or 0.
-> diff --git a/kernel/module.c b/kernel/module.c
-> index fdd6047728df..9963a979ed54 100644
-> --- a/kernel/module.c
-> +++ b/kernel/module.c
-> @@ -2923,6 +2923,11 @@ static int validate_section_offset(struct load_inf=
-o *info, Elf_Shdr *shdr)
->          return 0;
->   }
 >=20
-> +int __weak elf_check_module_arch(Elf_Ehdr *hdr)
-> +{
-> +       return 1;
-> +}
-> +
->   /*
->    * Sanity checks against invalid binaries, wrong arch, weird elf versio=
-n.
->    *
-> @@ -2941,6 +2946,7 @@ static int elf_validity_check(struct load_info *inf=
-o)
->          if (memcmp(info->hdr->e_ident, ELFMAG, SELFMAG) !=3D 0
->              || info->hdr->e_type !=3D ET_REL
->              || !elf_check_arch(info->hdr)
-> +           || !elf_check_module_arch(info->hdr)
->              || info->hdr->e_shentsize !=3D sizeof(Elf_Shdr))
->                  return -ENOEXEC;
->  =20
->=20
+> cheers
 >=20
