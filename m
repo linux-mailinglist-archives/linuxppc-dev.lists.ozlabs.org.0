@@ -1,85 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9FBD3A8E05
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 03:03:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81D0F3A8E0E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 03:06:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G4RkW45vMz307n
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 11:02:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G4RpX0rPWz3bx6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Jun 2021 11:06:28 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=AGbDg0Ut;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=RtYg3+7Q;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::533;
- helo=mail-pg1-x533.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=AGbDg0Ut; dkim-atps=neutral
-Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com
- [IPv6:2607:f8b0:4864:20::533])
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=RtYg3+7Q; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G4Rjz6K77z2ymP
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 11:02:30 +1000 (AEST)
-Received: by mail-pg1-x533.google.com with SMTP id e22so541678pgv.10
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Jun 2021 18:02:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=ZoVtmwAOKak/TM27yLe/rsSgPR3PjnRpu6GHf/Fg/Yk=;
- b=AGbDg0UtusOVrQYBCTriZhlbymMg3F/wJIw+DSg/8fDIMkZpf7wmvcezTu6NbuCra8
- adJw/H6GskZgOgcZJNfM0veaIpKmMti+uibFGDwqgWCLok3e4IZz7OjlfdcbR2ohO5gg
- wMetAqL+9GzvfNBH2M5giKJZbvCG1mfLepo06mNspEwrlwe8GwKgGWqxB+3+hBtw4Yc3
- nUlKB1xjbP/kZyVeKEGtSCdkBB/KwGXJCqZI0sM2+Rot+iItxzwweK66tHAdO7wcMVSO
- 646zxbJqR+S3aFLWSrIJchyT+yX/HbGkMXzayozS81H2aNQsP/nwrHO265d+WC2+EQ3Z
- V0Kg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=ZoVtmwAOKak/TM27yLe/rsSgPR3PjnRpu6GHf/Fg/Yk=;
- b=NH1Fisb7ZPgnlzXATYKumKw6TkTodT6aiVvI/eYog0jr8MkaDmn/+hw/o7bvXo6yzc
- 6GFFJ09d+eu3EZVyZ0J64g7+zuIzmfVoMflmKGuOX+R4NKEzrYH6Uj8CWXZPGsYsVtxn
- 9mu8EDlRVIJ2URoH75I0K/acifPqf5BeMsfpJmPYttGo2mAvFoLPiLDibB+kf5VRQXew
- kK8IRm5TB75zH1U95TWaKoP44q4mThddMfta9ufusV1SmXf/wtQp6GJoFNBwu9nHjtcN
- c8B5cAEztvmtFxcs7E9LqfwZiovc2+bR2QNKz2sVCslpBUKrktyGlk8Tdm+E8cq2ECyO
- Jdgw==
-X-Gm-Message-State: AOAM533CT6XgeIcJafW4iifpYC02zqNo1sE8LddhKpUShEzdDNOrmcMI
- o6ccAHZXgG6t13ZedRkn3c8=
-X-Google-Smtp-Source: ABdhPJx2VXXsI0QjB3AAzCjAUUOT6GPU9221rXxiBiQykVfxhfc7HTA8F+V7K5QXwYIZdeis5XNSKg==
-X-Received: by 2002:a63:c4d:: with SMTP id 13mr2304541pgm.102.1623805347655;
- Tue, 15 Jun 2021 18:02:27 -0700 (PDT)
-Received: from localhost (60-242-147-73.tpgi.com.au. [60.242.147.73])
- by smtp.gmail.com with ESMTPSA id 1sm3676108pjm.8.2021.06.15.18.02.26
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 15 Jun 2021 18:02:27 -0700 (PDT)
-Date: Wed, 16 Jun 2021 11:02:20 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v4 2/4] lazy tlb: allow lazy tlb mm refcounting to be
- configurable
-To: Andrew Morton <akpm@linux-foundation.org>, Andy Lutomirski
- <luto@kernel.org>
-References: <20210605014216.446867-1-npiggin@gmail.com>
- <20210605014216.446867-3-npiggin@gmail.com>
- <8ac1d420-b861-f586-bacf-8c3949e9b5c4@kernel.org>
- <1623629185.fxzl5xdab6.astroid@bobo.none>
- <02e16a2f-2f58-b4f2-d335-065e007bcea2@kernel.org>
- <1623643443.b9twp3txmw.astroid@bobo.none>
- <1623645385.u2cqbcn3co.astroid@bobo.none>
- <1623647326.0np4yc0lo0.astroid@bobo.none>
- <aecf5bc8-9018-c021-287d-6a975b7a6235@kernel.org>
- <1623715482.4lskm3cx10.astroid@bobo.none>
- <3b9eb877-5d1e-d565-5577-575229d18b6e@kernel.org>
-In-Reply-To: <3b9eb877-5d1e-d565-5577-575229d18b6e@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G4Rp344G6z303J
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 11:06:03 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4G4Rp21j2zz9sWQ;
+ Wed, 16 Jun 2021 11:06:02 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1623805562;
+ bh=XIijCsOVcBmWgHE1BahMIBiHKzEKNDQ6QgvElIBRv74=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=RtYg3+7QGMoXbm7EF7n7wjDVY26xSwD0zTFD/6GaRlEKaMD4NoRA0gUQEidrKJ0NK
+ VM77ZyoqSqmt09yV62o+hYP1ZAhaCvD0ZlvlitAZpA9dUg3SNkCj/PzxXixXgZrFR4
+ 4CPCazyahEJ4TE1hodF8hGwxcIHT8YjupqeeuOSFNyXMjwxA7fWlWdUS6Zj1/kLaRp
+ p/QFQNi1R5u6MFFnV71Sq0+SElnq3cSdiEIRovH9IkbKjp9UC9otN2jkVDE+2EaFh/
+ X1fg4FrSj6jg397Ljkd8GjSEloTc66Aq81Sr/Ip+Z1KeojVeipCsFlUG8rzRL+9pJ5
+ vd9DAIlZQ55CQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v2] selftests/powerpc: Always test lmw and stmw
+In-Reply-To: <20210615051009.538197-1-jniethe5@gmail.com>
+References: <20210615051009.538197-1-jniethe5@gmail.com>
+Date: Wed, 16 Jun 2021 11:06:01 +1000
+Message-ID: <871r92ty86.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Message-Id: <1623803360.zd3fo9zm1z.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,213 +61,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Rik van Riel <riel@surriel.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org
+Cc: Jordan Niethe <jniethe5@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Andy Lutomirski's message of June 16, 2021 10:14 am:
-> On 6/14/21 5:55 PM, Nicholas Piggin wrote:
->> Excerpts from Andy Lutomirski's message of June 15, 2021 2:20 am:
->>> Replying to several emails at once...
->>>
->=20
->>=20
->> So the only documentation relating to the current active_mm value or=20
->> refcounting is that it may not match what the x86 specific code is=20
->> doing?
->>=20
->> All this complexity you accuse me of adding is entirely in x86 code.
->> On other architectures, it's very simple and understandable, and=20
->> documented. I don't know how else to explain this.
->=20
-> And the docs you referred me to will be *wrong* with your patches
-> applied.  They are your patches, and they break the semantics.
+Jordan Niethe <jniethe5@gmail.com> writes:
+> Load Multiple Word (lmw) and Store Multiple Word (stmw) will raise an
+> Alignment Exception:
+>   - Little Endian mode: always
+>   - Big Endian mode: address not word aligned
+>
+> These conditions do not depend on cache inhibited memory. Test the
+> alignment handler emulation of these instructions regardless of if there
+> is cache inhibited memory available or not.
+>
+> Commit dd3a44c06f7b ("selftests/powerpc: Only test lwm/stmw on big
+> endian") stopped testing lmw/stmw on little endian because newer
+> binutils (>= 2.36) will not assemble them in little endian mode. The
+> kernel still emulates these instructions in little endian mode so use
+> macros to generate them and test them.
+>
+> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+> ---
+> v2: Use macros for lmw/stmw
+> ---
+>  .../powerpc/alignment/alignment_handler.c     | 101 +++++++++++++++++-
+>  .../selftests/powerpc/include/instructions.h  |  10 ++
+>  2 files changed, 106 insertions(+), 5 deletions(-)
 
-No they aren't wrong, I've documented the shootdown refcounting scheme=20
-and Linus' historical email is still right about the active_mm concept,
-and the refcounting details still match the CONFIG_MMU_TLB_REFCOUNT=3Dy
-case.
+Fails for me on BE?
 
-If you have some particular place you would like to see more=20
-documentation added, please tell me where I'll add something before
-the series gets upstreamed.
+test: test_alignment_handler_multiple
+tags: git_version:v5.13-rc5-2025-g31e45305e351
+        Doing lmw:      FAILED: Wrong Data
+        Doing stmw:     FAILED: Wrong Data
+failure: test_alignment_handler_multiple
 
->>>>>>
->>>>>>> With your patch applied:
->>>>>>>
->>>>>>>  To support all that, the "struct mm_struct" now has two counters: =
-a
->>>>>>>  "mm_users" counter that is how many "real address space users" the=
-re are,
->>>>>>>  and a "mm_count" counter that is the number of "lazy" users (ie an=
-onymous
->>>>>>>  users) plus one if there are any real users.
->>>>>>>
->>>>>>> isn't even true any more.
->>>>>>
->>>>>> Well yeah but the active_mm concept hasn't changed. The refcounting=20
->>>>>> change is hopefully reasonably documented?
->>>
->>> active_mm is *only* refcounting in the core code.  See below.
->>=20
->> It's just not. It's passed in to switch_mm. Most architectures except=20
->> for x86 require this.
->>=20
->=20
-> Sorry, I was obviously blatantly wrong.  Let me say it differently.
-> active_mm does two things:
->=20
-> 1. It keeps an mm alive via a refcounting scheme.
->=20
-> 2. It passes a parameter to switch_mm() to remind the arch code what the
-> most recently switch-to mm was.
->=20
-> #2 is basically useless.  An architecture can handle *that* with a
-> percpu variable and two lines of code.
->=20
-> If you are getting rid of functionality #1 in the core code via a new
-> arch opt-out, please get rid of #2 as well.  *Especially* because, when
-> the arch asks the core code to stop refcounting active_mm, there is
-> absolutely nothing guaranteeing that the parameter that the core code
-> will pass to switch_mm() points to memory that hasn't been freed and
-> reused for another purpose.
-
-You're confused about the patch. It's not opting out of lazy tlb mm or=20
-opting out of active_mm, it is changing how the refcounting is done.
-
-You were just before trying to tell me it would make the code simpler to=20
-remove it, but it clearly wouldn't if powerpc just had to reimplement it=20
-in arch code anyway, would it?
-
-powerpc is not going to add code to reimplement the exact same thing as=20
-active_mm, because it uses active_mm and so does everyone else. For the
-last time I'm not going to change that.
-
-That is something x86 wants. This series is not for x86. It doesn't=20
-change anything that x86 does. I have kindly tried to give you=20
-suggestions and patches about what you might do with x86, and it can=20
-easily be changed, but that is not the purpose of my patch. Please don't=20
-reply again telling me to get rid of active_mm. We'll draw a line under
-this and move on.
-
->>> I don't understand what contract you're talking about.  The core code
->>> maintains an active_mm counter and keeps that mm_struct from
->>> disappearing.  That's *it*.  The core code does not care that active_mm
->>> is active, and x86 provides evidence of that -- on x86,
->>> current->active_mm may well be completely unused.
->>=20
->> I already acknowledged archs can do their own thing under the covers if=20
->> they want.
->=20
-> No.
->=20
-> I am *not* going to write x86 patches that use your feature in a way
-> that will cause the core code to pass around a complete garbage pointer
-> to an mm_struct that is completely unreferenced and may well be deleted.
->  Doing something private in arch code is one thing.  Doing something
-> that causes basic common sense to be violated in core code is another
-> thing entirely.
-
-I'm talking about the relationship between core code's idea of active_mm=20
-and the arch's idea as it stands now. I'm not talking about what you might
-do with x86.
-
-The whole point of this was that you have been operating under the=20
-misconception that active_mm is not a core kernel concept, because x86=20
-has gone and done its own thing and doesn't use it. That does not mean=20
-it is not a core kernel concept!
-
->=20
->>>
->>> static inline void do_switch_mm(struct task_struct *prev_task, ...)
->>> {
->>> #ifdef CONFIG_MMU_TLB_REFCOUNT
->>> 	switch_mm(...);
->>> #else
->>> 	switch_mm(fewer parameters);
->>> 	/* or pass NULL or whatever. */
->>> #endif
->>> }
->>=20
->> And prev_task comes from active_mm, ergo core code requires the concept=20
->> of active_mm.
->=20
-> I don't see why this concept is hard.  We are literally quibbling about
-> this single line of core code in kernel/sched/core.c:
->=20
-> switch_mm_irqs_off(prev->active_mm, next->mm, next);
->=20
-> This is not rocket science.  There are any number of ways to fix it.
-> For example:
->=20
-> #ifdef CONFIG_MMU_TLB_REFCOUNT
-> 	switch_mm_irqs_off(prev->active_mm, next->mm, next);
-> #else
-> 	switch_mm_irqs_off(NULL, next->mm, next);
-> #endif
->=20
-> If you don't like the NULL, then make the signature depend on the config
-> option.
->=20
-> What you may not do is what your patch actually does:
->=20
-> switch_mm_irqs_off(random invalid pointer, next->mm, next);
-
-You're totally confused about the code, and my patch series. That's not=20
-what it does at all. Unless you have spotted a bug, in which case point=20
-it out.
-
->=20
-> Now maybe it works because powerpc's lifecycle rules happen to keep
-> active_mm alive, but I haven't verified it.  x86's lifecycle rules *do no=
-t*.
->=20
->>>>
->>>> That's understandable, but please redirect your objections to the prop=
-er=20
->>>> place. git blame suggests 3d28ebceaffab.
->>>
->>> Thanks for the snark.
->>=20
->> Is it not true? I don't mean that one patch causing all the x86=20
->> complexity or even making the situation worse itself. But you seem to be=
-=20
->> asking my series to do things that really apply to the x86 changes over
->> the past few years that got us here.
->=20
-> With just my patch from 4.15 applied, task->active_mm points to an
-> actual mm_struct, and that mm_struct will not be freed early.  If I opt
-> x86 into your patch's new behavior, then task->active_mm may be freed.
->=20
-> akpm, please drop this series until it's fixed.  It's a core change to
-> better support arch usecases, but it's unnecessarily fragile, and there
-> is already an arch maintainer pointing out that it's inadequate to
-> robustly support arch usecases.  There is no reason to merge it in its
-> present state.
->=20
-
-No, you've been sniping these for nearly a year now, and I've been pretty=20
-accommodating not pushing it upstream, and trying to get anything out of=20
-you, a patch or an actual description of the problem, but it's like=20
-getting blood from a stone. I've tried to ask what help x86 needs, but=20
-nothing. You didn't even reply to my (actual working) patch or questions=20
-about it in the last comment! Doing that then throwing out NAK like it's=20
-a magic word is pretty rude really.
-
-The series is fine, it's documented, it works well, it solves a problem
-the core code changes are small and reusable, and nobody has pointed out
-a bug.
-
-So at this point, just get over it. Do some patches for x86 on top of it=20
-later when you have some time. Or Rik might. None of the patches in my=20
-series prevents that. I'll be happy to review your changes or adjust=20
-some of the code added in this series so it's usable by x86 if you need.
-The x86 work could have bee done already with the time bickering about=20
-this.
-
-Thanks,
-Nick
+cheers
