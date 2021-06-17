@@ -1,69 +1,97 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 555B43AAD19
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 09:09:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E1FB3AAD71
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 09:24:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G5CqH6p4Sz3btr
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 17:09:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G5D805mLnz3byg
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 17:24:16 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20161025 header.b=FQtZTwK4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jArLBEbE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::22c;
- helo=mail-oi1-x22c.google.com; envelope-from=elver@google.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=FQtZTwK4; dkim-atps=neutral
-Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com
- [IPv6:2607:f8b0:4864:20::22c])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=jArLBEbE; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G5Cpr3QXFz3c1M
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 17:09:24 +1000 (AEST)
-Received: by mail-oi1-x22c.google.com with SMTP id u11so5473178oiv.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 00:09:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=Y899QIQlOQvFqET/XGorOZ+F3vK0QdxZBrZzg45qzIs=;
- b=FQtZTwK4cC4uXfrgpUfeUmm6Siw4e/WbKHpMQAsnI2GuJrbWnfKGVx55CrlKwNW3Yv
- id9W++OpGmqczrcKmov1LTEXRpsdyADCcXpBqkD3ebXNrue27Wv5udaUtl2dl2J7AQit
- 2ZDLx7SobVYkJb2Bwi7poyskkgAhFTaR7gPp/EyyS7kgrsdZcS/qwY/6LfDvnh3iCN2V
- WwCHMNNX9KIRmVZ3KOoIMKnbAUnz92UztTDXuBlQJ2gQoGCeCIK4IFzAku3R+7L7K/l4
- m78ITtrlX333pwjx/YWYG2DdGtLJayvmEFV1IjtZ3EiO1Qem80PZN8VEq3YzlCZaW7KP
- bOCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=Y899QIQlOQvFqET/XGorOZ+F3vK0QdxZBrZzg45qzIs=;
- b=dwER3/nl7YyocJD6MlQmugcx+KmDMcUEwrV+4EBnJcQbVDxVvi/VNL+XQc8MEuaHTD
- BSCm2z5VRGx0SYJaNUhbwPVobn0r+Hlp93QTcdpUxwl8KbOPPs3k3Fdbq51SxhNUZw/v
- +zg61KkLpPtI17PeQcCFSY4oxGGPekew2yMGJzf6VhRAYDIROeV6e0ndoUyWjSZzXMqg
- DTYRFNk4ZLX3aqpNSIV0SZiSGW6126x3POjzcA5ggGDreWYpGJvLpwL4WJLRXLUu8Ejk
- UQ22gHceV5OwhlawH7Ppu7aE75xHSvV4SGQoe9g3zDjtfPc06/pySTUpzGiaLPwEqdBM
- YePw==
-X-Gm-Message-State: AOAM531jI/vy/RXyrxVYGNtXfrlq/tgWojxC+YyrvPeTH44KTQ2X+v12
- PjnOfItEG+0etDfMu5bvULbZqWVYwGYTG2XJ4ekduQ==
-X-Google-Smtp-Source: ABdhPJztoH0C1/zvKob2TwWK9o3BZ++QjbgLwppAe2djLU6M4cBSQ1jJwElkp2Tz9gErUtDFo+xgFIsfw23ZT5VTMGA=
-X-Received: by 2002:a05:6808:bd5:: with SMTP id
- o21mr2275661oik.172.1623913760824; 
- Thu, 17 Jun 2021 00:09:20 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G5D7S1xZ9z2xb6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 17:23:47 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 15H72g22124678; Thu, 17 Jun 2021 03:23:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=RvvWwR9/+uLG4OoZQyp7y+hkjj/Y89Tl985pBxb91+w=;
+ b=jArLBEbEZPMGACSOQea9wsf3sBD/Gixw4hRBe/Qfb4YRY3VaHb7b9rROxDmPLSrELCKC
+ dVA0IHgb1DIB6Mu0L7+5gun3yl/HslJG+SUvRgrHcx01A+izCnLWNMZe31JkhAlW8Bn0
+ i7KWWcUDDY3vhh4yifjlFd91IbiwROARnYb6shNoYaNSo9+A/Cv0qot2FCWS4rKdssj3
+ Uoejjc8G2wjw5v2u2Vlfj+8OOW2rbehxR9lt8hopkCRkUZwVWok8lMBf8HXhCWtgCUdu
+ UgIcDc/ak/SbsYAjUbA9psPOw0yv1KI1VLghaREVa2KHZJ0uNbYnsXJf4xZ4TjRrfa52 +g== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3980yahuxf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 17 Jun 2021 03:23:40 -0400
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 15H72slk125775;
+ Thu, 17 Jun 2021 03:23:39 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3980yahux4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 17 Jun 2021 03:23:39 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15H7Hik1010259;
+ Thu, 17 Jun 2021 07:23:39 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
+ [9.57.198.27]) by ppma03dal.us.ibm.com with ESMTP id 394mja8ar0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 17 Jun 2021 07:23:39 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
+ [9.57.199.107])
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 15H7NcYA28049790
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 17 Jun 2021 07:23:38 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 115721240C5;
+ Thu, 17 Jun 2021 07:23:38 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 394971240A4;
+ Thu, 17 Jun 2021 07:23:35 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.102.31.110])
+ by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu, 17 Jun 2021 07:23:34 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+Subject: [PATCH v2 0/8] Add support for FORM2 associativity
+Date: Thu, 17 Jun 2021 12:52:38 +0530
+Message-Id: <20210617072246.500768-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: cav8eEPHHLTyd6g4oeoEhIaaQudDy7Nq
+X-Proofpoint-ORIG-GUID: Tk_DLLDUz4jsfi6oiJ9LrNzFkL-ZOLMO
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-References: <20210617063956.94061-1-dja@axtens.net>
- <20210617063956.94061-5-dja@axtens.net>
-In-Reply-To: <20210617063956.94061-5-dja@axtens.net>
-From: Marco Elver <elver@google.com>
-Date: Thu, 17 Jun 2021 09:09:09 +0200
-Message-ID: <CANpmjNOoeZqRnqpPGZqiro-ptaV=qKf5dnRYmVcZkRMPq7spig@mail.gmail.com>
-Subject: Re: [PATCH v14 4/4] kasan: use MAX_PTRS_PER_* for early shadow tables
-To: Daniel Axtens <dja@axtens.net>
-Content-Type: text/plain; charset="UTF-8"
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-06-17_02:2021-06-15,
+ 2021-06-17 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 malwarescore=0
+ mlxscore=0 phishscore=0 impostorscore=0 bulkscore=0 mlxlogscore=999
+ suspectscore=0 priorityscore=1501 adultscore=0 lowpriorityscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2106170049
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,85 +103,109 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.ibm.com, LKML <linux-kernel@vger.kernel.org>,
- kasan-dev <kasan-dev@googlegroups.com>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 17 Jun 2021 at 08:40, Daniel Axtens <dja@axtens.net> wrote:
->
-> powerpc has a variable number of PTRS_PER_*, set at runtime based
-> on the MMU that the kernel is booted under.
->
-> This means the PTRS_PER_* are no longer constants, and therefore
-> breaks the build. Switch to using MAX_PTRS_PER_*, which are constant.
->
-> Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Suggested-by: Balbir Singh <bsingharora@gmail.com>
-> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Reviewed-by: Balbir Singh <bsingharora@gmail.com>
-> Signed-off-by: Daniel Axtens <dja@axtens.net>
+Form2 associativity adds a much more flexible NUMA topology layout
+than what is provided by Form1. This also allows PAPR SCM device
+to use better associativity when using the device as DAX KMEM
+device. More details can be found in patch 7.
 
-Reviewed-by: Marco Elver <elver@google.com>
+$ ndctl list -N -v
+[
+  {
+    "dev":"namespace0.0",
+    "mode":"devdax",
+    "map":"dev",
+    "size":1071644672,
+    "uuid":"37dea198-ddb5-4e42-915a-99a915e24188",
+    "raw_uuid":"148deeaa-4a2f-41d1-8d74-fd9a942d26ba",
+    "daxregion":{
+      "id":0,
+      "size":1071644672,
+      "devices":[
+        {
+          "chardev":"dax0.0",
+          "size":1071644672,
+          "target_node":4,
+          "mode":"devdax"
+        }
+      ]
+    },
+    "align":2097152,
+    "numa_node":1
+  }
+]
 
+$ numactl -H
+...
+node distances:
+node   0   1   2   3 
+  0:  10  11  222  33 
+  1:  44  10  55  66 
+  2:  77  88  10  99 
+  3:  101  121  132  10 
+$
 
-> ---
->  include/linux/kasan.h | 6 +++---
->  mm/kasan/init.c       | 6 +++---
->  2 files changed, 6 insertions(+), 6 deletions(-)
->
-> diff --git a/include/linux/kasan.h b/include/linux/kasan.h
-> index 768d7d342757..5310e217bd74 100644
-> --- a/include/linux/kasan.h
-> +++ b/include/linux/kasan.h
-> @@ -41,9 +41,9 @@ struct kunit_kasan_expectation {
->  #endif
->
->  extern unsigned char kasan_early_shadow_page[PAGE_SIZE];
-> -extern pte_t kasan_early_shadow_pte[PTRS_PER_PTE + PTE_HWTABLE_PTRS];
-> -extern pmd_t kasan_early_shadow_pmd[PTRS_PER_PMD];
-> -extern pud_t kasan_early_shadow_pud[PTRS_PER_PUD];
-> +extern pte_t kasan_early_shadow_pte[MAX_PTRS_PER_PTE + PTE_HWTABLE_PTRS];
-> +extern pmd_t kasan_early_shadow_pmd[MAX_PTRS_PER_PMD];
-> +extern pud_t kasan_early_shadow_pud[MAX_PTRS_PER_PUD];
->  extern p4d_t kasan_early_shadow_p4d[MAX_PTRS_PER_P4D];
->
->  int kasan_populate_early_shadow(const void *shadow_start,
-> diff --git a/mm/kasan/init.c b/mm/kasan/init.c
-> index 348f31d15a97..cc64ed6858c6 100644
-> --- a/mm/kasan/init.c
-> +++ b/mm/kasan/init.c
-> @@ -41,7 +41,7 @@ static inline bool kasan_p4d_table(pgd_t pgd)
->  }
->  #endif
->  #if CONFIG_PGTABLE_LEVELS > 3
-> -pud_t kasan_early_shadow_pud[PTRS_PER_PUD] __page_aligned_bss;
-> +pud_t kasan_early_shadow_pud[MAX_PTRS_PER_PUD] __page_aligned_bss;
->  static inline bool kasan_pud_table(p4d_t p4d)
->  {
->         return p4d_page(p4d) == virt_to_page(lm_alias(kasan_early_shadow_pud));
-> @@ -53,7 +53,7 @@ static inline bool kasan_pud_table(p4d_t p4d)
->  }
->  #endif
->  #if CONFIG_PGTABLE_LEVELS > 2
-> -pmd_t kasan_early_shadow_pmd[PTRS_PER_PMD] __page_aligned_bss;
-> +pmd_t kasan_early_shadow_pmd[MAX_PTRS_PER_PMD] __page_aligned_bss;
->  static inline bool kasan_pmd_table(pud_t pud)
->  {
->         return pud_page(pud) == virt_to_page(lm_alias(kasan_early_shadow_pmd));
-> @@ -64,7 +64,7 @@ static inline bool kasan_pmd_table(pud_t pud)
->         return false;
->  }
->  #endif
-> -pte_t kasan_early_shadow_pte[PTRS_PER_PTE + PTE_HWTABLE_PTRS]
-> +pte_t kasan_early_shadow_pte[MAX_PTRS_PER_PTE + PTE_HWTABLE_PTRS]
->         __page_aligned_bss;
->
->  static inline bool kasan_pte_table(pmd_t pmd)
-> --
-> 2.30.2
->
+After DAX KMEM
+# numactl -H
+available: 5 nodes (0-4)
+...
+node distances:
+node   0   1   2   3   4 
+  0:  10  11  22  33  255 
+  1:  44  10  55  66  255 
+  2:  77  88  10  99  255 
+  3:  101  121  132  10  255 
+  4:  255  255  255  255  10 
+# 
+
+The above output is with a Qemu command line
+
+-numa node,nodeid=4 \
+-numa dist,src=0,dst=1,val=11 -numa dist,src=0,dst=2,val=22 -numa dist,src=0,dst=3,val=33 -numa dist,src=0,dst=4,val=255 \
+-numa dist,src=1,dst=0,val=44 -numa dist,src=1,dst=2,val=55 -numa dist,src=1,dst=3,val=66 -numa dist,src=1,dst=4,val=255 \
+-numa dist,src=2,dst=0,val=77 -numa dist,src=2,dst=1,val=88 -numa dist,src=2,dst=3,val=99 -numa dist,src=2,dst=4,val=255 \
+-numa dist,src=3,dst=0,val=101 -numa dist,src=3,dst=1,val=121 -numa dist,src=3,dst=2,val=132 -numa dist,src=3,dst=4,val=255 \
+-numa dist,src=4,dst=0,val=255 -numa dist,src=4,dst=1,val=255 -numa dist,src=4,dst=2,val=255 -numa dist,src=4,dst=3,val=255 \
+-object memory-backend-file,id=memnvdimm1,prealloc=yes,mem-path=$PMEM_DISK,share=yes,size=${PMEM_SIZE}  \
+-device nvdimm,label-size=128K,memdev=memnvdimm1,id=nvdimm1,slot=4,uuid=72511b67-0b3b-42fd-8d1d-5be3cae8bcaa,node=4,device-node=1
+
+Qemu changes can be found at https://lore.kernel.org/qemu-devel/20210616011944.2996399-1-danielhb413@gmail.com/
+
+Changes from v1:
+* Update FORM2 documentation.
+* rename max_domain_index to max_associativity_domain_index
+
+Aneesh Kumar K.V (8):
+  powerpc/pseries: rename min_common_depth to primary_domain_index
+  powerpc/pseries: rename distance_ref_points_depth to
+    max_associativity_domain_index
+  powerpc/pseries: Rename TYPE1_AFFINITY to FORM1_AFFINITY
+  powerpc/pseries: Consolidate DLPAR NUMA distance update
+  powerpc/pseries: Consolidate NUMA distance update during boot
+  powerpc/pseries: Add a helper for form1 cpu distance
+  powerpc/pseries: Add support for FORM2 associativity
+  powerpc/papr_scm: Use FORM2 associativity details
+
+ Documentation/powerpc/associativity.rst       | 177 +++++++
+ arch/powerpc/include/asm/firmware.h           |   7 +-
+ arch/powerpc/include/asm/prom.h               |   3 +-
+ arch/powerpc/kernel/prom_init.c               |   3 +-
+ arch/powerpc/mm/numa.c                        | 436 ++++++++++++++----
+ arch/powerpc/platforms/pseries/firmware.c     |   3 +-
+ arch/powerpc/platforms/pseries/hotplug-cpu.c  |   2 +
+ .../platforms/pseries/hotplug-memory.c        |   2 +
+ arch/powerpc/platforms/pseries/papr_scm.c     |  26 +-
+ arch/powerpc/platforms/pseries/pseries.h      |   2 +
+ 10 files changed, 560 insertions(+), 101 deletions(-)
+ create mode 100644 Documentation/powerpc/associativity.rst
+
+-- 
+2.31.1
+
