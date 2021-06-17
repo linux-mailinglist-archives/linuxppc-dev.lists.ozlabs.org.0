@@ -1,99 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CB673AAD8C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 09:27:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 588343AAD8F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 09:28:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G5DD7597Lz3cCd
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 17:27:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G5DDj0Kgxz3dkJ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 17:28:21 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KssB9/8Y;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=IPYAnM20;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1031;
+ helo=mail-pj1-x1031.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=KssB9/8Y; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=IPYAnM20; dkim-atps=neutral
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com
+ [IPv6:2607:f8b0:4864:20::1031])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G5D7q4WF9z2yXt
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 17:24:07 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 15H72nZp125336; Thu, 17 Jun 2021 03:24:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=DED5r5943z3h7/swXZJGs55YV2GVUQXo4vHtHQtn4mQ=;
- b=KssB9/8YmNH85NVil216Yu0wGgMd6/E3MCaezwdGAAVBCF5gr/6UHli4sXAPaNPi4L02
- 4Bl3mFIRECvYpy1TFxPbRB5LfNDuQa/bEXkR6/zrISo1NPtxyB9Kw2URkxyyeEu1nrd3
- kVT/6H5Th9NDhvH6jRzCiBI90qUiPz4yXmrA+7+J5SyMKQtkosS1gkz/qLEX/bm+pUlS
- SUfh/l7mqy8DfGmyrEkrtaUc6M/Lp4QUwXzxSE0AG+xahRhfgqYqmTq2E6TMvx3IzwtG
- 3ibXQM+3S8RXhXbbvK3pKxQqN+xi+hJKWRqAD3bTozAb3IlGChoqmn4UdzwM7LUyxg+W PA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3980yahv8d-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Jun 2021 03:24:01 -0400
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 15H72wa1126069;
- Thu, 17 Jun 2021 03:24:01 -0400
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3980yahv82-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Jun 2021 03:24:01 -0400
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15H7HNOm012218;
- Thu, 17 Jun 2021 07:24:01 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
- [9.57.198.28]) by ppma05wdc.us.ibm.com with ESMTP id 3954gkj6dp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Jun 2021 07:24:01 +0000
-Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
- [9.57.199.107])
- by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 15H7O0vM25100548
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 17 Jun 2021 07:24:00 GMT
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6FDD81240AB;
- Thu, 17 Jun 2021 07:24:00 +0000 (GMT)
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2285E124095;
- Thu, 17 Jun 2021 07:23:58 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.102.31.110])
- by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 17 Jun 2021 07:23:57 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH v2 8/8] powerpc/papr_scm: Use FORM2 associativity details
-Date: Thu, 17 Jun 2021 12:52:46 +0530
-Message-Id: <20210617072246.500768-9-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210617072246.500768-1-aneesh.kumar@linux.ibm.com>
-References: <20210617072246.500768-1-aneesh.kumar@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G5DCt3gqWz3c9v
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 17:27:37 +1000 (AEST)
+Received: by mail-pj1-x1031.google.com with SMTP id
+ fy24-20020a17090b0218b029016c5a59021fso5598415pjb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 00:27:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=q3EX7CyG2rNhO0jlWhSISSSdZOa8xQTSkIbcAZ7IlOc=;
+ b=IPYAnM20kkPd0fArHYlJu3WL296AewtyN7Cx6kaiuDMMoOKMsVVxLzc6Yov7dhAAh+
+ 6/oQpsFLhlpmeTpUgYFAo6q5evNJllTUQoj6X37sgAEgTpj8YJh3rRWTZ97YawLDNltq
+ HoGb7+M6owGBgkQFILaXEc67I6GQ/SBcRQsJlzoAz4492iQRvaFgq2du+ruyOMow6AQw
+ wqVNAiwvUzdqQTZrlm60ytv8Ok8n7JYFQygJ0s7KiewWqyU9ODQMKoamB+CXZlBCRmVm
+ gxAuhcDaZWNvzkz+Qg078PLoE9emEt2orQxJbBJBOMwChxI5xoOyGqPE8P4KtTjDKUmS
+ QXaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=q3EX7CyG2rNhO0jlWhSISSSdZOa8xQTSkIbcAZ7IlOc=;
+ b=NI6lyRY5Vh2eWJQjmT5dEcuO6VtnHMbOClWqSqiFBO8oQsar2blMSFkyILem2K0Z40
+ WgrdpBbPXD0MNY0Gzh/CW0SWlmr9Jm5Po436SeYgCew/a5Wnanu1IQSO2Vv6NV1d6PAe
+ IZ6JkjGDBvqOYFc5hxokzkmZ1GFwhb4h0U1ZzG5b4F4ogH0LSSLyUigUjl0bzh55r9i1
+ DHb6S1Sst0rCn4rK/Yqodw+XCoDzIfwzuc/LpeGyprJZB8kLTcVWPyq5mQ3HxQW49LGj
+ TuztrZyqad1dQB8qrDIBUAVd4Ean8rI7uX/LM/5kRP88xTkjnMaKy1HP7nO5WNK0lfx8
+ fCxw==
+X-Gm-Message-State: AOAM530dOsEqC3B7pMSJk/10A50sJE+Lr4/z+2vyQAmdfJrk+cEcl8kb
+ 8GU2AtS2NlxzGd9Qzyomhg6R/rbG6gw=
+X-Google-Smtp-Source: ABdhPJzG1f9h0FZ47mlK0uToNOTlI3hwF33lUiQNthJb9y2hTlAb1I5j5kpfnzLLeeE7dnOGmPJvgQ==
+X-Received: by 2002:a17:90b:152:: with SMTP id
+ em18mr4128425pjb.96.1623914853323; 
+ Thu, 17 Jun 2021 00:27:33 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com (60-242-147-73.tpgi.com.au. [60.242.147.73])
+ by smtp.gmail.com with ESMTPSA id h21sm3813429pfv.190.2021.06.17.00.27.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 17 Jun 2021 00:27:32 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] Fix for "powerpc/64: use interrupt restart table to speed up
+ return from interrupt" SOFTE loading
+Date: Thu, 17 Jun 2021 17:27:26 +1000
+Message-Id: <20210617072726.1914546-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: C7eyYnumKX3qpn8ZZyQyN8MQUpUv-G3S
-X-Proofpoint-ORIG-GUID: bo78MGEt1bALP1Xl0QIv4lyMt3xDSOH1
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-06-17_02:2021-06-15,
- 2021-06-17 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 malwarescore=0
- mlxscore=0 phishscore=0 impostorscore=0 bulkscore=0 mlxlogscore=999
- suspectscore=0 priorityscore=1501 adultscore=0 lowpriorityscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2106170049
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,158 +80,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-FORM2 introduce a concept of secondary domain which is identical to the
-conceept of FORM1 primary domain. Use secondary domain as the numa node
-when using persistent memory device. For DAX kmem use the logical domain
-id introduced in FORM2. This new numa node
+This patch loads SOFTE(r1) with lbz, which existing code stores to with
+std. This causes interrupt flag corruption on big endian (as Michael
+pointed out to me, lbz happens to grab the correct byte on LE kernels
+which explains why I didn't run into it).
 
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/mm/numa.c                    | 28 +++++++++++++++++++++++
- arch/powerpc/platforms/pseries/papr_scm.c | 26 +++++++++++++--------
- arch/powerpc/platforms/pseries/pseries.h  |  1 +
- 3 files changed, 45 insertions(+), 10 deletions(-)
+64e still seems to have an issue I'm chasing, and I still need to send a
+fix for the cpu hotplug lock warning.
 
-diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-index 5a7d94960fb7..cd3ae7ff77ac 100644
---- a/arch/powerpc/mm/numa.c
-+++ b/arch/powerpc/mm/numa.c
-@@ -265,6 +265,34 @@ static int associativity_to_nid(const __be32 *associativity)
- 	return nid;
- }
+ arch/powerpc/kernel/interrupt_64.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/kernel/interrupt_64.S b/arch/powerpc/kernel/interrupt_64.S
+index 76b827ae849a..4bf859e7dc25 100644
+--- a/arch/powerpc/kernel/interrupt_64.S
++++ b/arch/powerpc/kernel/interrupt_64.S
+@@ -618,7 +618,7 @@ RESTART_TABLE(.Linterrupt_return_\srr\()_user_rst_start, .Linterrupt_return_\srr
  
-+int get_primary_and_secondary_domain(struct device_node *node, int *primary, int *secondary)
-+{
-+	int secondary_index;
-+	const __be32 *associativity;
-+
-+	if (!numa_enabled) {
-+		*primary = NUMA_NO_NODE;
-+		*secondary = NUMA_NO_NODE;
-+		return 0;
-+	}
-+
-+	associativity = of_get_associativity(node);
-+	if (!associativity)
-+		return -ENODEV;
-+
-+	if (of_read_number(associativity, 1) >= primary_domain_index) {
-+		*primary = of_read_number(&associativity[primary_domain_index], 1);
-+		secondary_index = of_read_number(&distance_ref_points[1], 1);
-+		*secondary = of_read_number(&associativity[secondary_index], 1);
-+	}
-+	if (*primary == 0xffff || *primary >= nr_node_ids)
-+		*primary = NUMA_NO_NODE;
-+
-+	if (*secondary == 0xffff || *secondary >= nr_node_ids)
-+		*secondary = NUMA_NO_NODE;
-+	return 0;
-+}
-+
- /* Returns the nid associated with the given device tree node,
-  * or -1 if not found.
-  */
-diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-index ef26fe40efb0..9bf2f1f3ddc5 100644
---- a/arch/powerpc/platforms/pseries/papr_scm.c
-+++ b/arch/powerpc/platforms/pseries/papr_scm.c
-@@ -18,6 +18,7 @@
- #include <asm/plpar_wrappers.h>
- #include <asm/papr_pdsm.h>
- #include <asm/mce.h>
-+#include "pseries.h"
- 
- #define BIND_ANY_ADDR (~0ul)
- 
-@@ -88,6 +89,8 @@ struct papr_scm_perf_stats {
- struct papr_scm_priv {
- 	struct platform_device *pdev;
- 	struct device_node *dn;
-+	int numa_node;
-+	int target_node;
- 	uint32_t drc_index;
- 	uint64_t blocks;
- 	uint64_t block_size;
-@@ -923,7 +926,6 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
- 	struct nd_mapping_desc mapping;
- 	struct nd_region_desc ndr_desc;
- 	unsigned long dimm_flags;
--	int target_nid, online_nid;
- 	ssize_t stat_size;
- 
- 	p->bus_desc.ndctl = papr_scm_ndctl;
-@@ -974,10 +976,8 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
- 	mapping.size = p->blocks * p->block_size; // XXX: potential overflow?
- 
- 	memset(&ndr_desc, 0, sizeof(ndr_desc));
--	target_nid = dev_to_node(&p->pdev->dev);
--	online_nid = numa_map_to_online_node(target_nid);
--	ndr_desc.numa_node = online_nid;
--	ndr_desc.target_node = target_nid;
-+	ndr_desc.numa_node = p->numa_node;
-+	ndr_desc.target_node = p->target_node;
- 	ndr_desc.res = &p->res;
- 	ndr_desc.of_node = p->dn;
- 	ndr_desc.provider_data = p;
-@@ -1001,9 +1001,6 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
- 				ndr_desc.res, p->dn);
- 		goto err;
- 	}
--	if (target_nid != online_nid)
--		dev_info(dev, "Region registered with target node %d and online node %d",
--			 target_nid, online_nid);
- 
- 	mutex_lock(&papr_ndr_lock);
- 	list_add_tail(&p->region_list, &papr_nd_regions);
-@@ -1096,7 +1093,7 @@ static int papr_scm_probe(struct platform_device *pdev)
- 	struct papr_scm_priv *p;
- 	const char *uuid_str;
- 	u64 uuid[2];
--	int rc;
-+	int rc, numa_node;
- 
- 	/* check we have all the required DT properties */
- 	if (of_property_read_u32(dn, "ibm,my-drc-index", &drc_index)) {
-@@ -1119,11 +1116,20 @@ static int papr_scm_probe(struct platform_device *pdev)
- 		return -ENODEV;
- 	}
- 
--
- 	p = kzalloc(sizeof(*p), GFP_KERNEL);
- 	if (!p)
- 		return -ENOMEM;
- 
-+	if (get_primary_and_secondary_domain(dn, &p->target_node, &numa_node)) {
-+		dev_err(&pdev->dev, "%pOF: missing NUMA attributes!\n", dn);
-+		rc = -ENODEV;
-+		goto err;
-+	}
-+	p->numa_node = numa_map_to_online_node(numa_node);
-+	if (numa_node != p->numa_node)
-+		dev_info(&pdev->dev, "Region registered with online node %d and device tree node %d",
-+			 p->numa_node, numa_node);
-+
- 	/* Initialize the dimm mutex */
- 	mutex_init(&p->health_mutex);
- 
-diff --git a/arch/powerpc/platforms/pseries/pseries.h b/arch/powerpc/platforms/pseries/pseries.h
-index 663a0859cf13..9c2a1fc9ded1 100644
---- a/arch/powerpc/platforms/pseries/pseries.h
-+++ b/arch/powerpc/platforms/pseries/pseries.h
-@@ -114,4 +114,5 @@ void pseries_setup_security_mitigations(void);
- void pseries_lpar_read_hblkrm_characteristics(void);
- 
- void update_numa_distance(struct device_node *node);
-+int get_primary_and_secondary_domain(struct device_node *node, int *primary, int *secondary);
- #endif /* _PSERIES_PSERIES_H */
+ 	std	r1,PACA_EXIT_SAVE_R1(r13) /* save r1 for restart */
+ .Linterrupt_return_\srr\()_kernel_rst_start:
+-	lbz	r11,SOFTE(r1)
++	ld	r11,SOFTE(r1)
+ 	cmpwi	r11,IRQS_ENABLED
+ 	stb	r11,PACAIRQSOFTMASK(r13)
+ 	bne	1f
 -- 
-2.31.1
+2.23.0
 
