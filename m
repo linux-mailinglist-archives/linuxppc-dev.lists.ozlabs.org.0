@@ -2,47 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5605C3AA978
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 05:20:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 156D73AA9A0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 05:34:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G56kt0hznz3bwZ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 13:20:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G572x5WKgz3bwD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 13:34:33 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=SWZmufYB;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::432;
+ helo=mail-pf1-x432.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=SWZmufYB; dkim-atps=neutral
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com
+ [IPv6:2607:f8b0:4864:20::432])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G56kS72gSz3019
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 13:20:11 +1000 (AEST)
-IronPort-SDR: rLOi+H0jDwC4XQ/VXfKx1WhhBDUO6IN43PWVFuzI7vfCYNKsYozvFRf+us2EIQxxfcn+eeiwFm
- 1J9LMZm6Se8Q==
-X-IronPort-AV: E=McAfee;i="6200,9189,10017"; a="193603854"
-X-IronPort-AV: E=Sophos;i="5.83,278,1616482800"; d="scan'208";a="193603854"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
- by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jun 2021 20:20:04 -0700
-IronPort-SDR: OFY/ohIRb/yEP+n7wS3XN2yLo7fI6fCgJVy3/8ny5Lx7fWRfL3KpvZ6QD9zqJBhwOtxYuZbbGx
- VUYWWqnh40ZA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.83,278,1616482800"; d="scan'208";a="452623357"
-Received: from lkp-server01.sh.intel.com (HELO 4aae0cb4f5b5) ([10.239.97.150])
- by fmsmga008.fm.intel.com with ESMTP; 16 Jun 2021 20:20:02 -0700
-Received: from kbuild by 4aae0cb4f5b5 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1ltiZW-0001lh-7f; Thu, 17 Jun 2021 03:20:02 +0000
-Date: Thu, 17 Jun 2021 11:19:43 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD SUCCESS
- 27f6bc40cd9485020869fb01244b77ae6a266680
-Message-ID: <60cabf4f.NMfln43zjgBvGyGC%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G572R60R9z3048
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 13:34:06 +1000 (AEST)
+Received: by mail-pf1-x432.google.com with SMTP id y15so3879059pfl.4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 20:34:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=Np87+P91qpLWwoFgyfj/tVvnbhFOu2PiFh8/7E4oNNU=;
+ b=SWZmufYBXINix7/MHI629etAmmtBCT21x/eT4irvwjM8HUG0nFjwyMcXibhj4ODnG4
+ 3MkPm/nYtVj1kXUdjUS9UZ02EU+htVQUFF8zowNuTWzjVShPVCWWBnWSdp8g48fIJ+Nm
+ eMrm6zLpJYTtfJkFcaMVTSur10oBYr/K8xXJ5Kysa4o0PaqEJumDh/7+3rBGVgHY1o9Y
+ 8ybsNypepRxESJOycWNi+AluTbvQgjb/UuQfS05zkJJU19CGmsozLRReDKk7GzoLRQUb
+ sYtqsFCJMVyFmUnGDevw3Pjvwv0wk1KWnmbhPTvTicMKdQNPsO9lsDwECOo4oRokM9Bz
+ fu4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=Np87+P91qpLWwoFgyfj/tVvnbhFOu2PiFh8/7E4oNNU=;
+ b=Qb9rG1C3u/HtSnBO6byhxr8ECPU939AYKyQ6ncx58EvzwZYSpHeLwO/gh608HTQFdK
+ /J2WX8mQgNd61YWTpRu5UtQkPLydDMkp0834NhdZKEN8L4dCYdhnSom7eAIAKCkKQX3z
+ ckM6h3tZh+CnV5OtCUNkc4pRZqLJipHWaJzWvaxf0tIM3Fr48+uKu5CDTQtQuGVcwqjB
+ Sj7a0yvLUuleedMlYaqgE20Kmfq313AMOoW6eQSOYWKHbbGzdgYEzpE5wMRIRPNJO/0M
+ /m8ztK7Zp03TD390wehtN/S5o/j957OWP6zRli8qOJXOLMjw3FnMdZlmDTVw1xsw2g+P
+ B0Lw==
+X-Gm-Message-State: AOAM532zpg+iiJmTO/Mf+90VmQ3g2sBPUx4y6pbUyxVjKKgmM87T364+
+ QcrTDa+ktaxfpvKFYRr0BrI=
+X-Google-Smtp-Source: ABdhPJwaKbkscV5Os4TdY4LLC+vm6rH5DiyJ0bLZ8Qywlo8VE6hK0awThMofSNj3Ak+GdCXhUiNxmw==
+X-Received: by 2002:a63:6841:: with SMTP id d62mr2905034pgc.7.1623900841294;
+ Wed, 16 Jun 2021 20:34:01 -0700 (PDT)
+Received: from localhost (60-242-147-73.tpgi.com.au. [60.242.147.73])
+ by smtp.gmail.com with ESMTPSA id q4sm3609641pfh.18.2021.06.16.20.34.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 16 Jun 2021 20:34:00 -0700 (PDT)
+Date: Thu, 17 Jun 2021 13:33:55 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2 2/4] powerpc/interrupt: Refactor
+ prep_irq_for_user_exit()
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>,
+ Paul Mackerras <paulus@samba.org>
+References: <809d316bf5f1a81acdd69e220c13e716dac24f53.1622818556.git.christophe.leroy@csgroup.eu>
+ <3fbef68e1cffc0ebbbad1893e4fb9426b0915039.1622818556.git.christophe.leroy@csgroup.eu>
+ <1623378421.ayihg84s3a.astroid@bobo.none>
+ <4f21c7c2-d04b-dcb6-09ad-562a2c3cf88f@csgroup.eu>
+In-Reply-To: <4f21c7c2-d04b-dcb6-09ad-562a2c3cf88f@csgroup.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Message-Id: <1623900771.37yjadhzel.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,179 +85,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
-branch HEAD: 27f6bc40cd9485020869fb01244b77ae6a266680  selftests/powerpc: Always test lmw and stmw
+Excerpts from Christophe Leroy's message of June 15, 2021 6:37 pm:
+>=20
+>=20
+> Le 11/06/2021 =C3=A0 04:30, Nicholas Piggin a =C3=A9crit=C2=A0:
+>> Excerpts from Christophe Leroy's message of June 5, 2021 12:56 am:
+>>> prep_irq_for_user_exit() is a superset of
+>>> prep_irq_for_kernel_enabled_exit().
+>>>
+>>> Refactor it.
+>>=20
+>> I like the refactoring, but now prep_irq_for_user_exit() is calling
+>> prep_irq_for_kernel_enabled_exit(), which seems like the wrong naming.
+>>=20
+>> You could re-name prep_irq_for_kernel_enabled_exit() to
+>> prep_irq_for_enabled_exit() maybe? Or it could be
+>> __prep_irq_for_enabled_exit() then prep_irq_for_kernel_enabled_exit()
+>> and prep_irq_for_user_exit() would both call it.
+>=20
+> I renamed it prep_irq_for_enabled_exit().
+>=20
+> And I realised that after patch 4, prep_irq_for_enabled_exit() has become=
+ a trivial function used=20
+> only once.
+>=20
+> So I swapped patches 1/2 with patches 3/4 and added a 5th one to squash p=
+rep_irq_for_enabled_exit()=20
+> into its caller.
+>=20
+> You didn't have any comment on patch 4 (that is now patch 2) ?
 
-elapsed time: 740m
+I think it's okay, just trying to hunt down some apparent big-endian bug=20
+with my series. I can't see any problems with yours though, thanks for
+rebasing them, I'll take a better look when I can.
 
-configs tested: 153
-configs skipped: 2
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm64                            allyesconfig
-powerpc                  mpc885_ads_defconfig
-arm                             pxa_defconfig
-sh                         ap325rxa_defconfig
-openrisc                    or1ksim_defconfig
-m68k                         apollo_defconfig
-arm                           h3600_defconfig
-arm                            pleb_defconfig
-sh                            shmin_defconfig
-powerpc                      makalu_defconfig
-parisc                generic-64bit_defconfig
-arc                            hsdk_defconfig
-xtensa                  audio_kc705_defconfig
-mips                            e55_defconfig
-powerpc                 mpc837x_rdb_defconfig
-mips                        workpad_defconfig
-xtensa                generic_kc705_defconfig
-arm                           sama5_defconfig
-arm                         s5pv210_defconfig
-ia64                         bigsur_defconfig
-arm                        oxnas_v6_defconfig
-powerpc                     tqm5200_defconfig
-powerpc                 mpc8560_ads_defconfig
-arm                         vf610m4_defconfig
-arm                       omap2plus_defconfig
-mips                        maltaup_defconfig
-sh                              ul2_defconfig
-um                                  defconfig
-s390                          debug_defconfig
-sh                          sdk7780_defconfig
-sparc                            alldefconfig
-arm                             ezx_defconfig
-arc                        nsimosci_defconfig
-mips                     cu1000-neo_defconfig
-powerpc                    gamecube_defconfig
-microblaze                      mmu_defconfig
-xtensa                  cadence_csp_defconfig
-arm                        multi_v7_defconfig
-x86_64                            allnoconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a002-20210615
-i386                 randconfig-a006-20210615
-i386                 randconfig-a004-20210615
-i386                 randconfig-a001-20210615
-i386                 randconfig-a005-20210615
-i386                 randconfig-a003-20210615
-i386                 randconfig-a002-20210617
-i386                 randconfig-a006-20210617
-i386                 randconfig-a001-20210617
-i386                 randconfig-a004-20210617
-i386                 randconfig-a005-20210617
-i386                 randconfig-a003-20210617
-x86_64               randconfig-a004-20210617
-x86_64               randconfig-a001-20210617
-x86_64               randconfig-a002-20210617
-x86_64               randconfig-a003-20210617
-x86_64               randconfig-a006-20210617
-x86_64               randconfig-a005-20210617
-x86_64               randconfig-a015-20210616
-x86_64               randconfig-a011-20210616
-x86_64               randconfig-a014-20210616
-x86_64               randconfig-a012-20210616
-x86_64               randconfig-a013-20210616
-x86_64               randconfig-a016-20210616
-i386                 randconfig-a015-20210617
-i386                 randconfig-a013-20210617
-i386                 randconfig-a016-20210617
-i386                 randconfig-a012-20210617
-i386                 randconfig-a014-20210617
-i386                 randconfig-a011-20210617
-i386                 randconfig-a015-20210616
-i386                 randconfig-a013-20210616
-i386                 randconfig-a016-20210616
-i386                 randconfig-a012-20210616
-i386                 randconfig-a014-20210616
-i386                 randconfig-a011-20210616
-i386                 randconfig-a015-20210615
-i386                 randconfig-a013-20210615
-i386                 randconfig-a016-20210615
-i386                 randconfig-a012-20210615
-i386                 randconfig-a014-20210615
-i386                 randconfig-a011-20210615
-x86_64               randconfig-a001-20210615
-x86_64               randconfig-a004-20210615
-x86_64               randconfig-a002-20210615
-x86_64               randconfig-a003-20210615
-x86_64               randconfig-a006-20210615
-x86_64               randconfig-a005-20210615
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                    rhel-8.3-kselftests
-um                           x86_64_defconfig
-um                             i386_defconfig
-um                            kunit_defconfig
-x86_64                           allyesconfig
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-b001-20210615
-x86_64               randconfig-b001-20210617
-x86_64               randconfig-a015-20210617
-x86_64               randconfig-a011-20210617
-x86_64               randconfig-a014-20210617
-x86_64               randconfig-a012-20210617
-x86_64               randconfig-a013-20210617
-x86_64               randconfig-a016-20210617
-x86_64               randconfig-a015-20210615
-x86_64               randconfig-a011-20210615
-x86_64               randconfig-a012-20210615
-x86_64               randconfig-a014-20210615
-x86_64               randconfig-a016-20210615
-x86_64               randconfig-a013-20210615
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Thanks,
+Nick
