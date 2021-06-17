@@ -1,55 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B4A13AABB0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 08:08:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 340383AABED
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 08:27:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G5BT46TvLz3c0y
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 16:08:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G5BtG5ngDz3c0G
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 16:27:18 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=oZZoiBeV;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=IVV/5fAz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=oZZoiBeV; 
- dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::62f;
+ helo=mail-pl1-x62f.google.com; envelope-from=tientzu@chromium.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=IVV/5fAz; dkim-atps=neutral
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com
+ [IPv6:2607:f8b0:4864:20::62f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G5BSb2sCtz306v
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 16:08:30 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4G5BSJ40jBz9sSn;
- Thu, 17 Jun 2021 16:08:16 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1623910098;
- bh=hVSqDU1BBeAnmrNw6zEidn4Sen3Yd1tIwA02D0sarGQ=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=oZZoiBeVQr61j2bwMuugaKP9gv5ITKpktufP160mgBAmaarcFH8bPXbdJ5s5ZAoT7
- 68SUZpMPCycXQb4uZ+AqRADj/OQdoSYJqDG4hYoefgWjS0qZPtMny18lrv1bnWbnGs
- KBOE5Mko05q8bQdSFjqPAZizL+y7tz+XE6RsTtBK58oVtL0mWznrq5K0szKgbLprNl
- Z2mnxDi277OL/yq/XSkTEPwus9+Y6U5LpWAEUvgYl5ngSjQplmDenWM0kYCDcyyNHl
- F+wAZD7749u+k4C1USPD+m0b5eb8oHPeBRu1X7PoJNLikR6YONWawdwD8yIVLS7tIK
- 85QrKv0/sir6g==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Kees Cook <keescook@chromium.org>, Herbert Xu <herbert@gondor.apana.org.au>
-Subject: Re: [PATCH] crypto: nx: Fix memcpy() over-reading in nonce
-In-Reply-To: <20210616203459.1248036-1-keescook@chromium.org>
-References: <20210616203459.1248036-1-keescook@chromium.org>
-Date: Thu, 17 Jun 2021 16:08:15 +1000
-Message-ID: <87zgvpqb00.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G5Bsm48gRz2xvJ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 16:26:50 +1000 (AEST)
+Received: by mail-pl1-x62f.google.com with SMTP id v12so2371123plo.10
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 23:26:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=T2FafqXgYHBid0ZBe1+1JDcoq2ITMR3qeR/772URNKQ=;
+ b=IVV/5fAzJUboV2IX/WhvyfcG+Tda0hKqJwIbJhxk8/euHe8sF9QY7sPB101n4t3pq0
+ xCibs0rYhiNNqIGSKpxDHiRDbTJYqM6ZAdTvt7xU72VktjPhLVAhBUBErzgE8kE16i9D
+ Mr8MI74zoNL4jiAa52zvQRyTf9JTWT/AWijSs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=T2FafqXgYHBid0ZBe1+1JDcoq2ITMR3qeR/772URNKQ=;
+ b=ilqOjnVhz7ZGid1ezkE2wZXnhVlLR6O92H2h9E5IqsqLMBYhPuWuKb16C3V1l0UJ9i
+ i5jaiZgBMoZAEtMWltocQHUZhRHCovPTPMwlpX/y487KZgnVPuFSOm7VjOHFIZOaGda6
+ 6iYuA64yU2iSuZmwrD4RWH6gpidM9fgGQgRzCxHDRC1JrYWjrNpMWUq5lfPjoiFiSMru
+ s4k1g/6quKG3HXpf5qkMgaNWYwfvOMohDuZjWfGHJyujRsBxeDvfpYTOwnwIt6VARFre
+ fyzR8SpQ0OuRVF5Ii39lBJLuwdRooNTPmO46bnt+Gz8yAGSUMt8ZYyTs3siWs5/eR3ET
+ yXaA==
+X-Gm-Message-State: AOAM5312nah73XyGD3TEkk6KhbOp3mKoVXWfM/YXaKo+hDrKKu3WAuhK
+ n6NSOvRXc78Yn8XD/YZTj41Chg==
+X-Google-Smtp-Source: ABdhPJy0c6CkeYmIknk2P7/qxll1LLLQMygbBdhbTcld1tRPD8L5OQgaDNVXxbwz0PNAcGxSRbzFDA==
+X-Received: by 2002:a17:90b:502:: with SMTP id
+ r2mr15134236pjz.18.1623911205862; 
+ Wed, 16 Jun 2021 23:26:45 -0700 (PDT)
+Received: from localhost ([2401:fa00:95:205:e349:a6ae:d3d0:1621])
+ by smtp.gmail.com with UTF8SMTPSA id i128sm4164159pfc.142.2021.06.16.23.26.37
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 16 Jun 2021 23:26:45 -0700 (PDT)
+From: Claire Chang <tientzu@chromium.org>
+To: Rob Herring <robh+dt@kernel.org>, mpe@ellerman.id.au,
+ Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Frank Rowand <frowand.list@gmail.com>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, boris.ostrovsky@oracle.com,
+ jgross@suse.com, Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>
+Subject: [PATCH v13 00/12] Restricted DMA
+Date: Thu, 17 Jun 2021 14:26:23 +0800
+Message-Id: <20210617062635.1660944-1-tientzu@chromium.org>
+X-Mailer: git-send-email 2.32.0.288.g62a8d224e6-goog
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,52 +80,173 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kees Cook <keescook@chromium.org>, Nayna Jain <nayna@linux.ibm.com>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Paulo Flabiano Smorigo <pfsmorigo@gmail.com>, linux-crypto@vger.kernel.org,
- Breno =?utf-8?Q?Leit=C3=A3o?= <leitao@debian.org>,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org, "David S.
- Miller" <davem@davemloft.net>, linux-hardening@vger.kernel.org
+Cc: heikki.krogerus@linux.intel.com, thomas.hellstrom@linux.intel.com,
+ peterz@infradead.org, joonas.lahtinen@linux.intel.com,
+ dri-devel@lists.freedesktop.org, chris@chris-wilson.co.uk,
+ grant.likely@arm.com, paulus@samba.org, mingo@kernel.org, jxgao@google.com,
+ sstabellini@kernel.org, Saravana Kannan <saravanak@google.com>,
+ xypron.glpk@gmx.de, "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ Bartosz Golaszewski <bgolaszewski@baylibre.com>, bskeggs@redhat.com,
+ linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
+ Thierry Reding <treding@nvidia.com>, intel-gfx@lists.freedesktop.org,
+ matthew.auld@intel.com, linux-devicetree <devicetree@vger.kernel.org>,
+ daniel@ffwll.ch, airlied@linux.ie, maarten.lankhorst@linux.intel.com,
+ linuxppc-dev@lists.ozlabs.org, jani.nikula@linux.intel.com,
+ Nicolas Boichat <drinkcat@chromium.org>, rodrigo.vivi@intel.com,
+ bhelgaas@google.com, tientzu@chromium.org,
+ Dan Williams <dan.j.williams@intel.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Greg KH <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
+ lkml <linux-kernel@vger.kernel.org>, tfiga@chromium.org,
+ "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+ Jim Quinlan <james.quinlan@broadcom.com>, Robin Murphy <robin.murphy@arm.com>,
+ bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Kees Cook <keescook@chromium.org> writes:
-> Fix typo in memcpy() where size should be CTR_RFC3686_NONCE_SIZE.
->
-> Fixes: 030f4e968741 ("crypto: nx - Fix reentrancy bugs")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kees Cook <keescook@chromium.org>
+This series implements mitigations for lack of DMA access control on
+systems without an IOMMU, which could result in the DMA accessing the
+system memory at unexpected times and/or unexpected addresses, possibly
+leading to data leakage or corruption.
 
-Thanks.
+For example, we plan to use the PCI-e bus for Wi-Fi and that PCI-e bus is
+not behind an IOMMU. As PCI-e, by design, gives the device full access to
+system memory, a vulnerability in the Wi-Fi firmware could easily escalate
+to a full system exploit (remote wifi exploits: [1a], [1b] that shows a
+full chain of exploits; [2], [3]).
 
-> ---
->  drivers/crypto/nx/nx-aes-ctr.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/crypto/nx/nx-aes-ctr.c b/drivers/crypto/nx/nx-aes-ctr.c
-> index 13f518802343..6120e350ff71 100644
-> --- a/drivers/crypto/nx/nx-aes-ctr.c
-> +++ b/drivers/crypto/nx/nx-aes-ctr.c
-> @@ -118,7 +118,7 @@ static int ctr3686_aes_nx_crypt(struct skcipher_request *req)
->  	struct nx_crypto_ctx *nx_ctx = crypto_skcipher_ctx(tfm);
->  	u8 iv[16];
->  
-> -	memcpy(iv, nx_ctx->priv.ctr.nonce, CTR_RFC3686_IV_SIZE);
-> +	memcpy(iv, nx_ctx->priv.ctr.nonce, CTR_RFC3686_NONCE_SIZE);
->  	memcpy(iv + CTR_RFC3686_NONCE_SIZE, req->iv, CTR_RFC3686_IV_SIZE);
->  	iv[12] = iv[13] = iv[14] = 0;
->  	iv[15] = 1;
+To mitigate the security concerns, we introduce restricted DMA. Restricted
+DMA utilizes the existing swiotlb to bounce streaming DMA in and out of a
+specially allocated region and does memory allocation from the same region.
+The feature on its own provides a basic level of protection against the DMA
+overwriting buffer contents at unexpected times. However, to protect
+against general data leakage and system memory corruption, the system needs
+to provide a way to restrict the DMA to a predefined memory region (this is
+usually done at firmware level, e.g. MPU in ATF on some ARM platforms [4]).
 
-Where IV_SIZE is 8 and NONCE_SIZE is 4.
+[1a] https://googleprojectzero.blogspot.com/2017/04/over-air-exploiting-broadcoms-wi-fi_4.html
+[1b] https://googleprojectzero.blogspot.com/2017/04/over-air-exploiting-broadcoms-wi-fi_11.html
+[2] https://blade.tencent.com/en/advisories/qualpwn/
+[3] https://www.bleepingcomputer.com/news/security/vulnerabilities-found-in-highly-popular-firmware-for-wifi-chips/
+[4] https://github.com/ARM-software/arm-trusted-firmware/blob/master/plat/mediatek/mt8183/drivers/emi_mpu/emi_mpu.c#L132
 
-And iv is 16 bytes, so it's not a buffer overflow.
+v13:
+- Fix xen-swiotlb issues
+  - memset in patch 01/12
+  - is_swiotlb_force_bounce in patch 06/12
+- Fix the dts example typo in reserved-memory.txt
+- Add Stefano and Will's Tested-by tag from v12
 
-But priv.ctr.nonce is 4 bytes, and at the end of the struct, so it reads
-4 bytes past the end of the nx_crypto_ctx, which is not good.
+v12:
+Split is_dev_swiotlb_force into is_swiotlb_force_bounce (patch 06/12) and
+is_swiotlb_for_alloc (patch 09/12)
+https://lore.kernel.org/patchwork/cover/1447254/
 
-But then immediately overwrites whatever it read with req->iv.
+v11:
+- Rebase against swiotlb devel/for-linus-5.14
+- s/mempry/memory/g
+- exchange the order of patch 09/12 and 10/12
+https://lore.kernel.org/patchwork/cover/1447216/
 
-So seems pretty harmless in practice?
+v10:
+Address the comments in v9 to
+  - fix the dev->dma_io_tlb_mem assignment
+  - propagate swiotlb_force setting into io_tlb_default_mem->force
+  - move set_memory_decrypted out of swiotlb_init_io_tlb_mem
+  - move debugfs_dir declaration into the main CONFIG_DEBUG_FS block
+  - add swiotlb_ prefix to find_slots and release_slots
+  - merge the 3 alloc/free related patches
+  - move the CONFIG_DMA_RESTRICTED_POOL later
+https://lore.kernel.org/patchwork/cover/1446882/
 
-cheers
+v9:
+Address the comments in v7 to
+  - set swiotlb active pool to dev->dma_io_tlb_mem
+  - get rid of get_io_tlb_mem
+  - dig out the device struct for is_swiotlb_active
+  - move debugfs_create_dir out of swiotlb_create_debugfs
+  - do set_memory_decrypted conditionally in swiotlb_init_io_tlb_mem
+  - use IS_ENABLED in kernel/dma/direct.c
+  - fix redefinition of 'of_dma_set_restricted_buffer'
+https://lore.kernel.org/patchwork/cover/1445081/
+
+v8:
+- Fix reserved-memory.txt and add the reg property in example.
+- Fix sizeof for of_property_count_elems_of_size in
+  drivers/of/address.c#of_dma_set_restricted_buffer.
+- Apply Will's suggestion to try the OF node having DMA configuration in
+  drivers/of/address.c#of_dma_set_restricted_buffer.
+- Fix typo in the comment of drivers/of/address.c#of_dma_set_restricted_buffer.
+- Add error message for PageHighMem in
+  kernel/dma/swiotlb.c#rmem_swiotlb_device_init and move it to
+  rmem_swiotlb_setup.
+- Fix the message string in rmem_swiotlb_setup.
+https://lore.kernel.org/patchwork/cover/1437112/
+
+v7:
+Fix debugfs, PageHighMem and comment style in rmem_swiotlb_device_init
+https://lore.kernel.org/patchwork/cover/1431031/
+
+v6:
+Address the comments in v5
+https://lore.kernel.org/patchwork/cover/1423201/
+
+v5:
+Rebase on latest linux-next
+https://lore.kernel.org/patchwork/cover/1416899/
+
+v4:
+- Fix spinlock bad magic
+- Use rmem->name for debugfs entry
+- Address the comments in v3
+https://lore.kernel.org/patchwork/cover/1378113/
+
+v3:
+Using only one reserved memory region for both streaming DMA and memory
+allocation.
+https://lore.kernel.org/patchwork/cover/1360992/
+
+v2:
+Building on top of swiotlb.
+https://lore.kernel.org/patchwork/cover/1280705/
+
+v1:
+Using dma_map_ops.
+https://lore.kernel.org/patchwork/cover/1271660/
+
+Claire Chang (12):
+  swiotlb: Refactor swiotlb init functions
+  swiotlb: Refactor swiotlb_create_debugfs
+  swiotlb: Set dev->dma_io_tlb_mem to the swiotlb pool used
+  swiotlb: Update is_swiotlb_buffer to add a struct device argument
+  swiotlb: Update is_swiotlb_active to add a struct device argument
+  swiotlb: Use is_swiotlb_force_bounce for swiotlb data bouncing
+  swiotlb: Move alloc_size to swiotlb_find_slots
+  swiotlb: Refactor swiotlb_tbl_unmap_single
+  swiotlb: Add restricted DMA alloc/free support
+  swiotlb: Add restricted DMA pool initialization
+  dt-bindings: of: Add restricted DMA pool
+  of: Add plumbing for restricted DMA pool
+
+ .../reserved-memory/reserved-memory.txt       |  36 ++-
+ drivers/base/core.c                           |   4 +
+ drivers/gpu/drm/i915/gem/i915_gem_internal.c  |   2 +-
+ drivers/gpu/drm/nouveau/nouveau_ttm.c         |   2 +-
+ drivers/iommu/dma-iommu.c                     |  12 +-
+ drivers/of/address.c                          |  33 +++
+ drivers/of/device.c                           |   3 +
+ drivers/of/of_private.h                       |   6 +
+ drivers/pci/xen-pcifront.c                    |   2 +-
+ drivers/xen/swiotlb-xen.c                     |   4 +-
+ include/linux/device.h                        |   4 +
+ include/linux/swiotlb.h                       |  51 +++-
+ kernel/dma/Kconfig                            |  14 +
+ kernel/dma/direct.c                           |  59 +++--
+ kernel/dma/direct.h                           |   8 +-
+ kernel/dma/swiotlb.c                          | 250 +++++++++++++-----
+ 16 files changed, 387 insertions(+), 103 deletions(-)
+
+-- 
+2.32.0.288.g62a8d224e6-goog
+
