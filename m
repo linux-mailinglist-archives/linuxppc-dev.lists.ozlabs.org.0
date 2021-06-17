@@ -1,68 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2FD63AACFC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 09:07:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FADC3AAD16
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 09:09:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G5CmK3cZqz3btf
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 17:07:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G5Cpq4tSgz3c10
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 17:09:23 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20161025 header.b=TUHB1N3e;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20161025 header.b=PzliMFti;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::229;
- helo=mail-oi1-x229.google.com; envelope-from=elver@google.com;
+ smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::32d;
+ helo=mail-ot1-x32d.google.com; envelope-from=elver@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=TUHB1N3e; dkim-atps=neutral
-Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com
- [IPv6:2607:f8b0:4864:20::229])
+ header.s=20161025 header.b=PzliMFti; dkim-atps=neutral
+Received: from mail-ot1-x32d.google.com (mail-ot1-x32d.google.com
+ [IPv6:2607:f8b0:4864:20::32d])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G5Cll5yWFz3bty
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 17:06:43 +1000 (AEST)
-Received: by mail-oi1-x229.google.com with SMTP id u11so5463269oiv.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 00:06:42 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G5CpK4Gtpz2yX6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 17:08:57 +1000 (AEST)
+Received: by mail-ot1-x32d.google.com with SMTP id
+ 102-20020a9d0eef0000b02903fccc5b733fso5165934otj.4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 00:08:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=x3f7kXNEAio7wn8rN5Q4qZlH4cBywzmH0Nokkyx4dn0=;
- b=TUHB1N3eQfQ+/6r1GQXAlEPc8aNokCkZd1BTVoHNgFnFfyyaHuQ8Tf7NNKqMlBvak5
- YbMSSm+I9FLnG6TB8exQz/e5/DYGCNOU/HrQl7W9jHCTKMaPj48hgCrwO9HAqgsa6PUU
- LgzrPRiShRHFjIi0iMpIAfWuzyxY+yn074UknITQ6pWASp1mjiJ0xWYaLULgti2EgPfe
- CFsnD12vzglyKQp2quLeZjsZzcUBopxr/0CtrPKM2M5H+yt81jGEmvHjQ1GSTNFrUFim
- x4jAoOqmxpNRbiiJmDV+4C3HGdD1V9gQCdcX2DPFH21+kPNkDgzSy0vHY/OkTpHX6gs3
- BhYg==
+ :cc; bh=MsqYILgAKurijhL/t9Pxm6TteQj8nlU+VZKZOuCyAgE=;
+ b=PzliMFtiv8K08Pxfo0PmDseeXd+8Rv6kuf1m0/BRKy1IbtPJ0C7ZtmipsFCYFJm7v+
+ 8BpAmnYv6hYFBhc6MJnJWQkv8VkdplslO22TaJmGL4hlifgJfhYqaoPXxeLj59t+GYa8
+ DwQqabZdrdcpOIwg5a9dbdwhgAYIyjKHpxvD6SXaQJF0NU75Y2M7Oa13V4kib8E10aGq
+ 0u+WIvfiyPKwo/74aXBxOQlyEZAkThSGXtOU1keZaHfx+XKYgT9sI5K/bxb/RW8DOdwr
+ hZG7J0+b42ffm6Jhyz6jwOhDwQ3MUGQhpYX2U6Ujam6eCivPYscRqjK9RaCeirZ3uIfW
+ ZhIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=x3f7kXNEAio7wn8rN5Q4qZlH4cBywzmH0Nokkyx4dn0=;
- b=t5WeWcLxK93jcsq3rNgW/Id3/wGR+5/1LWzQ2lQHgdgSjg8KIR0MHVO9FKUvfi36M3
- ZPY2AFi4Y1bAuXsezN+sqGOaSfDmlTIKfP9arT9ShvX2vzsqV54eNjIU9vCJQ7OSw4jJ
- 3bbz0tHTFpVo2hSDyx6JnoR5g5oYzdxft+YOl4+w7JCk6Y5p76WmYdKvp+NaCnXxDddS
- khGwYM50fSdfMow+9yNtPr/6wj5IpeHozGFqXem3xPvNtrGyFP/gh776w9b7l630JgKD
- yVj20Hp8NIrxXGBYyB+xzQ3OqKBDkumrrY28nPgFNxoPodBFeeph3ZvCepJqH1bj3JBN
- kDhg==
-X-Gm-Message-State: AOAM531/cFWh2k6CvkQnVeUWTjYUTclFogCveaXBI3BDsUFe70kMvrfS
- JebpAAAN76mVHI7HbSbEFpBnABpjM4IJ7Yit8Ao7jw==
-X-Google-Smtp-Source: ABdhPJyZGKvGnxD2CIdMiQREsVQ1HcwtZM1JRfUu9L6kEngXp5CZ452oDL3g8DnPzot/p3uA3kuCYblnTqzbZUjMv6k=
-X-Received: by 2002:a05:6808:bd5:: with SMTP id
- o21mr2268625oik.172.1623913599850; 
- Thu, 17 Jun 2021 00:06:39 -0700 (PDT)
+ bh=MsqYILgAKurijhL/t9Pxm6TteQj8nlU+VZKZOuCyAgE=;
+ b=dENo3Jy1FHDfWdyUnOjlXHK3NOwlEL5VvZ5gckTHmdscFKJpqt/XWfCKZbU8SQ5cYP
+ zhLoSKi1hvkd5bGqBAX1G7b99ZkuOWyN1u4HwIgzUATOIT8RTvrGUf+7HEHMPezJxhz2
+ 3PsnLIpjKymZCIy67LEtsMuBJqAStwjatiOIYoZuGZOCJgQWdAVh/ZytEEeV2xnvylSf
+ hWTDaG1/lZYzzS4db+4gx2k9xMdr3OjFIH0lKyRQ37iGZMMy3TDzhGuEfDZWUGFKYYcM
+ 62i11DmGm2OA+TaBt7f/z5W82cKaS9nM8JVnbAhVhLWnc8my9/ptKtAuLceeY8qdAeS+
+ EN3A==
+X-Gm-Message-State: AOAM530D9lRgfmPbzlWM2QP/N+yXy2QqsemRdxCQrBG8F00KSxWffIog
+ +BzO/6RVqDwUdlX9HYBJRv8lUCr3J8naX9H8YTIxog==
+X-Google-Smtp-Source: ABdhPJzqEqAk206nhpNPL67OT0Xxgz7/1QCd+nNRElt8NPsvhQsdviKEPqluZO+azBZyRHYyFAXHZ4YUUD6AwJ6AEp0=
+X-Received: by 2002:a05:6830:93:: with SMTP id
+ a19mr3236836oto.17.1623913733228; 
+ Thu, 17 Jun 2021 00:08:53 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210617063956.94061-1-dja@axtens.net>
- <20210617063956.94061-2-dja@axtens.net>
-In-Reply-To: <20210617063956.94061-2-dja@axtens.net>
+ <20210617063956.94061-4-dja@axtens.net>
+In-Reply-To: <20210617063956.94061-4-dja@axtens.net>
 From: Marco Elver <elver@google.com>
-Date: Thu, 17 Jun 2021 09:06:28 +0200
-Message-ID: <CANpmjNPw2_Av0HVSBMP0nj0a2dwqKxMopWwvsyQF1vv5hN0zzA@mail.gmail.com>
-Subject: Re: [PATCH v14 1/4] kasan: allow an architecture to disable inline
- instrumentation
+Date: Thu, 17 Jun 2021 09:08:41 +0200
+Message-ID: <CANpmjNPo1Cn5PNQB0kRWU_481WKUO1WkY-kDYhBTQkT0VXsF0A@mail.gmail.com>
+Subject: Re: [PATCH v14 3/4] mm: define default MAX_PTRS_PER_* in
+ include/pgtable.h
 To: Daniel Axtens <dja@axtens.net>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -87,24 +88,20 @@ Sender: "Linuxppc-dev"
 
 On Thu, 17 Jun 2021 at 08:40, Daniel Axtens <dja@axtens.net> wrote:
 >
-> For annoying architectural reasons, it's very difficult to support inline
-> instrumentation on powerpc64.*
+> Commit c65e774fb3f6 ("x86/mm: Make PGDIR_SHIFT and PTRS_PER_P4D variable")
+> made PTRS_PER_P4D variable on x86 and introduced MAX_PTRS_PER_P4D as a
+> constant for cases which need a compile-time constant (e.g. fixed-size
+> arrays).
 >
-> Add a Kconfig flag to allow an arch to disable inline. (It's a bit
-> annoying to be 'backwards', but I'm not aware of any way to have
-> an arch force a symbol to be 'n', rather than 'y'.)
+> powerpc likewise has boot-time selectable MMU features which can cause
+> other mm "constants" to vary. For KASAN, we have some static
+> PTE/PMD/PUD/P4D arrays so we need compile-time maximums for all these
+> constants. Extend the MAX_PTRS_PER_ idiom, and place default definitions
+> in include/pgtable.h. These define MAX_PTRS_PER_x to be PTRS_PER_x unless
+> an architecture has defined MAX_PTRS_PER_x in its arch headers.
 >
-> We also disable stack instrumentation in this case as it does things that
-> are functionally equivalent to inline instrumentation, namely adding
-> code that touches the shadow directly without going through a C helper.
->
-> * on ppc64 atm, the shadow lives in virtual memory and isn't accessible in
-> real mode. However, before we turn on virtual memory, we parse the device
-> tree to determine which platform and MMU we're running under. That calls
-> generic DT code, which is instrumented. Inline instrumentation in DT would
-> unconditionally attempt to touch the shadow region, which we won't have
-> set up yet, and would crash. We can make outline mode wait for the arch to
-> be ready, but we can't change what the compiler inserts for inline mode.
+> Clean up pgtable-nop4d.h and s390's MAX_PTRS_PER_P4D definitions while
+> we're at it: both can just pick up the default now.
 >
 > Signed-off-by: Daniel Axtens <dja@axtens.net>
 
@@ -112,59 +109,74 @@ Reviewed-by: Marco Elver <elver@google.com>
 
 
 > ---
->  lib/Kconfig.kasan | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
 >
-> diff --git a/lib/Kconfig.kasan b/lib/Kconfig.kasan
-> index cffc2ebbf185..cb5e02d09e11 100644
-> --- a/lib/Kconfig.kasan
-> +++ b/lib/Kconfig.kasan
-> @@ -12,6 +12,15 @@ config HAVE_ARCH_KASAN_HW_TAGS
->  config HAVE_ARCH_KASAN_VMALLOC
->         bool
+> s390 was compile tested only.
+> ---
+>  arch/s390/include/asm/pgtable.h     |  2 --
+>  include/asm-generic/pgtable-nop4d.h |  1 -
+>  include/linux/pgtable.h             | 22 ++++++++++++++++++++++
+>  3 files changed, 22 insertions(+), 3 deletions(-)
 >
-> +config ARCH_DISABLE_KASAN_INLINE
-> +       bool
-> +       help
-> +         Sometimes an architecture might not be able to support inline
-> +         instrumentation but might be able to support outline instrumentation.
-> +         This option allows an architecture to prevent inline and stack
-> +         instrumentation from being enabled.
+> diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
+> index 7c66ae5d7e32..cf05954ce013 100644
+> --- a/arch/s390/include/asm/pgtable.h
+> +++ b/arch/s390/include/asm/pgtable.h
+> @@ -342,8 +342,6 @@ static inline int is_module_addr(void *addr)
+>  #define PTRS_PER_P4D   _CRST_ENTRIES
+>  #define PTRS_PER_PGD   _CRST_ENTRIES
+>
+> -#define MAX_PTRS_PER_P4D       PTRS_PER_P4D
+> -
+>  /*
+>   * Segment table and region3 table entry encoding
+>   * (R = read-only, I = invalid, y = young bit):
+> diff --git a/include/asm-generic/pgtable-nop4d.h b/include/asm-generic/pgtable-nop4d.h
+> index ce2cbb3c380f..2f6b1befb129 100644
+> --- a/include/asm-generic/pgtable-nop4d.h
+> +++ b/include/asm-generic/pgtable-nop4d.h
+> @@ -9,7 +9,6 @@
+>  typedef struct { pgd_t pgd; } p4d_t;
+>
+>  #define P4D_SHIFT              PGDIR_SHIFT
+> -#define MAX_PTRS_PER_P4D       1
+>  #define PTRS_PER_P4D           1
+>  #define P4D_SIZE               (1UL << P4D_SHIFT)
+>  #define P4D_MASK               (~(P4D_SIZE-1))
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index 9e6f71265f72..69700e3e615f 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -1625,4 +1625,26 @@ typedef unsigned int pgtbl_mod_mask;
+>  #define pte_leaf_size(x) PAGE_SIZE
+>  #endif
+>
+> +/*
+> + * Some architectures have MMUs that are configurable or selectable at boot
+> + * time. These lead to variable PTRS_PER_x. For statically allocated arrays it
+> + * helps to have a static maximum value.
+> + */
 > +
+> +#ifndef MAX_PTRS_PER_PTE
+> +#define MAX_PTRS_PER_PTE PTRS_PER_PTE
+> +#endif
 > +
->  config CC_HAS_KASAN_GENERIC
->         def_bool $(cc-option, -fsanitize=kernel-address)
->
-> @@ -130,6 +139,7 @@ config KASAN_OUTLINE
->
->  config KASAN_INLINE
->         bool "Inline instrumentation"
-> +       depends on !ARCH_DISABLE_KASAN_INLINE
->         help
->           Compiler directly inserts code checking shadow memory before
->           memory accesses. This is faster than outline (in some workloads
-> @@ -141,6 +151,7 @@ endchoice
->  config KASAN_STACK
->         bool "Enable stack instrumentation (unsafe)" if CC_IS_CLANG && !COMPILE_TEST
->         depends on KASAN_GENERIC || KASAN_SW_TAGS
-> +       depends on !ARCH_DISABLE_KASAN_INLINE
->         default y if CC_IS_GCC
->         help
->           The LLVM stack address sanitizer has a know problem that
-> @@ -154,6 +165,9 @@ config KASAN_STACK
->           but clang users can still enable it for builds without
->           CONFIG_COMPILE_TEST.  On gcc it is assumed to always be safe
->           to use and enabled by default.
-> +         If the architecture disables inline instrumentation, this is
-> +         also disabled as it adds inline-style instrumentation that
-> +         is run unconditionally.
->
->  config KASAN_SW_TAGS_IDENTIFY
->         bool "Enable memory corruption identification"
+> +#ifndef MAX_PTRS_PER_PMD
+> +#define MAX_PTRS_PER_PMD PTRS_PER_PMD
+> +#endif
+> +
+> +#ifndef MAX_PTRS_PER_PUD
+> +#define MAX_PTRS_PER_PUD PTRS_PER_PUD
+> +#endif
+> +
+> +#ifndef MAX_PTRS_PER_P4D
+> +#define MAX_PTRS_PER_P4D PTRS_PER_P4D
+> +#endif
+> +
+>  #endif /* _LINUX_PGTABLE_H */
 > --
 > 2.30.2
 >
 > --
 > You received this message because you are subscribed to the Google Groups "kasan-dev" group.
 > To unsubscribe from this group and stop receiving emails from it, send an email to kasan-dev+unsubscribe@googlegroups.com.
-> To view this discussion on the web visit https://groups.google.com/d/msgid/kasan-dev/20210617063956.94061-2-dja%40axtens.net.
+> To view this discussion on the web visit https://groups.google.com/d/msgid/kasan-dev/20210617063956.94061-4-dja%40axtens.net.
