@@ -1,53 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BC053ABF94
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 01:33:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D5123ABF98
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 01:35:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G5dfC0Mcfz3c31
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 09:33:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G5dhf5hBCz3cD5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 09:35:30 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=igsWuyQP;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=ILf8K75O;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sstabellini@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::532;
+ helo=mail-pg1-x532.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=igsWuyQP; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=ILf8K75O; dkim-atps=neutral
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com
+ [IPv6:2607:f8b0:4864:20::532])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G5dbk52Cxz3c48
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jun 2021 09:31:14 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id AEEAC6117A;
- Thu, 17 Jun 2021 23:31:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1623972672;
- bh=OQTvXWc5KTHXd26e21lniSV4nLp1qu2sC2xgNiM6A40=;
- h=Date:From:To:cc:Subject:In-Reply-To:References:From;
- b=igsWuyQPQeQ/DRXp976arBlh2Cd5oMHU2rmslY5U2yOFBKGWeEuqoDHh/Bj3mGHkd
- bLMM1Kw2CstAytFNmlUOY8WTs+QEtmm/R9UpxalWSGPL6zjJqu+ywf2zRKIqqo2Vn2
- ska/hVnarr3cmbXV1zh/4q6O7Ya6EcMANA1sH0BM5teIhgKxWe/aPUjXDGMJHDQcyG
- 02ttdVu/nqV8fLZFut1pkllMnC/G+MCX8oF5zPpY6lMJCM4R+UgwgZXWkVN0xhuJAr
- UeEfhIO3NooiVZttZkgEwUTjN1Qplp4be+9ogZRntMC6T8c0ripHJgEPpcV4OFRjHa
- ks0He4jC+xUpQ==
-Date: Thu, 17 Jun 2021 16:31:10 -0700 (PDT)
-From: Stefano Stabellini <sstabellini@kernel.org>
-X-X-Sender: sstabellini@sstabellini-ThinkPad-T480s
-To: Claire Chang <tientzu@chromium.org>
-Subject: Re: [PATCH v13 09/12] swiotlb: Add restricted DMA alloc/free support
-In-Reply-To: <20210617062635.1660944-10-tientzu@chromium.org>
-Message-ID: <alpine.DEB.2.21.2106171448490.24906@sstabellini-ThinkPad-T480s>
-References: <20210617062635.1660944-1-tientzu@chromium.org>
- <20210617062635.1660944-10-tientzu@chromium.org>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G5dhC5NBRz2xYg
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jun 2021 09:35:06 +1000 (AEST)
+Received: by mail-pg1-x532.google.com with SMTP id t13so6221365pgu.11
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 16:35:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=klKzIsZunyfSFvK0Q3oWxRgLGpdW2dre0gGgoWo8aag=;
+ b=ILf8K75OeJkrt3VCRlrd5S+hY6U3KQLY9j8sEbfcIxuMa2au+D5UE0u/C29LD+CrpC
+ Fo6ul5nyyabKRD9F0ZisUFhhM6BhdGHiLHLcGQ9o3TzSnzDGy4ZYPaeqq4jCR9Q07qqW
+ 4U6mk4d41L7gevmFc0nZcE2m1Tjp8HxC9sul4WMFJZSJeDnQZ7UYWtBGllcn1NCQ0nWz
+ qECDbmd7n23ToUrZaizdlZPOwusicblVALptwGIaInW5YWwrR6TL9z8IJJP1hvRpRW13
+ st5AiYymZt4//KcdW7Ewzu1TpJCtQ+anNIu3LqTmQJp/OJP8O+hyJQKaicL4hdG0N4Na
+ EJhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=klKzIsZunyfSFvK0Q3oWxRgLGpdW2dre0gGgoWo8aag=;
+ b=jO1E/8/zec4PQJZIci5mF6pPlHh97KYaBcG47ZPZRm9kowEXwDFAFEUylx7uMSWV6R
+ A0++ol8pZMfxwjS53XGPiQP1suCBBSPdVfYh+DnOt4RyDfvggHulchoihDvGl/yerxqv
+ chzvk1BQ2jN5mZhELiPj7ccv5zOAcuk7b1/9RREywCCxyFRkaJ71Z+kXHHKW9SOFvvMb
+ ltRU12ymwuyY/kjWstgokDJx8tIOjEeFfUPCYwQjEsK72lB9RZZL4JFZoMVYZddbt8Zq
+ a+6Yk11oB3uzbaN7U9wB9yIY3yzpVQ6ZDvFMbVFVTpmU6bpvpr4QsfCRqOqKJds+3qBG
+ h9xA==
+X-Gm-Message-State: AOAM531FSyEfMIm97uTlvSRcvyX8L4BQWeeFkjB9BIZlX/Zczs4/lB1l
+ fmEW4klQ7WVOp4Z/G2V2NIw=
+X-Google-Smtp-Source: ABdhPJwMUH5JT/9BzwKOTv8MZUWS0lw4Jp0+2NN1botOkP0uQehXbemE6D+Rwo7/kynA02C0YJMgIQ==
+X-Received: by 2002:a65:6256:: with SMTP id q22mr7171179pgv.391.1623972904141; 
+ Thu, 17 Jun 2021 16:35:04 -0700 (PDT)
+Received: from localhost (60-242-147-73.tpgi.com.au. [60.242.147.73])
+ by smtp.gmail.com with ESMTPSA id f15sm6518262pgg.23.2021.06.17.16.35.03
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 17 Jun 2021 16:35:03 -0700 (PDT)
+Date: Fri, 18 Jun 2021 09:34:58 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v6 13/17] powerpc/pseries/vas: Setup IRQ and fault handling
+To: Haren Myneni <haren@linux.ibm.com>, herbert@gondor.apana.org.au,
+ linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ mpe@ellerman.id.au
+References: <827bf56dce09620ebecd8a00a5f97105187a6205.camel@linux.ibm.com>
+ <b8fc66dcb783d06a099a303e5cfc69087bb3357a.camel@linux.ibm.com>
+In-Reply-To: <b8fc66dcb783d06a099a303e5cfc69087bb3357a.camel@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Message-Id: <1623972635.u8jj6g26re.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,300 +82,192 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: heikki.krogerus@linux.intel.com, thomas.hellstrom@linux.intel.com,
- peterz@infradead.org, joonas.lahtinen@linux.intel.com,
- dri-devel@lists.freedesktop.org, chris@chris-wilson.co.uk,
- grant.likely@arm.com, paulus@samba.org, Frank Rowand <frowand.list@gmail.com>,
- mingo@kernel.org, Marek Szyprowski <m.szyprowski@samsung.com>,
- sstabellini@kernel.org, Saravana Kannan <saravanak@google.com>,
- Joerg Roedel <joro@8bytes.org>,
- "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
- Christoph Hellwig <hch@lst.de>,
- Bartosz Golaszewski <bgolaszewski@baylibre.com>, bskeggs@redhat.com,
- linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
- Thierry Reding <treding@nvidia.com>, intel-gfx@lists.freedesktop.org,
- matthew.auld@intel.com, linux-devicetree <devicetree@vger.kernel.org>,
- jxgao@google.com, daniel@ffwll.ch, Will Deacon <will@kernel.org>,
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- maarten.lankhorst@linux.intel.com, airlied@linux.ie,
- Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org,
- jani.nikula@linux.intel.com, Rob Herring <robh+dt@kernel.org>,
- rodrigo.vivi@intel.com, bhelgaas@google.com, boris.ostrovsky@oracle.com,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jgross@suse.com,
- Nicolas Boichat <drinkcat@chromium.org>, Greg KH <gregkh@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, lkml <linux-kernel@vger.kernel.org>,
- tfiga@chromium.org,
- "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
- Jim Quinlan <james.quinlan@broadcom.com>, xypron.glpk@gmx.de,
- Robin Murphy <robin.murphy@arm.com>, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 17 Jun 2021, Claire Chang wrote:
-> Add the functions, swiotlb_{alloc,free} and is_swiotlb_for_alloc to
-> support the memory allocation from restricted DMA pool.
-> 
-> The restricted DMA pool is preferred if available.
-> 
-> Note that since coherent allocation needs remapping, one must set up
-> another device coherent pool by shared-dma-pool and use
-> dma_alloc_from_dev_coherent instead for atomic coherent allocation.
-> 
-> Signed-off-by: Claire Chang <tientzu@chromium.org>
-> Reviewed-by: Christoph Hellwig <hch@lst.de>
-> Tested-by: Stefano Stabellini <sstabellini@kernel.org>
-> Tested-by: Will Deacon <will@kernel.org>
+Excerpts from Haren Myneni's message of June 18, 2021 6:37 am:
+>=20
+> NX generates an interrupt when sees a fault on the user space
+> buffer and the hypervisor forwards that interrupt to OS. Then
+> the kernel handles the interrupt by issuing H_GET_NX_FAULT hcall
+> to retrieve the fault CRB information.
+>=20
+> This patch also adds changes to setup and free IRQ per each
+> window and also handles the fault by updating the CSB.
 
-Acked-by: Stefano Stabellini <sstabellini@kernel.org>
+In as much as this pretty well corresponds to the PowerNV code AFAIKS,
+it looks okay to me.
 
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
+Could you have an irq handler in your ops vector and have=20
+the core code set up the irq and call your handler, so the Linux irq
+handling is in one place? Not something for this series, I was just
+wondering.
+
+Thanks,
+Nick
+
+>=20
+> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
 > ---
->  include/linux/swiotlb.h | 26 ++++++++++++++++++++++
->  kernel/dma/direct.c     | 49 +++++++++++++++++++++++++++++++----------
->  kernel/dma/swiotlb.c    | 38 ++++++++++++++++++++++++++++++--
->  3 files changed, 99 insertions(+), 14 deletions(-)
-> 
-> diff --git a/include/linux/swiotlb.h b/include/linux/swiotlb.h
-> index 8d8855c77d9a..a73fad460162 100644
-> --- a/include/linux/swiotlb.h
-> +++ b/include/linux/swiotlb.h
-> @@ -85,6 +85,7 @@ extern enum swiotlb_force swiotlb_force;
->   * @debugfs:	The dentry to debugfs.
->   * @late_alloc:	%true if allocated using the page allocator
->   * @force_bounce: %true if swiotlb bouncing is forced
-> + * @for_alloc:  %true if the pool is used for memory allocation
->   */
->  struct io_tlb_mem {
->  	phys_addr_t start;
-> @@ -96,6 +97,7 @@ struct io_tlb_mem {
->  	struct dentry *debugfs;
->  	bool late_alloc;
->  	bool force_bounce;
-> +	bool for_alloc;
->  	struct io_tlb_slot {
->  		phys_addr_t orig_addr;
->  		size_t alloc_size;
-> @@ -156,4 +158,28 @@ static inline void swiotlb_adjust_size(unsigned long size)
->  extern void swiotlb_print_info(void);
->  extern void swiotlb_set_max_segment(unsigned int);
->  
-> +#ifdef CONFIG_DMA_RESTRICTED_POOL
-> +struct page *swiotlb_alloc(struct device *dev, size_t size);
-> +bool swiotlb_free(struct device *dev, struct page *page, size_t size);
-> +
-> +static inline bool is_swiotlb_for_alloc(struct device *dev)
-> +{
-> +	return dev->dma_io_tlb_mem->for_alloc;
-> +}
-> +#else
-> +static inline struct page *swiotlb_alloc(struct device *dev, size_t size)
-> +{
-> +	return NULL;
-> +}
-> +static inline bool swiotlb_free(struct device *dev, struct page *page,
-> +				size_t size)
-> +{
-> +	return false;
-> +}
-> +static inline bool is_swiotlb_for_alloc(struct device *dev)
-> +{
-> +	return false;
-> +}
-> +#endif /* CONFIG_DMA_RESTRICTED_POOL */
-> +
->  #endif /* __LINUX_SWIOTLB_H */
-> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-> index a92465b4eb12..2de33e5d302b 100644
-> --- a/kernel/dma/direct.c
-> +++ b/kernel/dma/direct.c
-> @@ -75,6 +75,15 @@ static bool dma_coherent_ok(struct device *dev, phys_addr_t phys, size_t size)
->  		min_not_zero(dev->coherent_dma_mask, dev->bus_dma_limit);
+>  arch/powerpc/platforms/pseries/vas.c | 102 +++++++++++++++++++++++++++
+>  1 file changed, 102 insertions(+)
+>=20
+> diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platform=
+s/pseries/vas.c
+> index f5a44f2f0e99..3385b5400cc6 100644
+> --- a/arch/powerpc/platforms/pseries/vas.c
+> +++ b/arch/powerpc/platforms/pseries/vas.c
+> @@ -11,6 +11,7 @@
+>  #include <linux/types.h>
+>  #include <linux/delay.h>
+>  #include <linux/slab.h>
+> +#include <linux/interrupt.h>
+>  #include <asm/machdep.h>
+>  #include <asm/hvcall.h>
+>  #include <asm/plpar_wrappers.h>
+> @@ -155,6 +156,50 @@ int h_query_vas_capabilities(const u64 hcall, u8 que=
+ry_type, u64 result)
 >  }
->  
-> +static void __dma_direct_free_pages(struct device *dev, struct page *page,
-> +				    size_t size)
+>  EXPORT_SYMBOL_GPL(h_query_vas_capabilities);
+> =20
+> +/*
+> + * hcall to get fault CRB from the hypervisor.
+> + */
+> +static int h_get_nx_fault(u32 winid, u64 buffer)
 > +{
-> +	if (IS_ENABLED(CONFIG_DMA_RESTRICTED_POOL) &&
-> +	    swiotlb_free(dev, page, size))
-> +		return;
-> +	dma_free_contiguous(dev, page, size);
+> +	long rc;
+> +
+> +	rc =3D plpar_hcall_norets(H_GET_NX_FAULT, winid, buffer);
+> +
+> +	if (rc =3D=3D H_SUCCESS)
+> +		return 0;
+> +
+> +	pr_err("H_GET_NX_FAULT error: %ld, winid %u, buffer 0x%llx\n",
+> +		rc, winid, buffer);
+> +	return -EIO;
+> +
 > +}
 > +
->  static struct page *__dma_direct_alloc_pages(struct device *dev, size_t size,
->  		gfp_t gfp)
->  {
-> @@ -86,6 +95,16 @@ static struct page *__dma_direct_alloc_pages(struct device *dev, size_t size,
->  
->  	gfp |= dma_direct_optimal_gfp_mask(dev, dev->coherent_dma_mask,
->  					   &phys_limit);
-> +	if (IS_ENABLED(CONFIG_DMA_RESTRICTED_POOL) &&
-> +	    is_swiotlb_for_alloc(dev)) {
-> +		page = swiotlb_alloc(dev, size);
-> +		if (page && !dma_coherent_ok(dev, page_to_phys(page), size)) {
-> +			__dma_direct_free_pages(dev, page, size);
-> +			return NULL;
-> +		}
-> +		return page;
+> +/*
+> + * Handle the fault interrupt.
+> + * When the fault interrupt is received for each window, query the
+> + * hypervisor to get the fault CRB on the specific fault. Then
+> + * process the CRB by updating CSB or send signal if the user space
+> + * CSB is invalid.
+> + * Note: The hypervisor forwards an interrupt for each fault request.
+> + *	So one fault CRB to process for each H_GET_NX_FAULT hcall.
+> + */
+> +irqreturn_t pseries_vas_fault_thread_fn(int irq, void *data)
+> +{
+> +	struct pseries_vas_window *txwin =3D data;
+> +	struct coprocessor_request_block crb;
+> +	struct vas_user_win_ref *tsk_ref;
+> +	int rc;
+> +
+> +	rc =3D h_get_nx_fault(txwin->vas_win.winid, (u64)virt_to_phys(&crb));
+> +	if (!rc) {
+> +		tsk_ref =3D &txwin->vas_win.task_ref;
+> +		vas_dump_crb(&crb);
+> +		vas_update_csb(&crb, tsk_ref);
 > +	}
 > +
->  	page = dma_alloc_contiguous(dev, size, gfp);
->  	if (page && !dma_coherent_ok(dev, page_to_phys(page), size)) {
->  		dma_free_contiguous(dev, page, size);
-> @@ -142,7 +161,7 @@ void *dma_direct_alloc(struct device *dev, size_t size,
->  		gfp |= __GFP_NOWARN;
->  
->  	if ((attrs & DMA_ATTR_NO_KERNEL_MAPPING) &&
-> -	    !force_dma_unencrypted(dev)) {
-> +	    !force_dma_unencrypted(dev) && !is_swiotlb_for_alloc(dev)) {
->  		page = __dma_direct_alloc_pages(dev, size, gfp & ~__GFP_ZERO);
->  		if (!page)
->  			return NULL;
-> @@ -155,18 +174,23 @@ void *dma_direct_alloc(struct device *dev, size_t size,
->  	}
->  
->  	if (!IS_ENABLED(CONFIG_ARCH_HAS_DMA_SET_UNCACHED) &&
-> -	    !IS_ENABLED(CONFIG_DMA_DIRECT_REMAP) &&
-> -	    !dev_is_dma_coherent(dev))
-> +	    !IS_ENABLED(CONFIG_DMA_DIRECT_REMAP) && !dev_is_dma_coherent(dev) &&
-> +	    !is_swiotlb_for_alloc(dev))
->  		return arch_dma_alloc(dev, size, dma_handle, gfp, attrs);
->  
->  	/*
->  	 * Remapping or decrypting memory may block. If either is required and
->  	 * we can't block, allocate the memory from the atomic pools.
-> +	 * If restricted DMA (i.e., is_swiotlb_for_alloc) is required, one must
-> +	 * set up another device coherent pool by shared-dma-pool and use
-> +	 * dma_alloc_from_dev_coherent instead.
->  	 */
->  	if (IS_ENABLED(CONFIG_DMA_COHERENT_POOL) &&
->  	    !gfpflags_allow_blocking(gfp) &&
->  	    (force_dma_unencrypted(dev) ||
-> -	     (IS_ENABLED(CONFIG_DMA_DIRECT_REMAP) && !dev_is_dma_coherent(dev))))
-> +	     (IS_ENABLED(CONFIG_DMA_DIRECT_REMAP) &&
-> +	      !dev_is_dma_coherent(dev))) &&
-> +	    !is_swiotlb_for_alloc(dev))
->  		return dma_direct_alloc_from_pool(dev, size, dma_handle, gfp);
->  
->  	/* we always manually zero the memory once we are done */
-> @@ -237,7 +261,7 @@ void *dma_direct_alloc(struct device *dev, size_t size,
->  			return NULL;
->  	}
->  out_free_pages:
-> -	dma_free_contiguous(dev, page, size);
-> +	__dma_direct_free_pages(dev, page, size);
->  	return NULL;
->  }
->  
-> @@ -247,15 +271,15 @@ void dma_direct_free(struct device *dev, size_t size,
->  	unsigned int page_order = get_order(size);
->  
->  	if ((attrs & DMA_ATTR_NO_KERNEL_MAPPING) &&
-> -	    !force_dma_unencrypted(dev)) {
-> +	    !force_dma_unencrypted(dev) && !is_swiotlb_for_alloc(dev)) {
->  		/* cpu_addr is a struct page cookie, not a kernel address */
->  		dma_free_contiguous(dev, cpu_addr, size);
->  		return;
->  	}
->  
->  	if (!IS_ENABLED(CONFIG_ARCH_HAS_DMA_SET_UNCACHED) &&
-> -	    !IS_ENABLED(CONFIG_DMA_DIRECT_REMAP) &&
-> -	    !dev_is_dma_coherent(dev)) {
-> +	    !IS_ENABLED(CONFIG_DMA_DIRECT_REMAP) && !dev_is_dma_coherent(dev) &&
-> +	    !is_swiotlb_for_alloc(dev)) {
->  		arch_dma_free(dev, size, cpu_addr, dma_addr, attrs);
->  		return;
->  	}
-> @@ -273,7 +297,7 @@ void dma_direct_free(struct device *dev, size_t size,
->  	else if (IS_ENABLED(CONFIG_ARCH_HAS_DMA_CLEAR_UNCACHED))
->  		arch_dma_clear_uncached(cpu_addr, size);
->  
-> -	dma_free_contiguous(dev, dma_direct_to_page(dev, dma_addr), size);
-> +	__dma_direct_free_pages(dev, dma_direct_to_page(dev, dma_addr), size);
->  }
->  
->  struct page *dma_direct_alloc_pages(struct device *dev, size_t size,
-> @@ -283,7 +307,8 @@ struct page *dma_direct_alloc_pages(struct device *dev, size_t size,
->  	void *ret;
->  
->  	if (IS_ENABLED(CONFIG_DMA_COHERENT_POOL) &&
-> -	    force_dma_unencrypted(dev) && !gfpflags_allow_blocking(gfp))
-> +	    force_dma_unencrypted(dev) && !gfpflags_allow_blocking(gfp) &&
-> +	    !is_swiotlb_for_alloc(dev))
->  		return dma_direct_alloc_from_pool(dev, size, dma_handle, gfp);
->  
->  	page = __dma_direct_alloc_pages(dev, size, gfp);
-> @@ -310,7 +335,7 @@ struct page *dma_direct_alloc_pages(struct device *dev, size_t size,
->  	*dma_handle = phys_to_dma_direct(dev, page_to_phys(page));
->  	return page;
->  out_free_pages:
-> -	dma_free_contiguous(dev, page, size);
-> +	__dma_direct_free_pages(dev, page, size);
->  	return NULL;
->  }
->  
-> @@ -329,7 +354,7 @@ void dma_direct_free_pages(struct device *dev, size_t size,
->  	if (force_dma_unencrypted(dev))
->  		set_memory_encrypted((unsigned long)vaddr, 1 << page_order);
->  
-> -	dma_free_contiguous(dev, page, size);
-> +	__dma_direct_free_pages(dev, page, size);
->  }
->  
->  #if defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_DEVICE) || \
-> diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-> index ff09341bb9f5..6499cfbfe95f 100644
-> --- a/kernel/dma/swiotlb.c
-> +++ b/kernel/dma/swiotlb.c
-> @@ -463,8 +463,9 @@ static int swiotlb_find_slots(struct device *dev, phys_addr_t orig_addr,
->  
->  	index = wrap = wrap_index(mem, ALIGN(mem->index, stride));
->  	do {
-> -		if ((slot_addr(tbl_dma_addr, index) & iotlb_align_mask) !=
-> -		    (orig_addr & iotlb_align_mask)) {
-> +		if (orig_addr &&
-> +		    (slot_addr(tbl_dma_addr, index) & iotlb_align_mask) !=
-> +			    (orig_addr & iotlb_align_mask)) {
->  			index = wrap_index(mem, index + 1);
->  			continue;
->  		}
-> @@ -703,3 +704,36 @@ static int __init swiotlb_create_default_debugfs(void)
->  late_initcall(swiotlb_create_default_debugfs);
->  
->  #endif
-> +
-> +#ifdef CONFIG_DMA_RESTRICTED_POOL
-> +struct page *swiotlb_alloc(struct device *dev, size_t size)
-> +{
-> +	struct io_tlb_mem *mem = dev->dma_io_tlb_mem;
-> +	phys_addr_t tlb_addr;
-> +	int index;
-> +
-> +	if (!mem)
-> +		return NULL;
-> +
-> +	index = swiotlb_find_slots(dev, 0, size);
-> +	if (index == -1)
-> +		return NULL;
-> +
-> +	tlb_addr = slot_addr(mem->start, index);
-> +
-> +	return pfn_to_page(PFN_DOWN(tlb_addr));
+> +	return IRQ_HANDLED;
 > +}
 > +
-> +bool swiotlb_free(struct device *dev, struct page *page, size_t size)
-> +{
-> +	phys_addr_t tlb_addr = page_to_phys(page);
+>  /*
+>   * Allocate window and setup IRQ mapping.
+>   */
+> @@ -166,10 +211,51 @@ static int allocate_setup_window(struct pseries_vas=
+_window *txwin,
+>  	rc =3D h_allocate_vas_window(txwin, domain, wintype, DEF_WIN_CREDS);
+>  	if (rc)
+>  		return rc;
+> +	/*
+> +	 * On PowerVM, the hypervisor setup and forwards the fault
+> +	 * interrupt per window. So the IRQ setup and fault handling
+> +	 * will be done for each open window separately.
+> +	 */
+> +	txwin->fault_virq =3D irq_create_mapping(NULL, txwin->fault_irq);
+> +	if (!txwin->fault_virq) {
+> +		pr_err("Failed irq mapping %d\n", txwin->fault_irq);
+> +		rc =3D -EINVAL;
+> +		goto out_win;
+> +	}
 > +
-> +	if (!is_swiotlb_buffer(dev, tlb_addr))
-> +		return false;
+> +	txwin->name =3D kasprintf(GFP_KERNEL, "vas-win-%d",
+> +				txwin->vas_win.winid);
+> +	if (!txwin->name) {
+> +		rc =3D -ENOMEM;
+> +		goto out_irq;
+> +	}
 > +
-> +	swiotlb_release_slots(dev, tlb_addr);
-> +
-> +	return true;
+> +	rc =3D request_threaded_irq(txwin->fault_virq, NULL,
+> +				  pseries_vas_fault_thread_fn, IRQF_ONESHOT,
+> +				  txwin->name, txwin);
+> +	if (rc) {
+> +		pr_err("VAS-Window[%d]: Request IRQ(%u) failed with %d\n",
+> +		       txwin->vas_win.winid, txwin->fault_virq, rc);
+> +		goto out_free;
+> +	}
+> =20
+>  	txwin->vas_win.wcreds_max =3D DEF_WIN_CREDS;
+> =20
+>  	return 0;
+> +out_free:
+> +	kfree(txwin->name);
+> +out_irq:
+> +	irq_dispose_mapping(txwin->fault_virq);
+> +out_win:
+> +	h_deallocate_vas_window(txwin->vas_win.winid);
+> +	return rc;
 > +}
 > +
-> +#endif /* CONFIG_DMA_RESTRICTED_POOL */
-> -- 
-> 2.32.0.288.g62a8d224e6-goog
-> 
+> +static inline void free_irq_setup(struct pseries_vas_window *txwin)
+> +{
+> +	free_irq(txwin->fault_virq, txwin);
+> +	kfree(txwin->name);
+> +	irq_dispose_mapping(txwin->fault_virq);
+>  }
+> =20
+>  static struct vas_window *vas_allocate_window(int vas_id, u64 flags,
+> @@ -284,6 +370,11 @@ static struct vas_window *vas_allocate_window(int va=
+s_id, u64 flags,
+>  	return &txwin->vas_win;
+> =20
+>  out_free:
+> +	/*
+> +	 * Window is not operational. Free IRQ before closing
+> +	 * window so that do not have to hold mutex.
+> +	 */
+> +	free_irq_setup(txwin);
+>  	h_deallocate_vas_window(txwin->vas_win.winid);
+>  out:
+>  	atomic_dec(&cop_feat_caps->used_lpar_creds);
+> @@ -303,7 +394,18 @@ static int deallocate_free_window(struct pseries_vas=
+_window *win)
+>  {
+>  	int rc =3D 0;
+> =20
+> +	/*
+> +	 * The hypervisor waits for all requests including faults
+> +	 * are processed before closing the window - Means all
+> +	 * credits have to be returned. In the case of fault
+> +	 * request, a credit is returned after OS issues
+> +	 * H_GET_NX_FAULT hcall.
+> +	 * So free IRQ after executing H_DEALLOCATE_VAS_WINDOW
+> +	 * hcall.
+> +	 */
+>  	rc =3D h_deallocate_vas_window(win->vas_win.winid);
+> +	if (!rc)
+> +		free_irq_setup(win);
+> =20
+>  	return rc;
+>  }
+> --=20
+> 2.18.2
+>=20
+>=20
+>=20
