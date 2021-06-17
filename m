@@ -2,71 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B20413AAFC8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 11:32:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5F043AB13F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 12:20:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G5H0G303zz3cZQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 19:32:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G5J3B3tfdz3c7W
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 20:20:22 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=ApqW+b4w;
+	dkim=pass (1024-bit key; secure) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=201602 header.b=WFwpbmoP;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::429;
- helo=mail-pf1-x429.google.com; envelope-from=dja@axtens.net;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=dgibson@ozlabs.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=ApqW+b4w; dkim-atps=neutral
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com
- [IPv6:2607:f8b0:4864:20::429])
+ secure) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
+ header.a=rsa-sha256 header.s=201602 header.b=WFwpbmoP; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G5GyB6lZnz3c0b
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 19:30:58 +1000 (AEST)
-Received: by mail-pf1-x429.google.com with SMTP id h12so4563011pfe.2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 02:30:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=lssK+06OrqYXMI/RYJk+NygLCQ6hQhXYMHdalKVel+U=;
- b=ApqW+b4wR3tXMa534EPaBXG3/a/Hp08qg47DiHJtK0mgfEzFsiG1Ao4n68XSbDDzxZ
- 9xXHIEqvn94lOxSRnTRB/+vsb0DyGcdYekj3LvN+7sN7No/pDmeLXun8PSncAf7BVTvs
- 3fWwD8exglZRS+hl5MRe5QjV1DWRuF2+sp7mc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=lssK+06OrqYXMI/RYJk+NygLCQ6hQhXYMHdalKVel+U=;
- b=Gju0867t55AWnJ9uf8Q5sls3PTiPK11093caSBSSjfEHj0DDc3zC8QquswxUtG70+1
- ZZ9S0MvSlqtLQNPcDeuUqozsKcZsHjOOeS+Dd0gUX0ecQEOdc/fGcDR2v1T8k5iMsBjB
- 6QI2r1MOfCqbxeV/ji8uldAQwbYt+JugUJrR46wzMHf3qBpv3BBw3cyhCGWCuX/nlMiU
- 6x5Mmmg0Yx00ovfN6++Aqjk3w1SJC1FFuStMmRAtn4g+5l7ptQ5JUDanHd+ZxAosIj59
- DndUqXiQh9zF9mL7M3fK2VNoJlr3qCDSpLHdMr0+Ngu4D3AdZrZQH/NJ2kk8APeztdpY
- MECw==
-X-Gm-Message-State: AOAM532hEH/q1nMfpDduiyRp+kqquxyXAr7UqBwxVWmbu95RsCf/DOPJ
- 7UMcZ0T3/FGqHnJ15E14MxJ7PQ==
-X-Google-Smtp-Source: ABdhPJz6OUBNln7eU/91Mj+ScyWERfC5hrYLY7B9BZavgiJtBCoiFIgMEfAytW77+pj2ssxxHF0OIA==
-X-Received: by 2002:a63:db01:: with SMTP id e1mr4204540pgg.38.1623922255699;
- Thu, 17 Jun 2021 02:30:55 -0700 (PDT)
-Received: from localhost ([203.206.29.204])
- by smtp.gmail.com with ESMTPSA id o14sm4847028pgk.82.2021.06.17.02.30.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 17 Jun 2021 02:30:55 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- kasan-dev@googlegroups.com, elver@google.com, akpm@linux-foundation.org,
- andreyknvl@gmail.com
-Subject: [PATCH v15 4/4] kasan: use MAX_PTRS_PER_* for early shadow tables
-Date: Thu, 17 Jun 2021 19:30:32 +1000
-Message-Id: <20210617093032.103097-5-dja@axtens.net>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210617093032.103097-1-dja@axtens.net>
-References: <20210617093032.103097-1-dja@axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G5J2B5CSkz30Fm
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 20:19:30 +1000 (AEST)
+Received: by ozlabs.org (Postfix, from userid 1007)
+ id 4G5J282N6Gz9sT6; Thu, 17 Jun 2021 20:19:28 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=gibson.dropbear.id.au; s=201602; t=1623925168;
+ bh=5NBVDDYSlt6hX+Mngmjbj7Cgm0bNBxR+APDmAEPrNTM=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=WFwpbmoP8w8nSJhLRl0FP4vEdrz/yb2KZFoKgQBRo6FyZZ1HGEhDePdwqprTrWbLi
+ TMxH79yrpyPwyOvtgtXuk1zK+AgcaCFn2lRgeKCA8XgZ/Qr0bz4jFNcORn0TqsTLEs
+ jlDltyJ+98xYACyDdp6ZHJ9NyP1eq/1gUl/aAFQA=
+Date: Thu, 17 Jun 2021 17:46:32 +1000
+From: David Gibson <david@gibson.dropbear.id.au>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Subject: Re: [RFC PATCH 8/8] powerpc/papr_scm: Use FORM2 associativity details
+Message-ID: <YMr92K2gaidDHeqC@yekko>
+References: <20210614164003.196094-1-aneesh.kumar@linux.ibm.com>
+ <20210614164003.196094-9-aneesh.kumar@linux.ibm.com>
+ <YMgkyfc4g+na5GJZ@yekko> <87czsnoejl.fsf@linux.ibm.com>
+ <YMhKEJ9WSlapuSE6@yekko> <87a6nrobf6.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="5znoaPUYMGnnxiRe"
+Content-Disposition: inline
+In-Reply-To: <87a6nrobf6.fsf@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,77 +59,173 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- Daniel Axtens <dja@axtens.net>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-powerpc has a variable number of PTRS_PER_*, set at runtime based
-on the MMU that the kernel is booted under.
 
-This means the PTRS_PER_* are no longer constants, and therefore
-breaks the build. Switch to using MAX_PTRS_PER_*, which are constant.
+--5znoaPUYMGnnxiRe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Suggested-by: Balbir Singh <bsingharora@gmail.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Balbir Singh <bsingharora@gmail.com>
-Reviewed-by: Marco Elver <elver@google.com>
-Signed-off-by: Daniel Axtens <dja@axtens.net>
----
- include/linux/kasan.h | 6 +++---
- mm/kasan/init.c       | 6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
+On Tue, Jun 15, 2021 at 12:35:17PM +0530, Aneesh Kumar K.V wrote:
+> David Gibson <david@gibson.dropbear.id.au> writes:
+>=20
+> > On Tue, Jun 15, 2021 at 11:27:50AM +0530, Aneesh Kumar K.V wrote:
+> >> David Gibson <david@gibson.dropbear.id.au> writes:
+> >>=20
+> >> > On Mon, Jun 14, 2021 at 10:10:03PM +0530, Aneesh Kumar K.V wrote:
+> >> >> FORM2 introduce a concept of secondary domain which is identical to=
+ the
+> >> >> conceept of FORM1 primary domain. Use secondary domain as the numa =
+node
+> >> >> when using persistent memory device. For DAX kmem use the logical d=
+omain
+> >> >> id introduced in FORM2. This new numa node
+> >> >>=20
+> >> >> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> >> >> ---
+> >> >>  arch/powerpc/mm/numa.c                    | 28 +++++++++++++++++++=
+++++
+> >> >>  arch/powerpc/platforms/pseries/papr_scm.c | 26 +++++++++++++------=
+--
+> >> >>  arch/powerpc/platforms/pseries/pseries.h  |  1 +
+> >> >>  3 files changed, 45 insertions(+), 10 deletions(-)
+> >> >>=20
+> >> >> diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+> >> >> index 86cd2af014f7..b9ac6d02e944 100644
+> >> >> --- a/arch/powerpc/mm/numa.c
+> >> >> +++ b/arch/powerpc/mm/numa.c
+> >> >> @@ -265,6 +265,34 @@ static int associativity_to_nid(const __be32 *=
+associativity)
+> >> >>  	return nid;
+> >> >>  }
+> >> >> =20
+> >> >> +int get_primary_and_secondary_domain(struct device_node *node, int=
+ *primary, int *secondary)
+> >> >> +{
+> >> >> +	int secondary_index;
+> >> >> +	const __be32 *associativity;
+> >> >> +
+> >> >> +	if (!numa_enabled) {
+> >> >> +		*primary =3D NUMA_NO_NODE;
+> >> >> +		*secondary =3D NUMA_NO_NODE;
+> >> >> +		return 0;
+> >> >> +	}
+> >> >> +
+> >> >> +	associativity =3D of_get_associativity(node);
+> >> >> +	if (!associativity)
+> >> >> +		return -ENODEV;
+> >> >> +
+> >> >> +	if (of_read_number(associativity, 1) >=3D primary_domain_index) {
+> >> >> +		*primary =3D of_read_number(&associativity[primary_domain_index]=
+, 1);
+> >> >> +		secondary_index =3D of_read_number(&distance_ref_points[1], 1);
+> >> >
+> >> > Secondary ID is always the second reference point, but primary depen=
+ds
+> >> > on the length of resources?  That seems very weird.
+> >>=20
+> >> primary_domain_index is distance_ref_point[0]. With Form2 we would find
+> >> both primary and secondary domain ID same for all resources other than
+> >> persistent memory device. The usage w.r.t. persistent memory is
+> >> explained in patch 7.
+> >
+> > Right, I misunderstood
+> >
+> >>=20
+> >> With Form2 the primary domainID and secondary domainID are used to ide=
+ntify the NUMA nodes
+> >> the kernel should use when using persistent memory devices.
+> >
+> > This seems kind of bogus.  With Form1, the primary/secondary ID are a
+> > sort of heirarchy of distance (things with same primary ID are very
+> > close, things with same secondary are kinda-close, etc.).  With Form2,
+> > it's referring to their effective node for different purposes.
+> >
+> > Using the same terms for different meanings seems unnecessarily
+> > confusing.
+>=20
+> They are essentially domainIDs. The interpretation of them are different
+> between Form1 and Form2. Hence I kept referring to them as primary and
+> secondary domainID. Any suggestion on what to name them with Form2?
 
-diff --git a/include/linux/kasan.h b/include/linux/kasan.h
-index 768d7d342757..5310e217bd74 100644
---- a/include/linux/kasan.h
-+++ b/include/linux/kasan.h
-@@ -41,9 +41,9 @@ struct kunit_kasan_expectation {
- #endif
- 
- extern unsigned char kasan_early_shadow_page[PAGE_SIZE];
--extern pte_t kasan_early_shadow_pte[PTRS_PER_PTE + PTE_HWTABLE_PTRS];
--extern pmd_t kasan_early_shadow_pmd[PTRS_PER_PMD];
--extern pud_t kasan_early_shadow_pud[PTRS_PER_PUD];
-+extern pte_t kasan_early_shadow_pte[MAX_PTRS_PER_PTE + PTE_HWTABLE_PTRS];
-+extern pmd_t kasan_early_shadow_pmd[MAX_PTRS_PER_PMD];
-+extern pud_t kasan_early_shadow_pud[MAX_PTRS_PER_PUD];
- extern p4d_t kasan_early_shadow_p4d[MAX_PTRS_PER_P4D];
- 
- int kasan_populate_early_shadow(const void *shadow_start,
-diff --git a/mm/kasan/init.c b/mm/kasan/init.c
-index 348f31d15a97..cc64ed6858c6 100644
---- a/mm/kasan/init.c
-+++ b/mm/kasan/init.c
-@@ -41,7 +41,7 @@ static inline bool kasan_p4d_table(pgd_t pgd)
- }
- #endif
- #if CONFIG_PGTABLE_LEVELS > 3
--pud_t kasan_early_shadow_pud[PTRS_PER_PUD] __page_aligned_bss;
-+pud_t kasan_early_shadow_pud[MAX_PTRS_PER_PUD] __page_aligned_bss;
- static inline bool kasan_pud_table(p4d_t p4d)
- {
- 	return p4d_page(p4d) == virt_to_page(lm_alias(kasan_early_shadow_pud));
-@@ -53,7 +53,7 @@ static inline bool kasan_pud_table(p4d_t p4d)
- }
- #endif
- #if CONFIG_PGTABLE_LEVELS > 2
--pmd_t kasan_early_shadow_pmd[PTRS_PER_PMD] __page_aligned_bss;
-+pmd_t kasan_early_shadow_pmd[MAX_PTRS_PER_PMD] __page_aligned_bss;
- static inline bool kasan_pmd_table(pud_t pud)
- {
- 	return pud_page(pud) == virt_to_page(lm_alias(kasan_early_shadow_pmd));
-@@ -64,7 +64,7 @@ static inline bool kasan_pmd_table(pud_t pud)
- 	return false;
- }
- #endif
--pte_t kasan_early_shadow_pte[PTRS_PER_PTE + PTE_HWTABLE_PTRS]
-+pte_t kasan_early_shadow_pte[MAX_PTRS_PER_PTE + PTE_HWTABLE_PTRS]
- 	__page_aligned_bss;
- 
- static inline bool kasan_pte_table(pmd_t pmd)
--- 
-2.30.2
+My point is that reusing associativity-reference-points for something
+with completely unrelated semantics seems like a very poor choice.
 
+> >> Persistent memory devices
+> >> can also be used as regular memory using DAX KMEM driver and primary d=
+omainID indicates
+> >> the numa node number OS should use when using these devices as regular=
+ memory. Secondary
+> >> domainID is the numa node number that should be used when using this d=
+evice as
+> >> persistent memory.
+> >
+> > It's weird to me that you'd want to consider them in different nodes
+> > for those different purposes.
+>=20
+>=20
+>    --------------------------------------
+>   |                            NUMA node0 |
+>   |    ProcA -----> MEMA                  |
+>   |     |                                 |
+>   |	|                                 |
+>   |	-------------------> PMEMB        |
+>   |                                       |
+>    ---------------------------------------
+>=20
+>    ---------------------------------------
+>   |                            NUMA node1 |
+>   |                                       |
+>   |    ProcB -------> MEMC                |
+>   |	|                                 |
+>   |	-------------------> PMEMD        |
+>   |                                       |
+>   |                                       |
+>    ---------------------------------------
+> =20
+>=20
+> For a topology like the above application running of ProcA wants to find =
+out
+> persistent memory mount local to its NUMA node. Hence when using it as
+> pmem fsdax mount or devdax device we want PMEMB to have associativity
+> of NUMA node0 and PMEMD to have associativity of NUMA node 1. But when
+> we want to use it as memory using dax kmem driver, we want both PMEMB
+> and PMEMD to appear as memory only NUMA node at a distance that is
+> derived based on the latency of the media.
+
+I'm still not understanding why the latency we care about is different
+in the two cases.  Can you give an example of when this would result
+in different actual node assignments for the two different cases?
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--5znoaPUYMGnnxiRe
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmDK/dYACgkQbDjKyiDZ
+s5J/DBAAmVqws8hBmu9XcecG8WAkbkxOtTah9GO8AL9pv/3Ptx5HZNFzV6FdS/aK
+1SUk65hDw3OvUanwoXgaj4n66g0awGclG+jEuiEgsOPvK0rWKuTCa/OU944wjdhY
+JiCrdlRlD5lfwjwQPRG7likyG1aJ7XyNpeDn0ynqk3yN3LZbnwZaJ4bf0pCg7ElT
+dYX9PyLIHhJwo92DB1HgztECxn4clEOKdqyoAPx/MeTsuHhe3AzdVaBVIx/YfJ1i
+UuOLhDaBslEPw91BgdEyg4REKVbDcfwHqr0IK2mxJo3DHnTHJH6aKZ1Ihhb0lpVw
+5ZN2fTcIJE4PBCsDKMMUcjF5ULqIcKpQ/esXjHyPe+8Mdfk3CB0/RyRnGB5TH7RY
+AQHiDtQxkkjYzq7JSL3HeLW7SImeEuWYgR2IfXVlUj7ySz/52khVlxN7x4KP2+c/
+/cSf8i+/587UvMWNNE7kw6YmcNRiEqboftcvEYFxV9BN4NttyXn6cIuXcoEsNRnJ
+IpW9FKaQxDIWATiVIxKcYPhwgB3QEazZT+TIy7XZWZwe0FQpjrNrenUfcLYC6E06
+Ipkwu2dTIika3x0i33K0j0NzK1vJMV5WV+bZjzwyTf6IPO/DTkD669OeCm0G2Qkq
+S9rIsvz7Jraq5F/wmxZZQp8yoAG2/vUrWEDF4IVdNX1MnfUn2P0=
+=pf+J
+-----END PGP SIGNATURE-----
+
+--5znoaPUYMGnnxiRe--
