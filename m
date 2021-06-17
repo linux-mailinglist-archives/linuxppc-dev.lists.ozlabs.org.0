@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EF413AACFB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 09:06:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2FD63AACFC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 09:07:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G5Cls0XKFz3c0x
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 17:06:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G5CmK3cZqz3btf
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 17:07:13 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20161025 header.b=eGrVtvwA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20161025 header.b=TUHB1N3e;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::333;
- helo=mail-ot1-x333.google.com; envelope-from=elver@google.com;
+ smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::229;
+ helo=mail-oi1-x229.google.com; envelope-from=elver@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=eGrVtvwA; dkim-atps=neutral
-Received: from mail-ot1-x333.google.com (mail-ot1-x333.google.com
- [IPv6:2607:f8b0:4864:20::333])
+ header.s=20161025 header.b=TUHB1N3e; dkim-atps=neutral
+Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com
+ [IPv6:2607:f8b0:4864:20::229])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G5ClL3dtQz2yX6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 17:06:20 +1000 (AEST)
-Received: by mail-ot1-x333.google.com with SMTP id
- w22-20020a0568304116b02904060c6415c7so5188681ott.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 00:06:19 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G5Cll5yWFz3bty
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 17:06:43 +1000 (AEST)
+Received: by mail-oi1-x229.google.com with SMTP id u11so5463269oiv.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 00:06:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=nhqmE1vBTbQZlPad3fKuDW4Qef6o+8lKl4ONa0J/G/8=;
- b=eGrVtvwA+i6aNAMo3ETYrgy4DVEWUiimdDfxOE2LFye56wFHpr1W4MnbrblQ8rRQcC
- xJ75y+uRuCGoD3u+AwSOr3k3oP8buzdYF7JppwE5mTFUR0Oe2ouOwNKfRRuPgh7Rr/zk
- RyQf66jXNR/8yk3XRkGerNoLo+WDXQA6ePmSKgvat2HJxflCZPul4uR6rRSq1QM9w53J
- 2TE6qCvLxMRjTV1m+KDKmwdi6doQ3jZ+Roh6f2GRMQZ7Uk/4Z11RLlP8MRyTk+7ApLA2
- rL5GXw+oTZeFmgnFcHUqZTo1Ehtao2FNASwGb3WRDOZm6rnFo/I35o+YxhzFb9V+4O/Y
- 35jA==
+ :cc; bh=x3f7kXNEAio7wn8rN5Q4qZlH4cBywzmH0Nokkyx4dn0=;
+ b=TUHB1N3eQfQ+/6r1GQXAlEPc8aNokCkZd1BTVoHNgFnFfyyaHuQ8Tf7NNKqMlBvak5
+ YbMSSm+I9FLnG6TB8exQz/e5/DYGCNOU/HrQl7W9jHCTKMaPj48hgCrwO9HAqgsa6PUU
+ LgzrPRiShRHFjIi0iMpIAfWuzyxY+yn074UknITQ6pWASp1mjiJ0xWYaLULgti2EgPfe
+ CFsnD12vzglyKQp2quLeZjsZzcUBopxr/0CtrPKM2M5H+yt81jGEmvHjQ1GSTNFrUFim
+ x4jAoOqmxpNRbiiJmDV+4C3HGdD1V9gQCdcX2DPFH21+kPNkDgzSy0vHY/OkTpHX6gs3
+ BhYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=nhqmE1vBTbQZlPad3fKuDW4Qef6o+8lKl4ONa0J/G/8=;
- b=KWJrG37QZl6mmH90QvZsuplibRJQg6gJ8mBDrD6VLZ5THYanhS/x7cI+lARby+2e5o
- SSLy2HbTDLcAiGaVhEHe1zRtE6dUEaqVBsV2kQS42mFd6Z1/x4fX/lVFUz8t7bdQDJ4I
- TQX622XIf48M+rhRCG0HYZiO0j0XqZmVSjsxvwJPGlby7Zuslh0oleniVEVoIZkoU/dB
- VZ7Dn+OcHZtuduopNdU57dE51ZeJX0ev1nBqIPqaDrG0F4+JHeOYoeXzAArWDO8gllX2
- n2A3phyMC5s82gM0fknOnBYLKcSlfRz/+qLdlbZhlrzVGODcBPkN/EIAFw4VlmZW5fig
- Efxw==
-X-Gm-Message-State: AOAM530lafxFWBj8Q7docKnXjUPb+LOmbtTron6zaK6psUp+V797bHtF
- A7nzi41WaD5yxOVP8wlV8d+hxxpZLWf6e5Kw+q1lpg==
-X-Google-Smtp-Source: ABdhPJzb3pydS4fL1OGc3+kLyBtkxKVQSv+5ySB2k1JVkAvfcK53EAa09UHM2AiBfuP55Icc+GyGNfs+i3l/fcRAo0o=
-X-Received: by 2002:a9d:4e7:: with SMTP id 94mr3260598otm.233.1623913575674;
- Thu, 17 Jun 2021 00:06:15 -0700 (PDT)
+ bh=x3f7kXNEAio7wn8rN5Q4qZlH4cBywzmH0Nokkyx4dn0=;
+ b=t5WeWcLxK93jcsq3rNgW/Id3/wGR+5/1LWzQ2lQHgdgSjg8KIR0MHVO9FKUvfi36M3
+ ZPY2AFi4Y1bAuXsezN+sqGOaSfDmlTIKfP9arT9ShvX2vzsqV54eNjIU9vCJQ7OSw4jJ
+ 3bbz0tHTFpVo2hSDyx6JnoR5g5oYzdxft+YOl4+w7JCk6Y5p76WmYdKvp+NaCnXxDddS
+ khGwYM50fSdfMow+9yNtPr/6wj5IpeHozGFqXem3xPvNtrGyFP/gh776w9b7l630JgKD
+ yVj20Hp8NIrxXGBYyB+xzQ3OqKBDkumrrY28nPgFNxoPodBFeeph3ZvCepJqH1bj3JBN
+ kDhg==
+X-Gm-Message-State: AOAM531/cFWh2k6CvkQnVeUWTjYUTclFogCveaXBI3BDsUFe70kMvrfS
+ JebpAAAN76mVHI7HbSbEFpBnABpjM4IJ7Yit8Ao7jw==
+X-Google-Smtp-Source: ABdhPJyZGKvGnxD2CIdMiQREsVQ1HcwtZM1JRfUu9L6kEngXp5CZ452oDL3g8DnPzot/p3uA3kuCYblnTqzbZUjMv6k=
+X-Received: by 2002:a05:6808:bd5:: with SMTP id
+ o21mr2268625oik.172.1623913599850; 
+ Thu, 17 Jun 2021 00:06:39 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210617063956.94061-1-dja@axtens.net>
- <20210617063956.94061-3-dja@axtens.net>
-In-Reply-To: <20210617063956.94061-3-dja@axtens.net>
+ <20210617063956.94061-2-dja@axtens.net>
+In-Reply-To: <20210617063956.94061-2-dja@axtens.net>
 From: Marco Elver <elver@google.com>
-Date: Thu, 17 Jun 2021 09:06:02 +0200
-Message-ID: <CANpmjNPvCprs4+aToP4GXC1upii2sVYbHPRcDoVr=qL3psMUSw@mail.gmail.com>
-Subject: Re: [PATCH v14 2/4] kasan: allow architectures to provide an outline
- readiness check
+Date: Thu, 17 Jun 2021 09:06:28 +0200
+Message-ID: <CANpmjNPw2_Av0HVSBMP0nj0a2dwqKxMopWwvsyQF1vv5hN0zzA@mail.gmail.com>
+Subject: Re: [PATCH v14 1/4] kasan: allow an architecture to disable inline
+ instrumentation
 To: Daniel Axtens <dja@axtens.net>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -76,8 +76,7 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.vnet.ibm.com>,
- aneesh.kumar@linux.ibm.com, LKML <linux-kernel@vger.kernel.org>,
+Cc: aneesh.kumar@linux.ibm.com, LKML <linux-kernel@vger.kernel.org>,
  kasan-dev <kasan-dev@googlegroups.com>,
  Linux Memory Management List <linux-mm@kvack.org>,
  Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
@@ -88,115 +87,84 @@ Sender: "Linuxppc-dev"
 
 On Thu, 17 Jun 2021 at 08:40, Daniel Axtens <dja@axtens.net> wrote:
 >
-> Allow architectures to define a kasan_arch_is_ready() hook that bails
-> out of any function that's about to touch the shadow unless the arch
-> says that it is ready for the memory to be accessed. This is fairly
-> uninvasive and should have a negligible performance penalty.
+> For annoying architectural reasons, it's very difficult to support inline
+> instrumentation on powerpc64.*
 >
-> This will only work in outline mode, so an arch must specify
-> ARCH_DISABLE_KASAN_INLINE if it requires this.
+> Add a Kconfig flag to allow an arch to disable inline. (It's a bit
+> annoying to be 'backwards', but I'm not aware of any way to have
+> an arch force a symbol to be 'n', rather than 'y'.)
 >
-> Cc: Balbir Singh <bsingharora@gmail.com>
-> Cc: Aneesh Kumar K.V <aneesh.kumar@linux.vnet.ibm.com>
-> Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> We also disable stack instrumentation in this case as it does things that
+> are functionally equivalent to inline instrumentation, namely adding
+> code that touches the shadow directly without going through a C helper.
+>
+> * on ppc64 atm, the shadow lives in virtual memory and isn't accessible in
+> real mode. However, before we turn on virtual memory, we parse the device
+> tree to determine which platform and MMU we're running under. That calls
+> generic DT code, which is instrumented. Inline instrumentation in DT would
+> unconditionally attempt to touch the shadow region, which we won't have
+> set up yet, and would crash. We can make outline mode wait for the arch to
+> be ready, but we can't change what the compiler inserts for inline mode.
+>
 > Signed-off-by: Daniel Axtens <dja@axtens.net>
-
-With Christophe's suggestion:
 
 Reviewed-by: Marco Elver <elver@google.com>
 
 
-> --
->
-> Both previous RFCs for ppc64 - by 2 different people - have
-> needed this trick! See:
->  - https://lore.kernel.org/patchwork/patch/592820/ # ppc64 hash series
->  - https://patchwork.ozlabs.org/patch/795211/      # ppc radix series
->
-> I haven't been able to exercise the arch hook error for !GENERIC as I
-> don't have a particularly modern aarch64 toolchain or a lot of experience
-> cross-compiling with clang. But it does fire for GENERIC + INLINE on x86.
 > ---
->  mm/kasan/common.c  | 4 ++++
->  mm/kasan/generic.c | 3 +++
->  mm/kasan/kasan.h   | 8 ++++++++
->  mm/kasan/shadow.c  | 8 ++++++++
->  4 files changed, 23 insertions(+)
+>  lib/Kconfig.kasan | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
 >
-> diff --git a/mm/kasan/common.c b/mm/kasan/common.c
-> index 10177cc26d06..0ad615f3801d 100644
-> --- a/mm/kasan/common.c
-> +++ b/mm/kasan/common.c
-> @@ -331,6 +331,10 @@ static inline bool ____kasan_slab_free(struct kmem_cache *cache, void *object,
->         u8 tag;
->         void *tagged_object;
+> diff --git a/lib/Kconfig.kasan b/lib/Kconfig.kasan
+> index cffc2ebbf185..cb5e02d09e11 100644
+> --- a/lib/Kconfig.kasan
+> +++ b/lib/Kconfig.kasan
+> @@ -12,6 +12,15 @@ config HAVE_ARCH_KASAN_HW_TAGS
+>  config HAVE_ARCH_KASAN_VMALLOC
+>         bool
 >
-> +       /* Bail if the arch isn't ready */
-> +       if (!kasan_arch_is_ready())
-> +               return false;
+> +config ARCH_DISABLE_KASAN_INLINE
+> +       bool
+> +       help
+> +         Sometimes an architecture might not be able to support inline
+> +         instrumentation but might be able to support outline instrumentation.
+> +         This option allows an architecture to prevent inline and stack
+> +         instrumentation from being enabled.
 > +
->         tag = get_tag(object);
->         tagged_object = object;
->         object = kasan_reset_tag(object);
-> diff --git a/mm/kasan/generic.c b/mm/kasan/generic.c
-> index 53cbf28859b5..c3f5ba7a294a 100644
-> --- a/mm/kasan/generic.c
-> +++ b/mm/kasan/generic.c
-> @@ -163,6 +163,9 @@ static __always_inline bool check_region_inline(unsigned long addr,
->                                                 size_t size, bool write,
->                                                 unsigned long ret_ip)
->  {
-> +       if (!kasan_arch_is_ready())
-> +               return true;
 > +
->         if (unlikely(size == 0))
->                 return true;
+>  config CC_HAS_KASAN_GENERIC
+>         def_bool $(cc-option, -fsanitize=kernel-address)
 >
-> diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
-> index 8f450bc28045..b18abaf8c78e 100644
-> --- a/mm/kasan/kasan.h
-> +++ b/mm/kasan/kasan.h
-> @@ -449,6 +449,14 @@ static inline void kasan_poison_last_granule(const void *address, size_t size) {
+> @@ -130,6 +139,7 @@ config KASAN_OUTLINE
 >
->  #endif /* CONFIG_KASAN_GENERIC */
+>  config KASAN_INLINE
+>         bool "Inline instrumentation"
+> +       depends on !ARCH_DISABLE_KASAN_INLINE
+>         help
+>           Compiler directly inserts code checking shadow memory before
+>           memory accesses. This is faster than outline (in some workloads
+> @@ -141,6 +151,7 @@ endchoice
+>  config KASAN_STACK
+>         bool "Enable stack instrumentation (unsafe)" if CC_IS_CLANG && !COMPILE_TEST
+>         depends on KASAN_GENERIC || KASAN_SW_TAGS
+> +       depends on !ARCH_DISABLE_KASAN_INLINE
+>         default y if CC_IS_GCC
+>         help
+>           The LLVM stack address sanitizer has a know problem that
+> @@ -154,6 +165,9 @@ config KASAN_STACK
+>           but clang users can still enable it for builds without
+>           CONFIG_COMPILE_TEST.  On gcc it is assumed to always be safe
+>           to use and enabled by default.
+> +         If the architecture disables inline instrumentation, this is
+> +         also disabled as it adds inline-style instrumentation that
+> +         is run unconditionally.
 >
-> +#ifndef kasan_arch_is_ready
-> +static inline bool kasan_arch_is_ready(void)   { return true; }
-> +#else
-> +#if !defined(CONFIG_KASAN_GENERIC) || !defined(CONFIG_KASAN_OUTLINE)
-> +#error kasan_arch_is_ready only works in KASAN generic outline mode!
-> +#endif
-> +#endif
-> +
->  /*
->   * Exported functions for interfaces called from assembly or from generated
->   * code. Declarations here to avoid warning about missing declarations.
-> diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
-> index 082ee5b6d9a1..3c7f7efe6f68 100644
-> --- a/mm/kasan/shadow.c
-> +++ b/mm/kasan/shadow.c
-> @@ -73,6 +73,10 @@ void kasan_poison(const void *addr, size_t size, u8 value, bool init)
->  {
->         void *shadow_start, *shadow_end;
->
-> +       /* Don't touch the shadow memory if arch isn't ready */
-> +       if (!kasan_arch_is_ready())
-> +               return;
-> +
->         /*
->          * Perform shadow offset calculation based on untagged address, as
->          * some of the callers (e.g. kasan_poison_object_data) pass tagged
-> @@ -99,6 +103,10 @@ EXPORT_SYMBOL(kasan_poison);
->  #ifdef CONFIG_KASAN_GENERIC
->  void kasan_poison_last_granule(const void *addr, size_t size)
->  {
-> +       /* Don't touch the shadow memory if arch isn't ready */
-> +       if (!kasan_arch_is_ready())
-> +               return;
-> +
->         if (size & KASAN_GRANULE_MASK) {
->                 u8 *shadow = (u8 *)kasan_mem_to_shadow(addr + size);
->                 *shadow = size & KASAN_GRANULE_MASK;
+>  config KASAN_SW_TAGS_IDENTIFY
+>         bool "Enable memory corruption identification"
 > --
 > 2.30.2
 >
+> --
+> You received this message because you are subscribed to the Google Groups "kasan-dev" group.
+> To unsubscribe from this group and stop receiving emails from it, send an email to kasan-dev+unsubscribe@googlegroups.com.
+> To view this discussion on the web visit https://groups.google.com/d/msgid/kasan-dev/20210617063956.94061-2-dja%40axtens.net.
