@@ -1,60 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61D4D3AACE4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 09:01:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EF413AACFB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 09:06:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G5Cd76xSVz3c0M
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 17:00:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G5Cls0XKFz3c0x
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 17:06:49 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20161025 header.b=eGrVtvwA;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::333;
+ helo=mail-ot1-x333.google.com; envelope-from=elver@google.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20161025 header.b=eGrVtvwA; dkim-atps=neutral
+Received: from mail-ot1-x333.google.com (mail-ot1-x333.google.com
+ [IPv6:2607:f8b0:4864:20::333])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G5Ccp6v2Lz2yX6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 17:00:42 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4G5Cck6knBzB9Kg;
- Thu, 17 Jun 2021 09:00:38 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id QJPdcHdgEBZK; Thu, 17 Jun 2021 09:00:38 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4G5Cck5nnwzB9JP;
- Thu, 17 Jun 2021 09:00:38 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id BB7508B803;
- Thu, 17 Jun 2021 09:00:38 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id v7kr536TYdhu; Thu, 17 Jun 2021 09:00:38 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0BA158B801;
- Thu, 17 Jun 2021 09:00:37 +0200 (CEST)
-Subject: Re: [PATCH v14 3/4] mm: define default MAX_PTRS_PER_* in
- include/pgtable.h
-To: Daniel Axtens <dja@axtens.net>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, kasan-dev@googlegroups.com, elver@google.com,
- akpm@linux-foundation.org, andreyknvl@gmail.com
-References: <20210617063956.94061-1-dja@axtens.net>
- <20210617063956.94061-4-dja@axtens.net>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <cbe77a1d-074d-4bc0-0aad-996249a6bf3a@csgroup.eu>
-Date: Thu, 17 Jun 2021 09:00:35 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G5ClL3dtQz2yX6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 17:06:20 +1000 (AEST)
+Received: by mail-ot1-x333.google.com with SMTP id
+ w22-20020a0568304116b02904060c6415c7so5188681ott.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 00:06:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=nhqmE1vBTbQZlPad3fKuDW4Qef6o+8lKl4ONa0J/G/8=;
+ b=eGrVtvwA+i6aNAMo3ETYrgy4DVEWUiimdDfxOE2LFye56wFHpr1W4MnbrblQ8rRQcC
+ xJ75y+uRuCGoD3u+AwSOr3k3oP8buzdYF7JppwE5mTFUR0Oe2ouOwNKfRRuPgh7Rr/zk
+ RyQf66jXNR/8yk3XRkGerNoLo+WDXQA6ePmSKgvat2HJxflCZPul4uR6rRSq1QM9w53J
+ 2TE6qCvLxMRjTV1m+KDKmwdi6doQ3jZ+Roh6f2GRMQZ7Uk/4Z11RLlP8MRyTk+7ApLA2
+ rL5GXw+oTZeFmgnFcHUqZTo1Ehtao2FNASwGb3WRDOZm6rnFo/I35o+YxhzFb9V+4O/Y
+ 35jA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=nhqmE1vBTbQZlPad3fKuDW4Qef6o+8lKl4ONa0J/G/8=;
+ b=KWJrG37QZl6mmH90QvZsuplibRJQg6gJ8mBDrD6VLZ5THYanhS/x7cI+lARby+2e5o
+ SSLy2HbTDLcAiGaVhEHe1zRtE6dUEaqVBsV2kQS42mFd6Z1/x4fX/lVFUz8t7bdQDJ4I
+ TQX622XIf48M+rhRCG0HYZiO0j0XqZmVSjsxvwJPGlby7Zuslh0oleniVEVoIZkoU/dB
+ VZ7Dn+OcHZtuduopNdU57dE51ZeJX0ev1nBqIPqaDrG0F4+JHeOYoeXzAArWDO8gllX2
+ n2A3phyMC5s82gM0fknOnBYLKcSlfRz/+qLdlbZhlrzVGODcBPkN/EIAFw4VlmZW5fig
+ Efxw==
+X-Gm-Message-State: AOAM530lafxFWBj8Q7docKnXjUPb+LOmbtTron6zaK6psUp+V797bHtF
+ A7nzi41WaD5yxOVP8wlV8d+hxxpZLWf6e5Kw+q1lpg==
+X-Google-Smtp-Source: ABdhPJzb3pydS4fL1OGc3+kLyBtkxKVQSv+5ySB2k1JVkAvfcK53EAa09UHM2AiBfuP55Icc+GyGNfs+i3l/fcRAo0o=
+X-Received: by 2002:a9d:4e7:: with SMTP id 94mr3260598otm.233.1623913575674;
+ Thu, 17 Jun 2021 00:06:15 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210617063956.94061-4-dja@axtens.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+References: <20210617063956.94061-1-dja@axtens.net>
+ <20210617063956.94061-3-dja@axtens.net>
+In-Reply-To: <20210617063956.94061-3-dja@axtens.net>
+From: Marco Elver <elver@google.com>
+Date: Thu, 17 Jun 2021 09:06:02 +0200
+Message-ID: <CANpmjNPvCprs4+aToP4GXC1upii2sVYbHPRcDoVr=qL3psMUSw@mail.gmail.com>
+Subject: Re: [PATCH v14 2/4] kasan: allow architectures to provide an outline
+ readiness check
+To: Daniel Axtens <dja@axtens.net>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,97 +76,127 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.vnet.ibm.com>,
+ aneesh.kumar@linux.ibm.com, LKML <linux-kernel@vger.kernel.org>,
+ kasan-dev <kasan-dev@googlegroups.com>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Andrey Konovalov <andreyknvl@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 17/06/2021 à 08:39, Daniel Axtens a écrit :
-> Commit c65e774fb3f6 ("x86/mm: Make PGDIR_SHIFT and PTRS_PER_P4D variable")
-> made PTRS_PER_P4D variable on x86 and introduced MAX_PTRS_PER_P4D as a
-> constant for cases which need a compile-time constant (e.g. fixed-size
-> arrays).
-> 
-> powerpc likewise has boot-time selectable MMU features which can cause
-> other mm "constants" to vary. For KASAN, we have some static
-> PTE/PMD/PUD/P4D arrays so we need compile-time maximums for all these
-> constants. Extend the MAX_PTRS_PER_ idiom, and place default definitions
-> in include/pgtable.h. These define MAX_PTRS_PER_x to be PTRS_PER_x unless
-> an architecture has defined MAX_PTRS_PER_x in its arch headers.
-> 
-> Clean up pgtable-nop4d.h and s390's MAX_PTRS_PER_P4D definitions while
-> we're at it: both can just pick up the default now.
-> 
+On Thu, 17 Jun 2021 at 08:40, Daniel Axtens <dja@axtens.net> wrote:
+>
+> Allow architectures to define a kasan_arch_is_ready() hook that bails
+> out of any function that's about to touch the shadow unless the arch
+> says that it is ready for the memory to be accessed. This is fairly
+> uninvasive and should have a negligible performance penalty.
+>
+> This will only work in outline mode, so an arch must specify
+> ARCH_DISABLE_KASAN_INLINE if it requires this.
+>
+> Cc: Balbir Singh <bsingharora@gmail.com>
+> Cc: Aneesh Kumar K.V <aneesh.kumar@linux.vnet.ibm.com>
+> Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 > Signed-off-by: Daniel Axtens <dja@axtens.net>
 
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+With Christophe's suggestion:
 
-> 
+Reviewed-by: Marco Elver <elver@google.com>
+
+
+> --
+>
+> Both previous RFCs for ppc64 - by 2 different people - have
+> needed this trick! See:
+>  - https://lore.kernel.org/patchwork/patch/592820/ # ppc64 hash series
+>  - https://patchwork.ozlabs.org/patch/795211/      # ppc radix series
+>
+> I haven't been able to exercise the arch hook error for !GENERIC as I
+> don't have a particularly modern aarch64 toolchain or a lot of experience
+> cross-compiling with clang. But it does fire for GENERIC + INLINE on x86.
 > ---
-> 
-> s390 was compile tested only.
-> ---
->   arch/s390/include/asm/pgtable.h     |  2 --
->   include/asm-generic/pgtable-nop4d.h |  1 -
->   include/linux/pgtable.h             | 22 ++++++++++++++++++++++
->   3 files changed, 22 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
-> index 7c66ae5d7e32..cf05954ce013 100644
-> --- a/arch/s390/include/asm/pgtable.h
-> +++ b/arch/s390/include/asm/pgtable.h
-> @@ -342,8 +342,6 @@ static inline int is_module_addr(void *addr)
->   #define PTRS_PER_P4D	_CRST_ENTRIES
->   #define PTRS_PER_PGD	_CRST_ENTRIES
->   
-> -#define MAX_PTRS_PER_P4D	PTRS_PER_P4D
-> -
->   /*
->    * Segment table and region3 table entry encoding
->    * (R = read-only, I = invalid, y = young bit):
-> diff --git a/include/asm-generic/pgtable-nop4d.h b/include/asm-generic/pgtable-nop4d.h
-> index ce2cbb3c380f..2f6b1befb129 100644
-> --- a/include/asm-generic/pgtable-nop4d.h
-> +++ b/include/asm-generic/pgtable-nop4d.h
-> @@ -9,7 +9,6 @@
->   typedef struct { pgd_t pgd; } p4d_t;
->   
->   #define P4D_SHIFT		PGDIR_SHIFT
-> -#define MAX_PTRS_PER_P4D	1
->   #define PTRS_PER_P4D		1
->   #define P4D_SIZE		(1UL << P4D_SHIFT)
->   #define P4D_MASK		(~(P4D_SIZE-1))
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index 9e6f71265f72..69700e3e615f 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -1625,4 +1625,26 @@ typedef unsigned int pgtbl_mod_mask;
->   #define pte_leaf_size(x) PAGE_SIZE
->   #endif
->   
-> +/*
-> + * Some architectures have MMUs that are configurable or selectable at boot
-> + * time. These lead to variable PTRS_PER_x. For statically allocated arrays it
-> + * helps to have a static maximum value.
-> + */
+>  mm/kasan/common.c  | 4 ++++
+>  mm/kasan/generic.c | 3 +++
+>  mm/kasan/kasan.h   | 8 ++++++++
+>  mm/kasan/shadow.c  | 8 ++++++++
+>  4 files changed, 23 insertions(+)
+>
+> diff --git a/mm/kasan/common.c b/mm/kasan/common.c
+> index 10177cc26d06..0ad615f3801d 100644
+> --- a/mm/kasan/common.c
+> +++ b/mm/kasan/common.c
+> @@ -331,6 +331,10 @@ static inline bool ____kasan_slab_free(struct kmem_cache *cache, void *object,
+>         u8 tag;
+>         void *tagged_object;
+>
+> +       /* Bail if the arch isn't ready */
+> +       if (!kasan_arch_is_ready())
+> +               return false;
 > +
-> +#ifndef MAX_PTRS_PER_PTE
-> +#define MAX_PTRS_PER_PTE PTRS_PER_PTE
+>         tag = get_tag(object);
+>         tagged_object = object;
+>         object = kasan_reset_tag(object);
+> diff --git a/mm/kasan/generic.c b/mm/kasan/generic.c
+> index 53cbf28859b5..c3f5ba7a294a 100644
+> --- a/mm/kasan/generic.c
+> +++ b/mm/kasan/generic.c
+> @@ -163,6 +163,9 @@ static __always_inline bool check_region_inline(unsigned long addr,
+>                                                 size_t size, bool write,
+>                                                 unsigned long ret_ip)
+>  {
+> +       if (!kasan_arch_is_ready())
+> +               return true;
+> +
+>         if (unlikely(size == 0))
+>                 return true;
+>
+> diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
+> index 8f450bc28045..b18abaf8c78e 100644
+> --- a/mm/kasan/kasan.h
+> +++ b/mm/kasan/kasan.h
+> @@ -449,6 +449,14 @@ static inline void kasan_poison_last_granule(const void *address, size_t size) {
+>
+>  #endif /* CONFIG_KASAN_GENERIC */
+>
+> +#ifndef kasan_arch_is_ready
+> +static inline bool kasan_arch_is_ready(void)   { return true; }
+> +#else
+> +#if !defined(CONFIG_KASAN_GENERIC) || !defined(CONFIG_KASAN_OUTLINE)
+> +#error kasan_arch_is_ready only works in KASAN generic outline mode!
+> +#endif
 > +#endif
 > +
-> +#ifndef MAX_PTRS_PER_PMD
-> +#define MAX_PTRS_PER_PMD PTRS_PER_PMD
-> +#endif
+>  /*
+>   * Exported functions for interfaces called from assembly or from generated
+>   * code. Declarations here to avoid warning about missing declarations.
+> diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
+> index 082ee5b6d9a1..3c7f7efe6f68 100644
+> --- a/mm/kasan/shadow.c
+> +++ b/mm/kasan/shadow.c
+> @@ -73,6 +73,10 @@ void kasan_poison(const void *addr, size_t size, u8 value, bool init)
+>  {
+>         void *shadow_start, *shadow_end;
+>
+> +       /* Don't touch the shadow memory if arch isn't ready */
+> +       if (!kasan_arch_is_ready())
+> +               return;
 > +
-> +#ifndef MAX_PTRS_PER_PUD
-> +#define MAX_PTRS_PER_PUD PTRS_PER_PUD
-> +#endif
+>         /*
+>          * Perform shadow offset calculation based on untagged address, as
+>          * some of the callers (e.g. kasan_poison_object_data) pass tagged
+> @@ -99,6 +103,10 @@ EXPORT_SYMBOL(kasan_poison);
+>  #ifdef CONFIG_KASAN_GENERIC
+>  void kasan_poison_last_granule(const void *addr, size_t size)
+>  {
+> +       /* Don't touch the shadow memory if arch isn't ready */
+> +       if (!kasan_arch_is_ready())
+> +               return;
 > +
-> +#ifndef MAX_PTRS_PER_P4D
-> +#define MAX_PTRS_PER_P4D PTRS_PER_P4D
-> +#endif
-> +
->   #endif /* _LINUX_PGTABLE_H */
-> 
+>         if (size & KASAN_GRANULE_MASK) {
+>                 u8 *shadow = (u8 *)kasan_mem_to_shadow(addr + size);
+>                 *shadow = size & KASAN_GRANULE_MASK;
+> --
+> 2.30.2
+>
