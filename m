@@ -2,58 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9C153AAA56
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 06:41:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D47C43AAB01
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 07:22:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G58Xg2xNRz3btp
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 14:41:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G59R93glMz3c0L
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 15:22:13 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Lg28WU8d;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=M4DsVPWi;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102b;
+ helo=mail-pj1-x102b.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=Lg28WU8d; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=M4DsVPWi; dkim-atps=neutral
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com
+ [IPv6:2607:f8b0:4864:20::102b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G58XC3Z8cz306W
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 14:41:30 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 4G58X90fL9z9sW6; Thu, 17 Jun 2021 14:41:29 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4G58X85dNdz9sTD;
- Thu, 17 Jun 2021 14:41:28 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1623904888;
- bh=zj99gzadatRL4zwEOH6gU654Lg1IqdYv0wxWxXYTDrU=;
- h=From:To:Subject:In-Reply-To:References:Date:From;
- b=Lg28WU8dP+KNsKaC2V/5AvMvNRhzSGUEqSwYIalsTOzw31V1597Rm645vcCUqO8MA
- 2P8Ap2y1ohD/i2MXo3dwccZSI3lBxnR/CAbjnP/YW1zmmGfLcMc23XLks1mBR0WJi2
- yWxICNZOdoVdIRUGB+T1QuUDdEBdItfJd6RMjBsRDVoNHNQKksxMp0VBMHmWeYNqLp
- ui5Vht7m6QGcUWl61aedKnNtk5Oa09LCId4YuhWIOd/yMUqM+IpuBxZBaXgql/BACZ
- TsQpUJp5u6NNzNWjZs6ZBgcbIrd1+MPF3HYNPgFB7mChq1TX5P6Egs3P5NiiZPEyAG
- rTsB10WC1bvLA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Paul Mackerras <paulus@ozlabs.org>, linuxppc-dev@ozlabs.org
-Subject: Re: [PATCH 02/11] powerpc: Add Microwatt device tree
-In-Reply-To: <YMffEN3q5RlLeg4W@thinks.paulus.ozlabs.org>
-References: <YMfeswgEHeXSLOUF@thinks.paulus.ozlabs.org>
- <YMffEN3q5RlLeg4W@thinks.paulus.ozlabs.org>
-Date: Thu, 17 Jun 2021 14:41:28 +1000
-Message-ID: <8735thrtl3.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G59Qd6kxjz306n
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 15:21:44 +1000 (AEST)
+Received: by mail-pj1-x102b.google.com with SMTP id
+ fy24-20020a17090b0218b029016c5a59021fso5423433pjb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jun 2021 22:21:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=IiEIjleBusGBa/AVKIhB+ojZDFic8IqFpbVO6kSE2bs=;
+ b=M4DsVPWi6V9ABVD4/wFHuv+DtK7vdPAeuGt4q68xjhSO+27cxKtMKV6eFaDsUwXxE8
+ sNCnMWFgnh2TiYqv8T2YiRTfJNpFBRgdpY2amsy1JgdkP+AVEQEEblnsTrBr1/i6M232
+ sc7HaBi1vN7BKaEMM7Ol+6TxXIwj415XBEGu+9OhJ1Qrc19NMT6w6NTbH+X+XDaiUE8W
+ QZiBJHopzLXOwxepkcpl/dWbDWNVzXYFYKOEXc++VBvm2xZ1zwz7C34aBkQ5yflGd4a4
+ J+lEQwF5ftbL/hXQqkolhPTLn2IFXl8mrY/aJCDPd0rt08qTMWum+5dP5X0RXSMvlFAe
+ Jo6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=IiEIjleBusGBa/AVKIhB+ojZDFic8IqFpbVO6kSE2bs=;
+ b=F105N/Eslg2/rX+dCEJD9UWo4u3kYoAsyrPem2eWSCeUmXF4BHINxeLnnhXnqKPOxu
+ sqjkNPp1wA6G90hUfHhq2Sw+eSzbx5WaI8KKdcbIUuFl5tp18n4ZdCSzYtAV1giwHB8M
+ THkOMupuAPoVLW3sZlHEJ57DfFjS/2FLCIyTbAKM4NJ8x6+XvbM2+4Ol+eGSZgOhe6YD
+ q3fzm+e7P6H4H+fAHEkl0W4ACso64rxnlcm17UCoJK8YoW31+wRvCoc6WnM8O9m0E3wL
+ Px7RdFfp39+B8jCZNng2cuKfa508xj+/zj1TCYwfTrTsjgzTuTOfJRYZIpuzBJm6TDtS
+ ar4w==
+X-Gm-Message-State: AOAM531clH34vDTnDGf0cuRrBeStTGDmLYjQH/p5YoepO0gUtPsFUAOM
+ b7dGqyJZKluWezQDkMOnh/s=
+X-Google-Smtp-Source: ABdhPJzBkr0iJz5bdOnzNSpA9OOHOaTorvnhWBgBCxf7FNmiUP5c7fPfcObhierQgxNTP26VcJWpJw==
+X-Received: by 2002:a17:902:8493:b029:11a:faa6:5bf6 with SMTP id
+ c19-20020a1709028493b029011afaa65bf6mr2979254plo.42.1623907301768; 
+ Wed, 16 Jun 2021 22:21:41 -0700 (PDT)
+Received: from localhost (60-242-147-73.tpgi.com.au. [60.242.147.73])
+ by smtp.gmail.com with ESMTPSA id d6sm4011456pgq.88.2021.06.16.22.21.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 16 Jun 2021 22:21:41 -0700 (PDT)
+Date: Thu, 17 Jun 2021 15:21:36 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v4 1/2] module: add elf_check_module_arch for module
+ specific elf arch checks
+To: Jessica Yu <jeyu@kernel.org>
+References: <20210611093959.821525-1-npiggin@gmail.com>
+ <20210611093959.821525-2-npiggin@gmail.com>
+ <YMdGWjBOmcstBwOl@p200300cbcf109700df096d564fe976c3.dip0.t-ipconnect.de>
+ <1623722110.amu32mwaqs.astroid@bobo.none>
+ <YMiaZOqhHck9iy0n@p200300cbcf109700df096d564fe976c3.dip0.t-ipconnect.de>
+ <1623805495.qdikm5ks8v.astroid@bobo.none> <YMn0cvhTyRtsE7xu@linux.fritz.box>
+In-Reply-To: <YMn0cvhTyRtsE7xu@linux.fritz.box>
 MIME-Version: 1.0
-Content-Type: text/plain
+Message-Id: <1623907147.4k0ms3i41v.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,180 +87,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Michal =?iso-8859-1?q?Such=E1nek?= <msuchanek@suse.de>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Paul Mackerras <paulus@ozlabs.org> writes:
->
+Excerpts from Jessica Yu's message of June 16, 2021 10:54 pm:
+> +++ Nicholas Piggin [16/06/21 11:18 +1000]:
+>>Excerpts from Jessica Yu's message of June 15, 2021 10:17 pm:
+>>> +++ Nicholas Piggin [15/06/21 12:05 +1000]:
+>>>>Excerpts from Jessica Yu's message of June 14, 2021 10:06 pm:
+>>>>> +++ Nicholas Piggin [11/06/21 19:39 +1000]:
+>>>>>>The elf_check_arch() function is used to test usermode binaries, but
+>>>>>>kernel modules may have more specific requirements. powerpc would lik=
+e
+>>>>>>to test for ABI version compatibility.
+>>>>>>
+>>>>>>Add an arch-overridable function elf_check_module_arch() that default=
+s
+>>>>>>to elf_check_arch() and use it in elf_validity_check().
+>>>>>>
+>>>>>>Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+>>>>>>[np: split patch, added changelog]
+>>>>>>Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>>>>>>---
+>>>>>> include/linux/moduleloader.h | 5 +++++
+>>>>>> kernel/module.c              | 2 +-
+>>>>>> 2 files changed, 6 insertions(+), 1 deletion(-)
+>>>>>>
+>>>>>>diff --git a/include/linux/moduleloader.h b/include/linux/moduleloade=
+r.h
+>>>>>>index 9e09d11ffe5b..fdc042a84562 100644
+>>>>>>--- a/include/linux/moduleloader.h
+>>>>>>+++ b/include/linux/moduleloader.h
+>>>>>>@@ -13,6 +13,11 @@
+>>>>>>  * must be implemented by each architecture.
+>>>>>>  */
+>>>>>>
+>>>>>>+// Allow arch to optionally do additional checking of module ELF hea=
+der
+>>>>>>+#ifndef elf_check_module_arch
+>>>>>>+#define elf_check_module_arch elf_check_arch
+>>>>>>+#endif
+>>>>>
+>>>>> Hi Nicholas,
+>>>>>
+>>>>> Why not make elf_check_module_arch() consistent with the other
+>>>>> arch-specific functions? Please see module_frob_arch_sections(),
+>>>>> module_{init,exit}_section(), etc in moduleloader.h. That is, they ar=
+e
+>>>>> all __weak functions that are overridable by arches. We can maybe mak=
+e
+>>>>> elf_check_module_arch() a weak symbol, available for arches to
+>>>>> override if they want to perform additional elf checks. Then we don't
+>>>>> have to have this one-off #define.
+>>>>
+>>>>
+>>>>Like this? I like it. Good idea.
+>>>
+>>> Yeah! Also, maybe we can alternatively make elf_check_module_arch() a
+>>> separate check entirely so that the powerpc implementation doesn't
+>>> have to include that extra elf_check_arch() call. Something like this m=
+aybe?
+>>
+>>Yeah we can do that. Would you be okay if it goes via powerpc tree? If
+>>yes, then we should get your Ack (or SOB because it seems to be entirely
+>>your patch now :D)
+>=20
+> This can go through the powerpc tree. Will you do another respin
+> of this patch? And yes, feel free to take my SOB for this one -
+>=20
+>      Signed-off-by: Jessica Yu <jeyu@kernel.org>
 
-Little bit of change log never hurts :)
+You're maintainer so let's go with your preference. We can always adjust=20
+the arch hooks later if a need comes up. And yes I'll re post with you=20
+cc'ed.
 
-> Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
-> ---
->  arch/powerpc/boot/dts/microwatt.dts | 105 ++++++++++++++++++++++++++++
->  1 file changed, 105 insertions(+)
->  create mode 100644 arch/powerpc/boot/dts/microwatt.dts
->
-> diff --git a/arch/powerpc/boot/dts/microwatt.dts b/arch/powerpc/boot/dts/microwatt.dts
-> new file mode 100644
-> index 000000000000..9b2e64da9432
-> --- /dev/null
-> +++ b/arch/powerpc/boot/dts/microwatt.dts
-> @@ -0,0 +1,105 @@
-> +/dts-v1/;
-> +
-> +/ {
-> +	#size-cells = <0x02>;
-> +	#address-cells = <0x02>;
-> +	model-name = "microwatt";
-> +	compatible = "microwatt-soc";
-> +
-> +	reserved-memory {
-> +		#size-cells = <0x02>;
-> +		#address-cells = <0x02>;
-> +		ranges;
-> +	};
-> +
-> +	memory@0 {
-> +		device_type = "memory";
-> +		reg = <0x00000000 0x00000000 0x00000000 0x10000000>;
-> +	};
-> +
-> +	cpus {
-> +		#size-cells = <0x00>;
-> +		#address-cells = <0x01>;
-> +
-> +		ibm,powerpc-cpu-features {
-> +			display-name = "Microwatt";
-> +			isa = <3000>;
-> +			device_type = "cpu-features";
-> +			compatible = "ibm,powerpc-cpu-features";
-> +
-> +			mmu-radix {
-> +				isa = <3000>;
-> +				usable-privilege = <2>;
-
-skiboot says 6?
-
-> +				os-support = <0x00>;
-> +			};
-> +
-> +			little-endian {
-> +				isa = <0>;
-
-I guess you just copied that from skiboot.
-
-The binding says it's required, but AFAICS the kernel doesn't use it.
-
-And isa = 0 mean ISA_BASE, according to the skiboot source.
-
-> +				usable-privilege = <3>;
-> +				os-support = <0x00>;
-> +			};
-> +
-> +			cache-inhibited-large-page {
-> +				isa = <0x00>;
-> +				usable-privilege = <2>;
-
-skiboot says 6, ie. HV and OS.
-Don't think it actually matters because you say os-support = 0.
-
-> +				os-support = <0x00>;
-> +			};
-> +
-> +			fixed-point-v3 {
-> +				isa = <3000>;
-> +				usable-privilege = <3>;
-
-skiboot says 7.
-
-> +			};
-> +
-> +			no-execute {
-> +				isa = <0x00>;
-> +				usable-privilege = <2>;
-
-skiboot says 6.
-
-> +				os-support = <0x00>;
-> +			};
-> +
-> +			floating-point {
-> +				hfscr-bit-nr = <0x00>;
-> +				hwcap-bit-nr = <0x1b>;
-
-Looks right, bit 27:
-
-#define PPC_FEATURE_HAS_FPU		0x08000000
-
-
-> +				isa = <0x00>;
-> +				usable-privilege = <0x07>;
-> +				hv-support = <0x00>;
-> +				os-support = <0x00>;
-> +			};
-> +		};
-> +
-> +		PowerPC,Microwatt@0 {
-> +			i-cache-sets = <2>;
-> +			ibm,dec-bits = <64>;
-> +			reservation-granule-size = <64>;
-
-Never seen that one before.
-
-> +			clock-frequency = <100000000>;
-> +			timebase-frequency = <100000000>;
-
-Those seem quite high?
-
-> +			i-tlb-sets = <1>;
-> +			ibm,ppc-interrupt-server#s = <0>;
-> +			i-cache-block-size = <64>;
-> +			d-cache-block-size = <64>;
-
-The kernel reads those, but also hard codes 128 in places.
-See L1_CACHE_BYTES.
-
-> +			ibm,pa-features = [40 00 c2 27 00 00 00 80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 80 00 80 00 00 00 80 00 80 00 00 00 80 00 80 00 80 00 80 00 80 00 80 00 80 00 80 00 80 00 80 00 80 00 80 00 80 00];
-
-Do you need that?
-
-You shouldn't, if we've done things right with the cpu-features support.
-
-> +			d-cache-sets = <2>;
-> +			ibm,pir = <0x3c>;
-
-Needed?
-
-> +			i-tlb-size = <64>;
-> +			cpu-version = <0x990000>;
-> +			status = "okay";
-> +			i-cache-size = <0x1000>;
-> +			ibm,processor-radix-AP-encodings = <0x0c 0xa0000010 0x20000015 0x4000001e>;
-> +			tlb-size = <0>;
-> +			tlb-sets = <0>;
-
-Does the kernel use those? I can't find it.
-
-> +			device_type = "cpu";
-> +			d-tlb-size = <128>;
-> +			d-tlb-sets = <2>;
-> +			reg = <0>;
-> +			general-purpose;
-> +			64-bit;
-> +			d-cache-size = <0x1000>;
-> +			ibm,chip-id = <0x00>;
-> +		};
-> +	};
-> +
-> +	chosen {
-> +		bootargs = "";
-> +		ibm,architecture-vec-5 = [19 00 10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 40 00 40];
-
-Do you need that?
-
-I assume you run with MSR[HV] = 1 (you don't say anywhere), in which
-case we never look at that property.
-
-cheers
+Thanks,
+Nick
