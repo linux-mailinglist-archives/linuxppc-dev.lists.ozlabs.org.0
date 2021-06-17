@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EF713ABF87
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 01:31:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E1683ABF8E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 01:31:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G5dbk0wSFz3c2q
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 09:31:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G5dcB4pSgz3c3c
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 09:31:38 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WNUjjRc9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=L3nKu5Hm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,34 +17,35 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sstabellini@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=WNUjjRc9; 
+ header.s=k20201202 header.b=L3nKu5Hm; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G5dbF5ynqz30B3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jun 2021 09:30:49 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 668C56113E;
- Thu, 17 Jun 2021 23:30:44 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G5dbM06Brz3bxh
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jun 2021 09:30:54 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id EC0DB6117A;
+ Thu, 17 Jun 2021 23:30:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1623972646;
- bh=rr/c3XeFS+9sdYq4bUvVJ43Rq1hQvVCPc1yQzRKz0M4=;
+ s=k20201202; t=1623972652;
+ bh=zT1qdWU1gzmRyGeh30JGyHfeH/5dy6E64TCLRTPOMuQ=;
  h=Date:From:To:cc:Subject:In-Reply-To:References:From;
- b=WNUjjRc9qiEKd1v6ch2oCBMCLr//p27BpMcgjvENehNLikMoev5Wqn272QTxx71CW
- 3D3qfUT5ju+4mKjQzOKKH9gG669sTY/7NSboz0Exn9xL7XiAsYwisipa8+ZFly/R/o
- DXSq4guI2oTMIWCnLtIfK2u7Aepnlt6Tlb4iaOHXykPvtPc0PDNGmILxhwM/W20xwP
- EkxLcDsLyTSrutO0JMWUgmxdcIo9gQkjJat7Q9uy0cpusxn7iT8yBAyZlIVSiyaPd+
- yrJcoSW9cwD0kiFZO94T+u3eUXoEusH4WrtVqLy3ZnfWy+/EPI7J5AbbnN0JrKQ05d
- sMIO+8CCUsK0g==
-Date: Thu, 17 Jun 2021 16:30:43 -0700 (PDT)
+ b=L3nKu5Hm2ncrIKOEaFTf+2fL0fh6USJhIFnbQA9qkk03x89Y1npCLAh/mGQJh5jgS
+ pnnSruyh6mX3z3Is7HGD+08WcJ0DnFnBawbI2rFKKmajFf1FEQ37ybp7Nq3v8pjbh0
+ NHrvEDTsIOxk4nTYvYmiUcCNBuL4M/XxImwe4e8lhtE6D3K7hOlD4JIdGP+kIOALnw
+ 5Scct4vYV5ZtSH09JchbACRHQNDYN1A3YXySJYHgErO3JUbn5qo9xkJbr5DFsapWSj
+ o+frwhth6wJ1B4JrC45X+H0+WpZAVkNuIox4TsHm6lkmMwlV+YZDFHxdVI/S5CtGI5
+ B7G21AS9iH6ZA==
+Date: Thu, 17 Jun 2021 16:30:50 -0700 (PDT)
 From: Stefano Stabellini <sstabellini@kernel.org>
 X-X-Sender: sstabellini@sstabellini-ThinkPad-T480s
 To: Claire Chang <tientzu@chromium.org>
-Subject: Re: [PATCH v13 01/12] swiotlb: Refactor swiotlb init functions
-In-Reply-To: <20210617062635.1660944-2-tientzu@chromium.org>
-Message-ID: <alpine.DEB.2.21.2106171434480.24906@sstabellini-ThinkPad-T480s>
+Subject: Re: [PATCH v13 03/12] swiotlb: Set dev->dma_io_tlb_mem to the swiotlb
+ pool used
+In-Reply-To: <20210617062635.1660944-4-tientzu@chromium.org>
+Message-ID: <alpine.DEB.2.21.2106171444510.24906@sstabellini-ThinkPad-T480s>
 References: <20210617062635.1660944-1-tientzu@chromium.org>
- <20210617062635.1660944-2-tientzu@chromium.org>
+ <20210617062635.1660944-4-tientzu@chromium.org>
 User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -90,104 +91,106 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Thu, 17 Jun 2021, Claire Chang wrote:
-> Add a new function, swiotlb_init_io_tlb_mem, for the io_tlb_mem struct
-> initialization to make the code reusable.
+> Always have the pointer to the swiotlb pool used in struct device. This
+> could help simplify the code for other pools.
 > 
 > Signed-off-by: Claire Chang <tientzu@chromium.org>
 > Reviewed-by: Christoph Hellwig <hch@lst.de>
 > Tested-by: Stefano Stabellini <sstabellini@kernel.org>
 > Tested-by: Will Deacon <will@kernel.org>
+
+Acked-by: Stefano Stabellini <sstabellini@kernel.org>
+
 > ---
->  kernel/dma/swiotlb.c | 50 ++++++++++++++++++++++----------------------
->  1 file changed, 25 insertions(+), 25 deletions(-)
+>  drivers/base/core.c    | 4 ++++
+>  include/linux/device.h | 4 ++++
+>  kernel/dma/swiotlb.c   | 8 ++++----
+>  3 files changed, 12 insertions(+), 4 deletions(-)
 > 
+> diff --git a/drivers/base/core.c b/drivers/base/core.c
+> index f29839382f81..cb3123e3954d 100644
+> --- a/drivers/base/core.c
+> +++ b/drivers/base/core.c
+> @@ -27,6 +27,7 @@
+>  #include <linux/netdevice.h>
+>  #include <linux/sched/signal.h>
+>  #include <linux/sched/mm.h>
+> +#include <linux/swiotlb.h>
+>  #include <linux/sysfs.h>
+>  #include <linux/dma-map-ops.h> /* for dma_default_coherent */
+>  
+> @@ -2736,6 +2737,9 @@ void device_initialize(struct device *dev)
+>      defined(CONFIG_ARCH_HAS_SYNC_DMA_FOR_CPU_ALL)
+>  	dev->dma_coherent = dma_default_coherent;
+>  #endif
+> +#ifdef CONFIG_SWIOTLB
+> +	dev->dma_io_tlb_mem = io_tlb_default_mem;
+> +#endif
+>  }
+>  EXPORT_SYMBOL_GPL(device_initialize);
+>  
+> diff --git a/include/linux/device.h b/include/linux/device.h
+> index ba660731bd25..240d652a0696 100644
+> --- a/include/linux/device.h
+> +++ b/include/linux/device.h
+> @@ -416,6 +416,7 @@ struct dev_links_info {
+>   * @dma_pools:	Dma pools (if dma'ble device).
+>   * @dma_mem:	Internal for coherent mem override.
+>   * @cma_area:	Contiguous memory area for dma allocations
+> + * @dma_io_tlb_mem: Pointer to the swiotlb pool used.  Not for driver use.
+>   * @archdata:	For arch-specific additions.
+>   * @of_node:	Associated device tree node.
+>   * @fwnode:	Associated device node supplied by platform firmware.
+> @@ -518,6 +519,9 @@ struct device {
+>  #ifdef CONFIG_DMA_CMA
+>  	struct cma *cma_area;		/* contiguous memory area for dma
+>  					   allocations */
+> +#endif
+> +#ifdef CONFIG_SWIOTLB
+> +	struct io_tlb_mem *dma_io_tlb_mem;
+>  #endif
+>  	/* arch specific additions */
+>  	struct dev_archdata	archdata;
 > diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-> index 52e2ac526757..47bb2a766798 100644
+> index 2dba659a1e73..de79e9437030 100644
 > --- a/kernel/dma/swiotlb.c
 > +++ b/kernel/dma/swiotlb.c
-> @@ -168,9 +168,28 @@ void __init swiotlb_update_mem_attributes(void)
->  	memset(vaddr, 0, bytes);
->  }
->  
-> -int __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
-> +static void swiotlb_init_io_tlb_mem(struct io_tlb_mem *mem, phys_addr_t start,
-> +				    unsigned long nslabs, bool late_alloc)
+> @@ -340,7 +340,7 @@ void __init swiotlb_exit(void)
+>  static void swiotlb_bounce(struct device *dev, phys_addr_t tlb_addr, size_t size,
+>  			   enum dma_data_direction dir)
 >  {
-> +	void *vaddr = phys_to_virt(start);
->  	unsigned long bytes = nslabs << IO_TLB_SHIFT, i;
-> +
-> +	mem->nslabs = nslabs;
-> +	mem->start = start;
-> +	mem->end = mem->start + bytes;
-> +	mem->index = 0;
-> +	mem->late_alloc = late_alloc;
-> +	spin_lock_init(&mem->lock);
-> +	for (i = 0; i < mem->nslabs; i++) {
-> +		mem->slots[i].list = IO_TLB_SEGSIZE - io_tlb_offset(i);
-> +		mem->slots[i].orig_addr = INVALID_PHYS_ADDR;
-> +		mem->slots[i].alloc_size = 0;
-> +	}
-> +	memset(vaddr, 0, bytes);
-> +}
-> +
-> +int __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
-> +{
->  	struct io_tlb_mem *mem;
->  	size_t alloc_size;
->  
-> @@ -186,16 +205,8 @@ int __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
->  	if (!mem)
->  		panic("%s: Failed to allocate %zu bytes align=0x%lx\n",
->  		      __func__, alloc_size, PAGE_SIZE);
-> -	mem->nslabs = nslabs;
-> -	mem->start = __pa(tlb);
-> -	mem->end = mem->start + bytes;
-> -	mem->index = 0;
-> -	spin_lock_init(&mem->lock);
-> -	for (i = 0; i < mem->nslabs; i++) {
-> -		mem->slots[i].list = IO_TLB_SEGSIZE - io_tlb_offset(i);
-> -		mem->slots[i].orig_addr = INVALID_PHYS_ADDR;
-> -		mem->slots[i].alloc_size = 0;
-> -	}
-> +
-> +	swiotlb_init_io_tlb_mem(mem, __pa(tlb), nslabs, false);
->  
->  	io_tlb_default_mem = mem;
->  	if (verbose)
-> @@ -282,8 +293,8 @@ swiotlb_late_init_with_default_size(size_t default_size)
->  int
->  swiotlb_late_init_with_tbl(char *tlb, unsigned long nslabs)
+> -	struct io_tlb_mem *mem = io_tlb_default_mem;
+> +	struct io_tlb_mem *mem = dev->dma_io_tlb_mem;
+>  	int index = (tlb_addr - mem->start) >> IO_TLB_SHIFT;
+>  	unsigned int offset = (tlb_addr - mem->start) & (IO_TLB_SIZE - 1);
+>  	phys_addr_t orig_addr = mem->slots[index].orig_addr;
+> @@ -431,7 +431,7 @@ static unsigned int wrap_index(struct io_tlb_mem *mem, unsigned int index)
+>  static int find_slots(struct device *dev, phys_addr_t orig_addr,
+>  		size_t alloc_size)
 >  {
-> -	unsigned long bytes = nslabs << IO_TLB_SHIFT, i;
->  	struct io_tlb_mem *mem;
-> +	unsigned long bytes = nslabs << IO_TLB_SHIFT;
->  
->  	if (swiotlb_force == SWIOTLB_NO_FORCE)
->  		return 0;
-> @@ -297,20 +308,9 @@ swiotlb_late_init_with_tbl(char *tlb, unsigned long nslabs)
->  	if (!mem)
->  		return -ENOMEM;
->  
-> -	mem->nslabs = nslabs;
-> -	mem->start = virt_to_phys(tlb);
-> -	mem->end = mem->start + bytes;
-> -	mem->index = 0;
-> -	mem->late_alloc = 1;
-> -	spin_lock_init(&mem->lock);
-> -	for (i = 0; i < mem->nslabs; i++) {
-> -		mem->slots[i].list = IO_TLB_SEGSIZE - io_tlb_offset(i);
-> -		mem->slots[i].orig_addr = INVALID_PHYS_ADDR;
-> -		mem->slots[i].alloc_size = 0;
-> -	}
-> -
-> +	memset(mem, 0, sizeof(*mem));
-> +	swiotlb_init_io_tlb_mem(mem, virt_to_phys(tlb), nslabs, true);
->  	set_memory_decrypted((unsigned long)tlb, bytes >> PAGE_SHIFT);
-> -	memset(tlb, 0, bytes);
- 
-This is good for swiotlb_late_init_with_tbl. However I have just noticed
-that mem could also be allocated from swiotlb_init_with_tbl, in which
-case the zeroing is missing. I think we need another memset in
-swiotlb_init_with_tbl as well. Or maybe it could be better to have a
-single memset at the beginning of swiotlb_init_io_tlb_mem instead. Up to
-you.
+> -	struct io_tlb_mem *mem = io_tlb_default_mem;
+> +	struct io_tlb_mem *mem = dev->dma_io_tlb_mem;
+>  	unsigned long boundary_mask = dma_get_seg_boundary(dev);
+>  	dma_addr_t tbl_dma_addr =
+>  		phys_to_dma_unencrypted(dev, mem->start) & boundary_mask;
+> @@ -508,7 +508,7 @@ phys_addr_t swiotlb_tbl_map_single(struct device *dev, phys_addr_t orig_addr,
+>  		size_t mapping_size, size_t alloc_size,
+>  		enum dma_data_direction dir, unsigned long attrs)
+>  {
+> -	struct io_tlb_mem *mem = io_tlb_default_mem;
+> +	struct io_tlb_mem *mem = dev->dma_io_tlb_mem;
+>  	unsigned int offset = swiotlb_align_offset(dev, orig_addr);
+>  	unsigned int i;
+>  	int index;
+> @@ -559,7 +559,7 @@ void swiotlb_tbl_unmap_single(struct device *hwdev, phys_addr_t tlb_addr,
+>  			      size_t mapping_size, enum dma_data_direction dir,
+>  			      unsigned long attrs)
+>  {
+> -	struct io_tlb_mem *mem = io_tlb_default_mem;
+> +	struct io_tlb_mem *mem = hwdev->dma_io_tlb_mem;
+>  	unsigned long flags;
+>  	unsigned int offset = swiotlb_align_offset(hwdev, tlb_addr);
+>  	int index = (tlb_addr - offset - mem->start) >> IO_TLB_SHIFT;
+> -- 
+> 2.32.0.288.g62a8d224e6-goog
+> 
