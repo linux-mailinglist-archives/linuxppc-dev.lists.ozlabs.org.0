@@ -1,75 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 569E33AB55A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 16:05:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 903F93AB6B1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 16:58:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G5P2l0MdXz3c98
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 00:05:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G5QDG1l1Yz3c32
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 00:58:38 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=lUWkoeD4;
+	dkim=pass (2048-bit key; unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=default header.b=LtCwpDBN;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102d;
- helo=mail-pj1-x102d.google.com; envelope-from=bsingharora@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=efficios.com (client-ip=167.114.26.124; helo=mail.efficios.com;
+ envelope-from=compudj@efficios.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=lUWkoeD4; dkim-atps=neutral
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com
- [IPv6:2607:f8b0:4864:20::102d])
+ unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256
+ header.s=default header.b=LtCwpDBN; dkim-atps=neutral
+X-Greylist: delayed 607 seconds by postgrey-1.36 at boromir;
+ Fri, 18 Jun 2021 00:58:13 AEST
+Received: from mail.efficios.com (mail.efficios.com [167.114.26.124])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G5P21271hz3byJ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jun 2021 00:04:40 +1000 (AEST)
-Received: by mail-pj1-x102d.google.com with SMTP id
- s17-20020a17090a8811b029016e89654f93so6171012pjn.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 07:04:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=m08QhGbjsqNMKDfakqlQtcqTK06PXTezleRaulhxGzY=;
- b=lUWkoeD4MiFsevJjayo/38vNE7ZcF3Oxzw/b1Q07FkRc7ABIzvQDeAtOro7WvCfVrO
- +VJiaMYJWwbbZat1lQItgBdYyGP9y7+FW4bSanRqQ+5ocg8rG6DhPe63YNfFFMucSoq/
- 1dwu701UdFYBSLnDG01vwkNtz5Ll7cMqNVi2HgAosjZ+h/TcBaznbunrF/ePq5Ki2nas
- mpJ+ADs4ZeMjYHk4HBtHkQ5PHbNQyAOcC6+SzcpJkxox/ri31d301yaoSmcy/5zcJnl+
- iIgVGGd+lg7Rc02efWHJigJQDevZu4jTyPSQoCg626+ngc5b4j9YIYIkqhKSsoy7qgYd
- 6C/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=m08QhGbjsqNMKDfakqlQtcqTK06PXTezleRaulhxGzY=;
- b=gq8yuZVYFaE1fwoy1OHoIptwCUoFNtz5G2k7bUsEJH71KNZL2n1t0/9AzaeM2aFsC0
- TKJGlqZmwYx56Oxv0CnE0ubA+eiRYf294MSnw1ET/8sz7EchBdsbEmovvu+3oRIeFxaS
- p40UMXFPDSM6hHjP4hdynSF5k06Mr+OC5faAgpbycV4sQ7mVqhwym8QVAL2U7Us2o01P
- gng75H58z4s+aIElzrHVWLud+4MHG169g/XiIiY3spGStZsB6YSV95MjhFI0Xbn7cgIS
- yaQRcsIvn53q+BaUlpwpwNe8vQzL4QsEyTAUvi1hXEuPKPiqJTxJHN7MCjj/otj71M6W
- A1Mg==
-X-Gm-Message-State: AOAM530g+gC7vNG5XruJd/KDj8yxh3nR4OafXHIC5g2s9+Zo7hPZ/UCy
- csnvfavj+GHyti8tfn45MXw=
-X-Google-Smtp-Source: ABdhPJw3GdT62IZuD4bx51NMgvLf/wsXCZbpE/gH+uomRAWk1xAMH0zRsTzXvPIjNue6X91FmIaDAA==
-X-Received: by 2002:a17:90b:4b49:: with SMTP id
- mi9mr16281017pjb.219.1623938676419; 
- Thu, 17 Jun 2021 07:04:36 -0700 (PDT)
-Received: from localhost ([61.69.135.108])
- by smtp.gmail.com with ESMTPSA id c5sm5652006pfn.144.2021.06.17.07.04.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 17 Jun 2021 07:04:34 -0700 (PDT)
-Date: Fri, 18 Jun 2021 00:04:31 +1000
-From: Balbir Singh <bsingharora@gmail.com>
-To: Daniel Axtens <dja@axtens.net>
-Subject: Re: [PATCH v15 0/4] KASAN core changes for ppc64 radix KASAN
-Message-ID: <YMtWb2HJx44HdgQC@balbir-desktop>
-References: <20210617093032.103097-1-dja@axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G5QCn34PLz3bsQ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jun 2021 00:58:12 +1000 (AEST)
+Received: from localhost (localhost [127.0.0.1])
+ by mail.efficios.com (Postfix) with ESMTP id 72CD133BA55;
+ Thu, 17 Jun 2021 10:47:58 -0400 (EDT)
+Received: from mail.efficios.com ([127.0.0.1])
+ by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10032)
+ with ESMTP id DhKZCbvlP3-9; Thu, 17 Jun 2021 10:47:58 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+ by mail.efficios.com (Postfix) with ESMTP id 0B78F33B931;
+ Thu, 17 Jun 2021 10:47:58 -0400 (EDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.efficios.com 0B78F33B931
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+ s=default; t=1623941278;
+ bh=PLmeUNZK9WR3Sr2WIFWT3Vd6iXIZKutqycMR2Hdur10=;
+ h=Date:From:To:Message-ID:MIME-Version;
+ b=LtCwpDBN1PTYJi8ZUiyQpNX/3B26iJ4YFHCpUNkxuC/DZxtG3R6gq98F+vllh70f0
+ guHwV9++CTJrY4RDnupUW+jaxChkzDohlXWciw2tLcDiWNYXn2xycDnQhQa36ejE6l
+ KKldpFqf6Uk5K7tMJhpa6pdzDA+WlEKBzmrHXGLX6LnwfcnIGfSePdTMpU43LAcU77
+ UNxM6gZcfhC/2UZ01A4uHToBHCHifVRJtheU6Q8N5MMh9bTFFssD1RjhmX/G84s5on
+ ezWOAG3wYMTK1m0vqxL8md2AC8nSYL352pUYY4SjHetyz3Irro/zNq5B22qbECQcNY
+ lGpIFbMb3uCgQ==
+X-Virus-Scanned: amavisd-new at efficios.com
+Received: from mail.efficios.com ([127.0.0.1])
+ by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10026)
+ with ESMTP id mjoObxJ2a_KR; Thu, 17 Jun 2021 10:47:58 -0400 (EDT)
+Received: from mail03.efficios.com (mail03.efficios.com [167.114.26.124])
+ by mail.efficios.com (Postfix) with ESMTP id EE8A133B8A0;
+ Thu, 17 Jun 2021 10:47:57 -0400 (EDT)
+Date: Thu, 17 Jun 2021 10:47:57 -0400 (EDT)
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To: Andy Lutomirski <luto@kernel.org>
+Message-ID: <827549827.10547.1623941277868.JavaMail.zimbra@efficios.com>
+In-Reply-To: <07a8b963002cb955b7516e61bad19514a3acaa82.1623813516.git.luto@kernel.org>
+References: <cover.1623813516.git.luto@kernel.org>
+ <07a8b963002cb955b7516e61bad19514a3acaa82.1623813516.git.luto@kernel.org>
+Subject: Re: [PATCH 8/8] membarrier: Rewrite sync_core_before_usermode() and
+ improve documentation
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210617093032.103097-1-dja@axtens.net>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [167.114.26.124]
+X-Mailer: Zimbra 8.8.15_GA_4018 (ZimbraWebClient - FF89 (Linux)/8.8.15_GA_4026)
+Thread-Topic: membarrier: Rewrite sync_core_before_usermode() and improve
+ documentation
+Thread-Index: HZuOJZBerHSq1IbJ6WneE0wVP8/5rA==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,50 +81,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: elver@google.com, aneesh.kumar@linux.ibm.com, linux-kernel@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-mm@kvack.org, akpm@linux-foundation.org,
- linuxppc-dev@lists.ozlabs.org, andreyknvl@gmail.com
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ linux-mm <linux-mm@kvack.org>, Peter Zijlstra <peterz@infradead.org>,
+ x86 <x86@kernel.org>, linux-kernel <linux-kernel@vger.kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Dave Hansen <dave.hansen@intel.com>,
+ Paul Mackerras <paulus@samba.org>, stable <stable@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 17, 2021 at 07:30:28PM +1000, Daniel Axtens wrote:
-> Building on the work of Christophe, Aneesh and Balbir, I've ported
-> KASAN to 64-bit Book3S kernels running on the Radix MMU. I've been
-> trying this for a while, but we keep having collisions between the
-> kasan code in the mm tree and the code I want to put in to the ppc
-> tree.
-> 
-> This series just contains the kasan core changes that we need. These
-> can go in via the mm tree. I will then propose the powerpc changes for
-> a later cycle. (The most recent RFC for the powerpc changes is in the
-> v12 series at
-> https://lore.kernel.org/linux-mm/20210615014705.2234866-1-dja@axtens.net/
-> )
-> 
-> v15 applies to next-20210611. There should be no noticeable changes to
-> other platforms.
-> 
-> Changes since v14: Included a bunch of Reviewed-by:s, thanks
-> Christophe and Marco. Cleaned up the build time error #ifdefs, thanks
-> Christophe.
-> 
-> Changes since v13: move the MAX_PTR_PER_* definitions out of kasan and
-> into pgtable.h. Add a build time error to hopefully prevent any
-> confusion about when the new hook is applicable. Thanks Marco and
-> Christophe.
-> 
-> Changes since v12: respond to Marco's review comments - clean up the
-> help for ARCH_DISABLE_KASAN_INLINE, and add an arch readiness check to
-> the new granule poisioning function. Thanks Marco.
-> 
-> Daniel Axtens (4):
->   kasan: allow an architecture to disable inline instrumentation
->   kasan: allow architectures to provide an outline readiness check
->   mm: define default MAX_PTRS_PER_* in include/pgtable.h
->   kasan: use MAX_PTRS_PER_* for early shadow tables
-> 
+----- On Jun 15, 2021, at 11:21 PM, Andy Lutomirski luto@kernel.org wrote:
 
-The series seems reasonable
+> The old sync_core_before_usermode() comments suggested that a non-icache-syncing
+> return-to-usermode instruction is x86-specific and that all other
+> architectures automatically notice cross-modified code on return to
+> userspace.
+> 
+> This is misleading.  The incantation needed to modify code from one
+> CPU and execute it on another CPU is highly architecture dependent.
+> On x86, according to the SDM, one must modify the code, issue SFENCE
+> if the modification was WC or nontemporal, and then issue a "serializing
+> instruction" on the CPU that will execute the code.  membarrier() can do
+> the latter.
+> 
+> On arm64 and powerpc, one must flush the icache and then flush the pipeline
+> on the target CPU, although the CPU manuals don't necessarily use this
+> language.
+> 
+> So let's drop any pretense that we can have a generic way to define or
+> implement membarrier's SYNC_CORE operation and instead require all
+> architectures to define the helper and supply their own documentation as to
+> how to use it.
 
-Reviewed-by: Balbir Singh <bsingharora@gmail.com>
+Agreed. Documentation of the sequence of operations that need to be performed
+when cross-modifying code on SMP should be per-architecture. The documentation
+of the architectural effects of membarrier sync-core should be per-arch as well.
+
+> This means x86, arm64, and powerpc for now.
+
+And also arm32, as discussed in the other leg of the patchset's email thread.
+
+> Let's also
+> rename the function from sync_core_before_usermode() to
+> membarrier_sync_core_before_usermode() because the precise flushing details
+> may very well be specific to membarrier, and even the concept of
+> "sync_core" in the kernel is mostly an x86-ism.
+
+OK
+
+> 
+[...]
+> 
+> static void ipi_rseq(void *info)
+> {
+> @@ -368,12 +373,14 @@ static int membarrier_private_expedited(int flags, int
+> cpu_id)
+> 	smp_call_func_t ipi_func = ipi_mb;
+> 
+> 	if (flags == MEMBARRIER_FLAG_SYNC_CORE) {
+> -		if (!IS_ENABLED(CONFIG_ARCH_HAS_MEMBARRIER_SYNC_CORE))
+> +#ifndef CONFIG_ARCH_HAS_MEMBARRIER_SYNC_CORE
+> 			return -EINVAL;
+> +#else
+> 		if (!(atomic_read(&mm->membarrier_state) &
+> 		      MEMBARRIER_STATE_PRIVATE_EXPEDITED_SYNC_CORE_READY))
+> 			return -EPERM;
+> 		ipi_func = ipi_sync_core;
+> +#endif
+
+Please change back this #ifndef / #else / #endif within function for
+
+if (!IS_ENABLED(CONFIG_ARCH_HAS_MEMBARRIER_SYNC_CORE)) {
+  ...
+} else {
+  ...
+}
+
+I don't think mixing up preprocessor and code logic makes it more readable.
+
+Thanks,
+
+Mathieu
+
+> 	} else if (flags == MEMBARRIER_FLAG_RSEQ) {
+> 		if (!IS_ENABLED(CONFIG_RSEQ))
+> 			return -EINVAL;
+> --
+> 2.31.1
+
+-- 
+Mathieu Desnoyers
+EfficiOS Inc.
+http://www.efficios.com
