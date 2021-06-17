@@ -2,98 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7795D3AB9FD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 18:53:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9F243AB9FE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 18:53:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G5SmW0jrHz3cRG
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 02:53:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G5Smz36Plz3ccR
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 02:53:39 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bacoI9+q;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=f5j/BntB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=bacoI9+q; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ header.s=pp1 header.b=f5j/BntB; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G5SkZ5LWWz3bwC
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jun 2021 02:51:34 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 15HGZ8cH111415; Thu, 17 Jun 2021 12:51:24 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G5Skd3lCtz3byR
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jun 2021 02:51:36 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 15HGYfTb138559; Thu, 17 Jun 2021 12:51:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=lw8KDET9356JySrstryGIngD5kuCZmK5bMgNuqxfapY=;
- b=bacoI9+qjqul2LxLGHBc6VKECu5+abcjH+Xu3PIgI3Oky99bymm6CHHel5SWZF8sbwIt
- ixUbry/mM4M4tzIExkPUtOD8smh7+S2+q3Yp6MkMpbH3983K2cOG5Rlv7t2nmJXUEqvA
- vN4m4+yL5oYiuD3hK41qndke8TeW52btk3uXibHNsPS9WuAXUHAcAGo70SjmHEJTISbO
- 0FVq0RM4sd60z8baQpjoxx7tHmgzo8hGyXq+oCwkh/IJ7IiTFS/zRDQmQs7/zZXujs3R
- kbFTV6TYovueAiWrQlDOYHTLrE1B1TkPNYhliaERMrITXmVFvpgfec/Iq+lzi3oFNpdM eQ== 
+ bh=vI8PkbPBlpoEc86rYAy6KObZxMHJtikJOjNrt1GAsfs=;
+ b=f5j/BntBH32VZDGVCJnhF28XS6VvSCtww2Fk8Z5/2nE750+X4tQIdgsbO/t/hjVnDPxy
+ 6bM8o+tijSCei4qc3shSu6X25I12JkSob0pOVrs+hC7pD9fWNI3ZTFLwMFthr/IW8w2M
+ EJBrcISyAwSz4FqHkV2oNdMDdeWFe/+d+2B8z7QGRibJJwEkkpRi0jaKB3ZKs9ZxiZHJ
+ MMf7O3ZxHUH0arzuZ6N7nY69UjSFG5XSrAsDEy0hyKP7chk3HNtv60iYTFJP6gxA38jP
+ mUeG2htLGpHQE6ULbBdlVSiT/8+TGZM50Rq+yYI2bXR2qdaHp69XUBnfHzOZBEdWEIjF 8Q== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3989j49beb-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3988xqjqh2-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Jun 2021 12:51:24 -0400
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 15HGZLA6112229;
- Thu, 17 Jun 2021 12:51:23 -0400
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3989j49be2-1
+ Thu, 17 Jun 2021 12:51:27 -0400
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 15HGolW9003893;
+ Thu, 17 Jun 2021 12:51:27 -0400
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3988xqjqgq-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Jun 2021 12:51:23 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15HGlXMm028376;
- Thu, 17 Jun 2021 16:51:23 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma01wdc.us.ibm.com with ESMTP id 394mj9tkux-1
+ Thu, 17 Jun 2021 12:51:26 -0400
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15HGmFOi003764;
+ Thu, 17 Jun 2021 16:51:26 GMT
+Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
+ [9.57.198.26]) by ppma02wdc.us.ibm.com with ESMTP id 394mjaahny-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Jun 2021 16:51:23 +0000
+ Thu, 17 Jun 2021 16:51:26 +0000
 Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
  [9.57.199.108])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 15HGpMu636176224
+ by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 15HGpP4X4981358
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 17 Jun 2021 16:51:23 GMT
+ Thu, 17 Jun 2021 16:51:25 GMT
 Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D4585B2066;
- Thu, 17 Jun 2021 16:51:22 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id CB151B2065;
+ Thu, 17 Jun 2021 16:51:25 +0000 (GMT)
 Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2429FB2065;
- Thu, 17 Jun 2021 16:51:20 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 55068B2066;
+ Thu, 17 Jun 2021 16:51:23 +0000 (GMT)
 Received: from skywalker.ibmuc.com (unknown [9.199.39.101])
  by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 17 Jun 2021 16:51:19 +0000 (GMT)
+ Thu, 17 Jun 2021 16:51:23 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH v4 3/7] powerpc/pseries: Rename TYPE1_AFFINITY to
- FORM1_AFFINITY
-Date: Thu, 17 Jun 2021 22:21:01 +0530
-Message-Id: <20210617165105.574178-4-aneesh.kumar@linux.ibm.com>
+Subject: [PATCH v4 4/7] powerpc/pseries: Consolidate DLPAR NUMA distance update
+Date: Thu, 17 Jun 2021 22:21:02 +0530
+Message-Id: <20210617165105.574178-5-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210617165105.574178-1-aneesh.kumar@linux.ibm.com>
 References: <20210617165105.574178-1-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: CJijxWkEJ-ZbTN_GOc81kNVijgAc2P1z
-X-Proofpoint-GUID: xVyLwROzdyitx0wc0eEFBqlqXcUENpy3
+X-Proofpoint-GUID: -9JO7DYjdnrKmghfVI-6gGjKTt_HEoFG
+X-Proofpoint-ORIG-GUID: hHxgpsk4FWnvsjXwtryAtJu6DgCxc7vf
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
  definitions=2021-06-17_15:2021-06-15,
  2021-06-17 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- priorityscore=1501 clxscore=1015 adultscore=0 suspectscore=0
- mlxlogscore=999 phishscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0
- mlxscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ suspectscore=0
+ mlxlogscore=999 phishscore=0 priorityscore=1501 mlxscore=0 malwarescore=0
+ adultscore=0 impostorscore=0 clxscore=1015 spamscore=0 bulkscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2104190000 definitions=main-2106170104
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -114,160 +113,108 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Also make related code cleanup that will allow adding FORM2_AFFINITY in
-later patches. No functional change in this patch.
+The associativity details of the newly added resourced are collected from
+the hypervisor via "ibm,configure-connector" rtas call. Update the numa
+distance details of the newly added numa node after the above call. In
+later patch we will remove updating NUMA distance when we are looking
+for node id from associativity array.
 
-Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- arch/powerpc/include/asm/firmware.h       |  4 +--
- arch/powerpc/include/asm/prom.h           |  2 +-
- arch/powerpc/kernel/prom_init.c           |  2 +-
- arch/powerpc/mm/numa.c                    | 35 ++++++++++++++---------
- arch/powerpc/platforms/pseries/firmware.c |  2 +-
- 5 files changed, 26 insertions(+), 19 deletions(-)
+ arch/powerpc/mm/numa.c                        | 41 +++++++++++++++++++
+ arch/powerpc/platforms/pseries/hotplug-cpu.c  |  2 +
+ .../platforms/pseries/hotplug-memory.c        |  2 +
+ arch/powerpc/platforms/pseries/pseries.h      |  1 +
+ 4 files changed, 46 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/firmware.h b/arch/powerpc/include/asm/firmware.h
-index 7604673787d6..60b631161360 100644
---- a/arch/powerpc/include/asm/firmware.h
-+++ b/arch/powerpc/include/asm/firmware.h
-@@ -44,7 +44,7 @@
- #define FW_FEATURE_OPAL		ASM_CONST(0x0000000010000000)
- #define FW_FEATURE_SET_MODE	ASM_CONST(0x0000000040000000)
- #define FW_FEATURE_BEST_ENERGY	ASM_CONST(0x0000000080000000)
--#define FW_FEATURE_TYPE1_AFFINITY ASM_CONST(0x0000000100000000)
-+#define FW_FEATURE_FORM1_AFFINITY ASM_CONST(0x0000000100000000)
- #define FW_FEATURE_PRRN		ASM_CONST(0x0000000200000000)
- #define FW_FEATURE_DRMEM_V2	ASM_CONST(0x0000000400000000)
- #define FW_FEATURE_DRC_INFO	ASM_CONST(0x0000000800000000)
-@@ -69,7 +69,7 @@ enum {
- 		FW_FEATURE_SPLPAR | FW_FEATURE_LPAR |
- 		FW_FEATURE_CMO | FW_FEATURE_VPHN | FW_FEATURE_XCMO |
- 		FW_FEATURE_SET_MODE | FW_FEATURE_BEST_ENERGY |
--		FW_FEATURE_TYPE1_AFFINITY | FW_FEATURE_PRRN |
-+		FW_FEATURE_FORM1_AFFINITY | FW_FEATURE_PRRN |
- 		FW_FEATURE_HPT_RESIZE | FW_FEATURE_DRMEM_V2 |
- 		FW_FEATURE_DRC_INFO | FW_FEATURE_BLOCK_REMOVE |
- 		FW_FEATURE_PAPR_SCM | FW_FEATURE_ULTRAVISOR |
-diff --git a/arch/powerpc/include/asm/prom.h b/arch/powerpc/include/asm/prom.h
-index 324a13351749..df9fec9d232c 100644
---- a/arch/powerpc/include/asm/prom.h
-+++ b/arch/powerpc/include/asm/prom.h
-@@ -147,7 +147,7 @@ extern int of_read_drc_info_cell(struct property **prop,
- #define OV5_MSI			0x0201	/* PCIe/MSI support */
- #define OV5_CMO			0x0480	/* Cooperative Memory Overcommitment */
- #define OV5_XCMO		0x0440	/* Page Coalescing */
--#define OV5_TYPE1_AFFINITY	0x0580	/* Type 1 NUMA affinity */
-+#define OV5_FORM1_AFFINITY	0x0580	/* FORM1 NUMA affinity */
- #define OV5_PRRN		0x0540	/* Platform Resource Reassignment */
- #define OV5_HP_EVT		0x0604	/* Hot Plug Event support */
- #define OV5_RESIZE_HPT		0x0601	/* Hash Page Table resizing */
-diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
-index 41ed7e33d897..64b9593038a7 100644
---- a/arch/powerpc/kernel/prom_init.c
-+++ b/arch/powerpc/kernel/prom_init.c
-@@ -1070,7 +1070,7 @@ static const struct ibm_arch_vec ibm_architecture_vec_template __initconst = {
- #else
- 		0,
- #endif
--		.associativity = OV5_FEAT(OV5_TYPE1_AFFINITY) | OV5_FEAT(OV5_PRRN),
-+		.associativity = OV5_FEAT(OV5_FORM1_AFFINITY) | OV5_FEAT(OV5_PRRN),
- 		.bin_opts = OV5_FEAT(OV5_RESIZE_HPT) | OV5_FEAT(OV5_HP_EVT),
- 		.micro_checkpoint = 0,
- 		.reserved0 = 0,
 diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-index 132813dd1a6c..0ec16999beef 100644
+index 0ec16999beef..645a95e3a7ea 100644
 --- a/arch/powerpc/mm/numa.c
 +++ b/arch/powerpc/mm/numa.c
-@@ -53,7 +53,10 @@ EXPORT_SYMBOL(node_data);
+@@ -287,6 +287,47 @@ int of_node_to_nid(struct device_node *device)
+ }
+ EXPORT_SYMBOL(of_node_to_nid);
  
- static int primary_domain_index;
- static int n_mem_addr_cells, n_mem_size_cells;
--static int form1_affinity;
++static void __initialize_form1_numa_distance(const __be32 *associativity)
++{
++	int i, nid;
 +
-+#define FORM0_AFFINITY 0
-+#define FORM1_AFFINITY 1
-+static int affinity_form;
- 
- #define MAX_DISTANCE_REF_POINTS 4
- static int max_associativity_domain_index;
-@@ -190,7 +193,7 @@ int __node_distance(int a, int b)
- 	int i;
- 	int distance = LOCAL_DISTANCE;
- 
--	if (!form1_affinity)
++	if (of_read_number(associativity, 1) >= primary_domain_index) {
++		nid = of_read_number(&associativity[primary_domain_index], 1);
++
++		for (i = 0; i < max_domain_index; i++) {
++			const __be32 *entry;
++
++			entry = &associativity[be32_to_cpu(distance_ref_points[i])];
++			distance_lookup_table[nid][i] = of_read_number(entry, 1);
++		}
++	}
++}
++
++static void initialize_form1_numa_distance(struct device_node *node)
++{
++	const __be32 *associativity;
++
++	associativity = of_get_associativity(node);
++	if (!associativity)
++		return;
++
++	__initialize_form1_numa_distance(associativity);
++	return;
++}
++
++/*
++ * Used to update distance information w.r.t newly added node.
++ */
++void update_numa_distance(struct device_node *node)
++{
 +	if (affinity_form == FORM0_AFFINITY)
- 		return ((a == b) ? LOCAL_DISTANCE : REMOTE_DISTANCE);
- 
- 	for (i = 0; i < max_associativity_domain_index; i++) {
-@@ -210,7 +213,7 @@ static void initialize_distance_lookup_table(int nid,
- {
- 	int i;
- 
--	if (!form1_affinity)
-+	if (affinity_form != FORM1_AFFINITY)
- 		return;
- 
- 	for (i = 0; i < max_associativity_domain_index; i++) {
-@@ -289,6 +292,17 @@ static int __init find_primary_domain_index(void)
- 	int index;
- 	struct device_node *root;
- 
-+	/*
-+	 * Check for which form of affinity.
-+	 */
-+	if (firmware_has_feature(FW_FEATURE_OPAL)) {
-+		affinity_form = FORM1_AFFINITY;
-+	} else if (firmware_has_feature(FW_FEATURE_FORM1_AFFINITY)) {
-+		dbg("Using form 1 affinity\n");
-+		affinity_form = FORM1_AFFINITY;
-+	} else
-+		affinity_form = FORM0_AFFINITY;
++		return;
++	else if (affinity_form == FORM1_AFFINITY) {
++		initialize_form1_numa_distance(node);
++		return;
++	}
++}
 +
- 	if (firmware_has_feature(FW_FEATURE_OPAL))
- 		root = of_find_node_by_path("/ibm,opal");
- 	else
-@@ -318,23 +332,16 @@ static int __init find_primary_domain_index(void)
+ static int __init find_primary_domain_index(void)
+ {
+ 	int index;
+diff --git a/arch/powerpc/platforms/pseries/hotplug-cpu.c b/arch/powerpc/platforms/pseries/hotplug-cpu.c
+index 7e970f81d8ff..778b6ab35f0d 100644
+--- a/arch/powerpc/platforms/pseries/hotplug-cpu.c
++++ b/arch/powerpc/platforms/pseries/hotplug-cpu.c
+@@ -498,6 +498,8 @@ static ssize_t dlpar_cpu_add(u32 drc_index)
+ 		return saved_rc;
  	}
  
- 	max_associativity_domain_index /= sizeof(int);
--
--	if (firmware_has_feature(FW_FEATURE_OPAL) ||
--	    firmware_has_feature(FW_FEATURE_TYPE1_AFFINITY)) {
--		dbg("Using form 1 affinity\n");
--		form1_affinity = 1;
--	}
--
--	if (form1_affinity) {
--		index = of_read_number(distance_ref_points, 1);
--	} else {
-+	if (affinity_form == FORM0_AFFINITY) {
- 		if (max_associativity_domain_index < 2) {
- 			printk(KERN_WARNING "NUMA: "
--				"short ibm,associativity-reference-points\n");
-+			       "short ibm,associativity-reference-points\n");
- 			goto err;
- 		}
- 
- 		index = of_read_number(&distance_ref_points[1], 1);
-+	} else {
-+		index = of_read_number(distance_ref_points, 1);
++	update_numa_distance(dn);
++
+ 	rc = dlpar_online_cpu(dn);
+ 	if (rc) {
+ 		saved_rc = rc;
+diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+index 8377f1f7c78e..0e602c3b01ea 100644
+--- a/arch/powerpc/platforms/pseries/hotplug-memory.c
++++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+@@ -180,6 +180,8 @@ static int update_lmb_associativity_index(struct drmem_lmb *lmb)
+ 		return -ENODEV;
  	}
  
- 	/*
-diff --git a/arch/powerpc/platforms/pseries/firmware.c b/arch/powerpc/platforms/pseries/firmware.c
-index 4c7b7f5a2ebc..5d4c2bc20bba 100644
---- a/arch/powerpc/platforms/pseries/firmware.c
-+++ b/arch/powerpc/platforms/pseries/firmware.c
-@@ -119,7 +119,7 @@ struct vec5_fw_feature {
++	update_numa_distance(lmb_node);
++
+ 	dr_node = of_find_node_by_path("/ibm,dynamic-reconfiguration-memory");
+ 	if (!dr_node) {
+ 		dlpar_free_cc_nodes(lmb_node);
+diff --git a/arch/powerpc/platforms/pseries/pseries.h b/arch/powerpc/platforms/pseries/pseries.h
+index 1f051a786fb3..663a0859cf13 100644
+--- a/arch/powerpc/platforms/pseries/pseries.h
++++ b/arch/powerpc/platforms/pseries/pseries.h
+@@ -113,4 +113,5 @@ extern u32 pseries_security_flavor;
+ void pseries_setup_security_mitigations(void);
+ void pseries_lpar_read_hblkrm_characteristics(void);
  
- static __initdata struct vec5_fw_feature
- vec5_fw_features_table[] = {
--	{FW_FEATURE_TYPE1_AFFINITY,	OV5_TYPE1_AFFINITY},
-+	{FW_FEATURE_FORM1_AFFINITY,	OV5_FORM1_AFFINITY},
- 	{FW_FEATURE_PRRN,		OV5_PRRN},
- 	{FW_FEATURE_DRMEM_V2,		OV5_DRMEM_V2},
- 	{FW_FEATURE_DRC_INFO,		OV5_DRC_INFO},
++void update_numa_distance(struct device_node *node);
+ #endif /* _PSERIES_PSERIES_H */
 -- 
 2.31.1
 
