@@ -1,79 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 637E93AA7D0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 01:59:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C269E3AA7E5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 02:10:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G52Gn011yz3c0W
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 09:59:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G52Vw3FDlz3c0j
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 10:10:00 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cAce7FEX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZYuvhN96;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=luto@kernel.org; receiver=<UNKNOWN>)
+ envelope-from=sstabellini@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=cAce7FEX; 
+ header.s=k20201202 header.b=ZYuvhN96; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G52GL3cxfz2xb6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 09:59:06 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A243760FD7;
- Wed, 16 Jun 2021 23:59:01 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G52VS3CFCz2ylk
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 10:09:36 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 70EFE61351;
+ Thu, 17 Jun 2021 00:09:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1623887942;
- bh=EIxI0VmomUpgT7/iZ3xMEinSY8OYAHPRUBOAfgdZDYE=;
- h=In-Reply-To:References:Date:From:To:Cc:Subject:From;
- b=cAce7FEXeesB3Eakd7FgmWGf9Fh349iEWi+MqQzZ25859UgzlcGjhB2BDd2939UFF
- swbXKFMMUdw4Lf+O1slRiUqFuttqF0etwHzTY0wHeB6RSCkLyVoM4XBLPGqhXnD8Vy
- ors7qsDhNt7P21cKbCRelkAgERBZrb2NfrWqltsCsQrFLWLgM+gW3v3AlI/4BV+8VO
- sxLxp5xmR56CzdHm9PQuO8mg7UR72l1k5JO6rm0gX/1n5is9oztdoCCHVum8UcJWpy
- FLV26Q2SGb/zFJ7VnfiNVIwdJ7shRlHNP9v1agEMM8Gg1M5S7s7YYTabA6xg0Ktcxg
- +WhRvMO37fYtg==
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.42])
- by mailauth.nyi.internal (Postfix) with ESMTP id A561627C0054;
- Wed, 16 Jun 2021 19:59:00 -0400 (EDT)
-Received: from imap21 ([10.202.2.71])
- by compute2.internal (MEProxy); Wed, 16 Jun 2021 19:59:00 -0400
-X-ME-Sender: <xms:QZDKYGayzehKC7WKofAuiaTI_p_AXBTXjR97NC1qdb2U7WrkOwJohw>
- <xme:QZDKYJa12h8h2X7FlDPPbwMvsBHD72ykVvc_boJ7rN7E57BomoCnpua3usi4AiYoX
- EB4LHQMkB4zFscDaiM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrfeeftddgvdegucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurhepofgfggfkjghffffhvffutgesthdtredtreerjeenucfhrhhomhepfdetnhgu
- hicunfhuthhomhhirhhskhhifdcuoehluhhtoheskhgvrhhnvghlrdhorhhgqeenucggtf
- frrghtthgvrhhnpeegjefghfdtledvfeegfeelvedtgfevkeeugfekffdvveeffeetieeh
- ueetveekfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
- hmpegrnhguhidomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudduiedukeeh
- ieefvddqvdeifeduieeitdekqdhluhhtoheppehkvghrnhgvlhdrohhrgheslhhinhhugi
- drlhhuthhordhush
-X-ME-Proxy: <xmx:QZDKYA9t7IAn3EgEhT7Si9BB0h1DUXL8hkKKGUIYkWMoV_34tvkjsQ>
- <xmx:QZDKYIpVXR-AAN4T8sDDSYyKYiHet_5trvbmKPNYhNBss_hnzQgqWw>
- <xmx:QZDKYBosE_nForDcuC7qt-yJ__5SNPLQalZxTjeeqoHM9EnxGzFFPA>
- <xmx:RJDKYC6Cm1vS3Ti_WH1_dNhaA6MfvzVejlUbA17GfozO0IOY3qXJd184TWvlGDmL>
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
- id A4AE751C0060; Wed, 16 Jun 2021 19:58:57 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.5.0-alpha0-526-gf020ecf851-fm-20210616.001-gf020ecf8
-Mime-Version: 1.0
-Message-Id: <ec728634-d7d3-4dbe-9989-d039c733bd6b@www.fastmail.com>
-In-Reply-To: <20210616102026.GB22350@willie-the-truck>
-References: <cover.1623813516.git.luto@kernel.org>
- <07a8b963002cb955b7516e61bad19514a3acaa82.1623813516.git.luto@kernel.org>
- <20210616102026.GB22350@willie-the-truck>
-Date: Wed, 16 Jun 2021 16:58:37 -0700
-From: "Andy Lutomirski" <luto@kernel.org>
-To: "Will Deacon" <will@kernel.org>
-Subject: =?UTF-8?Q?Re:_[PATCH_8/8]_membarrier:_Rewrite_sync=5Fcore=5Fbefore=5Fuse?=
- =?UTF-8?Q?rmode()_and_improve_documentation?=
-Content-Type: text/plain
+ s=k20201202; t=1623888572;
+ bh=mN2okVVdTICmc/8v91DABSXp7kK2mc41VelpLLMzraM=;
+ h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+ b=ZYuvhN96769HVBf9HwXfEMrx5h2joXFESxJj/lRenrF7yXWLZjtrg1PWIka+vT/Q0
+ oFtXyOpOZ9yR7QPt6WZ9qiVwYGYEJ72zE5pEW7HiR62r0bK1cPffUlPeluSwwsGV++
+ 8riMe4sA8jh8H05UnuJF58KJLPG9dNHhkmEpW63Symhvau9C6X5CTpmeRZXg03FBNA
+ YdmM71is91QiA8p/farR5qTSk/+kZjwaUjrHEt7/cAUyCA79A0OF17vUa8D0c+gd+H
+ nwIEeujLTdx4sfeAu0ptJEutsq4BmObXoP4A9/HlakW6ogsicBITdzMemlH7LIUWJw
+ GZfH7kl1LZ6XQ==
+Date: Wed, 16 Jun 2021 17:09:29 -0700 (PDT)
+From: Stefano Stabellini <sstabellini@kernel.org>
+X-X-Sender: sstabellini@sstabellini-ThinkPad-T480s
+To: Claire Chang <tientzu@chromium.org>
+Subject: Re: [PATCH v12 11/12] dt-bindings: of: Add restricted DMA pool
+In-Reply-To: <20210616062157.953777-12-tientzu@chromium.org>
+Message-ID: <alpine.DEB.2.21.2106161651290.24906@sstabellini-ThinkPad-T480s>
+References: <20210616062157.953777-1-tientzu@chromium.org>
+ <20210616062157.953777-12-tientzu@chromium.org>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,29 +59,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org,
- "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
- the arch/x86 maintainers <x86@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>, Dave Hansen <dave.hansen@intel.com>,
- Paul Mackerras <paulus@samba.org>, stable@vger.kernel.org,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: heikki.krogerus@linux.intel.com, thomas.hellstrom@linux.intel.com,
+ peterz@infradead.org, joonas.lahtinen@linux.intel.com,
+ dri-devel@lists.freedesktop.org, chris@chris-wilson.co.uk,
+ grant.likely@arm.com, paulus@samba.org, Frank Rowand <frowand.list@gmail.com>,
+ mingo@kernel.org, Marek Szyprowski <m.szyprowski@samsung.com>,
+ sstabellini@kernel.org, Saravana Kannan <saravanak@google.com>,
+ Joerg Roedel <joro@8bytes.org>,
+ "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ Christoph Hellwig <hch@lst.de>,
+ Bartosz Golaszewski <bgolaszewski@baylibre.com>, bskeggs@redhat.com,
+ linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
+ Thierry Reding <treding@nvidia.com>, intel-gfx@lists.freedesktop.org,
+ matthew.auld@intel.com, linux-devicetree <devicetree@vger.kernel.org>,
+ jxgao@google.com, daniel@ffwll.ch, Will Deacon <will@kernel.org>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ maarten.lankhorst@linux.intel.com, airlied@linux.ie,
+ Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org,
+ jani.nikula@linux.intel.com, Rob Herring <robh+dt@kernel.org>,
+ rodrigo.vivi@intel.com, bhelgaas@google.com, boris.ostrovsky@oracle.com,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jgross@suse.com,
+ Nicolas Boichat <drinkcat@chromium.org>, Greg KH <gregkh@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, lkml <linux-kernel@vger.kernel.org>,
+ tfiga@chromium.org,
+ "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+ Jim Quinlan <james.quinlan@broadcom.com>, xypron.glpk@gmx.de,
+ Robin Murphy <robin.murphy@arm.com>, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 16, 2021, at 3:20 AM, Will Deacon wrote:
+On Wed, 16 Jun 2021, Claire Chang wrote:
+> Introduce the new compatible string, restricted-dma-pool, for restricted
+> DMA. One can specify the address and length of the restricted DMA memory
+> region by restricted-dma-pool in the reserved-memory node.
 > 
-> For the arm64 bits (docs and asm/sync_core.h):
+> Signed-off-by: Claire Chang <tientzu@chromium.org>
+> ---
+>  .../reserved-memory/reserved-memory.txt       | 36 +++++++++++++++++--
+>  1 file changed, 33 insertions(+), 3 deletions(-)
 > 
-> Acked-by: Will Deacon <will@kernel.org>
-> 
+> diff --git a/Documentation/devicetree/bindings/reserved-memory/reserved-memory.txt b/Documentation/devicetree/bindings/reserved-memory/reserved-memory.txt
+> index e8d3096d922c..46804f24df05 100644
+> --- a/Documentation/devicetree/bindings/reserved-memory/reserved-memory.txt
+> +++ b/Documentation/devicetree/bindings/reserved-memory/reserved-memory.txt
+> @@ -51,6 +51,23 @@ compatible (optional) - standard definition
+>            used as a shared pool of DMA buffers for a set of devices. It can
+>            be used by an operating system to instantiate the necessary pool
+>            management subsystem if necessary.
+> +        - restricted-dma-pool: This indicates a region of memory meant to be
+> +          used as a pool of restricted DMA buffers for a set of devices. The
+> +          memory region would be the only region accessible to those devices.
+> +          When using this, the no-map and reusable properties must not be set,
+> +          so the operating system can create a virtual mapping that will be used
+> +          for synchronization. The main purpose for restricted DMA is to
+> +          mitigate the lack of DMA access control on systems without an IOMMU,
+> +          which could result in the DMA accessing the system memory at
+> +          unexpected times and/or unexpected addresses, possibly leading to data
+> +          leakage or corruption. The feature on its own provides a basic level
+> +          of protection against the DMA overwriting buffer contents at
+> +          unexpected times. However, to protect against general data leakage and
+> +          system memory corruption, the system needs to provide way to lock down
+> +          the memory access, e.g., MPU. Note that since coherent allocation
+> +          needs remapping, one must set up another device coherent pool by
+> +          shared-dma-pool and use dma_alloc_from_dev_coherent instead for atomic
+> +          coherent allocation.
+>          - vendor specific string in the form <vendor>,[<device>-]<usage>
+>  no-map (optional) - empty property
+>      - Indicates the operating system must not create a virtual mapping
+> @@ -85,10 +102,11 @@ memory-region-names (optional) - a list of names, one for each corresponding
+>  
+>  Example
+>  -------
+> -This example defines 3 contiguous regions are defined for Linux kernel:
+> +This example defines 4 contiguous regions for Linux kernel:
+>  one default of all device drivers (named linux,cma@72000000 and 64MiB in size),
+> -one dedicated to the framebuffer device (named framebuffer@78000000, 8MiB), and
+> -one for multimedia processing (named multimedia-memory@77000000, 64MiB).
+> +one dedicated to the framebuffer device (named framebuffer@78000000, 8MiB),
+> +one for multimedia processing (named multimedia-memory@77000000, 64MiB), and
+> +one for restricted dma pool (named restricted_dma_reserved@0x50000000, 64MiB).
+>  
+>  / {
+>  	#address-cells = <1>;
+> @@ -120,6 +138,11 @@ one for multimedia processing (named multimedia-memory@77000000, 64MiB).
+>  			compatible = "acme,multimedia-memory";
+>  			reg = <0x77000000 0x4000000>;
+>  		};
+> +
+> +		restricted_dma_reserved: restricted_dma_reserved {
+> +			compatible = "restricted-dma-pool";
+> +			reg = <0x50000000 0x4000000>;
+> +		};
+>  	};
+>  
+>  	/* ... */
+> @@ -138,4 +161,11 @@ one for multimedia processing (named multimedia-memory@77000000, 64MiB).
+>  		memory-region = <&multimedia_reserved>;
+>  		/* ... */
+>  	};
+> +
+> +	pcie_device: pcie_device@0,0 {
+> +		reg = <0x83010000 0x0 0x00000000 0x0 0x00100000
+> +		       0x83010000 0x0 0x00100000 0x0 0x00100000>;
+> +		memory-region = <&restricted_dma_mem_reserved>;
 
-Thanks.
+Shouldn't it be &restricted_dma_reserved ?
 
-Per Nick's suggestion, I renamed the header to membarrier.h.  Unless I hear otherwise, I'll keep the ack.
-
-> Will
-> 
