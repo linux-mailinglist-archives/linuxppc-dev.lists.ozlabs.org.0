@@ -2,59 +2,96 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2BD73AB9D0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 18:36:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D8CB3AB9F1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jun 2021 18:51:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G5SNg4gznz308Y
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 02:36:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G5Skz0jXSz3c3p
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 02:51:55 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jefOUYdP;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=jefOUYdP; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G5SNG4BgQz2xYp
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jun 2021 02:35:38 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4G5SN65Hk0zBFHn;
- Thu, 17 Jun 2021 18:35:34 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id uK1ZQBeUIsl9; Thu, 17 Jun 2021 18:35:34 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4G5SN64Md9zBFHk;
- Thu, 17 Jun 2021 18:35:34 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6B1E78B819;
- Thu, 17 Jun 2021 18:35:34 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id VmdzIM2qLhKQ; Thu, 17 Jun 2021 18:35:34 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id CBDBC8B801;
- Thu, 17 Jun 2021 18:35:33 +0200 (CEST)
-Subject: Re: Oops (NULL pointer) with 'perf record' of selftest 'null_syscall'
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-References: <c141a18c-b18d-b775-1848-527c35a1c433@csgroup.eu>
- <3388922c-0224-e4aa-f7b7-4fea43e060f9@linux.ibm.com>
- <6102EF12-AFB2-48B1-B707-D3F5471EADDB@linux.vnet.ibm.com>
- <bc2dac10-9e60-e4b7-c376-5ed00f6e227c@csgroup.eu>
- <2F349581-2E44-4C63-A75C-966FA32F26C2@linux.vnet.ibm.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <549cda2e-a7cf-5c69-d459-02ac62e75f24@csgroup.eu>
-Date: Thu, 17 Jun 2021 18:35:28 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
-MIME-Version: 1.0
-In-Reply-To: <2F349581-2E44-4C63-A75C-966FA32F26C2@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G5SkS2YXXz307x
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jun 2021 02:51:27 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 15HGYa3U143192; Thu, 17 Jun 2021 12:51:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=TJrIjCgwNXrnQAF2eJf/Y5Tt/ovH5gnvZp+Osn/9NU0=;
+ b=jefOUYdPaHEylOJYILD+NR9K7FeYTisnmEu7TuChZLIInu3K9zRHpTh1PJnR+8kYOI+U
+ OS/0SxNKZQmj81/Qs1QJikRLTtxdGD2sLm5Bo548htdXuXlVwoHj9OdGHAPr6DYQ+VNL
+ zO3Zopychk3hJ5YI77u2T1tlx7xFNfMbhfyRSswV5P4HiTVAIIppAxqsia9HJNg4eb9u
+ bJ7DOjs/CNi3uw1Pcncojgk6HaisAsGZVrLJENWQb+pP64hhAi2CO6R9aeohbJ9nw2zq
+ UMsK6qipdAsmMg1FKAgeTtBYI8wIbn1zrR4MW/yq0Mj6aZpO6InaWPZEfuOIV4wgL80Z 1A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3989rg8wwp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 17 Jun 2021 12:51:15 -0400
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 15HGYb3t143258;
+ Thu, 17 Jun 2021 12:51:14 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3989rg8wwb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 17 Jun 2021 12:51:14 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15HGlrNj013617;
+ Thu, 17 Jun 2021 16:51:14 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
+ [9.57.198.27]) by ppma03dal.us.ibm.com with ESMTP id 394mjad2mp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 17 Jun 2021 16:51:14 +0000
+Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
+ [9.57.199.108])
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 15HGpDGo19661118
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 17 Jun 2021 16:51:13 GMT
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E2528B2072;
+ Thu, 17 Jun 2021 16:51:12 +0000 (GMT)
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5338DB206E;
+ Thu, 17 Jun 2021 16:51:10 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.199.39.101])
+ by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu, 17 Jun 2021 16:51:09 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+Subject: [PATCH v4 0/7] Add support for FORM2 associativity
+Date: Thu, 17 Jun 2021 22:20:58 +0530
+Message-Id: <20210617165105.574178-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: EMFsAgBIjohbpzGuJ63HmXikka8pr6QS
+X-Proofpoint-GUID: BgONwuDISp1uhjUX-nxwkh7dkqHgk9V9
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-06-17_15:2021-06-15,
+ 2021-06-17 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 adultscore=0
+ suspectscore=0 phishscore=0 spamscore=0 mlxscore=0 priorityscore=1501
+ lowpriorityscore=0 malwarescore=0 impostorscore=0 bulkscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2106170104
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,79 +103,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, nvdimm@lists.linux.dev,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, dan.j.williams@intel.com,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Form2 associativity adds a much more flexible NUMA topology layout
+than what is provided by Form1. More details can be found in patch 7.
+
+$ numactl -H
+...
+node distances:
+node   0   1   2   3 
+  0:  10  11  222  33 
+  1:  44  10  55  66 
+  2:  77  88  10  99 
+  3:  101  121  132  10 
+$
+
+After DAX kmem memory add
+# numactl -H
+available: 5 nodes (0-4)
+...
+node distances:
+node   0   1   2   3   4 
+  0:  10  11  222  33  240 
+  1:  44  10  55  66  255 
+  2:  77  88  10  99  255 
+  3:  101  121  132  10  230 
+  4:  255  255  255  230  10 
 
 
-Le 17/06/2021 à 08:36, Athira Rajeev a écrit :
-> 
-> 
->> On 16-Jun-2021, at 11:56 AM, Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
->>
->>
->>
->> Le 16/06/2021 à 05:40, Athira Rajeev a écrit :
->>>> On 16-Jun-2021, at 8:53 AM, Madhavan Srinivasan <maddy@linux.ibm.com> wrote:
->>>>
->>>>
->>>> On 6/15/21 8:35 PM, Christophe Leroy wrote:
->>>>> For your information, I'm getting the following Oops. Detected with 5.13-rc6, it also oopses on 
->>>>> 5.12 and 5.11.
->>>>> Runs ok on 5.10. I'm starting bisecting now.
->>>>
->>>>
->>>> Thanks for reporting, got the issue. What has happened in this case is that, pmu device is not 
->>>> registered
->>>> and trying to access the instruction point which will land in perf_instruction_pointer(). And 
->>>> recently I have added
->>>> a workaround patch for power10 DD1 which has caused this breakage. My bad. We are working on a 
->>>> fix patch
->>>> for the same and will post it out. Sorry again.
->>>>
->>> Hi Christophe,
->>> Can you please try with below patch in your environment and test if it works for you.
->>> From 55d3afc9369dfbe28a7152c8e9f856c11c7fe43d Mon Sep 17 00:00:00 2001
->>> From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
->>> Date: Tue, 15 Jun 2021 22:28:11 -0400
->>> Subject: [PATCH] powerpc/perf: Fix crash with 'perf_instruction_pointer' when
->>> pmu is not set
->>> On systems without any specific PMU driver support registered, running
->>> perf record causes oops:
->>> [   38.841073] NIP [c00000000013af54] perf_instruction_pointer+0x24/0x100
->>> [   38.841079] LR [c0000000003c7358] perf_prepare_sample+0x4e8/0x820
->>> [   38.841085] --- interrupt: 300
->>> [   38.841088] [c00000001cf03440] [c0000000003c6ef8] perf_prepare_sample+0x88/0x820 (unreliable)
->>> [   38.841096] [c00000001cf034a0] [c0000000003c76d0] perf_event_output_forward+0x40/0xc0
->>> [   38.841104] [c00000001cf03520] [c0000000003b45e8] __perf_event_overflow+0x88/0x1b0
->>> [   38.841112] [c00000001cf03570] [c0000000003b480c] perf_swevent_hrtimer+0xfc/0x1a0
->>> [   38.841119] [c00000001cf03740] [c0000000002399cc] __hrtimer_run_queues+0x17c/0x380
->>> [   38.841127] [c00000001cf037c0] [c00000000023a5f8] hrtimer_interrupt+0x128/0x2f0
->>> [   38.841135] [c00000001cf03870] [c00000000002962c] timer_interrupt+0x13c/0x370
->>> [   38.841143i] [c00000001cf038d0] [c000000000009ba4] decrementer_common_virt+0x1a4/0x1b0
->>> [   38.841151] --- interrupt: 900 at copypage_power7+0xd4/0x1c0
->>> During perf record session, perf_instruction_pointer() is called to
->>> capture the sample ip. This function in core-book3s accesses ppmu->flags.
->>> If a platform specific PMU driver is not registered, ppmu is set to NULL
->>> and accessing its members results in a crash. Fix this crash by checking
->>> if ppmu is set.
->>> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
->>> Reported-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->>
->> Fixes: 2ca13a4cc56c ("powerpc/perf: Use regs->nip when SIAR is zero")
->> Cc: stable@vger.kernel.org
->> Tested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> 
-> Hi Christophe,
-> 
-> Thanks for testing with the change. I have a newer version where I have added braces around the check.
-> Can you please check once and can I add your tested-by for the below patch.
+PAPR SCM now use the numa distance details to find the numa_node and target_node
+for the device.
 
-Yes it works, you can add my Tested-by:
-Please also add Cc: stable@vger.kernel.org, this needs to be backported as soon as possible.
+kvaneesh@ubuntu-guest:~$ ndctl  list -N -v 
+[
+  {
+    "dev":"namespace0.0",
+    "mode":"devdax",
+    "map":"dev",
+    "size":1071644672,
+    "uuid":"d333d867-3f57-44c8-b386-d4d3abdc2bf2",
+    "raw_uuid":"915361ad-fe6a-42dd-848f-d6dc9f5af362",
+    "daxregion":{
+      "id":0,
+      "size":1071644672,
+      "devices":[
+        {
+          "chardev":"dax0.0",
+          "size":1071644672,
+          "target_node":4,
+          "mode":"devdax"
+        }
+      ]
+    },
+    "align":2097152,
+    "numa_node":3
+  }
+]
+kvaneesh@ubuntu-guest:~$ 
 
-Thanks
-Christophe
+
+The above output is with a Qemu command line
+
+-numa node,nodeid=4 \
+-numa dist,src=0,dst=1,val=11 -numa dist,src=0,dst=2,val=222 -numa dist,src=0,dst=3,val=33 -numa dist,src=0,dst=4,val=240 \
+-numa dist,src=1,dst=0,val=44 -numa dist,src=1,dst=2,val=55 -numa dist,src=1,dst=3,val=66 -numa dist,src=1,dst=4,val=255 \
+-numa dist,src=2,dst=0,val=77 -numa dist,src=2,dst=1,val=88 -numa dist,src=2,dst=3,val=99 -numa dist,src=2,dst=4,val=255 \
+-numa dist,src=3,dst=0,val=101 -numa dist,src=3,dst=1,val=121 -numa dist,src=3,dst=2,val=132 -numa dist,src=3,dst=4,val=230 \
+-numa dist,src=4,dst=0,val=255 -numa dist,src=4,dst=1,val=255 -numa dist,src=4,dst=2,val=255 -numa dist,src=4,dst=3,val=230 \
+-object memory-backend-file,id=memnvdimm1,prealloc=yes,mem-path=$PMEM_DISK,share=yes,size=${PMEM_SIZE}  \
+-device nvdimm,label-size=128K,memdev=memnvdimm1,id=nvdimm1,slot=4,uuid=72511b67-0b3b-42fd-8d1d-5be3cae8bcaa,node=4
+
+Qemu changes can be found at https://lore.kernel.org/qemu-devel/20210616011944.2996399-1-danielhb413@gmail.com/
+
+Changes from v3:
+* Drop PAPR SCM specific changes and depend completely on NUMA distance information.
+
+Changes from v2:
+* Add nvdimm list to Cc:
+* update PATCH 8 commit message.
+
+Changes from v1:
+* Update FORM2 documentation.
+* rename max_domain_index to max_associativity_domain_index
+
+Aneesh Kumar K.V (7):
+  powerpc/pseries: rename min_common_depth to primary_domain_index
+  powerpc/pseries: rename distance_ref_points_depth to
+    max_associativity_domain_index
+  powerpc/pseries: Rename TYPE1_AFFINITY to FORM1_AFFINITY
+  powerpc/pseries: Consolidate DLPAR NUMA distance update
+  powerpc/pseries: Consolidate NUMA distance update during boot
+  powerpc/pseries: Add a helper for form1 cpu distance
+  powerpc/pseries: Add support for FORM2 associativity
+
+ Documentation/powerpc/associativity.rst       | 135 ++++++
+ arch/powerpc/include/asm/firmware.h           |   7 +-
+ arch/powerpc/include/asm/prom.h               |   3 +-
+ arch/powerpc/kernel/prom_init.c               |   3 +-
+ arch/powerpc/mm/numa.c                        | 410 ++++++++++++++----
+ arch/powerpc/platforms/pseries/firmware.c     |   3 +-
+ arch/powerpc/platforms/pseries/hotplug-cpu.c  |   2 +
+ .../platforms/pseries/hotplug-memory.c        |   2 +
+ arch/powerpc/platforms/pseries/pseries.h      |   1 +
+ 9 files changed, 474 insertions(+), 92 deletions(-)
+ create mode 100644 Documentation/powerpc/associativity.rst
+
+-- 
+2.31.1
+
