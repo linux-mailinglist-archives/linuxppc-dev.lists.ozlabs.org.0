@@ -2,78 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3132F3ABF5F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 01:28:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EF713ABF87
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 01:31:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G5dX23Gdhz3c3y
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 09:28:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G5dbk0wSFz3c2q
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 09:31:14 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=sg64B7iT;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WNUjjRc9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1034;
- helo=mail-pj1-x1034.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sstabellini@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=sg64B7iT; dkim-atps=neutral
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com
- [IPv6:2607:f8b0:4864:20::1034])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=WNUjjRc9; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G5dWb3H4Vz3bsG
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jun 2021 09:27:38 +1000 (AEST)
-Received: by mail-pj1-x1034.google.com with SMTP id
- o88-20020a17090a0a61b029016eeb2adf66so6829387pjo.4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jun 2021 16:27:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=mJE3vn89L8/9BwSz8wTo8P/yLsaHXdWdVlVTB99IrQw=;
- b=sg64B7iTgVNF2/ubNs03b6i+SVZXHydv7axmVRMwFRLRGF2IFM2KivPII5dDie5zy0
- EfdXmAPhpMcvldd/Nh+3mb7P7uZbYIADKya9+r9m6AnDtQkpqffuDmCniEzYLEGRAF6B
- fac4Bj9yol6KYAWtKBSKpIxTzGswqt4xIdA1NNhgUfhQKBHPa7PgC3OKmUZVCg2lXOfO
- eXZlRyyFnJzw+xx90sC+gamRkDfnqMsxcfXcMcTlzJEI3FXqkaoablzm6GWPAE7lOyPq
- TxbtyoqnTAxlg92kwLm1Og4e3FnS2wY3sqVxXAmbSwvuXs9InJywUcQVLhpzmP3BqRTC
- irwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=mJE3vn89L8/9BwSz8wTo8P/yLsaHXdWdVlVTB99IrQw=;
- b=AliiSg7wJad7tlqWRTMBbxOD94L4LTmOqWH2iShtbE5MMRtIcgYnm1ah+27pKgCdEW
- gbaVil6fKxgWrdzsVp4Ss4uI0FU77vfuMLgkUNbB/7QF4f/+XpJjOVlVkRErBSGxML7L
- DCOQqP1WzZXL2YFTiWG5F3qga7D9tEC2pVjjd7yvRdBZTdCBbRiw+Q9jLQ3wqwWIy9+M
- bpwH6ZLJTL0G+peJeWNIyVb4xJUM5g0seoEARtw8jdfyRQFt2fa81JXcmKQI6TzfgBOm
- Gg5YG65ET8aUikiP/tjwftzLvUw2mmSrR5dw7mRaOvHkxyOtHzOZ98fezb/AHvvBlufM
- ALtw==
-X-Gm-Message-State: AOAM530ogs1gYOWrg9z3fsz3QEYc4caz9Wiek344ak5R++KS55i+UCAi
- woXy6Nnt2z+z3B5S3XDkelY=
-X-Google-Smtp-Source: ABdhPJy0y2W8C9jd99x+VfO8xyAJhEj7y9qnJvlWDxqtHyZv6oruEfG1SDhlGUe0iEVohuMpX/RW2Q==
-X-Received: by 2002:a17:90a:4a8f:: with SMTP id
- f15mr6421593pjh.76.1623972455763; 
- Thu, 17 Jun 2021 16:27:35 -0700 (PDT)
-Received: from localhost (60-242-147-73.tpgi.com.au. [60.242.147.73])
- by smtp.gmail.com with ESMTPSA id f7sm6084744pfk.191.2021.06.17.16.27.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 17 Jun 2021 16:27:35 -0700 (PDT)
-Date: Fri, 18 Jun 2021 09:27:29 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v6 04/17] powerpc/vas: Add platform specific user window
- operations
-To: Haren Myneni <haren@linux.ibm.com>, herbert@gondor.apana.org.au,
- linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- mpe@ellerman.id.au
-References: <827bf56dce09620ebecd8a00a5f97105187a6205.camel@linux.ibm.com>
- <f85091f4ace67f951ac04d60394d67b21e2f5d3c.camel@linux.ibm.com>
-In-Reply-To: <f85091f4ace67f951ac04d60394d67b21e2f5d3c.camel@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G5dbF5ynqz30B3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jun 2021 09:30:49 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 668C56113E;
+ Thu, 17 Jun 2021 23:30:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1623972646;
+ bh=rr/c3XeFS+9sdYq4bUvVJ43Rq1hQvVCPc1yQzRKz0M4=;
+ h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+ b=WNUjjRc9qiEKd1v6ch2oCBMCLr//p27BpMcgjvENehNLikMoev5Wqn272QTxx71CW
+ 3D3qfUT5ju+4mKjQzOKKH9gG669sTY/7NSboz0Exn9xL7XiAsYwisipa8+ZFly/R/o
+ DXSq4guI2oTMIWCnLtIfK2u7Aepnlt6Tlb4iaOHXykPvtPc0PDNGmILxhwM/W20xwP
+ EkxLcDsLyTSrutO0JMWUgmxdcIo9gQkjJat7Q9uy0cpusxn7iT8yBAyZlIVSiyaPd+
+ yrJcoSW9cwD0kiFZO94T+u3eUXoEusH4WrtVqLy3ZnfWy+/EPI7J5AbbnN0JrKQ05d
+ sMIO+8CCUsK0g==
+Date: Thu, 17 Jun 2021 16:30:43 -0700 (PDT)
+From: Stefano Stabellini <sstabellini@kernel.org>
+X-X-Sender: sstabellini@sstabellini-ThinkPad-T480s
+To: Claire Chang <tientzu@chromium.org>
+Subject: Re: [PATCH v13 01/12] swiotlb: Refactor swiotlb init functions
+In-Reply-To: <20210617062635.1660944-2-tientzu@chromium.org>
+Message-ID: <alpine.DEB.2.21.2106171434480.24906@sstabellini-ThinkPad-T480s>
+References: <20210617062635.1660944-1-tientzu@chromium.org>
+ <20210617062635.1660944-2-tientzu@chromium.org>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-Message-Id: <1623972363.whor4uwn96.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,54 +59,135 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: heikki.krogerus@linux.intel.com, thomas.hellstrom@linux.intel.com,
+ peterz@infradead.org, joonas.lahtinen@linux.intel.com,
+ dri-devel@lists.freedesktop.org, chris@chris-wilson.co.uk,
+ grant.likely@arm.com, paulus@samba.org, Frank Rowand <frowand.list@gmail.com>,
+ mingo@kernel.org, Marek Szyprowski <m.szyprowski@samsung.com>,
+ sstabellini@kernel.org, Saravana Kannan <saravanak@google.com>,
+ Joerg Roedel <joro@8bytes.org>,
+ "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ Christoph Hellwig <hch@lst.de>,
+ Bartosz Golaszewski <bgolaszewski@baylibre.com>, bskeggs@redhat.com,
+ linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
+ Thierry Reding <treding@nvidia.com>, intel-gfx@lists.freedesktop.org,
+ matthew.auld@intel.com, linux-devicetree <devicetree@vger.kernel.org>,
+ jxgao@google.com, daniel@ffwll.ch, Will Deacon <will@kernel.org>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ maarten.lankhorst@linux.intel.com, airlied@linux.ie,
+ Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org,
+ jani.nikula@linux.intel.com, Rob Herring <robh+dt@kernel.org>,
+ rodrigo.vivi@intel.com, bhelgaas@google.com, boris.ostrovsky@oracle.com,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jgross@suse.com,
+ Nicolas Boichat <drinkcat@chromium.org>, Greg KH <gregkh@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, lkml <linux-kernel@vger.kernel.org>,
+ tfiga@chromium.org,
+ "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+ Jim Quinlan <james.quinlan@broadcom.com>, xypron.glpk@gmx.de,
+ Robin Murphy <robin.murphy@arm.com>, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Haren Myneni's message of June 18, 2021 6:31 am:
->=20
-> PowerNV uses registers to open/close VAS windows, and getting the
-> paste address. Whereas the hypervisor calls are used on PowerVM.
->=20
-> This patch adds the platform specific user space window operations
-> and register with the common VAS user space interface.
->=20
-> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+On Thu, 17 Jun 2021, Claire Chang wrote:
+> Add a new function, swiotlb_init_io_tlb_mem, for the io_tlb_mem struct
+> initialization to make the code reusable.
+> 
+> Signed-off-by: Claire Chang <tientzu@chromium.org>
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
+> Tested-by: Stefano Stabellini <sstabellini@kernel.org>
+> Tested-by: Will Deacon <will@kernel.org>
 > ---
->  arch/powerpc/include/asm/vas.h              | 16 +++++--
->  arch/powerpc/platforms/book3s/vas-api.c     | 53 +++++++++++++--------
->  arch/powerpc/platforms/powernv/vas-window.c | 45 ++++++++++++++++-
->  arch/powerpc/platforms/powernv/vas.h        |  2 +
->  4 files changed, 91 insertions(+), 25 deletions(-)
->=20
-> diff --git a/arch/powerpc/include/asm/vas.h b/arch/powerpc/include/asm/va=
-s.h
-> index 6076adf9ab4f..163a8bb85d02 100644
-> --- a/arch/powerpc/include/asm/vas.h
-> +++ b/arch/powerpc/include/asm/vas.h
-> @@ -5,6 +5,7 @@
-> =20
->  #ifndef _ASM_POWERPC_VAS_H
->  #define _ASM_POWERPC_VAS_H
-> +#include <uapi/asm/vas-api.h>
-> =20
->  struct vas_window;
-> =20
-> @@ -48,6 +49,16 @@ enum vas_cop_type {
->  	VAS_COP_TYPE_MAX,
->  };
-> =20
-> +/*
-> + * User space window operations used for powernv and powerVM
-> + */
-> +struct vas_user_win_ops {
-> +	struct vas_window * (*open_win)(int vas_id, u64 flags,
-> +				enum vas_cop_type);
-
-Thanks for changing that to not pass down the struct passed in by the=20
-user. Looks good.
-
-Thanks,
-Nick
-
+>  kernel/dma/swiotlb.c | 50 ++++++++++++++++++++++----------------------
+>  1 file changed, 25 insertions(+), 25 deletions(-)
+> 
+> diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+> index 52e2ac526757..47bb2a766798 100644
+> --- a/kernel/dma/swiotlb.c
+> +++ b/kernel/dma/swiotlb.c
+> @@ -168,9 +168,28 @@ void __init swiotlb_update_mem_attributes(void)
+>  	memset(vaddr, 0, bytes);
+>  }
+>  
+> -int __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
+> +static void swiotlb_init_io_tlb_mem(struct io_tlb_mem *mem, phys_addr_t start,
+> +				    unsigned long nslabs, bool late_alloc)
+>  {
+> +	void *vaddr = phys_to_virt(start);
+>  	unsigned long bytes = nslabs << IO_TLB_SHIFT, i;
+> +
+> +	mem->nslabs = nslabs;
+> +	mem->start = start;
+> +	mem->end = mem->start + bytes;
+> +	mem->index = 0;
+> +	mem->late_alloc = late_alloc;
+> +	spin_lock_init(&mem->lock);
+> +	for (i = 0; i < mem->nslabs; i++) {
+> +		mem->slots[i].list = IO_TLB_SEGSIZE - io_tlb_offset(i);
+> +		mem->slots[i].orig_addr = INVALID_PHYS_ADDR;
+> +		mem->slots[i].alloc_size = 0;
+> +	}
+> +	memset(vaddr, 0, bytes);
+> +}
+> +
+> +int __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
+> +{
+>  	struct io_tlb_mem *mem;
+>  	size_t alloc_size;
+>  
+> @@ -186,16 +205,8 @@ int __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
+>  	if (!mem)
+>  		panic("%s: Failed to allocate %zu bytes align=0x%lx\n",
+>  		      __func__, alloc_size, PAGE_SIZE);
+> -	mem->nslabs = nslabs;
+> -	mem->start = __pa(tlb);
+> -	mem->end = mem->start + bytes;
+> -	mem->index = 0;
+> -	spin_lock_init(&mem->lock);
+> -	for (i = 0; i < mem->nslabs; i++) {
+> -		mem->slots[i].list = IO_TLB_SEGSIZE - io_tlb_offset(i);
+> -		mem->slots[i].orig_addr = INVALID_PHYS_ADDR;
+> -		mem->slots[i].alloc_size = 0;
+> -	}
+> +
+> +	swiotlb_init_io_tlb_mem(mem, __pa(tlb), nslabs, false);
+>  
+>  	io_tlb_default_mem = mem;
+>  	if (verbose)
+> @@ -282,8 +293,8 @@ swiotlb_late_init_with_default_size(size_t default_size)
+>  int
+>  swiotlb_late_init_with_tbl(char *tlb, unsigned long nslabs)
+>  {
+> -	unsigned long bytes = nslabs << IO_TLB_SHIFT, i;
+>  	struct io_tlb_mem *mem;
+> +	unsigned long bytes = nslabs << IO_TLB_SHIFT;
+>  
+>  	if (swiotlb_force == SWIOTLB_NO_FORCE)
+>  		return 0;
+> @@ -297,20 +308,9 @@ swiotlb_late_init_with_tbl(char *tlb, unsigned long nslabs)
+>  	if (!mem)
+>  		return -ENOMEM;
+>  
+> -	mem->nslabs = nslabs;
+> -	mem->start = virt_to_phys(tlb);
+> -	mem->end = mem->start + bytes;
+> -	mem->index = 0;
+> -	mem->late_alloc = 1;
+> -	spin_lock_init(&mem->lock);
+> -	for (i = 0; i < mem->nslabs; i++) {
+> -		mem->slots[i].list = IO_TLB_SEGSIZE - io_tlb_offset(i);
+> -		mem->slots[i].orig_addr = INVALID_PHYS_ADDR;
+> -		mem->slots[i].alloc_size = 0;
+> -	}
+> -
+> +	memset(mem, 0, sizeof(*mem));
+> +	swiotlb_init_io_tlb_mem(mem, virt_to_phys(tlb), nslabs, true);
+>  	set_memory_decrypted((unsigned long)tlb, bytes >> PAGE_SHIFT);
+> -	memset(tlb, 0, bytes);
+ 
+This is good for swiotlb_late_init_with_tbl. However I have just noticed
+that mem could also be allocated from swiotlb_init_with_tbl, in which
+case the zeroing is missing. I think we need another memset in
+swiotlb_init_with_tbl as well. Or maybe it could be better to have a
+single memset at the beginning of swiotlb_init_io_tlb_mem instead. Up to
+you.
