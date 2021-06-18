@@ -1,35 +1,34 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF03A3AC24C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 06:27:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CC543AC213
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 06:24:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G5m9f3HVJz3fJr
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 14:27:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G5m6F0TlVz3dGy
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 14:24:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
  envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G5m4G3pv5z3bxP
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jun 2021 14:22:54 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G5m4C1fLMz3c1W
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jun 2021 14:22:51 +1000 (AEST)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4G5m4F2rwbz9sfG; Fri, 18 Jun 2021 14:22:53 +1000 (AEST)
+ id 4G5m4925tZz9sCD; Fri, 18 Jun 2021 14:22:49 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Paul Mackerras <paulus@samba.org>,
+To: Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>, Shuah Khan <shuah@kernel.org>,
- Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <0ad62673d3e063f848e7c99d719bb966efd433e8.1622809833.git.christophe.leroy@csgroup.eu>
-References: <0ad62673d3e063f848e7c99d719bb966efd433e8.1622809833.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/selftests: Use gettid() instead of getppid() for
- null_syscall
-Message-Id: <162398829644.1363949.13696130535208062444.b4-ty@ellerman.id.au>
+ Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <8479a862e165a57a855292d47e24c259a578f5a0.1622711627.git.christophe.leroy@csgroup.eu>
+References: <8479a862e165a57a855292d47e24c259a578f5a0.1622711627.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc/kuap: Force inlining of all first level KUAP
+ helpers.
+Message-Id: <162398829627.1363949.10534995724959196164.b4-ty@ellerman.id.au>
 Date: Fri, 18 Jun 2021 13:51:36 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -45,18 +44,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 4 Jun 2021 12:31:09 +0000 (UTC), Christophe Leroy wrote:
-> gettid() is 10% lighter than getppid(), use it for null_syscall selftest.
+On Thu, 3 Jun 2021 09:13:54 +0000 (UTC), Christophe Leroy wrote:
+> All KUAP helpers defined in asm/kup.h are single line functions
+> that should be inlined. But on book3s/32 build, we get many
+> instances of <prevent_write_to_user.constprop.0>.
+> 
+> Force inlining of those helpers.
 
 Applied to powerpc/next.
 
-[1/1] powerpc/selftests: Use gettid() instead of getppid() for null_syscall
-      https://git.kernel.org/powerpc/c/a1ea0ca8a6f17d7b79bbc4d05dd4e6ca162d8f15
+[1/1] powerpc/kuap: Force inlining of all first level KUAP helpers.
+      https://git.kernel.org/powerpc/c/240efd717c415e69511780044f44416bdf161523
 
 cheers
