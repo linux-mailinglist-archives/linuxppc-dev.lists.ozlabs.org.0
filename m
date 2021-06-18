@@ -1,34 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 573FE3AC25E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 06:32:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 162173AC25C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 06:31:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G5mGz6zhNz3ggf
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 14:32:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G5mGH5Xkpz3gXL
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 14:31:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
  envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G5m4V0LzGz3c7N
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jun 2021 14:23:06 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G5m4S58Nsz3c1x
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jun 2021 14:23:04 +1000 (AEST)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4G5m4S5Qndz9t0k; Fri, 18 Jun 2021 14:23:04 +1000 (AEST)
+ id 4G5m4R526yz9svs; Fri, 18 Jun 2021 14:23:03 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Nathan Chancellor <nathan@kernel.org>,
- Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <20210528182752.1852002-1-nathan@kernel.org>
-References: <20210528182752.1852002-1-nathan@kernel.org>
-Subject: Re: [PATCH] powerpc/barrier: Avoid collision with clang's __lwsync
- macro
-Message-Id: <162398828610.1363949.4994127237137922755.b4-ty@ellerman.id.au>
-Date: Fri, 18 Jun 2021 13:51:26 +1000
+To: linuxppc-dev@lists.ozlabs.org, jk@ozlabs.org, paulus@samba.org,
+ arnd@arndb.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
+ linux-kernel@vger.kernel.org, Baokun Li <libaokun1@huawei.com>
+In-Reply-To: <20210601085127.139598-1-libaokun1@huawei.com>
+References: <20210601085127.139598-1-libaokun1@huawei.com>
+Subject: Re: [PATCH -next] powerpc/spufs: disp: Remove set but not used
+ variable 'dummy'
+Message-Id: <162398828869.1363949.8342892140049622633.b4-ty@ellerman.id.au>
+Date: Fri, 18 Jun 2021 13:51:28 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -43,39 +44,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, clang-built-linux@googlegroups.com,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: yangjihong1@huawei.com, yuehaibing@huawei.com, weiyongjun1@huawei.com,
+ yukuai3@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 28 May 2021 11:27:52 -0700, Nathan Chancellor wrote:
-> A change in clang 13 results in the __lwsync macro being defined as
-> __builtin_ppc_lwsync, which emits 'lwsync' or 'msync' depending on what
-> the target supports. This breaks the build because of -Werror in
-> arch/powerpc, along with thousands of warnings:
+On Tue, 1 Jun 2021 16:51:27 +0800, Baokun Li wrote:
+> Fixes gcc '-Wunused-but-set-variable' warning:
 > 
->  In file included from arch/powerpc/kernel/pmc.c:12:
->  In file included from include/linux/bug.h:5:
->  In file included from arch/powerpc/include/asm/bug.h:109:
->  In file included from include/asm-generic/bug.h:20:
->  In file included from include/linux/kernel.h:12:
->  In file included from include/linux/bitops.h:32:
->  In file included from arch/powerpc/include/asm/bitops.h:62:
->  arch/powerpc/include/asm/barrier.h:49:9: error: '__lwsync' macro redefined [-Werror,-Wmacro-redefined]
->  #define __lwsync()      __asm__ __volatile__ (stringify_in_c(LWSYNC) : : :"memory")
->         ^
->  <built-in>:308:9: note: previous definition is here
->  #define __lwsync __builtin_ppc_lwsync
->         ^
->  1 error generated.
+> arch/powerpc/platforms/cell/spufs/switch.c: In function 'check_ppu_mb_stat':
+> arch/powerpc/platforms/cell/spufs/switch.c:1660:6: warning:
+> variable ‘dummy’ set but not used [-Wunused-but-set-variable]
+> 
+> arch/powerpc/platforms/cell/spufs/switch.c: In function 'check_ppuint_mb_stat':
+> arch/powerpc/platforms/cell/spufs/switch.c:1675:6: warning:
+> variable ‘dummy’ set but not used [-Wunused-but-set-variable]
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/barrier: Avoid collision with clang's __lwsync macro
-      https://git.kernel.org/powerpc/c/015d98149b326e0f1f02e44413112ca8b4330543
+[1/1] powerpc/spufs: disp: Remove set but not used variable 'dummy'
+      https://git.kernel.org/powerpc/c/911bacda4658129bee039dc90fc0c3f193ee2695
 
 cheers
