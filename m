@@ -2,56 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CB633AC9F4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 13:34:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B3833ACAAC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 14:13:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G5xdw5KFZz3c4b
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 21:34:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G5yW61MGFz3c1N
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 22:13:22 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SqlXqi54;
+	dkim=pass (2048-bit key; secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=Dh63+Hio;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=paulus@ozlabs.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=SqlXqi54; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
+ header.s=201707 header.b=Dh63+Hio; dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G5xdR4ndPz2xZG
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jun 2021 21:33:47 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7E68B610CA;
- Fri, 18 Jun 2021 11:33:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1624016024;
- bh=9s2RQDW9wanQqORyAIBE9pVzVvO91REtRxxPhTclx3k=;
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G5yVg3nqZz307T
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jun 2021 22:12:58 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 4G5yVT3Rzbz9sT6; Fri, 18 Jun 2021 22:12:49 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1003)
+ id 4G5yVS6X64z9sVp; Fri, 18 Jun 2021 22:12:29 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
+ t=1624018368; bh=MyKOvU2M1w9HCVX5bMBrsh8qmF/WaxXgRIvqbgpLOs8=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=SqlXqi54Wb+yJCY85fbszND337jMrH1YM9XsF+vWgllGBpqb9VlxWeoQIneYKtmoL
- DDWw6wt7vpYW0ktptOHD07s18Z7MKMyqxG+QttWQ+0Vs2sUxhpzUOOPOfsT/wModgb
- KXCsOEO7f9llPwPii+Ae6A6fRw2dlavWsuGTs3GxHsarnYKzEzSFsGSjK7tZq9E9nB
- aijS9ai4jkTUI2U2HTPCWoqjIGzZ2KpEeJPAT0iO0F5xtCjm/IyRptmvk+3pMiwIFR
- zzUZ93Gzt1DsGgsmiJO5sWtcXSjvGbPlxA3dkXDbdCcC6ctVmJhpGelXftHm9jGPSx
- NZ7ixSeKGTPsg==
-Date: Fri, 18 Jun 2021 12:33:22 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Shengjiu Wang <shengjiu.wang@gmail.com>
-Subject: Re: [PATCH] ASoC: fsl_xcvr: disable all interrupts when suspend
- happens
-Message-ID: <20210618113322.GA4920@sirena.org.uk>
-References: <1624009876-3076-1-git-send-email-shengjiu.wang@nxp.com>
- <CAOMZO5DYLZmz6f0yjrOpaL4B_wicq0ofrYpW6QqzNPEc0j407Q@mail.gmail.com>
- <CAA+D8AOiL2otCBRyP3q7EWd2C7RnUhWZjRtxcJWQyXXXydf_ZQ@mail.gmail.com>
+ b=Dh63+HioMBmlnLwhGLum8Zle5TJq8/6JBZXO16/eRHe/vAos3sv5doMh1DWm3waHX
+ PPRLsrOQjtm+mTlnmvOgxllw573mKwQDTMzOlPRq0Y1+wMaIcEZ8FZcdj7TgzWNeak
+ 3Cw/wE7lopDEu9btjY2nxknMzf9NfCBHiPaJWdYnNzamwRURzGxv98EgweRE9Tvr5Z
+ VsCebnks2HZGO776wxvyj665vtH7V7MO4BSw7pJ32FkSouRPhvMgUFcCeHSmc8Zl1i
+ vsDPXUE3jvxZ4C6ehHxnrQwbB1NCVyG3poC8HG0Wg/i4DPK+CCYKggvdnHsrIiA+gT
+ uI5RzuD4Ag/oQ==
+Date: Fri, 18 Jun 2021 22:12:20 +1000
+From: Paul Mackerras <paulus@ozlabs.org>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2 5/9] powerpc/microwatt: Use standard 16550 UART for
+ console
+Message-ID: <YMyNpLwqttl4IGSH@thinks.paulus.ozlabs.org>
+References: <YMwWPcsaWzMlDPqQ@thinks.paulus.ozlabs.org>
+ <YMwXGCTzedpQje7r@thinks.paulus.ozlabs.org>
+ <1624001539.de8wj3qkjv.astroid@bobo.none>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="9amGYk9869ThD9tj"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAA+D8AOiL2otCBRyP3q7EWd2C7RnUhWZjRtxcJWQyXXXydf_ZQ@mail.gmail.com>
-X-Cookie: Are you a turtle?
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <1624001539.de8wj3qkjv.astroid@bobo.none>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,45 +62,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-ALSA <alsa-devel@alsa-project.org>, Timur Tabi <timur@kernel.org>,
- Xiubo Li <Xiubo.Lee@gmail.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Shengjiu Wang <shengjiu.wang@nxp.com>,
- linux-kernel <linux-kernel@vger.kernel.org>, Takashi Iwai <tiwai@suse.com>,
- Nicolin Chen <nicoleotsuka@gmail.com>, Fabio Estevam <festevam@gmail.com>
+Cc: linuxppc-dev@ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Fri, Jun 18, 2021 at 05:40:40PM +1000, Nicholas Piggin wrote:
+> Excerpts from Paul Mackerras's message of June 18, 2021 1:46 pm:
+> > From: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> > 
+> > This adds support to the Microwatt platform to use the standard
+> > 16550-style UART which available in the standalone Microwatt FPGA.
+> > 
+> > Signed-off-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> > Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
+...
+> > +#ifdef CONFIG_PPC_EARLY_DEBUG_MICROWATT
+> > +
+> > +#define UDBG_UART_MW_ADDR	((void __iomem *)0xc0002000)
+> > +
+> > +static u8 udbg_uart_in_isa300_rm(unsigned int reg)
+> > +{
+> > +	uint64_t msr = mfmsr();
+> > +	uint8_t  c;
+> > +
+> > +	mtmsr(msr & ~(MSR_EE|MSR_DR));
+> > +	isync();
+> > +	eieio();
+> > +	c = __raw_rm_readb(UDBG_UART_MW_ADDR + (reg << 2));
+> > +	mtmsr(msr);
+> > +	isync();
+> > +	return c;
+> > +}
+> 
+> Why is realmode required? No cache inhibited mappings yet?
 
---9amGYk9869ThD9tj
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Because it's EARLY debug, for use in the very early stages of boot
+when the kernel's radix tree may or may not have been initialized.
+The easiest way to make a function that works correctly whether or not
+the radix tree has been initialized and the MMU turned on is to
+temporarily turn off the MMU for data accesses and use lbzcix/stbcix
+(which Microwatt has, even though it doesn't implement hypervisor
+mode).
 
-On Fri, Jun 18, 2021 at 07:30:25PM +0800, Shengjiu Wang wrote:
-> On Fri, Jun 18, 2021 at 7:21 PM Fabio Estevam <festevam@gmail.com> wrote:
+(I don't know which "yet" you meant - "yet" in the process of booting a
+kernel, or "yet" in the process of Microwatt's development?  Microwatt
+certainly does have cache-inhibited mappings and has done since the
+MMU was first introduced.)
 
-> > The operations in _suspend() are usually balanced with the ones in _resume().
+In fact the defconfig I add later in the series doesn't enable
+CONFIG_PPC_EARLY_DEBUG_MICROWATT, but it's there if it's needed for
+debugging.
 
-> > Shouldn't you enable the interrupts in resume() then?
+> mtmsrd with L=0 is defined to be context synchronizing in isa 3, so I 
+> don't think the isync would be required. There is a bit of code around 
+> arch/powerpc that does this, maybe it used to be needed or some other
+> implementations needed it?
+> 
+> That's just for my curiosity, it doesn't really hurt to have them
+> there.
 
-> No,  as you said below, the interrupts are enabled in fsl_xcvr_prepare().
-> so this change should not block anything.
+Right, and in fact mtmsrd is marked as a single-issue instruction in
+Microwatt, so it should work with no isyncs or eieios.  Presumably Ben
+copied the isync/eieio pattern from somewhere else.
 
-Might be worth a comment explaining why there's the asymmetry.
-
---9amGYk9869ThD9tj
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmDMhIIACgkQJNaLcl1U
-h9APMQf/d/lJMjdPrNhdzJeuS3tVHQ268JZCwmabDferZbnDRbjuwaiq+4wAdnBC
-EFksPtmaTNBBrrLUc1bTxLs0Hl0wBGNv+zf5r8FCfEm60zrQF3QKDTZ1t46ZelbX
-9uQRMcFanYwBChVofttzEwDHWStsDCHoi7pfP4ZwGTR+SR6rERyzgAv43862ne/G
-klbzzYKa+CyLGvojCzNTZBvkyNPQCkhuazh7wk6UolcFTf2oz+wjUPYyJ/Xbwqb5
-t+Y4zwAqMls5GZtzFWIohvRgCULmADRq8FqCzFQIYm3teLhDgQGtbM8Xn2Tz3Vp0
-MQveAgdluQ8hDsBYMq31CB4CgMOZag==
-=a0cm
------END PGP SIGNATURE-----
-
---9amGYk9869ThD9tj--
+Paul.
