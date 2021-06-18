@@ -1,105 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA2A63AC0B6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 04:09:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76B653AC123
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 04:58:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G5j6h58bXz3bvs
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 12:09:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G5kCM0j5yz3c4l
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 12:58:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eL+S4PBN;
+	dkim=pass (2048-bit key; secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=OgZpega7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=paulus@ozlabs.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=eL+S4PBN; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
+ header.s=201707 header.b=OgZpega7; dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G5j673wF2z309g
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jun 2021 12:09:18 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 15I23PoW122777; Thu, 17 Jun 2021 22:09:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=CDvDUJ9lGuEW5fVkMiSdllq6N5HsFkKaefCea8olEq8=;
- b=eL+S4PBN1iQsweJKQ9bBAubz64WXn0nRrVI3/IgR97s7k3kwiEzgskakNT2mSQlE1HCS
- XSgbkYavYxMjDL7mNS2FyvT5FWUk/b0OlvBhW52+HAFuE+lfG5cd9z8c3EN/tFQGkwpX
- u88W3e89hgPxHAec1u0botmY5W2edhMgTtN7GSjmrQQmqxFEGhVjYqIpgz8U9Mlvufjc
- cKVJRd4zxfzlKh6q7+cBmeA4ZgDARl3eIvthtMf7MAan4CE5/A4IVKQ1+8BIfUXoXj41
- UqeZnl1uWEPES6fMl43HWQGxb0bmQzWziEJ3JNYuXnH8RgeWFhUwLHmGlGruVcwKrg6R Kw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 398gy0a5c8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Jun 2021 22:09:08 -0400
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 15I23mQo124028;
- Thu, 17 Jun 2021 22:09:07 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 398gy0a5bw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Jun 2021 22:09:07 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15I21nZk010160;
- Fri, 18 Jun 2021 02:09:06 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com
- (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
- by ppma03dal.us.ibm.com with ESMTP id 394mjah2kp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 18 Jun 2021 02:09:06 +0000
-Received: from b03ledav002.gho.boulder.ibm.com
- (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 15I295Hf24641942
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 18 Jun 2021 02:09:05 GMT
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8FBF313605D;
- Fri, 18 Jun 2021 02:09:05 +0000 (GMT)
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 47907136055;
- Fri, 18 Jun 2021 02:09:04 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.160.180.39])
- by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
- Fri, 18 Jun 2021 02:09:04 +0000 (GMT)
-Message-ID: <a19e7839316c9ec4f7901e97b551fcf4219de82f.camel@linux.ibm.com>
-Subject: Re: [PATCH v6 13/17] powerpc/pseries/vas: Setup IRQ and fault handling
-From: Haren Myneni <haren@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>, herbert@gondor.apana.org.au,
- linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- mpe@ellerman.id.au
-Date: Thu, 17 Jun 2021 19:09:01 -0700
-In-Reply-To: <1623972635.u8jj6g26re.astroid@bobo.none>
-References: <827bf56dce09620ebecd8a00a5f97105187a6205.camel@linux.ibm.com>
- <b8fc66dcb783d06a099a303e5cfc69087bb3357a.camel@linux.ibm.com>
- <1623972635.u8jj6g26re.astroid@bobo.none>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.2 (3.36.2-1.fc32) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G5kBt6lPTz2yR8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jun 2021 12:58:30 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 4G5kBj4XWFz9s5R; Fri, 18 Jun 2021 12:58:21 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1003)
+ id 4G5kBj3cykz9sT6; Fri, 18 Jun 2021 12:58:21 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
+ t=1623985101; bh=xBrI+k5gbJiATLruAAz5ico22CdaePVLum8OuITDZlc=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=OgZpega77Iov/OcaX3rdjrBj+R5b9Fm3xCAx0HWFM3MhFdn8j5eN68jV7fDrCIexL
+ nvpeC+Cl8ExGjlHILCaORHu3JgXmkclkLYY8GJYu/WUqFCsZr+Y6kcDYgtePxZbIB3
+ O8WH+30qLM5SxUCBplsVFB4oIf/UXReGrkKerJc8uKFiIvaOJiXoz4o/WkI4mLgloS
+ jTh3XPPo6xKIIjq1UKlp3lgV4LtUiiiCP1PtTqYceHXzAREEjOsa2zH1zeA6L14JoU
+ uURxgF4aQurhsgGB+U0CKsQsPNzbIkalaj1IIJ7J8yRpE2vIAK8Fdov36NTYqvrCwC
+ jvtLYvAuaATtQ==
+Date: Fri, 18 Jun 2021 12:58:14 +1000
+From: Paul Mackerras <paulus@ozlabs.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH 02/11] powerpc: Add Microwatt device tree
+Message-ID: <YMwLxodLhu28GbJr@thinks.paulus.ozlabs.org>
+References: <YMfeswgEHeXSLOUF@thinks.paulus.ozlabs.org>
+ <YMffEN3q5RlLeg4W@thinks.paulus.ozlabs.org>
+ <8735thrtl3.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: PzkMWa4scMM60VapGycZCKD4jBky2VXF
-X-Proofpoint-GUID: L-6EETqXBBZPgrS1ivjT0QnKbUva0FnR
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-06-17_17:2021-06-15,
- 2021-06-17 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 mlxscore=0
- spamscore=0 adultscore=0 mlxlogscore=999 priorityscore=1501 phishscore=0
- malwarescore=0 lowpriorityscore=0 impostorscore=0 bulkscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2106180008
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8735thrtl3.fsf@mpe.ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,216 +61,164 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2021-06-18 at 09:34 +1000, Nicholas Piggin wrote:
-> Excerpts from Haren Myneni's message of June 18, 2021 6:37 am:
-> > NX generates an interrupt when sees a fault on the user space
-> > buffer and the hypervisor forwards that interrupt to OS. Then
-> > the kernel handles the interrupt by issuing H_GET_NX_FAULT hcall
-> > to retrieve the fault CRB information.
-> > 
-> > This patch also adds changes to setup and free IRQ per each
-> > window and also handles the fault by updating the CSB.
+On Thu, Jun 17, 2021 at 02:41:28PM +1000, Michael Ellerman wrote:
+> Paul Mackerras <paulus@ozlabs.org> writes:
+> >
 > 
-> In as much as this pretty well corresponds to the PowerNV code
-> AFAIKS,
-> it looks okay to me.
+> Little bit of change log never hurts :)
 > 
-> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-> 
-> Could you have an irq handler in your ops vector and have 
-> the core code set up the irq and call your handler, so the Linux irq
-> handling is in one place? Not something for this series, I was just
-> wondering.
-
-Not possible to have common core code for IRQ  setup. 
-
-PowerNV: Every VAS instance will be having IRQ and this setup will be
-done during initialization (system boot). A fault FIFO will be assigned
-for each instance and registered to VAS so that VAS/NX writes fault CRB
-into this FIFO.  
-
-PowerVM: Each window will have an IRQ and the setup will be done during
-window open. 
-
-Thanks
-Haren
-
-> 
-> Thanks,
-> Nick
-> 
-> > Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+> > Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
 > > ---
-> >  arch/powerpc/platforms/pseries/vas.c | 102
-> > +++++++++++++++++++++++++++
-> >  1 file changed, 102 insertions(+)
-> > 
-> > diff --git a/arch/powerpc/platforms/pseries/vas.c
-> > b/arch/powerpc/platforms/pseries/vas.c
-> > index f5a44f2f0e99..3385b5400cc6 100644
-> > --- a/arch/powerpc/platforms/pseries/vas.c
-> > +++ b/arch/powerpc/platforms/pseries/vas.c
-> > @@ -11,6 +11,7 @@
-> >  #include <linux/types.h>
-> >  #include <linux/delay.h>
-> >  #include <linux/slab.h>
-> > +#include <linux/interrupt.h>
-> >  #include <asm/machdep.h>
-> >  #include <asm/hvcall.h>
-> >  #include <asm/plpar_wrappers.h>
-> > @@ -155,6 +156,50 @@ int h_query_vas_capabilities(const u64 hcall,
-> > u8 query_type, u64 result)
-> >  }
-> >  EXPORT_SYMBOL_GPL(h_query_vas_capabilities);
-> >  
-> > +/*
-> > + * hcall to get fault CRB from the hypervisor.
-> > + */
-> > +static int h_get_nx_fault(u32 winid, u64 buffer)
-> > +{
-> > +	long rc;
+> >  arch/powerpc/boot/dts/microwatt.dts | 105 ++++++++++++++++++++++++++++
+> >  1 file changed, 105 insertions(+)
+> >  create mode 100644 arch/powerpc/boot/dts/microwatt.dts
+> >
+> > diff --git a/arch/powerpc/boot/dts/microwatt.dts b/arch/powerpc/boot/dts/microwatt.dts
+> > new file mode 100644
+> > index 000000000000..9b2e64da9432
+> > --- /dev/null
+> > +++ b/arch/powerpc/boot/dts/microwatt.dts
+> > @@ -0,0 +1,105 @@
+> > +/dts-v1/;
 > > +
-> > +	rc = plpar_hcall_norets(H_GET_NX_FAULT, winid, buffer);
+> > +/ {
+> > +	#size-cells = <0x02>;
+> > +	#address-cells = <0x02>;
+> > +	model-name = "microwatt";
+> > +	compatible = "microwatt-soc";
 > > +
-> > +	if (rc == H_SUCCESS)
-> > +		return 0;
+> > +	reserved-memory {
+> > +		#size-cells = <0x02>;
+> > +		#address-cells = <0x02>;
+> > +		ranges;
+> > +	};
 > > +
-> > +	pr_err("H_GET_NX_FAULT error: %ld, winid %u, buffer 0x%llx\n",
-> > +		rc, winid, buffer);
-> > +	return -EIO;
+> > +	memory@0 {
+> > +		device_type = "memory";
+> > +		reg = <0x00000000 0x00000000 0x00000000 0x10000000>;
+> > +	};
 > > +
-> > +}
+> > +	cpus {
+> > +		#size-cells = <0x00>;
+> > +		#address-cells = <0x01>;
 > > +
-> > +/*
-> > + * Handle the fault interrupt.
-> > + * When the fault interrupt is received for each window, query the
-> > + * hypervisor to get the fault CRB on the specific fault. Then
-> > + * process the CRB by updating CSB or send signal if the user
-> > space
-> > + * CSB is invalid.
-> > + * Note: The hypervisor forwards an interrupt for each fault
-> > request.
-> > + *	So one fault CRB to process for each H_GET_NX_FAULT hcall.
-> > + */
-> > +irqreturn_t pseries_vas_fault_thread_fn(int irq, void *data)
-> > +{
-> > +	struct pseries_vas_window *txwin = data;
-> > +	struct coprocessor_request_block crb;
-> > +	struct vas_user_win_ref *tsk_ref;
-> > +	int rc;
+> > +		ibm,powerpc-cpu-features {
+> > +			display-name = "Microwatt";
+> > +			isa = <3000>;
+> > +			device_type = "cpu-features";
+> > +			compatible = "ibm,powerpc-cpu-features";
 > > +
-> > +	rc = h_get_nx_fault(txwin->vas_win.winid,
-> > (u64)virt_to_phys(&crb));
-> > +	if (!rc) {
-> > +		tsk_ref = &txwin->vas_win.task_ref;
-> > +		vas_dump_crb(&crb);
-> > +		vas_update_csb(&crb, tsk_ref);
-> > +	}
-> > +
-> > +	return IRQ_HANDLED;
-> > +}
-> > +
-> >  /*
-> >   * Allocate window and setup IRQ mapping.
-> >   */
-> > @@ -166,10 +211,51 @@ static int allocate_setup_window(struct
-> > pseries_vas_window *txwin,
-> >  	rc = h_allocate_vas_window(txwin, domain, wintype,
-> > DEF_WIN_CREDS);
-> >  	if (rc)
-> >  		return rc;
-> > +	/*
-> > +	 * On PowerVM, the hypervisor setup and forwards the fault
-> > +	 * interrupt per window. So the IRQ setup and fault handling
-> > +	 * will be done for each open window separately.
-> > +	 */
-> > +	txwin->fault_virq = irq_create_mapping(NULL, txwin->fault_irq);
-> > +	if (!txwin->fault_virq) {
-> > +		pr_err("Failed irq mapping %d\n", txwin->fault_irq);
-> > +		rc = -EINVAL;
-> > +		goto out_win;
-> > +	}
-> > +
-> > +	txwin->name = kasprintf(GFP_KERNEL, "vas-win-%d",
-> > +				txwin->vas_win.winid);
-> > +	if (!txwin->name) {
-> > +		rc = -ENOMEM;
-> > +		goto out_irq;
-> > +	}
-> > +
-> > +	rc = request_threaded_irq(txwin->fault_virq, NULL,
-> > +				  pseries_vas_fault_thread_fn,
-> > IRQF_ONESHOT,
-> > +				  txwin->name, txwin);
-> > +	if (rc) {
-> > +		pr_err("VAS-Window[%d]: Request IRQ(%u) failed with
-> > %d\n",
-> > +		       txwin->vas_win.winid, txwin->fault_virq, rc);
-> > +		goto out_free;
-> > +	}
-> >  
-> >  	txwin->vas_win.wcreds_max = DEF_WIN_CREDS;
-> >  
-> >  	return 0;
-> > +out_free:
-> > +	kfree(txwin->name);
-> > +out_irq:
-> > +	irq_dispose_mapping(txwin->fault_virq);
-> > +out_win:
-> > +	h_deallocate_vas_window(txwin->vas_win.winid);
-> > +	return rc;
-> > +}
-> > +
-> > +static inline void free_irq_setup(struct pseries_vas_window
-> > *txwin)
-> > +{
-> > +	free_irq(txwin->fault_virq, txwin);
-> > +	kfree(txwin->name);
-> > +	irq_dispose_mapping(txwin->fault_virq);
-> >  }
-> >  
-> >  static struct vas_window *vas_allocate_window(int vas_id, u64
-> > flags,
-> > @@ -284,6 +370,11 @@ static struct vas_window
-> > *vas_allocate_window(int vas_id, u64 flags,
-> >  	return &txwin->vas_win;
-> >  
-> >  out_free:
-> > +	/*
-> > +	 * Window is not operational. Free IRQ before closing
-> > +	 * window so that do not have to hold mutex.
-> > +	 */
-> > +	free_irq_setup(txwin);
-> >  	h_deallocate_vas_window(txwin->vas_win.winid);
-> >  out:
-> >  	atomic_dec(&cop_feat_caps->used_lpar_creds);
-> > @@ -303,7 +394,18 @@ static int deallocate_free_window(struct
-> > pseries_vas_window *win)
-> >  {
-> >  	int rc = 0;
-> >  
-> > +	/*
-> > +	 * The hypervisor waits for all requests including faults
-> > +	 * are processed before closing the window - Means all
-> > +	 * credits have to be returned. In the case of fault
-> > +	 * request, a credit is returned after OS issues
-> > +	 * H_GET_NX_FAULT hcall.
-> > +	 * So free IRQ after executing H_DEALLOCATE_VAS_WINDOW
-> > +	 * hcall.
-> > +	 */
-> >  	rc = h_deallocate_vas_window(win->vas_win.winid);
-> > +	if (!rc)
-> > +		free_irq_setup(win);
-> >  
-> >  	return rc;
-> >  }
-> > -- 
-> > 2.18.2
-> > 
-> > 
-> > 
+> > +			mmu-radix {
+> > +				isa = <3000>;
+> > +				usable-privilege = <2>;
+> 
+> skiboot says 6?
 
+That's for a machine with hypervisor mode - if I make it 6 here, then
+the kernel prints a message about "HV feature passed to guest" and
+then another about "missing dependency" and ends up not enabling the
+feature.
+
+Note that microwatt usually has MSR[HV] = 0 (you can set it to 1 but
+it doesn't do anything).  Arguably it should force it to 1 always, but
+if I do that, then the kernel starts trying to execute hrfid
+instructions, which microwatt doesn't have (for example in
+masked_Hinterrupt).
+
+> > +				os-support = <0x00>;
+> > +			};
+> > +
+> > +			little-endian {
+> > +				isa = <0>;
+> 
+> I guess you just copied that from skiboot.
+> 
+> The binding says it's required, but AFAICS the kernel doesn't use it.
+>
+> And isa = 0 mean ISA_BASE, according to the skiboot source.
+
+I changed it to 2050 since true little-endian mode was introduced for
+POWER6.
+
+> > +		PowerPC,Microwatt@0 {
+> > +			i-cache-sets = <2>;
+> > +			ibm,dec-bits = <64>;
+> > +			reservation-granule-size = <64>;
+> 
+> Never seen that one before.
+
+It's in PAPR+ (D.6.1.4, CPU Node Properties).
+
+> > +			clock-frequency = <100000000>;
+> > +			timebase-frequency = <100000000>;
+> 
+> Those seem quite high?
+
+No, 100MHz is correct.
+
+> > +			i-tlb-sets = <1>;
+> > +			ibm,ppc-interrupt-server#s = <0>;
+> > +			i-cache-block-size = <64>;
+> > +			d-cache-block-size = <64>;
+> 
+> The kernel reads those, but also hard codes 128 in places.
+
+Interesting, because it all seems to work.  I assume the critical
+thing is doing the right dcbz's.
+
+> See L1_CACHE_BYTES.
+> 
+> > +			ibm,pa-features = [40 00 c2 27 00 00 00 80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 80 00 80 00 00 00 80 00 80 00 00 00 80 00 80 00 80 00 80 00 80 00 80 00 80 00 80 00 80 00 80 00 80 00 80 00 80 00];
+> 
+> Do you need that?
+> 
+> You shouldn't, if we've done things right with the cpu-features support.
+
+Turns out I don't need it.
+
+> > +			d-cache-sets = <2>;
+> > +			ibm,pir = <0x3c>;
+> 
+> Needed?
+
+Nope.
+
+> > +			i-tlb-size = <64>;
+> > +			cpu-version = <0x990000>;
+> > +			status = "okay";
+> > +			i-cache-size = <0x1000>;
+> > +			ibm,processor-radix-AP-encodings = <0x0c 0xa0000010 0x20000015 0x4000001e>;
+> > +			tlb-size = <0>;
+> > +			tlb-sets = <0>;
+> 
+> Does the kernel use those? I can't find it.
+> 
+> > +			device_type = "cpu";
+> > +			d-tlb-size = <128>;
+> > +			d-tlb-sets = <2>;
+> > +			reg = <0>;
+> > +			general-purpose;
+> > +			64-bit;
+> > +			d-cache-size = <0x1000>;
+> > +			ibm,chip-id = <0x00>;
+> > +		};
+> > +	};
+> > +
+> > +	chosen {
+> > +		bootargs = "";
+> > +		ibm,architecture-vec-5 = [19 00 10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 40 00 40];
+> 
+> Do you need that?
+> 
+> I assume you run with MSR[HV] = 1 (you don't say anywhere), in which
+> case we never look at that property.
+
+I do need that given we're running with MSR[HV] = 0; without that the
+kernel assumes HPT mode.
+
+Paul.
