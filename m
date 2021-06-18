@@ -2,72 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E97E3AD129
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 19:27:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E54E3AD1E8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jun 2021 20:13:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G65T15MQFz3byB
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Jun 2021 03:27:01 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=default header.b=QxaZv37P;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G66Vh62Zgz3c7D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Jun 2021 04:13:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=efficios.com (client-ip=167.114.26.124; helo=mail.efficios.com;
- envelope-from=compudj@efficios.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256
- header.s=default header.b=QxaZv37P; dkim-atps=neutral
-Received: from mail.efficios.com (mail.efficios.com [167.114.26.124])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com;
+ envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G65SZ6FYZz303h
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Jun 2021 03:26:38 +1000 (AEST)
-Received: from localhost (localhost [127.0.0.1])
- by mail.efficios.com (Postfix) with ESMTP id 7AEE0345C4E;
- Fri, 18 Jun 2021 13:26:34 -0400 (EDT)
-Received: from mail.efficios.com ([127.0.0.1])
- by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10032)
- with ESMTP id TuF5gIHS_P9W; Fri, 18 Jun 2021 13:26:33 -0400 (EDT)
-Received: from localhost (localhost [127.0.0.1])
- by mail.efficios.com (Postfix) with ESMTP id 39D64346030;
- Fri, 18 Jun 2021 13:26:33 -0400 (EDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.efficios.com 39D64346030
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
- s=default; t=1624037193;
- bh=RVU1L7Bs5o8SF/s3fQLWZ2mgUojZ65JgsimVBayw7WM=;
- h=Date:From:To:Message-ID:MIME-Version;
- b=QxaZv37PI2T8k93cxNlviHuor7Eo1jdIh84JQW8lKtRqEnYg+leveVO3V0WFWrykT
- MvqRXaDcPeJ0eAiUxm+yvxtY3zYscfcARDn2rN0ViMIPWwVcsj7n0OufUs3b9Z1+9R
- oEl+McAQbfLVbznVaLyI+IjT8OEOZRe3hMWnqTSYXPrFjcy1639fmawQUsbPISdolV
- vzjbXySgml575Cim3yIEQOpynXR/OAVs0L+ob5PmJZT2AamgShg4nH+wblsIvv+a9o
- 2rIOi5IDZ47uAsVlnSrTmJsFS38xpSUbGgJqwa7YawAOIt4JkaTWO/VI7k6xNPxC35
- h+2QpUFHgBE5Q==
-X-Virus-Scanned: amavisd-new at efficios.com
-Received: from mail.efficios.com ([127.0.0.1])
- by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10026)
- with ESMTP id aQITEBiYLT6c; Fri, 18 Jun 2021 13:26:33 -0400 (EDT)
-Received: from mail03.efficios.com (mail03.efficios.com [167.114.26.124])
- by mail.efficios.com (Postfix) with ESMTP id 1BA0A346100;
- Fri, 18 Jun 2021 13:26:33 -0400 (EDT)
-Date: Fri, 18 Jun 2021 13:26:32 -0400 (EDT)
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <2077369633.12794.1624037192994.JavaMail.zimbra@efficios.com>
-In-Reply-To: <8b200dd5-f37b-b208-82fb-2775df7bcd49@csgroup.eu>
-References: <20180129202020.8515-1-mathieu.desnoyers@efficios.com>
- <20180129202020.8515-3-mathieu.desnoyers@efficios.com>
- <8b200dd5-f37b-b208-82fb-2775df7bcd49@csgroup.eu>
-Subject: Re: [PATCH for 4.16 v7 02/11] powerpc: membarrier: Skip memory
- barrier in switch_mm()
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G66VJ1MvZz304N
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Jun 2021 04:13:04 +1000 (AEST)
+IronPort-SDR: M8W0/1XsYPp8U0vZv4+7CX1+2oso29zc6DpMRvuY6YYBvU5D1i/q24+GKyZn35GHCSM6VATal8
+ 8UCH/nP0lE6A==
+X-IronPort-AV: E=McAfee;i="6200,9189,10019"; a="292229125"
+X-IronPort-AV: E=Sophos;i="5.83,284,1616482800"; d="scan'208";a="292229125"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Jun 2021 11:12:58 -0700
+IronPort-SDR: fZjz2UBcjkF09ZLFZzZqWyvwCbkGqlZanM6atUtLAcrBp3dXyferraXT69g8eiZc0puz+dQdsp
+ 3jQAgCFqGSuA==
+X-IronPort-AV: E=Sophos;i="5.83,284,1616482800"; d="scan'208";a="453226714"
+Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
+ by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Jun 2021 11:12:58 -0700
+Date: Fri, 18 Jun 2021 11:12:58 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: Herbert Xu <herbert@gondor.apana.org.au>
+Subject: Re: [PATCH 01/18] mm: add a kunmap_local_dirty helper
+Message-ID: <20210618181258.GC1905674@iweiny-DESK2.sc.intel.com>
+References: <20210615132456.753241-1-hch@lst.de>
+ <20210615132456.753241-2-hch@lst.de>
+ <20210618030157.GA1905674@iweiny-DESK2.sc.intel.com>
+ <20210618033728.GA16787@gondor.apana.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [167.114.26.124]
-X-Mailer: Zimbra 8.8.15_GA_4018 (ZimbraWebClient - FF89 (Linux)/8.8.15_GA_4026)
-Thread-Topic: powerpc: membarrier: Skip memory barrier in switch_mm()
-Thread-Index: CQE5LhemvVU5Lc+W1e2QOiB/EG3b7A==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210618033728.GA16787@gondor.apana.org.au>
+User-Agent: Mutt/1.11.1 (2018-12-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,59 +55,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maged michael <maged.michael@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Dave Watson <davejwatson@fb.com>,
- Will Deacon <will.deacon@arm.com>, Andrew Hunter <ahh@google.com>,
- David Sehr <sehr@google.com>, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, linux-arch <linux-arch@vger.kernel.org>,
- x86 <x86@kernel.org>, "Russell King, ARM Linux" <linux@armlinux.org.uk>,
- Greg Hackmann <ghackmann@google.com>,
- Linus Torvalds <torvalds@linux-foundation.org>, Ingo Molnar <mingo@redhat.com>,
- Alan Stern <stern@rowland.harvard.edu>, Paul <paulmck@linux.vnet.ibm.com>,
- Andrea Parri <parri.andrea@gmail.com>, Avi Kivity <avi@scylladb.com>,
- Boqun Feng <boqun.feng@gmail.com>, Nicholas Piggin <npiggin@gmail.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, linux-api <linux-api@vger.kernel.org>,
- linux-kernel <linux-kernel@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Mike Snitzer <snitzer@redhat.com>, "David S. Miller" <davem@davemloft.net>,
+ Geoff Levand <geoff@infradead.org>, Christoph Lameter <cl@gentwo.de>,
+ ceph-devel@vger.kernel.org, linux-mips@vger.kernel.org,
+ Dongsheng Yang <dongsheng.yang@easystack.cn>, linux-kernel@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ dm-devel@redhat.com, linux-arch@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, Ilya Dryomov <idryomov@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------ On Jun 18, 2021, at 1:13 PM, Christophe Leroy christophe.leroy@csgroup.eu wrote:
-[...]
+On Fri, Jun 18, 2021 at 11:37:28AM +0800, Herbert Xu wrote:
+> On Thu, Jun 17, 2021 at 08:01:57PM -0700, Ira Weiny wrote:
+> >
+> > > +		flush_kernel_dcache_page(__page);		\
+> > 
+> > Is this required on 32bit systems?  Why is kunmap_flush_on_unmap() not
+> > sufficient on 64bit systems?  The normal kunmap_local() path does that.
+> > 
+> > I'm sorry but I did not see a conclusion to my query on V1. Herbert implied the
+> > he just copied from the crypto code.[1]  I'm concerned that this _dirty() call
+> > is just going to confuse the users of kmap even more.  So why can't we get to
+> > the bottom of why flush_kernel_dcache_page() needs so much logic around it
+> > before complicating the general kernel users.
+> > 
+> > I would like to see it go away if possible.
 > 
-> I don't understand all that complexity to just replace a simple
-> 'smp_mb__after_unlock_lock()'.
+> This thread may be related:
 > 
-> #define smp_mb__after_unlock_lock()	smp_mb()
-> #define smp_mb()	barrier()
-> # define barrier() __asm__ __volatile__("": : :"memory")
-> 
-> 
-> Am I missing some subtility ?
+> https://lwn.net/Articles/240249/
 
-On powerpc CONFIG_SMP, smp_mb() is actually defined as:
+Interesting!  Thanks!
 
-#define smp_mb()        __smp_mb()
-#define __smp_mb()      mb()
-#define mb()   __asm__ __volatile__ ("sync" : : : "memory")
+Digging around a bit more I found:
 
-So the original motivation here was to skip a "sync" instruction whenever
-switching between threads which are part of the same process. But based on
-recent discussions, I suspect my implementation may be inaccurately doing
-so though.
+https://lore.kernel.org/patchwork/patch/439637/
 
-Thanks,
+Auditing all the flush_dcache_page() arch code reveals that the mapping field
+is either unused, or is checked for NULL.  Furthermore, all the implementations
+call page_mapping_file() which further limits the page to not be a swap page.
 
-Mathieu
+All flush_kernel_dcache_page() implementations appears to operate the same way
+in all arch's which define that call.
 
+So I'm confident now that additional !PageSlab(__page) checks are not needed
+and this patch is unnecessary.   Christoph, can we leave this out of the kmap
+API and just fold the flush_kernel_dcache_page() calls back into the bvec code?
 
-> 
-> Thanks
-> Christophe
+Unfortunately, I'm not convinced this can be handled completely by
+kunmap_local() nor the mem*_page() calls because there is a difference between
+flush_dcache_page() and flush_kernel_dcache_page() in most archs...  [parisc
+being an exception which falls back to flush_kernel_dcache_page()]...
 
--- 
-Mathieu Desnoyers
-EfficiOS Inc.
-http://www.efficios.com
+It seems like the generic unmap path _should_ be able to determine which call
+to make based on the page but I'd have to look at that more.
+
+Ira
