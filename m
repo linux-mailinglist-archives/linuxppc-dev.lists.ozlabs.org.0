@@ -2,76 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B77363AD6FB
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Jun 2021 05:22:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78D193AD6FD
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Jun 2021 05:23:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G6LhG3cwyz3c0y
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Jun 2021 13:22:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G6Lhx1jdvz3c9P
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Jun 2021 13:23:13 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Idn92CI+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=DIK4FeNK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e;
- helo=mail-pf1-x42e.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102a;
+ helo=mail-pj1-x102a.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Idn92CI+; dkim-atps=neutral
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com
- [IPv6:2607:f8b0:4864:20::42e])
+ header.s=20161025 header.b=DIK4FeNK; dkim-atps=neutral
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com
+ [IPv6:2607:f8b0:4864:20::102a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G6Lgr5dLmz2yhf
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Jun 2021 13:22:15 +1000 (AEST)
-Received: by mail-pf1-x42e.google.com with SMTP id x73so9181053pfc.8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jun 2021 20:22:15 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G6LhX3wWFz2yjB
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Jun 2021 13:22:52 +1000 (AEST)
+Received: by mail-pj1-x102a.google.com with SMTP id
+ 13-20020a17090a08cdb029016eed209ca4so7036550pjn.1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jun 2021 20:22:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=3T7Odnlsnem8BkJlC2xSfftmUKp4jKXmmLUMcPJbBEA=;
- b=Idn92CI+h8pY9q7HPYIz/0jW5jkAufr8GnNY7FFeQORmQ9SmvmYuuchs68QAnUofxU
- j642JXTnUvarg9FzIqNT/YOT2fQI3R9Vtura966K0T4HlNM7dtsb10gmwK6VcTMp3+UH
- N3woyo0zlsbbqlXbiO6+9V/oLRxLtbCUU8bVcVwbj7h2lf9RNRXweiUkKF3GCEmHaSSH
- KafqbdAdbLJrLdIdcEZ2Kf4sRBTBdRNTPtfl5EytC4bp713rC04HrKsQeisymGVv+1GK
- 5TyTIo1xfYdMRjh1/PaiAJ+KAoPzLTmFKNIQW+sBfs9FFviPd9f1vFvzcH2M65Vbtjlk
- DdcQ==
+ bh=6TdDLes2Gw5ionLs5FEcoq+qBpg/39isQHw8hmOU2DM=;
+ b=DIK4FeNKIz4uCyjknxXRGeur2lOR4V6Rm15a9SC3QuG8+LEAXvJu/F4FUwHaev8Yo8
+ ysyUTIRpWZLUXV5rhUDSGKfc0+2GSqtZkhOHf7HHmK4ijX97R3k5mkjCAtUIm/l+/CJN
+ mOV+R1jkEWDQiyy4vqqQZXOLJQn1zQj/m9C4lXUXmNFyobuYc/T5CQ8sDPD53x8GNo+O
+ BH9v2VW8TlG6JqB/pCd6rtoausxb04nCUwFtvVp4wDKEJoajRDyoXib/2StggY7vD86U
+ DMWYrj19QZvxlLJ7aZQTvLrpUOueNo6HthLIfHhFbl8nTXpTvqZh8FzqX+RIoYH+EKPS
+ JHoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=3T7Odnlsnem8BkJlC2xSfftmUKp4jKXmmLUMcPJbBEA=;
- b=s28c9lGvXayeWRRmpBQOCOo2wq8UDtPggD3n553BVr1/4Br3SLMF9Iwmom5Vk8mHQX
- XP0Ak5kPEix8zEXixiaStyQLmDA1YFVVrungYPLXhmXld/4ugdDhsT+9H8ImRp8+ZAB/
- Zqaqo0aVsVJjALa0VkT2vnadDcl64ndqwAwawjh4DAehj3gsY+C9wu51v/spFKOnmucC
- LrE3Urf4tMrzs1WBp3bJ5GLoWYFbGWAbts/m/Yt1FfpUV1PxUYKIaovm6Vl6EOcZ9uCq
- uj4qVyNv5qyzS5JOsKlWEwiLVNh/OUh8mqrAbhgPxD5Op2K8FIhrPqVawOYrcntTop/J
- ACKw==
-X-Gm-Message-State: AOAM532X4rZKgi9b+WxNARbzGJ+2KYTmidtRHahjNvAbK8chC24yjb4w
- i92da+gF2tSgp+vuMKpeEOw=
-X-Google-Smtp-Source: ABdhPJxXGfqiBU57ZsFrW4SrZNw5czQwAVUp1ykENVQ7Brhf201hESYNXZjgUGMvo2czRDaZpX0NhQ==
-X-Received: by 2002:a63:ef44:: with SMTP id c4mr12840074pgk.162.1624072931781; 
- Fri, 18 Jun 2021 20:22:11 -0700 (PDT)
+ bh=6TdDLes2Gw5ionLs5FEcoq+qBpg/39isQHw8hmOU2DM=;
+ b=nCbYz/Jk0HYwPqCLm51ANLk6b1RYCezrexo8ecnKKnNjw3mSsqaBVY/3vlIkG1bQIz
+ jUq3/S6gsWXykZ7obpKdU/H29Gt/wvFo8bU0+V2go6+qergxHgccH2DUO50ZBtIGezVq
+ NiNN04gZbM7pZzoEwp7Ap829PgHMlw/Y65BpxCS5OhaZvR2pA53b09nGb4/8Bk9j016A
+ QzgzxGMKDyXZ5NlNYbxxvA91uDpkL7tkoyA9uqIUtDtaiqinRJko+4NvxU+97TYCuHZf
+ HfKaLTARwTnERo+BqAniJKAUDghSrJ7rOcl3zRXZr5Ji2M+1VqCnl/ptgmpOYlKUOfmh
+ oCJQ==
+X-Gm-Message-State: AOAM533RitYEfism9ce37STQbRqyEgoG1qDhWmYxAafgRiK9NuP9inPN
+ 0QjMrmWJ0LoctPtLhPosBLI=
+X-Google-Smtp-Source: ABdhPJwOI/w4OXi61+N0pqTaQ2lOXCarNRIDwPwwwOCgihfmzYj4yCU8eDlQ17zFLpoz9uKa3wf7GA==
+X-Received: by 2002:a17:902:6904:b029:fb:42b6:e952 with SMTP id
+ j4-20020a1709026904b02900fb42b6e952mr7625233plk.16.1624072969252; 
+ Fri, 18 Jun 2021 20:22:49 -0700 (PDT)
 Received: from localhost (60-242-147-73.tpgi.com.au. [60.242.147.73])
- by smtp.gmail.com with ESMTPSA id h8sm8736847pjf.7.2021.06.18.20.22.10
+ by smtp.gmail.com with ESMTPSA id q23sm10014316pgm.31.2021.06.18.20.22.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 18 Jun 2021 20:22:11 -0700 (PDT)
-Date: Sat, 19 Jun 2021 13:22:05 +1000
+ Fri, 18 Jun 2021 20:22:48 -0700 (PDT)
+Date: Sat, 19 Jun 2021 13:22:43 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v6 12/17] powerpc/pseries/vas: Integrate API with
- open/close windows
+Subject: Re: [PATCH v6 13/17] powerpc/pseries/vas: Setup IRQ and fault handling
 To: Haren Myneni <haren@linux.ibm.com>, herbert@gondor.apana.org.au,
  linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
  mpe@ellerman.id.au
 References: <827bf56dce09620ebecd8a00a5f97105187a6205.camel@linux.ibm.com>
- <e8d956bace3f182c4d2e66e343ff37cb0391d1fd.camel@linux.ibm.com>
- <1623971609.844odc55aw.astroid@bobo.none>
- <0d6ca1ec553a61b219f42ebf6699dd6c56e2e978.camel@linux.ibm.com>
-In-Reply-To: <0d6ca1ec553a61b219f42ebf6699dd6c56e2e978.camel@linux.ibm.com>
+ <b8fc66dcb783d06a099a303e5cfc69087bb3357a.camel@linux.ibm.com>
+ <1623972635.u8jj6g26re.astroid@bobo.none>
+ <a19e7839316c9ec4f7901e97b551fcf4219de82f.camel@linux.ibm.com>
+In-Reply-To: <a19e7839316c9ec4f7901e97b551fcf4219de82f.camel@linux.ibm.com>
 MIME-Version: 1.0
-Message-Id: <1624072607.4axs4cpe7w.astroid@bobo.none>
+Message-Id: <1624072930.d9ivbdzz50.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -89,68 +90,39 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Haren Myneni's message of June 18, 2021 5:49 pm:
-> On Fri, 2021-06-18 at 09:22 +1000, Nicholas Piggin wrote:
->> Excerpts from Haren Myneni's message of June 18, 2021 6:36 am:
->> > This patch adds VAS window allocatioa/close with the corresponding
->> > hcalls. Also changes to integrate with the existing user space VAS
->> > API and provide register/unregister functions to NX pseries driver.
+Excerpts from Haren Myneni's message of June 18, 2021 12:09 pm:
+> On Fri, 2021-06-18 at 09:34 +1000, Nicholas Piggin wrote:
+>> Excerpts from Haren Myneni's message of June 18, 2021 6:37 am:
+>> > NX generates an interrupt when sees a fault on the user space
+>> > buffer and the hypervisor forwards that interrupt to OS. Then
+>> > the kernel handles the interrupt by issuing H_GET_NX_FAULT hcall
+>> > to retrieve the fault CRB information.
 >> >=20
->> > The driver register function is used to create the user space
->> > interface (/dev/crypto/nx-gzip) and unregister to remove this
->> > entry.
->> >=20
->> > The user space process opens this device node and makes an ioctl
->> > to allocate VAS window. The close interface is used to deallocate
->> > window.
->> >=20
->> > Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+>> > This patch also adds changes to setup and free IRQ per each
+>> > window and also handles the fault by updating the CSB.
+>>=20
+>> In as much as this pretty well corresponds to the PowerNV code
+>> AFAIKS,
+>> it looks okay to me.
 >>=20
 >> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 >>=20
->> Unless there is some significant performance reason it might be
->> simplest
->> to take the mutex for the duration of the allocate and frees rather
->> than=20
->> taking it several times, covering the atomic with the lock instead.
->>=20
->> You have a big lock, might as well use it and not have to wonder what
->> if=20
->> things race here or there.
+>> Could you have an irq handler in your ops vector and have=20
+>> the core code set up the irq and call your handler, so the Linux irq
+>> handling is in one place? Not something for this series, I was just
+>> wondering.
 >=20
-> Using mutex to protect allocate/deallocate window and setup/free IRQ,
-> also to protect updating the list. We do not need lock for modify
-> window hcall and other things. Hence taking mutex several times.
-
-Right, at which point you have to consider what happens with=20
-interleaving allocates and deallocates. I'm not saying it's wrong, just=20
-that if you do credential allocation, hcall allocation, irq allocation,=20
-and list insertion all under the one lock, and remoe it all under the=20
-one lock, concurrency requires less attention.
-
-
-> Also
-> used atomic for counters (used_lpar_creds) which can be exported in
-> sysfs (this patch will be added later in next enhancement seris).=20
-
-That's okay you can use mutexes for that too if that's how you're
-protecting them.
-
+> Not possible to have common core code for IRQ  setup.=20
 >=20
-> Genarlly applications open window initially, do continuous copy/paste
-> operations and close window later. But possible that the library /
-> application to open/close window for each request. Also may be opening
-> or closing multiple windows (say 1000 depends on cores on the system)
-> at the same time. These cases may affect the application performance.
+> PowerNV: Every VAS instance will be having IRQ and this setup will be
+> done during initialization (system boot). A fault FIFO will be assigned
+> for each instance and registered to VAS so that VAS/NX writes fault CRB
+> into this FIFO. =20
+>=20
+> PowerVM: Each window will have an IRQ and the setup will be done during
+> window open.=20
 
-It definitely could if you have a lot of concurrent open/close, but
-the code as is won't handle it all that well either, so there's the
-question of what is reasonable to do and what is reasonable to add
-concurrency complexity for.
-
-As I said, you've got it working and seem to have covered all cases now=20
-so let's get the series in first. But something to consider changing
-IMO.
+Yeah, I thought as much. Just wondering.
 
 Thanks,
 Nick
