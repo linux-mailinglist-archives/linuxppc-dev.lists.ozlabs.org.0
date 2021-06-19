@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FC243AD6EB
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Jun 2021 05:04:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0751B3AD6EC
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Jun 2021 05:09:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G6LGy6c8wz3c1W
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Jun 2021 13:04:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G6LPD4g8Lz3c5k
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Jun 2021 13:09:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=cGqxZITi;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=OOpMl65P;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,76 +17,77 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=srs0=aoo4=ln=gmail.com=npiggin@ozlabs.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=cGqxZITi; dkim-atps=neutral
+ header.s=20161025 header.b=OOpMl65P; dkim-atps=neutral
 Received: from ozlabs.org (ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G6LGV3RWnz2xb6
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Jun 2021 13:03:46 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G6LNm20rxz2xYf
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Jun 2021 13:09:12 +1000 (AEST)
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by ozlabs.org (Postfix) with ESMTP id 4G6LGS3Ccdz9sWk
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Jun 2021 13:03:44 +1000 (AEST)
+ by ozlabs.org (Postfix) with ESMTP id 4G6LNl1XPWz9sWk
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Jun 2021 13:09:11 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 4G6LGS2nFDz9sWM; Sat, 19 Jun 2021 13:03:44 +1000 (AEST)
+ id 4G6LNl1CLgz9sWM; Sat, 19 Jun 2021 13:09:11 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1030;
- helo=mail-pj1-x1030.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1031;
+ helo=mail-pj1-x1031.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=cGqxZITi; dkim-atps=neutral
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com
- [IPv6:2607:f8b0:4864:20::1030])
+ header.s=20161025 header.b=OOpMl65P; dkim-atps=neutral
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com
+ [IPv6:2607:f8b0:4864:20::1031])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4G6LGS1V5Yz9sRf;
- Sat, 19 Jun 2021 13:03:42 +1000 (AEST)
-Received: by mail-pj1-x1030.google.com with SMTP id
- pf4-20020a17090b1d84b029016f6699c3f2so1928167pjb.0; 
- Fri, 18 Jun 2021 20:03:42 -0700 (PDT)
+ by ozlabs.org (Postfix) with ESMTPS id 4G6LNk50tzz9sRf;
+ Sat, 19 Jun 2021 13:09:08 +1000 (AEST)
+Received: by mail-pj1-x1031.google.com with SMTP id
+ k22-20020a17090aef16b0290163512accedso8057748pjz.0; 
+ Fri, 18 Jun 2021 20:09:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:references:in-reply-to:mime-version:message-id
  :content-transfer-encoding;
- bh=qd5Se1wUdT2cUDPGsyOoAhLuXTJMOFXzE2ZorbnEGf4=;
- b=cGqxZITiN0AnVcYGc3cXVbI1mx+kmRmqrpv1a9l9KvxOMl7tjXYe1VtJzUKjBcg+g7
- wi6Kvk3XuzD2Q6cc1KrfrYvJjVa7gf2L1/W/qO7+PgPP7gb0rcTjCHyjdxBcCnQLN330
- VPA1l98r6MlQAYXIVl/BBX4bLMM23L9q8+oonY/LYLAqAP3W3Bh/bOEyji41EBxsYucN
- RrT7KRR3O2mDdgZTHcHQDMJN7LzlMi6q57MR+T62ZjPwvmd2eROxlR7dzgbbARLge6U7
- BsWkrg/tVTmxpTt3dBDa0C7Bwv7U3Q8mj8bqjriEBkMn70VWIu5ZTmnhMZfaqF7uoY7w
- Pxjw==
+ bh=TC6UClfqB9l6yrV5kpDH6L+PguCdl3thT0jqSLe0Ubs=;
+ b=OOpMl65PSsLEyBIE8Kwtikv6918A0K3lqW+Rc00c8sWrcYipU01+OFN88DnGjRD67a
+ 4XWl/isvf61B+0n4JCFoEsTJk5ynePrSBhMHcZsfRIYpS+pJH2NGA5jGTtkDS/iDU8Ef
+ crUKOnCFv8CQt54wjTp+z+sBLr/k2wUH6fFP9QnaBTALbo5+sFIfPIkDc+7aJcjaQ8rh
+ 1HOaQJySxgy5afGm16N0gh4efWpIFJVkHn2dCXsZDDrU0XJjpwdRPYkC8cKOvd3ghNRb
+ vLW4rbE4T173hF3bx1IMWHzy+/IShjIYIkzhm006PhByMjUoLk1NCiFUXV0X3rb6t739
+ 5yIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=qd5Se1wUdT2cUDPGsyOoAhLuXTJMOFXzE2ZorbnEGf4=;
- b=psbPIIC926gQk6CxKlJql5usgEvAuRurlmrXP3I2VYoLImOe884LfspR2iACnTF6vo
- DUKI2n7DQyWeMgBn7eQW0VNFPzRUoKltypQlBhMVDg+q/3KFMANTqooPc+f8Uq8HX1rd
- /+B8yKa9kolPcon5xB9J9kVIbWXkVPY35z8VML41IFJtAc+daNIvoiE7pBIcO1a2VSRL
- X0nf0d40CH9nusN8+nSsvXeKvyoPOLtpTlJ77CppJDUslgr+Lt9EN73wlQ9u+wT8U1No
- C9koGWyEpR1ar43eUM2HjTL3z/ZERPz8TyCblQUxzTnm1W/nhhicWKl7LwdInzDNbj7P
- 3Mmg==
-X-Gm-Message-State: AOAM530NSDRWoEyXqivPEaIL1zmqL2+BrmhF8EgmS1obMfvac230TIly
- jrPjTBJFX/wciGv0dXLYZ7UwIyJ1JWY=
-X-Google-Smtp-Source: ABdhPJwomcl0xVkvX5Fm2jJdJWWZxEpwRtQ+8bm3ZPqdB+3ty9XL+MEF96t5EHXFadjTrGbtZ8Av2Q==
-X-Received: by 2002:a17:902:b48b:b029:118:b709:9f50 with SMTP id
- y11-20020a170902b48bb0290118b7099f50mr7748073plr.74.1624071818769; 
- Fri, 18 Jun 2021 20:03:38 -0700 (PDT)
+ bh=TC6UClfqB9l6yrV5kpDH6L+PguCdl3thT0jqSLe0Ubs=;
+ b=CI3uBVmPYED1XjPGINO498460O7u+ExQOW2P08JYWs+E/+Atk7bOykil38RztSHh8B
+ /WE++2v2HHk5FRbmyDSKlrf9pKI6bqWArUC9zDe0u/2nismDc8D0e531Gc3t3TC/8zKj
+ fccj4ZCC8FF6VMkO2mGWBhix5/MDCQ4qW2xMyC/0MSh/xMZpESg0tX3Mo1ZU83IKFavd
+ /Dn7/AMX+wJ6aprxE2K9FqW0ipyrOKoAMXsFUobyvcUzPkFfJyMYHRh9jxUvl/OVEROr
+ tq1dg1WBSzsvIj5gcB7UIja69SZRrZLoNVkRQGrdIJs3EOlWwfsUuQGCtahxPaXL9zaH
+ /3sw==
+X-Gm-Message-State: AOAM531MyAf0QbelvFWpW/k5459a4HYRpW/UhuHVUfStLOWDt8T4wnnP
+ XWdJe2XGWfOtVfcm/PioQozPeL2ptEc=
+X-Google-Smtp-Source: ABdhPJyB21W5JW0SnveAGvx/q9eVCNMH/u9CXKW93zbNxzDeQRBApwe0jInHSLWn2gOZ+FLWgjG5wQ==
+X-Received: by 2002:a17:902:e751:b029:106:65ba:5c80 with SMTP id
+ p17-20020a170902e751b029010665ba5c80mr7680053plf.36.1624072145157; 
+ Fri, 18 Jun 2021 20:09:05 -0700 (PDT)
 Received: from localhost (60-242-147-73.tpgi.com.au. [60.242.147.73])
- by smtp.gmail.com with ESMTPSA id x2sm9336806pfp.155.2021.06.18.20.03.37
+ by smtp.gmail.com with ESMTPSA id 6sm9090659pfw.56.2021.06.18.20.08.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 18 Jun 2021 20:03:38 -0700 (PDT)
-Date: Sat, 19 Jun 2021 13:03:32 +1000
+ Fri, 18 Jun 2021 20:09:05 -0700 (PDT)
+Date: Sat, 19 Jun 2021 13:08:51 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 1/9] powerpc: Add Microwatt platform
+Subject: Re: [PATCH v2 6/9] powerpc/microwatt: Add support for hardware random
+ number generator
 To: linuxppc-dev@ozlabs.org, Paul Mackerras <paulus@ozlabs.org>
 References: <YMwWPcsaWzMlDPqQ@thinks.paulus.ozlabs.org>
- <YMwWbZVREsVug9R0@thinks.paulus.ozlabs.org>
-In-Reply-To: <YMwWbZVREsVug9R0@thinks.paulus.ozlabs.org>
+ <YMwXPHlV/ZleiQUY@thinks.paulus.ozlabs.org>
+In-Reply-To: <YMwXPHlV/ZleiQUY@thinks.paulus.ozlabs.org>
 MIME-Version: 1.0
-Message-Id: <1624071540.0w83jhkdb0.astroid@bobo.none>
+Message-Id: <1624071936.oqwaldrt74.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -104,131 +105,105 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Paul Mackerras's message of June 18, 2021 1:43 pm:
-> Microwatt is a FPGA-based implementation of the Power ISA.  It
-> currently only implements little-endian 64-bit mode, and does
-> not (yet) support SMP, VMX, VSX or transactional memory.  It has an
-> optional FPU, and an optional MMU (required for running Linux,
-> obviously) which implements a configurable radix tree but not
-> hypervisor mode or nested radix translation.
+Excerpts from Paul Mackerras's message of June 18, 2021 1:47 pm:
+> Microwatt's hardware RNG is accessed using the DARN instruction.
 >=20
-> This adds a new machine type to support FPGA-based SoCs with a
-> Microwatt core.  CONFIG_MATH_EMULATION can be selected for Microwatt
-> SOCs which don't have the FPU.
 
-The only thing I can think of is you may want to select PPC_RADIX and=20
-other possible things that are required, but that's not a big deal at=20
-the moment. I have a few kernel size reduction config patches (like=20
-CONFIG_PPC_HASH) I might be able to upstream now for Microwatt, so I
-could do a bit of a pass over the Kconfig stuff at that point.
+I think we're getting a platforms/book3s soon with the VAS patches,=20
+might be a place to add the get_random_darn function.
+
+Huh, DARN is unprivileged right? And yet we haven't wired it up in
+pseries it still uses an hcall.
+
+Anyway that's all stuff to sort out later.
 
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
->=20
 > Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
 > ---
->  arch/powerpc/Kconfig                      |  2 +-
->  arch/powerpc/platforms/Kconfig            |  1 +
->  arch/powerpc/platforms/Makefile           |  1 +
->  arch/powerpc/platforms/microwatt/Kconfig  |  9 +++++++++
->  arch/powerpc/platforms/microwatt/Makefile |  1 +
->  arch/powerpc/platforms/microwatt/setup.c  | 23 +++++++++++++++++++++++
->  6 files changed, 36 insertions(+), 1 deletion(-)
->  create mode 100644 arch/powerpc/platforms/microwatt/Kconfig
->  create mode 100644 arch/powerpc/platforms/microwatt/Makefile
->  create mode 100644 arch/powerpc/platforms/microwatt/setup.c
+>  arch/powerpc/platforms/microwatt/Kconfig  |  1 +
+>  arch/powerpc/platforms/microwatt/Makefile |  2 +-
+>  arch/powerpc/platforms/microwatt/rng.c    | 48 +++++++++++++++++++++++
+>  3 files changed, 50 insertions(+), 1 deletion(-)
+>  create mode 100644 arch/powerpc/platforms/microwatt/rng.c
 >=20
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 386ae12d8523..5ce51c38a346 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -422,7 +422,7 @@ config HUGETLB_PAGE_SIZE_VARIABLE
-> =20
->  config MATH_EMULATION
->  	bool "Math emulation"
-> -	depends on 4xx || PPC_8xx || PPC_MPC832x || BOOKE
-> +	depends on 4xx || PPC_8xx || PPC_MPC832x || BOOKE || PPC_MICROWATT
->  	select PPC_FPU_REGS
->  	help
->  	  Some PowerPC chips designed for embedded applications do not have
-> diff --git a/arch/powerpc/platforms/Kconfig b/arch/powerpc/platforms/Kcon=
-fig
-> index 7a5e8f4541e3..74be4d06afbf 100644
-> --- a/arch/powerpc/platforms/Kconfig
-> +++ b/arch/powerpc/platforms/Kconfig
-> @@ -20,6 +20,7 @@ source "arch/powerpc/platforms/embedded6xx/Kconfig"
->  source "arch/powerpc/platforms/44x/Kconfig"
->  source "arch/powerpc/platforms/40x/Kconfig"
->  source "arch/powerpc/platforms/amigaone/Kconfig"
-> +source "arch/powerpc/platforms/microwatt/Kconfig"
-> =20
->  config KVM_GUEST
->  	bool "KVM Guest support"
-> diff --git a/arch/powerpc/platforms/Makefile b/arch/powerpc/platforms/Mak=
-efile
-> index 143d4417f6cc..edcb54cdb1a8 100644
-> --- a/arch/powerpc/platforms/Makefile
-> +++ b/arch/powerpc/platforms/Makefile
-> @@ -22,3 +22,4 @@ obj-$(CONFIG_PPC_CELL)		+=3D cell/
->  obj-$(CONFIG_PPC_PS3)		+=3D ps3/
->  obj-$(CONFIG_EMBEDDED6xx)	+=3D embedded6xx/
->  obj-$(CONFIG_AMIGAONE)		+=3D amigaone/
-> +obj-$(CONFIG_PPC_MICROWATT)	+=3D microwatt/
 > diff --git a/arch/powerpc/platforms/microwatt/Kconfig b/arch/powerpc/plat=
 forms/microwatt/Kconfig
-> new file mode 100644
-> index 000000000000..3be01e78ce57
-> --- /dev/null
+> index 50ed0cedb5f1..8f6a81978461 100644
+> --- a/arch/powerpc/platforms/microwatt/Kconfig
 > +++ b/arch/powerpc/platforms/microwatt/Kconfig
-> @@ -0,0 +1,9 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +config PPC_MICROWATT
-> +	depends on PPC_BOOK3S_64 && !SMP
-> +	bool "Microwatt SoC platform"
-> +	select PPC_XICS
-> +	select PPC_NATIVE
-> +	help
-> +          This option enables support for FPGA-based Microwatt implement=
+> @@ -7,6 +7,7 @@ config PPC_MICROWATT
+>  	select PPC_ICP_NATIVE
+>  	select PPC_NATIVE
+>  	select PPC_UDBG_16550
+> +	select ARCH_RANDOM
+>  	help
+>            This option enables support for FPGA-based Microwatt implement=
 ations.
-> +
+> =20
 > diff --git a/arch/powerpc/platforms/microwatt/Makefile b/arch/powerpc/pla=
 tforms/microwatt/Makefile
-> new file mode 100644
-> index 000000000000..e6885b3b2ee7
-> --- /dev/null
+> index e6885b3b2ee7..116d6d3ad3f0 100644
+> --- a/arch/powerpc/platforms/microwatt/Makefile
 > +++ b/arch/powerpc/platforms/microwatt/Makefile
-> @@ -0,0 +1 @@
-> +obj-y	+=3D setup.o
-> diff --git a/arch/powerpc/platforms/microwatt/setup.c b/arch/powerpc/plat=
-forms/microwatt/setup.c
+> @@ -1 +1 @@
+> -obj-y	+=3D setup.o
+> +obj-y	+=3D setup.o rng.o
+> diff --git a/arch/powerpc/platforms/microwatt/rng.c b/arch/powerpc/platfo=
+rms/microwatt/rng.c
 > new file mode 100644
-> index 000000000000..d80d52612672
+> index 000000000000..3d8ee6eb7dad
 > --- /dev/null
-> +++ b/arch/powerpc/platforms/microwatt/setup.c
-> @@ -0,0 +1,23 @@
+> +++ b/arch/powerpc/platforms/microwatt/rng.c
+> @@ -0,0 +1,48 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
 > +/*
-> + * Microwatt FPGA-based SoC platform setup code.
-> + *
-> + * Copyright 2020 Paul Mackerras (paulus@ozlabs.org), IBM Corp.
+> + * Derived from arch/powerpc/platforms/powernv/rng.c, which is:
+> + * Copyright 2013, Michael Ellerman, IBM Corporation.
 > + */
 > +
-> +#include <linux/types.h>
-> +#include <linux/kernel.h>
-> +#include <linux/stddef.h>
-> +#include <linux/init.h>
-> +#include <asm/machdep.h>
-> +#include <asm/time.h>
+> +#define pr_fmt(fmt)	"microwatt-rng: " fmt
 > +
-> +static int __init microwatt_probe(void)
+> +#include <linux/kernel.h>
+> +#include <linux/smp.h>
+> +#include <asm/archrandom.h>
+> +#include <asm/cputable.h>
+> +#include <asm/machdep.h>
+> +
+> +#define DARN_ERR 0xFFFFFFFFFFFFFFFFul
+> +
+> +int microwatt_get_random_darn(unsigned long *v)
 > +{
-> +	return of_machine_is_compatible("microwatt-soc");
+> +	unsigned long val;
+> +
+> +	/* Using DARN with L=3D1 - 64-bit conditioned random number */
+> +	asm volatile(PPC_DARN(%0, 1) : "=3Dr"(val));
+> +
+> +	if (val =3D=3D DARN_ERR)
+> +		return 0;
+> +
+> +	*v =3D val;
+> +
+> +	return 1;
 > +}
 > +
-> +define_machine(microwatt) {
-> +	.name			=3D "microwatt",
-> +	.probe			=3D microwatt_probe,
-> +	.calibrate_decr		=3D generic_calibrate_decr,
-> +};
+> +static __init int rng_init(void)
+> +{
+> +	unsigned long val;
+> +	int i;
+> +
+> +	for (i =3D 0; i < 10; i++) {
+> +		if (microwatt_get_random_darn(&val)) {
+> +			ppc_md.get_random_seed =3D microwatt_get_random_darn;
+> +			return 0;
+> +		}
+> +	}
+> +
+> +	pr_warn("Unable to use DARN for get_random_seed()\n");
+> +
+> +	return -EIO;
+> +}
+> +machine_subsys_initcall(, rng_init);
 > --=20
 > 2.31.1
 >=20
