@@ -2,90 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A516C3AD6F2
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Jun 2021 05:16:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B77363AD6FB
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Jun 2021 05:22:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G6LYS2kWSz3c5g
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Jun 2021 13:16:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G6LhG3cwyz3c0y
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Jun 2021 13:22:38 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=FyZZ9H9q;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Idn92CI+;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=srs0=aoo4=ln=gmail.com=npiggin@ozlabs.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e;
+ helo=mail-pf1-x42e.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=FyZZ9H9q; dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ header.s=20161025 header.b=Idn92CI+; dkim-atps=neutral
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com
+ [IPv6:2607:f8b0:4864:20::42e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G6LY262THz2xYf
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Jun 2021 13:16:22 +1000 (AEST)
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by ozlabs.org (Postfix) with ESMTP id 4G6LY155QRz9sWk
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Jun 2021 13:16:21 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 4G6LY13rzkz9sWM; Sat, 19 Jun 2021 13:16:21 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62f;
- helo=mail-pl1-x62f.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=FyZZ9H9q; dkim-atps=neutral
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com
- [IPv6:2607:f8b0:4864:20::62f])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4G6LY06nR1z9sRf;
- Sat, 19 Jun 2021 13:16:20 +1000 (AEST)
-Received: by mail-pl1-x62f.google.com with SMTP id c15so5575930pls.13;
- Fri, 18 Jun 2021 20:16:20 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G6Lgr5dLmz2yhf
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Jun 2021 13:22:15 +1000 (AEST)
+Received: by mail-pf1-x42e.google.com with SMTP id x73so9181053pfc.8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jun 2021 20:22:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:references:in-reply-to:mime-version:message-id
- :content-transfer-encoding;
- bh=MRbO2ZwY7DNzo0HQIQt90UXM/F6/FHbr/s05/w3zWg4=;
- b=FyZZ9H9qWSmniiguUwpshTvt0vEnpLXC505Cectfi3e5xtKocwGxWW1oKZh6560M09
- ulecvCN78phBhIzjBEbMCQfkVz3R1qW8tHs1a52QCekV3kY8qnyGpGMClFf61ckChUuD
- wxwHM9RztK13+oehicfNj0Pb2FDnAogGf896xqNh7YUhDXg0C0S8hW69gYXovKmhA24k
- 4TKRa3qMqZGd8s48z7YyMxTlPvPlaz44uScHLE2+yCiJQaursSsUTZxEOMxYIT0MtvJM
- CjMJG7s/3pBVrqIdHHPErX0R2a0SVwXouPtntgHrU/uMC7AAdZXdydpEpWP5PY7rehop
- ASbg==
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=3T7Odnlsnem8BkJlC2xSfftmUKp4jKXmmLUMcPJbBEA=;
+ b=Idn92CI+h8pY9q7HPYIz/0jW5jkAufr8GnNY7FFeQORmQ9SmvmYuuchs68QAnUofxU
+ j642JXTnUvarg9FzIqNT/YOT2fQI3R9Vtura966K0T4HlNM7dtsb10gmwK6VcTMp3+UH
+ N3woyo0zlsbbqlXbiO6+9V/oLRxLtbCUU8bVcVwbj7h2lf9RNRXweiUkKF3GCEmHaSSH
+ KafqbdAdbLJrLdIdcEZ2Kf4sRBTBdRNTPtfl5EytC4bp713rC04HrKsQeisymGVv+1GK
+ 5TyTIo1xfYdMRjh1/PaiAJ+KAoPzLTmFKNIQW+sBfs9FFviPd9f1vFvzcH2M65Vbtjlk
+ DdcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:references:in-reply-to
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=MRbO2ZwY7DNzo0HQIQt90UXM/F6/FHbr/s05/w3zWg4=;
- b=Wku399n85GlA8smz1zbv9NOXEUMTNcvhmlAfP8MUOHTV9UEc66/JF6zsWSKTHEybEp
- W0thnyk7EgUaKOsnUoH3YMm6DEDT9t8Q1kZzyTkoFs+/fPeL2+e1JLDvjY+ae1eb/f8p
- GQ1R4HvUNtGhp6p7UIlZ9lCwvplGsGcnnOcaFXHHvA7fWUp1/u4BnbdPxqm6YJ6DmYcd
- qYo6LONsqqNAS+qeRDsjM0GKejggYiGkszHheKO8hZlgUsgccGiIiNX9WvBsT2j319ls
- oy3198GvNlAwB3DksOwf5lZvqkSGqU9+LkSPkeczovq70BQ0LCY80+/3qemrASaWNUgI
- Zyrw==
-X-Gm-Message-State: AOAM531LB+RawYQksua4ctBXWbd4D97eMo89vZtYmTNNJtixvcBZCFq+
- VVcv0NXmoYeflRxeka0O/dD6uzHYwwU=
-X-Google-Smtp-Source: ABdhPJw1Cu8Njwf0W0ypC0xpzBJUPaPtQhg0C4K5v1OtWLlP8qL9m7vYOMtxdLb6xnJwU/9nEafA1A==
-X-Received: by 2002:a17:902:da91:b029:116:864e:893b with SMTP id
- j17-20020a170902da91b0290116864e893bmr7533661plx.26.1624072577669; 
- Fri, 18 Jun 2021 20:16:17 -0700 (PDT)
+ bh=3T7Odnlsnem8BkJlC2xSfftmUKp4jKXmmLUMcPJbBEA=;
+ b=s28c9lGvXayeWRRmpBQOCOo2wq8UDtPggD3n553BVr1/4Br3SLMF9Iwmom5Vk8mHQX
+ XP0Ak5kPEix8zEXixiaStyQLmDA1YFVVrungYPLXhmXld/4ugdDhsT+9H8ImRp8+ZAB/
+ Zqaqo0aVsVJjALa0VkT2vnadDcl64ndqwAwawjh4DAehj3gsY+C9wu51v/spFKOnmucC
+ LrE3Urf4tMrzs1WBp3bJ5GLoWYFbGWAbts/m/Yt1FfpUV1PxUYKIaovm6Vl6EOcZ9uCq
+ uj4qVyNv5qyzS5JOsKlWEwiLVNh/OUh8mqrAbhgPxD5Op2K8FIhrPqVawOYrcntTop/J
+ ACKw==
+X-Gm-Message-State: AOAM532X4rZKgi9b+WxNARbzGJ+2KYTmidtRHahjNvAbK8chC24yjb4w
+ i92da+gF2tSgp+vuMKpeEOw=
+X-Google-Smtp-Source: ABdhPJxXGfqiBU57ZsFrW4SrZNw5czQwAVUp1ykENVQ7Brhf201hESYNXZjgUGMvo2czRDaZpX0NhQ==
+X-Received: by 2002:a63:ef44:: with SMTP id c4mr12840074pgk.162.1624072931781; 
+ Fri, 18 Jun 2021 20:22:11 -0700 (PDT)
 Received: from localhost (60-242-147-73.tpgi.com.au. [60.242.147.73])
- by smtp.gmail.com with ESMTPSA id nv1sm8916574pjb.43.2021.06.18.20.16.16
+ by smtp.gmail.com with ESMTPSA id h8sm8736847pjf.7.2021.06.18.20.22.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 18 Jun 2021 20:16:17 -0700 (PDT)
-Date: Sat, 19 Jun 2021 13:16:11 +1000
+ Fri, 18 Jun 2021 20:22:11 -0700 (PDT)
+Date: Sat, 19 Jun 2021 13:22:05 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 9/9] powerpc/boot: Add a boot wrapper for Microwatt
-To: linuxppc-dev@ozlabs.org, Paul Mackerras <paulus@ozlabs.org>
-References: <YMwWPcsaWzMlDPqQ@thinks.paulus.ozlabs.org>
- <YMwX19wym3kQ7guu@thinks.paulus.ozlabs.org>
-In-Reply-To: <YMwX19wym3kQ7guu@thinks.paulus.ozlabs.org>
+Subject: Re: [PATCH v6 12/17] powerpc/pseries/vas: Integrate API with
+ open/close windows
+To: Haren Myneni <haren@linux.ibm.com>, herbert@gondor.apana.org.au,
+ linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ mpe@ellerman.id.au
+References: <827bf56dce09620ebecd8a00a5f97105187a6205.camel@linux.ibm.com>
+ <e8d956bace3f182c4d2e66e343ff37cb0391d1fd.camel@linux.ibm.com>
+ <1623971609.844odc55aw.astroid@bobo.none>
+ <0d6ca1ec553a61b219f42ebf6699dd6c56e2e978.camel@linux.ibm.com>
+In-Reply-To: <0d6ca1ec553a61b219f42ebf6699dd6c56e2e978.camel@linux.ibm.com>
 MIME-Version: 1.0
-Message-Id: <1624072480.muwpegowoa.astroid@bobo.none>
+Message-Id: <1624072607.4axs4cpe7w.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -103,103 +89,68 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Paul Mackerras's message of June 18, 2021 1:49 pm:
-> From: Joel Stanley <joel@jms.id.au>
+Excerpts from Haren Myneni's message of June 18, 2021 5:49 pm:
+> On Fri, 2021-06-18 at 09:22 +1000, Nicholas Piggin wrote:
+>> Excerpts from Haren Myneni's message of June 18, 2021 6:36 am:
+>> > This patch adds VAS window allocatioa/close with the corresponding
+>> > hcalls. Also changes to integrate with the existing user space VAS
+>> > API and provide register/unregister functions to NX pseries driver.
+>> >=20
+>> > The driver register function is used to create the user space
+>> > interface (/dev/crypto/nx-gzip) and unregister to remove this
+>> > entry.
+>> >=20
+>> > The user space process opens this device node and makes an ioctl
+>> > to allocate VAS window. The close interface is used to deallocate
+>> > window.
+>> >=20
+>> > Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+>>=20
+>> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+>>=20
+>> Unless there is some significant performance reason it might be
+>> simplest
+>> to take the mutex for the duration of the allocate and frees rather
+>> than=20
+>> taking it several times, covering the atomic with the lock instead.
+>>=20
+>> You have a big lock, might as well use it and not have to wonder what
+>> if=20
+>> things race here or there.
 >=20
-> This allows microwatt's kernel to be built with an embedded device tree.
->=20
-> Load to arch/powerpc/boot/dtbImage.microwatt to 0x500000:
->=20
->  mw_debug -b fpga stop load arch/powerpc/boot/dtbImage.microwatt 500000 s=
-tart
->=20
-> Signed-off-by: Joel Stanley <joel@jms.id.au>
-> Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
+> Using mutex to protect allocate/deallocate window and setup/free IRQ,
+> also to protect updating the list. We do not need lock for modify
+> window hcall and other things. Hence taking mutex several times.
 
-Thanks for folding and commenting that change. Ack for this and the rest=20
-of the platform and dt and interrupt handling patches FWIW, but I don't=20
-know much about any of these areas to give an informed review.
+Right, at which point you have to consider what happens with=20
+interleaving allocates and deallocates. I'm not saying it's wrong, just=20
+that if you do credential allocation, hcall allocation, irq allocation,=20
+and list insertion all under the one lock, and remoe it all under the=20
+one lock, concurrency requires less attention.
+
+
+> Also
+> used atomic for counters (used_lpar_creds) which can be exported in
+> sysfs (this patch will be added later in next enhancement seris).=20
+
+That's okay you can use mutexes for that too if that's how you're
+protecting them.
+
+>=20
+> Genarlly applications open window initially, do continuous copy/paste
+> operations and close window later. But possible that the library /
+> application to open/close window for each request. Also may be opening
+> or closing multiple windows (say 1000 depends on cores on the system)
+> at the same time. These cases may affect the application performance.
+
+It definitely could if you have a lot of concurrent open/close, but
+the code as is won't handle it all that well either, so there's the
+question of what is reasonable to do and what is reasonable to add
+concurrency complexity for.
+
+As I said, you've got it working and seem to have covered all cases now=20
+so let's get the series in first. But something to consider changing
+IMO.
 
 Thanks,
 Nick
-
-> ---
->  arch/powerpc/boot/Makefile    |  4 ++++
->  arch/powerpc/boot/microwatt.c | 24 ++++++++++++++++++++++++
->  arch/powerpc/boot/wrapper     |  5 +++++
->  3 files changed, 33 insertions(+)
->  create mode 100644 arch/powerpc/boot/microwatt.c
->=20
-> diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
-> index 2b8da923ceca..dfaa4094fcae 100644
-> --- a/arch/powerpc/boot/Makefile
-> +++ b/arch/powerpc/boot/Makefile
-> @@ -163,6 +163,8 @@ src-plat-$(CONFIG_PPC_POWERNV) +=3D pseries-head.S
->  src-plat-$(CONFIG_PPC_IBM_CELL_BLADE) +=3D pseries-head.S
->  src-plat-$(CONFIG_MVME7100) +=3D motload-head.S mvme7100.c
-> =20
-> +src-plat-$(CONFIG_PPC_MICROWATT) +=3D fixed-head.S microwatt.c
-> +
->  src-wlib :=3D $(sort $(src-wlib-y))
->  src-plat :=3D $(sort $(src-plat-y))
->  src-boot :=3D $(src-wlib) $(src-plat) empty.c
-> @@ -355,6 +357,8 @@ image-$(CONFIG_MVME5100)		+=3D dtbImage.mvme5100
->  # Board port in arch/powerpc/platform/amigaone/Kconfig
->  image-$(CONFIG_AMIGAONE)		+=3D cuImage.amigaone
-> =20
-> +image-$(CONFIG_PPC_MICROWATT)		+=3D dtbImage.microwatt
-> +
->  # For 32-bit powermacs, build the COFF and miboot images
->  # as well as the ELF images.
->  ifdef CONFIG_PPC32
-> diff --git a/arch/powerpc/boot/microwatt.c b/arch/powerpc/boot/microwatt.=
-c
-> new file mode 100644
-> index 000000000000..ca9d83617fc1
-> --- /dev/null
-> +++ b/arch/powerpc/boot/microwatt.c
-> @@ -0,0 +1,24 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +
-> +#include <stddef.h>
-> +#include "stdio.h"
-> +#include "types.h"
-> +#include "io.h"
-> +#include "ops.h"
-> +
-> +BSS_STACK(8192);
-> +
-> +void platform_init(unsigned long r3, unsigned long r4, unsigned long r5)
-> +{
-> +	unsigned long heapsize =3D 16*1024*1024 - (unsigned long)_end;
-> +
-> +	/*
-> +	 * Disable interrupts and turn off MSR_RI, since we'll
-> +	 * shortly be overwriting the interrupt vectors.
-> +	 */
-> +	__asm__ volatile("mtmsrd %0,1" : : "r" (0));
-> +
-> +	simple_alloc_init(_end, heapsize, 32, 64);
-> +	fdt_init(_dtb_start);
-> +	serial_console_init();
-> +}
-> diff --git a/arch/powerpc/boot/wrapper b/arch/powerpc/boot/wrapper
-> index 41fa0a8715e3..ae48fffa1e13 100755
-> --- a/arch/powerpc/boot/wrapper
-> +++ b/arch/powerpc/boot/wrapper
-> @@ -342,6 +342,11 @@ gamecube|wii)
->      link_address=3D'0x600000'
->      platformo=3D"$object/$platform-head.o $object/$platform.o"
->      ;;
-> +microwatt)
-> +    link_address=3D'0x500000'
-> +    platformo=3D"$object/fixed-head.o $object/$platform.o"
-> +    binary=3Dy
-> +    ;;
->  treeboot-currituck)
->      link_address=3D'0x1000000'
->      ;;
-> --=20
-> 2.31.1
->=20
->=20
