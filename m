@@ -2,59 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B0BB3ADF78
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Jun 2021 18:49:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AAD83AE0C8
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Jun 2021 23:54:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G7JYK2ZSCz303n
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 02:49:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G7RKD6Yw4z3byK
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 07:54:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=p3gbv0AW;
+	dkim=pass (2048-bit key; secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=GO0EFaiU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=pr-tracker-bot@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=paulus@ozlabs.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=p3gbv0AW; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
+ header.s=201707 header.b=GO0EFaiU; dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G7JXs6gvTz2yWt
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Jun 2021 02:49:33 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPS id E7CF161040;
- Sun, 20 Jun 2021 16:49:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1624207768;
- bh=xMLqEyKZT96FMlXP9rr7/r5V2J8YwG8i/W9FbQW3BSQ=;
- h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
- b=p3gbv0AWujvmypm/e3ns5rc5w1g685L437a1q5xPo7AK2XeQNhx+9QsdrF3GHCRGo
- 0seWq0nSXvAgmva6zip82fjqKHsrjskQCYady3yA5+3t5oS23eU5b/LAeI3Zy6ndr1
- lL3K84JGBnwIbXfqzn6oc0FwiDJXCppIIFuKoi7Jajc4mrin8Av4w1Vu4QSgslQkUp
- NFRW/0Ol9um93A1bULMfK7tutsDo8dxb70/TLKN8HHCjGv7h1F60HaWTnoN3yJXY95
- 32ydBkELwN5X9dBGLk7vb0ffX7vt9pDxCyL+OnhkplQquKx3AiXoYRZ1Y9tmPz+ASb
- tuXW1j2k6DJlA==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain
- [127.0.0.1])
- by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id D5BF6609F6;
- Sun, 20 Jun 2021 16:49:28 +0000 (UTC)
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.13-6 tag
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <87lf752zk9.fsf@mpe.ellerman.id.au>
-References: <87lf752zk9.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <87lf752zk9.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
- tags/powerpc-5.13-6
-X-PR-Tracked-Commit-Id: 60b7ed54a41b550d50caf7f2418db4a7e75b5bdc
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: b84a7c286cecf0604a5f8bd5dfcd5e1ca7233e15
-Message-Id: <162420776881.12594.6457062686992793482.pr-tracker-bot@kernel.org>
-Date: Sun, 20 Jun 2021 16:49:28 +0000
-To: Michael Ellerman <mpe@ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G7RJp35rrz302g
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Jun 2021 07:54:34 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 4G7RJd5wz0z9sVp; Mon, 21 Jun 2021 07:54:25 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1003)
+ id 4G7RJd5Fwvz9sW6; Mon, 21 Jun 2021 07:54:25 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
+ t=1624226065; bh=13I1sADkfWA/3M+TV9QybttdGCvQH4UoozMrg2527as=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=GO0EFaiUCRwdZVYueKgnejUaXLNLLshPNCiRaYgcaYFdv59MEln6XBrMBWGQ/CWam
+ zfX9JRChN+iFdadqUB+gNBiZoAirVNbqFWu76kZWPvXeWdwHDoektVucHsWSZzDaIG
+ IS6A758xNrpg9siSYiwrULYTCTeCnWxCsQ4xb4ALmkbzJq/traQD9UxGN1t8Ip+I32
+ z+9H5e5GrDk4/7P3lW3ekULYQ0d0RmJgfpG3QzNbVy0vrtdKiG+4RMMvl+t+kbq5g6
+ 0z3kfAIsGwNiV6XLWWqurzrqKLS5Tp2CVZJybzkD+ONgKo2/+6vHSi8kECKenRJ1w7
+ R9wzAsZwWJRCQ==
+Date: Sun, 20 Jun 2021 22:08:58 +1000
+From: Paul Mackerras <paulus@ozlabs.org>
+To: Segher Boessenkool <segher@kernel.crashing.org>
+Subject: Re: [PATCH v2 2/9] powerpc: Add Microwatt device tree
+Message-ID: <YM8v2ricaCzGi2vv@thinks.paulus.ozlabs.org>
+References: <YMwWPcsaWzMlDPqQ@thinks.paulus.ozlabs.org>
+ <YMwWkPcXlGDSQ9Q3@thinks.paulus.ozlabs.org>
+ <20210619142616.GW5077@gate.crashing.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210619142616.GW5077@gate.crashing.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,21 +61,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, atrajeev@linux.vnet.ibm.com,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pull request you sent on Sun, 20 Jun 2021 09:40:38 +1000:
+On Sat, Jun 19, 2021 at 09:26:16AM -0500, Segher Boessenkool wrote:
+> On Fri, Jun 18, 2021 at 01:44:16PM +1000, Paul Mackerras wrote:
+> > Microwatt currently runs with MSR[HV] = 0,
+> 
+> That isn't compliant though?  If your implementation does not have LPAR
+> it must set MSR[HV]=1 always.
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.13-6
+True - but if I actually do that, Linux starts trying to use hrfid
+(for example in masked_Hinterrupt), which Microwatt doesn't have.
+Something for Nick to fix. :)
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/b84a7c286cecf0604a5f8bd5dfcd5e1ca7233e15
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Paul.
