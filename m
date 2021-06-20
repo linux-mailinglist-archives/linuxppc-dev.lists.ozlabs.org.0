@@ -1,48 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8C1B3ADE59
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Jun 2021 14:39:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3F4D3ADF17
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Jun 2021 16:47:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G7C074fMjz3c0F
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Jun 2021 22:39:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G7Fr73rcNz3cBy
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 00:47:35 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Y/Bf/Ie3;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=Y/Bf/Ie3; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G7Bzn57Hgz2xZh
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Jun 2021 22:39:01 +1000 (AEST)
-IronPort-SDR: t9sMmxMlLokccMQSxgGrVB9qCothfQc4ReSfmQXaPE6JwKhvX9oqtdFwwQiCqq+SgRXfh8tqZJ
- xJkYQyYxeNUA==
-X-IronPort-AV: E=McAfee;i="6200,9189,10021"; a="292349136"
-X-IronPort-AV: E=Sophos;i="5.83,287,1616482800"; d="scan'208";a="292349136"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
- by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jun 2021 05:38:56 -0700
-IronPort-SDR: gwpE+fmsMvCo/5mL1wdHnXWvrkaxlc9U35YUEcD8RD0Z0YjEONolyba5Aj2DwtjDOp3ytfcCTn
- SKAQV4ukySJQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.83,287,1616482800"; d="scan'208";a="555991007"
-Received: from lkp-server01.sh.intel.com (HELO 4aae0cb4f5b5) ([10.239.97.150])
- by fmsmga001.fm.intel.com with ESMTP; 20 Jun 2021 05:38:55 -0700
-Received: from kbuild by 4aae0cb4f5b5 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1luwj0-000474-KY; Sun, 20 Jun 2021 12:38:54 +0000
-Date: Sun, 20 Jun 2021 20:38:41 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD REGRESSION
- 77ba1e2abc7474c5321cbf8d90366ec69150d0a2
-Message-ID: <60cf36d1.JFzo6GVy6obMEKaa%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G7Fpk0cnKz2yjK
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Jun 2021 00:46:21 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 15KEXRnr115696; Sun, 20 Jun 2021 10:46:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject : date : message-id; s=pp1;
+ bh=JUOh3bBjd0Q+qWxCx1mLTSQdN+hm6WglLsfvKf41x2I=;
+ b=Y/Bf/Ie3ZGH4Aw6XKBS7ZToAzzBHgIYno69vYeIO0C6DT0VolKAQA5jBAyY1iGZXAEwA
+ MsX/ykh8expg3mlk2M752SUqVcMPimxg7CB4fZz0WfZ19OnyHgHzP1IiypHDlyEfhfBg
+ +rg/CO1HCgUeXHc/spkAn0cKpz3Dl8iMpjY8uTSgN0c8ijX36c8Ntzas7k1f08FMUKZD
+ aq7Bos6qrxgkqqU8O60uMEV8kctVOxg/nun7BO67v3OeIJOwAX8ITUBLLz2QKHk994zN
+ 19fnjyzWjWZmcvkSGYMxe615lLOY++m+Z2+vA5D07rdO8u8l+2lYc2PQdwbBi416cina 8w== 
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 39a6tn8vtg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 20 Jun 2021 10:46:09 -0400
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15KEk7GW026817;
+ Sun, 20 Jun 2021 14:46:07 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma06fra.de.ibm.com with ESMTP id 3997uhg8es-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 20 Jun 2021 14:46:07 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 15KEk3Nl28377548
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sun, 20 Jun 2021 14:46:04 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D32564C04A;
+ Sun, 20 Jun 2021 14:46:03 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 071AF4C04E;
+ Sun, 20 Jun 2021 14:46:02 +0000 (GMT)
+Received: from localhost.localdomain.localdomain (unknown [9.79.183.154])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Sun, 20 Jun 2021 14:46:01 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: mpe@ellerman.id.au, acme@kernel.org, jolsa@kernel.org
+Subject: [PATCH 0/2] powerpc/perf: Add instruction and data address registers
+ to extended regs
+Date: Sun, 20 Jun 2021 10:45:58 -0400
+Message-Id: <1624200360-1429-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 2jnnTs6nZcMW0YrYeu9mmFcYQ9zd-JqY
+X-Proofpoint-GUID: 2jnnTs6nZcMW0YrYeu9mmFcYQ9zd-JqY
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-06-20_07:2021-06-20,
+ 2021-06-20 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 adultscore=0
+ impostorscore=0 clxscore=1011 lowpriorityscore=0 spamscore=0
+ priorityscore=1501 mlxlogscore=918 phishscore=0 suspectscore=0
+ malwarescore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2106200105
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,149 +94,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: kjain@linux.ibm.com, maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ rnsastry@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
-branch HEAD: 77ba1e2abc7474c5321cbf8d90366ec69150d0a2  powerpc: Enable KFENCE on BOOK3S/64
+Patch set adds PMU registers namely Sampled Instruction Address Register
+(SIAR) and Sampled Data Address Register (SDAR) as part of extended regs
+in PowerPC. These registers provides the instruction/data address and
+adding these to extended regs helps in debug purposes.
 
-Error/Warning in current branch:
+Patch 1/2 adds SIAR and SDAR as part of the extended regs mask.
+Patch 2/2 includes perf tools side changes to add the SPRs to
+sample_reg_mask to use with -I? option.
 
-arch/powerpc/kernel/interrupt.c:36:20: error: unused function 'exit_must_hard_disable' [-Werror,-Wunused-function]
-arch/powerpc/lib/code-patching.c:76:12: error: no previous prototype for 'poking_init' [-Werror=missing-prototypes]
-arch/powerpc/lib/code-patching.c:76:12: warning: no previous prototype for 'poking_init' [-Wmissing-prototypes]
+Athira Rajeev (2):
+  powerpc/perf: Expose instruction and data address registers as part of
+    extended regs
+  tools/perf: Add perf tools support to expose instruction and data
+    address registers as part of extended regs
 
-Error/Warning ids grouped by kconfigs:
+ arch/powerpc/include/uapi/asm/perf_regs.h       | 12 +++++++-----
+ arch/powerpc/perf/perf_regs.c                   |  4 ++++
+ tools/arch/powerpc/include/uapi/asm/perf_regs.h | 12 +++++++-----
+ tools/perf/arch/powerpc/include/perf_regs.h     |  2 ++
+ tools/perf/arch/powerpc/util/perf_regs.c        |  2 ++
+ 5 files changed, 22 insertions(+), 10 deletions(-)
 
-gcc_recent_errors
-|-- powerpc-mpc885_ads_defconfig
-|   `-- arch-powerpc-lib-code-patching.c:error:no-previous-prototype-for-poking_init
-`-- powerpc64-randconfig-r011-20210620
-    `-- arch-powerpc-lib-code-patching.c:warning:no-previous-prototype-for-poking_init
+-- 
+1.8.3.1
 
-clang_recent_errors
-`-- powerpc-randconfig-r034-20210620
-    `-- arch-powerpc-kernel-interrupt.c:error:unused-function-exit_must_hard_disable-Werror-Wunused-function
-
-elapsed time: 723m
-
-configs tested: 108
-configs skipped: 5
-
-gcc tested configs:
-arm64                               defconfig
-arm                                 defconfig
-arm64                            allyesconfig
-arm                              allyesconfig
-arm                              allmodconfig
-powerpc                  mpc885_ads_defconfig
-sh                               j2_defconfig
-sh                           se7712_defconfig
-mips                          rb532_defconfig
-xtensa                       common_defconfig
-powerpc                     akebono_defconfig
-powerpc                    klondike_defconfig
-arm                        neponset_defconfig
-powerpc                        icon_defconfig
-powerpc                      obs600_defconfig
-arm                       aspeed_g5_defconfig
-powerpc                     skiroot_defconfig
-arm                          imote2_defconfig
-powerpc                 linkstation_defconfig
-powerpc                   currituck_defconfig
-microblaze                      mmu_defconfig
-mips                     loongson2k_defconfig
-mips                malta_qemu_32r6_defconfig
-sh                   secureedge5410_defconfig
-powerpc                        cell_defconfig
-sh                          urquell_defconfig
-x86_64                           allyesconfig
-arm                       imx_v6_v7_defconfig
-arm                          pxa168_defconfig
-mips                 decstation_r4k_defconfig
-arm                     davinci_all_defconfig
-powerpc                     redwood_defconfig
-ia64                         bigsur_defconfig
-powerpc                 mpc834x_mds_defconfig
-mips                        nlm_xlp_defconfig
-x86_64                            allnoconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a001-20210620
-i386                 randconfig-a002-20210620
-i386                 randconfig-a003-20210620
-i386                 randconfig-a006-20210620
-i386                 randconfig-a005-20210620
-i386                 randconfig-a004-20210620
-x86_64               randconfig-a012-20210620
-x86_64               randconfig-a014-20210620
-x86_64               randconfig-a013-20210620
-x86_64               randconfig-a011-20210620
-x86_64               randconfig-a016-20210620
-x86_64               randconfig-a015-20210620
-i386                 randconfig-a011-20210620
-i386                 randconfig-a014-20210620
-i386                 randconfig-a013-20210620
-i386                 randconfig-a012-20210620
-i386                 randconfig-a015-20210620
-i386                 randconfig-a016-20210620
-riscv                    nommu_k210_defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-um                            kunit_defconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                      rhel-8.3-kbuiltin
-x86_64                                  kexec
-
-clang tested configs:
-x86_64               randconfig-b001-20210620
-x86_64               randconfig-a002-20210620
-x86_64               randconfig-a001-20210620
-x86_64               randconfig-a003-20210620
-x86_64               randconfig-a004-20210620
-x86_64               randconfig-a005-20210620
-x86_64               randconfig-a006-20210620
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
