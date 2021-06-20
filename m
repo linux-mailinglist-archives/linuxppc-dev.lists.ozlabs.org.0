@@ -2,69 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 398FF3ADE30
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Jun 2021 13:47:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0601D3ADE4C
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Jun 2021 14:34:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G79rT029dz3cJC
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Jun 2021 21:47:37 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=PUPR7UCL;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G7BtZ51r0z308q
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Jun 2021 22:34:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62e;
- helo=mail-ej1-x62e.google.com; envelope-from=andreyknvl@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=PUPR7UCL; dkim-atps=neutral
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com
- [IPv6:2a00:1450:4864:20::62e])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mga06.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G79Bk0CGYz2yyK
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Jun 2021 21:18:21 +1000 (AEST)
-Received: by mail-ej1-x62e.google.com with SMTP id nd37so23707594ejc.3
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Jun 2021 04:18:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=QziFBff9GiMT4Os8umf/EiLjglEeNn/Ybki8x4poeu0=;
- b=PUPR7UCLEc58GXQJRHHhcsalboiBUKhgIE37jx1X1YWBZACe0Brp+YmMs43CnCPuk0
- us8/fLV6tuKG8vV0wrRUK3vn0vXtCMCHxecWzLCL1D4hN8dijyv/IHdQBvbpmZKUy47O
- R8kuM3qxft9OQVL9Dy3fs1+G1UrlmaLws7fcflaiVAY9pLiLsILpNtw/t7qpKmhYHg49
- Ifmnzs+CNNZsUpJlD8v3fA8QEvt3towamggAmaQHQ3kpn5+jClmKsv+38uoXEloU00zh
- jSGl0ayd9jQFJVe9TPf0sAmzWf/gm2n7NiYPpUgFMnI/10QTa+ZBwKcYmXez/NCSG6z+
- r6Dw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=QziFBff9GiMT4Os8umf/EiLjglEeNn/Ybki8x4poeu0=;
- b=Gu5lmVaOfyRhz/NEt8Qxx9POkm364nKvPAG9iUlFeRORy0AZ7EQYFa+QDZsVpB362o
- 53KPc8/QAju6yjyV3vkor+qwa8hEKf3ZXp0oGSyJrSPibOAllHWhzEgvhPiecxvC/amA
- DHlK+d7/C1YEEWVgEz1oTSVRrK+pxrHUyiSKu8bc5uQvNM7i73NNs3ZrZeQQsa48g5bt
- 2VZJPCo7/6ooK4QyASwAfgulzo/9pHss2vAkfxdXWXqwact6BxBIsnvM54L76SL6vHqV
- XyQ2wHgQb76Au0RccngVKusVSuuvz+5HHTdNtxVpyt3oqKolxOiomu5nLw2xXLWacW8W
- 1a1Q==
-X-Gm-Message-State: AOAM53256GO5n6m0hFQk36X/Mb+y6KGjDalf+W3aZKGGimkwrO0loq4o
- 5p2x7QzVQsluVW3PqCd9fh0PMvob43/bBvNKQJ0=
-X-Google-Smtp-Source: ABdhPJz/S/MSqo/80qI6QRv0Bhi2f8HKVBKRu6I41epUdGXpKkIFJ4CV/4mirJli5A5XQPAh/IdIMWx6bo4q/0vs1BY=
-X-Received: by 2002:a17:906:6b90:: with SMTP id
- l16mr11511853ejr.439.1624187897865; 
- Sun, 20 Jun 2021 04:18:17 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G7BtB6kZWz303q
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Jun 2021 22:34:04 +1000 (AEST)
+IronPort-SDR: uIfOnzrZJIum7phWhAsogv1QlwtD9Yy1qG4H/CbL4qlP2c+AUyFcMOGocd94rQ+qNoc1Bt4HTR
+ aNPgoSLo+/9A==
+X-IronPort-AV: E=McAfee;i="6200,9189,10021"; a="267861840"
+X-IronPort-AV: E=Sophos;i="5.83,287,1616482800"; d="scan'208";a="267861840"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jun 2021 05:33:56 -0700
+IronPort-SDR: 6YRcQ5ZHW+ybuivYYhsRhYInKzrer31I8eNlYTJcuyVZ829AqHSQyPG4QqnzTIFjkShuYu9uOX
+ wi6Jwr9LvYlg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.83,287,1616482800"; d="scan'208";a="453610073"
+Received: from lkp-server01.sh.intel.com (HELO 4aae0cb4f5b5) ([10.239.97.150])
+ by fmsmga008.fm.intel.com with ESMTP; 20 Jun 2021 05:33:55 -0700
+Received: from kbuild by 4aae0cb4f5b5 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1luweA-00046w-GZ; Sun, 20 Jun 2021 12:33:54 +0000
+Date: Sun, 20 Jun 2021 20:33:07 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ 60b7ed54a41b550d50caf7f2418db4a7e75b5bdc
+Message-ID: <60cf3583.s/kDl0LEl2vwdx/j%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20210617093032.103097-1-dja@axtens.net>
- <20210617093032.103097-5-dja@axtens.net>
-In-Reply-To: <20210617093032.103097-5-dja@axtens.net>
-From: Andrey Konovalov <andreyknvl@gmail.com>
-Date: Sun, 20 Jun 2021 14:17:57 +0300
-Message-ID: <CA+fCnZejE20i=R4=J1TCkoqhukT1G-vnADP_byxpoRULfOvC-A@mail.gmail.com>
-Subject: Re: [PATCH v15 4/4] kasan: use MAX_PTRS_PER_* for early shadow tables
-To: Daniel Axtens <dja@axtens.net>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Sun, 20 Jun 2021 21:46:05 +1000
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,83 +54,166 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Marco Elver <elver@google.com>, aneesh.kumar@linux.ibm.com,
- LKML <linux-kernel@vger.kernel.org>, kasan-dev <kasan-dev@googlegroups.com>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 17, 2021 at 12:30 PM Daniel Axtens <dja@axtens.net> wrote:
->
-> powerpc has a variable number of PTRS_PER_*, set at runtime based
-> on the MMU that the kernel is booted under.
->
-> This means the PTRS_PER_* are no longer constants, and therefore
-> breaks the build. Switch to using MAX_PTRS_PER_*, which are constant.
->
-> Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Suggested-by: Balbir Singh <bsingharora@gmail.com>
-> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Reviewed-by: Balbir Singh <bsingharora@gmail.com>
-> Reviewed-by: Marco Elver <elver@google.com>
-> Signed-off-by: Daniel Axtens <dja@axtens.net>
-> ---
->  include/linux/kasan.h | 6 +++---
->  mm/kasan/init.c       | 6 +++---
->  2 files changed, 6 insertions(+), 6 deletions(-)
->
-> diff --git a/include/linux/kasan.h b/include/linux/kasan.h
-> index 768d7d342757..5310e217bd74 100644
-> --- a/include/linux/kasan.h
-> +++ b/include/linux/kasan.h
-> @@ -41,9 +41,9 @@ struct kunit_kasan_expectation {
->  #endif
->
->  extern unsigned char kasan_early_shadow_page[PAGE_SIZE];
-> -extern pte_t kasan_early_shadow_pte[PTRS_PER_PTE + PTE_HWTABLE_PTRS];
-> -extern pmd_t kasan_early_shadow_pmd[PTRS_PER_PMD];
-> -extern pud_t kasan_early_shadow_pud[PTRS_PER_PUD];
-> +extern pte_t kasan_early_shadow_pte[MAX_PTRS_PER_PTE + PTE_HWTABLE_PTRS];
-> +extern pmd_t kasan_early_shadow_pmd[MAX_PTRS_PER_PMD];
-> +extern pud_t kasan_early_shadow_pud[MAX_PTRS_PER_PUD];
->  extern p4d_t kasan_early_shadow_p4d[MAX_PTRS_PER_P4D];
->
->  int kasan_populate_early_shadow(const void *shadow_start,
-> diff --git a/mm/kasan/init.c b/mm/kasan/init.c
-> index 348f31d15a97..cc64ed6858c6 100644
-> --- a/mm/kasan/init.c
-> +++ b/mm/kasan/init.c
-> @@ -41,7 +41,7 @@ static inline bool kasan_p4d_table(pgd_t pgd)
->  }
->  #endif
->  #if CONFIG_PGTABLE_LEVELS > 3
-> -pud_t kasan_early_shadow_pud[PTRS_PER_PUD] __page_aligned_bss;
-> +pud_t kasan_early_shadow_pud[MAX_PTRS_PER_PUD] __page_aligned_bss;
->  static inline bool kasan_pud_table(p4d_t p4d)
->  {
->         return p4d_page(p4d) == virt_to_page(lm_alias(kasan_early_shadow_pud));
-> @@ -53,7 +53,7 @@ static inline bool kasan_pud_table(p4d_t p4d)
->  }
->  #endif
->  #if CONFIG_PGTABLE_LEVELS > 2
-> -pmd_t kasan_early_shadow_pmd[PTRS_PER_PMD] __page_aligned_bss;
-> +pmd_t kasan_early_shadow_pmd[MAX_PTRS_PER_PMD] __page_aligned_bss;
->  static inline bool kasan_pmd_table(pud_t pud)
->  {
->         return pud_page(pud) == virt_to_page(lm_alias(kasan_early_shadow_pmd));
-> @@ -64,7 +64,7 @@ static inline bool kasan_pmd_table(pud_t pud)
->         return false;
->  }
->  #endif
-> -pte_t kasan_early_shadow_pte[PTRS_PER_PTE + PTE_HWTABLE_PTRS]
-> +pte_t kasan_early_shadow_pte[MAX_PTRS_PER_PTE + PTE_HWTABLE_PTRS]
->         __page_aligned_bss;
->
->  static inline bool kasan_pte_table(pmd_t pmd)
-> --
-> 2.30.2
->
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: 60b7ed54a41b550d50caf7f2418db4a7e75b5bdc  powerpc/perf: Fix crash in perf_instruction_pointer() when ppmu is not set
 
-Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+elapsed time: 721m
+
+configs tested: 140
+configs skipped: 19
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+powerpc                 mpc834x_itx_defconfig
+mips                     loongson2k_defconfig
+powerpc                     ep8248e_defconfig
+sh                             espt_defconfig
+mips                          ath79_defconfig
+m68k                       bvme6000_defconfig
+powerpc                     kmeter1_defconfig
+powerpc                 mpc834x_mds_defconfig
+powerpc                     akebono_defconfig
+powerpc                    klondike_defconfig
+arm                        neponset_defconfig
+powerpc                        icon_defconfig
+arc                        vdk_hs38_defconfig
+powerpc                      acadia_defconfig
+mips                           ci20_defconfig
+sh                          lboxre2_defconfig
+sh                        sh7763rdp_defconfig
+mips                    maltaup_xpa_defconfig
+arm                         palmz72_defconfig
+sh                            hp6xx_defconfig
+powerpc                      ep88xc_defconfig
+powerpc                 mpc832x_rdb_defconfig
+nios2                            allyesconfig
+mips                           rs90_defconfig
+m68k                        m5272c3_defconfig
+mips                         cobalt_defconfig
+mips                malta_qemu_32r6_defconfig
+sh                   secureedge5410_defconfig
+arm                          pxa3xx_defconfig
+sh                   sh7724_generic_defconfig
+powerpc                     tqm5200_defconfig
+x86_64                            allnoconfig
+arm                           sunxi_defconfig
+arm                     davinci_all_defconfig
+arm                           h3600_defconfig
+arm                       multi_v4t_defconfig
+powerpc                        cell_defconfig
+sh                           se7722_defconfig
+h8300                               defconfig
+arm                          lpd270_defconfig
+powerpc                    socrates_defconfig
+m68k                       m5249evb_defconfig
+arm                       cns3420vb_defconfig
+mips                  decstation_64_defconfig
+arm                         s3c2410_defconfig
+s390                                defconfig
+powerpc                   bluestone_defconfig
+sh                          urquell_defconfig
+powerpc                        warp_defconfig
+arm                         assabet_defconfig
+mips                      loongson3_defconfig
+sh                            titan_defconfig
+ia64                          tiger_defconfig
+arm                         lubbock_defconfig
+arm                            mps2_defconfig
+sh                     magicpanelr2_defconfig
+powerpc                 mpc8540_ads_defconfig
+parisc                generic-64bit_defconfig
+m68k                         amcore_defconfig
+arm                           corgi_defconfig
+ia64                        generic_defconfig
+arm                        vexpress_defconfig
+arm                        magician_defconfig
+powerpc                     mpc512x_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+nds32                               defconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                             allyesconfig
+i386                                defconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a001-20210620
+i386                 randconfig-a002-20210620
+i386                 randconfig-a003-20210620
+i386                 randconfig-a005-20210620
+i386                 randconfig-a004-20210620
+i386                 randconfig-a006-20210620
+x86_64               randconfig-a016-20210620
+x86_64               randconfig-a015-20210620
+x86_64               randconfig-a014-20210620
+x86_64               randconfig-a012-20210620
+x86_64               randconfig-a013-20210620
+x86_64               randconfig-a011-20210620
+i386                 randconfig-a016-20210620
+i386                 randconfig-a014-20210620
+i386                 randconfig-a015-20210620
+i386                 randconfig-a011-20210620
+i386                 randconfig-a013-20210620
+i386                 randconfig-a012-20210620
+riscv                    nommu_k210_defconfig
+riscv                             allnoconfig
+riscv                            allmodconfig
+riscv                            allyesconfig
+riscv                               defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+um                            kunit_defconfig
+x86_64                           allyesconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-b001-20210620
+x86_64               randconfig-a005-20210620
+x86_64               randconfig-a004-20210620
+x86_64               randconfig-a006-20210620
+x86_64               randconfig-a002-20210620
+x86_64               randconfig-a001-20210620
+x86_64               randconfig-a003-20210620
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
