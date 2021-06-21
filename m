@@ -2,52 +2,98 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4197C3AE384
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 08:50:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F8D83AE54C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 10:52:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G7gBz75Cbz3bsw
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 16:50:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G7jvc5kG7z3cC3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 18:52:12 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=d9afjnhq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tT1nz/yx;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=d9afjnhq; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=tT1nz/yx; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G7gBQ4xKBz2yXd
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Jun 2021 16:49:50 +1000 (AEST)
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 4G7gBG5gw9z9sWM; Mon, 21 Jun 2021 16:49:42 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1624258182;
- bh=MUJYhz0XfkAq6cNhnd9n85QD6OvL7N7pHUuZimBLQuc=;
- h=From:To:Subject:Date:In-Reply-To:References:From;
- b=d9afjnhqGvsSpZsNBq03bqaDU7iyW/d+GfVIr+DbjTjntnugfeYpiJvVlh+VmO+Ng
- EqLQREstGl3rYwtKfcvvhVxFTmFt5Dz8JqVm1+MrGJbixIlwX8ybksVqKQgFnyWHKe
- sylNQ/U98B56mq38GLzr1rr3CdvN6L4y8FTmUhKILcWSRk5lRTcBY2eRmNpHCYWjWC
- UtYwCWuoD8LmDpkPcMDKbPwBzu8Jznf4iTkKpVHpB9BHy+guv6O/tgNVUKOHUyEF7U
- 90lnJgz8ME0N+DYakHeMRagOdKmIPOqEQdsLrqAF1wyEuoscdLXj6q/n2bZblPOexc
- i1GWfm2oqaKXg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 2/2] powerpc/prom_init: Pass linux_banner to firmware via
- option vector 7
-Date: Mon, 21 Jun 2021 16:49:38 +1000
-Message-Id: <20210621064938.2021419-2-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210621064938.2021419-1-mpe@ellerman.id.au>
-References: <20210621064938.2021419-1-mpe@ellerman.id.au>
-MIME-Version: 1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G7jsb4Sgrz2ykQ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Jun 2021 18:50:26 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 15L8XV93183046; Mon, 21 Jun 2021 04:50:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-type : content-transfer-encoding :
+ mime-version; s=pp1; bh=veGlPVlCtZqhaBqdj3dROkMnCIGJlqvmFjU72GF2qC8=;
+ b=tT1nz/yxhDaOtHUiOBkZATORtWplnNf2xZULDUiyZk/CdfFtoIsf6QRn+Ty2bYuhUXXV
+ OAC6H8nLHiRSFDFfUb4cw0EoiAKqOG96ERV87WKhhbjXQ+wlTIHeuQQ0keWbmJi/SfN7
+ 76rdDXhwni8Cv/x94Lf+vpURJghojq3SFct+iB0V5wlEPdIXhxC30Roi96l5Ts4r4GIn
+ 4o6HVjV6QIJQEiynktlHzm5oNia/IsaW+jxFVEg/yhK5aDVJcuTsgDYuKnjcRdAr59Mt
+ oex4Hpd0igS6ewCN73F9md1JlYdzS2WRUxZrSpr8ifhDp0vRvYEY1LWrQEBPVuOSi0pQ pw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 39aq868mxx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 21 Jun 2021 04:50:14 -0400
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 15L8XUbU183021;
+ Mon, 21 Jun 2021 04:50:14 -0400
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 39aq868mx7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 21 Jun 2021 04:50:14 -0400
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15L8lO7k012519;
+ Mon, 21 Jun 2021 08:50:12 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma02fra.de.ibm.com with ESMTP id 3998788e0r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 21 Jun 2021 08:50:12 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 15L8o94O23855500
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 21 Jun 2021 08:50:09 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 75066A4057;
+ Mon, 21 Jun 2021 08:50:09 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B9EFFA4053;
+ Mon, 21 Jun 2021 08:50:07 +0000 (GMT)
+Received: from bharata.ibmuc.com (unknown [9.85.82.83])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 21 Jun 2021 08:50:07 +0000 (GMT)
+From: Bharata B Rao <bharata@linux.ibm.com>
+To: kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v8 0/6] Support for H_RPT_INVALIDATE in PowerPC KVM
+Date: Mon, 21 Jun 2021 14:19:57 +0530
+Message-Id: <20210621085003.904767-1-bharata@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
+Content-Type: text/plain; charset=UTF-8
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: igsdm_EUCAfZPxzeuaZDGTKqsBIjenEa
+X-Proofpoint-ORIG-GUID: wHle3_GDcoOzE6DC-VafdhIfajFb7pOG
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-06-21_02:2021-06-20,
+ 2021-06-21 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 phishscore=0
+ mlxlogscore=912 clxscore=1011 impostorscore=0 lowpriorityscore=0
+ bulkscore=0 malwarescore=0 priorityscore=1501 mlxscore=0 spamscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2106210049
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,101 +105,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: farosas@linux.ibm.com, aneesh.kumar@linux.ibm.com, npiggin@gmail.com,
+ Bharata B Rao <bharata@linux.ibm.com>, david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Pass the value of linux_banner to firmware via option vector 7.
+This patchset adds support for the new hcall H_RPT_INVALIDATE
+and replaces the nested tlb flush calls with this new hcall
+if support for the same exists.
 
-Option vector 7 is described in "LoPAR" Linux on Power Architecture
-Reference v2.9, in table B.7 on page 824:
+Changes in v8:
+-------------
+- Used tlb_single_page_flush_ceiling in the process-scoped range
+  flush routine to switch to full PID invalation if
+  the number of pages is above the threshold
+- Moved iterating over page sizes into the actual routine that
+  handles the eventual flushing thereby limiting the page size
+  iteration only to range based flushing
+- Converted #if 0 section into a comment section to avoid
+  checkpatch from complaining.
+- Used a threshold in the partition-scoped range flushing
+  to switch to full LPID invalidation
 
-  An ASCII character formatted null terminated string that describes
-  the client operating system. The string shall be human readable and
-  may be displayed on the console.
+v7: https://lore.kernel.org/linuxppc-dev/20210505154642.178702-1-bharata@linux.ibm.com/
 
-The string can be up to 256 bytes total, including the nul terminator.
+Aneesh Kumar K.V (1):
+  KVM: PPC: Book3S HV: Fix comments of H_RPT_INVALIDATE arguments
 
-linux_banner contains lots of information, and should make it possible
-to identify the exact kernel version that is running:
+Bharata B Rao (5):
+  powerpc/book3s64/radix: Add H_RPT_INVALIDATE pgsize encodings to
+    mmu_psize_def
+  KVM: PPC: Book3S HV: Add support for H_RPT_INVALIDATE
+  KVM: PPC: Book3S HV: Nested support in H_RPT_INVALIDATE
+  KVM: PPC: Book3S HV: Add KVM_CAP_PPC_RPT_INVALIDATE capability
+  KVM: PPC: Book3S HV: Use H_RPT_INVALIDATE in nested KVM
 
-  const char linux_banner[] =
-  "Linux version " UTS_RELEASE " (" LINUX_COMPILE_BY "@"
-  LINUX_COMPILE_HOST ") (" LINUX_COMPILER ") " UTS_VERSION "\n";
+ Documentation/virt/kvm/api.rst                |  18 ++
+ arch/powerpc/include/asm/book3s/64/mmu.h      |   1 +
+ .../include/asm/book3s/64/tlbflush-radix.h    |   4 +
+ arch/powerpc/include/asm/hvcall.h             |   4 +-
+ arch/powerpc/include/asm/kvm_book3s.h         |   3 +
+ arch/powerpc/include/asm/mmu_context.h        |   9 +
+ arch/powerpc/kvm/book3s_64_mmu_radix.c        |  27 ++-
+ arch/powerpc/kvm/book3s_hv.c                  |  89 +++++++++
+ arch/powerpc/kvm/book3s_hv_nested.c           | 129 ++++++++++++-
+ arch/powerpc/kvm/powerpc.c                    |   3 +
+ arch/powerpc/mm/book3s64/radix_pgtable.c      |   5 +
+ arch/powerpc/mm/book3s64/radix_tlb.c          | 176 +++++++++++++++++-
+ include/uapi/linux/kvm.h                      |   1 +
+ 13 files changed, 456 insertions(+), 13 deletions(-)
 
-For example:
-  Linux version 4.15.0-144-generic (buildd@bos02-ppc64el-018) (gcc
-  version 7.5.0 (Ubuntu 7.5.0-3ubuntu1~18.04)) #148-Ubuntu SMP Sat May 8
-  02:32:13 UTC 2021 (Ubuntu 4.15.0-144.148-generic 4.15.18)
-
-It's also printed at boot to the console/dmesg, which should make it
-possible to correlate what firmware receives with the console/dmesg on
-the machine.
-
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
-
-NB. linux_banner is already allowed by prom_init_check.sh
-
-LoPAR: https://openpowerfoundation.org/?resource_lib=linux-on-power-architecture-reference-a-papr-linux-subset-review-draft
----
- arch/powerpc/kernel/prom_init.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
-diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
-index c18d55f8b951..7343076b261c 100644
---- a/arch/powerpc/kernel/prom_init.c
-+++ b/arch/powerpc/kernel/prom_init.c
-@@ -27,6 +27,7 @@
- #include <linux/initrd.h>
- #include <linux/bitops.h>
- #include <linux/pgtable.h>
-+#include <linux/printk.h>
- #include <asm/prom.h>
- #include <asm/rtas.h>
- #include <asm/page.h>
-@@ -944,6 +945,10 @@ struct option_vector6 {
- 	u8 os_name;
- } __packed;
- 
-+struct option_vector7 {
-+	u8 os_id[256];
-+} __packed;
-+
- struct ibm_arch_vec {
- 	struct { u32 mask, val; } pvrs[14];
- 
-@@ -966,6 +971,9 @@ struct ibm_arch_vec {
- 
- 	u8 vec6_len;
- 	struct option_vector6 vec6;
-+
-+	u8 vec7_len;
-+	struct option_vector7 vec7;
- } __packed;
- 
- static const struct ibm_arch_vec ibm_architecture_vec_template __initconst = {
-@@ -1112,6 +1120,9 @@ static const struct ibm_arch_vec ibm_architecture_vec_template __initconst = {
- 		.secondary_pteg = 0,
- 		.os_name = OV6_LINUX,
- 	},
-+
-+	/* option vector 7: OS Identification */
-+	.vec7_len = VECTOR_LENGTH(sizeof(struct option_vector7)),
- };
- 
- static struct ibm_arch_vec __prombss ibm_architecture_vec  ____cacheline_aligned;
-@@ -1340,6 +1351,10 @@ static void __init prom_check_platform_support(void)
- 	memcpy(&ibm_architecture_vec, &ibm_architecture_vec_template,
- 	       sizeof(ibm_architecture_vec));
- 
-+	prom_strscpy_pad(ibm_architecture_vec.vec7.os_id, linux_banner, 256);
-+	// Ensure nul termination
-+	ibm_architecture_vec.vec7.os_id[255] = '\0';
-+
- 	if (prop_len > 1) {
- 		int i;
- 		u8 vec[8];
 -- 
-2.25.1
+2.31.1
 
