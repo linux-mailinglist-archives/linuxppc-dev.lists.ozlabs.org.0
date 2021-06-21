@@ -2,78 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 083F63AF20E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 19:32:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF2483AF23D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 19:44:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G7xRz5Zjpz3bsB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 03:32:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G7xkG4tG2z2yhF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 03:44:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OHmCp7QT;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=hTKeytdG;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=sachinp@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::230;
+ helo=mail-lj1-x230.google.com; envelope-from=vincent.guittot@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=OHmCp7QT; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=hTKeytdG; dkim-atps=neutral
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com
+ [IPv6:2a00:1450:4864:20::230])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G7xRV2Ttbz2yRX
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 03:32:05 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 15LHUT4V059089; Mon, 21 Jun 2021 13:31:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=content-type : subject :
- from : in-reply-to : date : cc : message-id : references : to :
- content-transfer-encoding : mime-version; s=pp1;
- bh=dN/oN0n9tLV8UYomMqhhtIvx1sfbdn8AhVSokNCO/6g=;
- b=OHmCp7QT3CPbjGpUtWV7P996093GvTISSIaYbrMOwTRb1guoENQ24KNAgFmHLVweLmug
- wSgwdIT81QwXxQp2InBMszRcr3MX1fh3fRqlk2VU3xgI149ciR5I20CItJ3khgenEWFb
- 33rOXRRxztyv4zInOGMCGcR/Vr45H5QMmEryytFuTS+7q5R2rEnk2wKr5XpY1dsv2+aM
- 0ziivzMI4jkJUbvXCQ7v8V7sii3HoS6YNu00XHQTY0uhNlhnAFyjdyff8nRz0Zq3b3QZ
- qejGVyV9cUbqN5XSAUEB9QD+yxHGDn+ubA/dwpD9mtGhs4YegS2nhvtszWp6tjTYWqti VQ== 
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.107])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39aup3qqb6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 21 Jun 2021 13:31:57 -0400
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
- by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15LHETPt019177;
- Mon, 21 Jun 2021 17:31:55 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma03fra.de.ibm.com with ESMTP id 3998788j4w-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 21 Jun 2021 17:31:55 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 15LHVrcw23331192
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 21 Jun 2021 17:31:53 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3576EA405B;
- Mon, 21 Jun 2021 17:31:53 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 38637A4060;
- Mon, 21 Jun 2021 17:31:52 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.77.196.19])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 21 Jun 2021 17:31:52 +0000 (GMT)
-Content-Type: text/plain;
-	charset=us-ascii
-Subject: Re: [powerpc][5.13.0-rc7] Kernel warning (kernel/sched/fair.c:401)
- while running LTP tests
-From: Sachin Sant <sachinp@linux.vnet.ibm.com>
-In-Reply-To: <CAKfTPtACzzoGhDFW0bTGgZRPB=3LR6kSwuUOrcKDFTAJ7BhTFQ@mail.gmail.com>
-Date: Mon, 21 Jun 2021 23:01:51 +0530
-Message-Id: <14EEE4A4-B2B1-4D0C-B2F6-BDB7C11B05DE@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G7xjr3gwrz2yRX
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 03:44:29 +1000 (AEST)
+Received: by mail-lj1-x230.google.com with SMTP id q23so15948447ljh.0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Jun 2021 10:44:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=aj/0Z18KSrpkQcWAKnHj05+GfR0DaIVfgC0ovqanE2c=;
+ b=hTKeytdGalobGnv1mLXz9178COoRqwCgEE/ubFc97TESs4l1ETbGTi/LXWwSHW8ii7
+ cU1NcxgBwnSNSSWUGI+0LSLO/eA4skHJOAyy2fZxvgaDUE2kKpXUeFq7V5b34HYKHOnI
+ TsfOqqXpxOjB45tPERHc8HZ9x/0x2urKpZmdDFjmOHnTIzDvOBwe/rgvABgjv5qaLR/O
+ ByzDEPcf5lYiYqzPcNPzyCnIwtBSE6IaFn0tItgAEDTNFbtKqHPSF2zRWCYSRAJfI1ut
+ 6seNasjRSFy7UCNfh8Ov01ynyt41Sclnq4cMIJyoVCx9rvyy9NrYgMxQtwhLOKhMEat+
+ cJWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=aj/0Z18KSrpkQcWAKnHj05+GfR0DaIVfgC0ovqanE2c=;
+ b=MS/TTxGsxbk81Wy063XNJZxMTdyFfYYHxSkJlLbmRq42hr0YQYNyOdIYzE8iVQaz0H
+ oUfcYYRgwblnFLLNmk07Qizen851w0n0L3+TdETy9cW0Axct7J5Ub+IG6yKu+u3Fzh9B
+ d74bkfJ48QD0ukSVPqVhHx0LNIyX379T6objJ1JFTdYWLxzEWo7HrDpl9lFn2qocn3hg
+ 3FWzCjk04/eKax6J6D1GHq7p2y81Xem/G1Dpe+SxLGfKC5Mp1qA74dw5mrYuqUd0CFaM
+ 8YS87a0WnnDNYW+x37zr9EzSFKVYv5L0DSJ3QQQDvEyyFMCUoXe49u9e+fin8y0utUT+
+ JIPg==
+X-Gm-Message-State: AOAM532ZQNXhwxkYLGSh41l+FBySlKoQuFl7zOHcZWjPQEis1rzFN9LJ
+ cS5BW2yRIwjVwZ8cjpo69neszf9nAVIZ3dPhE2AaWQ==
+X-Google-Smtp-Source: ABdhPJwdQKs2XYfO12j9GxWLhfQ9o6XvL9JaTlE9K2yEhyTXPKP7lTIi01KFE2ZPpN2bcp+AVRGr823u8lFAqVeQG58=
+X-Received: by 2002:a2e:858a:: with SMTP id b10mr22329066lji.445.1624297464450; 
+ Mon, 21 Jun 2021 10:44:24 -0700 (PDT)
+MIME-Version: 1.0
 References: <9D4A658A-5F77-4C33-904A-126E6052B205@linux.vnet.ibm.com>
  <CAFpoUr3g5t3Z0BtW4-jnYomc3cdY=V5=Zt94-C+fHOjGWa107w@mail.gmail.com>
  <CAKfTPtC=aXasuSNvn+A3152-4xoOTWROhJpZAVq6RLh1Hacpng@mail.gmail.com>
@@ -83,23 +63,15 @@ References: <9D4A658A-5F77-4C33-904A-126E6052B205@linux.vnet.ibm.com>
  <CAFpoUr3Wy9raHx+Dc0S8TB_Xi=E+Epsh_pA3DEFZP4eKf7s07A@mail.gmail.com>
  <20210621162243.GA29874@vingu-book>
  <CAKfTPtACzzoGhDFW0bTGgZRPB=3LR6kSwuUOrcKDFTAJ7BhTFQ@mail.gmail.com>
-To: Vincent Guittot <vincent.guittot@linaro.org>
-X-Mailer: Apple Mail (2.3654.100.0.2.22)
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: A57L-lTFSpwIsTbGCYyBbkxDN9_wFonX
-X-Proofpoint-GUID: A57L-lTFSpwIsTbGCYyBbkxDN9_wFonX
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
-MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-06-21_10:2021-06-21,
- 2021-06-21 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- mlxlogscore=999 suspectscore=0 adultscore=0 phishscore=0 malwarescore=0
- bulkscore=0 clxscore=1015 spamscore=0 mlxscore=0 lowpriorityscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2106210101
+ <14EEE4A4-B2B1-4D0C-B2F6-BDB7C11B05DE@linux.vnet.ibm.com>
+In-Reply-To: <14EEE4A4-B2B1-4D0C-B2F6-BDB7C11B05DE@linux.vnet.ibm.com>
+From: Vincent Guittot <vincent.guittot@linaro.org>
+Date: Mon, 21 Jun 2021 19:44:13 +0200
+Message-ID: <CAKfTPtCwqpHUxFdk0Q4dwL19Zn0_EhX7gQ8dwf=rsWHyxZVAVw@mail.gmail.com>
+Subject: Re: [powerpc][5.13.0-rc7] Kernel warning (kernel/sched/fair.c:401)
+ while running LTP tests
+To: Sachin Sant <sachinp@linux.vnet.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -117,29 +89,32 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
->>> Any thoughts Vincent?
->>=20
->>=20
->> I would prefer that we use the reason of adding the cfs in the list inst=
-ead.
->>=20
->> Something like the below should also fixed the problem. It is based on a
->> proposal I made to Rik sometimes ago when he tried to flatten the rq:
->> https://lore.kernel.org/lkml/20190906191237.27006-6-riel@surriel.com/
->>=20
->> This will ensure that a cfs is added in the list whenever one of its  ch=
-ild
->> is still in the list.
->=20
-> Could you confirm that this patch fixes the problem for you too ?
->=20
-Thanks for the fix.
+On Mon, 21 Jun 2021 at 19:32, Sachin Sant <sachinp@linux.vnet.ibm.com> wrote:
+>
+> >>> Any thoughts Vincent?
+> >>
+> >>
+> >> I would prefer that we use the reason of adding the cfs in the list instead.
+> >>
+> >> Something like the below should also fixed the problem. It is based on a
+> >> proposal I made to Rik sometimes ago when he tried to flatten the rq:
+> >> https://lore.kernel.org/lkml/20190906191237.27006-6-riel@surriel.com/
+> >>
+> >> This will ensure that a cfs is added in the list whenever one of its  child
+> >> is still in the list.
+> >
+> > Could you confirm that this patch fixes the problem for you too ?
+> >
+> Thanks for the fix.
+>
+> The patch fixes the reported problem. The test ran to completion without
+> any failure.
+>
+> Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+> Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
 
-The patch fixes the reported problem. The test ran to completion without
-any failure.=20
+Thanks
 
-Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-
--Sachin
-
+>
+> -Sachin
+>
