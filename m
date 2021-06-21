@@ -1,69 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C541E3AE1D2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 05:14:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F6533AE1D9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 05:19:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G7ZPm3tGWz308h
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 13:14:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G7ZWz6gBWz306w
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 13:19:43 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=Ly8+LdS+;
+	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=NRC/fzCR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::435;
- helo=mail-pf1-x435.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::1029;
+ helo=mail-pj1-x1029.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=Ly8+LdS+; dkim-atps=neutral
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com
- [IPv6:2607:f8b0:4864:20::435])
+ header.s=google header.b=NRC/fzCR; dkim-atps=neutral
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com
+ [IPv6:2607:f8b0:4864:20::1029])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G7ZPF57nQz2yx2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Jun 2021 13:13:51 +1000 (AEST)
-Received: by mail-pf1-x435.google.com with SMTP id g192so4861489pfb.6
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Jun 2021 20:13:50 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G7ZWX377vz2xb2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Jun 2021 13:19:18 +1000 (AEST)
+Received: by mail-pj1-x1029.google.com with SMTP id
+ pf4-20020a17090b1d84b029016f6699c3f2so4370120pjb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Jun 2021 20:19:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
  h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=Wze939aefA5PRCWTTx2ECjNbC/4jKslYlazXWOmibac=;
- b=Ly8+LdS+crvfc9rYevIpqHS7L6S3lp2Onsjz7GI/PWw+JW709QxZQR4VKy4qkiOfdG
- DFXh7DZhR3z0DFb/VgTQZnILlEgD/Dg5mO0VAPmBxoRU88VSlTqcoBvKh0r22P1K6IcT
- gaga6B1V6Dx5pi5IHaQBheF4NxX1K7JGkfluU=
+ :mime-version; bh=TIejsIF9hmrt8dkbegPQKYcgq6Tdf3AVNugwUeH1ttQ=;
+ b=NRC/fzCRfpjQp1qI+nqPJKAkvXcS+xHwPFERHYZ096qATPcMT29Sn7sNuLC9v0ur/D
+ ZI91wtT5jN8Ft7utW/iL5llOGsIPylBKIJ4EfW9mYaDLnZxt9Smi4k+J4SzrVrVNcgOR
+ 1b0AqLX5XE4NmtXOMKPzeLHR8VxO+CH+5QLmE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
  :message-id:mime-version;
- bh=Wze939aefA5PRCWTTx2ECjNbC/4jKslYlazXWOmibac=;
- b=ubBTs8I1icgrcZ/Wb/2FxQu24cmDzidZZIVFGtyF6nLu3ZtRIs6650UxYM9sG3qEOE
- aY6FCjvqI6Ao82pmhChOm1wo/Z7swD6J/MVcEvjcLSP0cGP79Y7pqCjQP54t3/jjQa6T
- YzAaxL7d4ngNJQ8JtXR2Pgk1Bt+79V+sPEDBZe4N8tAkjK/bfFIZbUxnWalfL6yeMcBC
- 8PElfmbpgQ2aGS4Jq5hZJ+3zXU8LnB+u3GD5TT/zhota4zS/KDApAtjtUrc0qcFIgf9m
- 7yruOm33p00CGWjYTKC52qC+lT1kplL4bedC9x3JNGgxOdQt0i6RmfIJMNVSj6JjQWCi
- VWvg==
-X-Gm-Message-State: AOAM531RK4uE+W1EGvvSqyH7fQ5lcWIHI+8gSNab55ubvNsIyKPsyGAZ
- wUtzKvOhojE7OXlCY/gk1rdJOw==
-X-Google-Smtp-Source: ABdhPJyBafYE/Wt6CLuVq2VJ2d4ASgZF4B3KRbYeIRoyXptAUPSOukQDYWkbWRN2jHyauLWMdL2+Hw==
-X-Received: by 2002:a62:53c1:0:b029:2ef:25e8:d9e5 with SMTP id
- h184-20020a6253c10000b02902ef25e8d9e5mr17338587pfb.74.1624245226719; 
- Sun, 20 Jun 2021 20:13:46 -0700 (PDT)
+ bh=TIejsIF9hmrt8dkbegPQKYcgq6Tdf3AVNugwUeH1ttQ=;
+ b=XL7q1r9NgiaEklEe30+1IJCRkefoXlDUuNjOP5Oj8jgZug+P/noiSv/pA1SBZOl6p0
+ LhYBlfmMKj/4ke7CvXJK3Knhfd2rN2AjLegw2ietN2R2JLmGbpApq79Y3pILVbDzK1gI
+ QxjU3tL7bQpi8qQtTD7lRd9ZPGxEd7ca3hkZfkBo539v4DXEyEjEjV+Pc44772LpUwNt
+ 2xYeGTRzUBX20j0oBrhrf8eSuMixIuzSjWUREYKTRlYXai+KyNKMAolfqt0OphsC98+K
+ 1JNnZ5svGlP8pCBVWvuMbn9bmo4zcN5qpH9BvuV0K8pO2kjvGxL4Fdi3lACb32pWhPc9
+ HQ4w==
+X-Gm-Message-State: AOAM530IoqLCxD5WrwIidNF0ocKcX+Fw8Lk+deabE1km6UMZdnNw0Kh3
+ MRc2uT8NVstqRtyL/KJR13q8bQ==
+X-Google-Smtp-Source: ABdhPJyhMVprA7LNSX+dPSa0z07+LT8QCOJ/gQGGEou7StHIiEQ5Fr7dSCWiQH7XT6cutt/nrJjAMQ==
+X-Received: by 2002:a17:90a:4491:: with SMTP id
+ t17mr21732313pjg.30.1624245554543; 
+ Sun, 20 Jun 2021 20:19:14 -0700 (PDT)
 Received: from localhost ([203.206.29.204])
- by smtp.gmail.com with ESMTPSA id g8sm14651950pja.14.2021.06.20.20.13.45
+ by smtp.gmail.com with ESMTPSA id 18sm16957096pje.22.2021.06.20.20.19.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 20 Jun 2021 20:13:46 -0700 (PDT)
+ Sun, 20 Jun 2021 20:19:14 -0700 (PDT)
 From: Daniel Axtens <dja@axtens.net>
 To: "Christopher M. Riedl" <cmr@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [RESEND PATCH v4 05/11] powerpc/64s: Add ability to skip SLB
- preload
-In-Reply-To: <20210506043452.9674-6-cmr@linux.ibm.com>
+Subject: Re: [RESEND PATCH v4 08/11] powerpc: Initialize and use a temporary
+ mm for patching
+In-Reply-To: <20210506043452.9674-9-cmr@linux.ibm.com>
 References: <20210506043452.9674-1-cmr@linux.ibm.com>
- <20210506043452.9674-6-cmr@linux.ibm.com>
-Date: Mon, 21 Jun 2021 13:13:42 +1000
-Message-ID: <87sg1bj4ex.fsf@dja-thinkpad.axtens.net>
+ <20210506043452.9674-9-cmr@linux.ibm.com>
+Date: Mon, 21 Jun 2021 13:19:10 +1000
+Message-ID: <87r1gvj45t.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -83,176 +84,126 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Christopher M. Riedl" <cmr@linux.ibm.com> writes:
+Hi Chris,
 
-> Switching to a different mm with Hash translation causes SLB entries to
-> be preloaded from the current thread_info. This reduces SLB faults, for
-> example when threads share a common mm but operate on different address
-> ranges.
->
-> Preloading entries from the thread_info struct may not always be
-> appropriate - such as when switching to a temporary mm. Introduce a new
-> boolean in mm_context_t to skip the SLB preload entirely. Also move the
-> SLB preload code into a separate function since switch_slb() is already
-> quite long. The default behavior (preloading SLB entries from the
-> current thread_info struct) remains unchanged.
->
-> Signed-off-by: Christopher M. Riedl <cmr@linux.ibm.com>
->
-> ---
->
-> v4:  * New to series.
-> ---
->  arch/powerpc/include/asm/book3s/64/mmu.h |  3 ++
->  arch/powerpc/include/asm/mmu_context.h   | 13 ++++++
->  arch/powerpc/mm/book3s64/mmu_context.c   |  2 +
->  arch/powerpc/mm/book3s64/slb.c           | 56 ++++++++++++++----------
->  4 files changed, 50 insertions(+), 24 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/book3s/64/mmu.h b/arch/powerpc/include/asm/book3s/64/mmu.h
-> index eace8c3f7b0a1..b23a9dcdee5af 100644
-> --- a/arch/powerpc/include/asm/book3s/64/mmu.h
-> +++ b/arch/powerpc/include/asm/book3s/64/mmu.h
-> @@ -130,6 +130,9 @@ typedef struct {
->  	u32 pkey_allocation_map;
->  	s16 execute_only_pkey; /* key holding execute-only protection */
->  #endif
-> +
-> +	/* Do not preload SLB entries from thread_info during switch_slb() */
-> +	bool skip_slb_preload;
->  } mm_context_t;
->  
->  static inline u16 mm_ctx_user_psize(mm_context_t *ctx)
-> diff --git a/arch/powerpc/include/asm/mmu_context.h b/arch/powerpc/include/asm/mmu_context.h
-> index 4bc45d3ed8b0e..264787e90b1a1 100644
-> --- a/arch/powerpc/include/asm/mmu_context.h
-> +++ b/arch/powerpc/include/asm/mmu_context.h
-> @@ -298,6 +298,19 @@ static inline int arch_dup_mmap(struct mm_struct *oldmm,
->  	return 0;
->  }
->  
-> +#ifdef CONFIG_PPC_BOOK3S_64
-> +
-> +static inline void skip_slb_preload_mm(struct mm_struct *mm)
-> +{
-> +	mm->context.skip_slb_preload = true;
-> +}
-> +
-> +#else
-> +
-> +static inline void skip_slb_preload_mm(struct mm_struct *mm) {}
-> +
-> +#endif /* CONFIG_PPC_BOOK3S_64 */
-> +
->  #include <asm-generic/mmu_context.h>
->  
->  #endif /* __KERNEL__ */
-> diff --git a/arch/powerpc/mm/book3s64/mmu_context.c b/arch/powerpc/mm/book3s64/mmu_context.c
-> index c10fc8a72fb37..3479910264c59 100644
-> --- a/arch/powerpc/mm/book3s64/mmu_context.c
-> +++ b/arch/powerpc/mm/book3s64/mmu_context.c
-> @@ -202,6 +202,8 @@ int init_new_context(struct task_struct *tsk, struct mm_struct *mm)
->  	atomic_set(&mm->context.active_cpus, 0);
->  	atomic_set(&mm->context.copros, 0);
->  
-> +	mm->context.skip_slb_preload = false;
-> +
->  	return 0;
->  }
->  
-> diff --git a/arch/powerpc/mm/book3s64/slb.c b/arch/powerpc/mm/book3s64/slb.c
-> index c91bd85eb90e3..da0836cb855af 100644
-> --- a/arch/powerpc/mm/book3s64/slb.c
-> +++ b/arch/powerpc/mm/book3s64/slb.c
-> @@ -441,10 +441,39 @@ static void slb_cache_slbie_user(unsigned int index)
->  	asm volatile("slbie %0" : : "r" (slbie_data));
->  }
->  
-> +static void preload_slb_entries(struct task_struct *tsk, struct mm_struct *mm)
-Should this be explicitly inline or even __always_inline? I'm thinking
-switch_slb is probably a fairly hot path on hash?
+> +	/*
+> +	 * Choose a randomized, page-aligned address from the range:
+> +	 * [PAGE_SIZE, DEFAULT_MAP_WINDOW - PAGE_SIZE]
+> +	 * The lower address bound is PAGE_SIZE to avoid the zero-page.
+> +	 * The upper address bound is DEFAULT_MAP_WINDOW - PAGE_SIZE to stay
+> +	 * under DEFAULT_MAP_WINDOW with the Book3s64 Hash MMU.
+> +	 */
+> +	patching_addr = PAGE_SIZE + ((get_random_long() & PAGE_MASK)
+> +			% (DEFAULT_MAP_WINDOW - 2 * PAGE_SIZE));
 
-> +{
-> +	struct thread_info *ti = task_thread_info(tsk);
-> +	unsigned char i;
+I checked and poking_init() comes after the functions that init the RNG,
+so this should be fine. The maths - while a bit fiddly to reason about -
+does check out.
+
 > +
 > +	/*
-> +	 * We gradually age out SLBs after a number of context switches to
-> +	 * reduce reload overhead of unused entries (like we do with FP/VEC
-> +	 * reload). Each time we wrap 256 switches, take an entry out of the
-> +	 * SLB preload cache.
+> +	 * PTE allocation uses GFP_KERNEL which means we need to pre-allocate
+> +	 * the PTE here. We cannot do the allocation during patching with IRQs
+> +	 * disabled (ie. "atomic" context).
 > +	 */
-> +	tsk->thread.load_slb++;
-> +	if (!tsk->thread.load_slb) {
-> +		unsigned long pc = KSTK_EIP(tsk);
-> +
-> +		preload_age(ti);
-> +		preload_add(ti, pc);
-> +	}
-> +
-> +	for (i = 0; i < ti->slb_preload_nr; i++) {
-> +		unsigned char idx;
-> +		unsigned long ea;
-> +
-> +		idx = (ti->slb_preload_tail + i) % SLB_PRELOAD_NR;
-> +		ea = (unsigned long)ti->slb_preload_esid[idx] << SID_SHIFT;
-> +
-> +		slb_allocate_user(mm, ea);
-> +	}
+> +	ptep = get_locked_pte(patching_mm, patching_addr, &ptl);
+> +	BUG_ON(!ptep);
+> +	pte_unmap_unlock(ptep, ptl);
 > +}
-> +
->  /* Flush all user entries from the segment table of the current processor. */
->  void switch_slb(struct task_struct *tsk, struct mm_struct *mm)
+>  
+>  #if IS_BUILTIN(CONFIG_LKDTM)
+>  unsigned long read_cpu_patching_addr(unsigned int cpu)
 >  {
-> -	struct thread_info *ti = task_thread_info(tsk);
->  	unsigned char i;
+> -	return (unsigned long)(per_cpu(text_poke_area, cpu))->addr;
+> +	return patching_addr;
+>  }
+>  #endif
 >  
->  	/*
-> @@ -502,29 +531,8 @@ void switch_slb(struct task_struct *tsk, struct mm_struct *mm)
+> -static int text_area_cpu_up(unsigned int cpu)
+> +struct patch_mapping {
+> +	spinlock_t *ptl; /* for protecting pte table */
+> +	pte_t *ptep;
+> +	struct temp_mm temp_mm;
+> +};
+> +
+> +#ifdef CONFIG_PPC_BOOK3S_64
+> +
+> +static inline int hash_prefault_mapping(pgprot_t pgprot)
+>  {
+> -	struct vm_struct *area;
+> +	int err;
 >  
->  	copy_mm_to_paca(mm);
->  
-> -	/*
-> -	 * We gradually age out SLBs after a number of context switches to
-> -	 * reduce reload overhead of unused entries (like we do with FP/VEC
-> -	 * reload). Each time we wrap 256 switches, take an entry out of the
-> -	 * SLB preload cache.
-> -	 */
-> -	tsk->thread.load_slb++;
-> -	if (!tsk->thread.load_slb) {
-> -		unsigned long pc = KSTK_EIP(tsk);
-> -
-> -		preload_age(ti);
-> -		preload_add(ti, pc);
+> -	area = get_vm_area(PAGE_SIZE, VM_ALLOC);
+> -	if (!area) {
+> -		WARN_ONCE(1, "Failed to create text area for cpu %d\n",
+> -			cpu);
+> -		return -1;
 > -	}
-> -
-> -	for (i = 0; i < ti->slb_preload_nr; i++) {
-> -		unsigned char idx;
-> -		unsigned long ea;
-> -
-> -		idx = (ti->slb_preload_tail + i) % SLB_PRELOAD_NR;
-> -		ea = (unsigned long)ti->slb_preload_esid[idx] << SID_SHIFT;
-> -
-> -		slb_allocate_user(mm, ea);
-> -	}
-> +	if (!mm->context.skip_slb_preload)
-> +		preload_slb_entries(tsk, mm);
-
-Should this be wrapped in likely()?
-
+> -	this_cpu_write(text_poke_area, area);
+> +	if (radix_enabled())
+> +		return 0;
 >  
->  	/*
->  	 * Synchronize slbmte preloads with possible subsequent user memory
+> -	return 0;
+> -}
+> +	err = slb_allocate_user(patching_mm, patching_addr);
+> +	if (err)
+> +		pr_warn("map patch: failed to allocate slb entry\n");
+>  
 
-Right below this comment is the isync. It seems to be specifically
-concerned with synchronising preloaded slbs. Do you need it if you are
-skipping SLB preloads?
+Here if slb_allocate_user() fails, you'll print a warning and then fall
+through to the rest of the function. You do return err, but there's a
+later call to hash_page_mm() that also sets err. Can slb_allocate_user()
+fail while hash_page_mm() succeeds, and would that be a problem?
 
-It's probably not a big deal to have an extra isync in the fairly rare
-path when we're skipping preloads, but I thought I'd check.
+> -static int text_area_cpu_down(unsigned int cpu)
+> -{
+> -	free_vm_area(this_cpu_read(text_poke_area));
+> -	return 0;
+> +	err = hash_page_mm(patching_mm, patching_addr, pgprot_val(pgprot), 0,
+> +			   HPTE_USE_KERNEL_KEY);
+> +	if (err)
+> +		pr_warn("map patch: failed to insert hashed page\n");
+> +
+> +	/* See comment in switch_slb() in mm/book3s64/slb.c */
+> +	isync();
+> +
+
+The comment reads:
+
+	/*
+	 * Synchronize slbmte preloads with possible subsequent user memory
+	 * address accesses by the kernel (user mode won't happen until
+	 * rfid, which is safe).
+	 */
+         isync();
+
+I have to say having read the description of isync I'm not 100% sure why
+that's enough (don't we also need stores to complete?) but I'm happy to
+take commit 5434ae74629a ("powerpc/64s/hash: Add a SLB preload cache")
+on trust here!
+
+I think it does make sense for you to have that barrier here: you are
+potentially about to start poking at the memory mapped through that SLB
+entry so you should make sure you're fully synchronised.
+
+> +	return err;
+>  }
+>  
+
+> +	init_temp_mm(&patch_mapping->temp_mm, patching_mm);
+> +	use_temporary_mm(&patch_mapping->temp_mm);
+>  
+> -	pmdp = pmd_offset(pudp, addr);
+> -	if (unlikely(!pmdp))
+> -		return -EINVAL;
+> +	/*
+> +	 * On Book3s64 with the Hash MMU we have to manually insert the SLB
+> +	 * entry and HPTE to prevent taking faults on the patching_addr later.
+> +	 */
+> +	return(hash_prefault_mapping(pgprot));
+
+hmm, `return hash_prefault_mapping(pgprot);` or
+`return (hash_prefault_mapping((pgprot));` maybe?
 
 Kind regards,
 Daniel
-
-> -- 
-> 2.26.1
