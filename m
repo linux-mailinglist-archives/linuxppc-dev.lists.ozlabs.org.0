@@ -2,76 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDD933AF179
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 19:10:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABE3E3AF1A2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 19:13:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G7wy33145z30Dr
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 03:10:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G7x1l34KCz3bsF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 03:13:15 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=aFqvERbp;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZgsKpayF;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::129;
- helo=mail-lf1-x129.google.com; envelope-from=vincent.guittot@linaro.org;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=aFqvERbp; dkim-atps=neutral
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com
- [IPv6:2a00:1450:4864:20::129])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=ZgsKpayF; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G7wxb2DsNz2y0C
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 03:09:39 +1000 (AEST)
-Received: by mail-lf1-x129.google.com with SMTP id u13so12086399lfk.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Jun 2021 10:09:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=JMmJSnD3/U06oRXyz4Yq2FrOHrZ2wymLSXBpDyNdQf4=;
- b=aFqvERbpM65QMOZG73UxuyPU5BkWbgA6kPF7nHf1gV5+iXHLclPP1EhgyQ107LXd5S
- NUQXitx+NmH1uQmHhIQMXR5QCqe2pgCwYKKtirrgXFzvBTczXJj9ZCEUrxjLIqiQ0ENc
- A1N7mmMLbJlnx37d+NFWaICbnHcEksER084HMoAdEtfgAD1VnBerjvYMZkaa328yyJLe
- L0eCEcl6qoCTSVTNUydjIYekUiexQakrVSnpu83mXxXHRpRRcXh6EHc/KYcZXSDk1AjI
- 9kKOVBUFp8ENP6DFkc8gGSXB93vXya4NGiY+1Dm9n39nULcIXXa699QNVB+gyNy4e/VP
- j/kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=JMmJSnD3/U06oRXyz4Yq2FrOHrZ2wymLSXBpDyNdQf4=;
- b=mJSR0TcXwceSkeqSD3YkkmFuFuhTbKQKWBQiXTELZTC+R8nCG+6Ic7nwinpV+GwSTq
- fz0R7xK82zKyEeWFU4pTNkm6hq+0rf8fdBbIbJLKX9YBNdrBBL+p/5+9uauFE1W/mePa
- 9SkL2AI7dSQtdGgjKnlzBSR+Xk20eK0AaXpaBM58NOp6h2jJSqp5/WMf3DhTSD/1o3N/
- 4aH0VpQfcWQDU+/fdEYZkSEUWXh7H3b8zXSlVyU834b9aD3rGtyxT2pW+WdmYoM1a9vi
- EPhqDagEgzog4ZAY9zMGB3KEFjGS/uZqbinzp2KH5NMebJ47tQO8yaPGB9afq48IApU5
- Xx0w==
-X-Gm-Message-State: AOAM530SHwQu9UvsAzPO3EsloKmM65rtIsOnZ+VevuUO2PRukT0pvWI3
- N+oXZBOco46e+zd7vKNcBqg1sTtOoZ5o8Z2+iJVfGQ==
-X-Google-Smtp-Source: ABdhPJyOnr0zQi9vvzYptYp8H0VJaVlnE+4dVZh/0b5F7SZjB71oomO/BvKD8ADCWcUpJW4wRui9yP+564St5QvBCVc=
-X-Received: by 2002:ac2:5088:: with SMTP id f8mr9295030lfm.233.1624295373872; 
- Mon, 21 Jun 2021 10:09:33 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G7x1J47kJz2y8Q
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 03:12:52 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7AE3260FF2;
+ Mon, 21 Jun 2021 17:12:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1624295567;
+ bh=8VLeKNLmsN8yXnBWPFldftKQFXRHteWlP0dfds+25Uo=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=ZgsKpayFEaDCuVwz+OZinwWFqETsbJtTXJCiFObQdpFQX7NCwkGyNry1/4i+bxPwc
+ IgneRIQNtPf1tAqhMbCdTltryRoFFaERZhcV+IWsxlIeKJ+seoRPFfTOkft47bDJwH
+ 9loBYe1aYLli1xB+U8ukIQQV93f7z/3US/mhPwRknJRw++1PwN2toUr3ytEzC1EpYb
+ 5ZQ235QrnKRv7K6+p1Zt4S1PGDuJzSNmNtpUaSIugYEPniQnHLU7/Ud4GpOwlcPkRY
+ UcQIyMjxEP7Gb9a+wLXbspLqnDFlI70JkE1gfXsteZFJrJ8dr1a5TR4s45WBmY+lwM
+ qM4gNqlhViH2w==
+Date: Mon, 21 Jun 2021 10:12:42 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Bharata B Rao <bharata@linux.ibm.com>
+Subject: Re: [PATCH v8 4/6] KVM: PPC: Book3S HV: Nested support in
+ H_RPT_INVALIDATE
+Message-ID: <YNDIitJ3Hn1/G8Jw@Ryzen-9-3900X.localdomain>
+References: <20210621085003.904767-1-bharata@linux.ibm.com>
+ <20210621085003.904767-5-bharata@linux.ibm.com>
 MIME-Version: 1.0
-References: <9D4A658A-5F77-4C33-904A-126E6052B205@linux.vnet.ibm.com>
- <CAFpoUr3g5t3Z0BtW4-jnYomc3cdY=V5=Zt94-C+fHOjGWa107w@mail.gmail.com>
- <CAKfTPtC=aXasuSNvn+A3152-4xoOTWROhJpZAVq6RLh1Hacpng@mail.gmail.com>
- <CAFpoUr2o2PVPOx+AvatjjUvqPTyNKE3C6oXejyU3HVMmtCnzvQ@mail.gmail.com>
- <6D1F875D-58E9-4A55-B0C3-21D5F31EDB76@linux.vnet.ibm.com>
- <CAFpoUr0iWFTq2grtnX_EH6KnZLZQCg1o6_yv1gfDK8WdbHmUCA@mail.gmail.com>
- <CAFpoUr3Wy9raHx+Dc0S8TB_Xi=E+Epsh_pA3DEFZP4eKf7s07A@mail.gmail.com>
- <20210621162243.GA29874@vingu-book>
-In-Reply-To: <20210621162243.GA29874@vingu-book>
-From: Vincent Guittot <vincent.guittot@linaro.org>
-Date: Mon, 21 Jun 2021 19:09:22 +0200
-Message-ID: <CAKfTPtACzzoGhDFW0bTGgZRPB=3LR6kSwuUOrcKDFTAJ7BhTFQ@mail.gmail.com>
-Subject: Re: [powerpc][5.13.0-rc7] Kernel warning (kernel/sched/fair.c:401)
- while running LTP tests
-To: Sachin Sant <sachinp@linux.vnet.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210621085003.904767-5-bharata@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,263 +59,308 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>, Odin Ugedal <odin@uged.al>,
- linuxppc-dev@lists.ozlabs.org, open list <linux-kernel@vger.kernel.org>
+Cc: farosas@linux.ibm.com, aneesh.kumar@linux.ibm.com, npiggin@gmail.com,
+ kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Sacha
-
-On Mon, 21 Jun 2021 at 18:22, Vincent Guittot
-<vincent.guittot@linaro.org> wrote:
->
-> Le lundi 21 juin 2021 =C3=A0 14:42:23 (+0200), Odin Ugedal a =C3=A9crit :
-> > Hi,
-> >
-> > Did some more research, and it looks like this is what happens:
-> >
-> > $ tree /sys/fs/cgroup/ltp/ -d --charset=3Dascii
-> > /sys/fs/cgroup/ltp/
-> > |-- drain
-> > `-- test-6851
-> >     `-- level2
-> >         |-- level3a
-> >         |   |-- worker1
-> >         |   `-- worker2
-> >         `-- level3b
-> >             `-- worker3
-> >
-> > Timeline (ish):
-> > - worker3 gets throttled
-> > - level3b is decayed, since it has no more load
-> > - level2 get throttled
-> > - worker3 get unthrottled
-> > - level2 get unthrottled
-> >   - worker3 is added to list
-> >   - level3b is not added to list, since nr_running=3D=3D0 and is decaye=
-d
-> >
-> >
-> > The attached diff (based on
-> > https://lore.kernel.org/lkml/20210518125202.78658-3-odin@uged.al/)
-> > fixes the issue for me. Not the most elegant solution, but the
-> > simplest one as of now, and to show what is wrong.
-> >
-> > Any thoughts Vincent?
->
->
-> I would prefer that we use the reason of adding the cfs in the list inste=
-ad.
->
-> Something like the below should also fixed the problem. It is based on a
-> proposal I made to Rik sometimes ago when he tried to flatten the rq:
-> https://lore.kernel.org/lkml/20190906191237.27006-6-riel@surriel.com/
->
-> This will ensure that a cfs is added in the list whenever one of its  chi=
-ld
-> is still in the list.
-
-Could you confirm that this patch fixes the problem for you too ?
-
->
+On Mon, Jun 21, 2021 at 02:20:01PM +0530, Bharata B Rao wrote:
+> Enable support for process-scoped invalidations from nested
+> guests and partition-scoped invalidations for nested guests.
+> 
+> Process-scoped invalidations for any level of nested guests
+> are handled by implementing H_RPT_INVALIDATE handler in the
+> nested guest exit path in L0.
+> 
+> Partition-scoped invalidation requests are forwarded to the
+> right nested guest, handled there and passed down to L0
+> for eventual handling.
+> 
+> Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> 	[Nested guest partition-scoped invalidation changes]
 > ---
->  kernel/sched/fair.c | 28 ++++++++++++++++++++++++++++
->  1 file changed, 28 insertions(+)
->
-> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-> index ea7de54cb022..e751061a9449 100644
-> --- a/kernel/sched/fair.c
-> +++ b/kernel/sched/fair.c
-> @@ -3272,6 +3272,31 @@ static inline void cfs_rq_util_change(struct cfs_r=
-q *cfs_rq, int flags)
->
->  #ifdef CONFIG_SMP
->  #ifdef CONFIG_FAIR_GROUP_SCHED
-> +/*
-> + * Because list_add_leaf_cfs_rq always places a child cfs_rq on the list
-> + * immediately before a parent cfs_rq, and cfs_rqs are removed from the =
-list
-> + * bottom-up, we only have to test whether the cfs_rq before us on the l=
-ist
-> + * is our child.
-> + * If cfs_rq is not on the list, test wether a child needs its to be add=
-ed to
-> + * connect a branch to the tree  * (see list_add_leaf_cfs_rq() for detai=
-ls).
-> + */
-> +static inline bool child_cfs_rq_on_list(struct cfs_rq *cfs_rq)
-> +{
-> +       struct cfs_rq *prev_cfs_rq;
-> +       struct list_head *prev;
+>  .../include/asm/book3s/64/tlbflush-radix.h    |   4 +
+>  arch/powerpc/include/asm/kvm_book3s.h         |   3 +
+>  arch/powerpc/kvm/book3s_hv.c                  |  59 ++++++++-
+>  arch/powerpc/kvm/book3s_hv_nested.c           | 117 ++++++++++++++++++
+>  arch/powerpc/mm/book3s64/radix_tlb.c          |   4 -
+>  5 files changed, 180 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush-radix.h b/arch/powerpc/include/asm/book3s/64/tlbflush-radix.h
+> index 8b33601cdb9d..a46fd37ad552 100644
+> --- a/arch/powerpc/include/asm/book3s/64/tlbflush-radix.h
+> +++ b/arch/powerpc/include/asm/book3s/64/tlbflush-radix.h
+> @@ -4,6 +4,10 @@
+>  
+>  #include <asm/hvcall.h>
+>  
+> +#define RIC_FLUSH_TLB 0
+> +#define RIC_FLUSH_PWC 1
+> +#define RIC_FLUSH_ALL 2
 > +
-> +       if (cfs_rq->on_list) {
-> +               prev =3D cfs_rq->leaf_cfs_rq_list.prev;
-> +       } else {
-> +               struct rq *rq =3D rq_of(cfs_rq);
-> +
-> +               prev =3D rq->tmp_alone_branch;
-> +       }
-> +
-> +       prev_cfs_rq =3D container_of(prev, struct cfs_rq, leaf_cfs_rq_lis=
-t);
-> +
-> +       return (prev_cfs_rq->tg->parent =3D=3D cfs_rq->tg);
-> +}
->
->  static inline bool cfs_rq_is_decayed(struct cfs_rq *cfs_rq)
->  {
-> @@ -3287,6 +3312,9 @@ static inline bool cfs_rq_is_decayed(struct cfs_rq =
-*cfs_rq)
->         if (cfs_rq->avg.runnable_sum)
->                 return false;
->
-> +       if (child_cfs_rq_on_list(cfs_rq))
-> +               return false;
-> +
->         return true;
+>  struct vm_area_struct;
+>  struct mm_struct;
+>  struct mmu_gather;
+> diff --git a/arch/powerpc/include/asm/kvm_book3s.h b/arch/powerpc/include/asm/kvm_book3s.h
+> index e6b53c6e21e3..caaa0f592d8e 100644
+> --- a/arch/powerpc/include/asm/kvm_book3s.h
+> +++ b/arch/powerpc/include/asm/kvm_book3s.h
+> @@ -307,6 +307,9 @@ void kvmhv_set_ptbl_entry(unsigned int lpid, u64 dw0, u64 dw1);
+>  void kvmhv_release_all_nested(struct kvm *kvm);
+>  long kvmhv_enter_nested_guest(struct kvm_vcpu *vcpu);
+>  long kvmhv_do_nested_tlbie(struct kvm_vcpu *vcpu);
+> +long do_h_rpt_invalidate_pat(struct kvm_vcpu *vcpu, unsigned long lpid,
+> +			     unsigned long type, unsigned long pg_sizes,
+> +			     unsigned long start, unsigned long end);
+>  int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu,
+>  			  u64 time_limit, unsigned long lpcr);
+>  void kvmhv_save_hv_regs(struct kvm_vcpu *vcpu, struct hv_guest_state *hr);
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 7e6da4687d88..3d5b8ba3786d 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -925,6 +925,34 @@ static int kvmppc_get_yield_count(struct kvm_vcpu *vcpu)
+>  	return yield_count;
 >  }
->
-> --
-> 2.17.1
->
->
->
-> >
-> > Thanks
-> > Odin
-> >
-> >
-> > diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-> > index bfaa6e1f6067..aa32e9c29efd 100644
-> > --- a/kernel/sched/fair.c
-> > +++ b/kernel/sched/fair.c
-> > @@ -376,7 +376,8 @@ static inline bool list_add_leaf_cfs_rq(struct
-> > cfs_rq *cfs_rq)
-> >         return false;
-> >  }
-> >
-> > -static inline void list_del_leaf_cfs_rq(struct cfs_rq *cfs_rq)
-> > +/* Returns 1 if cfs_rq was present in the list and removed */
-> > +static inline bool list_del_leaf_cfs_rq(struct cfs_rq *cfs_rq)
-> >  {
-> >         if (cfs_rq->on_list) {
-> >                 struct rq *rq =3D rq_of(cfs_rq);
-> > @@ -393,7 +394,9 @@ static inline void list_del_leaf_cfs_rq(struct
-> > cfs_rq *cfs_rq)
-> >
-> >                 list_del_rcu(&cfs_rq->leaf_cfs_rq_list);
-> >                 cfs_rq->on_list =3D 0;
-> > +               return 1;
-> >         }
-> > +       return 0;
-> >  }
-> >
-> >  static inline void assert_list_leaf_cfs_rq(struct rq *rq)
-> > @@ -3298,24 +3301,6 @@ static inline void cfs_rq_util_change(struct
-> > cfs_rq *cfs_rq, int flags)
-> >
-> >  #ifdef CONFIG_SMP
-> >  #ifdef CONFIG_FAIR_GROUP_SCHED
-> > -
-> > -static inline bool cfs_rq_is_decayed(struct cfs_rq *cfs_rq)
-> > -{
-> > -       if (cfs_rq->load.weight)
-> > -               return false;
-> > -
-> > -       if (cfs_rq->avg.load_sum)
-> > -               return false;
-> > -
-> > -       if (cfs_rq->avg.util_sum)
-> > -               return false;
-> > -
-> > -       if (cfs_rq->avg.runnable_sum)
-> > -               return false;
-> > -
-> > -       return true;
-> > -}
-> > -
-> >  /**
-> >   * update_tg_load_avg - update the tg's load avg
-> >   * @cfs_rq: the cfs_rq whose avg changed
-> > @@ -4109,11 +4094,6 @@ static inline void update_misfit_status(struct
-> > task_struct *p, struct rq *rq)
-> >
-> >  #else /* CONFIG_SMP */
-> >
-> > -static inline bool cfs_rq_is_decayed(struct cfs_rq *cfs_rq)
-> > -{
-> > -       return true;
-> > -}
-> > -
-> >  #define UPDATE_TG      0x0
-> >  #define SKIP_AGE_LOAD  0x0
-> >  #define DO_ATTACH      0x0
-> > @@ -4771,10 +4751,11 @@ static int tg_unthrottle_up(struct task_group
-> > *tg, void *data)
-> >         if (!cfs_rq->throttle_count) {
-> >                 cfs_rq->throttled_clock_task_time +=3D rq_clock_task(rq=
-) -
-> >                                              cfs_rq->throttled_clock_ta=
-sk;
-> > -
-> > -               /* Add cfs_rq with load or one or more already running
-> > entities to the list */
-> > -               if (!cfs_rq_is_decayed(cfs_rq) || cfs_rq->nr_running)
-> > +               if (cfs_rq->insert_on_unthrottle) {
-> >                         list_add_leaf_cfs_rq(cfs_rq);
-> > +                       if (tg->parent)
-> > +
-> > tg->parent->cfs_rq[cpu_of(rq)]->insert_on_unthrottle =3D true;
-> > +                       }
-> >         }
-> >
-> >         return 0;
-> > @@ -4788,7 +4769,7 @@ static int tg_throttle_down(struct task_group
-> > *tg, void *data)
-> >         /* group is entering throttled state, stop time */
-> >         if (!cfs_rq->throttle_count) {
-> >                 cfs_rq->throttled_clock_task =3D rq_clock_task(rq);
-> > -               list_del_leaf_cfs_rq(cfs_rq);
-> > +               cfs_rq->insert_on_unthrottle =3D list_del_leaf_cfs_rq(c=
-fs_rq);
-> >         }
-> >         cfs_rq->throttle_count++;
-> >
-> > @@ -8019,6 +8000,23 @@ static bool __update_blocked_others(struct rq
-> > *rq, bool *done)
-> >
-> >  #ifdef CONFIG_FAIR_GROUP_SCHED
-> >
-> > +static inline bool cfs_rq_is_decayed(struct cfs_rq *cfs_rq)
-> > +{
-> > +       if (cfs_rq->load.weight)
-> > +               return false;
-> > +
-> > +       if (cfs_rq->avg.load_sum)
-> > +               return false;
-> > +
-> > +       if (cfs_rq->avg.util_sum)
-> > +               return false;
-> > +
-> > +       if (cfs_rq->avg.runnable_sum)
-> > +               return false;
-> > +
-> > +       return true;
-> > +}
-> > +
-> >  static bool __update_blocked_fair(struct rq *rq, bool *done)
-> >  {
-> >         struct cfs_rq *cfs_rq, *pos;
-> > diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-> > index a189bec13729..12a707d99ee6 100644
-> > --- a/kernel/sched/sched.h
-> > +++ b/kernel/sched/sched.h
-> > @@ -602,6 +602,7 @@ struct cfs_rq {
-> >         u64                     throttled_clock_task_time;
-> >         int                     throttled;
-> >         int                     throttle_count;
-> > +       int                     insert_on_unthrottle;
-> >         struct list_head        throttled_list;
-> >  #endif /* CONFIG_CFS_BANDWIDTH */
-> >  #endif /* CONFIG_FAIR_GROUP_SCHED */
+>  
+> +/*
+> + * H_RPT_INVALIDATE hcall handler for nested guests.
+> + *
+> + * Handles only nested process-scoped invalidation requests in L0.
+> + */
+> +static int kvmppc_nested_h_rpt_invalidate(struct kvm_vcpu *vcpu)
+> +{
+> +	unsigned long type = kvmppc_get_gpr(vcpu, 6);
+> +	unsigned long pid, pg_sizes, start, end;
+> +
+> +	/*
+> +	 * The partition-scoped invalidations aren't handled here in L0.
+> +	 */
+> +	if (type & H_RPTI_TYPE_NESTED)
+> +		return RESUME_HOST;
+> +
+> +	pid = kvmppc_get_gpr(vcpu, 4);
+> +	pg_sizes = kvmppc_get_gpr(vcpu, 7);
+> +	start = kvmppc_get_gpr(vcpu, 8);
+> +	end = kvmppc_get_gpr(vcpu, 9);
+> +
+> +	do_h_rpt_invalidate_prt(pid, vcpu->arch.nested->shadow_lpid,
+> +				type, pg_sizes, start, end);
+> +
+> +	kvmppc_set_gpr(vcpu, 3, H_SUCCESS);
+> +	return RESUME_GUEST;
+> +}
+> +
+>  static long kvmppc_h_rpt_invalidate(struct kvm_vcpu *vcpu,
+>  				    unsigned long id, unsigned long target,
+>  				    unsigned long type, unsigned long pg_sizes,
+> @@ -938,10 +966,18 @@ static long kvmppc_h_rpt_invalidate(struct kvm_vcpu *vcpu,
+>  
+>  	/*
+>  	 * Partition-scoped invalidation for nested guests.
+> -	 * Not yet supported
+>  	 */
+> -	if (type & H_RPTI_TYPE_NESTED)
+> -		return H_P3;
+> +	if (type & H_RPTI_TYPE_NESTED) {
+> +		if (!nesting_enabled(vcpu->kvm))
+> +			return H_FUNCTION;
+> +
+> +		/* Support only cores as target */
+> +		if (target != H_RPTI_TARGET_CMMU)
+> +			return H_P2;
+> +
+> +		return do_h_rpt_invalidate_pat(vcpu, id, type, pg_sizes,
+> +					       start, end);
+> +	}
+>  
+>  	/*
+>  	 * Process-scoped invalidation for L1 guests.
+> @@ -1629,6 +1665,23 @@ static int kvmppc_handle_nested_exit(struct kvm_vcpu *vcpu)
+>  		if (!xics_on_xive())
+>  			kvmppc_xics_rm_complete(vcpu, 0);
+>  		break;
+> +	case BOOK3S_INTERRUPT_SYSCALL:
+> +	{
+> +		unsigned long req = kvmppc_get_gpr(vcpu, 3);
+> +
+> +		/*
+> +		 * The H_RPT_INVALIDATE hcalls issued by nested
+> +		 * guests for process-scoped invalidations when
+> +		 * GTSE=0, are handled here in L0.
+> +		 */
+> +		if (req == H_RPT_INVALIDATE) {
+> +			r = kvmppc_nested_h_rpt_invalidate(vcpu);
+> +			break;
+> +		}
+> +
+> +		r = RESUME_HOST;
+> +		break;
+> +	}
+>  	default:
+>  		r = RESUME_HOST;
+>  		break;
+> diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
+> index 60724f674421..056d3df68de1 100644
+> --- a/arch/powerpc/kvm/book3s_hv_nested.c
+> +++ b/arch/powerpc/kvm/book3s_hv_nested.c
+> @@ -1214,6 +1214,123 @@ long kvmhv_do_nested_tlbie(struct kvm_vcpu *vcpu)
+>  	return H_SUCCESS;
+>  }
+>  
+> +static long do_tlb_invalidate_nested_tlb(struct kvm_vcpu *vcpu,
+> +					 unsigned long lpid,
+> +					 unsigned long page_size,
+> +					 unsigned long ap,
+> +					 unsigned long start,
+> +					 unsigned long end)
+> +{
+> +	unsigned long addr = start;
+> +	int ret;
+> +
+> +	do {
+> +		ret = kvmhv_emulate_tlbie_tlb_addr(vcpu, lpid, ap,
+> +						   get_epn(addr));
+> +		if (ret)
+> +			return ret;
+> +		addr += page_size;
+> +	} while (addr < end);
+> +
+> +	return ret;
+> +}
+> +
+> +static long do_tlb_invalidate_nested_all(struct kvm_vcpu *vcpu,
+> +					 unsigned long lpid, unsigned long ric)
+> +{
+> +	struct kvm *kvm = vcpu->kvm;
+> +	struct kvm_nested_guest *gp;
+> +
+> +	gp = kvmhv_get_nested(kvm, lpid, false);
+> +	if (gp) {
+> +		kvmhv_emulate_tlbie_lpid(vcpu, gp, ric);
+> +		kvmhv_put_nested(gp);
+> +	}
+> +	return H_SUCCESS;
+> +}
+> +
+> +/*
+> + * Number of pages above which we invalidate the entire LPID rather than
+> + * flush individual pages.
+> + */
+> +static unsigned long tlb_range_flush_page_ceiling __read_mostly = 33;
+> +
+> +/*
+> + * Performs partition-scoped invalidations for nested guests
+> + * as part of H_RPT_INVALIDATE hcall.
+> + */
+> +long do_h_rpt_invalidate_pat(struct kvm_vcpu *vcpu, unsigned long lpid,
+> +			     unsigned long type, unsigned long pg_sizes,
+> +			     unsigned long start, unsigned long end)
+> +{
+> +	struct kvm_nested_guest *gp;
+> +	long ret;
+> +	unsigned long psize, ap;
+> +
+> +	/*
+> +	 * If L2 lpid isn't valid, we need to return H_PARAMETER.
+> +	 *
+> +	 * However, nested KVM issues a L2 lpid flush call when creating
+> +	 * partition table entries for L2. This happens even before the
+> +	 * corresponding shadow lpid is created in HV which happens in
+> +	 * H_ENTER_NESTED call. Since we can't differentiate this case from
+> +	 * the invalid case, we ignore such flush requests and return success.
+> +	 */
+> +	gp = kvmhv_find_nested(vcpu->kvm, lpid);
+> +	if (!gp)
+> +		return H_SUCCESS;
+> +
+> +	/*
+> +	 * A flush all request can be handled by a full lpid flush only.
+> +	 */
+> +	if ((type & H_RPTI_TYPE_NESTED_ALL) == H_RPTI_TYPE_NESTED_ALL)
+> +		return do_tlb_invalidate_nested_all(vcpu, lpid, RIC_FLUSH_ALL);
+> +
+> +	/*
+> +	 * We don't need to handle a PWC flush like process table here,
+> +	 * because intermediate partition scoped table in nested guest doesn't
+> +	 * really have PWC. Only level we have PWC is in L0 and for nested
+> +	 * invalidate at L0 we always do kvm_flush_lpid() which does
+> +	 * radix__flush_all_lpid(). For range invalidate at any level, we
+> +	 * are not removing the higher level page tables and hence there is
+> +	 * no PWC invalidate needed.
+> +	 *
+> +	 * if (type & H_RPTI_TYPE_PWC) {
+> +	 *	ret = do_tlb_invalidate_nested_all(vcpu, lpid, RIC_FLUSH_PWC);
+> +	 *	if (ret)
+> +	 *		return H_P4;
+> +	 * }
+> +	 */
+> +
+> +	if (start == 0 && end == -1)
+> +		return do_tlb_invalidate_nested_all(vcpu, lpid, RIC_FLUSH_TLB);
+> +
+> +	if (type & H_RPTI_TYPE_TLB) {
+> +		struct mmu_psize_def *def;
+> +		bool flush_lpid;
+> +		unsigned long nr_pages;
+> +
+> +		for (psize = 0; psize < MMU_PAGE_COUNT; psize++) {
+> +			def = &mmu_psize_defs[psize];
+> +			if (!(pg_sizes & def->h_rpt_pgsize))
+> +				continue;
+> +
+> +			nr_pages = (end - start) >> def->shift;
+> +			flush_lpid = nr_pages > tlb_range_flush_page_ceiling;
+> +			if (flush_lpid)
+> +				return do_tlb_invalidate_nested_all(vcpu, lpid,
+> +								RIC_FLUSH_TLB);
+> +
+> +			ret = do_tlb_invalidate_nested_tlb(vcpu, lpid,
+> +							   (1UL << def->shift),
+> +							   ap, start, end);
+
+I have not seen this reported yet so apologies if it has and there is a
+fix I am missing:
+
+arch/powerpc/kvm/book3s_hv_nested.c:1334:11: error: variable 'ap' is uninitialized when used here [-Werror,-Wuninitialized]
+                                                           ap, start, end);
+                                                           ^~
+arch/powerpc/kvm/book3s_hv_nested.c:1276:25: note: initialize the variable 'ap' to silence this warning
+        unsigned long psize, ap;
+                               ^
+                                = 0
+1 error generated.
+
+Cheers,
+Nathan
+
+> +			if (ret)
+> +				return H_P4;
+> +		}
+> +	}
+> +	return H_SUCCESS;
+> +}
+> +
+>  /* Used to convert a nested guest real address to a L1 guest real address */
+>  static int kvmhv_translate_addr_nested(struct kvm_vcpu *vcpu,
+>  				       struct kvm_nested_guest *gp,
+> diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
+> index cdd98b9e7b15..4f38cf34ea40 100644
+> --- a/arch/powerpc/mm/book3s64/radix_tlb.c
+> +++ b/arch/powerpc/mm/book3s64/radix_tlb.c
+> @@ -20,10 +20,6 @@
+>  
+>  #include "internal.h"
+>  
+> -#define RIC_FLUSH_TLB 0
+> -#define RIC_FLUSH_PWC 1
+> -#define RIC_FLUSH_ALL 2
+> -
+>  /*
+>   * tlbiel instruction for radix, set invalidation
+>   * i.e., r=1 and is=01 or is=10 or is=11
+> -- 
+> 2.31.1
