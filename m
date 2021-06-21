@@ -2,70 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B61873AE980
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 14:58:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90A1C3AEA92
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 15:55:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G7qMP3gB9z306c
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 22:58:09 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=jnA8Sw7H;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G7rdm2vKBz30D6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 23:55:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::1036;
- helo=mail-pj1-x1036.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=srs0=5kvv=lp=kernel.crashing.org=segher@ozlabs.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=jnA8Sw7H; dkim-atps=neutral
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com
- [IPv6:2607:f8b0:4864:20::1036])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G7qLx2S2wz2yYV
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Jun 2021 22:57:43 +1000 (AEST)
-Received: by mail-pj1-x1036.google.com with SMTP id
- p4-20020a17090a9304b029016f3020d867so8159253pjo.3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Jun 2021 05:57:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:subject:in-reply-to:references:date:message-id:mime-version;
- bh=0bWYaf9cBnr1uiIPV06eAL+29RQifYViiJjHT5s1Pwc=;
- b=jnA8Sw7Hmu/ycr+ur2WsChTHflbpZ0CAh/oLWfQXMZML0ip5WpK+NInOPi+1STL8xo
- FshiJKCCGrul7D+ClHn7rmqlJgKIWOXOy6lcaBB6jdnpDNogYrnNbMOf/xtVmKsfSBEP
- LqRl7LeoPc20r8XDdNgxv116FSkx4ClehV86Y=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=0bWYaf9cBnr1uiIPV06eAL+29RQifYViiJjHT5s1Pwc=;
- b=aYES7phtcsIkp15dLIncS9M6L3/luinptj1GdC8VxFcpjYMPGoB/Kq2WVO0mevbbeX
- DR1t/ntxYjMIAD/5v457ibRZhAk9bgOVQvO46wzeJYx3XVRFsmU0uQpiRVGoafcQXJKW
- RfdxU5ZJE6zgPzh8JBd41QCkPkzsl4zjWQXbD9FkIC4DXThsQyyQCqyJ1Xm/RSQpvcoj
- mg+nW3NLk/5Z3yT5Xe2KSEWNMG5SyoXeCnHMFHzypfxlKQLweQpyOSwYOOFLnd/2NBfC
- 9iKM54GB/FkzFlAOwnLy6G4LqE8baacsBFORu94HqtIbxLM921CNC0SMb1mM/8B+cAX8
- +iKw==
-X-Gm-Message-State: AOAM531vQj6Dsz5tqOZFLgOTsZrx7dBYLap/kk303DeO+dk8aaiHCXBW
- FA1wkYlDoViK3ag0diyjMU3LIg==
-X-Google-Smtp-Source: ABdhPJzEpFLQxUJnVr6dTKFPsK1zjEcAHnYR1UQn/5WoEGg319Jkqn2WPS/iMh9CSBeratugax+WCg==
-X-Received: by 2002:a17:902:b7c9:b029:122:ee2d:25f1 with SMTP id
- v9-20020a170902b7c9b0290122ee2d25f1mr10833535plz.14.1624280258192; 
- Mon, 21 Jun 2021 05:57:38 -0700 (PDT)
-Received: from localhost ([203.206.29.204])
- by smtp.gmail.com with ESMTPSA id u10sm15377790pfh.123.2021.06.21.05.57.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 21 Jun 2021 05:57:37 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 1/2] powerpc/prom_init: Convert prom_strcpy() into
- prom_strscpy_pad()
-In-Reply-To: <20210621064938.2021419-1-mpe@ellerman.id.au>
-References: <20210621064938.2021419-1-mpe@ellerman.id.au>
-Date: Mon, 21 Jun 2021 22:57:29 +1000
-Message-ID: <87lf73iddy.fsf@dja-thinkpad.axtens.net>
-MIME-Version: 1.0
-Content-Type: text/plain
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G7rdL2QtBz2yXP
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Jun 2021 23:55:17 +1000 (AEST)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by ozlabs.org (Postfix) with ESMTP id 4G7rdD4phHz9sWQ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Jun 2021 23:55:12 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 4G7rdD3bWqz9sWM; Mon, 21 Jun 2021 23:55:12 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by ozlabs.org (Postfix) with ESMTP id 4G7rdD01htz9sVp;
+ Mon, 21 Jun 2021 23:55:09 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 15LDs7KT011803;
+ Mon, 21 Jun 2021 08:54:07 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 15LDs7uO011802;
+ Mon, 21 Jun 2021 08:54:07 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Mon, 21 Jun 2021 08:54:07 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Paul Mackerras <paulus@ozlabs.org>
+Subject: Re: [PATCH v2 2/9] powerpc: Add Microwatt device tree
+Message-ID: <20210621135407.GB5077@gate.crashing.org>
+References: <YMwWPcsaWzMlDPqQ@thinks.paulus.ozlabs.org>
+ <YMwWkPcXlGDSQ9Q3@thinks.paulus.ozlabs.org>
+ <20210619142616.GW5077@gate.crashing.org>
+ <YM8v2ricaCzGi2vv@thinks.paulus.ozlabs.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YM8v2ricaCzGi2vv@thinks.paulus.ozlabs.org>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,77 +66,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi
+On Sun, Jun 20, 2021 at 10:08:58PM +1000, Paul Mackerras wrote:
+> On Sat, Jun 19, 2021 at 09:26:16AM -0500, Segher Boessenkool wrote:
+> > On Fri, Jun 18, 2021 at 01:44:16PM +1000, Paul Mackerras wrote:
+> > > Microwatt currently runs with MSR[HV] = 0,
+> > 
+> > That isn't compliant though?  If your implementation does not have LPAR
+> > it must set MSR[HV]=1 always.
+> 
+> True - but if I actually do that, Linux starts trying to use hrfid
+> (for example in masked_Hinterrupt), which Microwatt doesn't have.
+> Something for Nick to fix. :)
 
-> -static char __init *prom_strcpy(char *dest, const char *src)
-> +static ssize_t __init prom_strscpy_pad(char *dest, const char *src, size_t n)
->  {
-> -	char *tmp = dest;
-> +	ssize_t rc;
-> +	size_t i;
->  
-> -	while ((*dest++ = *src++) != '\0')
-> -		/* nothing */;
-> -	return tmp;
-> +	if (n == 0 || n > INT_MAX)
-> +		return -E2BIG;
-> +
-> +	// Copy up to n bytes
-> +	for (i = 0; i < n && src[i] != '\0'; i++)
-> +		dest[i] = src[i];
-> +
-> +	rc = i;
-> +
-> +	// If we copied all n then we have run out of space for the nul
-> +	if (rc == n) {
-> +		// Rewind by one character to ensure nul termination
-> +		i--;
-> +		rc = -E2BIG;
-> +	}
-> +
-> +	for (; i < n; i++)
-> +		dest[i] = '\0';
-> +
-> +	return rc;
->  }
->  
+That looks like it needs fixing, yes (it is hard to actually read).  But
+one thing you can do to make this Just Work is to make hrfid do exactly
+the same as rfid, i.e. decode hrfid (01000 10010) as rfid (00000 10010).
+That probably makes things run already, you don't even need to alias
+to SPRs HSRRn (01001 1101n) to SRRn (00000 1101n) :-)
 
-This implementation seems good to me.
 
-I copied it into a new C file and added the following:
-
-int main() {
-	char longstr[255]="abcdefghijklmnopqrstuvwxyz";
-	char shortstr[5];
-	assert(prom_strscpy_pad(longstr, "", 0) == -E2BIG);
-	assert(prom_strscpy_pad(longstr, "hello", 255) == 5);
-	assert(prom_strscpy_pad(shortstr, "hello", 5) == -E2BIG);
-	assert(memcmp(shortstr, "hell", 5) == 0);
-	assert(memcmp(longstr, "hello\0\0\0\0\0\0\0\0\0", 6) == 0);
-	return 0;
-}
-
-All the assertions pass. I believe this covers all the conditions from
-the strscpy_pad docstring.
-
-Reviewed-by: Daniel Axtens <dja@axtens.net>
-
-Kind regards,
-Daniel
-
->  static int __init prom_strncmp(const char *cs, const char *ct, size_t count)
-> @@ -2701,7 +2719,7 @@ static void __init flatten_device_tree(void)
->  
->  	/* Add "phandle" in there, we'll need it */
->  	namep = make_room(&mem_start, &mem_end, 16, 1);
-> -	prom_strcpy(namep, "phandle");
-> +	prom_strscpy_pad(namep, "phandle", sizeof("phandle"));
->  	mem_start = (unsigned long)namep + prom_strlen(namep) + 1;
->  
->  	/* Build string array */
-> -- 
-> 2.25.1
+Segher
