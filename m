@@ -1,52 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEEBE3AE5A1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 11:07:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E87EC3AE660
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 11:46:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G7kFX4psqz307t
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 19:07:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G7l6L4WSdz3bsw
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 19:46:34 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qjIZKqzu;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=secunet.com (client-ip=62.96.220.44; helo=mailout1.secunet.com;
- envelope-from=steffen.klassert@secunet.com; receiver=<UNKNOWN>)
-X-Greylist: delayed 576 seconds by postgrey-1.36 at boromir;
- Mon, 21 Jun 2021 18:45:27 AEST
-Received: from mailout1.secunet.com (mailout1.secunet.com [62.96.220.44])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=qjIZKqzu; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G7jlq0sKBz2yhd
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Jun 2021 18:45:25 +1000 (AEST)
-Received: from cas-essen-01.secunet.de (unknown [10.53.40.201])
- by mailout1.secunet.com (Postfix) with ESMTP id BAFED80004E;
- Mon, 21 Jun 2021 10:35:39 +0200 (CEST)
-Received: from mbx-essen-01.secunet.de (10.53.40.197) by
- cas-essen-01.secunet.de (10.53.40.201) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Mon, 21 Jun 2021 10:35:39 +0200
-Received: from gauss2.secunet.de (10.182.7.193) by mbx-essen-01.secunet.de
- (10.53.40.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Mon, 21 Jun
- 2021 10:35:39 +0200
-Received: by gauss2.secunet.de (Postfix, from userid 1000)
- id 249D031803E8; Mon, 21 Jun 2021 10:35:39 +0200 (CEST)
-Date: Mon, 21 Jun 2021 10:35:39 +0200
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Ondrej Mosnacek <omosnace@redhat.com>
-Subject: Re: [PATCH v3] lockdown,selinux: fix wrong subject in some SELinux
- lockdown checks
-Message-ID: <20210621083539.GY40979@gauss3.secunet.de>
-References: <20210616085118.1141101-1-omosnace@redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G7l5t0Z9Qz2yYP
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Jun 2021 19:46:08 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4G7l5p14q7z9sWl;
+ Mon, 21 Jun 2021 19:46:06 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1624268767;
+ bh=zDzQjEJQlnW0AJBiTTf601+r5jzUK+G3QgDwx54BkK0=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=qjIZKqzuVKzDihFui4DV1KheP3BPWR56Q/6p+6qiZi+vnedd/MECR/fXTc9tK4mYx
+ IpRIjW+7+tbXx828oIQigq98zGkLFzLdzks7imElRprN544FHncgm+IvOX1shLi6He
+ P/6jcowPWkv0csld3wtXJcNRseiLg/6J5OYDIXTZPUnFTX+uc0nDTk+aSbo8LSv9RH
+ nxH7t+y8JRxeZVRX6G3v7ZADUzZropfsglV42NGb32U9ibhh5SiStFHbYYLlGCrm0L
+ 2O/HtwWgYlhRdA8sCSramN5Qs5jJ65ODMxkj4WzU4ry8DU84wtGg8rAG3CnyguPorv
+ OCHI1jXgTb2rg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nathan Chancellor <nathan@kernel.org>, Nicholas Piggin
+ <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, kernel test robot
+ <lkp@intel.com>
+Subject: Re: arch/powerpc/kvm/book3s_hv_nested.c:264:6: error: stack frame
+ size of 2304 bytes in function 'kvmhv_enter_nested_guest'
+In-Reply-To: <e6167885-30e5-d149-bcde-3e9ad9f5d381@kernel.org>
+References: <202104031853.vDT0Qjqj-lkp@intel.com>
+ <1624232938.d90brlmh3p.astroid@bobo.none>
+ <e6167885-30e5-d149-bcde-3e9ad9f5d381@kernel.org>
+Date: Mon, 21 Jun 2021 19:46:03 +1000
+Message-ID: <87im273604.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20210616085118.1141101-1-omosnace@redhat.com>
-X-ClientProxiedBy: cas-essen-01.secunet.de (10.53.40.201) To
- mbx-essen-01.secunet.de (10.53.40.197)
-X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
-X-Mailman-Approved-At: Mon, 21 Jun 2021 19:07:27 +1000
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,81 +66,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-efi@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-cxl@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
- x86@kernel.org, James Morris <jmorris@namei.org>, linux-acpi@vger.kernel.org,
- Ingo Molnar <mingo@redhat.com>, linux-serial@vger.kernel.org,
- linux-pm@vger.kernel.org, selinux@vger.kernel.org,
- Steven Rostedt <rostedt@goodmis.org>, Casey Schaufler <casey@schaufler-ca.com>,
- Paul Moore <paul@paul-moore.com>, netdev@vger.kernel.org,
- Stephen Smalley <stephen.smalley.work@gmail.com>, kexec@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
+Cc: kbuild-all@lists.01.org, Kees Cook <keescook@chromium.org>,
+ clang-built-linux@googlegroups.com, linux-kernel@vger.kernel.org,
+ kvm-ppc@vger.kernel.org, Linux Memory Management List <linux-mm@kvack.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 16, 2021 at 10:51:18AM +0200, Ondrej Mosnacek wrote:
-> Commit 59438b46471a ("security,lockdown,selinux: implement SELinux
-> lockdown") added an implementation of the locked_down LSM hook to
-> SELinux, with the aim to restrict which domains are allowed to perform
-> operations that would breach lockdown.
-> 
-> However, in several places the security_locked_down() hook is called in
-> situations where the current task isn't doing any action that would
-> directly breach lockdown, leading to SELinux checks that are basically
-> bogus.
-> 
-> To fix this, add an explicit struct cred pointer argument to
-> security_lockdown() and define NULL as a special value to pass instead
-> of current_cred() in such situations. LSMs that take the subject
-> credentials into account can then fall back to some default or ignore
-> such calls altogether. In the SELinux lockdown hook implementation, use
-> SECINITSID_KERNEL in case the cred argument is NULL.
-> 
-> Most of the callers are updated to pass current_cred() as the cred
-> pointer, thus maintaining the same behavior. The following callers are
-> modified to pass NULL as the cred pointer instead:
-> 1. arch/powerpc/xmon/xmon.c
->      Seems to be some interactive debugging facility. It appears that
->      the lockdown hook is called from interrupt context here, so it
->      should be more appropriate to request a global lockdown decision.
-> 2. fs/tracefs/inode.c:tracefs_create_file()
->      Here the call is used to prevent creating new tracefs entries when
->      the kernel is locked down. Assumes that locking down is one-way -
->      i.e. if the hook returns non-zero once, it will never return zero
->      again, thus no point in creating these files. Also, the hook is
->      often called by a module's init function when it is loaded by
->      userspace, where it doesn't make much sense to do a check against
->      the current task's creds, since the task itself doesn't actually
->      use the tracing functionality (i.e. doesn't breach lockdown), just
->      indirectly makes some new tracepoints available to whoever is
->      authorized to use them.
-> 3. net/xfrm/xfrm_user.c:copy_to_user_*()
->      Here a cryptographic secret is redacted based on the value returned
->      from the hook. There are two possible actions that may lead here:
->      a) A netlink message XFRM_MSG_GETSA with NLM_F_DUMP set - here the
->         task context is relevant, since the dumped data is sent back to
->         the current task.
->      b) When adding/deleting/updating an SA via XFRM_MSG_xxxSA, the
->         dumped SA is broadcasted to tasks subscribed to XFRM events -
->         here the current task context is not relevant as it doesn't
->         represent the tasks that could potentially see the secret.
->      It doesn't seem worth it to try to keep using the current task's
->      context in the a) case, since the eventual data leak can be
->      circumvented anyway via b), plus there is no way for the task to
->      indicate that it doesn't care about the actual key value, so the
->      check could generate a lot of "false alert" denials with SELinux.
->      Thus, let's pass NULL instead of current_cred() here faute de
->      mieux.
-> 
-> Improvements-suggested-by: Casey Schaufler <casey@schaufler-ca.com>
-> Improvements-suggested-by: Paul Moore <paul@paul-moore.com>
-> Fixes: 59438b46471a ("security,lockdown,selinux: implement SELinux lockdown")
-> Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+Nathan Chancellor <nathan@kernel.org> writes:
+> On 6/20/2021 4:59 PM, Nicholas Piggin wrote:
+>> Excerpts from kernel test robot's message of April 3, 2021 8:47 pm:
+>>> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+>>> head:   d93a0d43e3d0ba9e19387be4dae4a8d5b175a8d7
+>>> commit: 97e4910232fa1f81e806aa60c25a0450276d99a2 linux/compiler-clang.h: define HAVE_BUILTIN_BSWAP*
+>>> date:   3 weeks ago
+>>> config: powerpc64-randconfig-r006-20210403 (attached as .config)
+>>> compiler: clang version 13.0.0 (https://github.com/llvm/llvm-project 0fe8af94688aa03c01913c2001d6a1a911f42ce6)
+>>> reproduce (this is a W=1 build):
+>>>          wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>>>          chmod +x ~/bin/make.cross
+>>>          # install powerpc64 cross compiling tool for clang build
+>>>          # apt-get install binutils-powerpc64-linux-gnu
+>>>          # https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=97e4910232fa1f81e806aa60c25a0450276d99a2
+>>>          git remote add linus https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+>>>          git fetch --no-tags linus master
+>>>          git checkout 97e4910232fa1f81e806aa60c25a0450276d99a2
+>>>          # save the attached .config to linux build tree
+>>>          COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross ARCH=powerpc64
+>>>
+>>> If you fix the issue, kindly add following tag as appropriate
+>>> Reported-by: kernel test robot <lkp@intel.com>
+>>>
+>>> All errors (new ones prefixed by >>):
+>>>
+>>>>> arch/powerpc/kvm/book3s_hv_nested.c:264:6: error: stack frame size of 2304 bytes in function 'kvmhv_enter_nested_guest' [-Werror,-Wframe-larger-than=]
+>>>     long kvmhv_enter_nested_guest(struct kvm_vcpu *vcpu)
+>>>          ^
+>>>     1 error generated.
+>>>
+>>>
+>>> vim +/kvmhv_enter_nested_guest +264 arch/powerpc/kvm/book3s_hv_nested.c
+>> 
+>> Not much changed here recently. It's not that big a concern because it's
+>> only called in the KVM ioctl path, not in any deep IO paths or anything,
+>> and doesn't recurse. Might be a bit of inlining or stack spilling put it
+>> over the edge.
+>
+> It appears to be the fact that LLVM's PowerPC backend does not emit 
+> efficient byteswap assembly:
+>
+> https://github.com/ClangBuiltLinux/linux/issues/1292
+>
+> https://bugs.llvm.org/show_bug.cgi?id=49610
+>
+>> powerpc does make it an error though, would be good to avoid that so the
+>> robot doesn't keep tripping over.
+>
+> Marking byteswap_pt_regs as 'noinline_for_stack' drastically reduces the 
+> stack usage. If that is an acceptable solution, I can send it along 
+> tomorrow.
 
-For the xfrm part:
+Yeah that should be OK. Can you post the before/after disassembly when
+you post the patch?
 
-Acked-by: Steffen Klassert <steffen.klassert@secunet.com>
+It should just be two extra function calls, which shouldn't be enough
+overhead to be measurable.
 
+cheers
