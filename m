@@ -2,99 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C2B33AE551
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 10:53:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEEBE3AE5A1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 11:07:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G7jxB0B9xz3cl1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 18:53:34 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OdgR0cS+;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G7kFX4psqz307t
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 19:07:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=OdgR0cS+; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ smtp.mailfrom=secunet.com (client-ip=62.96.220.44; helo=mailout1.secunet.com;
+ envelope-from=steffen.klassert@secunet.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 576 seconds by postgrey-1.36 at boromir;
+ Mon, 21 Jun 2021 18:45:27 AEST
+Received: from mailout1.secunet.com (mailout1.secunet.com [62.96.220.44])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G7jsj29S9z2yxS
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Jun 2021 18:50:33 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 15L8YCWc004086; Mon, 21 Jun 2021 04:50:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=pNW0jT60AkS4iI1vyu4TD9JmL4JAu001vv09Fh54Mi4=;
- b=OdgR0cS+FSJvWC8gtioBnqOlR2PG+9swVetSuWYNYNJuAN+KY30Q6y+e//nm5ifma9OV
- EUphT9Bp0ApXkJdi5wvkqOdwVMefi8UEUv+/KOpbQYwnyxxr4kCxDHtGX/fJaYki5Vzj
- rDhOjg4rpLjy8BPgOCuw0bEecWqwFIq8NcM0alkwTVuX1OZHvJuzT/07efwt1/vgm4hq
- 2NyRp733tXVoamCWfIV6WIKbfBmb7WMvgDmTmrQJYzuOI+YnZi+xFwQaxXgmfbYht4Ny
- HKRlAaY4w26QcifYzcsb1hmbxYSPvhkD5FJr4QBqWH7uEbCRMmmEFULtX1gEjKsISYMF Fw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39aq3a0yvf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 21 Jun 2021 04:50:27 -0400
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 15L8ZVjD011341;
- Mon, 21 Jun 2021 04:50:27 -0400
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39aq3a0yu5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 21 Jun 2021 04:50:27 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15L8n4UN013225;
- Mon, 21 Jun 2021 08:50:24 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma02fra.de.ibm.com with ESMTP id 3998788e0u-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 21 Jun 2021 08:50:24 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 15L8n7uS35586336
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 21 Jun 2021 08:49:07 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 041B1A404D;
- Mon, 21 Jun 2021 08:50:22 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 53BA3A4040;
- Mon, 21 Jun 2021 08:50:20 +0000 (GMT)
-Received: from bharata.ibmuc.com (unknown [9.85.82.83])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 21 Jun 2021 08:50:19 +0000 (GMT)
-From: Bharata B Rao <bharata@linux.ibm.com>
-To: kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v8 6/6] KVM: PPC: Book3S HV: Use H_RPT_INVALIDATE in nested KVM
-Date: Mon, 21 Jun 2021 14:20:03 +0530
-Message-Id: <20210621085003.904767-7-bharata@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210621085003.904767-1-bharata@linux.ibm.com>
-References: <20210621085003.904767-1-bharata@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G7jlq0sKBz2yhd
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Jun 2021 18:45:25 +1000 (AEST)
+Received: from cas-essen-01.secunet.de (unknown [10.53.40.201])
+ by mailout1.secunet.com (Postfix) with ESMTP id BAFED80004E;
+ Mon, 21 Jun 2021 10:35:39 +0200 (CEST)
+Received: from mbx-essen-01.secunet.de (10.53.40.197) by
+ cas-essen-01.secunet.de (10.53.40.201) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Mon, 21 Jun 2021 10:35:39 +0200
+Received: from gauss2.secunet.de (10.182.7.193) by mbx-essen-01.secunet.de
+ (10.53.40.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2176.2; Mon, 21 Jun
+ 2021 10:35:39 +0200
+Received: by gauss2.secunet.de (Postfix, from userid 1000)
+ id 249D031803E8; Mon, 21 Jun 2021 10:35:39 +0200 (CEST)
+Date: Mon, 21 Jun 2021 10:35:39 +0200
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: Ondrej Mosnacek <omosnace@redhat.com>
+Subject: Re: [PATCH v3] lockdown,selinux: fix wrong subject in some SELinux
+ lockdown checks
+Message-ID: <20210621083539.GY40979@gauss3.secunet.de>
+References: <20210616085118.1141101-1-omosnace@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: aCWDx226Q2EB5-c11eADsev0zZCcNN2_
-X-Proofpoint-ORIG-GUID: Aq8xfpvPba_hfeyPKi-b6jiJh6XYRtrw
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-06-21_02:2021-06-20,
- 2021-06-21 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 mlxscore=0
- mlxlogscore=999 spamscore=0 priorityscore=1501 bulkscore=0 phishscore=0
- clxscore=1015 adultscore=0 impostorscore=0 malwarescore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2106210049
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20210616085118.1141101-1-omosnace@redhat.com>
+X-ClientProxiedBy: cas-essen-01.secunet.de (10.53.40.201) To
+ mbx-essen-01.secunet.de (10.53.40.197)
+X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
+X-Mailman-Approved-At: Mon, 21 Jun 2021 19:07:27 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,107 +58,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: farosas@linux.ibm.com, aneesh.kumar@linux.ibm.com, npiggin@gmail.com,
- Bharata B Rao <bharata@linux.ibm.com>, david@gibson.dropbear.id.au
+Cc: linux-efi@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-cxl@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
+ x86@kernel.org, James Morris <jmorris@namei.org>, linux-acpi@vger.kernel.org,
+ Ingo Molnar <mingo@redhat.com>, linux-serial@vger.kernel.org,
+ linux-pm@vger.kernel.org, selinux@vger.kernel.org,
+ Steven Rostedt <rostedt@goodmis.org>, Casey Schaufler <casey@schaufler-ca.com>,
+ Paul Moore <paul@paul-moore.com>, netdev@vger.kernel.org,
+ Stephen Smalley <stephen.smalley.work@gmail.com>, kexec@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In the nested KVM case, replace H_TLB_INVALIDATE by the new hcall
-H_RPT_INVALIDATE if available. The availability of this hcall
-is determined from "hcall-rpt-invalidate" string in ibm,hypertas-functions
-DT property.
+On Wed, Jun 16, 2021 at 10:51:18AM +0200, Ondrej Mosnacek wrote:
+> Commit 59438b46471a ("security,lockdown,selinux: implement SELinux
+> lockdown") added an implementation of the locked_down LSM hook to
+> SELinux, with the aim to restrict which domains are allowed to perform
+> operations that would breach lockdown.
+> 
+> However, in several places the security_locked_down() hook is called in
+> situations where the current task isn't doing any action that would
+> directly breach lockdown, leading to SELinux checks that are basically
+> bogus.
+> 
+> To fix this, add an explicit struct cred pointer argument to
+> security_lockdown() and define NULL as a special value to pass instead
+> of current_cred() in such situations. LSMs that take the subject
+> credentials into account can then fall back to some default or ignore
+> such calls altogether. In the SELinux lockdown hook implementation, use
+> SECINITSID_KERNEL in case the cred argument is NULL.
+> 
+> Most of the callers are updated to pass current_cred() as the cred
+> pointer, thus maintaining the same behavior. The following callers are
+> modified to pass NULL as the cred pointer instead:
+> 1. arch/powerpc/xmon/xmon.c
+>      Seems to be some interactive debugging facility. It appears that
+>      the lockdown hook is called from interrupt context here, so it
+>      should be more appropriate to request a global lockdown decision.
+> 2. fs/tracefs/inode.c:tracefs_create_file()
+>      Here the call is used to prevent creating new tracefs entries when
+>      the kernel is locked down. Assumes that locking down is one-way -
+>      i.e. if the hook returns non-zero once, it will never return zero
+>      again, thus no point in creating these files. Also, the hook is
+>      often called by a module's init function when it is loaded by
+>      userspace, where it doesn't make much sense to do a check against
+>      the current task's creds, since the task itself doesn't actually
+>      use the tracing functionality (i.e. doesn't breach lockdown), just
+>      indirectly makes some new tracepoints available to whoever is
+>      authorized to use them.
+> 3. net/xfrm/xfrm_user.c:copy_to_user_*()
+>      Here a cryptographic secret is redacted based on the value returned
+>      from the hook. There are two possible actions that may lead here:
+>      a) A netlink message XFRM_MSG_GETSA with NLM_F_DUMP set - here the
+>         task context is relevant, since the dumped data is sent back to
+>         the current task.
+>      b) When adding/deleting/updating an SA via XFRM_MSG_xxxSA, the
+>         dumped SA is broadcasted to tasks subscribed to XFRM events -
+>         here the current task context is not relevant as it doesn't
+>         represent the tasks that could potentially see the secret.
+>      It doesn't seem worth it to try to keep using the current task's
+>      context in the a) case, since the eventual data leak can be
+>      circumvented anyway via b), plus there is no way for the task to
+>      indicate that it doesn't care about the actual key value, so the
+>      check could generate a lot of "false alert" denials with SELinux.
+>      Thus, let's pass NULL instead of current_cred() here faute de
+>      mieux.
+> 
+> Improvements-suggested-by: Casey Schaufler <casey@schaufler-ca.com>
+> Improvements-suggested-by: Paul Moore <paul@paul-moore.com>
+> Fixes: 59438b46471a ("security,lockdown,selinux: implement SELinux lockdown")
+> Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
 
-Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
-Reviewed-by: Fabiano Rosas <farosas@linux.ibm.com>
-Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
----
- arch/powerpc/kvm/book3s_64_mmu_radix.c | 27 +++++++++++++++++++++-----
- arch/powerpc/kvm/book3s_hv_nested.c    | 12 ++++++++++--
- 2 files changed, 32 insertions(+), 7 deletions(-)
+For the xfrm part:
 
-diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-index d909c069363e..b5905ae4377c 100644
---- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
-+++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-@@ -21,6 +21,7 @@
- #include <asm/pte-walk.h>
- #include <asm/ultravisor.h>
- #include <asm/kvm_book3s_uvmem.h>
-+#include <asm/plpar_wrappers.h>
- 
- /*
-  * Supported radix tree geometry.
-@@ -318,9 +319,19 @@ void kvmppc_radix_tlbie_page(struct kvm *kvm, unsigned long addr,
- 	}
- 
- 	psi = shift_to_mmu_psize(pshift);
--	rb = addr | (mmu_get_ap(psi) << PPC_BITLSHIFT(58));
--	rc = plpar_hcall_norets(H_TLB_INVALIDATE, H_TLBIE_P1_ENC(0, 0, 1),
--				lpid, rb);
-+
-+	if (!firmware_has_feature(FW_FEATURE_RPT_INVALIDATE)) {
-+		rb = addr | (mmu_get_ap(psi) << PPC_BITLSHIFT(58));
-+		rc = plpar_hcall_norets(H_TLB_INVALIDATE, H_TLBIE_P1_ENC(0, 0, 1),
-+					lpid, rb);
-+	} else {
-+		rc = pseries_rpt_invalidate(lpid, H_RPTI_TARGET_CMMU,
-+					    H_RPTI_TYPE_NESTED |
-+					    H_RPTI_TYPE_TLB,
-+					    psize_to_rpti_pgsize(psi),
-+					    addr, addr + psize);
-+	}
-+
- 	if (rc)
- 		pr_err("KVM: TLB page invalidation hcall failed, rc=%ld\n", rc);
- }
-@@ -334,8 +345,14 @@ static void kvmppc_radix_flush_pwc(struct kvm *kvm, unsigned int lpid)
- 		return;
- 	}
- 
--	rc = plpar_hcall_norets(H_TLB_INVALIDATE, H_TLBIE_P1_ENC(1, 0, 1),
--				lpid, TLBIEL_INVAL_SET_LPID);
-+	if (!firmware_has_feature(FW_FEATURE_RPT_INVALIDATE))
-+		rc = plpar_hcall_norets(H_TLB_INVALIDATE, H_TLBIE_P1_ENC(1, 0, 1),
-+					lpid, TLBIEL_INVAL_SET_LPID);
-+	else
-+		rc = pseries_rpt_invalidate(lpid, H_RPTI_TARGET_CMMU,
-+					    H_RPTI_TYPE_NESTED |
-+					    H_RPTI_TYPE_PWC, H_RPTI_PAGE_ALL,
-+					    0, -1UL);
- 	if (rc)
- 		pr_err("KVM: TLB PWC invalidation hcall failed, rc=%ld\n", rc);
- }
-diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
-index 056d3df68de1..d78efb5f5bb3 100644
---- a/arch/powerpc/kvm/book3s_hv_nested.c
-+++ b/arch/powerpc/kvm/book3s_hv_nested.c
-@@ -19,6 +19,7 @@
- #include <asm/pgalloc.h>
- #include <asm/pte-walk.h>
- #include <asm/reg.h>
-+#include <asm/plpar_wrappers.h>
- 
- static struct patb_entry *pseries_partition_tb;
- 
-@@ -467,8 +468,15 @@ static void kvmhv_flush_lpid(unsigned int lpid)
- 		return;
- 	}
- 
--	rc = plpar_hcall_norets(H_TLB_INVALIDATE, H_TLBIE_P1_ENC(2, 0, 1),
--				lpid, TLBIEL_INVAL_SET_LPID);
-+	if (!firmware_has_feature(FW_FEATURE_RPT_INVALIDATE))
-+		rc = plpar_hcall_norets(H_TLB_INVALIDATE, H_TLBIE_P1_ENC(2, 0, 1),
-+					lpid, TLBIEL_INVAL_SET_LPID);
-+	else
-+		rc = pseries_rpt_invalidate(lpid, H_RPTI_TARGET_CMMU,
-+					    H_RPTI_TYPE_NESTED |
-+					    H_RPTI_TYPE_TLB | H_RPTI_TYPE_PWC |
-+					    H_RPTI_TYPE_PAT,
-+					    H_RPTI_PAGE_ALL, 0, -1UL);
- 	if (rc)
- 		pr_err("KVM: TLB LPID invalidation hcall failed, rc=%ld\n", rc);
- }
--- 
-2.31.1
+Acked-by: Steffen Klassert <steffen.klassert@secunet.com>
 
