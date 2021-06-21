@@ -1,72 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F6533AE1D9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 05:19:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC5423AE1FA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 05:49:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G7ZWz6gBWz306w
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 13:19:43 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=NRC/fzCR;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G7b9p3R5Kz3bwv
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jun 2021 13:49:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::1029;
- helo=mail-pj1-x1029.google.com; envelope-from=dja@axtens.net;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=NRC/fzCR; dkim-atps=neutral
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com
- [IPv6:2607:f8b0:4864:20::1029])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mga02.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G7ZWX377vz2xb2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Jun 2021 13:19:18 +1000 (AEST)
-Received: by mail-pj1-x1029.google.com with SMTP id
- pf4-20020a17090b1d84b029016f6699c3f2so4370120pjb.0
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Jun 2021 20:19:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=TIejsIF9hmrt8dkbegPQKYcgq6Tdf3AVNugwUeH1ttQ=;
- b=NRC/fzCRfpjQp1qI+nqPJKAkvXcS+xHwPFERHYZ096qATPcMT29Sn7sNuLC9v0ur/D
- ZI91wtT5jN8Ft7utW/iL5llOGsIPylBKIJ4EfW9mYaDLnZxt9Smi4k+J4SzrVrVNcgOR
- 1b0AqLX5XE4NmtXOMKPzeLHR8VxO+CH+5QLmE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=TIejsIF9hmrt8dkbegPQKYcgq6Tdf3AVNugwUeH1ttQ=;
- b=XL7q1r9NgiaEklEe30+1IJCRkefoXlDUuNjOP5Oj8jgZug+P/noiSv/pA1SBZOl6p0
- LhYBlfmMKj/4ke7CvXJK3Knhfd2rN2AjLegw2ietN2R2JLmGbpApq79Y3pILVbDzK1gI
- QxjU3tL7bQpi8qQtTD7lRd9ZPGxEd7ca3hkZfkBo539v4DXEyEjEjV+Pc44772LpUwNt
- 2xYeGTRzUBX20j0oBrhrf8eSuMixIuzSjWUREYKTRlYXai+KyNKMAolfqt0OphsC98+K
- 1JNnZ5svGlP8pCBVWvuMbn9bmo4zcN5qpH9BvuV0K8pO2kjvGxL4Fdi3lACb32pWhPc9
- HQ4w==
-X-Gm-Message-State: AOAM530IoqLCxD5WrwIidNF0ocKcX+Fw8Lk+deabE1km6UMZdnNw0Kh3
- MRc2uT8NVstqRtyL/KJR13q8bQ==
-X-Google-Smtp-Source: ABdhPJyhMVprA7LNSX+dPSa0z07+LT8QCOJ/gQGGEou7StHIiEQ5Fr7dSCWiQH7XT6cutt/nrJjAMQ==
-X-Received: by 2002:a17:90a:4491:: with SMTP id
- t17mr21732313pjg.30.1624245554543; 
- Sun, 20 Jun 2021 20:19:14 -0700 (PDT)
-Received: from localhost ([203.206.29.204])
- by smtp.gmail.com with ESMTPSA id 18sm16957096pje.22.2021.06.20.20.19.13
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 20 Jun 2021 20:19:14 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: "Christopher M. Riedl" <cmr@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [RESEND PATCH v4 08/11] powerpc: Initialize and use a temporary
- mm for patching
-In-Reply-To: <20210506043452.9674-9-cmr@linux.ibm.com>
-References: <20210506043452.9674-1-cmr@linux.ibm.com>
- <20210506043452.9674-9-cmr@linux.ibm.com>
-Date: Mon, 21 Jun 2021 13:19:10 +1000
-Message-ID: <87r1gvj45t.fsf@dja-thinkpad.axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G7b9R4s2vz2yX6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Jun 2021 13:48:35 +1000 (AEST)
+IronPort-SDR: 4sefVFQvF8200uM4Hsl4KzHSp5QT/bEduzEVAPcxG8uTfatYNnFnxT4N7qQ0DBycW8RCr+Dv2+
+ uCv5rAqlt4IA==
+X-IronPort-AV: E=McAfee;i="6200,9189,10021"; a="193905937"
+X-IronPort-AV: E=Sophos;i="5.83,288,1616482800"; d="scan'208";a="193905937"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jun 2021 20:48:29 -0700
+IronPort-SDR: H2x2ylp4cY0MSOTVJqoq8U+mCevM+5YNmiIJ5SHHL5iVvfTR3ZEKK2fQx8qNDux18HEJx9n18p
+ ww4KB56GBypw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.83,288,1616482800"; d="scan'208";a="405835514"
+Received: from lkp-server01.sh.intel.com (HELO 4aae0cb4f5b5) ([10.239.97.150])
+ by orsmga003.jf.intel.com with ESMTP; 20 Jun 2021 20:48:27 -0700
+Received: from kbuild by 4aae0cb4f5b5 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1lvAvD-0004Qq-87; Mon, 21 Jun 2021 03:48:27 +0000
+Date: Mon, 21 Jun 2021 11:48:13 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:next-test] BUILD SUCCESS
+ 41075908e941f30636a607e841c08d7941966e1b
+Message-ID: <60d00bfd.AYRLTdnaaGQVyOQg%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,132 +54,158 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tglx@linutronix.de, x86@kernel.org, linux-hardening@vger.kernel.org,
- keescook@chromium.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Chris,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
+branch HEAD: 41075908e941f30636a607e841c08d7941966e1b  powerpc: Enable KFENCE on BOOK3S/64
 
-> +	/*
-> +	 * Choose a randomized, page-aligned address from the range:
-> +	 * [PAGE_SIZE, DEFAULT_MAP_WINDOW - PAGE_SIZE]
-> +	 * The lower address bound is PAGE_SIZE to avoid the zero-page.
-> +	 * The upper address bound is DEFAULT_MAP_WINDOW - PAGE_SIZE to stay
-> +	 * under DEFAULT_MAP_WINDOW with the Book3s64 Hash MMU.
-> +	 */
-> +	patching_addr = PAGE_SIZE + ((get_random_long() & PAGE_MASK)
-> +			% (DEFAULT_MAP_WINDOW - 2 * PAGE_SIZE));
+elapsed time: 723m
 
-I checked and poking_init() comes after the functions that init the RNG,
-so this should be fine. The maths - while a bit fiddly to reason about -
-does check out.
+configs tested: 132
+configs skipped: 3
 
-> +
-> +	/*
-> +	 * PTE allocation uses GFP_KERNEL which means we need to pre-allocate
-> +	 * the PTE here. We cannot do the allocation during patching with IRQs
-> +	 * disabled (ie. "atomic" context).
-> +	 */
-> +	ptep = get_locked_pte(patching_mm, patching_addr, &ptl);
-> +	BUG_ON(!ptep);
-> +	pte_unmap_unlock(ptep, ptl);
-> +}
->  
->  #if IS_BUILTIN(CONFIG_LKDTM)
->  unsigned long read_cpu_patching_addr(unsigned int cpu)
->  {
-> -	return (unsigned long)(per_cpu(text_poke_area, cpu))->addr;
-> +	return patching_addr;
->  }
->  #endif
->  
-> -static int text_area_cpu_up(unsigned int cpu)
-> +struct patch_mapping {
-> +	spinlock_t *ptl; /* for protecting pte table */
-> +	pte_t *ptep;
-> +	struct temp_mm temp_mm;
-> +};
-> +
-> +#ifdef CONFIG_PPC_BOOK3S_64
-> +
-> +static inline int hash_prefault_mapping(pgprot_t pgprot)
->  {
-> -	struct vm_struct *area;
-> +	int err;
->  
-> -	area = get_vm_area(PAGE_SIZE, VM_ALLOC);
-> -	if (!area) {
-> -		WARN_ONCE(1, "Failed to create text area for cpu %d\n",
-> -			cpu);
-> -		return -1;
-> -	}
-> -	this_cpu_write(text_poke_area, area);
-> +	if (radix_enabled())
-> +		return 0;
->  
-> -	return 0;
-> -}
-> +	err = slb_allocate_user(patching_mm, patching_addr);
-> +	if (err)
-> +		pr_warn("map patch: failed to allocate slb entry\n");
->  
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Here if slb_allocate_user() fails, you'll print a warning and then fall
-through to the rest of the function. You do return err, but there's a
-later call to hash_page_mm() that also sets err. Can slb_allocate_user()
-fail while hash_page_mm() succeeds, and would that be a problem?
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+powerpc                      chrp32_defconfig
+arm                          lpd270_defconfig
+riscv                          rv32_defconfig
+powerpc                      makalu_defconfig
+m68k                                defconfig
+mips                     loongson2k_defconfig
+powerpc                    amigaone_defconfig
+powerpc                     asp8347_defconfig
+powerpc                     sbc8548_defconfig
+powerpc                     tqm8560_defconfig
+powerpc                 mpc8315_rdb_defconfig
+powerpc                     mpc5200_defconfig
+h8300                            allyesconfig
+sh                           se7724_defconfig
+m68k                         amcore_defconfig
+m68k                        mvme147_defconfig
+mips                        qi_lb60_defconfig
+riscv             nommu_k210_sdcard_defconfig
+mips                             allyesconfig
+powerpc                        warp_defconfig
+powerpc                     mpc83xx_defconfig
+arm                        multi_v5_defconfig
+arm                           sunxi_defconfig
+arm                            zeus_defconfig
+sh                             sh03_defconfig
+powerpc                      ppc64e_defconfig
+powerpc                mpc7448_hpc2_defconfig
+ia64                         bigsur_defconfig
+sh                     sh7710voipgw_defconfig
+sh                             espt_defconfig
+powerpc                        fsp2_defconfig
+arc                            hsdk_defconfig
+csky                                defconfig
+powerpc                     kilauea_defconfig
+arm                     eseries_pxa_defconfig
+arm                      tct_hammer_defconfig
+sparc64                             defconfig
+riscv                               defconfig
+nios2                            alldefconfig
+powerpc                 mpc8540_ads_defconfig
+xtensa                    smp_lx200_defconfig
+arm                         lpc32xx_defconfig
+powerpc                     stx_gp3_defconfig
+sh                          rsk7203_defconfig
+arm                       aspeed_g5_defconfig
+powerpc                 mpc8560_ads_defconfig
+arm                        mvebu_v7_defconfig
+sh                 kfr2r09-romimage_defconfig
+m68k                       m5475evb_defconfig
+sh                          r7780mp_defconfig
+powerpc                      arches_defconfig
+arm                            dove_defconfig
+x86_64                            allnoconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a001-20210620
+i386                 randconfig-a002-20210620
+i386                 randconfig-a003-20210620
+i386                 randconfig-a006-20210620
+i386                 randconfig-a005-20210620
+i386                 randconfig-a004-20210620
+x86_64               randconfig-a012-20210620
+x86_64               randconfig-a016-20210620
+x86_64               randconfig-a015-20210620
+x86_64               randconfig-a014-20210620
+x86_64               randconfig-a013-20210620
+x86_64               randconfig-a011-20210620
+i386                 randconfig-a011-20210620
+i386                 randconfig-a014-20210620
+i386                 randconfig-a013-20210620
+i386                 randconfig-a015-20210620
+i386                 randconfig-a012-20210620
+i386                 randconfig-a016-20210620
+x86_64               randconfig-a002-20210621
+x86_64               randconfig-a001-20210621
+x86_64               randconfig-a005-20210621
+x86_64               randconfig-a003-20210621
+x86_64               randconfig-a004-20210621
+x86_64               randconfig-a006-20210621
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                            allmodconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+um                            kunit_defconfig
+x86_64                           allyesconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
 
-> -static int text_area_cpu_down(unsigned int cpu)
-> -{
-> -	free_vm_area(this_cpu_read(text_poke_area));
-> -	return 0;
-> +	err = hash_page_mm(patching_mm, patching_addr, pgprot_val(pgprot), 0,
-> +			   HPTE_USE_KERNEL_KEY);
-> +	if (err)
-> +		pr_warn("map patch: failed to insert hashed page\n");
-> +
-> +	/* See comment in switch_slb() in mm/book3s64/slb.c */
-> +	isync();
-> +
+clang tested configs:
+x86_64               randconfig-b001-20210620
+x86_64               randconfig-b001-20210621
+x86_64               randconfig-a002-20210620
+x86_64               randconfig-a001-20210620
+x86_64               randconfig-a005-20210620
+x86_64               randconfig-a003-20210620
+x86_64               randconfig-a004-20210620
+x86_64               randconfig-a006-20210620
 
-The comment reads:
-
-	/*
-	 * Synchronize slbmte preloads with possible subsequent user memory
-	 * address accesses by the kernel (user mode won't happen until
-	 * rfid, which is safe).
-	 */
-         isync();
-
-I have to say having read the description of isync I'm not 100% sure why
-that's enough (don't we also need stores to complete?) but I'm happy to
-take commit 5434ae74629a ("powerpc/64s/hash: Add a SLB preload cache")
-on trust here!
-
-I think it does make sense for you to have that barrier here: you are
-potentially about to start poking at the memory mapped through that SLB
-entry so you should make sure you're fully synchronised.
-
-> +	return err;
->  }
->  
-
-> +	init_temp_mm(&patch_mapping->temp_mm, patching_mm);
-> +	use_temporary_mm(&patch_mapping->temp_mm);
->  
-> -	pmdp = pmd_offset(pudp, addr);
-> -	if (unlikely(!pmdp))
-> -		return -EINVAL;
-> +	/*
-> +	 * On Book3s64 with the Hash MMU we have to manually insert the SLB
-> +	 * entry and HPTE to prevent taking faults on the patching_addr later.
-> +	 */
-> +	return(hash_prefault_mapping(pgprot));
-
-hmm, `return hash_prefault_mapping(pgprot);` or
-`return (hash_prefault_mapping((pgprot));` maybe?
-
-Kind regards,
-Daniel
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
