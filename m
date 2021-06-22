@@ -2,69 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2074B3AFCB5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 07:31:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 497EA3AFCD2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 08:04:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G8FPG6LDVz309T
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 15:31:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G8G850TsJz307m
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 16:04:53 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=DUJobmKU;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=VdZ9ob2k;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102d;
- helo=mail-pj1-x102d.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::434;
+ helo=mail-pf1-x434.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=DUJobmKU; dkim-atps=neutral
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com
- [IPv6:2607:f8b0:4864:20::102d])
+ header.s=20161025 header.b=VdZ9ob2k; dkim-atps=neutral
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com
+ [IPv6:2607:f8b0:4864:20::434])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G8FNp34BPz2yWG
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 15:30:49 +1000 (AEST)
-Received: by mail-pj1-x102d.google.com with SMTP id bb20so7231608pjb.3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Jun 2021 22:30:48 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G8G7d6QZ8z302y
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 16:04:27 +1000 (AEST)
+Received: by mail-pf1-x434.google.com with SMTP id c8so1725220pfp.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Jun 2021 23:04:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=JlIZKXO69QtGQlPiZa88L0vxWmZDsHPmtA+5U4BAEjE=;
- b=DUJobmKU6vcvxc5I7FzE7oG7sPuZcpgLrkrsgiDvtXwNqEQDkZ3dlnKK17RHipOpH8
- ERh5BFgEFLO1r6dmcyoXCpFJhMFXdJDuwNQaV7P569xSf5E5dVNyE3BkvsU0J7p/ecO7
- PF7Dzlt49uE7GyX46WOHnzp6jdkjlyTml4V8scfYQIFScyyvJA/8Sl8X644/U9KgLXhi
- 9pKLkASiKnyku5Q0XxzkIy8qh0YGvOyYwiTvV4Q6KCaaJBqwba/QCV8cTKLi5IFW5ZOy
- jBcJnrG731RlSfzBEEfPRahhz8pvgk2EttNPhMHFGNlf8NjeKah3T6OhacM3FCENjRcX
- tihw==
+ bh=ZgFUyElxbObTCf0884mJ4gJvFix3L87ni5NbC+6yT7k=;
+ b=VdZ9ob2kbF4TdQU9UZPENg9vo10l5mZS3YU1CZm3J1lw8zdsM5N9Z2fWzy4UvK+lIA
+ a6IKHeutiSITdt+vOGbpssUEQFoVbQeZUQx6AXiIEunzib+hMF2/hSZiOFjXReuAuv/c
+ RKdzXB1D0yRIXMEWMVG2lvb9sL8micaDGKsb84rC51uAZ57LELLZ70Xi/zZUGqtEhZJh
+ AFyt9GMxTSO4eN1M373NHMlCQQH/uR4/gvmCNNjlZmWakWADq0N2GNGjLcd0LZGIIxej
+ 5oYxJzkrwW5h2dnqMmNEnyqBaayuKa54AZUcKZDVvxbAot3vl0udHTtF9qPpmf29WAzF
+ g8kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=JlIZKXO69QtGQlPiZa88L0vxWmZDsHPmtA+5U4BAEjE=;
- b=X0+iExiG1yncnakjH2xAg9eZ0nDbXSzzn18JMJErs4IqTPPduWZDoxjrnsSWH0GZTv
- AGtjw9cwi2woBTnDOKkXLu3IQiyIfu+JaHTL2Pzdoh5bN9EIeigkdk9vcxvEqkf+WAH8
- /ZspPlN5Tc3NcMJWZ/xau8JjeuSx3L/1LQIq5g0S7xhAnuVO/FS/u83iC52MgfW4dAP4
- o2IEWvnVrNLMqnHhG8UysVQed1LNddcSv85ECkZrxR9TrI1Kc5piG0oS2ArjVxMbu9Ws
- nTcZ7vvEocDQlh3xMTixW9FdSdYmowmBFmsdyW/kED5hekRlCt6IBW+l4BS7r5114M3I
- txaA==
-X-Gm-Message-State: AOAM532/A4CC2Kfn9aDID7JJ6Taa2EDf8n0+yLz8I/QL4MgQ3ZEfU5QZ
- dvEZIShane4aa6BHz99IRNjUV6Xm4qE=
-X-Google-Smtp-Source: ABdhPJxw+vlaG5h+AulkqmhQnYVAYLQi6SoSbT8jTqE3ZHDrL/poY3N6Yz7CpKdbt11xf6shGvm0yg==
-X-Received: by 2002:a17:902:d909:b029:11b:870f:ddad with SMTP id
- c9-20020a170902d909b029011b870fddadmr21288279plz.81.1624339843753; 
- Mon, 21 Jun 2021 22:30:43 -0700 (PDT)
+ bh=ZgFUyElxbObTCf0884mJ4gJvFix3L87ni5NbC+6yT7k=;
+ b=Y0T39KEUtmMeV8T5z+q+Zzyd0ALLHbt/zwT1PZiPtTVKXPnRhR65nK6vauLEtnVKCY
+ +yy5PTletWJdmCeEfJ7pyn89ZElTisiVVtr/ZviRVg2g293O+L3UEpWx9XK+VSpPba4l
+ TNtOQJUP6giLqA2+9PJGvs6H43Vmk8n/Nnq4LaUb0d7vE6FlRwvCXIwMmG/FPYzoP68/
+ XKdHJ2U7UM779eaJElbtbqPkPMqmG9/zUYhc585gSqRwwLC6LhgOZv3AhWDte7P9KeEu
+ WIJO4NUDx37PqCaq9lX0FxhGFl2aQzSTIgeKy8pVnCySJnubdvE1LigLH9PdZHm/uLos
+ 2TEg==
+X-Gm-Message-State: AOAM53084vmMcX3rFt/1YzD6CJDmHorkY618I3sHVtt9YDj5JTvGyfOU
+ 0FVDGS86GeY6xMLB3frpMZ8US11zqEc=
+X-Google-Smtp-Source: ABdhPJyTwPwZwaLixHQlFPUj+42tgARuxppZAJmrACGc+a4yb2y5+cOAJpxFvTYUAG3rSUtQE2Dutg==
+X-Received: by 2002:a63:d84b:: with SMTP id k11mr2212143pgj.372.1624341863748; 
+ Mon, 21 Jun 2021 23:04:23 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (60-242-147-73.tpgi.com.au. [60.242.147.73])
- by smtp.gmail.com with ESMTPSA id f21sm912004pjp.39.2021.06.21.22.30.41
+ by smtp.gmail.com with ESMTPSA id n33sm11394751pgm.55.2021.06.21.23.04.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 21 Jun 2021 22:30:43 -0700 (PDT)
+ Mon, 21 Jun 2021 23:04:23 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/64s: Fix copy-paste data exposure into newly created
- tasks
-Date: Tue, 22 Jun 2021 15:30:36 +1000
-Message-Id: <20210622053036.474678-1-npiggin@gmail.com>
+Subject: [PATCH 0/2] fast interrupts fixes
+Date: Tue, 22 Jun 2021 16:04:14 +1000
+Message-Id: <20210622060416.548187-1-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -79,108 +77,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
- Haren Myneni <haren@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-copy-paste contains implicit "copy buffer" state that can contain
-arbitrary user data (if the user process executes a copy instruction).
-This could be snooped by another process if a context switch hits while
-the state is live. So cp_abort is executed on context switch to clear
-out possible sensitive data and prevent the leak.
+These are a couple of improvements to the fast interrupt exits series
+that fit after patch 4. The first patch is incremental to patch 4 and
+should be folded in, the second could go anywhere in the series but I
+based it on top.
 
-cp_abort is done after the low level _switch(), which means it is never
-reached by newly created tasks, so they could snoop on this buffer
-between their first and second context switch.
+I can rebase it or resend the series if needed.
 
-Fix this by doing the cp_abort before calling _switch. Add some
-comments which should make the issue harder to miss.
+Thanks,
+Nick
 
-Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-Cc: Haren Myneni <haren@linux.ibm.com>
-Fixes: 07d2a628bc000 ("powerpc/64s: Avoid cpabort in context switch when
-possible")
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/kernel/process.c | 48 +++++++++++++++++++++++------------
- 1 file changed, 32 insertions(+), 16 deletions(-)
+Nicholas Piggin (2):
+  powerpc/64s: Fix "avoid reloading (H)SRR registers if they are still
+    valid"
+  powerpc/64s/interrupt: Check and fix srr_valid without crashing
 
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 89e34aa273e2..1138f035ce74 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -1213,6 +1213,19 @@ struct task_struct *__switch_to(struct task_struct *prev,
- 			__flush_tlb_pending(batch);
- 		batch->active = 0;
- 	}
-+
-+	/*
-+	 * On POWER9 the copy-paste buffer can only paste into
-+	 * foreign real addresses, so unprivileged processes can not
-+	 * see the data or use it in any way unless they have
-+	 * foreign real mappings. If the new process has the foreign
-+	 * real address mappings, we must issue a cp_abort to clear
-+	 * any state and prevent snooping, corruption or a covert
-+	 * channel. ISA v3.1 supports paste into local memory.
-+	 */
-+	if (new->mm && (cpu_has_feature(CPU_FTR_ARCH_31) ||
-+			atomic_read(&new->mm->context.vas_windows)))
-+		asm volatile(PPC_CP_ABORT);
- #endif /* CONFIG_PPC_BOOK3S_64 */
- 
- #ifdef CONFIG_PPC_ADV_DEBUG_REGS
-@@ -1261,30 +1274,33 @@ struct task_struct *__switch_to(struct task_struct *prev,
- #endif
- 	last = _switch(old_thread, new_thread);
- 
-+	/*
-+	 * Nothing after _switch will be run for newly created tasks,
-+	 * because they switch directly to ret_from_fork/ret_from_kernel_thread
-+	 * etc. Code added here should have a comment explaining why that is
-+	 * okay.
-+	 */
-+
- #ifdef CONFIG_PPC_BOOK3S_64
-+	/*
-+	 * This applies to a process that was context switched while inside
-+	 * arch_enter_lazy_mmu_mode(), to re-activate the batch that was
-+	 * deactivated above, before _switch(). This will never be the case
-+	 * for new tasks.
-+	 */
- 	if (current_thread_info()->local_flags & _TLF_LAZY_MMU) {
- 		current_thread_info()->local_flags &= ~_TLF_LAZY_MMU;
- 		batch = this_cpu_ptr(&ppc64_tlb_batch);
- 		batch->active = 1;
- 	}
- 
--	if (current->thread.regs) {
-+	/*
-+	 * Math facilities are masked out of the child MSR in copy_thread.
-+	 * A new task does not need to restore_math because it will
-+	 * demand fault them.
-+	 */
-+	if (current->thread.regs)
- 		restore_math(current->thread.regs);
--
--		/*
--		 * On POWER9 the copy-paste buffer can only paste into
--		 * foreign real addresses, so unprivileged processes can not
--		 * see the data or use it in any way unless they have
--		 * foreign real mappings. If the new process has the foreign
--		 * real address mappings, we must issue a cp_abort to clear
--		 * any state and prevent snooping, corruption or a covert
--		 * channel. ISA v3.1 supports paste into local memory.
--		 */
--		if (current->mm &&
--			(cpu_has_feature(CPU_FTR_ARCH_31) ||
--			atomic_read(&current->mm->context.vas_windows)))
--			asm volatile(PPC_CP_ABORT);
--	}
- #endif /* CONFIG_PPC_BOOK3S_64 */
- 
- 	return last;
+ arch/powerpc/include/asm/interrupt.h          |  2 +-
+ arch/powerpc/include/asm/livepatch.h          |  2 +-
+ arch/powerpc/include/asm/probes.h             |  4 +-
+ arch/powerpc/include/asm/ptrace.h             |  2 +-
+ arch/powerpc/kernel/hw_breakpoint.c           |  4 +-
+ arch/powerpc/kernel/interrupt.c               | 58 +++++++++++++++++++
+ arch/powerpc/kernel/kgdb.c                    |  8 +--
+ arch/powerpc/kernel/kprobes-ftrace.c          |  2 +-
+ arch/powerpc/kernel/kprobes.c                 | 13 +++--
+ arch/powerpc/kernel/mce.c                     |  2 +-
+ arch/powerpc/kernel/optprobes.c               |  2 +-
+ arch/powerpc/kernel/process.c                 | 24 ++++----
+ arch/powerpc/kernel/ptrace/ptrace-adv.c       | 20 ++++---
+ arch/powerpc/kernel/ptrace/ptrace-noadv.c     | 14 ++---
+ arch/powerpc/kernel/ptrace/ptrace-view.c      |  5 +-
+ arch/powerpc/kernel/signal.c                  | 10 ++--
+ arch/powerpc/kernel/signal_32.c               | 42 +++++++-------
+ arch/powerpc/kernel/signal_64.c               | 35 +++++------
+ arch/powerpc/kernel/traps.c                   | 24 ++++----
+ arch/powerpc/kernel/uprobes.c                 |  4 +-
+ arch/powerpc/lib/error-inject.c               |  2 +-
+ arch/powerpc/lib/sstep.c                      | 17 +++---
+ arch/powerpc/lib/test_emulate_step.c          |  1 +
+ arch/powerpc/math-emu/math_efp.c              |  2 +-
+ arch/powerpc/platforms/embedded6xx/holly.c    |  4 +-
+ .../platforms/embedded6xx/mpc7448_hpc2.c      |  4 +-
+ arch/powerpc/platforms/pasemi/idle.c          |  4 +-
+ arch/powerpc/platforms/powernv/opal.c         |  2 +-
+ arch/powerpc/platforms/pseries/ras.c          |  4 +-
+ arch/powerpc/sysdev/fsl_rio.c                 |  4 +-
+ arch/powerpc/xmon/xmon.c                      | 14 ++---
+ 31 files changed, 193 insertions(+), 142 deletions(-)
+
 -- 
 2.23.0
 
