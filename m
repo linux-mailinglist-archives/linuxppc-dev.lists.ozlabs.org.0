@@ -2,69 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D32623B0255
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 13:06:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D18E3B0259
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 13:06:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G8Nqt4Wzpz3fR3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 21:06:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G8NrK20xyz3fWs
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 21:06:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=oXgKGnSJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=nXsy7rDk;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::632;
- helo=mail-pl1-x632.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102b;
+ helo=mail-pj1-x102b.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=oXgKGnSJ; dkim-atps=neutral
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com
- [IPv6:2607:f8b0:4864:20::632])
+ header.s=20161025 header.b=nXsy7rDk; dkim-atps=neutral
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com
+ [IPv6:2607:f8b0:4864:20::102b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G8Ng64Jqzz308h
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 20:58:42 +1000 (AEST)
-Received: by mail-pl1-x632.google.com with SMTP id y13so4136708plc.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 03:58:41 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G8Ng92xjrz3bvC
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 20:58:45 +1000 (AEST)
+Received: by mail-pj1-x102b.google.com with SMTP id k5so11868030pjj.1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 03:58:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=jZsiQN9J6oa0kU+XOcLhtqmzOw5qPUAZ0H870q5gDHs=;
- b=oXgKGnSJWf02f7//UKclDr/sY/W/n5Ltsl+LkJNmPb7GfodfTJvlsxGyhXUPNf2HhY
- ftzY/eGPAzPbkVMjQ5p3GMGJb8QxjqImr8RoT44qhpTcbPm2Z/Ngt4RZfeLp6VH/iv3r
- D2Pz5ZVluJvRVqmjl2SiiOv5lPdyQk8dubaIaKEDzk/9Rz6IfmwqEPs2G2nFeCJ3Zc4N
- Bjl6X/8aCGsk9XDoweWzDMEEo8CUceMXPFxzvM6I+ZJEV7PZlZ158FYZikjRWfylAB2z
- 386jJHZqU6awBLtTkwGxRnNfVGla8UKM9pQ9N1wurjqecxdG08w4vZrv+v7dqbFTz0UU
- WC/w==
+ bh=x0dmCYsk3isHrWBVd9EbNCHjQXM1SSzoE2891T24aTQ=;
+ b=nXsy7rDk+i6FzKBhv/WpWQ0dGfEcplkfWDd5Dl6bCyN0GAe5EXq4QSZ1RwE1gOyAMo
+ HkOmwiNd6zvcuVOt+tJnU2ZrD63n38CKoxMXkdsyfzZfTRwzJIAvQqNAPkZ5nsQRsdXQ
+ fbeUQAiCIZgdA2389cACDgck2PO0v8Z4Z0PBs0VVcIH/d+xAJ59YzmGocNyYajrHA/HO
+ o+qYtXZ/wclvkouhaq9rWayTKjlnHY0B0ZNnYzPIGVEK/DRXeuenQmx4I0lXZUqpfuU1
+ sGmCgsIGj6xqoUdABIjW8jaBW28zGOMDlKUgSV4XsgkkwPEKvxgk4zxTNYZFxViWiLNC
+ 2oXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=jZsiQN9J6oa0kU+XOcLhtqmzOw5qPUAZ0H870q5gDHs=;
- b=OI+1qOcsQbFHzTvFnVvAql5KvyVy5/FUXDqHu5y0uENZhbgiHDSDwmtasP9Ly97k5h
- rsYqyLcgGaCRC66lxsRSyqs+Jm8Q7/rJ9k49n8TGcmEH2AhbcCRDeNgit5g0nD8A2KS8
- wjvz8QMzoe6e7WLbVoUmTxqUiif6D+RwwduxvdUiXZCuUy3ghHFgPmuBtA+6M4AowFPa
- nFAAy2FNlgwdwt5Jukvn41VI7cO9kMKNRNpiwJRHZVbeaYMlVPXGuJ3LnxediCyGkNcb
- f1ZZZDksB+QLdYY9qES5i8sbffi0ZzM44hRPZ06b8ycfXcHVNEhMy2JIZZxAtJG4NNQG
- XkGw==
-X-Gm-Message-State: AOAM531PhJFjV9YNC1bIvIKyIGPJSZMdiDZ00ygBGAgEAGelMrXNNJBm
- pTBMjqFg6mn47LouMR6MGUU=
-X-Google-Smtp-Source: ABdhPJxZiINE41XCeFsG3jcgc0NnxGeUyLgSthjARikfH6htHg4KAKhBj5QVacEqpKZ6xZ1d8bNJKQ==
-X-Received: by 2002:a17:90b:4392:: with SMTP id
- in18mr3313783pjb.54.1624359519819; 
- Tue, 22 Jun 2021 03:58:39 -0700 (PDT)
+ bh=x0dmCYsk3isHrWBVd9EbNCHjQXM1SSzoE2891T24aTQ=;
+ b=BiJpcDP/1+eDgxIULwsBXCNfOxKmzdSkCcoCTWdfYYSZZbYTlz9OGXhhaVw6J/hd63
+ MZI+2nTDRZejgdOaovBYw+RB7DqF+B5PVkn3lxmFoMJUIV9KlHvQLrpx51eBzHUnz368
+ Cjdq0bpdX3oLPYXh2hqe0tgjMvOuW81sA/s72LXoyTt77qdKTYiTjBbtRBypqN0aHZIl
+ ZceE5OQj3hexQhsKgifgFHArvQaOfjuGq4aKPVMpFyhk+RwgcNMsJpRB4PNOXdtQyKLW
+ 43O+RyIxPeM3IGuNRLaMUQoGKy73gxcNu6GyehnyXKSLrvCa4D49ot7oz5MgMpaOjEYf
+ GtaQ==
+X-Gm-Message-State: AOAM530BEo0pgsO7JKNcVEzdMFyLMvarzl/l+JdkhKvkcJVKhheoT1Ju
+ qVY3/Kw04iBWJmUvxNBDQVk=
+X-Google-Smtp-Source: ABdhPJw8xCm9//WytbwWWoOvZMoOdUfSDCugUNHUkbclbRRNYp+rsOgAWV4rphMV891Z4K06wEQtkg==
+X-Received: by 2002:a17:90a:5998:: with SMTP id
+ l24mr3205269pji.169.1624359522112; 
+ Tue, 22 Jun 2021 03:58:42 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (60-242-147-73.tpgi.com.au. [60.242.147.73])
- by smtp.gmail.com with ESMTPSA id l6sm5623621pgh.34.2021.06.22.03.58.37
+ by smtp.gmail.com with ESMTPSA id l6sm5623621pgh.34.2021.06.22.03.58.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 22 Jun 2021 03:58:39 -0700 (PDT)
+ Tue, 22 Jun 2021 03:58:41 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org
-Subject: [RFC PATCH 18/43] KVM: PPC: Book3S HV P9: Improve mtmsrd scheduling
- by delaying MSR[EE] disable
-Date: Tue, 22 Jun 2021 20:57:11 +1000
-Message-Id: <20210622105736.633352-19-npiggin@gmail.com>
+Subject: [RFC PATCH 19/43] KVM: PPC: Book3S HV P9: Add kvmppc_stop_thread to
+ match kvmppc_start_thread
+Date: Tue, 22 Jun 2021 20:57:12 +1000
+Message-Id: <20210622105736.633352-20-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210622105736.633352-1-npiggin@gmail.com>
 References: <20210622105736.633352-1-npiggin@gmail.com>
@@ -86,84 +86,50 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Moving the mtmsrd after the host SPRs are saved and before the guest
-SPRs start to be loaded can prevent an SPR scoreboard stall (because
-the mtmsrd is L=1 type which does not cause context synchronisation.
-
-This is also now more convenient to combined with the mtmsrd L=0
-instruction to enable facilities just below, but that is not done yet.
-
--12 cycles (7791) POWER9 virt-mode NULL hcall
+Small cleanup makes it a bit easier to match up entry and exit
+operations.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kvm/book3s_hv.c | 23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ arch/powerpc/kvm/book3s_hv.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
 diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 3ac5dbdb59f8..b8b0695a9312 100644
+index b8b0695a9312..86c85e303a6d 100644
 --- a/arch/powerpc/kvm/book3s_hv.c
 +++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -4015,6 +4015,18 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+@@ -2948,6 +2948,13 @@ static void kvmppc_start_thread(struct kvm_vcpu *vcpu, struct kvmppc_vcore *vc)
+ 		kvmppc_ipi_thread(cpu);
+ }
  
- 	save_p9_host_os_sprs(&host_os_sprs);
- 
-+	/*
-+	 * This could be combined with MSR[RI] clearing, but that expands
-+	 * the unrecoverable window. It would be better to cover unrecoverable
-+	 * with KVM bad interrupt handling rather than use MSR[RI] at all.
-+	 *
-+	 * Much more difficult and less worthwhile to combine with IR/DR
-+	 * disable.
-+	 */
-+	hard_irq_disable();
-+	if (lazy_irq_pending())
-+		return 0;
++/* Old path does this in asm */
++static void kvmppc_stop_thread(struct kvm_vcpu *vcpu)
++{
++	vcpu->cpu = -1;
++	vcpu->arch.thread_cpu = -1;
++}
 +
- 	/* MSR bits may have been cleared by context switch */
- 	msr = 0;
- 	if (IS_ENABLED(CONFIG_PPC_FPU))
-@@ -4512,6 +4524,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
- 	struct kvmppc_vcore *vc;
- 	struct kvm *kvm = vcpu->kvm;
- 	struct kvm_nested_guest *nested = vcpu->arch.nested;
-+	unsigned long flags;
+ static void kvmppc_wait_for_nap(int n_threads)
+ {
+ 	int cpu = smp_processor_id();
+@@ -4154,8 +4161,6 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+ 		dec = (s32) dec;
+ 	tb = mftb();
+ 	vcpu->arch.dec_expires = dec + tb;
+-	vcpu->cpu = -1;
+-	vcpu->arch.thread_cpu = -1;
  
- 	trace_kvmppc_run_vcpu_enter(vcpu);
+ 	store_spr_state(vcpu);
  
-@@ -4555,11 +4568,11 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
- 	if (kvm_is_radix(kvm))
- 		kvmppc_prepare_radix_vcpu(vcpu, pcpu);
- 
--	local_irq_disable();
--	hard_irq_disable();
-+	/* flags save not required, but irq_pmu has no disable/enable API */
-+	powerpc_local_irq_pmu_save(flags);
- 	if (signal_pending(current))
- 		goto sigpend;
--	if (lazy_irq_pending() || need_resched() || !kvm->arch.mmu_ready)
-+	if (need_resched() || !kvm->arch.mmu_ready)
- 		goto out;
- 
- 	if (!nested) {
-@@ -4614,7 +4627,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+@@ -4627,6 +4632,8 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
  
  	guest_exit_irqoff();
  
--	local_irq_enable();
-+	powerpc_local_irq_pmu_restore(flags);
++	kvmppc_stop_thread(vcpu);
++
+ 	powerpc_local_irq_pmu_restore(flags);
  
  	cpumask_clear_cpu(pcpu, &kvm->arch.cpu_in_guest);
- 
-@@ -4672,7 +4685,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
- 	run->exit_reason = KVM_EXIT_INTR;
- 	vcpu->arch.ret = -EINTR;
-  out:
--	local_irq_enable();
-+	powerpc_local_irq_pmu_restore(flags);
- 	preempt_enable();
- 	goto done;
- }
 -- 
 2.23.0
 
