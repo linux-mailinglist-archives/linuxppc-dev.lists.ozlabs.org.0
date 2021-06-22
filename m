@@ -2,97 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A31BF3B0CA1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 20:12:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFDF03B0F30
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 23:03:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G8ZHq32G5z3bxw
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jun 2021 04:12:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G8f4y3gg9z3bs3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jun 2021 07:03:30 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=omZYJmHq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jp86WFjW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sstabellini@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=omZYJmHq; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=jp86WFjW; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G8ZHM1x4Jz2xtt
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jun 2021 04:12:15 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 15MI3itC178148; Tue, 22 Jun 2021 14:12:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=mLEiEdrRO+V5LRYuP1iz+bCOB7dk72PNnwumnPiW2a4=;
- b=omZYJmHqkSq+ahEQlxTbDstF1LLAOWOPRGI69bvuPbtdD6C9uWkRpxG/Ys41j1Bzhau4
- e4zgiFkG9Q7q1JRbELTMTR333mguf2LIomWHx1gRdtacJjtSay9uhy8IdNpdUaVPnweI
- qefUMoZDt8LufRuM3k2cQvmDkxe5Een8KeRCJfX8w53w9PDRLqpP9OQuHGFc6M1/NGbn
- RZWnFyTLChHrIcAjzHZZVqwE+eRuJtw3+mpThIUQYBESsNyu1oi7qaHS3JwB+f7PmRBx
- +yddk5U5Wk6mUqNhMX43wSF1rJ2uFwAScIa+CngY+TCADuySnAuQEpqTgxUDB6uFEbp1 TA== 
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0b-001b2d01.pphosted.com with ESMTP id 39bjbwwk74-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 22 Jun 2021 14:12:07 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15MI48hb004528;
- Tue, 22 Jun 2021 18:12:06 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
- [9.57.198.27]) by ppma03dal.us.ibm.com with ESMTP id 399wjg8qbv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 22 Jun 2021 18:12:06 +0000
-Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
- [9.57.199.108])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 15MIC6oG26935586
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 22 Jun 2021 18:12:06 GMT
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1AB22B2064;
- Tue, 22 Jun 2021 18:12:06 +0000 (GMT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 83A2FB205F;
- Tue, 22 Jun 2021 18:12:05 +0000 (GMT)
-Received: from oc6857751186.ibm.com (unknown [9.65.216.48])
- by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue, 22 Jun 2021 18:12:05 +0000 (GMT)
-Subject: Re: [PATCH 1/2] powerpc/prom_init: Convert prom_strcpy() into
- prom_strscpy_pad()
-To: Michael Ellerman <mpe@ellerman.id.au>, Daniel Axtens <dja@axtens.net>,
- linuxppc-dev@lists.ozlabs.org
-References: <20210621064938.2021419-1-mpe@ellerman.id.au>
- <87lf73iddy.fsf@dja-thinkpad.axtens.net> <87bl7y35dw.fsf@mpe.ellerman.id.au>
-From: Tyrel Datwyler <tyreld@linux.ibm.com>
-Message-ID: <210884ec-a4a4-c9f8-89f4-4e3adf2d0cb3@linux.ibm.com>
-Date: Tue, 22 Jun 2021 11:12:04 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G8f4T5SFVz2yxY
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jun 2021 07:03:05 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B82596108E;
+ Tue, 22 Jun 2021 21:02:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1624395780;
+ bh=v96U5qnlOhDf3w1FKsu7SjrxREMp2X2HSv3JOsCkgmU=;
+ h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+ b=jp86WFjWXckU//EExyz6NMfilYlNSGD/Sp+e74iycIMnJPnrnvb2f/IMZhcf30u/Y
+ nZN/eIYPHlNFb7aaAK4BGrzQ8h60A0DeuaUctP8s9mDpf/LCXTiw3xhjYNzVwnhtzX
+ TCr/gTHfn3WY41P/JfXANtN8uFlsPQPDxHmgwY0xOxtbMzYm2w8bezm6pQenS5mO9T
+ QACOuqiKoEaVeTvNfrREoxgLiMZfrcQDhTBPBD0g1ngPW8KyWNjA64wNxxoLTDCtna
+ okD7zfnO67pIIlP+aLcNDcQOeKWv20TpkQkk9C2UIZdw5p+0AdNoxQDYVfglebC4DR
+ 9wbHzTawfV26w==
+Date: Tue, 22 Jun 2021 14:02:58 -0700 (PDT)
+From: Stefano Stabellini <sstabellini@kernel.org>
+X-X-Sender: sstabellini@sstabellini-ThinkPad-T480s
+To: Claire Chang <tientzu@chromium.org>
+Subject: Re: [PATCH v14 01/12] swiotlb: Refactor swiotlb init functions
+In-Reply-To: <20210619034043.199220-2-tientzu@chromium.org>
+Message-ID: <alpine.DEB.2.21.2106221402390.24906@sstabellini-ThinkPad-T480s>
+References: <20210619034043.199220-1-tientzu@chromium.org>
+ <20210619034043.199220-2-tientzu@chromium.org>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-In-Reply-To: <87bl7y35dw.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Na51e42jCNOjLDxpxyNMgPVDMNfx-Qep
-X-Proofpoint-GUID: Na51e42jCNOjLDxpxyNMgPVDMNfx-Qep
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-06-22_11:2021-06-22,
- 2021-06-22 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 mlxlogscore=999
- suspectscore=0 mlxscore=0 spamscore=0 impostorscore=0 phishscore=0
- priorityscore=1501 adultscore=0 malwarescore=0 lowpriorityscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2106220111
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,77 +59,139 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: heikki.krogerus@linux.intel.com, thomas.hellstrom@linux.intel.com,
+ peterz@infradead.org, joonas.lahtinen@linux.intel.com,
+ dri-devel@lists.freedesktop.org, chris@chris-wilson.co.uk,
+ grant.likely@arm.com, paulus@samba.org, Frank Rowand <frowand.list@gmail.com>,
+ mingo@kernel.org, Marek Szyprowski <m.szyprowski@samsung.com>,
+ sstabellini@kernel.org, Saravana Kannan <saravanak@google.com>,
+ Joerg Roedel <joro@8bytes.org>,
+ "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ Christoph Hellwig <hch@lst.de>,
+ Bartosz Golaszewski <bgolaszewski@baylibre.com>, bskeggs@redhat.com,
+ linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
+ Thierry Reding <treding@nvidia.com>, intel-gfx@lists.freedesktop.org,
+ matthew.auld@intel.com, linux-devicetree <devicetree@vger.kernel.org>,
+ jxgao@google.com, daniel@ffwll.ch, Will Deacon <will@kernel.org>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ maarten.lankhorst@linux.intel.com, airlied@linux.ie,
+ Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org,
+ jani.nikula@linux.intel.com, Rob Herring <robh+dt@kernel.org>,
+ rodrigo.vivi@intel.com, bhelgaas@google.com, boris.ostrovsky@oracle.com,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jgross@suse.com,
+ Nicolas Boichat <drinkcat@chromium.org>, Greg KH <gregkh@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, lkml <linux-kernel@vger.kernel.org>,
+ tfiga@chromium.org,
+ "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+ Jim Quinlan <james.quinlan@broadcom.com>, xypron.glpk@gmx.de,
+ thomas.lendacky@amd.com, Robin Murphy <robin.murphy@arm.com>,
+ bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/21/21 9:11 PM, Michael Ellerman wrote:
-> Daniel Axtens <dja@axtens.net> writes:
->> Hi
->>
->>> -static char __init *prom_strcpy(char *dest, const char *src)
->>> +static ssize_t __init prom_strscpy_pad(char *dest, const char *src, size_t n)
->>>  {
->>> -	char *tmp = dest;
->>> +	ssize_t rc;
->>> +	size_t i;
->>>  
->>> -	while ((*dest++ = *src++) != '\0')
->>> -		/* nothing */;
->>> -	return tmp;
->>> +	if (n == 0 || n > INT_MAX)
->>> +		return -E2BIG;
->>> +
->>> +	// Copy up to n bytes
->>> +	for (i = 0; i < n && src[i] != '\0'; i++)
->>> +		dest[i] = src[i];
->>> +
->>> +	rc = i;
->>> +
->>> +	// If we copied all n then we have run out of space for the nul
->>> +	if (rc == n) {
->>> +		// Rewind by one character to ensure nul termination
->>> +		i--;
->>> +		rc = -E2BIG;
->>> +	}
->>> +
->>> +	for (; i < n; i++)
->>> +		dest[i] = '\0';
->>> +
->>> +	return rc;
->>>  }
->>>  
->>
->> This implementation seems good to me.
->>
->> I copied it into a new C file and added the following:
->>
->> int main() {
->> 	char longstr[255]="abcdefghijklmnopqrstuvwxyz";
->> 	char shortstr[5];
->> 	assert(prom_strscpy_pad(longstr, "", 0) == -E2BIG);
->> 	assert(prom_strscpy_pad(longstr, "hello", 255) == 5);
->> 	assert(prom_strscpy_pad(shortstr, "hello", 5) == -E2BIG);
->> 	assert(memcmp(shortstr, "hell", 5) == 0);
->> 	assert(memcmp(longstr, "hello\0\0\0\0\0\0\0\0\0", 6) == 0);
->> 	return 0;
->> }
->>
->> All the assertions pass. I believe this covers all the conditions from
->> the strscpy_pad docstring.
->>
->> Reviewed-by: Daniel Axtens <dja@axtens.net>
+On Sat, 19 Jun 2021, Claire Chang wrote:
+> Add a new function, swiotlb_init_io_tlb_mem, for the io_tlb_mem struct
+> initialization to make the code reusable.
 > 
-> Thanks.
+> Signed-off-by: Claire Chang <tientzu@chromium.org>
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
+> Tested-by: Stefano Stabellini <sstabellini@kernel.org>
+> Tested-by: Will Deacon <will@kernel.org>
+
+Acked-by: Stefano Stabellini <sstabellini@kernel.org>
+
+
+> ---
+>  kernel/dma/swiotlb.c | 50 ++++++++++++++++++++++----------------------
+>  1 file changed, 25 insertions(+), 25 deletions(-)
 > 
-> I'll also drop the explicit nul termination in patch 2, which is a
-> leftover from when I was using strncpy().
-
-I guess you can ignore my other email questioning this.
-
--Tyrel
-
+> diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+> index 52e2ac526757..1f9b2b9e7490 100644
+> --- a/kernel/dma/swiotlb.c
+> +++ b/kernel/dma/swiotlb.c
+> @@ -168,9 +168,28 @@ void __init swiotlb_update_mem_attributes(void)
+>  	memset(vaddr, 0, bytes);
+>  }
+>  
+> -int __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
+> +static void swiotlb_init_io_tlb_mem(struct io_tlb_mem *mem, phys_addr_t start,
+> +				    unsigned long nslabs, bool late_alloc)
+>  {
+> +	void *vaddr = phys_to_virt(start);
+>  	unsigned long bytes = nslabs << IO_TLB_SHIFT, i;
+> +
+> +	mem->nslabs = nslabs;
+> +	mem->start = start;
+> +	mem->end = mem->start + bytes;
+> +	mem->index = 0;
+> +	mem->late_alloc = late_alloc;
+> +	spin_lock_init(&mem->lock);
+> +	for (i = 0; i < mem->nslabs; i++) {
+> +		mem->slots[i].list = IO_TLB_SEGSIZE - io_tlb_offset(i);
+> +		mem->slots[i].orig_addr = INVALID_PHYS_ADDR;
+> +		mem->slots[i].alloc_size = 0;
+> +	}
+> +	memset(vaddr, 0, bytes);
+> +}
+> +
+> +int __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
+> +{
+>  	struct io_tlb_mem *mem;
+>  	size_t alloc_size;
+>  
+> @@ -186,16 +205,8 @@ int __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
+>  	if (!mem)
+>  		panic("%s: Failed to allocate %zu bytes align=0x%lx\n",
+>  		      __func__, alloc_size, PAGE_SIZE);
+> -	mem->nslabs = nslabs;
+> -	mem->start = __pa(tlb);
+> -	mem->end = mem->start + bytes;
+> -	mem->index = 0;
+> -	spin_lock_init(&mem->lock);
+> -	for (i = 0; i < mem->nslabs; i++) {
+> -		mem->slots[i].list = IO_TLB_SEGSIZE - io_tlb_offset(i);
+> -		mem->slots[i].orig_addr = INVALID_PHYS_ADDR;
+> -		mem->slots[i].alloc_size = 0;
+> -	}
+> +
+> +	swiotlb_init_io_tlb_mem(mem, __pa(tlb), nslabs, false);
+>  
+>  	io_tlb_default_mem = mem;
+>  	if (verbose)
+> @@ -282,8 +293,8 @@ swiotlb_late_init_with_default_size(size_t default_size)
+>  int
+>  swiotlb_late_init_with_tbl(char *tlb, unsigned long nslabs)
+>  {
+> -	unsigned long bytes = nslabs << IO_TLB_SHIFT, i;
+>  	struct io_tlb_mem *mem;
+> +	unsigned long bytes = nslabs << IO_TLB_SHIFT;
+>  
+>  	if (swiotlb_force == SWIOTLB_NO_FORCE)
+>  		return 0;
+> @@ -297,20 +308,9 @@ swiotlb_late_init_with_tbl(char *tlb, unsigned long nslabs)
+>  	if (!mem)
+>  		return -ENOMEM;
+>  
+> -	mem->nslabs = nslabs;
+> -	mem->start = virt_to_phys(tlb);
+> -	mem->end = mem->start + bytes;
+> -	mem->index = 0;
+> -	mem->late_alloc = 1;
+> -	spin_lock_init(&mem->lock);
+> -	for (i = 0; i < mem->nslabs; i++) {
+> -		mem->slots[i].list = IO_TLB_SEGSIZE - io_tlb_offset(i);
+> -		mem->slots[i].orig_addr = INVALID_PHYS_ADDR;
+> -		mem->slots[i].alloc_size = 0;
+> -	}
+> -
+> +	memset(mem, 0, sizeof(*mem));
+>  	set_memory_decrypted((unsigned long)tlb, bytes >> PAGE_SHIFT);
+> -	memset(tlb, 0, bytes);
+> +	swiotlb_init_io_tlb_mem(mem, virt_to_phys(tlb), nslabs, true);
+>  
+>  	io_tlb_default_mem = mem;
+>  	swiotlb_print_info();
+> -- 
+> 2.32.0.288.g62a8d224e6-goog
 > 
-> cheers
-> 
-
