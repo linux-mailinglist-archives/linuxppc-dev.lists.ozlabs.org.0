@@ -2,69 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 216573B0225
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 13:00:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 109E23B022B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 13:00:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G8Nhp6RPyz3cMt
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 21:00:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G8NjQ5jPTz3c3p
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 21:00:42 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=CttVOXAE;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=KsljJKuI;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::632;
- helo=mail-pl1-x632.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102d;
+ helo=mail-pj1-x102d.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=CttVOXAE; dkim-atps=neutral
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com
- [IPv6:2607:f8b0:4864:20::632])
+ header.s=20161025 header.b=KsljJKuI; dkim-atps=neutral
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com
+ [IPv6:2607:f8b0:4864:20::102d])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G8NfT2fByz306r
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 20:58:09 +1000 (AEST)
-Received: by mail-pl1-x632.google.com with SMTP id 69so10248264plc.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 03:58:08 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G8NfX0kYYz30BG
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 20:58:11 +1000 (AEST)
+Received: by mail-pj1-x102d.google.com with SMTP id bb20so7682055pjb.3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 03:58:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=YQJWOtbVkwPNfO/EI9YLyg8Eje9VJUdj6/oFZO50+yM=;
- b=CttVOXAEieVfIWAjlLClXAP/Yt9dIqUR+19jk3zfIdCRQ65EB9WOBwqJp7Vj3R7sjn
- 9ZV/SyoEtdYKzpIGDyQR7xD7l+NMIeSx/6Waa5akn7ioeJ5s5d8ODHqLVIuctxot+HcZ
- y7qM/ZXeTrR1mLbbHyuXBqUN2gTWgjQC9IlxdZELWqYrfSWznlVZJWWPfqzLJ3OtDcz2
- ehKDO2ovDki3u3zF3AO/N+3huo71ABX7Zgjj1Sya+8yTmHa7aC0vQOynvDQNq42TAf/f
- VLboVnvjM5v/bxBbu6dWKeoUGWNKPNtwUySgO9siNAMQygSOya9dM9F5NWo1Z1BdXVBX
- a0CA==
+ bh=2HwJMJ+M3lZ7LKAr188SC+V94ehruDB42lsvXKWHhLw=;
+ b=KsljJKuITKwAGTy1HlWe/atuGOyB50IBg64I0rlMWeigk6Xnc/NVVRjOPFBx41en55
+ Nzh61AuzPRoCTeuDJZ/e7LTTptdxRs4ZI5dYCa097wMZrCNkMkeCx/G0uQ8JPs+MN13v
+ 624v/ov82HWdkQDgxFCZkLBSLRLiNUl7qTVq7qrnnNqOfvePB1FILbspa9gkVdwCft1w
+ hXbMfQs1IMyxHSndeld71X33uxCCtVOPG28HltdP5YMOSnIW/vXpX35FnFMZVMPCc4FK
+ 9MB+s8xeo/81cSmHDuN/+mXqgkMXwhKCJ9RytvtQgaOzsdrOb2oRI/Dzubw1WHY22ttw
+ lgVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=YQJWOtbVkwPNfO/EI9YLyg8Eje9VJUdj6/oFZO50+yM=;
- b=WkUvdmt9/sqJbD6+GS/Agx8Y5XnnmnY54ron386HzbyPgljfGT3HkxCd4pmemBoetC
- 5LTjPApzMG95iKrXlW3zLRAjgl4W0/BQ2EMGla+SoG3tMiMGzoraek4mDO0luk0g4ZYC
- 69yA8mdkJQeUWgmIMkGXhiJ4CQ9OKVTqVyq6+Rqco0bqumqHnD9cmEWHqAdu5nsQeY5c
- v/aKhgzxu32TLzsI3Xy1dWuHMqiggi3g+o8IXak8nUfEzbKfU8znFFRF1VN0whd9XceO
- mQRhu8ANn+cImWp1T1BE7BwqhO5Els/BRUIb1RvwYblrPrDEzfbmxQ9qBQoaDiHx0zpt
- rQrA==
-X-Gm-Message-State: AOAM531QoF297Q2s9XYVVt6MbhBVlzwpdh5irFN9kXEzSs0PPVU2oWHD
- V6vlIxhBO7evOhA4zENb5KJIiwVALwA=
-X-Google-Smtp-Source: ABdhPJz7ui0cU6tQe5H0CFwHQ5+WG98e9YSqOP6tcADVcEZhM8JvVDHp7Q54ImYjDIG0Zp1QW5C+DQ==
-X-Received: by 2002:a17:90a:8804:: with SMTP id
- s4mr3262818pjn.200.1624359486446; 
- Tue, 22 Jun 2021 03:58:06 -0700 (PDT)
+ bh=2HwJMJ+M3lZ7LKAr188SC+V94ehruDB42lsvXKWHhLw=;
+ b=WWueDRtm7d2VMn+STA9nb/D7TpaKpKuOzI8c+1CFmkVKlLhy1LLajgWM95dFUyHOZ2
+ pAOQsAQUvUoRxYTfLEmpMtAfCwKbXG8ZpHw9pjDOOQBmfqcs0P8kB5uPjkYjMldJoyhc
+ DzjuO40hh5/oficYNL6s8bTyq63+Tx7LZCdcQloJ6F9+iSOeDqOM076yV88AstxpdaQ7
+ ORFjZQhp7VwVtUU/tb9MsVPvWN7PxjkVghd2AGWYfZlJk4GzxNPWjJBTsF3xNK/t0J8w
+ tMp40uysKs5pe+SLWEG455emy9Gmrug4B99ihpTq7uxYsaqThWUacgw2HR0H9E3nfqJV
+ kl2Q==
+X-Gm-Message-State: AOAM530H3B7kKMsXIFd3yQk5HSFyueLsp3AgEPEMTQWau96j+Gg3Wr7v
+ VawWt59sXw75CMaDYMH4Bp0=
+X-Google-Smtp-Source: ABdhPJzoOumOB90vpW0/ovtLjN1XL8sGNQJor6rhhW7lWsrYLLlfzJfGhdRpOrZj6l7a0HLKDiLzAA==
+X-Received: by 2002:a17:90b:11ca:: with SMTP id
+ gv10mr3408322pjb.94.1624359489126; 
+ Tue, 22 Jun 2021 03:58:09 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (60-242-147-73.tpgi.com.au. [60.242.147.73])
- by smtp.gmail.com with ESMTPSA id l6sm5623621pgh.34.2021.06.22.03.58.04
+ by smtp.gmail.com with ESMTPSA id l6sm5623621pgh.34.2021.06.22.03.58.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 22 Jun 2021 03:58:06 -0700 (PDT)
+ Tue, 22 Jun 2021 03:58:08 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org
-Subject: [RFC PATCH 04/43] KVM: PPC: Book3S HV P9: Use large decrementer for
- HDEC
-Date: Tue, 22 Jun 2021 20:56:57 +1000
-Message-Id: <20210622105736.633352-5-npiggin@gmail.com>
+Subject: [RFC PATCH 05/43] KVM: PPC: Book3S HV P9: Reduce mftb per guest
+ entry/exit
+Date: Tue, 22 Jun 2021 20:56:58 +1000
+Message-Id: <20210622105736.633352-6-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210622105736.633352-1-npiggin@gmail.com>
 References: <20210622105736.633352-1-npiggin@gmail.com>
@@ -81,63 +81,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>,
+ Fabiano Rosas <farosas@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On processors that don't suppress the HDEC exceptions when LPCR[HDICE]=0,
-this could help reduce needless guest exits due to leftover exceptions on
-entering the guest.
+mftb is serialising (dispatch next-to-complete) so it is heavy weight
+for a mfspr. Avoid reading it multiple times in the entry or exit paths.
+A small number of cycles delay to timers is tolerable.
 
-Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+-118 cycles (9137) POWER9 virt-mode NULL hcall
+
+Reviewed-by: Fabiano Rosas <farosas@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/time.h       | 2 ++
- arch/powerpc/kernel/time.c            | 1 +
- arch/powerpc/kvm/book3s_hv_p9_entry.c | 3 ++-
- 3 files changed, 5 insertions(+), 1 deletion(-)
+ arch/powerpc/kvm/book3s_hv.c          | 4 ++--
+ arch/powerpc/kvm/book3s_hv_p9_entry.c | 5 +++--
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/time.h b/arch/powerpc/include/asm/time.h
-index fd09b4797fd7..69b6be617772 100644
---- a/arch/powerpc/include/asm/time.h
-+++ b/arch/powerpc/include/asm/time.h
-@@ -18,6 +18,8 @@
- #include <asm/vdso/timebase.h>
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index a413377aafb5..5ec534620e07 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -3794,7 +3794,7 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	 *
+ 	 * XXX: Another day's problem.
+ 	 */
+-	mtspr(SPRN_DEC, vcpu->arch.dec_expires - mftb());
++	mtspr(SPRN_DEC, vcpu->arch.dec_expires - tb);
  
- /* time.c */
-+extern u64 decrementer_max;
-+
- extern unsigned long tb_ticks_per_jiffy;
- extern unsigned long tb_ticks_per_usec;
- extern unsigned long tb_ticks_per_sec;
-diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
-index 98bdd96141f2..026b3c0b648c 100644
---- a/arch/powerpc/kernel/time.c
-+++ b/arch/powerpc/kernel/time.c
-@@ -89,6 +89,7 @@ static struct clocksource clocksource_timebase = {
+ 	if (kvmhv_on_pseries()) {
+ 		/*
+@@ -3914,7 +3914,7 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	vc->in_guest = 0;
  
- #define DECREMENTER_DEFAULT_MAX 0x7FFFFFFF
- u64 decrementer_max = DECREMENTER_DEFAULT_MAX;
-+EXPORT_SYMBOL_GPL(decrementer_max); /* for KVM HDEC */
- 
- static int decrementer_set_next_event(unsigned long evt,
- 				      struct clock_event_device *dev);
+ 	next_timer = timer_get_next_tb();
+-	set_dec(next_timer - mftb());
++	set_dec(next_timer - tb);
+ 	/* We may have raced with new irq work */
+ 	if (test_irq_work_pending())
+ 		set_dec(1);
 diff --git a/arch/powerpc/kvm/book3s_hv_p9_entry.c b/arch/powerpc/kvm/book3s_hv_p9_entry.c
-index 83f592eadcd2..63afd277c5f3 100644
+index 63afd277c5f3..c4f3e066fcb4 100644
 --- a/arch/powerpc/kvm/book3s_hv_p9_entry.c
 +++ b/arch/powerpc/kvm/book3s_hv_p9_entry.c
-@@ -489,7 +489,8 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
- 		vc->tb_offset_applied = 0;
- 	}
+@@ -203,7 +203,8 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
+ 	unsigned long host_dawr1;
+ 	unsigned long host_dawrx1;
  
--	mtspr(SPRN_HDEC, 0x7fffffff);
-+	/* HDEC must be at least as large as DEC, so decrementer_max fits */
-+	mtspr(SPRN_HDEC, decrementer_max);
+-	hdec = time_limit - mftb();
++	tb = mftb();
++	hdec = time_limit - tb;
+ 	if (hdec < 0)
+ 		return BOOK3S_INTERRUPT_HV_DECREMENTER;
  
- 	save_clear_guest_mmu(kvm, vcpu);
- 	switch_mmu_to_host(kvm, host_pidr);
+@@ -215,7 +216,7 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
+ 	vcpu->arch.ceded = 0;
+ 
+ 	if (vc->tb_offset) {
+-		u64 new_tb = mftb() + vc->tb_offset;
++		u64 new_tb = tb + vc->tb_offset;
+ 		mtspr(SPRN_TBU40, new_tb);
+ 		tb = mftb();
+ 		if ((tb & 0xffffff) < (new_tb & 0xffffff))
 -- 
 2.23.0
 
