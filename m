@@ -2,69 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 418C73B027B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 13:11:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 469FD3B027D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 13:12:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G8NyM0dNNz3dgf
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 21:11:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G8Nyq0V1cz3gRr
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 21:12:19 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=G7qkniK0;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=OW1mMXZN;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::431;
- helo=mail-pf1-x431.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::530;
+ helo=mail-pg1-x530.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=G7qkniK0; dkim-atps=neutral
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com
- [IPv6:2607:f8b0:4864:20::431])
+ header.s=20161025 header.b=OW1mMXZN; dkim-atps=neutral
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com
+ [IPv6:2607:f8b0:4864:20::530])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G8Ngk6qCqz3c7h
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 20:59:14 +1000 (AEST)
-Received: by mail-pf1-x431.google.com with SMTP id c8so2260724pfp.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 03:59:13 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G8Ngn2DLBz3c22
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 20:59:17 +1000 (AEST)
+Received: by mail-pg1-x530.google.com with SMTP id p9so2418863pgb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 03:59:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=JaQQukVVLtIelVEbNkhVokmtF+DUGFzRwD4mBIzHcNA=;
- b=G7qkniK09sfdIYfShu3Q4lal0H3GzetSPeiXgCukzVpn2qm9kwXS6WDs88eEvb0ZMQ
- 3I80IxMyB9OH0k7uMN+2fN+WPireqF1+OD+uHhoRuB76HqU6MxOZTmgMS8mi47brk158
- 8Vg9eHW26Y+NAI6IAUZ+r2uWHYI7JNRQYWPM6T6czarr2OaINsBFRekEWIVhY/Dez/CN
- FaewOwDaxBv0wjJbALIc+tFyBeqKUnH01SjW8/vFbVieQaWCGhTOoo9mD4UJ0Urrmahu
- /A94nl73HhBQCTwCrAv3caDk3W44CqsncsDpUuKCuy19I77Dj5syuQYIPvYvxXlxiUeb
- 8U1w==
+ bh=updQAf8t0ym29EfFgOrHg3nwT7DKOY58qleB66Aa4hY=;
+ b=OW1mMXZNu+ZCgIsxMy2C530HmkrF1RmMy7/S1jn9RiIPWkODc3ENxiqiq53JUohvTS
+ JenMuS+SJRsaKI9feHbe5M/zQPpWAvChVbOo8AyFDpzlcgAUj4KpnIbsI7QRPZcMOgSS
+ gOH2tIZCz1JB7HzvEmMUUUVMPDX+cfcnVQlRvm319s6sGAWtlRNYMijATC/jfM9PNT9Z
+ OGH/0UWhXdWSLYDDxSSmQxjjhTRmR25K/yb2VDviV4LlV8Py/H7V7c0bZvswITkduS2p
+ QeurAePxYSUihiZitb0PBrm8ZCN0YBwuIgvN8asQ6uT1RsJ7ZOTrjT2TUMp98KUHnqYL
+ dp1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=JaQQukVVLtIelVEbNkhVokmtF+DUGFzRwD4mBIzHcNA=;
- b=DSQudAQajdq/vwMTypAlgrtZMex9B4rF1fjVAOX/YYJvg5RdA7s6HdAw1uNsDmiQyL
- 7qNMBZ7Aiy+YzmUWJrwmAfGz1A0yLQi+ptINiAvKVM8rYp5+NzEF7tVyCB+wfn3776qE
- nMHG6tr3EM068055KLTqTktBWKoDfe3UnC9PC+mEE4qZItGeJfGeyPP43KZnpDX+s+kC
- jpchPQ+3C2XWfyLb4lBjuDbqgteBrJ6oPQ7SuDoDIIFAAm+/rRzyfOx0zpxL9XuswVAy
- ECmRTZlQg3gKf/AhHnRsopvpoGVHdl6DbomiN/p+ivewpU2I4o/Wnjey6Uze2cgRv9ri
- XbPA==
-X-Gm-Message-State: AOAM53123ghykJsMxFyurnemWlEMOTXXGMXkQIbCLtGYS9iCrFmyorZC
- BqCPqjEL1ISoLVZeNHpwxR8=
-X-Google-Smtp-Source: ABdhPJylOkrOdeOJPWxgG6jMoh2doCgib0Nico/ppT2SmOb2qCJ+mWsegivKmkWrb69RLCwaaicoWA==
-X-Received: by 2002:aa7:8003:0:b029:2eb:2f8f:a320 with SMTP id
- j3-20020aa780030000b02902eb2f8fa320mr3161415pfi.70.1624359551792; 
- Tue, 22 Jun 2021 03:59:11 -0700 (PDT)
+ bh=updQAf8t0ym29EfFgOrHg3nwT7DKOY58qleB66Aa4hY=;
+ b=bFlFdutxi9oaSN1CLoOIs0AqmBLgejx6zyE8sJJyiAt95GAZlFZrl5wUueJuJirJ6c
+ DV8lUahRj3qJNy559zmc0S2kS2SObZdNjirHvThUa+2SPLZmkuls4lXfaoXb2uY6KDwg
+ S6RORPgyZdeIDLBnIf9HvxGhIldBOe7asUeCPZJPjgwEh7v6nZVi9Itgj5BupSCaA3h6
+ 97sTrpnZVSh2MmA4+juPmXdKvnYAHSzq9EisXdDwKsQ7vlFLnhD+rHHGvcimcUKo/iyt
+ NYGYajnHngeXrSBuCGaijCID60A//whFYXoOpE3qPZdt7fTFHxFZNmxFDjOVJRsixzmR
+ iCJw==
+X-Gm-Message-State: AOAM5319YRMj9x1XvxI66AStS7Q/3GF9jJGtxbz11Vwh4gV6RChTmixt
+ D45flGLKXJP3Vh9d7x/A5qc=
+X-Google-Smtp-Source: ABdhPJzzseEap132pTuafgfhFewz+gmMGFnrcHC7nC23xChJ1Kh5BUT2W1ca0o2GOuemG/87H2GhRQ==
+X-Received: by 2002:a63:a54b:: with SMTP id r11mr3220327pgu.43.1624359554094; 
+ Tue, 22 Jun 2021 03:59:14 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (60-242-147-73.tpgi.com.au. [60.242.147.73])
- by smtp.gmail.com with ESMTPSA id l6sm5623621pgh.34.2021.06.22.03.59.09
+ by smtp.gmail.com with ESMTPSA id l6sm5623621pgh.34.2021.06.22.03.59.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 22 Jun 2021 03:59:11 -0700 (PDT)
+ Tue, 22 Jun 2021 03:59:13 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org
-Subject: [RFC PATCH 31/43] KVM: PPC: Book3S HV P9: Switch PMU to guest as late
- as possible
-Date: Tue, 22 Jun 2021 20:57:24 +1000
-Message-Id: <20210622105736.633352-32-npiggin@gmail.com>
+Subject: [RFC PATCH 32/43] KVM: PPC: Book3S HV P9: Restrict DSISR canary
+ workaround to processors that require it
+Date: Tue, 22 Jun 2021 20:57:25 +1000
+Message-Id: <20210622105736.633352-33-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210622105736.633352-1-npiggin@gmail.com>
 References: <20210622105736.633352-1-npiggin@gmail.com>
@@ -86,85 +85,49 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This moves PMU switch to guest as late as possible in entry, and switch
-back to host as early as possible at exit. This helps the host get the
-most perf coverage of KVM entry/exit code as possible.
+Use CPU_FTR_P9_RADIX_PREFETCH_BUG for this, to test for DD2.1 and below
+processors.
 
-This is slightly suboptimal for SPR scheduling point of view when the
-PMU is enabled, but when perf is disabled there is no real difference.
+-43 cycles (7178) POWER9 virt-mode NULL hcall
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kvm/book3s_hv.c          | 6 ++----
- arch/powerpc/kvm/book3s_hv_p9_entry.c | 6 ++----
- 2 files changed, 4 insertions(+), 8 deletions(-)
+ arch/powerpc/kvm/book3s_hv.c          | 3 ++-
+ arch/powerpc/kvm/book3s_hv_p9_entry.c | 6 ++++--
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index ee4002c33f89..a31397fde98e 100644
+index a31397fde98e..ae528eb37792 100644
 --- a/arch/powerpc/kvm/book3s_hv.c
 +++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -3703,8 +3703,6 @@ static int kvmhv_vcpu_entry_p9_nested(struct kvm_vcpu *vcpu, u64 time_limit, uns
- 	s64 dec;
- 	int trap;
+@@ -1523,7 +1523,8 @@ XXX benchmark guest exits
+ 		unsigned long vsid;
+ 		long err;
  
--	switch_pmu_to_guest(vcpu, &host_os_sprs);
--
- 	save_p9_host_os_sprs(&host_os_sprs);
- 
- 	/*
-@@ -3766,9 +3764,11 @@ static int kvmhv_vcpu_entry_p9_nested(struct kvm_vcpu *vcpu, u64 time_limit, uns
- 
- 	mtspr(SPRN_DAR, vcpu->arch.shregs.dar);
- 	mtspr(SPRN_DSISR, vcpu->arch.shregs.dsisr);
-+	switch_pmu_to_guest(vcpu, &host_os_sprs);
- 	trap = plpar_hcall_norets(H_ENTER_NESTED, __pa(&hvregs),
- 				  __pa(&vcpu->arch.regs));
- 	kvmhv_restore_hv_return_state(vcpu, &hvregs);
-+	switch_pmu_to_host(vcpu, &host_os_sprs);
- 	vcpu->arch.shregs.msr = vcpu->arch.regs.msr;
- 	vcpu->arch.shregs.dar = mfspr(SPRN_DAR);
- 	vcpu->arch.shregs.dsisr = mfspr(SPRN_DSISR);
-@@ -3787,8 +3787,6 @@ static int kvmhv_vcpu_entry_p9_nested(struct kvm_vcpu *vcpu, u64 time_limit, uns
- 
- 	restore_p9_host_os_sprs(vcpu, &host_os_sprs);
- 
--	switch_pmu_to_host(vcpu, &host_os_sprs);
--
- 	return trap;
- }
- 
+-		if (vcpu->arch.fault_dsisr == HDSISR_CANARY) {
++		if (cpu_has_feature(CPU_FTR_P9_RADIX_PREFETCH_BUG) &&
++		    unlikely(vcpu->arch.fault_dsisr == HDSISR_CANARY)) {
+ 			r = RESUME_GUEST; /* Just retry if it's the canary */
+ 			break;
+ 		}
 diff --git a/arch/powerpc/kvm/book3s_hv_p9_entry.c b/arch/powerpc/kvm/book3s_hv_p9_entry.c
-index 81ff8479ac32..9e58624566a4 100644
+index 9e58624566a4..b41be3d8f101 100644
 --- a/arch/powerpc/kvm/book3s_hv_p9_entry.c
 +++ b/arch/powerpc/kvm/book3s_hv_p9_entry.c
-@@ -577,8 +577,6 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
- 	local_paca->kvm_hstate.host_purr = mfspr(SPRN_PURR);
- 	local_paca->kvm_hstate.host_spurr = mfspr(SPRN_SPURR);
+@@ -656,9 +656,11 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
+ 	 * HDSI which should correctly update the HDSISR the second time HDSI
+ 	 * entry.
+ 	 *
+-	 * Just do this on all p9 processors for now.
++	 * The "radix prefetch bug" test can be used to test for this bug, as
++	 * it also exists fo DD2.1 and below.
+ 	 */
+-	mtspr(SPRN_HDSISR, HDSISR_CANARY);
++	if (cpu_has_feature(CPU_FTR_P9_RADIX_PREFETCH_BUG))
++		mtspr(SPRN_HDSISR, HDSISR_CANARY);
  
--	switch_pmu_to_guest(vcpu, &host_os_sprs);
--
- 	save_p9_host_os_sprs(&host_os_sprs);
- 
- 	/*
-@@ -708,7 +706,9 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
- 
- 	accumulate_time(vcpu, &vcpu->arch.guest_time);
- 
-+	switch_pmu_to_guest(vcpu, &host_os_sprs);
- 	kvmppc_p9_enter_guest(vcpu);
-+	switch_pmu_to_host(vcpu, &host_os_sprs);
- 
- 	accumulate_time(vcpu, &vcpu->arch.rm_intr);
- 
-@@ -904,8 +904,6 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
- 		asm volatile(PPC_CP_ABORT);
- 
- out:
--	switch_pmu_to_host(vcpu, &host_os_sprs);
--
- 	end_timing(vcpu);
- 
- 	return trap;
+ 	mtspr(SPRN_SPRG0, vcpu->arch.shregs.sprg0);
+ 	mtspr(SPRN_SPRG1, vcpu->arch.shregs.sprg1);
 -- 
 2.23.0
 
