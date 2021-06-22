@@ -1,71 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B76073B0285
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 13:14:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3029C3B028F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 13:14:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G8P1P39Kxz3gmW
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 21:14:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G8P1r6t5Vz3grB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 21:14:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=s5dXxDXl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=f17RklGl;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1032;
- helo=mail-pj1-x1032.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::432;
+ helo=mail-pf1-x432.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=s5dXxDXl; dkim-atps=neutral
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com
- [IPv6:2607:f8b0:4864:20::1032])
+ header.s=20161025 header.b=f17RklGl; dkim-atps=neutral
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com
+ [IPv6:2607:f8b0:4864:20::432])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G8Nh02hmNz3cC7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 20:59:28 +1000 (AEST)
-Received: by mail-pj1-x1032.google.com with SMTP id
- 22-20020a17090a0c16b0290164a5354ad0so1505641pjs.2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 03:59:27 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G8Nh325Shz3cCd
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 20:59:31 +1000 (AEST)
+Received: by mail-pf1-x432.google.com with SMTP id t32so4765940pfg.2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 03:59:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=TUzaj3ou1GO2NNNnuj5/I2wDiFVQkUTWC6/PNkNyxk8=;
- b=s5dXxDXl9r4dJGMNKTA2/SVozQIrYdO2CQCqy7/1XUQX1I6OjD4hf1scTqvfPUNASg
- 6KDFpLRjNHX1glPMzBMJzB0yGtLYmeEiRG3E0yyHMIrPsU2ScwfEf2eJWwXeH2bxkABJ
- VfR9mqDiQTRL9iofQslV02dJ3paE/F3eqGT6K0bIpxy+atjX6mvHynUolwzc4RZc6c3N
- 9EXbKAdpH1alBLp7NzhU3Wlp4lV2HT2cI2PhBvmCc2u1LEKmtdbhRee1GmdC6HrpTQz3
- WcYB/jQAtO/GBqQcCxXamnBU+gBpxBBM6PzyzNa0hxVrlxaW29arh2X1bMzgsjH2/W6o
- /yqQ==
+ bh=3+1GsA6ZmKD4nmYQtf9IKf0wEf4lVcm4Be7DlE4qj3g=;
+ b=f17RklGlBCUwmnePSVpnLp8kFHodpXukg765daSsJYKtkMlSuGKCxTPzg0Dqzgba/Y
+ 8Sq3HSjS+884sLZiRdTxv51TKtdlFockH5nV3qfTl6qz53tHHUUcmROGQnN6zPe7w3gp
+ jdAQy8KSiWRxQdWIOiafHFrGcPD2h/i3fEdMxvwQpF8BoPd5UlJfGqUdtKaQZnQSORxE
+ pO6M9Nn/sLbVRkYToN34zzYiLNUiaMsVc6JP/8H92CkgF0Wpw+wjn4IXlCE4u//EMKrv
+ xphZCgMQ1mJ6+N26HmCktOChdhqrWmUANzc0/CoXWV7KlKgoGEdzL2OeHExG7PrSszPD
+ vo+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=TUzaj3ou1GO2NNNnuj5/I2wDiFVQkUTWC6/PNkNyxk8=;
- b=WH7wmGwXJqmbnIrRCtk8DgKqwHmEh2nJcNf+8fTXcTJxAuYsL/AGeJDw3WuFG0XvW7
- mVpR+rfI7ufIiudKugqpjVgi6mVSRk05bicmi/wIzFLTbhKitxUQ04+KcSCOI8ZJLk8z
- LqUETogre9UxlB4z/lUjCEMZOG8/qr7qDDj9EO651rZh0JoQ1BbxHkSg2PbDHkAuWd/z
- j0SvCPN4Hm5V5u5IPkldDd41Z12Rsipa3Pwp+gEX8ZehrfOdkv/llUOoyC09lNpJMkVk
- Qnr2AWygV02i0K95+ZCyDJTM1ty+v1R2w3rtpbd5gjRyznIHjfnX4SfLr8BR2GfVtfgx
- x7hA==
-X-Gm-Message-State: AOAM532EgJFL+LzDDdoYX75eUy6nqyEwC5c05vjlrJfYUGNkHE5lTs/3
- G93BRXuBJ6o9kAKa+D3vI9k=
-X-Google-Smtp-Source: ABdhPJz/BlKlTe8dkJTTinukuFFoQXWOFhqJEg9MaiXsO/sN/is8rdosD4OxcFhmPOxt3jmY15ZZbg==
-X-Received: by 2002:a17:902:d694:b029:103:ec01:12d5 with SMTP id
- v20-20020a170902d694b0290103ec0112d5mr22300383ply.19.1624359565584; 
- Tue, 22 Jun 2021 03:59:25 -0700 (PDT)
+ bh=3+1GsA6ZmKD4nmYQtf9IKf0wEf4lVcm4Be7DlE4qj3g=;
+ b=Qxha5INX6Ud4uJU7ROAwmctOYEy7X603HW+y9YwNV7LT72JCBwc/9lTTCjPt8FkWus
+ QRcAPq8asbh8OLUY4+b+0D/KVh1kN0/cThp8gUTukUBqrzb3sSmuUU1g44/Roh80SC7Q
+ Z0IhhWyviub/D0gsQWBHho8/TMnskiy3Fyp4Evt4PVQZvXlA3MjGic/ENdiEVESehDUZ
+ XFnRCUxHHKONAjeqMsRBoXvcwvaxn/8EmKnhMd3qiGBwFAzaR/H1CRr2gltlZhUfedRp
+ 0TvUvaSPRJXCzn9oFvhXWaUFzAL0D5lRJtMxl6D36pTRgzM0ssnGPeSPBMPZx4571CeW
+ lQOQ==
+X-Gm-Message-State: AOAM532Pi68XzeaXu8EhE2AyJxel0z2ux5AIGc74ojweGTELIxZfdKuk
+ TsiOPT/vuGlqy0NaIdqAmA8=
+X-Google-Smtp-Source: ABdhPJxDWavWUwUySm81FjkOyf58wBP6lQ3kVLsq4wedDamjPrqD4S3WBeiFtG+0KyaXu4Xzy7RAsg==
+X-Received: by 2002:a62:d447:0:b029:291:19f7:ddcd with SMTP id
+ u7-20020a62d4470000b029029119f7ddcdmr3129358pfl.54.1624359567973; 
+ Tue, 22 Jun 2021 03:59:27 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (60-242-147-73.tpgi.com.au. [60.242.147.73])
- by smtp.gmail.com with ESMTPSA id l6sm5623621pgh.34.2021.06.22.03.59.23
+ by smtp.gmail.com with ESMTPSA id l6sm5623621pgh.34.2021.06.22.03.59.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 22 Jun 2021 03:59:25 -0700 (PDT)
+ Tue, 22 Jun 2021 03:59:27 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org
-Subject: [RFC PATCH 37/43] KVM: PPC: Book3S HV P9: Comment and fix MMU context
- switching code
-Date: Tue, 22 Jun 2021 20:57:30 +1000
-Message-Id: <20210622105736.633352-38-npiggin@gmail.com>
+Subject: [RFC PATCH 38/43] KVM: PPC: Book3S HV P9: Test dawr_enabled() before
+ saving host DAWR SPRs
+Date: Tue, 22 Jun 2021 20:57:31 +1000
+Message-Id: <20210622105736.633352-39-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210622105736.633352-1-npiggin@gmail.com>
 References: <20210622105736.633352-1-npiggin@gmail.com>
@@ -87,119 +86,68 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Tighten up partition switching code synchronisation and comments.
-
-In particular, hwsync ; isync is required after the last access that is
-performed in the context of a partition, before the partition is
-switched away from.
-
--301 cycles (6319) POWER9 virt-mode NULL hcall
+Some of the DAWR SPR access is already predicated on dawr_enabled(),
+apply this to the remainder of the accesses.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kvm/book3s_64_mmu_radix.c |  4 +++
- arch/powerpc/kvm/book3s_hv_p9_entry.c  | 40 +++++++++++++++++++-------
- 2 files changed, 33 insertions(+), 11 deletions(-)
+ arch/powerpc/kvm/book3s_hv_p9_entry.c | 34 ++++++++++++++++-----------
+ 1 file changed, 20 insertions(+), 14 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-index d909c069363e..5a6ab0a61b68 100644
---- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
-+++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-@@ -53,6 +53,8 @@ unsigned long __kvmhv_copy_tofrom_guest_radix(int lpid, int pid,
- 
- 	preempt_disable();
- 
-+	asm volatile("hwsync" ::: "memory");
-+	isync();
- 	/* switch the lpid first to avoid running host with unallocated pid */
- 	old_lpid = mfspr(SPRN_LPID);
- 	if (old_lpid != lpid)
-@@ -69,6 +71,8 @@ unsigned long __kvmhv_copy_tofrom_guest_radix(int lpid, int pid,
- 	else
- 		ret = copy_to_user_nofault((void __user *)to, from, n);
- 
-+	asm volatile("hwsync" ::: "memory");
-+	isync();
- 	/* switch the pid first to avoid running host with unallocated pid */
- 	if (quadrant == 1 && pid != old_pid)
- 		mtspr(SPRN_PID, old_pid);
 diff --git a/arch/powerpc/kvm/book3s_hv_p9_entry.c b/arch/powerpc/kvm/book3s_hv_p9_entry.c
-index 55286a8357f7..7aa72efcac6c 100644
+index 7aa72efcac6c..f305d1d6445c 100644
 --- a/arch/powerpc/kvm/book3s_hv_p9_entry.c
 +++ b/arch/powerpc/kvm/book3s_hv_p9_entry.c
-@@ -503,17 +503,19 @@ static void switch_mmu_to_guest_radix(struct kvm *kvm, struct kvm_vcpu *vcpu, u6
- 	lpid = nested ? nested->shadow_lpid : kvm->arch.lpid;
+@@ -638,13 +638,16 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
  
- 	/*
--	 * All the isync()s are overkill but trivially follow the ISA
--	 * requirements. Some can likely be replaced with justification
--	 * comment for why they are not needed.
-+	 * Prior memory accesses to host PID Q3 must be completed before we
-+	 * start switching, and stores must be drained to avoid not-my-LPAR
-+	 * logic (see switch_mmu_to_host).
- 	 */
-+	asm volatile("hwsync" ::: "memory");
- 	isync();
- 	mtspr(SPRN_LPID, lpid);
--	isync();
- 	mtspr(SPRN_LPCR, lpcr);
--	isync();
- 	mtspr(SPRN_PID, vcpu->arch.pid);
--	isync();
-+	/*
-+	 * isync not required here because we are HRFID'ing to guest before
-+	 * any guest context access, which is context synchronising.
-+	 */
- }
+ 	host_hfscr = mfspr(SPRN_HFSCR);
+ 	host_ciabr = mfspr(SPRN_CIABR);
+-	host_dawr0 = mfspr(SPRN_DAWR0);
+-	host_dawrx0 = mfspr(SPRN_DAWRX0);
+ 	host_psscr = mfspr(SPRN_PSSCR);
+ 	host_pidr = mfspr(SPRN_PID);
+-	if (cpu_has_feature(CPU_FTR_DAWR1)) {
+-		host_dawr1 = mfspr(SPRN_DAWR1);
+-		host_dawrx1 = mfspr(SPRN_DAWRX1);
++
++	if (dawr_enabled()) {
++		host_dawr0 = mfspr(SPRN_DAWR0);
++		host_dawrx0 = mfspr(SPRN_DAWRX0);
++		if (cpu_has_feature(CPU_FTR_DAWR1)) {
++			host_dawr1 = mfspr(SPRN_DAWR1);
++			host_dawrx1 = mfspr(SPRN_DAWRX1);
++		}
+ 	}
  
- static void switch_mmu_to_guest_hpt(struct kvm *kvm, struct kvm_vcpu *vcpu, u64 lpcr)
-@@ -523,25 +525,41 @@ static void switch_mmu_to_guest_hpt(struct kvm *kvm, struct kvm_vcpu *vcpu, u64
+ 	local_paca->kvm_hstate.host_purr = mfspr(SPRN_PURR);
+@@ -951,15 +954,18 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
+ 	mtspr(SPRN_HFSCR, host_hfscr);
+ 	if (vcpu->arch.ciabr != host_ciabr)
+ 		mtspr(SPRN_CIABR, host_ciabr);
+-	if (vcpu->arch.dawr0 != host_dawr0)
+-		mtspr(SPRN_DAWR0, host_dawr0);
+-	if (vcpu->arch.dawrx0 != host_dawrx0)
+-		mtspr(SPRN_DAWRX0, host_dawrx0);
+-	if (cpu_has_feature(CPU_FTR_DAWR1)) {
+-		if (vcpu->arch.dawr1 != host_dawr1)
+-			mtspr(SPRN_DAWR1, host_dawr1);
+-		if (vcpu->arch.dawrx1 != host_dawrx1)
+-			mtspr(SPRN_DAWRX1, host_dawrx1);
++
++	if (dawr_enabled()) {
++		if (vcpu->arch.dawr0 != host_dawr0)
++			mtspr(SPRN_DAWR0, host_dawr0);
++		if (vcpu->arch.dawrx0 != host_dawrx0)
++			mtspr(SPRN_DAWRX0, host_dawrx0);
++		if (cpu_has_feature(CPU_FTR_DAWR1)) {
++			if (vcpu->arch.dawr1 != host_dawr1)
++				mtspr(SPRN_DAWR1, host_dawr1);
++			if (vcpu->arch.dawrx1 != host_dawrx1)
++				mtspr(SPRN_DAWRX1, host_dawrx1);
++		}
+ 	}
  
- 	lpid = kvm->arch.lpid;
- 
-+	/*
-+	 * See switch_mmu_to_guest_radix. ptesync should not be required here
-+	 * even if the host is in HPT mode because speculative accesses would
-+	 * not cause RC updates (we are in real mode).
-+	 */
-+	asm volatile("hwsync" ::: "memory");
-+	isync();
- 	mtspr(SPRN_LPID, lpid);
- 	mtspr(SPRN_LPCR, lpcr);
- 	mtspr(SPRN_PID, vcpu->arch.pid);
- 
- 	for (i = 0; i < vcpu->arch.slb_max; i++)
- 		mtslb(vcpu->arch.slb[i].orige, vcpu->arch.slb[i].origv);
--
--	isync();
-+	/*
-+	 * isync not required here, see switch_mmu_to_guest_radix.
-+	 */
- }
- 
- static void switch_mmu_to_host(struct kvm *kvm, u32 pid)
- {
-+	/*
-+	 * The guest has exited, so guest MMU context is no longer being
-+	 * non-speculatively accessed, but a hwsync is needed before the
-+	 * mtLPIDR / mtPIDR switch, in order to ensure all stores are drained,
-+	 * so the not-my-LPAR tlbie logic does not overlook them.
-+	 */
-+	asm volatile("hwsync" ::: "memory");
- 	isync();
- 	mtspr(SPRN_PID, pid);
--	isync();
- 	mtspr(SPRN_LPID, kvm->arch.host_lpid);
--	isync();
- 	mtspr(SPRN_LPCR, kvm->arch.host_lpcr);
--	isync();
-+	/*
-+	 * isync is not required after the switch, because mtmsrd with L=0
-+	 * is performed after this switch, which is context synchronising.
-+	 */
- 
- 	if (!radix_enabled())
- 		slb_restore_bolted_realmode();
+ 	if (vc->dpdes)
 -- 
 2.23.0
 
