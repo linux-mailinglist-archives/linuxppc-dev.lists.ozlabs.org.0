@@ -2,96 +2,96 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 606EB3B0C9C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 20:11:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A31BF3B0CA1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 20:12:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G8ZGj1JdXz3bv1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jun 2021 04:11:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G8ZHq32G5z3bxw
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jun 2021 04:12:39 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LTFHORKV;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=omZYJmHq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=LTFHORKV; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ header.s=pp1 header.b=omZYJmHq; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G8ZGB3BFqz2xtt
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jun 2021 04:11:13 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 15MI4CQo015335; Tue, 22 Jun 2021 14:11:04 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G8ZHM1x4Jz2xtt
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jun 2021 04:12:15 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 15MI3itC178148; Tue, 22 Jun 2021 14:12:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=subject : to :
- references : from : message-id : date : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=1Jzec6T7FNSjIG24Whnf1n6RMSj5j+FV/Q+0nTzBQdM=;
- b=LTFHORKVXam7FUPr/5h/zu8Jz6rHOBXEi4DSBuo0NSLAnw9g/lFBAfcKlzWsH2d7AWX2
- 47TozWcKo3Deah0LpW990wngmI5NA8DgdekquLDrxFnGrjIV3FMk9kdJviEdvdev7Hj/
- Q5SpF9hbSYQ83XqOoaChxYLXRWp/x1yGMqEXlHMGC58JHS7o/D6+bOFKZPPmtSzMhx2G
- k/Tg8mM14lrF8Zs5p4GFEgQ824RyHc8X2t/GKzEPRMneCGw7a180Pdoc0BKyEc2Hd/JF
- 8vncitBNeoTELsTyMTvjrRq7i94FmN+vwHT6ui7s2dahaYslcEVgaxsaoLfB/jJrwjMU yg== 
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39bmsyr6q6-1
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=mLEiEdrRO+V5LRYuP1iz+bCOB7dk72PNnwumnPiW2a4=;
+ b=omZYJmHqkSq+ahEQlxTbDstF1LLAOWOPRGI69bvuPbtdD6C9uWkRpxG/Ys41j1Bzhau4
+ e4zgiFkG9Q7q1JRbELTMTR333mguf2LIomWHx1gRdtacJjtSay9uhy8IdNpdUaVPnweI
+ qefUMoZDt8LufRuM3k2cQvmDkxe5Een8KeRCJfX8w53w9PDRLqpP9OQuHGFc6M1/NGbn
+ RZWnFyTLChHrIcAjzHZZVqwE+eRuJtw3+mpThIUQYBESsNyu1oi7qaHS3JwB+f7PmRBx
+ +yddk5U5Wk6mUqNhMX43wSF1rJ2uFwAScIa+CngY+TCADuySnAuQEpqTgxUDB6uFEbp1 TA== 
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 39bjbwwk74-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 22 Jun 2021 14:11:04 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15MI30PT022865;
- Tue, 22 Jun 2021 18:11:03 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma04wdc.us.ibm.com with ESMTP id 3998799y15-1
+ Tue, 22 Jun 2021 14:12:07 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15MI48hb004528;
+ Tue, 22 Jun 2021 18:12:06 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
+ [9.57.198.27]) by ppma03dal.us.ibm.com with ESMTP id 399wjg8qbv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 22 Jun 2021 18:11:03 +0000
+ Tue, 22 Jun 2021 18:12:06 +0000
 Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
  [9.57.199.108])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 15MIB2oD7340852
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 15MIC6oG26935586
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 22 Jun 2021 18:11:02 GMT
+ Tue, 22 Jun 2021 18:12:06 GMT
 Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CA248B2066;
- Tue, 22 Jun 2021 18:11:02 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 1AB22B2064;
+ Tue, 22 Jun 2021 18:12:06 +0000 (GMT)
 Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5ED43B206B;
- Tue, 22 Jun 2021 18:11:02 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 83A2FB205F;
+ Tue, 22 Jun 2021 18:12:05 +0000 (GMT)
 Received: from oc6857751186.ibm.com (unknown [9.65.216.48])
  by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue, 22 Jun 2021 18:11:02 +0000 (GMT)
-Subject: Re: [PATCH 2/2] powerpc/prom_init: Pass linux_banner to firmware via
- option vector 7
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+ Tue, 22 Jun 2021 18:12:05 +0000 (GMT)
+Subject: Re: [PATCH 1/2] powerpc/prom_init: Convert prom_strcpy() into
+ prom_strscpy_pad()
+To: Michael Ellerman <mpe@ellerman.id.au>, Daniel Axtens <dja@axtens.net>,
+ linuxppc-dev@lists.ozlabs.org
 References: <20210621064938.2021419-1-mpe@ellerman.id.au>
- <20210621064938.2021419-2-mpe@ellerman.id.au>
+ <87lf73iddy.fsf@dja-thinkpad.axtens.net> <87bl7y35dw.fsf@mpe.ellerman.id.au>
 From: Tyrel Datwyler <tyreld@linux.ibm.com>
-Message-ID: <bead9552-1e5c-2485-0463-4d161cce2a1f@linux.ibm.com>
-Date: Tue, 22 Jun 2021 11:11:01 -0700
+Message-ID: <210884ec-a4a4-c9f8-89f4-4e3adf2d0cb3@linux.ibm.com>
+Date: Tue, 22 Jun 2021 11:12:04 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.10.0
-In-Reply-To: <20210621064938.2021419-2-mpe@ellerman.id.au>
+MIME-Version: 1.0
+In-Reply-To: <87bl7y35dw.fsf@mpe.ellerman.id.au>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: ouX8t6eEkjx8GM5_0YtdkfqdVbX2-nTs
-X-Proofpoint-GUID: ouX8t6eEkjx8GM5_0YtdkfqdVbX2-nTs
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
-MIME-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Na51e42jCNOjLDxpxyNMgPVDMNfx-Qep
+X-Proofpoint-GUID: Na51e42jCNOjLDxpxyNMgPVDMNfx-Qep
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
  definitions=2021-06-22_11:2021-06-22,
  2021-06-22 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0
- priorityscore=1501 clxscore=1011 lowpriorityscore=0 suspectscore=0
- mlxscore=0 spamscore=0 mlxlogscore=999 phishscore=0 impostorscore=0
- adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ clxscore=1011 mlxlogscore=999
+ suspectscore=0 mlxscore=0 spamscore=0 impostorscore=0 phishscore=0
+ priorityscore=1501 adultscore=0 malwarescore=0 lowpriorityscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2104190000 definitions=main-2106220111
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -108,102 +108,73 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/20/21 11:49 PM, Michael Ellerman wrote:
-> Pass the value of linux_banner to firmware via option vector 7.
+On 6/21/21 9:11 PM, Michael Ellerman wrote:
+> Daniel Axtens <dja@axtens.net> writes:
+>> Hi
+>>
+>>> -static char __init *prom_strcpy(char *dest, const char *src)
+>>> +static ssize_t __init prom_strscpy_pad(char *dest, const char *src, size_t n)
+>>>  {
+>>> -	char *tmp = dest;
+>>> +	ssize_t rc;
+>>> +	size_t i;
+>>>  
+>>> -	while ((*dest++ = *src++) != '\0')
+>>> -		/* nothing */;
+>>> -	return tmp;
+>>> +	if (n == 0 || n > INT_MAX)
+>>> +		return -E2BIG;
+>>> +
+>>> +	// Copy up to n bytes
+>>> +	for (i = 0; i < n && src[i] != '\0'; i++)
+>>> +		dest[i] = src[i];
+>>> +
+>>> +	rc = i;
+>>> +
+>>> +	// If we copied all n then we have run out of space for the nul
+>>> +	if (rc == n) {
+>>> +		// Rewind by one character to ensure nul termination
+>>> +		i--;
+>>> +		rc = -E2BIG;
+>>> +	}
+>>> +
+>>> +	for (; i < n; i++)
+>>> +		dest[i] = '\0';
+>>> +
+>>> +	return rc;
+>>>  }
+>>>  
+>>
+>> This implementation seems good to me.
+>>
+>> I copied it into a new C file and added the following:
+>>
+>> int main() {
+>> 	char longstr[255]="abcdefghijklmnopqrstuvwxyz";
+>> 	char shortstr[5];
+>> 	assert(prom_strscpy_pad(longstr, "", 0) == -E2BIG);
+>> 	assert(prom_strscpy_pad(longstr, "hello", 255) == 5);
+>> 	assert(prom_strscpy_pad(shortstr, "hello", 5) == -E2BIG);
+>> 	assert(memcmp(shortstr, "hell", 5) == 0);
+>> 	assert(memcmp(longstr, "hello\0\0\0\0\0\0\0\0\0", 6) == 0);
+>> 	return 0;
+>> }
+>>
+>> All the assertions pass. I believe this covers all the conditions from
+>> the strscpy_pad docstring.
+>>
+>> Reviewed-by: Daniel Axtens <dja@axtens.net>
 > 
-> Option vector 7 is described in "LoPAR" Linux on Power Architecture
-> Reference v2.9, in table B.7 on page 824:
+> Thanks.
 > 
->   An ASCII character formatted null terminated string that describes
->   the client operating system. The string shall be human readable and
->   may be displayed on the console.
-> 
-> The string can be up to 256 bytes total, including the nul terminator.
-> 
-> linux_banner contains lots of information, and should make it possible
-> to identify the exact kernel version that is running:
-> 
->   const char linux_banner[] =
->   "Linux version " UTS_RELEASE " (" LINUX_COMPILE_BY "@"
->   LINUX_COMPILE_HOST ") (" LINUX_COMPILER ") " UTS_VERSION "\n";
-> 
-> For example:
->   Linux version 4.15.0-144-generic (buildd@bos02-ppc64el-018) (gcc
->   version 7.5.0 (Ubuntu 7.5.0-3ubuntu1~18.04)) #148-Ubuntu SMP Sat May 8
->   02:32:13 UTC 2021 (Ubuntu 4.15.0-144.148-generic 4.15.18)
-> 
-> It's also printed at boot to the console/dmesg, which should make it
-> possible to correlate what firmware receives with the console/dmesg on
-> the machine.
-> 
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> ---
-> 
-> NB. linux_banner is already allowed by prom_init_check.sh
-> 
-> LoPAR: https://openpowerfoundation.org/?resource_lib=linux-on-power-architecture-reference-a-papr-linux-subset-review-draft
-> ---
->  arch/powerpc/kernel/prom_init.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
-> 
-> diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
-> index c18d55f8b951..7343076b261c 100644
-> --- a/arch/powerpc/kernel/prom_init.c
-> +++ b/arch/powerpc/kernel/prom_init.c
-> @@ -27,6 +27,7 @@
->  #include <linux/initrd.h>
->  #include <linux/bitops.h>
->  #include <linux/pgtable.h>
-> +#include <linux/printk.h>
->  #include <asm/prom.h>
->  #include <asm/rtas.h>
->  #include <asm/page.h>
-> @@ -944,6 +945,10 @@ struct option_vector6 {
->  	u8 os_name;
->  } __packed;
-> 
-> +struct option_vector7 {
-> +	u8 os_id[256];
-> +} __packed;
-> +
->  struct ibm_arch_vec {
->  	struct { u32 mask, val; } pvrs[14];
-> 
-> @@ -966,6 +971,9 @@ struct ibm_arch_vec {
-> 
->  	u8 vec6_len;
->  	struct option_vector6 vec6;
-> +
-> +	u8 vec7_len;
-> +	struct option_vector7 vec7;
->  } __packed;
-> 
->  static const struct ibm_arch_vec ibm_architecture_vec_template __initconst = {
-> @@ -1112,6 +1120,9 @@ static const struct ibm_arch_vec ibm_architecture_vec_template __initconst = {
->  		.secondary_pteg = 0,
->  		.os_name = OV6_LINUX,
->  	},
-> +
-> +	/* option vector 7: OS Identification */
-> +	.vec7_len = VECTOR_LENGTH(sizeof(struct option_vector7)),
->  };
-> 
->  static struct ibm_arch_vec __prombss ibm_architecture_vec  ____cacheline_aligned;
-> @@ -1340,6 +1351,10 @@ static void __init prom_check_platform_support(void)
->  	memcpy(&ibm_architecture_vec, &ibm_architecture_vec_template,
->  	       sizeof(ibm_architecture_vec));
-> 
-> +	prom_strscpy_pad(ibm_architecture_vec.vec7.os_id, linux_banner, 256);
-> +	// Ensure nul termination
-> +	ibm_architecture_vec.vec7.os_id[255] = '\0';
-> +
+> I'll also drop the explicit nul termination in patch 2, which is a
+> leftover from when I was using strncpy().
 
-Doesn't the implementation of prom_strscpy_pad() in patch 1 ensure nul termination?
+I guess you can ignore my other email questioning this.
 
 -Tyrel
 
->  	if (prop_len > 1) {
->  		int i;
->  		u8 vec[8];
+> 
+> cheers
 > 
 
