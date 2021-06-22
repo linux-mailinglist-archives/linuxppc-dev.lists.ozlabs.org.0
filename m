@@ -1,39 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 339BF3AFB1F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 04:38:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBB4E3AFBA1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 06:12:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G89Yr6h6cz308X
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 12:38:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G8Cf13rKnz303j
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 14:12:09 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=hfgyHKDG;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.43;
- helo=out30-43.freemail.mail.aliyun.com;
- envelope-from=jiapeng.chong@linux.alibaba.com; receiver=<UNKNOWN>)
-Received: from out30-43.freemail.mail.aliyun.com
- (out30-43.freemail.mail.aliyun.com [115.124.30.43])
+ smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=hfgyHKDG; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G89YT69vwz2yY8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 12:38:04 +1000 (AEST)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R301e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04395;
- MF=jiapeng.chong@linux.alibaba.com; NM=1; PH=DS; RN=6; SR=0;
- TI=SMTPD_---0UdGVF.o_1624329462; 
-Received: from
- j63c13417.sqa.eu95.tbsite.net(mailfrom:jiapeng.chong@linux.alibaba.com
- fp:SMTPD_---0UdGVF.o_1624329462) by smtp.aliyun-inc.com(127.0.0.1);
- Tue, 22 Jun 2021 10:37:46 +0800
-From: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH] powerpc/interrupts: Fix duplicate included asm/interrupt.h
-Date: Tue, 22 Jun 2021 10:37:17 +0800
-Message-Id: <1624329437-84730-1-git-send-email-jiapeng.chong@linux.alibaba.com>
-X-Mailer: git-send-email 1.8.3.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G8CdY3kw8z2ym4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 14:11:45 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4G8CdW5jQwz9sf9;
+ Tue, 22 Jun 2021 14:11:43 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1624335103;
+ bh=w4jHRr1SfCtm9a1lrT4EpKjhYNuImkB/Yap5zTQk0o8=;
+ h=From:To:Subject:In-Reply-To:References:Date:From;
+ b=hfgyHKDGJcGmhemc9L8V8OjHY8Z1Tf3LpRQHoPZ/bP/ZcjSgJPg08wcEuJ7aJq5h2
+ HakdfrYfDzsbWRHp725pk1C1tZGWirIfQVxudM5wA4ISUINNc8x+vWTggO+1lpmIh2
+ btCEy9uvssPeOlurYak1Fi4X/L4i1n3NQdnY4C9ODzzAzhPXsw6/WqKeZLIQipw3kC
+ xH/+1ORgE3BmItz+/h0gAUO5Tlijk4AtVWLargdWhG/ATqbdCnltpkLHy0ZqPMcJ0G
+ DrxoVd6xNT3DWCwBsva8amdkZVzxb73O11SDJ8L4j0ytBZrqcJhbaaO5iWuz9XKgje
+ ftPHIc2w84Qjg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Daniel Axtens <dja@axtens.net>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 1/2] powerpc/prom_init: Convert prom_strcpy() into
+ prom_strscpy_pad()
+In-Reply-To: <87lf73iddy.fsf@dja-thinkpad.axtens.net>
+References: <20210621064938.2021419-1-mpe@ellerman.id.au>
+ <87lf73iddy.fsf@dja-thinkpad.axtens.net>
+Date: Tue, 22 Jun 2021 14:11:39 +1000
+Message-ID: <87bl7y35dw.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,37 +63,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>, paulus@samba.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Clean up the following includecheck warning:
+Daniel Axtens <dja@axtens.net> writes:
+> Hi
+>
+>> -static char __init *prom_strcpy(char *dest, const char *src)
+>> +static ssize_t __init prom_strscpy_pad(char *dest, const char *src, size_t n)
+>>  {
+>> -	char *tmp = dest;
+>> +	ssize_t rc;
+>> +	size_t i;
+>>  
+>> -	while ((*dest++ = *src++) != '\0')
+>> -		/* nothing */;
+>> -	return tmp;
+>> +	if (n == 0 || n > INT_MAX)
+>> +		return -E2BIG;
+>> +
+>> +	// Copy up to n bytes
+>> +	for (i = 0; i < n && src[i] != '\0'; i++)
+>> +		dest[i] = src[i];
+>> +
+>> +	rc = i;
+>> +
+>> +	// If we copied all n then we have run out of space for the nul
+>> +	if (rc == n) {
+>> +		// Rewind by one character to ensure nul termination
+>> +		i--;
+>> +		rc = -E2BIG;
+>> +	}
+>> +
+>> +	for (; i < n; i++)
+>> +		dest[i] = '\0';
+>> +
+>> +	return rc;
+>>  }
+>>  
+>
+> This implementation seems good to me.
+>
+> I copied it into a new C file and added the following:
+>
+> int main() {
+> 	char longstr[255]="abcdefghijklmnopqrstuvwxyz";
+> 	char shortstr[5];
+> 	assert(prom_strscpy_pad(longstr, "", 0) == -E2BIG);
+> 	assert(prom_strscpy_pad(longstr, "hello", 255) == 5);
+> 	assert(prom_strscpy_pad(shortstr, "hello", 5) == -E2BIG);
+> 	assert(memcmp(shortstr, "hell", 5) == 0);
+> 	assert(memcmp(longstr, "hello\0\0\0\0\0\0\0\0\0", 6) == 0);
+> 	return 0;
+> }
+>
+> All the assertions pass. I believe this covers all the conditions from
+> the strscpy_pad docstring.
+>
+> Reviewed-by: Daniel Axtens <dja@axtens.net>
 
-./arch/powerpc/kernel/interrupt.c: asm/interrupt.h is included more than
-once.
+Thanks.
 
-No functional change.
+I'll also drop the explicit nul termination in patch 2, which is a
+leftover from when I was using strncpy().
 
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
----
- arch/powerpc/kernel/interrupt.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
-index e0938ba..557ec14 100644
---- a/arch/powerpc/kernel/interrupt.c
-+++ b/arch/powerpc/kernel/interrupt.c
-@@ -7,7 +7,6 @@
- #include <asm/asm-prototypes.h>
- #include <asm/kup.h>
- #include <asm/cputime.h>
--#include <asm/interrupt.h>
- #include <asm/hw_irq.h>
- #include <asm/interrupt.h>
- #include <asm/kprobes.h>
--- 
-1.8.3.1
-
+cheers
