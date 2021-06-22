@@ -1,69 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13B943B060C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 15:43:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CE383B060D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 15:43:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G8SK56Jcsz3btG
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 23:43:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G8SKX5zGzz3cFh
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 23:43:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=E6TZRe1c;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=h5Ah6tVX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::72e;
- helo=mail-qk1-x72e.google.com; envelope-from=danielhb413@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::72c;
+ helo=mail-qk1-x72c.google.com; envelope-from=danielhb413@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=E6TZRe1c; dkim-atps=neutral
-Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com
- [IPv6:2607:f8b0:4864:20::72e])
+ header.s=20161025 header.b=h5Ah6tVX; dkim-atps=neutral
+Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com
+ [IPv6:2607:f8b0:4864:20::72c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G8SHl4qc4z300T
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 23:42:11 +1000 (AEST)
-Received: by mail-qk1-x72e.google.com with SMTP id bl4so3628389qkb.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 06:42:10 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G8SHn0JCHz305k
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 23:42:12 +1000 (AEST)
+Received: by mail-qk1-x72c.google.com with SMTP id j184so39564719qkd.6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 06:42:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=O/xPCHLexHplOss3tYuch9cg8PhqAWvilR52TXMA9Pc=;
- b=E6TZRe1ctY9C4Xk/af7g5Rs9fypN/SNoEANFmxDNoi893K8PPIZ9fXYQXkcG5lxdfR
- 5i6hdQqFZdbHUcAPNY96P6gPXl6rqru76bzHmWacwQOTXaw7ZC6pVjYADldqW9hO+P6y
- 4rn+37X9HphWwi6d4jiY7DIeaOYfTdTuY7TFGEypa5bcP+EBJOz32dyi1WBToT2uVpYj
- kGDao3p/nBf65Vu+EQ0rQMDwojvaKI2r87etUaJDNGKBm+hY1MVQL3QuWfR6/z1n8q4T
- +7guQzAFmfLvEzmoZAy2WQykKxMXnTBP8/0sNV5+dw+2xpjma0kshDDk9XQuODIjTkFK
- 2Ubw==
+ bh=wK+lz1570D3RMir3Ex4g5Tw3BeO1bUXSpe3zRlfRReY=;
+ b=h5Ah6tVXcrOG/KQ9kESA9h8hnIAWRDim8zgXZYMFM6VMbVO1p0sPq/JjRpGMr03cwQ
+ JrAn5Fhck4gbKSuW1AkLhNa/Ut0t/DjI0z3e3dj5fJC1aEGeEIw+ahaGmGDlecIw40XO
+ JxRhAAmhdLGoCy21cG+/Oij7eX8d5BsoouLlU35SySq1g3iUKSy0wPHdCDDTxNEOOlhf
+ Fam8WZcse8BM82HML0QOroQequa8/7xPfzAO/Jaei2flb+KHuuR4P4tVsdj1P8gfxfRr
+ mVsKj8mIWxBnL4+wDx5I0U6Fifxiyb7DWJl88xkJ3MdvbNQj0LH6N61Pvdf7bl+/zqAu
+ 1n1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=O/xPCHLexHplOss3tYuch9cg8PhqAWvilR52TXMA9Pc=;
- b=KsvgjKz8lMi+vSaNGxT/KTry83PvfBG0qgxdxYtFBjos+NT/pqeH0CYofUcrzKd0J9
- KWmEiztny+IgZz5pBTXDCv9D+sRY1oJvDpnvIkm8PWdztLtZRWhSJXvYrzCaTwo2P1of
- 1RVwIshre+MQJLDSy99uddociJfbOaZrSdDT+b+RCgpPRrV6mOTmudpEsq3Owx47WEx0
- /qAX//UsWf/IIkcVrrC7v+cn4rI6x7KlX0Jqx2Jy311Fqb5CHZzWj233N6U4h4OprTRC
- 905Ueo0ndR1WJGSIpngbp7zQk2BDiM3qp968RZZUKiIvRMyDb3eRnWGoIh0xz8etnKDW
- Dc1A==
-X-Gm-Message-State: AOAM530sgoZ4DEmxwXNAIXG6k+dt3sCmqqzB+VN1s4kc0hUutp4X79en
- VBxVj19UkeEQAwfCXVRZhON573mO3Rk=
-X-Google-Smtp-Source: ABdhPJxenOfjmEYcKZCej1kKUbC2k7Xz/wED+d2S8dRusHkmKPC5NdzJxJc32FnTuRSW5h0B3t7mEw==
-X-Received: by 2002:a37:6712:: with SMTP id b18mr4341086qkc.491.1624369327837; 
- Tue, 22 Jun 2021 06:42:07 -0700 (PDT)
+ bh=wK+lz1570D3RMir3Ex4g5Tw3BeO1bUXSpe3zRlfRReY=;
+ b=kxMHNBUwud7KmEgQ8otz5njN+w1VPbGvZdrWAPeU/O0P+abINTYvJBHQv8lD2HmyD0
+ bG14ntinyWEXPzo9e/phY229OaA6iKJKrG92mq0AzMiju+fmLtO3pFtUMa7RK8VsFBBC
+ POeAbcgAavwIhX5rp/FXLCS42SFM1awabN2vqqgqAnPVI3w4d7IDgGBqZMnQFVdxNKtQ
+ lg526z7pkyRHdiEL4exFmwop1M/ynDojDeB2NUgpVgizft2u57EkmmBaDeQy4yOsl67N
+ NFUYz/uoC01JgRH+6lb6UupOHqiU00JFXhoGL3Hqp5bVPwzM2SCw+9zPrZ1nN9PyDFjF
+ WZMQ==
+X-Gm-Message-State: AOAM533ERjd+k/SUQW+6O8i0hrwPtwhG7olSalxOpJtRPBW0y51XU7gq
+ qlZJpl+0KZj9rRhi3Y+yklh9rrIdQ0k=
+X-Google-Smtp-Source: ABdhPJyV+H/bbfAFWx7yup2l6fbihf4Zx/p1/fqDMCJZYnbl9ncVNYB8kk7DANpF5M59DqZXe0U5Pw==
+X-Received: by 2002:a37:9bc3:: with SMTP id d186mr4480073qke.14.1624369329478; 
+ Tue, 22 Jun 2021 06:42:09 -0700 (PDT)
 Received: from localhost.localdomain ([191.19.29.157])
- by smtp.gmail.com with ESMTPSA id r19sm1644491qtw.59.2021.06.22.06.42.05
+ by smtp.gmail.com with ESMTPSA id r19sm1644491qtw.59.2021.06.22.06.42.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 22 Jun 2021 06:42:07 -0700 (PDT)
+ Tue, 22 Jun 2021 06:42:09 -0700 (PDT)
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 2/3] powerpc/pseries: break early in
- dlpar_memory_add_by_count() loops
-Date: Tue, 22 Jun 2021 10:39:22 -0300
-Message-Id: <20210622133923.295373-3-danielhb413@gmail.com>
+Subject: [PATCH 3/3] powerpc/pseries: fail quicker in dlpar_memory_add_by_ic()
+Date: Tue, 22 Jun 2021 10:39:23 -0300
+Message-Id: <20210622133923.295373-4-danielhb413@gmail.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210622133923.295373-1-danielhb413@gmail.com>
 References: <20210622133923.295373-1-danielhb413@gmail.com>
@@ -85,77 +84,53 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-After a successful dlpar_add_lmb() call the LMB is marked as reserved.
-Later on, depending whether we added enough LMBs or not, we rely on
-the marked LMBs to see which ones might need to be removed, and we
-remove the reservation of all of them.
+The validation done at the start of dlpar_memory_add_by_ic() is an all
+of nothing scenario - if any LMBs in the range is marked as RESERVED we
+can fail right away.
 
-These are done in for_each_drmem_lmb() loops without any break
-condition. This means that we're going to check all LMBs of the partition
-even after going through all the reserved ones.
-
-This patch adds break conditions in both loops to avoid this. The
-'lmbs_added' variable was renamed to 'lmbs_reserved', and it's now
-being decremented each time a lmb reservation is removed, indicating
-if there are still marked LMBs to be processed.
+We then can remove the 'lmbs_available' var and its check with
+'lmbs_to_add' since the whole LMB range was already validated in the
+previous step.
 
 Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 ---
- arch/powerpc/platforms/pseries/hotplug-memory.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ arch/powerpc/platforms/pseries/hotplug-memory.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
 diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-index 28a7fd90232f..c0a03e1537cb 100644
+index c0a03e1537cb..377d852f5a9a 100644
 --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
 +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-@@ -673,7 +673,7 @@ static int dlpar_memory_add_by_count(u32 lmbs_to_add)
+@@ -796,7 +796,6 @@ static int dlpar_memory_add_by_index(u32 drc_index)
+ static int dlpar_memory_add_by_ic(u32 lmbs_to_add, u32 drc_index)
  {
- 	struct drmem_lmb *lmb;
- 	int lmbs_available = 0;
--	int lmbs_added = 0;
-+	int lmbs_reserved = 0;
+ 	struct drmem_lmb *lmb, *start_lmb, *end_lmb;
+-	int lmbs_available = 0;
  	int rc;
  
- 	pr_info("Attempting to hot-add %d LMB(s)\n", lmbs_to_add);
-@@ -714,13 +714,12 @@ static int dlpar_memory_add_by_count(u32 lmbs_to_add)
- 		 * requested LMBs cannot be added.
- 		 */
- 		drmem_mark_lmb_reserved(lmb);
+ 	pr_info("Attempting to hot-add %u LMB(s) at index %x\n",
+@@ -811,15 +810,14 @@ static int dlpar_memory_add_by_ic(u32 lmbs_to_add, u32 drc_index)
+ 
+ 	/* Validate that the LMBs in this range are not reserved */
+ 	for_each_drmem_lmb_in_range(lmb, start_lmb, end_lmb) {
+-		if (lmb->flags & DRCONF_MEM_RESERVED)
+-			break;
 -
--		lmbs_added++;
--		if (lmbs_added == lmbs_to_add)
-+		lmbs_reserved++;
-+		if (lmbs_reserved == lmbs_to_add)
- 			break;
+-		lmbs_available++;
++		/* Fail immediately if the whole range can't be hot-added */
++		if (lmb->flags & DRCONF_MEM_RESERVED) {
++			pr_err("Memory at %llx (drc index %x) is reserved\n",
++					lmb->base_addr, lmb->drc_index);
++			return -EINVAL;
++		}
  	}
  
--	if (lmbs_added != lmbs_to_add) {
-+	if (lmbs_reserved != lmbs_to_add) {
- 		pr_err("Memory hot-add failed, removing any added LMBs\n");
- 
- 		for_each_drmem_lmb(lmb) {
-@@ -735,6 +734,10 @@ static int dlpar_memory_add_by_count(u32 lmbs_to_add)
- 				dlpar_release_drc(lmb->drc_index);
- 
- 			drmem_remove_lmb_reservation(lmb);
-+			lmbs_reserved--;
-+
-+			if (lmbs_reserved == 0)
-+				break;
- 		}
- 		rc = -EINVAL;
- 	} else {
-@@ -745,6 +748,10 @@ static int dlpar_memory_add_by_count(u32 lmbs_to_add)
- 			pr_debug("Memory at %llx (drc index %x) was hot-added\n",
- 				 lmb->base_addr, lmb->drc_index);
- 			drmem_remove_lmb_reservation(lmb);
-+			lmbs_reserved--;
-+
-+			if (lmbs_reserved == 0)
-+				break;
- 		}
- 		rc = 0;
- 	}
+-	if (lmbs_available < lmbs_to_add)
+-		return -EINVAL;
+-
+ 	for_each_drmem_lmb_in_range(lmb, start_lmb, end_lmb) {
+ 		if (lmb->flags & DRCONF_MEM_ASSIGNED)
+ 			continue;
 -- 
 2.31.1
 
