@@ -2,106 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1518B3B0AB1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 18:52:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 606EB3B0C9C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 20:11:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G8XWn5n62z309T
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jun 2021 02:52:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G8ZGj1JdXz3bv1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jun 2021 04:11:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PaGmhVjn;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PaGmhVjn;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LTFHORKV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=PaGmhVjn; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=PaGmhVjn; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=LTFHORKV; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G8XWK3Kt9z2xgN
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jun 2021 02:52:27 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1624380735;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=4P1PfITd6m9CRCYryDXbjzGuOd03lvZO6GwMrQOOd8k=;
- b=PaGmhVjnMmR7KsW0LVJyuFL62EUcIP7TXELQiLg/KG8xtUV7b3feYBsgF8F30LPMvU3p+m
- FwvuMCIAJVKpeZwrVxpgKdwd2JvH2aTi9ZmTEbT3UkcWyARTwDDA6liN+44fQoRlFXZIxo
- G1dxZytNv3rqNXWx1ISsybAUmi+3hkM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1624380735;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=4P1PfITd6m9CRCYryDXbjzGuOd03lvZO6GwMrQOOd8k=;
- b=PaGmhVjnMmR7KsW0LVJyuFL62EUcIP7TXELQiLg/KG8xtUV7b3feYBsgF8F30LPMvU3p+m
- FwvuMCIAJVKpeZwrVxpgKdwd2JvH2aTi9ZmTEbT3UkcWyARTwDDA6liN+44fQoRlFXZIxo
- G1dxZytNv3rqNXWx1ISsybAUmi+3hkM=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-7-gPuSonJMMaS2CEhR4O1eew-1; Tue, 22 Jun 2021 12:52:12 -0400
-X-MC-Unique: gPuSonJMMaS2CEhR4O1eew-1
-Received: by mail-wr1-f71.google.com with SMTP id
- h104-20020adf90710000b029010de8455a3aso9978544wrh.12
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 09:52:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=4P1PfITd6m9CRCYryDXbjzGuOd03lvZO6GwMrQOOd8k=;
- b=iKqVRMFZ+n4g+fy1+md7kkIklmDaUC/ztsLTC4VvIa1QeS3g/YhlvCEXBFpsX+9xMt
- ZUEO/glIlWhZVK0JtJWG8PmftgUmLrQumgPZdw9FitCXZB/6+43cYJmMPAVHDX2RQ9Ck
- 6iKW7DVRYQEXoH29wvckBfsPSaYydhclFj89wjWiuoUifQNsF0ZctFa0+GjVEujVCmW2
- fxcFGPUYBvSlik1o+s6UrAReF18QJyh/9FNf/Juf2WYU5PSLevA5umeytrM4M+8zRXgt
- uYsmbZlq7gQRtUSGN4+0R3Yu84zAqQg0iVSDjJapbykAoVqRUkpWZmjpEfsGaKZjlYje
- 8XVQ==
-X-Gm-Message-State: AOAM53074LsH9q/FhYLgR2ydI9BQyGTdCUm+mYQcaCo72MKA5eAJkQKv
- RUH0NppVCNF3l/efpoQCu3X4y/OdFto4viuxKco9BqKwg02ekrneRdRb+hH9PZq5TUlOzT/nzL7
- SYNGzP6JsFUEGg5SSmTlhKBZbbA==
-X-Received: by 2002:a5d:4904:: with SMTP id x4mr5939008wrq.202.1624380731269; 
- Tue, 22 Jun 2021 09:52:11 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzHwvAETSGbesb6gzKh+dnovh/8/FzEzs9O+mu8f0VjdUXRziEiWzP7ITmfJWkfwxeiQrPAIQ==
-X-Received: by 2002:a5d:4904:: with SMTP id x4mr5938982wrq.202.1624380731048; 
- Tue, 22 Jun 2021 09:52:11 -0700 (PDT)
-Received: from ?IPv6:2001:b07:6468:f312:c8dd:75d4:99ab:290a?
- ([2001:b07:6468:f312:c8dd:75d4:99ab:290a])
- by smtp.gmail.com with ESMTPSA id n18sm3132025wmq.41.2021.06.22.09.52.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 22 Jun 2021 09:52:10 -0700 (PDT)
-Subject: Re: linux-next: manual merge of the kvm tree with the powerpc tree
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Stephen Rothwell <sfr@canb.auug.org.au>, KVM <kvm@vger.kernel.org>,
- PowerPC <linuxppc-dev@lists.ozlabs.org>
-References: <20210622152544.74e01567@canb.auug.org.au>
- <9c2dbe56-4c64-0032-0acb-2e2925c7a2ab@redhat.com>
- <871r8u2bqp.fsf@mpe.ellerman.id.au>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <479d2898-07d6-9a40-70e5-f33c91943d52@redhat.com>
-Date: Tue, 22 Jun 2021 18:52:09 +0200
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G8ZGB3BFqz2xtt
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jun 2021 04:11:13 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 15MI4CQo015335; Tue, 22 Jun 2021 14:11:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to :
+ references : from : message-id : date : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=1Jzec6T7FNSjIG24Whnf1n6RMSj5j+FV/Q+0nTzBQdM=;
+ b=LTFHORKVXam7FUPr/5h/zu8Jz6rHOBXEi4DSBuo0NSLAnw9g/lFBAfcKlzWsH2d7AWX2
+ 47TozWcKo3Deah0LpW990wngmI5NA8DgdekquLDrxFnGrjIV3FMk9kdJviEdvdev7Hj/
+ Q5SpF9hbSYQ83XqOoaChxYLXRWp/x1yGMqEXlHMGC58JHS7o/D6+bOFKZPPmtSzMhx2G
+ k/Tg8mM14lrF8Zs5p4GFEgQ824RyHc8X2t/GKzEPRMneCGw7a180Pdoc0BKyEc2Hd/JF
+ 8vncitBNeoTELsTyMTvjrRq7i94FmN+vwHT6ui7s2dahaYslcEVgaxsaoLfB/jJrwjMU yg== 
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 39bmsyr6q6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 22 Jun 2021 14:11:04 -0400
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15MI30PT022865;
+ Tue, 22 Jun 2021 18:11:03 GMT
+Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
+ [9.57.198.26]) by ppma04wdc.us.ibm.com with ESMTP id 3998799y15-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 22 Jun 2021 18:11:03 +0000
+Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
+ [9.57.199.108])
+ by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 15MIB2oD7340852
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 22 Jun 2021 18:11:02 GMT
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CA248B2066;
+ Tue, 22 Jun 2021 18:11:02 +0000 (GMT)
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5ED43B206B;
+ Tue, 22 Jun 2021 18:11:02 +0000 (GMT)
+Received: from oc6857751186.ibm.com (unknown [9.65.216.48])
+ by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue, 22 Jun 2021 18:11:02 +0000 (GMT)
+Subject: Re: [PATCH 2/2] powerpc/prom_init: Pass linux_banner to firmware via
+ option vector 7
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+References: <20210621064938.2021419-1-mpe@ellerman.id.au>
+ <20210621064938.2021419-2-mpe@ellerman.id.au>
+From: Tyrel Datwyler <tyreld@linux.ibm.com>
+Message-ID: <bead9552-1e5c-2485-0463-4d161cce2a1f@linux.ibm.com>
+Date: Tue, 22 Jun 2021 11:11:01 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
-MIME-Version: 1.0
-In-Reply-To: <871r8u2bqp.fsf@mpe.ellerman.id.au>
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=pbonzini@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8; format=flowed
+ Thunderbird/78.10.0
+In-Reply-To: <20210621064938.2021419-2-mpe@ellerman.id.au>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: ouX8t6eEkjx8GM5_0YtdkfqdVbX2-nTs
+X-Proofpoint-GUID: ouX8t6eEkjx8GM5_0YtdkfqdVbX2-nTs
 Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-06-22_11:2021-06-22,
+ 2021-06-22 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0
+ priorityscore=1501 clxscore=1011 lowpriorityscore=0 suspectscore=0
+ mlxscore=0 spamscore=0 mlxlogscore=999 phishscore=0 impostorscore=0
+ adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2106220111
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,34 +104,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ashish Kalra <ashish.kalra@amd.com>, Brijesh Singh <brijesh.singh@amd.com>,
- Sean Christopherson <seanjc@google.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Maxim Levitsky <mlevitsk@redhat.com>,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, Bharata B Rao <bharata@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 22/06/21 16:51, Michael Ellerman wrote:
->> Please drop the patches at
->> https://www.spinics.net/lists/kvm-ppc/msg18666.html  from the powerpc
->> tree, and merge them through either the kvm-powerpc or kvm trees.
-> The kvm-ppc tree is not taking patches at the moment.
-
-If so, let's remove the "T" entry from MAINTAINERS and add an entry for 
-the kvm@vger.kernel.org mailing list.
-
->   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/log/?h=topic/ppc-kvm
+On 6/20/21 11:49 PM, Michael Ellerman wrote:
+> Pass the value of linux_banner to firmware via option vector 7.
 > 
-> The commit Stephen mentioned has been rebased since to squash in a fix.
-> But what is in the topic branch is now final, I won't rebase what's
-> there.
+> Option vector 7 is described in "LoPAR" Linux on Power Architecture
+> Reference v2.9, in table B.7 on page 824:
+> 
+>   An ASCII character formatted null terminated string that describes
+>   the client operating system. The string shall be human readable and
+>   may be displayed on the console.
+> 
+> The string can be up to 256 bytes total, including the nul terminator.
+> 
+> linux_banner contains lots of information, and should make it possible
+> to identify the exact kernel version that is running:
+> 
+>   const char linux_banner[] =
+>   "Linux version " UTS_RELEASE " (" LINUX_COMPILE_BY "@"
+>   LINUX_COMPILE_HOST ") (" LINUX_COMPILER ") " UTS_VERSION "\n";
+> 
+> For example:
+>   Linux version 4.15.0-144-generic (buildd@bos02-ppc64el-018) (gcc
+>   version 7.5.0 (Ubuntu 7.5.0-3ubuntu1~18.04)) #148-Ubuntu SMP Sat May 8
+>   02:32:13 UTC 2021 (Ubuntu 4.15.0-144.148-generic 4.15.18)
+> 
+> It's also printed at boot to the console/dmesg, which should make it
+> possible to correlate what firmware receives with the console/dmesg on
+> the machine.
+> 
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> ---
+> 
+> NB. linux_banner is already allowed by prom_init_check.sh
+> 
+> LoPAR: https://openpowerfoundation.org/?resource_lib=linux-on-power-architecture-reference-a-papr-linux-subset-review-draft
+> ---
+>  arch/powerpc/kernel/prom_init.c | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+> 
+> diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+> index c18d55f8b951..7343076b261c 100644
+> --- a/arch/powerpc/kernel/prom_init.c
+> +++ b/arch/powerpc/kernel/prom_init.c
+> @@ -27,6 +27,7 @@
+>  #include <linux/initrd.h>
+>  #include <linux/bitops.h>
+>  #include <linux/pgtable.h>
+> +#include <linux/printk.h>
+>  #include <asm/prom.h>
+>  #include <asm/rtas.h>
+>  #include <asm/page.h>
+> @@ -944,6 +945,10 @@ struct option_vector6 {
+>  	u8 os_name;
+>  } __packed;
+> 
+> +struct option_vector7 {
+> +	u8 os_id[256];
+> +} __packed;
+> +
+>  struct ibm_arch_vec {
+>  	struct { u32 mask, val; } pvrs[14];
+> 
+> @@ -966,6 +971,9 @@ struct ibm_arch_vec {
+> 
+>  	u8 vec6_len;
+>  	struct option_vector6 vec6;
+> +
+> +	u8 vec7_len;
+> +	struct option_vector7 vec7;
+>  } __packed;
+> 
+>  static const struct ibm_arch_vec ibm_architecture_vec_template __initconst = {
+> @@ -1112,6 +1120,9 @@ static const struct ibm_arch_vec ibm_architecture_vec_template __initconst = {
+>  		.secondary_pteg = 0,
+>  		.os_name = OV6_LINUX,
+>  	},
+> +
+> +	/* option vector 7: OS Identification */
+> +	.vec7_len = VECTOR_LENGTH(sizeof(struct option_vector7)),
+>  };
+> 
+>  static struct ibm_arch_vec __prombss ibm_architecture_vec  ____cacheline_aligned;
+> @@ -1340,6 +1351,10 @@ static void __init prom_check_platform_support(void)
+>  	memcpy(&ibm_architecture_vec, &ibm_architecture_vec_template,
+>  	       sizeof(ibm_architecture_vec));
+> 
+> +	prom_strscpy_pad(ibm_architecture_vec.vec7.os_id, linux_banner, 256);
+> +	// Ensure nul termination
+> +	ibm_architecture_vec.vec7.os_id[255] = '\0';
+> +
 
-Thanks, I pulled it.  Anyway, if the workflow is not the one indicated 
-by MAINTAINERS it's never a bad idea to Cc more people when applying 
-patches.
+Doesn't the implementation of prom_strscpy_pad() in patch 1 ensure nul termination?
 
-Paolo
+-Tyrel
+
+>  	if (prop_len > 1) {
+>  		int i;
+>  		u8 vec[8];
+> 
 
