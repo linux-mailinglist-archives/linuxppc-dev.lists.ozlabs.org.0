@@ -1,83 +1,107 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42BC93B09E2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 18:04:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1518B3B0AB1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jun 2021 18:52:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G8WSL6bV4z3bt2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jun 2021 02:04:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G8XWn5n62z309T
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jun 2021 02:52:53 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=m6F2DQsu;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PaGmhVjn;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PaGmhVjn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::82a;
- helo=mail-qt1-x82a.google.com; envelope-from=danielhb413@gmail.com;
+ smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=m6F2DQsu; dkim-atps=neutral
-Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com
- [IPv6:2607:f8b0:4864:20::82a])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=PaGmhVjn; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=PaGmhVjn; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G8WRt10DZz2y0L
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jun 2021 02:04:24 +1000 (AEST)
-Received: by mail-qt1-x82a.google.com with SMTP id l2so13643290qtq.10
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 09:04:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=entKCWTDI9Bsx8G18PcOmZjK1E0yazSY3D3dLmYcAtQ=;
- b=m6F2DQsuLQmIwxjZ2P6To3E2S1tzE/qmUOh/wVNuWDOoyynxL7ExI2EsNSqjtogUDL
- CSf0i4/IYS9fGrXm9hfo/JCfkfWRdFmwVp7DdfTdjM0ciYuRXwidipCciIfVhPVHeF6n
- YyU9S7BkDc4NuJrPKWPq8xoglzrJ6WzgrFVlPULgYzEkiQK2Q1ClNl+I/bAajzolr4f+
- g7O1ljrlaYI1DGp7D5tRbrYKam1Dfj5CkrkTl0LMipuCWVhT/4ASAeKEL1cmamNcxmQz
- k2cx/HfaAbyB+QkjnVRJPptlQqq9ILHARSsaQ85TpZB2Eye1HWRSEArIB4vVb6hMRlkB
- sEaA==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G8XWK3Kt9z2xgN
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jun 2021 02:52:27 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1624380735;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=4P1PfITd6m9CRCYryDXbjzGuOd03lvZO6GwMrQOOd8k=;
+ b=PaGmhVjnMmR7KsW0LVJyuFL62EUcIP7TXELQiLg/KG8xtUV7b3feYBsgF8F30LPMvU3p+m
+ FwvuMCIAJVKpeZwrVxpgKdwd2JvH2aTi9ZmTEbT3UkcWyARTwDDA6liN+44fQoRlFXZIxo
+ G1dxZytNv3rqNXWx1ISsybAUmi+3hkM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1624380735;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=4P1PfITd6m9CRCYryDXbjzGuOd03lvZO6GwMrQOOd8k=;
+ b=PaGmhVjnMmR7KsW0LVJyuFL62EUcIP7TXELQiLg/KG8xtUV7b3feYBsgF8F30LPMvU3p+m
+ FwvuMCIAJVKpeZwrVxpgKdwd2JvH2aTi9ZmTEbT3UkcWyARTwDDA6liN+44fQoRlFXZIxo
+ G1dxZytNv3rqNXWx1ISsybAUmi+3hkM=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-7-gPuSonJMMaS2CEhR4O1eew-1; Tue, 22 Jun 2021 12:52:12 -0400
+X-MC-Unique: gPuSonJMMaS2CEhR4O1eew-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ h104-20020adf90710000b029010de8455a3aso9978544wrh.12
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 09:52:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:message-id:date
  :user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=entKCWTDI9Bsx8G18PcOmZjK1E0yazSY3D3dLmYcAtQ=;
- b=fpS+5RokFnY+pXpFMNYWhKnbSMSS0MSeykJqOTy2F9asDX9nhSY1dXqKIFtNHt7I0v
- N1mCczmfK64iyqNjPd+xPXoVVaZq4jTxDSsjUdda1nKZBnIWmreYQkaAsSnvlt1GfIBt
- 5dUUU/3IfDWdCfjcH/Vn2I9XNmG5f0MVFKkfVKRLID2swOwJuBNVh5owwnCvDvt9A3LD
- +sQEM+he3/Fap9ecsjlyJgwaK6hbRMU5Dl/H/rP9bm8Cdh1tJa71EYo013Fz8BKZYqmR
- uMlzdskhxPDDftgljfdw+hoW1gfrylX5C3HeYJqsX1WfDcBqH7WjBs+CPwzEs0PijL4W
- gVrQ==
-X-Gm-Message-State: AOAM532rzuEsKBOAX6ET+SBqk/UpbG7WejI6SxHbGVYskD0bXAVn/GMN
- c5BivKLE6szVL7cbn7DlVxo=
-X-Google-Smtp-Source: ABdhPJzmbO1PeH1ptJ21Np2FuC+8Yx5Y24XBZOPpIKg7ohwAZiJc2nsExXKAOkdAcvpxr9wci8MLgA==
-X-Received: by 2002:ac8:5994:: with SMTP id e20mr2961807qte.262.1624377858768; 
- Tue, 22 Jun 2021 09:04:18 -0700 (PDT)
-Received: from ?IPv6:2804:431:c7c6:59e4:b479:6e4f:abba:619e?
- ([2804:431:c7c6:59e4:b479:6e4f:abba:619e])
- by smtp.gmail.com with ESMTPSA id z6sm12945610qke.24.2021.06.22.09.04.16
+ bh=4P1PfITd6m9CRCYryDXbjzGuOd03lvZO6GwMrQOOd8k=;
+ b=iKqVRMFZ+n4g+fy1+md7kkIklmDaUC/ztsLTC4VvIa1QeS3g/YhlvCEXBFpsX+9xMt
+ ZUEO/glIlWhZVK0JtJWG8PmftgUmLrQumgPZdw9FitCXZB/6+43cYJmMPAVHDX2RQ9Ck
+ 6iKW7DVRYQEXoH29wvckBfsPSaYydhclFj89wjWiuoUifQNsF0ZctFa0+GjVEujVCmW2
+ fxcFGPUYBvSlik1o+s6UrAReF18QJyh/9FNf/Juf2WYU5PSLevA5umeytrM4M+8zRXgt
+ uYsmbZlq7gQRtUSGN4+0R3Yu84zAqQg0iVSDjJapbykAoVqRUkpWZmjpEfsGaKZjlYje
+ 8XVQ==
+X-Gm-Message-State: AOAM53074LsH9q/FhYLgR2ydI9BQyGTdCUm+mYQcaCo72MKA5eAJkQKv
+ RUH0NppVCNF3l/efpoQCu3X4y/OdFto4viuxKco9BqKwg02ekrneRdRb+hH9PZq5TUlOzT/nzL7
+ SYNGzP6JsFUEGg5SSmTlhKBZbbA==
+X-Received: by 2002:a5d:4904:: with SMTP id x4mr5939008wrq.202.1624380731269; 
+ Tue, 22 Jun 2021 09:52:11 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzHwvAETSGbesb6gzKh+dnovh/8/FzEzs9O+mu8f0VjdUXRziEiWzP7ITmfJWkfwxeiQrPAIQ==
+X-Received: by 2002:a5d:4904:: with SMTP id x4mr5938982wrq.202.1624380731048; 
+ Tue, 22 Jun 2021 09:52:11 -0700 (PDT)
+Received: from ?IPv6:2001:b07:6468:f312:c8dd:75d4:99ab:290a?
+ ([2001:b07:6468:f312:c8dd:75d4:99ab:290a])
+ by smtp.gmail.com with ESMTPSA id n18sm3132025wmq.41.2021.06.22.09.52.09
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 22 Jun 2021 09:04:18 -0700 (PDT)
-Subject: Re: [PATCH v4 7/7] powerpc/pseries: Add support for FORM2
- associativity
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-References: <20210617165105.574178-1-aneesh.kumar@linux.ibm.com>
- <20210617165105.574178-8-aneesh.kumar@linux.ibm.com>
- <e500697d-1866-538c-eaff-613e04a92c93@gmail.com>
- <87mtrihzl0.fsf@linux.ibm.com>
-From: Daniel Henrique Barboza <danielhb413@gmail.com>
-Message-ID: <f3e9ac91-fcaa-4ab5-efc8-71f3576b1e96@gmail.com>
-Date: Tue, 22 Jun 2021 13:04:14 -0300
+ Tue, 22 Jun 2021 09:52:10 -0700 (PDT)
+Subject: Re: linux-next: manual merge of the kvm tree with the powerpc tree
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Stephen Rothwell <sfr@canb.auug.org.au>, KVM <kvm@vger.kernel.org>,
+ PowerPC <linuxppc-dev@lists.ozlabs.org>
+References: <20210622152544.74e01567@canb.auug.org.au>
+ <9c2dbe56-4c64-0032-0acb-2e2925c7a2ab@redhat.com>
+ <871r8u2bqp.fsf@mpe.ellerman.id.au>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <479d2898-07d6-9a40-70e5-f33c91943d52@redhat.com>
+Date: Tue, 22 Jun 2021 18:52:09 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-In-Reply-To: <87mtrihzl0.fsf@linux.ibm.com>
+In-Reply-To: <871r8u2bqp.fsf@mpe.ellerman.id.au>
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=pbonzini@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,287 +113,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, nvdimm@lists.linux.dev,
- dan.j.williams@intel.com, David Gibson <david@gibson.dropbear.id.au>
+Cc: Ashish Kalra <ashish.kalra@amd.com>, Brijesh Singh <brijesh.singh@amd.com>,
+ Sean Christopherson <seanjc@google.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Maxim Levitsky <mlevitsk@redhat.com>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, Bharata B Rao <bharata@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 22/06/21 16:51, Michael Ellerman wrote:
+>> Please drop the patches at
+>> https://www.spinics.net/lists/kvm-ppc/msg18666.html  from the powerpc
+>> tree, and merge them through either the kvm-powerpc or kvm trees.
+> The kvm-ppc tree is not taking patches at the moment.
 
+If so, let's remove the "T" entry from MAINTAINERS and add an entry for 
+the kvm@vger.kernel.org mailing list.
 
-On 6/22/21 9:07 AM, Aneesh Kumar K.V wrote:
-> Daniel Henrique Barboza <danielhb413@gmail.com> writes:
+>   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/log/?h=topic/ppc-kvm
 > 
->> On 6/17/21 1:51 PM, Aneesh Kumar K.V wrote:
->>> PAPR interface currently supports two different ways of communicating resource
->>> grouping details to the OS. These are referred to as Form 0 and Form 1
->>> associativity grouping. Form 0 is the older format and is now considered
->>> deprecated. This patch adds another resource grouping named FORM2.
->>>
->>> Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
->>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->>> ---
->>>    Documentation/powerpc/associativity.rst   | 135 ++++++++++++++++++++
->>>    arch/powerpc/include/asm/firmware.h       |   3 +-
->>>    arch/powerpc/include/asm/prom.h           |   1 +
->>>    arch/powerpc/kernel/prom_init.c           |   3 +-
->>>    arch/powerpc/mm/numa.c                    | 149 +++++++++++++++++++++-
->>>    arch/powerpc/platforms/pseries/firmware.c |   1 +
->>>    6 files changed, 286 insertions(+), 6 deletions(-)
->>>    create mode 100644 Documentation/powerpc/associativity.rst
->>>
->>> diff --git a/Documentation/powerpc/associativity.rst b/Documentation/powerpc/associativity.rst
->>> new file mode 100644
->>> index 000000000000..93be604ac54d
->>> --- /dev/null
->>> +++ b/Documentation/powerpc/associativity.rst
->>> @@ -0,0 +1,135 @@
->>> +============================
->>> +NUMA resource associativity
->>> +=============================
->>> +
->>> +Associativity represents the groupings of the various platform resources into
->>> +domains of substantially similar mean performance relative to resources outside
->>> +of that domain. Resources subsets of a given domain that exhibit better
->>> +performance relative to each other than relative to other resources subsets
->>> +are represented as being members of a sub-grouping domain. This performance
->>> +characteristic is presented in terms of NUMA node distance within the Linux kernel.
->>> +From the platform view, these groups are also referred to as domains.
->>> +
->>> +PAPR interface currently supports different ways of communicating these resource
->>> +grouping details to the OS. These are referred to as Form 0, Form 1 and Form2
->>> +associativity grouping. Form 0 is the older format and is now considered deprecated.
->>> +
->>> +Hypervisor indicates the type/form of associativity used via "ibm,arcitecture-vec-5 property".
->>> +Bit 0 of byte 5 in the "ibm,architecture-vec-5" property indicates usage of Form 0 or Form 1.
->>> +A value of 1 indicates the usage of Form 1 associativity. For Form 2 associativity
->>> +bit 2 of byte 5 in the "ibm,architecture-vec-5" property is used.
->>> +
->>> +Form 0
->>> +-----
->>> +Form 0 associativity supports only two NUMA distance (LOCAL and REMOTE).
->>> +
->>> +Form 1
->>> +-----
->>> +With Form 1 a combination of ibm,associativity-reference-points and ibm,associativity
->>> +device tree properties are used to determine the NUMA distance between resource groups/domains.
->>> +
->>> +The “ibm,associativity” property contains one or more lists of numbers (domainID)
->>> +representing the resource’s platform grouping domains.
->>> +
->>> +The “ibm,associativity-reference-points” property contains one or more list of numbers
->>> +(domainID index) that represents the 1 based ordinal in the associativity lists.
->>> +The list of domainID index represnets increasing hierachy of resource grouping.
->>> +
->>> +ex:
->>> +{ primary domainID index, secondary domainID index, tertiary domainID index.. }
->>> +
->>> +Linux kernel uses the domainID at the primary domainID index as the NUMA node id.
->>> +Linux kernel computes NUMA distance between two domains by recursively comparing
->>> +if they belong to the same higher-level domains. For mismatch at every higher
->>> +level of the resource group, the kernel doubles the NUMA distance between the
->>> +comparing domains.
->>> +
->>> +Form 2
->>> +-------
->>> +Form 2 associativity format adds separate device tree properties representing NUMA node distance
->>> +thereby making the node distance computation flexible. Form 2 also allows flexible primary
->>> +domain numbering. With numa distance computation now detached from the index value of
->>> +"ibm,associativity" property, Form 2 allows a large number of primary domain ids at the
->>> +same domainID index representing resource groups of different performance/latency characteristics.
->>> +
->>> +Hypervisor indicates the usage of FORM2 associativity using bit 2 of byte 5 in the
->>> +"ibm,architecture-vec-5" property.
->>> +
->>> +"ibm,numa-lookup-index-table" property contains one or more list numbers representing
->>> +the domainIDs present in the system. The offset of the domainID in this property is considered
->>> +the domainID index.
->>> +
->>> +prop-encoded-array: The number N of the domainIDs encoded as with encode-int, followed by
->>> +N domainID encoded as with encode-int
->>> +
->>> +For ex:
->>> +ibm,numa-lookup-index-table =  {4, 0, 8, 250, 252}, domainID index for domainID 8 is 1.
->>> +
->>> +"ibm,numa-distance-table" property contains one or more list of numbers representing the NUMA
->>> +distance between resource groups/domains present in the system.
->>> +
->>> +prop-encoded-array: The number N of the distance values encoded as with encode-int, followed by
->>> +N distance values encoded as with encode-bytes. The max distance value we could encode is 255.
->>> +
->>> +For ex:
->>> +ibm,numa-lookup-index-table =  {3, 0, 8, 40}
->>> +ibm,numa-distance-table     =  {9, 10, 20, 80, 20, 10, 160, 80, 160, 10}
->>> +
->>> +  | 0    8   40
->>> +--|------------
->>> +  |
->>> +0 | 10   20  80
->>> +  |
->>> +8 | 20   10  160
->>> +  |
->>> +40| 80   160  10
->>> +
->>> +
->>> +"ibm,associativity" property for resources in node 0, 8 and 40
->>> +
->>> +{ 3, 6, 7, 0 }
->>> +{ 3, 6, 9, 8 }
->>> +{ 3, 6, 7, 40}
->>> +
->>> +With "ibm,associativity-reference-points"  { 0x3 }
->>
->> With this configuration, would the following ibm,associativity arrays
->> also be valid?
->>
->>
->> { 3, 0, 0, 0 }
->> { 3, 0, 0, 8 }
->> { 3, 0, 0, 40}
->>
-> 
-> Yes
-> 
->> If yes, then we need a way to tell that the associativity domains assignment
->> are optional, and FORM2 relies solely on finding out the domainID of the
->> resource (0, 8 and 40) to retrieve the domainID index, and with this
->> index all performance metrics can be retrieved from the numa-* properties
->> (numa-distance-table, numa-bandwidth-table ...).
->>
-> 
-> Where do you suggest we clarify that? I agree that it is not explicitly
-> mentioned. But we describe the details of how we find the numa distance
-> with example in the document.
+> The commit Stephen mentioned has been rebased since to squash in a fix.
+> But what is in the topic branch is now final, I won't rebase what's
+> there.
 
+Thanks, I pulled it.  Anyway, if the workflow is not the one indicated 
+by MAINTAINERS it's never a bad idea to Cc more people when applying 
+patches.
 
-Perhaps something like this, right in the middle of the example:
+Paolo
 
-
-----------------
-
-(...)
-
-+  | 0    8   40
-+--|------------
-+  |
-+0 | 10   20  80
-+  |
-+8 | 20   10  160
-+  |
-+40| 80   160  10
-+
-+
-
-With "ibm,associativity-reference-points" equal to { 0x3 }, the domainID of
-each resource is located at index 3 of each ibm,associativity property:
-
-+{ 3, 6, 7, 0 }
-+{ 3, 6, 9, 8 }
-+{ 3, 6, 7, 40 }
-
-
-FORM2 requires the ibm,associativity array to contain the domainID of the
-resource, which is defined by the ibm,associativity-reference-points.
-Calculating the associativity domains of the remaining ibm,associativity
-elements is not obligatory. In this example, the following ibm,associativity
-arrays are also valid:
-
-{ 3, 0, 0, 0 }
-{ 3, 0, 0, 8 }
-{ 3, 0, 0, 40 }
-
-(...)
-
--------------
-
-
-> 
->> Retrieving the resource domainID is done by using ibm,associativity-reference-points.
->>
->> This will allow the platform to implement FORM2 such as:
->>
->> { 1, 0 }
->> { 1, 8 }
->> { 1, 40 }
->>    
->> - ref-points: { 0x1 }
->>
->> If the platform chooses to do so.
->>
-> 
-> That is correct.
-> 
->>
->>> +
->>> +Each resource (drcIndex) now also supports additional optional device tree properties.
->>> +These properties are marked optional because the platform can choose not to export
->>> +them and provide the system topology details using the earlier defined device tree
->>> +properties alone. The optional device tree properties are used when adding new resources
->>> +(DLPAR) and when the platform didn't provide the topology details of the domain which
->>> +contains the newly added resource during boot.
->>> +
->>> +"ibm,numa-lookup-index" property contains a number representing the domainID index to be used
->>> +when building the NUMA distance of the numa node to which this resource belongs. This can
->>> +be looked at as the index at which this new domainID would have appeared in
->>> +"ibm,numa-lookup-index-table" if the domain was present during boot. The domainID
->>> +of the new resource can be obtained from the existing "ibm,associativity" property. This
->>> +can be used to build distance information of a newly onlined NUMA node via DLPAR operation.
->>> +The value is 1 based array index value.
->>> +
->>> +prop-encoded-array: An integer encoded as with encode-int specifying the domainID index
->>> +
->>> +"ibm,numa-distance" property contains one or more list of numbers presenting the NUMA distance
->>> +from this resource domain to other resources.
->>> +
->>> +prop-encoded-array: The number N of the distance values encoded as with encode-int, followed by
->>> +N distance values encoded as with encode-bytes. The max distance value we could encode is 255.
->>> +
->>> +For ex:
->>> +ibm,associativity     = { 4, 5, 10, 50}
->>> +ibm,numa-lookup-index = { 4 }
->>> +ibm,numa-distance   =  {8, 160, 255, 80, 10, 160, 255, 80, 10}
->>> +
->>> +resulting in a new toplogy as below.
->>> +  | 0    8   40   50
->>> +--|------------------
->>> +  |
->>> +0 | 10   20  80   160
->>> +  |
->>> +8 | 20   10  160  255
->>> +  |
->>> +40| 80   160  10  80
->>> +  |
->>> +50| 160  255  80  10
->>> +
->>
->> I see there is no mention of the special PAPR SCM handling. I saw in
->> one of the your replies of v1:
->>
->> "Another option is to make sure that numa-distance-value is populated
->> such that PMEMB distance indicates it is closer to node0 when compared
->> to node1. ie, node_distance[40][0] < node_distance[40][1]. One could
->> possibly infer the grouping based on the distance value and not deepend
->> on ibm,associativity for that purpose."
->>
->>
->> Is that was we're supposed to do with PAPR SCM? I'm not sure how that
->> affects NVDIMM support in QEMU with FORM2.
->>
->>
-> 
-> yes that is what we are doing with this version of the patchset (v4)
-> version. We can drop the nvdimm specific changes from Qemu.
-
-
-I see. I'll drop the NVDIMM changes in the QEMU POC of FORM2 then.
-
-
-
-Thanks,
-
-
-Daniel
-
-> 
-> -aneesh
-> 
