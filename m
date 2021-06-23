@@ -1,78 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DAA03B1FA7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jun 2021 19:38:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0CD83B205F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jun 2021 20:38:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G99Tz1dnBz3bxd
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 03:38:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G9Bpx4C0wz3bxX
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 04:38:17 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=uged.al header.i=@uged.al header.a=rsa-sha256 header.s=google header.b=uyCNzWi7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pew0mCSt;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ugedal.com (client-ip=2607:f8b0:4864:20::732;
- helo=mail-qk1-x732.google.com; envelope-from=odin@ugedal.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=will@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=uged.al header.i=@uged.al header.a=rsa-sha256
- header.s=google header.b=uyCNzWi7; dkim-atps=neutral
-Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com
- [IPv6:2607:f8b0:4864:20::732])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=pew0mCSt; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G99TT3qYqz304G
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 03:38:03 +1000 (AEST)
-Received: by mail-qk1-x732.google.com with SMTP id w21so7156866qkb.9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jun 2021 10:38:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uged.al; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=B5o1VpdMcZrmQnyC6VaIuCe6zHlh4bhQF/lUKDsspdg=;
- b=uyCNzWi7QuYZIzhGrc5Gb0sdMjZK3o6D0PuYZzJifbcz5wgi1WYMMQLGlIjgLaTWiV
- Y4aa2KgTJlvAvMQgmqyviyjzKaEw0jufgBBV0MDw9vzaM9Nm4/BsgAmh0UmIq5qmRIVy
- iyjfe0Ng8PLGeYGk/YSVvr9pWYTZhy7WC/hqAWcRnXRZE1WQPk4VgRskrvGwvNKXusZ6
- b8mwxVPmkgqS0o8quY79rwRVrItOcHsvvrvnr7DBPQXwCW4lqX1En11ySqqyjWAaxLyp
- h2WPhz0s73bmvf73nVMXj6PPZv9uYKZleOl7R/tkmOjDmAT8zD5eKrJtiOqLI/E/rNkM
- mSZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=B5o1VpdMcZrmQnyC6VaIuCe6zHlh4bhQF/lUKDsspdg=;
- b=hvX4+ZStwvKdcAK+jslBfiHbLs44OYTpVO+SntXYg+nyIMBL62zMSK4nrNARKJRCME
- Rg/+0/NdzzSwpEV421g2r9xuNQT4kCqOoNZDv6J0+EHKyRbrGqgsZa6zKnCv0ifvFYmC
- TBK91DuH8/bzNTJ/R/5AZtqkzbTg8L9+VwbZyFJlVvDMYQmbppxlJ6iSoRIJNI/yz02g
- CI6O4axQacckVOHJyutPlNKumAHZT70bwO547I7e/OcAdXujPcY+b9LXRyeIjgOeidjH
- o5v2tw84gZiOYXQrt6jxhH3pMGcwmt0JhSIsDyXqGndC9PclR+V6UAnycv4TrCGUusRL
- ULzA==
-X-Gm-Message-State: AOAM532nV1s/yniO7DBDcVybWvd/loytuGg1nwmybi5kyB0EL8iJkg83
- 8Yb/kCRSXwkfuQU3U/OkkFGgjFSZRNEJ1iRnWjAblw==
-X-Google-Smtp-Source: ABdhPJyS501FUMJKU2Fd8GSeFaTNJquoa/D16LPwAed/qRy5fatTpVdAvkwHb8W/LsdshZn6oTNpuwnYHJodG440fwc=
-X-Received: by 2002:ae9:dd06:: with SMTP id r6mr1270322qkf.74.1624469879194;
- Wed, 23 Jun 2021 10:37:59 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G9BpS0scNz304N
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 04:37:51 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3C1E061185;
+ Wed, 23 Jun 2021 18:37:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1624473468;
+ bh=K9ctSOOXg/HLNG/KMzo+bt+uXbhOKksVK31vHq8QEAc=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=pew0mCStiOrsU0bWjM0b54f2cDTk0BFJYuT7oL0Hl93RfndilrrpZ00P5EcbMTEX/
+ /lbkdoUtJfhzG6xhgO6NWycBIcDRvmNhEJGTWAKSFbeL2aFhOe2jpLrVodVSrKGkzr
+ gHxURUCJo+Bry9z+VHTZDIOT/ABoSs0DN2Tjo7IL/UHU38iukI2V/m5xdJIYc7NUws
+ 7NMVKjT7vcMuSIu2fy0OZOLVI8+LwwecPlMOHv27TBpClMax/sAEQmgzVN3VS5iIlB
+ HGiL4Uzn3xHn2voW7eTXBh/NjM9NO32LN+GkhPpRHj+kINjyQizH9+P5WDGveYcADU
+ kFBCzfquuEa8w==
+Date: Wed, 23 Jun 2021 19:37:37 +0100
+From: Will Deacon <will@kernel.org>
+To: Qian Cai <quic_qiancai@quicinc.com>
+Subject: Re: [PATCH v14 06/12] swiotlb: Use is_swiotlb_force_bounce for
+ swiotlb data bouncing
+Message-ID: <20210623183736.GA472@willie-the-truck>
+References: <20210619034043.199220-1-tientzu@chromium.org>
+ <20210619034043.199220-7-tientzu@chromium.org>
+ <76c3343d-72e5-9df3-8924-5474ee698ef4@quicinc.com>
 MIME-Version: 1.0
-References: <2ED1BDF5-BC0C-47CD-8F33-9A46C738F8CF@linux.vnet.ibm.com>
- <CAKfTPtDrHv4OOfPvwOE2DMNoucXQJ=yvvEpTVKrXghSdKEnZcA@mail.gmail.com>
- <20210622143154.GA804@vingu-book>
- <53968DDE-9E93-4CB4-B5E4-526230B6E154@linux.vnet.ibm.com>
- <20210623071935.GA29143@vingu-book>
- <CCB4222F-000A-44E8-8D61-F69893704688@linux.vnet.ibm.com>
- <6C676AB3-5D06-471A-8715-60AABEBBE392@linux.vnet.ibm.com>
- <20210623120835.GB29143@vingu-book>
- <5D874F72-B575-4830-91C3-8814A2B371CD@linux.vnet.ibm.com>
- <CAKfTPtBKn27=jryS_sxsVb+0yHDze_PMcLuyFtDkDo0H9Nzqww@mail.gmail.com>
- <CAKfTPtDFUBe+qD9z0YYb7yyup_mhdNNX+zopFwcnyh+G41viAw@mail.gmail.com>
-In-Reply-To: <CAKfTPtDFUBe+qD9z0YYb7yyup_mhdNNX+zopFwcnyh+G41viAw@mail.gmail.com>
-From: Odin Ugedal <odin@uged.al>
-Date: Wed, 23 Jun 2021 19:37:23 +0200
-Message-ID: <CAFpoUr1kLf3knmVG4HjPaOLzbs0bz+YpRf_uno233ZPO9xxCdQ@mail.gmail.com>
-Subject: Re: [powerpc][next-20210621] WARNING at kernel/sched/fair.c:3277
- during boot
-To: Vincent Guittot <vincent.guittot@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <76c3343d-72e5-9df3-8924-5474ee698ef4@quicinc.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,83 +61,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- Odin Ugedal <odin@uged.al>, open list <linux-kernel@vger.kernel.org>
+Cc: heikki.krogerus@linux.intel.com,
+ linux-devicetree <devicetree@vger.kernel.org>, peterz@infradead.org,
+ joonas.lahtinen@linux.intel.com, dri-devel@lists.freedesktop.org,
+ chris@chris-wilson.co.uk, grant.likely@arm.com, paulus@samba.org,
+ Frank Rowand <frowand.list@gmail.com>, mingo@kernel.org, jxgao@google.com,
+ sstabellini@kernel.org, Saravana Kannan <saravanak@google.com>,
+ Joerg Roedel <joro@8bytes.org>,
+ "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ Christoph Hellwig <hch@lst.de>,
+ Bartosz Golaszewski <bgolaszewski@baylibre.com>, bskeggs@redhat.com,
+ linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Dan Williams <dan.j.williams@intel.com>, matthew.auld@intel.com,
+ Nicolas Boichat <drinkcat@chromium.org>, thomas.hellstrom@linux.intel.com,
+ Jim Quinlan <james.quinlan@broadcom.com>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ intel-gfx@lists.freedesktop.org, maarten.lankhorst@linux.intel.com,
+ Robin Murphy <robin.murphy@arm.com>, jani.nikula@linux.intel.com,
+ Rob Herring <robh+dt@kernel.org>, rodrigo.vivi@intel.com, bhelgaas@google.com,
+ Claire Chang <tientzu@chromium.org>, boris.ostrovsky@oracle.com,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jgross@suse.com,
+ airlied@linux.ie, Thierry Reding <treding@nvidia.com>,
+ Greg KH <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
+ lkml <linux-kernel@vger.kernel.org>,
+ "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+ daniel@ffwll.ch, xypron.glpk@gmx.de, thomas.lendacky@amd.com,
+ linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-ons. 23. jun. 2021 kl. 19:27 skrev Vincent Guittot <vincent.guittot@linaro.org>:
->
-> On Wed, 23 Jun 2021 at 18:55, Vincent Guittot
-> <vincent.guittot@linaro.org> wrote:
-> >
-> > On Wed, 23 Jun 2021 at 18:46, Sachin Sant <sachinp@linux.vnet.ibm.com> wrote:
-> > >
-> > >
-> > > > Ok. This becomes even more weird. Could you share your config file and more details about
-> > > > you setup ?
-> > > >
-> > > > Have you applied the patch below ?
-> > > > https://lore.kernel.org/lkml/20210621174330.11258-1-vincent.guittot@linaro.org/
-> > > >
-> > > > Regarding the load_avg warning, I can see possible problem during attach. Could you add
-> > > > the patch below. The load_avg warning seems to happen during boot and sched_entity
-> > > > creation.
-> > > >
-> > >
-> > > Here is a summary of my testing.
-> > >
-> > > I have a POWER box with PowerVM hypervisor. On this box I have a logical partition(LPAR) or guest
-> > > (allocated with 32 cpus 90G memory) running linux-next.
-> > >
-> > > I started with a clean slate.
-> > > Moved to linux-next 5.13.0-rc7-next-20210622 as base code.
-> > > Applied patch #1 from Vincent which contains changes to dequeue_load_avg()
-> > > Applied patch #2 from Vincent which contains changes to enqueue_load_avg()
-> > > Applied patch #3 from Vincent which contains changes to attach_entity_load_avg()
-> > > Applied patch #4 from https://lore.kernel.org/lkml/20210621174330.11258-1-vincent.guittot@linaro.org/
-> > >
-> > > With these changes applied I was still able to recreate the issue. I could see kernel warning
-> > > during boot.
-> > >
-> > > I then applied patch #5 from Odin which contains changes to update_cfs_rq_load_avg()
-> > >
-> > > With all the 5 patches applied I was able to boot the kernel without any warning messages.
-> > > I also ran scheduler related tests from ltp (./runltp -f sched) . All tests including cfs_bandwidth01
-> > > ran successfully. No kernel warnings were observed.
-> >
-> > ok so Odin's patch fixes the problem which highlights that we
-> > overestimate _sum or don't sync _avg and _sum correctly
-> >
-> > I'm going to look at this further
->
-> The problem is  "_avg * divider" makes the assumption that all pending
-> contrib are not null contributions whereas they can be null.
+On Wed, Jun 23, 2021 at 12:39:29PM -0400, Qian Cai wrote:
+> 
+> 
+> On 6/18/2021 11:40 PM, Claire Chang wrote:
+> > Propagate the swiotlb_force into io_tlb_default_mem->force_bounce and
+> > use it to determine whether to bounce the data or not. This will be
+> > useful later to allow for different pools.
+> > 
+> > Signed-off-by: Claire Chang <tientzu@chromium.org>
+> > Reviewed-by: Christoph Hellwig <hch@lst.de>
+> > Tested-by: Stefano Stabellini <sstabellini@kernel.org>
+> > Tested-by: Will Deacon <will@kernel.org>
+> > Acked-by: Stefano Stabellini <sstabellini@kernel.org>
+> 
+> Reverting the rest of the series up to this patch fixed a boot crash with NVMe on today's linux-next.
 
-Yeah.
+Hmm, so that makes patch 7 the suspicious one, right?
 
-> Odin patch is the right way to fix this. Other patches should not be
-> useful for your problem
+Looking at that one more closely, it looks like swiotlb_find_slots() takes
+'alloc_size + offset' as its 'alloc_size' parameter from
+swiotlb_tbl_map_single() and initialises 'mem->slots[i].alloc_size' based
+on 'alloc_size + offset', which looks like a change in behaviour from the
+old code, which didn't include the offset there.
 
-Ack. As I see it, given how PELT works now, it is the only way to
-mitigate it (without doing a lot of extra PELT stuff).
-Will post it as a patch together with a proper message later today or tomorrow.
+swiotlb_release_slots() then adds the offset back on afaict, so we end up
+accounting for it twice and possibly unmap more than we're supposed to?
 
->
-> >
-> > >
-> > > Have also attached .config in case it is useful. config has CONFIG_HZ_100=y
-> >
-> > Thanks, i will have a look
-> >
-> > >
-> > > Thanks
-> > > -Sachin
-> > >
-
-Thanks for reporting Sachin!
-
-Thanks
-Odin
+Will
