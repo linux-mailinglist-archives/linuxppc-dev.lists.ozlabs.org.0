@@ -2,77 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC3473B139F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jun 2021 08:02:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2F563B13A1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jun 2021 08:03:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G8t2k3XGMz3by7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jun 2021 16:02:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G8t3z38Sgz3c22
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jun 2021 16:03:27 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=m8KQZw6U;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=KMvS4/8b;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::632;
- helo=mail-pl1-x632.google.com; envelope-from=viresh.kumar@linaro.org;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=m8KQZw6U; dkim-atps=neutral
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com
- [IPv6:2607:f8b0:4864:20::632])
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=KMvS4/8b; 
+ dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G8t216QqHz30G7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jun 2021 16:01:45 +1000 (AEST)
-Received: by mail-pl1-x632.google.com with SMTP id y21so598509plb.4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 23:01:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=0eD2NKzR92krNnSCAEqt3EN7AElb1rlw5uXmc6X1m0I=;
- b=m8KQZw6Ur1ZiTHKJ/vEdrdcpgTcd39VYmDcf9nHZVdCmN5oh5mXieYh2xJMKVyzF8B
- 6RmHjE+UgMakMuNUE4/0BDh9kz3JMP0am2MFxfi3dDK2MOftOig/MyT31BM4Ji3WpmhM
- QY4Mfjmq1iubygVVb/KNSroMQPQDavBkVmLiw0/XMAjQnFRCVIKqbtFX6JacQo4Tss6m
- YWhubLF7358Jz2ZO6q5lcP/llnus3BrZgge/0UFQ2HW68GZfrphwMyl+16pl1Wv+yiu5
- 6+TDJMhhKJO/7snEu8w3R9ISBR496y9OLfWO+682RmQipNOrUjD2RdILXbq39SR1pina
- grOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=0eD2NKzR92krNnSCAEqt3EN7AElb1rlw5uXmc6X1m0I=;
- b=AHwOVTKHD1CuhlBbru7h8I8bjlJghIZzDXEGEkQ0DQU3DGVigF1TLpZPEbZ4PEljCE
- xDtP/TqT7Q7h5JO05/sPh8CjyiqXLL9a+oDi3oyy3IyokdcVWU3vo4SgH++kPfO2EAie
- SOlUTz0rnlpgTYypeNfYDK4jFzHeRJ9ICxtkJwNTKutRz/LdR1YDosz0oy6mhAPPUP+9
- soU7ae10vtz4BPQqOtEscpyQ8gvlytLC5J4Ln4YPv6QOCNHV/T9OpQ814Cyl6KrHZf+S
- iNRWSN8Eo8xdpN4oEQpwzSPiARMEWQ6IvjVATmYZ8QJp2nK+hgPrq7M3MSF83oa2c+Ly
- INow==
-X-Gm-Message-State: AOAM5338kmF0DcO/GlP0J/xWzsfEXsikS5aDLaA0tHzQlK+7Tya9n9x6
- ueXt1YXD+uil59xvKWsI7I3VVw==
-X-Google-Smtp-Source: ABdhPJzgZD7Ut0KQSWuTsx2q+526QSQy+cqtMp4zyuBW2ebISqTBxiJGMb+5BE0Iagm05/cmP38YvA==
-X-Received: by 2002:a17:90a:17e7:: with SMTP id
- q94mr7708393pja.117.1624428102352; 
- Tue, 22 Jun 2021 23:01:42 -0700 (PDT)
-Received: from localhost ([136.185.134.182])
- by smtp.gmail.com with ESMTPSA id g18sm1063642pfi.199.2021.06.22.23.01.41
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 22 Jun 2021 23:01:41 -0700 (PDT)
-Date: Wed, 23 Jun 2021 11:31:40 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH V4 3/4] cpufreq: powerenv: Migrate to ->exit() callback
- instead of ->stop_cpu()
-Message-ID: <20210623060140.2mtivaxuiemgg7ug@vireshk-i7>
-References: <cover.1624421816.git.viresh.kumar@linaro.org>
- <e40e57a97735614941e9ca7fa2f221f8db9a12b2.1624421816.git.viresh.kumar@linaro.org>
- <87v96516d9.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G8t3X66vgz2yWv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jun 2021 16:03:04 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4G8t3W1lFmz9sCD;
+ Wed, 23 Jun 2021 16:03:02 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1624428183;
+ bh=NUxD5IWRTrB16e837MNcOneqkUUtN5EljoXA6mpYpaE=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=KMvS4/8b4VKbI66mYHHHYcRI/dKgGxZL5gX2zivwwkxMRfDBmgjx+yW4W/gC0lxxE
+ bW3bhnqaEya/Ums/FJ952VC/tTWiJilyInK9Q9BZUnWTcmxeON2/uznwkXh+BWWmxP
+ trsdmjqIGi0l2cnrASRjGQ75z2V6wyGTfcaQvcZyjvL4I6yasyZpb/j1rz6+CNnwHB
+ n5EKWicVw1JvKDdgCy6d7sCaqa+j/woswtVU6iuGVUJLJBxb8OYWscioeyHJIgAVzE
+ gzrExBPc0arXpKQyPd5hHudhoipL4d0v4T1FJxnRN1iy8v9f2ONBcLiZHQcCwj4jKi
+ 9NbuYcIE3WnPA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] powerpc/papr_scm: Properly handle UUID types and
+ API
+In-Reply-To: <YNHbSGzdgQh+6F+O@smile.fi.intel.com>
+References: <20210616134303.58185-1-andriy.shevchenko@linux.intel.com>
+ <YNHbSGzdgQh+6F+O@smile.fi.intel.com>
+Date: Wed, 23 Jun 2021 16:03:02 +1000
+Message-ID: <87r1gt15k9.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87v96516d9.fsf@mpe.ellerman.id.au>
-User-Agent: NeoMutt/20180716-391-311a52
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,21 +64,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vincent Guittot <vincent.guittot@linaro.org>, linux-pm@vger.kernel.org,
- Rafael Wysocki <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Oliver O'Halloran <oohall@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 23-06-21, 15:45, Michael Ellerman wrote:
-> Viresh Kumar <viresh.kumar@linaro.org> writes:
-> >
-> > Subject: Re: [PATCH V4 3/4] cpufreq: powerenv: Migrate to ->exit() callback instead of ->stop_cpu()
-> 
-> Typo in subject should be "powernv".
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> writes:
+> On Wed, Jun 16, 2021 at 04:43:03PM +0300, Andy Shevchenko wrote:
+>> Parse to and export from UUID own type, before dereferencing.
+>> This also fixes wrong comment (Little Endian UUID is something else)
+>> and should eliminate the direct strict types assignments.
+>
+> Any comments on this version? Can it be applied?
 
-Thanks for noticing it :)
+Yeah I'll grab it.
 
--- 
-viresh
+cheers
