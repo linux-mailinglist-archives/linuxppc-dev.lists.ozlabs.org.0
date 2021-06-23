@@ -1,77 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DCF53B12E8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jun 2021 06:25:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 031F33B12F6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jun 2021 06:41:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G8qvN3T0Xz3bsN
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jun 2021 14:25:52 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=t+6xWab1;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G8rFM63BPz309M
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jun 2021 14:41:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::431;
- helo=mail-pf1-x431.google.com; envelope-from=viresh.kumar@linaro.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=t+6xWab1; dkim-atps=neutral
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com
- [IPv6:2607:f8b0:4864:20::431])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mga02.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G8qtY5drKz306P
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jun 2021 14:25:07 +1000 (AEST)
-Received: by mail-pf1-x431.google.com with SMTP id c5so1294617pfv.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jun 2021 21:25:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=6a7/7P/WOJQ+/PmIgspG1zB1PV41tmG6f1/nfdy7CoM=;
- b=t+6xWab1VxarnVqfUhkbXR1Ff5de0zTzo6XWVJnzQqjtYQbcC0d0cwq4YGD7lFkZPL
- 3VCCQ7GyVb0fc4NVhfd/P5AuT6vvj8LMYcV0/Okt3M12xDfYFLcdTNd7rLbPP6G68KMG
- jJgp22S2nIfWa1lhHXimlMG3L8KN6gVp+UbHs4gidPoZnMN0hCN6L/361N2/NoVK+Ir+
- iPlUq/8muUIcSsjjbPXhs0T21QyPAq2VdPnsrhetmIYDy/jKyl5y/5fVsP/VLneiminp
- VsYSBgGBoYAkDjGRKIxwWgctQSbsV2gmtktRZUjk+InzJza/FNeuXGeywqk8f4y+4FPV
- e3+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=6a7/7P/WOJQ+/PmIgspG1zB1PV41tmG6f1/nfdy7CoM=;
- b=YHXRz9XLh3cbaJKTL4peb5pig2JfuJ9oYzssJ2onOTdqNbvHBJ+PQ+xrl2ADbhRS/w
- zEc1t++2fQ6mTLoWkRG/njevlmr8jv0zQSH/ULP0d1LOc8RDnm+aX/B9VUwnPgLJ5Smi
- dtmEk5WJABVy9NO06EHM8QLOHTO0IBnsrmvH5vxnpO1sBdBwnxNTHP6YQDil7x5ChpQv
- h8wwDtJg/xz6XOshrtyO6aQtkXPJfI9L5xVzrZw6BwoPdPjX0eYGdy2XFcVKt90LdEDW
- zdCqPvq/o5xsCygy4kwZ0DjvCCd8TElp1XYEMdgK1JbBHBTVgzs+6JPBfY+tVWymXy7K
- UBMQ==
-X-Gm-Message-State: AOAM533pz+PiHy/SeaaLyNaBuuk37CgsCZi67N1PEL3GzIU+IcWSqTG1
- z/ouYCbOtt3DRUDS4o717T5TuA==
-X-Google-Smtp-Source: ABdhPJzDpVOwS7ZIEb2SJs2H+EoxRoC+xD1xxTofOAwnibpWwbSbX5cAVwje8er8lFqQVADCv8VVzg==
-X-Received: by 2002:a63:6dca:: with SMTP id i193mr1944100pgc.107.1624422304847; 
- Tue, 22 Jun 2021 21:25:04 -0700 (PDT)
-Received: from localhost ([136.185.134.182])
- by smtp.gmail.com with ESMTPSA id b9sm748602pfm.124.2021.06.22.21.25.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 22 Jun 2021 21:25:04 -0700 (PDT)
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Rafael Wysocki <rjw@rjwysocki.net>, Viresh Kumar <viresh.kumar@linaro.org>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
-Subject: [PATCH V4 3/4] cpufreq: powerenv: Migrate to ->exit() callback
- instead of ->stop_cpu()
-Date: Wed, 23 Jun 2021 09:54:41 +0530
-Message-Id: <e40e57a97735614941e9ca7fa2f221f8db9a12b2.1624421816.git.viresh.kumar@linaro.org>
-X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
-In-Reply-To: <cover.1624421816.git.viresh.kumar@linaro.org>
-References: <cover.1624421816.git.viresh.kumar@linaro.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G8rDv1lwCz2yXy
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jun 2021 14:40:55 +1000 (AEST)
+IronPort-SDR: MrFFhhXzm4dvhuOwx8mNuoyeAtldorSIT6TwjcywRsuAQjYNy5WZc92ripnSamhiC7Pby9Ud43
+ IJ8u6+hT9Ssw==
+X-IronPort-AV: E=McAfee;i="6200,9189,10023"; a="194330655"
+X-IronPort-AV: E=Sophos;i="5.83,293,1616482800"; d="scan'208";a="194330655"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jun 2021 21:40:50 -0700
+IronPort-SDR: /nQ8v9PhhWcRnblCPGOyu1qevQDfc1q4e8YQvLkNPZeTidasJccDg2nr+LXcspW9q8M3MAVeAp
+ qpCvNOn1Fwvw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.83,293,1616482800"; d="scan'208";a="556012461"
+Received: from lkp-server01.sh.intel.com (HELO 4aae0cb4f5b5) ([10.239.97.150])
+ by orsmga004.jf.intel.com with ESMTP; 22 Jun 2021 21:40:47 -0700
+Received: from kbuild by 4aae0cb4f5b5 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1lvugw-0005in-DT; Wed, 23 Jun 2021 04:40:46 +0000
+Date: Wed, 23 Jun 2021 12:40:01 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:topic/ppc-kvm] BUILD SUCCESS
+ 51696f39cbee5bb684e7959c0c98b5f54548aa34
+Message-ID: <60d2bb21.yZiW8YqjC8sViqE6%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,82 +54,123 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Vincent Guittot <vincent.guittot@linaro.org>,
- linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-commit 367dc4aa932b ("cpufreq: Add stop CPU callback to cpufreq_driver
-interface") added the stop_cpu() callback to allow the drivers to do
-clean up before the CPU is completely down and its state can't be
-modified.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git topic/ppc-kvm
+branch HEAD: 51696f39cbee5bb684e7959c0c98b5f54548aa34  KVM: PPC: Book3S HV: Workaround high stack usage with clang
 
-At that time the CPU hotplug framework used to call the cpufreq core's
-registered notifier for different events like CPU_DOWN_PREPARE and
-CPU_POST_DEAD. The stop_cpu() callback was called during the
-CPU_DOWN_PREPARE event.
+elapsed time: 777m
 
-This is no longer the case, cpuhp_cpufreq_offline() is called only once
-by the CPU hotplug core now and we don't really need two separate
-callbacks for cpufreq drivers, i.e. stop_cpu() and exit(), as everything
-can be done from the exit() callback itself.
+configs tested: 97
+configs skipped: 2
 
-Migrate to using the exit() callback instead of stop_cpu().
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                           h3600_defconfig
+powerpc                    klondike_defconfig
+arm                       imx_v6_v7_defconfig
+powerpc                      arches_defconfig
+arm                             rpc_defconfig
+powerpc                    sam440ep_defconfig
+sh                           se7705_defconfig
+powerpc               mpc834x_itxgp_defconfig
+mips                          malta_defconfig
+xtensa                           alldefconfig
+powerpc                      makalu_defconfig
+h8300                     edosk2674_defconfig
+sh                           se7724_defconfig
+arc                           tb10x_defconfig
+mips                       rbtx49xx_defconfig
+sh                           se7343_defconfig
+m68k                        mvme16x_defconfig
+arm                        realview_defconfig
+x86_64                            allnoconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a001-20210622
+i386                 randconfig-a002-20210622
+i386                 randconfig-a003-20210622
+i386                 randconfig-a006-20210622
+i386                 randconfig-a005-20210622
+i386                 randconfig-a004-20210622
+x86_64               randconfig-a012-20210622
+x86_64               randconfig-a016-20210622
+x86_64               randconfig-a015-20210622
+x86_64               randconfig-a014-20210622
+x86_64               randconfig-a013-20210622
+x86_64               randconfig-a011-20210622
+i386                 randconfig-a011-20210622
+i386                 randconfig-a014-20210622
+i386                 randconfig-a013-20210622
+i386                 randconfig-a015-20210622
+i386                 randconfig-a012-20210622
+i386                 randconfig-a016-20210622
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+riscv                    nommu_k210_defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+um                            kunit_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-b001-20210622
+x86_64               randconfig-a002-20210622
+x86_64               randconfig-a001-20210622
+x86_64               randconfig-a005-20210622
+x86_64               randconfig-a003-20210622
+x86_64               randconfig-a004-20210622
+x86_64               randconfig-a006-20210622
+
 ---
- drivers/cpufreq/powernv-cpufreq.c | 23 +++++++++--------------
- 1 file changed, 9 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
-index e439b43c19eb..005600cef273 100644
---- a/drivers/cpufreq/powernv-cpufreq.c
-+++ b/drivers/cpufreq/powernv-cpufreq.c
-@@ -875,7 +875,15 @@ static int powernv_cpufreq_cpu_init(struct cpufreq_policy *policy)
- 
- static int powernv_cpufreq_cpu_exit(struct cpufreq_policy *policy)
- {
--	/* timer is deleted in cpufreq_cpu_stop() */
-+	struct powernv_smp_call_data freq_data;
-+	struct global_pstate_info *gpstates = policy->driver_data;
-+
-+	freq_data.pstate_id = idx_to_pstate(powernv_pstate_info.min);
-+	freq_data.gpstate_id = idx_to_pstate(powernv_pstate_info.min);
-+	smp_call_function_single(policy->cpu, set_pstate, &freq_data, 1);
-+	if (gpstates)
-+		del_timer_sync(&gpstates->timer);
-+
- 	kfree(policy->driver_data);
- 
- 	return 0;
-@@ -1007,18 +1015,6 @@ static struct notifier_block powernv_cpufreq_opal_nb = {
- 	.priority	= 0,
- };
- 
--static void powernv_cpufreq_stop_cpu(struct cpufreq_policy *policy)
--{
--	struct powernv_smp_call_data freq_data;
--	struct global_pstate_info *gpstates = policy->driver_data;
--
--	freq_data.pstate_id = idx_to_pstate(powernv_pstate_info.min);
--	freq_data.gpstate_id = idx_to_pstate(powernv_pstate_info.min);
--	smp_call_function_single(policy->cpu, set_pstate, &freq_data, 1);
--	if (gpstates)
--		del_timer_sync(&gpstates->timer);
--}
--
- static unsigned int powernv_fast_switch(struct cpufreq_policy *policy,
- 					unsigned int target_freq)
- {
-@@ -1042,7 +1038,6 @@ static struct cpufreq_driver powernv_cpufreq_driver = {
- 	.target_index	= powernv_cpufreq_target_index,
- 	.fast_switch	= powernv_fast_switch,
- 	.get		= powernv_cpufreq_get,
--	.stop_cpu	= powernv_cpufreq_stop_cpu,
- 	.attr		= powernv_cpu_freq_attr,
- };
- 
--- 
-2.31.1.272.g89b43f80a514
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
