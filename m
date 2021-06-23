@@ -2,100 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A9CA3B1326
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jun 2021 07:18:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AA303B1330
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jun 2021 07:24:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G8s445L09z2yys
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jun 2021 15:18:28 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PSfKlT7P;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G8sBW1vXPz3068
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jun 2021 15:24:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=PSfKlT7P; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G8s3Y26frz2yxW
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jun 2021 15:18:00 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 15N54JO8190927; Wed, 23 Jun 2021 01:17:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : date : content-type : mime-version :
- content-transfer-encoding; s=pp1;
- bh=gYN65NFFwIWxskFzlCXBNGDN+drf96I8yvJuoSuMIMw=;
- b=PSfKlT7PYLpY7jSxmjCUZNeSIgmHGVdo/Ls3gEdQbSpNxv79chYTZM1Ez7AtScWnN7/N
- pcN6ba+NVuprqA0LIzYdSYakpjxEM2tSM9zqXck+kneyAZQfxAkitJWoGsH/LDGoNPbN
- oQEgr9iPWB+06ayh+E+9hHSzXPiiEVtq379CO3Uo2EwamNjrreKfjTBvmqGTZkr+Zk3W
- dOkWatlaHw2jVvCnUbikdKC/61vig4ATVkR6PRvtyt3TEk/FcORmylc8dqu3UeHEqx/N
- X0RI40X5O3lfNYZ3pL7f/37BwrcFIN6K0p0dJaiTBHIlV5MwRsd8JzeV5KalKqy+Ff8t Cg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39bwgb1s4g-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 23 Jun 2021 01:17:51 -0400
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 15N54ZRZ194837;
- Wed, 23 Jun 2021 01:17:51 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39bwgb1s47-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 23 Jun 2021 01:17:51 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15N5Cf9M015339;
- Wed, 23 Jun 2021 05:17:50 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma02dal.us.ibm.com with ESMTP id 399879vsr0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 23 Jun 2021 05:17:50 +0000
-Received: from b03ledav001.gho.boulder.ibm.com
- (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 15N5HnCG30540284
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 23 Jun 2021 05:17:49 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8BDF06E053;
- Wed, 23 Jun 2021 05:17:49 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A01CC6E052;
- Wed, 23 Jun 2021 05:17:48 +0000 (GMT)
-Received: from sig-9-65-236-139.ibm.com (unknown [9.65.236.139])
- by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
- Wed, 23 Jun 2021 05:17:48 +0000 (GMT)
-Message-ID: <ed908341b1eb7ca0183c028a4ed4a0cf48bfe0f6.camel@linux.ibm.com>
-Subject: [PATCH] selftests/powerpc: Use req_max_processed_len from sysfs NX
- capabilities
-From: Haren Myneni <haren@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, npiggin@gmail.com,
- rzinsly@linux.ibm.com
-Date: Tue, 22 Jun 2021 22:17:46 -0700
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.2 (3.36.2-1.fc32) 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: qgqgtIpYGSko1VY9el051JbjoDfNTNdm
-X-Proofpoint-ORIG-GUID: l2JTWVA3Jo2aopcRc8mGTfWqIu2NzoaB
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-06-23_01:2021-06-22,
- 2021-06-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 mlxlogscore=999
- mlxscore=0 adultscore=0 clxscore=1015 priorityscore=1501 malwarescore=0
- spamscore=0 lowpriorityscore=0 phishscore=0 impostorscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104190000
- definitions=main-2106230026
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G8sB75tmHz2yXZ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jun 2021 15:23:40 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 4G8s9w0JgnzBDb3;
+ Wed, 23 Jun 2021 07:23:32 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id bYOMyFCcoABL; Wed, 23 Jun 2021 07:23:31 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4G8s9v59R8zBDZK;
+ Wed, 23 Jun 2021 07:23:31 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A36AE8B7C1;
+ Wed, 23 Jun 2021 07:23:31 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id JK5fSF0_49QA; Wed, 23 Jun 2021 07:23:31 +0200 (CEST)
+Received: from po9473vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5C1578B767;
+ Wed, 23 Jun 2021 07:23:31 +0200 (CEST)
+Received: by po9473vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 1BA1B6630E; Wed, 23 Jun 2021 05:23:30 +0000 (UTC)
+Message-Id: <5bdc8cbc9a95d0779e27c9ddbf42b40f51f883c0.1624425798.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v2] powerpc/kprobes: Fix Oops by passing ppc_inst as a pointer
+ to emulate_step() on ppc32
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Wed, 23 Jun 2021 05:23:30 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,88 +58,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+From: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
 
-On PowerVM, the hypervisor defines the maximum buffer length for
-each NX request and the kernel exported this value via sysfs.
+Trying to use a kprobe on ppc32 results in the below splat:
+    BUG: Unable to handle kernel data access on read at 0x7c0802a6
+    Faulting instruction address: 0xc002e9f0
+    Oops: Kernel access of bad area, sig: 11 [#1]
+    BE PAGE_SIZE=4K PowerPC 44x Platform
+    Modules linked in:
+    CPU: 0 PID: 89 Comm: sh Not tainted 5.13.0-rc1-01824-g3a81c0495fdb #7
+    NIP:  c002e9f0 LR: c0011858 CTR: 00008a47
+    REGS: c292fd50 TRAP: 0300   Not tainted  (5.13.0-rc1-01824-g3a81c0495fdb)
+    MSR:  00009000 <EE,ME>  CR: 24002002  XER: 20000000
+    DEAR: 7c0802a6 ESR: 00000000
+    <snip>
+    NIP [c002e9f0] emulate_step+0x28/0x324
+    LR [c0011858] optinsn_slot+0x128/0x10000
+    Call Trace:
+     opt_pre_handler+0x7c/0xb4 (unreliable)
+     optinsn_slot+0x128/0x10000
+     ret_from_syscall+0x0/0x28
 
-This patch reads this value if the sysfs entry is available and
-is used to limit the request length.
+The offending instruction is:
+    81 24 00 00     lwz     r9,0(r4)
 
-Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+Here, we are trying to load the second argument to emulate_step():
+struct ppc_inst, which is the instruction to be emulated. On ppc64,
+structures are passed in registers when passed by value. However, per
+the ppc32 ABI, structures are always passed to functions as pointers.
+This isn't being adhered to when setting up the call to emulate_step()
+in the optprobe trampoline. Fix the same.
+
+Fixes: eacf4c0202654a ("powerpc: Enable OPTPROBES on PPC32")
+Cc: stable@vger.kernel.org
+Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
 ---
- .../testing/selftests/powerpc/nx-gzip/Makefile  |  4 ++--
- .../selftests/powerpc/nx-gzip/gzfht_test.c      | 17 +++++++++++++++--
- 2 files changed, 17 insertions(+), 4 deletions(-)
+v2: Rebased on powerpc/merge 7f030e9d57b8
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/kernel/optprobes.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/powerpc/nx-gzip/Makefile b/tools/testing/selftests/powerpc/nx-gzip/Makefile
-index 640fad6cc2c7..0785c2e99d40 100644
---- a/tools/testing/selftests/powerpc/nx-gzip/Makefile
-+++ b/tools/testing/selftests/powerpc/nx-gzip/Makefile
-@@ -1,8 +1,8 @@
--CFLAGS = -O3 -m64 -I./include
-+CFLAGS = -O3 -m64 -I./include -I../include
- 
- TEST_GEN_FILES := gzfht_test gunz_test
- TEST_PROGS := nx-gzip-test.sh
- 
- include ../../lib.mk
- 
--$(TEST_GEN_FILES): gzip_vas.c
-+$(TEST_GEN_FILES): gzip_vas.c ../utils.c
-diff --git a/tools/testing/selftests/powerpc/nx-gzip/gzfht_test.c b/tools/testing/selftests/powerpc/nx-gzip/gzfht_test.c
-index b099753b50e4..095195a25687 100644
---- a/tools/testing/selftests/powerpc/nx-gzip/gzfht_test.c
-+++ b/tools/testing/selftests/powerpc/nx-gzip/gzfht_test.c
-@@ -60,6 +60,7 @@
- #include <assert.h>
- #include <errno.h>
- #include <signal.h>
-+#include "utils.h"
- #include "nxu.h"
- #include "nx.h"
- 
-@@ -70,6 +71,8 @@ FILE *nx_gzip_log;
- #define FNAME_MAX 1024
- #define FEXT ".nx.gz"
- 
-+#define SYSFS_MAX_REQ_BUF_PATH "devices/vio/ibm,compression-v1/nx_gzip_caps/req_max_processed_len"
-+
- /*
-  * LZ counts returned in the user supplied nx_gzip_crb_cpb_t structure.
-  */
-@@ -244,6 +247,7 @@ int compress_file(int argc, char **argv, void *handle)
- 	struct nx_gzip_crb_cpb_t *cmdp;
- 	uint32_t pagelen = 65536;
- 	int fault_tries = NX_MAX_FAULTS;
-+	char buf[32];
- 
- 	cmdp = (void *)(uintptr_t)
- 		aligned_alloc(sizeof(struct nx_gzip_crb_cpb_t),
-@@ -263,8 +267,17 @@ int compress_file(int argc, char **argv, void *handle)
- 	assert(NULL != (outbuf = (char *)malloc(outlen)));
- 	nxu_touch_pages(outbuf, outlen, pagelen, 1);
- 
--	/* Compress piecemeal in smallish chunks */
--	chunk = 1<<22;
-+	/*
-+	 * On PowerVM, the hypervisor defines the maximum request buffer
-+	 * size is defined and this value is available via sysfs.
-+	 */
-+	if (!read_sysfs_file(SYSFS_MAX_REQ_BUF_PATH, buf, sizeof(buf))) {
-+		chunk = atoi(buf);
+diff --git a/arch/powerpc/kernel/optprobes.c b/arch/powerpc/kernel/optprobes.c
+index 2b8fe40069ad..53facb4b377f 100644
+--- a/arch/powerpc/kernel/optprobes.c
++++ b/arch/powerpc/kernel/optprobes.c
+@@ -228,8 +228,12 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe *op, struct kprobe *p)
+ 	/*
+ 	 * 3. load instruction to be emulated into relevant register, and
+ 	 */
+-	temp = ppc_inst_read(p->ainsn.insn);
+-	patch_imm_load_insns(ppc_inst_as_ulong(temp), 4, buff + TMPL_INSN_IDX);
++	if (IS_ENABLED(CONFIG_PPC64)) {
++		temp = ppc_inst_read(p->ainsn.insn);
++		patch_imm_load_insns(ppc_inst_as_ulong(temp), 4, buff + TMPL_INSN_IDX);
 +	} else {
-+		/* sysfs entry is not available on PowerNV */
-+		/* Compress piecemeal in smallish chunks */
-+		chunk = 1<<22;
++		patch_imm_load_insns((unsigned long)p->ainsn.insn, 4, buff + TMPL_INSN_IDX);
 +	}
  
- 	/* Write the gzip header to the stream */
- 	num_hdr_bytes = gzip_header_blank(outbuf);
+ 	/*
+ 	 * 4. branch back from trampoline
 -- 
-2.18.2
-
+2.25.0
 
