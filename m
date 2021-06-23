@@ -1,101 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85B513B180A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jun 2021 12:23:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F35493B18CA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jun 2021 13:24:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G8zrC1yT4z302K
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jun 2021 20:23:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G91BN5hPqz3btr
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jun 2021 21:24:28 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RgJVk1k4;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=LU6oGvda;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102f;
+ helo=mail-pj1-x102f.google.com; envelope-from=colorfulshark@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=RgJVk1k4; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=LU6oGvda; dkim-atps=neutral
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com
+ [IPv6:2607:f8b0:4864:20::102f])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G8zqg60Zyz2yR7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jun 2021 20:23:11 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 15NA5Hbt095634; Wed, 23 Jun 2021 06:23:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=AftJfnQwVcjD78HGCBbYq5RU/wt4YyLX+10tVlYeGXk=;
- b=RgJVk1k4HrkLsJT1HFUmOl3MRdu17Ebg+GJBF2AIdNZC0iBpFhBS0yTGsGRDAR49w4mu
- xpKZ0mF6yF5EYnBPDP64Ij96fWggLlUCj45rPlOeD565Po+8hHM7UsMKCxJl/c9b8jjW
- EmxVmZ09bcRBtCE6ywrLQnHxw5fRthrFhxjeBnPy9XpWo9HwrmwvxfVJAERkcbzqYkDh
- ypho4yVlQ7noNi3DEdjDKiASEgnj6DGePJGA22UDD31bUk49AkoeatZJjHKypkOhAcYp
- 6iNqq4EAL3xc+CuxECuNhM64/Bdy3bD1edLqyaMqino1XhNbTnkKueXkpVkvD/FsBzNU 9A== 
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39c2689wgg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 23 Jun 2021 06:23:06 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15NADCjL004236;
- Wed, 23 Jun 2021 10:23:03 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma04fra.de.ibm.com with ESMTP id 399878s2bc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 23 Jun 2021 10:23:03 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 15NAN1LE31064540
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 23 Jun 2021 10:23:01 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5D285AE04D;
- Wed, 23 Jun 2021 10:23:01 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6C45FAE045;
- Wed, 23 Jun 2021 10:23:00 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.77.197.182])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 23 Jun 2021 10:23:00 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.100.0.2.22\))
-Subject: Re: [powerpc][next-20210621] WARNING at kernel/sched/fair.c:3277
- during boot
-From: Sachin Sant <sachinp@linux.vnet.ibm.com>
-In-Reply-To: <CCB4222F-000A-44E8-8D61-F69893704688@linux.vnet.ibm.com>
-Date: Wed, 23 Jun 2021 15:52:59 +0530
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <6C676AB3-5D06-471A-8715-60AABEBBE392@linux.vnet.ibm.com>
-References: <2ED1BDF5-BC0C-47CD-8F33-9A46C738F8CF@linux.vnet.ibm.com>
- <CAKfTPtDrHv4OOfPvwOE2DMNoucXQJ=yvvEpTVKrXghSdKEnZcA@mail.gmail.com>
- <20210622143154.GA804@vingu-book>
- <53968DDE-9E93-4CB4-B5E4-526230B6E154@linux.vnet.ibm.com>
- <20210623071935.GA29143@vingu-book>
- <CCB4222F-000A-44E8-8D61-F69893704688@linux.vnet.ibm.com>
-To: Vincent Guittot <vincent.guittot@linaro.org>
-X-Mailer: Apple Mail (2.3654.100.0.2.22)
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: O3M5gUFkff40vwB3SlSpzWnSTzNu6GcU
-X-Proofpoint-ORIG-GUID: O3M5gUFkff40vwB3SlSpzWnSTzNu6GcU
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-06-23_03:2021-06-23,
- 2021-06-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015
- lowpriorityscore=0 malwarescore=0 impostorscore=0 suspectscore=0
- bulkscore=0 spamscore=0 phishscore=0 priorityscore=1501 adultscore=0
- mlxscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2106230058
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G8yxn0NZcz2yXK
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jun 2021 19:43:24 +1000 (AEST)
+Received: by mail-pj1-x102f.google.com with SMTP id
+ x21-20020a17090aa395b029016e25313bfcso1046627pjp.2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jun 2021 02:43:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:from:date:message-id:subject:to;
+ bh=YTjbbCpbMCXFGMXathKIB/XfWymj1wgzv0Sjansfpao=;
+ b=LU6oGvdao7ftXBDiv/ZXTnz/VA/kjDQdEs1JfXsPZkRLki1sG45CEW1IyVwbt6Wz7r
+ VF2rEUSN39eEVxMGLEtQToHorhykwlbj7xs8Hi7x2jOI0kTATv/1fcLDIXMJrpN5sCWT
+ Rx+GgUqxSqABhha1nXaTn6/ddKo91RZ5iCUYMH+jLr+ICiPiH7dIyY0x/WBmaiYwkVP3
+ JApb/HRAUTio8+x/o1VvTl84NYG/2itxALfJU3hkPPcvsXl2w77Mf8uVmij6X9QDkA5R
+ gRJrz2AP4HlP40GWSYJGn62TqYzRXcL2//leWXpgnj8O20Z0+wKmO02LCe/F1Wh4xgkS
+ OnTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+ bh=YTjbbCpbMCXFGMXathKIB/XfWymj1wgzv0Sjansfpao=;
+ b=H1Kqi2Ze+MQUP9STAyt/HhCjpHl082e0K1Hk1Lbe4cQeGsRFpU7aMCETTvfb+AFhdH
+ 4F/yQmuBbKwHln5C2fSjbWIe1trPrgMhwYw8WYKUpjCWtrFgRTBUnHkFjsxNnwi9QVRd
+ tTpXjUdntuO0yl1BpF7fTC+cKgARp/2MXZr9GlIj12PYKUDOpXW1NONDCRZVZwTsDDgF
+ wW3/frq0/pXU+O5eP7c22a3OF8E/hBD9N7c8ZD2sX71qKmsdv+ZM3RQ9hHTvSECKEeCZ
+ bsGg50WwPNYbYhKhB4M6+NdSMwmjTXcxp8t00lHKRx/0NiaGrWBcUOeLKQV0N+xQtLvi
+ QppQ==
+X-Gm-Message-State: AOAM531vDhiC9rWZbtPrwK8FERgRgCLWJ7ppGk85Ca5PmB1SX+Ex++55
+ KOcs7Ayc0g6d+Rd9D7VGVWIAzknjTgWXfWIdy8joKlYtfgFYGQ==
+X-Google-Smtp-Source: ABdhPJzEpKXu8TGfgM/VI73TR/jWAyU9J8L3oQqkHGaBZGTKx9/5KAs+LfwATODqVkMBwoqFWPXrY1I00NV3Vf8Z10E=
+X-Received: by 2002:a17:90b:1958:: with SMTP id
+ nk24mr8705563pjb.28.1624441399642; 
+ Wed, 23 Jun 2021 02:43:19 -0700 (PDT)
+MIME-Version: 1.0
+From: Ryan Wong <colorfulshark@gmail.com>
+Date: Wed, 23 Jun 2021 17:43:08 +0800
+Message-ID: <CAMbeZn6ERB7a=XjOkoO1r8SpA-+YFwZBdOk7Q0GjpzofRJbi1g@mail.gmail.com>
+Subject: kernel panic with "Unrecoverable FP Unavailable Exception 800 at
+ c00000000009e308"
+To: linuxppc-dev@lists.ozlabs.org
+Content-Type: multipart/alternative; boundary="000000000000958cbc05c56bbc50"
+X-Mailman-Approved-At: Wed, 23 Jun 2021 21:24:06 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,275 +74,240 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- Odin Ugedal <odin@uged.al>, open list <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+--000000000000958cbc05c56bbc50
+Content-Type: text/plain; charset="UTF-8"
+
+Hi,
+
+Recently I encountered a kernel panic announcing "Unrecoverable FP
+Unavailable Exception 800 at c00000000009e308". I have attached the panic
+log at the end of the mail.
+As I known, this exception occured when the hard floating-point instruction
+was executed with FPU disabled, and if the instruction was from kernel
+space, kernel would assume it as unrecoverable and panic itself.
+*Here is the investigation I have done.*
+I checked the MSR firstly, and MSR[PR] = 0 and MSR[FP] = 0, It seems that
+the system did match the panic condition.
+Because MSR[PR] = 0, the instruction seemed come from kernel, but kernel
+would not do floating point calculation normally, so I was quite curious
+about the code which triggered the exception. And from the backtrace log,
+it should be the "update_min_vruntime" function.
+Unfortunately, I didn't see any floating-point operation in that function.
+Then I disassembled the vmlinux and found out the disassembly code of that
+function, and matched it with the instruction dump:
 
 
-> On 23-Jun-2021, at 1:28 PM, Sachin Sant <sachinp@linux.vnet.ibm.com> =
-wrote:
->=20
->=20
->>>> Could you try the patch below ? I have been able to reproduce the =
-problem locally and this
->>>> fix it on my system:
->>>>=20
->>> I can recreate the issue with this patch.
->>=20
->> ok, so your problem seem to be different from my assumption. Could =
-you try
->> the patch below on top of the previous one ?
->>=20
->> This will help us to confirm that the problem comes from load_avg and =
-that
->> it's linked to the cfs load_avg and it's not a problem happening =
-earlier in
->> the update of PELT.
->>=20
->=20
-> Indeed. With both the patches applied I see following warning related =
-to load_avg
 
-I left the machine running for sometime. Then attempted a kernel =
-compile.
-I subsequently saw warnings triggered for util_avg as well as =
-runnable_avg
 
-[ 8371.964935] ------------[ cut here ]------------
-[ 8371.964958] cfs_rq->avg.util_avg
-[ 8371.964969] WARNING: CPU: 16 PID: 479551 at kernel/sched/fair.c:3283 =
-update_blocked_averages+0x700/0x830
-=E2=80=A6=E2=80=A6..
-=E2=80=A6=E2=80=A6..
-[ 8664.754506] ------------[ cut here ]------------
-[ 8664.754569] cfs_rq->avg.runnable_avg
-[ 8664.754583] WARNING: CPU: 23 PID: 125 at kernel/sched/fair.c:3284 =
-update_blocked_averages+0x730/0x830
-=E2=80=A6=E2=80=A6.
 
->=20
->         Starting NTP client/server...
->         Starting VDO volume services...
-> [    9.029054] ------------[ cut here ]------------
-> [    9.029084] cfs_rq->avg.load_avg
-> [    9.029111] WARNING: CPU: 21 PID: 1169 at kernel/sched/fair.c:3282 =
-update_blocked_averages+0x760/0x830
-> [    9.029151] Modules linked in: pseries_rng xts vmx_crypto =
-uio_pdrv_genirq uio sch_fq_codel ip_tables xfs libcrc32c sr_mod sd_mod =
-cdrom t10_pi sg ibmvscsi ibmveth scsi_transport_srp dm_mirror =
-dm_region_hash dm_log dm_mod fuse
-> [    9.029233] CPU: 21 PID: 1169 Comm: grep Not tainted =
-5.13.0-rc7-next-20210621-dirty #3
-> [    9.029246] NIP:  c0000000001b6150 LR: c0000000001b614c CTR: =
-c000000000728f40
-> [    9.029259] REGS: c00000000e177650 TRAP: 0700   Not tainted  =
-(5.13.0-rc7-next-20210621-dirty)
-> [    9.029271] MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: =
-48088224  XER: 00000005
-> [    9.029296] CFAR: c00000000014d120 IRQMASK: 1=20
-> [    9.029296] GPR00: c0000000001b614c c00000000e1778f0 =
-c0000000029bb900 0000000000000014=20
-> [    9.029296] GPR04: 00000000fffeffff c00000000e1775b0 =
-0000000000000027 c00000154f637e18=20
-> [    9.029296] GPR08: 0000000000000023 0000000000000001 =
-0000000000000027 c00000167f1d7fe8=20
-> [    9.029296] GPR12: 0000000000008000 c00000154ffe0e80 =
-000000000000b820 000000021a2c6864=20
-> [    9.029296] GPR16: c0000000482cc000 c00000154f6c2580 =
-0000000000000001 0000000000000000=20
-> [    9.029296] GPR20: c00000000291a7f9 c0000000482cc100 =
-0000000000000000 000000000000020d=20
-> [    9.029296] GPR24: 0000000000000000 c00000154f6c2f90 =
-0000000000000001 c000000030b84400=20
-> [    9.029296] GPR28: 000000000000020d c0000000482cc1c0 =
-0000000000000338 0000000000000000=20
-> [    9.029481] NIP [c0000000001b6150] =
-update_blocked_averages+0x760/0x830
-> [    9.029494] LR [c0000000001b614c] =
-update_blocked_averages+0x75c/0x830
-> [    9.029508] Call Trace:
-> [    9.029515] [c00000000e1778f0] [c0000000001b614c] =
-update_blocked_averages+0x75c/0x830 (unreliable)
-> [    9.029533] [c00000000e177a20] [c0000000001bd388] =
-newidle_balance+0x258/0x5c0
-> [    9.029542] [c00000000e177ab0] [c0000000001bd7cc] =
-pick_next_task_fair+0x7c/0x4c0
-> [    9.029574] [c00000000e177b10] [c000000000cee3dc] =
-__schedule+0x15c/0x1780
-> [    9.029599] [c00000000e177c50] [c0000000001a5984] =
-do_task_dead+0x64/0x70
-> [    9.029622] [c00000000e177c80] [c000000000156338] =
-do_exit+0x848/0xcc0
-> [    9.029646] [c00000000e177d50] [c000000000156884] =
-do_group_exit+0x64/0xe0
-> [    9.029666] [c00000000e177d90] [c000000000156924] =
-sys_exit_group+0x24/0x30
-> [    9.029688] [c00000000e177db0] [c0000000000310c0] =
-system_call_exception+0x150/0x2d0
->         Startin[    9.029710] [gc00000000e177e10 Hardware Monito] =
-[c00000000000_common+0xec/0x2lling Sensors...
-> 78
-> [    9.029743] --- interrupt: c00 at 0x7fff943fddcc
-> [    9.029758] NIP:  00007fff943fddcc LR: 00007fff94357f04 CTR: =
+
+
+
+
+
+
+
+
+
+
+
+
+
+*c00000000009e2b8 <.update_min_vruntime>:...c00000000009e2d8:       e9 1f
+00 20     ld      r8,32(r31)c00000000009e2dc:       2f a9 00 00     cmpdi
+cr7,r9,0c00000000009e2e0:       41 9e 00 68     beq
+cr7,c00000000009e348 <.update_min_vruntime+0x90>c00000000009e2e4:       e9
+5f 00 30     ld      r10,48(r31)c00000000009e2e8:       e9 29 00 50     ld
+     r9,80(r9)c00000000009e2ec:       2f aa 00 00     cmpdi
+cr7,r10,0c00000000009e2f0:       41 9e 00 10     beq
+cr7,c00000000009e300 <.update_min_vruntime+0x48>c00000000009e2f4:       e9
+4a 00 40     ld      r10,64(r10)c00000000009e2f8:       7c e9 50 51
+subf.   r7,r9,r10c00000000009e2fc:       41 80 00 24     blt
+c00000000009e320 <.update_min_vruntime+0x68>c00000000009e300:       7c e8
+48 51     subf.   r7,r8,r9c00000000009e304:       40 81 00 28     ble
+c00000000009e32c <.update_min_vruntime+0x74>c00000000009e308:       f9 3f
+00 20     std     r9,32(r31)c00000000009e30c:       38 21 00 80     addi
+ r1,r1,128c00000000009e310:       e8 01 00 10     ld
+ r0,16(r1)c00000000009e314:       eb e1 ff f8     ld      r31,-8(r1)*
+
+And the criminal instruction is
+*c00000000009e308:       f9 3f 00 20     std     r9,32(r31)  *
+
+This is nothing to do with floating-point, I could not imagine why it will
+trigger the exception.
+
+Do you guys have any idea about this condition, appreciate for your reply.
+
+*Panic log*
+...
+Linux version 4.1.21 (ryan@ubuntu) (gcc version 5.2.0) #22 SMP PREEMPT Wed
+Oct 28 10:04:32 CST 2020
+...
+<1>Kernel command line: ramdisk_size=0x700000 root=/dev/ram rw init=/init
+mem=3840M reserve=256M@3840M console=ttyS0,115200 crashkernel=128M@32M
+bportals=s1 qportals=s1
+...
+<0>linux-kernel-bde (16258): Allocating DMA memory using method dmaalloc=0
+<0>linux-kernel-bde (16258): _use_dma_mapping:1 _dma_vbase:c000000060000000
+_dma_pbase:60000000 _cpu_pbase:60000000 allocated:2000000 dmaalloc:0
+<0>linux-kernel-bde (16247): _interrupt_connect d 0
+<0>linux-kernel-bde (16247): connect primary isr
+<0>linux-kernel-bde (16247): _interrupt_connect(3514):device# = 0,
+irq_flags = 128, irq = 41
+<1>device eth0.4092 entered promiscuous mode
+<1>Unrecoverable FP Unavailable Exception 800 at c00000000009e308
+<0>Oops: Unrecoverable FP Unavailable Exception, sig: 6 [#1]
+<0>PREEMPT SMP NR_CPUS=4 CoreNet Generic
+<0>Modules linked in: linux_user_bde(PO) linux_kernel_bde(PO) dma2(O)
+dma(O) watchdog(O) ttyVS(O) gpiodev(O) lbdev(O) spid(O) block2mtd
+mpc85xx_edac edac_core sch_fq_codel uio_seville(O) loop [last unloaded:
+linux_kernel_bde]
+<1>CPU: 1 PID: 7 Comm: rcu_preempt Tainted: P           O    4.1.21 #22
+<1>task: c0000000e11a4680 ti: c0000000e11d8000 task.ti: c0000000e11d8000
+<0>NIP: c00000000009e308 LR: c00000000009eda4 CTR: c0000000000a2de8
+<0>REGS: c0000000e11db4d0 TRAP: 0800   Tainted: P           O     (4.1.21)
+<0>MSR: 0000000080029000 <CE,EE,ME>  CR: 44a44242  XER: 00000000
+<0>SOFTE: 0
+<0>GPR00: c00000000009eda4 c0000000e11db750 c000000001763800
+c0000000efe476a0
+<0>GPR04: c0000000e11a4680 c0000000efe4fea0 c0000000efe47fa0
+c000000001643800
+<0>GPR08: 000006b94a32fd58 000006b949bb61f8 0000000000000000
+c0000000e11f0000
+<0>GPR12: 0000000044a44244 c00000000fffe6c0 0000000000000000
 0000000000000000
-> [    9.029786] REGS: c00000000e177e80 TRAP: 0c00   Not tainted  =
-(5.13.0-rc7-next-20210621-dirty)
-> [    9.029798] MSR:  800000000280f033 =
-<SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 28000402  XER: 00000000
-> [    9.029825] IRQMASK: 0=20
-> [    9.029825] GPR00: 00000000000000ea 00007ffff59c0170 =
-00007fff94527100 0000000000000001=20
-> [    9.029825] GPR04: 0000000000000000 0000000000000000 =
-0000000000000001 0000000000000000=20
-> [    9.029825] GPR08: 0000000000000000 0000000000000000 =
-0000000000000000 0000000000000000=20
-> [    9.029825] GPR12: 0000000000000000 00007fff9466af00 =
-0000000000000000 0000000000000000=20
-> [    9.029825] GPR16: 0000000000000000 0000000000000000 =
-0000000000000000 0000000000000000=20
-> [    9.029825] GPR20: 0000000000000000 00007fff94524f98 =
-0000000000000002 0000000000000001=20
-> [    9.029825] GPR24: 00007fff94520950 0000000000000000 =
-0000000000000001 0000000000000001=20
-> [    9.029825] GPR28: 0000000000000000 0000000000000000 =
-00007fff94663f10 0000000000000001=20
-> [    9.029935] NIP [00007fff943fddcc] 0x7fff943fddcc
-> [    9.029944] LR [00007fff94357f04] 0x7fff94357f04
-> [    9.029952] --- interrupt: c00
-> [    9.029959] Instruction dump:
-> [    9.029966] 0fe00000 4bfffc64 60000000 60000000 89340007 2f890000 =
-409efc38 e8610098=20
-> [    9.029987] 39200001 99340007 4bf96f71 60000000 <0fe00000> 4bfffc1c =
-60000000 60000000=20
-> [    9.030013] ---[ end trace 3d7e3a29c9539d96 ]---
->         Starting Authorization Manager=E2=80=A6
->=20
-> Thanks
-> -Sachin
->=20
->=20
->>=20
->> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
->> index da91db1c137f..8a6566f945a0 100644
->> --- a/kernel/sched/fair.c
->> +++ b/kernel/sched/fair.c
->> @@ -3030,8 +3030,9 @@ account_entity_dequeue(struct cfs_rq *cfs_rq, =
-struct sched_entity *se)
->> static inline void
->> enqueue_load_avg(struct cfs_rq *cfs_rq, struct sched_entity *se)
->> {
->> +       u32 divider =3D get_pelt_divider(&se->avg);
->>       cfs_rq->avg.load_avg +=3D se->avg.load_avg;
->> -       cfs_rq->avg.load_sum +=3D se_weight(se) * se->avg.load_sum;
->> +       cfs_rq->avg.load_sum =3D cfs_rq->avg.load_avg * divider;
->> }
->>=20
->> static inline void
->> @@ -3304,9 +3305,9 @@ static inline bool cfs_rq_is_decayed(struct =
-cfs_rq *cfs_rq)
->>        * Make sure that rounding and/or propagation of PELT values =
-never
->>        * break this.
->>        */
->> -       SCHED_WARN_ON(cfs_rq->avg.load_avg ||
->> -                     cfs_rq->avg.util_avg ||
->> -                     cfs_rq->avg.runnable_avg);
->> +       SCHED_WARN_ON(cfs_rq->avg.load_avg);
->> +       SCHED_WARN_ON(cfs_rq->avg.util_avg);
->> +       SCHED_WARN_ON(cfs_rq->avg.runnable_avg);
->>=20
->>       return true;
->> }
->>=20
->>=20
->>>=20
->>>        Starting Terminate Plymouth Boot Screen...
->>>        Starting Hold until boot process finishes up...
->>> [FAILED] Failed to start Crash recovery kernel arming.
->>> See 'systemctl status kdump.service' for details.
->>> [   10.737913] ------------[ cut here ]------------
->>> [   10.737960] cfs_rq->avg.load_avg || cfs_rq->avg.util_avg || =
-cfs_rq->avg.runnable_avg
->>> [   10.737976] WARNING: CPU: 27 PID: 146 at kernel/sched/fair.c:3279 =
-update_blocked_averages+0x758/0x780
->>> [   10.738010] Modules linked in: stp llc rfkill sunrpc pseries_rng =
-xts vmx_crypto uio_pdrv_genirq uio sch_fq_codel ip_tables xfs libcrc32c =
-sr_mod sd_mod cdrom t10_pi sg ibmvscsi ibmveth scsi_transport_srp =
-dm_mirror dm_region_hash dm_log dm_mod fuse
->>> [   10.738089] CPU: 27 PID: 146 Comm: ksoftirqd/27 Not tainted =
-5.13.0-rc7-next-20210621-dirty #2
->>> [   10.738103] NIP:  c0000000001b2768 LR: c0000000001b2764 CTR: =
-c000000000729120
->>> [   10.738116] REGS: c000000015973840 TRAP: 0700   Not tainted  =
-(5.13.0-rc7-next-20210621-dirty)
->>> [   10.738130] MSR:  800000000282b033 =
-<SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 48000224  XER: 00000005
->>> [   10.738161] CFAR: c00000000014d120 IRQMASK: 1=20
->>> [   10.738161] GPR00: c0000000001b2764 c000000015973ae0 =
-c0000000029bb900 0000000000000048=20
->>> [   10.738161] GPR04: 00000000fffeffff c0000000159737a0 =
-0000000000000027 c00000154f9f7e18=20
->>> [   10.738161] GPR08: 0000000000000023 0000000000000001 =
-0000000000000027 c00000167f1d7fe8=20
->>> [   10.738161] GPR12: 0000000000000000 c00000154ffd7e80 =
-c00000154fa82580 000000000000b78a=20
->>> [   10.738161] GPR16: 000000028007883c 00000000000002ed =
-c000000038d31000 0000000000000000=20
->>> [   10.738161] GPR20: 0000000000000000 c0000000029fdfe0 =
-0000000000000000 000000000000037b=20
->>> [   10.738161] GPR24: 0000000000000000 c00000154fa82f90 =
-0000000000000001 c00000003d4ca400=20
->>> [   10.738161] GPR28: 00000000000002ed c000000038d311c0 =
-c000000038d31100 0000000000000000=20
->>> [   10.738281] NIP [c0000000001b2768] =
-update_blocked_averages+0x758/0x780
->>> [   10.738290] LR [c0000000001b2764] =
-update_blocked_averages+0x754/0x780
->>> [   10.738299] Call Trace:
->>> [   10.738303] [c000000015973ae0] [c0000000001b2764] =
-update_blocked_averages+0x754/0x780 (unreliable)
->>> [   10.738315] [c000000015973c00] [c0000000001be720] =
-run_rebalance_domains+0xa0/0xd0
->>> [   10.738326] [c000000015973c30] [c000000000cf9acc] =
-__do_softirq+0x15c/0x3d4
->>> [   10.738337] [c000000015973d20] [c000000000158464] =
-run_ksoftirqd+0x64/0x90
->>> [   10.738346] [c000000015973d40] [c00000000018fd24] =
-smpboot_thread_fn+0x204/0x270
->>> [   10.738357] [c000000015973da0] [c000000000189770] =
-kthread+0x190/0x1a0
->>> [   10.738367] [c000000015973e10] [c00000000000ceec] =
-ret_from_kernel_thread+0x5c/0x70
->>> [   10.738381] Instruction dump:
->>> [   10.738388] 3863c808 9be9eefe 4bf9a979 60000000 0fe00000 4bfff980 =
-e9210070 e8610088=20
->>> [   10.738410] 39400001 99490003 4bf9a959 60000000 <0fe00000> =
-4bfffc24 3d22fff6 8929eefb=20
->>> [   10.738431] ---[ end trace 9ca80b55840c53f0 ]=E2=80=94
->>>=20
->>> Thanks
->>> -Sachin
->>>=20
->>>> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
->>>> index 8cc27b847ad8..da91db1c137f 100644
->>>> --- a/kernel/sched/fair.c
->>>> +++ b/kernel/sched/fair.c
->>>> @@ -3037,8 +3037,9 @@ enqueue_load_avg(struct cfs_rq *cfs_rq, =
-struct sched_entity *se)
->>>> static inline void
->>>> dequeue_load_avg(struct cfs_rq *cfs_rq, struct sched_entity *se)
->>>> {
->>>> +       u32 divider =3D get_pelt_divider(&se->avg);
->>>>      sub_positive(&cfs_rq->avg.load_avg, se->avg.load_avg);
->>>> -       sub_positive(&cfs_rq->avg.load_sum, se_weight(se) * =
-se->avg.load_sum);
->>>> +       cfs_rq->avg.load_sum =3D cfs_rq->avg.load_avg * divider;
->>>> }
->>>> #else
->>>> static inline void
->=20
+<0>GPR16: c0000000016a9fa0 c0000000016aa108 00000000000000fa
+0000000000000001
+<0>GPR20: c00000000176d578 0000000000000000 0000000000000001
+0000000000000000
+<0>GPR24: 0000000000000001 c000000000b08a18 0000000000000000
+c0000000efe47640
+<0>NIP [c00000000009e308] .update_min_vruntime+0x50/0xa4
+<0>LR [c00000000009eda4] .update_curr+0x80/0x1ec
+<0>Call Trace:
+<0>[c0000000e11db750] [c0000000e1004560] 0xc0000000e1004560 (unreliable)
+<0>[c0000000e11db7d0] [c00000000009eda4] .update_curr+0x80/0x1ec
+<0>[c0000000e11db870] [c0000000000a2e80] .dequeue_task_fair+0x98/0xaf0
+<0>[c0000000e11db960] [c00000000009376c] .dequeue_task+0x68/0x88
+<0>[c0000000e11db9f0] [c000000000ae8f88] .__schedule+0x2f4/0x7b4
+<0>[c0000000e11dbaa0] [c000000000ae9484] .schedule+0x3c/0xa8
+<0>[c0000000e11dbb20] [c000000000aecc98] .schedule_timeout+0x150/0x2d0
+<0>[c0000000e11dbc00] [c0000000000cdbb0] .rcu_gp_kthread+0x6c4/0xad4
+<0>[c0000000e11dbd30] [c000000000088aac] .kthread+0x10c/0x12c
+<0>[c0000000e11dbe30] [c0000000000009b0] .ret_from_kernel_thread+0x58/0xa8
+<0>Instruction dump:
+<0>e91f0020 2fa90000 419e0068 e95f0030 e9290050 2faa0000 419e0010 e94a0040
+<0>7ce95051 41800024 7ce84851 40810028 <f93f0020> 38210080 e8010010 ebe1fff8
+<1>---[ end trace bc398b62ecbb6901 ]---
+<0>
+<1>note: rcu_preempt[7] exited with preempt_count 2
 
+Thanks,
+Ryan
+
+--000000000000958cbc05c56bbc50
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr">Hi,<div><br></div><div>Recently I encount=
+ered a kernel panic announcing &quot;Unrecoverable FP Unavailable Exception=
+ 800 at c00000000009e308&quot;. I have attached the panic log at the end of=
+ the mail.</div><div>As I known, this exception occured when the hard float=
+ing-point instruction was executed with FPU disabled, and if the instructio=
+n was from kernel space, kernel would assume it as unrecoverable and panic =
+itself.</div><div><b>Here is the investigation I have done.</b></div><div>I=
+ checked the MSR firstly, and MSR[PR] =3D 0 and MSR[FP] =3D 0, It seems tha=
+t the system did match the panic condition.</div><div>Because MSR[PR] =3D 0=
+, the instruction=C2=A0seemed come from kernel, but kernel would not do flo=
+ating point calculation normally, so I was quite curious about the code whi=
+ch triggered the exception. And from the backtrace log, it should be the &q=
+uot;update_min_vruntime&quot; function.</div><div>Unfortunately, I didn&#39=
+;t see any floating-point operation in that function.</div><div>Then I disa=
+ssembled the vmlinux and found out the disassembly code of that function, a=
+nd matched it with the instruction dump:</div><div><br></div><div><b>c00000=
+000009e2b8 &lt;.update_min_vruntime&gt;:<br>...<br>c00000000009e2d8: =C2=A0=
+ =C2=A0 =C2=A0 e9 1f 00 20 =C2=A0 =C2=A0 ld =C2=A0 =C2=A0 =C2=A0r8,32(r31)<=
+br>c00000000009e2dc: =C2=A0 =C2=A0 =C2=A0 2f a9 00 00 =C2=A0 =C2=A0 cmpdi =
+=C2=A0 cr7,r9,0<br>c00000000009e2e0: =C2=A0 =C2=A0 =C2=A0 41 9e 00 68 =C2=
+=A0 =C2=A0 beq =C2=A0 =C2=A0 cr7,c00000000009e348 &lt;.update_min_vruntime+=
+0x90&gt;<br>c00000000009e2e4: =C2=A0 =C2=A0 =C2=A0 e9 5f 00 30 =C2=A0 =C2=
+=A0 ld =C2=A0 =C2=A0 =C2=A0r10,48(r31)<br>c00000000009e2e8: =C2=A0 =C2=A0 =
+=C2=A0 e9 29 00 50 =C2=A0 =C2=A0 ld =C2=A0 =C2=A0 =C2=A0r9,80(r9)<br>c00000=
+000009e2ec: =C2=A0 =C2=A0 =C2=A0 2f aa 00 00 =C2=A0 =C2=A0 cmpdi =C2=A0 cr7=
+,r10,0<br>c00000000009e2f0: =C2=A0 =C2=A0 =C2=A0 41 9e 00 10 =C2=A0 =C2=A0 =
+beq =C2=A0 =C2=A0 cr7,c00000000009e300 &lt;.update_min_vruntime+0x48&gt;<br=
+>c00000000009e2f4: =C2=A0 =C2=A0 =C2=A0 e9 4a 00 40 =C2=A0 =C2=A0 ld =C2=A0=
+ =C2=A0 =C2=A0r10,64(r10)<br>c00000000009e2f8: =C2=A0 =C2=A0 =C2=A0 7c e9 5=
+0 51 =C2=A0 =C2=A0 subf. =C2=A0 r7,r9,r10<br>c00000000009e2fc: =C2=A0 =C2=
+=A0 =C2=A0 41 80 00 24 =C2=A0 =C2=A0 blt =C2=A0 =C2=A0 c00000000009e320 &lt=
+;.update_min_vruntime+0x68&gt;<br>c00000000009e300: =C2=A0 =C2=A0 =C2=A0 7c=
+ e8 48 51 =C2=A0 =C2=A0 subf. =C2=A0 r7,r8,r9<br>c00000000009e304: =C2=A0 =
+=C2=A0 =C2=A0 40 81 00 28 =C2=A0 =C2=A0 ble =C2=A0 =C2=A0 c00000000009e32c =
+&lt;.update_min_vruntime+0x74&gt;<br>c00000000009e308: =C2=A0 =C2=A0 =C2=A0=
+ f9 3f 00 20 =C2=A0 =C2=A0 std =C2=A0 =C2=A0 r9,32(r31)<br>c00000000009e30c=
+: =C2=A0 =C2=A0 =C2=A0 38 21 00 80 =C2=A0 =C2=A0 addi =C2=A0 =C2=A0r1,r1,12=
+8<br>c00000000009e310: =C2=A0 =C2=A0 =C2=A0 e8 01 00 10 =C2=A0 =C2=A0 ld =
+=C2=A0 =C2=A0 =C2=A0r0,16(r1)<br>c00000000009e314: =C2=A0 =C2=A0 =C2=A0 eb =
+e1 ff f8 =C2=A0 =C2=A0 ld =C2=A0 =C2=A0 =C2=A0r31,-8(r1)</b><br></div><div>=
+<br></div><div>And the criminal instruction is</div><div><b>c00000000009e30=
+8: =C2=A0 =C2=A0 =C2=A0 f9 3f 00 20 =C2=A0 =C2=A0 std =C2=A0 =C2=A0 r9,32(r=
+31)=C2=A0=C2=A0</b><br></div><div><br></div><div>This is nothing to do with=
+ floating-point, I could not imagine why it will trigger the exception.</di=
+v><div><br></div><div>Do you guys have any idea about this condition, appre=
+ciate for your reply.</div><div><br></div><div><b>Panic log</b></div><div>.=
+..</div><div>Linux version 4.1.21 (ryan@ubuntu) (gcc version 5.2.0) #22 SMP=
+ PREEMPT Wed Oct 28 10:04:32 CST 2020<br></div><div>...</div><div>&lt;1&gt;=
+Kernel command line: ramdisk_size=3D0x700000 root=3D/dev/ram rw init=3D/ini=
+t mem=3D3840M reserve=3D256M@3840M console=3DttyS0,115200 crashkernel=3D128=
+M@32M bportals=3Ds1 qportals=3Ds1<br></div><div>...</div><div>&lt;0&gt;linu=
+x-kernel-bde (16258): Allocating DMA memory using method dmaalloc=3D0<br>&l=
+t;0&gt;linux-kernel-bde (16258): _use_dma_mapping:1 _dma_vbase:c00000006000=
+0000 _dma_pbase:60000000 _cpu_pbase:60000000 allocated:2000000 dmaalloc:0<b=
+r>&lt;0&gt;linux-kernel-bde (16247): _interrupt_connect d 0<br>&lt;0&gt;lin=
+ux-kernel-bde (16247): connect primary isr<br>&lt;0&gt;linux-kernel-bde (16=
+247): _interrupt_connect(3514):device# =3D 0, irq_flags =3D 128, irq =3D 41=
+<br>&lt;1&gt;device eth0.4092 entered promiscuous mode<br>&lt;1&gt;Unrecove=
+rable FP Unavailable Exception 800 at c00000000009e308<br>&lt;0&gt;Oops: Un=
+recoverable FP Unavailable Exception, sig: 6 [#1]<br>&lt;0&gt;PREEMPT SMP N=
+R_CPUS=3D4 CoreNet Generic<br>&lt;0&gt;Modules linked in: linux_user_bde(PO=
+) linux_kernel_bde(PO) dma2(O) dma(O) watchdog(O) ttyVS(O) gpiodev(O) lbdev=
+(O) spid(O) block2mtd mpc85xx_edac edac_core sch_fq_codel uio_seville(O) lo=
+op [last unloaded: linux_kernel_bde]<br>&lt;1&gt;CPU: 1 PID: 7 Comm: rcu_pr=
+eempt Tainted: P =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 O =C2=A0 =C2=A04.1.21 #=
+22<br>&lt;1&gt;task: c0000000e11a4680 ti: c0000000e11d8000 task.ti: c000000=
+0e11d8000<br>&lt;0&gt;NIP: c00000000009e308 LR: c00000000009eda4 CTR: c0000=
+000000a2de8<br>&lt;0&gt;REGS: c0000000e11db4d0 TRAP: 0800 =C2=A0 Tainted: P=
+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 O =C2=A0 =C2=A0 (4.1.21)<br>&lt;0&gt;MS=
+R: 0000000080029000 &lt;CE,EE,ME&gt; =C2=A0CR: 44a44242 =C2=A0XER: 00000000=
+<br>&lt;0&gt;SOFTE: 0<br>&lt;0&gt;GPR00: c00000000009eda4 c0000000e11db750 =
+c000000001763800 c0000000efe476a0<br>&lt;0&gt;GPR04: c0000000e11a4680 c0000=
+000efe4fea0 c0000000efe47fa0 c000000001643800<br>&lt;0&gt;GPR08: 000006b94a=
+32fd58 000006b949bb61f8 0000000000000000 c0000000e11f0000<br>&lt;0&gt;GPR12=
+: 0000000044a44244 c00000000fffe6c0 0000000000000000 0000000000000000<br>&l=
+t;0&gt;GPR16: c0000000016a9fa0 c0000000016aa108 00000000000000fa 0000000000=
+000001<br>&lt;0&gt;GPR20: c00000000176d578 0000000000000000 000000000000000=
+1 0000000000000000<br>&lt;0&gt;GPR24: 0000000000000001 c000000000b08a18 000=
+0000000000000 c0000000efe47640<br>&lt;0&gt;NIP [c00000000009e308] .update_m=
+in_vruntime+0x50/0xa4<br>&lt;0&gt;LR [c00000000009eda4] .update_curr+0x80/0=
+x1ec<br>&lt;0&gt;Call Trace:<br>&lt;0&gt;[c0000000e11db750] [c0000000e10045=
+60] 0xc0000000e1004560 (unreliable)<br>&lt;0&gt;[c0000000e11db7d0] [c000000=
+00009eda4] .update_curr+0x80/0x1ec<br>&lt;0&gt;[c0000000e11db870] [c0000000=
+000a2e80] .dequeue_task_fair+0x98/0xaf0<br>&lt;0&gt;[c0000000e11db960] [c00=
+000000009376c] .dequeue_task+0x68/0x88<br>&lt;0&gt;[c0000000e11db9f0] [c000=
+000000ae8f88] .__schedule+0x2f4/0x7b4<br>&lt;0&gt;[c0000000e11dbaa0] [c0000=
+00000ae9484] .schedule+0x3c/0xa8<br>&lt;0&gt;[c0000000e11dbb20] [c000000000=
+aecc98] .schedule_timeout+0x150/0x2d0<br>&lt;0&gt;[c0000000e11dbc00] [c0000=
+000000cdbb0] .rcu_gp_kthread+0x6c4/0xad4<br>&lt;0&gt;[c0000000e11dbd30] [c0=
+00000000088aac] .kthread+0x10c/0x12c<br>&lt;0&gt;[c0000000e11dbe30] [c00000=
+00000009b0] .ret_from_kernel_thread+0x58/0xa8<br>&lt;0&gt;Instruction dump:=
+<br>&lt;0&gt;e91f0020 2fa90000 419e0068 e95f0030 e9290050 2faa0000 419e0010=
+ e94a0040<br>&lt;0&gt;7ce95051 41800024 7ce84851 40810028 &lt;f93f0020&gt; =
+38210080 e8010010 ebe1fff8<br>&lt;1&gt;---[ end trace bc398b62ecbb6901 ]---=
+<br>&lt;0&gt;<br>&lt;1&gt;note: rcu_preempt[7] exited with preempt_count 2<=
+br></div><div><br></div><div>Thanks,</div><div>Ryan</div></div></div>
+
+--000000000000958cbc05c56bbc50--
