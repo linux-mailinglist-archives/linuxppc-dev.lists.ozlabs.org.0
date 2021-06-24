@@ -2,53 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 339AF3B280E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 08:57:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F21DE3B2773
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 08:33:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G9WDH72Cmz3098
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 16:57:51 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=BMYUamZ0;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G9VhQ59M6z3byS
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 16:33:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=163.com
- (client-ip=220.181.12.16; helo=m12-16.163.com;
- envelope-from=13145886936@163.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256
- header.s=s110527 header.b=BMYUamZ0; dkim-atps=neutral
-X-Greylist: delayed 920 seconds by postgrey-1.36 at boromir;
- Thu, 24 Jun 2021 16:19:07 AEST
-Received: from m12-16.163.com (m12-16.163.com [220.181.12.16])
- by lists.ozlabs.org (Postfix) with ESMTP id 4G9VMb2NWCz2yxj
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 16:19:02 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
- s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=hmqpo
- rXhZUOVVVEf/ac1YPbTWg/x3HX0KGoPZSyn+fI=; b=BMYUamZ0sV7zSAvreJrE5
- tnWBbLM8GzSl01Gd3ztUBu9gBlR0ju1fM7MQMMBB4/NWaIS1CBtfWPtZ5dN+U1ZS
- 5jTXPNNE+a5NdxGavoXVq/6OgXcZxSysTEsVuD/7p8bn47nQCcfcqDLC/X88ctKu
- iCegbeU4p3T2nn0faOFTBo=
-Received: from ubuntu.localdomain (unknown [218.17.89.92])
- by smtp12 (Coremail) with SMTP id EMCowAA3U08qINRg8uHZyw--.39766S2;
- Thu, 24 Jun 2021 14:03:22 +0800 (CST)
-From: 13145886936@163.com
-To: geoff@infradead.org
-Subject: [PATCH] powerpc: ps3: remove unneeded semicolon
-Date: Wed, 23 Jun 2021 23:03:16 -0700
-Message-Id: <20210624060316.25734-1-13145886936@163.com>
-X-Mailer: git-send-email 2.25.1
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gondor.apana.org.au (client-ip=216.24.177.18;
+ helo=deadmen.hmeau.com; envelope-from=herbert@gondor.apana.org.au;
+ receiver=<UNKNOWN>)
+Received: from deadmen.hmeau.com (helcar.hmeau.com [216.24.177.18])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G9Vh31hs0z2y08
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 16:33:21 +1000 (AEST)
+Received: from gondobar.mordor.me.apana.org.au ([192.168.128.4] helo=gondobar)
+ by deadmen.hmeau.com with esmtp (Exim 4.92 #5 (Debian))
+ id 1lwIun-0005DQ-BZ; Thu, 24 Jun 2021 14:32:41 +0800
+Received: from herbert by gondobar with local (Exim 4.92)
+ (envelope-from <herbert@gondor.apana.org.au>)
+ id 1lwIuN-0000Wf-O4; Thu, 24 Jun 2021 14:32:15 +0800
+Date: Thu, 24 Jun 2021 14:32:15 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Ira Weiny <ira.weiny@intel.com>
+Subject: [PATCH] crypto: scatterwalk - Remove obsolete PageSlab check
+Message-ID: <20210624063215.GA31721@gondor.apana.org.au>
+References: <20210615132456.753241-1-hch@lst.de>
+ <20210615132456.753241-2-hch@lst.de>
+ <20210618030157.GA1905674@iweiny-DESK2.sc.intel.com>
+ <20210618033728.GA16787@gondor.apana.org.au>
+ <20210618181258.GC1905674@iweiny-DESK2.sc.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: EMCowAA3U08qINRg8uHZyw--.39766S2
-X-Coremail-Antispam: 1Uf129KBjvdXoW7XF1UtF4ftryrXF45Gw4DArb_yoWfuwc_Aw
- 4Iv3Z7uFW8Jr12k3Z7CFn7Wr17J3sIgrWYgrsFq3W3t345J3yF9395JFWUGw4UXF92yrZx
- AFn8J3sxAa4SyjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
- 9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU55Ma5UUUUU==
-X-Originating-IP: [218.17.89.92]
-X-CM-SenderInfo: 5zrdx5xxdq6xppld0qqrwthudrp/xtbBdgq7g1UMRXtdgwAAs9
-X-Mailman-Approved-At: Thu, 24 Jun 2021 16:57:30 +1000
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210618181258.GC1905674@iweiny-DESK2.sc.intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,44 +51,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- gushengxian <gushengxian@yulong.com>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Mike Snitzer <snitzer@redhat.com>, "David S. Miller" <davem@davemloft.net>,
+ Geoff Levand <geoff@infradead.org>, Christoph Lameter <cl@gentwo.de>,
+ ceph-devel@vger.kernel.org, linux-mips@vger.kernel.org,
+ Dongsheng Yang <dongsheng.yang@easystack.cn>, linux-kernel@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ dm-devel@redhat.com, Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+ linux-arch@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+ Ilya Dryomov <idryomov@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: gushengxian <gushengxian@yulong.com>
+On Fri, Jun 18, 2021 at 11:12:58AM -0700, Ira Weiny wrote:
+>
+> Interesting!  Thanks!
+> 
+> Digging around a bit more I found:
+> 
+> https://lore.kernel.org/patchwork/patch/439637/
 
-Remove unneeded semocolons.
+Nice find.  So we can at least get rid of the PageSlab call from
+the Crypto API.
 
-Signed-off-by: gushengxian <gushengxian@yulong.com>
----
- arch/powerpc/platforms/ps3/system-bus.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+---8<---
+As it is now legal to call flush_dcache_page on slab pages we
+no longer need to do the check in the Crypto API.
 
-diff --git a/arch/powerpc/platforms/ps3/system-bus.c b/arch/powerpc/platforms/ps3/system-bus.c
-index 1a5665875165..f57f37fe038c 100644
---- a/arch/powerpc/platforms/ps3/system-bus.c
-+++ b/arch/powerpc/platforms/ps3/system-bus.c
-@@ -604,7 +604,7 @@ static dma_addr_t ps3_ioc0_map_page(struct device *_dev, struct page *page,
- 	default:
- 		/* not happned */
- 		BUG();
--	};
-+	}
- 	result = ps3_dma_map(dev->d_region, (unsigned long)ptr, size,
- 			     &bus_addr, iopte_flag);
+Reported-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+
+diff --git a/include/crypto/scatterwalk.h b/include/crypto/scatterwalk.h
+index c837d0775474..7af08174a721 100644
+--- a/include/crypto/scatterwalk.h
++++ b/include/crypto/scatterwalk.h
+@@ -81,12 +81,7 @@ static inline void scatterwalk_pagedone(struct scatter_walk *walk, int out,
+ 		struct page *page;
  
-@@ -763,7 +763,7 @@ int ps3_system_bus_device_register(struct ps3_system_bus_device *dev)
- 		break;
- 	default:
- 		BUG();
--	};
-+	}
+ 		page = sg_page(walk->sg) + ((walk->offset - 1) >> PAGE_SHIFT);
+-		/* Test ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE first as
+-		 * PageSlab cannot be optimised away per se due to
+-		 * use of volatile pointer.
+-		 */
+-		if (ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE && !PageSlab(page))
+-			flush_dcache_page(page);
++		flush_dcache_page(page);
+ 	}
  
- 	dev->core.of_node = NULL;
- 	set_dev_node(&dev->core, 0);
+ 	if (more && walk->offset >= walk->sg->offset + walk->sg->length)
 -- 
-2.25.1
-
-
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
