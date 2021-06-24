@@ -1,104 +1,104 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 727D03B2BAF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 11:43:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92E323B2BBA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 11:44:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G9Zv121pKz3bs5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 19:43:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G9Zw62ljlz3bwD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 19:44:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Dg09Q1JB;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Dg09Q1JB;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=N2dmpoXd;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=N2dmpoXd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
+ smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
  helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=Dg09Q1JB; 
+ header.s=mimecast20190719 header.b=N2dmpoXd; 
  dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=Dg09Q1JB; 
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=N2dmpoXd; 
  dkim-atps=neutral
 Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+ (us-smtp-delivery-124.mimecast.com [216.205.24.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G9ZtX0RR6z2yy9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 19:42:43 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G9Zvd65NQz2yy9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 19:43:41 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1624527759;
+ s=mimecast20190719; t=1624527817;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jyD4vH5kMZavgg+0al23ybbW1mNcrfB3c+Wxr6kYX38=;
- b=Dg09Q1JBF1FT2yGNlpUzg5ZmMVjnOBAvUUr/3l3rEgNzCEWl6NxXAbpZOaTky7eftJRdKJ
- oLpHNwtWiHd3s5w1WybrIvw/U5xAXkcr7IYk7Yf6x3VaO8BxsZglrteqpEmK2bmTaeJjz8
- YWZIaYY8hOjiyj/sr/s0Lnv4p8Zlgy0=
+ bh=qkxHw284a/HcUQKczqJcr3hZxs0a/eNZzaMIqcieCR4=;
+ b=N2dmpoXd8h1tJ/1jVQ8EadWoXvdJ00hsKd76ingRURI7ArP7YM3OVAqgd5iCcGtLbxK3C7
+ J0rwSiQGm1W62yubsHJcsSZWAiwG+R6YTX3bMtLXDw+7oAc+B11Z/3FqYtBXdPD45Pcc9x
+ UB6haCnVbw5AnTQduuhTYeNyrGJRGKk=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1624527759;
+ s=mimecast20190719; t=1624527817;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jyD4vH5kMZavgg+0al23ybbW1mNcrfB3c+Wxr6kYX38=;
- b=Dg09Q1JBF1FT2yGNlpUzg5ZmMVjnOBAvUUr/3l3rEgNzCEWl6NxXAbpZOaTky7eftJRdKJ
- oLpHNwtWiHd3s5w1WybrIvw/U5xAXkcr7IYk7Yf6x3VaO8BxsZglrteqpEmK2bmTaeJjz8
- YWZIaYY8hOjiyj/sr/s0Lnv4p8Zlgy0=
+ bh=qkxHw284a/HcUQKczqJcr3hZxs0a/eNZzaMIqcieCR4=;
+ b=N2dmpoXd8h1tJ/1jVQ8EadWoXvdJ00hsKd76ingRURI7ArP7YM3OVAqgd5iCcGtLbxK3C7
+ J0rwSiQGm1W62yubsHJcsSZWAiwG+R6YTX3bMtLXDw+7oAc+B11Z/3FqYtBXdPD45Pcc9x
+ UB6haCnVbw5AnTQduuhTYeNyrGJRGKk=
 Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
  [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-256-PPLABeKONQCfbAbxeeWrsA-1; Thu, 24 Jun 2021 05:42:38 -0400
-X-MC-Unique: PPLABeKONQCfbAbxeeWrsA-1
+ us-mta-213-7na6HJe3Mz2pYS546FefiA-1; Thu, 24 Jun 2021 05:43:36 -0400
+X-MC-Unique: 7na6HJe3Mz2pYS546FefiA-1
 Received: by mail-ed1-f70.google.com with SMTP id
- dy23-20020a05640231f7b0290394996f1452so3045965edb.18
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 02:42:37 -0700 (PDT)
+ j19-20020aa7c4130000b029039497d5cdbeso3022433edq.15
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 02:43:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:cc:references:from:message-id:date
  :user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=jyD4vH5kMZavgg+0al23ybbW1mNcrfB3c+Wxr6kYX38=;
- b=Wgwi9aVw6dcufeHLgPWysNPYcrw5RbWPB1KhypugGIuUmM0/PdwBFinHBS0zAsHLKD
- Eh1LBULsBVJU+WEjAHEpvXWpqSzo0BCg6LqcAXFOsU3sqcP4e4oxZy/HqSs4xAzw88xg
- 5Sxq6kvXqra7xn2shuzJXA9P2nmDprsy5xb95i/x4taQn4VSDLg9JtG3xcnBBkBOGgYi
- CQ47fhOlDRsagU+BGJcla9pATgbMXF2B2NavVXzSexIFjj+xAfGL/bHt5YynAW2gIELx
- x1YQ5lkzS/hnoKdsyXawQy+HPAUZvrc192NM4AA2VeUNwZHRq7+o5Q7hdVcongvw17yi
- 2ltA==
-X-Gm-Message-State: AOAM530QB6pfABy2MUDHCHXeS2WjVh1bjxkkCafdYWrNU8n+We5nW2QC
- 7hBFupUpu9m0ukqCUl7nMNHBUnI7DlnsmmajhBzdrqDtENuGFu76rw/UIG07Jz0dxyyngQ5oJLP
- ORNkjVEtdAQFL3AO52degqeaDHw==
-X-Received: by 2002:a05:6402:54c:: with SMTP id
- i12mr5910006edx.64.1624527757083; 
- Thu, 24 Jun 2021 02:42:37 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzUADYaxbQu5a0ZM6V5UX0tysDgP0Lb+XMxpzsUfVTNQ4yl7MEG7UQrmtC4bLiXvUVljS3Ohw==
-X-Received: by 2002:a05:6402:54c:: with SMTP id
- i12mr5909945edx.64.1624527756727; 
- Thu, 24 Jun 2021 02:42:36 -0700 (PDT)
+ bh=qkxHw284a/HcUQKczqJcr3hZxs0a/eNZzaMIqcieCR4=;
+ b=e0+fqKtzJYxcA1IszEoTV437ksFLEfaJVALDUvOMzKMVJS+vuPTCklL5Yv7m8ukjpv
+ jCECxtWTinCwR7mleCbrjfSG9lWLihr80B4WLcoauTdJ+9v9IRpOvIFpOi+85M+RO6X8
+ XyoOzmXceDxHCvcEbFdiGNBM9EefjFTO9wSpXBUecGbOjaZevXJUsxnepXw7G3+BIF+S
+ 4LZfmz+7+mD9truG3da7CmWsQbckG1xFtWvcnXt5mEYO0CXwEc88cC+pzB7uI+EIiudR
+ 9mJr+our0+TfdhBF6k2I/L3Iuo6FyPZhopS1jyESdKBSC3179tjDMEV4ri30Ss7Gvw3Q
+ IUeg==
+X-Gm-Message-State: AOAM533cV7++hNk1+nHz7W1q7ehZqj7jDtL6mBAMdqe/AKKagmomLF2F
+ 49oX4X1Q64QXtNuD50XBt8X5omcqdmlCl6Vlgd1uclPcrFptiZKFu9u6jBx8np8zGrjytrsu94n
+ n67zquSboeDkmzmg3Lr48YQ33Wg==
+X-Received: by 2002:a05:6402:944:: with SMTP id
+ h4mr5798146edz.76.1624527815210; 
+ Thu, 24 Jun 2021 02:43:35 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwD6cFFU4Uspcy5dTYBfn7A0VR+4loxnlaoo/QjHY9IN1nmjQ4mSQ+4egclMkG5+RC1oGdqOg==
+X-Received: by 2002:a05:6402:944:: with SMTP id
+ h4mr5798117edz.76.1624527814999; 
+ Thu, 24 Jun 2021 02:43:34 -0700 (PDT)
 Received: from ?IPv6:2001:b07:6468:f312:c8dd:75d4:99ab:290a?
  ([2001:b07:6468:f312:c8dd:75d4:99ab:290a])
- by smtp.gmail.com with ESMTPSA id jz27sm944475ejc.33.2021.06.24.02.42.34
+ by smtp.gmail.com with ESMTPSA id t17sm1544705edv.75.2021.06.24.02.43.32
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 24 Jun 2021 02:42:35 -0700 (PDT)
-Subject: Re: [PATCH 2/6] KVM: mmu: also return page from gfn_to_pfn
+ Thu, 24 Jun 2021 02:43:34 -0700 (PDT)
+Subject: Re: [PATCH 1/6] KVM: x86/mmu: release audited pfns
 To: Nicholas Piggin <npiggin@gmail.com>,
  Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>,
  Huacai Chen <chenhuacai@kernel.org>, Marc Zyngier <maz@kernel.org>,
  Paul Mackerras <paulus@ozlabs.org>, David Stevens <stevensd@chromium.org>,
  Zhenyu Wang <zhenyuw@linux.intel.com>, Zhi Wang <zhi.a.wang@intel.com>
 References: <20210624035749.4054934-1-stevensd@google.com>
- <20210624035749.4054934-3-stevensd@google.com>
- <1624524331.zsin3qejl9.astroid@bobo.none>
+ <20210624035749.4054934-2-stevensd@google.com>
+ <1624524156.04etgk7zmz.astroid@bobo.none>
 From: Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <201b68a7-10ea-d656-0c1e-5511b1f22674@redhat.com>
-Date: Thu, 24 Jun 2021 11:42:33 +0200
+Message-ID: <4816287a-b9a9-d3f4-f844-06922d696e06@redhat.com>
+Date: Thu, 24 Jun 2021 11:43:32 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.10.1
 MIME-Version: 1.0
-In-Reply-To: <1624524331.zsin3qejl9.astroid@bobo.none>
+In-Reply-To: <1624524156.04etgk7zmz.astroid@bobo.none>
 Authentication-Results: relay.mimecast.com;
  auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=pbonzini@redhat.com
 X-Mimecast-Spam-Score: 0
@@ -131,19 +131,43 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 24/06/21 10:52, Nicholas Piggin wrote:
->> For now, wrap all calls to gfn_to_pfn functions in the new helper
->> function. Callers which don't need the page struct will be updated in
->> follow-up patches.
-> Hmm. You mean callers that do need the page will be updated? Normally
-> if there will be leftover users that don't need the struct page then
-> you would go the other way and keep the old call the same, and add a new
-> one (gfn_to_pfn_page) just for those that need it.
+On 24/06/21 10:43, Nicholas Piggin wrote:
+> Excerpts from David Stevens's message of June 24, 2021 1:57 pm:
+>> From: David Stevens <stevensd@chromium.org>
+> 
+> Changelog? This looks like a bug, should it have a Fixes: tag?
 
-Needing kvm_pfn_page_unwrap is a sign that something might be buggy, so 
-it's a good idea to move the short name to the common case and the ugly 
-kvm_pfn_page_unwrap(gfn_to_pfn(...)) for the weird one.  In fact I'm not 
-sure there should be any kvm_pfn_page_unwrap in the end.
+Probably has been there forever... The best way to fix the bug would be 
+to nuke mmu_audit.c, which I've threatened to do many times but never 
+followed up on.
 
 Paolo
+
+> Thanks,
+> Nick
+> 
+>>
+>> Signed-off-by: David Stevens <stevensd@chromium.org>
+>> ---
+>>   arch/x86/kvm/mmu/mmu_audit.c | 2 ++
+>>   1 file changed, 2 insertions(+)
+>>
+>> diff --git a/arch/x86/kvm/mmu/mmu_audit.c b/arch/x86/kvm/mmu/mmu_audit.c
+>> index cedc17b2f60e..97ff184084b4 100644
+>> --- a/arch/x86/kvm/mmu/mmu_audit.c
+>> +++ b/arch/x86/kvm/mmu/mmu_audit.c
+>> @@ -121,6 +121,8 @@ static void audit_mappings(struct kvm_vcpu *vcpu, u64 *sptep, int level)
+>>   		audit_printk(vcpu->kvm, "levels %d pfn %llx hpa %llx "
+>>   			     "ent %llxn", vcpu->arch.mmu->root_level, pfn,
+>>   			     hpa, *sptep);
+>> +
+>> +	kvm_release_pfn_clean(pfn);
+>>   }
+>>   
+>>   static void inspect_spte_has_rmap(struct kvm *kvm, u64 *sptep)
+>> -- 
+>> 2.32.0.93.g670b81a890-goog
+>>
+>>
+> 
 
