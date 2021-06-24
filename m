@@ -1,58 +1,113 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69B0C3B3210
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 16:58:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D6FB3B32B0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 17:36:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G9jtP2Fcrz3bpL
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jun 2021 00:58:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G9kk96ndTz3bv1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jun 2021 01:36:01 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=Lpfsv0ZX;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CzWgx2D4;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZBx2tblY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=suse.com (client-ip=195.135.220.29; helo=smtp-out2.suse.de;
- envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
- header.s=susede1 header.b=Lpfsv0ZX; dkim-atps=neutral
-X-Greylist: delayed 486 seconds by postgrey-1.36 at boromir;
- Fri, 25 Jun 2021 00:57:41 AEST
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G9jsx5n2Xz2ym7
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Jun 2021 00:57:40 +1000 (AEST)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
- by smtp-out2.suse.de (Postfix) with ESMTP id 422A31FD97;
- Thu, 24 Jun 2021 14:49:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
- t=1624546169; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=5Ign43XeMpHmxep3PS/AYugOaZqefaSJ02AcjVPwEHM=;
- b=Lpfsv0ZXIrwaoon9xkE3tJ+qhGb1S6jmx1qTAAAexHj3ASpCFW5TKHtQmjYt3hMasjR7fZ
- 0/sucOsNVLyQrQk+Xi8bF3MK+GhYrMl+COXkvb7JwPZrCA+XTEBhIL+d0JKaM7ED00sK8N
- N+kwd6i+KX6gNiDJHVpoQay6wGtL3Wk=
-Received: from suse.cz (unknown [10.100.224.162])
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=CzWgx2D4; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZBx2tblY; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [216.205.24.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by relay2.suse.de (Postfix) with ESMTPS id 6BA58A3BB4;
- Thu, 24 Jun 2021 14:49:27 +0000 (UTC)
-Date: Thu, 24 Jun 2021 16:49:27 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: John Ogness <john.ogness@linutronix.de>
-Subject: Re: [PATCH printk v3 3/6] printk: remove safe buffers
-Message-ID: <YNSbd68YJ+0wxayx@alley>
-References: <20210624111148.5190-1-john.ogness@linutronix.de>
- <20210624111148.5190-4-john.ogness@linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G9kjj3fq0z300T
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Jun 2021 01:35:34 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1624548930;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=f6k4ykVaPXFxqKCeveqsqgjZTsHJh+2Hx0FU9Hu8Shk=;
+ b=CzWgx2D41CtewkNoKfSXlHNvHr4JzTaydpUFctZ4grhohiyPOOiZM03jcOk+BqcQY9PARI
+ ND/EiZ7OUbRRvzed7FFSGmmjCFYZnkRwlObmggnrscauZJ4LXoRq8lHxJhyJVtNv037ugs
+ MALhEc0j8q3/V50B+B5aP17iCj4dO/Y=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1624548931;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=f6k4ykVaPXFxqKCeveqsqgjZTsHJh+2Hx0FU9Hu8Shk=;
+ b=ZBx2tblYKfmR4+9rG4NOwghzYxEOd7Mmx5Gn0vYSog7hKciWxWX4+Pdl6FZR1XLdZPc2pO
+ MW7CiIwm6uEl/1E/Q9j53Du43FZmbal+Xi4KZCJAIE1hSQ1DFwIHgnXIXWc3YZ9vgMErJq
+ wu2hpoiNvzSUm94KYiwFUKDyPBSRb5U=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-453-QZNPaVDqOZKjtIf0Jis2pA-1; Thu, 24 Jun 2021 11:35:29 -0400
+X-MC-Unique: QZNPaVDqOZKjtIf0Jis2pA-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ x5-20020adff0c50000b029011a7be832b7so2328206wro.18
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 08:35:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:to:cc:references:from:subject:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=f6k4ykVaPXFxqKCeveqsqgjZTsHJh+2Hx0FU9Hu8Shk=;
+ b=KoXQXZDBARSD8OrmCPFo6Ijc1llv7tX6e6HZYPGTGOeEBHpaigyHw/UVII+SLg+kYM
+ ZjJ91tXlPiKWZIG/oiy+Hq7CLyxBrue6cpd80nW84S3M7/9llZIDQnf1bQhaPao42hJn
+ N7X+Oj3u6Qlyy88sKUpsWVPIp06+wTxCwKptWfrim8LTSxeBJKtp4LTmWpqxW8JAOpoj
+ xJgMrUWBcWsoArc4Tb1sBh8+9SF7cBiZhggnC5nGOp4g2ya7g6feGJBp1PJ0ibSZkGgG
+ kCiAwYbPnCr34uHnHk0s3Lyip9THJQ+7EP8MtjejLtw6hby4LdOLyFxnAGMcGdl7Z3s9
+ e7Sw==
+X-Gm-Message-State: AOAM530Y8FFeoLde+8xOkNc0cwLhgmm+I1foacdTcp7irMTnTd1CuZwd
+ pjWsh01Hy6c4NKb8ctJaPky46rPjGaVmaQudVk7XTs4C2F4HbGCkf+c+6n7QKi5/yu3Za8tbQWU
+ nhyPK/QR5Ny0jd8yCbWsQ1gK+rw==
+X-Received: by 2002:a05:6000:1251:: with SMTP id
+ j17mr5373898wrx.122.1624548927957; 
+ Thu, 24 Jun 2021 08:35:27 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwBnDqu4vf3bAIylFJkD7JiEEmgRW9T3VoP4swdNx5pmdzHboAZtCJNJi7bVPTY8V2i+hs/AQ==
+X-Received: by 2002:a05:6000:1251:: with SMTP id
+ j17mr5373864wrx.122.1624548927675; 
+ Thu, 24 Jun 2021 08:35:27 -0700 (PDT)
+Received: from ?IPv6:2001:b07:6468:f312:c8dd:75d4:99ab:290a?
+ ([2001:b07:6468:f312:c8dd:75d4:99ab:290a])
+ by smtp.gmail.com with ESMTPSA id v18sm4013288wrv.24.2021.06.24.08.35.25
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 24 Jun 2021 08:35:27 -0700 (PDT)
+To: Nicholas Piggin <npiggin@gmail.com>,
+ Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>,
+ Huacai Chen <chenhuacai@kernel.org>, Marc Zyngier <maz@kernel.org>,
+ Paul Mackerras <paulus@ozlabs.org>, David Stevens <stevensd@chromium.org>,
+ Zhenyu Wang <zhenyuw@linux.intel.com>, Zhi Wang <zhi.a.wang@intel.com>
+References: <20210624035749.4054934-1-stevensd@google.com>
+ <1624530624.8jff1f4u11.astroid@bobo.none>
+ <1624534759.nj0ylor2eh.astroid@bobo.none>
+ <0d3a699a-15eb-9f1b-0735-79d14736f38c@redhat.com>
+ <1624539354.6zggpdrdbw.astroid@bobo.none>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH 0/6] KVM: Remove uses of struct page from x86 and arm64 MMU
+Message-ID: <81d99029-ec40-19c5-5647-20607d78dab0@redhat.com>
+Date: Thu, 24 Jun 2021 17:35:25 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210624111148.5190-4-john.ogness@linutronix.de>
+In-Reply-To: <1624539354.6zggpdrdbw.astroid@bobo.none>
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=pbonzini@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,151 +119,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kees Cook <keescook@chromium.org>, "Paul E. McKenney" <paulmck@kernel.org>,
- Alexey Kardashevskiy <aik@ozlabs.ru>, Nicholas Piggin <npiggin@gmail.com>,
- linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
- kexec@lists.infradead.org, Sergey Senozhatsky <senozhatsky@chromium.org>,
- Yue Hu <huyue2@yulong.com>, Paul Mackerras <paulus@samba.org>,
- Eric Biederman <ebiederm@xmission.com>, Thomas Gleixner <tglx@linutronix.de>,
- linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>,
- Tiezhu Yang <yangtiezhu@loongson.cn>,
- =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>
+Cc: Wanpeng Li <wanpengli@tencent.com>, kvm@vger.kernel.org,
+ David Stevens <stevensd@google.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>, intel-gfx@lists.freedesktop.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, kvmarm@lists.cs.columbia.edu,
+ Will Deacon <will@kernel.org>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+ James Morse <james.morse@arm.com>, kvm-ppc@vger.kernel.org,
+ Sean Christopherson <seanjc@google.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, linux-mips@vger.kernel.org,
+ intel-gvt-dev@lists.freedesktop.org, Joerg Roedel <joro@8bytes.org>,
+ linux-arm-kernel@lists.infradead.org, Jim Mattson <jmattson@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu 2021-06-24 13:17:45, John Ogness wrote:
-> With @logbuf_lock removed, the high level printk functions for
-> storing messages are lockless. Messages can be stored from any
-> context, so there is no need for the NMI and safe buffers anymore.
-> Remove the NMI and safe buffers.
+On 24/06/21 14:57, Nicholas Piggin wrote:
+> KVM: Fix page ref underflow for regions with valid but non-refcounted pages
+
+It doesn't really fix the underflow, it disallows mapping them in the 
+first place.  Since in principle things can break, I'd rather be 
+explicit, so let's go with "KVM: do not allow mapping valid but 
+non-reference-counted pages".
+
+> It's possible to create a region which maps valid but non-refcounted
+> pages (e.g., tail pages of non-compound higher order allocations). These
+> host pages can then be returned by gfn_to_page, gfn_to_pfn, etc., family
+> of APIs, which take a reference to the page, which takes it from 0 to 1.
+> When the reference is dropped, this will free the page incorrectly.
 > 
-> Although the safe buffers are removed, the NMI and safe context
-> tracking is still in place. In these contexts, store the message
-> immediately but still use irq_work to defer the console printing.
+> Fix this by only taking a reference on the page if it was non-zero,
+
+s/on the page/on valid pages/ (makes clear that invalid pages are fine 
+without refcounting).
+
+Thank you *so* much, I'm awful at Linux mm.
+
+Paolo
+
+> which indicates it is participating in normal refcounting (and can be
+> released with put_page).
 > 
-> Since printk recursion tracking is in place, safe context tracking
-> for most of printk is not needed. Remove it. Only safe context
-> tracking relating to the console lock is left in place. This is
-> because the console lock is needed for the actual printing.
+> Signed-off-by: Nicholas Piggin<npiggin@gmail.com>
 
-Feel free to use:
-
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-
-There are some comments below.
-
-> --- a/kernel/printk/printk.c
-> +++ b/kernel/printk/printk.c
-> @@ -1852,7 +1839,7 @@ static int console_trylock_spinning(void)
->  	if (console_trylock())
->  		return 1;
->  
-> -	printk_safe_enter_irqsave(flags);
-> +	local_irq_save(flags);
->  
->  	raw_spin_lock(&console_owner_lock);
-
-This spin_lock is in the printk() path. We must make sure that
-it does not cause deadlock.
-
-printk_safe_enter_irqsave(flags) prevented the recursion because
-it deferred the console handling.
-
-One danger might be a lockdep report triggered by
-raw_spin_lock(&console_owner_lock) itself. But it should be safe.
-lockdep is checked before the lock is actually taken
-and lockdep should disable itself before printing anything.
-
-Another danger might be any printk() called under the lock.
-The code just compares and assigns values to some variables
-(static, on stack) so we should be on the safe side.
-
-Well, I would feel more comfortable if we add printk_safe_enter_irqsave()
-back around the sections guarded by this lock. It can be done
-in a separate patch. The code looks safe at the moment.
-
-
-> @@ -2664,9 +2648,9 @@ void console_unlock(void)
->  
->  	for (;;) {
->  		size_t ext_len = 0;
-> +		int handover;
->  		size_t len;
->  
-> -		printk_safe_enter_irqsave(flags);
->  skip:
->  		if (!prb_read_valid(prb, console_seq, &r))
->  			break;
-> @@ -2716,19 +2700,22 @@ void console_unlock(void)
->  		 * were to occur on another CPU, it may wait for this one to
->  		 * finish. This task can not be preempted if there is a
->  		 * waiter waiting to take over.
-> +		 *
-> +		 * Interrupts are disabled because the hand over to a waiter
-> +		 * must not be interrupted until the hand over is completed
-> +		 * (@console_waiter is cleared).
->  		 */
-> +		local_irq_save(flags);
->  		console_lock_spinning_enable();
-
-Same here. console_lock_spinning_enable() takes console_owner_lock.
-I would feel more comfortable if we added printk_safe_enter_irqsave(flags)
-inside console_lock_spinning_enable() around the locked code. The code
-is safe at the moment but...
-
->  
->  		stop_critical_timings();	/* don't trace print latency */
->  		call_console_drivers(ext_text, ext_len, text, len);
->  		start_critical_timings();
->  
-> -		if (console_lock_spinning_disable_and_check()) {
-> -			printk_safe_exit_irqrestore(flags);
-> +		handover = console_lock_spinning_disable_and_check();
-
-Same here. Also console_lock_spinning_disable_and_check() takes
-console_owner_lock. It looks safe at the moment but...
-
-
-> +		local_irq_restore(flags);
-> +		if (handover)
->  			return;
-> -		}
-> -
-> -		printk_safe_exit_irqrestore(flags);
->  
->  		if (do_cond_resched)
->  			cond_resched();
-
-> --- a/kernel/printk/printk_safe.c
-> +++ b/kernel/printk/printk_safe.c
-> @@ -369,7 +70,10 @@ asmlinkage int vprintk(const char *fmt, va_list args)
->  	 * Use the main logbuf even in NMI. But avoid calling console
->  	 * drivers that might have their own locks.
->  	 */
-> -	if ((this_cpu_read(printk_context) & PRINTK_NMI_DIRECT_CONTEXT_MASK)) {
-> +	if (this_cpu_read(printk_context) &
-> +	    (PRINTK_NMI_DIRECT_CONTEXT_MASK |
-> +	     PRINTK_NMI_CONTEXT_MASK |
-> +	     PRINTK_SAFE_CONTEXT_MASK)) {
->  		unsigned long flags;
->  		int len;
->  
-
-There is the following code right below:
-
-		printk_safe_enter_irqsave(flags);
-		len = vprintk_store(0, LOGLEVEL_DEFAULT, NULL, fmt, args);
-		printk_safe_exit_irqrestore(flags);
-		defer_console_output();
-		return len;
-
-printk_safe_enter_irqsave(flags) is not needed here. Any nested
-printk() ends here as well.
-
-Against this can be done in a separate patch. Well, the commit message
-mentions that the printk_safe context is removed everywhere except
-for the code manipulating console lock. But is it just a detail.
-
-Best Regards,
-Petr
