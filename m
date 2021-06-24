@@ -1,80 +1,106 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B6F43B2A9E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 10:43:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B89B83B2AA7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 10:46:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G9YZJ3Xt6z309g
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 18:43:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G9YdM3Szrz3bwZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 18:46:15 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=gAOPVlMk;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Onyb5eRl;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102a;
- helo=mail-pj1-x102a.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=gAOPVlMk; dkim-atps=neutral
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com
- [IPv6:2607:f8b0:4864:20::102a])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=Onyb5eRl; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G9YYq3pNxz2yxl
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 18:43:10 +1000 (AEST)
-Received: by mail-pj1-x102a.google.com with SMTP id
- z3-20020a17090a3983b029016bc232e40bso3019008pjb.4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 01:43:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=yhvFMq52QAZ9Grg2JNZMftQHgs3RA/23cRzSXZS17k0=;
- b=gAOPVlMk/C7twisLQPwKCNWWewikvdh3rxAsE3ZtniqnTTajI/NMXYxiFGdNgFsAb5
- HygkoSZIJ35Gv0csn5ROrHrh88J/UJu+eQftLB0ieYLqxUsTshCjLCXS6gCtoawRaivr
- 09ywa3Xbj5hpxhL9dwXklJBlZskMpYTiquDzecxyLb9cNgD5q6A07FqSvRwXDFm8rCjX
- BNwM+/+ntQwzLzmsj9QUq7rwCh6LY1EpIQpDwzEMVK8zxcfbTYEjGD1dfARZQBO2ATzQ
- bXhbvn6/C4gpLxmOLhsNYYF/nPrsfEvzkHwVbcZduLr1uAs8pjNAgfhm1dhPRaqpCZmK
- qi+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=yhvFMq52QAZ9Grg2JNZMftQHgs3RA/23cRzSXZS17k0=;
- b=McalerhmpCIjtgUoTMMcqGqlCa277RYWVWMIdCIsOQj0ZZ5XtyA1gIDR5F1CYgRaB6
- nxGyz5nfi3UPHMFIKV12H9tct/uc45WO++Bc02ehi6qI5MNdmMuDt64XZTVTqWzwaEB1
- IvoYEXA8ZpFkFNfASCM4nlC/lanyOmNDJ3Z7GDdgHHR9j9Yy/05RgDBJjFJAtUEhbKUn
- gnVAIbdohs8dPKwY6loll/PNdDbC58O+2IsEYQyq6wEnAiM6Wl4W1Ucn0LWDdPm84Hax
- 1As7NVdYuYAqGuWmrQKC1mHA2A6+JPw3g6fSrZ2RFONqXk2na4Uml7gR7K5CegRlAumC
- n7Ig==
-X-Gm-Message-State: AOAM530/wR7nSVv2O1pT8NbcpDEtAoYy/jTnlKOLnOIGePqTi6OaN+pW
- v6ekWsuifooTk6+BomHEbuo=
-X-Google-Smtp-Source: ABdhPJxPYtDJj0lFNs0Ok5TeYJmivmtsbDnnr/kiA2/ldwDSYWrbmF8IsiSMPIQHeLM0imoUnt26JQ==
-X-Received: by 2002:a17:90b:793:: with SMTP id
- l19mr14007232pjz.111.1624524186360; 
- Thu, 24 Jun 2021 01:43:06 -0700 (PDT)
-Received: from localhost (60-242-147-73.tpgi.com.au. [60.242.147.73])
- by smtp.gmail.com with ESMTPSA id 23sm1841779pjw.28.2021.06.24.01.43.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Jun 2021 01:43:06 -0700 (PDT)
-Date: Thu, 24 Jun 2021 18:43:00 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 1/6] KVM: x86/mmu: release audited pfns
-To: Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>, Huacai Chen
- <chenhuacai@kernel.org>, Marc Zyngier <maz@kernel.org>, Paul Mackerras
- <paulus@ozlabs.org>, Paolo Bonzini <pbonzini@redhat.com>, David Stevens
- <stevensd@chromium.org>, Zhenyu Wang <zhenyuw@linux.intel.com>, Zhi Wang
- <zhi.a.wang@intel.com>
-References: <20210624035749.4054934-1-stevensd@google.com>
- <20210624035749.4054934-2-stevensd@google.com>
-In-Reply-To: <20210624035749.4054934-2-stevensd@google.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G9Ycv1Y20z2xb7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 18:45:50 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 15O8Xjp8040044
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 04:45:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=z1ujShIptXIj/21BjLYcvwjtYOVpLKABFIIYV02oMv8=;
+ b=Onyb5eRl/LxxLEIwcZX8Fdsuxme9DBF5NN7ga0ZKlU4uJqvvxSlDsnEsMLwU2L0sDjM2
+ fXJMmo2wgPcnhlvqb0JGjnfuuVEG6DZSq3XlwJ3t7Tr5P8yuN61lq2+6Y8e218T2yrJU
+ n3Qfp7MJNnHcNiL6K+ilMtmQDNCkyPZi5x13Uww9WfMGWjO8Bc3oLu8udJqO+81n/0RD
+ KCtdYF33GqXl1FW2QjnQFM8fJk7y1FsMpVnSkRtcV7vXRoVGXSdd0zKIzigc4NdVpQKk
+ jqMmhzIeB5VsQivwsDL00UXlkMFzTrWTay/VFlI64sDZYyVsIzN5kNmlhUO7uTs16+gH lw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 39cn1vbtjb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 04:45:47 -0400
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 15O8YOwv042097
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 04:45:47 -0400
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 39cn1vbtgh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 24 Jun 2021 04:45:46 -0400
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15O8idpt019484;
+ Thu, 24 Jun 2021 08:45:44 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma06fra.de.ibm.com with ESMTP id 3997uhhbhr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 24 Jun 2021 08:45:44 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 15O8iKkQ20054292
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 24 Jun 2021 08:44:20 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E7A5E42064;
+ Thu, 24 Jun 2021 08:45:41 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B98B042077;
+ Thu, 24 Jun 2021 08:45:41 +0000 (GMT)
+Received: from pomme.local (unknown [9.145.158.63])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 24 Jun 2021 08:45:41 +0000 (GMT)
+Subject: Re: [PATCH 2/3] powerpc/pseries: break early in
+ dlpar_memory_add_by_count() loops
+To: Daniel Henrique Barboza <danielhb413@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org
+References: <20210622133923.295373-1-danielhb413@gmail.com>
+ <20210622133923.295373-3-danielhb413@gmail.com>
+From: Laurent Dufour <ldufour@linux.ibm.com>
+Message-ID: <c0a3bb20-e3ed-1522-8411-510e94633511@linux.ibm.com>
+Date: Thu, 24 Jun 2021 10:45:40 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.11.0
 MIME-Version: 1.0
-Message-Id: <1624524156.04etgk7zmz.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20210622133923.295373-3-danielhb413@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 8ozVHTJjLQb1U74UhyR9e8oiducnJm8V
+X-Proofpoint-ORIG-GUID: yPMFYkhWNK6iczXie6gNiZ1TxFy9luaX
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-06-24_06:2021-06-23,
+ 2021-06-24 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 bulkscore=0
+ lowpriorityscore=0 adultscore=0 malwarescore=0 phishscore=0 suspectscore=0
+ spamscore=0 priorityscore=1501 clxscore=1015 impostorscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2106240046
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,49 +112,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Wanpeng Li <wanpengli@tencent.com>, kvm@vger.kernel.org,
- Suzuki K Poulose <suzuki.poulose@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>, intel-gfx@lists.freedesktop.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, kvmarm@lists.cs.columbia.edu,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- kvm-ppc@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, linux-mips@vger.kernel.org,
- intel-gvt-dev@lists.freedesktop.org, Joerg Roedel <joro@8bytes.org>,
- linux-arm-kernel@lists.infradead.org, Jim Mattson <jmattson@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from David Stevens's message of June 24, 2021 1:57 pm:
-> From: David Stevens <stevensd@chromium.org>
+Le 22/06/2021 à 15:39, Daniel Henrique Barboza a écrit :
+> After a successful dlpar_add_lmb() call the LMB is marked as reserved.
+> Later on, depending whether we added enough LMBs or not, we rely on
+> the marked LMBs to see which ones might need to be removed, and we
+> remove the reservation of all of them.
+> 
+> These are done in for_each_drmem_lmb() loops without any break
+> condition. This means that we're going to check all LMBs of the partition
+> even after going through all the reserved ones.
+> 
+> This patch adds break conditions in both loops to avoid this. The
+> 'lmbs_added' variable was renamed to 'lmbs_reserved', and it's now
+> being decremented each time a lmb reservation is removed, indicating
+> if there are still marked LMBs to be processed.
 
-Changelog? This looks like a bug, should it have a Fixes: tag?
+Reviewed-by: Laurent Dufour <ldufour@linux.ibm.com>
 
-Thanks,
-Nick
-
->=20
-> Signed-off-by: David Stevens <stevensd@chromium.org>
+> Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 > ---
->  arch/x86/kvm/mmu/mmu_audit.c | 2 ++
->  1 file changed, 2 insertions(+)
->=20
-> diff --git a/arch/x86/kvm/mmu/mmu_audit.c b/arch/x86/kvm/mmu/mmu_audit.c
-> index cedc17b2f60e..97ff184084b4 100644
-> --- a/arch/x86/kvm/mmu/mmu_audit.c
-> +++ b/arch/x86/kvm/mmu/mmu_audit.c
-> @@ -121,6 +121,8 @@ static void audit_mappings(struct kvm_vcpu *vcpu, u64=
- *sptep, int level)
->  		audit_printk(vcpu->kvm, "levels %d pfn %llx hpa %llx "
->  			     "ent %llxn", vcpu->arch.mmu->root_level, pfn,
->  			     hpa, *sptep);
+>   arch/powerpc/platforms/pseries/hotplug-memory.c | 17 ++++++++++++-----
+>   1 file changed, 12 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+> index 28a7fd90232f..c0a03e1537cb 100644
+> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
+> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+> @@ -673,7 +673,7 @@ static int dlpar_memory_add_by_count(u32 lmbs_to_add)
+>   {
+>   	struct drmem_lmb *lmb;
+>   	int lmbs_available = 0;
+> -	int lmbs_added = 0;
+> +	int lmbs_reserved = 0;
+>   	int rc;
+>   
+>   	pr_info("Attempting to hot-add %d LMB(s)\n", lmbs_to_add);
+> @@ -714,13 +714,12 @@ static int dlpar_memory_add_by_count(u32 lmbs_to_add)
+>   		 * requested LMBs cannot be added.
+>   		 */
+>   		drmem_mark_lmb_reserved(lmb);
+> -
+> -		lmbs_added++;
+> -		if (lmbs_added == lmbs_to_add)
+> +		lmbs_reserved++;
+> +		if (lmbs_reserved == lmbs_to_add)
+>   			break;
+>   	}
+>   
+> -	if (lmbs_added != lmbs_to_add) {
+> +	if (lmbs_reserved != lmbs_to_add) {
+>   		pr_err("Memory hot-add failed, removing any added LMBs\n");
+>   
+>   		for_each_drmem_lmb(lmb) {
+> @@ -735,6 +734,10 @@ static int dlpar_memory_add_by_count(u32 lmbs_to_add)
+>   				dlpar_release_drc(lmb->drc_index);
+>   
+>   			drmem_remove_lmb_reservation(lmb);
+> +			lmbs_reserved--;
 > +
-> +	kvm_release_pfn_clean(pfn);
->  }
-> =20
->  static void inspect_spte_has_rmap(struct kvm *kvm, u64 *sptep)
-> --=20
-> 2.32.0.93.g670b81a890-goog
->=20
->=20
+> +			if (lmbs_reserved == 0)
+> +				break;
+>   		}
+>   		rc = -EINVAL;
+>   	} else {
+> @@ -745,6 +748,10 @@ static int dlpar_memory_add_by_count(u32 lmbs_to_add)
+>   			pr_debug("Memory at %llx (drc index %x) was hot-added\n",
+>   				 lmb->base_addr, lmb->drc_index);
+>   			drmem_remove_lmb_reservation(lmb);
+> +			lmbs_reserved--;
+> +
+> +			if (lmbs_reserved == 0)
+> +				break;
+>   		}
+>   		rc = 0;
+>   	}
+> 
+
