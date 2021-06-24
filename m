@@ -2,44 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F21DE3B2773
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 08:33:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60B9F3B2813
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 08:58:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G9VhQ59M6z3byS
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 16:33:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G9WDh0yFpz3c34
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 16:58:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gondor.apana.org.au (client-ip=216.24.177.18;
- helo=deadmen.hmeau.com; envelope-from=herbert@gondor.apana.org.au;
- receiver=<UNKNOWN>)
-Received: from deadmen.hmeau.com (helcar.hmeau.com [216.24.177.18])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G9Vh31hs0z2y08
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 16:33:21 +1000 (AEST)
-Received: from gondobar.mordor.me.apana.org.au ([192.168.128.4] helo=gondobar)
- by deadmen.hmeau.com with esmtp (Exim 4.92 #5 (Debian))
- id 1lwIun-0005DQ-BZ; Thu, 24 Jun 2021 14:32:41 +0800
-Received: from herbert by gondobar with local (Exim 4.92)
- (envelope-from <herbert@gondor.apana.org.au>)
- id 1lwIuN-0000Wf-O4; Thu, 24 Jun 2021 14:32:15 +0800
-Date: Thu, 24 Jun 2021 14:32:15 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Ira Weiny <ira.weiny@intel.com>
-Subject: [PATCH] crypto: scatterwalk - Remove obsolete PageSlab check
-Message-ID: <20210624063215.GA31721@gondor.apana.org.au>
-References: <20210615132456.753241-1-hch@lst.de>
- <20210615132456.753241-2-hch@lst.de>
- <20210618030157.GA1905674@iweiny-DESK2.sc.intel.com>
- <20210618033728.GA16787@gondor.apana.org.au>
- <20210618181258.GC1905674@iweiny-DESK2.sc.intel.com>
+ smtp.mailfrom=cdjrlc.com (client-ip=59.36.132.50; helo=qq.com;
+ envelope-from=wangborong@cdjrlc.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 64 seconds by postgrey-1.36 at boromir;
+ Thu, 24 Jun 2021 16:38:17 AEST
+Received: from qq.com (smtpbg467.qq.com [59.36.132.50])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G9Vnj4mWsz2yWG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 16:38:17 +1000 (AEST)
+X-QQ-mid: bizesmtp37t1624516600tqz6f830
+Received: from localhost.localdomain (unknown [182.148.13.245])
+ by esmtp6.qq.com (ESMTP) with 
+ id ; Thu, 24 Jun 2021 14:36:38 +0800 (CST)
+X-QQ-SSF: 01000000004000208000B00A0000000
+X-QQ-FEAT: b/ahUAh0Vpxk5eOVWi7G1S7hXdII6Xjak228SqLppcx6xR828AtN7zPfeLEax
+ 1KLc1R+tMbQB85tRIRu2jNGu9mn6Vt88dsGu+Ma3Mwp7T0FIpC3oJaziCRETz4r8++oxwfL
+ Yz6uxdIqkEpv/mfBrFsnH5GF8aYXUuRQsOJPxOhqJ7tdNlyc7Mm5e63r+GY53hsWNHC86M3
+ afN8a2lnRQV09Zv4gZTaHZ6XpFoRTL1jnkEdx9i5R5n7NeluvaB4NgDh73EfSSdVruawJAU
+ 8NBYoHGbI/IJja030DPA/L/V7zamPqIVjnLdrNyjZV5dJraOTDnOchHeZFL9L4YWbsEcQQH
+ 7FDalMB/zuTRmudDXvRwZMtXliWtQ==
+X-QQ-GoodBg: 0
+From: Jason Wang <wangborong@cdjrlc.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH] powerpc/sysfs: Replace sizeof(arr)/sizeof(arr[0]) with
+ ARRAY_SIZE
+Date: Thu, 24 Jun 2021 14:36:32 +0800
+Message-Id: <20210624063632.25632-1-wangborong@cdjrlc.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210618181258.GC1905674@iweiny-DESK2.sc.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:cdjrlc.com:qybgforeign:qybgforeign6
+X-QQ-Bgrelay: 1
+X-Mailman-Approved-At: Thu, 24 Jun 2021 16:57:30 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,58 +55,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Mike Snitzer <snitzer@redhat.com>, "David S. Miller" <davem@davemloft.net>,
- Geoff Levand <geoff@infradead.org>, Christoph Lameter <cl@gentwo.de>,
- ceph-devel@vger.kernel.org, linux-mips@vger.kernel.org,
- Dongsheng Yang <dongsheng.yang@easystack.cn>, linux-kernel@vger.kernel.org,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- dm-devel@redhat.com, Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
- linux-arch@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
- Ilya Dryomov <idryomov@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- Christoph Hellwig <hch@lst.de>
+Cc: christophe.leroy@c-s.fr, maddy@linux.ibm.com, wangborong@cdjrlc.com,
+ paulus@samba.org, clg@kaod.org, linuxppc-dev@lists.ozlabs.org, joel@jms.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 18, 2021 at 11:12:58AM -0700, Ira Weiny wrote:
->
-> Interesting!  Thanks!
-> 
-> Digging around a bit more I found:
-> 
-> https://lore.kernel.org/patchwork/patch/439637/
+The ARRAY_SIZE macro is more compact and more formal in linux source.
 
-Nice find.  So we can at least get rid of the PageSlab call from
-the Crypto API.
+Signed-off-by: Jason Wang <wangborong@cdjrlc.com>
+---
+ arch/powerpc/kernel/sysfs.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
----8<---
-As it is now legal to call flush_dcache_page on slab pages we
-no longer need to do the check in the Crypto API.
-
-Reported-by: Ira Weiny <ira.weiny@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-
-diff --git a/include/crypto/scatterwalk.h b/include/crypto/scatterwalk.h
-index c837d0775474..7af08174a721 100644
---- a/include/crypto/scatterwalk.h
-+++ b/include/crypto/scatterwalk.h
-@@ -81,12 +81,7 @@ static inline void scatterwalk_pagedone(struct scatter_walk *walk, int out,
- 		struct page *page;
- 
- 		page = sg_page(walk->sg) + ((walk->offset - 1) >> PAGE_SHIFT);
--		/* Test ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE first as
--		 * PageSlab cannot be optimised away per se due to
--		 * use of volatile pointer.
--		 */
--		if (ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE && !PageSlab(page))
--			flush_dcache_page(page);
-+		flush_dcache_page(page);
- 	}
- 
- 	if (more && walk->offset >= walk->sg->offset + walk->sg->length)
+diff --git a/arch/powerpc/kernel/sysfs.c b/arch/powerpc/kernel/sysfs.c
+index 2e08640bb3b4..5ff0e55d0db1 100644
+--- a/arch/powerpc/kernel/sysfs.c
++++ b/arch/powerpc/kernel/sysfs.c
+@@ -843,14 +843,14 @@ static int register_cpu_online(unsigned int cpu)
+ #ifdef HAS_PPC_PMC_IBM
+ 	case PPC_PMC_IBM:
+ 		attrs = ibm_common_attrs;
+-		nattrs = sizeof(ibm_common_attrs) / sizeof(struct device_attribute);
++		nattrs = ARRAY_SIZE(ibm_common_attrs);
+ 		pmc_attrs = classic_pmc_attrs;
+ 		break;
+ #endif /* HAS_PPC_PMC_IBM */
+ #ifdef HAS_PPC_PMC_G4
+ 	case PPC_PMC_G4:
+ 		attrs = g4_common_attrs;
+-		nattrs = sizeof(g4_common_attrs) / sizeof(struct device_attribute);
++		nattrs = ARRAY_SIZE(g4_common_attrs);
+ 		pmc_attrs = classic_pmc_attrs;
+ 		break;
+ #endif /* HAS_PPC_PMC_G4 */
+@@ -858,7 +858,7 @@ static int register_cpu_online(unsigned int cpu)
+ 	case PPC_PMC_PA6T:
+ 		/* PA Semi starts counting at PMC0 */
+ 		attrs = pa6t_attrs;
+-		nattrs = sizeof(pa6t_attrs) / sizeof(struct device_attribute);
++		nattrs = ARRAY_SIZE(pa6t_attrs);
+ 		pmc_attrs = NULL;
+ 		break;
+ #endif
+@@ -940,14 +940,14 @@ static int unregister_cpu_online(unsigned int cpu)
+ #ifdef HAS_PPC_PMC_IBM
+ 	case PPC_PMC_IBM:
+ 		attrs = ibm_common_attrs;
+-		nattrs = sizeof(ibm_common_attrs) / sizeof(struct device_attribute);
++		nattrs = ARRAY_SIZE(ibm_common_attrs);
+ 		pmc_attrs = classic_pmc_attrs;
+ 		break;
+ #endif /* HAS_PPC_PMC_IBM */
+ #ifdef HAS_PPC_PMC_G4
+ 	case PPC_PMC_G4:
+ 		attrs = g4_common_attrs;
+-		nattrs = sizeof(g4_common_attrs) / sizeof(struct device_attribute);
++		nattrs = ARRAY_SIZE(g4_common_attrs);
+ 		pmc_attrs = classic_pmc_attrs;
+ 		break;
+ #endif /* HAS_PPC_PMC_G4 */
+@@ -955,7 +955,7 @@ static int unregister_cpu_online(unsigned int cpu)
+ 	case PPC_PMC_PA6T:
+ 		/* PA Semi starts counting at PMC0 */
+ 		attrs = pa6t_attrs;
+-		nattrs = sizeof(pa6t_attrs) / sizeof(struct device_attribute);
++		nattrs = ARRAY_SIZE(pa6t_attrs);
+ 		pmc_attrs = NULL;
+ 		break;
+ #endif
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+2.31.1
+
+
+
