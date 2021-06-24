@@ -2,77 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62C363B2AD9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 10:58:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C09443B2B9D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 11:40:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G9Yvd1FD2z309g
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 18:58:37 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=hr3gPiWS;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G9Zr248dhz3bsP
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 19:40:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::434;
- helo=mail-pf1-x434.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=hr3gPiWS; dkim-atps=neutral
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com
- [IPv6:2607:f8b0:4864:20::434])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=maz@kernel.org; receiver=<UNKNOWN>)
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G9YvB0F42z2xZR
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 18:58:11 +1000 (AEST)
-Received: by mail-pf1-x434.google.com with SMTP id y4so4581170pfi.9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 01:58:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=tKGKGI76BKfQVO8CY1clLxpyySv3vaB3aNh7NWcPhFU=;
- b=hr3gPiWSs1kzsoT0RN4D0/9u1oAQb1rzWVWLp59xVCkmpZThGbP8ZZHdbz3ZoRByYE
- Q+bBx6g9vlzubm3xmDqrFRZB2+oF9y38fRVeD/lgeXJbzeuitriXAAYQ0N8Gc/HydmS9
- h/5/U9gCncS2FPi6hlzNOXRrtw9yomYF3Wegfa7y5BMTxxqMjVRS/4Rtc+vsfYrwyiXs
- LyEAUsbj+aFGjgwEVS9b0hjW6sOv/s+/X+xMkec2Brf1nwlIC4mUivbzM9KBmc/1CmOo
- TCEnNnCh1Rmp7Wm6gBzXbz6S+8yTRr+T+rSaRDpuwEYfFxSOn4uIuwntNiH62vmZwJdo
- +iuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=tKGKGI76BKfQVO8CY1clLxpyySv3vaB3aNh7NWcPhFU=;
- b=LeS2uDW/1Foz57E97+mWUmrNABR5SJ3vQHvTvSPSUlGl6rmtNH8tLDCEsYpaayzsqB
- hRJLnPAaYdUViPCkcRJFivO683KQkd1ks6HZB/zufzRg/XfK7/gCGqEpr15X/C9zzKec
- lvW+qBYmvJNPRoxdI9zLhmohkqV7hp1cGZy9h9sRByc9aZ3z2zEEOJsDqowFRAIjqUzo
- J4k8etcUXFUY2/J4SPnZDyYYJIXk+pPifowfKmskPigjqPMFfUKKfN67X1hovINl9Zjl
- UW8ojH0gXjhIGvRLpsUJLwUCKgdRrSOOHuTac35U0+uz2Qk9BYozqEd1yKyCBX+S7Fzw
- eBFg==
-X-Gm-Message-State: AOAM530QIDwNmuj5iGz15viRxFhvsVMoaXzQ49Jp0dRX+G/7c4IRdCQf
- +d+fw3vNd551hDPrCZZ8nyQ=
-X-Google-Smtp-Source: ABdhPJw6tjizzTpMBwm3ffTzeTydtLNTRDVWzEX8o5A/u6n7JmgIJ0z9ctLYNOtrV24IDSrsfT+37Q==
-X-Received: by 2002:a63:4e4c:: with SMTP id o12mr3895360pgl.95.1624525086186; 
- Thu, 24 Jun 2021 01:58:06 -0700 (PDT)
-Received: from localhost (60-242-147-73.tpgi.com.au. [60.242.147.73])
- by smtp.gmail.com with ESMTPSA id u12sm2003479pjc.0.2021.06.24.01.58.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Jun 2021 01:58:05 -0700 (PDT)
-Date: Thu, 24 Jun 2021 18:58:00 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 3/6] KVM: x86/mmu: avoid struct page in MMU
-To: Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>, Huacai Chen
- <chenhuacai@kernel.org>, Marc Zyngier <maz@kernel.org>, Paul Mackerras
- <paulus@ozlabs.org>, Paolo Bonzini <pbonzini@redhat.com>, David Stevens
- <stevensd@chromium.org>, Zhenyu Wang <zhenyuw@linux.intel.com>, Zhi Wang
- <zhi.a.wang@intel.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G9Zqc3Nb7z2yy9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 19:40:12 +1000 (AEST)
+Received: from disco-boy.misterjones.org (disco-boy.misterjones.org
+ [51.254.78.96])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 83160613C3;
+ Thu, 24 Jun 2021 09:40:07 +0000 (UTC)
+Received: from sofa.misterjones.org ([185.219.108.64] helo=why.misterjones.org)
+ by disco-boy.misterjones.org with esmtpsa (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
+ (envelope-from <maz@kernel.org>)
+ id 1lwLq9-009Yqj-H3; Thu, 24 Jun 2021 10:40:05 +0100
+Date: Thu, 24 Jun 2021 10:40:00 +0100
+Message-ID: <87o8bviosv.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: David Stevens <stevensd@chromium.org>
+Subject: Re: [PATCH 2/6] KVM: mmu: also return page from gfn_to_pfn
+In-Reply-To: <20210624035749.4054934-3-stevensd@google.com>
 References: <20210624035749.4054934-1-stevensd@google.com>
- <20210624035749.4054934-4-stevensd@google.com>
-In-Reply-To: <20210624035749.4054934-4-stevensd@google.com>
-MIME-Version: 1.0
-Message-Id: <1624524744.2sr7o7ix86.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+ <20210624035749.4054934-3-stevensd@google.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/27.1
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: stevensd@chromium.org, chenhuacai@kernel.org,
+ aleksandar.qemu.devel@gmail.com, paulus@ozlabs.org, pbonzini@redhat.com,
+ zhenyuw@linux.intel.com, zhi.a.wang@intel.com, james.morse@arm.com,
+ alexandru.elisei@arm.com, suzuki.poulose@arm.com, will@kernel.org,
+ seanjc@google.com, vkuznets@redhat.com, wanpengli@tencent.com,
+ jmattson@google.com, joro@8bytes.org, linux-arm-kernel@lists.infradead.org,
+ kvmarm@lists.cs.columbia.edu, linux-kernel@vger.kernel.org,
+ linux-mips@vger.kernel.org, kvm@vger.kernel.org, kvm-ppc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, intel-gvt-dev@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org);
+ SAEximRunCond expanded to false
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,35 +67,81 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Wanpeng Li <wanpengli@tencent.com>, kvm@vger.kernel.org,
- Suzuki K Poulose <suzuki.poulose@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>, intel-gfx@lists.freedesktop.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, kvmarm@lists.cs.columbia.edu,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- kvm-ppc@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, linux-mips@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org,
+ Will Deacon <will@kernel.org>, kvmarm@lists.cs.columbia.edu,
  intel-gvt-dev@lists.freedesktop.org, Joerg Roedel <joro@8bytes.org>,
- linux-arm-kernel@lists.infradead.org, Jim Mattson <jmattson@google.com>
+ Huacai Chen <chenhuacai@kernel.org>,
+ Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>,
+ Zhi Wang <zhi.a.wang@intel.com>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+ intel-gfx@lists.freedesktop.org, kvm-ppc@vger.kernel.org,
+ Zhenyu Wang <zhenyuw@linux.intel.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ linux-arm-kernel@lists.infradead.org, Jim Mattson <jmattson@google.com>,
+ Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org,
+ James Morse <james.morse@arm.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from David Stevens's message of June 24, 2021 1:57 pm:
+Hi David,
+
+On Thu, 24 Jun 2021 04:57:45 +0100,
+David Stevens <stevensd@chromium.org> wrote:
+> 
 > From: David Stevens <stevensd@chromium.org>
->  out_unlock:
->  	if (is_tdp_mmu_root(vcpu->kvm, vcpu->arch.mmu->root_hpa))
->  		read_unlock(&vcpu->kvm->mmu_lock);
->  	else
->  		write_unlock(&vcpu->kvm->mmu_lock);
-> -	kvm_release_pfn_clean(pfn);
+> 
+> Return a struct kvm_pfn_page containing both a pfn and an optional
+> struct page from the gfn_to_pfn family of functions. This differentiates
+> the gup and follow_fault_pfn cases, which allows callers that only need
+> a pfn to avoid touching the page struct in the latter case. For callers
+> that need a struct page, introduce a helper function that unwraps a
+> struct kvm_pfn_page into a struct page. This helper makes the call to
+> kvm_get_pfn which had previously been in hva_to_pfn_remapped.
+> 
+> For now, wrap all calls to gfn_to_pfn functions in the new helper
+> function. Callers which don't need the page struct will be updated in
+> follow-up patches.
+> 
+> Signed-off-by: David Stevens <stevensd@chromium.org>
+> ---
+>  arch/arm64/kvm/mmu.c                   |   5 +-
+>  arch/mips/kvm/mmu.c                    |   3 +-
+>  arch/powerpc/kvm/book3s.c              |   3 +-
+>  arch/powerpc/kvm/book3s_64_mmu_hv.c    |   5 +-
+>  arch/powerpc/kvm/book3s_64_mmu_radix.c |   5 +-
+>  arch/powerpc/kvm/book3s_hv_uvmem.c     |   4 +-
+>  arch/powerpc/kvm/e500_mmu_host.c       |   2 +-
+>  arch/x86/kvm/mmu/mmu.c                 |  11 ++-
+>  arch/x86/kvm/mmu/mmu_audit.c           |   2 +-
+>  arch/x86/kvm/x86.c                     |   2 +-
+>  drivers/gpu/drm/i915/gvt/kvmgt.c       |   2 +-
+>  include/linux/kvm_host.h               |  27 ++++--
+>  include/linux/kvm_types.h              |   5 +
+>  virt/kvm/kvm_main.c                    | 121 +++++++++++++------------
+>  14 files changed, 109 insertions(+), 88 deletions(-)
+> 
+
+[...]
+
+> +kvm_pfn_t kvm_pfn_page_unwrap(struct kvm_pfn_page pfnpg)
+> +{
 > +	if (pfnpg.page)
-> +		put_page(pfnpg.page);
->  	return r;
->  }
+> +		return pfnpg.pfn;
+> +
+> +	kvm_get_pfn(pfnpg.pfn);
+> +	return pfnpg.pfn;
+> +}
+> +EXPORT_SYMBOL_GPL(kvm_pfn_page_unwrap);
 
-How about
+I'd really like to see a tiny bit of documentation explaining that
+calls to kvm_pfn_page_unwrap() are not idempotent.
 
-  kvm_release_pfn_page_clean(pfnpg);
+Otherwise, looks good to me.
 
 Thanks,
-Nick
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
