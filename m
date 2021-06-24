@@ -1,82 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BCFB3B2722
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 08:06:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 339AF3B280E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 08:57:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G9V561v1Jz3bvd
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 16:06:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G9WDH72Cmz3098
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 16:57:51 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=f09JHaTt;
+	dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=BMYUamZ0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::12b;
- helo=mail-il1-x12b.google.com; envelope-from=tientzu@chromium.org;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=163.com
+ (client-ip=220.181.12.16; helo=m12-16.163.com;
+ envelope-from=13145886936@163.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=f09JHaTt; dkim-atps=neutral
-Received: from mail-il1-x12b.google.com (mail-il1-x12b.google.com
- [IPv6:2607:f8b0:4864:20::12b])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G9V4b2QMGz2yXP
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 16:06:05 +1000 (AEST)
-Received: by mail-il1-x12b.google.com with SMTP id k5so4962524ilv.8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jun 2021 23:06:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=osJqntoZHJL8VeQbE2d8Gx1TrOiajWQXazXH9w70kIY=;
- b=f09JHaTt6yY9HlwcujpzmyCJbvbUoIE0cZNa0aICkCK68T/rODYze/6/aKRkuFqgtc
- aQSgGc4CEL1bXaOSKVo+xlBop7hH5m1EqqxXbZi8VyWUJmFL6g6BM4X4ZMkMlYffhkXb
- itPPZk67YIl+8XjGG/C0lboNwjIIr80wXQ+NM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=osJqntoZHJL8VeQbE2d8Gx1TrOiajWQXazXH9w70kIY=;
- b=azg6kZEwr+ajaDXqwlEA5D3y1nL/nGfgJb6oVxvK0hC6Uq6M3WkMFN/lVCdhcafLQo
- k4gbqiAhVwbeCetpTVzk8PDmyHIIJ3s8Mz4zSdfieaGWo6bSGovGSa5kTzOPHcqPCisB
- otOkloeBlsIcDUx6IiEeUxujG8nGA6EMEN7bIg1xh6/f1H/5AOlAHM2ExzfwpwB1f1tY
- ZrUohc5I0A3mkDger9ydPbokGm1rkSgfTuRWufbkkUTehhr1Hho9SSlpBtpd/nZSDnvh
- lujR3qmJaFnrOvrxtT2lq5QX5jn9X3ag+4UF0Uvjh/JqUb7D3YbDIY9yaA7pPiJLC+8v
- UnSQ==
-X-Gm-Message-State: AOAM532tRuBZlh4ETiIjXIF2Q2c3vpjshr1yeW54t3/vdt24ono4ENb8
- ikGi/ty/LUK4e3fATheIHneUmWP5R0IEAQ==
-X-Google-Smtp-Source: ABdhPJy3WfSk9zmQl6gQd9xgpciCmlu7mzuSUFEDp27071hMmZlKc+MIlKUV9C30s3FeYhYejhllCg==
-X-Received: by 2002:a05:6e02:8b:: with SMTP id
- l11mr2456653ilm.228.1624514761190; 
- Wed, 23 Jun 2021 23:06:01 -0700 (PDT)
-Received: from mail-il1-f169.google.com (mail-il1-f169.google.com.
- [209.85.166.169])
- by smtp.gmail.com with ESMTPSA id s17sm695290ioe.32.2021.06.23.23.06.00
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 23 Jun 2021 23:06:00 -0700 (PDT)
-Received: by mail-il1-f169.google.com with SMTP id b5so4929739ilc.12
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jun 2021 23:06:00 -0700 (PDT)
-X-Received: by 2002:a92:750c:: with SMTP id q12mr2332407ilc.303.1624514749926; 
- Wed, 23 Jun 2021 23:05:49 -0700 (PDT)
+ unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256
+ header.s=s110527 header.b=BMYUamZ0; dkim-atps=neutral
+X-Greylist: delayed 920 seconds by postgrey-1.36 at boromir;
+ Thu, 24 Jun 2021 16:19:07 AEST
+Received: from m12-16.163.com (m12-16.163.com [220.181.12.16])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4G9VMb2NWCz2yxj
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 16:19:02 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+ s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=hmqpo
+ rXhZUOVVVEf/ac1YPbTWg/x3HX0KGoPZSyn+fI=; b=BMYUamZ0sV7zSAvreJrE5
+ tnWBbLM8GzSl01Gd3ztUBu9gBlR0ju1fM7MQMMBB4/NWaIS1CBtfWPtZ5dN+U1ZS
+ 5jTXPNNE+a5NdxGavoXVq/6OgXcZxSysTEsVuD/7p8bn47nQCcfcqDLC/X88ctKu
+ iCegbeU4p3T2nn0faOFTBo=
+Received: from ubuntu.localdomain (unknown [218.17.89.92])
+ by smtp12 (Coremail) with SMTP id EMCowAA3U08qINRg8uHZyw--.39766S2;
+ Thu, 24 Jun 2021 14:03:22 +0800 (CST)
+From: 13145886936@163.com
+To: geoff@infradead.org
+Subject: [PATCH] powerpc: ps3: remove unneeded semicolon
+Date: Wed, 23 Jun 2021 23:03:16 -0700
+Message-Id: <20210624060316.25734-1-13145886936@163.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20210619034043.199220-1-tientzu@chromium.org>
- <20210619034043.199220-7-tientzu@chromium.org>
- <76c3343d-72e5-9df3-8924-5474ee698ef4@quicinc.com>
- <20210623183736.GA472@willie-the-truck>
- <19d4c7a2-744d-21e0-289c-a576e1f0e6f3@quicinc.com>
- <20210624054315.GA25381@lst.de>
-In-Reply-To: <20210624054315.GA25381@lst.de>
-From: Claire Chang <tientzu@chromium.org>
-Date: Thu, 24 Jun 2021 14:05:39 +0800
-X-Gmail-Original-Message-ID: <CALiNf288ZLMhY3E8E3N+z9rkwi1viWNLm1wwMEwT4rNwh3FfwQ@mail.gmail.com>
-Message-ID: <CALiNf288ZLMhY3E8E3N+z9rkwi1viWNLm1wwMEwT4rNwh3FfwQ@mail.gmail.com>
-Subject: Re: [PATCH v14 06/12] swiotlb: Use is_swiotlb_force_bounce for
- swiotlb data bouncing
-To: Christoph Hellwig <hch@lst.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: EMCowAA3U08qINRg8uHZyw--.39766S2
+X-Coremail-Antispam: 1Uf129KBjvdXoW7XF1UtF4ftryrXF45Gw4DArb_yoWfuwc_Aw
+ 4Iv3Z7uFW8Jr12k3Z7CFn7Wr17J3sIgrWYgrsFq3W3t345J3yF9395JFWUGw4UXF92yrZx
+ AFn8J3sxAa4SyjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+ 9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU55Ma5UUUUU==
+X-Originating-IP: [218.17.89.92]
+X-CM-SenderInfo: 5zrdx5xxdq6xppld0qqrwthudrp/xtbBdgq7g1UMRXtdgwAAs9
+X-Mailman-Approved-At: Thu, 24 Jun 2021 16:57:30 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,60 +60,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: heikki.krogerus@linux.intel.com,
- linux-devicetree <devicetree@vger.kernel.org>, peterz@infradead.org,
- joonas.lahtinen@linux.intel.com, dri-devel@lists.freedesktop.org,
- chris@chris-wilson.co.uk, grant.likely@arm.com, paulus@samba.org,
- Frank Rowand <frowand.list@gmail.com>, mingo@kernel.org,
- Jianxiong Gao <jxgao@google.com>, Stefano Stabellini <sstabellini@kernel.org>,
- Saravana Kannan <saravanak@google.com>, Joerg Roedel <joro@8bytes.org>,
- "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
- Bartosz Golaszewski <bgolaszewski@baylibre.com>, bskeggs@redhat.com,
- linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Dan Williams <dan.j.williams@intel.com>, matthew.auld@intel.com,
- Nicolas Boichat <drinkcat@chromium.org>, thomas.hellstrom@linux.intel.com,
- Jim Quinlan <james.quinlan@broadcom.com>, Will Deacon <will@kernel.org>,
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- intel-gfx@lists.freedesktop.org, maarten.lankhorst@linux.intel.com,
- Robin Murphy <robin.murphy@arm.com>, jani.nikula@linux.intel.com,
- Rob Herring <robh+dt@kernel.org>, rodrigo.vivi@intel.com,
- Bjorn Helgaas <bhelgaas@google.com>, boris.ostrovsky@oracle.com,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jgross@suse.com,
- airlied@linux.ie, Thierry Reding <treding@nvidia.com>,
- Greg KH <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
- Qian Cai <quic_qiancai@quicinc.com>, lkml <linux-kernel@vger.kernel.org>,
- "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
- Daniel Vetter <daniel@ffwll.ch>, xypron.glpk@gmx.de,
- Tom Lendacky <thomas.lendacky@amd.com>, linuxppc-dev@lists.ozlabs.org,
- bauerman@linux.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ gushengxian <gushengxian@yulong.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 24, 2021 at 1:43 PM Christoph Hellwig <hch@lst.de> wrote:
->
-> On Wed, Jun 23, 2021 at 02:44:34PM -0400, Qian Cai wrote:
-> > is_swiotlb_force_bounce at /usr/src/linux-next/./include/linux/swiotlb.h:119
-> >
-> > is_swiotlb_force_bounce() was the new function introduced in this patch here.
-> >
-> > +static inline bool is_swiotlb_force_bounce(struct device *dev)
-> > +{
-> > +     return dev->dma_io_tlb_mem->force_bounce;
-> > +}
->
-> To me the crash looks like dev->dma_io_tlb_mem is NULL.  Can you
-> turn this into :
->
->         return dev->dma_io_tlb_mem && dev->dma_io_tlb_mem->force_bounce;
->
-> for a quick debug check?
+From: gushengxian <gushengxian@yulong.com>
 
-I just realized that dma_io_tlb_mem might be NULL like Christoph
-pointed out since swiotlb might not get initialized.
-However,  `Unable to handle kernel paging request at virtual address
-dfff80000000000e` looks more like the address is garbage rather than
-NULL?
-I wonder if that's because dev->dma_io_tlb_mem is not assigned
-properly (which means device_initialize is not called?).
+Remove unneeded semocolons.
+
+Signed-off-by: gushengxian <gushengxian@yulong.com>
+---
+ arch/powerpc/platforms/ps3/system-bus.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/platforms/ps3/system-bus.c b/arch/powerpc/platforms/ps3/system-bus.c
+index 1a5665875165..f57f37fe038c 100644
+--- a/arch/powerpc/platforms/ps3/system-bus.c
++++ b/arch/powerpc/platforms/ps3/system-bus.c
+@@ -604,7 +604,7 @@ static dma_addr_t ps3_ioc0_map_page(struct device *_dev, struct page *page,
+ 	default:
+ 		/* not happned */
+ 		BUG();
+-	};
++	}
+ 	result = ps3_dma_map(dev->d_region, (unsigned long)ptr, size,
+ 			     &bus_addr, iopte_flag);
+ 
+@@ -763,7 +763,7 @@ int ps3_system_bus_device_register(struct ps3_system_bus_device *dev)
+ 		break;
+ 	default:
+ 		BUG();
+-	};
++	}
+ 
+ 	dev->core.of_node = NULL;
+ 	set_dev_node(&dev->core, 0);
+-- 
+2.25.1
+
+
