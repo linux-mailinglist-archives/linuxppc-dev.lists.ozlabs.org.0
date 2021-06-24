@@ -2,80 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90D133B2C04
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 11:58:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F08A03B2C1C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 12:06:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G9bDm39Nfz3bsW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 19:58:32 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=EhX2h/EG;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G9bQM5yMVz3bwh
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 20:06:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42b;
- helo=mail-pf1-x42b.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=EhX2h/EG; dkim-atps=neutral
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com
- [IPv6:2607:f8b0:4864:20::42b])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=maz@kernel.org; receiver=<UNKNOWN>)
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G9bDH0PcJz2yyG
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 19:58:05 +1000 (AEST)
-Received: by mail-pf1-x42b.google.com with SMTP id 21so4732283pfp.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 02:58:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=2/FXkDvvz78LZzi8vEuw9P0gxvIPqn8+9Qh994D56qo=;
- b=EhX2h/EGnTWqdqRQbpZlpJcgT0oJJ6o7Nef8q7EtPvI99smF5fr4TIG1Xp5CmTthMl
- XHQzIJWggbxJUXpq8OIPTnYOso57K6OBKZR9lvcFT5+8SBJA9849ahv3W1ndrCYtoccT
- yygIYTNJlnGOy5EhAkMecjcGkX/PpQmk6jKwKuAM0vg6/CjPiKQtp4B/woWoN5Oxyu7M
- ua8ZUETzbjTOqOpCOLZ+ZXZ4cbXcI88NdWfpPkU+Dnz/3z1CLTZvVnhoG0DpsDAi9bV1
- nK9pW2bxw2DMCvsnbAXlJB/lKwAPvP15NgJgI5cnQ6vQYvzhGuulMUnoZMx6s+4VaanO
- Eqdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=2/FXkDvvz78LZzi8vEuw9P0gxvIPqn8+9Qh994D56qo=;
- b=mLk4AChn3PFHZt8VKKzkwd+kXCTTnFDDsZk1fEnZ/EWMEU3Jf2WLelcEVVL18g4vKD
- KThYUDYkr9Ck2N6k0vq4tv5AxAnP0vsQKexJ21hFsdP4jKd+I0GASzcwIGD261Z/VNYp
- fP9u/1XjRM8Coq7Avc9yxRElk0Uj45qPJNRG/8ZU+DSAZd834FBB7KAI7zYFn33166DG
- MiuPuffBhUpEdJKbNQ2FCVOwkYsjoJoo2QEWEVpyJphnsMPa2rgjhJUMhb6lFe9D1kvV
- V/0U4xSnMg6hBQHmADfSjUscel+w4EzaqzU8S2dKS5DzaRg+vZ/moG8JgsR+Kg6lQ/YH
- qZFw==
-X-Gm-Message-State: AOAM5332ib7bHh+xBdLjkWltWn/r1QpxPTLjfSzKzNcSN9iQjfhWTSEN
- uP/ojC91CD+Zl64JXzjBzgg=
-X-Google-Smtp-Source: ABdhPJzzKwhLHCAEARj7N7XbHWSLsSDNrl/BU7M36fXftqZpKf9BHg/7Rmx6MuG9ZeVpPhgC2xWSpQ==
-X-Received: by 2002:a62:1857:0:b029:302:fb56:df52 with SMTP id
- 84-20020a6218570000b0290302fb56df52mr4317733pfy.3.1624528683047; 
- Thu, 24 Jun 2021 02:58:03 -0700 (PDT)
-Received: from localhost (60-242-147-73.tpgi.com.au. [60.242.147.73])
- by smtp.gmail.com with ESMTPSA id y20sm2759510pfb.207.2021.06.24.02.58.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Jun 2021 02:58:02 -0700 (PDT)
-Date: Thu, 24 Jun 2021 19:57:57 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 2/6] KVM: mmu: also return page from gfn_to_pfn
-To: Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>, Huacai Chen
- <chenhuacai@kernel.org>, Marc Zyngier <maz@kernel.org>, Paul Mackerras
- <paulus@ozlabs.org>, Paolo Bonzini <pbonzini@redhat.com>, David Stevens
- <stevensd@chromium.org>, Zhenyu Wang <zhenyuw@linux.intel.com>, Zhi Wang
- <zhi.a.wang@intel.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G9bQ13nlVz300T
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 20:06:33 +1000 (AEST)
+Received: from disco-boy.misterjones.org (disco-boy.misterjones.org
+ [51.254.78.96])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 2AC33613FB;
+ Thu, 24 Jun 2021 10:06:30 +0000 (UTC)
+Received: from sofa.misterjones.org ([185.219.108.64] helo=why.misterjones.org)
+ by disco-boy.misterjones.org with esmtpsa (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
+ (envelope-from <maz@kernel.org>)
+ id 1lwMFg-009ZEr-4I; Thu, 24 Jun 2021 11:06:28 +0100
+Date: Thu, 24 Jun 2021 11:06:27 +0100
+Message-ID: <87mtrfinks.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 3/6] KVM: x86/mmu: avoid struct page in MMU
+In-Reply-To: <1624524744.2sr7o7ix86.astroid@bobo.none>
 References: <20210624035749.4054934-1-stevensd@google.com>
- <20210624035749.4054934-3-stevensd@google.com>
- <1624524331.zsin3qejl9.astroid@bobo.none>
- <201b68a7-10ea-d656-0c1e-5511b1f22674@redhat.com>
-In-Reply-To: <201b68a7-10ea-d656-0c1e-5511b1f22674@redhat.com>
-MIME-Version: 1.0
-Message-Id: <1624528342.s2ezcyp90x.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+ <20210624035749.4054934-4-stevensd@google.com>
+ <1624524744.2sr7o7ix86.astroid@bobo.none>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/27.1
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: npiggin@gmail.com, aleksandar.qemu.devel@gmail.com,
+ chenhuacai@kernel.org, paulus@ozlabs.org, pbonzini@redhat.com,
+ stevensd@chromium.org, zhenyuw@linux.intel.com, zhi.a.wang@intel.com,
+ alexandru.elisei@arm.com, dri-devel@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org, intel-gvt-dev@lists.freedesktop.org,
+ james.morse@arm.com, jmattson@google.com, joro@8bytes.org,
+ kvmarm@lists.cs.columbia.edu, kvm-ppc@vger.kernel.org, kvm@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, seanjc@google.com,
+ suzuki.poulose@arm.com, vkuznets@redhat.com, wanpengli@tencent.com,
+ will@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org);
+ SAEximRunCond expanded to false
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,41 +69,50 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Wanpeng Li <wanpengli@tencent.com>, kvm@vger.kernel.org,
- Suzuki K Poulose <suzuki.poulose@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>, intel-gfx@lists.freedesktop.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, kvmarm@lists.cs.columbia.edu,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- kvm-ppc@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, linux-mips@vger.kernel.org,
- intel-gvt-dev@lists.freedesktop.org, Joerg Roedel <joro@8bytes.org>,
- linux-arm-kernel@lists.infradead.org, Jim Mattson <jmattson@google.com>
+ dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org,
+ Will Deacon <will@kernel.org>, kvmarm@lists.cs.columbia.edu,
+ Alexandru Elisei <alexandru.elisei@arm.com>, Joerg Roedel <joro@8bytes.org>,
+ Huacai Chen <chenhuacai@kernel.org>,
+ Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>,
+ Zhi Wang <zhi.a.wang@intel.com>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+ intel-gfx@lists.freedesktop.org, kvm-ppc@vger.kernel.org,
+ Zhenyu Wang <zhenyuw@linux.intel.com>, intel-gvt-dev@lists.freedesktop.org,
+ linux-arm-kernel@lists.infradead.org, Jim Mattson <jmattson@google.com>,
+ Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org,
+ James Morse <james.morse@arm.com>, David Stevens <stevensd@chromium.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Paolo Bonzini's message of June 24, 2021 7:42 pm:
-> On 24/06/21 10:52, Nicholas Piggin wrote:
->>> For now, wrap all calls to gfn_to_pfn functions in the new helper
->>> function. Callers which don't need the page struct will be updated in
->>> follow-up patches.
->> Hmm. You mean callers that do need the page will be updated? Normally
->> if there will be leftover users that don't need the struct page then
->> you would go the other way and keep the old call the same, and add a new
->> one (gfn_to_pfn_page) just for those that need it.
->=20
-> Needing kvm_pfn_page_unwrap is a sign that something might be buggy, so=20
-> it's a good idea to move the short name to the common case and the ugly=20
-> kvm_pfn_page_unwrap(gfn_to_pfn(...)) for the weird one.  In fact I'm not=20
-> sure there should be any kvm_pfn_page_unwrap in the end.
+On Thu, 24 Jun 2021 09:58:00 +0100,
+Nicholas Piggin <npiggin@gmail.com> wrote:
+> 
+> Excerpts from David Stevens's message of June 24, 2021 1:57 pm:
+> > From: David Stevens <stevensd@chromium.org>
+> >  out_unlock:
+> >  	if (is_tdp_mmu_root(vcpu->kvm, vcpu->arch.mmu->root_hpa))
+> >  		read_unlock(&vcpu->kvm->mmu_lock);
+> >  	else
+> >  		write_unlock(&vcpu->kvm->mmu_lock);
+> > -	kvm_release_pfn_clean(pfn);
+> > +	if (pfnpg.page)
+> > +		put_page(pfnpg.page);
+> >  	return r;
+> >  }
+> 
+> How about
+> 
+>   kvm_release_pfn_page_clean(pfnpg);
 
-If all callers were updated that is one thing, but from the changelog
-it sounds like that would not happen and there would be some gfn_to_pfn
-users left over.
+I'm not sure. I always found kvm_release_pfn_clean() ugly, because it
+doesn't mark the page 'clean'. I find put_page() more correct.
 
-But yes in the end you would either need to make gfn_to_pfn never return
-a page found via follow_pte, or change all callers to the new way. If=20
-the plan is for the latter then I guess that's fine.
+Something like 'kvm_put_pfn_page()' would make more sense, but I'm so
+bad at naming things that I could just as well call it 'bob()'.
 
-Thanks,
-Nick
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
