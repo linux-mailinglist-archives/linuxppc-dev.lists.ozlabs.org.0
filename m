@@ -1,68 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37FC63B208A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jun 2021 20:45:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ABFB3B251C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 04:37:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G9Byw6l0pz3bvV
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 04:45:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G9PRc3f5Nz3bv5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 12:37:16 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256 header.s=qcdkim header.b=ZkdRYh3M;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=bE7Ut1O6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=quicinc.com (client-ip=199.106.114.39;
- helo=alexa-out-sd-02.qualcomm.com; envelope-from=quic_qiancai@quicinc.com;
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::102f;
+ helo=mail-pj1-x102f.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256
- header.s=qcdkim header.b=ZkdRYh3M; dkim-atps=neutral
-Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com
- [199.106.114.39])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=bE7Ut1O6; dkim-atps=neutral
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com
+ [IPv6:2607:f8b0:4864:20::102f])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G9ByQ0Yg2z302f
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 04:44:45 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
- d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
- t=1624473885; x=1656009885;
- h=subject:to:cc:references:from:message-id:date:
- mime-version:in-reply-to:content-transfer-encoding;
- bh=N07wTNJU87j8J0GwX4jxR069BiU3mP0B1FK82hyEXsU=;
- b=ZkdRYh3MVvg8GF4yz0MFAlyuF+vnLlxdSMGnuM+UBLs8gTZIJdHxyuVO
- n4uGRtvIe55FgjkyGDgaklEItJKc2/NKAx4n9wkf9nsoq6iXu/Sp+C6Om
- BulBTl6I0JI1AJ8BCznZQ/G89JI9RYRm/mU4/wAOQ94apLs6nLBqPwLum Q=;
-Received: from unknown (HELO ironmsg05-sd.qualcomm.com) ([10.53.140.145])
- by alexa-out-sd-02.qualcomm.com with ESMTP; 23 Jun 2021 11:44:42 -0700
-X-QCInternal: smtphost
-Received: from nasanexm03e.na.qualcomm.com ([10.85.0.48])
- by ironmsg05-sd.qualcomm.com with ESMTP/TLS/AES256-SHA;
- 23 Jun 2021 11:44:41 -0700
-Received: from [10.38.240.33] (10.80.80.8) by nasanexm03e.na.qualcomm.com
- (10.85.0.48) with Microsoft SMTP Server (TLS) id 15.0.1497.18; Wed, 23 Jun
- 2021 11:44:35 -0700
-Subject: Re: [PATCH v14 06/12] swiotlb: Use is_swiotlb_force_bounce for
- swiotlb data bouncing
-To: Will Deacon <will@kernel.org>
-References: <20210619034043.199220-1-tientzu@chromium.org>
- <20210619034043.199220-7-tientzu@chromium.org>
- <76c3343d-72e5-9df3-8924-5474ee698ef4@quicinc.com>
- <20210623183736.GA472@willie-the-truck>
-From: Qian Cai <quic_qiancai@quicinc.com>
-Message-ID: <19d4c7a2-744d-21e0-289c-a576e1f0e6f3@quicinc.com>
-Date: Wed, 23 Jun 2021 14:44:34 -0400
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G9PRB1Btmz2yjH
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 12:36:52 +1000 (AEST)
+Received: by mail-pj1-x102f.google.com with SMTP id
+ m15-20020a17090a5a4fb029016f385ffad0so2570441pji.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jun 2021 19:36:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=PA0sGsnWn7x6YWMb364WdKSRZr6JVc7r09OSPHJyTVk=;
+ b=bE7Ut1O6iEYhIzFYgS1kBHToBaRwb/B7k+v81/L3nAJV4duuuiXjpCwWPApRgLqP+C
+ EnSiLIXsZjAz29cVdDq0shYtP+Bjk60JqK4sMgivH2RsI/exQv3FR4cJ9+GMkfU9wGJL
+ Kl00N45p8PMsMHtCWRsr/wnmjyx+N2ydS5GG4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=PA0sGsnWn7x6YWMb364WdKSRZr6JVc7r09OSPHJyTVk=;
+ b=KjDNNWSKtAnmTLYuQ1xMQPiWVcXySYBoXDmZLYIQXPODcyldXh9HT0/GyV04Lgo6E8
+ i44qqUYyO7BBHyKg8jivoXr7oI7REv2nbwEdmd86cgiTZW24x8EXGcrYEpgvz8aALWXk
+ YkKwnR0KXlLiAhN+4RNAylHki/8YKQx6N/yFQciy8zYdIznGYPA5hydKHD46lcSnOT1F
+ wM00Dd5XfEWrft93a90UqbIStyHSfaSlKO0fCYnJtJzsH68qe1PjR35j9MBw2YTiXSQu
+ YzCucOMmkEFLKo7Z86vln//O7G8X2WUa5Av7NLZ0rLMpjS+nOGT+J0+nKllDD4/SRGd6
+ wYqw==
+X-Gm-Message-State: AOAM530TnS5AG91Y5NOrAyb/gmhmRTdnf/6CjeeVBeyyjgbW/j0HOAum
+ kqv0JcTGD4QD6E4zeBKtS1+QPUR3k6R81w==
+X-Google-Smtp-Source: ABdhPJy9QZIYxHRsZyK7FJh0LJUF507UJ3DFUZzXdvU/CLgGpPexvwUcuURZcEFZRwUQQ+WMl2/9/w==
+X-Received: by 2002:a17:90b:4b0f:: with SMTP id
+ lx15mr2918093pjb.34.1624502208883; 
+ Wed, 23 Jun 2021 19:36:48 -0700 (PDT)
+Received: from localhost ([203.206.29.204])
+ by smtp.gmail.com with ESMTPSA id v1sm746256pjg.19.2021.06.23.19.36.47
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 23 Jun 2021 19:36:48 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: Michael Ellerman <mpe@ellerman.id.au>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>
+Subject: Re: [PATCH 2/3] powerpc: Define swapper_pg_dir[] in C
+In-Reply-To: <87czsc21st.fsf@mpe.ellerman.id.au>
+References: <5838caffa269e0957c5a50cc85477876220298b0.1623063174.git.christophe.leroy@csgroup.eu>
+ <5e3f1b8a4695c33ccc80aa3870e016bef32b85e1.1623063174.git.christophe.leroy@csgroup.eu>
+ <871r8siyqm.fsf@dja-thinkpad.axtens.net>
+ <87czsc21st.fsf@mpe.ellerman.id.au>
+Date: Thu, 24 Jun 2021 12:36:43 +1000
+Message-ID: <874kdoyon8.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-In-Reply-To: <20210623183736.GA472@willie-the-truck>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanexm03e.na.qualcomm.com (10.85.0.48)
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,79 +81,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: heikki.krogerus@linux.intel.com,
- linux-devicetree <devicetree@vger.kernel.org>, peterz@infradead.org,
- joonas.lahtinen@linux.intel.com, dri-devel@lists.freedesktop.org,
- chris@chris-wilson.co.uk, grant.likely@arm.com, paulus@samba.org,
- Frank Rowand <frowand.list@gmail.com>, mingo@kernel.org, jxgao@google.com,
- sstabellini@kernel.org, Saravana Kannan <saravanak@google.com>,
- Joerg Roedel <joro@8bytes.org>,
- "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
- Christoph Hellwig <hch@lst.de>,
- Bartosz Golaszewski <bgolaszewski@baylibre.com>, bskeggs@redhat.com,
- linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Dan Williams <dan.j.williams@intel.com>, matthew.auld@intel.com,
- Nicolas Boichat <drinkcat@chromium.org>, thomas.hellstrom@linux.intel.com,
- Jim Quinlan <james.quinlan@broadcom.com>,
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- intel-gfx@lists.freedesktop.org, maarten.lankhorst@linux.intel.com,
- Robin Murphy <robin.murphy@arm.com>, jani.nikula@linux.intel.com,
- Rob Herring <robh+dt@kernel.org>, rodrigo.vivi@intel.com, bhelgaas@google.com,
- Claire Chang <tientzu@chromium.org>, boris.ostrovsky@oracle.com,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jgross@suse.com,
- airlied@linux.ie, Thierry Reding <treding@nvidia.com>,
- Greg KH <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
- lkml <linux-kernel@vger.kernel.org>,
- "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
- daniel@ffwll.ch, xypron.glpk@gmx.de, thomas.lendacky@amd.com,
- linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Michael Ellerman <mpe@ellerman.id.au> writes:
 
-
-On 6/23/2021 2:37 PM, Will Deacon wrote:
-> On Wed, Jun 23, 2021 at 12:39:29PM -0400, Qian Cai wrote:
+> Daniel Axtens <dja@axtens.net> writes:
+>> Hi Christophe,
 >>
+>> This breaks booting a radix KVM guest with 4k pages for me:
 >>
->> On 6/18/2021 11:40 PM, Claire Chang wrote:
->>> Propagate the swiotlb_force into io_tlb_default_mem->force_bounce and
->>> use it to determine whether to bounce the data or not. This will be
->>> useful later to allow for different pools.
->>>
->>> Signed-off-by: Claire Chang <tientzu@chromium.org>
->>> Reviewed-by: Christoph Hellwig <hch@lst.de>
->>> Tested-by: Stefano Stabellini <sstabellini@kernel.org>
->>> Tested-by: Will Deacon <will@kernel.org>
->>> Acked-by: Stefano Stabellini <sstabellini@kernel.org>
+>> make pseries_le_defconfig
+>> scripts/config -d CONFIG_PPC_64K_PAGES
+>> scripts/config -e CONFIG_PPC_4K_PAGES
+>> make vmlinux
+>> sudo qemu-system-ppc64 -enable-kvm -M pseries -m 1G -nographic -vga none -smp 4 -cpu host -kernel vmlinux
 >>
->> Reverting the rest of the series up to this patch fixed a boot crash with NVMe on today's linux-next.
-> 
-> Hmm, so that makes patch 7 the suspicious one, right?
+>> Boot hangs after printing 'Booting Linux via __start()' and qemu's 'info
+>> registers' reports that it's stuck at the instruction fetch exception.
+>>
+>> My host is Power9, 64k page size radix, and
+>> gcc (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+>>
+>
+> ...
+>>> diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
+>>> index 730838c7ca39..79f2d1e61abd 100644
+>>> --- a/arch/powerpc/kernel/head_64.S
+>>> +++ b/arch/powerpc/kernel/head_64.S
+>>> @@ -997,18 +997,3 @@ start_here_common:
+>>>  0:	trap
+>>>  	EMIT_BUG_ENTRY 0b, __FILE__, __LINE__, 0
+>>>  	.previous
+>>> -
+>>> -/*
+>>> - * We put a few things here that have to be page-aligned.
+>>> - * This stuff goes at the beginning of the bss, which is page-aligned.
+>>> - */
+>>> -	.section ".bss"
+>>> -/*
+>>> - * pgd dir should be aligned to PGD_TABLE_SIZE which is 64K.
+>>> - * We will need to find a better way to fix this
+>>> - */
+>>> -	.align	16
+>>> -
+>>> -	.globl	swapper_pg_dir
+>>> -swapper_pg_dir:
+>>> -	.space	PGD_TABLE_SIZE
+>
+> This is now 4K aligned whereas it used to be 64K.
+>
+> This fixes it and is not completely ugly?
+>
+> diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
+> index 1707ab580ee2..298469beaa90 100644
+> --- a/arch/powerpc/mm/pgtable.c
+> +++ b/arch/powerpc/mm/pgtable.c
+> @@ -28,7 +28,13 @@
+>  #include <asm/hugetlb.h>
+>  #include <asm/pte-walk.h>
+>  
+> -pgd_t swapper_pg_dir[MAX_PTRS_PER_PGD] __page_aligned_bss;
+> +#ifdef CONFIG_PPC64
+> +#define PGD_ALIGN 0x10000
+> +#else
+> +#define PGD_ALIGN PAGE_SIZE
+> +#endif
+> +
+> +pgd_t swapper_pg_dir[MAX_PTRS_PER_PGD] __section(".bss..page_aligned") __aligned(PGD_ALIGN);
 
-Will, no. It is rather patch #6 (this patch). Only the patch from #6 to #12 were reverted to fix the issue. Also, looking at this offset of the crash,
+The fix works for me, thank you.
 
-pc : dma_direct_map_sg+0x304/0x8f0
-is_swiotlb_force_bounce at /usr/src/linux-next/./include/linux/swiotlb.h:119
-
-is_swiotlb_force_bounce() was the new function introduced in this patch here.
-
-+static inline bool is_swiotlb_force_bounce(struct device *dev)
-+{
-+	return dev->dma_io_tlb_mem->force_bounce;
-+}
-
-> 
-> Looking at that one more closely, it looks like swiotlb_find_slots() takes
-> 'alloc_size + offset' as its 'alloc_size' parameter from
-> swiotlb_tbl_map_single() and initialises 'mem->slots[i].alloc_size' based
-> on 'alloc_size + offset', which looks like a change in behaviour from the
-> old code, which didn't include the offset there.
-> 
-> swiotlb_release_slots() then adds the offset back on afaict, so we end up
-> accounting for it twice and possibly unmap more than we're supposed to?
-> 
-> Will
-> 
+Kind regards,
+Daniel
+>  
+>  static inline int is_exec_fault(void)
+>  {
+>
+>
+> cheers
