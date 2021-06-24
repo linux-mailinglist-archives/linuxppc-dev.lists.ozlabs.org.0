@@ -1,77 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9278A3B2CB6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 12:44:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E43F3B2CDF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 12:48:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G9cFN2Yysz3bsv
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 20:44:08 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Uzc43caE;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G9cLh1Js3z30BM
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 20:48:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1035;
- helo=mail-pj1-x1035.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=cmss.chinamobile.com (client-ip=221.176.66.80;
+ helo=cmccmta2.chinamobile.com; envelope-from=tangbin@cmss.chinamobile.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Uzc43caE; dkim-atps=neutral
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com
- [IPv6:2607:f8b0:4864:20::1035])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G9cDp4Ylxz3bxC
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 20:43:38 +1000 (AEST)
-Received: by mail-pj1-x1035.google.com with SMTP id
- 22-20020a17090a0c16b0290164a5354ad0so5643288pjs.2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 03:43:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=Ntmvbr4Rsn/lopxAADIIDgcNErNmU/zbadQcByBiYK4=;
- b=Uzc43caEhY2Ti31+lpHHW0AZ5sLCVj6W+n4t/ez5IgVzQkVZOibK2DIWQ0+CAuzt9U
- PpuIA4kDsyK3chDvHhxE+YawXhAPb2eWGecCvYilJeif5bW1AWaPBDm7W4vYjxTYq4eX
- vsAbVyUYfQJDK46zRrnjfoRU3RdSuUfndWfij+20vPjPzE9a8Ky+gzwBiWuGHYujrH97
- b1g8G9j+MqQ6oKRgvSqRRvZdf9oww+7IytooiBQtjKLAdCQfMAXpO/dc/FMWyHkr12JS
- ZqabhMCopqc94H8G+WPpptqvIqeO4Wfi2qlPKFQXomh5RWpLJ4WGRgIbJ4SL7OebaZ9b
- Cu7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=Ntmvbr4Rsn/lopxAADIIDgcNErNmU/zbadQcByBiYK4=;
- b=gz1gD7aOFa4JUJg6Tib2abMCvSScQusQ5yP5XWpHzEDeAB6yBK7LY9qO7RmxP77Tgb
- wIN/UALzmBVErb17u571fJEexknf2Yihintl0S7MPmUXeXyx5JtnNAsUR2bR5E0So5bp
- bpqRvdwKkXK6C552wcP94i3/33Ejm76UwuxUtIsnyMXjiEm67yLgL7kKKKqDHrHb20tX
- Aj13kpgWDER+gpSPhDn2FXX1+mu0cMlfsbHHddaR5HeGaIykh8HZ0aQsxRAC7o4kCJhH
- FAeGYeiHspZ/XCf3eT5BFu6HfNDFe5l659LcPcNeHwi/qkUIA8VQNV+JbXqoZuPmjxDJ
- ujPA==
-X-Gm-Message-State: AOAM530M+F13et43AmdsVlTNTc9xSSNHRxkPWrzjbFD1pA6WcbX2Ij4z
- WdxVs58F/P9jnwKLUcJYrI4=
-X-Google-Smtp-Source: ABdhPJwSbcPeLeFEknq5SPs1K9/7wAZ9//Y8XUJsBm0HOgxDXNJ+d8W1kIX2/TWCimMS0wf9W28w6Q==
-X-Received: by 2002:a17:90a:ce87:: with SMTP id
- g7mr14492750pju.189.1624531415692; 
- Thu, 24 Jun 2021 03:43:35 -0700 (PDT)
-Received: from localhost (60-242-147-73.tpgi.com.au. [60.242.147.73])
- by smtp.gmail.com with ESMTPSA id n12sm2540624pfu.5.2021.06.24.03.43.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Jun 2021 03:43:35 -0700 (PDT)
-Date: Thu, 24 Jun 2021 20:43:29 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 3/6] KVM: x86/mmu: avoid struct page in MMU
-To: Marc Zyngier <maz@kernel.org>
-References: <20210624035749.4054934-1-stevensd@google.com>
- <20210624035749.4054934-4-stevensd@google.com>
- <1624524744.2sr7o7ix86.astroid@bobo.none> <87mtrfinks.wl-maz@kernel.org>
-In-Reply-To: <87mtrfinks.wl-maz@kernel.org>
+X-Greylist: delayed 182 seconds by postgrey-1.36 at boromir;
+ Thu, 24 Jun 2021 20:48:25 AEST
+Received: from cmccmta2.chinamobile.com (cmccmta2.chinamobile.com
+ [221.176.66.80])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4G9cLK095sz2xxk
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 20:48:24 +1000 (AEST)
+Received: from spf.mail.chinamobile.com (unknown[172.16.121.19]) by
+ rmmx-syy-dmz-app07-12007 (RichMail) with SMTP id 2ee760d462285c4-eee7a;
+ Thu, 24 Jun 2021 18:44:57 +0800 (CST)
+X-RM-TRANSID: 2ee760d462285c4-eee7a
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG: 00000000
+Received: from localhost.localdomain (unknown[223.112.105.130])
+ by rmsmtp-syy-appsvr10-12010 (RichMail) with SMTP id 2eea60d46224488-ee1e5;
+ Thu, 24 Jun 2021 18:44:56 +0800 (CST)
+X-RM-TRANSID: 2eea60d46224488-ee1e5
+From: Tang Bin <tangbin@cmss.chinamobile.com>
+To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
+ lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com
+Subject: [PATCH] ASoC: fsl_xcvr: Omit superfluous error message in
+ fsl_xcvr_probe()
+Date: Thu, 24 Jun 2021 18:45:05 +0800
+Message-Id: <20210624104505.13680-1-tangbin@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.20.1.windows.1
 MIME-Version: 1.0
-Message-Id: <1624531381.4bht02wxsj.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,53 +50,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Wanpeng Li <wanpengli@tencent.com>, kvm@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org,
- Will Deacon <will@kernel.org>, kvmarm@lists.cs.columbia.edu,
- intel-gvt-dev@lists.freedesktop.org, Joerg Roedel <joro@8bytes.org>,
- Huacai Chen <chenhuacai@kernel.org>,
- Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>,
- Zhi Wang <zhi.a.wang@intel.com>, Suzuki K Poulose <suzuki.poulose@arm.com>,
- intel-gfx@lists.freedesktop.org, kvm-ppc@vger.kernel.org,
- Zhenyu Wang <zhenyuw@linux.intel.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- linux-arm-kernel@lists.infradead.org, Jim Mattson <jmattson@google.com>,
- Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org,
- James Morse <james.morse@arm.com>, David Stevens <stevensd@chromium.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Tang Bin <tangbin@cmss.chinamobile.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Marc Zyngier's message of June 24, 2021 8:06 pm:
-> On Thu, 24 Jun 2021 09:58:00 +0100,
-> Nicholas Piggin <npiggin@gmail.com> wrote:
->>=20
->> Excerpts from David Stevens's message of June 24, 2021 1:57 pm:
->> > From: David Stevens <stevensd@chromium.org>
->> >  out_unlock:
->> >  	if (is_tdp_mmu_root(vcpu->kvm, vcpu->arch.mmu->root_hpa))
->> >  		read_unlock(&vcpu->kvm->mmu_lock);
->> >  	else
->> >  		write_unlock(&vcpu->kvm->mmu_lock);
->> > -	kvm_release_pfn_clean(pfn);
->> > +	if (pfnpg.page)
->> > +		put_page(pfnpg.page);
->> >  	return r;
->> >  }
->>=20
->> How about
->>=20
->>   kvm_release_pfn_page_clean(pfnpg);
->=20
-> I'm not sure. I always found kvm_release_pfn_clean() ugly, because it
-> doesn't mark the page 'clean'. I find put_page() more correct.
->=20
-> Something like 'kvm_put_pfn_page()' would make more sense, but I'm so
-> bad at naming things that I could just as well call it 'bob()'.
+In the function fsl_xcvr__probe(), when get irq failed,
+the function platform_get_irq() logs an error message, so remove
+redundant message here.
 
-That seems like a fine name to me. A little better than bob.
+Signed-off-by: Tang Bin <tangbin@cmss.chinamobile.com>
+---
+ sound/soc/fsl/fsl_xcvr.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-Thanks,
-Nick
+diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
+index 5e8284db857b..711d738f8de1 100644
+--- a/sound/soc/fsl/fsl_xcvr.c
++++ b/sound/soc/fsl/fsl_xcvr.c
+@@ -1190,10 +1190,8 @@ static int fsl_xcvr_probe(struct platform_device *pdev)
+ 
+ 	/* get IRQs */
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0) {
+-		dev_err(dev, "no irq[0]: %d\n", irq);
++	if (irq < 0)
+ 		return irq;
+-	}
+ 
+ 	ret = devm_request_irq(dev, irq, irq0_isr, 0, pdev->name, xcvr);
+ 	if (ret) {
+-- 
+2.18.2
+
+
+
