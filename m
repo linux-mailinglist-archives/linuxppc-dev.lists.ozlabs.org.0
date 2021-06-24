@@ -2,106 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 796DE3B2AB3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 10:49:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6B233B2ACA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 10:52:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G9Yj32X8hz3bx4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 18:49:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G9Yml43qWz306m
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 18:52:39 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lUKJNGQ9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=mEGHBnju;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::631;
+ helo=mail-pl1-x631.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=lUKJNGQ9; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=mEGHBnju; dkim-atps=neutral
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com
+ [IPv6:2607:f8b0:4864:20::631])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G9Yhc114mz2xb7
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 18:49:03 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 15O8X0KH050799
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 04:49:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=T8MCKEay5U++n4eZpb7NcWm5tWK7U9D7RYwIJFG58ng=;
- b=lUKJNGQ9OBYcpdpX4rGbkbyldUWmDzV5RuexYndNhWdCDpuuJwdNfFdcoC7dUyAW0yJa
- VsgQ4x8rzX6kw0azfQZinL+2nGW4WiqQnW4GgrinaPsCO2WC5RgT+B8xGEeS09hZ1gyc
- AVXv9Yxc3DhYSi8oX/QKNCpt6atzDpFWla2rgomrfEJm1ohjx4HHOfom4pHl3vAdIwv1
- QKCLf9QF+zCegcsiMcCNzFAGQ/Q7Z0ze6fMakeVf5RtnsmFw28uDTc1vNj3SdK81paOL
- PNjf/626sOI4TGoWqQ5go+Y5qB/289V+J2edGLe6UQP9NiIwyjtBJa5j46EmURvS0WLr 5w== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39cp57hfy5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 04:49:00 -0400
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 15O8X8YH051233
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 04:48:59 -0400
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39cp57hfxj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 24 Jun 2021 04:48:59 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15O8jnZ3009139;
- Thu, 24 Jun 2021 08:48:58 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma02fra.de.ibm.com with ESMTP id 3998789bsa-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 24 Jun 2021 08:48:57 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 15O8lTuJ7012686
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 24 Jun 2021 08:47:30 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4C85742064;
- Thu, 24 Jun 2021 08:48:54 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1F39D4205E;
- Thu, 24 Jun 2021 08:48:54 +0000 (GMT)
-Received: from pomme.local (unknown [9.145.158.63])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 24 Jun 2021 08:48:54 +0000 (GMT)
-Subject: Re: [PATCH 3/3] powerpc/pseries: fail quicker in
- dlpar_memory_add_by_ic()
-To: Daniel Henrique Barboza <danielhb413@gmail.com>,
- linuxppc-dev@lists.ozlabs.org
-References: <20210622133923.295373-1-danielhb413@gmail.com>
- <20210622133923.295373-4-danielhb413@gmail.com>
-From: Laurent Dufour <ldufour@linux.ibm.com>
-Message-ID: <a9c5499f-6a7f-a892-3941-03c22ba92317@linux.ibm.com>
-Date: Thu, 24 Jun 2021 10:48:53 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G9YmJ5wFpz2xZJ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 18:52:16 +1000 (AEST)
+Received: by mail-pl1-x631.google.com with SMTP id v13so2593518ple.9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 01:52:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=9iS9TDXjHYeeO4p1tZR6e76NZxX4UTo0tHhJ02Bmyuc=;
+ b=mEGHBnjuh74WaoNyT1eKb/VOfvVFvX3kwUneJ5AncMO10vay7V/YPF/SG5j7p8iYH1
+ 7gxNCDvNzDqb55aG0xXgAC1RA62Wj+bbizWaJDKEr0nn3qnuj2jXLdTdeiyFZgIkzbU6
+ eUXYZQk6B3lHcCn/C7rK9Hfy2ewbGQ+QcUAXV5aikZlnmoVPOh+oFpMVHi12RR/PQruY
+ Y7ojicHYDpa1rl6bybFrRzQg1WLQ4vvo9pySUIlXsW7HorWi3IZfqYmc1PUso5nJwGuX
+ l372R3hUka0ng8Md0fedsRzdAZ1LxWh9MkI+AQUHTjtMJyFheflEYDzQL0UNZQwWosBs
+ cQQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=9iS9TDXjHYeeO4p1tZR6e76NZxX4UTo0tHhJ02Bmyuc=;
+ b=UnurgBRd7cXq+uHXZP8CqNwLEi6K0Iaf0iQvwztfxjxUiWldazgEWUtRRlI3J9pZDS
+ CdKwhb9MJbN9Z/BW83JTo+2sieVf60C9z9FWHcfrqwEUkmsFPqJGyUZySw7eOEiuMv24
+ DemojjUFq8gOppR6tT7/KR+/3qZGTPslSeVcu6J01Fs7r5LBEmUH1f+BIhyVaUJEmHvg
+ RKLWBdJKz3a6eSzEd6XtVlNQPeFxyEGQbRzEoCymERaggnFqFaPeED6Ebk6pxTmwx3Mb
+ hCC8TtL1YvUxU9F+rybx94P+9JnBEaojiEwfz7Kn9kbQ1i4/xUHk5KlOrZ/mHIcAydNh
+ Ig1A==
+X-Gm-Message-State: AOAM531Q7u1zYp10v4dQ55hV7lOVHm+L26lgJMP2W2RZLD9bBDRL6Zre
+ K9bSCOb4uus7LEoyMc9Iq6c=
+X-Google-Smtp-Source: ABdhPJxZDp/SyGeLqZPtuw/I81jZ765tjN1eiDWxfb5Gw8s0EqtrDghio6LIVydktk8tQn/Q5HNfVQ==
+X-Received: by 2002:a17:90a:6fc1:: with SMTP id
+ e59mr4396347pjk.37.1624524732566; 
+ Thu, 24 Jun 2021 01:52:12 -0700 (PDT)
+Received: from localhost (60-242-147-73.tpgi.com.au. [60.242.147.73])
+ by smtp.gmail.com with ESMTPSA id c5sm2109274pfv.47.2021.06.24.01.52.11
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 24 Jun 2021 01:52:12 -0700 (PDT)
+Date: Thu, 24 Jun 2021 18:52:06 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 2/6] KVM: mmu: also return page from gfn_to_pfn
+To: Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>, Huacai Chen
+ <chenhuacai@kernel.org>, Marc Zyngier <maz@kernel.org>, Paul Mackerras
+ <paulus@ozlabs.org>, Paolo Bonzini <pbonzini@redhat.com>, David Stevens
+ <stevensd@chromium.org>, Zhenyu Wang <zhenyuw@linux.intel.com>, Zhi Wang
+ <zhi.a.wang@intel.com>
+References: <20210624035749.4054934-1-stevensd@google.com>
+ <20210624035749.4054934-3-stevensd@google.com>
+In-Reply-To: <20210624035749.4054934-3-stevensd@google.com>
 MIME-Version: 1.0
-In-Reply-To: <20210622133923.295373-4-danielhb413@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: SV5FbGbD_Ix3RV3uf7pIP7CXyjNn3Vxv
-X-Proofpoint-GUID: GVxMCxX-GjGF6dcS1iN67myqKHZXpz3W
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-06-24_06:2021-06-23,
- 2021-06-24 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 mlxlogscore=999
- lowpriorityscore=0 mlxscore=0 impostorscore=0 priorityscore=1501
- bulkscore=0 adultscore=0 suspectscore=0 phishscore=0 spamscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2106240046
+Message-Id: <1624524331.zsin3qejl9.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,59 +85,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Wanpeng Li <wanpengli@tencent.com>, kvm@vger.kernel.org,
+ Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>, intel-gfx@lists.freedesktop.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, kvmarm@lists.cs.columbia.edu,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ kvm-ppc@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, linux-mips@vger.kernel.org,
+ intel-gvt-dev@lists.freedesktop.org, Joerg Roedel <joro@8bytes.org>,
+ linux-arm-kernel@lists.infradead.org, Jim Mattson <jmattson@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Le 22/06/2021 à 15:39, Daniel Henrique Barboza a écrit :
-> The validation done at the start of dlpar_memory_add_by_ic() is an all
-> of nothing scenario - if any LMBs in the range is marked as RESERVED we
-> can fail right away.
-> 
-> We then can remove the 'lmbs_available' var and its check with
-> 'lmbs_to_add' since the whole LMB range was already validated in the
-> previous step.
+Excerpts from David Stevens's message of June 24, 2021 1:57 pm:
+> From: David Stevens <stevensd@chromium.org>
+>=20
+> Return a struct kvm_pfn_page containing both a pfn and an optional
+> struct page from the gfn_to_pfn family of functions. This differentiates
+> the gup and follow_fault_pfn cases, which allows callers that only need
+> a pfn to avoid touching the page struct in the latter case. For callers
+> that need a struct page, introduce a helper function that unwraps a
+> struct kvm_pfn_page into a struct page. This helper makes the call to
+> kvm_get_pfn which had previously been in hva_to_pfn_remapped.
+>=20
+> For now, wrap all calls to gfn_to_pfn functions in the new helper
+> function. Callers which don't need the page struct will be updated in
+> follow-up patches.
 
-Reviewed-by: Laurent Dufour <ldufour@linux.ibm.com>
+Hmm. You mean callers that do need the page will be updated? Normally=20
+if there will be leftover users that don't need the struct page then
+you would go the other way and keep the old call the same, and add a new
+one (gfn_to_pfn_page) just for those that need it.
 
-> Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
-> ---
->   arch/powerpc/platforms/pseries/hotplug-memory.c | 14 ++++++--------
->   1 file changed, 6 insertions(+), 8 deletions(-)
-> 
-> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-> index c0a03e1537cb..377d852f5a9a 100644
-> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-> @@ -796,7 +796,6 @@ static int dlpar_memory_add_by_index(u32 drc_index)
->   static int dlpar_memory_add_by_ic(u32 lmbs_to_add, u32 drc_index)
->   {
->   	struct drmem_lmb *lmb, *start_lmb, *end_lmb;
-> -	int lmbs_available = 0;
->   	int rc;
->   
->   	pr_info("Attempting to hot-add %u LMB(s) at index %x\n",
-> @@ -811,15 +810,14 @@ static int dlpar_memory_add_by_ic(u32 lmbs_to_add, u32 drc_index)
->   
->   	/* Validate that the LMBs in this range are not reserved */
->   	for_each_drmem_lmb_in_range(lmb, start_lmb, end_lmb) {
-> -		if (lmb->flags & DRCONF_MEM_RESERVED)
-> -			break;
-> -
-> -		lmbs_available++;
-> +		/* Fail immediately if the whole range can't be hot-added */
-> +		if (lmb->flags & DRCONF_MEM_RESERVED) {
-> +			pr_err("Memory at %llx (drc index %x) is reserved\n",
-> +					lmb->base_addr, lmb->drc_index);
-> +			return -EINVAL;
-> +		}
->   	}
->   
-> -	if (lmbs_available < lmbs_to_add)
-> -		return -EINVAL;
-> -
->   	for_each_drmem_lmb_in_range(lmb, start_lmb, end_lmb) {
->   		if (lmb->flags & DRCONF_MEM_ASSIGNED)
->   			continue;
-> 
+Most kernel code I look at passes back multiple values by updating=20
+pointers to struct or variables rather than returning a struct, I=20
+suppose that's not really a big deal and a matter of taste.
+
+Thanks,
+Nick
 
