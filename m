@@ -1,75 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ABFB3B251C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 04:37:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CFB63B2555
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 05:17:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4G9PRc3f5Nz3bv5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 12:37:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4G9QLM2MRZz3bs9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Jun 2021 13:17:47 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=bE7Ut1O6;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=201602 header.b=GDBf8OX5;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::102f;
- helo=mail-pj1-x102f.google.com; envelope-from=dja@axtens.net;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=dgibson@ozlabs.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=bE7Ut1O6; dkim-atps=neutral
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com
- [IPv6:2607:f8b0:4864:20::102f])
+ secure) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
+ header.a=rsa-sha256 header.s=201602 header.b=GDBf8OX5; 
+ dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4G9PRB1Btmz2yjH
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 12:36:52 +1000 (AEST)
-Received: by mail-pj1-x102f.google.com with SMTP id
- m15-20020a17090a5a4fb029016f385ffad0so2570441pji.0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jun 2021 19:36:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=PA0sGsnWn7x6YWMb364WdKSRZr6JVc7r09OSPHJyTVk=;
- b=bE7Ut1O6iEYhIzFYgS1kBHToBaRwb/B7k+v81/L3nAJV4duuuiXjpCwWPApRgLqP+C
- EnSiLIXsZjAz29cVdDq0shYtP+Bjk60JqK4sMgivH2RsI/exQv3FR4cJ9+GMkfU9wGJL
- Kl00N45p8PMsMHtCWRsr/wnmjyx+N2ydS5GG4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=PA0sGsnWn7x6YWMb364WdKSRZr6JVc7r09OSPHJyTVk=;
- b=KjDNNWSKtAnmTLYuQ1xMQPiWVcXySYBoXDmZLYIQXPODcyldXh9HT0/GyV04Lgo6E8
- i44qqUYyO7BBHyKg8jivoXr7oI7REv2nbwEdmd86cgiTZW24x8EXGcrYEpgvz8aALWXk
- YkKwnR0KXlLiAhN+4RNAylHki/8YKQx6N/yFQciy8zYdIznGYPA5hydKHD46lcSnOT1F
- wM00Dd5XfEWrft93a90UqbIStyHSfaSlKO0fCYnJtJzsH68qe1PjR35j9MBw2YTiXSQu
- YzCucOMmkEFLKo7Z86vln//O7G8X2WUa5Av7NLZ0rLMpjS+nOGT+J0+nKllDD4/SRGd6
- wYqw==
-X-Gm-Message-State: AOAM530TnS5AG91Y5NOrAyb/gmhmRTdnf/6CjeeVBeyyjgbW/j0HOAum
- kqv0JcTGD4QD6E4zeBKtS1+QPUR3k6R81w==
-X-Google-Smtp-Source: ABdhPJy9QZIYxHRsZyK7FJh0LJUF507UJ3DFUZzXdvU/CLgGpPexvwUcuURZcEFZRwUQQ+WMl2/9/w==
-X-Received: by 2002:a17:90b:4b0f:: with SMTP id
- lx15mr2918093pjb.34.1624502208883; 
- Wed, 23 Jun 2021 19:36:48 -0700 (PDT)
-Received: from localhost ([203.206.29.204])
- by smtp.gmail.com with ESMTPSA id v1sm746256pjg.19.2021.06.23.19.36.47
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Jun 2021 19:36:48 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: Michael Ellerman <mpe@ellerman.id.au>, Christophe Leroy
- <christophe.leroy@csgroup.eu>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>
-Subject: Re: [PATCH 2/3] powerpc: Define swapper_pg_dir[] in C
-In-Reply-To: <87czsc21st.fsf@mpe.ellerman.id.au>
-References: <5838caffa269e0957c5a50cc85477876220298b0.1623063174.git.christophe.leroy@csgroup.eu>
- <5e3f1b8a4695c33ccc80aa3870e016bef32b85e1.1623063174.git.christophe.leroy@csgroup.eu>
- <871r8siyqm.fsf@dja-thinkpad.axtens.net>
- <87czsc21st.fsf@mpe.ellerman.id.au>
-Date: Thu, 24 Jun 2021 12:36:43 +1000
-Message-ID: <874kdoyon8.fsf@dja-thinkpad.axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4G9QKt6nPjz3019
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jun 2021 13:17:22 +1000 (AEST)
+Received: by ozlabs.org (Postfix, from userid 1007)
+ id 4G9QKr2CyHz9sXk; Thu, 24 Jun 2021 13:17:20 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=gibson.dropbear.id.au; s=201602; t=1624504640;
+ bh=NbTQbQQ9qUR8H6RYZM+xj6EmkL92kbgF241vaPjjXzs=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=GDBf8OX5/51o0uCJtIyz0soti6TOegytzwhnFCKDDs7FsWVyqoe+PoVzjuCGmU2Cs
+ WvOy2trBX/S5fermbXuJLtmkTPW+YaxnZa2uShAuhwBYOUnynZTFqz3GRZfXarroPE
+ IcMP88oQFyoqb6A/8t3IyrTLwmOTocCcC2wfT8ig=
+Date: Thu, 24 Jun 2021 11:46:02 +1000
+From: David Gibson <david@gibson.dropbear.id.au>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH v4 1/7] powerpc/pseries: rename min_common_depth to
+ primary_domain_index
+Message-ID: <YNPj2tM3Nu7HwLDm@yekko>
+References: <20210617165105.574178-1-aneesh.kumar@linux.ibm.com>
+ <20210617165105.574178-2-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="LRFf1+pJXygmf9bq"
+Content-Disposition: inline
+In-Reply-To: <20210617165105.574178-2-aneesh.kumar@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,84 +58,191 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, nvdimm@lists.linux.dev,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, dan.j.williams@intel.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Ellerman <mpe@ellerman.id.au> writes:
 
-> Daniel Axtens <dja@axtens.net> writes:
->> Hi Christophe,
->>
->> This breaks booting a radix KVM guest with 4k pages for me:
->>
->> make pseries_le_defconfig
->> scripts/config -d CONFIG_PPC_64K_PAGES
->> scripts/config -e CONFIG_PPC_4K_PAGES
->> make vmlinux
->> sudo qemu-system-ppc64 -enable-kvm -M pseries -m 1G -nographic -vga none -smp 4 -cpu host -kernel vmlinux
->>
->> Boot hangs after printing 'Booting Linux via __start()' and qemu's 'info
->> registers' reports that it's stuck at the instruction fetch exception.
->>
->> My host is Power9, 64k page size radix, and
->> gcc (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0, GNU ld (GNU Binutils for Ubuntu) 2.34
->>
->
-> ...
->>> diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
->>> index 730838c7ca39..79f2d1e61abd 100644
->>> --- a/arch/powerpc/kernel/head_64.S
->>> +++ b/arch/powerpc/kernel/head_64.S
->>> @@ -997,18 +997,3 @@ start_here_common:
->>>  0:	trap
->>>  	EMIT_BUG_ENTRY 0b, __FILE__, __LINE__, 0
->>>  	.previous
->>> -
->>> -/*
->>> - * We put a few things here that have to be page-aligned.
->>> - * This stuff goes at the beginning of the bss, which is page-aligned.
->>> - */
->>> -	.section ".bss"
->>> -/*
->>> - * pgd dir should be aligned to PGD_TABLE_SIZE which is 64K.
->>> - * We will need to find a better way to fix this
->>> - */
->>> -	.align	16
->>> -
->>> -	.globl	swapper_pg_dir
->>> -swapper_pg_dir:
->>> -	.space	PGD_TABLE_SIZE
->
-> This is now 4K aligned whereas it used to be 64K.
->
-> This fixes it and is not completely ugly?
->
-> diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
-> index 1707ab580ee2..298469beaa90 100644
-> --- a/arch/powerpc/mm/pgtable.c
-> +++ b/arch/powerpc/mm/pgtable.c
-> @@ -28,7 +28,13 @@
->  #include <asm/hugetlb.h>
->  #include <asm/pte-walk.h>
->  
-> -pgd_t swapper_pg_dir[MAX_PTRS_PER_PGD] __page_aligned_bss;
-> +#ifdef CONFIG_PPC64
-> +#define PGD_ALIGN 0x10000
-> +#else
-> +#define PGD_ALIGN PAGE_SIZE
-> +#endif
-> +
-> +pgd_t swapper_pg_dir[MAX_PTRS_PER_PGD] __section(".bss..page_aligned") __aligned(PGD_ALIGN);
+--LRFf1+pJXygmf9bq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The fix works for me, thank you.
+On Thu, Jun 17, 2021 at 10:20:59PM +0530, Aneesh Kumar K.V wrote:
+> No functional change in this patch.
+>=20
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 
-Kind regards,
-Daniel
->  
->  static inline int is_exec_fault(void)
+Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
+
+> ---
+>  arch/powerpc/mm/numa.c | 38 +++++++++++++++++++-------------------
+>  1 file changed, 19 insertions(+), 19 deletions(-)
+>=20
+> diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+> index f2bf98bdcea2..8365b298ec48 100644
+> --- a/arch/powerpc/mm/numa.c
+> +++ b/arch/powerpc/mm/numa.c
+> @@ -51,7 +51,7 @@ EXPORT_SYMBOL(numa_cpu_lookup_table);
+>  EXPORT_SYMBOL(node_to_cpumask_map);
+>  EXPORT_SYMBOL(node_data);
+> =20
+> -static int min_common_depth;
+> +static int primary_domain_index;
+>  static int n_mem_addr_cells, n_mem_size_cells;
+>  static int form1_affinity;
+> =20
+> @@ -232,8 +232,8 @@ static int associativity_to_nid(const __be32 *associa=
+tivity)
+>  	if (!numa_enabled)
+>  		goto out;
+> =20
+> -	if (of_read_number(associativity, 1) >=3D min_common_depth)
+> -		nid =3D of_read_number(&associativity[min_common_depth], 1);
+> +	if (of_read_number(associativity, 1) >=3D primary_domain_index)
+> +		nid =3D of_read_number(&associativity[primary_domain_index], 1);
+> =20
+>  	/* POWER4 LPAR uses 0xffff as invalid node */
+>  	if (nid =3D=3D 0xffff || nid >=3D nr_node_ids)
+> @@ -284,9 +284,9 @@ int of_node_to_nid(struct device_node *device)
+>  }
+>  EXPORT_SYMBOL(of_node_to_nid);
+> =20
+> -static int __init find_min_common_depth(void)
+> +static int __init find_primary_domain_index(void)
 >  {
->
->
-> cheers
+> -	int depth;
+> +	int index;
+>  	struct device_node *root;
+> =20
+>  	if (firmware_has_feature(FW_FEATURE_OPAL))
+> @@ -326,7 +326,7 @@ static int __init find_min_common_depth(void)
+>  	}
+> =20
+>  	if (form1_affinity) {
+> -		depth =3D of_read_number(distance_ref_points, 1);
+> +		index =3D of_read_number(distance_ref_points, 1);
+>  	} else {
+>  		if (distance_ref_points_depth < 2) {
+>  			printk(KERN_WARNING "NUMA: "
+> @@ -334,7 +334,7 @@ static int __init find_min_common_depth(void)
+>  			goto err;
+>  		}
+> =20
+> -		depth =3D of_read_number(&distance_ref_points[1], 1);
+> +		index =3D of_read_number(&distance_ref_points[1], 1);
+>  	}
+> =20
+>  	/*
+> @@ -348,7 +348,7 @@ static int __init find_min_common_depth(void)
+>  	}
+> =20
+>  	of_node_put(root);
+> -	return depth;
+> +	return index;
+> =20
+>  err:
+>  	of_node_put(root);
+> @@ -437,16 +437,16 @@ int of_drconf_to_nid_single(struct drmem_lmb *lmb)
+>  	int nid =3D default_nid;
+>  	int rc, index;
+> =20
+> -	if ((min_common_depth < 0) || !numa_enabled)
+> +	if ((primary_domain_index < 0) || !numa_enabled)
+>  		return default_nid;
+> =20
+>  	rc =3D of_get_assoc_arrays(&aa);
+>  	if (rc)
+>  		return default_nid;
+> =20
+> -	if (min_common_depth <=3D aa.array_sz &&
+> +	if (primary_domain_index <=3D aa.array_sz &&
+>  	    !(lmb->flags & DRCONF_MEM_AI_INVALID) && lmb->aa_index < aa.n_array=
+s) {
+> -		index =3D lmb->aa_index * aa.array_sz + min_common_depth - 1;
+> +		index =3D lmb->aa_index * aa.array_sz + primary_domain_index - 1;
+>  		nid =3D of_read_number(&aa.arrays[index], 1);
+> =20
+>  		if (nid =3D=3D 0xffff || nid >=3D nr_node_ids)
+> @@ -708,18 +708,18 @@ static int __init parse_numa_properties(void)
+>  		return -1;
+>  	}
+> =20
+> -	min_common_depth =3D find_min_common_depth();
+> +	primary_domain_index =3D find_primary_domain_index();
+> =20
+> -	if (min_common_depth < 0) {
+> +	if (primary_domain_index < 0) {
+>  		/*
+> -		 * if we fail to parse min_common_depth from device tree
+> +		 * if we fail to parse primary_domain_index from device tree
+>  		 * mark the numa disabled, boot with numa disabled.
+>  		 */
+>  		numa_enabled =3D false;
+> -		return min_common_depth;
+> +		return primary_domain_index;
+>  	}
+> =20
+> -	dbg("NUMA associativity depth for CPU/Memory: %d\n", min_common_depth);
+> +	dbg("NUMA associativity depth for CPU/Memory: %d\n", primary_domain_ind=
+ex);
+> =20
+>  	/*
+>  	 * Even though we connect cpus to numa domains later in SMP
+> @@ -919,14 +919,14 @@ static void __init find_possible_nodes(void)
+>  			goto out;
+>  	}
+> =20
+> -	max_nodes =3D of_read_number(&domains[min_common_depth], 1);
+> +	max_nodes =3D of_read_number(&domains[primary_domain_index], 1);
+>  	for (i =3D 0; i < max_nodes; i++) {
+>  		if (!node_possible(i))
+>  			node_set(i, node_possible_map);
+>  	}
+> =20
+>  	prop_length /=3D sizeof(int);
+> -	if (prop_length > min_common_depth + 2)
+> +	if (prop_length > primary_domain_index + 2)
+>  		coregroup_enabled =3D 1;
+> =20
+>  out:
+> @@ -1259,7 +1259,7 @@ int cpu_to_coregroup_id(int cpu)
+>  		goto out;
+> =20
+>  	index =3D of_read_number(associativity, 1);
+> -	if (index > min_common_depth + 1)
+> +	if (index > primary_domain_index + 1)
+>  		return of_read_number(&associativity[index - 1], 1);
+> =20
+>  out:
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--LRFf1+pJXygmf9bq
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmDT49oACgkQbDjKyiDZ
+s5KLRQ//e79QIhgHz3IpR6z23SSCPCAbhtQFkD3QnzXdp82KZuq8kcFbkt1jjlo6
+o9+Pmkhzddu8eMxfN6RKeAVcbUfYg6F1zU6tXSFWRsNIG1YOtlio8HaqYi8neVWr
+KcO8E6ozxxDB42PcyPLRwBZydJpF0lim/J1afJKj93WJ1tqb9oomuLBiOzNhrqDc
+hiwOxLgWSXo4Fy83uiLc2zm3OvKYcJZDd413ChM6Zr+CEK8FYMeybkjh16axPDz/
+KjHQyKoH8vw2HDuweE0moo1W4J6BBAWo0xis68goL221hg7xR3N5XOleu3hOWuzC
+sQApOy8SW4zJorBWzvzQ8+FJw10N0XaiPX3zsbZl/iHbFAACFH4aktBnDHls584j
+/PW/R9grq3MMgxeIoJP21JneJJyT6plMKo/E8iQPH6bK7HJOcT9rMKPPJmN+LoUL
+6+UU+JHAKwTV0ypgrH21lxiGffDaDhQsydetCMeK/HIbUmiGG+SAkhLQ8q6gmEGe
+ouq8wAzhH19AVFNRnC3eH1YaZ7Q4RAKqevKW10MtLZDw+xm4lCi6s8gw9qFaC9Ew
+0GYfg0vzxqS1NPzTB9CeM321+LpGv/kLhKJT/mP6SlC6Fyulf6NT2+1NlAvd5nyf
+GEz/tjAZ80aiSOh3XD+n3gJSvJIMZzW305D9volHiMapJqdNng8=
+=nesG
+-----END PGP SIGNATURE-----
+
+--LRFf1+pJXygmf9bq--
