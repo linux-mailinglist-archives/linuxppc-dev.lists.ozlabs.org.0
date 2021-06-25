@@ -1,94 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA5183B3C60
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jun 2021 07:50:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CC463B3CB0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jun 2021 08:28:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GB5hd0psHz3bvm
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jun 2021 15:50:57 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Bw/p3P0n;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GB6WR29FGz3c96
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jun 2021 16:28:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Bw/p3P0n; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GB5h56QsKz2yWJ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Jun 2021 15:50:29 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 15P5j6eH118498; Fri, 25 Jun 2021 01:50:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=HxbJJArdxQqEJfa3XAkD4jiouEa0fm+K5xZwxjTLTTo=;
- b=Bw/p3P0n5m5WCpOnT0mtTDEiD2HS5iIldUE81bp6zIJySph70ciyJT7MvexR/IuFZpds
- 7e/TW30J8jM+i5EkgxXfv8Id9x2jqZ6wWOydiF5wO73LUU9GHPHm2R1PHskwcErtTNLl
- Dqquu7NscS7IFwjkTMAKWi/kvELaBsz5nhlltoLIdJKT236nx1Jlr70Io3cSyhHW8wYf
- q5yPsVtTVhhyGawja0vgvSClFKSt6RngJ19XjsrKpjQI2HMrEXLMz6CF9VeTfqz1adW9
- UsSgogEPopaIW0Sqy3SyuHr24UN33KkIY3RiCfpcqgElHiyM2F+qcPafke+0mSXtB5iW eg== 
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39d98s84my-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 25 Jun 2021 01:50:18 -0400
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15P5oFD1015646;
- Fri, 25 Jun 2021 05:50:15 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma06fra.de.ibm.com with ESMTP id 3997uhhkaf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 25 Jun 2021 05:50:15 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 15P5oD4M32375074
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 25 Jun 2021 05:50:13 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1FBBA11C050;
- Fri, 25 Jun 2021 05:50:13 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 96E7D11C064;
- Fri, 25 Jun 2021 05:50:11 +0000 (GMT)
-Received: from in.ibm.com (unknown [9.85.119.88])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Fri, 25 Jun 2021 05:50:11 +0000 (GMT)
-Date: Fri, 25 Jun 2021 11:20:09 +0530
-From: Bharata B Rao <bharata@linux.ibm.com>
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: PowerPC guest getting "BUG: scheduling while atomic" on
- linux-next-20210623 during secondary CPUs bringup
-Message-ID: <YNVukVCgPjCksagq@in.ibm.com>
-References: <YNSq3UQTjm6HWELA@in.ibm.com>
- <20210625054608.fmwt7lxuhp7inkjx@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GB6Rb3cBFz3btF
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Jun 2021 16:24:43 +1000 (AEST)
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 4GB6RY5KBQz9sxS; Fri, 25 Jun 2021 16:24:41 +1000 (AEST)
+From: Michael Ellerman <patch-notifications@ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20210617155116.2167984-1-npiggin@gmail.com>
+References: <20210617155116.2167984-1-npiggin@gmail.com>
+Subject: Re: [PATCH v4 00/17] powerpc/64: fast interrupt exits
+Message-Id: <162460208696.3247425.13006654599795164065.b4-ty@ellerman.id.au>
+Date: Fri, 25 Jun 2021 16:21:26 +1000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210625054608.fmwt7lxuhp7inkjx@linux.vnet.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: fego09511Jl2BHF_EjJlLB_hSs1T0pDr
-X-Proofpoint-GUID: fego09511Jl2BHF_EjJlLB_hSs1T0pDr
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-06-25_01:2021-06-24,
- 2021-06-25 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 mlxlogscore=999
- spamscore=0 malwarescore=0 clxscore=1011 lowpriorityscore=0 suspectscore=0
- bulkscore=0 adultscore=0 impostorscore=0 priorityscore=1501 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104190000
- definitions=main-2106250030
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,53 +41,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: bharata@linux.ibm.com
-Cc: Peter Zijlstra <peterz@infradead.org>, LKML <linux-kernel@vger.kernel.org>,
- Valentin Schneider <valentin.schneider@arm.com>, linux-next@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 25, 2021 at 11:16:08AM +0530, Srikar Dronamraju wrote:
-> * Bharata B Rao <bharata@linux.ibm.com> [2021-06-24 21:25:09]:
+On Fri, 18 Jun 2021 01:50:59 +1000, Nicholas Piggin wrote:
+> This series attempts to improve the speed of interrupts and system calls
+> in three major ways.
 > 
-> > A PowerPC KVM guest gets the following BUG message when booting
-> > linux-next-20210623:
-> > 
-> > smp: Bringing up secondary CPUs ...
-> > BUG: scheduling while atomic: swapper/1/0/0x00000000
-> > no locks held by swapper/1/0.
-> > Modules linked in:
-> > CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.13.0-rc7-next-20210623
-> > Call Trace:
-> > [c00000000ae5bc20] [c000000000badc64] dump_stack_lvl+0x98/0xe0 (unreliable)
-> > [c00000000ae5bc60] [c000000000210200] __schedule_bug+0xb0/0xe0
-> > [c00000000ae5bcd0] [c000000001609e28] __schedule+0x1788/0x1c70
-> > [c00000000ae5be20] [c00000000160a8cc] schedule_idle+0x3c/0x70
-> > [c00000000ae5be50] [c00000000022984c] do_idle+0x2bc/0x420
-> > [c00000000ae5bf00] [c000000000229d88] cpu_startup_entry+0x38/0x40
-> > [c00000000ae5bf30] [c0000000000666c0] start_secondary+0x290/0x2a0
-> > [c00000000ae5bf90] [c00000000000be54] start_secondary_prolog+0x10/0x14
-> > 
-> > <The above repeats for all the secondary CPUs>
-> > 
-> > smp: Brought up 2 nodes, 16 CPUs
-> > numa: Node 0 CPUs: 0-7
-> > numa: Node 1 CPUs: 8-15
-> > 
-> > This seems to have started from next-20210521 and isn't seen on
-> > next-20210511.
-> > 
+> Firstly, the SRR/HSRR registers do not need to be reloaded if they were
+> clobbered for the duration of the interrupt and the return NIP and MSR
+> did not changed. 64e does not implement this part, but it could quite
+> easily.
 > 
-> Bharata,
-> 
-> I think the regression is due to Commit f1a0a376ca0c ("sched/core:
-> Initialize the idle task with preemption disabled")
-> 
-> Can you please try with the above commit reverted?
+> [...]
 
-Yes, reverting that commit helps.
+Patches 1-4, and 6-17 applied to powerpc/next.
 
-Regards,
-Bharata.
+[01/17] powerpc/interrupt: Fix CONFIG ifdef typo
+        https://git.kernel.org/powerpc/c/9a3ed7adcabce24a85fbe05f54e762b18756ec22
+[02/17] powerpc: remove interrupt exit helpers unused argument
+        https://git.kernel.org/powerpc/c/bf9155f1970c4dbf9ec6b87d3688433bd494a4e1
+[03/17] powerpc/64s: introduce different functions to return from SRR vs HSRR interrupts
+        https://git.kernel.org/powerpc/c/1df7d5e4baeac74d14c1bee18b2dff9302b3efbc
+[04/17] powerpc/64s: avoid reloading (H)SRR registers if they are still valid
+        https://git.kernel.org/powerpc/c/59dc5bfca0cb6a29db1a50847684eb5c19f8f400
+[06/17] powerpc/64: move interrupt return asm to interrupt_64.S
+        https://git.kernel.org/powerpc/c/e754f4d13e3919aafa485657599907aa63b9a40c
+[07/17] powerpc/64s: system call avoid setting MSR[RI] until we set MSR[EE]
+        https://git.kernel.org/powerpc/c/dd152f70bdc1b91445b10c65ac874b90c93fb3b5
+[08/17] powerpc/64s: save one more register in the masked interrupt handler
+        https://git.kernel.org/powerpc/c/63e40806eea984f770c992120bbfd71b589ea580
+[09/17] powerpc/64: allow alternate return locations for soft-masked interrupts
+        https://git.kernel.org/powerpc/c/f23699c93becd746295aaa506537882a46a62219
+[10/17] powerpc/64: interrupt soft-enable race fix
+        https://git.kernel.org/powerpc/c/862fa563524b9f92d7e89fe332732bd3421772db
+[11/17] powerpc/64: treat low kernel text as irqs soft-masked
+        https://git.kernel.org/powerpc/c/9d1988ca87dd90ecf80a0601c7fd13071fbb1a83
+[12/17] powerpc/64: use interrupt restart table to speed up return from interrupt
+        https://git.kernel.org/powerpc/c/13799748b957bc5659f97c036224b0f4b42172e2
+[13/17] powerpc/interrupt: Rename and lightly change syscall_exit_prepare_main()
+        https://git.kernel.org/powerpc/c/f84aa284947f325c5697d35b92abd2047224f24b
+[14/17] powerpc/interrupt: Refactor interrupt_exit_user_prepare()
+        https://git.kernel.org/powerpc/c/a214ee8802adb864d175ea6ca4176223bcc11d2b
+[15/17] powerpc/interrupt: Interchange prep_irq_for_{kernel_enabled/user}_exit()
+        https://git.kernel.org/powerpc/c/99f98f849cf13e5fac532979ccdb77dff07665db
+[16/17] powerpc/interrupt: Refactor prep_irq_for_{user/kernel_enabled}_exit()
+        https://git.kernel.org/powerpc/c/61eece2d1707796fd45225ea3d20e9289251311c
+[17/17] powerpc/interrupt: Remove prep_irq_for_user_exit()
+        https://git.kernel.org/powerpc/c/ae58b1c645895c28ca155843db6788d57ea99e11
+
+cheers
