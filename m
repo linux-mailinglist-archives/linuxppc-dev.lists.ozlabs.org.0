@@ -2,33 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55DE93B3CA2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jun 2021 08:24:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 821533B3CAF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jun 2021 08:27:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GB6Rq1QN8z3c1Y
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jun 2021 16:24:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GB6W52cxXz3dmY
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jun 2021 16:27:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
  envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GB6RT6glKz2yYL
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Jun 2021 16:24:37 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GB6RZ27D5z3bvp
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Jun 2021 16:24:42 +1000 (AEST)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4GB6RR5r7hz9sX5; Fri, 25 Jun 2021 16:24:35 +1000 (AEST)
+ id 4GB6RY0mhSz9srX; Fri, 25 Jun 2021 16:24:40 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <20210616134303.58185-1-andriy.shevchenko@linux.intel.com>
-References: <20210616134303.58185-1-andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v2 1/1] powerpc/papr_scm: Properly handle UUID types and
- API
-Message-Id: <162460208882.3247425.8141718563854989207.b4-ty@ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20210623021528.702241-1-npiggin@gmail.com>
+References: <20210623021528.702241-1-npiggin@gmail.com>
+Subject: Re: [PATCH v2] powerpc/pseries: Enable hardlockup watchdog for
+ PowerVM partitions
+Message-Id: <162460208808.3247425.4990748993921366419.b4-ty@ellerman.id.au>
 Date: Fri, 25 Jun 2021 16:21:28 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -44,20 +42,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, Oliver O'Halloran <oohall@gmail.com>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 16 Jun 2021 16:43:03 +0300, Andy Shevchenko wrote:
-> Parse to and export from UUID own type, before dereferencing.
-> This also fixes wrong comment (Little Endian UUID is something else)
-> and should eliminate the direct strict types assignments.
+On Wed, 23 Jun 2021 12:15:28 +1000, Nicholas Piggin wrote:
+> PowerVM will not arbitrarily oversubscribe or stop guests, page out the
+> guest kernel text to a NFS volume connected by carrier pigeon to abacus
+> based storage, etc., as a KVM host might. So PowerVM guests are not
+> likely to be killed by the hard lockup watchdog in normal operation,
+> even with shared processor LPARs which still get a minimum allotment of
+> CPU time.
+> 
+> [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/papr_scm: Properly handle UUID types and API
-      https://git.kernel.org/powerpc/c/0e8554b5d7801b0aebc6c348a0a9f7706aa17b3b
+[1/1] powerpc/pseries: Enable hardlockup watchdog for PowerVM partitions
+      https://git.kernel.org/powerpc/c/633c8e9800f3884a26b2af59be8ce27696ad6ebf
 
 cheers
