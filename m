@@ -1,33 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CA653B3CA8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jun 2021 08:25:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55DE93B3CA2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jun 2021 08:24:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GB6Sw5cc9z3cNV
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jun 2021 16:25:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GB6Rq1QN8z3c1Y
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jun 2021 16:24:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
  envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GB6RV2m0gz2yhr
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Jun 2021 16:24:38 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GB6RT6glKz2yYL
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Jun 2021 16:24:37 +1000 (AEST)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4GB6RT2JYfz9sXb; Fri, 25 Jun 2021 16:24:37 +1000 (AEST)
+ id 4GB6RR5r7hz9sX5; Fri, 25 Jun 2021 16:24:35 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <20210621064938.2021419-1-mpe@ellerman.id.au>
-References: <20210621064938.2021419-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH 1/2] powerpc/prom_init: Convert prom_strcpy() into
- prom_strscpy_pad()
-Message-Id: <162460208744.3247425.11901434488919269002.b4-ty@ellerman.id.au>
-Date: Fri, 25 Jun 2021 16:21:27 +1000
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Michael Ellerman <mpe@ellerman.id.au>
+In-Reply-To: <20210616134303.58185-1-andriy.shevchenko@linux.intel.com>
+References: <20210616134303.58185-1-andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v2 1/1] powerpc/papr_scm: Properly handle UUID types and
+ API
+Message-Id: <162460208882.3247425.8141718563854989207.b4-ty@ellerman.id.au>
+Date: Fri, 25 Jun 2021 16:21:28 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,22 +44,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Paul Mackerras <paulus@samba.org>, Oliver O'Halloran <oohall@gmail.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 21 Jun 2021 16:49:37 +1000, Michael Ellerman wrote:
-> In a subsequent patch we'd like to have something like a strscpy_pad()
-> implementation usable in prom_init.c.
-> 
-> Currently we have a strcpy() implementation with only one caller, so
-> convert it into strscpy_pad() and update the caller.
+On Wed, 16 Jun 2021 16:43:03 +0300, Andy Shevchenko wrote:
+> Parse to and export from UUID own type, before dereferencing.
+> This also fixes wrong comment (Little Endian UUID is something else)
+> and should eliminate the direct strict types assignments.
 
 Applied to powerpc/next.
 
-[1/2] powerpc/prom_init: Convert prom_strcpy() into prom_strscpy_pad()
-      https://git.kernel.org/powerpc/c/f47d5a4fc254e62ea5af5cbb2fc3e68901def434
-[2/2] powerpc/prom_init: Pass linux_banner to firmware via option vector 7
-      https://git.kernel.org/powerpc/c/ffaacd97fd37b9f4e825d8107f5cba5470458f0e
+[1/1] powerpc/papr_scm: Properly handle UUID types and API
+      https://git.kernel.org/powerpc/c/0e8554b5d7801b0aebc6c348a0a9f7706aa17b3b
 
 cheers
