@@ -1,53 +1,97 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C39BC3B433F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jun 2021 14:30:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 652893B4348
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jun 2021 14:33:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GBGYz4pZHz3c0N
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jun 2021 22:30:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GBGcp1557z3by9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jun 2021 22:33:14 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bCaWwZtC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nUMMTBqD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=will@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=bCaWwZtC; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=nUMMTBqD; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GBGYT2s1Zz3bsN
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Jun 2021 22:30:21 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A4C9361463;
- Fri, 25 Jun 2021 12:30:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1624624216;
- bh=236dSGX7ExOVPv4h0UeOksGQ8SgYCOQ7aXD3NGK83S0=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=bCaWwZtC9a0kNjsO191mUbtUcojnviRFMJnXBZ/UQc+wZDgM8hUcreC3qNCEkirNE
- bbLWlaMbJfBXlg05V08tS0sV+lbJ6mjPNoN7Y8AT15UfxghYQbA3zVDmQkdENHWUeg
- aoWWbni5r3mbAZmV1yWyb6Qtn3Rm3bH4e4imD6DcErBaFTOVYzmckxYQM6wCi00qxL
- IKspsHt2W8+A5P7LrhMSB0wLC0J5AtiueFbpUWEKsYqOURtPkRdQJiwA+N05SkMbY0
- yNml1K+qGwoAZk+3C0lKdhaf1wsPR1zKe7fVETOXT9FqPpHlh5Z2ca5kWomvg9Dx6c
- 8Pdmk/dzJ5M/g==
-Date: Fri, 25 Jun 2021 13:30:05 +0100
-From: Will Deacon <will@kernel.org>
-To: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-Subject: Re: [PATCH v15 00/12] Restricted DMA
-Message-ID: <20210625123004.GA3170@willie-the-truck>
-References: <20210624155526.2775863-1-tientzu@chromium.org>
- <YNTa1C5uvz+qWryf@char.us.oracle.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GBGcJ3PCKz2yY0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Jun 2021 22:32:47 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 15PC6Dv5041356; Fri, 25 Jun 2021 08:32:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : reply-to : references : mime-version : content-type
+ : in-reply-to; s=pp1; bh=FoqHMAo4aVfUw7gRnFnF1SD6HsPYwczaCD7oSLM5WBA=;
+ b=nUMMTBqDvJIih/X7JDOZmrS8GdPnkabPWcS6DUypfccsgqEf/TYCugWJi38V//M93xXc
+ wqz3WJei/Qi0Hd5LMzr7ByGIKp7+Kn0KGG18gm/VKHVtdhx7FVlPlwi1z0OpFmRlCSpp
+ lKim+Z9jvKtFjf/LAbQKXqu8Rxsp4CF7ejnd0jjC2SgXSMRBeQQ7kykwG1dw+/33HB4B
+ VH/z5zJv+J9WfZ3qK69CLDYV96gDfSDK5D5r7/InCwV0+F0WHiHOM0Ij1micY85kTC4Q
+ R8MZ998B50+VcGKMGnp515Q3+qAePAckuefIP1Wr6cLTvOXGBDIDIDzRtb5QDjE6YBNa qQ== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 39dd7hcn90-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 25 Jun 2021 08:32:40 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15PCSuIG002538;
+ Fri, 25 Jun 2021 12:32:37 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma03ams.nl.ibm.com with ESMTP id 399878b1fs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 25 Jun 2021 12:32:37 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 15PCWZWk32571762
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 25 Jun 2021 12:32:35 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 76B01A4051;
+ Fri, 25 Jun 2021 12:32:35 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 24D93A4053;
+ Fri, 25 Jun 2021 12:32:34 +0000 (GMT)
+Received: from in.ibm.com (unknown [9.85.119.88])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Fri, 25 Jun 2021 12:32:33 +0000 (GMT)
+Date: Fri, 25 Jun 2021 18:02:31 +0530
+From: Bharata B Rao <bharata@linux.ibm.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Subject: Re: PowerPC guest getting "BUG: scheduling while atomic" on
+ linux-next-20210623 during secondary CPUs bringup
+Message-ID: <YNXM33OD8/qLkygG@in.ibm.com>
+References: <YNSq3UQTjm6HWELA@in.ibm.com>
+ <20210625054608.fmwt7lxuhp7inkjx@linux.vnet.ibm.com>
+ <YNWFiZii+MINhUC3@hirez.programming.kicks-ass.net>
+ <YNWZfKK+KBQSUdG5@in.ibm.com>
+ <YNWtFKdSuoYTfSon@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YNTa1C5uvz+qWryf@char.us.oracle.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <YNWtFKdSuoYTfSon@hirez.programming.kicks-ass.net>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: znBsyfVCmurmTMEpzxmyjHoqgWGHADw-
+X-Proofpoint-GUID: znBsyfVCmurmTMEpzxmyjHoqgWGHADw-
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-06-25_04:2021-06-25,
+ 2021-06-25 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ suspectscore=0 spamscore=0 bulkscore=0 adultscore=0 mlxscore=0
+ phishscore=0 clxscore=1015 malwarescore=0 mlxlogscore=999
+ priorityscore=1501 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2104190000 definitions=main-2106250069
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,74 +103,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: heikki.krogerus@linux.intel.com, thomas.hellstrom@linux.intel.com,
- peterz@infradead.org, joonas.lahtinen@linux.intel.com,
- dri-devel@lists.freedesktop.org, chris@chris-wilson.co.uk,
- grant.likely@arm.com, paulus@samba.org, Frank Rowand <frowand.list@gmail.com>,
- mingo@kernel.org, Marek Szyprowski <m.szyprowski@samsung.com>,
- sstabellini@kernel.org, Saravana Kannan <saravanak@google.com>,
- Joerg Roedel <joro@8bytes.org>,
- "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
- Christoph Hellwig <hch@lst.de>,
- Bartosz Golaszewski <bgolaszewski@baylibre.com>, bskeggs@redhat.com,
- linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
- Thierry Reding <treding@nvidia.com>, intel-gfx@lists.freedesktop.org,
- matthew.auld@intel.com, linux-devicetree <devicetree@vger.kernel.org>,
- jxgao@google.com, daniel@ffwll.ch, maarten.lankhorst@linux.intel.com,
- airlied@linux.ie, Dan Williams <dan.j.williams@intel.com>,
- linuxppc-dev@lists.ozlabs.org, jani.nikula@linux.intel.com,
- Rob Herring <robh+dt@kernel.org>, rodrigo.vivi@intel.com, bhelgaas@google.com,
- Claire Chang <tientzu@chromium.org>, boris.ostrovsky@oracle.com,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jgross@suse.com,
- Nicolas Boichat <drinkcat@chromium.org>, Greg KH <gregkh@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, quic_qiancai@quicinc.com,
- lkml <linux-kernel@vger.kernel.org>, tfiga@chromium.org,
- "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
- Jim Quinlan <james.quinlan@broadcom.com>, xypron.glpk@gmx.de,
- thomas.lendacky@amd.com, Robin Murphy <robin.murphy@arm.com>,
- bauerman@linux.ibm.com
+Reply-To: bharata@linux.ibm.com
+Cc: Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+ LKML <linux-kernel@vger.kernel.org>,
+ Valentin Schneider <valentin.schneider@arm.com>, linux-next@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 24, 2021 at 03:19:48PM -0400, Konrad Rzeszutek Wilk wrote:
-> On Thu, Jun 24, 2021 at 11:55:14PM +0800, Claire Chang wrote:
-> > This series implements mitigations for lack of DMA access control on
-> > systems without an IOMMU, which could result in the DMA accessing the
-> > system memory at unexpected times and/or unexpected addresses, possibly
-> > leading to data leakage or corruption.
-> > 
-> > For example, we plan to use the PCI-e bus for Wi-Fi and that PCI-e bus is
-> > not behind an IOMMU. As PCI-e, by design, gives the device full access to
-> > system memory, a vulnerability in the Wi-Fi firmware could easily escalate
-> > to a full system exploit (remote wifi exploits: [1a], [1b] that shows a
-> > full chain of exploits; [2], [3]).
-> > 
-> > To mitigate the security concerns, we introduce restricted DMA. Restricted
-> > DMA utilizes the existing swiotlb to bounce streaming DMA in and out of a
-> > specially allocated region and does memory allocation from the same region.
-> > The feature on its own provides a basic level of protection against the DMA
-> > overwriting buffer contents at unexpected times. However, to protect
-> > against general data leakage and system memory corruption, the system needs
-> > to provide a way to restrict the DMA to a predefined memory region (this is
-> > usually done at firmware level, e.g. MPU in ATF on some ARM platforms [4]).
-> > 
-> > [1a] https://googleprojectzero.blogspot.com/2017/04/over-air-exploiting-broadcoms-wi-fi_4.html
-> > [1b] https://googleprojectzero.blogspot.com/2017/04/over-air-exploiting-broadcoms-wi-fi_11.html
-> > [2] https://blade.tencent.com/en/advisories/qualpwn/
-> > [3] https://www.bleepingcomputer.com/news/security/vulnerabilities-found-in-highly-popular-firmware-for-wifi-chips/
-> > [4] https://github.com/ARM-software/arm-trusted-firmware/blob/master/plat/mediatek/mt8183/drivers/emi_mpu/emi_mpu.c#L132
-> > 
-> > v15:
-> > - Apply Will's diff (https://lore.kernel.org/patchwork/patch/1448957/#1647521)
-> >   to fix the crash reported by Qian.
-> > - Add Stefano's Acked-by tag for patch 01/12 from v14
+On Fri, Jun 25, 2021 at 12:16:52PM +0200, Peter Zijlstra wrote:
+> You mean: CONFIG_PREEMPTION=n, what about CONFIG_PREEMPT_COUNT?
 > 
-> That all should be now be on
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/konrad/swiotlb.git/
-> devel/for-linus-5.14 (and linux-next)
+> Because if both are =n, then I don't see how that warning could trigger.
+> in_atomic_preempt_off() would then result in prempt_count() == 0, and
+> per the print above, it *is* 0.
 
-Thanks Konrad!
+CONFIG_PREEMPTION isn't set.
 
-Will
+Also other PREEMPT related options are as under:
+
+# CONFIG_PREEMPT_NONE is not set
+CONFIG_PREEMPT_VOLUNTARY=y
+# CONFIG_PREEMPT is not set
+CONFIG_PREEMPT_COUNT=y
+CONFIG_PREEMPT_NOTIFIERS=y
+CONFIG_PREEMPTIRQ_TRACEPOINTS=y
+# CONFIG_PREEMPTIRQ_DELAY_TEST is not set
+
+Regards,
+Bharata.
