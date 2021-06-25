@@ -1,67 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11FF83B3D5D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jun 2021 09:28:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C8743B3D9B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jun 2021 09:37:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GB7sj5mqpz3c0c
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jun 2021 17:28:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GB83w1dyMz3byg
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jun 2021 17:37:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=mbmpQJtI;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=dHO26QDY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=desiato.20200630 header.b=mbmpQJtI; 
- dkim-atps=neutral
-Received: from desiato.infradead.org (desiato.infradead.org
- [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::62c;
+ helo=mail-pl1-x62c.google.com; envelope-from=stevensd@chromium.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=dHO26QDY; dkim-atps=neutral
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com
+ [IPv6:2607:f8b0:4864:20::62c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GB7s9386zz2xxq
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Jun 2021 17:28:26 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=5NOt14/R44u0IlgyCS4cWDsu+ALJWOxhITZR4eZIO04=; b=mbmpQJtIGPMRrIGs53GWr7Cg4k
- hU39jO9r4qRRBj9MAEIo15s/NNq2xWQpbqpoJqw26Hw/81AMfVIqZ0MaTrig4GIKpGYEgDu35LjpK
- DKQR4icxmN6osxi72wAD1lDAQnNaqcFljxKRANiK+SL9e62PiT6KpF6dyjtsn7VEB9UrVuz4ico3Z
- pw+9iPXbn38iSJoIpE5AJXH3P0U8i2/U9/rRI+37YuJhtnj8XWFAAeF1ZcNVmlRs++B8G+e/plX40
- 262JorqFmnQolqCavRCQwWemTpNZSt75mrvVmIYSNQmW4XlXa6rIwjw+WeEO1aRBRbgXDTinZV8h8
- 8TUaMCUA==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lwgFv-00BVV0-A4; Fri, 25 Jun 2021 07:28:10 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 774AF300252;
- Fri, 25 Jun 2021 09:28:09 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id 33509200B393D; Fri, 25 Jun 2021 09:28:09 +0200 (CEST)
-Date: Fri, 25 Jun 2021 09:28:09 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: PowerPC guest getting "BUG: scheduling while atomic" on
- linux-next-20210623 during secondary CPUs bringup
-Message-ID: <YNWFiZii+MINhUC3@hirez.programming.kicks-ass.net>
-References: <YNSq3UQTjm6HWELA@in.ibm.com>
- <20210625054608.fmwt7lxuhp7inkjx@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GB83R2b7mz308C
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Jun 2021 17:37:20 +1000 (AEST)
+Received: by mail-pl1-x62c.google.com with SMTP id x22so4281747pll.11
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Jun 2021 00:37:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=arS0mKVzVlqtqVfiVwhtHqUqhLwMsArq/fcDdatjRgU=;
+ b=dHO26QDY5LUMI+Tc2XZzsgpXZDpORNAX7YyZkCQ5xy7oSytr1O3oUF01CG9gH6yL5q
+ Y3La01kqEVPP9WWTMrMPMSLK8aydIT/ocZATNuL06J51ec4Okfq4Nv5ekqNB14ZWBhjL
+ tL88LfPKWlydh9eprQr48AASmItpc0PiVGEJE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=arS0mKVzVlqtqVfiVwhtHqUqhLwMsArq/fcDdatjRgU=;
+ b=j5QMzTWmVyp1z9czuhLc8P9wuq/F+Lyx6pOBudojGnkxk0wyjJ6sLIfUNJbrhbLH+A
+ /wc+lwanufP0qKVi4OtnIkYNDP0luRxRY3TxdeveBvrzS3UjWCZ4GSaM3fJlyr4YZCVP
+ iMQU/kahd638ZUR0lCgY48rMFN4jGYLlp0tsqiGAVRF7mcm0Kl2DCdKbaQhxcTceYHZe
+ WutoqsH+DT4xYFpcZqnTBSmNbv6xbXyqpeLfIA+nGCxgVdbPkjblnBH1a/zXsxBgpC2e
+ trJmfJFR5sIjH3vNEGBXv4kgFKfH/StKQjB8EfGNJP3aRixtONRO3NEgOuHUGk2KejhH
+ ncBQ==
+X-Gm-Message-State: AOAM533XLC2Cy9WNdQLjgp/LDxJArDWUoeyZBOyO3kHh1Wx7DzAVGQqv
+ ZybPS7WXT3sXO8PoWvYlECaJZQ==
+X-Google-Smtp-Source: ABdhPJzJyYhoE1B9Fk5Wy7zlre5sRlAATH1Tds+i1SalCyUSMMBey0lep4anSoEg3on5gb5KkCMm2Q==
+X-Received: by 2002:a17:902:c947:b029:125:34d4:249d with SMTP id
+ i7-20020a170902c947b029012534d4249dmr7925026pla.3.1624606637340; 
+ Fri, 25 Jun 2021 00:37:17 -0700 (PDT)
+Received: from localhost ([2401:fa00:8f:203:1492:9d4f:19fa:df61])
+ by smtp.gmail.com with UTF8SMTPSA id a9sm9986991pjm.51.2021.06.25.00.37.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 25 Jun 2021 00:37:16 -0700 (PDT)
+From: David Stevens <stevensd@chromium.org>
+X-Google-Original-From: David Stevens <stevensd@google.com>
+To: Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+ Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>,
+ Paul Mackerras <paulus@ozlabs.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Nick Piggin <npiggin@gmail.com>
+Subject: [PATCH v2 0/5] Remove uses of struct page from x86 and arm64 MMU
+Date: Fri, 25 Jun 2021 16:36:11 +0900
+Message-Id: <20210625073616.2184426-1-stevensd@google.com>
+X-Mailer: git-send-email 2.32.0.93.g670b81a890-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210625054608.fmwt7lxuhp7inkjx@linux.vnet.ibm.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,64 +79,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: LKML <linux-kernel@vger.kernel.org>,
- Valentin Schneider <valentin.schneider@arm.com>, linux-next@vger.kernel.org,
- Bharata B Rao <bharata@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Ingo Molnar <mingo@kernel.org>
+Cc: Wanpeng Li <wanpengli@tencent.com>, kvm@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org,
+ Will Deacon <will@kernel.org>, kvmarm@lists.cs.columbia.edu,
+ Alexandru Elisei <alexandru.elisei@arm.com>, Joerg Roedel <joro@8bytes.org>,
+ David Stevens <stevensd@google.com>, Zhi Wang <zhi.a.wang@intel.com>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, intel-gfx@lists.freedesktop.org,
+ kvm-ppc@vger.kernel.org, Zhenyu Wang <zhenyuw@linux.intel.com>,
+ intel-gvt-dev@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
+ Jim Mattson <jmattson@google.com>, Sean Christopherson <seanjc@google.com>,
+ linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 25, 2021 at 11:16:08AM +0530, Srikar Dronamraju wrote:
-> * Bharata B Rao <bharata@linux.ibm.com> [2021-06-24 21:25:09]:
-> 
-> > A PowerPC KVM guest gets the following BUG message when booting
-> > linux-next-20210623:
-> > 
-> > smp: Bringing up secondary CPUs ...
-> > BUG: scheduling while atomic: swapper/1/0/0x00000000
+KVM supports mapping VM_IO and VM_PFNMAP memory into the guest by using
+follow_pte in gfn_to_pfn. However, the resolved pfns may not have
+assoicated struct pages, so they should not be passed to pfn_to_page.
+This series removes such calls from the x86 and arm64 secondary MMU. To
+do this, this series introduces gfn_to_pfn_page functions that parallel
+the gfn_to_pfn functions. These functions take an extra out parameter
+which  contains the page if the hva was resovled by gup. This allows the
+caller to call put_page only when necessated by gup.
 
-'funny', your preempt_count is actually too low. The check here is for
-preempt_count() == DISABLE_OFFSET (aka. 1 when PREEMPT=y), but you have
-0.
+The gfn_to_pfn functions are depreciated. For now the functions remain
+with identical behavior to before, but callers should be migrated to the
+new gfn_to_pfn_page functions. I added new functions instead of simply
+adding another parameter to the existing functions to make it easier to
+track down users of the deprecated functions.
 
-> > no locks held by swapper/1/0.
-> > Modules linked in:
-> > CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.13.0-rc7-next-20210623
-> > Call Trace:
-> > [c00000000ae5bc20] [c000000000badc64] dump_stack_lvl+0x98/0xe0 (unreliable)
-> > [c00000000ae5bc60] [c000000000210200] __schedule_bug+0xb0/0xe0
-> > [c00000000ae5bcd0] [c000000001609e28] __schedule+0x1788/0x1c70
-> > [c00000000ae5be20] [c00000000160a8cc] schedule_idle+0x3c/0x70
-> > [c00000000ae5be50] [c00000000022984c] do_idle+0x2bc/0x420
-> > [c00000000ae5bf00] [c000000000229d88] cpu_startup_entry+0x38/0x40
-> > [c00000000ae5bf30] [c0000000000666c0] start_secondary+0x290/0x2a0
-> > [c00000000ae5bf90] [c00000000000be54] start_secondary_prolog+0x10/0x14
-> > 
-> > <The above repeats for all the secondary CPUs>
-> > 
-> > smp: Brought up 2 nodes, 16 CPUs
-> > numa: Node 0 CPUs: 0-7
-> > numa: Node 1 CPUs: 8-15
-> > 
-> > This seems to have started from next-20210521 and isn't seen on
-> > next-20210511.
-> > 
-> 
-> Bharata,
-> 
-> I think the regression is due to Commit f1a0a376ca0c ("sched/core:
-> Initialize the idle task with preemption disabled")
+I have migrated the x86 and arm64 secondary MMUs to the new
+gfn_to_pfn_page functions.
 
-So that extra preempt_disable() that got removed would've incremented it
-to 1 and then things would've been fine.
+This addresses CVE-2021-22543 on x86 and arm64.
 
-Except.. Valentin changed things such that preempt_count() should've
-been inittialized to 1, instead of 0, but for some raisin that didn't
-stick.. what gives.
+v1 -> v2:
+ - Introduce new gfn_to_pfn_page functions instead of modifying the
+   behavior of existing gfn_to_pfn functions, to make the change less
+   invasive.
+ - Drop changes to mmu_audit.c
+ - Include Nicholas Piggin's patch to avoid corrupting refcount in the
+   follow_pte case, and use it in depreciated gfn_to_pfn functions.
+ - Rebase on kvm/next
 
-So we have init_idle(p) -> init_idle_preempt_count(p) ->
-task_thread_info(p)->preempt_count = PREEMPT_DISABLED;
+David Stevens (4):
+  KVM: mmu: introduce new gfn_to_pfn_page functions
+  KVM: x86/mmu: use gfn_to_pfn_page
+  KVM: arm64/mmu: use gfn_to_pfn_page
+  KVM: mmu: remove over-aggressive warnings
 
-But somehow, by the time you're running start_secondary(), that's gotten
-to be 0 again. Does DEBUG_PREEMPT give more clues?
+Nicholas Piggin (1):
+  KVM: do not allow mapping valid but non-refcounted pages
+
+ arch/arm64/kvm/mmu.c            |  26 +++--
+ arch/x86/kvm/mmu/mmu.c          |  50 ++++-----
+ arch/x86/kvm/mmu/mmu_internal.h |   3 +-
+ arch/x86/kvm/mmu/paging_tmpl.h  |  23 +++--
+ arch/x86/kvm/mmu/tdp_mmu.c      |   6 +-
+ arch/x86/kvm/mmu/tdp_mmu.h      |   4 +-
+ arch/x86/kvm/x86.c              |   6 +-
+ include/linux/kvm_host.h        |  17 +++
+ virt/kvm/kvm_main.c             | 177 +++++++++++++++++++++++++-------
+ 9 files changed, 222 insertions(+), 90 deletions(-)
+
+-- 
+2.32.0.93.g670b81a890-goog
+
