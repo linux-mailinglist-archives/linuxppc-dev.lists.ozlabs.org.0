@@ -1,69 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85D913B4155
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jun 2021 12:17:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FA1A3B4172
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jun 2021 12:20:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GBCcP2kg3z3byc
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jun 2021 20:17:41 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=kXPUlU2H;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GBCgV1JP2z3c1M
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jun 2021 20:20:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=kXPUlU2H; 
- dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GBCbs3Z2bz3015
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Jun 2021 20:17:10 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=wDQXb0b+JpxtflRteJ/ZXAm5n+oQckfOfxFaEPzX3d0=; b=kXPUlU2H9vzWAwVh0T2wqxOCx1
- lOcpMyvsK0Pl8Ao1d4v2gfWrc0Nwb0T7Vahflk+dcFWCnsLwYrkC/r7NUuY7YqpQFIZS9srFwQQiN
- AvEi9XE1GR9ucHXeyTTCuVVpALouAkeRGuwLJKDMOqNcfprqT7v+6kTUEal+L1A7UlAnst6utMhHa
- Lms0BF77SDLRUoNVMUg0HQTX5EgzVCG+BZNNXuA+ESVfBhryzFVRCsqEc2+qBc2WcmH5NuRG2FURa
- Y57J9axgTfZmNszVbocy6VneLvFx1WZum1Pp/yJyueEdGf9AftpZuBTdUaIx7WJDRC/b6Q4kzOvii
- LnmBAxeg==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1lwitJ-00HYGQ-Ay; Fri, 25 Jun 2021 10:16:56 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id D3D6E300233;
- Fri, 25 Jun 2021 12:16:52 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id ADFB22019DA0B; Fri, 25 Jun 2021 12:16:52 +0200 (CEST)
-Date: Fri, 25 Jun 2021 12:16:52 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Bharata B Rao <bharata@linux.ibm.com>
-Subject: Re: PowerPC guest getting "BUG: scheduling while atomic" on
- linux-next-20210623 during secondary CPUs bringup
-Message-ID: <YNWtFKdSuoYTfSon@hirez.programming.kicks-ass.net>
-References: <YNSq3UQTjm6HWELA@in.ibm.com>
- <20210625054608.fmwt7lxuhp7inkjx@linux.vnet.ibm.com>
- <YNWFiZii+MINhUC3@hirez.programming.kicks-ass.net>
- <YNWZfKK+KBQSUdG5@in.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GBCg16fpCz2yWs
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Jun 2021 20:19:55 +1000 (AEST)
+IronPort-SDR: ujt6qXL3n1zK0iqqeyNyx48i9MEKCjucdwBfC40NyCkiyn3oW88cb3Y4ubZGmo88YZGwU9WKQh
+ BLXrncs6uQyg==
+X-IronPort-AV: E=McAfee;i="6200,9189,10025"; a="207680895"
+X-IronPort-AV: E=Sophos;i="5.83,298,1616482800"; d="scan'208";a="207680895"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+ by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Jun 2021 03:19:50 -0700
+IronPort-SDR: qRBiAccpJ2mY+4LcB9R6yd+A3+pDgtd8ZHMeo8i35PXIkZq+RJmT482gmgGsgvd7zMW61+BH2p
+ xCu52QQVweUw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.83,298,1616482800"; d="scan'208";a="481810236"
+Received: from lkp-server01.sh.intel.com (HELO 4aae0cb4f5b5) ([10.239.97.150])
+ by FMSMGA003.fm.intel.com with ESMTP; 25 Jun 2021 03:19:49 -0700
+Received: from kbuild by 4aae0cb4f5b5 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1lwiw8-00075b-Ux; Fri, 25 Jun 2021 10:19:48 +0000
+Date: Fri, 25 Jun 2021 18:19:38 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:next] BUILD SUCCESS 0e8554b5d7801b0aebc6c348a0a9f7706aa17b3b
+Message-ID: <60d5adba.Ri1j4NUI1VLGgMI6%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YNWZfKK+KBQSUdG5@in.ibm.com>
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,74 +53,193 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
- LKML <linux-kernel@vger.kernel.org>,
- Valentin Schneider <valentin.schneider@arm.com>, linux-next@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Ingo Molnar <mingo@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 25, 2021 at 02:23:16PM +0530, Bharata B Rao wrote:
-> On Fri, Jun 25, 2021 at 09:28:09AM +0200, Peter Zijlstra wrote:
-> > On Fri, Jun 25, 2021 at 11:16:08AM +0530, Srikar Dronamraju wrote:
-> > > * Bharata B Rao <bharata@linux.ibm.com> [2021-06-24 21:25:09]:
-> > > 
-> > > > A PowerPC KVM guest gets the following BUG message when booting
-> > > > linux-next-20210623:
-> > > > 
-> > > > smp: Bringing up secondary CPUs ...
-> > > > BUG: scheduling while atomic: swapper/1/0/0x00000000
-> > 
-> > 'funny', your preempt_count is actually too low. The check here is for
-> > preempt_count() == DISABLE_OFFSET (aka. 1 when PREEMPT=y), but you have
-> > 0.
-> > 
-> > > > no locks held by swapper/1/0.
-> > > > Modules linked in:
-> > > > CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.13.0-rc7-next-20210623
-> > > > Call Trace:
-> > > > [c00000000ae5bc20] [c000000000badc64] dump_stack_lvl+0x98/0xe0 (unreliable)
-> > > > [c00000000ae5bc60] [c000000000210200] __schedule_bug+0xb0/0xe0
-> > > > [c00000000ae5bcd0] [c000000001609e28] __schedule+0x1788/0x1c70
-> > > > [c00000000ae5be20] [c00000000160a8cc] schedule_idle+0x3c/0x70
-> > > > [c00000000ae5be50] [c00000000022984c] do_idle+0x2bc/0x420
-> > > > [c00000000ae5bf00] [c000000000229d88] cpu_startup_entry+0x38/0x40
-> > > > [c00000000ae5bf30] [c0000000000666c0] start_secondary+0x290/0x2a0
-> > > > [c00000000ae5bf90] [c00000000000be54] start_secondary_prolog+0x10/0x14
-> > > > 
-> > > > <The above repeats for all the secondary CPUs>
-> > > > 
-> > > > smp: Brought up 2 nodes, 16 CPUs
-> > > > numa: Node 0 CPUs: 0-7
-> > > > numa: Node 1 CPUs: 8-15
-> > > > 
-> > > > This seems to have started from next-20210521 and isn't seen on
-> > > > next-20210511.
-> > > > 
-> > > 
-> > > Bharata,
-> > > 
-> > > I think the regression is due to Commit f1a0a376ca0c ("sched/core:
-> > > Initialize the idle task with preemption disabled")
-> > 
-> > So that extra preempt_disable() that got removed would've incremented it
-> > to 1 and then things would've been fine.
-> > 
-> > Except.. Valentin changed things such that preempt_count() should've
-> > been inittialized to 1, instead of 0, but for some raisin that didn't
-> > stick.. what gives.
-> > 
-> > So we have init_idle(p) -> init_idle_preempt_count(p) ->
-> > task_thread_info(p)->preempt_count = PREEMPT_DISABLED;
-> > 
-> > But somehow, by the time you're running start_secondary(), that's gotten
-> > to be 0 again. Does DEBUG_PREEMPT give more clues?
-> 
-> PREEMPTION is off here.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+branch HEAD: 0e8554b5d7801b0aebc6c348a0a9f7706aa17b3b  powerpc/papr_scm: Properly handle UUID types and API
 
-You mean: CONFIG_PREEMPTION=n, what about CONFIG_PREEMPT_COUNT?
+elapsed time: 1121m
 
-Because if both are =n, then I don't see how that warning could trigger.
-in_atomic_preempt_off() would then result in prempt_count() == 0, and
-per the print above, it *is* 0.
+configs tested: 167
+configs skipped: 3
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+mips                           ip28_defconfig
+powerpc                 mpc832x_mds_defconfig
+arm                      pxa255-idp_defconfig
+sh                              ul2_defconfig
+arm                        neponset_defconfig
+sh                           se7721_defconfig
+arm                             rpc_defconfig
+arm                        magician_defconfig
+mips                      maltasmvp_defconfig
+powerpc                      ppc44x_defconfig
+alpha                            alldefconfig
+m68k                          amiga_defconfig
+powerpc                     ep8248e_defconfig
+mips                        omega2p_defconfig
+arm                         s5pv210_defconfig
+arm                         hackkit_defconfig
+csky                             alldefconfig
+arc                           tb10x_defconfig
+sh                          rsk7201_defconfig
+powerpc                 mpc837x_rdb_defconfig
+mips                  maltasmvp_eva_defconfig
+arm                        spear6xx_defconfig
+sh                             espt_defconfig
+mips                        qi_lb60_defconfig
+h8300                            alldefconfig
+powerpc                     akebono_defconfig
+ia64                             allmodconfig
+xtensa                generic_kc705_defconfig
+openrisc                    or1ksim_defconfig
+mips                         rt305x_defconfig
+sh                           se7206_defconfig
+nios2                            alldefconfig
+powerpc                 mpc8540_ads_defconfig
+mips                malta_qemu_32r6_defconfig
+m68k                        m5407c3_defconfig
+m68k                            mac_defconfig
+xtensa                           alldefconfig
+mips                        bcm63xx_defconfig
+arc                          axs103_defconfig
+sh                        edosk7760_defconfig
+powerpc                      katmai_defconfig
+powerpc                 mpc834x_mds_defconfig
+arc                        nsimosci_defconfig
+xtensa                    xip_kc705_defconfig
+sh                           se7751_defconfig
+mips                       capcella_defconfig
+arm                      footbridge_defconfig
+powerpc                 mpc8315_rdb_defconfig
+powerpc                 xes_mpc85xx_defconfig
+sh                        sh7763rdp_defconfig
+powerpc                     tqm8555_defconfig
+xtensa                  audio_kc705_defconfig
+mips                      maltaaprp_defconfig
+h8300                            allyesconfig
+arm                        mvebu_v5_defconfig
+arm                          exynos_defconfig
+xtensa                              defconfig
+arm                        clps711x_defconfig
+sh                           se7343_defconfig
+m68k                        m5272c3_defconfig
+arm                           sunxi_defconfig
+sh                         ap325rxa_defconfig
+m68k                       m5249evb_defconfig
+arm                  colibri_pxa270_defconfig
+sh                           sh2007_defconfig
+powerpc               mpc834x_itxgp_defconfig
+powerpc                 mpc8313_rdb_defconfig
+arm                   milbeaut_m10v_defconfig
+arm                           tegra_defconfig
+s390                          debug_defconfig
+powerpc                       ebony_defconfig
+powerpc                       holly_defconfig
+x86_64                            allnoconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a002-20210625
+x86_64               randconfig-a001-20210625
+x86_64               randconfig-a005-20210625
+x86_64               randconfig-a003-20210625
+x86_64               randconfig-a004-20210625
+x86_64               randconfig-a006-20210625
+i386                 randconfig-a002-20210625
+i386                 randconfig-a001-20210625
+i386                 randconfig-a003-20210625
+i386                 randconfig-a006-20210625
+i386                 randconfig-a005-20210625
+i386                 randconfig-a004-20210625
+i386                 randconfig-a001-20210622
+i386                 randconfig-a002-20210622
+i386                 randconfig-a003-20210622
+i386                 randconfig-a006-20210622
+i386                 randconfig-a005-20210622
+i386                 randconfig-a004-20210622
+x86_64               randconfig-a012-20210622
+x86_64               randconfig-a016-20210622
+x86_64               randconfig-a015-20210622
+x86_64               randconfig-a014-20210622
+x86_64               randconfig-a013-20210622
+x86_64               randconfig-a011-20210622
+i386                 randconfig-a011-20210622
+i386                 randconfig-a014-20210622
+i386                 randconfig-a013-20210622
+i386                 randconfig-a015-20210622
+i386                 randconfig-a012-20210622
+i386                 randconfig-a016-20210622
+i386                 randconfig-a011-20210625
+i386                 randconfig-a014-20210625
+i386                 randconfig-a013-20210625
+i386                 randconfig-a015-20210625
+i386                 randconfig-a012-20210625
+i386                 randconfig-a016-20210625
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+um                            kunit_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-b001-20210622
+x86_64               randconfig-a002-20210622
+x86_64               randconfig-a001-20210622
+x86_64               randconfig-a005-20210622
+x86_64               randconfig-a003-20210622
+x86_64               randconfig-a004-20210622
+x86_64               randconfig-a006-20210622
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
