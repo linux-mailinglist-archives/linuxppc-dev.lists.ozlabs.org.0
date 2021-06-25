@@ -2,50 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B2B03B3BF2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jun 2021 07:10:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B401E3B3C5A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jun 2021 07:47:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GB4p66HdRz3bwB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jun 2021 15:10:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GB5c522JVz3c0C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jun 2021 15:47:01 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lcigLJMA;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=lcigLJMA; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GB4nl5DHrz3001
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Jun 2021 15:10:16 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4GB4nd4BRpzBCCQ;
- Fri, 25 Jun 2021 07:10:13 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id G3DmZA-oQBa0; Fri, 25 Jun 2021 07:10:13 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4GB4nd3CRPzBCBq;
- Fri, 25 Jun 2021 07:10:13 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 590C28B7F4;
- Fri, 25 Jun 2021 07:10:13 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 73AMpCVsNCbN; Fri, 25 Jun 2021 07:10:13 +0200 (CEST)
-Received: from po9473vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 11DE88B7F0;
- Fri, 25 Jun 2021 07:10:13 +0200 (CEST)
-Received: by po9473vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id BCAC566396; Fri, 25 Jun 2021 05:10:12 +0000 (UTC)
-Message-Id: <38d04410700c8d02f28ba37e020b62c55d6f3d2c.1624597695.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v3] mm: pagewalk: Fix walk for hugepage tables
-To: Steven Price <steven.price@arm.com>, akpm@linux-foundation.org,
- linux-mm@kvack.org
-Date: Fri, 25 Jun 2021 05:10:12 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GB5bc07B0z302B
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Jun 2021 15:46:35 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 15P5ihlx117234; Fri, 25 Jun 2021 01:46:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : reply-to : references : mime-version : content-type
+ : in-reply-to; s=pp1; bh=Hnp9sEc1Zv51a6wVxJRQy5Y96XTuyf8F08yDG+Cs3LE=;
+ b=lcigLJMAr7dZx/RLIWptyaB0QQCN8r7lzUHtwsO2u2/3snR5Uz6Z8GO2ze/py7cSI8sG
+ S2zsDZ6gC7PHlBsW0m4neAkamGq2na4CUxP479vBZch+srlcZ5/LFdPWqaypKZCWAA9J
+ sizV+fyNelyjZ2XLjoM36QjZ1JRcOHBk1wgbVgp56YHJcX9YSLjTifXIfUh8hzHS5Kha
+ FuRme/lsjQqP74MHa8zjT15TUzXzGp2q4nfeiLemTzfVcAuN4khwWBD6DX/R99vy7Ur3
+ Fl5HhukZ0z3J/0TaoKIoRlSYhi0AZ+PuJNKS9w9fa3M6x7Pp3Zm+ZgFV1WlsiWHtdLqc Eg== 
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 39d98s815w-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 25 Jun 2021 01:46:16 -0400
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15P5dP3m006730;
+ Fri, 25 Jun 2021 05:46:14 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma06fra.de.ibm.com with ESMTP id 3997uhhk9r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 25 Jun 2021 05:46:13 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 15P5kBWk24904124
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 25 Jun 2021 05:46:11 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6FF8952050;
+ Fri, 25 Jun 2021 05:46:11 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with SMTP id 82E5C52059;
+ Fri, 25 Jun 2021 05:46:09 +0000 (GMT)
+Date: Fri, 25 Jun 2021 11:16:08 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Bharata B Rao <bharata@linux.ibm.com>
+Subject: Re: PowerPC guest getting "BUG: scheduling while atomic" on
+ linux-next-20210623 during secondary CPUs bringup
+Message-ID: <20210625054608.fmwt7lxuhp7inkjx@linux.vnet.ibm.com>
+References: <YNSq3UQTjm6HWELA@in.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <YNSq3UQTjm6HWELA@in.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 0Xidfmp9vCkq_Tn5j92Sq7EKuh_HE11t
+X-Proofpoint-GUID: 0Xidfmp9vCkq_Tn5j92Sq7EKuh_HE11t
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-06-25_01:2021-06-24,
+ 2021-06-25 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 mlxlogscore=999
+ spamscore=0 malwarescore=0 clxscore=1011 lowpriorityscore=0 suspectscore=0
+ bulkscore=0 adultscore=0 impostorscore=0 priorityscore=1501 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104190000
+ definitions=main-2106250030
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,130 +96,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- Oliver O'Halloran <oohall@gmail.com>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org, dja@axtens.net
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, LKML <linux-kernel@vger.kernel.org>,
+ Valentin Schneider <valentin.schneider@arm.com>, linux-next@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Pagewalk ignores hugepd entries and walk down the tables
-as if it was traditionnal entries, leading to crazy result.
+* Bharata B Rao <bharata@linux.ibm.com> [2021-06-24 21:25:09]:
 
-Add walk_hugepd_range() and use it to walk hugepage tables.
+> A PowerPC KVM guest gets the following BUG message when booting
+> linux-next-20210623:
+> 
+> smp: Bringing up secondary CPUs ...
+> BUG: scheduling while atomic: swapper/1/0/0x00000000
+> no locks held by swapper/1/0.
+> Modules linked in:
+> CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.13.0-rc7-next-20210623
+> Call Trace:
+> [c00000000ae5bc20] [c000000000badc64] dump_stack_lvl+0x98/0xe0 (unreliable)
+> [c00000000ae5bc60] [c000000000210200] __schedule_bug+0xb0/0xe0
+> [c00000000ae5bcd0] [c000000001609e28] __schedule+0x1788/0x1c70
+> [c00000000ae5be20] [c00000000160a8cc] schedule_idle+0x3c/0x70
+> [c00000000ae5be50] [c00000000022984c] do_idle+0x2bc/0x420
+> [c00000000ae5bf00] [c000000000229d88] cpu_startup_entry+0x38/0x40
+> [c00000000ae5bf30] [c0000000000666c0] start_secondary+0x290/0x2a0
+> [c00000000ae5bf90] [c00000000000be54] start_secondary_prolog+0x10/0x14
+> 
+> <The above repeats for all the secondary CPUs>
+> 
+> smp: Brought up 2 nodes, 16 CPUs
+> numa: Node 0 CPUs: 0-7
+> numa: Node 1 CPUs: 8-15
+> 
+> This seems to have started from next-20210521 and isn't seen on
+> next-20210511.
+> 
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Steven Price <steven.price@arm.com>
----
-v3:
-- Rebased on next-20210624 (no change since v2)
-- Added Steven's Reviewed-by
-- Sent as standalone for merge via mm
+Bharata,
 
-v2:
-- Add a guard for NULL ops->pte_entry
-- Take mm->page_table_lock when walking hugepage table, as suggested by follow_huge_pd()
----
- mm/pagewalk.c | 58 ++++++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 53 insertions(+), 5 deletions(-)
+I think the regression is due to Commit f1a0a376ca0c ("sched/core:
+Initialize the idle task with preemption disabled")
 
-diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-index e81640d9f177..9b3db11a4d1d 100644
---- a/mm/pagewalk.c
-+++ b/mm/pagewalk.c
-@@ -58,6 +58,45 @@ static int walk_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
- 	return err;
- }
- 
-+#ifdef CONFIG_ARCH_HAS_HUGEPD
-+static int walk_hugepd_range(hugepd_t *phpd, unsigned long addr,
-+			     unsigned long end, struct mm_walk *walk, int pdshift)
-+{
-+	int err = 0;
-+	const struct mm_walk_ops *ops = walk->ops;
-+	int shift = hugepd_shift(*phpd);
-+	int page_size = 1 << shift;
-+
-+	if (!ops->pte_entry)
-+		return 0;
-+
-+	if (addr & (page_size - 1))
-+		return 0;
-+
-+	for (;;) {
-+		pte_t *pte;
-+
-+		spin_lock(&walk->mm->page_table_lock);
-+		pte = hugepte_offset(*phpd, addr, pdshift);
-+		err = ops->pte_entry(pte, addr, addr + page_size, walk);
-+		spin_unlock(&walk->mm->page_table_lock);
-+
-+		if (err)
-+			break;
-+		if (addr >= end - page_size)
-+			break;
-+		addr += page_size;
-+	}
-+	return err;
-+}
-+#else
-+static int walk_hugepd_range(hugepd_t *phpd, unsigned long addr,
-+			     unsigned long end, struct mm_walk *walk, int pdshift)
-+{
-+	return 0;
-+}
-+#endif
-+
- static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
- 			  struct mm_walk *walk)
- {
-@@ -108,7 +147,10 @@ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
- 				goto again;
- 		}
- 
--		err = walk_pte_range(pmd, addr, next, walk);
-+		if (is_hugepd(__hugepd(pmd_val(*pmd))))
-+			err = walk_hugepd_range((hugepd_t *)pmd, addr, next, walk, PMD_SHIFT);
-+		else
-+			err = walk_pte_range(pmd, addr, next, walk);
- 		if (err)
- 			break;
- 	} while (pmd++, addr = next, addr != end);
-@@ -157,7 +199,10 @@ static int walk_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
- 		if (pud_none(*pud))
- 			goto again;
- 
--		err = walk_pmd_range(pud, addr, next, walk);
-+		if (is_hugepd(__hugepd(pud_val(*pud))))
-+			err = walk_hugepd_range((hugepd_t *)pud, addr, next, walk, PUD_SHIFT);
-+		else
-+			err = walk_pmd_range(pud, addr, next, walk);
- 		if (err)
- 			break;
- 	} while (pud++, addr = next, addr != end);
-@@ -189,7 +234,9 @@ static int walk_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long end,
- 			if (err)
- 				break;
- 		}
--		if (ops->pud_entry || ops->pmd_entry || ops->pte_entry)
-+		if (is_hugepd(__hugepd(p4d_val(*p4d))))
-+			err = walk_hugepd_range((hugepd_t *)p4d, addr, next, walk, P4D_SHIFT);
-+		else if (ops->pud_entry || ops->pmd_entry || ops->pte_entry)
- 			err = walk_pud_range(p4d, addr, next, walk);
- 		if (err)
- 			break;
-@@ -224,8 +271,9 @@ static int walk_pgd_range(unsigned long addr, unsigned long end,
- 			if (err)
- 				break;
- 		}
--		if (ops->p4d_entry || ops->pud_entry || ops->pmd_entry ||
--		    ops->pte_entry)
-+		if (is_hugepd(__hugepd(pgd_val(*pgd))))
-+			err = walk_hugepd_range((hugepd_t *)pgd, addr, next, walk, PGDIR_SHIFT);
-+		else if (ops->p4d_entry || ops->pud_entry || ops->pmd_entry || ops->pte_entry)
- 			err = walk_p4d_range(pgd, addr, next, walk);
- 		if (err)
- 			break;
+Can you please try with the above commit reverted?
+
 -- 
-2.25.0
-
+Thanks and Regards
+Srikar Dronamraju
