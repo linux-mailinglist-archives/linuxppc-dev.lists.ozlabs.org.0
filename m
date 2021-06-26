@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A1593B4E2B
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Jun 2021 12:41:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F3A03B4E2E
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Jun 2021 12:42:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GBr5n1SgCz3c97
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Jun 2021 20:41:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GBr6R6X6Kz3f06
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Jun 2021 20:42:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,16 +16,16 @@ Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GBr2V10gnz30BR
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Jun 2021 20:38:58 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GBr2W3JsZz3c1n
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Jun 2021 20:38:59 +1000 (AEST)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4GBr2S1NPpz9t2G; Sat, 26 Jun 2021 20:38:55 +1000 (AEST)
+ id 4GBr2T6s0Lz9sW8; Sat, 26 Jun 2021 20:38:57 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Kajol Jain <kjain@linux.ibm.com>, mpe@ellerman.id.au
-In-Reply-To: <20210418074003.6651-1-kjain@linux.ibm.com>
-References: <20210418074003.6651-1-kjain@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/papr_scm: trivial: fix typo in a comment
-Message-Id: <162470384564.3589875.1244984138894329682.b4-ty@ellerman.id.au>
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20210623130514.2543232-1-mpe@ellerman.id.au>
+References: <20210623130514.2543232-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc: Fix is_kvm_guest() / kvm_para_available()
+Message-Id: <162470384503.3589875.4224730716859368974.b4-ty@ellerman.id.au>
 Date: Sat, 26 Jun 2021 20:37:25 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -41,19 +41,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: trivial@kernel.org, maddy@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, vaibhav@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, 18 Apr 2021 13:10:03 +0530, Kajol Jain wrote:
-> There is a spelling mistake "byes" -> "bytes" in a comment of
-> function drc_pmem_query_stats(). Fix that typo.
+On Wed, 23 Jun 2021 23:05:14 +1000, Michael Ellerman wrote:
+> Commit a21d1becaa3f ("powerpc: Reintroduce is_kvm_guest() as a fast-path
+> check") added is_kvm_guest() and changed kvm_para_available() to use it.
+> 
+> is_kvm_guest() checks a static key, kvm_guest, and that static key is
+> set in check_kvm_guest().
+> 
+> The problem is check_kvm_guest() is only called on pseries, and even
+> then only in some configurations. That means is_kvm_guest() always
+> returns false on all non-pseries and some pseries depending on
+> configuration. That's a bug.
+> 
+> [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/papr_scm: trivial: fix typo in a comment
-      https://git.kernel.org/powerpc/c/d2827e5e2e0f0941a651f4b1ca5e9b778c4b5293
+[1/1] powerpc: Fix is_kvm_guest() / kvm_para_available()
+      https://git.kernel.org/powerpc/c/95839225639ba7c3d8d7231b542728dcf222bf2d
 
 cheers
