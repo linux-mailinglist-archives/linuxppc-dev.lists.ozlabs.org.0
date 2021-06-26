@@ -1,60 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 911983B5063
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Jun 2021 00:53:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 065743B5061
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Jun 2021 00:51:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GC8L83Tl7z3c4h
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Jun 2021 08:53:36 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=YKidPBzj;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GC8Hy4hJgz3c2f
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Jun 2021 08:51:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=posteo.net (client-ip=185.67.36.66; helo=mout02.posteo.de;
- envelope-from=j.ne@posteo.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256
- header.s=2017 header.b=YKidPBzj; dkim-atps=neutral
-X-Greylist: delayed 459 seconds by postgrey-1.36 at boromir;
- Sun, 27 Jun 2021 07:35:14 AEST
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mga06.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GC6bk5lC4z301K
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Jun 2021 07:35:12 +1000 (AEST)
-Received: from submission (posteo.de [89.146.220.130]) 
- by mout02.posteo.de (Postfix) with ESMTPS id 180C32400E5
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Jun 2021 23:27:25 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
- t=1624742846; bh=41rpbSn2Uyn0qALHKbYOc9/feymQyErjP+9elyuLFbA=;
- h=Date:From:To:Cc:Subject:From;
- b=YKidPBzjA63zz30yQIi00yBJHnHM2jl9JcmbnCDrfgbA+YpcIE9q3+cWOGZ078BBc
- AeMH1m2poKW9mZWUUrH7s6E56UaoryDtH41SPpH3Nyf7AlS3zmas+fflpJtCiQQ9eO
- spOMMOS0Bq4kwfK0uPcNejTXGSVZojw6HKaUSiLjic+YoMaNH2Zsro2KItHIN+Cnf2
- 0rssMMNFjalndR2wCpp5//fo9OJxTVrl/P0EJM6sWcx3tjOP4H8rrWQCcRhu3SXL1E
- A18sHONTca/zhF2Uc2a23Up2nImqEdZZOQ1ymdXYquDXToqTbpwPcDPNn/KROJv92v
- 5fsaWqbqbcaPw==
-Received: from customer (localhost [127.0.0.1])
- by submission (posteo.de) with ESMTPSA id 4GC6Qg0r7lz9rxL;
- Sat, 26 Jun 2021 23:27:23 +0200 (CEST)
-Date: Sat, 26 Jun 2021 21:27:22 +0000
-From: Jonathan =?utf-8?Q?Neusch=C3=A4fer?= <j.ne@posteo.net>
-To: Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
-Subject: Re: [PATCH v2 2/4] dt-bindings: nintendo-otp: Document the Wii and
- Wii U OTP support
-Message-ID: <YNebuj3J51FbWC1n@latitude>
-References: <20210519095044.4109-1-linkmauve@linkmauve.fr>
- <20210519095044.4109-3-linkmauve@linkmauve.fr>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GC8HZ3kwtz3015
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Jun 2021 08:51:16 +1000 (AEST)
+IronPort-SDR: 7guhMd+xLbSMJSgir7SuKvBk1IlDDetOM10uznPqlirv8T+KSiRw7LODolWVmlwsO8yCw07wOz
+ zuHmvBZNHO4Q==
+X-IronPort-AV: E=McAfee;i="6200,9189,10027"; a="268941479"
+X-IronPort-AV: E=Sophos;i="5.83,302,1616482800"; d="scan'208";a="268941479"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Jun 2021 15:51:08 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.83,302,1616482800"; d="scan'208";a="455836605"
+Received: from lkp-server01.sh.intel.com (HELO 4aae0cb4f5b5) ([10.239.97.150])
+ by fmsmga008.fm.intel.com with ESMTP; 26 Jun 2021 15:51:07 -0700
+Received: from kbuild by 4aae0cb4f5b5 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1lxH8k-0007wC-OO; Sat, 26 Jun 2021 22:51:06 +0000
+Date: Sun, 27 Jun 2021 06:50:28 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD REGRESSION
+ 0f7a719601eb957c10d417c62bd5f65080b5a409
+Message-ID: <60d7af34.4LVha34uSbiJvBaE%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="7j5plNaFnrRdIOyG"
-Content-Disposition: inline
-In-Reply-To: <20210519095044.4109-3-linkmauve@linkmauve.fr>
-X-Mailman-Approved-At: Sun, 27 Jun 2021 08:53:13 +1000
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,87 +52,205 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- Rob Herring <robh+dt@kernel.org>,
- Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
- Ash Logan <ash@heyquark.com>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org,
- Jonathan =?utf-8?Q?Neusch=C3=A4fer?= <j.ne@posteo.net>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: 0f7a719601eb957c10d417c62bd5f65080b5a409  Automatic merge of 'next' into merge (2021-06-26 20:22)
 
---7j5plNaFnrRdIOyG
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Error/Warning in current branch:
 
-Hello and sorry for the delay,
+arch/powerpc/kernel/hw_breakpoint.c:735:38: error: variable 'ea' is uninitialized when used here [-Werror,-Wuninitialized]
 
-On Wed, May 19, 2021 at 11:50:42AM +0200, Emmanuel Gil Peyrot wrote:
-> Both of these consoles use the exact same two registers, even at the
-> same address, but the Wii=C2=A0U has eight banks of 128=C2=A0bytes memory=
- while
-> the Wii only has one, hence the two compatible strings.
->=20
-> Signed-off-by: Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
+Error/Warning ids grouped by kconfigs:
 
-A link to the (third-party) documentation for the OTP device would be nice.
+clang_recent_errors
+`-- powerpc64-buildonly-randconfig-r006-20210626
+    `-- arch-powerpc-kernel-hw_breakpoint.c:error:variable-ea-is-uninitialized-when-used-here-Werror-Wuninitialized
 
+elapsed time: 723m
 
-Best regards,
-Jonathan Neusch=C3=A4fer
+configs tested: 172
+configs skipped: 2
 
-> ---
->  .../devicetree/bindings/nvmem/nintendo-otp.txt     | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/nvmem/nintendo-otp.=
-txt
->=20
-> diff --git a/Documentation/devicetree/bindings/nvmem/nintendo-otp.txt b/D=
-ocumentation/devicetree/bindings/nvmem/nintendo-otp.txt
-> new file mode 100644
-> index 000000000000..b26d705ec52d
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/nvmem/nintendo-otp.txt
-> @@ -0,0 +1,14 @@
-> +Nintendo Wii and Wii=C2=A0U OTP
-> +
-> +Required Properties:
-> +- compatible: depending on the console this should be one of:
-> +	- "nintendo,hollywood-otp" for the Wii
-> +	- "nintendo,latte-otp" for the Wii=C2=A0U
-> +- reg: base address and size of the OTP registers
-> +
-> +
-> +Example:
-> +	otp@d8001ec {
-> +		compatible =3D "nintendo,latte-otp";
-> +		reg =3D <0x0d8001ec 0x8>;
-> +	};
-> --=20
-> 2.31.1
->=20
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+mips                           ip28_defconfig
+powerpc                     tqm5200_defconfig
+powerpc                 mpc8313_rdb_defconfig
+arm                           spitz_defconfig
+sh                           se7619_defconfig
+um                                  defconfig
+powerpc               mpc834x_itxgp_defconfig
+mips                      malta_kvm_defconfig
+mips                malta_qemu_32r6_defconfig
+arm                          ep93xx_defconfig
+xtensa                           alldefconfig
+mips                        bcm47xx_defconfig
+powerpc                     skiroot_defconfig
+microblaze                          defconfig
+powerpc                 mpc836x_mds_defconfig
+sh                          rsk7201_defconfig
+powerpc                         ps3_defconfig
+powerpc                      mgcoge_defconfig
+sh                        sh7785lcr_defconfig
+sh                           se7721_defconfig
+sh                        edosk7705_defconfig
+arm                         bcm2835_defconfig
+sh                               j2_defconfig
+sh                          r7785rp_defconfig
+h8300                            alldefconfig
+mips                 decstation_r4k_defconfig
+m68k                        mvme16x_defconfig
+riscv                            allyesconfig
+arm                           omap1_defconfig
+mips                           gcw0_defconfig
+sh                           se7724_defconfig
+arm                            lart_defconfig
+mips                     cu1000-neo_defconfig
+mips                      maltaaprp_defconfig
+arm                      footbridge_defconfig
+arm                       multi_v4t_defconfig
+powerpc                 mpc837x_mds_defconfig
+powerpc                     tqm8540_defconfig
+arm                      integrator_defconfig
+arm                          pxa3xx_defconfig
+arm                          moxart_defconfig
+arm                           u8500_defconfig
+arm                         palmz72_defconfig
+powerpc                 mpc834x_mds_defconfig
+powerpc                 mpc834x_itx_defconfig
+mips                      fuloong2e_defconfig
+sh                  sh7785lcr_32bit_defconfig
+arm                            zeus_defconfig
+arc                          axs101_defconfig
+sh                          landisk_defconfig
+ia64                          tiger_defconfig
+sh                        dreamcast_defconfig
+arm                         s3c6400_defconfig
+mips                      pic32mzda_defconfig
+arc                            hsdk_defconfig
+powerpc                mpc7448_hpc2_defconfig
+powerpc                     tqm8560_defconfig
+arc                     nsimosci_hs_defconfig
+powerpc                     pq2fads_defconfig
+arm                         vf610m4_defconfig
+m68k                            mac_defconfig
+ia64                            zx1_defconfig
+microblaze                      mmu_defconfig
+arm                        trizeps4_defconfig
+powerpc                    socrates_defconfig
+powerpc                          g5_defconfig
+powerpc                        fsp2_defconfig
+sparc64                             defconfig
+sparc                       sparc32_defconfig
+x86_64                            allnoconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a002-20210625
+i386                 randconfig-a001-20210625
+i386                 randconfig-a003-20210625
+i386                 randconfig-a006-20210625
+i386                 randconfig-a005-20210625
+i386                 randconfig-a004-20210625
+x86_64               randconfig-a012-20210626
+x86_64               randconfig-a016-20210626
+x86_64               randconfig-a015-20210626
+x86_64               randconfig-a014-20210626
+x86_64               randconfig-a013-20210626
+x86_64               randconfig-a011-20210626
+x86_64               randconfig-a012-20210622
+x86_64               randconfig-a016-20210622
+x86_64               randconfig-a015-20210622
+x86_64               randconfig-a014-20210622
+x86_64               randconfig-a013-20210622
+x86_64               randconfig-a011-20210622
+i386                 randconfig-a011-20210625
+i386                 randconfig-a014-20210625
+i386                 randconfig-a013-20210625
+i386                 randconfig-a015-20210625
+i386                 randconfig-a012-20210625
+i386                 randconfig-a016-20210625
+i386                 randconfig-a011-20210622
+i386                 randconfig-a014-20210622
+i386                 randconfig-a013-20210622
+i386                 randconfig-a015-20210622
+i386                 randconfig-a012-20210622
+i386                 randconfig-a016-20210622
+i386                 randconfig-a011-20210626
+i386                 randconfig-a014-20210626
+i386                 randconfig-a013-20210626
+i386                 randconfig-a015-20210626
+i386                 randconfig-a012-20210626
+i386                 randconfig-a016-20210626
+x86_64               randconfig-a002-20210625
+x86_64               randconfig-a001-20210625
+x86_64               randconfig-a005-20210625
+x86_64               randconfig-a003-20210625
+x86_64               randconfig-a004-20210625
+x86_64               randconfig-a006-20210625
+riscv                    nommu_k210_defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+um                            kunit_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
 
---7j5plNaFnrRdIOyG
-Content-Type: application/pgp-signature; name="signature.asc"
+clang tested configs:
+x86_64               randconfig-b001-20210622
+x86_64               randconfig-b001-20210625
+x86_64               randconfig-a002-20210626
+x86_64               randconfig-a001-20210626
+x86_64               randconfig-a005-20210626
+x86_64               randconfig-a003-20210626
+x86_64               randconfig-a004-20210626
+x86_64               randconfig-a006-20210626
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEvHAHGBBjQPVy+qvDCDBEmo7zX9sFAmDXm4sACgkQCDBEmo7z
-X9veGhAAy2IY+Vkls/q+6+hkbYXDroy+O6Ogd0JYudibYnde3Y0McY0c+7nRHSBP
-jFIcSJfAEzdBk1X+g18nVJsB/ysvDZ3eMbWjGoOb2e5nNhT+G/Xhvpl0bSInHpel
-SqhHoCj3iSCzmZGlUiyKewjGEVboi1/iQR7Wq5gFctNgpDmwapb8w6RRYY8vjg/E
-+iI4gSDqgWLkWkDqQengP9AP3X+IKYgs2Xg+ZbXyGl1kx3ZRwxT2G1UEao1T2l1o
-WKlUAAdlB30+qigZVuCkFkuGTMUn7eSLVyWm3gAzu1toHtMChz3faac4ZnYIxcjl
-1kJKnu3dcMySRO8ITQIPsbIxwweWoSoRST0kEGueFylSzo5Kgh93DCBeChoGIcCG
-WeyP7gspFkcm3c6iR4yG+7W+VdKmO3nhSMlMNnttH8mRIO66quV8qV9k0tfVD6DH
-litoyTLmNT4f34T1+kTo0lzo3sRDRcRYt4ZikEqFXVQOHCCAylo6MLjvXLbaFAFd
-3PGKz9tYf7RtT82DDuvnVje1S13hTZ10eOO6HDvSGWPB5zbTks15zNEAE6H2Un3Y
-Xy1Jewlg/9EgaQTM6JzQjz9DG5/z3v26QpfJYo3Kpqg0ssCr9TXkJ/SPSCtq5w7e
-Qmf5ZZpL5hbPj32UremiOB9lLHloav3l8w8E7HS0lVv6tszVyk8=
-=CJPN
------END PGP SIGNATURE-----
-
---7j5plNaFnrRdIOyG--
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
