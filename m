@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 403063B5077
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Jun 2021 01:24:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C60C3B5089
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Jun 2021 01:34:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GC92C2ZCcz30Dq
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Jun 2021 09:24:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GC9FP2CZMz309s
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Jun 2021 09:34:33 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=cnOZd3tr;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=G0rvLrMD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,41 +17,40 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=j.ne@posteo.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256
- header.s=2017 header.b=cnOZd3tr; dkim-atps=neutral
+ header.s=2017 header.b=G0rvLrMD; dkim-atps=neutral
 Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GC91k09rPz2yR7
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Jun 2021 09:24:22 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GC9Dx4CmTz2yXc
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Jun 2021 09:34:07 +1000 (AEST)
 Received: from submission (posteo.de [89.146.220.130]) 
- by mout01.posteo.de (Postfix) with ESMTPS id 79A43240028
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Jun 2021 01:24:15 +0200 (CEST)
+ by mout01.posteo.de (Postfix) with ESMTPS id 4B6C1240026
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Jun 2021 01:34:04 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
- t=1624749856; bh=R9ujgHqs1BjJczriy1SBTuBrhRB6tHWhzFhcHRZqkgM=;
+ t=1624750444; bh=JeORn0wzi/Pu/QO65imy4jO5dUBCfYL8bqgtjgUWze0=;
  h=Date:From:To:Cc:Subject:From;
- b=cnOZd3trbXjyPktIzeD+KgNAXpoB1SJFGhXyFUr2Nvdr2gZHGljnzWtegmUJcE53s
- YHOGkysQ4lsZXGbN8X9wUlFTheoXm73OyCydILNHQnk6SPaybnzgZRzx5eS1gitOm4
- rchzOrVZwoiQwFfbT4oJFy0Cu34oAU6cfUi0FUyLorKTapEP7F7oSRiJU+8KYOUAov
- 7Aa7HxmeCGJWvtpvlr+hSZJ89LUlOLPtKJ8B3LtKJ9UtTF6a7DQPRBPx91uLz6Olw+
- c0d3giiPnKw5BgbEcbFgs92TC2EKVB1p+zzfkiu1EyHPds3Wf9CPSJ9f+2R8S+sPXL
- vUo5x8jpeWm0Q==
+ b=G0rvLrMD8U9cmFSF3dhOSHQs8Sgk7c12GaCw+B/FnCBkw/dbRDY87FMP8s58A0yP7
+ f7OQfF5t3lGh+vq5BcPML3l+5onT+kVHskAZEtsanYWU11+AZdzLl5syf7m80iqh+o
+ I+Ae0rIh7kO71qPbZnBsDNGmC4TmIplCA0kLMLTLMxajevZK5nXQIZSQ2elwtfAbzM
+ RdyfZPNk3xF/YuWPO5O8fyhwCzHCbLSZq9eBG6bngnGrZT7euEUTQj6YHZ0Y7oplt+
+ hq2Ob7QbrPLfBvR6Lr8N1nxfJbOiuDXN2lAYNvCz2NkxfZ10c0nY67cf8UdO01XHww
+ Bdq3AYzwFttjA==
 Received: from customer (localhost [127.0.0.1])
- by submission (posteo.de) with ESMTPSA id 4GC91T3CVXz6tm6;
- Sun, 27 Jun 2021 01:24:13 +0200 (CEST)
-Date: Sat, 26 Jun 2021 23:24:07 +0000
+ by submission (posteo.de) with ESMTPSA id 4GC9Dp28q1z9rxH;
+ Sun, 27 Jun 2021 01:34:02 +0200 (CEST)
+Date: Sat, 26 Jun 2021 23:34:01 +0000
 From: Jonathan =?utf-8?Q?Neusch=C3=A4fer?= <j.ne@posteo.net>
 To: Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
-Subject: Re: [PATCH v2 1/4] nvmem: nintendo-otp: Add new driver for the Wii
- and Wii U OTP
-Message-ID: <YNe3F7DPOOKuaFIm@latitude>
+Subject: Re: [PATCH v2 3/4] powerpc: wii.dts: Expose the OTP on this platform
+Message-ID: <YNe5aW55SrXFGKFV@latitude>
 References: <20210519095044.4109-1-linkmauve@linkmauve.fr>
- <20210519095044.4109-2-linkmauve@linkmauve.fr>
+ <20210519095044.4109-4-linkmauve@linkmauve.fr>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="8Davdyx64OL/jq/h"
+ protocol="application/pgp-signature"; boundary="AdirIyIEOXEflO+W"
 Content-Disposition: inline
-In-Reply-To: <20210519095044.4109-2-linkmauve@linkmauve.fr>
+In-Reply-To: <20210519095044.4109-4-linkmauve@linkmauve.fr>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,127 +73,69 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---8Davdyx64OL/jq/h
+--AdirIyIEOXEflO+W
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi,
-
-
-On Wed, May 19, 2021 at 11:50:41AM +0200, Emmanuel Gil Peyrot wrote:
-> This OTP is read-only and contains various keys used by the console to
-> decrypt, encrypt or verify various pieces of storage.
->=20
-> Its size depends on the console, it is 128=C2=A0bytes on the Wii and
-> 1024=C2=A0bytes on the Wii=C2=A0U (split into eight 128=C2=A0bytes banks).
->=20
-> It can be used directly by writing into one register and reading from
-> the other one, without any additional synchronisation.
+On Wed, May 19, 2021 at 11:50:43AM +0200, Emmanuel Gil Peyrot wrote:
+> This can be used by the newly-added nintendo-otp nvmem module.
 >=20
 > Signed-off-by: Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
 > ---
-
-A link to the (third-party) documentation would be nice, either in the
-commit message or in the code itself.
-
-(https://wiiubrew.org/wiki/Hardware/OTP i guess)
-
-[...]
-> +static int nintendo_otp_reg_read(void *context,
-> +				 unsigned int reg, void *_val, size_t bytes)
-> +{
-> +	struct nintendo_otp_priv *priv =3D context;
-> +	u32 *val =3D _val;
-> +	int words =3D bytes >> 2;
-> +	u32 bank, addr;
-> +
-> +	while (words--) {
-> +		bank =3D (reg << 1) & ~0xff;
-
-This is a bit non-obvious, IMHO. As far as I understand it, the expanded
-formula is:
-
-	bank =3D (reg / 128) << 8;
-
-I.e. first divide by bank size, then shift the parameter into the right
-place.
-
-> +		addr =3D (reg >> 2) & 0x1f;
-
-Here, I think it's about the word size (4 bytes); I think / 4 would be
-clearer.
-
-I *think* (but haven't checked) that gcc should generate efficent shifts
-for the divisions above, so using the division operator shouldn't be
-problem.
-
-> +		iowrite32be(OTP_READ | bank | addr, priv->regs + HW_OTPCMD);
-> +		*val++ =3D ioread32be(priv->regs + HW_OTPDATA);
-> +		reg +=3D 4;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-[...]
-> +	if (of_id->data) {
-> +		const struct nintendo_otp_devtype_data *data =3D of_id->data;
-> +		config.name =3D data->name;
-> +		config.size =3D data->num_banks * 128;
-
-Given that 128 appears a few times, perhaps a #define would be good.
-
-> +	}
-> +
-> +	config.dev =3D dev;
-> +	config.priv =3D priv;
-> +
-> +	nvmem =3D devm_nvmem_register(dev, &config);
-> +
-> +	return PTR_ERR_OR_ZERO(nvmem);
-> +}
-> +
-> +static struct platform_driver nintendo_otp_driver =3D {
-> +	.probe =3D nintendo_otp_probe,
-> +	.driver =3D {
-> +		.name =3D "nintendo-otp",
-> +		.of_match_table =3D nintendo_otp_of_table,
-> +	},
-> +};
-> +module_platform_driver(nintendo_otp_driver);
-> +MODULE_AUTHOR("Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>");
-> +MODULE_DESCRIPTION("Nintendo Wii and Wii U OTP driver");
-> +MODULE_LICENSE("GPL v2");
-> --=20
-> 2.31.1
+>  arch/powerpc/boot/dts/wii.dts | 5 +++++
+>  1 file changed, 5 insertions(+)
 >=20
+> diff --git a/arch/powerpc/boot/dts/wii.dts b/arch/powerpc/boot/dts/wii.dts
+> index aaa381da1906..7837c4a3f09c 100644
+> --- a/arch/powerpc/boot/dts/wii.dts
+> +++ b/arch/powerpc/boot/dts/wii.dts
+> @@ -219,6 +219,11 @@ control@d800100 {
+>  			reg =3D <0x0d800100 0x300>;
+>  		};
+> =20
+> +		otp@d8001ec {
+> +			compatible =3D "nintendo,hollywood-otp";
+> +			reg =3D <0x0d8001ec 0x8>;
 
-Tested-by: Jonathan Neusch=C3=A4fer <j.ne@posteo.net>  # on Wii
+The OTP registers overlap with the previous node, control@d800100.
+Not sure what's the best way to structure the devicetree in this case,
+maybe something roughly like the following (untested, unverified):
+
+	control@d800100 {
+		compatible =3D "nintendo,hollywood-control", "simple-mfd";
+		reg =3D <0x0d800100 0x300>;
+		ranges;
+
+		otp@d8001ec {
+			compatible =3D "nintendo,hollywood-otp";
+			reg =3D <0x0d8001ec 0x8>;
+		};
+	};
 
 
 
 Thanks,
 Jonathan Neusch=C3=A4fer
 
---8Davdyx64OL/jq/h
+--AdirIyIEOXEflO+W
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEvHAHGBBjQPVy+qvDCDBEmo7zX9sFAmDXttcACgkQCDBEmo7z
-X9sKyg//ZTxyWmJLiKXuS5IMWgXtRrk1KE9KhjcJMkkaB8vJdKI7PD0RLx2MemWH
-wJyZhd2tc0K3GYDvTG//Jc5tAZ/GkwYAsqil4TdH3qdEZwhNAXiWJkn1FoRtj+BN
-7UUhthGVIKY8F3EEeHa5OPpZOo+DiI9/KalB3Nqtar4e/b3UDWnLCu90RF60sbnR
-3cw0z5QsBgN5p5IixJffHeHLLgyIYCL/CDMGIJm/sHg1xvD4ywvZHiXKWr5k2RbS
-v4bItXWuPXRtEGxDSeq05qvgokqH2AUoXumUPTwvrG5/6t9dxe4H2DkDiWlsSYxp
-Tq51R4f2Jrm4wdgBWMHPt8iqPpJALOIIgc1k4CrUdFd8ZetdqFPxc0KTcxgqmm6F
-ZgTZsXVb6dyedG1Zc77E4GbuG9zdJLVUIBtXtN9/P1nn1YFDbtPqaoipqfbn5RGS
-lmAFVXMXt+4W/7DHWeInMN110HtmsL0GEBpQkdtQjjIrGPeAvGElL7tm5Rq5lAUz
-ldTMqaQN3BmaaddNiGO4bJ2f0jgxPVN436vBUo9YYE/kPNv5I+uS4baqtmSSY/+L
-QBmRhB4mVIh0tsmpL4DzezQtUBhHHpCz11ONZJwpmJYy5rV7lcNl4JvkISVn0WLv
-ukumLTyu76erTnMdbmZpVu3TGDYfS0MyOY0qG0VjHKXR+d01zyI=
-=X6iX
+iQIzBAABCgAdFiEEvHAHGBBjQPVy+qvDCDBEmo7zX9sFAmDXuWkACgkQCDBEmo7z
+X9tvzBAAhBVGIh0LX0XckUdyK/Mf844H2Sz6NoqeJvEeiEAgrqri2Lu+4fCoeXER
+d8Ll/zsvx97oEN7D5zpJd8OkDTVAJm/Mi+wGxJpEoAA9YpcwUgy6u6iHOGDne0Ad
+XObW1M5WEIoui+A520Rc4HWU8L18gAnGXS8gy8Ekh7SFkr7S+hQECo+x8ssLEX6d
+pct1h4Z5kPHvj38nTmIzNUhi8WWPihvVvlE+zhrhR+FOpFFQTBPBqe950/1tGic6
+qOpPa1eeuQIk7T9NDlF5a7i3eMoPwL9OMfz8i/jhb5ALM45trbEo/A09GD1kjtLE
+fx1G86a4QidPN4ps64eMQbHgeE6ciI+nTtZl5ntXwFm+6N5lWxZRN52Kh0ibpUQK
+F8oFj+2i3eNA+KjO12TD3ZKpAGQiZhTx4JIrGni6STRPnvYrNwSJ9TfpiEzs0wJ0
+L6ZLMf/yLzoLyHqk8N6DvZmQN79ZbvvF6tqAHg0qX/EIbx1k7kLuqJ3gd1spOtsh
+UE/3WQfqbZBxfFJIDewzCHtCWcFA22e1HSPgevKZXFL+fe2ePIiO4Q/c8MmXTY1P
+bpLjTyaFDrZ1mG9K3x5PwHOlBI3uOmpCzSm9zIysu5rOKVQo96CaNGhkHUOAdJNK
+MALu5woA7Chz0z4P9G7+pAuqOJBHzcqRaqLpdXZ/S0BHJibHLSQ=
+=EH1y
 -----END PGP SIGNATURE-----
 
---8Davdyx64OL/jq/h--
+--AdirIyIEOXEflO+W--
