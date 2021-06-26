@@ -1,35 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D94D3B4E27
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Jun 2021 12:40:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C4523B4E23
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Jun 2021 12:39:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GBr4m1b78z3dTr
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Jun 2021 20:40:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GBr3K1hhnz3cD3
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Jun 2021 20:39:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
  envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GBr2Q4Wrfz3c02
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Jun 2021 20:38:54 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GBr2M6gvMz2yQw
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Jun 2021 20:38:51 +1000 (AEST)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4GBr2P2tvPz9sxS; Sat, 26 Jun 2021 20:38:53 +1000 (AEST)
+ id 4GBr2L23Yqz9srZ; Sat, 26 Jun 2021 20:38:50 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Paul Mackerras <paulus@samba.org>, Steven Price <steven.price@arm.com>,
- akpm@linux-foundation.org, Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>, dja@axtens.net
-In-Reply-To: <cover.1618828806.git.christophe.leroy@csgroup.eu>
-References: <cover.1618828806.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v2 0/4] Convert powerpc to GENERIC_PTDUMP
-Message-Id: <162470383963.3589875.4353977558954497976.b4-ty@ellerman.id.au>
-Date: Sat, 26 Jun 2021 20:37:19 +1000
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <5ab3a517bc883a2fc905fb2cb5ee9344f37b2cfa.1622818435.git.christophe.leroy@csgroup.eu>
+References: <5ab3a517bc883a2fc905fb2cb5ee9344f37b2cfa.1622818435.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH 1/4] powerpc/32: Interchange r10 and r12 in SYSCALL_ENTRY
+ on non booke
+Message-Id: <162470384189.3589875.8770118604128642309.b4-ty@ellerman.id.au>
+Date: Sat, 26 Jun 2021 20:37:21 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -44,33 +44,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-mm@kvack.org,
- Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 19 Apr 2021 10:47:24 +0000 (UTC), Christophe Leroy wrote:
-> This series converts powerpc to generic PTDUMP.
-> 
-> For that, we first need to add missing hugepd support
-> to pagewalk and ptdump.
-> 
-> v2:
-> - Reworked the pagewalk modification to add locking and check ops->pte_entry
-> - Modified powerpc early IO mapping to have gaps between mappings
-> - Removed the logic that checked for contiguous physical memory
-> - Removed the articial level calculation in ptdump_pte_entry(), level 4 is ok for all.
-> - Removed page_size argument to note_page()
-> 
-> [...]
+On Fri, 4 Jun 2021 14:54:12 +0000 (UTC), Christophe Leroy wrote:
+> To better match booke version of SYSCALL_ENTRY macro, interchange
+> r10 and r12 in the non booke version.
 
-Patches 2 and 4 pplied to powerpc/next.
+Applied to powerpc/next.
 
-[2/4] powerpc/mm: Leave a gap between early allocated IO areas
-      https://git.kernel.org/powerpc/c/57307f1b6edd781fba2bf9f7ec5f4d17a881ea54
-[3/4] powerpc/mm: Properly coalesce pages in ptdump
-      https://git.kernel.org/powerpc/c/6ca6512c716afd6e37281372c4c35aa6afd71d10
+[1/4] powerpc/32: Interchange r10 and r12 in SYSCALL_ENTRY on non booke
+      https://git.kernel.org/powerpc/c/10e9252f043ecda0dad7cde6ef87db5d10dff2c7
+[2/4] powerpc/32: Interchange r1 and r11 in SYSCALL_ENTRY on booke
+      https://git.kernel.org/powerpc/c/275dcf24e253f4f5b200bc8cca5eac32a23b08c8
+[3/4] powerpc/32: Reduce code duplication of system call entry
+      https://git.kernel.org/powerpc/c/4bd9e05ac7b8b1f7d0c28702cb684417501a5e39
+[4/4] powerpc/32: Avoid #ifdef nested with FTR_SECTION on booke syscall entry
+      https://git.kernel.org/powerpc/c/a27755d57e0b8c1109a6b1485e52a5f9d51bd4eb
 
 cheers
