@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 479D63B4E2C
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Jun 2021 12:42:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CED33B4E34
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Jun 2021 12:43:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GBr670cp9z3drQ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Jun 2021 20:42:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GBr7m07kkz3fHc
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Jun 2021 20:43:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,16 +16,17 @@ Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GBr2V3Ldvz3bvC
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Jun 2021 20:38:58 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GBr2Z5gH6z3c1v
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Jun 2021 20:39:02 +1000 (AEST)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4GBr2T09bLz9t2g; Sat, 26 Jun 2021 20:38:56 +1000 (AEST)
+ id 4GBr2Y36lLz9sjD; Sat, 26 Jun 2021 20:39:01 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20210623130454.2542945-1-mpe@ellerman.id.au>
-References: <20210623130454.2542945-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/64s: Make prom_init require RELOCATABLE
-Message-Id: <162470384473.3589875.15306486210535594594.b4-ty@ellerman.id.au>
+To: linuxppc-dev@lists.ozlabs.org, bpf@vger.kernel.org,
+ "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+In-Reply-To: <20210609090024.1446800-1-naveen.n.rao@linux.vnet.ibm.com>
+References: <20210609090024.1446800-1-naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH] powerpc/bpf: Use bctrl for making function calls
+Message-Id: <162470384413.3589875.7316169059141962276.b4-ty@ellerman.id.au>
 Date: Sat, 26 Jun 2021 20:37:24 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -41,25 +42,17 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jniethe5@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 23 Jun 2021 23:04:54 +1000, Michael Ellerman wrote:
-> When we boot from open firmware (OF) using PPC_OF_BOOT_TRAMPOLINE, aka.
-> prom_init, we run parts of the kernel at an address other than the link
-> address. That happens because OF loads the kernel above zero (OF is at
-> zero) and we run prom_init before copying the kernel down to zero.
-> 
-> Currently that works even for non-relocatable kernels, because we do
-> various fixups to the prom_init code to make it run where it's loaded.
-> 
-> [...]
+On Wed, 9 Jun 2021 14:30:24 +0530, Naveen N. Rao wrote:
+> blrl corrupts the link stack. Instead use bctrl when making function
+> calls from BPF programs.
 
 Applied to powerpc/next.
 
-[1/1] powerpc/64s: Make prom_init require RELOCATABLE
-      https://git.kernel.org/powerpc/c/24d33ac5b8ffb7a0e697344fea8591376162548f
+[1/1] powerpc/bpf: Use bctrl for making function calls
+      https://git.kernel.org/powerpc/c/20ccb004bad659c186f9091015a956da220d615d
 
 cheers
