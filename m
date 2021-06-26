@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 342723B4E33
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Jun 2021 12:43:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 479D63B4E2C
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Jun 2021 12:42:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GBr7R0Cprz3fDc
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Jun 2021 20:43:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GBr670cp9z3drQ
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Jun 2021 20:42:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,19 +16,17 @@ Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GBr2Y5zvqz3bvR
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Jun 2021 20:39:01 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GBr2V3Ldvz3bvC
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Jun 2021 20:38:58 +1000 (AEST)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4GBr2X3f9Dz9sfG; Sat, 26 Jun 2021 20:39:00 +1000 (AEST)
+ id 4GBr2T09bLz9t2g; Sat, 26 Jun 2021 20:38:56 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, Jordan Niethe <jniethe5@gmail.com>,
- "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <cover.1621416666.git.naveen.n.rao@linux.vnet.ibm.com>
-References: <cover.1621416666.git.naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: (subset) [PATCH 0/5] powerpc/kprobes: fixes and cleanups
-Message-Id: <162470384321.3589875.17057005089795519695.b4-ty@ellerman.id.au>
-Date: Sat, 26 Jun 2021 20:37:23 +1000
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20210623130454.2542945-1-mpe@ellerman.id.au>
+References: <20210623130454.2542945-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/64s: Make prom_init require RELOCATABLE
+Message-Id: <162470384473.3589875.15306486210535594594.b4-ty@ellerman.id.au>
+Date: Sat, 26 Jun 2021 20:37:24 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -43,24 +41,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: jniethe5@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 19 May 2021 16:17:16 +0530, Naveen N. Rao wrote:
-> Various fixes and some code refactoring for kprobes on powerpc. The
-> first patch fixes an invalid access if probing the first instruction in
-> a kernel module. The rest are small cleanups. More details in the
-> individual patches.
+On Wed, 23 Jun 2021 23:04:54 +1000, Michael Ellerman wrote:
+> When we boot from open firmware (OF) using PPC_OF_BOOT_TRAMPOLINE, aka.
+> prom_init, we run parts of the kernel at an address other than the link
+> address. That happens because OF loads the kernel above zero (OF is at
+> zero) and we run prom_init before copying the kernel down to zero.
 > 
-> - Naveen
+> Currently that works even for non-relocatable kernels, because we do
+> various fixups to the prom_init code to make it run where it's loaded.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[5/5] powerpc/kprobes: Warn if instruction patching failed
-      https://git.kernel.org/powerpc/c/12b58492e60bf5a31d7f41e8a6f8ceb6f87e710e
+[1/1] powerpc/64s: Make prom_init require RELOCATABLE
+      https://git.kernel.org/powerpc/c/24d33ac5b8ffb7a0e697344fea8591376162548f
 
 cheers
