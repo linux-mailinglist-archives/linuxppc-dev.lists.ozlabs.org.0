@@ -1,62 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13B403B5538
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Jun 2021 23:12:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70A2B3B568C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Jun 2021 03:12:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GCk3H0RdGz30D7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Jun 2021 07:12:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GCqNR28Xhz3bZ3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Jun 2021 11:12:55 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=aus9ryL+;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.215.177;
- helo=mail-pg1-f177.google.com; envelope-from=bart.vanassche@gmail.com;
+ smtp.mailfrom=linux-foundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=akpm@linux-foundation.org;
  receiver=<UNKNOWN>)
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com
- [209.85.215.177])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.a=rsa-sha256 header.s=korg header.b=aus9ryL+; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GCk2w1cwVz2yjK
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Jun 2021 07:12:23 +1000 (AEST)
-Received: by mail-pg1-f177.google.com with SMTP id v7so13582594pgl.2
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Jun 2021 14:12:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=cR0LSa7hQHxDZ8gB3Did0Bb+VeSNqfYHg3w0G+AVSOY=;
- b=dMb8f3PiOpBa0+H4OI74GjKAYxQfi9Mrt3WL7uLLdQ68gJRwKHEXAxeM4k0XrjSFD9
- tH8HwPkPKQ8WzYuepvsNoBhu/bBiZu04kocLgbzSHTE9/+8YglEhluKW1FuY1GsQ74/a
- +3AZuapCioxqJHCaecZiehfOEM9kRZMjkgN1Jaxbrn6F9LzTA7PrYnCVQTgATmN1JFs+
- znARdgfHPbZ2SohO482u8vmqmyAbYLUZdDpELeyIxc5o5BcefXU3t89vO7csmHAH13ae
- TaquYSNICe+9XJiC3xfOO0WyqpJW/pD+wake4Xi3ZEuvDhN5MBo9gWcmL8gh1YFhMA6z
- 1uVw==
-X-Gm-Message-State: AOAM5311dLMhu+RBPXb2uPGlIMoV2TOdwRkfyUHLDA70tRRjgcFR80oh
- bcqpI4IRHsvCzozdQqtHNes=
-X-Google-Smtp-Source: ABdhPJz2dvDEjoTFobY6u4OvX1N/qlgiX9LWwds3dVb5opirv0byCScSz57eVmf9KYDYqsVvc2ZtXw==
-X-Received: by 2002:a63:191d:: with SMTP id z29mr20515543pgl.126.1624828335119; 
- Sun, 27 Jun 2021 14:12:15 -0700 (PDT)
-Received: from [192.168.3.217] (c-73-241-217-19.hsd1.ca.comcast.net.
- [73.241.217.19])
- by smtp.gmail.com with ESMTPSA id z26sm7862066pfk.112.2021.06.27.14.12.13
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 27 Jun 2021 14:12:14 -0700 (PDT)
-Subject: Re: [powerpc][next-20210625] WARN block/mq-deadline-main.c:743 during
- boot
-To: Sachin Sant <sachinp@linux.vnet.ibm.com>, linux-block@vger.kernel.org
-References: <74F24228-8BC7-49FA-BD43-A9FB90269E76@linux.vnet.ibm.com>
-From: Bart Van Assche <bvanassche@acm.org>
-Message-ID: <d9bb36b5-fb81-8394-e80c-1dc4562376e4@acm.org>
-Date: Sun, 27 Jun 2021 14:12:13 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
-MIME-Version: 1.0
-In-Reply-To: <74F24228-8BC7-49FA-BD43-A9FB90269E76@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GCqMz6kpvz2ydK
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Jun 2021 11:12:30 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3DC08619C5;
+ Mon, 28 Jun 2021 01:12:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+ s=korg; t=1624842747;
+ bh=jHVvl6fcFfg+IVQ3lBpd7cBJiC21/SiQ2M2n/J/aDeQ=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=aus9ryL+DgdKH4ZNAJ5wqeFEe6w9+xkQn3TmuhatvYPqjRvTfTCqQsNQm3nJrmYD/
+ X3DX2v1FqasZlVOaBS1sW/lXxvheF8cEwJVuOjRQZm7cTjQNhBT3i/tCFbtBeIq3yj
+ bupVyrvJDARUQXHC8Ly6sHJgcxIsv6qUTNCdNM7w=
+Date: Sun, 27 Jun 2021 18:12:26 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v3] mm: pagewalk: Fix walk for hugepage tables
+Message-Id: <20210627181226.983d899cc30c02420e1a6af5@linux-foundation.org>
+In-Reply-To: <38d04410700c8d02f28ba37e020b62c55d6f3d2c.1624597695.git.christophe.leroy@csgroup.eu>
+References: <38d04410700c8d02f28ba37e020b62c55d6f3d2c.1624597695.git.christophe.leroy@csgroup.eu>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -69,18 +56,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: axboe@kernel.dk, linux-next@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Steven Price <steven.price@arm.com>, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, Oliver O'Halloran <oohall@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/27/21 6:30 AM, Sachin Sant wrote:
-> While booting 5.13.0-rc7-next-20210625 on POWER9 LPAR following warning
-> is seen [ ... ]
+On Fri, 25 Jun 2021 05:10:12 +0000 (UTC) Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
 
-Please help with testing of the patch that is available at
-https://lore.kernel.org/linux-block/20210627211112.12720-1-bvanassche@acm.org/T/#u
+> Pagewalk ignores hugepd entries and walk down the tables
+> as if it was traditionnal entries, leading to crazy result.
+> 
+> Add walk_hugepd_range() and use it to walk hugepage tables.
 
-Thanks,
-
-Bart.
+More details, please?  I assume "crazy result" is userspace visible? 
+For how long has this bug existed?  Is a -stable backport needed?  Has
+a Fixes: commit been identified?  etcetera!
