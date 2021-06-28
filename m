@@ -1,69 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D7143B5A13
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Jun 2021 09:51:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57C043B5A14
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Jun 2021 09:52:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GD0Df3TjLz3cgD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Jun 2021 17:51:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GD0F426Qhz3bdT
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Jun 2021 17:52:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=qboADkED;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=q4dT7k6d;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52f;
- helo=mail-pg1-x52f.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::636;
+ helo=mail-pl1-x636.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=qboADkED; dkim-atps=neutral
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com
- [IPv6:2607:f8b0:4864:20::52f])
+ header.s=20161025 header.b=q4dT7k6d; dkim-atps=neutral
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com
+ [IPv6:2607:f8b0:4864:20::636])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GD0BQ6TNPz30F9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Jun 2021 17:49:50 +1000 (AEST)
-Received: by mail-pg1-x52f.google.com with SMTP id y17so2486829pgf.12
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Jun 2021 00:49:50 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GD0BT0351z30L3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Jun 2021 17:49:52 +1000 (AEST)
+Received: by mail-pl1-x636.google.com with SMTP id h1so8458284plt.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Jun 2021 00:49:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=IWBMjXBinn0yPYqP0cxTqwcLCJprYUYGTqwvGOKQk78=;
- b=qboADkEDSedgC+EJmp5Sfk4ccf1rq1GVAjsH+7ozEsxNT0Khd0h37SbGI0Xhtut46A
- GxMLvRGv6UbffUe26TQAfyQWy6E3h3BKRG8g68ZPM/+c3kn5GK7GbkNf6fBrc/v+k+/F
- bq4annpAHGvHC1AxBxMVfyO1CDYWgSpoOhKydvE+itD+ZBoWxeo/5T1Eh6Cpt6IT4ZAe
- QzaQg8rmqLccgIddt1KMZbUyTYiWvHRHA4j02q0FaJtPns1tX3kkHQdKT4GdJegGTEa5
- pljLnZyZvobXZkDLEepi0RQse6tSXDmewdw4G80PSs9S2KDCUmeclAVjYBo/Yn2iRqzj
- 4ijA==
+ bh=ttSgM1WjAPCRYvsrlu7lENde5WK16e+xYfj5Z3JpuDg=;
+ b=q4dT7k6d6nHQkPwym4p6h+d+h5UYySP3L4kcaFvQ8bWyJedVqOWGDIPXpKhp6aOToE
+ 0kkDEOWq2N9r1Q25z6TbvaAx4Hw6I9SA4nMoap9HDXqu8aoutXuqIJLn0yEKPd8DVPLt
+ EV3C1Dkiol68QgOv12EqeNG4xa85bgUTRF9mN/sR48+As+xkDo+ZcRdzYOY8mRwHRQik
+ 2M33LH/RYOiwk4IxnU+2dnI/gu5HIgETOuqayoHw4ius1b/ltGQwtMnf7Vh60M/SNoZZ
+ UyK4eQB7ZaRluGkr8TRDmPGQzpqAMyjINMg/15aHdCiIDkoM41egBaLJYrcjD7Uv84YL
+ fstA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=IWBMjXBinn0yPYqP0cxTqwcLCJprYUYGTqwvGOKQk78=;
- b=NFijGCxLJV0ZRcu2ADqEAUAMt4WanKEt5xEk63PCqAFcCwFM4vOMlP+9IqgiVLB/O5
- hhpAMr6te7OwQ6Tohy/UJUzMNtpFr0Y9Q95kA/ejPDQO4VY7+L72vhLkM9mZJSzYw+Yg
- 3KAgTgTGeIkszZmg+FzGMSLTsdrT4ogrrUNGtAbP9S/e+8bG9lE0kWbGxe9nFoTXhYoh
- Pt6X3P6BkxS3phE2LSAkVnPv3msezAWXu00LXGm2Mf3DuzNLJ4ya6p0S1UZ6lA+u+K4M
- 5lwg4k1pqUMXK70v5FEpT8+R3vXq5PYXd0KjPEl0RJTFxyDneHiXqgDZs8vcoqdpSutJ
- pFHQ==
-X-Gm-Message-State: AOAM533zswQ7qBISRDRSOipr42FeCEc8K2XJS8O+zU5/aNMQsWdlKOmk
- CIAVIXnCz83N7TafmOIDfQbAk8xsPyw=
-X-Google-Smtp-Source: ABdhPJxvczBzBQduVXNY04xHgqAFoOlyH5QkUshAdWNQZ7Q2SJWAQdfMy6KOtVNzP885gxfdv+xrCQ==
-X-Received: by 2002:a63:af07:: with SMTP id w7mr22572283pge.287.1624866588356; 
- Mon, 28 Jun 2021 00:49:48 -0700 (PDT)
+ bh=ttSgM1WjAPCRYvsrlu7lENde5WK16e+xYfj5Z3JpuDg=;
+ b=g0f0CboclC6vLxFvMSe2OqOlXurzXvvEBDk77gZNH6T1uO4lqPZRs560MI/flbxGtS
+ iSMksiUajmcg52fFeB8mKZclaio/w5ME4O0PvjQKxSzU/tkxgNjSnu0o/Jsek16O7fto
+ IL4UGTC3AAAeyCTDApIDGY7chLBGg/yP2DdO/c07n2KHYfga5cLe0FLQkUnEA1DSMMhU
+ W6NKKio4rscMPB3yHAA2ZpV0lqllzdvheJwhlxk84zmFphWUaO0pxHLEh0vxLbc7DxT5
+ sd2AJHy01Nn2Qk/BMrgGBlDgsC+Uow+4Cb7Tv4os4LONfYSuFojwbcmZRg14jhqk8ehp
+ 9KSA==
+X-Gm-Message-State: AOAM5315ZOBfW29HNbwhpauv1QMjMeO67DxMARMpb/8aOAd/Hqu1Z0Lw
+ z2uBppiLdba6vxzCuBtYvh+lbHjvr0w=
+X-Google-Smtp-Source: ABdhPJwO1Rkvg8q2gkqMsfS41nLodX6IqrxEWwhQCe+LywEHQ58P2LjnNYT/k4Rkn50rhEqJKsHEwQ==
+X-Received: by 2002:a17:90a:cb0d:: with SMTP id
+ z13mr26878695pjt.194.1624866590494; 
+ Mon, 28 Jun 2021 00:49:50 -0700 (PDT)
 Received: from bobo.ibm.com (60-242-147-73.tpgi.com.au. [60.242.147.73])
- by smtp.gmail.com with ESMTPSA id b22sm5264962pfp.20.2021.06.28.00.49.46
+ by smtp.gmail.com with ESMTPSA id b22sm5264962pfp.20.2021.06.28.00.49.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Jun 2021 00:49:48 -0700 (PDT)
+ Mon, 28 Jun 2021 00:49:50 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 4/8] powerpc/64s/interrupt: preserve regs->softe for NMI
- interrupts
-Date: Mon, 28 Jun 2021 17:49:28 +1000
-Message-Id: <20210628074932.1499554-5-npiggin@gmail.com>
+Subject: [PATCH 5/8] powerpc/64: enable MSR[EE] in irq replay pt_regs
+Date: Mon, 28 Jun 2021 17:49:29 +1000
+Message-Id: <20210628074932.1499554-6-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210628074932.1499554-1-npiggin@gmail.com>
 References: <20210628074932.1499554-1-npiggin@gmail.com>
@@ -86,47 +86,51 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If an NMI interrupt hits in an implicit soft-masked region, regs->softe
-is modified to reflect that. This may not be necessary for correctness
-at the moment, but it is less surprising and it's unhelpful when
-debugging or adding checks.
+Similar to 2b48e96be2f9f ("powerpc/64: fix irq replay pt_regs->softe
+value"), enable MSR_EE in pt_regs->msr, which makes the regs look a
+bit more normal and allows the extra debug checks to be added to
+interrupt handler entry.
 
-Make sure this is changed back to how it was found before returning.
-
-Fixes: 4ec5feec1ad0 ("powerpc/64s: Make NMI record implicitly soft-masked code as irqs disabled")
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/interrupt.h | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/powerpc/include/asm/interrupt.h | 4 ++++
+ arch/powerpc/kernel/irq.c            | 1 +
+ 2 files changed, 5 insertions(+)
 
 diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
-index d7df247a149c..789311d1e283 100644
+index 789311d1e283..d4bdf7d274ac 100644
 --- a/arch/powerpc/include/asm/interrupt.h
 +++ b/arch/powerpc/include/asm/interrupt.h
-@@ -227,6 +227,7 @@ struct interrupt_nmi_state {
- 	u8 irq_soft_mask;
- 	u8 irq_happened;
- 	u8 ftrace_enabled;
-+	u64 softe;
+@@ -173,6 +173,8 @@ static inline void interrupt_enter_prepare(struct pt_regs *regs, struct interrup
+ 			BUG_ON(search_kernel_restart_table(regs->nip));
  #endif
- };
- 
-@@ -252,6 +253,7 @@ static inline void interrupt_nmi_enter_prepare(struct pt_regs *regs, struct inte
- #ifdef CONFIG_PPC64
- 	state->irq_soft_mask = local_paca->irq_soft_mask;
- 	state->irq_happened = local_paca->irq_happened;
-+	state->softe = regs->softe;
- 
- 	/*
- 	 * Set IRQS_ALL_DISABLED unconditionally so irqs_disabled() does
-@@ -311,6 +313,7 @@ static inline void interrupt_nmi_exit_prepare(struct pt_regs *regs, struct inter
- 
- 	/* Check we didn't change the pending interrupt mask. */
- 	WARN_ON_ONCE((state->irq_happened | PACA_IRQ_HARD_DIS) != local_paca->irq_happened);
-+	regs->softe = state->softe;
- 	local_paca->irq_happened = state->irq_happened;
- 	local_paca->irq_soft_mask = state->irq_soft_mask;
+ 	}
++	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
++		BUG_ON(!arch_irq_disabled_regs(regs) && !(regs->msr & MSR_EE));
  #endif
+ 
+ 	booke_restore_dbcr0();
+@@ -268,6 +270,8 @@ static inline void interrupt_nmi_enter_prepare(struct pt_regs *regs, struct inte
+ 		// arch_irq_disabled_regs(regs) behaves as expected.
+ 		regs->softe = IRQS_ALL_DISABLED;
+ 	}
++	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
++		BUG_ON(!arch_irq_disabled_regs(regs) && !(regs->msr & MSR_EE));
+ 
+ 	/* Don't do any per-CPU operations until interrupt state is fixed */
+ 
+diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
+index 8428caf3194e..91e63eac4e8f 100644
+--- a/arch/powerpc/kernel/irq.c
++++ b/arch/powerpc/kernel/irq.c
+@@ -121,6 +121,7 @@ void replay_soft_interrupts(void)
+ 
+ 	ppc_save_regs(&regs);
+ 	regs.softe = IRQS_ENABLED;
++	regs.msr |= MSR_EE;
+ 
+ again:
+ 	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
 -- 
 2.23.0
 
