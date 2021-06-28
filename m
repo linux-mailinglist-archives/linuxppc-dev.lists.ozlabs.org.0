@@ -1,94 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 136793B59A3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Jun 2021 09:18:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47EE33B5A0B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Jun 2021 09:50:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GCzVb0Nzcz30Fn
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Jun 2021 17:18:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GD0Bq16L4z30D9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Jun 2021 17:50:11 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fh6ENSFm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=TZc1VkVh;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::430;
+ helo=mail-pf1-x430.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=fh6ENSFm; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=TZc1VkVh; dkim-atps=neutral
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com
+ [IPv6:2607:f8b0:4864:20::430])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GCzV4488Zz2y8Q
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Jun 2021 17:18:20 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 15S74Dog043820; Mon, 28 Jun 2021 03:18:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=nn0ACPMnVX/PLgpAmD7MyV871J4EE4YnQb1PU4QRyXw=;
- b=fh6ENSFmj3dhqzUguGnllZDyDlFo7EzCsp1tTO5ngeWOv7XIR45ebNT2zqJpl5rJncRJ
- UgFcRq/anE2CK03hPdMJ8Ce++PApNtb2OoLLGmK0/mCcsZP8mFHm4dQ5xbwPIARtSEwH
- XK2QqP/VMNjeE8yop6MhtTzyHYh1UWEDlASG9WctUkeAn81Hw0XCCJfmxJmx2bM7BmUk
- 5o17UEfJ5bRsaRW/Iz8r/xOveaXQrJC1JO7EdmTm1eP+mG8KgJUzwD8MZQO9EeypfpCZ
- 0pR9F4piZjLu8UOQFiKxyPZ83dt5mE4q/hYpAs6Vb0ZiHjNnM6zGRYOYHkh8m724+1To ng== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39f8j0t2xg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 28 Jun 2021 03:18:12 -0400
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 15S74L3K044337;
- Mon, 28 Jun 2021 03:18:12 -0400
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39f8j0t2wr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 28 Jun 2021 03:18:12 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15S7HkT4007920;
- Mon, 28 Jun 2021 07:18:10 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma04fra.de.ibm.com with ESMTP id 39duv8gb34-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 28 Jun 2021 07:18:09 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 15S7I6Xi33358298
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 28 Jun 2021 07:18:06 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 03B15520A3;
- Mon, 28 Jun 2021 07:16:03 +0000 (GMT)
-Received: from localhost.localdomain.com (unknown [9.85.85.15])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 7DE20522B8;
- Mon, 28 Jun 2021 07:15:56 +0000 (GMT)
-From: Kajol Jain <kjain@linux.ibm.com>
-To: will@kernel.org, hao.wu@intel.com, mark.rutland@arm.com
-Subject: [RFC] fpga: dfl: fme: Fix cpu hotplug code
-Date: Mon, 28 Jun 2021 12:45:46 +0530
-Message-Id: <20210628071546.167088-1-kjain@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GD0BH2WpPz303t
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Jun 2021 17:49:43 +1000 (AEST)
+Received: by mail-pf1-x430.google.com with SMTP id y4so13404135pfi.9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Jun 2021 00:49:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=YgWNnON359vBdYQPJK2JJ7cuAgqDJpoKiUS8EeDOdcI=;
+ b=TZc1VkVhFNjhj7pd20+XCSi2ifY0xLFKhTgv9+jehRuyTzFXjDsem2ctlQ+fkIauXS
+ QHrZaaOeksMxr6kcMbpEOD15OFulhkNhWggUDjWdaKR9XqYfUEjvAb2oC8InJ2IAzZG7
+ PoSDGbeX68PC9DFgAaq/mCuTwi7DvSTK15fOi0hbXzha0UIO5Q5kMYfCiUeyZJG6NM9Q
+ +uwHhVtUH97DfgpG1Xp1lswIB62Nyn4/MNUXh6Qbzo4/V3b9AxDEpn3H1usALA1rhYq0
+ 0mPObPZPaX4tiFH+rDkv8G6K2cFim4xwjAHnS4BJCyAWqU4aJNMnxRzl3VajBj6gyE3C
+ wxgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=YgWNnON359vBdYQPJK2JJ7cuAgqDJpoKiUS8EeDOdcI=;
+ b=VKS3grn+y32uzSZtNwulNwZ7kIeGlDFrfWdz+piYL33hHyTj831auxX5h+p/G8xR8d
+ lpRluoETcAzcknSrMoz28GivQajnvuC3XoxCbBMHkiI5OlhR0Ml2XHpcxUE8+6JilpP8
+ xkj6BiPaEgFBu6NNe52Nns5ChLYwnpbQ5qehUYZ3LQlmZM4r4JGidcN4xMhXsvp6UrSY
+ fi6eEvVI6cdq0ONBHA6akI/2vHEUjDk+yXAPiy8+Cvd4zc3/gD9aQWC5b0Zsr7uQLYzM
+ QqF//ZHrUa8EZCC1X2VqbS5FzOXwxiWpfzpZJG97mm4nq/yJzDCftgpNXHgmuqIrfM8T
+ S4Qg==
+X-Gm-Message-State: AOAM532967smVsxg3rV5N7OTfjkXOFZHVxeI8bRyrfrYyYbGpSSwOjMZ
+ 8ToFFPXJB7CTruatFt9jUDB2acbUyzE=
+X-Google-Smtp-Source: ABdhPJwK85Oj+InnZxbjgyKAhB78cOTIydPNHW1uzsYEhO8G/roWXgm/oELw30ZnNWbs1voMZj/ChQ==
+X-Received: by 2002:aa7:93bb:0:b029:307:31a3:ad3d with SMTP id
+ x27-20020aa793bb0000b029030731a3ad3dmr23623832pff.65.1624866579791; 
+ Mon, 28 Jun 2021 00:49:39 -0700 (PDT)
+Received: from bobo.ibm.com (60-242-147-73.tpgi.com.au. [60.242.147.73])
+ by smtp.gmail.com with ESMTPSA id b22sm5264962pfp.20.2021.06.28.00.49.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 28 Jun 2021 00:49:39 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 0/8] powerpc: fast interrupt exit bug and misc fixes
+Date: Mon, 28 Jun 2021 17:49:24 +1000
+Message-Id: <20210628074932.1499554-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: GjoDKIxFLf-hkCgBFSKbtvp0JQGhIj82
-X-Proofpoint-ORIG-GUID: EzjgMD5N2Ah2TPVSxKt9XScKkDCRHmp3
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-06-28_03:2021-06-25,
- 2021-06-28 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 mlxlogscore=999
- impostorscore=0 priorityscore=1501 spamscore=0 mlxscore=0
- lowpriorityscore=0 clxscore=1011 malwarescore=0 adultscore=0 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2106280049
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,59 +78,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maddy@linux.vnet.ibm.com, luwei.kang@intel.com, rnsastry@linux.ibm.com,
- trix@redhat.com, linux-fpga@vger.kernel.org, linux-kernel@vger.kernel.org,
- atrajeev@linux.vnet.ibm.com, mdf@kernel.org, kjain@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org, yilun.xu@intel.com
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit 724142f8c42a ("fpga: dfl: fme: add performance
-reporting support") added performance reporting support
-for FPGA management engine via perf.
+This is a bunch of fixes for powerpc next, mostly a nasty hole in fast
+interrupt exit code found by Sachin and some other bits along the way
+while looking at it.
 
-It also added cpu hotplug feature but it didn't add
-pmu migration call in cpu offline function.
-This can create an issue incase the current designated
-cpu being used to collect fme pmu data got offline,
-as based on current code we are not migrating fme pmu to
-new target cpu. Because of that perf will still try to
-fetch data from that offline cpu and hence we will not
-get counter data.
+So far this survives about 5 hours of stress testing with a workload
+that would trigger it in a few seconds (guest 128 vcpus running kernel
+compile loops with perf record -ag running in the background).
 
-Patch fixed this issue by adding pmu_migrate_context call
-in fme_perf_offline_cpu function.
+Thanks,
+Nick
 
-Fixes: 724142f8c42a ("fpga: dfl: fme: add performance reporting support")
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
----
- drivers/fpga/dfl-fme-perf.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Nicholas Piggin (8):
+  powerpc/64e: fix CONFIG_RELOCATABLE build
+  powerpc/64e: remove implicit soft-masking and interrupt exit restart
+    logic
+  powerpc/64s: add a table of implicit soft-masked addresses
+  powerpc/64s/interrupt: preserve regs->softe for NMI interrupts
+  powerpc/64: enable MSR[EE] in irq replay pt_regs
+  powerpc/64/interrupts: add missing kprobe annotations on interrupt
+    exit symbols
+  powerpc/64s/interrupt: clean up interrupt return labels
+  powerpc/64s: move ret_from_fork etc above __end_soft_masked
 
----
-- This fix patch is not tested (as I don't have required environment).
-  But issue mentioned in the commit msg can be re-created, by starting any
-  fme_perf event and while its still running, offline current designated
-  cpu pointed by cpumask file. Since current code didn't migrating pmu,
-  perf gonna try getting counts from that offlined cpu and hence we will
-  not get event data.
----
-diff --git a/drivers/fpga/dfl-fme-perf.c b/drivers/fpga/dfl-fme-perf.c
-index 4299145ef347..b9a54583e505 100644
---- a/drivers/fpga/dfl-fme-perf.c
-+++ b/drivers/fpga/dfl-fme-perf.c
-@@ -953,6 +953,10 @@ static int fme_perf_offline_cpu(unsigned int cpu, struct hlist_node *node)
- 		return 0;
- 
- 	priv->cpu = target;
-+
-+	/* Migrate fme_perf pmu events to the new target cpu */
-+	perf_pmu_migrate_context(&priv->pmu, cpu, target);
-+
- 	return 0;
- }
- 
+ arch/powerpc/include/asm/interrupt.h | 41 ++++++++++---
+ arch/powerpc/include/asm/ppc_asm.h   |  7 +++
+ arch/powerpc/kernel/exceptions-64e.S | 23 +++----
+ arch/powerpc/kernel/exceptions-64s.S | 55 ++++++++++++++---
+ arch/powerpc/kernel/interrupt_64.S   | 90 ++++++++++++++++++----------
+ arch/powerpc/kernel/irq.c            |  1 +
+ arch/powerpc/kernel/vmlinux.lds.S    |  9 +++
+ arch/powerpc/lib/restart_table.c     | 26 ++++++++
+ 8 files changed, 194 insertions(+), 58 deletions(-)
+
 -- 
-2.31.1
+2.23.0
 
