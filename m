@@ -2,106 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 788E63B6F13
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Jun 2021 10:09:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D5E63B71AC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Jun 2021 13:59:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GDcZS34MFz3bZY
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Jun 2021 18:09:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GDjgf2xgZz2yP3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Jun 2021 21:59:10 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Lst/v2ML;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=HFWjSZIZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Lst/v2ML; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=HFWjSZIZ; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GDcYy0Wtjz2yx9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Jun 2021 18:08:53 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 15T84FU4073675; Tue, 29 Jun 2021 04:08:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=RsIMVnamhB6FYa7FfF0w4uQRw+Kcw3nQxnVdRE1/Fv4=;
- b=Lst/v2MLPzGLS81nSf7dPD3ptWkhy65uSDp30t/ejUH4GOrNf3Tvi2It5zcdul33J3TQ
- E+C3TN0yD3uFZfqIiVSqfrxEhhZTP3VS4xRkhxS/XobQeCqvLBx/OBv6KWqwOf0fAH4x
- E+uCcs7Wuqqu/R5RAbeW4fuENENIK29kDOJ4ZjomiTIv1KR3+naE8CFUgxXQItjajUTI
- 3mX5bMkifhOgWjAmS4QEgjJfaWAq8IFYnX3t79wPYbP8PsYVNwDZlfld8gyNKGlH1acY
- yXEnQAQ08LPRi9TGOmx2sxVI9N2xSjTN1x5Ad1UCyY/0WS3bCMnQuccZAfz2OkdMfYkK mA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39fv03wc34-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 29 Jun 2021 04:08:44 -0400
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 15T869hB084165;
- Tue, 29 Jun 2021 04:08:43 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39fv03wc2j-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 29 Jun 2021 04:08:43 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15T86NDG021853;
- Tue, 29 Jun 2021 08:08:42 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com
- (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
- by ppma02dal.us.ibm.com with ESMTP id 39duvbwbpr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 29 Jun 2021 08:08:42 +0000
-Received: from b03ledav001.gho.boulder.ibm.com
- (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 15T88f1M27263300
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 29 Jun 2021 08:08:41 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 503996E090;
- Tue, 29 Jun 2021 08:08:41 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 828826E05B;
- Tue, 29 Jun 2021 08:08:35 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.199.45.57])
- by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue, 29 Jun 2021 08:08:35 +0000 (GMT)
-Subject: Re: [PATCH] fpga: dfl: fme: Fix cpu hotplug issue in performance
- reporting
-To: Greg KH <gregkh@linuxfoundation.org>
-References: <20210628101721.188991-1-kjain@linux.ibm.com>
- <adc3b013-d39b-a183-dfce-86ca857949b8@linux.ibm.com>
- <YNrLRLyyUeDemxTS@kroah.com>
-From: kajoljain <kjain@linux.ibm.com>
-Message-ID: <8a70f71a-f75c-427b-cf6a-b63bf7682f36@linux.ibm.com>
-Date: Tue, 29 Jun 2021 13:38:33 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
-In-Reply-To: <YNrLRLyyUeDemxTS@kroah.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: hetGeLcYCXc8AdjqHgud-38bTHz1rVQn
-X-Proofpoint-GUID: q5oo3cYrBGcZjkPfLbOJVvffHymg3jFJ
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GDjgD313lz2yN6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Jun 2021 21:58:47 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4GDjgB3Fp9z9sCD;
+ Tue, 29 Jun 2021 21:58:46 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1624967926;
+ bh=533gyRZK9TmPTAfumIEpfhjf9bBGEwRDqTzjjeqan60=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=HFWjSZIZkTSQj/nTgsEsjVAI7zL3d+2WyLr66KRC7mD3N066+boKXh+AGlggtXhaC
+ B/bk9puwEZg34DFC0x2GFxvjNXLxyz1xZ0rPQiv4QGIjOrUZ8yfMkPIkqyke4j020g
+ GFUqr9z5Q5M57CJCiMBIoUE3iTo5iDvVUVoX74llYPO06OSWBZvoFx+EYMEFYEE28H
+ VHV6bPCcNH+UT98EFGkHEGhCj1+WTHsg3QVXSYSTMkrfGL1NEUwrg9p0ks53s8hGGm
+ VgiE7DVILSASOs+3M6Qjl5PImVCyYKTQD/r1ZWBSw+cPFh0AStuz9cUYJC82urqp9O
+ KpxTeaYxDPwXw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>
+Subject: Re: [PATCH] powerpc/4xx: Fix setup_kuep() on SMP
+In-Reply-To: <b9c2a9add0f11754539e24c6f421bd2009327c36.1624863323.git.christophe.leroy@csgroup.eu>
+References: <b9c2a9add0f11754539e24c6f421bd2009327c36.1624863323.git.christophe.leroy@csgroup.eu>
+Date: Tue, 29 Jun 2021 21:58:45 +1000
+Message-ID: <87tulg7uh6.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-06-29_02:2021-06-25,
- 2021-06-29 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 suspectscore=0
- impostorscore=0 priorityscore=1501 malwarescore=0 bulkscore=0
- clxscore=1015 phishscore=0 lowpriorityscore=0 mlxlogscore=914 adultscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2106290056
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,51 +62,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, maddy@linux.vnet.ibm.com, rnsastry@linux.ibm.com,
- trix@redhat.com, linux-fpga@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- linux-perf-users@vger.kernel.org, atrajeev@linux.vnet.ibm.com, mdf@kernel.org,
- will@kernel.org, yilun.xu@intel.com, hao.wu@intel.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> On SMP, setup_kuep() is also called from start_secondary() since
+> commit 86f46f343272 ("powerpc/32s: Initialise KUAP and KUEP in C").
+>
+> start_secondary() is not an __init function.
+>
+> Remove the __init marker from setup_kuep() and bail out when
+> not caller on the first CPU as the work is already done.
+>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Fixes: 10248dcba120 ("powerpc/44x: Implement Kernel Userspace Exec Protection (KUEP)")
+> Fixes: 86f46f343272 ("powerpc/32s: Initialise KUAP and KUEP in C").
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+>  arch/powerpc/mm/nohash/44x.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/powerpc/mm/nohash/44x.c b/arch/powerpc/mm/nohash/44x.c
+> index 7da6d1e9fc9b..20c18bd5b9a0 100644
+> --- a/arch/powerpc/mm/nohash/44x.c
+> +++ b/arch/powerpc/mm/nohash/44x.c
+> @@ -241,8 +241,11 @@ void __init mmu_init_secondary(int cpu)
+>  #endif /* CONFIG_SMP */
+>  
+>  #ifdef CONFIG_PPC_KUEP
+> -void __init setup_kuep(bool disabled)
+> +void setup_kuep(bool disabled)
+>  {
+> +	if (smp_processor_id() != boot_cpuid)
+> +		return;
+> +
+>  	if (disabled)
+>  		patch_instruction_site(&patch__tlb_44x_kuep, ppc_inst(PPC_RAW_NOP()));
+>  	else
 
+Building ppc44x_defconfig gives me:
 
-On 6/29/21 12:57 PM, Greg KH wrote:
-> On Tue, Jun 29, 2021 at 12:45:20PM +0530, kajoljain wrote:
->>
->>
->> On 6/28/21 3:47 PM, Kajol Jain wrote:
->>> The performance reporting driver added cpu hotplug
->>> feature but it didn't add pmu migration call in cpu
->>> offline function.
->>> This can create an issue incase the current designated
->>> cpu being used to collect fme pmu data got offline,
->>> as based on current code we are not migrating fme pmu to
->>> new target cpu. Because of that perf will still try to
->>> fetch data from that offline cpu and hence we will not
->>> get counter data.
->>>
->>> Patch fixed this issue by adding pmu_migrate_context call
->>> in fme_perf_offline_cpu function.
->>>
->>
->> Adding stable@vger.kernel.org in cc list as suggested by Moritz Fischer.
-> 
-> 
-> <formletter>
-> 
-> This is not the correct way to submit patches for inclusion in the
-> stable kernel tree.  Please read:
->     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-> for how to do this properly.
+  /linux/arch/powerpc/mm/nohash/44x.c: In function 'setup_kuep':
+  /linux/arch/powerpc/mm/nohash/44x.c:246:35: error: 'boot_cpuid' undeclared (first use in this function); did you mean 'boot_cpu_init'?
+    246 |         if (smp_processor_id() != boot_cpuid)
+        |                                   ^~~~~~~~~~
+        |                                   boot_cpu_init
+  /linux/arch/powerpc/mm/nohash/44x.c:246:35: note: each undeclared identifier is reported only once for each function it appears in
 
-Thanks Greg for pointing it, I will take care in my next version.
-
-Thanks,
-Kajol Jain
-
-> 
-> </formletter>
-> 
+cheers
