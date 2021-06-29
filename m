@@ -1,71 +1,126 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0B973B6C49
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Jun 2021 03:51:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5367F3B6D08
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Jun 2021 05:35:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GDSBX5lnRz3bbq
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Jun 2021 11:51:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GDVVg1gJhz3bZy
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Jun 2021 13:35:39 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=llr7ICmS;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=tENbx2YG;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52a;
- helo=mail-pg1-x52a.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=llr7ICmS; dkim-atps=neutral
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com
- [IPv6:2607:f8b0:4864:20::52a])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=amd.com
+ (client-ip=40.107.237.78; helo=nam12-bn8-obe.outbound.protection.outlook.com;
+ envelope-from=wesley.sheng@amd.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256
+ header.s=selector1 header.b=tENbx2YG; 
+ dkim-atps=neutral
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2078.outbound.protection.outlook.com [40.107.237.78])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GDSB24Phzz2yYH
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Jun 2021 11:51:05 +1000 (AEST)
-Received: by mail-pg1-x52a.google.com with SMTP id d12so17071248pgd.9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Jun 2021 18:51:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=2BY4zqE5R7ZIdaOWowLUWYRGD/T3G3jLZaSrpreZe1o=;
- b=llr7ICmSob6w2IAgnlxolq6vUfekxPr2mXc1oZycRiSQNvr+uuv82lgiDWAoMk1p/m
- 8YSy/o6jteYqnZsQ1y5O9YwhgGpLgKWimJVrR3EkWG1vRNZQ185nLUDi/Y5zRn4elnIt
- l9OHnb0N9zuFP75vNr8RI4Mp1RTAlX0IZ6aF9dGrFkjEi1ZaFxLfaTdWg/omB5GuMH0O
- ZWr89E7WX4bTM6x2rS7sOODCQjwDt/IetVDCZEVkjwynyZgEORDNCDW/fF+pvsCWIeTx
- qcr7J5YPumE7+jc1DnaaJZbnPTgVt3PGKUNs5UFIujBvt2HMw6HhRDtIm4dFhqG72TIO
- PPrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=2BY4zqE5R7ZIdaOWowLUWYRGD/T3G3jLZaSrpreZe1o=;
- b=mreHQ6P+FwBNEgkdEGGOJlbfQSwG2GhQnSA1B9ZmhjELvM6DAmEGMnykb/V/+58KZv
- cIhDVsZqiaAqflMbvchTMrIjyeIfCwee7BiKwp6VTftYMcS93KqzZAyYqmi9v1EYTP4o
- 42Iws/Ld5+Z6/P+uL5NKRv65Qj6cjYe2lFyYF5x3N00yq61/j/kIv3U8v9J6xWHKrlYt
- +OdQd0lqM1vwvJaVm+AQIT2a8rBh6IiyjPYj90pVOFicwegMsXJ62S+gnnHl41iNhfGd
- 73uBjcAcOZRS3tUUSAhbMVqUSxWeOpzebDDHKp3g3r/V+AKfbu4Z222RNpCIkh6pKNIF
- Ml3w==
-X-Gm-Message-State: AOAM530hz19KaoIe2dYbqbP5d9vaGH/qxiCbYCD8fmIZNuge6qsr3Mgu
- HkQhO2Mh1yfOVbucEdcO5DcmiEfqX1M=
-X-Google-Smtp-Source: ABdhPJwHYKx/j+Ec7kT03fswwgNxk4+USqCYg7naAH8+DOxuFzDhudX5rGRk4L3ORYimJZiXQQUZ4Q==
-X-Received: by 2002:a63:3143:: with SMTP id x64mr26348600pgx.14.1624931463085; 
- Mon, 28 Jun 2021 18:51:03 -0700 (PDT)
-Received: from bobo.ibm.com (220-244-87-52.tpgi.com.au. [220.244.87.52])
- by smtp.gmail.com with ESMTPSA id h24sm16023638pjv.27.2021.06.28.18.51.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Jun 2021 18:51:02 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/64s: fix hash page fault interrupt handler
-Date: Tue, 29 Jun 2021 11:50:57 +1000
-Message-Id: <20210629015057.1635519-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GDVV61kRLz302B
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Jun 2021 13:35:06 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=IPToyWc0zOd5yvSaldLiSQJQJ15pmfxy10k+sbjsVMZ7SGzEgtiEsiiLVGKl1TYCvfx5HU94Dv9wmUR1qQvD57QPZaXi6++ASkK8Uqv+VGAzWngl0Hbf/UbVVICHQs1JeWyFMNWTY6fvCev2QIaa/pfI8/JTToYtM3Cdq0GYjFAxB3KzUEew5+26Io+iXIp6G3G+xWr/Lzm6UaXeoIE0Y90jktZVPoUHjoP3QorFJeyF4YZeZXWYrvq0b0fWUdW5k3sfZWdaTAB6v+Vk5d3xb00SM3G2h0awt6I7npVhhXpKqHtXH/EWqQeDFFWdRXdo6rlYmh+S4z0tNJxU954CkQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8et/drsZ/8ewsfmdZr4C0iLIiJPRcBPd+4bhBdwpnIw=;
+ b=YsK1XuBdeRoeyLP7Kb/+mEtm0bpMvGIPNNISQeAyPOU/QbPZmqsRSKb8j/RgxdSp5TledAYcJWEW5Xvz0hTLvZNYXJbS0XLYQw9BDIkVJPpy0lvi7dUkyqj0BXghHe67d2S+lLn4ajHXnfVCcGpX68TAvyVEKsMtDAZjzzNNIYw3o3zHqy1EoPm4sa2lIYZ/TmQ7eenKWnREzT8RUdZ1Y7YIl6T85B6jR8yeevaAhFhy3q2tFUO3YQiq33OSfz/66tcZKdO8JuwIUjtHAZEVnQFokfKa5eTEgF2SozM80Ik1ITZJDkFczymTagUPAzZeNpDblX6kay6/hoehQSmO8g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8et/drsZ/8ewsfmdZr4C0iLIiJPRcBPd+4bhBdwpnIw=;
+ b=tENbx2YGBi1ymrtHu4iLhOEsOKvPSA8nTu9IIEq4YMVRn/2HLgMsctPG9cOdabB6Toq685r6t37rV8fwAOnNWiNQtfg4cTCbsJA1pdvdNN31EHWI9V4Qj6UIKShkIO8hhZPi3/9NS32mHBDwrCxrCmPnR9OZTCpuQGgKSOcwjrs=
+Authentication-Results: gmail.com; dkim=none (message not signed)
+ header.d=none;gmail.com; dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB5357.namprd12.prod.outlook.com (2603:10b6:5:39b::24)
+ by DM8PR12MB5415.namprd12.prod.outlook.com (2603:10b6:8:25::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4264.20; Tue, 29 Jun 2021 03:34:49 +0000
+Received: from DM4PR12MB5357.namprd12.prod.outlook.com
+ ([fe80::9d97:11b:bb35:d2e6]) by DM4PR12MB5357.namprd12.prod.outlook.com
+ ([fe80::9d97:11b:bb35:d2e6%5]) with mapi id 15.20.4264.026; Tue, 29 Jun 2021
+ 03:34:49 +0000
+Date: Tue, 29 Jun 2021 11:34:37 +0800
+From: Wesley Sheng <wesley.sheng@amd.com>
+To: Oliver O'Halloran <oohall@gmail.com>, linasvepstas@gmail.com,
+ ruscur@russell.cc, bhelgaas@google.com, corbet@lwn.net,
+ linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Documentation: PCI: pci-error-recovery: rearrange the
+ general sequence
+Message-ID: <20210629033437.GB1492@buildhost>
+References: <20210618060446.7969-1-wesley.sheng@amd.com>
+ <CAOSf1CHaLCAsnB42Je+ynJ6xv-M8qmScbfOLSHVze7D4fEh66Q@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAOSf1CHaLCAsnB42Je+ynJ6xv-M8qmScbfOLSHVze7D4fEh66Q@mail.gmail.com>
+X-Originating-IP: [165.204.134.244]
+X-ClientProxiedBy: HK2PR02CA0148.apcprd02.prod.outlook.com
+ (2603:1096:202:16::32) To DM4PR12MB5357.namprd12.prod.outlook.com
+ (2603:10b6:5:39b::24)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from buildhost (165.204.134.244) by
+ HK2PR02CA0148.apcprd02.prod.outlook.com (2603:1096:202:16::32) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4264.18 via Frontend Transport; Tue, 29 Jun 2021 03:34:44 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 7367617e-588d-4295-a7a9-08d93aaed908
+X-MS-TrafficTypeDiagnostic: DM8PR12MB5415:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <DM8PR12MB5415677AE4EDF810EDCCEC6E95029@DM8PR12MB5415.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: sF7fUv40fNnppXkNiw3HGJEuZcv2bX9Y0xNzyYUtf5tkzTx9UzhGOqQU1EQP/iOswYI3gsZ7fJEF/ZVI4wJsfL1YHuhpQwPj00f7RHqe50dbUSmW/SypdQg3NVui3JP6l4k9dN8CoPEhhVM+0qZfPPt3fiT1x+humi65o6BdYkhO0SGLEGU4j4NTSpqT01uqMXe/GeqBVNYCehapcsojTOtOrIbg2+Z0+ME/zXV23oNBuhwvatxaWV4GmJyYWsEgjEbsx0urOovPA9pcB8FUTPMSIemBgeqd585hI3fQbmvEkeQA4AHZgHNI/fbgm5fuspIMXKWpZORWtUH141z29sLnzt2MYcTEUUebWGwUHyuxfOIkTAVh+MZQ9A51YtDdQhpeKmL3mnztGHH3ynAkITiSGmVfHXxkCIyOB1+/TX14veY5RSqPnfqRByB9JlF7SJ27lCqFrISHKHCPE+qgYUqdXwFEecy6mknYh1AwxHh+hnYLoFAJmqxeOJCRrAibFl2TJNdaGwrDef1++alBR0O/ldb5FbuOv3XtzfD7L6nCZn5SB1MtrgYiHMz40GSrm6HKFnWCDh1y1iAJiA2m8wVenRxqrY1ik+Gi7Fi/ZT2bji3dPVRiP4zxG7vnIyWGam2IfE9UlTK26YNonZE8lmj/X1jeKKZb+NnnIG1ONdtgu0isn+KJQPfDgjomf0SeaH2hgbj/q/GzeUdHDEI2yQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM4PR12MB5357.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(4636009)(39860400002)(396003)(136003)(346002)(366004)(376002)(316002)(53546011)(66946007)(52116002)(86362001)(66556008)(5660300002)(2906002)(9576002)(33656002)(83380400001)(44832011)(26005)(7416002)(66476007)(478600001)(186003)(33716001)(8936002)(1076003)(8676002)(16526019)(38350700002)(6496006)(9686003)(38100700002)(956004)(6666004)(55016002)(4326008);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?JeT6kvfg2oX7l7p/Qe1amfRY2U451W+o+Uz2n51ABR/hxex2/pFInnKMKkWG?=
+ =?us-ascii?Q?so0keRqvZG09vETxiPzmtpxE+arFrkVxKDwEZeHTXb4EJDhTFOOntFCRSZR4?=
+ =?us-ascii?Q?iJasG7pVCLnXo/72EHO3PMA1NP255k/cBhfF4NQWX/2K0Q3o3peH+fMF9U3V?=
+ =?us-ascii?Q?MAC8MXLUo/n6TqXYBJ4ooMuH56nJVoI9t8qRaKy/Uk1X/KNwclZ5TYKrkb5Q?=
+ =?us-ascii?Q?RuJSK6KBRW5mA2t+T8DVM/uYqRCrCP/L2moMxHKKC8X9dV7uMjoqK8iQpAQ8?=
+ =?us-ascii?Q?BJMFchbuzsEuG8DT+hV3wdR6cu/TGhe46TAy866sn1+p5n+0dUr4a3eu4K73?=
+ =?us-ascii?Q?8w7I0chh+ITobg6MMmJPgc+mpd5E5qkZ8Z47MFsr70JBrte0NtId5lZ2YROq?=
+ =?us-ascii?Q?yO9h/4fCbMDZAWiPTmlJblGOo8O9FrY4qEzS5xTG0vZJMk2vIkHwyn3VY0QC?=
+ =?us-ascii?Q?rGttA2itHwMf0NZDWrX7pKskJPULgZKF+tP4ck4cJmEZWMLoKDRKhLmWao/I?=
+ =?us-ascii?Q?i6yJxVyCyTV2szi94zBmu9DPK/XTRerOHDpjagNOXgpOX+vkr8359TdgT1Em?=
+ =?us-ascii?Q?/2uLpW2S3Zv6Z/LVeCA/H3Lg02+xiEayCXINfjBuy38KKaC5eVc2aH+G/kF/?=
+ =?us-ascii?Q?XBizSIUGBbjwo/XygHUGJj7dFa5bX5+4tTGw+R4Y2WhOrinrOS357PGVgJPx?=
+ =?us-ascii?Q?rHTbUsITjdxXj/1J0hnkutLwcteVZ0k0EyO01ytqrrrixF360kRC+v9OBB7A?=
+ =?us-ascii?Q?yLOpBlSQzjBJnd+QuqbjpY3sht49bs6S2j/qMDZdeTrT40sVgOF564YLr+Vo?=
+ =?us-ascii?Q?lQyIIOf4fC74Bmsx45b2mGyV901bzWdbBmIuN0PY/Mn8GjtWECRW4f2lHVau?=
+ =?us-ascii?Q?WOTA7QwmwdJUUidJHcTkWmvuxQnglmgN0sPckfCgtbIuG9itwRioX+XDNdKE?=
+ =?us-ascii?Q?LJc/Q4CJ4yCU/CbxyETUYoToSOWZPrhnmPOSyEAtF55zFc+orb1p4LML6F+x?=
+ =?us-ascii?Q?a7JkJGYkfwwdhS6vH3DQaSEgpt/pWiydsF1WRINgH2+0dY5LPqpAu0RqBqQH?=
+ =?us-ascii?Q?l1RgeUUYLJzKejROUVZafqZGgPCCgp7BRannn5xoQ/qHV5EXPwHVwpa/BpTU?=
+ =?us-ascii?Q?ljtAyD0bYC99gZ/8dXW2QCC97fThAVewoKKtQprWu/lUTpt7VBYaI36+oG8G?=
+ =?us-ascii?Q?SAfQRt73zoKy/lgm+VAaYQH+4p7X7476DARZc67ddd3qdYH4VL7BUH8uDBbZ?=
+ =?us-ascii?Q?g7QtTX0oY7Hkio7ATbrqIX99V8WvZF8Ho0OarIeDpLSBYPKZvVHTTD+f2FYM?=
+ =?us-ascii?Q?d6+Rg3mE/JZylWdQva3TKurY?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7367617e-588d-4295-a7a9-08d93aaed908
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5357.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2021 03:34:49.1281 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RqNcb/AKvTeUtpEGw/GUoAAS8ZClav+S3is9n4Q7W/o7PYIPrsK5bPQGqiMhVwlXy50jOTEVyqAN9cIa0ft4Fg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM8PR12MB5415
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,98 +132,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: wesley.sheng@amd.com, wesleyshenggit@sina.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The early bad fault or key fault test in do_hash_fault() ends up calling
-into ___do_page_fault without having gone through an interrupt handler
-wrapper (except the initial _RAW one). This can end up calling local irq
-functions while the interrupt has not been reconciled, which will likely
-cause crashes and it trips up on a later patch that adds more assertions.
+On Fri, Jun 18, 2021 at 05:21:32PM +1000, Oliver O'Halloran wrote:
+> On Fri, Jun 18, 2021 at 4:05 PM Wesley Sheng <wesley.sheng@amd.com> wrote:
+> >
+> > Reset_link() callback function was called before mmio_enabled() in
+> > pcie_do_recovery() function actually, so rearrange the general
+> > sequence betwen step 2 and step 3 accordingly.
+> 
+> I don't think this is true in all cases. If pcie_do_recovery() is
+> called with state==pci_channel_io_normal (i.e. non-fatal AER) the link
+> won't be reset. EEH (ppc PCI error recovery thing) also uses
+> .mmio_enabled() as described.
 
-pkey_exec_prot from selftests causes this path to be executed.
+Yes, in case of non-fatal AER, reset_link() callback (aer_root_reset() for 
+AER and dpc_reset_link() for DPC) will not be invoked. And if 
+.error_detected() return PCI_ERS_RESULT_CAN_RECOVER, .mmio_enabled() be
+called followed.
 
-There is no real reason to run the in_nmi() test should be performed
-before the key fault check. In fact if a perf interrupt in the hash
-fault code did a stack walk that was made to take a key fault somehow
-then running ___do_page_fault could possibly cause another hash fault
-causing problems. Move the in_nmi() test first, and then do everything
-else inside the regular interrupt handler function.
-
-Fixes: 3a96570ffceb ("powerpc: convert interrupt handlers to use wrappers")
-Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/mm/book3s64/hash_utils.c | 24 +++++++++++-------------
- 1 file changed, 11 insertions(+), 13 deletions(-)
-
-diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-index 96d9aa164007..ac5720371c0d 100644
---- a/arch/powerpc/mm/book3s64/hash_utils.c
-+++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -1522,8 +1522,8 @@ int hash_page(unsigned long ea, unsigned long access, unsigned long trap,
- }
- EXPORT_SYMBOL_GPL(hash_page);
- 
--DECLARE_INTERRUPT_HANDLER_RET(__do_hash_fault);
--DEFINE_INTERRUPT_HANDLER_RET(__do_hash_fault)
-+DECLARE_INTERRUPT_HANDLER(__do_hash_fault);
-+DEFINE_INTERRUPT_HANDLER(__do_hash_fault)
- {
- 	unsigned long ea = regs->dar;
- 	unsigned long dsisr = regs->dsisr;
-@@ -1533,6 +1533,11 @@ DEFINE_INTERRUPT_HANDLER_RET(__do_hash_fault)
- 	unsigned int region_id;
- 	long err;
- 
-+	if (unlikely(dsisr & (DSISR_BAD_FAULT_64S | DSISR_KEYFAULT))) {
-+		hash__do_page_fault(regs);
-+		return;
-+	}
-+
- 	region_id = get_region_id(ea);
- 	if ((region_id == VMALLOC_REGION_ID) || (region_id == IO_REGION_ID))
- 		mm = &init_mm;
-@@ -1571,9 +1576,10 @@ DEFINE_INTERRUPT_HANDLER_RET(__do_hash_fault)
- 			bad_page_fault(regs, SIGBUS);
- 		}
- 		err = 0;
--	}
- 
--	return err;
-+	} else if (err) {
-+		hash__do_page_fault(regs);
-+	}
- }
- 
- /*
-@@ -1582,13 +1588,6 @@ DEFINE_INTERRUPT_HANDLER_RET(__do_hash_fault)
-  */
- DEFINE_INTERRUPT_HANDLER_RAW(do_hash_fault)
- {
--	unsigned long dsisr = regs->dsisr;
--
--	if (unlikely(dsisr & (DSISR_BAD_FAULT_64S | DSISR_KEYFAULT))) {
--		hash__do_page_fault(regs);
--		return 0;
--	}
--
- 	/*
- 	 * If we are in an "NMI" (e.g., an interrupt when soft-disabled), then
- 	 * don't call hash_page, just fail the fault. This is required to
-@@ -1607,8 +1606,7 @@ DEFINE_INTERRUPT_HANDLER_RAW(do_hash_fault)
- 		return 0;
- 	}
- 
--	if (__do_hash_fault(regs))
--		hash__do_page_fault(regs);
-+	__do_hash_fault(regs);
- 
- 	return 0;
- }
--- 
-2.23.0
-
+But if pcie_do_recovery() is called with state == pci_channel_io_frozen,
+reset_link() callback is called after .error_detected() but before
+.mmio_enabled(). So I thought Step 2: MMIO Enabled and Step 3: Link Reset
+should rearrange their sequence.
