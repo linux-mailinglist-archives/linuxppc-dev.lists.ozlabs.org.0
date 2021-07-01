@@ -1,94 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 373AE3B8CDD
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 06:17:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F366A3B8CDB
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 06:17:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GFlLT1B7Lz3cdV
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 14:17:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GFlL062rpz3bXC
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 14:17:28 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GYdRC4h9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fdaZ5lqi;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=GYdRC4h9; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ header.s=pp1 header.b=fdaZ5lqi; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GFlKF1dCWz3002
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jul 2021 14:16:49 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GFlK371wTz2yN3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jul 2021 14:16:39 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 16144445193283; Thu, 1 Jul 2021 00:16:20 -0400
+ 161466Kb077183; Thu, 1 Jul 2021 00:16:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
- : date : message-id : in-reply-to : references : content-transfer-encoding
- : mime-version; s=pp1; bh=1QeEN8lYtB5E3x3m5VwTT+Q6+645tDNgC2asz074Es0=;
- b=GYdRC4h9cYtdeNnPrwOxhUpXnbKweWClxnzpPdP+ASedvrH7zP2Vo8haRi8Z8S2G1T3x
- 67Uc4cR8co855xbVIym4kUUw2paKz9Z2WXhXJnVMa3mSQGYSEzyYwrKRQQZY6o45VzMw
- m3XqS+kC9eIWD9UuRhgDFn7z7i6hmbUUAK4v0hMxIp4v5VGMwenGo6NY+g4Obi0iMgAG
- H1/k72WqXPMG9tUdz9oF/T0TSpcp+YGyKodD9wqzJVa0vwlDKOCm5ErnxhrXzPgwVh0o
- HjxS0b16I1/dRqXY8knQPmSmVMnicLdOVA2QIMl2hz+xZUxUjPUYT/MpGniIlfgf4V6K cQ== 
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39gt05cnyn-1
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=oPIuBBPZ70P+PF/7mhNIHUEPApm7nDezaCT2pZZbVZw=;
+ b=fdaZ5lqitbHPfHwZjgMFP7jPbeKosEfr1Idj7lW/roH4vqMDS5u22PIpdVrZyV3bAbAP
+ Ru1q2zRdxMbAk99/oAbIHkkqCxJmcMA+er/OFbTAsIdxXB5PRWWf8Q3KMJkfZCRkX/RG
+ KrpN2naQkWTjRlSRKWHXulK5fevJW69zu2BsY8XA08uJswILBdNbB6j2uIUSjOqc0CdJ
+ mFxZskoXVcM/OFcEugZCsyw3cqg+Mk8OEbG3REq/Zbacf8S3KhmWQhBQDrqsNBeweiDj
+ RhsYVDVjkvnQqm2u/ZL8CheOjpgPcjGz2Xnx+uzAzDJRkitvS+RsbJb/q4ZYn1KcPgYs Pw== 
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 39gwhuw3qk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 01 Jul 2021 00:16:20 -0400
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1614GFsi009388;
- Thu, 1 Jul 2021 04:16:17 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma06fra.de.ibm.com with ESMTP id 39dugh94ph-1
+ Thu, 01 Jul 2021 00:16:22 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1614C1IL005182;
+ Thu, 1 Jul 2021 04:16:21 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma04ams.nl.ibm.com with ESMTP id 39duv8j5jq-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 01 Jul 2021 04:16:17 +0000
+ Thu, 01 Jul 2021 04:16:21 +0000
 Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
  [9.149.105.61])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 1614EY6A30212556
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1614GINs21496226
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 1 Jul 2021 04:14:34 GMT
+ Thu, 1 Jul 2021 04:16:18 GMT
 Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7DB6411C070;
+ by IMSVA (Postfix) with ESMTP id 1576C11C069;
+ Thu,  1 Jul 2021 04:16:18 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D8CC711C05B;
  Thu,  1 Jul 2021 04:16:14 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3D88211C050;
- Thu,  1 Jul 2021 04:16:11 +0000 (GMT)
 Received: from saptagiri.in.ibm.com (unknown [9.85.122.203])
  by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu,  1 Jul 2021 04:16:11 +0000 (GMT)
+ Thu,  1 Jul 2021 04:16:14 +0000 (GMT)
 From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 To: Ingo Molnar <mingo@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
  Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v2 1/2] sched/topology: Skip updating masks for non-online
+Subject: [PATCH v2 2/2] powerpc/numa: Fill distance_lookup_table for offline
  nodes
-Date: Thu,  1 Jul 2021 09:45:51 +0530
-Message-Id: <20210701041552.112072-2-srikar@linux.vnet.ibm.com>
+Date: Thu,  1 Jul 2021 09:45:52 +0530
+Message-Id: <20210701041552.112072-3-srikar@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.26.3
 In-Reply-To: <20210701041552.112072-1-srikar@linux.vnet.ibm.com>
 References: <20210701041552.112072-1-srikar@linux.vnet.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: seh_S1PwfZvT5jv2RQ5mzXErcKr8xvet
-X-Proofpoint-ORIG-GUID: seh_S1PwfZvT5jv2RQ5mzXErcKr8xvet
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: m4NvHT9SNR3226OZ_T9x72LK9YghuLAT
+X-Proofpoint-GUID: m4NvHT9SNR3226OZ_T9x72LK9YghuLAT
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
  definitions=2021-07-01_01:2021-06-30,
  2021-07-01 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 mlxscore=0
- priorityscore=1501 clxscore=1015 suspectscore=0 phishscore=0
- lowpriorityscore=0 malwarescore=0 mlxlogscore=999 spamscore=0 adultscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ adultscore=0 mlxscore=0
+ bulkscore=0 clxscore=1015 suspectscore=0 mlxlogscore=999 spamscore=0
+ malwarescore=0 phishscore=0 lowpriorityscore=0 impostorscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2104190000 definitions=main-2107010027
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -116,26 +116,51 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently scheduler doesn't check if node is online before adding CPUs
-to the node mask. However on some architectures, node distance is only
-available for nodes that are online. Its not sure how much to rely on
-the node distance, when one of the nodes is offline.
+Currently scheduler populates the distance map by looking at distance
+of each node from all other nodes. This should work for most
+architectures and platforms.
 
-If said node distance is fake (since one of the nodes is offline) and
-the actual node distance is different, then the cpumask of such nodes
-when the nodes become becomes online will be wrong.
+Scheduler expects unique number of node distances to be available at
+boot. It uses node distance to calculate this unique node distances.
+On Power Servers, node distances for offline nodes is not available.
+However, Power Servers already knows unique possible node distances.
+Fake the offline node's distance_lookup_table entries so that all
+possible node distances are updated.
 
-This can cause topology_span_sane to throw up a warning message and the
-rest of the topology being not updated properly.
+For example distance info from numactl from a fully populated 8 node
+system at boot may look like this.
 
-Resolve this by skipping update of cpumask for nodes that are not
-online.
+node distances:
+node   0   1   2   3   4   5   6   7
+  0:  10  20  40  40  40  40  40  40
+  1:  20  10  40  40  40  40  40  40
+  2:  40  40  10  20  40  40  40  40
+  3:  40  40  20  10  40  40  40  40
+  4:  40  40  40  40  10  20  40  40
+  5:  40  40  40  40  20  10  40  40
+  6:  40  40  40  40  40  40  10  20
+  7:  40  40  40  40  40  40  20  10
 
-However by skipping, relevant CPUs may not be set when nodes are
-onlined. i.e when coming up with NUMA masks at a certain NUMA distance,
-CPUs that are part of other nodes, which are already online will not be
-part of the NUMA mask. Hence the first time, a CPU is added to the newly
-onlined node, add the other CPUs to the numa_mask.
+However the same system when only two nodes are online at boot, then
+distance info from numactl will look like
+node distances:
+node   0   1
+  0:  10  20
+  1:  20  10
+
+It may be implementation dependent on what node_distance(0,3) where
+node 0 is online and node 3 is offline. In Power Servers case, it returns
+LOCAL_DISTANCE(10). Here at boot the scheduler would assume that the max
+distance between nodes is 20. However that would not be true.
+
+When Nodes are onlined and CPUs from those nodes are hotplugged,
+the max node distance would be 40.
+
+However this only needs to be done if the number of unique node
+distances that can be computed for online nodes is less than the
+number of possible unique node distances as represented by
+distance_ref_points_depth. When the node is actually onlined,
+distance_lookup_table will be updated with actual entries.
 
 Cc: LKML <linux-kernel@vger.kernel.org>
 Cc: linuxppc-dev@lists.ozlabs.org
@@ -155,59 +180,99 @@ Reported-by: Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>
 Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 ---
 Changelog v1->v2:
-v1 link: http://lore.kernel.org/lkml/20210520154427.1041031-4-srikar@linux.vnet.ibm.com/t/#u
-Update the NUMA masks, whenever 1st CPU is added to cpuless node
+Move to a Powerpc specific solution as suggested by Peter and Valentin
 
- kernel/sched/topology.c | 25 +++++++++++++++++++++++--
- 1 file changed, 23 insertions(+), 2 deletions(-)
+ arch/powerpc/mm/numa.c | 70 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 70 insertions(+)
 
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index b77ad49dc14f..f25dbcab4fd2 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -1833,6 +1833,9 @@ void sched_init_numa(void)
- 			sched_domains_numa_masks[i][j] = mask;
- 
- 			for_each_node(k) {
-+				if (!node_online(j))
-+					continue;
-+
- 				if (sched_debug() && (node_distance(j, k) != node_distance(k, j)))
- 					sched_numa_warn("Node-distance not symmetric");
- 
-@@ -1891,12 +1894,30 @@ void sched_init_numa(void)
- void sched_domains_numa_masks_set(unsigned int cpu)
- {
- 	int node = cpu_to_node(cpu);
--	int i, j;
-+	int i, j, empty;
- 
-+	empty = cpumask_empty(sched_domains_numa_masks[0][node]);
- 	for (i = 0; i < sched_domains_numa_levels; i++) {
- 		for (j = 0; j < nr_node_ids; j++) {
--			if (node_distance(j, node) <= sched_domains_numa_distance[i])
-+			if (!node_online(j))
-+				continue;
-+
-+			if (node_distance(j, node) <= sched_domains_numa_distance[i]) {
- 				cpumask_set_cpu(cpu, sched_domains_numa_masks[i][j]);
-+
-+				/*
-+				 * We skip updating numa_masks for offline
-+				 * nodes. However now that the node is
-+				 * finally online, CPUs that were added
-+				 * earlier, should now be accommodated into
-+				 * newly oneline node's numa mask.
-+				 */
-+				if (node != j && empty) {
-+					cpumask_or(sched_domains_numa_masks[i][node],
-+							sched_domains_numa_masks[i][node],
-+							sched_domains_numa_masks[0][j]);
-+				}
-+			}
- 		}
+diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+index f2bf98bdcea2..6d0d89127190 100644
+--- a/arch/powerpc/mm/numa.c
++++ b/arch/powerpc/mm/numa.c
+@@ -860,6 +860,75 @@ void __init dump_numa_cpu_topology(void)
  	}
  }
+ 
++/*
++ * Scheduler expects unique number of node distances to be available at
++ * boot. It uses node distance to calculate this unique node distances. On
++ * POWER, node distances for offline nodes is not available. However, POWER
++ * already knows unique possible node distances. Fake the offline node's
++ * distance_lookup_table entries so that all possible node distances are
++ * updated.
++ */
++void __init fake_update_distance_lookup_table(void)
++{
++	unsigned long distance_map;
++	int i, nr_levels, nr_depth, node;
++
++	if (!numa_enabled)
++		return;
++
++	if (!form1_affinity)
++		return;
++
++	/*
++	 * distance_ref_points_depth lists the unique numa domains
++	 * available. However it ignore LOCAL_DISTANCE. So add +1
++	 * to get the actual number of unique distances.
++	 */
++	nr_depth = distance_ref_points_depth + 1;
++
++	WARN_ON(nr_depth > sizeof(distance_map));
++
++	bitmap_zero(&distance_map, nr_depth);
++	bitmap_set(&distance_map, 0, 1);
++
++	for_each_online_node(node) {
++		int nd, distance = LOCAL_DISTANCE;
++
++		if (node == first_online_node)
++			continue;
++
++		nd = __node_distance(node, first_online_node);
++		for (i = 0; i < nr_depth; i++, distance *= 2) {
++			if (distance == nd) {
++				bitmap_set(&distance_map, i, 1);
++				break;
++			}
++		}
++		nr_levels = bitmap_weight(&distance_map, nr_depth);
++		if (nr_levels == nr_depth)
++			return;
++	}
++
++	for_each_node(node) {
++		if (node_online(node))
++			continue;
++
++		i = find_first_zero_bit(&distance_map, nr_depth);
++		if (i >= nr_depth || i == 0) {
++			pr_warn("Levels(%d) not matching levels(%d)", nr_levels, nr_depth);
++			return;
++		}
++
++		bitmap_set(&distance_map, i, 1);
++		while (i--)
++			distance_lookup_table[node][i] = node;
++
++		nr_levels = bitmap_weight(&distance_map, nr_depth);
++		if (nr_levels == nr_depth)
++			return;
++	}
++}
++
+ /* Initialize NODE_DATA for a node on the local memory */
+ static void __init setup_node_data(int nid, u64 start_pfn, u64 end_pfn)
+ {
+@@ -975,6 +1044,7 @@ void __init mem_topology_setup(void)
+ 		 */
+ 		numa_setup_cpu(cpu);
+ 	}
++	fake_update_distance_lookup_table();
+ }
+ 
+ void __init initmem_init(void)
 -- 
 2.27.0
 
