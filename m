@@ -1,95 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F366A3B8CDB
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 06:17:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74BD63B8D55
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 07:12:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GFlL062rpz3bXC
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 14:17:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GFmYb2sZ6z3bXD
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 15:12:35 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fdaZ5lqi;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=meoFKDkd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=cmr@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=fdaZ5lqi; dkim-atps=neutral
+ header.s=pp1 header.b=meoFKDkd; dkim-atps=neutral
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GFlK371wTz2yN3
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jul 2021 14:16:39 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GFmY40dNjz2yNm
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jul 2021 15:12:07 +1000 (AEST)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 161466Kb077183; Thu, 1 Jul 2021 00:16:23 -0400
+ 16154QiH054626; Thu, 1 Jul 2021 01:12:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=oPIuBBPZ70P+PF/7mhNIHUEPApm7nDezaCT2pZZbVZw=;
- b=fdaZ5lqitbHPfHwZjgMFP7jPbeKosEfr1Idj7lW/roH4vqMDS5u22PIpdVrZyV3bAbAP
- Ru1q2zRdxMbAk99/oAbIHkkqCxJmcMA+er/OFbTAsIdxXB5PRWWf8Q3KMJkfZCRkX/RG
- KrpN2naQkWTjRlSRKWHXulK5fevJW69zu2BsY8XA08uJswILBdNbB6j2uIUSjOqc0CdJ
- mFxZskoXVcM/OFcEugZCsyw3cqg+Mk8OEbG3REq/Zbacf8S3KhmWQhBQDrqsNBeweiDj
- RhsYVDVjkvnQqm2u/ZL8CheOjpgPcjGz2Xnx+uzAzDJRkitvS+RsbJb/q4ZYn1KcPgYs Pw== 
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39gwhuw3qk-1
+ h=mime-version :
+ content-transfer-encoding : content-type : date : message-id : cc :
+ subject : from : to : references : in-reply-to; s=pp1;
+ bh=YLgQpRPJ1GRRmxVP4o36eN2IpqUWvL/lgTF0esteDeo=;
+ b=meoFKDkd6M8baV4eg78h5G4g3nhUvxQ7kY9o8mp4eRDnjz1eDt5jz5zMZGVxOSceBS75
+ e8PmANFNg4iMj+0LCNrKqt3ajX5TFoVh98aB97XGOIsePx7SpXrmB2q0KwCNyWIhhlhc
+ IdEZ04bPAVLXd0xHOL3E30ZgF+6+EFuH16jWf3eA+El0vH5de161f+6/Ww5OAc/tfL91
+ rnXx8BBhlYOKG2lmOG4EfZ8FPvduvHvF4bpOiwRlP7bCgx5/ybpStFPk+e/ikiFwDtwF
+ Q/2xedxIqgfEZhD9eGPiMZjIo07+3GdtX8p+MZBQB1OLEzLgFKU9ZKHbAnnSGkLv1qs6 3w== 
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 39gntsdaav-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 01 Jul 2021 00:16:22 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1614C1IL005182;
- Thu, 1 Jul 2021 04:16:21 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma04ams.nl.ibm.com with ESMTP id 39duv8j5jq-1
+ Thu, 01 Jul 2021 01:12:00 -0400
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16157ZUJ028690;
+ Thu, 1 Jul 2021 05:11:59 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
+ [9.57.198.24]) by ppma01dal.us.ibm.com with ESMTP id 39duvf52pf-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 01 Jul 2021 04:16:21 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 1614GINs21496226
+ Thu, 01 Jul 2021 05:11:59 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
+ [9.57.199.111])
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1615BxoO41353590
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 1 Jul 2021 04:16:18 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1576C11C069;
- Thu,  1 Jul 2021 04:16:18 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D8CC711C05B;
- Thu,  1 Jul 2021 04:16:14 +0000 (GMT)
-Received: from saptagiri.in.ibm.com (unknown [9.85.122.203])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu,  1 Jul 2021 04:16:14 +0000 (GMT)
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Ingo Molnar <mingo@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v2 2/2] powerpc/numa: Fill distance_lookup_table for offline
- nodes
-Date: Thu,  1 Jul 2021 09:45:52 +0530
-Message-Id: <20210701041552.112072-3-srikar@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.26.3
-In-Reply-To: <20210701041552.112072-1-srikar@linux.vnet.ibm.com>
-References: <20210701041552.112072-1-srikar@linux.vnet.ibm.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ Thu, 1 Jul 2021 05:11:59 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 26DCBAC05F;
+ Thu,  1 Jul 2021 05:11:59 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 60266AC059;
+ Thu,  1 Jul 2021 05:11:58 +0000 (GMT)
+Received: from oc8246131445.ibm.com (unknown [9.211.158.151])
+ by b01ledav006.gho.pok.ibm.com (Postfix) with SMTP;
+ Thu,  1 Jul 2021 05:11:58 +0000 (GMT)
+Received: from localhost (localhost6 [IPv6:::1])
+ by oc8246131445.ibm.com (Postfix) with ESMTP id CC816BC00D0;
+ Thu,  1 Jul 2021 00:11:55 -0500 (CDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 01 Jul 2021 00:11:55 -0500
+Message-Id: <CCHJNKZMJY5Q.3PK2V6112U5CG@oc8246131445.ibm.com>
+Subject: Re: [RESEND PATCH v4 08/11] powerpc: Initialize and use a temporary
+ mm for patching
+From: "Christopher M. Riedl" <cmr@linux.ibm.com>
+To: "Daniel Axtens" <dja@axtens.net>, <linuxppc-dev@lists.ozlabs.org>
+References: <20210506043452.9674-1-cmr@linux.ibm.com>
+ <20210506043452.9674-9-cmr@linux.ibm.com>
+ <87r1gvj45t.fsf@dja-thinkpad.axtens.net>
+In-Reply-To: <87r1gvj45t.fsf@dja-thinkpad.axtens.net>
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: m4NvHT9SNR3226OZ_T9x72LK9YghuLAT
-X-Proofpoint-GUID: m4NvHT9SNR3226OZ_T9x72LK9YghuLAT
+X-Proofpoint-GUID: RFQifFxCDlIYAhTckoHBQp21RS--prpB
+X-Proofpoint-ORIG-GUID: RFQifFxCDlIYAhTckoHBQp21RS--prpB
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
  definitions=2021-07-01_01:2021-06-30,
  2021-07-01 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 mlxscore=0
- bulkscore=0 clxscore=1015 suspectscore=0 mlxlogscore=999 spamscore=0
- malwarescore=0 phishscore=0 lowpriorityscore=0 impostorscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2107010027
+ adultscore=0
+ lowpriorityscore=0 suspectscore=0 priorityscore=1501 clxscore=1015
+ malwarescore=0 mlxlogscore=999 impostorscore=0 mlxscore=0 spamscore=0
+ phishscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2107010034
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,178 +104,152 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Gautham R Shenoy <ego@linux.vnet.ibm.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>, Rik van Riel <riel@surriel.com>,
- linuxppc-dev@lists.ozlabs.org,
- Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>,
- LKML <linux-kernel@vger.kernel.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Thomas Gleixner <tglx@linutronix.de>, Laurent Dufour <ldufour@linux.ibm.com>,
- Mel Gorman <mgorman@techsingularity.net>,
- Valentin Schneider <valentin.schneider@arm.com>
+Cc: tglx@linutronix.de, x86@kernel.org, linux-hardening@vger.kernel.org,
+ keescook@chromium.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently scheduler populates the distance map by looking at distance
-of each node from all other nodes. This should work for most
-architectures and platforms.
+On Sun Jun 20, 2021 at 10:19 PM CDT, Daniel Axtens wrote:
+> Hi Chris,
+>
+> > +	/*
+> > +	 * Choose a randomized, page-aligned address from the range:
+> > +	 * [PAGE_SIZE, DEFAULT_MAP_WINDOW - PAGE_SIZE]
+> > +	 * The lower address bound is PAGE_SIZE to avoid the zero-page.
+> > +	 * The upper address bound is DEFAULT_MAP_WINDOW - PAGE_SIZE to stay
+> > +	 * under DEFAULT_MAP_WINDOW with the Book3s64 Hash MMU.
+> > +	 */
+> > +	patching_addr =3D PAGE_SIZE + ((get_random_long() & PAGE_MASK)
+> > +			% (DEFAULT_MAP_WINDOW - 2 * PAGE_SIZE));
+>
+> I checked and poking_init() comes after the functions that init the RNG,
+> so this should be fine. The maths - while a bit fiddly to reason about -
+> does check out.
 
-Scheduler expects unique number of node distances to be available at
-boot. It uses node distance to calculate this unique node distances.
-On Power Servers, node distances for offline nodes is not available.
-However, Power Servers already knows unique possible node distances.
-Fake the offline node's distance_lookup_table entries so that all
-possible node distances are updated.
+Thanks for double checking.
 
-For example distance info from numactl from a fully populated 8 node
-system at boot may look like this.
+>
+> > +
+> > +	/*
+> > +	 * PTE allocation uses GFP_KERNEL which means we need to pre-allocate
+> > +	 * the PTE here. We cannot do the allocation during patching with IRQ=
+s
+> > +	 * disabled (ie. "atomic" context).
+> > +	 */
+> > +	ptep =3D get_locked_pte(patching_mm, patching_addr, &ptl);
+> > +	BUG_ON(!ptep);
+> > +	pte_unmap_unlock(ptep, ptl);
+> > +}
+> > =20
+> >  #if IS_BUILTIN(CONFIG_LKDTM)
+> >  unsigned long read_cpu_patching_addr(unsigned int cpu)
+> >  {
+> > -	return (unsigned long)(per_cpu(text_poke_area, cpu))->addr;
+> > +	return patching_addr;
+> >  }
+> >  #endif
+> > =20
+> > -static int text_area_cpu_up(unsigned int cpu)
+> > +struct patch_mapping {
+> > +	spinlock_t *ptl; /* for protecting pte table */
+> > +	pte_t *ptep;
+> > +	struct temp_mm temp_mm;
+> > +};
+> > +
+> > +#ifdef CONFIG_PPC_BOOK3S_64
+> > +
+> > +static inline int hash_prefault_mapping(pgprot_t pgprot)
+> >  {
+> > -	struct vm_struct *area;
+> > +	int err;
+> > =20
+> > -	area =3D get_vm_area(PAGE_SIZE, VM_ALLOC);
+> > -	if (!area) {
+> > -		WARN_ONCE(1, "Failed to create text area for cpu %d\n",
+> > -			cpu);
+> > -		return -1;
+> > -	}
+> > -	this_cpu_write(text_poke_area, area);
+> > +	if (radix_enabled())
+> > +		return 0;
+> > =20
+> > -	return 0;
+> > -}
+> > +	err =3D slb_allocate_user(patching_mm, patching_addr);
+> > +	if (err)
+> > +		pr_warn("map patch: failed to allocate slb entry\n");
+> > =20
+>
+> Here if slb_allocate_user() fails, you'll print a warning and then fall
+> through to the rest of the function. You do return err, but there's a
+> later call to hash_page_mm() that also sets err. Can slb_allocate_user()
+> fail while hash_page_mm() succeeds, and would that be a problem?
 
-node distances:
-node   0   1   2   3   4   5   6   7
-  0:  10  20  40  40  40  40  40  40
-  1:  20  10  40  40  40  40  40  40
-  2:  40  40  10  20  40  40  40  40
-  3:  40  40  20  10  40  40  40  40
-  4:  40  40  40  40  10  20  40  40
-  5:  40  40  40  40  20  10  40  40
-  6:  40  40  40  40  40  40  10  20
-  7:  40  40  40  40  40  40  20  10
+Hmm, yes I think this is a problem. If slb_allocate_user() fails then we
+could potentially mask that error until the actual patching
+fails/miscompares later (and that *will* certainly fail in this case). I
+will return the error and exit the function early in v5 of the series.
+Thanks!
 
-However the same system when only two nodes are online at boot, then
-distance info from numactl will look like
-node distances:
-node   0   1
-  0:  10  20
-  1:  20  10
+>
+> > -static int text_area_cpu_down(unsigned int cpu)
+> > -{
+> > -	free_vm_area(this_cpu_read(text_poke_area));
+> > -	return 0;
+> > +	err =3D hash_page_mm(patching_mm, patching_addr, pgprot_val(pgprot), =
+0,
+> > +			   HPTE_USE_KERNEL_KEY);
+> > +	if (err)
+> > +		pr_warn("map patch: failed to insert hashed page\n");
+> > +
+> > +	/* See comment in switch_slb() in mm/book3s64/slb.c */
+> > +	isync();
+> > +
+>
+> The comment reads:
+>
+> /*
+> * Synchronize slbmte preloads with possible subsequent user memory
+> * address accesses by the kernel (user mode won't happen until
+> * rfid, which is safe).
+> */
+> isync();
+>
+> I have to say having read the description of isync I'm not 100% sure why
+> that's enough (don't we also need stores to complete?) but I'm happy to
+> take commit 5434ae74629a ("powerpc/64s/hash: Add a SLB preload cache")
+> on trust here!
+>
+> I think it does make sense for you to have that barrier here: you are
+> potentially about to start poking at the memory mapped through that SLB
+> entry so you should make sure you're fully synchronised.
+>
+> > +	return err;
+> >  }
+> > =20
+>
+> > +	init_temp_mm(&patch_mapping->temp_mm, patching_mm);
+> > +	use_temporary_mm(&patch_mapping->temp_mm);
+> > =20
+> > -	pmdp =3D pmd_offset(pudp, addr);
+> > -	if (unlikely(!pmdp))
+> > -		return -EINVAL;
+> > +	/*
+> > +	 * On Book3s64 with the Hash MMU we have to manually insert the SLB
+> > +	 * entry and HPTE to prevent taking faults on the patching_addr later=
+.
+> > +	 */
+> > +	return(hash_prefault_mapping(pgprot));
+>
+> hmm, `return hash_prefault_mapping(pgprot);` or
+> `return (hash_prefault_mapping((pgprot));` maybe?
 
-It may be implementation dependent on what node_distance(0,3) where
-node 0 is online and node 3 is offline. In Power Servers case, it returns
-LOCAL_DISTANCE(10). Here at boot the scheduler would assume that the max
-distance between nodes is 20. However that would not be true.
+Yeah, I noticed I left the extra parentheses here after the RESEND. I
+think this is left-over when I had another wrapper here... anyway, I'll
+clean it up for v5.
 
-When Nodes are onlined and CPUs from those nodes are hotplugged,
-the max node distance would be 40.
-
-However this only needs to be done if the number of unique node
-distances that can be computed for online nodes is less than the
-number of possible unique node distances as represented by
-distance_ref_points_depth. When the node is actually onlined,
-distance_lookup_table will be updated with actual entries.
-
-Cc: LKML <linux-kernel@vger.kernel.org>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Nathan Lynch <nathanl@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Valentin Schneider <valentin.schneider@arm.com>
-Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>
-Cc: Laurent Dufour <ldufour@linux.ibm.com>
-Reported-by: Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>
-Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
----
-Changelog v1->v2:
-Move to a Powerpc specific solution as suggested by Peter and Valentin
-
- arch/powerpc/mm/numa.c | 70 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 70 insertions(+)
-
-diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-index f2bf98bdcea2..6d0d89127190 100644
---- a/arch/powerpc/mm/numa.c
-+++ b/arch/powerpc/mm/numa.c
-@@ -860,6 +860,75 @@ void __init dump_numa_cpu_topology(void)
- 	}
- }
- 
-+/*
-+ * Scheduler expects unique number of node distances to be available at
-+ * boot. It uses node distance to calculate this unique node distances. On
-+ * POWER, node distances for offline nodes is not available. However, POWER
-+ * already knows unique possible node distances. Fake the offline node's
-+ * distance_lookup_table entries so that all possible node distances are
-+ * updated.
-+ */
-+void __init fake_update_distance_lookup_table(void)
-+{
-+	unsigned long distance_map;
-+	int i, nr_levels, nr_depth, node;
-+
-+	if (!numa_enabled)
-+		return;
-+
-+	if (!form1_affinity)
-+		return;
-+
-+	/*
-+	 * distance_ref_points_depth lists the unique numa domains
-+	 * available. However it ignore LOCAL_DISTANCE. So add +1
-+	 * to get the actual number of unique distances.
-+	 */
-+	nr_depth = distance_ref_points_depth + 1;
-+
-+	WARN_ON(nr_depth > sizeof(distance_map));
-+
-+	bitmap_zero(&distance_map, nr_depth);
-+	bitmap_set(&distance_map, 0, 1);
-+
-+	for_each_online_node(node) {
-+		int nd, distance = LOCAL_DISTANCE;
-+
-+		if (node == first_online_node)
-+			continue;
-+
-+		nd = __node_distance(node, first_online_node);
-+		for (i = 0; i < nr_depth; i++, distance *= 2) {
-+			if (distance == nd) {
-+				bitmap_set(&distance_map, i, 1);
-+				break;
-+			}
-+		}
-+		nr_levels = bitmap_weight(&distance_map, nr_depth);
-+		if (nr_levels == nr_depth)
-+			return;
-+	}
-+
-+	for_each_node(node) {
-+		if (node_online(node))
-+			continue;
-+
-+		i = find_first_zero_bit(&distance_map, nr_depth);
-+		if (i >= nr_depth || i == 0) {
-+			pr_warn("Levels(%d) not matching levels(%d)", nr_levels, nr_depth);
-+			return;
-+		}
-+
-+		bitmap_set(&distance_map, i, 1);
-+		while (i--)
-+			distance_lookup_table[node][i] = node;
-+
-+		nr_levels = bitmap_weight(&distance_map, nr_depth);
-+		if (nr_levels == nr_depth)
-+			return;
-+	}
-+}
-+
- /* Initialize NODE_DATA for a node on the local memory */
- static void __init setup_node_data(int nid, u64 start_pfn, u64 end_pfn)
- {
-@@ -975,6 +1044,7 @@ void __init mem_topology_setup(void)
- 		 */
- 		numa_setup_cpu(cpu);
- 	}
-+	fake_update_distance_lookup_table();
- }
- 
- void __init initmem_init(void)
--- 
-2.27.0
+>
+> Kind regards,
+> Daniel
 
