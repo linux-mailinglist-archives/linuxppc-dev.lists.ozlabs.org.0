@@ -1,65 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 049393B9268
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 15:37:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89BCD3B924C
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 15:31:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GFzm101Mqz3dcq
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 23:37:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GFzdW3JkSz3dxr
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 23:31:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=kaod.org (client-ip=148.163.158.5;
+ host) smtp.mailfrom=kaod.org (client-ip=148.163.156.1;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=clg@kaod.org;
  receiver=<UNKNOWN>)
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GFzYj3LXGz3bXv
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jul 2021 23:28:25 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 161D6iP8135151; Thu, 1 Jul 2021 09:28:09 -0400
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0b-001b2d01.pphosted.com with ESMTP id 39hc26n1j3-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GFzYY1FJLz303k
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jul 2021 23:28:17 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 161D49UY067883; Thu, 1 Jul 2021 09:28:09 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 39hcxdkceb-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 01 Jul 2021 09:28:08 -0400
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 161DRT4J006701;
+ Thu, 01 Jul 2021 09:28:09 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 161DLnYv023687;
  Thu, 1 Jul 2021 13:28:07 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma06fra.de.ibm.com with ESMTP id 39dugh99ay-1
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma03ams.nl.ibm.com with ESMTP id 39duv8aeap-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 01 Jul 2021 13:28:06 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 161DQNCI32899528
+ Thu, 01 Jul 2021 13:28:07 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 161DS5Yh33751414
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 1 Jul 2021 13:26:23 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 99C0EA4092;
- Thu,  1 Jul 2021 13:28:04 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6258EA408C;
+ Thu, 1 Jul 2021 13:28:05 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0D68D4C04E;
+ Thu,  1 Jul 2021 13:28:05 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D30124C050;
  Thu,  1 Jul 2021 13:28:04 +0000 (GMT)
 Received: from smtp.tlslab.ibm.com (unknown [9.101.4.1])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
  Thu,  1 Jul 2021 13:28:04 +0000 (GMT)
 Received: from yukon.ibmuc.com (unknown [9.171.33.183])
- by smtp.tlslab.ibm.com (Postfix) with ESMTP id C2BD12201CC;
- Thu,  1 Jul 2021 15:28:03 +0200 (CEST)
+ by smtp.tlslab.ibm.com (Postfix) with ESMTP id 4DCFE22016C;
+ Thu,  1 Jul 2021 15:28:04 +0200 (CEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 15/32] KVM: PPC: Book3S HV: XIVE: Fix mapping of
- passthrough interrupts
-Date: Thu,  1 Jul 2021 15:27:33 +0200
-Message-Id: <20210701132750.1475580-16-clg@kaod.org>
+Subject: [PATCH v2 16/32] powerpc/xics: Remove ICS list
+Date: Thu,  1 Jul 2021 15:27:34 +0200
+Message-Id: <20210701132750.1475580-17-clg@kaod.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210701132750.1475580-1-clg@kaod.org>
 References: <20210701132750.1475580-1-clg@kaod.org>
@@ -67,17 +66,17 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: YvrwjIWq25J4Aw9c6NgGF_qR31JcZQxb
-X-Proofpoint-ORIG-GUID: YvrwjIWq25J4Aw9c6NgGF_qR31JcZQxb
+X-Proofpoint-GUID: Fde7E0OxjlklObSTH6itEyu2VISggtec
+X-Proofpoint-ORIG-GUID: Fde7E0OxjlklObSTH6itEyu2VISggtec
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
  definitions=2021-07-01_07:2021-07-01,
  2021-07-01 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0
- priorityscore=1501 lowpriorityscore=0 clxscore=1034 adultscore=0
- mlxscore=0 bulkscore=0 impostorscore=0 spamscore=0 phishscore=0
- suspectscore=0 mlxlogscore=789 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2104190000 definitions=main-2107010082
+ lowpriorityscore=0 mlxscore=0
+ bulkscore=0 phishscore=0 malwarescore=0 suspectscore=0 spamscore=0
+ adultscore=0 impostorscore=0 mlxlogscore=828 clxscore=1034
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2107010082
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,54 +88,138 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thomas Gleixner <tglx@linutronix.de>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PCI MSI interrupt numbers are now mapped in a PCI-MSI domain but the
-underlying calls handling the passthrough of the interrupt in the
-guest need a number in the XIVE IRQ domain.
+We always had only one ICS per machine. Simplify the XICS driver by
+removing the ICS list.
 
-Use the IRQ data mapped in the XIVE IRQ domain and not the one in the
-PCI-MSI domain.
+The ICS stored in the chip data of the XICS domain becomes useless and
+we don't need it anymore to migrate away IRQs from a CPU. This will be
+removed in a subsequent patch.
 
-Cc: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
 ---
- arch/powerpc/kvm/book3s_xive.c | 3 ++-
- kernel/irq/irqdomain.c         | 1 +
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ arch/powerpc/sysdev/xics/xics-common.c | 45 +++++++++++---------------
+ 1 file changed, 19 insertions(+), 26 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xiv=
-e.c
-index 434da541a20b..d30eb35cc7f0 100644
---- a/arch/powerpc/kvm/book3s_xive.c
-+++ b/arch/powerpc/kvm/book3s_xive.c
-@@ -926,7 +926,8 @@ int kvmppc_xive_set_mapped(struct kvm *kvm, unsigned =
-long guest_irq,
- 	struct kvmppc_xive *xive =3D kvm->arch.xive;
- 	struct kvmppc_xive_src_block *sb;
- 	struct kvmppc_xive_irq_state *state;
--	struct irq_data *host_data =3D irq_get_irq_data(host_irq);
-+	struct irq_data *host_data =3D
-+		irq_domain_get_irq_data(irq_get_default_host(), host_irq);
- 	unsigned int hw_irq =3D (unsigned int)irqd_to_hwirq(host_data);
- 	u16 idx;
- 	u8 prio;
-diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
-index 6284443b87ec..c8c06318dcbf 100644
---- a/kernel/irq/irqdomain.c
-+++ b/kernel/irq/irqdomain.c
-@@ -481,6 +481,7 @@ struct irq_domain *irq_get_default_host(void)
- {
- 	return irq_default_domain;
- }
-+EXPORT_SYMBOL_GPL(irq_get_default_host);
+diff --git a/arch/powerpc/sysdev/xics/xics-common.c b/arch/powerpc/sysdev=
+/xics/xics-common.c
+index 7c561a612366..05e5e7d84ca7 100644
+--- a/arch/powerpc/sysdev/xics/xics-common.c
++++ b/arch/powerpc/sysdev/xics/xics-common.c
+@@ -38,7 +38,7 @@ DEFINE_PER_CPU(struct xics_cppr, xics_cppr);
 =20
- static void irq_domain_clear_mapping(struct irq_domain *domain,
- 				     irq_hw_number_t hwirq)
+ struct irq_domain *xics_host;
+=20
+-static LIST_HEAD(ics_list);
++static struct ics *xics_ics;
+=20
+ void xics_update_irq_servers(void)
+ {
+@@ -111,12 +111,11 @@ void xics_setup_cpu(void)
+=20
+ void xics_mask_unknown_vec(unsigned int vec)
+ {
+-	struct ics *ics;
+-
+ 	pr_err("Interrupt 0x%x (real) is invalid, disabling it.\n", vec);
+=20
+-	list_for_each_entry(ics, &ics_list, link)
+-		ics->mask_unknown(ics, vec);
++	if (WARN_ON(!xics_ics))
++		return;
++	xics_ics->mask_unknown(xics_ics, vec);
+ }
+=20
+=20
+@@ -198,7 +197,6 @@ void xics_migrate_irqs_away(void)
+ 		struct irq_chip *chip;
+ 		long server;
+ 		unsigned long flags;
+-		struct ics *ics;
+=20
+ 		/* We can't set affinity on ISA interrupts */
+ 		if (virq < NUM_ISA_INTERRUPTS)
+@@ -219,13 +217,10 @@ void xics_migrate_irqs_away(void)
+ 		raw_spin_lock_irqsave(&desc->lock, flags);
+=20
+ 		/* Locate interrupt server */
+-		server =3D -1;
+-		ics =3D irq_desc_get_chip_data(desc);
+-		if (ics)
+-			server =3D ics->get_server(ics, irq);
++		server =3D xics_ics->get_server(xics_ics, irq);
+ 		if (server < 0) {
+-			printk(KERN_ERR "%s: Can't find server for irq %d\n",
+-			       __func__, irq);
++			pr_err("%s: Can't find server for irq %d/%x\n",
++			       __func__, virq, irq);
+ 			goto unlock;
+ 		}
+=20
+@@ -307,13 +302,9 @@ int xics_get_irq_server(unsigned int virq, const str=
+uct cpumask *cpumask,
+ static int xics_host_match(struct irq_domain *h, struct device_node *nod=
+e,
+ 			   enum irq_domain_bus_token bus_token)
+ {
+-	struct ics *ics;
+-
+-	list_for_each_entry(ics, &ics_list, link)
+-		if (ics->host_match(ics, node))
+-			return 1;
+-
+-	return 0;
++	if (WARN_ON(!xics_ics))
++		return 0;
++	return xics_ics->host_match(xics_ics, node) ? 1 : 0;
+ }
+=20
+ /* Dummies */
+@@ -330,8 +321,6 @@ static struct irq_chip xics_ipi_chip =3D {
+ static int xics_host_map(struct irq_domain *h, unsigned int virq,
+ 			 irq_hw_number_t hw)
+ {
+-	struct ics *ics;
+-
+ 	pr_devel("xics: map virq %d, hwirq 0x%lx\n", virq, hw);
+=20
+ 	/*
+@@ -348,12 +337,14 @@ static int xics_host_map(struct irq_domain *h, unsi=
+gned int virq,
+ 		return 0;
+ 	}
+=20
++	if (WARN_ON(!xics_ics))
++		return -EINVAL;
++
+ 	/* Let the ICS setup the chip data */
+-	list_for_each_entry(ics, &ics_list, link)
+-		if (ics->map(ics, virq) =3D=3D 0)
+-			return 0;
++	if (xics_ics->map(xics_ics, virq))
++		return -EINVAL;
+=20
+-	return -EINVAL;
++	return 0;
+ }
+=20
+ static int xics_host_xlate(struct irq_domain *h, struct device_node *ct,
+@@ -427,7 +418,9 @@ static void __init xics_init_host(void)
+=20
+ void __init xics_register_ics(struct ics *ics)
+ {
+-	list_add(&ics->link, &ics_list);
++	if (WARN_ONCE(xics_ics, "XICS: Source Controller is already defined !")=
+)
++		return;
++	xics_ics =3D ics;
+ }
+=20
+ static void __init xics_get_server_size(void)
 --=20
 2.31.1
 
