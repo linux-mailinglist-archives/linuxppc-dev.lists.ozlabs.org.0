@@ -2,67 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B9B63B947F
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 18:04:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1015F3B94BA
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 18:36:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GG31P0WbMz3bVs
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jul 2021 02:04:09 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=W1hitavD;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GG3kt6X3zz3blH
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jul 2021 02:36:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::231;
- helo=mail-lj1-x231.google.com; envelope-from=alexei.starovoitov@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=W1hitavD; dkim-atps=neutral
-Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com
- [IPv6:2a00:1450:4864:20::231])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GG30t0n8yz3001
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Jul 2021 02:03:41 +1000 (AEST)
-Received: by mail-lj1-x231.google.com with SMTP id e3so726045ljo.6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Jul 2021 09:03:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=csy0oso8sVVNOjKf5Gla0HtyiXTuq9Jx8AcUlJu8ImQ=;
- b=W1hitavDQEn8qNccnxW8+c9VumLiSxCJcP12eYPMdesJOpDw+paTePwzJA1Gua8Iel
- 2GM50RvgO0jf8yvuEecDlrtjJBs/Mz8/2fIymDYYHr08u8zSQJFY6Pv5DaLiv5wVtxVv
- SJlOYKaMMZbMC/A2RAL1dJzPdnM4G7XO+crdmBz5Aw/tXgFCAOy4uZB3+o/SmuNEA+W1
- v1j8j440WhQEQF5Q7A7tJAlWO8eWRawEukYNXRpIJ3ev0zn5wJ7HlwK9qx2ZW6RK3UAK
- W8U6Sw76TVO36oILcUl142hF9NVUdFGSLz1hflHxC9z4UWOUaxQ2daAYyCeQPHhlqqW5
- ZylA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=csy0oso8sVVNOjKf5Gla0HtyiXTuq9Jx8AcUlJu8ImQ=;
- b=kTfQKD83aI3nNnxmXLqZsDv1Pqz/eH8K2sZDfpFNcIyBsp0Ll7fIDFQbZJSqfSlyBh
- 1JOxnc9lJx8sQ5fPN6qULx0uMJ8/Zkj2MkYOZKZMzcFqW78fNDWR8GeGw12oUpCwG9NC
- U7x2PKVLOmVAxFNe+GvO2NUQagSLVfXGoXSWsItxDuqY+dpyyLdnFjW18Dure2Ma1jXa
- QRuvc687srFHOZFBHlB0iwF+bRL6l3tIM+yordbhwgiA5LW9f0Ukp+M3xfzV+FhMbsYs
- /pz1HP3I9eMfKTE47gC73CwkA9SU3tXN13aQZs494VkzsES1JcwIBBmJsYOJ2NYT94kX
- 9FJg==
-X-Gm-Message-State: AOAM53120/W+Kb5nMHPx3SnVZM0tNEcioZkRFdupxdWt9OTM+t1rnsUG
- 86hX2TR5oB5NaCNaillvt10decgbkAYNEDiR3h4=
-X-Google-Smtp-Source: ABdhPJwvTVCLAGoZOJRP0cbmhkzFDDGwtTUKErvtvOWGV08yJxAwgFzrRudfLAQcVSjb5vTaIPhzQ+N/SyE/3VBKqno=
-X-Received: by 2002:a2e:390f:: with SMTP id g15mr231914lja.44.1625155414065;
- Thu, 01 Jul 2021 09:03:34 -0700 (PDT)
-MIME-Version: 1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GG3kV5wbfz308M
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Jul 2021 02:36:15 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 4GG3kN6JFCzBF3K;
+ Thu,  1 Jul 2021 18:36:12 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id HhcqewzrEylk; Thu,  1 Jul 2021 18:36:12 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4GG3kN5MskzBF2m;
+ Thu,  1 Jul 2021 18:36:12 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id AF3538B97A;
+ Thu,  1 Jul 2021 18:36:12 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id Y6AlK0X0b0xD; Thu,  1 Jul 2021 18:36:12 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 30B258B96E;
+ Thu,  1 Jul 2021 18:36:12 +0200 (CEST)
+Subject: Re: [PATCH 2/2] powerpc/bpf: Reject atomic ops in ppc32 JIT
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>, bpf@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 References: <cover.1625145429.git.naveen.n.rao@linux.vnet.ibm.com>
- <4117b430ffaa8cd7af042496f87fd7539e4f17fd.1625145429.git.naveen.n.rao@linux.vnet.ibm.com>
-In-Reply-To: <4117b430ffaa8cd7af042496f87fd7539e4f17fd.1625145429.git.naveen.n.rao@linux.vnet.ibm.com>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Thu, 1 Jul 2021 09:03:22 -0700
-Message-ID: <CAADnVQ+78iDs7N=8xA6BZVBnPx78Q-Ljp860nmb8cOq7V_6qtQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] powerpc/bpf: Fix detecting BPF atomic instructions
-To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+ <426699046d89fe50f66ecf74bd31c01eda976ba5.1625145429.git.naveen.n.rao@linux.vnet.ibm.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <f05821f6-816f-c9bf-faa9-015e11f25a46@csgroup.eu>
+Date: Thu, 1 Jul 2021 18:36:11 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
+MIME-Version: 1.0
+In-Reply-To: <426699046d89fe50f66ecf74bd31c01eda976ba5.1625145429.git.naveen.n.rao@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,39 +64,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Daniel Borkmann <daniel@iogearbox.net>,
- ppc-dev <linuxppc-dev@lists.ozlabs.org>, Brendan Jackman <jackmanb@google.com>,
- bpf <bpf@vger.kernel.org>, Jiri Olsa <jolsa@redhat.com>
+Cc: Brendan Jackman <jackmanb@google.com>, Jiri Olsa <jolsa@redhat.com>,
+ Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+ Daniel Borkmann <daniel@iogearbox.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 1, 2021 at 8:09 AM Naveen N. Rao
-<naveen.n.rao@linux.vnet.ibm.com> wrote:
->
-> Commit 91c960b0056672 ("bpf: Rename BPF_XADD and prepare to encode other
-> atomics in .imm") converted BPF_XADD to BPF_ATOMIC and added a way to
-> distinguish instructions based on the immediate field. Existing JIT
-> implementations were updated to check for the immediate field and to
-> reject programs utilizing anything more than BPF_ADD (such as BPF_FETCH)
-> in the immediate field.
->
-> However, the check added to powerpc64 JIT did not look at the correct
-> BPF instruction. Due to this, such programs would be accepted and
-> incorrectly JIT'ed resulting in soft lockups, as seen with the atomic
-> bounds test. Fix this by looking at the correct immediate value.
->
-> Fixes: 91c960b0056672 ("bpf: Rename BPF_XADD and prepare to encode other atomics in .imm")
-> Reported-by: Jiri Olsa <jolsa@redhat.com>
-> Tested-by: Jiri Olsa <jolsa@redhat.com>
-> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-> ---
-> Hi Jiri,
-> FYI: I made a small change in this patch -- using 'imm' directly, rather
-> than insn[i].imm. I've still added your Tested-by since this shouldn't
-> impact the fix in any way.
->
-> - Naveen
 
-Excellent debugging! You guys are awesome.
-How do you want this fix routed? via bpf tree?
+
+Le 01/07/2021 à 17:08, Naveen N. Rao a écrit :
+> Commit 91c960b0056672 ("bpf: Rename BPF_XADD and prepare to encode other
+> atomics in .imm") converted BPF_XADD to BPF_ATOMIC and updated all JIT
+> implementations to reject JIT'ing instructions with an immediate value
+> different from BPF_ADD. However, ppc32 BPF JIT was implemented around
+> the same time and didn't include the same change. Update the ppc32 JIT
+> accordingly.
+> 
+> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+
+Shouldn't it also include a Fixes tag and stable Cc as PPC32 eBPF was added in 5.13 ?
+
+Fixes: 51c66ad849a7 ("powerpc/bpf: Implement extended BPF on PPC32")
+Cc: stable@vger.kernel.org
+
+> ---
+>   arch/powerpc/net/bpf_jit_comp32.c | 14 +++++++++++---
+>   1 file changed, 11 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/powerpc/net/bpf_jit_comp32.c b/arch/powerpc/net/bpf_jit_comp32.c
+> index cbe5b399ed869d..91c990335a16c9 100644
+> --- a/arch/powerpc/net/bpf_jit_comp32.c
+> +++ b/arch/powerpc/net/bpf_jit_comp32.c
+> @@ -773,9 +773,17 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
+>   			break;
+>   
+>   		/*
+> -		 * BPF_STX XADD (atomic_add)
+> +		 * BPF_STX ATOMIC (atomic ops)
+>   		 */
+> -		case BPF_STX | BPF_XADD | BPF_W: /* *(u32 *)(dst + off) += src */
+> +		case BPF_STX | BPF_ATOMIC | BPF_W:
+> +			if (imm != BPF_ADD) {
+> +				pr_err_ratelimited(
+> +					"eBPF filter atomic op code %02x (@%d) unsupported\n", code, i);
+> +				return -ENOTSUPP;
+> +			}
+> +
+> +			/* *(u32 *)(dst + off) += src */
+> +
+>   			bpf_set_seen_register(ctx, tmp_reg);
+>   			/* Get offset into TMP_REG */
+>   			EMIT(PPC_RAW_LI(tmp_reg, off));
+> @@ -789,7 +797,7 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
+>   			PPC_BCC_SHORT(COND_NE, (ctx->idx - 3) * 4);
+>   			break;
+>   
+> -		case BPF_STX | BPF_XADD | BPF_DW: /* *(u64 *)(dst + off) += src */
+> +		case BPF_STX | BPF_ATOMIC | BPF_DW: /* *(u64 *)(dst + off) += src */
+>   			return -EOPNOTSUPP;
+>   
+>   		/*
+> 
