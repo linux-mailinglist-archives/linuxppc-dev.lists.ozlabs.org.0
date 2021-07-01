@@ -2,103 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42EC13B96A6
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 21:37:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FBDD3B96DE
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 22:05:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GG7lJ1M02z3bXt
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jul 2021 05:37:16 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=agYOEfJp;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GG8Mx38l0z3bYd
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jul 2021 06:05:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=agYOEfJp; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linkmauve.fr (client-ip=82.65.109.163; helo=luna.linkmauve.fr;
+ envelope-from=linkmauve@linkmauve.fr; receiver=<UNKNOWN>)
+X-Greylist: delayed 475 seconds by postgrey-1.36 at boromir;
+ Fri, 02 Jul 2021 06:05:12 AEST
+Received: from luna.linkmauve.fr (82-65-109-163.subs.proxad.net
+ [82.65.109.163])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GG7kr5Yllz2xg1
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Jul 2021 05:36:52 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 161JXlNW155054; Thu, 1 Jul 2021 15:36:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : subject :
- to : cc : references : in-reply-to : mime-version : message-id :
- content-type : content-transfer-encoding; s=pp1;
- bh=jEVJ4q1ZvfZGmK6n0Mm367AN8ZZJQTFhBD8TmMyFW54=;
- b=agYOEfJp3o8IAEl3xdu2/XUEP9KiwzHWO1HM7Gycc1Rc8+OJ/3d9iCXCCgOyes8jZ7nI
- UpSmzLuBgzBWDTj0Qz96wKrPkLn2ca6jSHYo0nskm8uh0yMGp2vten8pMFfW39FyEDDG
- saYI0tsZALTc8pNKRYrotnRmGtnVgpPLR2K01Ru+KziHIg+Fd87J1PPwD7rdIakZXhKs
- dbub+10jeijb7WMLr0T14z2sHWL7DM1oBW2K3MYKcV4EXWkJbCALLRyVuWNXKsZRn/5W
- tx2xFmHdBLxG2UpGx2jX8gMGgdw9ZT1hCIk/w3d/VK2E96I70qsnx2ySa+/GCzrjlenu 6Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39hepr9xda-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 01 Jul 2021 15:36:35 -0400
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 161JaY6I168946;
- Thu, 1 Jul 2021 15:36:34 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39hepr9xc7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 01 Jul 2021 15:36:34 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 161J2YmX025016;
- Thu, 1 Jul 2021 19:36:32 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma03ams.nl.ibm.com with ESMTP id 39duv8aj8y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 01 Jul 2021 19:36:32 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 161JaTqS19988856
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 1 Jul 2021 19:36:30 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DD1B74208C;
- Thu,  1 Jul 2021 19:36:29 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4E9E34208E;
- Thu,  1 Jul 2021 19:36:29 +0000 (GMT)
-Received: from localhost (unknown [9.85.115.110])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu,  1 Jul 2021 19:36:28 +0000 (GMT)
-Date: Fri, 02 Jul 2021 01:06:27 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH 2/2] powerpc/bpf: Reject atomic ops in ppc32 JIT
-To: bpf@vger.kernel.org, Christophe Leroy <christophe.leroy@csgroup.eu>,
- linuxppc-dev@lists.ozlabs.org
-References: <cover.1625145429.git.naveen.n.rao@linux.vnet.ibm.com>
- <426699046d89fe50f66ecf74bd31c01eda976ba5.1625145429.git.naveen.n.rao@linux.vnet.ibm.com>
- <f05821f6-816f-c9bf-faa9-015e11f25a46@csgroup.eu>
-In-Reply-To: <f05821f6-816f-c9bf-faa9-015e11f25a46@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GG8MX1kClz301s
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Jul 2021 06:05:11 +1000 (AEST)
+Received: by luna.linkmauve.fr (Postfix, from userid 1000)
+ id 06CA9F40443; Thu,  1 Jul 2021 21:56:55 +0200 (CEST)
+Date: Thu, 1 Jul 2021 21:56:55 +0200
+From: Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
+To: Jonathan =?utf-8?Q?Neusch=C3=A4fer?= <j.ne@posteo.net>
+Subject: Re: [PATCH v2 3/4] powerpc: wii.dts: Expose the OTP on this platform
+Message-ID: <20210701195655.knbcikdga57a7epx@luna>
+Jabber-ID: linkmauve@linkmauve.fr
+References: <20210519095044.4109-1-linkmauve@linkmauve.fr>
+ <20210519095044.4109-4-linkmauve@linkmauve.fr>
+ <YNe5aW55SrXFGKFV@latitude>
 MIME-Version: 1.0
-User-Agent: astroid/v0.15-23-gcdc62b30 (https://github.com/astroidmail/astroid)
-Message-Id: <1625167931.l9jfkufqlx.naveen@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: z2J8m6gLUp2f2qpYmf6YJErztQWhVXxR
-X-Proofpoint-GUID: 5ZgWX0_ngW6RQ_WQf0d_DWZq317cZtBe
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-07-01_12:2021-07-01,
- 2021-07-01 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0
- priorityscore=1501 bulkscore=0 phishscore=0 mlxlogscore=999 malwarescore=0
- impostorscore=0 adultscore=0 clxscore=1015 mlxscore=0 lowpriorityscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2107010114
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="5xpqystiypqfkjaq"
+Content-Disposition: inline
+In-Reply-To: <YNe5aW55SrXFGKFV@latitude>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,39 +48,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Brendan Jackman <jackmanb@google.com>, Jiri Olsa <jolsa@redhat.com>,
- Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- Daniel Borkmann <daniel@iogearbox.net>
+Cc: devicetree@vger.kernel.org, Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>,
+ linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+ Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+ Ash Logan <ash@heyquark.com>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy wrote:
->=20
->=20
-> Le 01/07/2021 =C3=A0 17:08, Naveen N. Rao a =C3=A9crit=C2=A0:
->> Commit 91c960b0056672 ("bpf: Rename BPF_XADD and prepare to encode other
->> atomics in .imm") converted BPF_XADD to BPF_ATOMIC and updated all JIT
->> implementations to reject JIT'ing instructions with an immediate value
->> different from BPF_ADD. However, ppc32 BPF JIT was implemented around
->> the same time and didn't include the same change. Update the ppc32 JIT
->> accordingly.
->>=20
->> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
->=20
-> Shouldn't it also include a Fixes tag and stable Cc as PPC32 eBPF was add=
-ed in 5.13 ?
 
-Yes, I wasn't sure which patch to actually blame. But you're right, this=20
-should have the below fixes tag since this affects the ppc32 eBPF JIT.
+--5xpqystiypqfkjaq
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Sat, Jun 26, 2021 at 11:34:01PM +0000, Jonathan Neusch=C3=A4fer wrote:
+> On Wed, May 19, 2021 at 11:50:43AM +0200, Emmanuel Gil Peyrot wrote:
+> > This can be used by the newly-added nintendo-otp nvmem module.
+> >=20
+> > Signed-off-by: Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
+> > ---
+> >  arch/powerpc/boot/dts/wii.dts | 5 +++++
+> >  1 file changed, 5 insertions(+)
+> >=20
+> > diff --git a/arch/powerpc/boot/dts/wii.dts b/arch/powerpc/boot/dts/wii.=
+dts
+> > index aaa381da1906..7837c4a3f09c 100644
+> > --- a/arch/powerpc/boot/dts/wii.dts
+> > +++ b/arch/powerpc/boot/dts/wii.dts
+> > @@ -219,6 +219,11 @@ control@d800100 {
+> >  			reg =3D <0x0d800100 0x300>;
+> >  		};
+> > =20
+> > +		otp@d8001ec {
+> > +			compatible =3D "nintendo,hollywood-otp";
+> > +			reg =3D <0x0d8001ec 0x8>;
 >=20
-> Fixes: 51c66ad849a7 ("powerpc/bpf: Implement extended BPF on PPC32")
-> Cc: stable@vger.kernel.org
+> The OTP registers overlap with the previous node, control@d800100.
+> Not sure what's the best way to structure the devicetree in this case,
+> maybe something roughly like the following (untested, unverified):
+[snip]
 
-Cc: stable@vger.kernel.org # v5.13
+I couldn=E2=80=99t get this to work, but additionally it looks like it shou=
+ld
+start 0x100 earlier and contain pic1@d800030 and gpio@d8000c0, given
+https://wiibrew.org/wiki/Hardware/Hollywood_Registers
 
+Would it make sense, for the time being, to reduce the size of this
+control@d800100 device to the single register currently being used by
+arch/powerpc/platforms/embedded6xx/wii.c (0xd800194, used to reboot the
+system) and leave the refactor of restart + OTP + PIC + GPIO for a
+future series?
 
 Thanks,
-- Naveen
 
+--=20
+Emmanuel Gil Peyrot
+
+--5xpqystiypqfkjaq
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEjrVT1SzTln43kCLJOWgfYkb2LpAFAmDeHgQACgkQOWgfYkb2
+LpBR1wgAo8/AW14uyzt1Z177k6xWkLqlqUXPSqvRzsrEbtn4t/IlewtlPOrwBntP
+v9cBf82hjFyNeKZMOGD/3Hka8bXBlsqrcVZUEPxUYuty6f+qsQ96AIYeVdN+S4It
+8wquNDtGA3VIJY6xxD+sDE+GplNH5WeUO/dhLqXxlSDi52fSyUK/mc6DIcXHC+q8
+f+RW6VDgVVVrJdhofhvHoO/2g0BwKNWOmfyv70RXUvZq+mT6lI3liEkEeAm8TyxP
+4logyZ9vZYg/LhjceqHTnppXl5XyBPeOznBVbygdeJh7igBfRsh6Pz2ISgYeS51N
+YhJjzLcGv44IlTttJz1GkRzIwHj0wg==
+=zJte
+-----END PGP SIGNATURE-----
+
+--5xpqystiypqfkjaq--
