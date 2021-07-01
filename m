@@ -2,83 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 333E03B8EED
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 10:37:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 657123B8F7E
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 11:08:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GFs5p1MRBz3bms
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 18:37:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GFsnR2lHfz3bW0
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 19:08:11 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Efj1KZiA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=evredlD0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Efj1KZiA; dkim-atps=neutral
+ header.s=pp1 header.b=evredlD0; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GFs5L2D7Zz2xvL
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jul 2021 18:36:54 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GFsmz6XRSz303s
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jul 2021 19:07:46 +1000 (AEST)
 Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
  by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 1618WsgW056559; Thu, 1 Jul 2021 04:36:45 -0400
+ 16192j7K175689; Thu, 1 Jul 2021 05:07:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : from : to : cc
- : references : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=m3lF4Ui3NyRYpA3M3VM1hXVtkH1lNerbjQa7e9yqn50=;
- b=Efj1KZiAULNC/OfYRyfS6v53JGw8sN91a9HNztdsTlfUGtGEi1roSd3rolsxCRR1b2CH
- oo2qiVWdjPchgMEfx6DxdVgxNAeUfqTE/SffQ6e+EvpnsltD9SHkDOgPZhgUFvDe6q/h
- kXHkEWOssxJUs6inXXInBFI7aO7BinNIutu/CXSLdBzDpz09PfMEF1a36StkCuoYCcIE
- zv7tHJyRjyb3jE+vCH71XPx9Tm9WW8M6KQZpCzq8WmgbZdf0PMlG20p+GI4ceay9UXqP
- hod6NDRa5wZbOolDJG7+nIykSy2caPRAIDUMRKrIvJ1aIGGhPmiLepnkS7LD2h1PMbW2 wA== 
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0b-001b2d01.pphosted.com with ESMTP id 39h83av32n-1
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=bB1lOJxG3UYA8C9PrzCKfNs4xZ+dr97lG5EN898igjk=;
+ b=evredlD0MAqNWB1O1c1OVXHc0YSv4ai9egNeVN+36ZZTa0fM6v9XzULX2OSbpgPdCyFv
+ DpVzv/mJP0zTwnpCKWxemdqIWvgbpZZzHPFbkY/CqbKZVb06Lb2eQeWJoBixGeVXOPG8
+ YuhH+yFZpBNMorEECLBJWg05z+XkrVy74EVgwWqdoDio/IdSqQS0h7vnFTefQYBj6gl4
+ j9QatTLWJwfQ4wu4ubgWiWM0knBNBlA6xUQw18dpw4m0w6b5HgFGM2LgjuPkFxdtLb5l
+ l/hAQ8p/9RJDaNlhg9YI/DwxwOaVbkAOcIc0wn7BtcBMP3rJJqhZZPl4+IEXne/vNjHU Tw== 
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 39h83aw2rh-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 01 Jul 2021 04:36:45 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1618Vb08020468;
- Thu, 1 Jul 2021 08:36:43 GMT
+ Thu, 01 Jul 2021 05:07:33 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16191v1X008555;
+ Thu, 1 Jul 2021 09:07:31 GMT
 Received: from b06cxnps3074.portsmouth.uk.ibm.com
  (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma04fra.de.ibm.com with ESMTP id 39duv8h6ut-1
+ by ppma04ams.nl.ibm.com with ESMTP id 39duv8ja3b-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 01 Jul 2021 08:36:43 +0000
+ Thu, 01 Jul 2021 09:07:31 +0000
 Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
  [9.149.105.232])
  by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 1618aeBP29491464
+ 16197StK34537918
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 1 Jul 2021 08:36:40 GMT
+ Thu, 1 Jul 2021 09:07:28 GMT
 Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 01525520D9;
- Thu,  1 Jul 2021 08:36:40 +0000 (GMT)
-Received: from pomme.local (unknown [9.145.32.224])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id B6CFC52098;
- Thu,  1 Jul 2021 08:36:39 +0000 (GMT)
-Subject: Re: [PATCH v5] pseries/drmem: update LMBs after LPM
-From: Laurent Dufour <ldufour@linux.ibm.com>
-To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org
-References: <20210517090606.56930-1-ldufour@linux.ibm.com>
-Message-ID: <ef67e0e4-178b-5f4c-910a-a844aad2e5e4@linux.ibm.com>
-Date: Thu, 1 Jul 2021 10:36:39 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.11.0
+ by IMSVA (Postfix) with ESMTP id 657FE5208C;
+ Thu,  1 Jul 2021 09:07:28 +0000 (GMT)
+Received: from saptagiri.in.ibm.com (unknown [9.199.48.43])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 3C9E752052;
+ Thu,  1 Jul 2021 09:07:26 +0000 (GMT)
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 0/2] Update cpu_cpu_mask on CPU online/offline
+Date: Thu,  1 Jul 2021 14:37:18 +0530
+Message-Id: <20210701090720.130602-1-srikar@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.26.3
 MIME-Version: 1.0
-In-Reply-To: <20210517090606.56930-1-ldufour@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: bfbnWGmc6aMihfYEdGEzokiB3kHEr0f7
-X-Proofpoint-ORIG-GUID: bfbnWGmc6aMihfYEdGEzokiB3kHEr0f7
+X-Proofpoint-GUID: _POXqDoYgl0HISGLWnpAOGoTwgowEewH
+X-Proofpoint-ORIG-GUID: _POXqDoYgl0HISGLWnpAOGoTwgowEewH
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
  definitions=2021-07-01_06:2021-06-30,
  2021-07-01 signatures=0
@@ -87,7 +81,7 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501 impostorscore=0 suspectscore=0 mlxlogscore=999
  mlxscore=0 malwarescore=0 clxscore=1015 lowpriorityscore=0 spamscore=0
  phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2107010058
+ engine=8.12.0-2104190000 definitions=main-2107010062
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,170 +94,85 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Tyrel Datwyler <tyreld@linux.ibm.com>
+ Gautham R Shenoy <ego@linux.vnet.ibm.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>,
+ Ingo Molnar <mingo@kernel.org>, Laurent Dufour <ldufour@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Valentin Schneider <valentin.schneider@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael,
+When simultaneously running CPU online/offline with CPU add/remove in a
+loop, we see a WARNING messages.
 
-Do you mind taking this patch of 5.14?
+WARNING: CPU: 13 PID: 1142 at kernel/sched/topology.c:898 build_sched_domains+0xd48/0x1720
+Modules linked in: rpadlpar_io rpaphp mptcp_diag xsk_diag tcp_diag udp_diag
+raw_diag inet_diag unix_diag af_packet_diag netlink_diag bonding tls
+nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet
+nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat
+nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ip_set rfkill nf_tables nfnetlink
+pseries_rng xts vmx_crypto uio_pdrv_genirq uio binfmt_misc ip_tables xfs
+libcrc32c dm_service_time sd_mod t10_pi sg ibmvfc scsi_transport_fc ibmveth
+dm_multipath dm_mirror dm_region_hash dm_log dm_mod fuse
+CPU: 13 PID: 1142 Comm: kworker/13:2 Not tainted 5.13.0-rc6+ #28
+Workqueue: events cpuset_hotplug_workfn
+NIP:  c0000000001caac8 LR: c0000000001caac4 CTR: 00000000007088ec
+REGS: c00000005596f220 TRAP: 0700   Not tainted  (5.13.0-rc6+)
+MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 48828222  XER: 00000009
+CFAR: c0000000001ea698 IRQMASK: 0
+GPR00: c0000000001caac4 c00000005596f4c0 c000000001c4a400 0000000000000036
+GPR04: 00000000fffdffff c00000005596f1d0 0000000000000027 c0000018cfd07f90
+GPR08: 0000000000000023 0000000000000001 0000000000000027 c0000018fe68ffe8
+GPR12: 0000000000008000 c00000001e9d1880 c00000013a047200 0000000000000800
+GPR16: c000000001d3c7d0 0000000000000240 0000000000000048 c000000010aacd18
+GPR20: 0000000000000001 c000000010aacc18 c00000013a047c00 c000000139ec2400
+GPR24: 0000000000000280 c000000139ec2520 c000000136c1b400 c000000001c93060
+GPR28: c00000013a047c20 c000000001d3c6c0 c000000001c978a0 000000000000000d
+NIP [c0000000001caac8] build_sched_domains+0xd48/0x1720
+LR [c0000000001caac4] build_sched_domains+0xd44/0x1720
+Call Trace:
+[c00000005596f4c0] [c0000000001caac4] build_sched_domains+0xd44/0x1720 (unreliable)
+[c00000005596f670] [c0000000001cc5ec] partition_sched_domains_locked+0x3ac/0x4b0
+[c00000005596f710] [c0000000002804e4] rebuild_sched_domains_locked+0x404/0x9e0
+[c00000005596f810] [c000000000283e60] rebuild_sched_domains+0x40/0x70
+[c00000005596f840] [c000000000284124] cpuset_hotplug_workfn+0x294/0xf10
+[c00000005596fc60] [c000000000175040] process_one_work+0x290/0x590
+[c00000005596fd00] [c0000000001753c8] worker_thread+0x88/0x620
+[c00000005596fda0] [c000000000181704] kthread+0x194/0x1a0
+[c00000005596fe10] [c00000000000ccec] ret_from_kernel_thread+0x5c/0x70
+Instruction dump:
+485af049 60000000 2fa30800 409e0028 80fe0000 e89a00f8 e86100e8 38da0120
+7f88e378 7ce53b78 4801fb91 60000000 <0fe00000> 39000000 38e00000 38c00000
 
-Thanks,
-Laurent.
+This was because cpu_cpu_mask() was not getting updated on CPU
+online/offline but would be only updated when add/remove of CPUs.
+Other cpumasks get updated both on CPU online/offline and add/remove
+Update cpu_cpu_mask() on CPU online/offline too.
 
-Le 17/05/2021 à 11:06, Laurent Dufour a écrit :
-> After a LPM, the device tree node ibm,dynamic-reconfiguration-memory may be
-> updated by the hypervisor in the case the NUMA topology of the LPAR's
-> memory is updated.
-> 
-> This is handled by the kernel, but the memory's node is not updated because
-> there is no way to move a memory block between nodes from the Linux kernel
-> point of view.
-> 
-> If later a memory block is added or removed, drmem_update_dt() is called
-> and it is overwriting the DT node ibm,dynamic-reconfiguration-memory to
-> match the added or removed LMB. But the LMB's associativity node has not
-> been updated after the DT node update and thus the node is overwritten by
-> the Linux's topology instead of the hypervisor one.
-> 
-> Introduce a hook called when the ibm,dynamic-reconfiguration-memory node is
-> updated to force an update of the LMB's associativity. However, ignore the
-> call to that hook when the update has been triggered by drmem_update_dt().
-> Because, in that case, the LMB tree has been used to set the DT property
-> and thus it doesn't need to be updated back. Since drmem_update_dt() is
-> called under the protection of the device_hotplug_lock and the hook is
-> called in the same context, use a simple boolean variable to detect that
-> call.
-> 
-> Cc: Nathan Lynch <nathanl@linux.ibm.com>
-> Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> Cc: Tyrel Datwyler <tyreld@linux.ibm.com>
-> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
-> ---
-> 
-> V5:
->   - Reword the commit's description to address Nathan's comments.
-> V4:
->   - Prevent the LMB to be updated back in the case the request came from the
->   LMB tree's update.
-> V3:
->   - Check rd->dn->name instead of rd->dn->full_name
-> V2:
->   - Take Tyrel's idea to rely on OF_RECONFIG_UPDATE_PROPERTY instead of
->   introducing a new hook mechanism.
-> ---
->   arch/powerpc/include/asm/drmem.h              |  1 +
->   arch/powerpc/mm/drmem.c                       | 46 +++++++++++++++++++
->   .../platforms/pseries/hotplug-memory.c        |  4 ++
->   3 files changed, 51 insertions(+)
-> 
-> diff --git a/arch/powerpc/include/asm/drmem.h b/arch/powerpc/include/asm/drmem.h
-> index bf2402fed3e0..4265d5e95c2c 100644
-> --- a/arch/powerpc/include/asm/drmem.h
-> +++ b/arch/powerpc/include/asm/drmem.h
-> @@ -111,6 +111,7 @@ int drmem_update_dt(void);
->   int __init
->   walk_drmem_lmbs_early(unsigned long node, void *data,
->   		      int (*func)(struct drmem_lmb *, const __be32 **, void *));
-> +void drmem_update_lmbs(struct property *prop);
->   #endif
->   
->   static inline void invalidate_lmb_associativity_index(struct drmem_lmb *lmb)
-> diff --git a/arch/powerpc/mm/drmem.c b/arch/powerpc/mm/drmem.c
-> index 9af3832c9d8d..22197b18d85e 100644
-> --- a/arch/powerpc/mm/drmem.c
-> +++ b/arch/powerpc/mm/drmem.c
-> @@ -18,6 +18,7 @@ static int n_root_addr_cells, n_root_size_cells;
->   
->   static struct drmem_lmb_info __drmem_info;
->   struct drmem_lmb_info *drmem_info = &__drmem_info;
-> +static bool in_drmem_update;
->   
->   u64 drmem_lmb_memory_max(void)
->   {
-> @@ -178,6 +179,11 @@ int drmem_update_dt(void)
->   	if (!memory)
->   		return -1;
->   
-> +	/*
-> +	 * Set in_drmem_update to prevent the notifier callback to process the
-> +	 * DT property back since the change is coming from the LMB tree.
-> +	 */
-> +	in_drmem_update = true;
->   	prop = of_find_property(memory, "ibm,dynamic-memory", NULL);
->   	if (prop) {
->   		rc = drmem_update_dt_v1(memory, prop);
-> @@ -186,6 +192,7 @@ int drmem_update_dt(void)
->   		if (prop)
->   			rc = drmem_update_dt_v2(memory, prop);
->   	}
-> +	in_drmem_update = false;
->   
->   	of_node_put(memory);
->   	return rc;
-> @@ -307,6 +314,45 @@ int __init walk_drmem_lmbs_early(unsigned long node, void *data,
->   	return ret;
->   }
->   
-> +/*
-> + * Update the LMB associativity index.
-> + */
-> +static int update_lmb(struct drmem_lmb *updated_lmb,
-> +		      __maybe_unused const __be32 **usm,
-> +		      __maybe_unused void *data)
-> +{
-> +	struct drmem_lmb *lmb;
-> +
-> +	for_each_drmem_lmb(lmb) {
-> +		if (lmb->drc_index != updated_lmb->drc_index)
-> +			continue;
-> +
-> +		lmb->aa_index = updated_lmb->aa_index;
-> +		break;
-> +	}
-> +	return 0;
-> +}
-> +
-> +/*
-> + * Update the LMB associativity index.
-> + *
-> + * This needs to be called when the hypervisor is updating the
-> + * dynamic-reconfiguration-memory node property.
-> + */
-> +void drmem_update_lmbs(struct property *prop)
-> +{
-> +	/*
-> +	 * Don't update the LMBs if triggered by the update done in
-> +	 * drmem_update_dt(), the LMB values have been used to the update the DT
-> +	 * property in that case.
-> +	 */
-> +	if (in_drmem_update)
-> +		return;
-> +	if (!strcmp(prop->name, "ibm,dynamic-memory"))
-> +		__walk_drmem_v1_lmbs(prop->value, NULL, NULL, update_lmb);
-> +	else if (!strcmp(prop->name, "ibm,dynamic-memory-v2"))
-> +		__walk_drmem_v2_lmbs(prop->value, NULL, NULL, update_lmb);
-> +}
->   #endif
->   
->   static int init_drmem_lmb_size(struct device_node *dn)
-> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-> index 8377f1f7c78e..672ffbee2e78 100644
-> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-> @@ -949,6 +949,10 @@ static int pseries_memory_notifier(struct notifier_block *nb,
->   	case OF_RECONFIG_DETACH_NODE:
->   		err = pseries_remove_mem_node(rd->dn);
->   		break;
-> +	case OF_RECONFIG_UPDATE_PROPERTY:
-> +		if (!strcmp(rd->dn->name,
-> +			    "ibm,dynamic-reconfiguration-memory"))
-> +			drmem_update_lmbs(rd->prop);
->   	}
->   	return notifier_from_errno(err);
->   }
-> 
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Nathan Lynch <nathanl@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Valentin Schneider <valentin.schneider@arm.com>
+Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>
+Cc: Laurent Dufour <ldufour@linux.ibm.com>
+
+Srikar Dronamraju (2):
+  powerpc/numa: Print debug statements only when required
+  powerpc/numa: Update cpu_cpu_map on CPU online/offline
+
+ arch/powerpc/include/asm/topology.h | 12 ++++++++++++
+ arch/powerpc/kernel/smp.c           |  3 +++
+ arch/powerpc/mm/numa.c              | 18 +++++++-----------
+ 3 files changed, 22 insertions(+), 11 deletions(-)
+
+-- 
+2.27.0
 
