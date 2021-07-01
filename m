@@ -1,79 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A359F3B8CD3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 06:16:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B926A3B8CDA
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 06:17:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GFlJW3jVGz3bWr
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 14:16:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GFlKX5FqPz3bjf
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 14:17:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=VNmEHdcP;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Sai8wSsI;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::634;
- helo=mail-pl1-x634.google.com; envelope-from=npiggin@gmail.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=VNmEHdcP; dkim-atps=neutral
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com
- [IPv6:2607:f8b0:4864:20::634])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=Sai8wSsI; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GFlJ36Kdgz2yN3
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jul 2021 14:15:46 +1000 (AEST)
-Received: by mail-pl1-x634.google.com with SMTP id i4so2901658plt.12
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Jun 2021 21:15:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=sjKXrlzHdeYKbvdR/Do66AxwituMlDFFGjAyP20Oqdw=;
- b=VNmEHdcPzbXP2eV5NeVSyaWBEg0hbe7b47s2v4RO2Vrgd2WUYt4y9WhY6BGncVVTHi
- 77yi/Y98A1DTOvNyY/3PtPrbQDSZi1KgscVvwhx3mmOsKeOd7JyOl+7ytWw6qAizTDYd
- r4lJ21X+vUXQar2EcRc5tELcQb8jRnUyNgnKY20CQh0VA3c+6R7cAOUTolTlb8/T/0eR
- 8wJy1zvCeOWqv8I7rTjN3AOIJbHZQxT+F2V6BcgmSEKUF1ZqaSWLEjt/sdZ9iKABPhZP
- fdTGXoS2DQZuRPPgm5Oi1RGTKBLGmXYmK/9NQgtu5aX7/hrkLhzHTr8djO5i40Niwu80
- WiVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=sjKXrlzHdeYKbvdR/Do66AxwituMlDFFGjAyP20Oqdw=;
- b=udCGygq1u3mkTxK2/cfC/8SoqUf45ADAehnL2xv5D3zEn1JNe0bh8fFLiqlr30CZO2
- 1yED+JodOnXv8SbNuwchq0zXA5ylKVPUg35WRY2haoTHKf1aDozhf53DLpwwtXrQ08Cf
- C82Hhhnx8L35lOZsp6ajajDoYbkUWdG2U19bVo2ZJulq6oAyhf8LQ2AxYCblu1uDp3G1
- d47T/4iL0IkdKMAiiRSLFQQNbHpVOyEZO6zj2Xgs5nbGoCDtHPJcC+MAX3BkhR/sD4Al
- CscliFcSni+o37MBQm12VRbLPwO7o3wsz+wlaX/NpHanYl5CfrP6cmDI5qgUc3AuL3Qg
- WFPg==
-X-Gm-Message-State: AOAM531AUZbW1ZEWpBad3LWTKRCzvnznGXLqmYTOoCmNYu15I4f4r5w6
- SJN2ZbyD3WldY17Hr5MNQG0=
-X-Google-Smtp-Source: ABdhPJz3SWfoYmrCu8JW8hawg7Rs+2Auvv3RKl8ZUENWCFSu09Sl3JdsPvI42bH7ImO9+QzfCoR3Uw==
-X-Received: by 2002:a17:90a:708:: with SMTP id
- l8mr7894359pjl.103.1625112944319; 
- Wed, 30 Jun 2021 21:15:44 -0700 (PDT)
-Received: from localhost (220-244-87-52.tpgi.com.au. [220.244.87.52])
- by smtp.gmail.com with ESMTPSA id n34sm17675273pji.45.2021.06.30.21.15.43
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Jun 2021 21:15:44 -0700 (PDT)
-Date: Thu, 01 Jul 2021 14:15:38 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [RESEND PATCH v4 05/11] powerpc/64s: Add ability to skip SLB
- preload
-To: "Christopher M. Riedl" <cmr@linux.ibm.com>, Daniel Axtens
- <dja@axtens.net>, linuxppc-dev@lists.ozlabs.org
-References: <20210506043452.9674-1-cmr@linux.ibm.com>
- <20210506043452.9674-6-cmr@linux.ibm.com>
- <87sg1bj4ex.fsf@dja-thinkpad.axtens.net>
- <CCHHVUNV216M.1825LSMNZ1XG7@oc8246131445.ibm.com>
-In-Reply-To: <CCHHVUNV216M.1825LSMNZ1XG7@oc8246131445.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GFlK31qmXz2yN3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jul 2021 14:16:38 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 16143RVX142440; Thu, 1 Jul 2021 00:16:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=8Y1pJhcEdfTX8ByyHeVOiPCrmi/ljWqFUx98MB0fCMo=;
+ b=Sai8wSsIlVjGEAMGtFrjyi2+i8e7qVWwSB+lGY2k/GFIHE131OSDT3lBKd8nex/GwOXD
+ md8Z/ZV6JsxSZH85Cps2vml41LBbeNM6JDj3LOcb/sogpedCaTHN6k5ThOHjsiHpgvFe
+ Q1ZsL2A+pfC3Xco9A+LxdA6t90sikeIeE3eBawo1QS+SyUqQfLmMIjsDofZxsIlYlAs+
+ LQDdM494IRB9S4CV7V7v6z5ImUbrAnFVg2QtQCSqOm42G36s3Yye8h8LdAowudtgljLv
+ 1vnymEUyeYxM1/R/DQZZqWfBC4qb/Sl/yiFJwHDumxxLXwOc9qVtE9/7eLhdEV2MKOkm Qw== 
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 39h514hy5b-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 01 Jul 2021 00:16:17 -0400
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1614CNVd009622;
+ Thu, 1 Jul 2021 04:16:14 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma04fra.de.ibm.com with ESMTP id 39duv8h4sk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 01 Jul 2021 04:16:13 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1614GA4X22413606
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 1 Jul 2021 04:16:11 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D03BB11C06C;
+ Thu,  1 Jul 2021 04:16:10 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 795C111C069;
+ Thu,  1 Jul 2021 04:16:07 +0000 (GMT)
+Received: from saptagiri.in.ibm.com (unknown [9.85.122.203])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  1 Jul 2021 04:16:07 +0000 (GMT)
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Ingo Molnar <mingo@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH v2 0/2]  Skip numa distance for offline nodes
+Date: Thu,  1 Jul 2021 09:45:50 +0530
+Message-Id: <20210701041552.112072-1-srikar@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.26.3
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: hEJwWindf7BtteiaVGFkck3ixuBoFvy7
+X-Proofpoint-GUID: hEJwWindf7BtteiaVGFkck3ixuBoFvy7
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Message-Id: <1625112841.77uceah4w9.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-07-01_01:2021-06-30,
+ 2021-07-01 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 mlxscore=0
+ adultscore=0 phishscore=0 priorityscore=1501 spamscore=0 bulkscore=0
+ clxscore=1011 suspectscore=0 malwarescore=0 mlxlogscore=951
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2107010027
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,216 +98,136 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tglx@linutronix.de, x86@kernel.org, keescook@chromium.org,
- linux-hardening@vger.kernel.org
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Gautham R Shenoy <ego@linux.vnet.ibm.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Srikar Dronamraju <srikar@linux.vnet.ibm.com>, Rik van Riel <riel@surriel.com>,
+ linuxppc-dev@lists.ozlabs.org,
+ Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>,
+ LKML <linux-kernel@vger.kernel.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Laurent Dufour <ldufour@linux.ibm.com>,
+ Mel Gorman <mgorman@techsingularity.net>,
+ Valentin Schneider <valentin.schneider@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Christopher M. Riedl's message of July 1, 2021 1:48 pm:
-> On Sun Jun 20, 2021 at 10:13 PM CDT, Daniel Axtens wrote:
->> "Christopher M. Riedl" <cmr@linux.ibm.com> writes:
->>
->> > Switching to a different mm with Hash translation causes SLB entries t=
-o
->> > be preloaded from the current thread_info. This reduces SLB faults, fo=
-r
->> > example when threads share a common mm but operate on different addres=
-s
->> > ranges.
->> >
->> > Preloading entries from the thread_info struct may not always be
->> > appropriate - such as when switching to a temporary mm. Introduce a ne=
-w
->> > boolean in mm_context_t to skip the SLB preload entirely. Also move th=
-e
->> > SLB preload code into a separate function since switch_slb() is alread=
-y
->> > quite long. The default behavior (preloading SLB entries from the
->> > current thread_info struct) remains unchanged.
->> >
->> > Signed-off-by: Christopher M. Riedl <cmr@linux.ibm.com>
->> >
->> > ---
->> >
->> > v4:  * New to series.
->> > ---
->> >  arch/powerpc/include/asm/book3s/64/mmu.h |  3 ++
->> >  arch/powerpc/include/asm/mmu_context.h   | 13 ++++++
->> >  arch/powerpc/mm/book3s64/mmu_context.c   |  2 +
->> >  arch/powerpc/mm/book3s64/slb.c           | 56 ++++++++++++++---------=
--
->> >  4 files changed, 50 insertions(+), 24 deletions(-)
->> >
->> > diff --git a/arch/powerpc/include/asm/book3s/64/mmu.h b/arch/powerpc/i=
-nclude/asm/book3s/64/mmu.h
->> > index eace8c3f7b0a1..b23a9dcdee5af 100644
->> > --- a/arch/powerpc/include/asm/book3s/64/mmu.h
->> > +++ b/arch/powerpc/include/asm/book3s/64/mmu.h
->> > @@ -130,6 +130,9 @@ typedef struct {
->> >  	u32 pkey_allocation_map;
->> >  	s16 execute_only_pkey; /* key holding execute-only protection */
->> >  #endif
->> > +
->> > +	/* Do not preload SLB entries from thread_info during switch_slb() *=
-/
->> > +	bool skip_slb_preload;
->> >  } mm_context_t;
->> > =20
->> >  static inline u16 mm_ctx_user_psize(mm_context_t *ctx)
->> > diff --git a/arch/powerpc/include/asm/mmu_context.h b/arch/powerpc/inc=
-lude/asm/mmu_context.h
->> > index 4bc45d3ed8b0e..264787e90b1a1 100644
->> > --- a/arch/powerpc/include/asm/mmu_context.h
->> > +++ b/arch/powerpc/include/asm/mmu_context.h
->> > @@ -298,6 +298,19 @@ static inline int arch_dup_mmap(struct mm_struct =
-*oldmm,
->> >  	return 0;
->> >  }
->> > =20
->> > +#ifdef CONFIG_PPC_BOOK3S_64
->> > +
->> > +static inline void skip_slb_preload_mm(struct mm_struct *mm)
->> > +{
->> > +	mm->context.skip_slb_preload =3D true;
->> > +}
->> > +
->> > +#else
->> > +
->> > +static inline void skip_slb_preload_mm(struct mm_struct *mm) {}
->> > +
->> > +#endif /* CONFIG_PPC_BOOK3S_64 */
->> > +
->> >  #include <asm-generic/mmu_context.h>
->> > =20
->> >  #endif /* __KERNEL__ */
->> > diff --git a/arch/powerpc/mm/book3s64/mmu_context.c b/arch/powerpc/mm/=
-book3s64/mmu_context.c
->> > index c10fc8a72fb37..3479910264c59 100644
->> > --- a/arch/powerpc/mm/book3s64/mmu_context.c
->> > +++ b/arch/powerpc/mm/book3s64/mmu_context.c
->> > @@ -202,6 +202,8 @@ int init_new_context(struct task_struct *tsk, stru=
-ct mm_struct *mm)
->> >  	atomic_set(&mm->context.active_cpus, 0);
->> >  	atomic_set(&mm->context.copros, 0);
->> > =20
->> > +	mm->context.skip_slb_preload =3D false;
->> > +
->> >  	return 0;
->> >  }
->> > =20
->> > diff --git a/arch/powerpc/mm/book3s64/slb.c b/arch/powerpc/mm/book3s64=
-/slb.c
->> > index c91bd85eb90e3..da0836cb855af 100644
->> > --- a/arch/powerpc/mm/book3s64/slb.c
->> > +++ b/arch/powerpc/mm/book3s64/slb.c
->> > @@ -441,10 +441,39 @@ static void slb_cache_slbie_user(unsigned int in=
-dex)
->> >  	asm volatile("slbie %0" : : "r" (slbie_data));
->> >  }
->> > =20
->> > +static void preload_slb_entries(struct task_struct *tsk, struct mm_st=
-ruct *mm)
->> Should this be explicitly inline or even __always_inline? I'm thinking
->> switch_slb is probably a fairly hot path on hash?
->=20
-> Yes absolutely. I'll make this change in v5.
->=20
->>
->> > +{
->> > +	struct thread_info *ti =3D task_thread_info(tsk);
->> > +	unsigned char i;
->> > +
->> > +	/*
->> > +	 * We gradually age out SLBs after a number of context switches to
->> > +	 * reduce reload overhead of unused entries (like we do with FP/VEC
->> > +	 * reload). Each time we wrap 256 switches, take an entry out of the
->> > +	 * SLB preload cache.
->> > +	 */
->> > +	tsk->thread.load_slb++;
->> > +	if (!tsk->thread.load_slb) {
->> > +		unsigned long pc =3D KSTK_EIP(tsk);
->> > +
->> > +		preload_age(ti);
->> > +		preload_add(ti, pc);
->> > +	}
->> > +
->> > +	for (i =3D 0; i < ti->slb_preload_nr; i++) {
->> > +		unsigned char idx;
->> > +		unsigned long ea;
->> > +
->> > +		idx =3D (ti->slb_preload_tail + i) % SLB_PRELOAD_NR;
->> > +		ea =3D (unsigned long)ti->slb_preload_esid[idx] << SID_SHIFT;
->> > +
->> > +		slb_allocate_user(mm, ea);
->> > +	}
->> > +}
->> > +
->> >  /* Flush all user entries from the segment table of the current proce=
-ssor. */
->> >  void switch_slb(struct task_struct *tsk, struct mm_struct *mm)
->> >  {
->> > -	struct thread_info *ti =3D task_thread_info(tsk);
->> >  	unsigned char i;
->> > =20
->> >  	/*
->> > @@ -502,29 +531,8 @@ void switch_slb(struct task_struct *tsk, struct m=
-m_struct *mm)
->> > =20
->> >  	copy_mm_to_paca(mm);
->> > =20
->> > -	/*
->> > -	 * We gradually age out SLBs after a number of context switches to
->> > -	 * reduce reload overhead of unused entries (like we do with FP/VEC
->> > -	 * reload). Each time we wrap 256 switches, take an entry out of the
->> > -	 * SLB preload cache.
->> > -	 */
->> > -	tsk->thread.load_slb++;
->> > -	if (!tsk->thread.load_slb) {
->> > -		unsigned long pc =3D KSTK_EIP(tsk);
->> > -
->> > -		preload_age(ti);
->> > -		preload_add(ti, pc);
->> > -	}
->> > -
->> > -	for (i =3D 0; i < ti->slb_preload_nr; i++) {
->> > -		unsigned char idx;
->> > -		unsigned long ea;
->> > -
->> > -		idx =3D (ti->slb_preload_tail + i) % SLB_PRELOAD_NR;
->> > -		ea =3D (unsigned long)ti->slb_preload_esid[idx] << SID_SHIFT;
->> > -
->> > -		slb_allocate_user(mm, ea);
->> > -	}
->> > +	if (!mm->context.skip_slb_preload)
->> > +		preload_slb_entries(tsk, mm);
->>
->> Should this be wrapped in likely()?
->=20
-> Seems like a good idea - yes.
->=20
->>
->> > =20
->> >  	/*
->> >  	 * Synchronize slbmte preloads with possible subsequent user memory
->>
->> Right below this comment is the isync. It seems to be specifically
->> concerned with synchronising preloaded slbs. Do you need it if you are
->> skipping SLB preloads?
->>
->> It's probably not a big deal to have an extra isync in the fairly rare
->> path when we're skipping preloads, but I thought I'd check.
->=20
-> I don't _think_ we need the `isync` if we are skipping the SLB preloads,
-> but then again it was always in the code-path before. If someone can
-> make a compelling argument to drop it when not preloading SLBs I will,
-> otherwise (considering some of the other non-obvious things I stepped
-> into with the Hash code) I will keep it here for now.
+Changelog v1->v2:
+v1: http://lore.kernel.org/lkml/20210520154427.1041031-1-srikar@linux.vnet.ibm.com/t/#u
+- Update the numa masks, whenever 1st CPU is added to cpuless node
+- Populate all possible nodes distances in boot in a
+powerpc specific function
 
-The ISA says slbia wants an isync afterward, so we probably should keep=20
-it. The comment is a bit misleading in that case.
+Geetika reported yet another trace while doing a dlpar CPU add
+operation. This was true even on top of a recent commit
+6980d13f0dd1 ("powerpc/smp: Set numa node before updating mask") which fixed
+a similar trace.
 
-Why isn't preloading appropriate for a temporary mm?=20
+WARNING: CPU: 40 PID: 2954 at kernel/sched/topology.c:2088 build_sched_domains+0x6e8/0x1540
+Modules linked in: nft_counter nft_compat rpadlpar_io rpaphp mptcp_diag
+xsk_diag tcp_diag udp_diag raw_diag inet_diag unix_diag af_packet_diag
+netlink_diag bonding tls nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib
+nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat
+nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ip_set rfkill nf_tables
+nfnetlink dm_multipath pseries_rng xts vmx_crypto binfmt_misc ip_tables xfs
+libcrc32c sd_mod t10_pi sg ibmvscsi ibmveth scsi_transport_srp dm_mirror
+dm_region_hash dm_log dm_mod fuse
+CPU: 40 PID: 2954 Comm: kworker/40:0 Not tainted 5.13.0-rc1+ #19
+Workqueue: events cpuset_hotplug_workfn
+NIP:  c0000000001de588 LR: c0000000001de584 CTR: 00000000006cd36c
+REGS: c00000002772b250 TRAP: 0700   Not tainted  (5.12.0-rc5-master+)
+MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 28828422  XER: 0000000d
+CFAR: c00000000020c2f8 IRQMASK: 0 #012GPR00: c0000000001de584 c00000002772b4f0
+c000000001f55400 0000000000000036 #012GPR04: c0000063c6368010 c0000063c63f0a00
+0000000000000027 c0000063c6368018 #012GPR08: 0000000000000023 c0000063c636ef48
+00000063c4de0000 c0000063bfe9ffe8 #012GPR12: 0000000028828424 c0000063fe68fe80
+0000000000000000 0000000000000417 #012GPR16: 0000000000000028 c00000000740dcd8
+c00000000205db68 c000000001a3a4a0 #012GPR20: c000000091ed7d20 c000000091ed8520
+0000000000000001 0000000000000000 #012GPR24: c0000000113a9600 0000000000000190
+0000000000000028 c0000000010e3ac0 #012GPR28: 0000000000000000 c00000000740dd00
+c0000000317b5900 0000000000000190
+NIP [c0000000001de588] build_sched_domains+0x6e8/0x1540
+LR [c0000000001de584] build_sched_domains+0x6e4/0x1540
+Call Trace:
+[c00000002772b4f0] [c0000000001de584] build_sched_domains+0x6e4/0x1540 (unreliable)
+[c00000002772b640] [c0000000001e08dc] partition_sched_domains_locked+0x3ec/0x530
+[c00000002772b6e0] [c0000000002a2144] rebuild_sched_domains_locked+0x524/0xbf0
+[c00000002772b7e0] [c0000000002a5620] rebuild_sched_domains+0x40/0x70
+[c00000002772b810] [c0000000002a58e4] cpuset_hotplug_workfn+0x294/0xe20
+[c00000002772bc30] [c000000000187510] process_one_work+0x300/0x670
+[c00000002772bd10] [c0000000001878f8] worker_thread+0x78/0x520
+[c00000002772bda0] [c0000000001937f0] kthread+0x1a0/0x1b0
+[c00000002772be10] [c00000000000d6ec] ret_from_kernel_thread+0x5c/0x70
+Instruction dump:
+7ee5bb78 7f0ac378 7f29cb78 7f68db78 7f46d378 7f84e378 f8610068 3c62ff19
+fbe10060 3863e558 4802dd31 60000000 <0fe00000> 3920fff4 f9210080 e86100b0
 
-Thanks,
-Nick
+Detailed analysis of the failing scenario showed that the span in
+question belongs to NODE domain and further the cpumasks for some
+cpus in NODE overlapped. There are two possible reasons how we ended
+up here:
+
+(1) The numa node was offline or blank with no CPUs or memory. Hence
+the sched_max_numa_distance could not be set correctly, or the
+sched_domains_numa_distance happened to be partially populated.
+
+(2) Depending on a bogus node_distance of an offline node to populate
+cpumasks is the issue.  On POWER platform the node_distance is
+correctly available only for an online node which has some CPU or
+memory resource associated with it.
+
+For example distance info from numactl from a fully populated 8 node
+system at boot may look like this.
+
+node distances:
+node   0   1   2   3   4   5   6   7
+  0:  10  20  40  40  40  40  40  40
+  1:  20  10  40  40  40  40  40  40
+  2:  40  40  10  20  40  40  40  40
+  3:  40  40  20  10  40  40  40  40
+  4:  40  40  40  40  10  20  40  40
+  5:  40  40  40  40  20  10  40  40
+  6:  40  40  40  40  40  40  10  20
+  7:  40  40  40  40  40  40  20  10
+
+However the same system when only two nodes are online at boot, then the
+numa topology will look like
+node distances:
+node   0   1
+  0:  10  20
+  1:  20  10
+
+This series tries to fix both these problems.
+Note: These problems are now visible, thanks to
+Commit ccf74128d66c ("sched/topology: Assert non-NUMA topology masks don't
+(partially) overlap")
+
+Cc: LKML <linux-kernel@vger.kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Nathan Lynch <nathanl@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Valentin Schneider <valentin.schneider@arm.com>
+Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>
+Cc: Laurent Dufour <ldufour@linux.ibm.com>
+
+Srikar Dronamraju (2):
+  sched/topology: Skip updating masks for non-online nodes
+  powerpc/numa: Fill distance_lookup_table for offline nodes
+
+ arch/powerpc/mm/numa.c  | 70 +++++++++++++++++++++++++++++++++++++++++
+ kernel/sched/topology.c | 25 +++++++++++++--
+ 2 files changed, 93 insertions(+), 2 deletions(-)
+
+
+base-commit: 031e3bd8986fffe31e1ddbf5264cccfe30c9abd7
+-- 
+2.27.0
+
