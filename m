@@ -2,49 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FD4D3B91CA
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 14:50:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 620C63B91CF
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 14:52:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GFykP52jyz3bYK
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 22:50:53 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=VoKnAQoc;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GFymd1qnjz3bNs
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 22:52:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=VoKnAQoc; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=cdjrlc.com (client-ip=183.3.226.173; helo=qq.com;
+ envelope-from=wangborong@cdjrlc.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 64 seconds by postgrey-1.36 at boromir;
+ Thu, 01 Jul 2021 22:52:30 AEST
+Received: from qq.com (smtpbg551.qq.com [183.3.226.173])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GFyk06zS9z2ypn
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jul 2021 22:50:32 +1000 (AEST)
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 4GFyjz6Ljjz9sX5; Thu,  1 Jul 2021 22:50:31 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1625143831;
- bh=tbYJ2am5iPPSCxKGbyTzZbv5ZR6aV1TXfixQcYpWFIg=;
- h=From:To:Cc:Subject:Date:From;
- b=VoKnAQockLt4SLhwY8+5+WJ1mFsh1vGh0ZWWuB4CXEnFMY0tTMRNlJEtyMaQaSDxm
- kDeHB6l1CHV3WUgmhTYjgHLwP78BtqqKWltej+rqOGJM3o4pKAuZYyrrCbydQklcZT
- TPUiJmly4/1I9TgQpu43fHzQnHxyFnoYZKfJbtxFrcdgKawRpQR66680/3lLI57BXH
- CZR1x/0uv1uGfsW6x+jYCpJt7TP6tp+aT2KemskpnMvvR5XMx5Rs93PX2CgRNr9zG9
- pUkQxdDPPMmti5pSm9f5UpnVaRjusqSzO9Bd0NTqRVqBcfj6f5WEPu3aji8u9sHZm7
- BiXGO4D6AiqcA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc: Only build restart_table.c for 64s
-Date: Thu,  1 Jul 2021 22:50:26 +1000
-Message-Id: <20210701125026.292224-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.25.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GFymG6s9Jz2ymN
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jul 2021 22:52:30 +1000 (AEST)
+X-QQ-mid: bizesmtp34t1625143869t3i3nq03
+Received: from localhost.localdomain (unknown [182.148.13.55])
+ by esmtp6.qq.com (ESMTP) with 
+ id ; Thu, 01 Jul 2021 20:51:07 +0800 (CST)
+X-QQ-SSF: 0100000000800030B000B00A0000000
+X-QQ-FEAT: t5mnTZTTCFeiPWU/OhvvZsxrc8tP+EEDaPod+tKJ092DO7dk3bByzAqv1Qzzm
+ hHR43sKAqPWSZkcjOsXUTJt7z2CH2KesOtIVPZvzchEl8F/0/O5x/ZzvCHORyq4svZjIcq0
+ hfenTeYswyxotkoNrpGCuN8egV38/l1SCPnZtno5K5khVUwNsTFH7xAXZTjLr/GRQx8mQt9
+ 31uamDbKgFWfMgUrEa9gSXVfoff+T3K8FgHIqx2TsV95O/y4CSPUmhcbgJg4HF2+zF34WPc
+ Oebven09p4zeA/2MQFwiFrut5SheqGuP2+Rvd+m9Xx6IGdYxm5rDQC+CwsbE8X5n7SqKuxN
+ 2IUE0aMnt03eDj5i5nOf0Ao4OSZ1A==
+X-QQ-GoodBg: 0
+From: Jason Wang <wangborong@cdjrlc.com>
+To: jk@ozlabs.org
+Subject: [PATCH] sched: Use WARN_ON
+Date: Thu,  1 Jul 2021 20:50:46 +0800
+Message-Id: <20210701125046.43018-1-wangborong@cdjrlc.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:cdjrlc.com:qybgforeign:qybgforeign1
+X-QQ-Bgrelay: 1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,44 +53,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: npiggin@gmail.com
+Cc: arnd@arndb.de, linux-kernel@vger.kernel.org,
+ Jason Wang <wangborong@cdjrlc.com>, paulus@samba.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit 9b69d48c7516 ("powerpc/64e: remove implicit soft-masking and
-interrupt exit restart logic") limited the implicit soft masking and
-restart logic to 64-bit Book3S only. However we are still building
-restart_table.c for all 64-bit, ie. Book3E also.
+The BUG_ON macro simplifies the if condition followed by BUG, but it
+will lead to the kernel crashing. Therefore, we can try using WARN_ON
+instead of if condition followed by BUG.
 
-There's no need to build it for 64e, and it also causes missing
-prototype warnings for 64e builds, because the prototype is already
-behind an #ifdef PPC_BOOK3S_64.
-
-Fixes: 9b69d48c7516 ("powerpc/64e: remove implicit soft-masking and interrupt exit restart logic")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Jason Wang <wangborong@cdjrlc.com>
 ---
- arch/powerpc/lib/Makefile | 4 ++--
+ arch/powerpc/platforms/cell/spufs/sched.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
-index 4c92c80454f3..99a7c9132422 100644
---- a/arch/powerpc/lib/Makefile
-+++ b/arch/powerpc/lib/Makefile
-@@ -39,10 +39,10 @@ extra-$(CONFIG_PPC64)	+= crtsavres.o
- endif
+diff --git a/arch/powerpc/platforms/cell/spufs/sched.c b/arch/powerpc/platforms/cell/spufs/sched.c
+index 369206489895..0f218d9e5733 100644
+--- a/arch/powerpc/platforms/cell/spufs/sched.c
++++ b/arch/powerpc/platforms/cell/spufs/sched.c
+@@ -904,8 +904,8 @@ static noinline void spusched_tick(struct spu_context *ctx)
+ 	struct spu_context *new = NULL;
+ 	struct spu *spu = NULL;
  
- obj-$(CONFIG_PPC_BOOK3S_64) += copyuser_power7.o copypage_power7.o \
--			       memcpy_power7.o
-+			       memcpy_power7.o restart_table.o
+-	if (spu_acquire(ctx))
+-		BUG();	/* a kernel thread never has signals pending */
++	/* a kernel thread never has signals pending */
++	WARN_ON(spu_acquire(ctx));
  
- obj64-y	+= copypage_64.o copyuser_64.o mem_64.o hweight_64.o \
--	   memcpy_64.o copy_mc_64.o restart_table.o
-+	   memcpy_64.o copy_mc_64.o
- 
- ifndef CONFIG_PPC_QUEUED_SPINLOCKS
- obj64-$(CONFIG_SMP)	+= locks.o
+ 	if (ctx->state != SPU_STATE_RUNNABLE)
+ 		goto out;
 -- 
-2.25.1
+2.32.0
+
+
 
