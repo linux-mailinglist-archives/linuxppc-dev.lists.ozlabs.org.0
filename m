@@ -1,47 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F37833B9198
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 14:27:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FD4D3B91CA
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 14:50:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GFyBx0047z3bkD
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 22:27:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GFykP52jyz3bYK
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Jul 2021 22:50:53 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=VoKnAQoc;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=cdjrlc.com (client-ip=183.3.255.186; helo=qq.com;
- envelope-from=wangborong@cdjrlc.com; receiver=<UNKNOWN>)
-X-Greylist: delayed 64 seconds by postgrey-1.36 at boromir;
- Thu, 01 Jul 2021 22:26:45 AEST
-Received: from qq.com (smtpbg565.qq.com [183.3.255.186])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=VoKnAQoc; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GFyBY4Nz5z2xKM
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jul 2021 22:26:45 +1000 (AEST)
-X-QQ-mid: bizesmtp46t1625142286tlbg4c9f
-Received: from localhost.localdomain (unknown [182.148.13.55])
- by esmtp6.qq.com (ESMTP) with 
- id ; Thu, 01 Jul 2021 20:24:45 +0800 (CST)
-X-QQ-SSF: 0100000000800030B000B00A0000000
-X-QQ-FEAT: La+0rDrBjHXya7Xb/FWvTcJk4ETmtCJGFWM8dM4V/eUPmIigor0/jRDuN+QXI
- lWYwNRcUfOG7LBdVl0UTBcmkDH2hScWdrO1s1NBezshrh2L9GBtJaRoXocb0lPG39K9lctk
- K/6IRMeOgDfS2HmslR/DDCyF8DxoBsQF1L8Uakt8qBCbLi4eg0Gd8l2U9GdKHg5qMSXjNgR
- k95fUMvaIDPPEm9rinqSb8TCim4q/f4EP8XUuH4Ok9NevqusJMvWV2J0RGTxDN4EXbhpgMf
- 80ZciU+Le1T02RB/0XoxnwvatG/Td1rACLtj3no4Dikz2bCZxacCM0FdrReEqVdCLrkHNjX
- 3P0wbAT
-X-QQ-GoodBg: 0
-From: Jason Wang <wangborong@cdjrlc.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH] powerpc/xmon: Use ARRAY_SIZE
-Date: Thu,  1 Jul 2021 20:24:22 +0800
-Message-Id: <20210701122422.58863-1-wangborong@cdjrlc.com>
-X-Mailer: git-send-email 2.32.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GFyk06zS9z2ypn
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Jul 2021 22:50:32 +1000 (AEST)
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 4GFyjz6Ljjz9sX5; Thu,  1 Jul 2021 22:50:31 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1625143831;
+ bh=tbYJ2am5iPPSCxKGbyTzZbv5ZR6aV1TXfixQcYpWFIg=;
+ h=From:To:Cc:Subject:Date:From;
+ b=VoKnAQockLt4SLhwY8+5+WJ1mFsh1vGh0ZWWuB4CXEnFMY0tTMRNlJEtyMaQaSDxm
+ kDeHB6l1CHV3WUgmhTYjgHLwP78BtqqKWltej+rqOGJM3o4pKAuZYyrrCbydQklcZT
+ TPUiJmly4/1I9TgQpu43fHzQnHxyFnoYZKfJbtxFrcdgKawRpQR66680/3lLI57BXH
+ CZR1x/0uv1uGfsW6x+jYCpJt7TP6tp+aT2KemskpnMvvR5XMx5Rs93PX2CgRNr9zG9
+ pUkQxdDPPMmti5pSm9f5UpnVaRjusqSzO9Bd0NTqRVqBcfj6f5WEPu3aji8u9sHZm7
+ BiXGO4D6AiqcA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc: Only build restart_table.c for 64s
+Date: Thu,  1 Jul 2021 22:50:26 +1000
+Message-Id: <20210701125026.292224-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:cdjrlc.com:qybgforeign:qybgforeign2
-X-QQ-Bgrelay: 1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,69 +56,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: paulus@samba.org, linuxppc-dev@lists.ozlabs.org,
- Jason Wang <wangborong@cdjrlc.com>, linux-kernel@vger.kernel.org
+Cc: npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The ARRAY_SIZE macro is more compact and formal to get array size in
-linux kernel source. In addition, it is more readable for kernel
-developpers. Thus, we can replace all sizeof(arr)/sizeof(arr[0]) with
-ARRAY_SIZE.
+Commit 9b69d48c7516 ("powerpc/64e: remove implicit soft-masking and
+interrupt exit restart logic") limited the implicit soft masking and
+restart logic to 64-bit Book3S only. However we are still building
+restart_table.c for all 64-bit, ie. Book3E also.
 
-Signed-off-by: Jason Wang <wangborong@cdjrlc.com>
+There's no need to build it for 64e, and it also causes missing
+prototype warnings for 64e builds, because the prototype is already
+behind an #ifdef PPC_BOOK3S_64.
+
+Fixes: 9b69d48c7516 ("powerpc/64e: remove implicit soft-masking and interrupt exit restart logic")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/xmon/ppc-opc.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ arch/powerpc/lib/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/xmon/ppc-opc.c b/arch/powerpc/xmon/ppc-opc.c
-index dfb80810b16c..e1d292fe6c6e 100644
---- a/arch/powerpc/xmon/ppc-opc.c
-+++ b/arch/powerpc/xmon/ppc-opc.c
-@@ -954,8 +954,7 @@ const struct powerpc_operand powerpc_operands[] =
-   { 0xff, 11, NULL, NULL, PPC_OPERAND_SIGNOPT },
- };
+diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
+index 4c92c80454f3..99a7c9132422 100644
+--- a/arch/powerpc/lib/Makefile
++++ b/arch/powerpc/lib/Makefile
+@@ -39,10 +39,10 @@ extra-$(CONFIG_PPC64)	+= crtsavres.o
+ endif
  
--const unsigned int num_powerpc_operands = (sizeof (powerpc_operands)
--					   / sizeof (powerpc_operands[0]));
-+const unsigned int num_powerpc_operands = ARRAY_SIZE(powerpc_operands);
+ obj-$(CONFIG_PPC_BOOK3S_64) += copyuser_power7.o copypage_power7.o \
+-			       memcpy_power7.o
++			       memcpy_power7.o restart_table.o
  
- /* The functions used to insert and extract complicated operands.  */
+ obj64-y	+= copypage_64.o copyuser_64.o mem_64.o hweight_64.o \
+-	   memcpy_64.o copy_mc_64.o restart_table.o
++	   memcpy_64.o copy_mc_64.o
  
-@@ -6968,9 +6967,8 @@ const struct powerpc_opcode powerpc_opcodes[] = {
- {"fcfidu.",	XRC(63,974,1),	XRA_MASK, POWER7|PPCA2,	PPCVLE,		{FRT, FRB}},
- };
- 
--const int powerpc_num_opcodes =
--  sizeof (powerpc_opcodes) / sizeof (powerpc_opcodes[0]);
--
-+const int powerpc_num_opcodes = ARRAY_SIZE(powerpc_opcodes);
-+
- /* The VLE opcode table.
- 
-    The format of this opcode table is the same as the main opcode table.  */
-@@ -7207,9 +7205,8 @@ const struct powerpc_opcode vle_opcodes[] = {
- {"se_bl",	BD8(58,0,1),	BD8_MASK,	PPCVLE,	0,		{B8}},
- };
- 
--const int vle_num_opcodes =
--  sizeof (vle_opcodes) / sizeof (vle_opcodes[0]);
--
-+const int vle_num_opcodes = ARRAY_SIZE(vle_opcodes);
-+
- /* The macro table.  This is only used by the assembler.  */
- 
- /* The expressions of the form (-x ! 31) & (x | 31) have the value 0
-@@ -7276,5 +7273,4 @@ const struct powerpc_macro powerpc_macros[] = {
- {"e_clrlslwi",4, PPCVLE, "e_rlwinm %0,%1,%3,(%2)-(%3),31-(%3)"},
- };
- 
--const int powerpc_num_macros =
--  sizeof (powerpc_macros) / sizeof (powerpc_macros[0]);
-+const int powerpc_num_macros = ARRAY_SIZE(powerpc_macros);
+ ifndef CONFIG_PPC_QUEUED_SPINLOCKS
+ obj64-$(CONFIG_SMP)	+= locks.o
 -- 
-2.31.1
-
-
+2.25.1
 
