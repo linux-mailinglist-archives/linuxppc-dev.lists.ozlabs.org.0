@@ -2,125 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85B2D3B9ABD
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jul 2021 04:42:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F148B3B9ACF
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jul 2021 05:08:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GGKBD2KnLz3081
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jul 2021 12:42:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GGKm86279z3bX9
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jul 2021 13:08:40 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=grIzOmYO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=rcatVMwn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=amd.com
- (client-ip=40.107.244.61; helo=nam12-mw2-obe.outbound.protection.outlook.com;
- envelope-from=wesley.sheng@amd.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256
- header.s=selector1 header.b=grIzOmYO; 
- dkim-atps=neutral
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam12on2061.outbound.protection.outlook.com [40.107.244.61])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::232;
+ helo=mail-oi1-x232.google.com; envelope-from=groeck7@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=rcatVMwn; dkim-atps=neutral
+Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com
+ [IPv6:2607:f8b0:4864:20::232])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GGK9h4t8xz2yLp
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Jul 2021 12:42:12 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=i0TkbUYtx5WZhydjWYmKm2bCztCisV/pSaKYqd3Q9uLRVA7SpAfz5lNLJiv+kdw+EH2+JhthPu3M+uAR2dFgxcaPP09YslQAicw9hMwK5e8MYMnUw7zTR4hyUTosTT2p0UtdFvvAmCh/8It18Ul/rLgpWB2YNHFqWmme9+iiIwCzVzi9Ei2ZypLOeQLZwvFyVPmig+Kt9boFjXmJKxbRJXqSCxd0Qm/zZZOoyeEabnPGoARCLxll5tOlpEFQYsMvhleNAfkOSX+dMLN1N6ryuI4TCrgOSnPg1CKlvRu6EjkLIBOz1fvR1ususlzhKLsnhay8kjhQzN2OsxF3McTh6g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kmih0ZkrQRtOyKqpwRo6Syp55s5YzsKcF5xym9wFPUk=;
- b=LtS/+pU5uDh2Zmv4N1t2IGKhbGr6StgQvWl+I0pqyrVLDT/bckWNFFe3fRa1rkM0rOBkdOOnyH0OgaLlbgyad9egX1IGDbnHUTIib/9Ze/9oGvILN/EXcaJVcpgNZhRjx0Hhkm4BUdlz1CQP7JFDXoQ8yIURYJLw/b5n0poXm7s7gJz3djYP2Mro3QVsJurCyUljBGmoNb+o76mWwQ73SItOLKSQseMHi5dmpZHaWcYbpDgmiTuCVHOKfDKcjLBiQeUFnHC0tWMUVBIlArfTqTf5AyEmp1abe+3B1+trO2RgbOOzdzWPwfPsqTMsLSLWmMUgM1mY0JReNKSu2ab8EQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kmih0ZkrQRtOyKqpwRo6Syp55s5YzsKcF5xym9wFPUk=;
- b=grIzOmYOY5sKTd4R0TfV7H8i9wBF0ru28JzziDn+QuhUGQ+SXW8a0J9oNcIo4gbFhwv7PyoypLZGZctbK2T0lL3FkaRJs0+Sph0vmc+/nDl3gcPog5Fk4mqwivySm1ud3WHLWaicePg84Z8+fB+9Vai2SF6gj46K4Ld0Va9WR5g=
-Authentication-Results: gmail.com; dkim=none (message not signed)
- header.d=none;gmail.com; dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5357.namprd12.prod.outlook.com (2603:10b6:5:39b::24)
- by DM6PR12MB5518.namprd12.prod.outlook.com (2603:10b6:5:1b9::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4287.23; Fri, 2 Jul
- 2021 02:41:53 +0000
-Received: from DM4PR12MB5357.namprd12.prod.outlook.com
- ([fe80::9d97:11b:bb35:d2e6]) by DM4PR12MB5357.namprd12.prod.outlook.com
- ([fe80::9d97:11b:bb35:d2e6%5]) with mapi id 15.20.4264.026; Fri, 2 Jul 2021
- 02:41:53 +0000
-Date: Fri, 2 Jul 2021 10:41:23 +0800
-From: Wesley Sheng <wesley.sheng@amd.com>
-To: linasvepstas@gmail.com, ruscur@russell.cc, oohall@gmail.com,
- bhelgaas@google.com, corbet@lwn.net, linux-pci@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Documentation: PCI: pci-error-recovery: rearrange the
- general sequence
-Message-ID: <20210702024123.GA2714@buildhost>
-References: <20210618060446.7969-1-wesley.sheng@amd.com>
- <20210701222231.GA102933@bjorn-Precision-5520>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GGKld3Xckz2yj0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Jul 2021 13:08:12 +1000 (AEST)
+Received: by mail-oi1-x232.google.com with SMTP id a133so9723884oib.13
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Jul 2021 20:08:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=sender:date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=vnC0TqPJlyIMqLOncGpr5zl9pmbmcIIyiC4phT6PUIQ=;
+ b=rcatVMwnoboRAVBm6z7P2HYmOyqx+HWthzA0HOg5zSVWMr7WIAx3ZVtmMQBABS3jSs
+ ll3cBrlaV5N4g4Rvy938v3Mka2o7BKSsLAnp0j9BVKtd6G0HRyhUAM117EPetSB6PYk4
+ aIzksvokAZwg7oj60y4L3zka5GOYTYtCADcKKqh9eOpTeqFos+tdtKUeh13pl/ncaATb
+ z+gsly2qHHMFdyn0yxdy8vih0i6Y3VD1swKheCHmBE++JlII4Ajp+FJ6942Kfxfr0p9t
+ PlSPUBKWfUPw26fCx2/8jDss0gWJ7ZhSbqGnHJzN7Y9CqXNOHLSOGPQ6Z7xfZJI1OXzp
+ hIRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+ :references:mime-version:content-disposition:in-reply-to;
+ bh=vnC0TqPJlyIMqLOncGpr5zl9pmbmcIIyiC4phT6PUIQ=;
+ b=AvM8vqM6ccHrLP89weM6Se33TAsYYL69gqWSZzQQVc8JZCMu16HqipQaMruh2xIZnE
+ ZOT3xwXLfOZpFeC2v65XGrP3VoyJla3koroGLg/+Y20Hb2lyHkBSj7nc5Tpvk63QMtJ4
+ Zn/4vN8TiR7kqfAThxQsBkpzG0hINTqx1mW47hB9AmLy5f7NylxVcP6G9GGEaNATdCkN
+ awS0w7hxfBwgsPdxe2H/Cp/+GSdj88lbPvE53oMk6PfgTZDC7ASgf3JDVXNck0WQklnQ
+ qf0KlPueDA6oDeHj3bwHQWX+wGa7zzcwvxNSYGGj4x/gVdf0AJeOLtDnNKsAS8GLQwgT
+ cAFQ==
+X-Gm-Message-State: AOAM533zyP9SH39/s0PMflsvM2gxVwi9QCmT/9+4t48RiqIBPcTn8CZp
+ tf99IBtz6sP516ZTh7i9lAs=
+X-Google-Smtp-Source: ABdhPJxROyx59a65CULGKnIjDKL6LEkceViIozGHO/6JCiILIO/ostWPfjk3TYymGpFPnNGZwku3+w==
+X-Received: by 2002:a54:4187:: with SMTP id 7mr2101677oiy.127.1625195289117;
+ Thu, 01 Jul 2021 20:08:09 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+ by smtp.gmail.com with ESMTPSA id l2sm374555otl.27.2021.07.01.20.08.07
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 01 Jul 2021 20:08:08 -0700 (PDT)
+Date: Thu, 1 Jul 2021 20:08:07 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Claire Chang <tientzu@chromium.org>
+Subject: Re: [PATCH v15 12/12] of: Add plumbing for restricted DMA pool
+Message-ID: <20210702030807.GA2685166@roeck-us.net>
+References: <20210624155526.2775863-1-tientzu@chromium.org>
+ <20210624155526.2775863-13-tientzu@chromium.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210701222231.GA102933@bjorn-Precision-5520>
-X-Originating-IP: [165.204.134.244]
-X-ClientProxiedBy: HK2PR06CA0011.apcprd06.prod.outlook.com
- (2603:1096:202:2e::23) To DM4PR12MB5357.namprd12.prod.outlook.com
- (2603:10b6:5:39b::24)
-MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from buildhost (165.204.134.244) by
- HK2PR06CA0011.apcprd06.prod.outlook.com (2603:1096:202:2e::23) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4287.22 via Frontend Transport; Fri, 2 Jul 2021 02:41:50 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 4beaef6f-8996-4cd9-f933-08d93d02f3c1
-X-MS-TrafficTypeDiagnostic: DM6PR12MB5518:
-X-Microsoft-Antispam-PRVS: <DM6PR12MB5518AF20E869BAF204A87CCC951F9@DM6PR12MB5518.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:3826;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Yd8qLaRHn1Xr2m4pj8NkJbYRYSwiwm8eYoMCNdqOKZQ6hkr3wQb42Y+tjhdPrh5R94nQn91+K6gkHsBWD0oqGo8By3ECZBGO+lAlQcn+XgQqhryOdL+hJP+fnEoY5Z63SB8C1aFmYR7pCehV8IiFq6+ymGBpT1psirGSxWWKFDffsoAEDM9f0FWfSJmsyLAxSIGvi1p2KdpbUOcl5Q6oe765RwcC322LmOEj//MaCnhnwvHGXz6geUWPRufk+Ccf8x/o/vqN4AoaDB0HZnZMQch1O47w/099b0P9dXFNLIQc9vxvq/qH7pmXrhY5DgzvL4u2EFRaNoeCle4e4lc79309M3DXLIfEzNQmxT3eR+5kAbOIVvx2X1WmApULQa/iIVI6YWW/tS9xeE7/59K44ywMLyi93K9TLjmEde+mhpGnW6DKr2QEdA+/MTBiKG2IuW5zIayMZqFcoG27HcETr8udVsXkG/8hTQUmdIBZbjj5jDiRIO5/54i/ObeEZr0KecV+afu6T4HTMwVTtSf6V8PpIwDw/NnIq1llHN1DpBGOVdSTGA9HaYeso/HL03lRBkVBD9ewbfCXrF2/bJgW98mH+xNLWGzYDLSdpLqIvPm/L4uMjCE9pCtRvEEGsYoSUfqZimbzw+tg3+iC8YkjvY+3AycqI9WBi2vYd0Q7dcuQVGSN98YWtrVQ+T4JqAkHrcwDXBWBqtvUdJJ3IB+cQg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM4PR12MB5357.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(39860400002)(346002)(376002)(136003)(366004)(396003)(478600001)(1076003)(316002)(33716001)(8676002)(44832011)(7416002)(2906002)(8936002)(4326008)(9576002)(956004)(83380400001)(33656002)(38350700002)(6496006)(52116002)(66556008)(66476007)(86362001)(55016002)(9686003)(5660300002)(66946007)(186003)(6666004)(38100700002)(16526019)(26005);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?82VUYWDuV7SC5Y+Df4xDvTlgEXYSy1+5RbPTrNT+cH0dv4mDjJAcLIbR3toD?=
- =?us-ascii?Q?d3GuM8JFYLPI+TMU1iH1GsGPeZd1JvTAluiIICJE4g4NWY9uskindu/m9gwt?=
- =?us-ascii?Q?LoIEY39JJAmALbz3p7Bv1EpyKP0qOFt+91TzNF5RGnRTNa0O6rAzcJsc94Rt?=
- =?us-ascii?Q?KL3moY9D6i4pDf3M+dLzOC6b0Aj/+z1jRN4/Mzm+/iKRTqonCI4rMnkHrBpX?=
- =?us-ascii?Q?DYBSIFEW2EBDDBVKQ/M7FJGg7ozQqyCK0x3UqKE4slM1UnMM8hXTlMGH5rEj?=
- =?us-ascii?Q?oHAzGEoVmDB9MxdqUA/V+v77cHRGw2/mjXNwvXFMNlB8pKPkKLunx7/uWQAH?=
- =?us-ascii?Q?LQciIOFYNj6weBd3kVKnt2shtgTFdXUmq4Z10k2acGzny6PxNJaWvtmSEg4A?=
- =?us-ascii?Q?RwSqRFSRPlXsMrX6WfzqK4XeRI2W1bERwPQA1nX/dS0jOKMflrH67WVB02PG?=
- =?us-ascii?Q?l7OITzWZrJfDCMtAhtcLRfXuYxcLtuFshyEvj5mboBSxZvJf4O4beaNW6vyI?=
- =?us-ascii?Q?f2U4+OPgEyIus8bzjbuEVZLY8mzCn2Jw67CQCIZlb4jYFMkqkhcaONgIHplS?=
- =?us-ascii?Q?71AUP7SNc76TJ/zvXczlxrXjzqO7HUCEKqZB/hLRMKLBTHhmYdOKJ/3Bl+z3?=
- =?us-ascii?Q?lNiz6CfBX++QcIM6j3oalzyxlHtfvyZiTnqTG9izpQtBkhCVEs1fNeAN+wzE?=
- =?us-ascii?Q?D+et/RASs6t889tDKFGWWAPUIgLsgj6bqM4bsNOaVcPj78kD0sOwaoBCBfGZ?=
- =?us-ascii?Q?uBokNAQRUxDfrnLRmIsZA6BI1Y9Z0ly9LUPYWXy0X1GyCjK1Tp4XxpFntWZq?=
- =?us-ascii?Q?+XI+2rb3A/Z5uZvPVhCS2GGa1asdB/MeUTsZl5By+kwB9yRopcU0O2uXXaKa?=
- =?us-ascii?Q?xkMfR1Vbm1Vu4Kcnzvh87foA2zmfDSn262zneqUdX1CSaAUCKJOIGykjLst1?=
- =?us-ascii?Q?JttvJIkNscW5GWp1CV+PqwrP4RuacDg0GSa8Pl13MRZw0lqg2ken8kxMQ+Nc?=
- =?us-ascii?Q?s7iHr//402uYESpwQsfkFMHHocl/N4jHMVAxHwKuFBiAKoDb8/GxtPBTEhc0?=
- =?us-ascii?Q?EFxqLCFe1xw9gw/1+Ac10Kqp9Pq4zJdvUpWwFS/0of+ke5xbJ6H5pUo5yRb6?=
- =?us-ascii?Q?jPYsxAaGFX6Bah5ZlAzronE0RmjXzAmeJo+v+zj9/sAeEEPSZI//maFalJXJ?=
- =?us-ascii?Q?4ILh+5OQdmWawRrAriWiTMfkH+RWkgz34R05cFZTVaMUGvXxAF+K2JxVC0wM?=
- =?us-ascii?Q?zs0vziMsHz3e7C0UX73KLy7cDjGlEtwaZZscTheIrtL3tpADUGQcfJ5op+na?=
- =?us-ascii?Q?D7lYqlIyuUHRXKqOq/wUxvam?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4beaef6f-8996-4cd9-f933-08d93d02f3c1
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5357.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jul 2021 02:41:53.9167 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hJJ4OZO20CLgBJwfjN3Clo7kGfeiNHRM7LVk4Fpt4LILlmKOJaR32Ap2mXBUKSR3yfU/n8XaZAKNDCoFsV0Aow==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB5518
+In-Reply-To: <20210624155526.2775863-13-tientzu@chromium.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -132,109 +80,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wesleyshenggit@sina.com
+Cc: heikki.krogerus@linux.intel.com,
+ linux-devicetree <devicetree@vger.kernel.org>, peterz@infradead.org,
+ linux-pci@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ chris@chris-wilson.co.uk, grant.likely@arm.com, paulus@samba.org,
+ Frank Rowand <frowand.list@gmail.com>, mingo@kernel.org, jxgao@google.com,
+ sstabellini@kernel.org, Saravana Kannan <saravanak@google.com>,
+ Joerg Roedel <joro@8bytes.org>,
+ "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ Christoph Hellwig <hch@lst.de>,
+ Bartosz Golaszewski <bgolaszewski@baylibre.com>, bskeggs@redhat.com,
+ xen-devel@lists.xenproject.org, Marek Szyprowski <m.szyprowski@samsung.com>,
+ matthew.auld@intel.com, Nicolas Boichat <drinkcat@chromium.org>,
+ thomas.hellstrom@linux.intel.com, Will Deacon <will@kernel.org>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ intel-gfx@lists.freedesktop.org, Dan Williams <dan.j.williams@intel.com>,
+ linuxppc-dev@lists.ozlabs.org, Rob Herring <robh+dt@kernel.org>,
+ rodrigo.vivi@intel.com, bhelgaas@google.com, boris.ostrovsky@oracle.com,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jgross@suse.com,
+ airlied@linux.ie, Thierry Reding <treding@nvidia.com>,
+ Greg KH <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
+ quic_qiancai@quicinc.com, lkml <linux-kernel@vger.kernel.org>,
+ tfiga@chromium.org,
+ "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+ Jim Quinlan <james.quinlan@broadcom.com>, xypron.glpk@gmx.de,
+ thomas.lendacky@amd.com, Robin Murphy <robin.murphy@arm.com>,
+ bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 01, 2021 at 05:22:31PM -0500, Bjorn Helgaas wrote:
-> Please make the subject a little more specific.  "rearrange the
-> general sequence" doesn't say anything about what was affected.
-> 
-> On Fri, Jun 18, 2021 at 02:04:46PM +0800, Wesley Sheng wrote:
-> > Reset_link() callback function was called before mmio_enabled() in
-> > pcie_do_recovery() function actually, so rearrange the general
-> > sequence betwen step 2 and step 3 accordingly.
-> 
-> s/betwen/between/
-> 
-> Not sure "general" adds anything in this sentence.  "Step 2 and step
-> 3" are not meaningful here in the commit log.  It needs to spell out
-> what those steps are so the log makes sense by itself.
-> 
-> "reset_link" does not appear in pcie_do_recovery().  I'm guessing
-> you're referring to the "reset_subordinates" function pointer?
->
-Yes, you are right.
-pcieaer-howto.rst has a section named with "Provide callbacks",
-the callback supplied to pcie_do_recovery() was referred to 
-reset_link.
- 
-> > Signed-off-by: Wesley Sheng <wesley.sheng@amd.com>
-> 
-> I didn't quite understand your response to Oliver, so I'll wait for
-> your corrections and his ack before proceeding.
->
-OK.
-I thought step 2 MMIO Enabled and step 3 link reset should swap sequence.
+Hi,
 
-> > ---
-> >  Documentation/PCI/pci-error-recovery.rst | 23 ++++++++++++-----------
-> >  1 file changed, 12 insertions(+), 11 deletions(-)
-> > 
-> > diff --git a/Documentation/PCI/pci-error-recovery.rst b/Documentation/PCI/pci-error-recovery.rst
-> > index 187f43a03200..ac6a8729ef28 100644
-> > --- a/Documentation/PCI/pci-error-recovery.rst
-> > +++ b/Documentation/PCI/pci-error-recovery.rst
-> > @@ -184,7 +184,14 @@ is STEP 6 (Permanent Failure).
-> >     and prints an error to syslog.  A reboot is then required to
-> >     get the device working again.
-> >  
-> > -STEP 2: MMIO Enabled
-> > +STEP 2: Link Reset
-> > +------------------
-> > +The platform resets the link.  This is a PCI-Express specific step
-> > +and is done whenever a fatal error has been detected that can be
-> > +"solved" by resetting the link.
-> > +
-> > +
-> > +STEP 3: MMIO Enabled
-> >  --------------------
-> >  The platform re-enables MMIO to the device (but typically not the
-> >  DMA), and then calls the mmio_enabled() callback on all affected
-> > @@ -197,8 +204,8 @@ information, if any, and eventually do things like trigger a device local
-> >  reset or some such, but not restart operations. This callback is made if
-> >  all drivers on a segment agree that they can try to recover and if no automatic
-> >  link reset was performed by the HW. If the platform can't just re-enable IOs
-> > -without a slot reset or a link reset, it will not call this callback, and
-> > -instead will have gone directly to STEP 3 (Link Reset) or STEP 4 (Slot Reset)
-> > +without a slot reset, it will not call this callback, and
-> > +instead will have gone directly or STEP 4 (Slot Reset)
+On Thu, Jun 24, 2021 at 11:55:26PM +0800, Claire Chang wrote:
+> If a device is not behind an IOMMU, we look up the device node and set
+> up the restricted DMA when the restricted-dma-pool is presented.
 > 
-> s/or/to/  ?
-> 
-> >  .. note::
-> >  
-> > @@ -210,7 +217,7 @@ instead will have gone directly to STEP 3 (Link Reset) or STEP 4 (Slot Reset)
-> >     such an error might cause IOs to be re-blocked for the whole
-> >     segment, and thus invalidate the recovery that other devices
-> >     on the same segment might have done, forcing the whole segment
-> > -   into one of the next states, that is, link reset or slot reset.
-> > +   into next states, that is, slot reset.
-> 
-> s/into next states/into the next state/ ?
-> 
-> >  The driver should return one of the following result codes:
-> >    - PCI_ERS_RESULT_RECOVERED
-> > @@ -233,17 +240,11 @@ The driver should return one of the following result codes:
-> >  
-> >  The next step taken depends on the results returned by the drivers.
-> >  If all drivers returned PCI_ERS_RESULT_RECOVERED, then the platform
-> > -proceeds to either STEP3 (Link Reset) or to STEP 5 (Resume Operations).
-> > +proceeds to STEP 5 (Resume Operations).
-> >  
-> >  If any driver returned PCI_ERS_RESULT_NEED_RESET, then the platform
-> >  proceeds to STEP 4 (Slot Reset)
-> >  
-> > -STEP 3: Link Reset
-> > -------------------
-> > -The platform resets the link.  This is a PCI-Express specific step
-> > -and is done whenever a fatal error has been detected that can be
-> > -"solved" by resetting the link.
-> > -
-> >  STEP 4: Slot Reset
-> >  ------------------
-> >  
-> > -- 
-> > 2.25.1
-> > 
+> Signed-off-by: Claire Chang <tientzu@chromium.org>
+> Tested-by: Stefano Stabellini <sstabellini@kernel.org>
+> Tested-by: Will Deacon <will@kernel.org>
+
+With this patch in place, all sparc and sparc64 qemu emulations
+fail to boot. Symptom is that the root file system is not found.
+Reverting this patch fixes the problem. Bisect log is attached.
+
+Guenter
+
+---
+# bad: [fb0ca446157a86b75502c1636b0d81e642fe6bf1] Add linux-next specific files for 20210701
+# good: [62fb9874f5da54fdb243003b386128037319b219] Linux 5.13
+git bisect start 'HEAD' 'v5.13'
+# bad: [f63c4fda987a19b1194cc45cb72fd5bf968d9d90] Merge remote-tracking branch 'rdma/for-next'
+git bisect bad f63c4fda987a19b1194cc45cb72fd5bf968d9d90
+# good: [46bb5dd1d2a63e906e374e97dfd4a5e33934b1c4] Merge remote-tracking branch 'ipsec/master'
+git bisect good 46bb5dd1d2a63e906e374e97dfd4a5e33934b1c4
+# good: [43ba6969cfb8185353a7a6fc79070f13b9e3d6d3] Merge remote-tracking branch 'clk/clk-next'
+git bisect good 43ba6969cfb8185353a7a6fc79070f13b9e3d6d3
+# good: [1ca5eddcf8dca1d6345471c6404e7364af0d7019] Merge remote-tracking branch 'fuse/for-next'
+git bisect good 1ca5eddcf8dca1d6345471c6404e7364af0d7019
+# good: [8f6d7b3248705920187263a4e7147b0752ec7dcf] Merge remote-tracking branch 'pci/next'
+git bisect good 8f6d7b3248705920187263a4e7147b0752ec7dcf
+# good: [df1885a755784da3ef285f36d9230c1d090ef186] RDMA/rtrs_clt: Alloc less memory with write path fast memory registration
+git bisect good df1885a755784da3ef285f36d9230c1d090ef186
+# good: [93d31efb58c8ad4a66bbedbc2d082df458c04e45] Merge remote-tracking branch 'cpufreq-arm/cpufreq/arm/linux-next'
+git bisect good 93d31efb58c8ad4a66bbedbc2d082df458c04e45
+# good: [46308965ae6fdc7c25deb2e8c048510ae51bbe66] RDMA/irdma: Check contents of user-space irdma_mem_reg_req object
+git bisect good 46308965ae6fdc7c25deb2e8c048510ae51bbe66
+# good: [6de7a1d006ea9db235492b288312838d6878385f] thermal/drivers/int340x/processor_thermal: Split enumeration and processing part
+git bisect good 6de7a1d006ea9db235492b288312838d6878385f
+# good: [081bec2577cda3d04f6559c60b6f4e2242853520] dt-bindings: of: Add restricted DMA pool
+git bisect good 081bec2577cda3d04f6559c60b6f4e2242853520
+# good: [bf95ac0bcd69979af146852f6a617a60285ebbc1] Merge remote-tracking branch 'thermal/thermal/linux-next'
+git bisect good bf95ac0bcd69979af146852f6a617a60285ebbc1
+# good: [3d8287544223a3d2f37981c1f9ffd94d0b5e9ffc] RDMA/core: Always release restrack object
+git bisect good 3d8287544223a3d2f37981c1f9ffd94d0b5e9ffc
+# bad: [cff1f23fad6e0bd7d671acce0d15285c709f259c] Merge remote-tracking branch 'swiotlb/linux-next'
+git bisect bad cff1f23fad6e0bd7d671acce0d15285c709f259c
+# bad: [b655006619b7bccd0dc1e055bd72de5d613e7b5c] of: Add plumbing for restricted DMA pool
+git bisect bad b655006619b7bccd0dc1e055bd72de5d613e7b5c
+# first bad commit: [b655006619b7bccd0dc1e055bd72de5d613e7b5c] of: Add plumbing for restricted DMA pool
