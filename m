@@ -1,52 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85BFB3BA4F4
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Jul 2021 23:12:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35A5F3BA5E8
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Jul 2021 00:12:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GGnq73MRdz3bc7
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Jul 2021 07:12:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GGq7s6WQzz3bYL
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Jul 2021 08:12:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.222.47; helo=mail-ua1-f47.google.com;
- envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com
- [209.85.222.47])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=mit.edu
+ (client-ip=18.9.28.11; helo=outgoing.mit.edu; envelope-from=tytso@mit.edu;
+ receiver=<UNKNOWN>)
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GGnpp3hdSz3014
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 Jul 2021 07:12:32 +1000 (AEST)
-Received: by mail-ua1-f47.google.com with SMTP id x37so4316519uac.13
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Jul 2021 14:12:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=iWmsu/MAqdEYVnC17Jds+nQkby43Df87NTtUM3jHHqE=;
- b=j+F/pvTqUaaeGFKfrZUSqhG9q/puNO4OlYi8cH0z56zDIiG67m0NDfGLZpUGv1oGFm
- /VXgTAeXJpp5mRorK2Ca5WcG1RYF7yF4MVBbop5kx4Vsb/vQ03SM7ujZRKS6fuQMilrT
- 9Hgc3+AA7YxraN/1zotmBE6oSP+MKr3eWaA+zO0hhl6xxTPNDsIPAmlEI82rUA+cSBpC
- Fq1YY1qbXkpaZP468YNV8Ob9lxWlvV6mrjuYgWc02+U7DpfYOWara8qYmNj6T/rzGeX4
- HJUYL6jFjLUdU+8c/pslAxikPyjUsrJjTmMm6W4hHf/nw0FIbilmv2zVZzpsmY1G5doM
- IcJA==
-X-Gm-Message-State: AOAM533mjYRmD43Wcgyq8aB+POdzrKEn+cqjhHFWJNxltA8Zy0eCi8mw
- fEloXGFdn+bSbvPVZfc5NzxNPH2ql2m2wvBO+YUHhiDS
-X-Google-Smtp-Source: ABdhPJwFWeUtP8wudZfNwbQ+DaTooM2VLLb988TYTLhMSFaTbFsTt83dii8Q+aFlknLwfrxfTjLyTaJW7401xFUOgRs=
-X-Received: by 2002:ab0:71c1:: with SMTP id n1mr2542722uao.2.1625260349128;
- Fri, 02 Jul 2021 14:12:29 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GGq7T1j70z2yNs
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 Jul 2021 08:12:02 +1000 (AEST)
+Received: from cwcc.thunk.org (pool-72-74-133-215.bstnma.fios.verizon.net
+ [72.74.133.215]) (authenticated bits=0)
+ (User authenticated as tytso@ATHENA.MIT.EDU)
+ by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 162MBiGh015008
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 2 Jul 2021 18:11:45 -0400
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+ id B3FE515C3CE6; Fri,  2 Jul 2021 18:11:44 -0400 (EDT)
+Date: Fri, 2 Jul 2021 18:11:44 -0400
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: Zhang Yi <yi.zhang@huawei.com>
+Subject: Re: [powerpc][5.13.0-next-20210701] Kernel crash while running
+ ltp(chdir01) tests
+Message-ID: <YN+PIKV010a+j88S@mit.edu>
+References: <26ACA75D-E13D-405B-9BFC-691B5FB64243@linux.vnet.ibm.com>
+ <bf1c5b38-92f1-65db-e210-a97a199718ba@linux.dev>
+ <4cc87ab3-aaa6-ed87-b690-5e5b99de8380@huawei.com>
+ <03f734bd-f36e-f55b-0448-485b8a0d5b75@huawei.com>
+ <YN86yl5kgVaRixxQ@mit.edu>
 MIME-Version: 1.0
-References: <git-mailbomb-linux-master-f377f7da26d2af87e2ddc39190546f62ecdb2bd8@kernel.org>
-In-Reply-To: <git-mailbomb-linux-master-f377f7da26d2af87e2ddc39190546f62ecdb2bd8@kernel.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Fri, 2 Jul 2021 23:12:17 +0200
-Message-ID: <CAMuHMdVn6k16OS4NB5NEnRAHFSzSu60t1=SK4bd+xpBFSdLyYg@mail.gmail.com>
-Subject: Re: powerpc/spider-pci: Remove set but not used variable 'val'
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YN86yl5kgVaRixxQ@mit.edu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,60 +52,150 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>, Jan Kara <jack@suse.cz>,
+ Guoqing Jiang <guoqing.jiang@linux.dev>,
+ "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+ Ext4 Developers List <linux-ext4@vger.kernel.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael,
+On Fri, Jul 02, 2021 at 12:11:54PM -0400, Theodore Ts'o wrote:
+> So it probably makes more sense to keep jbd2_journal_unregister_shrinker()
+> in jbd2_destroy_journal(), since arguably the fact that we are using a
+> shrinker is an internal implementation detail, and the users of jbd2
+> ideally shouldn't need to be expected to know they have unregister
+> jbd2's shirnkers.
+> 
+> Similarly, perhaps we should be moving jbd2_journal_register_shirnker()
+> into jbd2_journal_init_common().  We can un-export the register and
+> unshrink register functions, and declare them as static functions internal
+> to fs/jbd2/journal.c.
+> 
+> What do you think?
 
-On Fri, Jul 2, 2021 at 10:14 PM Linux Kernel Mailing List
-<linux-kernel@vger.kernel.org> wrote:
-> Commit:     f377f7da26d2af87e2ddc39190546f62ecdb2bd8
-> Parent:     911bacda4658129bee039dc90fc0c3f193ee2695
-> Refname:    refs/heads/master
-> Web:        https://git.kernel.org/torvalds/c/f377f7da26d2af87e2ddc391905=
-46f62ecdb2bd8
-> Author:     Baokun Li <libaokun1@huawei.com>
-> AuthorDate: Tue Jun 1 16:53:19 2021 +0800
-> Committer:  Michael Ellerman <mpe@ellerman.id.au>
-> CommitDate: Tue Jun 15 17:12:27 2021 +1000
->
->     powerpc/spider-pci: Remove set but not used variable 'val'
->
->     Fixes gcc '-Wunused-but-set-variable' warning:
->     # WARNING: Fixes tag on line 3 doesn't match correct format
->     # WARNING: Fixes tag on line 3 doesn't match correct format
->     # WARNING: Fixes tag on line 3 doesn't match correct format
->     # WARNING: Fixes tag on line 3 doesn't match correct format
->     # WARNING: Fixes tag on line 3 doesn't match correct format
->     # WARNING: Fixes tag on line 3 doesn't match correct format
+Like this...
 
-Which tools is adding these warnings to various commit descriptions?
+commit 8f9e16badb8fda3391e03146a47c93e76680efaf
+Author: Theodore Ts'o <tytso@mit.edu>
+Date:   Fri Jul 2 18:05:03 2021 -0400
 
->     arch/powerpc/platforms/cell/spider-pci.c: In function 'spiderpci_io_f=
-lush':
->     arch/powerpc/platforms/cell/spider-pci.c:28:6: warning:
->     variable =E2=80=98val=E2=80=99 set but not used [-Wunused-but-set-var=
-iable]
->
->     It never used since introduction.
->
->     Signed-off-by: Baokun Li <libaokun1@huawei.com>
->     Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
->     Link: https://lore.kernel.org/r/20210601085319.140461-1-libaokun1@hua=
-wei.com
+    ext4: fix doubled call to jbd2_journal_unregister_shrinker()
+    
+    On Power and ARM platforms this was causing kernel crash when
+    unmounting the file system, due to a percpu_counter getting destroyed
+    twice.
+    
+    Fix this by cleaning how the jbd2 shrinker is initialized and
+    uninitiazed by making it solely the responsibility of
+    fs/jbd2/journal.c.
+    
+    Fixes: 4ba3fcdde7e3 ("jbd2,ext4: add a shrinker to release checkpointed buffers")
+    Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+    Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index b8ff0399e171..dfa09a277b56 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -1184,7 +1184,6 @@ static void ext4_put_super(struct super_block *sb)
+ 	ext4_unregister_sysfs(sb);
+ 
+ 	if (sbi->s_journal) {
+-		jbd2_journal_unregister_shrinker(sbi->s_journal);
+ 		aborted = is_journal_aborted(sbi->s_journal);
+ 		err = jbd2_journal_destroy(sbi->s_journal);
+ 		sbi->s_journal = NULL;
+@@ -5176,7 +5175,6 @@ static int ext4_fill_super(struct super_block *sb, void *data, int silent)
+ 	sbi->s_ea_block_cache = NULL;
+ 
+ 	if (sbi->s_journal) {
+-		jbd2_journal_unregister_shrinker(sbi->s_journal);
+ 		jbd2_journal_destroy(sbi->s_journal);
+ 		sbi->s_journal = NULL;
+ 	}
+@@ -5502,12 +5500,6 @@ static int ext4_load_journal(struct super_block *sb,
+ 		ext4_commit_super(sb);
+ 	}
+ 
+-	err = jbd2_journal_register_shrinker(journal);
+-	if (err) {
+-		EXT4_SB(sb)->s_journal = NULL;
+-		goto err_out;
+-	}
+-
+ 	return 0;
+ 
+ err_out:
+diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
+index 152880c298ca..2595703aca51 100644
+--- a/fs/jbd2/journal.c
++++ b/fs/jbd2/journal.c
+@@ -99,6 +99,8 @@ EXPORT_SYMBOL(jbd2_journal_begin_ordered_truncate);
+ EXPORT_SYMBOL(jbd2_inode_cache);
+ 
+ static int jbd2_journal_create_slab(size_t slab_size);
++static int jbd2_journal_register_shrinker(journal_t *journal);
++static void jbd2_journal_unregister_shrinker(journal_t *journal);
+ 
+ #ifdef CONFIG_JBD2_DEBUG
+ void __jbd2_debug(int level, const char *file, const char *func,
+@@ -2043,7 +2045,8 @@ int jbd2_journal_load(journal_t *journal)
+ 		goto recovery_error;
+ 
+ 	journal->j_flags |= JBD2_LOADED;
+-	return 0;
++
++	return jbd2_journal_register_shrinker(journal);
+ 
+ recovery_error:
+ 	printk(KERN_WARNING "JBD2: recovery failed\n");
+@@ -2099,7 +2102,7 @@ static unsigned long jbd2_journal_shrink_count(struct shrinker *shrink,
+  * Init a percpu counter to record the checkpointed buffers on the checkpoint
+  * list and register a shrinker to release their journal_head.
+  */
+-int jbd2_journal_register_shrinker(journal_t *journal)
++static int jbd2_journal_register_shrinker(journal_t *journal)
+ {
+ 	int err;
+ 
+@@ -2122,7 +2125,6 @@ int jbd2_journal_register_shrinker(journal_t *journal)
+ 
+ 	return 0;
+ }
+-EXPORT_SYMBOL(jbd2_journal_register_shrinker);
+ 
+ /**
+  * jbd2_journal_unregister_shrinker()
+@@ -2130,12 +2132,13 @@ EXPORT_SYMBOL(jbd2_journal_register_shrinker);
+  *
+  * Unregister the checkpointed buffer shrinker and destroy the percpu counter.
+  */
+-void jbd2_journal_unregister_shrinker(journal_t *journal)
++static void jbd2_journal_unregister_shrinker(journal_t *journal)
+ {
+-	percpu_counter_destroy(&journal->j_jh_shrink_count);
+-	unregister_shrinker(&journal->j_shrinker);
++	if (journal->j_shrinker.flags & SHRINKER_REGISTERED) {
++		percpu_counter_destroy(&journal->j_jh_shrink_count);
++		unregister_shrinker(&journal->j_shrinker);
++	}
+ }
+-EXPORT_SYMBOL(jbd2_journal_unregister_shrinker);
+ 
+ /**
+  * jbd2_journal_destroy() - Release a journal_t structure.
+diff --git a/include/linux/jbd2.h b/include/linux/jbd2.h
+index 6cc035321562..632afbe4b18f 100644
+--- a/include/linux/jbd2.h
++++ b/include/linux/jbd2.h
+@@ -1556,8 +1556,6 @@ extern int	   jbd2_journal_set_features
+ 		   (journal_t *, unsigned long, unsigned long, unsigned long);
+ extern void	   jbd2_journal_clear_features
+ 		   (journal_t *, unsigned long, unsigned long, unsigned long);
+-extern int	   jbd2_journal_register_shrinker(journal_t *journal);
+-extern void	   jbd2_journal_unregister_shrinker(journal_t *journal);
+ extern int	   jbd2_journal_load       (journal_t *journal);
+ extern int	   jbd2_journal_destroy    (journal_t *);
+ extern int	   jbd2_journal_recover    (journal_t *journal);
