@@ -2,45 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35A5F3BA5E8
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Jul 2021 00:12:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C34E03BA694
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Jul 2021 02:58:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GGq7s6WQzz3bYL
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Jul 2021 08:12:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GGtqP1Hpjz3bVx
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Jul 2021 10:58:25 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=S7UNFDqR;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=mit.edu
- (client-ip=18.9.28.11; helo=outgoing.mit.edu; envelope-from=tytso@mit.edu;
- receiver=<UNKNOWN>)
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.dev (client-ip=2001:41d0:2:267::; helo=out0.migadu.com;
+ envelope-from=guoqing.jiang@linux.dev; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256
+ header.s=key1 header.b=S7UNFDqR; dkim-atps=neutral
+X-Greylist: delayed 407 seconds by postgrey-1.36 at boromir;
+ Fri, 02 Jul 2021 19:45:19 AEST
+Received: from out0.migadu.com (out0.migadu.com [IPv6:2001:41d0:2:267::])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GGq7T1j70z2yNs
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 Jul 2021 08:12:02 +1000 (AEST)
-Received: from cwcc.thunk.org (pool-72-74-133-215.bstnma.fios.verizon.net
- [72.74.133.215]) (authenticated bits=0)
- (User authenticated as tytso@ATHENA.MIT.EDU)
- by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 162MBiGh015008
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 2 Jul 2021 18:11:45 -0400
-Received: by cwcc.thunk.org (Postfix, from userid 15806)
- id B3FE515C3CE6; Fri,  2 Jul 2021 18:11:44 -0400 (EDT)
-Date: Fri, 2 Jul 2021 18:11:44 -0400
-From: "Theodore Ts'o" <tytso@mit.edu>
-To: Zhang Yi <yi.zhang@huawei.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GGVYq2NDdz2yMj
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Jul 2021 19:45:18 +1000 (AEST)
 Subject: Re: [powerpc][5.13.0-next-20210701] Kernel crash while running
  ltp(chdir01) tests
-Message-ID: <YN+PIKV010a+j88S@mit.edu>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+ t=1625218696;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=UWJ+pqDT0mb1en6A52Tk3LmCoscuU9h3+MdS6wNnXpo=;
+ b=S7UNFDqRBtCV1Vxrghz/uh4InvwBHSoL4HrpnjdG/E0/OWehVxGnuShbynzAYCW8UshBo+
+ oAgJ97xfFZqaHUcHDLxz2NNb41KNgT9t/mpQTmksr0/BXG0qrgJnSaBLRTiMy1awaFMM1K
+ 7vTS7yhxz0Kct+8REfCeEIMsNp3693A=
+To: Sachin Sant <sachinp@linux.vnet.ibm.com>, linux-ext4@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org
 References: <26ACA75D-E13D-405B-9BFC-691B5FB64243@linux.vnet.ibm.com>
- <bf1c5b38-92f1-65db-e210-a97a199718ba@linux.dev>
- <4cc87ab3-aaa6-ed87-b690-5e5b99de8380@huawei.com>
- <03f734bd-f36e-f55b-0448-485b8a0d5b75@huawei.com>
- <YN86yl5kgVaRixxQ@mit.edu>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and
+ include these headers.
+From: Guoqing Jiang <guoqing.jiang@linux.dev>
+Message-ID: <bf1c5b38-92f1-65db-e210-a97a199718ba@linux.dev>
+Date: Fri, 2 Jul 2021 17:38:10 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YN86yl5kgVaRixxQ@mit.edu>
+In-Reply-To: <26ACA75D-E13D-405B-9BFC-691B5FB64243@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-Migadu-Flow: FLOW_OUT
+X-Migadu-Auth-User: guoqing.jiang@linux.dev
+X-Mailman-Approved-At: Sat, 03 Jul 2021 10:58:03 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,150 +64,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>, Jan Kara <jack@suse.cz>,
- Guoqing Jiang <guoqing.jiang@linux.dev>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- Ext4 Developers List <linux-ext4@vger.kernel.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: jack@suse.cz, linuxppc-dev@lists.ozlabs.org, yi.zhang@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jul 02, 2021 at 12:11:54PM -0400, Theodore Ts'o wrote:
-> So it probably makes more sense to keep jbd2_journal_unregister_shrinker()
-> in jbd2_destroy_journal(), since arguably the fact that we are using a
-> shrinker is an internal implementation detail, and the users of jbd2
-> ideally shouldn't need to be expected to know they have unregister
-> jbd2's shirnkers.
-> 
-> Similarly, perhaps we should be moving jbd2_journal_register_shirnker()
-> into jbd2_journal_init_common().  We can un-export the register and
-> unshrink register functions, and declare them as static functions internal
-> to fs/jbd2/journal.c.
-> 
-> What do you think?
 
-Like this...
 
-commit 8f9e16badb8fda3391e03146a47c93e76680efaf
-Author: Theodore Ts'o <tytso@mit.edu>
-Date:   Fri Jul 2 18:05:03 2021 -0400
+On 7/2/21 4:51 PM, Sachin Sant wrote:
+> While running LTP tests (chdir01) against 5.13.0-next20210701 booted on a Power server,
+> following crash is encountered.
+>
+> [ 3051.182992] ext2 filesystem being mounted at /var/tmp/avocado_oau90dri/ltp-W0cFB5HtCy/lKhal5/mntpoint supports timestamps until 2038 (0x7fffffff)
+> [ 3051.621341] EXT4-fs (loop0): mounting ext3 file system using the ext4 subsystem
+> [ 3051.624645] EXT4-fs (loop0): mounted filesystem with ordered data mode. Opts: (null). Quota mode: none.
+> [ 3051.624682] ext3 filesystem being mounted at /var/tmp/avocado_oau90dri/ltp-W0cFB5HtCy/lKhal5/mntpoint supports timestamps until 2038 (0x7fffffff)
+> [ 3051.629026] Kernel attempted to read user page (13fda70000) - exploit attempt? (uid: 0)
+> [ 3051.629074] BUG: Unable to handle kernel data access on read at 0x13fda70000
+> [ 3051.629103] Faulting instruction address: 0xc0000000006fa5cc
+> [ 3051.629118] Oops: Kernel access of bad area, sig: 11 [#1]
+> [ 3051.629130] LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
+> [ 3051.629148] Modules linked in: vfat fat btrfs blake2b_generic xor zstd_compress raid6_pq xfs loop sctp ip6_udp_tunnel udp_tunnel libcrc32c rpadlpar_io rpaphp dm_mod bonding rfkill sunrpc pseries_rng xts vmx_crypto uio_pdrv_genirq uio sch_fq_codel ip_tables ext4 mbcache jbd2 sd_mod t10_pi sg ibmvscsi ibmveth scsi_transport_srp fuse [last unloaded: test_cpuidle_latency]
+> [ 3051.629270] CPU: 10 PID: 274044 Comm: chdir01 Tainted: G        W  OE     5.13.0-next-20210701 #1
+> [ 3051.629289] NIP:  c0000000006fa5cc LR: c008000006949bc4 CTR: c0000000006fa5a0
+> [ 3051.629300] REGS: c000000f74de3660 TRAP: 0300   Tainted: G        W  OE      (5.13.0-next-20210701)
+> [ 3051.629314] MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 24000288  XER: 20040000
+> [ 3051.629342] CFAR: c008000006957564 DAR: 00000013fda70000 DSISR: 40000000 IRQMASK: 0
+> [ 3051.629342] GPR00: c008000006949bc4 c000000f74de3900 c0000000029bc800 c000000f88f0ab80
+> [ 3051.629342] GPR04: ffffffffffffffff 0000000000000020 0000000024000282 0000000000000000
+> [ 3051.629342] GPR08: c00000110628c828 0000000000000000 00000013fda70000 c008000006957550
+> [ 3051.629342] GPR12: c0000000006fa5a0 c0000013ffffbe80 0000000000000000 0000000000000000
+> [ 3051.629342] GPR16: 0000000000000000 0000000000000000 00000000100555f8 0000000010050d40
+> [ 3051.629342] GPR20: 0000000000000000 0000000010026188 0000000010026160 c000000f88f0ac08
+> [ 3051.629342] GPR24: 0000000000000000 c000000f88f0a920 0000000000000000 0000000000000002
+> [ 3051.629342] GPR28: c000000f88f0ac50 c000000f88f0a800 c000000fc5577d00 c000000f88f0ab80
+> [ 3051.629468] NIP [c0000000006fa5cc] percpu_counter_add_batch+0x2c/0xf0
+> [ 3051.629493] LR [c008000006949bc4] __jbd2_journal_remove_checkpoint+0x9c/0x280 [jbd2]
+> [ 3051.629526] Call Trace:
+> [ 3051.629532] [c000000f74de3900] [c000000f88f0a84c] 0xc000000f88f0a84c (unreliable)
+> [ 3051.629547] [c000000f74de3940] [c008000006949bc4] __jbd2_journal_remove_checkpoint+0x9c/0x280 [jbd2]
+> [ 3051.629577] [c000000f74de3980] [c008000006949eb4] jbd2_log_do_checkpoint+0x10c/0x630 [jbd2]
+> [ 3051.629605] [c000000f74de3a40] [c0080000069547dc] jbd2_journal_destroy+0x1b4/0x4e0 [jbd2]
+> [ 3051.629636] [c000000f74de3ad0] [c00800000735d72c] ext4_put_super+0xb4/0x560 [ext4]
+> [ 3051.629703] [c000000f74de3b60] [c000000000484d64] generic_shutdown_super+0xc4/0x1d0
+> [ 3051.629720] [c000000f74de3bd0] [c000000000484f48] kill_block_super+0x38/0x90
+> [ 3051.629736] [c000000f74de3c00] [c000000000485120] deactivate_locked_super+0x80/0x100
+> [ 3051.629752] [c000000f74de3c30] [c0000000004bec1c] cleanup_mnt+0x10c/0x1d0
+> [ 3051.629767] [c000000f74de3c80] [c000000000188b08] task_work_run+0xf8/0x170
+> [ 3051.629783] [c000000f74de3cd0] [c000000000021a24] do_notify_resume+0x434/0x480
+> [ 3051.629800] [c000000f74de3d80] [c000000000032910] interrupt_exit_user_prepare_main+0x1a0/0x260
+> [ 3051.629816] [c000000f74de3de0] [c000000000032d08] syscall_exit_prepare+0x68/0x150
+> [ 3051.629830] [c000000f74de3e10] [c00000000000c770] system_call_common+0x100/0x258
+> [ 3051.629846] --- interrupt: c00 at 0x7fffa2b92ffc
+> [ 3051.629855] NIP:  00007fffa2b92ffc LR: 00007fffa2b92fcc CTR: 0000000000000000
+> [ 3051.629867] REGS: c000000f74de3e80 TRAP: 0c00   Tainted: G        W  OE      (5.13.0-next-20210701)
+> [ 3051.629880] MSR:  800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 24000474  XER: 00000000
+> [ 3051.629908] IRQMASK: 0
+> [ 3051.629908] GPR00: 0000000000000034 00007fffc0242e20 00007fffa2c77100 0000000000000000
+> [ 3051.629908] GPR04: 0000000000000000 0000000000000078 0000000000000000 0000000000000020
+> [ 3051.629908] GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+> [ 3051.629908] GPR12: 0000000000000000 00007fffa2d1a310 0000000000000000 0000000000000000
+> [ 3051.629908] GPR16: 0000000000000000 0000000000000000 00000000100555f8 0000000010050d40
+> [ 3051.629908] GPR20: 0000000000000000 0000000010026188 0000000010026160 00000000100288f0
+> [ 3051.629908] GPR24: 00007fffa2d13320 00000000000186a0 0000000010025dd8 0000000010055688
+> [ 3051.629908] GPR28: 0000000010024bb8 0000000000000001 0000000000000001 0000000000000000
+> [ 3051.630022] NIP [00007fffa2b92ffc] 0x7fffa2b92ffc
+> [ 3051.630032] LR [00007fffa2b92fcc] 0x7fffa2b92fcc
+> [ 3051.630041] --- interrupt: c00
+> [ 3051.630048] Instruction dump:
+> [ 3051.630057] 60000000 3c4c022c 38422260 7c0802a6 fbe1fff8 fba1ffe8 7c7f1b78 fbc1fff0
+> [ 3051.630078] f8010010 f821ffc1 e94d0030 e9230020 <7fca4aaa> 7fbe2214 7fa9fe76 7d2aea78
+> [ 3051.630102] ---[ end trace 83afe3a19212c333 ]---
+> [ 3051.633656]
+> [ 3052.633681] Kernel panic - not syncing: Fatal exception
+>
+> 5.13.0-next-20210630 was good. Bisect points to following patch:
+>
+> commit 4ba3fcdde7e3
+>           jbd2,ext4: add a shrinker to release checkpointed buffers
+>
+> Reverting this patch allows the test to run successfully.
 
-    ext4: fix doubled call to jbd2_journal_unregister_shrinker()
-    
-    On Power and ARM platforms this was causing kernel crash when
-    unmounting the file system, due to a percpu_counter getting destroyed
-    twice.
-    
-    Fix this by cleaning how the jbd2 shrinker is initialized and
-    uninitiazed by making it solely the responsibility of
-    fs/jbd2/journal.c.
-    
-    Fixes: 4ba3fcdde7e3 ("jbd2,ext4: add a shrinker to release checkpointed buffers")
-    Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-    Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+I guess the problem is j_jh_shrink_count was destroyed in ext4_put_super 
+_>  jbd2_journal_unregister_shrinker
+which is before the path ext4_put_super -> jbd2_journal_destroy -> 
+jbd2_log_do_checkpoint to call
+percpu_counter_dec(&journal->j_jh_shrink_count).
 
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index b8ff0399e171..dfa09a277b56 100644
+And since jbd2_journal_unregister_shrinker is already called inside 
+jbd2_journal_destroy, does it make sense
+to do this?
+
 --- a/fs/ext4/super.c
 +++ b/fs/ext4/super.c
-@@ -1184,7 +1184,6 @@ static void ext4_put_super(struct super_block *sb)
- 	ext4_unregister_sysfs(sb);
- 
- 	if (sbi->s_journal) {
--		jbd2_journal_unregister_shrinker(sbi->s_journal);
- 		aborted = is_journal_aborted(sbi->s_journal);
- 		err = jbd2_journal_destroy(sbi->s_journal);
- 		sbi->s_journal = NULL;
-@@ -5176,7 +5175,6 @@ static int ext4_fill_super(struct super_block *sb, void *data, int silent)
- 	sbi->s_ea_block_cache = NULL;
- 
- 	if (sbi->s_journal) {
--		jbd2_journal_unregister_shrinker(sbi->s_journal);
- 		jbd2_journal_destroy(sbi->s_journal);
- 		sbi->s_journal = NULL;
- 	}
-@@ -5502,12 +5500,6 @@ static int ext4_load_journal(struct super_block *sb,
- 		ext4_commit_super(sb);
- 	}
- 
--	err = jbd2_journal_register_shrinker(journal);
--	if (err) {
--		EXT4_SB(sb)->s_journal = NULL;
--		goto err_out;
--	}
--
- 	return 0;
- 
- err_out:
-diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
-index 152880c298ca..2595703aca51 100644
---- a/fs/jbd2/journal.c
-+++ b/fs/jbd2/journal.c
-@@ -99,6 +99,8 @@ EXPORT_SYMBOL(jbd2_journal_begin_ordered_truncate);
- EXPORT_SYMBOL(jbd2_inode_cache);
- 
- static int jbd2_journal_create_slab(size_t slab_size);
-+static int jbd2_journal_register_shrinker(journal_t *journal);
-+static void jbd2_journal_unregister_shrinker(journal_t *journal);
- 
- #ifdef CONFIG_JBD2_DEBUG
- void __jbd2_debug(int level, const char *file, const char *func,
-@@ -2043,7 +2045,8 @@ int jbd2_journal_load(journal_t *journal)
- 		goto recovery_error;
- 
- 	journal->j_flags |= JBD2_LOADED;
--	return 0;
-+
-+	return jbd2_journal_register_shrinker(journal);
- 
- recovery_error:
- 	printk(KERN_WARNING "JBD2: recovery failed\n");
-@@ -2099,7 +2102,7 @@ static unsigned long jbd2_journal_shrink_count(struct shrinker *shrink,
-  * Init a percpu counter to record the checkpointed buffers on the checkpoint
-  * list and register a shrinker to release their journal_head.
-  */
--int jbd2_journal_register_shrinker(journal_t *journal)
-+static int jbd2_journal_register_shrinker(journal_t *journal)
- {
- 	int err;
- 
-@@ -2122,7 +2125,6 @@ int jbd2_journal_register_shrinker(journal_t *journal)
- 
- 	return 0;
- }
--EXPORT_SYMBOL(jbd2_journal_register_shrinker);
- 
- /**
-  * jbd2_journal_unregister_shrinker()
-@@ -2130,12 +2132,13 @@ EXPORT_SYMBOL(jbd2_journal_register_shrinker);
-  *
-  * Unregister the checkpointed buffer shrinker and destroy the percpu counter.
-  */
--void jbd2_journal_unregister_shrinker(journal_t *journal)
-+static void jbd2_journal_unregister_shrinker(journal_t *journal)
- {
--	percpu_counter_destroy(&journal->j_jh_shrink_count);
--	unregister_shrinker(&journal->j_shrinker);
-+	if (journal->j_shrinker.flags & SHRINKER_REGISTERED) {
-+		percpu_counter_destroy(&journal->j_jh_shrink_count);
-+		unregister_shrinker(&journal->j_shrinker);
-+	}
- }
--EXPORT_SYMBOL(jbd2_journal_unregister_shrinker);
- 
- /**
-  * jbd2_journal_destroy() - Release a journal_t structure.
-diff --git a/include/linux/jbd2.h b/include/linux/jbd2.h
-index 6cc035321562..632afbe4b18f 100644
---- a/include/linux/jbd2.h
-+++ b/include/linux/jbd2.h
-@@ -1556,8 +1556,6 @@ extern int	   jbd2_journal_set_features
- 		   (journal_t *, unsigned long, unsigned long, unsigned long);
- extern void	   jbd2_journal_clear_features
- 		   (journal_t *, unsigned long, unsigned long, unsigned long);
--extern int	   jbd2_journal_register_shrinker(journal_t *journal);
--extern void	   jbd2_journal_unregister_shrinker(journal_t *journal);
- extern int	   jbd2_journal_load       (journal_t *journal);
- extern int	   jbd2_journal_destroy    (journal_t *);
- extern int	   jbd2_journal_recover    (journal_t *journal);
+@@ -1176,7 +1176,6 @@ static void ext4_put_super(struct super_block *sb)
+         ext4_unregister_sysfs(sb);
+
+         if (sbi->s_journal) {
+-               jbd2_journal_unregister_shrinker(sbi->s_journal);
+                 aborted = is_journal_aborted(sbi->s_journal);
+                 err = jbd2_journal_destroy(sbi->s_journal);
+                 sbi->s_journal = NULL;
+
+Thanks,
+Guoqing
