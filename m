@@ -1,50 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5DDA3BA6D9
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Jul 2021 05:05:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBE933BA6EA
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Jul 2021 05:36:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GGxf66Nb4z307j
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Jul 2021 13:05:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GGyKM278Yz3bWq
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Jul 2021 13:36:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.255; helo=szxga08-in.huawei.com;
- envelope-from=yi.zhang@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GGxdn0C64z2yNs
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 Jul 2021 13:05:14 +1000 (AEST)
-Received: from dggeme752-chm.china.huawei.com (unknown [172.30.72.55])
- by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4GGxWP1Z0qz1BSYn;
- Sat,  3 Jul 2021 10:59:45 +0800 (CST)
-Received: from [10.174.178.134] (10.174.178.134) by
- dggeme752-chm.china.huawei.com (10.3.19.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2176.2; Sat, 3 Jul 2021 11:05:07 +0800
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=mit.edu
+ (client-ip=18.9.28.11; helo=outgoing.mit.edu; envelope-from=tytso@mit.edu;
+ receiver=<UNKNOWN>)
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GGyJy5zGsz2ymQ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 Jul 2021 13:35:44 +1000 (AEST)
+Received: from cwcc.thunk.org (pool-72-74-133-215.bstnma.fios.verizon.net
+ [72.74.133.215]) (authenticated bits=0)
+ (User authenticated as tytso@ATHENA.MIT.EDU)
+ by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 1633ZBda007796
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 2 Jul 2021 23:35:12 -0400
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+ id D29EF15C3CE6; Fri,  2 Jul 2021 23:35:11 -0400 (EDT)
+Date: Fri, 2 Jul 2021 23:35:11 -0400
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: Zhang Yi <yi.zhang@huawei.com>
 Subject: Re: [powerpc][5.13.0-next-20210701] Kernel crash while running
  ltp(chdir01) tests
-To: Theodore Ts'o <tytso@mit.edu>
+Message-ID: <YN/a70ucYXu0DqGf@mit.edu>
 References: <26ACA75D-E13D-405B-9BFC-691B5FB64243@linux.vnet.ibm.com>
  <bf1c5b38-92f1-65db-e210-a97a199718ba@linux.dev>
  <4cc87ab3-aaa6-ed87-b690-5e5b99de8380@huawei.com>
- <03f734bd-f36e-f55b-0448-485b8a0d5b75@huawei.com> <YN86yl5kgVaRixxQ@mit.edu>
-From: Zhang Yi <yi.zhang@huawei.com>
-Message-ID: <36778615-86fd-9a19-9bc9-f93a6f2d5817@huawei.com>
-Date: Sat, 3 Jul 2021 11:05:07 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.1
+ <03f734bd-f36e-f55b-0448-485b8a0d5b75@huawei.com>
+ <YN86yl5kgVaRixxQ@mit.edu>
+ <36778615-86fd-9a19-9bc9-f93a6f2d5817@huawei.com>
 MIME-Version: 1.0
-In-Reply-To: <YN86yl5kgVaRixxQ@mit.edu>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.178.134]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggeme752-chm.china.huawei.com (10.3.19.98)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <36778615-86fd-9a19-9bc9-f93a6f2d5817@huawei.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,58 +62,38 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2021/7/3 0:11, Theodore Ts'o wrote:
-> On Fri, Jul 02, 2021 at 09:52:13PM +0800, Zhang Yi wrote:
->>
->> Sorry about not catching this problem, this fix is not format corrected,
->> if you think this fix is OK, I can send a patch after test.
+On Sat, Jul 03, 2021 at 11:05:07AM +0800, Zhang Yi wrote:
 > 
-> The issue I see with your approach, which removes the
-> jbd2_journal_unregister_shrinker() call from jbd2_destsroy_journal(),
-> is that means that *all* callers of jbd2_destroy_journal now have to
-> be responsible for calling jbd2_journal_unregister_shrinker() --- and
-> there a number of call sites to jbd2_journal_unregister_shrinker():
-> 
-> fs/ext4/super.c:		err = jbd2_journal_destroy(sbi->s_journal);
-> fs/ext4/super.c:		jbd2_journal_destroy(sbi->s_journal);
-> fs/ext4/super.c:	jbd2_journal_destroy(journal);
-> fs/ext4/super.c:		jbd2_journal_destroy(journal);
-> fs/ext4/super.c:	jbd2_journal_destroy(journal);
-> fs/ocfs2/journal.c:	if (!jbd2_journal_destroy(journal->j_journal) && !status) {
-> fs/ocfs2/journal.c:		jbd2_journal_destroy(journal);
-> fs/ocfs2/journal.c:	jbd2_journal_destroy(journal);
-> 
+> Originally, I want to add this shrinker as a optional feature for jbd2 because
+> only ext4 use it now and I'm not sure does ocfs2 needs this feature. So I export
+> jbd2_journal_[un]register_shrinker(), ext4 could invoke them individually.
 
-Originally, I want to add this shrinker as a optional feature for jbd2 because
-only ext4 use it now and I'm not sure does ocfs2 needs this feature. So I export
-jbd2_journal_[un]register_shrinker(), ext4 could invoke them individually.
+The reason why bdev_try_to_free_page() callback was needed for ext4
+--- namely so there was a way to release checkpointed buffers under
+memory pressure --- also exists for ocfs2.  It was probably true that
+in most deployments of ocfs2, they weren't running with super-tight
+memory availability, so it may not have been necessary the same way
+that it might be necessary, say, if ext4 was being used on a Rasberry
+Pi.  :-)
 
-If with my fix, there is no responsible for calling
-jbd2_journal_unregister_shrinker() before every jbd2_journal_destroy(). There
-are only two places that need to do this, one is the error path after
-ext4_load_journal() because we have already register the shrinker, other one
-is in ext4_put_super() before the final release of the journal.
-jbd2_journal_unregister_shrinker() and jbd2_journal_destroy() do not have
-the strong dependence.
+> And one more thing we to could do is rename the 'j_jh_shrink_count' to something
+> like 'j_checkpoint_jh_count' because we always init it no matter we register the
+> shrinker or not later.
 
-And one more thing we to could do is rename the 'j_jh_shrink_count' to something
-like 'j_checkpoint_jh_count' because we always init it no matter we register the
-shrinker or not later.
+That makes sense.
 
-> So it probably makes more sense to keep jbd2_journal_unregister_shrinker()
-> in jbd2_destroy_journal(), since arguably the fact that we are using a
-> shrinker is an internal implementation detail, and the users of jbd2
-> ideally shouldn't need to be expected to know they have unregister
-> jbd2's shirnkers.
-> 
-> Similarly, perhaps we should be moving jbd2_journal_register_shirnker()
-> into jbd2_journal_init_common().  We can un-export the register and
-> unshrink register functions, and declare them as static functions internal
-> to fs/jbd2/journal.c.
-> 
+In fact, unless I'm mistaken, I don't think it's legal to call
+percpu_counter_{inc,dec} if the shrinker isn't initialized.  So for
+ocfs2, if we didn't initialize percpu_counter, when
+__jbd2_journal_insert_checkpoint() tries to call percpu_counter_inc(),
+I believe things would potentially go *boom* on some implementations
+of the percpu counter (e.g., on Power and ARM).  So not only would it
+not hurt to register the shrinker for ocfs2, I think it's required.
 
-Yeah, it's make sense and It's sound good to me if the shrinker doesn't have
-side effects on osfs2.
+So yeah, let's rename it to something like j_checkpoint_jh_count, and
+then let's inline jbd2_journal_[un]register_shrinker() in
+journal_init_common() and jbd2_journal_unregister_shrinker().
 
-Thanks,
-Yi.
+What do you think?
+
+					- Ted
