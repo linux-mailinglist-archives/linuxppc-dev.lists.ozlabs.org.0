@@ -1,50 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A71153BA696
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Jul 2021 02:59:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8AFA3BA6B3
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Jul 2021 04:26:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GGtr64WXbz3c0H
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Jul 2021 10:59:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GGwnN2j3fz3bW0
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Jul 2021 12:26:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com;
- envelope-from=yi.zhang@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GGc2r3yq1z303j
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Jul 2021 23:52:17 +1000 (AEST)
-Received: from dggeme752-chm.china.huawei.com (unknown [172.30.72.54])
- by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4GGbz60mcMzZjqJ;
- Fri,  2 Jul 2021 21:49:06 +0800 (CST)
-Received: from [10.174.178.134] (10.174.178.134) by
- dggeme752-chm.china.huawei.com (10.3.19.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2176.2; Fri, 2 Jul 2021 21:52:13 +0800
-Subject: Re: [powerpc][5.13.0-next-20210701] Kernel crash while running
- ltp(chdir01) tests
-From: Zhang Yi <yi.zhang@huawei.com>
-To: Theodore Ts'o <tytso@mit.edu>, Jan Kara <jack@suse.cz>
-References: <26ACA75D-E13D-405B-9BFC-691B5FB64243@linux.vnet.ibm.com>
- <bf1c5b38-92f1-65db-e210-a97a199718ba@linux.dev>
- <4cc87ab3-aaa6-ed87-b690-5e5b99de8380@huawei.com>
-Message-ID: <03f734bd-f36e-f55b-0448-485b8a0d5b75@huawei.com>
-Date: Fri, 2 Jul 2021 21:52:13 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.1
+ smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GGwmh5Zwzz2yxx
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 Jul 2021 12:26:12 +1000 (AEST)
+X-IronPort-AV: E=McAfee;i="6200,9189,10033"; a="272652540"
+X-IronPort-AV: E=Sophos;i="5.83,320,1616482800"; d="scan'208";a="272652540"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+ by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jul 2021 19:25:00 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.83,320,1616482800"; d="scan'208";a="642844427"
+Received: from lkp-server01.sh.intel.com (HELO 4aae0cb4f5b5) ([10.239.97.150])
+ by fmsmga006.fm.intel.com with ESMTP; 02 Jul 2021 19:24:59 -0700
+Received: from kbuild by 4aae0cb4f5b5 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1lzVL0-000BKa-DT; Sat, 03 Jul 2021 02:24:58 +0000
+Date: Sat, 03 Jul 2021 10:24:17 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ 2e5df51883031f749cb1b7032e4da7d7fe267e97
+Message-ID: <60dfca51.PcCoh6BzzhT98R+O%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-In-Reply-To: <4cc87ab3-aaa6-ed87-b690-5e5b99de8380@huawei.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.134]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggeme752-chm.china.huawei.com (10.3.19.98)
-X-CFilter-Loop: Reflected
-X-Mailman-Approved-At: Sat, 03 Jul 2021 10:58:03 +1000
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,211 +50,183 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- Ext4 Developers List <linux-ext4@vger.kernel.org>,
- linuxppc-dev@lists.ozlabs.org, Guoqing Jiang <guoqing.jiang@linux.dev>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2021/7/2 21:23, Zhang Yi wrote:
-> On 2021/7/2 17:38, Guoqing Jiang wrote:
->>
->>
->> On 7/2/21 4:51 PM, Sachin Sant wrote:
->>> While running LTP tests (chdir01) against 5.13.0-next20210701 booted on a Power server,
->>> following crash is encountered.
->>>
->>> [ 3051.182992] ext2 filesystem being mounted at /var/tmp/avocado_oau90dri/ltp-W0cFB5HtCy/lKhal5/mntpoint supports timestamps until 2038 (0x7fffffff)
->>> [ 3051.621341] EXT4-fs (loop0): mounting ext3 file system using the ext4 subsystem
->>> [ 3051.624645] EXT4-fs (loop0): mounted filesystem with ordered data mode. Opts: (null). Quota mode: none.
->>> [ 3051.624682] ext3 filesystem being mounted at /var/tmp/avocado_oau90dri/ltp-W0cFB5HtCy/lKhal5/mntpoint supports timestamps until 2038 (0x7fffffff)
->>> [ 3051.629026] Kernel attempted to read user page (13fda70000) - exploit attempt? (uid: 0)
->>> [ 3051.629074] BUG: Unable to handle kernel data access on read at 0x13fda70000
->>> [ 3051.629103] Faulting instruction address: 0xc0000000006fa5cc
->>> [ 3051.629118] Oops: Kernel access of bad area, sig: 11 [#1]
->>> [ 3051.629130] LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
->>> [ 3051.629148] Modules linked in: vfat fat btrfs blake2b_generic xor zstd_compress raid6_pq xfs loop sctp ip6_udp_tunnel udp_tunnel libcrc32c rpadlpar_io rpaphp dm_mod bonding rfkill sunrpc pseries_rng xts vmx_crypto uio_pdrv_genirq uio sch_fq_codel ip_tables ext4 mbcache jbd2 sd_mod t10_pi sg ibmvscsi ibmveth scsi_transport_srp fuse [last unloaded: test_cpuidle_latency]
->>> [ 3051.629270] CPU: 10 PID: 274044 Comm: chdir01 Tainted: G        W  OE     5.13.0-next-20210701 #1
->>> [ 3051.629289] NIP:  c0000000006fa5cc LR: c008000006949bc4 CTR: c0000000006fa5a0
->>> [ 3051.629300] REGS: c000000f74de3660 TRAP: 0300   Tainted: G        W  OE      (5.13.0-next-20210701)
->>> [ 3051.629314] MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 24000288  XER: 20040000
->>> [ 3051.629342] CFAR: c008000006957564 DAR: 00000013fda70000 DSISR: 40000000 IRQMASK: 0
->>> [ 3051.629342] GPR00: c008000006949bc4 c000000f74de3900 c0000000029bc800 c000000f88f0ab80
->>> [ 3051.629342] GPR04: ffffffffffffffff 0000000000000020 0000000024000282 0000000000000000
->>> [ 3051.629342] GPR08: c00000110628c828 0000000000000000 00000013fda70000 c008000006957550
->>> [ 3051.629342] GPR12: c0000000006fa5a0 c0000013ffffbe80 0000000000000000 0000000000000000
->>> [ 3051.629342] GPR16: 0000000000000000 0000000000000000 00000000100555f8 0000000010050d40
->>> [ 3051.629342] GPR20: 0000000000000000 0000000010026188 0000000010026160 c000000f88f0ac08
->>> [ 3051.629342] GPR24: 0000000000000000 c000000f88f0a920 0000000000000000 0000000000000002
->>> [ 3051.629342] GPR28: c000000f88f0ac50 c000000f88f0a800 c000000fc5577d00 c000000f88f0ab80
->>> [ 3051.629468] NIP [c0000000006fa5cc] percpu_counter_add_batch+0x2c/0xf0
->>> [ 3051.629493] LR [c008000006949bc4] __jbd2_journal_remove_checkpoint+0x9c/0x280 [jbd2]
->>> [ 3051.629526] Call Trace:
->>> [ 3051.629532] [c000000f74de3900] [c000000f88f0a84c] 0xc000000f88f0a84c (unreliable)
->>> [ 3051.629547] [c000000f74de3940] [c008000006949bc4] __jbd2_journal_remove_checkpoint+0x9c/0x280 [jbd2]
->>> [ 3051.629577] [c000000f74de3980] [c008000006949eb4] jbd2_log_do_checkpoint+0x10c/0x630 [jbd2]
->>> [ 3051.629605] [c000000f74de3a40] [c0080000069547dc] jbd2_journal_destroy+0x1b4/0x4e0 [jbd2]
->>> [ 3051.629636] [c000000f74de3ad0] [c00800000735d72c] ext4_put_super+0xb4/0x560 [ext4]
->>> [ 3051.629703] [c000000f74de3b60] [c000000000484d64] generic_shutdown_super+0xc4/0x1d0
->>> [ 3051.629720] [c000000f74de3bd0] [c000000000484f48] kill_block_super+0x38/0x90
->>> [ 3051.629736] [c000000f74de3c00] [c000000000485120] deactivate_locked_super+0x80/0x100
->>> [ 3051.629752] [c000000f74de3c30] [c0000000004bec1c] cleanup_mnt+0x10c/0x1d0
->>> [ 3051.629767] [c000000f74de3c80] [c000000000188b08] task_work_run+0xf8/0x170
->>> [ 3051.629783] [c000000f74de3cd0] [c000000000021a24] do_notify_resume+0x434/0x480
->>> [ 3051.629800] [c000000f74de3d80] [c000000000032910] interrupt_exit_user_prepare_main+0x1a0/0x260
->>> [ 3051.629816] [c000000f74de3de0] [c000000000032d08] syscall_exit_prepare+0x68/0x150
->>> [ 3051.629830] [c000000f74de3e10] [c00000000000c770] system_call_common+0x100/0x258
->>> [ 3051.629846] --- interrupt: c00 at 0x7fffa2b92ffc
->>> [ 3051.629855] NIP:  00007fffa2b92ffc LR: 00007fffa2b92fcc CTR: 0000000000000000
->>> [ 3051.629867] REGS: c000000f74de3e80 TRAP: 0c00   Tainted: G        W  OE      (5.13.0-next-20210701)
->>> [ 3051.629880] MSR:  800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 24000474  XER: 00000000
->>> [ 3051.629908] IRQMASK: 0
->>> [ 3051.629908] GPR00: 0000000000000034 00007fffc0242e20 00007fffa2c77100 0000000000000000
->>> [ 3051.629908] GPR04: 0000000000000000 0000000000000078 0000000000000000 0000000000000020
->>> [ 3051.629908] GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
->>> [ 3051.629908] GPR12: 0000000000000000 00007fffa2d1a310 0000000000000000 0000000000000000
->>> [ 3051.629908] GPR16: 0000000000000000 0000000000000000 00000000100555f8 0000000010050d40
->>> [ 3051.629908] GPR20: 0000000000000000 0000000010026188 0000000010026160 00000000100288f0
->>> [ 3051.629908] GPR24: 00007fffa2d13320 00000000000186a0 0000000010025dd8 0000000010055688
->>> [ 3051.629908] GPR28: 0000000010024bb8 0000000000000001 0000000000000001 0000000000000000
->>> [ 3051.630022] NIP [00007fffa2b92ffc] 0x7fffa2b92ffc
->>> [ 3051.630032] LR [00007fffa2b92fcc] 0x7fffa2b92fcc
->>> [ 3051.630041] --- interrupt: c00
->>> [ 3051.630048] Instruction dump:
->>> [ 3051.630057] 60000000 3c4c022c 38422260 7c0802a6 fbe1fff8 fba1ffe8 7c7f1b78 fbc1fff0
->>> [ 3051.630078] f8010010 f821ffc1 e94d0030 e9230020 <7fca4aaa> 7fbe2214 7fa9fe76 7d2aea78
->>> [ 3051.630102] ---[ end trace 83afe3a19212c333 ]---
->>> [ 3051.633656]
->>> [ 3052.633681] Kernel panic - not syncing: Fatal exception
->>>
->>> 5.13.0-next-20210630 was good. Bisect points to following patch:
->>>
->>> commit 4ba3fcdde7e3
->>>           jbd2,ext4: add a shrinker to release checkpointed buffers
->>>
->>> Reverting this patch allows the test to run successfully.
->>
->> I guess the problem is j_jh_shrink_count was destroyed in ext4_put_super _>  jbd2_journal_unregister_shrinker
->> which is before the path ext4_put_super -> jbd2_journal_destroy -> jbd2_log_do_checkpoint to call
->> percpu_counter_dec(&journal->j_jh_shrink_count).
->>
->> And since jbd2_journal_unregister_shrinker is already called inside jbd2_journal_destroy, does it make sense
->> to do this?
->>
->> --- a/fs/ext4/super.c
->> +++ b/fs/ext4/super.c
->> @@ -1176,7 +1176,6 @@ static void ext4_put_super(struct super_block  *sb)
->>         ext4_unregister_sysfs(sb);
->>
->>         if (sbi->s_journal) {
->> -               jbd2_journal_unregister_shrinker(sbi->s_journal);
->>                 aborted = is_journal_aborted(sbi->s_journal);
->>                 err = jbd2_journal_destroy(sbi->s_journal);
->>                 sbi->s_journal = NULL;
->>
-> 
-> Hi Guoqing,
-> 
-> Thanks for your analyze. This problem cannot reproduce on x86_64 but 100% reproduce on arm64,
-> it depends on the percpu counter code on different architecture.
-> 
-> Indeed, as you said, the real problem is invoke percpu_counter_dec(&journal->j_jh_shrink_count)
-> after it was destroyed during umount, and I'm afraid that it may also affect ocfs2
-> because it doesn't initialize the percpu counter before doing add/sub in
-> __jbd2_journal_[insert|remove]_checkpoint().
-> 
-> I think the quick fix could be:
-> 
-> diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
-> index 152880c298ca..48c7e5d17b38 100644
-> --- a/fs/jbd2/journal.c
-> +++ b/fs/jbd2/journal.c
-> @@ -1352,17 +1352,23 @@ static journal_t *journal_init_common(struct block_device *bdev,
->         if (!journal->j_wbuf)
->                 goto err_cleanup;
-> 
-> +       err = percpu_counter_init(&journal->j_jh_shrink_count, 0, GFP_KERNEL);
-> +       if (err)
-> +               goto err_cleanup;
-> +
->         bh = getblk_unmovable(journal->j_dev, start, journal->j_blocksize);
->         if (!bh) {
->                 pr_err("%s: Cannot get buffer for journal superblock\n",
->                         __func__);
-> -               goto err_cleanup;
-> +               goto err_cleanup_cnt;
->         }
->         journal->j_sb_buffer = bh;
->         journal->j_superblock = (journal_superblock_t *)bh->b_data;
-> 
->         return journal;
-> 
-> +err_cleanup_cnt:
-> +       percpu_counter_destroy(&journal->j_jh_shrink_count);
->  err_cleanup:
->         kfree(journal->j_wbuf);
->         jbd2_journal_destroy_revoke(journal);
-> @@ -2101,26 +2107,13 @@ static unsigned long jbd2_journal_shrink_count(struct shrinker *shrink,
->   */
->  int jbd2_journal_register_shrinker(journal_t *journal)
->  {
-> -       int err;
-> -
->         journal->j_shrink_transaction = NULL;
-> -
-> -       err = percpu_counter_init(&journal->j_jh_shrink_count, 0, GFP_KERNEL);
-> -       if (err)
-> -               return err;
-> -
->         journal->j_shrinker.scan_objects = jbd2_journal_shrink_scan;
->         journal->j_shrinker.count_objects = jbd2_journal_shrink_count;
->         journal->j_shrinker.seeks = DEFAULT_SEEKS;
->         journal->j_shrinker.batch = journal->j_max_transaction_buffers;
-> 
-> -       err = register_shrinker(&journal->j_shrinker);
-> -       if (err) {
-> -               percpu_counter_destroy(&journal->j_jh_shrink_count);
-> -               return err;
-> -       }
-> -
-> -       return 0;
-> +       return register_shrinker(&journal->j_shrinker);
->  }
->  EXPORT_SYMBOL(jbd2_journal_register_shrinker);
-> 
-> @@ -2132,7 +2125,6 @@ EXPORT_SYMBOL(jbd2_journal_register_shrinker);
->   */
->  void jbd2_journal_unregister_shrinker(journal_t *journal)
->  {
-> -       percpu_counter_destroy(&journal->j_jh_shrink_count);
->         unregister_shrinker(&journal->j_shrinker);
->  }
->  EXPORT_SYMBOL(jbd2_journal_unregister_shrinker);
-> @@ -2209,8 +2201,6 @@ int jbd2_journal_destroy(journal_t *journal)
->                 brelse(journal->j_sb_buffer);
->         }
-> 
-> -       jbd2_journal_unregister_shrinker(journal);
-> -
->         if (journal->j_proc_entry)
->                 jbd2_stats_proc_exit(journal);
->         iput(journal->j_inode);
-> @@ -2220,6 +2210,7 @@ int jbd2_journal_destroy(journal_t *journal)
->                 crypto_free_shash(journal->j_chksum_driver);
->         kfree(journal->j_fc_wbuf);
->         kfree(journal->j_wbuf);
-> +       percpu_counter_destroy(&journal->j_jh_shrink_count);
->         kfree(journal);
-> 
->         return err;
-> 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: 2e5df51883031f749cb1b7032e4da7d7fe267e97  powerpc/xive: Fix error handling when allocating an IPI
 
-Hi, Ted,
+elapsed time: 724m
 
-Sorry about not catching this problem, this fix is not format corrected,
-if you think this fix is OK, I can send a patch after test.
+configs tested: 157
+configs skipped: 3
 
-Thanks,
-Yi.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+powerpc                     tqm5200_defconfig
+powerpc                 mpc832x_mds_defconfig
+ia64                        generic_defconfig
+mips                         tb0226_defconfig
+ia64                         bigsur_defconfig
+powerpc                 mpc8272_ads_defconfig
+powerpc                     rainier_defconfig
+arm                  colibri_pxa270_defconfig
+powerpc                        cell_defconfig
+arm                        neponset_defconfig
+arm                        oxnas_v6_defconfig
+powerpc                   bluestone_defconfig
+arm                           corgi_defconfig
+powerpc                      obs600_defconfig
+sh                        sh7763rdp_defconfig
+powerpc                      cm5200_defconfig
+arc                         haps_hs_defconfig
+mips                     loongson1c_defconfig
+i386                                defconfig
+riscv                             allnoconfig
+sh                        sh7757lcr_defconfig
+arm                    vt8500_v6_v7_defconfig
+m68k                            q40_defconfig
+powerpc                 linkstation_defconfig
+arm                          ep93xx_defconfig
+mips                            gpr_defconfig
+mips                       lemote2f_defconfig
+arm                       omap2plus_defconfig
+sh                           se7712_defconfig
+arm                         vf610m4_defconfig
+mips                      pistachio_defconfig
+sh                  sh7785lcr_32bit_defconfig
+sh                             espt_defconfig
+arm                       cns3420vb_defconfig
+arm                          ixp4xx_defconfig
+i386                             alldefconfig
+sparc                            allyesconfig
+arm                       aspeed_g5_defconfig
+sh                          sdk7786_defconfig
+powerpc                          g5_defconfig
+powerpc                     mpc83xx_defconfig
+arc                        vdk_hs38_defconfig
+sh                        apsh4ad0a_defconfig
+arm                         lpc32xx_defconfig
+arm                         orion5x_defconfig
+arm                         axm55xx_defconfig
+m68k                        mvme16x_defconfig
+arm                           omap1_defconfig
+powerpc                     stx_gp3_defconfig
+powerpc                      walnut_defconfig
+mips                            ar7_defconfig
+sh                            shmin_defconfig
+powerpc                     skiroot_defconfig
+nds32                             allnoconfig
+sh                        edosk7760_defconfig
+mips                           jazz_defconfig
+m68k                            mac_defconfig
+x86_64                            allnoconfig
+arm                       spear13xx_defconfig
+mips                 decstation_r4k_defconfig
+mips                           ip28_defconfig
+arm                         lpc18xx_defconfig
+arm                        multi_v5_defconfig
+arm                      integrator_defconfig
+m68k                       m5208evb_defconfig
+powerpc                     sbc8548_defconfig
+powerpc                    gamecube_defconfig
+arm                           tegra_defconfig
+powerpc                 mpc837x_rdb_defconfig
+arm                            qcom_defconfig
+powerpc                     kmeter1_defconfig
+arm                        multi_v7_defconfig
+powerpc                         ps3_defconfig
+powerpc                       maple_defconfig
+csky                             alldefconfig
+mips                           ip22_defconfig
+powerpc                  mpc885_ads_defconfig
+powerpc                     redwood_defconfig
+powerpc                      pasemi_defconfig
+mips                           xway_defconfig
+powerpc64                        alldefconfig
+openrisc                         alldefconfig
+powerpc                  storcenter_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                               defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a004-20210702
+i386                 randconfig-a006-20210702
+i386                 randconfig-a001-20210702
+i386                 randconfig-a003-20210702
+i386                 randconfig-a005-20210702
+i386                 randconfig-a002-20210702
+x86_64               randconfig-a015-20210702
+x86_64               randconfig-a012-20210702
+x86_64               randconfig-a014-20210702
+x86_64               randconfig-a011-20210702
+x86_64               randconfig-a016-20210702
+x86_64               randconfig-a013-20210702
+i386                 randconfig-a015-20210702
+i386                 randconfig-a016-20210702
+i386                 randconfig-a011-20210702
+i386                 randconfig-a012-20210702
+i386                 randconfig-a013-20210702
+i386                 randconfig-a014-20210702
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+um                            kunit_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                      rhel-8.3-kbuiltin
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-b001-20210702
+x86_64               randconfig-a004-20210702
+x86_64               randconfig-a005-20210702
+x86_64               randconfig-a002-20210702
+x86_64               randconfig-a006-20210702
+x86_64               randconfig-a003-20210702
+x86_64               randconfig-a001-20210702
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
