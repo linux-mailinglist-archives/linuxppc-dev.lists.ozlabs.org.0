@@ -1,49 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7662B3BAD55
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Jul 2021 16:05:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 818D63BAF3C
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Jul 2021 23:39:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GHrDk2RCxz3bXK
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jul 2021 00:05:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GJ2Jm3M3Nz309p
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jul 2021 07:39:20 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Ws1vRwQ+;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=mit.edu
- (client-ip=18.9.28.11; helo=outgoing.mit.edu; envelope-from=tytso@mit.edu;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f34;
+ helo=mail-qv1-xf34.google.com; envelope-from=radu.rendec@gmail.com;
  receiver=<UNKNOWN>)
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Ws1vRwQ+; dkim-atps=neutral
+Received: from mail-qv1-xf34.google.com (mail-qv1-xf34.google.com
+ [IPv6:2607:f8b0:4864:20::f34])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GHrDJ6T3Mz2xtk
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Jul 2021 00:04:46 +1000 (AEST)
-Received: from cwcc.thunk.org (pool-72-74-133-215.bstnma.fios.verizon.net
- [72.74.133.215]) (authenticated bits=0)
- (User authenticated as tytso@ATHENA.MIT.EDU)
- by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 164E4L5N015602
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 4 Jul 2021 10:04:22 -0400
-Received: by cwcc.thunk.org (Postfix, from userid 15806)
- id C388115C3C96; Sun,  4 Jul 2021 10:04:21 -0400 (EDT)
-Date: Sun, 4 Jul 2021 10:04:21 -0400
-From: "Theodore Ts'o" <tytso@mit.edu>
-To: Zhang Yi <yi.zhang@huawei.com>
-Subject: Re: [powerpc][5.13.0-next-20210701] Kernel crash while running
- ltp(chdir01) tests
-Message-ID: <YOG/5ZY1AL05jumi@mit.edu>
-References: <26ACA75D-E13D-405B-9BFC-691B5FB64243@linux.vnet.ibm.com>
- <bf1c5b38-92f1-65db-e210-a97a199718ba@linux.dev>
- <4cc87ab3-aaa6-ed87-b690-5e5b99de8380@huawei.com>
- <03f734bd-f36e-f55b-0448-485b8a0d5b75@huawei.com>
- <YN86yl5kgVaRixxQ@mit.edu>
- <36778615-86fd-9a19-9bc9-f93a6f2d5817@huawei.com>
- <YN/a70ucYXu0DqGf@mit.edu>
- <66fb56cd-f1ff-c592-0202-0691372e32f5@huawei.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GJ2JJ1dnRz2yNx
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Jul 2021 07:38:53 +1000 (AEST)
+Received: by mail-qv1-xf34.google.com with SMTP id j14so7453463qvu.6
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 04 Jul 2021 14:38:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=message-id:subject:from:to:date:user-agent:mime-version
+ :content-transfer-encoding;
+ bh=fe3J2A+vtFu4IpZ6REOdxE2omyLFSQowPGaH+N2VFXE=;
+ b=Ws1vRwQ+9pUsdkHwkc6368X7KkFDfgigZHmNIz+izLp4WyuimWrTWC9/+p/mNK1Xfo
+ Mk0mSpsdBHJsV3zfG/9SgBOZFMjZdaHRa62zEBa5wnWBtP0hR8f9uDr1U7twXAAh3XnM
+ i1ab7BS/XH/JrIqQkkthP0t3RrHDz0jNnMkH3gJTohfCIyqDQYShgcP4cts4cGN8G89n
+ kJZyLw91VPYd+Muz+Sip/fyIN2sm07i6mA0OQ64f8iL95t3TemO9pcpwbhD7beA2NzoX
+ Yr2u782qoZpbY/bc6JjYGEI1n4ZxBs+VZzQwkI8JbdQOVMpU+3jlkAkcwIl0viQ1zFZF
+ SMXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:message-id:subject:from:to:date:user-agent
+ :mime-version:content-transfer-encoding;
+ bh=fe3J2A+vtFu4IpZ6REOdxE2omyLFSQowPGaH+N2VFXE=;
+ b=sVyb+UNrP75s0oFqaV24nTTETNHJnC83Rp9KKGCgNHB9pis8ZP2eNQqarkZDhCNa4S
+ PC31cEyeg5yMpZEwDEOaypC4uvIQxQhHKJPMS3aHZ9WEP89IPj/USGs7HGvTAFEq0Uk+
+ 5OZkOJiy994ZvmtzrherL9f3Ao6h2z4njSbq5wkAH3jmQTMY5t9jtUydJBJOJvRdiTfL
+ O41CHf0MF4n3MujpZ2D5QTdtmkth3lmu/gwlDXe4Fb4IVXRlvYsO2wDoiKO8D4LTDWe0
+ GYtxE4VHyM7srkiS4x7yqk6RjLeDsEplc9fNHRPo/Px+PAE5sgzDh9FXHvbZVeWdUxLz
+ Ku2Q==
+X-Gm-Message-State: AOAM532isffF9AOfSiPQiTicXsQkXzpnQyxtOcH8kkTAlg16NO5SJYne
+ W7e5vV24IB7yPjyebUMMbeRIp5s2f1E=
+X-Google-Smtp-Source: ABdhPJx8/p9TmuwCrVhsm7jTQcRqH/Ip8dzIHJ2eCoP5YlnEXiGUzr0RQZFYpUFuHDiOdmfC2TQnpQ==
+X-Received: by 2002:ad4:4d85:: with SMTP id cv5mr10192022qvb.33.1625434726626; 
+ Sun, 04 Jul 2021 14:38:46 -0700 (PDT)
+Received: from bat.mindbit.ro (cpe00fc8d79db03-cm00fc8d79db00.cpe.net.fido.ca.
+ [72.137.118.157])
+ by smtp.gmail.com with ESMTPSA id g6sm3767433qtk.44.2021.07.04.14.38.45
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 04 Jul 2021 14:38:46 -0700 (PDT)
+Message-ID: <6b5327e32549860c1e6c73e5b669528bfb383df2.camel@gmail.com>
+Subject: Hitting BUG_ON in do_notify_resume() with gdb and SIGTRAP
+From: Radu Rendec <radu.rendec@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Date: Sun, 04 Jul 2021 17:38:44 -0400
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <66fb56cd-f1ff-c592-0202-0691372e32f5@huawei.com>
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,318 +80,109 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>, Jan Kara <jack@suse.cz>,
- Guoqing Jiang <guoqing.jiang@linux.dev>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- Ext4 Developers List <linux-ext4@vger.kernel.org>,
- linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Jul 03, 2021 at 12:55:09PM +0800, Zhang Yi wrote:
-> Yeah, it sounds good to me. Do you want me to send the fix patch, or you
-> modify your commit 8f9e16badb8fd in another email directly?
+Hi Everyone,
 
-I've gone ahead and made the changes; what do you think?
+I'm trying to set up my (virtual) environment to test an old bug in the
+PPC32 ptrace() code. I came across a completely different problem,
+which seems to make gdb pretty much unusable on PPC32. I'm not sure if
+this is a real kernel bug or maybe something wrong with my
+configuration.
 
-I like how it also removes 40 lines of code.  :-)
+I'm running kernel 5.13 in a qemu VM with one e500mc CPU. I am running
+native gdb (inside the VM) and setting a breakpoint in main() in a test
+"hello world" program. Upon running the test program, I am hitting the
+BUG_ON in do_notify_resume() on line 292. The kernel bug log snippet is
+included below at the end of the email.
 
-     	  	    	     	      	   - Ted
+FWIW, gdb says:
+Program terminated with signal SIGTRAP, Trace/breakpoint trap.
+The program no longer exists.
 
-From ef3130d1b0b8ca769252d6a722a2e59a00141383 Mon Sep 17 00:00:00 2001
-From: Theodore Ts'o <tytso@mit.edu>
-Date: Fri, 2 Jul 2021 18:05:03 -0400
-Subject: [PATCH] ext4: inline jbd2_journal_[un]register_shrinker()
+I also added a pr_info() to do_notify_resume() just to see how much
+different 'regs' and 'current->thread.regs' are. Surprisingly, they are
+just 0x30 apart: regs=c7955f10 cur=c7955f40. Also, 'current' seems to
+be OK (pid and comm are consistent with the test program).
 
-The function jbd2_journal_unregister_shrinker() was getting called
-twice when the file system was getting unmounted.  On Power and ARM
-platforms this was causing kernel crash when unmounting the file
-system, when a percpu_counter was destroyed twice.
+If I'm not missing something, the 'regs' pointer that is eventually
+passed to do_notify_resume() is calculated in interrupt_return() by
+adding STACK_FRAME_OVERHEAD (defined to 112) to the value of r1. That
+means all registers are saved on the stack before entering the
+interrupt handler and, upon returning, a pointer to the register
+structure is calculated from the stack pointer. Either the offset
+itself is wrong, or the stack pointer is off by 0x30.
 
-Fix this by removing jbd2_journal_[un]register_shrinker() functions,
-and inlining the shrinker setup and teardown into
-journal_init_common() and jbd2_journal_destroy().  This means that
-ext4 and ocfs2 now no longer need to know about registering and
-unregistering jbd2's shrinker.
+This is as far as I have gone. Hopefully this rings a bell to someone
+who is familiar with that part of the code and has a better
+understanding of PPC32 interrupt handling in general.
 
-Also, while we're at it, rename the percpu counter from
-j_jh_shrink_count to j_checkpoint_jh_count, since this makes it
-clearer what this counter is intended to track.
+Last but not least, my configuration is fairly standard. I'm using the
+powerpc-e500mc--glibc--bleeding-edge-2020.08-1 toolchain from Bootlin
+to compile everything (kernel and user-space). The qemu version is
+5.2.0 (Fedora 34) and the user-space is a small Busybox based rootfs
+that I built using Buildroot 2021.05. The gdb version is 9.2.
 
-Fixes: 4ba3fcdde7e3 ("jbd2,ext4: add a shrinker to release checkpointed buffers")
-Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-Reported-by: Jon Hunter <jonathanh@nvidia.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
----
- fs/ext4/super.c      |   8 ---
- fs/jbd2/checkpoint.c |   4 +-
- fs/jbd2/journal.c    | 148 +++++++++++++++++--------------------------
- include/linux/jbd2.h |   6 +-
- 4 files changed, 63 insertions(+), 103 deletions(-)
+regs=c7955f10 cur=c7955f40 pid=138 comm=test
+------------[ cut here ]------------
+kernel BUG at arch/powerpc/kernel/signal.c:296!
+Oops: Exception in kernel mode, sig: 5 [#1]
+BE PAGE_SIZE=4K SMP NR_CPUS=24 QEMU e500
+Modules linked in:
+CPU: 0 PID: 138 Comm: test Not tainted 5.13.0-dirty #3
+NIP:  c0009694 LR: c0009694 CTR: c065f540
+REGS: c7955dc0 TRAP: 0700   Not tainted  (5.13.0-dirty)
+MSR:  00028002 <CE,EE>  CR: 28000282  XER: 20000000
 
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index b8ff0399e171..dfa09a277b56 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -1184,7 +1184,6 @@ static void ext4_put_super(struct super_block *sb)
- 	ext4_unregister_sysfs(sb);
+GPR00: c0009694 c7955e80 c7145100 0000002c dfbdc3d4 dfbe5d24 00000027 dfbdc3d8 
+GPR08: c0ffe988 00000000 00000000 00000000 22000282 00000000 00000000 b7fe17b4 
+GPR16: 00000000 b7ffd588 b7ffe8b8 b7ffee10 b7fff214 b7ffdf40 b7fff208 bffff858 
+GPR24: bffff970 b7fff130 00000001 bffff960 c7955f10 00000800 c7145100 00000102 
+NIP [c0009694] do_notify_resume+0x314/0x320
+LR [c0009694] do_notify_resume+0x314/0x320
+Call Trace:
+[c7955e80] [c0009694] do_notify_resume+0x314/0x320 (unreliable)
+[c7955ee0] [c0010b94] interrupt_exit_user_prepare+0x94/0xc0
+[c7955f00] [c00151e8] interrupt_return+0x14/0x13c
+--- interrupt: 7d8 at 0xb7fc3714
+NIP:  b7fc3714 LR: b7fc3714 CTR: 00000003
+REGS: c7955f10 TRAP: 07d8   Not tainted  (5.13.0-dirty)
+MSR:  1002d002 <CE,EE,PR,ME>  CR: 22000284  XER: 00000000
+
+GPR00: b7fc3584 bffff850 00000000 00000000 00000000 00000000 000000a0 6474e552 
+GPR08: b7fbe0d4 00000001 b7fff230 bffff850 b7fc36d8 00000000 00000000 b7fe17b4 
+GPR16: 00000000 b7ffd588 b7ffe8b8 b7ffee10 b7fff214 b7ffdf40 b7fff208 bffff858 
+GPR24: bffff970 b7fff130 00000001 bffff960 b7fff2b0 b7ffd5f0 b7ffe8a8 bffff850 
+NIP [b7fc3714] 0xb7fc3714
+LR [b7fc3714] 0xb7fc3714
+--- interrupt: 7d8
+Instruction dump:
+4bffff04 7c0802a6 93a10054 90010064 93c10058 48b95369 80c20398 3c60c0dc 
+7f84e378 38e204b0 3863ce30 4809d819 <0fe00000> 60000000 60000000 3d20c0ff 
+---[ end trace 065671519ba3d526 ]---
+
+Note: the BUG() line is slightly different because I had made this
+small change to print the pointers:
+
+diff --git a/arch/powerpc/kernel/signal.c b/arch/powerpc/kernel/signal.c
+index 9ded046edb0e..57ea6e500a6f 100644
+--- a/arch/powerpc/kernel/signal.c
++++ b/arch/powerpc/kernel/signal.c
+@@ -289,7 +289,12 @@ void do_notify_resume(struct pt_regs *regs, unsigned long thread_info_flags)
+ 		klp_update_patch_state(current);
  
- 	if (sbi->s_journal) {
--		jbd2_journal_unregister_shrinker(sbi->s_journal);
- 		aborted = is_journal_aborted(sbi->s_journal);
- 		err = jbd2_journal_destroy(sbi->s_journal);
- 		sbi->s_journal = NULL;
-@@ -5176,7 +5175,6 @@ static int ext4_fill_super(struct super_block *sb, void *data, int silent)
- 	sbi->s_ea_block_cache = NULL;
- 
- 	if (sbi->s_journal) {
--		jbd2_journal_unregister_shrinker(sbi->s_journal);
- 		jbd2_journal_destroy(sbi->s_journal);
- 		sbi->s_journal = NULL;
- 	}
-@@ -5502,12 +5500,6 @@ static int ext4_load_journal(struct super_block *sb,
- 		ext4_commit_super(sb);
- 	}
- 
--	err = jbd2_journal_register_shrinker(journal);
--	if (err) {
--		EXT4_SB(sb)->s_journal = NULL;
--		goto err_out;
--	}
--
- 	return 0;
- 
- err_out:
-diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
-index 51d1eb2ffeb9..746132998c57 100644
---- a/fs/jbd2/checkpoint.c
-+++ b/fs/jbd2/checkpoint.c
-@@ -701,7 +701,7 @@ int __jbd2_journal_remove_checkpoint(struct journal_head *jh)
- 
- 	__buffer_unlink(jh);
- 	jh->b_cp_transaction = NULL;
--	percpu_counter_dec(&journal->j_jh_shrink_count);
-+	percpu_counter_dec(&journal->j_checkpoint_jh_count);
- 	jbd2_journal_put_journal_head(jh);
- 
- 	/* Is this transaction empty? */
-@@ -764,7 +764,7 @@ void __jbd2_journal_insert_checkpoint(struct journal_head *jh,
- 		jh->b_cpnext->b_cpprev = jh;
- 	}
- 	transaction->t_checkpoint_list = jh;
--	percpu_counter_inc(&transaction->t_journal->j_jh_shrink_count);
-+	percpu_counter_inc(&transaction->t_journal->j_checkpoint_jh_count);
- }
- 
- /*
-diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
-index 152880c298ca..8a9c94dd3599 100644
---- a/fs/jbd2/journal.c
-+++ b/fs/jbd2/journal.c
-@@ -1283,6 +1283,48 @@ static int jbd2_min_tag_size(void)
- 	return sizeof(journal_block_tag_t) - 4;
- }
- 
-+/**
-+ * jbd2_journal_shrink_scan()
-+ *
-+ * Scan the checkpointed buffer on the checkpoint list and release the
-+ * journal_head.
-+ */
-+static unsigned long jbd2_journal_shrink_scan(struct shrinker *shrink,
-+					      struct shrink_control *sc)
-+{
-+	journal_t *journal = container_of(shrink, journal_t, j_shrinker);
-+	unsigned long nr_to_scan = sc->nr_to_scan;
-+	unsigned long nr_shrunk;
-+	unsigned long count;
-+
-+	count = percpu_counter_read_positive(&journal->j_checkpoint_jh_count);
-+	trace_jbd2_shrink_scan_enter(journal, sc->nr_to_scan, count);
-+
-+	nr_shrunk = jbd2_journal_shrink_checkpoint_list(journal, &nr_to_scan);
-+
-+	count = percpu_counter_read_positive(&journal->j_checkpoint_jh_count);
-+	trace_jbd2_shrink_scan_exit(journal, nr_to_scan, nr_shrunk, count);
-+
-+	return nr_shrunk;
-+}
-+
-+/**
-+ * jbd2_journal_shrink_count()
-+ *
-+ * Count the number of checkpoint buffers on the checkpoint list.
-+ */
-+static unsigned long jbd2_journal_shrink_count(struct shrinker *shrink,
-+					       struct shrink_control *sc)
-+{
-+	journal_t *journal = container_of(shrink, journal_t, j_shrinker);
-+	unsigned long count;
-+
-+	count = percpu_counter_read_positive(&journal->j_checkpoint_jh_count);
-+	trace_jbd2_shrink_count(journal, sc->nr_to_scan, count);
-+
-+	return count;
-+}
-+
- /*
-  * Management for journal control blocks: functions to create and
-  * destroy journal_t structures, and to initialise and read existing
-@@ -1361,6 +1403,19 @@ static journal_t *journal_init_common(struct block_device *bdev,
- 	journal->j_sb_buffer = bh;
- 	journal->j_superblock = (journal_superblock_t *)bh->b_data;
- 
-+	journal->j_shrink_transaction = NULL;
-+	journal->j_shrinker.scan_objects = jbd2_journal_shrink_scan;
-+	journal->j_shrinker.count_objects = jbd2_journal_shrink_count;
-+	journal->j_shrinker.seeks = DEFAULT_SEEKS;
-+	journal->j_shrinker.batch = journal->j_max_transaction_buffers;
-+
-+	if (percpu_counter_init(&journal->j_checkpoint_jh_count, 0, GFP_KERNEL))
-+		goto err_cleanup;
-+
-+	if (register_shrinker(&journal->j_shrinker)) {
-+		percpu_counter_destroy(&journal->j_checkpoint_jh_count);
-+		goto err_cleanup;
-+	}
- 	return journal;
- 
- err_cleanup:
-@@ -2050,93 +2105,6 @@ int jbd2_journal_load(journal_t *journal)
- 	return -EIO;
- }
- 
--/**
-- * jbd2_journal_shrink_scan()
-- *
-- * Scan the checkpointed buffer on the checkpoint list and release the
-- * journal_head.
-- */
--static unsigned long jbd2_journal_shrink_scan(struct shrinker *shrink,
--					      struct shrink_control *sc)
--{
--	journal_t *journal = container_of(shrink, journal_t, j_shrinker);
--	unsigned long nr_to_scan = sc->nr_to_scan;
--	unsigned long nr_shrunk;
--	unsigned long count;
--
--	count = percpu_counter_read_positive(&journal->j_jh_shrink_count);
--	trace_jbd2_shrink_scan_enter(journal, sc->nr_to_scan, count);
--
--	nr_shrunk = jbd2_journal_shrink_checkpoint_list(journal, &nr_to_scan);
--
--	count = percpu_counter_read_positive(&journal->j_jh_shrink_count);
--	trace_jbd2_shrink_scan_exit(journal, nr_to_scan, nr_shrunk, count);
--
--	return nr_shrunk;
--}
--
--/**
-- * jbd2_journal_shrink_count()
-- *
-- * Count the number of checkpoint buffers on the checkpoint list.
-- */
--static unsigned long jbd2_journal_shrink_count(struct shrinker *shrink,
--					       struct shrink_control *sc)
--{
--	journal_t *journal = container_of(shrink, journal_t, j_shrinker);
--	unsigned long count;
--
--	count = percpu_counter_read_positive(&journal->j_jh_shrink_count);
--	trace_jbd2_shrink_count(journal, sc->nr_to_scan, count);
--
--	return count;
--}
--
--/**
-- * jbd2_journal_register_shrinker()
-- * @journal: Journal to act on.
-- *
-- * Init a percpu counter to record the checkpointed buffers on the checkpoint
-- * list and register a shrinker to release their journal_head.
-- */
--int jbd2_journal_register_shrinker(journal_t *journal)
--{
--	int err;
--
--	journal->j_shrink_transaction = NULL;
--
--	err = percpu_counter_init(&journal->j_jh_shrink_count, 0, GFP_KERNEL);
--	if (err)
--		return err;
--
--	journal->j_shrinker.scan_objects = jbd2_journal_shrink_scan;
--	journal->j_shrinker.count_objects = jbd2_journal_shrink_count;
--	journal->j_shrinker.seeks = DEFAULT_SEEKS;
--	journal->j_shrinker.batch = journal->j_max_transaction_buffers;
--
--	err = register_shrinker(&journal->j_shrinker);
--	if (err) {
--		percpu_counter_destroy(&journal->j_jh_shrink_count);
--		return err;
--	}
--
--	return 0;
--}
--EXPORT_SYMBOL(jbd2_journal_register_shrinker);
--
--/**
-- * jbd2_journal_unregister_shrinker()
-- * @journal: Journal to act on.
-- *
-- * Unregister the checkpointed buffer shrinker and destroy the percpu counter.
-- */
--void jbd2_journal_unregister_shrinker(journal_t *journal)
--{
--	percpu_counter_destroy(&journal->j_jh_shrink_count);
--	unregister_shrinker(&journal->j_shrinker);
--}
--EXPORT_SYMBOL(jbd2_journal_unregister_shrinker);
--
- /**
-  * jbd2_journal_destroy() - Release a journal_t structure.
-  * @journal: Journal to act on.
-@@ -2209,8 +2177,10 @@ int jbd2_journal_destroy(journal_t *journal)
- 		brelse(journal->j_sb_buffer);
+ 	if (thread_info_flags & (_TIF_SIGPENDING | _TIF_NOTIFY_SIGNAL)) {
+-		BUG_ON(regs != current->thread.regs);
++		if (regs != current->thread.regs) {
++			pr_info("regs=%px cur=%px pid=%d comm=%s\n",
++				regs, current->thread.regs,
++				current->pid, current->comm);
++			BUG();
++		}
+ 		do_signal(current);
  	}
  
--	jbd2_journal_unregister_shrinker(journal);
--
-+	if (journal->j_shrinker.flags & SHRINKER_REGISTERED) {
-+		percpu_counter_destroy(&journal->j_checkpoint_jh_count);
-+		unregister_shrinker(&journal->j_shrinker);
-+	}
- 	if (journal->j_proc_entry)
- 		jbd2_stats_proc_exit(journal);
- 	iput(journal->j_inode);
-diff --git a/include/linux/jbd2.h b/include/linux/jbd2.h
-index 6cc035321562..fd933c45281a 100644
---- a/include/linux/jbd2.h
-+++ b/include/linux/jbd2.h
-@@ -918,11 +918,11 @@ struct journal_s
- 	struct shrinker		j_shrinker;
- 
- 	/**
--	 * @j_jh_shrink_count:
-+	 * @j_checkpoint_jh_count:
- 	 *
- 	 * Number of journal buffers on the checkpoint list. [j_list_lock]
- 	 */
--	struct percpu_counter	j_jh_shrink_count;
-+	struct percpu_counter	j_checkpoint_jh_count;
- 
- 	/**
- 	 * @j_shrink_transaction:
-@@ -1556,8 +1556,6 @@ extern int	   jbd2_journal_set_features
- 		   (journal_t *, unsigned long, unsigned long, unsigned long);
- extern void	   jbd2_journal_clear_features
- 		   (journal_t *, unsigned long, unsigned long, unsigned long);
--extern int	   jbd2_journal_register_shrinker(journal_t *journal);
--extern void	   jbd2_journal_unregister_shrinker(journal_t *journal);
- extern int	   jbd2_journal_load       (journal_t *journal);
- extern int	   jbd2_journal_destroy    (journal_t *);
- extern int	   jbd2_journal_recover    (journal_t *journal);
--- 
-2.31.0
+
 
