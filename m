@@ -1,42 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED6DF3BAC88
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Jul 2021 11:39:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19FD33BAD44
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Jul 2021 15:59:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GHkL22PvTz3bYY
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Jul 2021 19:39:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GHr5g0GR8z3bX4
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Jul 2021 23:59:03 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=qceaWP8b;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=canonical.com
- (client-ip=91.189.89.112; helo=youngberry.canonical.com;
- envelope-from=colin.king@canonical.com; receiver=<UNKNOWN>)
-Received: from youngberry.canonical.com (youngberry.canonical.com
- [91.189.89.112])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
+ envelope-from=geoff@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=qceaWP8b; 
+ dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GHkKc3CgXz2yP0
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  4 Jul 2021 19:38:59 +1000 (AEST)
-Received: from cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net
- ([80.193.200.194] helo=localhost)
- by youngberry.canonical.com with esmtpsa (TLS1.2) tls
- TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.93)
- (envelope-from <colin.king@canonical.com>)
- id 1lzyaM-0006j6-AL; Sun, 04 Jul 2021 09:38:46 +0000
-From: Colin King <colin.king@canonical.com>
-To: Geoff Levand <geoff@infradead.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GHr582xxhz2yPB
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  4 Jul 2021 23:58:33 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+ :Reply-To:Content-ID:Content-Description;
+ bh=g3hdydJBFBCCn6JqsBFpj8zYz33IDGPm9BzSUODFtSQ=; b=qceaWP8bXu3aVqs4WLzfLLbJBP
+ C+ZE6vZOXqoJ/HoZn7a23A4uT2p/AaZnrDBpNWcWp6pZjOFMvaaneZNjbpP9G7R0VlydXZA4lsJFk
+ lntHShrjl9besVKQJyq5+Cns60cdCdwI48vn/Sl4eUi1H7r0mdZt9Gq1qqYfkfgSgVu3LQzDWRhBr
+ JVE21lpsJbImbN91L/3Jw/8f55BS548FQKplksrVtXnFUoHcRuFhwwdJZTjTy/7Z+t1MKTJCh4KIE
+ sdST6UdwXX7mtdmAS8690tXhoSA85hyt4GrP1fVJnXM4A1qnPkeGl5fnT3M5uEvAC1LBg3M+CBiz2
+ ygC8Dvsg==;
+Received: from [2602:306:c5a2:a380:d5cf:ef86:a560:3f26]
+ by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1m02dM-009Lo8-H9; Sun, 04 Jul 2021 13:58:13 +0000
+Subject: Re: [PATCH] powerpc: Fix spelling mistake "mesages" -> "messages" in
+ Kconfig
+To: Colin King <colin.king@canonical.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc: Fix spelling mistake "mesages" -> "messages" in
- Kconfig
-Date: Sun,  4 Jul 2021 10:38:46 +0100
-Message-Id: <20210704093846.36972-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.31.1
+References: <20210704093846.36972-1-colin.king@canonical.com>
+From: Geoff Levand <geoff@infradead.org>
+Message-ID: <95c59476-7c97-d689-4a64-06666e25891b@infradead.org>
+Date: Sun, 4 Jul 2021 06:58:02 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210704093846.36972-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,28 +73,10 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Colin Ian King <colin.king@canonical.com>
+On 7/4/21 2:38 AM, Colin King wrote:
+> -	  Enables more verbose log mesages for LV1 hypercall results.
+> +	  Enables more verbose log messages for LV1 hypercall results.
 
-There is a spelling mistake in the Kconfig text. Fix it.
+Looks good.  Thanks.
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- arch/powerpc/platforms/ps3/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/platforms/ps3/Kconfig b/arch/powerpc/platforms/ps3/Kconfig
-index a4048b8c8c50..610682caabc4 100644
---- a/arch/powerpc/platforms/ps3/Kconfig
-+++ b/arch/powerpc/platforms/ps3/Kconfig
-@@ -90,7 +90,7 @@ config PS3_VERBOSE_RESULT
- 	bool "PS3 Verbose LV1 hypercall results" if PS3_ADVANCED
- 	depends on PPC_PS3
- 	help
--	  Enables more verbose log mesages for LV1 hypercall results.
-+	  Enables more verbose log messages for LV1 hypercall results.
- 
- 	  If in doubt, say N here and reduce the size of the kernel by a
- 	  small amount.
--- 
-2.31.1
-
+Acked by: Geoff Levand <geoff@infradead.org>
