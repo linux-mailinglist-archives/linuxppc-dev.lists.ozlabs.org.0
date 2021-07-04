@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C71A3BB1E7
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jul 2021 01:11:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B30463BB1EA
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jul 2021 01:12:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GJ4Mb6F59z3ch9
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jul 2021 09:11:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GJ4NB4nlRz3f1P
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jul 2021 09:12:26 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GXluS7/v;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QULguvyZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,35 +17,34 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=GXluS7/v; 
+ header.s=k20201202 header.b=QULguvyZ; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GJ4M94bDpz2yxq
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Jul 2021 09:11:33 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 991BA619C0;
- Sun,  4 Jul 2021 23:11:30 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GJ4Ml01nPz2xYf
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Jul 2021 09:12:02 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 353B661375;
+ Sun,  4 Jul 2021 23:12:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1625440291;
+ s=k20201202; t=1625440321;
  bh=xNZHQJvcgNRFaQ8eiwggEpWrLCEadieOmm+NlS87DBc=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=GXluS7/vAt9uC69IU+0z9zoKC8FVneJzzKsrz4wNjWeabMmooDBJgDps1XEaB5yB6
- flT3AXmStxoVH7xPz8yI5mUohMN4QCISdJ3JBTXIqC3y1sg4RdhnsR0HDbgL2Id1rk
- WL3adEewj/r4A4LhjWlH3jSMMKwCYO+vqQ+iad9+rx1is+hPihU+MGSg1aP97nOLXu
- y9AtDluYoNyPArL/mmjPDfljKIlfE2csT/+N8qldXUNLh7p58gOGVpSyLvrFdXn8rN
- gKcD21/8nXi6O1gh0P92OZpV+2Lt3+uVlOR0TUPuKoOucTQUyzx+KmemridH2lIvDM
- ilc6DMlvfLLhA==
+ b=QULguvyZPxA82Z+hbArm95IH3ck1+A+Pvh1JFaq0k3fuFLTYppOmFFPXPdQVVDWnk
+ 7bCMqZkUgW75CzhxuYzKRGtgDaDq8doytpTfqgVnWp08/azx4kLawWhTjqggRT6zgU
+ LF3+rDBjW/rDErOfZ4GKLUblAS6Wnk8+kwrAYSLSyNUCZWfPIRGm2zTlnwhgjYS3BQ
+ X6uDwkirCP08Zp+3gjJ6JAoGRSrxBJaToOuv3QYWFtXLvDkqyrnlWXflhSyv7CJ5q0
+ 0rTC5Tu2dwkwSZSuWsWERzNwWMB8UMGyDaErZbJCJgz/pRdwmHzIYTagCYqH2uO8se
+ bOoRTPFX57ZLQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 06/25] crypto: nx - add missing
- MODULE_DEVICE_TABLE
-Date: Sun,  4 Jul 2021 19:11:04 -0400
-Message-Id: <20210704231123.1491517-6-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 04/20] crypto: nx - add missing MODULE_DEVICE_TABLE
+Date: Sun,  4 Jul 2021 19:11:39 -0400
+Message-Id: <20210704231155.1491795-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210704231123.1491517-1-sashal@kernel.org>
-References: <20210704231123.1491517-1-sashal@kernel.org>
+In-Reply-To: <20210704231155.1491795-1-sashal@kernel.org>
+References: <20210704231155.1491795-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
