@@ -2,51 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D819C3BBC94
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jul 2021 14:01:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 966F23BBE0A
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jul 2021 16:12:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GJPRs3WxWz3bhx
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jul 2021 22:01:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GJSLG3qgcz3bYL
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 00:12:06 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Sk/CkUmz;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=bugzilla.kernel.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=Sk/CkUmz; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GJPRT67x3z303M
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Jul 2021 22:01:21 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4GJPRM0sMxzB7Q1;
- Mon,  5 Jul 2021 14:01:19 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id S1KocAW6MyJi; Mon,  5 Jul 2021 14:01:19 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4GJPQq3k1hzB5YS;
- Mon,  5 Jul 2021 14:00:51 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 7552C8B786;
- Mon,  5 Jul 2021 14:00:51 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id gAnyppKZ_Q8D; Mon,  5 Jul 2021 14:00:51 +0200 (CEST)
-Received: from po9473vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
- [172.25.230.103])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 431C48B763;
- Mon,  5 Jul 2021 14:00:51 +0200 (CEST)
-Received: by po9473vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id C4FB6663AC; Mon,  5 Jul 2021 12:00:50 +0000 (UTC)
-Message-Id: <e9d501da0c59f60ca767b1b3ea4603fce6d02b9e.1625486440.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH] powerpc/non-smp: Inconditionaly call smp_mb() on switch_mm
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon,  5 Jul 2021 12:00:50 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GJSKk69fsz2yxP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Jul 2021 00:11:38 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPS id DFF3C61955
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Jul 2021 14:11:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1625494295;
+ bh=SbnaeR9LxIdXQ4Zy9ugOFExDnRvzdL+yeo4v35LkNEE=;
+ h=From:To:Subject:Date:In-Reply-To:References:From;
+ b=Sk/CkUmzfeK6nO27QaZhuR/mQWux7HN4Uwh3Ql3VtfmItEAajcpOHdtfXdBo4bgVY
+ dBg26lYPljSTppOjHyDw/aiZxLP60Gt+zafMneSGu3qAECk6IdPwJ7QnNL5agdbrDz
+ N0BZtTwccy/8SUgO6H7JqxxGtlQQVQRlGbQDU83XNkX6WoOaF4rkmOktzW62XuHJ5H
+ b4e3PqtKrilqvdJWgtuHkmkk/CCBXfcRxGtHDq1iW1r2LUzsKqfZlbNSxgBkPaNsCj
+ i6kiM6N+zPaEyvsL9fLcsIPd4DMLej73USBE2oDQHTABrPgocZlj8VqHzSXZa2n0MP
+ 7C9tGin5jX2Rg==
+Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
+ id D389C61221; Mon,  5 Jul 2021 14:11:35 +0000 (UTC)
+From: bugzilla-daemon@bugzilla.kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 213079] [bisected] IRQ problems and crashes on a PowerMac G5
+ with 5.12.3
+Date: Mon, 05 Jul 2021 14:11:35 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: oohall@gmail.com
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: attachments.created
+Message-ID: <bug-213079-206035-lA0qxSsWOt@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-213079-206035@https.bugzilla.kernel.org/>
+References: <bug-213079-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
+MIME-Version: 1.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,68 +78,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit 3ccfebedd8cf ("powerpc, membarrier: Skip memory barrier in
-switch_mm()") added some logic to skip the smp_mb() in
-switch_mm_irqs_off() before the call to switch_mmu_context().
+https://bugzilla.kernel.org/show_bug.cgi?id=3D213079
 
-However, on non SMP smp_mb() is just a compiler barrier and doing
-it inconditionaly is simpler than the logic used to check
-whether the barrier is needed or not.
+--- Comment #12 from Oliver O'Halloran (oohall@gmail.com) ---
+Created attachment 297755
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D297755&action=3Dedit
+hackfix for MSI init
 
-After the patch:
+--=20
+You may reply to this email to add a comment.
 
-00000000 <switch_mm_irqs_off>:
-...
-   c:	7c 04 18 40 	cmplw   r4,r3
-  10:	81 24 00 24 	lwz     r9,36(r4)
-  14:	91 25 04 c8 	stw     r9,1224(r5)
-  18:	4d 82 00 20 	beqlr
-  1c:	48 00 00 00 	b       1c <switch_mm_irqs_off+0x1c>
-			1c: R_PPC_REL24	switch_mmu_context
-
-Before the patch:
-
-00000000 <switch_mm_irqs_off>:
-...
-   c:	7c 04 18 40 	cmplw   r4,r3
-  10:	81 24 00 24 	lwz     r9,36(r4)
-  14:	91 25 04 c8 	stw     r9,1224(r5)
-  18:	4d 82 00 20 	beqlr
-  1c:	81 24 00 28 	lwz     r9,40(r4)
-  20:	71 29 00 0a 	andi.   r9,r9,10
-  24:	40 82 00 34 	bne     58 <switch_mm_irqs_off+0x58>
-  28:	48 00 00 00 	b       28 <switch_mm_irqs_off+0x28>
-			28: R_PPC_REL24	switch_mmu_context
-...
-  58:	2c 03 00 00 	cmpwi   r3,0
-  5c:	41 82 ff cc 	beq     28 <switch_mm_irqs_off+0x28>
-  60:	48 00 00 00 	b       60 <switch_mm_irqs_off+0x60>
-			60: R_PPC_REL24	switch_mmu_context
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/include/asm/membarrier.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/include/asm/membarrier.h b/arch/powerpc/include/asm/membarrier.h
-index 6e20bb5c74ea..de7f79157918 100644
---- a/arch/powerpc/include/asm/membarrier.h
-+++ b/arch/powerpc/include/asm/membarrier.h
-@@ -12,7 +12,8 @@ static inline void membarrier_arch_switch_mm(struct mm_struct *prev,
- 	 * when switching from userspace to kernel is not needed after
- 	 * store to rq->curr.
- 	 */
--	if (likely(!(atomic_read(&next->membarrier_state) &
-+	if (IS_ENABLED(CONFIG_SMP) &&
-+	    likely(!(atomic_read(&next->membarrier_state) &
- 		     (MEMBARRIER_STATE_PRIVATE_EXPEDITED |
- 		      MEMBARRIER_STATE_GLOBAL_EXPEDITED)) || !prev))
- 		return;
--- 
-2.25.0
-
+You are receiving this mail because:
+You are watching the assignee of the bug.=
