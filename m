@@ -1,75 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76EDF3BBBFF
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jul 2021 13:11:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F03A13BBC31
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jul 2021 13:28:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GJNKv67Xtz308V
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jul 2021 21:11:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GJNj86hp0z3bYN
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jul 2021 21:28:12 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=inbox.ru header.i=@inbox.ru header.a=rsa-sha256 header.s=mail3 header.b=Mje9xQbG;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=inbox.ru header.i=@inbox.ru header.a=rsa-sha256 header.s=mail3 header.b=XXqf5sip;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=B5k2BjWU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=inbox.ru (client-ip=94.100.179.30; helo=fallback13.mail.ru;
- envelope-from=fido_max@inbox.ru; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=inbox.ru header.i=@inbox.ru header.a=rsa-sha256
- header.s=mail3 header.b=Mje9xQbG; 
- dkim=pass (1024-bit key) header.d=inbox.ru header.i=@inbox.ru
- header.a=rsa-sha256 header.s=mail3 header.b=XXqf5sip; 
- dkim-atps=neutral
-Received: from fallback13.mail.ru (fallback13.mail.ru [94.100.179.30])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=B5k2BjWU; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GJNKK1cQYz2yyt
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Jul 2021 21:11:00 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=inbox.ru;
- s=mail3; 
- h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:Cc:To:From:From:Subject:Content-Type:Content-Transfer-Encoding:To:Cc;
- bh=0JSq341hUaDJxvrGsqoGbS/XvjES/KBQcib8iJgSgKg=; 
- t=1625483461;x=1626088861; 
- b=Mje9xQbGBZ/yjpJc8wNl4qq9Kf4mv8hgZt3tcv7YwZATDqbpRLm2fGsRVG15wm2P4qgowmt135FEcOOev/IeBPlqe5WHM5zG+7aZzd9IGYHy3KdB2Uc0mdJfXjVP0KNrNaK4RE0lqjTMjw4KZ7LkXKWt5yWBOdaK/wR7euEeIj0=;
-Received: from [10.161.64.54] (port=35916 helo=smtp46.i.mail.ru)
- by fallback13.m.smailru.net with esmtp (envelope-from <fido_max@inbox.ru>)
- id 1m0MV6-0001c2-2H; Mon, 05 Jul 2021 14:10:56 +0300
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=inbox.ru;
- s=mail3; 
- h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:Cc:To:From:From:Subject:Content-Type:Content-Transfer-Encoding:To:Cc;
- bh=0JSq341hUaDJxvrGsqoGbS/XvjES/KBQcib8iJgSgKg=; 
- t=1625483456;x=1626088856; 
- b=XXqf5siprxyk5YnoNWwOV730UIxWvRc6vu8RR0oxr82C4Y3zieUVeyDhnLRN0cc019UOwbO3nbFr+aQYw2sYq9G9FpncmAL+zdCkqrekVmn/u0oRnNQzMIzB/X1flmJJWy0ysDf1K2i9BiZ02yuA3m3C+fVKivtboW1FDgN5dVM=;
-Received: by smtp46.i.mail.ru with esmtpa (envelope-from <fido_max@inbox.ru>)
- id 1m0MUx-0005TK-Kv; Mon, 05 Jul 2021 14:10:48 +0300
-From: Maxim Kochetkov <fido_max@inbox.ru>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] soc: fsl: qe: convert QE interrupt controller to
- platform_device
-Date: Mon,  5 Jul 2021 14:12:50 +0300
-Message-Id: <20210705111250.1513634-1-fido_max@inbox.ru>
-X-Mailer: git-send-email 2.31.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-7564579A: B8F34718100C35BD
-X-77F55803: 4F1203BC0FB41BD954DFF1DC42D673FB4F75AC5594ACDC16869A51A860A12816182A05F538085040DB55102748385198C44E13673184730B370CEAC6C2AF08E5AA9A1DCD7358FCA3
-X-7FA49CB5: FF5795518A3D127A4AD6D5ED66289B5278DA827A17800CE792C68BF9CD4C0E9EEA1F7E6F0F101C67BD4B6F7A4D31EC0BCC500DACC3FED6E28638F802B75D45FF8AA50765F790063716A4A39B750036BB8638F802B75D45FF36EB9D2243A4F8B5A6FCA7DBDB1FC311F39EFFDF887939037866D6147AF826D8606CF9C6503E1DDBFB3619910757EB4F6F9789CCF6C18C3F8528715B7D10C86878DA827A17800CE71AE4D56B06699BBC9FA2833FD35BB23D9E625A9149C048EE140C956E756FBB7ACB629EEF1311BF91D2E47CDBA5A96583BD4B6F7A4D31EC0BC014FD901B82EE079FA2833FD35BB23D27C277FBC8AE2E8B990B2EB4F061288CA471835C12D1D977C4224003CC836476EB9C4185024447017B076A6E789B0E975F5C1EE8F4F765FCB3914F264D7CCEB7D81D268191BDAD3DBD4B6F7A4D31EC0BEA7A3FFF5B025636D81D268191BDAD3D78DA827A17800CE746E395755886ED45CD04E86FAF290E2D7E9C4E3C761E06A71DD303D21008E29813377AFFFEAFD269A417C69337E82CC2E827F84554CEF50127C277FBC8AE2E8BA83251EDC214901ED5E8D9A59859A8B6A45692FFBBD75A6A089D37D7C0E48F6C5571747095F342E88FB05168BE4CE3AF
-X-B7AD71C0: AC4F5C86D027EB782CDD5689AFBDA7A24209795067102C07E8F7B195E1C97831133F3891C382AB3DDEE0BF9F2B90C42B
-X-C1DE0DAB: C20DE7B7AB408E4181F030C43753B8186998911F362727C414F749A5E30D975C62E2A2CC9B321AEE80404625108A7D3BAF9B4544A6E5FFED9C2B6934AE262D3EE7EAB7254005DCED556CBE7F905700A49510FB958DCE06DB6ED91DBE5ABE359A3485EE9140A7D39D7D06A436E56C8DB493EDB24507CE13387DFF0A840B692CF8
-X-C8649E89: 4E36BF7865823D7055A7F0CF078B5EC49A30900B95165D344FDECC3B9E4D57D4F1305AFF9A30A59688F2E32EBDC5888080AF857279C2BC83BABBEC764E6F27D31D7E09C32AA3244CE0610C78B268535A7FC213296340AD9460759606DA2E136AAD832FF50B3043B1
-X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu530nj6fImhcD4MUrOEAnl0W826KZ9Q+tr5ycPtXkTV4k65bRjmOUUP8cvGozZ33TWg5HZplvhhXbhDGzqmQDTd6OAevLeAnq3Ra9uf7zvY2zzsIhlcp/Y7m53TZgf2aB4JOg4gkr2bioj5fH2RN9TpJl1sLNQHw49/g==
-X-Mailru-Sender: 11C2EC085EDE56FA9C10FA2967F5AB240F3093F39B28524E5760718BE8B684BB0121305522DCE51AEE9242D420CFEBFD3DDE9B364B0DF2891A624F84B2C74EDA4239CF2AF0A6D4F80DA7A0AF5A3A8387
-X-Mras: Ok
-X-7564579A: 646B95376F6C166E
-X-77F55803: 6242723A09DB00B4AF5E86D184BC81F83CDC0DACDC54A29E165A03DC9BE1A2F7049FFFDB7839CE9ED4060E524F1F96E66640C8BB248A2CE56824E6024325BD2F02F9A4A7FA149467
-X-7FA49CB5: 0D63561A33F958A5DFEBEB9284B870DB744A2269A7D78893EDFF8D39DD2CC48CCACD7DF95DA8FC8BD5E8D9A59859A8B6E1463053F949B17DCC7F00164DA146DAFE8445B8C89999728AA50765F79006372389C3B161C5B535389733CBF5DBD5E9C8A9BA7A39EFB766F5D81C698A659EA7CC7F00164DA146DA9985D098DBDEAEC87A515FDF34F84F9CF6B57BC7E6449061A352F6E88A58FB86F5D81C698A659EA73AA81AA40904B5D9A18204E546F3947C1DAA61796BF5227B302FCEF25BFAB3454AD6D5ED66289B52698AB9A7B718F8C442539A7722CA490CD5E8D9A59859A8B6F7FD1A3A8AE6177F089D37D7C0E48F6C5571747095F342E88FB05168BE4CE3AF
-X-C1DE0DAB: C20DE7B7AB408E4181F030C43753B8186998911F362727C414F749A5E30D975C62E2A2CC9B321AEE7EB073028AC8D5AD85417A7E211F15859C2B6934AE262D3EE7EAB7254005DCED556CBE7F905700A4DC48ACC2A39D04F89CDFB48F4795C241BDAD6C7F3747799A
-X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu530nj6fImhcD4MUrOEAnl0W826KZ9Q+tr5ycPtXkTV4k65bRjmOUUP8cvGozZ33TWg5HZplvhhXbhDGzqmQDTd6OAevLeAnq3Ra9uf7zvY2zzsIhlcp/Y7m53TZgf2aB4JOg4gkr2bioj5fH2RN9TpJnxN8/P2iiCfg==
-X-Mailru-MI: 800
-X-Mailru-Sender: A5480F10D64C9005C3FADA55C8765CC357C9409653FBB352AF56D900923958144F784A941F346434C099ADC76E806A99D50E20E2BC48EF5A30D242760C51EA9CEAB4BC95F72C04283CDA0F3B3F5B9367
-X-Mras: Ok
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GJNhd2FKxz301q
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Jul 2021 21:27:44 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 165B4Nvs083690; Mon, 5 Jul 2021 07:27:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=iozgYz3WDzDVrFAs/2BY4dE1AB02jqYMzRcCZKwkBvU=;
+ b=B5k2BjWUOD+d3arlmW8C1qT5g+VvoAJSfJebll0IwS0dusJSUtAfo9TjivCVN5tMcWY5
+ lh0pcDSXBXjRVTr14a55uTeakRnQEnIzcng89eT4pfb0n3AbLFJ48icZF3cf62+EDq+r
+ om5iQbX5oErCX9m4qJQCtGsoK4DjRXw7z1meIYvoiobYlBHPaUYjxKbazYMetD54hBfZ
+ LDY3NtrEP+Lh6ajdjhcjH7zidmPGb6E8i5J7CBRl9b07ZKY7iLfhZ/gd2Xq7We1BcPFI
+ BIh3UZmi3HMTBSWrSn0Qjl09YmxEzm36jm52Knx5/BR6vaGzA8cgkrT2IbeAtdqHCJYz qg== 
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 39ky9d35ht-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 05 Jul 2021 07:27:33 -0400
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 165BO4hV022245;
+ Mon, 5 Jul 2021 11:27:31 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma05fra.de.ibm.com with ESMTP id 39jfh8gdh0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 05 Jul 2021 11:27:31 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 165BRTdg30277962
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 5 Jul 2021 11:27:29 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E5DB542045;
+ Mon,  5 Jul 2021 11:27:28 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B6D054204D;
+ Mon,  5 Jul 2021 11:27:27 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.85.74.100])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon,  5 Jul 2021 11:27:27 +0000 (GMT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.100.0.2.22\))
+Subject: Re: [powerpc][5.13.0-next-20210701] Kernel crash while running
+ ltp(chdir01) tests
+From: Sachin Sant <sachinp@linux.vnet.ibm.com>
+In-Reply-To: <YOG/5ZY1AL05jumi@mit.edu>
+Date: Mon, 5 Jul 2021 16:57:26 +0530
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <42CECCCE-A338-408A-B392-F4E25E629D2A@linux.vnet.ibm.com>
+References: <26ACA75D-E13D-405B-9BFC-691B5FB64243@linux.vnet.ibm.com>
+ <bf1c5b38-92f1-65db-e210-a97a199718ba@linux.dev>
+ <4cc87ab3-aaa6-ed87-b690-5e5b99de8380@huawei.com>
+ <03f734bd-f36e-f55b-0448-485b8a0d5b75@huawei.com> <YN86yl5kgVaRixxQ@mit.edu>
+ <36778615-86fd-9a19-9bc9-f93a6f2d5817@huawei.com> <YN/a70ucYXu0DqGf@mit.edu>
+ <66fb56cd-f1ff-c592-0202-0691372e32f5@huawei.com> <YOG/5ZY1AL05jumi@mit.edu>
+To: "Theodore Ts'o" <tytso@mit.edu>
+X-Mailer: Apple Mail (2.3654.100.0.2.22)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Bf6gHb7P31BL35PpU7G_EfT05lKk5aY7
+X-Proofpoint-ORIG-GUID: Bf6gHb7P31BL35PpU7G_EfT05lKk5aY7
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-07-05_05:2021-07-02,
+ 2021-07-05 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 clxscore=1011
+ spamscore=0 mlxlogscore=999 adultscore=0 priorityscore=1501 bulkscore=0
+ suspectscore=0 malwarescore=0 impostorscore=0 lowpriorityscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2107050059
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,127 +106,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: saravanak@google.com, gregkh@linuxfoundation.org,
- linux-kernel@vger.kernel.org, leoyang.li@nxp.com,
- Maxim Kochetkov <fido_max@inbox.ru>, linux-arm-kernel@lists.infradead.org,
- qiang.zhao@nxp.com
+Cc: Jan Kara <jack@suse.cz>, Zhang Yi <yi.zhang@huawei.com>,
+ Guoqing Jiang <guoqing.jiang@linux.dev>,
+ "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+ Ext4 Developers List <linux-ext4@vger.kernel.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Since 5.13 QE's ucc nodes can't get interrupts from devicetree:
 
-	ucc@2000 {
-		cell-index = <1>;
-		reg = <0x2000 0x200>;
-		interrupts = <32>;
-		interrupt-parent = <&qeic>;
-	};
 
-Now fw_devlink expects driver to create and probe a struct device
-for interrupt controller.
+> On 04-Jul-2021, at 7:34 PM, Theodore Ts'o <tytso@mit.edu> wrote:
+>=20
+> On Sat, Jul 03, 2021 at 12:55:09PM +0800, Zhang Yi wrote:
+>> Yeah, it sounds good to me. Do you want me to send the fix patch, or =
+you
+>> modify your commit 8f9e16badb8fd in another email directly?
+>=20
+> I've gone ahead and made the changes; what do you think?
+>=20
+> I like how it also removes 40 lines of code.  :-)
+>=20
+>     	  	    	     	      	   - Ted
+>=20
+> =46rom ef3130d1b0b8ca769252d6a722a2e59a00141383 Mon Sep 17 00:00:00 =
+2001
+> From: Theodore Ts'o <tytso@mit.edu>
+> Date: Fri, 2 Jul 2021 18:05:03 -0400
+> Subject: [PATCH] ext4: inline jbd2_journal_[un]register_shrinker()
+>=20
+> The function jbd2_journal_unregister_shrinker() was getting called
+> twice when the file system was getting unmounted.  On Power and ARM
+> platforms this was causing kernel crash when unmounting the file
+> system, when a percpu_counter was destroyed twice.
+>=20
+> Fix this by removing jbd2_journal_[un]register_shrinker() functions,
+> and inlining the shrinker setup and teardown into
+> journal_init_common() and jbd2_journal_destroy().  This means that
+> ext4 and ocfs2 now no longer need to know about registering and
+> unregistering jbd2's shrinker.
+>=20
+> Also, while we're at it, rename the percpu counter from
+> j_jh_shrink_count to j_checkpoint_jh_count, since this makes it
+> clearer what this counter is intended to track.
+>=20
+> Fixes: 4ba3fcdde7e3 ("jbd2,ext4: add a shrinker to release =
+checkpointed buffers")
+> Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+> Reported-by: Jon Hunter <jonathanh@nvidia.com>
+> Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+> ---
 
-So lets convert this driver to simple platform_device with probe().
+This patch fixes the reported problem. Test ran to completion
+without any crash.
 
-[1] - https://lore.kernel.org/lkml/CAGETcx9PiX==mLxB9PO8Myyk6u2vhPVwTMsA5NkD-ywH5xhusw@mail.gmail.com
-Fixes: e590474768f1 ("driver core: Set fw_devlink=on by default")
-Fixes: ea718c699055 ("Revert "Revert "driver core: Set fw_devlink=on by default""")
-Signed-off-by: Maxim Kochetkov <fido_max@inbox.ru>
----
- drivers/soc/fsl/qe/qe_ic.c | 38 +++++++++++++++++++++++---------------
- 1 file changed, 23 insertions(+), 15 deletions(-)
+Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
 
-diff --git a/drivers/soc/fsl/qe/qe_ic.c b/drivers/soc/fsl/qe/qe_ic.c
-index 3f711c1a0996..03d291376895 100644
---- a/drivers/soc/fsl/qe/qe_ic.c
-+++ b/drivers/soc/fsl/qe/qe_ic.c
-@@ -23,6 +23,7 @@
- #include <linux/signal.h>
- #include <linux/device.h>
- #include <linux/spinlock.h>
-+#include <linux/platform_device.h>
- #include <asm/irq.h>
- #include <asm/io.h>
- #include <soc/fsl/qe/qe.h>
-@@ -404,27 +405,28 @@ static void qe_ic_cascade_muxed_mpic(struct irq_desc *desc)
- 	chip->irq_eoi(&desc->irq_data);
- }
- 
--static void __init qe_ic_init(struct device_node *node)
-+static int qe_ic_init(struct platform_device *pdev)
- {
- 	void (*low_handler)(struct irq_desc *desc);
- 	void (*high_handler)(struct irq_desc *desc);
- 	struct qe_ic *qe_ic;
- 	struct resource res;
-+	struct device_node *node = pdev->dev.of_node;
- 	u32 ret;
- 
- 	ret = of_address_to_resource(node, 0, &res);
- 	if (ret)
--		return;
-+		return -ENODEV;
- 
- 	qe_ic = kzalloc(sizeof(*qe_ic), GFP_KERNEL);
- 	if (qe_ic == NULL)
--		return;
-+		return -ENOMEM;
- 
- 	qe_ic->irqhost = irq_domain_add_linear(node, NR_QE_IC_INTS,
- 					       &qe_ic_host_ops, qe_ic);
- 	if (qe_ic->irqhost == NULL) {
- 		kfree(qe_ic);
--		return;
-+		return -ENODEV;
- 	}
- 
- 	qe_ic->regs = ioremap(res.start, resource_size(&res));
-@@ -437,7 +439,7 @@ static void __init qe_ic_init(struct device_node *node)
- 	if (!qe_ic->virq_low) {
- 		printk(KERN_ERR "Failed to map QE_IC low IRQ\n");
- 		kfree(qe_ic);
--		return;
-+		return -ENODEV;
- 	}
- 	if (qe_ic->virq_high != qe_ic->virq_low) {
- 		low_handler = qe_ic_cascade_low;
-@@ -456,20 +458,26 @@ static void __init qe_ic_init(struct device_node *node)
- 		irq_set_handler_data(qe_ic->virq_high, qe_ic);
- 		irq_set_chained_handler(qe_ic->virq_high, high_handler);
- 	}
-+	return 0;
- }
-+static const struct of_device_id qe_ic_ids[] = {
-+	{ .compatible = "fsl,qe-ic"},
-+	{ .compatible = "qeic"},
-+	{},
-+};
- 
--static int __init qe_ic_of_init(void)
-+static struct platform_driver qe_ic_driver =
- {
--	struct device_node *np;
-+	.driver	= {
-+		.name		= "qe-ic",
-+		.of_match_table	= qe_ic_ids,
-+	},
-+	.probe	= qe_ic_init,
-+};
- 
--	np = of_find_compatible_node(NULL, NULL, "fsl,qe-ic");
--	if (!np) {
--		np = of_find_node_by_type(NULL, "qeic");
--		if (!np)
--			return -ENODEV;
--	}
--	qe_ic_init(np);
--	of_node_put(np);
-+static int __init qe_ic_of_init(void)
-+{
-+	platform_driver_register(&qe_ic_driver);
- 	return 0;
- }
- subsys_initcall(qe_ic_of_init);
--- 
-2.31.1
+-Sachin
+
 
