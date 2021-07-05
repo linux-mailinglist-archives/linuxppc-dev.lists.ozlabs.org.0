@@ -1,56 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CCD83BB704
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jul 2021 07:52:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20C183BB7E4
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jul 2021 09:30:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GJFG3103hz3bYn
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jul 2021 15:52:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GJHQy5M82z3bWC
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jul 2021 17:30:34 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=MJjJv9vX;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::443;
+ helo=mail-pf1-x443.google.com; envelope-from=tientzu@chromium.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=MJjJv9vX; dkim-atps=neutral
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GJFFc3ryBz2yYH
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Jul 2021 15:52:16 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4GJFFP4KSdzB61g;
- Mon,  5 Jul 2021 07:52:09 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id ioc1A9b4X4yj; Mon,  5 Jul 2021 07:52:09 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4GJFFP3JP2zB52G;
- Mon,  5 Jul 2021 07:52:09 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 633768B775;
- Mon,  5 Jul 2021 07:52:09 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id Q8U8wUrIUZOd; Mon,  5 Jul 2021 07:52:09 +0200 (CEST)
-Received: from [172.25.230.103] (po15451.idsi0.si.c-s.fr [172.25.230.103])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 359988B763;
- Mon,  5 Jul 2021 07:52:09 +0200 (CEST)
-Subject: Re: [RFC PATCH] powerpc: flexible register range save/restore macros
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20210703091452.352816-1-npiggin@gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <dc76505a-dbb3-ba3b-651e-32bcacd64d28@csgroup.eu>
-Date: Mon, 5 Jul 2021 07:52:06 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GJHQP0LnGz2yhr
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Jul 2021 17:30:01 +1000 (AEST)
+Received: by mail-pf1-x443.google.com with SMTP id 21so15979807pfp.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Jul 2021 00:30:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=Z8aOTxpCpkipy5n3d0JHyfRjSSgUP3aCWoPMsdbSOV4=;
+ b=MJjJv9vXGkq68MzcWqJ8Lqqow7NxZ75tHGPZbYF1jhN9Bhg/MWiZ0zY75eGHeJNh5Z
+ PszBTQni1VZca3yQMBDVtTmKafxxH3GNCEriEJqlKouIDe5e4/R1nL0etnQNDybC+N/V
+ LRgX2z3bSUPhZ4K1Wms/UIusjY+z2apf3AHmo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=Z8aOTxpCpkipy5n3d0JHyfRjSSgUP3aCWoPMsdbSOV4=;
+ b=iYekjEtRVKu/Wbk0vfniFVaIXZdrxzsVdBrrJSYpF7Ny0AGOCMYxrCj2udSLXKY40t
+ HWGb/rbncmztdla+49qNy2aYtHeWse3i3A0lnFLGta91AozhVgel2ammXgRfOB4SN6u8
+ BIp8vsB0wB1wey1NjAvg8HsZWl099lQB+/Yf/7GLN03jTyf5U2wkbi3xRFksp1dCNX4w
+ sFSBjMCIf7v5+rjjnb+RwgXStQVAjFLyrRT1eWgDtG0REJvEqQxwzTk+a3rMcRT7k45/
+ ibWslKDJxmGRZNrKvqlj9RPolXoeXNlnHgWEu1dKtBmA4l7vJULhUGw/kmOaEZhIhlfC
+ fkCw==
+X-Gm-Message-State: AOAM530f6y8YMZpgyx5qba7bX/4RM+Eq9ERkzOnX+VvCO0vzm4Ju094f
+ l2bM217pEl5v109+tviYxXo3Yq1hpwsFoQ==
+X-Google-Smtp-Source: ABdhPJzLBJW2jhlfx+CmMsCfNdML4bk/nJkJwfLA+7bAhVHUnphm548s0NYxhDeql/dprcA01zGO2g==
+X-Received: by 2002:a05:6a00:1307:b029:308:1e2b:a24b with SMTP id
+ j7-20020a056a001307b02903081e2ba24bmr13607209pfu.57.1625470197577; 
+ Mon, 05 Jul 2021 00:29:57 -0700 (PDT)
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com.
+ [209.85.210.169])
+ by smtp.gmail.com with ESMTPSA id k25sm11460487pfa.213.2021.07.05.00.29.56
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 05 Jul 2021 00:29:57 -0700 (PDT)
+Received: by mail-pf1-f169.google.com with SMTP id a127so15942218pfa.10
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Jul 2021 00:29:56 -0700 (PDT)
+X-Received: by 2002:a92:d10:: with SMTP id 16mr9764177iln.189.1625470185557;
+ Mon, 05 Jul 2021 00:29:45 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210703091452.352816-1-npiggin@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+References: <20210624155526.2775863-1-tientzu@chromium.org>
+ <20210624155526.2775863-7-tientzu@chromium.org>
+ <YNvMDFWKXSm4LRfZ@Ryzen-9-3900X.localdomain>
+ <CALiNf2-a-haQN0-4+gX8+wa++52-0CnO2O4BEkxrQCxoTa_47w@mail.gmail.com>
+ <20210630114348.GA8383@willie-the-truck>
+ <YNyUQwiagNeZ9YeJ@Ryzen-9-3900X.localdomain>
+ <20210701074045.GA9436@willie-the-truck>
+ <ea28db1f-846e-4f0a-4f13-beb67e66bbca@kernel.org>
+ <20210702135856.GB11132@willie-the-truck>
+ <0f7bd903-e309-94a0-21d7-f0e8e9546018@arm.com>
+ <YN/7xcxt/XGAKceZ@Ryzen-9-3900X.localdomain>
+In-Reply-To: <YN/7xcxt/XGAKceZ@Ryzen-9-3900X.localdomain>
+From: Claire Chang <tientzu@chromium.org>
+Date: Mon, 5 Jul 2021 15:29:34 +0800
+X-Gmail-Original-Message-ID: <CALiNf2_ZJq4MoxOGe_m_KFv5xYw8t9SdscTFUwSoLBy5rEuxwQ@mail.gmail.com>
+Message-ID: <CALiNf2_ZJq4MoxOGe_m_KFv5xYw8t9SdscTFUwSoLBy5rEuxwQ@mail.gmail.com>
+Subject: Re: [PATCH v15 06/12] swiotlb: Use is_swiotlb_force_bounce for
+ swiotlb data bouncing
+To: Nathan Chancellor <nathan@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,888 +93,206 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: heikki.krogerus@linux.intel.com, thomas.hellstrom@linux.intel.com,
+ peterz@infradead.org, joonas.lahtinen@linux.intel.com,
+ dri-devel@lists.freedesktop.org, chris@chris-wilson.co.uk,
+ grant.likely@arm.com, paulus@samba.org, Frank Rowand <frowand.list@gmail.com>,
+ mingo@kernel.org, Marek Szyprowski <m.szyprowski@samsung.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Saravana Kannan <saravanak@google.com>, xypron.glpk@gmx.de,
+ Joerg Roedel <joro@8bytes.org>,
+ "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ Christoph Hellwig <hch@lst.de>,
+ Bartosz Golaszewski <bgolaszewski@baylibre.com>, bskeggs@redhat.com,
+ linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
+ Thierry Reding <treding@nvidia.com>, intel-gfx@lists.freedesktop.org,
+ matthew.auld@intel.com, linux-devicetree <devicetree@vger.kernel.org>,
+ Jianxiong Gao <jxgao@google.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Will Deacon <will@kernel.org>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ maarten.lankhorst@linux.intel.com, airlied@linux.ie,
+ Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org,
+ jani.nikula@linux.intel.com, Rob Herring <robh+dt@kernel.org>,
+ rodrigo.vivi@intel.com, Bjorn Helgaas <bhelgaas@google.com>,
+ boris.ostrovsky@oracle.com,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jgross@suse.com,
+ Nicolas Boichat <drinkcat@chromium.org>, Greg KH <gregkh@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, Qian Cai <quic_qiancai@quicinc.com>,
+ lkml <linux-kernel@vger.kernel.org>, Tomasz Figa <tfiga@chromium.org>,
+ "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+ Jim Quinlan <james.quinlan@broadcom.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Robin Murphy <robin.murphy@arm.com>,
+ bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Sat, Jul 3, 2021 at 1:55 PM Nathan Chancellor <nathan@kernel.org> wrote:
+>
+> Hi Will and Robin,
+>
+> On Fri, Jul 02, 2021 at 04:13:50PM +0100, Robin Murphy wrote:
+> > On 2021-07-02 14:58, Will Deacon wrote:
+> > > Hi Nathan,
+> > >
+> > > On Thu, Jul 01, 2021 at 12:52:20AM -0700, Nathan Chancellor wrote:
+> > > > On 7/1/2021 12:40 AM, Will Deacon wrote:
+> > > > > On Wed, Jun 30, 2021 at 08:56:51AM -0700, Nathan Chancellor wrote:
+> > > > > > On Wed, Jun 30, 2021 at 12:43:48PM +0100, Will Deacon wrote:
+> > > > > > > On Wed, Jun 30, 2021 at 05:17:27PM +0800, Claire Chang wrote:
+> > > > > > > > `BUG: unable to handle page fault for address: 00000000003a8290` and
+> > > > > > > > the fact it crashed at `_raw_spin_lock_irqsave` look like the memory
+> > > > > > > > (maybe dev->dma_io_tlb_mem) was corrupted?
+> > > > > > > > The dev->dma_io_tlb_mem should be set here
+> > > > > > > > (https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/drivers/pci/probe.c#n2528)
+> > > > > > > > through device_initialize.
+> > > > > > >
+> > > > > > > I'm less sure about this. 'dma_io_tlb_mem' should be pointing at
+> > > > > > > 'io_tlb_default_mem', which is a page-aligned allocation from memblock.
+> > > > > > > The spinlock is at offset 0x24 in that structure, and looking at the
+> > > > > > > register dump from the crash:
+> > > > > > >
+> > > > > > > Jun 29 18:28:42 hp-4300G kernel: RSP: 0018:ffffadb4013db9e8 EFLAGS: 00010006
+> > > > > > > Jun 29 18:28:42 hp-4300G kernel: RAX: 00000000003a8290 RBX: 0000000000000000 RCX: ffff8900572ad580
+> > > > > > > Jun 29 18:28:42 hp-4300G kernel: RDX: ffff89005653f024 RSI: 00000000000c0000 RDI: 0000000000001d17
+> > > > > > > Jun 29 18:28:42 hp-4300G kernel: RBP: 000000000a20d000 R08: 00000000000c0000 R09: 0000000000000000
+> > > > > > > Jun 29 18:28:42 hp-4300G kernel: R10: 000000000a20d000 R11: ffff89005653f000 R12: 0000000000000212
+> > > > > > > Jun 29 18:28:42 hp-4300G kernel: R13: 0000000000001000 R14: 0000000000000002 R15: 0000000000200000
+> > > > > > > Jun 29 18:28:42 hp-4300G kernel: FS:  00007f1f8898ea40(0000) GS:ffff890057280000(0000) knlGS:0000000000000000
+> > > > > > > Jun 29 18:28:42 hp-4300G kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > > > > > > Jun 29 18:28:42 hp-4300G kernel: CR2: 00000000003a8290 CR3: 00000001020d0000 CR4: 0000000000350ee0
+> > > > > > > Jun 29 18:28:42 hp-4300G kernel: Call Trace:
+> > > > > > > Jun 29 18:28:42 hp-4300G kernel:  _raw_spin_lock_irqsave+0x39/0x50
+> > > > > > > Jun 29 18:28:42 hp-4300G kernel:  swiotlb_tbl_map_single+0x12b/0x4c0
+> > > > > > >
+> > > > > > > Then that correlates with R11 holding the 'dma_io_tlb_mem' pointer and
+> > > > > > > RDX pointing at the spinlock. Yet RAX is holding junk :/
+> > > > > > >
+> > > > > > > I agree that enabling KASAN would be a good idea, but I also think we
+> > > > > > > probably need to get some more information out of swiotlb_tbl_map_single()
+> > > > > > > to see see what exactly is going wrong in there.
+> > > > > >
+> > > > > > I can certainly enable KASAN and if there is any debug print I can add
+> > > > > > or dump anything, let me know!
+> > > > >
+> > > > > I bit the bullet and took v5.13 with swiotlb/for-linus-5.14 merged in, built
+> > > > > x86 defconfig and ran it on my laptop. However, it seems to work fine!
+> > > > >
+> > > > > Please can you share your .config?
+> > > >
+> > > > Sure thing, it is attached. It is just Arch Linux's config run through
+> > > > olddefconfig. The original is below in case you need to diff it.
+> > > >
+> > > > https://raw.githubusercontent.com/archlinux/svntogit-packages/9045405dc835527164f3034b3ceb9a67c7a53cd4/trunk/config
+> > > >
+> > > > If there is anything more that I can provide, please let me know.
+> > >
+> > > I eventually got this booting (for some reason it was causing LD to SEGV
+> > > trying to link it for a while...) and sadly it works fine on my laptop. Hmm.
+>
+> Seems like it might be something specific to the amdgpu module?
+>
+> > > Did you manage to try again with KASAN?
+>
+> Yes, it took a few times to reproduce the issue but I did manage to get
+> a dmesg, please find it attached. I build from commit 7d31f1c65cc9 ("swiotlb:
+> fix implicit debugfs declarations") in Konrad's tree.
 
+Looking at the logs, the use-after-free bug looked somehow relevant
+(and it's nvme again. Qian's crash is about nvme too):
 
-Le 03/07/2021 à 11:14, Nicholas Piggin a écrit :
-> Introduce macros that operate on a (start, end) range of registers,
-> which reduces lines of code and need to do mental arithmetic while
-> reading the code.
+[    2.468288] BUG: KASAN: use-after-free in __iommu_dma_unmap_swiotlb+0x64/0xb0
+[    2.468288] Read of size 8 at addr ffff8881d7830000 by task swapper/0/0
 
-Looks like a nice patch.
+[    2.468288] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.12.0-rc3-debug #1
+[    2.468288] Hardware name: HP HP Desktop M01-F1xxx/87D6, BIOS F.12 12/17/2020
+[    2.468288] Call Trace:
+[    2.468288]  <IRQ>
+[    2.479433]  dump_stack+0x9c/0xcf
+[    2.479433]  print_address_description.constprop.0+0x18/0x130
+[    2.479433]  ? __iommu_dma_unmap_swiotlb+0x64/0xb0
+[    2.479433]  kasan_report.cold+0x7f/0x111
+[    2.479433]  ? __iommu_dma_unmap_swiotlb+0x64/0xb0
+[    2.479433]  __iommu_dma_unmap_swiotlb+0x64/0xb0
+[    2.479433]  nvme_pci_complete_rq+0x73/0x130
+[    2.479433]  blk_complete_reqs+0x6f/0x80
+[    2.479433]  __do_softirq+0xfc/0x3be
+[    2.479433]  irq_exit_rcu+0xce/0x120
+[    2.479433]  common_interrupt+0x80/0xa0
+[    2.479433]  </IRQ>
+[    2.479433]  asm_common_interrupt+0x1e/0x40
+[    2.479433] RIP: 0010:cpuidle_enter_state+0xf9/0x590
 
-Maybe you could split the patch in two parts, one part for GPRs and one patch for the FP/VR regs.
+I wonder if this ended up unmapping something wrong and messing up the
+dev->dma_io_tlb_mem (i.e. io_tlb_default_mem)?
 
-Christophe
+Could you try this patch on top of 7d31f1c65cc9? This patch helps
+check if we try to unmap the wrong address.
 
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   arch/powerpc/boot/crt0.S                      | 31 ++++---
->   arch/powerpc/crypto/md5-asm.S                 | 10 +--
->   arch/powerpc/crypto/sha1-powerpc-asm.S        |  6 +-
->   arch/powerpc/include/asm/ppc_asm.h            | 81 +++++++++----------
->   arch/powerpc/kernel/cpu_setup_6xx.S           |  2 +-
->   arch/powerpc/kernel/entry_32.S                | 23 +++---
->   arch/powerpc/kernel/exceptions-64e.S          | 14 +---
->   arch/powerpc/kernel/exceptions-64s.S          |  6 +-
->   arch/powerpc/kernel/fpu.S                     | 28 +++----
->   arch/powerpc/kernel/head_32.h                 |  3 +-
->   arch/powerpc/kernel/head_booke.h              |  3 +-
->   arch/powerpc/kernel/interrupt_64.S            | 34 +++-----
->   arch/powerpc/kernel/optprobes_head.S          |  4 +-
->   arch/powerpc/kernel/tm.S                      | 47 +++++------
->   .../powerpc/kernel/trace/ftrace_64_mprofile.S | 14 ++--
->   arch/powerpc/kernel/vector.S                  |  8 +-
->   arch/powerpc/kvm/book3s_hv_rmhandlers.S       |  5 +-
->   .../lib/test_emulate_step_exec_instr.S        |  8 +-
->   18 files changed, 140 insertions(+), 187 deletions(-)
-> 
-> diff --git a/arch/powerpc/boot/crt0.S b/arch/powerpc/boot/crt0.S
-> index 1d83966f5ef6..349279ba8ce7 100644
-> --- a/arch/powerpc/boot/crt0.S
-> +++ b/arch/powerpc/boot/crt0.S
-> @@ -226,16 +226,19 @@ p_base:	mflr	r10		/* r10 now points to runtime addr of p_base */
->   #ifdef __powerpc64__
->   
->   #define PROM_FRAME_SIZE 512
-> -#define SAVE_GPR(n, base)       std     n,8*(n)(base)
-> -#define REST_GPR(n, base)       ld      n,8*(n)(base)
-> -#define SAVE_2GPRS(n, base)     SAVE_GPR(n, base); SAVE_GPR(n+1, base)
-> -#define SAVE_4GPRS(n, base)     SAVE_2GPRS(n, base); SAVE_2GPRS(n+2, base)
-> -#define SAVE_8GPRS(n, base)     SAVE_4GPRS(n, base); SAVE_4GPRS(n+4, base)
-> -#define SAVE_10GPRS(n, base)    SAVE_8GPRS(n, base); SAVE_2GPRS(n+8, base)
-> -#define REST_2GPRS(n, base)     REST_GPR(n, base); REST_GPR(n+1, base)
-> -#define REST_4GPRS(n, base)     REST_2GPRS(n, base); REST_2GPRS(n+2, base)
-> -#define REST_8GPRS(n, base)     REST_4GPRS(n, base); REST_4GPRS(n+4, base)
-> -#define REST_10GPRS(n, base)    REST_8GPRS(n, base); REST_2GPRS(n+8, base)
-> +
-> +.macro OP_REGS op, width, start, end, base, offset
-> +	.Lreg=\start
-> +	.rept (\end - \start + 1)
-> +	\op	.Lreg,\offset+\width*.Lreg(\base)
-> +	.Lreg=.Lreg+1
-> +	.endr
-> +.endm
-> +
-> +#define SAVE_GPRS(start, end, base)	OP_REGS std, 8, start, end, base, 0
-> +#define SAVE_GPR(n, base)		SAVE_GPRS(n, n, base)
-> +#define REST_GPRS(start, end, base)	OP_REGS ld, 8, start, end, base, 0
-> +#define REST_GPR(n, base)		REST_GPRS(n, n, base)
->   
->   /* prom handles the jump into and return from firmware.  The prom args pointer
->      is loaded in r3. */
-> @@ -246,9 +249,7 @@ prom:
->   	stdu	r1,-PROM_FRAME_SIZE(r1) /* Save SP and create stack space */
->   
->   	SAVE_GPR(2, r1)
-> -	SAVE_GPR(13, r1)
-> -	SAVE_8GPRS(14, r1)
-> -	SAVE_10GPRS(22, r1)
-> +	SAVE_GPRS(13, 31, r1)
->   	mfcr    r10
->   	std     r10,8*32(r1)
->   	mfmsr   r10
-> @@ -283,9 +284,7 @@ prom:
->   
->   	/* Restore other registers */
->   	REST_GPR(2, r1)
-> -	REST_GPR(13, r1)
-> -	REST_8GPRS(14, r1)
-> -	REST_10GPRS(22, r1)
-> +	REST_GPRS(13, 31, r1)
->   	ld      r10,8*32(r1)
->   	mtcr	r10
->   
-> diff --git a/arch/powerpc/crypto/md5-asm.S b/arch/powerpc/crypto/md5-asm.S
-> index 948d100a2934..8f335a3f8430 100644
-> --- a/arch/powerpc/crypto/md5-asm.S
-> +++ b/arch/powerpc/crypto/md5-asm.S
-> @@ -38,15 +38,11 @@
->   
->   #define INITIALIZE \
->   	PPC_STLU r1,-INT_FRAME_SIZE(r1); \
-> -	SAVE_8GPRS(14, r1);		/* push registers onto stack	*/ \
-> -	SAVE_4GPRS(22, r1);						   \
-> -	SAVE_GPR(26, r1)
-> +	SAVE_GPRS(14, 26, r1)		/* push registers onto stack	*/
->   
->   #define FINALIZE \
-> -	REST_8GPRS(14, r1);		/* pop registers from stack	*/ \
-> -	REST_4GPRS(22, r1);						   \
-> -	REST_GPR(26, r1);						   \
-> -	addi	r1,r1,INT_FRAME_SIZE;
-> +	REST_GPRS(14, 26, r1);		/* pop registers from stack	*/
-> +	addi	r1,r1,INT_FRAME_SIZE
->   
->   #ifdef __BIG_ENDIAN__
->   #define LOAD_DATA(reg, off) \
-> diff --git a/arch/powerpc/crypto/sha1-powerpc-asm.S b/arch/powerpc/crypto/sha1-powerpc-asm.S
-> index 23e248beff71..f0d5ed557ab1 100644
-> --- a/arch/powerpc/crypto/sha1-powerpc-asm.S
-> +++ b/arch/powerpc/crypto/sha1-powerpc-asm.S
-> @@ -125,8 +125,7 @@
->   
->   _GLOBAL(powerpc_sha_transform)
->   	PPC_STLU r1,-INT_FRAME_SIZE(r1)
-> -	SAVE_8GPRS(14, r1)
-> -	SAVE_10GPRS(22, r1)
-> +	SAVE_GPRS(14, 31, r1)
->   
->   	/* Load up A - E */
->   	lwz	RA(0),0(r3)	/* A */
-> @@ -184,7 +183,6 @@ _GLOBAL(powerpc_sha_transform)
->   	stw	RD(0),12(r3)
->   	stw	RE(0),16(r3)
->   
-> -	REST_8GPRS(14, r1)
-> -	REST_10GPRS(22, r1)
-> +	REST_GPRS(14, 31, r1)
->   	addi	r1,r1,INT_FRAME_SIZE
->   	blr
-> diff --git a/arch/powerpc/include/asm/ppc_asm.h b/arch/powerpc/include/asm/ppc_asm.h
-> index 116c1519728a..97fa10e13bd7 100644
-> --- a/arch/powerpc/include/asm/ppc_asm.h
-> +++ b/arch/powerpc/include/asm/ppc_asm.h
-> @@ -15,56 +15,53 @@
->   
->   #define SZL			(BITS_PER_LONG/8)
->   
-> +.macro OP_REGS op, width, start, end, base, offset
-> +	.Lreg=\start
-> +	.rept (\end - \start + 1)
-> +	\op	.Lreg, \offset + \width * .Lreg(\base)
-> +	.Lreg=.Lreg+1
-> +	.endr
-> +.endm
-> +
-> +.macro OP_REGS_IDX op, width, start, end, tmpreg, base
-> +	.Lreg=\start
-> +	.rept (\end - \start + 1)
-> +	li	\tmpreg, \width * .Lreg
-> +	\op	.Lreg, \tmpreg, \base
-> +	.Lreg=.Lreg+1
-> +	.endr
-> +.endm
-> +
->   /*
->    * Macros for storing registers into and loading registers from
->    * exception frames.
->    */
->   #ifdef __powerpc64__
-> -#define SAVE_GPR(n, base)	std	n,GPR0+8*(n)(base)
-> -#define REST_GPR(n, base)	ld	n,GPR0+8*(n)(base)
-> -#define SAVE_NVGPRS(base)	SAVE_8GPRS(14, base); SAVE_10GPRS(22, base)
-> -#define REST_NVGPRS(base)	REST_8GPRS(14, base); REST_10GPRS(22, base)
-> +#define SAVE_GPRS(start, end, base)	OP_REGS std, 8, start, end, base, GPR0
-> +#define SAVE_GPR(n, base)		SAVE_GPRS(n, n, base)
-> +#define REST_GPRS(start, end, base)	OP_REGS ld, 8, start, end, base, GPR0
-> +#define REST_GPR(n, base)		REST_GPRS(n, n, base)
-> +#define SAVE_NVGPRS(base)		SAVE_GPRS(14, 31, base)
-> +#define REST_NVGPRS(base)		REST_GPRS(14, 31, base)
->   #else
-> -#define SAVE_GPR(n, base)	stw	n,GPR0+4*(n)(base)
-> -#define REST_GPR(n, base)	lwz	n,GPR0+4*(n)(base)
-> -#define SAVE_NVGPRS(base)	stmw	13, GPR0+4*13(base)
-> -#define REST_NVGPRS(base)	lmw	13, GPR0+4*13(base)
-> +#define SAVE_GPRS(start, end, base)	OP_REGS stw, 4, start, end, base, GPR0
-> +#define SAVE_GPR(n, base)		SAVE_GPRS(n, n, base)
-> +#define REST_GPRS(start, end, base)	OP_REGS lwz, 4, start, end, base, GPR0
-> +#define REST_GPR(n, base)		REST_GPRS(n, n, base)
-> +#define SAVE_NVGPRS(base)		stmw	13, GPR0+4*13(base)
-> +#define REST_NVGPRS(base)		lmw	13, GPR0+4*13(base)
->   #endif
->   
-> -#define SAVE_2GPRS(n, base)	SAVE_GPR(n, base); SAVE_GPR(n+1, base)
-> -#define SAVE_4GPRS(n, base)	SAVE_2GPRS(n, base); SAVE_2GPRS(n+2, base)
-> -#define SAVE_8GPRS(n, base)	SAVE_4GPRS(n, base); SAVE_4GPRS(n+4, base)
-> -#define SAVE_10GPRS(n, base)	SAVE_8GPRS(n, base); SAVE_2GPRS(n+8, base)
-> -#define REST_2GPRS(n, base)	REST_GPR(n, base); REST_GPR(n+1, base)
-> -#define REST_4GPRS(n, base)	REST_2GPRS(n, base); REST_2GPRS(n+2, base)
-> -#define REST_8GPRS(n, base)	REST_4GPRS(n, base); REST_4GPRS(n+4, base)
-> -#define REST_10GPRS(n, base)	REST_8GPRS(n, base); REST_2GPRS(n+8, base)
-> -
-> -#define SAVE_FPR(n, base)	stfd	n,8*TS_FPRWIDTH*(n)(base)
-> -#define SAVE_2FPRS(n, base)	SAVE_FPR(n, base); SAVE_FPR(n+1, base)
-> -#define SAVE_4FPRS(n, base)	SAVE_2FPRS(n, base); SAVE_2FPRS(n+2, base)
-> -#define SAVE_8FPRS(n, base)	SAVE_4FPRS(n, base); SAVE_4FPRS(n+4, base)
-> -#define SAVE_16FPRS(n, base)	SAVE_8FPRS(n, base); SAVE_8FPRS(n+8, base)
-> -#define SAVE_32FPRS(n, base)	SAVE_16FPRS(n, base); SAVE_16FPRS(n+16, base)
-> -#define REST_FPR(n, base)	lfd	n,8*TS_FPRWIDTH*(n)(base)
-> -#define REST_2FPRS(n, base)	REST_FPR(n, base); REST_FPR(n+1, base)
-> -#define REST_4FPRS(n, base)	REST_2FPRS(n, base); REST_2FPRS(n+2, base)
-> -#define REST_8FPRS(n, base)	REST_4FPRS(n, base); REST_4FPRS(n+4, base)
-> -#define REST_16FPRS(n, base)	REST_8FPRS(n, base); REST_8FPRS(n+8, base)
-> -#define REST_32FPRS(n, base)	REST_16FPRS(n, base); REST_16FPRS(n+16, base)
-> -
-> -#define SAVE_VR(n,b,base)	li b,16*(n);  stvx n,base,b
-> -#define SAVE_2VRS(n,b,base)	SAVE_VR(n,b,base); SAVE_VR(n+1,b,base)
-> -#define SAVE_4VRS(n,b,base)	SAVE_2VRS(n,b,base); SAVE_2VRS(n+2,b,base)
-> -#define SAVE_8VRS(n,b,base)	SAVE_4VRS(n,b,base); SAVE_4VRS(n+4,b,base)
-> -#define SAVE_16VRS(n,b,base)	SAVE_8VRS(n,b,base); SAVE_8VRS(n+8,b,base)
-> -#define SAVE_32VRS(n,b,base)	SAVE_16VRS(n,b,base); SAVE_16VRS(n+16,b,base)
-> -#define REST_VR(n,b,base)	li b,16*(n); lvx n,base,b
-> -#define REST_2VRS(n,b,base)	REST_VR(n,b,base); REST_VR(n+1,b,base)
-> -#define REST_4VRS(n,b,base)	REST_2VRS(n,b,base); REST_2VRS(n+2,b,base)
-> -#define REST_8VRS(n,b,base)	REST_4VRS(n,b,base); REST_4VRS(n+4,b,base)
-> -#define REST_16VRS(n,b,base)	REST_8VRS(n,b,base); REST_8VRS(n+8,b,base)
-> -#define REST_32VRS(n,b,base)	REST_16VRS(n,b,base); REST_16VRS(n+16,b,base)
-> +#define SAVE_FPRS(start, end, base)	OP_REGS stfd, 8*TS_FPRWIDTH, start, end, base, 0
-> +#define SAVE_FPR(n, base)		SAVE_FPRS(n, n, base)
-> +
-> +#define REST_FPRS(start, end, base)	OP_REGS lfd, 8*TS_FPRWIDTH, start, end, base, 0
-> +#define REST_FPR(n, base)		REST_FPRS(n, n, base)
-> +
-> +#define SAVE_VRS(start, end, reg, base)	OP_REGS_IDX stvx, 16, start, end, reg, base
-> +#define SAVE_VR(n, reg, base)		SAVE_VRS(n, n, reg, base)
-> +#define REST_VRS(start, end, reg, base)	OP_REGS_IDX lvx, 16, start, end, reg, base
-> +#define REST_VR(n, reg, base)		REST_VRS(n, n, reg, base)
->   
->   #ifdef __BIG_ENDIAN__
->   #define STXVD2X_ROT(n,b,base)		STXVD2X(n,b,base)
-> diff --git a/arch/powerpc/kernel/cpu_setup_6xx.S b/arch/powerpc/kernel/cpu_setup_6xx.S
-> index f8b5ff64b604..a77e7fb06278 100644
-> --- a/arch/powerpc/kernel/cpu_setup_6xx.S
-> +++ b/arch/powerpc/kernel/cpu_setup_6xx.S
-> @@ -283,7 +283,7 @@ _GLOBAL(__init_fpu_registers)
->   	isync
->   	addis	r9,r3,empty_zero_page@ha
->   	addi	r9,r9,empty_zero_page@l
-> -	REST_32FPRS(0,r9)
-> +	REST_FPRS(0, 31, r9)
->   	sync
->   	mtmsr	r10
->   	isync
-> diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
-> index 0273a1349006..299b50279882 100644
-> --- a/arch/powerpc/kernel/entry_32.S
-> +++ b/arch/powerpc/kernel/entry_32.S
-> @@ -90,8 +90,7 @@ transfer_to_syscall:
->   	stw	r12,8(r1)
->   	stw	r2,_TRAP(r1)
->   	SAVE_GPR(0, r1)
-> -	SAVE_4GPRS(3, r1)
-> -	SAVE_2GPRS(7, r1)
-> +	SAVE_GPRS(3, 8, r1)
->   	addi	r2,r10,-THREAD
->   	SAVE_NVGPRS(r1)
->   
-> @@ -139,7 +138,7 @@ syscall_exit_finish:
->   	mtxer	r5
->   	lwz	r0,GPR0(r1)
->   	lwz	r3,GPR3(r1)
-> -	REST_8GPRS(4,r1)
-> +	REST_GPRS(4, 11, r1)
->   	lwz	r12,GPR12(r1)
->   	b	1b
->   
-> @@ -232,9 +231,9 @@ fast_exception_return:
->   	beq	3f			/* if not, we've got problems */
->   #endif
->   
-> -2:	REST_4GPRS(3, r11)
-> +2:	REST_GPRS(3, 6, r11)
->   	lwz	r10,_CCR(r11)
-> -	REST_2GPRS(1, r11)
-> +	REST_GPRS(1, 2, r11)
->   	mtcr	r10
->   	lwz	r10,_LINK(r11)
->   	mtlr	r10
-> @@ -298,16 +297,14 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
->   	 * the reliable stack unwinder later on. Clear it.
->   	 */
->   	stw	r0,8(r1)
-> -	REST_4GPRS(7, r1)
-> -	REST_2GPRS(11, r1)
-> +	REST_GPRS(7, 12, r1)
->   
->   	mtcr	r3
->   	mtlr	r4
->   	mtctr	r5
->   	mtspr	SPRN_XER,r6
->   
-> -	REST_4GPRS(2, r1)
-> -	REST_GPR(6, r1)
-> +	REST_GPRS(2, 6, r1)
->   	REST_GPR(0, r1)
->   	REST_GPR(1, r1)
->   	rfi
-> @@ -341,8 +338,7 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
->   	lwz	r6,_CCR(r1)
->   	li	r0,0
->   
-> -	REST_4GPRS(7, r1)
-> -	REST_2GPRS(11, r1)
-> +	REST_GPRS(7, 12, r1)
->   
->   	mtlr	r3
->   	mtctr	r4
-> @@ -354,7 +350,7 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
->   	 */
->   	stw	r0,8(r1)
->   
-> -	REST_4GPRS(2, r1)
-> +	REST_GPRS(2, 5, r1)
->   
->   	bne-	cr1,1f /* emulate stack store */
->   	mtcr	r6
-> @@ -430,8 +426,7 @@ _ASM_NOKPROBE_SYMBOL(interrupt_return)
->   	bne	interrupt_return;					\
->   	lwz	r0,GPR0(r1);						\
->   	lwz	r2,GPR2(r1);						\
-> -	REST_4GPRS(3, r1);						\
-> -	REST_2GPRS(7, r1);						\
-> +	REST_GPRS(3, 8, r1);						\
->   	lwz	r10,_XER(r1);						\
->   	lwz	r11,_CTR(r1);						\
->   	mtspr	SPRN_XER,r10;						\
-> diff --git a/arch/powerpc/kernel/exceptions-64e.S b/arch/powerpc/kernel/exceptions-64e.S
-> index 1401787b0b93..947d4a83704b 100644
-> --- a/arch/powerpc/kernel/exceptions-64e.S
-> +++ b/arch/powerpc/kernel/exceptions-64e.S
-> @@ -198,8 +198,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_EMB_HV)
->   
->   	stdcx.	r0,0,r1		/* to clear the reservation */
->   
-> -	REST_4GPRS(2, r1)
-> -	REST_4GPRS(6, r1)
-> +	REST_GPRS(2, 9, r1)
->   
->   	ld	r10,_CTR(r1)
->   	ld	r11,_XER(r1)
-> @@ -375,9 +374,7 @@ ret_from_mc_except:
->   exc_##n##_common:							    \
->   	std	r0,GPR0(r1);		/* save r0 in stackframe */	    \
->   	std	r2,GPR2(r1);		/* save r2 in stackframe */	    \
-> -	SAVE_4GPRS(3, r1);		/* save r3 - r6 in stackframe */    \
-> -	SAVE_2GPRS(7, r1);		/* save r7, r8 in stackframe */	    \
-> -	std	r9,GPR9(r1);		/* save r9 in stackframe */	    \
-> +	SAVE_GPRS(3, 9, r1);		/* save r3 - r9 in stackframe */    \
->   	std	r10,_NIP(r1);		/* save SRR0 to stackframe */	    \
->   	std	r11,_MSR(r1);		/* save SRR1 to stackframe */	    \
->   	beq	2f;			/* if from kernel mode */	    \
-> @@ -1061,9 +1058,7 @@ bad_stack_book3e:
->   	std	r11,_DSISR(r1)
->   	std	r0,GPR0(r1);		/* save r0 in stackframe */	    \
->   	std	r2,GPR2(r1);		/* save r2 in stackframe */	    \
-> -	SAVE_4GPRS(3, r1);		/* save r3 - r6 in stackframe */    \
-> -	SAVE_2GPRS(7, r1);		/* save r7, r8 in stackframe */	    \
-> -	std	r9,GPR9(r1);		/* save r9 in stackframe */	    \
-> +	SAVE_GPRS(3, 9, r1);		/* save r3 - r9 in stackframe */    \
->   	ld	r3,PACA_EXGEN+EX_R10(r13);/* get back r10 */		    \
->   	ld	r4,PACA_EXGEN+EX_R11(r13);/* get back r11 */		    \
->   	mfspr	r5,SPRN_SPRG_GEN_SCRATCH;/* get back r13 XXX can be wrong */ \
-> @@ -1077,8 +1072,7 @@ bad_stack_book3e:
->   	std	r10,_LINK(r1)
->   	std	r11,_CTR(r1)
->   	std	r12,_XER(r1)
-> -	SAVE_10GPRS(14,r1)
-> -	SAVE_8GPRS(24,r1)
-> +	SAVE_GPRS(14, 31, r1)
->   	lhz	r12,PACA_TRAP_SAVE(r13)
->   	std	r12,_TRAP(r1)
->   	addi	r11,r1,INT_FRAME_SIZE
-> diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-> index 4aec59a77d4c..4084a049a8ed 100644
-> --- a/arch/powerpc/kernel/exceptions-64s.S
-> +++ b/arch/powerpc/kernel/exceptions-64s.S
-> @@ -574,8 +574,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
->   	ld	r10,IAREA+EX_CTR(r13)
->   	std	r10,_CTR(r1)
->   	std	r2,GPR2(r1)		/* save r2 in stackframe	*/
-> -	SAVE_4GPRS(3, r1)		/* save r3 - r6 in stackframe   */
-> -	SAVE_2GPRS(7, r1)		/* save r7, r8 in stackframe	*/
-> +	SAVE_GPRS(3, 8, r1)		/* save r3 - r8 in stackframe   */
->   	mflr	r9			/* Get LR, later save to stack	*/
->   	ld	r2,PACATOC(r13)		/* get kernel TOC into r2	*/
->   	std	r9,_LINK(r1)
-> @@ -693,8 +692,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
->   	mtlr	r9
->   	ld	r9,_CCR(r1)
->   	mtcr	r9
-> -	REST_8GPRS(2, r1)
-> -	REST_4GPRS(10, r1)
-> +	REST_GPRS(2, 13, r1)
->   	REST_GPR(0, r1)
->   	/* restore original r1. */
->   	ld	r1,GPR1(r1)
-> diff --git a/arch/powerpc/kernel/fpu.S b/arch/powerpc/kernel/fpu.S
-> index 6010adcee16e..79b01610dae2 100644
-> --- a/arch/powerpc/kernel/fpu.S
-> +++ b/arch/powerpc/kernel/fpu.S
-> @@ -23,29 +23,29 @@
->   #include <asm/feature-fixups.h>
->   
->   #ifdef CONFIG_VSX
-> -#define __REST_32FPVSRS(n,c,base)					\
-> +#define __REST_32FPVSRS(c, base)					\
->   BEGIN_FTR_SECTION							\
->   	b	2f;							\
->   END_FTR_SECTION_IFSET(CPU_FTR_VSX);					\
-> -	REST_32FPRS(n,base);						\
-> +	REST_FPRS(0, 31, base);						\
->   	b	3f;							\
-> -2:	REST_32VSRS(n,c,base);						\
-> +2:	REST_32VSRS(0, c, base);					\
->   3:
->   
-> -#define __SAVE_32FPVSRS(n,c,base)					\
-> +#define __SAVE_32FPVSRS(c, base)					\
->   BEGIN_FTR_SECTION							\
->   	b	2f;							\
->   END_FTR_SECTION_IFSET(CPU_FTR_VSX);					\
-> -	SAVE_32FPRS(n,base);						\
-> +	SAVE_FPRS(0, 31, base);						\
->   	b	3f;							\
-> -2:	SAVE_32VSRS(n,c,base);						\
-> +2:	SAVE_32VSRS(0, c, base);					\
->   3:
->   #else
-> -#define __REST_32FPVSRS(n,b,base)	REST_32FPRS(n, base)
-> -#define __SAVE_32FPVSRS(n,b,base)	SAVE_32FPRS(n, base)
-> +#define __REST_32FPVSRS(c, base)	REST_FPRS(0, 31, base)
-> +#define __SAVE_32FPVSRS(c, base)	SAVE_FPRS(0, 31, base)
->   #endif
-> -#define REST_32FPVSRS(n,c,base) __REST_32FPVSRS(n,__REG_##c,__REG_##base)
-> -#define SAVE_32FPVSRS(n,c,base) __SAVE_32FPVSRS(n,__REG_##c,__REG_##base)
-> +#define REST_32FPVSRS(c, base) __REST_32FPVSRS(__REG_##c, __REG_##base)
-> +#define SAVE_32FPVSRS(c, base) __SAVE_32FPVSRS(__REG_##c, __REG_##base)
->   
->   /*
->    * Load state from memory into FP registers including FPSCR.
-> @@ -54,7 +54,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_VSX);					\
->   _GLOBAL(load_fp_state)
->   	lfd	fr0,FPSTATE_FPSCR(r3)
->   	MTFSF_L(fr0)
-> -	REST_32FPVSRS(0, R4, R3)
-> +	REST_32FPVSRS(R4, R3)
->   	blr
->   EXPORT_SYMBOL(load_fp_state)
->   _ASM_NOKPROBE_SYMBOL(load_fp_state); /* used by restore_math */
-> @@ -64,7 +64,7 @@ _ASM_NOKPROBE_SYMBOL(load_fp_state); /* used by restore_math */
->    * Assumes the caller has enabled FP in the MSR.
->    */
->   _GLOBAL(store_fp_state)
-> -	SAVE_32FPVSRS(0, R4, R3)
-> +	SAVE_32FPVSRS(R4, R3)
->   	mffs	fr0
->   	stfd	fr0,FPSTATE_FPSCR(r3)
->   	blr
-> @@ -113,7 +113,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_VSX)
->   	addi	r10,r5,THREAD_FPSTATE
->   	lfd	fr0,FPSTATE_FPSCR(r10)
->   	MTFSF_L(fr0)
-> -	REST_32FPVSRS(0, R4, R10)
-> +	REST_32FPVSRS(R4, R10)
->   	/* restore registers and return */
->   	/* we haven't used ctr or xer or lr */
->   	blr
-> @@ -131,7 +131,7 @@ _GLOBAL(save_fpu)
->   	PPC_LCMPI	0,r6,0
->   	bne	2f
->   	addi	r6,r3,THREAD_FPSTATE
-> -2:	SAVE_32FPVSRS(0, R4, R6)
-> +2:	SAVE_32FPVSRS(R4, R6)
->   	mffs	fr0
->   	stfd	fr0,FPSTATE_FPSCR(r6)
->   	blr
-> diff --git a/arch/powerpc/kernel/head_32.h b/arch/powerpc/kernel/head_32.h
-> index 6b1ec9e3541b..25887303651a 100644
-> --- a/arch/powerpc/kernel/head_32.h
-> +++ b/arch/powerpc/kernel/head_32.h
-> @@ -115,8 +115,7 @@ _ASM_NOKPROBE_SYMBOL(\name\()_virt)
->   	stw	r10,8(r1)
->   	li	r10, \trapno
->   	stw	r10,_TRAP(r1)
-> -	SAVE_4GPRS(3, r1)
-> -	SAVE_2GPRS(7, r1)
-> +	SAVE_GPRS(3, 8, r1)
->   	SAVE_NVGPRS(r1)
->   	stw	r2,GPR2(r1)
->   	stw	r12,_NIP(r1)
-> diff --git a/arch/powerpc/kernel/head_booke.h b/arch/powerpc/kernel/head_booke.h
-> index 87b806e8eded..5691e49d3368 100644
-> --- a/arch/powerpc/kernel/head_booke.h
-> +++ b/arch/powerpc/kernel/head_booke.h
-> @@ -87,8 +87,7 @@ END_BTB_FLUSH_SECTION
->   	stw	r10, 8(r1)
->   	li	r10, \trapno
->   	stw	r10,_TRAP(r1)
-> -	SAVE_4GPRS(3, r1)
-> -	SAVE_2GPRS(7, r1)
-> +	SAVE_GPRS(3, 8, r1)
->   	SAVE_NVGPRS(r1)
->   	stw	r2,GPR2(r1)
->   	stw	r12,_NIP(r1)
-> diff --git a/arch/powerpc/kernel/interrupt_64.S b/arch/powerpc/kernel/interrupt_64.S
-> index 4063e8a3f704..03d053ff87c7 100644
-> --- a/arch/powerpc/kernel/interrupt_64.S
-> +++ b/arch/powerpc/kernel/interrupt_64.S
-> @@ -169,10 +169,9 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
->   	 * The value of AMR only matters while we're in the kernel.
->   	 */
->   	mtcr	r2
-> -	ld	r2,GPR2(r1)
-> -	ld	r3,GPR3(r1)
-> -	ld	r13,GPR13(r1)
-> -	ld	r1,GPR1(r1)
-> +	REST_GPRS(2, 3, r1)
-> +	REST_GPR(13, r1)
-> +	REST_GPR(1, r1)
->   	RFSCV_TO_USER
->   	b	.	/* prevent speculative execution */
->   
-> @@ -190,9 +189,8 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
->   	mtctr	r3
->   	mtlr	r4
->   	mtspr	SPRN_XER,r5
-> -	REST_10GPRS(2, r1)
-> -	REST_2GPRS(12, r1)
-> -	ld	r1,GPR1(r1)
-> +	REST_GPRS(2, 13, r1)
-> +	REST_GPR(1, r1)
->   	RFI_TO_USER
->   .Lsyscall_vectored_\name\()_rst_end:
->   
-> @@ -383,10 +381,9 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
->   	 * The value of AMR only matters while we're in the kernel.
->   	 */
->   	mtcr	r2
-> -	ld	r2,GPR2(r1)
-> -	ld	r3,GPR3(r1)
-> -	ld	r13,GPR13(r1)
-> -	ld	r1,GPR1(r1)
-> +	REST_GPRS(2, 3, r1)
-> +	REST_GPR(13, r1)
-> +	REST_GPR(1, r1)
->   	RFI_TO_USER
->   	b	.	/* prevent speculative execution */
->   
-> @@ -397,8 +394,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
->   	mtctr	r3
->   	mtspr	SPRN_XER,r4
->   	ld	r0,GPR0(r1)
-> -	REST_8GPRS(4, r1)
-> -	ld	r12,GPR12(r1)
-> +	REST_GPRS(4, 12, r1)
->   	b	.Lsyscall_restore_regs_cont
->   .Lsyscall_rst_end:
->   
-> @@ -555,17 +551,14 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
->   	ld	r6,_XER(r1)
->   	li	r0,0
->   
-> -	REST_4GPRS(7, r1)
-> -	REST_2GPRS(11, r1)
-> -	REST_GPR(13, r1)
-> +	REST_GPRS(7, 13, r1)
->   
->   	mtcr	r3
->   	mtlr	r4
->   	mtctr	r5
->   	mtspr	SPRN_XER,r6
->   
-> -	REST_4GPRS(2, r1)
-> -	REST_GPR(6, r1)
-> +	REST_GPRS(2, 6, r1)
->   	REST_GPR(0, r1)
->   	REST_GPR(1, r1)
->   	.ifc \srr,srr
-> @@ -662,8 +655,7 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
->   	ld	r6,_CCR(r1)
->   	li	r0,0
->   
-> -	REST_4GPRS(7, r1)
-> -	REST_2GPRS(11, r1)
-> +	REST_GPRS(7, 12, r1)
->   
->   	mtlr	r3
->   	mtctr	r4
-> @@ -675,7 +667,7 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
->   	 */
->   	std	r0,STACK_FRAME_OVERHEAD-16(r1)
->   
-> -	REST_4GPRS(2, r1)
-> +	REST_GPRS(2, 5, r1)
->   
->   	bne-	cr1,1f /* emulate stack store */
->   	mtcr	r6
-> diff --git a/arch/powerpc/kernel/optprobes_head.S b/arch/powerpc/kernel/optprobes_head.S
-> index 19ea3312403c..5c7f0b4b784b 100644
-> --- a/arch/powerpc/kernel/optprobes_head.S
-> +++ b/arch/powerpc/kernel/optprobes_head.S
-> @@ -10,8 +10,8 @@
->   #include <asm/asm-offsets.h>
->   
->   #ifdef CONFIG_PPC64
-> -#define SAVE_30GPRS(base) SAVE_10GPRS(2,base); SAVE_10GPRS(12,base); SAVE_10GPRS(22,base)
-> -#define REST_30GPRS(base) REST_10GPRS(2,base); REST_10GPRS(12,base); REST_10GPRS(22,base)
-> +#define SAVE_30GPRS(base) SAVE_GPRS(2, 31, base)
-> +#define REST_30GPRS(base) REST_GPRS(2, 31, base)
->   #define TEMPLATE_FOR_IMM_LOAD_INSNS	nop; nop; nop; nop; nop
->   #else
->   #define SAVE_30GPRS(base) stmw	r2, GPR2(base)
-> diff --git a/arch/powerpc/kernel/tm.S b/arch/powerpc/kernel/tm.S
-> index 2b91f233b05d..dd382ba5926a 100644
-> --- a/arch/powerpc/kernel/tm.S
-> +++ b/arch/powerpc/kernel/tm.S
-> @@ -17,30 +17,30 @@
->   
->   #ifdef CONFIG_VSX
->   /* See fpu.S, this is borrowed from there */
-> -#define __SAVE_32FPRS_VSRS(n,c,base)		\
-> +#define __SAVE_32FPRS_VSRS(c, base)		\
->   BEGIN_FTR_SECTION				\
->   	b	2f;				\
->   END_FTR_SECTION_IFSET(CPU_FTR_VSX);		\
-> -	SAVE_32FPRS(n,base);			\
-> +	SAVE_FPRS(0, 31, base);			\
->   	b	3f;				\
-> -2:	SAVE_32VSRS(n,c,base);			\
-> +2:	SAVE_32VSRS(0, c, base);		\
->   3:
-> -#define __REST_32FPRS_VSRS(n,c,base)		\
-> +#define __REST_32FPRS_VSRS(c, base)		\
->   BEGIN_FTR_SECTION				\
->   	b	2f;				\
->   END_FTR_SECTION_IFSET(CPU_FTR_VSX);		\
-> -	REST_32FPRS(n,base);			\
-> +	REST_FPRS(0, 31, base);			\
->   	b	3f;				\
-> -2:	REST_32VSRS(n,c,base);			\
-> +2:	REST_32VSRS(0, c, base);		\
->   3:
->   #else
-> -#define __SAVE_32FPRS_VSRS(n,c,base)	SAVE_32FPRS(n, base)
-> -#define __REST_32FPRS_VSRS(n,c,base)	REST_32FPRS(n, base)
-> +#define __SAVE_32FPRS_VSRS(c,base)	SAVE_FPRS(0, 31, base)
-> +#define __REST_32FPRS_VSRS(c,base)	REST_FPRS(0, 31, base)
->   #endif
-> -#define SAVE_32FPRS_VSRS(n,c,base) \
-> -	__SAVE_32FPRS_VSRS(n,__REG_##c,__REG_##base)
-> -#define REST_32FPRS_VSRS(n,c,base) \
-> -	__REST_32FPRS_VSRS(n,__REG_##c,__REG_##base)
-> +#define SAVE_32FPRS_VSRS(c, base) \
-> +	__SAVE_32FPRS_VSRS(__REG_##c, __REG_##base)
-> +#define REST_32FPRS_VSRS(c, base) \
-> +	__REST_32FPRS_VSRS(__REG_##c, __REG_##base)
->   
->   /* Stack frame offsets for local variables. */
->   #define TM_FRAME_L0	TM_FRAME_SIZE-16
-> @@ -226,11 +226,8 @@ _GLOBAL(tm_reclaim)
->   
->   	/* Sync the userland GPRs 2-12, 14-31 to thread->regs: */
->   	SAVE_GPR(0, r7)				/* user r0 */
-> -	SAVE_GPR(2, r7)				/* user r2 */
-> -	SAVE_4GPRS(3, r7)			/* user r3-r6 */
-> -	SAVE_GPR(8, r7)				/* user r8 */
-> -	SAVE_GPR(9, r7)				/* user r9 */
-> -	SAVE_GPR(10, r7)			/* user r10 */
-> +	SAVE_GPRS(2, 6, r7)			/* user r2-r6 */
-> +	SAVE_GPRS(8, 10, r7)			/* user r8-r10 */
->   	ld	r3, GPR1(r1)			/* user r1 */
->   	ld	r4, GPR7(r1)			/* user r7 */
->   	ld	r5, GPR11(r1)			/* user r11 */
-> @@ -290,7 +287,7 @@ _GLOBAL(tm_reclaim)
->   
->   	/* Altivec (VEC/VMX/VR)*/
->   	addi	r7, r3, THREAD_CKVRSTATE
-> -	SAVE_32VRS(0, r6, r7)	/* r6 scratch, r7 ckvr_state */
-> +	SAVE_VRS(0, 31, r6, r7)	/* r6 scratch, r7 ckvr_state */
->   	mfvscr	v0
->   	li	r6, VRSTATE_VSCR
->   	stvx	v0, r7, r6
-> @@ -301,7 +298,7 @@ _GLOBAL(tm_reclaim)
->   
->   	/* Floating Point (FP) */
->   	addi	r7, r3, THREAD_CKFPSTATE
-> -	SAVE_32FPRS_VSRS(0, R6, R7)	/* r6 scratch, r7 ckfp_state */
-> +	SAVE_32FPRS_VSRS(R6, R7)	/* r6 scratch, r7 ckfp_state */
->   	mffs    fr0
->   	stfd    fr0,FPSTATE_FPSCR(r7)
->   
-> @@ -409,7 +406,7 @@ _GLOBAL(__tm_recheckpoint)
->   	li	r5, VRSTATE_VSCR
->   	lvx	v0, r8, r5
->   	mtvscr	v0
-> -	REST_32VRS(0, r5, r8)			/* r5 scratch, r8 ptr */
-> +	REST_VRS(0, 31, r5, r8)			/* r5 scratch, r8 ptr */
->   	ld	r5, THREAD_CKVRSAVE(r3)
->   	mtspr	SPRN_VRSAVE, r5
->   #endif
-> @@ -417,7 +414,7 @@ _GLOBAL(__tm_recheckpoint)
->   	addi	r8, r3, THREAD_CKFPSTATE
->   	lfd	fr0, FPSTATE_FPSCR(r8)
->   	MTFSF_L(fr0)
-> -	REST_32FPRS_VSRS(0, R4, R8)
-> +	REST_32FPRS_VSRS(R4, R8)
->   
->   	mtmsr	r6				/* FP/Vec off again! */
->   
-> @@ -445,12 +442,8 @@ restore_gprs:
->   	ld	r6, THREAD_TM_PPR(r3)
->   
->   	REST_GPR(0, r7)				/* GPR0 */
-> -	REST_2GPRS(2, r7)			/* GPR2-3 */
-> -	REST_GPR(4, r7)				/* GPR4 */
-> -	REST_4GPRS(8, r7)			/* GPR8-11 */
-> -	REST_2GPRS(12, r7)			/* GPR12-13 */
-> -
-> -	REST_NVGPRS(r7)				/* GPR14-31 */
-> +	REST_GPRS(2, 4, r7)			/* GPR2-4 */
-> +	REST_GPRS(8, 31, r7)			/* GPR8-31 */
->   
->   	/* Load up PPR and DSCR here so we don't run with user values for long */
->   	mtspr	SPRN_DSCR, r5
-> diff --git a/arch/powerpc/kernel/trace/ftrace_64_mprofile.S b/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
-> index f9fd5f743eba..dd5e720fe44b 100644
-> --- a/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
-> +++ b/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
-> @@ -41,15 +41,14 @@ _GLOBAL(ftrace_regs_caller)
->   
->   	/* Save all gprs to pt_regs */
->   	SAVE_GPR(0, r1)
-> -	SAVE_10GPRS(2, r1)
-> +	SAVE_GPRS(2, 11, r1)
->   
->   	/* Ok to continue? */
->   	lbz	r3, PACA_FTRACE_ENABLED(r13)
->   	cmpdi	r3, 0
->   	beq	ftrace_no_trace
->   
-> -	SAVE_10GPRS(12, r1)
-> -	SAVE_10GPRS(22, r1)
-> +	SAVE_GPRS(12, 31, r1)
->   
->   	/* Save previous stack pointer (r1) */
->   	addi	r8, r1, SWITCH_FRAME_SIZE
-> @@ -108,10 +107,7 @@ ftrace_regs_call:
->   #endif
->   
->   	/* Restore gprs */
-> -	REST_GPR(0,r1)
-> -	REST_10GPRS(2,r1)
-> -	REST_10GPRS(12,r1)
-> -	REST_10GPRS(22,r1)
-> +	REST_GPRS(2, 31, r1)
->   
->   	/* Restore possibly modified LR */
->   	ld	r0, _LINK(r1)
-> @@ -157,7 +153,7 @@ _GLOBAL(ftrace_caller)
->   	stdu	r1, -SWITCH_FRAME_SIZE(r1)
->   
->   	/* Save all gprs to pt_regs */
-> -	SAVE_8GPRS(3, r1)
-> +	SAVE_GPRS(3, 10, r1)
->   
->   	lbz	r3, PACA_FTRACE_ENABLED(r13)
->   	cmpdi	r3, 0
-> @@ -194,7 +190,7 @@ ftrace_call:
->   	mtctr	r3
->   
->   	/* Restore gprs */
-> -	REST_8GPRS(3,r1)
-> +	REST_GPRS(3, 10, r1)
->   
->   	/* Restore callee's TOC */
->   	ld	r2, 24(r1)
-> diff --git a/arch/powerpc/kernel/vector.S b/arch/powerpc/kernel/vector.S
-> index fc120fac1910..66071dc19452 100644
-> --- a/arch/powerpc/kernel/vector.S
-> +++ b/arch/powerpc/kernel/vector.S
-> @@ -18,7 +18,7 @@ _GLOBAL(load_vr_state)
->   	li	r4,VRSTATE_VSCR
->   	lvx	v0,r4,r3
->   	mtvscr	v0
-> -	REST_32VRS(0,r4,r3)
-> +	REST_VRS(0, 31, r4, r3)
->   	blr
->   EXPORT_SYMBOL(load_vr_state)
->   _ASM_NOKPROBE_SYMBOL(load_vr_state); /* used by restore_math */
-> @@ -28,7 +28,7 @@ _ASM_NOKPROBE_SYMBOL(load_vr_state); /* used by restore_math */
->    * Assumes the caller has enabled VMX in the MSR.
->    */
->   _GLOBAL(store_vr_state)
-> -	SAVE_32VRS(0, r4, r3)
-> +	SAVE_VRS(0, 31, r4, r3)
->   	mfvscr	v0
->   	li	r4, VRSTATE_VSCR
->   	stvx	v0, r4, r3
-> @@ -86,7 +86,7 @@ _GLOBAL(load_up_altivec)
->   	stw	r4,THREAD_USED_VR(r5)
->   	lvx	v0,r10,r6
->   	mtvscr	v0
-> -	REST_32VRS(0,r4,r6)
-> +	REST_VRS(0, 31, r4, r6)
->   	/* restore registers and return */
->   	blr
->   _ASM_NOKPROBE_SYMBOL(load_up_altivec)
-> @@ -102,7 +102,7 @@ _GLOBAL(save_altivec)
->   	PPC_LCMPI	0,r7,0
->   	bne	2f
->   	addi	r7,r3,THREAD_VRSTATE
-> -2:	SAVE_32VRS(0,r4,r7)
-> +2:	SAVE_VRS(0, 31, r4, r7)
->   	mfvscr	v0
->   	li	r4,VRSTATE_VSCR
->   	stvx	v0,r4,r7
-> diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> index 8dd437d7a2c6..37ee440cc35e 100644
-> --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> @@ -2715,8 +2715,7 @@ kvmppc_bad_host_intr:
->   	std	r0, GPR0(r1)
->   	std	r9, GPR1(r1)
->   	std	r2, GPR2(r1)
-> -	SAVE_4GPRS(3, r1)
-> -	SAVE_2GPRS(7, r1)
-> +	SAVE_GPRS(3, 8, r1)
->   	srdi	r0, r12, 32
->   	clrldi	r12, r12, 32
->   	std	r0, _CCR(r1)
-> @@ -2739,7 +2738,7 @@ kvmppc_bad_host_intr:
->   	ld	r9, HSTATE_SCRATCH2(r13)
->   	ld	r12, HSTATE_SCRATCH0(r13)
->   	GET_SCRATCH0(r0)
-> -	SAVE_4GPRS(9, r1)
-> +	SAVE_GPRS(9, 12, r1)
->   	std	r0, GPR13(r1)
->   	SAVE_NVGPRS(r1)
->   	ld	r5, HSTATE_CFAR(r13)
-> diff --git a/arch/powerpc/lib/test_emulate_step_exec_instr.S b/arch/powerpc/lib/test_emulate_step_exec_instr.S
-> index 9ef941d958d8..5473f9d03df3 100644
-> --- a/arch/powerpc/lib/test_emulate_step_exec_instr.S
-> +++ b/arch/powerpc/lib/test_emulate_step_exec_instr.S
-> @@ -37,7 +37,7 @@ _GLOBAL(exec_instr)
->   	 * The stack pointer (GPR1) and the thread pointer (GPR13) are not
->   	 * saved as these should not be modified anyway.
->   	 */
-> -	SAVE_2GPRS(2, r1)
-> +	SAVE_GPRS(2, 3, r1)
->   	SAVE_NVGPRS(r1)
->   
->   	/*
-> @@ -75,8 +75,7 @@ _GLOBAL(exec_instr)
->   
->   	/* Load GPRs from pt_regs */
->   	REST_GPR(0, r31)
-> -	REST_10GPRS(2, r31)
-> -	REST_GPR(12, r31)
-> +	REST_GPRS(2, 12, r31)
->   	REST_NVGPRS(r31)
->   
->   	/* Placeholder for the test instruction */
-> @@ -99,8 +98,7 @@ _GLOBAL(exec_instr)
->   	subi	r3, r3, GPR0
->   	SAVE_GPR(0, r3)
->   	SAVE_GPR(2, r3)
-> -	SAVE_8GPRS(4, r3)
-> -	SAVE_GPR(12, r3)
-> +	SAVE_GPRS(4, 12, r3)
->   	SAVE_NVGPRS(r3)
->   
->   	/* Save resulting LR to pt_regs */
-> 
+```
+diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+index b7f76bca89bf..5ac08d50a394 100644
+--- a/kernel/dma/swiotlb.c
++++ b/kernel/dma/swiotlb.c
+@@ -613,6 +613,21 @@ void swiotlb_tbl_unmap_single(struct device *dev,
+phys_addr_t tlb_addr,
+                              size_t mapping_size, enum dma_data_direction dir,
+                              unsigned long attrs)
+ {
++       struct io_tlb_mem *mem = dev->dma_io_tlb_mem;
++       unsigned int offset = swiotlb_align_offset(dev, tlb_addr);
++       int index;
++
++       if (!is_swiotlb_buffer(dev, tlb_addr - offset)) {
++               dev_err(dev, "%s: attempt to unmap invalid address
+(0x%llx, offset=%u)\n", __func__, tlb_addr, offset);
++               return;
++       }
++
++       index = (tlb_addr - offset - mem->start) >> IO_TLB_SHIFT;
++       if (mem->slots[index].orig_addr == INVALID_PHYS_ADDR) {
++               dev_err(dev, "%s: memory is not mapped before (0x%llx,
+offset=%u)\n", __func__, tlb_addr, offset);
++               return;
++       }
++
+        /*
+         * First, sync the memory before unmapping the entry
+         */
+```
+It might be useful to have CONFIG_SLUB_DEBUG=y, CONFIG_SLUB_DEBUG_ON=y
+and line numbers (scripts/decode_stacktrace.sh) too.
+
+Thank you so much for helping!
+
+>
+> > > It might also be worth taking the IOMMU out of the equation, since that
+> > > interfaces differently with SWIOTLB and I couldn't figure out the code path
+> > > from the log you provided. What happens if you boot with "amd_iommu=off
+> > > swiotlb=force"?
+> >
+> > Oh, now there's a thing... the chat from the IOMMU API in the boot log
+> > implies that the IOMMU *should* be in the picture - we see that default
+> > domains are IOMMU_DOMAIN_DMA default and the GPU 0000:0c:00.0 was added to a
+> > group. That means dev->dma_ops should be set and DMA API calls should be
+> > going through iommu-dma, yet the callstack in the crash says we've gone
+> > straight from dma_map_page_attrs() to swiotlb_map(), implying the inline
+> > dma_direct_map_page() path.
+> >
+> > If dev->dma_ops didn't look right in the first place, it's perhaps less
+> > surprising that dev->dma_io_tlb_mem might be wild as well. It doesn't seem
+> > plausible that we should have a race between initialising the device and
+> > probing its driver, so maybe the whole dev pointer is getting trampled
+> > earlier in the callchain (or is fundamentally wrong to begin with, but from
+> > a quick skim of the amdgpu code it did look like adev->dev and adev->pdev
+> > are appropriately set early on by amdgpu_pci_probe()).
+> >
+> > > (although word of warning here: i915 dies horribly on my laptop if I pass
+> > > swiotlb=force, even with the distro 5.10 kernel)
+> >
+> > FWIW I'd imagine you probably need to massively increase the SWIOTLB buffer
+> > size to have hope of that working.
+>
+> Is it worth trying this still then?
+>
+> Cheers,
+> Nathan
