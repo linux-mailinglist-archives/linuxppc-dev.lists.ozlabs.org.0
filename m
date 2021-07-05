@@ -1,52 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69AB03BB67A
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jul 2021 06:43:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CCD83BB704
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jul 2021 07:52:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GJCkW2Lbnz30Cb
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jul 2021 14:43:47 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=201602 header.b=P1ZWiFfU;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GJFG3103hz3bYn
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Jul 2021 15:52:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=dgibson@ozlabs.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
- header.a=rsa-sha256 header.s=201602 header.b=P1ZWiFfU; 
- dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GJCk220HFz2yNT
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Jul 2021 14:43:21 +1000 (AEST)
-Received: by ozlabs.org (Postfix, from userid 1007)
- id 4GJCk03Nnvz9sXM; Mon,  5 Jul 2021 14:43:20 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=gibson.dropbear.id.au; s=201602; t=1625460200;
- bh=Tq1M47EUu05GKZ3ZRLukuT3vBKJvsDynJ59Ygrjk5jE=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=P1ZWiFfUgB4jU+Dz3AjsHWLQ8JDhsf1E2qD+jqU0n9blHx4d/fZKYCktdEXewCrg9
- 4IEuZ3ze1NS+sUtUvYJ3oaoFf/CjgJdGdpVlnPP64GM7c5cPDkxehNKJTk2dteFc97
- 7z8ZovSOwlgXmvC5q/IBnh49XKSe4hH2FKlT2PXs=
-Date: Mon, 5 Jul 2021 14:42:33 +1000
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Bharata B Rao <bharata@linux.ibm.com>
-Subject: Re: [PATCH v8 3/6] KVM: PPC: Book3S HV: Add support for
- H_RPT_INVALIDATE
-Message-ID: <YOKNub8mS4U4iox0@yekko>
-References: <20210621085003.904767-1-bharata@linux.ibm.com>
- <20210621085003.904767-4-bharata@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GJFFc3ryBz2yYH
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Jul 2021 15:52:16 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 4GJFFP4KSdzB61g;
+ Mon,  5 Jul 2021 07:52:09 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id ioc1A9b4X4yj; Mon,  5 Jul 2021 07:52:09 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4GJFFP3JP2zB52G;
+ Mon,  5 Jul 2021 07:52:09 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 633768B775;
+ Mon,  5 Jul 2021 07:52:09 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id Q8U8wUrIUZOd; Mon,  5 Jul 2021 07:52:09 +0200 (CEST)
+Received: from [172.25.230.103] (po15451.idsi0.si.c-s.fr [172.25.230.103])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 359988B763;
+ Mon,  5 Jul 2021 07:52:09 +0200 (CEST)
+Subject: Re: [RFC PATCH] powerpc: flexible register range save/restore macros
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20210703091452.352816-1-npiggin@gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <dc76505a-dbb3-ba3b-651e-32bcacd64d28@csgroup.eu>
+Date: Mon, 5 Jul 2021 07:52:06 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="kmxHPmCrK2EERXPh"
-Content-Disposition: inline
-In-Reply-To: <20210621085003.904767-4-bharata@linux.ibm.com>
+In-Reply-To: <20210703091452.352816-1-npiggin@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,499 +62,888 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: farosas@linux.ibm.com, aneesh.kumar@linux.ibm.com, npiggin@gmail.com,
- kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---kmxHPmCrK2EERXPh
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 21, 2021 at 02:20:00PM +0530, Bharata B Rao wrote:
-> H_RPT_INVALIDATE does two types of TLB invalidations:
->=20
-> 1. Process-scoped invalidations for guests when LPCR[GTSE]=3D0.
->    This is currently not used in KVM as GTSE is not usually
->    disabled in KVM.
-> 2. Partition-scoped invalidations that an L1 hypervisor does on
->    behalf of an L2 guest. This is currently handled
->    by H_TLB_INVALIDATE hcall and this new replaces the old that.
->=20
-> This commit enables process-scoped invalidations for L1 guests.
-> Support for process-scoped and partition-scoped invalidations
-> from/for nested guests will be added separately.
->=20
-> Process scoped tlbie invalidations from L1 and nested guests
-> need RS register for TLBIE instruction to contain both PID and
-> LPID.  This patch introduces primitives that execute tlbie
-> instruction with both PID and LPID set in prepartion for
-> H_RPT_INVALIDATE hcall.
->=20
-> A description of H_RPT_INVALIDATE follows:
->=20
-> int64=A0=A0 /* H_Success: Return code on successful completion */
-> =A0=A0=A0=A0=A0=A0=A0 /* H_Busy - repeat the call with the same */
-> =A0=A0=A0=A0=A0=A0=A0 /* H_Parameter, H_P2, H_P3, H_P4, H_P5 : Invalid
-> 	   parameters */
-> hcall(const uint64 H_RPT_INVALIDATE, /* Invalidate RPT
-> 					translation
-> 					lookaside information */
-> =A0=A0=A0=A0=A0 uint64 id,=A0 =A0=A0=A0=A0=A0 /* PID/LPID to invalidate */
-> =A0=A0=A0=A0=A0 uint64 target,=A0=A0=A0 /* Invalidation target */
-> =A0=A0=A0=A0=A0 uint64 type,=A0=A0=A0=A0=A0 /* Type of lookaside informat=
-ion */
-> =A0=A0=A0=A0=A0 uint64 pg_sizes,  /* Page sizes */
-> =A0=A0=A0=A0=A0 uint64 start,=A0=A0=A0=A0 /* Start of Effective Address (=
-EA)
-> 			   range (inclusive) */
-> =A0=A0=A0=A0=A0 uint64 end)=A0=A0=A0=A0=A0=A0 /* End of EA range (exclusi=
-ve) */
->=20
-> Invalidation targets (target)
-> -----------------------------
-> Core MMU=A0=A0=A0=A0=A0=A0=A0 0x01 /* All virtual processors in the
-> 			partition */
-> Core local MMU=A0 0x02 /* Current virtual processor */
-> Nest MMU=A0=A0=A0=A0=A0=A0=A0 0x04 /* All nest/accelerator agents
-> 			in use by the partition */
->=20
-> A combination of the above can be specified,
-> except core and core local.
->=20
-> Type of translation to invalidate (type)
-> ---------------------------------------
-> NESTED=A0=A0=A0=A0=A0=A0 0x0001=A0 /* invalidate nested guest partition-s=
-cope */
-> TLB=A0=A0=A0=A0=A0=A0=A0=A0=A0=A00x0002=A0 /* Invalidate TLB */
-> PWC=A0=A0=A0=A0=A0=A0=A0=A0=A0=A00x0004=A0 /* Invalidate Page Walk Cache =
-*/
-> PRT=A0=A0=A0=A0=A0=A0=A0=A0=A0=A00x0008=A0 /* Invalidate caching of Proce=
-ss Table
-> 			Entries if NESTED is clear */
-> PAT=A0=A0=A0=A0=A0=A0=A0=A0=A0=A00x0008=A0 /* Invalidate caching of Parti=
-tion Table
-> 			Entries if NESTED is set */
->=20
-> A combination of the above can be specified.
->=20
-> Page size mask (pages)
-> ----------------------
-> 4K=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0x01
-> 64K=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0x02
-> 2M=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0x04
-> 1G=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 0x08
-> All sizes=A0=A0=A0=A0=A0=A0 (-1UL)
->=20
-> A combination of the above can be specified.
-> All page sizes can be selected with -1.
->=20
-> Semantics: Invalidate radix tree lookaside information
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 matching the parameters given.
-> * Return H_P2, H_P3 or H_P4 if target, type, or pageSizes parameters
->   are different from the defined values.
-> * Return H_PARAMETER if NESTED is set and pid is not a valid nested
->   LPID allocated to this partition
-> * Return H_P5 if (start, end) doesn't form a valid range. Start and
->   end should be a valid Quadrant address and=A0 end > start.
-> * Return H_NotSupported if the partition is not in running in radix
->   translation mode.
-> * May invalidate more translation information than requested.
-> * If start =3D 0 and end =3D -1, set the range to cover all valid
->   addresses. Else start and end should be aligned to 4kB (lower 11
->   bits clear).
-> * If NESTED is clear, then invalidate process scoped lookaside
->   information. Else pid specifies a nested LPID, and the invalidation
->   is performed =A0 on nested guest partition table and nested guest
->   partition scope real addresses.
-> * If pid =3D 0 and NESTED is clear, then valid addresses are quadrant 3
->   and quadrant 0 spaces, Else valid addresses are quadrant 0.
-> * Pages which are fully covered by the range are to be invalidated.
-> =A0 Those which are partially covered are considered outside
->   invalidation range, which allows a caller to optimally invalidate
->   ranges that may =A0 contain mixed page sizes.
-> * Return H_SUCCESS on success.
->=20
-> Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
+Le 03/07/2021 à 11:14, Nicholas Piggin a écrit :
+> Introduce macros that operate on a (start, end) range of registers,
+> which reduces lines of code and need to do mental arithmetic while
+> reading the code.
+
+Looks like a nice patch.
+
+Maybe you could split the patch in two parts, one part for GPRs and one patch for the FP/VR regs.
+
+Christophe
+
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->  arch/powerpc/include/asm/mmu_context.h |   9 ++
->  arch/powerpc/kvm/book3s_hv.c           |  36 ++++++
->  arch/powerpc/mm/book3s64/radix_tlb.c   | 172 +++++++++++++++++++++++++
->  3 files changed, 217 insertions(+)
->=20
-> diff --git a/arch/powerpc/include/asm/mmu_context.h b/arch/powerpc/includ=
-e/asm/mmu_context.h
-> index 4bc45d3ed8b0..b44f291fc909 100644
-> --- a/arch/powerpc/include/asm/mmu_context.h
-> +++ b/arch/powerpc/include/asm/mmu_context.h
-> @@ -124,8 +124,17 @@ static inline bool need_extra_context(struct mm_stru=
-ct *mm, unsigned long ea)
-> =20
->  #if defined(CONFIG_KVM_BOOK3S_HV_POSSIBLE) && defined(CONFIG_PPC_RADIX_M=
-MU)
->  extern void radix_kvm_prefetch_workaround(struct mm_struct *mm);
-> +void do_h_rpt_invalidate_prt(unsigned long pid, unsigned long lpid,
-> +			     unsigned long type, unsigned long pg_sizes,
-> +			     unsigned long start, unsigned long end);
->  #else
->  static inline void radix_kvm_prefetch_workaround(struct mm_struct *mm) {=
- }
-> +static inline void do_h_rpt_invalidate_prt(unsigned long pid,
-> +					   unsigned long lpid,
-> +					   unsigned long type,
-> +					   unsigned long pg_sizes,
-> +					   unsigned long start,
-> +					   unsigned long end) { }
-
-Since the only plausible caller is in KVM HV code, why do you need the
-#else clause.
-
->  #endif
-> =20
->  extern void switch_cop(struct mm_struct *next);
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index bc0813644666..7e6da4687d88 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -76,6 +76,7 @@
->  #include <asm/kvm_book3s_uvmem.h>
->  #include <asm/ultravisor.h>
->  #include <asm/dtl.h>
-> +#include <asm/plpar_wrappers.h>
-> =20
->  #include "book3s.h"
-> =20
-> @@ -924,6 +925,32 @@ static int kvmppc_get_yield_count(struct kvm_vcpu *v=
-cpu)
->  	return yield_count;
->  }
-> =20
-> +static long kvmppc_h_rpt_invalidate(struct kvm_vcpu *vcpu,
-> +				    unsigned long id, unsigned long target,
-> +				    unsigned long type, unsigned long pg_sizes,
-> +				    unsigned long start, unsigned long end)
-> +{
-> +	if (!kvm_is_radix(vcpu->kvm))
-> +		return H_UNSUPPORTED;
+>   arch/powerpc/boot/crt0.S                      | 31 ++++---
+>   arch/powerpc/crypto/md5-asm.S                 | 10 +--
+>   arch/powerpc/crypto/sha1-powerpc-asm.S        |  6 +-
+>   arch/powerpc/include/asm/ppc_asm.h            | 81 +++++++++----------
+>   arch/powerpc/kernel/cpu_setup_6xx.S           |  2 +-
+>   arch/powerpc/kernel/entry_32.S                | 23 +++---
+>   arch/powerpc/kernel/exceptions-64e.S          | 14 +---
+>   arch/powerpc/kernel/exceptions-64s.S          |  6 +-
+>   arch/powerpc/kernel/fpu.S                     | 28 +++----
+>   arch/powerpc/kernel/head_32.h                 |  3 +-
+>   arch/powerpc/kernel/head_booke.h              |  3 +-
+>   arch/powerpc/kernel/interrupt_64.S            | 34 +++-----
+>   arch/powerpc/kernel/optprobes_head.S          |  4 +-
+>   arch/powerpc/kernel/tm.S                      | 47 +++++------
+>   .../powerpc/kernel/trace/ftrace_64_mprofile.S | 14 ++--
+>   arch/powerpc/kernel/vector.S                  |  8 +-
+>   arch/powerpc/kvm/book3s_hv_rmhandlers.S       |  5 +-
+>   .../lib/test_emulate_step_exec_instr.S        |  8 +-
+>   18 files changed, 140 insertions(+), 187 deletions(-)
+> 
+> diff --git a/arch/powerpc/boot/crt0.S b/arch/powerpc/boot/crt0.S
+> index 1d83966f5ef6..349279ba8ce7 100644
+> --- a/arch/powerpc/boot/crt0.S
+> +++ b/arch/powerpc/boot/crt0.S
+> @@ -226,16 +226,19 @@ p_base:	mflr	r10		/* r10 now points to runtime addr of p_base */
+>   #ifdef __powerpc64__
+>   
+>   #define PROM_FRAME_SIZE 512
+> -#define SAVE_GPR(n, base)       std     n,8*(n)(base)
+> -#define REST_GPR(n, base)       ld      n,8*(n)(base)
+> -#define SAVE_2GPRS(n, base)     SAVE_GPR(n, base); SAVE_GPR(n+1, base)
+> -#define SAVE_4GPRS(n, base)     SAVE_2GPRS(n, base); SAVE_2GPRS(n+2, base)
+> -#define SAVE_8GPRS(n, base)     SAVE_4GPRS(n, base); SAVE_4GPRS(n+4, base)
+> -#define SAVE_10GPRS(n, base)    SAVE_8GPRS(n, base); SAVE_2GPRS(n+8, base)
+> -#define REST_2GPRS(n, base)     REST_GPR(n, base); REST_GPR(n+1, base)
+> -#define REST_4GPRS(n, base)     REST_2GPRS(n, base); REST_2GPRS(n+2, base)
+> -#define REST_8GPRS(n, base)     REST_4GPRS(n, base); REST_4GPRS(n+4, base)
+> -#define REST_10GPRS(n, base)    REST_8GPRS(n, base); REST_2GPRS(n+8, base)
 > +
-> +	if (end < start)
-> +		return H_P5;
+> +.macro OP_REGS op, width, start, end, base, offset
+> +	.Lreg=\start
+> +	.rept (\end - \start + 1)
+> +	\op	.Lreg,\offset+\width*.Lreg(\base)
+> +	.Lreg=.Lreg+1
+> +	.endr
+> +.endm
 > +
-> +	/*
-> +	 * Partition-scoped invalidation for nested guests.
-> +	 * Not yet supported
-> +	 */
-> +	if (type & H_RPTI_TYPE_NESTED)
-> +		return H_P3;
+> +#define SAVE_GPRS(start, end, base)	OP_REGS std, 8, start, end, base, 0
+> +#define SAVE_GPR(n, base)		SAVE_GPRS(n, n, base)
+> +#define REST_GPRS(start, end, base)	OP_REGS ld, 8, start, end, base, 0
+> +#define REST_GPR(n, base)		REST_GPRS(n, n, base)
+>   
+>   /* prom handles the jump into and return from firmware.  The prom args pointer
+>      is loaded in r3. */
+> @@ -246,9 +249,7 @@ prom:
+>   	stdu	r1,-PROM_FRAME_SIZE(r1) /* Save SP and create stack space */
+>   
+>   	SAVE_GPR(2, r1)
+> -	SAVE_GPR(13, r1)
+> -	SAVE_8GPRS(14, r1)
+> -	SAVE_10GPRS(22, r1)
+> +	SAVE_GPRS(13, 31, r1)
+>   	mfcr    r10
+>   	std     r10,8*32(r1)
+>   	mfmsr   r10
+> @@ -283,9 +284,7 @@ prom:
+>   
+>   	/* Restore other registers */
+>   	REST_GPR(2, r1)
+> -	REST_GPR(13, r1)
+> -	REST_8GPRS(14, r1)
+> -	REST_10GPRS(22, r1)
+> +	REST_GPRS(13, 31, r1)
+>   	ld      r10,8*32(r1)
+>   	mtcr	r10
+>   
+> diff --git a/arch/powerpc/crypto/md5-asm.S b/arch/powerpc/crypto/md5-asm.S
+> index 948d100a2934..8f335a3f8430 100644
+> --- a/arch/powerpc/crypto/md5-asm.S
+> +++ b/arch/powerpc/crypto/md5-asm.S
+> @@ -38,15 +38,11 @@
+>   
+>   #define INITIALIZE \
+>   	PPC_STLU r1,-INT_FRAME_SIZE(r1); \
+> -	SAVE_8GPRS(14, r1);		/* push registers onto stack	*/ \
+> -	SAVE_4GPRS(22, r1);						   \
+> -	SAVE_GPR(26, r1)
+> +	SAVE_GPRS(14, 26, r1)		/* push registers onto stack	*/
+>   
+>   #define FINALIZE \
+> -	REST_8GPRS(14, r1);		/* pop registers from stack	*/ \
+> -	REST_4GPRS(22, r1);						   \
+> -	REST_GPR(26, r1);						   \
+> -	addi	r1,r1,INT_FRAME_SIZE;
+> +	REST_GPRS(14, 26, r1);		/* pop registers from stack	*/
+> +	addi	r1,r1,INT_FRAME_SIZE
+>   
+>   #ifdef __BIG_ENDIAN__
+>   #define LOAD_DATA(reg, off) \
+> diff --git a/arch/powerpc/crypto/sha1-powerpc-asm.S b/arch/powerpc/crypto/sha1-powerpc-asm.S
+> index 23e248beff71..f0d5ed557ab1 100644
+> --- a/arch/powerpc/crypto/sha1-powerpc-asm.S
+> +++ b/arch/powerpc/crypto/sha1-powerpc-asm.S
+> @@ -125,8 +125,7 @@
+>   
+>   _GLOBAL(powerpc_sha_transform)
+>   	PPC_STLU r1,-INT_FRAME_SIZE(r1)
+> -	SAVE_8GPRS(14, r1)
+> -	SAVE_10GPRS(22, r1)
+> +	SAVE_GPRS(14, 31, r1)
+>   
+>   	/* Load up A - E */
+>   	lwz	RA(0),0(r3)	/* A */
+> @@ -184,7 +183,6 @@ _GLOBAL(powerpc_sha_transform)
+>   	stw	RD(0),12(r3)
+>   	stw	RE(0),16(r3)
+>   
+> -	REST_8GPRS(14, r1)
+> -	REST_10GPRS(22, r1)
+> +	REST_GPRS(14, 31, r1)
+>   	addi	r1,r1,INT_FRAME_SIZE
+>   	blr
+> diff --git a/arch/powerpc/include/asm/ppc_asm.h b/arch/powerpc/include/asm/ppc_asm.h
+> index 116c1519728a..97fa10e13bd7 100644
+> --- a/arch/powerpc/include/asm/ppc_asm.h
+> +++ b/arch/powerpc/include/asm/ppc_asm.h
+> @@ -15,56 +15,53 @@
+>   
+>   #define SZL			(BITS_PER_LONG/8)
+>   
+> +.macro OP_REGS op, width, start, end, base, offset
+> +	.Lreg=\start
+> +	.rept (\end - \start + 1)
+> +	\op	.Lreg, \offset + \width * .Lreg(\base)
+> +	.Lreg=.Lreg+1
+> +	.endr
+> +.endm
 > +
-> +	/*
-> +	 * Process-scoped invalidation for L1 guests.
-> +	 */
-> +	do_h_rpt_invalidate_prt(id, vcpu->kvm->arch.lpid,
-> +				type, pg_sizes, start, end);
-> +	return H_SUCCESS;
-> +}
+> +.macro OP_REGS_IDX op, width, start, end, tmpreg, base
+> +	.Lreg=\start
+> +	.rept (\end - \start + 1)
+> +	li	\tmpreg, \width * .Lreg
+> +	\op	.Lreg, \tmpreg, \base
+> +	.Lreg=.Lreg+1
+> +	.endr
+> +.endm
 > +
->  int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
->  {
->  	unsigned long req =3D kvmppc_get_gpr(vcpu, 3);
-> @@ -1132,6 +1159,14 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
->  		 */
->  		ret =3D kvmppc_h_svm_init_abort(vcpu->kvm);
->  		break;
-> +	case H_RPT_INVALIDATE:
-> +		ret =3D kvmppc_h_rpt_invalidate(vcpu, kvmppc_get_gpr(vcpu, 4),
-> +					      kvmppc_get_gpr(vcpu, 5),
-> +					      kvmppc_get_gpr(vcpu, 6),
-> +					      kvmppc_get_gpr(vcpu, 7),
-> +					      kvmppc_get_gpr(vcpu, 8),
-> +					      kvmppc_get_gpr(vcpu, 9));
-> +		break;
-> =20
->  	default:
->  		return RESUME_HOST;
-> @@ -1178,6 +1213,7 @@ static int kvmppc_hcall_impl_hv(unsigned long cmd)
->  	case H_XIRR_X:
->  #endif
->  	case H_PAGE_INIT:
-> +	case H_RPT_INVALIDATE:
->  		return 1;
->  	}
-> =20
-> diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3=
-s64/radix_tlb.c
-> index 409e61210789..cdd98b9e7b15 100644
-> --- a/arch/powerpc/mm/book3s64/radix_tlb.c
-> +++ b/arch/powerpc/mm/book3s64/radix_tlb.c
-> @@ -130,6 +130,21 @@ static __always_inline void __tlbie_pid(unsigned lon=
-g pid, unsigned long ric)
->  	trace_tlbie(0, 0, rb, rs, ric, prs, r);
->  }
-> =20
-> +static __always_inline void __tlbie_pid_lpid(unsigned long pid,
-> +					     unsigned long lpid,
-> +					     unsigned long ric)
-> +{
-> +	unsigned long rb, rs, prs, r;
+>   /*
+>    * Macros for storing registers into and loading registers from
+>    * exception frames.
+>    */
+>   #ifdef __powerpc64__
+> -#define SAVE_GPR(n, base)	std	n,GPR0+8*(n)(base)
+> -#define REST_GPR(n, base)	ld	n,GPR0+8*(n)(base)
+> -#define SAVE_NVGPRS(base)	SAVE_8GPRS(14, base); SAVE_10GPRS(22, base)
+> -#define REST_NVGPRS(base)	REST_8GPRS(14, base); REST_10GPRS(22, base)
+> +#define SAVE_GPRS(start, end, base)	OP_REGS std, 8, start, end, base, GPR0
+> +#define SAVE_GPR(n, base)		SAVE_GPRS(n, n, base)
+> +#define REST_GPRS(start, end, base)	OP_REGS ld, 8, start, end, base, GPR0
+> +#define REST_GPR(n, base)		REST_GPRS(n, n, base)
+> +#define SAVE_NVGPRS(base)		SAVE_GPRS(14, 31, base)
+> +#define REST_NVGPRS(base)		REST_GPRS(14, 31, base)
+>   #else
+> -#define SAVE_GPR(n, base)	stw	n,GPR0+4*(n)(base)
+> -#define REST_GPR(n, base)	lwz	n,GPR0+4*(n)(base)
+> -#define SAVE_NVGPRS(base)	stmw	13, GPR0+4*13(base)
+> -#define REST_NVGPRS(base)	lmw	13, GPR0+4*13(base)
+> +#define SAVE_GPRS(start, end, base)	OP_REGS stw, 4, start, end, base, GPR0
+> +#define SAVE_GPR(n, base)		SAVE_GPRS(n, n, base)
+> +#define REST_GPRS(start, end, base)	OP_REGS lwz, 4, start, end, base, GPR0
+> +#define REST_GPR(n, base)		REST_GPRS(n, n, base)
+> +#define SAVE_NVGPRS(base)		stmw	13, GPR0+4*13(base)
+> +#define REST_NVGPRS(base)		lmw	13, GPR0+4*13(base)
+>   #endif
+>   
+> -#define SAVE_2GPRS(n, base)	SAVE_GPR(n, base); SAVE_GPR(n+1, base)
+> -#define SAVE_4GPRS(n, base)	SAVE_2GPRS(n, base); SAVE_2GPRS(n+2, base)
+> -#define SAVE_8GPRS(n, base)	SAVE_4GPRS(n, base); SAVE_4GPRS(n+4, base)
+> -#define SAVE_10GPRS(n, base)	SAVE_8GPRS(n, base); SAVE_2GPRS(n+8, base)
+> -#define REST_2GPRS(n, base)	REST_GPR(n, base); REST_GPR(n+1, base)
+> -#define REST_4GPRS(n, base)	REST_2GPRS(n, base); REST_2GPRS(n+2, base)
+> -#define REST_8GPRS(n, base)	REST_4GPRS(n, base); REST_4GPRS(n+4, base)
+> -#define REST_10GPRS(n, base)	REST_8GPRS(n, base); REST_2GPRS(n+8, base)
+> -
+> -#define SAVE_FPR(n, base)	stfd	n,8*TS_FPRWIDTH*(n)(base)
+> -#define SAVE_2FPRS(n, base)	SAVE_FPR(n, base); SAVE_FPR(n+1, base)
+> -#define SAVE_4FPRS(n, base)	SAVE_2FPRS(n, base); SAVE_2FPRS(n+2, base)
+> -#define SAVE_8FPRS(n, base)	SAVE_4FPRS(n, base); SAVE_4FPRS(n+4, base)
+> -#define SAVE_16FPRS(n, base)	SAVE_8FPRS(n, base); SAVE_8FPRS(n+8, base)
+> -#define SAVE_32FPRS(n, base)	SAVE_16FPRS(n, base); SAVE_16FPRS(n+16, base)
+> -#define REST_FPR(n, base)	lfd	n,8*TS_FPRWIDTH*(n)(base)
+> -#define REST_2FPRS(n, base)	REST_FPR(n, base); REST_FPR(n+1, base)
+> -#define REST_4FPRS(n, base)	REST_2FPRS(n, base); REST_2FPRS(n+2, base)
+> -#define REST_8FPRS(n, base)	REST_4FPRS(n, base); REST_4FPRS(n+4, base)
+> -#define REST_16FPRS(n, base)	REST_8FPRS(n, base); REST_8FPRS(n+8, base)
+> -#define REST_32FPRS(n, base)	REST_16FPRS(n, base); REST_16FPRS(n+16, base)
+> -
+> -#define SAVE_VR(n,b,base)	li b,16*(n);  stvx n,base,b
+> -#define SAVE_2VRS(n,b,base)	SAVE_VR(n,b,base); SAVE_VR(n+1,b,base)
+> -#define SAVE_4VRS(n,b,base)	SAVE_2VRS(n,b,base); SAVE_2VRS(n+2,b,base)
+> -#define SAVE_8VRS(n,b,base)	SAVE_4VRS(n,b,base); SAVE_4VRS(n+4,b,base)
+> -#define SAVE_16VRS(n,b,base)	SAVE_8VRS(n,b,base); SAVE_8VRS(n+8,b,base)
+> -#define SAVE_32VRS(n,b,base)	SAVE_16VRS(n,b,base); SAVE_16VRS(n+16,b,base)
+> -#define REST_VR(n,b,base)	li b,16*(n); lvx n,base,b
+> -#define REST_2VRS(n,b,base)	REST_VR(n,b,base); REST_VR(n+1,b,base)
+> -#define REST_4VRS(n,b,base)	REST_2VRS(n,b,base); REST_2VRS(n+2,b,base)
+> -#define REST_8VRS(n,b,base)	REST_4VRS(n,b,base); REST_4VRS(n+4,b,base)
+> -#define REST_16VRS(n,b,base)	REST_8VRS(n,b,base); REST_8VRS(n+8,b,base)
+> -#define REST_32VRS(n,b,base)	REST_16VRS(n,b,base); REST_16VRS(n+16,b,base)
+> +#define SAVE_FPRS(start, end, base)	OP_REGS stfd, 8*TS_FPRWIDTH, start, end, base, 0
+> +#define SAVE_FPR(n, base)		SAVE_FPRS(n, n, base)
 > +
-> +	rb =3D PPC_BIT(53); /* IS =3D 1 */
-> +	rs =3D (pid << PPC_BITLSHIFT(31)) | (lpid & ~(PPC_BITMASK(0, 31)));
-> +	prs =3D 1; /* process scoped */
-> +	r =3D 1;   /* radix format */
+> +#define REST_FPRS(start, end, base)	OP_REGS lfd, 8*TS_FPRWIDTH, start, end, base, 0
+> +#define REST_FPR(n, base)		REST_FPRS(n, n, base)
 > +
-> +	asm volatile(PPC_TLBIE_5(%0, %4, %3, %2, %1)
-> +		     : : "r"(rb), "i"(r), "i"(prs), "i"(ric), "r"(rs) : "memory");
-> +	trace_tlbie(0, 0, rb, rs, ric, prs, r);
-> +}
->  static __always_inline void __tlbie_lpid(unsigned long lpid, unsigned lo=
-ng ric)
->  {
->  	unsigned long rb,rs,prs,r;
-> @@ -190,6 +205,23 @@ static __always_inline void __tlbie_va(unsigned long=
- va, unsigned long pid,
->  	trace_tlbie(0, 0, rb, rs, ric, prs, r);
->  }
-> =20
-> +static __always_inline void __tlbie_va_lpid(unsigned long va, unsigned l=
-ong pid,
-> +					    unsigned long lpid,
-> +					    unsigned long ap, unsigned long ric)
-> +{
-> +	unsigned long rb, rs, prs, r;
-> +
-> +	rb =3D va & ~(PPC_BITMASK(52, 63));
-> +	rb |=3D ap << PPC_BITLSHIFT(58);
-> +	rs =3D (pid << PPC_BITLSHIFT(31)) | (lpid & ~(PPC_BITMASK(0, 31)));
-> +	prs =3D 1; /* process scoped */
-> +	r =3D 1;   /* radix format */
-> +
-> +	asm volatile(PPC_TLBIE_5(%0, %4, %3, %2, %1)
-> +		     : : "r"(rb), "i"(r), "i"(prs), "i"(ric), "r"(rs) : "memory");
-> +	trace_tlbie(0, 0, rb, rs, ric, prs, r);
-> +}
-> +
->  static __always_inline void __tlbie_lpid_va(unsigned long va, unsigned l=
-ong lpid,
->  					    unsigned long ap, unsigned long ric)
->  {
-> @@ -235,6 +267,22 @@ static inline void fixup_tlbie_va_range(unsigned lon=
-g va, unsigned long pid,
->  	}
->  }
-> =20
-> +static inline void fixup_tlbie_va_range_lpid(unsigned long va,
-> +					     unsigned long pid,
-> +					     unsigned long lpid,
-> +					     unsigned long ap)
-> +{
-> +	if (cpu_has_feature(CPU_FTR_P9_TLBIE_ERAT_BUG)) {
-> +		asm volatile("ptesync" : : : "memory");
-> +		__tlbie_pid_lpid(0, lpid, RIC_FLUSH_TLB);
-> +	}
-> +
-> +	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
-> +		asm volatile("ptesync" : : : "memory");
-> +		__tlbie_va_lpid(va, pid, lpid, ap, RIC_FLUSH_TLB);
-> +	}
-> +}
-> +
->  static inline void fixup_tlbie_pid(unsigned long pid)
->  {
->  	/*
-> @@ -254,6 +302,25 @@ static inline void fixup_tlbie_pid(unsigned long pid)
->  	}
->  }
-> =20
-> +static inline void fixup_tlbie_pid_lpid(unsigned long pid, unsigned long=
- lpid)
-> +{
-> +	/*
-> +	 * We can use any address for the invalidation, pick one which is
-> +	 * probably unused as an optimisation.
-> +	 */
-> +	unsigned long va =3D ((1UL << 52) - 1);
-> +
-> +	if (cpu_has_feature(CPU_FTR_P9_TLBIE_ERAT_BUG)) {
-> +		asm volatile("ptesync" : : : "memory");
-> +		__tlbie_pid_lpid(0, lpid, RIC_FLUSH_TLB);
-> +	}
-> +
-> +	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
-> +		asm volatile("ptesync" : : : "memory");
-> +		__tlbie_va_lpid(va, pid, lpid, mmu_get_ap(MMU_PAGE_64K),
-> +				RIC_FLUSH_TLB);
-> +	}
-> +}
-> =20
->  static inline void fixup_tlbie_lpid_va(unsigned long va, unsigned long l=
-pid,
->  				       unsigned long ap)
-> @@ -344,6 +411,31 @@ static inline void _tlbie_pid(unsigned long pid, uns=
-igned long ric)
->  	asm volatile("eieio; tlbsync; ptesync": : :"memory");
->  }
-> =20
-> +static inline void _tlbie_pid_lpid(unsigned long pid, unsigned long lpid,
-> +				   unsigned long ric)
-> +{
-> +	asm volatile("ptesync" : : : "memory");
-> +
-> +	/*
-> +	 * Workaround the fact that the "ric" argument to __tlbie_pid
-> +	 * must be a compile-time contraint to match the "i" constraint
-> +	 * in the asm statement.
-> +	 */
-> +	switch (ric) {
-> +	case RIC_FLUSH_TLB:
-> +		__tlbie_pid_lpid(pid, lpid, RIC_FLUSH_TLB);
-> +		fixup_tlbie_pid_lpid(pid, lpid);
-> +		break;
-> +	case RIC_FLUSH_PWC:
-> +		__tlbie_pid_lpid(pid, lpid, RIC_FLUSH_PWC);
-> +		break;
-> +	case RIC_FLUSH_ALL:
-> +	default:
-> +		__tlbie_pid_lpid(pid, lpid, RIC_FLUSH_ALL);
-> +		fixup_tlbie_pid_lpid(pid, lpid);
-> +	}
-> +	asm volatile("eieio; tlbsync; ptesync" : : : "memory");
-> +}
->  struct tlbiel_pid {
->  	unsigned long pid;
->  	unsigned long ric;
-> @@ -469,6 +561,20 @@ static inline void __tlbie_va_range(unsigned long st=
-art, unsigned long end,
->  	fixup_tlbie_va_range(addr - page_size, pid, ap);
->  }
-> =20
-> +static inline void __tlbie_va_range_lpid(unsigned long start, unsigned l=
-ong end,
-> +					 unsigned long pid, unsigned long lpid,
-> +					 unsigned long page_size,
-> +					 unsigned long psize)
-> +{
-> +	unsigned long addr;
-> +	unsigned long ap =3D mmu_get_ap(psize);
-> +
-> +	for (addr =3D start; addr < end; addr +=3D page_size)
-> +		__tlbie_va_lpid(addr, pid, lpid, ap, RIC_FLUSH_TLB);
-> +
-> +	fixup_tlbie_va_range_lpid(addr - page_size, pid, lpid, ap);
-> +}
-> +
->  static __always_inline void _tlbie_va(unsigned long va, unsigned long pi=
-d,
->  				      unsigned long psize, unsigned long ric)
->  {
-> @@ -549,6 +655,18 @@ static inline void _tlbie_va_range(unsigned long sta=
-rt, unsigned long end,
->  	asm volatile("eieio; tlbsync; ptesync": : :"memory");
->  }
-> =20
-> +static inline void _tlbie_va_range_lpid(unsigned long start, unsigned lo=
-ng end,
-> +					unsigned long pid, unsigned long lpid,
-> +					unsigned long page_size,
-> +					unsigned long psize, bool also_pwc)
-> +{
-> +	asm volatile("ptesync" : : : "memory");
-> +	if (also_pwc)
-> +		__tlbie_pid_lpid(pid, lpid, RIC_FLUSH_PWC);
-> +	__tlbie_va_range_lpid(start, end, pid, lpid, page_size, psize);
-> +	asm volatile("eieio; tlbsync; ptesync" : : : "memory");
-> +}
-> +
->  static inline void _tlbiel_va_range_multicast(struct mm_struct *mm,
->  				unsigned long start, unsigned long end,
->  				unsigned long pid, unsigned long page_size,
-> @@ -1381,4 +1499,58 @@ extern void radix_kvm_prefetch_workaround(struct m=
-m_struct *mm)
->  	}
->  }
->  EXPORT_SYMBOL_GPL(radix_kvm_prefetch_workaround);
-> +
-> +/*
-> + * Performs process-scoped invalidations for a given LPID
-> + * as part of H_RPT_INVALIDATE hcall.
-> + */
-> +void do_h_rpt_invalidate_prt(unsigned long pid, unsigned long lpid,
-> +			     unsigned long type, unsigned long pg_sizes,
-> +			     unsigned long start, unsigned long end)
-> +{
-> +	unsigned long psize, nr_pages;
-> +	struct mmu_psize_def *def;
-> +	bool flush_pid;
-> +
-> +	/*
-> +	 * A H_RPTI_TYPE_ALL request implies RIC=3D3, hence
-> +	 * do a single IS=3D1 based flush.
-> +	 */
-> +	if ((type & H_RPTI_TYPE_ALL) =3D=3D H_RPTI_TYPE_ALL) {
-> +		_tlbie_pid_lpid(pid, lpid, RIC_FLUSH_ALL);
-> +		return;
-> +	}
-> +
-> +	if (type & H_RPTI_TYPE_PWC)
-> +		_tlbie_pid_lpid(pid, lpid, RIC_FLUSH_PWC);
-> +
-> +	/* Full PID flush */
-> +	if (start =3D=3D 0 && end =3D=3D -1)
-> +		return _tlbie_pid_lpid(pid, lpid, RIC_FLUSH_TLB);
-> +
-> +	/* Do range invalidation for all the valid page sizes */
-> +	for (psize =3D 0; psize < MMU_PAGE_COUNT; psize++) {
-> +		def =3D &mmu_psize_defs[psize];
-> +		if (!(pg_sizes & def->h_rpt_pgsize))
-> +			continue;
-> +
-> +		nr_pages =3D (end - start) >> def->shift;
-> +		flush_pid =3D nr_pages > tlb_single_page_flush_ceiling;
-> +
-> +		/*
-> +		 * If the number of pages spanning the range is above
-> +		 * the ceiling, convert the request into a full PID flush.
-> +		 * And since PID flush takes out all the page sizes, there
-> +		 * is no need to consider remaining page sizes.
-> +		 */
-> +		if (flush_pid) {
-> +			_tlbie_pid_lpid(pid, lpid, RIC_FLUSH_TLB);
-> +			return;
-> +		}
-> +		_tlbie_va_range_lpid(start, end, pid, lpid,
-> +				     (1UL << def->shift), psize, false);
-> +	}
-> +}
-> +EXPORT_SYMBOL_GPL(do_h_rpt_invalidate_prt);
-> +
->  #endif /* CONFIG_KVM_BOOK3S_HV_POSSIBLE */
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---kmxHPmCrK2EERXPh
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmDijbcACgkQbDjKyiDZ
-s5L2MQ//QAyidiy3+M1WyK2a3cM20vlZD/zwXv+yw6E1q7EvW6ypxSqLOA6zMyOd
-/NCECT85byTMlEUraZdajPnpQ9WD/EZ0nR3sOMiY26/MZzWcBl8d5nYGXOycmPAW
-nufGLaSRYAc/Rd8sV2aSVGrMlWgpbNYfX3K13qv/2Ca7CFqt1vQ25gUqJRqEqE9x
-9YF7vbaUQ8GKvgMyTi0aqPBtConRJg3W15vKJJNIWXU4aMz0kkh60+BZCQleXu+5
-CWCzVspk7w/WbL3vLOMWDBx5C82JqNhRqM5OuhieRMtIcmmEZwTIKuMGIPborCk5
-pO3RSk9mY0ic01UBpsFta9b68zM9oM2Gc1zZyzgqf6l33eRKRclosymjDxJPaP0R
-RWIrwDE4JUCi28SheRwiVM5Q7Ldys75RuG/jD84gVK6nNe7VJrwIuSYA6VvRcphY
-VUXFWCE4Kh74zACfwjqKuHVw/xPQrmn72GZ31RkGUC5C0kXJZ467hVHsPTViNDrc
-Pu8qJxcwM1t/YHgYeRmj7tpu8mUNJHZOGmlGzqjDPrWOD/jCzJIa3Er4NaawvivY
-uu0OT+XJcf4h/obWOpeJVf4WumS8GK72TS+8wN+gbMYRBHFLKtMIp0xDyo1ABSuS
-133Jnzza38jbLrK64Jfq7kDYc4n4HmZbBDKcTitd8Jfy9uGqz5s=
-=b1Tf
------END PGP SIGNATURE-----
-
---kmxHPmCrK2EERXPh--
+> +#define SAVE_VRS(start, end, reg, base)	OP_REGS_IDX stvx, 16, start, end, reg, base
+> +#define SAVE_VR(n, reg, base)		SAVE_VRS(n, n, reg, base)
+> +#define REST_VRS(start, end, reg, base)	OP_REGS_IDX lvx, 16, start, end, reg, base
+> +#define REST_VR(n, reg, base)		REST_VRS(n, n, reg, base)
+>   
+>   #ifdef __BIG_ENDIAN__
+>   #define STXVD2X_ROT(n,b,base)		STXVD2X(n,b,base)
+> diff --git a/arch/powerpc/kernel/cpu_setup_6xx.S b/arch/powerpc/kernel/cpu_setup_6xx.S
+> index f8b5ff64b604..a77e7fb06278 100644
+> --- a/arch/powerpc/kernel/cpu_setup_6xx.S
+> +++ b/arch/powerpc/kernel/cpu_setup_6xx.S
+> @@ -283,7 +283,7 @@ _GLOBAL(__init_fpu_registers)
+>   	isync
+>   	addis	r9,r3,empty_zero_page@ha
+>   	addi	r9,r9,empty_zero_page@l
+> -	REST_32FPRS(0,r9)
+> +	REST_FPRS(0, 31, r9)
+>   	sync
+>   	mtmsr	r10
+>   	isync
+> diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
+> index 0273a1349006..299b50279882 100644
+> --- a/arch/powerpc/kernel/entry_32.S
+> +++ b/arch/powerpc/kernel/entry_32.S
+> @@ -90,8 +90,7 @@ transfer_to_syscall:
+>   	stw	r12,8(r1)
+>   	stw	r2,_TRAP(r1)
+>   	SAVE_GPR(0, r1)
+> -	SAVE_4GPRS(3, r1)
+> -	SAVE_2GPRS(7, r1)
+> +	SAVE_GPRS(3, 8, r1)
+>   	addi	r2,r10,-THREAD
+>   	SAVE_NVGPRS(r1)
+>   
+> @@ -139,7 +138,7 @@ syscall_exit_finish:
+>   	mtxer	r5
+>   	lwz	r0,GPR0(r1)
+>   	lwz	r3,GPR3(r1)
+> -	REST_8GPRS(4,r1)
+> +	REST_GPRS(4, 11, r1)
+>   	lwz	r12,GPR12(r1)
+>   	b	1b
+>   
+> @@ -232,9 +231,9 @@ fast_exception_return:
+>   	beq	3f			/* if not, we've got problems */
+>   #endif
+>   
+> -2:	REST_4GPRS(3, r11)
+> +2:	REST_GPRS(3, 6, r11)
+>   	lwz	r10,_CCR(r11)
+> -	REST_2GPRS(1, r11)
+> +	REST_GPRS(1, 2, r11)
+>   	mtcr	r10
+>   	lwz	r10,_LINK(r11)
+>   	mtlr	r10
+> @@ -298,16 +297,14 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
+>   	 * the reliable stack unwinder later on. Clear it.
+>   	 */
+>   	stw	r0,8(r1)
+> -	REST_4GPRS(7, r1)
+> -	REST_2GPRS(11, r1)
+> +	REST_GPRS(7, 12, r1)
+>   
+>   	mtcr	r3
+>   	mtlr	r4
+>   	mtctr	r5
+>   	mtspr	SPRN_XER,r6
+>   
+> -	REST_4GPRS(2, r1)
+> -	REST_GPR(6, r1)
+> +	REST_GPRS(2, 6, r1)
+>   	REST_GPR(0, r1)
+>   	REST_GPR(1, r1)
+>   	rfi
+> @@ -341,8 +338,7 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
+>   	lwz	r6,_CCR(r1)
+>   	li	r0,0
+>   
+> -	REST_4GPRS(7, r1)
+> -	REST_2GPRS(11, r1)
+> +	REST_GPRS(7, 12, r1)
+>   
+>   	mtlr	r3
+>   	mtctr	r4
+> @@ -354,7 +350,7 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
+>   	 */
+>   	stw	r0,8(r1)
+>   
+> -	REST_4GPRS(2, r1)
+> +	REST_GPRS(2, 5, r1)
+>   
+>   	bne-	cr1,1f /* emulate stack store */
+>   	mtcr	r6
+> @@ -430,8 +426,7 @@ _ASM_NOKPROBE_SYMBOL(interrupt_return)
+>   	bne	interrupt_return;					\
+>   	lwz	r0,GPR0(r1);						\
+>   	lwz	r2,GPR2(r1);						\
+> -	REST_4GPRS(3, r1);						\
+> -	REST_2GPRS(7, r1);						\
+> +	REST_GPRS(3, 8, r1);						\
+>   	lwz	r10,_XER(r1);						\
+>   	lwz	r11,_CTR(r1);						\
+>   	mtspr	SPRN_XER,r10;						\
+> diff --git a/arch/powerpc/kernel/exceptions-64e.S b/arch/powerpc/kernel/exceptions-64e.S
+> index 1401787b0b93..947d4a83704b 100644
+> --- a/arch/powerpc/kernel/exceptions-64e.S
+> +++ b/arch/powerpc/kernel/exceptions-64e.S
+> @@ -198,8 +198,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_EMB_HV)
+>   
+>   	stdcx.	r0,0,r1		/* to clear the reservation */
+>   
+> -	REST_4GPRS(2, r1)
+> -	REST_4GPRS(6, r1)
+> +	REST_GPRS(2, 9, r1)
+>   
+>   	ld	r10,_CTR(r1)
+>   	ld	r11,_XER(r1)
+> @@ -375,9 +374,7 @@ ret_from_mc_except:
+>   exc_##n##_common:							    \
+>   	std	r0,GPR0(r1);		/* save r0 in stackframe */	    \
+>   	std	r2,GPR2(r1);		/* save r2 in stackframe */	    \
+> -	SAVE_4GPRS(3, r1);		/* save r3 - r6 in stackframe */    \
+> -	SAVE_2GPRS(7, r1);		/* save r7, r8 in stackframe */	    \
+> -	std	r9,GPR9(r1);		/* save r9 in stackframe */	    \
+> +	SAVE_GPRS(3, 9, r1);		/* save r3 - r9 in stackframe */    \
+>   	std	r10,_NIP(r1);		/* save SRR0 to stackframe */	    \
+>   	std	r11,_MSR(r1);		/* save SRR1 to stackframe */	    \
+>   	beq	2f;			/* if from kernel mode */	    \
+> @@ -1061,9 +1058,7 @@ bad_stack_book3e:
+>   	std	r11,_DSISR(r1)
+>   	std	r0,GPR0(r1);		/* save r0 in stackframe */	    \
+>   	std	r2,GPR2(r1);		/* save r2 in stackframe */	    \
+> -	SAVE_4GPRS(3, r1);		/* save r3 - r6 in stackframe */    \
+> -	SAVE_2GPRS(7, r1);		/* save r7, r8 in stackframe */	    \
+> -	std	r9,GPR9(r1);		/* save r9 in stackframe */	    \
+> +	SAVE_GPRS(3, 9, r1);		/* save r3 - r9 in stackframe */    \
+>   	ld	r3,PACA_EXGEN+EX_R10(r13);/* get back r10 */		    \
+>   	ld	r4,PACA_EXGEN+EX_R11(r13);/* get back r11 */		    \
+>   	mfspr	r5,SPRN_SPRG_GEN_SCRATCH;/* get back r13 XXX can be wrong */ \
+> @@ -1077,8 +1072,7 @@ bad_stack_book3e:
+>   	std	r10,_LINK(r1)
+>   	std	r11,_CTR(r1)
+>   	std	r12,_XER(r1)
+> -	SAVE_10GPRS(14,r1)
+> -	SAVE_8GPRS(24,r1)
+> +	SAVE_GPRS(14, 31, r1)
+>   	lhz	r12,PACA_TRAP_SAVE(r13)
+>   	std	r12,_TRAP(r1)
+>   	addi	r11,r1,INT_FRAME_SIZE
+> diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
+> index 4aec59a77d4c..4084a049a8ed 100644
+> --- a/arch/powerpc/kernel/exceptions-64s.S
+> +++ b/arch/powerpc/kernel/exceptions-64s.S
+> @@ -574,8 +574,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
+>   	ld	r10,IAREA+EX_CTR(r13)
+>   	std	r10,_CTR(r1)
+>   	std	r2,GPR2(r1)		/* save r2 in stackframe	*/
+> -	SAVE_4GPRS(3, r1)		/* save r3 - r6 in stackframe   */
+> -	SAVE_2GPRS(7, r1)		/* save r7, r8 in stackframe	*/
+> +	SAVE_GPRS(3, 8, r1)		/* save r3 - r8 in stackframe   */
+>   	mflr	r9			/* Get LR, later save to stack	*/
+>   	ld	r2,PACATOC(r13)		/* get kernel TOC into r2	*/
+>   	std	r9,_LINK(r1)
+> @@ -693,8 +692,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
+>   	mtlr	r9
+>   	ld	r9,_CCR(r1)
+>   	mtcr	r9
+> -	REST_8GPRS(2, r1)
+> -	REST_4GPRS(10, r1)
+> +	REST_GPRS(2, 13, r1)
+>   	REST_GPR(0, r1)
+>   	/* restore original r1. */
+>   	ld	r1,GPR1(r1)
+> diff --git a/arch/powerpc/kernel/fpu.S b/arch/powerpc/kernel/fpu.S
+> index 6010adcee16e..79b01610dae2 100644
+> --- a/arch/powerpc/kernel/fpu.S
+> +++ b/arch/powerpc/kernel/fpu.S
+> @@ -23,29 +23,29 @@
+>   #include <asm/feature-fixups.h>
+>   
+>   #ifdef CONFIG_VSX
+> -#define __REST_32FPVSRS(n,c,base)					\
+> +#define __REST_32FPVSRS(c, base)					\
+>   BEGIN_FTR_SECTION							\
+>   	b	2f;							\
+>   END_FTR_SECTION_IFSET(CPU_FTR_VSX);					\
+> -	REST_32FPRS(n,base);						\
+> +	REST_FPRS(0, 31, base);						\
+>   	b	3f;							\
+> -2:	REST_32VSRS(n,c,base);						\
+> +2:	REST_32VSRS(0, c, base);					\
+>   3:
+>   
+> -#define __SAVE_32FPVSRS(n,c,base)					\
+> +#define __SAVE_32FPVSRS(c, base)					\
+>   BEGIN_FTR_SECTION							\
+>   	b	2f;							\
+>   END_FTR_SECTION_IFSET(CPU_FTR_VSX);					\
+> -	SAVE_32FPRS(n,base);						\
+> +	SAVE_FPRS(0, 31, base);						\
+>   	b	3f;							\
+> -2:	SAVE_32VSRS(n,c,base);						\
+> +2:	SAVE_32VSRS(0, c, base);					\
+>   3:
+>   #else
+> -#define __REST_32FPVSRS(n,b,base)	REST_32FPRS(n, base)
+> -#define __SAVE_32FPVSRS(n,b,base)	SAVE_32FPRS(n, base)
+> +#define __REST_32FPVSRS(c, base)	REST_FPRS(0, 31, base)
+> +#define __SAVE_32FPVSRS(c, base)	SAVE_FPRS(0, 31, base)
+>   #endif
+> -#define REST_32FPVSRS(n,c,base) __REST_32FPVSRS(n,__REG_##c,__REG_##base)
+> -#define SAVE_32FPVSRS(n,c,base) __SAVE_32FPVSRS(n,__REG_##c,__REG_##base)
+> +#define REST_32FPVSRS(c, base) __REST_32FPVSRS(__REG_##c, __REG_##base)
+> +#define SAVE_32FPVSRS(c, base) __SAVE_32FPVSRS(__REG_##c, __REG_##base)
+>   
+>   /*
+>    * Load state from memory into FP registers including FPSCR.
+> @@ -54,7 +54,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_VSX);					\
+>   _GLOBAL(load_fp_state)
+>   	lfd	fr0,FPSTATE_FPSCR(r3)
+>   	MTFSF_L(fr0)
+> -	REST_32FPVSRS(0, R4, R3)
+> +	REST_32FPVSRS(R4, R3)
+>   	blr
+>   EXPORT_SYMBOL(load_fp_state)
+>   _ASM_NOKPROBE_SYMBOL(load_fp_state); /* used by restore_math */
+> @@ -64,7 +64,7 @@ _ASM_NOKPROBE_SYMBOL(load_fp_state); /* used by restore_math */
+>    * Assumes the caller has enabled FP in the MSR.
+>    */
+>   _GLOBAL(store_fp_state)
+> -	SAVE_32FPVSRS(0, R4, R3)
+> +	SAVE_32FPVSRS(R4, R3)
+>   	mffs	fr0
+>   	stfd	fr0,FPSTATE_FPSCR(r3)
+>   	blr
+> @@ -113,7 +113,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_VSX)
+>   	addi	r10,r5,THREAD_FPSTATE
+>   	lfd	fr0,FPSTATE_FPSCR(r10)
+>   	MTFSF_L(fr0)
+> -	REST_32FPVSRS(0, R4, R10)
+> +	REST_32FPVSRS(R4, R10)
+>   	/* restore registers and return */
+>   	/* we haven't used ctr or xer or lr */
+>   	blr
+> @@ -131,7 +131,7 @@ _GLOBAL(save_fpu)
+>   	PPC_LCMPI	0,r6,0
+>   	bne	2f
+>   	addi	r6,r3,THREAD_FPSTATE
+> -2:	SAVE_32FPVSRS(0, R4, R6)
+> +2:	SAVE_32FPVSRS(R4, R6)
+>   	mffs	fr0
+>   	stfd	fr0,FPSTATE_FPSCR(r6)
+>   	blr
+> diff --git a/arch/powerpc/kernel/head_32.h b/arch/powerpc/kernel/head_32.h
+> index 6b1ec9e3541b..25887303651a 100644
+> --- a/arch/powerpc/kernel/head_32.h
+> +++ b/arch/powerpc/kernel/head_32.h
+> @@ -115,8 +115,7 @@ _ASM_NOKPROBE_SYMBOL(\name\()_virt)
+>   	stw	r10,8(r1)
+>   	li	r10, \trapno
+>   	stw	r10,_TRAP(r1)
+> -	SAVE_4GPRS(3, r1)
+> -	SAVE_2GPRS(7, r1)
+> +	SAVE_GPRS(3, 8, r1)
+>   	SAVE_NVGPRS(r1)
+>   	stw	r2,GPR2(r1)
+>   	stw	r12,_NIP(r1)
+> diff --git a/arch/powerpc/kernel/head_booke.h b/arch/powerpc/kernel/head_booke.h
+> index 87b806e8eded..5691e49d3368 100644
+> --- a/arch/powerpc/kernel/head_booke.h
+> +++ b/arch/powerpc/kernel/head_booke.h
+> @@ -87,8 +87,7 @@ END_BTB_FLUSH_SECTION
+>   	stw	r10, 8(r1)
+>   	li	r10, \trapno
+>   	stw	r10,_TRAP(r1)
+> -	SAVE_4GPRS(3, r1)
+> -	SAVE_2GPRS(7, r1)
+> +	SAVE_GPRS(3, 8, r1)
+>   	SAVE_NVGPRS(r1)
+>   	stw	r2,GPR2(r1)
+>   	stw	r12,_NIP(r1)
+> diff --git a/arch/powerpc/kernel/interrupt_64.S b/arch/powerpc/kernel/interrupt_64.S
+> index 4063e8a3f704..03d053ff87c7 100644
+> --- a/arch/powerpc/kernel/interrupt_64.S
+> +++ b/arch/powerpc/kernel/interrupt_64.S
+> @@ -169,10 +169,9 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+>   	 * The value of AMR only matters while we're in the kernel.
+>   	 */
+>   	mtcr	r2
+> -	ld	r2,GPR2(r1)
+> -	ld	r3,GPR3(r1)
+> -	ld	r13,GPR13(r1)
+> -	ld	r1,GPR1(r1)
+> +	REST_GPRS(2, 3, r1)
+> +	REST_GPR(13, r1)
+> +	REST_GPR(1, r1)
+>   	RFSCV_TO_USER
+>   	b	.	/* prevent speculative execution */
+>   
+> @@ -190,9 +189,8 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+>   	mtctr	r3
+>   	mtlr	r4
+>   	mtspr	SPRN_XER,r5
+> -	REST_10GPRS(2, r1)
+> -	REST_2GPRS(12, r1)
+> -	ld	r1,GPR1(r1)
+> +	REST_GPRS(2, 13, r1)
+> +	REST_GPR(1, r1)
+>   	RFI_TO_USER
+>   .Lsyscall_vectored_\name\()_rst_end:
+>   
+> @@ -383,10 +381,9 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+>   	 * The value of AMR only matters while we're in the kernel.
+>   	 */
+>   	mtcr	r2
+> -	ld	r2,GPR2(r1)
+> -	ld	r3,GPR3(r1)
+> -	ld	r13,GPR13(r1)
+> -	ld	r1,GPR1(r1)
+> +	REST_GPRS(2, 3, r1)
+> +	REST_GPR(13, r1)
+> +	REST_GPR(1, r1)
+>   	RFI_TO_USER
+>   	b	.	/* prevent speculative execution */
+>   
+> @@ -397,8 +394,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+>   	mtctr	r3
+>   	mtspr	SPRN_XER,r4
+>   	ld	r0,GPR0(r1)
+> -	REST_8GPRS(4, r1)
+> -	ld	r12,GPR12(r1)
+> +	REST_GPRS(4, 12, r1)
+>   	b	.Lsyscall_restore_regs_cont
+>   .Lsyscall_rst_end:
+>   
+> @@ -555,17 +551,14 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
+>   	ld	r6,_XER(r1)
+>   	li	r0,0
+>   
+> -	REST_4GPRS(7, r1)
+> -	REST_2GPRS(11, r1)
+> -	REST_GPR(13, r1)
+> +	REST_GPRS(7, 13, r1)
+>   
+>   	mtcr	r3
+>   	mtlr	r4
+>   	mtctr	r5
+>   	mtspr	SPRN_XER,r6
+>   
+> -	REST_4GPRS(2, r1)
+> -	REST_GPR(6, r1)
+> +	REST_GPRS(2, 6, r1)
+>   	REST_GPR(0, r1)
+>   	REST_GPR(1, r1)
+>   	.ifc \srr,srr
+> @@ -662,8 +655,7 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
+>   	ld	r6,_CCR(r1)
+>   	li	r0,0
+>   
+> -	REST_4GPRS(7, r1)
+> -	REST_2GPRS(11, r1)
+> +	REST_GPRS(7, 12, r1)
+>   
+>   	mtlr	r3
+>   	mtctr	r4
+> @@ -675,7 +667,7 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
+>   	 */
+>   	std	r0,STACK_FRAME_OVERHEAD-16(r1)
+>   
+> -	REST_4GPRS(2, r1)
+> +	REST_GPRS(2, 5, r1)
+>   
+>   	bne-	cr1,1f /* emulate stack store */
+>   	mtcr	r6
+> diff --git a/arch/powerpc/kernel/optprobes_head.S b/arch/powerpc/kernel/optprobes_head.S
+> index 19ea3312403c..5c7f0b4b784b 100644
+> --- a/arch/powerpc/kernel/optprobes_head.S
+> +++ b/arch/powerpc/kernel/optprobes_head.S
+> @@ -10,8 +10,8 @@
+>   #include <asm/asm-offsets.h>
+>   
+>   #ifdef CONFIG_PPC64
+> -#define SAVE_30GPRS(base) SAVE_10GPRS(2,base); SAVE_10GPRS(12,base); SAVE_10GPRS(22,base)
+> -#define REST_30GPRS(base) REST_10GPRS(2,base); REST_10GPRS(12,base); REST_10GPRS(22,base)
+> +#define SAVE_30GPRS(base) SAVE_GPRS(2, 31, base)
+> +#define REST_30GPRS(base) REST_GPRS(2, 31, base)
+>   #define TEMPLATE_FOR_IMM_LOAD_INSNS	nop; nop; nop; nop; nop
+>   #else
+>   #define SAVE_30GPRS(base) stmw	r2, GPR2(base)
+> diff --git a/arch/powerpc/kernel/tm.S b/arch/powerpc/kernel/tm.S
+> index 2b91f233b05d..dd382ba5926a 100644
+> --- a/arch/powerpc/kernel/tm.S
+> +++ b/arch/powerpc/kernel/tm.S
+> @@ -17,30 +17,30 @@
+>   
+>   #ifdef CONFIG_VSX
+>   /* See fpu.S, this is borrowed from there */
+> -#define __SAVE_32FPRS_VSRS(n,c,base)		\
+> +#define __SAVE_32FPRS_VSRS(c, base)		\
+>   BEGIN_FTR_SECTION				\
+>   	b	2f;				\
+>   END_FTR_SECTION_IFSET(CPU_FTR_VSX);		\
+> -	SAVE_32FPRS(n,base);			\
+> +	SAVE_FPRS(0, 31, base);			\
+>   	b	3f;				\
+> -2:	SAVE_32VSRS(n,c,base);			\
+> +2:	SAVE_32VSRS(0, c, base);		\
+>   3:
+> -#define __REST_32FPRS_VSRS(n,c,base)		\
+> +#define __REST_32FPRS_VSRS(c, base)		\
+>   BEGIN_FTR_SECTION				\
+>   	b	2f;				\
+>   END_FTR_SECTION_IFSET(CPU_FTR_VSX);		\
+> -	REST_32FPRS(n,base);			\
+> +	REST_FPRS(0, 31, base);			\
+>   	b	3f;				\
+> -2:	REST_32VSRS(n,c,base);			\
+> +2:	REST_32VSRS(0, c, base);		\
+>   3:
+>   #else
+> -#define __SAVE_32FPRS_VSRS(n,c,base)	SAVE_32FPRS(n, base)
+> -#define __REST_32FPRS_VSRS(n,c,base)	REST_32FPRS(n, base)
+> +#define __SAVE_32FPRS_VSRS(c,base)	SAVE_FPRS(0, 31, base)
+> +#define __REST_32FPRS_VSRS(c,base)	REST_FPRS(0, 31, base)
+>   #endif
+> -#define SAVE_32FPRS_VSRS(n,c,base) \
+> -	__SAVE_32FPRS_VSRS(n,__REG_##c,__REG_##base)
+> -#define REST_32FPRS_VSRS(n,c,base) \
+> -	__REST_32FPRS_VSRS(n,__REG_##c,__REG_##base)
+> +#define SAVE_32FPRS_VSRS(c, base) \
+> +	__SAVE_32FPRS_VSRS(__REG_##c, __REG_##base)
+> +#define REST_32FPRS_VSRS(c, base) \
+> +	__REST_32FPRS_VSRS(__REG_##c, __REG_##base)
+>   
+>   /* Stack frame offsets for local variables. */
+>   #define TM_FRAME_L0	TM_FRAME_SIZE-16
+> @@ -226,11 +226,8 @@ _GLOBAL(tm_reclaim)
+>   
+>   	/* Sync the userland GPRs 2-12, 14-31 to thread->regs: */
+>   	SAVE_GPR(0, r7)				/* user r0 */
+> -	SAVE_GPR(2, r7)				/* user r2 */
+> -	SAVE_4GPRS(3, r7)			/* user r3-r6 */
+> -	SAVE_GPR(8, r7)				/* user r8 */
+> -	SAVE_GPR(9, r7)				/* user r9 */
+> -	SAVE_GPR(10, r7)			/* user r10 */
+> +	SAVE_GPRS(2, 6, r7)			/* user r2-r6 */
+> +	SAVE_GPRS(8, 10, r7)			/* user r8-r10 */
+>   	ld	r3, GPR1(r1)			/* user r1 */
+>   	ld	r4, GPR7(r1)			/* user r7 */
+>   	ld	r5, GPR11(r1)			/* user r11 */
+> @@ -290,7 +287,7 @@ _GLOBAL(tm_reclaim)
+>   
+>   	/* Altivec (VEC/VMX/VR)*/
+>   	addi	r7, r3, THREAD_CKVRSTATE
+> -	SAVE_32VRS(0, r6, r7)	/* r6 scratch, r7 ckvr_state */
+> +	SAVE_VRS(0, 31, r6, r7)	/* r6 scratch, r7 ckvr_state */
+>   	mfvscr	v0
+>   	li	r6, VRSTATE_VSCR
+>   	stvx	v0, r7, r6
+> @@ -301,7 +298,7 @@ _GLOBAL(tm_reclaim)
+>   
+>   	/* Floating Point (FP) */
+>   	addi	r7, r3, THREAD_CKFPSTATE
+> -	SAVE_32FPRS_VSRS(0, R6, R7)	/* r6 scratch, r7 ckfp_state */
+> +	SAVE_32FPRS_VSRS(R6, R7)	/* r6 scratch, r7 ckfp_state */
+>   	mffs    fr0
+>   	stfd    fr0,FPSTATE_FPSCR(r7)
+>   
+> @@ -409,7 +406,7 @@ _GLOBAL(__tm_recheckpoint)
+>   	li	r5, VRSTATE_VSCR
+>   	lvx	v0, r8, r5
+>   	mtvscr	v0
+> -	REST_32VRS(0, r5, r8)			/* r5 scratch, r8 ptr */
+> +	REST_VRS(0, 31, r5, r8)			/* r5 scratch, r8 ptr */
+>   	ld	r5, THREAD_CKVRSAVE(r3)
+>   	mtspr	SPRN_VRSAVE, r5
+>   #endif
+> @@ -417,7 +414,7 @@ _GLOBAL(__tm_recheckpoint)
+>   	addi	r8, r3, THREAD_CKFPSTATE
+>   	lfd	fr0, FPSTATE_FPSCR(r8)
+>   	MTFSF_L(fr0)
+> -	REST_32FPRS_VSRS(0, R4, R8)
+> +	REST_32FPRS_VSRS(R4, R8)
+>   
+>   	mtmsr	r6				/* FP/Vec off again! */
+>   
+> @@ -445,12 +442,8 @@ restore_gprs:
+>   	ld	r6, THREAD_TM_PPR(r3)
+>   
+>   	REST_GPR(0, r7)				/* GPR0 */
+> -	REST_2GPRS(2, r7)			/* GPR2-3 */
+> -	REST_GPR(4, r7)				/* GPR4 */
+> -	REST_4GPRS(8, r7)			/* GPR8-11 */
+> -	REST_2GPRS(12, r7)			/* GPR12-13 */
+> -
+> -	REST_NVGPRS(r7)				/* GPR14-31 */
+> +	REST_GPRS(2, 4, r7)			/* GPR2-4 */
+> +	REST_GPRS(8, 31, r7)			/* GPR8-31 */
+>   
+>   	/* Load up PPR and DSCR here so we don't run with user values for long */
+>   	mtspr	SPRN_DSCR, r5
+> diff --git a/arch/powerpc/kernel/trace/ftrace_64_mprofile.S b/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
+> index f9fd5f743eba..dd5e720fe44b 100644
+> --- a/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
+> +++ b/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
+> @@ -41,15 +41,14 @@ _GLOBAL(ftrace_regs_caller)
+>   
+>   	/* Save all gprs to pt_regs */
+>   	SAVE_GPR(0, r1)
+> -	SAVE_10GPRS(2, r1)
+> +	SAVE_GPRS(2, 11, r1)
+>   
+>   	/* Ok to continue? */
+>   	lbz	r3, PACA_FTRACE_ENABLED(r13)
+>   	cmpdi	r3, 0
+>   	beq	ftrace_no_trace
+>   
+> -	SAVE_10GPRS(12, r1)
+> -	SAVE_10GPRS(22, r1)
+> +	SAVE_GPRS(12, 31, r1)
+>   
+>   	/* Save previous stack pointer (r1) */
+>   	addi	r8, r1, SWITCH_FRAME_SIZE
+> @@ -108,10 +107,7 @@ ftrace_regs_call:
+>   #endif
+>   
+>   	/* Restore gprs */
+> -	REST_GPR(0,r1)
+> -	REST_10GPRS(2,r1)
+> -	REST_10GPRS(12,r1)
+> -	REST_10GPRS(22,r1)
+> +	REST_GPRS(2, 31, r1)
+>   
+>   	/* Restore possibly modified LR */
+>   	ld	r0, _LINK(r1)
+> @@ -157,7 +153,7 @@ _GLOBAL(ftrace_caller)
+>   	stdu	r1, -SWITCH_FRAME_SIZE(r1)
+>   
+>   	/* Save all gprs to pt_regs */
+> -	SAVE_8GPRS(3, r1)
+> +	SAVE_GPRS(3, 10, r1)
+>   
+>   	lbz	r3, PACA_FTRACE_ENABLED(r13)
+>   	cmpdi	r3, 0
+> @@ -194,7 +190,7 @@ ftrace_call:
+>   	mtctr	r3
+>   
+>   	/* Restore gprs */
+> -	REST_8GPRS(3,r1)
+> +	REST_GPRS(3, 10, r1)
+>   
+>   	/* Restore callee's TOC */
+>   	ld	r2, 24(r1)
+> diff --git a/arch/powerpc/kernel/vector.S b/arch/powerpc/kernel/vector.S
+> index fc120fac1910..66071dc19452 100644
+> --- a/arch/powerpc/kernel/vector.S
+> +++ b/arch/powerpc/kernel/vector.S
+> @@ -18,7 +18,7 @@ _GLOBAL(load_vr_state)
+>   	li	r4,VRSTATE_VSCR
+>   	lvx	v0,r4,r3
+>   	mtvscr	v0
+> -	REST_32VRS(0,r4,r3)
+> +	REST_VRS(0, 31, r4, r3)
+>   	blr
+>   EXPORT_SYMBOL(load_vr_state)
+>   _ASM_NOKPROBE_SYMBOL(load_vr_state); /* used by restore_math */
+> @@ -28,7 +28,7 @@ _ASM_NOKPROBE_SYMBOL(load_vr_state); /* used by restore_math */
+>    * Assumes the caller has enabled VMX in the MSR.
+>    */
+>   _GLOBAL(store_vr_state)
+> -	SAVE_32VRS(0, r4, r3)
+> +	SAVE_VRS(0, 31, r4, r3)
+>   	mfvscr	v0
+>   	li	r4, VRSTATE_VSCR
+>   	stvx	v0, r4, r3
+> @@ -86,7 +86,7 @@ _GLOBAL(load_up_altivec)
+>   	stw	r4,THREAD_USED_VR(r5)
+>   	lvx	v0,r10,r6
+>   	mtvscr	v0
+> -	REST_32VRS(0,r4,r6)
+> +	REST_VRS(0, 31, r4, r6)
+>   	/* restore registers and return */
+>   	blr
+>   _ASM_NOKPROBE_SYMBOL(load_up_altivec)
+> @@ -102,7 +102,7 @@ _GLOBAL(save_altivec)
+>   	PPC_LCMPI	0,r7,0
+>   	bne	2f
+>   	addi	r7,r3,THREAD_VRSTATE
+> -2:	SAVE_32VRS(0,r4,r7)
+> +2:	SAVE_VRS(0, 31, r4, r7)
+>   	mfvscr	v0
+>   	li	r4,VRSTATE_VSCR
+>   	stvx	v0,r4,r7
+> diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+> index 8dd437d7a2c6..37ee440cc35e 100644
+> --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+> +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+> @@ -2715,8 +2715,7 @@ kvmppc_bad_host_intr:
+>   	std	r0, GPR0(r1)
+>   	std	r9, GPR1(r1)
+>   	std	r2, GPR2(r1)
+> -	SAVE_4GPRS(3, r1)
+> -	SAVE_2GPRS(7, r1)
+> +	SAVE_GPRS(3, 8, r1)
+>   	srdi	r0, r12, 32
+>   	clrldi	r12, r12, 32
+>   	std	r0, _CCR(r1)
+> @@ -2739,7 +2738,7 @@ kvmppc_bad_host_intr:
+>   	ld	r9, HSTATE_SCRATCH2(r13)
+>   	ld	r12, HSTATE_SCRATCH0(r13)
+>   	GET_SCRATCH0(r0)
+> -	SAVE_4GPRS(9, r1)
+> +	SAVE_GPRS(9, 12, r1)
+>   	std	r0, GPR13(r1)
+>   	SAVE_NVGPRS(r1)
+>   	ld	r5, HSTATE_CFAR(r13)
+> diff --git a/arch/powerpc/lib/test_emulate_step_exec_instr.S b/arch/powerpc/lib/test_emulate_step_exec_instr.S
+> index 9ef941d958d8..5473f9d03df3 100644
+> --- a/arch/powerpc/lib/test_emulate_step_exec_instr.S
+> +++ b/arch/powerpc/lib/test_emulate_step_exec_instr.S
+> @@ -37,7 +37,7 @@ _GLOBAL(exec_instr)
+>   	 * The stack pointer (GPR1) and the thread pointer (GPR13) are not
+>   	 * saved as these should not be modified anyway.
+>   	 */
+> -	SAVE_2GPRS(2, r1)
+> +	SAVE_GPRS(2, 3, r1)
+>   	SAVE_NVGPRS(r1)
+>   
+>   	/*
+> @@ -75,8 +75,7 @@ _GLOBAL(exec_instr)
+>   
+>   	/* Load GPRs from pt_regs */
+>   	REST_GPR(0, r31)
+> -	REST_10GPRS(2, r31)
+> -	REST_GPR(12, r31)
+> +	REST_GPRS(2, 12, r31)
+>   	REST_NVGPRS(r31)
+>   
+>   	/* Placeholder for the test instruction */
+> @@ -99,8 +98,7 @@ _GLOBAL(exec_instr)
+>   	subi	r3, r3, GPR0
+>   	SAVE_GPR(0, r3)
+>   	SAVE_GPR(2, r3)
+> -	SAVE_8GPRS(4, r3)
+> -	SAVE_GPR(12, r3)
+> +	SAVE_GPRS(4, 12, r3)
+>   	SAVE_NVGPRS(r3)
+>   
+>   	/* Save resulting LR to pt_regs */
+> 
