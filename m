@@ -2,45 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69A983BC5BE
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 06:49:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A770D3BC5F7
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 07:13:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GJqpR2hWkz3081
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 14:49:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GJrLd4L6pz303j
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 15:13:45 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Y3r+P8ek;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52c;
+ helo=mail-pg1-x52c.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Y3r+P8ek; dkim-atps=neutral
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com
+ [IPv6:2607:f8b0:4864:20::52c])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GJqp173zYz2yNl
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Jul 2021 14:48:56 +1000 (AEST)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id 25C5068BEB; Tue,  6 Jul 2021 06:48:49 +0200 (CEST)
-Date: Tue, 6 Jul 2021 06:48:48 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v15 06/12] swiotlb: Use is_swiotlb_force_bounce for
- swiotlb data bouncing
-Message-ID: <20210706044848.GA13640@lst.de>
-References: <YNvMDFWKXSm4LRfZ@Ryzen-9-3900X.localdomain>
- <CALiNf2-a-haQN0-4+gX8+wa++52-0CnO2O4BEkxrQCxoTa_47w@mail.gmail.com>
- <20210630114348.GA8383@willie-the-truck>
- <YNyUQwiagNeZ9YeJ@Ryzen-9-3900X.localdomain>
- <20210701074045.GA9436@willie-the-truck>
- <ea28db1f-846e-4f0a-4f13-beb67e66bbca@kernel.org>
- <20210702135856.GB11132@willie-the-truck>
- <0f7bd903-e309-94a0-21d7-f0e8e9546018@arm.com>
- <YN/7xcxt/XGAKceZ@Ryzen-9-3900X.localdomain>
- <20210705190352.GA19461@willie-the-truck>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GJrLB1jx1z2yLq
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Jul 2021 15:13:21 +1000 (AEST)
+Received: by mail-pg1-x52c.google.com with SMTP id h4so20305627pgp.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 05 Jul 2021 22:13:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=KGEIoRo5Dp7AVnpJdAEGBYvPI2Lzg0XOuBunjectvb8=;
+ b=Y3r+P8ekYKtJkS3l6XUrImvvUqye5WZg4USvMxXHC3Vdvj0E1uqLBSiI9a7l8QNHf3
+ g8+vKa7V0smnyxx//wwd3aqgCplTECq7BbdDn21lPo6tHksYWXikMQZyFm2VVw9W5PWp
+ pPXosboBPyfsZA7IBr3fJd4fW/AY48y48reSRzbz3i+KNB/+tDYhAKLJ7em3Fu40eu88
+ 9I/FCQ3DGkMxrnPh+bE6T709VHPB4ZSt3SKG9HXv88BfANHxGhGlp5bzBpTBbuEg2c0K
+ 4JhwFXBe17nWpiymDwdhhqeYd+zqdRQj6hmKK/G6nktqmBv/reab6eybWeok6lQZ5GhB
+ sP2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=KGEIoRo5Dp7AVnpJdAEGBYvPI2Lzg0XOuBunjectvb8=;
+ b=ENbVlsvl0PsS9OhZuAzveGqymDOfdKU/hI9djwVcrzwmMAbFHlwT+MqY6ZxVtimotM
+ 4gP0UREQ9/vAaeRQCRxmerF1IlKpRhZKU4jL/t91ou8MY2OssmegKxE5+Rp2E3YOGxif
+ zcRGdBxd9NNZvW7HJjOhgiXbn+3Tq7tBDUf5sT0vADEE4D/IH7YSENKNJ7VjooTdVaEw
+ Yk+/2HjY3viv9pK95eBuetvTDG3bcgHFjXx3xMRpJm7EQteneQzTXLFO2CQdH2I4nmyz
+ i65R+Q3akpYtaZgqpYl/HYscnPFhLmxWaJU1irjzZR+V7P6Otmbd6/JaFdL5K9TlyWs3
+ 8R7w==
+X-Gm-Message-State: AOAM5312VKNvCNtKt9IyHBwRP9p9wxYwKSzIPKeWeXeb5hTthb4MC7rR
+ kGg2nx12R1uduWlDt950jiAXSVbwKamPTw==
+X-Google-Smtp-Source: ABdhPJwWVnsji0e8J5nwY8j/S584NbTZ4c5tAZDcE1JRMrOnJ4lrEC73YibUWuHMC4/cXX4KJ/jb/g==
+X-Received: by 2002:a63:f750:: with SMTP id f16mr17667602pgk.292.1625548397844; 
+ Mon, 05 Jul 2021 22:13:17 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com ([202.168.10.200])
+ by smtp.gmail.com with ESMTPSA id f17sm1180338pjj.21.2021.07.05.22.13.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 05 Jul 2021 22:13:16 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/64e: Fix system call illegal mtmsrd instruction
+Date: Tue,  6 Jul 2021 15:13:10 +1000
+Message-Id: <20210706051310.608992-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210705190352.GA19461@willie-the-truck>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,53 +77,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: heikki.krogerus@linux.intel.com, thomas.hellstrom@linux.intel.com,
- peterz@infradead.org, joonas.lahtinen@linux.intel.com,
- dri-devel@lists.freedesktop.org, chris@chris-wilson.co.uk,
- grant.likely@arm.com, paulus@samba.org, Frank Rowand <frowand.list@gmail.com>,
- mingo@kernel.org, Marek Szyprowski <m.szyprowski@samsung.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Saravana Kannan <saravanak@google.com>, Joerg Roedel <joro@8bytes.org>,
- "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
- Christoph Hellwig <hch@lst.de>,
- Bartosz Golaszewski <bgolaszewski@baylibre.com>, bskeggs@redhat.com,
- linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
- Thierry Reding <treding@nvidia.com>, intel-gfx@lists.freedesktop.org,
- matthew.auld@intel.com, linux-devicetree <devicetree@vger.kernel.org>,
- Jianxiong Gao <jxgao@google.com>, Daniel Vetter <daniel@ffwll.ch>,
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- maarten.lankhorst@linux.intel.com, airlied@linux.ie,
- Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org,
- jani.nikula@linux.intel.com, Nathan Chancellor <nathan@kernel.org>,
- Rob Herring <robh+dt@kernel.org>, rodrigo.vivi@intel.com,
- Bjorn Helgaas <bhelgaas@google.com>, Claire Chang <tientzu@chromium.org>,
- boris.ostrovsky@oracle.com,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jgross@suse.com,
- Nicolas Boichat <drinkcat@chromium.org>, Greg KH <gregkh@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, Qian Cai <quic_qiancai@quicinc.com>,
- lkml <linux-kernel@vger.kernel.org>, Tomasz Figa <tfiga@chromium.org>,
- "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
- Jim Quinlan <james.quinlan@broadcom.com>, xypron.glpk@gmx.de,
- Tom Lendacky <thomas.lendacky@amd.com>, Robin Murphy <robin.murphy@arm.com>,
- bauerman@linux.ibm.com
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ Christian Zigotzky <chzigotzky@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 05, 2021 at 08:03:52PM +0100, Will Deacon wrote:
-> So at this point, the AMD IOMMU driver does:
-> 
-> 	swiotlb        = (iommu_default_passthrough() || sme_me_mask) ? 1 : 0;
-> 
-> where 'swiotlb' is a global variable indicating whether or not swiotlb
-> is in use. It's picked up a bit later on by pci_swiotlb_late_init(), which
-> will call swiotlb_exit() if 'swiotlb' is false.
-> 
-> Now, that used to work fine, because swiotlb_exit() clears
-> 'io_tlb_default_mem' to NULL, but now with the restricted DMA changes, I
-> think that all the devices which have successfully probed beforehand will
-> have stale pointers to the freed structure in their 'dev->dma_io_tlb_mem'
-> field.
+BookE does not have mtmsrd, switch to use wrteei to enable MSR[EE].
 
-Yeah.  I don't think we can do that anymore, and I also think it is
-a bad idea to start with.
+Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+Fixes: dd152f70bdc1 ("powerpc/64s: system call avoid setting MSR[RI] until we set MSR[EE]")
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+This wasn't caught by QEMU because it executes mtmsrd just fine on BookE
+CPUs. Patching that reproduces the problem and verifies this fix.
+
+ arch/powerpc/kernel/interrupt_64.S | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/kernel/interrupt_64.S b/arch/powerpc/kernel/interrupt_64.S
+index 4063e8a3f704..d4212d2ff0b5 100644
+--- a/arch/powerpc/kernel/interrupt_64.S
++++ b/arch/powerpc/kernel/interrupt_64.S
+@@ -311,9 +311,13 @@ END_BTB_FLUSH_SECTION
+ 	 * trace_hardirqs_off().
+ 	 */
+ 	li	r11,IRQS_ALL_DISABLED
+-	li	r12,-1 /* Set MSR_EE and MSR_RI */
+ 	stb	r11,PACAIRQSOFTMASK(r13)
++#ifdef CONFIG_PPC_BOOK3S
++	li	r12,-1 /* Set MSR_EE and MSR_RI */
+ 	mtmsrd	r12,1
++#else
++	wrteei	1
++#endif
+ 
+ 	/* Calling convention has r9 = orig r0, r10 = regs */
+ 	mr	r9,r0
+-- 
+2.23.0
+
