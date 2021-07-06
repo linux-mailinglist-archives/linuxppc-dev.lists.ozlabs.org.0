@@ -2,34 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A7E23BCAFB
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 12:53:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEC603BCAFD
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 12:53:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GJztV45wxz3bm6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 20:53:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GJztq65hxz3bwb
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 20:53:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
  envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GJzss3p8mz2yYh
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Jul 2021 20:52:49 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GJzsy2VNgz300x
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Jul 2021 20:52:54 +1000 (AEST)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4GJzsk2R2hz9sWl; Tue,  6 Jul 2021 20:52:42 +1000 (AEST)
+ id 4GJzsy1QGmz9sXV; Tue,  6 Jul 2021 20:52:54 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: npiggin@gmail.com, Paul Mackerras <paulus@samba.org>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <024bb05105050f704743a0083fe3548702be5706.1625138205.git.christophe.leroy@csgroup.eu>
-References: <024bb05105050f704743a0083fe3548702be5706.1625138205.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/mm: Fix lockup on kernel exec fault
-Message-Id: <162556873360.460578.10834762081536677498.b4-ty@ellerman.id.au>
-Date: Tue, 06 Jul 2021 20:52:13 +1000
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>, bpf@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <cover.1625145429.git.naveen.n.rao@linux.vnet.ibm.com>
+References: <cover.1625145429.git.naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH 0/2] powerpc/bpf: Fix issue with atomic ops
+Message-Id: <162556873716.460578.10069325708926626758.b4-ty@ellerman.id.au>
+Date: Tue, 06 Jul 2021 20:52:17 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -44,27 +42,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Brendan Jackman <jackmanb@google.com>, Jiri Olsa <jolsa@redhat.com>,
+ Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+ Daniel Borkmann <daniel@iogearbox.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 1 Jul 2021 11:17:08 +0000 (UTC), Christophe Leroy wrote:
-> The powerpc kernel is not prepared to handle exec faults from kernel.
-> Especially, the function is_exec_fault() will return 'false' when an
-> exec fault is taken by kernel, because the check is based on reading
-> current->thread.regs->trap which contains the trap from user.
+On Thu, 1 Jul 2021 20:38:57 +0530, Naveen N. Rao wrote:
+> The first patch fixes an issue that causes a soft lockup on ppc64 with
+> the BPF_ATOMIC bounds propagation verifier test. The second one updates
+> ppc32 JIT to reject atomic operations properly.
 > 
-> For instance, when provoking a LKDTM EXEC_USERSPACE test,
-> current->thread.regs->trap is set to SYSCALL trap (0xc00), and
-> the fault taken by the kernel is not seen as an exec fault by
-> set_access_flags_filter().
+> - Naveen
+> 
+> Naveen N. Rao (2):
+>   powerpc/bpf: Fix detecting BPF atomic instructions
+>   powerpc/bpf: Reject atomic ops in ppc32 JIT
 > 
 > [...]
 
 Applied to powerpc/fixes.
 
-[1/1] powerpc/mm: Fix lockup on kernel exec fault
-      https://git.kernel.org/powerpc/c/cd5d5e602f502895e47e18cd46804d6d7014e65c
+[1/2] powerpc/bpf: Fix detecting BPF atomic instructions
+      https://git.kernel.org/powerpc/c/419ac821766cbdb9fd85872bb3f1a589df05c94c
+[2/2] powerpc/bpf: Reject atomic ops in ppc32 JIT
+      https://git.kernel.org/powerpc/c/307e5042c7bdae15308ef2e9b848833b84122eb0
 
 cheers
