@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62F6D3BCC60
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 13:16:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E8FD3BCD77
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 13:20:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GK0Pd6V9fz3bXD
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 21:16:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GK0V94LKMz3bXh
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 21:20:49 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dP+e42/T;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RLu0u/BA;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,35 +17,35 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=dP+e42/T; 
+ header.s=k20201202 header.b=RLu0u/BA; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GK0PC738mz3000
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Jul 2021 21:16:31 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 071E861C52;
- Tue,  6 Jul 2021 11:16:28 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GK0Tm3NF7z2yLk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Jul 2021 21:20:28 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6954361D5E;
+ Tue,  6 Jul 2021 11:20:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1625570189;
- bh=cVUpZ974XxVYD/7Fwp5542TVuNMT77tbrLYVujDkoW4=;
+ s=k20201202; t=1625570426;
+ bh=9FgXrg546LF12QfPPvKq2AJJdYzvM69rjMX+fXMsaG4=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=dP+e42/TE9lkNTvaBl4kpp4na/HtYPQW5WbQ2X0tpF9SKltfyITrbTi0QKD9S9b6n
- 4MISFoMgK8s4pC48IuC20zv61GESWTJfGLgYb00g0kSntQZAelPWkkSeyIVjszIkbU
- mqsVX1FUjZV+X+i7YfIv4T5dgmzOpmogl+lTgQ+KDpr6As4f0m1RzPolvcOGtAIpDn
- viQ4QeF0hAIe9rHgzK3hiavQqqp0fo+2TklDpcKw6Hq/FtFnlSxObCn98HEg3osE8/
- ePNdeps4nhozcQ3Rk2jtRf9v3spaCYCycccjP9Q+2404x00i1Ti7qeC36qLi5qJdHQ
- juD2G+Ltg3pWA==
+ b=RLu0u/BAJtr0LxqWL3FmV+34aEVHQ88ZQ2L/rVU5suHsVA01VaFcSHOf6nK/QHWC0
+ UPW9m4S+lZ7FWT1itbXhjFdRRNoFmCdg3xEgJCUGprBdUDyTigATWIGuZAdDqf0iSn
+ 1O1+5xj+Fhf31VlxIPivP1/DxyeE3aA/RpybEqyOil5Xb0Fq0JqdFMQPDNGMVnV9HM
+ JSRfC0SqM5qFo0eg/L5AlMJerMzVeIVW28jiQwYywsrFSThunFpoH3fk4RPEBmgdA2
+ etX9DKYa498DtAK3IojZ2SFRmJgVXM0AQlf1jVIlCAXs5mj0rc4Zhh/zOqnt81ntvj
+ lOZyhBJSg9XMw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.13 104/189] ibmvnic: fix kernel build warnings in
+Subject: [PATCH AUTOSEL 5.12 089/160] ibmvnic: fix kernel build warnings in
  build_hdr_descs_arr
-Date: Tue,  6 Jul 2021 07:12:44 -0400
-Message-Id: <20210706111409.2058071-104-sashal@kernel.org>
+Date: Tue,  6 Jul 2021 07:17:15 -0400
+Message-Id: <20210706111827.2060499-89-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210706111409.2058071-1-sashal@kernel.org>
-References: <20210706111409.2058071-1-sashal@kernel.org>
+In-Reply-To: <20210706111827.2060499-1-sashal@kernel.org>
+References: <20210706111827.2060499-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -85,10 +85,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index 5788bb956d73..a764a5e615fa 100644
+index ffb2a91750c7..a0d30ece6c04 100644
 --- a/drivers/net/ethernet/ibm/ibmvnic.c
 +++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -1502,7 +1502,8 @@ static int create_hdr_descs(u8 hdr_field, u8 *hdr_data, int len, int *hdr_len,
+@@ -1476,7 +1476,8 @@ static int create_hdr_descs(u8 hdr_field, u8 *hdr_data, int len, int *hdr_len,
  
  /**
   * build_hdr_descs_arr - build a header descriptor array
