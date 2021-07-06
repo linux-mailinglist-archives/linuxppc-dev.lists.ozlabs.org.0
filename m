@@ -2,58 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80F6A3BD786
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 15:16:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DACBD3BD7BC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 15:25:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GK33w2ddjz3bPN
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 23:16:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GK3FY57w4z3bWv
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 23:25:05 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Tx92MCkf;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=will@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=Tx92MCkf; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GK33X2Glkz2xjZ
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Jul 2021 23:16:20 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4GK33P0hFlzBDSn;
- Tue,  6 Jul 2021 15:16:17 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id i5brs2mokII7; Tue,  6 Jul 2021 15:16:17 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4GK33N6rVCzBD68;
- Tue,  6 Jul 2021 15:16:16 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id DF4B08B7A9;
- Tue,  6 Jul 2021 15:16:16 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id TwRsMLqlSPd4; Tue,  6 Jul 2021 15:16:16 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 69B288B7A3;
- Tue,  6 Jul 2021 15:16:16 +0200 (CEST)
-Subject: Re: Hitting BUG_ON in do_notify_resume() with gdb and SIGTRAP
-To: Radu Rendec <radu.rendec@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- Nicholas Piggin <npiggin@gmail.com>
-References: <6b5327e32549860c1e6c73e5b669528bfb383df2.camel@gmail.com>
- <d02fca74-933b-4586-496b-65511e435628@csgroup.eu>
- <786399a77d82890a391172fee269272e12c52489.camel@gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <200445ae-c3fc-ccc8-f77d-aebce2b09046@csgroup.eu>
-Date: Tue, 6 Jul 2021 15:16:16 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GK3F16CvTz2xKJ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Jul 2021 23:24:37 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id BE61061164;
+ Tue,  6 Jul 2021 13:24:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1625577874;
+ bh=1b6k92EMOVzHgyTq1RFb48ZKUcEXJlaaPAFN5oqwmF4=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=Tx92MCkf/DXZd6nh5mgnaOshLB4ggq26FqyP7BRdqm4hXED58hUYg3wTzF/ZikCOl
+ U+1P1/gbNfCqV4xnZ7pHjCf8/b987/nQ/mVKU1HbWyoJyOKg9fJOcN462l6+qNBbsk
+ mG027LEWXpfZtreWSaiuUnUFKCuYwjJn+lLcTB45MSBdJeGNl0JTrXgxYvizMLKavG
+ ZjJErAdgAQUwjFypjPCvRFBu+p+iugJjiDv/3nE/dAIeatFPDVEKPcPUEgF80LgmiZ
+ dhxesW61+bCVt47G9QVFd9FVhqxuurozkVLZ3Q4Ql0HvqNzplvnBtOnAkUoP1it1tH
+ ndRwRZDbWWvhQ==
+Date: Tue, 6 Jul 2021 14:24:23 +0100
+From: Will Deacon <will@kernel.org>
+To: Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH v15 06/12] swiotlb: Use is_swiotlb_force_bounce for
+ swiotlb data bouncing
+Message-ID: <20210706132422.GA20327@willie-the-truck>
+References: <CALiNf2-a-haQN0-4+gX8+wa++52-0CnO2O4BEkxrQCxoTa_47w@mail.gmail.com>
+ <20210630114348.GA8383@willie-the-truck>
+ <YNyUQwiagNeZ9YeJ@Ryzen-9-3900X.localdomain>
+ <20210701074045.GA9436@willie-the-truck>
+ <ea28db1f-846e-4f0a-4f13-beb67e66bbca@kernel.org>
+ <20210702135856.GB11132@willie-the-truck>
+ <0f7bd903-e309-94a0-21d7-f0e8e9546018@arm.com>
+ <YN/7xcxt/XGAKceZ@Ryzen-9-3900X.localdomain>
+ <20210705190352.GA19461@willie-the-truck>
+ <20210706044848.GA13640@lst.de>
 MIME-Version: 1.0
-In-Reply-To: <786399a77d82890a391172fee269272e12c52489.camel@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210706044848.GA13640@lst.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,135 +68,322 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: heikki.krogerus@linux.intel.com, thomas.hellstrom@linux.intel.com,
+ peterz@infradead.org, joonas.lahtinen@linux.intel.com,
+ dri-devel@lists.freedesktop.org, chris@chris-wilson.co.uk,
+ grant.likely@arm.com, paulus@samba.org, Frank Rowand <frowand.list@gmail.com>,
+ mingo@kernel.org, Marek Szyprowski <m.szyprowski@samsung.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Saravana Kannan <saravanak@google.com>, Joerg Roedel <joro@8bytes.org>,
+ "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ Bartosz Golaszewski <bgolaszewski@baylibre.com>, bskeggs@redhat.com,
+ linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
+ Thierry Reding <treding@nvidia.com>, intel-gfx@lists.freedesktop.org,
+ matthew.auld@intel.com, linux-devicetree <devicetree@vger.kernel.org>,
+ Jianxiong Gao <jxgao@google.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ maarten.lankhorst@linux.intel.com, airlied@linux.ie,
+ Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org,
+ jani.nikula@linux.intel.com, Nathan Chancellor <nathan@kernel.org>,
+ Rob Herring <robh+dt@kernel.org>, rodrigo.vivi@intel.com,
+ Bjorn Helgaas <bhelgaas@google.com>, Claire Chang <tientzu@chromium.org>,
+ boris.ostrovsky@oracle.com,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jgross@suse.com,
+ Nicolas Boichat <drinkcat@chromium.org>, Greg KH <gregkh@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, Qian Cai <quic_qiancai@quicinc.com>,
+ lkml <linux-kernel@vger.kernel.org>, Tomasz Figa <tfiga@chromium.org>,
+ "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+ Jim Quinlan <james.quinlan@broadcom.com>, xypron.glpk@gmx.de,
+ Tom Lendacky <thomas.lendacky@amd.com>, Robin Murphy <robin.murphy@arm.com>,
+ bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue, Jul 06, 2021 at 06:48:48AM +0200, Christoph Hellwig wrote:
+> On Mon, Jul 05, 2021 at 08:03:52PM +0100, Will Deacon wrote:
+> > So at this point, the AMD IOMMU driver does:
+> > 
+> > 	swiotlb        = (iommu_default_passthrough() || sme_me_mask) ? 1 : 0;
+> > 
+> > where 'swiotlb' is a global variable indicating whether or not swiotlb
+> > is in use. It's picked up a bit later on by pci_swiotlb_late_init(), which
+> > will call swiotlb_exit() if 'swiotlb' is false.
+> > 
+> > Now, that used to work fine, because swiotlb_exit() clears
+> > 'io_tlb_default_mem' to NULL, but now with the restricted DMA changes, I
+> > think that all the devices which have successfully probed beforehand will
+> > have stale pointers to the freed structure in their 'dev->dma_io_tlb_mem'
+> > field.
+> 
+> Yeah.  I don't think we can do that anymore, and I also think it is
+> a bad idea to start with.
 
+I've had a crack at reworking things along the following lines:
 
-Le 06/07/2021 à 13:56, Radu Rendec a écrit :
-> On Tue, 2021-07-06 at 12:43 +0200, Christophe Leroy wrote:
->> Le 04/07/2021 à 23:38, Radu Rendec a écrit :
->>> I'm trying to set up my (virtual) environment to test an old bug in the
->>> PPC32 ptrace() code. I came across a completely different problem,
->>> which seems to make gdb pretty much unusable on PPC32. I'm not sure if
->>> this is a real kernel bug or maybe something wrong with my
->>> configuration.
->>>
->>> I'm running kernel 5.13 in a qemu VM with one e500mc CPU. I am running
->>> native gdb (inside the VM) and setting a breakpoint in main() in a test
->>> "hello world" program. Upon running the test program, I am hitting the
->>> BUG_ON in do_notify_resume() on line 292. The kernel bug log snippet is
->>> included below at the end of the email.
->>>
->>> FWIW, gdb says:
->>> Program terminated with signal SIGTRAP, Trace/breakpoint trap.
->>> The program no longer exists.
->>>
->>> I also added a pr_info() to do_notify_resume() just to see how much
->>> different 'regs' and 'current->thread.regs' are. Surprisingly, they are
->>> just 0x30 apart: regs=c7955f10 cur=c7955f40. Also, 'current' seems to
->>> be OK (pid and comm are consistent with the test program).
->>
->> The TRAP = 0x7d8 is obviously wrong.
->>
->> Need to know which 'TRAP' it is exactly.
->> Could you try to dump what we have at the correct regs ?
->> Something like 'show_regs(current->thread.regs)' should do it.
-> 
-> Sure, please see the output below. It looks to me like the "correct"
-> regs are just garbage. Either they are overwritten or current->thread.regs
-> is wrong. But in any case, r1 = 0 doesn't look good.
+  - io_tlb_default_mem now lives in the BSS, the flexible array member
+    is now a pointer and that part is allocated dynamically (downside of
+    this is an extra indirection to get at the slots).
 
-Yes indeed. I think I identified the problem. For Critical interrupts like DEBUG interrupt, struct 
-exception_regs is added, therefore the frame has 12x4 (0x30) more bytes. That's what you see.
+  - io_tlb_default_mem.nslabs tells you whether the thing is valid
 
-Commit 
-https://github.com/linuxppc/linux/commit/db297c3b07af7856fb7c666fbc9792d8e37556be#diff-dd6b952a3980da19df4facccdb4f3dddeb8cef56ee384c7f03d02b23b0c6cb26
+  - swiotlb_exit() frees the slots array and clears the rest of the
+    structure to 0. I also extended it to free the actual slabs, but I'm
+    not sure why it wasn't doing that before.
 
-Need to find the best solution now to fix that.
+So a non-NULL dev->dma_io_tlb_mem should always be valid to follow.
 
-> 
-> regs=c7a0ff10 cur=c7a0ff40 pid=139 comm=test
-> CPU: 0 PID: 139 Comm: test Not tainted 5.13.0-dirty #4
-> NIP:  10000338 LR: 00030000 CTR: 00000003
-> REGS: c7a0ff40 TRAP: 670000   Not tainted  (5.13.0-dirty)
-> MSR:  1002d202 <CE,EE,PR,ME,DE>  CR: 10000004  XER: 80670100
-> 
-> GPR00: b7fc36d8 00000000 00000000 b7fe17b4 00000000 b7ffd588 b7ffe8b8 b7ffee10
-> GPR08: b7fff214 b7ffdf40 b7fff208 bffff858 bffff970 b7fff130 00000001 bffff960
-> GPR16: b7fff2b0 b7ffd5f0 b7ffe8a8 bffff850 b7fc3714 1002d002 b7fff208 00000003
-> GPR24: b7fc3714 00000000 22000284 bffff960 000007d8 10000338 08000000 bffff850
-> NIP [10000338] 0x10000338
-> LR [00030000] 0x30000
-> Call Trace:
-> [c7a0fe40] [c0008eac] show_regs+0x4c/0x1b0 (unreliable)
-> [c7a0fe80] [c000969c] do_notify_resume+0x31c/0x320
-> [c7a0fee0] [c0010b94] interrupt_exit_user_prepare+0x94/0xc0
-> [c7a0ff00] [c00151e8] interrupt_return+0x14/0x13c
-> --- interrupt: 7d8 at 0xb7fc3714
-> NIP:  b7fc3714 LR: b7fc3714 CTR: 00000003
-> REGS: c7a0ff10 TRAP: 07d8   Not tainted  (5.13.0-dirty)
-> MSR:  1002d002 <CE,EE,PR,ME>  CR: 22000284  XER: 00000000
-> 
-> GPR00: b7fc3584 bffff850 00000000 00000000 00000000 00000000 000000a0 6474e552
-> GPR08: b7fbe0d4 00000001 b7fff230 bffff850 b7fc36d8 00000000 00000000 b7fe17b4
-> GPR16: 00000000 b7ffd588 b7ffe8b8 b7ffee10 b7fff214 b7ffdf40 b7fff208 bffff858
-> GPR24: bffff970 b7fff130 00000001 bffff960 b7fff2b0 b7ffd5f0 b7ffe8a8 bffff850
-> NIP [b7fc3714] 0xb7fc3714
-> LR [b7fc3714] 0xb7fc3714
-> --- interrupt: 7d8
-> ------------[ cut here ]------------
-> kernel BUG at arch/powerpc/kernel/signal.c:298!
-> Oops: Exception in kernel mode, sig: 5 [#1]
-> BE PAGE_SIZE=4K SMP NR_CPUS=24 QEMU e500
-> Modules linked in:
-> CPU: 0 PID: 139 Comm: test Not tainted 5.13.0-dirty #4
-> NIP:  c000969c LR: c000969c CTR: c065f540
-> REGS: c7a0fdc0 TRAP: 0700   Not tainted  (5.13.0-dirty)
-> MSR:  00028002 <CE,EE>  CR: 28000282  XER: 20000000
-> 
-> GPR00: c000969c c7a0fe80 c70ef500 c70efbd8 c70ef500 00000010 c7a0fc38 00000002
-> GPR08: 00000001 00000000 00000000 00000000 28000282 00000000 00000000 b7fe17b4
-> GPR16: 00000000 b7ffd588 b7ffe8b8 b7ffee10 b7fff214 b7ffdf40 b7fff208 bffff858
-> GPR24: bffff970 b7fff130 00000001 bffff960 c7a0ff10 00000800 c70ef500 00000102
-> NIP [c000969c] do_notify_resume+0x31c/0x320
-> LR [c000969c] do_notify_resume+0x31c/0x320
-> Call Trace:
-> [c7a0fe80] [c000969c] do_notify_resume+0x31c/0x320 (unreliable)
-> [c7a0fee0] [c0010b94] interrupt_exit_user_prepare+0x94/0xc0
-> [c7a0ff00] [c00151e8] interrupt_return+0x14/0x13c
-> --- interrupt: 7d8 at 0xb7fc3714
-> NIP:  b7fc3714 LR: b7fc3714 CTR: 00000003
-> REGS: c7a0ff10 TRAP: 07d8   Not tainted  (5.13.0-dirty)
-> MSR:  1002d002 <CE,EE,PR,ME>  CR: 22000284  XER: 00000000
-> 
-> GPR00: b7fc3584 bffff850 00000000 00000000 00000000 00000000 000000a0 6474e552
-> GPR08: b7fbe0d4 00000001 b7fff230 bffff850 b7fc36d8 00000000 00000000 b7fe17b4
-> GPR16: 00000000 b7ffd588 b7ffe8b8 b7ffee10 b7fff214 b7ffdf40 b7fff208 bffff858
-> GPR24: bffff970 b7fff130 00000001 bffff960 b7fff2b0 b7ffd5f0 b7ffe8a8 bffff850
-> NIP [b7fc3714] 0xb7fc3714
-> LR [b7fc3714] 0xb7fc3714
-> --- interrupt: 7d8
-> Instruction dump:
-> 93a10054 90010064 93c10058 48b95369 80c20398 3c60c0dc 7f84e378 38e204b0
-> 3863ce30 4809d819 80620704 4bfff7c9 <0fe00000> 3d20c0ff 8129c014 2c090000
-> ---[ end trace 1cbf27cd19ae39a0 ]---
-> 
->>> If I'm not missing something, the 'regs' pointer that is eventually
->>> passed to do_notify_resume() is calculated in interrupt_return() by
->>> adding STACK_FRAME_OVERHEAD (defined to 112) to the value of r1. That
->>> means all registers are saved on the stack before entering the
->>> interrupt handler and, upon returning, a pointer to the register
->>> structure is calculated from the stack pointer. Either the offset
->>> itself is wrong, or the stack pointer is off by 0x30.
->>>
->>> This is as far as I have gone. Hopefully this rings a bell to someone
->>> who is familiar with that part of the code and has a better
->>> understanding of PPC32 interrupt handling in general.
->>>
->>> Last but not least, my configuration is fairly standard. I'm using the
->>> powerpc-e500mc--glibc--bleeding-edge-2020.08-1 toolchain from Bootlin
->>> to compile everything (kernel and user-space). The qemu version is
->>> 5.2.0 (Fedora 34) and the user-space is a small Busybox based rootfs
->>> that I built using Buildroot 2021.05. The gdb version is 9.2.
+Untested diff below... Nathan, it would be ace if you're brave enough
+to give this a shot.
+
+Will
+
+--->8
+
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index bbad7c559901..9e1218f89e4b 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -2820,7 +2820,7 @@ void device_initialize(struct device *dev)
+ 	dev->dma_coherent = dma_default_coherent;
+ #endif
+ #ifdef CONFIG_SWIOTLB
+-	dev->dma_io_tlb_mem = io_tlb_default_mem;
++	dev->dma_io_tlb_mem = &io_tlb_default_mem;
+ #endif
+ }
+ EXPORT_SYMBOL_GPL(device_initialize);
+diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
+index 785ec7e8be01..f06d9b4f1e0f 100644
+--- a/drivers/xen/swiotlb-xen.c
++++ b/drivers/xen/swiotlb-xen.c
+@@ -164,7 +164,7 @@ int __ref xen_swiotlb_init(void)
+ 	int rc = -ENOMEM;
+ 	char *start;
+ 
+-	if (io_tlb_default_mem != NULL) {
++	if (io_tlb_default_mem.nslabs) {
+ 		pr_warn("swiotlb buffer already initialized\n");
+ 		return -EEXIST;
+ 	}
+@@ -547,7 +547,7 @@ xen_swiotlb_sync_sg_for_device(struct device *dev, struct scatterlist *sgl,
+ static int
+ xen_swiotlb_dma_supported(struct device *hwdev, u64 mask)
+ {
+-	return xen_phys_to_dma(hwdev, io_tlb_default_mem->end - 1) <= mask;
++	return xen_phys_to_dma(hwdev, io_tlb_default_mem.end - 1) <= mask;
+ }
+ 
+ const struct dma_map_ops xen_swiotlb_dma_ops = {
+diff --git a/include/linux/swiotlb.h b/include/linux/swiotlb.h
+index 39284ff2a6cd..b0cb2a9973f4 100644
+--- a/include/linux/swiotlb.h
++++ b/include/linux/swiotlb.h
+@@ -103,9 +103,9 @@ struct io_tlb_mem {
+ 		phys_addr_t orig_addr;
+ 		size_t alloc_size;
+ 		unsigned int list;
+-	} slots[];
++	} *slots;
+ };
+-extern struct io_tlb_mem *io_tlb_default_mem;
++extern struct io_tlb_mem io_tlb_default_mem;
+ 
+ static inline bool is_swiotlb_buffer(struct device *dev, phys_addr_t paddr)
+ {
+diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+index 0ffbaae9fba2..91cd1d413027 100644
+--- a/kernel/dma/swiotlb.c
++++ b/kernel/dma/swiotlb.c
+@@ -70,7 +70,7 @@
+ 
+ enum swiotlb_force swiotlb_force;
+ 
+-struct io_tlb_mem *io_tlb_default_mem;
++struct io_tlb_mem io_tlb_default_mem;
+ 
+ /*
+  * Max segment that we can provide which (if pages are contingous) will
+@@ -101,7 +101,7 @@ early_param("swiotlb", setup_io_tlb_npages);
+ 
+ unsigned int swiotlb_max_segment(void)
+ {
+-	return io_tlb_default_mem ? max_segment : 0;
++	return io_tlb_default_mem.nslabs ? max_segment : 0;
+ }
+ EXPORT_SYMBOL_GPL(swiotlb_max_segment);
+ 
+@@ -134,9 +134,9 @@ void __init swiotlb_adjust_size(unsigned long size)
+ 
+ void swiotlb_print_info(void)
+ {
+-	struct io_tlb_mem *mem = io_tlb_default_mem;
++	struct io_tlb_mem *mem = &io_tlb_default_mem;
+ 
+-	if (!mem) {
++	if (!mem->nslabs) {
+ 		pr_warn("No low mem\n");
+ 		return;
+ 	}
+@@ -163,11 +163,11 @@ static inline unsigned long nr_slots(u64 val)
+  */
+ void __init swiotlb_update_mem_attributes(void)
+ {
+-	struct io_tlb_mem *mem = io_tlb_default_mem;
++	struct io_tlb_mem *mem = &io_tlb_default_mem;
+ 	void *vaddr;
+ 	unsigned long bytes;
+ 
+-	if (!mem || mem->late_alloc)
++	if (!mem->nslabs || mem->late_alloc)
+ 		return;
+ 	vaddr = phys_to_virt(mem->start);
+ 	bytes = PAGE_ALIGN(mem->nslabs << IO_TLB_SHIFT);
+@@ -201,25 +201,24 @@ static void swiotlb_init_io_tlb_mem(struct io_tlb_mem *mem, phys_addr_t start,
+ 
+ int __init swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose)
+ {
+-	struct io_tlb_mem *mem;
++	struct io_tlb_mem *mem = &io_tlb_default_mem;
+ 	size_t alloc_size;
+ 
+ 	if (swiotlb_force == SWIOTLB_NO_FORCE)
+ 		return 0;
+ 
+ 	/* protect against double initialization */
+-	if (WARN_ON_ONCE(io_tlb_default_mem))
++	if (WARN_ON_ONCE(mem->nslabs))
+ 		return -ENOMEM;
+ 
+-	alloc_size = PAGE_ALIGN(struct_size(mem, slots, nslabs));
+-	mem = memblock_alloc(alloc_size, PAGE_SIZE);
+-	if (!mem)
++	alloc_size = PAGE_ALIGN(array_size(sizeof(*mem->slots), nslabs));
++	mem->slots = memblock_alloc(alloc_size, PAGE_SIZE);
++	if (!mem->slots)
+ 		panic("%s: Failed to allocate %zu bytes align=0x%lx\n",
+ 		      __func__, alloc_size, PAGE_SIZE);
+ 
+ 	swiotlb_init_io_tlb_mem(mem, __pa(tlb), nslabs, false);
+ 
+-	io_tlb_default_mem = mem;
+ 	if (verbose)
+ 		swiotlb_print_info();
+ 	swiotlb_set_max_segment(mem->nslabs << IO_TLB_SHIFT);
+@@ -304,26 +303,24 @@ swiotlb_late_init_with_default_size(size_t default_size)
+ int
+ swiotlb_late_init_with_tbl(char *tlb, unsigned long nslabs)
+ {
+-	struct io_tlb_mem *mem;
++	struct io_tlb_mem *mem = &io_tlb_default_mem;
+ 	unsigned long bytes = nslabs << IO_TLB_SHIFT;
+ 
+ 	if (swiotlb_force == SWIOTLB_NO_FORCE)
+ 		return 0;
+ 
+ 	/* protect against double initialization */
+-	if (WARN_ON_ONCE(io_tlb_default_mem))
++	if (WARN_ON_ONCE(mem->nslabs))
+ 		return -ENOMEM;
+ 
+-	mem = (void *)__get_free_pages(GFP_KERNEL,
+-		get_order(struct_size(mem, slots, nslabs)));
+-	if (!mem)
++	mem->slots = (void *)__get_free_pages(GFP_KERNEL | __GFP_ZERO,
++		get_order(array_size(sizeof(*mem->slots), nslabs)));
++	if (!mem->slots)
+ 		return -ENOMEM;
+ 
+-	memset(mem, 0, sizeof(*mem));
+ 	set_memory_decrypted((unsigned long)tlb, bytes >> PAGE_SHIFT);
+ 	swiotlb_init_io_tlb_mem(mem, virt_to_phys(tlb), nslabs, true);
+ 
+-	io_tlb_default_mem = mem;
+ 	swiotlb_print_info();
+ 	swiotlb_set_max_segment(mem->nslabs << IO_TLB_SHIFT);
+ 	return 0;
+@@ -331,18 +328,23 @@ swiotlb_late_init_with_tbl(char *tlb, unsigned long nslabs)
+ 
+ void __init swiotlb_exit(void)
+ {
+-	struct io_tlb_mem *mem = io_tlb_default_mem;
+-	size_t size;
++	struct io_tlb_mem *mem = &io_tlb_default_mem;
++	size_t tbl_size, slots_size;
+ 
+-	if (!mem)
++	if (!mem->nslabs)
+ 		return;
+ 
+-	size = struct_size(mem, slots, mem->nslabs);
+-	if (mem->late_alloc)
+-		free_pages((unsigned long)mem, get_order(size));
+-	else
+-		memblock_free_late(__pa(mem), PAGE_ALIGN(size));
+-	io_tlb_default_mem = NULL;
++	tbl_size = mem->end - mem->start;
++	slots_size = array_size(sizeof(*mem->slots), mem->nslabs);
++	if (mem->late_alloc) {
++		free_pages((unsigned long)mem->start, get_order(tbl_size));
++		free_pages((unsigned long)mem->slots, get_order(slots_size));
++	} else {
++		memblock_free_late(__pa(mem->start), PAGE_ALIGN(tbl_size));
++		memblock_free_late(__pa(mem->slots), PAGE_ALIGN(slots_size));
++	}
++
++	memset(mem, 0, sizeof(*mem));
+ }
+ 
+ /*
+@@ -682,7 +684,9 @@ size_t swiotlb_max_mapping_size(struct device *dev)
+ 
+ bool is_swiotlb_active(struct device *dev)
+ {
+-	return dev->dma_io_tlb_mem != NULL;
++	struct io_tlb_mem *mem = dev->dma_io_tlb_mem;
++
++	return mem && mem->nslabs;
+ }
+ EXPORT_SYMBOL_GPL(is_swiotlb_active);
+ 
+@@ -697,10 +701,10 @@ static void swiotlb_create_debugfs_files(struct io_tlb_mem *mem)
+ 
+ static int __init swiotlb_create_default_debugfs(void)
+ {
+-	struct io_tlb_mem *mem = io_tlb_default_mem;
++	struct io_tlb_mem *mem = &io_tlb_default_mem;
+ 
+ 	debugfs_dir = debugfs_create_dir("swiotlb", NULL);
+-	if (mem) {
++	if (mem->nslabs) {
+ 		mem->debugfs = debugfs_dir;
+ 		swiotlb_create_debugfs_files(mem);
+ 	}
+@@ -754,10 +758,17 @@ static int rmem_swiotlb_device_init(struct reserved_mem *rmem,
+ 	 * to it.
+ 	 */
+ 	if (!mem) {
+-		mem = kzalloc(struct_size(mem, slots, nslabs), GFP_KERNEL);
++		mem = kzalloc(sizeof(*mem), GFP_KERNEL);
+ 		if (!mem)
+ 			return -ENOMEM;
+ 
++		mem->slots = kzalloc(array_size(sizeof(*mem->slots), nslabs),
++				     GFP_KERNEL);
++		if (!mem->slots) {
++			kfree(mem);
++			return -ENOMEM;
++		}
++
+ 		set_memory_decrypted((unsigned long)phys_to_virt(rmem->base),
+ 				     rmem->size >> PAGE_SHIFT);
+ 		swiotlb_init_io_tlb_mem(mem, rmem->base, nslabs, false);
+@@ -781,7 +792,7 @@ static int rmem_swiotlb_device_init(struct reserved_mem *rmem,
+ static void rmem_swiotlb_device_release(struct reserved_mem *rmem,
+ 					struct device *dev)
+ {
+-	dev->dma_io_tlb_mem = io_tlb_default_mem;
++	dev->dma_io_tlb_mem = &io_tlb_default_mem;
+ }
+ 
+ static const struct reserved_mem_ops rmem_swiotlb_ops = {
