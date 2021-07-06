@@ -1,51 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F40B93BD741
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 14:55:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80F6A3BD786
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 15:16:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GK2Zq6QZgz3f92
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 22:54:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GK33w2ddjz3bPN
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 23:16:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33;
- helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de;
- receiver=<UNKNOWN>)
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
- [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GK1mG2jsCz2ysm
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Jul 2021 22:18:04 +1000 (AEST)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1m0jyc-0001jk-4o; Tue, 06 Jul 2021 14:14:58 +0200
-Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1m0jyP-0001fC-Gy; Tue, 06 Jul 2021 14:14:45 +0200
-Date: Tue, 6 Jul 2021 14:14:45 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Cornelia Huck <cohuck@redhat.com>
-Subject: Re: [PATCH] bus: Make remove callback return void
-Message-ID: <20210706121445.o3nxgi4bhzrw5w73@pengutronix.de>
-References: <20210706095037.1425211-1-u.kleine-koenig@pengutronix.de>
- <87pmvvhfqq.fsf@redhat.com> <87mtqzhesu.fsf@redhat.com>
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GK33X2Glkz2xjZ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Jul 2021 23:16:20 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 4GK33P0hFlzBDSn;
+ Tue,  6 Jul 2021 15:16:17 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id i5brs2mokII7; Tue,  6 Jul 2021 15:16:17 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4GK33N6rVCzBD68;
+ Tue,  6 Jul 2021 15:16:16 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id DF4B08B7A9;
+ Tue,  6 Jul 2021 15:16:16 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id TwRsMLqlSPd4; Tue,  6 Jul 2021 15:16:16 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 69B288B7A3;
+ Tue,  6 Jul 2021 15:16:16 +0200 (CEST)
+Subject: Re: Hitting BUG_ON in do_notify_resume() with gdb and SIGTRAP
+To: Radu Rendec <radu.rendec@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ Nicholas Piggin <npiggin@gmail.com>
+References: <6b5327e32549860c1e6c73e5b669528bfb383df2.camel@gmail.com>
+ <d02fca74-933b-4586-496b-65511e435628@csgroup.eu>
+ <786399a77d82890a391172fee269272e12c52489.camel@gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <200445ae-c3fc-ccc8-f77d-aebce2b09046@csgroup.eu>
+Date: Tue, 6 Jul 2021 15:16:16 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="qlv3rwmw2vf6tbvn"
-Content-Disposition: inline
-In-Reply-To: <87mtqzhesu.fsf@redhat.com>
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
- SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
-X-Mailman-Approved-At: Tue, 06 Jul 2021 22:48:04 +1000
+In-Reply-To: <786399a77d82890a391172fee269272e12c52489.camel@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,230 +65,135 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nvdimm@lists.linux.dev, Alexey Kardashevskiy <aik@ozlabs.ru>,
- Samuel Iglesias Gonsalvez <siglesias@igalia.com>,
- Jens Taprogge <jens.taprogge@taprogge.org>,
- Alison Schofield <alison.schofield@intel.com>,
- Jaroslav Kysela <perex@perex.cz>,
- Benjamin Tissoires <benjamin.tissoires@redhat.com>,
- Paul Mackerras <paulus@samba.org>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- "K. Y. Srinivasan" <kys@microsoft.com>,
- Mike Christie <michael.christie@oracle.com>, Wei Liu <wei.liu@kernel.org>,
- Maxim Levitsky <maximlevitsky@gmail.com>, Samuel Holland <samuel@sholland.org>,
- Takashi Iwai <tiwai@suse.com>, linux-acpi@vger.kernel.org,
- Tom Rix <trix@redhat.com>, xen-devel@lists.xenproject.org,
- Tomas Winkler <tomas.winkler@intel.com>, Jason Wang <jasowang@redhat.com>,
- Ohad Ben-Cohen <ohad@wizery.com>, Alex Williamson <alex.williamson@redhat.com>,
- Alex Elder <elder@kernel.org>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Geoff Levand <geoff@infradead.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org, Kai-Heng Feng <kai.heng.feng@canonical.com>,
- kernel@pengutronix.de, Jon Mason <jdmason@kudzu.us>,
- linux-ntb@googlegroups.com, linux-media@vger.kernel.org,
- David Woodhouse <dwmw@amazon.co.uk>,
- Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Manohar Vanga <manohar.vanga@gmail.com>,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- Dominik Brodowski <linux@dominikbrodowski.net>,
- virtualization@lists.linux-foundation.org,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- target-devel@vger.kernel.org,
- Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
- linux-i2c@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>,
- Stephen Hemminger <sthemmin@microsoft.com>, Jiri Slaby <jirislaby@kernel.org>,
- Helge Deller <deller@gmx.de>,
- =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
- industrypack-devel@lists.sourceforge.net, Wu Hao <hao.wu@intel.com>,
- alsa-devel@alsa-project.org, linux-arm-msm@vger.kernel.org,
- Maxime Ripard <mripard@kernel.org>,
- William Breathitt Gray <vilhelm.gray@gmail.com>, greybus-dev@lists.linaro.org,
- Frank Li <lznuaa@gmail.com>, Mark Gross <mgross@linux.intel.com>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- linux-arm-kernel@lists.infradead.org, Johannes Thumshirn <morbidrsa@gmail.com>,
- Mathieu Poirier <mathieu.poirier@linaro.org>, Stephen Boyd <sboyd@kernel.org>,
- Wolfram Sang <wsa@kernel.org>, Joey Pabalan <jpabalanb@gmail.com>,
- Yehezkel Bernat <YehezkelShB@gmail.com>,
- Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>, Len Brown <lenb@kernel.org>,
- Bodo Stroesser <bostroesser@gmail.com>, Ulf Hansson <ulf.hansson@linaro.org>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Tyrel Datwyler <tyreld@linux.ibm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- linux-pci@vger.kernel.org, Julien Grall <jgrall@amazon.com>,
- SeongJae Park <sjpark@amazon.de>, linux-hyperv@vger.kernel.org,
- platform-driver-x86@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
- Jernej Skrabec <jernej.skrabec@gmail.com>, Ira Weiny <ira.weiny@intel.com>,
- Rob Herring <robh@kernel.org>, Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
- Dave Jiang <dave.jiang@intel.com>, linux-staging@lists.linux.dev,
- Dexuan Cui <decui@microsoft.com>, Qinglang Miao <miaoqinglang@huawei.com>,
- Kishon Vijay Abraham I <kishon@ti.com>, Chen-Yu Tsai <wens@csie.org>,
- linux-input@vger.kernel.org, Allen Hubbe <allenbh@gmail.com>,
- Alex Dubov <oakad@yahoo.com>, Haiyang Zhang <haiyangz@microsoft.com>,
- Jiri Kosina <jikos@kernel.org>, Vladimir Zapolskiy <vz@mleia.com>,
- Ben Widawsky <ben.widawsky@intel.com>, Moritz Fischer <mdf@kernel.org>,
- linux-cxl@vger.kernel.org, Michael Buesch <m@bues.ch>,
- Dan Williams <dan.j.williams@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Cristian Marussi <cristian.marussi@arm.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
- Martyn Welch <martyn@welchs.me.uk>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, linux-mmc@vger.kernel.org,
- linux-sunxi@lists.linux.dev, Stefan Richter <stefanr@s5r6.in-berlin.de>,
- Sudeep Holla <sudeep.holla@arm.com>, "David S. Miller" <davem@davemloft.net>,
- Sven Van Asbroeck <TheSven73@gmail.com>, kvm@vger.kernel.org,
- "Michael S. Tsirkin" <mst@redhat.com>, linux-remoteproc@vger.kernel.org,
- Maximilian Luz <luzmaximilian@gmail.com>,
- Bjorn Andersson <bjorn.andersson@linaro.org>,
- Kirti Wankhede <kwankhede@nvidia.com>,
- Andreas Noever <andreas.noever@gmail.com>, linux-i3c@lists.infradead.org,
- linux1394-devel@lists.sourceforge.net, Lee Jones <lee.jones@linaro.org>,
- Arnd Bergmann <arnd@arndb.de>, linux-scsi@vger.kernel.org,
- Vishal Verma <vishal.l.verma@intel.com>, Russell King <linux@armlinux.org.uk>,
- Thorsten Scherer <t.scherer@eckelmann.de>, Andy Gross <agross@kernel.org>,
- linux-serial@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
- Michael Jamet <michael.jamet@intel.com>, Johan Hovold <johan@kernel.org>,
- Hans de Goede <hdegoede@redhat.com>, Hannes Reinecke <hare@suse.de>,
- Adrian Hunter <adrian.hunter@intel.com>,
- Johannes Berg <johannes@sipsolutions.net>, Juergen Gross <jgross@suse.com>,
- netdev@vger.kernel.org, linux-mips@vger.kernel.org,
- Alexandre Bounine <alex.bou9@gmail.com>, Vinod Koul <vkoul@kernel.org>,
- Mark Brown <broonie@kernel.org>, Marc Zyngier <maz@kernel.org>,
- dmaengine@vger.kernel.org, linux-fpga@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---qlv3rwmw2vf6tbvn
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 06, 2021 at 01:17:37PM +0200, Cornelia Huck wrote:
-> On Tue, Jul 06 2021, Cornelia Huck <cohuck@redhat.com> wrote:
->=20
-> > On Tue, Jul 06 2021, Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de=
-> wrote:
-> >
-> >> The driver core ignores the return value of this callback because there
-> >> is only little it can do when a device disappears.
-> >>
-> >> This is the final bit of a long lasting cleanup quest where several
-> >> buses were converted to also return void from their remove callback.
-> >> Additionally some resource leaks were fixed that were caused by drivers
-> >> returning an error code in the expectation that the driver won't go
-> >> away.
-> >>
-> >> With struct bus_type::remove returning void it's prevented that newly
-> >> implemented buses return an ignored error code and so don't anticipate
-> >> wrong expectations for driver authors.
-> >
-> > Yay!
-> >
-> >>
-> >> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> >> ---
-> >> Hello,
-> >>
-> >> this patch depends on "PCI: endpoint: Make struct pci_epf_driver::remo=
-ve
-> >> return void" that is not yet applied, see
-> >> https://lore.kernel.org/r/20210223090757.57604-1-u.kleine-koenig@pengu=
-tronix.de.
-> >>
-> >> I tested it using allmodconfig on amd64 and arm, but I wouldn't be
-> >> surprised if I still missed to convert a driver. So it would be great =
-to
-> >> get this into next early after the merge window closes.
-> >
-> > I'm afraid you missed the s390-specific busses in drivers/s390/cio/
-> > (css/ccw/ccwgroup).
+Le 06/07/2021 à 13:56, Radu Rendec a écrit :
+> On Tue, 2021-07-06 at 12:43 +0200, Christophe Leroy wrote:
+>> Le 04/07/2021 à 23:38, Radu Rendec a écrit :
+>>> I'm trying to set up my (virtual) environment to test an old bug in the
+>>> PPC32 ptrace() code. I came across a completely different problem,
+>>> which seems to make gdb pretty much unusable on PPC32. I'm not sure if
+>>> this is a real kernel bug or maybe something wrong with my
+>>> configuration.
+>>>
+>>> I'm running kernel 5.13 in a qemu VM with one e500mc CPU. I am running
+>>> native gdb (inside the VM) and setting a breakpoint in main() in a test
+>>> "hello world" program. Upon running the test program, I am hitting the
+>>> BUG_ON in do_notify_resume() on line 292. The kernel bug log snippet is
+>>> included below at the end of the email.
+>>>
+>>> FWIW, gdb says:
+>>> Program terminated with signal SIGTRAP, Trace/breakpoint trap.
+>>> The program no longer exists.
+>>>
+>>> I also added a pr_info() to do_notify_resume() just to see how much
+>>> different 'regs' and 'current->thread.regs' are. Surprisingly, they are
+>>> just 0x30 apart: regs=c7955f10 cur=c7955f40. Also, 'current' seems to
+>>> be OK (pid and comm are consistent with the test program).
+>>
+>> The TRAP = 0x7d8 is obviously wrong.
+>>
+>> Need to know which 'TRAP' it is exactly.
+>> Could you try to dump what we have at the correct regs ?
+>> Something like 'show_regs(current->thread.regs)' should do it.
+> 
+> Sure, please see the output below. It looks to me like the "correct"
+> regs are just garbage. Either they are overwritten or current->thread.regs
+> is wrong. But in any case, r1 = 0 doesn't look good.
 
-:-\
+Yes indeed. I think I identified the problem. For Critical interrupts like DEBUG interrupt, struct 
+exception_regs is added, therefore the frame has 12x4 (0x30) more bytes. That's what you see.
 
-> The change for vfio/mdev looks good.
->=20
-> The following should do the trick for s390; not sure if other
-> architectures have easy-to-miss busses as well.
->=20
-> diff --git a/drivers/s390/cio/ccwgroup.c b/drivers/s390/cio/ccwgroup.c
-> index 9748165e08e9..a66f416138ab 100644
-> --- a/drivers/s390/cio/ccwgroup.c
-> +++ b/drivers/s390/cio/ccwgroup.c
-> @@ -439,17 +439,15 @@ module_exit(cleanup_ccwgroup);
-> =20
->  /************************** driver stuff ******************************/
-> =20
-> -static int ccwgroup_remove(struct device *dev)
-> +static void ccwgroup_remove(struct device *dev)
->  {
->  	struct ccwgroup_device *gdev =3D to_ccwgroupdev(dev);
->  	struct ccwgroup_driver *gdrv =3D to_ccwgroupdrv(dev->driver);
-> =20
->  	if (!dev->driver)
-> -		return 0;
-> +		return;
+Commit 
+https://github.com/linuxppc/linux/commit/db297c3b07af7856fb7c666fbc9792d8e37556be#diff-dd6b952a3980da19df4facccdb4f3dddeb8cef56ee384c7f03d02b23b0c6cb26
 
-This is fine to be squashed into my patch. In the long run: in a remove
-callback dev->driver cannot be NULL, so this if could go away.
+Need to find the best solution now to fix that.
 
->  	if (gdrv->remove)
->  		gdrv->remove(gdev);
-> -
-> -	return 0;
->  }
-> =20
->  static void ccwgroup_shutdown(struct device *dev)
-> diff --git a/drivers/s390/cio/css.c b/drivers/s390/cio/css.c
-> index a974943c27da..ebc321edba51 100644
-> --- a/drivers/s390/cio/css.c
-> +++ b/drivers/s390/cio/css.c
-> @@ -1371,15 +1371,14 @@ static int css_probe(struct device *dev)
->  	return ret;
->  }
-> =20
-> -static int css_remove(struct device *dev)
-> +static void css_remove(struct device *dev)
->  {
->  	struct subchannel *sch;
-> -	int ret;
-> =20
->  	sch =3D to_subchannel(dev);
-> -	ret =3D sch->driver->remove ? sch->driver->remove(sch) : 0;
-> +	if (sch->driver->remove)
-> +		sch->driver->remove(sch);
-
-Maybe the return type for this function pointer can be changed to void,
-too.
-
-I will add these changes to a v2 that I plan to send out after the dust
-settles some more.
-
-Thanks
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---qlv3rwmw2vf6tbvn
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmDkSTIACgkQwfwUeK3K
-7AmpKwf/cEGBSAtr38Z6g8D5Sb7wD6N+VKt79z1eeeFykI81lxaibOS1hxqeDq28
-jW5itKeFVh1+cP8UVt8l7VJlvhIUO+xFsMgJ/LrRGoynkDBqMdlbTfQnZ/yOULyX
-KI6vecR8mDHh+M0cs+KxsmbHXtKL+WJfAnGYMVFhrq7cayZ2ZnflKlVAFFyN1iWR
-ewHXQduLqDi718k76IDgu9PZfUuQbRNLuX69ZAwyVl1F+BpBxMCvnMU2apcdJQ1B
-ovWeCbDSh+HLgMrfUAYcVddvRKo81lrMn1i24FK2RuVnrnYdupIRl3L+Y5V4D7Pd
-xOqLOUY6yncBK5uZwnZctg9p3aX8wA==
-=Zesi
------END PGP SIGNATURE-----
-
---qlv3rwmw2vf6tbvn--
+> 
+> regs=c7a0ff10 cur=c7a0ff40 pid=139 comm=test
+> CPU: 0 PID: 139 Comm: test Not tainted 5.13.0-dirty #4
+> NIP:  10000338 LR: 00030000 CTR: 00000003
+> REGS: c7a0ff40 TRAP: 670000   Not tainted  (5.13.0-dirty)
+> MSR:  1002d202 <CE,EE,PR,ME,DE>  CR: 10000004  XER: 80670100
+> 
+> GPR00: b7fc36d8 00000000 00000000 b7fe17b4 00000000 b7ffd588 b7ffe8b8 b7ffee10
+> GPR08: b7fff214 b7ffdf40 b7fff208 bffff858 bffff970 b7fff130 00000001 bffff960
+> GPR16: b7fff2b0 b7ffd5f0 b7ffe8a8 bffff850 b7fc3714 1002d002 b7fff208 00000003
+> GPR24: b7fc3714 00000000 22000284 bffff960 000007d8 10000338 08000000 bffff850
+> NIP [10000338] 0x10000338
+> LR [00030000] 0x30000
+> Call Trace:
+> [c7a0fe40] [c0008eac] show_regs+0x4c/0x1b0 (unreliable)
+> [c7a0fe80] [c000969c] do_notify_resume+0x31c/0x320
+> [c7a0fee0] [c0010b94] interrupt_exit_user_prepare+0x94/0xc0
+> [c7a0ff00] [c00151e8] interrupt_return+0x14/0x13c
+> --- interrupt: 7d8 at 0xb7fc3714
+> NIP:  b7fc3714 LR: b7fc3714 CTR: 00000003
+> REGS: c7a0ff10 TRAP: 07d8   Not tainted  (5.13.0-dirty)
+> MSR:  1002d002 <CE,EE,PR,ME>  CR: 22000284  XER: 00000000
+> 
+> GPR00: b7fc3584 bffff850 00000000 00000000 00000000 00000000 000000a0 6474e552
+> GPR08: b7fbe0d4 00000001 b7fff230 bffff850 b7fc36d8 00000000 00000000 b7fe17b4
+> GPR16: 00000000 b7ffd588 b7ffe8b8 b7ffee10 b7fff214 b7ffdf40 b7fff208 bffff858
+> GPR24: bffff970 b7fff130 00000001 bffff960 b7fff2b0 b7ffd5f0 b7ffe8a8 bffff850
+> NIP [b7fc3714] 0xb7fc3714
+> LR [b7fc3714] 0xb7fc3714
+> --- interrupt: 7d8
+> ------------[ cut here ]------------
+> kernel BUG at arch/powerpc/kernel/signal.c:298!
+> Oops: Exception in kernel mode, sig: 5 [#1]
+> BE PAGE_SIZE=4K SMP NR_CPUS=24 QEMU e500
+> Modules linked in:
+> CPU: 0 PID: 139 Comm: test Not tainted 5.13.0-dirty #4
+> NIP:  c000969c LR: c000969c CTR: c065f540
+> REGS: c7a0fdc0 TRAP: 0700   Not tainted  (5.13.0-dirty)
+> MSR:  00028002 <CE,EE>  CR: 28000282  XER: 20000000
+> 
+> GPR00: c000969c c7a0fe80 c70ef500 c70efbd8 c70ef500 00000010 c7a0fc38 00000002
+> GPR08: 00000001 00000000 00000000 00000000 28000282 00000000 00000000 b7fe17b4
+> GPR16: 00000000 b7ffd588 b7ffe8b8 b7ffee10 b7fff214 b7ffdf40 b7fff208 bffff858
+> GPR24: bffff970 b7fff130 00000001 bffff960 c7a0ff10 00000800 c70ef500 00000102
+> NIP [c000969c] do_notify_resume+0x31c/0x320
+> LR [c000969c] do_notify_resume+0x31c/0x320
+> Call Trace:
+> [c7a0fe80] [c000969c] do_notify_resume+0x31c/0x320 (unreliable)
+> [c7a0fee0] [c0010b94] interrupt_exit_user_prepare+0x94/0xc0
+> [c7a0ff00] [c00151e8] interrupt_return+0x14/0x13c
+> --- interrupt: 7d8 at 0xb7fc3714
+> NIP:  b7fc3714 LR: b7fc3714 CTR: 00000003
+> REGS: c7a0ff10 TRAP: 07d8   Not tainted  (5.13.0-dirty)
+> MSR:  1002d002 <CE,EE,PR,ME>  CR: 22000284  XER: 00000000
+> 
+> GPR00: b7fc3584 bffff850 00000000 00000000 00000000 00000000 000000a0 6474e552
+> GPR08: b7fbe0d4 00000001 b7fff230 bffff850 b7fc36d8 00000000 00000000 b7fe17b4
+> GPR16: 00000000 b7ffd588 b7ffe8b8 b7ffee10 b7fff214 b7ffdf40 b7fff208 bffff858
+> GPR24: bffff970 b7fff130 00000001 bffff960 b7fff2b0 b7ffd5f0 b7ffe8a8 bffff850
+> NIP [b7fc3714] 0xb7fc3714
+> LR [b7fc3714] 0xb7fc3714
+> --- interrupt: 7d8
+> Instruction dump:
+> 93a10054 90010064 93c10058 48b95369 80c20398 3c60c0dc 7f84e378 38e204b0
+> 3863ce30 4809d819 80620704 4bfff7c9 <0fe00000> 3d20c0ff 8129c014 2c090000
+> ---[ end trace 1cbf27cd19ae39a0 ]---
+> 
+>>> If I'm not missing something, the 'regs' pointer that is eventually
+>>> passed to do_notify_resume() is calculated in interrupt_return() by
+>>> adding STACK_FRAME_OVERHEAD (defined to 112) to the value of r1. That
+>>> means all registers are saved on the stack before entering the
+>>> interrupt handler and, upon returning, a pointer to the register
+>>> structure is calculated from the stack pointer. Either the offset
+>>> itself is wrong, or the stack pointer is off by 0x30.
+>>>
+>>> This is as far as I have gone. Hopefully this rings a bell to someone
+>>> who is familiar with that part of the code and has a better
+>>> understanding of PPC32 interrupt handling in general.
+>>>
+>>> Last but not least, my configuration is fairly standard. I'm using the
+>>> powerpc-e500mc--glibc--bleeding-edge-2020.08-1 toolchain from Bootlin
+>>> to compile everything (kernel and user-space). The qemu version is
+>>> 5.2.0 (Fedora 34) and the user-space is a small Busybox based rootfs
+>>> that I built using Buildroot 2021.05. The gdb version is 9.2.
