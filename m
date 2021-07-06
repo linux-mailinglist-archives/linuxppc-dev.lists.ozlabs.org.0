@@ -1,106 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42E173BD3AF
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 13:56:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B81CC3BD3B0
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 13:57:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GK1Hn1Y5Pz3bXj
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 21:56:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GK1JF4pFdz306m
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 21:57:17 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hdM04e1/;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=j9lcl5IO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::72f;
+ helo=mail-qk1-x72f.google.com; envelope-from=radu.rendec@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=hdM04e1/; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=j9lcl5IO; dkim-atps=neutral
+Received: from mail-qk1-x72f.google.com (mail-qk1-x72f.google.com
+ [IPv6:2607:f8b0:4864:20::72f])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GK1HJ3R5lz300S
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Jul 2021 21:56:27 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 166BY7sq093435; Tue, 6 Jul 2021 07:56:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : from : to : cc
- : references : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=eAxSoAMfy4WoRm6Nob+I0xEpZ8yxFb5egnCHiA4R4fk=;
- b=hdM04e1/UZOt5sSzBvmJyJ5K7lIPw2Ck6xURH6ihBj6phyEslpAdtkhpWlaKodXE4Gdj
- EtZb2H+Jy2qy2zDvqeNfQDXPD5SvpuniGKJAcl/24kqciBY4ZcdnxeBma+5btMiietnZ
- FzDEXOOMJ/8yXAb66N1lBSNtDWlitJ0a5luYJ6QcTNgGQw4GOMtl0Kyxw7sKC9kRHShD
- AisACQ5S94u+NmYxL0hMhgb28idH99ZOANQ7b/cKm5+SNzof7Hf5dU7OmOhXQOFBNHrZ
- BIvb7NbPG4k2DBM+4smkpE9cxu+leCohz3FCrz91XWgnOnsrfMleZg2acHbpG9bcqfox Cg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 39m8xsub6y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 06 Jul 2021 07:56:20 -0400
-Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 166BYXce097140;
- Tue, 6 Jul 2021 07:56:20 -0400
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0b-001b2d01.pphosted.com with ESMTP id 39m8xsub6s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 06 Jul 2021 07:56:20 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 166BpoYh011922;
- Tue, 6 Jul 2021 11:56:19 GMT
-Received: from b03cxnp07027.gho.boulder.ibm.com
- (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
- by ppma04dal.us.ibm.com with ESMTP id 39jfhbtn83-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 06 Jul 2021 11:56:19 +0000
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 166BuI1p22937970
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 6 Jul 2021 11:56:18 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 101776A057;
- Tue,  6 Jul 2021 11:56:18 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0BBCF6A051;
- Tue,  6 Jul 2021 11:56:13 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.199.34.44])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue,  6 Jul 2021 11:56:13 +0000 (GMT)
-Subject: Re: [PATCH] perf script python: Fix buffer size to report iregs in
- perf script
-From: kajoljain <kjain@linux.ibm.com>
-To: "acme@kernel.org" <acme@kernel.org>, Jiri Olsa <jolsa@redhat.com>
-References: <20210628062341.155839-1-kjain@linux.ibm.com>
- <20210628144937.GE142768@li-24c3614c-2adc-11b2-a85c-85f334518bdb.ibm.com>
- <ee98968a-f343-a68e-9a3e-58e97dc130c8@linux.ibm.com>
-Message-ID: <c6fb2136-21e1-325a-f7f7-9745dbe29661@linux.ibm.com>
-Date: Tue, 6 Jul 2021 17:26:12 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GK1Hc4Gwxz308V
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Jul 2021 21:56:43 +1000 (AEST)
+Received: by mail-qk1-x72f.google.com with SMTP id q190so19819484qkd.2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Jul 2021 04:56:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=message-id:subject:from:to:date:in-reply-to:references:user-agent
+ :mime-version:content-transfer-encoding;
+ bh=yfpqCL72E4Ht1c8gFySvUZD3b/GK//s6Y+xpAXTl1u8=;
+ b=j9lcl5IO5LEqX61SGy0w/QtICwEHlGB2KE+RBVNrIsJgV2fViAyR421Lgpbn12dsq1
+ yT60Jy6WvBzmilsM7S/wHiokAAn5V/rSRIkRHVScV0r96uSAx2+FAORNJgTmMayhalGc
+ D4W8b7A0K58j/j+BSP51O5CGpRVvho50HpajU10yskYrZ717BcTPd4MX8qDWNxqWBvmF
+ 1yAQ1TDH2l/dDvWv2FTsQhtGRNxYXBvSfII6kqBxSkNt6Ycyda6GO2yD+V8NhliM2a51
+ D9XVc/bEPrMiM1rfZjh6rFk5NDr/Q8bHKsRwHQL+l9AjJXWVPsfgmxQBhss1PMbjFupY
+ AKDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
+ :references:user-agent:mime-version:content-transfer-encoding;
+ bh=yfpqCL72E4Ht1c8gFySvUZD3b/GK//s6Y+xpAXTl1u8=;
+ b=EUPwHO9eT1WGkaW/G1LSUEaFYllNfCyfePcNpKMGeleKnkaJQRBfPIJn+pnkDZldKZ
+ 3PLLOaumZcDnVHWg6eX7+nx5phcPMjG+G15IoPKM+DpUPpbvMrMMJele7+G+GohevU+j
+ fyGQ5qUhg8HS8ZxYkAJ46mRrrIVbl3qQsmEs04toDbaYF8CwRvtIkIVYYJ3/GDxEj7G7
+ yeJzp50oMRD+a4vrpL3vrpxU3teebKiu0wlKv8r4hgi2m5BF9RndHmrAxpxzrvFIci1K
+ W3xr6eL4FKUnF8IvBlprUiWStjiNe8CEULC06wYV/gAgarA3Z/g4muAOt4pdHZ8x9uGa
+ 0tfw==
+X-Gm-Message-State: AOAM533o76MinHvV3+XSltHOqLNkSjwrp5lw2/JxmrlXsA1v2hs2qOG3
+ b42UF11EqY92yvyQXhn0PZg=
+X-Google-Smtp-Source: ABdhPJyjWyYMEPoc0WzDFaS/9ikth33M9VhD7SwYUqnWaKiimWkMDkP1a9P8z9S1YLBRuCIVMH3F8A==
+X-Received: by 2002:a37:8f44:: with SMTP id r65mr3764010qkd.20.1625572598818; 
+ Tue, 06 Jul 2021 04:56:38 -0700 (PDT)
+Received: from bat.mindbit.ro (cpe00fc8d79db03-cm00fc8d79db00.cpe.net.fido.ca.
+ [72.137.118.157])
+ by smtp.gmail.com with ESMTPSA id e6sm6721562qkg.12.2021.07.06.04.56.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 06 Jul 2021 04:56:37 -0700 (PDT)
+Message-ID: <786399a77d82890a391172fee269272e12c52489.camel@gmail.com>
+Subject: Re: Hitting BUG_ON in do_notify_resume() with gdb and SIGTRAP
+From: Radu Rendec <radu.rendec@gmail.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ linuxppc-dev@lists.ozlabs.org
+Date: Tue, 06 Jul 2021 07:56:36 -0400
+In-Reply-To: <d02fca74-933b-4586-496b-65511e435628@csgroup.eu>
+References: <6b5327e32549860c1e6c73e5b669528bfb383df2.camel@gmail.com>
+ <d02fca74-933b-4586-496b-65511e435628@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-In-Reply-To: <ee98968a-f343-a68e-9a3e-58e97dc130c8@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Dac3meT_7Ga6DLoLLfplXyxG3mVH09dk
-X-Proofpoint-GUID: TPByq9dt2-DxNkKd4cHAZxd3TRrruSwA
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-07-06_06:2021-07-02,
- 2021-07-06 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 adultscore=0
- malwarescore=0 phishscore=0 priorityscore=1501 spamscore=0 impostorscore=0
- mlxlogscore=999 suspectscore=0 lowpriorityscore=0 mlxscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104190000
- definitions=main-2107060057
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,119 +83,125 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ravi.bangoria@linux.ibm.com, atrajeev@linux.vnet.ibm.com,
- rnsastry@linux.ibm.com, linux-kernel@vger.kernel.org,
- linux-perf-users@vger.kernel.org, maddy@linux.vnet.ibm.com,
- "Paul A. Clarke" <pc@us.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue, 2021-07-06 at 12:43 +0200, Christophe Leroy wrote:
+> Le 04/07/2021 à 23:38, Radu Rendec a écrit :
+> > I'm trying to set up my (virtual) environment to test an old bug in the
+> > PPC32 ptrace() code. I came across a completely different problem,
+> > which seems to make gdb pretty much unusable on PPC32. I'm not sure if
+> > this is a real kernel bug or maybe something wrong with my
+> > configuration.
+> >
+> > I'm running kernel 5.13 in a qemu VM with one e500mc CPU. I am running
+> > native gdb (inside the VM) and setting a breakpoint in main() in a test
+> > "hello world" program. Upon running the test program, I am hitting the
+> > BUG_ON in do_notify_resume() on line 292. The kernel bug log snippet is
+> > included below at the end of the email.
+> >
+> > FWIW, gdb says:
+> > Program terminated with signal SIGTRAP, Trace/breakpoint trap.
+> > The program no longer exists.
+> >
+> > I also added a pr_info() to do_notify_resume() just to see how much
+> > different 'regs' and 'current->thread.regs' are. Surprisingly, they are
+> > just 0x30 apart: regs=c7955f10 cur=c7955f40. Also, 'current' seems to
+> > be OK (pid and comm are consistent with the test program).
+>
+> The TRAP = 0x7d8 is obviously wrong.
+>
+> Need to know which 'TRAP' it is exactly.
+> Could you try to dump what we have at the correct regs ?
+> Something like 'show_regs(current->thread.regs)' should do it.
+
+Sure, please see the output below. It looks to me like the "correct"
+regs are just garbage. Either they are overwritten or current->thread.regs
+is wrong. But in any case, r1 = 0 doesn't look good.
+
+regs=c7a0ff10 cur=c7a0ff40 pid=139 comm=test
+CPU: 0 PID: 139 Comm: test Not tainted 5.13.0-dirty #4
+NIP:  10000338 LR: 00030000 CTR: 00000003
+REGS: c7a0ff40 TRAP: 670000   Not tainted  (5.13.0-dirty)
+MSR:  1002d202 <CE,EE,PR,ME,DE>  CR: 10000004  XER: 80670100
+
+GPR00: b7fc36d8 00000000 00000000 b7fe17b4 00000000 b7ffd588 b7ffe8b8 b7ffee10 
+GPR08: b7fff214 b7ffdf40 b7fff208 bffff858 bffff970 b7fff130 00000001 bffff960 
+GPR16: b7fff2b0 b7ffd5f0 b7ffe8a8 bffff850 b7fc3714 1002d002 b7fff208 00000003 
+GPR24: b7fc3714 00000000 22000284 bffff960 000007d8 10000338 08000000 bffff850 
+NIP [10000338] 0x10000338
+LR [00030000] 0x30000
+Call Trace:
+[c7a0fe40] [c0008eac] show_regs+0x4c/0x1b0 (unreliable)
+[c7a0fe80] [c000969c] do_notify_resume+0x31c/0x320
+[c7a0fee0] [c0010b94] interrupt_exit_user_prepare+0x94/0xc0
+[c7a0ff00] [c00151e8] interrupt_return+0x14/0x13c
+--- interrupt: 7d8 at 0xb7fc3714
+NIP:  b7fc3714 LR: b7fc3714 CTR: 00000003
+REGS: c7a0ff10 TRAP: 07d8   Not tainted  (5.13.0-dirty)
+MSR:  1002d002 <CE,EE,PR,ME>  CR: 22000284  XER: 00000000
+
+GPR00: b7fc3584 bffff850 00000000 00000000 00000000 00000000 000000a0 6474e552 
+GPR08: b7fbe0d4 00000001 b7fff230 bffff850 b7fc36d8 00000000 00000000 b7fe17b4 
+GPR16: 00000000 b7ffd588 b7ffe8b8 b7ffee10 b7fff214 b7ffdf40 b7fff208 bffff858 
+GPR24: bffff970 b7fff130 00000001 bffff960 b7fff2b0 b7ffd5f0 b7ffe8a8 bffff850 
+NIP [b7fc3714] 0xb7fc3714
+LR [b7fc3714] 0xb7fc3714
+--- interrupt: 7d8
+------------[ cut here ]------------
+kernel BUG at arch/powerpc/kernel/signal.c:298!
+Oops: Exception in kernel mode, sig: 5 [#1]
+BE PAGE_SIZE=4K SMP NR_CPUS=24 QEMU e500
+Modules linked in:
+CPU: 0 PID: 139 Comm: test Not tainted 5.13.0-dirty #4
+NIP:  c000969c LR: c000969c CTR: c065f540
+REGS: c7a0fdc0 TRAP: 0700   Not tainted  (5.13.0-dirty)
+MSR:  00028002 <CE,EE>  CR: 28000282  XER: 20000000
+
+GPR00: c000969c c7a0fe80 c70ef500 c70efbd8 c70ef500 00000010 c7a0fc38 00000002 
+GPR08: 00000001 00000000 00000000 00000000 28000282 00000000 00000000 b7fe17b4 
+GPR16: 00000000 b7ffd588 b7ffe8b8 b7ffee10 b7fff214 b7ffdf40 b7fff208 bffff858 
+GPR24: bffff970 b7fff130 00000001 bffff960 c7a0ff10 00000800 c70ef500 00000102 
+NIP [c000969c] do_notify_resume+0x31c/0x320
+LR [c000969c] do_notify_resume+0x31c/0x320
+Call Trace:
+[c7a0fe80] [c000969c] do_notify_resume+0x31c/0x320 (unreliable)
+[c7a0fee0] [c0010b94] interrupt_exit_user_prepare+0x94/0xc0
+[c7a0ff00] [c00151e8] interrupt_return+0x14/0x13c
+--- interrupt: 7d8 at 0xb7fc3714
+NIP:  b7fc3714 LR: b7fc3714 CTR: 00000003
+REGS: c7a0ff10 TRAP: 07d8   Not tainted  (5.13.0-dirty)
+MSR:  1002d002 <CE,EE,PR,ME>  CR: 22000284  XER: 00000000
+
+GPR00: b7fc3584 bffff850 00000000 00000000 00000000 00000000 000000a0 6474e552 
+GPR08: b7fbe0d4 00000001 b7fff230 bffff850 b7fc36d8 00000000 00000000 b7fe17b4 
+GPR16: 00000000 b7ffd588 b7ffe8b8 b7ffee10 b7fff214 b7ffdf40 b7fff208 bffff858 
+GPR24: bffff970 b7fff130 00000001 bffff960 b7fff2b0 b7ffd5f0 b7ffe8a8 bffff850 
+NIP [b7fc3714] 0xb7fc3714
+LR [b7fc3714] 0xb7fc3714
+--- interrupt: 7d8
+Instruction dump:
+93a10054 90010064 93c10058 48b95369 80c20398 3c60c0dc 7f84e378 38e204b0 
+3863ce30 4809d819 80620704 4bfff7c9 <0fe00000> 3d20c0ff 8129c014 2c090000 
+---[ end trace 1cbf27cd19ae39a0 ]---
+
+> > If I'm not missing something, the 'regs' pointer that is eventually
+> > passed to do_notify_resume() is calculated in interrupt_return() by
+> > adding STACK_FRAME_OVERHEAD (defined to 112) to the value of r1. That
+> > means all registers are saved on the stack before entering the
+> > interrupt handler and, upon returning, a pointer to the register
+> > structure is calculated from the stack pointer. Either the offset
+> > itself is wrong, or the stack pointer is off by 0x30.
+> >
+> > This is as far as I have gone. Hopefully this rings a bell to someone
+> > who is familiar with that part of the code and has a better
+> > understanding of PPC32 interrupt handling in general.
+> >
+> > Last but not least, my configuration is fairly standard. I'm using the
+> > powerpc-e500mc--glibc--bleeding-edge-2020.08-1 toolchain from Bootlin
+> > to compile everything (kernel and user-space). The qemu version is
+> > 5.2.0 (Fedora 34) and the user-space is a small Busybox based rootfs
+> > that I built using Buildroot 2021.05. The gdb version is 9.2.
 
 
-On 6/29/21 12:39 PM, kajoljain wrote:
-> 
-> 
-> On 6/28/21 8:19 PM, Paul A. Clarke wrote:
->> On Mon, Jun 28, 2021 at 11:53:41AM +0530, Kajol Jain wrote:
->>> Commit 48a1f565261d ("perf script python: Add more PMU fields
->>> to event handler dict") added functionality to report fields like
->>> weight, iregs, uregs etc via perf report.
->>> That commit predefined buffer size to 512 bytes to print those fields.
->>>
->>> But incase of powerpc, since we added extended regs support
->>> in commits:
->>>
->>> Commit 068aeea3773a ("perf powerpc: Support exposing Performance Monitor
->>> Counter SPRs as part of extended regs")
->>> Commit d735599a069f ("powerpc/perf: Add extended regs support for
->>> power10 platform")
->>>
->>> Now iregs can carry more bytes of data and this predefined buffer size
->>> can result to data loss in perf script output.
->>>
->>> Patch resolve this issue by making buffer size dynamic based on number
->>> of registers needed to print. It also changed return type for function
->>> "regs_map" from int to void, as the return value is not being used by
->>> the caller function "set_regs_in_dict".
->>>
->>> Fixes: 068aeea3773a ("perf powerpc: Support exposing Performance Monitor
->>> Counter SPRs as part of extended regs")
->>> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
->>> ---
->>>  .../util/scripting-engines/trace-event-python.c | 17 ++++++++++++-----
->>>  1 file changed, 12 insertions(+), 5 deletions(-)
->>>
->>> diff --git a/tools/perf/util/scripting-engines/trace-event-python.c b/tools/perf/util/scripting-engines/trace-event-python.c
->>> index 4e4aa4c97ac5..c8c9706b4643 100644
->>> --- a/tools/perf/util/scripting-engines/trace-event-python.c
->>> +++ b/tools/perf/util/scripting-engines/trace-event-python.c
->> [...]
->>> @@ -713,7 +711,16 @@ static void set_regs_in_dict(PyObject *dict,
->>>  			     struct evsel *evsel)
->>>  {
->>>  	struct perf_event_attr *attr = &evsel->core.attr;
->>> -	char bf[512];
->>> +
->>> +	/*
->>> +	 * Here value 28 is a constant size which can be used to print
->>> +	 * one register value and its corresponds to:
->>> +	 * 16 chars is to specify 64 bit register in hexadecimal.
->>> +	 * 2 chars is for appending "0x" to the hexadecimal value and
->>> +	 * 10 chars is for register name.
->>> +	 */
->>> +	int size = __sw_hweight64(attr->sample_regs_intr) * 28;
->>> +	char bf[size];
->>
->> I propose using a template rather than a magic number here. Something like:
->> const char reg_name_tmpl[] = "10 chars  ";
->> const char reg_value_tmpl[] = "0x0123456789abcdef";
->> const int size = __sw_hweight64(attr->sample_regs_intr) +
->>                  sizeof reg_name_tmpl + sizeof reg_value_tmpl;
->>
-> 
-> Hi Paul,
->    Thanks for reviewing the patch. Yes these are
-> some standardization we can do by creating macros for different
-> fields.
-> The basic idea is, we want to provide significant buffer size
-> based on number of registers present in sample_regs_intr to accommodate
-> all data.
-> 
-
-Hi Arnaldo/Jiri,
-   Is the approach used in this patch looks fine to you?
-
-Thanks,
-Kajol Jain
-
-> But before going to optimizing code, Arnaldo/Jiri, is this approach looks good to you?
-> 
->> Pardon my ignorance, but is there no separation/whitespace between the name
->> and the value?
-> 
-> This is how we will get data via perf script
-> 
-> r0:0xc000000000112008
-> r1:0xc000000023b37920
-> r2:0xc00000000144c900
-> r3:0xc0000000bc566120
-> r4:0xc0000000c5600000
-> r5:0x2606c6506ca
-> r6:0xc000000023b378f8
-> r7:0xfffffd9f93a48f0e
-> .....
-> 
->  And is there some significance to 10 characters for the
->> register name, or is that a magic number?
-> 
-> Most of the register name are within 10 characters, basically we are giving this
-> magic number to make sure we have enough space in buffer to contain all registers
-> name with colon.
-> 
-> Thanks,
-> Kajol Jain
->  
->>
->> PC
->>
