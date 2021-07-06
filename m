@@ -1,58 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 149FA3BDDE6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 21:16:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85D553BDE98
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 22:43:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GKC2Z0DhLz3bW4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Jul 2021 05:16:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GKDzv2hJMz30BK
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Jul 2021 06:43:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZvqvC7ZL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=cMEULcwq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=acme@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::c35;
+ helo=mail-oo1-xc35.google.com; envelope-from=bjorn.andersson@linaro.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=ZvqvC7ZL; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=cMEULcwq; dkim-atps=neutral
+Received: from mail-oo1-xc35.google.com (mail-oo1-xc35.google.com
+ [IPv6:2607:f8b0:4864:20::c35])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GKC281YK0z2xvV
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Jul 2021 05:15:44 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id EC86B61C7A;
- Tue,  6 Jul 2021 19:15:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1625598942;
- bh=AtH56eW72m8BpdbGWiJELuMI6J92ShZ97mnSWwRKvQo=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=ZvqvC7ZLKHZD4VdrsKjXLa3kJgUGINBTZa2kp84Tex81UNAgSWqDIu7Pk5LatqtYg
- Lor8u/FIhzBBOp5XHa4K0yA+TP/MkyRoqhegOFxTnKi5O8W9nT8iSCNsAySJznsjvN
- GCpqC7Yo2p2oR+WuAR4uUbFMxFTPN15vWhLlLv86agNeNWN6gAYs/vloO+3qy8Ra3w
- IOe6JYTQ6PYMv932akm6WRhhp/mXg+ciJXl1so4jBrksgjhqy69iATN5lszUqV/Sl+
- Nd69lYy8+q4EDIPfBT6cSi2SF18gDtX7O49dSIK4OnhKL305jGXOLw2E++iaPTs9aU
- r4i6Fl3E9rByA==
-Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
- id 6135D40B1A; Tue,  6 Jul 2021 16:15:39 -0300 (-03)
-Date: Tue, 6 Jul 2021 16:15:39 -0300
-From: Arnaldo Carvalho de Melo <acme@kernel.org>
-To: kajoljain <kjain@linux.ibm.com>
-Subject: Re: [PATCH] perf script python: Fix buffer size to report iregs in
- perf script
-Message-ID: <YOSr25+a+r3MF2Ob@kernel.org>
-References: <20210628062341.155839-1-kjain@linux.ibm.com>
- <20210628144937.GE142768@li-24c3614c-2adc-11b2-a85c-85f334518bdb.ibm.com>
- <ee98968a-f343-a68e-9a3e-58e97dc130c8@linux.ibm.com>
- <c6fb2136-21e1-325a-f7f7-9745dbe29661@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GKDzQ53cyz302y
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Jul 2021 06:43:28 +1000 (AEST)
+Received: by mail-oo1-xc35.google.com with SMTP id
+ l26-20020a4ac61a0000b029024c94215d77so5576248ooq.11
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Jul 2021 13:43:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=pxMY07o9eA6SvMdwqfO/Cy/RP18zRy8WHvKUzTEaaNE=;
+ b=cMEULcwqLZ1Wut54PhoGe8eWn9DWOkTBGefRRfl5OdVDl+rs626G5wMaH28cgDjzcy
+ C3SrxS4IBWN9GT87WmK8g47N1LXQplCWDOfx8int0/GS3k/x/nkilLmTHNlFEJRG7MNd
+ XBIkEEXZ1pU0eRvjS1TRSvA1B76ydqAA34SpYmKB2ihzHjiFB86o3rkOkpvBUwbSv3hH
+ SAJ7sWW3535WnApBT/aqgm8mqOlZd3rAIlZ18pf5XSKHOT2S+byWJIp1xZIbcvBH0etl
+ zsjB18jSpkL6JUn2+voD9bKAbUaWuj/V1AbjBFUkZHMHiCqgtvfqmj4sQqDjclnu51kM
+ rRng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=pxMY07o9eA6SvMdwqfO/Cy/RP18zRy8WHvKUzTEaaNE=;
+ b=hmvcGKI+8uhNEqSvDELBKBBjA5wdPqDpAe2UqRZbchW8cLAotrtanSUhFJ8I07hT9E
+ o3kTO7MAS6enOjU+1ez0JTdTeYoo9It3PsyDsZOJNpdN5eDWjGceP+pt3dz3LZrHzPPR
+ w39lI0X+MHg8CCmcjnr33EUHHeFG1TK73lUR07h6rgetc61FMmCcoSA/vukmmMYZfT7D
+ dLmqT0LhXwmUW1RF27VJmLuNCOXVy9MbkW00J8N9EpAmLjux1kXWyR8IhVdjG51GdX7y
+ dfJ8NUNFlA5dhzqjko3ETn8TDp+FwJ9w/Tv6NEWqfEtoXdHja50+peKSHcmvsKevO3zl
+ PLNQ==
+X-Gm-Message-State: AOAM5323SRRI4kMyX2TP9rPRpzkQnmrujT97y++7v4nQPLrEtpv3n+rQ
+ kLv8cZE1e+KiSPG0x9u0WlnKgw==
+X-Google-Smtp-Source: ABdhPJxDvDPv3ADYsyyhWPVlnzb7CaqMGlOMdSkFiej4dUoXbTCedb2luVlDDH/zGyqw6KpVymfMhg==
+X-Received: by 2002:a4a:d6cc:: with SMTP id j12mr2894172oot.0.1625604204373;
+ Tue, 06 Jul 2021 13:43:24 -0700 (PDT)
+Received: from yoga (104-57-184-186.lightspeed.austtx.sbcglobal.net.
+ [104.57.184.186])
+ by smtp.gmail.com with ESMTPSA id x130sm1332892oix.22.2021.07.06.13.43.22
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 06 Jul 2021 13:43:23 -0700 (PDT)
+Date: Tue, 6 Jul 2021 15:43:21 -0500
+From: Bjorn Andersson <bjorn.andersson@linaro.org>
+To: Uwe Kleine-K?nig <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH v2 4/4] bus: Make remove callback return void
+Message-ID: <YOTAaQ7AnkCvRQaS@yoga>
+References: <20210706154803.1631813-1-u.kleine-koenig@pengutronix.de>
+ <20210706154803.1631813-5-u.kleine-koenig@pengutronix.de>
+ <YOSb1+yeVeLxiSRc@yoga>
+ <20210706184323.fudcbsiu4i34dojs@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c6fb2136-21e1-325a-f7f7-9745dbe29661@linux.ibm.com>
-X-Url: http://acmel.wordpress.com
+In-Reply-To: <20210706184323.fudcbsiu4i34dojs@pengutronix.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,130 +84,130 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ravi.bangoria@linux.ibm.com, atrajeev@linux.vnet.ibm.com,
- rnsastry@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
- maddy@linux.vnet.ibm.com, "Paul A. Clarke" <pc@us.ibm.com>,
- Jiri Olsa <jolsa@redhat.com>
+Cc: nvdimm@lists.linux.dev, linux-hyperv@vger.kernel.org, kvm@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-fpga@vger.kernel.org,
+ linux-remoteproc@vger.kernel.org, alsa-devel@alsa-project.org,
+ linux-cxl@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+ target-devel@vger.kernel.org, linux-i2c@vger.kernel.org,
+ linux-i3c@lists.infradead.org, linux1394-devel@lists.sourceforge.net,
+ linux-scsi@vger.kernel.org, linux-staging@lists.linux.dev,
+ linux-acpi@vger.kernel.org, industrypack-devel@lists.sourceforge.net,
+ linux-input@vger.kernel.org, xen-devel@lists.xenproject.org,
+ linux-sunxi@lists.linux.dev, linux-media@vger.kernel.org,
+ linux-serial@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-mmc@vger.kernel.org, greybus-dev@lists.linaro.org,
+ virtualization@lists.linux-foundation.org,
+ linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
+ netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-wireless@vger.kernel.org, linux-mips@vger.kernel.org,
+ linux-spi@vger.kernel.org, kernel@pengutronix.de, dmaengine@vger.kernel.org,
+ linux-ntb@googlegroups.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Em Tue, Jul 06, 2021 at 05:26:12PM +0530, kajoljain escreveu:
-> 
-> 
-> On 6/29/21 12:39 PM, kajoljain wrote:
-> > 
-> > 
-> > On 6/28/21 8:19 PM, Paul A. Clarke wrote:
-> >> On Mon, Jun 28, 2021 at 11:53:41AM +0530, Kajol Jain wrote:
-> >>> Commit 48a1f565261d ("perf script python: Add more PMU fields
-> >>> to event handler dict") added functionality to report fields like
-> >>> weight, iregs, uregs etc via perf report.
-> >>> That commit predefined buffer size to 512 bytes to print those fields.
-> >>>
-> >>> But incase of powerpc, since we added extended regs support
-> >>> in commits:
-> >>>
-> >>> Commit 068aeea3773a ("perf powerpc: Support exposing Performance Monitor
-> >>> Counter SPRs as part of extended regs")
-> >>> Commit d735599a069f ("powerpc/perf: Add extended regs support for
-> >>> power10 platform")
-> >>>
-> >>> Now iregs can carry more bytes of data and this predefined buffer size
-> >>> can result to data loss in perf script output.
-> >>>
-> >>> Patch resolve this issue by making buffer size dynamic based on number
-> >>> of registers needed to print. It also changed return type for function
-> >>> "regs_map" from int to void, as the return value is not being used by
-> >>> the caller function "set_regs_in_dict".
-> >>>
-> >>> Fixes: 068aeea3773a ("perf powerpc: Support exposing Performance Monitor
-> >>> Counter SPRs as part of extended regs")
-> >>> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-> >>> ---
-> >>>  .../util/scripting-engines/trace-event-python.c | 17 ++++++++++++-----
-> >>>  1 file changed, 12 insertions(+), 5 deletions(-)
-> >>>
-> >>> diff --git a/tools/perf/util/scripting-engines/trace-event-python.c b/tools/perf/util/scripting-engines/trace-event-python.c
-> >>> index 4e4aa4c97ac5..c8c9706b4643 100644
-> >>> --- a/tools/perf/util/scripting-engines/trace-event-python.c
-> >>> +++ b/tools/perf/util/scripting-engines/trace-event-python.c
-> >> [...]
-> >>> @@ -713,7 +711,16 @@ static void set_regs_in_dict(PyObject *dict,
-> >>>  			     struct evsel *evsel)
-> >>>  {
-> >>>  	struct perf_event_attr *attr = &evsel->core.attr;
-> >>> -	char bf[512];
-> >>> +
-> >>> +	/*
-> >>> +	 * Here value 28 is a constant size which can be used to print
-> >>> +	 * one register value and its corresponds to:
-> >>> +	 * 16 chars is to specify 64 bit register in hexadecimal.
-> >>> +	 * 2 chars is for appending "0x" to the hexadecimal value and
-> >>> +	 * 10 chars is for register name.
-> >>> +	 */
-> >>> +	int size = __sw_hweight64(attr->sample_regs_intr) * 28;
-> >>> +	char bf[size];
-> >>
-> >> I propose using a template rather than a magic number here. Something like:
-> >> const char reg_name_tmpl[] = "10 chars  ";
-> >> const char reg_value_tmpl[] = "0x0123456789abcdef";
-> >> const int size = __sw_hweight64(attr->sample_regs_intr) +
-> >>                  sizeof reg_name_tmpl + sizeof reg_value_tmpl;
-> >>
-> > 
-> > Hi Paul,
-> >    Thanks for reviewing the patch. Yes these are
-> > some standardization we can do by creating macros for different
-> > fields.
-> > The basic idea is, we want to provide significant buffer size
-> > based on number of registers present in sample_regs_intr to accommodate
-> > all data.
-> > 
-> 
-> Hi Arnaldo/Jiri,
->    Is the approach used in this patch looks fine to you?
+On Tue 06 Jul 13:43 CDT 2021, Uwe Kleine-K?nig wrote:
 
-Yeah, and the comment you provide right above it explains it, so I think
-that is enough, ok?
-
-- Arnaldo
- 
-> Thanks,
-> Kajol Jain
+> Hello Bjorn,
 > 
-> > But before going to optimizing code, Arnaldo/Jiri, is this approach looks good to you?
+> On Tue, Jul 06, 2021 at 01:08:18PM -0500, Bjorn Andersson wrote:
+> > On Tue 06 Jul 10:48 CDT 2021, Uwe Kleine-K?nig wrote:
+> > > diff --git a/drivers/rpmsg/rpmsg_core.c b/drivers/rpmsg/rpmsg_core.c
+> > > index c1404d3dae2c..7f6fac618ab2 100644
+> > > --- a/drivers/rpmsg/rpmsg_core.c
+> > > +++ b/drivers/rpmsg/rpmsg_core.c
+> > > @@ -530,7 +530,7 @@ static int rpmsg_dev_probe(struct device *dev)
+> > >  	return err;
+> > >  }
+> > >  
+> > > -static int rpmsg_dev_remove(struct device *dev)
+> > > +static void rpmsg_dev_remove(struct device *dev)
+> > >  {
+> > >  	struct rpmsg_device *rpdev = to_rpmsg_device(dev);
+> > >  	struct rpmsg_driver *rpdrv = to_rpmsg_driver(rpdev->dev.driver);
+> > > @@ -546,8 +546,6 @@ static int rpmsg_dev_remove(struct device *dev)
+> > >  
+> > >  	if (rpdev->ept)
+> > >  		rpmsg_destroy_ept(rpdev->ept);
+> > > -
+> > > -	return err;
 > > 
-> >> Pardon my ignorance, but is there no separation/whitespace between the name
-> >> and the value?
-> > 
-> > This is how we will get data via perf script
-> > 
-> > r0:0xc000000000112008
-> > r1:0xc000000023b37920
-> > r2:0xc00000000144c900
-> > r3:0xc0000000bc566120
-> > r4:0xc0000000c5600000
-> > r5:0x2606c6506ca
-> > r6:0xc000000023b378f8
-> > r7:0xfffffd9f93a48f0e
-> > .....
-> > 
-> >  And is there some significance to 10 characters for the
-> >> register name, or is that a magic number?
-> > 
-> > Most of the register name are within 10 characters, basically we are giving this
-> > magic number to make sure we have enough space in buffer to contain all registers
-> > name with colon.
-> > 
-> > Thanks,
-> > Kajol Jain
-> >  
-> >>
-> >> PC
-> >>
+> > This leaves err assigned but never used, but I don't mind following up
+> > with a patch cleaning that up after this has landed.
+> 
+> Ah, good catch. If I send out a v3 I will fold the following into this
+> patch:
+> 
+> diff --git a/drivers/rpmsg/rpmsg_core.c b/drivers/rpmsg/rpmsg_core.c
+> index 7f6fac618ab2..9151836190ce 100644
+> --- a/drivers/rpmsg/rpmsg_core.c
+> +++ b/drivers/rpmsg/rpmsg_core.c
+> @@ -534,10 +534,9 @@ static void rpmsg_dev_remove(struct device *dev)
+>  {
+>  	struct rpmsg_device *rpdev = to_rpmsg_device(dev);
+>  	struct rpmsg_driver *rpdrv = to_rpmsg_driver(rpdev->dev.driver);
+> -	int err = 0;
+>  
+>  	if (rpdev->ops->announce_destroy)
+> -		err = rpdev->ops->announce_destroy(rpdev);
+> +		rpdev->ops->announce_destroy(rpdev);
+>  
+>  	if (rpdrv->remove)
+>  		rpdrv->remove(rpdev);
+> 
 
--- 
+Sounds good, feel free to keep my ack on this.
 
-- Arnaldo
+> Maybe .announce_destroy() should then be changed to return void, too?
+> Something like:
+> 
+
+Yes, I saw this opportunity as well. But that will fan out further, so
+let's postpone that until your series has landed and we can follow up
+with such changes through the remoteproc tree.
+
+> diff --git a/drivers/rpmsg/rpmsg_internal.h b/drivers/rpmsg/rpmsg_internal.h
+> index a76c344253bf..d5204756714c 100644
+> --- a/drivers/rpmsg/rpmsg_internal.h
+> +++ b/drivers/rpmsg/rpmsg_internal.h
+> @@ -40,7 +40,7 @@ struct rpmsg_device_ops {
+>  					    struct rpmsg_channel_info chinfo);
+>  
+>  	int (*announce_create)(struct rpmsg_device *ept);
+> -	int (*announce_destroy)(struct rpmsg_device *ept);
+> +	void (*announce_destroy)(struct rpmsg_device *ept);
+>  };
+>  
+>  /**
+> diff --git a/drivers/rpmsg/virtio_rpmsg_bus.c b/drivers/rpmsg/virtio_rpmsg_bus.c
+> index 8e49a3bacfc7..4e05994634f8 100644
+> --- a/drivers/rpmsg/virtio_rpmsg_bus.c
+> +++ b/drivers/rpmsg/virtio_rpmsg_bus.c
+> @@ -340,7 +340,7 @@ static int virtio_rpmsg_announce_create(struct rpmsg_device *rpdev)
+>  	return err;
+>  }
+>  
+> -static int virtio_rpmsg_announce_destroy(struct rpmsg_device *rpdev)
+> +static void virtio_rpmsg_announce_destroy(struct rpmsg_device *rpdev)
+>  {
+>  	struct virtio_rpmsg_channel *vch = to_virtio_rpmsg_channel(rpdev);
+>  	struct virtproc_info *vrp = vch->vrp;
+> @@ -360,8 +360,6 @@ static int virtio_rpmsg_announce_destroy(struct rpmsg_device *rpdev)
+>  		if (err)
+>  			dev_err(dev, "failed to announce service %d\n", err);
+>  	}
+> -
+> -	return err;
+>  }
+>  
+>  static const struct rpmsg_device_ops virtio_rpmsg_ops = {
+> 
+> though it's not obvious for me that the last hunk is sensible. (OTOH the
+> return code is ignored anyhow as rpmsg_dev_remove() is the only caller.
+> 
+
+I need to backtrack a little bit more to figure out why we ended up with
+this...
+
+Thanks,
+Bjorn
