@@ -2,75 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B9253BDCB2
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 20:08:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 119DC3BDD80
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 20:44:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GK9Y12jf3z3bdW
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Jul 2021 04:08:53 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Sz6rE6fI;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GKBL96qxKz306l
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Jul 2021 04:44:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::332;
- helo=mail-ot1-x332.google.com; envelope-from=bjorn.andersson@linaro.org;
+ smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33;
+ helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=Sz6rE6fI; dkim-atps=neutral
-Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com
- [IPv6:2607:f8b0:4864:20::332])
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
+ [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GK9XX2PRYz2yjS
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Jul 2021 04:08:25 +1000 (AEST)
-Received: by mail-ot1-x332.google.com with SMTP id
- d21-20020a9d72d50000b02904604cda7e66so22458176otk.7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Jul 2021 11:08:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=rFh4HQBpaw9ewOD7eKuJ7KI9YAzHhN8tlxJ6LopMKHs=;
- b=Sz6rE6fIxKghlltcLCE+UXPsQefAUgPvTMscjeRzq2kl6NTGV49umux5xM0XcDuF3f
- KuSKKfkZ8nSISGEXHz3w1v+CP9bxuRJkim+LBmkXAMBhskBSVWy4R8UYC7L1pwY+g7hz
- Zg3WKG3mRVhsusU5VFmdXh5UPocqhZf4lahEU95r9tDGNbsVfHF1Q4HkA+YZfm/i81fd
- v0xNi9dJEaEvf856OdG6fjSc31APYItT+IUiPzbg0w9QbfcYoXqLRo58SwLlUHuXr/Qb
- gjgu5RAVRwk/bKL57rYJjqGIxVt7qPeDusZUEamQ36NdV7/ZYwdc/uo7wSJkJLcpf0tD
- jOXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=rFh4HQBpaw9ewOD7eKuJ7KI9YAzHhN8tlxJ6LopMKHs=;
- b=i3KVNMLQbNcqZ1HdDi99kIKMd6UomqfteyKtjJG+AiUig+WgnM7zBWiwhCYpe194cx
- sDCJkud+A3/Tiz8y9+/ft6xYsrmMn99t9rau57VGe5rUvDJQqFyQdwb1k4OIEmw9Sv5W
- 8u/fYOGShC5MbJsVYcUz1Qp9swysCdg316N+k7z6jS+Vt/+VMVapCcjaYYBNbxl97wGW
- /b/dq3hYEDEXddOXiew1yYsF6ICQMLMzs8budPrjZEo5+Mon6R6MOYOXufAFd0p6hqAK
- gmVVta3Cq3UdA9sy1jN/I+/WKr3v4/q+7s0Dmasv6pOYF1gMhU5ZmOlk5lKomoLeP8UV
- lIGg==
-X-Gm-Message-State: AOAM532dJPONebdvcQxqH4jJzB8lFEK1sGHxJd+tIQoLjm0uGSMQK2yz
- Gtjd0OyqU4KM2xWO6zYeyvhQbw==
-X-Google-Smtp-Source: ABdhPJwwC8pa+wbm0v5SSaX+DFJoQ7jJmXTjdD3iH0933Y2rw8Y2+zYlxp2w0qjcBNkHXGnjSvRJ6w==
-X-Received: by 2002:a9d:3d3:: with SMTP id f77mr16276146otf.43.1625594902170; 
- Tue, 06 Jul 2021 11:08:22 -0700 (PDT)
-Received: from yoga (104-57-184-186.lightspeed.austtx.sbcglobal.net.
- [104.57.184.186])
- by smtp.gmail.com with ESMTPSA id 68sm497113otd.74.2021.07.06.11.08.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Jul 2021 11:08:21 -0700 (PDT)
-Date: Tue, 6 Jul 2021 13:08:18 -0500
-From: Bjorn Andersson <bjorn.andersson@linaro.org>
-To: Uwe Kleine-K?nig <u.kleine-koenig@pengutronix.de>
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GKBKq27QLz2yyb
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Jul 2021 04:44:13 +1000 (AEST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <ukl@pengutronix.de>)
+ id 1m0q2W-0000ek-Kp; Tue, 06 Jul 2021 20:43:24 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+ by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <ukl@pengutronix.de>)
+ id 1m0q2V-00021e-8f; Tue, 06 Jul 2021 20:43:23 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+ (envelope-from <ukl@pengutronix.de>)
+ id 1m0q2V-0004QV-6e; Tue, 06 Jul 2021 20:43:23 +0200
+Date: Tue, 6 Jul 2021 20:43:23 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Bjorn Andersson <bjorn.andersson@linaro.org>
 Subject: Re: [PATCH v2 4/4] bus: Make remove callback return void
-Message-ID: <YOSb1+yeVeLxiSRc@yoga>
+Message-ID: <20210706184323.fudcbsiu4i34dojs@pengutronix.de>
 References: <20210706154803.1631813-1-u.kleine-koenig@pengutronix.de>
  <20210706154803.1631813-5-u.kleine-koenig@pengutronix.de>
+ <YOSb1+yeVeLxiSRc@yoga>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="2fjaqpmq47gf4tbn"
 Content-Disposition: inline
-In-Reply-To: <20210706154803.1631813-5-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <YOSb1+yeVeLxiSRc@yoga>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
+ SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,8 +62,8 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: nvdimm@lists.linux.dev, linux-hyperv@vger.kernel.org, kvm@vger.kernel.org,
- linux-wireless@vger.kernel.org, linux-fpga@vger.kernel.org,
- linux-pci@vger.kernel.org, alsa-devel@alsa-project.org,
+ linux-pci@vger.kernel.org, linux-fpga@vger.kernel.org,
+ linux-remoteproc@vger.kernel.org, alsa-devel@alsa-project.org,
  linux-cxl@vger.kernel.org, platform-driver-x86@vger.kernel.org,
  target-devel@vger.kernel.org, linux-i2c@vger.kernel.org,
  linux-i3c@lists.infradead.org, linux1394-devel@lists.sourceforge.net,
@@ -92,65 +71,136 @@ Cc: nvdimm@lists.linux.dev, linux-hyperv@vger.kernel.org, kvm@vger.kernel.org,
  linux-acpi@vger.kernel.org, industrypack-devel@lists.sourceforge.net,
  linux-input@vger.kernel.org, xen-devel@lists.xenproject.org,
  linux-sunxi@lists.linux.dev, linux-media@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-serial@vger.kernel.org,
- linux-remoteproc@vger.kernel.org, greybus-dev@lists.linaro.org,
+ linux-serial@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-mmc@vger.kernel.org, greybus-dev@lists.linaro.org,
  virtualization@lists.linux-foundation.org,
  linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
- netdev@vger.kernel.org, linux-usb@vger.kernel.org, linux-mmc@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-spi@vger.kernel.org, kernel@pengutronix.de,
- dmaengine@vger.kernel.org, linux-ntb@googlegroups.com,
- linuxppc-dev@lists.ozlabs.org
+ netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-wireless@vger.kernel.org, linux-mips@vger.kernel.org,
+ linux-spi@vger.kernel.org, kernel@pengutronix.de, dmaengine@vger.kernel.org,
+ linux-ntb@googlegroups.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue 06 Jul 10:48 CDT 2021, Uwe Kleine-K?nig wrote:
 
-> The driver core ignores the return value of this callback because there
-> is only little it can do when a device disappears.
-> 
-> This is the final bit of a long lasting cleanup quest where several
-> buses were converted to also return void from their remove callback.
-> Additionally some resource leaks were fixed that were caused by drivers
-> returning an error code in the expectation that the driver won't go
-> away.
-> 
-> With struct bus_type::remove returning void it's prevented that newly
-> implemented buses return an ignored error code and so don't anticipate
-> wrong expectations for driver authors.
-> 
+--2fjaqpmq47gf4tbn
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks for doing this!
+Hello Bjorn,
 
-Acked-by: Bjorn Andersson <bjorn.andersson@linaro.org> (rpmsg and apr)
+On Tue, Jul 06, 2021 at 01:08:18PM -0500, Bjorn Andersson wrote:
+> On Tue 06 Jul 10:48 CDT 2021, Uwe Kleine-K?nig wrote:
+> > diff --git a/drivers/rpmsg/rpmsg_core.c b/drivers/rpmsg/rpmsg_core.c
+> > index c1404d3dae2c..7f6fac618ab2 100644
+> > --- a/drivers/rpmsg/rpmsg_core.c
+> > +++ b/drivers/rpmsg/rpmsg_core.c
+> > @@ -530,7 +530,7 @@ static int rpmsg_dev_probe(struct device *dev)
+> >  	return err;
+> >  }
+> > =20
+> > -static int rpmsg_dev_remove(struct device *dev)
+> > +static void rpmsg_dev_remove(struct device *dev)
+> >  {
+> >  	struct rpmsg_device *rpdev =3D to_rpmsg_device(dev);
+> >  	struct rpmsg_driver *rpdrv =3D to_rpmsg_driver(rpdev->dev.driver);
+> > @@ -546,8 +546,6 @@ static int rpmsg_dev_remove(struct device *dev)
+> > =20
+> >  	if (rpdev->ept)
+> >  		rpmsg_destroy_ept(rpdev->ept);
+> > -
+> > -	return err;
+>=20
+> This leaves err assigned but never used, but I don't mind following up
+> with a patch cleaning that up after this has landed.
 
-[..]
-> diff --git a/drivers/rpmsg/rpmsg_core.c b/drivers/rpmsg/rpmsg_core.c
-> index c1404d3dae2c..7f6fac618ab2 100644
-> --- a/drivers/rpmsg/rpmsg_core.c
-> +++ b/drivers/rpmsg/rpmsg_core.c
-> @@ -530,7 +530,7 @@ static int rpmsg_dev_probe(struct device *dev)
->  	return err;
->  }
->  
-> -static int rpmsg_dev_remove(struct device *dev)
-> +static void rpmsg_dev_remove(struct device *dev)
->  {
->  	struct rpmsg_device *rpdev = to_rpmsg_device(dev);
->  	struct rpmsg_driver *rpdrv = to_rpmsg_driver(rpdev->dev.driver);
-> @@ -546,8 +546,6 @@ static int rpmsg_dev_remove(struct device *dev)
->  
->  	if (rpdev->ept)
->  		rpmsg_destroy_ept(rpdev->ept);
-> -
-> -	return err;
+Ah, good catch. If I send out a v3 I will fold the following into this
+patch:
 
-This leaves err assigned but never used, but I don't mind following up
-with a patch cleaning that up after this has landed.
+diff --git a/drivers/rpmsg/rpmsg_core.c b/drivers/rpmsg/rpmsg_core.c
+index 7f6fac618ab2..9151836190ce 100644
+--- a/drivers/rpmsg/rpmsg_core.c
++++ b/drivers/rpmsg/rpmsg_core.c
+@@ -534,10 +534,9 @@ static void rpmsg_dev_remove(struct device *dev)
+ {
+ 	struct rpmsg_device *rpdev =3D to_rpmsg_device(dev);
+ 	struct rpmsg_driver *rpdrv =3D to_rpmsg_driver(rpdev->dev.driver);
+-	int err =3D 0;
+=20
+ 	if (rpdev->ops->announce_destroy)
+-		err =3D rpdev->ops->announce_destroy(rpdev);
++		rpdev->ops->announce_destroy(rpdev);
+=20
+ 	if (rpdrv->remove)
+ 		rpdrv->remove(rpdev);
 
->  }
->  
->  static struct bus_type rpmsg_bus = {
+Maybe .announce_destroy() should then be changed to return void, too?
+Something like:
 
-Regards,
-Bjorn
+diff --git a/drivers/rpmsg/rpmsg_internal.h b/drivers/rpmsg/rpmsg_internal.h
+index a76c344253bf..d5204756714c 100644
+--- a/drivers/rpmsg/rpmsg_internal.h
++++ b/drivers/rpmsg/rpmsg_internal.h
+@@ -40,7 +40,7 @@ struct rpmsg_device_ops {
+ 					    struct rpmsg_channel_info chinfo);
+=20
+ 	int (*announce_create)(struct rpmsg_device *ept);
+-	int (*announce_destroy)(struct rpmsg_device *ept);
++	void (*announce_destroy)(struct rpmsg_device *ept);
+ };
+=20
+ /**
+diff --git a/drivers/rpmsg/virtio_rpmsg_bus.c b/drivers/rpmsg/virtio_rpmsg_=
+bus.c
+index 8e49a3bacfc7..4e05994634f8 100644
+--- a/drivers/rpmsg/virtio_rpmsg_bus.c
++++ b/drivers/rpmsg/virtio_rpmsg_bus.c
+@@ -340,7 +340,7 @@ static int virtio_rpmsg_announce_create(struct rpmsg_de=
+vice *rpdev)
+ 	return err;
+ }
+=20
+-static int virtio_rpmsg_announce_destroy(struct rpmsg_device *rpdev)
++static void virtio_rpmsg_announce_destroy(struct rpmsg_device *rpdev)
+ {
+ 	struct virtio_rpmsg_channel *vch =3D to_virtio_rpmsg_channel(rpdev);
+ 	struct virtproc_info *vrp =3D vch->vrp;
+@@ -360,8 +360,6 @@ static int virtio_rpmsg_announce_destroy(struct rpmsg_d=
+evice *rpdev)
+ 		if (err)
+ 			dev_err(dev, "failed to announce service %d\n", err);
+ 	}
+-
+-	return err;
+ }
+=20
+ static const struct rpmsg_device_ops virtio_rpmsg_ops =3D {
+
+though it's not obvious for me that the last hunk is sensible. (OTOH the
+return code is ignored anyhow as rpmsg_dev_remove() is the only caller.
+
+Best regards and thanks
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--2fjaqpmq47gf4tbn
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmDkpEcACgkQwfwUeK3K
+7Ak4/gf+JPjwmTdMOBhuMe8ecxXY1LASOPn6raBvtbwdOTQTpuggYaNCNlkaVJAE
+HyLf68h68hyvV9vpIoID8AOmf9uXGwFBXlOzR/nHgHqauU/8HnbE2GH+wOywoCi8
+Tkzj2jT35NSYD0Cmtorpd0wmKVjEQuPqiv8px5gEqAMvtwp93P9dQwyKm7IPhUSf
+Ly8NwR3EsI/ng6nNulL+Z6d0tGg+RRvUj5mWp8YcIYePISvHdibi/lFHA6vTaWE7
+ZqLwQsajLZaY5r33EPGYZOxBPk809iKwh4Q5mfww37TTXySNeps2tFT7S6r4d6To
+OAUYwloDQSOqtVvuLc4PfxSTkToueQ==
+=o1F8
+-----END PGP SIGNATURE-----
+
+--2fjaqpmq47gf4tbn--
