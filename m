@@ -2,54 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 119DC3BDD80
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 20:44:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE3763BDDE4
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 21:14:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GKBL96qxKz306l
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Jul 2021 04:44:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GKC1750RQz3bWD
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Jul 2021 05:14:51 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TU5TtD5U;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33;
- helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de;
- receiver=<UNKNOWN>)
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
- [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GKBKq27QLz2yyb
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Jul 2021 04:44:13 +1000 (AEST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1m0q2W-0000ek-Kp; Tue, 06 Jul 2021 20:43:24 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
- by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1m0q2V-00021e-8f; Tue, 06 Jul 2021 20:43:23 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1m0q2V-0004QV-6e; Tue, 06 Jul 2021 20:43:23 +0200
-Date: Tue, 6 Jul 2021 20:43:23 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Bjorn Andersson <bjorn.andersson@linaro.org>
-Subject: Re: [PATCH v2 4/4] bus: Make remove callback return void
-Message-ID: <20210706184323.fudcbsiu4i34dojs@pengutronix.de>
-References: <20210706154803.1631813-1-u.kleine-koenig@pengutronix.de>
- <20210706154803.1631813-5-u.kleine-koenig@pengutronix.de>
- <YOSb1+yeVeLxiSRc@yoga>
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=TU5TtD5U; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GKC0c5XjJz304G
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Jul 2021 05:14:24 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 0B79260FEE;
+ Tue,  6 Jul 2021 19:14:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1625598861;
+ bh=QlBKfCu996qP5JenUg1J68Cu2xyoSjshlo1u0WQ5l4Q=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=TU5TtD5UIfY0r+aXmb18IJawcVy9481TeWFSQOFYJdeGslFF5REp8bH73BojUcAOS
+ WlHc4LPuYi7chvxRgoEbHiUmVBJCPC7C5tF6pdGMxY91712ZIHIFWEljUXECaizwR+
+ koaeta5RgZiHx0Sss+0r3QJAYmQBlDDtVdoZp0FeXJcOVflgaIqK1qCkplXl/uW0BS
+ LCRRvULfQJWTmzcODhL8YcjXYnyWkDWBHwYJN74M0CyF9fd7kjSS4G13Z+1zJxm7S+
+ SxqHpxzj/Vqq6tNxTCJBSiyuyZK+lbgOtwblLLeGRCpsIt4FpxqITodwMfqKGzStS2
+ aVPLPXphc2cDw==
+Subject: Re: [PATCH v15 06/12] swiotlb: Use is_swiotlb_force_bounce for
+ swiotlb data bouncing
+To: Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>
+References: <ea28db1f-846e-4f0a-4f13-beb67e66bbca@kernel.org>
+ <20210702135856.GB11132@willie-the-truck>
+ <0f7bd903-e309-94a0-21d7-f0e8e9546018@arm.com>
+ <YN/7xcxt/XGAKceZ@Ryzen-9-3900X.localdomain>
+ <20210705190352.GA19461@willie-the-truck> <20210706044848.GA13640@lst.de>
+ <20210706132422.GA20327@willie-the-truck>
+ <a59f771f-3289-62f0-ca50-8f3675d9b166@arm.com>
+ <20210706140513.GA26498@lst.de>
+ <bb32d5a6-2b34-4524-e171-3e9f5f4d3a94@arm.com>
+ <20210706170657.GD20750@willie-the-truck>
+From: Nathan Chancellor <nathan@kernel.org>
+Message-ID: <e1c026c6-22c7-8979-4941-de9cfab3863a@kernel.org>
+Date: Tue, 6 Jul 2021 12:14:16 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="2fjaqpmq47gf4tbn"
-Content-Disposition: inline
-In-Reply-To: <YOSb1+yeVeLxiSRc@yoga>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
- SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20210706170657.GD20750@willie-the-truck>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,146 +70,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nvdimm@lists.linux.dev, linux-hyperv@vger.kernel.org, kvm@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-fpga@vger.kernel.org,
- linux-remoteproc@vger.kernel.org, alsa-devel@alsa-project.org,
- linux-cxl@vger.kernel.org, platform-driver-x86@vger.kernel.org,
- target-devel@vger.kernel.org, linux-i2c@vger.kernel.org,
- linux-i3c@lists.infradead.org, linux1394-devel@lists.sourceforge.net,
- linux-scsi@vger.kernel.org, linux-staging@lists.linux.dev,
- linux-acpi@vger.kernel.org, industrypack-devel@lists.sourceforge.net,
- linux-input@vger.kernel.org, xen-devel@lists.xenproject.org,
- linux-sunxi@lists.linux.dev, linux-media@vger.kernel.org,
- linux-serial@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-mmc@vger.kernel.org, greybus-dev@lists.linaro.org,
- virtualization@lists.linux-foundation.org,
- linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
- netdev@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-wireless@vger.kernel.org, linux-mips@vger.kernel.org,
- linux-spi@vger.kernel.org, kernel@pengutronix.de, dmaengine@vger.kernel.org,
- linux-ntb@googlegroups.com, linuxppc-dev@lists.ozlabs.org
+Cc: Jim Quinlan <james.quinlan@broadcom.com>, heikki.krogerus@linux.intel.com,
+ linux-devicetree <devicetree@vger.kernel.org>, peterz@infradead.org,
+ joonas.lahtinen@linux.intel.com, dri-devel@lists.freedesktop.org,
+ chris@chris-wilson.co.uk, grant.likely@arm.com, paulus@samba.org,
+ Frank Rowand <frowand.list@gmail.com>, mingo@kernel.org,
+ Jianxiong Gao <jxgao@google.com>, Stefano Stabellini <sstabellini@kernel.org>,
+ Saravana Kannan <saravanak@google.com>,
+ "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ Christoph Hellwig <hch@lst.de>,
+ Bartosz Golaszewski <bgolaszewski@baylibre.com>, bskeggs@redhat.com,
+ linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
+ Thierry Reding <treding@nvidia.com>, matthew.auld@intel.com,
+ Nicolas Boichat <drinkcat@chromium.org>, thomas.hellstrom@linux.intel.com,
+ jgross@suse.com, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ intel-gfx@lists.freedesktop.org, maarten.lankhorst@linux.intel.com,
+ jani.nikula@linux.intel.com, Rob Herring <robh+dt@kernel.org>,
+ rodrigo.vivi@intel.com, Bjorn Helgaas <bhelgaas@google.com>,
+ Claire Chang <tientzu@chromium.org>, Dan Williams <dan.j.williams@intel.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ boris.ostrovsky@oracle.com, airlied@linux.ie,
+ Greg KH <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
+ Qian Cai <quic_qiancai@quicinc.com>, lkml <linux-kernel@vger.kernel.org>,
+ "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+ Daniel Vetter <daniel@ffwll.ch>, xypron.glpk@gmx.de,
+ Tom Lendacky <thomas.lendacky@amd.com>, linuxppc-dev@lists.ozlabs.org,
+ bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Will and Robin,
 
---2fjaqpmq47gf4tbn
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 7/6/2021 10:06 AM, Will Deacon wrote:
+> On Tue, Jul 06, 2021 at 04:39:11PM +0100, Robin Murphy wrote:
+>> On 2021-07-06 15:05, Christoph Hellwig wrote:
+>>> On Tue, Jul 06, 2021 at 03:01:04PM +0100, Robin Murphy wrote:
+>>>> FWIW I was pondering the question of whether to do something along those
+>>>> lines or just scrap the default assignment entirely, so since I hadn't got
+>>>> round to saying that I've gone ahead and hacked up the alternative
+>>>> (similarly untested) for comparison :)
+>>>>
+>>>> TBH I'm still not sure which one I prefer...
+>>>
+>>> Claire did implement something like your suggestion originally, but
+>>> I don't really like it as it doesn't scale for adding multiple global
+>>> pools, e.g. for the 64-bit addressable one for the various encrypted
+>>> secure guest schemes.
+>>
+>> Ah yes, that had slipped my mind, and it's a fair point indeed. Since we're
+>> not concerned with a minimal fix for backports anyway I'm more than happy to
+>> focus on Will's approach. Another thing is that that looks to take us a
+>> quiet step closer to the possibility of dynamically resizing a SWIOTLB pool,
+>> which is something that some of the hypervisor protection schemes looking to
+>> build on top of this series may want to explore at some point.
+> 
+> Ok, I'll split that nasty diff I posted up into a reviewable series and we
+> can take it from there.
 
-Hello Bjorn,
+For what it's worth, I attempted to boot Will's diff on top of Konrad's 
+devel/for-linus-5.14 and it did not work; in fact, I got no output on my 
+monitor period, even with earlyprintk=, and I do not think this machine 
+has a serial console.
 
-On Tue, Jul 06, 2021 at 01:08:18PM -0500, Bjorn Andersson wrote:
-> On Tue 06 Jul 10:48 CDT 2021, Uwe Kleine-K?nig wrote:
-> > diff --git a/drivers/rpmsg/rpmsg_core.c b/drivers/rpmsg/rpmsg_core.c
-> > index c1404d3dae2c..7f6fac618ab2 100644
-> > --- a/drivers/rpmsg/rpmsg_core.c
-> > +++ b/drivers/rpmsg/rpmsg_core.c
-> > @@ -530,7 +530,7 @@ static int rpmsg_dev_probe(struct device *dev)
-> >  	return err;
-> >  }
-> > =20
-> > -static int rpmsg_dev_remove(struct device *dev)
-> > +static void rpmsg_dev_remove(struct device *dev)
-> >  {
-> >  	struct rpmsg_device *rpdev =3D to_rpmsg_device(dev);
-> >  	struct rpmsg_driver *rpdrv =3D to_rpmsg_driver(rpdev->dev.driver);
-> > @@ -546,8 +546,6 @@ static int rpmsg_dev_remove(struct device *dev)
-> > =20
-> >  	if (rpdev->ept)
-> >  		rpmsg_destroy_ept(rpdev->ept);
-> > -
-> > -	return err;
->=20
-> This leaves err assigned but never used, but I don't mind following up
-> with a patch cleaning that up after this has landed.
+Robin's fix does work, it survived ten reboots with no issues getting to 
+X and I do not see the KASAN and slub debug messages anymore but I 
+understand that this is not the preferred solution it seems (although 
+Konrad did want to know if it works).
 
-Ah, good catch. If I send out a v3 I will fold the following into this
-patch:
+I am happy to test any further patches or follow ups as needed, just 
+keep me on CC.
 
-diff --git a/drivers/rpmsg/rpmsg_core.c b/drivers/rpmsg/rpmsg_core.c
-index 7f6fac618ab2..9151836190ce 100644
---- a/drivers/rpmsg/rpmsg_core.c
-+++ b/drivers/rpmsg/rpmsg_core.c
-@@ -534,10 +534,9 @@ static void rpmsg_dev_remove(struct device *dev)
- {
- 	struct rpmsg_device *rpdev =3D to_rpmsg_device(dev);
- 	struct rpmsg_driver *rpdrv =3D to_rpmsg_driver(rpdev->dev.driver);
--	int err =3D 0;
-=20
- 	if (rpdev->ops->announce_destroy)
--		err =3D rpdev->ops->announce_destroy(rpdev);
-+		rpdev->ops->announce_destroy(rpdev);
-=20
- 	if (rpdrv->remove)
- 		rpdrv->remove(rpdev);
-
-Maybe .announce_destroy() should then be changed to return void, too?
-Something like:
-
-diff --git a/drivers/rpmsg/rpmsg_internal.h b/drivers/rpmsg/rpmsg_internal.h
-index a76c344253bf..d5204756714c 100644
---- a/drivers/rpmsg/rpmsg_internal.h
-+++ b/drivers/rpmsg/rpmsg_internal.h
-@@ -40,7 +40,7 @@ struct rpmsg_device_ops {
- 					    struct rpmsg_channel_info chinfo);
-=20
- 	int (*announce_create)(struct rpmsg_device *ept);
--	int (*announce_destroy)(struct rpmsg_device *ept);
-+	void (*announce_destroy)(struct rpmsg_device *ept);
- };
-=20
- /**
-diff --git a/drivers/rpmsg/virtio_rpmsg_bus.c b/drivers/rpmsg/virtio_rpmsg_=
-bus.c
-index 8e49a3bacfc7..4e05994634f8 100644
---- a/drivers/rpmsg/virtio_rpmsg_bus.c
-+++ b/drivers/rpmsg/virtio_rpmsg_bus.c
-@@ -340,7 +340,7 @@ static int virtio_rpmsg_announce_create(struct rpmsg_de=
-vice *rpdev)
- 	return err;
- }
-=20
--static int virtio_rpmsg_announce_destroy(struct rpmsg_device *rpdev)
-+static void virtio_rpmsg_announce_destroy(struct rpmsg_device *rpdev)
- {
- 	struct virtio_rpmsg_channel *vch =3D to_virtio_rpmsg_channel(rpdev);
- 	struct virtproc_info *vrp =3D vch->vrp;
-@@ -360,8 +360,6 @@ static int virtio_rpmsg_announce_destroy(struct rpmsg_d=
-evice *rpdev)
- 		if (err)
- 			dev_err(dev, "failed to announce service %d\n", err);
- 	}
--
--	return err;
- }
-=20
- static const struct rpmsg_device_ops virtio_rpmsg_ops =3D {
-
-though it's not obvious for me that the last hunk is sensible. (OTOH the
-return code is ignored anyhow as rpmsg_dev_remove() is the only caller.
-
-Best regards and thanks
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---2fjaqpmq47gf4tbn
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmDkpEcACgkQwfwUeK3K
-7Ak4/gf+JPjwmTdMOBhuMe8ecxXY1LASOPn6raBvtbwdOTQTpuggYaNCNlkaVJAE
-HyLf68h68hyvV9vpIoID8AOmf9uXGwFBXlOzR/nHgHqauU/8HnbE2GH+wOywoCi8
-Tkzj2jT35NSYD0Cmtorpd0wmKVjEQuPqiv8px5gEqAMvtwp93P9dQwyKm7IPhUSf
-Ly8NwR3EsI/ng6nNulL+Z6d0tGg+RRvUj5mWp8YcIYePISvHdibi/lFHA6vTaWE7
-ZqLwQsajLZaY5r33EPGYZOxBPk809iKwh4Q5mfww37TTXySNeps2tFT7S6r4d6To
-OAUYwloDQSOqtVvuLc4PfxSTkToueQ==
-=o1F8
------END PGP SIGNATURE-----
-
---2fjaqpmq47gf4tbn--
+Cheers,
+Nathan
