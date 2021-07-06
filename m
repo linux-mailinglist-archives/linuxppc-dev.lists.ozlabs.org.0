@@ -2,75 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E593BCA32
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 12:36:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A959B3BCA45
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 12:43:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GJzW20ptVz3bW4
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 20:36:30 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Yt+wwRbD;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GJzgV4rH4z3bXr
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 20:43:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::42d;
- helo=mail-wr1-x42d.google.com; envelope-from=lee.jones@linaro.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=Yt+wwRbD; dkim-atps=neutral
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com
- [IPv6:2a00:1450:4864:20::42d])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GJzVT4pkSz2yMq
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Jul 2021 20:36:00 +1000 (AEST)
-Received: by mail-wr1-x42d.google.com with SMTP id u8so25449414wrq.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Jul 2021 03:36:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:content-transfer-encoding:in-reply-to;
- bh=6xuYHcNFKOKQBrKUFUDH+4OX/ZzxgolWWFVCDDtB2Y0=;
- b=Yt+wwRbDrooYfJ07+RIOcvlbNAmDArbrvJ7r1S0Vf2cjg/rLU7fAYgPxXpkS/Es1c/
- LcGWWFOVsEF/0XQJw8Ic4i6Dtc59Y/PIazeWXS81o/I5/ykvg7NDoqtNhU6ZQY0qgpts
- hX13gyhgO6x+I73AAGb4ZN/+qaseZR6quq5U1fL8NFgVa2YoJXURs1gKcClPP7oowGFt
- CUO7YRn27lhbGlEADkw/xBbGzLYaM6sE1cZhR+vatbGDVqfyXQOHsgSlmcoOTDifCPOm
- ISHjTYrtj1Tj6vkK+FyowiPdLCC1ljyYKvKt5eTXHZu+z0mb6AF50iygoibOaTtpwXde
- Om/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:content-transfer-encoding
- :in-reply-to;
- bh=6xuYHcNFKOKQBrKUFUDH+4OX/ZzxgolWWFVCDDtB2Y0=;
- b=CX+FTjIwtLyDdLgR3EibnI6MP84bvbKP9TYutgd61CGrpzPTSgTxGsVpqYfU7EYMgi
- 0Rsuud/UeZe4Wcgg3CJ0h9oe/nKPIDyI9Z9xD+9y/pSWUcWXRY9ng3ekTH59cxjkQmAR
- +gnAGF+qlWYAs6nIwQEJUIyb5c1QhnyjQrKXEX44Xi9beYevc/MPiFlmo7vivqvXI5oM
- jJFMHkS5jmQnf4JgdIlCq3+zbjlC3Kw3UFSy2Ad9336dsif9f5XAO4iKKGlFtMGc15Bz
- ittEH2gKKYT1nLgOECOy4DRTCQ/iEYid/qSPIIIzcYnqP6MhzNzAIIltad1q73mXv6GP
- 7+QA==
-X-Gm-Message-State: AOAM530CZfaSdKM4cNwvs6qUvMSqKNkA0qeYt8RBYMk/OznmkgSZpMwG
- p5cxJOXbljse9Wr80/xMShRH4Q==
-X-Google-Smtp-Source: ABdhPJxx+Xr4AcuLpRSkCC4EtytSRujE0SZ0zcPphvKN4FEK+8OpQKjY5aHg/Lctw2KdmVZr98nK+A==
-X-Received: by 2002:a05:6000:12d0:: with SMTP id
- l16mr21397024wrx.189.1625567755049; 
- Tue, 06 Jul 2021 03:35:55 -0700 (PDT)
-Received: from dell ([109.180.115.218])
- by smtp.gmail.com with ESMTPSA id l9sm16428319wrp.14.2021.07.06.03.35.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Jul 2021 03:35:54 -0700 (PDT)
-Date: Tue, 6 Jul 2021 11:35:52 +0100
-From: Lee Jones <lee.jones@linaro.org>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Subject: Re: [PATCH] bus: Make remove callback return void
-Message-ID: <YOQxRS8HLTYthWNn@dell>
-References: <20210706095037.1425211-1-u.kleine-koenig@pengutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GJzg86FHVz2yWr
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Jul 2021 20:43:29 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 4GJzg27570zBFbj;
+ Tue,  6 Jul 2021 12:43:26 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id nn1Mb2WTkRyn; Tue,  6 Jul 2021 12:43:26 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4GJzg269BSzBFbg;
+ Tue,  6 Jul 2021 12:43:26 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id BD0038B7A5;
+ Tue,  6 Jul 2021 12:43:26 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 9s8Xhydx-Ix2; Tue,  6 Jul 2021 12:43:26 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6893A8B7A3;
+ Tue,  6 Jul 2021 12:43:26 +0200 (CEST)
+Subject: Re: Hitting BUG_ON in do_notify_resume() with gdb and SIGTRAP
+To: Radu Rendec <radu.rendec@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <6b5327e32549860c1e6c73e5b669528bfb383df2.camel@gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <d02fca74-933b-4586-496b-65511e435628@csgroup.eu>
+Date: Tue, 6 Jul 2021 12:43:27 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+In-Reply-To: <6b5327e32549860c1e6c73e5b669528bfb383df2.camel@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210706095037.1425211-1-u.kleine-koenig@pengutronix.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,109 +62,119 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nvdimm@lists.linux.dev, linux-hyperv@vger.kernel.org, kvm@vger.kernel.org,
- linux-fpga@vger.kernel.org, linux-pci@vger.kernel.org,
- alsa-devel@alsa-project.org, linux-cxl@vger.kernel.org,
- linux-mips@vger.kernel.org,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- target-devel@vger.kernel.org, linux-i2c@vger.kernel.org,
- linux-i3c@lists.infradead.org, linux1394-devel@lists.sourceforge.net,
- linux-scsi@vger.kernel.org, Helge Deller <deller@gmx.de>,
- linux-staging@lists.linux.dev, Russell King <linux@armlinux.org.uk>,
- linux-acpi@vger.kernel.org, industrypack-devel@lists.sourceforge.net,
- linux-input@vger.kernel.org, linux-mmc@vger.kernel.org,
- virtualization@lists.linux-foundation.org, linux-sunxi@lists.linux.dev,
- linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-serial@vger.kernel.org, linux-remoteproc@vger.kernel.org,
- greybus-dev@lists.linaro.org, xen-devel@lists.xenproject.org,
- platform-driver-x86@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
- Geoff Levand <geoff@infradead.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org, kernel@pengutronix.de, netdev@vger.kernel.org,
- dmaengine@vger.kernel.org, linux-ntb@googlegroups.com,
- linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 06 Jul 2021, Uwe Kleine-König wrote:
 
-> The driver core ignores the return value of this callback because there
-> is only little it can do when a device disappears.
-> 
-> This is the final bit of a long lasting cleanup quest where several
-> buses were converted to also return void from their remove callback.
-> Additionally some resource leaks were fixed that were caused by drivers
-> returning an error code in the expectation that the driver won't go
-> away.
-> 
-> With struct bus_type::remove returning void it's prevented that newly
-> implemented buses return an ignored error code and so don't anticipate
-> wrong expectations for driver authors.
-> 
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-> ---
-> Hello,
-> 
-> this patch depends on "PCI: endpoint: Make struct pci_epf_driver::remove
-> return void" that is not yet applied, see
-> https://lore.kernel.org/r/20210223090757.57604-1-u.kleine-koenig@pengutronix.de.
-> 
-> I tested it using allmodconfig on amd64 and arm, but I wouldn't be
-> surprised if I still missed to convert a driver. So it would be great to
-> get this into next early after the merge window closes.
-> 
-> I send this mail to all people that get_maintainer.pl emits for this
-> patch. I wonder how many recipents will refuse this mail because of the
-> long Cc: list :-)
-> 
-> Best regards
-> Uwe
-> 
->  arch/arm/common/locomo.c                  | 3 +--
->  arch/arm/common/sa1111.c                  | 4 +---
->  arch/arm/mach-rpc/ecard.c                 | 4 +---
->  arch/mips/sgi-ip22/ip22-gio.c             | 3 +--
->  arch/parisc/kernel/drivers.c              | 5 ++---
->  arch/powerpc/platforms/ps3/system-bus.c   | 3 +--
->  arch/powerpc/platforms/pseries/ibmebus.c  | 3 +--
->  arch/powerpc/platforms/pseries/vio.c      | 3 +--
->  drivers/acpi/bus.c                        | 3 +--
->  drivers/amba/bus.c                        | 4 +---
->  drivers/base/auxiliary.c                  | 4 +---
->  drivers/base/isa.c                        | 4 +---
->  drivers/base/platform.c                   | 4 +---
->  drivers/bcma/main.c                       | 6 ++----
->  drivers/bus/sunxi-rsb.c                   | 4 +---
->  drivers/cxl/core.c                        | 3 +--
->  drivers/dax/bus.c                         | 4 +---
->  drivers/dma/idxd/sysfs.c                  | 4 +---
->  drivers/firewire/core-device.c            | 4 +---
->  drivers/firmware/arm_scmi/bus.c           | 4 +---
->  drivers/firmware/google/coreboot_table.c  | 4 +---
->  drivers/fpga/dfl.c                        | 4 +---
->  drivers/hid/hid-core.c                    | 4 +---
->  drivers/hid/intel-ish-hid/ishtp/bus.c     | 4 +---
->  drivers/hv/vmbus_drv.c                    | 5 +----
->  drivers/hwtracing/intel_th/core.c         | 4 +---
->  drivers/i2c/i2c-core-base.c               | 5 +----
->  drivers/i3c/master.c                      | 4 +---
->  drivers/input/gameport/gameport.c         | 3 +--
->  drivers/input/serio/serio.c               | 3 +--
->  drivers/ipack/ipack.c                     | 4 +---
->  drivers/macintosh/macio_asic.c            | 4 +---
->  drivers/mcb/mcb-core.c                    | 4 +---
->  drivers/media/pci/bt8xx/bttv-gpio.c       | 3 +--
->  drivers/memstick/core/memstick.c          | 3 +--
 
->  drivers/mfd/mcp-core.c                    | 3 +--
+Le 04/07/2021 à 23:38, Radu Rendec a écrit :
+> Hi Everyone,
+> 
+> I'm trying to set up my (virtual) environment to test an old bug in the
+> PPC32 ptrace() code. I came across a completely different problem,
+> which seems to make gdb pretty much unusable on PPC32. I'm not sure if
+> this is a real kernel bug or maybe something wrong with my
+> configuration.
+> 
+> I'm running kernel 5.13 in a qemu VM with one e500mc CPU. I am running
+> native gdb (inside the VM) and setting a breakpoint in main() in a test
+> "hello world" program. Upon running the test program, I am hitting the
+> BUG_ON in do_notify_resume() on line 292. The kernel bug log snippet is
+> included below at the end of the email.
+> 
+> FWIW, gdb says:
+> Program terminated with signal SIGTRAP, Trace/breakpoint trap.
+> The program no longer exists.
+> 
+> I also added a pr_info() to do_notify_resume() just to see how much
+> different 'regs' and 'current->thread.regs' are. Surprisingly, they are
+> just 0x30 apart: regs=c7955f10 cur=c7955f40. Also, 'current' seems to
+> be OK (pid and comm are consistent with the test program).
 
-Acked-by: Lee Jones <lee.jones@linaro.org>
+The TRAP = 0x7d8 is obviously wrong.
 
--- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Need to know which 'TRAP' it is exactly.
+Could you try to dump what we have at the correct regs ?
+Something like 'show_regs(current->thread.regs)' should do it.
+
+
+> 
+> If I'm not missing something, the 'regs' pointer that is eventually
+> passed to do_notify_resume() is calculated in interrupt_return() by
+> adding STACK_FRAME_OVERHEAD (defined to 112) to the value of r1. That
+> means all registers are saved on the stack before entering the
+> interrupt handler and, upon returning, a pointer to the register
+> structure is calculated from the stack pointer. Either the offset
+> itself is wrong, or the stack pointer is off by 0x30.
+> 
+> This is as far as I have gone. Hopefully this rings a bell to someone
+> who is familiar with that part of the code and has a better
+> understanding of PPC32 interrupt handling in general.
+> 
+> Last but not least, my configuration is fairly standard. I'm using the
+> powerpc-e500mc--glibc--bleeding-edge-2020.08-1 toolchain from Bootlin
+> to compile everything (kernel and user-space). The qemu version is
+> 5.2.0 (Fedora 34) and the user-space is a small Busybox based rootfs
+> that I built using Buildroot 2021.05. The gdb version is 9.2.
+> 
+> regs=c7955f10 cur=c7955f40 pid=138 comm=test
+> ------------[ cut here ]------------
+> kernel BUG at arch/powerpc/kernel/signal.c:296!
+> Oops: Exception in kernel mode, sig: 5 [#1]
+> BE PAGE_SIZE=4K SMP NR_CPUS=24 QEMU e500
+> Modules linked in:
+> CPU: 0 PID: 138 Comm: test Not tainted 5.13.0-dirty #3
+> NIP:  c0009694 LR: c0009694 CTR: c065f540
+> REGS: c7955dc0 TRAP: 0700   Not tainted  (5.13.0-dirty)
+> MSR:  00028002 <CE,EE>  CR: 28000282  XER: 20000000
+> 
+> GPR00: c0009694 c7955e80 c7145100 0000002c dfbdc3d4 dfbe5d24 00000027 dfbdc3d8
+> GPR08: c0ffe988 00000000 00000000 00000000 22000282 00000000 00000000 b7fe17b4
+> GPR16: 00000000 b7ffd588 b7ffe8b8 b7ffee10 b7fff214 b7ffdf40 b7fff208 bffff858
+> GPR24: bffff970 b7fff130 00000001 bffff960 c7955f10 00000800 c7145100 00000102
+> NIP [c0009694] do_notify_resume+0x314/0x320
+> LR [c0009694] do_notify_resume+0x314/0x320
+> Call Trace:
+> [c7955e80] [c0009694] do_notify_resume+0x314/0x320 (unreliable)
+> [c7955ee0] [c0010b94] interrupt_exit_user_prepare+0x94/0xc0
+> [c7955f00] [c00151e8] interrupt_return+0x14/0x13c
+> --- interrupt: 7d8 at 0xb7fc3714
+> NIP:  b7fc3714 LR: b7fc3714 CTR: 00000003
+> REGS: c7955f10 TRAP: 07d8   Not tainted  (5.13.0-dirty)
+> MSR:  1002d002 <CE,EE,PR,ME>  CR: 22000284  XER: 00000000
+> 
+> GPR00: b7fc3584 bffff850 00000000 00000000 00000000 00000000 000000a0 6474e552
+> GPR08: b7fbe0d4 00000001 b7fff230 bffff850 b7fc36d8 00000000 00000000 b7fe17b4
+> GPR16: 00000000 b7ffd588 b7ffe8b8 b7ffee10 b7fff214 b7ffdf40 b7fff208 bffff858
+> GPR24: bffff970 b7fff130 00000001 bffff960 b7fff2b0 b7ffd5f0 b7ffe8a8 bffff850
+> NIP [b7fc3714] 0xb7fc3714
+> LR [b7fc3714] 0xb7fc3714
+> --- interrupt: 7d8
+> Instruction dump:
+> 4bffff04 7c0802a6 93a10054 90010064 93c10058 48b95369 80c20398 3c60c0dc
+> 7f84e378 38e204b0 3863ce30 4809d819 <0fe00000> 60000000 60000000 3d20c0ff
+> ---[ end trace 065671519ba3d526 ]---
+> 
+> Note: the BUG() line is slightly different because I had made this
+> small change to print the pointers:
+> 
+> diff --git a/arch/powerpc/kernel/signal.c b/arch/powerpc/kernel/signal.c
+> index 9ded046edb0e..57ea6e500a6f 100644
+> --- a/arch/powerpc/kernel/signal.c
+> +++ b/arch/powerpc/kernel/signal.c
+> @@ -289,7 +289,12 @@ void do_notify_resume(struct pt_regs *regs, unsigned long thread_info_flags)
+>   		klp_update_patch_state(current);
+>   
+>   	if (thread_info_flags & (_TIF_SIGPENDING | _TIF_NOTIFY_SIGNAL)) {
+> -		BUG_ON(regs != current->thread.regs);
+> +		if (regs != current->thread.regs) {
+> +			pr_info("regs=%px cur=%px pid=%d comm=%s\n",
+> +				regs, current->thread.regs,
+> +				current->pid, current->comm);
+> +			BUG();
+> +		}
+>   		do_signal(current);
+>   	}
+>   
+> 
