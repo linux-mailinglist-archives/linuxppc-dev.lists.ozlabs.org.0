@@ -1,47 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC6263BD740
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 14:54:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 718243BD73F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 14:54:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GK2ZQ4SWVz3f3R
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 22:54:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GK2Z22rc3z3f1S
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Jul 2021 22:54:18 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=TwRJy6+J;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=134.134.136.100; helo=mga07.intel.com;
- envelope-from=heikki.krogerus@linux.intel.com; receiver=<UNKNOWN>)
-X-Greylist: delayed 124 seconds by postgrey-1.36 at boromir;
- Tue, 06 Jul 2021 21:45:27 AEST
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::534;
+ helo=mail-ed1-x534.google.com; envelope-from=luzmaximilian@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=TwRJy6+J; dkim-atps=neutral
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com
+ [IPv6:2a00:1450:4864:20::534])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GK12b4HFbz2yNf
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Jul 2021 21:45:27 +1000 (AEST)
-X-IronPort-AV: E=McAfee;i="6200,9189,10036"; a="272945357"
-X-IronPort-AV: E=Sophos;i="5.83,328,1616482800"; d="scan'208";a="272945357"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
- by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Jul 2021 04:42:14 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.83,328,1616482800"; d="scan'208";a="562991774"
-Received: from kuha.fi.intel.com ([10.237.72.162])
- by fmsmga001.fm.intel.com with SMTP; 06 Jul 2021 04:41:40 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation);
- Tue, 06 Jul 2021 14:41:39 +0300
-Date: Tue, 6 Jul 2021 14:41:39 +0300
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GK0zR1bDBz2yxX
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Jul 2021 21:42:42 +1000 (AEST)
+Received: by mail-ed1-x534.google.com with SMTP id m1so27575933edq.8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Jul 2021 04:42:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=CDGtQ2yb8IShQ7cIRYFiJmp1Uu5BANeA/6Jg/xILJy0=;
+ b=TwRJy6+J3urIn/EOHkX70XQHrPpIXFIOoiquz6eJSwyU/SQIQ4dADKORnRQAYcVLDd
+ bGmCH+O3vZ/zwAN03+xnrlCOWn/T/Pz6KfPYlHzOgGXWb72eEAEAjVLMxY3sV52LOQiu
+ 4sMepvP8f2M/NuGTEEUpcS9djTSXyNUocbOOHuCxDZ/swc4Yj2krBjOK18+xBOWwYw7y
+ O/LcWjnu0kdZ4pmyv7jFfFo0qSdeTOdmtP2CciCXwcdnQ5FYkYueWY1vZLSQqxLbXVdx
+ xHWyXJmiVDLrlTvE9QGQSNArUJUGdY04ySHX3mfxNurDFI1sFLhNw1IKyh/ZzycJEC6f
+ piBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=CDGtQ2yb8IShQ7cIRYFiJmp1Uu5BANeA/6Jg/xILJy0=;
+ b=FjbCNZ17HLXFpU/ZgN4tl3FIWrrDKKWjXLQPa0JrRs3rGcBTTNFC93Q4PY6ZTKoRTc
+ oN9efp8ksGUetCca0BlCNrRUMo/WCHCAcTu1Xpzdrh8re+WE2pe373RI7kaJVfkMun8D
+ 30lZD4sK3gZ5xll5QXPwIBclyg6mUz3SbQYwWcCaMLgJnBUPdApz8Pwptj7ep34JzREj
+ v/e//oM4HOKkqDt0WIAmeGUmBsGJrChdWo9ZhCqEh8+5LmaVxgZL9qbDaVuPMGJE7vtI
+ qiHEh/T1UvQu0/1XJbHheUOUPlNR+xN2VG2/B2RUWro891Xy5lvRwXiubgWLcyg6OYct
+ rqXQ==
+X-Gm-Message-State: AOAM532gk6jwN6195w7qZfeqc7okzB/nz7W5wBAqOtoiOyEQXAXgzB4Q
+ RKoHD8WsEN1TrafaSh4GQaY=
+X-Google-Smtp-Source: ABdhPJwOR9RYbuFI1V8zYqZEcawlLdGKboqfR9DJ6TrIpurxtzPOHwaABH2lGpOOBvACTZh8ZOEU1A==
+X-Received: by 2002:a05:6402:1c06:: with SMTP id
+ ck6mr22330893edb.287.1625571755735; 
+ Tue, 06 Jul 2021 04:42:35 -0700 (PDT)
+Received: from [192.168.2.202] (pd9e5a48a.dip0.t-ipconnect.de.
+ [217.229.164.138])
+ by smtp.gmail.com with ESMTPSA id eb9sm5646083ejc.32.2021.07.06.04.42.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 06 Jul 2021 04:42:35 -0700 (PDT)
 Subject: Re: [PATCH] bus: Make remove callback return void
-Message-ID: <YORBc384OjIBC/Yj@kuha.fi.intel.com>
+To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 References: <20210706095037.1425211-1-u.kleine-koenig@pengutronix.de>
+From: Maximilian Luz <luzmaximilian@gmail.com>
+Message-ID: <07c08230-6c71-2a73-c89f-05b9b5de78ab@gmail.com>
+Date: Tue, 6 Jul 2021 13:42:31 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <20210706095037.1425211-1-u.kleine-koenig@pengutronix.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-Mailman-Approved-At: Tue, 06 Jul 2021 22:48:04 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -54,45 +87,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alison Schofield <alison.schofield@intel.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Samuel Iglesias Gonsalvez <siglesias@igalia.com>,
- Jens Taprogge <jens.taprogge@taprogge.org>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Benjamin Tissoires <benjamin.tissoires@redhat.com>,
- Paul Mackerras <paulus@samba.org>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- "K. Y. Srinivasan" <kys@microsoft.com>, Ira Weiny <ira.weiny@intel.com>,
- Wei Liu <wei.liu@kernel.org>, Alex Dubov <oakad@ya>,
- Dave Jiang <dave.jiang@intel.com>, Maxim Levitsky <maximlevitsky@gmail.com>,
- Johannes Thumshirn <morbidrsa@gmail.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Helge Deller <deller@gmx.de>,
- =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
- Dexuan Cui <decui@microsoft.com>, Russell King <linux@armlinux.org.uk>,
- Jernej Skrabec <jernej.skrabec@gmail.com>, Chen-Yu Tsai <wens@csie.org>,
- Tom Rix <trix@redhat.com>, Len Brown <lenb@kernel.org>,
- Jiri Kosina <jikos@kernel.org>, Haiyang Zhang <haiyangz@microsoft.com>,
- Sudeep Holla <sudeep.holla@arm.com>,
- William Breathitt Gray <vilhelm.gray@gmail.com>,
- Maxime Ripard <mripard@kernel.org>, Ben Widawsky <ben.widawsky@intel.com>,
- Moritz Fischer <mdf@kernel.org>, Stephen Hemminger <sthemmin@microsoft.com>,
- Dan Williams <dan.j.williams@intel.com>,
+Cc: =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
+ linux-hyperv@vger.kernel.org, Alex Elder <elder@kernel.org>,
+ kvm@vger.kernel.org, nvdimm@lists.linux.dev, linux-mmc@vger.kernel.org,
+ linux-wireless@vger.kernel.org, linux-fpga@vger.kernel.org,
+ linux-pci@vger.kernel.org, alsa-devel@alsa-project.org,
+ linux-cxl@vger.kernel.org, Bjorn Andersson <bjorn.andersson@linaro.org>,
+ target-devel@vger.kernel.org, linux-i2c@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-i3c@lists.infradead.org,
+ "K. Y. Srinivasan" <kys@microsoft.com>, Jiri Slaby <jirislaby@kernel.org>,
+ Rob Herring <robh@kernel.org>, Wei Liu <wei.liu@kernel.org>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Stephen Hemminger <sthemmin@microsoft.com>, linux-scsi@vger.kernel.org,
+ Adrian Hunter <adrian.hunter@intel.com>, linux-staging@lists.linux.dev,
+ Dexuan Cui <decui@microsoft.com>, linux-acpi@vger.kernel.org,
+ Andy Gross <agross@kernel.org>, industrypack-devel@lists.sourceforge.net,
+ linux-input@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+ linux-mips@vger.kernel.org, virtualization@lists.linux-foundation.org,
+ linux-sunxi@lists.linux.dev, Len Brown <lenb@kernel.org>,
+ platform-driver-x86@vger.kernel.org, linux-serial@vger.kernel.org,
+ Arnd Bergmann <arnd@arndb.de>, linux-remoteproc@vger.kernel.org,
+ Haiyang Zhang <haiyangz@microsoft.com>, Jiri Kosina <jikos@kernel.org>,
+ Johan Hovold <johan@kernel.org>, Maxime Ripard <mripard@kernel.org>,
+ Hans de Goede <hdegoede@redhat.com>, Mark Brown <broonie@kernel.org>,
+ xen-devel@lists.xenproject.org, Bjorn Helgaas <bhelgaas@google.com>,
+ Mark Gross <mgross@linux.intel.com>,
  Mauro Carvalho Chehab <mchehab@kernel.org>,
- Cristian Marussi <cristian.marussi@arm.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Geoff Levand <geoff@infradead.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ linux-arm-kernel@lists.infradead.org, linux1394-devel@lists.sourceforge.net,
+ Johannes Thumshirn <morbidrsa@gmail.com>, linux-parisc@vger.kernel.org,
+ greybus-dev@lists.linaro.org, Stephen Boyd <sboyd@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org,
  "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
- Wolfram Sang <wsa@kernel.org>, Vinod Koul <vkoul@kernel.org>,
- Stefan Richter <stefanr@s5r6.in-berlin.de>, kernel@pengutronix.de,
- Wu Hao <hao.wu@intel.com>
+ linux-spi@vger.kernel.org, netdev@vger.kernel.org, dmaengine@vger.kernel.org,
+ linux-ntb@googlegroups.com, linux-media@vger.kernel.org,
+ =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 06, 2021 at 11:50:37AM +0200, Uwe Kleine-König wrote:
+On 7/6/21 11:50 AM, Uwe Kleine-KÃ¶nig wrote:
 > The driver core ignores the return value of this callback because there
 > is only little it can do when a device disappears.
 > 
@@ -106,13 +141,8 @@ On Tue, Jul 06, 2021 at 11:50:37AM +0200, Uwe Kleine-König wrote:
 > implemented buses return an ignored error code and so don't anticipate
 > wrong expectations for driver authors.
 > 
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+> Signed-off-by: Uwe Kleine-KÃ¶nig <u.kleine-koenig@pengutronix.de>
 
-For ulpi and typec:
+>   drivers/platform/surface/aggregator/bus.c | 4 +---
 
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-
-thanks,
-
--- 
-heikki
+Acked-by: Maximilian Luz <luzmaximilian@gmail.com>
