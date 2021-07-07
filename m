@@ -1,60 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D6193BE561
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Jul 2021 11:11:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA4153BE59C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Jul 2021 11:29:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GKYZH3Pnwz3bj5
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Jul 2021 19:11:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GKYzY5G33z3bhw
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Jul 2021 19:29:45 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=S2JKLryR;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=VkxD7jFU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=suse.com (client-ip=195.135.220.29; helo=smtp-out2.suse.de;
- envelope-from=jgross@suse.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
- header.s=susede1 header.b=S2JKLryR; dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1030;
+ helo=mail-pj1-x1030.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=VkxD7jFU; dkim-atps=neutral
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com
+ [IPv6:2607:f8b0:4864:20::1030])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GKYYn4nsDz3062
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Jul 2021 19:10:52 +1000 (AEST)
-Received: from imap1.suse-dmz.suse.de (imap1.suse-dmz.suse.de [192.168.254.73])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 73D1C1FD5C;
- Wed,  7 Jul 2021 09:10:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
- t=1625649048; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=jBrTdZh0fhHdoZBmt7kZCO7hzkn6x3INTyY3C5pkFwM=;
- b=S2JKLryRPmjUmQr9qsJJMP4SAYWAeQdDK57J6LPLxK5z9x6x3XQrAFHaITXI3dWZAWazwE
- L7LZHl1Ecfl22mrcaxv93w06LSjduKdNmBf0P7ENfxbe5yed6jbPVBX7fEFsEiXK2/a3jd
- sC/5d4yUaeG8VZD/deLqErOUYhHNgho=
-Received: from imap1.suse-dmz.suse.de (imap1.suse-dmz.suse.de [192.168.254.73])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap1.suse-dmz.suse.de (Postfix) with ESMTPS id 3CDA613966;
- Wed,  7 Jul 2021 09:10:48 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap1.suse-dmz.suse.de with ESMTPSA id 6ZHeDJhv5WDWOAAAGKfGzw
- (envelope-from <jgross@suse.com>); Wed, 07 Jul 2021 09:10:48 +0000
-From: Juergen Gross <jgross@suse.com>
-To: xen-devel@lists.xenproject.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-Subject: [PATCH v2] xen/hvc: replace BUG_ON() with negative return value
-Date: Wed,  7 Jul 2021 11:10:45 +0200
-Message-Id: <20210707091045.460-1-jgross@suse.com>
-X-Mailer: git-send-email 2.26.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GKYz40962z3033
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Jul 2021 19:29:19 +1000 (AEST)
+Received: by mail-pj1-x1030.google.com with SMTP id fs7so1189718pjb.2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jul 2021 02:29:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=jchZkw+FKZli49Idov1A0qv/d0edmDmo36x/4w2EWgs=;
+ b=VkxD7jFUHmONoxu5GZbfLBi9nRIJhxf16ID1aYK6PwjkbUsmB9wNl5T1f8raW+0GJl
+ bB7/iQdVyEgsS2ch1+JvvlPTsiROwBYS3/Nain3jg/RdgRwIHAQ/819KdcyH+nbgVaq6
+ iqaQ0tYEbuYyCTPBrxBguVCNaZEZQYDeXCxB5FmgyyYt03R/Ybw8KViwishtD6uw2sha
+ KxFmjVnkOsCXk1nveEk2o6KCrqVnSbCgeIkLhuDwrZ033HPN/RhoCyOvl54nHLFgMagc
+ 4PtVvHVBrKGPj8B4bt1EIbgE3ht6RJW9gmP/jEETF2PHgy18/Uo8/mzDuFscmSBzPGGH
+ gPdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=jchZkw+FKZli49Idov1A0qv/d0edmDmo36x/4w2EWgs=;
+ b=dB4rDQQ5NrUMtbOIC2+9c1a/iDvI5CTkSgf2JQ3V5WYh+kY1DyNINH8YvETsANZJ8D
+ AnOBTRfryjmt1LKICAJbn6FKjAPp1wThi9Rnrve4ZGtZSDfKtM+nxwm+Zh5+lk30dl99
+ KZ2YfPYVaQRr3tXMKW7ufBdpbTWJdh26IecxBtYT2vfS8iHpHZHWNCXtD3st88ovfQa5
+ YC8fLzMOlx4Xq8oXdaOo8UowGSBbLc/AlMSW3JaKfX1jxYXfpHopXAC+3jGgEmMvy5sU
+ y9dlHA6wRZDCx9b6HaGv7SGJre1mDVNjGSG5Pm0B0ZBZmlG1Jwsy+6ojxxe0EUjEvU4b
+ KEuw==
+X-Gm-Message-State: AOAM530MfWcu5xjpep5zQT1Lxa1/uNNzPdYvXz8u70swQeiYc8SkKk8G
+ 01zChP4Ha+EXDPpvGXGI4ro=
+X-Google-Smtp-Source: ABdhPJzu2P2o6nW8AyL5Iv95K1fV5hjbPuLgawKBe5rgFiu4HtQftA0qTz9YGYR5uLjFVszCVj7SMA==
+X-Received: by 2002:a17:90a:7e16:: with SMTP id
+ i22mr5192502pjl.12.1625650155425; 
+ Wed, 07 Jul 2021 02:29:15 -0700 (PDT)
+Received: from localhost (14-203-186-173.tpgi.com.au. [14.203.186.173])
+ by smtp.gmail.com with ESMTPSA id x26sm3316540pfu.37.2021.07.07.02.29.14
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 07 Jul 2021 02:29:15 -0700 (PDT)
+Date: Wed, 07 Jul 2021 19:29:09 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [FSL P50xx] IRQ issues
+To: Christian Zigotzky <chzigotzky@xenosoft.de>, linuxppc-dev
+ <linuxppc-dev@lists.ozlabs.org>
+References: <20210509224926.GA31035@embeddedor>
+ <CADnq5_OWk+rXK5xrwu0YOMVC45WyQgFQBTUNkcF8oO3ucp+=XQ@mail.gmail.com>
+ <ba5f2a73-58e8-6b3e-4048-bb19f238be51@embeddedor.com>
+ <4e0a3130-4c20-aa8a-f32a-6c3f0d9cd6f8@xenosoft.de>
+ <86de3024-c025-ec65-a45a-264585730c4a@xenosoft.de>
+ <cc1b16c0-47d5-2c50-fba0-9e1aa014ee8a@xenosoft.de>
+ <1625527692.m58rsysc62.astroid@bobo.none>
+ <8ba2f5a3-5fc8-042b-a738-7545f8fbcf4d@xenosoft.de>
+ <74509635-f4e2-d6e7-311f-dbdab8fe317f@xenosoft.de>
+In-Reply-To: <74509635-f4e2-d6e7-311f-dbdab8fe317f@xenosoft.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-Id: <1625650049.uh1jm4qzw5.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,69 +89,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juergen Gross <jgross@suse.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>
+Cc: Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ mad skateman <madskateman@gmail.com>, Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Xen frontends shouldn't BUG() in case of illegal data received from
-their backends. So replace the BUG_ON()s when reading illegal data from
-the ring page with negative return values.
+Nice, thanks for reporting and testing. I submitted a qemu patch to=20
+hopefully avoid this happening again in future.
 
-Signed-off-by: Juergen Gross <jgross@suse.com>
----
-V2:
-- drop BUG_ON() (Christophe Leroy, Greg Kroah-Hartmann)
-- replace WARN_ONCE() by pr_err_once() (Greg Kroah-Hartmann)
-- break out from original series
----
- drivers/tty/hvc/hvc_xen.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+Thanks,
+Nick
 
-diff --git a/drivers/tty/hvc/hvc_xen.c b/drivers/tty/hvc/hvc_xen.c
-index 92c9a476defc..8f143c09a169 100644
---- a/drivers/tty/hvc/hvc_xen.c
-+++ b/drivers/tty/hvc/hvc_xen.c
-@@ -86,7 +86,11 @@ static int __write_console(struct xencons_info *xencons,
- 	cons = intf->out_cons;
- 	prod = intf->out_prod;
- 	mb();			/* update queue values before going on */
--	BUG_ON((prod - cons) > sizeof(intf->out));
-+
-+	if ((prod - cons) > sizeof(intf->out)) {
-+		pr_err_once("xencons: Illegal ring page indices");
-+		return -EINVAL;
-+	}
- 
- 	while ((sent < len) && ((prod - cons) < sizeof(intf->out)))
- 		intf->out[MASK_XENCONS_IDX(prod++, intf->out)] = data[sent++];
-@@ -114,7 +118,10 @@ static int domU_write_console(uint32_t vtermno, const char *data, int len)
- 	 */
- 	while (len) {
- 		int sent = __write_console(cons, data, len);
--		
-+
-+		if (sent < 0)
-+			return sent;
-+
- 		data += sent;
- 		len -= sent;
- 
-@@ -138,7 +145,11 @@ static int domU_read_console(uint32_t vtermno, char *buf, int len)
- 	cons = intf->in_cons;
- 	prod = intf->in_prod;
- 	mb();			/* get pointers before reading ring */
--	BUG_ON((prod - cons) > sizeof(intf->in));
-+
-+	if ((prod - cons) > sizeof(intf->in)) {
-+		pr_err_once("xencons: Illegal ring page indices");
-+		return -EINVAL;
-+	}
- 
- 	while (cons != prod && recv < len)
- 		buf[recv++] = intf->in[MASK_XENCONS_IDX(cons++, intf->in)];
--- 
-2.26.2
-
+Excerpts from Christian Zigotzky's message of July 7, 2021 1:22 am:
+> Hi Nick,
+>=20
+> Your patch works (see patch below)! Many thanks for your help! We tested=20
+> it on an A-EON AmigaOne X5000/20 and in a virtual e5500 QEMU machine toda=
+y.
+>=20
+> Screenshots:
+>=20
+> -=20
+> http://www.skateman.nl/wp-content/uploads/2021/07/Screenshot-at-2021-07-0=
+6-113237.png
+> - https://i.ibb.co/h813RRp/Kernel-5-14-alpha3-Power-PC.png
+>=20
+> Thanks,
+> Christian
+>=20
+> On 06 July 2021 at 06:07 am, Christian Zigotzky wrote:
+>> Hi Nick,
+>>
+>> Thanks a lot for your patch! We will test it as soon as possible.=20
+>> You're right that this issue doesn't exist in a virtual e5500 QEMU=20
+>> machine.
+>>
+>> Have a nice day,
+>> Christian
+>>
+>> On 06 July 2021 at 01:36 am, Nicholas Piggin wrote:
+>>> Excerpts from Christian Zigotzky's message of July 6, 2021 4:49 am:
+>>>> Hi All,
+>>>>
+>>>> Our FSL P50xx machines don't boot anymore because of IRQ issues. [1]
+>>>>
+>>>> Please check the IRQ changes in the latest PowerPC updates 5.14-1. [2]
+>>>>
+>>>> Thanks,
+>>>> Christian
+>>>>
+>>>> [1]
+>>>> https://forum.hyperion-entertainment.com/download/file.php?id=3D2592&m=
+ode=3Dview=20
+>>>>
+>>>> [2]
+>>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/com=
+mit/?id=3D019b3fd94ba73d3ac615f0537440b81f129821f6=20
+>>>>
+>>> This looks like mtmsrd in the 64e code. I think this should fix it.
+>>>
+>>> QEMU does not seem to trap on this, maybe something to improve.
+>>>
+>>> Thanks,
+>>> Nick
+>>> --=20
+>>>
+>>> diff --git a/arch/powerpc/kernel/interrupt_64.S=20
+>>> b/arch/powerpc/kernel/interrupt_64.S
+>>> index 4063e8a3f704..d4212d2ff0b5 100644
+>>> --- a/arch/powerpc/kernel/interrupt_64.S
+>>> +++ b/arch/powerpc/kernel/interrupt_64.S
+>>> @@ -311,9 +311,13 @@ END_BTB_FLUSH_SECTION
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * trace_hardirqs_off().
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 li=C2=A0=C2=A0=C2=A0 r11,IRQS_ALL_DISABL=
+ED
+>>> -=C2=A0=C2=A0=C2=A0 li=C2=A0=C2=A0=C2=A0 r12,-1 /* Set MSR_EE and MSR_R=
+I */
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 stb=C2=A0=C2=A0=C2=A0 r11,PACAIRQSOFTMAS=
+K(r13)
+>>> +#ifdef CONFIG_PPC_BOOK3S
+>>> +=C2=A0=C2=A0=C2=A0 li=C2=A0=C2=A0=C2=A0 r12,-1 /* Set MSR_EE and MSR_R=
+I */
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 mtmsrd=C2=A0=C2=A0=C2=A0 r12,1
+>>> +#else
+>>> +=C2=A0=C2=A0=C2=A0 wrteei=C2=A0=C2=A0=C2=A0 1
+>>> +#endif
+>>> =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* Calling convention has r9 =3D =
+orig r0, r10 =3D regs */
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 mr=C2=A0=C2=A0=C2=A0 r9,r0
+>>
+>=20
+>=20
