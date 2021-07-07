@@ -1,76 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B1D03BE91F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Jul 2021 15:58:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C08AA3BE954
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Jul 2021 16:05:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GKgxZ4HMxz3bkp
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Jul 2021 23:58:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GKh5Z4bDlz3bkq
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jul 2021 00:05:22 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=LSwG+ltb;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jw9QDbbo;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42c;
- helo=mail-pf1-x42c.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=acme@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=LSwG+ltb; dkim-atps=neutral
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com
- [IPv6:2607:f8b0:4864:20::42c])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=jw9QDbbo; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GKgx64sHRz302y
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Jul 2021 23:58:01 +1000 (AEST)
-Received: by mail-pf1-x42c.google.com with SMTP id q10so2179164pfj.12
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jul 2021 06:58:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:references:in-reply-to:mime-version:message-id
- :content-transfer-encoding;
- bh=y7xL37+wRygKUruADb7d35ysRYf/kHcND7rKwd7sRCg=;
- b=LSwG+ltb4yb+bmQ8BT2udXsnLoS4F1NFxJm4EvajAXZJRwCRrgEucrygvJ2ItOhzlr
- kqpXfeFoe4LV/nMRz8zvyZlamHeJaQ4NNtpV9uWD0KkgbfEPjmn5tXwIYIVWD0Zvyx/b
- qmlMoz8RbVM9seje67Q5Ej/hYTCWVtUn1ZhcEU+cYvSlu96kFvjgpwNRNBZd8vx36lCP
- axdFzyNDdwPDK5SM7+CHc/1bnVnXLG77AAGAsWrPqut6eTHyeR7DkMjlpB9HHpfkIidv
- DwwOcZXXJooxCfn+q3VLVDyBqxoahCl3/iKgTxFXLJm4Ra11A1X+q2dLKFbEqy1o0jEO
- V8uA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=y7xL37+wRygKUruADb7d35ysRYf/kHcND7rKwd7sRCg=;
- b=ricxL2+8de68ZF0aR3E5W0hlr/DQBkHpE4jvA0trFbpq0FW0hmd+edwvbcqPxKlIgL
- c3sgGF9QEoglQHWnALTgqU5Q/hK+h9OaumKnr0I4MFUaPFBnHyWBsIjNtBLT0M1NCVKM
- 3WchlI6rfAD0Dno5ljj+LcGEOOmvs2IWTNtnmAqha4TV5OgCZQKGVfXejpnHUZPLEdPH
- n754Uw0VRg+1xHjWRTjly5ytrbkRzBWUGFaLjy5SCjViK6saNJNvu18LD87z5cS59926
- oKCRONQmCvqUwPCj/tzY9nNGYbVM8iLUVkv65xGlj7hwjIftwDktGwYMfyCfDibQR3D3
- OqZg==
-X-Gm-Message-State: AOAM532kVHreFLly9bn834+qKPNFeLCm/ODIQuPbGDNI2vlsrRPNkpJO
- n+yYyqMkD+9ICpC16/wlc1//8KdmcCM=
-X-Google-Smtp-Source: ABdhPJyF5GrjpvOZiBtmF9Bmh8/qpLdQRa+UHdAi0idEJ/9z/my5D6u/5vbGOFqg2+OxnPkLdcD3OQ==
-X-Received: by 2002:aa7:80d9:0:b029:2ed:49fa:6dc5 with SMTP id
- a25-20020aa780d90000b02902ed49fa6dc5mr25560648pfn.3.1625666277416; 
- Wed, 07 Jul 2021 06:57:57 -0700 (PDT)
-Received: from localhost (14-203-186-173.tpgi.com.au. [14.203.186.173])
- by smtp.gmail.com with ESMTPSA id e18sm15715332pfc.85.2021.07.07.06.57.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 Jul 2021 06:57:57 -0700 (PDT)
-Date: Wed, 07 Jul 2021 23:57:51 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [RFC PATCH] powerpc: flexible register range save/restore macros
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- linuxppc-dev@lists.ozlabs.org
-References: <20210703091452.352816-1-npiggin@gmail.com>
- <dc76505a-dbb3-ba3b-651e-32bcacd64d28@csgroup.eu>
-In-Reply-To: <dc76505a-dbb3-ba3b-651e-32bcacd64d28@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GKh543q8Dz300b
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jul 2021 00:04:56 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C810C61C92;
+ Wed,  7 Jul 2021 14:04:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1625666692;
+ bh=X05+giyFKsVT+sh0hnEHJ5D9wx29IQi/oJ6RZCCiYdc=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=jw9QDbboQVZmhJTdpYKUBDl5Urg8AOtcJ1QcxY+8FidTj0Qsdc6Ya7EXPDznObwfU
+ jkeLZzQ7OE4HyTFk4vUuIEDUv757Vf7BcEpdhCI3EjpWwzCn0pzJUrLGqrXFDhGjNs
+ OvAOFNolWWTIED7BlLP4MI+QgazZICx1UIirNIRa4P1lKUq+pcEFJxQgX89jqu3ovQ
+ Fd5zgVv6ROfuCjczgWuRMLt5STOmLgPBSeEnZTpT34aFunQlzZd6lCPJT5UA321LxL
+ jJijpFNGL2n4xTOvo/UPFmqQGRPFYOjkGn1lWbzOzPU2FFLzOYkBP9w1fc+FMddedL
+ rJIcTENISNdOg==
+Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
+ id 1A48F40B1A; Wed,  7 Jul 2021 11:04:49 -0300 (-03)
+Date: Wed, 7 Jul 2021 11:04:49 -0300
+From: Arnaldo Carvalho de Melo <acme@kernel.org>
+To: kajoljain <kjain@linux.ibm.com>
+Subject: Re: [PATCH] perf script python: Fix buffer size to report iregs in
+ perf script
+Message-ID: <YOW0gU4yNpgN8MjB@kernel.org>
+References: <20210628062341.155839-1-kjain@linux.ibm.com>
+ <20210628144937.GE142768@li-24c3614c-2adc-11b2-a85c-85f334518bdb.ibm.com>
+ <ee98968a-f343-a68e-9a3e-58e97dc130c8@linux.ibm.com>
+ <c6fb2136-21e1-325a-f7f7-9745dbe29661@linux.ibm.com>
+ <YOSr25+a+r3MF2Ob@kernel.org>
+ <d59266da-2aa6-69ff-646b-144ba874ee2f@linux.ibm.com>
 MIME-Version: 1.0
-Message-Id: <1625666256.bfohvdbguf.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d59266da-2aa6-69ff-646b-144ba874ee2f@linux.ibm.com>
+X-Url: http://acmel.wordpress.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,24 +66,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: ravi.bangoria@linux.ibm.com, atrajeev@linux.vnet.ibm.com,
+ rnsastry@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+ maddy@linux.vnet.ibm.com, "Paul A. Clarke" <pc@us.ibm.com>,
+ Jiri Olsa <jolsa@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Christophe Leroy's message of July 5, 2021 3:52 pm:
->=20
->=20
-> Le 03/07/2021 =C3=A0 11:14, Nicholas Piggin a =C3=A9crit=C2=A0:
->> Introduce macros that operate on a (start, end) range of registers,
->> which reduces lines of code and need to do mental arithmetic while
->> reading the code.
->=20
-> Looks like a nice patch.
->=20
-> Maybe you could split the patch in two parts, one part for GPRs and one p=
-atch for the FP/VR regs.
+Em Wed, Jul 07, 2021 at 11:16:20AM +0530, kajoljain escreveu:
+> On 7/7/21 12:45 AM, Arnaldo Carvalho de Melo wrote:
+> > Em Tue, Jul 06, 2021 at 05:26:12PM +0530, kajoljain escreveu:
+> >> On 6/29/21 12:39 PM, kajoljain wrote:
+> >>> On 6/28/21 8:19 PM, Paul A. Clarke wrote:
+> >>>> On Mon, Jun 28, 2021 at 11:53:41AM +0530, Kajol Jain wrote:
+> >>>>> @@ -713,7 +711,16 @@ static void set_regs_in_dict(PyObject *dict,
+> >>>>>  			     struct evsel *evsel)
+> >>>>>  {
+> >>>>>  	struct perf_event_attr *attr = &evsel->core.attr;
+> >>>>> -	char bf[512];
+> >>>>> +
+> >>>>> +	/*
+> >>>>> +	 * Here value 28 is a constant size which can be used to print
+> >>>>> +	 * one register value and its corresponds to:
+> >>>>> +	 * 16 chars is to specify 64 bit register in hexadecimal.
+> >>>>> +	 * 2 chars is for appending "0x" to the hexadecimal value and
+> >>>>> +	 * 10 chars is for register name.
+> >>>>> +	 */
+> >>>>> +	int size = __sw_hweight64(attr->sample_regs_intr) * 28;
+> >>>>> +	char bf[size];
 
-Sure I can do that.
+> >>>> I propose using a template rather than a magic number here. Something like:
+> >>>> const char reg_name_tmpl[] = "10 chars  ";
+> >>>> const char reg_value_tmpl[] = "0x0123456789abcdef";
+> >>>> const int size = __sw_hweight64(attr->sample_regs_intr) +
+> >>>>                  sizeof reg_name_tmpl + sizeof reg_value_tmpl;
 
-Thanks,
-Nick
+> >>>    Thanks for reviewing the patch. Yes these are
+> >>> some standardization we can do by creating macros for different
+> >>> fields.
+> >>> The basic idea is, we want to provide significant buffer size
+> >>> based on number of registers present in sample_regs_intr to accommodate
+> >>> all data.
+
+> >>    Is the approach used in this patch looks fine to you?
+
+> > Yeah, and the comment you provide right above it explains it, so I think
+> > that is enough, ok?
+ 
+>     Thanks for reviewing it. As you said added comment already explains
+> why we are taking size constant as 28, should we skip adding macros part?
+> Can you pull this patch.
+
+Sure.
+
+- Arnaldo
