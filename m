@@ -1,73 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B1303BF021
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Jul 2021 21:18:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E0A33BF284
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jul 2021 01:35:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GKq3320tzz3blL
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jul 2021 05:18:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GKwlR1Wycz3bkV
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jul 2021 09:35:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=GhGgdo1u;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Iwo14BH0;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Iwo14BH0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::c29;
- helo=mail-oo1-xc29.google.com; envelope-from=groeck7@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=GhGgdo1u; dkim-atps=neutral
-Received: from mail-oo1-xc29.google.com (mail-oo1-xc29.google.com
- [IPv6:2607:f8b0:4864:20::c29])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
+ helo=us-smtp-delivery-124.mimecast.com;
+ envelope-from=benjamin.tissoires@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=Iwo14BH0; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=Iwo14BH0; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GKq2Y1lBHz307r
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jul 2021 05:18:12 +1000 (AEST)
-Received: by mail-oo1-xc29.google.com with SMTP id
- 128-20020a4a11860000b029024b19a4d98eso767267ooc.5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Jul 2021 12:18:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:date:from:to:cc:subject:message-id:mime-version
- :content-disposition;
- bh=Y7Q51/7FLsCms66glLj41BP5mqecTdjNWpQEsIZ8maA=;
- b=GhGgdo1uZFPwlJDhrxzSSKETzBZEfVoXMQ3Ml4ZKUlafAZUF4OHN0xRl5PnsgDfxFq
- 1jGcfEat3uGzVNqztVDKGxfT5VJXWYgroBb86qiN71d63McvKGeGGaBTphuvzI9JRRVT
- +zkEuUnlZz9XlhMPlhTuA5lOC0NIxmRfNTd4MjWU7osgUy6IjX9ihL6S77qRBnzlkN23
- 0O4qjM/uhD+wxl4nKCLRGkT2MUyCA/tgWdiUSbCYNTPfNdUfaFO/+Y8IZxC4cisUn2BU
- FJIwsnKM8W5jUkSiT7Vc8QZzWNg/BygY0M64pesU7o+j2b3HeBqmmV0Im1uw6z/6n69e
- M3xg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
- :mime-version:content-disposition;
- bh=Y7Q51/7FLsCms66glLj41BP5mqecTdjNWpQEsIZ8maA=;
- b=R06jGlguwqRnZYtCVD8B9ogLMS9Qka88b3IXeG58tljecDSH/SyOqTvDX8PtErPYOB
- 0h4QIuhBdUjLoc+r8HKgFKckKwdn7FKGHkZ0l5MMx7XMeHxbiev/70ZAXMXXYjWKzxM+
- wpvQvUaFCm5oiYMvmcaNHuYYUbTK6AzL80qsRQC5EemrKNJoY8sR1+c1IQP19Bfzb14s
- yDGZ/6Wu4EWdr4xTvINVVK/pkFSqPwA51WnV9AYU3uUUWf7Oh0C/i/rmAiYOGBqE2MbU
- Z8e7lJkcshT/U/m1UUB/DhTTU3FsyKdZoWzOJJ8CIcXZQLrOMKF1Cus1r7jB50AOKFfE
- ueuQ==
-X-Gm-Message-State: AOAM5302efg8G25JYsQ8cKn52klAXH47ZgGVHaMp7Op62Q9cDp3Zr7A1
- XA2F6IKeUz8A+pllM+f0Teg=
-X-Google-Smtp-Source: ABdhPJxhpgZtFpXxgiq4iFjsks77cNfTgE5hakcSlpkJO0GiSRepWq4Fn3wdns7pp1X2Xlw/4ENwVw==
-X-Received: by 2002:a4a:8687:: with SMTP id x7mr19627528ooh.46.1625685488815; 
- Wed, 07 Jul 2021 12:18:08 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
- by smtp.gmail.com with ESMTPSA id h25sm990890oop.15.2021.07.07.12.18.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 Jul 2021 12:18:08 -0700 (PDT)
-Date: Wed, 7 Jul 2021 12:18:06 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Valentin Schneider <valentin.schneider@arm.com>
-Subject: Re: [PATCH] powerpc: preempt: Don't touch the idle task's
- preempt_count during hotplug
-Message-ID: <20210707191806.GA2205122@roeck-us.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GKhXv6HyVz305r
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jul 2021 00:25:33 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1625667928;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=R1b1MmqRg+JjTb9SqE3N1oUES1jMyS6VpEEII2IWGuk=;
+ b=Iwo14BH06W//MgUJ/Dx5+0ggoObpPt3GMxyyQBWF8d1IHUVhouEMvKgsOvmGIh2+GywzJi
+ +s4nM2c/4yUcqqIk/5/D8RDL/iiZIxBG4fJxpGSUR0LCGQna8mc/ItGR3dWtwxL87y5tK5
+ gUfjwMS7Yp9iKOYkVjxwYcPjJSPj38k=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1625667928;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=R1b1MmqRg+JjTb9SqE3N1oUES1jMyS6VpEEII2IWGuk=;
+ b=Iwo14BH06W//MgUJ/Dx5+0ggoObpPt3GMxyyQBWF8d1IHUVhouEMvKgsOvmGIh2+GywzJi
+ +s4nM2c/4yUcqqIk/5/D8RDL/iiZIxBG4fJxpGSUR0LCGQna8mc/ItGR3dWtwxL87y5tK5
+ gUfjwMS7Yp9iKOYkVjxwYcPjJSPj38k=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-144-CRo11BF7MI-sHiDKM9mjGw-1; Wed, 07 Jul 2021 10:25:26 -0400
+X-MC-Unique: CRo11BF7MI-sHiDKM9mjGw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
+ [10.5.11.23])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E6AB71926DB0;
+ Wed,  7 Jul 2021 14:25:20 +0000 (UTC)
+Received: from [10.36.112.61] (ovpn-112-61.ams2.redhat.com [10.36.112.61])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E4E3919C66;
+ Wed,  7 Jul 2021 14:24:39 +0000 (UTC)
+Subject: Re: [PATCH v2 4/4] bus: Make remove callback return void
+To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <20210706154803.1631813-1-u.kleine-koenig@pengutronix.de>
+ <20210706154803.1631813-5-u.kleine-koenig@pengutronix.de>
+From: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Message-ID: <5d3bf56e-285f-ecc1-ec64-384409645353@redhat.com>
+Date: Wed, 7 Jul 2021 16:24:38 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+In-Reply-To: <20210706154803.1631813-5-u.kleine-koenig@pengutronix.de>
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=benjamin.tissoires@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Thu, 08 Jul 2021 09:35:04 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,74 +94,195 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
- Arnd Bergmann <arnd@arndb.de>, Peter Zijlstra <peterz@infradead.org>,
- linux-kernel@vger.kernel.org, Bharata B Rao <bharata@linux.ibm.com>,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
- Ingo Molnar <mingo@kernel.org>
+Cc: nvdimm@lists.linux.dev, Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Samuel Iglesias Gonsalvez <siglesias@igalia.com>,
+ Jens Taprogge <jens.taprogge@taprogge.org>,
+ Ulf Hansson <ulf.hansson@linaro.org>, Jaroslav Kysela <perex@perex.cz>,
+ Thorsten Scherer <t.scherer@eckelmann.de>, Paul Mackerras <paulus@samba.org>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ "K. Y. Srinivasan" <kys@microsoft.com>,
+ Mike Christie <michael.christie@oracle.com>, Wei Liu <wei.liu@kernel.org>,
+ Maxim Levitsky <maximlevitsky@gmail.com>, Samuel Holland <samuel@sholland.org>,
+ linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+ xen-devel@lists.xenproject.org, Tomas Winkler <tomas.winkler@intel.com>,
+ Julien Grall <jgrall@amazon.com>, Ohad Ben-Cohen <ohad@wizery.com>,
+ Alex Williamson <alex.williamson@redhat.com>, Alex Elder <elder@kernel.org>,
+ linux-parisc@vger.kernel.org, Geoff Levand <geoff@infradead.org>,
+ linux-fpga@vger.kernel.org, linux-usb@vger.kernel.org,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, Kai-Heng Feng <kai.heng.feng@canonical.com>,
+ kernel@pengutronix.de, Jon Mason <jdmason@kudzu.us>,
+ linux-ntb@googlegroups.com, Wu Hao <hao.wu@intel.com>,
+ David Woodhouse <dwmw@amazon.co.uk>,
+ =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Manohar Vanga <manohar.vanga@gmail.com>, linux-wireless@vger.kernel.org,
+ Dominik Brodowski <linux@dominikbrodowski.net>,
+ virtualization@lists.linux-foundation.org,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ target-devel@vger.kernel.org,
+ Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+ linux-i2c@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>,
+ Stephen Hemminger <sthemmin@microsoft.com>, Ira Weiny <ira.weiny@intel.com>,
+ Helge Deller <deller@gmx.de>,
+ =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+ industrypack-devel@lists.sourceforge.net, linux-mips@vger.kernel.org,
+ Len Brown <lenb@kernel.org>, alsa-devel@alsa-project.org,
+ linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
+ Maxime Ripard <mripard@kernel.org>, Johan Hovold <johan@kernel.org>,
+ greybus-dev@lists.linaro.org, Bjorn Helgaas <bhelgaas@google.com>,
+ Dave Jiang <dave.jiang@intel.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ linux-arm-kernel@lists.infradead.org, Johannes Thumshirn <morbidrsa@gmail.com>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>, Stephen Boyd <sboyd@kernel.org>,
+ Cornelia Huck <cohuck@redhat.com>, Wolfram Sang <wsa@kernel.org>,
+ Joey Pabalan <jpabalanb@gmail.com>, Yehezkel Bernat <YehezkelShB@gmail.com>,
+ =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>,
+ Bodo Stroesser <bostroesser@gmail.com>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Tyrel Datwyler <tyreld@linux.ibm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Tom Rix <trix@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ SeongJae Park <sjpark@amazon.de>, linux-hyperv@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org, Frank Li <lznuaa@gmail.com>,
+ netdev@vger.kernel.org, Qinglang Miao <miaoqinglang@huawei.com>,
+ Jiri Slaby <jirislaby@kernel.org>, Rob Herring <robh@kernel.org>,
+ Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+ Mark Gross <mgross@linux.intel.com>, linux-staging@lists.linux.dev,
+ Dexuan Cui <decui@microsoft.com>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Kishon Vijay Abraham I <kishon@ti.com>, Chen-Yu Tsai <wens@csie.org>,
+ linux-input@vger.kernel.org, Allen Hubbe <allenbh@gmail.com>,
+ Alex Dubov <oakad@yahoo.com>, Haiyang Zhang <haiyangz@microsoft.com>,
+ Jiri Kosina <jikos@kernel.org>, Vladimir Zapolskiy <vz@mleia.com>,
+ Russell King <rmk+kernel@armlinux.org.uk>,
+ Ben Widawsky <ben.widawsky@intel.com>, Moritz Fischer <mdf@kernel.org>,
+ linux-cxl@vger.kernel.org, Michael Buesch <m@bues.ch>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Cristian Marussi <cristian.marussi@arm.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Martyn Welch <martyn@welchs.me.uk>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, linux-mmc@vger.kernel.org,
+ linux-sunxi@lists.linux.dev, Stefan Richter <stefanr@s5r6.in-berlin.de>,
+ Sudeep Holla <sudeep.holla@arm.com>, "David S. Miller" <davem@davemloft.net>,
+ Sven Van Asbroeck <TheSven73@gmail.com>, kvm@vger.kernel.org,
+ "Michael S. Tsirkin" <mst@redhat.com>, linux-remoteproc@vger.kernel.org,
+ Bjorn Andersson <bjorn.andersson@linaro.org>,
+ Kirti Wankhede <kwankhede@nvidia.com>,
+ Andreas Noever <andreas.noever@gmail.com>, linux-i3c@lists.infradead.org,
+ linux1394-devel@lists.sourceforge.net, Lee Jones <lee.jones@linaro.org>,
+ Arnd Bergmann <arnd@arndb.de>, linux-scsi@vger.kernel.org,
+ Vishal Verma <vishal.l.verma@intel.com>, Russell King <linux@armlinux.org.uk>,
+ Andy Gross <agross@kernel.org>, linux-serial@vger.kernel.org,
+ Jakub Kicinski <kuba@kernel.org>, Michael Jamet <michael.jamet@intel.com>,
+ William Breathitt Gray <vilhelm.gray@gmail.com>,
+ Hans de Goede <hdegoede@redhat.com>, Hannes Reinecke <hare@suse.de>,
+ Adrian Hunter <adrian.hunter@intel.com>, Juergen Gross <jgross@suse.com>,
+ linuxppc-dev@lists.ozlabs.org, Takashi Iwai <tiwai@suse.com>,
+ Alexandre Bounine <alex.bou9@gmail.com>, Vinod Koul <vkoul@kernel.org>,
+ Mark Brown <broonie@kernel.org>, Marc Zyngier <maz@kernel.org>,
+ dmaengine@vger.kernel.org, Johannes Berg <johannes@sipsolutions.net>,
+ Johannes Thumshirn <jth@kernel.org>, Maximilian Luz <luzmaximilian@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jul 07, 2021 at 07:38:31PM +0100, Valentin Schneider wrote:
-> Powerpc currently resets a CPU's idle task preempt_count to 0 before said
-> task starts executing the secondary startup routine (and becomes an idle
-> task proper).
+On 7/6/21 5:48 PM, Uwe Kleine-König wrote:
+> The driver core ignores the return value of this callback because there
+> is only little it can do when a device disappears.
 > 
-> This conflicts with commit
+> This is the final bit of a long lasting cleanup quest where several
+> buses were converted to also return void from their remove callback.
+> Additionally some resource leaks were fixed that were caused by drivers
+> returning an error code in the expectation that the driver won't go
+> away.
 > 
->   f1a0a376ca0c ("sched/core: Initialize the idle task with preemption disabled")
+> With struct bus_type::remove returning void it's prevented that newly
+> implemented buses return an ignored error code and so don't anticipate
+> wrong expectations for driver authors.
 > 
-> which initializes all of the idle tasks' preempt_count to PREEMPT_DISABLED
-> during smp_init(). Note that this was superfluous before said commit, as
-> back then the hotplug machinery would invoke init_idle() via
-> idle_thread_get(), which would have already reset the CPU's idle task's
-> preempt_count to PREEMPT_ENABLED.
-> 
-> Get rid of this preempt_count write.
-> 
-> Cc: Guenter Roeck <linux@roeck-us.net>
-> Fixes: f1a0a376ca0c ("sched/core: Initialize the idle task with preemption disabled")
-> Reported-by: Bharata B Rao <bharata@linux.ibm.com>
-> Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
-
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-
+> Acked-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk> (For ARM, Amba and related parts)
+> Acked-by: Mark Brown <broonie@kernel.org>
+> Acked-by: Chen-Yu Tsai <wens@csie.org> (for drivers/bus/sunxi-rsb.c)
+> Acked-by: Pali Rohár <pali@kernel.org>
+> Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org> (for drivers/media)
+> Acked-by: Hans de Goede <hdegoede@redhat.com> (For drivers/platform)
+> Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> Acked-By: Vinod Koul <vkoul@kernel.org>
+> Acked-by: Juergen Gross <jgross@suse.com> (For Xen)
+> Acked-by: Lee Jones <lee.jones@linaro.org> (For drivers/mfd)
+> Acked-by: Johannes Thumshirn <jth@kernel.org> (For drivers/mcb)
+> Acked-by: Johan Hovold <johan@kernel.org>
+> Acked-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org> (For drivers/slimbus)
+> Acked-by: Kirti Wankhede <kwankhede@nvidia.com> (For drivers/vfio)
+> Acked-by: Maximilian Luz <luzmaximilian@gmail.com>
+> Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com> (For ulpi and typec)
+> Acked-by: Samuel Iglesias Gonsálvez <siglesias@igalia.com> (For ipack)
+> Reviewed-by: Tom Rix <trix@redhat.com> (For fpga)
+> Acked-by: Geoff Levand <geoff@infradead.org> (For ps3)
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 > ---
->  arch/powerpc/platforms/cell/smp.c    | 3 ---
->  arch/powerpc/platforms/pseries/smp.c | 5 +----
->  2 files changed, 1 insertion(+), 7 deletions(-)
 > 
-> diff --git a/arch/powerpc/platforms/cell/smp.c b/arch/powerpc/platforms/cell/smp.c
-> index c855a0aeb49c..d7ab868aab54 100644
-> --- a/arch/powerpc/platforms/cell/smp.c
-> +++ b/arch/powerpc/platforms/cell/smp.c
-> @@ -78,9 +78,6 @@ static inline int smp_startup_cpu(unsigned int lcpu)
->  
->  	pcpu = get_hard_smp_processor_id(lcpu);
->  
-> -	/* Fixup atomic count: it exited inside IRQ handler. */
-> -	task_thread_info(paca_ptrs[lcpu]->__current)->preempt_count	= 0;
+
+[...]
+
+>   drivers/hid/hid-core.c                    | 4 +---
+>   drivers/hid/intel-ish-hid/ishtp/bus.c     | 4 +---
+
+[...]
+
+> diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
+> index 7db332139f7d..dbed2524fd47 100644
+> --- a/drivers/hid/hid-core.c
+> +++ b/drivers/hid/hid-core.c
+> @@ -2302,7 +2302,7 @@ static int hid_device_probe(struct device *dev)
+>   	return ret;
+>   }
+>   
+> -static int hid_device_remove(struct device *dev)
+> +static void hid_device_remove(struct device *dev)
+>   {
+>   	struct hid_device *hdev = to_hid_device(dev);
+>   	struct hid_driver *hdrv;
+> @@ -2322,8 +2322,6 @@ static int hid_device_remove(struct device *dev)
+>   
+>   	if (!hdev->io_started)
+>   		up(&hdev->driver_input_lock);
 > -
->  	/*
->  	 * If the RTAS start-cpu token does not exist then presume the
->  	 * cpu is already spinning.
-> diff --git a/arch/powerpc/platforms/pseries/smp.c b/arch/powerpc/platforms/pseries/smp.c
-> index 096629f54576..7ebf3382816a 100644
-> --- a/arch/powerpc/platforms/pseries/smp.c
-> +++ b/arch/powerpc/platforms/pseries/smp.c
-> @@ -105,10 +105,7 @@ static inline int smp_startup_cpu(unsigned int lcpu)
->  		return 1;
->  	}
->  
-> -	/* Fixup atomic count: it exited inside IRQ handler. */
-> -	task_thread_info(paca_ptrs[lcpu]->__current)->preempt_count	= 0;
+> -	return 0;
+>   }
+>   
+>   static ssize_t modalias_show(struct device *dev, struct device_attribute *a,
+> diff --git a/drivers/hid/intel-ish-hid/ishtp/bus.c b/drivers/hid/intel-ish-hid/ishtp/bus.c
+> index f0802b047ed8..8a51bd9cd093 100644
+> --- a/drivers/hid/intel-ish-hid/ishtp/bus.c
+> +++ b/drivers/hid/intel-ish-hid/ishtp/bus.c
+> @@ -255,7 +255,7 @@ static int ishtp_cl_bus_match(struct device *dev, struct device_driver *drv)
+>    *
+>    * Return: Return value from driver remove() call.
+>    */
+> -static int ishtp_cl_device_remove(struct device *dev)
+> +static void ishtp_cl_device_remove(struct device *dev)
+>   {
+>   	struct ishtp_cl_device *device = to_ishtp_cl_device(dev);
+>   	struct ishtp_cl_driver *driver = to_ishtp_cl_driver(dev->driver);
+> @@ -267,8 +267,6 @@ static int ishtp_cl_device_remove(struct device *dev)
+>   
+>   	if (driver->remove)
+>   		driver->remove(device);
 > -
-> -	/* 
-> +	/*
->  	 * If the RTAS start-cpu token does not exist then presume the
->  	 * cpu is already spinning.
->  	 */
-> -- 
-> 2.25.1
-> 
+> -	return 0;
+>   }
+>   
+>   /**
+
+For the HID part:
+
+Acked-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+
+Cheers,
+Benjamin
+
