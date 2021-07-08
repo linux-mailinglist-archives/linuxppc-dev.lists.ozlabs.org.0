@@ -2,104 +2,94 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBEB63BF4C3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jul 2021 06:30:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04A433BF515
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jul 2021 07:30:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GL3HB58hCz3bkN
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jul 2021 14:29:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GL4d96kZdz3bWY
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jul 2021 15:30:37 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BxBaxDVd;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oasDoopG;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=BxBaxDVd; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ header.s=pp1 header.b=oasDoopG; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GL3Gg6t0hz2yN9
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jul 2021 14:29:31 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 16843aLR087636; Thu, 8 Jul 2021 00:29:22 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GL4cf512Xz2yYh
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jul 2021 15:30:09 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 16852km1188722; Thu, 8 Jul 2021 01:30:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : content-transfer-encoding : in-reply-to; s=pp1;
- bh=2/2FY0C+H7LwMRHMxKCHMeiU21F33OpFCGw6XAvVc6k=;
- b=BxBaxDVd2Rnisbh0w+ak/ezZvw+Z+C1d8bU+WEfOgb4XXBSYRDAJ6omYPieheMgJVOKs
- PzU3yPAYb9CRdlLnrLZCmofou0KpV8MT01PpM9HtDtFjazAOWTg0JlE9/BYh+KgmS+jd
- r+tVEF8kqoNkZ96svP9PHzKXQPf4KXmxfzX19VMXkHZk3LBbB+z9+AL0kEU0bcJsuAEt
- bCPEjwk/kNXkgxmCUwlDtHSrMcHprP9dnyp0FL+SU5vPVPfsFPbKFFXBwKZnqUdRpH0A
- EhKguUwvF66/TBkkGNWgzrR5eljEHeLHR+ajGkYgDtS3DVrKSvpqiHw3iQGBEnLu4g4r qw== 
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=6XWe7eWZX7n/OD7rd071XuDRE7H0a3x3VaFrrvk80MI=;
+ b=oasDoopGSOW7IktBFoFVbFp/zPE5cXVV0KI8hzCYWdzqdkFUBqMQUQbvv+Cact01xjpG
+ wereGUe1+N76TSxZUIx85Exv85suO3rhGHnHXHquvW0k8RPzjU5f45/zVq5hWDXdbGw4
+ l/Q9u5R8v++kNQeZNZpq2m74M39TamY4zgmeU/KGj3XDbypK3kcvid99TN1w5lDIsQtc
+ 1qnzob8LfAVKxGljIlTDjyNyhaCYLYchb+LDilLqg8NS03o+Rga+4b2ot61EI7gDzhMA
+ ndiY03Reksz5/h1xrtvXf30OyVlEMNFRinZQ+79vmj0Xt1MOCcL19s8HI7LymoVlrf7H 4A== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39nhcam4t9-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 39mbkfs0tx-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 08 Jul 2021 00:29:21 -0400
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 16843arO087650;
- Thu, 8 Jul 2021 00:29:21 -0400
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39nhcam4sr-1
+ Thu, 08 Jul 2021 01:30:00 -0400
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 16852wsk189397;
+ Thu, 8 Jul 2021 01:30:00 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 39mbkfs0t5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 08 Jul 2021 00:29:21 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1684Mu3P029177;
- Thu, 8 Jul 2021 04:29:19 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma04fra.de.ibm.com with ESMTP id 39jfh8h2th-1
+ Thu, 08 Jul 2021 01:29:59 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1685NJ48006205;
+ Thu, 8 Jul 2021 05:29:58 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma04ams.nl.ibm.com with ESMTP id 39jfh8t1bd-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 08 Jul 2021 04:29:18 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 1684TFFB34079114
+ Thu, 08 Jul 2021 05:29:58 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1685Tt1u20054426
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 8 Jul 2021 04:29:15 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3BB94AE045;
- Thu,  8 Jul 2021 04:29:15 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AA199AE053;
- Thu,  8 Jul 2021 04:29:13 +0000 (GMT)
-Received: from in.ibm.com (unknown [9.85.82.66])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Thu,  8 Jul 2021 04:29:13 +0000 (GMT)
-Date: Thu, 8 Jul 2021 09:59:08 +0530
+ Thu, 8 Jul 2021 05:29:55 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E0E1F5204F;
+ Thu,  8 Jul 2021 05:29:54 +0000 (GMT)
+Received: from bharata.ibmuc.com (unknown [9.85.82.66])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id DD87D52054;
+ Thu,  8 Jul 2021 05:29:53 +0000 (GMT)
 From: Bharata B Rao <bharata@linux.ibm.com>
-To: David Gibson <david@gibson.dropbear.id.au>
-Subject: Re: [PATCH v8 3/6] KVM: PPC: Book3S HV: Add support for
- H_RPT_INVALIDATE
-Message-ID: <YOZ/FNW1K/nzaaEe@in.ibm.com>
-References: <20210621085003.904767-1-bharata@linux.ibm.com>
- <20210621085003.904767-4-bharata@linux.ibm.com>
- <YOKNub8mS4U4iox0@yekko> <YOPpiLJlsEBtTmgt@in.ibm.com>
- <YOZ3zNsGbSoymVKI@yekko>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [RFC PATCH v0 1/1] powerpc/percpu: Use 2MB atom_size in percpu
+ allocator on radix
+Date: Thu,  8 Jul 2021 10:59:46 +0530
+Message-Id: <20210708052946.1497495-1-bharata@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <YOZ3zNsGbSoymVKI@yekko>
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: jfhlcWEMcXpg08Afl9ML8v98cU2XhIc6
-X-Proofpoint-GUID: g3mkWPg7Qn4mwh2ze_3t5w_1dZ0Y5M0B
+X-Proofpoint-GUID: 2YEN2dKRcnpmugEHBG9oO6qYBIKX7R2s
+X-Proofpoint-ORIG-GUID: IpW6jqcPM2-VL-aQtrIZXJW71Whr1jWb
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
  definitions=2021-07-08_01:2021-07-06,
  2021-07-08 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- malwarescore=0 phishscore=0 mlxlogscore=999 mlxscore=0 spamscore=0
- clxscore=1015 impostorscore=0 priorityscore=1501 adultscore=0
- suspectscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2107080020
+ impostorscore=0 mlxscore=0
+ lowpriorityscore=0 clxscore=1015 mlxlogscore=999 phishscore=0
+ priorityscore=1501 spamscore=0 malwarescore=0 adultscore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2107080025
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,59 +101,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: bharata@linux.ibm.com
-Cc: farosas@linux.ibm.com, aneesh.kumar@linux.ibm.com, npiggin@gmail.com,
- kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: aneesh.kumar@linux.ibm.com, Bharata B Rao <bharata@linux.ibm.com>,
+ npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 08, 2021 at 01:58:04PM +1000, David Gibson wrote:
-> On Tue, Jul 06, 2021 at 10:56:32AM +0530, Bharata B Rao wrote:
-> > On Mon, Jul 05, 2021 at 02:42:33PM +1000, David Gibson wrote:
-> > > On Mon, Jun 21, 2021 at 02:20:00PM +0530, Bharata B Rao wrote:
-> > > > diff --git a/arch/powerpc/include/asm/mmu_context.h b/arch/powerpc/include/asm/mmu_context.h
-> > > > index 4bc45d3ed8b0..b44f291fc909 100644
-> > > > --- a/arch/powerpc/include/asm/mmu_context.h
-> > > > +++ b/arch/powerpc/include/asm/mmu_context.h
-> > > > @@ -124,8 +124,17 @@ static inline bool need_extra_context(struct mm_struct *mm, unsigned long ea)
-> > > >  
-> > > >  #if defined(CONFIG_KVM_BOOK3S_HV_POSSIBLE) && defined(CONFIG_PPC_RADIX_MMU)
-> > > >  extern void radix_kvm_prefetch_workaround(struct mm_struct *mm);
-> > > > +void do_h_rpt_invalidate_prt(unsigned long pid, unsigned long lpid,
-> > > > +			     unsigned long type, unsigned long pg_sizes,
-> > > > +			     unsigned long start, unsigned long end);
-> > > >  #else
-> > > >  static inline void radix_kvm_prefetch_workaround(struct mm_struct *mm) { }
-> > > > +static inline void do_h_rpt_invalidate_prt(unsigned long pid,
-> > > > +					   unsigned long lpid,
-> > > > +					   unsigned long type,
-> > > > +					   unsigned long pg_sizes,
-> > > > +					   unsigned long start,
-> > > > +					   unsigned long end) { }
-> > > 
-> > > Since the only plausible caller is in KVM HV code, why do you need the
-> > > #else clause.
-> > 
-> > The call to the above routine is prevented for non-radix guests
-> > in KVM HV code at runtime using kvm_is_radix() check and not by
-> > CONFIG_PPC_RADIX_MMU. Hence the #else version would be needed.
-> 
-> kvm_is_radix() should evaluate to false at compile time if
-> !defined(CONFIG_PPC_RADIX_MMU), in which case, no you shouldn't need
-> the else version.
+The atom_size used by percpu allocator on powerpc is currently
+determined by mmu_linear_psize which is initialized to 4K and
+mmu_linear_psize is modified only by hash. Till now for radix
+the atom_size was defaulting to PAGE_SIZE(64K). Go for 2MB
+atom_size on radix if support for 2MB pages exist.
 
-At least in the latest mainline, I don't see the definition of
-kvm_is_radix() being conditional to CONFIG_PPC_RADIX_MMU.
+2MB atom_size on radix will allow using PMD mappings in the
+vmalloc area if and when support for higher sized vmalloc
+mappings is enabled for the pecpu allocator. However right now
+this change will result in more number of units to be allocated
+within one allocation due to increased upa(units per allocation).
 
-Anyway this is what I see in practice if the #else version is
-removed and CONFIG_PPC_RADIX_MMU is turned off:
+Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
+---
+ arch/powerpc/kernel/setup_64.c | 34 +++++++++++++++++++++++++---------
+ 1 file changed, 25 insertions(+), 9 deletions(-)
 
-arch/powerpc/kvm/book3s_hv.c: In function ‘kvmppc_h_rpt_invalidate’:
-arch/powerpc/kvm/book3s_hv.c:983:2: error: implicit declaration of function ‘do_h_rpt_invalidate_prt’; did you mean ‘do_h_rpt_invalidate_pat’? [-Werror=implicit-function-declaration]
-  983 |  do_h_rpt_invalidate_prt(id, vcpu->kvm->arch.lpid,
-      |  ^~~~~~~~~~~~~~~~~~~~~~~
-      |  do_h_rpt_invalidate_pat
+diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
+index 1ff258f6c76c..45ce2d6e8112 100644
+--- a/arch/powerpc/kernel/setup_64.c
++++ b/arch/powerpc/kernel/setup_64.c
+@@ -871,6 +871,30 @@ static void __init pcpu_populate_pte(unsigned long addr)
+ 	      __func__, PAGE_SIZE, PAGE_SIZE, PAGE_SIZE);
+ }
+ 
++static size_t pcpu_atom_size(void)
++{
++	size_t atom_size = PAGE_SIZE;
++
++	/*
++	 * Radix: Use PAGE_SIZE by default or 2M if available.
++	 */
++	if (radix_enabled()) {
++		if (mmu_psize_defs[MMU_PAGE_2M].shift)
++			atom_size = 1 << mmu_psize_defs[MMU_PAGE_2M].shift;
++		goto out;
++	}
++
++	/*
++	 * Hash: Linear mapping is one of 4K, 1M and 16M.  For 4K, no need
++	 * to group units.  For larger mappings, use 1M atom which
++	 * should be large enough to contain a number of units.
++	 */
++	if (mmu_linear_psize != MMU_PAGE_4K)
++		atom_size = 1 << 20;
++
++out:
++	return atom_size;
++}
+ 
+ void __init setup_per_cpu_areas(void)
+ {
+@@ -880,15 +904,7 @@ void __init setup_per_cpu_areas(void)
+ 	unsigned int cpu;
+ 	int rc = -EINVAL;
+ 
+-	/*
+-	 * Linear mapping is one of 4K, 1M and 16M.  For 4K, no need
+-	 * to group units.  For larger mappings, use 1M atom which
+-	 * should be large enough to contain a number of units.
+-	 */
+-	if (mmu_linear_psize == MMU_PAGE_4K)
+-		atom_size = PAGE_SIZE;
+-	else
+-		atom_size = 1 << 20;
++	atom_size = pcpu_atom_size();
+ 
+ 	if (pcpu_chosen_fc != PCPU_FC_PAGE) {
+ 		rc = pcpu_embed_first_chunk(0, dyn_size, atom_size, pcpu_cpu_distance,
+-- 
+2.31.1
 
-Regards,
-Bharata.
