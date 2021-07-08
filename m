@@ -2,71 +2,102 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89B823BF739
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jul 2021 11:06:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 363C03BF746
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jul 2021 11:08:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GL9Q96VLhz3bl8
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jul 2021 19:06:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GL9Sy0X9fz3bkw
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jul 2021 19:08:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=qZH+SEJJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AzNQwZ6x;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::532;
- helo=mail-pg1-x532.google.com; envelope-from=npiggin@gmail.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=qZH+SEJJ; dkim-atps=neutral
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com
- [IPv6:2607:f8b0:4864:20::532])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=AzNQwZ6x; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GL9Ph2Vn3z2yXt
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jul 2021 19:05:59 +1000 (AEST)
-Received: by mail-pg1-x532.google.com with SMTP id a2so5264550pgi.6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jul 2021 02:05:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=9Atfy8oMsvtFLCjg1qLq522WoJI19QujsuyESGKjbdI=;
- b=qZH+SEJJu3HZF4PGAnMk4cPSMvIJXBP75VzDGqKIgFLSDA2zYRtibDBgV1ybOuKueT
- Jaf0MD4ouKGbGJDWdt7nX/EuMVY6OdfLXrHCUciIbMKAwH7VXvEyARTbusJNp364xCFB
- 5c67zsi2XfYH344U93pHfkoCYUHLtu7rGZOEs21iMpZq7DT1OmdtrNzRxCMFzoaImxRD
- isYVLko7eVYYolhBqZvqqKHDT23Il4RFZGwCO5UeSHWPfCrFX9ANg0sXr7N8xGRP4WBK
- xM28J3iJdfYQuqeSvewLj3GZIAOjjFto3Ht8hzv9oSRDjktHbSKx3Qk4E54+A5TXCATe
- a4yQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=9Atfy8oMsvtFLCjg1qLq522WoJI19QujsuyESGKjbdI=;
- b=iglWUQNz9KjjO05bH9iIZ/0As58vNzAfbXIh6kN6HMUwyW2DUw+Bc5GWVN20FWnlX7
- mF3QPFk0t/pS4G/i8A4BZQoHJPGPCuAX/FSDVMXOa5QmgclTriFRQczyhWdmBwPmB6Ol
- nVubhj6oW5MLjLTWILga1/fCzClSFYhPMXxYoXlRBFaA/QqRm9YGo3jSwzI4eQVk6Sew
- fMXef62fez31sp+6LgGxV7I2C5qm7Pq++XLddwu2kIpbycMV9pCpmtROVLqVyg848XOn
- WCwQcyn0mt6JEpzMCwqziM4WbFiLF4CHTerfIJrHmXChETg241naP5ezSTwukgkGFORp
- HDbg==
-X-Gm-Message-State: AOAM532bii1qEXFbVl8YyI6znOoVm8p3rj0QIfInh8ukE8aAdRg1VSkc
- ksMgTgA/mSkp6wvRaSI3j1I9t8OSmkA=
-X-Google-Smtp-Source: ABdhPJylTgIa0Wg/D51J2eKC1HwQc12heZg6ceIkDx5vDLxO9x3HTWVQjcP8PIZAAZ04AayINeEuzg==
-X-Received: by 2002:aa7:96cc:0:b029:327:c196:d22a with SMTP id
- h12-20020aa796cc0000b0290327c196d22amr1984002pfq.47.1625735155548; 
- Thu, 08 Jul 2021 02:05:55 -0700 (PDT)
-Received: from bobo.ibm.com (14-203-186-173.tpgi.com.au. [14.203.186.173])
- by smtp.gmail.com with ESMTPSA id b67sm2426927pga.37.2021.07.08.02.05.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Jul 2021 02:05:55 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/64s/hash: Fix SLB preload cache vs kthread_use_mm
-Date: Thu,  8 Jul 2021 19:05:49 +1000
-Message-Id: <20210708090549.77975-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GL9SV24yCz2yj0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jul 2021 19:08:25 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 16894jlV055988; Thu, 8 Jul 2021 05:08:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : reply-to : references : mime-version : content-type
+ : in-reply-to; s=pp1; bh=JPJDLe0p4ZjhEFucYJlDDkxue6Tk2PTl5d+5nvsL6qE=;
+ b=AzNQwZ6xuDPxnCb7xw9sj+naBglfF8O3fijEP1F6hyyXSGYVht3RGUaR7yMMy1funRtC
+ K5x9vHRf/v19nEV0cK2zVvzpFxI3g10CICZQ/e+PM7sRxgBbI/gOK09TB3u1WJdoILM/
+ BSpDeTxygKxzhKB+2/KbGJnJrAOrV58KaBY/0JkNBzOThnfS7Dr/j4CW/6Qw8HyekyTT
+ fbhox1BSJsEc7/Vg6McbpeL7DvDu2AdAX60SbZEoBKic40yWZ87R4JlEGAQ+fwQjGbFr
+ HBv6sy/Hjb/JeCA2EB493JJWwVPWQT0w+Yovywq7K830AfXyKRLD0mHbwS9r1GRdsLX6 Gg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 39nwn01c8u-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 08 Jul 2021 05:08:16 -0400
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 168951xJ059928;
+ Thu, 8 Jul 2021 05:08:16 -0400
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 39nwn01c8j-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 08 Jul 2021 05:08:16 -0400
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 168979ig006029;
+ Thu, 8 Jul 2021 09:08:15 GMT
+Received: from b03cxnp07027.gho.boulder.ibm.com
+ (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
+ by ppma01wdc.us.ibm.com with ESMTP id 39jfhca9r8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 08 Jul 2021 09:08:15 +0000
+Received: from b03ledav001.gho.boulder.ibm.com
+ (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
+ by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 16898EoM18612528
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 8 Jul 2021 09:08:14 GMT
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2E1686E058;
+ Thu,  8 Jul 2021 09:08:14 +0000 (GMT)
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D14F96E052;
+ Thu,  8 Jul 2021 09:08:13 +0000 (GMT)
+Received: from sofia.ibm.com (unknown [9.199.42.113])
+ by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu,  8 Jul 2021 09:08:13 +0000 (GMT)
+Received: by sofia.ibm.com (Postfix, from userid 1000)
+ id 451722E3B06; Thu,  8 Jul 2021 14:38:08 +0530 (IST)
+Date: Thu, 8 Jul 2021 14:38:08 +0530
+From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+To: "Pratik R. Sampat" <psampat@linux.ibm.com>
+Subject: Re: [PATCH] cpufreq:powernv: Fix init_chip_info initialization in
+ numa=off
+Message-ID: <20210708090808.GA21260@in.ibm.com>
+References: <20210615050949.10071-1-psampat@linux.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210615050949.10071-1-psampat@linux.ibm.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: UgbXKmIpz22uEgfbU_KqL_zudiRSdQ8B
+X-Proofpoint-ORIG-GUID: twlkEIaGgywqDefwKHZo2OlwpgoN0mA-
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-07-08_04:2021-07-06,
+ 2021-07-08 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 spamscore=0
+ clxscore=1011 impostorscore=0 lowpriorityscore=0 adultscore=0
+ malwarescore=0 suspectscore=0 priorityscore=1501 mlxlogscore=999
+ mlxscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2107080050
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,152 +109,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- "Christopher M . Riedl" <cmr@codefail.de>
+Reply-To: ego@linux.vnet.ibm.com
+Cc: pratik.r.sampat@gmail.com, linux-pm@vger.kernel.org, rjw@rjwysocki.net,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-It's possible for kernel threads to pick up SLB preload entries if
-they are accessing userspace with kthread_use_mm. If the kthread
-later is context switched while using a different mm, when it is
-switched back it could preload SLBs belonging to the previous mm.
+Hello Pratik,
 
-This could lead to data corruption, leaks, SLB multi hits, etc.
+On Tue, Jun 15, 2021 at 10:39:49AM +0530, Pratik R. Sampat wrote:
+> In the numa=off kernel command-line configuration init_chip_info() loops
+> around the number of chips and attempts to copy the cpumask of that node
+> which is NULL for all iterations after the first chip.
 
-In the absence of a usable hook to clear preloads when unusing an
-mm, fix it by keeping track of the mm that the preloads belong to.
+Thanks for taking a look into this. Indeed there is an issue here
+because the code here assumes that node_mask as a proxy for the
+chip_mask. This assumption breaks when run with numa=off, since there will only be a
+single node, but multiple chips.
 
-Adjust the isync() comment to be clear it can't be skipped if we
-had no preloads.
 
-Fixes: 5434ae74629a ("powerpc/64s/hash: Add a SLB preload cache")
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/include/asm/thread_info.h |  1 +
- arch/powerpc/mm/book3s64/slb.c         | 36 ++++++++++++++++++--------
- 2 files changed, 26 insertions(+), 11 deletions(-)
+> 
+> Hence adding a check to bail out after the first initialization if there
+> is only one node.
+> 
+> Fixes: 053819e0bf84 ("cpufreq: powernv: Handle throttling due to Pmax capping at chip level")
+> Signed-off-by: Pratik R. Sampat <psampat@linux.ibm.com>
+> Reported-by: Shirisha Ganta <shirishaganta1@ibm.com>
+> ---
+>  drivers/cpufreq/powernv-cpufreq.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
+> index e439b43c19eb..663f9c4b5e3a 100644
+> --- a/drivers/cpufreq/powernv-cpufreq.c
+> +++ b/drivers/cpufreq/powernv-cpufreq.c
+> @@ -1078,6 +1078,8 @@ static int init_chip_info(void)
+>  		INIT_WORK(&chips[i].throttle, powernv_cpufreq_work_fn);
+>  		for_each_cpu(cpu, &chips[i].mask)
+>  			per_cpu(chip_info, cpu) =  &chips[i];
+> +		if (num_possible_nodes() == 1)
+> +			break;
 
-diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
-index b4ec6c7dd72e..c3de13dde2af 100644
---- a/arch/powerpc/include/asm/thread_info.h
-+++ b/arch/powerpc/include/asm/thread_info.h
-@@ -54,6 +54,7 @@ struct thread_info {
- #if defined(CONFIG_VIRT_CPU_ACCOUNTING_NATIVE) && defined(CONFIG_PPC32)
- 	struct cpu_accounting_data accounting;
- #endif
-+	struct mm_struct *slb_preload_mm;
- 	unsigned char slb_preload_nr;
- 	unsigned char slb_preload_tail;
- 	u32 slb_preload_esid[SLB_PRELOAD_NR];
-diff --git a/arch/powerpc/mm/book3s64/slb.c b/arch/powerpc/mm/book3s64/slb.c
-index c91bd85eb90e..4f9dbce0dd84 100644
---- a/arch/powerpc/mm/book3s64/slb.c
-+++ b/arch/powerpc/mm/book3s64/slb.c
-@@ -294,11 +294,20 @@ static bool preload_hit(struct thread_info *ti, unsigned long esid)
- 	return false;
- }
- 
--static bool preload_add(struct thread_info *ti, unsigned long ea)
-+static bool preload_add(struct thread_info *ti, struct mm_struct *mm, unsigned long ea)
- {
- 	unsigned char idx;
- 	unsigned long esid;
- 
-+	if (unlikely(ti->slb_preload_mm != mm)) {
-+		/*
-+		 * kthread_use_mm or other temporary mm switching can
-+		 * change the mm being used by a particular thread.
-+		 */
-+		ti->slb_preload_nr = 0;
-+		ti->slb_preload_mm = mm;
-+	}
-+
- 	if (mmu_has_feature(MMU_FTR_1T_SEGMENT)) {
- 		/* EAs are stored >> 28 so 256MB segments don't need clearing */
- 		if (ea & ESID_MASK_1T)
-@@ -362,13 +371,13 @@ void slb_setup_new_exec(void)
- 	 * 0x10000000 so it makes sense to preload this segment.
- 	 */
- 	if (!is_kernel_addr(exec)) {
--		if (preload_add(ti, exec))
-+		if (preload_add(ti, mm, exec))
- 			slb_allocate_user(mm, exec);
- 	}
- 
- 	/* Libraries and mmaps. */
- 	if (!is_kernel_addr(mm->mmap_base)) {
--		if (preload_add(ti, mm->mmap_base))
-+		if (preload_add(ti, mm, mm->mmap_base))
- 			slb_allocate_user(mm, mm->mmap_base);
- 	}
- 
-@@ -394,19 +403,19 @@ void preload_new_slb_context(unsigned long start, unsigned long sp)
- 
- 	/* Userspace entry address. */
- 	if (!is_kernel_addr(start)) {
--		if (preload_add(ti, start))
-+		if (preload_add(ti, mm, start))
- 			slb_allocate_user(mm, start);
- 	}
- 
- 	/* Top of stack, grows down. */
- 	if (!is_kernel_addr(sp)) {
--		if (preload_add(ti, sp))
-+		if (preload_add(ti, mm, sp))
- 			slb_allocate_user(mm, sp);
- 	}
- 
- 	/* Bottom of heap, grows up. */
- 	if (heap && !is_kernel_addr(heap)) {
--		if (preload_add(ti, heap))
-+		if (preload_add(ti, mm, heap))
- 			slb_allocate_user(mm, heap);
- 	}
- 
-@@ -502,6 +511,11 @@ void switch_slb(struct task_struct *tsk, struct mm_struct *mm)
- 
- 	copy_mm_to_paca(mm);
- 
-+	if (unlikely(ti->slb_preload_mm != mm)) {
-+		ti->slb_preload_nr = 0;
-+		ti->slb_preload_mm = mm;
-+	}
-+
- 	/*
- 	 * We gradually age out SLBs after a number of context switches to
- 	 * reduce reload overhead of unused entries (like we do with FP/VEC
-@@ -513,7 +527,7 @@ void switch_slb(struct task_struct *tsk, struct mm_struct *mm)
- 		unsigned long pc = KSTK_EIP(tsk);
- 
- 		preload_age(ti);
--		preload_add(ti, pc);
-+		preload_add(ti, mm, pc);
- 	}
- 
- 	for (i = 0; i < ti->slb_preload_nr; i++) {
-@@ -527,9 +541,9 @@ void switch_slb(struct task_struct *tsk, struct mm_struct *mm)
- 	}
- 
- 	/*
--	 * Synchronize slbmte preloads with possible subsequent user memory
--	 * address accesses by the kernel (user mode won't happen until
--	 * rfid, which is safe).
-+	 * Synchronize slbias and slbmte preloads with possible subsequent user
-+	 * memory address accesses by the kernel (user mode won't happen until
-+	 * rfid, which is synchronizing).
- 	 */
- 	isync();
- }
-@@ -863,7 +877,7 @@ DEFINE_INTERRUPT_HANDLER_RAW(do_slb_fault)
- 
- 		err = slb_allocate_user(mm, ea);
- 		if (!err)
--			preload_add(current_thread_info(), ea);
-+			preload_add(current_thread_info(), mm, ea);
- 
- 		return err;
- 	}
--- 
-2.23.0
+With this we will only initialize the chip[0].throttle work function,
+while for the rest of the chips chip[i].throttle will be
+uninitialized. While we may be running in the numa=off mode, the fact
+remains that those other chips do exist and they may experiencing
+throttling, during which they will try to schedule work for chip[i] in
+order to take corrective action, which will fail.
 
+Hence a more correct approach may be to maintain a chip[i] mask
+independent of the node mask.
+
+
+
+
+
+>  	}
+>  
+>  free_and_return:
+> -- 
+> 2.30.2
+> 
