@@ -2,100 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C0AC3C163A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jul 2021 17:44:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 179E43C1749
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jul 2021 18:45:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GLLFW32K2z3bYH
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jul 2021 01:44:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GLMbG6gQ5z3bnX
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jul 2021 02:44:58 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=plw/pOcD;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Sp+30VCo;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=us.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=pc@us.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=will@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=plw/pOcD; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=Sp+30VCo; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GLLF10z3Lz30JY
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jul 2021 01:44:04 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 168Fe3wO099191; Thu, 8 Jul 2021 11:43:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=oogCIMQk/TkjuW28N2Xop1sy7pZBJQKfbtCVqD5uznI=;
- b=plw/pOcDmxQ79kFMIOTKemcZHYJeLQ6C8X1a3aQn+7ZpOPCbtncEXPV0SIdrTL6fc7zF
- U762wlgL1s1hqV3r47LKb+6cWi0LTPGg3HD/p8VnnnTR+zk8CwzL9iKHtQanVDEi+Uct
- FlhfS/HOo0fNtWa0gP04msBxisYV+A/lGIEhD5ynuNKJe8fnBsD/o2sz9A1QdgNbLFv1
- astv3rzSMemNxabBtKlcDOAXGsLTpSr9waz32l4Kp/T0XC4mpOgKUj9dDjhH21Fz5C0t
- FdL5ceppIhmMyCPsd17Gb1JSKI65bUxATsJ6Hs33O+7+0n5REzI9C3XrAvtRxW7wSezF SA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39mts1rcd2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 08 Jul 2021 11:43:57 -0400
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 168FeExV099876;
- Thu, 8 Jul 2021 11:43:57 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39mts1rcc9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 08 Jul 2021 11:43:57 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 168FaUbT029012;
- Thu, 8 Jul 2021 15:43:56 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
- [9.57.198.27]) by ppma01dal.us.ibm.com with ESMTP id 39jfhdw37k-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 08 Jul 2021 15:43:56 +0000
-Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
- [9.57.199.107])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 168FhsJ342467584
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 8 Jul 2021 15:43:54 GMT
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id ABF5A12405B;
- Thu,  8 Jul 2021 15:43:54 +0000 (GMT)
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3D51A12405E;
- Thu,  8 Jul 2021 15:43:54 +0000 (GMT)
-Received: from li-24c3614c-2adc-11b2-a85c-85f334518bdb.ibm.com (unknown
- [9.80.227.146]) by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTPS;
- Thu,  8 Jul 2021 15:43:54 +0000 (GMT)
-Date: Thu, 8 Jul 2021 10:43:52 -0500
-From: "Paul A. Clarke" <pc@us.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH] powerpc/perf: Fix cycles/instructions as
- PM_CYC/PM_INST_CMPL in power10
-Message-ID: <20210708154352.GA11710@li-24c3614c-2adc-11b2-a85c-85f334518bdb.ibm.com>
-References: <1625639981-1424-1-git-send-email-atrajeev@linux.vnet.ibm.com>
- <1625748771.problnjoqz.astroid@bobo.none>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GLMZq08bvz30DG
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jul 2021 02:44:34 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 88F256145A;
+ Thu,  8 Jul 2021 16:44:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1625762671;
+ bh=W3zJ1dUIVfwK2RD5Gb/pjjaY8IvTpKuqVuwPdbuz25M=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=Sp+30VCoqVzKdRCHxsdjheJ32Al4GyKkdqY67UI3HBglP9/4ElBHuP/C2H/FyWKo7
+ e/R4/9B3d7vhaPNlh1DPVXpIf7uT6p/REBIACdKpJwJF9GZS42ymRBAxS0kVUi63dX
+ LFzIygW0HZtu2Ulg0IazOQ0jJMqOOsCWNLsNFVLNWlAdaw+e6puTS7FlMwyfD5gEdI
+ lFB3Rrin6g2B0nXBBJNO+PUuvd4DpkVlBGoDw/jR5Tje1HakbrKaEjYhMjAxMq0G0/
+ 9JUb/J7ll5Lxx3f7sEDifcv8wjoDYV7KpD0n+YA4MYDlWDIvbopDufBoyo/NtyqWxC
+ FAtOTP/W4ikEQ==
+Date: Thu, 8 Jul 2021 17:44:19 +0100
+From: Will Deacon <will@kernel.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Subject: Re: [PATCH v15 06/12] swiotlb: Use is_swiotlb_force_bounce for
+ swiotlb data bouncing
+Message-ID: <20210708164418.GB23598@willie-the-truck>
+References: <0f7bd903-e309-94a0-21d7-f0e8e9546018@arm.com>
+ <YN/7xcxt/XGAKceZ@Ryzen-9-3900X.localdomain>
+ <20210705190352.GA19461@willie-the-truck>
+ <20210706044848.GA13640@lst.de>
+ <20210706132422.GA20327@willie-the-truck>
+ <a59f771f-3289-62f0-ca50-8f3675d9b166@arm.com>
+ <20210706140513.GA26498@lst.de>
+ <bb32d5a6-2b34-4524-e171-3e9f5f4d3a94@arm.com>
+ <20210706170657.GD20750@willie-the-truck>
+ <e1c026c6-22c7-8979-4941-de9cfab3863a@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1625748771.problnjoqz.astroid@bobo.none>
+In-Reply-To: <e1c026c6-22c7-8979-4941-de9cfab3863a@kernel.org>
 User-Agent: Mutt/1.10.1 (2018-07-13)
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: A8T8VvUKGTIgHthO4aVrymu5SwGX3wN9
-X-Proofpoint-GUID: QADGXKondkQ88VrBtQhlIS4_EKKZpwHn
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-07-08_06:2021-07-08,
- 2021-07-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0
- lowpriorityscore=0 spamscore=0 bulkscore=0 mlxlogscore=999 malwarescore=0
- phishscore=0 priorityscore=1501 clxscore=1015 adultscore=0 impostorscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2107080083
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,28 +68,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- maddy@linux.ibm.com
+Cc: Jim Quinlan <james.quinlan@broadcom.com>, heikki.krogerus@linux.intel.com,
+ linux-devicetree <devicetree@vger.kernel.org>, peterz@infradead.org,
+ joonas.lahtinen@linux.intel.com, dri-devel@lists.freedesktop.org,
+ chris@chris-wilson.co.uk, grant.likely@arm.com, paulus@samba.org,
+ Frank Rowand <frowand.list@gmail.com>, mingo@kernel.org,
+ Jianxiong Gao <jxgao@google.com>, Stefano Stabellini <sstabellini@kernel.org>,
+ Saravana Kannan <saravanak@google.com>,
+ "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, xypron.glpk@gmx.de,
+ Christoph Hellwig <hch@lst.de>,
+ Bartosz Golaszewski <bgolaszewski@baylibre.com>, bskeggs@redhat.com,
+ linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
+ Thierry Reding <treding@nvidia.com>, matthew.auld@intel.com,
+ Nicolas Boichat <drinkcat@chromium.org>, thomas.hellstrom@linux.intel.com,
+ jgross@suse.com, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ intel-gfx@lists.freedesktop.org, maarten.lankhorst@linux.intel.com,
+ jani.nikula@linux.intel.com, Rob Herring <robh+dt@kernel.org>,
+ rodrigo.vivi@intel.com, Bjorn Helgaas <bhelgaas@google.com>,
+ Claire Chang <tientzu@chromium.org>, Dan Williams <dan.j.williams@intel.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ boris.ostrovsky@oracle.com, airlied@linux.ie, linuxppc-dev@lists.ozlabs.org,
+ Randy Dunlap <rdunlap@infradead.org>, Qian Cai <quic_qiancai@quicinc.com>,
+ lkml <linux-kernel@vger.kernel.org>,
+ "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+ Daniel Vetter <daniel@ffwll.ch>, Greg KH <gregkh@linuxfoundation.org>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Robin Murphy <robin.murphy@arm.com>,
+ bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 08, 2021 at 10:56:57PM +1000, Nicholas Piggin wrote:
-> Excerpts from Athira Rajeev's message of July 7, 2021 4:39 pm:
-> > From: Athira Rajeev <atrajeev@linux.vnet.ibm.cm>
+On Tue, Jul 06, 2021 at 12:14:16PM -0700, Nathan Chancellor wrote:
+> On 7/6/2021 10:06 AM, Will Deacon wrote:
+> > On Tue, Jul 06, 2021 at 04:39:11PM +0100, Robin Murphy wrote:
+> > > On 2021-07-06 15:05, Christoph Hellwig wrote:
+> > > > On Tue, Jul 06, 2021 at 03:01:04PM +0100, Robin Murphy wrote:
+> > > > > FWIW I was pondering the question of whether to do something along those
+> > > > > lines or just scrap the default assignment entirely, so since I hadn't got
+> > > > > round to saying that I've gone ahead and hacked up the alternative
+> > > > > (similarly untested) for comparison :)
+> > > > > 
+> > > > > TBH I'm still not sure which one I prefer...
+> > > > 
+> > > > Claire did implement something like your suggestion originally, but
+> > > > I don't really like it as it doesn't scale for adding multiple global
+> > > > pools, e.g. for the 64-bit addressable one for the various encrypted
+> > > > secure guest schemes.
+> > > 
+> > > Ah yes, that had slipped my mind, and it's a fair point indeed. Since we're
+> > > not concerned with a minimal fix for backports anyway I'm more than happy to
+> > > focus on Will's approach. Another thing is that that looks to take us a
+> > > quiet step closer to the possibility of dynamically resizing a SWIOTLB pool,
+> > > which is something that some of the hypervisor protection schemes looking to
+> > > build on top of this series may want to explore at some point.
 > > 
-> > Power10 performance monitoring unit (PMU) driver uses performance
-> > monitor counter 5 (PMC5) and performance monitor counter 6 (PMC6)
-> > for counting instructions and cycles. Event used for cycles is
-> > PM_RUN_CYC and instructions is PM_RUN_INST_CMPL. But counting of these
-> > events in wait state is controlled by the CC56RUN bit setting in
-> > Monitor Mode Control Register0 (MMCR0). If the CC56RUN bit is not
-> > set, PMC5/6 will not count when CTRL[RUN] is zero.
+> > Ok, I'll split that nasty diff I posted up into a reviewable series and we
+> > can take it from there.
 > 
-> What's the acutal bug here, can you explain a bit more? I thought
-> PM_RUN_CYC is supposed to be gated by the runlatch.
+> For what it's worth, I attempted to boot Will's diff on top of Konrad's
+> devel/for-linus-5.14 and it did not work; in fact, I got no output on my
+> monitor period, even with earlyprintk=, and I do not think this machine has
+> a serial console.
 
-Would this renaming break compatibility with existing tools that
-presume PM_RUN_CYC and PM_RUN_INST_CMPL exist generically?
+Looking back at the diff, I completely messed up swiotlb_exit() by mixing up
+physical and virtual addresses.
 
-PC
+> Robin's fix does work, it survived ten reboots with no issues getting to X
+> and I do not see the KASAN and slub debug messages anymore but I understand
+> that this is not the preferred solution it seems (although Konrad did want
+> to know if it works).
+> 
+> I am happy to test any further patches or follow ups as needed, just keep me
+> on CC.
+
+Cheers. Since this isn't 5.14 material any more, I'll CC you on a series
+next week.
+
+Will
