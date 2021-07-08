@@ -1,99 +1,113 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CEF53C18BA
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jul 2021 19:57:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C05D3C1AF4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jul 2021 23:21:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GLPBl71Cvz3bVr
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jul 2021 03:57:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GLTkV4R4Pz3bph
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Jul 2021 07:21:38 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aZeQ0tiu;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=C9XcZgZt;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=nvidia.com (client-ip=40.107.243.49;
+ helo=nam12-dm6-obe.outbound.protection.outlook.com;
+ envelope-from=roid@nvidia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=aZeQ0tiu; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256
+ header.s=selector2 header.b=C9XcZgZt; 
+ dkim-atps=neutral
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam12on2049.outbound.protection.outlook.com [40.107.243.49])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GLPBG1Tstz2xfL
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jul 2021 03:56:53 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 168HYRTL071910; Thu, 8 Jul 2021 13:56:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=IcXhJ2bC0L959rJe4wUD/jaNBEfSotz/cU6M37PLavA=;
- b=aZeQ0tiuiSCgaEZ25GHNUbhQ6X3luA5zDPtMO5h0vDQSswj/vh+E5D9MFd+LXtyooMRR
- i5bce2fICKQnzPy1UN348opMC4hjzNCzKVITa6/tzYI7SdZR8bd8+A/qItt+4w44crty
- SeLIuBrVx05mp5rKEveipaG8/bckEOfQ3O5/8nMRo4rIoK5XP65EUW52uyEnBovwCOex
- zGpQSO2PDLkTUBUk6EiQsuoFcdsj802WX5yeRM+LLn0bxjpH/dDYMlrE8CbHeYa6DtN7
- 7WJRZpWQ+QyFSoklrncn4clHoffbANTbJZ2JhdEeHxpX+BoTLz44MXA8mbLqGvPOkBbJ 6Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39n287mjxj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 08 Jul 2021 13:56:51 -0400
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 168HYThX072054;
- Thu, 8 Jul 2021 13:56:51 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39n287mjx8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 08 Jul 2021 13:56:51 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 168HXrY0023374;
- Thu, 8 Jul 2021 17:56:50 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
- [9.57.198.29]) by ppma03dal.us.ibm.com with ESMTP id 39jhq1fehy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 08 Jul 2021 17:56:50 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 168Hunb111731306
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 8 Jul 2021 17:56:49 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 639BFAE060;
- Thu,  8 Jul 2021 17:56:49 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9981EAE01E;
- Thu,  8 Jul 2021 17:56:48 +0000 (GMT)
-Received: from localhost (unknown [9.211.64.106])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTPS;
- Thu,  8 Jul 2021 17:56:48 +0000 (GMT)
-From: Fabiano Rosas <farosas@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
-Subject: Re: [RFC PATCH 12/43] KVM: PPC: Book3S HV P9: Factor out
- yield_count increment
-In-Reply-To: <20210622105736.633352-13-npiggin@gmail.com>
-References: <20210622105736.633352-1-npiggin@gmail.com>
- <20210622105736.633352-13-npiggin@gmail.com>
-Date: Thu, 08 Jul 2021 14:56:45 -0300
-Message-ID: <87pmvsofj6.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GLJJL3KZqz2xKJ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Jul 2021 00:16:47 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=TDD5I2C5lHn/KH342uyMlNVueL76LaWQWRcT2wtaGL4ShSUnGWDT9Xxgk19TE7ouRGu1EJOq/NjCfLSDkoEjYkmFFqwtN9sP3TlmjF/lz3msuUkaK3mU1OAuotESST5FTQpbMqOGJFfv4vOFWZcgbBMR6LKwWiaD8Gpm/HP0XFm5YVE/fdWJSJYQCjkMzbPmvTkx71+kj7zdGgfYwUnq5n1Vd4llbLVFXrKN07ePR/ZGMvfHny5uDPUeF8aSg6nAAtojePwtq6J6V2ygDwEU1yg1hN9pzzKW4yw59wAk09pdI06ZqK35PLwtNkDCAK0D81wff98LJdNHJNYXJv1ZIA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=AE3cxfC0n5CvERAHRboZjnq/BP4DOV2T55Ry4u6w9dg=;
+ b=Kk/L823dRAVH38G6cqPz4X5vzD0ZXF8TBu+aOPLQr9yasv0gRMQ0qDVztbJQLg+Y2TJz/VaUvYk/lr4+VCFcCpTgk96YMe9mcNxr/U6tZX/J5WiSs+JU7cvsIKh0cOMoTkngXbmNgENFfXbcpsnDi3S/s5D3TSbz5hkQX1kB88lvZkWNJ7iRVp7VtN4J2S4vQfs/t3WXAY+o2j7lt9UkWzoZVIDMCT29tcGdcNLVC1whRQbp5IiBf1O1qDI4QKmMlE6lRQ0lAXVXE9KUSBwRcE7UV9pcnEyCw1BRK34iWsNB4vV+/CNktGKydHAUoZd4qFLRbdwY9Hy725BF1bAijg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.112.34) smtp.rcpttodomain=lists.ozlabs.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=AE3cxfC0n5CvERAHRboZjnq/BP4DOV2T55Ry4u6w9dg=;
+ b=C9XcZgZt1yI970HIMmQ/Tt827FDCTMGPLuP7uGfssPVWQOHGqN7weYSGV8k/1OF+T+bx1J37dPEwniIvKutwSPIM5XrNZ/sIL/oSvT+S6ZJpW+MDVcldmLU5yfNJvekvOyscupzmNtozCe3YVYJXoXeErn7nvTWy1KtiWg39EhiuEkKE9DFlhLg3ESXZYOfVlLwgXk3kR9rj/SNrfPBaNHh6dM1VjHqkcc/9W9if0QCsHAkoWgpqU9p+fh5YXZn4e2frObjLuyiDM7BLpgusebk1U6R1c3HhdKJg61IjWnzpTC7N04RoZ1SXqZvMRmW61/Kur/jr6rlXVgWxQzSCGA==
+Received: from DM5PR08CA0035.namprd08.prod.outlook.com (2603:10b6:4:60::24) by
+ DM5PR12MB1738.namprd12.prod.outlook.com (2603:10b6:3:112::22) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4308.19; Thu, 8 Jul 2021 14:16:27 +0000
+Received: from DM6NAM11FT056.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:4:60:cafe::b9) by DM5PR08CA0035.outlook.office365.com
+ (2603:10b6:4:60::24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4308.19 via Frontend
+ Transport; Thu, 8 Jul 2021 14:16:27 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.112.34)
+ smtp.mailfrom=nvidia.com; lists.ozlabs.org; dkim=none (message not signed)
+ header.d=none;lists.ozlabs.org; dmarc=pass action=none
+ header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.112.34 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.112.34; helo=mail.nvidia.com;
+Received: from mail.nvidia.com (216.228.112.34) by
+ DM6NAM11FT056.mail.protection.outlook.com (10.13.173.99) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.20.4308.20 via Frontend Transport; Thu, 8 Jul 2021 14:16:27 +0000
+Received: from [172.27.1.80] (172.20.187.5) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 8 Jul
+ 2021 14:16:25 +0000
+Subject: Re: [netdev/net][ppc][bisected 8550ff8] build fails
+ net/core/dev.c:6020:19: error: dereferencing pointer
+To: Abdul Haleem <abdhalee@linux.vnet.ibm.com>, netdev
+ <netdev@vger.kernel.org>, <paulb@nvidia.com>
+References: <0683b4ff-43eb-029d-b28d-e98bb41516a4@linux.vnet.ibm.com>
+From: Roi Dayan <roid@nvidia.com>
+Message-ID: <a843e17c-0709-e48a-8d4f-f3995666678f@nvidia.com>
+Date: Thu, 8 Jul 2021 17:16:22 +0300
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: weSfOTeI_pC2JJ_1f2pV_oyeNC14KiTl
-X-Proofpoint-ORIG-GUID: dpJyGwdN7RX28dciiyO4_n0gTKi1M_BJ
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-07-08_10:2021-07-08,
- 2021-07-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 impostorscore=0
- mlxscore=0 priorityscore=1501 malwarescore=0 suspectscore=0 spamscore=0
- phishscore=0 lowpriorityscore=0 mlxlogscore=999 adultscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104190000
- definitions=main-2107080093
+In-Reply-To: <0683b4ff-43eb-029d-b28d-e98bb41516a4@linux.vnet.ibm.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [172.20.187.5]
+X-ClientProxiedBy: HQMAIL101.nvidia.com (172.20.187.10) To
+ HQMAIL107.nvidia.com (172.20.187.13)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: db1656f5-0353-4df3-e2a4-08d9421af9a7
+X-MS-TrafficTypeDiagnostic: DM5PR12MB1738:
+X-Microsoft-Antispam-PRVS: <DM5PR12MB173866A5506E7A7BED67A2ABB8199@DM5PR12MB1738.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2733;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: /aq/MZCy6VSUqFDHxWunlLIyViZqkAHpyLvdlQwznGarnpS9l7q92mXujOfI6nXp6mU4VJpCzzl7F0o3dYelnR7YFGNUNA3uv0Be+pyNJ7/ZyEtOlZ4uoQQNRF+RUWBNqUGxWxmUQSL2CFGrXl4XfM8jluTK0KCYbqAKILuetwcmcvsmFutXSFgs7wl9fLj8X1Fu7kxiRcMOM1zJUmmYBIAy1XmZUvhjR+6IbzU3vs60xSVXQJTvMMXY5CWxpy+Byetm2It8zf36eP7EuexVpuRQQpwPLdsXSJIFLiPPboc2E/Jvs3LTkTdK/lbCV0pEBakABQLljyVEwnL6Q18xGiScTK6yCWhfoE8TIe1FjjGkNzKfyK8eeobQQFf9FRekoJZwjdG8FGZtqvB3fpkRnGZr1t+qgtcNtjD5HCa/VNBzZwZCl5APe90HNy0M5+GmoRz53SnquhsofiLOFZHRrZ/+jrO24+m0lK/3ojQQHfe99OzV1Qo8bVCv+FCnpMwWdJVimsBPqCQxVR+3zHs9aoy9WjGaRYvoYhoXRanDAo4BdRYgkzxZ779MnrEu+RlAHCV+XGRgMEiApSTeZv6Jpis4IGQ1iK/z1pXLlrj9VS5TU+IUhiAE4x4rv/k5L0KZVY1dq4oIidIPcpsDFkbLBExei/Czj1FxsXbjiDSxjCAqh4aFrnYlsCNHgu8+G0wzBa/FM+JtM+tj75n9X6ZAQ2Zvr0aivhYof5zj3SA6awU=
+X-Forefront-Antispam-Report: CIP:216.228.112.34; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:schybrid03.nvidia.com; CAT:NONE;
+ SFS:(4636009)(39860400002)(346002)(376002)(136003)(396003)(36840700001)(46966006)(82310400003)(36860700001)(110136005)(36756003)(54906003)(82740400003)(86362001)(16576012)(83380400001)(2906002)(26005)(36906005)(31686004)(47076005)(316002)(5660300002)(336012)(4326008)(356005)(8936002)(426003)(53546011)(7636003)(31696002)(2616005)(478600001)(6636002)(186003)(16526019)(8676002)(70586007)(70206006)(6666004)(43740500002);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2021 14:16:27.3308 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: db1656f5-0353-4df3-e2a4-08d9421af9a7
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.112.34];
+ Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT056.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR12MB1738
+X-Mailman-Approved-At: Fri, 09 Jul 2021 07:21:14 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,69 +119,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: sachinp <sachinp@linux.vnet.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, davem@davemloft.net,
+ linux-kernel <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
 
-> Factor duplicated code into a helper function.
->
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 
-Reviewed-by: Fabiano Rosas <farosas@linux.ibm.com>
-
-> ---
->  arch/powerpc/kvm/book3s_hv.c | 24 ++++++++++++------------
->  1 file changed, 12 insertions(+), 12 deletions(-)
->
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index b1b94b3563b7..38d8afa16839 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -3896,6 +3896,16 @@ static inline bool hcall_is_xics(unsigned long req)
->  		req == H_IPOLL || req == H_XIRR || req == H_XIRR_X;
->  }
->
-> +static void vcpu_vpa_increment_dispatch(struct kvm_vcpu *vcpu)
-> +{
-> +	struct lppaca *lp = vcpu->arch.vpa.pinned_addr;
-> +	if (lp) {
-> +		u32 yield_count = be32_to_cpu(lp->yield_count) + 1;
-> +		lp->yield_count = cpu_to_be32(yield_count);
-> +		vcpu->arch.vpa.dirty = 1;
-> +	}
-> +}
+On 2021-07-08 9:29 AM, Abdul Haleem wrote:
+> Greetings
+> 
+> netdev's net branch fails to build on my PowerPC box with error
+> 
+> net/core/dev.c: In function 'gro_list_prepare':
+> net/core/dev.c:6015:51: error: 'TC_SKB_EXT' undeclared (first use in this function); did you mean 'TC_U32_EAT'?
+>      struct tc_skb_ext *skb_ext = skb_ext_find(skb, TC_SKB_EXT);
+>                                                     ^~~~~~~~~~
+>                                                     TC_U32_EAT
+> net/core/dev.c:6015:51: note: each undeclared identifier is reported only once for each function it appears in
+> net/core/dev.c:6020:19: error: dereferencing pointer to incomplete type 'struct tc_skb_ext'
+>       diffs |= p_ext->chain ^ skb_ext->chain;
+>                     ^~
+> make[2]: *** [scripts/Makefile.build:273: net/core/dev.o] Error 1
+> make[2]: *** Waiting for unfinished jobs....
+> make[1]: *** [scripts/Makefile.build:516: net/core] Error 2
+> make[1]: *** Waiting for unfinished jobs....
+> make: *** [Makefile:1847: net] Error 2
+> make: *** Waiting for unfinished jobs...
+> 
+> Which was included due to below commit
+> 
+> commit 8550ff8d8c75416e984d9c4b082845e57e560984
+> Author: Paul Blakey <paulb@nvidia.com  <mailto:paulb@nvidia.com>>
+> Date:   Mon Jul 5 13:54:51 2021 +0300
+> 
+>      skbuff: Release nfct refcount on napi stolen or re-used skbs
+>      
+>      When multiple SKBs are merged to a new skb under napi GRO,
+>      or SKB is re-used by napi, if nfct was set for them in the
+>      driver, it will not be released while freeing their stolen
+>      head state or on re-use.
+>      
+>      Release nfct on napi's stolen or re-used SKBs, and
+>      in gro_list_prepare, check conntrack metadata diff.
+>      
+>      Fixes: 5c6b94604744 ("net/mlx5e: CT: Handle misses after executing CT action")
+>      Reviewed-by: Roi Dayan <roid@nvidia.com  <mailto:roid@nvidia.com>>
+>      Signed-off-by: Paul Blakey <paulb@nvidia.com  <mailto:paulb@nvidia.com>>
+>      Signed-off-by: David S. Miller <davem@davemloft.net  <mailto:davem@davemloft.net>>
+> 
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index c253c2aafe97..177a5aec0b6b 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -6008,6 +6008,18 @@ static void gro_list_prepare(const struct list_head *head,
+>                          diffs = memcmp(skb_mac_header(p),
+>                                         skb_mac_header(skb),
+>                                         maclen);
 > +
->  /*
->   * Guest entry for POWER9 and later CPUs.
->   */
-> @@ -3926,12 +3936,7 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
->  	vc->entry_exit_map = 1;
->  	vc->in_guest = 1;
->
-> -	if (vcpu->arch.vpa.pinned_addr) {
-> -		struct lppaca *lp = vcpu->arch.vpa.pinned_addr;
-> -		u32 yield_count = be32_to_cpu(lp->yield_count) + 1;
-> -		lp->yield_count = cpu_to_be32(yield_count);
-> -		vcpu->arch.vpa.dirty = 1;
-> -	}
-> +	vcpu_vpa_increment_dispatch(vcpu);
->
->  	if (cpu_has_feature(CPU_FTR_TM) ||
->  	    cpu_has_feature(CPU_FTR_P9_TM_HV_ASSIST))
-> @@ -4069,12 +4074,7 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
->  	    cpu_has_feature(CPU_FTR_P9_TM_HV_ASSIST))
->  		kvmppc_save_tm_hv(vcpu, vcpu->arch.shregs.msr, true);
->
-> -	if (vcpu->arch.vpa.pinned_addr) {
-> -		struct lppaca *lp = vcpu->arch.vpa.pinned_addr;
-> -		u32 yield_count = be32_to_cpu(lp->yield_count) + 1;
-> -		lp->yield_count = cpu_to_be32(yield_count);
-> -		vcpu->arch.vpa.dirty = 1;
-> -	}
-> +	vcpu_vpa_increment_dispatch(vcpu);
->
->  	save_p9_guest_pmu(vcpu);
->  #ifdef CONFIG_PPC_PSERIES
+> +               diffs |= skb_get_nfct(p) ^ skb_get_nfct(skb);
+> +
+> +               if (!diffs) {
+> +                       struct tc_skb_ext *skb_ext = skb_ext_find(skb, TC_SKB_EXT);
+> +                       struct tc_skb_ext *p_ext = skb_ext_find(p, TC_SKB_EXT);
+> +
+> +                       diffs |= (!!p_ext) ^ (!!skb_ext);
+> +                       if (!diffs && unlikely(skb_ext))
+> +                               diffs |= p_ext->chain ^ skb_ext->chain;
+> +               }
+> +
+>                  NAPI_GRO_CB(p)->same_flow = !diffs;
+>          }
+>   }
+> 
+> kernel config is attached
+> 
+> @paul, could you please have a look into this ?
+> 
+> -- 
+> Regard's
+> 
+> Abdul Haleem
+> IBM Linux Technology Center
+> 
+
+Hi,
+
+This looks the same reason as Floarian fixed,
+missing CONFIG_SKB_EXTENSIONS and CONFIG_NET_TC_SKB_EXT.
+Fix was sent by Floarian titled "[PATCH net] skbuff: Fix build with SKB 
+extensions disabled".
+
+Thanks,
+Roi
