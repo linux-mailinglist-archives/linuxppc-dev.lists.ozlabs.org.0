@@ -2,70 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5F573BFA94
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jul 2021 14:46:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C8A33BFA8C
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jul 2021 14:46:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GLGJT5Ymyz3bsV
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jul 2021 22:46:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GLGHz6zLHz3bmG
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Jul 2021 22:46:23 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=VetX2Cfr;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=YlSg5KTL;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::e33;
- helo=mail-vs1-xe33.google.com; envelope-from=ulf.hansson@linaro.org;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::433;
+ helo=mail-pf1-x433.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=VetX2Cfr; dkim-atps=neutral
-Received: from mail-vs1-xe33.google.com (mail-vs1-xe33.google.com
- [IPv6:2607:f8b0:4864:20::e33])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=YlSg5KTL; dkim-atps=neutral
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com
+ [IPv6:2607:f8b0:4864:20::433])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GLGBf2S5Bz2ymb
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jul 2021 22:41:43 +1000 (AEST)
-Received: by mail-vs1-xe33.google.com with SMTP id az11so3512712vsb.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jul 2021 05:41:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=hP9H7HVTE7TFrRNTl1vyqWVVeZcuqXBCZg0bGqclL/A=;
- b=VetX2Cfr8bdRNaZiWLEm04u6bqZW3l6DI4CAN74JIY7k4z1gUX2WPAhVDnzm350lf2
- zN9Z12JQmbzlk/BWNUXvjVAbpB66ZXuvK3SPb444QQ5diXQOytBY51L2/oTaoUD9VeXU
- uFurAnxdtCpnicZBLB0yD9ojUwv6W/qtm1PvBS9AFUFJNPr3tKxeC4wQWDvFkNeWRoRf
- 7SjXn45LyDiaoeLgbbyRwVPp/zZWqO3qYud0+Xn/514eUefuiFS0gjROioJ7tCP2C/ZN
- ZUSLS7lmtDXFsaxdqMahs7f08oqXmzo9A5DfBGmAWg3PByPV9/9CFdzFbNZ8GtPMsFJE
- z42g==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GLGHW46bQz300S
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Jul 2021 22:45:59 +1000 (AEST)
+Received: by mail-pf1-x433.google.com with SMTP id d12so5364694pfj.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Jul 2021 05:45:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=V9F9nU6MbirMGKo2lzCFkdt6YjO4+T9M0GAqL4st5Zw=;
+ b=YlSg5KTLns4/Qz5wajNfrxRNcTtoQ5Jl7jDZZ8dCrtRuMoAi+WhE9NMrncKXJtZU7U
+ MN3ekSTUvnqBT+gbt+YEWbvvO+XaytYyI9CruRDbPyACkiFatEFAQSsqXMj1WP8aI31K
+ EY6zjek/+/cHVdY+N6IetLxdW+WUTyvC6QxuuvHG+YaYX43i1IwXwlIJMI7RjLoyO0fR
+ Rxxb0RPJ76EwXRHGiNEgE1MChDTYw2mXVqZc1wbCMZI7inE2v9TXuUHzri1L7ktyn77g
+ 1f3jA13z+V/BcjrMosHdmkfzmNqO8bfFYN7Q0hXjRdnkmxOf80840wjVraLeCQYMcBXi
+ 5hjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=hP9H7HVTE7TFrRNTl1vyqWVVeZcuqXBCZg0bGqclL/A=;
- b=G2C9V0GCVtF9jqxPgI8W2XyPv7CeT6CGdwaXvcZhW+rZHXalNgSlnNMmqttQLJAm1Z
- Mx//7vKDqv9na0uMKDh0a1a9EgHxdMAhAL7WS7ERFrG523AQZ5nuODARVZffvyYavi8p
- I2BkGfnnaloJZwj37US4PS9KmpfIhDmjq1Jue0RHbmNjHCbnrPHgzMC4NjTe2My4jzwR
- KDhqu69v4iKTFFMaRba96f5sQtOl3b0JQOozjRzaCw2K/j8xObqrcGMXa5LJFvt5T+so
- tUiAWqe5NRmoUpfJr1sGukhQBroeuhvUPOdyXX4LuVSD53EXnTUwmMc4tzl5YDOgBmvO
- WOUw==
-X-Gm-Message-State: AOAM531smrJyZKozdfmoHmWy5M+I6zwP9bJ1QmOznPCAKFy4UEHz/U/L
- o8j69iPqQcKIYpToZ7bAkpvtNdUchibPksE4JcNF7A==
-X-Google-Smtp-Source: ABdhPJywz4fR2V+V+6/E9OWxEVi9/b58VFa4IZ2LlJTPpT0B9SRAdSG9PM7u1rPMHG2ZlSabjmUDzfVjnsqdUEe3bFI=
-X-Received: by 2002:a67:8783:: with SMTP id j125mr27888650vsd.42.1625748098931; 
- Thu, 08 Jul 2021 05:41:38 -0700 (PDT)
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=V9F9nU6MbirMGKo2lzCFkdt6YjO4+T9M0GAqL4st5Zw=;
+ b=cUbZrLEgJBNzPNGrIuhuoICTsxsh6Cyv6FzbNW5LJip8P0R9NZyLKAGZD8cBNPD0IK
+ WsbvrRqYGbOnivCSbeiAVVhcygz/g7/aklX1hXJvFkbvYLcwmaGy7Jv2K0YBrH2M5w9F
+ MmUP3MUZNWCBWWeutinnr+vVU7Vw0zC1PKzSYUarxJ+LFi26T0l32fg5i5WpmPtXwxD6
+ uTybkKzQ/icXp74nICaBVuoSFRjXhsXQIBaaMI7tXYLigSFYbLUpL/1pLnNb+eUEE/Lm
+ d1DyszqYkh79WD9VSTW70rEfSqGJHtWklkpqp0Em/5SEC3sL59RD2z5KBF2jTU4F0EIg
+ Yy1A==
+X-Gm-Message-State: AOAM530Jeo2lBg3bVz4dAokhLy8FeCPbQ4j5VjjxB56arGYqcjWLjT25
+ EtnJ7h6COL4WNy6OviT+0rc=
+X-Google-Smtp-Source: ABdhPJxzzRZ518bBwLsflS/TK5EJCPaRfOj6cR9e7GiPVRZuLq8P25e3BS1Wypre4supFoO/8GwObA==
+X-Received: by 2002:a05:6a00:1a0b:b029:31a:25cf:3dbd with SMTP id
+ g11-20020a056a001a0bb029031a25cf3dbdmr28132323pfv.57.1625748355755; 
+ Thu, 08 Jul 2021 05:45:55 -0700 (PDT)
+Received: from localhost (14-203-186-173.tpgi.com.au. [14.203.186.173])
+ by smtp.gmail.com with ESMTPSA id e4sm3519813pgi.94.2021.07.08.05.45.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 08 Jul 2021 05:45:55 -0700 (PDT)
+Date: Thu, 08 Jul 2021 22:45:49 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [RFC PATCH 10/43] powerpc/64s: Always set PMU control registers
+ to frozen/disabled when not in use
+To: kvm-ppc@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>
+References: <20210622105736.633352-1-npiggin@gmail.com>
+ <20210622105736.633352-11-npiggin@gmail.com>
+ <c607e40c-5334-e8b1-11ac-c1464332e01a@linux.ibm.com>
+ <1625185125.n8jy7yqojr.astroid@bobo.none>
+In-Reply-To: <1625185125.n8jy7yqojr.astroid@bobo.none>
 MIME-Version: 1.0
-References: <20210706154803.1631813-1-u.kleine-koenig@pengutronix.de>
- <20210706154803.1631813-5-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20210706154803.1631813-5-u.kleine-koenig@pengutronix.de>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Thu, 8 Jul 2021 14:41:02 +0200
-Message-ID: <CAPDyKFo0zuooWAkuR=BcsvcJ2pmSrcEoBhuC8+ne18GQphyPHA@mail.gmail.com>
-Subject: Re: [PATCH v2 4/4] bus: Make remove callback return void
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
+Message-Id: <1625745913.qxusux97eo.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Mailman-Approved-At: Thu, 08 Jul 2021 22:46:26 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,148 +84,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nvdimm@lists.linux.dev, Alexey Kardashevskiy <aik@ozlabs.ru>,
- Samuel Iglesias Gonsalvez <siglesias@igalia.com>,
- Jens Taprogge <jens.taprogge@taprogge.org>, Jaroslav Kysela <perex@perex.cz>,
- linux-fpga@vger.kernel.org, Benjamin Tissoires <benjamin.tissoires@redhat.com>,
- Paul Mackerras <paulus@samba.org>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- "K. Y. Srinivasan" <kys@microsoft.com>,
- Mike Christie <michael.christie@oracle.com>, Wei Liu <wei.liu@kernel.org>,
- Maxim Levitsky <maximlevitsky@gmail.com>, Samuel Holland <samuel@sholland.org>,
- linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
- xen-devel@lists.xenproject.org, Tomas Winkler <tomas.winkler@intel.com>,
- Julien Grall <jgrall@amazon.com>, Ohad Ben-Cohen <ohad@wizery.com>,
- Alex Williamson <alex.williamson@redhat.com>, Alex Elder <elder@kernel.org>,
- linux-parisc@vger.kernel.org, Geoff Levand <geoff@infradead.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-spi@vger.kernel.org, Thorsten Scherer <t.scherer@eckelmann.de>,
- Sascha Hauer <kernel@pengutronix.de>, Jon Mason <jdmason@kudzu.us>,
- linux-ntb@googlegroups.com, Wu Hao <hao.wu@intel.com>,
- David Woodhouse <dwmw@amazon.co.uk>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Manohar Vanga <manohar.vanga@gmail.com>, linux-wireless@vger.kernel.org,
- Dominik Brodowski <linux@dominikbrodowski.net>,
- virtualization@lists.linux-foundation.org,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- target-devel@vger.kernel.org,
- Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
- linux-i2c@vger.kernel.org, Kai-Heng Feng <kai.heng.feng@canonical.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Stephen Hemminger <sthemmin@microsoft.com>, Ira Weiny <ira.weiny@intel.com>,
- Helge Deller <deller@gmx.de>,
- =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
- industrypack-devel@lists.sourceforge.net, linux-mips@vger.kernel.org,
- Len Brown <lenb@kernel.org>, alsa-devel@alsa-project.org,
- linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
- Maxime Ripard <mripard@kernel.org>, Johan Hovold <johan@kernel.org>,
- greybus-dev@lists.linaro.org, Bjorn Helgaas <bhelgaas@google.com>,
- Dave Jiang <dave.jiang@intel.com>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- linux-arm-kernel@lists.infradead.org, Johannes Thumshirn <morbidrsa@gmail.com>,
- Mathieu Poirier <mathieu.poirier@linaro.org>, Stephen Boyd <sboyd@kernel.org>,
- Cornelia Huck <cohuck@redhat.com>, Wolfram Sang <wsa@kernel.org>,
- Joey Pabalan <jpabalanb@gmail.com>, Yehezkel Bernat <YehezkelShB@gmail.com>,
- =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
- Bodo Stroesser <bostroesser@gmail.com>,
- Alison Schofield <alison.schofield@intel.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Tyrel Datwyler <tyreld@linux.ibm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Tom Rix <trix@redhat.com>, Jason Wang <jasowang@redhat.com>,
- SeongJae Park <sjpark@amazon.de>, linux-hyperv@vger.kernel.org,
- platform-driver-x86@vger.kernel.org, Frank Li <lznuaa@gmail.com>,
- netdev@vger.kernel.org, Qinglang Miao <miaoqinglang@huawei.com>,
- Jiri Slaby <jirislaby@kernel.org>, Rob Herring <robh@kernel.org>,
- Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
- Mark Gross <mgross@linux.intel.com>, linux-staging@lists.linux.dev,
- Dexuan Cui <decui@microsoft.com>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Kishon Vijay Abraham I <kishon@ti.com>, Chen-Yu Tsai <wens@csie.org>,
- linux-input@vger.kernel.org, Allen Hubbe <allenbh@gmail.com>,
- Alex Dubov <oakad@yahoo.com>, Haiyang Zhang <haiyangz@microsoft.com>,
- Jiri Kosina <jikos@kernel.org>, Vladimir Zapolskiy <vz@mleia.com>,
- Russell King <rmk+kernel@armlinux.org.uk>,
- Ben Widawsky <ben.widawsky@intel.com>, Moritz Fischer <mdf@kernel.org>,
- linux-cxl@vger.kernel.org, Michael Buesch <m@bues.ch>,
- Dan Williams <dan.j.williams@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Cristian Marussi <cristian.marussi@arm.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Martyn Welch <martyn@welchs.me.uk>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, linux-mmc@vger.kernel.org,
- linux-sunxi@lists.linux.dev, Stefan Richter <stefanr@s5r6.in-berlin.de>,
- Sudeep Holla <sudeep.holla@arm.com>, "David S. Miller" <davem@davemloft.net>,
- Sven Van Asbroeck <TheSven73@gmail.com>, kvm@vger.kernel.org,
- "Michael S. Tsirkin" <mst@redhat.com>, linux-remoteproc@vger.kernel.org,
- Bjorn Andersson <bjorn.andersson@linaro.org>,
- Kirti Wankhede <kwankhede@nvidia.com>,
- Andreas Noever <andreas.noever@gmail.com>, linux-i3c@lists.infradead.org,
- linux1394-devel@lists.sourceforge.net, Lee Jones <lee.jones@linaro.org>,
- Arnd Bergmann <arnd@arndb.de>, linux-scsi@vger.kernel.org,
- Vishal Verma <vishal.l.verma@intel.com>, Russell King <linux@armlinux.org.uk>,
- Andy Gross <agross@kernel.org>, linux-serial@vger.kernel.org,
- Jakub Kicinski <kuba@kernel.org>, Michael Jamet <michael.jamet@intel.com>,
- William Breathitt Gray <vilhelm.gray@gmail.com>,
- Hans de Goede <hdegoede@redhat.com>, Hannes Reinecke <hare@suse.de>,
- Adrian Hunter <adrian.hunter@intel.com>, Juergen Gross <jgross@suse.com>,
- linuxppc-dev@lists.ozlabs.org, Takashi Iwai <tiwai@suse.com>,
- Alexandre Bounine <alex.bou9@gmail.com>, Vinod Koul <vkoul@kernel.org>,
- Mark Brown <broonie@kernel.org>, Marc Zyngier <maz@kernel.org>,
- dmaengine@vger.kernel.org, Johannes Berg <johannes@sipsolutions.net>,
- Johannes Thumshirn <jth@kernel.org>, Maximilian Luz <luzmaximilian@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 6 Jul 2021 at 17:53, Uwe Kleine-K=C3=B6nig
-<u.kleine-koenig@pengutronix.de> wrote:
->
-> The driver core ignores the return value of this callback because there
-> is only little it can do when a device disappears.
->
-> This is the final bit of a long lasting cleanup quest where several
-> buses were converted to also return void from their remove callback.
-> Additionally some resource leaks were fixed that were caused by drivers
-> returning an error code in the expectation that the driver won't go
-> away.
->
-> With struct bus_type::remove returning void it's prevented that newly
-> implemented buses return an ignored error code and so don't anticipate
-> wrong expectations for driver authors.
->
-> Acked-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk> (For ARM, Am=
-ba and related parts)
-> Acked-by: Mark Brown <broonie@kernel.org>
-> Acked-by: Chen-Yu Tsai <wens@csie.org> (for drivers/bus/sunxi-rsb.c)
-> Acked-by: Pali Roh=C3=A1r <pali@kernel.org>
-> Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org> (for drivers/media)
-> Acked-by: Hans de Goede <hdegoede@redhat.com> (For drivers/platform)
-> Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> Acked-By: Vinod Koul <vkoul@kernel.org>
-> Acked-by: Juergen Gross <jgross@suse.com> (For Xen)
-> Acked-by: Lee Jones <lee.jones@linaro.org> (For drivers/mfd)
-> Acked-by: Johannes Thumshirn <jth@kernel.org> (For drivers/mcb)
-> Acked-by: Johan Hovold <johan@kernel.org>
-> Acked-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org> (For drive=
-rs/slimbus)
-> Acked-by: Kirti Wankhede <kwankhede@nvidia.com> (For drivers/vfio)
-> Acked-by: Maximilian Luz <luzmaximilian@gmail.com>
-> Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com> (For ulpi and=
- typec)
-> Acked-by: Samuel Iglesias Gons=C3=A1lvez <siglesias@igalia.com> (For ipac=
-k)
-> Reviewed-by: Tom Rix <trix@redhat.com> (For fpga)
-> Acked-by: Geoff Levand <geoff@infradead.org> (For ps3)
-> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+Excerpts from Nicholas Piggin's message of July 2, 2021 10:27 am:
+> Excerpts from Madhavan Srinivasan's message of July 1, 2021 11:17 pm:
+>>=20
+>> On 6/22/21 4:27 PM, Nicholas Piggin wrote:
+>>> KVM PMU management code looks for particular frozen/disabled bits in
+>>> the PMU registers so it knows whether it must clear them when coming
+>>> out of a guest or not. Setting this up helps KVM make these optimisatio=
+ns
+>>> without getting confused. Longer term the better approach might be to
+>>> move guest/host PMU switching to the perf subsystem.
+>>>
+>>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>>> ---
+>>>   arch/powerpc/kernel/cpu_setup_power.c | 4 ++--
+>>>   arch/powerpc/kernel/dt_cpu_ftrs.c     | 6 +++---
+>>>   arch/powerpc/kvm/book3s_hv.c          | 5 +++++
+>>>   arch/powerpc/perf/core-book3s.c       | 7 +++++++
+>>>   4 files changed, 17 insertions(+), 5 deletions(-)
+>>>
+>>> diff --git a/arch/powerpc/kernel/cpu_setup_power.c b/arch/powerpc/kerne=
+l/cpu_setup_power.c
+>>> index a29dc8326622..3dc61e203f37 100644
+>>> --- a/arch/powerpc/kernel/cpu_setup_power.c
+>>> +++ b/arch/powerpc/kernel/cpu_setup_power.c
+>>> @@ -109,7 +109,7 @@ static void init_PMU_HV_ISA207(void)
+>>>   static void init_PMU(void)
+>>>   {
+>>>   	mtspr(SPRN_MMCRA, 0);
+>>> -	mtspr(SPRN_MMCR0, 0);
+>>> +	mtspr(SPRN_MMCR0, MMCR0_FC);
+>>=20
+>> Sticky point here is, currently if not frozen, pmc5/6 will
+>> keep countering. And not freezing them at boot is quiet useful
+>> sometime, like say when running in a simulation where we could calculate
+>> approx CPIs for micro benchmarks without perf subsystem.
+>=20
+> You even can't use the sysfs files in this sim environment? In that case
+> what if we added a boot option that could set some things up? In that=20
+> case possibly you could even gather some more types of events too.
 
-Acked-by: Ulf Hansson <ulf.hansson@linaro.org> # For MMC
+What if we added this to allow sim environments to run PMC5/6 and=20
+additionally specify MMCR1 without userspace involvement?
 
-[...]
+Thanks,
+Nick
 
-Kind regards
-Uffe
+---
+diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3=
+s.c
+index af8a4981c6f6..454771243529 100644
+--- a/arch/powerpc/perf/core-book3s.c
++++ b/arch/powerpc/perf/core-book3s.c
+@@ -2425,8 +2425,24 @@ int register_power_pmu(struct power_pmu *pmu)
+ }
+=20
+ #ifdef CONFIG_PPC64
++static bool pmu_override =3D false;
++static unsigned long pmu_override_val;
++static void do_pmu_override(void *data)
++{
++	ppc_set_pmu_inuse(1);
++	if (pmu_override_val)
++		mtspr(SPRN_MMCR1, pmu_override_val);
++	mtspr(SPRN_MMCR0, mfspr(SPRN_MMCR0) & ~MMCR0_FC);
++}
++
+ static int __init init_ppc64_pmu(void)
+ {
++	if (cpu_has_feature(CPU_FTR_HVMODE) && pmu_override) {
++		printk(KERN_WARNING "perf: disabling perf due to pmu=3D command line opt=
+ion.\n");
++		on_each_cpu(do_pmu_override, NULL, 1);
++		return 0;
++	}
++
+ 	/* run through all the pmu drivers one at a time */
+ 	if (!init_power5_pmu())
+ 		return 0;
+@@ -2448,4 +2464,23 @@ static int __init init_ppc64_pmu(void)
+ 		return init_generic_compat_pmu();
+ }
+ early_initcall(init_ppc64_pmu);
++
++static int __init pmu_setup(char *str)
++{
++	unsigned long val;
++
++	if (!early_cpu_has_feature(CPU_FTR_HVMODE))
++		return 0;
++
++	pmu_override =3D true;
++
++	if (kstrtoul(str, 0, &val))
++		val =3D 0;
++
++	pmu_override_val =3D val;
++
++	return 1;
++}
++__setup("pmu=3D", pmu_setup);
++
+ #endif
