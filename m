@@ -1,98 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E13E3C3563
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Jul 2021 17:59:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39E1F3C37B8
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Jul 2021 01:50:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GMZTQ1849z3bg4
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Jul 2021 01:59:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GMmwx5Pr9z3blm
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Jul 2021 09:50:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Z5MZjR4B;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UcvLir4H;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Z5MZjR4B; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=UcvLir4H; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GMZSq45n9z307k
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Jul 2021 01:58:34 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 16AF9OZA122460; Sat, 10 Jul 2021 11:58:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references; s=pp1;
- bh=UtvByU2W4YCf82mvJoL7qY+E2r0b/oZwtSap2xaytg0=;
- b=Z5MZjR4BB8vYul96j6im/qwWna37O+KaA7AgmGi+eOKpgSB9HtlT/lMPWWIq6KKNPRyo
- 9aylVjPco2LckeDyB8WahWbbkDhNAdQ6p8OJfN+gnUEEnE+kp1f1cJuDwFe02CVyE6eb
- +gfxmv8swBAeLi2k6iTOl+FmKlYQkvMnr7OIRPx3ykIQkgoPqdMMP4L60GXUk62ZeaQR
- knrlItbTiYF/VJig8bf6WU/yrvolBr6h+mBlHhYIv/XEfbeqGWILjkDhdiUEwrEzDtvi
- m3xRli+NmoLj32xwGpsAqLUvjhRnoqV2LhTbQm3rNN8+kiYUk/QFnpCl0MAJxF7zoUtG sQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39q5vah501-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 10 Jul 2021 11:58:25 -0400
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 16AFqG7H193239;
- Sat, 10 Jul 2021 11:58:25 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39q5vah4yh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 10 Jul 2021 11:58:24 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16AFp5ZY013968;
- Sat, 10 Jul 2021 15:58:22 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma04ams.nl.ibm.com with ESMTP id 39q368850f-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 10 Jul 2021 15:58:22 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 16AFwIqN23331112
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 10 Jul 2021 15:58:19 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D8D514C046;
- Sat, 10 Jul 2021 15:58:18 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0E41E4C040;
- Sat, 10 Jul 2021 15:58:17 +0000 (GMT)
-Received: from localhost.localdomain.localdomain (unknown [9.195.35.113])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Sat, 10 Jul 2021 15:58:16 +0000 (GMT)
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH V3 1/1] powerpc/perf: Fix PMU callbacks to clear pending PMI
- before resetting an overflown PMC
-Date: Sat, 10 Jul 2021 11:58:14 -0400
-Message-Id: <1625932694-1525-2-git-send-email-atrajeev@linux.vnet.ibm.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1625932694-1525-1-git-send-email-atrajeev@linux.vnet.ibm.com>
-References: <1625932694-1525-1-git-send-email-atrajeev@linux.vnet.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: NjYhDNtz-uMyDdoCFMX7RZv3-jjecHgJ
-X-Proofpoint-ORIG-GUID: TNQqBa3RktU8TqkShtnNijnP-tmJN-Xe
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-07-10_02:2021-07-09,
- 2021-07-10 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 adultscore=0
- malwarescore=0 lowpriorityscore=0 phishscore=0 mlxlogscore=999
- suspectscore=0 spamscore=0 impostorscore=0 priorityscore=1501
- clxscore=1015 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2107100024
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GMmwN3rJtz3073
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Jul 2021 09:49:40 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6524A610D2;
+ Sat, 10 Jul 2021 23:49:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1625960976;
+ bh=YcuXPbe0XfzqQbPH39bcJPdP60ShdIyo75apiWl/Ass=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=UcvLir4HexPa1kfN+XbisiUtw8Z1V4nUfv/P24n0UuwVls7Vy7JWpDh5a6fwmor4O
+ 0vei+4gRJFGZZO71InEHwAGEMmHHH6UAvDmQAS+5pwUv20F4k8osukCwO27qadtwLr
+ DyQspng3vU738H8yorYBDy/4O2hCGm58ZWDVr7UyFsGelojRc6IvE8cXBxGXuEU6Ej
+ 90uNUoR2XwL5giUaYDFTFF99rImmLhw74705Q88ekUEaFYCTphW29dBLLR72YH06N1
+ 25T7xMqAp24/DSOLM7RpkjLSFisU2i83XledbjH1SsTI+uSSTuRmJ+1UbYrtGP5Yfh
+ R4DMt5RJkKzbA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.12 13/43] PCI: pciehp: Ignore Link Down/Up caused by
+ DPC
+Date: Sat, 10 Jul 2021 19:48:45 -0400
+Message-Id: <20210710234915.3220342-13-sashal@kernel.org>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210710234915.3220342-1-sashal@kernel.org>
+References: <20210710234915.3220342-1-sashal@kernel.org>
+MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,242 +61,289 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
- rnsastry@linux.ibm.com
+Cc: Sasha Levin <sashal@kernel.org>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Ashok Raj <ashok.raj@intel.com>, linux-pci@vger.kernel.org,
+ Sinan Kaya <okaya@kernel.org>, Yicong Yang <yangyicong@hisilicon.com>,
+ Keith Busch <kbusch@kernel.org>, Lukas Wunner <lukas@wunner.de>,
+ Ethan Zhao <haifeng.zhao@intel.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Running perf fuzzer showed below in dmesg logs:
-"Can't find PMC that caused IRQ"
+From: Lukas Wunner <lukas@wunner.de>
 
-This means a PMU exception happened, but none of the PMC's (Performance
-Monitor Counter) were found to be overflown. There are some corner cases
-that clears the PMCs after PMI gets masked. In such cases, the perf
-interrupt handler will not find the active PMC values that had caused
-the overflow and thus leads to this message while replaying.
+[ Upstream commit a97396c6eb13f65bea894dbe7739b2e883d40a3e ]
 
-Case 1: PMU Interrupt happens during replay of other interrupts and
-counter values gets cleared by PMU callbacks before replay:
+Downstream Port Containment (PCIe r5.0, sec. 6.2.10) disables the link upon
+an error and attempts to re-enable it when instructed by the DPC driver.
 
-During replay of interrupts like timer, __do_irq and doorbell exception, we
-conditionally enable interrupts via may_hard_irq_enable(). This could
-potentially create a window to generate a PMI. Since irq soft mask is set
-to ALL_DISABLED, the PMI will get masked here. We could get IPIs run before
-perf interrupt is replayed and the PMU events could deleted or stopped.
-This will change the PMU SPR values and resets the counters. Snippet of
-ftrace log showing PMU callbacks invoked in "__do_irq":
+A slot which is both DPC- and hotplug-capable is currently powered off by
+pciehp once DPC is triggered (due to the link change) and powered back up
+on successful recovery.  That's undesirable, the slot should remain powered
+so the hotplugged device remains bound to its driver.  DPC notifies the
+driver of the error and of successful recovery in pcie_do_recovery() and
+the driver may then restore the device to working state.
 
-<idle>-0 [051] dns. 132025441306354: __do_irq <-call_do_irq
-<idle>-0 [051] dns. 132025441306430: irq_enter <-__do_irq
-<idle>-0 [051] dns. 132025441306503: irq_enter_rcu <-__do_irq
-<idle>-0 [051] dnH. 132025441306599: xive_get_irq <-__do_irq
-<<>>
-<idle>-0 [051] dnH. 132025441307770: generic_smp_call_function_single_interrupt <-smp_ipi_demux_relaxed
-<idle>-0 [051] dnH. 132025441307839: flush_smp_call_function_queue <-smp_ipi_demux_relaxed
-<idle>-0 [051] dnH. 132025441308057: _raw_spin_lock <-event_function
-<idle>-0 [051] dnH. 132025441308206: power_pmu_disable <-perf_pmu_disable
-<idle>-0 [051] dnH. 132025441308337: power_pmu_del <-event_sched_out
-<idle>-0 [051] dnH. 132025441308407: power_pmu_read <-power_pmu_del
-<idle>-0 [051] dnH. 132025441308477: read_pmc <-power_pmu_read
-<idle>-0 [051] dnH. 132025441308590: isa207_disable_pmc <-power_pmu_del
-<idle>-0 [051] dnH. 132025441308663: write_pmc <-power_pmu_del
-<idle>-0 [051] dnH. 132025441308787: power_pmu_event_idx <-perf_event_update_userpage
-<idle>-0 [051] dnH. 132025441308859: rcu_read_unlock_strict <-perf_event_update_userpage
-<idle>-0 [051] dnH. 132025441308975: power_pmu_enable <-perf_pmu_enable
-<<>>
-<idle>-0 [051] dnH. 132025441311108: irq_exit <-__do_irq
-<idle>-0 [051] dns. 132025441311319: performance_monitor_exception <-replay_soft_interrupts
+Moreover, Sinan points out that turning off slot power by pciehp may foil
+recovery by DPC:  Power off/on is a cold reset concurrently to DPC's warm
+reset.  Sathyanarayanan reports extended delays or failure in link
+retraining by DPC if pciehp brings down the slot.
 
-Case 2: PMI's masked during local_* operations, example local_add.
-If the local_add operation happens within a local_irq_save, replay of
-PMI will be during local_irq_restore. Similar to case 1, this could
-also create a window before replay where PMU events gets deleted or
-stopped.
+Fix by detecting whether a Link Down event is caused by DPC and awaiting
+recovery if so.  On successful recovery, ignore both the Link Down and the
+subsequent Link Up event.
 
-Patch adds a fix to update the PMU callback function 'power_pmu_disable' to
-check for pending perf interrupt. If there is an overflown PMC and pending
-perf interrupt indicated in Paca, clear the PMI bit in paca to drop that
-sample. Clearing of PMI bit is done in 'power_pmu_disable' since disable is
-invoked before any event gets deleted/stopped. With this fix, if there are
-more than one event running in the PMU, there is a chance that we clear the
-PMI bit for the event which is not getting deleted/stopped. The other
-events may still remain active. Hence to make sure we don't drop valid
-sample in such cases, another check is added in power_pmu_enable. This
-checks if there is an overflown PMC found among the active events and if
-so enable back the PMI bit. Two new helper functions are introduced to
-clear/set the PMI, ie 'clear_pmi_irq_pending' and 'set_pmi_irq_pending'.
+Afterwards, check whether the link is down to detect surprise-removal or
+another DPC event immediately after DPC recovery.  Ensure that the
+corresponding DLLSC event is not ignored by synthesizing it and invoking
+irq_wake_thread() to trigger a re-run of pciehp_ist().
 
-Also there are corner cases which results in performance monitor interrupts
-getting triggered during power_pmu_disable. This happens since PMXE bit is
-not cleared along with disabling of other MMCR0 bits in the pmu_disable.
-Such PMI's could leave the PMU running and could trigger PMI again which
-will set MMCR0 PMAO bit. This could lead to spurious interrupts in some
-corner cases. Example, a timer after power_pmu_del which will re-enable
-interrupts and triggers a PMI again since PMAO bit is still set. But fails
-to find valid overflow since PMC get cleared in power_pmu_del. Patch
-fixes this by disabling PMXE along with disabling of other MMCR0 bits
-in power_pmu_disable.
+The IRQ threads of the hotplug and DPC drivers, pciehp_ist() and
+dpc_handler(), race against each other.  If pciehp is faster than DPC, it
+will wait until DPC recovery completes.
 
-We can't just replay PMI any time. Hence this approach is preferred rather
-than replaying PMI before resetting overflown PMC. Patch also documents
-core-book3s on a race condition which can trigger these PMC messages during
-idle path in PowerNV.
+Recovery consists of two steps:  The first step (waiting for link
+disablement) is recognizable by pciehp through a set DPC Trigger Status
+bit.  The second step (waiting for link retraining) is recognizable through
+a newly introduced PCI_DPC_RECOVERING flag.
 
-Fixes: f442d004806e ("powerpc/64s: Add support to mask perf interrupts and replay them")
-Reported-by: Nageswara R Sastry <nasastry@in.ibm.com>
-Suggested-by: Nicholas Piggin <npiggin@gmail.com>
-Suggested-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+If DPC is faster than pciehp, neither of the two flags will be set and
+pciehp may glean the recovery status from the new PCI_DPC_RECOVERED flag.
+The flag is zero if DPC didn't occur at all, hence DLLSC events are not
+ignored by default.
+
+pciehp waits up to 4 seconds before assuming that DPC recovery failed and
+bringing down the slot.  This timeout is not taken from the spec (it
+doesn't mandate one) but based on a report from Yicong Yang that DPC may
+take a bit more than 3 seconds on HiSilicon's Kunpeng platform.
+
+The timeout is necessary because the DPC Trigger Status bit may never
+clear:  On Root Ports which support RP Extensions for DPC, the DPC driver
+polls the DPC RP Busy bit for up to 1 second before giving up on DPC
+recovery.  Without the timeout, pciehp would then wait indefinitely for DPC
+to complete.
+
+This commit draws inspiration from previous attempts to synchronize DPC
+with pciehp:
+
+By Sinan Kaya, August 2018:
+https://lore.kernel.org/linux-pci/20180818065126.77912-1-okaya@kernel.org/
+
+By Ethan Zhao, October 2020:
+https://lore.kernel.org/linux-pci/20201007113158.48933-1-haifeng.zhao@intel.com/
+
+By Kuppuswamy Sathyanarayanan, March 2021:
+https://lore.kernel.org/linux-pci/59cb30f5e5ac6d65427ceaadf1012b2ba8dbf66c.1615606143.git.sathyanarayanan.kuppuswamy@linux.intel.com/
+
+Link: https://lore.kernel.org/r/0be565d97438fe2a6d57354b3aa4e8626952a00b.1619857124.git.lukas@wunner.de
+Reported-by: Sinan Kaya <okaya@kernel.org>
+Reported-by: Ethan Zhao <haifeng.zhao@intel.com>
+Reported-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Tested-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Tested-by: Yicong Yang <yangyicong@hisilicon.com>
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Ashok Raj <ashok.raj@intel.com>
+Cc: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/hw_irq.h | 31 +++++++++++++++++++++++++
- arch/powerpc/perf/core-book3s.c   | 49 ++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 79 insertions(+), 1 deletion(-)
+ drivers/pci/hotplug/pciehp_hpc.c | 36 ++++++++++++++++
+ drivers/pci/pci.h                |  4 ++
+ drivers/pci/pcie/dpc.c           | 74 +++++++++++++++++++++++++++++---
+ 3 files changed, 109 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/hw_irq.h b/arch/powerpc/include/asm/hw_irq.h
-index 21cc571..0a067bb 100644
---- a/arch/powerpc/include/asm/hw_irq.h
-+++ b/arch/powerpc/include/asm/hw_irq.h
-@@ -224,6 +224,34 @@ static inline bool arch_irqs_disabled(void)
- 	return arch_irqs_disabled_flags(arch_local_save_flags());
+diff --git a/drivers/pci/hotplug/pciehp_hpc.c b/drivers/pci/hotplug/pciehp_hpc.c
+index fb3840e222ad..9d06939736c0 100644
+--- a/drivers/pci/hotplug/pciehp_hpc.c
++++ b/drivers/pci/hotplug/pciehp_hpc.c
+@@ -563,6 +563,32 @@ void pciehp_power_off_slot(struct controller *ctrl)
+ 		 PCI_EXP_SLTCTL_PWR_OFF);
  }
  
-+static inline void set_pmi_irq_pending(void)
++static void pciehp_ignore_dpc_link_change(struct controller *ctrl,
++					  struct pci_dev *pdev, int irq)
 +{
 +	/*
-+	 * Invoked currently from PMU callback functions
-+	 * to set PMI bit in Paca. This has to be called
-+	 * with irq's disabled ( via hard_irq_disable ).
++	 * Ignore link changes which occurred while waiting for DPC recovery.
++	 * Could be several if DPC triggered multiple times consecutively.
 +	 */
-+	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
-+		WARN_ON_ONCE(mfmsr() & MSR_EE);
-+	get_paca()->irq_happened |= PACA_IRQ_PMI;
-+}
++	synchronize_hardirq(irq);
++	atomic_and(~PCI_EXP_SLTSTA_DLLSC, &ctrl->pending_events);
++	if (pciehp_poll_mode)
++		pcie_capability_write_word(pdev, PCI_EXP_SLTSTA,
++					   PCI_EXP_SLTSTA_DLLSC);
++	ctrl_info(ctrl, "Slot(%s): Link Down/Up ignored (recovered by DPC)\n",
++		  slot_name(ctrl));
 +
-+static inline void clear_pmi_irq_pending(void)
-+{
 +	/*
-+	 * Some corner cases could clear the PMU counter overflow
-+	 * while a masked PMI is pending. One of such case is
-+	 * when a PMI happens during interrupt replay and perf
-+	 * counter values gets cleared by PMU callbacks before
-+	 * replay. So the pending PMI must be cleared here.
++	 * If the link is unexpectedly down after successful recovery,
++	 * the corresponding link change may have been ignored above.
++	 * Synthesize it to ensure that it is acted on.
 +	 */
-+	if (get_paca()->irq_happened & PACA_IRQ_PMI) {
-+		if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
-+			WARN_ON_ONCE(mfmsr() & MSR_EE);
-+		get_paca()->irq_happened &= ~PACA_IRQ_PMI;
-+	}
++	down_read(&ctrl->reset_lock);
++	if (!pciehp_check_link_active(ctrl))
++		pciehp_request(ctrl, PCI_EXP_SLTSTA_DLLSC);
++	up_read(&ctrl->reset_lock);
 +}
 +
- #ifdef CONFIG_PPC_BOOK3S
- /*
-  * To support disabling and enabling of irq with PMI, set of
-@@ -408,6 +436,9 @@ static inline void do_hard_irq_enable(void)
- 	BUILD_BUG();
- }
- 
-+static inline void clear_pmi_irq_pending(void) { }
-+static inline void set_pmi_irq_pending(void) { }
-+
- static inline void irq_soft_mask_regs_set_state(struct pt_regs *regs, unsigned long val)
+ static irqreturn_t pciehp_isr(int irq, void *dev_id)
  {
- }
-diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-index bb0ee71..17463b2 100644
---- a/arch/powerpc/perf/core-book3s.c
-+++ b/arch/powerpc/perf/core-book3s.c
-@@ -848,6 +848,19 @@ static void write_pmc(int idx, unsigned long val)
+ 	struct controller *ctrl = (struct controller *)dev_id;
+@@ -706,6 +732,16 @@ static irqreturn_t pciehp_ist(int irq, void *dev_id)
+ 				      PCI_EXP_SLTCTL_ATTN_IND_ON);
  	}
- }
  
-+static int any_pmc_overflown(struct cpu_hw_events *cpuhw)
-+{
-+	int i, idx;
-+
-+	for (i = 0; i < cpuhw->n_events; i++) {
-+		idx = cpuhw->event[i]->hw.idx;
-+		if ((idx) && ((int)read_pmc(idx) < 0))
-+			return idx;
++	/*
++	 * Ignore Link Down/Up events caused by Downstream Port Containment
++	 * if recovery from the error succeeded.
++	 */
++	if ((events & PCI_EXP_SLTSTA_DLLSC) && pci_dpc_recovered(pdev) &&
++	    ctrl->state == ON_STATE) {
++		events &= ~PCI_EXP_SLTSTA_DLLSC;
++		pciehp_ignore_dpc_link_change(ctrl, pdev, irq);
 +	}
 +
-+	return 0;
+ 	/*
+ 	 * Disable requests have higher priority than Presence Detect Changed
+ 	 * or Data Link Layer State Changed events.
+diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+index 9684b468267f..e5ae5e860431 100644
+--- a/drivers/pci/pci.h
++++ b/drivers/pci/pci.h
+@@ -392,6 +392,8 @@ static inline bool pci_dev_is_disconnected(const struct pci_dev *dev)
+ 
+ /* pci_dev priv_flags */
+ #define PCI_DEV_ADDED 0
++#define PCI_DPC_RECOVERED 1
++#define PCI_DPC_RECOVERING 2
+ 
+ static inline void pci_dev_assign_added(struct pci_dev *dev, bool added)
+ {
+@@ -446,10 +448,12 @@ void pci_restore_dpc_state(struct pci_dev *dev);
+ void pci_dpc_init(struct pci_dev *pdev);
+ void dpc_process_error(struct pci_dev *pdev);
+ pci_ers_result_t dpc_reset_link(struct pci_dev *pdev);
++bool pci_dpc_recovered(struct pci_dev *pdev);
+ #else
+ static inline void pci_save_dpc_state(struct pci_dev *dev) {}
+ static inline void pci_restore_dpc_state(struct pci_dev *dev) {}
+ static inline void pci_dpc_init(struct pci_dev *pdev) {}
++static inline bool pci_dpc_recovered(struct pci_dev *pdev) { return false; }
+ #endif
+ 
+ #ifdef CONFIG_PCIEPORTBUS
+diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
+index e05aba86a317..c556e7beafe3 100644
+--- a/drivers/pci/pcie/dpc.c
++++ b/drivers/pci/pcie/dpc.c
+@@ -71,6 +71,58 @@ void pci_restore_dpc_state(struct pci_dev *dev)
+ 	pci_write_config_word(dev, dev->dpc_cap + PCI_EXP_DPC_CTL, *cap);
+ }
+ 
++static DECLARE_WAIT_QUEUE_HEAD(dpc_completed_waitqueue);
++
++#ifdef CONFIG_HOTPLUG_PCI_PCIE
++static bool dpc_completed(struct pci_dev *pdev)
++{
++	u16 status;
++
++	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_STATUS, &status);
++	if ((status != 0xffff) && (status & PCI_EXP_DPC_STATUS_TRIGGER))
++		return false;
++
++	if (test_bit(PCI_DPC_RECOVERING, &pdev->priv_flags))
++		return false;
++
++	return true;
 +}
 +
- /* Called from sysrq_handle_showregs() */
- void perf_event_print_debug(void)
- {
-@@ -1276,7 +1289,7 @@ static void power_pmu_disable(struct pmu *pmu)
- 		val  = mmcr0 = mfspr(SPRN_MMCR0);
- 		val |= MMCR0_FC;
- 		val &= ~(MMCR0_EBE | MMCR0_BHRBA | MMCR0_PMCC | MMCR0_PMAO |
--			 MMCR0_FC56);
-+			 MMCR0_PMXE | MMCR0_FC56);
- 		/* Set mmcr0 PMCCEXT for p10 */
- 		if (ppmu->flags & PPMU_ARCH_31)
- 			val |= MMCR0_PMCCEXT;
-@@ -1290,6 +1303,16 @@ static void power_pmu_disable(struct pmu *pmu)
- 		mb();
- 		isync();
- 
-+		/*
-+		 * If any of PMC corresponding to the active PMU
-+		 * events is overflown, check if there is any pending
-+		 * perf interrupt set in paca. If so, disable the interrupt
-+		 * by clearing the paca bit for PMI since we are disabling
-+		 * the PMU now.
-+		 */
-+		if (any_pmc_overflown(cpuhw))
-+			clear_pmi_irq_pending();
++/**
++ * pci_dpc_recovered - whether DPC triggered and has recovered successfully
++ * @pdev: PCI device
++ *
++ * Return true if DPC was triggered for @pdev and has recovered successfully.
++ * Wait for recovery if it hasn't completed yet.  Called from the PCIe hotplug
++ * driver to recognize and ignore Link Down/Up events caused by DPC.
++ */
++bool pci_dpc_recovered(struct pci_dev *pdev)
++{
++	struct pci_host_bridge *host;
 +
- 		val = mmcra = cpuhw->mmcr.mmcra;
- 
- 		/*
-@@ -1381,6 +1404,15 @@ static void power_pmu_enable(struct pmu *pmu)
- 	 * (possibly updated for removal of events).
- 	 */
- 	if (!cpuhw->n_added) {
-+		/*
-+		 * If there is any active event with an overflown PMC
-+		 * value, Set back PACA_IRQ_PMI which would have got
-+		 * cleared in power_pmu_disable.
-+		 */
-+		hard_irq_disable();
-+		if (any_pmc_overflown(cpuhw))
-+			set_pmi_irq_pending();
-+
- 		mtspr(SPRN_MMCRA, cpuhw->mmcr.mmcra & ~MMCRA_SAMPLE_ENABLE);
- 		mtspr(SPRN_MMCR1, cpuhw->mmcr.mmcr1);
- 		if (ppmu->flags & PPMU_ARCH_31)
-@@ -2336,6 +2368,12 @@ static void __perf_event_interrupt(struct pt_regs *regs)
- 				break;
- 			}
- 		}
-+		/*
-+		 * Check if PACA_IRQ_PMI is set any chance
-+		 * by set_pmi_irq_pending() when PMU was enabled
-+		 * after accounting for interrupts.
-+		 */
-+		clear_pmi_irq_pending();
- 		if (!active)
- 			/* reset non active counters that have overflowed */
- 			write_pmc(i + 1, 0);
-@@ -2355,6 +2393,15 @@ static void __perf_event_interrupt(struct pt_regs *regs)
- 			}
- 		}
- 	}
++	if (!pdev->dpc_cap)
++		return false;
 +
 +	/*
-+	 * During system wide profling or while specific CPU
-+	 * is monitored for an event, some corner cases could
-+	 * cause PMC to overflow in idle path. This will trigger
-+	 * a PMI after waking up from idle. Since counter values
-+	 * are _not_ saved/restored in idle path, can lead to
-+	 * below "Can't find PMC" message.
++	 * Synchronization between hotplug and DPC is not supported
++	 * if DPC is owned by firmware and EDR is not enabled.
 +	 */
- 	if (unlikely(!found) && !arch_irq_disabled_regs(regs))
- 		printk_ratelimited(KERN_WARNING "Can't find PMC that caused IRQ\n");
++	host = pci_find_host_bridge(pdev->bus);
++	if (!host->native_dpc && !IS_ENABLED(CONFIG_PCIE_EDR))
++		return false;
++
++	/*
++	 * Need a timeout in case DPC never completes due to failure of
++	 * dpc_wait_rp_inactive().  The spec doesn't mandate a time limit,
++	 * but reports indicate that DPC completes within 4 seconds.
++	 */
++	wait_event_timeout(dpc_completed_waitqueue, dpc_completed(pdev),
++			   msecs_to_jiffies(4000));
++
++	return test_and_clear_bit(PCI_DPC_RECOVERED, &pdev->priv_flags);
++}
++#endif /* CONFIG_HOTPLUG_PCI_PCIE */
++
+ static int dpc_wait_rp_inactive(struct pci_dev *pdev)
+ {
+ 	unsigned long timeout = jiffies + HZ;
+@@ -91,8 +143,11 @@ static int dpc_wait_rp_inactive(struct pci_dev *pdev)
  
+ pci_ers_result_t dpc_reset_link(struct pci_dev *pdev)
+ {
++	pci_ers_result_t ret;
+ 	u16 cap;
+ 
++	set_bit(PCI_DPC_RECOVERING, &pdev->priv_flags);
++
+ 	/*
+ 	 * DPC disables the Link automatically in hardware, so it has
+ 	 * already been reset by the time we get here.
+@@ -106,18 +161,27 @@ pci_ers_result_t dpc_reset_link(struct pci_dev *pdev)
+ 	if (!pcie_wait_for_link(pdev, false))
+ 		pci_info(pdev, "Data Link Layer Link Active not cleared in 1000 msec\n");
+ 
+-	if (pdev->dpc_rp_extensions && dpc_wait_rp_inactive(pdev))
+-		return PCI_ERS_RESULT_DISCONNECT;
++	if (pdev->dpc_rp_extensions && dpc_wait_rp_inactive(pdev)) {
++		clear_bit(PCI_DPC_RECOVERED, &pdev->priv_flags);
++		ret = PCI_ERS_RESULT_DISCONNECT;
++		goto out;
++	}
+ 
+ 	pci_write_config_word(pdev, cap + PCI_EXP_DPC_STATUS,
+ 			      PCI_EXP_DPC_STATUS_TRIGGER);
+ 
+ 	if (!pcie_wait_for_link(pdev, true)) {
+ 		pci_info(pdev, "Data Link Layer Link Active not set in 1000 msec\n");
+-		return PCI_ERS_RESULT_DISCONNECT;
++		clear_bit(PCI_DPC_RECOVERED, &pdev->priv_flags);
++		ret = PCI_ERS_RESULT_DISCONNECT;
++	} else {
++		set_bit(PCI_DPC_RECOVERED, &pdev->priv_flags);
++		ret = PCI_ERS_RESULT_RECOVERED;
+ 	}
+-
+-	return PCI_ERS_RESULT_RECOVERED;
++out:
++	clear_bit(PCI_DPC_RECOVERING, &pdev->priv_flags);
++	wake_up_all(&dpc_completed_waitqueue);
++	return ret;
+ }
+ 
+ static void dpc_process_rp_pio_error(struct pci_dev *pdev)
 -- 
-1.8.3.1
+2.30.2
 
