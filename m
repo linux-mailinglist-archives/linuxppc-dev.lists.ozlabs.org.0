@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E9853C2DC2
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Jul 2021 04:25:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38B3B3C2DF0
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Jul 2021 04:25:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GMDQP3Wqkz3dTS
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Jul 2021 12:25:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GMDQr1VQpz3dYN
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Jul 2021 12:25:40 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=c3mjVubV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QsN8rvnd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,32 +17,32 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=c3mjVubV; 
+ header.s=k20201202 header.b=QsN8rvnd; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GMDP35fmBz3c6F
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Jul 2021 12:24:07 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C84076141D;
- Sat, 10 Jul 2021 02:24:04 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GMDP44p95z3ccg
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Jul 2021 12:24:08 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3A6B361413;
+ Sat, 10 Jul 2021 02:24:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1625883845;
- bh=sk5rvFib5S+/tFVACJhPL3D9r+kcEJmN/zFpx1YCRI4=;
+ s=k20201202; t=1625883846;
+ bh=kHoNxcXkLQ7IZeRw/l1gGdNDWqkuAu2OTklmpYUs87A=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=c3mjVubVmg5W5oBgFepHAE2VrFcJoM3jkZ1HRqD0xJw/slNqk6qezcUGbkr9XL+xq
- jXecAKRa9FXIhlmt7H2PnoxOHxWtfA/Bsw7x7gWxCCdXk6gAEKqJHD+2bnfazlL/wc
- Iwc/L+bIKTTJaJ8Ai3mH8PnAUStamPO5dI5taTNWVj4/gKkY/B1svdr2sRG/WkwYPE
- XDExdYX3QN844bhh85d2JnsDgm62x7iY5lycbQayYjQRCxaTJIdqMeEjJ4rZEGBJ59
- sWqCvjlIySm6N5tjic26nbrvUFZ2hQqCOZDc3k1xB6Y32Ocr6QLm8X9xLx5vs3zGmR
- upcqlqQgJPsDA==
+ b=QsN8rvndpypw4cCD5G00YUSvCibigulwfeUxD8EPUl9uUVnQPAGM81nSv16cWZBgF
+ 3AQHeZwTJZM+ti75gNlWIsloMojDRbNpOH0CUFkc/E3dHN641zTCyeKdgDJCrOouJg
+ IZ9vr5A/aFs5WZUwCxaCQVHzrlAJrIkvoQMBOA3/ZmAJYOWhFziUp/CAYvoOmybbcL
+ SY5HHfKhuMAIZmlwxe+txEL4ZjdcjdOb6gjp4R5NhvQS8Ax4m1U0g1wjxkowyIapIr
+ yhya3oqMwO7rZqVHTNMgSdHnsQyS7r8ymSK/rc2Kxx6i2F4bOF2gcKGbXS3wxUxdrL
+ p1as2ssZOcflA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.12 090/104] powerpc/boot: Fixup device-tree on
- little endian
-Date: Fri,  9 Jul 2021 22:21:42 -0400
-Message-Id: <20210710022156.3168825-90-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.12 091/104] ASoC: fsl_xcvr: check return value after
+ calling platform_get_resource_byname()
+Date: Fri,  9 Jul 2021 22:21:43 -0400
+Message-Id: <20210710022156.3168825-91-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210710022156.3168825-1-sashal@kernel.org>
 References: <20210710022156.3168825-1-sashal@kernel.org>
@@ -61,247 +61,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, alsa-devel@alsa-project.org,
+ Mark Brown <broonie@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ Yang Yingliang <yangyingliang@huawei.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit c93f80849bdd9b45d834053ae1336e28f0026c84 ]
+[ Upstream commit a2f6ed4a44721d3a9fdf4da7e0743cb13866bf61 ]
 
-This fixes the core devtree.c functions and the ns16550 UART backend.
+It will cause null-ptr-deref if platform_get_resource_byname() returns NULL,
+we need check the return value.
 
-Signed-off-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
-Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
-Acked-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/YMwXrPT8nc4YUdJ9@thinks.paulus.ozlabs.org
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Link: https://lore.kernel.org/r/20210615013922.784296-10-yangyingliang@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/boot/devtree.c | 59 +++++++++++++++++++++----------------
- arch/powerpc/boot/ns16550.c |  9 ++++--
- 2 files changed, 41 insertions(+), 27 deletions(-)
+ sound/soc/fsl/fsl_xcvr.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/powerpc/boot/devtree.c b/arch/powerpc/boot/devtree.c
-index 5d91036ad626..58fbcfcc98c9 100644
---- a/arch/powerpc/boot/devtree.c
-+++ b/arch/powerpc/boot/devtree.c
-@@ -13,6 +13,7 @@
- #include "string.h"
- #include "stdio.h"
- #include "ops.h"
-+#include "of.h"
+diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
+index 6dd0a5fcd455..dc7f914816c6 100644
+--- a/sound/soc/fsl/fsl_xcvr.c
++++ b/sound/soc/fsl/fsl_xcvr.c
+@@ -1205,6 +1205,10 @@ static int fsl_xcvr_probe(struct platform_device *pdev)
  
- void dt_fixup_memory(u64 start, u64 size)
- {
-@@ -23,21 +24,25 @@ void dt_fixup_memory(u64 start, u64 size)
- 	root = finddevice("/");
- 	if (getprop(root, "#address-cells", &naddr, sizeof(naddr)) < 0)
- 		naddr = 2;
-+	else
-+		naddr = be32_to_cpu(naddr);
- 	if (naddr < 1 || naddr > 2)
- 		fatal("Can't cope with #address-cells == %d in /\n\r", naddr);
- 
- 	if (getprop(root, "#size-cells", &nsize, sizeof(nsize)) < 0)
- 		nsize = 1;
-+	else
-+		nsize = be32_to_cpu(nsize);
- 	if (nsize < 1 || nsize > 2)
- 		fatal("Can't cope with #size-cells == %d in /\n\r", nsize);
- 
- 	i = 0;
- 	if (naddr == 2)
--		memreg[i++] = start >> 32;
--	memreg[i++] = start & 0xffffffff;
-+		memreg[i++] = cpu_to_be32(start >> 32);
-+	memreg[i++] = cpu_to_be32(start & 0xffffffff);
- 	if (nsize == 2)
--		memreg[i++] = size >> 32;
--	memreg[i++] = size & 0xffffffff;
-+		memreg[i++] = cpu_to_be32(size >> 32);
-+	memreg[i++] = cpu_to_be32(size & 0xffffffff);
- 
- 	memory = finddevice("/memory");
- 	if (! memory) {
-@@ -45,9 +50,9 @@ void dt_fixup_memory(u64 start, u64 size)
- 		setprop_str(memory, "device_type", "memory");
- 	}
- 
--	printf("Memory <- <0x%x", memreg[0]);
-+	printf("Memory <- <0x%x", be32_to_cpu(memreg[0]));
- 	for (i = 1; i < (naddr + nsize); i++)
--		printf(" 0x%x", memreg[i]);
-+		printf(" 0x%x", be32_to_cpu(memreg[i]));
- 	printf("> (%ldMB)\n\r", (unsigned long)(size >> 20));
- 
- 	setprop(memory, "reg", memreg, (naddr + nsize)*sizeof(u32));
-@@ -65,10 +70,10 @@ void dt_fixup_cpu_clocks(u32 cpu, u32 tb, u32 bus)
- 		printf("CPU bus-frequency <- 0x%x (%dMHz)\n\r", bus, MHZ(bus));
- 
- 	while ((devp = find_node_by_devtype(devp, "cpu"))) {
--		setprop_val(devp, "clock-frequency", cpu);
--		setprop_val(devp, "timebase-frequency", tb);
-+		setprop_val(devp, "clock-frequency", cpu_to_be32(cpu));
-+		setprop_val(devp, "timebase-frequency", cpu_to_be32(tb));
- 		if (bus > 0)
--			setprop_val(devp, "bus-frequency", bus);
-+			setprop_val(devp, "bus-frequency", cpu_to_be32(bus));
- 	}
- 
- 	timebase_period_ns = 1000000000 / tb;
-@@ -80,7 +85,7 @@ void dt_fixup_clock(const char *path, u32 freq)
- 
- 	if (devp) {
- 		printf("%s: clock-frequency <- %x (%dMHz)\n\r", path, freq, MHZ(freq));
--		setprop_val(devp, "clock-frequency", freq);
-+		setprop_val(devp, "clock-frequency", cpu_to_be32(freq));
- 	}
- }
- 
-@@ -133,8 +138,12 @@ void dt_get_reg_format(void *node, u32 *naddr, u32 *nsize)
- {
- 	if (getprop(node, "#address-cells", naddr, 4) != 4)
- 		*naddr = 2;
-+	else
-+		*naddr = be32_to_cpu(*naddr);
- 	if (getprop(node, "#size-cells", nsize, 4) != 4)
- 		*nsize = 1;
-+	else
-+		*nsize = be32_to_cpu(*nsize);
- }
- 
- static void copy_val(u32 *dest, u32 *src, int naddr)
-@@ -163,9 +172,9 @@ static int add_reg(u32 *reg, u32 *add, int naddr)
- 	int i, carry = 0;
- 
- 	for (i = MAX_ADDR_CELLS - 1; i >= MAX_ADDR_CELLS - naddr; i--) {
--		u64 tmp = (u64)reg[i] + add[i] + carry;
-+		u64 tmp = (u64)be32_to_cpu(reg[i]) + be32_to_cpu(add[i]) + carry;
- 		carry = tmp >> 32;
--		reg[i] = (u32)tmp;
-+		reg[i] = cpu_to_be32((u32)tmp);
- 	}
- 
- 	return !carry;
-@@ -180,18 +189,18 @@ static int compare_reg(u32 *reg, u32 *range, u32 *rangesize)
- 	u32 end;
- 
- 	for (i = 0; i < MAX_ADDR_CELLS; i++) {
--		if (reg[i] < range[i])
-+		if (be32_to_cpu(reg[i]) < be32_to_cpu(range[i]))
- 			return 0;
--		if (reg[i] > range[i])
-+		if (be32_to_cpu(reg[i]) > be32_to_cpu(range[i]))
- 			break;
- 	}
- 
- 	for (i = 0; i < MAX_ADDR_CELLS; i++) {
--		end = range[i] + rangesize[i];
-+		end = be32_to_cpu(range[i]) + be32_to_cpu(rangesize[i]);
- 
--		if (reg[i] < end)
-+		if (be32_to_cpu(reg[i]) < end)
- 			break;
--		if (reg[i] > end)
-+		if (be32_to_cpu(reg[i]) > end)
- 			return 0;
- 	}
- 
-@@ -240,7 +249,6 @@ static int dt_xlate(void *node, int res, int reglen, unsigned long *addr,
- 		return 0;
- 
- 	dt_get_reg_format(parent, &naddr, &nsize);
--
- 	if (nsize > 2)
- 		return 0;
- 
-@@ -252,10 +260,10 @@ static int dt_xlate(void *node, int res, int reglen, unsigned long *addr,
- 
- 	copy_val(last_addr, prop_buf + offset, naddr);
- 
--	ret_size = prop_buf[offset + naddr];
-+	ret_size = be32_to_cpu(prop_buf[offset + naddr]);
- 	if (nsize == 2) {
- 		ret_size <<= 32;
--		ret_size |= prop_buf[offset + naddr + 1];
-+		ret_size |= be32_to_cpu(prop_buf[offset + naddr + 1]);
- 	}
- 
- 	for (;;) {
-@@ -278,7 +286,6 @@ static int dt_xlate(void *node, int res, int reglen, unsigned long *addr,
- 
- 		offset = find_range(last_addr, prop_buf, prev_naddr,
- 		                    naddr, prev_nsize, buflen / 4);
--
- 		if (offset < 0)
- 			return 0;
- 
-@@ -296,8 +303,7 @@ static int dt_xlate(void *node, int res, int reglen, unsigned long *addr,
- 	if (naddr > 2)
- 		return 0;
- 
--	ret_addr = ((u64)last_addr[2] << 32) | last_addr[3];
--
-+	ret_addr = ((u64)be32_to_cpu(last_addr[2]) << 32) | be32_to_cpu(last_addr[3]);
- 	if (sizeof(void *) == 4 &&
- 	    (ret_addr >= 0x100000000ULL || ret_size > 0x100000000ULL ||
- 	     ret_addr + ret_size > 0x100000000ULL))
-@@ -350,11 +356,14 @@ int dt_is_compatible(void *node, const char *compat)
- int dt_get_virtual_reg(void *node, void **addr, int nres)
- {
- 	unsigned long xaddr;
--	int n;
-+	int n, i;
- 
- 	n = getprop(node, "virtual-reg", addr, nres * 4);
--	if (n > 0)
-+	if (n > 0) {
-+		for (i = 0; i < n/4; i ++)
-+			((u32 *)addr)[i] = be32_to_cpu(((u32 *)addr)[i]);
- 		return n / 4;
+ 	rx_res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "rxfifo");
+ 	tx_res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "txfifo");
++	if (!rx_res || !tx_res) {
++		dev_err(dev, "could not find rxfifo or txfifo resource\n");
++		return -EINVAL;
 +	}
- 
- 	for (n = 0; n < nres; n++) {
- 		if (!dt_xlate_reg(node, n, &xaddr, NULL))
-diff --git a/arch/powerpc/boot/ns16550.c b/arch/powerpc/boot/ns16550.c
-index b0da4466d419..f16d2be1d0f3 100644
---- a/arch/powerpc/boot/ns16550.c
-+++ b/arch/powerpc/boot/ns16550.c
-@@ -15,6 +15,7 @@
- #include "stdio.h"
- #include "io.h"
- #include "ops.h"
-+#include "of.h"
- 
- #define UART_DLL	0	/* Out: Divisor Latch Low */
- #define UART_DLM	1	/* Out: Divisor Latch High */
-@@ -58,16 +59,20 @@ int ns16550_console_init(void *devp, struct serial_console_data *scdp)
- 	int n;
- 	u32 reg_offset;
- 
--	if (dt_get_virtual_reg(devp, (void **)&reg_base, 1) < 1)
-+	if (dt_get_virtual_reg(devp, (void **)&reg_base, 1) < 1) {
-+		printf("virt reg parse fail...\r\n");
- 		return -1;
-+	}
- 
- 	n = getprop(devp, "reg-offset", &reg_offset, sizeof(reg_offset));
- 	if (n == sizeof(reg_offset))
--		reg_base += reg_offset;
-+		reg_base += be32_to_cpu(reg_offset);
- 
- 	n = getprop(devp, "reg-shift", &reg_shift, sizeof(reg_shift));
- 	if (n != sizeof(reg_shift))
- 		reg_shift = 0;
-+	else
-+		reg_shift = be32_to_cpu(reg_shift);
- 
- 	scdp->open = ns16550_open;
- 	scdp->putc = ns16550_putc;
+ 	xcvr->dma_prms_rx.chan_name = "rx";
+ 	xcvr->dma_prms_tx.chan_name = "tx";
+ 	xcvr->dma_prms_rx.addr = rx_res->start;
 -- 
 2.30.2
 
