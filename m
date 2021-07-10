@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA5483C2E79
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Jul 2021 04:27:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D80E63C2EA8
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Jul 2021 04:28:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GMDT54XDtz3dxT
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Jul 2021 12:27:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GMDTX5tDtz3dyW
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Jul 2021 12:28:00 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TkxymQNp;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SdKB/MFD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,37 +17,36 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=TkxymQNp; 
+ header.s=k20201202 header.b=SdKB/MFD; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GMDRp418qz3dk7
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Jul 2021 12:26:30 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 4D00B613D9;
- Sat, 10 Jul 2021 02:26:28 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GMDS90RYZz3cf2
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Jul 2021 12:26:49 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2627F613EB;
+ Sat, 10 Jul 2021 02:26:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1625883989;
- bh=X2BiEr4jCZ3xAg2Dmz/MAgtJoQ2wHAd3YQ6VKLwqtv4=;
+ s=k20201202; t=1625884007;
+ bh=sk5rvFib5S+/tFVACJhPL3D9r+kcEJmN/zFpx1YCRI4=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=TkxymQNpq+8ni/vYhKqUeljUEkmMI59IO0byLY9J126SQj3Ro1rJX2Iws4Y+dqEX3
- qOnBti3GTDWTInUQjh2/JPWGEGWqGDMlXslPlmlZcoumsy0czT/bku2ld5SKAH9Cob
- fCXgfl8uH/xMNBXSDOcdDnexdAUJWOa05DKuu1+bYAiZrqArtazVqGTwZWrhwRGtg4
- t0Dyj1KuuT+ySesZDiPEw18ML2daps+Bq50b6weCULRCZXuUFPie7wx38xxNd49AG8
- mAs6eGJAvOebmfgiAE2l2Fn5SZGypJ7079qelyRMnQNWhrJxsbGtG9dSK574wZJTCz
- XNXjgsICF3/pg==
+ b=SdKB/MFD7+uiYOKMPaFV2+E6dvtFkPPUCsTZs5Rzmkm/dfVaizJv/z+4m7FR7wYW/
+ KzUH2jInHVzNmhR0sKE+R/NCxzBoOWu3YLA+IuOqx/pj/Q75Ng5qVpH/P6HrdZdjXr
+ t4REpFV4LOQynPisFJ9euO/HLU3n7ztlZsl0IY8UoRc2bIbl85fIafL9PM6wAGbtLC
+ XUxMAPygDTkmY5d8409pD3lTTBnR+PeUFcg3oVBV1h9Q8w0IL8mY5uRlGtRPyu1wzO
+ zBkDP9J8uDobpUh3qi1CefYRUo4dPQnB5XuwN09dzdTE62nQxbN1+XeRGxALqMmDBd
+ YXw/EcaGoiyWA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 65/93] powerpc/mm/book3s64: Fix possible build
- error
-Date: Fri,  9 Jul 2021 22:23:59 -0400
-Message-Id: <20210710022428.3169839-65-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 80/93] powerpc/boot: Fixup device-tree on little
+ endian
+Date: Fri,  9 Jul 2021 22:24:14 -0400
+Message-Id: <20210710022428.3169839-80-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210710022428.3169839-1-sashal@kernel.org>
 References: <20210710022428.3169839-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -62,92 +61,247 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+From: Benjamin Herrenschmidt <benh@kernel.crashing.org>
 
-[ Upstream commit 07d8ad6fd8a3d47f50595ca4826f41dbf4f3a0c6 ]
+[ Upstream commit c93f80849bdd9b45d834053ae1336e28f0026c84 ]
 
-Update _tlbiel_pid() such that we can avoid build errors like below when
-using this function in other places.
+This fixes the core devtree.c functions and the ns16550 UART backend.
 
-arch/powerpc/mm/book3s64/radix_tlb.c: In function ‘__radix__flush_tlb_range_psize’:
-arch/powerpc/mm/book3s64/radix_tlb.c:114:2: warning: ‘asm’ operand 3 probably does not match constraints
-  114 |  asm volatile(PPC_TLBIEL(%0, %4, %3, %2, %1)
-      |  ^~~
-arch/powerpc/mm/book3s64/radix_tlb.c:114:2: error: impossible constraint in ‘asm’
-make[4]: *** [scripts/Makefile.build:271: arch/powerpc/mm/book3s64/radix_tlb.o] Error 1
-m
-
-With this fix, we can also drop the __always_inline in __radix_flush_tlb_range_psize
-which was added by commit e12d6d7d46a6 ("powerpc/mm/radix: mark __radix__flush_tlb_range_psize() as __always_inline")
-
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
+Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
+Acked-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20210610083639.387365-1-aneesh.kumar@linux.ibm.com
+Link: https://lore.kernel.org/r/YMwXrPT8nc4YUdJ9@thinks.paulus.ozlabs.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/book3s64/radix_tlb.c | 26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ arch/powerpc/boot/devtree.c | 59 +++++++++++++++++++++----------------
+ arch/powerpc/boot/ns16550.c |  9 ++++--
+ 2 files changed, 41 insertions(+), 27 deletions(-)
 
-diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
-index b487b489d4b6..4c2f75916a7e 100644
---- a/arch/powerpc/mm/book3s64/radix_tlb.c
-+++ b/arch/powerpc/mm/book3s64/radix_tlb.c
-@@ -282,22 +282,30 @@ static inline void fixup_tlbie_lpid(unsigned long lpid)
- /*
-  * We use 128 set in radix mode and 256 set in hpt mode.
-  */
--static __always_inline void _tlbiel_pid(unsigned long pid, unsigned long ric)
-+static inline void _tlbiel_pid(unsigned long pid, unsigned long ric)
+diff --git a/arch/powerpc/boot/devtree.c b/arch/powerpc/boot/devtree.c
+index 5d91036ad626..58fbcfcc98c9 100644
+--- a/arch/powerpc/boot/devtree.c
++++ b/arch/powerpc/boot/devtree.c
+@@ -13,6 +13,7 @@
+ #include "string.h"
+ #include "stdio.h"
+ #include "ops.h"
++#include "of.h"
+ 
+ void dt_fixup_memory(u64 start, u64 size)
  {
- 	int set;
+@@ -23,21 +24,25 @@ void dt_fixup_memory(u64 start, u64 size)
+ 	root = finddevice("/");
+ 	if (getprop(root, "#address-cells", &naddr, sizeof(naddr)) < 0)
+ 		naddr = 2;
++	else
++		naddr = be32_to_cpu(naddr);
+ 	if (naddr < 1 || naddr > 2)
+ 		fatal("Can't cope with #address-cells == %d in /\n\r", naddr);
  
- 	asm volatile("ptesync": : :"memory");
+ 	if (getprop(root, "#size-cells", &nsize, sizeof(nsize)) < 0)
+ 		nsize = 1;
++	else
++		nsize = be32_to_cpu(nsize);
+ 	if (nsize < 1 || nsize > 2)
+ 		fatal("Can't cope with #size-cells == %d in /\n\r", nsize);
  
--	/*
--	 * Flush the first set of the TLB, and if we're doing a RIC_FLUSH_ALL,
--	 * also flush the entire Page Walk Cache.
--	 */
--	__tlbiel_pid(pid, 0, ric);
-+	switch (ric) {
-+	case RIC_FLUSH_PWC:
+ 	i = 0;
+ 	if (naddr == 2)
+-		memreg[i++] = start >> 32;
+-	memreg[i++] = start & 0xffffffff;
++		memreg[i++] = cpu_to_be32(start >> 32);
++	memreg[i++] = cpu_to_be32(start & 0xffffffff);
+ 	if (nsize == 2)
+-		memreg[i++] = size >> 32;
+-	memreg[i++] = size & 0xffffffff;
++		memreg[i++] = cpu_to_be32(size >> 32);
++	memreg[i++] = cpu_to_be32(size & 0xffffffff);
  
--	/* For PWC, only one flush is needed */
--	if (ric == RIC_FLUSH_PWC) {
-+		/* For PWC, only one flush is needed */
-+		__tlbiel_pid(pid, 0, RIC_FLUSH_PWC);
- 		ppc_after_tlbiel_barrier();
- 		return;
-+	case RIC_FLUSH_TLB:
-+		__tlbiel_pid(pid, 0, RIC_FLUSH_TLB);
-+		break;
-+	case RIC_FLUSH_ALL:
-+	default:
-+		/*
-+		 * Flush the first set of the TLB, and if
-+		 * we're doing a RIC_FLUSH_ALL, also flush
-+		 * the entire Page Walk Cache.
-+		 */
-+		__tlbiel_pid(pid, 0, RIC_FLUSH_ALL);
+ 	memory = finddevice("/memory");
+ 	if (! memory) {
+@@ -45,9 +50,9 @@ void dt_fixup_memory(u64 start, u64 size)
+ 		setprop_str(memory, "device_type", "memory");
  	}
  
- 	/* For the remaining sets, just flush the TLB */
-@@ -1068,7 +1076,7 @@ void radix__tlb_flush(struct mmu_gather *tlb)
+-	printf("Memory <- <0x%x", memreg[0]);
++	printf("Memory <- <0x%x", be32_to_cpu(memreg[0]));
+ 	for (i = 1; i < (naddr + nsize); i++)
+-		printf(" 0x%x", memreg[i]);
++		printf(" 0x%x", be32_to_cpu(memreg[i]));
+ 	printf("> (%ldMB)\n\r", (unsigned long)(size >> 20));
+ 
+ 	setprop(memory, "reg", memreg, (naddr + nsize)*sizeof(u32));
+@@ -65,10 +70,10 @@ void dt_fixup_cpu_clocks(u32 cpu, u32 tb, u32 bus)
+ 		printf("CPU bus-frequency <- 0x%x (%dMHz)\n\r", bus, MHZ(bus));
+ 
+ 	while ((devp = find_node_by_devtype(devp, "cpu"))) {
+-		setprop_val(devp, "clock-frequency", cpu);
+-		setprop_val(devp, "timebase-frequency", tb);
++		setprop_val(devp, "clock-frequency", cpu_to_be32(cpu));
++		setprop_val(devp, "timebase-frequency", cpu_to_be32(tb));
+ 		if (bus > 0)
+-			setprop_val(devp, "bus-frequency", bus);
++			setprop_val(devp, "bus-frequency", cpu_to_be32(bus));
+ 	}
+ 
+ 	timebase_period_ns = 1000000000 / tb;
+@@ -80,7 +85,7 @@ void dt_fixup_clock(const char *path, u32 freq)
+ 
+ 	if (devp) {
+ 		printf("%s: clock-frequency <- %x (%dMHz)\n\r", path, freq, MHZ(freq));
+-		setprop_val(devp, "clock-frequency", freq);
++		setprop_val(devp, "clock-frequency", cpu_to_be32(freq));
  	}
  }
  
--static __always_inline void __radix__flush_tlb_range_psize(struct mm_struct *mm,
-+static void __radix__flush_tlb_range_psize(struct mm_struct *mm,
- 				unsigned long start, unsigned long end,
- 				int psize, bool also_pwc)
+@@ -133,8 +138,12 @@ void dt_get_reg_format(void *node, u32 *naddr, u32 *nsize)
  {
+ 	if (getprop(node, "#address-cells", naddr, 4) != 4)
+ 		*naddr = 2;
++	else
++		*naddr = be32_to_cpu(*naddr);
+ 	if (getprop(node, "#size-cells", nsize, 4) != 4)
+ 		*nsize = 1;
++	else
++		*nsize = be32_to_cpu(*nsize);
+ }
+ 
+ static void copy_val(u32 *dest, u32 *src, int naddr)
+@@ -163,9 +172,9 @@ static int add_reg(u32 *reg, u32 *add, int naddr)
+ 	int i, carry = 0;
+ 
+ 	for (i = MAX_ADDR_CELLS - 1; i >= MAX_ADDR_CELLS - naddr; i--) {
+-		u64 tmp = (u64)reg[i] + add[i] + carry;
++		u64 tmp = (u64)be32_to_cpu(reg[i]) + be32_to_cpu(add[i]) + carry;
+ 		carry = tmp >> 32;
+-		reg[i] = (u32)tmp;
++		reg[i] = cpu_to_be32((u32)tmp);
+ 	}
+ 
+ 	return !carry;
+@@ -180,18 +189,18 @@ static int compare_reg(u32 *reg, u32 *range, u32 *rangesize)
+ 	u32 end;
+ 
+ 	for (i = 0; i < MAX_ADDR_CELLS; i++) {
+-		if (reg[i] < range[i])
++		if (be32_to_cpu(reg[i]) < be32_to_cpu(range[i]))
+ 			return 0;
+-		if (reg[i] > range[i])
++		if (be32_to_cpu(reg[i]) > be32_to_cpu(range[i]))
+ 			break;
+ 	}
+ 
+ 	for (i = 0; i < MAX_ADDR_CELLS; i++) {
+-		end = range[i] + rangesize[i];
++		end = be32_to_cpu(range[i]) + be32_to_cpu(rangesize[i]);
+ 
+-		if (reg[i] < end)
++		if (be32_to_cpu(reg[i]) < end)
+ 			break;
+-		if (reg[i] > end)
++		if (be32_to_cpu(reg[i]) > end)
+ 			return 0;
+ 	}
+ 
+@@ -240,7 +249,6 @@ static int dt_xlate(void *node, int res, int reglen, unsigned long *addr,
+ 		return 0;
+ 
+ 	dt_get_reg_format(parent, &naddr, &nsize);
+-
+ 	if (nsize > 2)
+ 		return 0;
+ 
+@@ -252,10 +260,10 @@ static int dt_xlate(void *node, int res, int reglen, unsigned long *addr,
+ 
+ 	copy_val(last_addr, prop_buf + offset, naddr);
+ 
+-	ret_size = prop_buf[offset + naddr];
++	ret_size = be32_to_cpu(prop_buf[offset + naddr]);
+ 	if (nsize == 2) {
+ 		ret_size <<= 32;
+-		ret_size |= prop_buf[offset + naddr + 1];
++		ret_size |= be32_to_cpu(prop_buf[offset + naddr + 1]);
+ 	}
+ 
+ 	for (;;) {
+@@ -278,7 +286,6 @@ static int dt_xlate(void *node, int res, int reglen, unsigned long *addr,
+ 
+ 		offset = find_range(last_addr, prop_buf, prev_naddr,
+ 		                    naddr, prev_nsize, buflen / 4);
+-
+ 		if (offset < 0)
+ 			return 0;
+ 
+@@ -296,8 +303,7 @@ static int dt_xlate(void *node, int res, int reglen, unsigned long *addr,
+ 	if (naddr > 2)
+ 		return 0;
+ 
+-	ret_addr = ((u64)last_addr[2] << 32) | last_addr[3];
+-
++	ret_addr = ((u64)be32_to_cpu(last_addr[2]) << 32) | be32_to_cpu(last_addr[3]);
+ 	if (sizeof(void *) == 4 &&
+ 	    (ret_addr >= 0x100000000ULL || ret_size > 0x100000000ULL ||
+ 	     ret_addr + ret_size > 0x100000000ULL))
+@@ -350,11 +356,14 @@ int dt_is_compatible(void *node, const char *compat)
+ int dt_get_virtual_reg(void *node, void **addr, int nres)
+ {
+ 	unsigned long xaddr;
+-	int n;
++	int n, i;
+ 
+ 	n = getprop(node, "virtual-reg", addr, nres * 4);
+-	if (n > 0)
++	if (n > 0) {
++		for (i = 0; i < n/4; i ++)
++			((u32 *)addr)[i] = be32_to_cpu(((u32 *)addr)[i]);
+ 		return n / 4;
++	}
+ 
+ 	for (n = 0; n < nres; n++) {
+ 		if (!dt_xlate_reg(node, n, &xaddr, NULL))
+diff --git a/arch/powerpc/boot/ns16550.c b/arch/powerpc/boot/ns16550.c
+index b0da4466d419..f16d2be1d0f3 100644
+--- a/arch/powerpc/boot/ns16550.c
++++ b/arch/powerpc/boot/ns16550.c
+@@ -15,6 +15,7 @@
+ #include "stdio.h"
+ #include "io.h"
+ #include "ops.h"
++#include "of.h"
+ 
+ #define UART_DLL	0	/* Out: Divisor Latch Low */
+ #define UART_DLM	1	/* Out: Divisor Latch High */
+@@ -58,16 +59,20 @@ int ns16550_console_init(void *devp, struct serial_console_data *scdp)
+ 	int n;
+ 	u32 reg_offset;
+ 
+-	if (dt_get_virtual_reg(devp, (void **)&reg_base, 1) < 1)
++	if (dt_get_virtual_reg(devp, (void **)&reg_base, 1) < 1) {
++		printf("virt reg parse fail...\r\n");
+ 		return -1;
++	}
+ 
+ 	n = getprop(devp, "reg-offset", &reg_offset, sizeof(reg_offset));
+ 	if (n == sizeof(reg_offset))
+-		reg_base += reg_offset;
++		reg_base += be32_to_cpu(reg_offset);
+ 
+ 	n = getprop(devp, "reg-shift", &reg_shift, sizeof(reg_shift));
+ 	if (n != sizeof(reg_shift))
+ 		reg_shift = 0;
++	else
++		reg_shift = be32_to_cpu(reg_shift);
+ 
+ 	scdp->open = ns16550_open;
+ 	scdp->putc = ns16550_putc;
 -- 
 2.30.2
 
