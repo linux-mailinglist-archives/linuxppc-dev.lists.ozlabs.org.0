@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA5443C2E4A
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Jul 2021 04:26:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 829DF3C2E5B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Jul 2021 04:27:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GMDS65pTLz3cdX
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Jul 2021 12:26:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GMDSg2pf3z3dsX
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Jul 2021 12:27:15 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=e3E8JphO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uyxt8e2G;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,32 +17,32 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=e3E8JphO; 
+ header.s=k20201202 header.b=uyxt8e2G; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GMDR36yVnz3dbr
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Jul 2021 12:25:51 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1D7A461455;
- Sat, 10 Jul 2021 02:25:49 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GMDRn0YXTz3dj3
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Jul 2021 12:26:29 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id DE21F60BD3;
+ Sat, 10 Jul 2021 02:26:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1625883950;
- bh=aNgvai2dHUFLmKna88+VloTUFYnAA2YEoAtKk5xaEIQ=;
+ s=k20201202; t=1625883986;
+ bh=jwxkV8jZGl94FlM/nlAXZjfg9eIq3wI2w8TCMXtD7B8=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=e3E8JphO8C64L73x3UNEiZ3w0yPXMXNgkVvWYQUR/a0chOPDc4GEadM76pq2BCBHn
- wOTnqfZVziS61bQH5tBeYYfB24wmhYkr9XSo+1F3SF2urJ9ABphakJ1uvEKOtkLEaq
- Z5rZVun30o1GFacmN/nfwWqzWnQfoKeXhgnzZ45/7/hn0p+GYDUecfqGkKQsmt7b1k
- JLO+1skbRVYWI14ok/QtUYsFDpv50y0vJl4WNGQF2PijuB9Yezayp9zrTW0Vb6G1eH
- o3QP1hjBgYbrWHf/gi0xla7Ff4cCehVK8x/pgd59+qybrSqhiz2U7HE3ogJuNhqOYV
- o2urF+v2UqMvg==
+ b=uyxt8e2GCV5YsE+RPm8/gNSy5chWZxaKuudMqIoFsmuaa1T2yGsE/tO/uno+HgydL
+ UyE90TpXnQ4FQRJhuRCeP7Uj4+O++9q8hjN+YvNIrvgivcTiOZvTijgb5BhDiSO6+R
+ LJ2Ec375OFexlpGL6nRrNzyXc1QpJVNJCF6zRjOKxLGplvoEZV95+RQ3/iFPyE4h8G
+ Yxjyx2x4VlvWsEHTugdWU+DGNNEzCF5IFg4iOjHg8VhpRROzH9MC8GsRtYkm1cxr+Q
+ J7qu0CJHvfwNwh9t6NMfZbgDVRGhnM/BVL791jLh9FXCGsQAwlD9j8WutDuxpofW6/
+ w0bN4yP9jhDHw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 62/93] ALSA: ppc: fix error return code in
- snd_pmac_probe()
-Date: Fri,  9 Jul 2021 22:23:56 -0400
-Message-Id: <20210710022428.3169839-62-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 63/93] selftests/powerpc: Fix "no_handler" EBB
+ selftest
+Date: Fri,  9 Jul 2021 22:23:57 -0400
+Message-Id: <20210710022428.3169839-63-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210710022428.3169839-1-sashal@kernel.org>
 References: <20210710022428.3169839-1-sashal@kernel.org>
@@ -61,46 +61,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, alsa-devel@alsa-project.org,
- Takashi Iwai <tiwai@suse.de>, Hulk Robot <hulkci@huawei.com>,
- Yang Yingliang <yangyingliang@huawei.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>,
+ Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+ Shirisha Ganta <shirisha.ganta1@ibm.com>, linux-kselftest@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 
-[ Upstream commit 80b9c1be567c3c6bbe0d4b290af578e630485b5d ]
+[ Upstream commit 45677c9aebe926192e59475b35a1ff35ff2d4217 ]
 
-If snd_pmac_tumbler_init() or snd_pmac_tumbler_post_init() fails,
-snd_pmac_probe() need return error code.
+The "no_handler_test" in ebb selftests attempts to read the PMU
+registers twice via helper function "dump_ebb_state". First dump is
+just before closing of event and the second invocation is done after
+closing of the event. The original intention of second
+dump_ebb_state was to dump the state of registers at the end of
+the test when the counters are frozen. But this will be achieved
+with the first call itself since sample period is set to low value
+and PMU will be frozen by then. Hence patch removes the
+dump which was done before closing of the event.
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Link: https://lore.kernel.org/r/20210616021121.1991502-1-yangyingliang@huawei.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reported-by: Shirisha Ganta <shirisha.ganta1@ibm.com>
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Tested-by: Nageswara R Sastry <rnsastry@linux.ibm.com <mailto:rnsastry@linux.ibm.com>>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/1621950703-1532-2-git-send-email-atrajeev@linux.vnet.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/ppc/powermac.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ tools/testing/selftests/powerpc/pmu/ebb/no_handler_test.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/sound/ppc/powermac.c b/sound/ppc/powermac.c
-index 96ef55082bf9..b135d114ce89 100644
---- a/sound/ppc/powermac.c
-+++ b/sound/ppc/powermac.c
-@@ -77,7 +77,11 @@ static int snd_pmac_probe(struct platform_device *devptr)
- 		sprintf(card->shortname, "PowerMac %s", name_ext);
- 		sprintf(card->longname, "%s (Dev %d) Sub-frame %d",
- 			card->shortname, chip->device_id, chip->subframe);
--		if ( snd_pmac_tumbler_init(chip) < 0 || snd_pmac_tumbler_post_init() < 0)
-+		err = snd_pmac_tumbler_init(chip);
-+		if (err < 0)
-+			goto __error;
-+		err = snd_pmac_tumbler_post_init();
-+		if (err < 0)
- 			goto __error;
- 		break;
- 	case PMAC_AWACS:
+diff --git a/tools/testing/selftests/powerpc/pmu/ebb/no_handler_test.c b/tools/testing/selftests/powerpc/pmu/ebb/no_handler_test.c
+index fc5bf4870d8e..01e827c31169 100644
+--- a/tools/testing/selftests/powerpc/pmu/ebb/no_handler_test.c
++++ b/tools/testing/selftests/powerpc/pmu/ebb/no_handler_test.c
+@@ -50,8 +50,6 @@ static int no_handler_test(void)
+ 
+ 	event_close(&event);
+ 
+-	dump_ebb_state();
+-
+ 	/* The real test is that we never took an EBB at 0x0 */
+ 
+ 	return 0;
 -- 
 2.30.2
 
