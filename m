@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 942533C2CF4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Jul 2021 04:20:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EDD63C2D33
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Jul 2021 04:20:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GMDJM2grlz3bWn
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Jul 2021 12:20:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GMDJr0gM0z3blq
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Jul 2021 12:20:28 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OTXAruOJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=N5fKqCtB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,32 +17,32 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=OTXAruOJ; 
+ header.s=k20201202 header.b=N5fKqCtB; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GMDHh2tSNz3bW6
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Jul 2021 12:19:28 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D4C17613AF;
- Sat, 10 Jul 2021 02:19:25 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GMDHl1ZX2z3bXY
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Jul 2021 12:19:31 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C9BF4613B7;
+ Sat, 10 Jul 2021 02:19:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1625883566;
- bh=0YPOTlGAevRTrCYvMVP6goKkOJ4HD5gtpQFiIRIXX6I=;
+ s=k20201202; t=1625883569;
+ bh=H65BQimBAwbH5n7kbcYzCOuiT8nnBa5h2f5AOhcpIMw=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=OTXAruOJ4APS5gHShb3eJJdgD0oRtS+GAKJmf0zILeA5+hsmQTOK4pL/3LcJDAndG
- NK/XPCMkQw7rxYIAExUoYYlqZxGaQpAc4X0xqkUaue+aN2wnYeQZwCa5URZ3dOu86N
- an3nK68JDU1uXnTXa1xBurnIbAyyQWjp2F9JStKnZfB9KHZFacoAH7cldFcyaYHkFt
- pm+Q7l2V99J8BfpT6DQ0S7HiC89VncusYHHSGBDuyO0mehnsNLDanyw8Ng+uMGy1UI
- SNRqU3BhlytNRxQiEl6jLhFM5woXswPbm/Qpms1h2t4KRrosGVcs4zfhI0R+hkMbOE
- Xe951GQmUOHUw==
+ b=N5fKqCtBoSv2maue9+0qlOgqnMvetaBeAaGBJr5bWneS34KfwzlhqHZq1m6ApXHOe
+ 7+IWHjKvXkzvSpvrP+PSeEgCFloc8tFPH9Z7VLuQB/01RWNoSRp4mlWNYYX0Mek5BG
+ 23Bpw41AVM58SzfMOhxhsnSXybISMEO91C2Ybd4T6xq9pzh0PiTobGU+At4JD1I8GH
+ EoW4m0v2q0LR9Psv8wvsMlytfb8kxNO9xsm/HuxZgq72zx9ds9IOcqBJZ4+S97ah5G
+ vJmc3f6xkZWmnLL25ceX0eHeNhKtXQ2nf0dUEVRldA46umOwRNf86TLLu/+RpbRSeO
+ bVQMw/WTt5NLw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.13 073/114] powerpc/inst: Fix sparse detection on
- get_user_instr()
-Date: Fri,  9 Jul 2021 22:17:07 -0400
-Message-Id: <20210710021748.3167666-73-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.13 075/114] ALSA: ppc: fix error return code in
+ snd_pmac_probe()
+Date: Fri,  9 Jul 2021 22:17:09 -0400
+Message-Id: <20210710021748.3167666-75-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210710021748.3167666-1-sashal@kernel.org>
 References: <20210710021748.3167666-1-sashal@kernel.org>
@@ -61,54 +61,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, alsa-devel@alsa-project.org,
+ Takashi Iwai <tiwai@suse.de>, Hulk Robot <hulkci@huawei.com>,
+ Yang Yingliang <yangyingliang@huawei.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit b3a9e523237013477bea914b7fbfbe420428b988 ]
+[ Upstream commit 80b9c1be567c3c6bbe0d4b290af578e630485b5d ]
 
-get_user_instr() lacks sparse detection for the __user tag.
+If snd_pmac_tumbler_init() or snd_pmac_tumbler_post_init() fails,
+snd_pmac_probe() need return error code.
 
-This is because __gui_ptr is assigned with a cast.
-
-Fix that by adding a __chk_user_ptr()
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/0320e5b41a794fd456ab8c5993bbfadcf9e1d8b4.1621516826.git.christophe.leroy@csgroup.eu
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Link: https://lore.kernel.org/r/20210616021121.1991502-1-yangyingliang@huawei.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/inst.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ sound/ppc/powermac.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/inst.h b/arch/powerpc/include/asm/inst.h
-index 268d3bd073c8..887ef150fdda 100644
---- a/arch/powerpc/include/asm/inst.h
-+++ b/arch/powerpc/include/asm/inst.h
-@@ -12,6 +12,8 @@
- 	unsigned long __gui_ptr = (unsigned long)ptr;			\
- 	struct ppc_inst __gui_inst;					\
- 	unsigned int __prefix, __suffix;				\
-+									\
-+	__chk_user_ptr(ptr);						\
- 	__gui_ret = gu_op(__prefix, (unsigned int __user *)__gui_ptr);	\
- 	if (__gui_ret == 0) {						\
- 		if ((__prefix >> 26) == OP_PREFIX) {			\
-@@ -29,7 +31,10 @@
- })
- #else /* !CONFIG_PPC64 */
- #define ___get_user_instr(gu_op, dest, ptr)				\
--	gu_op((dest).val, (u32 __user *)(ptr))
-+({									\
-+	__chk_user_ptr(ptr);						\
-+	gu_op((dest).val, (u32 __user *)(ptr));				\
-+})
- #endif /* CONFIG_PPC64 */
- 
- #define get_user_instr(x, ptr) \
+diff --git a/sound/ppc/powermac.c b/sound/ppc/powermac.c
+index 9fb51ebafde1..8088f77d5a74 100644
+--- a/sound/ppc/powermac.c
++++ b/sound/ppc/powermac.c
+@@ -76,7 +76,11 @@ static int snd_pmac_probe(struct platform_device *devptr)
+ 		sprintf(card->shortname, "PowerMac %s", name_ext);
+ 		sprintf(card->longname, "%s (Dev %d) Sub-frame %d",
+ 			card->shortname, chip->device_id, chip->subframe);
+-		if ( snd_pmac_tumbler_init(chip) < 0 || snd_pmac_tumbler_post_init() < 0)
++		err = snd_pmac_tumbler_init(chip);
++		if (err < 0)
++			goto __error;
++		err = snd_pmac_tumbler_post_init();
++		if (err < 0)
+ 			goto __error;
+ 		break;
+ 	case PMAC_AWACS:
 -- 
 2.30.2
 
