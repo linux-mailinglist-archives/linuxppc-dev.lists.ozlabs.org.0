@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10B1E3C2CD9
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Jul 2021 04:19:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 942533C2CF4
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Jul 2021 04:20:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GMDHv2RTYz3bm4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Jul 2021 12:19:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GMDJM2grlz3bWn
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Jul 2021 12:20:03 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lCGz2+E7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OTXAruOJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,32 +17,32 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=lCGz2+E7; 
+ header.s=k20201202 header.b=OTXAruOJ; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GMDHT4kXLz302D
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Jul 2021 12:19:17 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D98CF613D4;
- Sat, 10 Jul 2021 02:19:14 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GMDHh2tSNz3bW6
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Jul 2021 12:19:28 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D4C17613AF;
+ Sat, 10 Jul 2021 02:19:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1625883555;
- bh=ZDCUU28TsGbJ5waRsjO7Xs0ybMYKJTAPfqcoT+VKrTE=;
+ s=k20201202; t=1625883566;
+ bh=0YPOTlGAevRTrCYvMVP6goKkOJ4HD5gtpQFiIRIXX6I=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=lCGz2+E7EctKn4vs+elOoa+eGhZG6g+LWRdQGhVmrqb3AwJwAaf0NTcnHdP+xK2mn
- qsHGR3wLkOGdU+R65vU4KaSdAVkXl2ZC9CcWDD8QyLOoyVwfhTXMhWhcFHvwZSjGgL
- CGaXFtuuFfwxVmkn/b5YGe7rEQOWxwOPAR4IwQor7GIrlwewAV76wEd7W7RNwspl8c
- WrZjRw94Pr26YVA/yN7AoMGJ9YxqySNEldvvHsdrZml4S9jNTIZmA4WsAS+KLj/tPH
- 1iZemY0+7t6w1/162xLzM+ER7NcjF6/LVMLi9IfeXRCnBghDNF9M91aJmE7a16w92A
- wu93V+egplXiQ==
+ b=OTXAruOJ4APS5gHShb3eJJdgD0oRtS+GAKJmf0zILeA5+hsmQTOK4pL/3LcJDAndG
+ NK/XPCMkQw7rxYIAExUoYYlqZxGaQpAc4X0xqkUaue+aN2wnYeQZwCa5URZ3dOu86N
+ an3nK68JDU1uXnTXa1xBurnIbAyyQWjp2F9JStKnZfB9KHZFacoAH7cldFcyaYHkFt
+ pm+Q7l2V99J8BfpT6DQ0S7HiC89VncusYHHSGBDuyO0mehnsNLDanyw8Ng+uMGy1UI
+ SNRqU3BhlytNRxQiEl6jLhFM5woXswPbm/Qpms1h2t4KRrosGVcs4zfhI0R+hkMbOE
+ Xe951GQmUOHUw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.13 064/114] powerpc/ps3: Add dma_mask to
- ps3_dma_region
-Date: Fri,  9 Jul 2021 22:16:58 -0400
-Message-Id: <20210710021748.3167666-64-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.13 073/114] powerpc/inst: Fix sparse detection on
+ get_user_instr()
+Date: Fri,  9 Jul 2021 22:17:07 -0400
+Message-Id: <20210710021748.3167666-73-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210710021748.3167666-1-sashal@kernel.org>
 References: <20210710021748.3167666-1-sashal@kernel.org>
@@ -61,97 +61,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Geoff Levand <geoff@infradead.org>, linuxppc-dev@lists.ozlabs.org,
- Sasha Levin <sashal@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Geoff Levand <geoff@infradead.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 9733862e50fdba55e7f1554e4286fcc5302ff28e ]
+[ Upstream commit b3a9e523237013477bea914b7fbfbe420428b988 ]
 
-Commit f959dcd6ddfd29235030e8026471ac1b022ad2b0 (dma-direct: Fix
-potential NULL pointer dereference) added a null check on the
-dma_mask pointer of the kernel's device structure.
+get_user_instr() lacks sparse detection for the __user tag.
 
-Add a dma_mask variable to the ps3_dma_region structure and set
-the device structure's dma_mask pointer to point to this new variable.
+This is because __gui_ptr is assigned with a cast.
 
-Fixes runtime errors like these:
-# WARNING: Fixes tag on line 10 doesn't match correct format
-# WARNING: Fixes tag on line 10 doesn't match correct format
+Fix that by adding a __chk_user_ptr()
 
-  ps3_system_bus_match:349: dev=8.0(sb_01), drv=8.0(ps3flash): match
-  WARNING: CPU: 0 PID: 1 at kernel/dma/mapping.c:151 .dma_map_page_attrs+0x34/0x1e0
-  ps3flash sb_01: ps3stor_setup:193: map DMA region failed
-
-Signed-off-by: Geoff Levand <geoff@infradead.org>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/562d0c9ea0100a30c3b186bcc7adb34b0bbd2cd7.1622746428.git.geoff@infradead.org
+Link: https://lore.kernel.org/r/0320e5b41a794fd456ab8c5993bbfadcf9e1d8b4.1621516826.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/ps3.h  |  2 ++
- arch/powerpc/platforms/ps3/mm.c | 12 ++++++++++++
- 2 files changed, 14 insertions(+)
+ arch/powerpc/include/asm/inst.h | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/ps3.h b/arch/powerpc/include/asm/ps3.h
-index e646c7f218bc..12b6b76e8d0f 100644
---- a/arch/powerpc/include/asm/ps3.h
-+++ b/arch/powerpc/include/asm/ps3.h
-@@ -71,6 +71,7 @@ struct ps3_dma_region_ops;
-  * @bus_addr: The 'translated' bus address of the region.
-  * @len: The length in bytes of the region.
-  * @offset: The offset from the start of memory of the region.
-+ * @dma_mask: Device dma_mask.
-  * @ioid: The IOID of the device who owns this region
-  * @chunk_list: Opaque variable used by the ioc page manager.
-  * @region_ops: struct ps3_dma_region_ops - dma region operations
-@@ -85,6 +86,7 @@ struct ps3_dma_region {
- 	enum ps3_dma_region_type region_type;
- 	unsigned long len;
- 	unsigned long offset;
-+	u64 dma_mask;
+diff --git a/arch/powerpc/include/asm/inst.h b/arch/powerpc/include/asm/inst.h
+index 268d3bd073c8..887ef150fdda 100644
+--- a/arch/powerpc/include/asm/inst.h
++++ b/arch/powerpc/include/asm/inst.h
+@@ -12,6 +12,8 @@
+ 	unsigned long __gui_ptr = (unsigned long)ptr;			\
+ 	struct ppc_inst __gui_inst;					\
+ 	unsigned int __prefix, __suffix;				\
++									\
++	__chk_user_ptr(ptr);						\
+ 	__gui_ret = gu_op(__prefix, (unsigned int __user *)__gui_ptr);	\
+ 	if (__gui_ret == 0) {						\
+ 		if ((__prefix >> 26) == OP_PREFIX) {			\
+@@ -29,7 +31,10 @@
+ })
+ #else /* !CONFIG_PPC64 */
+ #define ___get_user_instr(gu_op, dest, ptr)				\
+-	gu_op((dest).val, (u32 __user *)(ptr))
++({									\
++	__chk_user_ptr(ptr);						\
++	gu_op((dest).val, (u32 __user *)(ptr));				\
++})
+ #endif /* CONFIG_PPC64 */
  
- 	/* driver variables  (set by ps3_dma_region_create) */
- 	unsigned long bus_addr;
-diff --git a/arch/powerpc/platforms/ps3/mm.c b/arch/powerpc/platforms/ps3/mm.c
-index d094321964fb..a81eac35d900 100644
---- a/arch/powerpc/platforms/ps3/mm.c
-+++ b/arch/powerpc/platforms/ps3/mm.c
-@@ -6,6 +6,7 @@
-  *  Copyright 2006 Sony Corp.
-  */
- 
-+#include <linux/dma-mapping.h>
- #include <linux/kernel.h>
- #include <linux/export.h>
- #include <linux/memblock.h>
-@@ -1118,6 +1119,7 @@ int ps3_dma_region_init(struct ps3_system_bus_device *dev,
- 	enum ps3_dma_region_type region_type, void *addr, unsigned long len)
- {
- 	unsigned long lpar_addr;
-+	int result;
- 
- 	lpar_addr = addr ? ps3_mm_phys_to_lpar(__pa(addr)) : 0;
- 
-@@ -1129,6 +1131,16 @@ int ps3_dma_region_init(struct ps3_system_bus_device *dev,
- 		r->offset -= map.r1.offset;
- 	r->len = len ? len : ALIGN(map.total, 1 << r->page_size);
- 
-+	dev->core.dma_mask = &r->dma_mask;
-+
-+	result = dma_set_mask_and_coherent(&dev->core, DMA_BIT_MASK(32));
-+
-+	if (result < 0) {
-+		dev_err(&dev->core, "%s:%d: dma_set_mask_and_coherent failed: %d\n",
-+			__func__, __LINE__, result);
-+		return result;
-+	}
-+
- 	switch (dev->dev_type) {
- 	case PS3_DEVICE_TYPE_SB:
- 		r->region_ops =  (USE_DYNAMIC_DMA)
+ #define get_user_instr(x, ptr) \
 -- 
 2.30.2
 
