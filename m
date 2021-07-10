@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39E1F3C37B8
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Jul 2021 01:50:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 780F63C3804
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Jul 2021 01:51:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GMmwx5Pr9z3blm
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Jul 2021 09:50:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GMmxw3FP7z3br1
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Jul 2021 09:51:00 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UcvLir4H;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SCxnlGIh;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,35 +17,35 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=UcvLir4H; 
+ header.s=k20201202 header.b=SCxnlGIh; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GMmwN3rJtz3073
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Jul 2021 09:49:40 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6524A610D2;
- Sat, 10 Jul 2021 23:49:35 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GMmxS5sBHz308w
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Jul 2021 09:50:36 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 0265B61370;
+ Sat, 10 Jul 2021 23:50:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1625960976;
- bh=YcuXPbe0XfzqQbPH39bcJPdP60ShdIyo75apiWl/Ass=;
+ s=k20201202; t=1625961034;
+ bh=Xlz2lRLQs6zeNSzbDmNovmY/D64BjgH/LZXwUJ/H8g8=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=UcvLir4HexPa1kfN+XbisiUtw8Z1V4nUfv/P24n0UuwVls7Vy7JWpDh5a6fwmor4O
- 0vei+4gRJFGZZO71InEHwAGEMmHHH6UAvDmQAS+5pwUv20F4k8osukCwO27qadtwLr
- DyQspng3vU738H8yorYBDy/4O2hCGm58ZWDVr7UyFsGelojRc6IvE8cXBxGXuEU6Ej
- 90uNUoR2XwL5giUaYDFTFF99rImmLhw74705Q88ekUEaFYCTphW29dBLLR72YH06N1
- 25T7xMqAp24/DSOLM7RpkjLSFisU2i83XledbjH1SsTI+uSSTuRmJ+1UbYrtGP5Yfh
- R4DMt5RJkKzbA==
+ b=SCxnlGIh3Z2r2IXrHi5YuLGIMSW7IUJDYJdNJbSfdNM7jKpNpuzfjG0NPO/PMLrft
+ godZbDBDovjTjyBW+3Mua+61GNmxzXJFuJnQfFY15X02Blyz0AajzCNMXY2vVZlb2+
+ 4WaK2yXlc+MCzYkyxhrKHBvOpfqwrOxR7V1BjTGfJNhqsQnqjp5ccphZRskmeyGr/f
+ 6he2fXpeHeObCEYNXgHECqTHWbgIkKP6PF+mLQRCMiXSba4rV7Ok2SD8OtTYWWoH21
+ GT46mXWUKGHkF1/Kaggew7xdac07FisQJPgDQ9CLB7mM73+vo/9usNxboXGhIZJmyj
+ HStIvrHFzD6pA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.12 13/43] PCI: pciehp: Ignore Link Down/Up caused by
+Subject: [PATCH AUTOSEL 5.10 13/37] PCI: pciehp: Ignore Link Down/Up caused by
  DPC
-Date: Sat, 10 Jul 2021 19:48:45 -0400
-Message-Id: <20210710234915.3220342-13-sashal@kernel.org>
+Date: Sat, 10 Jul 2021 19:49:51 -0400
+Message-Id: <20210710235016.3221124-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210710234915.3220342-1-sashal@kernel.org>
-References: <20210710234915.3220342-1-sashal@kernel.org>
+In-Reply-To: <20210710235016.3221124-1-sashal@kernel.org>
+References: <20210710235016.3221124-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -211,10 +211,10 @@ index fb3840e222ad..9d06939736c0 100644
  	 * Disable requests have higher priority than Presence Detect Changed
  	 * or Data Link Layer State Changed events.
 diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index 9684b468267f..e5ae5e860431 100644
+index 09ebc134d0d7..a96dc6f53076 100644
 --- a/drivers/pci/pci.h
 +++ b/drivers/pci/pci.h
-@@ -392,6 +392,8 @@ static inline bool pci_dev_is_disconnected(const struct pci_dev *dev)
+@@ -409,6 +409,8 @@ static inline bool pci_dev_is_disconnected(const struct pci_dev *dev)
  
  /* pci_dev priv_flags */
  #define PCI_DEV_ADDED 0
@@ -223,7 +223,7 @@ index 9684b468267f..e5ae5e860431 100644
  
  static inline void pci_dev_assign_added(struct pci_dev *dev, bool added)
  {
-@@ -446,10 +448,12 @@ void pci_restore_dpc_state(struct pci_dev *dev);
+@@ -454,10 +456,12 @@ void pci_restore_dpc_state(struct pci_dev *dev);
  void pci_dpc_init(struct pci_dev *pdev);
  void dpc_process_error(struct pci_dev *pdev);
  pci_ers_result_t dpc_reset_link(struct pci_dev *pdev);
@@ -235,7 +235,7 @@ index 9684b468267f..e5ae5e860431 100644
 +static inline bool pci_dpc_recovered(struct pci_dev *pdev) { return false; }
  #endif
  
- #ifdef CONFIG_PCIEPORTBUS
+ #ifdef CONFIG_PCI_ATS
 diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
 index e05aba86a317..c556e7beafe3 100644
 --- a/drivers/pci/pcie/dpc.c
