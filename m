@@ -1,52 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EE393C3A14
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Jul 2021 06:16:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F31A03C3AF7
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Jul 2021 09:07:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GMtrT4VfFz3bkP
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Jul 2021 14:16:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GMydc6Zm7z30Gv
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Jul 2021 17:07:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=merlin.20170209 header.b=o5zkGw1C;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nxalGVHs;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1234::107; helo=merlin.infradead.org;
- envelope-from=geoff@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=merlin.20170209 header.b=o5zkGw1C; 
- dkim-atps=neutral
-Received: from merlin.infradead.org (merlin.infradead.org
- [IPv6:2001:8b0:10b:1234::107])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=nxalGVHs; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GMtqV4JC1z307D
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Jul 2021 14:15:47 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=merlin.20170209; h=Date:Cc:To:Subject:From:References:
- In-Reply-To:Message-Id:Sender:Reply-To:MIME-Version:Content-Type:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=zWV2AX+O8o2JLh2rehG594XozbXOrGxJ9rl5HuCAxZU=; b=o5zkGw1CY4WRlblXlaH+D+/EoS
- 4hnWimSqBGudSVVEuBQGeULLtG+x8gK6OLRlevJTE0oV++PiPBZPD/2l1jZRtc/YNWd0dOtWlM61B
- alIzY/us9ntmxXTzlvcaNG+tMoohYouUdttorsd7+kXqrSZ9XRd+TkSEHP7eQw/Hm+IkPtytSum3S
- oGjNy2ZZrUi7Y4JJEKg8e5vWxMWKZkxnu22AfyYYLpZIadzCSVrt6oxNuFHgZHdpvA9HU2073rb/x
- NUnE360UUJq9BZf0gCOtvdBsM3ScYnfSrqn/YkeKCO3EYxm2N81NsulQiq67wpvWV41Ew8A6vRPJs
- cFW5C7WQ==;
-Received: from geoff by merlin.infradead.org with local (Exim 4.94.2 #2 (Red
- Hat Linux)) id 1m2QsI-0079dX-3N; Sun, 11 Jul 2021 04:15:26 +0000
-Message-Id: <ffb7b2f4ac085986f563131e3851e07393cd514f.1625976141.git.geoff@infradead.org>
-In-Reply-To: <cover.1625976141.git.geoff@infradead.org>
-References: <cover.1625976141.git.geoff@infradead.org>
-From: Geoff Levand <geoff@infradead.org>
-Patch-Date: Tue, 1 Jun 2021 12:27:43 -0700
-Subject: [PATCH v3 2/2] net/ps3_gelic: Cleanups, improve logging
-To: David S. Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
-Date: Sun, 11 Jul 2021 04:15:26 +0000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GMyd60shPz2yRT
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Jul 2021 17:07:05 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 16B73mdO044898; Sun, 11 Jul 2021 03:06:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject : date : message-id; s=pp1;
+ bh=GEwUDnetKzfHu5W0oGB7qKLd7S+PO0SjEGH6NOgbEI8=;
+ b=nxalGVHsLDnDrBaNc0RxotNiGD6r41a10ozK9EFY43zk11n4QQREIReOebX/rW/0vcmJ
+ NKfmS+JOXd+zxmh3sOXmEethhZWqC2E9nNvrKbURGTuLScrmjtnc8aDQA5LwubocoViw
+ tzN1YW++6bHa7mRiSkl8ZEP7ymCp3ttalKQQgWy/elruJ+Yu7MEnBaUx0MYfKyt1pq/e
+ OSeH3/pmLc2TibV4Abav3hPJkc82+YcHxmyyn3GJTpLxkHPzzV3qI6+AhEaSYGxFpmIW
+ TKTkeAESkj3i5W/P7sxHxSKKvo9zJ4wR8BlTAOacazlgDxw9AU2/0WV/mFCAUArEtLUi PQ== 
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 39qrhxu1av-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 11 Jul 2021 03:06:55 -0400
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16B76qbv017593;
+ Sun, 11 Jul 2021 07:06:52 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma01fra.de.ibm.com with ESMTP id 39q368857x-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 11 Jul 2021 07:06:52 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 16B76nkC27394492
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sun, 11 Jul 2021 07:06:49 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 00FE24C050;
+ Sun, 11 Jul 2021 07:06:49 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1A3EC4C040;
+ Sun, 11 Jul 2021 07:06:47 +0000 (GMT)
+Received: from localhost.localdomain.localdomain (unknown [9.79.180.87])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Sun, 11 Jul 2021 07:06:46 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH] powerpc/perf: Enable PMU counters post partition migration if
+ PMU is active
+Date: Sun, 11 Jul 2021 03:06:45 -0400
+Message-Id: <1625987205-1649-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: e7Pceis8hqfrPCF7GQCoWnzJB3_dpiuC
+X-Proofpoint-GUID: e7Pceis8hqfrPCF7GQCoWnzJB3_dpiuC
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-07-11_04:2021-07-09,
+ 2021-07-11 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ mlxlogscore=999 suspectscore=0 phishscore=0 spamscore=0 malwarescore=0
+ bulkscore=99 impostorscore=0 mlxscore=0 clxscore=1015 adultscore=0
+ lowpriorityscore=99 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2107110056
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,911 +94,195 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: kjain@linux.ibm.com, maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ rnsastry@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-General source cleanups and improved logging messages.
+During Live Partition Migration (LPM), it is observed that after
+migration completion, perf counter values reports 0 incase of
+system/cpu wide monitoring. However 'perf stat' with workload
+continues to show counts post migration since PMU gets disabled/enabled
+during sched switches.
 
-Signed-off-by: Geoff Levand <geoff@infradead.org>
+Example:
+ ./perf stat -e r1001e -I 1000
+           time             counts unit events
+     1.001010437         22,137,414      r1001e
+     2.002495447         15,455,821      r1001e
+<<>> As seen in next below logs, the counter values shows zero
+        after migration is completed.
+<<>>
+    86.142535370    129,392,333,440      r1001e
+    87.144714617                  0      r1001e
+    88.146526636                  0      r1001e
+    89.148085029                  0      r1001e
+
+Here PMU is enabled during start of perf session and counter
+values are read at intervals. Counters are only disabled at the
+end of session. The powerpc mobility code presently does not handle
+disabling and enabling back of PMU counters during partition
+migration. Also since the PMU register values are not saved/restored
+during migration, PMU registers like Monitor Mode Control Register 0
+(MMCR0), Monitor Mode Control Register 1 (MMCR1) will not contain
+the value it was programmed with. Hence PMU counters will not be
+enabled correctly post migration.
+
+Fix this in mobility code by handling disabling and enabling of
+PMU in all cpu's before and after migration. Patch introduces two
+functions 'mobility_pmu_disable' and 'mobility_pmu_enable'.
+mobility_pmu_disable() is called before the processor threads goes
+to suspend state so as to disable the PMU counters. And disable is
+done only if there are any active events running on that cpu.
+mobility_pmu_enable() is called after the processor threads are
+back online to enable back the PMU counters.
+
+Since the performance Monitor counters ( PMCs) are not
+saved/restored during LPM, results in PMC value being zero and the
+'event->hw.prev_count' being non-zero value. This causes problem
+during updation of event->count since we always accumulate
+(event->hw.prev_count - PMC value) in event->count.  If
+event->hw.prev_count is greater PMC value, event->count becomes
+negative. Fix this by re-initialising 'prev_count' also for all
+events while enabling back the events. A new variable 'migrate' is
+introduced in 'struct cpu_hw_event' to achieve this for LPM cases
+in power_pmu_enable. Use the 'migrate' value to clear the PMC
+index (stored in event->hw.idx) for all events so that event
+count settings will get re-initialised correctly.
+
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 ---
- drivers/net/ethernet/toshiba/ps3_gelic_net.c | 395 ++++++++++---------
- 1 file changed, 216 insertions(+), 179 deletions(-)
+ arch/powerpc/include/asm/rtas.h           |  4 +++
+ arch/powerpc/perf/core-book3s.c           | 43 ++++++++++++++++++++++++++++---
+ arch/powerpc/platforms/pseries/mobility.c |  4 +++
+ 3 files changed, 48 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/toshiba/ps3_gelic_net.c b/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-index e01938128882..9dbcb7c4ec80 100644
---- a/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-+++ b/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-@@ -44,17 +44,17 @@ MODULE_AUTHOR("SCE Inc.");
- MODULE_DESCRIPTION("Gelic Network driver");
- MODULE_LICENSE("GPL");
+diff --git a/arch/powerpc/include/asm/rtas.h b/arch/powerpc/include/asm/rtas.h
+index 9dc97d2..3fc478a 100644
+--- a/arch/powerpc/include/asm/rtas.h
++++ b/arch/powerpc/include/asm/rtas.h
+@@ -376,8 +376,12 @@ static inline void rtas_initialize(void) { }
  
--
--/* set irq_mask */
- int gelic_card_set_irq_mask(struct gelic_card *card, u64 mask)
- {
-+	struct device *dev = ctodev(card);
- 	int status;
- 
- 	status = lv1_net_set_interrupt_mask(bus_id(card), dev_id(card),
- 					    mask, 0);
--	if (status)
--		dev_info(ctodev(card),
--			 "%s failed %d\n", __func__, status);
-+	if (status) {
-+		dev_err(dev, "%s:%d failed: %d\n", __func__, __LINE__, status);
-+	}
-+
- 	return status;
- }
- 
-@@ -63,6 +63,7 @@ static void gelic_card_rx_irq_on(struct gelic_card *card)
- 	card->irq_mask |= GELIC_CARD_RXINT;
- 	gelic_card_set_irq_mask(card, card->irq_mask);
- }
-+
- static void gelic_card_rx_irq_off(struct gelic_card *card)
- {
- 	card->irq_mask &= ~GELIC_CARD_RXINT;
-@@ -70,15 +71,14 @@ static void gelic_card_rx_irq_off(struct gelic_card *card)
- }
- 
- static void gelic_card_get_ether_port_status(struct gelic_card *card,
--					     int inform)
-+	int inform)
- {
- 	u64 v2;
- 	struct net_device *ether_netdev;
- 
- 	lv1_net_control(bus_id(card), dev_id(card),
--			GELIC_LV1_GET_ETH_PORT_STATUS,
--			GELIC_LV1_VLAN_TX_ETHERNET_0, 0, 0,
--			&card->ether_port_status, &v2);
-+		GELIC_LV1_GET_ETH_PORT_STATUS, GELIC_LV1_VLAN_TX_ETHERNET_0, 0,
-+		0, &card->ether_port_status, &v2);
- 
- 	if (inform) {
- 		ether_netdev = card->netdev[GELIC_PORT_ETHERNET_0];
-@@ -105,15 +105,17 @@ gelic_descr_get_status(struct gelic_descr *descr)
- 
- static int gelic_card_set_link_mode(struct gelic_card *card, int mode)
- {
-+	struct device *dev = ctodev(card);
- 	int status;
- 	u64 v1, v2;
- 
- 	status = lv1_net_control(bus_id(card), dev_id(card),
--				 GELIC_LV1_SET_NEGOTIATION_MODE,
--				 GELIC_LV1_PHY_ETHERNET_0, mode, 0, &v1, &v2);
-+		GELIC_LV1_SET_NEGOTIATION_MODE, GELIC_LV1_PHY_ETHERNET_0, mode,
-+		0, &v1, &v2);
-+
- 	if (status) {
--		pr_info("%s: failed setting negotiation mode %d\n", __func__,
--			status);
-+		dev_err(dev, "%s:%d: Failed setting negotiation mode: %d\n",
-+			__func__, __LINE__, status);
- 		return -EBUSY;
- 	}
- 
-@@ -130,13 +132,16 @@ static int gelic_card_set_link_mode(struct gelic_card *card, int mode)
-  */
- static void gelic_card_disable_txdmac(struct gelic_card *card)
- {
-+	struct device *dev = ctodev(card);
- 	int status;
- 
- 	/* this hvc blocks until the DMA in progress really stopped */
- 	status = lv1_net_stop_tx_dma(bus_id(card), dev_id(card));
--	if (status)
--		dev_err(ctodev(card),
--			"lv1_net_stop_tx_dma failed, status=%d\n", status);
-+
-+	if (status) {
-+		dev_err(dev, "%s:%d: lv1_net_stop_tx_dma failed: %d\n",
-+			__func__, __LINE__, status);
-+	}
- }
- 
- /**
-@@ -187,13 +192,16 @@ static void gelic_card_enable_rxdmac(struct gelic_card *card)
-  */
- static void gelic_card_disable_rxdmac(struct gelic_card *card)
- {
-+	struct device *dev = ctodev(card);
- 	int status;
- 
- 	/* this hvc blocks until the DMA in progress really stopped */
- 	status = lv1_net_stop_rx_dma(bus_id(card), dev_id(card));
--	if (status)
--		dev_err(ctodev(card),
--			"lv1_net_stop_rx_dma failed, %d\n", status);
-+
-+	if (status) {
-+		dev_err(dev, "%s:%d: lv1_net_stop_rx_dma failed: %d\n",
-+			__func__, __LINE__, status);
-+	}
- }
- 
- /**
-@@ -216,6 +224,7 @@ static void gelic_descr_set_status(struct gelic_descr *descr,
- 	 * Usually caller of this function wants to inform that to the
- 	 * hardware, so we assure here the hardware sees the change.
- 	 */
-+
- 	wmb();
- }
- 
-@@ -229,8 +238,7 @@ static void gelic_descr_set_status(struct gelic_descr *descr,
-  * and re-initialize the hardware chain for later use
-  */
- static void gelic_card_reset_chain(struct gelic_card *card,
--				   struct gelic_descr_chain *chain,
--				   struct gelic_descr *start_descr)
-+	struct gelic_descr_chain *chain, struct gelic_descr *start_descr)
- {
- 	struct gelic_descr *descr;
- 
-@@ -248,45 +256,41 @@ static void gelic_card_reset_chain(struct gelic_card *card,
- 
- void gelic_card_up(struct gelic_card *card)
- {
--	pr_debug("%s: called\n", __func__);
-+	struct device *dev = ctodev(card);
-+
- 	mutex_lock(&card->updown_lock);
- 	if (atomic_inc_return(&card->users) == 1) {
--		pr_debug("%s: real do\n", __func__);
--		/* enable irq */
-+		dev_dbg(dev, "%s:%d: Starting...\n", __func__, __LINE__);
- 		gelic_card_set_irq_mask(card, card->irq_mask);
--		/* start rx */
- 		gelic_card_enable_rxdmac(card);
--
- 		napi_enable(&card->napi);
- 	}
- 	mutex_unlock(&card->updown_lock);
--	pr_debug("%s: done\n", __func__);
- }
- 
- void gelic_card_down(struct gelic_card *card)
- {
-+	struct device *dev = ctodev(card);
- 	u64 mask;
--	pr_debug("%s: called\n", __func__);
-+
- 	mutex_lock(&card->updown_lock);
- 	if (atomic_dec_if_positive(&card->users) == 0) {
--		pr_debug("%s: real do\n", __func__);
-+		dev_dbg(dev, "%s:%d: Stopping...\n", __func__, __LINE__);
- 		napi_disable(&card->napi);
- 		/*
--		 * Disable irq. Wireless interrupts will
--		 * be disabled later if any
-+		 * Disable irq. Wireless interrupts will be disabled later.
- 		 */
- 		mask = card->irq_mask & (GELIC_CARD_WLAN_EVENT_RECEIVED |
--					 GELIC_CARD_WLAN_COMMAND_COMPLETED);
-+			GELIC_CARD_WLAN_COMMAND_COMPLETED);
- 		gelic_card_set_irq_mask(card, mask);
--		/* stop rx */
-+
- 		gelic_card_disable_rxdmac(card);
- 		gelic_card_reset_chain(card, &card->rx_chain,
--				       card->descr + GELIC_NET_TX_DESCRIPTORS);
--		/* stop tx */
-+			card->descr + GELIC_NET_TX_DESCRIPTORS);
-+
- 		gelic_card_disable_txdmac(card);
- 	}
- 	mutex_unlock(&card->updown_lock);
--	pr_debug("%s: done\n", __func__);
- }
- 
- static void gelic_unmap_link(struct device *dev, struct gelic_descr *descr)
-@@ -652,6 +656,7 @@ static void gelic_card_release_tx_chain(struct gelic_card *card, int stop)
- void gelic_net_set_multi(struct net_device *netdev)
- {
- 	struct gelic_card *card = netdev_card(netdev);
-+	struct device *dev = ctodev(card);
- 	struct netdev_hw_addr *ha;
- 	unsigned int i;
- 	uint8_t *p;
-@@ -661,27 +666,31 @@ void gelic_net_set_multi(struct net_device *netdev)
- 	/* clear all multicast address */
- 	status = lv1_net_remove_multicast_address(bus_id(card), dev_id(card),
- 						  0, 1);
--	if (status)
--		dev_err(ctodev(card),
--			"lv1_net_remove_multicast_address failed %d\n",
--			status);
-+	if (status) {
-+		dev_err(dev,
-+			"%s:%d: lv1_net_remove_multicast_address failed %d\n",
-+			__func__, __LINE__, status);
-+	}
-+
- 	/* set broadcast address */
- 	status = lv1_net_add_multicast_address(bus_id(card), dev_id(card),
- 					       GELIC_NET_BROADCAST_ADDR, 0);
--	if (status)
--		dev_err(ctodev(card),
--			"lv1_net_add_multicast_address failed, %d\n",
--			status);
-+	if (status) {
-+		dev_err(dev,
-+			"%s:%d: lv1_net_add_multicast_address failed, %d\n",
-+			__func__, __LINE__, status);
-+	}
- 
- 	if ((netdev->flags & IFF_ALLMULTI) ||
- 	    (netdev_mc_count(netdev) > GELIC_NET_MC_COUNT_MAX)) {
- 		status = lv1_net_add_multicast_address(bus_id(card),
- 						       dev_id(card),
- 						       0, 1);
--		if (status)
--			dev_err(ctodev(card),
--				"lv1_net_add_multicast_address failed, %d\n",
--				status);
-+		if (status) {
-+			dev_err(dev,
-+				"%s:%d: lv1_net_add_multicast_address failed, %d\n",
-+				__func__, __LINE__, status);
-+		}
- 		return;
- 	}
- 
-@@ -694,12 +703,13 @@ void gelic_net_set_multi(struct net_device *netdev)
- 			addr |= *p++;
- 		}
- 		status = lv1_net_add_multicast_address(bus_id(card),
--						       dev_id(card),
--						       addr, 0);
--		if (status)
--			dev_err(ctodev(card),
--				"lv1_net_add_multicast_address failed, %d\n",
--				status);
-+			dev_id(card), addr, 0);
-+
-+		if (status) {
-+			dev_err(dev,
-+				"%s:%d: lv1_net_add_multicast_address failed, %d\n",
-+				__func__, __LINE__, status);
-+		}
- 	}
- }
- 
-@@ -711,17 +721,17 @@ void gelic_net_set_multi(struct net_device *netdev)
-  */
- int gelic_net_stop(struct net_device *netdev)
- {
--	struct gelic_card *card;
-+	struct gelic_card *card = netdev_card(netdev);
-+	struct device *dev = ctodev(card);
- 
--	pr_debug("%s: start\n", __func__);
-+	dev_dbg(dev, "%s:%d: >\n", __func__, __LINE__);
- 
- 	netif_stop_queue(netdev);
- 	netif_carrier_off(netdev);
- 
--	card = netdev_card(netdev);
- 	gelic_card_down(card);
- 
--	pr_debug("%s: done\n", __func__);
-+	dev_dbg(dev, "%s:%d: <\n", __func__, __LINE__);
- 	return 0;
- }
- 
-@@ -736,14 +746,15 @@ gelic_card_get_next_tx_descr(struct gelic_card *card)
- {
- 	if (!card->tx_chain.head)
- 		return NULL;
-+
- 	/*  see if the next descriptor is free */
--	if (card->tx_chain.tail != card->tx_chain.head->next &&
--	    gelic_descr_get_status(card->tx_chain.head) ==
--	    GELIC_DESCR_DMA_NOT_IN_USE)
-+	if ((card->tx_chain.tail != card->tx_chain.head->next)
-+		&& (gelic_descr_get_status(card->tx_chain.head)
-+		== GELIC_DESCR_DMA_NOT_IN_USE)) {
- 		return card->tx_chain.head;
--	else
--		return NULL;
-+	}
- 
-+	return NULL;
- }
- 
- /**
-@@ -787,14 +798,15 @@ static void gelic_descr_set_tx_cmdstat(struct gelic_descr *descr,
- }
- 
- static struct sk_buff *gelic_put_vlan_tag(struct sk_buff *skb,
--						 unsigned short tag)
-+	unsigned short tag)
- {
- 	struct vlan_ethhdr *veth;
- 	static unsigned int c;
- 
- 	if (skb_headroom(skb) < VLAN_HLEN) {
- 		struct sk_buff *sk_tmp = skb;
--		pr_debug("%s: hd=%d c=%ud\n", __func__, skb_headroom(skb), c);
-+		pr_debug("%s:%d: hd=%d c=%ud\n", __func__, __LINE__,
-+			skb_headroom(skb), c);
- 		skb = skb_realloc_headroom(sk_tmp, VLAN_HLEN);
- 		if (!skb)
- 			return NULL;
-@@ -818,7 +830,6 @@ static struct sk_buff *gelic_put_vlan_tag(struct sk_buff *skb,
-  * @skb: packet to use
-  *
-  * returns 0 on success, <0 on failure.
-- *
-  */
- static int gelic_descr_prepare_tx(struct gelic_card *card,
- 	struct gelic_descr *descr, struct sk_buff *skb)
-@@ -1161,9 +1172,9 @@ static int gelic_net_poll(struct napi_struct *napi, int budget)
- 	int packets_done = 0;
- 
- 	while (packets_done < budget) {
--		if (!gelic_card_decode_one_descr(card))
-+		if (!gelic_card_decode_one_descr(card)) {
- 			break;
--
-+		}
- 		packets_done++;
- 	}
- 
-@@ -1171,6 +1182,7 @@ static int gelic_net_poll(struct napi_struct *napi, int budget)
- 		napi_complete_done(napi, packets_done);
- 		gelic_card_rx_irq_on(card);
- 	}
-+
- 	return packets_done;
- }
- 
-@@ -1185,8 +1197,9 @@ static irqreturn_t gelic_card_interrupt(int irq, void *ptr)
- 
- 	status = card->irq_status;
- 
--	if (!status)
-+	if (!status) {
- 		return IRQ_NONE;
-+	}
- 
- 	status &= card->irq_mask;
- 
-@@ -1205,13 +1218,15 @@ static irqreturn_t gelic_card_interrupt(int irq, void *ptr)
- 	}
- 
- 	/* ether port status changed */
--	if (status & GELIC_CARD_PORT_STATUS_CHANGED)
-+	if (status & GELIC_CARD_PORT_STATUS_CHANGED) {
- 		gelic_card_get_ether_port_status(card, 1);
-+	}
- 
- #ifdef CONFIG_GELIC_WIRELESS
- 	if (status & (GELIC_CARD_WLAN_EVENT_RECEIVED |
--		      GELIC_CARD_WLAN_COMMAND_COMPLETED))
-+		GELIC_CARD_WLAN_COMMAND_COMPLETED)) {
- 		gelic_wl_interrupt(card->netdev[GELIC_PORT_WIRELESS], status);
-+	}
+ #ifdef CONFIG_HV_PERF_CTRS
+ void read_24x7_sys_info(void);
++void mobility_pmu_disable(void);
++void mobility_pmu_enable(void);
+ #else
+ static inline void read_24x7_sys_info(void) { }
++static inline void mobility_pmu_disable(void) { }
++static inline void mobility_pmu_enable(void) { }
  #endif
  
- 	return IRQ_HANDLED;
-@@ -1247,19 +1262,16 @@ int gelic_net_open(struct net_device *netdev)
- {
- 	struct gelic_card *card = netdev_card(netdev);
+ #endif /* __KERNEL__ */
+diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
+index bb0ee71..e86df45 100644
+--- a/arch/powerpc/perf/core-book3s.c
++++ b/arch/powerpc/perf/core-book3s.c
+@@ -58,6 +58,7 @@ struct cpu_hw_events {
  
--	dev_dbg(ctodev(card), " -> %s %p\n", __func__, netdev);
--
- 	gelic_card_up(card);
- 
- 	netif_start_queue(netdev);
- 	gelic_card_get_ether_port_status(card, 1);
- 
--	dev_dbg(ctodev(card), " <- %s\n", __func__);
- 	return 0;
- }
- 
- void gelic_net_get_drvinfo(struct net_device *netdev,
--			   struct ethtool_drvinfo *info)
-+	struct ethtool_drvinfo *info)
- {
- 	strlcpy(info->driver, DRV_NAME, sizeof(info->driver));
- 	strlcpy(info->version, DRV_VERSION, sizeof(info->version));
-@@ -1317,11 +1329,11 @@ static int gelic_ether_get_link_ksettings(struct net_device *netdev,
- 	return 0;
- }
- 
--static int
--gelic_ether_set_link_ksettings(struct net_device *netdev,
--			       const struct ethtool_link_ksettings *cmd)
-+static int gelic_ether_set_link_ksettings(struct net_device *netdev,
-+	const struct ethtool_link_ksettings *cmd)
- {
- 	struct gelic_card *card = netdev_card(netdev);
-+	struct device *dev = ctodev(card);
- 	u64 mode;
- 	int ret;
- 
-@@ -1341,94 +1353,100 @@ gelic_ether_set_link_ksettings(struct net_device *netdev,
- 		default:
- 			return -EINVAL;
- 		}
-+
- 		if (cmd->base.duplex == DUPLEX_FULL) {
- 			mode |= GELIC_LV1_ETHER_FULL_DUPLEX;
- 		} else if (cmd->base.speed == SPEED_1000) {
--			pr_info("1000 half duplex is not supported.\n");
-+			dev_dbg(dev,
-+				"%s:%d: 1000 half duplex is not supported.\n",
-+				__func__, __LINE__);
- 			return -EINVAL;
- 		}
- 	}
- 
- 	ret = gelic_card_set_link_mode(card, mode);
- 
--	if (ret)
-+	if (ret) {
- 		return ret;
-+	}
- 
- 	return 0;
- }
- 
- static void gelic_net_get_wol(struct net_device *netdev,
--			      struct ethtool_wolinfo *wol)
-+	struct ethtool_wolinfo *wol)
- {
--	if (0 <= ps3_compare_firmware_version(2, 2, 0))
-+	if (0 <= ps3_compare_firmware_version(2, 2, 0)) {
- 		wol->supported = WAKE_MAGIC;
--	else
-+	} else {
- 		wol->supported = 0;
-+	}
- 
- 	wol->wolopts = ps3_sys_manager_get_wol() ? wol->supported : 0;
- 	memset(&wol->sopass, 0, sizeof(wol->sopass));
- }
-+
- static int gelic_net_set_wol(struct net_device *netdev,
--			     struct ethtool_wolinfo *wol)
-+	struct ethtool_wolinfo *wol)
- {
-+	struct gelic_card *card = netdev_card(netdev);
-+	struct device *dev = ctodev(card);
- 	int status;
--	struct gelic_card *card;
- 	u64 v1, v2;
- 
- 	if (ps3_compare_firmware_version(2, 2, 0) < 0 ||
--	    !capable(CAP_NET_ADMIN))
-+		!capable(CAP_NET_ADMIN)) {
- 		return -EPERM;
-+	}
- 
--	if (wol->wolopts & ~WAKE_MAGIC)
-+	if (wol->wolopts & ~WAKE_MAGIC) {
- 		return -EINVAL;
-+	}
- 
--	card = netdev_card(netdev);
- 	if (wol->wolopts & WAKE_MAGIC) {
- 		status = lv1_net_control(bus_id(card), dev_id(card),
--					 GELIC_LV1_SET_WOL,
--					 GELIC_LV1_WOL_MAGIC_PACKET,
--					 0, GELIC_LV1_WOL_MP_ENABLE,
--					 &v1, &v2);
-+			GELIC_LV1_SET_WOL, GELIC_LV1_WOL_MAGIC_PACKET, 0,
-+			GELIC_LV1_WOL_MP_ENABLE, &v1, &v2);
-+
- 		if (status) {
--			pr_info("%s: enabling WOL failed %d\n", __func__,
--				status);
-+			dev_dbg(dev, "%s:%d: enabling WOL failed: %d\n",
-+				__func__, __LINE__, status);
- 			status = -EIO;
- 			goto done;
- 		}
-+
- 		status = lv1_net_control(bus_id(card), dev_id(card),
--					 GELIC_LV1_SET_WOL,
--					 GELIC_LV1_WOL_ADD_MATCH_ADDR,
--					 0, GELIC_LV1_WOL_MATCH_ALL,
--					 &v1, &v2);
--		if (!status)
-+			GELIC_LV1_SET_WOL, GELIC_LV1_WOL_ADD_MATCH_ADDR, 0,
-+			GELIC_LV1_WOL_MATCH_ALL, &v1, &v2);
-+
-+		if (!status) {
- 			ps3_sys_manager_set_wol(1);
--		else {
--			pr_info("%s: enabling WOL filter failed %d\n",
--				__func__, status);
-+		} else {
-+			dev_dbg(dev, "%s:%d: Enabling WOL filter failed: %d\n",
-+				__func__, __LINE__, status);
- 			status = -EIO;
- 		}
- 	} else {
- 		status = lv1_net_control(bus_id(card), dev_id(card),
--					 GELIC_LV1_SET_WOL,
--					 GELIC_LV1_WOL_MAGIC_PACKET,
--					 0, GELIC_LV1_WOL_MP_DISABLE,
--					 &v1, &v2);
-+			GELIC_LV1_SET_WOL, GELIC_LV1_WOL_MAGIC_PACKET, 0,
-+			GELIC_LV1_WOL_MP_DISABLE, &v1, &v2);
-+
- 		if (status) {
--			pr_info("%s: disabling WOL failed %d\n", __func__,
--				status);
-+			dev_dbg(dev, "%s:%d: Disabling WOL failed: %d\n",
-+				__func__, __LINE__, status);
- 			status = -EIO;
- 			goto done;
- 		}
-+
- 		status = lv1_net_control(bus_id(card), dev_id(card),
--					 GELIC_LV1_SET_WOL,
--					 GELIC_LV1_WOL_DELETE_MATCH_ADDR,
--					 0, GELIC_LV1_WOL_MATCH_ALL,
--					 &v1, &v2);
-+			GELIC_LV1_SET_WOL, GELIC_LV1_WOL_DELETE_MATCH_ADDR, 0,
-+			GELIC_LV1_WOL_MATCH_ALL, &v1, &v2);
-+
- 		if (!status)
- 			ps3_sys_manager_set_wol(0);
- 		else {
--			pr_info("%s: removing WOL filter failed %d\n",
--				__func__, status);
-+			dev_dbg(dev, "%s:%d: Removing WOL filter failed: %d\n",
-+				__func__, __LINE__, status);
- 			status = -EIO;
- 		}
- 	}
-@@ -1445,6 +1463,11 @@ static const struct ethtool_ops gelic_ether_ethtool_ops = {
- 	.set_link_ksettings = gelic_ether_set_link_ksettings,
+ 	/* Store the PMC values */
+ 	unsigned long pmcs[MAX_HWEVENTS];
++	int migrate;
  };
  
-+static struct gelic_card *gelic_work_to_card(struct work_struct *work)
+ static DEFINE_PER_CPU(struct cpu_hw_events, cpu_hw_events);
+@@ -1335,6 +1336,22 @@ static void power_pmu_disable(struct pmu *pmu)
+ }
+ 
+ /*
++ * Called from powerpc mobility code
++ * before migration to disable counters
++ * if the PMU is active.
++ */
++void mobility_pmu_disable(void)
 +{
-+	return container_of(work, struct gelic_card, tx_timeout_task);
++	struct cpu_hw_events *cpuhw;
++
++	cpuhw = this_cpu_ptr(&cpu_hw_events);
++	if (cpuhw->n_events != 0) {
++		power_pmu_disable(NULL);
++		cpuhw->migrate = 1;
++	}
 +}
 +
- /**
-  * gelic_net_tx_timeout_task - task scheduled by the watchdog timeout
-  * function (to be called not under interrupt status)
-@@ -1454,14 +1477,15 @@ static const struct ethtool_ops gelic_ether_ethtool_ops = {
-  */
- static void gelic_net_tx_timeout_task(struct work_struct *work)
- {
--	struct gelic_card *card =
--		container_of(work, struct gelic_card, tx_timeout_task);
-+	struct gelic_card *card = gelic_work_to_card(work);
- 	struct net_device *netdev = card->netdev[GELIC_PORT_ETHERNET_0];
-+	struct device *dev = ctodev(card);
- 
--	dev_info(ctodev(card), "%s:Timed out. Restarting...\n", __func__);
-+	dev_info(dev, "%s:%d: Timed out. Restarting...\n", __func__, __LINE__);
- 
--	if (!(netdev->flags & IFF_UP))
-+	if (!(netdev->flags & IFF_UP)) {
- 		goto out;
-+	}
- 
- 	netif_device_detach(netdev);
- 	gelic_net_stop(netdev);
-@@ -1486,10 +1510,12 @@ void gelic_net_tx_timeout(struct net_device *netdev, unsigned int txqueue)
- 
- 	card = netdev_card(netdev);
- 	atomic_inc(&card->tx_timeout_task_counter);
--	if (netdev->flags & IFF_UP)
-+
-+	if (netdev->flags & IFF_UP) {
- 		schedule_work(&card->tx_timeout_task);
--	else
-+	} else {
- 		atomic_dec(&card->tx_timeout_task_counter);
-+	}
- }
- 
- static const struct net_device_ops gelic_netdevice_ops = {
-@@ -1513,7 +1539,7 @@ static const struct net_device_ops gelic_netdevice_ops = {
-  * fills out function pointers in the net_device structure
-  */
- static void gelic_ether_setup_netdev_ops(struct net_device *netdev,
--					 struct napi_struct *napi)
-+	struct napi_struct *napi)
- {
- 	netdev->watchdog_timeo = GELIC_NET_WATCHDOG_TIMEOUT;
- 	/* NAPI */
-@@ -1534,25 +1560,28 @@ static void gelic_ether_setup_netdev_ops(struct net_device *netdev,
-  **/
- int gelic_net_setup_netdev(struct net_device *netdev, struct gelic_card *card)
- {
-+	struct device *dev = ctodev(card);
- 	int status;
- 	u64 v1, v2;
- 
- 	netdev->hw_features = NETIF_F_IP_CSUM | NETIF_F_RXCSUM;
--
- 	netdev->features = NETIF_F_IP_CSUM;
--	if (GELIC_CARD_RX_CSUM_DEFAULT)
-+
-+	if (GELIC_CARD_RX_CSUM_DEFAULT) {
- 		netdev->features |= NETIF_F_RXCSUM;
-+	}
- 
- 	status = lv1_net_control(bus_id(card), dev_id(card),
--				 GELIC_LV1_GET_MAC_ADDRESS,
--				 0, 0, 0, &v1, &v2);
-+		GELIC_LV1_GET_MAC_ADDRESS, 0, 0, 0, &v1, &v2);
-+
- 	v1 <<= 16;
-+
- 	if (status || !is_valid_ether_addr((u8 *)&v1)) {
--		dev_info(ctodev(card),
--			 "%s:lv1_net_control GET_MAC_ADDR failed %d\n",
--			 __func__, status);
-+		dev_dbg(dev, "%s:%d: lv1_net_control GET_MAC_ADDR failed: %d\n",
-+				__func__, __LINE__, status);
- 		return -EINVAL;
- 	}
-+
- 	memcpy(netdev->dev_addr, &v1, ETH_ALEN);
- 
- 	if (card->vlan_required) {
-@@ -1569,13 +1598,15 @@ int gelic_net_setup_netdev(struct net_device *netdev, struct gelic_card *card)
- 	netdev->max_mtu = GELIC_NET_MAX_MTU;
- 
- 	status = register_netdev(netdev);
-+
- 	if (status) {
--		dev_err(ctodev(card), "%s:Couldn't register %s %d\n",
--			__func__, netdev->name, status);
-+		dev_err(dev, "%s:%d: Couldn't register %s: %d\n", __func__,
-+			__LINE__, netdev->name, status);
- 		return status;
- 	}
--	dev_info(ctodev(card), "%s: MAC addr %pM\n",
--		 netdev->name, netdev->dev_addr);
-+
-+	dev_info(dev, "%s:%d: %s MAC addr %pxM\n", __func__, __LINE__,
-+		netdev->name, netdev->dev_addr);
- 
- 	return 0;
- }
-@@ -1600,34 +1631,33 @@ static struct gelic_card *gelic_alloc_card_net(struct net_device **netdev)
++/*
+  * Re-enable all events if disable == 0.
+  * If we were previously disabled and events were added, then
+  * put the new config on the PMU.
+@@ -1379,8 +1396,10 @@ static void power_pmu_enable(struct pmu *pmu)
+ 	 * no need to recalculate MMCR* settings and reset the PMCs.
+ 	 * Just reenable the PMU with the current MMCR* settings
+ 	 * (possibly updated for removal of events).
++	 * While reenabling PMU during partition migration, continue
++	 * with normal flow.
  	 */
- 	BUILD_BUG_ON(offsetof(struct gelic_card, irq_status) % 8);
- 	BUILD_BUG_ON(offsetof(struct gelic_card, descr) % 32);
--	alloc_size =
--		sizeof(struct gelic_card) +
-+
-+	alloc_size = sizeof(struct gelic_card) +
- 		sizeof(struct gelic_descr) * GELIC_NET_RX_DESCRIPTORS +
- 		sizeof(struct gelic_descr) * GELIC_NET_TX_DESCRIPTORS +
- 		GELIC_ALIGN - 1;
- 
- 	p  = kzalloc(alloc_size, GFP_KERNEL);
--	if (!p)
-+
-+	if (!p) {
- 		return NULL;
-+	}
-+
- 	card = PTR_ALIGN(p, GELIC_ALIGN);
- 	card->unalign = p;
- 
--	/*
--	 * alloc netdev
--	 */
- 	*netdev = alloc_etherdev(sizeof(struct gelic_port));
-+
- 	if (!*netdev) {
- 		kfree(card->unalign);
- 		return NULL;
- 	}
--	port = netdev_priv(*netdev);
- 
--	/* gelic_port */
-+	port = netdev_priv(*netdev);
- 	port->netdev = *netdev;
- 	port->card = card;
- 	port->type = GELIC_PORT_ETHERNET_0;
- 
--	/* gelic_card */
- 	card->netdev[GELIC_PORT_ETHERNET_0] = *netdev;
- 
- 	INIT_WORK(&card->tx_timeout_task, gelic_net_tx_timeout_task);
-@@ -1641,13 +1671,15 @@ static struct gelic_card *gelic_alloc_card_net(struct net_device **netdev)
- 
- static void gelic_card_get_vlan_info(struct gelic_card *card)
- {
-+	struct device *dev = ctodev(card);
-+	unsigned int i;
- 	u64 v1, v2;
- 	int status;
--	unsigned int i;
--	struct {
-+	struct vlan_id {
- 		int tx;
- 		int rx;
--	} vlan_id_ix[2] = {
-+	};
-+	struct vlan_id vlan_id_ix[2] = {
- 		[GELIC_PORT_ETHERNET_0] = {
- 			.tx = GELIC_LV1_VLAN_TX_ETHERNET_0,
- 			.rx = GELIC_LV1_VLAN_RX_ETHERNET_0
-@@ -1661,38 +1693,44 @@ static void gelic_card_get_vlan_info(struct gelic_card *card)
- 	for (i = 0; i < ARRAY_SIZE(vlan_id_ix); i++) {
- 		/* tx tag */
- 		status = lv1_net_control(bus_id(card), dev_id(card),
--					 GELIC_LV1_GET_VLAN_ID,
--					 vlan_id_ix[i].tx,
--					 0, 0, &v1, &v2);
-+			GELIC_LV1_GET_VLAN_ID,	vlan_id_ix[i].tx, 0, 0, &v1,
-+			&v2);
-+
- 		if (status || !v1) {
--			if (status != LV1_NO_ENTRY)
--				dev_dbg(ctodev(card),
--					"get vlan id for tx(%d) failed(%d)\n",
--					vlan_id_ix[i].tx, status);
-+			if (status != LV1_NO_ENTRY) {
-+				dev_dbg(dev,
-+					"%s:%d: Get vlan id for tx(%d) failed: %d\n",
-+					__func__, __LINE__, vlan_id_ix[i].tx,
-+					status);
-+			}
- 			card->vlan[i].tx = 0;
- 			card->vlan[i].rx = 0;
- 			continue;
+-	if (!cpuhw->n_added) {
++	if (!cpuhw->n_added && !cpuhw->migrate) {
+ 		mtspr(SPRN_MMCRA, cpuhw->mmcr.mmcra & ~MMCRA_SAMPLE_ENABLE);
+ 		mtspr(SPRN_MMCR1, cpuhw->mmcr.mmcr1);
+ 		if (ppmu->flags & PPMU_ARCH_31)
+@@ -1434,11 +1453,15 @@ static void power_pmu_enable(struct pmu *pmu)
+ 	/*
+ 	 * Read off any pre-existing events that need to move
+ 	 * to another PMC.
++	 * While enabling PMU during partition migration,
++	 * skip power_pmu_read since all event count settings
++	 * needs to be re-initialised after migration.
+ 	 */
+ 	for (i = 0; i < cpuhw->n_events; ++i) {
+ 		event = cpuhw->event[i];
+-		if (event->hw.idx && event->hw.idx != hwc_index[i] + 1) {
+-			power_pmu_read(event);
++		if ((event->hw.idx && event->hw.idx != hwc_index[i] + 1) || (cpuhw->migrate)) {
++			if (!cpuhw->migrate)
++				power_pmu_read(event);
+ 			write_pmc(event->hw.idx, 0);
+ 			event->hw.idx = 0;
  		}
-+
- 		card->vlan[i].tx = (u16)v1;
- 
- 		/* rx tag */
- 		status = lv1_net_control(bus_id(card), dev_id(card),
--					 GELIC_LV1_GET_VLAN_ID,
--					 vlan_id_ix[i].rx,
--					 0, 0, &v1, &v2);
-+			GELIC_LV1_GET_VLAN_ID, vlan_id_ix[i].rx, 0, 0, &v1,
-+			&v2);
-+
- 		if (status || !v1) {
--			if (status != LV1_NO_ENTRY)
--				dev_info(ctodev(card),
--					 "get vlan id for rx(%d) failed(%d)\n",
--					 vlan_id_ix[i].rx, status);
-+			if (status != LV1_NO_ENTRY) {
-+				dev_dbg(dev,
-+					"%s:%d: Get vlan id for rx(%d) failed: %d\n",
-+					__func__, __LINE__, vlan_id_ix[i].rx,
-+					status);
-+			}
- 			card->vlan[i].tx = 0;
- 			card->vlan[i].rx = 0;
- 			continue;
- 		}
-+
- 		card->vlan[i].rx = (u16)v1;
- 
--		dev_dbg(ctodev(card), "vlan_id[%d] tx=%02x rx=%02x\n",
--			i, card->vlan[i].tx, card->vlan[i].rx);
-+		dev_dbg(dev, "%s:%d: vlan_id[%d] tx=%02x rx=%02x\n", __func__,
-+			__LINE__, i, card->vlan[i].tx, card->vlan[i].rx);
- 	}
- 
- 	if (card->vlan[GELIC_PORT_ETHERNET_0].tx) {
-@@ -1707,9 +1745,10 @@ static void gelic_card_get_vlan_info(struct gelic_card *card)
- 		card->vlan[GELIC_PORT_WIRELESS].rx = 0;
- 	}
- 
--	dev_info(ctodev(card), "internal vlan %s\n",
--		 card->vlan_required? "enabled" : "disabled");
-+	dev_dbg(dev, "%s:%d: internal vlan %s\n", __func__, __LINE__,
-+		card->vlan_required? "enabled" : "disabled");
- }
-+
- /*
-  * ps3_gelic_driver_probe - add a device to the control of this driver
-  */
-@@ -1872,26 +1911,25 @@ static int ps3_gelic_driver_probe(struct ps3_system_bus_device *sb_dev)
-  * ps3_gelic_driver_remove - remove a device from the control of this driver
-  */
- 
--static void ps3_gelic_driver_remove(struct ps3_system_bus_device *dev)
-+static void ps3_gelic_driver_remove(struct ps3_system_bus_device *sb_dev)
- {
--	struct gelic_card *card = ps3_system_bus_get_drvdata(dev);
-+	struct gelic_card *card = ps3_system_bus_get_drvdata(sb_dev);
-+	struct device *dev = &sb_dev->core;
- 	struct net_device *netdev0;
--	pr_debug("%s: called\n", __func__);
- 
--	/* set auto-negotiation */
-+	dev_dbg(dev, "%s:%d: >\n", __func__, __LINE__);
-+
- 	gelic_card_set_link_mode(card, GELIC_LV1_ETHER_AUTO_NEG);
- 
- #ifdef CONFIG_GELIC_WIRELESS
- 	gelic_wl_driver_remove(card);
- #endif
--	/* stop interrupt */
-+
- 	gelic_card_set_irq_mask(card, 0);
- 
--	/* turn off DMA, force end */
- 	gelic_card_disable_rxdmac(card);
- 	gelic_card_disable_txdmac(card);
- 
--	/* release chains */
- 	gelic_card_release_tx_chain(card, 1);
- 	gelic_card_release_rx_chain(card);
- 
-@@ -1899,28 +1937,28 @@ static void ps3_gelic_driver_remove(struct ps3_system_bus_device *dev)
- 	gelic_card_free_chain(card, card->rx_top);
- 
- 	netdev0 = card->netdev[GELIC_PORT_ETHERNET_0];
--	/* disconnect event port */
-+
- 	free_irq(card->irq, card);
- 	netdev0->irq = 0;
- 	ps3_sb_event_receive_port_destroy(card->dev, card->irq);
- 
- 	wait_event(card->waitq,
--		   atomic_read(&card->tx_timeout_task_counter) == 0);
-+		atomic_read(&card->tx_timeout_task_counter) == 0);
- 
- 	lv1_net_set_interrupt_status_indicator(bus_id(card), dev_id(card),
--					       0 , 0);
-+		0 , 0);
- 
- 	unregister_netdev(netdev0);
- 	kfree(netdev_card(netdev0)->unalign);
- 	free_netdev(netdev0);
- 
--	ps3_system_bus_set_drvdata(dev, NULL);
-+	ps3_system_bus_set_drvdata(sb_dev, NULL);
- 
--	ps3_dma_region_free(dev->d_region);
-+	ps3_dma_region_free(sb_dev->d_region);
- 
--	ps3_close_hv_device(dev);
-+	ps3_close_hv_device(sb_dev);
- 
--	pr_debug("%s: done\n", __func__);
-+	dev_dbg(dev, "%s:%d: <\n", __func__, __LINE__);
+@@ -1506,6 +1529,20 @@ static void power_pmu_enable(struct pmu *pmu)
+ 	local_irq_restore(flags);
  }
  
- static struct ps3_system_bus_driver ps3_gelic_driver = {
-@@ -1932,14 +1970,14 @@ static struct ps3_system_bus_driver ps3_gelic_driver = {
- 	.core.owner = THIS_MODULE,
- };
++/*
++ * Called from powerpc mobility code
++ * during migration completion to
++ * enable back PMU counters.
++ */
++void mobility_pmu_enable(void)
++{
++	struct cpu_hw_events *cpuhw;
++
++	cpuhw = this_cpu_ptr(&cpu_hw_events);
++	power_pmu_enable(NULL);
++	cpuhw->migrate = 0;
++}
++
+ static int collect_events(struct perf_event *group, int max_count,
+ 			  struct perf_event *ctrs[], u64 *events,
+ 			  unsigned int *flags)
+diff --git a/arch/powerpc/platforms/pseries/mobility.c b/arch/powerpc/platforms/pseries/mobility.c
+index e83e089..ff7a77c 100644
+--- a/arch/powerpc/platforms/pseries/mobility.c
++++ b/arch/powerpc/platforms/pseries/mobility.c
+@@ -476,6 +476,8 @@ static int do_join(void *arg)
+ retry:
+ 	/* Must ensure MSR.EE off for H_JOIN. */
+ 	hard_irq_disable();
++	/* Disable PMU before suspend */
++	mobility_pmu_disable();
+ 	hvrc = plpar_hcall_norets(H_JOIN);
  
--static int __init ps3_gelic_driver_init (void)
-+static int __init ps3_gelic_driver_init(void)
- {
- 	return firmware_has_feature(FW_FEATURE_PS3_LV1)
- 		? ps3_system_bus_driver_register(&ps3_gelic_driver)
- 		: -ENODEV;
+ 	switch (hvrc) {
+@@ -530,6 +532,8 @@ static int do_join(void *arg)
+ 	 * reset the watchdog.
+ 	 */
+ 	touch_nmi_watchdog();
++	/* Enable PMU after resuming */
++	mobility_pmu_enable();
+ 	return ret;
  }
  
--static void __exit ps3_gelic_driver_exit (void)
-+static void __exit ps3_gelic_driver_exit(void)
- {
- 	ps3_system_bus_driver_unregister(&ps3_gelic_driver);
- }
-@@ -1948,4 +1986,3 @@ module_init(ps3_gelic_driver_init);
- module_exit(ps3_gelic_driver_exit);
- 
- MODULE_ALIAS(PS3_MODULE_ALIAS_GELIC);
--
 -- 
-2.25.1
+1.8.3.1
 
