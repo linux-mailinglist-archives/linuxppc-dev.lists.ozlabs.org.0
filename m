@@ -2,102 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CB3C3C5DF7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jul 2021 16:08:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 511A63C5DF8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jul 2021 16:08:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GNlwT0bSZz303f
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jul 2021 00:08:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GNlww1Nfmz3blC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jul 2021 00:08:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DSjtaMi/;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=q4lmagBX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::533;
+ helo=mail-pg1-x533.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=DSjtaMi/; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=q4lmagBX; dkim-atps=neutral
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com
+ [IPv6:2607:f8b0:4864:20::533])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GNlvx4yn1z3000
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jul 2021 00:07:41 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 16CE3iU0144002; Mon, 12 Jul 2021 10:07:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=dRntATiYhXnEaLdwzmewjaMPOlMt18rJpskriL5gN98=;
- b=DSjtaMi/ZHNdB9J37yNo2gEKSfwAYLKatwd0mi+sHyUOy6uRtU2kEe7hu6ORlnOXTPzP
- G2zXIyBejCs3L7ppkGN2fq49WGsPKRgBo4EkdEJq4YL5SxIJqPQVL+pRIJIa2BUQMOSV
- KXC9ZqsfN+ihkdXCLpbI3p990P+DDdPuw6oUpCR4+vQywbm/lkiCbLK9PcuEMvTF5RWc
- tlGnY898aMwiQdDysEgtM4XFIIjPmN+euO6kG5iyhxqbeg/cQSzJrhTSfRQJtUqbxzda
- c/VMYocGOgg5iXaDeU7w9qK/sMqsMhJjd6FFGu2JXgWKPKdgs712KWCULzo/u5xU7Lom Vw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 39qs10k4ta-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 12 Jul 2021 10:07:38 -0400
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 16CE4VBE150957;
- Mon, 12 Jul 2021 10:07:37 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0b-001b2d01.pphosted.com with ESMTP id 39qs10k4sm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 12 Jul 2021 10:07:37 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16CE204h019290;
- Mon, 12 Jul 2021 14:07:36 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma04ams.nl.ibm.com with ESMTP id 39q3688tpq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 12 Jul 2021 14:07:36 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 16CE7Xim33685972
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 Jul 2021 14:07:33 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8289A52050;
- Mon, 12 Jul 2021 14:07:33 +0000 (GMT)
-Received: from [9.195.45.30] (unknown [9.195.45.30])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id 8C48B52051;
- Mon, 12 Jul 2021 14:07:32 +0000 (GMT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.6\))
-Subject: Re: [RFC PATCH 11/43] KVM: PPC: Book3S HV P9: Implement PMU
- save/restore in C
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <1626057686.aeolnlaqjr.astroid@bobo.none>
-Date: Mon, 12 Jul 2021 19:37:29 +0530
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GNlwH3lHJz30Gv
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jul 2021 00:07:58 +1000 (AEST)
+Received: by mail-pg1-x533.google.com with SMTP id 62so18389175pgf.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Jul 2021 07:07:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=FgUjJS+liPV7E6DIWjQh4VsfMeSfWIFGDk8agHLk9DM=;
+ b=q4lmagBX68tpTVehF/hplEYK7SUYbTRnkiSPakVLf1Wb8ionHkJ3JUgPkIhIc/+2Wo
+ W8cOc3tri76WaK2bDSQes5RIHipCxRLEWrcrEmRsgctgXH8tCC4/1YzYCa5gKMyglFh7
+ 65E1bnFz71uDP23yZVC7a4d23bRjmJIt/G1empeBAkqmOTTt1XqweRdG5nxq7eBKGdVW
+ KoXTrBIu/3F6jJQryBxCaswksOehAaqvdEk+UZd9gWkHNK5835BUy6NXx4IopUyFpJ29
+ E2uWLXVk56CWDKOrbZsAh+kUi6NP9PFCCBV4ISBQwGiD+A/VHqOa6h+tGE6V0D4M6Lqy
+ a1Eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=FgUjJS+liPV7E6DIWjQh4VsfMeSfWIFGDk8agHLk9DM=;
+ b=qVRntXCAmAdlS/rGtif6BQq7WtrIJ7/2HyIIESfC9/BBWcXkyQwyRsFleiqjEfaObL
+ fiFCC/oIMIoiZFJjtV+NB1JSfLOtk9r+HydSSTiGBRWaWfXw1gpI7IjO1nojV7DE6dNF
+ mESARWUI9JpepoFykknZ5Nl0+SIaFnlIqDMrKmGckLpZVERtkI192dlqtusTXaTUmsYf
+ GrQHR4gPpTAFRdBr2UWKPOJEOrYru1T7SsCdg58/88i93hKPek5ZBV0C2uGb/YKFQrbW
+ y9qR+2L1fkGk9QsDivwcCXDPKPR1fCqdMvX1QD6KicDiyrzFajyQEOcOwlacVOj4eMTL
+ 8g2A==
+X-Gm-Message-State: AOAM533ZIDsLx8QFkxEN063AjXURG4SWvJKZvV5uuaI3VnIOJIYB66yE
+ +QvRJoBTG976X35P9/9z8w4+k+9vMfs=
+X-Google-Smtp-Source: ABdhPJynRXfXlbL11L7R6tBzkunQX2zBbgOKGTav1PVDG7DgDnM8WkdZsFQSexp24OjbyjKDqyofqg==
+X-Received: by 2002:a63:1a12:: with SMTP id a18mr31223847pga.269.1626098873016; 
+ Mon, 12 Jul 2021 07:07:53 -0700 (PDT)
+Received: from localhost (203-219-181-43.static.tpgi.com.au. [203.219.181.43])
+ by smtp.gmail.com with ESMTPSA id
+ i8sm17384338pjh.36.2021.07.12.07.07.51
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 12 Jul 2021 07:07:52 -0700 (PDT)
+Date: Tue, 13 Jul 2021 00:07:46 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH] powerpc/64s/hash: Fix SLB preload cache vs kthread_use_mm
+To: linuxppc-dev@lists.ozlabs.org
+References: <20210708090549.77975-1-npiggin@gmail.com>
+In-Reply-To: <20210708090549.77975-1-npiggin@gmail.com>
+MIME-Version: 1.0
+Message-Id: <1626098505.b2zofm328v.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <E89DCB35-8672-4BD2-B1F9-36BE0F0B95AD@linux.vnet.ibm.com>
-References: <20210622105736.633352-1-npiggin@gmail.com>
- <20210622105736.633352-12-npiggin@gmail.com>
- <A647F37A-F32C-46B7-8A2E-C4D7CDB012E3@linux.vnet.ibm.com>
- <1626057686.aeolnlaqjr.astroid@bobo.none>
-To: Nicholas Piggin <npiggin@gmail.com>
-X-Mailer: Apple Mail (2.3608.120.23.2.6)
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: krs-l5-ZG5cO5HVUS4_UoOq4ld0r12Jo
-X-Proofpoint-ORIG-GUID: peF15S2ncmaJ0SAYoflxaFNS9-FTSDkH
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-07-12_08:2021-07-12,
- 2021-07-12 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 adultscore=0
- suspectscore=0 impostorscore=0 clxscore=1015 lowpriorityscore=0
- bulkscore=0 malwarescore=0 priorityscore=1501 mlxlogscore=999 mlxscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2107120111
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,139 +80,178 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, kvm-ppc@vger.kernel.org
+Cc: "Christopher M . Riedl" <cmr@codefail.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-> On 12-Jul-2021, at 8:19 AM, Nicholas Piggin <npiggin@gmail.com> wrote:
+Excerpts from Nicholas Piggin's message of July 8, 2021 7:05 pm:
+> It's possible for kernel threads to pick up SLB preload entries if
+> they are accessing userspace with kthread_use_mm. If the kthread
+> later is context switched while using a different mm, when it is
+> switched back it could preload SLBs belonging to the previous mm.
 >=20
-> Excerpts from Athira Rajeev's message of July 10, 2021 12:47 pm:
->>=20
->>=20
->>> On 22-Jun-2021, at 4:27 PM, Nicholas Piggin <npiggin@gmail.com> =
-wrote:
->>>=20
->>> Implement the P9 path PMU save/restore code in C, and remove the
->>> POWER9/10 code from the P7/8 path assembly.
->>>=20
->>> -449 cycles (8533) POWER9 virt-mode NULL hcall
->>>=20
->>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->>> ---
->>> arch/powerpc/include/asm/asm-prototypes.h |   5 -
->>> arch/powerpc/kvm/book3s_hv.c              | 205 =
-++++++++++++++++++++--
->>> arch/powerpc/kvm/book3s_hv_interrupts.S   |  13 +-
->>> arch/powerpc/kvm/book3s_hv_rmhandlers.S   |  43 +----
->>> 4 files changed, 200 insertions(+), 66 deletions(-)
->>>=20
->>> diff --git a/arch/powerpc/include/asm/asm-prototypes.h =
-b/arch/powerpc/include/asm/asm-prototypes.h
->>> index 02ee6f5ac9fe..928db8ef9a5a 100644
->>> --- a/arch/powerpc/include/asm/asm-prototypes.h
->>> +++ b/arch/powerpc/include/asm/asm-prototypes.h
->>> @@ -136,11 +136,6 @@ static inline void kvmppc_restore_tm_hv(struct =
-kvm_vcpu *vcpu, u64 msr,
->>> 					bool preserve_nv) { }
->>> #endif /* CONFIG_PPC_TRANSACTIONAL_MEM */
->>>=20
->>> -void kvmhv_save_host_pmu(void);
->>> -void kvmhv_load_host_pmu(void);
->>> -void kvmhv_save_guest_pmu(struct kvm_vcpu *vcpu, bool pmu_in_use);
->>> -void kvmhv_load_guest_pmu(struct kvm_vcpu *vcpu);
->>> -
->>> void kvmppc_p9_enter_guest(struct kvm_vcpu *vcpu);
->>>=20
->>> long kvmppc_h_set_dabr(struct kvm_vcpu *vcpu, unsigned long dabr);
->>> diff --git a/arch/powerpc/kvm/book3s_hv.c =
-b/arch/powerpc/kvm/book3s_hv.c
->>> index f7349d150828..b1b94b3563b7 100644
->>> --- a/arch/powerpc/kvm/book3s_hv.c
->>> +++ b/arch/powerpc/kvm/book3s_hv.c
->>> @@ -3635,6 +3635,188 @@ static noinline void kvmppc_run_core(struct =
-kvmppc_vcore *vc)
->>> 	trace_kvmppc_run_core(vc, 1);
->>> }
->>>=20
->>> +/*
->>> + * Privileged (non-hypervisor) host registers to save.
->>> + */
->>> +struct p9_host_os_sprs {
->>> +	unsigned long dscr;
->>> +	unsigned long tidr;
->>> +	unsigned long iamr;
->>> +	unsigned long amr;
->>> +	unsigned long fscr;
->>> +
->>> +	unsigned int pmc1;
->>> +	unsigned int pmc2;
->>> +	unsigned int pmc3;
->>> +	unsigned int pmc4;
->>> +	unsigned int pmc5;
->>> +	unsigned int pmc6;
->>> +	unsigned long mmcr0;
->>> +	unsigned long mmcr1;
->>> +	unsigned long mmcr2;
->>> +	unsigned long mmcr3;
->>> +	unsigned long mmcra;
->>> +	unsigned long siar;
->>> +	unsigned long sier1;
->>> +	unsigned long sier2;
->>> +	unsigned long sier3;
->>> +	unsigned long sdar;
->>> +};
->>> +
->>> +static void freeze_pmu(unsigned long mmcr0, unsigned long mmcra)
->>> +{
->>> +	if (!(mmcr0 & MMCR0_FC))
->>> +		goto do_freeze;
->>> +	if (mmcra & MMCRA_SAMPLE_ENABLE)
->>> +		goto do_freeze;
->>> +	if (cpu_has_feature(CPU_FTR_ARCH_31)) {
->>> +		if (!(mmcr0 & MMCR0_PMCCEXT))
->>> +			goto do_freeze;
->>> +		if (!(mmcra & MMCRA_BHRB_DISABLE))
->>> +			goto do_freeze;
->>> +	}
->>> +	return;
->>=20
->>=20
->> Hi Nick
->>=20
->> When freezing the PMU, do we need to also set pmcregs_in_use to zero =
-?
+> This could lead to data corruption, leaks, SLB multi hits, etc.
 >=20
-> Not immediately, we still need to save out the values of the PMU=20
-> registers. If we clear pmcregs_in_use, then our hypervisor can discard=20=
-
-> the contents of those registers at any time.
+> In the absence of a usable hook to clear preloads when unusing an
+> mm, fix it by keeping track of the mm that the preloads belong to.
 >=20
->> Also, why we need these above conditions like MMCRA_SAMPLE_ENABLE,  =
-MMCR0_PMCCEXT checks also before freezing ?
+> Adjust the isync() comment to be clear it can't be skipped if we
+> had no preloads.
+
+I should note that this patch is wrong, and so I withdraw it. The
+supposed bug is not actually a bug, because the SLB preload only
+records the ESID/EA to preload, not the VA.
+
+So this cross-mm "leak" can happen, but the worst it will do is
+preload some addresses used in the previous mm that are not likely to
+be accessed in the new mm.
+
+There is an idea that this is the "correct" thing to be doing as
+performance goes, but on the other hand it should be pretty rare to
+happen so it may not be worth the extra logic. At least it should be
+submitted as a performance thing not bugfix if we did do it.
+
+Thanks,
+Nick
+
 >=20
-> Basically just because that's the condition we wnat to set the PMU to=20=
-
-> before entering the guest if the guest does not have its own PMU=20
-> registers in use.
+> Fixes: 5434ae74629a ("powerpc/64s/hash: Add a SLB preload cache")
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>  arch/powerpc/include/asm/thread_info.h |  1 +
+>  arch/powerpc/mm/book3s64/slb.c         | 36 ++++++++++++++++++--------
+>  2 files changed, 26 insertions(+), 11 deletions(-)
 >=20
-> I'm not entirely sure this is correct / optimal for perf though, so we
-> should double check that. I think some of this stuff should be wrapped=20=
-
-> up and put into perf/ subdirectory as I've said before. KVM shouldn't=20=
-
-> need to know about exactly how PMU is to be set up and managed by
-> perf, we should just be able to ask perf to save/restore/switch state.
-
-Hi Nick,
-
-Agree to your point. It makes sense that some of these perf code should =
-be moved under perf/ directory.
-
-Athira
+> diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/includ=
+e/asm/thread_info.h
+> index b4ec6c7dd72e..c3de13dde2af 100644
+> --- a/arch/powerpc/include/asm/thread_info.h
+> +++ b/arch/powerpc/include/asm/thread_info.h
+> @@ -54,6 +54,7 @@ struct thread_info {
+>  #if defined(CONFIG_VIRT_CPU_ACCOUNTING_NATIVE) && defined(CONFIG_PPC32)
+>  	struct cpu_accounting_data accounting;
+>  #endif
+> +	struct mm_struct *slb_preload_mm;
+>  	unsigned char slb_preload_nr;
+>  	unsigned char slb_preload_tail;
+>  	u32 slb_preload_esid[SLB_PRELOAD_NR];
+> diff --git a/arch/powerpc/mm/book3s64/slb.c b/arch/powerpc/mm/book3s64/sl=
+b.c
+> index c91bd85eb90e..4f9dbce0dd84 100644
+> --- a/arch/powerpc/mm/book3s64/slb.c
+> +++ b/arch/powerpc/mm/book3s64/slb.c
+> @@ -294,11 +294,20 @@ static bool preload_hit(struct thread_info *ti, uns=
+igned long esid)
+>  	return false;
+>  }
+> =20
+> -static bool preload_add(struct thread_info *ti, unsigned long ea)
+> +static bool preload_add(struct thread_info *ti, struct mm_struct *mm, un=
+signed long ea)
+>  {
+>  	unsigned char idx;
+>  	unsigned long esid;
+> =20
+> +	if (unlikely(ti->slb_preload_mm !=3D mm)) {
+> +		/*
+> +		 * kthread_use_mm or other temporary mm switching can
+> +		 * change the mm being used by a particular thread.
+> +		 */
+> +		ti->slb_preload_nr =3D 0;
+> +		ti->slb_preload_mm =3D mm;
+> +	}
+> +
+>  	if (mmu_has_feature(MMU_FTR_1T_SEGMENT)) {
+>  		/* EAs are stored >> 28 so 256MB segments don't need clearing */
+>  		if (ea & ESID_MASK_1T)
+> @@ -362,13 +371,13 @@ void slb_setup_new_exec(void)
+>  	 * 0x10000000 so it makes sense to preload this segment.
+>  	 */
+>  	if (!is_kernel_addr(exec)) {
+> -		if (preload_add(ti, exec))
+> +		if (preload_add(ti, mm, exec))
+>  			slb_allocate_user(mm, exec);
+>  	}
+> =20
+>  	/* Libraries and mmaps. */
+>  	if (!is_kernel_addr(mm->mmap_base)) {
+> -		if (preload_add(ti, mm->mmap_base))
+> +		if (preload_add(ti, mm, mm->mmap_base))
+>  			slb_allocate_user(mm, mm->mmap_base);
+>  	}
+> =20
+> @@ -394,19 +403,19 @@ void preload_new_slb_context(unsigned long start, u=
+nsigned long sp)
+> =20
+>  	/* Userspace entry address. */
+>  	if (!is_kernel_addr(start)) {
+> -		if (preload_add(ti, start))
+> +		if (preload_add(ti, mm, start))
+>  			slb_allocate_user(mm, start);
+>  	}
+> =20
+>  	/* Top of stack, grows down. */
+>  	if (!is_kernel_addr(sp)) {
+> -		if (preload_add(ti, sp))
+> +		if (preload_add(ti, mm, sp))
+>  			slb_allocate_user(mm, sp);
+>  	}
+> =20
+>  	/* Bottom of heap, grows up. */
+>  	if (heap && !is_kernel_addr(heap)) {
+> -		if (preload_add(ti, heap))
+> +		if (preload_add(ti, mm, heap))
+>  			slb_allocate_user(mm, heap);
+>  	}
+> =20
+> @@ -502,6 +511,11 @@ void switch_slb(struct task_struct *tsk, struct mm_s=
+truct *mm)
+> =20
+>  	copy_mm_to_paca(mm);
+> =20
+> +	if (unlikely(ti->slb_preload_mm !=3D mm)) {
+> +		ti->slb_preload_nr =3D 0;
+> +		ti->slb_preload_mm =3D mm;
+> +	}
+> +
+>  	/*
+>  	 * We gradually age out SLBs after a number of context switches to
+>  	 * reduce reload overhead of unused entries (like we do with FP/VEC
+> @@ -513,7 +527,7 @@ void switch_slb(struct task_struct *tsk, struct mm_st=
+ruct *mm)
+>  		unsigned long pc =3D KSTK_EIP(tsk);
+> =20
+>  		preload_age(ti);
+> -		preload_add(ti, pc);
+> +		preload_add(ti, mm, pc);
+>  	}
+> =20
+>  	for (i =3D 0; i < ti->slb_preload_nr; i++) {
+> @@ -527,9 +541,9 @@ void switch_slb(struct task_struct *tsk, struct mm_st=
+ruct *mm)
+>  	}
+> =20
+>  	/*
+> -	 * Synchronize slbmte preloads with possible subsequent user memory
+> -	 * address accesses by the kernel (user mode won't happen until
+> -	 * rfid, which is safe).
+> +	 * Synchronize slbias and slbmte preloads with possible subsequent user
+> +	 * memory address accesses by the kernel (user mode won't happen until
+> +	 * rfid, which is synchronizing).
+>  	 */
+>  	isync();
+>  }
+> @@ -863,7 +877,7 @@ DEFINE_INTERRUPT_HANDLER_RAW(do_slb_fault)
+> =20
+>  		err =3D slb_allocate_user(mm, ea);
+>  		if (!err)
+> -			preload_add(current_thread_info(), ea);
+> +			preload_add(current_thread_info(), mm, ea);
+> =20
+>  		return err;
+>  	}
+> --=20
+> 2.23.0
 >=20
-> Thanks,
-> Nick
-
+>=20
