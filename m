@@ -2,112 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B6DD3C5CB7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jul 2021 14:58:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CED0D3C5CB8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jul 2021 14:58:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GNkMc2kmpz3bVn
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jul 2021 22:58:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GNkN550XCz3blB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jul 2021 22:58:29 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TIXovsvw;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RMHnwqwy;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RMHnwqwy;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=TIXovsvw; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=RMHnwqwy; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=RMHnwqwy; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [216.205.24.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GNVWr48jJz2yxj
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Jul 2021 14:04:23 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 16C43Aep121318; Mon, 12 Jul 2021 00:04:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : mime-version :
- content-type : from : in-reply-to : date : cc : content-transfer-encoding
- : message-id : references : to; s=pp1;
- bh=SnCnHdtOeqy9L++ZFtPlHUXIxEcgiWEXhHOKAojy3eA=;
- b=TIXovsvwv7es6KR8v0LtDjtOdoaUoy6YudxunUoPHDh8RKzZoeD5acjxIQhuq5Ojf8zw
- csvE+9Fokk5v3WQ+mOENsLhfbD1gcx6vUEZKyM+rM8NjrfbGc+Fn+qvcST+1yd/dkIAh
- xk7BIghocj9oDgKcYJTpPFA8ZzHpAQmTLXcuB6vGcxuXBjY4IdKx5SRqBXFrWIanmbqA
- 02986LFpnQOXacwfokOVc+e+FYO0yaLkK/h0Wr/oyn/qs86aCm11KvI1bst10qGqURcZ
- WH6c2E12xKGBL6EayVwDOHLD2Z+VlqnxLaeg0T5P7LEq+7HCyaGwB/Tja7jQTHw1yTom gQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39qrr3cb46-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 12 Jul 2021 00:04:21 -0400
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 16C43We7126276;
- Mon, 12 Jul 2021 00:04:20 -0400
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39qrr3cb2u-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 12 Jul 2021 00:04:20 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16C441lJ027805;
- Mon, 12 Jul 2021 04:04:18 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma04fra.de.ibm.com with ESMTP id 39q368g9m5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 12 Jul 2021 04:04:18 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 16C42DIn28508428
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 Jul 2021 04:02:13 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C986611C04C;
- Mon, 12 Jul 2021 04:04:14 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B376311C052;
- Mon, 12 Jul 2021 04:04:13 +0000 (GMT)
-Received: from [9.195.47.54] (unknown [9.195.47.54])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Mon, 12 Jul 2021 04:04:13 +0000 (GMT)
-Subject: Re: [RFC PATCH 10/43] powerpc/64s: Always set PMU control registers
- to frozen/disabled when not in use
-Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.6\))
-Content-Type: text/html;
-	charset=utf-8
-X-Apple-Auto-Saved: 1
-X-Apple-Mail-Plain-Text-Draft: yes
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-X-Apple-Mail-Remote-Attachments: YES
-X-Apple-Base-Url: x-msg://22/
-In-Reply-To: <1626057462.8m12ralsd6.astroid@bobo.none>
-X-Apple-Windows-Friendly: 1
-Date: Mon, 12 Jul 2021 08:47:12 +0530
-X-Apple-Mail-Signature: SKIP_SIGNATURE
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <C5467AE9-8348-4B84-A2DA-688C3E9C4F1E@linux.vnet.ibm.com>
-References: <20210622105736.633352-1-npiggin@gmail.com>
- <20210622105736.633352-11-npiggin@gmail.com>
- <C58A063A-3B5D-4188-80E2-4C19802785BF@linux.vnet.ibm.com>
- <1626057462.8m12ralsd6.astroid@bobo.none>
-X-Uniform-Type-Identifier: com.apple.mail-draft
-To: Nicholas Piggin <npiggin@gmail.com>
-X-Mailer: Apple Mail (2.3608.120.23.2.6)
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Z7ID5iGbwYHqPp11K578fJMeJNuTDLx7
-X-Proofpoint-ORIG-GUID: wxwMsiJuWoUxpNPv0zCWgTRJFTGm-NIm
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-07-12_02:2021-07-09,
- 2021-07-12 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 mlxscore=0
- bulkscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0 mlxlogscore=999
- spamscore=0 impostorscore=0 suspectscore=0 clxscore=1015 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104190000
- definitions=main-2107120031
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GNk1L1gjXz2yXy
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Jul 2021 22:42:12 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1626093728;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=JgthilpN6XZFAy+UGPe835lylTvKYfM8g6LSaHbkPeU=;
+ b=RMHnwqwyz0jet4Vd+oHM+nw8qUWHuOY1ZSFAlWkGWPPgutu0X1U6DHadq7dku4Az1XCn/A
+ iq/A6bb75pIssW+TNjhVNx0+fRoyb4/IbLJZPfyeYuuX6a2KjgHs/0BK24d7OSF5ZDJRJg
+ f+1ZZ2ys4cFxpzmagWDOGBhtB3IjwSs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1626093728;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=JgthilpN6XZFAy+UGPe835lylTvKYfM8g6LSaHbkPeU=;
+ b=RMHnwqwyz0jet4Vd+oHM+nw8qUWHuOY1ZSFAlWkGWPPgutu0X1U6DHadq7dku4Az1XCn/A
+ iq/A6bb75pIssW+TNjhVNx0+fRoyb4/IbLJZPfyeYuuX6a2KjgHs/0BK24d7OSF5ZDJRJg
+ f+1ZZ2ys4cFxpzmagWDOGBhtB3IjwSs=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-227-3hAqniKNON2zUxKAhWLfZw-1; Mon, 12 Jul 2021 08:42:06 -0400
+X-MC-Unique: 3hAqniKNON2zUxKAhWLfZw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
+ [10.5.11.16])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B87381936B71;
+ Mon, 12 Jul 2021 12:42:00 +0000 (UTC)
+Received: from t480s.redhat.com (ovpn-113-111.rdu2.redhat.com [10.10.113.111])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3670D5C1D1;
+ Mon, 12 Jul 2021 12:41:40 +0000 (UTC)
+From: David Hildenbrand <david@redhat.com>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH v1 2/4] mm/memory_hotplug: remove nid parameter from
+ arch_remove_memory()
+Date: Mon, 12 Jul 2021 14:40:50 +0200
+Message-Id: <20210712124052.26491-3-david@redhat.com>
+In-Reply-To: <20210712124052.26491-1-david@redhat.com>
+References: <20210712124052.26491-1-david@redhat.com>
+MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
 X-Mailman-Approved-At: Mon, 12 Jul 2021 22:57:40 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -120,162 +90,265 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, kvm-ppc@vger.kernel.org
+Cc: Michel Lespinasse <michel@lespinasse.org>,
+ Kefeng Wang <wangkefeng.wang@huawei.com>,
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, linux-ia64@vger.kernel.org,
+ Wei Yang <richard.weiyang@linux.alibaba.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Jason Wang <jasowang@redhat.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ virtualization@lists.linux-foundation.org, linux-mm@kvack.org,
+ Rich Felker <dalias@libc.org>, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Will Deacon <will@kernel.org>,
+ Ard Biesheuvel <ardb@kernel.org>, linux-s390@vger.kernel.org,
+ Laurent Dufour <ldufour@linux.ibm.com>, Dave Jiang <dave.jiang@intel.com>,
+ Baoquan He <bhe@redhat.com>, Christian Borntraeger <borntraeger@de.ibm.com>,
+ linux-sh@vger.kernel.org, David Hildenbrand <david@redhat.com>,
+ linux-acpi@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+ linux-arm-kernel@lists.infradead.org, Len Brown <lenb@kernel.org>,
+ Nathan Lynch <nathanl@linux.ibm.com>,
+ Pavel Tatashin <pasha.tatashin@soleen.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Borislav Petkov <bp@alien8.de>,
+ Sergei Trofimovich <slyfox@gentoo.org>, Andy Lutomirski <luto@kernel.org>,
+ Jia He <justin.he@arm.com>, Dan Williams <dan.j.williams@intel.com>,
+ Michal Hocko <mhocko@kernel.org>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>,
+ Christophe Leroy <christophe.leroy@c-s.fr>,
+ Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Pierre Morel <pmorel@linux.ibm.com>, Scott Cheloha <cheloha@linux.ibm.com>,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>, Thomas Gleixner <tglx@linutronix.de>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Joe Perches <joe@perches.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-<html><head></head><body dir=3D"auto" style=3D"word-wrap: break-word; =
--webkit-nbsp-mode: space; line-break: after-white-space;" =
-class=3D"ApplePlainTextBody"><div dir=3D"auto" style=3D"word-wrap: =
-break-word; -webkit-nbsp-mode: space; line-break: after-white-space;" =
-class=3D"ApplePlainTextBody"><div =
-class=3D"ApplePlainTextBody"><br><br><blockquote type=3D"cite">On =
-12-Jul-2021, at 8:11 AM, Nicholas Piggin &lt;npiggin@gmail.com&gt; =
-wrote:<br><br>Excerpts from Athira Rajeev's message of July 10, 2021 =
-12:50 pm:<br><blockquote type=3D"cite"><br><br><blockquote =
-type=3D"cite">On 22-Jun-2021, at 4:27 PM, Nicholas Piggin =
-&lt;npiggin@gmail.com&gt; wrote:<br><br>KVM PMU management code looks =
-for particular frozen/disabled bits in<br>the PMU registers so it knows =
-whether it must clear them when coming<br>out of a guest or not. Setting =
-this up helps KVM make these optimisations<br>without getting confused. =
-Longer term the better approach might be to<br>move guest/host PMU =
-switching to the perf subsystem.<br><br>Signed-off-by: Nicholas Piggin =
-&lt;npiggin@gmail.com&gt;<br>---<br>arch/powerpc/kernel/cpu_setup_power.c =
-| 4 ++--<br>arch/powerpc/kernel/dt_cpu_ftrs.c &nbsp;&nbsp;&nbsp;&nbsp;| =
-6 +++---<br>arch/powerpc/kvm/book3s_hv.c =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 5 =
-+++++<br>arch/powerpc/perf/core-book3s.c =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 7 +++++++<br>4 files changed, 17 =
-insertions(+), 5 deletions(-)<br><br>diff --git =
-a/arch/powerpc/kernel/cpu_setup_power.c =
-b/arch/powerpc/kernel/cpu_setup_power.c<br>index =
-a29dc8326622..3dc61e203f37 100644<br>--- =
-a/arch/powerpc/kernel/cpu_setup_power.c<br>+++ =
-b/arch/powerpc/kernel/cpu_setup_power.c<br>@@ -109,7 +109,7 @@ static =
-void init_PMU_HV_ISA207(void)<br>static void =
-init_PMU(void)<br>{<br><span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span>mtspr(SPRN_MMCRA, 0);<br>-<span =
-class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span>mtspr(SPRN_MMCR0, 0);<br>+<span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span>mtspr(SPRN_MMCR0, =
-MMCR0_FC);<br><span class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span>mtspr(SPRN_MMCR1, 0);<br><span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span>mtspr(SPRN_MMCR2, 0);<br>}<br>@@ =
--123,7 +123,7 @@ static void init_PMU_ISA31(void)<br>{<br><span =
-class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span>mtspr(SPRN_MMCR3, 0);<br><span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span>mtspr(SPRN_MMCRA, =
-MMCRA_BHRB_DISABLE);<br>-<span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span>mtspr(SPRN_MMCR0, =
-MMCR0_PMCCEXT);<br>+<span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span>mtspr(SPRN_MMCR0, MMCR0_FC | =
-MMCR0_PMCCEXT);<br>}<br><br>/*<br>diff --git =
-a/arch/powerpc/kernel/dt_cpu_ftrs.c =
-b/arch/powerpc/kernel/dt_cpu_ftrs.c<br>index 0a6b36b4bda8..06a089fbeaa7 =
-100644<br>--- a/arch/powerpc/kernel/dt_cpu_ftrs.c<br>+++ =
-b/arch/powerpc/kernel/dt_cpu_ftrs.c<br>@@ -353,7 +353,7 @@ static void =
-init_pmu_power8(void)<br><span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span>}<br><br><span =
-class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span>mtspr(SPRN_MMCRA, 0);<br>-<span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span>mtspr(SPRN_MMCR0, 0);<br>+<span =
-class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span>mtspr(SPRN_MMCR0, MMCR0_FC);<br><span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span>mtspr(SPRN_MMCR1, 0);<br><span =
-class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span>mtspr(SPRN_MMCR2, 0);<br><span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span>mtspr(SPRN_MMCRS, 0);<br>@@ =
--392,7 +392,7 @@ static void init_pmu_power9(void)<br><span =
-class=3D"Apple-tab-span" style=3D"white-space:pre">	</span><span =
-class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span>mtspr(SPRN_MMCRC, 0);<br><br><span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span>mtspr(SPRN_MMCRA, 0);<br>-<span =
-class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span>mtspr(SPRN_MMCR0, 0);<br>+<span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span>mtspr(SPRN_MMCR0, =
-MMCR0_FC);<br><span class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span>mtspr(SPRN_MMCR1, 0);<br><span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span>mtspr(SPRN_MMCR2, 0);<br>}<br>@@ =
--428,7 +428,7 @@ static void init_pmu_power10(void)<br><br><span =
-class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span>mtspr(SPRN_MMCR3, 0);<br><span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span>mtspr(SPRN_MMCRA, =
-MMCRA_BHRB_DISABLE);<br>-<span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span>mtspr(SPRN_MMCR0, =
-MMCR0_PMCCEXT);<br>+<span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span>mtspr(SPRN_MMCR0, MMCR0_FC | =
-MMCR0_PMCCEXT);<br>}<br><br>static int __init =
-feat_enable_pmu_power10(struct dt_cpu_feature *f)<br>diff --git =
-a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c<br>index =
-1f30f98b09d1..f7349d150828 100644<br>--- =
-a/arch/powerpc/kvm/book3s_hv.c<br>+++ =
-b/arch/powerpc/kvm/book3s_hv.c<br>@@ -2593,6 +2593,11 @@ static int =
-kvmppc_core_vcpu_create_hv(struct kvm_vcpu =
-*vcpu)<br>#endif<br>#endif<br><span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span>vcpu-&gt;arch.mmcr[0] =3D =
-MMCR0_FC;<br>+<span class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span>if (cpu_has_feature(CPU_FTR_ARCH_31)) {<br>+<span =
-class=3D"Apple-tab-span" style=3D"white-space:pre">	</span><span =
-class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span>vcpu-&gt;arch.mmcr[0] |=3D MMCR0_PMCCEXT;<br>+<span =
-class=3D"Apple-tab-span" style=3D"white-space:pre">	</span><span =
-class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span>vcpu-&gt;arch.mmcra =3D MMCRA_BHRB_DISABLE;<br>+<span =
-class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span>}<br>+<br><span class=3D"Apple-tab-span" style=3D"white-space:pre">=
-	</span>vcpu-&gt;arch.ctrl =3D CTRL_RUNLATCH;<br><span =
-class=3D"Apple-tab-span" style=3D"white-space:pre">	</span>/* =
-default to host PVR, since we can't spoof it */<br><span =
-class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span>kvmppc_set_pvr_hv(vcpu, mfspr(SPRN_PVR));<br>diff --git =
-a/arch/powerpc/perf/core-book3s.c =
-b/arch/powerpc/perf/core-book3s.c<br>index 51622411a7cc..e33b29ec1a65 =
-100644<br>--- a/arch/powerpc/perf/core-book3s.c<br>+++ =
-b/arch/powerpc/perf/core-book3s.c<br>@@ -1361,6 +1361,13 @@ static void =
-power_pmu_enable(struct pmu *pmu)<br><span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span>goto out;<br><br><span =
-class=3D"Apple-tab-span" style=3D"white-space:pre">	</span>if =
-(cpuhw-&gt;n_events =3D=3D 0) {<br>+<span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span>if =
-(cpu_has_feature(CPU_FTR_ARCH_31)) {<br>+<span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span>mtspr(SPRN_MMCRA, =
-MMCRA_BHRB_DISABLE);<br>+<span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span>mtspr(SPRN_MMCR0, MMCR0_FC | =
-MMCR0_PMCCEXT);<br>+<span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span>} else {<br>+<span =
-class=3D"Apple-tab-span" style=3D"white-space:pre">	</span><span =
-class=3D"Apple-tab-span" style=3D"white-space:pre">	</span><span =
-class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span>mtspr(SPRN_MMCRA, 0);<br>+<span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span><span class=3D"Apple-tab-span" =
-style=3D"white-space:pre">	</span>mtspr(SPRN_MMCR0, =
-MMCR0_FC);<br>+<span class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span><span class=3D"Apple-tab-span" style=3D"white-space:pre">	=
-</span>}<br></blockquote><br><br>Hi Nick,<br><br>We are setting these =
-bits in =E2=80=9Cpower_pmu_disable=E2=80=9D function. And disable will =
-be called before any event gets deleted/stopped. Can you please help to =
-understand why this is needed in power_pmu_enable path also =
-?<br></blockquote><br>I'll have to go back and check what I needed it =
-for.<br><br>Basically what I'm trying to achieve is that when the guest =
-and host <br>are not running perf, then the registers should match. This =
-way the host <br>can test them with mfspr but does not need to fix them =
-with mtspr.<br><br>It's not too important for performance after TM =
-facility demand faulting<br>and the nested guest PMU fix means you can =
-usually just skip that <br>entirely, but I think it's cleaner. I'll =
-double check my perf/ changes<br>it's possible that part should be split =
-out or is unnecessary.<br><br></blockquote><br>Sure =
-Nick<br><br>power_pmu_disable already sets =
-MMCRA_BHRB_DISABLE/MMCR0_FC/MMCR0_PMCCEXT bits.<br>Hence trying to =
-understand in which scenario we found this was needed for =
-power_pmu_enable.<br><br>Thanks<br>Athira<br><br><blockquote =
-type=3D"cite">Thanks,<br>Nick<br></blockquote><br></div></div></body></htm=
-l>=
+The parameter is unused, let's remove it.
+
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Acked-by: Heiko Carstens <hca@linux.ibm.com> (s390)
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@de.ibm.com>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Rich Felker <dalias@libc.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: x86@kernel.org
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Laurent Dufour <ldufour@linux.ibm.com>
+Cc: Sergei Trofimovich <slyfox@gentoo.org>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Michel Lespinasse <michel@lespinasse.org>
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: Joe Perches <joe@perches.com>
+Cc: Pierre Morel <pmorel@linux.ibm.com>
+Cc: Jia He <justin.he@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-ia64@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org
+Cc: linux-sh@vger.kernel.org
+Signed-off-by: David Hildenbrand <david@redhat.com>
+---
+ arch/arm64/mm/mmu.c            | 3 +--
+ arch/ia64/mm/init.c            | 3 +--
+ arch/powerpc/mm/mem.c          | 3 +--
+ arch/s390/mm/init.c            | 3 +--
+ arch/sh/mm/init.c              | 3 +--
+ arch/x86/mm/init_32.c          | 3 +--
+ arch/x86/mm/init_64.c          | 3 +--
+ include/linux/memory_hotplug.h | 3 +--
+ mm/memory_hotplug.c            | 4 ++--
+ mm/memremap.c                  | 5 +----
+ 10 files changed, 11 insertions(+), 22 deletions(-)
+
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index d74586508448..af8ab553a268 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -1506,8 +1506,7 @@ int arch_add_memory(int nid, u64 start, u64 size,
+ 	return ret;
+ }
+ 
+-void arch_remove_memory(int nid, u64 start, u64 size,
+-			struct vmem_altmap *altmap)
++void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
+ {
+ 	unsigned long start_pfn = start >> PAGE_SHIFT;
+ 	unsigned long nr_pages = size >> PAGE_SHIFT;
+diff --git a/arch/ia64/mm/init.c b/arch/ia64/mm/init.c
+index 064a967a7b6e..5c6da8d83c1a 100644
+--- a/arch/ia64/mm/init.c
++++ b/arch/ia64/mm/init.c
+@@ -484,8 +484,7 @@ int arch_add_memory(int nid, u64 start, u64 size,
+ 	return ret;
+ }
+ 
+-void arch_remove_memory(int nid, u64 start, u64 size,
+-			struct vmem_altmap *altmap)
++void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
+ {
+ 	unsigned long start_pfn = start >> PAGE_SHIFT;
+ 	unsigned long nr_pages = size >> PAGE_SHIFT;
+diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+index ad198b439222..c3c4e31462ec 100644
+--- a/arch/powerpc/mm/mem.c
++++ b/arch/powerpc/mm/mem.c
+@@ -119,8 +119,7 @@ int __ref arch_add_memory(int nid, u64 start, u64 size,
+ 	return rc;
+ }
+ 
+-void __ref arch_remove_memory(int nid, u64 start, u64 size,
+-			      struct vmem_altmap *altmap)
++void __ref arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
+ {
+ 	unsigned long start_pfn = start >> PAGE_SHIFT;
+ 	unsigned long nr_pages = size >> PAGE_SHIFT;
+diff --git a/arch/s390/mm/init.c b/arch/s390/mm/init.c
+index 8ac710de1ab1..d85bd7f5d8dc 100644
+--- a/arch/s390/mm/init.c
++++ b/arch/s390/mm/init.c
+@@ -306,8 +306,7 @@ int arch_add_memory(int nid, u64 start, u64 size,
+ 	return rc;
+ }
+ 
+-void arch_remove_memory(int nid, u64 start, u64 size,
+-			struct vmem_altmap *altmap)
++void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
+ {
+ 	unsigned long start_pfn = start >> PAGE_SHIFT;
+ 	unsigned long nr_pages = size >> PAGE_SHIFT;
+diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
+index ce26c7f8950a..506784702430 100644
+--- a/arch/sh/mm/init.c
++++ b/arch/sh/mm/init.c
+@@ -414,8 +414,7 @@ int arch_add_memory(int nid, u64 start, u64 size,
+ 	return ret;
+ }
+ 
+-void arch_remove_memory(int nid, u64 start, u64 size,
+-			struct vmem_altmap *altmap)
++void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
+ {
+ 	unsigned long start_pfn = PFN_DOWN(start);
+ 	unsigned long nr_pages = size >> PAGE_SHIFT;
+diff --git a/arch/x86/mm/init_32.c b/arch/x86/mm/init_32.c
+index 74b78840182d..bd90b8fe81e4 100644
+--- a/arch/x86/mm/init_32.c
++++ b/arch/x86/mm/init_32.c
+@@ -801,8 +801,7 @@ int arch_add_memory(int nid, u64 start, u64 size,
+ 	return __add_pages(nid, start_pfn, nr_pages, params);
+ }
+ 
+-void arch_remove_memory(int nid, u64 start, u64 size,
+-			struct vmem_altmap *altmap)
++void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
+ {
+ 	unsigned long start_pfn = start >> PAGE_SHIFT;
+ 	unsigned long nr_pages = size >> PAGE_SHIFT;
+diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
+index ddeaba947eb3..a6e11763763f 100644
+--- a/arch/x86/mm/init_64.c
++++ b/arch/x86/mm/init_64.c
+@@ -1255,8 +1255,7 @@ kernel_physical_mapping_remove(unsigned long start, unsigned long end)
+ 	remove_pagetable(start, end, true, NULL);
+ }
+ 
+-void __ref arch_remove_memory(int nid, u64 start, u64 size,
+-			      struct vmem_altmap *altmap)
++void __ref arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
+ {
+ 	unsigned long start_pfn = start >> PAGE_SHIFT;
+ 	unsigned long nr_pages = size >> PAGE_SHIFT;
+diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
+index d01b504ce06f..010a192298b5 100644
+--- a/include/linux/memory_hotplug.h
++++ b/include/linux/memory_hotplug.h
+@@ -130,8 +130,7 @@ static inline bool movable_node_is_enabled(void)
+ 	return movable_node_enabled;
+ }
+ 
+-extern void arch_remove_memory(int nid, u64 start, u64 size,
+-			       struct vmem_altmap *altmap);
++extern void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap);
+ extern void __remove_pages(unsigned long start_pfn, unsigned long nr_pages,
+ 			   struct vmem_altmap *altmap);
+ 
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index 93b3abaf9828..f2a9af3af184 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1106,7 +1106,7 @@ int __ref add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
+ 	/* create memory block devices after memory was added */
+ 	ret = create_memory_block_devices(start, size, mhp_altmap.alloc);
+ 	if (ret) {
+-		arch_remove_memory(nid, start, size, NULL);
++		arch_remove_memory(start, size, NULL);
+ 		goto error;
+ 	}
+ 
+@@ -1892,7 +1892,7 @@ static int __ref try_remove_memory(int nid, u64 start, u64 size)
+ 
+ 	mem_hotplug_begin();
+ 
+-	arch_remove_memory(nid, start, size, altmap);
++	arch_remove_memory(start, size, altmap);
+ 
+ 	if (IS_ENABLED(CONFIG_ARCH_KEEP_MEMBLOCK)) {
+ 		memblock_free(start, size);
+diff --git a/mm/memremap.c b/mm/memremap.c
+index 15a074ffb8d7..ed593bf87109 100644
+--- a/mm/memremap.c
++++ b/mm/memremap.c
+@@ -140,14 +140,11 @@ static void pageunmap_range(struct dev_pagemap *pgmap, int range_id)
+ {
+ 	struct range *range = &pgmap->ranges[range_id];
+ 	struct page *first_page;
+-	int nid;
+ 
+ 	/* make sure to access a memmap that was actually initialized */
+ 	first_page = pfn_to_page(pfn_first(pgmap, range_id));
+ 
+ 	/* pages are dead and unused, undo the arch mapping */
+-	nid = page_to_nid(first_page);
+-
+ 	mem_hotplug_begin();
+ 	remove_pfn_range_from_zone(page_zone(first_page), PHYS_PFN(range->start),
+ 				   PHYS_PFN(range_len(range)));
+@@ -155,7 +152,7 @@ static void pageunmap_range(struct dev_pagemap *pgmap, int range_id)
+ 		__remove_pages(PHYS_PFN(range->start),
+ 			       PHYS_PFN(range_len(range)), NULL);
+ 	} else {
+-		arch_remove_memory(nid, range->start, range_len(range),
++		arch_remove_memory(range->start, range_len(range),
+ 				pgmap_altmap(pgmap));
+ 		kasan_remove_zero_shadow(__va(range->start), range_len(range));
+ 	}
+-- 
+2.31.1
+
