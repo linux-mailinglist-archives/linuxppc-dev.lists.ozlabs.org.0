@@ -1,78 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C169B3C5C82
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jul 2021 14:42:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14D8E3C5C99
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jul 2021 14:50:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GNk2759Qzz3bSp
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jul 2021 22:42:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GNkBM6Ny4z30C1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jul 2021 22:50:03 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=U3ewErcQ;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=U3ewErcQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hjeuJdFl;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=U3ewErcQ; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=U3ewErcQ; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=hjeuJdFl; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GNk1g1tT8z300b
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Jul 2021 22:42:30 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1626093748;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=o0FdO9B1qE5YwKXkqC/7tnGLf5JxbTNt5M+hBS1amRE=;
- b=U3ewErcQE7a0FJte9/CNGvG2NJjtKeiUqvBADRhB0hrcNezC41RWeVWqawMUsGSovGDc5I
- fP43D/Fi36BLitpl8s+6+WlV5zq0KODaLS+KodGlorBxjf+NAg1mu3x+Qh9k8EITGhPAir
- ZfocQiD5EgIeuQ+QbP/mrKWlp+/uSCg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1626093748;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=o0FdO9B1qE5YwKXkqC/7tnGLf5JxbTNt5M+hBS1amRE=;
- b=U3ewErcQE7a0FJte9/CNGvG2NJjtKeiUqvBADRhB0hrcNezC41RWeVWqawMUsGSovGDc5I
- fP43D/Fi36BLitpl8s+6+WlV5zq0KODaLS+KodGlorBxjf+NAg1mu3x+Qh9k8EITGhPAir
- ZfocQiD5EgIeuQ+QbP/mrKWlp+/uSCg=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-533-I-qdw033PzGdkc0OmRRBOA-1; Mon, 12 Jul 2021 08:42:26 -0400
-X-MC-Unique: I-qdw033PzGdkc0OmRRBOA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
- [10.5.11.16])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 39475100C610;
- Mon, 12 Jul 2021 12:42:21 +0000 (UTC)
-Received: from t480s.redhat.com (ovpn-113-111.rdu2.redhat.com [10.10.113.111])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 3981C5C1D1;
- Mon, 12 Jul 2021 12:42:00 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH v1 3/4] mm/memory_hotplug: remove nid parameter from
- remove_memory() and friends
-Date: Mon, 12 Jul 2021 14:40:51 +0200
-Message-Id: <20210712124052.26491-4-david@redhat.com>
-In-Reply-To: <20210712124052.26491-1-david@redhat.com>
-References: <20210712124052.26491-1-david@redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GNk9r3g5zz2yX8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Jul 2021 22:49:36 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 16CCZAYZ086549; Mon, 12 Jul 2021 08:49:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : reply-to : references : mime-version : content-type
+ : in-reply-to; s=pp1; bh=LJYI1bacdtGJL+1DHEEvi/ZzNJU//hClCL+ahCL3twY=;
+ b=hjeuJdFlONaibCzfr4+ZMchWnqawJnEdKzrfU/m0xnGChAhbDzB5WXcar8ogPvZJE17p
+ mSWUhXqt5+UFbv6XRZaNb8nukm7IOnyK7006qL93MgurO7o1+q+3gieLVkyRh0ODBQtU
+ alxWFF7xnOj0nHRjV+w69c0AAvGAgvtLb1NbxrWSLk8cTefTLrbaGrYFam7osJmoD5X0
+ PIufbmp/rrF1h60CIVOB/iyoyKIol5KYKhDaGdi9UOGRXqrrZnTEEQSPGjxUQrDzfd/R
+ +bIAbBeB07vWeAaYFYsb3Khyh+HO9EXG7DwNDLjgkq1s169rsVaHiIZZCCgC6bYafBoO 9Q== 
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 39qs48rmaa-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 12 Jul 2021 08:49:05 -0400
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16CChX0M023645;
+ Mon, 12 Jul 2021 12:49:04 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma06fra.de.ibm.com with ESMTP id 39q2th8dm5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 12 Jul 2021 12:49:04 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 16CCn0PI35717440
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 12 Jul 2021 12:49:00 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BB369A4062;
+ Mon, 12 Jul 2021 12:49:00 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8AC30A4054;
+ Mon, 12 Jul 2021 12:48:57 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Mon, 12 Jul 2021 12:48:57 +0000 (GMT)
+Date: Mon, 12 Jul 2021 18:18:56 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Valentin Schneider <valentin.schneider@arm.com>
+Subject: Re: [PATCH v2 1/2] sched/topology: Skip updating masks for
+ non-online nodes
+Message-ID: <20210712124856.GA3836887@linux.vnet.ibm.com>
+References: <20210701041552.112072-1-srikar@linux.vnet.ibm.com>
+ <20210701041552.112072-2-srikar@linux.vnet.ibm.com>
+ <875yxu85wi.mognet@arm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <875yxu85wi.mognet@arm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: g3uLNbuXkP_eyoH59VlJi4Uwhkq9JcHx
+X-Proofpoint-ORIG-GUID: g3uLNbuXkP_eyoH59VlJi4Uwhkq9JcHx
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-07-12_07:2021-07-12,
+ 2021-07-12 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 adultscore=0
+ phishscore=0 lowpriorityscore=0 bulkscore=0 priorityscore=1501
+ clxscore=1015 spamscore=0 malwarescore=0 suspectscore=0 impostorscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2107120099
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,329 +101,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michel Lespinasse <michel@lespinasse.org>, nvdimm@lists.linux.dev,
- Kefeng Wang <wangkefeng.wang@huawei.com>,
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
- Wei Yang <richard.weiyang@linux.alibaba.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Jason Wang <jasowang@redhat.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- virtualization@lists.linux-foundation.org, linux-mm@kvack.org,
- Rich Felker <dalias@libc.org>, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Will Deacon <will@kernel.org>,
- Ard Biesheuvel <ardb@kernel.org>, Laurent Dufour <ldufour@linux.ibm.com>,
- Dave Jiang <dave.jiang@intel.com>, Baoquan He <bhe@redhat.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- David Hildenbrand <david@redhat.com>, linux-acpi@vger.kernel.org,
- Ingo Molnar <mingo@redhat.com>, Len Brown <lenb@kernel.org>,
- Nathan Lynch <nathanl@linux.ibm.com>,
- Pavel Tatashin <pasha.tatashin@soleen.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Borislav Petkov <bp@alien8.de>,
- Sergei Trofimovich <slyfox@gentoo.org>, Andy Lutomirski <luto@kernel.org>,
- Jia He <justin.he@arm.com>, Dan Williams <dan.j.williams@intel.com>,
- Michal Hocko <mhocko@kernel.org>, Vitaly Kuznetsov <vkuznets@redhat.com>,
- Vlastimil Babka <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>,
- Christophe Leroy <christophe.leroy@c-s.fr>,
- Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Pierre Morel <pmorel@linux.ibm.com>, Scott Cheloha <cheloha@linux.ibm.com>,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>, Thomas Gleixner <tglx@linutronix.de>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Joe Perches <joe@perches.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Mike Rapoport <rppt@kernel.org>
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Gautham R Shenoy <ego@linux.vnet.ibm.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>, Rik van Riel <riel@surriel.com>,
+ Peter Zijlstra <peterz@infradead.org>, linuxppc-dev@lists.ozlabs.org,
+ Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>,
+ LKML <linux-kernel@vger.kernel.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Laurent Dufour <ldufour@linux.ibm.com>,
+ Mel Gorman <mgorman@techsingularity.net>, Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There is only a single user remaining. We can simply lookup the nid only
-used for node offlining purposes when walking our memory blocks. We
-don't expect to remove multi-nid ranges; and if we'd ever do, we most
-probably don't care about removing multi-nid ranges that actually result
-in empty nodes.
+Hi Valentin,
 
-If ever required, we can detect the "multi-nid" scenario and simply try
-offlining all online nodes.
+> On 01/07/21 09:45, Srikar Dronamraju wrote:
+> > @@ -1891,12 +1894,30 @@ void sched_init_numa(void)
+> >  void sched_domains_numa_masks_set(unsigned int cpu)
+> >  {
+> 
+> Hmph, so we're playing games with masks of offline nodes - is that really
+> necessary? Your modification of sched_init_numa() still scans all of the
+> nodes (regardless of their online status) to build the distance map, and
+> that is never updated (sched_init_numa() is pretty much an __init
+> function).
+> 
+> So AFAICT this is all to cope with topology_span_sane() not applying
+> 'cpu_map' to its masks. That seemed fine to me back when I wrote it, but in
+> light of having bogus distance values for offline nodes, not so much...
+> 
+> What about the below instead?
+> 
+> ---
+> diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+> index b77ad49dc14f..c2d9caad4aa6 100644
+> --- a/kernel/sched/topology.c
+> +++ b/kernel/sched/topology.c
+> @@ -2075,6 +2075,7 @@ static struct sched_domain *build_sched_domain(struct sched_domain_topology_leve
+>  static bool topology_span_sane(struct sched_domain_topology_level *tl,
+>  			      const struct cpumask *cpu_map, int cpu)
+>  {
+> +	struct cpumask *intersect = sched_domains_tmpmask;
+>  	int i;
+> 
+>  	/* NUMA levels are allowed to overlap */
+> @@ -2090,14 +2091,17 @@ static bool topology_span_sane(struct sched_domain_topology_level *tl,
+>  	for_each_cpu(i, cpu_map) {
+>  		if (i == cpu)
+>  			continue;
+> +
+>  		/*
+> -		 * We should 'and' all those masks with 'cpu_map' to exactly
+> -		 * match the topology we're about to build, but that can only
+> -		 * remove CPUs, which only lessens our ability to detect
+> -		 * overlaps
+> +		 * We shouldn't have to bother with cpu_map here, unfortunately
+> +		 * some architectures (powerpc says hello) have to deal with
+> +		 * offline NUMA nodes reporting bogus distance values. This can
+> +		 * lead to funky NODE domain spans, but since those are offline
+> +		 * we can mask them out.
+>  		 */
+> +		cpumask_and(intersect, tl->mask(cpu), tl->mask(i));
+>  		if (!cpumask_equal(tl->mask(cpu), tl->mask(i)) &&
+> -		    cpumask_intersects(tl->mask(cpu), tl->mask(i)))
+> +		    cpumask_intersects(intersect, cpu_map))
+>  			return false;
+>  	}
+> 
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: Len Brown <lenb@kernel.org>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
-Cc: Dave Jiang <dave.jiang@intel.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>
-Cc: Laurent Dufour <ldufour@linux.ibm.com>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Cc: Scott Cheloha <cheloha@linux.ibm.com>
-Cc: Anton Blanchard <anton@ozlabs.org>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-acpi@vger.kernel.org
-Cc: nvdimm@lists.linux.dev
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- .../platforms/pseries/hotplug-memory.c        |  9 +++---
- drivers/acpi/acpi_memhotplug.c                |  7 +----
- drivers/dax/kmem.c                            |  3 +-
- drivers/virtio/virtio_mem.c                   |  4 +--
- include/linux/memory_hotplug.h                | 10 +++----
- mm/memory_hotplug.c                           | 28 +++++++++++--------
- 6 files changed, 30 insertions(+), 31 deletions(-)
+Unfortunately this is not helping.
+I tried this patch alone and also with 2/2 patch of this series where
+we update/fill fake topology numbers. However both cases are still failing.
 
-diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-index 377d852f5a9a..ef5c24b42cf1 100644
---- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-+++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-@@ -286,7 +286,7 @@ static int pseries_remove_memblock(unsigned long base, unsigned long memblock_si
- {
- 	unsigned long block_sz, start_pfn;
- 	int sections_per_block;
--	int i, nid;
-+	int i;
- 
- 	start_pfn = base >> PAGE_SHIFT;
- 
-@@ -297,10 +297,9 @@ static int pseries_remove_memblock(unsigned long base, unsigned long memblock_si
- 
- 	block_sz = pseries_memory_block_size();
- 	sections_per_block = block_sz / MIN_MEMORY_BLOCK_SIZE;
--	nid = memory_add_physaddr_to_nid(base);
- 
- 	for (i = 0; i < sections_per_block; i++) {
--		__remove_memory(nid, base, MIN_MEMORY_BLOCK_SIZE);
-+		__remove_memory(base, MIN_MEMORY_BLOCK_SIZE);
- 		base += MIN_MEMORY_BLOCK_SIZE;
- 	}
- 
-@@ -387,7 +386,7 @@ static int dlpar_remove_lmb(struct drmem_lmb *lmb)
- 
- 	block_sz = pseries_memory_block_size();
- 
--	__remove_memory(mem_block->nid, lmb->base_addr, block_sz);
-+	__remove_memory(lmb->base_addr, block_sz);
- 	put_device(&mem_block->dev);
- 
- 	/* Update memory regions for memory remove */
-@@ -660,7 +659,7 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
- 
- 	rc = dlpar_online_lmb(lmb);
- 	if (rc) {
--		__remove_memory(nid, lmb->base_addr, block_sz);
-+		__remove_memory(lmb->base_addr, block_sz);
- 		invalidate_lmb_associativity_index(lmb);
- 	} else {
- 		lmb->flags |= DRCONF_MEM_ASSIGNED;
-diff --git a/drivers/acpi/acpi_memhotplug.c b/drivers/acpi/acpi_memhotplug.c
-index 8cc195c4c861..1d01d9414c40 100644
---- a/drivers/acpi/acpi_memhotplug.c
-+++ b/drivers/acpi/acpi_memhotplug.c
-@@ -239,19 +239,14 @@ static int acpi_memory_enable_device(struct acpi_memory_device *mem_device)
- 
- static void acpi_memory_remove_memory(struct acpi_memory_device *mem_device)
- {
--	acpi_handle handle = mem_device->device->handle;
- 	struct acpi_memory_info *info, *n;
--	int nid = acpi_get_node(handle);
- 
- 	list_for_each_entry_safe(info, n, &mem_device->res_list, list) {
- 		if (!info->enabled)
- 			continue;
- 
--		if (nid == NUMA_NO_NODE)
--			nid = memory_add_physaddr_to_nid(info->start_addr);
--
- 		acpi_unbind_memory_blocks(info);
--		__remove_memory(nid, info->start_addr, info->length);
-+		__remove_memory(info->start_addr, info->length);
- 		list_del(&info->list);
- 		kfree(info);
- 	}
-diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
-index ac231cc36359..99e0f60c4c26 100644
---- a/drivers/dax/kmem.c
-+++ b/drivers/dax/kmem.c
-@@ -156,8 +156,7 @@ static void dev_dax_kmem_remove(struct dev_dax *dev_dax)
- 		if (rc)
- 			continue;
- 
--		rc = remove_memory(dev_dax->target_node, range.start,
--				range_len(&range));
-+		rc = remove_memory(range.start, range_len(&range));
- 		if (rc == 0) {
- 			release_resource(data->res[i]);
- 			kfree(data->res[i]);
-diff --git a/drivers/virtio/virtio_mem.c b/drivers/virtio/virtio_mem.c
-index 09ed55de07d7..774986695dc4 100644
---- a/drivers/virtio/virtio_mem.c
-+++ b/drivers/virtio/virtio_mem.c
-@@ -677,7 +677,7 @@ static int virtio_mem_remove_memory(struct virtio_mem *vm, uint64_t addr,
- 
- 	dev_dbg(&vm->vdev->dev, "removing memory: 0x%llx - 0x%llx\n", addr,
- 		addr + size - 1);
--	rc = remove_memory(vm->nid, addr, size);
-+	rc = remove_memory(addr, size);
- 	if (!rc) {
- 		atomic64_sub(size, &vm->offline_size);
- 		/*
-@@ -720,7 +720,7 @@ static int virtio_mem_offline_and_remove_memory(struct virtio_mem *vm,
- 		"offlining and removing memory: 0x%llx - 0x%llx\n", addr,
- 		addr + size - 1);
- 
--	rc = offline_and_remove_memory(vm->nid, addr, size);
-+	rc = offline_and_remove_memory(addr, size);
- 	if (!rc) {
- 		atomic64_sub(size, &vm->offline_size);
- 		/*
-diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-index 010a192298b5..068e3dcf4690 100644
---- a/include/linux/memory_hotplug.h
-+++ b/include/linux/memory_hotplug.h
-@@ -292,9 +292,9 @@ static inline void pgdat_resize_init(struct pglist_data *pgdat) {}
- 
- extern void try_offline_node(int nid);
- extern int offline_pages(unsigned long start_pfn, unsigned long nr_pages);
--extern int remove_memory(int nid, u64 start, u64 size);
--extern void __remove_memory(int nid, u64 start, u64 size);
--extern int offline_and_remove_memory(int nid, u64 start, u64 size);
-+extern int remove_memory(u64 start, u64 size);
-+extern void __remove_memory(u64 start, u64 size);
-+extern int offline_and_remove_memory(u64 start, u64 size);
- 
- #else
- static inline void try_offline_node(int nid) {}
-@@ -304,12 +304,12 @@ static inline int offline_pages(unsigned long start_pfn, unsigned long nr_pages)
- 	return -EINVAL;
- }
- 
--static inline int remove_memory(int nid, u64 start, u64 size)
-+static inline int remove_memory(u64 start, u64 size)
- {
- 	return -EBUSY;
- }
- 
--static inline void __remove_memory(int nid, u64 start, u64 size) {}
-+static inline void __remove_memory(u64 start, u64 size) {}
- #endif /* CONFIG_MEMORY_HOTREMOVE */
- 
- extern void set_zone_contiguous(struct zone *zone);
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index f2a9af3af184..388c8627f17f 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1745,7 +1745,9 @@ int __ref offline_pages(unsigned long start_pfn, unsigned long nr_pages)
- static int check_memblock_offlined_cb(struct memory_block *mem, void *arg)
- {
- 	int ret = !is_memblock_offlined(mem);
-+	int *nid = arg;
- 
-+	*nid = mem->nid;
- 	if (unlikely(ret)) {
- 		phys_addr_t beginpa, endpa;
- 
-@@ -1838,12 +1840,12 @@ void try_offline_node(int nid)
- }
- EXPORT_SYMBOL(try_offline_node);
- 
--static int __ref try_remove_memory(int nid, u64 start, u64 size)
-+static int __ref try_remove_memory(u64 start, u64 size)
- {
--	int rc = 0;
- 	struct vmem_altmap mhp_altmap = {};
- 	struct vmem_altmap *altmap = NULL;
- 	unsigned long nr_vmemmap_pages;
-+	int rc = 0, nid = NUMA_NO_NODE;
- 
- 	BUG_ON(check_hotplug_memory_range(start, size));
- 
-@@ -1851,8 +1853,12 @@ static int __ref try_remove_memory(int nid, u64 start, u64 size)
- 	 * All memory blocks must be offlined before removing memory.  Check
- 	 * whether all memory blocks in question are offline and return error
- 	 * if this is not the case.
-+	 *
-+	 * While at it, determine the nid. Note that if we'd have mixed nodes,
-+	 * we'd only try to offline the last determined one -- which is good
-+	 * enough for the cases we care about.
- 	 */
--	rc = walk_memory_blocks(start, size, NULL, check_memblock_offlined_cb);
-+	rc = walk_memory_blocks(start, size, &nid, check_memblock_offlined_cb);
- 	if (rc)
- 		return rc;
- 
-@@ -1901,7 +1907,8 @@ static int __ref try_remove_memory(int nid, u64 start, u64 size)
- 
- 	release_mem_region_adjustable(start, size);
- 
--	try_offline_node(nid);
-+	if (nid != NUMA_NO_NODE)
-+		try_offline_node(nid);
- 
- 	mem_hotplug_done();
- 	return 0;
-@@ -1909,7 +1916,6 @@ static int __ref try_remove_memory(int nid, u64 start, u64 size)
- 
- /**
-  * __remove_memory - Remove memory if every memory block is offline
-- * @nid: the node ID
-  * @start: physical address of the region to remove
-  * @size: size of the region to remove
-  *
-@@ -1917,14 +1923,14 @@ static int __ref try_remove_memory(int nid, u64 start, u64 size)
-  * and online/offline operations before this call, as required by
-  * try_offline_node().
-  */
--void __remove_memory(int nid, u64 start, u64 size)
-+void __remove_memory(u64 start, u64 size)
- {
- 
- 	/*
- 	 * trigger BUG() if some memory is not offlined prior to calling this
- 	 * function
- 	 */
--	if (try_remove_memory(nid, start, size))
-+	if (try_remove_memory(start, size))
- 		BUG();
- }
- 
-@@ -1932,12 +1938,12 @@ void __remove_memory(int nid, u64 start, u64 size)
-  * Remove memory if every memory block is offline, otherwise return -EBUSY is
-  * some memory is not offline
-  */
--int remove_memory(int nid, u64 start, u64 size)
-+int remove_memory(u64 start, u64 size)
- {
- 	int rc;
- 
- 	lock_device_hotplug();
--	rc  = try_remove_memory(nid, start, size);
-+	rc = try_remove_memory(start, size);
- 	unlock_device_hotplug();
- 
- 	return rc;
-@@ -1997,7 +2003,7 @@ static int try_reonline_memory_block(struct memory_block *mem, void *arg)
-  * unplugged all memory (so it's no longer in use) and want to offline + remove
-  * that memory.
-  */
--int offline_and_remove_memory(int nid, u64 start, u64 size)
-+int offline_and_remove_memory(u64 start, u64 size)
- {
- 	const unsigned long mb_count = size / memory_block_size_bytes();
- 	uint8_t *online_types, *tmp;
-@@ -2033,7 +2039,7 @@ int offline_and_remove_memory(int nid, u64 start, u64 size)
- 	 * This cannot fail as it cannot get onlined in the meantime.
- 	 */
- 	if (!rc) {
--		rc = try_remove_memory(nid, start, size);
-+		rc = try_remove_memory(start, size);
- 		if (rc)
- 			pr_err("%s: Failed to remove memory: %d", __func__, rc);
- 	}
 -- 
-2.31.1
-
+Thanks and Regards
+Srikar Dronamraju
