@@ -1,106 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 165D73C464D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jul 2021 11:41:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C74CE3C518D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jul 2021 12:48:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GNf0L6cK3z3bW3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jul 2021 19:41:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GNgTk5ShTz3bNr
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jul 2021 20:48:10 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TjmIEYSN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rU49web7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=TjmIEYSN; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=rU49web7; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GNdzt57ydz2yLh
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Jul 2021 19:40:42 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 16C9XfNx130319
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Jul 2021 05:40:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=0g2OAdBAfSiQTHH3eH+6NzsJ8RXigOJMNnZCOM2Lmfo=;
- b=TjmIEYSNMQ633kSjAMoctTritsQxnSc/F9v1jULlaVWrpdeLKGNd+Thbsy6fn+srbyV3
- Z7JmGDrLGLEKssEUJYJWgPXEQtoR0poDXtp7gl8FEiM4IQRn3Vt3veMSwNItBubKkEC2
- mGY3GlCP7T2QRgYINBw9cMt8ZbNRGRBkxlFmWok6aFglGu2ByuolohgZ3RCuJlm82/lo
- pkCYraN1VLK0a/SjQV7DDnlwUsQNxPa5PT1GBDlJTNH+PmiQumMsCvJ/Rih3y9XqQaCB
- oZg9Jxg7urRRsOMrt2UTqj9mH8hgKDbWVHu7K7pL7SkkFNSNAxwFH/pNDRsoFgzILv1o Gg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39qrsxm1k5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Jul 2021 05:40:38 -0400
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 16C9YfeG137309
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Jul 2021 05:40:38 -0400
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.108])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39qrsxm1jp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 12 Jul 2021 05:40:37 -0400
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
- by ppma05fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16C9W5uY000399;
- Mon, 12 Jul 2021 09:40:36 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma05fra.de.ibm.com with ESMTP id 39q368gc20-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 12 Jul 2021 09:40:36 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 16C9eXT225559544
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 Jul 2021 09:40:33 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4936211C04C;
- Mon, 12 Jul 2021 09:40:33 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 34FB411C052;
- Mon, 12 Jul 2021 09:40:32 +0000 (GMT)
-Received: from [9.195.47.54] (unknown [9.195.47.54])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Mon, 12 Jul 2021 09:40:31 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.6\))
-Subject: Re: [PATCH] powerpc/perf: Fix cycles/instructions as
- PM_CYC/PM_INST_CMPL in power10
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <20210708154352.GA11710@li-24c3614c-2adc-11b2-a85c-85f334518bdb.ibm.com>
-Date: Mon, 12 Jul 2021 15:10:29 +0530
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <60A25057-1C93-4EDE-9504-DBC77EB5F28B@linux.vnet.ibm.com>
-References: <1625639981-1424-1-git-send-email-atrajeev@linux.vnet.ibm.com>
- <1625748771.problnjoqz.astroid@bobo.none>
- <20210708154352.GA11710@li-24c3614c-2adc-11b2-a85c-85f334518bdb.ibm.com>
-To: "Paul A. Clarke" <pc@us.ibm.com>
-X-Mailer: Apple Mail (2.3608.120.23.2.6)
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: YDJdcuGIfDZagqjgGQExdE-oMMHQQkSU
-X-Proofpoint-GUID: 2iO81ly82izOWN4AsUx0LNH_p8_t5lOU
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-07-12_05:2021-07-12,
- 2021-07-12 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0
- mlxscore=0 bulkscore=0 lowpriorityscore=0 adultscore=0 impostorscore=0
- spamscore=0 phishscore=0 priorityscore=1501 clxscore=1015 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104190000
- definitions=main-2107120074
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GNgTK0ht3z2yMr
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Jul 2021 20:47:48 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D6D99610FA;
+ Mon, 12 Jul 2021 10:47:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1626086865;
+ bh=p+qLz+HhOqEFcAKXAJHCu8puLmOSYZop39X5dZG07EY=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=rU49web7RUua2IMfaM//7+M8yiIKwUXhdv/e9Lsl0tVAtN/EQj9BVMhbCL8YKua1j
+ 8nqoKs2sXd54M4LPlV1bq1W1VKT9dKMeRyT0E2wMNN/7JA24+0XwLvO9tTEnOJHP+c
+ oBVojxFrYQ9Un5iayEwV6932dPiboBqfLQJc+3K3fEr4K+/hh8ofXz9kz/Ofx8ENti
+ Mvz9XizXA8pcuNqnrWLaP0P/gSaNyMNfrGgRBKdMQC6dvc51jb7Sib1xtw3NkH9dfw
+ 2MS6M/Rx4rAAmiyXXO7OUf2KCWmSJzYSKe256pA3Ntsct+etX7uKAi16h0mq5WeZjw
+ ZE7Nhg7tdikPQ==
+From: Mark Brown <broonie@kernel.org>
+To: timur@kernel.org, nicoleotsuka@gmail.com,
+ Tang Bin <tangbin@cmss.chinamobile.com>, Xiubo.Lee@gmail.com,
+ tiwai@suse.com, lgirdwood@gmail.com, perex@perex.cz
+Subject: Re: [PATCH] ASoC: fsl_xcvr: Omit superfluous error message in
+ fsl_xcvr_probe()
+Date: Mon, 12 Jul 2021 11:45:59 +0100
+Message-Id: <162608623153.3192.455683453441836535.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20210624104505.13680-1-tangbin@cmss.chinamobile.com>
+References: <20210624104505.13680-1-tangbin@cmss.chinamobile.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,47 +61,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: alsa-devel@alsa-project.org, Mark Brown <broonie@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, 24 Jun 2021 18:45:05 +0800, Tang Bin wrote:
+> In the function fsl_xcvr__probe(), when get irq failed,
+> the function platform_get_irq() logs an error message, so remove
+> redundant message here.
 
+Applied to
 
-> On 08-Jul-2021, at 9:13 PM, Paul A. Clarke <pc@us.ibm.com> wrote:
->=20
-> On Thu, Jul 08, 2021 at 10:56:57PM +1000, Nicholas Piggin wrote:
->> Excerpts from Athira Rajeev's message of July 7, 2021 4:39 pm:
->>> From: Athira Rajeev <atrajeev@linux.vnet.ibm.cm>
->>>=20
->>> Power10 performance monitoring unit (PMU) driver uses performance
->>> monitor counter 5 (PMC5) and performance monitor counter 6 (PMC6)
->>> for counting instructions and cycles. Event used for cycles is
->>> PM_RUN_CYC and instructions is PM_RUN_INST_CMPL. But counting of =
-these
->>> events in wait state is controlled by the CC56RUN bit setting in
->>> Monitor Mode Control Register0 (MMCR0). If the CC56RUN bit is not
->>> set, PMC5/6 will not count when CTRL[RUN] is zero.
->>=20
->> What's the acutal bug here, can you explain a bit more? I thought
->> PM_RUN_CYC is supposed to be gated by the runlatch.
->=20
-> Would this renaming break compatibility with existing tools that
-> presume PM_RUN_CYC and PM_RUN_INST_CMPL exist generically?
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
+Thanks!
 
-Hi Paul,
+[1/1] ASoC: fsl_xcvr: Omit superfluous error message in fsl_xcvr_probe()
+      commit: 8620c40002db9679279546cc3be2aceb8c5e5e76
 
-Thanks for checking the patch.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-No, this does not break compatibility with existing tools. Since the =
-change is only for PMC5 and PMC6. Events PM_RUN_CYC and PM_RUN_INST_CMPL =
-still behaves the same way since they are programmed in different =
-PMC=E2=80=99s.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Thanks
-Athira
->=20
-> PC
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
