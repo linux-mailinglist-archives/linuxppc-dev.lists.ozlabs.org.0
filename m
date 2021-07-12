@@ -2,94 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14D8E3C5C99
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jul 2021 14:50:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E024F3C5DD8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jul 2021 15:57:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GNkBM6Ny4z30C1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jul 2021 22:50:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GNlh30yHpz307n
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jul 2021 23:57:23 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hjeuJdFl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=apLKxQ3a;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=will@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=hjeuJdFl; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=apLKxQ3a; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GNk9r3g5zz2yX8
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Jul 2021 22:49:36 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 16CCZAYZ086549; Mon, 12 Jul 2021 08:49:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=LJYI1bacdtGJL+1DHEEvi/ZzNJU//hClCL+ahCL3twY=;
- b=hjeuJdFlONaibCzfr4+ZMchWnqawJnEdKzrfU/m0xnGChAhbDzB5WXcar8ogPvZJE17p
- mSWUhXqt5+UFbv6XRZaNb8nukm7IOnyK7006qL93MgurO7o1+q+3gieLVkyRh0ODBQtU
- alxWFF7xnOj0nHRjV+w69c0AAvGAgvtLb1NbxrWSLk8cTefTLrbaGrYFam7osJmoD5X0
- PIufbmp/rrF1h60CIVOB/iyoyKIol5KYKhDaGdi9UOGRXqrrZnTEEQSPGjxUQrDzfd/R
- +bIAbBeB07vWeAaYFYsb3Khyh+HO9EXG7DwNDLjgkq1s169rsVaHiIZZCCgC6bYafBoO 9Q== 
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39qs48rmaa-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 12 Jul 2021 08:49:05 -0400
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16CChX0M023645;
- Mon, 12 Jul 2021 12:49:04 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma06fra.de.ibm.com with ESMTP id 39q2th8dm5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 12 Jul 2021 12:49:04 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 16CCn0PI35717440
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 Jul 2021 12:49:00 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BB369A4062;
- Mon, 12 Jul 2021 12:49:00 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8AC30A4054;
- Mon, 12 Jul 2021 12:48:57 +0000 (GMT)
-Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Mon, 12 Jul 2021 12:48:57 +0000 (GMT)
-Date: Mon, 12 Jul 2021 18:18:56 +0530
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Valentin Schneider <valentin.schneider@arm.com>
-Subject: Re: [PATCH v2 1/2] sched/topology: Skip updating masks for
- non-online nodes
-Message-ID: <20210712124856.GA3836887@linux.vnet.ibm.com>
-References: <20210701041552.112072-1-srikar@linux.vnet.ibm.com>
- <20210701041552.112072-2-srikar@linux.vnet.ibm.com>
- <875yxu85wi.mognet@arm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GNlgc0RvPz2yfq
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Jul 2021 23:56:59 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 0A31561003;
+ Mon, 12 Jul 2021 13:56:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1626098216;
+ bh=KqwO5Vj/j6Fq4TmXSaTqESu5yHRQzrkv3vVFfvNbMGY=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=apLKxQ3ase69s99n1r/hg6FOeb+BIYvcXeks3TH0kXFsiV4vt4JUCfZRcjNqqJoI+
+ C/PtbYfC7V6I9+tFs23xYS40pB1IE1Ru0GO/sR7kIL+zLBxUujKnwvKpXUPJuSJZEH
+ W/rAB9EgGt57/FadwbxksE14xUlBKeyWZI/Wnb4Nnt0t5RD8RNJlUOkSuzegkOaEqs
+ Qc6OK9PK6WVdefs+A+PDuKLzETeUU+bVabgaTyboguU6s7wHGEC28+izJWHslIy77f
+ yr0fKTdfH84fcYgWwvMeJ8lGvcnMqQz4hxapleBU2sKhQTn0GZErsyzP3AbO0nm6/5
+ eLx4kI3jlwL/w==
+Date: Mon, 12 Jul 2021 14:56:45 +0100
+From: Will Deacon <will@kernel.org>
+To: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+Subject: Re: [PATCH v15 06/12] swiotlb: Use is_swiotlb_force_bounce for
+ swiotlb data bouncing
+Message-ID: <20210712135645.GA28881@willie-the-truck>
+References: <0f7bd903-e309-94a0-21d7-f0e8e9546018@arm.com>
+ <YN/7xcxt/XGAKceZ@Ryzen-9-3900X.localdomain>
+ <20210705190352.GA19461@willie-the-truck>
+ <20210706044848.GA13640@lst.de>
+ <20210706132422.GA20327@willie-the-truck>
+ <a59f771f-3289-62f0-ca50-8f3675d9b166@arm.com>
+ <20210706140513.GA26498@lst.de>
+ <YORsr0h7u5l9DZwh@char.us.oracle.com>
+ <20210706165720.GC20750@willie-the-truck>
+ <YOSMDZmtfXEKerpf@char.us.oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <875yxu85wi.mognet@arm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: g3uLNbuXkP_eyoH59VlJi4Uwhkq9JcHx
-X-Proofpoint-ORIG-GUID: g3uLNbuXkP_eyoH59VlJi4Uwhkq9JcHx
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-07-12_07:2021-07-12,
- 2021-07-12 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 adultscore=0
- phishscore=0 lowpriorityscore=0 bulkscore=0 priorityscore=1501
- clxscore=1015 spamscore=0 malwarescore=0 suspectscore=0 impostorscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2107120099
+In-Reply-To: <YOSMDZmtfXEKerpf@char.us.oracle.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,80 +68,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Gautham R Shenoy <ego@linux.vnet.ibm.com>,
- Vincent Guittot <vincent.guittot@linaro.org>, Rik van Riel <riel@surriel.com>,
- Peter Zijlstra <peterz@infradead.org>, linuxppc-dev@lists.ozlabs.org,
- Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>,
- LKML <linux-kernel@vger.kernel.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Thomas Gleixner <tglx@linutronix.de>, Laurent Dufour <ldufour@linux.ibm.com>,
- Mel Gorman <mgorman@techsingularity.net>, Ingo Molnar <mingo@kernel.org>
+Cc: Jim Quinlan <james.quinlan@broadcom.com>, heikki.krogerus@linux.intel.com,
+ linux-devicetree <devicetree@vger.kernel.org>, peterz@infradead.org,
+ joonas.lahtinen@linux.intel.com, dri-devel@lists.freedesktop.org,
+ chris@chris-wilson.co.uk, grant.likely@arm.com, paulus@samba.org,
+ Frank Rowand <frowand.list@gmail.com>, mingo@kernel.org,
+ Jianxiong Gao <jxgao@google.com>, Stefano Stabellini <sstabellini@kernel.org>,
+ Saravana Kannan <saravanak@google.com>,
+ "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, xypron.glpk@gmx.de,
+ Christoph Hellwig <hch@lst.de>,
+ Bartosz Golaszewski <bgolaszewski@baylibre.com>, bskeggs@redhat.com,
+ linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
+ Thierry Reding <treding@nvidia.com>, matthew.auld@intel.com,
+ Nicolas Boichat <drinkcat@chromium.org>, thomas.hellstrom@linux.intel.com,
+ jgross@suse.com, intel-gfx@lists.freedesktop.org,
+ maarten.lankhorst@linux.intel.com, jani.nikula@linux.intel.com,
+ Nathan Chancellor <nathan@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+ rodrigo.vivi@intel.com, Bjorn Helgaas <bhelgaas@google.com>,
+ Claire Chang <tientzu@chromium.org>, Dan Williams <dan.j.williams@intel.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ boris.ostrovsky@oracle.com, airlied@linux.ie, linuxppc-dev@lists.ozlabs.org,
+ Randy Dunlap <rdunlap@infradead.org>, Qian Cai <quic_qiancai@quicinc.com>,
+ lkml <linux-kernel@vger.kernel.org>,
+ "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+ Daniel Vetter <daniel@ffwll.ch>, Greg KH <gregkh@linuxfoundation.org>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Robin Murphy <robin.murphy@arm.com>,
+ bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Valentin,
+On Tue, Jul 06, 2021 at 12:59:57PM -0400, Konrad Rzeszutek Wilk wrote:
+> On Tue, Jul 06, 2021 at 05:57:21PM +0100, Will Deacon wrote:
+> > On Tue, Jul 06, 2021 at 10:46:07AM -0400, Konrad Rzeszutek Wilk wrote:
+> > > On Tue, Jul 06, 2021 at 04:05:13PM +0200, Christoph Hellwig wrote:
+> > > > On Tue, Jul 06, 2021 at 03:01:04PM +0100, Robin Murphy wrote:
+> > > > > FWIW I was pondering the question of whether to do something along those 
+> > > > > lines or just scrap the default assignment entirely, so since I hadn't got 
+> > > > > round to saying that I've gone ahead and hacked up the alternative 
+> > > > > (similarly untested) for comparison :)
+> > > > >
+> > > > > TBH I'm still not sure which one I prefer...
+> > > > 
+> > > > Claire did implement something like your suggestion originally, but
+> > > > I don't really like it as it doesn't scale for adding multiple global
+> > > > pools, e.g. for the 64-bit addressable one for the various encrypted
+> > > > secure guest schemes.
+> > > 
+> > > Couple of things:
+> > >  - I am not pushing to Linus the Claire's patchset until we have a
+> > >    resolution on this. I hope you all agree that is a sensible way
+> > >    forward as much as I hate doing that.
+> > 
+> > Sure, it's a pity but we could clearly use a bit more time to get these
+> > just right and we've run out of time for 5.14.
+> > 
+> > I think the main question I have is how would you like to see patches for
+> > 5.15? i.e. as patches on top of devel/for-linus-5.14 or something else?
+> 
+> Yes that would be perfect. If there are any dependencies on the rc1, I
+> can rebase it on top of that.
 
-> On 01/07/21 09:45, Srikar Dronamraju wrote:
-> > @@ -1891,12 +1894,30 @@ void sched_init_numa(void)
-> >  void sched_domains_numa_masks_set(unsigned int cpu)
-> >  {
-> 
-> Hmph, so we're playing games with masks of offline nodes - is that really
-> necessary? Your modification of sched_init_numa() still scans all of the
-> nodes (regardless of their online status) to build the distance map, and
-> that is never updated (sched_init_numa() is pretty much an __init
-> function).
-> 
-> So AFAICT this is all to cope with topology_span_sane() not applying
-> 'cpu_map' to its masks. That seemed fine to me back when I wrote it, but in
-> light of having bogus distance values for offline nodes, not so much...
-> 
-> What about the below instead?
-> 
-> ---
-> diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-> index b77ad49dc14f..c2d9caad4aa6 100644
-> --- a/kernel/sched/topology.c
-> +++ b/kernel/sched/topology.c
-> @@ -2075,6 +2075,7 @@ static struct sched_domain *build_sched_domain(struct sched_domain_topology_leve
->  static bool topology_span_sane(struct sched_domain_topology_level *tl,
->  			      const struct cpumask *cpu_map, int cpu)
->  {
-> +	struct cpumask *intersect = sched_domains_tmpmask;
->  	int i;
-> 
->  	/* NUMA levels are allowed to overlap */
-> @@ -2090,14 +2091,17 @@ static bool topology_span_sane(struct sched_domain_topology_level *tl,
->  	for_each_cpu(i, cpu_map) {
->  		if (i == cpu)
->  			continue;
-> +
->  		/*
-> -		 * We should 'and' all those masks with 'cpu_map' to exactly
-> -		 * match the topology we're about to build, but that can only
-> -		 * remove CPUs, which only lessens our ability to detect
-> -		 * overlaps
-> +		 * We shouldn't have to bother with cpu_map here, unfortunately
-> +		 * some architectures (powerpc says hello) have to deal with
-> +		 * offline NUMA nodes reporting bogus distance values. This can
-> +		 * lead to funky NODE domain spans, but since those are offline
-> +		 * we can mask them out.
->  		 */
-> +		cpumask_and(intersect, tl->mask(cpu), tl->mask(i));
->  		if (!cpumask_equal(tl->mask(cpu), tl->mask(i)) &&
-> -		    cpumask_intersects(tl->mask(cpu), tl->mask(i)))
-> +		    cpumask_intersects(intersect, cpu_map))
->  			return false;
->  	}
-> 
+Yes, please, rebasing would be very helpful. The broader rework of
+'io_tlb_default_mem' is going to conflict quite badly otherwise.
 
-Unfortunately this is not helping.
-I tried this patch alone and also with 2/2 patch of this series where
-we update/fill fake topology numbers. However both cases are still failing.
+Cheers,
 
--- 
-Thanks and Regards
-Srikar Dronamraju
+Will
