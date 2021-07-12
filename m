@@ -1,77 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA16D3C4155
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jul 2021 04:51:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC84E3C415A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jul 2021 05:00:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GNSvL5r5cz3bX0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jul 2021 12:51:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GNT6N5fD4z2yyb
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jul 2021 13:00:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=peHg2NZY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=c18j2Yq5;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102d;
- helo=mail-pj1-x102d.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::534;
+ helo=mail-pg1-x534.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=peHg2NZY; dkim-atps=neutral
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com
- [IPv6:2607:f8b0:4864:20::102d])
+ header.s=20161025 header.b=c18j2Yq5; dkim-atps=neutral
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com
+ [IPv6:2607:f8b0:4864:20::534])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GNStt0HS2z2yXX
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Jul 2021 12:50:45 +1000 (AEST)
-Received: by mail-pj1-x102d.google.com with SMTP id
- d9-20020a17090ae289b0290172f971883bso11296158pjz.1
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Jul 2021 19:50:45 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GNT5w3dY7z2yss
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Jul 2021 13:00:19 +1000 (AEST)
+Received: by mail-pg1-x534.google.com with SMTP id u14so16759586pga.11
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Jul 2021 20:00:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=w2r4qfv5vAYJ00NUqIGFvURWuXmn7VNm7e5xDqKTB40=;
- b=peHg2NZYicXl7JUKveOTepsa2bfhyjmB2JQE0hW9wkOmsUl933a9C0q2v7O6jLtBbE
- V/hTspmlE9CvELtFH2zhZPBQxafCjsu3yjh7G2YL/ikow9cuUl+NiwMjpdELfGhjb1Lt
- 1pvNKDa2evs8wYVWo+FA/4p7yLhI60nZjAcYf8G3MudWU4XciPBWUnV+EXC6eGg02f9p
- NMM1eR4X7ihRox92tW8AveGdHUq5OPFaU+80UNZ32B65kysP3ANu600CtC2S7qY4aa3M
- V2sDwWadsl6ORLOuDfKxdydFmKur6d3x8UWTCdVmGttwli3k55fo6PuiZ1Odq0Ci7kuI
- 1hwg==
+ bh=0eCF5kOKTau0RV8haml/YD6B20mltYBG9SCZ3Izqo1k=;
+ b=c18j2Yq58fWAdTXzdZSGm9qmWwlRNnq2VK346HyjRcmuBR1zii3ZPJT9YG5v8g6rm1
+ z6RR2wwiRp+mxkFQHxqSeRJ5oF8OtTVaO5+F3EvH6vknf2PQmEBm6PLR8MhQfzDo0iev
+ ka12VwATXT6ed0d4EENlTc97kD6wsz6I9t07eYRgdXf3xLHwQDDpYjjuSgQRSZWnfp6b
+ bC2+SwdYTYWO4h5yOmkcYUfCO14ZJHCGpqSl75o2gNB9Mm0ECnWU2xKuXN1FQqddNW88
+ e/OaQmpRoHi93NZRAShTRwjFSNupAwjrK0D9DNQj13zsMNCk2ULo0yc0aADRyAIG1VIw
+ RQTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=w2r4qfv5vAYJ00NUqIGFvURWuXmn7VNm7e5xDqKTB40=;
- b=bajdR0j8Xg7KFrZHU5LLVE1Q8vsQSUWcqA9VzF0QLNPa7akR9oBiPRFqRNlzdUV7cP
- fea2Af1+XO/iC1ypNjwUjXwBfRotbUJjrgJOuYEk1Pb0inMwIyjOQfbt6Vva7wHJRrpz
- 0m/U1yuXk0m+dZz8oDd9+nhiaWRHNpc2hsWsuts2SGXNUcXTWo0OFUdlBGXl70uxvMqf
- fd+0eMMELf3IwSdyQpnXdtQF8/rZroPq0XkNrYKoRtR0VtCSTQBpspx4ANs9my2i7Xfu
- fAU5BQ73CIqW+Zph2zz+kyR1/ZLwFEJzy4gDMSouh8+Y+pxrbMKJtl4h2Gm/Qp4T2cZg
- Yufg==
-X-Gm-Message-State: AOAM5305M9l8SsVuAzI+2XqUPawvjzeP0yrOlxluTfNx+UgX7KQ4KRBW
- lx2A10YxtfOds/7Z4LTZ4ww=
-X-Google-Smtp-Source: ABdhPJx8vYHuMpqABVE2A8PY2LXzGVCyvJikwfxTgN5gLhmU21scm0Rou6G7ltnJo7pMYtthEp3pXg==
-X-Received: by 2002:a17:90b:384f:: with SMTP id
- nl15mr51537121pjb.88.1626058243048; 
- Sun, 11 Jul 2021 19:50:43 -0700 (PDT)
+ bh=0eCF5kOKTau0RV8haml/YD6B20mltYBG9SCZ3Izqo1k=;
+ b=mCX+GQHCggxwGZTsn/JQ2L6HP7cOu4mSjA2kYoYNqLp6mQ0eOeXxydxvcRiKf1yDDs
+ sB3BO3OHMgWSapXkleH7X+3AXFfjkeQeGxJQjrs9ZV4pnd/+ydNGt3/BtbagHk1B7MrW
+ vE2FYztaimWp8+lY4OFelVbes/a+N8S6K6RZRmPVLby0WFRInchkMfBphNiBlyoY+sCi
+ C8icoVwSpLeiDlLH/lEuRMPmynkmCXYMTh5poBSB/xmmn5Y03CJ3oN2v67Ah+ifZCLjW
+ TDtClruktN2MjOG557nKsxFT4rStWiEBNrqRNkvzaa1flcN6h7r5A1vxdRCDBkKXenfc
+ sEfw==
+X-Gm-Message-State: AOAM530m2rWW5G/7wxQYEr1ALsJ0kW9Prl2YZxJkT0fglHCgak+sF4yf
+ 1IQMIE8xRv2XH6vpA07/WdA=
+X-Google-Smtp-Source: ABdhPJwqvXGl8WMj4VzysHZsPpEhxiqQz4PizCF7LM2zXPuxq1YLHA/3ztrz96HsBJOD68HChH8ERA==
+X-Received: by 2002:a65:5542:: with SMTP id t2mr51104772pgr.358.1626058815878; 
+ Sun, 11 Jul 2021 20:00:15 -0700 (PDT)
 Received: from localhost (203-219-181-43.static.tpgi.com.au. [203.219.181.43])
  by smtp.gmail.com with ESMTPSA id
- t1sm11565859pjo.33.2021.07.11.19.50.42
+ s36sm6498955pgk.64.2021.07.11.20.00.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 11 Jul 2021 19:50:42 -0700 (PDT)
-Date: Mon, 12 Jul 2021 12:50:37 +1000
+ Sun, 11 Jul 2021 20:00:15 -0700 (PDT)
+Date: Mon, 12 Jul 2021 13:00:10 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [RFC PATCH 27/43] KVM: PPC: Book3S HV P9: Move host OS
- save/restore functions to built-in
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-References: <20210622105736.633352-1-npiggin@gmail.com>
- <20210622105736.633352-28-npiggin@gmail.com>
- <983C1FE6-79CB-4DBD-BD00-8CFDA3685FEB@linux.vnet.ibm.com>
-In-Reply-To: <983C1FE6-79CB-4DBD-BD00-8CFDA3685FEB@linux.vnet.ibm.com>
+Subject: Re: [RFC PATCH v0 1/1] powerpc/percpu: Use 2MB atom_size in percpu
+ allocator on radix
+To: Bharata B Rao <bharata@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+References: <20210708052946.1497495-1-bharata@linux.ibm.com>
+In-Reply-To: <20210708052946.1497495-1-bharata@linux.ibm.com>
 MIME-Version: 1.0
-Message-Id: <1626058210.6twtrgfync.astroid@bobo.none>
+Message-Id: <1626058374.3xlvhrcly8.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -85,186 +81,109 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org
+Cc: aneesh.kumar@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Athira Rajeev's message of July 8, 2021 3:32 pm:
->=20
->=20
->> On 22-Jun-2021, at 4:27 PM, Nicholas Piggin <npiggin@gmail.com> wrote:
->>=20
->> Move the P9 guest/host register switching functions to the built-in
->> P9 entry code, and export it for nested to use as well.
->>=20
->> This allows more flexibility in scheduling these supervisor privileged
->> SPR accesses with the HV privileged and PR SPR accesses in the low level
->> entry code.
->>=20
->> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->> ---
->> arch/powerpc/kvm/book3s_hv.c          | 351 +-------------------------
->> arch/powerpc/kvm/book3s_hv.h          |  39 +++
->> arch/powerpc/kvm/book3s_hv_p9_entry.c | 332 ++++++++++++++++++++++++
->> 3 files changed, 372 insertions(+), 350 deletions(-)
->> create mode 100644 arch/powerpc/kvm/book3s_hv.h
->>=20
->> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
->> index 35749b0b663f..a7660af22161 100644
->> --- a/arch/powerpc/kvm/book3s_hv.c
->> +++ b/arch/powerpc/kvm/book3s_hv.c
->> @@ -79,6 +79,7 @@
->> #include <asm/dtl.h>
->>=20
->> #include "book3s.h"
->> +#include "book3s_hv.h"
->>=20
->> #define CREATE_TRACE_POINTS
->> #include "trace_hv.h"
->> @@ -3675,356 +3676,6 @@ static noinline void kvmppc_run_core(struct kvmp=
-pc_vcore *vc)
->> 	trace_kvmppc_run_core(vc, 1);
->> }
->>=20
->> -/*
->> - * Privileged (non-hypervisor) host registers to save.
->> - */
->> -struct p9_host_os_sprs {
->> -	unsigned long dscr;
->> -	unsigned long tidr;
->> -	unsigned long iamr;
->> -	unsigned long amr;
->> -	unsigned long fscr;
->> -
->> -	unsigned int pmc1;
->> -	unsigned int pmc2;
->> -	unsigned int pmc3;
->> -	unsigned int pmc4;
->> -	unsigned int pmc5;
->> -	unsigned int pmc6;
->> -	unsigned long mmcr0;
->> -	unsigned long mmcr1;
->> -	unsigned long mmcr2;
->> -	unsigned long mmcr3;
->> -	unsigned long mmcra;
->> -	unsigned long siar;
->> -	unsigned long sier1;
->> -	unsigned long sier2;
->> -	unsigned long sier3;
->> -	unsigned long sdar;
->> -};
->> -
->> -static void freeze_pmu(unsigned long mmcr0, unsigned long mmcra)
->> -{
->> -	if (!(mmcr0 & MMCR0_FC))
->> -		goto do_freeze;
->> -	if (mmcra & MMCRA_SAMPLE_ENABLE)
->> -		goto do_freeze;
->> -	if (cpu_has_feature(CPU_FTR_ARCH_31)) {
->> -		if (!(mmcr0 & MMCR0_PMCCEXT))
->> -			goto do_freeze;
->> -		if (!(mmcra & MMCRA_BHRB_DISABLE))
->> -			goto do_freeze;
->> -	}
->> -	return;
->> -
->> -do_freeze:
->> -	mmcr0 =3D MMCR0_FC;
->> -	mmcra =3D 0;
->> -	if (cpu_has_feature(CPU_FTR_ARCH_31)) {
->> -		mmcr0 |=3D MMCR0_PMCCEXT;
->> -		mmcra =3D MMCRA_BHRB_DISABLE;
->> -	}
->> -
->> -	mtspr(SPRN_MMCR0, mmcr0);
->> -	mtspr(SPRN_MMCRA, mmcra);
->> -	isync();
->> -}
->> -
->> -static void switch_pmu_to_guest(struct kvm_vcpu *vcpu,
->> -				struct p9_host_os_sprs *host_os_sprs)
->> -{
->> -	struct lppaca *lp;
->> -	int load_pmu =3D 1;
->> -
->> -	lp =3D vcpu->arch.vpa.pinned_addr;
->> -	if (lp)
->> -		load_pmu =3D lp->pmcregs_in_use;
->> -
->> -	if (load_pmu)
->> -	      vcpu->arch.hfscr |=3D HFSCR_PM;
->> -
->> -	/* Save host */
->> -	if (ppc_get_pmu_inuse()) {
->> -		/*
->> -		 * It might be better to put PMU handling (at least for the
->> -		 * host) in the perf subsystem because it knows more about what
->> -		 * is being used.
->> -		 */
->> -
->> -		/* POWER9, POWER10 do not implement HPMC or SPMC */
->> -
->> -		host_os_sprs->mmcr0 =3D mfspr(SPRN_MMCR0);
->> -		host_os_sprs->mmcra =3D mfspr(SPRN_MMCRA);
->> -
->> -		freeze_pmu(host_os_sprs->mmcr0, host_os_sprs->mmcra);
->> -
->> -		host_os_sprs->pmc1 =3D mfspr(SPRN_PMC1);
->> -		host_os_sprs->pmc2 =3D mfspr(SPRN_PMC2);
->> -		host_os_sprs->pmc3 =3D mfspr(SPRN_PMC3);
->> -		host_os_sprs->pmc4 =3D mfspr(SPRN_PMC4);
->> -		host_os_sprs->pmc5 =3D mfspr(SPRN_PMC5);
->> -		host_os_sprs->pmc6 =3D mfspr(SPRN_PMC6);
->> -		host_os_sprs->mmcr1 =3D mfspr(SPRN_MMCR1);
->> -		host_os_sprs->mmcr2 =3D mfspr(SPRN_MMCR2);
->> -		host_os_sprs->sdar =3D mfspr(SPRN_SDAR);
->> -		host_os_sprs->siar =3D mfspr(SPRN_SIAR);
->> -		host_os_sprs->sier1 =3D mfspr(SPRN_SIER);
->> -
->> -		if (cpu_has_feature(CPU_FTR_ARCH_31)) {
->> -			host_os_sprs->mmcr3 =3D mfspr(SPRN_MMCR3);
->> -			host_os_sprs->sier2 =3D mfspr(SPRN_SIER2);
->> -			host_os_sprs->sier3 =3D mfspr(SPRN_SIER3);
->> -		}
->> -	}
->> -
->> -#ifdef CONFIG_PPC_PSERIES
->> -	if (kvmhv_on_pseries()) {
->> -		if (vcpu->arch.vpa.pinned_addr) {
->> -			struct lppaca *lp =3D vcpu->arch.vpa.pinned_addr;
->> -			get_lppaca()->pmcregs_in_use =3D lp->pmcregs_in_use;
->> -		} else {
->> -			get_lppaca()->pmcregs_in_use =3D 1;
->> -		}
->> -	}
->> -#endif
->> -
->> -	/* Load guest */
->> -	if (vcpu->arch.hfscr & HFSCR_PM) {
->> -		mtspr(SPRN_PMC1, vcpu->arch.pmc[0]);
->> -		mtspr(SPRN_PMC2, vcpu->arch.pmc[1]);
->> -		mtspr(SPRN_PMC3, vcpu->arch.pmc[2]);
->> -		mtspr(SPRN_PMC4, vcpu->arch.pmc[3]);
->> -		mtspr(SPRN_PMC5, vcpu->arch.pmc[4]);
->> -		mtspr(SPRN_PMC6, vcpu->arch.pmc[5]);
->> -		mtspr(SPRN_MMCR1, vcpu->arch.mmcr[1]);
->> -		mtspr(SPRN_MMCR2, vcpu->arch.mmcr[2]);
->> -		mtspr(SPRN_SDAR, vcpu->arch.sdar);
->> -		mtspr(SPRN_SIAR, vcpu->arch.siar);
->> -		mtspr(SPRN_SIER, vcpu->arch.sier[0]);
->> -
->> -		if (cpu_has_feature(CPU_FTR_ARCH_31)) {
->> -			mtspr(SPRN_MMCR3, vcpu->arch.mmcr[4]);
->=20
->=20
-> Hi Nick,
->=20
-> Have a doubt here..
-> For MMCR3, it is  vcpu->arch.mmcr[3) ?
+Excerpts from Bharata B Rao's message of July 8, 2021 3:29 pm:
+> The atom_size used by percpu allocator on powerpc is currently
+> determined by mmu_linear_psize which is initialized to 4K and
+> mmu_linear_psize is modified only by hash. Till now for radix
+> the atom_size was defaulting to PAGE_SIZE(64K).
 
-Hey, yea it is you're right. Good catch.
+Looks like it was 1MB to me?
+
+> Go for 2MB
+> atom_size on radix if support for 2MB pages exist.
+>=20
+> 2MB atom_size on radix will allow using PMD mappings in the
+> vmalloc area if and when support for higher sized vmalloc
+> mappings is enabled for the pecpu allocator. However right now
+
+That would be nice.
+
+> this change will result in more number of units to be allocated
+> within one allocation due to increased upa(units per allocation).
+
+In that case is there any reason to do it until then?
+
+>=20
+> Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
+> ---
+>  arch/powerpc/kernel/setup_64.c | 34 +++++++++++++++++++++++++---------
+>  1 file changed, 25 insertions(+), 9 deletions(-)
+>=20
+> diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_6=
+4.c
+> index 1ff258f6c76c..45ce2d6e8112 100644
+> --- a/arch/powerpc/kernel/setup_64.c
+> +++ b/arch/powerpc/kernel/setup_64.c
+> @@ -871,6 +871,30 @@ static void __init pcpu_populate_pte(unsigned long a=
+ddr)
+>  	      __func__, PAGE_SIZE, PAGE_SIZE, PAGE_SIZE);
+>  }
+> =20
+> +static size_t pcpu_atom_size(void)
+> +{
+> +	size_t atom_size =3D PAGE_SIZE;
+> +
+> +	/*
+> +	 * Radix: Use PAGE_SIZE by default or 2M if available.
+> +	 */
+> +	if (radix_enabled()) {
+> +		if (mmu_psize_defs[MMU_PAGE_2M].shift)
+> +			atom_size =3D 1 << mmu_psize_defs[MMU_PAGE_2M].shift;
+
+Looks like this changes behaviour for radix.
+
+Also mmu_psize_defs is a pretty horrible interface you only need it in=20
+some low level instruction encodings. You already explicitly know it's
+2MB there, so you can just PMD_SHIFT.
+
+If you want to know whether huge PMD is supported and enabled in vmalloc
+memory, you would have to add some check which also accounts for
+vmap_allow_huge, so that would be another patch.
 
 Thanks,
 Nick
 
+> +		goto out;
+> +	}
+> +
+> +	/*
+> +	 * Hash: Linear mapping is one of 4K, 1M and 16M.  For 4K, no need
+> +	 * to group units.  For larger mappings, use 1M atom which
+> +	 * should be large enough to contain a number of units.
+> +	 */
+> +	if (mmu_linear_psize !=3D MMU_PAGE_4K)
+> +		atom_size =3D 1 << 20;
+> +
+> +out:
+> +	return atom_size;
+> +}
+> =20
+>  void __init setup_per_cpu_areas(void)
+>  {
+> @@ -880,15 +904,7 @@ void __init setup_per_cpu_areas(void)
+>  	unsigned int cpu;
+>  	int rc =3D -EINVAL;
+> =20
+> -	/*
+> -	 * Linear mapping is one of 4K, 1M and 16M.  For 4K, no need
+> -	 * to group units.  For larger mappings, use 1M atom which
+> -	 * should be large enough to contain a number of units.
+> -	 */
+> -	if (mmu_linear_psize =3D=3D MMU_PAGE_4K)
+> -		atom_size =3D PAGE_SIZE;
+> -	else
+> -		atom_size =3D 1 << 20;
+> +	atom_size =3D pcpu_atom_size();
+> =20
+>  	if (pcpu_chosen_fc !=3D PCPU_FC_PAGE) {
+>  		rc =3D pcpu_embed_first_chunk(0, dyn_size, atom_size, pcpu_cpu_distanc=
+e,
+> --=20
+> 2.31.1
+>=20
+>=20
