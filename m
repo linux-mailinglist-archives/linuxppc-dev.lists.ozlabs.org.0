@@ -1,54 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EB413C45E8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jul 2021 09:51:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C0FA3C4621
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jul 2021 10:49:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GNbYj0Ty9z307J
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jul 2021 17:51:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GNcry6ZQPz3bVT
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Jul 2021 18:49:38 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cMw3V2lc;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=kaod.org (client-ip=205.139.111.44;
- helo=us-smtp-delivery-44.mimecast.com; envelope-from=groug@kaod.org;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com;
  receiver=<UNKNOWN>)
-Received: from us-smtp-delivery-44.mimecast.com
- (us-smtp-delivery-44.mimecast.com [205.139.111.44])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=cMw3V2lc; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GNbYH1Sd0z2yQF
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Jul 2021 17:50:57 +1000 (AEST)
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-414-SL5PkOnLNIyX8sjq6PFYdA-1; Mon, 12 Jul 2021 03:50:49 -0400
-X-MC-Unique: SL5PkOnLNIyX8sjq6PFYdA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com
- [10.5.11.11])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C6A4D84B9FF;
- Mon, 12 Jul 2021 07:50:47 +0000 (UTC)
-Received: from bahia.lan (ovpn-112-172.ams2.redhat.com [10.36.112.172])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 17B2D69CB4;
- Mon, 12 Jul 2021 07:50:41 +0000 (UTC)
-Date: Mon, 12 Jul 2021 09:50:32 +0200
-From: Greg Kurz <groug@kaod.org>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH] memblock: make for_each_mem_range() traverse
- MEMBLOCK_HOTPLUG regions
-Message-ID: <20210712095032.1f6666e5@bahia.lan>
-In-Reply-To: <20210712071132.20902-1-rppt@kernel.org>
-References: <20210712071132.20902-1-rppt@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GNcrS3MW4z3002
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Jul 2021 18:49:11 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 16C8Xn3C112987; Mon, 12 Jul 2021 04:48:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=hhaFh1bdiVXfa0mbzwOPOB1EtpdGUT9yWlIQEVGNJWo=;
+ b=cMw3V2lcCiEA6v0CmcfT0+W4mC2VXdaHrsTs85yCWLmPQrKwInQcEOFieX2ONhFoDt1R
+ 7+TTt8ewpAi51anwftY4icJmT+XRPwZiEFpI3b04wU3RFkY+fm/8jl9lOL64DdZfCPJp
+ 4xDN1Kgi/wzn/Hw4heTVDTXSfIAN9XI7DGaW4rr0AhSPPVz57GCBkf2lnZ02VEyyVLOO
+ g5k5Rtp6s1tNXipo9Pd17TuvlQ/ozSosSO/+mdsEeoEjzgyrQhLQOYAOnoTGRk5ap/2U
+ Mcmwc0RY2sjmuM4imiPGUOXGxyYc4cohhQKuEystooEwIjJE0qf/wAqwaQI1Jtc60ZYz WA== 
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 39qrhyk0y0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 12 Jul 2021 04:48:55 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16C8iVsH025238;
+ Mon, 12 Jul 2021 08:48:53 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma06ams.nl.ibm.com with ESMTP id 39q2th8nsy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 12 Jul 2021 08:48:53 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 16C8kixN29360434
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 12 Jul 2021 08:46:45 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2617FA4070;
+ Mon, 12 Jul 2021 08:48:50 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 32EDEA40A3;
+ Mon, 12 Jul 2021 08:48:47 +0000 (GMT)
+Received: from vajain21.in.ibm.com (unknown [9.85.98.133])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Mon, 12 Jul 2021 08:48:46 +0000 (GMT)
+Received: by vajain21.in.ibm.com (sSMTP sendmail emulation);
+ Mon, 12 Jul 2021 14:18:46 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: linux-nvdimm@lists.01.org, nvdimm@lists.linux.dev,
+ linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/papr_scm: Implement initial support for injecting
+ smart errors
+Date: Mon, 12 Jul 2021 14:18:19 +0530
+Message-Id: <20210712084819.1150350-1-vaibhav@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: veuxCgwDcfy7YcJ1T5-KJ2GqmqVVhbnS
+X-Proofpoint-GUID: veuxCgwDcfy7YcJ1T5-KJ2GqmqVVhbnS
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=groug@kaod.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: kaod.org
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-07-12_04:2021-07-12,
+ 2021-07-12 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ mlxlogscore=999 suspectscore=0 phishscore=0 spamscore=0 malwarescore=0
+ bulkscore=0 impostorscore=0 mlxscore=0 clxscore=1015 adultscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2107120067
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,153 +101,275 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>, linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Santosh Sivaraj <santosh@fossix.org>,
+ Shivaprasad G Bhat <sbhat@linux.ibm.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Vaibhav Jain <vaibhav@linux.ibm.com>, Dan Williams <dan.j.williams@intel.com>,
+ Ira Weiny <ira.weiny@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 12 Jul 2021 10:11:32 +0300
-Mike Rapoport <rppt@kernel.org> wrote:
+Presently PAPR doesn't support injecting smart errors on an
+NVDIMM. This makes testing the NVDIMM health reporting functionality
+difficult as simulating NVDIMM health related events need a hacked up
+qemu version.
 
-> From: Mike Rapoport <rppt@linux.ibm.com>
->=20
-> Commit b10d6bca8720 ("arch, drivers: replace for_each_membock() with
-> for_each_mem_range()") didn't take into account that when there is
-> movable_node parameter in the kernel command line, for_each_mem_range()
-> would skip ranges marked with MEMBLOCK_HOTPLUG.
->=20
-> The page table setup code in POWER uses for_each_mem_range() to create th=
-e
-> linear mapping of the physical memory and since the regions marked as
-> MEMORY_HOTPLUG are skipped, they never make it to the linear map.
->=20
-> A later access to the memory in those ranges will fail:
->=20
-> [    2.271743] BUG: Unable to handle kernel data access on write at 0xc00=
-0000400000000
-> [    2.271984] Faulting instruction address: 0xc00000000008a3c0
-> [    2.272568] Oops: Kernel access of bad area, sig: 11 [#1]
-> [    2.272683] LE PAGE_SIZE=3D64K MMU=3DRadix SMP NR_CPUS=3D2048 NUMA pSe=
-ries
-> [    2.273063] Modules linked in:
-> [    2.273435] CPU: 0 PID: 53 Comm: kworker/u2:0 Not tainted 5.13.0 #7
-> [    2.273832] NIP:  c00000000008a3c0 LR: c0000000003c1ed8 CTR: 000000000=
-0000040
-> [    2.273918] REGS: c000000008a57770 TRAP: 0300   Not tainted  (5.13.0)
-> [    2.274036] MSR:  8000000002009033 <SF,VEC,EE,ME,IR,DR,RI,LE>  CR: 842=
-22202  XER: 20040000
-> [    2.274454] CFAR: c0000000003c1ed4 DAR: c000000400000000 DSISR: 420000=
-00 IRQMASK: 0
-> [    2.274454] GPR00: c0000000003c1ed8 c000000008a57a10 c0000000019da700 =
-c000000400000000
-> [    2.274454] GPR04: 0000000000000280 0000000000000180 0000000000000400 =
-0000000000000200
-> [    2.274454] GPR08: 0000000000000100 0000000000000080 0000000000000040 =
-0000000000000300
-> [    2.274454] GPR12: 0000000000000380 c000000001bc0000 c0000000001660c8 =
-c000000006337e00
-> [    2.274454] GPR16: 0000000000000000 0000000000000000 0000000000000000 =
-0000000000000000
-> [    2.274454] GPR20: 0000000040000000 0000000020000000 c000000001a81990 =
-c000000008c30000
-> [    2.274454] GPR24: c000000008c20000 c000000001a81998 000fffffffff0000 =
-c000000001a819a0
-> [    2.274454] GPR28: c000000001a81908 c00c000001000000 c000000008c40000 =
-c000000008a64680
-> [    2.275520] NIP [c00000000008a3c0] clear_user_page+0x50/0x80
-> [    2.276333] LR [c0000000003c1ed8] __handle_mm_fault+0xc88/0x1910
-> [    2.276688] Call Trace:
-> [    2.276839] [c000000008a57a10] [c0000000003c1e94] __handle_mm_fault+0x=
-c44/0x1910 (unreliable)
-> [    2.277142] [c000000008a57af0] [c0000000003c2c90] handle_mm_fault+0x13=
-0/0x2a0
-> [    2.277331] [c000000008a57b40] [c0000000003b5f08] __get_user_pages+0x2=
-48/0x610
-> [    2.277541] [c000000008a57c40] [c0000000003b848c] __get_user_pages_rem=
-ote+0x12c/0x3e0
-> [    2.277768] [c000000008a57cd0] [c000000000473f24] get_arg_page+0x54/0x=
-f0
-> [    2.277959] [c000000008a57d10] [c000000000474a7c] copy_string_kernel+0=
-x11c/0x210
-> [    2.278159] [c000000008a57d80] [c00000000047663c] kernel_execve+0x16c/=
-0x220
-> [    2.278361] [c000000008a57dd0] [c000000000166270] call_usermodehelper_=
-exec_async+0x1b0/0x2f0
-> [    2.278543] [c000000008a57e10] [c00000000000d5ec] ret_from_kernel_thre=
-ad+0x5c/0x70
-> [    2.278870] Instruction dump:
-> [    2.279214] 79280fa4 79271764 79261f24 794ae8e2 7ca94214 7d683a14 7c89=
-3a14 7d893050
-> [    2.279416] 7d4903a6 60000000 60000000 60000000 <7c001fec> 7c091fec 7c=
-081fec 7c051fec
-> [    2.280193] ---[ end trace 490b8c67e6075e09 ]---
->=20
-> Making for_each_mem_range() include MEMBLOCK_HOTPLUG regions in the
-> traversal fixes this issue.
->=20
-> Link: https://bugzilla.redhat.com/show_bug.cgi?id=3D1976100
-> Fixes: b10d6bca8720 ("arch, drivers: replace for_each_membock() with for_=
-each_mem_range()")
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> ---
+To solve this problem this patch proposes simulating certain set of
+NVDIMM health related events in papr_scm. Specifically 'fatal' health
+state and 'dirty' shutdown state. These error can be injected via the
+user-space 'ndctl-inject-smart(1)' command. With the proposed patch and
+corresponding ndctl patches following command flow is expected:
 
-This fixes the issue I was observing with both radix and hash.
+$ sudo ndctl list -DH -d nmem0
+...
+      "health_state":"ok",
+      "shutdown_state":"clean",
+...
+ # inject unsafe shutdown and fatal health error
+$ sudo ndctl inject-smart nmem0 -Uf
+...
+      "health_state":"fatal",
+      "shutdown_state":"dirty",
+...
+ # uninject all errors
+$ sudo ndctl inject-smart nmem0 -N
+...
+      "health_state":"ok",
+      "shutdown_state":"clean",
+...
 
-Thanks !
+The patch adds two members 'health_bitmap_mask' and
+'health_bitmap_override' inside struct papr_scm_priv which are then
+bit blt'ed[1] to the health bitmaps fetched from the hypervisor. In case
+we are not able to fetch health information from the hypervisor we
+service the health bitmap from these two members. These members are
+accessible from sysfs at nmemX/papr/health_bitmap_override
 
-Tested-by: Greg Kurz <groug@kaod.org>
+A new PDSM named 'SMART_INJECT' is proposed that accepts newly
+introduced 'struct nd_papr_pdsm_smart_inject' as payload thats
+exchanged between libndctl and papr_scm to indicate the requested
+smart-error states.
 
-Cc'ing linuxppc-dev so that POWER folks know about the fix
-and stable.
+When the processing the PDSM 'SMART_INJECT', papr_pdsm_smart_inject()
+constructs a pair or 'mask' and 'override' bitmaps from the payload
+and bit-blt it to the 'health_bitmap_{mask, override}' members. This
+ensures the after being fetched from the hypervisor, the health_bitmap
+reflects requested smart-error states.
 
-Cc: stable@vger.kernel.org # v5.10
+The patch is based on [2] "powerpc/papr_scm: Move duplicate
+definitions to common header files".
 
->  include/linux/memblock.h | 4 ++--
->  mm/memblock.c            | 3 ++-
->  2 files changed, 4 insertions(+), 3 deletions(-)
->=20
-> diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-> index cbf46f56d105..4a53c3ca86bd 100644
-> --- a/include/linux/memblock.h
-> +++ b/include/linux/memblock.h
-> @@ -209,7 +209,7 @@ static inline void __next_physmem_range(u64 *idx, str=
-uct memblock_type *type,
->   */
->  #define for_each_mem_range(i, p_start, p_end) \
->  =09__for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,=09\
-> -=09=09=09     MEMBLOCK_NONE, p_start, p_end, NULL)
-> +=09=09=09     MEMBLOCK_HOTPLUG, p_start, p_end, NULL)
-> =20
->  /**
->   * for_each_mem_range_rev - reverse iterate through memblock areas from
-> @@ -220,7 +220,7 @@ static inline void __next_physmem_range(u64 *idx, str=
-uct memblock_type *type,
->   */
->  #define for_each_mem_range_rev(i, p_start, p_end)=09=09=09\
->  =09__for_each_mem_range_rev(i, &memblock.memory, NULL, NUMA_NO_NODE, \
-> -=09=09=09=09 MEMBLOCK_NONE, p_start, p_end, NULL)
-> +=09=09=09=09 MEMBLOCK_HOTPLUG, p_start, p_end, NULL)
-> =20
->  /**
->   * for_each_reserved_mem_range - iterate over all reserved memblock area=
-s
-> diff --git a/mm/memblock.c b/mm/memblock.c
-> index 0041ff62c584..de7b553baa50 100644
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -947,7 +947,8 @@ static bool should_skip_region(struct memblock_type *=
-type,
->  =09=09return true;
-> =20
->  =09/* skip hotpluggable memory regions if needed */
-> -=09if (movable_node_is_enabled() && memblock_is_hotpluggable(m))
-> +=09if (movable_node_is_enabled() && memblock_is_hotpluggable(m) &&
-> +=09    !(flags & MEMBLOCK_HOTPLUG))
->  =09=09return true;
-> =20
->  =09/* if we want mirror memory skip non-mirror memory regions */
->=20
-> base-commit: e73f0f0ee7541171d89f2e2491130c7771ba58d3
+[1] : https://en.wikipedia.org/wiki/Bit_blit
+[2] :
+https://lore.kernel.org/nvdimm/162505488483.72147.12741153746322191381.stgit@56e104a48989
+
+Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+---
+ arch/powerpc/platforms/pseries/papr_scm.c | 94 ++++++++++++++++++++++-
+ include/uapi/linux/papr_pdsm.h            | 18 +++++
+ 2 files changed, 109 insertions(+), 3 deletions(-)
+
+diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+index 0c56db5a1427..b7437c61a270 100644
+--- a/arch/powerpc/platforms/pseries/papr_scm.c
++++ b/arch/powerpc/platforms/pseries/papr_scm.c
+@@ -29,6 +29,10 @@
+ 	 (1ul << ND_CMD_SET_CONFIG_DATA) | \
+ 	 (1ul << ND_CMD_CALL))
+ 
++/* Use bitblt method to override specific bits in the '_bitmap_' */
++#define BITBLT_BITMAP(_bitmap_, _mask_, _override_)		\
++	(((_bitmap_) & ~(_mask_)) | ((_mask_) & (_override_)))
++
+ /* Struct holding a single performance metric */
+ struct papr_scm_perf_stat {
+ 	u8 stat_id[8];
+@@ -81,6 +85,12 @@ struct papr_scm_priv {
+ 
+ 	/* length of the stat buffer as expected by phyp */
+ 	size_t stat_buffer_len;
++
++	/* The bits which needs to be overridden */
++	u64 health_bitmap_mask;
++
++	/* The overridden values for the bits having the masks set */
++	u64 health_bitmap_override;
+ };
+ 
+ static int papr_scm_pmem_flush(struct nd_region *nd_region,
+@@ -308,19 +318,28 @@ static ssize_t drc_pmem_query_stats(struct papr_scm_priv *p,
+ static int __drc_pmem_query_health(struct papr_scm_priv *p)
+ {
+ 	unsigned long ret[PLPAR_HCALL_BUFSIZE];
++	u64 bitmap = 0;
+ 	long rc;
+ 
+ 	/* issue the hcall */
+ 	rc = plpar_hcall(H_SCM_HEALTH, ret, p->drc_index);
+-	if (rc != H_SUCCESS) {
++	if (rc == H_SUCCESS)
++		bitmap = ret[0] & ret[1];
++	else if (rc == H_FUNCTION)
++		dev_info_once(&p->pdev->dev,
++			      "Hcall H_SCM_HEALTH not implemented, assuming empty health bitmap");
++	else {
++
+ 		dev_err(&p->pdev->dev,
+ 			"Failed to query health information, Err:%ld\n", rc);
+ 		return -ENXIO;
+ 	}
+ 
+ 	p->lasthealth_jiffies = jiffies;
+-	p->health_bitmap = ret[0] & ret[1];
+-
++	/* Allow overriding specific health bits via bit blt. */
++	bitmap = BITBLT_BITMAP(bitmap, p->health_bitmap_mask,
++			       p->health_bitmap_override);
++	WRITE_ONCE(p->health_bitmap, bitmap);
+ 	dev_dbg(&p->pdev->dev,
+ 		"Queried dimm health info. Bitmap:0x%016lx Mask:0x%016lx\n",
+ 		ret[0], ret[1]);
+@@ -630,6 +649,54 @@ static int papr_pdsm_health(struct papr_scm_priv *p,
+ 	return rc;
+ }
+ 
++/* Inject a smart error Add the dirty-shutdown-counter value to the pdsm */
++static int papr_pdsm_smart_inject(struct papr_scm_priv *p,
++				  union nd_pdsm_payload *payload)
++{
++	int rc;
++	u32 supported_flags = 0;
++	u64 mask = 0, override = 0;
++
++	/* Check for individual smart error flags and update mask and override */
++	if (payload->smart_inject.flags & PDSM_SMART_INJECT_HEALTH_FATAL) {
++		supported_flags |= PDSM_SMART_INJECT_HEALTH_FATAL;
++		mask |= PAPR_PMEM_HEALTH_FATAL;
++		override |= payload->smart_inject.fatal_enable ?
++			PAPR_PMEM_HEALTH_FATAL : 0;
++	}
++
++	if (payload->smart_inject.flags & PDSM_SMART_INJECT_BAD_SHUTDOWN) {
++		supported_flags |= PDSM_SMART_INJECT_BAD_SHUTDOWN;
++		mask |= PAPR_PMEM_SHUTDOWN_DIRTY;
++		override |= payload->smart_inject.unsafe_shutdown_enable ?
++			PAPR_PMEM_SHUTDOWN_DIRTY : 0;
++	}
++
++	dev_dbg(&p->pdev->dev, "[Smart-inject] Mask=%#llx override=%#llx\n",
++		mask, override);
++
++	/* Prevent concurrent access to dimm health bitmap related members */
++	rc = mutex_lock_interruptible(&p->health_mutex);
++	if (rc)
++		return rc;
++
++	/* Bitblt mask/override to corrosponding health_bitmap couterparts */
++	p->health_bitmap_mask = BITBLT_BITMAP(p->health_bitmap_mask,
++					      mask, override);
++	p->health_bitmap_override = BITBLT_BITMAP(p->health_bitmap_override,
++						  mask, override);
++
++	/* Invalidate cached health bitmap */
++	p->lasthealth_jiffies = 0;
++
++	mutex_unlock(&p->health_mutex);
++
++	/* Return the supported flags back to userspace */
++	payload->smart_inject.flags = supported_flags;
++
++	return sizeof(struct nd_papr_pdsm_health);
++}
++
+ /*
+  * 'struct pdsm_cmd_desc'
+  * Identifies supported PDSMs' expected length of in/out payloads
+@@ -663,6 +730,12 @@ static const struct pdsm_cmd_desc __pdsm_cmd_descriptors[] = {
+ 		.size_out = sizeof(struct nd_papr_pdsm_health),
+ 		.service = papr_pdsm_health,
+ 	},
++
++	[PAPR_PDSM_SMART_INJECT] = {
++		.size_in = sizeof(struct nd_papr_pdsm_smart_inject),
++		.size_out = sizeof(struct nd_papr_pdsm_smart_inject),
++		.service = papr_pdsm_smart_inject,
++	},
+ 	/* Empty */
+ 	[PAPR_PDSM_MAX] = {
+ 		.size_in = 0,
+@@ -799,6 +872,20 @@ static int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc,
+ 	return 0;
+ }
+ 
++static ssize_t health_bitmap_override_show(struct device *dev,
++					   struct device_attribute *attr,
++					   char *buf)
++{
++	struct nvdimm *dimm = to_nvdimm(dev);
++	struct papr_scm_priv *p = nvdimm_provider_data(dimm);
++
++	return sprintf(buf, "mask=%#llx override=%#llx\n",
++		       READ_ONCE(p->health_bitmap_mask),
++		       READ_ONCE(p->health_bitmap_override));
++}
++
++static DEVICE_ATTR_ADMIN_RO(health_bitmap_override);
++
+ static ssize_t perf_stats_show(struct device *dev,
+ 			       struct device_attribute *attr, char *buf)
+ {
+@@ -913,6 +1000,7 @@ static struct attribute *papr_nd_attributes[] = {
+ 	&dev_attr_flags.attr,
+ 	&dev_attr_perf_stats.attr,
+ 	&dev_attr_dirty_shutdown.attr,
++	&dev_attr_health_bitmap_override.attr,
+ 	NULL,
+ };
+ 
+diff --git a/include/uapi/linux/papr_pdsm.h b/include/uapi/linux/papr_pdsm.h
+index 1ef46fe8d905..14ec90912460 100644
+--- a/include/uapi/linux/papr_pdsm.h
++++ b/include/uapi/linux/papr_pdsm.h
+@@ -116,6 +116,22 @@ struct nd_papr_pdsm_health {
+ 	};
+ };
+ 
++/* Flags for injecting specific smart errors */
++#define PDSM_SMART_INJECT_HEALTH_FATAL		(1 << 0)
++#define PDSM_SMART_INJECT_BAD_SHUTDOWN		(1 << 1)
++
++struct nd_papr_pdsm_smart_inject {
++	union {
++		struct {
++			/* One or more of PDSM_SMART_INJECT_ */
++			__u32 flags;
++			__u8 fatal_enable;
++			__u8 unsafe_shutdown_enable;
++		};
++		__u8 buf[ND_PDSM_PAYLOAD_MAX_SIZE];
++	};
++} __packed;
++
+ /*
+  * Methods to be embedded in ND_CMD_CALL request. These are sent to the kernel
+  * via 'nd_cmd_pkg.nd_command' member of the ioctl struct
+@@ -123,12 +139,14 @@ struct nd_papr_pdsm_health {
+ enum papr_pdsm {
+ 	PAPR_PDSM_MIN = 0x0,
+ 	PAPR_PDSM_HEALTH,
++	PAPR_PDSM_SMART_INJECT,
+ 	PAPR_PDSM_MAX,
+ };
+ 
+ /* Maximal union that can hold all possible payload types */
+ union nd_pdsm_payload {
+ 	struct nd_papr_pdsm_health health;
++	struct nd_papr_pdsm_smart_inject smart_inject;
+ 	__u8 buf[ND_PDSM_PAYLOAD_MAX_SIZE];
+ } __packed;
+ 
+-- 
+2.31.1
 
