@@ -2,71 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C03F83C6892
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jul 2021 04:35:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F9873C697A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jul 2021 06:37:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GP4Vr67Lzz3bX1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jul 2021 12:35:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GP7CH2bYqz305v
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jul 2021 14:37:15 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=paul-moore-com.20150623.gappssmtp.com header.i=@paul-moore-com.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=hAqQVpiv;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=VW6TGlpY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=paul-moore.com
- (client-ip=2a00:1450:4864:20::62a; helo=mail-ej1-x62a.google.com;
- envelope-from=paul@paul-moore.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::432;
+ helo=mail-pf1-x432.google.com; envelope-from=leobras.c@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=paul-moore-com.20150623.gappssmtp.com
- header.i=@paul-moore-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=hAqQVpiv; dkim-atps=neutral
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com
- [IPv6:2a00:1450:4864:20::62a])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=VW6TGlpY; dkim-atps=neutral
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com
+ [IPv6:2607:f8b0:4864:20::432])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GP4VL2cF3z2yNX
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jul 2021 12:35:04 +1000 (AEST)
-Received: by mail-ej1-x62a.google.com with SMTP id hc15so34858ejc.4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Jul 2021 19:35:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=RBPu6xYIBS0viB5UZS492p6zHqYEhcALtpbidr1sCrU=;
- b=hAqQVpiv52aQMiILfGaILA7UZ3Vb7hpAEZl5MSyT4Y9giLdF8ZWBqgareVlSQUHWpR
- ZUrim0on5dre3bqN5EGAiRzVWG6nVeaiF+s6JaGu2Q+54HjtAgU1AvqcqlU5GALyqPc8
- J59ZdfyvvWc0CNOaKSGrAuHZon7DtT9jG9x1ueo2PbGCXBvXV9LCEYmPz0NJvuwLKCb4
- e5swfb54jlYSJ49YcMdOKdIhN3CYIP2f7H6ObIehgsT00rpoEugEWTcwjWsk6Ijx/OB+
- sziXashjbhIgbQwAsqKXq8JHPkE9kbOMVO58+jj4MNa7U/Fp8vQxUrXCiR8DuABY3fmZ
- DToA==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GP7Bl6rXlz2yXd
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jul 2021 14:36:46 +1000 (AEST)
+Received: by mail-pf1-x432.google.com with SMTP id o201so13359070pfd.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Jul 2021 21:36:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=message-id:subject:from:to:cc:date:in-reply-to:references
+ :user-agent:mime-version:content-transfer-encoding;
+ bh=82m03D0s+VMudJouCH7xODKkU6rRtZkgh42oOQDO16A=;
+ b=VW6TGlpY06/w5pkT7TxeM2WTODkXJh5X54KrtuYOFbiQ4cJR4UOEQq/3J77uAa4K9o
+ r7IWudEirM1J2yeVWKv5dGC6hCQpQONyWEQBnJNvrkXGi53dpr7IHhRLRmSdafqUMba6
+ yC2qrM3ZoaoZoH9Rx+nXf+ueLuGsDYIDwjAkytOPK0D+BZw5TO8iYERyHKWmQc7/321i
+ JmaeSiWUV2v539BKivflxc6bU2UusUPT2BFzdljqE6VnSxisQBgud1zv14n/onez2fBj
+ 5HX7OF42GOsvE0s8drqycKBE56kjgIG3eqW//7OXR80RoM+Rh/5W/BDvoPV9ErJKMlf0
+ CYuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=RBPu6xYIBS0viB5UZS492p6zHqYEhcALtpbidr1sCrU=;
- b=ojgzT33srNHOtC+6k5TsgrzL+C25F7ASqShEOazbBy4HiNcbUGTz+KXq4gJxSn50vy
- 7VYDVs/f6V6vVDIsYYeIrj2qcJ7jIbJmmW4wjXuAoK8+vlkaAxALccP8Mo37UVyD1Tau
- PrMOQDfMaXHPfrKKt2sVvNI3svx8RjcbDvDdGkMGiotxr/8DIJfb08VIY0eI95yS1eyl
- Zf8ssn0HdeEPklfnmFWkRQbEYIBOid6+7+cbn+Mb6yswcCgozEwXdmVJp4UwdaW8P8p+
- Mx+5vJTrHJnRLvewDunhyATm9CrKulaiqhesi4ooN+vN+w/62jkzcnHN25t7mOWL1lE3
- nLAg==
-X-Gm-Message-State: AOAM533WwldWaBxxFCByqLulNK/bAvMFmxRgz4X3L2bSra75wLdIXyyR
- uNFYm35VsY8lIt0luzlZ2Ce/KsyzLNUKvA8HNNEJ
-X-Google-Smtp-Source: ABdhPJyytdq/CE/wkitIkFTYSvvbb5T4D4KC4bniBQLIKEAC15BXF2YMkUTZuWQQktrfljWaz21U9sH3mGdCEuV7T/M=
-X-Received: by 2002:a17:907:10d8:: with SMTP id
- rv24mr2673354ejb.542.1626143695922; 
- Mon, 12 Jul 2021 19:34:55 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210616085118.1141101-1-omosnace@redhat.com>
- <8735tdiyc1.ffs@nanos.tec.linutronix.de>
-In-Reply-To: <8735tdiyc1.ffs@nanos.tec.linutronix.de>
-From: Paul Moore <paul@paul-moore.com>
-Date: Mon, 12 Jul 2021 22:34:45 -0400
-Message-ID: <CAHC9VhRAN4RS2c3cwpr=DQ_45MDqn2QV7nL4J3ZWXKfUNLcjdQ@mail.gmail.com>
-Subject: Re: [PATCH v3] lockdown,selinux: fix wrong subject in some SELinux
- lockdown checks
-To: Thomas Gleixner <tglx@linutronix.de>
+ h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+ :references:user-agent:mime-version:content-transfer-encoding;
+ bh=82m03D0s+VMudJouCH7xODKkU6rRtZkgh42oOQDO16A=;
+ b=XucPawFrwHRPzkch7F39CcxBqvdLZJcqbtRrdZooqf337mp3kfAUQx9LpggA6S9p55
+ P7v6MTJRUK1APuRteExn/L0E7GxnSEZW0hNopkHjazqm0Xy+kNXt1n2wWPUeUKNz3jBK
+ 4gJ0+nNt+P+ZvWHoAHyOznruTxCz/qcSpE8bIIRncy8xUrb5B3Y6guC5bqrMcXkXCDav
+ iQ3xwoHAT6Gzp6bG+HWoe6IPFyqUbJLdge+g+VCydjcawMB0tc5yJC77sHCLUc/iY2JA
+ VjVRfSyOWBq9zXTvSmgUruJtHW1i6eNhNkcI4UybJyHDiVb2G0tDIuCpF4v3QgT9sISX
+ BgqA==
+X-Gm-Message-State: AOAM530agJN3jEbfSVGTgd0Ap5oFf0DuH2aT0ed9wybY9AAcuYnzCy5I
+ 1YziaGmQNj8P5EBHV1+PwJQ=
+X-Google-Smtp-Source: ABdhPJwSS4qHGmIytrzwPKmqhB2ndXwHOn3ihpE6aC1jNtjFxE+StfykewwJZNQ72Oncr1gendG2DA==
+X-Received: by 2002:a05:6a00:21c6:b029:2ff:e9:94f0 with SMTP id
+ t6-20020a056a0021c6b02902ff00e994f0mr2536260pfj.73.1626151002354; 
+ Mon, 12 Jul 2021 21:36:42 -0700 (PDT)
+Received: from ?IPv6:2804:14c:482:92eb:ffdf:6b35:b94d:258?
+ ([2804:14c:482:92eb:ffdf:6b35:b94d:258])
+ by smtp.gmail.com with ESMTPSA id j20sm14700424pfc.203.2021.07.12.21.36.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 12 Jul 2021 21:36:41 -0700 (PDT)
+Message-ID: <5b8676140f495dbbe3e28ce261e449b885dbae66.camel@gmail.com>
+Subject: Re: [PATCH v4 10/11] powerpc/pseries/iommu: Make use of DDW for
+ indirect mapping
+From: Leonardo =?ISO-8859-1?Q?Br=E1s?= <leobras.c@gmail.com>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>, Michael Ellerman
+ <mpe@ellerman.id.au>,  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Joel Stanley <joel@jms.id.au>, 
+ Christophe Leroy <christophe.leroy@c-s.fr>, Nicolin Chen
+ <nicoleotsuka@gmail.com>, Niklas Schnelle <schnelle@linux.ibm.com>
+Date: Tue, 13 Jul 2021 01:36:52 -0300
+In-Reply-To: <95ac11e9-a709-e0a2-9690-ef13c4a2cd43@ozlabs.ru>
+References: <20210430163145.146984-1-leobras.c@gmail.com>
+ <20210430163145.146984-11-leobras.c@gmail.com>
+ <95ac11e9-a709-e0a2-9690-ef13c4a2cd43@ozlabs.ru>
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.40.2 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,61 +89,246 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-efi@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
- Steffen Klassert <steffen.klassert@secunet.com>,
- Herbert Xu <herbert@gondor.apana.org.au>, x86@kernel.org,
- James Morris <jmorris@namei.org>, linux-acpi@vger.kernel.org,
- Ingo Molnar <mingo@redhat.com>, linux-serial@vger.kernel.org,
- linux-pm@vger.kernel.org, selinux@vger.kernel.org,
- Steven Rostedt <rostedt@goodmis.org>, Casey Schaufler <casey@schaufler-ca.com>,
- netdev@vger.kernel.org, Stephen Smalley <stephen.smalley.work@gmail.com>,
- kexec@lists.infradead.org, Ondrej Mosnacek <omosnace@redhat.com>,
- linux-security-module@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- "David S . Miller" <davem@davemloft.net>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Jun 19, 2021 at 1:00 PM Thomas Gleixner <tglx@linutronix.de> wrote:
-> On Wed, Jun 16 2021 at 10:51, Ondrej Mosnacek wrote:
-> > diff --git a/arch/x86/mm/testmmiotrace.c b/arch/x86/mm/testmmiotrace.c
-> > index bda73cb7a044..c43a13241ae8 100644
-> > --- a/arch/x86/mm/testmmiotrace.c
-> > +++ b/arch/x86/mm/testmmiotrace.c
-> > @@ -116,7 +116,7 @@ static void do_test_bulk_ioremapping(void)
-> >  static int __init init(void)
-> >  {
-> >       unsigned long size = (read_far) ? (8 << 20) : (16 << 10);
-> > -     int ret = security_locked_down(LOCKDOWN_MMIOTRACE);
-> > +     int ret = security_locked_down(current_cred(), LOCKDOWN_MMIOTRACE);
->
-> I have no real objection to those patches, but it strikes me odd that
-> out of the 62 changed places 58 have 'current_cred()' and 4 have NULL as
-> argument.
->
-> I can't see why this would ever end up with anything else than
-> current_cred() or NULL and NULL being the 'special' case. So why not
-> having security_locked_down_no_cred() and make current_cred() implicit
-> for security_locked_down() which avoids most of the churn and just makes
-> the special cases special. I might be missing something though.
+On Tue, 2021-05-11 at 17:57 +1000, Alexey Kardashevskiy wrote:
+> 
+> 
+> On 01/05/2021 02:31, Leonardo Bras wrote:
+> > [...]
+> >       pmem_present = dn != NULL;
+> > @@ -1218,8 +1224,12 @@ static bool enable_ddw(struct pci_dev *dev,
+> > struct device_node *pdn)
+> >   
+> >         mutex_lock(&direct_window_init_mutex);
+> >   
+> > -       if (find_existing_ddw(pdn, &dev->dev.archdata.dma_offset,
+> > &len))
+> > -               goto out_unlock;
+> > +       if (find_existing_ddw(pdn, &dev->dev.archdata.dma_offset,
+> > &len)) {
+> > +               direct_mapping = (len >= max_ram_len);
+> > +
+> > +               mutex_unlock(&direct_window_init_mutex);
+> > +               return direct_mapping;
+> 
+> Does not this break the existing case when direct_mapping==true by 
+> skipping setting dev->dev.bus_dma_limit before returning?
+> 
 
-Unfortunately it is not uncommon for kernel subsystems to add, move,
-or otherwise play around with LSM hooks without checking with the LSM
-folks; generally this is okay, but there have been a few problems in
-the past and I try to keep that in mind when we are introducing new
-hooks or modifying existing ones.  If we have two LSM hooks for
-roughly the same control point it has the potential to cause
-confusion, e.g. do I use the "normal" or the "no_cred" version?  What
-if I don't want to pass a credential, can I just use "no_cred"?  My
-thinking with the single, always-pass-a-cred function is that callers
-don't have to worry about choosing from multiple, similar hooks and
-they know they need to pass a cred which hopefully gets them thinking
-about what cred is appropriate.  It's not foolproof, but I believe the
-single hook approach will be less prone to accidents ... or so I hope
-:)
+Yes, it does. Good catch!
+I changed it to use a flag instead of win64 for return, and now I can
+use the same success exit path for both the new config and the config
+found in list. (out_unlock)
 
--- 
-paul moore
-www.paul-moore.com
+> 
+> 
+> > +       }
+> >   
+> >         /*
+> >          * If we already went through this for a previous function of
+> > @@ -1298,7 +1308,6 @@ static bool enable_ddw(struct pci_dev *dev,
+> > struct device_node *pdn)
+> >                 goto out_failed;
+> >         }
+> >         /* verify the window * number of ptes will map the partition
+> > */
+> > -       /* check largest block * page size > max memory hotplug addr
+> > */
+> >         /*
+> >          * The "ibm,pmemory" can appear anywhere in the address
+> > space.
+> >          * Assuming it is still backed by page structs, try
+> > MAX_PHYSMEM_BITS
+> > @@ -1320,6 +1329,17 @@ static bool enable_ddw(struct pci_dev *dev,
+> > struct device_node *pdn)
+> >                         1ULL << len,
+> >                         query.largest_available_block,
+> >                         1ULL << page_shift);
+> > +
+> > +               len = order_base_2(query.largest_available_block <<
+> > page_shift);
+> > +               win_name = DMA64_PROPNAME;
+> 
+> [1] ....
+> 
+> 
+> > +       } else {
+> > +               direct_mapping = true;
+> > +               win_name = DIRECT64_PROPNAME;
+> > +       }
+> > +
+> > +       /* DDW + IOMMU on single window may fail if there is any
+> > allocation */
+> > +       if (default_win_removed && !direct_mapping &&
+> > iommu_table_in_use(tbl)) {
+> > +               dev_dbg(&dev->dev, "current IOMMU table in use, can't
+> > be replaced.\n");
+> 
+> 
+> ... remove !direct_mapping and move to [1]?
+
+
+sure, done!
+
+> 
+> 
+> >                 goto out_failed;
+> >         }
+> >   
+> > @@ -1331,8 +1351,7 @@ static bool enable_ddw(struct pci_dev *dev,
+> > struct device_node *pdn)
+> >                   create.liobn, dn);
+> >   
+> >         win_addr = ((u64)create.addr_hi << 32) | create.addr_lo;
+> > -       win64 = ddw_property_create(DIRECT64_PROPNAME, create.liobn,
+> > win_addr,
+> > -                                   page_shift, len);
+> > +       win64 = ddw_property_create(win_name, create.liobn, win_addr,
+> > page_shift, len);
+> >         if (!win64) {
+> >                 dev_info(&dev->dev,
+> >                          "couldn't allocate property, property name,
+> > or value\n");
+> > @@ -1350,12 +1369,47 @@ static bool enable_ddw(struct pci_dev *dev,
+> > struct device_node *pdn)
+> >         if (!window)
+> >                 goto out_del_prop;
+> >   
+> > -       ret = walk_system_ram_range(0, memblock_end_of_DRAM() >>
+> > PAGE_SHIFT,
+> > -                       win64->value,
+> > tce_setrange_multi_pSeriesLP_walk);
+> > -       if (ret) {
+> > -               dev_info(&dev->dev, "failed to map direct window for
+> > %pOF: %d\n",
+> > -                        dn, ret);
+> > -               goto out_del_list;
+> > +       if (direct_mapping) {
+> > +               /* DDW maps the whole partition, so enable direct DMA
+> > mapping */
+> > +               ret = walk_system_ram_range(0, memblock_end_of_DRAM()
+> > >> PAGE_SHIFT,
+> > +                                           win64->value,
+> > tce_setrange_multi_pSeriesLP_walk);
+> > +               if (ret) {
+> > +                       dev_info(&dev->dev, "failed to map direct
+> > window for %pOF: %d\n",
+> > +                                dn, ret);
+> > +                       goto out_del_list;
+> > +               }
+> > +       } else {
+> > +               struct iommu_table *newtbl;
+> > +               int i;
+> > +
+> > +               /* New table for using DDW instead of the default DMA
+> > window */
+> > +               newtbl = iommu_pseries_alloc_table(pci->phb->node);
+> > +               if (!newtbl) {
+> > +                       dev_dbg(&dev->dev, "couldn't create new IOMMU
+> > table\n");
+> > +                       goto out_del_list;
+> > +               }
+> > +
+> > +               for (i = 0; i < ARRAY_SIZE(pci->phb->mem_resources);
+> > i++) {
+> > +                       const unsigned long mask = IORESOURCE_MEM_64
+> > | IORESOURCE_MEM;
+> > +
+> > +                       /* Look for MMIO32 */
+> > +                       if ((pci->phb->mem_resources[i].flags & mask)
+> > == IORESOURCE_MEM)
+> > +                               break;
+> 
+> What if there is no IORESOURCE_MEM? pci->phb->mem_resources[i].start 
+> below will have garbage.
+
+
+
+Yeah, that makes sense. I will add this lines after 'for':
+
+if (i == ARRAY_SIZE(pci->phb->mem_resources)) {
+ iommu_tce_table_put(newtbl);
+ goto out_del_list;
+}
+
+What do you think?
+
+
+> 
+> 
+> > +               }
+> > +
+> > +               _iommu_table_setparms(newtbl, pci->phb->bus->number,
+> > create.liobn, win_addr,
+> > +                                     1UL << len, page_shift, 0,
+> > &iommu_table_lpar_multi_ops);
+> > +               iommu_init_table(newtbl, pci->phb->node, pci->phb-
+> > >mem_resources[i].start,
+> > +                                pci->phb->mem_resources[i].end);
+> > +
+> > +               if (default_win_removed)
+> > +                       iommu_tce_table_put(tbl);
+> 
+> 
+> iommu_tce_table_put() should have been called when the window was
+> removed.
+> 
+> Also after some thinking - what happens if there were 2 devices in the 
+> PE and one requested 64bit DMA? This will only update 
+> set_iommu_table_base() for the 64bit one but not for the other.
+>
+> I think the right thing to do is:
+> 
+> 1. check if table[0] is in use, if yes => fail (which this does
+> already)
+> 
+> 2. remove default dma window but keep the iommu_table struct with one
+> change - set it_size to 0 (and free it_map) so the 32bit device won't
+> look at a stale structure and think there is some window (imaginery 
+> situation for phyp but easy to recreate in qemu).
+> 
+> 3. use table[1] for newly created indirect DDW window.
+> 
+> 4. change get_iommu_table_base() to return a usable table (or may be
+> not 
+> needed?).
+> 
+> If this sounds reasonable (does it?),
+
+Looks ok, I will try your suggestion. 
+I was not aware of how pci->table_group->tables[] worked, so I replaced
+pci->table_group->tables[0] with the new tbl, while moving the older in
+pci->table_group->tables[1].
+(4) get_iommu_table_base() does not seem to need update, as it returns
+the tlb set by set_iommu_table_base() which is already called in the
+!direct_mapping path in current patch.
+
+>  the question is now if you have
+> time to do that and the hardware to test that, or I'll have to finish
+> the work :)
+
+Sorry, for some reason part of this got lost in Evolution mail client.
+
+If possible, I do want to finish this work, and I am talking to IBM
+Virt people in order to get testing HW.
+
+> 
+> 
+> > +               else
+> > +                       pci->table_group->tables[1] = tbl;
+> 
+> 
+> What is this for?
+
+I was thinking of adding the older table to pci->table_group->tables[1]
+while keeping the newer table on pci->table_group->tables[0].
+This did work, but I think your suggestion may work better.
+
+Best regards,
+Leonardo Bras
+
+
