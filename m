@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 470CA3C69B2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jul 2021 07:25:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C46403C69B3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jul 2021 07:26:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GP8HM389Rz3blT
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jul 2021 15:25:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GP8Hq5Hkpz3btV
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Jul 2021 15:26:15 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DcXEnHM8;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Os/S/TNb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,82 +18,82 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=DcXEnHM8; dkim-atps=neutral
+ header.s=pp1 header.b=Os/S/TNb; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GP8GF5KTcz2yNZ
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jul 2021 15:24:53 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GP8GG505Rz2yNZ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Jul 2021 15:24:54 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
  by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 16D54GkU062583; Tue, 13 Jul 2021 01:24:47 -0400
+ 16D541xZ106750; Tue, 13 Jul 2021 01:24:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=rVgni9StortTZXRWrd8xM1wdZuWSy6UI/QQyrSbYZLI=;
- b=DcXEnHM8nM52Cb6ev1HvlaAqOS+IuyAYrnwo62vFk2/rPOuoUSFXpqa+tZTS4dj5hjxq
- j50zQgCI+O4HXlIg6gHqmHPYoWkqY8Yt66EXhPcEIaKyJ37NnYIZg6Qj8UqVpOsuBqOQ
- oNeEqUj49up8qwqRPi9JbFpIoU9zcT5Kh0KQLmok3x4eff04JBXKy+zcf+XWNtDKAOl6
- NAo964dBhFfCTGP2qmr2Prmny4HJUe1yQdKMFEttMatN3LunvqiriPSbCuvveuG2DDLS
- vr6uiBFuZOl6+63tgAAegoQs2iC4F0D55Wz07SVxxvwurnEdxNZeJoYW8bhwnJw87ivT bw== 
+ bh=ZTnMM3mGGqOnUOgF6S7CuQEQrJWP/0bovcoDH+AF2hA=;
+ b=Os/S/TNb4dd+OmrJPo8+DfkUfR4a8kEOsH1KCTyXdd0vixaSgxlxPHk4NmpU3rGEjCr3
+ xTVOnQ1MeHrAWLDqBKQRJmhY8VyFrIrO8dxnYeAL8+D5UY+pU5SquPGCPPyx8W8N+YHG
+ Fc/gwAMLUKZUnaUAr6DNo5FXFftLQRqsIQ9Slj24WxIIMj9xZ7BCmM/qo5xEobCAiwAP
+ NS42Ot66ktI06KsdIO9gIZPQGou6c+aLbtxUmlBet9F5agLMn1320Gn7gf3casoWxTS8
+ yPFHmYYEKJPxiAy/6adlYWgTw6zODW1JqGcSE2paY6zT6xtdSOzLmoSllEtJ9MI/LkLy JA== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 39qs3bqq66-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 39qs117kmu-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 13 Jul 2021 01:24:46 -0400
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 16D56XSn069155;
- Tue, 13 Jul 2021 01:24:46 -0400
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0b-001b2d01.pphosted.com with ESMTP id 39qs3bqq4a-1
+ Tue, 13 Jul 2021 01:24:49 -0400
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 16D56jr1115687;
+ Tue, 13 Jul 2021 01:24:48 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 39qs117kmb-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 13 Jul 2021 01:24:46 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16D5Oimc015497;
- Tue, 13 Jul 2021 05:24:44 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma02fra.de.ibm.com with ESMTP id 39s3p780e6-1
+ Tue, 13 Jul 2021 01:24:48 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16D5MF4P018930;
+ Tue, 13 Jul 2021 05:24:47 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma04ams.nl.ibm.com with ESMTP id 39q3689310-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 13 Jul 2021 05:24:44 +0000
+ Tue, 13 Jul 2021 05:24:46 +0000
 Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
  [9.149.105.58])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 16D5OgTI28639568
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 16D5Meea24576268
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 13 Jul 2021 05:24:42 GMT
+ Tue, 13 Jul 2021 05:22:40 GMT
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 017104C046;
+ by IMSVA (Postfix) with ESMTP id 786564C062;
+ Tue, 13 Jul 2021 05:24:44 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 75CE24C044;
  Tue, 13 Jul 2021 05:24:42 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 698ED4C04E;
- Tue, 13 Jul 2021 05:24:39 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.102.18.200])
  by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 13 Jul 2021 05:24:39 +0000 (GMT)
+ Tue, 13 Jul 2021 05:24:42 +0000 (GMT)
 From: Parth Shah <parth@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC 1/2] powerpc/book3s_hv: Add new idle-hint attribute in VPA region
-Date: Tue, 13 Jul 2021 10:54:32 +0530
-Message-Id: <20210713052433.257003-2-parth@linux.ibm.com>
+Subject: [RFC 2/2] kernel/idle: Update and use idle-hint in VPA region
+Date: Tue, 13 Jul 2021 10:54:33 +0530
+Message-Id: <20210713052433.257003-3-parth@linux.ibm.com>
 X-Mailer: git-send-email 2.26.3
 In-Reply-To: <20210713052433.257003-1-parth@linux.ibm.com>
 References: <20210713052433.257003-1-parth@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: fnIQ02gnzoSz23RRV73oZNL7NaWOu_Kh
-X-Proofpoint-ORIG-GUID: fvr0rah-xX68hXKfioGyCLlsRiPsSI1q
+X-Proofpoint-GUID: SpXDZIwvsAK7htr7VUnwltiMIUt7MQjn
+X-Proofpoint-ORIG-GUID: ohrjz4hFXC57tCInTgacUWua0ccoh7D4
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
  definitions=2021-07-13_03:2021-07-13,
  2021-07-12 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- mlxlogscore=999 phishscore=0 impostorscore=0 suspectscore=0 mlxscore=0
- adultscore=0 malwarescore=0 clxscore=1015 bulkscore=0 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ phishscore=0 adultscore=0
+ suspectscore=0 impostorscore=0 clxscore=1015 lowpriorityscore=0
+ bulkscore=0 malwarescore=0 priorityscore=1501 mlxlogscore=999 mlxscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2104190000 definitions=main-2107130022
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -112,140 +112,77 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In lppaca region, add a new attribute idle_hint which can allow guest scheduler for
-better cpu selection. Hypervisor can update idle_hint attribute based on
-the prediction that if vCPU needs to be scheduled then can it be scheduled
-instantly or not.
+In guest, Set idle_hint to 1 when the prev_cpu of a vCPU goes into idle state,
+similarly set idle_hint to 0 when exiting an idle state.
+
+Since the idle_hint is in VPA region, the available_idle_cpu() in guest can
+read this region every time to find if a vCPU can be scheduled instantly by
+the hypervsior or not.
 
 Signed-off-by: Parth Shah <parth@linux.ibm.com>
 ---
- arch/powerpc/include/asm/idle_hint.h | 28 +++++++++++++++++++++++
- arch/powerpc/include/asm/lppaca.h    |  3 ++-
- arch/powerpc/kvm/book3s.h            |  2 ++
- arch/powerpc/kvm/book3s_hv.c         | 34 ++++++++++++++++++++++++++++
- 4 files changed, 66 insertions(+), 1 deletion(-)
- create mode 100644 arch/powerpc/include/asm/idle_hint.h
+ arch/powerpc/include/asm/paravirt.h | 12 ++++++++++--
+ kernel/sched/idle.c                 |  3 +++
+ 2 files changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/idle_hint.h b/arch/powerpc/include/asm/idle_hint.h
-new file mode 100644
-index 000000000000..165d65c0275b
---- /dev/null
-+++ b/arch/powerpc/include/asm/idle_hint.h
-@@ -0,0 +1,28 @@
-+#ifndef _ASM_POWERPC_IDLEHINT_H
-+#define _ASM_POWERPC_IDLEHINT_H
-+
-+#include <linux/kvm_host.h>
-+
-+extern void kvmppc_idle_hint_set(struct kvm_vcpu *vcpu, int idle_hint);
-+
-+extern int idle_hint_is_active;
-+
-+extern void set_idle_hint(int cpu, int value);
-+
-+static inline int prev_cpu_of_kvm(struct kvm_vcpu *vcpu)
+diff --git a/arch/powerpc/include/asm/paravirt.h b/arch/powerpc/include/asm/paravirt.h
+index bcb7b5f917be..b20e4d25bd00 100644
+--- a/arch/powerpc/include/asm/paravirt.h
++++ b/arch/powerpc/include/asm/paravirt.h
+@@ -21,6 +21,12 @@ static inline bool is_shared_processor(void)
+ 	return static_branch_unlikely(&shared_processor);
+ }
+ 
++static inline int idle_hint_of(int cpu)
 +{
-+	struct pid *pid;
-+	struct task_struct *task = NULL;
-+
-+	rcu_read_lock();
-+	pid = rcu_dereference(vcpu->pid);
-+	if (pid)
-+		task = get_pid_task(pid, PIDTYPE_PID);
-+	rcu_read_unlock();
-+
-+	if (!task)
-+		return -1;
-+
-+	return task_cpu(task);
++	__be32 idle_hint = READ_ONCE(lppaca_of(cpu).idle_hint);
++	return be32_to_cpu(idle_hint);
 +}
-+#endif
-diff --git a/arch/powerpc/include/asm/lppaca.h b/arch/powerpc/include/asm/lppaca.h
-index c390ec377bae..ee790a566036 100644
---- a/arch/powerpc/include/asm/lppaca.h
-+++ b/arch/powerpc/include/asm/lppaca.h
-@@ -111,7 +111,8 @@ struct lppaca {
- 	__be32	page_ins;		/* CMO Hint - # page ins by OS */
- 	u8	reserved11[148];
- 	volatile __be64 dtl_idx;	/* Dispatch Trace Log head index */
--	u8	reserved12[96];
-+	volatile __be32 idle_hint;	/* Can vCPU be scheduled instantly? */
-+	u8	reserved12[92];
- } ____cacheline_aligned;
++
+ /* If bit 0 is set, the cpu has been preempted */
+ static inline u32 yield_count_of(int cpu)
+ {
+@@ -109,8 +115,10 @@ static inline bool vcpu_is_preempted(int cpu)
+ 	}
+ #endif
  
- #define lppaca_of(cpu)	(*paca_ptrs[cpu]->lppaca_ptr)
-diff --git a/arch/powerpc/kvm/book3s.h b/arch/powerpc/kvm/book3s.h
-index 740e51def5a5..61b0741c139a 100644
---- a/arch/powerpc/kvm/book3s.h
-+++ b/arch/powerpc/kvm/book3s.h
-@@ -7,6 +7,8 @@
- #ifndef __POWERPC_KVM_BOOK3S_H__
- #define __POWERPC_KVM_BOOK3S_H__
+-	if (yield_count_of(cpu) & 1)
+-		return true;
++	if (yield_count_of(cpu) & 1) {
++		if (idle_hint_of(cpu) == 0)
++			return true;
++	}
+ 	return false;
+ }
  
+diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
+index 7ca3d3d86c2a..fdc8d1d474f0 100644
+--- a/kernel/sched/idle.c
++++ b/kernel/sched/idle.c
+@@ -7,6 +7,7 @@
+  *        tasks which are handled in sched/fair.c )
+  */
+ #include "sched.h"
 +#include <asm/idle_hint.h>
-+
- extern void kvmppc_core_flush_memslot_hv(struct kvm *kvm,
- 					 struct kvm_memory_slot *memslot);
- extern bool kvm_unmap_gfn_range_hv(struct kvm *kvm, struct kvm_gfn_range *range);
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index bc0813644666..c008be20294d 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -447,6 +447,7 @@ static void init_vpa(struct kvm_vcpu *vcpu, struct lppaca *vpa)
- {
- 	vpa->__old_status |= LPPACA_OLD_SHARED_PROC;
- 	vpa->yield_count = cpu_to_be32(1);
-+	vpa->idle_hint = cpu_to_be32(0);
- }
  
- static int set_vpa(struct kvm_vcpu *vcpu, struct kvmppc_vpa *v,
-@@ -911,6 +912,17 @@ static int kvm_arch_vcpu_yield_to(struct kvm_vcpu *target)
- 	return kvm_vcpu_yield_to(target);
- }
+ #include <trace/events/power.h>
  
-+void kvmppc_idle_hint_set(struct kvm_vcpu *vcpu, int idle_hint)
-+{
-+	struct lppaca *lppaca;
-+
-+	if (!vcpu) return;
-+
-+	lppaca = (struct lppaca *)vcpu->arch.vpa.pinned_addr;
-+	if (lppaca)
-+		lppaca->idle_hint = cpu_to_be32(idle_hint);
-+}
-+
- static int kvmppc_get_yield_count(struct kvm_vcpu *vcpu)
- {
- 	int yield_count = 0;
-@@ -2803,6 +2815,28 @@ static int on_primary_thread(void)
- 	return 1;
- }
+@@ -290,6 +291,7 @@ static void do_idle(void)
+ 			arch_cpu_idle_dead();
+ 		}
  
-+void set_idle_hint_for_kvm(struct kvm *kvm, int cpu, int value)
-+{
-+	int i;
-+	struct kvm_vcpu *vcpu;
-+
-+	kvm_for_each_vcpu(i, vcpu, kvm) {
-+		if (cpu == prev_cpu_of_kvm(vcpu)) {
-+			kvmppc_idle_hint_set(vcpu, value);
-+		}
-+	}
-+}
-+
-+void set_idle_hint(int cpu, int value)
-+{
-+	struct kvm *kvm;
-+	struct kvm *tmp;
-+
-+	list_for_each_entry_safe(kvm, tmp, &vm_list, vm_list) {
-+		set_idle_hint_for_kvm(kvm, cpu, value);
-+	}
-+}
-+
- /*
-  * A list of virtual cores for each physical CPU.
-  * These are vcores that could run but their runner VCPU tasks are
++		set_idle_hint(cpu, 1);
+ 		arch_cpu_idle_enter();
+ 		rcu_nocb_flush_deferred_wakeup();
+ 
+@@ -306,6 +308,7 @@ static void do_idle(void)
+ 			cpuidle_idle_call();
+ 		}
+ 		arch_cpu_idle_exit();
++		set_idle_hint(cpu, 0);
+ 	}
+ 
+ 	/*
 -- 
 2.26.3
 
