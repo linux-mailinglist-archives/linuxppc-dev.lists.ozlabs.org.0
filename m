@@ -1,70 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CC443C935E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jul 2021 23:48:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 943FC3C93D4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jul 2021 00:30:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GQB302mdhz30Dr
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jul 2021 07:48:44 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=UUnwQaua;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GQBz11TvJz3bhX
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jul 2021 08:30:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::134;
- helo=mail-il1-x134.google.com; envelope-from=pankaj.gupta.linux@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.222.175;
+ helo=mail-qk1-f175.google.com; envelope-from=pku.leo@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=UUnwQaua; dkim-atps=neutral
-Received: from mail-il1-x134.google.com (mail-il1-x134.google.com
- [IPv6:2607:f8b0:4864:20::134])
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com
+ [209.85.222.175])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GQ8hn4HjPz2yyb
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jul 2021 06:47:52 +1000 (AEST)
-Received: by mail-il1-x134.google.com with SMTP id h3so2909459ilc.9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jul 2021 13:47:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=hvhFUaJpsKWtTEeD2+NVxurp5yWKuTzZW3b3jtSmo5Y=;
- b=UUnwQaua/H8rwEJ46wBGu21VE3YZ4bJWf1X9TiXDo9vh0gjpsjTI69qTz8pUIOeQmZ
- 87sYgU7NQ2/IywPIyzuJgPagS9NB5ilUObP1yaPA/AaIMC2BENX2XW8OmvNHcjIZzcqQ
- lCJKYYFk7pgPjzvPFxoMU8RBALA3Hs5cTmm/buog1pLIyQXWBKa5ks+NtYkm7Xs9p1/4
- 9bfr6Tuk3tiShJOZYSkFcJbqC1a6xfK4TJacBP5OeWgIBt7iJpXiEuB2Btyl4Pu/1mqs
- QL/3W25VvEP2vW3CnG/H9MMRVuhf6MAjCdkOTJ68fiKoyj5Vp4y4pfExBy7Ej62pduDV
- nCew==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GQByY25z7z2yNW
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Jul 2021 08:29:55 +1000 (AEST)
+Received: by mail-qk1-f175.google.com with SMTP id m68so3273015qke.7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jul 2021 15:29:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=hvhFUaJpsKWtTEeD2+NVxurp5yWKuTzZW3b3jtSmo5Y=;
- b=TkD4l1+SZKQdQ4zgf7eEFBd26vJrnJo4/hu0JdL3wD0QNsxVhEukxplwbyXfHjkf7v
- 4RR9lFRrSMlU9Yc/q/lDQopLm2eDF184xAWcwYF8YTET/LPpdR5/WWFqNK/Th+5M2HP0
- kAgzm9HWpfB8iuFgNg5VWITYHVUauMXMjpGeAUdyE89oEvT2GqO8YacEwMznoJVB5SzP
- wexlWPztF0/hl5rXUCHJz6iwUfwNb6UilpSGUZVCqiaoTaDgvDEowN5fncjSJa7Ty5HG
- vAgH3QFsZYORmdeAF8SMYJ5eUyzMqMLhP3FH7iRFKvY7TCRQuC2RKnOGtomzvbP/7p8w
- ytwA==
-X-Gm-Message-State: AOAM532eOtNAelLWU9idfnkjRIiU+Y21mTXXKxiCrRXBa7VrUil/X04r
- CRCTahPS2oAgkyaAR5tx3d9SxR/8hZmBBPc7v38=
-X-Google-Smtp-Source: ABdhPJzWAUEodW2mYSrVgx/aVrQIoBL1nE+ROg1S3BgzAtNQwXY0vhRs5znC0NaRsIBHIP11yL7l0nkY7pQ1qsdr6E4=
-X-Received: by 2002:a92:a005:: with SMTP id e5mr7715143ili.22.1626295669171;
- Wed, 14 Jul 2021 13:47:49 -0700 (PDT)
+ bh=lsctwH0XgpYOHYMIUUkD/PxnFZz1dTw3T5m+9J+nUZo=;
+ b=pgakz4r6JDzxAPi5Pd+YeUxNA4+esblEHmoI5OxF5rZS/sZEI7ZxIrWfxgv1Y7t7cf
+ FKdwDlLjms/cNJfI1ijz2YenKeXR+s479JiElg84qDtgsbwUF4kXmtP8pAxaaBHsO0Uy
+ XN3L8oW9E6nVDBXHSqRArfKpXb/j5r6dUHTistxf3rKronkjnvUds4kSXFCHQqqbvpBS
+ AvPcuxxIbv1B2M9+aCAHblvPfgJApOI8Z+WlLRNIc+2v1iSsJvUbO4GsLKIyurKCg+Xy
+ bJbBUMWBuQhPOBJWpbwM7VUAovoxhqMx86KkqDkZetqmJZov21VoM5rpuJDSspUpSiHp
+ ibBw==
+X-Gm-Message-State: AOAM533d+QzO5aOSnu+rK1viaXpSRopE1g/xPvrd3Yc208NUGHpIf+Os
+ XT1DXN5dP+vNaZSguaYldD4DNzZc5L+9Iw==
+X-Google-Smtp-Source: ABdhPJy76LA+yiywOGvkEc9i5u4zb6Cx89rtvs5IeiiOkG/A06s88JlKjGoTLAU7qQg6pAJf5ul48w==
+X-Received: by 2002:ae9:f00c:: with SMTP id l12mr242310qkg.141.1626301791948; 
+ Wed, 14 Jul 2021 15:29:51 -0700 (PDT)
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com.
+ [209.85.222.181])
+ by smtp.gmail.com with ESMTPSA id h8sm1323632qtj.57.2021.07.14.15.29.50
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 14 Jul 2021 15:29:51 -0700 (PDT)
+Received: by mail-qk1-f181.google.com with SMTP id p202so3253901qka.12
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jul 2021 15:29:50 -0700 (PDT)
+X-Received: by 2002:a37:a58f:: with SMTP id o137mr218663qke.451.1626301790102; 
+ Wed, 14 Jul 2021 15:29:50 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210712124052.26491-1-david@redhat.com>
- <20210712124052.26491-3-david@redhat.com>
-In-Reply-To: <20210712124052.26491-3-david@redhat.com>
-From: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-Date: Wed, 14 Jul 2021 22:47:38 +0200
-Message-ID: <CAM9Jb+hj8uGc0N16Guui9kaA6W46QHzAET44Zt8C7kRdRAXMOA@mail.gmail.com>
-Subject: Re: [PATCH v1 2/4] mm/memory_hotplug: remove nid parameter from
- arch_remove_memory()
-To: David Hildenbrand <david@redhat.com>
+References: <20210705111250.1513634-1-fido_max@inbox.ru>
+In-Reply-To: <20210705111250.1513634-1-fido_max@inbox.ru>
+From: Li Yang <leoyang.li@nxp.com>
+Date: Wed, 14 Jul 2021 17:29:38 -0500
+X-Gmail-Original-Message-ID: <CADRPPNRYDBFHEppfpYLwsy7MMEdtsOLS764MJboL9ERW0-KK3Q@mail.gmail.com>
+Message-ID: <CADRPPNRYDBFHEppfpYLwsy7MMEdtsOLS764MJboL9ERW0-KK3Q@mail.gmail.com>
+Subject: Re: [PATCH] soc: fsl: qe: convert QE interrupt controller to
+ platform_device
+To: Maxim Kochetkov <fido_max@inbox.ru>
 Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Thu, 15 Jul 2021 07:48:19 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,263 +70,137 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michel Lespinasse <michel@lespinasse.org>,
- Kefeng Wang <wangkefeng.wang@huawei.com>, Rich Felker <dalias@libc.org>,
- linux-ia64@vger.kernel.org, Wei Yang <richard.weiyang@linux.alibaba.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Jason Wang <jasowang@redhat.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "maintainer:X86 ARCHITECTURE \(32-BIT AND 64-BIT\)" <x86@kernel.org>,
- Michal Hocko <mhocko@kernel.org>, Linux MM <linux-mm@kvack.org>,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
- linux-s390@vger.kernel.org, Laurent Dufour <ldufour@linux.ibm.com>,
- Dave Jiang <dave.jiang@intel.com>, Baoquan He <bhe@redhat.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, linux-sh@vger.kernel.org,
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, linux-acpi@vger.kernel.org,
- Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
- Len Brown <lenb@kernel.org>, Nathan Lynch <nathanl@linux.ibm.com>,
- Pavel Tatashin <pasha.tatashin@soleen.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Borislav Petkov <bp@alien8.de>,
- Sergei Trofimovich <slyfox@gentoo.org>, Andy Lutomirski <luto@kernel.org>,
- Jia He <justin.he@arm.com>, Dan Williams <dan.j.williams@intel.com>,
- virtualization@lists.linux-foundation.org,
- Vitaly Kuznetsov <vkuznets@redhat.com>, Vlastimil Babka <vbabka@suse.cz>,
- Oscar Salvador <osalvador@suse.de>, Christophe Leroy <christophe.leroy@c-s.fr>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Pierre Morel <pmorel@linux.ibm.com>, Scott Cheloha <cheloha@linux.ibm.com>,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>, LKML <linux-kernel@vger.kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Joe Perches <joe@perches.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Mike Rapoport <rppt@kernel.org>
+Cc: saravanak@google.com, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ lkml <linux-kernel@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>, Zhao Qiang <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> The parameter is unused, let's remove it.
+On Mon, Jul 5, 2021 at 6:12 AM Maxim Kochetkov <fido_max@inbox.ru> wrote:
 >
-> Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-> Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-> Acked-by: Heiko Carstens <hca@linux.ibm.com> (s390)
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Heiko Carstens <hca@linux.ibm.com>
-> Cc: Vasily Gorbik <gor@linux.ibm.com>
-> Cc: Christian Borntraeger <borntraeger@de.ibm.com>
-> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-> Cc: Rich Felker <dalias@libc.org>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: Andy Lutomirski <luto@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: x86@kernel.org
-> Cc: "H. Peter Anvin" <hpa@zytor.com>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-> Cc: Ard Biesheuvel <ardb@kernel.org>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
-> Cc: Baoquan He <bhe@redhat.com>
-> Cc: Laurent Dufour <ldufour@linux.ibm.com>
-> Cc: Sergei Trofimovich <slyfox@gentoo.org>
-> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-> Cc: Michel Lespinasse <michel@lespinasse.org>
-> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-> Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-> Cc: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-> Cc: Joe Perches <joe@perches.com>
-> Cc: Pierre Morel <pmorel@linux.ibm.com>
-> Cc: Jia He <justin.he@arm.com>
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-ia64@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-s390@vger.kernel.org
-> Cc: linux-sh@vger.kernel.org
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+> Since 5.13 QE's ucc nodes can't get interrupts from devicetree:
+>
+>         ucc@2000 {
+>                 cell-index = <1>;
+>                 reg = <0x2000 0x200>;
+>                 interrupts = <32>;
+>                 interrupt-parent = <&qeic>;
+>         };
+>
+> Now fw_devlink expects driver to create and probe a struct device
+> for interrupt controller.
+>
+> So lets convert this driver to simple platform_device with probe().
+>
+> [1] - https://lore.kernel.org/lkml/CAGETcx9PiX==mLxB9PO8Myyk6u2vhPVwTMsA5NkD-ywH5xhusw@mail.gmail.com
+> Fixes: e590474768f1 ("driver core: Set fw_devlink=on by default")
+> Fixes: ea718c699055 ("Revert "Revert "driver core: Set fw_devlink=on by default""")
+> Signed-off-by: Maxim Kochetkov <fido_max@inbox.ru>
 > ---
->  arch/arm64/mm/mmu.c            | 3 +--
->  arch/ia64/mm/init.c            | 3 +--
->  arch/powerpc/mm/mem.c          | 3 +--
->  arch/s390/mm/init.c            | 3 +--
->  arch/sh/mm/init.c              | 3 +--
->  arch/x86/mm/init_32.c          | 3 +--
->  arch/x86/mm/init_64.c          | 3 +--
->  include/linux/memory_hotplug.h | 3 +--
->  mm/memory_hotplug.c            | 4 ++--
->  mm/memremap.c                  | 5 +----
->  10 files changed, 11 insertions(+), 22 deletions(-)
+>  drivers/soc/fsl/qe/qe_ic.c | 38 +++++++++++++++++++++++---------------
+>  1 file changed, 23 insertions(+), 15 deletions(-)
 >
-> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> index d74586508448..af8ab553a268 100644
-> --- a/arch/arm64/mm/mmu.c
-> +++ b/arch/arm64/mm/mmu.c
-> @@ -1506,8 +1506,7 @@ int arch_add_memory(int nid, u64 start, u64 size,
->         return ret;
+> diff --git a/drivers/soc/fsl/qe/qe_ic.c b/drivers/soc/fsl/qe/qe_ic.c
+> index 3f711c1a0996..03d291376895 100644
+> --- a/drivers/soc/fsl/qe/qe_ic.c
+> +++ b/drivers/soc/fsl/qe/qe_ic.c
+> @@ -23,6 +23,7 @@
+>  #include <linux/signal.h>
+>  #include <linux/device.h>
+>  #include <linux/spinlock.h>
+> +#include <linux/platform_device.h>
+>  #include <asm/irq.h>
+>  #include <asm/io.h>
+>  #include <soc/fsl/qe/qe.h>
+> @@ -404,27 +405,28 @@ static void qe_ic_cascade_muxed_mpic(struct irq_desc *desc)
+>         chip->irq_eoi(&desc->irq_data);
 >  }
 >
-> -void arch_remove_memory(int nid, u64 start, u64 size,
-> -                       struct vmem_altmap *altmap)
-> +void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
+> -static void __init qe_ic_init(struct device_node *node)
+> +static int qe_ic_init(struct platform_device *pdev)
 >  {
->         unsigned long start_pfn = start >> PAGE_SHIFT;
->         unsigned long nr_pages = size >> PAGE_SHIFT;
-> diff --git a/arch/ia64/mm/init.c b/arch/ia64/mm/init.c
-> index 064a967a7b6e..5c6da8d83c1a 100644
-> --- a/arch/ia64/mm/init.c
-> +++ b/arch/ia64/mm/init.c
-> @@ -484,8 +484,7 @@ int arch_add_memory(int nid, u64 start, u64 size,
->         return ret;
->  }
+>         void (*low_handler)(struct irq_desc *desc);
+>         void (*high_handler)(struct irq_desc *desc);
+>         struct qe_ic *qe_ic;
+>         struct resource res;
+> +       struct device_node *node = pdev->dev.of_node;
+>         u32 ret;
 >
-> -void arch_remove_memory(int nid, u64 start, u64 size,
-> -                       struct vmem_altmap *altmap)
-> +void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
->  {
->         unsigned long start_pfn = start >> PAGE_SHIFT;
->         unsigned long nr_pages = size >> PAGE_SHIFT;
-> diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-> index ad198b439222..c3c4e31462ec 100644
-> --- a/arch/powerpc/mm/mem.c
-> +++ b/arch/powerpc/mm/mem.c
-> @@ -119,8 +119,7 @@ int __ref arch_add_memory(int nid, u64 start, u64 size,
->         return rc;
->  }
+>         ret = of_address_to_resource(node, 0, &res);
+>         if (ret)
+> -               return;
+> +               return -ENODEV;
 >
-> -void __ref arch_remove_memory(int nid, u64 start, u64 size,
-> -                             struct vmem_altmap *altmap)
-> +void __ref arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
->  {
->         unsigned long start_pfn = start >> PAGE_SHIFT;
->         unsigned long nr_pages = size >> PAGE_SHIFT;
-> diff --git a/arch/s390/mm/init.c b/arch/s390/mm/init.c
-> index 8ac710de1ab1..d85bd7f5d8dc 100644
-> --- a/arch/s390/mm/init.c
-> +++ b/arch/s390/mm/init.c
-> @@ -306,8 +306,7 @@ int arch_add_memory(int nid, u64 start, u64 size,
->         return rc;
->  }
+>         qe_ic = kzalloc(sizeof(*qe_ic), GFP_KERNEL);
+>         if (qe_ic == NULL)
+> -               return;
+> +               return -ENOMEM;
 >
-> -void arch_remove_memory(int nid, u64 start, u64 size,
-> -                       struct vmem_altmap *altmap)
-> +void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
->  {
->         unsigned long start_pfn = start >> PAGE_SHIFT;
->         unsigned long nr_pages = size >> PAGE_SHIFT;
-> diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
-> index ce26c7f8950a..506784702430 100644
-> --- a/arch/sh/mm/init.c
-> +++ b/arch/sh/mm/init.c
-> @@ -414,8 +414,7 @@ int arch_add_memory(int nid, u64 start, u64 size,
->         return ret;
->  }
->
-> -void arch_remove_memory(int nid, u64 start, u64 size,
-> -                       struct vmem_altmap *altmap)
-> +void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
->  {
->         unsigned long start_pfn = PFN_DOWN(start);
->         unsigned long nr_pages = size >> PAGE_SHIFT;
-> diff --git a/arch/x86/mm/init_32.c b/arch/x86/mm/init_32.c
-> index 74b78840182d..bd90b8fe81e4 100644
-> --- a/arch/x86/mm/init_32.c
-> +++ b/arch/x86/mm/init_32.c
-> @@ -801,8 +801,7 @@ int arch_add_memory(int nid, u64 start, u64 size,
->         return __add_pages(nid, start_pfn, nr_pages, params);
->  }
->
-> -void arch_remove_memory(int nid, u64 start, u64 size,
-> -                       struct vmem_altmap *altmap)
-> +void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
->  {
->         unsigned long start_pfn = start >> PAGE_SHIFT;
->         unsigned long nr_pages = size >> PAGE_SHIFT;
-> diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-> index ddeaba947eb3..a6e11763763f 100644
-> --- a/arch/x86/mm/init_64.c
-> +++ b/arch/x86/mm/init_64.c
-> @@ -1255,8 +1255,7 @@ kernel_physical_mapping_remove(unsigned long start, unsigned long end)
->         remove_pagetable(start, end, true, NULL);
->  }
->
-> -void __ref arch_remove_memory(int nid, u64 start, u64 size,
-> -                             struct vmem_altmap *altmap)
-> +void __ref arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
->  {
->         unsigned long start_pfn = start >> PAGE_SHIFT;
->         unsigned long nr_pages = size >> PAGE_SHIFT;
-> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-> index d01b504ce06f..010a192298b5 100644
-> --- a/include/linux/memory_hotplug.h
-> +++ b/include/linux/memory_hotplug.h
-> @@ -130,8 +130,7 @@ static inline bool movable_node_is_enabled(void)
->         return movable_node_enabled;
->  }
->
-> -extern void arch_remove_memory(int nid, u64 start, u64 size,
-> -                              struct vmem_altmap *altmap);
-> +extern void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap);
->  extern void __remove_pages(unsigned long start_pfn, unsigned long nr_pages,
->                            struct vmem_altmap *altmap);
->
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 93b3abaf9828..f2a9af3af184 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -1106,7 +1106,7 @@ int __ref add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
->         /* create memory block devices after memory was added */
->         ret = create_memory_block_devices(start, size, mhp_altmap.alloc);
->         if (ret) {
-> -               arch_remove_memory(nid, start, size, NULL);
-> +               arch_remove_memory(start, size, NULL);
->                 goto error;
+>         qe_ic->irqhost = irq_domain_add_linear(node, NR_QE_IC_INTS,
+>                                                &qe_ic_host_ops, qe_ic);
+>         if (qe_ic->irqhost == NULL) {
+>                 kfree(qe_ic);
+> -               return;
+> +               return -ENODEV;
 >         }
 >
-> @@ -1892,7 +1892,7 @@ static int __ref try_remove_memory(int nid, u64 start, u64 size)
->
->         mem_hotplug_begin();
->
-> -       arch_remove_memory(nid, start, size, altmap);
-> +       arch_remove_memory(start, size, altmap);
->
->         if (IS_ENABLED(CONFIG_ARCH_KEEP_MEMBLOCK)) {
->                 memblock_free(start, size);
-> diff --git a/mm/memremap.c b/mm/memremap.c
-> index 15a074ffb8d7..ed593bf87109 100644
-> --- a/mm/memremap.c
-> +++ b/mm/memremap.c
-> @@ -140,14 +140,11 @@ static void pageunmap_range(struct dev_pagemap *pgmap, int range_id)
->  {
->         struct range *range = &pgmap->ranges[range_id];
->         struct page *first_page;
-> -       int nid;
->
->         /* make sure to access a memmap that was actually initialized */
->         first_page = pfn_to_page(pfn_first(pgmap, range_id));
->
->         /* pages are dead and unused, undo the arch mapping */
-> -       nid = page_to_nid(first_page);
-> -
->         mem_hotplug_begin();
->         remove_pfn_range_from_zone(page_zone(first_page), PHYS_PFN(range->start),
->                                    PHYS_PFN(range_len(range)));
-> @@ -155,7 +152,7 @@ static void pageunmap_range(struct dev_pagemap *pgmap, int range_id)
->                 __remove_pages(PHYS_PFN(range->start),
->                                PHYS_PFN(range_len(range)), NULL);
->         } else {
-> -               arch_remove_memory(nid, range->start, range_len(range),
-> +               arch_remove_memory(range->start, range_len(range),
->                                 pgmap_altmap(pgmap));
->                 kasan_remove_zero_shadow(__va(range->start), range_len(range));
+>         qe_ic->regs = ioremap(res.start, resource_size(&res));
+> @@ -437,7 +439,7 @@ static void __init qe_ic_init(struct device_node *node)
+>         if (!qe_ic->virq_low) {
+>                 printk(KERN_ERR "Failed to map QE_IC low IRQ\n");
+>                 kfree(qe_ic);
+> -               return;
+> +               return -ENODEV;
 >         }
+>         if (qe_ic->virq_high != qe_ic->virq_low) {
+>                 low_handler = qe_ic_cascade_low;
+> @@ -456,20 +458,26 @@ static void __init qe_ic_init(struct device_node *node)
+>                 irq_set_handler_data(qe_ic->virq_high, qe_ic);
+>                 irq_set_chained_handler(qe_ic->virq_high, high_handler);
+>         }
+> +       return 0;
+>  }
+> +static const struct of_device_id qe_ic_ids[] = {
+> +       { .compatible = "fsl,qe-ic"},
+> +       { .compatible = "qeic"},
 
-Reviewed-by: Pankaj Gupta <pankaj.gupta@ionos.com>
+From the original code, this should be type = "qeic".  It is not
+defined in current binding but probably needed for backward
+compatibility.
+
+It would be great if you can also deal with the comments from Dan too.  Thanks.
+
+> +       {},
+> +};
+>
+> -static int __init qe_ic_of_init(void)
+> +static struct platform_driver qe_ic_driver =
+>  {
+> -       struct device_node *np;
+> +       .driver = {
+> +               .name           = "qe-ic",
+> +               .of_match_table = qe_ic_ids,
+> +       },
+> +       .probe  = qe_ic_init,
+> +};
+>
+> -       np = of_find_compatible_node(NULL, NULL, "fsl,qe-ic");
+> -       if (!np) {
+> -               np = of_find_node_by_type(NULL, "qeic");
+> -               if (!np)
+> -                       return -ENODEV;
+> -       }
+> -       qe_ic_init(np);
+> -       of_node_put(np);
+> +static int __init qe_ic_of_init(void)
+> +{
+> +       platform_driver_register(&qe_ic_driver);
+>         return 0;
+>  }
+>  subsys_initcall(qe_ic_of_init);
+> --
+> 2.31.1
+>
