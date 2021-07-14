@@ -2,77 +2,111 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 044533C8495
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jul 2021 14:39:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D186D3C84AA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jul 2021 14:49:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GPxsY6pvKz3bXl
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jul 2021 22:39:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GPy4R5d96z308m
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jul 2021 22:49:11 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=p5dD5XXD;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VWf26k1k;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e;
- helo=mail-pf1-x42e.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=srs0=wnpg=mg=linux.ibm.com=hbathini@ozlabs.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=p5dD5XXD; dkim-atps=neutral
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com
- [IPv6:2607:f8b0:4864:20::42e])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=VWf26k1k; dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GPxs80p4Yz2yNC
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jul 2021 22:39:22 +1000 (AEST)
-Received: by mail-pf1-x42e.google.com with SMTP id a127so1896403pfa.10
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jul 2021 05:39:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=CcE+Luj/vv/V9B2PLHGUjgVkPHIzTSDrQQ8UogdtXTQ=;
- b=p5dD5XXDZHRJk9wNY1G2FJHL1zK8j6XM9IyZklLNPZrOKmeVrSSwqHIffMU/yUYcFY
- mPPlLuWRYiBQXQvI9VsB2yENJE2gyvccBNJVSkVa/EhYTtPbJU1RyqQwZkNQ2XIDvRbV
- R4fq1hfz9MC1IGUNdABnQLdIPtfm/FURcVTyOXGcsCXAnSxC9LjfHunatiifHCKBL9hL
- CD8NgQ3fLZWV/fw2WH898c9tmyZAo9ulyJ4KPoKUaaBhgdsMv8WJIBdS0lLQZl5dVzg5
- 95w2fWbxUfrjHg0pA17xuC2/RAQQ7Gy4Dt+kTP9D7GQf/rTCuY3yQVADK4ORkh65hOsx
- ZD/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=CcE+Luj/vv/V9B2PLHGUjgVkPHIzTSDrQQ8UogdtXTQ=;
- b=W1E6i5ITawwopkPtxMxTRuiMJ9nwHbll8UL1Z9K/XT09HdcVbj7SUp8JvG00DOwUb8
- iHKpBbi0g0tfo/Ru3HVmtFWxSjrpXv80xlYsvcbsj3NUSJgzzh1/438+5XG93z0FaSfp
- kUIHvwkaBbq8lt1kmdH7vjxsmnCs0GLBJermda9xwzrG3GR+iVwfr9a8kkRIv5zI4a7c
- 8IcnZsY4haObX94+CRGlfxaeLT/GsbPaVOTYlQ54K/pGxlK8U13Bao0UI73ZBZkD7sCQ
- fJ4njW18+/o3kA+Jexo2V0gp7eqqxAlnqHs1r10tPIF60aGswu/PwAoFJaA0U7gUNVbS
- Cfig==
-X-Gm-Message-State: AOAM530juRuBTZwG78+UqNhuhlXdao4r5G7gk4qkVFGrQhwUsSjvFPTu
- FjagmSrtU2WMxHieqT7Rjw4=
-X-Google-Smtp-Source: ABdhPJxv6MQHKHvwgfoIYB8aLfts4eY7yrOWP+bvZXtUWdqEnXg9lYfZUPgLWChgov+mcoBv7EeHvQ==
-X-Received: by 2002:a63:4415:: with SMTP id r21mr9475016pga.296.1626266357721; 
- Wed, 14 Jul 2021 05:39:17 -0700 (PDT)
-Received: from localhost (203-219-181-43.static.tpgi.com.au. [203.219.181.43])
- by smtp.gmail.com with ESMTPSA id
- c11sm2932977pfp.0.2021.07.14.05.39.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Jul 2021 05:39:17 -0700 (PDT)
-Date: Wed, 14 Jul 2021 22:39:11 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [RFC PATCH 10/43] powerpc/64s: Always set PMU control registers
- to frozen/disabled when not in use
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-References: <20210622105736.633352-1-npiggin@gmail.com>
- <20210622105736.633352-11-npiggin@gmail.com>
- <C58A063A-3B5D-4188-80E2-4C19802785BF@linux.vnet.ibm.com>
- <1626057462.8m12ralsd6.astroid@bobo.none>
-In-Reply-To: <1626057462.8m12ralsd6.astroid@bobo.none>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GPy3w2y6Xz2ydK
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jul 2021 22:48:44 +1000 (AEST)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by ozlabs.org (Postfix) with ESMTP id 4GPy3m15K6z9sXh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jul 2021 22:48:36 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 4GPy3l4s1Lz9sXN; Wed, 14 Jul 2021 22:48:35 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=VWf26k1k; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 4GPy3j3nF9z9sRR;
+ Wed, 14 Jul 2021 22:48:30 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 16ECmQf9009793; Wed, 14 Jul 2021 08:48:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : from : to : cc
+ : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=pp1;
+ bh=L2CYNOGRnUgkSItJv1nhqAlJlgH9/N0oRnq3YLmNOT4=;
+ b=VWf26k1k6LU98xOAQcN7tohUBR6z+ZiSf2dZ8u7N2TH+tvSMxS3iBWUgAzNEc45q/8fw
+ H9AWuGk7rnr0KqkDmkrmkcLKIxxjytf95C+fyNJx74sneis9MJRuUtVmpRgXCOpyWCOl
+ Eohm/30xRxdkM+MGXbYJkX28Hi0tTPVNzZD/orcHg8DqAWTMpwoyYkiC7f5zkBNwS68w
+ t7K8Bu4yYF+7O3D9fOnF1e4n8ikSLtsxG/Q3dvjfzabCm5Q+PcxFmt2j7lefhE97Zzsu
+ hELWUXQqE5BxLhHE4wIYPpFDzegbDG+3gf57wazoQu+3FOSNwhdZoWIAnck6XhPNb2aT 2A== 
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 39s8vgj61a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 14 Jul 2021 08:48:28 -0400
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16ECm4oL030892;
+ Wed, 14 Jul 2021 12:48:04 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma04fra.de.ibm.com with ESMTP id 39q368gxq6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 14 Jul 2021 12:48:03 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 16ECm0e429491634
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 14 Jul 2021 12:48:00 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8C20511C050;
+ Wed, 14 Jul 2021 12:48:00 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4C17511C05E;
+ Wed, 14 Jul 2021 12:47:59 +0000 (GMT)
+Received: from hbathini-workstation.ibm.com (unknown [9.85.91.87])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 14 Jul 2021 12:47:59 +0000 (GMT)
+Subject: [PATCH] powerpc/kexec: blacklist functions called in real mode for
+ kprobe
+From: Hari Bathini <hbathini@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Date: Wed, 14 Jul 2021 18:17:58 +0530
+Message-ID: <162626687834.155313.4692863392927831843.stgit@hbathini-workstation.ibm.com>
+User-Agent: StGit/0.23
 MIME-Version: 1.0
-Message-Id: <1626265929.asca0gyunh.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: FXg1ABHxlPEPL4FVjgWG4VEVSiDLMpBH
+X-Proofpoint-GUID: FXg1ABHxlPEPL4FVjgWG4VEVSiDLMpBH
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-07-14_06:2021-07-14,
+ 2021-07-14 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0
+ priorityscore=1501 mlxscore=0 phishscore=0 bulkscore=0 suspectscore=0
+ impostorscore=0 mlxlogscore=999 clxscore=1011 spamscore=0 adultscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2107140077
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,141 +118,186 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org
+Cc: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@ozlabs.org>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Nicholas Piggin's message of July 12, 2021 12:41 pm:
-> Excerpts from Athira Rajeev's message of July 10, 2021 12:50 pm:
->>=20
->>=20
->>> On 22-Jun-2021, at 4:27 PM, Nicholas Piggin <npiggin@gmail.com> wrote:
->>>=20
->>> KVM PMU management code looks for particular frozen/disabled bits in
->>> the PMU registers so it knows whether it must clear them when coming
->>> out of a guest or not. Setting this up helps KVM make these optimisatio=
-ns
->>> without getting confused. Longer term the better approach might be to
->>> move guest/host PMU switching to the perf subsystem.
->>>=20
->>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->>> ---
->>> arch/powerpc/kernel/cpu_setup_power.c | 4 ++--
->>> arch/powerpc/kernel/dt_cpu_ftrs.c     | 6 +++---
->>> arch/powerpc/kvm/book3s_hv.c          | 5 +++++
->>> arch/powerpc/perf/core-book3s.c       | 7 +++++++
->>> 4 files changed, 17 insertions(+), 5 deletions(-)
->>>=20
->>> diff --git a/arch/powerpc/kernel/cpu_setup_power.c b/arch/powerpc/kerne=
-l/cpu_setup_power.c
->>> index a29dc8326622..3dc61e203f37 100644
->>> --- a/arch/powerpc/kernel/cpu_setup_power.c
->>> +++ b/arch/powerpc/kernel/cpu_setup_power.c
->>> @@ -109,7 +109,7 @@ static void init_PMU_HV_ISA207(void)
->>> static void init_PMU(void)
->>> {
->>> 	mtspr(SPRN_MMCRA, 0);
->>> -	mtspr(SPRN_MMCR0, 0);
->>> +	mtspr(SPRN_MMCR0, MMCR0_FC);
->>> 	mtspr(SPRN_MMCR1, 0);
->>> 	mtspr(SPRN_MMCR2, 0);
->>> }
->>> @@ -123,7 +123,7 @@ static void init_PMU_ISA31(void)
->>> {
->>> 	mtspr(SPRN_MMCR3, 0);
->>> 	mtspr(SPRN_MMCRA, MMCRA_BHRB_DISABLE);
->>> -	mtspr(SPRN_MMCR0, MMCR0_PMCCEXT);
->>> +	mtspr(SPRN_MMCR0, MMCR0_FC | MMCR0_PMCCEXT);
->>> }
->>>=20
->>> /*
->>> diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt=
-_cpu_ftrs.c
->>> index 0a6b36b4bda8..06a089fbeaa7 100644
->>> --- a/arch/powerpc/kernel/dt_cpu_ftrs.c
->>> +++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
->>> @@ -353,7 +353,7 @@ static void init_pmu_power8(void)
->>> 	}
->>>=20
->>> 	mtspr(SPRN_MMCRA, 0);
->>> -	mtspr(SPRN_MMCR0, 0);
->>> +	mtspr(SPRN_MMCR0, MMCR0_FC);
->>> 	mtspr(SPRN_MMCR1, 0);
->>> 	mtspr(SPRN_MMCR2, 0);
->>> 	mtspr(SPRN_MMCRS, 0);
->>> @@ -392,7 +392,7 @@ static void init_pmu_power9(void)
->>> 		mtspr(SPRN_MMCRC, 0);
->>>=20
->>> 	mtspr(SPRN_MMCRA, 0);
->>> -	mtspr(SPRN_MMCR0, 0);
->>> +	mtspr(SPRN_MMCR0, MMCR0_FC);
->>> 	mtspr(SPRN_MMCR1, 0);
->>> 	mtspr(SPRN_MMCR2, 0);
->>> }
->>> @@ -428,7 +428,7 @@ static void init_pmu_power10(void)
->>>=20
->>> 	mtspr(SPRN_MMCR3, 0);
->>> 	mtspr(SPRN_MMCRA, MMCRA_BHRB_DISABLE);
->>> -	mtspr(SPRN_MMCR0, MMCR0_PMCCEXT);
->>> +	mtspr(SPRN_MMCR0, MMCR0_FC | MMCR0_PMCCEXT);
->>> }
->>>=20
->>> static int __init feat_enable_pmu_power10(struct dt_cpu_feature *f)
->>> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.=
-c
->>> index 1f30f98b09d1..f7349d150828 100644
->>> --- a/arch/powerpc/kvm/book3s_hv.c
->>> +++ b/arch/powerpc/kvm/book3s_hv.c
->>> @@ -2593,6 +2593,11 @@ static int kvmppc_core_vcpu_create_hv(struct kvm=
-_vcpu *vcpu)
->>> #endif
->>> #endif
->>> 	vcpu->arch.mmcr[0] =3D MMCR0_FC;
->>> +	if (cpu_has_feature(CPU_FTR_ARCH_31)) {
->>> +		vcpu->arch.mmcr[0] |=3D MMCR0_PMCCEXT;
->>> +		vcpu->arch.mmcra =3D MMCRA_BHRB_DISABLE;
->>> +	}
->>> +
->>> 	vcpu->arch.ctrl =3D CTRL_RUNLATCH;
->>> 	/* default to host PVR, since we can't spoof it */
->>> 	kvmppc_set_pvr_hv(vcpu, mfspr(SPRN_PVR));
->>> diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-b=
-ook3s.c
->>> index 51622411a7cc..e33b29ec1a65 100644
->>> --- a/arch/powerpc/perf/core-book3s.c
->>> +++ b/arch/powerpc/perf/core-book3s.c
->>> @@ -1361,6 +1361,13 @@ static void power_pmu_enable(struct pmu *pmu)
->>> 		goto out;
->>>=20
->>> 	if (cpuhw->n_events =3D=3D 0) {
->>> +		if (cpu_has_feature(CPU_FTR_ARCH_31)) {
->>> +			mtspr(SPRN_MMCRA, MMCRA_BHRB_DISABLE);
->>> +			mtspr(SPRN_MMCR0, MMCR0_FC | MMCR0_PMCCEXT);
->>> +		} else {
->>> +			mtspr(SPRN_MMCRA, 0);
->>> +			mtspr(SPRN_MMCR0, MMCR0_FC);
->>> +		}
->>=20
->>=20
->> Hi Nick,
->>=20
->> We are setting these bits in =E2=80=9Cpower_pmu_disable=E2=80=9D functio=
-n. And disable will be called before any event gets deleted/stopped. Can yo=
-u please help to understand why this is needed in power_pmu_enable path als=
-o ?
->=20
-> I'll have to go back and check what I needed it for.
+As kprobe does not handle events happening in real mode, blacklist the
+functions that only get called in real mode or in kexec sequence with
+MMU turned off.
 
-Okay, MMCRA is getting MMCRA_SDAR_MODE_DCACHE set on POWER9, by the looks.
+Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+---
+ arch/powerpc/kernel/head_64.S            |    2 ++
+ arch/powerpc/kexec/core_64.c             |    6 ++++--
+ arch/powerpc/mm/book3s64/hash_native.c   |    2 +-
+ arch/powerpc/mm/book3s64/pgtable.c       |    4 ++--
+ arch/powerpc/mm/book3s64/radix_pgtable.c |    3 ++-
+ arch/powerpc/platforms/ps3/htab.c        |    3 ++-
+ arch/powerpc/platforms/ps3/mm.c          |    8 ++++++--
+ arch/powerpc/platforms/pseries/lpar.c    |    9 ++++++---
+ 8 files changed, 25 insertions(+), 12 deletions(-)
 
-That's not necessarily a problem, but KVM sets MMCRA to 0 to disable
-SDAR updates. So KVM and perf don't agree on what the "correct" value
-for disabled is. Which could be a problem with POWER10 not setting BHRB
-disable before my series.
+diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
+index 79930b0bc781..f17ae2083733 100644
+--- a/arch/powerpc/kernel/head_64.S
++++ b/arch/powerpc/kernel/head_64.S
+@@ -712,6 +712,8 @@ _GLOBAL(copy_and_flush)
+ 	isync
+ 	blr
+ 
++_ASM_NOKPROBE_SYMBOL(copy_and_flush); /* Called in real mode */
++
+ .align 8
+ copy_to_here:
+ 
+diff --git a/arch/powerpc/kexec/core_64.c b/arch/powerpc/kexec/core_64.c
+index 8a449b2d8715..84618d3c8013 100644
+--- a/arch/powerpc/kexec/core_64.c
++++ b/arch/powerpc/kexec/core_64.c
+@@ -72,7 +72,8 @@ int default_machine_kexec_prepare(struct kimage *image)
+ 	return 0;
+ }
+ 
+-static void copy_segments(unsigned long ind)
++/* Called during kexec sequence with MMU off */
++static notrace void copy_segments(unsigned long ind)
+ {
+ 	unsigned long entry;
+ 	unsigned long *ptr;
+@@ -105,7 +106,8 @@ static void copy_segments(unsigned long ind)
+ 	}
+ }
+ 
+-void kexec_copy_flush(struct kimage *image)
++/* Called during kexec sequence with MMU off */
++notrace void kexec_copy_flush(struct kimage *image)
+ {
+ 	long i, nr_segments = image->nr_segments;
+ 	struct  kexec_segment ranges[KEXEC_SEGMENT_MAX];
+diff --git a/arch/powerpc/mm/book3s64/hash_native.c b/arch/powerpc/mm/book3s64/hash_native.c
+index 52e170bd95ae..d8279bfe68ea 100644
+--- a/arch/powerpc/mm/book3s64/hash_native.c
++++ b/arch/powerpc/mm/book3s64/hash_native.c
+@@ -787,7 +787,7 @@ static void hpte_decode(struct hash_pte *hpte, unsigned long slot,
+  * TODO: add batching support when enabled.  remember, no dynamic memory here,
+  * although there is the control page available...
+  */
+-static void native_hpte_clear(void)
++static notrace void native_hpte_clear(void)
+ {
+ 	unsigned long vpn = 0;
+ 	unsigned long slot, slots;
+diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
+index 9ffa65074cb0..300099de553b 100644
+--- a/arch/powerpc/mm/book3s64/pgtable.c
++++ b/arch/powerpc/mm/book3s64/pgtable.c
+@@ -172,8 +172,8 @@ pmd_t pmd_modify(pmd_t pmd, pgprot_t newprot)
+ }
+ #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+ 
+-/* For use by kexec */
+-void mmu_cleanup_all(void)
++/* For use by kexec, called with MMU off */
++notrace void mmu_cleanup_all(void)
+ {
+ 	if (radix_enabled())
+ 		radix__mmu_cleanup_all();
+diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+index e50ddf129c15..ae20add7954a 100644
+--- a/arch/powerpc/mm/book3s64/radix_pgtable.c
++++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+@@ -679,7 +679,8 @@ void radix__early_init_mmu_secondary(void)
+ 	mtspr(SPRN_UAMOR, 0);
+ }
+ 
+-void radix__mmu_cleanup_all(void)
++/* Called during kexec sequence with MMU off */
++notrace void radix__mmu_cleanup_all(void)
+ {
+ 	unsigned long lpcr;
+ 
+diff --git a/arch/powerpc/platforms/ps3/htab.c b/arch/powerpc/platforms/ps3/htab.c
+index 7ddc7ec6a7c0..ef710a715903 100644
+--- a/arch/powerpc/platforms/ps3/htab.c
++++ b/arch/powerpc/platforms/ps3/htab.c
+@@ -169,7 +169,8 @@ static void ps3_hpte_invalidate(unsigned long slot, unsigned long vpn,
+ 	spin_unlock_irqrestore(&ps3_htab_lock, flags);
+ }
+ 
+-static void ps3_hpte_clear(void)
++/* Called during kexec sequence with MMU off */
++static notrace void ps3_hpte_clear(void)
+ {
+ 	unsigned long hpte_count = (1UL << ppc64_pft_size) >> 4;
+ 	u64 i;
+diff --git a/arch/powerpc/platforms/ps3/mm.c b/arch/powerpc/platforms/ps3/mm.c
+index a81eac35d900..9c44f335c0b9 100644
+--- a/arch/powerpc/platforms/ps3/mm.c
++++ b/arch/powerpc/platforms/ps3/mm.c
+@@ -195,9 +195,11 @@ void __init ps3_mm_vas_create(unsigned long* htab_size)
+ 
+ /**
+  * ps3_mm_vas_destroy -
++ *
++ * called during kexec sequence with MMU off.
+  */
+ 
+-void ps3_mm_vas_destroy(void)
++notrace void ps3_mm_vas_destroy(void)
+ {
+ 	int result;
+ 
+@@ -1243,9 +1245,11 @@ void __init ps3_mm_init(void)
+ 
+ /**
+  * ps3_mm_shutdown - final cleanup of address space
++ *
++ * called during kexec sequence with MMU off.
+  */
+ 
+-void ps3_mm_shutdown(void)
++notrace void ps3_mm_shutdown(void)
+ {
+ 	ps3_mm_region_destroy(&map.r1);
+ }
+diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
+index dab356e3ff87..869ef638698a 100644
+--- a/arch/powerpc/platforms/pseries/lpar.c
++++ b/arch/powerpc/platforms/pseries/lpar.c
+@@ -801,7 +801,8 @@ static long pSeries_lpar_hpte_remove(unsigned long hpte_group)
+ 	return -1;
+ }
+ 
+-static void manual_hpte_clear_all(void)
++/* Called during kexec sequence with MMU off */
++static notrace void manual_hpte_clear_all(void)
+ {
+ 	unsigned long size_bytes = 1UL << ppc64_pft_size;
+ 	unsigned long hpte_count = size_bytes >> 4;
+@@ -834,7 +835,8 @@ static void manual_hpte_clear_all(void)
+ 	}
+ }
+ 
+-static int hcall_hpte_clear_all(void)
++/* Called during kexec sequence with MMU off */
++static notrace int hcall_hpte_clear_all(void)
+ {
+ 	int rc;
+ 
+@@ -845,7 +847,8 @@ static int hcall_hpte_clear_all(void)
+ 	return rc;
+ }
+ 
+-static void pseries_hpte_clear_all(void)
++/* Called during kexec sequence with MMU off */
++static notrace void pseries_hpte_clear_all(void)
+ {
+ 	int rc;
+ 
 
-I'll get rid of this hunk for now, I expect things won't be exactly clean
-or consistent until the KVM host PMU code is moved into perf/ though.
 
-Thanks,
-Nick
