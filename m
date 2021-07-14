@@ -2,52 +2,38 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA0BE3C8353
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jul 2021 13:02:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E2F23C835F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jul 2021 13:02:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GPvjB0xJJz307v
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jul 2021 21:02:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GPvjh6x1Fz309K
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Jul 2021 21:02:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.222.42; helo=mail-ua1-f42.google.com;
- envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com
- [209.85.222.42])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GPrdy5r9Sz2yNf
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jul 2021 18:44:22 +1000 (AEST)
-Received: by mail-ua1-f42.google.com with SMTP id q20so350098uaa.3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jul 2021 01:44:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=r5k/nzvm++7I0kjlsxJbLPoLxldn2GkCJzAXrc4Q3tE=;
- b=ZtZavlDQKeYSc/GoQ4KRXMe/JkA8MeXAgGl48evPV/dNnWcnqjiCw3Bl9npv9aNp8f
- DBxyUanpcNOh6mIpUnHn16NuoKufc7h8vYTrV6sWXUgEdv37dFkykseglZ0kgulYXMmp
- 0e6QfjYL7PLZC9aOvQSSXL3hLQzbDn2RUls3FeNzqxvxhjhgDrN9OmpZUCS6fVG+th0I
- UAGhKMWWJlHKpu+WzMkX7+HAoyWJeRFyBu6eH/pv+lKb12Y2VROWtJiiFFC8AZmV64ep
- Y1nv5lDurFygS6VTDv2wg71Em0olz38246fGOAySde+1b4KI7e92GYrdh0XmO6Egu9Io
- 8Xaw==
-X-Gm-Message-State: AOAM533W1SfE5CIYb792cZxNQbyG9UQnojl3dT0vqXvO4fx1t1/93KhP
- uAVk86XbIVAilZwTwmkJkYjXOrXmpMMavB1Fceg=
-X-Google-Smtp-Source: ABdhPJw+Y3tnjfY/zI+Y1qOhR0PNRzn2MQD3PHuwf/AzIRJfXjUIjP825Ll9FtnbmVsf04QAqWLG0Tq2dErAW2+m0rM=
-X-Received: by 2002:a9f:3f0d:: with SMTP id h13mr12412958uaj.100.1626252258156; 
- Wed, 14 Jul 2021 01:44:18 -0700 (PDT)
-MIME-Version: 1.0
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=sudeep.holla@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4GPtwT3SNJz2ykR
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Jul 2021 20:27:03 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3209A1042;
+ Wed, 14 Jul 2021 03:27:00 -0700 (PDT)
+Received: from bogus (unknown [10.57.79.213])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2FF633F774;
+ Wed, 14 Jul 2021 03:26:27 -0700 (PDT)
+Date: Wed, 14 Jul 2021 11:25:29 +0100
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH v4 5/5] bus: Make remove callback return void
+Message-ID: <20210714102529.ehwquc2s2qlbccyg@bogus>
 References: <20210713193522.1770306-1-u.kleine-koenig@pengutronix.de>
  <20210713193522.1770306-6-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <20210713193522.1770306-6-u.kleine-koenig@pengutronix.de>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 14 Jul 2021 10:44:06 +0200
-Message-ID: <CAMuHMdW8r6u4O5zv2ee-3=jPP6qwnOSHdSzf8pPE_y=jY3Bn5A@mail.gmail.com>
-Subject: Re: [PATCH v4 5/5] bus: Make remove callback return void
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Mailman-Approved-At: Wed, 14 Jul 2021 21:02:02 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -71,24 +57,24 @@ Cc: nvdimm@lists.linux.dev, linux-sh@vger.kernel.org,
  Mike Christie <michael.christie@oracle.com>, Wei Liu <wei.liu@kernel.org>,
  Maxim Levitsky <maximlevitsky@gmail.com>, Samuel Holland <samuel@sholland.org>,
  "Rafael J . Wysocki" <rafael@kernel.org>, linux-acpi@vger.kernel.org,
- linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
- Tomas Winkler <tomas.winkler@intel.com>, Julien Grall <jgrall@amazon.com>,
- Ohad Ben-Cohen <ohad@wizery.com>, Yufen Yu <yuyufen@huawei.com>,
- Alex Williamson <alex.williamson@redhat.com>, Alex Elder <elder@kernel.org>,
- linux-parisc@vger.kernel.org, Finn Thain <fthain@linux-m68k.org>,
- Geoff Levand <geoff@infradead.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, linux-pci@vger.kernel.org,
+ xen-devel@lists.xenproject.org, Tomas Winkler <tomas.winkler@intel.com>,
+ Julien Grall <jgrall@amazon.com>, Ohad Ben-Cohen <ohad@wizery.com>,
+ Yufen Yu <yuyufen@huawei.com>, Alex Williamson <alex.williamson@redhat.com>,
+ Alex Elder <elder@kernel.org>, linux-parisc@vger.kernel.org,
+ Finn Thain <fthain@linux-m68k.org>, Geoff Levand <geoff@infradead.org>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
  "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
  linux-spi@vger.kernel.org, Kai-Heng Feng <kai.heng.feng@canonical.com>,
- Sascha Hauer <kernel@pengutronix.de>, Jon Mason <jdmason@kudzu.us>,
+ kernel@pengutronix.de, Jon Mason <jdmason@kudzu.us>,
  linux-ntb@googlegroups.com, Wu Hao <hao.wu@intel.com>,
  David Woodhouse <dwmw@amazon.co.uk>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
+ Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
  Alexandre Belloni <alexandre.belloni@bootlin.com>,
  Manohar Vanga <manohar.vanga@gmail.com>, linux-wireless@vger.kernel.org,
  Dominik Brodowski <linux@dominikbrodowski.net>,
  virtualization@lists.linux-foundation.org,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
  target-devel@vger.kernel.org,
  Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
  linux-i2c@vger.kernel.org, linux-s390@vger.kernel.org,
@@ -96,7 +82,7 @@ Cc: nvdimm@lists.linux.dev, linux-sh@vger.kernel.org,
  Stephen Hemminger <sthemmin@microsoft.com>,
  Yoshinori Sato <ysato@users.sourceforge.jp>, Jiri Slaby <jirislaby@kernel.org>,
  Helge Deller <deller@gmx.de>,
- =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+ =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
  YueHaibing <yuehaibing@huawei.com>, industrypack-devel@lists.sourceforge.net,
  linux-mips@vger.kernel.org, Len Brown <lenb@kernel.org>,
  Vasily Gorbik <gor@linux.ibm.com>, linux-arm-msm@vger.kernel.org,
@@ -112,7 +98,7 @@ Cc: nvdimm@lists.linux.dev, linux-sh@vger.kernel.org,
  Cornelia Huck <cohuck@redhat.com>, Peter Oberparleiter <oberpar@linux.ibm.com>,
  Wolfram Sang <wsa@kernel.org>, Joey Pabalan <jpabalanb@gmail.com>,
  Yehezkel Bernat <YehezkelShB@gmail.com>,
- =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
+ Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>,
  Bodo Stroesser <bostroesser@gmail.com>,
  Alison Schofield <alison.schofield@intel.com>,
  Heikki Krogerus <heikki.krogerus@linux.intel.com>,
@@ -166,35 +152,47 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 13, 2021 at 9:35 PM Uwe Kleine-K=C3=B6nig
-<u.kleine-koenig@pengutronix.de> wrote:
+On Tue, Jul 13, 2021 at 09:35:22PM +0200, Uwe Kleine-König wrote:
 > The driver core ignores the return value of this callback because there
 > is only little it can do when a device disappears.
->
+> 
 > This is the final bit of a long lasting cleanup quest where several
 > buses were converted to also return void from their remove callback.
 > Additionally some resource leaks were fixed that were caused by drivers
 > returning an error code in the expectation that the driver won't go
 > away.
->
+> 
 > With struct bus_type::remove returning void it's prevented that newly
 > implemented buses return an ignored error code and so don't anticipate
 > wrong expectations for driver authors.
+> 
 
->  drivers/zorro/zorro-driver.c              | 3 +--
+[...]
 
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> diff --git a/drivers/firmware/arm_scmi/bus.c b/drivers/firmware/arm_scmi/bus.c
+> index 784cf0027da3..2682c3df651c 100644
+> --- a/drivers/firmware/arm_scmi/bus.c
+> +++ b/drivers/firmware/arm_scmi/bus.c
+> @@ -116,15 +116,13 @@ static int scmi_dev_probe(struct device *dev)
+>  	return scmi_drv->probe(scmi_dev);
+>  }
+>  
+> -static int scmi_dev_remove(struct device *dev)
+> +static void scmi_dev_remove(struct device *dev)
+>  {
+>  	struct scmi_driver *scmi_drv = to_scmi_driver(dev->driver);
+>  	struct scmi_device *scmi_dev = to_scmi_dev(dev);
+>  
+>  	if (scmi_drv->remove)
+>  		scmi_drv->remove(scmi_dev);
+> -
+> -	return 0;
+>  }
+>  
+>  static struct bus_type scmi_bus_type = {
 
-Gr{oetje,eeting}s,
+Acked-by: Sudeep Holla <sudeep.holla@arm.com>
 
-                        Geert
-
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+--
+Regards,
+Sudeep
