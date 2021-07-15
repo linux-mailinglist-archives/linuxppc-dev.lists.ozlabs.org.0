@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 414423CA3BA
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jul 2021 19:16:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 573DB3CA3C3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jul 2021 19:16:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GQgyF1B5nz3bXm
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jul 2021 03:16:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GQgyj1vzKz3bk7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jul 2021 03:16:45 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=deltatee.com header.i=@deltatee.com header.a=rsa-sha256 header.s=20200525 header.b=oVKqj1qx;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=deltatee.com header.i=@deltatee.com header.a=rsa-sha256 header.s=20200525 header.b=Spw0vcPu;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,31 +17,29 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=gunthorp@deltatee.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=deltatee.com header.i=@deltatee.com header.a=rsa-sha256
- header.s=20200525 header.b=oVKqj1qx; dkim-atps=neutral
-X-Greylist: delayed 1786 seconds by postgrey-1.36 at boromir;
- Fri, 16 Jul 2021 03:15:54 AEST
+ header.s=20200525 header.b=Spw0vcPu; dkim-atps=neutral
 Received: from ale.deltatee.com (ale.deltatee.com [204.191.154.188])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GQgxk37GLz2yY9
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jul 2021 03:15:53 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GQgxn1b8kz2yY9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jul 2021 03:15:57 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=deltatee.com; s=20200525; h=Subject:MIME-Version:References:In-Reply-To:
  Message-Id:Date:Cc:To:From:content-disposition;
- bh=5q5HrJN5z01eX+XAG2EfKItHnqLG5Bo1fOvwGUnV4O4=; b=oVKqj1qxGhVN9ixr6TLSsC4ZBO
- UTD1MZ1POYG3KI27eIMLMFxYbxzslShIpA6YWVrJkGi8+wWJ/wcVjvI1+Jf302nsbpn08IP0HnrjG
- oh9pK+zmvzVkSIE1LmiCYRQEMg/n7BKDDFN1GhirqNtUZZY85nV7dWg7yr93fsfot42jaRm2mqSn+
- wA3i/zh7pUzR0TP8bgsZsoHOwBQn2dWZ41mvNoesxsAdL31ytt8u53ohsynd3SOTknscoWtbi7kQX
- eUTXIk0RVW11sAtm1oHi0qiO2SdAZ7zV+zvHAQY6D/M0Zv5t6bRmqKI4wJIkqLx4KZbsVyYpCrClV
- /+yGg5Kg==;
+ bh=wWprxpQbGfLFSl5wy/zhotLOA6ZrkLS6haFDYZBjiv4=; b=Spw0vcPuNWrC1VB/N3ErsY9QsR
+ SVOu2pyWJ/FuZ63VRhkHaNrYGNxmmYIXx9PikhM8TCMmdpKyjBuF9RLs0h5USncTLdFqA8ookOx0G
+ Uh+6hSZ1LQ/AT/6fkMs7I/sWmgeij/QksGHD/wcgAvLgLFIYupGJcECBNvTIejINc9vzRhnt1gvMp
+ d1qv/fQOX1iCowsgU//qvf9zBxNSzcO+QCg8whF/oXVJhQQoSMlgUYlJBgNgtfjNvKiSi4udAIPMg
+ kZkbvAnNQf0F0JxQ/F67quZyGQhReNDhJW14fk20qFpoR28wptyOUDAN3gFjO1yJsvCMWx9e+oRs6
+ TMj7iEGw==;
 Received: from cgy1-donard.priv.deltatee.com ([172.16.1.31])
  by ale.deltatee.com with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <gunthorp@deltatee.com>)
- id 1m44Ut-0001yb-T5; Thu, 15 Jul 2021 10:46:04 -0600
+ id 1m44Ut-0001yd-PE; Thu, 15 Jul 2021 10:46:04 -0600
 Received: from gunthorp by cgy1-donard.priv.deltatee.com with local (Exim 4.92)
  (envelope-from <gunthorp@deltatee.com>)
- id 1m44Up-0001no-O1; Thu, 15 Jul 2021 10:45:59 -0600
+ id 1m44Up-0001nr-Se; Thu, 15 Jul 2021 10:45:59 -0600
 From: Logan Gunthorpe <logang@deltatee.com>
 To: linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
@@ -49,8 +47,8 @@ To: linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
  linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
  iommu@lists.linux-foundation.org, linux-parisc@vger.kernel.org,
  xen-devel@lists.xenproject.org
-Date: Thu, 15 Jul 2021 10:45:43 -0600
-Message-Id: <20210715164544.6827-16-logang@deltatee.com>
+Date: Thu, 15 Jul 2021 10:45:44 -0600
+Message-Id: <20210715164544.6827-17-logang@deltatee.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20210715164544.6827-1-logang@deltatee.com>
 References: <20210715164544.6827-1-logang@deltatee.com>
@@ -70,8 +68,8 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on ale.deltatee.com
 X-Spam-Level: 
 X-Spam-Status: No, score=-6.7 required=5.0 tests=ALL_TRUSTED,BAYES_00,
  MYRULES_NO_TEXT autolearn=no autolearn_force=no version=3.4.2
-Subject: [PATCH v1 15/16] dma-mapping: return error code from
- dma_dummy_map_sg()
+Subject: [PATCH v1 16/16] dma-mapping: Disallow .map_sg operations from
+ returning zero on error
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -93,32 +91,60 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Martin Oliveira <martin.oliveira@eideticom.com>
+Now that all the .map_sg operations have been converted to returning
+proper error codes, drop the code to handle a zero return value,
+add a warning if a zero is returned and update the comment for the
+map_sg operation.
 
-The .map_sg() op now expects an error code instead of zero on failure.
-
-The only errno to return is -ENODEV in the case when DMA is not
-supported.
-
-Signed-off-by: Martin Oliveira <martin.oliveira@eideticom.com>
 Signed-off-by: Logan Gunthorpe <logang@deltatee.com>
 ---
- kernel/dma/dummy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/dma-map-ops.h | 8 +++-----
+ kernel/dma/mapping.c        | 6 +++---
+ 2 files changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/dma/dummy.c b/kernel/dma/dummy.c
-index eacd4c5b10bf..ae9abebed0c4 100644
---- a/kernel/dma/dummy.c
-+++ b/kernel/dma/dummy.c
-@@ -22,7 +22,7 @@ static int dma_dummy_map_sg(struct device *dev, struct scatterlist *sgl,
- 		int nelems, enum dma_data_direction dir,
- 		unsigned long attrs)
- {
--	return 0;
-+	return -ENODEV;
- }
+diff --git a/include/linux/dma-map-ops.h b/include/linux/dma-map-ops.h
+index eaa969be8284..f299bc1e317b 100644
+--- a/include/linux/dma-map-ops.h
++++ b/include/linux/dma-map-ops.h
+@@ -42,11 +42,9 @@ struct dma_map_ops {
+ 			unsigned long attrs);
+ 	/*
+ 	 * map_sg should return a negative error code on error.
+-	 * dma_map_sgtable() will return the error code returned and convert
+-	 * a zero return (for legacy implementations) into -EINVAL.
+-	 *
+-	 * dma_map_sg() will always return zero on any negative or zero
+-	 * return to satisfy its own calling convention.
++	 * dma_map_sgtable() will return the error code returned by the
++	 * operation and dma_map_sg() will always convert any error to zero
++	 * to satisfy its own calling convention.
+ 	 */
+ 	int (*map_sg)(struct device *dev, struct scatterlist *sg, int nents,
+ 			enum dma_data_direction dir, unsigned long attrs);
+diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
+index 30f89d244566..978a6a16aaf7 100644
+--- a/kernel/dma/mapping.c
++++ b/kernel/dma/mapping.c
+@@ -194,6 +194,8 @@ static int __dma_map_sg_attrs(struct device *dev, struct scatterlist *sg,
+ 	else
+ 		ents = ops->map_sg(dev, sg, nents, dir, attrs);
  
- static int dma_dummy_supported(struct device *hwdev, u64 mask)
++	WARN_ON_ONCE(ents == 0);
++
+ 	if (ents > 0)
+ 		debug_dma_map_sg(dev, sg, nents, ents, dir);
+ 
+@@ -251,9 +253,7 @@ int dma_map_sgtable(struct device *dev, struct sg_table *sgt,
+ 	int nents;
+ 
+ 	nents = __dma_map_sg_attrs(dev, sgt->sgl, sgt->orig_nents, dir, attrs);
+-	if (nents == 0)
+-		return -EINVAL;
+-	else if (nents < 0)
++	if (nents < 0)
+ 		return nents;
+ 
+ 	sgt->nents = nents;
 -- 
 2.20.1
 
