@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A76E73CA3DC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jul 2021 19:20:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0477A3CA3DF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jul 2021 19:21:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GQh393z80z3drm
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jul 2021 03:20:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GQh4X6ztPz3f7B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jul 2021 03:21:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=deltatee.com header.i=@deltatee.com header.a=rsa-sha256 header.s=20200525 header.b=JmcSAn2r;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=deltatee.com header.i=@deltatee.com header.a=rsa-sha256 header.s=20200525 header.b=ZaXCnoVe;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,29 +17,29 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=gunthorp@deltatee.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=deltatee.com header.i=@deltatee.com header.a=rsa-sha256
- header.s=20200525 header.b=JmcSAn2r; dkim-atps=neutral
+ header.s=20200525 header.b=ZaXCnoVe; dkim-atps=neutral
 Received: from ale.deltatee.com (ale.deltatee.com [204.191.154.188])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GQgyK03kmz3bbB
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jul 2021 03:16:25 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GQgyW5PK6z3bjl
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jul 2021 03:16:35 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=deltatee.com; s=20200525; h=Subject:MIME-Version:References:In-Reply-To:
  Message-Id:Date:Cc:To:From:content-disposition;
- bh=Vh7idcp8uIAqCBUcnPlWtiOoHOTF3pKwZ9tjpJkyjBs=; b=JmcSAn2rvRQc5C7MrFSRK9pBrk
- GKVkxj+CKC5t4mYSimezSqrTpkyQiLqjRkiysuOkTo5xv4HNant2pQCww+QjxcAxV5QVqv7kQibHD
- Igtt3UtSYyGJX35W1Sy5JkYpSPmiKIkvOm4QY3kby4ft+qBjcTzrrx+eHWsugiQnsKU99QFdtUWjo
- RGKbXIpbYgM6wfJnEYPQ7nnjxKkVRl/NgOjCCDAKbeBnXVJUhW2sh6RcwENC4KOjVMf/8vOqW2Ffe
- ln4bBhV7KnL2jLL1wwfCDO+4ND4q58CbobKSfyeYQnG+t1VZ+BqxBrACk2rRQb5uSnYDIb7pF4f8K
- 8EuQ8rFA==;
+ bh=v712SqpSEckB3f7bRn5BvRO69pOYG6tOz5ojT8LD73A=; b=ZaXCnoVebjGK2r9ONanYW8xyoE
+ d/aBn+IIZsuZoEFaEqgbPSqT+vKCb9iPs53KbB9p5heckwbq9FJLYYzsPbEZwjA/oSwzmCwNan9H3
+ d9wymXNRdMM7Ogi/JqBqg/zX+rqVe5ZWliU1yjk6OjAaFLsf+VzCAITHxjm0E3UUFPmqwThLi5jAB
+ +1kSzs8ggjovcct44c4uh2C7M19dmwFVCr4t5dmJeG4ve17QFBYfsX2vNPY2R80TryX7yClClbhiB
+ Mm7YL8s8QqWa6kWxFLWxSs34EoLz8X9XKPkRNOdD7KpEJAmkkZzyIplL0KzNfjb9/FjQ6XGMfEGyq
+ 3OcuabnQ==;
 Received: from cgy1-donard.priv.deltatee.com ([172.16.1.31])
  by ale.deltatee.com with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <gunthorp@deltatee.com>)
- id 1m44Ux-0001yg-6K; Thu, 15 Jul 2021 10:46:08 -0600
+ id 1m44Uw-0001yc-0C; Thu, 15 Jul 2021 10:46:07 -0600
 Received: from gunthorp by cgy1-donard.priv.deltatee.com with local (Exim 4.92)
  (envelope-from <gunthorp@deltatee.com>)
- id 1m44Up-0001nf-8u; Thu, 15 Jul 2021 10:45:59 -0600
+ id 1m44Up-0001ni-DZ; Thu, 15 Jul 2021 10:45:59 -0600
 From: Logan Gunthorpe <logang@deltatee.com>
 To: linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
@@ -47,8 +47,8 @@ To: linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
  linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
  iommu@lists.linux-foundation.org, linux-parisc@vger.kernel.org,
  xen-devel@lists.xenproject.org
-Date: Thu, 15 Jul 2021 10:45:40 -0600
-Message-Id: <20210715164544.6827-13-logang@deltatee.com>
+Date: Thu, 15 Jul 2021 10:45:41 -0600
+Message-Id: <20210715164544.6827-14-logang@deltatee.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20210715164544.6827-1-logang@deltatee.com>
 References: <20210715164544.6827-1-logang@deltatee.com>
@@ -62,14 +62,15 @@ X-SA-Exim-Rcpt-To: linux-arm-kernel@lists.infradead.org,
  linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
  linux-parisc@vger.kernel.org, xen-devel@lists.xenproject.org, hch@lst.de,
  m.szyprowski@samsung.com, robin.murphy@arm.com, sbates@raithlin.com,
- martin.oliveira@eideticom.com, logang@deltatee.com,
- James.Bottomley@HansenPartnership.com, deller@gmx.de
+ martin.oliveira@eideticom.com, logang@deltatee.com, konrad.wilk@oracle.com,
+ boris.ostrovsky@oracle.com, jgross@suse.com, sstabellini@kernel.org
 X-SA-Exim-Mail-From: gunthorp@deltatee.com
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on ale.deltatee.com
 X-Spam-Level: 
 X-Spam-Status: No, score=-6.7 required=5.0 tests=ALL_TRUSTED,BAYES_00,
  MYRULES_NO_TEXT autolearn=no autolearn_force=no version=3.4.2
-Subject: [PATCH v1 12/16] parisc: return error code from .map_sg() ops
+Subject: [PATCH v1 13/16] xen: swiotlb: return error code from
+ xen_swiotlb_map_sg()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -83,10 +84,13 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Robin Murphy <robin.murphy@arm.com>, Helge Deller <deller@gmx.de>,
+Cc: Juergen Gross <jgross@suse.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ Robin Murphy <robin.murphy@arm.com>,
  Martin Oliveira <martin.oliveira@eideticom.com>,
  Stephen Bates <sbates@raithlin.com>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
  Logan Gunthorpe <logang@deltatee.com>, Christoph Hellwig <hch@lst.de>,
  Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
@@ -97,41 +101,33 @@ From: Martin Oliveira <martin.oliveira@eideticom.com>
 
 The .map_sg() op now expects an error code instead of zero on failure.
 
+xen_swiotlb_map_sg() may only fail if xen_swiotlb_map_page() fails, but
+xen_swiotlb_map_page() only supports returning errors as
+DMA_MAPPING_ERROR. So coalesce all errors into EINVAL.
+
 Signed-off-by: Martin Oliveira <martin.oliveira@eideticom.com>
 Signed-off-by: Logan Gunthorpe <logang@deltatee.com>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
+Cc: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: Stefano Stabellini <sstabellini@kernel.org>
 ---
- drivers/parisc/ccio-dma.c  | 2 +-
- drivers/parisc/sba_iommu.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/xen/swiotlb-xen.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/parisc/ccio-dma.c b/drivers/parisc/ccio-dma.c
-index b5f9ee81a46c..a3a5cfda3d93 100644
---- a/drivers/parisc/ccio-dma.c
-+++ b/drivers/parisc/ccio-dma.c
-@@ -918,7 +918,7 @@ ccio_map_sg(struct device *dev, struct scatterlist *sglist, int nents,
- 	BUG_ON(!dev);
- 	ioc = GET_IOC(dev);
- 	if (!ioc)
--		return 0;
-+		return -ENODEV;
- 	
- 	DBG_RUN_SG("%s() START %d entries\n", __func__, nents);
+diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
+index 24d11861ac7d..b5707127c9d7 100644
+--- a/drivers/xen/swiotlb-xen.c
++++ b/drivers/xen/swiotlb-xen.c
+@@ -509,7 +509,7 @@ xen_swiotlb_map_sg(struct device *dev, struct scatterlist *sgl, int nelems,
+ out_unmap:
+ 	xen_swiotlb_unmap_sg(dev, sgl, i, dir, attrs | DMA_ATTR_SKIP_CPU_SYNC);
+ 	sg_dma_len(sgl) = 0;
+-	return 0;
++	return -EINVAL;
+ }
  
-diff --git a/drivers/parisc/sba_iommu.c b/drivers/parisc/sba_iommu.c
-index dce4cdf786cd..9a6671a230ee 100644
---- a/drivers/parisc/sba_iommu.c
-+++ b/drivers/parisc/sba_iommu.c
-@@ -947,7 +947,7 @@ sba_map_sg(struct device *dev, struct scatterlist *sglist, int nents,
- 
- 	ioc = GET_IOC(dev);
- 	if (!ioc)
--		return 0;
-+		return -ENODEV;
- 
- 	/* Fast path single entry scatterlists. */
- 	if (nents == 1) {
+ static void
 -- 
 2.20.1
 
