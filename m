@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D6F03CA3E3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jul 2021 19:23:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DC333CA3E0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Jul 2021 19:22:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GQh640wx8z3cgN
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jul 2021 03:23:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GQh516L74z3fBy
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jul 2021 03:22:13 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=deltatee.com header.i=@deltatee.com header.a=rsa-sha256 header.s=20200525 header.b=sT6nIphY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=deltatee.com header.i=@deltatee.com header.a=rsa-sha256 header.s=20200525 header.b=Uk9hmVlO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,29 +17,29 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=gunthorp@deltatee.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=deltatee.com header.i=@deltatee.com header.a=rsa-sha256
- header.s=20200525 header.b=sT6nIphY; dkim-atps=neutral
+ header.s=20200525 header.b=Uk9hmVlO; dkim-atps=neutral
 Received: from ale.deltatee.com (ale.deltatee.com [204.191.154.188])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GQgyg4231z3bkc
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jul 2021 03:16:43 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GQgyZ0P1Yz3bht
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jul 2021 03:16:38 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=deltatee.com; s=20200525; h=Subject:MIME-Version:References:In-Reply-To:
  Message-Id:Date:Cc:To:From:content-disposition;
- bh=tVzBPY6/Bgdpsr8bmfZpwFmQV8rVEWLD9Ju+AXRRB/Q=; b=sT6nIphYRpQg2LPmIHPAN9+aTu
- GJh+kG/x4SM7ujeEOwTJw5ilEgyuKzytEd4BRwwLa0nLKahIc7+GQ9qJ4fA5Hu9384ZtjsbuG2b92
- s51DHr3LmCxuscjDOqlyMZ7uwWmozJZCa9HkoIp885CAsrDYo/QLqd7pHbw54nqIDcuExXUrrVRfw
- hZPArbok7AiyAtDvc1e+GRkLRV8zgo/jTjvTVyD1VZI/lSLxAe/izWpR6ucAyWORMvAeNpU6T2dEP
- ToPwTmhEJvkkerb0Tb9hn7uJF1hapwuF3GeNQtxgW4wYN95t0lZGeB9IRWqetmlEjHzeTZ71Uml4S
- 1lVZm5YQ==;
+ bh=yHZJDyrbtc2DNRkkLnCWk6LyCavHBAROxZPaBwPJV+w=; b=Uk9hmVlOMLTaHT5Tplw3GW15jH
+ CeVS5nCeJY2tUo3aAcbZduCSQVDn0jptjFbmtnj3v5G8CraUuCNv7B/bA1lXnwAqLJwQNB2t23QL6
+ GCZqhLMOwzqRH34G+Y5BBzb4NQhwdrGK5mOkNWXt9gAGnvdQqFYRscmaU6pWKWcE7qUt7wO4D80pe
+ 8/PNToWYD9qaWrwbmxJrGUcHjdK3p3BXVy4naPhfKpzb1aURkg8IXCH/NXXzv+OOVY95aZoB5qwfA
+ QHHlGEKoZAnVNvL5MsmbOBHtpgrk0NyNnIEds8LB/+w6+0+ZS1RCVbWjm8vff/8qi0kFo6Sr+2pOL
+ bwtGjm0w==;
 Received: from cgy1-donard.priv.deltatee.com ([172.16.1.31])
  by ale.deltatee.com with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <gunthorp@deltatee.com>)
- id 1m44V1-0001yg-Li; Thu, 15 Jul 2021 10:46:12 -0600
+ id 1m44V0-0001ye-IS; Thu, 15 Jul 2021 10:46:11 -0600
 Received: from gunthorp by cgy1-donard.priv.deltatee.com with local (Exim 4.92)
  (envelope-from <gunthorp@deltatee.com>)
- id 1m44Uo-0001nN-8x; Thu, 15 Jul 2021 10:45:58 -0600
+ id 1m44Uo-0001nQ-Dh; Thu, 15 Jul 2021 10:45:58 -0600
 From: Logan Gunthorpe <logang@deltatee.com>
 To: linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
@@ -47,8 +47,8 @@ To: linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
  linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
  iommu@lists.linux-foundation.org, linux-parisc@vger.kernel.org,
  xen-devel@lists.xenproject.org
-Date: Thu, 15 Jul 2021 10:45:34 -0600
-Message-Id: <20210715164544.6827-7-logang@deltatee.com>
+Date: Thu, 15 Jul 2021 10:45:35 -0600
+Message-Id: <20210715164544.6827-8-logang@deltatee.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20210715164544.6827-1-logang@deltatee.com>
 References: <20210715164544.6827-1-logang@deltatee.com>
@@ -62,14 +62,15 @@ X-SA-Exim-Rcpt-To: linux-arm-kernel@lists.infradead.org,
  linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
  linux-parisc@vger.kernel.org, xen-devel@lists.xenproject.org, hch@lst.de,
  m.szyprowski@samsung.com, robin.murphy@arm.com, sbates@raithlin.com,
- martin.oliveira@eideticom.com, logang@deltatee.com, linux@armlinux.org.uk,
- tsbogend@alpha.franken.de
+ martin.oliveira@eideticom.com, logang@deltatee.com, mpe@ellerman.id.au,
+ schnelle@linux.ibm.com, tsbogend@alpha.franken.de
 X-SA-Exim-Mail-From: gunthorp@deltatee.com
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on ale.deltatee.com
 X-Spam-Level: 
 X-Spam-Status: No, score=-6.7 required=5.0 tests=ALL_TRUSTED,BAYES_00,
  MYRULES_NO_TEXT autolearn=no autolearn_force=no version=3.4.2
-Subject: [PATCH v1 06/16] ARM/dma-mapping: return error code from .map_sg() ops
+Subject: [PATCH v1 07/16] ia64/sba_iommu: return error code from
+ sba_map_sg_attrs()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -84,103 +85,67 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Robin Murphy <robin.murphy@arm.com>,
+ Niklas Schnelle <schnelle@linux.ibm.com>, Robin Murphy <robin.murphy@arm.com>,
  Martin Oliveira <martin.oliveira@eideticom.com>,
- Stephen Bates <sbates@raithlin.com>, Russell King <linux@armlinux.org.uk>,
- Logan Gunthorpe <logang@deltatee.com>, Christoph Hellwig <hch@lst.de>,
- Marek Szyprowski <m.szyprowski@samsung.com>
+ Stephen Bates <sbates@raithlin.com>, Logan Gunthorpe <logang@deltatee.com>,
+ Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 From: Martin Oliveira <martin.oliveira@eideticom.com>
 
-The .map_sg() op now expects an error code instead of zero on failure,
-so propagate any errors that may happen all the way up.
+The .map_sg() op now expects an error code instead of zero on failure.
+
+Propagate the return of dma_mapping_error() up, if it is an errno.
+
+sba_coalesce_chunks() may only presently fail if sba_alloc_range()
+fails, which in turn only fails if the iommu is out of mapping
+resources, hence a -ENOMEM is used in that case.
 
 Signed-off-by: Martin Oliveira <martin.oliveira@eideticom.com>
 Signed-off-by: Logan Gunthorpe <logang@deltatee.com>
-Cc: Russell King <linux@armlinux.org.uk>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Niklas Schnelle <schnelle@linux.ibm.com>
 Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 ---
- arch/arm/mm/dma-mapping.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ arch/ia64/hp/common/sba_iommu.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/mm/dma-mapping.c b/arch/arm/mm/dma-mapping.c
-index c4b8df2ad328..8c286e690756 100644
---- a/arch/arm/mm/dma-mapping.c
-+++ b/arch/arm/mm/dma-mapping.c
-@@ -980,7 +980,7 @@ int arm_dma_map_sg(struct device *dev, struct scatterlist *sg, int nents,
+diff --git a/arch/ia64/hp/common/sba_iommu.c b/arch/ia64/hp/common/sba_iommu.c
+index 9148ddbf02e5..09dbe07a18c1 100644
+--- a/arch/ia64/hp/common/sba_iommu.c
++++ b/arch/ia64/hp/common/sba_iommu.c
+@@ -1431,7 +1431,7 @@ static int sba_map_sg_attrs(struct device *dev, struct scatterlist *sglist,
+ 			    unsigned long attrs)
  {
- 	const struct dma_map_ops *ops = get_dma_ops(dev);
- 	struct scatterlist *s;
--	int i, j;
-+	int i, j, ret;
- 
- 	for_each_sg(sg, s, nents, i) {
- #ifdef CONFIG_NEED_SG_DMA_LENGTH
-@@ -988,7 +988,8 @@ int arm_dma_map_sg(struct device *dev, struct scatterlist *sg, int nents,
+ 	struct ioc *ioc;
+-	int coalesced, filled = 0;
++	int coalesced, filled = 0, ret;
+ #ifdef ASSERT_PDIR_SANITY
+ 	unsigned long flags;
  #endif
- 		s->dma_address = ops->map_page(dev, sg_page(s), s->offset,
- 						s->length, dir, attrs);
--		if (dma_mapping_error(dev, s->dma_address))
-+		ret = dma_mapping_error(dev, s->dma_address);
+@@ -1458,8 +1458,9 @@ static int sba_map_sg_attrs(struct device *dev, struct scatterlist *sglist,
+ 		sglist->dma_length = sglist->length;
+ 		sglist->dma_address = sba_map_page(dev, sg_page(sglist),
+ 				sglist->offset, sglist->length, dir, attrs);
+-		if (dma_mapping_error(dev, sglist->dma_address))
+-			return 0;
++		ret = dma_mapping_error(dev, sglist->dma_address);
 +		if (ret)
- 			goto bad_mapping;
++			return ret;
+ 		return 1;
  	}
- 	return nents;
-@@ -996,7 +997,7 @@ int arm_dma_map_sg(struct device *dev, struct scatterlist *sg, int nents,
-  bad_mapping:
- 	for_each_sg(sg, s, i, j)
- 		ops->unmap_page(dev, sg_dma_address(s), sg_dma_len(s), dir, attrs);
--	return 0;
-+	return ret;
- }
  
- /**
-@@ -1622,7 +1623,7 @@ static int __iommu_map_sg(struct device *dev, struct scatterlist *sg, int nents,
- 		     bool is_coherent)
- {
- 	struct scatterlist *s = sg, *dma = sg, *start = sg;
--	int i, count = 0;
-+	int i, count = 0, ret;
- 	unsigned int offset = s->offset;
- 	unsigned int size = s->offset + s->length;
- 	unsigned int max = dma_get_max_seg_size(dev);
-@@ -1634,8 +1635,10 @@ static int __iommu_map_sg(struct device *dev, struct scatterlist *sg, int nents,
- 		s->dma_length = 0;
- 
- 		if (s->offset || (size & ~PAGE_MASK) || size + s->length > max) {
--			if (__map_sg_chunk(dev, start, size, &dma->dma_address,
--			    dir, attrs, is_coherent) < 0)
-+			ret = __map_sg_chunk(dev, start, size,
-+					     &dma->dma_address, dir, attrs,
-+					     is_coherent);
-+			if (ret < 0)
- 				goto bad_mapping;
- 
- 			dma->dma_address += offset;
-@@ -1648,8 +1651,9 @@ static int __iommu_map_sg(struct device *dev, struct scatterlist *sg, int nents,
- 		}
- 		size += s->length;
+@@ -1486,7 +1487,7 @@ static int sba_map_sg_attrs(struct device *dev, struct scatterlist *sglist,
+ 	coalesced = sba_coalesce_chunks(ioc, dev, sglist, nents);
+ 	if (coalesced < 0) {
+ 		sba_unmap_sg_attrs(dev, sglist, nents, dir, attrs);
+-		return 0;
++		return -ENOMEM;
  	}
--	if (__map_sg_chunk(dev, start, size, &dma->dma_address, dir, attrs,
--		is_coherent) < 0)
-+	ret = __map_sg_chunk(dev, start, size, &dma->dma_address, dir, attrs,
-+			     is_coherent);
-+	if (ret < 0)
- 		goto bad_mapping;
  
- 	dma->dma_address += offset;
-@@ -1660,7 +1664,7 @@ static int __iommu_map_sg(struct device *dev, struct scatterlist *sg, int nents,
- bad_mapping:
- 	for_each_sg(sg, s, count, i)
- 		__iommu_remove_mapping(dev, sg_dma_address(s), sg_dma_len(s));
--	return 0;
-+	return ret;
- }
- 
- /**
+ 	/*
 -- 
 2.20.1
 
