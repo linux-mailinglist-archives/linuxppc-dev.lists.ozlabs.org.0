@@ -1,101 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1085F3CB416
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jul 2021 10:25:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E59743CB42D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jul 2021 10:28:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GR46l6K46z3bSr
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jul 2021 18:25:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GR4Bb69NMz3bbx
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Jul 2021 18:28:23 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BMc79y1K;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=fP7d4VtH;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=schnelle@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f31;
+ helo=mail-qv1-xf31.google.com; envelope-from=leobras.c@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=BMc79y1K; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=fP7d4VtH; dkim-atps=neutral
+Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com
+ [IPv6:2607:f8b0:4864:20::f31])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GR4691Pckz2yyP
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jul 2021 18:24:32 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 16G82sot034778; Fri, 16 Jul 2021 04:24:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=8Of+ionZ0K44S7zzH2G1wGenaNNg9cYQDtiQ0dQz6+E=;
- b=BMc79y1KhhQKUFZbOrAhtcEP61wGvhCcKpBh3YItmYniaHy7RinkekOStAMhwPcVbV8g
- tA8KdxQW6CmdQCUDo7HXnXeBDvsxeO1Bxcn4vmR46+BPBqB7+8Ctzlwih1eoet+d/O4e
- U7lnzCYwkCmnuQ2N7TeXEVQB0tNbOBoSC9rb2wWdVRh2ThxQaLFsKo3f4ZcKX5kegGXy
- lsJ/BZHBXKo8Vpdp79tRxovqbQ5nmEvbTtQHpKKZhzPMbI6YKxeWxAqOAKu0r38O+7Ex
- 7l5jIUCj1b6+Lwrw1Hy8lrhsFTfLuxB+ksipWyRyg3640fKq4qgCXYb8/oO8DK9d7iju gA== 
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0b-001b2d01.pphosted.com with ESMTP id 39tw3vn83n-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 16 Jul 2021 04:24:15 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16G8EkKq007904;
- Fri, 16 Jul 2021 08:24:13 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma02fra.de.ibm.com with ESMTP id 39s3p78tv5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 16 Jul 2021 08:24:13 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 16G8OAou20840890
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 16 Jul 2021 08:24:10 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 167C84C04A;
- Fri, 16 Jul 2021 08:24:10 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2C04E4C04E;
- Fri, 16 Jul 2021 08:24:09 +0000 (GMT)
-Received: from sig-9-145-73-130.uk.ibm.com (unknown [9.145.73.130])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 16 Jul 2021 08:24:09 +0000 (GMT)
-Message-ID: <352f2a35d62399fce1dca0ce1158974ecda3904c.camel@linux.ibm.com>
-Subject: Re: [PATCH v1 10/16] s390/pci: return error code from
- s390_dma_map_sg()
-From: Niklas Schnelle <schnelle@linux.ibm.com>
-To: Logan Gunthorpe <logang@deltatee.com>, linux-kernel@vger.kernel.org,
- linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
- sparclinux@vger.kernel.org, iommu@lists.linux-foundation.org,
- linux-parisc@vger.kernel.org, xen-devel@lists.xenproject.org
-Date: Fri, 16 Jul 2021 10:24:08 +0200
-In-Reply-To: <20210715164544.6827-11-logang@deltatee.com>
-References: <20210715164544.6827-1-logang@deltatee.com>
- <20210715164544.6827-11-logang@deltatee.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-16.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Au675VXZyfEIxm3kG5FUCjrWY9DzzlcG
-X-Proofpoint-ORIG-GUID: Au675VXZyfEIxm3kG5FUCjrWY9DzzlcG
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-07-16_02:2021-07-16,
- 2021-07-16 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- lowpriorityscore=0 mlxlogscore=999 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 mlxscore=0 spamscore=0 clxscore=1011 adultscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2107160048
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GR4B75tyzz2ym7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jul 2021 18:27:58 +1000 (AEST)
+Received: by mail-qv1-xf31.google.com with SMTP id h18so4225008qve.1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Jul 2021 01:27:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=F/YkxBfRDtBmkhP+2nUtCJKlfQdr5yzKh5I2Oej3mdw=;
+ b=fP7d4VtHE1Tvt1K+Ez2d2PHrWDHgocp+BgKISQ/mQs7CJH7VceDaKYYPXGfhKVWSJy
+ XQARSgA/u4viSBPA9r4HM5I/LrlpZtZLvNasgVturM2oGcSFcxGQOv6zr4WWaZqcNGAX
+ A27IaNR4lfJ8VWb+KpNpVIy3mAucW/o+TSwHJfUYH32XR4XgoGjDgaT1GSw5yShhsx9r
+ i/7k57ad4hIreMlkZJb+49rMOCz6YJPQqZYceRGFTL3k/uEPQbidT1oLKM2vTKMrJJOa
+ D5oXrUPJ3+fEPdxRpZPXdzJXVsshExyEheEKumgfUZWAEYwxlO05HfmZMQjElFfmSmgp
+ GSYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=F/YkxBfRDtBmkhP+2nUtCJKlfQdr5yzKh5I2Oej3mdw=;
+ b=LzbCM0QxCeF+51DXwf66HM8RXvC5mYjDCD51axf24ChoFU0HBTfCGYL5gaqGAr4WjM
+ gt61ublIWwa6GWXmS+/vWbMj7iSgBIWc9XodZ9X1ddBE+1zFiYQRl5MdkyTF+GqWS4CJ
+ 9Rvxo3xeZxL6IAMhOgbYwMTxKq2YpVxtHtyxb9f4sFaRi+3WabdETLSN2EjrConTHGbA
+ 9AUFCAf5eJ6l/gq7XgIcOZfxLDulMYQgGSkHV2UjF5KdE8Q3Mxc/23B9tg14+Ho5vNA0
+ fxXP7ZPaLsymK32CZxWB4LlpJwLc6kLwgGrpzKWy8f2Hop8cv+yhFdLXHFCuFMyi8GjJ
+ 9tfQ==
+X-Gm-Message-State: AOAM53295QmkP835l8h7AEavBsSSwR1UpZq15SK0w4TsvqIRiF5lziM1
+ 8+/13p2D0iW/V5F9d0vspdw=
+X-Google-Smtp-Source: ABdhPJzkmMN2JnYjZU7i/Yb+iOp1euFVgbzEGzAmrgu368Yout2rNikTND3y+C+esr/hZxUDq41tBQ==
+X-Received: by 2002:a05:6214:20ac:: with SMTP id
+ 12mr9076220qvd.7.1626424075237; 
+ Fri, 16 Jul 2021 01:27:55 -0700 (PDT)
+Received: from LeoBras.redhat.com ([2804:14c:482:92eb:ffdf:6b35:b94d:258])
+ by smtp.gmail.com with ESMTPSA id q199sm3603540qka.112.2021.07.16.01.27.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 16 Jul 2021 01:27:54 -0700 (PDT)
+From: Leonardo Bras <leobras.c@gmail.com>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Leonardo Bras <leobras.c@gmail.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ kernel test robot <lkp@intel.com>, Nicolin Chen <nicoleotsuka@gmail.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>
+Subject: [PATCH v5 00/11] DDW + Indirect Mapping
+Date: Fri, 16 Jul 2021 05:27:45 -0300
+Message-Id: <20210716082755.428187-1-leobras.c@gmail.com>
+X-Mailer: git-send-email 2.32.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,85 +84,120 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
- Martin Oliveira <martin.oliveira@eideticom.com>,
- Stephen Bates <sbates@raithlin.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>,
- Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2021-07-15 at 10:45 -0600, Logan Gunthorpe wrote:
-> From: Martin Oliveira <martin.oliveira@eideticom.com>
-> 
-> The .map_sg() op now expects an error code instead of zero on failure.
-> 
-> So propagate the error from __s390_dma_map_sg() up.
-> 
-> Signed-off-by: Martin Oliveira <martin.oliveira@eideticom.com>
-> Signed-off-by: Logan Gunthorpe <logang@deltatee.com>
-> Cc: Niklas Schnelle <schnelle@linux.ibm.com>
-> Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-> Cc: Heiko Carstens <hca@linux.ibm.com>
-> Cc: Vasily Gorbik <gor@linux.ibm.com>
-> Cc: Christian Borntraeger <borntraeger@de.ibm.com>
-> ---
->  arch/s390/pci/pci_dma.c | 12 +++++++-----
->  1 file changed, 7 insertions(+), 5 deletions(-)
-> 
-> diff --git a/arch/s390/pci/pci_dma.c b/arch/s390/pci/pci_dma.c
-> index ebc9a49523aa..c78b02012764 100644
-> --- a/arch/s390/pci/pci_dma.c
-> +++ b/arch/s390/pci/pci_dma.c
-> @@ -487,7 +487,7 @@ static int s390_dma_map_sg(struct device *dev, struct scatterlist *sg,
->  	unsigned int max = dma_get_max_seg_size(dev);
->  	unsigned int size = s->offset + s->length;
->  	unsigned int offset = s->offset;
-> -	int count = 0, i;
-> +	int count = 0, i, ret;
->  
->  	for (i = 1; i < nr_elements; i++) {
->  		s = sg_next(s);
-> @@ -497,8 +497,9 @@ static int s390_dma_map_sg(struct device *dev, struct scatterlist *sg,
->  
->  		if (s->offset || (size & ~PAGE_MASK) ||
->  		    size + s->length > max) {
-> -			if (__s390_dma_map_sg(dev, start, size,
-> -					      &dma->dma_address, dir))
-> +			ret = __s390_dma_map_sg(dev, start, size,
-> +						&dma->dma_address, dir);
-> +			if (ret)
->  				goto unmap;
->  
->  			dma->dma_address += offset;
-> @@ -511,7 +512,8 @@ static int s390_dma_map_sg(struct device *dev, struct scatterlist *sg,
->  		}
->  		size += s->length;
->  	}
-> -	if (__s390_dma_map_sg(dev, start, size, &dma->dma_address, dir))
-> +	ret = __s390_dma_map_sg(dev, start, size, &dma->dma_address, dir);
-> +	if (ret)
->  		goto unmap;
->  
->  	dma->dma_address += offset;
-> @@ -523,7 +525,7 @@ static int s390_dma_map_sg(struct device *dev, struct scatterlist *sg,
->  		s390_dma_unmap_pages(dev, sg_dma_address(s), sg_dma_len(s),
->  				     dir, attrs);
->  
-> -	return 0;
-> +	return ret;
->  }
->  
->  static void s390_dma_unmap_sg(struct device *dev, struct scatterlist *sg,
+So far it's assumed possible to map the guest RAM 1:1 to the bus, which
+works with a small number of devices. SRIOV changes it as the user can
+configure hundreds VFs and since phyp preallocates TCEs and does not
+allow IOMMU pages bigger than 64K, it has to limit the number of TCEs
+per a PE to limit waste of physical pages.
 
-So the error codes we return are -ENOMEM if allocating a DMA
-translation entry fails and -EINVAL if the DMA translation table hasn't
-been initialized or the caller tries to map 0 sized memory. Are these
-error codes that you would expect? If yes then this change looks good
-to me.
+As of today, if the assumed direct mapping is not possible, DDW creation
+is skipped and the default DMA window "ibm,dma-window" is used instead.
 
-Acked-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Using the DDW instead of the default DMA window may allow to expand the
+amount of memory that can be DMA-mapped, given the number of pages (TCEs)
+may stay the same (or increase) and the default DMA window offers only
+4k-pages while DDW may offer larger pages (4k, 64k, 16M ...).
+
+Patch #1 replaces hard-coded 4K page size with a variable containing the
+correct page size for the window.
+
+Patch #2 introduces iommu_table_in_use(), and replace manual bit-field
+checking where it's used. It will be used for aborting enable_ddw() if
+there is any current iommu allocation and we are trying single window
+indirect mapping.
+
+Patch #3 introduces iommu_pseries_alloc_table() that will be helpful
+when indirect mapping needs to replace the iommu_table.
+
+Patch #4 adds helpers for adding DDWs in the list.
+
+Patch #5 refactors enable_ddw() so it returns if direct mapping is
+possible, instead of DMA offset. It helps for next patches on
+indirect DMA mapping and also allows DMA windows starting at 0x00.
+
+Patch #6 bring new helper to simplify enable_ddw(), allowing
+some reorganization for introducing indirect mapping DDW.
+
+Patch #7 adds new helper _iommu_table_setparms() and use it in other
+*setparams*() to fill iommu_table. It will also be used for creating a
+new iommu_table for indirect mapping.
+
+Patch #8 updates remove_dma_window() to accept different property names,
+so we can introduce a new property for indirect mapping.
+
+Patch #9 extracts find_existing_ddw_windows() into
+find_existing_ddw_windows_named(), and calls it by it's property name.
+This will be useful when the property for indirect mapping is created,
+so we can search the device-tree for both properties.
+
+Patch #10:
+Instead of destroying the created DDW if it doesn't map the whole
+partition, make use of it instead of the default DMA window as it improves
+performance. Also, update the iommu_table and re-generate the pools.
+It introduces a new property name for DDW with indirect DMA mapping.
+
+Patch #11:
+Does some renaming of 'direct window' to 'dma window', given the DDW
+created can now be also used in indirect mapping if direct mapping is not
+available.
+
+All patches were tested into an LPAR with an virtio-net interface that
+allows default DMA window and DDW to coexist.
+
+Changes since v4:
+- Solve conflicts with new upstream versions
+- Avoid unecessary code moving by doing variable declaration before definition
+- Rename _iommu_table_setparms to iommu_table_setparms_common and changed base
+  parameter from unsigned long to void* in order to avoid unecessary casting.
+- Fix breaking case for existing direct-mapping.
+- Fix IORESOURCE_MEM bound issue
+- Move new tbl to pci->table_group->tables[1] instead of replacing [0]
+v4 Link: https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=241597&state=%2A&archive=both
+
+Changes since v3:
+- Fixed inverted free order at ddw_property_create()
+- Updated goto tag naming
+v3 Link: https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=240287&state=%2A&archive=both
+
+Changes since v2:
+- Some patches got removed from the series and sent by themselves,
+- New tbl created for DDW + indirect mapping reserves MMIO32 space,
+- Improved reserved area algorithm,
+- Improved commit messages,
+- Removed define for default DMA window prop name,
+- Avoided some unnecessary renaming,
+- Removed some unnecessary empty lines,
+- Changed some code moving to forward declarations.
+v2 Link: http://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=201210&state=%2A&archive=both
+
+
+Leonardo Bras (11):
+  powerpc/pseries/iommu: Replace hard-coded page shift
+  powerpc/kernel/iommu: Add new iommu_table_in_use() helper
+  powerpc/pseries/iommu: Add iommu_pseries_alloc_table() helper
+  powerpc/pseries/iommu: Add ddw_list_new_entry() helper
+  powerpc/pseries/iommu: Allow DDW windows starting at 0x00
+  powerpc/pseries/iommu: Add ddw_property_create() and refactor
+    enable_ddw()
+  powerpc/pseries/iommu: Reorganize iommu_table_setparms*() with new
+    helper
+  powerpc/pseries/iommu: Update remove_dma_window() to accept property
+    name
+  powerpc/pseries/iommu: Find existing DDW with given property name
+  powerpc/pseries/iommu: Make use of DDW for indirect mapping
+  powerpc/pseries/iommu: Rename "direct window" to "dma window"
+
+ arch/powerpc/include/asm/iommu.h       |   1 +
+ arch/powerpc/include/asm/tce.h         |   8 -
+ arch/powerpc/kernel/iommu.c            |  65 ++--
+ arch/powerpc/platforms/pseries/iommu.c | 481 +++++++++++++++----------
+ 4 files changed, 330 insertions(+), 225 deletions(-)
+
+-- 
+2.32.0
 
