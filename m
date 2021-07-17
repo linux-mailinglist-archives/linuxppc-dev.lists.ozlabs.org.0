@@ -2,49 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88D493CC40D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Jul 2021 17:30:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 052C33CC44D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Jul 2021 17:55:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GRsVZ3G3zz30CC
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Jul 2021 01:29:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GRt3X6CvGz3bXv
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Jul 2021 01:55:04 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Hd7cFMGq;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f2e;
+ helo=mail-qv1-xf2e.google.com; envelope-from=oohall@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Hd7cFMGq; dkim-atps=neutral
+Received: from mail-qv1-xf2e.google.com (mail-qv1-xf2e.google.com
+ [IPv6:2607:f8b0:4864:20::f2e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GRsV66b86z2yMJ
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Jul 2021 01:29:31 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4GRsTx3TnMzB6G4;
- Sat, 17 Jul 2021 17:29:25 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id CsnSEz9Ns0sb; Sat, 17 Jul 2021 17:29:25 +0200 (CEST)
-Received: from vm-hermes.si.c-s.fr (vm-hermes.si.c-s.fr [192.168.25.253])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4GRsTx2MlBzB6FJ;
- Sat, 17 Jul 2021 17:29:25 +0200 (CEST)
-Received: by vm-hermes.si.c-s.fr (Postfix, from userid 33)
- id C1C925EF; Sat, 17 Jul 2021 17:34:35 +0200 (CEST)
-Received: from 37-171-38-5.coucou-networks.fr
- (37-171-38-5.coucou-networks.fr [37.171.38.5]) by messagerie.c-s.fr (Horde
- Framework) with HTTP; Sat, 17 Jul 2021 17:34:35 +0200
-Date: Sat, 17 Jul 2021 17:34:35 +0200
-Message-ID: <20210717173435.Horde.Yjk9m3mjnYfLI-Xv6-IIdg8@messagerie.c-s.fr>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Tyrel Datwyler <tyreld@linux.ibm.com>
-Subject: Re: [PATCH] ibmvfc: fix command state accounting and stale response
- detection
-In-Reply-To: <20210716205220.1101150-1-tyreld@linux.ibm.com>
-User-Agent: Internet Messaging Program (IMP) H5 (6.2.3)
-Content-Type: text/plain; charset=UTF-8; format=flowed; DelSp=Yes
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GRt351MRwz2yNm
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Jul 2021 01:54:40 +1000 (AEST)
+Received: by mail-qv1-xf2e.google.com with SMTP id a10so5855218qvj.11
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Jul 2021 08:54:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=/AmEWCj5cXsx6W4oaKZsoab5w8JmJ+9MssIjB5+swwA=;
+ b=Hd7cFMGqcK3734ZSRwBdBTBnPszJUkSaEgKGOSuTyf/9CVvvNfXluFBSaLkqh+vhUh
+ QcrT26qOCpfZc1WiHF4mKDD77VaNcYLaA4X7EeCUnD599C/30/hYg2crk7JwD7LWYouM
+ QOihc6TRUO3to8f8fESP33q4Y62wfeI36gXgoSU4oyvnNfExtwIvT+orPuGfx8DmHazn
+ aiD+1sObT9TkpJVcTQyr+UmDLRLttJ+AV6/s1Qp++DeDte7qcMlwc05Jp5E2l9tnTn0i
+ z/HU8M7Kh1ZgxSwCGUKkPA1Uhyo59wcJ9cyEWR9+YBPFTcnFad3dmDkblvyYHWAWCPeu
+ ZbEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=/AmEWCj5cXsx6W4oaKZsoab5w8JmJ+9MssIjB5+swwA=;
+ b=QR4/5Iz7t/hKH94ztV6HodhHcSUXQUbgBHFl/typQ1HsoVLw51+efyfBtfeYwEpvJT
+ hOhXPmBvXoiJ4Xh+fI258SxkCnECW1JS/CgpIATHaIS+jlw4igX2RdZmJmKwkBHLhWzr
+ f0n3v5UzJCoEp9ZuEnn4hc2NxQ1/FUVoTPl92QU2JU2va+XAT6SfGibQYz9PxBldGOyc
+ Qu8KWFs4+kWSm6eQ25jUBqBp3RmUWnDqaNJdpDBGIVQky4FzwnOh0ZxwcsBs8mVeqc43
+ mV+Rd/HmxSA5Ja10l3CIVBf2apgRN8Z1q6+JYO4uVtRe6rO7l2ukIVSJGmsVA2/3iuei
+ ZPNg==
+X-Gm-Message-State: AOAM533oxIuuv36z37OzhzWZ5rILZeI++V8xoLaPtub32jzyfLf0qLda
+ 12KetW8TjJMjaaYkU8K5GoqAEsFzavYEplhruJQ=
+X-Google-Smtp-Source: ABdhPJx6da7bNxrbahuQ1ZMmUEUmGz/s4AMwe9r3af+DEfFlkKfncSOREj83WikQRIBmu7VH6T14DsqX92XdK+L9ZyA=
+X-Received: by 2002:a05:6214:1cb:: with SMTP id
+ c11mr16338918qvt.47.1626537274819; 
+ Sat, 17 Jul 2021 08:54:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+References: <20210716221159.3587039-1-linux@roeck-us.net>
+In-Reply-To: <20210716221159.3587039-1-linux@roeck-us.net>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Sun, 18 Jul 2021 01:54:23 +1000
+Message-ID: <CAOSf1CHuLhYO1rXiAhPz6xyQ-GgrjE-dj=Af6v7CWSH6QroEtQ@mail.gmail.com>
+Subject: Re: [PATCH] powerpc/chrp: Revert "Move PHB discovery" and "Make
+ hydra_init() static"
+To: Guenter Roeck <linux@roeck-us.net>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,97 +75,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-scsi@vger.kernel.org, martin.petersen@oracle.com,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- james.bottomley@hansenpartnership.com, brking@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Tyrel Datwyler <tyreld@linux.ibm.com> a =C3=A9crit=C2=A0:
-
-> Prior to commit 1f4a4a19508d ("scsi: ibmvfc: Complete commands outside
-> the host/queue lock") responses to commands were completed sequentially
-> with the host lock held such that a command had a basic binary state of
-> active or free. It was therefore a simple affair of ensuring the
-> assocaiated ibmvfc_event to a VIOS response was valid by testing that it
-> was not already free. The lock relexation work to complete commands
-> outside the lock inadverdently made it a trinary command state such that
-> a command is either in flight, received and being completed, or
-> completed and now free. This breaks the stale command detection logic as
-> a command may be still marked active and been placed on the delayed
-> completion list when a second stale response for the same command
-> arrives. This can lead to double completions and list corruption. This
-> issue was exposed by a recent VIOS regression were a missing memory
-> barrier could occasionally result in the ibmvfc client receiveing a
-> duplicate response for the same command.
+On Sat, Jul 17, 2021 at 8:12 AM Guenter Roeck <linux@roeck-us.net> wrote:
 >
-> Fix the issue by introducing the atomic ibmvfc_event.active to track the
-> trinary state of a command. The state is explicitly set to 1 when a
-> command is successfully sent. The CRQ response handlers use
-> atomic_dec_if_positive() to test for stale responses and correctly
-> transition to the completion state when a active command is received.
-> Finally, atomic_dec_and_test() is used to sanity check transistions
-> when commands are freed as a result of a completion, or moved to the
-> purge list as a result of error handling or adapter reset.
+> This patch reverts commit 407d418f2fd4 ("powerpc/chrp: Move PHB
+> discovery") and commit 9634afa67bfd ("powerpc/chrp: Make hydra_init()
+> static").
 >
-> Cc: stable@vger.kernel.org
-> Fixes: 1f4a4a19508d ("scsi: ibmvfc: Complete commands outside the=20=20
->=20host/queue lock")
-> Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
-> ---
->  drivers/scsi/ibmvscsi/ibmvfc.c | 19 +++++++++++++++++--
->  drivers/scsi/ibmvscsi/ibmvfc.h |  1 +
->  2 files changed, 18 insertions(+), 2 deletions(-)
+> Running the upstream kernel on Qemu's brand new "pegasos2" emulation
+> results in a variety of backtraces such as
+
+...and actually using it appears to require both manually enabling it
+in the qemu config and finding a random bios blob that is no longer
+distributed by the manufacturer. Cool.
+
+> Kernel attempted to write user page (a1) - exploit attempt? (uid: 0)
+> ------------[ cut here ]------------
+> Bug: Write fault blocked by KUAP!
+> WARNING: CPU: 0 PID: 0 at arch/powerpc/mm/fault.c:230 do_page_fault+0x4f4/0x920
+> CPU: 0 PID: 0 Comm: swapper Not tainted 5.13.2 #40
+> NIP:  c0021824 LR: c0021824 CTR: 00000000
+> REGS: c1085d50 TRAP: 0700   Not tainted  (5.13.2)
+> MSR:  00021032 <ME,IR,DR,RI>  CR: 24042254  XER: 00000000
 >
-> diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvf=
-c.c
-> index bee1bec49c09..935b01ee44b7 100644
-> --- a/drivers/scsi/ibmvscsi/ibmvfc.c
-> +++ b/drivers/scsi/ibmvscsi/ibmvfc.c
-> @@ -807,6 +807,13 @@ static int ibmvfc_init_event_pool(struct=20=20
->=20ibmvfc_host *vhost,
->  	for (i =3D 0; i < size; ++i) {
->  		struct ibmvfc_event *evt =3D &pool->events[i];
+> GPR00: c0021824 c1085e10 c0f8c520 00000021 3fffefff c1085c60 c1085c58 00000000
+> GPR08: 00001032 00000000 00000000 c0ffb3ec 44042254 00000000 00000000 00000004
+> GPR16: 00000000 ffffffff 000000c4 000000d0 0188c6e0 01006000 00000001 40b14000
+> GPR24: c0ec000c 00000300 02000000 00000000 42000000 000000a1 00000000 c1085e60
+> NIP [c0021824] do_page_fault+0x4f4/0x920
+> LR [c0021824] do_page_fault+0x4f4/0x920
+> Call Trace:
+> [c1085e10] [c0021824] do_page_fault+0x4f4/0x920 (unreliable)
+> [c1085e50] [c0004254] DataAccess_virt+0xd4/0xe4
 >
-> +		/*
-> +		 * evt->active states
-> +		 *  1 =3D in flight
-> +		 *  0 =3D being completed
-> +		 * -1 =3D free/freed
-> +		 */
-> +		atomic_set(&evt->active, -1);
->  		atomic_set(&evt->free, 1);
->  		evt->crq.valid =3D 0x80;
->  		evt->crq.ioba =3D cpu_to_be64(pool->iu_token + (sizeof(*evt->xfer_iu) =
-* i));
-> @@ -1017,6 +1024,7 @@ static void ibmvfc_free_event(struct ibmvfc_event *=
-evt)
->
->  	BUG_ON(!ibmvfc_valid_event(pool, evt));
->  	BUG_ON(atomic_inc_return(&evt->free) !=3D 1);
-> +	BUG_ON(atomic_dec_and_test(&evt->active));
+> and the system fails to boot. Bisect points to commit 407d418f2fd4
+> ("powerpc/chrp: Move PHB discovery"). Reverting this patch together with
+> commit 9634afa67bfd ("powerpc/chrp: Make hydra_init() static") fixes
+> the problem.
 
-Avoid new BUG_ONs. See=20=20
-https://www.kernel.org/doc/html/latest/process/deprecated.html
+The rationale for adding ppc_md.discover_phbs() and shifting all the
+platforms over to using it is in commit 5537fcb319d0 ("powerpc/pci:
+Add ppc_md.discover_phbs()"). I'd rather not go back to having random
+platforms doing their PCI init before the kernel has setup the page
+allocator. You need to either debug the problem fully, or provide
+enough replication details so that someone who isn't invested in
+emulating ancient hardware (i.e. me) with enough information to
+actually replicate the problem.
 
->
->=20 	spin_lock_irqsave(&evt->queue->l_lock, flags);
->  	list_add_tail(&evt->queue_list, &evt->queue->free);
-> @@ -1072,6 +1080,12 @@ static void ibmvfc_complete_purge(struct=20=20
->=20list_head *purge_list)
->   **/
->  static void ibmvfc_fail_request(struct ibmvfc_event *evt, int error_code=
-)
->  {
-> +	/*
-> +	 * Anything we are failing should still be active. Otherwise, it
-> +	 * implies we already got a response for the command and are doing
-> +	 * something bad like double completing it.
-> +	 */
-> +	BUG_ON(!atomic_dec_and_test(&evt->active));
-
-Same
-
-
+Oliver
