@@ -1,84 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DCAB3CCA38
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Jul 2021 20:07:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F34A3CCDFC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jul 2021 08:34:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GSXyB0KKtz30CZ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jul 2021 04:07:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GSsWV1fY5z30Mp
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jul 2021 16:34:14 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=jbhtnjp4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hE5qpfPd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::734;
- helo=mail-qk1-x734.google.com; envelope-from=radu.rendec@gmail.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=jbhtnjp4; dkim-atps=neutral
-Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com
- [IPv6:2607:f8b0:4864:20::734])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=hE5qpfPd; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GSXxb52B1z2yN4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jul 2021 04:07:13 +1000 (AEST)
-Received: by mail-qk1-x734.google.com with SMTP id t185so14499106qkd.3
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Jul 2021 11:07:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :user-agent:mime-version:content-transfer-encoding;
- bh=ty75JegD1P7PK3lGjxE6rRjOfvMEUFoRgBKC/+Jw6I4=;
- b=jbhtnjp4uwXVufgYOE9aQoohZITMpMrI/YzUda5mCD9LWGiQKMzpIm9nGbTm2b+2yB
- WGKhSxMLt038J/m7WRm0fS8MTldZqTW77o29GOGLVhN9FaS5hpAWuLFzumkM93g54T5Y
- 1y5qXWKgucowXQH8KDKjiLJIQLk57VR5wQc1EKCtUaXQhYM6D0+HI5fLCY2qlwBxw77b
- NNgMUIZXWCixvlpSvwmW/HSqIPtx2goRgcwVuW8yr3RWN1fG8dtDq0Amvu10gJ5O2W/j
- khJCjimvshBGJQ6PT0+n9b02NBhO1JzxBsvHThd7sqbMXBIuaVo/YPzap84E67po8rEc
- ZLVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:user-agent:mime-version:content-transfer-encoding;
- bh=ty75JegD1P7PK3lGjxE6rRjOfvMEUFoRgBKC/+Jw6I4=;
- b=RDlMmI7eQrFchN8Kn8ypV1FUhxJX57qhO1wuZ+xGyWDNuswKpIFfuBAED8dRtsengt
- Ly9bJTTFtXNEJJSRmzP7sjhlO4KykbDT467gauX3Nb/+nIp15YqhbXA1EKkjaGqd26Fw
- myVnPgGySHbk/Q2z3i/Dwk4xvbrV1L8xU+UdY1FZA98WK34SsBjAf3Qo1NYNyjzNNWFA
- lPrN3w2l4UhskwFWR3XBJoTr4nP1gtIn3ibC2+BmJIbGrCm5S2MICjwdLcGs/VZJrpvZ
- WhfmCK2nsVEQaWYITHvYh65cg8LnQblIVE6ZWOJHYD41PpVEQErS3PCyuikHxuxl20UK
- 52IA==
-X-Gm-Message-State: AOAM533/c6kYsBPDireTOQh1/P+Dfjh9Dzk3ypRKOOjyAmz+z1nd9Y1F
- EIxs86guh6uWFskXsYpMqrY=
-X-Google-Smtp-Source: ABdhPJxbMLeL2lZyjznzhmX6wFSzd+W5SjIX1+vNL37DyBdxdtJfaO8px60KGv/R4v+KmqHqO3JkvQ==
-X-Received: by 2002:a37:e109:: with SMTP id c9mr692175qkm.480.1626631629650;
- Sun, 18 Jul 2021 11:07:09 -0700 (PDT)
-Received: from bat.mindbit.ro (cpe00fc8d79db03-cm00fc8d79db00.cpe.net.fido.ca.
- [72.137.118.157])
- by smtp.gmail.com with ESMTPSA id o24sm4967076qtt.21.2021.07.18.11.07.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 Jul 2021 11:07:09 -0700 (PDT)
-Message-ID: <0c3f35e18b6ceeed0e8a2792f5c76b4fcb0a6c1d.camel@gmail.com>
-Subject: Re: [PATCH 0/1] PPC32: fix ptrace() access to FPU registers
-From: Radu Rendec <radu.rendec@gmail.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Daniel Axtens
- <dja@axtens.net>, Andreas Schwab <schwab@linux-m68k.org>
-Date: Sun, 18 Jul 2021 14:07:07 -0400
-In-Reply-To: <20b6bdebae736b48814c1d600024546b7c604e3c.camel@gmail.com>
-References: <20190610232758.19010-1-radu.rendec@gmail.com>
- <87r27t2el0.fsf@dja-thinkpad.axtens.net>
- <5fcdb5767b7cf4c7d5b7496c0032021e43115d39.camel@gmail.com>
- <87muif2y4l.fsf@dja-thinkpad.axtens.net>
- <fbf9f9cbb99fc40c7d7af86fee3984427c61b799.camel__46559.9162316479$1560860409$gmane$org@gmail.com>
- <875zp2rcip.fsf@igel.home> <87k1di2yxg.fsf@dja-thinkpad.axtens.net>
- <fd936660cde0d5f151b732d0f885ddf0b6ba67eb.camel@gmail.com>
- <39d6eb22-2142-d869-7649-0242cecf5532@csgroup.eu>
- <20b6bdebae736b48814c1d600024546b7c604e3c.camel@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GSsVv1Dj9z2yN5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Jul 2021 16:33:42 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 16J648Rk153167; Mon, 19 Jul 2021 02:33:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version; s=pp1;
+ bh=kdmreP7YA3UrwzCFhRCMpIKoAo7N/ldyvK2ItSEadg0=;
+ b=hE5qpfPdunsXm2ezTOeBCxiWeG9nWF0K0r6f8mkT9AmskD75j2IfBcWihxA4fHrm4Ewb
+ ol1kAOS7kDvrLnZicjG3BSKVg2l9Y9mBVq+dT7BAA17i61FX2lBy0PwbxbCCBhqIyoHu
+ UgkLkph7ddtJ88uoYR1Jr2CvbhyR5ZgHrMzo6oDJneIT43eM3chbu7nJBlPEbINv4RUj
+ 4JCtZhRIjuxINcoYp7wu6eoTeOrby+CM300Mz8Lshlz0kD5a8vC4OhtjxlfGeb6DyFsS
+ LMJCiICCEBjR1ILH7gUcKrbsrQSxh+j1Je7nhfe0AinK3oOOpUvbqi1ZiAImXobzjOQY VA== 
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 39vxwpf429-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 19 Jul 2021 02:33:35 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16J6Wvnl009185;
+ Mon, 19 Jul 2021 06:33:35 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma04dal.us.ibm.com with ESMTP id 39upuaddns-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 19 Jul 2021 06:33:35 +0000
+Received: from b03ledav001.gho.boulder.ibm.com
+ (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 16J6XX2215139344
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 19 Jul 2021 06:33:33 GMT
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A42BC6E056;
+ Mon, 19 Jul 2021 06:33:33 +0000 (GMT)
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E18E16E04E;
+ Mon, 19 Jul 2021 06:33:32 +0000 (GMT)
+Received: from sofia.ibm.com (unknown [9.85.122.97])
+ by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon, 19 Jul 2021 06:33:32 +0000 (GMT)
+Received: by sofia.ibm.com (Postfix, from userid 1000)
+ id CCB162E301D; Mon, 19 Jul 2021 12:03:30 +0530 (IST)
+From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
+ Michal Suchanek <msuchanek@suse.de>
+Subject: [PATCH v5 0/2] cpuidle/pseries: cleanup of the CEDE0 latency fixup
+ code
+Date: Mon, 19 Jul 2021 12:03:17 +0530
+Message-Id: <1626676399-15975-1-git-send-email-ego@linux.vnet.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: G0IAr-gj6S3yQx0WTGp4LQ24E1rWrc-z
+X-Proofpoint-GUID: G0IAr-gj6S3yQx0WTGp4LQ24E1rWrc-z
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-07-19_02:2021-07-16,
+ 2021-07-19 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 malwarescore=0
+ impostorscore=0 adultscore=0 mlxlogscore=999 lowpriorityscore=0
+ bulkscore=0 clxscore=1015 mlxscore=0 suspectscore=0 priorityscore=1501
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2107190033
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,127 +104,168 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
- Oleg Nesterov <oleg@redhat.com>
+Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ joedecke@de.ibm.com, linux-pm@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2021-06-11 at 10:37 -0400, Radu Rendec wrote:
->On Fri, 2021-06-11 at 08:02 +0200, Christophe Leroy wrote:
->>Le 19/06/2019 à 14:57, Radu Rendec a écrit :
->>> On Wed, 2019-06-19 at 10:36 +1000, Daniel Axtens wrote:
->>>> Andreas Schwab <
->>>> schwab@linux-m68k.org
->>>>> writes:
->>>>
->>>>> On Jun 18 2019, Radu Rendec <
->>>>> radu.rendec@gmail.com
->>>>>> wrote:
->>>>>
->>>>>> Since you already have a working setup, it would be nice if you could
->>>>>> add a printk to arch_ptrace() to print the address and confirm what I
->>>>>> believe happens (by reading the gdb source code).
->>>>>
->>>>> A ppc32 ptrace syscall goes through compat_arch_ptrace.
->>>
->>> Right. I completely overlooked that part.
->>>
->>>> Ah right, and that (in ptrace32.c) contains code that will work:
->>>>
->>>>
->>>> 			/*
->>>> 			 * the user space code considers the floating point
->>>> 			 * to be an array of unsigned int (32 bits) - the
->>>> 			 * index passed in is based on this assumption.
->>>> 			 */
->>>> 			tmp = ((unsigned int *)child->thread.fp_state.fpr)
->>>> 				[FPRINDEX(index)];
->>>>
->>>> FPRINDEX is defined above to deal with the various manipulations you
->>>> need to do.
->>>
->>> Correct. Basically it does the same that I did in my patch: it divides
->>> the index again by 2 (it's already divided by 4 in compat_arch_ptrace()
->>> so it ends up divided by 8), then takes the least significant bit and
->>> adds it to the index. I take bit 2 of the original address, which is the
->>> same thing (because in FPRHALF() the address is already divided by 4).
->>>
->>> So we have this in ptrace32.c:
->>>
->>> #define FPRNUMBER(i) (((i) - PT_FPR0) >> 1)
->>> #define FPRHALF(i) (((i) - PT_FPR0) & 1)
->>> #define FPRINDEX(i) TS_FPRWIDTH * FPRNUMBER(i) * 2 + FPRHALF(i)
->>>
->>> index = (unsigned long) addr >> 2;
->>> (unsigned int *)child->thread.fp_state.fpr)[FPRINDEX(index)]
->>>
->>>
->>> And we have this in my patch:
->>>
->>> fpidx = (addr - PT_FPR0 * sizeof(long)) / 8;
->>> (void *)&child->thread.TS_FPR(fpidx) + (addr & 4)
->>>
->>>> Radu: I think we want to copy that working code back into ptrace.c.
->>>
->>> I'm not sure that would work. There's a subtle difference: the code in
->>> ptrace32.c is always compiled on a 64-bit kernel and the user space
->>> calling it is always 32-bit; on the other hand, the code in ptrace.c can
->>> be compiled on either a 64-bit kernel or a 32-bit kernel and the user
->>> space calling it always has the same "bitness" as the kernel.
->>>
->>> One difference is the size of the CPU registers. On 64-bit they are 8
->>> byte long and user space knows that and generates 8-byte aligned
->>> addresses. So you have to divide the address by 8 to calculate the CPU
->>> register index correctly, which compat_arch_ptrace() currently doesn't.
->>>
->>> Another difference is that on 64-bit `long` is 8 bytes, so user space
->>> can read a whole FPU register in a single ptrace call.
->>>
->>> Now that we are all aware of compat_arch_ptrace() (which handles the
->>> special case of a 32-bit process running on a 64-bit kernel) I would say
->>> the patch is correct and does the right thing for both 32-bit and 64-bit
->>> kernels and processes.
->>>
->>>> The challenge will be unpicking the awful mess of ifdefs in ptrace.c
->>>> and making it somewhat more comprehensible.
->>>
->>> I'm not sure what ifdefs you're thinking about. The only that are used
->>> inside arch_ptrace() are PT_FPR0, PT_FPSCR and TS_FPR, which seem to be
->>> correct.
->>>
->>> But perhaps it would be useful to change my patch and add a comment just
->>> before arch_ptrace() that explains how the math is done and that the
->>> code must work on both 32-bit and 64-bit, the user space address
->>> assumptions, etc.
->>>
->>> By the way, I'm not sure the code in compat_arch_ptrace() handles
->>> PT_FPSCR correctly. It might (just because fpscr is right next to fpr[]
->>> in memory - and that's a hack), but I can't figure out if it accesses
->>> the right half.
->>>
->>
->>Does the issue still exists ? If yes, the patch has to be rebased.
->
->Hard to say. I'm still using 4.9 (stable) on the systems that I created
->the patch for. I tried to rebase, and the patch no longer applies. It
->looks like there have been some changes around that area, notably your
->commit e009fa433542, so it could actually be fixed now.
->
->It's been exactly two years since I sent the patch and I don't remember
->all the details. I will have to go back and look. Also, running a recent
->kernel on my PPC32 systems is not an option because there are a bunch of
->custom patches that would have to be ported. I will try in a VM and get
->back to you, hopefully early next week.
+From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
 
-I finally had time to test everything properly. I can now confirm that
-the original problem no longer exists, so the patch doesn't need to be
-rebased.
 
-I tested all three variants: 32-bit program on 32-bit kernel, 32-bit
-program on 64-bit kernel and 64-bit program on 64-bit kernel.
+Hi,
 
-Best regards,
-Radu
+This is the v5 of the patchset to fixup CEDE0 latency only from
+POWER10 onwards.
 
+
+The previous versions of the patches are
+v4 : https://lore.kernel.org/linux-pm/1623048014-16451-1-git-send-email-ego@linux.vnet.ibm.com/
+v3 : https://lore.kernel.org/linuxppc-dev/1619697982-28461-1-git-send-email-ego@linux.vnet.ibm.com/
+v2 : https://lore.kernel.org/linuxppc-dev/1619673517-10853-1-git-send-email-ego@linux.vnet.ibm.com/
+v1 : https://lore.kernel.org/linuxppc-dev/1619104049-5118-1-git-send-email-ego@linux.vnet.ibm.com/
+
+v4 --> v5 changes
+ * Patch 1 : Unchanged. Rebased it against the latest powerpc/merge
+  tree. With this patch, on processors older than POWER10, the CEDE
+  latency is set to the hardcoded value of 10us which is closer to the
+  measured value (details of the measurement in Patch 1).
+
+ * Added a Patch 2/2 titled "cpuidle/pseries: Do not cap the CEDE0
+   latency in fixup_cede0_latency()" which will ensure that on POWER10
+   onwards we simply take the latency value exposed by the firmware
+   without keeping an upper cap of 10us. This upper cap was previously
+   required to prevent regression on POWER8 which had advertized
+   latency values higher than 10us while the measured values were
+   lesser. With Patch 1, we don't need the upper cap any longer.
+
+
+Tested the series on POWER8, POWER9 and POWER10 with the
+cpuidle-smt-performance test case
+(https://github.com/gautshen/misc/tree/master/cpuidle-smt-performance) .
+  
+This test has three classes of threads
+1. Workload thread which computes fibonacci numbers (Pinned to the
+   primary thread CPU 8). We are interested in the throughput of this
+   workload thread.
+
+2. Three irritator threads which are pinned to the secondary CPUs of
+   the core on which the workload thread is running (CPUs 10, 12,
+   14). These irritators block on a pipe until woken up by a
+   waker. After being woken up, they again go back to sleep by
+   blocking on a pipe read. We are interested in the wakeup latency of
+   the irritator threads.
+
+3. A waker thread which, pinned to a different core (CPU 16) from
+   where the workload and the irritators are running, periodically
+   wakes up the three irritator threads by writing to their respective
+   pipes. The purpose of these periodic wakeups is to prime the
+   cpuidle governor on the irritator CPUs to pick the idle state the
+   wakeup period.
+
+We measure the wakeup latency of the irritator threads, which tells us
+the impact of entering a particular combinations of idle states. Thus
+shallower the state, lower should be the wakeup latency.
+
+We also measure the throughput of the fibonacci workload to measure
+the single-thread performance in the presence of the waking irritators
+on the sibling threads. Entering an idle state which performs SMT
+folding should show greater throughput.
+
+There is no observable difference in the behaviour on POWER8 and
+POWER10 with and without the patch series, since the CEDE latencies on
+both of them with and without the patch are 10us.
+
+However, on POWER9, without the patch, the CEDE latency is 1us based
+on the value returned by the firmware (which is not accurate), while
+with the patch it is set to the default value of 10us which is closer
+to the accurate measure.
+
+The throughput, wakeup latency, throughput and the snooze, CEDE idle
+percentage residency results on POWER9 with and without patch are as
+follows.
+
+We observe that for a wakeup period between 20us - 100us, the wakeup
+latency of the irritator threads with the patch improves by 40-45%.
+
+Though note that with the patch, the throughput of the fibbonacci
+workload drops by 5-10% when the wakeup period of the irritator
+threads is between 20us-100us. This is an acceptable tradeoff since
+there are certain benchmarks on POWER9 which are very sensitive to the
+wakeup latency and have a sleeping duration of less than 100us.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Avg Wakeup Latency of the irritator threads
+(lower the better)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Irritator  |                   |
+wakeup     |   Without         |   With
+period     |   Patch           |   Patch
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    1 us   |   3.703 us        |   3.632 us ( -1.91%)
+    2 us   |   3.843 us        |   3.925 us ( +2.13%)
+    5 us   |   8.575 us        |   8.656 us ( +0.94%)
+   10 us   |   8.264 us        |   8.242 us ( -0.27%)
+   20 us   |   8.672 us        |   8.256 us ( -4.80%)
+   50 us   |  15.552 us        |   8.257 us (-46.90%)
+   80 us   |  15.603 us        |   8.803 us (-43.58%)
+  100 us   |  15.617 us        |   8.328 us (-46.67%)
+  120 us   |  15.612 us        |  14.505 us ( -7.09%)
+  500 us   |  15.957 us        |  15.723 us ( -1.47%)
+ 1000 us   |  16.526 us        |  16.502 us ( -0.14%)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Fibonacci workload throughput in Million Operations
+per second (higher the better)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Irritator  |                   |
+wakeup     |   Without         |   With
+period     |   Patch           |   Patch
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    1 us   |  44.234 Mops/s    |   44.305 Mops/s ( +0.16%)
+    2 us   |  44.290 Mops/s    |   44.233 Mops/s ( -0.13%)
+    5 us   |  44.757 Mops/s    |   44.759 Mops/s ( -0.01%)
+   10 us   |  46.169 Mops/s    |   46.049 Mops/s ( -0.25%)
+   20 us   |  48.263 Mops/s    |   49.647 Mops/s ( +2.87%)
+   50 us   |  52.817 Mops/s    |   52.310 Mops/s ( -0.96%)
+   80 us   |  57.338 Mops/s    |   53.216 Mops/s ( -7.19%)
+  100 us   |  58.958 Mops/s    |   53.497 Mops/s ( -9.26%)
+  120 us   |  60.060 Mops/s    |   58.980 Mops/s ( -1.80%)
+  500 us   |  64.484 Mops/s    |   64.460 Mops/s ( -0.04%)
+ 1000 us   |  65.200 Mops/s    |   65.188 Mops/s ( -0.02%)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+(snooze, CEDE Residency Percentage)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Irritator  |                   |
+wakeup     |   Without         |   With
+period     |   Patch           |   Patch
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    1 us   |  ( 0.40%,  0.00%) |  (0.28%,   0.00%)
+    2 us   |  ( 0.42%,  0.00%) |  (0.33%,   0.00%)
+    5 us   |  ( 3.94%,  0.00%) |  (3.89%,   0.00%)
+   10 us   |  (21.85%,  0.00%) |  (21.62%,  0.00%)
+   20 us   |  (43.44%,  0.00%) |  (50.90%,  0.00%)
+   50 us   |  ( 0.03%, 76.07%) |  (76.85%,  0.00%)
+   80 us   |  ( 0.07%, 84.14%) |  (84.85%,  0.00%)
+  100 us   |  ( 0.03%, 87.18%) |  (87.61%,  0.02%)
+  120 us   |  ( 0.02%, 89.21%) |  (14.71%, 74.40%)
+  500 us   |  ( 0.00%, 97.27%) |  ( 3.70%, 93.53%
+ 1000 us   |  ( 0.00%, 98.57%) |  ( 0.17%, 98.40%)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+
+
+
+Gautham R. Shenoy (2):
+  cpuidle/pseries: Fixup CEDE0 latency only for POWER10 onwards
+  cpuidle/pseries: Do not cap the CEDE0 latency in fixup_cede0_latency()
+
+ drivers/cpuidle/cpuidle-pseries.c | 75 +++++++++++++++++++++++----------------
+ 1 file changed, 45 insertions(+), 30 deletions(-)
+
+-- 
+1.9.4
 
