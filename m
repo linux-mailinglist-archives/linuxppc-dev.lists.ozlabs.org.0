@@ -2,51 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 266E13CE3E0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jul 2021 18:30:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9CCF3CE094
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Jul 2021 18:07:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GT6lP0slxz3bf1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jul 2021 02:30:25 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=ghwIxZRA;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GT6Dm4Py2z3bgZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jul 2021 02:07:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
- header.a=rsa-sha256 header.s=korg header.b=ghwIxZRA; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GT6kv3ZzBz2yfr
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jul 2021 02:29:58 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8F0FD61264;
- Mon, 19 Jul 2021 16:29:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
- s=korg; t=1626712195;
- bh=v7pWGtxDohJ7VY2sfL19nblJLcEcVeGV8U2O2jdQST8=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=ghwIxZRACQ8WV6CGcTPTzIe5yarKqddUJdfdb+FT5wtfo29SIfUTDkNTouAmXHlWF
- 64DRyKZ+xHqKHkbVftbgZ/v2Snf0gs8hy0gnyt9Tgs3jYYYqHVDulLsiYIjRjpWJTZ
- ziUkDcqmGsf3do4HoYospEpCuSrNpy1li55bA3t4=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH 5.12 286/292] perf script python: Fix buffer size to report
- iregs in perf script
-Date: Mon, 19 Jul 2021 16:55:48 +0200
-Message-Id: <20210719144952.322441606@linuxfoundation.org>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20210719144942.514164272@linuxfoundation.org>
-References: <20210719144942.514164272@linuxfoundation.org>
-User-Agent: quilt/0.66
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GT6DP5D57z2y8P
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jul 2021 02:06:58 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 4GT6DF4xN0zB58n;
+ Mon, 19 Jul 2021 18:06:53 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id COi69W5SXrwD; Mon, 19 Jul 2021 18:06:53 +0200 (CEST)
+Received: from vm-hermes.si.c-s.fr (vm-hermes.si.c-s.fr [192.168.25.253])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4GT6DF3zhRzB58l;
+ Mon, 19 Jul 2021 18:06:53 +0200 (CEST)
+Received: by vm-hermes.si.c-s.fr (Postfix, from userid 33)
+ id BD3BA37C; Mon, 19 Jul 2021 18:12:05 +0200 (CEST)
+Received: from 37.172.104.68 ([37.172.104.68]) by messagerie.c-s.fr (Horde
+ Framework) with HTTP; Mon, 19 Jul 2021 18:12:05 +0200
+Date: Mon, 19 Jul 2021 18:12:05 +0200
+Message-ID: <20210719181205.Horde.xU8C00MIRgjqhZQ3-RrANw8@messagerie.c-s.fr>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Salah Triki <salah.triki@gmail.com>
+Subject: Re: [PATCH] replace if with min
+In-Reply-To: <20210712204546.GA1492390@pc>
+User-Agent: Internet Messaging Program (IMP) H5 (6.2.3)
+Content-Type: text/plain; charset=UTF-8; format=flowed; DelSp=Yes
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,107 +54,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>,
- Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
- Athira Jajeev <atrajeev@linux.vnet.ibm.com>,
- Nageswara R Sastry <rnsastry@linux.ibm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org,
- stable@vger.kernel.org, Arnaldo Carvalho de Melo <acme@redhat.com>,
- Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, Paul Clarke <pc@us.ibm.com>,
- Kajol Jain <kjain@linux.ibm.com>, Jiri Olsa <jolsa@redhat.com>
+Cc: herbert@gondor.apana.org.au, linux-kernel@vger.kernel.org, paulus@samba.org,
+ linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Kajol Jain <kjain@linux.ibm.com>
+Salah Triki <salah.triki@gmail.com> a =C3=A9crit=C2=A0:
 
-[ Upstream commit dea8cfcc33695f70f56023b416cf88ae44c8a45a ]
+> Replace if with min in order to make code more clean.
+>
+> Signed-off-by: Salah Triki <salah.triki@gmail.com>
+> ---
+>  drivers/crypto/nx/nx-842.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/drivers/crypto/nx/nx-842.c b/drivers/crypto/nx/nx-842.c
+> index 2ab90ec10e61..0d1d5a463899 100644
+> --- a/drivers/crypto/nx/nx-842.c
+> +++ b/drivers/crypto/nx/nx-842.c
+> @@ -134,8 +134,7 @@ EXPORT_SYMBOL_GPL(nx842_crypto_exit);
+>  static void check_constraints(struct nx842_constraints *c)
+>  {
+>  	/* limit maximum, to always have enough bounce buffer to decompress */
+> -	if (c->maximum > BOUNCE_BUFFER_SIZE)
+> -		c->maximum =3D BOUNCE_BUFFER_SIZE;
+> +	c->maximum =3D min(c->maximum, BOUNCE_BUFFER_SIZE);
 
-Commit 48a1f565261d2ab1 ("perf script python: Add more PMU fields to
-event handler dict") added functionality to report fields like weight,
-iregs, uregs etc via perf report.  That commit predefined buffer size to
-512 bytes to print those fields.
+For me the code is less clear with this change, and in addition it=20=20
+slightly=20changes the behaviour. Before, the write was done only when=20=
+=20
+the=20value was changing. Now you rewrite the value always, even when it=20=
+=20
+doesn't=20change.
 
-But in PowerPC, since we added extended regs support in:
-
-  068aeea3773a6f4c ("perf powerpc: Support exposing Performance Monitor Counter SPRs as part of extended regs")
-  d735599a069f6936 ("powerpc/perf: Add extended regs support for power10 platform")
-
-Now iregs can carry more bytes of data and this predefined buffer size
-can result to data loss in perf script output.
-
-This patch resolves this issue by making the buffer size dynamic, based
-on the number of registers needed to print. It also changes the
-regs_map() return type from int to void, as it is not being used by the
-set_regs_in_dict(), its only caller.
-
-Fixes: 068aeea3773a6f4c ("perf powerpc: Support exposing Performance Monitor Counter SPRs as part of extended regs")
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-Tested-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
-Cc: Athira Jajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
-Cc: Paul Clarke <pc@us.ibm.com>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Link: http://lore.kernel.org/lkml/20210628062341.155839-1-kjain@linux.ibm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- .../util/scripting-engines/trace-event-python.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
-
-diff --git a/tools/perf/util/scripting-engines/trace-event-python.c b/tools/perf/util/scripting-engines/trace-event-python.c
-index 23dc5014e711..a61be9c07565 100644
---- a/tools/perf/util/scripting-engines/trace-event-python.c
-+++ b/tools/perf/util/scripting-engines/trace-event-python.c
-@@ -687,7 +687,7 @@ static void set_sample_datasrc_in_dict(PyObject *dict,
- 			_PyUnicode_FromString(decode));
- }
- 
--static int regs_map(struct regs_dump *regs, uint64_t mask, char *bf, int size)
-+static void regs_map(struct regs_dump *regs, uint64_t mask, char *bf, int size)
- {
- 	unsigned int i = 0, r;
- 	int printed = 0;
-@@ -695,7 +695,7 @@ static int regs_map(struct regs_dump *regs, uint64_t mask, char *bf, int size)
- 	bf[0] = 0;
- 
- 	if (!regs || !regs->regs)
--		return 0;
-+		return;
- 
- 	for_each_set_bit(r, (unsigned long *) &mask, sizeof(mask) * 8) {
- 		u64 val = regs->regs[i++];
-@@ -704,8 +704,6 @@ static int regs_map(struct regs_dump *regs, uint64_t mask, char *bf, int size)
- 				     "%5s:0x%" PRIx64 " ",
- 				     perf_reg_name(r), val);
- 	}
--
--	return printed;
- }
- 
- static void set_regs_in_dict(PyObject *dict,
-@@ -713,7 +711,16 @@ static void set_regs_in_dict(PyObject *dict,
- 			     struct evsel *evsel)
- {
- 	struct perf_event_attr *attr = &evsel->core.attr;
--	char bf[512];
-+
-+	/*
-+	 * Here value 28 is a constant size which can be used to print
-+	 * one register value and its corresponds to:
-+	 * 16 chars is to specify 64 bit register in hexadecimal.
-+	 * 2 chars is for appending "0x" to the hexadecimal value and
-+	 * 10 chars is for register name.
-+	 */
-+	int size = __sw_hweight64(attr->sample_regs_intr) * 28;
-+	char bf[size];
- 
- 	regs_map(&sample->intr_regs, attr->sample_regs_intr, bf, sizeof(bf));
- 
--- 
-2.30.2
-
+>  }
+>
+>  static int nx842_crypto_add_header(struct nx842_crypto_header *hdr, u8 *=
+buf)
+> --
+> 2.25.1
 
 
