@@ -1,94 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBDFC3CFCD9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jul 2021 17:02:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C00F3CFCE7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jul 2021 17:04:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GThlx4g5Lz3bhN
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jul 2021 01:02:53 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=efu1XCVb;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GThnR3K6Vz3bkG
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jul 2021 01:04:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=schnelle@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=efu1XCVb; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GThlN1m3Vz30CS
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jul 2021 01:02:23 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 16KEpGqs050858; Tue, 20 Jul 2021 11:02:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=4yJPyWET6+73QDcQFyJd/Bc3kxhxcfiUQwUkrG1J3a0=;
- b=efu1XCVbXaUaZpr0ZRQgTmYxOS54uIaAkS7tfrX87l5TqH/oXP8r8kvpzV/rxyXwrDpX
- LAr2T63O7IBfbaakEoh61CnphxQ3kqRI5d0BAKZlbFOa02zfXTc2NXosZpZF8cQwwhHd
- eKj0KLVtVZs2v1VNTsKNY4Vx1ojm+wLurL4uZfwVqAyNG7gcNnrKIo1xCm2+wwyADFKO
- nrTF20OlCH6nrld1iTFTb5ecPIIhrStEX9niI0sXFTQv6XWgUiFVPX8iaI5+TWRU58JJ
- ty+H7gHF1Bjt/sLTtLm7+ZJQ5LSK3ufwz+QYtCtVE0tqQyhEPWkOyS1b3chLne9jU7Vl mw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 39wwg677ma-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Jul 2021 11:01:59 -0400
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 16KEpPkp051587;
- Tue, 20 Jul 2021 11:01:59 -0400
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.107])
- by mx0b-001b2d01.pphosted.com with ESMTP id 39wwg677ee-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Jul 2021 11:01:56 -0400
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
- by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16KEsOB3004898;
- Tue, 20 Jul 2021 15:01:48 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma03fra.de.ibm.com with ESMTP id 39upu88t5a-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Jul 2021 15:01:48 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 16KF1kFR34079210
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 20 Jul 2021 15:01:46 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E67CC52059;
- Tue, 20 Jul 2021 15:01:45 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 88F9D52050;
- Tue, 20 Jul 2021 15:01:45 +0000 (GMT)
-From: Niklas Schnelle <schnelle@linux.ibm.com>
-To: Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH v3] PCI: Move pci_dev_is/assign_added() to pci.h
-Date: Tue, 20 Jul 2021 17:01:45 +0200
-Message-Id: <20210720150145.640727-1-schnelle@linux.ibm.com>
-X-Mailer: git-send-email 2.25.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GThn15xvvz2yNK
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jul 2021 01:03:47 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 4GThms4brpzB9SY;
+ Tue, 20 Jul 2021 17:03:41 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id xY-Ufv6zed-4; Tue, 20 Jul 2021 17:03:41 +0200 (CEST)
+Received: from vm-hermes.si.c-s.fr (vm-hermes.si.c-s.fr [192.168.25.253])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4GThms3bRYzB9SV;
+ Tue, 20 Jul 2021 17:03:41 +0200 (CEST)
+Received: by vm-hermes.si.c-s.fr (Postfix, from userid 33)
+ id 818D9C01; Tue, 20 Jul 2021 17:08:54 +0200 (CEST)
+Received: from 37.170.147.235 ([37.170.147.235]) by messagerie.c-s.fr (Horde
+ Framework) with HTTP; Tue, 20 Jul 2021 17:08:54 +0200
+Date: Tue, 20 Jul 2021 17:08:54 +0200
+Message-ID: <20210720170854.Horde.zUpZp_h7ZiNgRJJV7AKL7g1@messagerie.c-s.fr>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Will Deacon <will@kernel.org>
+Subject: Re: [PATCH 1/2] Revert "powerpc/8xx: add support for huge pages on
+ VMAP and VMALLOC"
+References: <20210720123512.8740-1-will@kernel.org>
+ <20210720123512.8740-2-will@kernel.org>
+In-Reply-To: <20210720123512.8740-2-will@kernel.org>
+User-Agent: Internet Messaging Program (IMP) H5 (6.2.3)
+Content-Type: text/plain; charset=UTF-8; format=flowed; DelSp=Yes
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: _DcHbTAJjqF8GuaMyqVq3aSFzMnPY462
-X-Proofpoint-ORIG-GUID: _ecq_PxMqpK76NqtWINHCvv1PWBUdX3r
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-07-20_09:2021-07-19,
- 2021-07-20 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 phishscore=0
- impostorscore=0 suspectscore=0 mlxlogscore=999 malwarescore=0 adultscore=0
- clxscore=1015 lowpriorityscore=0 priorityscore=1501 bulkscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2107200091
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,135 +57,169 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>, Jonathan Marek <jonathan@marek.ca>,
+ Marc Zyngier <maz@kernel.org>, linux-kernel@vger.kernel.org,
+ Ard Biesheuvel <ardb@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ linux-arm-kernel@lists.infradead.org,
+ Catalin Marinas <catalin.marinas@arm.com>, Paul Mackerras <paulus@samba.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Thomas Gleixner <tglx@linutronix.de>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The helper function pci_dev_is_added() from drivers/pci/pci.h is used in
-PCI arch code of both s390 and powerpc leading to awkward relative
-includes. Move it to the global include/linux/pci.h and get rid of these
-includes just for that one function.
+Will Deacon <will@kernel.org> a =C3=A9crit=C2=A0:
 
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
----
-Since v1 (and bad v2):
-- Fixed accidental removal of PCI_DPC_RECOVERED, PCI_DPC_RECOVERING
-  defines and also move these to include/linux/pci.h
+> This reverts commit a6a8f7c4aa7eb50304b5c4e68eccd24313f3a785.
+>
+> Commit c742199a014d ("mm/pgtable: add stubs for
+> {pmd/pub}_{set/clear}_huge") breaks the boot for arm64 when block
+> mappings are used to create the linear map, as this relies on a working
+> implementation of pXd_set_huge() even if the corresponding page-table
+> levels have been folded.
+>
+> Although the problematic patch reverts cleanly, doing so breaks the
+> build for 32-bit PowerPC 8xx machines, which rely on the default
+> function definitions when the corresponding page-table levels are
+> folded:
+>
+>  | powerpc64-linux-ld: mm/vmalloc.o: in function `vunmap_pud_range':
+>  | linux/mm/vmalloc.c:362: undefined reference to `pud_clear_huge'
+>  | powerpc64-linux-ld: mm/vmalloc.o: in function `vunmap_pmd_range':
+>  | linux/mm/vmalloc.c:337: undefined reference to `pmd_clear_huge'
+>  | powerpc64-linux-ld: mm/vmalloc.o: in function `vunmap_pud_range':
+>  | linux/mm/vmalloc.c:362: undefined reference to `pud_clear_huge'
+>  | powerpc64-linux-ld: mm/vmalloc.o: in function `vunmap_pmd_range':
+>  | linux/mm/vmalloc.c:337: undefined reference to `pmd_clear_huge'
+>  | make: *** [Makefile:1177: vmlinux] Error 1
+>
+> Although Christophe has kindly offered to look into the arm64 breakage,
+> he's on holiday for another 10 days and there isn't an obvious fix on
+> the arm64 side which allows us to continue using huge-vmap for affected
+> configurations.
+>
+> In the interest of quickly getting things back to a working state as
+> they were in 5.13, revert the huge-vmap changes for PowerPC 8xx prior to
+> reverting the change which breaks arm64. We can then work on this
+> together for 5.15 once Christophe is back.
 
- arch/powerpc/platforms/powernv/pci-sriov.c |  3 ---
- arch/powerpc/platforms/pseries/setup.c     |  1 -
- arch/s390/pci/pci_sysfs.c                  |  2 --
- drivers/pci/hotplug/acpiphp_glue.c         |  1 -
- drivers/pci/pci.h                          | 15 ---------------
- include/linux/pci.h                        | 15 +++++++++++++++
- 6 files changed, 15 insertions(+), 22 deletions(-)
+Instead of reverting this awaited functionnality,  could you please=20=20
+just=20add the two following functions in arch/powerpc/mm/nohash/8xx.c :
 
-diff --git a/arch/powerpc/platforms/powernv/pci-sriov.c b/arch/powerpc/platforms/powernv/pci-sriov.c
-index 28aac933a439..2e0ca5451e85 100644
---- a/arch/powerpc/platforms/powernv/pci-sriov.c
-+++ b/arch/powerpc/platforms/powernv/pci-sriov.c
-@@ -9,9 +9,6 @@
- 
- #include "pci.h"
- 
--/* for pci_dev_is_added() */
--#include "../../../../drivers/pci/pci.h"
--
- /*
-  * The majority of the complexity in supporting SR-IOV on PowerNV comes from
-  * the need to put the MMIO space for each VF into a separate PE. Internally
-diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
-index 631a0d57b6cd..17585ec9f955 100644
---- a/arch/powerpc/platforms/pseries/setup.c
-+++ b/arch/powerpc/platforms/pseries/setup.c
-@@ -74,7 +74,6 @@
- #include <asm/hvconsole.h>
- 
- #include "pseries.h"
--#include "../../../../drivers/pci/pci.h"
- 
- DEFINE_STATIC_KEY_FALSE(shared_processor);
- EXPORT_SYMBOL_GPL(shared_processor);
-diff --git a/arch/s390/pci/pci_sysfs.c b/arch/s390/pci/pci_sysfs.c
-index 6e2450c2b9c1..8dbe54ef8f8e 100644
---- a/arch/s390/pci/pci_sysfs.c
-+++ b/arch/s390/pci/pci_sysfs.c
-@@ -13,8 +13,6 @@
- #include <linux/stat.h>
- #include <linux/pci.h>
- 
--#include "../../../drivers/pci/pci.h"
--
- #include <asm/sclp.h>
- 
- #define zpci_attr(name, fmt, member)					\
-diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
-index f031302ad401..4cb963f88183 100644
---- a/drivers/pci/hotplug/acpiphp_glue.c
-+++ b/drivers/pci/hotplug/acpiphp_glue.c
-@@ -38,7 +38,6 @@
- #include <linux/slab.h>
- #include <linux/acpi.h>
- 
--#include "../pci.h"
- #include "acpiphp.h"
- 
- static LIST_HEAD(bridge_list);
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index 93dcdd431072..a159cd0f6f05 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -383,21 +383,6 @@ static inline bool pci_dev_is_disconnected(const struct pci_dev *dev)
- 	return dev->error_state == pci_channel_io_perm_failure;
- }
- 
--/* pci_dev priv_flags */
--#define PCI_DEV_ADDED 0
--#define PCI_DPC_RECOVERED 1
--#define PCI_DPC_RECOVERING 2
--
--static inline void pci_dev_assign_added(struct pci_dev *dev, bool added)
--{
--	assign_bit(PCI_DEV_ADDED, &dev->priv_flags, added);
--}
--
--static inline bool pci_dev_is_added(const struct pci_dev *dev)
--{
--	return test_bit(PCI_DEV_ADDED, &dev->priv_flags);
--}
--
- #ifdef CONFIG_PCIEAER
- #include <linux/aer.h>
- 
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 540b377ca8f6..ea0e23dbc8ec 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -507,6 +507,21 @@ struct pci_dev {
- 	unsigned long	priv_flags;	/* Private flags for the PCI driver */
- };
- 
-+/* pci_dev priv_flags */
-+#define PCI_DEV_ADDED 0
-+#define PCI_DPC_RECOVERED 1
-+#define PCI_DPC_RECOVERING 2
-+
-+static inline void pci_dev_assign_added(struct pci_dev *dev, bool added)
-+{
-+	assign_bit(PCI_DEV_ADDED, &dev->priv_flags, added);
-+}
-+
-+static inline bool pci_dev_is_added(const struct pci_dev *dev)
-+{
-+	return test_bit(PCI_DEV_ADDED, &dev->priv_flags);
-+}
-+
- static inline struct pci_dev *pci_physfn(struct pci_dev *dev)
- {
- #ifdef CONFIG_PCI_IOV
--- 
-2.25.1
+int pud_clear_huge(pud_t *pud)
+{
+	return 0;
+}
+
+int pmd_clear_huge(pmd_t *pmd)
+{
+	return 0;
+}
+
+Thank you
+Christophe
+
+>
+> Cc: Ard Biesheuvel <ardb@kernel.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Nicholas Piggin <npiggin@gmail.com
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+> Cc: Marc Zyngier <maz@kernel.org>
+> Link:=20=20
+>=20https://lore.kernel.org/r/20210719170615.Horde.Qio1wp3k5ebLo-d9xXHdOg1@=
+messagerie.c-s.fr
+> Signed-off-by: Will Deacon <will@kernel.org>
+> ---
+>  arch/powerpc/Kconfig                         |  2 +-
+>  arch/powerpc/include/asm/nohash/32/mmu-8xx.h | 43 --------------------
+>  2 files changed, 1 insertion(+), 44 deletions(-)
+>
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index d01e3401581d..5fc19ac62cb9 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -189,7 +189,7 @@ config PPC
+>  	select GENERIC_VDSO_TIME_NS
+>  	select HAVE_ARCH_AUDITSYSCALL
+>  	select HAVE_ARCH_HUGE_VMALLOC		if HAVE_ARCH_HUGE_VMAP
+> -	select HAVE_ARCH_HUGE_VMAP		if PPC_RADIX_MMU || PPC_8xx
+> +	select HAVE_ARCH_HUGE_VMAP		if PPC_BOOK3S_64 && PPC_RADIX_MMU
+>  	select HAVE_ARCH_JUMP_LABEL
+>  	select HAVE_ARCH_JUMP_LABEL_RELATIVE
+>  	select HAVE_ARCH_KASAN			if PPC32 && PPC_PAGE_SHIFT <=3D 14
+> diff --git a/arch/powerpc/include/asm/nohash/32/mmu-8xx.h=20=20
+>=20b/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
+> index 997cec973406..6e4faa0a9b35 100644
+> --- a/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
+> +++ b/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
+> @@ -178,7 +178,6 @@
+>  #ifndef __ASSEMBLY__
+>
+>  #include <linux/mmdebug.h>
+> -#include <linux/sizes.h>
+>
+>  void mmu_pin_tlb(unsigned long top, bool readonly);
+>
+> @@ -226,48 +225,6 @@ static inline unsigned int=20=20
+>=20mmu_psize_to_shift(unsigned int mmu_psize)
+>  	BUG();
+>  }
+>
+> -static inline bool arch_vmap_try_size(unsigned long addr, unsigned=20=20
+>=20long end, u64 pfn,
+> -				      unsigned int max_page_shift, unsigned long size)
+> -{
+> -	if (end - addr < size)
+> -		return false;
+> -
+> -	if ((1UL << max_page_shift) < size)
+> -		return false;
+> -
+> -	if (!IS_ALIGNED(addr, size))
+> -		return false;
+> -
+> -	if (!IS_ALIGNED(PFN_PHYS(pfn), size))
+> -		return false;
+> -
+> -	return true;
+> -}
+> -
+> -static inline unsigned long arch_vmap_pte_range_map_size(unsigned=20=20
+>=20long addr, unsigned long end,
+> -							 u64 pfn, unsigned int max_page_shift)
+> -{
+> -	if (arch_vmap_try_size(addr, end, pfn, max_page_shift, SZ_512K))
+> -		return SZ_512K;
+> -	if (PAGE_SIZE =3D=3D SZ_16K)
+> -		return SZ_16K;
+> -	if (arch_vmap_try_size(addr, end, pfn, max_page_shift, SZ_16K))
+> -		return SZ_16K;
+> -	return PAGE_SIZE;
+> -}
+> -#define arch_vmap_pte_range_map_size arch_vmap_pte_range_map_size
+> -
+> -static inline int arch_vmap_pte_supported_shift(unsigned long size)
+> -{
+> -	if (size >=3D SZ_512K)
+> -		return 19;
+> -	else if (size >=3D SZ_16K)
+> -		return 14;
+> -	else
+> -		return PAGE_SHIFT;
+> -}
+> -#define arch_vmap_pte_supported_shift arch_vmap_pte_supported_shift
+> -
+>  /* patch sites */
+>  extern s32 patch__itlbmiss_exit_1, patch__dtlbmiss_exit_1;
+>  extern s32 patch__itlbmiss_perf, patch__dtlbmiss_perf;
+> --
+> 2.32.0.402.g57bb445576-goog
+
 
