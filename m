@@ -1,90 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37E113CF707
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jul 2021 11:41:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F9383CF74D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jul 2021 11:58:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GTYdK00Dtz302S
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jul 2021 19:41:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GTZ1C2sx3z3bbZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jul 2021 19:58:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=OQPq3ivH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=k36fR+Wd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::42f;
- helo=mail-pf1-x42f.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=schnelle@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=OQPq3ivH; dkim-atps=neutral
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com
- [IPv6:2607:f8b0:4864:20::42f])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=k36fR+Wd; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GTYcr3l8Tz2yfY
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jul 2021 19:41:13 +1000 (AEST)
-Received: by mail-pf1-x42f.google.com with SMTP id u126so11367262pfb.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jul 2021 02:41:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=message-id:date:mime-version:user-agent:subject:content-language:to
- :cc:references:from:in-reply-to:content-transfer-encoding;
- bh=lBTdU8mREWjp6GuuDRHaFg8/8Aywm4XcbbpvuhmOIxI=;
- b=OQPq3ivHPUv0PV3E0QM2yqaQD4NedeMCakKx7MBpzKAlKJmT8YbStiF3T9y0FixuKL
- xU4iUVlLAguySXkO8kgsWzDP7f8Azr3RxK0+KZB0tRAA8cBSDuQzuJapBqEmYyZKoi/q
- JvC2hGQJlh8EUa0PorL2dudpoZQgfYTXyyaVRKkB+J3gd+ajkAskmj1i6fcpwreX+TXb
- RleIwS/fMI6yvAY1X2X/ZLOMwbL7Mg9pmHF9CVJa837enDVh29W2CH9eq+lJZrTrbts0
- tZtWhO588w09ox/PL2pVT7Qw4w1WpxM5e/5iT1vnoXOZwMKUCmf2YfpZwDIXy1T1A0fU
- Y5vw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
- :content-language:to:cc:references:from:in-reply-to
- :content-transfer-encoding;
- bh=lBTdU8mREWjp6GuuDRHaFg8/8Aywm4XcbbpvuhmOIxI=;
- b=AaiO2ib91dhc+UviEeqquId6d3AYWfd1RHmH1WdU7aMqTlp/QsodfHSjd1OKZnlbQX
- CP0G8GtqUoaCNEIZxQQMIyMKd8jU2Xnh9miyP7FfeigMOyxvk+FMgkcMM6pBpAeMUPF2
- BlRhh92IsPY6vLTvrHLyl1N2wRl/drRba0gFYUWftnyZ3M3OdtiO7r/OyWMHGMo3S37j
- Pw27m0ygHyZ6ms7A9OpACIrQrFkRHLeznb5pstjjQRE8iw/gvVo55H9AztQbX5i/8bmS
- ltsz2A0WgOV4NnRzkoBYj62EVy5FfexzQgoHWQ2pcUMC9Otz+HTEuCNNjmMxrPtk0IId
- npSg==
-X-Gm-Message-State: AOAM533NvYGIbfaPamIMPoWAqwmhMxoibxLdLif3rMsnyqQqQ7b+P16G
- AXeCftAdgUba72imVl2AdlTJHg==
-X-Google-Smtp-Source: ABdhPJzwFMn5nWvbQaylTXslcD5MFqxqoe3hjE59RDXvkdB56AeXlY8I65PRaJL6t1G/soCSfzRAhg==
-X-Received: by 2002:a63:5244:: with SMTP id s4mr22843254pgl.267.1626774068971; 
- Tue, 20 Jul 2021 02:41:08 -0700 (PDT)
-Received: from [192.168.10.23] (219-90-184-65.ip.adam.com.au. [219.90.184.65])
- by smtp.gmail.com with UTF8SMTPSA id
- n23sm24858904pgv.76.2021.07.20.02.41.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Jul 2021 02:41:08 -0700 (PDT)
-Message-ID: <cd309d68-65ac-0ce9-c941-520ac6402f8e@ozlabs.ru>
-Date: Tue, 20 Jul 2021 19:41:02 +1000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GTZ0j4jSXz30Bw
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jul 2021 19:58:29 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 16K9WfGZ135457; Tue, 20 Jul 2021 05:58:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=i/Hk+xVck2IegLcH4mpvonpVjL/z9xDF5mHSUSq1xoM=;
+ b=k36fR+WdkkHG12Elq9KtUifAfLkFdXpoPCPIzrfy2k5BSbtwWgyRIwtX+CXe0SeYXqv7
+ XsOuCsA0WrlOgoOuYA7UV+e2MuynCi5EnLN9XTYnHMiwbxW20n3198sKCy1Vb/VaQGtv
+ dJnfwnxJuB538GrbAoJWuPznGVnPXtquCRoekoR6N2uIyYxeCFF+tJzVTuKutP0JSALq
+ wmBXhEyFuHwmAJ93GBSPyJ4HeDqgz/xQdavophtpWii7iX/ovkahUobnmOVYvFePFBr7
+ JsTYiplcWn9Me8y5ssU0LCxUveO9vhuhwQdXusJMWLb6T58MRZIza0+oRvOkHh/YzeF0 /Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 39wugpse40-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 20 Jul 2021 05:58:21 -0400
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 16K9XDnx138366;
+ Tue, 20 Jul 2021 05:58:21 -0400
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 39wugpse3h-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 20 Jul 2021 05:58:21 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16K9wJ9T022202;
+ Tue, 20 Jul 2021 09:58:19 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma03fra.de.ibm.com with ESMTP id 39upu88pm8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 20 Jul 2021 09:58:19 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 16K9wHwD26476968
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 20 Jul 2021 09:58:17 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E56945204E;
+ Tue, 20 Jul 2021 09:58:16 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 837EC52052;
+ Tue, 20 Jul 2021 09:58:16 +0000 (GMT)
+From: Niklas Schnelle <schnelle@linux.ibm.com>
+To: Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH v2] PCI: Move pci_dev_is/assign_added() to pci.h
+Date: Tue, 20 Jul 2021 11:58:16 +0200
+Message-Id: <20210720095816.3660813-1-schnelle@linux.ibm.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:90.0) Gecko/20100101
- Thunderbird/90.0
-Subject: Re: [PATCH v5 02/11] powerpc/kernel/iommu: Add new
- iommu_table_in_use() helper
-Content-Language: en-US
-To: =?UTF-8?Q?Leonardo_Br=c3=a1s?= <leobras.c@gmail.com>,
- Frederic Barrat <fbarrat@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, David Gibson
- <david@gibson.dropbear.id.au>, kernel test robot <lkp@intel.com>,
- Nicolin Chen <nicoleotsuka@gmail.com>
-References: <20210716082755.428187-1-leobras.c@gmail.com>
- <20210716082755.428187-3-leobras.c@gmail.com>
- <29c199f3-63a8-3edb-b29e-de157431d89f@linux.ibm.com>
- <283e44591010dcb0690769afaef147add3b36978.camel@gmail.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-In-Reply-To: <283e44591010dcb0690769afaef147add3b36978.camel@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: QjVdo8k0eTAvE3Ja4tBwGpvB14Bc7uR6
+X-Proofpoint-ORIG-GUID: lSsjcml-fCq6hLF5EZvrRf8X2Oj7PF6R
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-07-20_04:2021-07-19,
+ 2021-07-20 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0
+ priorityscore=1501 mlxscore=0 lowpriorityscore=0 malwarescore=0
+ bulkscore=0 phishscore=0 impostorscore=0 mlxlogscore=999 spamscore=0
+ clxscore=1011 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2107200059
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,80 +100,133 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+The helper function pci_dev_is_added() from drivers/pci/pci.h is used in
+PCI arch code of both s390 and powerpc leading to awkward relative
+includes. Move it to the global include/linux/pci.h and get rid of these
+includes just for that one function.
 
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+---
+Since v1:
+- Fixed accidental removal of PCI_DPC_RECOVERED, PCI_DPC_RECOVERING
+  defines and also move these to include/linux/pci.h
 
-On 20/07/2021 15:38, Leonardo Brás wrote:
-> Hello Fred, thanks for this feedback!
-> 
-> Sorry if I miss anything, this snippet was written for v1 over an year
-> ago, and I have not taken a look at it ever since.
-> 
-> On Mon, 2021-07-19 at 15:53 +0200, Frederic Barrat wrote:
->>
->>
->> On 16/07/2021 10:27, Leonardo Bras wrote:
->>> @@ -1099,18 +1105,13 @@ int iommu_take_ownership(struct iommu_table
->>> *tbl)
->>>          for (i = 0; i < tbl->nr_pools; i++)
->>>                  spin_lock_nest_lock(&tbl->pools[i].lock, &tbl-
->>>> large_pool.lock);
->>>    
->>> -       iommu_table_release_pages(tbl);
->>> -
->>> -       if (!bitmap_empty(tbl->it_map, tbl->it_size)) {
->>> +       if (iommu_table_in_use(tbl)) {
->>>                  pr_err("iommu_tce: it_map is not empty");
->>>                  ret = -EBUSY;
->>> -               /* Undo iommu_table_release_pages, i.e. restore
->>> bit#0, etc */
->>> -               iommu_table_reserve_pages(tbl, tbl-
->>>> it_reserved_start,
->>> -                               tbl->it_reserved_end);
->>> -       } else {
->>> -               memset(tbl->it_map, 0xff, sz);
->>>          }
->>>    
->>> +       memset(tbl->it_map, 0xff, sz);
->>> +
->>
->>
->> So if the table is not empty, we fail (EBUSY) but we now also
->> completely
->> overwrite the bitmap. It was in an unexpected state, but we're making
->> it
->> worse. Or am I missing something?
-> 
-> IIRC there was a reason to do that at the time, but TBH I don't really
-> remember it, and by looking at the code right now you seem to be
-> correct about this causing trouble.
-> 
-> I will send a v6 fixing it soon.
-> Please review the remaining patches for some issue I may be missing.
-> 
-> Alexey, any comments on that?
+ arch/powerpc/platforms/powernv/pci-sriov.c |  3 ---
+ arch/powerpc/platforms/pseries/setup.c     |  1 -
+ arch/s390/pci/pci_sysfs.c                  |  2 --
+ drivers/pci/hotplug/acpiphp_glue.c         |  1 -
+ drivers/pci/pci.h                          | 15 ---------------
+ include/linux/pci.h                        | 13 +++++++++++++
+ 6 files changed, 13 insertions(+), 22 deletions(-)
 
-
-Agree with Fred, this is a bug, EBUSY is not that unexpected :-/ Thanks,
-
-
-> 
->>
->>     Fred
->>
-> 
-> Again, thank you for reviewing Fred!
-> Best regards,
-> Leonardo Bras
-> 
-> 
-> 
-> 
-> 
-
+diff --git a/arch/powerpc/platforms/powernv/pci-sriov.c b/arch/powerpc/platforms/powernv/pci-sriov.c
+index 28aac933a439..2e0ca5451e85 100644
+--- a/arch/powerpc/platforms/powernv/pci-sriov.c
++++ b/arch/powerpc/platforms/powernv/pci-sriov.c
+@@ -9,9 +9,6 @@
+ 
+ #include "pci.h"
+ 
+-/* for pci_dev_is_added() */
+-#include "../../../../drivers/pci/pci.h"
+-
+ /*
+  * The majority of the complexity in supporting SR-IOV on PowerNV comes from
+  * the need to put the MMIO space for each VF into a separate PE. Internally
+diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
+index 631a0d57b6cd..17585ec9f955 100644
+--- a/arch/powerpc/platforms/pseries/setup.c
++++ b/arch/powerpc/platforms/pseries/setup.c
+@@ -74,7 +74,6 @@
+ #include <asm/hvconsole.h>
+ 
+ #include "pseries.h"
+-#include "../../../../drivers/pci/pci.h"
+ 
+ DEFINE_STATIC_KEY_FALSE(shared_processor);
+ EXPORT_SYMBOL_GPL(shared_processor);
+diff --git a/arch/s390/pci/pci_sysfs.c b/arch/s390/pci/pci_sysfs.c
+index 6e2450c2b9c1..8dbe54ef8f8e 100644
+--- a/arch/s390/pci/pci_sysfs.c
++++ b/arch/s390/pci/pci_sysfs.c
+@@ -13,8 +13,6 @@
+ #include <linux/stat.h>
+ #include <linux/pci.h>
+ 
+-#include "../../../drivers/pci/pci.h"
+-
+ #include <asm/sclp.h>
+ 
+ #define zpci_attr(name, fmt, member)					\
+diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
+index f031302ad401..4cb963f88183 100644
+--- a/drivers/pci/hotplug/acpiphp_glue.c
++++ b/drivers/pci/hotplug/acpiphp_glue.c
+@@ -38,7 +38,6 @@
+ #include <linux/slab.h>
+ #include <linux/acpi.h>
+ 
+-#include "../pci.h"
+ #include "acpiphp.h"
+ 
+ static LIST_HEAD(bridge_list);
+diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+index 93dcdd431072..a159cd0f6f05 100644
+--- a/drivers/pci/pci.h
++++ b/drivers/pci/pci.h
+@@ -383,21 +383,6 @@ static inline bool pci_dev_is_disconnected(const struct pci_dev *dev)
+ 	return dev->error_state == pci_channel_io_perm_failure;
+ }
+ 
+-/* pci_dev priv_flags */
+-#define PCI_DEV_ADDED 0
+-#define PCI_DPC_RECOVERED 1
+-#define PCI_DPC_RECOVERING 2
+-
+-static inline void pci_dev_assign_added(struct pci_dev *dev, bool added)
+-{
+-	assign_bit(PCI_DEV_ADDED, &dev->priv_flags, added);
+-}
+-
+-static inline bool pci_dev_is_added(const struct pci_dev *dev)
+-{
+-	return test_bit(PCI_DEV_ADDED, &dev->priv_flags);
+-}
+-
+ #ifdef CONFIG_PCIEAER
+ #include <linux/aer.h>
+ 
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 540b377ca8f6..b3b7bafa17e5 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -507,6 +507,19 @@ struct pci_dev {
+ 	unsigned long	priv_flags;	/* Private flags for the PCI driver */
+ };
+ 
++/* pci_dev priv_flags */
++#define PCI_DEV_ADDED 0
++
++static inline void pci_dev_assign_added(struct pci_dev *dev, bool added)
++{
++	assign_bit(PCI_DEV_ADDED, &dev->priv_flags, added);
++}
++
++static inline bool pci_dev_is_added(const struct pci_dev *dev)
++{
++	return test_bit(PCI_DEV_ADDED, &dev->priv_flags);
++}
++
+ static inline struct pci_dev *pci_physfn(struct pci_dev *dev)
+ {
+ #ifdef CONFIG_PCI_IOV
 -- 
-Alexey
+2.25.1
+
