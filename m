@@ -2,97 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC6A33CFB78
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jul 2021 15:59:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96A0D3CFBC8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jul 2021 16:15:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GTgMB62Ysz30Cc
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jul 2021 23:59:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GTgjV3zvNz30KF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jul 2021 00:15:42 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RbM2fNe5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=kp1D6UnM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=schnelle@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1036;
+ helo=mail-pj1-x1036.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=RbM2fNe5; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=kp1D6UnM; dkim-atps=neutral
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com
+ [IPv6:2607:f8b0:4864:20::1036])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GTgLg2tqrz303n
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jul 2021 23:59:23 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 16KDpOKR179444; Tue, 20 Jul 2021 09:59:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=3lvLu6cinEqw0FGFqRgYpcY/s9Dp4BHVAc9DtIAt19A=;
- b=RbM2fNe5tDmCsKZFLuxlrAzC+lSl2vj+AAbAxujBaC8mj0xT4PCHcA+A9YqTdRe9lg7Y
- DD5t2WT6orj7pZTvXaxrzer9hDm69gC1mCtDdQ2iD8O+7IDgrKzgsNJnzE+lOSBdTNOz
- QSbmvPBinT7VXXedz5sA4b7IUwamod+lIdeWPR31Qr9XxFuKw86mck5aT6uRPyui9+H8
- 0Jsn9NX2nvj3aeddcuNoEruHooCwTkSsv3NCAwvCTQmKWMOvg2if7XnaR/RZfHg85z/g
- s53lQT6BhOmGY8IGWFg+lV79i0IPVSdWS4X+fDPKXSIqr0y54qxJbOHgCwHoP3OaHb/O Gw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39wyr60b0s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Jul 2021 09:59:15 -0400
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 16KDpXWw180372;
- Tue, 20 Jul 2021 09:59:15 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39wyr60axt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Jul 2021 09:59:15 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16KDwrM7017121;
- Tue, 20 Jul 2021 13:59:12 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma04ams.nl.ibm.com with ESMTP id 39upu89bu8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Jul 2021 13:59:12 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 16KDx9ZM25559458
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 20 Jul 2021 13:59:10 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B85E452073;
- Tue, 20 Jul 2021 13:59:09 +0000 (GMT)
-Received: from sig-9-145-150-42.de.ibm.com (unknown [9.145.150.42])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 5BE7F52052;
- Tue, 20 Jul 2021 13:59:09 +0000 (GMT)
-Message-ID: <a8fca09bb18174e21d641e9cda0727307ecf9b9d.camel@linux.ibm.com>
-Subject: Re: [PATCH v2] PCI: Move pci_dev_is/assign_added() to pci.h
-From: Niklas Schnelle <schnelle@linux.ibm.com>
-To: Bjorn Helgaas <bhelgaas@google.com>
-Date: Tue, 20 Jul 2021 15:59:09 +0200
-In-Reply-To: <20210720095816.3660813-1-schnelle@linux.ibm.com>
-References: <20210720095816.3660813-1-schnelle@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-16.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: HCLyOhtaq8QM3LWcyOg1rI6HxplqFhr9
-X-Proofpoint-GUID: OwpqnuiswPMkIsQPmC0YKJQDNIcnHprn
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-07-20_07:2021-07-19,
- 2021-07-20 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 phishscore=0
- lowpriorityscore=0 priorityscore=1501 malwarescore=0 suspectscore=0
- clxscore=1015 mlxscore=0 bulkscore=0 mlxlogscore=999 adultscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2107200087
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GTgj21hKMz30D9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jul 2021 00:15:16 +1000 (AEST)
+Received: by mail-pj1-x1036.google.com with SMTP id
+ g4-20020a17090ace84b029017554809f35so1980156pju.5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jul 2021 07:15:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=9W5kr9cxG7EzUCazAbzAw+mUR76nZ5zxmtbgj+8doKI=;
+ b=kp1D6UnM5/7/BKvwTv+BFiKt3bnHMr9i1P+Jk0GGMFDKTK7Zx1as+C01ym1muYbaIN
+ 9xnOXNITw0R+2SpWsuljez7/hPg/t5e/bAhYKM9zcLnqfUVaU19bPj3VQMHHXk32Re8d
+ 4uUMXuUVlT7QEaJU8rKIshmWGWvr8w3r9XtpBOckZ4CU2uXcioinL3dlXn3iSuQVZ1tk
+ 2/lXFHbRkYgAptRNWQH85/G8T+PlCd4o2fnuA1p3acfXYKRtfVVXWPI/UxtJy/hIKsY9
+ qKKotYxGwHfqEkFuERARhVk3AD23j9Hhlsp6HVjHKtU2eDRMI019lnXwRRPjTMQEeyDE
+ hkOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=9W5kr9cxG7EzUCazAbzAw+mUR76nZ5zxmtbgj+8doKI=;
+ b=XS77rDSD8cwNcVm8VfuHHRqVpZq74HqonVlCQjKfj3e6wIDREbXq+ui0bvrTmoYPaz
+ V6PSQ2pvNvpYReYX7EJoXOJAQ8m3kB6KkfNzpGcHcQxR5iV6H/Iw+/sJ/sbtw4/NwX1b
+ ZGJnTC295PjhvZqKqTi/6bZyd7VQNnT6w27emrwMfzVyFVlYpg7JSSXJAf9HJVboDD6A
+ iKLS7gBibO4f22L9CEVhCm4acQ30A1Qnj9NzbsOvBiAK0cCMzLByq1VmiQEk9K4+9rGf
+ +wXcG+RVTQMTTZgRvYwL3xeB63NPF2eegwJr2HN53dyvErvCwqCFXxeHcZCvMHxn72lN
+ Htew==
+X-Gm-Message-State: AOAM5314UeX1A1nOYUBAhB0RyoOJghyDp/vPg7RLtJiwep8X76ozjHfM
+ II56iHRxKnn+kpZW2Bk2nrrtEEBz9w8=
+X-Google-Smtp-Source: ABdhPJxaAzFEM75Pxw1oGS78CnbNeHfvbLagrnXMmJyNsvep5ApQpAf5bbkXA2HgkZ0wKFfCWrdwVg==
+X-Received: by 2002:a17:90a:3f87:: with SMTP id
+ m7mr35881824pjc.128.1626790511504; 
+ Tue, 20 Jul 2021 07:15:11 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com (27-33-83-114.tpgi.com.au. [27.33.83.114])
+ by smtp.gmail.com with ESMTPSA id
+ u8sm3125357pjf.20.2021.07.20.07.15.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 20 Jul 2021 07:15:11 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/64s/perf: Always use SIAR for kernel interrupts
+Date: Wed, 21 Jul 2021 00:15:04 +1000
+Message-Id: <20210720141504.420110-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,36 +80,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2021-07-20 at 11:58 +0200, Niklas Schnelle wrote:
-> The helper function pci_dev_is_added() from drivers/pci/pci.h is used in
-> PCI arch code of both s390 and powerpc leading to awkward relative
-> includes. Move it to the global include/linux/pci.h and get rid of these
-> includes just for that one function.
-> 
-> Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-> ---
-> Since v1:
-> - Fixed accidental removal of PCI_DPC_RECOVERED, PCI_DPC_RECOVERING
->   defines and also move these to include/linux/pci.h
+If an interrupt is taken in kernel mode, always use SIAR for it rather than
+looking at regs_sipr. This prevents samples piling up around interrupt
+enable (hard enable or interrupt replay via soft enable) in PMUs / modes
+where the PR sample indication is not in synch with SIAR.
 
-Please disregard I actually sent the old patch ;-(
+This results in better sampling of interrupt entry and exit in particular.
 
-> 
->  arch/powerpc/platforms/powernv/pci-sriov.c |  3 ---
->  arch/powerpc/platforms/pseries/setup.c     |  1 -
->  arch/s390/pci/pci_sysfs.c                  |  2 --
->  drivers/pci/hotplug/acpiphp_glue.c         |  1 -
->  drivers/pci/pci.h                          | 15 ---------------
->  include/linux/pci.h                        | 13 +++++++++++++
->  6 files changed, 13 insertions(+), 22 deletions(-)
-> 
-> 
-... snip ..
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/perf/core-book3s.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
+index bb0ee716de91..91203ed9d0ff 100644
+--- a/arch/powerpc/perf/core-book3s.c
++++ b/arch/powerpc/perf/core-book3s.c
+@@ -340,6 +340,13 @@ static inline void perf_read_regs(struct pt_regs *regs)
+ 	 * If the PMU doesn't update the SIAR for non marked events use
+ 	 * pt_regs.
+ 	 *
++	 * If regs is a kernel interrupt, always use SIAR. Some PMUs have an
++	 * issue with regs_sipr not being in synch with SIAR in interrupt entry
++	 * and return sequences, which can result in regs_sipr being true for
++	 * kernel interrupts and SIAR, which has the effect of causing samples
++	 * to pile up at mtmsrd MSR[EE] 0->1 or pending irq replay around
++	 * interrupt entry/exit.
++	 *
+ 	 * If the PMU has HV/PR flags then check to see if they
+ 	 * place the exception in userspace. If so, use pt_regs. In
+ 	 * continuous sampling mode the SIAR and the PMU exception are
+@@ -356,6 +363,8 @@ static inline void perf_read_regs(struct pt_regs *regs)
+ 		use_siar = 1;
+ 	else if ((ppmu->flags & PPMU_NO_CONT_SAMPLING))
+ 		use_siar = 0;
++	else if (!user_mode(regs))
++		use_siar = 1;
+ 	else if (!(ppmu->flags & PPMU_NO_SIPR) && regs_sipr(regs))
+ 		use_siar = 0;
+ 	else
+-- 
+2.23.0
 
