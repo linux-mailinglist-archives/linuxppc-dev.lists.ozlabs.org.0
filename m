@@ -1,94 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F9383CF74D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jul 2021 11:58:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EDF13CF7DD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jul 2021 12:28:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GTZ1C2sx3z3bbZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jul 2021 19:58:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GTZgS1x1Wz3bg7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jul 2021 20:28:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=k36fR+Wd;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=rrc4HUbr;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=jR9gOGNe;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=schnelle@linux.ibm.com;
+ smtp.mailfrom=linutronix.de (client-ip=193.142.43.55;
+ helo=galois.linutronix.de; envelope-from=tglx@linutronix.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=k36fR+Wd; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
+ header.s=2020 header.b=rrc4HUbr; 
+ dkim=pass header.d=linutronix.de header.i=@linutronix.de
+ header.a=ed25519-sha256 header.s=2020e header.b=jR9gOGNe; 
+ dkim-atps=neutral
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GTZ0j4jSXz30Bw
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jul 2021 19:58:29 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 16K9WfGZ135457; Tue, 20 Jul 2021 05:58:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=i/Hk+xVck2IegLcH4mpvonpVjL/z9xDF5mHSUSq1xoM=;
- b=k36fR+WdkkHG12Elq9KtUifAfLkFdXpoPCPIzrfy2k5BSbtwWgyRIwtX+CXe0SeYXqv7
- XsOuCsA0WrlOgoOuYA7UV+e2MuynCi5EnLN9XTYnHMiwbxW20n3198sKCy1Vb/VaQGtv
- dJnfwnxJuB538GrbAoJWuPznGVnPXtquCRoekoR6N2uIyYxeCFF+tJzVTuKutP0JSALq
- wmBXhEyFuHwmAJ93GBSPyJ4HeDqgz/xQdavophtpWii7iX/ovkahUobnmOVYvFePFBr7
- JsTYiplcWn9Me8y5ssU0LCxUveO9vhuhwQdXusJMWLb6T58MRZIza0+oRvOkHh/YzeF0 /Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 39wugpse40-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Jul 2021 05:58:21 -0400
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 16K9XDnx138366;
- Tue, 20 Jul 2021 05:58:21 -0400
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.107])
- by mx0b-001b2d01.pphosted.com with ESMTP id 39wugpse3h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Jul 2021 05:58:21 -0400
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
- by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16K9wJ9T022202;
- Tue, 20 Jul 2021 09:58:19 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma03fra.de.ibm.com with ESMTP id 39upu88pm8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Jul 2021 09:58:19 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 16K9wHwD26476968
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 20 Jul 2021 09:58:17 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E56945204E;
- Tue, 20 Jul 2021 09:58:16 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 837EC52052;
- Tue, 20 Jul 2021 09:58:16 +0000 (GMT)
-From: Niklas Schnelle <schnelle@linux.ibm.com>
-To: Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH v2] PCI: Move pci_dev_is/assign_added() to pci.h
-Date: Tue, 20 Jul 2021 11:58:16 +0200
-Message-Id: <20210720095816.3660813-1-schnelle@linux.ibm.com>
-X-Mailer: git-send-email 2.25.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GTZg10W5Hz309r
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jul 2021 20:28:13 +1000 (AEST)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+ s=2020; t=1626776885;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=bDwlcccV3/vrCei0Ik2QF0oAbhCHCeGSps/lbR/oXjs=;
+ b=rrc4HUbrItu4keiCBFDV6/iZsLiL8usY9FbDHeI4D0I1/zy+CkNxG1g/5XN9JnUxDBX1XH
+ D8nz4ERDGHLbOEIT6E/f4yGW2VHnGFKo1WLQJIxyye2fbdZwZ8qSxtslrqM9QYKkj2ffZs
+ seq8Kab8uW4nWTm68L+sBOS0XdBrAuCI4uidnM8U84SNow92p0TxRnF1HSbzt3SvPAQDpr
+ T2RSz05IuSv9YmY1RGtRFynXZoGZkvntuXukmueiIJlwSFCEcq4MXiMIgfckew/n+lUT62
+ U33GBTeu0r4pJrD81lbua3jk0eve0oivLfdISVdOx5NP2n2Rhv/7CcYMsHYC6A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+ s=2020e; t=1626776885;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=bDwlcccV3/vrCei0Ik2QF0oAbhCHCeGSps/lbR/oXjs=;
+ b=jR9gOGNeHOnpLDQqTwtWhDmu3e6WgD3WgKRfTXr62rFosvzmq87Ej2fos213iV2PD7DabD
+ 8U9PI7FVSnWR/iBg==
+To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc: use IRQF_NO_DEBUG for IPIs
+In-Reply-To: <20210719130614.195886-1-clg@kaod.org>
+References: <20210719130614.195886-1-clg@kaod.org>
+Date: Tue, 20 Jul 2021 12:28:05 +0200
+Message-ID: <87czrde0ui.ffs@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: QjVdo8k0eTAvE3Ja4tBwGpvB14Bc7uR6
-X-Proofpoint-ORIG-GUID: lSsjcml-fCq6hLF5EZvrRf8X2Oj7PF6R
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-07-20_04:2021-07-19,
- 2021-07-20 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0
- priorityscore=1501 mlxscore=0 lowpriorityscore=0 malwarescore=0
- bulkscore=0 phishscore=0 impostorscore=0 mlxlogscore=999 spamscore=0
- clxscore=1011 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2107200059
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,133 +72,17 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The helper function pci_dev_is_added() from drivers/pci/pci.h is used in
-PCI arch code of both s390 and powerpc leading to awkward relative
-includes. Move it to the global include/linux/pci.h and get rid of these
-includes just for that one function.
+On Mon, Jul 19 2021 at 15:06, C=C3=A9dric Le Goater wrote:
+> There is no need to use the lockup detector ("noirqdebug") for IPIs.
+> The ipistorm benchmark measures a ~10% improvement on high systems
+> when this flag is set.
+>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
 
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
----
-Since v1:
-- Fixed accidental removal of PCI_DPC_RECOVERED, PCI_DPC_RECOVERING
-  defines and also move these to include/linux/pci.h
-
- arch/powerpc/platforms/powernv/pci-sriov.c |  3 ---
- arch/powerpc/platforms/pseries/setup.c     |  1 -
- arch/s390/pci/pci_sysfs.c                  |  2 --
- drivers/pci/hotplug/acpiphp_glue.c         |  1 -
- drivers/pci/pci.h                          | 15 ---------------
- include/linux/pci.h                        | 13 +++++++++++++
- 6 files changed, 13 insertions(+), 22 deletions(-)
-
-diff --git a/arch/powerpc/platforms/powernv/pci-sriov.c b/arch/powerpc/platforms/powernv/pci-sriov.c
-index 28aac933a439..2e0ca5451e85 100644
---- a/arch/powerpc/platforms/powernv/pci-sriov.c
-+++ b/arch/powerpc/platforms/powernv/pci-sriov.c
-@@ -9,9 +9,6 @@
- 
- #include "pci.h"
- 
--/* for pci_dev_is_added() */
--#include "../../../../drivers/pci/pci.h"
--
- /*
-  * The majority of the complexity in supporting SR-IOV on PowerNV comes from
-  * the need to put the MMIO space for each VF into a separate PE. Internally
-diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
-index 631a0d57b6cd..17585ec9f955 100644
---- a/arch/powerpc/platforms/pseries/setup.c
-+++ b/arch/powerpc/platforms/pseries/setup.c
-@@ -74,7 +74,6 @@
- #include <asm/hvconsole.h>
- 
- #include "pseries.h"
--#include "../../../../drivers/pci/pci.h"
- 
- DEFINE_STATIC_KEY_FALSE(shared_processor);
- EXPORT_SYMBOL_GPL(shared_processor);
-diff --git a/arch/s390/pci/pci_sysfs.c b/arch/s390/pci/pci_sysfs.c
-index 6e2450c2b9c1..8dbe54ef8f8e 100644
---- a/arch/s390/pci/pci_sysfs.c
-+++ b/arch/s390/pci/pci_sysfs.c
-@@ -13,8 +13,6 @@
- #include <linux/stat.h>
- #include <linux/pci.h>
- 
--#include "../../../drivers/pci/pci.h"
--
- #include <asm/sclp.h>
- 
- #define zpci_attr(name, fmt, member)					\
-diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
-index f031302ad401..4cb963f88183 100644
---- a/drivers/pci/hotplug/acpiphp_glue.c
-+++ b/drivers/pci/hotplug/acpiphp_glue.c
-@@ -38,7 +38,6 @@
- #include <linux/slab.h>
- #include <linux/acpi.h>
- 
--#include "../pci.h"
- #include "acpiphp.h"
- 
- static LIST_HEAD(bridge_list);
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index 93dcdd431072..a159cd0f6f05 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -383,21 +383,6 @@ static inline bool pci_dev_is_disconnected(const struct pci_dev *dev)
- 	return dev->error_state == pci_channel_io_perm_failure;
- }
- 
--/* pci_dev priv_flags */
--#define PCI_DEV_ADDED 0
--#define PCI_DPC_RECOVERED 1
--#define PCI_DPC_RECOVERING 2
--
--static inline void pci_dev_assign_added(struct pci_dev *dev, bool added)
--{
--	assign_bit(PCI_DEV_ADDED, &dev->priv_flags, added);
--}
--
--static inline bool pci_dev_is_added(const struct pci_dev *dev)
--{
--	return test_bit(PCI_DEV_ADDED, &dev->priv_flags);
--}
--
- #ifdef CONFIG_PCIEAER
- #include <linux/aer.h>
- 
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 540b377ca8f6..b3b7bafa17e5 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -507,6 +507,19 @@ struct pci_dev {
- 	unsigned long	priv_flags;	/* Private flags for the PCI driver */
- };
- 
-+/* pci_dev priv_flags */
-+#define PCI_DEV_ADDED 0
-+
-+static inline void pci_dev_assign_added(struct pci_dev *dev, bool added)
-+{
-+	assign_bit(PCI_DEV_ADDED, &dev->priv_flags, added);
-+}
-+
-+static inline bool pci_dev_is_added(const struct pci_dev *dev)
-+{
-+	return test_bit(PCI_DEV_ADDED, &dev->priv_flags);
-+}
-+
- static inline struct pci_dev *pci_physfn(struct pci_dev *dev)
- {
- #ifdef CONFIG_PCI_IOV
--- 
-2.25.1
-
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
