@@ -2,108 +2,108 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCCBD3D00E2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jul 2021 19:50:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8606C3D00E5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Jul 2021 19:50:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GTmSk4hCdz3bgT
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jul 2021 03:49:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GTmTj2qPLz3bh2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jul 2021 03:50:49 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZrvaKCd8;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iq7FHtV1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=ZrvaKCd8; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ header.s=pp1 header.b=iq7FHtV1; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GTmSH21bvz307Z
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jul 2021 03:49:34 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 16KHYRoN091836; Tue, 20 Jul 2021 13:49:28 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GTmT94WNqz2xKJ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jul 2021 03:50:21 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 16KHYOYT083755; Tue, 20 Jul 2021 13:50:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=subject : to : cc :
  references : from : message-id : date : mime-version : in-reply-to :
  content-type : content-transfer-encoding; s=pp1;
- bh=PrNdgdKGT7GkTAqpA/hCe0toDTceMwujLTzJJXQiZgY=;
- b=ZrvaKCd8Qu8UdLsC4p51CPClhJmvbremTjhrRP5fD3x1upaQ9G7T2zm9fetJHiFAVJhE
- 9EmWDje59VOAvd33CYkiBHPvbsdiqv9oJN5OVg/R5malcVynVOodhNDLbpx6MQZoNaGo
- 0CvPO3Qad2OkiU3AgN8eOOgSFII9bgWTwfzkIPshf5Sx3DRiM44yEmHyWcdVn8KSqkVx
- YDlgfHxAqkeFDuTgJd5YYpqWbkS2ZX8OwCuWKXL9Adw09fq58hi/TA0A3PpYRDS+IvbN
- 29N8k/7fa2EQzlvTTDAnUF1C78+ym2jP9iDboI0s8WtzGTWdUPYymmt3XogAuA/diBjU yw== 
+ bh=M+k/THqYmQioCQfI+vvQ675Vl3gkL6U2pMThTBk09aQ=;
+ b=iq7FHtV1CAfdF+tx2uzC5LJtaxFdI3ijk8fH4SSe6IFqB4+5AE2bXLgHocd1BhLQMPmf
+ hQhcSITOtCFEMHY01Vcbd90RPMwj3cwKPZH9ckXWz8W/mj0PmOUaxIPjnPz8dSLEUMWv
+ Xmj2VE47ufz2Kz1ekSF8jRLN8XQAPoj41SVqrIS8YvfsjSj7o2bE8xkLVFRhDqe9yaeU
+ aK8QUUe0i0OLLYjscPAUZG5ElaPF+lVHis3JblaqybWr4YZwkMt3lIQ/vSLn//pm9OHV
+ vy1Wm/+ooIvVWcm0e6PUnuyDDuBU/ltTv8gU+EmA/FGPmVOBgT4JoEGtYrKT3rLxr4A3 XA== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39wy71ssf7-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 39x2u1gpbq-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Jul 2021 13:49:28 -0400
-Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 16KHYiHX092333;
- Tue, 20 Jul 2021 13:49:28 -0400
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39wy71sse5-1
+ Tue, 20 Jul 2021 13:50:12 -0400
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 16KHZeMK088052;
+ Tue, 20 Jul 2021 13:50:12 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 39x2u1gpaw-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Jul 2021 13:49:28 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16KHh1ch021003;
- Tue, 20 Jul 2021 17:49:25 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma06ams.nl.ibm.com with ESMTP id 39vng71357-1
+ Tue, 20 Jul 2021 13:50:12 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16KHhBsO021985;
+ Tue, 20 Jul 2021 17:50:10 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma04ams.nl.ibm.com with ESMTP id 39upu89f3q-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 20 Jul 2021 17:49:25 +0000
+ Tue, 20 Jul 2021 17:50:10 +0000
 Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
  [9.149.105.58])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 16KHnNIC36831672
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 16KHo7D927394502
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 20 Jul 2021 17:49:23 GMT
+ Tue, 20 Jul 2021 17:50:07 GMT
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4DA704C04E;
- Tue, 20 Jul 2021 17:49:23 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id B5EBC4C058;
+ Tue, 20 Jul 2021 17:50:07 +0000 (GMT)
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E937F4C044;
- Tue, 20 Jul 2021 17:49:22 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 5A44F4C046;
+ Tue, 20 Jul 2021 17:50:07 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.145.178.12])
  by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 20 Jul 2021 17:49:22 +0000 (GMT)
-Subject: Re: [PATCH v5 06/11] powerpc/pseries/iommu: Add ddw_property_create()
- and refactor enable_ddw()
+ Tue, 20 Jul 2021 17:50:07 +0000 (GMT)
+Subject: Re: [PATCH v5 07/11] powerpc/pseries/iommu: Reorganize
+ iommu_table_setparms*() with new helper
 To: Leonardo Bras <leobras.c@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Alexey Kardashevskiy <aik@ozlabs.ru>,
  David Gibson <david@gibson.dropbear.id.au>, kernel test robot
  <lkp@intel.com>, Nicolin Chen <nicoleotsuka@gmail.com>
 References: <20210716082755.428187-1-leobras.c@gmail.com>
- <20210716082755.428187-7-leobras.c@gmail.com>
+ <20210716082755.428187-8-leobras.c@gmail.com>
 From: Frederic Barrat <fbarrat@linux.ibm.com>
-Message-ID: <1ab60060-1435-f77a-d2df-84019e7625a2@linux.ibm.com>
-Date: Tue, 20 Jul 2021 19:49:22 +0200
+Message-ID: <b1cdc216-31e3-a0ca-7b52-22cf4fa5579a@linux.ibm.com>
+Date: Tue, 20 Jul 2021 19:50:07 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
 MIME-Version: 1.0
-In-Reply-To: <20210716082755.428187-7-leobras.c@gmail.com>
+In-Reply-To: <20210716082755.428187-8-leobras.c@gmail.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Vp1lpu0PQ94KhCgD19zjdSpR8D0EAVv9
-X-Proofpoint-ORIG-GUID: iU5tmCzWD_RCq-OULjMweQVVYisVKGpW
+X-Proofpoint-ORIG-GUID: qwHudOO9SoRziUdczZVY9b1MU1MAyvGs
+X-Proofpoint-GUID: 5f5KeENN8SKx9n7LfIX9zixWbCbqa4vL
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
  definitions=2021-07-20_12:2021-07-19,
  2021-07-20 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- lowpriorityscore=0 clxscore=1015 suspectscore=0 mlxlogscore=999
- spamscore=0 mlxscore=0 malwarescore=0 adultscore=0 phishscore=0
- impostorscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2104190000 definitions=main-2107200115
+ spamscore=0 suspectscore=0
+ priorityscore=1501 mlxscore=0 clxscore=1015 impostorscore=0 bulkscore=0
+ mlxlogscore=999 malwarescore=0 phishscore=0 lowpriorityscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2107200115
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -123,196 +123,167 @@ Sender: "Linuxppc-dev"
 
 
 On 16/07/2021 10:27, Leonardo Bras wrote:
-> Code used to create a ddw property that was previously scattered in
-> enable_ddw() is now gathered in ddw_property_create(), which deals with
-> allocation and filling the property, letting it ready for
-> of_property_add(), which now occurs in sequence.
+> Add a new helper _iommu_table_setparms(), and use it in
+> iommu_table_setparms() and iommu_table_setparms_lpar() to avoid duplicated
+> code.
 > 
-> This created an opportunity to reorganize the second part of enable_ddw():
-> 
-> Without this patch enable_ddw() does, in order:
-> kzalloc() property & members, create_ddw(), fill ddwprop inside property,
-> ddw_list_new_entry(), do tce_setrange_multi_pSeriesLP_walk in all memory,
-> of_add_property(), and list_add().
-> 
-> With this patch enable_ddw() does, in order:
-> create_ddw(), ddw_property_create(), of_add_property(),
-> ddw_list_new_entry(), do tce_setrange_multi_pSeriesLP_walk in all memory,
-> and list_add().
-> 
-> This change requires of_remove_property() in case anything fails after
-> of_add_property(), but we get to do tce_setrange_multi_pSeriesLP_walk
-> in all memory, which looks the most expensive operation, only if
-> everything else succeeds.
+> Also, setting tbl->it_ops was happening outsite iommu_table_setparms*(),
+> so move it to the new helper. Since we need the iommu_table_ops to be
+> declared before used, declare iommu_table_lpar_multi_ops and
+> iommu_table_pseries_ops to before their respective iommu_table_setparms*().
 > 
 > Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
-> Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 > ---
->   arch/powerpc/platforms/pseries/iommu.c | 93 ++++++++++++++++----------
->   1 file changed, 57 insertions(+), 36 deletions(-)
+
+
+Looks good
+Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
+
+
+
+>   arch/powerpc/platforms/pseries/iommu.c | 72 ++++++++++++++------------
+>   1 file changed, 38 insertions(+), 34 deletions(-)
 > 
 > diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-> index b34b473bbdc1..7ca79a04fa52 100644
+> index 7ca79a04fa52..108c3dcca686 100644
 > --- a/arch/powerpc/platforms/pseries/iommu.c
 > +++ b/arch/powerpc/platforms/pseries/iommu.c
-> @@ -1153,6 +1153,35 @@ static int iommu_get_page_shift(u32 query_page_size)
->   	return 0;
+> @@ -501,6 +501,24 @@ static int tce_setrange_multi_pSeriesLP_walk(unsigned long start_pfn,
+>   	return tce_setrange_multi_pSeriesLP(start_pfn, num_pfn, arg);
 >   }
 >   
-> +static struct property *ddw_property_create(const char *propname, u32 liobn, u64 dma_addr,
-> +					    u32 page_shift, u32 window_shift)
+> +static void iommu_table_setparms_common(struct iommu_table *tbl, unsigned long busno,
+> +					unsigned long liobn, unsigned long win_addr,
+> +					unsigned long window_size, unsigned long page_shift,
+> +					void *base, struct iommu_table_ops *table_ops)
 > +{
-> +	struct dynamic_dma_window_prop *ddwprop;
-> +	struct property *win64;
-> +
-> +	win64 = kzalloc(sizeof(*win64), GFP_KERNEL);
-> +	if (!win64)
-> +		return NULL;
-> +
-> +	win64->name = kstrdup(propname, GFP_KERNEL);
-> +	ddwprop = kzalloc(sizeof(*ddwprop), GFP_KERNEL);
-> +	win64->value = ddwprop;
-> +	win64->length = sizeof(*ddwprop);
-> +	if (!win64->name || !win64->value) {
-> +		kfree(win64->name);
-> +		kfree(win64->value);
-> +		kfree(win64);
-> +		return NULL;
-> +	}
-> +
-> +	ddwprop->liobn = cpu_to_be32(liobn);
-> +	ddwprop->dma_base = cpu_to_be64(dma_addr);
-> +	ddwprop->tce_shift = cpu_to_be32(page_shift);
-> +	ddwprop->window_shift = cpu_to_be32(window_shift);
-> +
-> +	return win64;
+> +	tbl->it_busno = busno;
+> +	tbl->it_index = liobn;
+> +	tbl->it_offset = win_addr >> page_shift;
+> +	tbl->it_size = window_size >> page_shift;
+> +	tbl->it_page_shift = page_shift;
+> +	tbl->it_base = (unsigned long)base;
+> +	tbl->it_blocksize = 16;
+> +	tbl->it_type = TCE_PCI;
+> +	tbl->it_ops = table_ops;
 > +}
 > +
+> +struct iommu_table_ops iommu_table_pseries_ops;
+> +
+>   static void iommu_table_setparms(struct pci_controller *phb,
+>   				 struct device_node *dn,
+>   				 struct iommu_table *tbl)
+> @@ -509,8 +527,13 @@ static void iommu_table_setparms(struct pci_controller *phb,
+>   	const unsigned long *basep;
+>   	const u32 *sizep;
+>   
+> -	node = phb->dn;
+> +	/* Test if we are going over 2GB of DMA space */
+> +	if (phb->dma_window_base_cur + phb->dma_window_size > SZ_2G) {
+> +		udbg_printf("PCI_DMA: Unexpected number of IOAs under this PHB.\n");
+> +		panic("PCI_DMA: Unexpected number of IOAs under this PHB.\n");
+> +	}
+>   
+> +	node = phb->dn;
+>   	basep = of_get_property(node, "linux,tce-base", NULL);
+>   	sizep = of_get_property(node, "linux,tce-size", NULL);
+>   	if (basep == NULL || sizep == NULL) {
+> @@ -519,33 +542,18 @@ static void iommu_table_setparms(struct pci_controller *phb,
+>   		return;
+>   	}
+>   
+> -	tbl->it_base = (unsigned long)__va(*basep);
+> +	iommu_table_setparms_common(tbl, phb->bus->number, 0, phb->dma_window_base_cur,
+> +				    phb->dma_window_size, IOMMU_PAGE_SHIFT_4K,
+> +				    __va(*basep), &iommu_table_pseries_ops);
+>   
+>   	if (!is_kdump_kernel())
+>   		memset((void *)tbl->it_base, 0, *sizep);
+>   
+> -	tbl->it_busno = phb->bus->number;
+> -	tbl->it_page_shift = IOMMU_PAGE_SHIFT_4K;
+> -
+> -	/* Units of tce entries */
+> -	tbl->it_offset = phb->dma_window_base_cur >> tbl->it_page_shift;
+> -
+> -	/* Test if we are going over 2GB of DMA space */
+> -	if (phb->dma_window_base_cur + phb->dma_window_size > 0x80000000ul) {
+> -		udbg_printf("PCI_DMA: Unexpected number of IOAs under this PHB.\n");
+> -		panic("PCI_DMA: Unexpected number of IOAs under this PHB.\n");
+> -	}
+> -
+>   	phb->dma_window_base_cur += phb->dma_window_size;
+> -
+> -	/* Set the tce table size - measured in entries */
+> -	tbl->it_size = phb->dma_window_size >> tbl->it_page_shift;
+> -
+> -	tbl->it_index = 0;
+> -	tbl->it_blocksize = 16;
+> -	tbl->it_type = TCE_PCI;
+>   }
+>   
+> +struct iommu_table_ops iommu_table_lpar_multi_ops;
+> +
 >   /*
->    * If the PE supports dynamic dma windows, and there is space for a table
->    * that can map all pages in a linear offset, then setup such a table,
-> @@ -1171,12 +1200,12 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
->   	struct ddw_query_response query;
->   	struct ddw_create_response create;
->   	int page_shift;
-> +	u64 win_addr;
->   	struct device_node *dn;
->   	u32 ddw_avail[DDW_APPLICABLE_SIZE];
->   	struct direct_window *window;
->   	struct property *win64;
->   	bool ddw_enabled = false;
-> -	struct dynamic_dma_window_prop *ddwprop;
->   	struct failed_ddw_pdn *fpdn;
->   	bool default_win_removed = false;
->   	bool pmem_present;
-> @@ -1293,72 +1322,64 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
->   			1ULL << page_shift);
->   		goto out_failed;
->   	}
-> -	win64 = kzalloc(sizeof(struct property), GFP_KERNEL);
-> -	if (!win64) {
-> -		dev_info(&dev->dev,
-> -			"couldn't allocate property for 64bit dma window\n");
-> -		goto out_failed;
-> -	}
-> -	win64->name = kstrdup(DIRECT64_PROPNAME, GFP_KERNEL);
-> -	win64->value = ddwprop = kmalloc(sizeof(*ddwprop), GFP_KERNEL);
-> -	win64->length = sizeof(*ddwprop);
-> -	if (!win64->name || !win64->value) {
-> -		dev_info(&dev->dev,
-> -			"couldn't allocate property name and value\n");
-> -		goto out_free_prop;
-> -	}
+>    * iommu_table_setparms_lpar
+>    *
+> @@ -557,17 +565,13 @@ static void iommu_table_setparms_lpar(struct pci_controller *phb,
+>   				      struct iommu_table_group *table_group,
+>   				      const __be32 *dma_window)
+>   {
+> -	unsigned long offset, size;
+> +	unsigned long offset, size, liobn;
 >   
->   	ret = create_ddw(dev, ddw_avail, &create, page_shift, len);
->   	if (ret != 0)
-> -		goto out_free_prop;
-> -
-> -	ddwprop->liobn = cpu_to_be32(create.liobn);
-> -	ddwprop->dma_base = cpu_to_be64(((u64)create.addr_hi << 32) |
-> -			create.addr_lo);
-> -	ddwprop->tce_shift = cpu_to_be32(page_shift);
-> -	ddwprop->window_shift = cpu_to_be32(len);
-> +		goto out_failed;
->   
->   	dev_dbg(&dev->dev, "created tce table LIOBN 0x%x for %pOF\n",
->   		  create.liobn, dn);
->   
-> -	window = ddw_list_new_entry(pdn, ddwprop);
-> +	win_addr = ((u64)create.addr_hi << 32) | create.addr_lo;
-> +	win64 = ddw_property_create(DIRECT64_PROPNAME, create.liobn, win_addr,
-> +				    page_shift, len);
-> +	if (!win64) {
-> +		dev_info(&dev->dev,
-> +			 "couldn't allocate property, property name, or value\n");
-> +		goto out_remove_win;
-> +	}
+> -	of_parse_dma_window(dn, dma_window, &tbl->it_index, &offset, &size);
+> +	of_parse_dma_window(dn, dma_window, &liobn, &offset, &size);
 > +
-> +	ret = of_add_property(pdn, win64);
-> +	if (ret) {
-> +		dev_err(&dev->dev, "unable to add dma window property for %pOF: %d",
-> +			pdn, ret);
-> +		goto out_free_prop;
-> +	}
+> +	iommu_table_setparms_common(tbl, phb->bus->number, liobn, offset, size, IOMMU_PAGE_SHIFT_4K, NULL,
+> +				    &iommu_table_lpar_multi_ops);
+>   
+> -	tbl->it_busno = phb->bus->number;
+> -	tbl->it_page_shift = IOMMU_PAGE_SHIFT_4K;
+> -	tbl->it_base   = 0;
+> -	tbl->it_blocksize  = 16;
+> -	tbl->it_type = TCE_PCI;
+> -	tbl->it_offset = offset >> tbl->it_page_shift;
+> -	tbl->it_size = size >> tbl->it_page_shift;
+>   
+>   	table_group->tce32_start = offset;
+>   	table_group->tce32_size = size;
+> @@ -647,7 +651,7 @@ static void pci_dma_bus_setup_pSeries(struct pci_bus *bus)
+>   	tbl = pci->table_group->tables[0];
+>   
+>   	iommu_table_setparms(pci->phb, dn, tbl);
+> -	tbl->it_ops = &iommu_table_pseries_ops;
 > +
-> +	window = ddw_list_new_entry(pdn, win64->value);
->   	if (!window)
-> -		goto out_clear_window;
-> +		goto out_del_prop;
+>   	if (!iommu_init_table(tbl, pci->phb->node, 0, 0))
+>   		panic("Failed to initialize iommu table");
 >   
->   	ret = walk_system_ram_range(0, memblock_end_of_DRAM() >> PAGE_SHIFT,
->   			win64->value, tce_setrange_multi_pSeriesLP_walk);
->   	if (ret) {
->   		dev_info(&dev->dev, "failed to map direct window for %pOF: %d\n",
->   			 dn, ret);
-> -		goto out_free_window;
-> -	}
-> -
-> -	ret = of_add_property(pdn, win64);
-> -	if (ret) {
-> -		dev_err(&dev->dev, "unable to add dma window property for %pOF: %d",
-> -			 pdn, ret);
-> -		goto out_free_window;
-> +		goto out_del_list;
->   	}
->   
->   	spin_lock(&direct_window_list_lock);
->   	list_add(&window->list, &direct_window_list);
->   	spin_unlock(&direct_window_list_lock);
->   
-> -	dev->dev.archdata.dma_offset = be64_to_cpu(ddwprop->dma_base);
-> +	dev->dev.archdata.dma_offset = win_addr;
->   	ddw_enabled = true;
->   	goto out_unlock;
->   
-> -out_free_window:
-> +out_del_list:
->   	kfree(window);
->   
-> -out_clear_window:
-> -	remove_ddw(pdn, true);
-> +out_del_prop:
-> +	of_remove_property(pdn, win64);
->   
->   out_free_prop:
->   	kfree(win64->name);
->   	kfree(win64->value);
->   	kfree(win64);
->   
-> +out_remove_win:
-> +	remove_ddw(pdn, true);
-
-
-I believe there's a small problem here. We jump directly to 
-out_remove_win if allocating the property failed. Yet, the first thing 
-remove_ddw() does is look for the property. So it will never find it and 
-the window is never removed by the hypervisor.
-
-   Fred
-
-
+> @@ -730,7 +734,7 @@ static void pci_dma_bus_setup_pSeriesLP(struct pci_bus *bus)
+>   		tbl = ppci->table_group->tables[0];
+>   		iommu_table_setparms_lpar(ppci->phb, pdn, tbl,
+>   				ppci->table_group, dma_window);
+> -		tbl->it_ops = &iommu_table_lpar_multi_ops;
 > +
->   out_failed:
->   	if (default_win_removed)
->   		reset_dma_window(dev, pdn);
+>   		if (!iommu_init_table(tbl, ppci->phb->node, 0, 0))
+>   			panic("Failed to initialize iommu table");
+>   		iommu_register_group(ppci->table_group,
+> @@ -760,7 +764,7 @@ static void pci_dma_dev_setup_pSeries(struct pci_dev *dev)
+>   		PCI_DN(dn)->table_group = iommu_pseries_alloc_group(phb->node);
+>   		tbl = PCI_DN(dn)->table_group->tables[0];
+>   		iommu_table_setparms(phb, dn, tbl);
+> -		tbl->it_ops = &iommu_table_pseries_ops;
+> +
+>   		if (!iommu_init_table(tbl, phb->node, 0, 0))
+>   			panic("Failed to initialize iommu table");
+>   
+> @@ -1443,7 +1447,7 @@ static void pci_dma_dev_setup_pSeriesLP(struct pci_dev *dev)
+>   		tbl = pci->table_group->tables[0];
+>   		iommu_table_setparms_lpar(pci->phb, pdn, tbl,
+>   				pci->table_group, dma_window);
+> -		tbl->it_ops = &iommu_table_lpar_multi_ops;
+> +
+>   		iommu_init_table(tbl, pci->phb->node, 0, 0);
+>   		iommu_register_group(pci->table_group,
+>   				pci_domain_nr(pci->phb->bus), 0);
 > 
