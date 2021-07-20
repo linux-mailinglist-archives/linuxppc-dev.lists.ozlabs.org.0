@@ -2,187 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCCD83D049B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jul 2021 00:27:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B65593D05E3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jul 2021 01:53:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GTtcR50Zrz2yhf
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jul 2021 08:27:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GTwXh3wLJz3bgN
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jul 2021 09:53:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VBe4HBaG;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=e0EE40nq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=wsa@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=bugzilla.kernel.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=VBe4HBaG; 
+ header.s=k20201202 header.b=e0EE40nq; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GTqwj3YWGz303y
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jul 2021 06:25:57 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 56E9760BBB;
- Tue, 20 Jul 2021 20:25:51 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GTwXB6fLXz2yPB
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jul 2021 09:53:30 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPS id 76FEE60E08
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jul 2021 23:53:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1626812753;
- bh=l5xDkWzCR3urdpTjqmcMUpN6o09NewdpR8Jc68Liw0U=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=VBe4HBaGXZMGD0ZdODVsdKbrJ8SORqt3SuXaX37yK3AHshxYDbXGRQXluA6mx7jW3
- pTBW48mt4sopqYvfTU+bZO/p3bIz4jENtO9uPBTi0SuDufiC+I7vrG7Ce/qo8tgdbL
- Vv6L36N+yjTOuiDCZaFxIklqrdMuw+BZDERVBNSuKxTccmMm+0DpHaq2hVxlihY0dP
- QgyoMfzVLFJnhH8igTsTFxC4OBQeb5IzLYxfferXAP0fHcTPB3F6Yr+8KbAgAJLPf2
- a0unVf6CWv1kUs6z+N9Cr2G8gL44dgqsGt8dlJjFYXR6m7PEcLW13zfgVQ2ipy0CDg
- OpoYDDMZUiahA==
-Date: Tue, 20 Jul 2021 22:25:42 +0200
-From: Wolfram Sang <wsa@kernel.org>
-To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Subject: Re: [PATCH v4 5/5] bus: Make remove callback return void
-Message-ID: <YPcxRgfZymtjJ4ih@kunai>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
- Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- kernel@pengutronix.de,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Alexandre Bounine <alex.bou9@gmail.com>,
- Alex Dubov <oakad@yahoo.com>, Alex Elder <elder@kernel.org>,
- Alex Williamson <alex.williamson@redhat.com>,
- Alison Schofield <alison.schofield@intel.com>,
- Allen Hubbe <allenbh@gmail.com>,
- Andreas Noever <andreas.noever@gmail.com>,
- Andy Gross <agross@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Benjamin Tissoires <benjamin.tissoires@redhat.com>,
- Ben Widawsky <ben.widawsky@intel.com>,
- Bjorn Andersson <bjorn.andersson@linaro.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Bodo Stroesser <bostroesser@gmail.com>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Chen-Yu Tsai <wens@csie.org>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Cornelia Huck <cohuck@redhat.com>,
- Cristian Marussi <cristian.marussi@arm.com>,
- Dan Williams <dan.j.williams@intel.com>,
- Dave Jiang <dave.jiang@intel.com>,
- "David S. Miller" <davem@davemloft.net>,
- David Woodhouse <dwmw@amazon.co.uk>,
- Dexuan Cui <decui@microsoft.com>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>,
- Dominik Brodowski <linux@dominikbrodowski.net>,
- Finn Thain <fthain@linux-m68k.org>,
- Florian Fainelli <f.fainelli@gmail.com>,
- Frank Li <lznuaa@gmail.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- Geoff Levand <geoff@infradead.org>,
- Haiyang Zhang <haiyangz@microsoft.com>,
- Hannes Reinecke <hare@suse.de>, Hans de Goede <hdegoede@redhat.com>,
- Harald Freudenberger <freude@linux.ibm.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Heiko Carstens <hca@linux.ibm.com>, Helge Deller <deller@gmx.de>,
- Ira Weiny <ira.weiny@intel.com>, Jakub Kicinski <kuba@kernel.org>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Jaroslav Kysela <perex@perex.cz>, Jason Wang <jasowang@redhat.com>,
- Jens Taprogge <jens.taprogge@taprogge.org>,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Jiri Kosina <jikos@kernel.org>, Jiri Slaby <jirislaby@kernel.org>,
- Joey Pabalan <jpabalanb@gmail.com>, Johan Hovold <johan@kernel.org>,
- Johannes Berg <johannes@sipsolutions.net>,
- Johannes Thumshirn <morbidrsa@gmail.com>,
- Jon Mason <jdmason@kudzu.us>, Juergen Gross <jgross@suse.com>,
- Julien Grall <jgrall@amazon.com>,
- Kai-Heng Feng <kai.heng.feng@canonical.com>,
- Kirti Wankhede <kwankhede@nvidia.com>,
- Kishon Vijay Abraham I <kishon@ti.com>,
- Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
- "K. Y. Srinivasan" <kys@microsoft.com>,
- Lee Jones <lee.jones@linaro.org>, Len Brown <lenb@kernel.org>,
- Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
- Manohar Vanga <manohar.vanga@gmail.com>,
- Marc Zyngier <maz@kernel.org>, Mark Brown <broonie@kernel.org>,
- Mark Gross <mgross@linux.intel.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Martyn Welch <martyn@welchs.me.uk>,
- Mathieu Poirier <mathieu.poirier@linaro.org>,
- Matt Porter <mporter@kernel.crashing.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Maxime Ripard <mripard@kernel.org>,
- Maximilian Luz <luzmaximilian@gmail.com>,
- Maxim Levitsky <maximlevitsky@gmail.com>,
- Michael Buesch <m@bues.ch>, Michael Ellerman <mpe@ellerman.id.au>,
- Michael Jamet <michael.jamet@intel.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- Mike Christie <michael.christie@oracle.com>,
- Moritz Fischer <mdf@kernel.org>, Ohad Ben-Cohen <ohad@wizery.com>,
- Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>,
- Paul Mackerras <paulus@samba.org>,
- Peter Oberparleiter <oberpar@linux.ibm.com>,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
- Rich Felker <dalias@libc.org>,
- Rikard Falkeborn <rikard.falkeborn@gmail.com>,
- Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
- "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
- Samuel Holland <samuel@sholland.org>,
- Samuel Iglesias Gonsalvez <siglesias@igalia.com>,
- SeongJae Park <sjpark@amazon.de>,
- Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Stefan Richter <stefanr@s5r6.in-berlin.de>,
- Stephen Boyd <sboyd@kernel.org>,
- Stephen Hemminger <sthemmin@microsoft.com>,
- Sudeep Holla <sudeep.holla@arm.com>,
- Sven Van Asbroeck <TheSven73@gmail.com>,
- Takashi Iwai <tiwai@suse.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Thorsten Scherer <t.scherer@eckelmann.de>,
- Tomas Winkler <tomas.winkler@intel.com>, Tom Rix <trix@redhat.com>,
- Tyrel Datwyler <tyreld@linux.ibm.com>,
- Ulf Hansson <ulf.hansson@linaro.org>,
- Vasily Gorbik <gor@linux.ibm.com>,
- Vineeth Vijayan <vneethv@linux.ibm.com>,
- Vinod Koul <vkoul@kernel.org>,
- Vishal Verma <vishal.l.verma@intel.com>,
- Wei Liu <wei.liu@kernel.org>,
- William Breathitt Gray <vilhelm.gray@gmail.com>,
- Wu Hao <hao.wu@intel.com>, Yehezkel Bernat <YehezkelShB@gmail.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- YueHaibing <yuehaibing@huawei.com>, Yufen Yu <yuyufen@huawei.com>,
- alsa-devel@alsa-project.org, dmaengine@vger.kernel.org,
- greybus-dev@lists.linaro.org,
- industrypack-devel@lists.sourceforge.net, kvm@vger.kernel.org,
- linux1394-devel@lists.sourceforge.net, linux-acpi@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
- linux-cxl@vger.kernel.org, linux-fpga@vger.kernel.org,
- linux-hyperv@vger.kernel.org, linux-i2c@vger.kernel.org,
- linux-i3c@lists.infradead.org, linux-input@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- linux-media@vger.kernel.org, linux-mips@vger.kernel.org,
- linux-mmc@vger.kernel.org, linux-ntb@googlegroups.com,
- linux-parisc@vger.kernel.org, linux-pci@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-remoteproc@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
- linux-serial@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-spi@vger.kernel.org, linux-staging@lists.linux.dev,
- linux-sunxi@lists.linux.dev, linux-usb@vger.kernel.org,
- linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- nvdimm@lists.linux.dev, platform-driver-x86@vger.kernel.org,
- sparclinux@vger.kernel.org, target-devel@vger.kernel.org,
- virtualization@lists.linux-foundation.org,
- xen-devel@lists.xenproject.org, Johannes Thumshirn <jth@kernel.org>,
- "Rafael J . Wysocki" <rafael@kernel.org>
-References: <20210713193522.1770306-1-u.kleine-koenig@pengutronix.de>
- <20210713193522.1770306-6-u.kleine-koenig@pengutronix.de>
+ s=k20201202; t=1626825208;
+ bh=J0Il9UY/skweKYdo2syntQFL7OMmMC9NyOb3Jbf0+e0=;
+ h=From:To:Subject:Date:From;
+ b=e0EE40nqod9DtlV465ceMsWfnZFd/ppQhzVd/UlDknsuG+M4ENHUU9RcDymeqtzqV
+ kj1qADTE8ksJlKAOM4QipISosXwuVn8vzsoHtBl9aBjnF5WINEkAsKftjaugosVsom
+ fNYuNbKSM3PABeHVjD6Ailn4lHRdv7gKs8pAPjiJtdf6x8mOSmEuo+pN/kiCOJsMBk
+ lwQ+OHn/WVsKMEDjri7b+kL6SHYiKky1NtXewxQl5No6SjaVmCF6ONhBrR2CedT+wy
+ vdD+bOD62Rg2LXsG0gBnRGJDoPH7Pt0nd8dcBWaMwpyYkkbqPND2wGVzsDmyVp86QJ
+ YcEBNmntqecTQ==
+Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
+ id 60D9C611F0; Tue, 20 Jul 2021 23:53:28 +0000 (UTC)
+From: bugzilla-daemon@bugzilla.kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: =?UTF-8?B?W0J1ZyAyMTM4MDNdIE5ldzogRzUga2VybmVsIGJ1aWxkICh2NS4x?=
+ =?UTF-8?B?NC1yYzIpIGZhaWxzIGF0IGxpbmtpbmcgc3RhZ2UgLSBsZDogYXJjaC9wb3dl?=
+ =?UTF-8?B?cnBjL21tL3BndGFibGUubzogaW4gZnVuY3Rpb24gYC5fX3B0ZXBfc2V0X2Fj?=
+ =?UTF-8?B?Y2Vzc19mbGFncyc6IC91c3Ivc3JjL2xpbnV4LXN0YWJsZS8uL2FyY2gvcG93?=
+ =?UTF-8?B?ZXJwYy9pbmNsdWRlL2FzbS9ib29rM3MvNjQvcGd0YWJsZS5oOjgyNDogdW5k?=
+ =?UTF-8?B?ZWZpbmVkIHJlZmVyZW5jZSB0byBgLnJhZGl4X19wdGVwX3NldF9hY2Nlc3Nf?=
+ =?UTF-8?B?ZmxhZ3Mn?=
+Date: Tue, 20 Jul 2021 23:53:28 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: new
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: bug_id short_desc product version
+ cf_kernel_version rep_platform op_sys cf_tree bug_status bug_severity
+ priority component assigned_to reporter cf_regression attachments.created
+Message-ID: <bug-213803-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="o9Bjd73EPYzHYRI8"
-Content-Disposition: inline
-In-Reply-To: <20210713193522.1770306-6-u.kleine-koenig@pengutronix.de>
-X-Mailman-Approved-At: Wed, 21 Jul 2021 08:26:35 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -194,198 +83,177 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nvdimm@lists.linux.dev, linux-sh@vger.kernel.org,
- Samuel Iglesias Gonsalvez <siglesias@igalia.com>,
- Jens Taprogge <jens.taprogge@taprogge.org>,
- Ulf Hansson <ulf.hansson@linaro.org>, Jaroslav Kysela <perex@perex.cz>,
- linux-fpga@vger.kernel.org, Benjamin Tissoires <benjamin.tissoires@redhat.com>,
- Paul Mackerras <paulus@samba.org>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- "K. Y. Srinivasan" <kys@microsoft.com>,
- Mike Christie <michael.christie@oracle.com>, Wei Liu <wei.liu@kernel.org>,
- Maxim Levitsky <maximlevitsky@gmail.com>, Samuel Holland <samuel@sholland.org>,
- "Rafael J . Wysocki" <rafael@kernel.org>, linux-acpi@vger.kernel.org,
- Geert Uytterhoeven <geert@linux-m68k.org>, linux-pci@vger.kernel.org,
- xen-devel@lists.xenproject.org, Tomas Winkler <tomas.winkler@intel.com>,
- Julien Grall <jgrall@amazon.com>, Ohad Ben-Cohen <ohad@wizery.com>,
- Yufen Yu <yuyufen@huawei.com>, Alex Williamson <alex.williamson@redhat.com>,
- Alex Elder <elder@kernel.org>, linux-parisc@vger.kernel.org,
- Finn Thain <fthain@linux-m68k.org>, Geoff Levand <geoff@infradead.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org, Kai-Heng Feng <kai.heng.feng@canonical.com>,
- kernel@pengutronix.de, Jon Mason <jdmason@kudzu.us>,
- linux-ntb@googlegroups.com, Wu Hao <hao.wu@intel.com>,
- David Woodhouse <dwmw@amazon.co.uk>,
- Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Manohar Vanga <manohar.vanga@gmail.com>, linux-wireless@vger.kernel.org,
- Dominik Brodowski <linux@dominikbrodowski.net>,
- virtualization@lists.linux-foundation.org,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- target-devel@vger.kernel.org,
- Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
- linux-i2c@vger.kernel.org, linux-s390@vger.kernel.org,
- Stefano Stabellini <sstabellini@kernel.org>,
- Stephen Hemminger <sthemmin@microsoft.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Jiri Slaby <jirislaby@kernel.org>,
- Helge Deller <deller@gmx.de>,
- =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
- YueHaibing <yuehaibing@huawei.com>, industrypack-devel@lists.sourceforge.net,
- linux-mips@vger.kernel.org, Len Brown <lenb@kernel.org>,
- Vasily Gorbik <gor@linux.ibm.com>, linux-arm-msm@vger.kernel.org,
- linux-media@vger.kernel.org, Maxime Ripard <mripard@kernel.org>,
- William Breathitt Gray <vilhelm.gray@gmail.com>, greybus-dev@lists.linaro.org,
- linux-m68k@lists.linux-m68k.org, Florian Fainelli <f.fainelli@gmail.com>,
- Rikard Falkeborn <rikard.falkeborn@gmail.com>, Frank Li <lznuaa@gmail.com>,
- Mark Gross <mgross@linux.intel.com>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- linux-arm-kernel@lists.infradead.org, Johannes Thumshirn <morbidrsa@gmail.com>,
- Mathieu Poirier <mathieu.poirier@linaro.org>, Stephen Boyd <sboyd@kernel.org>,
- Cornelia Huck <cohuck@redhat.com>, Peter Oberparleiter <oberpar@linux.ibm.com>,
- Joey Pabalan <jpabalanb@gmail.com>, Yehezkel Bernat <YehezkelShB@gmail.com>,
- Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>,
- Bodo Stroesser <bostroesser@gmail.com>,
- Alison Schofield <alison.schofield@intel.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Tyrel Datwyler <tyreld@linux.ibm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Tom Rix <trix@redhat.com>, Jason Wang <jasowang@redhat.com>,
- SeongJae Park <sjpark@amazon.de>, alsa-devel@alsa-project.org,
- platform-driver-x86@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
- netdev@vger.kernel.org, Vineeth Vijayan <vneethv@linux.ibm.com>,
- Ira Weiny <ira.weiny@intel.com>, Rob Herring <robh@kernel.org>,
- Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
- Dave Jiang <dave.jiang@intel.com>, linux-staging@lists.linux.dev,
- Dexuan Cui <decui@microsoft.com>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Kishon Vijay Abraham I <kishon@ti.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Chen-Yu Tsai <wens@csie.org>,
- linux-input@vger.kernel.org, Allen Hubbe <allenbh@gmail.com>,
- Alex Dubov <oakad@yahoo.com>, Haiyang Zhang <haiyangz@microsoft.com>,
- Jiri Kosina <jikos@kernel.org>,
- "Russell King \(Oracle\)" <rmk+kernel@armlinux.org.uk>,
- Ben Widawsky <ben.widawsky@intel.com>,
- Harald Freudenberger <freude@linux.ibm.com>, linux-cxl@vger.kernel.org,
- Michael Buesch <m@bues.ch>, Dan Williams <dan.j.williams@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Cristian Marussi <cristian.marussi@arm.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Martyn Welch <martyn@welchs.me.uk>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, linux-mmc@vger.kernel.org,
- linux-sunxi@lists.linux.dev, Stefan Richter <stefanr@s5r6.in-berlin.de>,
- Sudeep Holla <sudeep.holla@arm.com>, "David S. Miller" <davem@davemloft.net>,
- Sven Van Asbroeck <TheSven73@gmail.com>, Rich Felker <dalias@libc.org>,
- kvm@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>,
- linux-remoteproc@vger.kernel.org, Bjorn Andersson <bjorn.andersson@linaro.org>,
- sparclinux@vger.kernel.org, Kirti Wankhede <kwankhede@nvidia.com>,
- Andreas Noever <andreas.noever@gmail.com>, linux-i3c@lists.infradead.org,
- linux1394-devel@lists.sourceforge.net, Lee Jones <lee.jones@linaro.org>,
- Arnd Bergmann <arnd@arndb.de>, linux-scsi@vger.kernel.org,
- Marc Zyngier <maz@kernel.org>, Russell King <linux@armlinux.org.uk>,
- Thorsten Scherer <t.scherer@eckelmann.de>, Andy Gross <agross@kernel.org>,
- linux-serial@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
- linux-hyperv@vger.kernel.org, Michael Jamet <michael.jamet@intel.com>,
- Heiko Carstens <hca@linux.ibm.com>, Johan Hovold <johan@kernel.org>,
- Hans de Goede <hdegoede@redhat.com>, Hannes Reinecke <hare@suse.de>,
- Juergen Gross <jgross@suse.com>, linuxppc-dev@lists.ozlabs.org,
- Takashi Iwai <tiwai@suse.com>, Alexandre Bounine <alex.bou9@gmail.com>,
- Vinod Koul <vkoul@kernel.org>, Mark Brown <broonie@kernel.org>,
- Vishal Verma <vishal.l.verma@intel.com>, dmaengine@vger.kernel.org,
- Moritz Fischer <mdf@kernel.org>, Johannes Berg <johannes@sipsolutions.net>,
- Johannes Thumshirn <jth@kernel.org>, Maximilian Luz <luzmaximilian@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+https://bugzilla.kernel.org/show_bug.cgi?id=3D213803
 
---o9Bjd73EPYzHYRI8
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+            Bug ID: 213803
+           Summary: G5 kernel build (v5.14-rc2) fails at linking stage -
+                    ld: arch/powerpc/mm/pgtable.o: in function
+                    `.__ptep_set_access_flags':
+                    /usr/src/linux-stable/./arch/powerpc/include/asm/book3
+                    s/64/pgtable.h:824: undefined reference to
+                    `.radix__ptep_set_access_flags'
+           Product: Platform Specific/Hardware
+           Version: 2.5
+    Kernel Version: 5.14-rc2
+          Hardware: PPC-64
+                OS: Linux
+              Tree: Mainline
+            Status: NEW
+          Severity: normal
+          Priority: P1
+         Component: PPC-64
+          Assignee: platform_ppc-64@kernel-bugs.osdl.org
+          Reporter: erhard_f@mailbox.org
+        Regression: No
 
-On Tue, Jul 13, 2021 at 09:35:22PM +0200, Uwe Kleine-K=C3=B6nig wrote:
-> The driver core ignores the return value of this callback because there
-> is only little it can do when a device disappears.
->=20
-> This is the final bit of a long lasting cleanup quest where several
-> buses were converted to also return void from their remove callback.
-> Additionally some resource leaks were fixed that were caused by drivers
-> returning an error code in the expectation that the driver won't go
-> away.
->=20
-> With struct bus_type::remove returning void it's prevented that newly
-> implemented buses return an ignored error code and so don't anticipate
-> wrong expectations for driver authors.
->=20
-> Acked-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk> (For ARM, Am=
-ba and related parts)
-> Acked-by: Mark Brown <broonie@kernel.org>
-> Acked-by: Chen-Yu Tsai <wens@csie.org> (for sunxi-rsb)
-> Acked-by: Pali Roh=C3=A1r <pali@kernel.org>
-> Acked-by: Mauro Carvalho Chehab <mchehab@kernel.org> (for media)
-> Acked-by: Hans de Goede <hdegoede@redhat.com> (For drivers/platform)
-> Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> Acked-By: Vinod Koul <vkoul@kernel.org>
-> Acked-by: Juergen Gross <jgross@suse.com> (For xen)
-> Acked-by: Lee Jones <lee.jones@linaro.org> (For mfd)
-> Acked-by: Johannes Thumshirn <jth@kernel.org> (For mcb)
-> Acked-by: Johan Hovold <johan@kernel.org>
-> Acked-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org> (For slimb=
-us)
-> Acked-by: Kirti Wankhede <kwankhede@nvidia.com> (For vfio)
-> Acked-by: Maximilian Luz <luzmaximilian@gmail.com>
-> Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com> (For ulpi and=
- typec)
-> Acked-by: Samuel Iglesias Gons=C3=A1lvez <siglesias@igalia.com> (For ipac=
-k)
-> Reviewed-by: Tom Rix <trix@redhat.com> (For fpga)
-> Acked-by: Geoff Levand <geoff@infradead.org> (For ps3)
-> Acked-by: Yehezkel Bernat <YehezkelShB@gmail.com> (For thunderbolt)
-> Reviewed-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-> Acked-by: Alexander Shishkin <alexander.shishkin@linux.intel.com> (For in=
-tel_th)
-> Acked-by: Dominik Brodowski <linux@dominikbrodowski.net> (For pcmcia)
-> Reviewed-by: Cornelia Huck <cohuck@redhat.com> (For drivers/s390 and driv=
-ers/vfio)
-> Acked-by: Rafael J. Wysocki <rafael@kernel.org> (For ACPI)
-> Acked-by: Bjorn Andersson <bjorn.andersson@linaro.org> (rpmsg and apr)
-> Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com> (For =
-intel-ish-hid)
-> Acked-by: Dan Williams <dan.j.williams@intel.com> (For CXL, DAX, and NVDI=
-MM)
-> Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com> (For isa)
-> Acked-by: Stefan Richter <stefanr@s5r6.in-berlin.de> (For firewire)
-> Acked-by: Benjamin Tissoires <benjamin.tissoires@redhat.com> (For hid)
-> Acked-by: Thorsten Scherer <t.scherer@eckelmann.de> (For siox)
-> Acked-by: Sven Van Asbroeck <TheSven73@gmail.com> (For anybuss)
-> Acked-by: Ulf Hansson <ulf.hansson@linaro.org> (For MMC)
-> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+Created attachment 297967
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D297967&action=3Dedit
+kernel .config (5.14-rc2, PowerMac G5 11,2)
 
-Acked-by: Wolfram Sang <wsa@kernel.org> # for I2C
+[...]
+  CHK     include/generated/autoksyms.h
+  GEN     .version
+  CHK     include/generated/compile.h
+  UPD     include/generated/compile.h
+  CC      init/version.o
+  AR      init/built-in.a
+  LD      vmlinux.o
+  MODPOST vmlinux.symvers
+  MODINFO modules.builtin.modinfo
+  GEN     modules.builtin
+  LD      .tmp_vmlinux.kallsyms1
+ld: arch/powerpc/mm/pgtable.o: in function `.__ptep_set_access_flags':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/pgtable.h:824:
+undefined reference to `.radix__ptep_set_access_flags'
+ld: arch/powerpc/mm/pageattr.o: in function `.change_page_attr':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/tlbflush.h:80:
+undefined reference to `.radix__flush_tlb_kernel_range'
+ld: arch/powerpc/mm/pageattr.o: in function `.set_page_attr':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/tlbflush.h:80:
+undefined reference to `.radix__flush_tlb_kernel_range'
+ld: arch/powerpc/mm/book3s64/mmu_context.o:(.toc+0x0): undefined reference =
+to
+`mmu_pid_bits'
+ld: arch/powerpc/mm/book3s64/mmu_context.o:(.toc+0x8): undefined reference =
+to
+`mmu_base_pid'
+ld: arch/powerpc/mm/book3s64/pgtable.o: in function `.pmd_hugepage_update':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/pgtable.h:1197:
+undefined reference to `.radix__pmd_hugepage_update'
+ld: arch/powerpc/mm/book3s64/pgtable.o: in function `.do_serialize':
+/usr/src/linux-stable/arch/powerpc/mm/book3s64/pgtable.c:89: undefined
+reference to `.exit_lazy_flush_tlb'
+ld: arch/powerpc/mm/book3s64/pgtable.o: in function `.pmdp_set_access_flags=
+':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/pgtable.h:824:
+undefined reference to `.radix__ptep_set_access_flags'
+ld: arch/powerpc/mm/book3s64/pgtable.o: in function `.pmdp_invalidate':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/tlbflush.h:54:
+undefined reference to `.radix__flush_pmd_tlb_range'
+ld: arch/powerpc/mm/book3s64/pgtable.o: in function
+`.pmdp_huge_get_and_clear_full':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/pgtable.h:1300:
+undefined reference to `.radix__pmdp_huge_get_and_clear'
+ld: arch/powerpc/mm/book3s64/pgtable.o: in function
+`.pmdp_huge_get_and_clear_full':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/tlbflush.h:54:
+undefined reference to `.radix__flush_pmd_tlb_range'
+ld: arch/powerpc/mm/book3s64/pgtable.o: in function `.mmu_cleanup_all':
+/usr/src/linux-stable/arch/powerpc/mm/book3s64/pgtable.c:179: undefined
+reference to `.radix__mmu_cleanup_all'
+ld: arch/powerpc/mm/book3s64/pgtable.o: in function `.ptep_modify_prot_comm=
+it':
+/usr/src/linux-stable/arch/powerpc/mm/book3s64/pgtable.c:457: undefined
+reference to `.radix__ptep_modify_prot_commit'
+ld: arch/powerpc/lib/code-patching.o: in function `.patch_instruction':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/pgtable.h:1080:
+undefined reference to `.radix__map_kernel_page'
+ld: arch/powerpc/lib/code-patching.o: in function `.patch_instruction':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/tlbflush.h:80:
+undefined reference to `.radix__flush_tlb_kernel_range'
+ld: kernel/fork.o: in function `.dup_mm':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/tlbflush.h:117:
+undefined reference to `.radix__flush_tlb_mm'
+ld: mm/memory.o: in function `.unmap_page_range':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/tlbflush.h:109:
+undefined reference to `.radix__tlb_flush'
+ld: mm/memory.o: in function `.do_wp_page':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/tlbflush.h:125:
+undefined reference to `.radix__flush_tlb_page'
+ld: mm/memory.o: in function `.do_set_pmd':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/pgtable.h:1323:
+undefined reference to `.radix__pgtable_trans_huge_deposit'
+ld: mm/memory.o: in function `.__handle_mm_fault':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/tlbflush.h:125:
+undefined reference to `.radix__flush_tlb_page'
+ld: mm/mprotect.o: in function `.change_protection':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/tlbflush.h:72:
+undefined reference to `.radix__flush_tlb_range'
+ld: mm/mremap.o: in function `.flush_tlb_range':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/tlbflush.h:72:
+undefined reference to `.radix__flush_tlb_range'
+ld: mm/pgtable-generic.o: in function `.ptep_clear_flush':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/tlbflush.h:125:
+undefined reference to `.radix__flush_tlb_page'
+ld: mm/pgtable-generic.o: in function `.pmdp_huge_clear_flush':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/pgtable.h:1300:
+undefined reference to `.radix__pmdp_huge_get_and_clear'
+ld: mm/pgtable-generic.o: in function `.pmdp_huge_clear_flush':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/tlbflush.h:54:
+undefined reference to `.radix__flush_pmd_tlb_range'
+ld: mm/rmap.o: in function `.try_to_unmap_one':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/tlbflush.h:72:
+undefined reference to `.radix__flush_tlb_range'
+ld: mm/rmap.o: in function `.try_to_migrate_one':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/tlbflush.h:72:
+undefined reference to `.radix__flush_tlb_range'
+ld: mm/vmalloc.o: in function `.flush_tlb_kernel_range':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/tlbflush.h:80:
+undefined reference to `.radix__flush_tlb_kernel_range'
+ld: mm/hugetlb.o: in function `.hugetlb_cow':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/hugetlb.h:91:
+undefined reference to `.radix__flush_hugetlb_page'
+ld: mm/hugetlb.o: in function `.hugetlb_change_protection':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/tlbflush.h:64:
+undefined reference to `.radix__flush_hugetlb_tlb_range'
+ld: mm/hugetlb.o: in function `.hugetlb_unshare_all_pmds':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/tlbflush.h:64:
+undefined reference to `.radix__flush_hugetlb_tlb_range'
+ld: mm/huge_memory.o: in function `.pgtable_trans_huge_deposit':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/pgtable.h:1323:
+undefined reference to `.radix__pgtable_trans_huge_deposit'
+ld: mm/huge_memory.o: in function `.pgtable_trans_huge_withdraw':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/pgtable.h:1332:
+undefined reference to `.radix__pgtable_trans_huge_withdraw'
+ld: mm/huge_memory.o: in function `.pmd_hugepage_update.isra.0':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/pgtable.h:1197:
+undefined reference to `.radix__pmd_hugepage_update'
+ld: mm/huge_memory.o: in function `.do_huge_pmd_numa_page':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/tlbflush.h:72:
+undefined reference to `.radix__flush_tlb_range'
+ld: mm/huge_memory.o: in function `.move_huge_pmd':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/pgtable.h:1300:
+undefined reference to `.radix__pmdp_huge_get_and_clear'
+ld: mm/huge_memory.o: in function `.move_huge_pmd':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/tlbflush.h:72:
+undefined reference to `.radix__flush_tlb_range'
+ld: mm/khugepaged.o: in function `.pmdp_collapse_flush':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/pgtable.h:1308:
+undefined reference to `.radix__pmdp_collapse_flush'
+ld: mm/khugepaged.o: in function `.khugepaged':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/pgtable.h:1323:
+undefined reference to `.radix__pgtable_trans_huge_deposit'
+ld: fs/proc/task_mmu.o: in function `.clear_refs_write':
+/usr/src/linux-stable/./arch/powerpc/include/asm/book3s/64/tlbflush.h:117:
+undefined reference to `.radix__flush_tlb_mm'
+ld: warning: creating DT_TEXTREL in a PIE
 
-Thanks, Uwe!
+--=20
+You may reply to this email to add a comment.
 
-
---o9Bjd73EPYzHYRI8
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmD3MUIACgkQFA3kzBSg
-KbYzoQ//fHsReQ7gV79Uj6MfHENOZAAxSFMd8yIWNeX0Ug8crVQ2fzQgvlotUS1y
-62KPO9MFbi37+nfCWwl5uNEiDPwYjpB+jM/jfqJ849ngfiIQyUqCK7qr5b1FIWkp
-TuEV1Rx/wlpmxMEjKFAuo+/5OkXVwvpxQGiqBemOeTmOKjqITCpXEBkYqDqqI/MY
-lnzwpE8R30sf8IH/aThtb9dZBz+8y2mry6nVtSbMMmZ0VAYgwEPmuPLfa9CIhaCJ
-Oqe6Uf+sJs/emp0nfyZ5IDXvO8vE5kgPoy0l/smHEtejHLUkHBKf4MusKOzDdbax
-Uk48fnhKgbhxbVN0guT7IzWvRG+80hU4Ns9YPjmHYNXr4Wg03//hoAv4otMAAqXU
-Tjk9sEMBGHasqHZ0e1j3xTRhxQOwTJjzwVNhkrTX4HIZ/k0gXQK0ojBXxGvWeds2
-yQ7FUakyf1LQBmrLwssWSXbyp+W6tVodIUmnebSK1IpVd7YK4NZPf796yD44Ckzd
-XM4O5xTksxr5X+cEsNNLxhXFMohR/BOpLCj4R1+vpRNyMTHLIqfsI7GL+TJh+Mri
-+kuq0TQgbTRlrIw/jfTcenYmXhQte4oeFQa3uVwGY2b+5kB/zRMTKThU0e2Vpd+8
-Kifz6u9a8LEGAMrLNXVd1B/uHQSOMYeeIzsuZ+BHqVxDsyNvJds=
-=zPVh
------END PGP SIGNATURE-----
-
---o9Bjd73EPYzHYRI8--
+You are receiving this mail because:
+You are watching the assignee of the bug.=
