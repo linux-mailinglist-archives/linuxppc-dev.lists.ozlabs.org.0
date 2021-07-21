@@ -2,57 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 372B63D094A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jul 2021 08:59:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F3733D0957
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jul 2021 09:02:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GV5zP1TLdz2yWs
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jul 2021 16:59:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GV63S1w7Lz3bWH
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jul 2021 17:02:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=t3hopBQT;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=dHDgP3pL;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=casper.srs.infradead.org (client-ip=2001:8b0:10b:1236::1;
- helo=casper.infradead.org;
- envelope-from=batv+75be22767c7c0793244e+6541+infradead.org+hch@casper.srs.infradead.org;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=t3hopBQT; 
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=dHDgP3pL; 
  dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
+Received: from ozlabs.org (ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GV5yy2CQdz2yMT
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jul 2021 16:58:50 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=2Tg6rDmREVX1ceiTKGgiYnKUFpoX6FiU/JNm2fWqBkw=; b=t3hopBQTUruM/ENRFxNyEOoUC+
- 5oJEQnciSH7H7I8MBiuNHyNhq7XNi/0H9lWN4pG4JSoChs5UkzgXC23DuhuRBWouYCC04xOkyZ1xV
- rR+ywDmkEKE0nnaaZ5dg8qfF0i8IuE7hW6GwCxdzrrEd18zJIIHurdno+HOqRNXejciU760Nh3WQx
- 3AOh2nuu5mW+eF0HaQSNswWOgds534d05ahBQ3vI0rR4UkVwl5iObPL+K+tNrdsch3TtjxYoxhGnS
- hW5Qq+sSJ88nW4YhTG3gLQZhM3cY/AdifCtrpRz3dSoygFIOUXVfb1SJ8YEApxUrgC5VPetggN9c3
- 7B06dTQQ==;
-Received: from hch by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat
- Linux)) id 1m66BG-008tyJ-Id; Wed, 21 Jul 2021 06:58:13 +0000
-Date: Wed, 21 Jul 2021 07:58:10 +0100
-From: Christoph Hellwig <hch@infradead.org>
-To: Anson Jacob <Anson.Jacob@amd.com>
-Subject: Re: [RFC v2 1/2] ppc/fpu: Add generic FPU api similar to x86
-Message-ID: <YPfFgkD+kcRaH8Ow@infradead.org>
-References: <20210721044801.840501-1-Anson.Jacob@amd.com>
- <20210721044801.840501-2-Anson.Jacob@amd.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GV6301DXsz2xZS
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jul 2021 17:02:19 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4GV62w2YVgz9sX1;
+ Wed, 21 Jul 2021 17:02:15 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1626850939;
+ bh=yJhjT2FDu3UB8nSglmZ3gbSnFsIXkP+zQ7M5BtWj7Pk=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=dHDgP3pLI3+s7uEkJ8IBAg8bl7v9nFoRYyfUvYTb33iok877v9y3b+AcWL6eXbAe8
+ 3AVxLlKBLBekk/5nXVHAS6LQRaTBCaEi0umtTRJuFh6/w9bieCsTEzv74XWQmi1BOe
+ ex1f/gb2Hl/5W0tiXY4lwumBIYxWeGdslSmZBN2vAd/OmWeTQFznjea4sQhAxrmytt
+ vBO/7rFIRSPktXV1rMnpbTIzG4C4fv99vAPUozpHPBgN0oxkB9KB9pIWVfSUHgTomd
+ WndpQL/WVkignS3ZQ270Kg2HeTy3CRUKvj6ls5Co0oc4f3P5a/ziboca6jNkCJ15uS
+ kWi0lkouHabfw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Will Deacon
+ <will@kernel.org>
+Subject: [PATCH v2] Revert "mm/pgtable: add stubs for
+ {pmd/pub}_{set/clear}_huge"
+In-Reply-To: <20210720202627.Horde.vlszNhxkKrLIg0-3Sn2ucw5@messagerie.c-s.fr>
+References: <20210720202627.Horde.vlszNhxkKrLIg0-3Sn2ucw5@messagerie.c-s.fr>
+Date: Wed, 21 Jul 2021 17:02:13 +1000
+Message-ID: <87r1fs1762.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210721044801.840501-2-Anson.Jacob@amd.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,86 +63,260 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Bhawanpreet.Lakha@amd.com, Harry Wentland <harry.wentland@amd.com>,
- Sunpeng.Li@amd.com, qingqing.zhuo@amd.com, Rodrigo.Siqueira@amd.com,
- linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org, roman.li@amd.com,
- Christoph Hellwig <hch@infradead.org>, Aurabindo.Pillai@amd.com,
- paulus@samba.org, linuxppc-dev@lists.ozlabs.org,
- Christian K??nig <christian.koenig@amd.com>, bindu.r@amd.com
+Cc: Mark Rutland <mark.rutland@arm.com>, Jonathan Marek <jonathan@marek.ca>,
+ Marc Zyngier <maz@kernel.org>, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>, Ard Biesheuvel <ardb@kernel.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>,
+ linux-arm-kernel@lists.infradead.org,
+ Catalin Marinas <catalin.marinas@arm.com>, Paul Mackerras <paulus@samba.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Thomas Gleixner <tglx@linutronix.de>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> +
-> +/*
-> + * Use kernel_fpu_begin/end() if you intend to use FPU in kernel context. It
-> + * disables preemption so be careful if you intend to use it for long periods
-> + * of time.
-> + * TODO: If you intend to use the FPU in irq/softirq you need to check first with
-> + * irq_fpu_usable() if it is possible.
+From: Jonathan Marek <jonathan@marek.ca>
 
-Please avoid the overly lone lines comments.
+This reverts commit c742199a014de23ee92055c2473d91fe5561ffdf.
 
-> +extern bool kernel_fpu_enabled(void);
-> +extern void kernel_fpu_begin(void);
-> +extern void kernel_fpu_end(void);
+c742199a014d ("mm/pgtable: add stubs for {pmd/pub}_{set/clear}_huge")
+breaks arm64 in at least two ways for configurations where PUD or PMD
+folding occur:
 
-No need for the externs.
+  1. We no longer install huge-vmap mappings and silently fall back to
+     page-granular entries, despite being able to install block entries
+     at what is effectively the PGD level.
 
-> +/*
-> + * Track whether the kernel is using the FPU state
-> + * currently.
+  2. If the linear map is backed with block mappings, these will now
+     silently fail to be created in alloc_init_pud(), causing a panic
+     early during boot.
 
-This all fits on a single line.
+The pgtable selftests caught this, although a fix has not been
+forthcoming and Christophe is AWOL at the moment, so just revert the
+change for now to get a working -rc3 on which we can queue patches for
+5.15.
 
-> +static bool fpu_support(void)
-> +{
-> +	if (cpu_has_feature(CPU_FTR_VSX_COMP)) {
-> +		return true;
-> +	} else if (cpu_has_feature(CPU_FTR_ALTIVEC_COMP)) {
-> +		return true;
-> +	} else if (!cpu_has_feature(CPU_FTR_FPU_UNAVAILABLE)) {
-> +		return true;
-> +	}
+A simple revert breaks the build for 32-bit PowerPC 8xx machines, which
+rely on the default function definitions when the corresponding
+page-table levels are folded, since commit a6a8f7c4aa7e ("powerpc/8xx:
+add support for huge pages on VMAP and VMALLOC"), eg:
 
-No need for the braces, or else after a return.  In fact this could
-be simplified down to:
+  powerpc64-linux-ld: mm/vmalloc.o: in function `vunmap_pud_range':
+  linux/mm/vmalloc.c:362: undefined reference to `pud_clear_huge'
 
-	return cpu_has_feature(CPU_FTR_VSX_COMP) ||
-		cpu_has_feature(CPU_FTR_ALTIVEC_COMP) ||
-		cpu_has_feature(CPU_FTR_FPU_UNAVAILABLE));
+To avoid that, add stubs for pud_clear_huge() and pmd_clear_huge() in
+arch/powerpc/mm/nohash/8xx.c as suggested by Christophe.
 
-> +	preempt_disable();
-> +
-> +#ifdef CONFIG_VSX
-> +	if (cpu_has_feature(CPU_FTR_VSX_COMP)) {
-> +		enable_kernel_vsx();
-> +		return;
-> +	}
-> +#endif
-> +
-> +#ifdef CONFIG_ALTIVEC
-> +	if (cpu_has_feature(CPU_FTR_ALTIVEC_COMP)) {
-> +		enable_kernel_altivec();
-> +		return;
-> +	}
-> +#endif
-> +
-> +#ifdef CONFIG_PPC_FPU
-> +	if (!cpu_has_feature(CPU_FTR_FPU_UNAVAILABLE)) {
-> +		enable_kernel_fp();
-> +		return;
-> +	}
-> +#endif
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Fixes: c742199a014d ("mm/pgtable: add stubs for {pmd/pub}_{set/clear}_huge")
+Signed-off-by: Jonathan Marek <jonathan@marek.ca>
+Signed-off-by: Will Deacon <will@kernel.org>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Acked-by: Marc Zyngier <maz@kernel.org>
+[mpe: Fold in 8xx.c changes from Christophe and mention in change log]
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/linux-arm-kernel/CAMuHMdXShORDox-xxaeUfDW3wx2PeggFSqhVSHVZNKCGK-y_vQ@mail.gmail.com/
+Link: https://lore.kernel.org/r/20210717160118.9855-1-jonathan@marek.ca
+---
+ arch/arm64/mm/mmu.c          | 20 ++++++++------------
+ arch/powerpc/mm/nohash/8xx.c | 10 ++++++++++
+ arch/x86/mm/pgtable.c        | 34 +++++++++++++++-------------------
+ include/linux/pgtable.h      | 26 +-------------------------
+ 4 files changed, 34 insertions(+), 56 deletions(-)
 
-All the features are defined away if not supported (and we already rely
-on that in fpu_support()).  So this could become:
+v2: Fold in suggestion from Christophe to add stubs for 8xx.
 
-	if (cpu_has_feature(CPU_FTR_VSX_COMP))
-		enable_kernel_vsx();
-	else if (cpu_has_feature(CPU_FTR_ALTIVEC_COMP))
-		enable_kernel_altivec();
-	else if (!cpu_has_feature(CPU_FTR_FPU_UNAVAILABLE))
-		enable_kernel_fp();
+I kept the reviewed-by/acked-by tags from arm64 folks as the patch is
+unchanged as far as arm64 is concerned.
 
-Same for the disable path.
+Please take this via the arm64 tree.
+
+cheers
+
+
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index d74586508448..9ff0de1b2b93 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -1339,7 +1339,6 @@ void *__init fixmap_remap_fdt(phys_addr_t dt_phys, int *size, pgprot_t prot)
+ 	return dt_virt;
+ }
+ 
+-#if CONFIG_PGTABLE_LEVELS > 3
+ int pud_set_huge(pud_t *pudp, phys_addr_t phys, pgprot_t prot)
+ {
+ 	pud_t new_pud = pfn_pud(__phys_to_pfn(phys), mk_pud_sect_prot(prot));
+@@ -1354,16 +1353,6 @@ int pud_set_huge(pud_t *pudp, phys_addr_t phys, pgprot_t prot)
+ 	return 1;
+ }
+ 
+-int pud_clear_huge(pud_t *pudp)
+-{
+-	if (!pud_sect(READ_ONCE(*pudp)))
+-		return 0;
+-	pud_clear(pudp);
+-	return 1;
+-}
+-#endif
+-
+-#if CONFIG_PGTABLE_LEVELS > 2
+ int pmd_set_huge(pmd_t *pmdp, phys_addr_t phys, pgprot_t prot)
+ {
+ 	pmd_t new_pmd = pfn_pmd(__phys_to_pfn(phys), mk_pmd_sect_prot(prot));
+@@ -1378,6 +1367,14 @@ int pmd_set_huge(pmd_t *pmdp, phys_addr_t phys, pgprot_t prot)
+ 	return 1;
+ }
+ 
++int pud_clear_huge(pud_t *pudp)
++{
++	if (!pud_sect(READ_ONCE(*pudp)))
++		return 0;
++	pud_clear(pudp);
++	return 1;
++}
++
+ int pmd_clear_huge(pmd_t *pmdp)
+ {
+ 	if (!pmd_sect(READ_ONCE(*pmdp)))
+@@ -1385,7 +1382,6 @@ int pmd_clear_huge(pmd_t *pmdp)
+ 	pmd_clear(pmdp);
+ 	return 1;
+ }
+-#endif
+ 
+ int pmd_free_pte_page(pmd_t *pmdp, unsigned long addr)
+ {
+diff --git a/arch/powerpc/mm/nohash/8xx.c b/arch/powerpc/mm/nohash/8xx.c
+index 60780e089118..0df9fe29dd56 100644
+--- a/arch/powerpc/mm/nohash/8xx.c
++++ b/arch/powerpc/mm/nohash/8xx.c
+@@ -240,3 +240,13 @@ void __init setup_kuap(bool disabled)
+ 	mtspr(SPRN_MD_AP, MD_APG_KUAP);
+ }
+ #endif
++
++int pud_clear_huge(pud_t *pud)
++{
++	 return 0;
++}
++
++int pmd_clear_huge(pmd_t *pmd)
++{
++	 return 0;
++}
+diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
+index 3364fe62b903..3481b35cb4ec 100644
+--- a/arch/x86/mm/pgtable.c
++++ b/arch/x86/mm/pgtable.c
+@@ -682,7 +682,6 @@ int p4d_clear_huge(p4d_t *p4d)
+ }
+ #endif
+ 
+-#if CONFIG_PGTABLE_LEVELS > 3
+ /**
+  * pud_set_huge - setup kernel PUD mapping
+  *
+@@ -721,23 +720,6 @@ int pud_set_huge(pud_t *pud, phys_addr_t addr, pgprot_t prot)
+ 	return 1;
+ }
+ 
+-/**
+- * pud_clear_huge - clear kernel PUD mapping when it is set
+- *
+- * Returns 1 on success and 0 on failure (no PUD map is found).
+- */
+-int pud_clear_huge(pud_t *pud)
+-{
+-	if (pud_large(*pud)) {
+-		pud_clear(pud);
+-		return 1;
+-	}
+-
+-	return 0;
+-}
+-#endif
+-
+-#if CONFIG_PGTABLE_LEVELS > 2
+ /**
+  * pmd_set_huge - setup kernel PMD mapping
+  *
+@@ -768,6 +750,21 @@ int pmd_set_huge(pmd_t *pmd, phys_addr_t addr, pgprot_t prot)
+ 	return 1;
+ }
+ 
++/**
++ * pud_clear_huge - clear kernel PUD mapping when it is set
++ *
++ * Returns 1 on success and 0 on failure (no PUD map is found).
++ */
++int pud_clear_huge(pud_t *pud)
++{
++	if (pud_large(*pud)) {
++		pud_clear(pud);
++		return 1;
++	}
++
++	return 0;
++}
++
+ /**
+  * pmd_clear_huge - clear kernel PMD mapping when it is set
+  *
+@@ -782,7 +779,6 @@ int pmd_clear_huge(pmd_t *pmd)
+ 
+ 	return 0;
+ }
+-#endif
+ 
+ #ifdef CONFIG_X86_64
+ /**
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index d147480cdefc..e24d2c992b11 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -1397,34 +1397,10 @@ static inline int p4d_clear_huge(p4d_t *p4d)
+ }
+ #endif /* !__PAGETABLE_P4D_FOLDED */
+ 
+-#ifndef __PAGETABLE_PUD_FOLDED
+ int pud_set_huge(pud_t *pud, phys_addr_t addr, pgprot_t prot);
+-int pud_clear_huge(pud_t *pud);
+-#else
+-static inline int pud_set_huge(pud_t *pud, phys_addr_t addr, pgprot_t prot)
+-{
+-	return 0;
+-}
+-static inline int pud_clear_huge(pud_t *pud)
+-{
+-	return 0;
+-}
+-#endif /* !__PAGETABLE_PUD_FOLDED */
+-
+-#ifndef __PAGETABLE_PMD_FOLDED
+ int pmd_set_huge(pmd_t *pmd, phys_addr_t addr, pgprot_t prot);
++int pud_clear_huge(pud_t *pud);
+ int pmd_clear_huge(pmd_t *pmd);
+-#else
+-static inline int pmd_set_huge(pmd_t *pmd, phys_addr_t addr, pgprot_t prot)
+-{
+-	return 0;
+-}
+-static inline int pmd_clear_huge(pmd_t *pmd)
+-{
+-	return 0;
+-}
+-#endif /* !__PAGETABLE_PMD_FOLDED */
+-
+ int p4d_free_pud_page(p4d_t *p4d, unsigned long addr);
+ int pud_free_pmd_page(pud_t *pud, unsigned long addr);
+ int pmd_free_pte_page(pmd_t *pmd, unsigned long addr);
+
+-- 
+2.25.1
+
