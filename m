@@ -2,54 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C580E3D0C8A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jul 2021 12:48:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 112B63D0D8B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jul 2021 13:26:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GVC3y5mr6z30Gx
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jul 2021 20:48:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GVCvd06Vcz30Mp
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jul 2021 21:26:21 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ID6hrb0z;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=ZMLCGL/W;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=will@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=ID6hrb0z; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ smtp.mailfrom=suse.com (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
+ envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
+ header.s=susede1 header.b=ZMLCGL/W; dkim-atps=neutral
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GVCv723XZz2yY0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jul 2021 21:25:54 +1000 (AEST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+ by smtp-out1.suse.de (Postfix) with ESMTP id C76CF224CA;
+ Wed, 21 Jul 2021 11:25:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+ t=1626866749; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=GBhNhDSkXmGc+UGDvicy9H00ze0r3nAnQtgCPS938x8=;
+ b=ZMLCGL/Ws0WpDS339s/PeufncPuxlhb3HUg5U0hMGmpycjJVw/eR58wDX5gmQjgRJSp2N5
+ Y5v8CdtUUD7bEYPTxfQKBYd1rQ4KFajiAxQRw5ZyelV61E+PDdtRl+3vmyjz+ukcmfaWWJ
+ f7/QQCYoht67/ix57et3URrFAOBc7/c=
+Received: from suse.cz (pathway.suse.cz [10.100.12.24])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GVC3T3NhFz2yP1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jul 2021 20:48:05 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id DDCED6138C;
- Wed, 21 Jul 2021 10:47:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1626864482;
- bh=qR4EPIkAAUhsdXzNobnISSq8AvXs8KveVzIPRgC1ZSg=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=ID6hrb0zF1vZAWTO/w64wkH49bmbmEGRBdhTkmz8CXH9ZQ5RF7SsBYyX6mXFyyASq
- f07Ztur3Q8lPzlkZAf/va0W1gLo9bnlyRHdsKrfjsu5sUGuqAvqSocHtj4yFnuL0cJ
- HiqjLARL7TjecLsxZuUzEPQkZx1WtlU6O3iMOLP74mxKJjN7PE3iMkNtcDR6HQfFGj
- XRT3R6bViCjK4K/kVOCKFpFBDjuL9BhP+zLL9tekrqcd4Umomaxh0EnxUYxWWnlo0R
- ld9xxHa8rszAKphlvt/IYjNPlhOofDAjcAFSKgUAqmggENwS95WZ2jZptkug0eO44b
- WhsgW3cGaup2Q==
-From: Will Deacon <will@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v2] Revert "mm/pgtable: add stubs for
- {pmd/pub}_{set/clear}_huge"
-Date: Wed, 21 Jul 2021 11:47:53 +0100
-Message-Id: <162686329170.980657.905966885675716231.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <87r1fs1762.fsf@mpe.ellerman.id.au>
-References: <20210720202627.Horde.vlszNhxkKrLIg0-3Sn2ucw5@messagerie.c-s.fr>
- <87r1fs1762.fsf@mpe.ellerman.id.au>
+ by relay2.suse.de (Postfix) with ESMTPS id D52A3A3B84;
+ Wed, 21 Jul 2021 11:25:47 +0000 (UTC)
+Date: Wed, 21 Jul 2021 13:25:47 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: John Ogness <john.ogness@linutronix.de>
+Subject: Re: [PATCH printk v4 3/6] printk: remove safe buffers
+Message-ID: <20210721112547.fmksfm3kah5rd4ck@pathway.suse.cz>
+References: <20210715193359.25946-1-john.ogness@linutronix.de>
+ <20210715193359.25946-4-john.ogness@linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210715193359.25946-4-john.ogness@linutronix.de>
+User-Agent: NeoMutt/20170912 (1.9.0)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,43 +63,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Marc Zyngier <maz@kernel.org>,
- linux-kernel@vger.kernel.org, Jonathan Marek <jonathan@marek.ca>,
- Will Deacon <will@kernel.org>, catalin.marinas@arm.com,
- linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>,
- Ard Biesheuvel <ardb@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>,
- linux-arm-kernel@lists.infradead.org, Paul Mackerras <paulus@samba.org>,
- Thomas Gleixner <tglx@linutronix.de>, kernel-team@android.com,
- Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>
+Cc: Kees Cook <keescook@chromium.org>, "Paul E. McKenney" <paulmck@kernel.org>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>, Nicholas Piggin <npiggin@gmail.com>,
+ linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
+ kexec@lists.infradead.org, Sergey Senozhatsky <senozhatsky@chromium.org>,
+ Yue Hu <huyue2@yulong.com>, Paul Mackerras <paulus@samba.org>,
+ Eric Biederman <ebiederm@xmission.com>, Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>,
+ Tiezhu Yang <yangtiezhu@loongson.cn>,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 21 Jul 2021 17:02:13 +1000, Michael Ellerman wrote:
-> This reverts commit c742199a014de23ee92055c2473d91fe5561ffdf.
+On Thu 2021-07-15 21:39:56, John Ogness wrote:
+> With @logbuf_lock removed, the high level printk functions for
+> storing messages are lockless. Messages can be stored from any
+> context, so there is no need for the NMI and safe buffers anymore.
+> Remove the NMI and safe buffers.
 > 
-> c742199a014d ("mm/pgtable: add stubs for {pmd/pub}_{set/clear}_huge")
-> breaks arm64 in at least two ways for configurations where PUD or PMD
-> folding occur:
+> Although the safe buffers are removed, the NMI and safe context
+> tracking is still in place. In these contexts, store the message
+> immediately but still use irq_work to defer the console printing.
 > 
->   1. We no longer install huge-vmap mappings and silently fall back to
->      page-granular entries, despite being able to install block entries
->      at what is effectively the PGD level.
+> Since printk recursion tracking is in place, safe context tracking
+> for most of printk is not needed. Remove it. Only safe context
+> tracking relating to the console and console_owner locks is left
+> in place. This is because the console and console_owner locks are
+> needed for the actual printing.
 > 
-> [...]
+> Signed-off-by: John Ogness <john.ogness@linutronix.de>
 
-Thank you Michael! I owe you a beer next time I see you, if we don't go
-extinct before then.
+Reviewed-by: Petr Mladek <pmladek@suse.com>
 
-Applied to arm64 (for-next/fixes), thanks!
-
-[1/1] Revert "mm/pgtable: add stubs for {pmd/pub}_{set/clear}_huge"
-      https://git.kernel.org/arm64/c/d8a719059b9d
-
-Cheers,
--- 
-Will
-
-https://fixes.arm64.dev
-https://next.arm64.dev
-https://will.arm64.dev
+Best Regards,
+Petr
