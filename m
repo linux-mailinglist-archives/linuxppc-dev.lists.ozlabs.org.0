@@ -1,89 +1,112 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96D2E3D0762
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jul 2021 05:33:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D009F3D07EC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jul 2021 06:49:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GV1Ps3wcdz3085
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jul 2021 13:33:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GV35d53gdz3bf3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Jul 2021 14:49:25 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=Q5WX2nUU;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=Jlb4Ku4Z;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::529;
- helo=mail-pg1-x529.google.com; envelope-from=aik@ozlabs.ru;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=Q5WX2nUU; dkim-atps=neutral
-Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com
- [IPv6:2607:f8b0:4864:20::529])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=amd.com
+ (client-ip=40.107.92.62; helo=nam10-bn7-obe.outbound.protection.outlook.com;
+ envelope-from=anson.jacob@amd.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256
+ header.s=selector1 header.b=Jlb4Ku4Z; 
+ dkim-atps=neutral
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com
+ (mail-bn7nam10on2062.outbound.protection.outlook.com [40.107.92.62])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GV1PN3tdBz2yP5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jul 2021 13:32:53 +1000 (AEST)
-Received: by mail-pg1-x529.google.com with SMTP id y17so604795pgf.12
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Jul 2021 20:32:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=message-id:date:mime-version:user-agent:subject:content-language:to
- :cc:references:from:in-reply-to:content-transfer-encoding;
- bh=QAwNLVYnXfNwIrxKP2BgwpBmnIzyfGWy+FsMfeaHuZU=;
- b=Q5WX2nUU8R9BIOsyeKlPmuklyVqgc8kret9u46beycn1/bWbwH2Jk2zED/lYid2BNH
- n5XFAQ46+rpj6dsc5bjRvKVv830FiwnLX4SKjtbOSl7tOghNhJWQOoa+AUYY/r4MA/vP
- KxJjof8MslP8/AU7z/QRWI3An+bVy6IgaYxYVntMb9xE+fKCNxPAwuGCEcU3hFRPjm09
- MfQiGMKJ9xKQTGQLOTcyXgaj4tq7oBuvqNdY137N4k8LG4Pgg4Nm+/wKl6R4YD/sULGj
- FvoNVqpv3pI1HQNiNbKjDAA2Ng2eMBwaYUnKXJmWdceEiz94XZg8TlvKURjIIpOdrRDl
- +Nhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
- :content-language:to:cc:references:from:in-reply-to
- :content-transfer-encoding;
- bh=QAwNLVYnXfNwIrxKP2BgwpBmnIzyfGWy+FsMfeaHuZU=;
- b=EouRoqlNKH1wDMTpJFHxlx2ijhW169pxS0xiFmUnhdza0Ng+IQvPP2D4zY9idXEeBy
- F2FErhZ8moy/bTv57WjO8GFAUGR/ztEv4M6gkrGqM6zzxWSCt0g02yRXblvTNnv/7tAh
- Xq/N7eJkl6fYKetTD9FU6OOLFiRYqzN6xMVIGiVScmET9RU+yBgAHYDDkbg8gjTs6p4W
- 9ax+mHaWGz2W6wCk2cioAFv8+gi1T5Su42D+8SosowPlcdL/LAyiv+Kv0q5Qhk3KvYGN
- c85xNaRAJ1/D6dYfmyTn5zPiZfjUZuQafS73Q0wHMsH0NU6URGeT4p1fguJdHUE8u6uz
- ja6w==
-X-Gm-Message-State: AOAM53151DhIir2Cm1jz3xENppmgtgH/MJZvUNnoWSZOPCqUvGPIlwxK
- tJ1WspfB+JUZayLwIakOTdCcsg==
-X-Google-Smtp-Source: ABdhPJxQpRGy+rG3yE6PLFTfgGw8SwQUlsMBPU4Uaw1kXUOrTzqTxcCskUsNn99a4MjfVecWRkuYsQ==
-X-Received: by 2002:a05:6a00:168a:b029:2fb:6bb0:aba with SMTP id
- k10-20020a056a00168ab02902fb6bb00abamr34692486pfc.32.1626838367365; 
- Tue, 20 Jul 2021 20:32:47 -0700 (PDT)
-Received: from [192.168.10.23] (219-90-184-65.ip.adam.com.au. [219.90.184.65])
- by smtp.gmail.com with UTF8SMTPSA id
- q125sm18975978pga.87.2021.07.20.20.32.39
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Jul 2021 20:32:46 -0700 (PDT)
-Message-ID: <8dfb28d5-b654-746c-03d8-aeee3d438240@ozlabs.ru>
-Date: Wed, 21 Jul 2021 13:32:36 +1000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GV34b6Xcyz2yP1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Jul 2021 14:48:28 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=nPq1Ou/iEgRKitoNWS5d38famT2g9I+tktifJhe5CqasN33rHeRIPrBJZ+L1MsfYGwKHw5GaOkNdlerYqMS0MLKWiOMEIljphu7+v/5aaIeQm7BU+8AD02d4t4d3alhy5OralPNyDo3tOEi3UGmWmH6C72Ivfh3+OLxiWrtXkJzgIJbBOuD/CZrilR3FooVRorZT+cv2gsB4uIxMbwYajuurCJAoqGY7D8jeliUcCz3Uc2GVT6VnP5vlI+qcOubPBGO871hR94GumhsMsV6w9wsOQyLhm7TI30Yio1BuhACPU21SnVuvPkiUAtEhtyQADEYkx4bpSxWj6MecrG7V4w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TrzMv5T4lvXTDDAO61PU0YC1kmkH91c8l3sbzBCe32Y=;
+ b=bCHeHjcgQF9uiYddAZ4M896m/myjiqimbnss3V4m9+YujLLOBHunM+vtZMRfMldZ0fTbs0m67SsQNI3u965s03CG6uaT5JSaRN3CT5vd8tkcno1nW1o40MVILjboSrB5zPsi+WSyv67tmZHxQ5q9DpUlz/3BORJco7C9ppQh4/k4btjsFXoBnCGW07aGUwGFjjgnVgnaG5G2XQZJkCVisxCQq9ZVvoGfrQfDfxF5eM2kAVpTC3c2w7cLO/jU0waVdThNWLP4Gj7a3B76e8gj08h5pUEExTcjx5qf/K4lvkx2sXgL9g1V0roNsNrhpmYmSm8LeAGFpJVtiG/O58IBSg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=ellerman.id.au smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TrzMv5T4lvXTDDAO61PU0YC1kmkH91c8l3sbzBCe32Y=;
+ b=Jlb4Ku4ZcQZaofYPWvyZoEHBllgl4ryC4R3SotLCq17haHBbQ/umJl/W30gR0b6P/Va4TyR56lUuAgrZeH9cH2oj2MJAVNn1gEbYs3kUeH0jTR2YsHTsYRXznSRhgVgbarESO0AoeyLfFZfwJVBocW0+TQFd/DPD9g598PdArzw=
+Received: from DM3PR08CA0001.namprd08.prod.outlook.com (2603:10b6:0:52::11) by
+ MWHPR12MB1904.namprd12.prod.outlook.com (2603:10b6:300:114::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4331.21; Wed, 21 Jul
+ 2021 04:48:06 +0000
+Received: from DM6NAM11FT055.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:0:52:cafe::6f) by DM3PR08CA0001.outlook.office365.com
+ (2603:10b6:0:52::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4331.21 via Frontend
+ Transport; Wed, 21 Jul 2021 04:48:06 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; ellerman.id.au; dkim=none (message not signed)
+ header.d=none;ellerman.id.au; dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DM6NAM11FT055.mail.protection.outlook.com (10.13.173.103) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.4352.24 via Frontend Transport; Wed, 21 Jul 2021 04:48:05 +0000
+Received: from SATLEXMB08.amd.com (10.181.40.132) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Tue, 20 Jul
+ 2021 23:48:04 -0500
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB08.amd.com
+ (10.181.40.132) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Tue, 20 Jul
+ 2021 21:48:04 -0700
+Received: from Bumblebee.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server id 15.1.2242.4 via Frontend
+ Transport; Tue, 20 Jul 2021 23:48:03 -0500
+From: Anson Jacob <Anson.Jacob@amd.com>
+To: <mpe@ellerman.id.au>, <benh@kernel.crashing.org>, <paulus@samba.org>,
+ <christophe.leroy@csgroup.eu>, <linuxppc-dev@lists.ozlabs.org>,
+ <amd-gfx@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
+Subject: [RFC v2 0/2] PPC: Add generic FPU api similar to x86
+Date: Wed, 21 Jul 2021 00:47:59 -0400
+Message-ID: <20210721044801.840501-1-Anson.Jacob@amd.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.0
-Subject: Re: [PATCH v5 10/11] powerpc/pseries/iommu: Make use of DDW for
- indirect mapping
-Content-Language: en-US
-To: Frederic Barrat <fbarrat@linux.ibm.com>,
- Leonardo Bras <leobras.c@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, David Gibson
- <david@gibson.dropbear.id.au>, kernel test robot <lkp@intel.com>,
- Nicolin Chen <nicoleotsuka@gmail.com>
-References: <20210716082755.428187-1-leobras.c@gmail.com>
- <20210716082755.428187-11-leobras.c@gmail.com>
- <b98f696a-ed64-4c9e-ccb6-549ae8bc7fd6@linux.ibm.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-In-Reply-To: <b98f696a-ed64-4c9e-ccb6-549ae8bc7fd6@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: b6b57cd7-6f0f-41f0-30a0-08d94c02bad3
+X-MS-TrafficTypeDiagnostic: MWHPR12MB1904:
+X-Microsoft-Antispam-PRVS: <MWHPR12MB190494D82B1C7EDB6A652764EBE39@MWHPR12MB1904.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:7219;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: wWnrdtgg7QSEPQ5A7nmhRCfvJTJe05roofGklhwzfVHVRw82rHSqSuryUSYmh7c4rUdsKBlY8Jor8ynLJHK3fzGYdOl2sqwlEx6707WPt9c+mg4qBVxPcSJp3mlkfsdQhqaKAGqN1NE3Jnj1oXs2GN+6x37JepgskK5pgubkzbpp1Sxl2N6EL2Un/zFyGc/PeviTKe8ESsyZlbt04IxA4f0t4sJ07wXMK6IZZl+4Tcwn115IQMuMq4Yzpkh9UWSpSCNmnAL3KP6mAus39sU3dKC/9PnPuk+1Wj3yyCQ3RKJQAD3lS6nD9IggqxxpPMe6MCOBH837wEb39kh2Omgew909bQ40ZSivA79GC0lkE9vEYCtKSGhM2Euw4rqWAAzrLyUwUhwWHAQ1nVLRdwntQ50fZNY+E3J6OJWJ6nbkIML830vdUPcKXjE1eONcgAvEfPBAEuJcowkoVWx7xXA7KKSkmPb2e2JtPM2Rh9N9Dl9B6c4gJQR0i4HkK3+QTxXEdDUUtxEt/P4Cf3QJWFcBiVwqXyMeMOIO45/isShVfq9E4/dFZA5VfWy4sjyemjBuLsppbap0bctt1FgwvNJEc4icWG7Xt+zVIMzghvJDoW6ruwH5XM3mx1PcNbvBrgvxJEUxxtIv1bIr15JxDB+77r9trcXqFyS4gXq4dJfhouOceRjElYyl5zyJpTIyM5sv6CecJqgxiGzsixRhz0CeNTMZZrGswTbpj3WTDnqdyoDBkh7B/MoiVc3eOjKneW+ZGVjVSGehgIa/mmqEYhVTkQ==
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(4636009)(136003)(346002)(376002)(396003)(39860400002)(36840700001)(46966006)(5660300002)(4326008)(2906002)(86362001)(186003)(8676002)(47076005)(1076003)(6666004)(478600001)(2616005)(110136005)(336012)(316002)(54906003)(36860700001)(70206006)(7696005)(36756003)(356005)(8936002)(81166007)(4744005)(426003)(26005)(70586007)(83380400001)(82740400003)(82310400003)(41533002)(36900700001);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jul 2021 04:48:05.6594 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b6b57cd7-6f0f-41f0-30a0-08d94c02bad3
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT055.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR12MB1904
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,286 +118,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Sunpeng.Li@amd.com, Harry.Wentland@amd.com, qingqing.zhuo@amd.com,
+ Rodrigo.Siqueira@amd.com, roman.li@amd.com, Anson.Jacob@amd.com,
+ Aurabindo.Pillai@amd.com, Bhawanpreet.Lakha@amd.com, bindu.r@amd.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+This is an attempt to have generic FPU enable/disable
+calls similar to x86. 
+So that we can simplify gpu/drm/amd/display/dc/os_types.h
 
+Also adds FPU correctness logic seen in x86.
 
-On 21/07/2021 04:12, Frederic Barrat wrote:
-> 
-> 
-> On 16/07/2021 10:27, Leonardo Bras wrote:
->> So far it's assumed possible to map the guest RAM 1:1 to the bus, which
->> works with a small number of devices. SRIOV changes it as the user can
->> configure hundreds VFs and since phyp preallocates TCEs and does not
->> allow IOMMU pages bigger than 64K, it has to limit the number of TCEs
->> per a PE to limit waste of physical pages.
->>
->> As of today, if the assumed direct mapping is not possible, DDW creation
->> is skipped and the default DMA window "ibm,dma-window" is used instead.
->>
->> By using DDW, indirect mapping  can get more TCEs than available for the
->> default DMA window, and also get access to using much larger pagesizes
->> (16MB as implemented in qemu vs 4k from default DMA window), causing a
->> significant increase on the maximum amount of memory that can be IOMMU
->> mapped at the same time.
->>
->> Indirect mapping will only be used if direct mapping is not a
->> possibility.
->>
->> For indirect mapping, it's necessary to re-create the iommu_table with
->> the new DMA window parameters, so iommu_alloc() can use it.
->>
->> Removing the default DMA window for using DDW with indirect mapping
->> is only allowed if there is no current IOMMU memory allocated in
->> the iommu_table. enable_ddw() is aborted otherwise.
->>
->> Even though there won't be both direct and indirect mappings at the
->> same time, we can't reuse the DIRECT64_PROPNAME property name, or else
->> an older kexec()ed kernel can assume direct mapping, and skip
->> iommu_alloc(), causing undesirable behavior.
->> So a new property name DMA64_PROPNAME "linux,dma64-ddr-window-info"
->> was created to represent a DDW that does not allow direct mapping.
->>
->> Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
->> ---
->>   arch/powerpc/platforms/pseries/iommu.c | 87 +++++++++++++++++++++-----
->>   1 file changed, 72 insertions(+), 15 deletions(-)
->>
->> diff --git a/arch/powerpc/platforms/pseries/iommu.c 
->> b/arch/powerpc/platforms/pseries/iommu.c
->> index 22d251e15b61..a67e71c49aeb 100644
->> --- a/arch/powerpc/platforms/pseries/iommu.c
->> +++ b/arch/powerpc/platforms/pseries/iommu.c
->> @@ -375,6 +375,7 @@ static DEFINE_SPINLOCK(direct_window_list_lock);
->>   /* protects initializing window twice for same device */
->>   static DEFINE_MUTEX(direct_window_init_mutex);
->>   #define DIRECT64_PROPNAME "linux,direct64-ddr-window-info"
->> +#define DMA64_PROPNAME "linux,dma64-ddr-window-info"
->>   static int tce_clearrange_multi_pSeriesLP(unsigned long start_pfn,
->>                       unsigned long num_pfn, const void *arg)
->> @@ -925,6 +926,7 @@ static int find_existing_ddw_windows(void)
->>           return 0;
->>       find_existing_ddw_windows_named(DIRECT64_PROPNAME);
->> +    find_existing_ddw_windows_named(DMA64_PROPNAME);
->>       return 0;
->>   }
->> @@ -1211,14 +1213,17 @@ static bool enable_ddw(struct pci_dev *dev, 
->> struct device_node *pdn)
->>       struct ddw_create_response create;
->>       int page_shift;
->>       u64 win_addr;
->> +    const char *win_name;
->>       struct device_node *dn;
->>       u32 ddw_avail[DDW_APPLICABLE_SIZE];
->>       struct direct_window *window;
->>       struct property *win64;
->>       bool ddw_enabled = false;
->>       struct failed_ddw_pdn *fpdn;
->> -    bool default_win_removed = false;
->> +    bool default_win_removed = false, direct_mapping = false;
->>       bool pmem_present;
->> +    struct pci_dn *pci = PCI_DN(pdn);
->> +    struct iommu_table *tbl = pci->table_group->tables[0];
->>       dn = of_find_node_by_type(NULL, "ibm,pmemory");
->>       pmem_present = dn != NULL;
->> @@ -1227,6 +1232,7 @@ static bool enable_ddw(struct pci_dev *dev, 
->> struct device_node *pdn)
->>       mutex_lock(&direct_window_init_mutex);
->>       if (find_existing_ddw(pdn, &dev->dev.archdata.dma_offset, &len)) {
->> +        direct_mapping = (len >= max_ram_len);
->>           ddw_enabled = true;
->>           goto out_unlock;
->>       }
->> @@ -1307,8 +1313,7 @@ static bool enable_ddw(struct pci_dev *dev, 
->> struct device_node *pdn)
->>                 query.page_size);
->>           goto out_failed;
->>       }
->> -    /* verify the window * number of ptes will map the partition */
->> -    /* check largest block * page size > max memory hotplug addr */
->> +
->>       /*
->>        * The "ibm,pmemory" can appear anywhere in the address space.
->>        * Assuming it is still backed by page structs, try 
->> MAX_PHYSMEM_BITS
->> @@ -1324,13 +1329,25 @@ static bool enable_ddw(struct pci_dev *dev, 
->> struct device_node *pdn)
->>               dev_info(&dev->dev, "Skipping ibm,pmemory");
->>       }
->> +    /* check if the available block * number of ptes will map 
->> everything */
->>       if (query.largest_available_block < (1ULL << (len - page_shift))) {
->>           dev_dbg(&dev->dev,
->>               "can't map partition max 0x%llx with %llu %llu-sized 
->> pages\n",
->>               1ULL << len,
->>               query.largest_available_block,
->>               1ULL << page_shift);
->> -        goto out_failed;
->> +
->> +        /* DDW + IOMMU on single window may fail if there is any 
->> allocation */
->> +        if (default_win_removed && iommu_table_in_use(tbl)) {
->> +            dev_dbg(&dev->dev, "current IOMMU table in use, can't be 
->> replaced.\n");
->> +            goto out_failed;
->> +        }
->> +
->> +        len = order_base_2(query.largest_available_block << page_shift);
->> +        win_name = DMA64_PROPNAME;
->> +    } else {
->> +        direct_mapping = true;
->> +        win_name = DIRECT64_PROPNAME;
->>       }
->>       ret = create_ddw(dev, ddw_avail, &create, page_shift, len);
->> @@ -1341,8 +1358,7 @@ static bool enable_ddw(struct pci_dev *dev, 
->> struct device_node *pdn)
->>             create.liobn, dn);
->>       win_addr = ((u64)create.addr_hi << 32) | create.addr_lo;
->> -    win64 = ddw_property_create(DIRECT64_PROPNAME, create.liobn, 
->> win_addr,
->> -                    page_shift, len);
->> +    win64 = ddw_property_create(win_name, create.liobn, win_addr, 
->> page_shift, len);
->>       if (!win64) {
->>           dev_info(&dev->dev,
->>                "couldn't allocate property, property name, or value\n");
->> @@ -1360,12 +1376,51 @@ static bool enable_ddw(struct pci_dev *dev, 
->> struct device_node *pdn)
->>       if (!window)
->>           goto out_del_prop;
->> -    ret = walk_system_ram_range(0, memblock_end_of_DRAM() >> PAGE_SHIFT,
->> -            win64->value, tce_setrange_multi_pSeriesLP_walk);
->> -    if (ret) {
->> -        dev_info(&dev->dev, "failed to map direct window for %pOF: 
->> %d\n",
->> -             dn, ret);
->> -        goto out_del_list;
->> +    if (direct_mapping) {
->> +        /* DDW maps the whole partition, so enable direct DMA mapping */
->> +        ret = walk_system_ram_range(0, memblock_end_of_DRAM() >> 
->> PAGE_SHIFT,
->> +                        win64->value, 
->> tce_setrange_multi_pSeriesLP_walk);
->> +        if (ret) {
->> +            dev_info(&dev->dev, "failed to map direct window for 
->> %pOF: %d\n",
->> +                 dn, ret);
->> +            goto out_del_list;
->> +        }
->> +    } else {
->> +        struct iommu_table *newtbl;
->> +        int i;
->> +
->> +        for (i = 0; i < ARRAY_SIZE(pci->phb->mem_resources); i++) {
->> +            const unsigned long mask = IORESOURCE_MEM_64 | 
->> IORESOURCE_MEM;
->> +
->> +            /* Look for MMIO32 */
->> +            if ((pci->phb->mem_resources[i].flags & mask) == 
->> IORESOURCE_MEM)
->> +                break;
->> +        }
->> +
->> +        if (i == ARRAY_SIZE(pci->phb->mem_resources))
->> +            goto out_del_list;
-> 
-> 
-> So we exit and do nothing if there's no MMIO32 bar?
-> Isn't the intent just to figure out the MMIO32 area to reserve it when 
-> init'ing the table? In which case we could default to 0,0
-> 
-> I'm actually not clear why we are reserving this area on pseries.
+v2:
+- Added asm/fpu/api.h powerpc variant with kernel_fpu_begin/end()
+  and kernel_fpu_enabled() declarations
+- Updated kernel_fpu_enabled as EXPORT_SYMBOL_GPL
+- Got rid of macro switch for PPC in dc/os_types.h as header file
+  with same name as x86 is added by previous patch in the series
 
+Anson Jacob (2):
+  ppc/fpu: Add generic FPU api similar to x86
+  drm/amd/display: Use PPC FPU functions
 
-
-If we do not reserve it, then the iommu code will allocate DMA pages 
-from there and these addresses are MMIO32 from the kernel pov at least. 
-I saw crashes when (I think) a device tried DMAing to the top 2GB of the 
-bus space which happened to be a some other device's BAR.
-
-
-> 
-> 
->> +
->> +        /* New table for using DDW instead of the default DMA window */
->> +        newtbl = iommu_pseries_alloc_table(pci->phb->node);
->> +        if (!newtbl) {
->> +            dev_dbg(&dev->dev, "couldn't create new IOMMU table\n");
->> +            goto out_del_list;
->> +        }
->> +
->> +        iommu_table_setparms_common(newtbl, pci->phb->bus->number, 
->> create.liobn, win_addr,
->> +                        1UL << len, page_shift, NULL, 
->> &iommu_table_lpar_multi_ops);
->> +        iommu_init_table(newtbl, pci->phb->node, 
->> pci->phb->mem_resources[i].start,
->> +                 pci->phb->mem_resources[i].end);
->> +
->> +        pci->table_group->tables[1] = newtbl;
->> +
->> +        /* Keep default DMA window stuct if removed */
->> +        if (default_win_removed) {
->> +            tbl->it_size = 0;
->> +            kfree(tbl->it_map);
->> +        }
->> +
->> +        set_iommu_table_base(&dev->dev, newtbl);
->>       }
->>       spin_lock(&direct_window_list_lock);
-> 
-> 
-> 
-> 
-> Somewhere around here, we have:
-> 
-> out_remove_win:
->      remove_ddw(pdn, true, DIRECT64_PROPNAME);
-> 
-> We should replace with:
->      remove_ddw(pdn, true, win_name);
-
-
-True. Good spotting. Or rework remove_dma_window() to take just a liobn. 
-Thanks,
-
-> 
-> 
->    Fred
-> 
-> 
-> 
->> @@ -1408,10 +1463,10 @@ static bool enable_ddw(struct pci_dev *dev, 
->> struct device_node *pdn)
->>        * as RAM, then we failed to create a window to cover persistent
->>        * memory and need to set the DMA limit.
->>        */
->> -    if (pmem_present && ddw_enabled && (len == max_ram_len))
->> +    if (pmem_present && ddw_enabled && direct_mapping && len == 
->> max_ram_len)
->>           dev->dev.bus_dma_limit = dev->dev.archdata.dma_offset + 
->> (1ULL << len);
->> -    return ddw_enabled;
->> +    return ddw_enabled && direct_mapping;
->>   }
->>   static void pci_dma_dev_setup_pSeriesLP(struct pci_dev *dev)
->> @@ -1553,7 +1608,9 @@ static int iommu_reconfig_notifier(struct 
->> notifier_block *nb, unsigned long acti
->>            * we have to remove the property when releasing
->>            * the device node.
->>            */
->> -        remove_ddw(np, false, DIRECT64_PROPNAME);
->> +        if (remove_ddw(np, false, DIRECT64_PROPNAME))
->> +            remove_ddw(np, false, DMA64_PROPNAME);
->> +
->>           if (pci && pci->table_group)
->>               iommu_pseries_free_group(pci->table_group,
->>                       np->full_name);
->>
+ arch/powerpc/include/asm/fpu/api.h        |  18 +++
+ arch/powerpc/include/asm/switch_to.h      |  25 +----
+ arch/powerpc/kernel/process.c             | 130 ++++++++++++++++++++++
+ drivers/gpu/drm/amd/display/dc/os_types.h |  29 -----
+ 4 files changed, 151 insertions(+), 51 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/fpu/api.h
 
 -- 
-Alexey
+2.25.1
+
