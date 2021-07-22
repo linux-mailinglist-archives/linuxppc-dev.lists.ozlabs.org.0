@@ -1,103 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7FCB3D1F16
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jul 2021 09:35:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB5383D220B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jul 2021 12:25:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GVkkk6LVXz30C8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jul 2021 17:35:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GVpVX1ql6z30KN
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Jul 2021 20:25:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EaZvULyY;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=d2l4V14j;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=EaZvULyY; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
+ header.a=rsa-sha256 header.s=korg header.b=d2l4V14j; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GVkk91PXhz2yPH
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jul 2021 17:34:56 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 16M7YbXI148306; Thu, 22 Jul 2021 03:34:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=xWZ8ip8i5xg/pAZX+YDB62gs+ClN8SdxgYNtKTpEwc4=;
- b=EaZvULyYMXh5zAwXaGwDc4f3KA7BnSSOb0ZWsDfi//2b6bG/UzQeTynyW3Lyxxn+W/Rt
- bKzsVd/Q+QSzz6Qo7rUGFs09yi+9Q4b1DV0tdm+c+XtyVyss2LS62oPYI+YHS65SrFK4
- elODyoa3QG3wCl+k+T/geb+PB+OYcRqL9WkxtCLZ21CycOr16ivjHFTdP59Ek3B5PnPy
- i+91u5/6z64rFl7ZbAnwNbRgUVp9gF3Mvwl7THVdn8LyMBRq3zy1J8B/T/qZ1wnw5ziY
- OedAjp1OBFmuJAfVKovCoCAaImq3nUOqHsr9vohkLSkYUNjTQSLkSMZAUGjxZR7HsbYK Aw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 39y3ycrptx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 22 Jul 2021 03:34:49 -0400
-Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 16M7YiBm148978;
- Thu, 22 Jul 2021 03:34:48 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0b-001b2d01.pphosted.com with ESMTP id 39y3ycrptn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 22 Jul 2021 03:34:48 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16M7RJQ5008760;
- Thu, 22 Jul 2021 07:34:48 GMT
-Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
- [9.57.198.25]) by ppma03dal.us.ibm.com with ESMTP id 39y0bmq5dj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 22 Jul 2021 07:34:48 +0000
-Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
- [9.57.199.108])
- by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 16M7YlfI38207940
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 22 Jul 2021 07:34:47 GMT
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3F898B206C;
- Thu, 22 Jul 2021 07:34:47 +0000 (GMT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 31ABDB2066;
- Thu, 22 Jul 2021 07:34:45 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.199.40.113])
- by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 22 Jul 2021 07:34:44 +0000 (GMT)
-X-Mailer: emacs 28.0.50 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: David Gibson <david@gibson.dropbear.id.au>
-Subject: Re: [PATCH v5 6/6] powerpc/pseries: Add support for FORM2
- associativity
-In-Reply-To: <YPjX5BxRKj6SFyCW@yekko>
-References: <20210628151117.545935-1-aneesh.kumar@linux.ibm.com>
- <20210628151117.545935-7-aneesh.kumar@linux.ibm.com>
- <YPjX5BxRKj6SFyCW@yekko>
-Date: Thu, 22 Jul 2021 13:04:42 +0530
-Message-ID: <87tukmu7hp.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GVmJD5XlTz2yyv
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jul 2021 18:46:03 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A43AE6128C;
+ Thu, 22 Jul 2021 08:45:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+ s=korg; t=1626943559;
+ bh=iHEKpKP05yPtSDo0WVw13tR4OsPIw3x7iurEQu7Pc7Q=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=d2l4V14jYNVya/romP2w2ezg4x2LnX47K9dLSJmCxQOKyIqkdonEoIsuSyzycFfD4
+ aHamBXJweC7B8K4Qi3lPBaud6oc7vHctb7fViEzj6oXWZWpeL9VSuOZpThr23TyNei
+ Kh7xAATxCTMeB2NBX21iFqK668swZChaCi9FSwpo=
+Date: Thu, 22 Jul 2021 10:45:55 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH v4 0/5] bus: Make remove callback return void
+Message-ID: <YPkwQwf0dUKnGA7L@kroah.com>
+References: <20210713193522.1770306-1-u.kleine-koenig@pengutronix.de>
+ <YPfyZen4Y0uDKqDT@kroah.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 45O240B2h8SZjvovsTwX0yT36AlGYoDy
-X-Proofpoint-ORIG-GUID: t-V5UsBrth4h7JHrFrOf6m3El8FshX6C
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-07-22_03:2021-07-22,
- 2021-07-22 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0
- priorityscore=1501 malwarescore=0 suspectscore=0 adultscore=0
- clxscore=1015 impostorscore=0 mlxscore=0 phishscore=0 spamscore=0
- mlxlogscore=999 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2104190000 definitions=main-2107220043
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <YPfyZen4Y0uDKqDT@kroah.com>
+X-Mailman-Approved-At: Thu, 22 Jul 2021 20:24:41 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,596 +58,283 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: nvdimm@lists.linux.dev, linux-sh@vger.kernel.org,
+ Samuel Iglesias Gonsalvez <siglesias@igalia.com>,
+ Jens Taprogge <jens.taprogge@taprogge.org>,
+ Ulf Hansson <ulf.hansson@linaro.org>, Jaroslav Kysela <perex@perex.cz>,
+ Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+ Paul Mackerras <paulus@samba.org>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ "K. Y. Srinivasan" <kys@microsoft.com>,
+ Mike Christie <michael.christie@oracle.com>, Wei Liu <wei.liu@kernel.org>,
+ Maxim Levitsky <maximlevitsky@gmail.com>, Samuel Holland <samuel@sholland.org>,
+ Halil Pasic <pasic@linux.ibm.com>, linux-acpi@vger.kernel.org,
+ Geert Uytterhoeven <geert@linux-m68k.org>, linux-pci@vger.kernel.org,
+ xen-devel@lists.xenproject.org, Tomas Winkler <tomas.winkler@intel.com>,
+ Julien Grall <jgrall@amazon.com>, Ohad Ben-Cohen <ohad@wizery.com>,
+ Yufen Yu <yuyufen@huawei.com>, Alex Williamson <alex.williamson@redhat.com>,
+ Alex Elder <elder@kernel.org>, linux-parisc@vger.kernel.org,
+ Finn Thain <fthain@linux-m68k.org>, Geoff Levand <geoff@infradead.org>,
+ linux-fpga@vger.kernel.org, linux-usb@vger.kernel.org,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, Kai-Heng Feng <kai.heng.feng@canonical.com>,
+ kernel@pengutronix.de, Jon Mason <jdmason@kudzu.us>,
+ linux-ntb@googlegroups.com, Wu Hao <hao.wu@intel.com>,
+ David Woodhouse <dwmw@amazon.co.uk>,
+ Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Manohar Vanga <manohar.vanga@gmail.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>, linux-wireless@vger.kernel.org,
+ Dominik Brodowski <linux@dominikbrodowski.net>,
+ virtualization@lists.linux-foundation.org,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ target-devel@vger.kernel.org,
+ Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+ linux-i2c@vger.kernel.org, linux-s390@vger.kernel.org,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Stephen Hemminger <sthemmin@microsoft.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Jiri Slaby <jirislaby@kernel.org>,
+ Helge Deller <deller@gmx.de>,
+ =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+ YueHaibing <yuehaibing@huawei.com>, industrypack-devel@lists.sourceforge.net,
+ linux-mips@vger.kernel.org, Len Brown <lenb@kernel.org>,
+ Eric Farman <farman@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
+ Maxime Ripard <mripard@kernel.org>,
+ William Breathitt Gray <vilhelm.gray@gmail.com>, greybus-dev@lists.linaro.org,
+ linux-m68k@lists.linux-m68k.org, Florian Fainelli <f.fainelli@gmail.com>,
+ Rikard Falkeborn <rikard.falkeborn@gmail.com>, Frank Li <lznuaa@gmail.com>,
+ Mark Gross <mgross@linux.intel.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ linux-arm-kernel@lists.infradead.org, Johannes Thumshirn <morbidrsa@gmail.com>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>, Stephen Boyd <sboyd@kernel.org>,
+ Cornelia Huck <cohuck@redhat.com>, Peter Oberparleiter <oberpar@linux.ibm.com>,
+ Wolfram Sang <wsa@kernel.org>, Joey Pabalan <jpabalanb@gmail.com>,
+ Yehezkel Bernat <YehezkelShB@gmail.com>,
+ Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+ Bodo Stroesser <bostroesser@gmail.com>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Tyrel Datwyler <tyreld@linux.ibm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Tom Rix <trix@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ SeongJae Park <sjpark@amazon.de>, alsa-devel@alsa-project.org,
+ platform-driver-x86@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+ netdev@vger.kernel.org, Vineeth Vijayan <vneethv@linux.ibm.com>,
+ Ira Weiny <ira.weiny@intel.com>, Rob Herring <robh@kernel.org>,
+ Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+ Dave Jiang <dave.jiang@intel.com>, linux-staging@lists.linux.dev,
+ Dexuan Cui <decui@microsoft.com>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Kishon Vijay Abraham I <kishon@ti.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Chen-Yu Tsai <wens@csie.org>,
+ linux-input@vger.kernel.org, Allen Hubbe <allenbh@gmail.com>,
+ Alex Dubov <oakad@yahoo.com>, Haiyang Zhang <haiyangz@microsoft.com>,
+ Jiri Kosina <jikos@kernel.org>,
+ "Russell King \(Oracle\)" <rmk+kernel@armlinux.org.uk>,
+ Ben Widawsky <ben.widawsky@intel.com>,
+ Harald Freudenberger <freude@linux.ibm.com>, linux-cxl@vger.kernel.org,
+ Michael Buesch <m@bues.ch>, Dan Williams <dan.j.williams@intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Cristian Marussi <cristian.marussi@arm.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ Martyn Welch <martyn@welchs.me.uk>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, linux-mmc@vger.kernel.org,
+ linux-sunxi@lists.linux.dev, Stefan Richter <stefanr@s5r6.in-berlin.de>,
+ Sudeep Holla <sudeep.holla@arm.com>, "David S. Miller" <davem@davemloft.net>,
+ Sven Van Asbroeck <TheSven73@gmail.com>, Rich Felker <dalias@libc.org>,
+ kvm@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ linux-remoteproc@vger.kernel.org, Bjorn Andersson <bjorn.andersson@linaro.org>,
+ sparclinux@vger.kernel.org, Kirti Wankhede <kwankhede@nvidia.com>,
+ Andreas Noever <andreas.noever@gmail.com>, linux-i3c@lists.infradead.org,
+ linux1394-devel@lists.sourceforge.net, Lee Jones <lee.jones@linaro.org>,
+ Arnd Bergmann <arnd@arndb.de>, linux-scsi@vger.kernel.org,
+ Marc Zyngier <maz@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ Thorsten Scherer <t.scherer@eckelmann.de>, Andy Gross <agross@kernel.org>,
+ linux-serial@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+ linux-hyperv@vger.kernel.org, Michael Jamet <michael.jamet@intel.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Johan Hovold <johan@kernel.org>,
+ Hans de Goede <hdegoede@redhat.com>, Hannes Reinecke <hare@suse.de>,
+ Juergen Gross <jgross@suse.com>, linuxppc-dev@lists.ozlabs.org,
+ Takashi Iwai <tiwai@suse.com>, Alexandre Bounine <alex.bou9@gmail.com>,
+ Vinod Koul <vkoul@kernel.org>, Mark Brown <broonie@kernel.org>,
+ Vishal Verma <vishal.l.verma@intel.com>, dmaengine@vger.kernel.org,
+ Moritz Fischer <mdf@kernel.org>, Johannes Berg <johannes@sipsolutions.net>,
+ Maximilian Luz <luzmaximilian@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-David Gibson <david@gibson.dropbear.id.au> writes:
+On Wed, Jul 21, 2021 at 12:09:41PM +0200, Greg Kroah-Hartman wrote:
+> On Tue, Jul 13, 2021 at 09:35:17PM +0200, Uwe Kleine-König wrote:
+> > Hello,
+> > 
+> > this is v4 of the final patch set for my effort to make struct
+> > bus_type::remove return void.
+> > 
+> > The first four patches contain cleanups that make some of these
+> > callbacks (more obviously) always return 0. They are acked by the
+> > respective maintainers. Bjorn Helgaas explicitly asked to include the
+> > pci patch (#1) into this series, so Greg taking this is fine. I assume
+> > the s390 people are fine with Greg taking patches #2 to #4, too, they
+> > didn't explicitly said so though.
+> > 
+> > The last patch actually changes the prototype and so touches quite some
+> > drivers and has the potential to conflict with future developments, so I
+> > consider it beneficial to put these patches into next soon. I expect
+> > that it will be Greg who takes the complete series, he already confirmed
+> > via irc (for v2) to look into this series.
+> > 
+> > The only change compared to v3 is in the fourth patch where I modified a
+> > few more drivers to fix build failures. Some of them were found by build
+> > bots (thanks!), some of them I found myself using a regular expression
+> > search. The newly modified files are:
+> > 
+> >  arch/sparc/kernel/vio.c
+> >  drivers/nubus/bus.c
+> >  drivers/sh/superhyway/superhyway.c
+> >  drivers/vlynq/vlynq.c
+> >  drivers/zorro/zorro-driver.c
+> >  sound/ac97/bus.c
+> > 
+> > Best regards
+> > Uwe
+> 
+> Now queued up.  I can go make a git tag that people can pull from after
+> 0-day is finished testing this to verify all is good, if others need it.
 
-> On Mon, Jun 28, 2021 at 08:41:17PM +0530, Aneesh Kumar K.V wrote:
->> PAPR interface currently supports two different ways of communicating re=
-source
->> grouping details to the OS. These are referred to as Form 0 and Form 1
->> associativity grouping. Form 0 is the older format and is now considered
->> deprecated. This patch adds another resource grouping named FORM2.
->>=20
->> Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
->> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->> ---
->>  Documentation/powerpc/associativity.rst   | 103 ++++++++++++++
->>  arch/powerpc/include/asm/firmware.h       |   3 +-
->>  arch/powerpc/include/asm/prom.h           |   1 +
->>  arch/powerpc/kernel/prom_init.c           |   3 +-
->>  arch/powerpc/mm/numa.c                    | 157 ++++++++++++++++++----
->>  arch/powerpc/platforms/pseries/firmware.c |   1 +
->>  6 files changed, 242 insertions(+), 26 deletions(-)
->>  create mode 100644 Documentation/powerpc/associativity.rst
->>=20
->> diff --git a/Documentation/powerpc/associativity.rst b/Documentation/pow=
-erpc/associativity.rst
->> new file mode 100644
->> index 000000000000..31cc7da2c7a6
->> --- /dev/null
->> +++ b/Documentation/powerpc/associativity.rst
->> @@ -0,0 +1,103 @@
->> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
->> +NUMA resource associativity
->> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D
->> +
->> +Associativity represents the groupings of the various platform resource=
-s into
->> +domains of substantially similar mean performance relative to resources=
- outside
->> +of that domain. Resources subsets of a given domain that exhibit better
->> +performance relative to each other than relative to other resources sub=
-sets
->> +are represented as being members of a sub-grouping domain. This perform=
-ance
->> +characteristic is presented in terms of NUMA node distance within the L=
-inux kernel.
->> +From the platform view, these groups are also referred to as domains.
->
-> Pretty hard to decipher, but that's typical for PAPR.
->
->> +PAPR interface currently supports different ways of communicating these=
- resource
->> +grouping details to the OS. These are referred to as Form 0, Form 1 and=
- Form2
->> +associativity grouping. Form 0 is the older format and is now considere=
-d deprecated.
->
-> Nit: s/older/oldest/ since there are now >2 forms.
+Ok, here's a tag that any other subsystem can pull from if they want
+these changes in their tree before 5.15-rc1 is out.  I might pull it
+into my char-misc-next tree as well just to keep that tree sane as it
+seems to pick up new busses on a regular basis...
 
-updated.
+thanks,
 
->
->> +Hypervisor indicates the type/form of associativity used via "ibm,archi=
-tecture-vec-5 property".
->> +Bit 0 of byte 5 in the "ibm,architecture-vec-5" property indicates usag=
-e of Form 0 or Form 1.
->> +A value of 1 indicates the usage of Form 1 associativity. For Form 2 as=
-sociativity
->> +bit 2 of byte 5 in the "ibm,architecture-vec-5" property is used.
->> +
->> +Form 0
->> +-----
->> +Form 0 associativity supports only two NUMA distances (LOCAL and REMOTE=
-).
->> +
->> +Form 1
->> +-----
->> +With Form 1 a combination of ibm,associativity-reference-points, and ib=
-m,associativity
->> +device tree properties are used to determine the NUMA distance between =
-resource groups/domains.
->> +
->> +The =E2=80=9Cibm,associativity=E2=80=9D property contains a list of one=
- or more numbers (domainID)
->> +representing the resource=E2=80=99s platform grouping domains.
->> +
->> +The =E2=80=9Cibm,associativity-reference-points=E2=80=9D property conta=
-ins a list of one or more numbers
->> +(domainID index) that represents the 1 based ordinal in the associativi=
-ty lists.
->> +The list of domainID indexes represents an increasing hierarchy of reso=
-urce grouping.
->> +
->> +ex:
->> +{ primary domainID index, secondary domainID index, tertiary domainID i=
-ndex.. }
->> +
->> +Linux kernel uses the domainID at the primary domainID index as the NUM=
-A node id.
->> +Linux kernel computes NUMA distance between two domains by recursively =
-comparing
->> +if they belong to the same higher-level domains. For mismatch at every =
-higher
->> +level of the resource group, the kernel doubles the NUMA distance betwe=
-en the
->> +comparing domains.
->> +
->> +Form 2
->> +-------
->> +Form 2 associativity format adds separate device tree properties repres=
-enting NUMA node distance
->> +thereby making the node distance computation flexible. Form 2 also allo=
-ws flexible primary
->> +domain numbering. With numa distance computation now detached from the =
-index value in
->> +"ibm,associativity-reference-points" property, Form 2 allows a large nu=
-mber of primary domain
->> +ids at the same domainID index representing resource groups of differen=
-t performance/latency
->> +characteristics.
->> +
->> +Hypervisor indicates the usage of FORM2 associativity using bit 2 of by=
-te 5 in the
->> +"ibm,architecture-vec-5" property.
->> +
->> +"ibm,numa-lookup-index-table" property contains a list of one or more n=
-umbers representing
->> +the domainIDs present in the system. The offset of the domainID in this=
- property is
->> +used as an index while computing numa distance information via "ibm,num=
-a-distance-table".
->> +
->> +prop-encoded-array: The number N of the domainIDs encoded as with encod=
-e-int, followed by
->> +N domainID encoded as with encode-int
->> +
->> +For ex:
->> +"ibm,numa-lookup-index-table" =3D  {4, 0, 8, 250, 252}. The offset of d=
-omainID 8 (2) is used when
->> +computing the distance of domain 8 from other domains present in the sy=
-stem. For the rest of
->> +this document, this offset will be referred to as domain distance offse=
-t.
->> +
->> +"ibm,numa-distance-table" property contains a list of one or more numbe=
-rs representing the NUMA
->> +distance between resource groups/domains present in the system.
->> +
->> +prop-encoded-array: The number N of the distance values encoded as with=
- encode-int, followed by
->> +N distance values encoded as with encode-bytes. The max distance value =
-we could encode is 255.
->> +The number N must be equal to the square of m where m is the number of =
-domainIDs in the
->> +numa-lookup-index-table.
->> +
->> +For ex:
->> +ibm,numa-lookup-index-table =3D  {3, 0, 8, 40}
->> +ibm,numa-distance-table     =3D  {9, 10, 20, 80, 20, 10, 160, 80, 160, =
-10}
->
-> This representation doesn't make it clear that the 9 is a u32, but the
-> rest are u8s.
+greg k-h
 
-How do you suggest we specify that? I could do 9:u32 10:u8 etc. But
-considering the details are explained in the paragraph above, is that
-needed?=20
+-----------------------------------
 
->
->> +
->> +  | 0    8   40
->> +--|------------
->> +  |
->> +0 | 10   20  80
->> +  |
->> +8 | 20   10  160
->> +  |
->> +40| 80   160  10
->> +
->> +A possible "ibm,associativity" property for resources in node 0, 8 and =
-40
->> +
->> +{ 3, 6, 7, 0 }
->> +{ 3, 6, 9, 8 }
->> +{ 3, 6, 7, 40}
->> +
->> +With "ibm,associativity-reference-points"  { 0x3 }
->
-> You haven't actually described how ibm,associativity-reference-points
-> operates in Form2.
 
-Nothing change w.r.t the definition of associativity-reference-points
-w.r.t FORM2. It still will continue to show the increasing hierarchy of
-resource groups.
+The following changes since commit 2734d6c1b1a089fb593ef6a23d4b70903526fe0c:
 
->
->> +"ibm,lookup-index-table" helps in having a compact representation of di=
-stance matrix.
->> +Since domainID can be sparse, the matrix of distances can also be effec=
-tively sparse.
->> +With "ibm,lookup-index-table" we can achieve a compact representation of
->> +distance information.
->> diff --git a/arch/powerpc/include/asm/firmware.h b/arch/powerpc/include/=
-asm/firmware.h
->> index 60b631161360..97a3bd9ffeb9 100644
->> --- a/arch/powerpc/include/asm/firmware.h
->> +++ b/arch/powerpc/include/asm/firmware.h
->> @@ -53,6 +53,7 @@
->>  #define FW_FEATURE_ULTRAVISOR	ASM_CONST(0x0000004000000000)
->>  #define FW_FEATURE_STUFF_TCE	ASM_CONST(0x0000008000000000)
->>  #define FW_FEATURE_RPT_INVALIDATE ASM_CONST(0x0000010000000000)
->> +#define FW_FEATURE_FORM2_AFFINITY ASM_CONST(0x0000020000000000)
->>=20=20
->>  #ifndef __ASSEMBLY__
->>=20=20
->> @@ -73,7 +74,7 @@ enum {
->>  		FW_FEATURE_HPT_RESIZE | FW_FEATURE_DRMEM_V2 |
->>  		FW_FEATURE_DRC_INFO | FW_FEATURE_BLOCK_REMOVE |
->>  		FW_FEATURE_PAPR_SCM | FW_FEATURE_ULTRAVISOR |
->> -		FW_FEATURE_RPT_INVALIDATE,
->> +		FW_FEATURE_RPT_INVALIDATE | FW_FEATURE_FORM2_AFFINITY,
->>  	FW_FEATURE_PSERIES_ALWAYS =3D 0,
->>  	FW_FEATURE_POWERNV_POSSIBLE =3D FW_FEATURE_OPAL | FW_FEATURE_ULTRAVISO=
-R,
->>  	FW_FEATURE_POWERNV_ALWAYS =3D 0,
->> diff --git a/arch/powerpc/include/asm/prom.h b/arch/powerpc/include/asm/=
-prom.h
->> index df9fec9d232c..5c80152e8f18 100644
->> --- a/arch/powerpc/include/asm/prom.h
->> +++ b/arch/powerpc/include/asm/prom.h
->> @@ -149,6 +149,7 @@ extern int of_read_drc_info_cell(struct property **p=
-rop,
->>  #define OV5_XCMO		0x0440	/* Page Coalescing */
->>  #define OV5_FORM1_AFFINITY	0x0580	/* FORM1 NUMA affinity */
->>  #define OV5_PRRN		0x0540	/* Platform Resource Reassignment */
->> +#define OV5_FORM2_AFFINITY	0x0520	/* Form2 NUMA affinity */
->>  #define OV5_HP_EVT		0x0604	/* Hot Plug Event support */
->>  #define OV5_RESIZE_HPT		0x0601	/* Hash Page Table resizing */
->>  #define OV5_PFO_HW_RNG		0x1180	/* PFO Random Number Generator */
->> diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_=
-init.c
->> index 5d9ea059594f..c483df6c9393 100644
->> --- a/arch/powerpc/kernel/prom_init.c
->> +++ b/arch/powerpc/kernel/prom_init.c
->> @@ -1069,7 +1069,8 @@ static const struct ibm_arch_vec ibm_architecture_=
-vec_template __initconst =3D {
->>  #else
->>  		0,
->>  #endif
->> -		.associativity =3D OV5_FEAT(OV5_FORM1_AFFINITY) | OV5_FEAT(OV5_PRRN),
->> +		.associativity =3D OV5_FEAT(OV5_FORM1_AFFINITY) | OV5_FEAT(OV5_PRRN) |
->> +		OV5_FEAT(OV5_FORM2_AFFINITY),
->>  		.bin_opts =3D OV5_FEAT(OV5_RESIZE_HPT) | OV5_FEAT(OV5_HP_EVT),
->>  		.micro_checkpoint =3D 0,
->>  		.reserved0 =3D 0,
->> diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
->> index c6293037a103..c68846fc9550 100644
->> --- a/arch/powerpc/mm/numa.c
->> +++ b/arch/powerpc/mm/numa.c
->> @@ -56,12 +56,17 @@ static int n_mem_addr_cells, n_mem_size_cells;
->>=20=20
->>  #define FORM0_AFFINITY 0
->>  #define FORM1_AFFINITY 1
->> +#define FORM2_AFFINITY 2
->>  static int affinity_form;
->>=20=20
->>  #define MAX_DISTANCE_REF_POINTS 4
->>  static int max_associativity_domain_index;
->>  static const __be32 *distance_ref_points;
->>  static int distance_lookup_table[MAX_NUMNODES][MAX_DISTANCE_REF_POINTS];
->> +static int numa_distance_table[MAX_NUMNODES][MAX_NUMNODES] =3D {
->> +	[0 ... MAX_NUMNODES - 1] =3D { [0 ... MAX_NUMNODES - 1] =3D -1 }
->> +};
->> +static int numa_id_index_table[MAX_NUMNODES] =3D { [0 ... MAX_NUMNODES =
-- 1] =3D NUMA_NO_NODE };
->>=20=20
->>  /*
->>   * Allocate node_to_cpumask_map based on number of available nodes
->> @@ -166,6 +171,44 @@ static void unmap_cpu_from_node(unsigned long cpu)
->>  }
->>  #endif /* CONFIG_HOTPLUG_CPU || CONFIG_PPC_SPLPAR */
->>=20=20
->> +/*
->> + * Returns nid in the range [0..nr_node_ids], or -1 if no useful NUMA
->> + * info is found.
->> + */
->> +static int associativity_to_nid(const __be32 *associativity)
->> +{
->> +	int nid =3D NUMA_NO_NODE;
->> +
->> +	if (!numa_enabled)
->> +		goto out;
->> +
->> +	if (of_read_number(associativity, 1) >=3D primary_domain_index)
->> +		nid =3D of_read_number(&associativity[primary_domain_index], 1);
->> +
->> +	/* POWER4 LPAR uses 0xffff as invalid node */
->> +	if (nid =3D=3D 0xffff || nid >=3D nr_node_ids)
->> +		nid =3D NUMA_NO_NODE;
->> +out:
->> +	return nid;
->> +}
->> +
->> +static int __cpu_form2_relative_distance(__be32 *cpu1_assoc, __be32 *cp=
-u2_assoc)
->> +{
->> +	int dist;
->> +	int node1, node2;
->> +
->> +	node1 =3D associativity_to_nid(cpu1_assoc);
->> +	node2 =3D associativity_to_nid(cpu2_assoc);
->> +
->> +	dist =3D numa_distance_table[node1][node2];
->> +	if (dist <=3D LOCAL_DISTANCE)
->> +		return 0;
->> +	else if (dist <=3D REMOTE_DISTANCE)
->> +		return 1;
->> +	else
->> +		return 2;
->
-> Squashing the full range of distances into just 0, 1 or 2 seems odd.
-> But then, this whole cpu_distance() thing being distinct from
-> node_distance() seems odd.
->
->> +}
->> +
->>  static int __cpu_form1_relative_distance(__be32 *cpu1_assoc, __be32 *cp=
-u2_assoc)
->>  {
->>  	int dist =3D 0;
->> @@ -186,8 +229,9 @@ int cpu_relative_distance(__be32 *cpu1_assoc, __be32=
- *cpu2_assoc)
->>  {
->>  	/* We should not get called with FORM0 */
->>  	VM_WARN_ON(affinity_form =3D=3D FORM0_AFFINITY);
->> -
->> -	return __cpu_form1_relative_distance(cpu1_assoc, cpu2_assoc);
->> +	if (affinity_form =3D=3D FORM1_AFFINITY)
->> +		return __cpu_form1_relative_distance(cpu1_assoc, cpu2_assoc);
->> +	return __cpu_form2_relative_distance(cpu1_assoc, cpu2_assoc);
->>  }
->>=20=20
->>  /* must hold reference to node during call */
->> @@ -201,7 +245,9 @@ int __node_distance(int a, int b)
->>  	int i;
->>  	int distance =3D LOCAL_DISTANCE;
->>=20=20
->> -	if (affinity_form =3D=3D FORM0_AFFINITY)
->> +	if (affinity_form =3D=3D FORM2_AFFINITY)
->> +		return numa_distance_table[a][b];
->> +	else if (affinity_form =3D=3D FORM0_AFFINITY)
->>  		return ((a =3D=3D b) ? LOCAL_DISTANCE : REMOTE_DISTANCE);
->>=20=20
->>  	for (i =3D 0; i < max_associativity_domain_index; i++) {
->
-> Hmm.. couldn't we simplify this whole __node_distance function, if we
-> just update numa_distance_table[][] appropriately for Form0 and Form1
-> as well?
+  Linux 5.14-rc2 (2021-07-18 14:13:49 -0700)
 
-IIUC what you are suggesting is to look at the possibility of using
-numa_distance_table[a][b] even for FORM1_AFFINITY? I can do that as part
-of separate patch?
+are available in the Git repository at:
 
->
->> @@ -216,27 +262,6 @@ int __node_distance(int a, int b)
->>  }
->>  EXPORT_SYMBOL(__node_distance);
->>=20=20
->> -/*
->> - * Returns nid in the range [0..nr_node_ids], or -1 if no useful NUMA
->> - * info is found.
->> - */
->> -static int associativity_to_nid(const __be32 *associativity)
->> -{
->> -	int nid =3D NUMA_NO_NODE;
->> -
->> -	if (!numa_enabled)
->> -		goto out;
->> -
->> -	if (of_read_number(associativity, 1) >=3D primary_domain_index)
->> -		nid =3D of_read_number(&associativity[primary_domain_index], 1);
->> -
->> -	/* POWER4 LPAR uses 0xffff as invalid node */
->> -	if (nid =3D=3D 0xffff || nid >=3D nr_node_ids)
->> -		nid =3D NUMA_NO_NODE;
->> -out:
->> -	return nid;
->> -}
->> -
->>  /* Returns the nid associated with the given device tree node,
->>   * or -1 if not found.
->>   */
->> @@ -305,12 +330,84 @@ static void initialize_form1_numa_distance(struct =
-device_node *node)
->>   */
->>  void update_numa_distance(struct device_node *node)
->>  {
->> +	int nid;
->> +
->>  	if (affinity_form =3D=3D FORM0_AFFINITY)
->>  		return;
->>  	else if (affinity_form =3D=3D FORM1_AFFINITY) {
->>  		initialize_form1_numa_distance(node);
->>  		return;
->>  	}
->> +
->> +	/* FORM2 affinity  */
->> +	nid =3D of_node_to_nid_single(node);
->> +	if (nid =3D=3D NUMA_NO_NODE)
->> +		return;
->> +
->> +	/*
->> +	 * With FORM2 we expect NUMA distance of all possible NUMA
->> +	 * nodes to be provided during boot.
->> +	 */
->> +	WARN(numa_distance_table[nid][nid] =3D=3D -1,
->> +	     "NUMA distance details for node %d not provided\n", nid);
->> +}
->> +
->> +/*
->> + * ibm,numa-lookup-index-table=3D {N, domainid1, domainid2, ..... domai=
-nidN}
->> + * ibm,numa-distance-table =3D { N, 1, 2, 4, 5, 1, 6, .... N elements}
->> + */
->> +static void initialize_form2_numa_distance_lookup_table(struct device_n=
-ode *root)
->> +{
->> +	int i, j;
->> +	const __u8 *numa_dist_table;
->> +	const __be32 *numa_lookup_index;
->> +	int numa_dist_table_length;
->> +	int max_numa_index, distance_index;
->> +
->> +	numa_lookup_index =3D of_get_property(root, "ibm,numa-lookup-index-tab=
-le", NULL);
->> +	max_numa_index =3D of_read_number(&numa_lookup_index[0], 1);
->> +
->> +	/* first element of the array is the size and is encode-int */
->> +	numa_dist_table =3D of_get_property(root, "ibm,numa-distance-table", N=
-ULL);
->> +	numa_dist_table_length =3D of_read_number((const __be32 *)&numa_dist_t=
-able[0], 1);
->> +	/* Skip the size which is encoded int */
->> +	numa_dist_table +=3D sizeof(__be32);
->> +
->> +	pr_debug("numa_dist_table_len =3D %d, numa_dist_indexes_len =3D %d\n",
->> +		 numa_dist_table_length, max_numa_index);
->> +
->> +	for (i =3D 0; i < max_numa_index; i++)
->> +		/* +1 skip the max_numa_index in the property */
->> +		numa_id_index_table[i] =3D of_read_number(&numa_lookup_index[i + 1], =
-1);
->> +
->> +
->> +	if (numa_dist_table_length !=3D max_numa_index * max_numa_index) {
->> +
->> +		WARN(1, "Wrong NUMA distance information\n");
->> +		/* consider everybody else just remote. */
->> +		for (i =3D 0;  i < max_numa_index; i++) {
->> +			for (j =3D 0; j < max_numa_index; j++) {
->> +				int nodeA =3D numa_id_index_table[i];
->> +				int nodeB =3D numa_id_index_table[j];
->> +
->> +				if (nodeA =3D=3D nodeB)
->> +					numa_distance_table[nodeA][nodeB] =3D LOCAL_DISTANCE;
->> +				else
->> +					numa_distance_table[nodeA][nodeB] =3D REMOTE_DISTANCE;
->> +			}
->> +		}
->> +	}
->> +
->> +	distance_index =3D 0;
->> +	for (i =3D 0;  i < max_numa_index; i++) {
->> +		for (j =3D 0; j < max_numa_index; j++) {
->> +			int nodeA =3D numa_id_index_table[i];
->> +			int nodeB =3D numa_id_index_table[j];
->> +
->> +			numa_distance_table[nodeA][nodeB] =3D numa_dist_table[distance_index=
-++];
->> +			pr_debug("dist[%d][%d]=3D%d ", nodeA, nodeB, numa_distance_table[nod=
-eA][nodeB]);
->> +		}
->> +	}
->>  }
->>=20=20
->>  static int __init find_primary_domain_index(void)
->> @@ -323,6 +420,9 @@ static int __init find_primary_domain_index(void)
->>  	 */
->>  	if (firmware_has_feature(FW_FEATURE_OPAL)) {
->>  		affinity_form =3D FORM1_AFFINITY;
->> +	} else if (firmware_has_feature(FW_FEATURE_FORM2_AFFINITY)) {
->> +		dbg("Using form 2 affinity\n");
->> +		affinity_form =3D FORM2_AFFINITY;
->>  	} else if (firmware_has_feature(FW_FEATURE_FORM1_AFFINITY)) {
->>  		dbg("Using form 1 affinity\n");
->>  		affinity_form =3D FORM1_AFFINITY;
->> @@ -367,8 +467,17 @@ static int __init find_primary_domain_index(void)
->>=20=20
->>  		index =3D of_read_number(&distance_ref_points[1], 1);
->>  	} else {
->> +		/*
->> +		 * Both FORM1 and FORM2 affinity find the primary domain details
->> +		 * at the same offset.
->> +		 */
->>  		index =3D of_read_number(distance_ref_points, 1);
->>  	}
->> +	/*
->> +	 * If it is FORM2 also initialize the distance table here.
->> +	 */
->> +	if (affinity_form =3D=3D FORM2_AFFINITY)
->> +		initialize_form2_numa_distance_lookup_table(root);
->
-> Ew.  Calling a function called "find_primary_domain_index" to also
-> initialize the main distance table is needlessly counterintuitive.
-> Move this call to parse_numa_properties().
+  git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core.git tags/bus_remove_return_void-5.15
 
-The reason I ended up doing it here is because 'root' is already fetched
-here. But I agree it is confusing. I will move fetching of root inside
-initialize_form2_numa_distance_lookup_table() and move the function
-outside primary_index lookup.
+for you to fetch changes up to fc7a6209d5710618eb4f72a77cd81b8d694ecf89:
 
-modified   arch/powerpc/mm/numa.c
-@@ -355,14 +355,22 @@ void update_numa_distance(struct device_node *node)
-  * ibm,numa-lookup-index-table=3D {N, domainid1, domainid2, ..... domainid=
-N}
-  * ibm,numa-distance-table =3D { N, 1, 2, 4, 5, 1, 6, .... N elements}
-  */
--static void initialize_form2_numa_distance_lookup_table(struct device_node=
- *root)
-+static void initialize_form2_numa_distance_lookup_table()
- {
- 	int i, j;
-+	struct device_node *root;
- 	const __u8 *numa_dist_table;
- 	const __be32 *numa_lookup_index;
- 	int numa_dist_table_length;
- 	int max_numa_index, distance_index;
-=20
-+	if (firmware_has_feature(FW_FEATURE_OPAL))
-+		root =3D of_find_node_by_path("/ibm,opal");
-+	else
-+		root =3D of_find_node_by_path("/rtas");
-+	if (!root)
-+		root =3D of_find_node_by_path("/");
-+
- 	numa_lookup_index =3D of_get_property(root, "ibm,numa-lookup-index-table"=
-, NULL);
- 	max_numa_index =3D of_read_number(&numa_lookup_index[0], 1);
-=20
-@@ -407,6 +415,7 @@ static void initialize_form2_numa_distance_lookup_table=
-(struct device_node *root
- 			pr_debug("dist[%d][%d]=3D%d ", nodeA, nodeB, numa_distance_table[nodeA]=
-[nodeB]);
- 		}
- 	}
-+	of_node_put(root);
- }
-=20
- static int __init find_primary_domain_index(void)
-@@ -472,12 +481,6 @@ static int __init find_primary_domain_index(void)
- 		 */
- 		index =3D of_read_number(distance_ref_points, 1);
- 	}
--	/*
--	 * If it is FORM2 also initialize the distance table here.
--	 */
--	if (affinity_form =3D=3D FORM2_AFFINITY)
--		initialize_form2_numa_distance_lookup_table(root);
--
- 	/*
- 	 * Warn and cap if the hardware supports more than
- 	 * MAX_DISTANCE_REF_POINTS domains.
-@@ -916,6 +919,12 @@ static int __init parse_numa_properties(void)
-=20
- 	dbg("NUMA associativity depth for CPU/Memory: %d\n", primary_domain_index=
-);
-=20
-+	/*
-+	 * If it is FORM2 also initialize the distance table here.
-+	 */
-+	if (affinity_form =3D=3D FORM2_AFFINITY)
-+		initialize_form2_numa_distance_lookup_table();
-+
- 	/*
- 	 * Even though we connect cpus to numa domains later in SMP
- 	 * init, we need to know the node ids now. This is because
+  bus: Make remove callback return void (2021-07-21 11:53:42 +0200)
 
--aneesh
+----------------------------------------------------------------
+Bus: Make remove callback return void tag
+
+Tag for other trees/branches to pull from in order to have a stable
+place to build off of if they want to add new busses for 5.15.
+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+----------------------------------------------------------------
+Uwe Kleine-König (5):
+      PCI: endpoint: Make struct pci_epf_driver::remove return void
+      s390/cio: Make struct css_driver::remove return void
+      s390/ccwgroup: Drop if with an always false condition
+      s390/scm: Make struct scm_driver::remove return void
+      bus: Make remove callback return void
+
+ arch/arm/common/locomo.c                  | 3 +--
+ arch/arm/common/sa1111.c                  | 4 +---
+ arch/arm/mach-rpc/ecard.c                 | 4 +---
+ arch/mips/sgi-ip22/ip22-gio.c             | 3 +--
+ arch/parisc/kernel/drivers.c              | 5 ++---
+ arch/powerpc/platforms/ps3/system-bus.c   | 3 +--
+ arch/powerpc/platforms/pseries/ibmebus.c  | 3 +--
+ arch/powerpc/platforms/pseries/vio.c      | 3 +--
+ arch/s390/include/asm/eadm.h              | 2 +-
+ arch/sparc/kernel/vio.c                   | 4 +---
+ drivers/acpi/bus.c                        | 3 +--
+ drivers/amba/bus.c                        | 4 +---
+ drivers/base/auxiliary.c                  | 4 +---
+ drivers/base/isa.c                        | 4 +---
+ drivers/base/platform.c                   | 4 +---
+ drivers/bcma/main.c                       | 6 ++----
+ drivers/bus/sunxi-rsb.c                   | 4 +---
+ drivers/cxl/core.c                        | 3 +--
+ drivers/dax/bus.c                         | 4 +---
+ drivers/dma/idxd/sysfs.c                  | 4 +---
+ drivers/firewire/core-device.c            | 4 +---
+ drivers/firmware/arm_scmi/bus.c           | 4 +---
+ drivers/firmware/google/coreboot_table.c  | 4 +---
+ drivers/fpga/dfl.c                        | 4 +---
+ drivers/hid/hid-core.c                    | 4 +---
+ drivers/hid/intel-ish-hid/ishtp/bus.c     | 4 +---
+ drivers/hv/vmbus_drv.c                    | 5 +----
+ drivers/hwtracing/intel_th/core.c         | 4 +---
+ drivers/i2c/i2c-core-base.c               | 5 +----
+ drivers/i3c/master.c                      | 4 +---
+ drivers/input/gameport/gameport.c         | 3 +--
+ drivers/input/serio/serio.c               | 3 +--
+ drivers/ipack/ipack.c                     | 4 +---
+ drivers/macintosh/macio_asic.c            | 4 +---
+ drivers/mcb/mcb-core.c                    | 4 +---
+ drivers/media/pci/bt8xx/bttv-gpio.c       | 3 +--
+ drivers/memstick/core/memstick.c          | 3 +--
+ drivers/mfd/mcp-core.c                    | 3 +--
+ drivers/misc/mei/bus.c                    | 4 +---
+ drivers/misc/tifm_core.c                  | 3 +--
+ drivers/mmc/core/bus.c                    | 4 +---
+ drivers/mmc/core/sdio_bus.c               | 4 +---
+ drivers/net/netdevsim/bus.c               | 3 +--
+ drivers/ntb/core.c                        | 4 +---
+ drivers/ntb/ntb_transport.c               | 4 +---
+ drivers/nubus/bus.c                       | 6 ++----
+ drivers/nvdimm/bus.c                      | 3 +--
+ drivers/pci/endpoint/pci-epf-core.c       | 7 ++-----
+ drivers/pci/pci-driver.c                  | 3 +--
+ drivers/pcmcia/ds.c                       | 4 +---
+ drivers/platform/surface/aggregator/bus.c | 4 +---
+ drivers/platform/x86/wmi.c                | 4 +---
+ drivers/pnp/driver.c                      | 3 +--
+ drivers/rapidio/rio-driver.c              | 4 +---
+ drivers/rpmsg/rpmsg_core.c                | 7 ++-----
+ drivers/s390/block/scm_drv.c              | 4 +---
+ drivers/s390/cio/ccwgroup.c               | 6 +-----
+ drivers/s390/cio/chsc_sch.c               | 3 +--
+ drivers/s390/cio/css.c                    | 7 +++----
+ drivers/s390/cio/css.h                    | 2 +-
+ drivers/s390/cio/device.c                 | 9 +++------
+ drivers/s390/cio/eadm_sch.c               | 4 +---
+ drivers/s390/cio/scm.c                    | 5 +++--
+ drivers/s390/cio/vfio_ccw_drv.c           | 3 +--
+ drivers/s390/crypto/ap_bus.c              | 4 +---
+ drivers/scsi/scsi_debug.c                 | 3 +--
+ drivers/sh/superhyway/superhyway.c        | 8 ++------
+ drivers/siox/siox-core.c                  | 4 +---
+ drivers/slimbus/core.c                    | 4 +---
+ drivers/soc/qcom/apr.c                    | 4 +---
+ drivers/spi/spi.c                         | 4 +---
+ drivers/spmi/spmi.c                       | 3 +--
+ drivers/ssb/main.c                        | 4 +---
+ drivers/staging/fieldbus/anybuss/host.c   | 4 +---
+ drivers/staging/greybus/gbphy.c           | 4 +---
+ drivers/target/loopback/tcm_loop.c        | 5 ++---
+ drivers/thunderbolt/domain.c              | 4 +---
+ drivers/tty/serdev/core.c                 | 4 +---
+ drivers/usb/common/ulpi.c                 | 4 +---
+ drivers/usb/serial/bus.c                  | 4 +---
+ drivers/usb/typec/bus.c                   | 4 +---
+ drivers/vdpa/vdpa.c                       | 4 +---
+ drivers/vfio/mdev/mdev_driver.c           | 4 +---
+ drivers/virtio/virtio.c                   | 3 +--
+ drivers/vlynq/vlynq.c                     | 4 +---
+ drivers/vme/vme.c                         | 4 +---
+ drivers/xen/xenbus/xenbus.h               | 2 +-
+ drivers/xen/xenbus/xenbus_probe.c         | 4 +---
+ drivers/zorro/zorro-driver.c              | 3 +--
+ include/linux/device/bus.h                | 2 +-
+ include/linux/pci-epf.h                   | 2 +-
+ sound/ac97/bus.c                          | 6 ++----
+ sound/aoa/soundbus/core.c                 | 4 +---
+ 93 files changed, 107 insertions(+), 263 deletions(-)
