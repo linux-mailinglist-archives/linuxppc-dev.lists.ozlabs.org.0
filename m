@@ -2,84 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FCF23D3507
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jul 2021 09:06:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD7153D35B7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jul 2021 09:50:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GWL2N0s5dz30Gn
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jul 2021 17:06:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GWM28522Sz30gW
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jul 2021 17:50:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=AkyYuZgR;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=bfzaCdOo;
+	dkim=fail reason="signature verification failed" header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=WllF+5Da;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=canonical.com (client-ip=185.125.188.120;
- helo=smtp-relay-canonical-0.canonical.com;
- envelope-from=kai.heng.feng@canonical.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=canonical.com header.i=@canonical.com
- header.a=rsa-sha256 header.s=20210705 header.b=AkyYuZgR; 
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
+ (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
+ envelope-from=jslaby@suse.cz; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256
+ header.s=susede2_rsa header.b=bfzaCdOo; 
+ dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256
+ header.s=susede2_ed25519 header.b=WllF+5Da; 
  dkim-atps=neutral
-Received: from smtp-relay-canonical-0.canonical.com
- (smtp-relay-canonical-0.canonical.com [185.125.188.120])
+X-Greylist: delayed 429 seconds by postgrey-1.36 at boromir;
+ Fri, 23 Jul 2021 17:50:32 AEST
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GWL1p1kjnz2yLQ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jul 2021 17:05:33 +1000 (AEST)
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GWM1h27CTz2yMS
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jul 2021 17:50:32 +1000 (AEST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+ by smtp-out1.suse.de (Postfix) with ESMTP id 823F2225FE;
+ Fri, 23 Jul 2021 07:43:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+ t=1627026198; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZsjT25MItZUg98TG024pK66nz3/iaQg4oVcs7Iej4E0=;
+ b=bfzaCdOogaiDAbtW4z1zQz5UVFz/XLAPo+YyWgET7dKerP2f54qVvT3jc5e7wZtxtkyvfV
+ HU+D5G8kHTsJOQf1iIIIccbDrwT6+EZT1UMD6wfGzZZ3kTGBofUQVHP5owFgwCHeDviUQr
+ D6PoKK4IjvvA2eYeqnS++PIUe9foK2o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+ s=susede2_ed25519; t=1627026198;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZsjT25MItZUg98TG024pK66nz3/iaQg4oVcs7Iej4E0=;
+ b=WllF+5DaOsITCb5p7LdrNyFd7tTT1TJqpJDPXot87iypQGp2EAWXXbaPq023qjZv/Gw5WP
+ cgpTjbMm0gIQK6BA==
+Received: from localhost.localdomain (unknown [10.100.201.122])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPS id AC2AB3F349
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jul 2021 07:05:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
- s=20210705; t=1627023928;
- bh=nfkPx7NC5zaeXceVlyVGlTHRL5ArI5NO9jvFKmnisTY=;
- h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
- To:Cc:Content-Type;
- b=AkyYuZgRiWKoTrTqlZV5tATy9Dvitjs8j6NnRfcOtGVSzY7VeKiDAQX/UCnuK9ccg
- BPUYyxg+l65emZg7HbqHKOqR0x7KCZ/urNR4D4GfUgyYdUgURe3Tx24tLgbk7fjtka
- Y/WcsDuWKitw+jjB8SENu+BlJX5RnDBX7IDrjeXqE00QEB0RwHdzZhRaxCZvChznWn
- YDbbR0v73O3JmFLh4G3kjq83UeL40S9SF/2Lvdh5J0p6IovtyYK1xGmdlngD6q493t
- szcDl44VG31q9AEwnIMSkkMyTMZaShMGJJui4oKMaLFZax9YW3YfLay7cv7viW/O9V
- WifUDdLGQrTSA==
-Received: by mail-ed1-f69.google.com with SMTP id
- f24-20020a0564021618b02903954c05c938so278798edv.3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jul 2021 00:05:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=nfkPx7NC5zaeXceVlyVGlTHRL5ArI5NO9jvFKmnisTY=;
- b=LsSf+QD2577l9pWlIyuw3S83q4a7g3/CetcquvCEGyDrpg/IFTJXMTw8P+tq6BEYYb
- 0kQkGEY9ZYZMUKFIHTi2CH7gcUr69U+PxzR+M6Wwza5jkB0Qj/lCu/TLw/B4GJYLFiZM
- hVsc9mI/u2bXz+eVqmJb2IS7zjdr/Zcs70F2vUK+XfFUvgZgdGVbH4+HucRGMQAPPDAA
- zOIC1z0xDiOkNAVdeAC3MtDihvWT2kxh2240gJmUTZU/+OQXhcNhZ6boOjiaVV6pPXZD
- WLiOEldGJgPwsvXcX7cOYtONxLarBiy4cxxelNUMmrJtMEWpKoG5uurUEMOOWjivYisJ
- 0nMA==
-X-Gm-Message-State: AOAM533MO4+iKzD7Yt3HY8bL3cvZtSkY+dM1/JQoQ/XMhfgGXzNf0q0Z
- CysWTFHNCBpgOxlrBU+08uL4jUtmzdeqkaVHoosOXHWPbJsi3p9V+Noo7J0ywiiEgRgzTLtdwVJ
- 1wDtWNjLrq4uDQNzL5BJ1WndZnSYm1PMjxCkYu1KzftVJg+I6fgLWPgZ8Fzg=
-X-Received: by 2002:a17:906:f0d8:: with SMTP id
- dk24mr3430027ejb.432.1627023926311; 
- Fri, 23 Jul 2021 00:05:26 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwnwrE3fibwAyd5puLQhhkBI3cJ/iZwBYnuPqRykg2M2+jR/0WQUB0/5z1/f5dPMa0hH/lPTm/THgVMa/6SzKQ=
-X-Received: by 2002:a17:906:f0d8:: with SMTP id
- dk24mr3430007ejb.432.1627023926038; 
- Fri, 23 Jul 2021 00:05:26 -0700 (PDT)
+ by relay2.suse.de (Postfix) with ESMTPS id 1CDB1A3B87;
+ Fri, 23 Jul 2021 07:43:18 +0000 (UTC)
+From: Jiri Slaby <jslaby@suse.cz>
+To: gregkh@linuxfoundation.org
+Subject: [PATCH 2/8] hvsi: don't panic on tty_register_driver failure
+Date: Fri, 23 Jul 2021 09:43:11 +0200
+Message-Id: <20210723074317.32690-3-jslaby@suse.cz>
+X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20210723074317.32690-1-jslaby@suse.cz>
+References: <20210723074317.32690-1-jslaby@suse.cz>
 MIME-Version: 1.0
-References: <CAAd53p6VN0ejKHcTRgj8mZ_iApR=KogpVZ-HkvdoZbJ=Yue98g@mail.gmail.com>
- <20210722222351.GA354095@bjorn-Precision-5520>
- <YPpShrTa448OpGjA@infradead.org>
-In-Reply-To: <YPpShrTa448OpGjA@infradead.org>
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Date: Fri, 23 Jul 2021 15:05:12 +0800
-Message-ID: <CAAd53p75d=ibfFRCLmYOMvfrn7XbDajby1shKdWQWW=DOrX3uw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] PCI/AER: Disable AER interrupt during suspend
-To: Christoph Hellwig <hch@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,55 +78,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Joerg Roedel <jroedel@suse.de>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- "open list:PCI SUBSYSTEM" <linux-pci@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>,
- Lalithambika Krishnakumar <lalithambika.krishnakumar@intel.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Bjorn Helgaas <helgaas@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Oliver O'Halloran <oohall@gmail.com>,
- "open list:PCI ENHANCED ERROR HANDLING \(EEH\) FOR POWERPC"
- <linuxppc-dev@lists.ozlabs.org>, Lu Baolu <baolu.lu@linux.intel.com>
+Cc: linuxppc-dev@lists.ozlabs.org, Jiri Slaby <jslaby@suse.cz>,
+ linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jul 23, 2021 at 1:24 PM Christoph Hellwig <hch@infradead.org> wrote:
->
-> On Thu, Jul 22, 2021 at 05:23:51PM -0500, Bjorn Helgaas wrote:
-> > Marking both of these as "not applicable" for now because I don't
-> > think we really understand what's going on.
-> >
-> > Apparently a DMA occurs during suspend or resume and triggers an ACS
-> > violation.  I don't think think such a DMA should occur in the first
-> > place.
-> >
-> > Or maybe, since you say the problem happens right after ACS is enabled
-> > during resume, we're doing the ACS enable incorrectly?  Although I
-> > would think we should not be doing DMA at the same time we're enabling
-> > ACS, either.
-> >
-> > If this really is a system firmware issue, both HP and Dell should
-> > have the knowledge and equipment to figure out what's going on.
->
-> DMA on resume sounds really odd.  OTOH the below mentioned case of
-> a DMA during suspend seems very like in some setup.  NVMe has the
-> concept of a host memory buffer (HMB) that allows the PCIe device
-> to use arbitrary host memory for internal purposes.  Combine this
-> with the "Storage D3" misfeature in modern x86 platforms that force
-> a slot into d3cold without consulting the driver first and you'd see
-> symptoms like this.  Another case would be the NVMe equivalent of the
-> AER which could lead to a completion without host activity.
+The alloc_tty_driver failure is handled gracefully in hvsi_init. But
+tty_register_driver is not. panic is called if that one fails.
 
-The issue can also be observed on non-HMB NVMe.
+So handle the failure of tty_register_driver gracefully too. This will
+keep at least the console functional as it was enabled earlier by
+console_initcall in hvsi_console_init. Instead of shooting down the
+whole system.
 
->
-> We now have quirks in the ACPI layer and NVMe to fully shut down the
-> NVMe controllers on these messed up systems with the "Storage D3"
-> misfeature which should avoid such "spurious" DMAs at the cost of
-> wearning out the device much faster.
+This means, we disable interrupts and restore hvsi_wait back to
+poll_for_state().
 
-Since the issue is on S3, I think the NVMe always fully shuts down.
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+Cc: linuxppc-dev@lists.ozlabs.org
+---
+ drivers/tty/hvc/hvsi.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-Kai-Heng
+diff --git a/drivers/tty/hvc/hvsi.c b/drivers/tty/hvc/hvsi.c
+index bfc15279d5bc..f0bc8e780051 100644
+--- a/drivers/tty/hvc/hvsi.c
++++ b/drivers/tty/hvc/hvsi.c
+@@ -1038,7 +1038,7 @@ static const struct tty_operations hvsi_ops = {
+ 
+ static int __init hvsi_init(void)
+ {
+-	int i;
++	int i, ret;
+ 
+ 	hvsi_driver = alloc_tty_driver(hvsi_count);
+ 	if (!hvsi_driver)
+@@ -1069,12 +1069,25 @@ static int __init hvsi_init(void)
+ 	}
+ 	hvsi_wait = wait_for_state; /* irqs active now */
+ 
+-	if (tty_register_driver(hvsi_driver))
+-		panic("Couldn't register hvsi console driver\n");
++	ret = tty_register_driver(hvsi_driver);
++	if (ret) {
++		pr_err("Couldn't register hvsi console driver\n");
++		goto err_free_irq;
++	}
+ 
+ 	printk(KERN_DEBUG "HVSI: registered %i devices\n", hvsi_count);
+ 
+ 	return 0;
++err_free_irq:
++	hvsi_wait = poll_for_state;
++	for (i = 0; i < hvsi_count; i++) {
++		struct hvsi_struct *hp = &hvsi_ports[i];
++
++		free_irq(hp->virq, hp);
++	}
++	tty_driver_kref_put(hvsi_driver);
++
++	return ret;
+ }
+ device_initcall(hvsi_init);
+ 
+-- 
+2.32.0
+
