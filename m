@@ -2,51 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D3763D419B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jul 2021 22:34:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C38403D42A4
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Jul 2021 00:09:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GWgyr40HMz3bmP
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Jul 2021 06:34:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GWk4s5bQ2z3bcK
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Jul 2021 08:09:33 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=merlin.20170209 header.b=PPnJFt7y;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=HGYGO1ag;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1234::107; helo=merlin.infradead.org;
- envelope-from=geoff@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::436;
+ helo=mail-wr1-x436.google.com; envelope-from=chunkeey@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=merlin.20170209 header.b=PPnJFt7y; 
- dkim-atps=neutral
-Received: from merlin.infradead.org (merlin.infradead.org
- [IPv6:2001:8b0:10b:1234::107])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=HGYGO1ag; dkim-atps=neutral
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com
+ [IPv6:2a00:1450:4864:20::436])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GWgwL1T6Jz30FZ
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Jul 2021 06:32:01 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=merlin.20170209; h=Date:Cc:To:Subject:From:References:
- In-Reply-To:Message-Id:Sender:Reply-To:MIME-Version:Content-Type:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=jbIceOU5VecBIK4RxPlxXgIRdSPP/6kstn0NmRj+bg8=; b=PPnJFt7yjFdmef88qwNPHh4tTW
- F4o4F3fRgB44eJTp+cNRcKK04o3BL+7uo43PLnzTvmp5K5wZeW/n8z/cn7SQ9wk3bJDbnHan5M/3M
- 5COSk2v6xSxoiuwn3ANllZyAEo0gf9hTaowx1zLeG4kxEDEfE2RjbleTzTHBRqprrOe95YB6qbvtG
- zCdz8SQsdaLICE2WNiCbPCwvtrUbasdzMTACwfP0IyJOWOjOXnPV39R8BZnSz1fWsIQT+i30+uclZ
- RMoZHqdLi6JQu7gSRmGzpsZSEP2WkvxLWAYTkx1pSgBcGXO2A20G7chm1L59AGivx3bKD5kyy3T7s
- lo90T3pQ==;
-Received: from geoff by merlin.infradead.org with local (Exim 4.94.2 #2 (Red
- Hat Linux)) id 1m71pk-009Biz-5a; Fri, 23 Jul 2021 20:31:48 +0000
-Message-Id: <7aa1d9b1b4ffadcbdc6f88e4f8d4a323da307595.1627068552.git.geoff@infradead.org>
-In-Reply-To: <cover.1627068552.git.geoff@infradead.org>
-References: <cover.1627068552.git.geoff@infradead.org>
-From: Geoff Levand <geoff@infradead.org>
-Patch-Date: Sat, 24 Jul 2021 13:02:14 -0700
-Subject: [PATCH v4 10/10] net/ps3_gelic: Fix DMA mapping problems
-To: David S. Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
-Date: Fri, 23 Jul 2021 20:31:48 +0000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GWk4M6h7Fz2yNW
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Jul 2021 08:09:05 +1000 (AEST)
+Received: by mail-wr1-x436.google.com with SMTP id j2so3769786wrx.9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jul 2021 15:09:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=ecBj1zwkwYbGZmPUHfpHo34O/qFU4IXeWk/Gj4el/tM=;
+ b=HGYGO1agXI7WNvWwPw350KSfg0GLvzcju4Z5EiI8D+l4EP40ZQllCKXTfUAABvAYIc
+ ukNpMOqWdsL0WhHVNhZlCOxZIb1fEyuSOvRKzMbACrfUV088n0fVEsNd0cgEWr+5iKhk
+ fqb4oqe7cZyVJv/MzOmLwEYTm8Ra4CDWuBzy46ruPzfmfvlE2tSKwcNxNrQvTW9Hl8/X
+ C5nghG/eCYy9yt6b0NXGN9bGSSfifgesFDnrObZiI9iI8nfx12eFzMMVHt/BPhtOjDIb
+ 1G7KkYePFXHBwrErsA+cRg+vYFnhS48+AVKe+ZC+micMrt9to0/OLV8Kj04u+4XKwUi2
+ bTzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=ecBj1zwkwYbGZmPUHfpHo34O/qFU4IXeWk/Gj4el/tM=;
+ b=s2wwOmIF+kb9D4kaUV49SAsYdVlW9YQ/jNt8YqHTTa8BZ8DFJAiyLAcsMBiLZe3VMQ
+ elc6u9XB8Op5naSo8sRoPGH+PkV1zEQcmiS+TGN/GCeK1+o7d0490rCL9+WdVg1wEO48
+ aqHzO4vl+3UA3SN30GHG6cQQ7kBa0nIW7NkzLhjRT33sy+1H3CErWs/DzhzQa9KVhJ+G
+ 92Itk/SqO0uCz/A4x2HkTya+tD7TSOuGID9VXyRPwLrY/YpJwJ/pbV5hI7F1x17+twUO
+ LqvngoqZ8FzGBmFP1xjq8haFOFkmjh36+cS1KL1oSiLxkf37yod5wrIG1x0oiPTnBo7P
+ YA9A==
+X-Gm-Message-State: AOAM532afOprP3RCtDIIwLvvMziRiE0230u9Vhr8vh4PF8PyQT0g5ESU
+ Vu9yTSmAqqdMouFJ/SY+qL4=
+X-Google-Smtp-Source: ABdhPJw8Sxr/QfKAbUpyqwrWHu2bVlTySlMiiJtAJVMHDHH+c3u+yrc4eD88LEHyDBRAn/1TATR+hg==
+X-Received: by 2002:a05:6000:1248:: with SMTP id
+ j8mr7212507wrx.391.1627078138602; 
+ Fri, 23 Jul 2021 15:08:58 -0700 (PDT)
+Received: from debian64.daheim (p5b0d7bb8.dip0.t-ipconnect.de. [91.13.123.184])
+ by smtp.gmail.com with ESMTPSA id v30sm36863335wrv.85.2021.07.23.15.08.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 23 Jul 2021 15:08:58 -0700 (PDT)
+Received: from localhost.daheim ([127.0.0.1])
+ by debian64.daheim with esmtp (Exim 4.94.2)
+ (envelope-from <chunkeey@gmail.com>)
+ id 1m73LK-001hIT-Av; Sat, 24 Jul 2021 00:08:30 +0200
+Subject: Re: [PATCH v3 0/5] powerpc: apm82181: adding customer devices
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+References: <cover.1599343429.git.chunkeey@gmail.com>
+ <YPsWMRLWQoxHFub6@smile.fi.intel.com>
+From: Christian Lamparter <chunkeey@gmail.com>
+Message-ID: <8a8f50d1-b89c-322f-1465-062ed287d491@gmail.com>
+Date: Sat, 24 Jul 2021 00:08:30 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
+MIME-Version: 1.0
+In-Reply-To: <YPsWMRLWQoxHFub6@smile.fi.intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,357 +89,149 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: devicetree@vger.kernel.org, Chris Blake <chrisrblake93@gmail.com>,
+ Rob Herring <robh+dt@kernel.org>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fixes several DMA mapping problems with the PS3's gelic network driver:
+Hi Andy!
 
- * Change from checking the return value of dma_map_single to using the
-   dma_mapping_error routine.
- * Use the correct buffer length when mapping the RX skb.
- * Improved error checking and debug logging.
+On 23/07/2021 21:19, Andy Shevchenko wrote:
+> On Sun, Sep 06, 2020 at 12:06:10AM +0200, Christian Lamparter wrote:
+>> I've been holding on to these devices dts' for a while now.
+>> But ever since the recent purge of the PPC405, I'm feeling
+>> the urge to move forward.
+>>
+>> The devices in question have been running with OpenWrt since
+>> around 2016/2017. Back then it was linux v4.4 and required
+>> many out-of-tree patches (for WIFI, SATA, CRYPTO...), that
+>> since have been integrated. So, there's nothing else in the
+>> way I think.
+>>
+>> A patch that adds the Meraki vendor-prefix has been sent
+>> separately, as there's also the Meraki MR32 that I'm working
+>> on as well. Here's the link to the patch:
+>> <https://lore.kernel.org/linuxppc-dev/20200822154045.16036-1-chunkeey@gmail.com/>
+>>
+>> Now, I've looked around in the arch/powerpc for recent .dts
+>> and device submissions to get an understanding of what is
+>> required.
+>> >From the looks of it, it seems like every device gets a
+>> skeleton defconfig and a CONFIG_$DEVICE symbol (Like:
+>> CONFIG_MERAKI_MR24, CONFIG_WD_MYBOOKLIVE).
+>>
+>> Will this be the case? Or would it make sense to further
+>> unite the Bluestone, MR24 and MBL under a common CONFIG_APM82181
+>> and integrate the BLUESTONE device's defconfig into it as well?
+>> (I've stumbled across the special machine compatible
+>> handling of ppc in the Documentation/devicetree/usage-model.rst
+>> already.)
+> 
+> I haven't found any traces of this to be applied. What is the status of this
+> patch series? And what is the general state of affairs for the PPC44x?
 
-Fixes runtime errors like these, and also other randomly occurring errors:
 
-  IP-Config: Complete:
-  DMA-API: ps3_gelic_driver sb_05: device driver failed to check map error
-  WARNING: CPU: 0 PID: 0 at kernel/dma/debug.c:1027 .check_unmap+0x888/0x8dc
+My best guess is: It's complicated. While there was a recent big
+UPSET EVENT regarding the My Book Live (MBL) that affected "hundreds"
+and "thousands": "An unpleasant surprise for My Book Live owners"
+(<https://lwn.net/Articles/861235/>). Sadly this wasn't getting any
+traction.
 
-Signed-off-by: Geoff Levand <geoff@infradead.org>
----
- drivers/net/ethernet/toshiba/ps3_gelic_net.c | 183 +++++++++++--------
- 1 file changed, 108 insertions(+), 75 deletions(-)
+I can tell that the mentioned Cisco Meraki MR32 (Broadcom ARM SoC)
+got merged. So this is off the plate 😌.
 
-diff --git a/drivers/net/ethernet/toshiba/ps3_gelic_net.c b/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-index 42f4de9ad5fe..11ddeacb1159 100644
---- a/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-+++ b/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-@@ -336,22 +336,31 @@ static int gelic_card_init_chain(struct gelic_card *card,
- 	struct gelic_descr_chain *chain, struct gelic_descr *start_descr,
- 	int descr_count)
- {
--	int i;
--	struct gelic_descr *descr;
-+	struct gelic_descr *descr = start_descr;
- 	struct device *dev = ctodev(card);
-+	unsigned int index;
- 
--	descr = start_descr;
--	memset(descr, 0, sizeof(*descr) *descr_count);
-+	memset(start_descr, 0, descr_count * sizeof(*start_descr));
- 
--	for (i = 0; i < descr_count; i++, descr++) {
--		descr->link.size = sizeof(struct gelic_hw_regs);
-+	for (index = 0, descr = start_descr; index < descr_count;
-+		index++, descr++) {
- 		gelic_descr_set_status(descr, GELIC_DESCR_DMA_NOT_IN_USE);
--		descr->link.cpu_addr =
--			dma_map_single(dev, descr, descr->link.size,
--				DMA_BIDIRECTIONAL);
- 
--		if (!descr->link.cpu_addr)
--			goto iommu_error;
-+		descr->link.size = sizeof(struct gelic_hw_regs);
-+		descr->link.cpu_addr = dma_map_single(dev, descr,
-+			descr->link.size, DMA_BIDIRECTIONAL);
-+
-+		if (unlikely(dma_mapping_error(dev, descr->link.cpu_addr))) {
-+			dev_err(dev, "%s:%d: dma_mapping_error\n", __func__,
-+				__LINE__);
-+
-+			for (index--, descr--; index > 0; index--, descr--) {
-+				if (descr->link.cpu_addr) {
-+					gelic_unmap_link(dev, descr);
-+				}
-+			}
-+			return -ENOMEM;
-+		}
- 
- 		descr->next = descr + 1;
- 		descr->prev = descr - 1;
-@@ -360,8 +369,9 @@ static int gelic_card_init_chain(struct gelic_card *card,
- 	(descr - 1)->next = start_descr;
- 	start_descr->prev = (descr - 1);
- 
--	descr = start_descr;
--	for (i = 0; i < descr_count; i++, descr++) {
-+	/* chain bus addr of hw descriptor */
-+	for (index = 0, descr = start_descr; index < descr_count;
-+		index++, descr++) {
- 		descr->hw_regs.next_descr_addr =
- 			cpu_to_be32(descr->next->link.cpu_addr);
- 	}
-@@ -373,12 +383,6 @@ static int gelic_card_init_chain(struct gelic_card *card,
- 	(descr - 1)->hw_regs.next_descr_addr = 0;
- 
- 	return 0;
--
--iommu_error:
--	for (i--, descr--; 0 <= i; i--, descr--)
--		if (descr->link.cpu_addr)
--			gelic_unmap_link(dev, descr);
--	return -ENOMEM;
- }
- 
- /**
-@@ -395,49 +399,63 @@ static int gelic_descr_prepare_rx(struct gelic_card *card,
- 	struct gelic_descr *descr)
- {
- 	struct device *dev = ctodev(card);
--	int offset;
--	unsigned int bufsize;
-+	struct aligned_buff {
-+		unsigned int total_bytes;
-+		unsigned int offset;
-+	};
-+	struct aligned_buff a_buf;
-+	dma_addr_t cpu_addr;
- 
- 	if (gelic_descr_get_status(descr) !=  GELIC_DESCR_DMA_NOT_IN_USE) {
- 		dev_err(dev, "%s:%d: ERROR status\n", __func__, __LINE__);
- 	}
- 
--	/* we need to round up the buffer size to a multiple of 128 */
--	bufsize = ALIGN(GELIC_NET_MAX_MTU, GELIC_NET_RXBUF_ALIGN);
-+	a_buf.total_bytes = ALIGN(GELIC_NET_MAX_MTU, GELIC_NET_RXBUF_ALIGN)
-+		+ GELIC_NET_RXBUF_ALIGN;
-+
-+	descr->skb = dev_alloc_skb(a_buf.total_bytes);
- 
--	/* and we need to have it 128 byte aligned, therefore we allocate a
--	 * bit more */
--	descr->skb = dev_alloc_skb(bufsize + GELIC_NET_RXBUF_ALIGN - 1);
- 	if (!descr->skb) {
--		descr->hw_regs.payload.dev_addr = 0; /* tell DMAC don't touch memory */
-+		descr->hw_regs.payload.dev_addr = 0;
-+		descr->hw_regs.payload.size = 0;
- 		return -ENOMEM;
- 	}
--	descr->hw_regs.payload.size = cpu_to_be32(bufsize);
-+
-+	a_buf.offset = PTR_ALIGN(descr->skb->data, GELIC_NET_RXBUF_ALIGN)
-+		- descr->skb->data;
-+
-+	if (a_buf.offset) {
-+		dev_dbg(dev, "%s:%d: offset=%u\n", __func__, __LINE__,
-+			a_buf.offset);
-+		skb_reserve(descr->skb, a_buf.offset);
-+	}
-+
- 	descr->hw_regs.dmac_cmd_status = 0;
- 	descr->hw_regs.result_size = 0;
- 	descr->hw_regs.valid_size = 0;
- 	descr->hw_regs.data_error = 0;
- 
--	offset = ((unsigned long)descr->skb->data) &
--		(GELIC_NET_RXBUF_ALIGN - 1);
--	if (offset)
--		skb_reserve(descr->skb, GELIC_NET_RXBUF_ALIGN - offset);
--	/* io-mmu-map the skb */
--	descr->hw_regs.payload.dev_addr = cpu_to_be32(dma_map_single(dev,
--						     descr->skb->data,
--						     GELIC_NET_MAX_MTU,
--						     DMA_FROM_DEVICE));
--	if (!descr->hw_regs.payload.dev_addr) {
-+	descr->hw_regs.payload.size = a_buf.total_bytes - a_buf.offset;
-+	cpu_addr = dma_map_single(dev, descr->skb->data,
-+		descr->hw_regs.payload.size, DMA_FROM_DEVICE);
-+	descr->hw_regs.payload.dev_addr = cpu_to_be32(cpu_addr);
-+
-+	if (unlikely(dma_mapping_error(dev, cpu_addr))) {
-+		dev_err(dev, "%s:%d: dma_mapping_error\n", __func__, __LINE__);
-+
-+		descr->hw_regs.payload.dev_addr = 0;
-+		descr->hw_regs.payload.size = 0;
-+
- 		dev_kfree_skb_any(descr->skb);
- 		descr->skb = NULL;
--		dev_info(dev,
--			 "%s:Could not iommu-map rx buffer\n", __func__);
-+
- 		gelic_descr_set_status(descr, GELIC_DESCR_DMA_NOT_IN_USE);
-+
- 		return -ENOMEM;
--	} else {
--		gelic_descr_set_status(descr, GELIC_DESCR_DMA_CARDOWNED);
--		return 0;
- 	}
-+
-+	gelic_descr_set_status(descr, GELIC_DESCR_DMA_CARDOWNED);
-+	return 0;
- }
- 
- /**
-@@ -454,13 +472,18 @@ static void gelic_card_release_rx_chain(struct gelic_card *card)
- 		if (descr->skb) {
- 			dma_unmap_single(dev,
- 				be32_to_cpu(descr->hw_regs.payload.dev_addr),
--				descr->skb->len, DMA_FROM_DEVICE);
--			descr->hw_regs.payload.dev_addr = 0;
-+				descr->hw_regs.payload.size, DMA_FROM_DEVICE);
-+
- 			dev_kfree_skb_any(descr->skb);
- 			descr->skb = NULL;
-+
- 			gelic_descr_set_status(descr,
- 				GELIC_DESCR_DMA_NOT_IN_USE);
- 		}
-+
-+		descr->hw_regs.payload.dev_addr = 0;
-+		descr->hw_regs.payload.size = 0;
-+
- 		descr = descr->next;
- 	} while (descr != card->rx_chain.head);
- }
-@@ -526,17 +549,19 @@ static void gelic_descr_release_tx(struct gelic_card *card,
- 		GELIC_DESCR_TX_TAIL));
- 
- 	dma_unmap_single(dev, be32_to_cpu(descr->hw_regs.payload.dev_addr),
--		skb->len, DMA_TO_DEVICE);
--	dev_kfree_skb_any(skb);
-+		descr->hw_regs.payload.size, DMA_TO_DEVICE);
- 
- 	descr->hw_regs.payload.dev_addr = 0;
- 	descr->hw_regs.payload.size = 0;
-+
-+	dev_kfree_skb_any(skb);
-+	descr->skb = NULL;
-+
- 	descr->hw_regs.next_descr_addr = 0;
- 	descr->hw_regs.result_size = 0;
- 	descr->hw_regs.valid_size = 0;
- 	descr->hw_regs.data_status = 0;
- 	descr->hw_regs.data_error = 0;
--	descr->skb = NULL;
- 
- 	gelic_descr_set_status(descr, GELIC_DESCR_DMA_NOT_IN_USE);
- }
-@@ -565,31 +590,34 @@ static void gelic_card_wake_queues(struct gelic_card *card)
- static void gelic_card_release_tx_chain(struct gelic_card *card, int stop)
- {
- 	struct gelic_descr_chain *tx_chain;
--	enum gelic_descr_dma_status status;
- 	struct device *dev = ctodev(card);
--	struct net_device *netdev;
--	int release = 0;
-+	int release;
-+
-+	for (release = 0, tx_chain = &card->tx_chain;
-+		tx_chain->head != tx_chain->tail && tx_chain->tail;
-+		tx_chain->tail = tx_chain->tail->next) {
-+		enum gelic_descr_dma_status status;
-+		struct gelic_descr *descr;
-+		struct net_device *netdev;
-+
-+		descr = tx_chain->tail;
-+		status = gelic_descr_get_status(descr);
-+		netdev = descr->skb->dev;
- 
--	for (tx_chain = &card->tx_chain;
--	     tx_chain->head != tx_chain->tail && tx_chain->tail;
--	     tx_chain->tail = tx_chain->tail->next) {
--		status = gelic_descr_get_status(tx_chain->tail);
--		netdev = tx_chain->tail->skb->dev;
- 		switch (status) {
- 		case GELIC_DESCR_DMA_RESPONSE_ERROR:
- 		case GELIC_DESCR_DMA_PROTECTION_ERROR:
- 		case GELIC_DESCR_DMA_FORCE_END:
--			 dev_info_ratelimited(dev,
--					 "%s:%d: forcing end of tx descriptor with status %x\n",
--					 __func__, __LINE__, status);
-+			dev_info_ratelimited(dev,
-+				"%s:%d: forcing end of tx descriptor with status %x\n",
-+				__func__, __LINE__, status);
- 			netdev->stats.tx_dropped++;
- 			break;
- 
- 		case GELIC_DESCR_DMA_COMPLETE:
--			if (tx_chain->tail->skb) {
-+			if (descr->skb) {
- 				netdev->stats.tx_packets++;
--				netdev->stats.tx_bytes +=
--					tx_chain->tail->skb->len;
-+				netdev->stats.tx_bytes += descr->skb->len;
- 			}
- 			break;
- 
-@@ -599,7 +627,7 @@ static void gelic_card_release_tx_chain(struct gelic_card *card, int stop)
- 			}
- 		}
- 
--		gelic_descr_release_tx(card, tx_chain->tail);
-+		gelic_descr_release_tx(card, descr);
- 		release++;
- 	}
- out:
-@@ -703,19 +731,19 @@ int gelic_net_stop(struct net_device *netdev)
-  *
-  * returns the address of the next descriptor, or NULL if not available.
-  */
--static struct gelic_descr *
--gelic_card_get_next_tx_descr(struct gelic_card *card)
-+static struct gelic_descr *gelic_card_get_next_tx_descr(struct gelic_card *card)
- {
- 	if (!card->tx_chain.head)
- 		return NULL;
-+
- 	/*  see if the next descriptor is free */
- 	if (card->tx_chain.tail != card->tx_chain.head->next &&
--		gelic_descr_get_status(card->tx_chain.head) ==
--			GELIC_DESCR_DMA_NOT_IN_USE)
-+		(gelic_descr_get_status(card->tx_chain.head) ==
-+			GELIC_DESCR_DMA_NOT_IN_USE)) {
- 		return card->tx_chain.head;
--	else
--		return NULL;
-+	}
- 
-+	return NULL;
- }
- 
- /**
-@@ -809,18 +837,23 @@ static int gelic_descr_prepare_tx(struct gelic_card *card,
- 		if (!skb_tmp) {
- 			return -ENOMEM;
- 		}
-+
- 		skb = skb_tmp;
- 	}
- 
--	cpu_addr = dma_map_single(dev, skb->data, skb->len, DMA_TO_DEVICE);
-+	descr->hw_regs.payload.size = skb->len;
-+	cpu_addr = dma_map_single(dev, skb->data, descr->hw_regs.payload.size,
-+		DMA_TO_DEVICE);
-+	descr->hw_regs.payload.dev_addr = cpu_to_be32(cpu_addr);
- 
--	if (!cpu_addr) {
-+	if (unlikely(dma_mapping_error(dev, cpu_addr))) {
- 		dev_err(dev, "%s:%d: dma_mapping_error\n", __func__, __LINE__);
-+
-+		descr->hw_regs.payload.dev_addr = 0;
-+		descr->hw_regs.payload.size = 0;
- 		return -ENOMEM;
- 	}
- 
--	descr->hw_regs.payload.dev_addr = cpu_to_be32(cpu_addr);
--	descr->hw_regs.payload.size = cpu_to_be32(skb->len);
- 	descr->skb = skb;
- 	descr->hw_regs.data_status = 0;
- 	descr->hw_regs.next_descr_addr = 0; /* terminate hw descr */
-@@ -948,9 +981,9 @@ static void gelic_net_pass_skb_up(struct gelic_descr *descr,
- 
- 	data_status = be32_to_cpu(descr->hw_regs.data_status);
- 	data_error = be32_to_cpu(descr->hw_regs.data_error);
--	/* unmap skb buffer */
-+
- 	dma_unmap_single(dev, be32_to_cpu(descr->hw_regs.payload.dev_addr),
--			 GELIC_NET_MAX_MTU, DMA_FROM_DEVICE);
-+			 descr->hw_regs.payload.size, DMA_FROM_DEVICE);
- 
- 	skb_put(skb, be32_to_cpu(descr->hw_regs.valid_size) ?
- 		be32_to_cpu(descr->hw_regs.valid_size) :
--- 
-2.25.1
+But APM821xx sadly went nowhere 😕. One reason being that I haven't
+yet posted a V4, V5 and so on...
 
+In theory, for v4 I would have liked to know how to handle the
+kConfig aspect of the series: Would it be "OK" to have a
+single CONFIG_APM82181/CONFIG_APM821XX symbol or should there
+be a CONFIG_MBL the CONFIG_MR24 (CONFIG_WNDR4700 and CONFIG_MX60W
+in the future)?
+
+As for the MBL: Well, If you (or any one else) is interested in
+having a more up-to-date Debian. Then I have something:
+
+A while back, I made a "build.sh". This will build a
+"out-of-the-box" Debian unstable/SID powerpc system image.
+This includes sensible NAS defaults + programs as well as
+a Cockpit Web-GUI. But also makes it easily possible to do
+the DTBs development on the latest vanilla (5.14-rc2 as of
+the time of writing this) kernel for the
+MyBook Live Single and Duo:
+
+<https://github.com/chunkeey/mbl-debian>
+
+I can't really make one for the MR24 though. Its 32MiB NAND
+makes it difficult to install anything else than OpenWrt
+(and get some use out of the device).
+
+So, how to proceed?
+
+Cheers,
+Christian
+
+PS.: As for PPC44x health regarding APM82181: It works!
+
+This is with a My Book Live (MBL) and the 5.14.0-rc2(+) kernel.
+
+[    0.000000] printk: bootconsole [udbg0] enabled
+[    0.000000] Activating Kernel Userspace Execution Prevention
+[    0.000000] Linux version 5.14.0-rc2+ (root@debian64) (powerpc-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2) #1 Fri Jul 23 22:59:56 CEST 2021
+[    0.000000] Found initrd at 0xcf000000:0xcfe73b70
+[    0.000000] Using PowerPC 44x Platform machine description
+[    0.000000] -----------------------------------------------------
+[    0.000000] phys_mem_size     = 0x10000000
+[    0.000000] dcache_bsize      = 0x20
+[    0.000000] icache_bsize      = 0x20
+[    0.000000] cpu_features      = 0x0000000000000100
+[    0.000000]   possible        = 0x0000000040000100
+[    0.000000]   always          = 0x0000000000000100
+[    0.000000] cpu_user_features = 0x8c008000 0x00000000
+[    0.000000] mmu_features      = 0x00000008
+[    0.000000] -----------------------------------------------------
+[    0.000000] Top of RAM: 0x10000000, Total RAM: 0x10000000
+[    0.000000] Memory hole size: 0MB
+[    0.000000] Zone ranges:
+[    0.000000]   Normal   [mem 0x0000000000000000-0x000000000fffffff]
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000000000000-0x000000000fffffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000000000000-0x000000000fffffff]
+[    0.000000] MMU: Allocated 1088 bytes of context maps for 255 contexts
+[    0.000000] pcpu-alloc: s0 r0 d32768 u32768 alloc=1*32768
+[    0.000000] pcpu-alloc: [0] 0
+[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 16352
+[    0.000000] Kernel command line: root=UUID=ef4e8942-768b-4d2e-ba57-486397c97081 console=ttyS0,115200
+[    0.000000] Dentry cache hash table entries: 32768 (order: 3, 131072 bytes, linear)
+[    0.000000] Inode-cache hash table entries: 16384 (order: 2, 65536 bytes, linear)
+[    0.000000] mem auto-init: stack:off, heap alloc:off, heap free:off
+[    0.000000] Kernel virtual memory layout:
+[    0.000000]   * 0xffbdc000..0xffffc000  : fixmap
+[    0.000000]   * 0xd1000000..0xffbdc000  : vmalloc & ioremap
+[    0.000000] Memory: 237088K/262144K available (6096K kernel code, 832K rwdata, 1888K rodata, 256K init, 338K bss, 25056K reserved, 0K cma-reserved)
+[    0.000000] random: get_random_u32 called from cache_random_seq_create+0x68/0x148 with crng_init=0
+[    0.000000] SLUB: HWalign=32, Order=0-3, MinObjects=0, CPUs=1, Nodes=1
+[    0.000000] NR_IRQS: 512, nr_irqs: 512, preallocated irqs: 16
+[    0.000000] UIC0 (32 IRQ sources) at DCR 0xc0
+[    0.000000] UIC1 (32 IRQ sources) at DCR 0xd0
+[    0.000000] UIC2 (32 IRQ sources) at DCR 0xe0
+[    0.000000] UIC3 (32 IRQ sources) at DCR 0xf0
+[    0.000000] time_init: decrementer frequency = 800.000008 MHz
+[    0.000000] time_init: processor frequency   = 800.000008 MHz
+[    0.000008] clocksource: timebase: mask: 0xffffffffffffffff max_cycles: 0xb881274fa3, max_idle_ns: 440795210636 ns
+[    0.008985] clocksource: timebase mult[1400000] shift[24] registered
+[    0.014006] clockevent: decrementer mult[ccccccef] shift[32] cpu[0]
+[    0.019181] Console: colour dummy device 80x25
+[    0.022289] pid_max: default: 32768 minimum: 301
+[    0.025979] Mount-cache hash table entries: 4096 (order: 0, 16384 bytes, linear)
+[    0.032024] Mountpoint-cache hash table entries: 4096 (order: 0, 16384 bytes, linear)
+[    0.041291] devtmpfs: initialized
+...
+
+The "+" Patch is:
+<https://github.com/chunkeey/mbl-debian/blob/master/patches/kernel/9999-powerpc-apm82181-add-WD-MyBook-Live-NAS.patch>
+(which adds the "wd,mybooklive" to the list of
+supported devices to ppc44x_simple.c)
