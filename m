@@ -1,92 +1,102 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C13DD3D3422
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jul 2021 07:35:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64A8F3D3447
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jul 2021 07:47:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GWJ1R4crMz303L
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jul 2021 15:35:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GWJHd2jlkz3clB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jul 2021 15:47:25 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=shYdbYpK;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fKjhhA3A;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::1030;
- helo=mail-pj1-x1030.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=psampat@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=shYdbYpK; dkim-atps=neutral
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com
- [IPv6:2607:f8b0:4864:20::1030])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=fKjhhA3A; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GWJ0v0sDJz2xgP
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jul 2021 15:34:36 +1000 (AEST)
-Received: by mail-pj1-x1030.google.com with SMTP id
- e2-20020a17090a4a02b029016f3020d867so2307050pjh.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Jul 2021 22:34:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=message-id:date:mime-version:user-agent:subject:content-language:to
- :cc:references:from:in-reply-to:content-transfer-encoding;
- bh=R31IBsRAfuuPKWQktgrPBsM8qqZTNdn0VUlW4YQ6CmU=;
- b=shYdbYpKnnZqm3nw+0kpBihqH8f7KJROTlNmKF6YN4j4mx9oxE9amV1mosmOA6XqFB
- MVjyzhtn+B+ahOWqplFIYkLSU+nMzE6N0JSo+x9HY2zsO60MQfzTIzwgg3AhDYqimSRh
- 6eu3wJ5bfyiCjKf6iRfpZ6d4Jg5azuCRs9nxkVvmhtu2Rd8yMNQb1ekVMChSypNwNlXs
- 6g9SbsBaiRoWq4MfOTVh7QP4eU0iNr9hbYlLRSY3nVX5f/8wWbNux4QWD8B5f7XDPD0m
- WUsIdOtdX1g8NK05c0UHfuBF42+/UItgWfFng0ZZJ0q/BRt1URVN1jPQzVX26cA+NuqH
- X8Ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
- :content-language:to:cc:references:from:in-reply-to
- :content-transfer-encoding;
- bh=R31IBsRAfuuPKWQktgrPBsM8qqZTNdn0VUlW4YQ6CmU=;
- b=bi/5wQTQf77BwQzRZHeyWrP/ChXk4IvswXoYk9zVGr8/C1390YPqSvAUjwTQxQeSO8
- jn3WwR1SffQjY1fx+AlgTrNhP02t67BqPX9gLEugmKlrlT1azr8v+nkL5pJG6kfO7thx
- 3S1tDRHXm1otKTjyZVLOhSBPLgWV0ZOctju7JBt3CQ2YOv7j9sb14vtyyI4Nkj2PW/bz
- K91EuwUfwLqh0pelos9Xm6A2tM7QaI7oz+vQLLaVVlQquc7nw+BY8Bn8eGd/yHuqnczw
- +bnWBHdP5jlux9P4O6TdRKr1WWuLoHKhsoCK15P2ZxK7pRt81BiU+ksRK/mdwiQJo5xK
- OKvQ==
-X-Gm-Message-State: AOAM531WiI9g3zKWPMlGliQP09fe7o7pEtePl7GmG5z70XjHdKRDeTz4
- nd7Zu8Ra0/p1r0aCmywoDJDOIQ==
-X-Google-Smtp-Source: ABdhPJx3Ec2rarEh2fRASsiuYDsAF/2MRAJnhHTqu5M1OIbZbAHGF9soOBmIOC9+kPoM1DowUbhUPg==
-X-Received: by 2002:a17:90a:420c:: with SMTP id
- o12mr3076303pjg.101.1627018472138; 
- Thu, 22 Jul 2021 22:34:32 -0700 (PDT)
-Received: from [192.168.10.23] (219-90-184-65.ip.adam.com.au. [219.90.184.65])
- by smtp.gmail.com with UTF8SMTPSA id
- n22sm31926155pfo.125.2021.07.22.22.34.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 22 Jul 2021 22:34:31 -0700 (PDT)
-Message-ID: <75c84c0b-46b3-2600-c186-257aec05c645@ozlabs.ru>
-Date: Fri, 23 Jul 2021 15:34:25 +1000
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.0
-Subject: Re: [PATCH v5 10/11] powerpc/pseries/iommu: Make use of DDW for
- indirect mapping
-Content-Language: en-US
-To: Frederic Barrat <fbarrat@linux.ibm.com>,
- Leonardo Bras <leobras.c@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, David Gibson
- <david@gibson.dropbear.id.au>, kernel test robot <lkp@intel.com>,
- Nicolin Chen <nicoleotsuka@gmail.com>
-References: <20210716082755.428187-1-leobras.c@gmail.com>
- <20210716082755.428187-11-leobras.c@gmail.com>
- <b98f696a-ed64-4c9e-ccb6-549ae8bc7fd6@linux.ibm.com>
- <8dfb28d5-b654-746c-03d8-aeee3d438240@ozlabs.ru>
- <994051df-73b3-4dad-76aa-1a03d9afaf6d@linux.ibm.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-In-Reply-To: <994051df-73b3-4dad-76aa-1a03d9afaf6d@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GWJGd03kTz2ysq
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jul 2021 15:46:31 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 16N5f7QS150038; Fri, 23 Jul 2021 01:46:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : subject :
+ date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=VHQjjm8DAPMfTDBzQQsDI5hUGOXPrU5yVQDztcq7e6c=;
+ b=fKjhhA3Abb2m7bj91cZHPEk2F9Boi7H7zT6dw9edqq4l4r9zfFfgzhgKNDWE87EHbVfP
+ R8U/zF8gqDzIBIDWtdnUKWwI/g1DGfPP8yxTe9y0cJFGVrK5WeUNDN+25+JAFJV+b5Gy
+ NdEtZ8R9/dScr7uzDDM3vohBszlUo2OLN825MbrWIKWPUvFceFB2lzWEqAlGo8wVp18y
+ FE8ZXAALES4evlqt8kIVW7inqHrsMaTr71XVScfTtzdNfqVJRL9GJiAqRVOhmCwPtW/U
+ g++rWOHJbuRdtSATXi2pV2eM2AUadm9+DDK+kFb5yl70360TKVJl5MO3ljWzM+JBN1UE dQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 39ynvyafum-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 23 Jul 2021 01:46:19 -0400
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 16N5gkkp156620;
+ Fri, 23 Jul 2021 01:46:18 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 39ynvyafua-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 23 Jul 2021 01:46:18 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16N5jGdb028391;
+ Fri, 23 Jul 2021 05:46:16 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma04ams.nl.ibm.com with ESMTP id 39xhx49165-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 23 Jul 2021 05:46:16 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 16N5kDll27197746
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 23 Jul 2021 05:46:13 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8F85D11C058;
+ Fri, 23 Jul 2021 05:46:13 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 05DFF11C052;
+ Fri, 23 Jul 2021 05:46:11 +0000 (GMT)
+Received: from pratiks-thinkpad.ibmuc.com (unknown [9.77.201.127])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 23 Jul 2021 05:46:10 +0000 (GMT)
+From: "Pratik R. Sampat" <psampat@linux.ibm.com>
+To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+ farosas@linux.ibm.com, kjain@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, psampat@linux.ibm.com,
+ pratik.r.sampat@gmail.com
+Subject: [PATCH v7 0/1] Interface to represent PAPR firmware attributes
+Date: Fri, 23 Jul 2021 11:16:08 +0530
+Message-Id: <20210723054609.15033-1-psampat@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: tpuXao94BZL5yD6gUmxYa9X3x0m4Iiy1
+X-Proofpoint-GUID: 4yjttkjfY2fE2Vv0JZ-p3-waeonxY914
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-07-22_16:2021-07-22,
+ 2021-07-22 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ lowpriorityscore=0 phishscore=0 adultscore=0 priorityscore=1501
+ clxscore=1015 malwarescore=0 spamscore=0 mlxlogscore=999 bulkscore=0
+ mlxscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2107230031
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,73 +108,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+RFC: https://lkml.org/lkml/2021/6/4/791
+PATCH v1: https://lkml.org/lkml/2021/6/16/805
+PATCH v2: https://lkml.org/lkml/2021/7/6/138
+PATCH v3: https://lkml.org/lkml/2021/7/12/2799
+PATCH v4: https://lkml.org/lkml/2021/7/16/532
+PATCH v5: https://lkml.org/lkml/2021/7/19/247
+PATCH v6: https://lkml.org/lkml/2021/7/20/36
 
+Changelog v6-->v7
+1. Optimize free for pgs attributes to iterate only over the currently
+   allocated attributes "idx" instead of free'ing for all
 
-On 22/07/2021 01:04, Frederic Barrat wrote:
-> 
-> 
-> On 21/07/2021 05:32, Alexey Kardashevskiy wrote:
->>>> +        struct iommu_table *newtbl;
->>>> +        int i;
->>>> +
->>>> +        for (i = 0; i < ARRAY_SIZE(pci->phb->mem_resources); i++) {
->>>> +            const unsigned long mask = IORESOURCE_MEM_64 | 
->>>> IORESOURCE_MEM;
->>>> +
->>>> +            /* Look for MMIO32 */
->>>> +            if ((pci->phb->mem_resources[i].flags & mask) == 
->>>> IORESOURCE_MEM)
->>>> +                break;
->>>> +        }
->>>> +
->>>> +        if (i == ARRAY_SIZE(pci->phb->mem_resources))
->>>> +            goto out_del_list;
->>>
->>>
->>> So we exit and do nothing if there's no MMIO32 bar?
->>> Isn't the intent just to figure out the MMIO32 area to reserve it 
->>> when init'ing the table? In which case we could default to 0,0
->>>
->>> I'm actually not clear why we are reserving this area on pseries.
->>
->>
->>
->> If we do not reserve it, then the iommu code will allocate DMA pages 
->> from there and these addresses are MMIO32 from the kernel pov at 
->> least. I saw crashes when (I think) a device tried DMAing to the top 
->> 2GB of the bus space which happened to be a some other device's BAR.
-> 
-> 
-> hmmm... then figuring out the correct range needs more work. We could 
-> have more than one MMIO32 bar. And they don't have to be adjacent. 
+Also, have implemented a POC using this interface for the powerpc-utils'
+ppc64_cpu --frequency command-line tool to utilize this information
+in userspace.
+The POC for the new interface has been hosted here:
+https://github.com/pratiksampat/powerpc-utils/tree/H_GET_ENERGY_SCALE_INFO_v2
 
-They all have to be within the MMIO32 window of a PHB and we reserve the 
-entire window here.
+Sample output from the powerpc-utils tool is as follows:
 
-> I 
-> don't see that we are reserving any range on the initial table though 
-> (on pseries).
-True, we did not need to, as the hypervisor always took care of DMA and 
-MMIO32 regions to not overlap.
+# ppc64_cpu --frequency
+Power and Performance Mode: XXXX
+Idle Power Saver Status   : XXXX
+Processor Folding Status  : XXXX --> Printed if Idle power save status is supported
 
-And in this series we do not (strictly speaking) need this either as 
-phyp never allocates more than one window dynamically and that only 
-window is always the second one starting from 0x800.0000.0000.0000. It 
-is probably my mistake that KVM allows a new window to start from 0 - 
-PAPR did not prohibit this explicitly.
+Platform reported frequencies --> Frequencies reported from the platform's H_CALL i.e PAPR interface
+min        :    NNNN GHz
+max        :    NNNN GHz
+static     :    NNNN GHz
 
-And for the KVM case, we do not need to remove the default window as KVM 
-can pretty much always allocate as many TCE as the VM wants. But we 
-still allow removing the default window and creating a huge one instead 
-at 0x0 as this way we can allow 1:1 for every single PCI device even if 
-it only allows 48 (or similar but less than 64bit) DMA. Hope this makes 
-sense. Thanks,
+Tool Computed frequencies
+min        :    NNNN GHz (cpu XX)
+max        :    NNNN GHz (cpu XX)
+avg        :    NNNN GHz
 
+Pratik R. Sampat (1):
+  powerpc/pseries: Interface to represent PAPR firmware attributes
+
+ .../sysfs-firmware-papr-energy-scale-info     |  26 ++
+ arch/powerpc/include/asm/hvcall.h             |  24 +-
+ arch/powerpc/kvm/trace_hv.h                   |   1 +
+ arch/powerpc/platforms/pseries/Makefile       |   3 +-
+ .../pseries/papr_platform_attributes.c        | 312 ++++++++++++++++++
+ 5 files changed, 364 insertions(+), 2 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-firmware-papr-energy-scale-info
+ create mode 100644 arch/powerpc/platforms/pseries/papr_platform_attributes.c
 
 -- 
-Alexey
+2.31.1
+
