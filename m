@@ -2,71 +2,102 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 795593D3A78
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jul 2021 14:47:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C2E03D3AF8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jul 2021 15:17:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GWTck2YBwz30Fk
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jul 2021 22:47:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GWVGj3b0Kz30jP
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jul 2021 23:17:17 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MDqSXcH5;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EHW0RAUX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=bugzilla.kernel.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=MDqSXcH5; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=EHW0RAUX; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GWTcD2Pzrz302d
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jul 2021 22:47:24 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPS id 3FA1E60E53
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jul 2021 12:47:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1627044441;
- bh=+3BzHDAhAXr6s5R2Lj+cwbVgdxZOFZowZGflD8N5Dj8=;
- h=From:To:Subject:Date:In-Reply-To:References:From;
- b=MDqSXcH5GrpW496Qcp9HbuwSf0cwdVvMgPZ7CAW938idZrheJ8MtTpEqYKmiKjFo2
- TIANVhp+GeKI6oKmHakUmDKiLaBls4z8otrU9NoqRBGwOoxzfLU/Yt//94jsnuB+IS
- 6F5gycatGC++4So1oA5WrR/M75JyywdoWxke5jWyAR8DW0vSo+DIwWBA9G3eIXLtlf
- li4e9dat1CYvUNAMRySpzkPI+Yo023toVaeWQdsIK5jtfYT8I1lW/nRaflorBFJOGl
- /lON1XynPr4lV3RwylXG7hkeci6nZZ6omc5pGFbfKnQpMI3488JUcMFZx2yB4ZD5QJ
- XloNGRsDqRp5g==
-Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
- id 34D42603E1; Fri, 23 Jul 2021 12:47:21 +0000 (UTC)
-From: bugzilla-daemon@bugzilla.kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 213079] [bisected] IRQ problems and crashes on a PowerMac G5
- with 5.12.3
-Date: Fri, 23 Jul 2021 12:47:20 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-213079-206035-p4ivb7wGr9@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-213079-206035@https.bugzilla.kernel.org/>
-References: <bug-213079-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GWVG84Ksyz302K
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jul 2021 23:16:48 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 16ND3eFX049686; Fri, 23 Jul 2021 09:16:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : subject :
+ in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=UVQt0GuOeKk36RlYZ2dAkgT4CoJbUq2B09fX4wSvrCo=;
+ b=EHW0RAUX7yvLTLkInVn0AP/U+4lP4bnMv879AooV+2s5vI/ZzONJRT9ufOQUAX6fCAeI
+ MZzG5PgIJLBVfpVDVRDcJcr1wbG6KqDoSzoW39BcT9bVX7Il/6o3wARB8SUdV0GpSplq
+ GeMLtqWmLKHM+Ib9OoCSBM+tdKGxiT6qVmVZs4GvD3SRsroe58VOd6OtBR7tIoMqSRay
+ 9bIhMWRpc2qLudtrDuLNcgr7V+c/fCJ9hZddt4vj3hkutXZCwZqlT5/QDQ+wIEVqNPMd
+ 64rBs1OeHCQsOMh5ZfO7bru9sUbe6JgVwy9pT1ozXfSwvwj8VOHnCj4Abgv6c9cH42Gp Nw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 39yvxwbdj0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 23 Jul 2021 09:16:38 -0400
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 16ND4Sf3053233;
+ Fri, 23 Jul 2021 09:16:38 -0400
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 39yvxwbdhm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 23 Jul 2021 09:16:37 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16ND74Oa018506;
+ Fri, 23 Jul 2021 13:16:37 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma04dal.us.ibm.com with ESMTP id 39upufy0a7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 23 Jul 2021 13:16:37 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
+ [9.57.199.109])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 16NDGaEY24051970
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 23 Jul 2021 13:16:36 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 25914112070;
+ Fri, 23 Jul 2021 13:16:36 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5824F112065;
+ Fri, 23 Jul 2021 13:16:35 +0000 (GMT)
+Received: from localhost (unknown [9.211.138.163])
+ by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTPS;
+ Fri, 23 Jul 2021 13:16:34 +0000 (GMT)
+From: Fabiano Rosas <farosas@linux.ibm.com>
+To: "Pratik R. Sampat" <psampat@linux.ibm.com>, mpe@ellerman.id.au,
+ benh@kernel.crashing.org, paulus@samba.org, kjain@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, psampat@linux.ibm.com,
+ pratik.r.sampat@gmail.com
+Subject: Re: [PATCH v7 1/1] powerpc/pseries: Interface to represent PAPR
+ firmware attributes
+In-Reply-To: <20210723054609.15033-2-psampat@linux.ibm.com>
+References: <20210723054609.15033-1-psampat@linux.ibm.com>
+ <20210723054609.15033-2-psampat@linux.ibm.com>
+Date: Fri, 23 Jul 2021 10:16:32 -0300
+Message-ID: <87r1fpcgr3.fsf@linux.ibm.com>
 MIME-Version: 1.0
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: t4BzyVrfvVSyoZVsVv1DINHFabc5o9M_
+X-Proofpoint-GUID: y1d1d4t_xEJ3rGTmbqYl9y8h4rjJ3Z2X
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-07-23_05:2021-07-23,
+ 2021-07-23 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 lowpriorityscore=0
+ malwarescore=0 spamscore=0 phishscore=0 mlxlogscore=999 suspectscore=0
+ bulkscore=0 priorityscore=1501 impostorscore=0 adultscore=0 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2104190000
+ definitions=main-2107230078
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,75 +113,69 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D213079
+"Pratik R. Sampat" <psampat@linux.ibm.com> writes:
 
---- Comment #15 from Erhard F. (erhard_f@mailbox.org) ---
-(In reply to Oliver O'Halloran from comment #13)
-> In the meanwhile, can you try the patch above? That seems to fix bug which
-> is causing MSIs to be unusable. I'm not 100% sure why that woudld matter,
-> but it's possible the crashes are due to some other bug which doesn't app=
-ear
-> when MSIs are in use.
-Now I had time to test your patch on top of kernel 5.13-rc6 and 5.13.4. Can=
-'t
-test it on top of 5.14-rc2 due to bug #213803.
+> Adds a generic interface to represent the energy and frequency related
+> PAPR attributes on the system using the new H_CALL
+> "H_GET_ENERGY_SCALE_INFO".
+>
+> H_GET_EM_PARMS H_CALL was previously responsible for exporting this
+> information in the lparcfg, however the H_GET_EM_PARMS H_CALL
+> will be deprecated P10 onwards.
+>
+> The H_GET_ENERGY_SCALE_INFO H_CALL is of the following call format:
+> hcall(
+>   uint64 H_GET_ENERGY_SCALE_INFO,  // Get energy scale info
+>   uint64 flags,           // Per the flag request
+>   uint64 firstAttributeId,// The attribute id
+>   uint64 bufferAddress,   // Guest physical address of the output buffer
+>   uint64 bufferSize       // The size in bytes of the output buffer
+> );
+>
+> This H_CALL can query either all the attributes at once with
+> firstAttributeId = 0, flags = 0 as well as query only one attribute
+> at a time with firstAttributeId = id, flags = 1.
+>
+> The output buffer consists of the following
+> 1. number of attributes              - 8 bytes
+> 2. array offset to the data location - 8 bytes
+> 3. version info                      - 1 byte
+> 4. A data array of size num attributes, which contains the following:
+>   a. attribute ID              - 8 bytes
+>   b. attribute value in number - 8 bytes
+>   c. attribute name in string  - 64 bytes
+>   d. attribute value in string - 64 bytes
+>
+> The new H_CALL exports information in direct string value format, hence
+> a new interface has been introduced in
+> /sys/firmware/papr/energy_scale_info to export this information to
+> userspace in an extensible pass-through format.
+>
+> The H_CALL returns the name, numeric value and string value (if exists)
+>
+> The format of exposing the sysfs information is as follows:
+> /sys/firmware/papr/energy_scale_info/
+>    |-- <id>/
+>      |-- desc
+>      |-- value
+>      |-- value_desc (if exists)
+>    |-- <id>/
+>      |-- desc
+>      |-- value
+>      |-- value_desc (if exists)
+> ...
+>
+> The energy information that is exported is useful for userspace tools
+> such as powerpc-utils. Currently these tools infer the
+> "power_mode_data" value in the lparcfg, which in turn is obtained from
+> the to be deprecated H_GET_EM_PARMS H_CALL.
+> On future platforms, such userspace utilities will have to look at the
+> data returned from the new H_CALL being populated in this new sysfs
+> interface and report this information directly without the need of
+> interpretation.
+>
+> Signed-off-by: Pratik R. Sampat <psampat@linux.ibm.com>
+> Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
 
-Your patch seems to work fine and I don't get this "irq 63: nobody cared"
-messages and crashes any longer! However now when building stuff the G5 soo=
-ner
-or later crashes with:
+Reviewed-by: Fabiano Rosas <farosas@linux.ibm.com>
 
-[...]
-Kernel panic - not syncing: corrupted stack end detected inside scheduler
-Call Trace:
-CPU: 1 PID: 2968 Comm: powerpc64-unkno Tainted: G        W=20=20=20=20=20=
-=20=20=20
-5.13.0-rc6-PowerMacG5+ #2
-[c0000000717178c0] [c0000000005412d0] .dump_stack+0xe0/0x13c (unreliable)
-[c000000071717960] [c0000000000681a0] .panic+0x168/0x430
-[c000000071717a10] [c000000000809ca0] .__schedule+0x80/0x840
-[c000000071717af0] [c0000000000a0ea8] .do_task_dead+0x54/0x58
-[c000000071717b70] [c00000000006e7b4] .do_exit+0xa14/0xa6c
-[c000000071717c60] [c00000000006e89c] .do_group_exit+0x50/0xb0
-[c000000071717cf0] [c00000000006e910] .__wake_up_parent+0x0/0x34
-[c000000071717d60] [c000000000021530] .system_call_exception+0x1b4/0x1ec
-[c000000071717e10] [c00000000000b9c4] system_call_common+0xe4/0x214
---- interrupt: c00 at 0x3fffa8092aa8
-NIP:  00003fffa8092aa8 LR: 00003fffa7ff2d04 CTR: 0000000000000000
-REGS: c000000071717e80 TRAP: 0c00   Tainted: G        W=20=20=20=20=20=20=
-=20=20=20
-(5.13.0-rc6-PowerMacG5+)
-MSR:  900000000200f032 <SF,HV,VEC,EE,PR,FP,ME,IR,DR,RI>  CR: 22000482  XER:
-00000000
-IRQMASK: 0=20
-GPR00: 00000000000000ea 00003fffd04ef2a0 00003fffa81b1300 0000000000000000=
-=20
-GPR04: 0000000000000000 0000000000000000 0000000000000000 0000000000000000=
-=20
-GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000=
-=20
-GPR12: 0000000000000000 00003fffa8318c30 000000012e5ff800 00000001136b53b0=
-=20
-GPR16: 00000001200cec38 00003fffddea1c68 00000001200ceb28 000000000000002f=
-=20
-GPR20: 0000000000000000 00003fffa81abff8 0000000000000001 00003fffa81aaa58=
-=20
-GPR24: 0000000000000000 0000000000000000 0000000000000003 0000000000000001=
-=20
-GPR28: 0000000000000000 00003fffa8311c50 fffffffffffff000 0000000000000000=
-=20
-NIP [00003fffa8092aa8] 0x3fffa8092aa8
-LR [00003fffa7ff2d04] 0x3fffa7ff2d04
---- interrupt: c00
-Rebooting in 120 seconds..
-
-
-Don't know whether this is related. I'll throw more debugging stuff in,  fi=
-le
-this as a seperate issue and link it here just in case.
-
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
