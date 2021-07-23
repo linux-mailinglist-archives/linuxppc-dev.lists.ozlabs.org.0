@@ -1,71 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 936AD3D388B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jul 2021 12:21:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9BB03D39EF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jul 2021 14:04:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GWQNL3vTGz30JX
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jul 2021 20:21:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GWSg35VdPz3bVf
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jul 2021 22:04:47 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mL3p3JsB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=VunPNjPI;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=bugzilla.kernel.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=mL3p3JsB; 
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=VunPNjPI; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GWQMs1dBcz2yLl
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jul 2021 20:21:29 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPS id DA00260EB6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jul 2021 10:21:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1627035685;
- bh=Xzx1OQzvdwUSmisCDl22GcEvDkGLuntawd3HSIGQN+E=;
- h=From:To:Subject:Date:In-Reply-To:References:From;
- b=mL3p3JsBUHlSWcK7cWv5dxORUE1TSJgEJwLuLINY29zdt9MdiLdLoNGLoG32kcZd4
- 9DE9ZxHWavDUuwlVNRW6COMjgKjgBKim7YrmoILzPCKkrMgQ4XrNzGJZEo/YBZTZ3q
- 4aXs/7LpKSMaz38sxKzX29GAX+ib8cUD6B6Ij/Yi86ho+2dovqhW+vPWOWVj8D1Aay
- QfHWm2XJoGTUhQawb6jVAHCo/4Q01BIW3a/Cr/znmr1E3bOrhn2iX8crKaNIPuA+yp
- JVbLwlgLN5gtf6ahmMd4Ws5Zm45Xvg7EbEx3afCm4qg1edsaEry6655bIA8flW9wO6
- dHD4pqA2sQjew==
-Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
- id C11B5603A7; Fri, 23 Jul 2021 10:21:25 +0000 (UTC)
-From: bugzilla-daemon@bugzilla.kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 205303] Compilation for PPC64 fails on warning in watchdog.o
-Date: Fri, 23 Jul 2021 10:21:25 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: blocking
-X-Bugzilla-Who: michael@ellerman.id.au
-X-Bugzilla-Status: RESOLVED
-X-Bugzilla-Resolution: CODE_FIX
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_status cc resolution
-Message-ID: <bug-205303-206035-ncYmu6g96Z@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-205303-206035@https.bugzilla.kernel.org/>
-References: <bug-205303-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GWSfb0yCKz302M
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Jul 2021 22:04:22 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4GWSfR5Vqtz9sXM;
+ Fri, 23 Jul 2021 22:04:15 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1627041861;
+ bh=WEE70A1SmlcnlIsv9nVnRGPp1lz7FMXEUMxrnsgf+IU=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=VunPNjPI5UTxmlZmtF6HnK+D0Dif1lwUaNWcXlVbCnOy3zlfgpBXZRcdGvCjeSpTD
+ 9GtJzMFZAjmswf1Hvf+Shhuu3DtNGBXMNTQoMka2kFXjYcF/zGbOVaCZOBpwbNaHMV
+ epX/8JSDuS2F3jGKGPdB1wvzULNj0TkI4wo+Z5qZ8TF2KuuqLjMk0XTObjG1udah19
+ U1CpdO9KIVSiwPBast1gIEWa3fuADmNkO9j6lepWMRmuG+MHxyeWmwMTljc1HY+qcN
+ iPuTprU1H6rO2uX1bsNbdVNf6qs+BaSKB5njML9F9aEsaaPNMQrnX9vJgFwZ5rtJUH
+ 0p1oAfMTFZbgA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Will Deacon <will@kernel.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2] Revert "mm/pgtable: add stubs for
+ {pmd/pub}_{set/clear}_huge"
+In-Reply-To: <162686329170.980657.905966885675716231.b4-ty@kernel.org>
+References: <20210720202627.Horde.vlszNhxkKrLIg0-3Sn2ucw5@messagerie.c-s.fr>
+ <87r1fs1762.fsf@mpe.ellerman.id.au>
+ <162686329170.980657.905966885675716231.b4-ty@kernel.org>
+Date: Fri, 23 Jul 2021 22:04:10 +1000
+Message-ID: <87o8at1bk5.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,28 +65,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Mark Rutland <mark.rutland@arm.com>, Marc Zyngier <maz@kernel.org>,
+ linux-kernel@vger.kernel.org, Jonathan Marek <jonathan@marek.ca>,
+ Will Deacon <will@kernel.org>, catalin.marinas@arm.com,
+ linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>,
+ Ard Biesheuvel <ardb@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ linux-arm-kernel@lists.infradead.org, Paul Mackerras <paulus@samba.org>,
+ Thomas Gleixner <tglx@linutronix.de>, kernel-team@android.com,
+ Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D205303
+Will Deacon <will@kernel.org> writes:
+> On Wed, 21 Jul 2021 17:02:13 +1000, Michael Ellerman wrote:
+>> This reverts commit c742199a014de23ee92055c2473d91fe5561ffdf.
+>> 
+>> c742199a014d ("mm/pgtable: add stubs for {pmd/pub}_{set/clear}_huge")
+>> breaks arm64 in at least two ways for configurations where PUD or PMD
+>> folding occur:
+>> 
+>>   1. We no longer install huge-vmap mappings and silently fall back to
+>>      page-granular entries, despite being able to install block entries
+>>      at what is effectively the PGD level.
+>> 
+>> [...]
+>
+> Thank you Michael! I owe you a beer next time I see you, if we don't go
+> extinct before then.
 
-Michael Ellerman (michael@ellerman.id.au) changed:
+No worries, thanks to Christophe for identifying the solution while on
+vacation!
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-             Status|NEW                         |RESOLVED
-                 CC|                            |michael@ellerman.id.au
-         Resolution|---                         |CODE_FIX
+Beers seem a long way off, but hopefully one day :)
 
---- Comment #3 from Michael Ellerman (michael@ellerman.id.au) ---
-This was fixed by:
-
-4fe529449d85 ("powerpc: Fix HAVE_HARDLOCKUP_DETECTOR_ARCH build configurati=
-on")
-
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+cheers
