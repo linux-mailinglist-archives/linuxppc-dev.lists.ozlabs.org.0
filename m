@@ -2,96 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7DAA3D3BE8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jul 2021 16:40:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2231E3D3F6C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Jul 2021 19:51:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GWX6W6HFcz30Nc
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Jul 2021 00:40:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GWcLq0LNgz30Jj
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Jul 2021 03:51:15 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZAUH5IEA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=deltatee.com header.i=@deltatee.com header.a=rsa-sha256 header.s=20200525 header.b=TaYSXIwq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=deltatee.com (client-ip=204.191.154.188; helo=ale.deltatee.com;
+ envelope-from=gunthorp@deltatee.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=ZAUH5IEA; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GWX5v4tKdz308y
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Jul 2021 00:39:46 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 16NEX175056143; Fri, 23 Jul 2021 10:39:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=fKX4zNXgaGJKAPHkX+VvD2qjMshr2LD1fraA+Czoeko=;
- b=ZAUH5IEASoDeRfr+OzCNBjKD2kELB7tGi5zzy7rc+vw/M9Cxx+X7U/IuTxCtQy/ru47a
- Ze3lAYzQGVaD7yIIMYohicsOFtvTtpp97AwguP6MuTjOInlpaO07+Ad3kNDGXo8Ydfat
- tfZdy56Tm7ASCHqxnQw5510+XbD1yvH1JZBxNQ765FyKqcOGS9/BUNCulk9CXg5VTR26
- vZFkIAo5qUfNcJVZESNFDwmsOkZXPiH3LiIuKb97HlG33XgT31lS5UBCSatJpmt/WX2v
- glmH8PKBI5UOspK1+HF2pJk7O+RpSAmVCRM/2n3+0yhzo+6CBnpC0wPou63Ssv4WWozs SA== 
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 39yygv8hmb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 23 Jul 2021 10:39:25 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16NEXGT6030071;
- Fri, 23 Jul 2021 14:39:22 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma04ams.nl.ibm.com with ESMTP id 39xhx4997m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 23 Jul 2021 14:39:22 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 16NEdJaV37028096
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 23 Jul 2021 14:39:19 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id ECA794C040;
- Fri, 23 Jul 2021 14:39:18 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9B08D4C04A;
- Fri, 23 Jul 2021 14:39:15 +0000 (GMT)
-Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Fri, 23 Jul 2021 14:39:15 +0000 (GMT)
-Date: Fri, 23 Jul 2021 20:09:14 +0530
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Valentin Schneider <valentin.schneider@arm.com>
-Subject: Re: [PATCH v2 1/2] sched/topology: Skip updating masks for
- non-online nodes
-Message-ID: <20210723143914.GI3836887@linux.vnet.ibm.com>
-References: <20210701041552.112072-1-srikar@linux.vnet.ibm.com>
- <20210701041552.112072-2-srikar@linux.vnet.ibm.com>
- <875yxu85wi.mognet@arm.com>
- <20210712124856.GA3836887@linux.vnet.ibm.com>
- <87zguqmay9.mognet@arm.com>
+ unprotected) header.d=deltatee.com header.i=@deltatee.com header.a=rsa-sha256
+ header.s=20200525 header.b=TaYSXIwq; dkim-atps=neutral
+Received: from ale.deltatee.com (ale.deltatee.com [204.191.154.188])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GWcKl6SdGz2yyP
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Jul 2021 03:50:18 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=deltatee.com; s=20200525; h=Subject:MIME-Version:Message-Id:Date:Cc:To:From
+ :references:content-disposition:in-reply-to;
+ bh=LQAXJCFOAL4wucMr1J1VtJo8YmjL7Kj+0Z4w4rvIHlA=; b=TaYSXIwq9R6P6E55tx/ubbtnmS
+ Ix5S11dwF37+JjGSmV0s6xjYEbeV6HdQPY8L4ceTMQxqpBLWTmndOS7kQPDkYi2krgtZOLSSVrbb9
+ c0wyfIKZ/WK/9ISrP+H4LcIuYdyOl+C/RV6yOHboEG5zPmMsNfK3aO2OoJum1Yw5QAO6ceknbIXSK
+ YJ19q++0q3iOK/z8UWCCZbVtohsVag7m/aVg7sT15ZTzk7ir/QgR0nCButA7tc9Ka/8+8ms4RDMBa
+ ZTvS5QgWu1CMefIqiLZqWI4h41+KbLiC3sS/uG0C6Qqc+uqKCjukEFJp4LCqKNzSSEPRjV4K5xyIk
+ redVVngg==;
+Received: from cgy1-donard.priv.deltatee.com ([172.16.1.31])
+ by ale.deltatee.com with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.92) (envelope-from <gunthorp@deltatee.com>)
+ id 1m6zJN-0005Lg-Sm; Fri, 23 Jul 2021 11:50:14 -0600
+Received: from gunthorp by cgy1-donard.priv.deltatee.com with local (Exim 4.92)
+ (envelope-from <gunthorp@deltatee.com>)
+ id 1m6zJK-0005qW-Eh; Fri, 23 Jul 2021 11:50:10 -0600
+From: Logan Gunthorpe <logang@deltatee.com>
+To: linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+ iommu@lists.linux-foundation.org, linux-parisc@vger.kernel.org,
+ xen-devel@lists.xenproject.org
+Date: Fri, 23 Jul 2021 11:49:47 -0600
+Message-Id: <20210723175008.22410-1-logang@deltatee.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <87zguqmay9.mognet@arm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Wa-xcP-Wm7AVpsaMsZjSqtAxKW1JuKUT
-X-Proofpoint-GUID: Wa-xcP-Wm7AVpsaMsZjSqtAxKW1JuKUT
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-07-23_08:2021-07-23,
- 2021-07-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 malwarescore=0
- adultscore=0 bulkscore=0 mlxlogscore=999 clxscore=1015 impostorscore=0
- mlxscore=0 priorityscore=1501 phishscore=0 lowpriorityscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2107230087
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 172.16.1.31
+X-SA-Exim-Rcpt-To: linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, iommu@lists.linux-foundation.org,
+ linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+ linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
+ linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-parisc@vger.kernel.org, xen-devel@lists.xenproject.org, hch@lst.de,
+ m.szyprowski@samsung.com, robin.murphy@arm.com, sbates@raithlin.com,
+ martin.oliveira@eideticom.com, logang@deltatee.com
+X-SA-Exim-Mail-From: gunthorp@deltatee.com
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on ale.deltatee.com
+X-Spam-Level: 
+X-Spam-Status: No, score=-6.7 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+ MYRULES_NO_TEXT autolearn=no autolearn_force=no version=3.4.2
+Subject: [PATCH v2 00/21] .map_sg() error cleanup
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,436 +80,109 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Gautham R Shenoy <ego@linux.vnet.ibm.com>,
- Vincent Guittot <vincent.guittot@linaro.org>, Rik van Riel <riel@surriel.com>,
- Peter Zijlstra <peterz@infradead.org>, linuxppc-dev@lists.ozlabs.org,
- Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>,
- LKML <linux-kernel@vger.kernel.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Thomas Gleixner <tglx@linutronix.de>, Laurent Dufour <ldufour@linux.ibm.com>,
- Mel Gorman <mgorman@techsingularity.net>, Ingo Molnar <mingo@kernel.org>
+Cc: Robin Murphy <robin.murphy@arm.com>,
+ Martin Oliveira <martin.oliveira@eideticom.com>,
+ Stephen Bates <sbates@raithlin.com>, Logan Gunthorpe <logang@deltatee.com>,
+ Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Valentin Schneider <valentin.schneider@arm.com> [2021-07-13 17:32:14]:
+Hi,
 
-> On 12/07/21 18:18, Srikar Dronamraju wrote:
-> > Hi Valentin,
-> >
-> >> On 01/07/21 09:45, Srikar Dronamraju wrote:
-> >> > @@ -1891,12 +1894,30 @@ void sched_init_numa(void)
-> >> >  void sched_domains_numa_masks_set(unsigned int cpu)
-> >> >  {
-> >
-> > Unfortunately this is not helping.
-> > I tried this patch alone and also with 2/2 patch of this series where
-> > we update/fill fake topology numbers. However both cases are still failing.
-> >
-> 
-> Thanks for testing it.
-> 
-> 
-> Now, let's take examples from your cover letter:
-> 
->   node distances:
->   node   0   1   2   3   4   5   6   7
->     0:  10  20  40  40  40  40  40  40
->     1:  20  10  40  40  40  40  40  40
->     2:  40  40  10  20  40  40  40  40
->     3:  40  40  20  10  40  40  40  40
->     4:  40  40  40  40  10  20  40  40
->     5:  40  40  40  40  20  10  40  40
->     6:  40  40  40  40  40  40  10  20
->     7:  40  40  40  40  40  40  20  10
-> 
-> But the system boots with just nodes 0 and 1, thus only this distance
-> matrix is valid:
-> 
->   node   0   1
->     0:  10  20
->     1:  20  10
-> 
-> topology_span_sane() is going to use tl->mask(cpu), and as you reported the
-> NODE topology level should cause issues. Let's assume all offline nodes say
-> they're 10 distance away from everyone else, and that we have one CPU per
-> node. This would give us:
-> 
+This v2 of the series is spun out and expanded from my work to add
+P2PDMA support to DMA map operations[1]. v1 is at [2]. The main changes
+in v1 are to more carefully define the meaning of the error codes for
+dma_map_sgtable().
 
-No,
-All offline nodes would be at a distance of 10 from node 0 only.
-So here node distance of all offline nodes from node 1 would be 20.
+The P2PDMA work requires distinguishing different error conditions in
+a map_sg operation. dma_map_sgtable() already allows for returning an
+error code (where as dma_map_sg() is only allowed to return zero)
+however, it currently only returns -EINVAL when a .map_sg() call returns
+zero.
 
->   NODE->mask(0) == 0,2-7
->   NODE->mask(1) == 1-7
+This series cleans up all .map_sg() implementations to return appropriate
+error codes. After the cleanup, dma_map_sg() will still return zero,
+however dma_map_sgtable() will pass the error code from the .map_sg()
+call. Thanks go to Martn Oliveira for doing a lot of the cleanup of the
+obscure implementations.
 
-so 
+The patch set is based off of v5.14-rc2 and a git repo can be found
+here:
 
-NODE->mask(0) == 0,2-7
-NODE->mask(1) should be 1
-and NODE->mask(2-7) == 0,2-7
+  https://github.com/sbates130272/linux-p2pmem map_sg_err_cleanup_v2
 
-> 
-> The intersection is 2-7, we'll trigger the WARN_ON().
-> Now, with the above snippet, we'll check if that intersection covers any
-> online CPU. For sched_init_domains(), cpu_map is cpu_active_mask, so we'd
-> end up with an empty intersection and we shouldn't warn - that's the theory
-> at least.
+Thanks,
 
-Now lets say we onlined CPU 3 and node 3 which was at a actual distance
-of 20 from node 0.
+Logan
 
-(If we only consider online CPUs, and since scheduler masks like
-sched_domains_numa_masks arent updated with offline CPUs,)
-then
+[1] https://lore.kernel.org/linux-block/20210513223203.5542-1-logang@deltatee.com/
+[2] https://lore.kernel.org/linux-mips/20210715164544.6827-1-logang@deltatee.com/
 
-NODE->mask(0) == 0
-NODE->mask(1) == 1
-NODE->mask(3) == 0,3
+--
 
-cpumask_and(intersect, tl->mask(cpu), tl->mask(i));
-if (!cpumask_equal(tl->mask(cpu), tl->mask(i)) && cpumask_intersects(intersect, cpu_map))
+Changes in v2:
+  - Attempt to define the meanings of the errors returned by
+    dma_map_sgtable() and restrict the valid return codes of
+    .map_sg implementations. (Per Christoph)
+  - Change dma_map_sgtable() to EXPORT_SYMBOL_GPL() (Per Christoph)
+  - Add patches to remove the erroneous setting of sg->dma_address
+    to DMA_MAP_ERROR in a few .map_sg(0 implementations. (Per
+    Christoph).
 
-cpu_map is 0,1,3
-intersect is 0
+--
 
-From above NODE->mask(0) is !equal to NODE->mask(1) and
-cpumask_intersects(intersect, cpu_map) is also true.
+Logan Gunthorpe (10):
+  dma-mapping: Allow map_sg() ops to return negative error codes
+  dma-direct: Return appropriate error code from dma_direct_map_sg()
+  iommu: Return full error code from iommu_map_sg[_atomic]()
+  dma-iommu: Return error code from iommu_dma_map_sg()
+  ARM/dma-mapping: don't set failed sg dma_address to DMA_MAPPING_ERROR
+  powerpc/iommu: don't set failed sg dma_address to DMA_MAPPING_ERROR
+  s390/pci: don't set failed sg dma_address to DMA_MAPPING_ERROR
+  sparc/iommu: don't set failed sg dma_address to DMA_MAPPING_ERROR
+  x86/amd_gart: don't set failed sg dma_address to DMA_MAPPING_ERROR
+  dma-mapping: Disallow .map_sg operations from returning zero on error
 
-I picked Node 3 since if Node 1 is online, we would have faked distance
-for Node 2 to be at distance of 40.
+Martin Oliveira (11):
+  alpha: return error code from alpha_pci_map_sg()
+  ARM/dma-mapping: return error code from .map_sg() ops
+  ia64/sba_iommu: return error code from sba_map_sg_attrs()
+  MIPS/jazzdma: return error code from jazz_dma_map_sg()
+  powerpc/iommu: return error code from .map_sg() ops
+  s390/pci: return error code from s390_dma_map_sg()
+  sparc/iommu: return error codes from .map_sg() ops
+  parisc: return error code from .map_sg() ops
+  xen: swiotlb: return error code from xen_swiotlb_map_sg()
+  x86/amd_gart: return error code from gart_map_sg()
+  dma-mapping: return error code from dma_dummy_map_sg()
 
-Any node from 3 to 7, we would have faced the same problem.
+ arch/alpha/kernel/pci_iommu.c           | 10 ++-
+ arch/arm/mm/dma-mapping.c               | 26 +++++---
+ arch/ia64/hp/common/sba_iommu.c         |  6 +-
+ arch/mips/jazz/jazzdma.c                |  2 +-
+ arch/powerpc/kernel/iommu.c             |  6 +-
+ arch/powerpc/platforms/ps3/system-bus.c |  2 +-
+ arch/powerpc/platforms/pseries/vio.c    |  5 +-
+ arch/s390/pci/pci_dma.c                 | 13 ++--
+ arch/sparc/kernel/iommu.c               |  6 +-
+ arch/sparc/kernel/pci_sun4v.c           |  6 +-
+ arch/sparc/mm/iommu.c                   |  2 +-
+ arch/x86/kernel/amd_gart_64.c           | 18 +++---
+ drivers/iommu/dma-iommu.c               | 23 +++++--
+ drivers/iommu/iommu.c                   | 15 ++---
+ drivers/parisc/ccio-dma.c               |  2 +-
+ drivers/parisc/sba_iommu.c              |  2 +-
+ drivers/xen/swiotlb-xen.c               |  2 +-
+ include/linux/dma-map-ops.h             |  5 +-
+ include/linux/dma-mapping.h             | 35 ++--------
+ include/linux/iommu.h                   | 22 +++----
+ kernel/dma/direct.c                     |  2 +-
+ kernel/dma/dummy.c                      |  2 +-
+ kernel/dma/mapping.c                    | 86 ++++++++++++++++++++++---
+ 23 files changed, 181 insertions(+), 117 deletions(-)
 
-> 
-> Looking at sd_numa_mask(), I think there's a bug with topology_span_sane():
-> it doesn't run in the right place wrt where sched_domains_curr_level is
-> updated. Could you try the below on top of the previous snippet?
-> 
-> If that doesn't help, could you share the node distances / topology masks
-> that lead to the WARN_ON()? Thanks.
-> 
-> ---
-> diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-> index b77ad49dc14f..cda69dfa4065 100644
-> --- a/kernel/sched/topology.c
-> +++ b/kernel/sched/topology.c
-> @@ -1516,13 +1516,6 @@ sd_init(struct sched_domain_topology_level *tl,
->  	int sd_id, sd_weight, sd_flags = 0;
->  	struct cpumask *sd_span;
-> 
-> -#ifdef CONFIG_NUMA
-> -	/*
-> -	 * Ugly hack to pass state to sd_numa_mask()...
-> -	 */
-> -	sched_domains_curr_level = tl->numa_level;
-> -#endif
-> -
->  	sd_weight = cpumask_weight(tl->mask(cpu));
-> 
->  	if (tl->sd_flags)
-> @@ -2131,7 +2124,12 @@ build_sched_domains(const struct cpumask *cpu_map, struct sched_domain_attr *att
-> 
->  		sd = NULL;
->  		for_each_sd_topology(tl) {
-> -
-> +#ifdef CONFIG_NUMA
-> +			/*
-> +			 * Ugly hack to pass state to sd_numa_mask()...
-> +			 */
-> +			sched_domains_curr_level = tl->numa_level;
-> +#endif
->  			if (WARN_ON(!topology_span_sane(tl, cpu_map, i)))
->  				goto error;
-> 
-> 
 
-I tested with the above patch too. However it still not helping.
-
-Here is the log from my testing.
-
-At Boot.
-
-(Do remember to arrive at sched_max_numa_levels we faked the
-numa_distance of node 1 to be at 20 from node 0. All other offline
-nodes are at a distance of 10 from node 0.)
-
-numactl -H
-available: 2 nodes (0,5)
-node 0 cpus: 0 1 2 3 4 5 6 7
-node 0 size: 0 MB
-node 0 free: 0 MB
-node 5 cpus:
-node 5 size: 32038 MB
-node 5 free: 29367 MB
-node distances:
-node   0   5
-  0:  10  40
-  5:  40  10
-------------------------------------------------------------------
-grep -r . /sys/kernel/debug/sched/domains/cpu0/domain{0,1,2,3,4}/{name,flags}
-/sys/kernel/debug/sched/domains/cpu0/domain0/name:SMT
-/sys/kernel/debug/sched/domains/cpu0/domain0/flags:SD_BALANCE_NEWIDLE SD_BALANCE_EXEC SD_BALANCE_FORK SD_WAKE_AFFINE SD_SHARE_CPUCAPACITY SD_SHARE_PKG_RESOURCES SD_PREFER_SIBLING
-/sys/kernel/debug/sched/domains/cpu0/domain1/name:CACHE
-/sys/kernel/debug/sched/domains/cpu0/domain1/flags:SD_BALANCE_NEWIDLE SD_BALANCE_EXEC SD_BALANCE_FORK SD_WAKE_AFFINE SD_SHARE_PKG_RESOURCES SD_PREFER_SIBLING
-------------------------------------------------------------------
-awk '/domain/{print $1, $2}' /proc/schedstat | sort -u | sed -e 's/00000000,//g'
-domain0 00000055
-domain0 000000aa
-domain1 000000ff
-==================================================================
-
-(After performing smt mode switch to 1 and adding 2 additional small cores.
-(We always add 2 small cores at a time.))
-
-numactl -H
-available: 2 nodes (0,5)
-node 0 cpus: 0
-node 0 size: 0 MB
-node 0 free: 0 MB
-node 5 cpus: 8 9 10 11 12 13 14 15
-node 5 size: 32038 MB
-node 5 free: 29389 MB
-node distances:
-node   0   5
-  0:  10  40
-  5:  40  10
-------------------------------------------------------------------
-grep -r . /sys/kernel/debug/sched/domains/cpu0/domain{0,1,2,3,4}/{name,flags}
-/sys/kernel/debug/sched/domains/cpu0/domain0/name:NUMA
-/sys/kernel/debug/sched/domains/cpu0/domain0/flags:SD_BALANCE_NEWIDLE SD_SERIALIZE SD_OVERLAP SD_NUMA
-------------------------------------------------------------------
-awk '/domain/{print $1, $2}' /proc/schedstat | sort -u | sed -e 's/00000000,//g'
-domain0 0000ff00
-domain0 0000ff01
-domain1 0000ff01
-==================================================================
-
-<snipped for brevity>
-(Penultimate successful smt mode switch + add of a core)
-
-numactl -H
-available: 2 nodes (0,5)
-node 0 cpus: 0 1 2 3
-node 0 size: 0 MB
-node 0 free: 0 MB
-node 5 cpus: 8 9 10 11 16 17 18 19 24 25 26 27 32 33 34 35 40 41 42 43 48 49 50 51 56 57 58 59 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79
-node 5 size: 32038 MB
-node 5 free: 29106 MB
-node distances:
-node   0   5
-  0:  10  40
-  5:  40  10
-------------------------------------------------------------------
-grep -r . /sys/kernel/debug/sched/domains/cpu0/domain{0,1,2,3,4}/{name,flags}
-/sys/kernel/debug/sched/domains/cpu0/domain0/name:SMT
-/sys/kernel/debug/sched/domains/cpu0/domain0/flags:SD_BALANCE_NEWIDLE SD_BALANCE_EXEC SD_BALANCE_FORK SD_WAKE_AFFINE SD_SHARE_CPUCAPACITY SD_SHARE_PKG_RESOURCES SD_PREFER_SIBLING
-/sys/kernel/debug/sched/domains/cpu0/domain1/name:CACHE
-/sys/kernel/debug/sched/domains/cpu0/domain1/flags:SD_BALANCE_NEWIDLE SD_BALANCE_EXEC SD_BALANCE_FORK SD_WAKE_AFFINE SD_SHARE_PKG_RESOURCES SD_PREFER_SIBLING
-/sys/kernel/debug/sched/domains/cpu0/domain2/name:NUMA
-/sys/kernel/debug/sched/domains/cpu0/domain2/flags:SD_BALANCE_NEWIDLE SD_SERIALIZE SD_OVERLAP SD_NUMA
-------------------------------------------------------------------
-awk '/domain/{print $1, $2}' /proc/schedstat | sort -u | sed -e 's/00000000,//g'
-domain0 00000005
-domain0 0000000a
-domain0 00000f00
-domain0 000f0000
-domain0 0f000000
-domain0 0000000f,00000000
-domain0 00000f00,00000000
-domain0 000f0000,00000000
-domain0 8f000000,00000000
-domain0 000000ff,00000000
-domain0 0000ff00,00000000
-domain1 0000000f
-domain1 0000ffff,8f0f0f0f,0f0f0f00
-domain2 0000ffff,8f0f0f0f,0f0f0f0f
-==================================================================
-
-(Before Last successful smt mode switch and 2 small core additions.
-Till now all CPU additions have been from nodes which are online.)
-
-numactl -H
-available: 2 nodes (0,5)
-node 0 cpus: 0 1 2 3 4 5
-node 0 size: 0 MB
-node 0 free: 0 MB
-node 5 cpus: 8 9 10 11 16 17 18 19 24 25 26 27 32 33 34 35 40 41 42 43 48 49 50 51 56 57 58 59 64 65 66 67 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87
-node 5 size: 32038 MB
-node 5 free: 29099 MB
-node distances:
-node   0   5
-  0:  10  40
-  5:  40  10
-------------------------------------------------------------------
-grep -r . /sys/kernel/debug/sched/domains/cpu0/domain{0,1,2,3,4}/{name,flags}
-/sys/kernel/debug/sched/domains/cpu0/domain0/name:SMT
-/sys/kernel/debug/sched/domains/cpu0/domain0/flags:SD_BALANCE_NEWIDLE SD_BALANCE_EXEC SD_BALANCE_FORK SD_WAKE_AFFINE SD_SHARE_CPUCAPACITY SD_SHARE_PKG_RESOURCES SD_PREFER_SIBLING
-/sys/kernel/debug/sched/domains/cpu0/domain1/name:CACHE
-/sys/kernel/debug/sched/domains/cpu0/domain1/flags:SD_BALANCE_NEWIDLE SD_BALANCE_EXEC SD_BALANCE_FORK SD_WAKE_AFFINE SD_SHARE_PKG_RESOURCES SD_PREFER_SIBLING
-/sys/kernel/debug/sched/domains/cpu0/domain2/name:NUMA
-/sys/kernel/debug/sched/domains/cpu0/domain2/flags:SD_BALANCE_NEWIDLE SD_SERIALIZE SD_OVERLAP SD_NUMA
-------------------------------------------------------------------
-awk '/domain/{print $1, $2}' /proc/schedstat | sort -u | sed -e 's/00000000,//g'
-domain0 00000015
-domain0 0000002a
-domain0 00000f00
-domain0 000f0000
-domain0 0f000000
-domain0 0000000f,00000000
-domain0 00000f00,00000000
-domain0 000f0000,00000000
-domain0 0f000000,00000000
-domain0 0000000f,00000000
-domain0 0000ff00,00000000
-domain0 00ff0000,00000000
-domain1 0000003f
-domain1 00ffff0f,0f0f0f0f,0f0f0f00
-domain2 00ffff0f,0f0f0f0f,0f0f0f3f
-==================================================================
-
-( First addition of a CPU to a non-online node esp node whose node
-distance was not faked.)
-
-numactl -H
-available: 3 nodes (0,5,7)
-node 0 cpus: 0 1 2 3 4 5 6 7
-node 0 size: 0 MB
-node 0 free: 0 MB
-node 5 cpus: 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 32 33 34 35 40 41 42 43 48 49 50 51 56 57 58 59 64 65 66 67 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87
-node 5 size: 32038 MB
-node 5 free: 29024 MB
-node 7 cpus: 88 89 90 91 92 93 94 95
-node 7 size: 0 MB
-node 7 free: 0 MB
-node distances:
-node   0   5   7
-  0:  10  40  40
-  5:  40  10  20
-  7:  40  20  10
-------------------------------------------------------------------
-grep -r . /sys/kernel/debug/sched/domains/cpu0/domain{0,1,2,3,4}/{name,flags}
-------------------------------------------------------------------
-awk '/domain/{print $1, $2}' /proc/schedstat | sort -u | sed -e 's/00000000,//g'
-==================================================================
-
-I had added a debug patch to dump some variables that may help to
-understand the problem
-------------------->8--------------------------------------------8<----------
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index 5e1abd9a8cc5..146f59381bcc 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -2096,7 +2096,8 @@ static bool topology_span_sane(struct sched_domain_topology_level *tl,
- 		cpumask_and(intersect, tl->mask(cpu), tl->mask(i));
- 		if (!cpumask_equal(tl->mask(cpu), tl->mask(i)) &&
- 		    cpumask_intersects(intersect, cpu_map)) {
--			pr_err("name=%s mask(%d/%d)=%*pbl mask(%d/%d)=%*pbl", tl->name, cpu, cpu_to_node(cpu), cpumask_pr_args(tl->mask(cpu)), i, cpu_to_node(i), cpumask_pr_args(tl->mask(i)));
-+			pr_err("name=%s mask(%d/%d)=%*pbl mask(%d/%d)=%*pbl numa-level=%d curr_level=%d", tl->name, cpu, cpu_to_node(cpu), cpumask_pr_args(tl->mask(cpu)), i, cpu_to_node(i), cpumask_pr_args(tl->mask(i)), tl->numa_level, sched_domains_curr_level);
-+			pr_err("intersect=%*pbl cpu_map=%*pbl", cpumask_pr_args(intersect), cpumask_pr_args(cpu_map));
- 			return false;
- 		}
- 	}
-------------------->8--------------------------------------------8<----------
-
-From dmesg:
-
-[   99.076892] WARNING: workqueue cpumask: online intersect > possible intersect
-[  167.256079] Built 2 zonelists, mobility grouping on.  Total pages: 508394
-[  167.256108] Policy zone: Normal
-[  167.626915] name=NODE mask(0/0)=0-7 mask(88/7)=0-7,88 numa-level=0 curr_level=0    <-- hunk above
-[  167.626925] intersect=0-7 cpu_map=0-19,24-27,32-35,40-43,48-51,56-59,64-67,72-88
-[  167.626951] ------------[ cut here ]------------
-[  167.626959] WARNING: CPU: 88 PID: 6285 at kernel/sched/topology.c:2143 build_sched_domains+0xacc/0x1780
-[  167.626975] Modules linked in: rpadlpar_io rpaphp mptcp_diag xsk_diag tcp_diag udp_diag raw_diag inet_diag unix_diag af_packet_diag netlink_diag bonding tls nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ip_set rfkill nf_tables nfnetlink pseries_rng xts vmx_crypto uio_pdrv_genirq uio binfmt_misc ip_tables xfs libcrc32c dm_service_time sd_mod t10_pi sg ibmvfc scsi_transport_fc ibmveth dm_multipath dm_mirror dm_region_hash dm_log dm_mod fuse
-[  167.627068] CPU: 88 PID: 6285 Comm: kworker/88:0 Tainted: G        W         5.13.0-rc6+ #60
-[  167.627075] Workqueue: events cpuset_hotplug_workfn
-[  167.627085] NIP:  c0000000001caf3c LR: c0000000001caf38 CTR: 00000000007088ec
-[  167.627091] REGS: c0000000aa253260 TRAP: 0700   Tainted: G        W          (5.13.0-rc6+)
-[  167.627095] MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 48848222  XER: 00000004
-[  167.627108] CFAR: c0000000001eac38 IRQMASK: 0 
-               GPR00: c0000000001caf38 c0000000aa253500 c000000001c4a500 0000000000000044 
-               GPR04: 00000000fff7ffff c0000000aa253210 0000000000000027 c0000007d9807f90 
-               GPR08: 0000000000000023 0000000000000001 0000000000000027 c0000007d2ffffe8 
-               GPR12: 0000000000008000 c00000001e9aa480 c000000001c93060 c00000006b834e80 
-               GPR16: c000000001d3c6b0 0000000000000000 c000000001775860 c000000001775868 
-               GPR20: 0000000000000000 c00000000c064900 0000000000000280 c0000000010bf838 
-               GPR24: 0000000000000280 c000000001d3c6c0 0000000000000007 0000000000000058 
-               GPR28: 0000000000000000 c00000000c446cc0 c000000001c978a0 c0000000b0a36f00 
-[  167.627161] NIP [c0000000001caf3c] build_sched_domains+0xacc/0x1780
-[  167.627166] LR [c0000000001caf38] build_sched_domains+0xac8/0x1780
-[  167.627172] Call Trace:
-[  167.627174] [c0000000aa253500] [c0000000001caf38] build_sched_domains+0xac8/0x1780 (unreliable)
-[  167.627182] [c0000000aa253680] [c0000000001ccf2c] partition_sched_domains_locked+0x3ac/0x4c0
-[  167.627188] [c0000000aa253710] [c000000000280a84] rebuild_sched_domains_locked+0x404/0x9e0
-[  167.627194] [c0000000aa253810] [c000000000284400] rebuild_sched_domains+0x40/0x70
-[  167.627201] [c0000000aa253840] [c0000000002846c4] cpuset_hotplug_workfn+0x294/0xf10
-[  167.627208] [c0000000aa253c60] [c000000000175140] process_one_work+0x290/0x590
-[  167.627217] [c0000000aa253d00] [c0000000001754c8] worker_thread+0x88/0x620
-[  167.627224] [c0000000aa253da0] [c000000000181804] kthread+0x194/0x1a0
-[  167.627230] [c0000000aa253e10] [c00000000000ccec] ret_from_kernel_thread+0x5c/0x70
-[  167.627238] Instruction dump:
-[  167.627242] 38635150 f9610070 4801fcdd 60000000 80de0000 3c62ff47 7f25cb78 7fe7fb78 
-[  167.627252] 386351a0 7cc43378 4801fcbd 60000000 <0fe00000> 3920fff4 f92100c0 e86100e0 
-[  167.627262] ---[ end trace 870f890d7c623d18 ]---
-[  168.026621] name=NODE mask(0/0)=0-7 mask(88/7)=0-7,88-89 numa-level=0 curr_level=0
-[  168.026626] intersect=0-7 cpu_map=0-19,24-27,32-35,40-43,48-51,56-59,64-67,72-89
-[  168.026637] ------------[ cut here ]------------
-[  168.026643] WARNING: CPU: 89 PID: 6298 at kernel/sched/topology.c:2143 build_sched_domains+0xacc/0x1780
-[  168.026650] Modules linked in: rpadlpar_io rpaphp mptcp_diag xsk_diag tcp_diag udp_diag raw_diag inet_diag unix_diag af_packet_diag netlink_diag bonding tls nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ip_set rfkill nf_tables nfnetlink pseries_rng xts vmx_crypto uio_pdrv_genirq uio binfmt_misc ip_tables xfs libcrc32c dm_service_time sd_mod t10_pi sg ibmvfc scsi_transport_fc ibmveth dm_multipath dm_mirror dm_region_hash dm_log dm_mod fuse
-[  168.026707] CPU: 89 PID: 6298 Comm: kworker/89:0 Tainted: G        W         5.13.0-rc6+ #60
-[  168.026713] Workqueue: events cpuset_hotplug_workfn
-[  168.026719] NIP:  c0000000001caf3c LR: c0000000001caf38 CTR: 00000000007088ec
-[  168.026723] REGS: c0000000ae6d7260 TRAP: 0700   Tainted: G        W          (5.13.0-rc6+)
-[  168.026728] MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 48848222  XER: 00000007
-[  168.026738] CFAR: c0000000001eac38 IRQMASK: 0 
-               GPR00: c0000000001caf38 c0000000ae6d7500 c000000001c4a500 0000000000000044 
-               GPR04: 00000000fff7ffff c0000000ae6d7210 0000000000000027 c0000007d9907f90 
-               GPR08: 0000000000000023 0000000000000001 0000000000000027 c0000007d2ffffe8 
-               GPR12: 0000000000008000 c00000001e9a9400 c000000001c93060 c00000006b836a80 
-               GPR16: c000000001d3c6b0 0000000000000000 c000000001775860 c000000001775868 
-               GPR20: 0000000000000000 c00000000c064900 0000000000000280 c0000000010bf838 
-               GPR24: 0000000000000280 c000000001d3c6c0 0000000000000007 0000000000000058 
-               GPR28: 0000000000000000 c00000000c446cc0 c000000001c978a0 c0000000b1c13b00 
-[  168.026792] NIP [c0000000001caf3c] build_sched_domains+0xacc/0x1780
-[  168.026796] LR [c0000000001caf38] build_sched_domains+0xac8/0x1780
-[  168.026801] Call Trace:
-[  168.026804] [c0000000ae6d7500] [c0000000001caf38] build_sched_domains+0xac8/0x1780 (unreliable)
-[  168.026811] [c0000000ae6d7680] [c0000000001ccf2c] partition_sched_domains_locked+0x3ac/0x4c0
-[  168.026817] [c0000000ae6d7710] [c000000000280a84] rebuild_sched_domains_locked+0x404/0x9e0
-[  168.026823] [c0000000ae6d7810] [c000000000284400] rebuild_sched_domains+0x40/0x70
-[  168.026829] [c0000000ae6d7840] [c0000000002846c4] cpuset_hotplug_workfn+0x294/0xf10
-[  168.026835] [c0000000ae6d7c60] [c000000000175140] process_one_work+0x290/0x590
-[  168.026841] [c0000000ae6d7d00] [c0000000001754c8] worker_thread+0x88/0x620
-[  168.026848] [c0000000ae6d7da0] [c000000000181804] kthread+0x194/0x1a0
-[  168.026853] [c0000000ae6d7e10] [c00000000000ccec] ret_from_kernel_thread+0x5c/0x70
-[  168.026859] Instruction dump:
-[  168.026863] 38635150 f9610070 4801fcdd 60000000 80de0000 3c62ff47 7f25cb78 7fe7fb78 
-[  168.026872] 386351a0 7cc43378 4801fcbd 60000000 <0fe00000> 3920fff4 f92100c0 e86100e0 
-[  168.026883] ---[ end trace 870f890d7c623d19 ]---
-
-Now this keeps repeating.
-
-I know I have mentioned this before. (So sorry for repeating)
-Generally on Power node distance is not populated for offline nodes.
-However to arrive at sched_max_numa_levels, we thought of faking few
-node distances. In the above case, we faked distance of node 1 as 20
-(from node 0) node 5 was already at distance of 40 from node 0.
-
-So when sched_domains_numa_masks_set is called to update sd_numa_mask or
-sched_domains_numa_masks, all CPUs under node 0 get updated for node 2
-too. (since node 2 is shown as at a local distance from node 0). Do
-look at the node mask of CPU 88 in the dmesg. It should have been 88,
-however its 0-7,88 where 0-7 are coming from node 0.
-
-Even if we skip updation of sched_domains_numa_masks for offline nodes,
-on online of a node (i.e when we get the correct node distance), we have
-to update the sched_domains_numa_masks to ensure CPUs that were already
-present within a certain distance and skipped are added back. And this
-was what I tried to do in my patch.
-
--- 
-Thanks and Regards
-Srikar Dronamraju
+base-commit: 2734d6c1b1a089fb593ef6a23d4b70903526fe0c
+--
+2.20.1
