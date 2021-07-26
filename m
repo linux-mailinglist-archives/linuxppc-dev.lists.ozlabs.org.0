@@ -1,75 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D7B03D524A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jul 2021 06:15:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 954B03D52CB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jul 2021 07:20:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GY65q3vTYz3jn6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jul 2021 14:15:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GY7Yj3GdJz3bcp
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jul 2021 15:20:57 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=T4Qgip1K;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=inbox.ru header.i=@inbox.ru header.a=rsa-sha256 header.s=mail3 header.b=TYBJCslV;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=inbox.ru header.i=@inbox.ru header.a=rsa-sha256 header.s=mail3 header.b=HFsG8wpL;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1033;
- helo=mail-pj1-x1033.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=T4Qgip1K; dkim-atps=neutral
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com
- [IPv6:2607:f8b0:4864:20::1033])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=inbox.ru (client-ip=94.100.179.50; helo=fallback15.mail.ru;
+ envelope-from=fido_max@inbox.ru; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=inbox.ru header.i=@inbox.ru header.a=rsa-sha256
+ header.s=mail3 header.b=TYBJCslV; 
+ dkim=pass (1024-bit key) header.d=inbox.ru header.i=@inbox.ru
+ header.a=rsa-sha256 header.s=mail3 header.b=HFsG8wpL; 
+ dkim-atps=neutral
+Received: from fallback15.mail.ru (fallback15.mail.ru [94.100.179.50])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GY5c502Mnz30Ky
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Jul 2021 13:52:53 +1000 (AEST)
-Received: by mail-pj1-x1033.google.com with SMTP id
- a4-20020a17090aa504b0290176a0d2b67aso9380795pjq.2
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Jul 2021 20:52:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=g7tzAmHt9KFCtjyh0DlOhYXuEQ09+ToK2o7s2d30wi4=;
- b=T4Qgip1KmTTvnYJO1orXDsbOKQ2HY5MjVPhZr3mE8waj56Ds3xJLVFSGfRv7Szdn1y
- QEzBi1loDZwMIy49XVPf8h/N1fXKHBhgcHelSVF0/AyF2h+2AOjgeWJ4muenI4CbdSqC
- PvUrTx7RF19wifBUACpAviUfXSzAwe/ZNK0ysFv9S9SpSfVVngyJDrbiZIvfJ3+zvHLo
- fDBxmKlxQxE14P5J5dsSNY/5p7Mk+7zxjCqagaSpqQWdgGUy3oQ/E3sG9o6w6nrXZiQr
- rwaARkvRIC259z375gg2N3HbUA2XXq6FvPckc9qiQ+HENWTGj78+lM+7wXhJb2GLk05M
- aqWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=g7tzAmHt9KFCtjyh0DlOhYXuEQ09+ToK2o7s2d30wi4=;
- b=JjeFwkg5gd+9w4408WNMCUQzBnu8A0jtcvLeGmgpIo+ThlY58ZgXtH5/0VWF8JbjN9
- hr/qJfG1ePoGSWGzkl1QIibYE6rWjlYVvgvrfUHw1IV0zqmCrTRKU4U5D9Mj/nfsmm7T
- E6JRApIk3LKUhsGRG9+gLJ3dnqr4cZMW7aF9vKPynILeiA2ytjOj2edIaMm0GNPMEgvy
- oc5MqFomn5an6D1sAvtLycuOR0fxVd9IB1iOU3yRh3Z+HeObNIQKIZcUXhyUK7a+HAto
- aiUXAy4rbAOuOcujO+58aNLOu7xRjTwLknOdo7Ik2aL8oF9/l3nX7+yk3rnHX/lM9soe
- LUZw==
-X-Gm-Message-State: AOAM5325f4qyFXTGPmOr45+UnoiPj2nboWRMLee8k+eJMYo7SC8jGLe2
- PJZX5C4Ij+KrTukn9SryjiM=
-X-Google-Smtp-Source: ABdhPJzwIM7O9OUMjHW7iRnCSulR7E5dYl4iqmmFRRUkU6vIcCXmbFuSo8vKOF91kEH2jrCedJc7DQ==
-X-Received: by 2002:a17:90a:f40f:: with SMTP id
- ch15mr3517977pjb.32.1627271571042; 
- Sun, 25 Jul 2021 20:52:51 -0700 (PDT)
-Received: from bobo.ibm.com (220-244-190-123.tpgi.com.au. [220.244.190.123])
- by smtp.gmail.com with ESMTPSA id p33sm41140341pfw.40.2021.07.25.20.52.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 25 Jul 2021 20:52:50 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: kvm-ppc@vger.kernel.org
-Subject: [PATCH v1 55/55] KVM: PPC: Book3S HV P9: Remove subcore HMI handling
-Date: Mon, 26 Jul 2021 13:50:36 +1000
-Message-Id: <20210726035036.739609-56-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20210726035036.739609-1-npiggin@gmail.com>
-References: <20210726035036.739609-1-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GY7Y60PVCz2xfL
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Jul 2021 15:20:25 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=inbox.ru;
+ s=mail3; 
+ h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:Cc:To:From:From:Subject:Content-Type:Content-Transfer-Encoding:To:Cc;
+ bh=t1Uh5KTwLCMvfNZqiWZTCHU59a6VhHwc3c34OkzXXK0=; 
+ t=1627276826;x=1627882226; 
+ b=TYBJCslVA927sP0CEOH72VHj+oJou+9FG+2RViJXLBXBDGeqrC6e4OwzjStwHaMXLZobKf25XLL0TaKfyjbLFG6VUVadQn//eUa5xtTHpWExjCl9veilKVfMdo11WvMaLWzcA421BqDZzd/HB1v+nDfXsC+BBf4sz7aC+57t7Xk=;
+Received: from [10.161.64.51] (port=52486 helo=smtp43.i.mail.ru)
+ by fallback15.m.smailru.net with esmtp (envelope-from <fido_max@inbox.ru>)
+ id 1m7t2L-0000hP-Cc; Mon, 26 Jul 2021 08:20:21 +0300
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=inbox.ru;
+ s=mail3; 
+ h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:Cc:To:From:From:Subject:Content-Type:Content-Transfer-Encoding:To:Cc;
+ bh=t1Uh5KTwLCMvfNZqiWZTCHU59a6VhHwc3c34OkzXXK0=; 
+ t=1627276821;x=1627882221; 
+ b=HFsG8wpL/yfnCULCtowXdU/lai1vO/kyqsNcq8D+wVkP4RIZ1aFT6zu3Sj8SQk8rMOxVRil4j1toTa2JlJmzafFDcc8WTKEgKHMQyLMrFoLYBjfC/Tlvi3IRxswaNyOZ1G+7d7UiMjd8Ndb9fftyTSUhqkSxnBr41xadI7dWJ8k=;
+Received: by smtp43.i.mail.ru with esmtpa (envelope-from <fido_max@inbox.ru>)
+ id 1m7t2B-0005FX-OU; Mon, 26 Jul 2021 08:20:12 +0300
+From: Maxim Kochetkov <fido_max@inbox.ru>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v3] soc: fsl: qe: convert QE interrupt controller to
+ platform_device
+Date: Mon, 26 Jul 2021 08:22:17 +0300
+Message-Id: <20210726052217.13558-1-fido_max@inbox.ru>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-7564579A: 78E4E2B564C1792B
+X-77F55803: 4F1203BC0FB41BD941C43E597735A9C3D3726AD0AC8C7907896201F0AD2BBAE8182A05F5380850409D28132A2A740F627A359249B08D8940F9DEA757F337415BC037DA5BA24F7E8A
+X-7FA49CB5: FF5795518A3D127A4AD6D5ED66289B5278DA827A17800CE75263010198C72082EA1F7E6F0F101C67BD4B6F7A4D31EC0BCC500DACC3FED6E28638F802B75D45FF8AA50765F790063732727FD5A4355FD18638F802B75D45FF36EB9D2243A4F8B5A6FCA7DBDB1FC311F39EFFDF887939037866D6147AF826D886EBC48F350539DBA23B9703778B5A996F9789CCF6C18C3F8528715B7D10C86878DA827A17800CE7A29E2F051442AF778941B15DA834481FA18204E546F3947C1E44367C8E80A7B4F6B57BC7E64490618DEB871D839B7333395957E7521B51C2DFABB839C843B9C08941B15DA834481F8AA50765F7900637BA2F0AEB80054583389733CBF5DBD5E9B5C8C57E37DE458BD9DD9810294C998ED8FC6C240DEA76428AA50765F79006376B150EEEA420D0FBD81D268191BDAD3DBD4B6F7A4D31EC0BEA7A3FFF5B025636D81D268191BDAD3D78DA827A17800CE7F8413B35385CE433EC76A7562686271EEC990983EF5C03292E808ACE2090B5E14AD6D5ED66289B5259CC434672EE63711DD303D21008E298D5E8D9A59859A8B6B372FE9A2E580EFC725E5C173C3A84C361DD96311B40C2D435872C767BF85DA2F004C90652538430E4A6367B16DE6309
+X-C1DE0DAB: C20DE7B7AB408E4181F030C43753B8186998911F362727C414F749A5E30D975C7941123239F7850421C1E794AB7149D6CD8E38C4B36944A89C2B6934AE262D3EE7EAB7254005DCED1C8AEA1E975C27AC1E0A4E2319210D9B64D260DF9561598F01A9E91200F654B03031C89702B531498E8E86DC7131B365E7726E8460B7C23C
+X-C8649E89: 4E36BF7865823D7055A7F0CF078B5EC49A30900B95165D342833AC5E8E9ACF1C3ABECC5E186177B3E36FFADD1680F45A81D3DC0E074A8F2DC01EDAC4EB81FB9E1D7E09C32AA3244C5ED05D3279869C37F426C3C0ED5C82E4408A6A02710B7304ED98077840A144B9
+X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu530nj6fImhcD4MUrOEAnl0W826KZ9Q+tr5ycPtXkTV4k65bRjmOUUP8cvGozZ33TWg5HZplvhhXbhDGzqmQDTd6OAevLeAnq3Ra9uf7zvY2zzsIhlcp/Y7m53TZgf2aB4JOg4gkr2biojBHzp66hWLW2MmQ0+nR2bnA==
+X-Mailru-Sender: 11C2EC085EDE56FA9C10FA2967F5AB24CC4E7603B3CCE21D85B7A77D3600FEFAED25AD0588FA7D16EE9242D420CFEBFD3DDE9B364B0DF2891A624F84B2C74EDA4239CF2AF0A6D4F80DA7A0AF5A3A8387
+X-Mras: Ok
+X-7564579A: B8F34718100C35BD
+X-77F55803: 6242723A09DB00B4DE24245422D83CE6F6EF26CB7A2DAAF275B90700DCC5904E049FFFDB7839CE9E790A577F25633BAC67FF5625DE986C47671D1F33D48B04C16C06AFB9415F9DAB
+X-7FA49CB5: 0D63561A33F958A53A8332BA8FC104A37DDD5463A4D6D3C10E8979EBC08A0069CACD7DF95DA8FC8BD5E8D9A59859A8B60417BEADF48D1460CC7F00164DA146DAFE8445B8C89999728AA50765F7900637E9F91455EEDB1B70389733CBF5DBD5E9C8A9BA7A39EFB766F5D81C698A659EA7CC7F00164DA146DA9985D098DBDEAEC8188B2BFCDC338A02F6B57BC7E6449061A352F6E88A58FB86F5D81C698A659EA73AA81AA40904B5D9A18204E546F3947C1DAA61796BF5227B302FCEF25BFAB3454AD6D5ED66289B52698AB9A7B718F8C442539A7722CA490CD5E8D9A59859A8B608F55DA9FB1C18C0089D37D7C0E48F6C5571747095F342E88FB05168BE4CE3AF
+X-C1DE0DAB: C20DE7B7AB408E4181F030C43753B8186998911F362727C414F749A5E30D975C7941123239F785042FC38361DF28E973E5FBA43393BAB56E9C2B6934AE262D3EE7EAB7254005DCED1C8AEA1E975C27AC699F904B3F4130E343918A1A30D5E7FCCB5012B2E24CD356
+X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu530nj6fImhcD4MUrOEAnl0W826KZ9Q+tr5ycPtXkTV4k65bRjmOUUP8cvGozZ33TWg5HZplvhhXbhDGzqmQDTd6OAevLeAnq3Ra9uf7zvY2zzsIhlcp/Y7m53TZgf2aB4JOg4gkr2biojBHzp66hWLW2e5HZ12CN1GA==
+X-Mailru-MI: 800
+X-Mailru-Sender: A5480F10D64C900579012F43D24554B08AB642A06AF0B9C7F1EFB9C2FF11262D398300F31D255910C099ADC76E806A99D50E20E2BC48EF5A30D242760C51EA9CEAB4BC95F72C04283CDA0F3B3F5B9367
+X-Mras: Ok
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,150 +80,173 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: kernel test robot <lkp@intel.com>, saravanak@google.com,
+ gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, leoyang.li@nxp.com,
+ Maxim Kochetkov <fido_max@inbox.ru>, Dan Carpenter <dan.carpenter@oracle.com>,
+ linux-arm-kernel@lists.infradead.org, qiang.zhao@nxp.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On POWER9 and newer, rather than the complex HMI synchronisation and
-subcore state, have each thread un-apply the guest TB offset before
-calling into the early HMI handler.
+Since 5.13 QE's ucc nodes can't get interrupts from devicetree:
 
-This allows the subcore state to be avoided, including subcore enter
-/ exit guest, which includes an expensive divide that shows up
-slightly in profiles.
+	ucc@2000 {
+		cell-index = <1>;
+		reg = <0x2000 0x200>;
+		interrupts = <32>;
+		interrupt-parent = <&qeic>;
+	};
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Now fw_devlink expects driver to create and probe a struct device
+for interrupt controller.
+
+So lets convert this driver to simple platform_device with probe().
+Also use platform_get_ and devm_ family function to get/allocate
+resources and drop unused .compatible = "qeic".
+
+[1] - https://lore.kernel.org/lkml/CAGETcx9PiX==mLxB9PO8Myyk6u2vhPVwTMsA5NkD-ywH5xhusw@mail.gmail.com
+Fixes: e590474768f1 ("driver core: Set fw_devlink=on by default")
+Fixes: ea718c699055 ("Revert "Revert "driver core: Set fw_devlink=on by default""")
+Signed-off-by: Maxim Kochetkov <fido_max@inbox.ru>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- arch/powerpc/kvm/book3s_hv.c          | 12 +++++-----
- arch/powerpc/kvm/book3s_hv_hmi.c      |  7 +++++-
- arch/powerpc/kvm/book3s_hv_p9_entry.c | 32 ++++++++++++++++++++++++++-
- arch/powerpc/kvm/book3s_hv_ras.c      |  4 ++++
- 4 files changed, 46 insertions(+), 9 deletions(-)
+Changes in v3:
+ - use .compatible = "qeic" again (Li Yang <leoyang.li@nxp.com> asks to keep it)
+ 
+Changes in v2:
+ - use devm_ family functions to allocate mem/resources
+ - use platform_get_ family functions to get resources/irqs
+ - drop unused .compatible = "qeic"
 
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index b727b2cfad98..3f62ada1a669 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -3994,8 +3994,6 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
- 
- 	vcpu->arch.ceded = 0;
- 
--	kvmppc_subcore_enter_guest();
--
- 	vcpu_vpa_increment_dispatch(vcpu);
- 
- 	if (kvmhv_on_pseries()) {
-@@ -4048,8 +4046,6 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
- 
- 	vcpu_vpa_increment_dispatch(vcpu);
- 
--	kvmppc_subcore_exit_guest();
--
- 	return trap;
+ drivers/soc/fsl/qe/qe_ic.c | 75 ++++++++++++++++++++++----------------
+ 1 file changed, 44 insertions(+), 31 deletions(-)
+
+diff --git a/drivers/soc/fsl/qe/qe_ic.c b/drivers/soc/fsl/qe/qe_ic.c
+index 3f711c1a0996..54cabd2605dd 100644
+--- a/drivers/soc/fsl/qe/qe_ic.c
++++ b/drivers/soc/fsl/qe/qe_ic.c
+@@ -23,6 +23,7 @@
+ #include <linux/signal.h>
+ #include <linux/device.h>
+ #include <linux/spinlock.h>
++#include <linux/platform_device.h>
+ #include <asm/irq.h>
+ #include <asm/io.h>
+ #include <soc/fsl/qe/qe.h>
+@@ -404,41 +405,40 @@ static void qe_ic_cascade_muxed_mpic(struct irq_desc *desc)
+ 	chip->irq_eoi(&desc->irq_data);
  }
  
-@@ -6031,9 +6027,11 @@ static int kvmppc_book3s_init_hv(void)
- 	if (r)
- 		return r;
+-static void __init qe_ic_init(struct device_node *node)
++static int qe_ic_init(struct platform_device *pdev)
+ {
++	struct device *dev = &pdev->dev;
+ 	void (*low_handler)(struct irq_desc *desc);
+ 	void (*high_handler)(struct irq_desc *desc);
+ 	struct qe_ic *qe_ic;
+-	struct resource res;
+-	u32 ret;
++	struct resource *res;
++	struct device_node *node = pdev->dev.of_node;
  
--	r = kvm_init_subcore_bitmap();
--	if (r)
--		return r;
-+	if (!cpu_has_feature(CPU_FTR_ARCH_300)) {
-+		r = kvm_init_subcore_bitmap();
-+		if (r)
-+			return r;
+-	ret = of_address_to_resource(node, 0, &res);
+-	if (ret)
+-		return;
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (res == NULL) {
++		dev_err(dev, "no memory resource defined\n");
++		return -ENODEV;
 +	}
  
- 	/*
- 	 * We need a way of accessing the XICS interrupt controller,
-diff --git a/arch/powerpc/kvm/book3s_hv_hmi.c b/arch/powerpc/kvm/book3s_hv_hmi.c
-index 9af660476314..1ec50c69678b 100644
---- a/arch/powerpc/kvm/book3s_hv_hmi.c
-+++ b/arch/powerpc/kvm/book3s_hv_hmi.c
-@@ -20,10 +20,15 @@ void wait_for_subcore_guest_exit(void)
+-	qe_ic = kzalloc(sizeof(*qe_ic), GFP_KERNEL);
++	qe_ic = devm_kzalloc(dev, sizeof(*qe_ic), GFP_KERNEL);
+ 	if (qe_ic == NULL)
+-		return;
++		return -ENOMEM;
  
- 	/*
- 	 * NULL bitmap pointer indicates that KVM module hasn't
--	 * been loaded yet and hence no guests are running.
-+	 * been loaded yet and hence no guests are running, or running
-+	 * on POWER9 or newer CPU.
-+	 *
- 	 * If no KVM is in use, no need to co-ordinate among threads
- 	 * as all of them will always be in host and no one is going
- 	 * to modify TB other than the opal hmi handler.
-+	 *
-+	 * POWER9 and newer don't need this synchronisation.
-+	 *
- 	 * Hence, just return from here.
- 	 */
- 	if (!local_paca->sibling_subcore_state)
-diff --git a/arch/powerpc/kvm/book3s_hv_p9_entry.c b/arch/powerpc/kvm/book3s_hv_p9_entry.c
-index 032ca6dfd83c..d23e1ef2e3a7 100644
---- a/arch/powerpc/kvm/book3s_hv_p9_entry.c
-+++ b/arch/powerpc/kvm/book3s_hv_p9_entry.c
-@@ -3,6 +3,7 @@
- #include <linux/kvm_host.h>
- #include <asm/asm-prototypes.h>
- #include <asm/dbell.h>
-+#include <asm/interrupt.h>
- #include <asm/kvm_ppc.h>
- #include <asm/pmc.h>
- #include <asm/ppc-opcode.h>
-@@ -927,7 +928,36 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
- 		kvmppc_realmode_machine_check(vcpu);
+-	qe_ic->irqhost = irq_domain_add_linear(node, NR_QE_IC_INTS,
+-					       &qe_ic_host_ops, qe_ic);
+-	if (qe_ic->irqhost == NULL) {
+-		kfree(qe_ic);
+-		return;
++	qe_ic->regs = devm_ioremap(dev, res->start, resource_size(res));
++	if (qe_ic->regs == NULL) {
++		dev_err(dev, "failed to ioremap() registers\n");
++		return -ENODEV;
+ 	}
  
- 	} else if (unlikely(trap == BOOK3S_INTERRUPT_HMI)) {
--		kvmppc_realmode_hmi_handler();
-+		/*
-+		 * Unapply and clear the offset first. That way, if the TB
-+		 * was fine then no harm done, if it is corrupted then the
-+		 * HMI resync will bring it back to host mode. This way, we
-+		 * don't need to actualy know whether not OPAL resynced the
-+		 * timebase. Although it would be cleaner if we could rely
-+		 * on that, early POWER9 OPAL did not support the
-+		 * OPAL_HANDLE_HMI2 call.
-+		 */
-+		if (vc->tb_offset_applied) {
-+			u64 new_tb = mftb() - vc->tb_offset_applied;
-+			mtspr(SPRN_TBU40, new_tb);
-+			if ((mftb() & 0xffffff) < (new_tb & 0xffffff)) {
-+				new_tb += 0x1000000;
-+				mtspr(SPRN_TBU40, new_tb);
-+			}
-+			vc->tb_offset_applied = 0;
-+		}
+-	qe_ic->regs = ioremap(res.start, resource_size(&res));
+-
+ 	qe_ic->hc_irq = qe_ic_irq_chip;
+ 
+-	qe_ic->virq_high = irq_of_parse_and_map(node, 0);
+-	qe_ic->virq_low = irq_of_parse_and_map(node, 1);
++	qe_ic->virq_high = platform_get_irq(pdev, 0);
++	qe_ic->virq_low = platform_get_irq(pdev, 1);
+ 
+-	if (!qe_ic->virq_low) {
+-		printk(KERN_ERR "Failed to map QE_IC low IRQ\n");
+-		kfree(qe_ic);
+-		return;
++	if (qe_ic->virq_low < 0) {
++		return -ENODEV;
+ 	}
 +
-+		hmi_exception_realmode(NULL);
-+
-+		if (vc->tb_offset) {
-+			u64 new_tb = mftb() + vc->tb_offset;
-+			mtspr(SPRN_TBU40, new_tb);
-+			if ((mftb() & 0xffffff) < (new_tb & 0xffffff)) {
-+				new_tb += 0x1000000;
-+				mtspr(SPRN_TBU40, new_tb);
-+			}
-+			vc->tb_offset_applied = vc->tb_offset;
-+		}
+ 	if (qe_ic->virq_high != qe_ic->virq_low) {
+ 		low_handler = qe_ic_cascade_low;
+ 		high_handler = qe_ic_cascade_high;
+@@ -447,6 +447,13 @@ static void __init qe_ic_init(struct device_node *node)
+ 		high_handler = NULL;
+ 	}
  
- 	} else if (trap == BOOK3S_INTERRUPT_H_EMUL_ASSIST) {
- 		vcpu->arch.emul_inst = mfspr(SPRN_HEIR);
-diff --git a/arch/powerpc/kvm/book3s_hv_ras.c b/arch/powerpc/kvm/book3s_hv_ras.c
-index d4bca93b79f6..a49ee9bdab67 100644
---- a/arch/powerpc/kvm/book3s_hv_ras.c
-+++ b/arch/powerpc/kvm/book3s_hv_ras.c
-@@ -136,6 +136,10 @@ void kvmppc_realmode_machine_check(struct kvm_vcpu *vcpu)
- 	vcpu->arch.mce_evt = mce_evt;
++	qe_ic->irqhost = irq_domain_add_linear(node, NR_QE_IC_INTS,
++					       &qe_ic_host_ops, qe_ic);
++	if (qe_ic->irqhost == NULL) {
++		dev_err(dev, "failed to add irq domain\n");
++		return -ENODEV;
++	}
++
+ 	qe_ic_write(qe_ic->regs, QEIC_CICR, 0);
+ 
+ 	irq_set_handler_data(qe_ic->virq_low, qe_ic);
+@@ -456,20 +463,26 @@ static void __init qe_ic_init(struct device_node *node)
+ 		irq_set_handler_data(qe_ic->virq_high, qe_ic);
+ 		irq_set_chained_handler(qe_ic->virq_high, high_handler);
+ 	}
++	return 0;
  }
++static const struct of_device_id qe_ic_ids[] = {
++	{ .compatible = "fsl,qe-ic"},
++	{ .compatible = "qeic"},
++	{},
++};
  
-+/*
-+ * This subcore HMI handling is all only for pre-POWER9 CPUs.
-+ */
-+
- /* Check if dynamic split is in force and return subcore size accordingly. */
- static inline int kvmppc_cur_subcore_size(void)
+-static int __init qe_ic_of_init(void)
++static struct platform_driver qe_ic_driver =
  {
+-	struct device_node *np;
++	.driver	= {
++		.name		= "qe-ic",
++		.of_match_table	= qe_ic_ids,
++	},
++	.probe	= qe_ic_init,
++};
+ 
+-	np = of_find_compatible_node(NULL, NULL, "fsl,qe-ic");
+-	if (!np) {
+-		np = of_find_node_by_type(NULL, "qeic");
+-		if (!np)
+-			return -ENODEV;
+-	}
+-	qe_ic_init(np);
+-	of_node_put(np);
++static int __init qe_ic_of_init(void)
++{
++	platform_driver_register(&qe_ic_driver);
+ 	return 0;
+ }
+ subsys_initcall(qe_ic_of_init);
 -- 
-2.23.0
+2.31.1
 
