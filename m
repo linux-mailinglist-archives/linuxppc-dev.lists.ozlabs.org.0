@@ -2,52 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BD3C3D563F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jul 2021 11:13:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72DE83D56CB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jul 2021 11:46:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GYDkX3862z3bSm
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jul 2021 19:13:56 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=BTtsSmHk;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GYFSZ2JNHz30B4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jul 2021 19:46:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=BTtsSmHk; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com;
+ envelope-from=andriy.shevchenko@intel.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 123 seconds by postgrey-1.36 at boromir;
+ Mon, 26 Jul 2021 19:46:33 AEST
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GYDk85zFPz2yZb
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Jul 2021 19:13:35 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4GYDk31Hh6z9sRK;
- Mon, 26 Jul 2021 19:13:30 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1627290811;
- bh=EmXfaftT1IqjptCL3mh1XdTbojOaazXywA0uGYqoaU4=;
- h=From:To:Cc:Subject:Date:From;
- b=BTtsSmHkS6RTzkHf/fs8kiC/3IGxOPUYUlxhWZUeEWaLu+LY8yD4AIULbqmZvoxbW
- LXj9z6XyW1vbg130FGfWZNWfLzfHGyqZUHeu2H7F/jtTZsztvhVxnflkuc1XPXZzqV
- 6O1py/wIEQsRFqwW8Y1/AtRpwYa0yt4Ud+IRcTxO91+toq7FapMT+LHS8Su7kLVbxx
- WweyD7OvrsWhwqyBQEkCqZutmq9+2LOSOj2v2xbDfvTgosepryCtMEYbPSqxJ+fiDI
- saMdArM4ATStEOxbcm+y9Lg6sqogN85Xp9uZT13kUOSSUix6BoUf5qD4tjshpDd9z0
- BWxPjy6OSMeHQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: oss-security@lists.openwall.com
-Subject: Linux kernel: powerpc: KVM guest to host memory corruption
-Date: Mon, 26 Jul 2021 19:13:25 +1000
-Message-ID: <87im0x1lqi.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GYFS90ZM6z304G
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Jul 2021 19:46:32 +1000 (AEST)
+X-IronPort-AV: E=McAfee;i="6200,9189,10056"; a="209079590"
+X-IronPort-AV: E=Sophos;i="5.84,270,1620716400"; d="scan'208";a="209079590"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Jul 2021 02:43:12 -0700
+X-IronPort-AV: E=Sophos;i="5.84,270,1620716400"; d="scan'208";a="417001763"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+ by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Jul 2021 02:43:10 -0700
+Received: from andy by smile with local (Exim 4.94.2)
+ (envelope-from <andriy.shevchenko@intel.com>)
+ id 1m7x8X-000fh1-Mv; Mon, 26 Jul 2021 12:43:01 +0300
+Date: Mon, 26 Jul 2021 12:43:01 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Christian Lamparter <chunkeey@gmail.com>
+Subject: Re: [PATCH v3 0/5] powerpc: apm82181: adding customer devices
+Message-ID: <YP6DpWPhIFpF+j40@smile.fi.intel.com>
+References: <cover.1599343429.git.chunkeey@gmail.com>
+ <YPsWMRLWQoxHFub6@smile.fi.intel.com>
+ <8a8f50d1-b89c-322f-1465-062ed287d491@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8a8f50d1-b89c-322f-1465-062ed287d491@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,42 +56,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: devicetree@vger.kernel.org, Chris Blake <chrisrblake93@gmail.com>,
+ Rob Herring <robh+dt@kernel.org>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The Linux kernel for powerpc since v3.10 has a bug which allows a malicious KVM guest to
-corrupt host memory.
+On Sat, Jul 24, 2021 at 12:08:30AM +0200, Christian Lamparter wrote:
+> On 23/07/2021 21:19, Andy Shevchenko wrote:
+> > On Sun, Sep 06, 2020 at 12:06:10AM +0200, Christian Lamparter wrote:
+> > > I've been holding on to these devices dts' for a while now.
+> > > But ever since the recent purge of the PPC405, I'm feeling
+> > > the urge to move forward.
+> > > 
+> > > The devices in question have been running with OpenWrt since
+> > > around 2016/2017. Back then it was linux v4.4 and required
+> > > many out-of-tree patches (for WIFI, SATA, CRYPTO...), that
+> > > since have been integrated. So, there's nothing else in the
+> > > way I think.
+> > > 
+> > > A patch that adds the Meraki vendor-prefix has been sent
+> > > separately, as there's also the Meraki MR32 that I'm working
+> > > on as well. Here's the link to the patch:
+> > > <https://lore.kernel.org/linuxppc-dev/20200822154045.16036-1-chunkeey@gmail.com/>
+> > > 
+> > > Now, I've looked around in the arch/powerpc for recent .dts
+> > > and device submissions to get an understanding of what is
+> > > required.
+> > > >From the looks of it, it seems like every device gets a
+> > > skeleton defconfig and a CONFIG_$DEVICE symbol (Like:
+> > > CONFIG_MERAKI_MR24, CONFIG_WD_MYBOOKLIVE).
+> > > 
+> > > Will this be the case? Or would it make sense to further
+> > > unite the Bluestone, MR24 and MBL under a common CONFIG_APM82181
+> > > and integrate the BLUESTONE device's defconfig into it as well?
+> > > (I've stumbled across the special machine compatible
+> > > handling of ppc in the Documentation/devicetree/usage-model.rst
+> > > already.)
+> > 
+> > I haven't found any traces of this to be applied. What is the status of this
+> > patch series? And what is the general state of affairs for the PPC44x?
+> 
+> 
+> My best guess is: It's complicated. While there was a recent big
+> UPSET EVENT regarding the My Book Live (MBL) that affected "hundreds"
+> and "thousands": "An unpleasant surprise for My Book Live owners"
+> (<https://lwn.net/Articles/861235/>). Sadly this wasn't getting any
+> traction.
+> 
+> I can tell that the mentioned Cisco Meraki MR32 (Broadcom ARM SoC)
+> got merged. So this is off the plate 😌.
+> 
+> But APM821xx sadly went nowhere 😕. One reason being that I haven't
+> yet posted a V4, V5 and so on...
 
-In the handling of the H_RTAS hypercall, args.rets is made to point into the args.args
-buffer which is located on the stack:
+I will help with testing if needed, please continue this, it's helpful!
 
-	args.rets = &args.args[be32_to_cpu(args.nargs)];
+> In theory, for v4 I would have liked to know how to handle the
+> kConfig aspect of the series: Would it be "OK" to have a
+> single CONFIG_APM82181/CONFIG_APM821XX symbol or should there
+> be a CONFIG_MBL the CONFIG_MR24 (CONFIG_WNDR4700 and CONFIG_MX60W
+> in the future)?
 
-However args.nargs has not been range checked. That allows the guest to point args.rets
-anywhere up to +16GB from args.args.
+No idea. Not a PPC maintainer here.
 
-The guest does not have control of what is written to args.rets, it is always (u32)-3,
-because subsequent code does check nargs. Additionally the guest will be killed as a
-result of the nargs being out of range, so a given guest only has a single shot at
-corrupting memory.
+> As for the MBL: Well, If you (or any one else) is interested in
+> having a more up-to-date Debian. Then I have something:
+> 
+> A while back, I made a "build.sh". This will build a
+> "out-of-the-box" Debian unstable/SID powerpc system image.
+> This includes sensible NAS defaults + programs as well as
+> a Cockpit Web-GUI. But also makes it easily possible to do
+> the DTBs development on the latest vanilla (5.14-rc2 as of
+> the time of writing this) kernel for the
+> MyBook Live Single and Duo:
+> 
+> <https://github.com/chunkeey/mbl-debian>
 
-Only machines using Linux as the hypervisor, aka. KVM or bare metal, are affected by the
-bug.
+Thanks for the pointer.
 
-The bug was introduced in:
+> I can't really make one for the MR24 though. Its 32MiB NAND
+> makes it difficult to install anything else than OpenWrt
+> (and get some use out of the device).
 
-    8e591cb72047 ("KVM: PPC: Book3S: Add infrastructure to implement kernel-side RTAS calls")
+Not interested in MR24, up to you.
 
-Which was first released in v3.10.
+> So, how to proceed?
 
-The upstream fix is:
+At least send a v4 :-)
 
-  f62f3c20647e ("KVM: PPC: Book3S: Fix H_RTAS rets buffer overflow")
+-- 
+With Best Regards,
+Andy Shevchenko
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=f62f3c20647ebd5fb6ecb8f0b477b9281c44c10a
 
-Which will be included in the v5.14 release.
-
-cheers
