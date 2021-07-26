@@ -1,70 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC32A3D5243
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jul 2021 06:12:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 899833D5244
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jul 2021 06:12:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GY62n5VfGz3fHK
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jul 2021 14:12:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GY63D30Vbz3bn2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jul 2021 14:12:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=TNpHgJIr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=q0zvUm3T;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62c;
- helo=mail-pl1-x62c.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::634;
+ helo=mail-pl1-x634.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=TNpHgJIr; dkim-atps=neutral
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com
- [IPv6:2607:f8b0:4864:20::62c])
+ header.s=20161025 header.b=q0zvUm3T; dkim-atps=neutral
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com
+ [IPv6:2607:f8b0:4864:20::634])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GY5br1jYDz3bbm
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Jul 2021 13:52:40 +1000 (AEST)
-Received: by mail-pl1-x62c.google.com with SMTP id e5so8070802pld.6
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Jul 2021 20:52:40 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GY5bt3CM7z3dFc
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Jul 2021 13:52:42 +1000 (AEST)
+Received: by mail-pl1-x634.google.com with SMTP id d1so2755553pll.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Jul 2021 20:52:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=Ss4SKT1mXpLqh5sHj/o40xs+IZbBpzSCdWo+XRcuK+I=;
- b=TNpHgJIrduC7LKWTgROEqE0OvQNLCPmPxYxafWgzN9+45UdApS0cAvqJDNcA/HyyLD
- 2ifIGY7B6lJYPM5k4LxIHgxhofJ7AwIqVwSLJalvx/vY0qkSJfs8zqUTW0glll+/Aw11
- EeVU5XMdHgJAo/EgUSicIoq+ZVBorCMBwt2bNgaROtjzdaVTPA38cIj9KSjRM0THouJy
- CKulW7uyuFe93LSgr+qVvE5xzEWa4Pzuwqkcpu/N29nCy5BwpqlcrZVYh0tWIBCb/Iq3
- aH7fKVh7XSTExSVXwADaVACxYg/6CVvMO+pqrviWqDddGj9qfNJt649oXGy7y9gGodbr
- Mjlg==
+ bh=uA8TbX3pYs2LbKbx2AqpBXWdMPxg/1XwQyLtHZ8k4pk=;
+ b=q0zvUm3TdOgPeQLfr9sl7pSpHI3OiRrMO74Sa2ndO/muk12RQUeSUujFdcIE80IV7P
+ F4gtTODUo9IguULkuthSrvAqvksQeHi9a2ud4K1wl9wPv5e31dnvzLQznN0gbEBWpZ4y
+ 8AZouMK2qFnGJkyFIeh/6kl3o8Z280aQ5Xx/burOJgp09wXcF/l4LnnVvK/dbXa6kB2B
+ yMyxrW3DQjrEv6eybQeFtlsL83USLO/9JJRVpcH68YkMUm3HCSGT5phXnxq8t9ApUgRO
+ /yJSOpFbSBYNQjTv2IwpcT20cz7LwuvTjrwSKf0r1NApVreyV0AYUk7F5nPiDnAR5y0q
+ I5Hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=Ss4SKT1mXpLqh5sHj/o40xs+IZbBpzSCdWo+XRcuK+I=;
- b=bXt5L4pW2NTZMhxEFQKgw54EFfOWoy48HcZ55hQ/TRXawnsPTfLY0ztvvVi79fBZ3l
- MfLAeLPq59HBw0CMaLk8YiVauRg9YTIXvjwNuBqWQHTopD+RPQe9IfEZR6ZMjVdnJIKb
- 65ZN9gUoyKizYMRjuhAyvxu3aBRcOf4OSndgyw0D0WasWaNbN8wolgAEORcZUi7tiHKr
- F78abOwpfXp19oa9mFHax85Wrbr6XSjAwPnGbykOd4fS/0xCvKXowiiKR+RS/3SlxCrW
- VZ/ZiGuZpJ6CJ3cktnk6l9ZryMv1lc6coCZgxIDSvleNOWp0rXLDis4EIL3/nQYVhwhJ
- l3mg==
-X-Gm-Message-State: AOAM530PG0NH87tBKXXdrwow0Cv/DujYrBqpA0R5CDGpQor75PZTS+2K
- MlyjC5yytmCwRpCU3Mgh5mg=
-X-Google-Smtp-Source: ABdhPJz2PWY2wqBl1nbx6nNLUFWaqLoEMHAWftB5D29WCaNQQxV/uu7OTwoucCw4z7znMCz8lH+3PA==
-X-Received: by 2002:aa7:93cd:0:b029:328:9d89:a790 with SMTP id
- y13-20020aa793cd0000b02903289d89a790mr15681898pff.71.1627271557733; 
- Sun, 25 Jul 2021 20:52:37 -0700 (PDT)
+ bh=uA8TbX3pYs2LbKbx2AqpBXWdMPxg/1XwQyLtHZ8k4pk=;
+ b=k1UIH7VkeFQthF4yMHbTILwKJNkwIOjDJnCxeeBuGs24MeY+XxhbynDDbCtOeCD8QE
+ hgxU8EnPgljyipoEprPWm3ljNj9Ob8EVMftZW1Urybq1H2cTdjpfgd6LKKnruOKKpIn2
+ 89BaxuVIC7VfQu/3JSSui+44A3PisiARQFPYQcLgUtVsWUiilPCaAQNy9AH0kb5gDu8A
+ VXJhNPl4iMNmldMHP7xLktxV9WR+WXVzBGJnna5JNCmTmzT0qJ3rxqV6YfUsNWHQ39OB
+ 3gUqiOu9muI5HJUfA6a82RjvnuF6l7ucCZgpx18FyK0pDWEAXzWJeK/9gfa6tDG4zDx4
+ AVag==
+X-Gm-Message-State: AOAM533TE1GIG7urkWrn2bmvp2/fkncrLLK4JcJ5YSBhlWtYRUKgZv35
+ Ite+Ys9k9dX6uNG113IOrhM=
+X-Google-Smtp-Source: ABdhPJyDzzba2kzswPB+YgoKplhqURknNv8gSWMDKpLSXONGI2J1wXWOnb44s6R5WiFC76hLE8jz6Q==
+X-Received: by 2002:a63:f712:: with SMTP id x18mr16448939pgh.389.1627271559976; 
+ Sun, 25 Jul 2021 20:52:39 -0700 (PDT)
 Received: from bobo.ibm.com (220-244-190-123.tpgi.com.au. [220.244.190.123])
- by smtp.gmail.com with ESMTPSA id p33sm41140341pfw.40.2021.07.25.20.52.35
+ by smtp.gmail.com with ESMTPSA id p33sm41140341pfw.40.2021.07.25.20.52.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 25 Jul 2021 20:52:37 -0700 (PDT)
+ Sun, 25 Jul 2021 20:52:39 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org
-Subject: [PATCH v1 49/55] KVM: PPC: Book3S HV P9: Optimise hash guest SLB
- saving
-Date: Mon, 26 Jul 2021 13:50:30 +1000
-Message-Id: <20210726035036.739609-50-npiggin@gmail.com>
+Subject: [PATCH v1 50/55] KVM: PPC: Book3S HV P9: Add unlikely annotation for
+ !mmu_ready
+Date: Mon, 26 Jul 2021 13:50:31 +1000
+Message-Id: <20210726035036.739609-51-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210726035036.739609-1-npiggin@gmail.com>
 References: <20210726035036.739609-1-npiggin@gmail.com>
@@ -86,58 +85,26 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-slbmfee/slbmfev instructions are very expensive, moreso than a regular
-mfspr instruction, so minimising them significantly improves hash guest
-exit performance. The slbmfev is only required if slbmfee found a valid
-SLB entry.
+The mmu will almost always be ready.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kvm/book3s_hv_p9_entry.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+ arch/powerpc/kvm/book3s_hv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kvm/book3s_hv_p9_entry.c b/arch/powerpc/kvm/book3s_hv_p9_entry.c
-index 1287dac918a0..338873f90c72 100644
---- a/arch/powerpc/kvm/book3s_hv_p9_entry.c
-+++ b/arch/powerpc/kvm/book3s_hv_p9_entry.c
-@@ -477,10 +477,22 @@ static void __accumulate_time(struct kvm_vcpu *vcpu, struct kvmhv_tb_accumulator
- #define accumulate_time(vcpu, next) do {} while (0)
- #endif
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index ee4e38cf5df4..2bd000e2c269 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -4376,7 +4376,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	vc->runner = vcpu;
  
--static inline void mfslb(unsigned int idx, u64 *slbee, u64 *slbev)
-+static inline u64 mfslbv(unsigned int idx)
- {
--	asm volatile("slbmfev  %0,%1" : "=r" (*slbev) : "r" (idx));
--	asm volatile("slbmfee  %0,%1" : "=r" (*slbee) : "r" (idx));
-+	u64 slbev;
-+
-+	asm volatile("slbmfev  %0,%1" : "=r" (slbev) : "r" (idx));
-+
-+	return slbev;
-+}
-+
-+static inline u64 mfslbe(unsigned int idx)
-+{
-+	u64 slbee;
-+
-+	asm volatile("slbmfee  %0,%1" : "=r" (slbee) : "r" (idx));
-+
-+	return slbee;
- }
- 
- static inline void mtslb(u64 slbee, u64 slbev)
-@@ -610,8 +622,10 @@ static void save_clear_guest_mmu(struct kvm *kvm, struct kvm_vcpu *vcpu)
- 		 */
- 		for (i = 0; i < vcpu->arch.slb_nr; i++) {
- 			u64 slbee, slbev;
--			mfslb(i, &slbee, &slbev);
-+
-+			slbee = mfslbe(i);
- 			if (slbee & SLB_ESID_V) {
-+				slbev = mfslbv(i);
- 				vcpu->arch.slb[nr].orige = slbee | i;
- 				vcpu->arch.slb[nr].origv = slbev;
- 				nr++;
+ 	/* See if the MMU is ready to go */
+-	if (!kvm->arch.mmu_ready) {
++	if (unlikely(!kvm->arch.mmu_ready)) {
+ 		r = kvmhv_setup_mmu(vcpu);
+ 		if (r) {
+ 			run->exit_reason = KVM_EXIT_FAIL_ENTRY;
 -- 
 2.23.0
 
