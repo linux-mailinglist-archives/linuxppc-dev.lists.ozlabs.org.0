@@ -2,98 +2,98 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA2DA3D6515
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jul 2021 19:08:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D0B93D6803
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jul 2021 22:17:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GYRGH4f47z3bWr
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jul 2021 03:08:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GYWSh42DLz307v
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jul 2021 06:17:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DF5zbsEl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XhfRAlWC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=psampat@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=DF5zbsEl; dkim-atps=neutral
+ header.s=pp1 header.b=XhfRAlWC; dkim-atps=neutral
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GYRFr1Ftsz2xZh
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jul 2021 03:08:15 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GYWS72ZyHz3068
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jul 2021 06:17:26 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 16QH3nxF161959; Mon, 26 Jul 2021 13:08:07 -0400
+ 16QK6ZOc184140; Mon, 26 Jul 2021 16:17:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : subject :
- date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=PPHIk19j2zkNcxZZlTJxjLDQCtLPXdvL9yQEAb3r99w=;
- b=DF5zbsEl2zweSYSxviPiIHu96bLgGCbx8EjHXo3RZj02fVHMvTFq1OqXDwZT3yg9a88d
- nLQkTvAmmQ1ke/f1pUNM9gwRpzmONnQBuJIJHRoBBN62LmEJcT5nT/E2o5N6yROhfuYB
- KdWHu/XHccHOgoe3xoTFcNktUo0slgO5zayHMguj9gXfTiyz29FbnZkwtPUdBfnNW/mT
- U4rdbDTW9KrC0X588SmQj4yVDOBwEA+8PG83HccoJBS5EZsVUm/CAJz/0DBShEb03Uni
- Z6xYioxWr4PmKzZJXdY42Z/DXYcwsyTFYdKZhRI5mxgB1z0awlprORCE2YeapvynWe7W fw== 
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=THLNBzErXmgvcbqtLURu006pI/FzQrcVNE1dOLEUfAE=;
+ b=XhfRAlWCYZpox65fq75KYgxgXC1w9fGH6Jp6SIJ4bYgH9KgZgDYJOVOiF15iaiCtkuh/
+ iiKtBqZF3pU9Zw3XoaimzW5kufiJi3Eh+yyHg/jQJtD8du/6diErthoS+tW0d/bV+kPK
+ M8DlLdDODMShu9VdyVuw11ALq2SzgzCZ28B+5hnnr8w4425eQPL5I/Qfr5SlSe9vxc97
+ mgtxF6O85JtI5a+pcxSDyJKodHp5cJNDB+hSXrNXzhe0oZwb7KmqKAOvPgJ59P/uIvHY
+ 9leDhqBNutZ1VReYEEq4W67oqtpYMCp0dXhd9tNIkDqE6GH/n4qEAzlePwK+l8wDhz+6 tw== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3a20e1sn97-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3a23t0890b-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 26 Jul 2021 13:08:06 -0400
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 16QH3slJ164567;
- Mon, 26 Jul 2021 13:08:06 -0400
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.70])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3a20e1sn8f-1
+ Mon, 26 Jul 2021 16:17:18 -0400
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 16QK6sRN184896;
+ Mon, 26 Jul 2021 16:17:17 -0400
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3a23t088yv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 26 Jul 2021 13:08:06 -0400
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16QH5vEl004392;
- Mon, 26 Jul 2021 17:08:04 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma01fra.de.ibm.com with ESMTP id 3a0ag8rstx-1
+ Mon, 26 Jul 2021 16:17:17 -0400
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16QKCQf8028284;
+ Mon, 26 Jul 2021 20:17:17 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com
+ (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+ by ppma02wdc.us.ibm.com with ESMTP id 3a235jhdce-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 26 Jul 2021 17:08:04 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 16QH81SK28705262
+ Mon, 26 Jul 2021 20:17:16 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 16QKHGHR38076742
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 26 Jul 2021 17:08:02 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CC98A4C052;
- Mon, 26 Jul 2021 17:08:01 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3F0D04C044;
- Mon, 26 Jul 2021 17:07:59 +0000 (GMT)
-Received: from pratiks-thinkpad.ibmuc.com (unknown [9.199.55.176])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 26 Jul 2021 17:07:58 +0000 (GMT)
-From: "Pratik R. Sampat" <psampat@linux.ibm.com>
-To: mpe@ellerman.id.au, rjw@rjwysocki.net, linux-pm@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, psampat@linux.ibm.com, pratik.r.sampat@gmail.com
-Subject: [PATCH] cpufreq:powernv: Fix init_chip_info initialization in numa=off
-Date: Mon, 26 Jul 2021 22:37:57 +0530
-Message-Id: <20210726170758.61041-1-psampat@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ Mon, 26 Jul 2021 20:17:16 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 03EC9BE059;
+ Mon, 26 Jul 2021 20:17:16 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 89ADABE058;
+ Mon, 26 Jul 2021 20:17:14 +0000 (GMT)
+Received: from farosas.linux.ibm.com.com (unknown [9.211.57.103])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon, 26 Jul 2021 20:17:14 +0000 (GMT)
+From: Fabiano Rosas <farosas@linux.ibm.com>
+To: kvm-ppc@vger.kernel.org
+Subject: [PATCH v5 0/2] KVM: PPC: Book3S HV: Nested guest state sanitising
+ changes
+Date: Mon, 26 Jul 2021 17:17:08 -0300
+Message-Id: <20210726201710.2432874-1-farosas@linux.ibm.com>
+X-Mailer: git-send-email 2.29.2
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: DPbsWMXae3DWyGROJPGnTZNKQDsvKhsx
-X-Proofpoint-GUID: 8RmMpLKmoHjvsq9AyLbV2F8ZZtX5rtie
+X-Proofpoint-GUID: 8csxEGbE7O05fx4jWBHVob81gNMFITiQ
+X-Proofpoint-ORIG-GUID: Ma7cv6T0a1XBI6sNPHKTiMQ91jeoXY-2
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-07-26_10:2021-07-26,
+ definitions=2021-07-26_14:2021-07-26,
  2021-07-26 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 bulkscore=0
- impostorscore=0 malwarescore=0 suspectscore=0 lowpriorityscore=0
- priorityscore=1501 phishscore=0 clxscore=1011 mlxlogscore=999 spamscore=0
+ clxscore=1015 spamscore=0
+ lowpriorityscore=0 impostorscore=0 priorityscore=1501 mlxlogscore=818
+ bulkscore=0 phishscore=0 suspectscore=0 malwarescore=0 mlxscore=0
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2107260099
+ engine=8.12.0-2107140000 definitions=main-2107260118
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,79 +105,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In the numa=off kernel command-line configuration init_chip_info() loops
-around the number of chips and attempts to copy the cpumask of that node
-which is NULL for all iterations after the first chip.
+This series aims to stop contaminating the l2_hv structure with bits
+that might have come from L1 state.
 
-Hence, store the cpu mask for each chip instead of derving cpumask from
-node while populating the "chips" struct array and copy that to the
-chips[i].mask
+Patch 1 makes l2_hv read-only (mostly). It is now only changed when we
+explicitly want to pass information to L1.
 
-Cc: stable@vger.kernel.org
-Fixes: 053819e0bf84 ("cpufreq: powernv: Handle throttling due to Pmax capping at chip level")
-Signed-off-by: Pratik R. Sampat <psampat@linux.ibm.com>
-Reported-by: Shirisha Ganta <shirisha.ganta1@ibm.com>
----
- drivers/cpufreq/powernv-cpufreq.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+Patch 2 makes sure that L1 is not forwarded HFU interrupts when the
+host has decided to disable any facilities (theoretical for now, since
+HFSCR bits are always the same between L1/Ln).
 
-diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
-index 005600cef273..8ec10d9aed8f 100644
---- a/drivers/cpufreq/powernv-cpufreq.c
-+++ b/drivers/cpufreq/powernv-cpufreq.c
-@@ -1046,12 +1046,20 @@ static int init_chip_info(void)
- 	unsigned int *chip;
- 	unsigned int cpu, i;
- 	unsigned int prev_chip_id = UINT_MAX;
-+	cpumask_t *chip_cpu_mask;
- 	int ret = 0;
- 
- 	chip = kcalloc(num_possible_cpus(), sizeof(*chip), GFP_KERNEL);
- 	if (!chip)
- 		return -ENOMEM;
- 
-+	/* Allocate a chip cpu mask large enough to fit mask for all chips */
-+	chip_cpu_mask = kcalloc(32, sizeof(cpumask_t), GFP_KERNEL);
-+	if (!chip_cpu_mask) {
-+		ret = -ENOMEM;
-+		goto free_and_return;
-+	}
-+
- 	for_each_possible_cpu(cpu) {
- 		unsigned int id = cpu_to_chip_id(cpu);
- 
-@@ -1059,22 +1067,25 @@ static int init_chip_info(void)
- 			prev_chip_id = id;
- 			chip[nr_chips++] = id;
- 		}
-+		cpumask_set_cpu(cpu, &chip_cpu_mask[nr_chips-1]);
- 	}
- 
- 	chips = kcalloc(nr_chips, sizeof(struct chip), GFP_KERNEL);
- 	if (!chips) {
- 		ret = -ENOMEM;
--		goto free_and_return;
-+		goto out_chip_cpu_mask;
- 	}
- 
- 	for (i = 0; i < nr_chips; i++) {
- 		chips[i].id = chip[i];
--		cpumask_copy(&chips[i].mask, cpumask_of_node(chip[i]));
-+		cpumask_copy(&chips[i].mask, &chip_cpu_mask[i]);
- 		INIT_WORK(&chips[i].throttle, powernv_cpufreq_work_fn);
- 		for_each_cpu(cpu, &chips[i].mask)
- 			per_cpu(chip_info, cpu) =  &chips[i];
- 	}
- 
-+out_chip_cpu_mask:
-+	kfree(chip_cpu_mask);
- free_and_return:
- 	kfree(chip);
- 	return ret;
+Changes since v4:
+- moved setting of the Cause bits under BOOK3S_INTERRUPT_H_FAC_UNAVAIL.
+
+v4:
+
+- now passing lpcr separately into load_l2_hv_regs to solve the
+  conflict with commit a19b70abc69a ("KVM: PPC: Book3S HV: Nested move
+  LPCR sanitising to sanitise_hv_regs");
+
+- patch 2 now forwards a HEAI instead of injecting a Program.
+
+https://lkml.kernel.org/r/20210722221240.2384655-1-farosas@linux.ibm.com
+
+v3:
+
+- removed the sanitise functions;
+- moved the entry code into a new load_l2_hv_regs and the exit code
+  into the existing save_hv_return_state;
+- new patch: removes the cause bits when L0 has disabled the
+  corresponding facility.
+
+https://lkml.kernel.org/r/20210415230948.3563415-1-farosas@linux.ibm.com
+
+v2:
+
+- made the change more generic, not only applies to hfscr anymore;
+- sanitisation is now done directly on the vcpu struct, l2_hv is left
+  unchanged.
+
+https://lkml.kernel.org/r/20210406214645.3315819-1-farosas@linux.ibm.com
+
+v1:
+https://lkml.kernel.org/r/20210305231055.2913892-1-farosas@linux.ibm.com
+
+Fabiano Rosas (2):
+  KVM: PPC: Book3S HV: Sanitise vcpu registers in nested path
+  KVM: PPC: Book3S HV: Stop forwarding all HFUs to L1
+
+ arch/powerpc/kvm/book3s_hv_nested.c | 118 ++++++++++++++++------------
+ 1 file changed, 68 insertions(+), 50 deletions(-)
+
 -- 
-2.31.1
+2.29.2
 
