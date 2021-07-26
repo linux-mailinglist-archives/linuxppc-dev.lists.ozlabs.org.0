@@ -1,50 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4AC33D4F85
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 25 Jul 2021 20:33:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EEED3D5126
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jul 2021 03:51:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GXsBG4ln4z30Mr
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jul 2021 04:33:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GY2w239hDz30Qq
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jul 2021 11:51:30 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=tWW5oM8F;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102f;
+ helo=mail-pj1-x102f.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=tWW5oM8F; dkim-atps=neutral
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com
+ [IPv6:2607:f8b0:4864:20::102f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GXs9x3f3wz2yLQ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Jul 2021 04:32:50 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4GXs9q1cxpzBCTn;
- Sun, 25 Jul 2021 20:32:47 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id qNNbYLWewUwJ; Sun, 25 Jul 2021 20:32:47 +0200 (CEST)
-Received: from vm-hermes.si.c-s.fr (vm-hermes.si.c-s.fr [192.168.25.253])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4GXs9q0Sj8zBCTX;
- Sun, 25 Jul 2021 20:32:47 +0200 (CEST)
-Received: by vm-hermes.si.c-s.fr (Postfix, from userid 33)
- id 5ED5A3D9; Sun, 25 Jul 2021 20:38:04 +0200 (CEST)
-Received: from 37-165-12-41.coucou-networks.fr
- (37-165-12-41.coucou-networks.fr [37.165.12.41]) by messagerie.c-s.fr (Horde
- Framework) with HTTP; Sun, 25 Jul 2021 20:38:04 +0200
-Date: Sun, 25 Jul 2021 20:38:04 +0200
-Message-ID: <20210725203804.Horde.sruKcwZQKonIWKjB98332A2@messagerie.c-s.fr>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Geoff Levand <geoff@infradead.org>
-Subject: Re: [PATCH v4 10/10] net/ps3_gelic: Fix DMA mapping problems
-References: <cover.1627068552.git.geoff@infradead.org>
- <7aa1d9b1b4ffadcbdc6f88e4f8d4a323da307595.1627068552.git.geoff@infradead.org>
-In-Reply-To: <7aa1d9b1b4ffadcbdc6f88e4f8d4a323da307595.1627068552.git.geoff@infradead.org>
-User-Agent: Internet Messaging Program (IMP) H5 (6.2.3)
-Content-Type: text/plain; charset=UTF-8; format=flowed; DelSp=Yes
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GY2vV4wXmz2y6F
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Jul 2021 11:51:00 +1000 (AEST)
+Received: by mail-pj1-x102f.google.com with SMTP id
+ k4-20020a17090a5144b02901731c776526so17517341pjm.4
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Jul 2021 18:51:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=TfsUknjrJxS3/K50NAkYQdZi/fyngt6PnwTm6MfOOQw=;
+ b=tWW5oM8FgRxlkQ+Qoz4bkxNVkBpxJaUnYVHkWsKfwA4bTHMQ+P+8q8khbYpyt0G/Op
+ 97SxiG/GF+TQWD3n8z/NVkY9htHqFV3ufCaEqyoWwwJIcYxwqW0ENM01PWQhRGKMHR7+
+ glW1SfuAId3JmpR5HLlil73+fE1xUBGpNME0JUamcvxrfs7EPkOeg1IciffyQ8wcGCoV
+ XpFH2MLHtF45nbl6T1K9XsdJ7fxT8rE3uy2MhqAKcdmxkxM9gYxDOd5uJfPWSV9KXimR
+ JuyVHNocdxgajXtSFafczVXcgCimFVVwJFtJptZN9ayn7bc1mf8eEOC5ckHHcFXpAhSe
+ xlfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=TfsUknjrJxS3/K50NAkYQdZi/fyngt6PnwTm6MfOOQw=;
+ b=JBVYnRqpcvxBtfl4mFYQjogpMGlY9UIjgQ+6kTiaC4f1cIixk0sVbbtINPFHenn3G8
+ F7KZXZyBn0o84WhHAmAxoymfqL8P8Qg1OL+/xOuGse0ymakA/afqwD5E82zhm9ChOAmj
+ jyvqGzEYz3hovi6TLk5NeXNlJxWgpH5jf6Sdzcugfb2PxLKq/h/qopk5qhpm6xcpI7kP
+ CAAoPIInec9nmqRIZhtbv2idpBxCEP+5FB7k5JJhh0CgSf6Zg5H6RiAs6Y+NESEC+ofS
+ 72RQnl8YfpFUDohXBYxUOaR4Mwpjoeam7bkueCVVM/3CZfP/4jtqozC9Ej3+QXLu7KeR
+ Iw9w==
+X-Gm-Message-State: AOAM531V8IXPLX8AIyOop3uyftM9JJye/oUQZyHZAZsivSZ1QnHTxfys
+ q8vmlW8s2NvOxpgmLLflOIoV6AmTL6/oYA==
+X-Google-Smtp-Source: ABdhPJzbbjXo/sTEbHh6B9PN3y2Hx3DeAF1uurvBqKACVg6CKfVPOHw6Khdj0tVfLVxGA1u7haliyw==
+X-Received: by 2002:a17:90a:6097:: with SMTP id
+ z23mr14672145pji.172.1627264255561; 
+ Sun, 25 Jul 2021 18:50:55 -0700 (PDT)
+Received: from localhost (220-244-190-123.tpgi.com.au. [220.244.190.123])
+ by smtp.gmail.com with ESMTPSA id a21sm11868557pjq.2.2021.07.25.18.50.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 25 Jul 2021 18:50:55 -0700 (PDT)
+Date: Mon, 26 Jul 2021 11:50:50 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v4 1/2] KVM: PPC: Book3S HV: Sanitise vcpu registers in
+ nested path
+To: Fabiano Rosas <farosas@linux.ibm.com>, kvm-ppc@vger.kernel.org
+References: <20210722221240.2384655-1-farosas@linux.ibm.com>
+ <20210722221240.2384655-2-farosas@linux.ibm.com>
+In-Reply-To: <20210722221240.2384655-2-farosas@linux.ibm.com>
 MIME-Version: 1.0
-Content-Disposition: inline
+Message-Id: <1627263995.i8pr0asy10.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -57,394 +83,211 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Geoff Levand <geoff@infradead.org> a =C3=A9crit=C2=A0:
+Excerpts from Fabiano Rosas's message of July 23, 2021 8:12 am:
+> As one of the arguments of the H_ENTER_NESTED hypercall, the nested
+> hypervisor (L1) prepares a structure containing the values of various
+> hypervisor-privileged registers with which it wants the nested guest
+> (L2) to run. Since the nested HV runs in supervisor mode it needs the
+> host to write to these registers.
+>=20
+> To stop a nested HV manipulating this mechanism and using a nested
+> guest as a proxy to access a facility that has been made unavailable
+> to it, we have a routine that sanitises the values of the HV registers
+> before copying them into the nested guest's vcpu struct.
+>=20
+> However, when coming out of the guest the values are copied as they
+> were back into L1 memory, which means that any sanitisation we did
+> during guest entry will be exposed to L1 after H_ENTER_NESTED returns.
+>=20
+> This patch alters this sanitisation to have effect on the vcpu->arch
+> registers directly before entering and after exiting the guest,
+> leaving the structure that is copied back into L1 unchanged (except
+> when we really want L1 to access the value, e.g the Cause bits of
+> HFSCR).
 
-> Fixes several DMA mapping problems with the PS3's gelic network driver:
->
->  * Change from checking the return value of dma_map_single to using the
->    dma_mapping_error routine.
->  * Use the correct buffer length when mapping the RX skb.
->  * Improved error checking and debug logging.
+These patches look good to me. I ported my demand-faulting patches on=20
+top of them and things seem to work okay.
 
-The patch is quite big and probably deserves more explanation. For=20=20
-instance,=20explain why the buffer length is not correct today.
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
-Also as it is a bug fixing patch, it should include a 'fixes' tag, and=20=
-=20
-a=20Cc: to stable@vger.kernel.org. Also, when possible, bug fixes should=20=
-=20
-be=20one of the first patches in a series like that so that they can be=20=
-=20
-applied=20to stable without applying the whole series.
+Just one minor nit:
 
-Christophe
-
->
-> Fixes runtime errors like these, and also other randomly occurring errors=
-:
->
->   IP-Config: Complete:
->   DMA-API: ps3_gelic_driver sb_05: device driver failed to check map erro=
-r
->   WARNING: CPU: 0 PID: 0 at kernel/dma/debug.c:1027 .check_unmap+0x888/0x=
-8dc
->
-> Signed-off-by: Geoff Levand <geoff@infradead.org>
+>=20
+> Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
 > ---
->  drivers/net/ethernet/toshiba/ps3_gelic_net.c | 183 +++++++++++--------
->  1 file changed, 108 insertions(+), 75 deletions(-)
->
-> diff --git a/drivers/net/ethernet/toshiba/ps3_gelic_net.c=20=20
->=20b/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-> index 42f4de9ad5fe..11ddeacb1159 100644
-> --- a/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-> +++ b/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-> @@ -336,22 +336,31 @@ static int gelic_card_init_chain(struct=20=20
->=20gelic_card *card,
->  	struct gelic_descr_chain *chain, struct gelic_descr *start_descr,
->  	int descr_count)
+>  arch/powerpc/kvm/book3s_hv_nested.c | 100 +++++++++++++++-------------
+>  1 file changed, 52 insertions(+), 48 deletions(-)
+>=20
+> diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3=
+s_hv_nested.c
+> index 8543ad538b0c..3804dc50ebe8 100644
+> --- a/arch/powerpc/kvm/book3s_hv_nested.c
+> +++ b/arch/powerpc/kvm/book3s_hv_nested.c
+> @@ -104,8 +104,17 @@ static void save_hv_return_state(struct kvm_vcpu *vc=
+pu, int trap,
 >  {
-> -	int i;
-> -	struct gelic_descr *descr;
-> +	struct gelic_descr *descr =3D start_descr;
->  	struct device *dev =3D ctodev(card);
-> +	unsigned int index;
->
-> -	descr =3D start_descr;
-> -	memset(descr, 0, sizeof(*descr) *descr_count);
-> +	memset(start_descr, 0, descr_count * sizeof(*start_descr));
->
-> -	for (i =3D 0; i < descr_count; i++, descr++) {
-> -		descr->link.size =3D sizeof(struct gelic_hw_regs);
-> +	for (index =3D 0, descr =3D start_descr; index < descr_count;
-> +		index++, descr++) {
->  		gelic_descr_set_status(descr, GELIC_DESCR_DMA_NOT_IN_USE);
-> -		descr->link.cpu_addr =3D
-> -			dma_map_single(dev, descr, descr->link.size,
-> -				DMA_BIDIRECTIONAL);
->
-> -		if (!descr->link.cpu_addr)
-> -			goto iommu_error;
-> +		descr->link.size =3D sizeof(struct gelic_hw_regs);
-> +		descr->link.cpu_addr =3D dma_map_single(dev, descr,
-> +			descr->link.size, DMA_BIDIRECTIONAL);
+>  	struct kvmppc_vcore *vc =3D vcpu->arch.vcore;
+> =20
+> +	/*
+> +	 * When loading the hypervisor-privileged registers to run L2,
+> +	 * we might have used bits from L1 state to restrict what the
+> +	 * L2 state is allowed to be. Since L1 is not allowed to read
+> +	 * the HV registers, do not include these modifications in the
+> +	 * return state.
+> +	 */
+> +	hr->hfscr =3D ((~HFSCR_INTR_CAUSE & hr->hfscr) |
+> +		     (HFSCR_INTR_CAUSE & vcpu->arch.hfscr));
+
+Can you change this to only update HFSCR intr cause field when we take a=20
+hfac interrupt? It's possible the L0 can cause other kinds of hfacs=20
+behind the back of the L1 with demand faulting, so it would be unusual
+for L1 to see the register change if it didn't take an hfac interrupt.
+
+Thanks,
+Nick
+
 > +
-> +		if (unlikely(dma_mapping_error(dev, descr->link.cpu_addr))) {
-> +			dev_err(dev, "%s:%d: dma_mapping_error\n", __func__,
-> +				__LINE__);
-> +
-> +			for (index--, descr--; index > 0; index--, descr--) {
-> +				if (descr->link.cpu_addr) {
-> +					gelic_unmap_link(dev, descr);
-> +				}
-> +			}
-> +			return -ENOMEM;
-> +		}
->
->  		descr->next =3D descr + 1;
->  		descr->prev =3D descr - 1;
-> @@ -360,8 +369,9 @@ static int gelic_card_init_chain(struct gelic_card *c=
-ard,
->  	(descr - 1)->next =3D start_descr;
->  	start_descr->prev =3D (descr - 1);
->
-> -	descr =3D start_descr;
-> -	for (i =3D 0; i < descr_count; i++, descr++) {
-> +	/* chain bus addr of hw descriptor */
-> +	for (index =3D 0, descr =3D start_descr; index < descr_count;
-> +		index++, descr++) {
->  		descr->hw_regs.next_descr_addr =3D
->  			cpu_to_be32(descr->next->link.cpu_addr);
+>  	hr->dpdes =3D vc->dpdes;
+> -	hr->hfscr =3D vcpu->arch.hfscr;
+>  	hr->purr =3D vcpu->arch.purr;
+>  	hr->spurr =3D vcpu->arch.spurr;
+>  	hr->ic =3D vcpu->arch.ic;
+> @@ -134,49 +143,7 @@ static void save_hv_return_state(struct kvm_vcpu *vc=
+pu, int trap,
 >  	}
-> @@ -373,12 +383,6 @@ static int gelic_card_init_chain(struct=20=20
->=20gelic_card *card,
->  	(descr - 1)->hw_regs.next_descr_addr =3D 0;
->
->  	return 0;
+>  }
+> =20
+> -/*
+> - * This can result in some L0 HV register state being leaked to an L1
+> - * hypervisor when the hv_guest_state is copied back to the guest after
+> - * being modified here.
+> - *
+> - * There is no known problem with such a leak, and in many cases these
+> - * register settings could be derived by the guest by observing behaviou=
+r
+> - * and timing, interrupts, etc., but it is an issue to consider.
+> - */
+> -static void sanitise_hv_regs(struct kvm_vcpu *vcpu, struct hv_guest_stat=
+e *hr)
+> -{
+> -	struct kvmppc_vcore *vc =3D vcpu->arch.vcore;
+> -	u64 mask;
 > -
-> -iommu_error:
-> -	for (i--, descr--; 0 <=3D i; i--, descr--)
-> -		if (descr->link.cpu_addr)
-> -			gelic_unmap_link(dev, descr);
-> -	return -ENOMEM;
->  }
->
->  /**
-> @@ -395,49 +399,63 @@ static int gelic_descr_prepare_rx(struct=20=20
->=20gelic_card *card,
->  	struct gelic_descr *descr)
+> -	/*
+> -	 * Don't let L1 change LPCR bits for the L2 except these:
+> -	 */
+> -	mask =3D LPCR_DPFD | LPCR_ILE | LPCR_TC | LPCR_AIL | LPCR_LD |
+> -		LPCR_LPES | LPCR_MER;
+> -
+> -	/*
+> -	 * Additional filtering is required depending on hardware
+> -	 * and configuration.
+> -	 */
+> -	hr->lpcr =3D kvmppc_filter_lpcr_hv(vcpu->kvm,
+> -			(vc->lpcr & ~mask) | (hr->lpcr & mask));
+> -
+> -	/*
+> -	 * Don't let L1 enable features for L2 which we've disabled for L1,
+> -	 * but preserve the interrupt cause field.
+> -	 */
+> -	hr->hfscr &=3D (HFSCR_INTR_CAUSE | vcpu->arch.hfscr);
+> -
+> -	/* Don't let data address watchpoint match in hypervisor state */
+> -	hr->dawrx0 &=3D ~DAWRX_HYP;
+> -	hr->dawrx1 &=3D ~DAWRX_HYP;
+> -
+> -	/* Don't let completed instruction address breakpt match in HV state */
+> -	if ((hr->ciabr & CIABR_PRIV) =3D=3D CIABR_PRIV_HYPER)
+> -		hr->ciabr &=3D ~CIABR_PRIV;
+> -}
+> -
+> -static void restore_hv_regs(struct kvm_vcpu *vcpu, struct hv_guest_state=
+ *hr)
+> +static void restore_hv_regs(struct kvm_vcpu *vcpu, const struct hv_guest=
+_state *hr)
 >  {
->  	struct device *dev =3D ctodev(card);
-> -	int offset;
-> -	unsigned int bufsize;
-> +	struct aligned_buff {
-> +		unsigned int total_bytes;
-> +		unsigned int offset;
-> +	};
-> +	struct aligned_buff a_buf;
-> +	dma_addr_t cpu_addr;
->
->  	if (gelic_descr_get_status(descr) !=3D  GELIC_DESCR_DMA_NOT_IN_USE) {
->  		dev_err(dev, "%s:%d: ERROR status\n", __func__, __LINE__);
->  	}
->
-> -	/* we need to round up the buffer size to a multiple of 128 */
-> -	bufsize =3D ALIGN(GELIC_NET_MAX_MTU, GELIC_NET_RXBUF_ALIGN);
-> +	a_buf.total_bytes =3D ALIGN(GELIC_NET_MAX_MTU, GELIC_NET_RXBUF_ALIGN)
-> +		+ GELIC_NET_RXBUF_ALIGN;
-> +
-> +	descr->skb =3D dev_alloc_skb(a_buf.total_bytes);
->
-> -	/* and we need to have it 128 byte aligned, therefore we allocate a
-> -	 * bit more */
-> -	descr->skb =3D dev_alloc_skb(bufsize + GELIC_NET_RXBUF_ALIGN - 1);
->  	if (!descr->skb) {
-> -		descr->hw_regs.payload.dev_addr =3D 0; /* tell DMAC don't touch memory=
- */
-> +		descr->hw_regs.payload.dev_addr =3D 0;
-> +		descr->hw_regs.payload.size =3D 0;
->  		return -ENOMEM;
->  	}
-> -	descr->hw_regs.payload.size =3D cpu_to_be32(bufsize);
-> +
-> +	a_buf.offset =3D PTR_ALIGN(descr->skb->data, GELIC_NET_RXBUF_ALIGN)
-> +		- descr->skb->data;
-> +
-> +	if (a_buf.offset) {
-> +		dev_dbg(dev, "%s:%d: offset=3D%u\n", __func__, __LINE__,
-> +			a_buf.offset);
-> +		skb_reserve(descr->skb, a_buf.offset);
-> +	}
-> +
->  	descr->hw_regs.dmac_cmd_status =3D 0;
->  	descr->hw_regs.result_size =3D 0;
->  	descr->hw_regs.valid_size =3D 0;
->  	descr->hw_regs.data_error =3D 0;
->
-> -	offset =3D ((unsigned long)descr->skb->data) &
-> -		(GELIC_NET_RXBUF_ALIGN - 1);
-> -	if (offset)
-> -		skb_reserve(descr->skb, GELIC_NET_RXBUF_ALIGN - offset);
-> -	/* io-mmu-map the skb */
-> -	descr->hw_regs.payload.dev_addr =3D cpu_to_be32(dma_map_single(dev,
-> -						     descr->skb->data,
-> -						     GELIC_NET_MAX_MTU,
-> -						     DMA_FROM_DEVICE));
-> -	if (!descr->hw_regs.payload.dev_addr) {
-> +	descr->hw_regs.payload.size =3D a_buf.total_bytes - a_buf.offset;
-> +	cpu_addr =3D dma_map_single(dev, descr->skb->data,
-> +		descr->hw_regs.payload.size, DMA_FROM_DEVICE);
-> +	descr->hw_regs.payload.dev_addr =3D cpu_to_be32(cpu_addr);
-> +
-> +	if (unlikely(dma_mapping_error(dev, cpu_addr))) {
-> +		dev_err(dev, "%s:%d: dma_mapping_error\n", __func__, __LINE__);
-> +
-> +		descr->hw_regs.payload.dev_addr =3D 0;
-> +		descr->hw_regs.payload.size =3D 0;
-> +
->  		dev_kfree_skb_any(descr->skb);
->  		descr->skb =3D NULL;
-> -		dev_info(dev,
-> -			 "%s:Could not iommu-map rx buffer\n", __func__);
-> +
->  		gelic_descr_set_status(descr, GELIC_DESCR_DMA_NOT_IN_USE);
-> +
->  		return -ENOMEM;
-> -	} else {
-> -		gelic_descr_set_status(descr, GELIC_DESCR_DMA_CARDOWNED);
-> -		return 0;
->  	}
-> +
-> +	gelic_descr_set_status(descr, GELIC_DESCR_DMA_CARDOWNED);
-> +	return 0;
+>  	struct kvmppc_vcore *vc =3D vcpu->arch.vcore;
+> =20
+> @@ -288,6 +255,43 @@ static int kvmhv_write_guest_state_and_regs(struct k=
+vm_vcpu *vcpu,
+>  				     sizeof(struct pt_regs));
 >  }
->
->  /**
-> @@ -454,13 +472,18 @@ static void gelic_card_release_rx_chain(struct=20=
-=20
->=20gelic_card *card)
->  		if (descr->skb) {
->  			dma_unmap_single(dev,
->  				be32_to_cpu(descr->hw_regs.payload.dev_addr),
-> -				descr->skb->len, DMA_FROM_DEVICE);
-> -			descr->hw_regs.payload.dev_addr =3D 0;
-> +				descr->hw_regs.payload.size, DMA_FROM_DEVICE);
+> =20
+> +static void load_l2_hv_regs(struct kvm_vcpu *vcpu,
+> +			    const struct hv_guest_state *l2_hv,
+> +			    const struct hv_guest_state *l1_hv, u64 *lpcr)
+> +{
+> +	struct kvmppc_vcore *vc =3D vcpu->arch.vcore;
+> +	u64 mask;
 > +
->  			dev_kfree_skb_any(descr->skb);
->  			descr->skb =3D NULL;
+> +	restore_hv_regs(vcpu, l2_hv);
 > +
->  			gelic_descr_set_status(descr,
->  				GELIC_DESCR_DMA_NOT_IN_USE);
->  		}
+> +	/*
+> +	 * Don't let L1 change LPCR bits for the L2 except these:
+> +	 */
+> +	mask =3D LPCR_DPFD | LPCR_ILE | LPCR_TC | LPCR_AIL | LPCR_LD |
+> +		LPCR_LPES | LPCR_MER;
 > +
-> +		descr->hw_regs.payload.dev_addr =3D 0;
-> +		descr->hw_regs.payload.size =3D 0;
+> +	/*
+> +	 * Additional filtering is required depending on hardware
+> +	 * and configuration.
+> +	 */
+> +	*lpcr =3D kvmppc_filter_lpcr_hv(vcpu->kvm,
+> +				      (vc->lpcr & ~mask) | (*lpcr & mask));
 > +
->  		descr =3D descr->next;
->  	} while (descr !=3D card->rx_chain.head);
->  }
-> @@ -526,17 +549,19 @@ static void gelic_descr_release_tx(struct=20=20
->=20gelic_card *card,
->  		GELIC_DESCR_TX_TAIL));
->
->  	dma_unmap_single(dev, be32_to_cpu(descr->hw_regs.payload.dev_addr),
-> -		skb->len, DMA_TO_DEVICE);
-> -	dev_kfree_skb_any(skb);
-> +		descr->hw_regs.payload.size, DMA_TO_DEVICE);
->
->  	descr->hw_regs.payload.dev_addr =3D 0;
->  	descr->hw_regs.payload.size =3D 0;
+> +	/*
+> +	 * Don't let L1 enable features for L2 which we've disabled for L1,
+> +	 * but preserve the interrupt cause field.
+> +	 */
+> +	vcpu->arch.hfscr =3D l2_hv->hfscr & (HFSCR_INTR_CAUSE | l1_hv->hfscr);
 > +
-> +	dev_kfree_skb_any(skb);
-> +	descr->skb =3D NULL;
+> +	/* Don't let data address watchpoint match in hypervisor state */
+> +	vcpu->arch.dawrx0 =3D l2_hv->dawrx0 & ~DAWRX_HYP;
+> +	vcpu->arch.dawrx1 =3D l2_hv->dawrx1 & ~DAWRX_HYP;
 > +
->  	descr->hw_regs.next_descr_addr =3D 0;
->  	descr->hw_regs.result_size =3D 0;
->  	descr->hw_regs.valid_size =3D 0;
->  	descr->hw_regs.data_status =3D 0;
->  	descr->hw_regs.data_error =3D 0;
-> -	descr->skb =3D NULL;
->
->  	gelic_descr_set_status(descr, GELIC_DESCR_DMA_NOT_IN_USE);
->  }
-> @@ -565,31 +590,34 @@ static void gelic_card_wake_queues(struct=20=20
->=20gelic_card *card)
->  static void gelic_card_release_tx_chain(struct gelic_card *card, int sto=
-p)
+> +	/* Don't let completed instruction address breakpt match in HV state */
+> +	if ((l2_hv->ciabr & CIABR_PRIV) =3D=3D CIABR_PRIV_HYPER)
+> +		vcpu->arch.ciabr =3D l2_hv->ciabr & ~CIABR_PRIV;
+> +}
+> +
+>  long kvmhv_enter_nested_guest(struct kvm_vcpu *vcpu)
 >  {
->  	struct gelic_descr_chain *tx_chain;
-> -	enum gelic_descr_dma_status status;
->  	struct device *dev=20=3D ctodev(card);
-> -	struct net_device *netdev;
-> -	int release =3D 0;
-> +	int release;
-> +
-> +	for (release =3D 0, tx_chain =3D &card->tx_chain;
-> +		tx_chain->head !=3D tx_chain->tail && tx_chain->tail;
-> +		tx_chain->tail =3D tx_chain->tail->next) {
-> +		enum gelic_descr_dma_status status;
-> +		struct gelic_descr *descr;
-> +		struct net_device *netdev;
-> +
-> +		descr =3D tx_chain->tail;
-> +		status =3D gelic_descr_get_status(descr);
-> +		netdev =3D descr->skb->dev;
->
-> -	for (tx_chain =3D &card->tx_chain;
-> -	     tx_chain->head !=3D tx_chain->tail && tx_chain->tail;
-> -	     tx_chain->tail =3D tx_chain->tail->next) {
-> -		status =3D gelic_descr_get_status(tx_chain->tail);
-> -		netdev =3D tx_chain->tail->skb->dev;
->  		switch (status) {
->  		case GELIC_DESCR_DMA_RESPONSE_ERROR:
->  		case GELIC_DESCR_DMA_PROTECTION_ERROR:
->  		case GELIC_DESCR_DMA_FORCE_END:
-> -			 dev_info_ratelimited(dev,
-> -					 "%s:%d: forcing end of tx descriptor with status %x\n",
-> -					 __func__, __LINE__, status);
-> +			dev_info_ratelimited(dev,
-> +				"%s:%d: forcing end of tx descriptor with status %x\n",
-> +				__func__, __LINE__, status);
->  			netdev->stats.tx_dropped++;
+>  	long int err, r;
+> @@ -296,7 +300,7 @@ long kvmhv_enter_nested_guest(struct kvm_vcpu *vcpu)
+>  	struct hv_guest_state l2_hv =3D {0}, saved_l1_hv;
+>  	struct kvmppc_vcore *vc =3D vcpu->arch.vcore;
+>  	u64 hv_ptr, regs_ptr;
+> -	u64 hdec_exp;
+> +	u64 hdec_exp, lpcr;
+>  	s64 delta_purr, delta_spurr, delta_ic, delta_vtb;
+> =20
+>  	if (vcpu->kvm->arch.l1_ptcr =3D=3D 0)
+> @@ -349,8 +353,8 @@ long kvmhv_enter_nested_guest(struct kvm_vcpu *vcpu)
+>  	/* Guest must always run with ME enabled, HV disabled. */
+>  	vcpu->arch.shregs.msr =3D (vcpu->arch.regs.msr | MSR_ME) & ~MSR_HV;
+> =20
+> -	sanitise_hv_regs(vcpu, &l2_hv);
+> -	restore_hv_regs(vcpu, &l2_hv);
+> +	lpcr =3D l2_hv.lpcr;
+> +	load_l2_hv_regs(vcpu, &l2_hv, &saved_l1_hv, &lpcr);
+> =20
+>  	vcpu->arch.ret =3D RESUME_GUEST;
+>  	vcpu->arch.trap =3D 0;
+> @@ -360,7 +364,7 @@ long kvmhv_enter_nested_guest(struct kvm_vcpu *vcpu)
+>  			r =3D RESUME_HOST;
 >  			break;
->
->  		case GELIC_DESCR_DMA_COMPLETE:
-> -			if (tx_chain->tail->skb) {
-> +			if (descr->skb) {
->  				netdev->stats.tx_packets++;
-> -				netdev->stats.tx_bytes +=3D
-> -					tx_chain->tail->skb->len;
-> +				netdev->stats.tx_bytes +=3D descr->skb->len;
->  			}
->  			break;
->
-> @@ -599,7 +627,7 @@ static void gelic_card_release_tx_chain(struct=20=20
->=20gelic_card *card, int stop)
->  			}
 >  		}
->
-> -		gelic_descr_release_tx(card, tx_chain->tail);
-> +		gelic_descr_release_tx(card, descr);
->  		release++;
->  	}
->  out:
-> @@ -703,19 +731,19 @@ int gelic_net_stop(struct net_device *netdev)
->   *
->   * returns the address of the next descriptor, or NULL if not available.
->   */
-> -static struct gelic_descr *
-> -gelic_card_get_next_tx_descr(struct gelic_card *card)
-> +static struct gelic_descr *gelic_card_get_next_tx_descr(struct=20=20
->=20gelic_card *card)
->  {
->  	if (!card->tx_chain.head)
->  		return NULL;
-> +
->  	/*  see if the next descriptor is free */
->  	if (card->tx_chain.tail !=3D card->tx_chain.head->next &&
-> -		gelic_descr_get_status(card->tx_chain.head) =3D=3D
-> -			GELIC_DESCR_DMA_NOT_IN_USE)
-> +		(gelic_descr_get_status(card->tx_chain.head) =3D=3D
-> +			GELIC_DESCR_DMA_NOT_IN_USE)) {
->  		return card->tx_chain.head;
-> -	else
-> -		return NULL;
-> +	}
->
-> +	return NULL;
->  }
->
->  /**
-> @@ -809,18 +837,23 @@ static int gelic_descr_prepare_tx(struct=20=20
->=20gelic_card *card,
->  		if (!skb_tmp) {
->  			return -ENOMEM;
->  		}
-> +
->  		skb =3D skb_tmp;
->  	}
->
-> -	cpu_addr =3D dma_map_single(dev, skb->data, skb->len, DMA_TO_DEVICE);
-> +	descr->hw_regs.payload.size =3D skb->len;
-> +	cpu_addr =3D dma_map_single(dev, skb->data, descr->hw_regs.payload.size=
-,
-> +		DMA_TO_DEVICE);
-> +	descr->hw_regs.payload.dev_addr =3D cpu_to_be32(cpu_addr);
->
-> -	if (!cpu_addr) {
-> +	if (unlikely(dma_mapping_error(dev, cpu_addr))) {
->  		dev_err(dev, "%s:%d: dma_mapping_error\n", __func__, __LINE__);
-> +
-> +		descr->hw_regs.payload.dev_addr =3D 0;
-> +		descr->hw_regs.payload.size =3D 0;
->  		return -ENOMEM;
->  	}
->
-> -	descr->hw_regs.payload.dev_addr =3D cpu_to_be32(cpu_addr);
-> -	descr->hw_regs.payload.size =3D cpu_to_be32(skb->len);
->  	descr->skb =3D skb;
->  	descr->hw_regs.data_status =3D 0;
->  	descr->hw_regs.next_descr_addr =3D 0; /* terminate hw descr */
-> @@ -948,9 +981,9 @@ static void gelic_net_pass_skb_up(struct=20=20
->=20gelic_descr *descr,
->
->  	data_status =3D be32_to_cpu(descr->hw_regs.data_status);
->  	data_error =3D be32_to_cpu(descr->hw_regs.data_error);
-> -	/* unmap skb buffer */
-> +
->  	dma_unmap_single(dev, be32_to_cpu(descr->hw_regs.payload.dev_addr),
-> -			 GELIC_NET_MAX_MTU, DMA_FROM_DEVICE);
-> +			 descr->hw_regs.payload.size, DMA_FROM_DEVICE);
->
->  	skb_put(skb, be32_to_cpu(descr->hw_regs.valid_size) ?
->  		be32_to_cpu(descr->hw_regs.valid_size) :
-> --
-> 2.25.1
-
-
+> -		r =3D kvmhv_run_single_vcpu(vcpu, hdec_exp, l2_hv.lpcr);
+> +		r =3D kvmhv_run_single_vcpu(vcpu, hdec_exp, lpcr);
+>  	} while (is_kvmppc_resume_guest(r));
+> =20
+>  	/* save L2 state for return */
+> --=20
+> 2.29.2
+>=20
+>=20
