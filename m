@@ -2,68 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B70253D5249
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jul 2021 06:14:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D7B03D524A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jul 2021 06:15:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GY65H4vZsz3jgX
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jul 2021 14:14:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GY65q3vTYz3jn6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Jul 2021 14:15:11 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=rYqGzF2C;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=T4Qgip1K;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630;
- helo=mail-pl1-x630.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1033;
+ helo=mail-pj1-x1033.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=rYqGzF2C; dkim-atps=neutral
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com
- [IPv6:2607:f8b0:4864:20::630])
+ header.s=20161025 header.b=T4Qgip1K; dkim-atps=neutral
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com
+ [IPv6:2607:f8b0:4864:20::1033])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GY5c41tqqz30Dh
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Jul 2021 13:52:52 +1000 (AEST)
-Received: by mail-pl1-x630.google.com with SMTP id a20so10256367plm.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GY5c502Mnz30Ky
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Jul 2021 13:52:53 +1000 (AEST)
+Received: by mail-pj1-x1033.google.com with SMTP id
+ a4-20020a17090aa504b0290176a0d2b67aso9380795pjq.2
  for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Jul 2021 20:52:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=4TD+VXbAQkLjU1Tv9nfQp6WJQncSQ+vS8R2ucbT1q4Q=;
- b=rYqGzF2CXDcmuW2mWG/451LNfWwHC2Bh0vYkWw/oWGlPjqdmNWNI2JdYR4Ix/++TlK
- OUE/LJym/P3Gi9GZv90usVyZp7pSm6uCql39qE1G32gudX+8vkdFZ7paM3dI1SXNq2jW
- 6WuULww0raOMIEYWjOscKfKwPPSAtzFdSNYIXGJb4pw9WQLTRwigqa+o312fjmypphLk
- SFV16Dgdc7b38+EF3T9SLJ40VyOeqoLAWrj1Pd9G9zqYTqtpCR/kAE11IQQpt8wqhqVZ
- VTdf6dMap6Ijb2TAFfGJWuLmLRsN+5T7hUBZz6ZLPyebvuHeqBT3R5C+iPe9ZBlJ1kRW
- ktBQ==
+ bh=g7tzAmHt9KFCtjyh0DlOhYXuEQ09+ToK2o7s2d30wi4=;
+ b=T4Qgip1KmTTvnYJO1orXDsbOKQ2HY5MjVPhZr3mE8waj56Ds3xJLVFSGfRv7Szdn1y
+ QEzBi1loDZwMIy49XVPf8h/N1fXKHBhgcHelSVF0/AyF2h+2AOjgeWJ4muenI4CbdSqC
+ PvUrTx7RF19wifBUACpAviUfXSzAwe/ZNK0ysFv9S9SpSfVVngyJDrbiZIvfJ3+zvHLo
+ fDBxmKlxQxE14P5J5dsSNY/5p7Mk+7zxjCqagaSpqQWdgGUy3oQ/E3sG9o6w6nrXZiQr
+ rwaARkvRIC259z375gg2N3HbUA2XXq6FvPckc9qiQ+HENWTGj78+lM+7wXhJb2GLk05M
+ aqWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=4TD+VXbAQkLjU1Tv9nfQp6WJQncSQ+vS8R2ucbT1q4Q=;
- b=Q0rQjWgk7rH5qn0FzBSLLxEItqdchQJMRnYeE+mYsH75jO+st/rGl/kjAKxMAutqgF
- Vtucvy7tb1iE95mvcQE2Yb8j6BVetavUieeAlhJhCJnu/G/Tt2rd7/w9c8z1p/mj4uZY
- nbXRBueBcVmmCZPz66jLsIYGcRJPbnbrOT54hxDOK+MHIcN4catx0Bo9aMg7FsBhRhi4
- kkpo+9/HVbQGkcTJzcvATHx1dfP/9xCg60Odf2VcKZLC6MO/sFrPAH+9xxZVCt29tX73
- YYwlZWQ+YqMS/kXNnNEhe3XFMIxoXp9fK3iwqNENllldMtpDZwIlZbbcTFZswj42crES
- sRqg==
-X-Gm-Message-State: AOAM53209e3wJTQSKQq+LjcLDoqnHWeFbb6tbzkIEdUapKhDhvUMetGp
- HhrWsQ/ZgN28ma+Sc3fi7As=
-X-Google-Smtp-Source: ABdhPJyED48ffEzufLC/jgr6X71ytepHIJcTvR+1kUU3ioulHKiztmxFXFUUA4RAdq7/870wICyq3w==
-X-Received: by 2002:aa7:88d3:0:b029:32b:75d0:fa92 with SMTP id
- k19-20020aa788d30000b029032b75d0fa92mr15948571pff.23.1627271568854; 
- Sun, 25 Jul 2021 20:52:48 -0700 (PDT)
+ bh=g7tzAmHt9KFCtjyh0DlOhYXuEQ09+ToK2o7s2d30wi4=;
+ b=JjeFwkg5gd+9w4408WNMCUQzBnu8A0jtcvLeGmgpIo+ThlY58ZgXtH5/0VWF8JbjN9
+ hr/qJfG1ePoGSWGzkl1QIibYE6rWjlYVvgvrfUHw1IV0zqmCrTRKU4U5D9Mj/nfsmm7T
+ E6JRApIk3LKUhsGRG9+gLJ3dnqr4cZMW7aF9vKPynILeiA2ytjOj2edIaMm0GNPMEgvy
+ oc5MqFomn5an6D1sAvtLycuOR0fxVd9IB1iOU3yRh3Z+HeObNIQKIZcUXhyUK7a+HAto
+ aiUXAy4rbAOuOcujO+58aNLOu7xRjTwLknOdo7Ik2aL8oF9/l3nX7+yk3rnHX/lM9soe
+ LUZw==
+X-Gm-Message-State: AOAM5325f4qyFXTGPmOr45+UnoiPj2nboWRMLee8k+eJMYo7SC8jGLe2
+ PJZX5C4Ij+KrTukn9SryjiM=
+X-Google-Smtp-Source: ABdhPJzwIM7O9OUMjHW7iRnCSulR7E5dYl4iqmmFRRUkU6vIcCXmbFuSo8vKOF91kEH2jrCedJc7DQ==
+X-Received: by 2002:a17:90a:f40f:: with SMTP id
+ ch15mr3517977pjb.32.1627271571042; 
+ Sun, 25 Jul 2021 20:52:51 -0700 (PDT)
 Received: from bobo.ibm.com (220-244-190-123.tpgi.com.au. [220.244.190.123])
- by smtp.gmail.com with ESMTPSA id p33sm41140341pfw.40.2021.07.25.20.52.47
+ by smtp.gmail.com with ESMTPSA id p33sm41140341pfw.40.2021.07.25.20.52.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 25 Jul 2021 20:52:48 -0700 (PDT)
+ Sun, 25 Jul 2021 20:52:50 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org
-Subject: [PATCH v1 54/55] KVM: PPC: Book3S HV P9: Stop using vc->dpdes
-Date: Mon, 26 Jul 2021 13:50:35 +1000
-Message-Id: <20210726035036.739609-55-npiggin@gmail.com>
+Subject: [PATCH v1 55/55] KVM: PPC: Book3S HV P9: Remove subcore HMI handling
+Date: Mon, 26 Jul 2021 13:50:36 +1000
+Message-Id: <20210726035036.739609-56-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210726035036.739609-1-npiggin@gmail.com>
 References: <20210726035036.739609-1-npiggin@gmail.com>
@@ -85,128 +86,145 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The P9 path uses vc->dpdes only for msgsndp / SMT emulation. This adds
-an ordering requirement between vcpu->doorbell_request and vc->dpdes for
-no real benefit. Use vcpu->doorbell_request directly.
+On POWER9 and newer, rather than the complex HMI synchronisation and
+subcore state, have each thread un-apply the guest TB offset before
+calling into the early HMI handler.
 
-XXX: verify msgsndp / DPDES emulation works properly.
+This allows the subcore state to be avoided, including subcore enter
+/ exit guest, which includes an expensive divide that shows up
+slightly in profiles.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kvm/book3s_hv.c          | 18 ++++++++++--------
- arch/powerpc/kvm/book3s_hv_builtin.c  |  2 ++
- arch/powerpc/kvm/book3s_hv_p9_entry.c | 14 ++++++++++----
- 3 files changed, 22 insertions(+), 12 deletions(-)
+ arch/powerpc/kvm/book3s_hv.c          | 12 +++++-----
+ arch/powerpc/kvm/book3s_hv_hmi.c      |  7 +++++-
+ arch/powerpc/kvm/book3s_hv_p9_entry.c | 32 ++++++++++++++++++++++++++-
+ arch/powerpc/kvm/book3s_hv_ras.c      |  4 ++++
+ 4 files changed, 46 insertions(+), 9 deletions(-)
 
 diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index f233ff1c18e1..b727b2cfad98 100644
+index b727b2cfad98..3f62ada1a669 100644
 --- a/arch/powerpc/kvm/book3s_hv.c
 +++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -766,6 +766,8 @@ static bool kvmppc_doorbell_pending(struct kvm_vcpu *vcpu)
+@@ -3994,8 +3994,6 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
  
- 	if (vcpu->arch.doorbell_request)
- 		return true;
-+	if (cpu_has_feature(CPU_FTR_ARCH_300))
-+		return false;
- 	/*
- 	 * Ensure that the read of vcore->dpdes comes after the read
- 	 * of vcpu->doorbell_request.  This barrier matches the
-@@ -2166,8 +2168,10 @@ static int kvmppc_get_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
- 		 * either vcore->dpdes or doorbell_request.
- 		 * On POWER8, doorbell_request is 0.
- 		 */
--		*val = get_reg_val(id, vcpu->arch.vcore->dpdes |
--				   vcpu->arch.doorbell_request);
-+		if (cpu_has_feature(CPU_FTR_ARCH_300))
-+			*val = get_reg_val(id, vcpu->arch.doorbell_request);
-+		else
-+			*val = get_reg_val(id, vcpu->arch.vcore->dpdes);
- 		break;
- 	case KVM_REG_PPC_VTB:
- 		*val = get_reg_val(id, vcpu->arch.vcore->vtb);
-@@ -2404,7 +2408,10 @@ static int kvmppc_set_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
- 		vcpu->arch.pspb = set_reg_val(id, *val);
- 		break;
- 	case KVM_REG_PPC_DPDES:
--		vcpu->arch.vcore->dpdes = set_reg_val(id, *val);
-+		if (cpu_has_feature(CPU_FTR_ARCH_300))
-+			vcpu->arch.doorbell_request = set_reg_val(id, *val) & 1;
-+		else
-+			vcpu->arch.vcore->dpdes = set_reg_val(id, *val);
- 		break;
- 	case KVM_REG_PPC_VTB:
- 		vcpu->arch.vcore->vtb = set_reg_val(id, *val);
-@@ -4440,11 +4447,6 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	vcpu->arch.ceded = 0;
  
- 	if (!nested) {
- 		kvmppc_core_prepare_to_enter(vcpu);
--		if (vcpu->arch.doorbell_request) {
--			vc->dpdes = 1;
--			smp_wmb();
--			vcpu->arch.doorbell_request = 0;
--		}
- 		if (test_bit(BOOK3S_IRQPRIO_EXTERNAL,
- 			     &vcpu->arch.pending_exceptions))
- 			lpcr |= LPCR_MER;
-diff --git a/arch/powerpc/kvm/book3s_hv_builtin.c b/arch/powerpc/kvm/book3s_hv_builtin.c
-index a10bf93054ca..3ed90149ed2e 100644
---- a/arch/powerpc/kvm/book3s_hv_builtin.c
-+++ b/arch/powerpc/kvm/book3s_hv_builtin.c
-@@ -660,6 +660,8 @@ void kvmppc_guest_entry_inject_int(struct kvm_vcpu *vcpu)
- 	int ext;
- 	unsigned long lpcr;
+-	kvmppc_subcore_enter_guest();
+-
+ 	vcpu_vpa_increment_dispatch(vcpu);
  
-+	WARN_ON_ONCE(cpu_has_feature(CPU_FTR_ARCH_300));
-+
- 	/* Insert EXTERNAL bit into LPCR at the MER bit position */
- 	ext = (vcpu->arch.pending_exceptions >> BOOK3S_IRQPRIO_EXTERNAL) & 1;
- 	lpcr = mfspr(SPRN_LPCR);
-diff --git a/arch/powerpc/kvm/book3s_hv_p9_entry.c b/arch/powerpc/kvm/book3s_hv_p9_entry.c
-index 338873f90c72..032ca6dfd83c 100644
---- a/arch/powerpc/kvm/book3s_hv_p9_entry.c
-+++ b/arch/powerpc/kvm/book3s_hv_p9_entry.c
-@@ -695,6 +695,7 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
- 	unsigned long host_pidr;
- 	unsigned long host_dawr1;
- 	unsigned long host_dawrx1;
-+	unsigned long dpdes;
+ 	if (kvmhv_on_pseries()) {
+@@ -4048,8 +4046,6 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
  
- 	hdec = time_limit - *tb;
- 	if (hdec < 0)
-@@ -757,8 +758,10 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
+ 	vcpu_vpa_increment_dispatch(vcpu);
  
- 	if (vc->pcr)
- 		mtspr(SPRN_PCR, vc->pcr | PCR_MASK);
--	if (vc->dpdes)
--		mtspr(SPRN_DPDES, vc->dpdes);
-+	if (vcpu->arch.doorbell_request) {
-+		vcpu->arch.doorbell_request = 0;
-+		mtspr(SPRN_DPDES, 1);
+-	kvmppc_subcore_exit_guest();
+-
+ 	return trap;
+ }
+ 
+@@ -6031,9 +6027,11 @@ static int kvmppc_book3s_init_hv(void)
+ 	if (r)
+ 		return r;
+ 
+-	r = kvm_init_subcore_bitmap();
+-	if (r)
+-		return r;
++	if (!cpu_has_feature(CPU_FTR_ARCH_300)) {
++		r = kvm_init_subcore_bitmap();
++		if (r)
++			return r;
 +	}
  
- 	if (dawr_enabled()) {
- 		if (vcpu->arch.dawr0 != host_dawr0)
-@@ -995,7 +998,10 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
- 	vcpu->arch.shregs.sprg2 = mfspr(SPRN_SPRG2);
- 	vcpu->arch.shregs.sprg3 = mfspr(SPRN_SPRG3);
+ 	/*
+ 	 * We need a way of accessing the XICS interrupt controller,
+diff --git a/arch/powerpc/kvm/book3s_hv_hmi.c b/arch/powerpc/kvm/book3s_hv_hmi.c
+index 9af660476314..1ec50c69678b 100644
+--- a/arch/powerpc/kvm/book3s_hv_hmi.c
++++ b/arch/powerpc/kvm/book3s_hv_hmi.c
+@@ -20,10 +20,15 @@ void wait_for_subcore_guest_exit(void)
  
--	vc->dpdes = mfspr(SPRN_DPDES);
-+	dpdes = mfspr(SPRN_DPDES);
-+	if (dpdes)
-+		vcpu->arch.doorbell_request = 1;
+ 	/*
+ 	 * NULL bitmap pointer indicates that KVM module hasn't
+-	 * been loaded yet and hence no guests are running.
++	 * been loaded yet and hence no guests are running, or running
++	 * on POWER9 or newer CPU.
++	 *
+ 	 * If no KVM is in use, no need to co-ordinate among threads
+ 	 * as all of them will always be in host and no one is going
+ 	 * to modify TB other than the opal hmi handler.
++	 *
++	 * POWER9 and newer don't need this synchronisation.
++	 *
+ 	 * Hence, just return from here.
+ 	 */
+ 	if (!local_paca->sibling_subcore_state)
+diff --git a/arch/powerpc/kvm/book3s_hv_p9_entry.c b/arch/powerpc/kvm/book3s_hv_p9_entry.c
+index 032ca6dfd83c..d23e1ef2e3a7 100644
+--- a/arch/powerpc/kvm/book3s_hv_p9_entry.c
++++ b/arch/powerpc/kvm/book3s_hv_p9_entry.c
+@@ -3,6 +3,7 @@
+ #include <linux/kvm_host.h>
+ #include <asm/asm-prototypes.h>
+ #include <asm/dbell.h>
++#include <asm/interrupt.h>
+ #include <asm/kvm_ppc.h>
+ #include <asm/pmc.h>
+ #include <asm/ppc-opcode.h>
+@@ -927,7 +928,36 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
+ 		kvmppc_realmode_machine_check(vcpu);
+ 
+ 	} else if (unlikely(trap == BOOK3S_INTERRUPT_HMI)) {
+-		kvmppc_realmode_hmi_handler();
++		/*
++		 * Unapply and clear the offset first. That way, if the TB
++		 * was fine then no harm done, if it is corrupted then the
++		 * HMI resync will bring it back to host mode. This way, we
++		 * don't need to actualy know whether not OPAL resynced the
++		 * timebase. Although it would be cleaner if we could rely
++		 * on that, early POWER9 OPAL did not support the
++		 * OPAL_HANDLE_HMI2 call.
++		 */
++		if (vc->tb_offset_applied) {
++			u64 new_tb = mftb() - vc->tb_offset_applied;
++			mtspr(SPRN_TBU40, new_tb);
++			if ((mftb() & 0xffffff) < (new_tb & 0xffffff)) {
++				new_tb += 0x1000000;
++				mtspr(SPRN_TBU40, new_tb);
++			}
++			vc->tb_offset_applied = 0;
++		}
 +
- 	vc->vtb = mfspr(SPRN_VTB);
++		hmi_exception_realmode(NULL);
++
++		if (vc->tb_offset) {
++			u64 new_tb = mftb() + vc->tb_offset;
++			mtspr(SPRN_TBU40, new_tb);
++			if ((mftb() & 0xffffff) < (new_tb & 0xffffff)) {
++				new_tb += 0x1000000;
++				mtspr(SPRN_TBU40, new_tb);
++			}
++			vc->tb_offset_applied = vc->tb_offset;
++		}
  
- 	dec = mfspr(SPRN_DEC);
-@@ -1057,7 +1063,7 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
- 		}
- 	}
+ 	} else if (trap == BOOK3S_INTERRUPT_H_EMUL_ASSIST) {
+ 		vcpu->arch.emul_inst = mfspr(SPRN_HEIR);
+diff --git a/arch/powerpc/kvm/book3s_hv_ras.c b/arch/powerpc/kvm/book3s_hv_ras.c
+index d4bca93b79f6..a49ee9bdab67 100644
+--- a/arch/powerpc/kvm/book3s_hv_ras.c
++++ b/arch/powerpc/kvm/book3s_hv_ras.c
+@@ -136,6 +136,10 @@ void kvmppc_realmode_machine_check(struct kvm_vcpu *vcpu)
+ 	vcpu->arch.mce_evt = mce_evt;
+ }
  
--	if (vc->dpdes)
-+	if (dpdes)
- 		mtspr(SPRN_DPDES, 0);
- 	if (vc->pcr)
- 		mtspr(SPRN_PCR, PCR_MASK);
++/*
++ * This subcore HMI handling is all only for pre-POWER9 CPUs.
++ */
++
+ /* Check if dynamic split is in force and return subcore size accordingly. */
+ static inline int kvmppc_cur_subcore_size(void)
+ {
 -- 
 2.23.0
 
