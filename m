@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D7843D6ED0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jul 2021 08:10:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 946A23D6EDC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jul 2021 08:11:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GYmc70vT0z3bhg
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jul 2021 16:10:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GYmdc30wsz3bX3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jul 2021 16:11:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=YElztzLh;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=jxiZJUH1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,34 +19,35 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=YElztzLh; 
+ header.s=casper.20170209 header.b=jxiZJUH1; 
  dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org
  [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GYmbd0Q09z2xl9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jul 2021 16:09:49 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GYmdC5Tb9z2xfn
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jul 2021 16:11:11 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description;
- bh=cNxTcG8XdnUuoOVixjLVY8XjmYtYsiM+b+iVbGfjzMo=; b=YElztzLh9bPWVL4V+uU9bkDpMk
- NzLXuxXX8mqkPiEdB2lVQLf3TV5qJiqowOEHrhhlM06Y91t6eaziCzTqxX42qQ+8cb1d8ZXTRaikg
- YF5bKQT+bE2YjfM1cjolnhAs+dTL9vFk6NqmTNFE5uy2JYG8dRJQvDpF3Je4y8fhZ+4UaW9tikYHy
- WY55ceDWlHcUJgaRiSXsKjeyGORzyQs4tFpWjixBwSlsLjNevh7FbpN0Wxj9UdkAEILekZHJ2A5iP
- zcPxLvMPLFrlCZ5qfJamSbDvM83tqLmnBQ/axtL8y/k+21PGCIp8eSw58kmzmrTHns4GfaGKtsH6k
- qWoYyuyg==;
+ bh=t3OnbpMN0amphJR+ZqgOptW+ighdT38XSDrB1q6UGsY=; b=jxiZJUH1ZldCiRMidy9A0MN4FV
+ okgzD1ux3SJB6nURWa1SMC0+SxoMfrsTCYSAkO/RMZj4ghpmPzEuy9qfzXK3BpzVja11hpREgQ2hB
+ /xs650Kb1jqHLHG+yyDtL2K10/2IDdROHGxy3DsJDxhIuJsLNiPv08PvDZhR/wX8ZbA0KvfAeTr0U
+ GLmNyWK50LLQrs5sQvt3sYtFc1Jm9Sp0BckshzulJzaqKLzR0tzaKziM8xRGC9IEOWHsj88pyusQh
+ GEqauNJTMpP+sztKcdRkRat9r7hGjVwUNFPS8WEPtr3xCKsQNrYxFDMOGMl+kDSmZfS42eBHW4voZ
+ CaITiwNw==;
 Received: from [2001:4bb8:184:87c5:b7fb:1299:a9e5:ff56] (helo=localhost)
  by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1m8GD4-00Einn-II; Tue, 27 Jul 2021 06:05:39 +0000
+ id 1m8GEm-00Eit3-Oj; Tue, 27 Jul 2021 06:07:07 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Jens Axboe <axboe@kernel.dk>,
 	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 06/15] rbd: use memzero_bvec
-Date: Tue, 27 Jul 2021 07:56:37 +0200
-Message-Id: <20210727055646.118787-7-hch@lst.de>
+Subject: [PATCH 07/15] dm-writecache: use bvec_kmap_local instead of
+ bvec_kmap_irq
+Date: Tue, 27 Jul 2021 07:56:38 +0200
+Message-Id: <20210727055646.118787-8-hch@lst.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210727055646.118787-1-hch@lst.de>
 References: <20210727055646.118787-1-hch@lst.de>
@@ -79,55 +80,46 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use memzero_bvec instead of reimplementing it.
+There is no need to disable interrupts in bio_copy_block, and the local
+only mappings helps to avoid any sort of problems with stray writes
+into the bio data.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
-Acked-by: Ilya Dryomov <idryomov@gmail.com>
 Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
 Reviewed-by: Ira Weiny <ira.weiny@intel.com>
 ---
- drivers/block/rbd.c | 15 ++-------------
- 1 file changed, 2 insertions(+), 13 deletions(-)
+ drivers/md/dm-writecache.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/block/rbd.c b/drivers/block/rbd.c
-index 90b947c96402..6d596c2c2cd6 100644
---- a/drivers/block/rbd.c
-+++ b/drivers/block/rbd.c
-@@ -1219,24 +1219,13 @@ static void rbd_dev_mapping_clear(struct rbd_device *rbd_dev)
- 	rbd_dev->mapping.size = 0;
- }
- 
--static void zero_bvec(struct bio_vec *bv)
--{
--	void *buf;
--	unsigned long flags;
--
--	buf = bvec_kmap_irq(bv, &flags);
--	memset(buf, 0, bv->bv_len);
--	flush_dcache_page(bv->bv_page);
--	bvec_kunmap_irq(buf, &flags);
--}
--
- static void zero_bios(struct ceph_bio_iter *bio_pos, u32 off, u32 bytes)
+diff --git a/drivers/md/dm-writecache.c b/drivers/md/dm-writecache.c
+index e21e29e81bbf..3d2cf811ec3e 100644
+--- a/drivers/md/dm-writecache.c
++++ b/drivers/md/dm-writecache.c
+@@ -1214,14 +1214,13 @@ static void memcpy_flushcache_optimized(void *dest, void *source, size_t size)
+ static void bio_copy_block(struct dm_writecache *wc, struct bio *bio, void *data)
  {
- 	struct ceph_bio_iter it = *bio_pos;
+ 	void *buf;
+-	unsigned long flags;
+ 	unsigned size;
+ 	int rw = bio_data_dir(bio);
+ 	unsigned remaining_size = wc->block_size;
  
- 	ceph_bio_iter_advance(&it, off);
- 	ceph_bio_iter_advance_step(&it, bytes, ({
--		zero_bvec(&bv);
-+		memzero_bvec(&bv);
- 	}));
- }
+ 	do {
+ 		struct bio_vec bv = bio_iter_iovec(bio, bio->bi_iter);
+-		buf = bvec_kmap_irq(&bv, &flags);
++		buf = bvec_kmap_local(&bv);
+ 		size = bv.bv_len;
+ 		if (unlikely(size > remaining_size))
+ 			size = remaining_size;
+@@ -1239,7 +1238,7 @@ static void bio_copy_block(struct dm_writecache *wc, struct bio *bio, void *data
+ 			memcpy_flushcache_optimized(data, buf, size);
+ 		}
  
-@@ -1246,7 +1235,7 @@ static void zero_bvecs(struct ceph_bvec_iter *bvec_pos, u32 off, u32 bytes)
+-		bvec_kunmap_irq(buf, &flags);
++		kunmap_local(buf);
  
- 	ceph_bvec_iter_advance(&it, off);
- 	ceph_bvec_iter_advance_step(&it, bytes, ({
--		zero_bvec(&bv);
-+		memzero_bvec(&bv);
- 	}));
- }
- 
+ 		data = (char *)data + size;
+ 		remaining_size -= size;
 -- 
 2.30.2
 
