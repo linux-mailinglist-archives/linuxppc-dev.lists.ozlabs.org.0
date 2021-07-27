@@ -1,101 +1,99 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 501FD3D728B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jul 2021 12:05:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 057E93D7899
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jul 2021 16:37:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GYsqb1Yhqz3dV8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jul 2021 20:05:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GYzsS6nGPz3bbv
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jul 2021 00:37:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Tmp2K6WW;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MZeR0fkg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Tmp2K6WW; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ header.s=pp1 header.b=MZeR0fkg; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GYsnl0DNrz3bT4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jul 2021 20:03:54 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 16R9Zrp2049481; Tue, 27 Jul 2021 06:03:49 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GYzry1D8gz3005
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jul 2021 00:37:05 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 16REXgq9178457; Tue, 27 Jul 2021 10:36:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=T8CVWd/dyJWUAuE0OjHc9MlASOpYb9dvsFdM/Ej18Gs=;
- b=Tmp2K6WWr/voMDAyPuGVosetWylfbK+sjW5gKsD+0+SK3qhyrIql9I+D4SFYQJ9krQDq
- Wi445gde92U8o/I67Bv+jP17bYUKUZ9JKYhdRYoiKctTaUbKjpLwdGZizAyXhdEaoWna
- 4q6R/YmzfxK+J1CdojDsdcXi5Y4QW3IX0tfGdK8w/JXnFVAQVAhfNDwoaeSiqBF7LbMT
- Cpib9OYJ7cQfs2w+Y/oa6ciEzH1dBX6SzT8rmRZ+Kda0cnyppIxAeGOhlY3Vry7QgT7S
- cZn71TUsPymrnhbZtcoEYJu7LAXwMUlyBVhbiPExKyWsoGnPWEKeyxteOC3RVpXkvtlY Jg== 
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=MQ4ux33af7VadX0imatqcwUcNfNmUpD8TX9W/+DBEt0=;
+ b=MZeR0fkgwbSXvS6OMfEquZ7bn2+U6rdOBFFkrIHMqlDFkL7CcTLDaAe7+IIlL1WFqsgx
+ 5L8s2ATFs1qiKzISu8Su1a4b6Jmh7wQY67m0+3LG2IxyPBhmA2JKoShx9VNqw+t68OMi
+ nK1XnwQbuVbnu0JFkFxxbiO/lR3cZ7M23yls8elHNoJ7lVP1rA7crVGnuJNKhxsnPC8E
+ vLYUB+GhWeD7R3bwpqGkLhm7rXMBpImSRxfbsxlCSzepCFwdGPByxsYT9hqhq3fzTUSu
+ Vt7Renq85HDAku5KmS3gUoOuCy2wqf4SoGbOwdI6vzXR7g0+BPRCXeQoR0UuxprpcJNa BQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3a2f6hthmq-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3a2g7bj8gk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Jul 2021 06:03:49 -0400
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 16R9a7M0051473;
- Tue, 27 Jul 2021 06:03:48 -0400
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3a2f6hthkq-1
+ Tue, 27 Jul 2021 10:36:56 -0400
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 16REXtMi179616;
+ Tue, 27 Jul 2021 10:36:39 -0400
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3a2g7bj7ey-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Jul 2021 06:03:48 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16RA1E5h000335;
- Tue, 27 Jul 2021 10:03:48 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com
- (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
- by ppma04wdc.us.ibm.com with ESMTP id 3a235mcjt9-1
+ Tue, 27 Jul 2021 10:36:38 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16REM61O003606;
+ Tue, 27 Jul 2021 14:36:24 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
+ [9.57.198.27]) by ppma02dal.us.ibm.com with ESMTP id 3a2362dpuc-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Jul 2021 10:03:48 +0000
-Received: from b03ledav001.gho.boulder.ibm.com
- (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 16RA3knR49086780
+ Tue, 27 Jul 2021 14:36:24 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
+ [9.57.199.109])
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 16REaNAQ50397554
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 27 Jul 2021 10:03:46 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A13A66E056;
- Tue, 27 Jul 2021 10:03:46 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 13D116E053;
- Tue, 27 Jul 2021 10:03:43 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.85.74.145])
- by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue, 27 Jul 2021 10:03:42 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH v6 6/6] powerpc/pseries: Consolidate form1 distance
- initialization into a helper
-Date: Tue, 27 Jul 2021 15:33:11 +0530
-Message-Id: <20210727100311.310969-7-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210727100311.310969-1-aneesh.kumar@linux.ibm.com>
-References: <20210727100311.310969-1-aneesh.kumar@linux.ibm.com>
+ Tue, 27 Jul 2021 14:36:23 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3CF8D112066;
+ Tue, 27 Jul 2021 14:36:23 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 837F6112070;
+ Tue, 27 Jul 2021 14:36:22 +0000 (GMT)
+Received: from localhost (unknown [9.211.99.174])
+ by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTPS;
+ Tue, 27 Jul 2021 14:36:22 +0000 (GMT)
+From: Fabiano Rosas <farosas@linux.ibm.com>
+To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
+Subject: Re: [PATCH v5 2/2] KVM: PPC: Book3S HV: Stop forwarding all HFUs to L1
+In-Reply-To: <1627355201.gqa4czyyxy.astroid@bobo.none>
+References: <20210726201710.2432874-1-farosas@linux.ibm.com>
+ <20210726201710.2432874-3-farosas@linux.ibm.com>
+ <1627355201.gqa4czyyxy.astroid@bobo.none>
+Date: Tue, 27 Jul 2021 11:36:20 -0300
+Message-ID: <87o8anddsr.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 95vLovtwJbKthn7RwWO5KO5ZPc7H9whM
-X-Proofpoint-GUID: 9D1F2kK1QnZlhpXcE5ZFRNFw1xurDEIc
+X-Proofpoint-GUID: 46Un7Zj04E9iCj213-wdxD8JkNpIXPK9
+X-Proofpoint-ORIG-GUID: vqsRGzEaj4gq5C088sZ7HWVto0aY2lNW
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-07-27_06:2021-07-27,
+ definitions=2021-07-27_10:2021-07-27,
  2021-07-27 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 spamscore=0
- malwarescore=0 phishscore=0 mlxlogscore=999 lowpriorityscore=0
- clxscore=1015 priorityscore=1501 bulkscore=0 suspectscore=0
- impostorscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2107140000 definitions=main-2107270055
+ malwarescore=0
+ lowpriorityscore=0 adultscore=0 spamscore=0 impostorscore=0 suspectscore=0
+ phishscore=0 bulkscore=0 clxscore=1015 mlxlogscore=999 priorityscore=1501
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2107140000 definitions=main-2107270086
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,171 +105,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently, we duplicate parsing code for ibm,associativity and
-ibm,associativity-lookup-arrays in the kernel. The associativity array provided
-by these device tree properties are very similar and hence can use
-a helper to parse the node id and numa distance details.
+Nicholas Piggin <npiggin@gmail.com> writes:
 
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- arch/powerpc/mm/numa.c | 83 ++++++++++++++++++++++++++----------------
- 1 file changed, 51 insertions(+), 32 deletions(-)
+> Excerpts from Fabiano Rosas's message of July 27, 2021 6:17 am:
+>> If the nested hypervisor has no access to a facility because it has
+>> been disabled by the host, it should also not be able to see the
+>> Hypervisor Facility Unavailable that arises from one of its guests
+>> trying to access the facility.
+>> 
+>> This patch turns a HFU that happened in L2 into a Hypervisor Emulation
+>> Assistance interrupt and forwards it to L1 for handling. The ones that
+>> happened because L1 explicitly disabled the facility for L2 are still
+>> let through, along with the corresponding Cause bits in the HFSCR.
+>> 
+>> Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
+>> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+>> ---
+>>  arch/powerpc/kvm/book3s_hv_nested.c | 32 +++++++++++++++++++++++------
+>>  1 file changed, 26 insertions(+), 6 deletions(-)
+>> 
+>> diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
+>> index 8215dbd4be9a..d544b092b49a 100644
+>> --- a/arch/powerpc/kvm/book3s_hv_nested.c
+>> +++ b/arch/powerpc/kvm/book3s_hv_nested.c
+>> @@ -99,7 +99,7 @@ static void byteswap_hv_regs(struct hv_guest_state *hr)
+>>  	hr->dawrx1 = swab64(hr->dawrx1);
+>>  }
+>>  
+>> -static void save_hv_return_state(struct kvm_vcpu *vcpu, int trap,
+>> +static void save_hv_return_state(struct kvm_vcpu *vcpu,
+>>  				 struct hv_guest_state *hr)
+>>  {
+>>  	struct kvmppc_vcore *vc = vcpu->arch.vcore;
+>> @@ -118,7 +118,7 @@ static void save_hv_return_state(struct kvm_vcpu *vcpu, int trap,
+>>  	hr->pidr = vcpu->arch.pid;
+>>  	hr->cfar = vcpu->arch.cfar;
+>>  	hr->ppr = vcpu->arch.ppr;
+>> -	switch (trap) {
+>> +	switch (vcpu->arch.trap) {
+>>  	case BOOK3S_INTERRUPT_H_DATA_STORAGE:
+>>  		hr->hdar = vcpu->arch.fault_dar;
+>>  		hr->hdsisr = vcpu->arch.fault_dsisr;
+>> @@ -128,9 +128,29 @@ static void save_hv_return_state(struct kvm_vcpu *vcpu, int trap,
+>>  		hr->asdr = vcpu->arch.fault_gpa;
+>>  		break;
+>>  	case BOOK3S_INTERRUPT_H_FAC_UNAVAIL:
+>> -		hr->hfscr = ((~HFSCR_INTR_CAUSE & hr->hfscr) |
+>> -			     (HFSCR_INTR_CAUSE & vcpu->arch.hfscr));
+>> -		break;
+>> +	{
+>> +		u8 cause = vcpu->arch.hfscr >> 56;
+>
+> Can this be u64 just to help gcc?
+>
 
-diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-index fffb3c40f595..7506251e17f2 100644
---- a/arch/powerpc/mm/numa.c
-+++ b/arch/powerpc/mm/numa.c
-@@ -171,19 +171,19 @@ static void unmap_cpu_from_node(unsigned long cpu)
- }
- #endif /* CONFIG_HOTPLUG_CPU || CONFIG_PPC_SPLPAR */
- 
--/*
-- * Returns nid in the range [0..nr_node_ids], or -1 if no useful NUMA
-- * info is found.
-- */
--static int associativity_to_nid(const __be32 *associativity)
-+static int __associativity_to_nid(const __be32 *associativity,
-+				  int max_array_sz)
- {
- 	int nid = NUMA_NO_NODE;
-+	/*
-+	 * primary_domain_index is 1 based array index.
-+	 */
-+	int index = primary_domain_index  - 1;
- 
--	if (!numa_enabled)
-+	if (!numa_enabled || index >= max_array_sz)
- 		goto out;
- 
--	if (of_read_number(associativity, 1) >= primary_domain_index)
--		nid = of_read_number(&associativity[primary_domain_index], 1);
-+	nid = of_read_number(&associativity[index], 1);
- 
- 	/* POWER4 LPAR uses 0xffff as invalid node */
- 	if (nid == 0xffff || nid >= nr_node_ids)
-@@ -191,6 +191,17 @@ static int associativity_to_nid(const __be32 *associativity)
- out:
- 	return nid;
- }
-+/*
-+ * Returns nid in the range [0..nr_node_ids], or -1 if no useful NUMA
-+ * info is found.
-+ */
-+static int associativity_to_nid(const __be32 *associativity)
-+{
-+	int array_sz = of_read_number(associativity, 1);
-+
-+	/* Skip the first element in the associativity array */
-+	return __associativity_to_nid((associativity + 1), array_sz);
-+}
- 
- static int __cpu_form2_relative_distance(__be32 *cpu1_assoc, __be32 *cpu2_assoc)
- {
-@@ -295,24 +306,41 @@ int of_node_to_nid(struct device_node *device)
- }
- EXPORT_SYMBOL(of_node_to_nid);
- 
--static void __initialize_form1_numa_distance(const __be32 *associativity)
-+static void ___initialize_form1_numa_distance(const __be32 *associativity,
-+					     int max_array_sz)
- {
- 	int i, nid;
- 
- 	if (affinity_form != FORM1_AFFINITY)
- 		return;
- 
--	nid = associativity_to_nid(associativity);
-+	nid = __associativity_to_nid(associativity, max_array_sz);
- 	if (nid != NUMA_NO_NODE) {
- 		for (i = 0; i < distance_ref_points_depth; i++) {
- 			const __be32 *entry;
-+			int index = be32_to_cpu(distance_ref_points[i]) - 1;
-+
-+			/*
-+			 * broken hierarchy, return with broken distance table
-+			 */
-+			if (index >= max_array_sz)
-+				return;
- 
--			entry = &associativity[be32_to_cpu(distance_ref_points[i])];
-+			entry = &associativity[index];
- 			distance_lookup_table[nid][i] = of_read_number(entry, 1);
- 		}
- 	}
- }
- 
-+static void __initialize_form1_numa_distance(const __be32 *associativity)
-+{
-+	int array_sz;
-+
-+	array_sz = of_read_number(associativity, 1);
-+	/* Skip the first element in the associativity array */
-+	___initialize_form1_numa_distance(associativity + 1, array_sz);
-+}
-+
- static void initialize_form1_numa_distance(struct device_node *node)
- {
- 	const __be32 *associativity;
-@@ -586,27 +614,18 @@ static int get_nid_and_numa_distance(struct drmem_lmb *lmb)
- 
- 	if (primary_domain_index <= aa.array_sz &&
- 	    !(lmb->flags & DRCONF_MEM_AI_INVALID) && lmb->aa_index < aa.n_arrays) {
--		index = lmb->aa_index * aa.array_sz + primary_domain_index - 1;
--		nid = of_read_number(&aa.arrays[index], 1);
-+		const __be32 *associativity;
- 
--		if (nid == 0xffff || nid >= nr_node_ids)
--			nid = default_nid;
-+		index = lmb->aa_index * aa.array_sz;
-+		associativity = &aa.arrays[index];
-+		nid = __associativity_to_nid(associativity, aa.array_sz);
- 		if (nid > 0 && affinity_form == FORM1_AFFINITY) {
--			int i;
--			const __be32 *associativity;
--
--			index = lmb->aa_index * aa.array_sz;
--			associativity = &aa.arrays[index];
- 			/*
--			 * lookup array associativity entries have different format
--			 * There is no length of the array as the first element.
-+			 * lookup array associativity entries have
-+			 * no length of the array as the first element.
- 			 */
--			for (i = 0; i < distance_ref_points_depth; i++) {
--				const __be32 *entry;
--
--				entry = &associativity[be32_to_cpu(distance_ref_points[i]) - 1];
--				distance_lookup_table[nid][i] = of_read_number(entry, 1);
--			}
-+			___initialize_form1_numa_distance(associativity,
-+							  aa.array_sz);
- 		}
- 	}
- 	return nid;
-@@ -632,11 +651,11 @@ int of_drconf_to_nid_single(struct drmem_lmb *lmb)
- 
- 	if (primary_domain_index <= aa.array_sz &&
- 	    !(lmb->flags & DRCONF_MEM_AI_INVALID) && lmb->aa_index < aa.n_arrays) {
--		index = lmb->aa_index * aa.array_sz + primary_domain_index - 1;
--		nid = of_read_number(&aa.arrays[index], 1);
-+		const __be32 *associativity;
- 
--		if (nid == 0xffff || nid >= nr_node_ids)
--			nid = default_nid;
-+		index = lmb->aa_index * aa.array_sz;
-+		associativity = &aa.arrays[index];
-+		nid = __associativity_to_nid(associativity, aa.array_sz);
- 	}
- 	return nid;
- }
--- 
-2.31.1
+Yes.
 
+>> +
+>> +		WARN_ON_ONCE(cause >= BITS_PER_LONG);
+>> +
+>> +		if (!(hr->hfscr & (1UL << cause))) {
+>> +			hr->hfscr = ((~HFSCR_INTR_CAUSE & hr->hfscr) |
+>> +				     (HFSCR_INTR_CAUSE & vcpu->arch.hfscr));
+>> +			break;
+>> +		}
+>> +
+>> +		/*
+>> +		 * We have disabled this facility, so it does not
+>> +		 * exist from L1's perspective. Turn it into a HEAI.
+>> +		 */
+>> +		vcpu->arch.trap = BOOK3S_INTERRUPT_H_EMUL_ASSIST;
+>> +		kvmppc_load_last_inst(vcpu, INST_GENERIC, &vcpu->arch.emul_inst);
+>
+> Hmm, this doesn't handle kvmpc_load_last_inst failure. Other code tends 
+> to just resume guest and retry in this case. Can we do that here?
+>
+
+Not at this point. The other code does that inside
+kvmppc_handle_exit_hv, which is called from kvmhv_run_single_vcpu. And
+since we're changing the interrupt, I cannot load the last instruction
+at kvmppc_handle_nested_exit because at that point this is still an HFU.
+
+Unless I do it anyway at the HFU handler and put a comment explaining
+the situation.
+
+Or I could check for failure and clear vcpu->arch.emul_inst and
+therefore also hr->heir if we couldn't load the instruction.
+
+>> +
+>> +		/* Don't leak the cause field */
+>> +		hr->hfscr &= ~HFSCR_INTR_CAUSE;
+>
+> This hunk also remains -- shouldn't change HFSCR for HEA, only HFAC.
+
+Ah of course, thanks.
+
+>
+> Thanks,
+> Nick
