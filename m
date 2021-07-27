@@ -1,105 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E23C63D6FAC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jul 2021 08:49:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 997523D6FC6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jul 2021 08:56:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GYnTn6Qzcz3bZD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jul 2021 16:49:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GYndB5L0Bz3bZv
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jul 2021 16:56:14 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=du6MRDY0;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=b//a6O8R;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=psampat@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102b;
+ helo=mail-pj1-x102b.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=du6MRDY0; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=b//a6O8R; dkim-atps=neutral
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com
+ [IPv6:2607:f8b0:4864:20::102b])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GYnTG16Wtz2yNS
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jul 2021 16:49:21 +1000 (AEST)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 16R6YZZr031688; Tue, 27 Jul 2021 02:49:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=4gKl0q2cCG3K0uWmHofx3rjoSMwefxziUQ3VJpNnV4w=;
- b=du6MRDY0J1mBENbGmQ6B5qGjstjN5EpVK/im5p0EwHOo9F//VUIWoNubMWsbZ5aGfhxF
- Z7WLvZ0A5sBT/rvP1vurgPr442mLyrK5TSrRZf8CmbUTpNEUto+QuKN/sIZ+Jge78iEA
- eJkvcBbkrJEtzwKh4SsiaNzd2F+K+av+O539a8vNKcF6uL4APDa67jxeHitgwm1bGNce
- UWj8UeGZ3VUmBf8wgrl4J/K5VCX1iLcuchyvHDkuQFuLmTa5kC/RtJ8rE5QvF9gsgm9C
- jTLium8IKThP6vv7KadyvS7i7tPcyt5XykVWvyyffIuMl6Um16YBIYWoBCuITjLlMX7q KA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3a2d080qa9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Jul 2021 02:49:14 -0400
-Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 16R6Ynl7033625;
- Tue, 27 Jul 2021 02:49:13 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3a2d080q92-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Jul 2021 02:49:13 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16R6CSpi027171;
- Tue, 27 Jul 2021 06:49:11 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma04ams.nl.ibm.com with ESMTP id 3a235m07db-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Jul 2021 06:49:11 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 16R6n8Zv28311894
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 27 Jul 2021 06:49:08 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 932F0A4062;
- Tue, 27 Jul 2021 06:49:08 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DA1CEA405B;
- Tue, 27 Jul 2021 06:49:05 +0000 (GMT)
-Received: from [9.199.45.94] (unknown [9.199.45.94])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 27 Jul 2021 06:49:05 +0000 (GMT)
-Subject: Re: [PATCH] cpufreq:powernv: Fix init_chip_info initialization in
- numa=off
-To: ego@linux.vnet.ibm.com
-References: <20210726170758.61041-1-psampat@linux.ibm.com>
- <20210727061656.GA10282@in.ibm.com>
-From: Pratik Sampat <psampat@linux.ibm.com>
-Message-ID: <60aaa78a-ece1-73d2-ea4c-e3835a6e3ab8@linux.ibm.com>
-Date: Tue, 27 Jul 2021 12:19:04 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GYncj5jTSz2yxx
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jul 2021 16:55:49 +1000 (AEST)
+Received: by mail-pj1-x102b.google.com with SMTP id
+ mz5-20020a17090b3785b0290176ecf64922so2761643pjb.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Jul 2021 23:55:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=cti+9xh1CQCuVdfi7nDnFSd31tcaiiPvT0SSDMfe1KY=;
+ b=b//a6O8RetEzQhBq1L0w5a0lG9K5wSxLr2nLMY+MxCt1aYKjnTmvotbwu/NW+0v9/f
+ YOHilor6TuFcgSMUvSkBB3dH+UCvnmSIpr3crbZ+d3sFVcdS+VJNPzH4cZ9yVrKMjFXp
+ nkN/a85lLDrUK8kUgxOMdtQYQu6NiitUoZBcfPaV0uHgPPKrAFd0KW+GIRUTcmQKIHp4
+ /qpAh559aa3qa2X5zCFuTkckl142JXrkYHZ2zZ7v7FOqVeBKyYfVNBCWFHV4kviuYIMk
+ NXloaUfCzXZiJdlK3LxcfHRU86xJTJz3lSKCzEzgqviB8oxvZlWyCoBxXAikKMhFXRwk
+ 8WHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=cti+9xh1CQCuVdfi7nDnFSd31tcaiiPvT0SSDMfe1KY=;
+ b=PPAbGKXBYiiYq52wgQATwAk7cTnZQ7pv8XAYiNnUzN+oh1J2NiJZwIaapv6VPEv6vr
+ rhyWyy5COwfsiIEAqDrEB+lGkmkWAa2KL43mxNYbyH/PpOpFW3UtLbnEUVfNtMRj/o1m
+ S8tJ/4i0t6Q0/edVK+ExkqUEDEt8LR4bjc9wz/lFgrRnhJy3c4RXREKZnrClXn+MMyzf
+ E/C8oXIIFd+A3StykPRHZTB25wqtd5VgAeJDXxNJ+MIGPnvGr0hyrXHkE5M+JXVK0gz2
+ hrEiIff8ZJG2Ky7CU5Wuy/LlpajFOhQ5AwWF0EVD6BTndyGeSNgllmPkZ/cam0ORaRAh
+ l/aQ==
+X-Gm-Message-State: AOAM531OC+Pmp5PF0XL/WwpWzy1NFo95ph5J7L+Abw1dDTLrzCX6hvQ8
+ MiTfjUJzggUF7ewZvJBlskoinydMJoY=
+X-Google-Smtp-Source: ABdhPJzs1JBmFsYyyBnUfFGdDobDkCFhNF1q0x2vfnpGEQS0S2f65tA5Pe+xapmvUbdPClQx5E7ENg==
+X-Received: by 2002:a62:1ad2:0:b029:349:f807:129b with SMTP id
+ a201-20020a621ad20000b0290349f807129bmr21825260pfa.16.1627368946651; 
+ Mon, 26 Jul 2021 23:55:46 -0700 (PDT)
+Received: from tee480.ozlabs.ibm.com
+ (159-196-117-139.9fc475.syd.nbn.aussiebb.net. [159.196.117.139])
+ by smtp.gmail.com with ESMTPSA id f11sm2257891pga.61.2021.07.26.23.55.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 26 Jul 2021 23:55:46 -0700 (PDT)
+From: Jordan Niethe <jniethe5@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 1/3] powerpc64/bpf: Store temp registers' bpf to ppc mapping
+Date: Tue, 27 Jul 2021 16:55:37 +1000
+Message-Id: <20210727065539.299598-1-jniethe5@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <20210727061656.GA10282@in.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 2wm48rhKY5L38nFjNAYG_fYMRPhOJ6TD
-X-Proofpoint-GUID: rpSxo2XOqTUJmE7fJEZ_NqTsKBv5681R
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-07-27_04:2021-07-27,
- 2021-07-27 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0
- lowpriorityscore=0 phishscore=0 spamscore=0 clxscore=1015
- priorityscore=1501 suspectscore=0 mlxscore=0 bulkscore=0 adultscore=0
- impostorscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2107140000 definitions=main-2107270038
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,100 +80,365 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pm@vger.kernel.org, pratik.r.sampat@gmail.com, rjw@rjwysocki.net,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: naveen.n.rao@linux.vnet.ibm.com, Jordan Niethe <jniethe5@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+In bpf_jit_build_body(), the mapping of TMP_REG_1 and TMP_REG_2's bpf
+register to ppc register is evalulated at every use despite not
+changing. Instead, determine the ppc register once and store the result.
+This will be more useful when a later patch introduces a more complex
+mapping from bpf registers to ppc registers.
 
+Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+---
+ arch/powerpc/net/bpf_jit_comp64.c | 163 +++++++++++++-----------------
+ 1 file changed, 69 insertions(+), 94 deletions(-)
 
-On 27/07/21 11:46 am, Gautham R Shenoy wrote:
-> On Mon, Jul 26, 2021 at 10:37:57PM +0530, Pratik R. Sampat wrote:
->> In the numa=off kernel command-line configuration init_chip_info() loops
->> around the number of chips and attempts to copy the cpumask of that node
->> which is NULL for all iterations after the first chip.
->>
->> Hence, store the cpu mask for each chip instead of derving cpumask from
->> node while populating the "chips" struct array and copy that to the
->> chips[i].mask
->>
->> Cc: stable@vger.kernel.org
->> Fixes: 053819e0bf84 ("cpufreq: powernv: Handle throttling due to Pmax capping at chip level")
->> Signed-off-by: Pratik R. Sampat <psampat@linux.ibm.com>
->> Reported-by: Shirisha Ganta <shirisha.ganta1@ibm.com>
->> ---
->>   drivers/cpufreq/powernv-cpufreq.c | 15 +++++++++++++--
->>   1 file changed, 13 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
->> index 005600cef273..8ec10d9aed8f 100644
->> --- a/drivers/cpufreq/powernv-cpufreq.c
->> +++ b/drivers/cpufreq/powernv-cpufreq.c
->> @@ -1046,12 +1046,20 @@ static int init_chip_info(void)
->>   	unsigned int *chip;
->>   	unsigned int cpu, i;
->>   	unsigned int prev_chip_id = UINT_MAX;
->> +	cpumask_t *chip_cpu_mask;
->>   	int ret = 0;
->>
->>   	chip = kcalloc(num_possible_cpus(), sizeof(*chip), GFP_KERNEL);
->>   	if (!chip)
->>   		return -ENOMEM;
->>
->> +	/* Allocate a chip cpu mask large enough to fit mask for all chips */
->> +	chip_cpu_mask = kcalloc(32, sizeof(cpumask_t), GFP_KERNEL);
-> I suppose by 32 you mean the maximum number of chips possible. You
-> could use a #define for that.
-
-ack, I could #define the constant.
-
-> Otherwise, the patch looks good to me.
->
-> Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
->
-Thanks
-Pratik
-
->
->> +	if (!chip_cpu_mask) {
->> +		ret = -ENOMEM;
->> +		goto free_and_return;
->> +	}
->> +
->>   	for_each_possible_cpu(cpu) {
->>   		unsigned int id = cpu_to_chip_id(cpu);
->>
->> @@ -1059,22 +1067,25 @@ static int init_chip_info(void)
->>   			prev_chip_id = id;
->>   			chip[nr_chips++] = id;
->>   		}
->> +		cpumask_set_cpu(cpu, &chip_cpu_mask[nr_chips-1]);
->>   	}
->>
->>   	chips = kcalloc(nr_chips, sizeof(struct chip), GFP_KERNEL);
->>   	if (!chips) {
->>   		ret = -ENOMEM;
->> -		goto free_and_return;
->> +		goto out_chip_cpu_mask;
->>   	}
->>
->>   	for (i = 0; i < nr_chips; i++) {
->>   		chips[i].id = chip[i];
->> -		cpumask_copy(&chips[i].mask, cpumask_of_node(chip[i]));
->> +		cpumask_copy(&chips[i].mask, &chip_cpu_mask[i]);
->>   		INIT_WORK(&chips[i].throttle, powernv_cpufreq_work_fn);
->>   		for_each_cpu(cpu, &chips[i].mask)
->>   			per_cpu(chip_info, cpu) =  &chips[i];
->>   	}
->>
->> +out_chip_cpu_mask:
->> +	kfree(chip_cpu_mask);
->>   free_and_return:
->>   	kfree(chip);
->>   	return ret;
->> -- 
->> 2.31.1
->>
+diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
+index de8595880fee..1dfec85bb03b 100644
+--- a/arch/powerpc/net/bpf_jit_comp64.c
++++ b/arch/powerpc/net/bpf_jit_comp64.c
+@@ -285,6 +285,8 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
+ 		u32 code = insn[i].code;
+ 		u32 dst_reg = b2p[insn[i].dst_reg];
+ 		u32 src_reg = b2p[insn[i].src_reg];
++		u32 tmp1_reg = b2p[TMP_REG_1];
++		u32 tmp2_reg = b2p[TMP_REG_2];
+ 		s16 off = insn[i].off;
+ 		s32 imm = insn[i].imm;
+ 		bool func_addr_fixed;
+@@ -337,8 +339,8 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
+ 				if (imm >= -32768 && imm < 32768)
+ 					EMIT(PPC_RAW_ADDI(dst_reg, dst_reg, IMM_L(imm)));
+ 				else {
+-					PPC_LI32(b2p[TMP_REG_1], imm);
+-					EMIT(PPC_RAW_ADD(dst_reg, dst_reg, b2p[TMP_REG_1]));
++					PPC_LI32(tmp1_reg, imm);
++					EMIT(PPC_RAW_ADD(dst_reg, dst_reg, tmp1_reg));
+ 				}
+ 			}
+ 			goto bpf_alu32_trunc;
+@@ -354,32 +356,28 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
+ 			if (imm >= -32768 && imm < 32768)
+ 				EMIT(PPC_RAW_MULI(dst_reg, dst_reg, IMM_L(imm)));
+ 			else {
+-				PPC_LI32(b2p[TMP_REG_1], imm);
++				PPC_LI32(tmp1_reg, imm);
+ 				if (BPF_CLASS(code) == BPF_ALU)
+-					EMIT(PPC_RAW_MULW(dst_reg, dst_reg,
+-							b2p[TMP_REG_1]));
++					EMIT(PPC_RAW_MULW(dst_reg, dst_reg, tmp1_reg));
+ 				else
+-					EMIT(PPC_RAW_MULD(dst_reg, dst_reg,
+-							b2p[TMP_REG_1]));
++					EMIT(PPC_RAW_MULD(dst_reg, dst_reg, tmp1_reg));
+ 			}
+ 			goto bpf_alu32_trunc;
+ 		case BPF_ALU | BPF_DIV | BPF_X: /* (u32) dst /= (u32) src */
+ 		case BPF_ALU | BPF_MOD | BPF_X: /* (u32) dst %= (u32) src */
+ 			if (BPF_OP(code) == BPF_MOD) {
+-				EMIT(PPC_RAW_DIVWU(b2p[TMP_REG_1], dst_reg, src_reg));
+-				EMIT(PPC_RAW_MULW(b2p[TMP_REG_1], src_reg,
+-						b2p[TMP_REG_1]));
+-				EMIT(PPC_RAW_SUB(dst_reg, dst_reg, b2p[TMP_REG_1]));
++				EMIT(PPC_RAW_DIVWU(tmp1_reg, dst_reg, src_reg));
++				EMIT(PPC_RAW_MULW(tmp1_reg, src_reg, tmp1_reg));
++				EMIT(PPC_RAW_SUB(dst_reg, dst_reg, tmp1_reg));
+ 			} else
+ 				EMIT(PPC_RAW_DIVWU(dst_reg, dst_reg, src_reg));
+ 			goto bpf_alu32_trunc;
+ 		case BPF_ALU64 | BPF_DIV | BPF_X: /* dst /= src */
+ 		case BPF_ALU64 | BPF_MOD | BPF_X: /* dst %= src */
+ 			if (BPF_OP(code) == BPF_MOD) {
+-				EMIT(PPC_RAW_DIVDU(b2p[TMP_REG_1], dst_reg, src_reg));
+-				EMIT(PPC_RAW_MULD(b2p[TMP_REG_1], src_reg,
+-						b2p[TMP_REG_1]));
+-				EMIT(PPC_RAW_SUB(dst_reg, dst_reg, b2p[TMP_REG_1]));
++				EMIT(PPC_RAW_DIVDU(tmp1_reg, dst_reg, src_reg));
++				EMIT(PPC_RAW_MULD(tmp1_reg, src_reg, tmp1_reg));
++				EMIT(PPC_RAW_SUB(dst_reg, dst_reg, tmp1_reg));
+ 			} else
+ 				EMIT(PPC_RAW_DIVDU(dst_reg, dst_reg, src_reg));
+ 			break;
+@@ -392,35 +390,23 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
+ 			else if (imm == 1)
+ 				goto bpf_alu32_trunc;
+ 
+-			PPC_LI32(b2p[TMP_REG_1], imm);
++			PPC_LI32(tmp1_reg, imm);
+ 			switch (BPF_CLASS(code)) {
+ 			case BPF_ALU:
+ 				if (BPF_OP(code) == BPF_MOD) {
+-					EMIT(PPC_RAW_DIVWU(b2p[TMP_REG_2],
+-							dst_reg,
+-							b2p[TMP_REG_1]));
+-					EMIT(PPC_RAW_MULW(b2p[TMP_REG_1],
+-							b2p[TMP_REG_1],
+-							b2p[TMP_REG_2]));
+-					EMIT(PPC_RAW_SUB(dst_reg, dst_reg,
+-							b2p[TMP_REG_1]));
++					EMIT(PPC_RAW_DIVWU(tmp2_reg, dst_reg, tmp1_reg));
++					EMIT(PPC_RAW_MULW(tmp1_reg, tmp1_reg, tmp2_reg));
++					EMIT(PPC_RAW_SUB(dst_reg, dst_reg, tmp1_reg));
+ 				} else
+-					EMIT(PPC_RAW_DIVWU(dst_reg, dst_reg,
+-							b2p[TMP_REG_1]));
++					EMIT(PPC_RAW_DIVWU(dst_reg, dst_reg, tmp1_reg));
+ 				break;
+ 			case BPF_ALU64:
+ 				if (BPF_OP(code) == BPF_MOD) {
+-					EMIT(PPC_RAW_DIVDU(b2p[TMP_REG_2],
+-							dst_reg,
+-							b2p[TMP_REG_1]));
+-					EMIT(PPC_RAW_MULD(b2p[TMP_REG_1],
+-							b2p[TMP_REG_1],
+-							b2p[TMP_REG_2]));
+-					EMIT(PPC_RAW_SUB(dst_reg, dst_reg,
+-							b2p[TMP_REG_1]));
++					EMIT(PPC_RAW_DIVDU(tmp2_reg, dst_reg, tmp1_reg));
++					EMIT(PPC_RAW_MULD(tmp1_reg, tmp1_reg, tmp2_reg));
++					EMIT(PPC_RAW_SUB(dst_reg, dst_reg, tmp1_reg));
+ 				} else
+-					EMIT(PPC_RAW_DIVDU(dst_reg, dst_reg,
+-							b2p[TMP_REG_1]));
++					EMIT(PPC_RAW_DIVDU(dst_reg, dst_reg, tmp1_reg));
+ 				break;
+ 			}
+ 			goto bpf_alu32_trunc;
+@@ -442,8 +428,8 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
+ 				EMIT(PPC_RAW_ANDI(dst_reg, dst_reg, IMM_L(imm)));
+ 			else {
+ 				/* Sign-extended */
+-				PPC_LI32(b2p[TMP_REG_1], imm);
+-				EMIT(PPC_RAW_AND(dst_reg, dst_reg, b2p[TMP_REG_1]));
++				PPC_LI32(tmp1_reg, imm);
++				EMIT(PPC_RAW_AND(dst_reg, dst_reg, tmp1_reg));
+ 			}
+ 			goto bpf_alu32_trunc;
+ 		case BPF_ALU | BPF_OR | BPF_X: /* dst = (u32) dst | (u32) src */
+@@ -454,8 +440,8 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
+ 		case BPF_ALU64 | BPF_OR | BPF_K:/* dst = dst | imm */
+ 			if (imm < 0 && BPF_CLASS(code) == BPF_ALU64) {
+ 				/* Sign-extended */
+-				PPC_LI32(b2p[TMP_REG_1], imm);
+-				EMIT(PPC_RAW_OR(dst_reg, dst_reg, b2p[TMP_REG_1]));
++				PPC_LI32(tmp1_reg, imm);
++				EMIT(PPC_RAW_OR(dst_reg, dst_reg, tmp1_reg));
+ 			} else {
+ 				if (IMM_L(imm))
+ 					EMIT(PPC_RAW_ORI(dst_reg, dst_reg, IMM_L(imm)));
+@@ -471,8 +457,8 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
+ 		case BPF_ALU64 | BPF_XOR | BPF_K: /* dst ^= imm */
+ 			if (imm < 0 && BPF_CLASS(code) == BPF_ALU64) {
+ 				/* Sign-extended */
+-				PPC_LI32(b2p[TMP_REG_1], imm);
+-				EMIT(PPC_RAW_XOR(dst_reg, dst_reg, b2p[TMP_REG_1]));
++				PPC_LI32(tmp1_reg, imm);
++				EMIT(PPC_RAW_XOR(dst_reg, dst_reg, tmp1_reg));
+ 			} else {
+ 				if (IMM_L(imm))
+ 					EMIT(PPC_RAW_XORI(dst_reg, dst_reg, IMM_L(imm)));
+@@ -573,11 +559,11 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
+ 			switch (imm) {
+ 			case 16:
+ 				/* Rotate 8 bits left & mask with 0x0000ff00 */
+-				EMIT(PPC_RAW_RLWINM(b2p[TMP_REG_1], dst_reg, 8, 16, 23));
++				EMIT(PPC_RAW_RLWINM(tmp1_reg, dst_reg, 8, 16, 23));
+ 				/* Rotate 8 bits right & insert LSB to reg */
+-				EMIT(PPC_RAW_RLWIMI(b2p[TMP_REG_1], dst_reg, 24, 24, 31));
++				EMIT(PPC_RAW_RLWIMI(tmp1_reg, dst_reg, 24, 24, 31));
+ 				/* Move result back to dst_reg */
+-				EMIT(PPC_RAW_MR(dst_reg, b2p[TMP_REG_1]));
++				EMIT(PPC_RAW_MR(dst_reg, tmp1_reg));
+ 				break;
+ 			case 32:
+ 				/*
+@@ -585,12 +571,12 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
+ 				 * 2 bytes are already in their final position
+ 				 * -- byte 2 and 4 (of bytes 1, 2, 3 and 4)
+ 				 */
+-				EMIT(PPC_RAW_RLWINM(b2p[TMP_REG_1], dst_reg, 8, 0, 31));
++				EMIT(PPC_RAW_RLWINM(tmp1_reg, dst_reg, 8, 0, 31));
+ 				/* Rotate 24 bits and insert byte 1 */
+-				EMIT(PPC_RAW_RLWIMI(b2p[TMP_REG_1], dst_reg, 24, 0, 7));
++				EMIT(PPC_RAW_RLWIMI(tmp1_reg, dst_reg, 24, 0, 7));
+ 				/* Rotate 24 bits and insert byte 3 */
+-				EMIT(PPC_RAW_RLWIMI(b2p[TMP_REG_1], dst_reg, 24, 16, 23));
+-				EMIT(PPC_RAW_MR(dst_reg, b2p[TMP_REG_1]));
++				EMIT(PPC_RAW_RLWIMI(tmp1_reg, dst_reg, 24, 16, 23));
++				EMIT(PPC_RAW_MR(dst_reg, tmp1_reg));
+ 				break;
+ 			case 64:
+ 				/*
+@@ -602,8 +588,8 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
+ 				 * same across all passes
+ 				 */
+ 				PPC_BPF_STL(dst_reg, 1, bpf_jit_stack_local(ctx));
+-				EMIT(PPC_RAW_ADDI(b2p[TMP_REG_1], 1, bpf_jit_stack_local(ctx)));
+-				EMIT(PPC_RAW_LDBRX(dst_reg, 0, b2p[TMP_REG_1]));
++				EMIT(PPC_RAW_ADDI(tmp1_reg, 1, bpf_jit_stack_local(ctx)));
++				EMIT(PPC_RAW_LDBRX(dst_reg, 0, tmp1_reg));
+ 				break;
+ 			}
+ 			break;
+@@ -633,32 +619,32 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
+ 		case BPF_STX | BPF_MEM | BPF_B: /* *(u8 *)(dst + off) = src */
+ 		case BPF_ST | BPF_MEM | BPF_B: /* *(u8 *)(dst + off) = imm */
+ 			if (BPF_CLASS(code) == BPF_ST) {
+-				EMIT(PPC_RAW_LI(b2p[TMP_REG_1], imm));
+-				src_reg = b2p[TMP_REG_1];
++				EMIT(PPC_RAW_LI(tmp1_reg, imm));
++				src_reg = tmp1_reg;
+ 			}
+ 			EMIT(PPC_RAW_STB(src_reg, dst_reg, off));
+ 			break;
+ 		case BPF_STX | BPF_MEM | BPF_H: /* (u16 *)(dst + off) = src */
+ 		case BPF_ST | BPF_MEM | BPF_H: /* (u16 *)(dst + off) = imm */
+ 			if (BPF_CLASS(code) == BPF_ST) {
+-				EMIT(PPC_RAW_LI(b2p[TMP_REG_1], imm));
+-				src_reg = b2p[TMP_REG_1];
++				EMIT(PPC_RAW_LI(tmp1_reg, imm));
++				src_reg = tmp1_reg;
+ 			}
+ 			EMIT(PPC_RAW_STH(src_reg, dst_reg, off));
+ 			break;
+ 		case BPF_STX | BPF_MEM | BPF_W: /* *(u32 *)(dst + off) = src */
+ 		case BPF_ST | BPF_MEM | BPF_W: /* *(u32 *)(dst + off) = imm */
+ 			if (BPF_CLASS(code) == BPF_ST) {
+-				PPC_LI32(b2p[TMP_REG_1], imm);
+-				src_reg = b2p[TMP_REG_1];
++				PPC_LI32(tmp1_reg, imm);
++				src_reg = tmp1_reg;
+ 			}
+ 			EMIT(PPC_RAW_STW(src_reg, dst_reg, off));
+ 			break;
+ 		case BPF_STX | BPF_MEM | BPF_DW: /* (u64 *)(dst + off) = src */
+ 		case BPF_ST | BPF_MEM | BPF_DW: /* *(u64 *)(dst + off) = imm */
+ 			if (BPF_CLASS(code) == BPF_ST) {
+-				PPC_LI32(b2p[TMP_REG_1], imm);
+-				src_reg = b2p[TMP_REG_1];
++				PPC_LI32(tmp1_reg, imm);
++				src_reg = tmp1_reg;
+ 			}
+ 			PPC_BPF_STL(src_reg, dst_reg, off);
+ 			break;
+@@ -677,14 +663,14 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
+ 			/* *(u32 *)(dst + off) += src */
+ 
+ 			/* Get EA into TMP_REG_1 */
+-			EMIT(PPC_RAW_ADDI(b2p[TMP_REG_1], dst_reg, off));
++			EMIT(PPC_RAW_ADDI(tmp1_reg, dst_reg, off));
+ 			tmp_idx = ctx->idx * 4;
+ 			/* load value from memory into TMP_REG_2 */
+-			EMIT(PPC_RAW_LWARX(b2p[TMP_REG_2], 0, b2p[TMP_REG_1], 0));
++			EMIT(PPC_RAW_LWARX(tmp2_reg, 0, tmp1_reg, 0));
+ 			/* add value from src_reg into this */
+-			EMIT(PPC_RAW_ADD(b2p[TMP_REG_2], b2p[TMP_REG_2], src_reg));
++			EMIT(PPC_RAW_ADD(tmp2_reg, tmp2_reg, src_reg));
+ 			/* store result back */
+-			EMIT(PPC_RAW_STWCX(b2p[TMP_REG_2], 0, b2p[TMP_REG_1]));
++			EMIT(PPC_RAW_STWCX(tmp2_reg, 0, tmp1_reg));
+ 			/* we're done if this succeeded */
+ 			PPC_BCC_SHORT(COND_NE, tmp_idx);
+ 			break;
+@@ -697,11 +683,11 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
+ 			}
+ 			/* *(u64 *)(dst + off) += src */
+ 
+-			EMIT(PPC_RAW_ADDI(b2p[TMP_REG_1], dst_reg, off));
++			EMIT(PPC_RAW_ADDI(tmp1_reg, dst_reg, off));
+ 			tmp_idx = ctx->idx * 4;
+-			EMIT(PPC_RAW_LDARX(b2p[TMP_REG_2], 0, b2p[TMP_REG_1], 0));
+-			EMIT(PPC_RAW_ADD(b2p[TMP_REG_2], b2p[TMP_REG_2], src_reg));
+-			EMIT(PPC_RAW_STDCX(b2p[TMP_REG_2], 0, b2p[TMP_REG_1]));
++			EMIT(PPC_RAW_LDARX(tmp2_reg, 0, tmp1_reg, 0));
++			EMIT(PPC_RAW_ADD(tmp2_reg, tmp2_reg, src_reg));
++			EMIT(PPC_RAW_STDCX(tmp2_reg, 0, tmp1_reg));
+ 			PPC_BCC_SHORT(COND_NE, tmp_idx);
+ 			break;
+ 
+@@ -879,14 +865,10 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
+ 			case BPF_JMP | BPF_JSET | BPF_X:
+ 			case BPF_JMP32 | BPF_JSET | BPF_X:
+ 				if (BPF_CLASS(code) == BPF_JMP) {
+-					EMIT(PPC_RAW_AND_DOT(b2p[TMP_REG_1], dst_reg,
+-						    src_reg));
++					EMIT(PPC_RAW_AND_DOT(tmp1_reg, dst_reg, src_reg));
+ 				} else {
+-					int tmp_reg = b2p[TMP_REG_1];
+-
+-					EMIT(PPC_RAW_AND(tmp_reg, dst_reg, src_reg));
+-					EMIT(PPC_RAW_RLWINM_DOT(tmp_reg, tmp_reg, 0, 0,
+-						       31));
++					EMIT(PPC_RAW_AND(tmp1_reg, dst_reg, src_reg));
++					EMIT(PPC_RAW_RLWINM_DOT(tmp1_reg, tmp1_reg, 0, 0, 31));
+ 				}
+ 				break;
+ 			case BPF_JMP | BPF_JNE | BPF_K:
+@@ -915,14 +897,12 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
+ 						EMIT(PPC_RAW_CMPLDI(dst_reg, imm));
+ 				} else {
+ 					/* sign-extending load */
+-					PPC_LI32(b2p[TMP_REG_1], imm);
++					PPC_LI32(tmp1_reg, imm);
+ 					/* ... but unsigned comparison */
+ 					if (is_jmp32)
+-						EMIT(PPC_RAW_CMPLW(dst_reg,
+-							  b2p[TMP_REG_1]));
++						EMIT(PPC_RAW_CMPLW(dst_reg, tmp1_reg));
+ 					else
+-						EMIT(PPC_RAW_CMPLD(dst_reg,
+-							  b2p[TMP_REG_1]));
++						EMIT(PPC_RAW_CMPLD(dst_reg, tmp1_reg));
+ 				}
+ 				break;
+ 			}
+@@ -947,13 +927,11 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
+ 					else
+ 						EMIT(PPC_RAW_CMPDI(dst_reg, imm));
+ 				} else {
+-					PPC_LI32(b2p[TMP_REG_1], imm);
++					PPC_LI32(tmp1_reg, imm);
+ 					if (is_jmp32)
+-						EMIT(PPC_RAW_CMPW(dst_reg,
+-							 b2p[TMP_REG_1]));
++						EMIT(PPC_RAW_CMPW(dst_reg, tmp1_reg));
+ 					else
+-						EMIT(PPC_RAW_CMPD(dst_reg,
+-							 b2p[TMP_REG_1]));
++						EMIT(PPC_RAW_CMPD(dst_reg, tmp1_reg));
+ 				}
+ 				break;
+ 			}
+@@ -962,19 +940,16 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
+ 				/* andi does not sign-extend the immediate */
+ 				if (imm >= 0 && imm < 32768)
+ 					/* PPC_ANDI is _only/always_ dot-form */
+-					EMIT(PPC_RAW_ANDI(b2p[TMP_REG_1], dst_reg, imm));
++					EMIT(PPC_RAW_ANDI(tmp1_reg, dst_reg, imm));
+ 				else {
+-					int tmp_reg = b2p[TMP_REG_1];
+-
+-					PPC_LI32(tmp_reg, imm);
++					PPC_LI32(tmp1_reg, imm);
+ 					if (BPF_CLASS(code) == BPF_JMP) {
+-						EMIT(PPC_RAW_AND_DOT(tmp_reg, dst_reg,
+-							    tmp_reg));
++						EMIT(PPC_RAW_AND_DOT(tmp1_reg, dst_reg,
++								     tmp1_reg));
+ 					} else {
+-						EMIT(PPC_RAW_AND(tmp_reg, dst_reg,
+-							tmp_reg));
+-						EMIT(PPC_RAW_RLWINM_DOT(tmp_reg, tmp_reg,
+-							       0, 0, 31));
++						EMIT(PPC_RAW_AND(tmp1_reg, dst_reg, tmp1_reg));
++						EMIT(PPC_RAW_RLWINM_DOT(tmp1_reg, tmp1_reg,
++									0, 0, 31));
+ 					}
+ 				}
+ 				break;
+-- 
+2.25.1
 
