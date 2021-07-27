@@ -2,53 +2,101 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D95113D6E8B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jul 2021 07:59:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7721B3D6F14
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jul 2021 08:17:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GYmMx5fFRz300J
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jul 2021 15:59:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GYmmb2Sb9z3bWY
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jul 2021 16:17:35 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=201602 header.b=mqE/Wtkh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AZfa2557;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=dgibson@ozlabs.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
- header.a=rsa-sha256 header.s=201602 header.b=mqE/Wtkh; 
- dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=AZfa2557; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GYmMW4r9Fz2xKT
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jul 2021 15:59:18 +1000 (AEST)
-Received: by ozlabs.org (Postfix, from userid 1007)
- id 4GYmMT600rz9sX5; Tue, 27 Jul 2021 15:59:17 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gibson.dropbear.id.au; s=201602; t=1627365557;
- bh=sZK49bZ+9mkKeVN3juIZOhNs+UehZFx67H+WeTfOQD8=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=mqE/WtkhduKAcyT+Itlb0k3vNqrfIYv2vO2j2bx78NfHP5iTB0V9dvVQ3Er+tBoBF
- GgqED4Fb0j0umHU1wx0c6m1nBF89xgEEPHRru009joMqOFrGWrAuk6Qov+FK8j8Sl1
- soHc9MQawFULCZlf80m7ZpQVd3h3/u5+ug2BNzDo=
-Date: Tue, 27 Jul 2021 15:59:12 +1000
-From: David Gibson <david@gibson.dropbear.id.au>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH v5 4/6] powerpc/pseries: Consolidate different NUMA
- distance update code paths
-Message-ID: <YP+gsFZIsFtRptID@yekko>
-References: <20210628151117.545935-1-aneesh.kumar@linux.ibm.com>
- <20210628151117.545935-5-aneesh.kumar@linux.ibm.com>
- <YPjMkQ5W1fSQdzNe@yekko> <87zgueu8ql.fsf@linux.ibm.com>
- <YP4f7lj9p4f/h77f@yekko> <87r1fktory.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GYmm70sWsz2xvL
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Jul 2021 16:17:10 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 16R6DtCQ020751; Tue, 27 Jul 2021 02:17:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : reply-to : references : mime-version : content-type
+ : in-reply-to; s=pp1; bh=8XeYG3yg7Vf01LhGV5Z7bYY22GMqXf1CPu6wzVsB1Bw=;
+ b=AZfa2557qPr1YpYZlnyMIx50kjsTSzuPoOe2XJBJqPGvM1QBQihdzbyH9JY7CiDidF96
+ 2cH1GmSTibYpOyrZ/c9/Gl8QASw8E9gt4AKNffMlmXZC0+9fTN6zUklsKNUvPrX6Xlmp
+ 5vxNQuQgKBKxIibXhmhlUIMd9XANIZC2HkOymFZ6bBEzLJz+mWiHtLxfyTd2CF179m0O
+ JQgIKRTQmWLCeJClEJuoqknSsJ6M8q4gYlOz+Q2PZcPK/eYD0dwOogv1d0Zdy+FYN/dB
+ qa6uIi/CXatupy05awUrmBincG7YjEEh1JEgCd6mrCwtVaLXJ1gn9knvAMavhuWPmGv8 cg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3a2cph02pj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Jul 2021 02:17:02 -0400
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 16R6E1g9020876;
+ Tue, 27 Jul 2021 02:17:01 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3a2cph02p9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Jul 2021 02:17:01 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16R62PBG004810;
+ Tue, 27 Jul 2021 06:17:01 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma03dal.us.ibm.com with ESMTP id 3a235nhbx3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 27 Jul 2021 06:17:01 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
+ [9.57.199.111])
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 16R6H0oJ31457626
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 27 Jul 2021 06:17:00 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5F58FAC05E;
+ Tue, 27 Jul 2021 06:17:00 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EEFA3AC066;
+ Tue, 27 Jul 2021 06:16:59 +0000 (GMT)
+Received: from sofia.ibm.com (unknown [9.85.71.190])
+ by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue, 27 Jul 2021 06:16:59 +0000 (GMT)
+Received: by sofia.ibm.com (Postfix, from userid 1000)
+ id 4A24D2E4A4C; Tue, 27 Jul 2021 11:46:56 +0530 (IST)
+Date: Tue, 27 Jul 2021 11:46:56 +0530
+From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+To: "Pratik R. Sampat" <psampat@linux.ibm.com>
+Subject: Re: [PATCH] cpufreq:powernv: Fix init_chip_info initialization in
+ numa=off
+Message-ID: <20210727061656.GA10282@in.ibm.com>
+References: <20210726170758.61041-1-psampat@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="Wy9UC89B51bginW/"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87r1fktory.fsf@linux.ibm.com>
+In-Reply-To: <20210726170758.61041-1-psampat@linux.ibm.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: TBFUlIHCqR60qHwztg6isWZ6lxfaWg_M
+X-Proofpoint-GUID: JOA9zxu-8QY3hhlblipMVVHkB5WwXOxu
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-07-27_04:2021-07-27,
+ 2021-07-27 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ phishscore=0 mlxlogscore=999 mlxscore=0 lowpriorityscore=0 malwarescore=0
+ spamscore=0 adultscore=0 suspectscore=0 impostorscore=0 clxscore=1011
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2107140000 definitions=main-2107270035
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,318 +108,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Reply-To: ego@linux.vnet.ibm.com
+Cc: linux-pm@vger.kernel.org, pratik.r.sampat@gmail.com, rjw@rjwysocki.net,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Mon, Jul 26, 2021 at 10:37:57PM +0530, Pratik R. Sampat wrote:
+> In the numa=off kernel command-line configuration init_chip_info() loops
+> around the number of chips and attempts to copy the cpumask of that node
+> which is NULL for all iterations after the first chip.
+> 
+> Hence, store the cpu mask for each chip instead of derving cpumask from
+> node while populating the "chips" struct array and copy that to the
+> chips[i].mask
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 053819e0bf84 ("cpufreq: powernv: Handle throttling due to Pmax capping at chip level")
+> Signed-off-by: Pratik R. Sampat <psampat@linux.ibm.com>
+> Reported-by: Shirisha Ganta <shirisha.ganta1@ibm.com>
+> ---
+>  drivers/cpufreq/powernv-cpufreq.c | 15 +++++++++++++--
+>  1 file changed, 13 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
+> index 005600cef273..8ec10d9aed8f 100644
+> --- a/drivers/cpufreq/powernv-cpufreq.c
+> +++ b/drivers/cpufreq/powernv-cpufreq.c
+> @@ -1046,12 +1046,20 @@ static int init_chip_info(void)
+>  	unsigned int *chip;
+>  	unsigned int cpu, i;
+>  	unsigned int prev_chip_id = UINT_MAX;
+> +	cpumask_t *chip_cpu_mask;
+>  	int ret = 0;
+> 
+>  	chip = kcalloc(num_possible_cpus(), sizeof(*chip), GFP_KERNEL);
+>  	if (!chip)
+>  		return -ENOMEM;
+> 
+> +	/* Allocate a chip cpu mask large enough to fit mask for all chips */
+> +	chip_cpu_mask = kcalloc(32, sizeof(cpumask_t), GFP_KERNEL);
 
---Wy9UC89B51bginW/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I suppose by 32 you mean the maximum number of chips possible. You
+could use a #define for that.
 
-On Tue, Jul 27, 2021 at 09:02:33AM +0530, Aneesh Kumar K.V wrote:
-> David Gibson <david@gibson.dropbear.id.au> writes:
->=20
-> > On Thu, Jul 22, 2021 at 12:37:46PM +0530, Aneesh Kumar K.V wrote:
-> >> David Gibson <david@gibson.dropbear.id.au> writes:
-> >>=20
-> >> > On Mon, Jun 28, 2021 at 08:41:15PM +0530, Aneesh Kumar K.V wrote:
->=20
-> ....
->=20
-> >=20
-> >> >
-> >> >> +		nid =3D of_read_number(&aa.arrays[index], 1);
-> >> >> +
-> >> >> +		if (nid =3D=3D 0xffff || nid >=3D nr_node_ids)
-> >> >> +			nid =3D default_nid;
-> >> >> +		if (nid > 0 && affinity_form =3D=3D FORM1_AFFINITY) {
-> >> >> +			int i;
-> >> >> +			const __be32 *associativity;
-> >> >> +
-> >> >> +			index =3D lmb->aa_index * aa.array_sz;
-> >> >> +			associativity =3D &aa.arrays[index];
-> >> >> +			/*
-> >> >> +			 * lookup array associativity entries have different format
-> >> >> +			 * There is no length of the array as the first element.
-> >> >
-> >> > The difference it very small, and this is not a hot path.  Couldn't
-> >> > you reduce a chunk of code by prepending aa.array_sz, then re-using
-> >> > __initialize_form1_numa_distance.  Or even making
-> >> > __initialize_form1_numa_distance() take the length as a parameter.
-> >>=20
-> >> The changes are small but confusing w.r.t how we look at the
-> >> associativity-lookup-arrays. The way we interpret associativity array
-> >> and associativity lookup array using primary_domain_index is different.
-> >> Hence the '-1' in the node lookup here.
-> >
-> > They're really not, though.  It's exactly the same interpretation of
-> > the associativity array itself - it's just that one of them has the
-> > array prepended with a (redundant) length.  So you can make
-> > __initialize_form1_numa_distance() work on the "bare" associativity
-> > array, with a given length.  Here you call it with aa.array_sz as the
-> > length, and in the other place you call it with prop[0] as the length.
-> >
-> >>=20
-> >> 	index =3D lmb->aa_index * aa.array_sz + primary_domain_index - 1;
-> >> 	nid =3D of_read_number(&aa.arrays[index], 1);
-> >>=20
-> >>=20
-> >> >
-> >> >> +			 */
-> >> >> +			for (i =3D 0; i < max_associativity_domain_index; i++) {
-> >> >> +				const __be32 *entry;
-> >> >> +
-> >> >> +				entry =3D &associativity[be32_to_cpu(distance_ref_points[i]) -=
- 1];
-> >> >
-> >> > Does anywhere verify that distance_ref_points[i] <=3D aa.array_size =
-for
-> >> > every i?
-> >>=20
-> >> We do check for=20
-> >>=20
-> >> 	if (primary_domain_index <=3D aa.array_sz &&
-> >
-> > Right, but that doesn't check the other distance_ref_points entries.
-> > Not that there's any reason to have extra entries with Form2, but we
-> > still don't want stray array accesses.
->=20
-> This is how the change looks. I am not convinced this makes it simpler.
+Otherwise, the patch looks good to me.
 
-It's not, but that's because the lookup_array_assoc flag is not needed...
+Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
 
-> I will add that as the last patch and we can drop that if we find that
-> not helpful?=20
->=20
-> modified   arch/powerpc/mm/numa.c
-> @@ -171,20 +171,31 @@ static void unmap_cpu_from_node(unsigned long cpu)
->  }
->  #endif /* CONFIG_HOTPLUG_CPU || CONFIG_PPC_SPLPAR */
-> =20
-> -/*
-> - * Returns nid in the range [0..nr_node_ids], or -1 if no useful NUMA
-> - * info is found.
-> - */
-> -static int associativity_to_nid(const __be32 *associativity)
-> +static int __associativity_to_nid(const __be32 *associativity,
-> +				  bool lookup_array_assoc,
-> +				  int max_array_index)
->  {
->  	int nid =3D NUMA_NO_NODE;
-> +	int index;
-> =20
->  	if (!numa_enabled)
->  		goto out;
-> +	/*
-> +	 * ibm,associativity-lookup-array doesn't have element
-> +	 * count at the start of the associativity. Hence
-> +	 * decrement the primary_domain_index when used with
-> +	 * lookup-array associativity.
-> +	 */
-> +	if (lookup_array_assoc)
-> +		index =3D primary_domain_index - 1;
-> +	else {
-> +		index =3D primary_domain_index;
-> +		max_array_index =3D of_read_number(associativity, 1);
+
+
+> +	if (!chip_cpu_mask) {
+> +		ret = -ENOMEM;
+> +		goto free_and_return;
 > +	}
-> +	if (index > max_array_index)
-> +		goto out;
-
-So, the associativity-array-with-length is exactly a length, followed
-by an associativity-array-without-length.  What I was suggesting is
-you make this function only take an
-associativity-array-without-length, with the length passed separately.
-
-Where you want to use it on an associativity-array-with-length, stored
-in __be32 *awl, you just invoke it as:
-	associativity_to_nid(awl + 1, of_read_number(awl, 1));
-
-> -	if (of_read_number(associativity, 1) >=3D primary_domain_index)
-> -		nid =3D of_read_number(&associativity[primary_domain_index], 1);
-> -
-> +	nid =3D of_read_number(&associativity[index], 1);
->  	/* POWER4 LPAR uses 0xffff as invalid node */
->  	if (nid =3D=3D 0xffff || nid >=3D nr_node_ids)
->  		nid =3D NUMA_NO_NODE;
-> @@ -192,6 +203,15 @@ static int associativity_to_nid(const __be32 *associ=
-ativity)
->  	return nid;
->  }
-> =20
-> +/*
-> + * Returns nid in the range [0..nr_node_ids], or -1 if no useful NUMA
-> + * info is found.
-> + */
-> +static inline int associativity_to_nid(const __be32 *associativity)
-> +{
-> +	return __associativity_to_nid(associativity, false, 0);
-> +}
 > +
->  static int __cpu_form2_relative_distance(__be32 *cpu1_assoc, __be32 *cpu=
-2_assoc)
->  {
->  	int dist;
-> @@ -295,19 +315,38 @@ int of_node_to_nid(struct device_node *device)
->  }
->  EXPORT_SYMBOL(of_node_to_nid);
-> =20
-> -static void __initialize_form1_numa_distance(const __be32 *associativity)
-> +static void __initialize_form1_numa_distance(const __be32 *associativity,
-> +					     bool lookup_array_assoc,
-> +					     int max_array_index)
->  {
->  	int i, nid;
-> +	int index_offset =3D 0;
-> =20
->  	if (affinity_form !=3D FORM1_AFFINITY)
->  		return;
-> +	/*
-> +	 * ibm,associativity-lookup-array doesn't have element
-> +	 * count at the start of the associativity. Hence
-> +	 * decrement the distance_ref_points index when used with
-> +	 * lookup-array associativity.
-> +	 */
-> +	if (lookup_array_assoc)
-> +		index_offset =3D 1;
-> +	else
-> +		max_array_index =3D of_read_number(associativity, 1);
-> =20
-> -	nid =3D associativity_to_nid(associativity);
-> +	nid =3D __associativity_to_nid(associativity, lookup_array_assoc, max_a=
-rray_index);
->  	if (nid !=3D NUMA_NO_NODE) {
->  		for (i =3D 0; i < distance_ref_points_depth; i++) {
->  			const __be32 *entry;
-> +			int index =3D be32_to_cpu(distance_ref_points[i]) - index_offset;
-> =20
-> -			entry =3D &associativity[be32_to_cpu(distance_ref_points[i])];
-> +			/*
-> +			 * broken hierarchy, return with broken distance table
-> +			 */
-> +			if (index > max_array_index)
-> +				return;
-> +			entry =3D &associativity[index];
->  			distance_lookup_table[nid][i] =3D of_read_number(entry, 1);
+>  	for_each_possible_cpu(cpu) {
+>  		unsigned int id = cpu_to_chip_id(cpu);
+> 
+> @@ -1059,22 +1067,25 @@ static int init_chip_info(void)
+>  			prev_chip_id = id;
+>  			chip[nr_chips++] = id;
 >  		}
+> +		cpumask_set_cpu(cpu, &chip_cpu_mask[nr_chips-1]);
 >  	}
-> @@ -321,7 +360,7 @@ static void initialize_form1_numa_distance(struct dev=
-ice_node *node)
->  	if (!associativity)
->  		return;
-> =20
-> -	__initialize_form1_numa_distance(associativity);
-> +	__initialize_form1_numa_distance(associativity, false, 0);
->  }
-> =20
->  /*
-> @@ -586,27 +625,14 @@ static int get_nid_and_numa_distance(struct drmem_l=
-mb *lmb)
-> =20
->  	if (primary_domain_index <=3D aa.array_sz &&
->  	    !(lmb->flags & DRCONF_MEM_AI_INVALID) && lmb->aa_index < aa.n_array=
-s) {
-> -		index =3D lmb->aa_index * aa.array_sz + primary_domain_index - 1;
-> -		nid =3D of_read_number(&aa.arrays[index], 1);
-> +		const __be32 *associativity;
-> =20
-> -		if (nid =3D=3D 0xffff || nid >=3D nr_node_ids)
-> -			nid =3D default_nid;
-> +		index =3D lmb->aa_index * aa.array_sz;
-> +		associativity =3D &aa.arrays[index];
-> +		nid =3D __associativity_to_nid(associativity, true, aa.array_sz - 1);
->  		if (nid > 0 && affinity_form =3D=3D FORM1_AFFINITY) {
-> -			int i;
-> -			const __be32 *associativity;
-> -
-> -			index =3D lmb->aa_index * aa.array_sz;
-> -			associativity =3D &aa.arrays[index];
-> -			/*
-> -			 * lookup array associativity entries have different format
-> -			 * There is no length of the array as the first element.
-> -			 */
-> -			for (i =3D 0; i < distance_ref_points_depth; i++) {
-> -				const __be32 *entry;
-> -
-> -				entry =3D &associativity[be32_to_cpu(distance_ref_points[i]) - 1];
-> -				distance_lookup_table[nid][i] =3D of_read_number(entry, 1);
-> -			}
-> +			__initialize_form1_numa_distance(associativity,
-> +							 true, aa.array_sz - 1);
->  		}
+> 
+>  	chips = kcalloc(nr_chips, sizeof(struct chip), GFP_KERNEL);
+>  	if (!chips) {
+>  		ret = -ENOMEM;
+> -		goto free_and_return;
+> +		goto out_chip_cpu_mask;
 >  	}
->  	return nid;
-> @@ -632,9 +658,11 @@ int of_drconf_to_nid_single(struct drmem_lmb *lmb)
-> =20
->  	if (primary_domain_index <=3D aa.array_sz &&
->  	    !(lmb->flags & DRCONF_MEM_AI_INVALID) && lmb->aa_index < aa.n_array=
-s) {
-> -		index =3D lmb->aa_index * aa.array_sz + primary_domain_index - 1;
-> -		nid =3D of_read_number(&aa.arrays[index], 1);
-> +		const __be32 *associativity;
-> =20
-> +		index =3D lmb->aa_index * aa.array_sz;
-> +		associativity =3D &aa.arrays[index];
-> +		nid =3D __associativity_to_nid(associativity, true, aa.array_sz - 1);
->  		if (nid =3D=3D 0xffff || nid >=3D nr_node_ids)
->  			nid =3D default_nid;
+> 
+>  	for (i = 0; i < nr_chips; i++) {
+>  		chips[i].id = chip[i];
+> -		cpumask_copy(&chips[i].mask, cpumask_of_node(chip[i]));
+> +		cpumask_copy(&chips[i].mask, &chip_cpu_mask[i]);
+>  		INIT_WORK(&chips[i].throttle, powernv_cpufreq_work_fn);
+>  		for_each_cpu(cpu, &chips[i].mask)
+>  			per_cpu(chip_info, cpu) =  &chips[i];
 >  	}
-> @@ -939,7 +967,7 @@ static int __init parse_numa_properties(void)
-> =20
->  		if (__vphn_get_associativity(i, vphn_assoc) =3D=3D 0) {
->  			nid =3D associativity_to_nid(vphn_assoc);
-> -			__initialize_form1_numa_distance(vphn_assoc);
-> +			__initialize_form1_numa_distance(vphn_assoc, false, 0);
->  		} else {
-> =20
->  			/*
-> @@ -953,7 +981,7 @@ static int __init parse_numa_properties(void)
->  			associativity =3D of_get_associativity(cpu);
->  			if (associativity) {
->  				nid =3D associativity_to_nid(associativity);
-> -				__initialize_form1_numa_distance(associativity);
-> +				__initialize_form1_numa_distance(associativity, false, 0);
->  			}
->  			of_node_put(cpu);
->  		}
-> @@ -993,7 +1021,7 @@ static int __init parse_numa_properties(void)
->  		associativity =3D of_get_associativity(memory);
->  		if (associativity) {
->  			nid =3D associativity_to_nid(associativity);
-> -			__initialize_form1_numa_distance(associativity);
-> +			__initialize_form1_numa_distance(associativity, false, 0);
->  		} else
->  			nid =3D default_nid;
-> =20
->=20
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---Wy9UC89B51bginW/
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmD/oK4ACgkQbDjKyiDZ
-s5LRYw//SHzg0RUqHcgJhJbZAjhsRQSivRNdgEXuB2L5xI0sskv3RflXIfSxb47E
-JpSMtalGMLrUmKFK1ZHtNkLNk2aDy1/4xe6WbCeXks3zXCSYG33mCdagRAxs5wFO
-mPLClbVaJxJH93HoT9lmSy7RVluJ22nP5yGw6mwHj+HR35psjBaf2+qCoCsEovvB
-iubq5Z7qMx1nmUE01q+eG3uHTQDK7VzcTs54R2ht70jPPldS/XbLzA7IWs9j+v+u
-cgQl27r1qf3VDdPwdM2Oq3XwOjrFIppKGhs8621BqFU7sPra8Cbls+X2yTYzAMGs
-BSgDHsHV5eNZ71VremJy4PE6m+v2FOr24vBYMMmoXrgsO49goCeO/RSzuA5hP8cW
-5LHmUdMUseRtbJHdTtXWUUKMAmhXf3Zo4Qy1DubYm0HuxtBPCyx46WPIS3jtHSmw
-pClofbeSiF959k87AamxVjuADle6qDdnGV/VaxDBSnwB2Wa4CDFKEbG2Wqb4dV/l
-OZVrM8miRTLdo+iUFiIB2HdVdwqdZmujnyax9DRVapNLNaOPj7QwNTdGhJ4Vr1Zi
-kQAJYInIndlyy+zLoJfg/mOI5DNgH+AbK40CzcjdFtHbQoPrtFU8V5MEz3mf0Yx3
-uH21lKVAHCeFy5U0jBFs49o8p9uXJEp2fS00uqRamjV0ndFr83Y=
-=yryv
------END PGP SIGNATURE-----
-
---Wy9UC89B51bginW/--
+> 
+> +out_chip_cpu_mask:
+> +	kfree(chip_cpu_mask);
+>  free_and_return:
+>  	kfree(chip);
+>  	return ret;
+> -- 
+> 2.31.1
+> 
