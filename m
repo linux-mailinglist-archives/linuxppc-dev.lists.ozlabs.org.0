@@ -1,99 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 057E93D7899
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jul 2021 16:37:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FDE33D78CF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Jul 2021 16:49:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GYzsS6nGPz3bbv
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jul 2021 00:37:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GZ07c3WTlz3bhv
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jul 2021 00:49:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MZeR0fkg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Jm0Ghr4D;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=MZeR0fkg; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=Jm0Ghr4D; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GYzry1D8gz3005
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jul 2021 00:37:05 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 16REXgq9178457; Tue, 27 Jul 2021 10:36:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=MQ4ux33af7VadX0imatqcwUcNfNmUpD8TX9W/+DBEt0=;
- b=MZeR0fkgwbSXvS6OMfEquZ7bn2+U6rdOBFFkrIHMqlDFkL7CcTLDaAe7+IIlL1WFqsgx
- 5L8s2ATFs1qiKzISu8Su1a4b6Jmh7wQY67m0+3LG2IxyPBhmA2JKoShx9VNqw+t68OMi
- nK1XnwQbuVbnu0JFkFxxbiO/lR3cZ7M23yls8elHNoJ7lVP1rA7crVGnuJNKhxsnPC8E
- vLYUB+GhWeD7R3bwpqGkLhm7rXMBpImSRxfbsxlCSzepCFwdGPByxsYT9hqhq3fzTUSu
- Vt7Renq85HDAku5KmS3gUoOuCy2wqf4SoGbOwdI6vzXR7g0+BPRCXeQoR0UuxprpcJNa BQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3a2g7bj8gk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Jul 2021 10:36:56 -0400
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 16REXtMi179616;
- Tue, 27 Jul 2021 10:36:39 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3a2g7bj7ey-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Jul 2021 10:36:38 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16REM61O003606;
- Tue, 27 Jul 2021 14:36:24 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
- [9.57.198.27]) by ppma02dal.us.ibm.com with ESMTP id 3a2362dpuc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 27 Jul 2021 14:36:24 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 16REaNAQ50397554
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 27 Jul 2021 14:36:23 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3CF8D112066;
- Tue, 27 Jul 2021 14:36:23 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 837F6112070;
- Tue, 27 Jul 2021 14:36:22 +0000 (GMT)
-Received: from localhost (unknown [9.211.99.174])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTPS;
- Tue, 27 Jul 2021 14:36:22 +0000 (GMT)
-From: Fabiano Rosas <farosas@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
-Subject: Re: [PATCH v5 2/2] KVM: PPC: Book3S HV: Stop forwarding all HFUs to L1
-In-Reply-To: <1627355201.gqa4czyyxy.astroid@bobo.none>
-References: <20210726201710.2432874-1-farosas@linux.ibm.com>
- <20210726201710.2432874-3-farosas@linux.ibm.com>
- <1627355201.gqa4czyyxy.astroid@bobo.none>
-Date: Tue, 27 Jul 2021 11:36:20 -0300
-Message-ID: <87o8anddsr.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GZ0764c96z2xZR
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jul 2021 00:49:22 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3559861AFD;
+ Tue, 27 Jul 2021 14:49:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1627397359;
+ bh=Tjiwf4/hYWXFn9aUgPpl3D0HHZbelU5u+FTy8tvX/BA=;
+ h=From:To:Cc:Subject:Date:From;
+ b=Jm0Ghr4DY8S8DbJUMOgzNYNZ9TpUDawl2m4udsOCvZu6uErY0ceZK1ugOzDu5GYfU
+ FcpYwKuxA6AjAy3zyCgVACtAq/UWFPG3mNHsh8tFDA5zWzInxHIu8o0jJfWh5vuzLj
+ ++JkgaoWIL8JM41Ld9ZSmOyhjlGS5DRNjCGi0qceKIOC/UT+DuY98htxeqdY7x3FKV
+ 40uaxkb5SA6kv5iFRlvbFCA5wazm8JgMVhL91/E5GnpKc2GEeZREYLyo0ppxHTqLHX
+ HXWc8AwqP3FWNXks7HkSQo4WKwHmUdrLF/lKZgKuXzZvtIgXac3yNPJy/etARITDNG
+ 3IhheeU5vs0Kw==
+From: Arnd Bergmann <arnd@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH v5 0/6] compat: remove compat_alloc_user_space
+Date: Tue, 27 Jul 2021 16:48:53 +0200
+Message-Id: <20210727144859.4150043-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 46Un7Zj04E9iCj213-wdxD8JkNpIXPK9
-X-Proofpoint-ORIG-GUID: vqsRGzEaj4gq5C088sZ7HWVto0aY2lNW
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-07-27_10:2021-07-27,
- 2021-07-27 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0
- lowpriorityscore=0 adultscore=0 spamscore=0 impostorscore=0 suspectscore=0
- phishscore=0 bulkscore=0 clxscore=1015 mlxlogscore=999 priorityscore=1501
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2107140000 definitions=main-2107270086
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,106 +55,151 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Feng Tang <feng.tang@intel.com>, linux-mips@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+ Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+ Helge Deller <deller@gmx.de>, x86@kernel.org,
+ Christoph Hellwig <hch@infradead.org>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Borislav Petkov <bp@alien8.de>,
+ Al Viro <viro@zeniv.linux.org.uk>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-arm-kernel@lists.infradead.org,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ linux-api@vger.kernel.org, linux-kernel@vger.kernel.org,
+ "Eric W. Biederman" <ebiederm@xmission.com>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
+From: Arnd Bergmann <arnd@arndb.de>
 
-> Excerpts from Fabiano Rosas's message of July 27, 2021 6:17 am:
->> If the nested hypervisor has no access to a facility because it has
->> been disabled by the host, it should also not be able to see the
->> Hypervisor Facility Unavailable that arises from one of its guests
->> trying to access the facility.
->> 
->> This patch turns a HFU that happened in L2 into a Hypervisor Emulation
->> Assistance interrupt and forwards it to L1 for handling. The ones that
->> happened because L1 explicitly disabled the facility for L2 are still
->> let through, along with the corresponding Cause bits in the HFSCR.
->> 
->> Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
->> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
->> ---
->>  arch/powerpc/kvm/book3s_hv_nested.c | 32 +++++++++++++++++++++++------
->>  1 file changed, 26 insertions(+), 6 deletions(-)
->> 
->> diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
->> index 8215dbd4be9a..d544b092b49a 100644
->> --- a/arch/powerpc/kvm/book3s_hv_nested.c
->> +++ b/arch/powerpc/kvm/book3s_hv_nested.c
->> @@ -99,7 +99,7 @@ static void byteswap_hv_regs(struct hv_guest_state *hr)
->>  	hr->dawrx1 = swab64(hr->dawrx1);
->>  }
->>  
->> -static void save_hv_return_state(struct kvm_vcpu *vcpu, int trap,
->> +static void save_hv_return_state(struct kvm_vcpu *vcpu,
->>  				 struct hv_guest_state *hr)
->>  {
->>  	struct kvmppc_vcore *vc = vcpu->arch.vcore;
->> @@ -118,7 +118,7 @@ static void save_hv_return_state(struct kvm_vcpu *vcpu, int trap,
->>  	hr->pidr = vcpu->arch.pid;
->>  	hr->cfar = vcpu->arch.cfar;
->>  	hr->ppr = vcpu->arch.ppr;
->> -	switch (trap) {
->> +	switch (vcpu->arch.trap) {
->>  	case BOOK3S_INTERRUPT_H_DATA_STORAGE:
->>  		hr->hdar = vcpu->arch.fault_dar;
->>  		hr->hdsisr = vcpu->arch.fault_dsisr;
->> @@ -128,9 +128,29 @@ static void save_hv_return_state(struct kvm_vcpu *vcpu, int trap,
->>  		hr->asdr = vcpu->arch.fault_gpa;
->>  		break;
->>  	case BOOK3S_INTERRUPT_H_FAC_UNAVAIL:
->> -		hr->hfscr = ((~HFSCR_INTR_CAUSE & hr->hfscr) |
->> -			     (HFSCR_INTR_CAUSE & vcpu->arch.hfscr));
->> -		break;
->> +	{
->> +		u8 cause = vcpu->arch.hfscr >> 56;
->
-> Can this be u64 just to help gcc?
->
+Going through compat_alloc_user_space() to convert indirect system call
+arguments tends to add complexity compared to handling the native and
+compat logic in the same code.
 
-Yes.
+Out of the other remaining callers, the linux-media series went into
+v5.14, and the network ioctl handling is now fixed in net-next, so
+these are the last remaining users, and I now include the final
+patch to remove the definitions as well.
 
->> +
->> +		WARN_ON_ONCE(cause >= BITS_PER_LONG);
->> +
->> +		if (!(hr->hfscr & (1UL << cause))) {
->> +			hr->hfscr = ((~HFSCR_INTR_CAUSE & hr->hfscr) |
->> +				     (HFSCR_INTR_CAUSE & vcpu->arch.hfscr));
->> +			break;
->> +		}
->> +
->> +		/*
->> +		 * We have disabled this facility, so it does not
->> +		 * exist from L1's perspective. Turn it into a HEAI.
->> +		 */
->> +		vcpu->arch.trap = BOOK3S_INTERRUPT_H_EMUL_ASSIST;
->> +		kvmppc_load_last_inst(vcpu, INST_GENERIC, &vcpu->arch.emul_inst);
->
-> Hmm, this doesn't handle kvmpc_load_last_inst failure. Other code tends 
-> to just resume guest and retry in this case. Can we do that here?
->
+Since these patches are now all that remains, it would be nice to
+merge it all through Andrew's Linux-mm tree, which is already based
+on top of linux-next.
 
-Not at this point. The other code does that inside
-kvmppc_handle_exit_hv, which is called from kvmhv_run_single_vcpu. And
-since we're changing the interrupt, I cannot load the last instruction
-at kvmppc_handle_nested_exit because at that point this is still an HFU.
+       Arnd
+---
 
-Unless I do it anyway at the HFU handler and put a comment explaining
-the situation.
+Changes in v4:
 
-Or I could check for failure and clear vcpu->arch.emul_inst and
-therefore also hr->heir if we couldn't load the instruction.
+- Rebase on top of net-next
+- Split up and improve the kexec patch based on Christoph's suggestions
+- Include final patch to remove compat_alloc_user_space
+- Cc compat architecture maintainers
 
->> +
->> +		/* Don't leak the cause field */
->> +		hr->hfscr &= ~HFSCR_INTR_CAUSE;
->
-> This hunk also remains -- shouldn't change HFSCR for HEA, only HFAC.
+Link: https://lore.kernel.org/lkml/20210720150950.3669610-1-arnd@kernel.org/
 
-Ah of course, thanks.
+Changes in v3:
 
->
-> Thanks,
-> Nick
+- fix whitespace as pointed out by Christoph Hellwig
+- minor build fixes
+- rebase to v5.13-rc1
+
+Link: https://lore.kernel.org/lkml/20210517203343.3941777-1-arnd@kernel.org/
+
+Changes in v2:
+
+- address review comments from Christoph Hellwig
+- split syscall removal into a separate patch
+- replace __X32_COND_SYSCALL() with individual macros for x32
+
+Link: https://lore.kernel.org/lkml/20201208150614.GA15765@infradead.org/
+
+Arnd Bergmann (6):
+  kexec: move locking into do_kexec_load
+  kexec: avoid compat_alloc_user_space
+  mm: simplify compat_sys_move_pages
+  mm: simplify compat numa syscalls
+  compat: remove some compat entry points
+  arch: remove compat_alloc_user_space
+
+ arch/arm64/include/asm/compat.h           |   5 -
+ arch/arm64/include/asm/uaccess.h          |  11 --
+ arch/arm64/include/asm/unistd32.h         |  10 +-
+ arch/arm64/lib/Makefile                   |   2 +-
+ arch/arm64/lib/copy_in_user.S             |  77 ---------
+ arch/mips/cavium-octeon/octeon-memcpy.S   |   2 -
+ arch/mips/include/asm/compat.h            |   8 -
+ arch/mips/include/asm/uaccess.h           |  26 ---
+ arch/mips/kernel/syscalls/syscall_n32.tbl |  10 +-
+ arch/mips/kernel/syscalls/syscall_o32.tbl |  10 +-
+ arch/mips/lib/memcpy.S                    |  11 --
+ arch/parisc/include/asm/compat.h          |   6 -
+ arch/parisc/include/asm/uaccess.h         |   2 -
+ arch/parisc/kernel/syscalls/syscall.tbl   |   8 +-
+ arch/parisc/lib/memcpy.c                  |   9 -
+ arch/powerpc/include/asm/compat.h         |  16 --
+ arch/powerpc/kernel/syscalls/syscall.tbl  |  10 +-
+ arch/s390/include/asm/compat.h            |  10 --
+ arch/s390/include/asm/uaccess.h           |   3 -
+ arch/s390/kernel/syscalls/syscall.tbl     |  10 +-
+ arch/s390/lib/uaccess.c                   |  63 -------
+ arch/sparc/include/asm/compat.h           |  19 ---
+ arch/sparc/kernel/process_64.c            |   2 +-
+ arch/sparc/kernel/signal32.c              |  12 +-
+ arch/sparc/kernel/signal_64.c             |   8 +-
+ arch/sparc/kernel/syscalls/syscall.tbl    |  10 +-
+ arch/x86/entry/syscalls/syscall_32.tbl    |   4 +-
+ arch/x86/entry/syscalls/syscall_64.tbl    |   2 +-
+ arch/x86/include/asm/compat.h             |  13 --
+ arch/x86/include/asm/uaccess_64.h         |   7 -
+ include/linux/compat.h                    |  39 +----
+ include/linux/uaccess.h                   |  10 --
+ include/uapi/asm-generic/unistd.h         |  10 +-
+ kernel/compat.c                           |  21 ---
+ kernel/kexec.c                            | 103 +++++-------
+ kernel/sys_ni.c                           |   5 -
+ mm/mempolicy.c                            | 196 +++++-----------------
+ mm/migrate.c                              |  50 +++---
+ 38 files changed, 175 insertions(+), 645 deletions(-)
+ delete mode 100644 arch/arm64/lib/copy_in_user.S
+
+-- 
+2.29.2
+
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@de.ibm.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: x86@kernel.org
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Eric W. Biederman" <ebiederm@xmission.com>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Feng Tang <feng.tang@intel.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-mips@vger.kernel.org
+Cc: linux-parisc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org
+Cc: sparclinux@vger.kernel.org
+Cc: linux-arch@vger.kernel.org
+Cc: linux-api@vger.kernel.org
+Cc: linux-mm@kvack.org
