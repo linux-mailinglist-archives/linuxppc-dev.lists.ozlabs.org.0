@@ -2,49 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB7513D963D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jul 2021 21:54:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B6013D964C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jul 2021 22:00:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GZkrR3WYpz3ckQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jul 2021 05:54:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GZkzY050lz3bjW
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jul 2021 06:00:25 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=CbeXGXPt;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel-dk.20150623.gappssmtp.com header.i=@kernel-dk.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=x1PbINT2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
- envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.dk (client-ip=2607:f8b0:4864:20::233;
+ helo=mail-oi1-x233.google.com; envelope-from=axboe@kernel.dk;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel-dk.20150623.gappssmtp.com
+ header.i=@kernel-dk.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=x1PbINT2; dkim-atps=neutral
+Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com
+ [IPv6:2607:f8b0:4864:20::233])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GZkqp2ss5z2yZ6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Jul 2021 05:53:39 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
- Subject:Sender:Reply-To:Content-ID:Content-Description;
- bh=ceYcn2BX8bAIVCFE8i/J5S2LBC9zV6/rYm2vca9y+zQ=; b=CbeXGXPtzC+++YgD0UKs3sCy4z
- xjIr2ccAUu8H1jL4QUMfTB39zViFf56ayjzZi2T+pyDMcOuFqrGpSUuEsx7kmRSSFI1Lnb4QROgsz
- BZ7rB3SsLcKQD2pb7KyvPyT+J5tztT+NwkZrQMNxK7pFmj8gCKI4+0PDnVimm1wxeH6HASB75HMWb
- uGvf3CRDW2Dgd3bB9/rGbedgA8x3IDtFaTCO6L3w1PWQzgII6RsdMKQ1K18s+s2ez4rhf0Bj2f2hW
- dpU8E8W2SWb9TQaCJqguSH2zqOSNSKYtkaBFpJu9ZYIGAUzcoM7u2FUrNfaZQcWuJgxKtnBwAaDWC
- dfiv6KQQ==;
-Received: from [2601:1c0:6280:3f0::aefb]
- by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1m8pcQ-002Ej4-1H; Wed, 28 Jul 2021 19:53:30 +0000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GZkyt0L7tz2yxv
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Jul 2021 05:59:47 +1000 (AEST)
+Received: by mail-oi1-x233.google.com with SMTP id o20so5165892oiw.12
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jul 2021 12:59:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=V7tascY0zmK6SjDjUbPmzAhZw2O0kxWfALnB7KaYVDw=;
+ b=x1PbINT2LA8ujUSzo+vCRr5s+0JZmw7NFBFrQYgGx/C4kpgs2YeX7IsEYz/FcY1rL0
+ ImEFKIDk3JagkWbG/Vtzb7zzV8rwCHYzTdib44faAi3enJ8EuACO3en9Jpo1syIZlYyl
+ rSSCPvZY2nlPK5qKzi/y6Zyo6hXSV4ZV2sWg1DQ36svbQIxkuFpzurMDXfbC8GaZ1TcM
+ /tSxF9uRX14bbRGgf5reR1EuaMDATMzCD2xk9P1gWInjEkYvc+YCaoJJaCu985EjBsKR
+ sT/IIQYJUvLO0EDSOwx5hFe6qJWseidOzWDoTOmAWs06xO4+fMqJUl+5SiV9Pt5YxmMC
+ tS6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=V7tascY0zmK6SjDjUbPmzAhZw2O0kxWfALnB7KaYVDw=;
+ b=uFPygSNBE9WS0EVwl8YUNMFG8bA1pJ2l/NO77LDs+tFBWgsaBt75VDi4qfQMkQjwwU
+ Aoalv8ZbLXw0p5iMu8+Sie7dGHm4i1kRC47sruHcfa2DrhVlTik9l2uw2hIOB0DSzc/8
+ fOGrT4fyio3ys79gfHsNf0e0DnWLt2yYsqV1peAqodL/jvLLyM0oryCMamtZwmzEwHpG
+ IjUgR3J1PTR7qgUqi+y3iNeBQrJeq27wVWtV2JuSWklQbto2MLuKp8uFEHqmgwjww7xT
+ hJ1X3bjqeI6S2fJioqA/S9CtaV/qpS6fV+3McOr+DdWKHDso1c1MsXdIk2BezZIgwk4F
+ T6hQ==
+X-Gm-Message-State: AOAM531523MxD5+CMCsECrdZDvCXZzCmJ7UAsPY0RCo6Di9LpQS16hSA
+ gjrn4Dg1xmPQMhZfA4spdL4Flw==
+X-Google-Smtp-Source: ABdhPJyplh3DLaKY33JdHi5ZA/1Zz4gKIUC/ZHaC/vCpjWr2Bk0IU/obgcKjx2u5SMeB4jcc5cywyw==
+X-Received: by 2002:aca:5802:: with SMTP id m2mr7738994oib.23.1627502383125;
+ Wed, 28 Jul 2021 12:59:43 -0700 (PDT)
+Received: from [192.168.1.30] ([207.135.234.126])
+ by smtp.gmail.com with ESMTPSA id d20sm174553otq.67.2021.07.28.12.59.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 28 Jul 2021 12:59:42 -0700 (PDT)
 Subject: Re: [PATCH] arch: Kconfig: clean up obsolete use of HAVE_IDE
 To: Lukas Bulwahn <lukas.bulwahn@gmail.com>, Christoph Hellwig <hch@lst.de>,
- Jens Axboe <axboe@kernel.dk>
+ Randy Dunlap <rdunlap@infradead.org>
 References: <20210728182115.4401-1-lukas.bulwahn@gmail.com>
-From: Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <0dcbd285-0fab-cc58-7f1a-013263f9cb45@infradead.org>
-Date: Wed, 28 Jul 2021 12:53:29 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+From: Jens Axboe <axboe@kernel.dk>
+Message-ID: <3c09d6d8-7f83-4f6f-d496-20f5b1b4a7d8@kernel.dk>
+Date: Wed, 28 Jul 2021 13:59:41 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
 In-Reply-To: <20210728182115.4401-1-lukas.bulwahn@gmail.com>
 Content-Type: text/plain; charset=utf-8
@@ -72,7 +97,7 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/28/21 11:21 AM, Lukas Bulwahn wrote:
+On 7/28/21 12:21 PM, Lukas Bulwahn wrote:
 > The arch-specific Kconfig files use HAVE_IDE to indicate if IDE is
 > supported.
 > 
@@ -81,33 +106,10 @@ On 7/28/21 11:21 AM, Lukas Bulwahn wrote:
 > HAVE_IDE in all those arch-specific Kconfig files.
 > 
 > The issue was identified with ./scripts/checkkconfigsymbols.py.
-> 
-> Fixes: b7fb14d3ac63 ("ide: remove the legacy ide driver")
-> Suggested-by: Randy Dunlap <rdunlap@infradead.org>
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-
-Thanks.
-
-> ---
->  arch/alpha/Kconfig            | 1 -
->  arch/arm/Kconfig              | 6 ------
->  arch/arm/mach-davinci/Kconfig | 1 -
->  arch/h8300/Kconfig.cpu        | 1 -
->  arch/ia64/Kconfig             | 1 -
->  arch/m68k/Kconfig             | 1 -
->  arch/mips/Kconfig             | 1 -
->  arch/parisc/Kconfig           | 1 -
->  arch/powerpc/Kconfig          | 1 -
->  arch/sh/Kconfig               | 1 -
->  arch/sparc/Kconfig            | 1 -
->  arch/x86/Kconfig              | 1 -
->  arch/xtensa/Kconfig           | 1 -
->  13 files changed, 18 deletions(-)
-> 
-
+Thanks, let's queue this for 5.14 to avoid any future conflicts with
+it.
 
 -- 
-~Randy
+Jens Axboe
 
