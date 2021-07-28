@@ -1,103 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AAD23D8D74
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jul 2021 14:05:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1FD93D8E18
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jul 2021 14:44:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GZXRv0WyKz3bjT
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jul 2021 22:05:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GZYJ64S9kz3bXP
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Jul 2021 22:44:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jSy+XZOa;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=UQ/8qIYa;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=psampat@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=jSy+XZOa; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=UQ/8qIYa; 
+ dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GZXRN0VNqz307m
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jul 2021 22:05:19 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 16SC2VdD101996; Wed, 28 Jul 2021 08:05:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : subject :
- date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=IQu+wCH9h7nDTOSHQeUwEGhSI28OKU5cShZSQ8xx/uw=;
- b=jSy+XZOaPcxAhtNsegAIez5qIsGtjbahHYn5lu32mUuck3t76OQQoRH7mPLp/tczyaTF
- a0o1jDf4c5IiPcaMtv2e88Y0jQx8UKzAm4FJ3mvqk5TC9zvhum9QqEna1PZ3xcVmlus2
- 7oqi2I9JJ7J3lX+qEK24RXE+3oX6JtFlyXdET60xfmoFugDrT4aobokYjVsBkyNLCeZR
- D8EHQXFQFks3bT7SFNljhYuK4YIWPJHZOLeQ875kY0BI9/atzuvD1vheginSf3pUpcnO
- ZEzrCcU0sRwrCaOofktxlokCVlG4Y3xQmt8JaVWGWQOI6X9YhTLIwPBL8j8ekZ9aK9k/ lw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3a36g897k2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 28 Jul 2021 08:05:14 -0400
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 16SC5D2m134022;
- Wed, 28 Jul 2021 08:05:13 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3a36g897h7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 28 Jul 2021 08:05:12 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16SC2pui009742;
- Wed, 28 Jul 2021 12:05:11 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma03ams.nl.ibm.com with ESMTP id 3a235yh1fa-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 28 Jul 2021 12:05:11 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 16SC58f731392066
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 28 Jul 2021 12:05:08 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9793111C050;
- Wed, 28 Jul 2021 12:05:08 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BD98F11C058;
- Wed, 28 Jul 2021 12:05:05 +0000 (GMT)
-Received: from pratiks-thinkpad.ibmuc.com (unknown [9.85.80.104])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 28 Jul 2021 12:05:05 +0000 (GMT)
-From: "Pratik R. Sampat" <psampat@linux.ibm.com>
-To: mpe@ellerman.id.au, rjw@rjwysocki.net, linux-pm@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, psampat@linux.ibm.com, pratik.r.sampat@gmail.com
-Subject: [PATCH v2 1/1] cpufreq:powernv: Fix init_chip_info initialization in
- numa=off
-Date: Wed, 28 Jul 2021 17:35:00 +0530
-Message-Id: <20210728120500.87549-2-psampat@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210728120500.87549-1-psampat@linux.ibm.com>
-References: <20210728120500.87549-1-psampat@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GZYHf4Vlwz308L
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jul 2021 22:43:41 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4GZYHZ1ybVz9sSs;
+ Wed, 28 Jul 2021 22:43:38 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1627476219;
+ bh=Ua9l0fbwYf9DXxQijm/D7Oz8UlSCL9oNqn7tF7luSvs=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=UQ/8qIYaJRScflx9AwVVfU8McpeRUkUYefqiEfaOVkRXs/DxN86r+qHS+ZTAjrn1D
+ lF7JC95nT+52+/MF0/mRtVAwfDY0dzHfTq1ignDIu/4vW+BMSqjBUhlVojjtuDc/DL
+ hwdeIQKdlPyRjwuXKGhfLtMpibnFjTF3k3B3hsyqwhvm6e0ZS8Qqvy65eZhR7Si7ln
+ NkSd1NITOy6wBYJy7EHTVwFenb+JvprNMuqPQ+svLhxIwsGG4vH6kPNPOn1lK3OhYg
+ Pi1AfR1tzasUVFm7Kg3A9FcnwgCfm2cTC4Z0uMwCM4R7GZ5+fcT8h9Kza/UTTrIY6Y
+ 31aMlFhFzs40w==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Paul Menzel <pmenzel@molgen.mpg.de>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Christophe
+ Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: Possible regression by ab037dd87a2f (powerpc/vdso: Switch VDSO
+ to generic C implementation.)
+In-Reply-To: <4f037af0-5066-ebb9-53a6-733b3bd8eeac@molgen.mpg.de>
+References: <a273c619-9258-e29a-24c3-ea47a13c4817@molgen.mpg.de>
+ <3661999754da1a5e5c810fa669654cc7db95b059.camel@kernel.crashing.org>
+ <4f037af0-5066-ebb9-53a6-733b3bd8eeac@molgen.mpg.de>
+Date: Wed, 28 Jul 2021 22:43:36 +1000
+Message-ID: <878s1q1udj.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: yy9xZxCFGgnQXWxN30-uVWG8VmOn6ZmQ
-X-Proofpoint-ORIG-GUID: 5nhJnAlooTf6GZS1GKBZpkDtRQGvr6iq
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-07-28_07:2021-07-27,
- 2021-07-28 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 bulkscore=0
- impostorscore=0 suspectscore=0 phishscore=0 adultscore=0 malwarescore=0
- lowpriorityscore=0 mlxscore=0 mlxlogscore=999 priorityscore=1501
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2107140000 definitions=main-2107280068
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,88 +67,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Derek Parker <parkerderek86@gmail.com>, Dmitrii Okunev <xaionaro@gmail.com>,
+ murp@ibm.com, linuxppc-dev@lists.ozlabs.org, laboger@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In the numa=off kernel command-line configuration init_chip_info() loops
-around the number of chips and attempts to copy the cpumask of that node
-which is NULL for all iterations after the first chip.
+Paul Menzel <pmenzel@molgen.mpg.de> writes:
+> Am 28.07.21 um 01:14 schrieb Benjamin Herrenschmidt:
+>> On Tue, 2021-07-27 at 10:45 +0200, Paul Menzel wrote:
+>
+>>> On ppc64le Go 1.16.2 from Ubuntu 21.04 terminates with a segmentation
+>>> fault [1], and it might be related to *[release-branch.go1.16] runtime:
+>>> fix crash during VDSO calls on PowerPC* [2], conjecturing that commit
+>>> ab037dd87a2f (powerpc/vdso: Switch VDSO to generic C implementation.)
+>>> added in Linux 5.11 causes this.
+>>>
+>>> If this is indeed the case, this would be a regression in userspace. Is
+>>> there a generic fix or should the change be reverted?
+>>=20
+>> From the look at the links you posted, this appears to be completely
+>> broken assumptions by Go that some registers don't change while calling
+>> what essentially are external library functions *while inside those
+>> functions* (ie in this case from a signal handler).
+>>=20
+>> I suppose it would be possible to build the VDSO with gcc arguments to
+>> make it not use r30, but that's just gross...
+>
+> Thank you for looking into this. No idea, if it falls under Linux=E2=80=
+=99 no=20
+> regression policy or not.
 
-Hence, store the cpu mask for each chip instead of derving cpumask from
-node while populating the "chips" struct array and copy that to the
-chips[i].mask
+Reluctantly yes, I think it does. Though it would have been good if it
+had been reported to us sooner.
 
-Cc: stable@vger.kernel.org
-Fixes: 053819e0bf84 ("cpufreq: powernv: Handle throttling due to Pmax capping at chip level")
-Signed-off-by: Pratik R. Sampat <psampat@linux.ibm.com>
-Reported-by: Shirisha Ganta <shirisha.ganta1@ibm.com>
-Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
----
- drivers/cpufreq/powernv-cpufreq.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+It looks like that Go fix is only committed to master, and neither of
+the latest Go 1.16 or 1.15 releases contain the fix? ie. there's no way
+for a user to get a working version of Go other than building master?
 
-diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
-index 005600cef273..5f0e7c315e49 100644
---- a/drivers/cpufreq/powernv-cpufreq.c
-+++ b/drivers/cpufreq/powernv-cpufreq.c
-@@ -36,6 +36,7 @@
- #define MAX_PSTATE_SHIFT	32
- #define LPSTATE_SHIFT		48
- #define GPSTATE_SHIFT		56
-+#define MAX_NR_CHIPS		32
- 
- #define MAX_RAMP_DOWN_TIME				5120
- /*
-@@ -1046,12 +1047,20 @@ static int init_chip_info(void)
- 	unsigned int *chip;
- 	unsigned int cpu, i;
- 	unsigned int prev_chip_id = UINT_MAX;
-+	cpumask_t *chip_cpu_mask;
- 	int ret = 0;
- 
- 	chip = kcalloc(num_possible_cpus(), sizeof(*chip), GFP_KERNEL);
- 	if (!chip)
- 		return -ENOMEM;
- 
-+	/* Allocate a chip cpu mask large enough to fit mask for all chips */
-+	chip_cpu_mask = kcalloc(MAX_NR_CHIPS, sizeof(cpumask_t), GFP_KERNEL);
-+	if (!chip_cpu_mask) {
-+		ret = -ENOMEM;
-+		goto free_and_return;
-+	}
-+
- 	for_each_possible_cpu(cpu) {
- 		unsigned int id = cpu_to_chip_id(cpu);
- 
-@@ -1059,22 +1068,25 @@ static int init_chip_info(void)
- 			prev_chip_id = id;
- 			chip[nr_chips++] = id;
- 		}
-+		cpumask_set_cpu(cpu, &chip_cpu_mask[nr_chips-1]);
- 	}
- 
- 	chips = kcalloc(nr_chips, sizeof(struct chip), GFP_KERNEL);
- 	if (!chips) {
- 		ret = -ENOMEM;
--		goto free_and_return;
-+		goto out_chip_cpu_mask;
- 	}
- 
- 	for (i = 0; i < nr_chips; i++) {
- 		chips[i].id = chip[i];
--		cpumask_copy(&chips[i].mask, cpumask_of_node(chip[i]));
-+		cpumask_copy(&chips[i].mask, &chip_cpu_mask[i]);
- 		INIT_WORK(&chips[i].throttle, powernv_cpufreq_work_fn);
- 		for_each_cpu(cpu, &chips[i].mask)
- 			per_cpu(chip_info, cpu) =  &chips[i];
- 	}
- 
-+out_chip_cpu_mask:
-+	kfree(chip_cpu_mask);
- free_and_return:
- 	kfree(chip);
- 	return ret;
--- 
-2.31.1
+I'll see if we can work around it in the kernel. Are you able to test a
+kernel patch if I send you one?
 
+cheers
