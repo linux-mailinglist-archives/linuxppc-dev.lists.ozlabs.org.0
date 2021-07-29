@@ -2,185 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 982093D9C42
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jul 2021 05:38:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7101C3D9C67
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jul 2021 05:53:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GZx7r31gRz3cHG
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jul 2021 13:38:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GZxTF2CkVz3cLW
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Jul 2021 13:53:21 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2021-07-09 header.b=LA0hbzJc;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2020-01-29 header.b=Rb/RaGEB;
-	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=FN03+Gu0;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Cx8+UoRr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oracle.com (client-ip=205.220.177.32;
- helo=mx0b-00069f02.pphosted.com; envelope-from=martin.petersen@oracle.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1034;
+ helo=mail-pj1-x1034.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
- header.s=corp-2021-07-09 header.b=LA0hbzJc; 
- dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
- header.s=corp-2020-01-29 header.b=Rb/RaGEB; 
- dkim=pass (1024-bit key;
- unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com
- header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com
- header.b=FN03+Gu0; dkim-atps=neutral
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com
- [205.220.177.32])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Cx8+UoRr; dkim-atps=neutral
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com
+ [IPv6:2607:f8b0:4864:20::1034])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GZx706nP9z2yLl
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Jul 2021 13:37:31 +1000 (AEST)
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 16T3bHOP009545; Thu, 29 Jul 2021 03:37:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=corp-2021-07-09;
- bh=m8pZdR/1R0ou17CvkqhbGXIovFiV8iT+8IELAJSObXA=;
- b=LA0hbzJctXOHGVnigyP0lGB+Te571SoJoGkJnJf85bKDvJVz5VQvwZ73yqlvoPSJmpXY
- x8OkpcqRBSNKUWvf1sh3wsd7wrm9fxh466FSvtIk7sxO7Kri9jjL7xRZiGAy4DIeSlNG
- BwBU2Mf3rKVFTQjYPE5jx499b4iOfd3sr9CNNjsCoIdiXQ6HFK7ABCONB6/KYh515oqw
- 5Q5xnKUL5vOWNgfH7rCo/m1467KvgXVV8ugIbB3JDMIwD1h2KVOriHK1srkcpXokOciS
- DOU2+E8EQGh3UXJ4RhXM2KWE5gNd5M1eTygoYr5OZWobJwf7M2dTeOtneY8n+olUXONT +A== 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=corp-2020-01-29;
- bh=m8pZdR/1R0ou17CvkqhbGXIovFiV8iT+8IELAJSObXA=;
- b=Rb/RaGEB8PF2ed67h1cBx4EyC7pgBkm4fVfWRBMQ0w8OZokH8ETVRqhl1WN9jviVxx70
- eAOMbO/Kj+0/JiZjvdPfG4/GWHotToj212CrMvYDbZe5COqGZPEAmdkBc5cKPWOLSwXq
- qh8LT4Z6vJdr3njrdiOZhf8rw15ptNN6a+SR+sVIYTMSR7szbk8QpfTTPg0DHm+FmPxg
- 1bd/TZn53M3yYjgt4PyK8e0xxEKnmcZ9efELXlPfdgNV9K5eoHpWJeZ18QqywREcdC/d
- oK3xkS6foYDJiTYFR1WCFCkFM8aIoNS56dqPfebROgjuH51cF5SR+wBPsVkh/N+Uegkn 4g== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
- by mx0b-00069f02.pphosted.com with ESMTP id 3a2jkfcbj1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 29 Jul 2021 03:37:24 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
- by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 16T3Tlob040950;
- Thu, 29 Jul 2021 03:37:23 GMT
-Received: from nam04-bn8-obe.outbound.protection.outlook.com
- (mail-bn8nam08lp2042.outbound.protection.outlook.com [104.47.74.42])
- by aserp3030.oracle.com with ESMTP id 3a234dpce5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 29 Jul 2021 03:37:23 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dB87Buv+Yf9YSa72FsurJM5kww2H8bZFTEH4d0a1IibPCvicmeLhBO9/ZCvuM38k+yk4jvTK8r8c62YLN08oAlPfix+o6KVCMPgPRu0Pp4GXRuWq3fcpLa3tnlfT2HSgXv387DdcuxIFYdYTchWcmYUP9f7jiZZoLuTKYVeEDu+1vvdjGDNnM9xPgyQWamr1xILexhQx1l7zr18w7rS4OWT099wcwAzYqFipmxowcDiGJQWTpGq+Qt/qr/NGMca8bYUoDoIb2D6man3g7fkhyJIw4StEK9cJNj5VD1anRBaf7Mv/7ZI/Ut9lHGWoiyVCHENn+acpZlQHQEX3SJwOMg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=m8pZdR/1R0ou17CvkqhbGXIovFiV8iT+8IELAJSObXA=;
- b=AFN52paLN12jao43JWnG5lpgyvkC2vZgc2FbTPK3TWLF+8KToj9gj41qmo83RCtC2D2GRKrJU/anSHITT45zrSPPNz/nPjPlz9MFClIFdWrz1gwkZWDO1aXqSZPuVeb+mATbmKkP2Sk3nOpbVsORQMHnFX4y5uYisr904gDgffQDaXaz7jXJq8TvNml3mzgntyuKL7ztXZfXdwHHZfH+qKq4Z2u1nOtkN639kBWicpNUq9fU7rB1gvxsRn4TK60vL8FJkT/pdG79JhoF+IjJKw5eQqpS9Z31OzQymY3apedod+sOWs9kcXcCjRm874D5UbgJROiW5Sn0iXeUD+1AsQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=m8pZdR/1R0ou17CvkqhbGXIovFiV8iT+8IELAJSObXA=;
- b=FN03+Gu0QcDMATu85oCq1hWacZZa2HRTPRP28o9ow+QTpax44gze2q6kvHywHAxY3+2TIzW2Pip1xYQIpTkKOLvj2Pjwd7xugDEVQicjft1tp+8jkPC5M9RXvLbyxqYexBxpZZpRxm3icnC8Pvr9IV2hYF/hW+JBUbK8XuI/Whc=
-Authentication-Results: hansenpartnership.com; dkim=none (message not signed)
- header.d=none; hansenpartnership.com;
- dmarc=none action=none header.from=oracle.com;
-Received: from CO1PR10MB4754.namprd10.prod.outlook.com (2603:10b6:303:91::24)
- by MWHPR10MB1549.namprd10.prod.outlook.com (2603:10b6:300:26::13)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4373.19; Thu, 29 Jul
- 2021 03:37:21 +0000
-Received: from CO1PR10MB4754.namprd10.prod.outlook.com
- ([fe80::79e6:7162:c46f:35b7]) by CO1PR10MB4754.namprd10.prod.outlook.com
- ([fe80::79e6:7162:c46f:35b7%5]) with mapi id 15.20.4373.021; Thu, 29 Jul 2021
- 03:37:21 +0000
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: james.bottomley@hansenpartnership.com,
- Tyrel Datwyler <tyreld@linux.ibm.com>
-Subject: Re: [PATCH] ibmvfc: fix command state accounting and stale response
- detection
-Date: Wed, 28 Jul 2021 23:37:07 -0400
-Message-Id: <162752979292.3014.14406303368375387867.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20210716205220.1101150-1-tyreld@linux.ibm.com>
-References: <20210716205220.1101150-1-tyreld@linux.ibm.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR05CA0121.namprd05.prod.outlook.com
- (2603:10b6:a03:33d::6) To CO1PR10MB4754.namprd10.prod.outlook.com
- (2603:10b6:303:91::24)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GZxSq3zNJz2yWT
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Jul 2021 13:52:58 +1000 (AEST)
+Received: by mail-pj1-x1034.google.com with SMTP id m1so8336907pjv.2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Jul 2021 20:52:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=raQOQdpU8K2UcVzsPkwxSrz9lH1X2bF4EYfiRD2nT6s=;
+ b=Cx8+UoRrPb/UJrxJCmiaervR89VoYhb4pKbdaDCzptlzQsuXGXkWA7jLxsvjRZGGje
+ UYhR4hEUGsRc2/QK0LjZnTMlHyMnE/pJ+kC8u6N/4qbZ6f4cA78SnjZM4aQacipq3x1x
+ u9foYMtYwoR7d3eBHRo7pRRqQGTPOaa1MSansAJiL1r2bddS2JzCxsxUoBxJvfIcJUNL
+ Fp7fVpTVxUL/Ut/oNUXWf3aIhyINM0Ey2Qw1SyYgbW/GbcKh3WggEzXDzRlhvNwifFfC
+ 7OjkYUwsBWqRRahPzv8zMtG2cBD3gjEwVHU9QuJ8UDjmaUSav5srdXfOAmYJp/UFIaqz
+ 3MnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=raQOQdpU8K2UcVzsPkwxSrz9lH1X2bF4EYfiRD2nT6s=;
+ b=Ep5dfisy88sZHSZDonHrFhqJfBwd6CvI0h38LCVh5tq+YIBRwPLWw8fpLOMimb6zFN
+ KM5zRcF3H6hfbKQFd+DSv++4ueWwZvM85YxafvTCDRhYppfyJMLrL3Kj21IRLa6xsDxk
+ 3yEQ8upynIJvmc0ucvT43gDWFYe0fJ/W1yVIOqIketo4sYU1m/sr7uy+CofRts4EYdsQ
+ IMJoR3JvWWQQFDKff+b0JpB6FKqawkQ9XJrGnrSqKj4vv4pgv91s7XQ7XQvc5M3eexYn
+ U1jhhvFbskJ5Ror5SUBAzHTrLvhYlNdn2CZvqEYHvaD9aFk73+2WbcFPBLuMG8a2AIxx
+ M8pg==
+X-Gm-Message-State: AOAM532dqxLgvAh1yYos2P5chUXZ/Zw8GDzFVPH7LwoQQPM6Lc31P8LR
+ lhY0Q/ocOEU6dwAut5SXJyY=
+X-Google-Smtp-Source: ABdhPJxDweUZAz5Tfmv1Rf7bAzdB4obsZEjB0XbY1Qi5y8V6zbn6f2uuSW2cEv0m7m4f6U9rM4CFig==
+X-Received: by 2002:a17:902:8c83:b029:129:17e5:a1cc with SMTP id
+ t3-20020a1709028c83b029012917e5a1ccmr2696576plo.49.1627530775419; 
+ Wed, 28 Jul 2021 20:52:55 -0700 (PDT)
+Received: from localhost (60-242-181-102.static.tpgi.com.au. [60.242.181.102])
+ by smtp.gmail.com with ESMTPSA id
+ a23sm1525283pff.43.2021.07.28.20.52.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 28 Jul 2021 20:52:54 -0700 (PDT)
+Date: Thu, 29 Jul 2021 13:52:49 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v5 2/2] KVM: PPC: Book3S HV: Stop forwarding all HFUs to L1
+To: Fabiano Rosas <farosas@linux.ibm.com>, kvm-ppc@vger.kernel.org
+References: <20210726201710.2432874-1-farosas@linux.ibm.com>
+ <20210726201710.2432874-3-farosas@linux.ibm.com>
+ <1627355201.gqa4czyyxy.astroid@bobo.none> <87o8anddsr.fsf@linux.ibm.com>
+In-Reply-To: <87o8anddsr.fsf@linux.ibm.com>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from ca-mkp.mkp.ca.oracle.com (138.3.201.9) by
- SJ0PR05CA0121.namprd05.prod.outlook.com (2603:10b6:a03:33d::6) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4394.9 via Frontend Transport; Thu, 29 Jul 2021 03:37:20 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 4fd41d7c-8d4d-4c69-7f31-08d952422c3a
-X-MS-TrafficTypeDiagnostic: MWHPR10MB1549:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <MWHPR10MB15498033320802AE1D08A00E8EEB9@MWHPR10MB1549.namprd10.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:3826;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: zASFQZSy30UqXxwzGUgrZ2wNjF28MJBj4juISKYxXydszEJB8ObZToH8fpJRdp6pQRlrQSCgyA6Jq0E6YdsZHnr1MlpnnsGaPsq072QdkI1ILCo/geXmiN4ZoJd1v8u4g6L0aBwN/vklzJhSBeTtXbQvlZ3m2tI0bmTgaeslwfWyjDD/pZdmzEo28f982XV9LpVIELA0vr9rg1c2c61FTysoFYUEMb/uQWRQyUQPxoLCmzeW5Ag1JOSPvmDjuaUz+RrxUdSAU6/4ndE8UbDeAxRPzVahiISFcUR6dc66sCu1npBapZoyQxWReTU9GQGzb/a7Oghc19rjJq3M46eRfoBPKLsrZG7f3vEgjRZQkSdxmnNnGxJieURu8ip6YJw9TyAgz3AFtFng0jU+tRWntA94Fbs+TVS65Rab/uxUdafzupSlqZ0qPI5nA8ZvZ8bKtg6QMXNmDgTqWhlVxBbVgPhasEjDrZjROZ/+lk5/3rkFCKRwtKWwcFoJlwZWDlv3djjz3JDYsb2xGJ0E97iKfIDY1TPzDIOca1afnGtNaND0k690SWB1nte5dkRlHAiuu86Wdgp97/SNk82XE8IGLZGg97provWn9QPLwb4i1efGe5eF52+3iJmn69KrjwsnK0RahI5x5Uo0Ipa60MSV54G5BRxqX01Ztc4cRdThfllsUQ6IdOdyAHfJdhA35Wcz2unjNHp17vQfwcHXxIYKm7Suy2hDH898z38Brp0CGzFd544l5FyoBCQFUDAjAnZhI5+v3CqcR+9GdKX65aXYvA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CO1PR10MB4754.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(366004)(66556008)(66476007)(66946007)(6486002)(26005)(2906002)(316002)(103116003)(6666004)(186003)(4326008)(38100700002)(38350700002)(5660300002)(36756003)(966005)(8676002)(508600001)(52116002)(7696005)(6916009)(83380400001)(2616005)(956004)(86362001)(15650500001)(8936002);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SjZ6VGxCdmFpN0tObXdTYm1YZWRzWWt0WUNOMEwvRFFoa3JkeEZ6NVVCR09h?=
- =?utf-8?B?Y3VIQ0liZExjMUtuSk1RSUl3eG9hUHRUTEpDQ09VeEhZT2p4eEpXMnM2SEps?=
- =?utf-8?B?NG1GVzZJK3RRVzRDV1psUm8xVU1EWklpSUdEaWwwNEpUUGZ6di9OemE0RmE1?=
- =?utf-8?B?byt0WmF4bVlyOFlsaElEaGFwQnNnUks5RmVidTZhd0dORE13ZUFOV1o4SWZV?=
- =?utf-8?B?RmRCS3k2eUhkcFNKMVhhS1J4aG9CQjltYjRpOWxxRi9ETS9OemJMWXFXTTUw?=
- =?utf-8?B?alBmQU0zUFNnWXVtaG1CREhKVXJsWFdDbWdDeUtRUlp2UHozYVQ5S0llMDNz?=
- =?utf-8?B?U0JkT0hYKzZKdXh1WU9SQU1uKythYWZTVEdleFdmdWFjWkFUcjJKdXFhWHdl?=
- =?utf-8?B?Tk1aRVJSMXRIN0hWUUJoQ3Q2eUNlWFd6SHJhVHVxT3doa0E2emdONGJrZUJk?=
- =?utf-8?B?QWVONUJIYzQzRVlid2ZoVVRKTDZPajZqaVZ0L0xUb2ZXK1NyTEZhQWdJOU1r?=
- =?utf-8?B?Sk1FUXdtSGN0QlBWWDNESHQ1UUJKb3BuamlJcWVXKzdJTTJ6NlVRdzVjbmVZ?=
- =?utf-8?B?d0xWMzBiTVpuaUtyZVd2YklhalRONjhzTUxqTVNmd1NvNDVUeUN0WDVMMTI5?=
- =?utf-8?B?bjlkRjh1SjBSSzZGamlobjRhRWdnZWxrME1IalpveW56NVZ3dVpZRFJQd0VT?=
- =?utf-8?B?V1UzTVhraGw0SWlKZVJWYTFzMTVESXROUjNWK0FQRXZUREtFTnNodGpQMXJN?=
- =?utf-8?B?dU12RUZ4b2pqVXgzeHRQOGVJcG9uWGQzUkNtRVZKbnhtRnFObEoyZzdERWVk?=
- =?utf-8?B?YU9maFd3WU80YTJ1UkszUDRMVWxCb0pXRDZ4WVBGcXF0eTV2YTNKdThEVUw0?=
- =?utf-8?B?czdDSnZ0VFVmV2VPc3NGRjlpS2VjR1JXMTZaMjYzS3c1eUU1bXpBb3QvU2t1?=
- =?utf-8?B?bUJoVWpaV210anBudEdnSHZtaW1OUjlKNFVRMC9qQ0Z3bG9TUk1seTJPSGVX?=
- =?utf-8?B?VXU3NHREMG1rRDNXc0FVM004ZGtIUFlmK1ZUOUcxMWs3cnRRV2xtMTZaVEx3?=
- =?utf-8?B?N1MwQUZsaStxbllwVzFzTzVzb0tUakIwNm41cGZaVWdpUjJMM2xQUEhmdUhD?=
- =?utf-8?B?K3gwQnU5N1dkQXkvOEU4TWI4aXppck1vZjRqd0dHanVWVlgycS9iV1krWlhy?=
- =?utf-8?B?S0E5QWJsbVpzVGkvQ3UzTER6UTZmb2ZSRERQNlRsZlhUREFIcUM2UnVPcHBn?=
- =?utf-8?B?WTdlRUlwNkxvWHkxd2VDanRjVWU2WjlNY2xDd2puY2hlWkxBQzlsZ2lMNXFr?=
- =?utf-8?B?OTByWG5TalZab3pJVHgvWFEwR1Y5YlkrMWlScjhZT2huQ0lUUUYvWEthcXJy?=
- =?utf-8?B?QlZtNkdWOU1Dc1JXdHdlYkRPQVd1NXVaTTJkOG00bjVGcVQveGFRcDBOVVh3?=
- =?utf-8?B?d2VWWG5QS0RmVjdlSDNjOEZCT2gyWHVaZUlEY0RPRlZ4SlNvR1F2a2FHZlIr?=
- =?utf-8?B?Wi80bTBXWjVoYTRGMTZRUk1nZC90SHBaNE0zc0xreHhaQUMrYzlhb29Tck5M?=
- =?utf-8?B?SGEweGtyRXQzQUtLWm5xbTkwY1M5OXlLT0pJUkYzK3FjdnZ1cUVLRlFBZG5G?=
- =?utf-8?B?ODRJT2pjZzNNV3lUc3BObzJKeER2ZkdvVTV2Y3hzY09WZlVZd0lpN0lsVG9N?=
- =?utf-8?B?QzgzT3Bzdmt6Zmc4Q1gxaE1EMkZtaVpDSnFSdFo3WElONlR1SW5vSlZQMnJh?=
- =?utf-8?Q?QgVVPDjYOsrQSIG8QqBe0dLIolRIKPvJTpeIsx6?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4fd41d7c-8d4d-4c69-7f31-08d952422c3a
-X-MS-Exchange-CrossTenant-AuthSource: CO1PR10MB4754.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2021 03:37:21.4857 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8OPfrnwPrL/0G9eIYQM2wVYKN3VPnC0JI5tRWKPG3H0wiXr+U8nl8jMtUHQ/awXxX3FAm2JOJIntl8wmdudI56Tw1kD0+D8yG+GyftV0bTs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR10MB1549
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=10059
- signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- phishscore=0
- suspectscore=0 mlxlogscore=999 bulkscore=0 spamscore=0 mlxscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2107140000 definitions=main-2107290020
-X-Proofpoint-GUID: GpmBVKjnIYMkLDgQ7xbNljwTRnPGxyyC
-X-Proofpoint-ORIG-GUID: GpmBVKjnIYMkLDgQ7xbNljwTRnPGxyyC
+Message-Id: <1627530625.zza0qspyp2.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -192,38 +83,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-scsi@vger.kernel.org,
- "Martin K . Petersen" <martin.petersen@oracle.com>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, brking@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 16 Jul 2021 14:52:20 -0600, Tyrel Datwyler wrote:
+Excerpts from Fabiano Rosas's message of July 28, 2021 12:36 am:
+> Nicholas Piggin <npiggin@gmail.com> writes:
+>=20
+>> Excerpts from Fabiano Rosas's message of July 27, 2021 6:17 am:
+>>> If the nested hypervisor has no access to a facility because it has
+>>> been disabled by the host, it should also not be able to see the
+>>> Hypervisor Facility Unavailable that arises from one of its guests
+>>> trying to access the facility.
+>>>=20
+>>> This patch turns a HFU that happened in L2 into a Hypervisor Emulation
+>>> Assistance interrupt and forwards it to L1 for handling. The ones that
+>>> happened because L1 explicitly disabled the facility for L2 are still
+>>> let through, along with the corresponding Cause bits in the HFSCR.
+>>>=20
+>>> Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
+>>> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+>>> ---
+>>>  arch/powerpc/kvm/book3s_hv_nested.c | 32 +++++++++++++++++++++++------
+>>>  1 file changed, 26 insertions(+), 6 deletions(-)
+>>>=20
+>>> diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/boo=
+k3s_hv_nested.c
+>>> index 8215dbd4be9a..d544b092b49a 100644
+>>> --- a/arch/powerpc/kvm/book3s_hv_nested.c
+>>> +++ b/arch/powerpc/kvm/book3s_hv_nested.c
+>>> @@ -99,7 +99,7 @@ static void byteswap_hv_regs(struct hv_guest_state *h=
+r)
+>>>  	hr->dawrx1 =3D swab64(hr->dawrx1);
+>>>  }
+>>> =20
+>>> -static void save_hv_return_state(struct kvm_vcpu *vcpu, int trap,
+>>> +static void save_hv_return_state(struct kvm_vcpu *vcpu,
+>>>  				 struct hv_guest_state *hr)
+>>>  {
+>>>  	struct kvmppc_vcore *vc =3D vcpu->arch.vcore;
+>>> @@ -118,7 +118,7 @@ static void save_hv_return_state(struct kvm_vcpu *v=
+cpu, int trap,
+>>>  	hr->pidr =3D vcpu->arch.pid;
+>>>  	hr->cfar =3D vcpu->arch.cfar;
+>>>  	hr->ppr =3D vcpu->arch.ppr;
+>>> -	switch (trap) {
+>>> +	switch (vcpu->arch.trap) {
+>>>  	case BOOK3S_INTERRUPT_H_DATA_STORAGE:
+>>>  		hr->hdar =3D vcpu->arch.fault_dar;
+>>>  		hr->hdsisr =3D vcpu->arch.fault_dsisr;
+>>> @@ -128,9 +128,29 @@ static void save_hv_return_state(struct kvm_vcpu *=
+vcpu, int trap,
+>>>  		hr->asdr =3D vcpu->arch.fault_gpa;
+>>>  		break;
+>>>  	case BOOK3S_INTERRUPT_H_FAC_UNAVAIL:
+>>> -		hr->hfscr =3D ((~HFSCR_INTR_CAUSE & hr->hfscr) |
+>>> -			     (HFSCR_INTR_CAUSE & vcpu->arch.hfscr));
+>>> -		break;
+>>> +	{
+>>> +		u8 cause =3D vcpu->arch.hfscr >> 56;
+>>
+>> Can this be u64 just to help gcc?
+>>
+>=20
+> Yes.
+>=20
+>>> +
+>>> +		WARN_ON_ONCE(cause >=3D BITS_PER_LONG);
+>>> +
+>>> +		if (!(hr->hfscr & (1UL << cause))) {
+>>> +			hr->hfscr =3D ((~HFSCR_INTR_CAUSE & hr->hfscr) |
+>>> +				     (HFSCR_INTR_CAUSE & vcpu->arch.hfscr));
+>>> +			break;
+>>> +		}
+>>> +
+>>> +		/*
+>>> +		 * We have disabled this facility, so it does not
+>>> +		 * exist from L1's perspective. Turn it into a HEAI.
+>>> +		 */
+>>> +		vcpu->arch.trap =3D BOOK3S_INTERRUPT_H_EMUL_ASSIST;
+>>> +		kvmppc_load_last_inst(vcpu, INST_GENERIC, &vcpu->arch.emul_inst);
+>>
+>> Hmm, this doesn't handle kvmpc_load_last_inst failure. Other code tends=20
+>> to just resume guest and retry in this case. Can we do that here?
+>>
+>=20
+> Not at this point. The other code does that inside
+> kvmppc_handle_exit_hv, which is called from kvmhv_run_single_vcpu. And
+> since we're changing the interrupt, I cannot load the last instruction
+> at kvmppc_handle_nested_exit because at that point this is still an HFU.
+>=20
+> Unless I do it anyway at the HFU handler and put a comment explaining
+> the situation.
 
-> Prior to commit 1f4a4a19508d ("scsi: ibmvfc: Complete commands outside
-> the host/queue lock") responses to commands were completed sequentially
-> with the host lock held such that a command had a basic binary state of
-> active or free. It was therefore a simple affair of ensuring the
-> assocaiated ibmvfc_event to a VIOS response was valid by testing that it
-> was not already free. The lock relexation work to complete commands
-> outside the lock inadverdently made it a trinary command state such that
-> a command is either in flight, received and being completed, or
-> completed and now free. This breaks the stale command detection logic as
-> a command may be still marked active and been placed on the delayed
-> completion list when a second stale response for the same command
-> arrives. This can lead to double completions and list corruption. This
-> issue was exposed by a recent VIOS regression were a missing memory
-> barrier could occasionally result in the ibmvfc client receiveing a
-> duplicate response for the same command.
-> 
-> [...]
+Yeah I think it would be better to move this logic to the nested exit=20
+handler.
 
-Applied to 5.14/scsi-fixes, thanks!
-
-[1/1] ibmvfc: fix command state accounting and stale response detection
-      https://git.kernel.org/mkp/scsi/c/73bfdf707d01
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Thanks,
+Nick
