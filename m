@@ -2,48 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0C2B3DB7F8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Jul 2021 13:43:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B71003DB818
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Jul 2021 13:54:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gblrn403Mz3d7G
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Jul 2021 21:43:05 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AX4PmDXF;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gbm5t49fZz3d88
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Jul 2021 21:54:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=will@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=AX4PmDXF; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=209.85.217.43; helo=mail-vs1-f43.google.com;
+ envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com
+ [209.85.217.43])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GblrK0vKBz301g
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Jul 2021 21:42:40 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id DA0B56103B;
- Fri, 30 Jul 2021 11:42:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1627645357;
- bh=nRa9TJJxTAW4vDwwhA6VyorL4FVC9dzFn9iKflCLVG4=;
- h=From:To:Cc:Subject:Date:From;
- b=AX4PmDXFu2OLhlDawWaxLNHParYoTGmSJs27Idg5FL5pTfeInPD7rwiKgXxtrPeI+
- YnwXvpvboeOTSnmX/9f+mJ3pK9gkCHjGs1oOX1FEqc/IlpAEENMFlPxjozGkEsqeRe
- +SJcWyl4yBDUBIX9BWRzNcVNNGHxZAwrWROd3Slwwzk9h7ai3tQmQ+Rw3tJslJOoEA
- JDxgIz+qYcifZf5UFEZ2HUVKcEEErOFWHEP3BSmqPcUWWS0MWvPMPstHVDuFBYfJrV
- n3N3cwwEGzSKSNAO4b1VbXellnqtPpwftg22Q3+Z80kzZ2DcYa8RZJu3CXAzO/vKm4
- W5of3aDkiQuZQ==
-From: Will Deacon <will@kernel.org>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH] powerpc/svm: Don't issue ultracalls if !mem_encrypt_active()
-Date: Fri, 30 Jul 2021 12:42:31 +0100
-Message-Id: <20210730114231.23445-1-will@kernel.org>
-X-Mailer: git-send-email 2.20.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gbm5W0QR3z301g
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Jul 2021 21:54:06 +1000 (AEST)
+Received: by mail-vs1-f43.google.com with SMTP id x66so2768261vsb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Jul 2021 04:54:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=10AbK6xK8RHobfuB2T0I9ydjpvpHcTKY9gPukwHCGGA=;
+ b=Y0VJZMDLAn5ZlQg3OOPkNQJcdP7qwEKDUu3hwADbM2Fymg3/GDmU/7vYj/6cdHx3bW
+ 66tvJYtWvjVTRaZOITZNrL/5tvWP1ksbxOC4BQwmxadI97tgFwG+xmtfrHHJ9CFeb0be
+ HdH3mePU0vMQeMBca97dZ+Wi1Ldihvl+Fayqi+ptPat2mqgz1eEaA+unXuE7ZpptaNex
+ Bl93n5nVRhL5v39QVCpl3Agi20dsyRirRwHtaSMIKF/huuL6gOWUZuuzqhsVwc2lmqG2
+ fcCpey3jybhRJp5mMaqUGUpEIsXUR8iNUhi0aoKopTjGi4El4RyaoXpM8KGZDAg1lsNF
+ Fbgg==
+X-Gm-Message-State: AOAM533XAjq45o0xksRkpUXHout4aONlt8vL3oe5e91M8/fmk7dx+5WV
+ zpp3P6UtKj3rV5Ur7iEBUXnzN/z2nm6uM0A4tcY=
+X-Google-Smtp-Source: ABdhPJz4vdafBihdMrOKEMxBFoPjbpJQjxu69DET98mge7/3K8Au1C7Ct04O+Z9CWQAOZ0tklY4nnHzuyfbZq+wo9hQ=
+X-Received: by 2002:a05:6102:321c:: with SMTP id
+ r28mr1030174vsf.40.1627646043462; 
+ Fri, 30 Jul 2021 04:54:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210728182115.4401-1-lukas.bulwahn@gmail.com>
+In-Reply-To: <20210728182115.4401-1-lukas.bulwahn@gmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Fri, 30 Jul 2021 13:53:52 +0200
+Message-ID: <CAMuHMdXt4tYHcgPNUZ0ZQ9iKhmZ_dC=ub=Ha35xDy+jR2-CroQ@mail.gmail.com>
+Subject: Re: [PATCH] arch: Kconfig: clean up obsolete use of HAVE_IDE
+To: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,69 +58,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, linuxppc-dev@lists.ozlabs.org,
- Robin Murphy <robin.murphy@arm.com>, Nicholas Piggin <npiggin@gmail.com>,
- Nathan Chancellor <nathan@kernel.org>, iommu@lists.linux-foundation.org,
- Claire Chang <tientzu@chromium.org>, Will Deacon <will@kernel.org>,
- Christoph Hellwig <hch@lst.de>
+Cc: Jens Axboe <axboe@kernel.dk>, "moderated list:H8/300 ARCHITECTURE"
+ <uclinux-h8-devel@lists.sourceforge.jp>, Randy Dunlap <rdunlap@infradead.org>,
+ "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+ Parisc List <linux-parisc@vger.kernel.org>,
+ Linux-sh list <linux-sh@vger.kernel.org>,
+ "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>,
+ the arch/x86 maintainers <x86@kernel.org>, kernel-janitors@vger.kernel.org,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-m68k <linux-m68k@lists.linux-m68k.org>,
+ alpha <linux-alpha@vger.kernel.org>, sparclinux <sparclinux@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit ad6c00283163 ("swiotlb: Free tbl memory in swiotlb_exit()")
-introduced a set_memory_encrypted() call to swiotlb_exit() so that the
-buffer pages are returned to an encrypted state prior to being freed.
+On Wed, Jul 28, 2021 at 8:21 PM Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
+> The arch-specific Kconfig files use HAVE_IDE to indicate if IDE is
+> supported.
+>
+> As IDE support and the HAVE_IDE config vanishes with commit b7fb14d3ac63
+> ("ide: remove the legacy ide driver"), there is no need to mention
+> HAVE_IDE in all those arch-specific Kconfig files.
+>
+> The issue was identified with ./scripts/checkkconfigsymbols.py.
+>
+> Fixes: b7fb14d3ac63 ("ide: remove the legacy ide driver")
+> Suggested-by: Randy Dunlap <rdunlap@infradead.org>
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 
-Sachin reports that this leads to the following crash on a Power server:
+>  arch/m68k/Kconfig             | 1 -
 
-[    0.010799] software IO TLB: tearing down default memory pool
-[    0.010805] ------------[ cut here ]------------
-[    0.010808] kernel BUG at arch/powerpc/kernel/interrupt.c:98!
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
-Nick spotted that this is because set_memory_encrypted() is issuing an
-ultracall which doesn't exist for the processor, and should therefore
-be gated by mem_encrypt_active() to mirror the x86 implementation.
+Gr{oetje,eeting}s,
 
-Cc: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-Cc: Claire Chang <tientzu@chromium.org>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Robin Murphy <robin.murphy@arm.com>
-Fixes: ad6c00283163 ("swiotlb: Free tbl memory in swiotlb_exit()")
-Suggested-by: Nicholas Piggin <npiggin@gmail.com>
-Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/r/1905CD70-7656-42AE-99E2-A31FC3812EAC@linux.vnet.ibm.com/
-Signed-off-by: Will Deacon <will@kernel.org>
----
- arch/powerpc/platforms/pseries/svm.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+                        Geert
 
-diff --git a/arch/powerpc/platforms/pseries/svm.c b/arch/powerpc/platforms/pseries/svm.c
-index 1d829e257996..87f001b4c4e4 100644
---- a/arch/powerpc/platforms/pseries/svm.c
-+++ b/arch/powerpc/platforms/pseries/svm.c
-@@ -63,6 +63,9 @@ void __init svm_swiotlb_init(void)
- 
- int set_memory_encrypted(unsigned long addr, int numpages)
- {
-+	if (!mem_encrypt_active())
-+		return 0;
-+
- 	if (!PAGE_ALIGNED(addr))
- 		return -EINVAL;
- 
-@@ -73,6 +76,9 @@ int set_memory_encrypted(unsigned long addr, int numpages)
- 
- int set_memory_decrypted(unsigned long addr, int numpages)
- {
-+	if (!mem_encrypt_active())
-+		return 0;
-+
- 	if (!PAGE_ALIGNED(addr))
- 		return -EINVAL;
- 
 -- 
-2.32.0.554.ge1b32706d8-goog
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
