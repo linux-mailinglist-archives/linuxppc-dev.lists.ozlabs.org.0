@@ -2,76 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC7773DC122
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Jul 2021 00:35:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E03993DC1C7
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Jul 2021 02:02:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gc2KN3Xtcz30Dd
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Jul 2021 08:35:20 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20161025 header.b=UfW+Uyhy;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gc4Fr5rBtz3cVk
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Jul 2021 10:02:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1030;
- helo=mail-pj1-x1030.google.com; envelope-from=seanjc@google.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=UfW+Uyhy; dkim-atps=neutral
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com
- [IPv6:2607:f8b0:4864:20::1030])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gc2Jl3YyJz30BX
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Jul 2021 08:34:45 +1000 (AEST)
-Received: by mail-pj1-x1030.google.com with SMTP id l19so17340160pjz.0
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Jul 2021 15:34:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=2B8bmMK1MWV0IKBzZFhJ4QQnRCCDWLQwwtmcrrRzShw=;
- b=UfW+Uyhy937lSOvlfCbvzUSHfPBdVvhcTOaILHqlmzjEQeZkE7CJS1pDjY85yLeTrk
- ZUbJvCXGnG9V4YR8YvLqiCoHxoAuC0RJHo8xznM5u3dhr6dkJI9BNq9mI/HgcDxL19UV
- T0+Bsg6O2a3etVDRUOMu6je3JU33B5pFqiYpolqwzc84ASrmmPyryuwH24+FPODl2NK0
- /jswqbw3cLYGC3s8tw+3+64iNj05CofMOCHjsjPmhNsSGF6fZGX5s2X6UpkAmOT82yEf
- KD+vMh5N6wzurqnoLV7GP3bDuQRiamzrkbH5J6wxueQVfjy9YKlsV1lqKUCTBLbTMy1G
- tbIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=2B8bmMK1MWV0IKBzZFhJ4QQnRCCDWLQwwtmcrrRzShw=;
- b=FR+rR2+7w76oNQFizChzGLmFfhwW0hfkvtp8oDHN4YYAYm1qNTOgPwttqCP6suTVio
- wGKZJJkn+nlyMBBBs2OH+Q0nwb/e6FYq0nw6VISd+95RDE66evSUjrqc/ZyIcbLq8nck
- OOtIeKKAb+m2659P4cMcwNYVmbM/gckTmB66Wb9fPVA+5flKJDq8zQszU3vABN1Rj+0e
- ibRCl6hiF20142JMIMVoLWPYEGwTIEK3+xNBjLBhGXNxY0VtaxgBqhMFvyEW6twswkLq
- TnwyFfNmJL1L5qAl5Hn3AJSTbsyX5nKjhuNvNATEFpXJl7PFR7fVo5Ve9LUl00tqbygp
- E64g==
-X-Gm-Message-State: AOAM531O8AkGf6925xlMrHiZsw4zOmz9CGcZQrfisSYtZ+jbmwO/8u1S
- fn1mjDEH2rBsKWsDYhxIxxE5kw==
-X-Google-Smtp-Source: ABdhPJzSqN3B7Go3MtNjE9VY5h0clk+hYXj3ladZ5/S+PnXE8W92M9c05HKB4nGF1ekuX4eoULgjrQ==
-X-Received: by 2002:a17:90b:1bcc:: with SMTP id
- oa12mr5239612pjb.113.1627684481796; 
- Fri, 30 Jul 2021 15:34:41 -0700 (PDT)
-Received: from google.com (157.214.185.35.bc.googleusercontent.com.
- [35.185.214.157])
- by smtp.gmail.com with ESMTPSA id b184sm3525033pfg.72.2021.07.30.15.34.41
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 30 Jul 2021 15:34:41 -0700 (PDT)
-Date: Fri, 30 Jul 2021 22:34:37 +0000
-From: Sean Christopherson <seanjc@google.com>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Subject: Re: [PATCH 07/11] treewide: Replace the use of mem_encrypt_active()
- with prot_guest_has()
-Message-ID: <YQR+ffO92gMfGDbs@google.com>
-References: <cover.1627424773.git.thomas.lendacky@amd.com>
- <029791b24c6412f9427cfe6ec598156c64395964.1627424774.git.thomas.lendacky@amd.com>
-MIME-Version: 1.0
+Authentication-Results: lists.ozlabs.org;
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4Gc4FT34pZz3bnC
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Jul 2021 10:02:03 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 16UNtuUP004776;
+ Fri, 30 Jul 2021 18:55:56 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 16UNtsHB004775;
+ Fri, 30 Jul 2021 18:55:54 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Fri, 30 Jul 2021 18:55:54 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Nick Desaulniers <ndesaulniers@google.com>
+Subject: Re: [PATCH] powerpc/vdso: Don't use r30 to avoid breaking Go lang
+Message-ID: <20210730235554.GJ1583@gate.crashing.org>
+References: <20210729131244.2595519-1-mpe@ellerman.id.au>
+ <392b3b47-1878-d27a-9656-4596fdc7c343@molgen.mpg.de>
+ <CAKwvOdmR9nB3T-PLNSGea3=9qbZuOoLs5D22UPRBbvw_+aOO7A@mail.gmail.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <029791b24c6412f9427cfe6ec598156c64395964.1627424774.git.thomas.lendacky@amd.com>
+In-Reply-To: <CAKwvOdmR9nB3T-PLNSGea3=9qbZuOoLs5D22UPRBbvw_+aOO7A@mail.gmail.com>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,39 +49,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
- linux-efi@vger.kernel.org, Brijesh Singh <brijesh.singh@amd.com>,
- kvm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org,
- platform-driver-x86@vger.kernel.org, Will Deacon <will@kernel.org>,
- linux-s390@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
- Baoquan He <bhe@redhat.com>, Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
- amd-gfx@lists.freedesktop.org, David Airlie <airlied@linux.ie>,
- Ingo Molnar <mingo@redhat.com>, linux-graphics-maintainer@vmware.com,
- Dave Young <dyoung@redhat.com>, Tianyu Lan <Tianyu.Lan@microsoft.com>,
- Thomas Zimmermann <tzimmermann@suse.de>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
- iommu@lists.linux-foundation.org, Daniel Vetter <daniel@ffwll.ch>,
- linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Nathan Chancellor <nathan@kernel.org>, Paul Menzel <pmenzel@molgen.mpg.de>,
+ linuxppc-dev@lists.ozlabs.org, clang-built-linux@googlegroups.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 27, 2021, Tom Lendacky wrote:
-> @@ -451,7 +450,7 @@ void __init mem_encrypt_free_decrypted_mem(void)
->  	 * The unused memory range was mapped decrypted, change the encryption
->  	 * attribute from decrypted to encrypted before freeing it.
->  	 */
-> -	if (mem_encrypt_active()) {
-> +	if (sme_me_mask) {
+On Thu, Jul 29, 2021 at 09:25:43AM -0700, Nick Desaulniers wrote:
+> On Thu, Jul 29, 2021 at 6:42 AM Paul Menzel <pmenzel@molgen.mpg.de> wrote:
+> > Am 29.07.21 um 15:12 schrieb Michael Ellerman:
+> > > Note this only works with GCC, clang does not support -ffixed-rN.
+> >
+> > Maybe the clang/LLVM build support folks (in CC) have an idea.
+> 
+> Right, we've had issues with these in the past.  Generally, we need to
+> teach clang about which registers are valid for `N` so that it can
+> diagnose invalid values ASAP.  This has to be done on a per arch basis
+> in LLVM to steal the register from the register allocator.  For
+> example, this was used previously for aarch64 (but removed from use in
+> the kernel) and IIRC is used for m68k (which we're working to get
+> builds online for).
 
-Any reason this uses sme_me_mask?  The helper it calls, __set_memory_enc_dec(),
-uses prot_guest_has(PATTR_MEM_ENCRYPT) so I assume it's available?
+In GCC, it is -ffixed-* (note: no "r").  The string is stripped of the
+standard prefix for the target (for Power, none), and possibly of one
+"%" or "#".  If the string is a recognised register name (or alternative
+register name) for the target, that is used.  If not, and it is a
+decimal number, then the internal GCC register of that number is used
+(these numbers can differ from one GCC release to another, and in fact
+we have changed the numbering for Power before -- but 0..31 have always
+been the GPRs, and 32..63 have always been the FPRs).
 
->  		r = set_memory_encrypted(vaddr, npages);
->  		if (r) {
->  			pr_warn("failed to free unused decrypted pages\n");
+The names for the Power registers are:
+GPRs:
+  0..31, or alternatively
+  r0..r31
+FPRs:
+  0..31, or alternatively
+  fr0..fr31, or alternatively
+  vs0..vs31
+VRs:
+  0..31, or alternatively
+  v0..v31, or alternatively
+  vs32..vs63
+CR fields:
+  0..7, or alternatively
+  cr0..cr7
 
+(There are more, but changing the default calling convention for those
+will not work anyway.  Also, some non-Linux configurations use different
+names.)
+
+
+Segher
