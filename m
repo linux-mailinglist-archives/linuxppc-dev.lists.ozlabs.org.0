@@ -1,70 +1,189 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 815DB3DBFD6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Jul 2021 22:30:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB5973DC29B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Jul 2021 04:21:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GbzYX2bbfz3cPT
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Jul 2021 06:30:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gc7Kt48RNz3dCS
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Jul 2021 12:21:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20161025 header.b=N8HoRlaG;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2021-07-09 header.b=olBVhedo;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2020-01-29 header.b=gR7P6ADv;
+	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=M3qwMaSy;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::22c;
- helo=mail-lj1-x22c.google.com; envelope-from=ndesaulniers@google.com;
+ smtp.mailfrom=oracle.com (client-ip=205.220.177.32;
+ helo=mx0b-00069f02.pphosted.com; envelope-from=boris.ostrovsky@oracle.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=N8HoRlaG; dkim-atps=neutral
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com
- [IPv6:2a00:1450:4864:20::22c])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
+ header.s=corp-2021-07-09 header.b=olBVhedo; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
+ header.s=corp-2020-01-29 header.b=gR7P6ADv; 
+ dkim=pass (1024-bit key;
+ unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com
+ header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com
+ header.b=M3qwMaSy; dkim-atps=neutral
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com
+ [205.220.177.32])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GbzY54lPLz2yWG
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Jul 2021 06:30:15 +1000 (AEST)
-Received: by mail-lj1-x22c.google.com with SMTP id m9so14062986ljp.7
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Jul 2021 13:30:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=NlNJsWKLmqO3IeQQioweQYYN6qx+xQ/7jnpZkoegGsQ=;
- b=N8HoRlaGoRDU1r+nR55Q+mD8NeG34Px6GOxSmRxfAWW/GtjaLdW4aEeIuv/KprECeS
- nlkj1pzEAMruW5U2sly70QyiAeKTV7LAgxYxFO5Ghd+vKCdzW2j0cp2YcLu0GLu4zTkX
- gf8JtbV00p0gPK9m1zN7X84cFLWtYaj/gcnSOMvkCOkm915o9iUhaJbypDlgNwlsaCYm
- 6cLVDs9eLPDBauUK9WRcd5TAEwbftzIPZKZyABICTTlEZmWKkWwmUfVd/E03Y+x7H32F
- GwRknAJs6R8kf0WLZw6JN8rYtXRbl/xtr5FoJDjoRXDQZrn8G/VXJkeaoiv3RCrBcY9C
- nDbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=NlNJsWKLmqO3IeQQioweQYYN6qx+xQ/7jnpZkoegGsQ=;
- b=cCBiMcCy/ofanS5Mn0q3qNj7L4Gv80YGiRT5UIOXFi5byU0lu6V+09Dh2zFbbTbnrs
- pg4nsj8lH2T3B9As1f0KD/EzCYD3FMD3oUx3ej8JiMBYaPzP4QLyHLwbbBQImxnmkGv5
- 8MyVvXAwOCA0tH25YJSwU/uDgiEeeIT6TXHDitoL387uzwBqBAp4qtDGjycuD9Lz/BzD
- L/HueKOHB67Ld+OEY5dk6zV3kNkPT5k03ir3PtcTATDBC7xnxLae4TclJVrOrJQjDXbR
- H5e/Q0s1L0JX3AcljHn5q+wyWpLfKm436VbF9+SiR+bJoQFPgnvVaG7unE3m874q84cu
- Il1w==
-X-Gm-Message-State: AOAM53119gEkOt3YV9a7y7fFHXbPGvoatEditx6DjZNsOFCAr6mfdgpz
- dgKIUTgj8R3mxlwR0ZANWck9noH1HsEdaqwu2dWiKw==
-X-Google-Smtp-Source: ABdhPJycP4d14boj+x7rHzVPDwajcqyRnadT/XwhsCoJtnZ5aga9ccR/57cOzQWxd3X3ZJJjF6Pof8pxFnN/+9b14Ac=
-X-Received: by 2002:a05:651c:329:: with SMTP id
- b9mr2927423ljp.116.1627677010835; 
- Fri, 30 Jul 2021 13:30:10 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gbzl003Zgz2yXf
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Jul 2021 06:38:49 +1000 (AEST)
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 16UKa7r2013229; Fri, 30 Jul 2021 20:37:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=subject : to : cc :
+ references : from : message-id : date : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2021-07-09;
+ bh=WQqZO2vXgRMAEHOwfeKW9pvCxNym6y/aItCMeaAsAXU=;
+ b=olBVhedoSR0HyLxxaOOgS/a493vrgoE/vHjB1qCQMRSOSMkXWtAMIIzT/mgyAUMlX2a+
+ 4R7x0iCWahUWZ2JGvCB3NkCUA4h6KThCiDqWSXf6OXTxu6pBBRAgG5SM0JP5zsymF4RN
+ tKDuJxLyG8GE4VZxGTolR8vFsrBaLzpG3S5CRhNPsQqcDYBpsyiTcsNpRKVSaCq196Au
+ oKSySFhUaitkfkM+jyqM+0QQi40s8xw+0oFUC7kD2AlEM3aiA8QYAeVGTgzVyv+HT2cD
+ w6/fK3xgCh4LttpWT0ZXWGViQl6mOqpN14tSjsL29h7b18f4IrL48GZkoEw/vf1E/Ju9 OA== 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=subject : to : cc :
+ references : from : message-id : date : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2020-01-29;
+ bh=WQqZO2vXgRMAEHOwfeKW9pvCxNym6y/aItCMeaAsAXU=;
+ b=gR7P6ADvIldouOpafOj/tiG2rFjyQCQdqDp7kgnnyKPCov4DwD4ZvRkeLdokRmTnOSoW
+ dCbGXm5i+9iW00b7G9zuek/bRuoFjBonzDgZdbnYNUp2n9gPNNiBlhdHLqG3GkZ9xgXM
+ aeIkjbUEpQClN74QIFlBB1dQdEXUVpG+8b5Zv8+paXELjvWPmWHDBpBbIwcqjUuUl7+f
+ WiVxHv5YwDpnI1gLp+zv0Iw0KmYSp7+5vEd3anfI63XBw+hmUPiVJK7z4gkYA41sTAqj
+ ennltRZ+OkjZ+KOHmu8L0R3e99nSb2qaSuc+7UuCx8UuyVZBWM5UVEN0VXdZKHrFbEf/ mQ== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+ by mx0b-00069f02.pphosted.com with ESMTP id 3a488da6us-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 30 Jul 2021 20:37:42 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+ by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 16UKZpMW026681;
+ Fri, 30 Jul 2021 20:37:41 GMT
+Received: from nam11-dm6-obe.outbound.protection.outlook.com
+ (mail-dm6nam11lp2177.outbound.protection.outlook.com [104.47.57.177])
+ by aserp3030.oracle.com with ESMTP id 3a4ngv12th-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 30 Jul 2021 20:37:41 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=OwwTLA62HnA7D6mAwuAHj/MSfi+6JM6uBib2mZgfGOBl4fJfVuVGnL97TUyi+zVoZUYlmC+m99q/W3FyydP2mnWkEIeF5SOsfW+hwPeUgG2FLzJiH1qMjD3pOTP2Q6dtIvHLNS/3pDhYo7TK+MlmjgKHF5UVll/FhjP9j6G+VWcsaagoxhFSY/KRWVuZAKfwuOAb+UB5OIfT7eCCcI9ljc3w2u1HwSz7Lmk+/8hAS9srVCrEas0u0Q+SUMp5kpjr6+bK27vRLBK9LFW6tyOAPiIRwFuPbs7ptA63ttyNWsdETPPZFQqKCX7CDH3NQvs9akHd+gUqxuQyDO01sGCMmg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WQqZO2vXgRMAEHOwfeKW9pvCxNym6y/aItCMeaAsAXU=;
+ b=AJ+Ura8vH5oA34c9wvlKyuwRSyqVVWtOGQQfdzmIHlCYhj7iqVjksaXML8VSA91MwqJy10MEfQnxGE2ROrsBl51npCcCV/Ik26uRDGpJqXevx16Sd1ze5T6hpVugyVA34NAwsuj48fXHGJJUPAYGK+g6qNvAKPVYHTJmKd0Hj/RAMP3ViE64IeicB7vVx5h8xfJF5HXcBeqgzkww+aQO9Tp7wQHJ3GxxytRdUWqErKnWoRgzjLx4I16AIrA0/Kxp4JnKOPGlGrHx1unlaJnwXUfH7Fj7muWT5mXcErxqmUuPeFKwsJdl/F8LizQuDSI2dfNKVmtY+PngEYA7QrXdjQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WQqZO2vXgRMAEHOwfeKW9pvCxNym6y/aItCMeaAsAXU=;
+ b=M3qwMaSy1cNSgKlaKFRGkoV871IF3xOdtm1/pORV0cUKxkegNdV9N7V5yNfSk/IWti6yt86e0ouiK/cD+Fck/+RKYB1Hrkk9ZmzIEzpYGv7SPFU5UatApjCE1DV8Vb1o6/w0J3JT5uE6cdRokxC5r5dURfa5Cp3y7wijRbEf2vI=
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none; vger.kernel.org; dmarc=none action=none header.from=oracle.com; 
+Received: from BLAPR10MB5009.namprd10.prod.outlook.com (2603:10b6:208:321::10)
+ by MN2PR10MB4253.namprd10.prod.outlook.com (2603:10b6:208:1d6::20)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4373.21; Fri, 30 Jul
+ 2021 20:37:39 +0000
+Received: from BLAPR10MB5009.namprd10.prod.outlook.com
+ ([fe80::f10d:29d2:cb38:ed0]) by BLAPR10MB5009.namprd10.prod.outlook.com
+ ([fe80::f10d:29d2:cb38:ed0%8]) with mapi id 15.20.4373.025; Fri, 30 Jul 2021
+ 20:37:38 +0000
+Subject: Re: [PATCH v1 4/5] PCI: Adapt all code locations to not use struct
+ pci_dev::driver directly
+To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+ Bjorn Helgaas <bhelgaas@google.com>
+References: <20210729203740.1377045-1-u.kleine-koenig@pengutronix.de>
+ <20210729203740.1377045-5-u.kleine-koenig@pengutronix.de>
+From: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Message-ID: <2b5e8cb5-fac2-5da2-f87b-d287d2c5ea81@oracle.com>
+Date: Fri, 30 Jul 2021 16:37:31 -0400
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.12.0
+In-Reply-To: <20210729203740.1377045-5-u.kleine-koenig@pengutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-ClientProxiedBy: CH0PR03CA0207.namprd03.prod.outlook.com
+ (2603:10b6:610:e4::32) To BLAPR10MB5009.namprd10.prod.outlook.com
+ (2603:10b6:208:321::10)
 MIME-Version: 1.0
-References: <20210729141937.445051-1-masahiroy@kernel.org>
- <20210729141937.445051-3-masahiroy@kernel.org>
-In-Reply-To: <20210729141937.445051-3-masahiroy@kernel.org>
-From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Fri, 30 Jul 2021 13:29:59 -0700
-Message-ID: <CAKwvOdkRuxaUvAi4ik2SiDgEeNOX6D76aBtHDBPyDVTumWskLg@mail.gmail.com>
-Subject: Re: [PATCH 3/3] powerpc: move the install rule to
- arch/powerpc/Makefile
-To: Masahiro Yamada <masahiroy@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [10.74.103.140] (160.34.89.140) by
+ CH0PR03CA0207.namprd03.prod.outlook.com (2603:10b6:610:e4::32) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4373.18 via Frontend Transport; Fri, 30 Jul 2021 20:37:33 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 96576103-4114-4377-14bd-08d95399dedd
+X-MS-TrafficTypeDiagnostic: MN2PR10MB4253:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <MN2PR10MB4253B4C0F753BFF1FA01C0B38AEC9@MN2PR10MB4253.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2887;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: s6ovWgFeuFXbSv56/21AW+kfDUirYVwOPMw5MTa/HnbouQolX0Q48Fc4cLIkdalDaE1j2C2BIBId9QbD6Jd+F6lOrw35+RryNbJ1G8epQziPi4gZAfSOlZZeLnEzKCTJ90ascCHYrReDB4HLVBZH6Huv91YItm4KenDYCoSWBhj7W6IUzH+BUOe+a/L9gF0u785j8yaFEF2PN9rK42iFyTQTuwPmwP1h5S/rxodsSYfKgEh8S926zVQha7qxnCaUpRCMJ6lu62nuaQKAY/2srG5fMMN1gBlRlFTOvaIwVZokZLxQ2gFWjaFIj+XFPfezwAG+zww1EUu6b4ghgp+mSVNobpOJftrgfhMjut93w2jDWWxILz5cE4NW3GsoM+pk2d3xPanaRjawdmOPNLTnr0HBX3zoxQUnbhJpwdiIqnZyUDC6j2qHq3dBCMJ09DE+I/6ljbGaF0Qn9v2/Ery/wP2LqjIMOUo/CYUSPhqwUd7EiiUSTK/k/X/AlPa9lYTH6TVbjnkHuHHwRmigOkdzvF8Qd5ZKTqGDmn24lqJ2klYP5HMOlEh9AgyrmXZFfg9hFluxLL4A22ZGmUjUruBaTnuUGsNmABSKd+6+8jU54Bx7acBuWntyieY62mmkeSswkgUxSNRYVh/KeiFgbScPNAed7hWSc7yjRUt4EuHrXT53/UIN7tKPG+QdXOmiv3Bio5pUewx1Ja7MTT8CEW4noMxLAsTYWtpRcoY7GZj5Oqc=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BLAPR10MB5009.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(376002)(396003)(136003)(39860400002)(346002)(366004)(31686004)(2906002)(8936002)(31696002)(6486002)(7366002)(110136005)(8676002)(5660300002)(36756003)(316002)(2616005)(7416002)(16576012)(38100700002)(44832011)(7406005)(86362001)(66556008)(26005)(186003)(956004)(66476007)(478600001)(4744005)(4326008)(53546011)(66946007)(54906003)(45980500001)(43740500002);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NW1WdmlybHdpdHhFcWhFSXZpZXFPK1BkNkhKeWxWSjd2SDM5NWZ4OFcrVTFT?=
+ =?utf-8?B?eGQ0bE9PWEx4bHQ5NkJMc0Yvb3BBSXB2YmtXeHlScGhuU3krc0lOTVBFdWpl?=
+ =?utf-8?B?TmpYRG1BTkVGRkw2MGJKUFFvRkZiSzRPaW4zMnFEVUo5eWNuQXQ4dERLR2w5?=
+ =?utf-8?B?ME9YMWdQQVVaNTgrdlA0QkhwcnhGK1NUeUpvdlEzSk80ZlJXMU0zdms3QW00?=
+ =?utf-8?B?QjhrdHpVVXltNUViVW9vK3ZlNmpXSnpPNFFybExiUUFYSFRNaXl1RkNJMThT?=
+ =?utf-8?B?SXN4MUU3dWFiaisyWW9MZTc1YjBVMGdMOTR5b1B6OTdETkl3THFiSG4rdGhE?=
+ =?utf-8?B?RDRCdTlLOVZYakdZYXhvQWZHeDQ5SysxN012d1FSN0p5RkZ1Kyt3RE9MSHB4?=
+ =?utf-8?B?c3VFZWZnVDJ4RWZicnJ6dW9FYkROVndzdHU0KzVNc0pacndrYVNWVm9FNENZ?=
+ =?utf-8?B?Z09ZdCsvMlA0cFBoVkV0UzhtU0tOcWFKaFBCRlphUElDOHQ0UEp4VWlnZ2NK?=
+ =?utf-8?B?T1RMaXZHMzhIcUp1WGlDVUxhcGRaMTJnaVBlYUtqQnpjY0syS25ZZ3BmVlhr?=
+ =?utf-8?B?V2ZTbnduUWlwT2x4ZTByNEhjUWxsVXdzOFRNWFZaY1BTZzBMKzhLeEtpKzd0?=
+ =?utf-8?B?bTZvRkR6Szl3bDFoQStmQVM5QTJjRVdrbTV3cG9aZnV1QTF0WW9YYkJZOVlC?=
+ =?utf-8?B?WTVGUFoxUU15Mm5qUy84d2VkLyt5VnlxbWJqRWhjSjlITWNBZVliRDZEbDdr?=
+ =?utf-8?B?OWdjY0NvaEF5YlR5bWNPN2ttdDZ1OWxwNWx4MEt4anRSL1U2alRyQWpZS3No?=
+ =?utf-8?B?RzFCT1p0L3ZQRHEyVjBveklmZzZxbjAyUHo2QnM0ekRNY0VRTVlnZHVUUmo5?=
+ =?utf-8?B?b29QYmxsSHNKend3R1oxVUlpY1VuMDdodHk1SVZldWN0M0JsZU02ZXNvWDJw?=
+ =?utf-8?B?TlJvbFNtRXRvY1ZKY25FVjBnRlVlT2hlK3ZncXZJcUcxQWVrcVorZEloQ0Z1?=
+ =?utf-8?B?YjBidFh3WWlSa2JYUHNKTVI3T2ZJdmtST3YwZVZveHBjVkdNZURMZ2hiTDNO?=
+ =?utf-8?B?TVA3NlVqOWVvbVNXYWpPcHVxdkV0QXhZZlVaTHZkVmxSWnBCOXkvTm1jUHZS?=
+ =?utf-8?B?YVR1d1QyTzlJSmVXYkNoSHZyZzBRbFBheGFNTTFwRTRLRUN1Ui9YZEZYSkZJ?=
+ =?utf-8?B?OXlTbnlud1dyZ3FEalREWExqTTFoRnh6cmdieTRiV2R5dXE4aExtcTNQbGZt?=
+ =?utf-8?B?U2NDS0dtZ2h2aXU5UnhnUWVFOUl5L1hSYkUvczRwZkhaMXR4UGxnVUI1VG1U?=
+ =?utf-8?B?dmp1VmEyTmxJVDY2dXBNRlZUM2Rta2JkMVVLbmhaWnhqYlNmbzh1R2d3M3A0?=
+ =?utf-8?B?YUxMbTdWWFBBRC9mZm5EN0R4QzJuQVFSZmtDeCtkVFA3RmxiVlV1SmdIbmZq?=
+ =?utf-8?B?VUpRMFBiOTlSNWlWMURBUHFuQ21samlEOXAxcmoxSi9oUGdTdkwxaEw0eDgz?=
+ =?utf-8?B?dWd5TVFKRFIyb3BTQU94RXNSeXlqRXFXVHF6RytTY2hDaVlTQU50WVloSDRD?=
+ =?utf-8?B?aUdxNGFLTmJITXREUE1FQS9xaktxNElxUnY5cFBIcEdzZUIrd3pyS3M4L0l2?=
+ =?utf-8?B?cnlFbjZ5S0pqajFJeTV0KzRCK1BhUndKVVVTdWJHQWw1NUtXT0xoUGRvMXJv?=
+ =?utf-8?B?dEVqZys1dVZoWEp0YWdvRmFteGV0L1JyRDE5UFBuSjZ2SVFiOE9sQXcyc1NI?=
+ =?utf-8?Q?EYn00mTAVHJlTHteaHmu1hCGNpvNUR0DxNjrjdj?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 96576103-4114-4377-14bd-08d95399dedd
+X-MS-Exchange-CrossTenant-AuthSource: BLAPR10MB5009.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2021 20:37:38.7750 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: MYW0UmmAZESi7E9HqplJenptPPPpkZg9GTDBk/J5JkiaC7jkFeeumgUZ8WLSyI/faLrx9128OvOsyBsR90qjAO1uS5oH8QnETj+5eGZA91A=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR10MB4253
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=10061
+ signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ mlxlogscore=909
+ mlxscore=0 phishscore=0 bulkscore=0 suspectscore=0 spamscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2107140000 definitions=main-2107300140
+X-Proofpoint-GUID: KbCouSxoq4ys_s-0Tgq7VsQevDeTuMTo
+X-Proofpoint-ORIG-GUID: KbCouSxoq4ys_s-0Tgq7VsQevDeTuMTo
+X-Mailman-Approved-At: Sat, 31 Jul 2021 12:20:05 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,88 +195,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- Jordan Niethe <jniethe5@gmail.com>, Paul Mackerras <paulus@samba.org>,
- Bill Wendling <morbo@google.com>, Miguel Ojeda <ojeda@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, Joel Stanley <joel@jms.id.au>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+ =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, linux-pci@vger.kernel.org,
+ Alexander Duyck <alexanderduyck@fb.com>,
+ Sathya Prakash <sathya.prakash@broadcom.com>, oss-drivers@corigine.com,
+ Oliver O'Halloran <oohall@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ Jiri Olsa <jolsa@redhat.com>, linux-perf-users@vger.kernel.org,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>, linux-scsi@vger.kernel.org,
+ Ido Schimmel <idosch@nvidia.com>, x86@kernel.org, qat-linux@intel.com,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ linux-wireless@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+ Mathias Nyman <mathias.nyman@intel.com>,
+ Yisen Zhuang <yisen.zhuang@huawei.com>, Fiona Trahe <fiona.trahe@intel.com>,
+ Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ Suganath Prabu Subramani <suganath-prabu.subramani@broadcom.com>,
+ Simon Horman <simon.horman@corigine.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>, Borislav Petkov <bp@alien8.de>,
+ Michael Buesch <m@bues.ch>, Jiri Pirko <jiri@nvidia.com>,
+ Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Andy Shevchenko <andriy.shevchenko@intel.com>, Juergen Gross <jgross@suse.com>,
+ Salil Mehta <salil.mehta@huawei.com>,
+ Sreekanth Reddy <sreekanth.reddy@broadcom.com>, xen-devel@lists.xenproject.org,
+ Vadym Kochan <vkochan@marvell.com>, MPT-FusionLinux.pdl@broadcom.com,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
+ Wojciech Ziemba <wojciech.ziemba@intel.com>, linux-kernel@vger.kernel.org,
+ Taras Chornyi <tchornyi@marvell.com>, Zhou Wang <wangzhou1@hisilicon.com>,
+ linux-crypto@vger.kernel.org, kernel@pengutronix.de, netdev@vger.kernel.org,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 29, 2021 at 7:22 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
->
-> Currently, the install target in arch/powerpc/Makefile descends into
-> arch/powerpc/boot/Makefile to invoke the shell script, but there is no
-> good reason to do so.
 
-Sure, but there are more arch/ subdirs that DO invoke install.sh from
-arch/<arch>/boot/Makefile than, not:
+On 7/29/21 4:37 PM, Uwe Kleine-König wrote:
 
-arch/<arch>/boot/Makefile:
-- parisc
-- nios2
-- arm
-- nds32
-- sparc
-- riscv
-- 390
-- ppc (this patch)
-- x86
-- arm64
-
-arch/<arch>/Makefile:
-- ia64
-- m68k
-
-Patch is fine, but right now the tree is a bit inconsistent.
-
->
-> arch/powerpc/Makefile can run the shell script directly.
->
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> ---
->
->  arch/powerpc/Makefile      | 3 ++-
->  arch/powerpc/boot/Makefile | 6 ------
->  2 files changed, 2 insertions(+), 7 deletions(-)
->
-> diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-> index 6505d66f1193..9aaf1abbc641 100644
-> --- a/arch/powerpc/Makefile
-> +++ b/arch/powerpc/Makefile
-> @@ -407,7 +407,8 @@ endef
->
->  PHONY += install
->  install:
-> -       $(Q)$(MAKE) $(build)=$(boot) install
-> +       sh -x $(srctree)/$(boot)/install.sh "$(KERNELRELEASE)" vmlinux \
-> +       System.map "$(INSTALL_PATH)"
->
->  archclean:
->         $(Q)$(MAKE) $(clean)=$(boot)
-> diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
-> index 0d165bd98b61..10c0fb306f15 100644
-> --- a/arch/powerpc/boot/Makefile
-> +++ b/arch/powerpc/boot/Makefile
-> @@ -444,12 +444,6 @@ $(obj)/zImage:             $(addprefix $(obj)/, $(image-y))
->  $(obj)/zImage.initrd:  $(addprefix $(obj)/, $(initrd-y))
->         $(Q)rm -f $@; ln $< $@
->
-> -# Only install the vmlinux
-> -install:
-> -       sh -x $(srctree)/$(src)/install.sh "$(KERNELRELEASE)" vmlinux System.map "$(INSTALL_PATH)"
-> -
-> -PHONY += install
-> -
->  # anything not in $(targets)
->  clean-files += $(image-) $(initrd-) cuImage.* dtbImage.* treeImage.* \
->         zImage zImage.initrd zImage.chrp zImage.coff zImage.holly \
-> --
-> 2.27.0
->
+> --- a/drivers/pci/xen-pcifront.c
+> +++ b/drivers/pci/xen-pcifront.c
+> @@ -599,12 +599,12 @@ static pci_ers_result_t pcifront_common_process(int cmd,
+>  	result = PCI_ERS_RESULT_NONE;
+>  
+>  	pcidev = pci_get_domain_bus_and_slot(domain, bus, devfn);
+> -	if (!pcidev || !pcidev->driver) {
+> +	pdrv = pci_driver_of_dev(pcidev);
+> +	if (!pcidev || !pdrv) {
 
 
--- 
-Thanks,
-~Nick Desaulniers
+If pcidev is NULL we are dead by the time we reach 'if' statement.
+
+
+-boris
+
+
+
+>  		dev_err(&pdev->xdev->dev, "device or AER driver is NULL\n");
+>  		pci_dev_put(pcidev);
+>  		return result;
+>  	}
+> -	pdrv = pcidev->driver;
+>  
