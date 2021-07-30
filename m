@@ -1,102 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41F6F3DBE4D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Jul 2021 20:25:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A8613DBF93
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Jul 2021 22:21:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GbwmT605tz3d85
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Jul 2021 04:24:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GbzLq031gz3d6w
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Jul 2021 06:21:23 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=F+9p7KpP;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20161025 header.b=JLaAC3h6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com;
+ smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::229;
+ helo=mail-lj1-x229.google.com; envelope-from=ndesaulniers@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=F+9p7KpP; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20161025 header.b=JLaAC3h6; dkim-atps=neutral
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com
+ [IPv6:2a00:1450:4864:20::229])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gbwly45FKz2yNK
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Jul 2021 04:24:29 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 16UIMX2I180365; Fri, 30 Jul 2021 14:24:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=D6/MohSKkzIUyUpZ6c8/jFPUemFrIIoEn0DhLaN5meA=;
- b=F+9p7KpPNF8DbB+Dt2Wm8+Dg5/jXPjUn6JDwU6HC0DneNNcG9pymmKD6JI3V68Gix6lq
- WINWtmcw85qiSiksI0oq8wRoh8tJ03X+dDvfRlJf65I70+f1oGNHsLLbiYZqdNhXnWap
- zkkiNtq/0CVlzo79H5wNWl4Ue1KhEmZbRiBbP2QLzPDBhWCDQsqi3cVsWtK6cAn6MT+G
- q9zfH3e9+/7+3q7Izr8+BRHe8R3yAHheSJSx6wPZWf/VGBUE54jCztOd9tz4QNavL1l2
- 0yxaPcRfHYGmhqXff1Tqzis459ougIDI9j3msWVUx/9F5OgDFhm2a6BsDk7y9FIPaW7W 6A== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3a4pn9g160-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 30 Jul 2021 14:24:22 -0400
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 16UINPLH182880;
- Fri, 30 Jul 2021 14:24:22 -0400
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3a4pn9g15h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 30 Jul 2021 14:24:22 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 16UINE7t029219;
- Fri, 30 Jul 2021 18:24:20 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma04fra.de.ibm.com with ESMTP id 3a235kknpf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 30 Jul 2021 18:24:20 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 16UIOHOI26018154
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 30 Jul 2021 18:24:17 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E1DF0A4051;
- Fri, 30 Jul 2021 18:24:16 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C5F1AA4040;
- Fri, 30 Jul 2021 18:24:14 +0000 (GMT)
-Received: from li-c7b85bcc-2727-11b2-a85c-a9ba7f3a2193.ibm.com (unknown
- [9.199.33.196])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 30 Jul 2021 18:24:14 +0000 (GMT)
-From: Ganesh Goudar <ganeshgr@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH 3/3] powerpc/mce: Modify the real address error logging
- messages
-Date: Fri, 30 Jul 2021 23:53:49 +0530
-Message-Id: <20210730182349.625819-3-ganeshgr@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210730182349.625819-1-ganeshgr@linux.ibm.com>
-References: <20210730182349.625819-1-ganeshgr@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GbzLL5V9cz2yMM
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Jul 2021 06:20:56 +1000 (AEST)
+Received: by mail-lj1-x229.google.com with SMTP id h11so13984703ljo.12
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Jul 2021 13:20:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=6ZdxsXIhfZeShR0BpG7ZM9hlF98/ed3x62uZjV8NOlc=;
+ b=JLaAC3h6i7sv+zobgB6FCO8AkNHOnE+QSegQ6bJPG6zSD18coezaJg3a+0CFIZQDfS
+ 8q2bUhPPeq8m6y39/0m8Oj0eweVmITzggzzvOvTbMRziX1ZII5ODNwmvKf5pQ2aAcIyR
+ aejTL5OimVzszTLBmMh/RQY5fS6aDnBUyroYVcmtGcurAfL/38PbaRCFUlL8bEkPg2M6
+ iI76uy2PSOch+Xjq8lgsVsP5Q7CyTB9B37NnsW/dBhrfXzwYpdNeOp7Sl5aILWZ13KJ5
+ TvQtlXaQ1w+IqLoPVg9nOVqxFjaQA1nx72kNzlQ/DV8S+Ow1gRYts2kwwuBIlJeGLIkG
+ Uu+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=6ZdxsXIhfZeShR0BpG7ZM9hlF98/ed3x62uZjV8NOlc=;
+ b=gJ9+927nzUFKZo/a5e778B2C5s0g3uUvS3/q0ExBX7jQ441F65GetOgONZmd710aqo
+ hOFDSzgJveKPDXx8cBrxhg9T+96ynmNzpIFmrAC1Xo6g+wVGz0FPOA3i8JXVsRSFSzE/
+ mYqoP9aldeqLADxf/p9fOyNl58jjmdrSMl0Njyl4jiKbj5sIsC/zpOdWhqcAh6WggH+c
+ KiDITaqi03Ml2alHFEeswGQfK6ZFnvggJldHSosnUr3QuyHiefJ0NZvIpo2ksebSPppz
+ WzOirnWWWXDbrPBEPjDSY8velsP0+kWZZqpdiKgGU+SM09QiOAsCkyF025Crt226c2SV
+ pkjA==
+X-Gm-Message-State: AOAM531OC92r8q0V8jcA7WvQCAV4WLN/cPMqBk9hgJ5F1MLbDPmE9oTS
+ jXGwCjpbY/oM9UAlPiXNF/W0wz9K+HUGBts2DjEbrA==
+X-Google-Smtp-Source: ABdhPJxOp5UzhKE8mQDqRvlDz8V9c71SjR7m9HyAJLUxJZSu5SbSBuLRrcen1tdS0S3uE6PnU0rTNbtfAOPrHw/7VOw=
+X-Received: by 2002:a05:651c:329:: with SMTP id
+ b9mr2900217ljp.116.1627676446795; 
+ Fri, 30 Jul 2021 13:20:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: WQaSjqRX3QGDBLMPZN0_5_cnnzLOWLim
-X-Proofpoint-GUID: m-gU05EZFlN0X2vZUs2FjYiDsIC7Ri5y
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-07-30_11:2021-07-30,
- 2021-07-30 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0
- priorityscore=1501 mlxscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 malwarescore=0 suspectscore=0 mlxlogscore=999
- impostorscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2107140000 definitions=main-2107300121
+References: <20210729141937.445051-1-masahiroy@kernel.org>
+In-Reply-To: <20210729141937.445051-1-masahiroy@kernel.org>
+From: Nick Desaulniers <ndesaulniers@google.com>
+Date: Fri, 30 Jul 2021 13:20:34 -0700
+Message-ID: <CAKwvOd=AM1zus+apNQ14oS05bQPoSuhSdjUhPUD-4EU5x2KFSA@mail.gmail.com>
+Subject: Re: [PATCH 1/3] powerpc: remove unused zInstall target from
+ arch/powerpc/boot/Makefile
+To: Masahiro Yamada <masahiroy@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,55 +75,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, Ganesh Goudar <ganeshgr@linux.ibm.com>,
- mahesh@linux.ibm.com, npiggin@gmail.com
+Cc: linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Jordan Niethe <jniethe5@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ Joel Stanley <joel@jms.id.au>, linuxppc-dev@lists.ozlabs.org,
+ Bill Wendling <morbo@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-To avoid ambiguity, modify the strings in real address error
-logging messages to "foreign/control memory" from "foreign",
-Since the error discriptions in P9 user manual and P10 user
-manual are different for same type of errors.
+On Thu, Jul 29, 2021 at 7:22 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
+>
+> Commit c913e5f95e54 ("powerpc/boot: Don't install zImage.* from make
+> install") added the zInstall target to arch/powerpc/boot/Makefile,
+> but you cannot use it since the corresponding hook is missing in
+> arch/powerpc/Makefile.
+>
+> It has never worked since its addition. Nobody has complained about
+> it for 7 years, which means this code was unneeded.
+>
+> With this removal, the install.sh will be passed in with 4 parameters.
+> Simplify the shell script.
+>
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 
-P9 User Manual for MCE:
-DSISR:59 Host real address to foreign space during translation.
-DSISR:60 Host real address to foreign space on a load or store
-	 access.
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
 
-P10 User Manual for MCE:
-DSISR:59 D-side tablewalk used a host real address in the
-	 control memory address range.
-DSISR:60 D-side operand access to control memory address space.
+> ---
+>
+>  arch/powerpc/boot/Makefile   |  6 +-----
+>  arch/powerpc/boot/install.sh | 13 -------------
+>  2 files changed, 1 insertion(+), 18 deletions(-)
+>
+> diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
+> index e312ea802aa6..a702f9d1ec0d 100644
+> --- a/arch/powerpc/boot/Makefile
+> +++ b/arch/powerpc/boot/Makefile
+> @@ -448,11 +448,7 @@ $(obj)/zImage.initrd:      $(addprefix $(obj)/, $(initrd-y))
+>  install: $(CONFIGURE) $(addprefix $(obj)/, $(image-y))
+>         sh -x $(srctree)/$(src)/install.sh "$(KERNELRELEASE)" vmlinux System.map "$(INSTALL_PATH)"
+>
+> -# Install the vmlinux and other built boot targets.
+> -zInstall: $(CONFIGURE) $(addprefix $(obj)/, $(image-y))
+> -       sh -x $(srctree)/$(src)/install.sh "$(KERNELRELEASE)" vmlinux System.map "$(INSTALL_PATH)" $^
+> -
+> -PHONY += install zInstall
+> +PHONY += install
+>
+>  # anything not in $(targets)
+>  clean-files += $(image-) $(initrd-) cuImage.* dtbImage.* treeImage.* \
+> diff --git a/arch/powerpc/boot/install.sh b/arch/powerpc/boot/install.sh
+> index b6a256bc96ee..658c93ca7437 100644
+> --- a/arch/powerpc/boot/install.sh
+> +++ b/arch/powerpc/boot/install.sh
+> @@ -15,7 +15,6 @@
+>  #   $2 - kernel image file
+>  #   $3 - kernel map file
+>  #   $4 - default install path (blank if root directory)
+> -#   $5 and more - kernel boot files; zImage*, uImage, cuImage.*, etc.
+>  #
+>
+>  # Bail with error code if anything goes wrong
+> @@ -41,15 +40,3 @@ fi
+>
+>  cat $2 > $4/$image_name
+>  cp $3 $4/System.map
+> -
+> -# Copy all the bootable image files
+> -path=$4
+> -shift 4
+> -while [ $# -ne 0 ]; do
+> -       image_name=`basename $1`
+> -       if [ -f $path/$image_name ]; then
+> -               mv $path/$image_name $path/$image_name.old
+> -       fi
+> -       cat $1 > $path/$image_name
+> -       shift
+> -done;
+> --
+> 2.27.0
+>
 
-Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
----
- arch/powerpc/kernel/mce.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
-index 47a683cd00d2..f3ef480bb739 100644
---- a/arch/powerpc/kernel/mce.c
-+++ b/arch/powerpc/kernel/mce.c
-@@ -388,14 +388,14 @@ void machine_check_print_event_info(struct machine_check_event *evt,
- 	static const char *mc_ra_types[] = {
- 		"Indeterminate",
- 		"Instruction fetch (bad)",
--		"Instruction fetch (foreign)",
-+		"Instruction fetch (foreign/control memory)",
- 		"Page table walk ifetch (bad)",
--		"Page table walk ifetch (foreign)",
-+		"Page table walk ifetch (foreign/control memory)",
- 		"Load (bad)",
- 		"Store (bad)",
- 		"Page table walk Load/Store (bad)",
--		"Page table walk Load/Store (foreign)",
--		"Load/Store (foreign)",
-+		"Page table walk Load/Store (foreign/control memory)",
-+		"Load/Store (foreign/control memory)",
- 	};
- 	static const char *mc_link_types[] = {
- 		"Indeterminate",
 -- 
-2.31.1
-
+Thanks,
+~Nick Desaulniers
