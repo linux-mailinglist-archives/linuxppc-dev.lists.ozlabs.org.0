@@ -1,52 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 003143DC6F3
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Jul 2021 18:36:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DFB13DC7A5
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Jul 2021 20:25:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GcVJS4G7wz3cVf
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  1 Aug 2021 02:36:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GcXkp2M4Wz3cVD
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  1 Aug 2021 04:25:38 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=RzWNt86K;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=yahoo.com (client-ip=66.163.191.147;
+ helo=sonic304-21.consmr.mail.ne1.yahoo.com; envelope-from=userm57@yahoo.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256
+ header.s=s2048 header.b=RzWNt86K; dkim-atps=neutral
+Received: from sonic304-21.consmr.mail.ne1.yahoo.com
+ (sonic304-21.consmr.mail.ne1.yahoo.com [66.163.191.147])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GcVHz5ssbz3002
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  1 Aug 2021 02:35:40 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4GcVHs0RTGzBB6B;
- Sat, 31 Jul 2021 18:35:37 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id frZPMb5MSNCg; Sat, 31 Jul 2021 18:35:36 +0200 (CEST)
-Received: from vm-hermes.si.c-s.fr (vm-hermes.si.c-s.fr [192.168.25.253])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4GcVHr6TZLzBB44;
- Sat, 31 Jul 2021 18:35:36 +0200 (CEST)
-Received: by vm-hermes.si.c-s.fr (Postfix, from userid 33)
- id 30E13B4; Sat, 31 Jul 2021 18:40:59 +0200 (CEST)
-Received: from 37-173-18-216.coucou-networks.fr
- (37-173-18-216.coucou-networks.fr [37.173.18.216]) by messagerie.c-s.fr
- (Horde Framework) with HTTP; Sat, 31 Jul 2021 18:40:59 +0200
-Date: Sat, 31 Jul 2021 18:40:59 +0200
-Message-ID: <20210731184059.Horde.Yln_bjDrKlAdWFSSbeXUSQ1@messagerie.c-s.fr>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Finn Thain <fthain@linux-m68k.org>
-Subject: Re: [PATCH v3 31/41] powerpc/32: Dismantle EXC_XFER_STD/LITE/TEMPLATE
-References: <cover.1615552866.git.christophe.leroy@csgroup.eu>
- <ca5795d04a220586b7037dbbbe6951dfa9e768eb.1615552867.git.christophe.leroy@csgroup.eu>
- <666e3ab4-372-27c2-4621-7cc3933756dd@linux-m68k.org>
-In-Reply-To: <666e3ab4-372-27c2-4621-7cc3933756dd@linux-m68k.org>
-User-Agent: Internet Messaging Program (IMP) H5 (6.2.3)
-Content-Type: text/plain; charset=UTF-8; format=flowed; DelSp=Yes
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GcXkJ5c8Vz301g
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  1 Aug 2021 04:25:10 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048;
+ t=1627755906; bh=NbIOQi1dtWxWRnD2A5fEcx4q/YAr0GojReCQw/awfrA=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From:Subject:Reply-To;
+ b=RzWNt86K/wYuJ9SRcvCgL0TqiaKeOIDPk5W7yFFDZY4clEE3rLpCAUytGMx6VlNdBt4gCmyHi9rdn+U5Q7jigtBQciW6vUvRrerr80KXmwaJuLZnidkWjIvRjgtLmv/cK5Z/ymsbS6aaWg3mT0UkcN7t56CJYHwDalyGURID8ihHyb11qnNuNXPhh3qS7Nc4NqM+AeG2hzJFmuLVFv50CryqQVZeeaj+o2FK/Q7r+42RDpV6TQriBI7mDmdzcWtA54VRqM0nUKuyR7EdOutEUUo7jNItMMk2iG33AXlnGfTVZ4H5Onnlb6vKFcT/pK33C0pXdkXRf5Ioufw8uAJ0Uw==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048;
+ t=1627755906; bh=WXC2A9+LPn3C2tZii2Y8koDlq2T+hQOFtcO+1Mx0PhV=;
+ h=X-Sonic-MF:Subject:To:From:Date:From:Subject;
+ b=Q6Odo/pi96JOHGBEbCg7y3RF5bTWsUKeBIt0XlYdWR4+dLkVka0EtYj+pjJIpERlE6i7RQxqdjSiwDtyVcVgCCmchf+jwM5ojvg/aP8hXOT25B2fddppTLLABw1MsKTHwl8NFHHfpwpqEn3HJjg9XXus4lNFPHKAUeiAvVxQUBFz7wRJ//G98pWxOdmgn5CqnomIKVLLJ4A9KqD87lVXEr2jyoX/JCxo5IN1ckqSUXy8pwSDKOfzjiUUrJJNEYlxostytBWZQ9UWmWgC4mWHocOPbUyLod/KXfd7o18RUNZYitwNsZTYSCZtLC+3htWrCoBspVa1MzSgJrjHn2y08A==
+X-YMail-OSG: y.DwxDgVM1kF7k119sxKiKO9JY7Uht1C9Bk41Z132RnSABgDHaHedROUEfxx86F
+ 9ITSede4vvbx_q3l_BirmDM5jIi2Y1HrknRNyLW6qD9P6E2ZhrDieWdJ5NW2Z2t48.njo5T60mlR
+ nB06VOilWPG0nESjxeWjEmUQEfF6VMqcrgxykEZNUf.SJJZLHMQlr7KU2hcLtEmhHqjP.SPsw1h1
+ pom4cBTmI5sN8AE3iCi5G3R3gHS7OrLt5puISuY2czvMKlvSSWeflhey9.yePpem_XlGm.OSBYz5
+ BfVqlhYtYRfaW.Mv8NbrwWHzlnUQFwvioszJLNev94zfNYDTAaimg1GOfAZWgeZN1zpRaRAsNyLo
+ n.Nkcy2YPAnhAqz60ibvxo38eBBudQxq9gbBLw_dMMjUSeiQxhhdVLNI00tjZ1Q6eiJLT8UIPyFG
+ Hs9jJzx7rkjlvSEBPamBVbyHoUsX7yyAAFSLZlSld96lLUdF7m6jKzxPSPswdcOt8r2Ighx2priC
+ KNfBGi39zbyb0KncHmEYmanMxIbrSiEMvcDjq7KQIYrCuTnMCVXC0EkBtjl6Yb7LkXaKx1UWBtNM
+ uIxfaUSTgt.e9YqvhtBKQWoBgt7JTwJStIPTIL0U8IlM1_yrQvQYadBnRf1frYN4xyBoRluAIX9x
+ NNvUnOPO_4M6CGvn4a7UtyXwuXEMJjJ54VP4ELOjbVVhVcoQCyuR2WPJYTesckSVEsm1pJbWp0Wc
+ 9jzTmTr5f7pu_Vyjk6mwmfitBkK37MmOXIGbRH3TvMY_4tXGwAax7o7S.9Sy8tn5GGFTP8gYQfu_
+ QabGKhPnthKvnV.bWNAPVS2rXn8_6B0elhM01n5WuRaAE8Swh6GKAF6KDb0WFoqF4JyNrVOIIx_A
+ 1k8yzG9NUDpp0KAx2jjYUv4.IpGaj1SAVR06LqjhsaGf0YojpAUccoMf5fCxvD9JpQe23l.7C3H8
+ 1rnb8n7DRpOH1MDjjE0t30RkNDeYkLu2esFuNmB7p9nrcVNy.5CN_eY73WTOJhbgmAaqOPPXwRbT
+ pVW.UZu8tN7G10xqvmvhTXCZwGWv42bWhQFzgQ718RrtrrN_k8ioEUBTxlZFRrYvlqmagBoScsJW
+ GLUYiyCBukcXyTJeo6Oxmv9UEa4naK7zCDptMib6xA6ICUuEJxNT9TCm8KVYb2USkWpw8TyqWYBy
+ bSxOc9JmwqyxPu6LOugttHvVmhC.H_kx64I2Irqy2msl8YyQZgITBAZoogjPQbbN7N63fJSrh65W
+ 1bPTbypjr3puStgVrh8YqkgEwkcY71.AvxLjpLYU7y4GDfXHexdzsq3vauedw2t0T4UMnqsSteXd
+ QNFfn.eJXxcnBan9gnG.NyWiHxe4Yv0.8leIPHhIMMdFPM.kJfuvDy2xCq7mW0rETVoOt5zHtktl
+ GFGH4PlWFEoHcds3h1FRAu2l5iVZPtnqx8T1S5uwBaTkK6LHwSDeHXuqoIlJpBYZVeL2nITyq._h
+ HKj4zWpn4l4qiHmAk2MGrxfB.l3nvtachiRkfAlIJrv07O5y5CZG5kgj4TKgTobrDOiCl0PbpSDW
+ 9zzMW08inej.DpqZKNFcRk1dsfVi.B4mCAr8Ql24.adYyoh1tEz0.5leRSzxTGQQkx08fOCWHqVr
+ Fq6nm3uQZkm4d2HPjULs.rBzzo.ICejmKNn4xpVK.gC2kOTQu0G6Yvk8sTr0.tHS2vg4rxuc09rh
+ LGR.SzYpIolueLZTJJx_xpoJvPxdAb7cGKbFw9J7kw4IEC9nMJ70Ixka_dDjd2kgJjDib4e1nyb_
+ LXQLqvch1i_xJA.HZI0Q68ykU09TtYGz9Q4mTqh1Sm8T7PJNjJh_uMoE.Vkl.AMiZnsgGcR7zAKY
+ ItWJC35bhzP5wL2HuPOBZzRi.r0RkdrvxSV6SjYBindQNSN3JIGevOAr7_UHiU0nLRNX1paG.lsx
+ zfN7u.P1lnjDiJAW.b0jCgy0vbbO1w0_6hAahPy3NEMRxmUEYhRE4U4YOeBBouOtIdQPZoFUFbP3
+ Nf5h_C5_xbgKQEoa54Tsnr0VXe5WU2QZOY1JiFBkkTmeVt_DCmDEsBVDMhHseG0zelqc6o1TW0Yk
+ sciU3Vj5_wjEQXCckjaxaUrnpWDlTBJeBfqldEbvBeJE3FdfSrDde5hpmeeVkXlgppljVLlJFTKE
+ q2vZE1FOiK2d3DCvfulnLaP40k0R_SLwOT9FiyMH8P5I7yschDbNAEMBbBKwyFA37o7fKEVK0F6P
+ pMK.bVAX.x4vXnq_rvL7aAY4cutNeNT68NVKK.vFr8liwzboy0PPxM5RZIydo8m02PRn.hCIthNC
+ p_iUkAo039dGsq7EiW_cmdrnxheC4mob_eNTtG_5KZGTYAlNccwwyk0pduPvE.lMthCi6U.mjImR
+ xnZlrqxFcSARzDOzlLNw1.z03IaQ5bRpEYn0J9GbLS0jLA5qb5VmsFKjNambEfJhtdOKfsrJ557z
+ hU53gab2USnVann0oUh.CQEOpgeQeaOGlwujYj5cMeC9O9pSDdPCMUqtNWlBggjR8gnylbe5b4q_
+ f9H0CzyuDzhySF9ytMH8PjEOq.dm8QUmTI4XeRR02zCzj_owlWp78n2gXiBDewM4YzScTbUtDANS
+ QRrgdubaRen9as1yQYLCxMA3u1wt5ABc8SnV5cBkiPLzQ4dO4NAZTLFsqe3QVspYqa.Q4onVmjlP
+ _ocM3jok4lN24vqsRsXnTRGGia.WvGqmTMdLqnIzBlIqZWXf9DJrSUz9d7DVPIC4F
+X-Sonic-MF: <userm57@yahoo.com>
+Received: from sonic.gate.mail.ne1.yahoo.com by
+ sonic304.consmr.mail.ne1.yahoo.com with HTTP; Sat, 31 Jul 2021 18:25:06 +0000
+Received: by kubenode531.mail-prod1.omega.ne1.yahoo.com (VZM Hermes SMTP
+ Server) with ESMTPA ID 33664c0d36ed30bef40b13577008ba6b; 
+ Sat, 31 Jul 2021 18:25:02 +0000 (UTC)
+Subject: Re: Debian SID kernel doesn't boot on PowerBook 3400c
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+References: <60841a75-ed7c-8789-15db-272bf43055f5.ref@yahoo.com>
+ <60841a75-ed7c-8789-15db-272bf43055f5@yahoo.com>
+ <20210731175842.Horde.UunWM8rZMP0dRCaeWUo-og1@messagerie.c-s.fr>
+From: Stan Johnson <userm57@yahoo.com>
+Message-ID: <cd7c931c-a578-a2ff-0632-7767a0e90bb9@yahoo.com>
+Date: Sat, 31 Jul 2021 12:24:45 -0600
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:60.0)
+ Gecko/20100101 Thunderbird/60.9.1
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20210731175842.Horde.UunWM8rZMP0dRCaeWUo-og1@messagerie.c-s.fr>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Mailer: WebService/1.1.18749
+ mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,206 +104,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stan Johnson <userm57@yahoo.com>, linux-kernel@vger.kernel.org,
- Nick Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Debian PowerPC <debian-powerpc@lists.debian.org>,
+ linuxppc-dev@lists.ozlabs.org, Finn Thain <fthain@linux-m68k.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Finn Thain <fthain@linux-m68k.org> a =C3=A9crit=C2=A0:
+Hi Christophe,
 
-> Hi Christophe,
-
-> We found that reducing memory with the kernel parameter 'mem=3D464M' woul=
-d
-> prevent the crash.
->
-> Below are Stan's notes from the 'git bisect' run. They include an
-> additional failure mode that might be of interest. We've also observed
-> "Kernel attempted to write user page (c6207c) - exploit attempt?" and
-> "kernel BUG at arch/powerpc/kernel/interrupt.c:49!".
->
-
-Interesting.  Can you provide detailed log of thoose two BUGs ?
-
-Thanks
-Christophe
-
-
-
-
->
-> On Thu, 29 Jul 2021, Stanley J. Johnson wrote:
->
->> Here are the git bisect results (I saved the kernels and dmesg outputs
->> in case they're needed later, though it's easy enough to re-create the
->> results).
+On 7/31/21 9:58 AM, Christophe Leroy wrote:
+> Stan Johnson <userm57@yahoo.com> a écrit :
+> 
+>> Hello,
 >>
->> We'll have up to two boots (only one if the first boot fails) for each
->> kernel on WS-1 with the default memory setting of 512M.
+>> The current Debian SID kernel will not boot on a PowerBook 3400c running
+>> the latest version of Debian SID. If booted using the BootX extension,
+>> the kernel hangs immediately:
 >>
->> 1) 5.12.0-pmac-08447-g85f3f17b5db (good)
->> -> works: no dmesg errs, X works
->> -> works: no dmesg errs, X works
+>> "Welcome to Linux, kernel 5.10.0-8-powerpc"
 >>
->> 2) 5.12.0-pmac-12750-g23243c1ace9 (bad)
->> (Crash and burn. I was tempted to mark this one "skip", since the errors
->> are different, though we've seen them in earlier tests. So there could
->> be multiple regressions. But let's keep chasing this one. I can re-run
->> the bisect later and skip some failures if necessary.)
->> -> fails: "Unable to contact settings server" after wdm login; dmesg err=
-ors:
->> ...
->> [  127.169294] BUG: Unable to handle kernel instruction fetch (NULL=20=
-=20
->>=20pointer?)
->> [  127.169397] Faulting instruction address: 0x00000000
->> [  127.169635] Oops: Kernel access of bad area, sig: 11 [#2]
->> [  127.169661] BE PAGE_SIZE=3D4K MMU=3DHash SMP NR_CPUS=3D2 PowerMac
->> [  127.169696] Modules linked in:
->> [  127.169736] CPU: 0 PID: 1877 Comm: gdbus Tainted: G      D=20=20
->>=205.12.0-pmac-12750-g23243c1ace9 #9
->> [  127.169776] NIP:  00000000 LR: 00000000 CTR: 00000000
->> ...
+>> If booted from Mac OS, the Mac OS screen hangs.
 >>
->> 3) 5.12.0-rc7-pmac-02335-gaeacb52a8de (good)
->> -> works: no dmesg errs, X works
->> -> works: no dmesg errs, X works
+>> Booting also hangs if the "No video driver" option is selected in BootX,
+>> "No video driver" causes "video=ofonly" to be passed to the kernel.
 >>
->> 4) 5.12.0-pmac-11585-g95275402f66 (bad)
->> -> fails: dmesg errs, wdm login fails with "Unable to contact settings
->> server..."
->> ...
->> [   58.290883] BUG: Unable to handle kernel instruction fetch
->> [   58.291009] Faulting instruction address: 0x7cc903a4
->> [   58.291240] Oops: Kernel access of bad area, sig: 11 [#1]
->> [   58.291268] BE PAGE_SIZE=3D4K MMU=3DHash SMP NR_CPUS=3D2 PowerMac
->> [   58.291305] Modules linked in:
->> [   58.291349] CPU: 0 PID: 1750 Comm: Xorg Not tainted=20=20
->>=205.12.0-pmac-11585-g95275402f66 #11
->> [   58.291391] NIP:  7cc903a4 LR: 7cc903a6 CTR: c0127eb8
->> [   58.291417] REGS: e2da1e70 TRAP: 0400   Not tainted=20=20
->>=20(5.12.0-pmac-11585-g95275402f66)
->> [   58.291450] MSR:  40001030 <ME,IR,DR>  CR: 28008228  XER: 20000000
->> ...
+>> This is the current command line that I'm using in BootX:
+>> root=/dev/sda13 video=chips65550:vmode:14,cmode:16
 >>
->> 5) 5.12.0-pmac-11068-g9d31d233895 (good)
->> -> works: no dmesg errs, X works
->> -> works: no dmesg errs, X works
+>> Kernel v5.9 works as expected.
 >>
->> 6) 5.12.0-rc3-pmac-00258-ga9d2f9bb225 (bad)
->> -> fails: wdm dies at login, screen hangs, dmesg errs that I haven't
->> seen before:
->> ...
->> [   59.988732] InputThread[1751]: bad frame in sys_rt_sigreturn:=20=20
->>=2051a79ab6 nip 001023c8 lr 001023c0
->> [   62.079043] InputThread[1760]: bad frame in sys_rt_sigreturn:=20=20
->>=20a98be235 nip 001023c8 lr 001023c0
->> [   64.348063] InputThread[1776]: bad frame in sys_rt_sigreturn:=20=20
->>=20a46b945e nip 001023c8 lr 001023c0
->> [   66.413980] InputThread[1785]: bad frame in sys_rt_sigreturn:=20=20
->>=20a98be235 nip 001023c8 lr 001023c0
->> [   68.486768] InputThread[1794]: bad frame in sys_rt_sigreturn:=20=20
->>=20677e693b nip 001023c8 lr 001023c0
+>> The config file I'm using is attached.
 >>
->> 7) 5.12.0-rc3-pmac-00129-g036fc2cb1dc (bad)
->> -> fails: dmesg errs, wdm hangs (wdm did not crash, screen seems hung)
->> ...
->> [  101.136941] BUG: Unable to handle kernel instruction fetch
->> [  101.137059] Faulting instruction address: 0xfea31f74
->> [  101.137296] Oops: Kernel access of bad area, sig: 11 [#1]
->> [  101.137323] BE PAGE_SIZE=3D4K MMU=3DHash SMP NR_CPUS=3D2 PowerMac
->> [  101.137358] Modules linked in:
->> [  101.137401] CPU: 0 PID: 1882 Comm: xfce4-session Not tainted=20=20
->>=205.12.0-rc3-pmac-00129-g036fc2cb1dc #14
->> [  101.137443] NIP:  fea31f74 LR: fea31f74 CTR: c00cfef4
->> [  101.137470] REGS: e2e21e70 TRAP: 0400   Not tainted=20=20
->>=20(5.12.0-rc3-pmac-00129-g036fc2cb1dc)
->> [  101.137502] MSR:  40001030 <ME,IR,DR>  CR: 220084e8  XER: 00000000
->> ...
+>> Here are the results of a git bisect, marking v5.9 as "good" and the
+>> most current kernel as "bad":
 >>
->> 8) 5.12.0-rc3-pmac-00064-g719e7e212c7 (good)
->> -> works: no dmesg errs, X works
->> -> works: no dmesg errs, X works
+>> $ cd linux
+>> $ git remote update
+>> $ git bisect reset
+>> $ git bisect start
+>> $ git bisect bad
+>> $ git bisect good v5.9
 >>
->> 9) 5.12.0-rc3-pmac-00096-ga2308836880 (bad)
->> -> fails: dmesg errs, wdm hangs while validating login
->> ...
->> [  104.559951] BUG: Unable to handle kernel instruction fetch
->> [  104.560086] Faulting instruction address: 0xfe988ba4
->> [  104.560307] Oops: Kernel access of bad area, sig: 11 [#1]
->> [  104.560337] BE PAGE_SIZE=3D4K MMU=3DHash SMP NR_CPUS=3D2 PowerMac
->> [  104.560371] Modules linked in:
->> [  104.560415] CPU: 0 PID: 1834 Comm: xfce4-session Not tainted=20=20
->>=205.12.0-rc3-pmac-00096-ga2308836880 #16
->> [  104.560457] NIP:  fe988ba4 LR: fe988ba4 CTR: c00cfee8
->> [  104.560484] REGS: e2d9de70 TRAP: 0400   Not tainted=20=20
->>=20(5.12.0-rc3-pmac-00096-ga2308836880)
->> [  104.560517] MSR:  40001030 <ME,IR,DR>  CR: 220484e8  XER: 00000000
->> ...
->> [  114.371853] BUG: Unable to handle kernel instruction fetch
->> [  114.371998] Faulting instruction address: 0x3e62a270
->> [  114.372270] Oops: Kernel access of bad area, sig: 11 [#2]
->> [  114.372298] BE PAGE_SIZE=3D4K MMU=3DHash SMP NR_CPUS=3D2 PowerMac
->> [  114.372334] Modules linked in:
->> [  114.372382] CPU: 0 PID: 1858 Comm: xfwm4 Tainted: G      D=20=20
->>=205.12.0-rc3-pmac-00096-ga2308836880 #16
->> [  114.372425] NIP:  3e62a270 LR: 3e62a271 CTR: c065eebc
->> [  114.372452] REGS: e2dede70 TRAP: 0400   Tainted: G      D=20=20
->>=20(5.12.0-rc3-pmac-00096-ga2308836880)
->> [  114.372486] MSR:  40001030 <ME,IR,DR>  CR: 22002284  XER: 00000000
->> ...
+>> Note: "bad" -> hangs at boot; "good" -> boots to login prompt
 >>
->> 10) 5.12.0-rc3-pmac-00080-g7a7d744ffe8 (bad)
->> -> fails: dmesg errs, "Unable to contact settings server..."
->> ...
->> [  170.622408] BUG: Unable to handle kernel instruction fetch
->> [  170.622546] Faulting instruction address: 0xfe9255d4
->> [  170.622777] Oops: Kernel access of bad area, sig: 11 [#1]
->> [  170.622806] BE PAGE_SIZE=3D4K MMU=3DHash SMP NR_CPUS=3D2 PowerMac
->> [  170.622841] Modules linked in:
->> [  170.622885] CPU: 0 PID: 1863 Comm: xfce4-session Not tainted=20=20
->>=205.12.0-rc3-pmac-00080-g7a7d744ffe8 #17
->> [  170.622927] NIP:  fe9255d4 LR: fe9255d4 CTR: c00cfee8
->> [  170.622954] REGS: e2da1e70 TRAP: 0400   Not tainted=20=20
->>=20(5.12.0-rc3-pmac-00080-g7a7d744ffe8)
->> [  170.622987] MSR:  40001030 <ME,IR,DR>  CR: 220484e8  XER: 00000000
->> ...
->> [  172.611235] BUG: Unable to handle kernel instruction fetch (NULL=20=
-=20
->>=20pointer?)
->> [  172.611364] Faulting instruction address: 0x00000000
->> [  172.611662] Oops: Kernel access of bad area, sig: 11 [#2]
->> [  172.611690] BE PAGE_SIZE=3D4K MMU=3DHash SMP NR_CPUS=3D2 PowerMac
->> [  172.611725] Modules linked in:
->> [  172.611773] CPU: 0 PID: 1871 Comm: gmain Tainted: G      D=20=20
->>=205.12.0-rc3-pmac-00080-g7a7d744ffe8 #17
->> [  172.611814] NIP:  00000000 LR: 00000000 CTR: 00000000
->> [  172.611840] REGS: e2db9e70 TRAP: 0400   Tainted: G      D=20=20
->>=20(5.12.0-rc3-pmac-00080-g7a7d744ffe8)
->> [  172.611874] MSR:  40001030 <ME,IR,DR>  CR: 28008468  XER: 00000000
->> ...
+>>  1) 5.11.0-rc5-pmac-00034-g684da7628d9 (bad)
+>>  2) 5.10.0-rc3-pmac-00383-gbb9dd3ce617 (good)
+>>  3) 5.10.0-pmac-06637-g2911ed9f47b (good)
+>>     Note: I had to disable SMP to build this kernel.
+>>  4) 5.10.0-pmac-10584-g9805529ec54 (good)
+>>     Note: I had to disable SMP to build this kernel.
+>>  5) 5.10.0-pmac-12577-g8552d28e140 (bad)
+>>  6) 5.10.0-pmac-11576-g8a5be36b930 (bad)
+>>  7) 5.10.0-pmac-11044-gbe695ee29e8 (good)
+>>     Note: I had to disable SMP to build this kernel.
+>>  8) 5.10.0-rc2-pmac-00288-g59d512e4374 (bad)
+>>  9) 5.10.0-rc2-pmac-00155-gc3d35ddd1ec (good)
+>> 10) 5.10.0-rc2-pmac-00221-g7049b288ea8 (good)
+>> 11) 5.10.0-rc2-pmac-00254-g4b74a35fc7e (bad)
+>> 12) 5.10.0-rc2-pmac-00237-ged22bb8d39f (good)
+>> 13) 5.10.0-rc2-pmac-00245-g87b57ea7e10 (good)
+>> 14) 5.10.0-rc2-pmac-00249-gf10881a46f8 (bad)
+>> 15) 5.10.0-rc2-pmac-00247-gf8a4b277c3c (good)
+>> 16) 5.10.0-rc2-pmac-00248-gdb972a3787d (bad)
 >>
->> 11) 5.12.0-rc3-pmac-00072-ga2b3e09ae41 (bad)
->> -> fails: kernel panic, I'd have to capture the output via a serial cons=
-ole
->>
->> 12) 5.12.0-rc3-pmac-00068-gacc142b6230 (bad)
->> -> fails: kernel panic
->>
->> 13) 5.12.0-rc3-pmac-00066-g8f6ff5bd9b7 (good)
->> -> works: no dmesg errs, X works
->> -> works: no dmesg errs, X works
->>
->> 14) 5.12.0-rc3-pmac-00067-g4c0104a83fc (bad)
->> -> fails: kernel panic
->>
->> The git bisect thinks this is the bad commit, but I'm not sure it means
->> anything at all:
->>
->> -----
->>
->> 4c0104a83fc3990a76a01a2f4e504251fa9814c4 is the first bad commit
+>> db972a3787d12b1ce9ba7a31ec376d8a79e04c47 is the first bad commit
+> 
+> Not sure this is really the root of the problem.
+> 
+> Can you try again without CONFIG_VMAP_STACK ?
+> 
+> Thanks
+> Christophe
+> ...
 
 
+With CONFIG_VMAP_STACK=y, 5.11.0-rc5-pmac-00034-g684da7628d9 hangs at
+boot on the PB 3400c.
+
+Without CONFIG_VMAP_STACK, 5.11.0-rc5-pmac-00034-g684da7628d9 boots as
+expected.
+
+I didn't re-build the Debian SID kernel, though I confirmed that the
+Debian config file for 5.10.0-8-powerpc includes CONFIG_VMAP_STACK=y.
+It's not clear whether removing CONFIG_VMAP_STACK would be appropriate
+for other powerpc systems.
+
+Please let me know why removing CONFIG_VMAP_STACK fixed the problem on
+the PB 3400c. Should CONFIG_HAVE_ARCH_VMAP_STACK also be removed?
+
+thanks
+
+-Stan Johnson
