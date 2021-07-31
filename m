@@ -1,52 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C8903DC3A4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Jul 2021 08:00:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 043833DC3B3
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Jul 2021 08:03:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GcDC60nsvz3cRd
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Jul 2021 16:00:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GcDFy6Bmnz3cVT
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Jul 2021 16:03:02 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=UMeUDmEB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=Ks+HHPyi;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=kernel.org (client-ip=210.131.2.79;
- helo=conuserg-12.nifty.com; envelope-from=masahiroy@kernel.org;
+ host) smtp.mailfrom=kernel.org (client-ip=210.131.2.74;
+ helo=conuserg-07.nifty.com; envelope-from=masahiroy@kernel.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
- header.s=dec2015msa header.b=UMeUDmEB; 
+ header.s=dec2015msa header.b=Ks+HHPyi; 
  dkim-atps=neutral
-Received: from conuserg-12.nifty.com (conuserg-12.nifty.com [210.131.2.79])
+Received: from conuserg-07.nifty.com (conuserg-07.nifty.com [210.131.2.74])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GcDBf4k6zz2yWJ
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Jul 2021 16:00:10 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GcDFW4Vhtz2xtp
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Jul 2021 16:02:39 +1000 (AEST)
 Received: from localhost.localdomain ([133.106.57.58]) (authenticated)
- by conuserg-12.nifty.com with ESMTP id 16V5vc6u023849;
- Sat, 31 Jul 2021 14:57:39 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-12.nifty.com 16V5vc6u023849
+ by conuserg-07.nifty.com with ESMTP id 16V60MNT006940;
+ Sat, 31 Jul 2021 15:00:22 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-07.nifty.com 16V60MNT006940
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1627711060;
- bh=kbgy+e6+xWYENR319IquT7ksqMD3Pp/VPUYpU/wDMsw=;
+ s=dec2015msa; t=1627711224;
+ bh=E1KYte6EKYvuOXcazzHUuX4uprDRxjj1nwZUGGg69y0=;
  h=From:To:Cc:Subject:Date:From;
- b=UMeUDmEBp7Pe6ULmffpzQdudxDWHqtyIw55ItR2H3gT3dotPu+jibOHcSlufO0sIZ
- 11TJa8ycpXmx80P2YYEbvpaBDrNtNarWAjIT6rTK3dZnNESdLyZgBr2uAPxKC3Mexd
- haACRhbGC7Z3refVuToRuN0ord/K81BZNKrnt6y2NcXNyskT8ZSBV24zRonUhPCPoS
- 8TR4V63Q/qYK7G5eZ0j+lenf4lOj7GcHwTPimFpI1bC2via80DAp5PFjvvIE5O0PB2
- lVUwZU7JJdrFHYyug8eeBgBfljg+z6PGs67mifx5eEhLmZBXXz8rUVsJlygaveGXEN
- EVeN+xghrhjrg==
+ b=Ks+HHPyiQsB4OoMywyC5471MbAfkkwSCZmNeD3PTw1B3lkQ77LuPVzltS9vjmtHEv
+ gj73bxnaUqARREufMNwMwgIeatkcHNp+6iL5DFpOkOZ05S0IRw2JTwUe+pgLfMC2L1
+ cEcFnXt4M31ltZPd8C9XlBCW/oU5ZzLVPIHyRUkUYUMicyzf043T8Yh6JSVAuLdhBk
+ cp901SEFrI1NoseIv+DFPesUZambG8FswAOb3cMqcFgucI8L/apFEImtob/q4dTCVw
+ GXnsE6nm0/tOCQrT/4SXRTAGep0guoXmym5jgKo0iB+B3ILb8JHYquSWBPqdhTHxxV
+ F030NsS4YZ7mQ==
 X-Nifty-SrcIP: [133.106.57.58]
 From: Masahiro Yamada <masahiroy@kernel.org>
 To: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
  Vincenzo Frascino <vincenzo.frascino@arm.com>, linux-kernel@vger.kernel.org
-Subject: [PATCH] arch: vdso: remove if-conditionals of $(c-gettimeofday-y)
-Date: Sat, 31 Jul 2021 14:57:33 +0900
-Message-Id: <20210731055733.12332-1-masahiroy@kernel.org>
+Subject: [PATCH v2] arch: vdso: remove if-conditionals of $(c-gettimeofday-y)
+Date: Sat, 31 Jul 2021 15:00:20 +0900
+Message-Id: <20210731060020.12913-1-masahiroy@kernel.org>
 X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -64,17 +64,18 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
  Catalin Marinas <catalin.marinas@arm.com>,
  Masahiro Yamada <masahiroy@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- linux-mips@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
- Albert Ou <aou@eecs.berkeley.edu>, Palmer Dabbelt <palmer@dabbelt.com>,
- Paul Walmsley <paul.walmsley@sifive.com>, Paul Mackerras <paulus@samba.org>,
+ linux-mips@vger.kernel.org, linux-csky@vger.kernel.org,
+ Russell King <linux@armlinux.org.uk>, Albert Ou <aou@eecs.berkeley.edu>,
+ Palmer Dabbelt <palmer@dabbelt.com>, linux-arm-kernel@lists.infradead.org,
+ Paul Walmsley <paul.walmsley@sifive.com>, Guo Ren <guoren@kernel.org>,
  linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
- linux-arm-kernel@lists.infradead.org
+ Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-arm, arm64, mips, powerpc always select GENERIC_GETTIMEOFDAY, hence
-$(gettimeofday-y) never becomes empty.
+arm, arm64, csky, mips, powerpc always select GENERIC_GETTIMEOFDAY,
+hence $(gettimeofday-y) never becomes empty.
 
 riscv conditionally selects GENERIC_GETTIMEOFDAY when MMU=y && 64BIT=y,
 but arch/riscv/kernel/vdso/vgettimeofday.o is built only under that
@@ -85,14 +86,18 @@ Remove all the meaningless conditionals.
 Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 ---
 
+Changes in v2:
+  - Fix csky as well
+
  arch/arm/vdso/Makefile              |  4 ----
  arch/arm64/kernel/vdso/Makefile     |  5 +----
  arch/arm64/kernel/vdso32/Makefile   |  3 ---
+ arch/csky/kernel/vdso/Makefile      |  4 +---
  arch/mips/vdso/Makefile             |  2 --
  arch/powerpc/kernel/vdso32/Makefile | 14 ++++++--------
  arch/powerpc/kernel/vdso64/Makefile | 14 ++++++--------
  arch/riscv/kernel/vdso/Makefile     |  5 +----
- 7 files changed, 14 insertions(+), 33 deletions(-)
+ 8 files changed, 15 insertions(+), 36 deletions(-)
 
 diff --git a/arch/arm/vdso/Makefile b/arch/arm/vdso/Makefile
 index 7c9e395b77f7..d996b57ca19d 100644
@@ -140,6 +145,21 @@ index 3dba0c4f8f42..330111046afc 100644
 -endif
  
  VDSO_CFLAGS_REMOVE_vgettimeofday.o = $(CC_FLAGS_FTRACE) -Os
+ 
+diff --git a/arch/csky/kernel/vdso/Makefile b/arch/csky/kernel/vdso/Makefile
+index 0b6909f10667..432adf2c78c2 100644
+--- a/arch/csky/kernel/vdso/Makefile
++++ b/arch/csky/kernel/vdso/Makefile
+@@ -12,9 +12,7 @@ vdso-syms  += vgettimeofday
+ # Files to link into the vdso
+ obj-vdso = $(patsubst %, %.o, $(vdso-syms)) note.o
+ 
+-ifneq ($(c-gettimeofday-y),)
+-	CFLAGS_vgettimeofday.o += -include $(c-gettimeofday-y)
+-endif
++CFLAGS_vgettimeofday.o += -include $(c-gettimeofday-y)
+ 
+ ccflags-y := -fno-stack-protector -DBUILD_VDSO32
  
 diff --git a/arch/mips/vdso/Makefile b/arch/mips/vdso/Makefile
 index 1b2ea34c3d3b..c409d551972a 100644
