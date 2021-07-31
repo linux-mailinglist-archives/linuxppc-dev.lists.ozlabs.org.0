@@ -1,98 +1,176 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DFB13DC7A5
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Jul 2021 20:25:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF3BC3DC936
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  1 Aug 2021 03:12:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GcXkp2M4Wz3cVD
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  1 Aug 2021 04:25:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GcjmB3Cxsz30C7
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  1 Aug 2021 11:12:26 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=RzWNt86K;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=synopsys.com header.i=@synopsys.com header.a=rsa-sha256 header.s=mail header.b=cSknRoUD;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=synopsys.com header.i=@synopsys.com header.a=rsa-sha256 header.s=selector1 header.b=YG5vmKaa;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=yahoo.com (client-ip=66.163.191.147;
- helo=sonic304-21.consmr.mail.ne1.yahoo.com; envelope-from=userm57@yahoo.com;
+ smtp.mailfrom=synopsys.com (client-ip=149.117.73.133;
+ helo=smtprelay-out1.synopsys.com; envelope-from=vineet.gupta1@synopsys.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256
- header.s=s2048 header.b=RzWNt86K; dkim-atps=neutral
-Received: from sonic304-21.consmr.mail.ne1.yahoo.com
- (sonic304-21.consmr.mail.ne1.yahoo.com [66.163.191.147])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=synopsys.com header.i=@synopsys.com header.a=rsa-sha256
+ header.s=mail header.b=cSknRoUD; 
+ dkim=fail reason="signature verification failed" (1024-bit key;
+ unprotected) header.d=synopsys.com header.i=@synopsys.com header.a=rsa-sha256
+ header.s=selector1 header.b=YG5vmKaa; 
+ dkim-atps=neutral
+X-Greylist: delayed 449 seconds by postgrey-1.36 at boromir;
+ Sun, 01 Aug 2021 09:20:51 AEST
+Received: from smtprelay-out1.synopsys.com (smtprelay-out1.synopsys.com
+ [149.117.73.133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GcXkJ5c8Vz301g
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  1 Aug 2021 04:25:10 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048;
- t=1627755906; bh=NbIOQi1dtWxWRnD2A5fEcx4q/YAr0GojReCQw/awfrA=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From:Subject:Reply-To;
- b=RzWNt86K/wYuJ9SRcvCgL0TqiaKeOIDPk5W7yFFDZY4clEE3rLpCAUytGMx6VlNdBt4gCmyHi9rdn+U5Q7jigtBQciW6vUvRrerr80KXmwaJuLZnidkWjIvRjgtLmv/cK5Z/ymsbS6aaWg3mT0UkcN7t56CJYHwDalyGURID8ihHyb11qnNuNXPhh3qS7Nc4NqM+AeG2hzJFmuLVFv50CryqQVZeeaj+o2FK/Q7r+42RDpV6TQriBI7mDmdzcWtA54VRqM0nUKuyR7EdOutEUUo7jNItMMk2iG33AXlnGfTVZ4H5Onnlb6vKFcT/pK33C0pXdkXRf5Ioufw8uAJ0Uw==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048;
- t=1627755906; bh=WXC2A9+LPn3C2tZii2Y8koDlq2T+hQOFtcO+1Mx0PhV=;
- h=X-Sonic-MF:Subject:To:From:Date:From:Subject;
- b=Q6Odo/pi96JOHGBEbCg7y3RF5bTWsUKeBIt0XlYdWR4+dLkVka0EtYj+pjJIpERlE6i7RQxqdjSiwDtyVcVgCCmchf+jwM5ojvg/aP8hXOT25B2fddppTLLABw1MsKTHwl8NFHHfpwpqEn3HJjg9XXus4lNFPHKAUeiAvVxQUBFz7wRJ//G98pWxOdmgn5CqnomIKVLLJ4A9KqD87lVXEr2jyoX/JCxo5IN1ckqSUXy8pwSDKOfzjiUUrJJNEYlxostytBWZQ9UWmWgC4mWHocOPbUyLod/KXfd7o18RUNZYitwNsZTYSCZtLC+3htWrCoBspVa1MzSgJrjHn2y08A==
-X-YMail-OSG: y.DwxDgVM1kF7k119sxKiKO9JY7Uht1C9Bk41Z132RnSABgDHaHedROUEfxx86F
- 9ITSede4vvbx_q3l_BirmDM5jIi2Y1HrknRNyLW6qD9P6E2ZhrDieWdJ5NW2Z2t48.njo5T60mlR
- nB06VOilWPG0nESjxeWjEmUQEfF6VMqcrgxykEZNUf.SJJZLHMQlr7KU2hcLtEmhHqjP.SPsw1h1
- pom4cBTmI5sN8AE3iCi5G3R3gHS7OrLt5puISuY2czvMKlvSSWeflhey9.yePpem_XlGm.OSBYz5
- BfVqlhYtYRfaW.Mv8NbrwWHzlnUQFwvioszJLNev94zfNYDTAaimg1GOfAZWgeZN1zpRaRAsNyLo
- n.Nkcy2YPAnhAqz60ibvxo38eBBudQxq9gbBLw_dMMjUSeiQxhhdVLNI00tjZ1Q6eiJLT8UIPyFG
- Hs9jJzx7rkjlvSEBPamBVbyHoUsX7yyAAFSLZlSld96lLUdF7m6jKzxPSPswdcOt8r2Ighx2priC
- KNfBGi39zbyb0KncHmEYmanMxIbrSiEMvcDjq7KQIYrCuTnMCVXC0EkBtjl6Yb7LkXaKx1UWBtNM
- uIxfaUSTgt.e9YqvhtBKQWoBgt7JTwJStIPTIL0U8IlM1_yrQvQYadBnRf1frYN4xyBoRluAIX9x
- NNvUnOPO_4M6CGvn4a7UtyXwuXEMJjJ54VP4ELOjbVVhVcoQCyuR2WPJYTesckSVEsm1pJbWp0Wc
- 9jzTmTr5f7pu_Vyjk6mwmfitBkK37MmOXIGbRH3TvMY_4tXGwAax7o7S.9Sy8tn5GGFTP8gYQfu_
- QabGKhPnthKvnV.bWNAPVS2rXn8_6B0elhM01n5WuRaAE8Swh6GKAF6KDb0WFoqF4JyNrVOIIx_A
- 1k8yzG9NUDpp0KAx2jjYUv4.IpGaj1SAVR06LqjhsaGf0YojpAUccoMf5fCxvD9JpQe23l.7C3H8
- 1rnb8n7DRpOH1MDjjE0t30RkNDeYkLu2esFuNmB7p9nrcVNy.5CN_eY73WTOJhbgmAaqOPPXwRbT
- pVW.UZu8tN7G10xqvmvhTXCZwGWv42bWhQFzgQ718RrtrrN_k8ioEUBTxlZFRrYvlqmagBoScsJW
- GLUYiyCBukcXyTJeo6Oxmv9UEa4naK7zCDptMib6xA6ICUuEJxNT9TCm8KVYb2USkWpw8TyqWYBy
- bSxOc9JmwqyxPu6LOugttHvVmhC.H_kx64I2Irqy2msl8YyQZgITBAZoogjPQbbN7N63fJSrh65W
- 1bPTbypjr3puStgVrh8YqkgEwkcY71.AvxLjpLYU7y4GDfXHexdzsq3vauedw2t0T4UMnqsSteXd
- QNFfn.eJXxcnBan9gnG.NyWiHxe4Yv0.8leIPHhIMMdFPM.kJfuvDy2xCq7mW0rETVoOt5zHtktl
- GFGH4PlWFEoHcds3h1FRAu2l5iVZPtnqx8T1S5uwBaTkK6LHwSDeHXuqoIlJpBYZVeL2nITyq._h
- HKj4zWpn4l4qiHmAk2MGrxfB.l3nvtachiRkfAlIJrv07O5y5CZG5kgj4TKgTobrDOiCl0PbpSDW
- 9zzMW08inej.DpqZKNFcRk1dsfVi.B4mCAr8Ql24.adYyoh1tEz0.5leRSzxTGQQkx08fOCWHqVr
- Fq6nm3uQZkm4d2HPjULs.rBzzo.ICejmKNn4xpVK.gC2kOTQu0G6Yvk8sTr0.tHS2vg4rxuc09rh
- LGR.SzYpIolueLZTJJx_xpoJvPxdAb7cGKbFw9J7kw4IEC9nMJ70Ixka_dDjd2kgJjDib4e1nyb_
- LXQLqvch1i_xJA.HZI0Q68ykU09TtYGz9Q4mTqh1Sm8T7PJNjJh_uMoE.Vkl.AMiZnsgGcR7zAKY
- ItWJC35bhzP5wL2HuPOBZzRi.r0RkdrvxSV6SjYBindQNSN3JIGevOAr7_UHiU0nLRNX1paG.lsx
- zfN7u.P1lnjDiJAW.b0jCgy0vbbO1w0_6hAahPy3NEMRxmUEYhRE4U4YOeBBouOtIdQPZoFUFbP3
- Nf5h_C5_xbgKQEoa54Tsnr0VXe5WU2QZOY1JiFBkkTmeVt_DCmDEsBVDMhHseG0zelqc6o1TW0Yk
- sciU3Vj5_wjEQXCckjaxaUrnpWDlTBJeBfqldEbvBeJE3FdfSrDde5hpmeeVkXlgppljVLlJFTKE
- q2vZE1FOiK2d3DCvfulnLaP40k0R_SLwOT9FiyMH8P5I7yschDbNAEMBbBKwyFA37o7fKEVK0F6P
- pMK.bVAX.x4vXnq_rvL7aAY4cutNeNT68NVKK.vFr8liwzboy0PPxM5RZIydo8m02PRn.hCIthNC
- p_iUkAo039dGsq7EiW_cmdrnxheC4mob_eNTtG_5KZGTYAlNccwwyk0pduPvE.lMthCi6U.mjImR
- xnZlrqxFcSARzDOzlLNw1.z03IaQ5bRpEYn0J9GbLS0jLA5qb5VmsFKjNambEfJhtdOKfsrJ557z
- hU53gab2USnVann0oUh.CQEOpgeQeaOGlwujYj5cMeC9O9pSDdPCMUqtNWlBggjR8gnylbe5b4q_
- f9H0CzyuDzhySF9ytMH8PjEOq.dm8QUmTI4XeRR02zCzj_owlWp78n2gXiBDewM4YzScTbUtDANS
- QRrgdubaRen9as1yQYLCxMA3u1wt5ABc8SnV5cBkiPLzQ4dO4NAZTLFsqe3QVspYqa.Q4onVmjlP
- _ocM3jok4lN24vqsRsXnTRGGia.WvGqmTMdLqnIzBlIqZWXf9DJrSUz9d7DVPIC4F
-X-Sonic-MF: <userm57@yahoo.com>
-Received: from sonic.gate.mail.ne1.yahoo.com by
- sonic304.consmr.mail.ne1.yahoo.com with HTTP; Sat, 31 Jul 2021 18:25:06 +0000
-Received: by kubenode531.mail-prod1.omega.ne1.yahoo.com (VZM Hermes SMTP
- Server) with ESMTPA ID 33664c0d36ed30bef40b13577008ba6b; 
- Sat, 31 Jul 2021 18:25:02 +0000 (UTC)
-Subject: Re: Debian SID kernel doesn't boot on PowerBook 3400c
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-References: <60841a75-ed7c-8789-15db-272bf43055f5.ref@yahoo.com>
- <60841a75-ed7c-8789-15db-272bf43055f5@yahoo.com>
- <20210731175842.Horde.UunWM8rZMP0dRCaeWUo-og1@messagerie.c-s.fr>
-From: Stan Johnson <userm57@yahoo.com>
-Message-ID: <cd7c931c-a578-a2ff-0632-7767a0e90bb9@yahoo.com>
-Date: Sat, 31 Jul 2021 12:24:45 -0600
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:60.0)
- Gecko/20100101 Thunderbird/60.9.1
-MIME-Version: 1.0
-In-Reply-To: <20210731175842.Horde.UunWM8rZMP0dRCaeWUo-og1@messagerie.c-s.fr>
-Content-Type: text/plain; charset=utf-8
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GcgHR35xxz306n
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  1 Aug 2021 09:20:48 +1000 (AEST)
+Received: from mailhost.synopsys.com (us03-mailhost2.synopsys.com [10.4.17.18])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+ (Client CN "mailhost.synopsys.com", Issuer "SNPSica2" (verified OK))
+ by smtprelay-out1.synopsys.com (Postfix) with ESMTPS id 379DF40AAB;
+ Sat, 31 Jul 2021 23:13:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=synopsys.com; s=mail;
+ t=1627773196; bh=/S86EVYPGY9xO3kUoJy56OQzYShJeYu8vWMcA/vI1hU=;
+ h=From:To:CC:Subject:Date:References:In-Reply-To:From;
+ b=cSknRoUDYnV5K4e9RsktZTB3QGt2oCEb40SBNrfyh9F+EmNso1AAl6mimKoLm4Z9q
+ khyQvwqSZMh/b/Bx1hwv6KmrDnrBMAkYlKcvTB6+yI+xCL5FSzLYTByDQnJ2OvadN+
+ 3F9QsvB9tzuxlD09nUjofDPzIEIr0tmc8Cu9mI0vuYnj2NMrIug8z2eYy+4czpfEXj
+ Z3LmxLa5LXEHOkJWlry4xLGnfMHtmXYTKDJbbWD4mMGtv/4vHxsZdh+8/LFn9vS/5M
+ Z+6h3mB1Pq6c8L7GYiHzosHPQZDDYwhJii5aBORBdt6MwcDUNT/C6CovEDYJobnFjO
+ ynYFu45BOhzmQ==
+Received: from o365relay-in.synopsys.com (us03-o365relay1.synopsys.com
+ [10.4.161.137])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+ (Client CN "o365relay-in.synopsys.com",
+ Issuer "Entrust Certification Authority - L1K" (verified OK))
+ by mailhost.synopsys.com (Postfix) with ESMTPS id 96039A00A0;
+ Sat, 31 Jul 2021 23:13:02 +0000 (UTC)
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com
+ (mail-dm3nam07lp2047.outbound.protection.outlook.com [104.47.56.47])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client CN "mail.protection.outlook.com",
+ Issuer "DigiCert Cloud Services CA-1" (verified OK))
+ by o365relay-in.synopsys.com (Postfix) with ESMTPS id EBF978021F;
+ Sat, 31 Jul 2021 23:12:42 +0000 (UTC)
+Authentication-Results: o365relay-in.synopsys.com;
+ dmarc=pass (p=reject dis=none) header.from=synopsys.com
+Authentication-Results: o365relay-in.synopsys.com;
+ spf=pass smtp.mailfrom=vgupta@synopsys.com
+Authentication-Results: o365relay-in.synopsys.com; dkim=pass (1024-bit key;
+ unprotected) header.d=synopsys.com header.i=@synopsys.com header.b="YG5vmKaa";
+ dkim-atps=neutral
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=lpwXj4pwuqtmFIDKSh6+tPV8Wvzx6rPiDM61wQAwVZW+dvzyJzLx7AQnna/76mETD9TZA4AokNwdISek/EiDM6jKa64zVH5l3Xf9jLGzNzkisXj41u5Bz4uVM6ATgRhrLn4hnlX78B7RvK4qfnpjpMEeh2jMvg6PHsU5JAp6wQFeF7tHmMLlJs2JhaoYo6YhOCo6wSl6PbMORKmYdM8Zl8KvrJx/WMnSgy/HiV01FmJKFDhByq7EzrfZCwd8gkWiJukzRFIvd03LxgtQDZbw/uWS35QDiLjJJwhPBIf+K36bmBx2TOPL28+e5i4oJcPbKcEyzHTt6wnTSeJ7m7HBqw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/S86EVYPGY9xO3kUoJy56OQzYShJeYu8vWMcA/vI1hU=;
+ b=Ugt3bcB263NQ840znsmCrwSrZCCjnHTSbbMSf3w03NJ1e9IATBiWuP9btT2zJZDKyqL3vMnWjkTBuaLTbdeuxp2lsktJ9kE67lKwT2FUc5kdgrZVcCekXSA/74Og5NkIg9D6g304DIU75OmgQRU3vtOoEGT4LgHjdRCN5+hRoS1/uzWN1cgvNlpw+AeT8cGlhX8C5pXbGDQ8ifs6VEsA0j+zE0dxWvHSvlSB8V4CIj42CCpsRvWUyxI0uGuuwj/r6ut5fHD7TNrWr2clOs3Pze3N3+20xTnP1yC06RrcqmguIJ6MUs92yCaxgzV7sRds1I+eb4QxCzMCUPA6nH5AOg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=synopsys.com; dmarc=pass action=none header.from=synopsys.com;
+ dkim=pass header.d=synopsys.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=synopsys.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/S86EVYPGY9xO3kUoJy56OQzYShJeYu8vWMcA/vI1hU=;
+ b=YG5vmKaaTr8H8brX5rjKTHUnmj2TIgOVM/BnGwDsLv37PoaFI78mHpo97eW7w0cnAEtfgxQVbwI7la7nLB6605apE4qQrON0rxo+18q6Cy+kEKHeMHuCvyMsiZRoS3jt2urRBeFdIA08oyOzGgFlT5HL4upq6yltkbqR3lpRE4U=
+Received: from BYAPR12MB3479.namprd12.prod.outlook.com (20.178.54.154) by
+ BYAPR12MB4629.namprd12.prod.outlook.com (20.179.59.203) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4373.25; Sat, 31 Jul 2021 23:12:39 +0000
+Received: from BYAPR12MB3479.namprd12.prod.outlook.com
+ ([fe80::acbd:42ac:9bab:39ee]) by BYAPR12MB3479.namprd12.prod.outlook.com
+ ([fe80::acbd:42ac:9bab:39ee%3]) with mapi id 15.20.4373.026; Sat, 31 Jul 2021
+ 23:12:39 +0000
+X-SNPS-Relay: synopsys.com
+From: Vineet Gupta <Vineet.Gupta1@synopsys.com>
+To: Masahiro Yamada <masahiroy@kernel.org>, Steven Rostedt
+ <rostedt@goodmis.org>, Ingo Molnar <mingo@redhat.com>
+Subject: Re: [PATCH 2/3] trace: refactor TRACE_IRQFLAGS_SUPPORT in Kconfig
+Thread-Topic: [PATCH 2/3] trace: refactor TRACE_IRQFLAGS_SUPPORT in Kconfig
+Thread-Index: AQHXhcxPA6EPe6ekOUigKes8hDjBc6tdt4MA
+Date: Sat, 31 Jul 2021 23:12:38 +0000
+Message-ID: <1036d104-44c1-b162-2262-973226628be2@synopsys.com>
+References: <20210731052233.4703-1-masahiroy@kernel.org>
+ <20210731052233.4703-2-masahiroy@kernel.org>
+In-Reply-To: <20210731052233.4703-2-masahiroy@kernel.org>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Mailer: WebService/1.1.18749
- mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
+authentication-results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=synopsys.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 11f32b68-098f-4b98-4dd5-08d95478b105
+x-ms-traffictypediagnostic: BYAPR12MB4629:
+x-microsoft-antispam-prvs: <BYAPR12MB4629D5976007C72139678E93B6ED9@BYAPR12MB4629.namprd12.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:439;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: gmFQOtz89sCyiTQut2zG1zFT0qpFyE0WSlhEbGxCJGfkjyhF+USRzUKzqwkodF8ZyRtyeOgj2zP134AurnC+Q+DpgsrlycwmfpeUPMbz93DtP24Oe568AkFxk3jMKKB4ze2zuTS53ReYfN6biZHJYYNvQiEn+dctWFX/I12PgztinH2/ugFnZbNpGNZ+heYU845Bozk739sSSxsa/LtyN+qzf3qpUNot2nTr3PCLBOyiO1zZBXug6kbXnq2FEOZ1oe+Aj/HBStz/mjw2vukJV5L+poZNNkHJFp8lBwpZAaI3kRQIgVyKXE5Q2rwC+Fxgr59Eqenwc7Haggm9MFSyqHSaB616ZNgFFit6Cyem7ebS0dOrwT4x4DPudHskmfx7ARtB98jxRP7JNsr+mjDMuaxsOu7XAdbeXaxA/PQ9fnglLyPn7iU4TrYbVCK+q9Gp16anRP3UkybeF5lUHpVdyset4ZUqgF+AZiT4JzMNXC+IhZeeSWMSRcN2C1+Bw0n5uMi9QjGyYNvdGKE3JfUBcBbWeXZyiEcvfhcMVwyMr1/Ax/yowBS8dC8wrkE4Hpd6YA4xNzje3rfUdWSK6gJrlHk34PIKfYY73g5q9V5meZMdfacvgx7vRYOMlAPRujYRQBBo1LA2th2vp5I5Y9TU9Sr2JwvTYeFH2+3krPTKHCzJqJ86q0BFC0Yr+guESlQdkXaQDVg+msTqnCYqTjQQV17Pv3VTmn68D2B8Ggf9oUbhwtewM51U74tspgcSgAEes0etk5PqoMEoZI07aUPmwQ==
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BYAPR12MB3479.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(376002)(396003)(366004)(136003)(346002)(39850400004)(71200400001)(54906003)(2906002)(31686004)(8676002)(110136005)(6512007)(64756008)(76116006)(5660300002)(66556008)(66946007)(478600001)(66446008)(66476007)(38100700002)(316002)(38070700005)(6486002)(4326008)(8936002)(122000001)(7406005)(186003)(53546011)(26005)(6506007)(558084003)(2616005)(31696002)(86362001)(7366002)(36756003)(7416002)(45980500001)(43740500002);
+ DIR:OUT; SFP:1102; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?cmZ0ejc4cXpYMTkxUnBnY0lObXVWQ29JUFc2d0RlMjQvRS8wYndESDNkUEUx?=
+ =?utf-8?B?elllWERCbVMxV29SelZjUmNSaXZESU9ER0xsMFFMQ1Rnd00vRTV0ckQyN1Vo?=
+ =?utf-8?B?TG9jTlFIcTQxbk12TTBZdE4wTUJIUXZKeGx5blhmUm15NnE1aWVENXdmd0Fr?=
+ =?utf-8?B?TEhNbWROcy90aTJHODNkVWl6bWdaajc1eS9VWmpLTWc4S2d1Vm9jOXJGcG9N?=
+ =?utf-8?B?NE1kaUhEVDU4SEZFUjlUbE9aN1FBakVSNzNVRm8yaWFJRUF4MHFQK21FSENk?=
+ =?utf-8?B?SlRvbkQ0WmptajNtcG1hNlhHZmRpWGNxSk5wWFlJNCthejRTRm0vemxwU1VE?=
+ =?utf-8?B?K0xjT0YyYS9DUjg5V1ViWDdJcTZWYldvUUw1Q3F2NTVmUllUNnpVaHFJMlE2?=
+ =?utf-8?B?Y2dQWXZqSzZEa1kwYlA1SlpNaEtEenFXT3NXNmYvT3ArVHpMV1p4cS93TGlW?=
+ =?utf-8?B?NFJ1bkRnMk5QNzkvOTdtcHlJQ0FCRzlMZ3dnMGdjTlc5Q2JIbDZHbUptdGRI?=
+ =?utf-8?B?RDljL1QzNXg4TlBYM0lvNHFjZ21rVGZ1OG5ONlkvR1ZXdytkWDJHTG1JQXVU?=
+ =?utf-8?B?dkpySmNWNkRqL05XVUNRbkJyNWpORFFMT2FDV0dyeDI4bEZtRXc0SExMMzJ3?=
+ =?utf-8?B?eEJ6N0V6by9GVkt2THM4eTRMcVhLRTJnZy8xWlpSNEN5bXFFMEY4ampYSTlZ?=
+ =?utf-8?B?Q0JUNlR5UFN5cnpHWHM3a0V6T1RMcnNWazRqWFkrM0x6RjBLdkZMVklnTDVM?=
+ =?utf-8?B?eGFKc2p5QlY2NTlxUFdxSlNrVmJ2QVBlZlN1U2Y1amVoNmhEZUZXZ1ZjT0pZ?=
+ =?utf-8?B?Vk9tNTZET1BpWGZaSzFrN2lhQkN5aUNIOEM0UHVZTjI1UUkyQXBvUFhZR3da?=
+ =?utf-8?B?cFRqbnZwNk5KUTJadFFINGhiM2JHUVBtMk1ZODNYUkxKYmVTcWNVS1duZWR0?=
+ =?utf-8?B?aUh6d2Q4Z1ZxOUpVSHFaYnFmUG1RUWxjN3I4dGdadU53UkFPNGdoTTlMeWox?=
+ =?utf-8?B?ekVLVWIzYmpwd3pLSnMwUy8vTk9RbU5VVlBMT0QyZkpDZ25rMDBGM0lZNWdN?=
+ =?utf-8?B?ZTZ0YUFYK0RUbGVlUmNuSzc1OWM3Ykl3dXZEaWU1cnJSb3Q0MlVwTGRMdkgx?=
+ =?utf-8?B?dkt0cDNFRFhtRWxsRllkQU1qZyt3UFlmMzRKbkpiTHgzd3U1OHgrekJGdm5O?=
+ =?utf-8?B?dlZGUU8zbUJYdzFUK1hGRXFOYkRJWG9FNnFmZnVyZUI4RjA2SENoVVRpZ0pk?=
+ =?utf-8?B?TVlHYVF4WEhpNjRyUzNxRkI5NWJScWlISUdDWWUwZ1QvaWR3ZmJqVXcrbkNQ?=
+ =?utf-8?B?TDBWUzdURE9hR1dweVVKSnArZm1JS0Jqemx3eUIwWktOMUViTzhGUmkyRjdT?=
+ =?utf-8?B?VWErdEtpRU8rQmJxck1aU3k0ajRNUkk2ZTBuYkV3TVluOVlnMm1PbEtYR1hi?=
+ =?utf-8?B?UFdCZkh6akFEWTUyMlFRZU82VGhxeWZaVTZzNDRpcEFHRzkza2lKWmI5eHNK?=
+ =?utf-8?B?R01xeEg4KzA2VnVnaWxkZTlOVDRmTXRYa2lFVFgySUVPbmZMNytzUDY2Zllv?=
+ =?utf-8?B?OTd0eWVzdW5BOVVKaWlkUlZTSjcvOFNVWmZpRlhvUkRkWHROd3VTdFhxQW5Q?=
+ =?utf-8?B?ejBTNFJTMjI1TTZVWDBSaURVSHhKVk9qOHhzaEwyeHR4anF3Y3N0ZDBqeEpG?=
+ =?utf-8?B?aHkrY0VhV2puMUorRFFTT1RDUDBiYWZSSW52Q3dISzJFUldhZFQvanF1NS9Z?=
+ =?utf-8?Q?IjB8kzYt4uw+NJgbH4=3D?=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <D343C53D18DD6D43ADCBB013B53C2A98@namprd12.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: synopsys.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB3479.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 11f32b68-098f-4b98-4dd5-08d95478b105
+X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Jul 2021 23:12:38.8971 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: c33c9f88-1eb7-4099-9700-16013fd9e8aa
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: n591pRdiJ+MmbcbSM0oJpTzbEaSomMaacCyu2y3wQloG0Gf8tLeP4Y4IVvlSpPAu7VFslDybhx3kj+vNcxGOYg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR12MB4629
+X-Mailman-Approved-At: Sun, 01 Aug 2021 11:11:54 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,94 +182,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Debian PowerPC <debian-powerpc@lists.debian.org>,
- linuxppc-dev@lists.ozlabs.org, Finn Thain <fthain@linux-m68k.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, Rich Felker <dalias@libc.org>,
+ "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>,
+ "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>,
+ "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+ "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+ Vincent Chen <deanbo422@gmail.com>, Will Deacon <will@kernel.org>,
+ Ard Biesheuvel <ardb@kernel.org>, Paul Mackerras <paulus@samba.org>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Jonas Bonn <jonas@southpole.se>,
+ "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ Vasily Gorbik <gor@linux.ibm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+ YiFei Zhu <yifeifz2@illinois.edu>, Richard Weinberger <richard@nod.at>,
+ Helge Deller <deller@gmx.de>, "x86@kernel.org" <x86@kernel.org>,
+ Russell King <linux@armlinux.org.uk>, Ley Foon Tan <ley.foon.tan@intel.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>,
+ "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+ Sami Tolvanen <samitolvanen@google.com>,
+ =?utf-8?B?VXdlIEtsZWluZS1Lw7ZuaWc=?= <u.kleine-koenig@pengutronix.de>,
+ Stafford Horne <shorne@gmail.com>,
+ "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>,
+ Jeff Dike <jdike@addtoit.com>,
+ "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
+ Albert Ou <aou@eecs.berkeley.edu>, Kees Cook <keescook@chromium.org>,
+ Arnd Bergmann <arnd@arndb.de>, Anshuman Khandual <anshuman.khandual@arm.com>,
+ Heiko Carstens <hca@linux.ibm.com>,
+ "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ "openrisc@lists.librecores.org" <openrisc@lists.librecores.org>,
+ Borislav Petkov <bp@alien8.de>, Greentime Hu <green.hu@gmail.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ Andrey Konovalov <andreyknvl@gmail.com>, Chris Zankel <chris@zankel.net>,
+ Michal Simek <monstr@monstr.eu>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Brian Cain <bcain@codeaurora.org>, Nick Hu <nickhu@andestech.com>,
+ "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+ Frederic Weisbecker <frederic@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
+ Colin Ian King <colin.king@canonical.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christophe,
-
-On 7/31/21 9:58 AM, Christophe Leroy wrote:
-> Stan Johnson <userm57@yahoo.com> a écrit :
-> 
->> Hello,
->>
->> The current Debian SID kernel will not boot on a PowerBook 3400c running
->> the latest version of Debian SID. If booted using the BootX extension,
->> the kernel hangs immediately:
->>
->> "Welcome to Linux, kernel 5.10.0-8-powerpc"
->>
->> If booted from Mac OS, the Mac OS screen hangs.
->>
->> Booting also hangs if the "No video driver" option is selected in BootX,
->> "No video driver" causes "video=ofonly" to be passed to the kernel.
->>
->> This is the current command line that I'm using in BootX:
->> root=/dev/sda13 video=chips65550:vmode:14,cmode:16
->>
->> Kernel v5.9 works as expected.
->>
->> The config file I'm using is attached.
->>
->> Here are the results of a git bisect, marking v5.9 as "good" and the
->> most current kernel as "bad":
->>
->> $ cd linux
->> $ git remote update
->> $ git bisect reset
->> $ git bisect start
->> $ git bisect bad
->> $ git bisect good v5.9
->>
->> Note: "bad" -> hangs at boot; "good" -> boots to login prompt
->>
->>  1) 5.11.0-rc5-pmac-00034-g684da7628d9 (bad)
->>  2) 5.10.0-rc3-pmac-00383-gbb9dd3ce617 (good)
->>  3) 5.10.0-pmac-06637-g2911ed9f47b (good)
->>     Note: I had to disable SMP to build this kernel.
->>  4) 5.10.0-pmac-10584-g9805529ec54 (good)
->>     Note: I had to disable SMP to build this kernel.
->>  5) 5.10.0-pmac-12577-g8552d28e140 (bad)
->>  6) 5.10.0-pmac-11576-g8a5be36b930 (bad)
->>  7) 5.10.0-pmac-11044-gbe695ee29e8 (good)
->>     Note: I had to disable SMP to build this kernel.
->>  8) 5.10.0-rc2-pmac-00288-g59d512e4374 (bad)
->>  9) 5.10.0-rc2-pmac-00155-gc3d35ddd1ec (good)
->> 10) 5.10.0-rc2-pmac-00221-g7049b288ea8 (good)
->> 11) 5.10.0-rc2-pmac-00254-g4b74a35fc7e (bad)
->> 12) 5.10.0-rc2-pmac-00237-ged22bb8d39f (good)
->> 13) 5.10.0-rc2-pmac-00245-g87b57ea7e10 (good)
->> 14) 5.10.0-rc2-pmac-00249-gf10881a46f8 (bad)
->> 15) 5.10.0-rc2-pmac-00247-gf8a4b277c3c (good)
->> 16) 5.10.0-rc2-pmac-00248-gdb972a3787d (bad)
->>
->> db972a3787d12b1ce9ba7a31ec376d8a79e04c47 is the first bad commit
-> 
-> Not sure this is really the root of the problem.
-> 
-> Can you try again without CONFIG_VMAP_STACK ?
-> 
-> Thanks
-> Christophe
-> ...
-
-
-With CONFIG_VMAP_STACK=y, 5.11.0-rc5-pmac-00034-g684da7628d9 hangs at
-boot on the PB 3400c.
-
-Without CONFIG_VMAP_STACK, 5.11.0-rc5-pmac-00034-g684da7628d9 boots as
-expected.
-
-I didn't re-build the Debian SID kernel, though I confirmed that the
-Debian config file for 5.10.0-8-powerpc includes CONFIG_VMAP_STACK=y.
-It's not clear whether removing CONFIG_VMAP_STACK would be appropriate
-for other powerpc systems.
-
-Please let me know why removing CONFIG_VMAP_STACK fixed the problem on
-the PB 3400c. Should CONFIG_HAVE_ARCH_VMAP_STACK also be removed?
-
-thanks
-
--Stan Johnson
+T24gNy8zMC8yMSAxMDoyMiBQTSwgTWFzYWhpcm8gWWFtYWRhIHdyb3RlOg0KPiBNYWtlIGFyY2hp
+dGVjdHVyZXMgc2VsZWN0IFRSQUNFX0lSUUZMQUdTX1NVUFBPUlQgaW5zdGVhZCBvZg0KPiBoYXZp
+bmcgbWFueSBkZWZpbmVzLg0KPg0KPiBTaWduZWQtb2ZmLWJ5OiBNYXNhaGlybyBZYW1hZGEgPG1h
+c2FoaXJveUBrZXJuZWwub3JnPg0KPiAtLS0NCj4NCj4gICBhcmNoL2FyYy9LY29uZmlnICAgICAg
+ICAgICAgICB8IDQgKy0tLQ0KPiBbc25pcC4uXQ0KDQoNCkFja2VkLWJ5OiBWaW5lZXQgR3VwdGEg
+PHZndXB0YUBzeW5vcHN5cy5jb20+wqDCoCAjYXJjaC9hcmMNCg0K
