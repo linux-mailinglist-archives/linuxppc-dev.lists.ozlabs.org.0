@@ -1,58 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B915E3DE323
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Aug 2021 01:38:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9252B3DD03C
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Aug 2021 08:03:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GdvZm46qCz3cJW
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Aug 2021 09:38:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GdS9K410Sz3cHY
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Aug 2021 16:03:17 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=mk/OrQNA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=KhE/7yng;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
  envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=mk/OrQNA; 
+ header.a=rsa-sha256 header.s=201909 header.b=KhE/7yng; 
  dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GdN214dCtz2yP0
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Aug 2021 12:56:41 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GdS8r54w1z2yy3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Aug 2021 16:02:51 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4GdN1V04FQz9sW5;
- Mon,  2 Aug 2021 12:56:13 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4GdS8p4BsNz9sRK;
+ Mon,  2 Aug 2021 16:02:48 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1627872995;
- bh=lgFF44D+VvUgGNOcyjoWgD9ieIKlVa+1W38G93yYucc=;
+ s=201909; t=1627884171;
+ bh=n8jZx6w5lsO8h4k9sHk6uNDWOQkmiMu8W8QtD1+2nO8=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=mk/OrQNAgyUtJh9QVu/sq6e2cVKMZEuh5t1elkMY1Gr3oABbY0LNl7+izatEJSZYL
- zGYgU92C+VtRG3i2VpinkrgquF7osc3y3sT0rg1Dkyhhq3uC9pQ9Vyxzu9DIdALkJc
- uVe/31b8NqskHAYnC6qUpRqajmu4XqURQ3LIDSg6AKfjRRV0hOE1uY7cgZepVTdX9e
- 8HP4jyVzz75vtA5OgyyRq7pJjgDvTYCj/aQ+sFQ1koQ2SqpBgqVF2xnWntozO8y/pw
- uq0H9be0uwkFpXGGeabu1UoeiTG0mQrIQSbO5Gdvb2ehvStkNDQgftwpI5d9vMxe/C
- vq3iTIN0uJtjQ==
+ b=KhE/7yngTkzWfiGcIos1FbWPLpdyYidIZkO96Xmei+xSuXi1IHpFADnnXA8lTi0MH
+ 8rXdS5lr94S+ItUlrRMXhROjhnXJMA37UrMObAbcX8Q+i9hF8253qAxVhVjQjuKhQI
+ PvbBC/XyMMPYxr6hx19BDj5H73ioBoa5cm499JaPS3/gJ6oNLVXdNndj18KA6ZP7zM
+ +0aCqQs7N8eHzd+lRqMP7OcsLf65/FC2gwY9aSeroiw2cwPAWtH6/VaGL0TNg3Amsh
+ uQZEZUitD1aOINQJieswBnfY5NUtPNl4aXBg6c9C+xIFrt+eHyeWBUx89pkyP+I1IA
+ m4/iHahE0wTcA==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Masahiro Yamada <masahiroy@kernel.org>, Steven Rostedt
- <rostedt@goodmis.org>, Ingo Molnar <mingo@redhat.com>
-Subject: Re: [PATCH 2/3] trace: refactor TRACE_IRQFLAGS_SUPPORT in Kconfig
-In-Reply-To: <20210731052233.4703-2-masahiroy@kernel.org>
-References: <20210731052233.4703-1-masahiroy@kernel.org>
- <20210731052233.4703-2-masahiroy@kernel.org>
-Date: Mon, 02 Aug 2021 12:56:13 +1000
-Message-ID: <87lf5klfle.fsf@mpe.ellerman.id.au>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH kernel] powerpc/powernv: Check if powernv_rng is
+ initialized
+In-Reply-To: <20210730044315.956125-1-aik@ozlabs.ru>
+References: <20210730044315.956125-1-aik@ozlabs.ru>
+Date: Mon, 02 Aug 2021 16:02:48 +1000
+Message-ID: <87im0ol6yf.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Mailman-Approved-At: Tue, 03 Aug 2021 09:38:00 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,113 +62,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Rich Felker <dalias@libc.org>,
- linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Linus Walleij <linus.walleij@linaro.org>,
- Viresh Kumar <viresh.kumar@linaro.org>, linux-kernel@vger.kernel.org,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>,
- linux-csky@vger.kernel.org, "H. Peter
- Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
- linux-riscv@lists.infradead.org, Vincent Chen <deanbo422@gmail.com>,
- Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
- Paul Mackerras <paulus@samba.org>,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>,
- Jonas Bonn <jonas@southpole.se>, linux-s390@vger.kernel.org,
- Vasily Gorbik <gor@linux.ibm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>,
- Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
- YiFei Zhu <yifeifz2@illinois.edu>, Richard Weinberger <richard@nod.at>,
- Masahiro Yamada <masahiroy@kernel.org>, x86@kernel.org,
- Russell King <linux@armlinux.org.uk>, Ley Foon Tan <ley.foon.tan@intel.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>, linux-parisc@vger.kernel.org,
- Sami Tolvanen <samitolvanen@google.com>,
- Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- Stafford Horne <shorne@gmail.com>, linux-snps-arc@lists.infradead.org,
- Jeff Dike <jdike@addtoit.com>, linux-xtensa@linux-xtensa.org,
- Albert Ou <aou@eecs.berkeley.edu>, Kees Cook <keescook@chromium.org>,
- Arnd Bergmann <arnd@arndb.de>, Anshuman Khandual <anshuman.khandual@arm.com>,
- Heiko Carstens <hca@linux.ibm.com>, linux-um@lists.infradead.org,
- Nicholas Piggin <npiggin@gmail.com>,
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>,
- Greentime Hu <green.hu@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Andrey Konovalov <andreyknvl@gmail.com>, Chris Zankel <chris@zankel.net>,
- Michal Simek <monstr@monstr.eu>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Brian Cain <bcain@codeaurora.org>, Nick Hu <nickhu@andestech.com>,
- Vineet Gupta <vgupta@synopsys.com>, linux-mips@vger.kernel.org,
- "David S. Miller" <davem@davemloft.net>,
- Frederic Weisbecker <frederic@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- linux-hexagon@vger.kernel.org, Colin Ian King <colin.king@canonical.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Helge Deller <deller@gmx.de>, Mike Rapoport <rppt@kernel.org>
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Paul Mackerras <paulus@samba.org>,
+ linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Masahiro Yamada <masahiroy@kernel.org> writes:
-> Make architectures select TRACE_IRQFLAGS_SUPPORT instead of
-> having many defines.
+Alexey Kardashevskiy <aik@ozlabs.ru> writes:
+> The powernv-rng driver has 2 users - the bare metal powernv platform and
+> the KVM's H_RANDOM hcall. The hcall handler works fine when it is L0 KVM
+> but fails in L1 KVM as there is no support for the HW registers in L1 VMs
+> and such support is not advertised either (== no "ibm,power-rng" in
+> the FDT). So when a nested VM tries H_RANDOM, the L1 KVM crashes on
+> in_be64(rng->regs).
 >
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> This checks the pointers and returns an error if the feature is not
+> set up.
+>
+> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 > ---
 >
->  arch/Kconfig                  | 3 +++
->  arch/arc/Kconfig              | 4 +---
->  arch/arm/Kconfig              | 5 +----
->  arch/arm64/Kconfig            | 4 +---
->  arch/csky/Kconfig             | 4 +---
->  arch/hexagon/Kconfig          | 4 +---
->  arch/microblaze/Kconfig       | 1 +
->  arch/microblaze/Kconfig.debug | 5 -----
->  arch/mips/Kconfig             | 1 +
->  arch/mips/Kconfig.debug       | 4 ----
->  arch/nds32/Kconfig            | 4 +---
->  arch/nios2/Kconfig            | 3 ---
->  arch/openrisc/Kconfig         | 4 +---
->  arch/parisc/Kconfig           | 1 +
->  arch/parisc/Kconfig.debug     | 3 ---
->  arch/powerpc/Kconfig          | 5 +----
->  arch/riscv/Kconfig            | 4 +---
->  arch/s390/Kconfig             | 1 +
->  arch/s390/Kconfig.debug       | 3 ---
->  arch/sh/Kconfig               | 1 +
->  arch/sh/Kconfig.debug         | 3 ---
->  arch/sparc/Kconfig            | 1 +
->  arch/sparc/Kconfig.debug      | 4 ----
->  arch/um/Kconfig               | 5 +----
->  arch/x86/Kconfig              | 1 +
->  arch/x86/Kconfig.debug        | 3 ---
->  arch/xtensa/Kconfig           | 4 +---
->  27 files changed, 21 insertions(+), 64 deletions(-)
+>
+> Randomly randomized H_RANDOM:
+>
+> 00:00:45 executing program 10:
+> r0 = openat$kvm(0xffffffffffffff9c, &(0x7f0000000000), 0x0, 0x0)
+> r1 = ioctl$KVM_CREATE_VM(r0, 0x2000ae01, 0x0)
+> r2 = ioctl$KVM_CREATE_VCPU(r1, 0x2000ae41, 0x0)
+> ioctl$KVM_SET_REGS(r2, 0x8188ae82, &(0x7f00000001c0)={[0x0, 0x0, 0xffffffffffffffe1, 0x0, 0x0, 0x200000953, 0x0, 0xfffffffffffffffe, 0x0, 0x0, 0x2], 0x2000})
+> syz_kvm_setup_cpu$ppc64(0xffffffffffffffff, r2, &(0x7f0000e80000/0x180000)=nil, 0x0, 0x0, 0x0, 0x0, 0x0)
+> r3 = openat$kvm(0xffffffffffffff9c, &(0x7f0000000100), 0x0, 0x0)
+> syz_kvm_setup_cpu$ppc64(r1, r2, &(0x7f0000e70000/0x180000)=nil, &(0x7f0000000080)=[{0x0, &(0x7f0000000280)="0000e03d0080ef61e403ef790000ef650900ef61647b007c0000e03f0000ff63e403ff7b0000ff679952ff6370e63f7e0000603c00006360e4036378000063640003636018a8803c28bf8460e4038478ef97846436888460b6f6a03c88d6a560e403a5781beda564d879a5602665c03cb08dc660e403c67806b3c664966fc660d53fe03cddf1e760e403e7785c41e7646623e76022000044463fb1f20000803e00809462e403947a0000946604009462a6a6607f4abb4c130000603f00007b63e4037b7b00007b679a367b6332d9c17c201c994f7201004cbb7a603f72047b63e4037b7b955f7b6799947b636401607f", 0xf0}], 0x1, 0x0, &(0x7f00000000c0)=[@featur2={0x1, 0x1000}], 0x1)
+>
+>
+> cpu 0xd: Vector: 300 (Data Access) at [c00000001599f590]
+>     pc: c00000000011d2bc: powernv_get_random_long+0x4c/0xc0
+>     lr: c00000000011d298: powernv_get_random_long+0x28/0xc0
+>     sp: c00000001599f830
+>    msr: 800000000280b033
+>    dar: 0
+>  dsisr: 40000000
+>   current = 0xc0000000614c7f80
+>   paca    = 0xc0000000fff81700	 irqmask: 0x03	 irq_happened: 0x01
+>     pid   = 31576, comm = syz-executor.10
+>
+> Linux version 5.14.0-rc2-le_f29cf1ff9a23_a+fstn1 (aik@fstn1-p1) (gcc (Ubuntu 10.3.0-1ubuntu1) 10.3.0, GNU ld (GNU Binutils for Ubuntu) 2.36.1) #263 SMP Thu Jul 29 17:56:12 AEST 2021
+> enter ? for help
+> [c00000001599f860] c0000000001e45f8 kvmppc_pseries_do_hcall+0x5d8/0x2190
+> [c00000001599f8f0] c0000000001ea2dc kvmppc_vcpu_run_hv+0x31c/0x14d0
+> [c00000001599f9c0] c0000000001bd518 kvmppc_vcpu_run+0x48/0x60
+> [c00000001599f9f0] c0000000001b74b0 kvm_arch_vcpu_ioctl_run+0x580/0x7d0
+> [c00000001599fa90] c00000000019e6f8 kvm_vcpu_ioctl+0x418/0xd00
+> [c00000001599fc70] c00000000079d8c4 sys_ioctl+0xb44/0x2100
+> [c00000001599fd90] c00000000003b704 system_call_exception+0x224/0x410
+> [c00000001599fe10] c00000000000c0e8 system_call_vectored_common+0xe8/0x278
 
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index d01e3401581d..76a28452c042 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -94,10 +94,6 @@ config STACKTRACE_SUPPORT
->  	bool
->  	default y
->  
-> -config TRACE_IRQFLAGS_SUPPORT
-> -	bool
-> -	default y
-> -
->  config LOCKDEP_SUPPORT
->  	bool
->  	default y
-> @@ -271,6 +267,7 @@ config PPC
->  	select STRICT_KERNEL_RWX if STRICT_MODULE_RWX
->  	select SYSCTL_EXCEPTION_TRACE
->  	select THREAD_INFO_IN_TASK
-> +	select TRACE_IRQFLAGS_SUPPORT
->  	select VIRT_TO_BUS			if !PPC64
->  	#
->  	# Please keep this list sorted alphabetically.
-
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+There would be no bug if KVM was using arch_get_random_seed_long(),
+because that defers to ppc_md, which is only populated when the RNG is
+setup correctly. That seems like a better fix?
 
 cheers
