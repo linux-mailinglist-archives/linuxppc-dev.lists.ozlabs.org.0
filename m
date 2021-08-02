@@ -2,76 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 120F03DD0BC
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Aug 2021 08:43:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A5463DD11B
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Aug 2021 09:25:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GdT3Y0240z3bn2
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Aug 2021 16:43:21 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=lxYQjRPo;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GdV0K0j3qz30BX
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Aug 2021 17:25:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::32c;
- helo=mail-wm1-x32c.google.com; envelope-from=adobriyan@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=lxYQjRPo; dkim-atps=neutral
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com
- [IPv6:2a00:1450:4864:20::32c])
+ smtp.mailfrom=gmail.com (client-ip=209.85.218.48; helo=mail-ej1-f48.google.com;
+ envelope-from=jirislaby@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com
+ [209.85.218.48])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GdT332lhlz2yxL
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Aug 2021 16:42:54 +1000 (AEST)
-Received: by mail-wm1-x32c.google.com with SMTP id
- i10-20020a05600c354ab029025a0f317abfso3279189wmq.3
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 01 Aug 2021 23:42:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=BLpYFCEhMxHCYOJofpDOBnsrLOpomdik6GbpkfmrbEo=;
- b=lxYQjRPo7UXjm1H9eY2abYSOBagbxy3grS+nrpt94yVfDuQQDLFjSmpCYReTly+NMm
- Fb6o6xPlrEvvPdY8iATiegFaJBfJZcLKN7qmg41+a3vxxiKSeci7BsXBn9ENnmruEGlq
- 3zuZW8DQwMUpuVkUruZBRpZSZqEM315zhCaBaLmzhoFJ1kHytRaJSbTwRaQRr8hpPXxY
- +lGpN3+bZA6IDCwCs4eiFX/kT9Vwtc1kxR1HgqqYtjjrSTUQejSXSasuw5Xs9eHBNwYf
- 6p/J4vr35PGVCXSyjTmyr4Sk494k8jwZpGauPdepm+RZ5xQdV1raeOuly+kut0V0IRAS
- xGRQ==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GdV000TGmz2yhd
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Aug 2021 17:25:19 +1000 (AEST)
+Received: by mail-ej1-f48.google.com with SMTP id e19so29328614ejs.9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Aug 2021 00:25:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=BLpYFCEhMxHCYOJofpDOBnsrLOpomdik6GbpkfmrbEo=;
- b=re0gNdpH1S1CJgVqhHx7QQ79D6xx9gaEvGTGTUdSnBF1sxhA/q6e3mgurI6OkMV4Sl
- g9Nufa3yc5F2QqItrGP84Gn7OxKZ+q+KBD19ePUn9/hjvnf6/TzBNLne3YTlfieKwyON
- +s0bDwNwA2j6ziY2ywi7/PhYFQFleomykTjwBciwDLbfXdah7SPQUyeoT2ECthckVVSa
- Mg7pUBIt1FNMava7fWUsddwz3BRHUFcZENoZC1gT+JvGjvcn6hl0GllIsNYQ0W/B5obF
- p6vyAa/dAla7fDNJOcOW0KfASopWUYI4AJfaTOkS2zKt22jViXyiOhqe+NHqO3XKU5pC
- hiTQ==
-X-Gm-Message-State: AOAM531EOcHLXtVVayylpkdLSRXgUMF8xOEEHoOACgP+uoiIEbZGHn3S
- fZ7ghbaqrq+11jAMbrwkLg==
-X-Google-Smtp-Source: ABdhPJxo16iUjyVIeQ9xmvVvuQlDGuzxRLyLiI++9qUbTiA6r1gF/Vs2kZ1oNCsICDMajf7DIB0MlQ==
-X-Received: by 2002:a05:600c:2215:: with SMTP id
- z21mr10525990wml.84.1627886568347; 
- Sun, 01 Aug 2021 23:42:48 -0700 (PDT)
-Received: from localhost.localdomain ([46.53.248.142])
- by smtp.gmail.com with ESMTPSA id k186sm11178355wme.45.2021.08.01.23.42.47
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 01 Aug 2021 23:42:47 -0700 (PDT)
-Date: Mon, 2 Aug 2021 09:42:45 +0300
-From: Alexey Dobriyan <adobriyan@gmail.com>
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Subject: Re: [PATCH 3/3] isystem: delete global -isystem compile option
-Message-ID: <YQeT5QRXc3CzK9nL@localhost.localdomain>
-References: <20210801201336.2224111-1-adobriyan@gmail.com>
- <20210801201336.2224111-3-adobriyan@gmail.com>
- <20210801213247.GM1583@gate.crashing.org>
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=WcetUWPb8culgJfYwcXyd4enV0COOIi+oGgXXHCJxs8=;
+ b=F9F+P9HIitF2nx6blNgSeDlfB2MYKWDSvLc/H74vTbfAPiFtSs5C+xaFKg2VhppwwD
+ ewrD/akPsJboa72PG1WqUxKLYdZjl1yKY4W4HDvSoF0XnaePC4K4NNaGpawotcePcjk/
+ 7QKh7RtXEDtJIsUobkoOAWY6Yy0G8QstRwERE4i5L8P8hEBcAaaCyo6QZv8V5ud2pjQ6
+ UuN1XZJXCviksA8wBebJGLCjiuywEQWfRK0oMNyFkEuXe7P/MN/lmtPaD3edu+HvwGxJ
+ UqP6CizLelNWSVNwLPODMSAd83GoyEY+SDMOHRCMSXlWWL9i4et03Lx5VV7cADI1EQnC
+ LLeA==
+X-Gm-Message-State: AOAM533BO3OjbSu2sxbM5Y7ZxUt+z6H9GHZGQ/qepjAep3czwdWeOCMk
+ BBPh0i4DEj/sidV21+VgrKo=
+X-Google-Smtp-Source: ABdhPJxWTIdE9MBJiFVNAsUjUXU9AE4QP/vAPTBU9gQDwWpXVj1nFXiA6JbVTS8aEqGldEf1vZCzFQ==
+X-Received: by 2002:a17:906:394:: with SMTP id
+ b20mr14197279eja.462.1627889114838; 
+ Mon, 02 Aug 2021 00:25:14 -0700 (PDT)
+Received: from ?IPv6:2a0b:e7c0:0:107::70f? ([2a0b:e7c0:0:107::70f])
+ by smtp.gmail.com with ESMTPSA id i11sm5384121eds.72.2021.08.02.00.25.14
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 02 Aug 2021 00:25:14 -0700 (PDT)
+Subject: Re: [PATCH 2/2] virtio-console: remove unnecessary kmemdup()
+To: Xianting Tian <xianting.tian@linux.alibaba.com>,
+ gregkh@linuxfoundation.org, amit@kernel.org, arnd@arndb.de
+References: <20210801051655.79048-1-xianting.tian@linux.alibaba.com>
+From: Jiri Slaby <jirislaby@kernel.org>
+Message-ID: <b5554967-a683-96ae-deb9-2d4980d33b41@kernel.org>
+Date: Mon, 2 Aug 2021 09:25:13 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210801213247.GM1583@gate.crashing.org>
+In-Reply-To: <20210801051655.79048-1-xianting.tian@linux.alibaba.com>
+Content-Type: text/plain; charset=iso-8859-2; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,48 +68,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Will Deacon <will@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>, masahiroy@kernel.org,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: osandov@fb.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ virtualization@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Aug 01, 2021 at 04:32:47PM -0500, Segher Boessenkool wrote:
-> On Sun, Aug 01, 2021 at 11:13:36PM +0300, Alexey Dobriyan wrote:
-> > In theory, it enables "leakage" of userspace headers into kernel which
-> > may present licensing problem.
+Hi,
+
+why is this 2/2? I seem (Lore neither) to find 1/2.
+
+On 01. 08. 21, 7:16, Xianting Tian wrote:
+> hvc framework will never pass stack memory to the put_chars() function,
+
+Am I blind or missing something?
+
+hvc_console_print(...)
+{
+   char c[N_OUTBUF]
+...
+   cons_ops[index]->put_chars(vtermnos[index], c, i);
+
+The same here:
+
+hvc_poll_put_char(..., char ch)
+{
+...
+    n = hp->ops->put_chars(hp->vtermno, &ch, 1);
+
+AFAICS both of them *pass* a pointer to stack variable.
+
+> So the calling of kmemdup() is unnecessary, remove it.
 > 
-> > -NOSTDINC_FLAGS += -nostdinc -isystem $(shell $(CC) -print-file-name=include)
-> > +NOSTDINC_FLAGS += -nostdinc
+> Fixes: c4baad5029 ("virtio-console: avoid DMA from stack")
+
+This patch doesn't "Fix" -- it reverts the commit. You should've CCed 
+the author too.
+
+> Signed-off-by: Xianting Tian <xianting.tian@linux.alibaba.com>
+> ---
+>   drivers/char/virtio_console.c | 12 ++----------
+>   1 file changed, 2 insertions(+), 10 deletions(-)
 > 
-> This is removing the compiler's own include files.  These are required
-> for all kinds of basic features, and required to be compliant to the C
-> standard at all.
+> diff --git a/drivers/char/virtio_console.c b/drivers/char/virtio_console.c
+> index 7eaf303a7..4ed3ffb1d 100644
+> --- a/drivers/char/virtio_console.c
+> +++ b/drivers/char/virtio_console.c
+> @@ -1117,8 +1117,6 @@ static int put_chars(u32 vtermno, const char *buf, int count)
+>   {
+>   	struct port *port;
+>   	struct scatterlist sg[1];
+> -	void *data;
+> -	int ret;
+>   
+>   	if (unlikely(early_put_chars))
+>   		return early_put_chars(vtermno, buf, count);
+> @@ -1127,14 +1125,8 @@ static int put_chars(u32 vtermno, const char *buf, int count)
+>   	if (!port)
+>   		return -EPIPE;
+>   
+> -	data = kmemdup(buf, count, GFP_ATOMIC);
+> -	if (!data)
+> -		return -ENOMEM;
+> -
+> -	sg_init_one(sg, data, count);
+> -	ret = __send_to_port(port, sg, 1, count, data, false);
+> -	kfree(data);
+> -	return ret;
+> +	sg_init_one(sg, buf, count);
+> +	return __send_to_port(port, sg, 1, count, (void *)buf, false);
+>   }
+>   
+>   /*
+> 
 
-No they are not required. Kernel uses its own bool, uintptr_t and
-static_assert, memset(), CHAR_BIT. noreturn, alignas newest C standard
-are next.
 
-This version changelog didn't mention but kernel would use
--ffreestanding too if not other problems with the flag.
-
-> These are not "userspace headers", that is what
-> -nostdinc takes care of already.
-
-They are userspace headers in the sense they are external to the project
-just like userspace programs are external to the kernel.
-
-> In the case of GCC all these headers are GPL-with-runtime-exception, so
-> claiming this can cause licensing problems is fearmongering.
-
-I agree licensing problem doesn't really exist.
-It would take gcc drop-in replacement with authors insane enough to not
-license standard headers properly.
-
-> I strongly advise against doing this.
-
-Kernel chose to be self-contained. -isystem removal makes sense then.
-It will be used for intrinsics where necessary.
+-- 
+js
+suse labs
