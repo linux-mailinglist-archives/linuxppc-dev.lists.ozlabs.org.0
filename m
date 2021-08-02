@@ -2,36 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0674A3DE327
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Aug 2021 01:39:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12CD13DDDFE
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Aug 2021 18:52:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GdvcT6svpz3dHG
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Aug 2021 09:39:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GdkZC0T5yz3cJN
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Aug 2021 02:52:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=cmarinas@kernel.org; receiver=<UNKNOWN>)
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GdjJr6946z2yMH
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Aug 2021 01:55:40 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3008461107;
- Mon,  2 Aug 2021 15:55:25 +0000 (UTC)
-Date: Mon, 2 Aug 2021 16:55:22 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Masahiro Yamada <masahiroy@kernel.org>
-Subject: Re: [PATCH 2/3] trace: refactor TRACE_IRQFLAGS_SUPPORT in Kconfig
-Message-ID: <20210802155521.GI18685@arm.com>
-References: <20210731052233.4703-1-masahiroy@kernel.org>
- <20210731052233.4703-2-masahiroy@kernel.org>
-MIME-Version: 1.0
+Authentication-Results: lists.ozlabs.org;
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4GdkYt2PzYz3029
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Aug 2021 02:52:01 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 172GlmVS025072;
+ Mon, 2 Aug 2021 11:47:48 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 172Gllk1025071;
+ Mon, 2 Aug 2021 11:47:47 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Mon, 2 Aug 2021 11:47:47 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Alexey Dobriyan <adobriyan@gmail.com>
+Subject: Re: [PATCH 3/3] isystem: delete global -isystem compile option
+Message-ID: <20210802164747.GN1583@gate.crashing.org>
+References: <20210801201336.2224111-1-adobriyan@gmail.com>
+ <20210801201336.2224111-3-adobriyan@gmail.com>
+ <20210801213247.GM1583@gate.crashing.org>
+ <YQeT5QRXc3CzK9nL@localhost.localdomain>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210731052233.4703-2-masahiroy@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Mailman-Approved-At: Tue, 03 Aug 2021 09:38:00 +1000
+In-Reply-To: <YQeT5QRXc3CzK9nL@localhost.localdomain>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,57 +50,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Rich Felker <dalias@libc.org>,
- linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Linus Walleij <linus.walleij@linaro.org>,
- Viresh Kumar <viresh.kumar@linaro.org>, linux-kernel@vger.kernel.org,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>,
- linux-csky@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
- Vincent Chen <deanbo422@gmail.com>, Will Deacon <will@kernel.org>,
- Ard Biesheuvel <ardb@kernel.org>, Paul Mackerras <paulus@samba.org>,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>,
- Jonas Bonn <jonas@southpole.se>, linux-s390@vger.kernel.org,
- Vasily Gorbik <gor@linux.ibm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>,
- Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
- YiFei Zhu <yifeifz2@illinois.edu>, Richard Weinberger <richard@nod.at>,
- Helge Deller <deller@gmx.de>, x86@kernel.org,
- Russell King <linux@armlinux.org.uk>, Ley Foon Tan <ley.foon.tan@intel.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>, linux-parisc@vger.kernel.org,
- Sami Tolvanen <samitolvanen@google.com>,
- Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
- Stafford Horne <shorne@gmail.com>, linux-snps-arc@lists.infradead.org,
- Jeff Dike <jdike@addtoit.com>, linux-xtensa@linux-xtensa.org,
- Albert Ou <aou@eecs.berkeley.edu>, Kees Cook <keescook@chromium.org>,
- Arnd Bergmann <arnd@arndb.de>, Anshuman Khandual <anshuman.khandual@arm.com>,
- Heiko Carstens <hca@linux.ibm.com>, linux-um@lists.infradead.org,
- Steven Rostedt <rostedt@goodmis.org>,
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>,
- Greentime Hu <green.hu@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Andrey Konovalov <andreyknvl@gmail.com>, Chris Zankel <chris@zankel.net>,
- Michal Simek <monstr@monstr.eu>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Brian Cain <bcain@codeaurora.org>, Nick Hu <nickhu@andestech.com>,
- Vineet Gupta <vgupta@synopsys.com>, Nicholas Piggin <npiggin@gmail.com>,
- linux-mips@vger.kernel.org, Frederic Weisbecker <frederic@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, linux-hexagon@vger.kernel.org,
- Colin Ian King <colin.king@canonical.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>, Mike Rapoport <rppt@kernel.org>
+Cc: linux-arch@vger.kernel.org, Will Deacon <will@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, masahiroy@kernel.org,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Jul 31, 2021 at 02:22:32PM +0900, Masahiro Yamada wrote:
-> Make architectures select TRACE_IRQFLAGS_SUPPORT instead of
-> having many defines.
+On Mon, Aug 02, 2021 at 09:42:45AM +0300, Alexey Dobriyan wrote:
+> On Sun, Aug 01, 2021 at 04:32:47PM -0500, Segher Boessenkool wrote:
+> > On Sun, Aug 01, 2021 at 11:13:36PM +0300, Alexey Dobriyan wrote:
+> > > In theory, it enables "leakage" of userspace headers into kernel which
+> > > may present licensing problem.
+> > 
+> > > -NOSTDINC_FLAGS += -nostdinc -isystem $(shell $(CC) -print-file-name=include)
+> > > +NOSTDINC_FLAGS += -nostdinc
+> > 
+> > This is removing the compiler's own include files.  These are required
+> > for all kinds of basic features, and required to be compliant to the C
+> > standard at all.
 > 
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> No they are not required.
 
-For arm64:
+This is false, they *are* required, whenever you want to use these
+features.  If you do not include the required headers you get undefined
+behaviour.
 
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+> Kernel uses its own bool, uintptr_t and
+> static_assert, memset(), CHAR_BIT.
+
+Yes, and it occasionally gets it wrong.  Great fun.  See c46bbf5d2def
+for the latest episode in this saga.  (Yes I know this is uapi so maybe
+not the best example here, but it isn't like the kernel gets such things
+wrong so often these days ;-) )
+
+The kernel *cannot* make up its own types for this.  It has to use the
+types it is required to use (by C, by the ABIs, etc.)  So why
+reimplement this?
+
+> noreturn, alignas newest C standard
+> are next.
+
+What is wrong with <stdalign.h> and <stdnoreturn.h>?
+
+> This version changelog didn't mention but kernel would use
+> -ffreestanding too if not other problems with the flag.
+
+It is still true for freestanding C implementations, you just get a
+severely reduced standard library,
+
+> > These are not "userspace headers", that is what
+> > -nostdinc takes care of already.
+> 
+> They are userspace headers in the sense they are external to the project
+> just like userspace programs are external to the kernel.
+
+So you are going to rewrite all of the rest of GCC inside the kernel
+project as well?
+
+> > In the case of GCC all these headers are GPL-with-runtime-exception, so
+> > claiming this can cause licensing problems is fearmongering.
+> 
+> I agree licensing problem doesn't really exist.
+> It would take gcc drop-in replacement with authors insane enough to not
+> license standard headers properly.
+
+There does still not exist a drop-in replacement for GCC, not if you
+look closely and/or rely on details (like the kernel does).  Some of the
+differences are hidden by "linux/compiler-*.h", but hardly all.
+
+> > I strongly advise against doing this.
+> 
+> Kernel chose to be self-contained.
+
+That is largely historical, imo.  Nowadays this is less necessary.
+
+Also, the kernel chose to *do* use the compiler include files.  It is
+you who wants to abolish that here.
+
+> -isystem removal makes sense then.
+
+-nostdinc -isystem $(shell $(CC) -print-file-name=include)  makes sense
+for that: you do indeed not want the userspace headers.  Maiming the
+compiler (by removing some of its functional parts, namely, its generic
+headers) does not make sense.
+
+> It will be used for intrinsics where necessary.
+
+Like, everywhere.
+
+
+Segher
