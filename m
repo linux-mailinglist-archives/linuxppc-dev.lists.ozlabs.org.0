@@ -2,103 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C79AB3DD173
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Aug 2021 09:45:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 689643DE324
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Aug 2021 01:38:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GdVRX5bYFz3cXh
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Aug 2021 17:45:44 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=opXA+N2F;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GdvbB2gdrz3cnP
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Aug 2021 09:38:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=opXA+N2F; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.130;
+ helo=out30-130.freemail.mail.aliyun.com;
+ envelope-from=xianting.tian@linux.alibaba.com; receiver=<UNKNOWN>)
+Received: from out30-130.freemail.mail.aliyun.com
+ (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GdVR26DFxz2xfx
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Aug 2021 17:45:18 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 1727Y5rd125744; Mon, 2 Aug 2021 03:45:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=3GTKSoYuyeI7amyWljKoeZqQ+nHMylTD/J3zpAbpSkU=;
- b=opXA+N2F/OyCTrMckSbOQvv0dIelBOVELlf0qOm/01gfXdjEuvk6vCiHmojnt3SMYS8K
- bxW+LNNfiXRU7UgPKtR4usSebN/rk1tanddBuxxEMvc8FRtczuLXIVPnjwSFJgxozrim
- zD8r7WT5rh1J5mZs1h0CVY2lRQwX67Qo2K9kKqyBQp7M/LNmVWXi/5p3gxxnDiJaCLN9
- rZs1ekfust89aikdjGSboEL5x7zhilaaveAazi3oEk70xDpx1YXVJKNxQDDkLJ3jZa23
- DxTIk25KIE8o9mHofZKFkLQtN+Lxjp+q7mu/NEr2rJCrB2HANs6cVKDtn15Evjr5PfHQ iQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3a5kjutct4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 02 Aug 2021 03:45:12 -0400
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1727cEhp137848;
- Mon, 2 Aug 2021 03:45:11 -0400
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3a5kjutcs5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 02 Aug 2021 03:45:11 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1727bmXr009344;
- Mon, 2 Aug 2021 07:45:09 GMT
-Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
- [9.57.198.25]) by ppma01wdc.us.ibm.com with ESMTP id 3a4x5a7t7y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 02 Aug 2021 07:45:09 +0000
-Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
- [9.57.199.108])
- by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 1727j9XO21889420
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 2 Aug 2021 07:45:09 GMT
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F3602B2064;
- Mon,  2 Aug 2021 07:45:08 +0000 (GMT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 09D95B2068;
- Mon,  2 Aug 2021 07:45:04 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.199.36.88])
- by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Mon,  2 Aug 2021 07:45:03 +0000 (GMT)
-Subject: Re: [PATCH v3] fpga: dfl: fme: Fix cpu hotplug issue in performance
- reporting
-To: will@kernel.org, hao.wu@intel.com, mark.rutland@arm.com
-References: <20210713074216.208391-1-kjain@linux.ibm.com>
-From: kajoljain <kjain@linux.ibm.com>
-Message-ID: <61495dc0-f496-992c-1d2a-9229a04e6e44@linux.ibm.com>
-Date: Mon, 2 Aug 2021 13:15:00 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
-In-Reply-To: <20210713074216.208391-1-kjain@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: RyHz5855e0unzEdNSw03Cg5mCfzhtRmF
-X-Proofpoint-GUID: W10U2EPBpxzuTFdcHfQHeMJ90pMtAAy-
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GdWTs1Rb8z2yL1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Aug 2021 18:32:46 +1000 (AEST)
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R701e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=alimailimapcm10staff010182156082;
+ MF=xianting.tian@linux.alibaba.com; NM=1; PH=DS; RN=8; SR=0;
+ TI=SMTPD_---0UhkYpQP_1627893150; 
+Received: from B-LB6YLVDL-0141.local(mailfrom:xianting.tian@linux.alibaba.com
+ fp:SMTPD_---0UhkYpQP_1627893150) by smtp.aliyun-inc.com(127.0.0.1);
+ Mon, 02 Aug 2021 16:32:31 +0800
+Subject: Re: [PATCH 2/2] virtio-console: remove unnecessary kmemdup()
+To: Jiri Slaby <jirislaby@kernel.org>, gregkh@linuxfoundation.org,
+ amit@kernel.org, arnd@arndb.de
+References: <20210801051655.79048-1-xianting.tian@linux.alibaba.com>
+ <b5554967-a683-96ae-deb9-2d4980d33b41@kernel.org>
+From: Xianting Tian <xianting.tian@linux.alibaba.com>
+Message-ID: <5ad81a0e-fbb2-a849-6db7-f5718633d282@linux.alibaba.com>
+Date: Mon, 2 Aug 2021 16:32:30 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.10.1
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-08-02_01:2021-08-02,
- 2021-08-02 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 phishscore=0 impostorscore=0 suspectscore=0 adultscore=0
- mlxlogscore=999 bulkscore=0 mlxscore=0 clxscore=1015 lowpriorityscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2107140000 definitions=main-2108020053
+In-Reply-To: <b5554967-a683-96ae-deb9-2d4980d33b41@kernel.org>
+Content-Type: multipart/alternative;
+ boundary="------------5546104638CD853A0222348F"
+X-Mailman-Approved-At: Tue, 03 Aug 2021 09:38:00 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,75 +53,270 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maddy@linux.ibm.com, rnsastry@linux.ibm.com, trix@redhat.com,
- linux-fpga@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, linux-perf-users@vger.kernel.org,
- atrajeev@linux.vnet.ibm.com, mdf@kernel.org, linuxppc-dev@lists.ozlabs.org,
- yilun.xu@intel.com
+Cc: osandov@fb.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ virtualization@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+This is a multi-part message in MIME format.
+--------------5546104638CD853A0222348F
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
 
-On 7/13/21 1:12 PM, Kajol Jain wrote:
-> The performance reporting driver added cpu hotplug
-> feature but it didn't add pmu migration call in cpu
-> offline function.
-> This can create an issue incase the current designated
-> cpu being used to collect fme pmu data got offline,
-> as based on current code we are not migrating fme pmu to
-> new target cpu. Because of that perf will still try to
-> fetch data from that offline cpu and hence we will not
-> get counter data.
-> 
-> Patch fixed this issue by adding pmu_migrate_context call
-> in fme_perf_offline_cpu function.
-> 
-> Fixes: 724142f8c42a ("fpga: dfl: fme: add performance reporting support")
-> Tested-by: Xu Yilun <yilun.xu@intel.com>
-> Acked-by: Wu Hao <hao.wu@intel.com>
-> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-> Cc: stable@vger.kernel.org
-> ---
+在 2021/8/2 下午3:25, Jiri Slaby 写道:
+> Hi,
+>
+> why is this 2/2? I seem (Lore neither) to find 1/2.
+You didn't receive 1/2?
+[PATCH 1/2] tty: hvc: pass DMA capable memory to put_chars()
+https://lkml.org/lkml/2021/8/1/8 <https://lkml.org/lkml/2021/8/1/8>
+>
+> On 01. 08. 21, 7:16, Xianting Tian wrote:
+>> hvc framework will never pass stack memory to the put_chars() function,
+>
+> Am I blind or missing something?
+>
+> hvc_console_print(...)
+> {
+>   char c[N_OUTBUF]
+> ...
+>   cons_ops[index]->put_chars(vtermnos[index], c, i);
+>
+> The same here:
+>
+> hvc_poll_put_char(..., char ch)
+> {
+> ...
+>    n = hp->ops->put_chars(hp->vtermno, &ch, 1);
+>
+> AFAICS both of them *pass* a pointer to stack variable.
 
-Any update on this patch? Please let me know if any changes required.
+yes, I discussed the issue with Arnd before in below thread,  you can 
+get the history, thanks
 
-Thanks,
-Kajol Jain
+https://lkml.org/lkml/2021/7/27/494 <https://lkml.org/lkml/2021/7/27/494>
 
->  drivers/fpga/dfl-fme-perf.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> ---
-> Changelog:
-> v2 -> v3:
-> - Added Acked-by tag
-> - Removed comment as suggested by Wu Hao
-> - Link to patch v2: https://lkml.org/lkml/2021/7/9/143
-> 
-> v1 -> v2:
-> - Add stable@vger.kernel.org in cc list
-> - Link to patch v1: https://lkml.org/lkml/2021/6/28/275
-> 
-> RFC -> PATCH v1
-> - Remove RFC tag
-> - Did nits changes on subject and commit message as suggested by Xu Yilun
-> - Added Tested-by tag
-> - Link to rfc patch: https://lkml.org/lkml/2021/6/28/112
-> ---
-> 
-> diff --git a/drivers/fpga/dfl-fme-perf.c b/drivers/fpga/dfl-fme-perf.c
-> index 4299145ef347..587c82be12f7 100644
-> --- a/drivers/fpga/dfl-fme-perf.c
-> +++ b/drivers/fpga/dfl-fme-perf.c
-> @@ -953,6 +953,8 @@ static int fme_perf_offline_cpu(unsigned int cpu, struct hlist_node *node)
->  		return 0;
->  
->  	priv->cpu = target;
-> +	perf_pmu_migrate_context(&priv->pmu, cpu, target);
-> +
->  	return 0;
->  }
->  
-> 
+>
+>> So the calling of kmemdup() is unnecessary, remove it.
+>>
+>> Fixes: c4baad5029 ("virtio-console: avoid DMA from stack")
+>
+> This patch doesn't "Fix" -- it reverts the commit. You should've CCed 
+> the author too.
+
+yes, we discussed ther issue in above thread, which we CCed the author.
+
+>
+>> Signed-off-by: Xianting Tian <xianting.tian@linux.alibaba.com>
+>> ---
+>>   drivers/char/virtio_console.c | 12 ++----------
+>>   1 file changed, 2 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/drivers/char/virtio_console.c 
+>> b/drivers/char/virtio_console.c
+>> index 7eaf303a7..4ed3ffb1d 100644
+>> --- a/drivers/char/virtio_console.c
+>> +++ b/drivers/char/virtio_console.c
+>> @@ -1117,8 +1117,6 @@ static int put_chars(u32 vtermno, const char 
+>> *buf, int count)
+>>   {
+>>       struct port *port;
+>>       struct scatterlist sg[1];
+>> -    void *data;
+>> -    int ret;
+>>         if (unlikely(early_put_chars))
+>>           return early_put_chars(vtermno, buf, count);
+>> @@ -1127,14 +1125,8 @@ static int put_chars(u32 vtermno, const char 
+>> *buf, int count)
+>>       if (!port)
+>>           return -EPIPE;
+>>   -    data = kmemdup(buf, count, GFP_ATOMIC);
+>> -    if (!data)
+>> -        return -ENOMEM;
+>> -
+>> -    sg_init_one(sg, data, count);
+>> -    ret = __send_to_port(port, sg, 1, count, data, false);
+>> -    kfree(data);
+>> -    return ret;
+>> +    sg_init_one(sg, buf, count);
+>> +    return __send_to_port(port, sg, 1, count, (void *)buf, false);
+>>   }
+>>     /*
+>>
+>
+>
+
+--------------5546104638CD853A0222348F
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">在 2021/8/2 下午3:25, Jiri Slaby 写道:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:b5554967-a683-96ae-deb9-2d4980d33b41@kernel.org">Hi,
+      <br>
+      <br>
+      why is this 2/2? I seem (Lore neither) to find 1/2.
+      <br>
+    </blockquote>
+    You didn't receive 1/2?<br>
+    <span style="color: rgb(0, 0, 0); font-family: courier, monospace;
+      font-size: medium; font-style: normal; font-variant-ligatures:
+      normal; font-variant-caps: normal; font-weight: 400;
+      letter-spacing: normal; orphans: 2; text-align: start;
+      text-indent: 0px; text-transform: none; white-space: normal;
+      widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px;
+      text-decoration-style: initial; text-decoration-color: initial;
+      display: inline !important; float: none;">[PATCH 1/2] tty: hvc:
+      pass DMA capable memory to put_chars()</span><br>
+    <a href="https://lkml.org/lkml/2021/8/1/8">https://lkml.org/lkml/2021/8/1/8</a>
+    <blockquote type="cite"
+      cite="mid:b5554967-a683-96ae-deb9-2d4980d33b41@kernel.org">
+      <br>
+      On 01. 08. 21, 7:16, Xianting Tian wrote:
+      <br>
+      <blockquote type="cite">hvc framework will never pass stack memory
+        to the put_chars() function,
+        <br>
+      </blockquote>
+      <br>
+      Am I blind or missing something?
+      <br>
+      <br>
+      hvc_console_print(...)
+      <br>
+      {
+      <br>
+        char c[N_OUTBUF]
+      <br>
+      ...
+      <br>
+        cons_ops[index]-&gt;put_chars(vtermnos[index], c, i);
+      <br>
+      <br>
+      The same here:
+      <br>
+      <br>
+      hvc_poll_put_char(..., char ch)
+      <br>
+      {
+      <br>
+      ...
+      <br>
+         n = hp-&gt;ops-&gt;put_chars(hp-&gt;vtermno, &amp;ch, 1);
+      <br>
+      <br>
+      AFAICS both of them *pass* a pointer to stack variable.
+      <br>
+    </blockquote>
+    <p>yes, I discussed the issue with Arnd before in below thread,  you
+      can get the history, thanks<br>
+    </p>
+    <p><a href="https://lkml.org/lkml/2021/7/27/494">https://lkml.org/lkml/2021/7/27/494</a>
+    </p>
+    <blockquote type="cite"
+      cite="mid:b5554967-a683-96ae-deb9-2d4980d33b41@kernel.org">
+      <br>
+      <blockquote type="cite">So the calling of kmemdup() is
+        unnecessary, remove it.
+        <br>
+        <br>
+        Fixes: c4baad5029 ("virtio-console: avoid DMA from stack")
+        <br>
+      </blockquote>
+      <br>
+      This patch doesn't "Fix" -- it reverts the commit. You should've
+      CCed the author too.
+      <br>
+    </blockquote>
+    <p>yes, we discussed ther issue in above thread, which we CCed the
+      author.</p>
+    <blockquote type="cite"
+      cite="mid:b5554967-a683-96ae-deb9-2d4980d33b41@kernel.org">
+      <br>
+      <blockquote type="cite">Signed-off-by: Xianting Tian
+        <a class="moz-txt-link-rfc2396E" href="mailto:xianting.tian@linux.alibaba.com">&lt;xianting.tian@linux.alibaba.com&gt;</a>
+        <br>
+        ---
+        <br>
+          drivers/char/virtio_console.c | 12 ++----------
+        <br>
+          1 file changed, 2 insertions(+), 10 deletions(-)
+        <br>
+        <br>
+        diff --git a/drivers/char/virtio_console.c
+        b/drivers/char/virtio_console.c
+        <br>
+        index 7eaf303a7..4ed3ffb1d 100644
+        <br>
+        --- a/drivers/char/virtio_console.c
+        <br>
+        +++ b/drivers/char/virtio_console.c
+        <br>
+        @@ -1117,8 +1117,6 @@ static int put_chars(u32 vtermno, const
+        char *buf, int count)
+        <br>
+          {
+        <br>
+              struct port *port;
+        <br>
+              struct scatterlist sg[1];
+        <br>
+        -    void *data;
+        <br>
+        -    int ret;
+        <br>
+                if (unlikely(early_put_chars))
+        <br>
+                  return early_put_chars(vtermno, buf, count);
+        <br>
+        @@ -1127,14 +1125,8 @@ static int put_chars(u32 vtermno, const
+        char *buf, int count)
+        <br>
+              if (!port)
+        <br>
+                  return -EPIPE;
+        <br>
+          -    data = kmemdup(buf, count, GFP_ATOMIC);
+        <br>
+        -    if (!data)
+        <br>
+        -        return -ENOMEM;
+        <br>
+        -
+        <br>
+        -    sg_init_one(sg, data, count);
+        <br>
+        -    ret = __send_to_port(port, sg, 1, count, data, false);
+        <br>
+        -    kfree(data);
+        <br>
+        -    return ret;
+        <br>
+        +    sg_init_one(sg, buf, count);
+        <br>
+        +    return __send_to_port(port, sg, 1, count, (void *)buf,
+        false);
+        <br>
+          }
+        <br>
+            /*
+        <br>
+        <br>
+      </blockquote>
+      <br>
+      <br>
+    </blockquote>
+  </body>
+</html>
+
+--------------5546104638CD853A0222348F--
