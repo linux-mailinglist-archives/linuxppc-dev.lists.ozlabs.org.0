@@ -2,79 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A35433DCE33
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Aug 2021 01:49:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DF183DCE98
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Aug 2021 04:03:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GdHsm1tgdz3bZ9
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Aug 2021 09:49:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GdLs40QDMz3bWy
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Aug 2021 12:03:52 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=MAY40Hmj;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=lax88g34;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=out5-smtp.messagingengine.com (client-ip=66.111.4.29;
- helo=out5-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1036;
+ helo=mail-pj1-x1036.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm3 header.b=MAY40Hmj; 
- dkim-atps=neutral
-Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com
- [66.111.4.29])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=lax88g34; dkim-atps=neutral
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com
+ [IPv6:2607:f8b0:4864:20::1036])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GdHsF4fflz2ydJ
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Aug 2021 09:48:47 +1000 (AEST)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
- by mailout.nyi.internal (Postfix) with ESMTP id 605055C00B3;
- Sun,  1 Aug 2021 19:48:43 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute4.internal (MEProxy); Sun, 01 Aug 2021 19:48:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to:x-me-proxy
- :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=nnnzJF
- x8hthSPnZMbL1LXaiksssikZRREo9X40HfJyo=; b=MAY40HmjmS/AFI4yvUYgWJ
- k02rfMQIDrmctCPmAdjUet8n60RblLqZivAYJiJVUIfeIQU8yIN8N1OzS6vSjupH
- dOrzAlvGPyeTrE9+0L1R49w6lDrF0LVM0VtSyx24BW9/aDahFahlJFbUrPCspGjr
- i0KjDqC++QugdpN8UF5SopFcmPivGYpzL8tXQ+z/gtWH10ZyjKeyPD41XnDniBS9
- YwLr8IAbshAdrpIvK8mZtKxaJJQUws/OkTpxceJhixSw1lWeZtbfGAjN+Tc1bM/6
- OrzbjdvPIjKzDiCJB9YUSEejMi5omEq4oraIzZYmhIXYKu1Bl8K0cGI+mjAnV4YA
- ==
-X-ME-Sender: <xms:2jIHYR4VukHQvaZRDZNdiAE1020L2RRf6-9biPVhQ79iWE2WNd0krA>
- <xme:2jIHYe4N0u6KgPYhtI9fVNFOU098q49fsLp5b4AqBpmN_5HNdapqIu7cC3Sb56olz
- ml4BXturuRsNxuiwxU>
-X-ME-Received: <xmr:2jIHYYcavJpf89ph2CSar3Zkc0Rufr6fiCNApBQ7XH7JqfjQXl4Jsx8oZO_PEQsfHN-waltg0yKNYycEZWaXyONgS8V3hjCyQ58>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddriedugddufecutefuodetggdotefrodftvf
- curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
- uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
- fjughrpeffhffvufgjkfhfgggtsehttdertddttddvnecuhfhrohhmpefhihhnnhcuvfhh
- rghinhcuoehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrghtth
- gvrhhnpeffudfhgeefvdeitedugfelueegheekkeefveffhfeiveetledvhfdtveffteeu
- udenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehfth
- hhrghinheslhhinhhugidqmheikehkrdhorhhg
-X-ME-Proxy: <xmx:2jIHYaIBRK2WXKB3yeJ3CBZy7zrvlciftgUR9rzH5yt0ZsUCSW0tPw>
- <xmx:2jIHYVICCBnp8zRjbTHWsG52CbY9Nr_H6xERWEq8qwM1aw_ubA7rlA>
- <xmx:2jIHYTxF_ZohcMKbfrc7iuvZE5MH3YU3oX37CVp3dhD5VLtmKIh93w>
- <xmx:2zIHYThhXzBUL1gRcSZmIeOPGnH4ufY0SwaKaWQXCryA6hWcdIKbdg>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 1 Aug 2021 19:48:39 -0400 (EDT)
-Date: Mon, 2 Aug 2021 09:48:36 +1000 (AEST)
-From: Finn Thain <fthain@linux-m68k.org>
-To: Stan Johnson <userm57@yahoo.com>
-Subject: Re: [PATCH v3 31/41] powerpc/32: Dismantle EXC_XFER_STD/LITE/TEMPLATE
-In-Reply-To: <34e52975-4ab9-4eb4-3501-02376e38a27c@yahoo.com>
-Message-ID: <3e4365d3-e58e-ee89-2da4-f79926db15bd@linux-m68k.org>
-References: <cover.1615552866.git.christophe.leroy@csgroup.eu>
- <ca5795d04a220586b7037dbbbe6951dfa9e768eb.1615552867.git.christophe.leroy@csgroup.eu>
- <666e3ab4-372-27c2-4621-7cc3933756dd@linux-m68k.org>
- <20210731173954.Horde.fV2Xkw7-sxjG0DUcZ_JO_g3@messagerie.c-s.fr>
- <1d601b7c-1e39-e372-39a5-e1e98e56e2a5@linux-m68k.org>
- <34e52975-4ab9-4eb4-3501-02376e38a27c@yahoo.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GdLrc020Lz2yM1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Aug 2021 12:03:27 +1000 (AEST)
+Received: by mail-pj1-x1036.google.com with SMTP id
+ pj14-20020a17090b4f4eb029017786cf98f9so11937528pjb.2
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 01 Aug 2021 19:03:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=qRAGhi37lhF1sunuSfrr1C0LvoIqLv4kahSQWWZ31Ss=;
+ b=lax88g34cj6deV6YZblYxmwfptSOzpkqmyB+B4Vn1fweUniem1asTRHasAOxZ55XZJ
+ zqsiJgmLq/+cRjJh0nO5k2UN7G0HlE2kugBTza3Og3GUw7rG2N+SwGBi9+uA1T1Er2yA
+ 6Qe1ETEHjQvyXkez1SmHzAkGP3+ymXApiEOpV1FzAMyW6KGMKhL0TpJK/qLv87h87dWh
+ 0pq5ri7OReltA40mhbAKM7zvrUxaTPAeuVXsDc1yJrWOdJcIdfTM/vcBcPyM1RuXikNs
+ 1llU3wtFXO0lSeXGbvldh/bTWKHqwYxzmauFRFoxe05GNbONOLErhKlh9idTSR22x3fR
+ HSTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=qRAGhi37lhF1sunuSfrr1C0LvoIqLv4kahSQWWZ31Ss=;
+ b=Ct/AKGgE1jManl4AHUNTwCeGbDqTzduVimBWbQlMkQXzRQTu2rz1OsVomlUH86dlB+
+ sHfshPU7OInCBNs1y0IhRqZ76jBPwytyfzEpcCoxAAokW8LCrwvX79KfnFhTWK8aMxxg
+ u7jpG5r85JxONLahrjJN98NbLpKtoXph+rViXGir+zgI4+RQGv9Yw/lxnFg0c6YAcL5t
+ 7idUKupIeuydq4YzFLDRdA6iufEDHF7hV1nIYgpqyxi4rBwjGMifPMN7wHRx2UclrRgU
+ 2orjofkEQzr7qUZfQ8MMJvjb3qMxk5j+mYt2LwpcBYWEMW2Bw02k05yOi/Mm3MUVx0GW
+ 9PCQ==
+X-Gm-Message-State: AOAM530AVgwq1I2/kpjN521upQ8gQNiBxavWY+Q2Hh19Yk3JTgfQsc9L
+ RuR0ZMqf9PEl54ln37vSEj8=
+X-Google-Smtp-Source: ABdhPJzV7KdTwX/eRoeMqY3JPzEDww/yit821nvXnqkx9bMQbO1GpBQJFlJezLK900wCL/Z+zR4LDg==
+X-Received: by 2002:a17:90a:de16:: with SMTP id
+ m22mr14997962pjv.38.1627869804836; 
+ Sun, 01 Aug 2021 19:03:24 -0700 (PDT)
+Received: from localhost (60-242-181-102.static.tpgi.com.au. [60.242.181.102])
+ by smtp.gmail.com with ESMTPSA id
+ j10sm10189936pfd.200.2021.08.01.19.03.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 01 Aug 2021 19:03:24 -0700 (PDT)
+Date: Mon, 02 Aug 2021 12:03:19 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH] powerpc/svm: Don't issue ultracalls if
+ !mem_encrypt_active()
+To: linux-kernel@vger.kernel.org, Will Deacon <will@kernel.org>
+References: <20210730114231.23445-1-will@kernel.org>
+In-Reply-To: <20210730114231.23445-1-will@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Message-Id: <1627869720.jrkx2xunfl.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,67 +83,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Nick Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, linuxppc-dev@lists.ozlabs.org,
+ Nathan Chancellor <nathan@kernel.org>, iommu@lists.linux-foundation.org,
+ Claire Chang <tientzu@chromium.org>, Robin Murphy <robin.murphy@arm.com>,
+ Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, 1 Aug 2021, Stan Johnson wrote:
+Excerpts from Will Deacon's message of July 30, 2021 9:42 pm:
+> Commit ad6c00283163 ("swiotlb: Free tbl memory in swiotlb_exit()")
+> introduced a set_memory_encrypted() call to swiotlb_exit() so that the
+> buffer pages are returned to an encrypted state prior to being freed.
+>=20
+> Sachin reports that this leads to the following crash on a Power server:
+>=20
+> [    0.010799] software IO TLB: tearing down default memory pool
+> [    0.010805] ------------[ cut here ]------------
+> [    0.010808] kernel BUG at arch/powerpc/kernel/interrupt.c:98!
+>=20
+> Nick spotted that this is because set_memory_encrypted() is issuing an
+> ultracall which doesn't exist for the processor, and should therefore
+> be gated by mem_encrypt_active() to mirror the x86 implementation.
+>=20
+> Cc: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+> Cc: Claire Chang <tientzu@chromium.org>
+> Cc: Christoph Hellwig <hch@lst.de>
+> Cc: Robin Murphy <robin.murphy@arm.com>
+> Fixes: ad6c00283163 ("swiotlb: Free tbl memory in swiotlb_exit()")
+> Suggested-by: Nicholas Piggin <npiggin@gmail.com>
+> Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+> Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+> Tested-by: Nathan Chancellor <nathan@kernel.org>
+> Link: https://lore.kernel.org/r/1905CD70-7656-42AE-99E2-A31FC3812EAC@linu=
+x.vnet.ibm.com/
+> Signed-off-by: Will Deacon <will@kernel.org>
+> ---
 
-> > 
-> >> Could you try without CONFIG_VMAP_STACK
-> >>
-> > 
-> > Stan, would you please test the following build:
-> > 
-> > $ git checkout v5.13
-> > $ cp ../dot-config-powermac-5.13 .config
-> > $ scripts/config -d CONFIG_VMAP_STACK
-> > $ make ARCH=powerpc CROSS_COMPILE=powerpc-linux-gnu- -j4 clean olddefconfig vmlinux
-> > 
-> Please see the attached serial console log (four boots):
-> 1) v5.13-mac, CONFIG_VMAP_STACK=y, mem=512M (fails)
-> 2) v5.13-mac, CONFIG_VMAP_STACK=y, mem=384M (works)
-> 3) v5.13-mac, CONFIG_VMAP_STACK=n, mem=512M (works)
-> 4) v5.13-mac, CONFIG_VMAP_STACK=n, mem=384M (works)
-> 
-> My apologies if the extra boots were not needed (due to the time
-> difference, I'm trying to anticipate future requests).
-> 
-> Cutting and pasting Finn's commands above builds a new kernel
-> (5.13.0-pmac) with the following in .config:
-> 
-> $ fgrep VMAP .config
-> CONFIG_HAVE_ARCH_VMAP_STACK=y
-> CONFIG_VMAP_STACK=y
-> 
+Thanks for writing it.
 
-That's odd. It works correctly here:
+Acked-by: Nicholas Piggin <npiggin@gmail.com>
 
-$ cp ../dot-config-powermac-5.13 .config
-$ grep CONFIG_VMAP_STACK .config
-CONFIG_VMAP_STACK=y
-$ scripts/config -d CONFIG_VMAP_STACK
-$ grep CONFIG_VMAP_STACK .config
-# CONFIG_VMAP_STACK is not set
-
-Anyway, I see that you resolved the problem:
-
-> ...
-> 
-> $ fgrep VMAP .config
-> CONFIG_HAVE_ARCH_VMAP_STACK=y
-> # CONFIG_VMAP_STACK is not set
-> 
-> 3) Same as 1 (512M) but with CONFIG_VMAP_STACK not set in v5.13.
-> Everything works (no problems with X, no errors logged).
-> 
-> 4) Same as 2 (384M) but with CONFIG_VMAP_STACK not set in v5.13.
-> Everything works (no problems with X, no errors logged).
-> 
-
-Thanks for collecting those results.
-
-It appears that Christophe was right. Disabling CONFIG_VMAP_STACK avoids 
-the crashes in v5.13. (Enabling CONFIG_VMAP_STACK worked fine in v5.12.)
+>  arch/powerpc/platforms/pseries/svm.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>=20
+> diff --git a/arch/powerpc/platforms/pseries/svm.c b/arch/powerpc/platform=
+s/pseries/svm.c
+> index 1d829e257996..87f001b4c4e4 100644
+> --- a/arch/powerpc/platforms/pseries/svm.c
+> +++ b/arch/powerpc/platforms/pseries/svm.c
+> @@ -63,6 +63,9 @@ void __init svm_swiotlb_init(void)
+> =20
+>  int set_memory_encrypted(unsigned long addr, int numpages)
+>  {
+> +	if (!mem_encrypt_active())
+> +		return 0;
+> +
+>  	if (!PAGE_ALIGNED(addr))
+>  		return -EINVAL;
+> =20
+> @@ -73,6 +76,9 @@ int set_memory_encrypted(unsigned long addr, int numpag=
+es)
+> =20
+>  int set_memory_decrypted(unsigned long addr, int numpages)
+>  {
+> +	if (!mem_encrypt_active())
+> +		return 0;
+> +
+>  	if (!PAGE_ALIGNED(addr))
+>  		return -EINVAL;
+> =20
+> --=20
+> 2.32.0.554.ge1b32706d8-goog
+>=20
+>=20
