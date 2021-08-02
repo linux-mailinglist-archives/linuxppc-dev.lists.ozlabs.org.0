@@ -1,46 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBB7D3DE1CB
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Aug 2021 23:46:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09C5C3DE217
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Aug 2021 00:08:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gds5y4RjJz3cVm
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Aug 2021 07:46:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GdsZT5Ppbz3bXm
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Aug 2021 08:08:01 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GXMiPWq4;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 4Gds5Y1hcCz302X
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Aug 2021 07:46:24 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 172Lg8IZ011901;
- Mon, 2 Aug 2021 16:42:08 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 172Lg7U0011900;
- Mon, 2 Aug 2021 16:42:07 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Mon, 2 Aug 2021 16:42:07 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Alexey Dobriyan <adobriyan@gmail.com>
-Subject: Re: [PATCH 3/3] isystem: delete global -isystem compile option
-Message-ID: <20210802214207.GP1583@gate.crashing.org>
-References: <20210801201336.2224111-1-adobriyan@gmail.com>
- <20210801201336.2224111-3-adobriyan@gmail.com>
- <20210801213247.GM1583@gate.crashing.org>
- <YQeT5QRXc3CzK9nL@localhost.localdomain>
- <20210802164747.GN1583@gate.crashing.org>
- <YQhVyOdQKUnvz1n5@localhost.localdomain>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YQhVyOdQKUnvz1n5@localhost.localdomain>
-User-Agent: Mutt/1.4.2.3i
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=bugzilla.kernel.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=GXMiPWq4; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GdsZ31Ntrz2xfP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Aug 2021 08:07:38 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPS id 606B760F48
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Aug 2021 22:07:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1627942056;
+ bh=IkrImeaiLqrCc9Iuv2ShFvD/5+ZB6VZ9eWlI0DAabq4=;
+ h=From:To:Subject:Date:In-Reply-To:References:From;
+ b=GXMiPWq48InKBlB2TitW+3rNS5iHTQmrp/u7o44kMVEDipYlv5N+83Rv5dC5xuGFA
+ 8sM6LFD645FnCGb2/ChGVlTClLTQcsz9394uVUN61Q2jxiUcwytDoKgGL7VkMNNI4e
+ mIZkKeqC0N9GA3Z/9MiYNhjVRfgbeAW0MIzD2disUUAv4iVbrHRZPG9TNt8zyDZNlv
+ vN/R67+VEBDIYR2PHfbXTBnc8l/8mJC6gVmfXL+TMh/VlzxvxrE33k4fJSb+nWYSsR
+ eJ+6IksPJN4hds2V9tue+26s3iwweqC+Sq4laCM1tajbIBwzCgCFwUVs7IZImkXUCn
+ XJ5NdqBHX7kVA==
+Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
+ id 4F81860E4E; Mon,  2 Aug 2021 22:07:36 +0000 (UTC)
+From: bugzilla-daemon@bugzilla.kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: =?UTF-8?B?W0J1ZyAyMTM4MDNdIEc1IGtlcm5lbCBidWlsZCAodjUuMTQtcmMy?=
+ =?UTF-8?B?KSBmYWlscyBhdCBsaW5raW5nIHN0YWdlIC0gbGQ6IGFyY2gvcG93ZXJwYy9t?=
+ =?UTF-8?B?bS9wZ3RhYmxlLm86IGluIGZ1bmN0aW9uIGAuX19wdGVwX3NldF9hY2Nlc3Nf?=
+ =?UTF-8?B?ZmxhZ3MnOiAvdXNyL3NyYy9saW51eC1zdGFibGUvLi9hcmNoL3Bvd2VycGMv?=
+ =?UTF-8?B?aW5jbHVkZS9hc20vYm9vazNzLzY0L3BndGFibGUuaDo4MjQ6IHVuZGVmaW5l?=
+ =?UTF-8?B?ZCByZWZlcmVuY2UgdG8gYC5yYWRpeF9fcHRlcF9zZXRfYWNjZXNzX2ZsYWdz?=
+ =?UTF-8?B?Jw==?=
+Date: Mon, 02 Aug 2021 22:07:36 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-213803-206035-uE9kzJAMn6@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-213803-206035@https.bugzilla.kernel.org/>
+References: <bug-213803-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
+MIME-Version: 1.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,95 +83,17 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Will Deacon <will@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>, masahiroy@kernel.org,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 02, 2021 at 11:30:00PM +0300, Alexey Dobriyan wrote:
-> On Mon, Aug 02, 2021 at 11:47:47AM -0500, Segher Boessenkool wrote:
-> > The kernel *cannot* make up its own types for this.  It has to use the
-> > types it is required to use (by C, by the ABIs, etc.)  So why
-> > reimplement this?
-> 
-> Yes, it can. gcc headers have stuff like this:
-> 
-> 	#define __PTRDIFF_TYPE__ long int
-> 	#define __SIZE_TYPE__ long unsigned int
-> 
-> If gcc can defined standard types, kernel can too.
+https://bugzilla.kernel.org/show_bug.cgi?id=3D213803
 
-The kernel *has to* use those exact same types.  So why on earth do you
-feel you should reimplement this?
+--- Comment #1 from Erhard F. (erhard_f@mailbox.org) ---
+Still a problem in v5.14-rc4.
 
-> > > noreturn, alignas newest C standard
-> > > are next.
-> > 
-> > What is wrong with <stdalign.h> and <stdnoreturn.h>?
-> 
-> These two are actually quite nice.
-> 
-> Have you seen <stddef.h>? Loads of macrology crap.
-> Kernel can ship nicer one.
+--=20
+You may reply to this email to add a comment.
 
-It is a pretty tame file.  And it works correctly for *all* targets,
-including all Linux targets.  Why reimplement this?  No, it takes
-virtually no resources to compile this.  And you do not have to maintain
-it *at all*, the compiler will take care of it.  It is standard.
-
-> > > They are userspace headers in the sense they are external to the project
-> > > just like userspace programs are external to the kernel.
-> > 
-> > So you are going to rewrite all of the rest of GCC inside the kernel
-> > project as well?
-> 
-> What an argument. "the rest of GCC" is already there except for stdarg.h.
-
-???
-
-That is there as well.  But you want to remove it.
-
-"The rest of GCC" is everything in cc1 (the compiler binary), in libgcc
-(not that the kernel wants that either on most targets, although it is
-required), etc.  A few GB of binary goodness.
-
-> > > Kernel chose to be self-contained.
-> > 
-> > That is largely historical, imo.  Nowadays this is less necessary.
-> 
-> I kind of agree as in kernel should use int8_t and stuff because they
-> are standard.
-
-s8 is a much nicer name, heh.  But it could
-  #define s8 int8_t
-certainly.
-
-What I meant was the kernel wanted to avoid standard headers because
-those traditionally have been a bit problematic.  But decades have gone
-by, and nowadays the kernel's own headers are at least as bad.
-
-> Also, -isystem removal disables <float.h> and <stdatomic.h> which is
-> desireable.
-
-Why?  Do you think  #include <float.h>  will ever make it past code
-review?  Do you need to throw up extra barriers so people will have a
-harder time changing that policy, if ever they think that a good idea?
-
-> > > It will be used for intrinsics where necessary.
-> > 
-> > Like, everywhere.
-> 
-> No, where necessary. Patch demostrates there are only a few places which
-> want -isystem back.
-
-Yes, where necessary, that is what I said.  So, potentially everywhere.
-An arch can decide to use some builtin in a generic header, for example.
-
-Your patch makes for more work in the future, that is the best it does.
-
-
-Segher
+You are receiving this mail because:
+You are watching the assignee of the bug.=
