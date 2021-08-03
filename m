@@ -2,81 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2FFD3DE3A7
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Aug 2021 02:43:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21DB43DEB7D
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Aug 2021 13:01:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gdx2D4Xd8z3cLG
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Aug 2021 10:43:48 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=gHaOx2og;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GfBkh72Plz3dDX
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Aug 2021 21:01:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=out4-smtp.messagingengine.com (client-ip=66.111.4.28;
- helo=out4-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org;
+ smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33;
+ helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm3 header.b=gHaOx2og; 
- dkim-atps=neutral
-Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com
- [66.111.4.28])
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
+ [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gdx1p2WlGz2ydS
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Aug 2021 10:43:25 +1000 (AEST)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
- by mailout.nyi.internal (Postfix) with ESMTP id 05F325C0167;
- Mon,  2 Aug 2021 20:43:23 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute4.internal (MEProxy); Mon, 02 Aug 2021 20:43:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:content-id:content-type:date:from
- :in-reply-to:message-id:mime-version:references:subject:to
- :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm3; bh=rTy3dKsPoajPmNli8ExRtsgRJClAC4+cHirejhq0af0=; b=gHaOx2og
- 7UxXtoTnVvlBJFD4rhjsp2UJzdXIfpvua6QYeqYCW2YgY/e3hv4Nw36t/S1lYSFr
- U0KM0VFqiXYVi31udYjYGyJUD52E2PbLvprNuq6eoV5eOm7lUqLL0fZyQf2ijPRW
- LB8i/V9bTp83/k/+FNHobB3gXPzd1dLAKgu+mgvFyMqZwa/TEpWpCtoq5aW8GosT
- +jfkGmbUoCnBjH9XhQ163V1R25hkphTuG/AtG8IUdh64gbdAh1amM1BCWwMHn4Fh
- J8rlSSWmXtgRCS7rZqWll3bJWLn3ALJHJ0tIkKyfVoBUMqFPRxLmX73WhmlkSL9X
- Bjtga70UP5z43A==
-X-ME-Sender: <xms:KJEIYf4vBGAfEVA5ewHcBKsN7xoyOKOLRlrccAJFQNz-eLlgu9KhGQ>
- <xme:KJEIYU6_BG_KyuAW0R1NnNsZw-B9NB9PFIOWO9Dwpq0ptAveGZUXl9KpneUNfOre3
- wf_NPLQM3cDcWZ2ic0>
-X-ME-Received: <xmr:KJEIYWfgLYCO1Xl4fz7yTSxsTi7Wu_R4vUqgq9dWvgqoGxuNyjL9BweYmq5pYcM_pBvW5VQKxZbBdX3A5xWsCg9tzixMVQyRCP8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrieefgddvkecutefuodetggdotefrodftvf
- curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
- uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
- fjughrpeffhffvufgjkfhfgggtsehmtderredttdejnecuhfhrohhmpefhihhnnhcuvfhh
- rghinhcuoehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrghtth
- gvrhhnpeetvedvueduheehkeejhedukeevheejkedvffdugeehkeffkeekgfehkedvleel
- teenucffohhmrghinhepfedvrdhssgenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
- grmhepmhgrihhlfhhrohhmpehfthhhrghinheslhhinhhugidqmheikehkrdhorhhg
-X-ME-Proxy: <xmx:KJEIYQKC_EDIXx5thghUnVKWJCBBfF6jZUG5XNYTMB_kc-Bqjm4hKw>
- <xmx:KJEIYTLrbFr5a-aT0AOLpzvw5mCcXSlYi9n0-gB7Xe39AfuqCPngJA>
- <xmx:KJEIYZysrQryQ8HXTPEoc9rErzUNVJKmLVqxynNuCkHXspzj3Ok8Dw>
- <xmx:K5EIYZjz_XMXWroheeZZ8i7aJHLFN8vap22H5P22yvZ5igJMuokyUQ>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 2 Aug 2021 20:43:17 -0400 (EDT)
-Date: Tue, 3 Aug 2021 10:43:13 +1000 (AEST)
-From: Finn Thain <fthain@linux-m68k.org>
-To: Stan Johnson <userm57@yahoo.com>, 
- LEROY Christophe <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v3 31/41] powerpc/32: Dismantle EXC_XFER_STD/LITE/TEMPLATE
-In-Reply-To: <9b64dde3-6ebd-b446-41d9-61e8cb0d8c39@csgroup.eu>
-Message-ID: <216b7b17-28f4-7976-c338-1dedeba14ce7@linux-m68k.org>
-References: <cover.1615552866.git.christophe.leroy@csgroup.eu>
- <ca5795d04a220586b7037dbbbe6951dfa9e768eb.1615552867.git.christophe.leroy@csgroup.eu>
- <666e3ab4-372-27c2-4621-7cc3933756dd@linux-m68k.org>
- <20210731173954.Horde.fV2Xkw7-sxjG0DUcZ_JO_g3@messagerie.c-s.fr>
- <1d601b7c-1e39-e372-39a5-e1e98e56e2a5@linux-m68k.org>
- <9b64dde3-6ebd-b446-41d9-61e8cb0d8c39@csgroup.eu>
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gf9S46hzJz306C
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Aug 2021 20:03:30 +1000 (AEST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <ukl@pengutronix.de>)
+ id 1mArFM-0002yH-C3; Tue, 03 Aug 2021 12:02:04 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+ by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <ukl@pengutronix.de>)
+ id 1mArFB-0006F1-AC; Tue, 03 Aug 2021 12:01:53 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+ (envelope-from <ukl@pengutronix.de>)
+ id 1mArFB-0002le-6C; Tue, 03 Aug 2021 12:01:53 +0200
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH v2 0/6] PCI: Drop duplicated tracking of a pci_dev's bound
+ driver
+Date: Tue,  3 Aug 2021 12:01:44 +0200
+Message-Id: <20210803100150.1543597-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="-1463811774-1281028418-1627951377=:28"
-Content-ID: <11d1109a-eda8-9252-f7e-84519fa8d55@nippy.intranet>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
+ SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+X-Mailman-Approved-At: Tue, 03 Aug 2021 21:00:13 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,82 +59,173 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Nick Piggin <npiggin@gmail.com>,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+ =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, linux-pci@vger.kernel.org,
+ Alexander Duyck <alexanderduyck@fb.com>,
+ Sathya Prakash <sathya.prakash@broadcom.com>, oss-drivers@corigine.com,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ Jiri Olsa <jolsa@redhat.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ linux-perf-users@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>, linux-scsi@vger.kernel.org,
+ Ido Schimmel <idosch@nvidia.com>, x86@kernel.org, qat-linux@intel.com,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, linux-wireless@vger.kernel.org,
+ Jakub Kicinski <kuba@kernel.org>, Mathias Nyman <mathias.nyman@intel.com>,
+ Yisen Zhuang <yisen.zhuang@huawei.com>, Fiona Trahe <fiona.trahe@intel.com>,
+ Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ Suganath Prabu Subramani <suganath-prabu.subramani@broadcom.com>,
+ Simon Horman <simon.horman@corigine.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>, Borislav Petkov <bp@alien8.de>,
+ Michael Buesch <m@bues.ch>, Jiri Pirko <jiri@nvidia.com>,
+ Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Andy Shevchenko <andriy.shevchenko@intel.com>, Juergen Gross <jgross@suse.com>,
+ Salil Mehta <salil.mehta@huawei.com>,
+ Sreekanth Reddy <sreekanth.reddy@broadcom.com>, xen-devel@lists.xenproject.org,
+ Vadym Kochan <vkochan@marvell.com>, MPT-FusionLinux.pdl@broadcom.com,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
+ Wojciech Ziemba <wojciech.ziemba@intel.com>, linux-kernel@vger.kernel.org,
+ Taras Chornyi <tchornyi@marvell.com>, Zhou Wang <wangzhou1@hisilicon.com>,
+ linux-crypto@vger.kernel.org, kernel@pengutronix.de, netdev@vger.kernel.org,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hello,
 
----1463811774-1281028418-1627951377=:28
-Content-Type: text/plain; CHARSET=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Content-ID: <86b5d84-d157-9cb8-3a40-99b6e82a91fa@nippy.intranet>
+changes since v1 (https://lore.kernel.org/linux-pci/20210729203740.1377045-1-u.kleine-koenig@pengutronix.de):
 
-On Mon, 2 Aug 2021, LEROY Christophe wrote:
+- New patch to simplify drivers/pci/xen-pcifront.c, spotted and
+  suggested by Boris Ostrovsky
+- Fix a possible NULL pointer dereference I introduced in xen-pcifront.c
+- A few whitespace improvements
+- Add a commit log to patch #6 (formerly #5)
 
-> Le 01/08/2021 =C3=A0 03:21, Finn Thain a =C3=A9crit=C2=A0:
-> > On Sat, 31 Jul 2021, Christophe Leroy wrote:
-> >=20
-> > > >=20
-> > > > Stan Johnson contacted me about a regression in mainline that he
-> > > > observed on his G3 Powerbooks. Using 'git bisect' we determined tha=
-t
-> > > > this patch was the cause of the regression, i.e. commit 4c0104a83fc=
-3
-> > > > ("powerpc/32: Dismantle EXC_XFER_STD/LITE/TEMPLATE").
-> > > >=20
-> > > > When testing 4c0104a83fc and all subsequent builds, various user
-> > > > processes were liable to segfault. Here is the console log that Sta=
-n
-> > > > provided:
-> > >=20
-> > > Hi, i will be able to look at that more in details next week, however=
- I
-> > > have a few preliminary qurstions.
-> > >=20
-> > > Can you reliabily reproduce the problem with the said commit, and can
-> > > you reliabily run without problem with the parent commit ?
-> >=20
-> > Yes and yes. (I already asked Stan to establish those things before I
-> > contacted the list.)
->=20
-> I think I found the problem with that commit. Can you retry with the foll=
-owing
-> change:
->=20
-> diff --git a/arch/powerpc/kernel/head_book3s_32.S
-> b/arch/powerpc/kernel/head_book3s_32.S
-> index 0a3d7d4a9ec4..a294103a91a1 100644
-> --- a/arch/powerpc/kernel/head_book3s_32.S
-> +++ b/arch/powerpc/kernel/head_book3s_32.S
-> @@ -299,7 +299,7 @@ ALT_MMU_FTR_SECTION_END_IFSET(MMU_FTR_HPTE_TABLE)
->  =09EXCEPTION_PROLOG_1
->  =09EXCEPTION_PROLOG_2 0x300 DataAccess handle_dar_dsisr=3D1
->  =09prepare_transfer_to_handler
-> -=09lwz=09r5, _DSISR(r11)
-> +=09lwz=09r5, _DSISR(r1)
->  =09andis.=09r0, r5, DSISR_DABRMATCH@h
->  =09bne-=091f
->  =09bl=09do_page_fault
+I also expanded the audience for patches #4 and #6 to allow affected
+people to actually see the changes to their drivers.
 
-That patch doesn't apply to mainline. This version might help.
+Interdiff can be found below.
 
-diff --git a/arch/powerpc/kernel/head_book3s_32.S b/arch/powerpc/kernel/hea=
-d_book3s_32.S
-index 764edd860ed4..68e5c0a7e99d 100644
---- a/arch/powerpc/kernel/head_book3s_32.S
-+++ b/arch/powerpc/kernel/head_book3s_32.S
-@@ -300,7 +300,7 @@ ALT_MMU_FTR_SECTION_END_IFSET(MMU_FTR_HPTE_TABLE)
- =09EXCEPTION_PROLOG_1
- =09EXCEPTION_PROLOG_2 INTERRUPT_DATA_STORAGE DataAccess handle_dar_dsisr=
-=3D1
- =09prepare_transfer_to_handler
--=09lwz=09r5, _DSISR(r11)
-+=09lwz=09r5, _DSISR(r1)
- =09andis.=09r0, r5, DSISR_DABRMATCH@h
- =09bne-=091f
- =09bl=09do_page_fault
----1463811774-1281028418-1627951377=:28--
+The idea is still the same: After a few cleanups (#1 - #3) a new macro
+is introduced abstracting access to struct pci_dev->driver. All users
+are then converted to use this and in the last patch the macro is
+changed to make use of struct pci_dev::dev->driver to get rid of the
+duplicated tracking.
+
+Best regards
+Uwe
+
+Uwe Kleine-König (6):
+  PCI: Simplify pci_device_remove()
+  PCI: Drop useless check from pci_device_probe()
+  xen/pci: Drop some checks that are always true
+  PCI: Provide wrapper to access a pci_dev's bound driver
+  PCI: Adapt all code locations to not use struct pci_dev::driver
+    directly
+  PCI: Drop duplicated tracking of a pci_dev's bound driver
+
+ arch/powerpc/include/asm/ppc-pci.h            |  3 +-
+ arch/powerpc/kernel/eeh_driver.c              | 12 ++--
+ arch/x86/events/intel/uncore.c                |  2 +-
+ arch/x86/kernel/probe_roms.c                  |  2 +-
+ drivers/bcma/host_pci.c                       |  6 +-
+ drivers/crypto/hisilicon/qm.c                 |  2 +-
+ drivers/crypto/qat/qat_common/adf_aer.c       |  2 +-
+ drivers/message/fusion/mptbase.c              |  4 +-
+ drivers/misc/cxl/guest.c                      | 21 +++----
+ drivers/misc/cxl/pci.c                        | 25 ++++----
+ .../ethernet/hisilicon/hns3/hns3_ethtool.c    |  2 +-
+ .../ethernet/marvell/prestera/prestera_pci.c  |  2 +-
+ drivers/net/ethernet/mellanox/mlxsw/pci.c     |  2 +-
+ .../ethernet/netronome/nfp/nfp_net_ethtool.c  |  2 +-
+ drivers/pci/iov.c                             | 23 ++++---
+ drivers/pci/pci-driver.c                      | 48 +++++++--------
+ drivers/pci/pci.c                             | 10 ++--
+ drivers/pci/pcie/err.c                        | 35 ++++++-----
+ drivers/pci/xen-pcifront.c                    | 60 ++++++++-----------
+ drivers/ssb/pcihost_wrapper.c                 |  7 ++-
+ drivers/usb/host/xhci-pci.c                   |  3 +-
+ include/linux/pci.h                           |  2 +-
+ 22 files changed, 145 insertions(+), 130 deletions(-)
+
+Range-diff against v1:
+1:  7d97605df363 = 1:  8ba6e9faa18c PCI: Simplify pci_device_remove()
+2:  aec84c688d0f = 2:  d8a7dc52091f PCI: Drop useless check from pci_device_probe()
+-:  ------------ > 3:  f4b78aa41776 xen/pci: Drop some checks that are always true
+3:  e6f933f532c9 = 4:  50f3daa64170 PCI: Provide wrapper to access a pci_dev's bound driver
+4:  d678a2924143 ! 5:  21cbd3f180a1 PCI: Adapt all code locations to not use struct pci_dev::driver directly
+    @@ drivers/message/fusion/mptbase.c: mpt_device_driver_register(struct mpt_pci_driv
+     -		id = ioc->pcidev->driver ?
+     -		    ioc->pcidev->driver->id_table : NULL;
+     +		struct pci_driver *pdrv = pci_driver_of_dev(ioc->pcidev);
+    -+		id = pdrv ?  pdrv->id_table : NULL;
+    ++		id = pdrv ? pdrv->id_table : NULL;
+      		if (dd_cbfunc->probe)
+      			dd_cbfunc->probe(ioc->pcidev, id);
+      	 }
+    @@ drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c: static void hns3_get_drvinfo
+      	}
+      
+     -	strncpy(drvinfo->driver, h->pdev->driver->name,
+    --		sizeof(drvinfo->driver));
+    -+	strncpy(drvinfo->driver, pci_driver_of_dev(h->pdev)->name, sizeof(drvinfo->driver));
+    ++	strncpy(drvinfo->driver, pci_driver_of_dev(h->pdev)->name,
+    + 		sizeof(drvinfo->driver));
+      	drvinfo->driver[sizeof(drvinfo->driver) - 1] = '\0';
+      
+    - 	strncpy(drvinfo->bus_info, pci_name(h->pdev),
+     
+      ## drivers/net/ethernet/marvell/prestera/prestera_pci.c ##
+     @@ drivers/net/ethernet/marvell/prestera/prestera_pci.c: static int prestera_fw_load(struct prestera_fw *fw)
+    @@ drivers/pci/xen-pcifront.c: static pci_ers_result_t pcifront_common_process(int
+      
+      	pcidev = pci_get_domain_bus_and_slot(domain, bus, devfn);
+     -	if (!pcidev || !pcidev->driver) {
+    -+	pdrv = pci_driver_of_dev(pcidev);
+    -+	if (!pcidev || !pdrv) {
+    ++	if (!pcidev || !(pdrv = pci_driver_of_dev(pcidev))) {
+      		dev_err(&pdev->xdev->dev, "device or AER driver is NULL\n");
+      		pci_dev_put(pcidev);
+      		return result;
+      	}
+     -	pdrv = pcidev->driver;
+      
+    - 	if (pdrv) {
+    - 		if (pdrv->err_handler && pdrv->err_handler->error_detected) {
+    + 	if (pdrv->err_handler && pdrv->err_handler->error_detected) {
+    + 		pci_dbg(pcidev, "trying to call AER service\n");
+     
+      ## drivers/ssb/pcihost_wrapper.c ##
+     @@ drivers/ssb/pcihost_wrapper.c: static int ssb_pcihost_probe(struct pci_dev *dev,
+    @@ drivers/ssb/pcihost_wrapper.c: static int ssb_pcihost_probe(struct pci_dev *dev,
+      	name = dev_name(&dev->dev);
+     -	if (dev->driver && dev->driver->name)
+     -		name = dev->driver->name;
+    -+	
+    ++
+     +	pdrv = pci_driver_of_dev(dev);
+     +	if (pdrv && pdrv->name)
+     +		name = pdrv->name;
+5:  8c70ffd24380 ! 6:  02e6da6e5919 PCI: Drop duplicated tracking of a pci_dev's bound driver
+    @@ Metadata
+      ## Commit message ##
+         PCI: Drop duplicated tracking of a pci_dev's bound driver
+     
+    +    Currently it's tracked twice which driver is bound to a given pci
+    +    device. Now that all users of the pci specific one (struct
+    +    pci_dev::driver) are updated to use an access macro
+    +    (pci_driver_of_dev()), change the macro to use the information from the
+    +    driver core and remove the driver member from struct pci_dev.
+    +
+         Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+     
+      ## drivers/pci/pci-driver.c ##
+
+base-commit: 2734d6c1b1a089fb593ef6a23d4b70903526fe0c
+-- 
+2.30.2
+
