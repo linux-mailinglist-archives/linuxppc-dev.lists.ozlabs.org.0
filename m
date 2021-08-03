@@ -2,39 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43AB23DFAE8
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 07:08:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 984DF3DFAEB
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 07:08:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gffrt1VbGz3dY6
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 15:08:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GffsM3ywLz3cPK
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 15:08:39 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=F/09aFyg;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com;
- envelope-from=andriy.shevchenko@intel.com; receiver=<UNKNOWN>)
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.helo=new1-smtp.messagingengine.com (client-ip=66.111.4.221;
+ helo=new1-smtp.messagingengine.com; envelope-from=idosch@idosch.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.a=rsa-sha256 header.s=fm3 header.b=F/09aFyg; 
+ dkim-atps=neutral
+X-Greylist: delayed 584 seconds by postgrey-1.36 at boromir;
+ Wed, 04 Aug 2021 00:56:05 AEST
+Received: from new1-smtp.messagingengine.com (new1-smtp.messagingengine.com
+ [66.111.4.221])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GfHbY5VdJz2yX6
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Aug 2021 00:40:25 +1000 (AEST)
-X-IronPort-AV: E=McAfee;i="6200,9189,10065"; a="211837192"
-X-IronPort-AV: E=Sophos;i="5.84,291,1620716400"; d="scan'208";a="211837192"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
- by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Aug 2021 07:39:23 -0700
-X-IronPort-AV: E=Sophos;i="5.84,291,1620716400"; d="scan'208";a="419683121"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
- by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Aug 2021 07:39:07 -0700
-Received: from andy by smile with local (Exim 4.94.2)
- (envelope-from <andriy.shevchenko@intel.com>)
- id 1mAvZJ-004lU3-S4; Tue, 03 Aug 2021 17:38:57 +0300
-Date: Tue, 3 Aug 2021 17:38:57 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GfHxd0H7Jz2yX8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Aug 2021 00:56:05 +1000 (AEST)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+ by mailnew.nyi.internal (Postfix) with ESMTP id EBF245806A0;
+ Tue,  3 Aug 2021 10:46:16 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute1.internal (MEProxy); Tue, 03 Aug 2021 10:46:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:content-transfer-encoding:content-type
+ :date:from:in-reply-to:message-id:mime-version:references
+ :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm3; bh=ZhhzKAcbp08j/zLplXp7CUKlTW+9yQngYwV71xLLU
+ uk=; b=F/09aFygJQYV2RtiZgmhk7lrEY/SgDHVCp9GLx/945GbshDofvqnTjhPv
+ MdQvU0XkuXuw8J+MuhKrJ5gR1GZcomEdsTK6ZD7aIFtguwONkYK584aL0vB3+uOi
+ 1cZ7en9ladrjw6Am+2BpbC6fRp8uuoZu3LuWznvdmPAybGSJD4k6LsC2dgve+Rgl
+ 7lVDmmuL7y/jEYsgA56vScY1S21u5F3TLg4OLHZRv4+oQDdiQgC7TWc+gnXL5h4w
+ 2rvrqIo0t83pmPMDPPc41jSJk9WPHxdOeJIBVx4KzCnsejQeB77xOjaT3gfaZ5ud
+ PQwuZWkKpupEjh03t9vkMNG6BzFeQ==
+X-ME-Sender: <xms:slYJYT6kZeAR_u8nmIhOwwTdbdSTNZDG6YV26ZSH5RAkJpiwDMEecg>
+ <xme:slYJYY6-9FEu98HWO-uZSzE-IqI3ADKc0IPE-fH4fhb6O37ZXlqSYAoGH26C6xR_Y
+ 3AnO0EnJ1_HFrI>
+X-ME-Received: <xmr:slYJYacOsY7ys2tiGj1OcG6XygrXSWg4xrc9GnX_-fPcsyrhgEjtC7VnWYQEv5nVsTuIg9N7CZQZGuQjxh2ppRV9AbXp_w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrieeggdejjecutefuodetggdotefrodftvf
+ curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+ uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+ fjughrpeffhffvuffkfhggtggugfgjsehtkeertddttddunecuhfhrohhmpefkughoucfu
+ tghhihhmmhgvlhcuoehiughoshgthhesihguohhstghhrdhorhhgqeenucggtffrrghtth
+ gvrhhnpedvffevkeefieeiueeitedufeekveekuefhueeiudduteekgeelfedvgeehjeeh
+ hfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehiug
+ hoshgthhesihguohhstghhrdhorhhg
+X-ME-Proxy: <xmx:slYJYUKzZG3Xz6r6LaeXad3wYy6LOTbk81cO0cMnwYXwbSFEc7wHjQ>
+ <xmx:slYJYXJjCcb3nZi9UnC0Hz6_YYtYtVnj1jBbwCxXsrsAsiMMX5tIkw>
+ <xmx:slYJYdxfVsvKDxmjEDddhWRd4PUJmS19TokpDNA-XT3HSimKkg7Dwg>
+ <xmx:uFYJYVgEB2oEZs8RPQxAloMFD7GNawFrzXmXD3USqGR6p1WsqWraOg>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 3 Aug 2021 10:46:09 -0400 (EDT)
+Date: Tue, 3 Aug 2021 17:46:05 +0300
+From: Ido Schimmel <idosch@idosch.org>
 To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 Subject: Re: [PATCH v2 5/6] PCI: Adapt all code locations to not use struct
  pci_dev::driver directly
-Message-ID: <YQlVAcOGDrDO8500@smile.fi.intel.com>
+Message-ID: <YQlWrcCY3X01eNJJ@shredder>
 References: <20210803100150.1543597-1-u.kleine-koenig@pengutronix.de>
  <20210803100150.1543597-6-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
@@ -42,7 +76,6 @@ Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 In-Reply-To: <20210803100150.1543597-6-u.kleine-koenig@pengutronix.de>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Mailman-Approved-At: Wed, 04 Aug 2021 15:05:41 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -77,7 +110,8 @@ Cc: Mark Rutland <mark.rutland@arm.com>,
  Arnaldo Carvalho de Melo <acme@kernel.org>, Borislav Petkov <bp@alien8.de>,
  Michael Buesch <m@bues.ch>, Jiri Pirko <jiri@nvidia.com>,
  Bjorn Helgaas <bhelgaas@google.com>, Namhyung Kim <namhyung@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, Juergen Gross <jgross@suse.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Andy Shevchenko <andriy.shevchenko@intel.com>, Juergen Gross <jgross@suse.com>,
  Salil Mehta <salil.mehta@huawei.com>,
  Sreekanth Reddy <sreekanth.reddy@broadcom.com>, xen-devel@lists.xenproject.org,
  Vadym Kochan <vkochan@marvell.com>, MPT-FusionLinux.pdl@broadcom.com,
@@ -94,18 +128,32 @@ Sender: "Linuxppc-dev"
 On Tue, Aug 03, 2021 at 12:01:49PM +0200, Uwe Kleine-König wrote:
 > This prepares removing the driver member of struct pci_dev which holds the
 > same information than struct pci_dev::dev->driver.
+> 
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+> ---
+>  arch/powerpc/include/asm/ppc-pci.h            |  3 +-
+>  arch/powerpc/kernel/eeh_driver.c              | 12 ++++---
+>  arch/x86/events/intel/uncore.c                |  2 +-
+>  arch/x86/kernel/probe_roms.c                  |  2 +-
+>  drivers/bcma/host_pci.c                       |  6 ++--
+>  drivers/crypto/hisilicon/qm.c                 |  2 +-
+>  drivers/crypto/qat/qat_common/adf_aer.c       |  2 +-
+>  drivers/message/fusion/mptbase.c              |  4 +--
+>  drivers/misc/cxl/guest.c                      | 21 +++++------
+>  drivers/misc/cxl/pci.c                        | 25 +++++++------
+>  .../ethernet/hisilicon/hns3/hns3_ethtool.c    |  2 +-
+>  .../ethernet/marvell/prestera/prestera_pci.c  |  2 +-
+>  drivers/net/ethernet/mellanox/mlxsw/pci.c     |  2 +-
+>  .../ethernet/netronome/nfp/nfp_net_ethtool.c  |  2 +-
+>  drivers/pci/iov.c                             | 23 +++++++-----
+>  drivers/pci/pci-driver.c                      | 28 ++++++++-------
+>  drivers/pci/pci.c                             | 10 +++---
+>  drivers/pci/pcie/err.c                        | 35 ++++++++++---------
+>  drivers/pci/xen-pcifront.c                    |  3 +-
+>  drivers/ssb/pcihost_wrapper.c                 |  7 ++--
+>  drivers/usb/host/xhci-pci.c                   |  3 +-
+>  21 files changed, 112 insertions(+), 84 deletions(-)
 
-...
+For mlxsw:
 
-> +	struct pci_driver *pdrv;
-
-Missed blank line here and everywhere else. I don't remember if it's a
-checkpatch who complains on this.
-
-> +	return (pdev && (pdrv = pci_driver_of_dev(pdev))) ? pdrv->name : "<null>";
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Tested-by: Ido Schimmel <idosch@nvidia.com>
