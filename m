@@ -1,49 +1,188 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D2013DFAE4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 07:06:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1C473DFAE5
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 07:07:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gffpn1qFnz3d8r
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 15:06:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gffqb3pt4z3cWS
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 15:07:07 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2021-07-09 header.b=NUrJH7Ab;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2020-01-29 header.b=OzK/ZB65;
+	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=uuyJ+W6l;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=134.134.136.24; helo=mga09.intel.com;
- envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
-X-Greylist: delayed 123 seconds by postgrey-1.36 at boromir;
- Tue, 03 Aug 2021 23:55:31 AEST
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=oracle.com (client-ip=205.220.177.32;
+ helo=mx0b-00069f02.pphosted.com; envelope-from=boris.ostrovsky@oracle.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
+ header.s=corp-2021-07-09 header.b=NUrJH7Ab; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
+ header.s=corp-2020-01-29 header.b=OzK/ZB65; 
+ dkim=pass (1024-bit key;
+ unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com
+ header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com
+ header.b=uuyJ+W6l; dkim-atps=neutral
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com
+ [205.220.177.32])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GfGbl6bDrz3079
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Aug 2021 23:55:31 +1000 (AEST)
-X-IronPort-AV: E=McAfee;i="6200,9189,10064"; a="213677050"
-X-IronPort-AV: E=Sophos;i="5.84,291,1620716400"; d="scan'208";a="213677050"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
- by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Aug 2021 06:52:25 -0700
-X-IronPort-AV: E=Sophos;i="5.84,291,1620716400"; d="scan'208";a="670439422"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
- by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Aug 2021 06:52:12 -0700
-Received: from andy by smile with local (Exim 4.94.2)
- (envelope-from <andriy.shevchenko@linux.intel.com>)
- id 1mAupt-004kJM-Mo; Tue, 03 Aug 2021 16:52:01 +0300
-Date: Tue, 3 Aug 2021 16:52:01 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: John Ogness <john.ogness@linutronix.de>
-Subject: Re: [PATCH printk v1 00/10] printk: introduce atomic consoles and
- sync mode
-Message-ID: <YQlKAeXS9MPmE284@smile.fi.intel.com>
-References: <20210803131301.5588-1-john.ogness@linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GfGcW2jGgz2xy4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Aug 2021 23:56:09 +1000 (AEST)
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 173DGioQ016340; Tue, 3 Aug 2021 13:53:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=subject : to : cc :
+ references : from : message-id : date : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2021-07-09;
+ bh=mc0rv1449u54t1SBf7CRIqWRLBpqKys823s528t4E1Y=;
+ b=NUrJH7AbCQwDs/M2Y1wq4ty6RtXD+1bU4kBxFpRR0uMSuvWbHuCeRbMSLj5sGunB50R4
+ ehVDVNK5lR1D+Yb+AJMyvyDrc82AwZKvkxMYRg+0tCAsM7S6mwpyoJbID2YxPXH3bt6d
+ K7L1iQtqjuOD+ZSVLBE6g0+JW5D+lvT0+EFPF/xyuS9O6QvKsqKNodqtP7pQ86rzEQv2
+ sOWj3JGWyOThisRJgZtBs+uPgNkNhiPte0EwcLegfMckoA/PS7vWQKnYeRJ+ZKC9DGNb
+ YLHXX8BgTrSWnkET+3Q0cwj0sI9jDlCvr/NU8AeHqhtDRA+PikrCfjL7sbuv4Zlvy0YZ Ow== 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=subject : to : cc :
+ references : from : message-id : date : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2020-01-29;
+ bh=mc0rv1449u54t1SBf7CRIqWRLBpqKys823s528t4E1Y=;
+ b=OzK/ZB653cf0W9Nan1w7lLxrc5WYwWN+DbhOUitE4eHK9BeaVfngJ/HPv1bzuZi+vA+J
+ DzwhuK1cIjGy1Rk8zQOce4Snlq/w/pWyxXPbfb5MoOaGV0yuSjZKNruMO2IJf8LD25dQ
+ zVLfQ9TPP7crC13N8tr3bkLNS+hGa+x/NYPXoKFGddc6ctahXI7b3P/MRFa2kJhEXktH
+ d1l9VC6zuEwV3rwcwfCu6wEC1/CmA4GONljLdjEKgPF0K4H+NNuPZwXfjg3wm9iL3VRj
+ 4+eii8dKWYGMA8RofY/rj9xnOBZ2k63+itemt0OurZk9oh5Qzata8d5kYOXNOZ+pcbWR gg== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+ by mx0b-00069f02.pphosted.com with ESMTP id 3a6fxhb65d-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 03 Aug 2021 13:53:23 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+ by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 173DpJmD038355;
+ Tue, 3 Aug 2021 13:53:22 GMT
+Received: from nam11-co1-obe.outbound.protection.outlook.com
+ (mail-co1nam11lp2170.outbound.protection.outlook.com [104.47.56.170])
+ by userp3020.oracle.com with ESMTP id 3a5g9v4ayq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 03 Aug 2021 13:53:22 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=XB1/QlHIPFvtLXvRffdRBmlKD+wEPXxdLDwTRLoUugVhXQKmbGvQSkGjYvjs34GDtDmCBWc3BVUIe+ejgSGubVaBd1O9Ku3f6j/9pkc+U49ylOP70zf4RYefVkgME/5B9agl5Uh3IUKUM0t+5dO4n1kUp0277Gkb/gY+FEwBNNZKOzZdQPp1VoRg1ZJCe3GqW59LBP9wvyP1BlIJG9rsLQqgTsE4aA5NQRRc+Bj5UrPDwY2fpu9oPwj+mPpOwQZNQ8D3lc7Hxbpt0msIqTDCl+7byHooBYrcyPcsm8JR0eMR9UCKmpzaXfsyl2UTLmSQynDIte6uqNIpkFgb3/LcGg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mc0rv1449u54t1SBf7CRIqWRLBpqKys823s528t4E1Y=;
+ b=gFlx3qfw4scBrJYT3A9cyyKpyR3WdoirxH5JQ75rMK/Zs7m5+yoiuBnKfty579nGabuUPMZXjmBTYDaWrrBddJOShp7W3h4jVvcHQ/9we727Kv063KVAk5FaYlPlM8PUfV/tSfT8X8AGP6VqvnL2mabkhlpKtlVw0hI+qRwQJKNbi26YOQ1IAp+HS/nQ9uACtkF717hBsrfBJEXsXGmg8aiN8hk/sn6E7+XPoRaBYtvFzJfSqjtPcsWz21VCFvvgy/UYsf45OyJNYhzZsq7cfg+1qi9G5v5jfg+RgyIS0WNBDSof3LPxp0L1QFPIiFaP9OJWDYdpDL2YtoS2mcvpfQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mc0rv1449u54t1SBf7CRIqWRLBpqKys823s528t4E1Y=;
+ b=uuyJ+W6l/so1KWW0z1pKj8qJ9QtF4qnqyUGyVCFqWPovu2Dktk3sfFWoY1jOaefvP1JA9KTHdGcNBzzPZREBWbOEIsH7K9NG0hZyV5VN8JM02NQB8hJixuc35iDtgQgZei+YYBVfbGfBFRKebgGJ+1kqlehp+l8H/hzAgiJjzkY=
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none; vger.kernel.org; dmarc=none action=none header.from=oracle.com; 
+Received: from BLAPR10MB5009.namprd10.prod.outlook.com (2603:10b6:208:321::10)
+ by BLAPR10MB4882.namprd10.prod.outlook.com (2603:10b6:208:30d::8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4394.15; Tue, 3 Aug
+ 2021 13:53:19 +0000
+Received: from BLAPR10MB5009.namprd10.prod.outlook.com
+ ([fe80::f10d:29d2:cb38:ed0]) by BLAPR10MB5009.namprd10.prod.outlook.com
+ ([fe80::f10d:29d2:cb38:ed0%8]) with mapi id 15.20.4373.026; Tue, 3 Aug 2021
+ 13:53:19 +0000
+Subject: Re: [PATCH v2 5/6] PCI: Adapt all code locations to not use struct
+ pci_dev::driver directly
+To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+ Bjorn Helgaas <bhelgaas@google.com>
+References: <20210803100150.1543597-1-u.kleine-koenig@pengutronix.de>
+ <20210803100150.1543597-6-u.kleine-koenig@pengutronix.de>
+From: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Message-ID: <d829c037-fab1-c886-7d33-f04f895f3aee@oracle.com>
+Date: Tue, 3 Aug 2021 09:53:06 -0400
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.12.0
+In-Reply-To: <20210803100150.1543597-6-u.kleine-koenig@pengutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-ClientProxiedBy: SN6PR04CA0098.namprd04.prod.outlook.com
+ (2603:10b6:805:f2::39) To BLAPR10MB5009.namprd10.prod.outlook.com
+ (2603:10b6:208:321::10)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210803131301.5588-1-john.ogness@linutronix.de>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [10.74.97.38] (160.34.89.38) by
+ SN6PR04CA0098.namprd04.prod.outlook.com (2603:10b6:805:f2::39) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4373.18 via Frontend Transport; Tue, 3 Aug 2021 13:53:09 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 37d7087d-83c1-4256-b078-08d956860c71
+X-MS-TrafficTypeDiagnostic: BLAPR10MB4882:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <BLAPR10MB488218AAF5D031ADC6FC687C8AF09@BLAPR10MB4882.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:220;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: pJbbt+5/9kOx88hw2B+e/dR3hqeLGfOWg0qKPQ1rLn2G8odXH6Og3cq0j23ZuY3529lkNoglnlfdpingHqyErdlmrq4TGMpp4GbH6yYjpeU+V0jiMRCFm9l1SEherH1rnrvn+YI2iqbVVthwC/i1GKX9556Y0Ib1B2g5dAaV1q45vZpknprEzsXIvLg7xnwht3hk90mGbl/bqlf1+Wlj2sE8u6A6DOHArQVnrE/HTOWzYK927VEDDsZ/rKquJV3rh8qThc5juiqx7D+ELR2QoUDFNXPi4XBksWmQWgg4uRX/815ljP2+EW/trsxPa+ZBNEZO1WzLq/sDU3tjjauy2rn3KHwcAaVzXU9bcvF32E/9l9iWzjeZusvn9Kp+zgwic7qnVREyhmaSTZGr1wD/wxSfn2UPq64rnATU69K5Ss8Ys54zYUSCYLny+yNYv1h9xgKdezUfWgH4KNNBlG/Tljz/E+x/YaDMWi2Ge9hogn8pCkyNHnqRc4kR52JrRNPBkeDopYlxkl8gfu6JB/yvK1yST5CKq6n/gd3oYFA4mCOLaMY3odvtvMadrqBW5t8LosdZWn1d4EhN4pOMC9NJqY7WtnF6opRm0FB1l7fS6B3K+p9jrgFJJW2r2Bbiou6IBOYL8aSFThSomzWdJFYL/UfCDvcsKxlUDDG3/UaV1+/k/3P0bL+7VOSfsakA+SKJWU4kIBtZbEV6TYqVAr6iIOuilu+8RpA7xhZoOdYxTxY=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BLAPR10MB5009.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(136003)(346002)(39860400002)(376002)(396003)(366004)(31696002)(4326008)(6486002)(86362001)(26005)(478600001)(53546011)(8676002)(8936002)(5660300002)(36756003)(38100700002)(6666004)(83380400001)(7366002)(44832011)(7416002)(7406005)(316002)(31686004)(66946007)(66556008)(66476007)(16576012)(2906002)(110136005)(186003)(54906003)(2616005)(956004)(43740500002)(45980500001);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dFpLZVpHOGY1aE93bEF5VzlVQlJDeW9kc3diWUhDNERuNTlpdTNmRWhUdFQ1?=
+ =?utf-8?B?MXVOY2lrZUlEMDdzWEVHb1dzaTdtd1lIUTludUVqaGZ6eFREU1JkNlAxRmZL?=
+ =?utf-8?B?Qi82T09SV25YeHp5dDVSU2FiMHE5bU9KRVB3QXZhYlJYeWhFcGRjakZXWElX?=
+ =?utf-8?B?MldObnBJdjFtUFRkbUhQREFidEl1dmp4bGpmR0QxZFVwbmZMdUgwK0t4ZVpn?=
+ =?utf-8?B?ZEdQUzFJWE9oZENOY3BzMi8rSVRxdzF4WE8yVEdMbkpuMEJ1cUphRldvU0x3?=
+ =?utf-8?B?eWU0NzN4ODRVMlovQTFxaWQxYnNuZFBGVGRMQ3hnWkFSWXoxcHp4OVZXeGda?=
+ =?utf-8?B?VEpUYnJ6emlNN0xPazlKN01FTEZlQ2w4c09CeVpFSkRLbEdHWENtbHl1NDRx?=
+ =?utf-8?B?dVNJeUNSdVV6ZlpiNjRnd01uNkxLNzF0VlNGMmJ5SDVlbG9rR0ozdytnczRT?=
+ =?utf-8?B?MnFiZllvN1BVQjNvQVZWTHAvMTF6ZGRvYVUrdG51dHh5bmhycjE4eE1DTE1H?=
+ =?utf-8?B?RFh1US9waVdpOFcwR2Q5WllNb3g4aXNNVkxKVU9OU1c4cm9Qb0pFT2MwS3l5?=
+ =?utf-8?B?TU5mMzAyQTFSUzRyaGdOMHhJZmIrMmtqdFo5VFh4akx3Y1AyREZsMnBwZ1dl?=
+ =?utf-8?B?V1JQY0VJanRyc2hyc1k3WUNuYUxuTWw4Um1hdGh5cFZzZjdkNVhaZTMyUThj?=
+ =?utf-8?B?L2xVY2pqSEFVbGRvazdFM2JmNzBFNlpNRnpERFk4cW5ydnJwVk1XZ1V3MnBB?=
+ =?utf-8?B?NGttdE5NNEVMdzdza1hBRFM1eFNiZHVIN01CSEdITjNNWlZmdVZIQm1XRVdN?=
+ =?utf-8?B?MWNxNkRpZ2NYRk94TzRrWHpNckMrZ1paZXNPd3pwL3FRZEpMVGl1MUZISzdH?=
+ =?utf-8?B?dkRob1R2Kzl5cnlRcUMyWm5tY29aVS80cFo4Zjgxc0F2UUJUYTFudWZXVUhY?=
+ =?utf-8?B?L1RjZE9hbXk4UTFKMXZHUHJHczl3eTNkZlc5NVJOZ0dsU0dNTmJ3dTlxMlZJ?=
+ =?utf-8?B?VjJFV0M2Zk8vMkFnRURSeHlLck5RNXhNcWkzR25YczF5ank3MEUwUTF1NGpl?=
+ =?utf-8?B?d0lyQUNqQWhjNk03cVNYWE8rbE9uNFNCQkZlMjdOWVpadU1jSVQwT2ozWUhX?=
+ =?utf-8?B?Q1YrNGtUTGx1Zkw3NUljRWVyQitWSmhSSUs5TmVJS3B1MEdQMXh2TkxsTllF?=
+ =?utf-8?B?TTVnditQQ29KSG8raHppYVFUQXpuWml0VzY4eStvSHk2MlJyYkh4UjI2N0xF?=
+ =?utf-8?B?V09SMlVGNGVaVGxmOE41YU1Za2dmazZ3S0grbWlEb3dZZ3pUZWdJMExrWTM0?=
+ =?utf-8?B?SGhNd0JsZVp0UDNKVXdzekZ5Y3dKbGR2Ymd4RUQ5bVpZVWlCNXBrdlZERWNG?=
+ =?utf-8?B?dm5NR2tyWEhCcE5aOERQTGxKRmR2MzBQNGVKS1VuakpnMGgvT09BT3RqazF1?=
+ =?utf-8?B?ZEdtQTQ2em1CNzc4UE43U25DcWFvS0lmZ1BvOVp4ejdReFQ1NHRnQVk5Qkgr?=
+ =?utf-8?B?V21FRVB3MEpnd3JXTmJ5Q0JpYVZ1RTVlRnZJTEhHaVNWZmFtSlE1OVN1Nk5H?=
+ =?utf-8?B?UWcyaE9meTJwbFFGa3NkbWpXOGpyZitsNS94TXRLUHhVMnc0Wi9ab0tSTnJ3?=
+ =?utf-8?B?ZDFBZ0NXVEdsYitGd3ZTekE4TGFBSmJnVkJ3Qlpra2ZGL081emQ5cEgySUJH?=
+ =?utf-8?B?SzNXbVp6SUVZSEs0STkzcXVwYU1KcEo1Qk80V0hoeDNYYjk4cXBMM21VbnJs?=
+ =?utf-8?Q?u++K/dGtrLnXLIJa3V53YiAFG4Hu978PvfzVbNj?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 37d7087d-83c1-4256-b078-08d956860c71
+X-MS-Exchange-CrossTenant-AuthSource: BLAPR10MB5009.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2021 13:53:18.8559 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Zkce6/FDLIFABseQgPNxfSWxiaCbO+S72NwtAQH2zQBQjgiRdAeeoZ9RhSpcUqhG5J9RN9lHXD3jORKQ+IpJ7ADMDZXmE5+q2SRmYWa8pc0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BLAPR10MB4882
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=10064
+ signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
+ malwarescore=0 phishscore=0
+ spamscore=0 adultscore=0 suspectscore=0 mlxlogscore=999 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2107140000
+ definitions=main-2108030092
+X-Proofpoint-GUID: 1zfowUBAnsX5uRsxf3xD4UCQWk3eimm2
+X-Proofpoint-ORIG-GUID: 1zfowUBAnsX5uRsxf3xD4UCQWk3eimm2
 X-Mailman-Approved-At: Wed, 04 Aug 2021 15:05:41 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -56,92 +195,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
- Jiri Slaby <jirislaby@kernel.org>, Tony Lindgren <tony@atomide.com>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Al Cooper <alcooperx@gmail.com>, Douglas Anderson <dianders@chromium.org>,
- Paul Cercueil <paul@crapouillou.net>,
- Matthias Brugger <matthias.bgg@gmail.com>, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Cengiz Can <cengiz@kernel.wtf>,
- Chengyang Fan <cy.fan@huawei.com>,
- Daniel Thompson <daniel.thompson@linaro.org>,
- Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
- Bhaskar Chowdhury <unixbhaskar@gmail.com>, Changbin Du <changbin.du@intel.com>,
- Masahiro Yamada <masahiroy@kernel.org>, x86@kernel.org,
- linux-mediatek@lists.infradead.org, Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>, linux-serial@vger.kernel.org,
- kgdb-bugreport@lists.sourceforge.net, linux-mips@vger.kernel.org,
- Wang Qing <wangqing@vivo.com>, Petr Mladek <pmladek@suse.com>,
- "Paul E. McKenney" <paulmck@kernel.org>, Johan Hovold <johan@kernel.org>,
- Steven Rostedt <rostedt@goodmis.org>, Borislav Petkov <bp@alien8.de>,
- Nicholas Piggin <npiggin@gmail.com>, Hsin-Yi Wang <hsinyi@chromium.org>,
- Sedat Dilek <sedat.dilek@gmail.com>, Claire Chang <tientzu@chromium.org>,
- Thomas Gleixner <tglx@linutronix.de>, Eddie Huang <eddie.huang@mediatek.com>,
- Andrij Abyzov <aabyzov@slb.com>, linux-arm-kernel@lists.infradead.org,
- Sumit Garg <sumit.garg@linaro.org>,
- kuldip dwivedi <kuldip.dwivedi@puresoftware.com>,
- Andrew Jeffery <andrew@aj.id.au>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Zhang Qilong <zhangqilong3@huawei.com>,
- Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
- Serge Semin <Sergey.Semin@baikalelectronics.ru>,
- Sergey Senozhatsky <senozhatsky@chromium.org>,
- Guenter Roeck <linux@roeck-us.net>, Jason Wessel <jason.wessel@windriver.com>,
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Maciej W. Rozycki" <macro@orcam.me.uk>, linuxppc-dev@lists.ozlabs.org,
- Vitor Massaru Iha <vitor@massaru.org>,
- =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+ =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, linux-pci@vger.kernel.org,
+ Alexander Duyck <alexanderduyck@fb.com>,
+ Sathya Prakash <sathya.prakash@broadcom.com>, oss-drivers@corigine.com,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ Jiri Olsa <jolsa@redhat.com>, linux-perf-users@vger.kernel.org,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>, linux-scsi@vger.kernel.org,
+ Ido Schimmel <idosch@nvidia.com>, x86@kernel.org, qat-linux@intel.com,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, linux-wireless@vger.kernel.org,
+ Jakub Kicinski <kuba@kernel.org>, Mathias Nyman <mathias.nyman@intel.com>,
+ Yisen Zhuang <yisen.zhuang@huawei.com>, Fiona Trahe <fiona.trahe@intel.com>,
+ Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ Suganath Prabu Subramani <suganath-prabu.subramani@broadcom.com>,
+ Simon Horman <simon.horman@corigine.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>, Borislav Petkov <bp@alien8.de>,
+ Michael Buesch <m@bues.ch>, Jiri Pirko <jiri@nvidia.com>,
+ Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Andy Shevchenko <andriy.shevchenko@intel.com>, Juergen Gross <jgross@suse.com>,
+ Salil Mehta <salil.mehta@huawei.com>,
+ Sreekanth Reddy <sreekanth.reddy@broadcom.com>, xen-devel@lists.xenproject.org,
+ Vadym Kochan <vkochan@marvell.com>, MPT-FusionLinux.pdl@broadcom.com,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
+ Wojciech Ziemba <wojciech.ziemba@intel.com>, linux-kernel@vger.kernel.org,
+ Taras Chornyi <tchornyi@marvell.com>, Zhou Wang <wangzhou1@hisilicon.com>,
+ linux-crypto@vger.kernel.org, kernel@pengutronix.de, netdev@vger.kernel.org,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Aug 03, 2021 at 03:18:51PM +0206, John Ogness wrote:
-> Hi,
-> 
-> This is the next part of our printk-rework effort (points 3 and
-> 4 of the LPC 2019 summary [0]).
-> 
-> Here the concept of "atomic consoles" is introduced through  a
-> new (optional) write_atomic() callback for console drivers. This
-> callback must be implemented as an NMI-safe variant of the
-> write() callback, meaning that it can function from any context
-> without relying on questionable tactics such as ignoring locking
-> and also without relying on the synchronization of console
-> semaphore.
-> 
-> As an example of how such an atomic console can look like, this
-> series implements write_atomic() for the 8250 UART driver.
-> 
-> This series also introduces a new console printing mode called
-> "sync mode" that is only activated when the kernel is about to
-> end (such as panic, oops, shutdown, reboot). Sync mode can only
-> be activated if atomic consoles are available. A system without
-> registered atomic consoles will be unaffected by this series.
-> 
-> When in sync mode, the console printing behavior becomes:
-> 
-> - only consoles implementing write_atomic() will be called
-> 
-> - printing occurs within vprintk_store() instead of
->   console_unlock(), since the console semaphore is irrelevant
->   for atomic consoles
-> 
-> For systems that have registered atomic consoles, this series
-> improves the reliability of seeing crash messages by using new
-> locking techniques rather than "ignoring locks and hoping for
-> the best". In particular, atomic consoles rely on the
-> CPU-reentrant spinlock (i.e. the printk cpulock) for
-> synchronizing console output.
 
-If console is runtime suspended, who will bring it up?
-Does it mean that this callback can't be implemented on the consoles that
-do runtime suspend (some of 8250 currently, for example)?
+On 8/3/21 6:01 AM, Uwe Kleine-König wrote:
+> This prepares removing the driver member of struct pci_dev which holds the
+> same information than struct pci_dev::dev->driver.
+>
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+> ---
+>  arch/powerpc/include/asm/ppc-pci.h            |  3 +-
+>  arch/powerpc/kernel/eeh_driver.c              | 12 ++++---
+>  arch/x86/events/intel/uncore.c                |  2 +-
+>  arch/x86/kernel/probe_roms.c                  |  2 +-
+>  drivers/bcma/host_pci.c                       |  6 ++--
+>  drivers/crypto/hisilicon/qm.c                 |  2 +-
+>  drivers/crypto/qat/qat_common/adf_aer.c       |  2 +-
+>  drivers/message/fusion/mptbase.c              |  4 +--
+>  drivers/misc/cxl/guest.c                      | 21 +++++------
+>  drivers/misc/cxl/pci.c                        | 25 +++++++------
+>  .../ethernet/hisilicon/hns3/hns3_ethtool.c    |  2 +-
+>  .../ethernet/marvell/prestera/prestera_pci.c  |  2 +-
+>  drivers/net/ethernet/mellanox/mlxsw/pci.c     |  2 +-
+>  .../ethernet/netronome/nfp/nfp_net_ethtool.c  |  2 +-
+>  drivers/pci/iov.c                             | 23 +++++++-----
+>  drivers/pci/pci-driver.c                      | 28 ++++++++-------
+>  drivers/pci/pci.c                             | 10 +++---
+>  drivers/pci/pcie/err.c                        | 35 ++++++++++---------
+>  drivers/pci/xen-pcifront.c                    |  3 +-
+>  drivers/ssb/pcihost_wrapper.c                 |  7 ++--
+>  drivers/usb/host/xhci-pci.c                   |  3 +-
+>  21 files changed, 112 insertions(+), 84 deletions(-)
 
--- 
-With Best Regards,
-Andy Shevchenko
+
+For Xen bits:
+
+Reviewed-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
 
 
