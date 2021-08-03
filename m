@@ -2,64 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFB9C3DEEE0
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Aug 2021 15:13:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D2013DFAE4
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 07:06:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GfFgR4vdwz3cHQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Aug 2021 23:13:39 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=F4Kr6r8H;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=2FvCWmHq;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gffpn1qFnz3d8r
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 15:06:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1;
- helo=galois.linutronix.de; envelope-from=john.ogness@linutronix.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=F4Kr6r8H; 
- dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=2FvCWmHq; 
- dkim-atps=neutral
-Received: from galois.linutronix.de (Galois.linutronix.de
- [IPv6:2a0a:51c0:0:12e:550::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=linux.intel.com
+ (client-ip=134.134.136.24; helo=mga09.intel.com;
+ envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 123 seconds by postgrey-1.36 at boromir;
+ Tue, 03 Aug 2021 23:55:31 AEST
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GfFfw3Mn9z307P
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Aug 2021 23:13:12 +1000 (AEST)
-From: John Ogness <john.ogness@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1627996385;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=JcS09GR5JxL0wxh7byS8wnH3e0xYQhVouJmEluHPAn4=;
- b=F4Kr6r8HNs8LTHORLhZYOfHJ0zhDPtuon3LD0tc3Gr2e/ZQ14v+JJTvAYl7qIM2MpajGIK
- Xvq1ewJgFto4MhazwVpQ0Lpa4Qpa7ebvuhAFrKYByLx3DmnIkyB9joIAAx33fwX47sv2jC
- XTEnzFbPyxSx1PUwbUSqjiQOXtUGWVippyuJ3TJEK3fh0mnN9Hdvgj5geL1RUuohLjWmoZ
- zJ+JHO9I9NawG8KH8CbOWm/AxHWDJY33eLGzDT9ahOfQCr7kWCjAPcHABD6yCjX56NvHWt
- MDH8UCcXnb/zI4BocNRa77BVyz9YWAepuG0OZNpGcK3xbYgqlalxwbYV+zJZAw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1627996385;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=JcS09GR5JxL0wxh7byS8wnH3e0xYQhVouJmEluHPAn4=;
- b=2FvCWmHq0n4iYAZlTThn1l3Z/ypeLK+B8838CtejWTXR1ZLqHIHX2f18YAsE0ENkc2fJWw
- 2G5uHsBObvQqPCAA==
-To: Petr Mladek <pmladek@suse.com>
-Subject: [PATCH printk v1 03/10] kgdb: delay roundup if holding printk cpulock
-Date: Tue,  3 Aug 2021 15:18:54 +0206
-Message-Id: <20210803131301.5588-4-john.ogness@linutronix.de>
-In-Reply-To: <20210803131301.5588-1-john.ogness@linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GfGbl6bDrz3079
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Aug 2021 23:55:31 +1000 (AEST)
+X-IronPort-AV: E=McAfee;i="6200,9189,10064"; a="213677050"
+X-IronPort-AV: E=Sophos;i="5.84,291,1620716400"; d="scan'208";a="213677050"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+ by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Aug 2021 06:52:25 -0700
+X-IronPort-AV: E=Sophos;i="5.84,291,1620716400"; d="scan'208";a="670439422"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+ by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Aug 2021 06:52:12 -0700
+Received: from andy by smile with local (Exim 4.94.2)
+ (envelope-from <andriy.shevchenko@linux.intel.com>)
+ id 1mAupt-004kJM-Mo; Tue, 03 Aug 2021 16:52:01 +0300
+Date: Tue, 3 Aug 2021 16:52:01 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: John Ogness <john.ogness@linutronix.de>
+Subject: Re: [PATCH printk v1 00/10] printk: introduce atomic consoles and
+ sync mode
+Message-ID: <YQlKAeXS9MPmE284@smile.fi.intel.com>
 References: <20210803131301.5588-1-john.ogness@linutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210803131301.5588-1-john.ogness@linutronix.de>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Mailman-Approved-At: Wed, 04 Aug 2021 15:05:41 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,266 +57,91 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
- Douglas Anderson <dianders@chromium.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
  Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
- Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ Jiri Slaby <jirislaby@kernel.org>, Tony Lindgren <tony@atomide.com>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Al Cooper <alcooperx@gmail.com>, Douglas Anderson <dianders@chromium.org>,
+ Paul Cercueil <paul@crapouillou.net>,
+ Matthias Brugger <matthias.bgg@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Cengiz Can <cengiz@kernel.wtf>,
  Chengyang Fan <cy.fan@huawei.com>,
  Daniel Thompson <daniel.thompson@linaro.org>,
- Bhaskar Chowdhury <unixbhaskar@gmail.com>, x86@kernel.org,
- Ingo Molnar <mingo@redhat.com>, kgdb-bugreport@lists.sourceforge.net,
- Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>,
- Steven Rostedt <rostedt@goodmis.org>, Thomas Gleixner <tglx@linutronix.de>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+ Bhaskar Chowdhury <unixbhaskar@gmail.com>, Changbin Du <changbin.du@intel.com>,
+ Masahiro Yamada <masahiroy@kernel.org>, x86@kernel.org,
+ linux-mediatek@lists.infradead.org, Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@redhat.com>, linux-serial@vger.kernel.org,
+ kgdb-bugreport@lists.sourceforge.net, linux-mips@vger.kernel.org,
+ Wang Qing <wangqing@vivo.com>, Petr Mladek <pmladek@suse.com>,
+ "Paul E. McKenney" <paulmck@kernel.org>, Johan Hovold <johan@kernel.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Borislav Petkov <bp@alien8.de>,
+ Nicholas Piggin <npiggin@gmail.com>, Hsin-Yi Wang <hsinyi@chromium.org>,
+ Sedat Dilek <sedat.dilek@gmail.com>, Claire Chang <tientzu@chromium.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Eddie Huang <eddie.huang@mediatek.com>,
+ Andrij Abyzov <aabyzov@slb.com>, linux-arm-kernel@lists.infradead.org,
+ Sumit Garg <sumit.garg@linaro.org>,
+ kuldip dwivedi <kuldip.dwivedi@puresoftware.com>,
+ Andrew Jeffery <andrew@aj.id.au>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Zhang Qilong <zhangqilong3@huawei.com>,
+ Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
+ Serge Semin <Sergey.Semin@baikalelectronics.ru>,
  Sergey Senozhatsky <senozhatsky@chromium.org>,
- Jason Wessel <jason.wessel@windriver.com>, linuxppc-dev@lists.ozlabs.org,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+ Guenter Roeck <linux@roeck-us.net>, Jason Wessel <jason.wessel@windriver.com>,
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Maciej W. Rozycki" <macro@orcam.me.uk>, linuxppc-dev@lists.ozlabs.org,
+ Vitor Massaru Iha <vitor@massaru.org>,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-kgdb makes use of its own cpulock (@dbg_master_lock, @kgdb_active)
-during cpu roundup. This will conflict with the printk cpulock.
-Therefore, a CPU must ensure that it is not holding the printk
-cpulock when calling kgdb_cpu_enter(). If it is, it must allow its
-printk context to complete first.
+On Tue, Aug 03, 2021 at 03:18:51PM +0206, John Ogness wrote:
+> Hi,
+> 
+> This is the next part of our printk-rework effort (points 3 and
+> 4 of the LPC 2019 summary [0]).
+> 
+> Here the concept of "atomic consoles" is introduced through  a
+> new (optional) write_atomic() callback for console drivers. This
+> callback must be implemented as an NMI-safe variant of the
+> write() callback, meaning that it can function from any context
+> without relying on questionable tactics such as ignoring locking
+> and also without relying on the synchronization of console
+> semaphore.
+> 
+> As an example of how such an atomic console can look like, this
+> series implements write_atomic() for the 8250 UART driver.
+> 
+> This series also introduces a new console printing mode called
+> "sync mode" that is only activated when the kernel is about to
+> end (such as panic, oops, shutdown, reboot). Sync mode can only
+> be activated if atomic consoles are available. A system without
+> registered atomic consoles will be unaffected by this series.
+> 
+> When in sync mode, the console printing behavior becomes:
+> 
+> - only consoles implementing write_atomic() will be called
+> 
+> - printing occurs within vprintk_store() instead of
+>   console_unlock(), since the console semaphore is irrelevant
+>   for atomic consoles
+> 
+> For systems that have registered atomic consoles, this series
+> improves the reliability of seeing crash messages by using new
+> locking techniques rather than "ignoring locks and hoping for
+> the best". In particular, atomic consoles rely on the
+> CPU-reentrant spinlock (i.e. the printk cpulock) for
+> synchronizing console output.
 
-A new helper function kgdb_roundup_delay() is introduced for kgdb
-to determine if it is holding the printk cpulock. If so, a flag is
-set so that when the printk cpulock is released, kgdb will be
-re-triggered for that CPU.
+If console is runtime suspended, who will bring it up?
+Does it mean that this callback can't be implemented on the consoles that
+do runtime suspend (some of 8250 currently, for example)?
 
-Signed-off-by: John Ogness <john.ogness@linutronix.de>
----
- arch/powerpc/include/asm/smp.h |  1 +
- arch/powerpc/kernel/kgdb.c     | 10 +++++++-
- arch/powerpc/kernel/smp.c      |  5 ++++
- arch/x86/kernel/kgdb.c         |  9 ++++---
- include/linux/kgdb.h           |  3 +++
- include/linux/printk.h         |  8 ++++++
- kernel/debug/debug_core.c      | 45 ++++++++++++++++++++--------------
- kernel/printk/printk.c         | 12 +++++++++
- 8 files changed, 70 insertions(+), 23 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/smp.h b/arch/powerpc/include/asm/smp.h
-index 03b3d010cbab..eec452e647b3 100644
---- a/arch/powerpc/include/asm/smp.h
-+++ b/arch/powerpc/include/asm/smp.h
-@@ -58,6 +58,7 @@ struct smp_ops_t {
- 
- extern int smp_send_nmi_ipi(int cpu, void (*fn)(struct pt_regs *), u64 delay_us);
- extern int smp_send_safe_nmi_ipi(int cpu, void (*fn)(struct pt_regs *), u64 delay_us);
-+extern void smp_send_debugger_break_cpu(unsigned int cpu);
- extern void smp_send_debugger_break(void);
- extern void start_secondary_resume(void);
- extern void smp_generic_give_timebase(void);
-diff --git a/arch/powerpc/kernel/kgdb.c b/arch/powerpc/kernel/kgdb.c
-index bdee7262c080..d57d37497862 100644
---- a/arch/powerpc/kernel/kgdb.c
-+++ b/arch/powerpc/kernel/kgdb.c
-@@ -120,11 +120,19 @@ int kgdb_skipexception(int exception, struct pt_regs *regs)
- 
- static int kgdb_debugger_ipi(struct pt_regs *regs)
- {
--	kgdb_nmicallback(raw_smp_processor_id(), regs);
-+	int cpu = raw_smp_processor_id();
-+
-+	if (!kgdb_roundup_delay(cpu))
-+		kgdb_nmicallback(cpu, regs);
- 	return 0;
- }
- 
- #ifdef CONFIG_SMP
-+void kgdb_roundup_cpu(unsigned int cpu)
-+{
-+	smp_send_debugger_break_cpu(cpu);
-+}
-+
- void kgdb_roundup_cpus(void)
- {
- 	smp_send_debugger_break();
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index 447b78a87c8f..816d7f09bbf9 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -582,6 +582,11 @@ static void debugger_ipi_callback(struct pt_regs *regs)
- 	debugger_ipi(regs);
- }
- 
-+void smp_send_debugger_break_cpu(unsigned int cpu)
-+{
-+	smp_send_nmi_ipi(cpu, debugger_ipi_callback, 1000000);
-+}
-+
- void smp_send_debugger_break(void)
- {
- 	smp_send_nmi_ipi(NMI_IPI_ALL_OTHERS, debugger_ipi_callback, 1000000);
-diff --git a/arch/x86/kernel/kgdb.c b/arch/x86/kernel/kgdb.c
-index 3a43a2dee658..37bd37cdf2b6 100644
---- a/arch/x86/kernel/kgdb.c
-+++ b/arch/x86/kernel/kgdb.c
-@@ -502,9 +502,12 @@ static int kgdb_nmi_handler(unsigned int cmd, struct pt_regs *regs)
- 		if (atomic_read(&kgdb_active) != -1) {
- 			/* KGDB CPU roundup */
- 			cpu = raw_smp_processor_id();
--			kgdb_nmicallback(cpu, regs);
--			set_bit(cpu, was_in_debug_nmi);
--			touch_nmi_watchdog();
-+
-+			if (!kgdb_roundup_delay(cpu)) {
-+				kgdb_nmicallback(cpu, regs);
-+				set_bit(cpu, was_in_debug_nmi);
-+				touch_nmi_watchdog();
-+			}
- 
- 			return NMI_HANDLED;
- 		}
-diff --git a/include/linux/kgdb.h b/include/linux/kgdb.h
-index 258cdde8d356..9bca0d98db5a 100644
---- a/include/linux/kgdb.h
-+++ b/include/linux/kgdb.h
-@@ -212,6 +212,8 @@ extern void kgdb_call_nmi_hook(void *ignored);
-  */
- extern void kgdb_roundup_cpus(void);
- 
-+extern void kgdb_roundup_cpu(unsigned int cpu);
-+
- /**
-  *	kgdb_arch_set_pc - Generic call back to the program counter
-  *	@regs: Current &struct pt_regs.
-@@ -365,5 +367,6 @@ extern void kgdb_free_init_mem(void);
- #define dbg_late_init()
- static inline void kgdb_panic(const char *msg) {}
- static inline void kgdb_free_init_mem(void) { }
-+static inline void kgdb_roundup_cpu(unsigned int cpu) {}
- #endif /* ! CONFIG_KGDB */
- #endif /* _KGDB_H_ */
-diff --git a/include/linux/printk.h b/include/linux/printk.h
-index ac738d1d9934..974ea2c99749 100644
---- a/include/linux/printk.h
-+++ b/include/linux/printk.h
-@@ -280,10 +280,18 @@ static inline void dump_stack(void)
- extern int __printk_cpu_trylock(void);
- extern void __printk_wait_on_cpu_lock(void);
- extern void __printk_cpu_unlock(void);
-+extern bool kgdb_roundup_delay(unsigned int cpu);
-+
- #else
-+
- #define __printk_cpu_trylock()		1
- #define __printk_wait_on_cpu_lock()
- #define __printk_cpu_unlock()
-+
-+static inline bool kgdb_roundup_delay(unsigned int cpu)
-+{
-+	return false;
-+}
- #endif /* CONFIG_SMP */
- 
- /**
-diff --git a/kernel/debug/debug_core.c b/kernel/debug/debug_core.c
-index b4aa6bb6b2bd..9117ca86b81c 100644
---- a/kernel/debug/debug_core.c
-+++ b/kernel/debug/debug_core.c
-@@ -241,35 +241,42 @@ NOKPROBE_SYMBOL(kgdb_call_nmi_hook);
- static DEFINE_PER_CPU(call_single_data_t, kgdb_roundup_csd) =
- 	CSD_INIT(kgdb_call_nmi_hook, NULL);
- 
--void __weak kgdb_roundup_cpus(void)
-+void __weak kgdb_roundup_cpu(unsigned int cpu)
- {
- 	call_single_data_t *csd;
-+	int ret;
-+
-+	csd = &per_cpu(kgdb_roundup_csd, cpu);
-+
-+	/*
-+	 * If it didn't round up last time, don't try again
-+	 * since smp_call_function_single_async() will block.
-+	 *
-+	 * If rounding_up is false then we know that the
-+	 * previous call must have at least started and that
-+	 * means smp_call_function_single_async() won't block.
-+	 */
-+	if (kgdb_info[cpu].rounding_up)
-+		return;
-+	kgdb_info[cpu].rounding_up = true;
-+
-+	ret = smp_call_function_single_async(cpu, csd);
-+	if (ret)
-+		kgdb_info[cpu].rounding_up = false;
-+}
-+NOKPROBE_SYMBOL(kgdb_roundup_cpu);
-+
-+void __weak kgdb_roundup_cpus(void)
-+{
- 	int this_cpu = raw_smp_processor_id();
- 	int cpu;
--	int ret;
- 
- 	for_each_online_cpu(cpu) {
- 		/* No need to roundup ourselves */
- 		if (cpu == this_cpu)
- 			continue;
- 
--		csd = &per_cpu(kgdb_roundup_csd, cpu);
--
--		/*
--		 * If it didn't round up last time, don't try again
--		 * since smp_call_function_single_async() will block.
--		 *
--		 * If rounding_up is false then we know that the
--		 * previous call must have at least started and that
--		 * means smp_call_function_single_async() won't block.
--		 */
--		if (kgdb_info[cpu].rounding_up)
--			continue;
--		kgdb_info[cpu].rounding_up = true;
--
--		ret = smp_call_function_single_async(cpu, csd);
--		if (ret)
--			kgdb_info[cpu].rounding_up = false;
-+		kgdb_roundup_cpu(cpu);
- 	}
- }
- NOKPROBE_SYMBOL(kgdb_roundup_cpus);
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index 3d0c933937b4..1b546e117f10 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -44,6 +44,7 @@
- #include <linux/irq_work.h>
- #include <linux/ctype.h>
- #include <linux/uio.h>
-+#include <linux/kgdb.h>
- #include <linux/sched/clock.h>
- #include <linux/sched/debug.h>
- #include <linux/sched/task_stack.h>
-@@ -214,6 +215,7 @@ int devkmsg_sysctl_set_loglvl(struct ctl_table *table, int write,
- #ifdef CONFIG_SMP
- static atomic_t printk_cpulock_owner = ATOMIC_INIT(-1);
- static atomic_t printk_cpulock_nested = ATOMIC_INIT(0);
-+static unsigned int kgdb_cpu = -1;
- 
- /**
-  * __printk_wait_on_cpu_lock() - Busy wait until the printk cpu-reentrant
-@@ -325,6 +327,16 @@ void __printk_cpu_unlock(void)
- 			   -1); /* LMM(__printk_cpu_unlock:B) */
- }
- EXPORT_SYMBOL(__printk_cpu_unlock);
-+
-+bool kgdb_roundup_delay(unsigned int cpu)
-+{
-+	if (cpu != atomic_read(&printk_cpulock_owner))
-+		return false;
-+
-+	kgdb_cpu = cpu;
-+	return true;
-+}
-+EXPORT_SYMBOL(kgdb_roundup_delay);
- #endif /* CONFIG_SMP */
- 
- /* Number of registered extended console drivers. */
 -- 
-2.20.1
+With Best Regards,
+Andy Shevchenko
+
 
