@@ -1,67 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E93773DEB7B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Aug 2021 13:00:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0A603DEA7E
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Aug 2021 12:08:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GfBjs6K9lz3byh
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Aug 2021 21:00:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gf9ZC4dlDz3cHd
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Aug 2021 20:08:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33;
- helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de;
- receiver=<UNKNOWN>)
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
- [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gf9S46VXtz2ymZ
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Aug 2021 20:03:30 +1000 (AEST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1mArFM-0002yN-C1; Tue, 03 Aug 2021 12:02:04 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
- by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1mArFD-0006FL-MW; Tue, 03 Aug 2021 12:01:55 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1mArFC-0002oK-Il; Tue, 03 Aug 2021 12:01:54 +0200
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH v2 6/6] PCI: Drop duplicated tracking of a pci_dev's bound
- driver
-Date: Tue,  3 Aug 2021 12:01:50 +0200
-Message-Id: <20210803100150.1543597-7-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210803100150.1543597-1-u.kleine-koenig@pengutronix.de>
-References: <20210803100150.1543597-1-u.kleine-koenig@pengutronix.de>
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gf9Yp3grJz2yyP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Aug 2021 20:08:26 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4Gf9Yg563mz9sV7;
+ Tue,  3 Aug 2021 12:08:23 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id BeQBNTyMbv2f; Tue,  3 Aug 2021 12:08:23 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4Gf9Yg45PWz9sTp;
+ Tue,  3 Aug 2021 12:08:23 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6F42D8B778;
+ Tue,  3 Aug 2021 12:08:23 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id clZfT2uCyg4G; Tue,  3 Aug 2021 12:08:23 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 075108B763;
+ Tue,  3 Aug 2021 12:08:22 +0200 (CEST)
+Subject: Re: Debian SID kernel doesn't boot on PowerBook 3400c
+To: Stan Johnson <userm57@yahoo.com>
+References: <60841a75-ed7c-8789-15db-272bf43055f5.ref@yahoo.com>
+ <60841a75-ed7c-8789-15db-272bf43055f5@yahoo.com>
+ <20210731175842.Horde.UunWM8rZMP0dRCaeWUo-og1@messagerie.c-s.fr>
+ <cd7c931c-a578-a2ff-0632-7767a0e90bb9@yahoo.com>
+ <fbd08736-9738-35cf-3b47-b5c9c455c552@csgroup.eu>
+ <b84bb7ff-2dfb-0ae6-6eee-dd3c40661982@yahoo.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <fac98e72-14a1-802e-8343-9bed9a6eaedc@csgroup.eu>
+Date: Tue, 3 Aug 2021 12:08:22 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Patch-Hashes: v=1; h=sha256; i=yGEodBYjARp1eJPqP9/n/KpfKo6ALJzXr+t0LDtBUZM=;
- m=JRVTmu6nPliiiBslnXnYAnMTr94GnCwSSGQey1Vdrcw=;
- p=VXwrm6IwhM33tInq/RiiFiTf7eEJSweS+vvs0hZjA4Y=;
- g=dfdf1d247df87fe752d1cd93dee47b352d54b9dc
-X-Patch-Sig: m=pgp; i=u.kleine-koenig@pengutronix.de;
- s=0x0D2511F322BFAB1C1580266BE2DCDD9132669BD6;
- b=iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmEJFAcACgkQwfwUeK3K7AlY4QgAoQ1
- tszu0I41Zf6v0DKUasmGS98o7Yfn0OAkexq7Ntd7+GO5Lwc/dR4OcqooMePO5FWdYTzhGFWsTXAAD
- LGujFGBNIwdOZY7PsRSHFlhr8DoTUgXyHh0WvMo6wsFShQYS62Ay8MgAU36nYDzrGR94CrNoCANwS
- h+SL7+g+mtMAbQlS/p+3RSIYxyZ7XVHTUqkYWvnbsQpiqJVjtySAaBAdOsmo1ks0PezNBWORDnTZx
- oiJmCi1ZKOwWmWW0oqRhmNELiPQJzEh2XFGYcJCfDILAltZ8JK14Akc3BKVCwfr8+rcyFeI1PC7hB
- WPmvafaXTQnzw47uX9Cc5oG6/RB92PA==
+In-Reply-To: <b84bb7ff-2dfb-0ae6-6eee-dd3c40661982@yahoo.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
- SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
-X-Mailman-Approved-At: Tue, 03 Aug 2021 21:00:13 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,108 +67,178 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>,
- Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
- =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, linux-pci@vger.kernel.org,
- Alexander Duyck <alexanderduyck@fb.com>,
- Sathya Prakash <sathya.prakash@broadcom.com>, oss-drivers@corigine.com,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- Jiri Olsa <jolsa@redhat.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- linux-perf-users@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>,
- Herbert Xu <herbert@gondor.apana.org.au>, linux-scsi@vger.kernel.org,
- Ido Schimmel <idosch@nvidia.com>, x86@kernel.org, qat-linux@intel.com,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Ingo Molnar <mingo@redhat.com>, linux-wireless@vger.kernel.org,
- Jakub Kicinski <kuba@kernel.org>, Mathias Nyman <mathias.nyman@intel.com>,
- Yisen Zhuang <yisen.zhuang@huawei.com>, Fiona Trahe <fiona.trahe@intel.com>,
- Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- Suganath Prabu Subramani <suganath-prabu.subramani@broadcom.com>,
- Simon Horman <simon.horman@corigine.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Michael Buesch <m@bues.ch>, Jiri Pirko <jiri@nvidia.com>,
- Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Andy Shevchenko <andriy.shevchenko@intel.com>, Juergen Gross <jgross@suse.com>,
- Salil Mehta <salil.mehta@huawei.com>,
- Sreekanth Reddy <sreekanth.reddy@broadcom.com>, xen-devel@lists.xenproject.org,
- Vadym Kochan <vkochan@marvell.com>, MPT-FusionLinux.pdl@broadcom.com,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
- Wojciech Ziemba <wojciech.ziemba@intel.com>, linux-kernel@vger.kernel.org,
- Taras Chornyi <tchornyi@marvell.com>, Zhou Wang <wangzhou1@hisilicon.com>,
- linux-crypto@vger.kernel.org, kernel@pengutronix.de, netdev@vger.kernel.org,
- Frederic Barrat <fbarrat@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: Debian PowerPC <debian-powerpc@lists.debian.org>,
+ linuxppc-dev@lists.ozlabs.org, Finn Thain <fthain@linux-m68k.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently it's tracked twice which driver is bound to a given pci
-device. Now that all users of the pci specific one (struct
-pci_dev::driver) are updated to use an access macro
-(pci_driver_of_dev()), change the macro to use the information from the
-driver core and remove the driver member from struct pci_dev.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- drivers/pci/pci-driver.c | 4 ----
- include/linux/pci.h      | 3 +--
- 2 files changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
-index 740d5bf5d411..5d950eb476e2 100644
---- a/drivers/pci/pci-driver.c
-+++ b/drivers/pci/pci-driver.c
-@@ -305,12 +305,10 @@ static long local_pci_probe(void *_ddi)
- 	 * its remove routine.
- 	 */
- 	pm_runtime_get_sync(dev);
--	pci_dev->driver = pci_drv;
- 	rc = pci_drv->probe(pci_dev, ddi->id);
- 	if (!rc)
- 		return rc;
- 	if (rc < 0) {
--		pci_dev->driver = NULL;
- 		pm_runtime_put_sync(dev);
- 		return rc;
- 	}
-@@ -376,7 +374,6 @@ static int pci_call_probe(struct pci_driver *drv, struct pci_dev *dev,
-  * @pci_dev: PCI device being probed
-  *
-  * returns 0 on success, else error.
-- * side-effect: pci_dev->driver is set to drv when drv claims pci_dev.
-  */
- static int __pci_device_probe(struct pci_driver *drv, struct pci_dev *pci_dev)
- {
-@@ -451,7 +448,6 @@ static int pci_device_remove(struct device *dev)
- 		pm_runtime_put_noidle(dev);
- 	}
- 	pcibios_free_irq(pci_dev);
--	pci_dev->driver = NULL;
- 	pci_iov_remove(pci_dev);
- 
- 	/* Undo the runtime PM settings in local_pci_probe() */
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 778f3b5e6f23..f44ab76e216f 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -342,7 +342,6 @@ struct pci_dev {
- 	u16		pcie_flags_reg;	/* Cached PCIe Capabilities Register */
- 	unsigned long	*dma_alias_mask;/* Mask of enabled devfn aliases */
- 
--	struct pci_driver *driver;	/* Driver bound to this device */
- 	u64		dma_mask;	/* Mask of the bits of bus address this
- 					   device implements.  Normally this is
- 					   0xffffffff.  You only need to change
-@@ -887,7 +886,7 @@ struct pci_driver {
- };
- 
- #define	to_pci_driver(drv) container_of(drv, struct pci_driver, driver)
--#define pci_driver_of_dev(pdev) ((pdev)->driver)
-+#define pci_driver_of_dev(pdev) ((pdev)->dev.driver ? to_pci_driver((pdev)->dev.driver) : NULL)
- 
- /**
-  * PCI_DEVICE - macro used to describe a specific PCI device
--- 
-2.30.2
+Le 02/08/2021 à 19:32, Stan Johnson a écrit :
+> On 8/2/21 8:41 AM, Christophe Leroy wrote:
+>>
+>>
+>> Le 31/07/2021 à 20:24, Stan Johnson a écrit :
+>>> Hi Christophe,
+>>>
+>>> On 7/31/21 9:58 AM, Christophe Leroy wrote:
+>>>> Stan Johnson <userm57@yahoo.com> a écrit :
+>>>>
+>>>>> Hello,
+>>>>>
+>>>>> The current Debian SID kernel will not boot on a PowerBook 3400c
+>>>>> running
+>>>>> the latest version of Debian SID. If booted using the BootX extension,
+>>>>> the kernel hangs immediately:
+>>>>>
+>>>>> "Welcome to Linux, kernel 5.10.0-8-powerpc"
+>>>>>
+>>>>> If booted from Mac OS, the Mac OS screen hangs.
+>>>>>
+>>>>> Booting also hangs if the "No video driver" option is selected in
+>>>>> BootX,
+>>>>> "No video driver" causes "video=ofonly" to be passed to the kernel.
+>>>>>
+>>>>> This is the current command line that I'm using in BootX:
+>>>>> root=/dev/sda13 video=chips65550:vmode:14,cmode:16
+>>>>>
+>>>>> Kernel v5.9 works as expected.
+>>>>>
+>>>>> The config file I'm using is attached.
+>>>>>
+>>>>> Here are the results of a git bisect, marking v5.9 as "good" and the
+>>>>> most current kernel as "bad":
+>>>>>
+>>>>> $ cd linux
+>>>>> $ git remote update
+>>>>> $ git bisect reset
+>>>>> $ git bisect start
+>>>>> $ git bisect bad
+>>>>> $ git bisect good v5.9
+>>>>>
+>>>>> Note: "bad" -> hangs at boot; "good" -> boots to login prompt
+>>>>>
+>>>>>    1) 5.11.0-rc5-pmac-00034-g684da7628d9 (bad)
+>>>>>    2) 5.10.0-rc3-pmac-00383-gbb9dd3ce617 (good)
+>>>>>    3) 5.10.0-pmac-06637-g2911ed9f47b (good)
+>>>>>       Note: I had to disable SMP to build this kernel.
+>>>>>    4) 5.10.0-pmac-10584-g9805529ec54 (good)
+>>>>>       Note: I had to disable SMP to build this kernel.
+>>>>>    5) 5.10.0-pmac-12577-g8552d28e140 (bad)
+>>>>>    6) 5.10.0-pmac-11576-g8a5be36b930 (bad)
+>>>>>    7) 5.10.0-pmac-11044-gbe695ee29e8 (good)
+>>>>>       Note: I had to disable SMP to build this kernel.
+>>>>>    8) 5.10.0-rc2-pmac-00288-g59d512e4374 (bad)
+>>>>>    9) 5.10.0-rc2-pmac-00155-gc3d35ddd1ec (good)
+>>>>> 10) 5.10.0-rc2-pmac-00221-g7049b288ea8 (good)
+>>>>> 11) 5.10.0-rc2-pmac-00254-g4b74a35fc7e (bad)
+>>>>> 12) 5.10.0-rc2-pmac-00237-ged22bb8d39f (good)
+>>>>> 13) 5.10.0-rc2-pmac-00245-g87b57ea7e10 (good)
+>>>>> 14) 5.10.0-rc2-pmac-00249-gf10881a46f8 (bad)
+>>>>> 15) 5.10.0-rc2-pmac-00247-gf8a4b277c3c (good)
+>>>>> 16) 5.10.0-rc2-pmac-00248-gdb972a3787d (bad)
+>>>>>
+>>>>> db972a3787d12b1ce9ba7a31ec376d8a79e04c47 is the first bad commit
+>>>>
+>>>> Not sure this is really the root of the problem.
+>>>>
+>>>> Can you try again without CONFIG_VMAP_STACK ?
+>>>>
+>>>> Thanks
+>>>> Christophe
+>>>> ...
+>>>
+>>>
+>>> With CONFIG_VMAP_STACK=y, 5.11.0-rc5-pmac-00034-g684da7628d9 hangs at
+>>> boot on the PB 3400c.
+>>>
+>>> Without CONFIG_VMAP_STACK, 5.11.0-rc5-pmac-00034-g684da7628d9 boots as
+>>> expected.
+>>>
+>>> I didn't re-build the Debian SID kernel, though I confirmed that the
+>>> Debian config file for 5.10.0-8-powerpc includes CONFIG_VMAP_STACK=y.
+>>> It's not clear whether removing CONFIG_VMAP_STACK would be appropriate
+>>> for other powerpc systems.
+>>>
+>>> Please let me know why removing CONFIG_VMAP_STACK fixed the problem on
+>>> the PB 3400c. Should CONFIG_HAVE_ARCH_VMAP_STACK also be removed?
+>>>
+>>
+>> When CONFIG_HAVE_ARCH_VMAP_STACK is selected by the architecture,
+>> CONFIG_VMAP_STACK  is selected by default.
+>>
+>> The point is that your config has CONFIG_ADB_PMU.
+>>
+>> A bug with VMAP stack was detected during 5.9 release cycle for
+>> platforms selecting CONFIG_ADB_PMU. Because fixing the bug was an heavy
+>> change, we prefered at that time to disable VMAP stack, so VMAP stack
+>> was deselected for CONFIG_ADB_PMU by commit
+>> 4a133eb351ccc275683ad49305d0b04dde903733.
+>>
+>> Then as a second step, the proper fix was implemented and then VMAP
+>> stack was enabled again by the commit you bisected.
+>>
+>> Taking into account that the problem disappears for you when you
+>> manually deselect VMAP stacks, it means the problem is not the fix
+>> itself, but the fact that VMAP stacks are now enable by default.
+>>
+>> We need to understand why VMAP stack doesn't work on your platform, more
+>> than that why it doesn't boot at all with VMAP stack.
+>>
+>> Could you send me the dmesg output of your system when it properly boots ?
+>>
+>> Did you check with kernel 5.13 ?
+>>
+>> Thanks
+>> Christophe
+>>
+> 
+> Christophe,
+> 
+> Thanks for your response. It looks like I never tested v5.13 (I was
+> originally just reporting that the default Debian SID kernel,
+> 5.10.0-8-powerpc, hangs at boot on the PB 3400c).
+> 
+> So I rebuilt the stock v5.13 from kernel.org using Finn's
+> dot-config-powermac-5.13, which got changed slightly at compilation (see
+> dot-config-v5.13-pmac, attached). It has CONFIG_VMAP_STACK and
+> CONFIG_ADB_PMU set, and it booted, but there were multiple memory
+> errors. So it looks like the hang-at-boot problem was fixed sometime
+> after v5.11, but there are now memory errors (similar to Wallstreet).
+> 
+> With CONFIG_VMAP_STACK not set (CONFIG_ADB_PMU is still set), the
+> .config file turns into the attached dot-config-v5.13-pmac_NO_VMAP. And
+> there were still memory errors (dmesg output attached).
+> 
+> The memory errors may be a completely unrelated issue, since they occur
+> regardless of the CONFIG_VMAP_STACK setting.
+> 
+> To help rule out a hardware issue, I confirmed that memory errors don't
+> occur with v5.8.2 (dmesg output attached).
+> 
+> A useful git bisect might be possible if CONFIG_VMAP_STACK is disabled
+> for each build. I would need to determine where the memory errors
+> started (v5.9, v5.10, v5.11, or v5.12). There is the complication that
+> (at least) several v5.10 kernels won't compile if SMP is set, so I might
+> need to disable that everywhere as well, assuming the SMP fix didn't
+> cause the memory errors.
+> 
 
+Thanks a lot for the information.
+
+Looks like the memory errors are linked to KUAP (Kernel Userspace Access Protection). Based on the 
+places the problems happen, I don't think there are any invalid access, so there must be something 
+wrong in the KUAP logic, probably linked to some interrupts happenning in kernel mode while the KUAP 
+window is opened. And because is not selected by default on book3s/32 until 5.14, probably nobody 
+ever tested it in a real environment before you.
+
+I think the issue may be linked to commit https://github.com/linuxppc/linux/commit/c16728835 which 
+happened between 5.12 and 5.13. Would be nice if you could confirm that 5.12 doesn't have the 
+problem (At the same time maybe you can see if 5.12 also boots OK with CONFIG_VMAP_STACK)
+
+Note that the error detected in the other thread which is being discussed with Finn might also be an 
+issue to be checked while we are here.
+
+Thanks
+Christophe
