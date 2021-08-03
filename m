@@ -2,95 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FC6C3DE343
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Aug 2021 01:51:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2FFD3DE3A7
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Aug 2021 02:43:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GdvtP331Lz3bXp
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Aug 2021 09:51:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gdx2D4Xd8z3cLG
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Aug 2021 10:43:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tB94p91k;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=gHaOx2og;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
+ smtp.helo=out4-smtp.messagingengine.com (client-ip=66.111.4.28;
+ helo=out4-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=tB94p91k; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.a=rsa-sha256 header.s=fm3 header.b=gHaOx2og; 
+ dkim-atps=neutral
+Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com
+ [66.111.4.28])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gdvsv2SCKz2yNG
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Aug 2021 09:51:30 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 172NYWhq191770; Mon, 2 Aug 2021 19:51:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=Zy8u+iZjJF5rgUIWtPjs5w51IfL+CHjjbvIEPBpoG5k=;
- b=tB94p91kxMeukDC0RwIMEkW4ZxiHMfwvun4CSxfNXOEjpRg+oup2W7VuEkRTZESjFKEg
- okRXIGuAHBrh0qjJa1CMuBEBj9inOmLZGCCwsoFJw77a+NfV6wG9QOqkVfCnIb8XKUPE
- zOCV8wWmD6m883dQknDizD05aXG7QztE5Razfi8ak9ZtQV011B84Gh94qWcKV1zYvd70
- ucQj+rKSP2NnXwoG3Gm2zECOd/hWDwk1OK+KwHcVChEJs0lR1ScWRwTBtuYVCobO6ibi
- csFhs+eVePl4o9XO/LH4abgPx2umrQ+0lrAIwgCwYQdHRg5ly+1r3xSD4kRF3ALYp8YC rw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3a5m024cky-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 02 Aug 2021 19:51:19 -0400
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 172NZrxL194627;
- Mon, 2 Aug 2021 19:51:18 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3a5m024cks-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 02 Aug 2021 19:51:18 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 172NhOYk018035;
- Mon, 2 Aug 2021 23:51:17 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
- [9.57.198.29]) by ppma01dal.us.ibm.com with ESMTP id 3a4x5c282v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 02 Aug 2021 23:51:15 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 172Nnm7G28115318
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 2 Aug 2021 23:49:48 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4D81D112089;
- Mon,  2 Aug 2021 23:49:48 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D8DC1112080;
- Mon,  2 Aug 2021 23:49:45 +0000 (GMT)
-Received: from farosas.linux.ibm.com.com (unknown [9.211.147.189])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Mon,  2 Aug 2021 23:49:45 +0000 (GMT)
-From: Fabiano Rosas <farosas@linux.ibm.com>
-To: kvm-ppc@vger.kernel.org
-Subject: [PATCH] KVM: PPC: Book3S HV: Fix kvmhv_copy_tofrom_guest_radix
-Date: Mon,  2 Aug 2021 20:49:41 -0300
-Message-Id: <20210802234941.2568493-1-farosas@linux.ibm.com>
-X-Mailer: git-send-email 2.29.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gdx1p2WlGz2ydS
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Aug 2021 10:43:25 +1000 (AEST)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+ by mailout.nyi.internal (Postfix) with ESMTP id 05F325C0167;
+ Mon,  2 Aug 2021 20:43:23 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute4.internal (MEProxy); Mon, 02 Aug 2021 20:43:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:content-id:content-type:date:from
+ :in-reply-to:message-id:mime-version:references:subject:to
+ :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+ fm3; bh=rTy3dKsPoajPmNli8ExRtsgRJClAC4+cHirejhq0af0=; b=gHaOx2og
+ 7UxXtoTnVvlBJFD4rhjsp2UJzdXIfpvua6QYeqYCW2YgY/e3hv4Nw36t/S1lYSFr
+ U0KM0VFqiXYVi31udYjYGyJUD52E2PbLvprNuq6eoV5eOm7lUqLL0fZyQf2ijPRW
+ LB8i/V9bTp83/k/+FNHobB3gXPzd1dLAKgu+mgvFyMqZwa/TEpWpCtoq5aW8GosT
+ +jfkGmbUoCnBjH9XhQ163V1R25hkphTuG/AtG8IUdh64gbdAh1amM1BCWwMHn4Fh
+ J8rlSSWmXtgRCS7rZqWll3bJWLn3ALJHJ0tIkKyfVoBUMqFPRxLmX73WhmlkSL9X
+ Bjtga70UP5z43A==
+X-ME-Sender: <xms:KJEIYf4vBGAfEVA5ewHcBKsN7xoyOKOLRlrccAJFQNz-eLlgu9KhGQ>
+ <xme:KJEIYU6_BG_KyuAW0R1NnNsZw-B9NB9PFIOWO9Dwpq0ptAveGZUXl9KpneUNfOre3
+ wf_NPLQM3cDcWZ2ic0>
+X-ME-Received: <xmr:KJEIYWfgLYCO1Xl4fz7yTSxsTi7Wu_R4vUqgq9dWvgqoGxuNyjL9BweYmq5pYcM_pBvW5VQKxZbBdX3A5xWsCg9tzixMVQyRCP8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrieefgddvkecutefuodetggdotefrodftvf
+ curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+ uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+ fjughrpeffhffvufgjkfhfgggtsehmtderredttdejnecuhfhrohhmpefhihhnnhcuvfhh
+ rghinhcuoehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrghtth
+ gvrhhnpeetvedvueduheehkeejhedukeevheejkedvffdugeehkeffkeekgfehkedvleel
+ teenucffohhmrghinhepfedvrdhssgenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
+ grmhepmhgrihhlfhhrohhmpehfthhhrghinheslhhinhhugidqmheikehkrdhorhhg
+X-ME-Proxy: <xmx:KJEIYQKC_EDIXx5thghUnVKWJCBBfF6jZUG5XNYTMB_kc-Bqjm4hKw>
+ <xmx:KJEIYTLrbFr5a-aT0AOLpzvw5mCcXSlYi9n0-gB7Xe39AfuqCPngJA>
+ <xmx:KJEIYZysrQryQ8HXTPEoc9rErzUNVJKmLVqxynNuCkHXspzj3Ok8Dw>
+ <xmx:K5EIYZjz_XMXWroheeZZ8i7aJHLFN8vap22H5P22yvZ5igJMuokyUQ>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 2 Aug 2021 20:43:17 -0400 (EDT)
+Date: Tue, 3 Aug 2021 10:43:13 +1000 (AEST)
+From: Finn Thain <fthain@linux-m68k.org>
+To: Stan Johnson <userm57@yahoo.com>, 
+ LEROY Christophe <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v3 31/41] powerpc/32: Dismantle EXC_XFER_STD/LITE/TEMPLATE
+In-Reply-To: <9b64dde3-6ebd-b446-41d9-61e8cb0d8c39@csgroup.eu>
+Message-ID: <216b7b17-28f4-7976-c338-1dedeba14ce7@linux-m68k.org>
+References: <cover.1615552866.git.christophe.leroy@csgroup.eu>
+ <ca5795d04a220586b7037dbbbe6951dfa9e768eb.1615552867.git.christophe.leroy@csgroup.eu>
+ <666e3ab4-372-27c2-4621-7cc3933756dd@linux-m68k.org>
+ <20210731173954.Horde.fV2Xkw7-sxjG0DUcZ_JO_g3@messagerie.c-s.fr>
+ <1d601b7c-1e39-e372-39a5-e1e98e56e2a5@linux-m68k.org>
+ <9b64dde3-6ebd-b446-41d9-61e8cb0d8c39@csgroup.eu>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: XDu1sdXcRYa4geea3LgkH1NIsLRHQtNl
-X-Proofpoint-GUID: 66lDNQhNt0HxsFdf703KzyF9NmB-7PQo
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-08-02_07:2021-08-02,
- 2021-08-02 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 suspectscore=0
- mlxlogscore=999 lowpriorityscore=0 clxscore=1011 priorityscore=1501
- mlxscore=0 malwarescore=0 phishscore=0 bulkscore=0 impostorscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2107140000 definitions=main-2108020149
+Content-Type: multipart/mixed; BOUNDARY="-1463811774-1281028418-1627951377=:28"
+Content-ID: <11d1109a-eda8-9252-f7e-84519fa8d55@nippy.intranet>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,159 +88,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, christophe.leroy@c-s.fr, npiggin@gmail.com
+Cc: linux-kernel@vger.kernel.org, Nick Piggin <npiggin@gmail.com>,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This function was introduced along with nested HV guest support. It
-uses the platform's Radix MMU quadrants[1] to provide a nested
-hypervisor with fast access to its nested guests memory
-(H_COPY_TOFROM_GUEST hypercall). It has also since been added as a
-fast path for the kvmppc_ld/st routines which are used during
-instruction emulation.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-The commit def0bfdbd603 ("powerpc: use probe_user_read() and
-probe_user_write()") changed the low level copy function from
-raw_copy_from_user to probe_user_read, which adds a check to
-access_ok. In powerpc that is:
+---1463811774-1281028418-1627951377=:28
+Content-Type: text/plain; CHARSET=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Content-ID: <86b5d84-d157-9cb8-3a40-99b6e82a91fa@nippy.intranet>
 
- static inline bool __access_ok(unsigned long addr, unsigned long size)
- {
-        return addr < TASK_SIZE_MAX && size <= TASK_SIZE_MAX - addr;
- }
+On Mon, 2 Aug 2021, LEROY Christophe wrote:
 
-and TASK_SIZE_MAX is 0x0010000000000000UL for 64-bit, which means that
-setting the two MSBs of the effective address (which correspond to the
-quadrant) now cause access_ok to reject the access.
+> Le 01/08/2021 =C3=A0 03:21, Finn Thain a =C3=A9crit=C2=A0:
+> > On Sat, 31 Jul 2021, Christophe Leroy wrote:
+> >=20
+> > > >=20
+> > > > Stan Johnson contacted me about a regression in mainline that he
+> > > > observed on his G3 Powerbooks. Using 'git bisect' we determined tha=
+t
+> > > > this patch was the cause of the regression, i.e. commit 4c0104a83fc=
+3
+> > > > ("powerpc/32: Dismantle EXC_XFER_STD/LITE/TEMPLATE").
+> > > >=20
+> > > > When testing 4c0104a83fc and all subsequent builds, various user
+> > > > processes were liable to segfault. Here is the console log that Sta=
+n
+> > > > provided:
+> > >=20
+> > > Hi, i will be able to look at that more in details next week, however=
+ I
+> > > have a few preliminary qurstions.
+> > >=20
+> > > Can you reliabily reproduce the problem with the said commit, and can
+> > > you reliabily run without problem with the parent commit ?
+> >=20
+> > Yes and yes. (I already asked Stan to establish those things before I
+> > contacted the list.)
+>=20
+> I think I found the problem with that commit. Can you retry with the foll=
+owing
+> change:
+>=20
+> diff --git a/arch/powerpc/kernel/head_book3s_32.S
+> b/arch/powerpc/kernel/head_book3s_32.S
+> index 0a3d7d4a9ec4..a294103a91a1 100644
+> --- a/arch/powerpc/kernel/head_book3s_32.S
+> +++ b/arch/powerpc/kernel/head_book3s_32.S
+> @@ -299,7 +299,7 @@ ALT_MMU_FTR_SECTION_END_IFSET(MMU_FTR_HPTE_TABLE)
+>  =09EXCEPTION_PROLOG_1
+>  =09EXCEPTION_PROLOG_2 0x300 DataAccess handle_dar_dsisr=3D1
+>  =09prepare_transfer_to_handler
+> -=09lwz=09r5, _DSISR(r11)
+> +=09lwz=09r5, _DSISR(r1)
+>  =09andis.=09r0, r5, DSISR_DABRMATCH@h
+>  =09bne-=091f
+>  =09bl=09do_page_fault
 
-This was not caught earlier because the most common code path via
-kvmppc_ld/st contains a fallback (kvm_read_guest) that is likely to
-succeed for L1 guests. For nested guests there is no fallback.
+That patch doesn't apply to mainline. This version might help.
 
-Another issue is that probe_user_read (now __copy_from_user_nofault)
-does not return the number of not copied bytes in case of failure, so
-the destination memory is not being cleared anymore in
-kvmhv_copy_from_guest_radix:
-
- ret = kvmhv_copy_tofrom_guest_radix(vcpu, eaddr, to, NULL, n);
- if (ret > 0)                            <-- always false!
-        memset(to + (n - ret), 0, ret);
-
-This patch fixes both issues by introducing two new functions that set
-the quadrant bit of the effective address only after checking
-access_ok and moving the memset closer to __copy_to_user_inatomic.
-
-1 - for more on quadrants see commit d7b456152230 ("KVM: PPC: Book3S
-HV: Implement functions to access quadrants 1 & 2")
-
-Fixes: def0bfdbd603 ("powerpc: use probe_user_read() and probe_user_write()")
-Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
----
- arch/powerpc/kvm/book3s_64_mmu_radix.c | 63 ++++++++++++++++++++------
- 1 file changed, 49 insertions(+), 14 deletions(-)
-
-diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-index b5905ae4377c..076a8e4a9135 100644
---- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
-+++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-@@ -30,12 +30,57 @@
-  */
- static int p9_supported_radix_bits[4] = { 5, 9, 9, 13 };
- 
-+/* LPIDR and PIDR must have already been set */
-+static long __copy_from_guest_quadrant(void *dst, void __user *src, size_t size,
-+				       unsigned long quadrant)
-+{
-+	long ret = size;
-+	mm_segment_t old_fs = force_uaccess_begin();
-+
-+	if (access_ok(src, size)) {
-+		src += (quadrant << 62);
-+
-+		pagefault_disable();
-+		ret = __copy_from_user_inatomic((void __user *)dst, src, size);
-+		pagefault_enable();
-+	}
-+	force_uaccess_end(old_fs);
-+
-+	if (!ret)
-+		return ret;
-+
-+	memset(dst + (size - ret), 0, ret);
-+
-+	return -EFAULT;
-+}
-+
-+/* LPIDR and PIDR must have already been set */
-+static long __copy_to_guest_quadrant(void __user *dst, void *src, size_t size,
-+				     unsigned long quadrant)
-+{
-+	long ret = -EFAULT;
-+	mm_segment_t old_fs = force_uaccess_begin();
-+
-+	if (access_ok(dst, size)) {
-+		dst += (quadrant << 62);
-+
-+		pagefault_disable();
-+		ret = __copy_to_user_inatomic(dst, (void __user *)src, size);
-+		pagefault_enable();
-+	}
-+	force_uaccess_end(old_fs);
-+
-+	if (ret)
-+		return -EFAULT;
-+	return 0;
-+}
-+
- unsigned long __kvmhv_copy_tofrom_guest_radix(int lpid, int pid,
- 					      gva_t eaddr, void *to, void *from,
- 					      unsigned long n)
- {
- 	int old_pid, old_lpid;
--	unsigned long quadrant, ret = n;
-+	unsigned long quadrant, ret;
- 	bool is_load = !!to;
- 
- 	/* Can't access quadrants 1 or 2 in non-HV mode, call the HV to do it */
-@@ -47,10 +92,6 @@ unsigned long __kvmhv_copy_tofrom_guest_radix(int lpid, int pid,
- 	quadrant = 1;
- 	if (!pid)
- 		quadrant = 2;
--	if (is_load)
--		from = (void *) (eaddr | (quadrant << 62));
--	else
--		to = (void *) (eaddr | (quadrant << 62));
- 
- 	preempt_disable();
- 
-@@ -66,9 +107,9 @@ unsigned long __kvmhv_copy_tofrom_guest_radix(int lpid, int pid,
- 	isync();
- 
- 	if (is_load)
--		ret = copy_from_user_nofault(to, (const void __user *)from, n);
-+		ret = __copy_from_guest_quadrant(to, (void __user *)eaddr, n, quadrant);
- 	else
--		ret = copy_to_user_nofault((void __user *)to, from, n);
-+		ret = __copy_to_guest_quadrant((void __user *)eaddr, from, n, quadrant);
- 
- 	/* switch the pid first to avoid running host with unallocated pid */
- 	if (quadrant == 1 && pid != old_pid)
-@@ -109,13 +150,7 @@ static long kvmhv_copy_tofrom_guest_radix(struct kvm_vcpu *vcpu, gva_t eaddr,
- long kvmhv_copy_from_guest_radix(struct kvm_vcpu *vcpu, gva_t eaddr, void *to,
- 				 unsigned long n)
- {
--	long ret;
--
--	ret = kvmhv_copy_tofrom_guest_radix(vcpu, eaddr, to, NULL, n);
--	if (ret > 0)
--		memset(to + (n - ret), 0, ret);
--
--	return ret;
-+	return kvmhv_copy_tofrom_guest_radix(vcpu, eaddr, to, NULL, n);
- }
- EXPORT_SYMBOL_GPL(kvmhv_copy_from_guest_radix);
- 
--- 
-2.29.2
-
+diff --git a/arch/powerpc/kernel/head_book3s_32.S b/arch/powerpc/kernel/hea=
+d_book3s_32.S
+index 764edd860ed4..68e5c0a7e99d 100644
+--- a/arch/powerpc/kernel/head_book3s_32.S
++++ b/arch/powerpc/kernel/head_book3s_32.S
+@@ -300,7 +300,7 @@ ALT_MMU_FTR_SECTION_END_IFSET(MMU_FTR_HPTE_TABLE)
+ =09EXCEPTION_PROLOG_1
+ =09EXCEPTION_PROLOG_2 INTERRUPT_DATA_STORAGE DataAccess handle_dar_dsisr=
+=3D1
+ =09prepare_transfer_to_handler
+-=09lwz=09r5, _DSISR(r11)
++=09lwz=09r5, _DSISR(r1)
+ =09andis.=09r0, r5, DSISR_DABRMATCH@h
+ =09bne-=091f
+ =09bl=09do_page_fault
+---1463811774-1281028418-1627951377=:28--
