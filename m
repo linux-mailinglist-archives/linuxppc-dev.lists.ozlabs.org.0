@@ -1,77 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92A573DFAF6
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 07:15:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 835193DFB09
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 07:25:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gfg0h2Gdnz3d7s
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 15:15:00 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=C0Ck3geE;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GfgDz3LVyz3cVG
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 15:25:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1030;
- helo=mail-pj1-x1030.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=C0Ck3geE; dkim-atps=neutral
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com
- [IPv6:2607:f8b0:4864:20::1030])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gfg0C30Wsz2yLh
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Aug 2021 15:14:34 +1000 (AEST)
-Received: by mail-pj1-x1030.google.com with SMTP id
- s22-20020a17090a1c16b0290177caeba067so7160037pjs.0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Aug 2021 22:14:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:references:in-reply-to:mime-version:message-id
- :content-transfer-encoding;
- bh=g2lEclpK8rx1SxIedmLq/RnIwOdwyXFvHeDeTMr9HDM=;
- b=C0Ck3geEryRzahd+bxFsI4qgXJucnZzpVkrOMejBVaaskUW0ERJc2tAOAykQcHoYAU
- wc31TLWGa/uRT5C72c8rLl1Rwuwo27j/tCuffqlosRe4QR1CZVOvc4C2nXXZzIwTER4c
- CQOBe3RKevOdw4Qp2itcbEn69dduvqshl/NnfC4/KIlknfzATS0kRynFlvnCv6PdgN5W
- pVji9Bel4zr9eitlopANPCOp+MGTOqUA8ZznpWWr5/EIEdcuyfCTEFPGSFhdvr4bfK9q
- XVVih5YzH9HHXRHIBCqmH34TSedSPJB891y/4ZAh7nF9nMAybzrUvohlHSFk6QJL92i4
- fUnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=g2lEclpK8rx1SxIedmLq/RnIwOdwyXFvHeDeTMr9HDM=;
- b=QbfN2WLTRyq1jV4eXS+q1gU6E2oocuw8v4R4SmX32d6z8tAAquNuOobxxXFIa3/mAv
- gcCFYIGoB5IHXKACuQpa0EmJ/9Osi8GnUY2FmyS6WuExSD5FwysfQG+2RWO0sCWCByqy
- /oGap59CJEM5gx++lssiIM58A6FR/w4eIPDUn2XT/SItPv0q9kEZYlxyKHCwy5tiNq/Y
- peHK2VljzJXBhQZZJiS0PlAtM0yJZ6d1bJTZMsuQlqIz3zFtVabkM5nS0iHFiG/qXp+d
- Dw/nDxKShB3OlN3mt/geKRGAaDrBttO1EeD3Ncs83dSo8CO2h2GXIQ5uz/WlkRyzoDVG
- 088A==
-X-Gm-Message-State: AOAM5315iE17U6ltLa+s0QiQRsVSPOZE15OYWdArjlOW3gcJ6rmKXxNE
- 6gCjwwCm/wNE+HIBa6jhg9M=
-X-Google-Smtp-Source: ABdhPJyZw/u9guwaqSLigzQ95ESE/UIP7wKoGzzdh+MTpbf+trrBhpGNmJXFHqfksETGDPaBKK4sEA==
-X-Received: by 2002:a63:d458:: with SMTP id i24mr738383pgj.289.1628054068123; 
- Tue, 03 Aug 2021 22:14:28 -0700 (PDT)
-Received: from localhost (60-242-181-102.static.tpgi.com.au. [60.242.181.102])
- by smtp.gmail.com with ESMTPSA id
- l6sm975210pff.74.2021.08.03.22.14.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Aug 2021 22:14:27 -0700 (PDT)
-Date: Wed, 04 Aug 2021 15:14:22 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [RFC PATCH] powerpc/book3s64/radix: Upgrade va tlbie to PID tlbie
- if we cross PMD_SIZE
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-References: <20210803143725.615186-1-aneesh.kumar@linux.ibm.com>
-In-Reply-To: <20210803143725.615186-1-aneesh.kumar@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GfgDZ2Qy8z2yNG
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Aug 2021 15:25:14 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4GfgDR2pSqz9sWD;
+ Wed,  4 Aug 2021 07:25:11 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id pwnPOfv-FcV0; Wed,  4 Aug 2021 07:25:11 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4GfgDR1WyJz9sVr;
+ Wed,  4 Aug 2021 07:25:11 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id F36F68B790;
+ Wed,  4 Aug 2021 07:25:10 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id La9pB5DTjAGj; Wed,  4 Aug 2021 07:25:10 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 7A04A8B764;
+ Wed,  4 Aug 2021 07:25:10 +0200 (CEST)
+Subject: Re: [PATCH 1/2] powerpc/bug: Remove specific powerpc BUG_ON() and
+ WARN_ON() on PPC32
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+References: <b286e07fb771a664b631cd07a40b09c06f26e64b.1618244758.git.christophe.leroy@csgroup.eu>
+ <c2525223-ad29-6126-afa1-d70b8e29d721@csgroup.eu>
+Message-ID: <2325c462-07ab-4b0f-db9e-566883d5fc15@csgroup.eu>
+Date: Wed, 4 Aug 2021 07:25:10 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 MIME-Version: 1.0
-Message-Id: <1628053302.0qclx0xcj9.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <c2525223-ad29-6126-afa1-d70b8e29d721@csgroup.eu>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,104 +65,175 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Aneesh Kumar K.V's message of August 4, 2021 12:37 am:
-> With shared mapping, even though we are unmapping a large range, the kern=
-el
-> will force a TLB flush with ptl lock held to avoid the race mentioned in
-> commit 1cf35d47712d ("mm: split 'tlb_flush_mmu()' into tlb flushing and m=
-emory freeing parts")
-> This results in the kernel issuing a high number of TLB flushes even for =
-a large
-> range. This can be improved by making sure the kernel switch to pid based=
- flush if the
-> kernel is unmapping a 2M range.
+Gentle ping Michael ?
 
-It would be good to have a bit more description here.
-
-In any patch that changes a heuristic like this, I would like to see=20
-some justification or reasoning that could be refuted or used as a=20
-supporting argument if we ever wanted to change the heuristic later.
-Ideally with some of the obvious downsides listed as well.
-
-This "improves" things here, but what if it hurt things elsewhere, how=20
-would we come in later and decide to change it back?
-
-THP flushes for example, I think now they'll do PID flushes (if they=20
-have to be broadcast, which they will tend to be when khugepaged does
-them). So now that might increase jitter for THP and cause it to be a
-loss for more workloads.
-
-So where do you notice this? What's the benefit?
-
->=20
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> ---
->  arch/powerpc/mm/book3s64/radix_tlb.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->=20
-> diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3=
-s64/radix_tlb.c
-> index aefc100d79a7..21d0f098e43b 100644
-> --- a/arch/powerpc/mm/book3s64/radix_tlb.c
-> +++ b/arch/powerpc/mm/book3s64/radix_tlb.c
-> @@ -1106,7 +1106,7 @@ EXPORT_SYMBOL(radix__flush_tlb_kernel_range);
->   * invalidating a full PID, so it has a far lower threshold to change fr=
-om
->   * individual page flushes to full-pid flushes.
->   */
-> -static unsigned long tlb_single_page_flush_ceiling __read_mostly =3D 33;
-> +static unsigned long tlb_single_page_flush_ceiling __read_mostly =3D 32;
->  static unsigned long tlb_local_single_page_flush_ceiling __read_mostly =
-=3D POWER9_TLB_SETS_RADIX * 2;
-> =20
->  static inline void __radix__flush_tlb_range(struct mm_struct *mm,
-> @@ -1133,7 +1133,7 @@ static inline void __radix__flush_tlb_range(struct =
-mm_struct *mm,
->  	if (fullmm)
->  		flush_pid =3D true;
->  	else if (type =3D=3D FLUSH_TYPE_GLOBAL)
-> -		flush_pid =3D nr_pages > tlb_single_page_flush_ceiling;
-> +		flush_pid =3D nr_pages >=3D tlb_single_page_flush_ceiling;
-
-Arguably >=3D is nicer than > here, but this shouldn't be in the same=20
-patch as the value change.
-
->  	else
->  		flush_pid =3D nr_pages > tlb_local_single_page_flush_ceiling;
-
-And it should change everything to be consistent. Although I'm not sure=20
-it's worth changing even though I highly doubt any administrator would
-be tweaking this.
-
-Thanks,
-Nick
-
->  	/*
-> @@ -1335,7 +1335,7 @@ static void __radix__flush_tlb_range_psize(struct m=
-m_struct *mm,
->  	if (fullmm)
->  		flush_pid =3D true;
->  	else if (type =3D=3D FLUSH_TYPE_GLOBAL)
-> -		flush_pid =3D nr_pages > tlb_single_page_flush_ceiling;
-> +		flush_pid =3D nr_pages >=3D tlb_single_page_flush_ceiling;
->  	else
->  		flush_pid =3D nr_pages > tlb_local_single_page_flush_ceiling;
-> =20
-> @@ -1505,7 +1505,7 @@ void do_h_rpt_invalidate_prt(unsigned long pid, uns=
-igned long lpid,
->  			continue;
-> =20
->  		nr_pages =3D (end - start) >> def->shift;
-> -		flush_pid =3D nr_pages > tlb_single_page_flush_ceiling;
-> +		flush_pid =3D nr_pages >=3D tlb_single_page_flush_ceiling;
-> =20
->  		/*
->  		 * If the number of pages spanning the range is above
-> --=20
-> 2.31.1
->=20
->=20
+Le 25/06/2021 à 16:41, Christophe Leroy a écrit :
+> Hi Michael,
+> 
+> What happened to this series ? It has been flagged 'under review' in Patchwork since mid April but I 
+> never saw it in next-test.
+> 
+> Thanks
+> Christophe
+> 
+> Le 12/04/2021 à 18:26, Christophe Leroy a écrit :
+>> powerpc BUG_ON() and WARN_ON() are based on using twnei instruction.
+>>
+>> For catching simple conditions like a variable having value 0, this
+>> is efficient because it does the test and the trap at the same time.
+>> But most conditions used with BUG_ON or WARN_ON are more complex and
+>> forces GCC to format the condition into a 0 or 1 value in a register.
+>> This will usually require 2 to 3 instructions.
+>>
+>> The most efficient solution would be to use __builtin_trap() because
+>> GCC is able to optimise the use of the different trap instructions
+>> based on the requested condition, but this is complex if not
+>> impossible for the following reasons:
+>> - __builtin_trap() is a non-recoverable instruction, so it can't be
+>> used for WARN_ON
+>> - Knowing which line of code generated the trap would require the
+>> analysis of DWARF information. This is not a feature we have today.
+>>
+>> As mentioned in commit 8d4fbcfbe0a4 ("Fix WARN_ON() on bitfield ops")
+>> the way WARN_ON() is implemented is suboptimal. That commit also
+>> mentions an issue with 'long long' condition. It fixed it for
+>> WARN_ON() but the same problem still exists today with BUG_ON() on
+>> PPC32. It will be fixed by using the generic implementation.
+>>
+>> By using the generic implementation, gcc will naturally generate a
+>> branch to the unconditional trap generated by BUG().
+>>
+>> As modern powerpc implement zero-cycle branch,
+>> that's even more efficient.
+>>
+>> And for the functions using WARN_ON() and its return, the test
+>> on return from WARN_ON() is now also used for the WARN_ON() itself.
+>>
+>> On PPC64 we don't want it because we want to be able to use CFAR
+>> register to track how we entered the code that trapped. The CFAR
+>> register would be clobbered by the branch.
+>>
+>> A simple test function:
+>>
+>>     unsigned long test9w(unsigned long a, unsigned long b)
+>>     {
+>>         if (WARN_ON(!b))
+>>             return 0;
+>>         return a / b;
+>>     }
+>>
+>> Before the patch:
+>>
+>>     0000046c <test9w>:
+>>      46c:    7c 89 00 34     cntlzw  r9,r4
+>>      470:    55 29 d9 7e     rlwinm  r9,r9,27,5,31
+>>      474:    0f 09 00 00     twnei   r9,0
+>>      478:    2c 04 00 00     cmpwi   r4,0
+>>      47c:    41 82 00 0c     beq     488 <test9w+0x1c>
+>>      480:    7c 63 23 96     divwu   r3,r3,r4
+>>      484:    4e 80 00 20     blr
+>>
+>>      488:    38 60 00 00     li      r3,0
+>>      48c:    4e 80 00 20     blr
+>>
+>> After the patch:
+>>
+>>     00000468 <test9w>:
+>>      468:    2c 04 00 00     cmpwi   r4,0
+>>      46c:    41 82 00 0c     beq     478 <test9w+0x10>
+>>      470:    7c 63 23 96     divwu   r3,r3,r4
+>>      474:    4e 80 00 20     blr
+>>
+>>      478:    0f e0 00 00     twui    r0,0
+>>      47c:    38 60 00 00     li      r3,0
+>>      480:    4e 80 00 20     blr
+>>
+>> So we see before the patch we need 3 instructions on the likely path
+>> to handle the WARN_ON(). With the patch the trap goes on the unlikely
+>> path.
+>>
+>> See below the difference at the entry of system_call_exception where
+>> we have several BUG_ON(), allthough less impressing.
+>>
+>> With the patch:
+>>
+>>     00000000 <system_call_exception>:
+>>        0:    81 6a 00 84     lwz     r11,132(r10)
+>>        4:    90 6a 00 88     stw     r3,136(r10)
+>>        8:    71 60 00 02     andi.   r0,r11,2
+>>        c:    41 82 00 70     beq     7c <system_call_exception+0x7c>
+>>       10:    71 60 40 00     andi.   r0,r11,16384
+>>       14:    41 82 00 6c     beq     80 <system_call_exception+0x80>
+>>       18:    71 6b 80 00     andi.   r11,r11,32768
+>>       1c:    41 82 00 68     beq     84 <system_call_exception+0x84>
+>>       20:    94 21 ff e0     stwu    r1,-32(r1)
+>>       24:    93 e1 00 1c     stw     r31,28(r1)
+>>       28:    7d 8c 42 e6     mftb    r12
+>>     ...
+>>       7c:    0f e0 00 00     twui    r0,0
+>>       80:    0f e0 00 00     twui    r0,0
+>>       84:    0f e0 00 00     twui    r0,0
+>>
+>> Without the patch:
+>>
+>>     00000000 <system_call_exception>:
+>>        0:    94 21 ff e0     stwu    r1,-32(r1)
+>>        4:    93 e1 00 1c     stw     r31,28(r1)
+>>        8:    90 6a 00 88     stw     r3,136(r10)
+>>        c:    81 6a 00 84     lwz     r11,132(r10)
+>>       10:    69 60 00 02     xori    r0,r11,2
+>>       14:    54 00 ff fe     rlwinm  r0,r0,31,31,31
+>>       18:    0f 00 00 00     twnei   r0,0
+>>       1c:    69 60 40 00     xori    r0,r11,16384
+>>       20:    54 00 97 fe     rlwinm  r0,r0,18,31,31
+>>       24:    0f 00 00 00     twnei   r0,0
+>>       28:    69 6b 80 00     xori    r11,r11,32768
+>>       2c:    55 6b 8f fe     rlwinm  r11,r11,17,31,31
+>>       30:    0f 0b 00 00     twnei   r11,0
+>>       34:    7d 8c 42 e6     mftb    r12
+>>
+>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>> ---
+>>   arch/powerpc/include/asm/bug.h | 9 ++++++---
+>>   1 file changed, 6 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
+>> index d1635ffbb179..101dea4eec8d 100644
+>> --- a/arch/powerpc/include/asm/bug.h
+>> +++ b/arch/powerpc/include/asm/bug.h
+>> @@ -68,7 +68,11 @@
+>>       BUG_ENTRY("twi 31, 0, 0", 0);                \
+>>       unreachable();                        \
+>>   } while (0)
+>> +#define HAVE_ARCH_BUG
+>> +
+>> +#define __WARN_FLAGS(flags) BUG_ENTRY("twi 31, 0, 0", BUGFLAG_WARNING | (flags))
+>> +#ifdef CONFIG_PPC64
+>>   #define BUG_ON(x) do {                        \
+>>       if (__builtin_constant_p(x)) {                \
+>>           if (x)                        \
+>> @@ -78,8 +82,6 @@
+>>       }                            \
+>>   } while (0)
+>> -#define __WARN_FLAGS(flags) BUG_ENTRY("twi 31, 0, 0", BUGFLAG_WARNING | (flags))
+>> -
+>>   #define WARN_ON(x) ({                        \
+>>       int __ret_warn_on = !!(x);                \
+>>       if (__builtin_constant_p(__ret_warn_on)) {        \
+>> @@ -93,9 +95,10 @@
+>>       unlikely(__ret_warn_on);                \
+>>   })
+>> -#define HAVE_ARCH_BUG
+>>   #define HAVE_ARCH_BUG_ON
+>>   #define HAVE_ARCH_WARN_ON
+>> +#endif
+>> +
+>>   #endif /* __ASSEMBLY __ */
+>>   #else
+>>   #ifdef __ASSEMBLY__
+>>
