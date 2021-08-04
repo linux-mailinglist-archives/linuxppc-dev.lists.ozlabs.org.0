@@ -2,67 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39A173DFC23
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 09:35:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6496B3DFC7C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 10:08:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gfk720fLpz3dBx
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 17:35:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GfksG1wXZz3cVf
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 18:08:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=Bazz9ZBL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=soV5H8Ia;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1029;
+ helo=mail-pj1-x1029.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=Bazz9ZBL; 
- dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=soV5H8Ia; dkim-atps=neutral
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com
+ [IPv6:2607:f8b0:4864:20::1029])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gfk6W3shNz30C6
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Aug 2021 17:35:13 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=GtjZ3ipXeKj8P4xNvYP5472scFiSXgWwNFMV9QOGauI=; b=Bazz9ZBLOe91WaVB1byxI1W2Ej
- 5/vfo616togbzfW5E9qw9JSBNuCvtzXzTUAxNW+TA/GHozqvkt7ENMyUammSZPBLGnPVPYJfOYEQf
- sxgj6pHsBB5P2lXyHmFRcmjdAvVW9gZJGqbZfZQqbRKsGPdJpOPUNm9Xe97nQ2mZ/zl+7rAzXkyaE
- SkU8TvyaWkX2aJ6+Hr8UBrvkUnhQ+T+rb1OwhIjeKrajLFpSaPPHAFxgRABi3EBnGojVhQCk+u767
- ImVNqgPJ7kaPFv+mwQuk28PlTmCk9ad1tzAzwpyxra1gj9AjtZ0ifxyytT523oJW/dKvFnhPO1AIK
- YE1RCHUw==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mBBQ4-005WsN-Ii; Wed, 04 Aug 2021 07:34:34 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 9BE533000F2;
- Wed,  4 Aug 2021 09:34:26 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id 73930200BAB53; Wed,  4 Aug 2021 09:34:26 +0200 (CEST)
-Date: Wed, 4 Aug 2021 09:34:26 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [RFC PATCH] powerpc/book3s64/radix: Upgrade va tlbie to PID
- tlbie if we cross PMD_SIZE
-Message-ID: <YQpDAjlYIWTxr56g@hirez.programming.kicks-ass.net>
-References: <20210803143725.615186-1-aneesh.kumar@linux.ibm.com>
- <1628053302.0qclx0xcj9.astroid@bobo.none>
- <1628058455.rphrivzjzb.astroid@bobo.none>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gfkrn5bfJz302N
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Aug 2021 18:08:24 +1000 (AEST)
+Received: by mail-pj1-x1029.google.com with SMTP id
+ o44-20020a17090a0a2fb0290176ca3e5a2fso2479585pjo.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Aug 2021 01:08:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=iF8GqUw3fJkSuKkM1TDURToz/fDqSBL3RQMnD7NkKi4=;
+ b=soV5H8Iaxlk13Zsqs/hVkR+nh/fQ+droSHbxWuKIwOf/yzzy9YzHm5qGn9Pld7ekHR
+ Zle8+Ikp4lSC2Q6X4IgF4ktAwCDEKcB/BtF5gYxik/DpNXWJXqu0cHVHRvwH07fzeHCK
+ EDEUHZCk+GgCP00JIkDa8C7NLzZUbJrmjWKIHpBVo+Zd6NlaJ3nhBINpBwUgRgWr4F9A
+ v2oLTpGT67CgWpTpZv+Zci1E5QMBgP7dzQ0BMpyRdLrO7t7GODl0XfaZ2GzRruXDpGIb
+ Qflmjn7ajBMMJcVk8uSsYjSZ1Zb4aNTaaaygAfe6EwPCM9X5WyPI8MrO+Jtx/7OaBmrp
+ dljQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=iF8GqUw3fJkSuKkM1TDURToz/fDqSBL3RQMnD7NkKi4=;
+ b=IwsFIZmKz3vmHwNaiHwVX6O//+AMDP3q/NIe7sJril7brSS0Rn9H6Hy1vAijf28WAk
+ itwld+nteNZpc6njWKHI+V0tnQGZ2qrzCN1YU2xhcRC8Lj5xhhQwqxkUjCX23gK4TsVJ
+ G6npoZyuYh2/ljXUGBEIRqnUsV46v7zMcHXeKKN+JjJlQf974fduUN3Z6LFQbXXQkfWC
+ JkwkDNJzjA0MVZDFD7Ipvsu3YswZ3puwbIk2H698ha51m2kTbBGik4Ax7jhhchbtTE3F
+ oD/y2BT6B7dy5iaSRdNBmRyZDyR1Jg41X/02Ob3V0ChDN5lRavimHCJgxwf/jPonm/ds
+ eBDA==
+X-Gm-Message-State: AOAM531sRoinICoRqk2g6h1eJixUmbtOm8MfcIczXqBtEBuKwc6tsXT5
+ hXwHnYjtH6A9pHcz8MGsxmA=
+X-Google-Smtp-Source: ABdhPJzBcxvudp/M5au72pgDSSu33yGC2Lt+KJhqCRM8D6bWhoyw/dh6MAN471eUedhDYAR6imgz3g==
+X-Received: by 2002:a62:e416:0:b029:3c5:f084:7212 with SMTP id
+ r22-20020a62e4160000b02903c5f0847212mr343016pfh.76.1628064501299; 
+ Wed, 04 Aug 2021 01:08:21 -0700 (PDT)
+Received: from localhost (60-242-181-102.static.tpgi.com.au. [60.242.181.102])
+ by smtp.gmail.com with ESMTPSA id
+ j19sm1662743pfr.82.2021.08.04.01.08.20
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 04 Aug 2021 01:08:20 -0700 (PDT)
+Date: Wed, 04 Aug 2021 18:08:16 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH] powerpc: Remove MSR_PR check in
+ interrupt_exit_{user/kernel}_prepare()
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>,
+ Paul Mackerras <paulus@samba.org>
+References: <b36623df00ef3d2296f928487b6e23f93a217afa.1628054802.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <b36623df00ef3d2296f928487b6e23f93a217afa.1628054802.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1628058455.rphrivzjzb.astroid@bobo.none>
+Message-Id: <1628064412.48kzr1eula.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,38 +85,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Aug 04, 2021 at 04:39:44PM +1000, Nicholas Piggin wrote:
-> For that matter, I wonder if we shouldn't do something like this 
-> (untested) so the low level batch flush has visibility to the high
-> level flush range.
-> 
-> x86 could use this too AFAIKS, just needs to pass the range a bit
-> further down, but in practice I'm not sure it would ever really
-> matter for them because the 2MB level exceeds the single page flush
-> ceiling for 4k pages unlike powerpc with 64k pages. But in corner
-> cases where the unmap crossed a bunch of small vmas or the ceiling
-> was increased then in theory it could be of use.
+Excerpts from Christophe Leroy's message of August 4, 2021 3:27 pm:
+> In those hot functions that are called at every interrupt, any saved
+> cycle is worth it.
+>=20
+> interrupt_exit_user_prepare() and interrupt_exit_kernel_prepare() are
+> called from three places:
+> - From entry_32.S
+> - From interrupt_64.S
+> - From interrupt_exit_user_restart() and interrupt_exit_kernel_restart()
+>=20
+> In entry_32.S, there are inambiguously called based on MSR_PR:
+>=20
+> 	interrupt_return:
+> 		lwz	r4,_MSR(r1)
+> 		addi	r3,r1,STACK_FRAME_OVERHEAD
+> 		andi.	r0,r4,MSR_PR
+> 		beq	.Lkernel_interrupt_return
+> 		bl	interrupt_exit_user_prepare
+> 	...
+> 	.Lkernel_interrupt_return:
+> 		bl	interrupt_exit_kernel_prepare
+>=20
+> In interrupt_64.S, that's similar:
+>=20
+> 	interrupt_return_\srr\():
+> 		ld	r4,_MSR(r1)
+> 		andi.	r0,r4,MSR_PR
+> 		beq	interrupt_return_\srr\()_kernel
+> 	interrupt_return_\srr\()_user: /* make backtraces match the _kernel vari=
+ant */
+> 		addi	r3,r1,STACK_FRAME_OVERHEAD
+> 		bl	interrupt_exit_user_prepare
+> 	...
+> 	interrupt_return_\srr\()_kernel:
+> 		addi	r3,r1,STACK_FRAME_OVERHEAD
+> 		bl	interrupt_exit_kernel_prepare
+>=20
+> In interrupt_exit_user_restart() and interrupt_exit_kernel_restart(),
+> MSR_PR is verified respectively by BUG_ON(!user_mode(regs)) and
+> BUG_ON(user_mode(regs)) prior to calling interrupt_exit_user_prepare()
+> and interrupt_exit_kernel_prepare().
+>=20
+> The verification in interrupt_exit_user_prepare() and
+> interrupt_exit_kernel_prepare() are therefore useless and can be removed.
+>=20
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-x86 can do single invalidates for 2M pages if that's the only type
-encountered in the range, at which point we can do 33*2M = 66M, which is
-well below the 1G range for the next level of huge.
+Probably okay to do now things are ironing out.
 
-> Subject: [PATCH v1] mm/mmu_gather: provide archs with the entire range that is
->  to be flushed, not just the particular gather
-> 
-> This allows archs to optimise flushing heuristics better, in the face of
-> flush operations forcing smaller flush batches. For example, an
-> architecture may choose a more costly per-page invalidation for small
-> ranges of pages with the assumption that the full TLB flush cost would
-> be more expensive in terms of refills. However if a very large range is
-> forced into flushing small ranges, the faster full-process flush may
-> have been the better choice.
+Unless we want to make a new define for interrupt handler debug and put=20
+a bunch of these asserts under it. There's quite a lot more here, and
+in asm/interrupt.h, etc.
 
-What is splitting up the flushes for you? That page_size power-special?
+Thanks,
+Nick
+
+> ---
+>  arch/powerpc/kernel/interrupt.c | 2 --
+>  1 file changed, 2 deletions(-)
+>=20
+> diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interr=
+upt.c
+> index 21bbd615ca41..f26caf911ab5 100644
+> --- a/arch/powerpc/kernel/interrupt.c
+> +++ b/arch/powerpc/kernel/interrupt.c
+> @@ -465,7 +465,6 @@ notrace unsigned long interrupt_exit_user_prepare(str=
+uct pt_regs *regs)
+> =20
+>  	if (!IS_ENABLED(CONFIG_BOOKE) && !IS_ENABLED(CONFIG_40x))
+>  		BUG_ON(!(regs->msr & MSR_RI));
+> -	BUG_ON(!(regs->msr & MSR_PR));
+>  	BUG_ON(arch_irq_disabled_regs(regs));
+>  	CT_WARN_ON(ct_state() =3D=3D CONTEXT_USER);
+> =20
+> @@ -499,7 +498,6 @@ notrace unsigned long interrupt_exit_kernel_prepare(s=
+truct pt_regs *regs)
+>  	if (!IS_ENABLED(CONFIG_BOOKE) && !IS_ENABLED(CONFIG_40x) &&
+>  	    unlikely(!(regs->msr & MSR_RI)))
+>  		unrecoverable_exception(regs);
+> -	BUG_ON(regs->msr & MSR_PR);
+>  	/*
+>  	 * CT_WARN_ON comes here via program_check_exception,
+>  	 * so avoid recursion.
+> --=20
+> 2.25.0
+>=20
+>=20
