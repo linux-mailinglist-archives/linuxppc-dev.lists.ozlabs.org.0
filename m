@@ -1,81 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D0D73DFD59
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 10:54:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD4C63DFEC0
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 12:02:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gflsn2bgTz3cTT
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 18:54:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GfnNt4p3Sz3cXT
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 20:02:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=fk37KOcr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ceTPa6Je;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1030;
- helo=mail-pj1-x1030.google.com; envelope-from=npiggin@gmail.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=fk37KOcr; dkim-atps=neutral
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com
- [IPv6:2607:f8b0:4864:20::1030])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=ceTPa6Je; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GflsJ017Vz302G
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Aug 2021 18:53:54 +1000 (AEST)
-Received: by mail-pj1-x1030.google.com with SMTP id
- b1-20020a17090a8001b029017700de3903so5168654pjn.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Aug 2021 01:53:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=jAaZlMkl00zT0OtQniQ7FZrvBURnMn0WpyG8CxlOJn4=;
- b=fk37KOcrmxMPrw7cXIiBvrn80IgC1iRB7IkdNmQkax/PkAu2NsEsTirizGutmU0QG3
- VOTUOnlbIbIdLU0C4uyIcoRR6n4b/fVNrmKQNEezNIobfi1RL5uwvOj39pFxVgRTEy7H
- AvGcHpBt8z3iaVpcL+yI3PzBkSXCtI3XLjQQkvm8URA0+/IcP1KxVDb7Xyk2csBABKZ+
- OTv00GJ1mmF+6sI5vx+ExobgY5rfNtwZNlDkIr38Dd5SRIl39N6BIHjCT7AfiPFL/gqH
- Y5n/jMA4zpg1cXov+VHFc1ZKEG6zqaiOIa2bttWvHaATHK+M8V1EEGMEaPbbEaP1hTA0
- oNdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=jAaZlMkl00zT0OtQniQ7FZrvBURnMn0WpyG8CxlOJn4=;
- b=oBz1/nQUY6JiS6keSPSHzeslkTbta9LfkwynBxpXVkzjLt/VBdvr0SeojHRmvG0Oih
- vUp21i6t89MG7PxIAcsyG83bhgmV0g76Pw0Yh6dORG7VNNUvo8YrMWaB05p7wVdgHHmc
- y5DCKtFbRn8N7fF0N3Shj5aW1mKQsaRWI4fgpTQmXe1B9djKTQm5Ly+APzfwmRZ5YOUJ
- 1Ix1MnQk37riwcQtQmP9SHfU8IK33xv6oXb5PmzuZT3iwTVOpVX4EA8dyt940kxjfjnf
- FwsSD9ALUqETROSpXxtqrja0AKkTJb3kJL1SXwMgx0KZUXhaVMxKz+NvwcQ2/cmLQZNm
- HnYA==
-X-Gm-Message-State: AOAM532f+oVJXgDugTGi4bRP5L8oQQl4GQr9oxDDn0rsiLdsTtcyCQso
- 2fZnboO1au0S6TzCuKDPhCQ=
-X-Google-Smtp-Source: ABdhPJwcXvw0oSoxqi2MuD7Y5yzBqeL8SRppbr8D0zPLRVYAgmrTaQA5Pd9K8CuLIjyynNaYi0XY+Q==
-X-Received: by 2002:a17:902:b78b:b029:12c:6f89:51aa with SMTP id
- e11-20020a170902b78bb029012c6f8951aamr21910891pls.3.1628067232884; 
- Wed, 04 Aug 2021 01:53:52 -0700 (PDT)
-Received: from localhost (60-242-181-102.static.tpgi.com.au. [60.242.181.102])
- by smtp.gmail.com with ESMTPSA id
- u13sm1893006pfh.123.2021.08.04.01.53.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Aug 2021 01:53:52 -0700 (PDT)
-Date: Wed, 04 Aug 2021 18:53:47 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH] powerpc: Remove MSR_PR check in
- interrupt_exit_{user/kernel}_prepare()
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
- <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>,
- Paul Mackerras <paulus@samba.org>
-References: <b36623df00ef3d2296f928487b6e23f93a217afa.1628054802.git.christophe.leroy@csgroup.eu>
- <1628064412.48kzr1eula.astroid@bobo.none>
- <cd5f54fd-fbf4-e471-9971-1e8c86755754@csgroup.eu>
-In-Reply-To: <cd5f54fd-fbf4-e471-9971-1e8c86755754@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GfnNM3g7Cz30Dd
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Aug 2021 20:02:26 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 1749YBTD061927; Wed, 4 Aug 2021 06:02:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : reply-to : references : mime-version : content-type
+ : in-reply-to; s=pp1; bh=Si2RaYEKACLc9gmdxcROUfh0ObjMKmBVxrlDiI0m+P8=;
+ b=ceTPa6JehcJh6u1IYa79vhNqhiaGEvErhoJJwneWRZm+xq2iVBK4Mk38NPYU9KVZ/Mf1
+ KYSvDyHeOxx6tCwuHj3UuxzLmaNYtSLdhP9hfaAKWjY3m1xyKTMcnnae9R+k/UcJtkwR
+ q5WhXH8JZLp21nxIZ9rlyesSZeLFEd2g6HjYw9ADdXSfLh1WM0t1ZAu6ELQDjOrptdzz
+ 7nrXCTbauVmIEdtBykdtE47gjV56EHEucs502RZIoQl5ISYJHvP1XP8eM/yoDUOAqeGT
+ 6NoPtkyLRJQX4K+V5/d0a+tjSyeKdtg6eMfHIhuo48naWKi7ffOv6qDQNYK8/hWVz+qt zA== 
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3a7cfc8erg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 04 Aug 2021 06:02:06 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1749vMqE017669;
+ Wed, 4 Aug 2021 10:02:03 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma03fra.de.ibm.com with ESMTP id 3a4x58r3j6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 04 Aug 2021 10:02:03 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 174A1x8A47448328
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 4 Aug 2021 10:01:59 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3D132A407B;
+ Wed,  4 Aug 2021 10:01:59 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 01E0DA4040;
+ Wed,  4 Aug 2021 10:01:56 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Wed,  4 Aug 2021 10:01:55 +0000 (GMT)
+Date: Wed, 4 Aug 2021 15:31:55 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Valentin Schneider <valentin.schneider@arm.com>
+Subject: Re: [PATCH v2 1/2] sched/topology: Skip updating masks for
+ non-online nodes
+Message-ID: <20210804100155.GE4072958@linux.vnet.ibm.com>
+References: <20210701041552.112072-1-srikar@linux.vnet.ibm.com>
+ <20210701041552.112072-2-srikar@linux.vnet.ibm.com>
+ <875yxu85wi.mognet@arm.com>
+ <20210712124856.GA3836887@linux.vnet.ibm.com>
+ <87zguqmay9.mognet@arm.com>
+ <20210723143914.GI3836887@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Message-Id: <1628067212.yli25q0lwj.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <20210723143914.GI3836887@linux.vnet.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: kyLPPIU7EN9hswyoUw8Cy49AOnuzhdLT
+X-Proofpoint-GUID: kyLPPIU7EN9hswyoUw8Cy49AOnuzhdLT
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-08-04_03:2021-08-04,
+ 2021-08-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0
+ lowpriorityscore=0 malwarescore=0 phishscore=0 bulkscore=0 clxscore=1015
+ priorityscore=1501 spamscore=0 mlxscore=0 impostorscore=0 suspectscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2107140000 definitions=main-2108040047
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,75 +104,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Gautham R Shenoy <ego@linux.vnet.ibm.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>, Rik van Riel <riel@surriel.com>,
+ Peter Zijlstra <peterz@infradead.org>, linuxppc-dev@lists.ozlabs.org,
+ Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>,
+ LKML <linux-kernel@vger.kernel.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Laurent Dufour <ldufour@linux.ibm.com>,
+ Mel Gorman <mgorman@techsingularity.net>, Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Christophe Leroy's message of August 4, 2021 6:37 pm:
->=20
->=20
-> Le 04/08/2021 =C3=A0 10:08, Nicholas Piggin a =C3=A9crit=C2=A0:
->> Excerpts from Christophe Leroy's message of August 4, 2021 3:27 pm:
->>> In those hot functions that are called at every interrupt, any saved
->>> cycle is worth it.
->>>
->>> interrupt_exit_user_prepare() and interrupt_exit_kernel_prepare() are
->>> called from three places:
->>> - From entry_32.S
->>> - From interrupt_64.S
->>> - From interrupt_exit_user_restart() and interrupt_exit_kernel_restart(=
-)
->>>
->>> In entry_32.S, there are inambiguously called based on MSR_PR:
->>>
->>> 	interrupt_return:
->>> 		lwz	r4,_MSR(r1)
->>> 		addi	r3,r1,STACK_FRAME_OVERHEAD
->>> 		andi.	r0,r4,MSR_PR
->>> 		beq	.Lkernel_interrupt_return
->>> 		bl	interrupt_exit_user_prepare
->>> 	...
->>> 	.Lkernel_interrupt_return:
->>> 		bl	interrupt_exit_kernel_prepare
->>>
->>> In interrupt_64.S, that's similar:
->>>
->>> 	interrupt_return_\srr\():
->>> 		ld	r4,_MSR(r1)
->>> 		andi.	r0,r4,MSR_PR
->>> 		beq	interrupt_return_\srr\()_kernel
->>> 	interrupt_return_\srr\()_user: /* make backtraces match the _kernel va=
-riant */
->>> 		addi	r3,r1,STACK_FRAME_OVERHEAD
->>> 		bl	interrupt_exit_user_prepare
->>> 	...
->>> 	interrupt_return_\srr\()_kernel:
->>> 		addi	r3,r1,STACK_FRAME_OVERHEAD
->>> 		bl	interrupt_exit_kernel_prepare
->>>
->>> In interrupt_exit_user_restart() and interrupt_exit_kernel_restart(),
->>> MSR_PR is verified respectively by BUG_ON(!user_mode(regs)) and
->>> BUG_ON(user_mode(regs)) prior to calling interrupt_exit_user_prepare()
->>> and interrupt_exit_kernel_prepare().
->>>
->>> The verification in interrupt_exit_user_prepare() and
->>> interrupt_exit_kernel_prepare() are therefore useless and can be remove=
-d.
->>>
->>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->>=20
->> Probably okay to do now things are ironing out.
->>=20
->> Unless we want to make a new define for interrupt handler debug and put
->> a bunch of these asserts under it. There's quite a lot more here, and
->> in asm/interrupt.h, etc.
->=20
-> But that one is so trivial that I'm not sure there is any point in keepin=
-g it even as a kind of=20
-> additional DEBUG level, unless you want those BUG_ONs because you don't t=
-rust the compiler.
+* Srikar Dronamraju <srikar@linux.vnet.ibm.com> [2021-07-23 20:09:14]:
 
-Fair point.
+> * Valentin Schneider <valentin.schneider@arm.com> [2021-07-13 17:32:14]:
+> 
+> > On 12/07/21 18:18, Srikar Dronamraju wrote:
+> > > Hi Valentin,
+> > >
+> > >> On 01/07/21 09:45, Srikar Dronamraju wrote:
+> > >> > @@ -1891,12 +1894,30 @@ void sched_init_numa(void)
+> > >> >  void sched_domains_numa_masks_set(unsigned int cpu)
+> > >> >  {
+> > >
 
-Acked-by: Nicholas Piggin <npiggin@gmail.com>
+Hey Valentin / Peter
+
+Did you get a chance to look at this?
+
+-- 
+Thanks and Regards
+Srikar Dronamraju
