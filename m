@@ -2,47 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 102CC3E036E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 16:36:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA8A33E03A6
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 16:46:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GfvSn6VpKz3clk
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Aug 2021 00:36:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gfvh44cb2z3cZV
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Aug 2021 00:46:28 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=fwuZTS2i;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com;
- envelope-from=pulehui@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GfvSM5SJZz30BX
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Aug 2021 00:36:19 +1000 (AEST)
-Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.57])
- by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4GfvMn3qJJz83dT;
- Wed,  4 Aug 2021 22:32:21 +0800 (CST)
-Received: from dggpemm500019.china.huawei.com (7.185.36.180) by
- dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Wed, 4 Aug 2021 22:36:12 +0800
-Received: from ubuntu1804.huawei.com (10.67.174.98) by
- dggpemm500019.china.huawei.com (7.185.36.180) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Wed, 4 Aug 2021 22:36:12 +0800
-From: Pu Lehui <pulehui@huawei.com>
-To: <oleg@redhat.com>, <mpe@ellerman.id.au>, <benh@kernel.crashing.org>,
- <paulus@samba.org>, <naveen.n.rao@linux.vnet.ibm.com>, <mhiramat@kernel.org>, 
- <christophe.leroy@csgroup.eu>, <peterz@infradead.org>, <npiggin@gmail.com>,
- <ruscur@russell.cc>
-Subject: [PATCH] powerpc/kprobes: Fix kprobe Oops happens in booke
-Date: Wed, 4 Aug 2021 22:37:35 +0800
-Message-ID: <20210804143735.148547-1-pulehui@huawei.com>
-X-Mailer: git-send-email 2.17.1
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62b;
+ helo=mail-pl1-x62b.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=fwuZTS2i; dkim-atps=neutral
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com
+ [IPv6:2607:f8b0:4864:20::62b])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GfvgZ0lhrz307S
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Aug 2021 00:46:01 +1000 (AEST)
+Received: by mail-pl1-x62b.google.com with SMTP id i10so3260294pla.3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Aug 2021 07:46:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=P8L654BT1qD/OuJQ67qVjzfF7qTMazs5HMM0i+7RRcU=;
+ b=fwuZTS2ikg4ACOiCjTD3LaULWWQfkT6c5+djcaSAxEdN887vXddrjiEPZJTGjhao4W
+ 4XXCqUZFuOW7vRaVDQuYzrx2RxgSJ6XDKIKdfOrUdf8mXVJMuMAaEvJ2VOiDMtSQWsI8
+ uvF+0bAm30zV+6/a9+/RJsvA0trmPceQgiFakE8lJj+vNxQxeTfCE6DJI7j4MOcdVwZ9
+ ArgXHlyYuAYaT/KJwoMVDARa+rLS5gwK1EQ2eC/3QZK3yJ3TLtg6gAskMF8mE5lQ05M5
+ UOlmoo6diMCotD5tufmYGe57o96OtQ9HH+C9IUO33C+OdhA3EoK1KK3jI4paAXw5hB73
+ h4mw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=P8L654BT1qD/OuJQ67qVjzfF7qTMazs5HMM0i+7RRcU=;
+ b=I3UKITyBYioO/D7nNtghsvLBnrSFE6mxdMCTyzXkzgUv6/BOGkwLRapSLp57KqG/F3
+ Wre+wtwIKFgR9gLDkBb5e5bXKiham+G40+9W5gTNxko+BB1Vkuux7OtH6g4TFFU034Bb
+ BKKfGUyR97NLw0oGmXazSBcAOsdQZq+81NiDnUU/TW2urV+YoEBRTXdD44wiyJARfsuv
+ 8b830xG9TEOSkjUbBOH7pAWfZbYakzmut4M3k9GVjKr+YZr7pI8cw78a+z3Y5HZcaLL+
+ G05vtx9ELShKIJslY7Z2xWo/V5kR3tFa/biG/tPC003XkslvXsAC2yAPnhE59ip731td
+ rnBw==
+X-Gm-Message-State: AOAM530D/cEY7EwrlAvriN81jk9nARFpFdbHrC/2ItYdwiklUn7PWCF1
+ XKWUDQBBjbhfCAHD5qg+cjY=
+X-Google-Smtp-Source: ABdhPJxLmkmmgouPLnRDtGmrVMfLMsXI77C3t2tw1c5wn0y6G7joHKaNpwWijYksY1TkSpEX0KgijA==
+X-Received: by 2002:a05:6a00:b83:b029:352:9507:f3b9 with SMTP id
+ g3-20020a056a000b83b02903529507f3b9mr27559882pfj.13.1628088356088; 
+ Wed, 04 Aug 2021 07:45:56 -0700 (PDT)
+Received: from localhost (60-242-181-102.static.tpgi.com.au. [60.242.181.102])
+ by smtp.gmail.com with ESMTPSA id
+ g1sm3246958pfo.0.2021.08.04.07.45.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 04 Aug 2021 07:45:55 -0700 (PDT)
+Date: Thu, 05 Aug 2021 00:45:50 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH] powerpc/32s: Fix napping restore in data storage
+ interrupt (DSI)
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+References: <731694e0885271f6ee9ffc179eb4bcee78313682.1628003562.git.christophe.leroy@csgroup.eu>
+ <ce20d16c-b0b2-94c-3e22-794d95c376b@linux-m68k.org>
+ <b04a90a9-9d62-2192-f896-ea99be911604@csgroup.eu>
+ <8fb08f68-ed01-65f9-fb9e-66abf2b18a00@csgroup.eu>
+ <1628068469.gv4bl1fw7w.astroid@bobo.none>
+ <d8e1f924-ca60-4dcc-ac5f-3801ea226edf@csgroup.eu>
+In-Reply-To: <d8e1f924-ca60-4dcc-ac5f-3801ea226edf@csgroup.eu>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.67.174.98]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpemm500019.china.huawei.com (7.185.36.180)
-X-CFilter-Loop: Reflected
+Message-Id: <1628085762.7z2g9ulayj.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,93 +87,137 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: zhangjinhao2@huawei.com, xukuohai@huawei.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, pulehui@huawei.com
+Cc: userm57@yahoo.com, Finn Thain <fthain@linux-m68k.org>,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When using kprobe on powerpc booke series processor, Oops happens
-as show bellow:
+Excerpts from Christophe Leroy's message of August 4, 2021 11:28 pm:
+>=20
+>=20
+> Le 04/08/2021 =C3=A0 13:36, Nicholas Piggin a =C3=A9crit=C2=A0:
+>> Excerpts from Christophe Leroy's message of August 4, 2021 4:21 pm:
+>>> Hi Nic,
+>>>
+>>> I think I'll need your help on that one.
+>>>
+>>> Le 04/08/2021 =C3=A0 08:07, Christophe Leroy a =C3=A9crit=C2=A0:
+>>>>
+>>>>
+>>>> Le 04/08/2021 =C3=A0 06:04, Finn Thain a =C3=A9crit=C2=A0:
+>>=20
+>> Hi Finn!
+>>=20
+>>>>> On Tue, 3 Aug 2021, Christophe Leroy wrote:
+>>>>>
+>>> ...
+>>>>>
+>>>>> ------------[ cut here ]------------
+>>>>> kernel BUG at arch/powerpc/kernel/interrupt.c:49!
+>>>>> Oops: Exception in kernel mode, sig: 5 [#1]
+>>>>> BE PAGE_SIZE=3D4K MMU=3DHash SMP NR_CPUS=3D2 PowerMac
+>>>>> Modules linked in:
+>>>>> CPU: 0 PID: 1859 Comm: xfce4-session Not tainted 5.13.0-pmac-VMAP #10
+>>>>> NIP:=C2=A0 c0011474 LR: c0011464 CTR: 00000000
+>>>>> REGS: e2f75e40 TRAP: 0700=C2=A0=C2=A0 Not tainted=C2=A0 (5.13.0-pmac-=
+VMAP)
+>>>>> MSR:=C2=A0 00021032 <ME,IR,DR,RI>=C2=A0 CR: 2400446c=C2=A0 XER: 20000=
+000
+>>>>>
+>>>>> GPR00: c001604c e2f75f00 ca284a60 00000000 00000000 a5205eb0 00000008=
+ 00000020
+>>>>> GPR08: ffffffc0 00000001 501200d9 ce030005 ca285010 00c1f778 00000000=
+ 00000000
+>>>>> GPR16: 00945b20 009402f8 00000001 a6b87550 a51fd000 afb73220 a6b22c78=
+ a6a6aecc
+>>>>> GPR24: 00000000 ffffffc0 00000020 00000008 a5205eb0 00000000 e2f75f40=
+ 000000ae
+>>>>> NIP [c0011474] system_call_exception+0x60/0x164
+>>>>> LR [c0011464] system_call_exception+0x50/0x164
+>>>>> Call Trace:
+>>>>> [e2f75f00] [00009000] 0x9000 (unreliable)
+>>>>> [e2f75f30] [c001604c] ret_from_syscall+0x0/0x28
+>>>>> --- interrupt: c00 at 0xa69d6cb0
+>>>>> NIP:=C2=A0 a69d6cb0 LR: a69d6c3c CTR: 00000000
+>>>>> REGS: e2f75f40 TRAP: 0c00=C2=A0=C2=A0 Not tainted=C2=A0 (5.13.0-pmac-=
+VMAP)
+>>>>> MSR:=C2=A0 0000d032 <EE,PR,ME,IR,DR,RI>=C2=A0 CR: 2400446c=C2=A0 XER:=
+ 20000000
+>>>>>
+>>>>> GPR00: 000000ae a5205de0 a5687ca0 00000000 00000000 a5205eb0 00000008=
+ 00000020
+>>>>> GPR08: ffffffc0 401201ea 401200d9 ffffffff c158f230 00c1f778 00000000=
+ 00000000
+>>>>> GPR16: 00945b20 009402f8 00000001 a6b87550 a51fd000 afb73220 a6b22c78=
+ a6a6aecc
+>>>>> GPR24: afb72fc8 00000000 00000001 a5205f30 afb733dc 00000000 a6b85ff4=
+ a5205eb0
+>>>>> NIP [a69d6cb0] 0xa69d6cb0
+>>>>> LR [a69d6c3c] 0xa69d6c3c
+>>>>> --- interrupt: c00
+>>>>> Instruction dump:
+>>>>> 7cdb3378 93810020 7cbc2b78 93a10024 7c9d2378 93e1002c 7d3f4b78 4800d6=
+29
+>>>>> 817e0084 931e0088 69690002 5529fffe <0f090000> 69694000 552997fe 0f09=
+0000
+>>>>> ---[ end trace c66c6c3c44806276 ]---
+>>>>>
+>>>
+>>> Getting a BUG at arch/powerpc/kernel/interrupt.c:49 meaning MSR_RI is n=
+ot set, but the c00 interrupt
+>>> frame shows MSR_RI properly set, so what ?
+>>=20
+>> Could the stack be correct but regs pointer incorrect?
+>>=20
+>> Instruction dump is
+>>=20
+>>     0:   78 33 db 7c     mr      r27,r6
+>>     4:   20 00 81 93     stw     r28,32(r1)
+>>     8:   78 2b bc 7c     mr      r28,r5
+>>     c:   24 00 a1 93     stw     r29,36(r1)
+>>    10:   78 23 9d 7c     mr      r29,r4
+>>    14:   2c 00 e1 93     stw     r31,44(r1)
+>>    18:   78 4b 3f 7d     mr      r31,r9
+>>    1c:   29 d6 00 48     bl      0xd644
+>>    20:   84 00 7e 81     lwz     r11,132(r30)
+>>    24:   88 00 1e 93     stw     r24,136(r30)
+>>    28:   02 00 69 69     xori    r9,r11,2
+>>    2c:   fe ff 29 55     rlwinm  r9,r9,31,31,31
+>>    30:   00 00 09 0f     twnei   r9,0
+>>    34:   00 40 69 69     xori    r9,r11,16384
+>>    38:   fe 97 29 55     rlwinm  r9,r9,18,31,31
+>>    3c:   00 00 09 0f     twnei   r9,0
+>>=20
+>> regs->msr is in r11 =3D=3D 0xce030005 so some kernel address?
+>>=20
+>> r1  =3D=3D 0xe2f75f00
+>> r30 =3D=3D 0xe2f75f40
+>>=20
+>> I think that matches if the function allocates 48 bytes of stack.
+>> STACK_FRAME_OVERHEAD is 16, so the difference would be 0x40 in that
+>> case. Seems okay.
+>>=20
+>> I'm not sure then. Can you get a hash fault interrupt come in here
+>> because of the vmap stack access and clobber r11? Hmm...
+>>=20
+>> fast_hash_page_return:
+>>          andis.  r10, r9, SRR1_ISI_NOPT@h        /* Set on ISI, cleared =
+on DSI */
+>>=20
+>> Is that really right? DSI can set this bit for NOHPTE as well no?
+>=20
+> On DSI, the error bits are in DSISR while they are in SRR1 on ISI.
+>=20
+> r9 is supposed to contain SRR1 in both cases. Powerpc 32 bits programming=
+ manual explicitely says=20
+> that bits 1-4 and 10-15 of SRR1 are cleared on DSI.
 
-[   35.861352] Oops: Exception in kernel mode, sig: 5 [#1]
-[   35.861676] BE PAGE_SIZE=4K SMP NR_CPUS=24 QEMU e500
-[   35.861905] Modules linked in:
-[   35.862144] CPU: 0 PID: 76 Comm: sh Not tainted 5.14.0-rc3-00060-g7e96bf476270 #18
-[   35.862610] NIP:  c0b96470 LR: c00107b4 CTR: c0161c80
-[   35.862805] REGS: c387fe70 TRAP: 0700   Not tainted (5.14.0-rc3-00060-g7e96bf476270)
-[   35.863198] MSR:  00029002 <CE,EE,ME>  CR: 24022824  XER: 20000000
-[   35.863577]
-[   35.863577] GPR00: c0015218 c387ff20 c313e300 c387ff50 00000004 40000002 40000000 0a1a2cce
-[   35.863577] GPR08: 00000000 00000004 00000000 59764000 24022422 102490c2 00000000 00000000
-[   35.863577] GPR16: 00000000 00000000 00000040 10240000 10240000 10240000 10240000 10220000
-[   35.863577] GPR24: ffffffff 10240000 00000000 00000000 bfc655e8 00000800 c387ff50 00000000
-[   35.865367] NIP [c0b96470] schedule+0x0/0x130
-[   35.865606] LR [c00107b4] interrupt_exit_user_prepare_main+0xf4/0x100
-[   35.865974] Call Trace:
-[   35.866142] [c387ff20] [c0053224] irq_exit+0x114/0x120 (unreliable)
-[   35.866472] [c387ff40] [c0015218] interrupt_return+0x14/0x13c
-[   35.866728] --- interrupt: 900 at 0x100af3dc
-[   35.866963] NIP:  100af3dc LR: 100de020 CTR: 00000000
-[   35.867177] REGS: c387ff50 TRAP: 0900   Not tainted (5.14.0-rc3-00060-g7e96bf476270)
-[   35.867488] MSR:  0002f902 <CE,EE,PR,FP,ME>  CR: 20022422  XER: 20000000
-[   35.867808]
-[   35.867808] GPR00: c001509c bfc65570 1024b4d0 00000000 100de020 20022422 bfc655a8 100af3dc
-[   35.867808] GPR08: 0002f902 00000000 00000000 00000000 72656773 102490c2 00000000 00000000
-[   35.867808] GPR16: 00000000 00000000 00000040 10240000 10240000 10240000 10240000 10220000
-[   35.867808] GPR24: ffffffff 10240000 00000000 00000000 bfc655e8 10245910 ffffffff 00000001
-[   35.869406] NIP [100af3dc] 0x100af3dc
-[   35.869578] LR [100de020] 0x100de020
-[   35.869751] --- interrupt: 900
-[   35.870001] Instruction dump:
-[   35.870283] 40c20010 815e0518 714a0100 41e2fd04 39200000 913e00c0 3b1e0450 4bfffd80
-[   35.870666] 0fe00000 92a10024 4bfff1a9 60000000 <7fe00008> 7c0802a6 93e1001c 7c5f1378
-[   35.871339] ---[ end trace 23ff848139efa9b9 ]---
+Ah right, I had in mind it was DSISR on DSI and SRR1 on ISI because
+we put them together early on 64s. Can't think of anything else at the=20
+moment.
 
-There is no real mode for booke arch and the MMU translation is
-always on. The corresponding MSR_IS/MSR_DS bit in booke is used
-to switch the address space, but not for real mode judgment.
-
-Fixes: 21f8b2fa3ca5 ("powerpc/kprobes: Ignore traps that happened in real mode")
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
----
- arch/powerpc/include/asm/ptrace.h | 6 ++++++
- arch/powerpc/kernel/kprobes.c     | 5 +----
- 2 files changed, 7 insertions(+), 4 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/ptrace.h b/arch/powerpc/include/asm/ptrace.h
-index 3e5d470a6155..4aec1a97024b 100644
---- a/arch/powerpc/include/asm/ptrace.h
-+++ b/arch/powerpc/include/asm/ptrace.h
-@@ -187,6 +187,12 @@ static inline unsigned long frame_pointer(struct pt_regs *regs)
- #define user_mode(regs) (((regs)->msr & MSR_PR) != 0)
- #endif
- 
-+#ifdef CONFIG_BOOKE
-+#define real_mode(regs)	0
-+#else
-+#define real_mode(regs)	(!((regs)->msr & MSR_IR) || !((regs)->msr & MSR_DR))
-+#endif
-+
- #define force_successful_syscall_return()   \
- 	do { \
- 		set_thread_flag(TIF_NOERROR); \
-diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
-index cbc28d1a2e1b..fac9a5974718 100644
---- a/arch/powerpc/kernel/kprobes.c
-+++ b/arch/powerpc/kernel/kprobes.c
-@@ -289,10 +289,7 @@ int kprobe_handler(struct pt_regs *regs)
- 	unsigned int *addr = (unsigned int *)regs->nip;
- 	struct kprobe_ctlblk *kcb;
- 
--	if (user_mode(regs))
--		return 0;
--
--	if (!(regs->msr & MSR_IR) || !(regs->msr & MSR_DR))
-+	if (user_mode(regs) || real_mode(regs))
- 		return 0;
- 
- 	/*
--- 
-2.17.1
+Thanks,
+Nick
 
