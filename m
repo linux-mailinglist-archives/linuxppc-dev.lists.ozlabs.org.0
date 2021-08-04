@@ -2,82 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A4383DFAD3
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 06:58:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92A573DFAF6
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 07:15:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gffdb0cQqz3brZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 14:58:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gfg0h2Gdnz3d7s
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 15:15:00 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=du9Q8S3A;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=C0Ck3geE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=out3-smtp.messagingengine.com (client-ip=66.111.4.27;
- helo=out3-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1030;
+ helo=mail-pj1-x1030.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm3 header.b=du9Q8S3A; 
- dkim-atps=neutral
-Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com
- [66.111.4.27])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=C0Ck3geE; dkim-atps=neutral
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com
+ [IPv6:2607:f8b0:4864:20::1030])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gffd70n03z307g
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Aug 2021 14:58:01 +1000 (AEST)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.42])
- by mailout.nyi.internal (Postfix) with ESMTP id D22BE5C0115;
- Wed,  4 Aug 2021 00:57:58 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute2.internal (MEProxy); Wed, 04 Aug 2021 00:57:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to:x-me-proxy
- :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=0lryY4
- e0pWkzFQkHYnTN+Uj25D78SoHYsCpQWq1zdSA=; b=du9Q8S3ArJU3U/j6RXV7a2
- tE75ZWGT1ar7NvadfQ5+KXEjwom+rg3ZyEFOajIeXseEAI8ByEiAi6+MTexqbjd3
- YAAr29+Ro1jrMIg4Z7OZjEgzNkShA8d5rWkFbAl5vdQtFjXoJBuMawdyXR3TSPHN
- fir2d1JrpulGpcPHlSVPTE79P7aZaIk+kqu9DvevC2H2+8oi21YcdmbcY6LSmg9y
- ++bdvkkthJa9CXz75uB/vX3wtxdZ8oIYL2rIA5pDH0krUHqq8Mbp7AsX4oK19HX7
- +J+Xwz6hNIBaEMKKdpEhOIZ4RhqSyNlTjiuZav2EebZjK23cJ178q1DA5/CdKX/w
- ==
-X-ME-Sender: <xms:VB4KYZ7pOc4e_tpNz_nGkftqxgyQ0Ot5Mb8rK9oGxZBcrQcYoTwQAg>
- <xme:VB4KYW6IKoD7UEdfCpgsp2bRLeaJEG3lZsSAUnfyO8Ei9AmPrl_sFRbvtNN451GJJ
- S0XMsNR3UgsWQNmREw>
-X-ME-Received: <xmr:VB4KYQdDd-nCN9sk66I-21z0sQ4anxpKw7-BX66pYLFRKaVGrUEEKoI0FZUm7WhKUKRvLWIgB6kPRQ_mkIYJH0iRGfGKKRik1U0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrieehgdekhecutefuodetggdotefrodftvf
- curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
- uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
- fjughrpeffhffvufgjkfhfgggtsehttdertddttddvnecuhfhrohhmpefhihhnnhcuvfhh
- rghinhcuoehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrghtth
- gvrhhnpeekjeelgfektdfgveefffduvefghfettdeuveekteduleehleeujeegfffhteel
- keenucffohhmrghinhepuddurdhsohenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
- grmhepmhgrihhlfhhrohhmpehfthhhrghinheslhhinhhugidqmheikehkrdhorhhg
-X-ME-Proxy: <xmx:VB4KYSJAV69RxbSl0nBF33m7Voqvja58W7rGbqcGnAAA3FEIDRNBNQ>
- <xmx:VB4KYdKeYOPzKwcafNI1-m8tp3HMLmS7j3Rdywrk4RQ6NoEWstVaqg>
- <xmx:VB4KYbznUqXX-qK1cSLpyrBCQzYgOcmQEiCmha4qC8tQXz3UAKRu0g>
- <xmx:Vh4KYV_yjJdzUvmUhF99J2hWRnkzMl6NWcFTw0JvOnSZ676-ZuoIQw>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 4 Aug 2021 00:57:54 -0400 (EDT)
-Date: Wed, 4 Aug 2021 14:57:48 +1000 (AEST)
-From: Finn Thain <fthain@linux-m68k.org>
-To: Stan Johnson <userm57@yahoo.com>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v3 31/41] powerpc/32: Dismantle EXC_XFER_STD/LITE/TEMPLATE
-In-Reply-To: <683c8156-97b0-5ba7-ce31-2e8613089836@yahoo.com>
-Message-ID: <255f92fc-1667-bdd1-fcac-664c8644a96@linux-m68k.org>
-References: <cover.1615552866.git.christophe.leroy@csgroup.eu>
- <ca5795d04a220586b7037dbbbe6951dfa9e768eb.1615552867.git.christophe.leroy@csgroup.eu>
- <666e3ab4-372-27c2-4621-7cc3933756dd@linux-m68k.org>
- <20210731173954.Horde.fV2Xkw7-sxjG0DUcZ_JO_g3@messagerie.c-s.fr>
- <1d601b7c-1e39-e372-39a5-e1e98e56e2a5@linux-m68k.org>
- <9b64dde3-6ebd-b446-41d9-61e8cb0d8c39@csgroup.eu>
- <62d36dbb-4b39-f5bd-7962-4dcfbea729b3@linux-m68k.org>
- <683c8156-97b0-5ba7-ce31-2e8613089836@yahoo.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gfg0C30Wsz2yLh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Aug 2021 15:14:34 +1000 (AEST)
+Received: by mail-pj1-x1030.google.com with SMTP id
+ s22-20020a17090a1c16b0290177caeba067so7160037pjs.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Aug 2021 22:14:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:references:in-reply-to:mime-version:message-id
+ :content-transfer-encoding;
+ bh=g2lEclpK8rx1SxIedmLq/RnIwOdwyXFvHeDeTMr9HDM=;
+ b=C0Ck3geEryRzahd+bxFsI4qgXJucnZzpVkrOMejBVaaskUW0ERJc2tAOAykQcHoYAU
+ wc31TLWGa/uRT5C72c8rLl1Rwuwo27j/tCuffqlosRe4QR1CZVOvc4C2nXXZzIwTER4c
+ CQOBe3RKevOdw4Qp2itcbEn69dduvqshl/NnfC4/KIlknfzATS0kRynFlvnCv6PdgN5W
+ pVji9Bel4zr9eitlopANPCOp+MGTOqUA8ZznpWWr5/EIEdcuyfCTEFPGSFhdvr4bfK9q
+ XVVih5YzH9HHXRHIBCqmH34TSedSPJB891y/4ZAh7nF9nMAybzrUvohlHSFk6QJL92i4
+ fUnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=g2lEclpK8rx1SxIedmLq/RnIwOdwyXFvHeDeTMr9HDM=;
+ b=QbfN2WLTRyq1jV4eXS+q1gU6E2oocuw8v4R4SmX32d6z8tAAquNuOobxxXFIa3/mAv
+ gcCFYIGoB5IHXKACuQpa0EmJ/9Osi8GnUY2FmyS6WuExSD5FwysfQG+2RWO0sCWCByqy
+ /oGap59CJEM5gx++lssiIM58A6FR/w4eIPDUn2XT/SItPv0q9kEZYlxyKHCwy5tiNq/Y
+ peHK2VljzJXBhQZZJiS0PlAtM0yJZ6d1bJTZMsuQlqIz3zFtVabkM5nS0iHFiG/qXp+d
+ Dw/nDxKShB3OlN3mt/geKRGAaDrBttO1EeD3Ncs83dSo8CO2h2GXIQ5uz/WlkRyzoDVG
+ 088A==
+X-Gm-Message-State: AOAM5315iE17U6ltLa+s0QiQRsVSPOZE15OYWdArjlOW3gcJ6rmKXxNE
+ 6gCjwwCm/wNE+HIBa6jhg9M=
+X-Google-Smtp-Source: ABdhPJyZw/u9guwaqSLigzQ95ESE/UIP7wKoGzzdh+MTpbf+trrBhpGNmJXFHqfksETGDPaBKK4sEA==
+X-Received: by 2002:a63:d458:: with SMTP id i24mr738383pgj.289.1628054068123; 
+ Tue, 03 Aug 2021 22:14:28 -0700 (PDT)
+Received: from localhost (60-242-181-102.static.tpgi.com.au. [60.242.181.102])
+ by smtp.gmail.com with ESMTPSA id
+ l6sm975210pff.74.2021.08.03.22.14.27
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 03 Aug 2021 22:14:27 -0700 (PDT)
+Date: Wed, 04 Aug 2021 15:14:22 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [RFC PATCH] powerpc/book3s64/radix: Upgrade va tlbie to PID tlbie
+ if we cross PMD_SIZE
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+References: <20210803143725.615186-1-aneesh.kumar@linux.ibm.com>
+In-Reply-To: <20210803143725.615186-1-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Message-Id: <1628053302.0qclx0xcj9.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,230 +83,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stan Johnson <userm57@yahoo.com>, linux-kernel@vger.kernel.org,
- Nick Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Excerpts from Aneesh Kumar K.V's message of August 4, 2021 12:37 am:
+> With shared mapping, even though we are unmapping a large range, the kern=
+el
+> will force a TLB flush with ptl lock held to avoid the race mentioned in
+> commit 1cf35d47712d ("mm: split 'tlb_flush_mmu()' into tlb flushing and m=
+emory freeing parts")
+> This results in the kernel issuing a high number of TLB flushes even for =
+a large
+> range. This can be improved by making sure the kernel switch to pid based=
+ flush if the
+> kernel is unmapping a 2M range.
 
-On Tue, 3 Aug 2021, Stan Johnson wrote:
+It would be good to have a bit more description here.
 
-> Attached you will find the following six files:
-> 
-> 1) config-5.13-patched_VMAP.txt
-> 2) config-5.13-patched_NO_VMAP.txt
-> 3) pb3400c-console-5.13-patched_VMAP.txt (using config 1)
-> 4) pb3400c-console-5.13-patched_NO_VMAP.txt (using config 2)
-> 5) ws-console-5.13-patched_VMAP.txt (using config 1)
-> 6) ws-console-5.13-patched_NO_VMAP.txt (using config 2)
-> 
+In any patch that changes a heuristic like this, I would like to see=20
+some justification or reasoning that could be refuted or used as a=20
+supporting argument if we ever wanted to change the heuristic later.
+Ideally with some of the obvious downsides listed as well.
 
-Thanks!
+This "improves" things here, but what if it hurt things elsewhere, how=20
+would we come in later and decide to change it back?
 
-> The command lines in BootX were as follows:
-> 
-> PB 3400c:
-> root=/dev/sda13 console=ttyS0 video=chips65550:vmode:14,cmode:16
-> 
-> Wallstreet:
-> root=/dev/sda12 console=ttyS0 video=ofonly
-> 
-> Notes:
-> 
-> For 3), the patch seems to have fixed the "hang-at-boot" at the Mac
-> OS screen for the PB 3400c. 
+THP flushes for example, I think now they'll do PID flushes (if they=20
+have to be broadcast, which they will tend to be when khugepaged does
+them). So now that might increase jitter for THP and cause it to be a
+loss for more workloads.
 
-I doubt that. I suspect that this is an unrelated failure that only 
-affects the Powerbook 3400 and only intermittently. I say that because 
-you've also observed this failure in v5.11.
+So where do you notice this? What's the benefit?
 
-So we should probably ignore this early-boot failure for the moment. Stan, 
-if it happens again, please reboot and retry. That may allow us to make 
-progress on the other bugs.
+>=20
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+>  arch/powerpc/mm/book3s64/radix_tlb.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3=
+s64/radix_tlb.c
+> index aefc100d79a7..21d0f098e43b 100644
+> --- a/arch/powerpc/mm/book3s64/radix_tlb.c
+> +++ b/arch/powerpc/mm/book3s64/radix_tlb.c
+> @@ -1106,7 +1106,7 @@ EXPORT_SYMBOL(radix__flush_tlb_kernel_range);
+>   * invalidating a full PID, so it has a far lower threshold to change fr=
+om
+>   * individual page flushes to full-pid flushes.
+>   */
+> -static unsigned long tlb_single_page_flush_ceiling __read_mostly =3D 33;
+> +static unsigned long tlb_single_page_flush_ceiling __read_mostly =3D 32;
+>  static unsigned long tlb_local_single_page_flush_ceiling __read_mostly =
+=3D POWER9_TLB_SETS_RADIX * 2;
+> =20
+>  static inline void __radix__flush_tlb_range(struct mm_struct *mm,
+> @@ -1133,7 +1133,7 @@ static inline void __radix__flush_tlb_range(struct =
+mm_struct *mm,
+>  	if (fullmm)
+>  		flush_pid =3D true;
+>  	else if (type =3D=3D FLUSH_TYPE_GLOBAL)
+> -		flush_pid =3D nr_pages > tlb_single_page_flush_ceiling;
+> +		flush_pid =3D nr_pages >=3D tlb_single_page_flush_ceiling;
 
-> After a successful boot, I didn't see any errors until I accessed the 
-> system via ssh. In an ssh window, I entered "dmesg" (no errors) followed 
-> by "ls -Rail /usr/bin", and while that was running, the errors appeared. 
+Arguably >=3D is nicer than > here, but this shouldn't be in the same=20
+patch as the value change.
 
-Since Stan has a yahoo email address that isn't allowed past the spam 
-filter, I'll paste that portion of the console log he sent --
+>  	else
+>  		flush_pid =3D nr_pages > tlb_local_single_page_flush_ceiling;
 
-Kernel attempted to write user page (78a930) - exploit attempt? (uid: 1000)
-------------[ cut here ]------------
-Bug: Write fault blocked by KUAP!
-WARNING: CPU: 0 PID: 1619 at arch/powerpc/mm/fault.c:230 do_page_fault+0x484/0x720
-Modules linked in:
-CPU: 0 PID: 1619 Comm: sshd Not tainted 5.13.0-pmac-VMAP #10
-NIP:  c001b780 LR: c001b780 CTR: 00000000
-REGS: cb981bc0 TRAP: 0700   Not tainted  (5.13.0-pmac-VMAP)
-MSR:  00021032 <ME,IR,DR,RI>  CR: 24942424  XER: 00000000
+And it should change everything to be consistent. Although I'm not sure=20
+it's worth changing even though I highly doubt any administrator would
+be tweaking this.
 
-GPR00: c001b780 cb981c80 c151c1e0 00000021 3ffffbff 085b0000 00000027 c8eb644c
-GPR08: 00000023 00000000 00000000 00000000 24942424 0076f8c8 00000000 000186a0
-GPR16: afab5544 afab5540 afab553c afab5538 afab5534 afab5530 00000004 0078a934
-GPR24: 00000000 00000000 0078a970 02000000 c1497b60 0078a930 00000300 cb981cc0
-NIP [c001b780] do_page_fault+0x484/0x720
-LR [c001b780] do_page_fault+0x484/0x720
-Call Trace:
-[cb981c80] [c001b780] do_page_fault+0x484/0x720 (unreliable)
-[cb981cb0] [c000424c] DataAccess_virt+0xd4/0xe4
---- interrupt: 300 at __copy_tofrom_user+0x110/0x20c
-NIP:  c001f9bc LR: c0172b04 CTR: 00000001
-REGS: cb981cc0 TRAP: 0300   Not tainted  (5.13.0-pmac-VMAP)
-MSR:  00009032 <EE,ME,IR,DR,RI>  CR: 442444e8  XER: 20000000
-DAR: 0078a930 DSISR: 0a000000
-GPR00: 00000000 cb981d80 c151c1e0 0078a930 cb981db8 00000004 0078a92c 00000100
-GPR08: 00000122 10c279a1 10000000 c1800034 242444e2 0076f8c8 00000000 000186a0
-GPR16: afab5544 afab5540 afab553c afab5538 afab5534 afab5530 00000004 0078a934
-GPR24: 00000000 00000000 0078a970 0078a930 cb981dac cb981dac 00000001 00000004
-NIP [c001f9bc] __copy_tofrom_user+0x110/0x20c
-LR [c0172b04] core_sys_select+0x3e8/0x594
---- interrupt: 300
-[cb981d80] [c0172960] core_sys_select+0x244/0x594 (unreliable)
-[cb981ee0] [c0172d98] kern_select+0xe8/0x158
-[cb981f30] [c001604c] ret_from_syscall+0x0/0x28
---- interrupt: c00 at 0xa7a4f388
-NIP:  a7a4f388 LR: a7a4f35c CTR: 00000000
-REGS: cb981f40 TRAP: 0c00   Not tainted  (5.13.0-pmac-VMAP)
-MSR:  0000d032 <EE,PR,ME,IR,DR,RI>  CR: 240044e2  XER: 20000000
+Thanks,
+Nick
 
-GPR00: 0000008e afab54e0 a73cc7d0 0000000c 0078a930 0078a970 00000000 00000000
-GPR08: 00000004 00000000 00000000 a79e45b0 28004462 0076f8c8 00000000 000186a0
-GPR16: afab5544 afab5540 afab553c afab5538 afab5534 afab5530 00000004 00770490
-GPR24: afab552f 00000004 00000000 0078a930 00000000 00771734 a7b2fff4 00798cb0
-NIP [a7a4f388] 0xa7a4f388
-LR [a7a4f35c] 0xa7a4f35c
---- interrupt: c00
-Instruction dump:
-3884aa30 3863012c 4807685d 807f0080 48042e41 2f830000 419e0148 3c80c079
-3c60c076 38841b6c 38630174 4801f701 <0fe00000> 3860000b 4bfffe30 3c80c06b
----[ end trace c6ec12d4725e6f89 ]---
-
-> I'll enter the same commands for the other three boots. It may be 
-> important that I didn't see errors until there was significant network 
-> access.
-> 
-> For 4), the PB 3400c also booted normally. Errors started after
-> logging in via ssh when I entered "dmesg". To be consistent with the
-> first test, I followed that with "ls -Rail /usr/bin" and saw more
-> errors. A normal reboot ("shutdown -r now") caused even more errors.
-> 
-
-Here's the relevant portion of that log:
-
-Kernel attempted to write user page (ba3bc0) - exploit attempt? (uid: 1000)
-------------[ cut here ]------------
-Bug: Write fault blocked by KUAP!
-WARNING: CPU: 0 PID: 1609 at arch/powerpc/mm/fault.c:230 do_page_fault+0x484/0x720
-Modules linked in:
-CPU: 0 PID: 1609 Comm: bash Not tainted 5.13.0-pmac-NO_VMAP #11
-NIP:  c001b780 LR: c001b780 CTR: 00000000
-REGS: c3c5bba0 TRAP: 0700   Not tainted  (5.13.0-pmac-NO_VMAP)
-MSR:  00021032 <ME,IR,DR,RI>  CR: 24442424  XER: 00000000
-
-GPR00: c001b780 c3c5bc60 c3842ca0 00000021 3ffffbff 085ac000 00000027 c8eb2444
-GPR08: 00000023 00000000 00000000 00000000 24442424 00b6fff4 00180008 00000000
-GPR16: c18ac148 c3c5beb0 c8fc3e00 00000000 c7a70000 00ba4260 00000000 00000000
-GPR24: c3c5be90 00001000 c7a70000 02000000 c1f43900 00ba3bc0 00000300 c3c5bca0
-NIP [c001b780] do_page_fault+0x484/0x720
-LR [c001b780] do_page_fault+0x484/0x720
-Call Trace:
-[c3c5bc60] [c001b780] do_page_fault+0x484/0x720 (unreliable)
-[c3c5bc90] [c000424c] DataAccess_virt+0xd4/0xe4
---- interrupt: 300 at __copy_tofrom_user+0xbc/0x20c
-NIP:  c001f968 LR: c03258c4 CTR: 00000031
-REGS: c3c5bca0 TRAP: 0300   Not tainted  (5.13.0-pmac-NO_VMAP)
-MSR:  00009032 <EE,ME,IR,DR,RI>  CR: 42424288  XER: 20000000
-DAR: 00ba3bc0 DSISR: 0a000000
-GPR00: 00000004 c3c5bd60 c3842ca0 00000084 c7a7096c 00000000 00ba3bbc 20776974
-GPR08: 68207469 6c646520 287e290a 00000004 22422282 00b6fff4 00180008 00000000
-GPR16: c18ac148 c3c5beb0 c8fc3e00 00000000 c7a70000 00ba4260 00000000 00000000
-GPR24: c3c5be90 00001000 c7a70000 c8fc3e00 00001000 c3c5be98 00008000 00ba3260
-NIP [c001f968] __copy_tofrom_user+0xbc/0x20c
-LR [c03258c4] copy_page_to_iter+0x2c0/0xab8
---- interrupt: 300
-[c3c5bd60] [00000000] 0x0 (unreliable)
-[c3c5bdb0] [c00f5bb4] filemap_read+0x424/0xa2c
-[c3c5be80] [c0156910] vfs_read+0x274/0x340
-[c3c5bf00] [c0156ec4] ksys_read+0x70/0x118
-[c3c5bf30] [c001604c] ret_from_syscall+0x0/0x28
---- interrupt: c00 at 0x86bc88
-NIP:  0086bc88 LR: 0086bc5c CTR: 00000000
-REGS: c3c5bf40 TRAP: 0c00   Not tainted  (5.13.0-pmac-NO_VMAP)
-MSR:  0000d032 <EE,PR,ME,IR,DR,RI>  CR: 20422224  XER: 20000000
-
-GPR00: 00000003 afa710a0 a799a8c0 00000003 00b9b260 00012b22 00badd88 00000000
-GPR08: 0000e279 00012b31 00b9b258 00b9b178 00002564 00b6fff4 00b8b4c0 00000000
-GPR16: 00000002 00012b22 00aa2ad0 00000000 00b85730 00b85680 00b87900 00b85620
-GPR24: 00b856d0 00b9aa80 00000003 00b85520 00b855d0 00b878a0 00959ff4 0000000e
-NIP [0086bc88] 0x86bc88
-LR [0086bc5c] 0x86bc5c
---- interrupt: c00
-Instruction dump:
-3884a9e0 386300f0 48076575 807f0080 48042b59 2f830000 419e0148 3c80c079
-3c60c076 38841b24 38630138 4801f419 <0fe00000> 3860000b 4bfffe30 3c80c06b
----[ end trace c6966f6cf6736566 ]---
-
-
-So the PowerBook 3400 and the PowerBook G3 Series "Wallstreet" may have one 
-failure mode in common (?) The "Wallstreet" (stock v5.13), in the log
-sent a few days ago, showed:
-
-Kernel attempted to write user page (c6207c) - exploit attempt? (uid: 0)
-BUG: Unable to handle kernel data access on write at 0x00c6207c
-Faulting instruction address: 0xa77ad1dc
-Oops: Kernel access of bad area, sig: 11 [#1]
-...
-
-> For 5), login at the Wallstreet X console failed, with errors. After
-> logging in via ssh, entering "dmesg" and "ls -Rail /usr/bin" generated
-> more errors.
-> 
-
-Here's the relevant portion of the log:
-
-------------[ cut here ]------------
-kernel BUG at arch/powerpc/kernel/interrupt.c:49!
-Oops: Exception in kernel mode, sig: 5 [#1]
-BE PAGE_SIZE=4K MMU=Hash SMP NR_CPUS=2 PowerMac
-Modules linked in:
-CPU: 0 PID: 1859 Comm: xfce4-session Not tainted 5.13.0-pmac-VMAP #10
-NIP:  c0011474 LR: c0011464 CTR: 00000000
-REGS: e2f75e40 TRAP: 0700   Not tainted  (5.13.0-pmac-VMAP)
-MSR:  00021032 <ME,IR,DR,RI>  CR: 2400446c  XER: 20000000
-
-GPR00: c001604c e2f75f00 ca284a60 00000000 00000000 a5205eb0 00000008 00000020
-GPR08: ffffffc0 00000001 501200d9 ce030005 ca285010 00c1f778 00000000 00000000
-GPR16: 00945b20 009402f8 00000001 a6b87550 a51fd000 afb73220 a6b22c78 a6a6aecc
-GPR24: 00000000 ffffffc0 00000020 00000008 a5205eb0 00000000 e2f75f40 000000ae
-NIP [c0011474] system_call_exception+0x60/0x164
-LR [c0011464] system_call_exception+0x50/0x164
-Call Trace:
-[e2f75f00] [00009000] 0x9000 (unreliable)
-[e2f75f30] [c001604c] ret_from_syscall+0x0/0x28
---- interrupt: c00 at 0xa69d6cb0
-NIP:  a69d6cb0 LR: a69d6c3c CTR: 00000000
-REGS: e2f75f40 TRAP: 0c00   Not tainted  (5.13.0-pmac-VMAP)
-MSR:  0000d032 <EE,PR,ME,IR,DR,RI>  CR: 2400446c  XER: 20000000
-
-GPR00: 000000ae a5205de0 a5687ca0 00000000 00000000 a5205eb0 00000008 00000020
-GPR08: ffffffc0 401201ea 401200d9 ffffffff c158f230 00c1f778 00000000 00000000
-GPR16: 00945b20 009402f8 00000001 a6b87550 a51fd000 afb73220 a6b22c78 a6a6aecc
-GPR24: afb72fc8 00000000 00000001 a5205f30 afb733dc 00000000 a6b85ff4 a5205eb0
-NIP [a69d6cb0] 0xa69d6cb0
-LR [a69d6c3c] 0xa69d6c3c
---- interrupt: c00
-Instruction dump:
-7cdb3378 93810020 7cbc2b78 93a10024 7c9d2378 93e1002c 7d3f4b78 4800d629
-817e0084 931e0088 69690002 5529fffe <0f090000> 69694000 552997fe 0f090000
----[ end trace c66c6c3c44806276 ]---
-
-> For 6), login at the Wallstreet X console worked, with no errors.
-> There were also no errors from entering "dmesg" or "ls -Rail /usr/bin"
-> in an ssh window. Everything seems stable.
-> 
-
-I think that's consistent with results from a previous test with this 
-machine with v5.13 with CONFIG_VMAP_STACK disabled.
+>  	/*
+> @@ -1335,7 +1335,7 @@ static void __radix__flush_tlb_range_psize(struct m=
+m_struct *mm,
+>  	if (fullmm)
+>  		flush_pid =3D true;
+>  	else if (type =3D=3D FLUSH_TYPE_GLOBAL)
+> -		flush_pid =3D nr_pages > tlb_single_page_flush_ceiling;
+> +		flush_pid =3D nr_pages >=3D tlb_single_page_flush_ceiling;
+>  	else
+>  		flush_pid =3D nr_pages > tlb_local_single_page_flush_ceiling;
+> =20
+> @@ -1505,7 +1505,7 @@ void do_h_rpt_invalidate_prt(unsigned long pid, uns=
+igned long lpid,
+>  			continue;
+> =20
+>  		nr_pages =3D (end - start) >> def->shift;
+> -		flush_pid =3D nr_pages > tlb_single_page_flush_ceiling;
+> +		flush_pid =3D nr_pages >=3D tlb_single_page_flush_ceiling;
+> =20
+>  		/*
+>  		 * If the number of pages spanning the range is above
+> --=20
+> 2.31.1
+>=20
+>=20
