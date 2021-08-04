@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 704213DF8B7
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 02:03:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB25B3DF8F8
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 02:35:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GfX4v71Kfz3cM5
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 10:03:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GfXnZ5kGtz2yy3
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 10:34:58 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=h481Eqo3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=LxVdFcPG;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,55 +18,56 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm3 header.b=h481Eqo3; 
+ header.a=rsa-sha256 header.s=fm3 header.b=LxVdFcPG; 
  dkim-atps=neutral
 Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com
  [66.111.4.29])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GfX4Q3PMlz2yLg
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Aug 2021 10:02:44 +1000 (AEST)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.42])
- by mailout.nyi.internal (Postfix) with ESMTP id 9D7FF5C0136;
- Tue,  3 Aug 2021 20:02:40 -0400 (EDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GfXn81RgNz2yLJ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Aug 2021 10:34:35 +1000 (AEST)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+ by mailout.nyi.internal (Postfix) with ESMTP id 1816D5C0130;
+ Tue,  3 Aug 2021 20:34:33 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
- by compute2.internal (MEProxy); Tue, 03 Aug 2021 20:02:40 -0400
+ by compute4.internal (MEProxy); Tue, 03 Aug 2021 20:34:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:content-type:date:from:in-reply-to
  :message-id:mime-version:references:subject:to:x-me-proxy
- :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=Q2bbrQ
- EQnW/CCXMgoh33J6LXnHBILfp18k4dMcUv8Ro=; b=h481Eqo3Cf0LiWnYIBGqFt
- wGMlWNWenDzK3bhLi45YzA2KPq3DTdDP6Up1wgAf2sg5LvHrPfsbHmb/d64I6vKL
- G8NX85Dfi6ouRLvXbuB26q8S0jZmIRcjuQrd/fyw1rDfX7tQHK7+xbHnvoHiNw2U
- jZrsti0ON0a+E7/+SQAFf9q9ggG1Pwcoxe0+LIiO5sITJpJRSx/jxRnKFntcPTLX
- 8Zcdctw2KAV1FaLIJlshXFgw/W68brd9HGU+Psw4+bqj/8wqCwfmO4147AqyLwi6
- twTMg/TryEqLrL68uEaF9ukKLfsOLraWTwnd8H4DqeZsR+w07WUIF6x8WXo1StZg
+ :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=JeUqSg
+ WX6vaL9uqlA0f6QajQ3fp/nnr4lDxVoh3HZ4g=; b=LxVdFcPG/JV4Ip7P5aBeDi
+ CzGLK4ROwIlnQJo41YyN/5FFvCcx4uAe711LCStZmoXyimIHhXjZmvSWqLGL7k1l
+ ujWlYi96OQPsU/TbMBwatSO0VqwFY+ED5t5museI2bsqe7t38mHZbpmLAQrGwCXO
+ EmkOtNPQWlkmUKxGjArcmDf2/b61XU4z6CWKspLb4A3DwxZg1VdCz8DXdFDb2Fi3
+ cD8p29wvYUnCOPqtKM82QxbTqSmCvqTeqc9XhkoZH7c/FuBPBDmAciKA825bdfgP
+ 4fssFV1S/IRVmE+PuzRjR+gpEX27eyu7jYD47R4FEt0dj0wMasx4vpLM0F1gqYCQ
  ==
-X-ME-Sender: <xms:H9kJYZyFx4NyfiIAUfyjzzk8MM3-knkAP-3489zF3uayQPPvRXTccQ>
- <xme:H9kJYZQnxBlDTcNxC_6pbjyBgGjPTVz4wDc3qhfhNbw5M4zyac48P9YFvqJyf80g9
- VFjXNFmsUrusg8Yio8>
-X-ME-Received: <xmr:H9kJYTUq5P9pa7UuOIAsHp3d6AJnIhVUq-kpNy8luUohMew1HMTNC2B7zBtqYCG-3rmcKzi0qQ0AkCEyXMXFnRLoi9z8If3KrCE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrieehgddviecutefuodetggdotefrodftvf
+X-ME-Sender: <xms:l-AJYes9NVpK3G1FiC4Mw52meQKrc-dEGXumayqJ5lRV81cIX1VP-g>
+ <xme:l-AJYTeb5mQkm3YQeHI1QvS73cjeyC45oVGFtKAgjP4V6BlyBt-Oy1AcI3kS27NgI
+ aZPxFw3PgyaoGuJMJo>
+X-ME-Received: <xmr:l-AJYZzYt-W7UAfmIQGu3yHQAngL10DkvyPaQKDSoWDRlzKko6emzphvxBiplFXTbvZV42qAboS12DL2LzEbmYookGC7B4YfHSg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrieehgdeffecutefuodetggdotefrodftvf
  curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
  uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
  fjughrpeffhffvufgjkfhfgggtsehttdertddttddvnecuhfhrohhmpefhihhnnhcuvfhh
  rghinhcuoehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrghtth
- gvrhhnpeffudfhgeefvdeitedugfelueegheekkeefveffhfeiveetledvhfdtveffteeu
- udenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehfth
- hhrghinheslhhinhhugidqmheikehkrdhorhhg
-X-ME-Proxy: <xmx:H9kJYbgC0RWDD0JEGaejWumzVw6EsVG9XkuzBPYozst5SIL0zgC4vQ>
- <xmx:H9kJYbA8U2DKxU2X99YCzNnWTaAsbzl0fFOsh_SMgkG9PBts9tpRYw>
- <xmx:H9kJYUKTHd9cnz9RyZ057_rPAcqXxJkByfAAuqGRER80Z-tmhTWNew>
- <xmx:INkJYQ6tkGgsOf7L6njuMrlS57w60KyrZXoDdSHQZzwtoxEz8VbQmw>
+ gvrhhnpefgtdegudfgheehhfeugeeffefhvefgjeevffegfeduffdugeekkeffffejjeeh
+ tdenucffohhmrghinhepghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptd
+ enucfrrghrrghmpehmrghilhhfrhhomhepfhhthhgrihhnsehlihhnuhigqdhmieekkhdr
+ ohhrgh
+X-ME-Proxy: <xmx:l-AJYZPOljgxUPMo887LdblvD4DPYwPe-G6V-6LJQIMvRbuzYhAboA>
+ <xmx:l-AJYe_KlbsHZ0MCcSCXbuhDzsN8DCOw3vr90zBvmIUM_Fj518--kg>
+ <xmx:l-AJYRW-VEp2pFlSfu9Ewj8DIBtQXpikQdk2rfnV6MMVsW3VBvDyXQ>
+ <xmx:meAJYUn5UzlaHwGA2YC0mmB3k14cEoNrII9eYuhxDYZ90MBskKa0sg>
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 3 Aug 2021 20:02:37 -0400 (EDT)
-Date: Wed, 4 Aug 2021 10:02:33 +1000 (AEST)
+ 3 Aug 2021 20:34:29 -0400 (EDT)
+Date: Wed, 4 Aug 2021 10:34:25 +1000 (AEST)
 From: Finn Thain <fthain@linux-m68k.org>
-To: Stan Johnson <userm57@yahoo.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
 Subject: Re: Debian SID kernel doesn't boot on PowerBook 3400c
-In-Reply-To: <757cf732-d572-26c5-9a3f-6b63e3d2d0bd@yahoo.com>
-Message-ID: <a6e27c1-3a89-b3d8-d651-3a97cbb12ce3@linux-m68k.org>
+In-Reply-To: <fac98e72-14a1-802e-8343-9bed9a6eaedc@csgroup.eu>
+Message-ID: <c535cc2b-3f45-2415-1e81-32ea24b4ec@linux-m68k.org>
 References: <60841a75-ed7c-8789-15db-272bf43055f5.ref@yahoo.com>
  <60841a75-ed7c-8789-15db-272bf43055f5@yahoo.com>
  <20210731175842.Horde.UunWM8rZMP0dRCaeWUo-og1@messagerie.c-s.fr>
@@ -74,7 +75,6 @@ References: <60841a75-ed7c-8789-15db-272bf43055f5.ref@yahoo.com>
  <fbd08736-9738-35cf-3b47-b5c9c455c552@csgroup.eu>
  <b84bb7ff-2dfb-0ae6-6eee-dd3c40661982@yahoo.com>
  <fac98e72-14a1-802e-8343-9bed9a6eaedc@csgroup.eu>
- <757cf732-d572-26c5-9a3f-6b63e3d2d0bd@yahoo.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -89,20 +89,28 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Debian PowerPC <debian-powerpc@lists.debian.org>,
- linuxppc-dev@lists.ozlabs.org
+ linuxppc-dev@lists.ozlabs.org, Stan Johnson <userm57@yahoo.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 3 Aug 2021, Stan Johnson wrote:
+
+On Tue, 3 Aug 2021, Christophe Leroy wrote:
 
 > 
-> I'm not sure of the issue you are referencing. If it's the Wallstreet 
-> issue, I believe we were waiting to hear back from you regarding the 
-> memory errors that crop up with CONFIG_VMAP_STACK=y and mem >464M. 
-> Finn, if that is not correct, please let me know.
+> Looks like the memory errors are linked to KUAP (Kernel Userspace Access 
+> Protection). Based on the places the problems happen, I don't think 
+> there are any invalid access, so there must be something wrong in the 
+> KUAP logic, probably linked to some interrupts happenning in kernel mode 
+> while the KUAP window is opened. And because is not selected by default 
+> on book3s/32 until 5.14, probably nobody ever tested it in a real 
+> environment before you.
 > 
+> I think the issue may be linked to commit 
+> https://github.com/linuxppc/linux/commit/c16728835 which happened 
+> between 5.12 and 5.13.
 
-No, it's not correct. I sent a message dated 3 Aug 2021 with a patch from 
-Christophe. I also sent (privately) a message with instructions for 
-testing that patch. I will resend these now.
+The messages, "Kernel attempted to write user page (c6207c) - exploit 
+attempt? (uid: 0)", appear in the console logs generated by v5.13. Those 
+logs come from the Powerbook G3 discussion in the other thread. Could that 
+be the same bug?
