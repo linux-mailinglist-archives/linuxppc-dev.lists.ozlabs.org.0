@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4268F3E00EC
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 14:13:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 190353E0136
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 14:32:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GfrH01Q0bz3cY8
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 22:13:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gfrj03vjjz3cGY
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 22:32:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=pJykIc+x;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=qv89K6eJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,44 +17,43 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
- header.s=susede1 header.b=pJykIc+x; dkim-atps=neutral
+ header.s=susede1 header.b=qv89K6eJ; dkim-atps=neutral
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GfrGT5JZQz2yyM
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Aug 2021 22:12:32 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GfrhY5sLJz3bNk
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Aug 2021 22:31:40 +1000 (AEST)
 Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
- by smtp-out2.suse.de (Postfix) with ESMTP id 296761FDD5;
- Wed,  4 Aug 2021 12:12:28 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTP id 1C1141FDD3;
+ Wed,  4 Aug 2021 12:31:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
- t=1628079148; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1628080298; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=bn9YVbCSQKeHHPfP05oD5rwX8ODweOX9w/K+lArk/DE=;
- b=pJykIc+xN1nPCYR+8lVCwGNHacbjeH4BnxYNPAjN5HwhwpgixEWNbXHGIVGxw0toxjfyE+
- 3Cz/TV2a/vLe+bxLld3Yxu29dFROf4HRFFmsffjqCyRRUT/p7QefScdDc8u+qL9c428dDi
- 8yrfvbcQ6E33HugPCEHnK31du1EvPTE=
+ bh=DC4/KiaX6Vt6MBJgEki+wBHi3z9bnh0HTsoiAX5JG+Y=;
+ b=qv89K6eJX6qCyTdTbWC4KoIJyZrT3KxOobSvMJygB5ThmfxOox1BDe2omC2JBPPAoLMtGB
+ bKFSc+u2up5Woqc9r/hhTWJ8Ov9DX5HAMaytSa9uS/AcZYXU1vxKGHzVBgdDIPMeXPJbGJ
+ AqnoLG6rfavK0Kh86LcdVpnFJG8pEbA=
 Received: from suse.cz (unknown [10.100.216.66])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by relay2.suse.de (Postfix) with ESMTPS id 18078A3B84;
- Wed,  4 Aug 2021 12:12:26 +0000 (UTC)
-Date: Wed, 4 Aug 2021 14:12:22 +0200
+ by relay2.suse.de (Postfix) with ESMTPS id 4A1B3A3B84;
+ Wed,  4 Aug 2021 12:31:37 +0000 (UTC)
+Date: Wed, 4 Aug 2021 14:31:36 +0200
 From: Petr Mladek <pmladek@suse.com>
-To: Daniel Thompson <daniel.thompson@linaro.org>
+To: John Ogness <john.ogness@linutronix.de>
 Subject: Re: [PATCH printk v1 03/10] kgdb: delay roundup if holding printk
  cpulock
-Message-ID: <YQqEJtmNFxVxH3U/@alley>
+Message-ID: <YQqIqKjRcNhZSaAZ@alley>
 References: <20210803131301.5588-1-john.ogness@linutronix.de>
  <20210803131301.5588-4-john.ogness@linutronix.de>
  <20210803142558.cz7apumpgijs5y4y@maple.lan>
  <87tuk635rb.fsf@jogness.linutronix.de>
- <20210804113159.lsnoyylifg6v5i35@maple.lan>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210804113159.lsnoyylifg6v5i35@maple.lan>
+In-Reply-To: <87tuk635rb.fsf@jogness.linutronix.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,9 +70,10 @@ Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
  Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
  Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
  Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- Chengyang Fan <cy.fan@huawei.com>, Bhaskar Chowdhury <unixbhaskar@gmail.com>,
- x86@kernel.org, Ingo Molnar <mingo@redhat.com>,
- kgdb-bugreport@lists.sourceforge.net, John Ogness <john.ogness@linutronix.de>,
+ Chengyang Fan <cy.fan@huawei.com>,
+ Daniel Thompson <daniel.thompson@linaro.org>,
+ Bhaskar Chowdhury <unixbhaskar@gmail.com>, x86@kernel.org,
+ Ingo Molnar <mingo@redhat.com>, kgdb-bugreport@lists.sourceforge.net,
  Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>,
  Steven Rostedt <rostedt@goodmis.org>, Thomas Gleixner <tglx@linutronix.de>,
  "Gustavo A. R. Silva" <gustavoars@kernel.org>,
@@ -84,90 +84,78 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed 2021-08-04 12:31:59, Daniel Thompson wrote:
-> On Tue, Aug 03, 2021 at 05:36:32PM +0206, John Ogness wrote:
-> > On 2021-08-03, Daniel Thompson <daniel.thompson@linaro.org> wrote:
-> > > On Tue, Aug 03, 2021 at 03:18:54PM +0206, John Ogness wrote:
-> > >> kgdb makes use of its own cpulock (@dbg_master_lock, @kgdb_active)
-> > >> during cpu roundup. This will conflict with the printk cpulock.
-> > >
-> > > When the full vision is realized what will be the purpose of the printk
-> > > cpulock?
-> > >
-> > > I'm asking largely because it's current role is actively unhelpful
-> > > w.r.t. kdb. It is possible that cautious use of in_dbg_master() might
-> > > be a better (and safer) solution. However it sounds like there is a
-> > > larger role planned for the printk cpulock...
-> > 
-> > The printk cpulock is used as a synchronization mechanism for
-> > implementing atomic consoles, which need to be able to safely interrupt
-> > the console write() activity at any time and immediately continue with
-> > their own printing. The ultimate goal is to move all console printing
-> > into per-console dedicated kthreads, so the primary function of the
-> > printk cpulock is really to immediately _stop_ the CPU/kthread
-> > performing write() in order to allow write_atomic() (from any context on
-> > any CPU) to safely and reliably take over.
+On Tue 2021-08-03 17:36:32, John Ogness wrote:
+> On 2021-08-03, Daniel Thompson <daniel.thompson@linaro.org> wrote:
+> > On Tue, Aug 03, 2021 at 03:18:54PM +0206, John Ogness wrote:
+> >> kgdb makes use of its own cpulock (@dbg_master_lock, @kgdb_active)
+> >> during cpu roundup. This will conflict with the printk cpulock.
+> >
+> >> diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+> >> index 3d0c933937b4..1b546e117f10 100644
+> >> --- a/kernel/printk/printk.c
+> >> +++ b/kernel/printk/printk.c
+> >> @@ -214,6 +215,7 @@ int devkmsg_sysctl_set_loglvl(struct ctl_table *table, int write,
+> >>  #ifdef CONFIG_SMP
+> >>  static atomic_t printk_cpulock_owner = ATOMIC_INIT(-1);
+> >>  static atomic_t printk_cpulock_nested = ATOMIC_INIT(0);
+> >> +static unsigned int kgdb_cpu = -1;
+> >
+> > Is this the flag to provoke retriggering? It appears to be a write-only
+> > variable (at least in this patch). How is it consumed?
 > 
-> I see.
+> Critical catch! Thank you. I am quite unhappy to see these hunks were
+> accidentally dropped when generating this series.
 > 
-> Is there any mileage in allowing in_dbg_master() to suppress taking
-> the console lock?
-> 
-> There's a couple of reasons to worry about the current approach.
-> 
-> The first is that we don't want this code to trigger in the case when
-> kgdb is enabled and kdb is not since it is only kdb (a self-hosted
-> debugger) than uses the consoles. This case is relatively trivial to
-> address since we can rename it kdb_roundup_delay() and alter the way it
-> is conditionally compiled.
-> 
-> The second is more of a problem however. kdb will only call into the
-> console code from the debug master. By default this is the CPU that
-> takes the debug trap so initial prints will work fine. However it is
-> possible to switch to a different master (so we can read per-CPU
-> registers and things like that). This will result in one of the CPUs
-> that did the IPI round up calling into console code and this is unsafe
-> in that instance.
-> 
-> There are a couple of tricks we could adopt to work around this but
-> given the slightly odd calling context for kdb (all CPUs quiesced, no
-> log interleaving possible) it sounds like it would remain safe to
-> bypass the lock if in_dbg_master() is true.
-> 
-> Bypassing an inconvenient lock might sound icky but:
-> 
-> 1. If the lock is not owned by any CPU then what kdb will do is safe.
->
-> 2. If the lock is owned by any CPU then we have quiesced it anyway
->    and this makes is safe for the owning CPU to share its ownership
->    (since it isn't much different to recursive acquisition on a single
->    CPU)
+> @@ -3673,6 +3675,9 @@ EXPORT_SYMBOL(__printk_cpu_trylock);
+>   */
+>  void __printk_cpu_unlock(void)
+>  {
+> +	bool trigger_kgdb = false;
+> +	unsigned int cpu;
+> +
+>  	if (atomic_read(&printk_cpulock_nested)) {
+>  		atomic_dec(&printk_cpulock_nested);
+>  		return;
+> @@ -3683,6 +3688,12 @@ void __printk_cpu_unlock(void)
+>  	 * LMM(__printk_cpu_unlock:A)
+>  	 */
+>  
+> +	cpu = smp_processor_id();
+> +	if (kgdb_cpu == cpu) {
+> +		trigger_kgdb = true;
+> +		kgdb_cpu = -1;
+> +	}
 
-I think about the following:
+Just in case that this approach is used in the end.
 
-void kgdb_roundup_cpus(void)
-{
-	__printk_cpu_lock();
-	__kgdb_roundup_cpus();
-}
+This code looks racy. kgdb_roundup_delay() seems to be called in NMI
+context. NMI might happen at this point and set kgdb_cpu after
+it was checked.
 
-, where __printk_cpu_lock() waits/takes printk_cpu_lock()
-	__kgdb_roundup_cpus() is the original kgdb_roundup_cpus();
+I am afraid that it won't be easy to make this safe using a single
+global variable. A solution might be a per-CPU variable set
+by kgdb_roundup_delay() when it owns printk_cpu_lock.
+__printk_cpu_unlock() would call kgdb_roundup_cpu(cpu) when
+the variable is set.
 
+Nit: The name "kgdb_cpu" is too generic. It is not clear what is
+     so special about this CPU. I would call the per-CPU variable
+     "kgdb_delayed_roundup" or so.
 
-The idea is that kgdb_roundup_cpus() caller takes the printk_cpu lock.
-The owner will be well defined.
-
-As a result any other CPU will not be able to take the printk_cpu lock
-as long as it is owned by the kgdb lock. But as you say, kgdb will
-make sure that everything is serialized at this stage. So that
-the original raw_printk_cpu_lock_irqsave() might just disable
-IRQs when called under debugger.
-
-Does it make any sense?
-
-I have to say that it is a bit hairy. But it looks slightly better
-than the delayed/repeated IPI proposed by this patch.
 
 Best Regards,
 Petr
+
+>  	/*
+>  	 * Guarantee loads and stores from this CPU when it was the
+>  	 * lock owner are visible to the next lock owner. This pairs
+> @@ -3703,6 +3714,21 @@ void __printk_cpu_unlock(void)
+>  	 */
+>  	atomic_set_release(&printk_cpulock_owner,
+>  			   -1); /* LMM(__printk_cpu_unlock:B) */
+> +
+> +	if (trigger_kgdb) {
+> +		pr_warn("re-triggering kgdb roundup for CPU#%d\n", cpu);
+> +		kgdb_roundup_cpu(cpu);
+> +	}
+>  }
