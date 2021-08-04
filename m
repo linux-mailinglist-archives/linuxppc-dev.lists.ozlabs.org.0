@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 849063DFB47
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 07:53:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D758C3DFB4F
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 08:07:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gfgrm3Pn8z3cVx
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 15:53:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gfh9k5d4Rz3bmk
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Aug 2021 16:07:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,38 +16,40 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GfgrR0QSrz2yXf
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Aug 2021 15:52:51 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gfh9N5kgqz2ypn
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Aug 2021 16:07:34 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4GfgrJ3ZWDz9sWD;
- Wed,  4 Aug 2021 07:52:48 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4Gfh9H1j76z9sWG;
+ Wed,  4 Aug 2021 08:07:31 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id C62R_8tTsmRg; Wed,  4 Aug 2021 07:52:48 +0200 (CEST)
+ with ESMTP id 1UZkY5u__K6R; Wed,  4 Aug 2021 08:07:31 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4GfgrJ2Y27z9sVt;
- Wed,  4 Aug 2021 07:52:48 +0200 (CEST)
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4Gfh9H0hs0z9sWF;
+ Wed,  4 Aug 2021 08:07:31 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 182368B79C;
- Wed,  4 Aug 2021 07:52:48 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B9FE28B79A;
+ Wed,  4 Aug 2021 08:07:30 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id s7x32NG_3SaB; Wed,  4 Aug 2021 07:52:47 +0200 (CEST)
+ with ESMTP id kpEFvkCvqei6; Wed,  4 Aug 2021 08:07:30 +0200 (CEST)
 Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 90CD88B764;
- Wed,  4 Aug 2021 07:52:47 +0200 (CEST)
-Subject: Re: [PATCH] powerpc/32: Fix critical and debug interrupts on BOOKE
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3E8178B764;
+ Wed,  4 Aug 2021 08:07:30 +0200 (CEST)
+Subject: Re: [PATCH] powerpc/32s: Fix napping restore in data storage
+ interrupt (DSI)
+To: Finn Thain <fthain@linux-m68k.org>
+References: <731694e0885271f6ee9ffc179eb4bcee78313682.1628003562.git.christophe.leroy@csgroup.eu>
+ <ce20d16c-b0b2-94c-3e22-794d95c376b@linux-m68k.org>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: radu.rendec@gmail.com
-References: <028d5483b4851b01ea4334d0751e7f260419092b.1625637264.git.christophe.leroy@csgroup.eu>
-Message-ID: <c9f3a3e2-e5ed-6074-b700-99911d925012@csgroup.eu>
-Date: Wed, 4 Aug 2021 07:52:43 +0200
+Message-ID: <b04a90a9-9d62-2192-f896-ea99be911604@csgroup.eu>
+Date: Wed, 4 Aug 2021 08:07:29 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.12.0
 MIME-Version: 1.0
-In-Reply-To: <028d5483b4851b01ea4334d0751e7f260419092b.1625637264.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <ce20d16c-b0b2-94c-3e22-794d95c376b@linux-m68k.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -62,175 +64,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
- linux-kernel@vger.kernel.org
+Cc: userm57@yahoo.com, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Radu,
-
-Le 07/07/2021 à 07:55, Christophe Leroy a écrit :
-> 32 bits BOOKE have special interrupts for debug and other
-> critical events.
-
-Were you able to test this patch ?
-
-Thanks
-Christophe
 
 
+Le 04/08/2021 à 06:04, Finn Thain a écrit :
+> On Tue, 3 Aug 2021, Christophe Leroy wrote:
 > 
-> When handling those interrupts, dedicated registers are saved
-> in the stack frame in addition to the standard registers, leading
-> to a shift of the pt_regs struct.
+>> When a DSI (Data Storage Interrupt) is taken while in NAP mode, r11
+>> doesn't survive the call to power_save_ppc32_restore().
+>>
+>> So use r1 instead of r11 as they both contain the virtual stack pointer
+>> at that point.
+>>
+>> Reported-by: Finn Thain <fthain@linux-m68k.org>
+>> Fixes: 4c0104a83fc3 ("powerpc/32: Dismantle EXC_XFER_STD/LITE/TEMPLATE")
 > 
-> Since commit db297c3b07af ("powerpc/32: Don't save thread.regs on
-> interrupt entry"), the pt_regs struct is expected to be at the
-> same place all the time.
+> Regarding that 'Fixes' tag, this patch has not fixed the failure below,
+> unfortunately. But there appears to be several bugs in play here. Can you
+> tell us which failure mode is associated with the bug addressed by this
+> patch?
+
+
+This is unrelated to the failure below. This patch is related to the bisect you did that pointed to 
+4c0104a83fc3 ("powerpc/32: Dismantle EXC_XFER_STD/LITE/TEMPLATE")
+
+I think maybe the starting point should be to (manually) apply the patch on top of that commit in 
+order to check that the bug to leaded to pointing that commit as 'first bad commit' is now gone.
+
+The BUG below is likely something completely different.
+
+And the other bug involving KUAP write is also something else to be investigated separately.
+
 > 
-> Instead of handling a special struct in addition to pt_regs, just
-> add those special registers to struct pt_regs.
+> ------------[ cut here ]------------
+> kernel BUG at arch/powerpc/kernel/interrupt.c:49!
+> Oops: Exception in kernel mode, sig: 5 [#1]
+> BE PAGE_SIZE=4K MMU=Hash SMP NR_CPUS=2 PowerMac
+> Modules linked in:
+> CPU: 0 PID: 1859 Comm: xfce4-session Not tainted 5.13.0-pmac-VMAP #10
+> NIP:  c0011474 LR: c0011464 CTR: 00000000
+> REGS: e2f75e40 TRAP: 0700   Not tainted  (5.13.0-pmac-VMAP)
+> MSR:  00021032 <ME,IR,DR,RI>  CR: 2400446c  XER: 20000000
 > 
-> Reported-by: Radu Rendec <radu.rendec@gmail.com>
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Fixes: db297c3b07af ("powerpc/32: Don't save thread.regs on interrupt entry")
-> Cc: stable@vger.kernel.org
-> ---
->   arch/powerpc/include/asm/ptrace.h | 16 ++++++++++++++++
->   arch/powerpc/kernel/asm-offsets.c | 31 ++++++++++++++-----------------
->   arch/powerpc/kernel/head_booke.h  | 27 +++------------------------
->   3 files changed, 33 insertions(+), 41 deletions(-)
+> GPR00: c001604c e2f75f00 ca284a60 00000000 00000000 a5205eb0 00000008 00000020
+> GPR08: ffffffc0 00000001 501200d9 ce030005 ca285010 00c1f778 00000000 00000000
+> GPR16: 00945b20 009402f8 00000001 a6b87550 a51fd000 afb73220 a6b22c78 a6a6aecc
+> GPR24: 00000000 ffffffc0 00000020 00000008 a5205eb0 00000000 e2f75f40 000000ae
+> NIP [c0011474] system_call_exception+0x60/0x164
+> LR [c0011464] system_call_exception+0x50/0x164
+> Call Trace:
+> [e2f75f00] [00009000] 0x9000 (unreliable)
+> [e2f75f30] [c001604c] ret_from_syscall+0x0/0x28
+> --- interrupt: c00 at 0xa69d6cb0
+> NIP:  a69d6cb0 LR: a69d6c3c CTR: 00000000
+> REGS: e2f75f40 TRAP: 0c00   Not tainted  (5.13.0-pmac-VMAP)
+> MSR:  0000d032 <EE,PR,ME,IR,DR,RI>  CR: 2400446c  XER: 20000000
 > 
-> diff --git a/arch/powerpc/include/asm/ptrace.h b/arch/powerpc/include/asm/ptrace.h
-> index 3e5d470a6155..14422e851494 100644
-> --- a/arch/powerpc/include/asm/ptrace.h
-> +++ b/arch/powerpc/include/asm/ptrace.h
-> @@ -70,6 +70,22 @@ struct pt_regs
->   		unsigned long __pad[4];	/* Maintain 16 byte interrupt stack alignment */
->   	};
->   #endif
-> +#if defined(CONFIG_PPC32) && defined(CONFIG_BOOKE)
-> +	struct { /* Must be a multiple of 16 bytes */
-> +		unsigned long mas0;
-> +		unsigned long mas1;
-> +		unsigned long mas2;
-> +		unsigned long mas3;
-> +		unsigned long mas6;
-> +		unsigned long mas7;
-> +		unsigned long srr0;
-> +		unsigned long srr1;
-> +		unsigned long csrr0;
-> +		unsigned long csrr1;
-> +		unsigned long dsrr0;
-> +		unsigned long dsrr1;
-> +	};
-> +#endif
->   };
->   #endif
->   
-> diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
-> index a47eefa09bcb..5bee245d832b 100644
-> --- a/arch/powerpc/kernel/asm-offsets.c
-> +++ b/arch/powerpc/kernel/asm-offsets.c
-> @@ -309,24 +309,21 @@ int main(void)
->   	STACK_PT_REGS_OFFSET(STACK_REGS_IAMR, iamr);
->   #endif
->   
-> -#if defined(CONFIG_PPC32)
-> -#if defined(CONFIG_BOOKE) || defined(CONFIG_40x)
-> -	DEFINE(EXC_LVL_SIZE, STACK_EXC_LVL_FRAME_SIZE);
-> -	DEFINE(MAS0, STACK_INT_FRAME_SIZE+offsetof(struct exception_regs, mas0));
-> +#if defined(CONFIG_PPC32) && defined(CONFIG_BOOKE)
-> +	STACK_PT_REGS_OFFSET(MAS0, mas0);
->   	/* we overload MMUCR for 44x on MAS0 since they are mutually exclusive */
-> -	DEFINE(MMUCR, STACK_INT_FRAME_SIZE+offsetof(struct exception_regs, mas0));
-> -	DEFINE(MAS1, STACK_INT_FRAME_SIZE+offsetof(struct exception_regs, mas1));
-> -	DEFINE(MAS2, STACK_INT_FRAME_SIZE+offsetof(struct exception_regs, mas2));
-> -	DEFINE(MAS3, STACK_INT_FRAME_SIZE+offsetof(struct exception_regs, mas3));
-> -	DEFINE(MAS6, STACK_INT_FRAME_SIZE+offsetof(struct exception_regs, mas6));
-> -	DEFINE(MAS7, STACK_INT_FRAME_SIZE+offsetof(struct exception_regs, mas7));
-> -	DEFINE(_SRR0, STACK_INT_FRAME_SIZE+offsetof(struct exception_regs, srr0));
-> -	DEFINE(_SRR1, STACK_INT_FRAME_SIZE+offsetof(struct exception_regs, srr1));
-> -	DEFINE(_CSRR0, STACK_INT_FRAME_SIZE+offsetof(struct exception_regs, csrr0));
-> -	DEFINE(_CSRR1, STACK_INT_FRAME_SIZE+offsetof(struct exception_regs, csrr1));
-> -	DEFINE(_DSRR0, STACK_INT_FRAME_SIZE+offsetof(struct exception_regs, dsrr0));
-> -	DEFINE(_DSRR1, STACK_INT_FRAME_SIZE+offsetof(struct exception_regs, dsrr1));
-> -#endif
-> +	STACK_PT_REGS_OFFSET(MMUCR, mas0);
-> +	STACK_PT_REGS_OFFSET(MAS1, mas1);
-> +	STACK_PT_REGS_OFFSET(MAS2, mas2);
-> +	STACK_PT_REGS_OFFSET(MAS3, mas3);
-> +	STACK_PT_REGS_OFFSET(MAS6, mas6);
-> +	STACK_PT_REGS_OFFSET(MAS7, mas7);
-> +	STACK_PT_REGS_OFFSET(_SRR0, srr0);
-> +	STACK_PT_REGS_OFFSET(_SRR1, srr1);
-> +	STACK_PT_REGS_OFFSET(_CSRR0, csrr0);
-> +	STACK_PT_REGS_OFFSET(_CSRR1, csrr1);
-> +	STACK_PT_REGS_OFFSET(_DSRR0, dsrr0);
-> +	STACK_PT_REGS_OFFSET(_DSRR1, dsrr1);
->   #endif
->   
->   	/* About the CPU features table */
-> diff --git a/arch/powerpc/kernel/head_booke.h b/arch/powerpc/kernel/head_booke.h
-> index 87b806e8eded..e5503420b6c6 100644
-> --- a/arch/powerpc/kernel/head_booke.h
-> +++ b/arch/powerpc/kernel/head_booke.h
-> @@ -168,20 +168,18 @@ ALT_FTR_SECTION_END_IFSET(CPU_FTR_EMB_HV)
->   /* only on e500mc */
->   #define DBG_STACK_BASE		dbgirq_ctx
->   
-> -#define EXC_LVL_FRAME_OVERHEAD	(THREAD_SIZE - INT_FRAME_SIZE - EXC_LVL_SIZE)
-> -
->   #ifdef CONFIG_SMP
->   #define BOOKE_LOAD_EXC_LEVEL_STACK(level)		\
->   	mfspr	r8,SPRN_PIR;				\
->   	slwi	r8,r8,2;				\
->   	addis	r8,r8,level##_STACK_BASE@ha;		\
->   	lwz	r8,level##_STACK_BASE@l(r8);		\
-> -	addi	r8,r8,EXC_LVL_FRAME_OVERHEAD;
-> +	addi	r8,r8,THREAD_SIZE - INT_FRAME_SIZE;
->   #else
->   #define BOOKE_LOAD_EXC_LEVEL_STACK(level)		\
->   	lis	r8,level##_STACK_BASE@ha;		\
->   	lwz	r8,level##_STACK_BASE@l(r8);		\
-> -	addi	r8,r8,EXC_LVL_FRAME_OVERHEAD;
-> +	addi	r8,r8,THREAD_SIZE - INT_FRAME_SIZE;
->   #endif
->   
->   /*
-> @@ -208,7 +206,7 @@ ALT_FTR_SECTION_END_IFSET(CPU_FTR_EMB_HV)
->   	mtmsr	r11;							\
->   	mfspr	r11,SPRN_SPRG_THREAD;	/* if from user, start at top of   */\
->   	lwz	r11, TASK_STACK - THREAD(r11); /* this thread's kernel stack */\
-> -	addi	r11,r11,EXC_LVL_FRAME_OVERHEAD;	/* allocate stack frame    */\
-> +	addi	r11,r11,THREAD_SIZE - INT_FRAME_SIZE;	/* allocate stack frame    */\
->   	beq	1f;							     \
->   	/* COMING FROM USER MODE */					     \
->   	stw	r9,_CCR(r11);		/* save CR			   */\
-> @@ -516,24 +514,5 @@ ALT_FTR_SECTION_END_IFSET(CPU_FTR_EMB_HV)
->   	bl	kernel_fp_unavailable_exception;			      \
->   	b	interrupt_return
->   
-> -#else /* __ASSEMBLY__ */
-> -struct exception_regs {
-> -	unsigned long mas0;
-> -	unsigned long mas1;
-> -	unsigned long mas2;
-> -	unsigned long mas3;
-> -	unsigned long mas6;
-> -	unsigned long mas7;
-> -	unsigned long srr0;
-> -	unsigned long srr1;
-> -	unsigned long csrr0;
-> -	unsigned long csrr1;
-> -	unsigned long dsrr0;
-> -	unsigned long dsrr1;
-> -};
-> -
-> -/* ensure this structure is always sized to a multiple of the stack alignment */
-> -#define STACK_EXC_LVL_FRAME_SIZE	ALIGN(sizeof (struct exception_regs), 16)
-> -
->   #endif /* __ASSEMBLY__ */
->   #endif /* __HEAD_BOOKE_H__ */
+> GPR00: 000000ae a5205de0 a5687ca0 00000000 00000000 a5205eb0 00000008 00000020
+> GPR08: ffffffc0 401201ea 401200d9 ffffffff c158f230 00c1f778 00000000 00000000
+> GPR16: 00945b20 009402f8 00000001 a6b87550 a51fd000 afb73220 a6b22c78 a6a6aecc
+> GPR24: afb72fc8 00000000 00000001 a5205f30 afb733dc 00000000 a6b85ff4 a5205eb0
+> NIP [a69d6cb0] 0xa69d6cb0
+> LR [a69d6c3c] 0xa69d6c3c
+> --- interrupt: c00
+> Instruction dump:
+> 7cdb3378 93810020 7cbc2b78 93a10024 7c9d2378 93e1002c 7d3f4b78 4800d629
+> 817e0084 931e0088 69690002 5529fffe <0f090000> 69694000 552997fe 0f090000
+> ---[ end trace c66c6c3c44806276 ]---
 > 
