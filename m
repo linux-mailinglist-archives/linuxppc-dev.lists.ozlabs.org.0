@@ -2,70 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B38F43E135D
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Aug 2021 13:00:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C6153E13A6
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Aug 2021 13:14:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GgQcv53j8z3cl8
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Aug 2021 21:00:31 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SI9rsPjP;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GgQxQ6ctCz3d81
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Aug 2021 21:14:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=bugzilla.kernel.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=SI9rsPjP; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=linux.alibaba.com (client-ip=47.88.44.36;
+ helo=out4436.biz.mail.alibaba.com;
+ envelope-from=xianting.tian@linux.alibaba.com; receiver=<UNKNOWN>)
+Received: from out4436.biz.mail.alibaba.com (out4436.biz.mail.alibaba.com
+ [47.88.44.36])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GgQcR4DB1z3cKV
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Aug 2021 21:00:07 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPS id 99BFD61102
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Aug 2021 11:00:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1628161205;
- bh=Cbp+TiiOQKaunFqg4TdxHIEl6plL9PH7NwiXSVpGIOQ=;
- h=From:To:Subject:Date:In-Reply-To:References:From;
- b=SI9rsPjP3VMl3/WZ0HFEHW02yeDrFKMWfAyluxR8HEv5JduGTXOGNEbwagIbOV4/I
- OUzPcPPFBUtelGvlBaNyw76h1NRUueMYSWMeJYMWG1/byX7BLjnYTBNl5OaCgG4G0Z
- FXdW912z1J1Dd5xvcu1mznuOueVjR6MXP4zp4L6q92ObhSrlx/ILETUES57MUGVR7+
- itgMuMa5l0m5uikuAfCf7LxwUyp8fezOopahE8pq4ar+CH8kHqXGHpIXCRe9efvQ0Y
- ZWQfVZfKLmPZw5HLaCya8duiIKpgBjM92gRxB7LD7MYAqsRdymUSA9B9C6ls++xeDR
- 4oSPv9hqGbOdw==
-Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
- id 877C760F36; Thu,  5 Aug 2021 11:00:05 +0000 (UTC)
-From: bugzilla-daemon@bugzilla.kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 213961] Oops while loading radeon driver
-Date: Thu, 05 Aug 2021 11:00:05 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-32
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: christophe.leroy@csgroup.eu
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-213961-206035-7YFvhjRdJi@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-213961-206035@https.bugzilla.kernel.org/>
-References: <bug-213961-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GgQx60F1gz3cKv
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Aug 2021 21:14:32 +1000 (AEST)
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R941e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04420;
+ MF=xianting.tian@linux.alibaba.com; NM=1; PH=DS; RN=8; SR=0;
+ TI=SMTPD_---0Ui1z.hC_1628162053; 
+Received: from B-LB6YLVDL-0141.local(mailfrom:xianting.tian@linux.alibaba.com
+ fp:SMTPD_---0Ui1z.hC_1628162053) by smtp.aliyun-inc.com(127.0.0.1);
+ Thu, 05 Aug 2021 19:14:13 +0800
+Subject: Re: [PATCH v3 1/2] tty: hvc: pass DMA capable memory to put_chars()
+To: Jiri Slaby <jirislaby@kernel.org>, gregkh@linuxfoundation.org,
+ amit@kernel.org, arnd@arndb.de, osandov@fb.com
+References: <20210804025453.93543-1-xianting.tian@linux.alibaba.com>
+ <0f26a1c3-53e8-9282-69e8-8d81a9cafc59@kernel.org>
+ <f1b92c7d-0eaf-4eac-ecd2-fbb74fb63b52@kernel.org>
+From: Xianting Tian <xianting.tian@linux.alibaba.com>
+Message-ID: <202cf491-5cdd-999f-d556-a5ebd2b4e266@linux.alibaba.com>
+Date: Thu, 5 Aug 2021 19:14:13 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.10.1
 MIME-Version: 1.0
+In-Reply-To: <f1b92c7d-0eaf-4eac-ecd2-fbb74fb63b52@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,20 +53,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ virtualization@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D213961
 
---- Comment #10 from Christophe Leroy (christophe.leroy@csgroup.eu) ---
-(In reply to Elimar Riesebieter from comment #9)
-> Well, 5.13.8 just runs fine, though.
-
-Yes, recent changes to Radeon appear for the first time in v5.14-rc1
-
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+在 2021/8/5 下午4:09, Jiri Slaby 写道:
+> On 05. 08. 21, 9:58, Jiri Slaby wrote:
+>> Hi,
+>>
+>> On 04. 08. 21, 4:54, Xianting Tian wrote:
+>>> @@ -933,6 +949,16 @@ struct hvc_struct *hvc_alloc(uint32_t vtermno, 
+>>> int data,
+>>>       hp->outbuf_size = outbuf_size;
+>>>       hp->outbuf = &((char *)hp)[ALIGN(sizeof(*hp), sizeof(long))];
+>
+> This deserves cleanup too. Why is "outbuf" not "char outbuf[0] 
+> __ALIGNED__" at the end of the structure? The allocation would be 
+> easier (using struct_size()) and this line would be gone completely.
+I will make the cleanup in v4.
+>
+>>> +    /*
+>>> +     * hvc_con_outbuf is guaranteed to be aligned at least to the
+>>> +     * size(N_OUTBUF) by kmalloc().
+>>> +     */
+>>> +    hp->hvc_con_outbuf = kzalloc(N_OUTBUF, GFP_KERNEL);
+>>> +    if (!hp->hvc_con_outbuf)
+>>> +        return ERR_PTR(-ENOMEM);
+>>
+>> This leaks hp, right?
+>
+> Actually, why don't you make
+> char c[N_OUTBUF] __ALIGNED__;
+>
+> part of struct hvc_struct directly?
+thanks, it a good idea, I will change it in v4.
+>
+>> BTW your 2 patches are still not threaded, that is hard to follow.
+>>
+>>> +
+>>> +    spin_lock_init(&hp->hvc_con_lock);
+>>> +
+>>>       tty_port_init(&hp->port);
+>>>       hp->port.ops = &hvc_port_ops;
+>>
+>> thanks,
