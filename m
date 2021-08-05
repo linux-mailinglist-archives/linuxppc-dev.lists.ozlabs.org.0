@@ -2,57 +2,96 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10E5B3E0F0C
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Aug 2021 09:22:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44E8E3E0F21
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Aug 2021 09:25:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GgKnQ6pfpz3d7S
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Aug 2021 17:22:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GgKsF1CWMz3cYW
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Aug 2021 17:25:53 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AejbVI4Q;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=AejbVI4Q; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GgKn26Xzrz307B
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Aug 2021 17:22:10 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4GgKmv1Qd7z9sTQ;
- Thu,  5 Aug 2021 09:22:07 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id vVLALSTpUWcO; Thu,  5 Aug 2021 09:22:07 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4GgKmv0RKCz9sVh;
- Thu,  5 Aug 2021 09:22:07 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E87E88B7B9;
- Thu,  5 Aug 2021 09:22:06 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id LT6tMK24Gv07; Thu,  5 Aug 2021 09:22:06 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 90DBE8B7BB;
- Thu,  5 Aug 2021 09:22:06 +0200 (CEST)
-Subject: Re: [PATCH v1 11/55] powerpc/time: add API for KVM to re-arm the host
- timer/decrementer
-To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
-References: <20210726035036.739609-1-npiggin@gmail.com>
- <20210726035036.739609-12-npiggin@gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <370398a9-4429-285e-4a0f-33759f39b2fc@csgroup.eu>
-Date: Thu, 5 Aug 2021 09:22:05 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GgKrH0Z0Kz3bX3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Aug 2021 17:25:01 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 17573Fx8145808; Thu, 5 Aug 2021 03:24:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=xTOloxu+kX26mmcganPgGmVvIM+ZLnBpjMkSHkYV+To=;
+ b=AejbVI4QolKMNDYPoJnC/UW9yt1nVrc1F4qdmeIclURG6oqOcvyCcn9PbWgu2QmQhFQx
+ qjfo1o2HjHnDyQ9IS5K9fvSuZyw4Xy7u6z/X4fwAzY4kv1W3woQo8TglUqPnvgrULlkO
+ vckR779OCCzbeDGtU8kTdlcyMC5tqwoCd3Qzh9srTFZRofM8ELZKNO/+0eccxgHqimZq
+ ov3H/GUMVGffWSzzX4OHdlUDrhYXks5C0xk+yF8AK1rXvAjVsBCB/qxCefEyOj0v3uNp
+ NNhFYtFTCRZ6JG5bBM9jhQBEpiyMxXsTtdxdDzD+2vgk+gDUefUBP234i52hnHX7AIik lg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3a87f65md6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 05 Aug 2021 03:24:58 -0400
+Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 17573NoV146527;
+ Thu, 5 Aug 2021 03:24:57 -0400
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3a87f65mcj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 05 Aug 2021 03:24:57 -0400
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 17577gwV030594;
+ Thu, 5 Aug 2021 07:24:54 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma05fra.de.ibm.com with ESMTP id 3a4x58hnxk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 05 Aug 2021 07:24:54 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1757OpfI50790844
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 5 Aug 2021 07:24:51 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7F0D0A4070;
+ Thu,  5 Aug 2021 07:24:50 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7ABDCA405B;
+ Thu,  5 Aug 2021 07:24:48 +0000 (GMT)
+Received: from bharata.ibmuc.com (unknown [9.102.2.73])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  5 Aug 2021 07:24:48 +0000 (GMT)
+From: Bharata B Rao <bharata@linux.ibm.com>
+To: kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: [RFC PATCH v0 0/5] PPC: KVM: pseries: Asynchronous page fault
+Date: Thu,  5 Aug 2021 12:54:34 +0530
+Message-Id: <20210805072439.501481-1-bharata@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-In-Reply-To: <20210726035036.739609-12-npiggin@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: rfyLg0DUXb31M9zppxGRRiZ3dvIe21_C
+X-Proofpoint-GUID: 3bnfYHbwF8zasQ8ffrVI2dmJ-mCxSSWt
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-08-05_02:2021-08-04,
+ 2021-08-05 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ spamscore=0 priorityscore=1501 bulkscore=0 phishscore=0 mlxlogscore=900
+ suspectscore=0 impostorscore=0 clxscore=1011 mlxscore=0 adultscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2107140000 definitions=main-2108050041
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,177 +103,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: aneesh.kumar@linux.ibm.com, Bharata B Rao <bharata@linux.ibm.com>,
+ kvm@vger.kernel.org, bharata.rao@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi,
 
+This series adds asynchronous page fault support for pseries guests
+and enables the support for the same in powerpc KVM. This is an
+early RFC with details and multiple TODOs listed in patch descriptions.
 
-Le 26/07/2021 à 05:49, Nicholas Piggin a écrit :
-> Rather than have KVM look up the host timer and fiddle with the
-> irq-work internal details, have the powerpc/time.c code provide a
-> function for KVM to re-arm the Linux timer code when exiting a
-> guest.
-> 
-> This is implementation has an improvement over existing code of
-> marking a decrementer interrupt as soft-pending if a timer has
-> expired, rather than setting DEC to a -ve value, which tended to
-> cause host timers to take two interrupts (first hdec to exit the
-> guest, then the immediate dec).
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   arch/powerpc/include/asm/time.h | 16 +++-------
->   arch/powerpc/kernel/time.c      | 52 +++++++++++++++++++++++++++------
->   arch/powerpc/kvm/book3s_hv.c    |  7 ++---
->   3 files changed, 49 insertions(+), 26 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/time.h b/arch/powerpc/include/asm/time.h
-> index 69b6be617772..924b2157882f 100644
-> --- a/arch/powerpc/include/asm/time.h
-> +++ b/arch/powerpc/include/asm/time.h
-> @@ -99,18 +99,6 @@ extern void div128_by_32(u64 dividend_high, u64 dividend_low,
->   extern void secondary_cpu_time_init(void);
->   extern void __init time_init(void);
->   
-> -#ifdef CONFIG_PPC64
-> -static inline unsigned long test_irq_work_pending(void)
-> -{
-> -	unsigned long x;
-> -
-> -	asm volatile("lbz %0,%1(13)"
-> -		: "=r" (x)
-> -		: "i" (offsetof(struct paca_struct, irq_work_pending)));
-> -	return x;
-> -}
-> -#endif
-> -
->   DECLARE_PER_CPU(u64, decrementers_next_tb);
->   
->   static inline u64 timer_get_next_tb(void)
-> @@ -118,6 +106,10 @@ static inline u64 timer_get_next_tb(void)
->   	return __this_cpu_read(decrementers_next_tb);
->   }
->   
-> +#ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
-> +void timer_rearm_host_dec(u64 now);
-> +#endif
-> +
->   /* Convert timebase ticks to nanoseconds */
->   unsigned long long tb_to_ns(unsigned long long tb_ticks);
->   
-> diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
-> index 72d872b49167..016828b7401b 100644
-> --- a/arch/powerpc/kernel/time.c
-> +++ b/arch/powerpc/kernel/time.c
-> @@ -499,6 +499,16 @@ EXPORT_SYMBOL(profile_pc);
->    * 64-bit uses a byte in the PACA, 32-bit uses a per-cpu variable...
->    */
->   #ifdef CONFIG_PPC64
-> +static inline unsigned long test_irq_work_pending(void)
-> +{
-> +	unsigned long x;
-> +
-> +	asm volatile("lbz %0,%1(13)"
-> +		: "=r" (x)
-> +		: "i" (offsetof(struct paca_struct, irq_work_pending)));
+This patch needs supporting enablement in QEMU too which will be
+posted separately.
 
-Can we just use READ_ONCE() instead of hard coding the read ?
+Bharata B Rao (5):
+  powerpc: Define Expropriation interrupt bit to VPA byte offset 0xB9
+  KVM: PPC: Add support for KVM_REQ_ESN_EXIT
+  KVM: PPC: Book3S: Enable setting SRR1 flags for DSI
+  KVM: PPC: BOOK3S HV: Async PF support
+  pseries: Asynchronous page fault support
 
+ Documentation/virt/kvm/api.rst            |  15 ++
+ arch/powerpc/include/asm/async-pf.h       |  12 ++
+ arch/powerpc/include/asm/hvcall.h         |   1 +
+ arch/powerpc/include/asm/kvm_book3s_esn.h |  24 +++
+ arch/powerpc/include/asm/kvm_host.h       |  22 +++
+ arch/powerpc/include/asm/kvm_ppc.h        |   4 +-
+ arch/powerpc/include/asm/lppaca.h         |  20 +-
+ arch/powerpc/include/uapi/asm/kvm.h       |   6 +
+ arch/powerpc/kvm/Kconfig                  |   2 +
+ arch/powerpc/kvm/Makefile                 |   5 +-
+ arch/powerpc/kvm/book3s.c                 |   6 +-
+ arch/powerpc/kvm/book3s_64_mmu_radix.c    |   9 +-
+ arch/powerpc/kvm/book3s_hv.c              |  37 +++-
+ arch/powerpc/kvm/book3s_hv_esn.c          | 189 +++++++++++++++++++
+ arch/powerpc/kvm/book3s_hv_nested.c       |   4 +-
+ arch/powerpc/kvm/book3s_pr.c              |   4 +-
+ arch/powerpc/mm/fault.c                   |   7 +-
+ arch/powerpc/platforms/pseries/Makefile   |   2 +-
+ arch/powerpc/platforms/pseries/async-pf.c | 219 ++++++++++++++++++++++
+ drivers/cpuidle/cpuidle-pseries.c         |   4 +-
+ include/uapi/linux/kvm.h                  |   2 +
+ tools/include/uapi/linux/kvm.h            |   1 +
+ 22 files changed, 574 insertions(+), 21 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/async-pf.h
+ create mode 100644 arch/powerpc/include/asm/kvm_book3s_esn.h
+ create mode 100644 arch/powerpc/kvm/book3s_hv_esn.c
+ create mode 100644 arch/powerpc/platforms/pseries/async-pf.c
 
-> +	return x;
-> +}
-> +
->   static inline void set_irq_work_pending_flag(void)
->   {
->   	asm volatile("stb %0,%1(13)" : :
-> @@ -542,13 +552,44 @@ void arch_irq_work_raise(void)
->   	preempt_enable();
->   }
->   
-> +static void set_dec_or_work(u64 val)
-> +{
-> +	set_dec(val);
-> +	/* We may have raced with new irq work */
-> +	if (unlikely(test_irq_work_pending()))
-> +		set_dec(1);
-> +}
-> +
->   #else  /* CONFIG_IRQ_WORK */
->   
->   #define test_irq_work_pending()	0
->   #define clear_irq_work_pending()
->   
-> +static void set_dec_or_work(u64 val)
-> +{
-> +	set_dec(val);
-> +}
->   #endif /* CONFIG_IRQ_WORK */
->   
-> +#ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
-> +void timer_rearm_host_dec(u64 now)
-> +{
-> +	u64 *next_tb = this_cpu_ptr(&decrementers_next_tb);
-> +
-> +	WARN_ON_ONCE(!arch_irqs_disabled());
-> +	WARN_ON_ONCE(mfmsr() & MSR_EE);
-> +
-> +	if (now >= *next_tb) {
-> +		local_paca->irq_happened |= PACA_IRQ_DEC;
-> +	} else {
-> +		now = *next_tb - now;
-> +		if (now <= decrementer_max)
-> +			set_dec_or_work(now);
-> +	}
-> +}
-> +EXPORT_SYMBOL_GPL(timer_rearm_host_dec);
-> +#endif
-> +
->   /*
->    * timer_interrupt - gets called when the decrementer overflows,
->    * with interrupts disabled.
-> @@ -609,10 +650,7 @@ DEFINE_INTERRUPT_HANDLER_ASYNC(timer_interrupt)
->   	} else {
->   		now = *next_tb - now;
->   		if (now <= decrementer_max)
-> -			set_dec(now);
-> -		/* We may have raced with new irq work */
-> -		if (test_irq_work_pending())
-> -			set_dec(1);
-> +			set_dec_or_work(now);
->   		__this_cpu_inc(irq_stat.timer_irqs_others);
->   	}
->   
-> @@ -854,11 +892,7 @@ static int decrementer_set_next_event(unsigned long evt,
->   				      struct clock_event_device *dev)
->   {
->   	__this_cpu_write(decrementers_next_tb, get_tb() + evt);
-> -	set_dec(evt);
-> -
-> -	/* We may have raced with new irq work */
-> -	if (test_irq_work_pending())
-> -		set_dec(1);
-> +	set_dec_or_work(evt);
->   
->   	return 0;
->   }
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index 6e6cfb10e9bb..0cef578930f9 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -4018,11 +4018,8 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
->   	vc->entry_exit_map = 0x101;
->   	vc->in_guest = 0;
->   
-> -	next_timer = timer_get_next_tb();
-> -	set_dec(next_timer - tb);
-> -	/* We may have raced with new irq work */
-> -	if (test_irq_work_pending())
-> -		set_dec(1);
-> +	timer_rearm_host_dec(tb);
-> +
->   	mtspr(SPRN_SPRG_VDSO_WRITE, local_paca->sprg_vdso);
->   
->   	kvmhv_load_host_pmu();
-> 
+-- 
+2.31.1
+
