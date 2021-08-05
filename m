@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EE0A3E0D84
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Aug 2021 07:08:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0BE13E0D86
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Aug 2021 07:08:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GgGp90Pd6z3cXN
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Aug 2021 15:08:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GgGqB5Dg2z3dXF
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Aug 2021 15:08:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,40 +16,40 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GgGnq5mKYz3bZ3
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Aug 2021 15:07:43 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GgGpt004Yz3bY0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Aug 2021 15:08:37 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4GgGnn1xSVz9sWL;
- Thu,  5 Aug 2021 07:07:41 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4GgGpp6YtZz9sX1;
+ Thu,  5 Aug 2021 07:08:34 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 6t7DCkzoMOFG; Thu,  5 Aug 2021 07:07:41 +0200 (CEST)
+ with ESMTP id EUV2T3z4V6Op; Thu,  5 Aug 2021 07:08:34 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4GgGnn0vtrz9sWG;
- Thu,  5 Aug 2021 07:07:41 +0200 (CEST)
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4GgGpp5bkQz9sWW;
+ Thu,  5 Aug 2021 07:08:34 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id F3CAA8B7AE;
- Thu,  5 Aug 2021 07:07:40 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9A6B38B7AE;
+ Thu,  5 Aug 2021 07:08:34 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id eQgHi0R9P5Y4; Thu,  5 Aug 2021 07:07:40 +0200 (CEST)
+ with ESMTP id PZ660VRD4lYy; Thu,  5 Aug 2021 07:08:34 +0200 (CEST)
 Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 9EB018B76A;
- Thu,  5 Aug 2021 07:07:40 +0200 (CEST)
-Subject: Re: [PATCH v4 05/10] net/ps3_gelic: Add vlan_id structure
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 349BC8B76A;
+ Thu,  5 Aug 2021 07:08:34 +0200 (CEST)
+Subject: Re: [PATCH v4 06/10] net/ps3_gelic: Cleanup debug code
 To: Geoff Levand <geoff@infradead.org>, "David S. Miller"
  <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 References: <cover.1627068552.git.geoff@infradead.org>
- <1cdd7f718dde93dcaebf7ddd025869901aa30523.1627068552.git.geoff@infradead.org>
+ <8421aa2c148d840b11b7115208e5276017999c2a.1627068552.git.geoff@infradead.org>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <defb4181-c57f-7088-7208-f106c1b8c5ac@csgroup.eu>
-Date: Thu, 5 Aug 2021 07:07:41 +0200
+Message-ID: <4b004fab-bf60-3e77-54f0-f2598ef81396@csgroup.eu>
+Date: Thu, 5 Aug 2021 07:08:35 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.12.0
 MIME-Version: 1.0
-In-Reply-To: <1cdd7f718dde93dcaebf7ddd025869901aa30523.1627068552.git.geoff@infradead.org>
+In-Reply-To: <8421aa2c148d840b11b7115208e5276017999c2a.1627068552.git.geoff@infradead.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -72,39 +72,62 @@ Sender: "Linuxppc-dev"
 
 
 Le 23/07/2021 à 22:31, Geoff Levand a écrit :
-> In an effort to make the PS3 gelic driver easier to maintain, add
-> a definition for the vlan_id structure.
+> In an effort to make the PS3 gelic driver easier to maintain, change the
+> gelic_card_enable_rxdmac routine to use the optimizer to remove
+> debug code.
 > 
 > Signed-off-by: Geoff Levand <geoff@infradead.org>
 
-Commit 4298d9fdc87f ("net/ps3_gelic: Add vlan_id structure") has no obvious style problems and is 
-ready for submission.
+
+WARNING:VSPRINTF_SPECIFIER_PX: Using vsprintf specifier '%px' potentially exposes the kernel memory 
+layout, if you don't really need the address please consider using '%p'.
+#38: FILE: drivers/net/ethernet/toshiba/ps3_gelic_net.c:171:
++		dev_err(dev, "%s:%d: head=%px\n", __func__, __LINE__,
++			card->rx_chain.head);
+
+
+NOTE: For some of the reported defects, checkpatch may be able to
+       mechanically convert to the typical style using --fix or --fix-inplace.
+
+Commit 65f38d9720ac ("net/ps3_gelic: Cleanup debug code") has style problems, please review.
+
+NOTE: Ignored message types: ARCH_INCLUDE_LINUX BIT_MACRO COMPARISON_TO_NULL DT_SPLIT_BINDING_PATCH 
+EMAIL_SUBJECT FILE_PATH_CHANGES GLOBAL_INITIALISERS LINE_SPACING MULTIPLE_ASSIGNMENTS
 
 
 > ---
->   drivers/net/ethernet/toshiba/ps3_gelic_net.c | 7 ++++---
->   1 file changed, 4 insertions(+), 3 deletions(-)
+>   drivers/net/ethernet/toshiba/ps3_gelic_net.c | 19 +++++++++----------
+>   1 file changed, 9 insertions(+), 10 deletions(-)
 > 
 > diff --git a/drivers/net/ethernet/toshiba/ps3_gelic_net.c b/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-> index 946e9bfa071b..54e50ad9e629 100644
+> index 54e50ad9e629..85fc1915c8be 100644
 > --- a/drivers/net/ethernet/toshiba/ps3_gelic_net.c
 > +++ b/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-> @@ -1614,13 +1614,14 @@ static struct gelic_card *gelic_alloc_card_net(struct net_device **netdev)
->   static void gelic_card_get_vlan_info(struct gelic_card *card)
->   {
+> @@ -162,17 +162,16 @@ static void gelic_card_enable_rxdmac(struct gelic_card *card)
 >   	struct device *dev = ctodev(card);
-> +	unsigned int i;
->   	u64 v1, v2;
 >   	int status;
-> -	unsigned int i;
-> -	struct {
-> +	struct vlan_id {
->   		int tx;
->   		int rx;
-> -	} vlan_id_ix[2] = {
-> +	};
-> +	struct vlan_id vlan_id_ix[2] = {
->   		[GELIC_PORT_ETHERNET_0] = {
->   			.tx = GELIC_LV1_VLAN_TX_ETHERNET_0,
->   			.rx = GELIC_LV1_VLAN_RX_ETHERNET_0
+>   
+> -#ifdef DEBUG
+> -	if (gelic_descr_get_status(card->rx_chain.head) !=
+> -	    GELIC_DESCR_DMA_CARDOWNED) {
+> -		printk(KERN_ERR "%s: status=%x\n", __func__,
+> -		       be32_to_cpu(card->rx_chain.head->dmac_cmd_status));
+> -		printk(KERN_ERR "%s: nextphy=%x\n", __func__,
+> -		       be32_to_cpu(card->rx_chain.head->hw_regs.next_descr_addr));
+> -		printk(KERN_ERR "%s: head=%p\n", __func__,
+> -		       card->rx_chain.head);
+> +	if (__is_defined(DEBUG) && (gelic_descr_get_status(card->rx_chain.head)
+> +			!= GELIC_DESCR_DMA_CARDOWNED)) {
+> +		dev_err(dev, "%s:%d: status=%x\n", __func__, __LINE__,
+> +			be32_to_cpu(card->rx_chain.head->hw_regs.dmac_cmd_status));
+> +		dev_err(dev, "%s:%d: nextphy=%x\n", __func__, __LINE__,
+> +			be32_to_cpu(card->rx_chain.head->hw_regs.next_descr_addr));
+> +		dev_err(dev, "%s:%d: head=%px\n", __func__, __LINE__,
+> +			card->rx_chain.head);
+>   	}
+> -#endif
+> +
+>   	status = lv1_net_start_rx_dma(bus_id(card), dev_id(card),
+>   		card->rx_chain.head->link.cpu_addr, 0);
+>   
 > 
