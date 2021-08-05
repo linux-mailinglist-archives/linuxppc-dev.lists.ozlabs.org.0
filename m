@@ -2,99 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E5F83E1E01
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Aug 2021 23:27:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F8733E1E46
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 00:02:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GghXn2GRlz3dTB
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 07:27:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GgjJh1bwXz3dCb
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 08:02:28 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rVOCOVSt;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=paul-moore-com.20150623.gappssmtp.com header.i=@paul-moore-com.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=Y9dxhU40;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=paul-moore.com
+ (client-ip=2a00:1450:4864:20::52c; helo=mail-ed1-x52c.google.com;
+ envelope-from=paul@paul-moore.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=rVOCOVSt; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=paul-moore-com.20150623.gappssmtp.com
+ header.i=@paul-moore-com.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=Y9dxhU40; dkim-atps=neutral
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com
+ [IPv6:2a00:1450:4864:20::52c])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GghWP0f7Dz3cWN
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Aug 2021 07:26:40 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 175L444W132940; Thu, 5 Aug 2021 17:26:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=JoGy5yoHcJTp5C4m3UqKOyLRWSEw5jL/u+xcwHfgf2Q=;
- b=rVOCOVStIs7r/nfBgC7HSEQvuefTiCvBz8CXhm/EBmryfNfUcJUtOBY/9Wmh6/0l1U3D
- tyQVnEPgQJPxQs9aFKLQLHd+TxCJZ7aMAx2RojMZJxGkAu5Z+YYVdlvJC2NfChhQ8sPa
- aQVQa3ljoHX/UsLjXsr+luzVVhp8S9PXDGw2Rbp827FMmGSqnTQ+2SPwnEMFMSodYi5F
- eedS056PEHQ03W2z6g8pQUhnoo9OZCp9HaKERHBDbilN9K6VTBD2Nw/mgfyoUw7s6jhC
- oKOlkgx2rneVCeg9NoPEIBa/WH93ExeMHcnB4y3As24lF3KH0Hg3TD7CNBtHYk7dB3cv 8w== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3a83gq8bea-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 05 Aug 2021 17:26:33 -0400
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 175L5kHK145705;
- Thu, 5 Aug 2021 17:26:33 -0400
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3a83gq8bdm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 05 Aug 2021 17:26:33 -0400
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 175LNP4V005101;
- Thu, 5 Aug 2021 21:26:32 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
- [9.57.198.28]) by ppma03wdc.us.ibm.com with ESMTP id 3a77h539js-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 05 Aug 2021 21:26:32 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 175LQVYW17629448
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 5 Aug 2021 21:26:31 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A6A1D112072;
- Thu,  5 Aug 2021 21:26:31 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6A0D711207C;
- Thu,  5 Aug 2021 21:26:29 +0000 (GMT)
-Received: from farosas.linux.ibm.com.com (unknown [9.163.18.4])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu,  5 Aug 2021 21:26:29 +0000 (GMT)
-From: Fabiano Rosas <farosas@linux.ibm.com>
-To: kvm-ppc@vger.kernel.org
-Subject: [PATCH v2 3/3] KVM: PPC: Book3S HV: Stop exporting symbols from
- book3s_64_mmu_radix
-Date: Thu,  5 Aug 2021 18:26:16 -0300
-Message-Id: <20210805212616.2641017-4-farosas@linux.ibm.com>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210805212616.2641017-1-farosas@linux.ibm.com>
-References: <20210805212616.2641017-1-farosas@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GgjJF2qTzz2yNf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Aug 2021 08:02:04 +1000 (AEST)
+Received: by mail-ed1-x52c.google.com with SMTP id y7so10457775eda.5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Aug 2021 15:02:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=c3urkHLQm5QwJdZ9O5/+QqeYs/qIDb1LdTwMX8UuIJo=;
+ b=Y9dxhU40Cp8veCcp+fcPVCm4ifcChrN1zCWT6snRwiYjugw4bnQknql6Al6HruhkGh
+ hRr2EK3dfowDwcLy/91ol0zhq75r4GYw/0FGGfHCvI9pwgM/NBpebJBtEgcpxjZPzh7X
+ 6Qb4mLJ2AkRFR7FJQcLLLzFC1VGLUVsRMVl3aLy6lBeo2Y7pxZfomIrU+VomHL3c87QG
+ q3wIiaH3OeaFpPWo49uBcSya0/hSPyR98ZBBjPRupyhM1wN8h8eCnG23kWHKYe5oxTOx
+ ekDzNhD/GOj4/cx6e4T7C6fCiv+h+myJcrv4/jTtK0HBwN5TieASVgvaRp9YnmbuiQXC
+ 4KhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=c3urkHLQm5QwJdZ9O5/+QqeYs/qIDb1LdTwMX8UuIJo=;
+ b=a3EktE3TMjPXJ/jjnITNUzp47I+e3hdRPydksVezmy7vOcl3WrY1s/cucc5FmMzE++
+ eEC2OSUEvNA/NLqMtEmHN+HLAhVZiuCMAoez37phwhS+Y3jEIlDElloY3KDGDhxPp/PE
+ 51PoXC9O/gPLfcF7z2+koF+JeLYRkittYf+E3kW/bM3z6FNde5OwulSyOItuJk2ys6U+
+ ROJJtVxVHnUnSSV3x25fi3asbe4OmJyze9jpCAVB+XDxi6qXLqqSaddu20JaYvhMkAaV
+ bhVw+ATUJ0x3TlJbXs5hEt89hpl9lAvVPVU/aMBdCk6JkY1x9DGZ63hHeEcyGZ22pZEk
+ EMBw==
+X-Gm-Message-State: AOAM530umlAeqBBqU3n7LQ0yeSANcRmOiKeuv0WoSFfWd+eS4IsUnxHq
+ jEtjNWAZOQhKlGP3jVERHX9O0lvviOMnGsRYN60C
+X-Google-Smtp-Source: ABdhPJyUIiWYAz6aUFc6MPvieEo2GUkchlv7WYU/OChfOMJj/dkrDY3GEEK87ConDlVxbwRyeX2EW3ZWABWXQS8VcSk=
+X-Received: by 2002:a05:6402:b83:: with SMTP id
+ cf3mr9240826edb.12.1628200918472; 
+ Thu, 05 Aug 2021 15:01:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: UOHeF9WmSWWGHC-lOiIxwopRIz37pdM9
-X-Proofpoint-GUID: 0N-CJxMgXLcKzyc2RzhjEfG-QzOTQdbk
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-08-05_10:2021-08-05,
- 2021-08-05 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 bulkscore=0
- phishscore=0 suspectscore=0 impostorscore=0 spamscore=0 adultscore=0
- mlxscore=0 malwarescore=0 priorityscore=1501 lowpriorityscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2107140000 definitions=main-2108050124
+References: <cover.1621363275.git.rgb@redhat.com>
+ <2300b1083a32aade7ae7efb95826e8f3f260b1df.1621363275.git.rgb@redhat.com>
+In-Reply-To: <2300b1083a32aade7ae7efb95826e8f3f260b1df.1621363275.git.rgb@redhat.com>
+From: Paul Moore <paul@paul-moore.com>
+Date: Thu, 5 Aug 2021 18:01:47 -0400
+Message-ID: <CAHC9VhRDYYOpUvCkcWw=2a_P0AJxtA5N5y_Kj5PAG-0BQ02COQ@mail.gmail.com>
+Subject: Re: [PATCH v4 1/3] audit: replace magic audit syscall class numbers
+ with macros
+To: Richard Guy Briggs <rgb@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,47 +78,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, christophe.leroy@c-s.fr, npiggin@gmail.com
+Cc: linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org,
+ linux-parisc@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>, x86@kernel.org,
+ LKML <linux-kernel@vger.kernel.org>, Eric Paris <eparis@redhat.com>,
+ sparclinux@vger.kernel.org, Aleksa Sarai <cyphar@cyphar.com>,
+ Linux-Audit Mailing List <linux-audit@redhat.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, linux-alpha@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, Eric Paris <eparis@parisplace.org>,
+ Steve Grubb <sgrubb@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The book3s_64_mmu_radix.o object is not part of the KVM builtins and
-all the callers of the exported symbols are in the same kvm-hv.ko
-module so we should not need to export any symbols.
+On Wed, May 19, 2021 at 4:01 PM Richard Guy Briggs <rgb@redhat.com> wrote:
+>
+> Replace audit syscall class magic numbers with macros.
+>
+> This required putting the macros into new header file
+> include/linux/auditsc_classmacros.h since the syscall macros were
+> included for both 64 bit and 32 bit in any compat code, causing
+> redefinition warnings.
+>
+> Signed-off-by: Richard Guy Briggs <rgb@redhat.com>
+> Link: https://lore.kernel.org/r/2300b1083a32aade7ae7efb95826e8f3f260b1df.1621363275.git.rgb@redhat.com
+> ---
+>  MAINTAINERS                         |  1 +
+>  arch/alpha/kernel/audit.c           |  8 ++++----
+>  arch/ia64/kernel/audit.c            |  8 ++++----
+>  arch/parisc/kernel/audit.c          |  8 ++++----
+>  arch/parisc/kernel/compat_audit.c   |  9 +++++----
+>  arch/powerpc/kernel/audit.c         | 10 +++++-----
+>  arch/powerpc/kernel/compat_audit.c  | 11 ++++++-----
+>  arch/s390/kernel/audit.c            | 10 +++++-----
+>  arch/s390/kernel/compat_audit.c     | 11 ++++++-----
+>  arch/sparc/kernel/audit.c           | 10 +++++-----
+>  arch/sparc/kernel/compat_audit.c    | 11 ++++++-----
+>  arch/x86/ia32/audit.c               | 11 ++++++-----
+>  arch/x86/kernel/audit_64.c          |  8 ++++----
+>  include/linux/audit.h               |  1 +
+>  include/linux/auditsc_classmacros.h | 23 +++++++++++++++++++++++
+>  kernel/auditsc.c                    | 12 ++++++------
+>  lib/audit.c                         | 10 +++++-----
+>  lib/compat_audit.c                  | 11 ++++++-----
+>  18 files changed, 102 insertions(+), 71 deletions(-)
+>  create mode 100644 include/linux/auditsc_classmacros.h
 
-Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
----
- arch/powerpc/kvm/book3s_64_mmu_radix.c | 3 ---
- 1 file changed, 3 deletions(-)
+...
 
-diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-index 1b1c9e9e539b..16359525a40f 100644
---- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
-+++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-@@ -86,7 +86,6 @@ unsigned long __kvmhv_copy_tofrom_guest_radix(int lpid, int pid,
- 
- 	return ret;
- }
--EXPORT_SYMBOL_GPL(__kvmhv_copy_tofrom_guest_radix);
- 
- static long kvmhv_copy_tofrom_guest_radix(struct kvm_vcpu *vcpu, gva_t eaddr,
- 					  void *to, void *from, unsigned long n)
-@@ -122,14 +121,12 @@ long kvmhv_copy_from_guest_radix(struct kvm_vcpu *vcpu, gva_t eaddr, void *to,
- 
- 	return ret;
- }
--EXPORT_SYMBOL_GPL(kvmhv_copy_from_guest_radix);
- 
- long kvmhv_copy_to_guest_radix(struct kvm_vcpu *vcpu, gva_t eaddr, void *from,
- 			       unsigned long n)
- {
- 	return kvmhv_copy_tofrom_guest_radix(vcpu, eaddr, NULL, from, n);
- }
--EXPORT_SYMBOL_GPL(kvmhv_copy_to_guest_radix);
- 
- int kvmppc_mmu_walk_radix_tree(struct kvm_vcpu *vcpu, gva_t eaddr,
- 			       struct kvmppc_pte *gpte, u64 root,
+> diff --git a/include/linux/auditsc_classmacros.h b/include/linux/auditsc_classmacros.h
+> new file mode 100644
+> index 000000000000..18757d270961
+> --- /dev/null
+> +++ b/include/linux/auditsc_classmacros.h
+> @@ -0,0 +1,23 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +/* auditsc_classmacros.h -- Auditing support syscall macros
+> + *
+> + * Copyright 2021 Red Hat Inc., Durham, North Carolina.
+> + * All Rights Reserved.
+> + *
+> + * Author: Richard Guy Briggs <rgb@redhat.com>
+> + */
+> +#ifndef _LINUX_AUDITSCM_H_
+> +#define _LINUX_AUDITSCM_H_
+> +
+> +enum auditsc_class_t {
+> +       AUDITSC_NATIVE = 0,
+> +       AUDITSC_COMPAT,
+> +       AUDITSC_OPEN,
+> +       AUDITSC_OPENAT,
+> +       AUDITSC_SOCKETCALL,
+> +       AUDITSC_EXECVE,
+> +
+> +       AUDITSC_NVALS /* count */
+> +};
+> +
+> +#endif
+
+My apologies Richard, for some reason I had it in my mind that this
+series was waiting on you to answer a question and/or respin; however,
+now that I'm clearing my patch queues looking for any stragglers I see
+that isn't the case.  Looking over the patchset I think it looks okay
+to me, my only concern is that "auditsc_classmacros.h" is an awfully
+specific header file name and could prove to be annoying if we want to
+add to it in the future.  What do you think about something like
+"audit_arch.h" instead?
+
+If that change is okay with you I can go ahead and do the rename while
+I'm merging the patches, I'll consider it penance for letting this
+patchset sit for so long :/
+
 -- 
-2.29.2
-
+paul moore
+www.paul-moore.com
