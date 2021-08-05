@@ -1,70 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 392033E0CE3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Aug 2021 05:47:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 366153E0D7E
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Aug 2021 07:04:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GgF110Zjgz3ck8
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Aug 2021 13:47:17 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=mGVTHKFa;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=86MJ/1Do;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GgGjZ12mCz3cVf
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Aug 2021 15:04:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1;
- helo=galois.linutronix.de; envelope-from=john.ogness@linutronix.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=mGVTHKFa; 
- dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=86MJ/1Do; 
- dkim-atps=neutral
-Received: from galois.linutronix.de (Galois.linutronix.de
- [IPv6:2a0a:51c0:0:12e:550::1])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GgF0X6Yxjz30G8
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Aug 2021 13:46:52 +1000 (AEST)
-From: John Ogness <john.ogness@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1628135204;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Uk5CAK1ofKH4/IrVtMIiLz8ZUZ925UDJRRzDYZI2vDw=;
- b=mGVTHKFa39+pFN2vjyvDnOkW7UyNhwn6C5SPH1m5CSlBOrEc9s6E73EomrlR/KPRE7kzWI
- q92fxtGTZTwnVRjluB00r4plp7y4pEAyDMRTapzwjcD2KyO4I49teT0glwxZz/vD8cmGRx
- gBnt1qLw13BWoxyoTxL+OW6ngTdGbWPo6EiFKg5gMfu4BrsLS3YIvLq3qTxO0XQAYYtsep
- fIjGUI0Onp3VfN/NYNmK1FMEMZgetbfw/aBgAp4efMAEIECbZR+qAxy02DSptuvBO1BIPB
- ACbOwCeXpvlA96KwIxE5M1ojitMxsSY+0Ge8kP2vLY8EQezGCdCP4YvWCLVbfA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1628135204;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Uk5CAK1ofKH4/IrVtMIiLz8ZUZ925UDJRRzDYZI2vDw=;
- b=86MJ/1DoOSnpngKET2bKmE2kIiPxxoqcvs+HqG5oHdfSFQrQx/m9o1L0SjnZQPmCqVoRDB
- ckN+EL5bxz0l8QDA==
-To: Daniel Thompson <daniel.thompson@linaro.org>,
- Petr Mladek <pmladek@suse.com>
-Subject: Re: [PATCH printk v1 03/10] kgdb: delay roundup if holding printk
- cpulock
-In-Reply-To: <20210804150431.qtra3wvh2n4m6j64@maple.lan>
-References: <20210803131301.5588-1-john.ogness@linutronix.de>
- <20210803131301.5588-4-john.ogness@linutronix.de>
- <20210803142558.cz7apumpgijs5y4y@maple.lan>
- <87tuk635rb.fsf@jogness.linutronix.de>
- <20210804113159.lsnoyylifg6v5i35@maple.lan> <YQqEJtmNFxVxH3U/@alley>
- <20210804150431.qtra3wvh2n4m6j64@maple.lan>
-Date: Thu, 05 Aug 2021 05:52:43 +0206
-Message-ID: <87tuk4lfj0.fsf@jogness.linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GgGjC31G2z308h
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Aug 2021 15:03:39 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4GgGj406Lvz9sS6;
+ Thu,  5 Aug 2021 07:03:36 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id cAYlmELQErNj; Thu,  5 Aug 2021 07:03:35 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4GgGj35PN3z9sS0;
+ Thu,  5 Aug 2021 07:03:35 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 8C70B8B7AE;
+ Thu,  5 Aug 2021 07:03:35 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id MvH5Fk3aJuYh; Thu,  5 Aug 2021 07:03:35 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C85628B76A;
+ Thu,  5 Aug 2021 07:03:34 +0200 (CEST)
+Subject: Re: [PATCH v4 01/10] net/ps3_gelic: Add gelic_descr structures
+To: Geoff Levand <geoff@infradead.org>, "David S. Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
+References: <cover.1627068552.git.geoff@infradead.org>
+ <c95aa8e57aca8b3af6893f13f2e03731f8198184.1627068552.git.geoff@infradead.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <b819b8cf-c079-10d5-3c6e-245cb8e33f39@csgroup.eu>
+Date: Thu, 5 Aug 2021 07:03:35 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <c95aa8e57aca8b3af6893f13f2e03731f8198184.1627068552.git.geoff@infradead.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,222 +64,457 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
- Douglas Anderson <dianders@chromium.org>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
- Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- Chengyang Fan <cy.fan@huawei.com>, Bhaskar Chowdhury <unixbhaskar@gmail.com>,
- x86@kernel.org, Ingo Molnar <mingo@redhat.com>,
- kgdb-bugreport@lists.sourceforge.net, Nicholas Piggin <npiggin@gmail.com>,
- Borislav Petkov <bp@alien8.de>, Steven Rostedt <rostedt@goodmis.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- Sergey Senozhatsky <senozhatsky@chromium.org>,
- Jason Wessel <jason.wessel@windriver.com>, linuxppc-dev@lists.ozlabs.org,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>
+Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2021-08-04, Daniel Thompson <daniel.thompson@linaro.org> wrote:
-> On Wed, Aug 04, 2021 at 02:12:22PM +0200, Petr Mladek wrote:
->> On Wed 2021-08-04 12:31:59, Daniel Thompson wrote:
->> > On Tue, Aug 03, 2021 at 05:36:32PM +0206, John Ogness wrote:
->> > > On 2021-08-03, Daniel Thompson <daniel.thompson@linaro.org> wrote:
->> > > > On Tue, Aug 03, 2021 at 03:18:54PM +0206, John Ogness wrote:
->> > > >> kgdb makes use of its own cpulock (@dbg_master_lock, @kgdb_active)
->> > > >> during cpu roundup. This will conflict with the printk cpulock.
->> > > >
->> > > > When the full vision is realized what will be the purpose of the printk
->> > > > cpulock?
->> > > >
->> > > > I'm asking largely because it's current role is actively unhelpful
->> > > > w.r.t. kdb. It is possible that cautious use of in_dbg_master() might
->> > > > be a better (and safer) solution. However it sounds like there is a
->> > > > larger role planned for the printk cpulock...
->> > > 
->> > > The printk cpulock is used as a synchronization mechanism for
->> > > implementing atomic consoles, which need to be able to safely interrupt
->> > > the console write() activity at any time and immediately continue with
->> > > their own printing. The ultimate goal is to move all console printing
->> > > into per-console dedicated kthreads, so the primary function of the
->> > > printk cpulock is really to immediately _stop_ the CPU/kthread
->> > > performing write() in order to allow write_atomic() (from any context on
->> > > any CPU) to safely and reliably take over.
->> > 
->> > I see.
->> > 
->> > Is there any mileage in allowing in_dbg_master() to suppress taking
->> > the console lock?
->> > 
->> > There's a couple of reasons to worry about the current approach.
->> > 
->> > The first is that we don't want this code to trigger in the case when
->> > kgdb is enabled and kdb is not since it is only kdb (a self-hosted
->> > debugger) than uses the consoles. This case is relatively trivial to
->> > address since we can rename it kdb_roundup_delay() and alter the way it
->> > is conditionally compiled.
 
-Well, _I_ want this code to trigger even without kdb. The printk cpulock
-is meant to be the innermost locking for the entire kernel. No code is
-allowed to block/spin on any kind of lock if holding the printk
-cpulock. This is the only way to guarantee the functionality of the
-atomic consoles.
 
-For example, if the kernel were to crash while inside kgdb code, we want
-to see the backtrace.
+Le 23/07/2021 à 22:31, Geoff Levand a écrit :
+> In an effort to make the PS3 gelic driver easier to maintain, create two
+> new structures, struct gelic_hw_regs and struct gelic_chain_link, and
+> replace the corresponding members of struct gelic_descr with the new
+> structures.
+> 
+> struct gelic_hw_regs holds the register variables used by the gelic
+> hardware device.  struct gelic_chain_link holds variables used to manage
+> the driver's linked list of gelic descr structures.
+> 
+> Signed-off-by: Geoff Levand <geoff@infradead.org>
 
-Since kgdb _does_ take locks (spinning on @dbg_slave_lock during roundup
-and the master's own cpu lock as a retry loop on @dbg_master_lock),
-clearly it is not allowed to hold the printk cpulock. The simplest
-solution I could find was just to make sure kgdb_cpu_enter() isn't
-called while holding the printk cpulock.
+Running checkpatch script provides the following feedback:
 
->> > The second is more of a problem however. kdb will only call into the
->> > console code from the debug master. By default this is the CPU that
->> > takes the debug trap so initial prints will work fine. However it is
->> > possible to switch to a different master (so we can read per-CPU
->> > registers and things like that). This will result in one of the CPUs
->> > that did the IPI round up calling into console code and this is unsafe
->> > in that instance.
+CHECK:PARENTHESIS_ALIGNMENT: Alignment should match open parenthesis
+#164: FILE: drivers/net/ethernet/toshiba/ps3_gelic_net.c:400:
++	descr->hw_regs.payload.dev_addr = cpu_to_be32(dma_map_single(ctodev(card),
+  						     descr->skb->data,
 
-It is only unsafe if a CPU enters "kgdb/kdb context" while holding the
-printk cpulock. That is what I want to prevent.
+WARNING:AVOID_BUG: Avoid crashing the kernel - try using WARN_ON & recovery code rather than BUG() 
+or BUG_ON()
+#190: FILE: drivers/net/ethernet/toshiba/ps3_gelic_net.c:497:
++	BUG_ON(!(be32_to_cpu(descr->hw_regs.data_status) & GELIC_DESCR_TX_TAIL));
 
->> > There are a couple of tricks we could adopt to work around this but
->> > given the slightly odd calling context for kdb (all CPUs quiesced, no
->> > log interleaving possible) it sounds like it would remain safe to
->> > bypass the lock if in_dbg_master() is true.
->> > 
->> > Bypassing an inconvenient lock might sound icky but:
->> > 
->> > 1. If the lock is not owned by any CPU then what kdb will do is safe.
+ERROR:SPACING: spaces required around that '?' (ctx:VxE)
+#333: FILE: drivers/net/ethernet/toshiba/ps3_gelic_net.c:922:
++	skb_put(skb, be32_to_cpu(descr->hw_regs.valid_size)?
+  	                                                   ^
 
-No. The printk cpulock exists for low-level synchronization. The atomic
-consoles need this synchronization. (For example, the 8250 needs this
-for correct tracking of its interrupt register, even for
-serial8250_put_poll_char().)
 
->> > 2. If the lock is owned by any CPU then we have quiesced it anyway
->> >    and this makes is safe for the owning CPU to share its ownership
->> >    (since it isn't much different to recursive acquisition on a single
->> >    CPU)
+NOTE: For some of the reported defects, checkpatch may be able to
+       mechanically convert to the typical style using --fix or --fix-inplace.
 
-Quiescing the printk cpulock is not permitted.
+Commit 5c33bdbe1861 ("net/ps3_gelic: Add gelic_descr structures") has style problems, please review.
 
-Just because it is kdb, does not mean that the atomic consoles were
-interrupted in a convenient place. The whole purpose of the atomic
-consoles is so that we can have guaranteed console output from _any_
-context and _any_ line of code in the kernel.
+NOTE: Ignored message types: ARCH_INCLUDE_LINUX BIT_MACRO COMPARISON_TO_NULL DT_SPLIT_BINDING_PATCH 
+EMAIL_SUBJECT FILE_PATH_CHANGES GLOBAL_INITIALISERS LINE_SPACING MULTIPLE_ASSIGNMENTS
 
->> I think about the following:
->> 
->> void kgdb_roundup_cpus(void)
->> {
->> 	__printk_cpu_lock();
->> 	__kgdb_roundup_cpus();
->> }
->> 
->> , where __printk_cpu_lock() waits/takes printk_cpu_lock()
->> 	__kgdb_roundup_cpus() is the original kgdb_roundup_cpus();
->> 
->> 
->> The idea is that kgdb_roundup_cpus() caller takes the printk_cpu lock.
->> The owner will be well defined.
->> 
->> As a result any other CPU will not be able to take the printk_cpu lock
->> as long as it is owned by the kgdb lock. But as you say, kgdb will
->> make sure that everything is serialized at this stage. So that
->> the original raw_printk_cpu_lock_irqsave() might just disable
->> IRQs when called under debugger.
->> 
->> Does it make any sense?
->
-> Yes but I think it is still has problems.
->
-> Primarily is doesn't solve the issue I raised. It would still be unsafe
-> to change debug master: we can guarantee the initial master owns the
-> lock but if it has been multiply acquired we cannot transfer ownership
-> when we want to change master.
->
-> Additionally it will delay the round up of cores that do not own the
-> lock. The quiescing is never atomic and the operator needs to know
-> that but the longer CPUs are allows to execute for the more confusing
-> things can become for the operator.
->
-> Finally on machines without an NMI this could cause trouble with the
-> interrupt disable in raw_printk_cpu_lock_irqsave() (or any outer level
-> interrupt disable). If the master get the lock then the other processes
-> will become incapable of being rounded up if they are waiting for the
-> printk lock).
 
-I am also not happy with such a solution. Aside from Daniel's comments,
-it also violates the basic principle of the printk cpulock by allowing
-further locking while holding the print cpulock. That is a recipe for
-deadlock.
 
->> I have to say that it is a bit hairy. But it looks slightly better
->> than the delayed/repeated IPI proposed by this patch.
->
-> I'd like to reserve judgement for now which one is least worst...
-> largely because if the purpose of the lock simply to prevent interleaving
-> of console output then the debugger quiescing code should already have
-> this covered.
->
-> It leaves me wondering if a change like the one below is sufficient
-> (based on code without John's patches but hopefully still clear enough).
-> I've given the new code it's own branch which it doesn't, strictly
-> speaking, need but it is easier to comment this way... and perhaps also
-> just a little easier for people who have not set CONFIG_KGDB to
-> ignore ;-).
->
-> ~~~
-> diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-> index 142a58d124d9..41a7e103bb66 100644
-> --- a/kernel/printk/printk.c
-> +++ b/kernel/printk/printk.c
-> @@ -3599,6 +3599,18 @@ int __printk_cpu_trylock(void)
->                 /* This CPU is already the owner. */
->                 atomic_inc(&printk_cpulock_nested);
->                 return 1;
-> +       } else if (in_dbg_master()) {
-> +               /*
-> +                * If we are executing as the primary CPU and with the debugger
-> +                * active than all other CPUs in the system are quiesced by
-> +                * the time kdb winds up calling this function. To execute this
-> +                * branch then the lock must be owned by one of the quiesced CPUs.
-> +                * Happily, because it is quiesced and cannot release it, it is
-> +                * safe for us to allow the lock to be taken from a different CPU!
-> +                * The lock will be released prior to resuming the real owner.
-> +                */
-> +               atomic_inc(&printk_cpulock_nested);
-> +               return 1;
->         }
->  
->         return 0;
-> ~~~
-
-Being in kgdb/kdb context is similar to being in atomic console
-context. (Of course, they are both using cpu locks.) But the contexts
-are not the same. It is incorrect to handle them as the same.
-
-We need to decide who is inside of who. Either printk is the innermost,
-in which case the printk cpulock cannot be held when calling
-kgdb_cpu_enter(). Or kgdb is the innermost, meaning that the atomic
-consoles are no longer atomic/reliable while in kgdb.
-
-I prefer and am pushing for the first, but am willing to accept the
-second (i.e. that kgdb is the innermost function of the kernel).
-
-> PS In the interested of full disclosure there is a special case
->    in the debugger to allow it to try to cope if it fails to
->    quiesce a CPU and I deliberately omitted this from the long
->    comment above. That special case is expected to be unstable
->    but since the alternative is likely to be a permanent deadlock
->    without any indication of why we choose to take the risk of
->    continuing. Personally I don't recommend reasoning about
->    console safety based on this emergency case hence omitting the
->    comment.
-
-John Ogness
+> ---
+>   drivers/net/ethernet/toshiba/ps3_gelic_net.c | 133 ++++++++++---------
+>   drivers/net/ethernet/toshiba/ps3_gelic_net.h |  24 ++--
+>   2 files changed, 82 insertions(+), 75 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/toshiba/ps3_gelic_net.c b/drivers/net/ethernet/toshiba/ps3_gelic_net.c
+> index 55e652624bd7..cb45571573d7 100644
+> --- a/drivers/net/ethernet/toshiba/ps3_gelic_net.c
+> +++ b/drivers/net/ethernet/toshiba/ps3_gelic_net.c
+> @@ -98,7 +98,7 @@ static void gelic_card_get_ether_port_status(struct gelic_card *card,
+>   static enum gelic_descr_dma_status
+>   gelic_descr_get_status(struct gelic_descr *descr)
+>   {
+> -	return be32_to_cpu(descr->dmac_cmd_status) & GELIC_DESCR_DMA_STAT_MASK;
+> +	return be32_to_cpu(descr->hw_regs.dmac_cmd_status) & GELIC_DESCR_DMA_STAT_MASK;
+>   }
+>   
+>   static int gelic_card_set_link_mode(struct gelic_card *card, int mode)
+> @@ -154,13 +154,13 @@ static void gelic_card_enable_rxdmac(struct gelic_card *card)
+>   		printk(KERN_ERR "%s: status=%x\n", __func__,
+>   		       be32_to_cpu(card->rx_chain.head->dmac_cmd_status));
+>   		printk(KERN_ERR "%s: nextphy=%x\n", __func__,
+> -		       be32_to_cpu(card->rx_chain.head->next_descr_addr));
+> +		       be32_to_cpu(card->rx_chain.head->hw_regs.next_descr_addr));
+>   		printk(KERN_ERR "%s: head=%p\n", __func__,
+>   		       card->rx_chain.head);
+>   	}
+>   #endif
+>   	status = lv1_net_start_rx_dma(bus_id(card), dev_id(card),
+> -				card->rx_chain.head->bus_addr, 0);
+> +				card->rx_chain.head->link.cpu_addr, 0);
+>   	if (status)
+>   		dev_info(ctodev(card),
+>   			 "lv1_net_start_rx_dma failed, status=%d\n", status);
+> @@ -195,8 +195,8 @@ static void gelic_card_disable_rxdmac(struct gelic_card *card)
+>   static void gelic_descr_set_status(struct gelic_descr *descr,
+>   				   enum gelic_descr_dma_status status)
+>   {
+> -	descr->dmac_cmd_status = cpu_to_be32(status |
+> -			(be32_to_cpu(descr->dmac_cmd_status) &
+> +	descr->hw_regs.dmac_cmd_status = cpu_to_be32(status |
+> +			(be32_to_cpu(descr->hw_regs.dmac_cmd_status) &
+>   			 ~GELIC_DESCR_DMA_STAT_MASK));
+>   	/*
+>   	 * dma_cmd_status field is used to indicate whether the descriptor
+> @@ -224,13 +224,13 @@ static void gelic_card_reset_chain(struct gelic_card *card,
+>   
+>   	for (descr = start_descr; start_descr != descr->next; descr++) {
+>   		gelic_descr_set_status(descr, GELIC_DESCR_DMA_CARDOWNED);
+> -		descr->next_descr_addr = cpu_to_be32(descr->next->bus_addr);
+> +		descr->hw_regs.next_descr_addr = cpu_to_be32(descr->next->link.cpu_addr);
+>   	}
+>   
+>   	chain->head = start_descr;
+>   	chain->tail = (descr - 1);
+>   
+> -	(descr - 1)->next_descr_addr = 0;
+> +	(descr - 1)->hw_regs.next_descr_addr = 0;
+>   }
+>   
+>   void gelic_card_up(struct gelic_card *card)
+> @@ -286,10 +286,10 @@ static void gelic_card_free_chain(struct gelic_card *card,
+>   {
+>   	struct gelic_descr *descr;
+>   
+> -	for (descr = descr_in; descr && descr->bus_addr; descr = descr->next) {
+> -		dma_unmap_single(ctodev(card), descr->bus_addr,
+> -				 GELIC_DESCR_SIZE, DMA_BIDIRECTIONAL);
+> -		descr->bus_addr = 0;
+> +	for (descr = descr_in; descr && descr->link.cpu_addr; descr = descr->next) {
+> +		dma_unmap_single(ctodev(card), descr->link.cpu_addr,
+> +				 descr->link.size, DMA_BIDIRECTIONAL);
+> +		descr->link.cpu_addr = 0;
+>   	}
+>   }
+>   
+> @@ -317,13 +317,14 @@ static int gelic_card_init_chain(struct gelic_card *card,
+>   
+>   	/* set up the hardware pointers in each descriptor */
+>   	for (i = 0; i < no; i++, descr++) {
+> +		descr->link.size = sizeof(struct gelic_hw_regs);
+>   		gelic_descr_set_status(descr, GELIC_DESCR_DMA_NOT_IN_USE);
+> -		descr->bus_addr =
+> +		descr->link.cpu_addr =
+>   			dma_map_single(ctodev(card), descr,
+> -				       GELIC_DESCR_SIZE,
+> +				       descr->link.size,
+>   				       DMA_BIDIRECTIONAL);
+>   
+> -		if (!descr->bus_addr)
+> +		if (!descr->link.cpu_addr)
+>   			goto iommu_error;
+>   
+>   		descr->next = descr + 1;
+> @@ -336,22 +337,22 @@ static int gelic_card_init_chain(struct gelic_card *card,
+>   	/* chain bus addr of hw descriptor */
+>   	descr = start_descr;
+>   	for (i = 0; i < no; i++, descr++) {
+> -		descr->next_descr_addr = cpu_to_be32(descr->next->bus_addr);
+> +		descr->hw_regs.next_descr_addr = cpu_to_be32(descr->next->link.cpu_addr);
+>   	}
+>   
+>   	chain->head = start_descr;
+>   	chain->tail = start_descr;
+>   
+>   	/* do not chain last hw descriptor */
+> -	(descr - 1)->next_descr_addr = 0;
+> +	(descr - 1)->hw_regs.next_descr_addr = 0;
+>   
+>   	return 0;
+>   
+>   iommu_error:
+>   	for (i--, descr--; 0 <= i; i--, descr--)
+> -		if (descr->bus_addr)
+> -			dma_unmap_single(ctodev(card), descr->bus_addr,
+> -					 GELIC_DESCR_SIZE,
+> +		if (descr->link.cpu_addr)
+> +			dma_unmap_single(ctodev(card), descr->link.cpu_addr,
+> +					 descr->link.size,
+>   					 DMA_BIDIRECTIONAL);
+>   	return -ENOMEM;
+>   }
+> @@ -381,25 +382,25 @@ static int gelic_descr_prepare_rx(struct gelic_card *card,
+>   	 * bit more */
+>   	descr->skb = dev_alloc_skb(bufsize + GELIC_NET_RXBUF_ALIGN - 1);
+>   	if (!descr->skb) {
+> -		descr->buf_addr = 0; /* tell DMAC don't touch memory */
+> +		descr->hw_regs.payload.dev_addr = 0; /* tell DMAC don't touch memory */
+>   		return -ENOMEM;
+>   	}
+> -	descr->buf_size = cpu_to_be32(bufsize);
+> -	descr->dmac_cmd_status = 0;
+> -	descr->result_size = 0;
+> -	descr->valid_size = 0;
+> -	descr->data_error = 0;
+> +	descr->hw_regs.payload.size = cpu_to_be32(bufsize);
+> +	descr->hw_regs.dmac_cmd_status = 0;
+> +	descr->hw_regs.result_size = 0;
+> +	descr->hw_regs.valid_size = 0;
+> +	descr->hw_regs.data_error = 0;
+>   
+>   	offset = ((unsigned long)descr->skb->data) &
+>   		(GELIC_NET_RXBUF_ALIGN - 1);
+>   	if (offset)
+>   		skb_reserve(descr->skb, GELIC_NET_RXBUF_ALIGN - offset);
+>   	/* io-mmu-map the skb */
+> -	descr->buf_addr = cpu_to_be32(dma_map_single(ctodev(card),
+> +	descr->hw_regs.payload.dev_addr = cpu_to_be32(dma_map_single(ctodev(card),
+>   						     descr->skb->data,
+>   						     GELIC_NET_MAX_MTU,
+>   						     DMA_FROM_DEVICE));
+> -	if (!descr->buf_addr) {
+> +	if (!descr->hw_regs.payload.dev_addr) {
+>   		dev_kfree_skb_any(descr->skb);
+>   		descr->skb = NULL;
+>   		dev_info(ctodev(card),
+> @@ -424,10 +425,10 @@ static void gelic_card_release_rx_chain(struct gelic_card *card)
+>   	do {
+>   		if (descr->skb) {
+>   			dma_unmap_single(ctodev(card),
+> -					 be32_to_cpu(descr->buf_addr),
+> +					 be32_to_cpu(descr->hw_regs.payload.dev_addr),
+>   					 descr->skb->len,
+>   					 DMA_FROM_DEVICE);
+> -			descr->buf_addr = 0;
+> +			descr->hw_regs.payload.dev_addr = 0;
+>   			dev_kfree_skb_any(descr->skb);
+>   			descr->skb = NULL;
+>   			gelic_descr_set_status(descr,
+> @@ -493,19 +494,19 @@ static void gelic_descr_release_tx(struct gelic_card *card,
+>   {
+>   	struct sk_buff *skb = descr->skb;
+>   
+> -	BUG_ON(!(be32_to_cpu(descr->data_status) & GELIC_DESCR_TX_TAIL));
+> +	BUG_ON(!(be32_to_cpu(descr->hw_regs.data_status) & GELIC_DESCR_TX_TAIL));
+>   
+> -	dma_unmap_single(ctodev(card), be32_to_cpu(descr->buf_addr), skb->len,
+> +	dma_unmap_single(ctodev(card), be32_to_cpu(descr->hw_regs.payload.dev_addr), skb->len,
+>   			 DMA_TO_DEVICE);
+>   	dev_kfree_skb_any(skb);
+>   
+> -	descr->buf_addr = 0;
+> -	descr->buf_size = 0;
+> -	descr->next_descr_addr = 0;
+> -	descr->result_size = 0;
+> -	descr->valid_size = 0;
+> -	descr->data_status = 0;
+> -	descr->data_error = 0;
+> +	descr->hw_regs.payload.dev_addr = 0;
+> +	descr->hw_regs.payload.size = 0;
+> +	descr->hw_regs.next_descr_addr = 0;
+> +	descr->hw_regs.result_size = 0;
+> +	descr->hw_regs.valid_size = 0;
+> +	descr->hw_regs.data_status = 0;
+> +	descr->hw_regs.data_error = 0;
+>   	descr->skb = NULL;
+>   
+>   	/* set descr status */
+> @@ -698,7 +699,7 @@ static void gelic_descr_set_tx_cmdstat(struct gelic_descr *descr,
+>   				       struct sk_buff *skb)
+>   {
+>   	if (skb->ip_summed != CHECKSUM_PARTIAL)
+> -		descr->dmac_cmd_status =
+> +		descr->hw_regs.dmac_cmd_status =
+>   			cpu_to_be32(GELIC_DESCR_DMA_CMD_NO_CHKSUM |
+>   				    GELIC_DESCR_TX_DMA_FRAME_TAIL);
+>   	else {
+> @@ -706,19 +707,19 @@ static void gelic_descr_set_tx_cmdstat(struct gelic_descr *descr,
+>   		 * if yes: tcp? udp? */
+>   		if (skb->protocol == htons(ETH_P_IP)) {
+>   			if (ip_hdr(skb)->protocol == IPPROTO_TCP)
+> -				descr->dmac_cmd_status =
+> +				descr->hw_regs.dmac_cmd_status =
+>   				cpu_to_be32(GELIC_DESCR_DMA_CMD_TCP_CHKSUM |
+>   					    GELIC_DESCR_TX_DMA_FRAME_TAIL);
+>   
+>   			else if (ip_hdr(skb)->protocol == IPPROTO_UDP)
+> -				descr->dmac_cmd_status =
+> +				descr->hw_regs.dmac_cmd_status =
+>   				cpu_to_be32(GELIC_DESCR_DMA_CMD_UDP_CHKSUM |
+>   					    GELIC_DESCR_TX_DMA_FRAME_TAIL);
+>   			else	/*
+>   				 * the stack should checksum non-tcp and non-udp
+>   				 * packets on his own: NETIF_F_IP_CSUM
+>   				 */
+> -				descr->dmac_cmd_status =
+> +				descr->hw_regs.dmac_cmd_status =
+>   				cpu_to_be32(GELIC_DESCR_DMA_CMD_NO_CHKSUM |
+>   					    GELIC_DESCR_TX_DMA_FRAME_TAIL);
+>   		}
+> @@ -763,7 +764,7 @@ static int gelic_descr_prepare_tx(struct gelic_card *card,
+>   				  struct gelic_descr *descr,
+>   				  struct sk_buff *skb)
+>   {
+> -	dma_addr_t buf;
+> +	dma_addr_t cpu_addr;
+>   
+>   	if (card->vlan_required) {
+>   		struct sk_buff *skb_tmp;
+> @@ -777,20 +778,20 @@ static int gelic_descr_prepare_tx(struct gelic_card *card,
+>   		skb = skb_tmp;
+>   	}
+>   
+> -	buf = dma_map_single(ctodev(card), skb->data, skb->len, DMA_TO_DEVICE);
+> +	cpu_addr = dma_map_single(ctodev(card), skb->data, skb->len, DMA_TO_DEVICE);
+>   
+> -	if (!buf) {
+> +	if (!cpu_addr) {
+>   		dev_err(ctodev(card),
+>   			"dma map 2 failed (%p, %i). Dropping packet\n",
+>   			skb->data, skb->len);
+>   		return -ENOMEM;
+>   	}
+>   
+> -	descr->buf_addr = cpu_to_be32(buf);
+> -	descr->buf_size = cpu_to_be32(skb->len);
+> +	descr->hw_regs.payload.dev_addr = cpu_to_be32(cpu_addr);
+> +	descr->hw_regs.payload.size = cpu_to_be32(skb->len);
+>   	descr->skb = skb;
+> -	descr->data_status = 0;
+> -	descr->next_descr_addr = 0; /* terminate hw descr */
+> +	descr->hw_regs.data_status = 0;
+> +	descr->hw_regs.next_descr_addr = 0; /* terminate hw descr */
+>   	gelic_descr_set_tx_cmdstat(descr, skb);
+>   
+>   	/* bump free descriptor pointer */
+> @@ -815,7 +816,7 @@ static int gelic_card_kick_txdma(struct gelic_card *card,
+>   	if (gelic_descr_get_status(descr) == GELIC_DESCR_DMA_CARDOWNED) {
+>   		card->tx_dma_progress = 1;
+>   		status = lv1_net_start_tx_dma(bus_id(card), dev_id(card),
+> -					      descr->bus_addr, 0);
+> +					      descr->link.cpu_addr, 0);
+>   		if (status) {
+>   			card->tx_dma_progress = 0;
+>   			dev_info(ctodev(card), "lv1_net_start_txdma failed," \
+> @@ -868,7 +869,7 @@ netdev_tx_t gelic_net_xmit(struct sk_buff *skb, struct net_device *netdev)
+>   	 * link this prepared descriptor to previous one
+>   	 * to achieve high performance
+>   	 */
+> -	descr->prev->next_descr_addr = cpu_to_be32(descr->bus_addr);
+> +	descr->prev->hw_regs.next_descr_addr = cpu_to_be32(descr->link.cpu_addr);
+>   	/*
+>   	 * as hardware descriptor is modified in the above lines,
+>   	 * ensure that the hardware sees it
+> @@ -881,12 +882,12 @@ netdev_tx_t gelic_net_xmit(struct sk_buff *skb, struct net_device *netdev)
+>   		 */
+>   		netdev->stats.tx_dropped++;
+>   		/* don't trigger BUG_ON() in gelic_descr_release_tx */
+> -		descr->data_status = cpu_to_be32(GELIC_DESCR_TX_TAIL);
+> +		descr->hw_regs.data_status = cpu_to_be32(GELIC_DESCR_TX_TAIL);
+>   		gelic_descr_release_tx(card, descr);
+>   		/* reset head */
+>   		card->tx_chain.head = descr;
+>   		/* reset hw termination */
+> -		descr->prev->next_descr_addr = 0;
+> +		descr->prev->hw_regs.next_descr_addr = 0;
+>   		dev_info(ctodev(card), "%s: kick failure\n", __func__);
+>   	}
+>   
+> @@ -911,21 +912,21 @@ static void gelic_net_pass_skb_up(struct gelic_descr *descr,
+>   	struct sk_buff *skb = descr->skb;
+>   	u32 data_status, data_error;
+>   
+> -	data_status = be32_to_cpu(descr->data_status);
+> -	data_error = be32_to_cpu(descr->data_error);
+> +	data_status = be32_to_cpu(descr->hw_regs.data_status);
+> +	data_error = be32_to_cpu(descr->hw_regs.data_error);
+>   	/* unmap skb buffer */
+> -	dma_unmap_single(ctodev(card), be32_to_cpu(descr->buf_addr),
+> +	dma_unmap_single(ctodev(card), be32_to_cpu(descr->hw_regs.payload.dev_addr),
+>   			 GELIC_NET_MAX_MTU,
+>   			 DMA_FROM_DEVICE);
+>   
+> -	skb_put(skb, be32_to_cpu(descr->valid_size)?
+> -		be32_to_cpu(descr->valid_size) :
+> -		be32_to_cpu(descr->result_size));
+> -	if (!descr->valid_size)
+> +	skb_put(skb, be32_to_cpu(descr->hw_regs.valid_size)?
+> +		be32_to_cpu(descr->hw_regs.valid_size) :
+> +		be32_to_cpu(descr->hw_regs.result_size));
+> +	if (!descr->hw_regs.valid_size)
+>   		dev_info(ctodev(card), "buffer full %x %x %x\n",
+> -			 be32_to_cpu(descr->result_size),
+> -			 be32_to_cpu(descr->buf_size),
+> -			 be32_to_cpu(descr->dmac_cmd_status));
+> +			 be32_to_cpu(descr->hw_regs.result_size),
+> +			 be32_to_cpu(descr->hw_regs.payload.size),
+> +			 be32_to_cpu(descr->hw_regs.dmac_cmd_status));
+>   
+>   	descr->skb = NULL;
+>   	/*
+> @@ -1036,14 +1037,14 @@ static int gelic_card_decode_one_descr(struct gelic_card *card)
+>   
+>   	/* is the current descriptor terminated with next_descr == NULL? */
+>   	dmac_chain_ended =
+> -		be32_to_cpu(descr->dmac_cmd_status) &
+> +		be32_to_cpu(descr->hw_regs.dmac_cmd_status) &
+>   		GELIC_DESCR_RX_DMA_CHAIN_END;
+>   	/*
+>   	 * So that always DMAC can see the end
+>   	 * of the descriptor chain to avoid
+>   	 * from unwanted DMAC overrun.
+>   	 */
+> -	descr->next_descr_addr = 0;
+> +	descr->hw_regs.next_descr_addr = 0;
+>   
+>   	/* change the descriptor state: */
+>   	gelic_descr_set_status(descr, GELIC_DESCR_DMA_NOT_IN_USE);
+> @@ -1060,7 +1061,7 @@ static int gelic_card_decode_one_descr(struct gelic_card *card)
+>   	/*
+>   	 * Set this descriptor the end of the chain.
+>   	 */
+> -	descr->prev->next_descr_addr = cpu_to_be32(descr->bus_addr);
+> +	descr->prev->hw_regs.next_descr_addr = cpu_to_be32(descr->link.cpu_addr);
+>   
+>   	/*
+>   	 * If dmac chain was met, DMAC stopped.
+> diff --git a/drivers/net/ethernet/toshiba/ps3_gelic_net.h b/drivers/net/ethernet/toshiba/ps3_gelic_net.h
+> index 68f324ed4eaf..569f691021d9 100644
+> --- a/drivers/net/ethernet/toshiba/ps3_gelic_net.h
+> +++ b/drivers/net/ethernet/toshiba/ps3_gelic_net.h
+> @@ -220,29 +220,35 @@ enum gelic_lv1_phy {
+>   	GELIC_LV1_PHY_ETHERNET_0	= 0x0000000000000002L,
+>   };
+>   
+> -/* size of hardware part of gelic descriptor */
+> -#define GELIC_DESCR_SIZE	(32)
+> -
+>   enum gelic_port_type {
+>   	GELIC_PORT_ETHERNET_0	= 0,
+>   	GELIC_PORT_WIRELESS	= 1,
+>   	GELIC_PORT_MAX
+>   };
+>   
+> -struct gelic_descr {
+> -	/* as defined by the hardware */
+> -	__be32 buf_addr;
+> -	__be32 buf_size;
+> +/* as defined by the hardware */
+> +struct gelic_hw_regs {
+> +	struct  {
+> +		__be32 dev_addr;
+> +		__be32 size;
+> +	} __packed payload;
+>   	__be32 next_descr_addr;
+>   	__be32 dmac_cmd_status;
+>   	__be32 result_size;
+>   	__be32 valid_size;	/* all zeroes for tx */
+>   	__be32 data_status;
+>   	__be32 data_error;	/* all zeroes for tx */
+> +} __packed;
+>   
+> -	/* used in the driver */
+> +struct gelic_chain_link {
+> +	dma_addr_t cpu_addr;
+> +	unsigned int size;
+> +};
+> +
+> +struct gelic_descr {
+> +	struct gelic_hw_regs hw_regs;
+> +	struct gelic_chain_link link;
+>   	struct sk_buff *skb;
+> -	dma_addr_t bus_addr;
+>   	struct gelic_descr *next;
+>   	struct gelic_descr *prev;
+>   } __attribute__((aligned(32)));
+> 
