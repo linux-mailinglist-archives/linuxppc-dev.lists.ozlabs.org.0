@@ -2,56 +2,36 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 358CB3E10E2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Aug 2021 11:09:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06A1D3E1121
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Aug 2021 11:18:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GgN8q1DZ7z3d8Y
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Aug 2021 19:09:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GgNLY6sBMz3d8B
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Aug 2021 19:17:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GgN8T5wPrz2xbB
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Aug 2021 19:09:12 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4GgN8P4tb5z9sWJ;
- Thu,  5 Aug 2021 11:09:09 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id bbX-U_KwuJ3S; Thu,  5 Aug 2021 11:09:09 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4GgN8P3rktz9sWH;
- Thu,  5 Aug 2021 11:09:09 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 213358B7BE;
- Thu,  5 Aug 2021 11:09:09 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id FM7R-FbjtVsw; Thu,  5 Aug 2021 11:09:09 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 7BFF08B7BD;
- Thu,  5 Aug 2021 11:09:08 +0200 (CEST)
-Subject: Re: [PATCH v5 4/8] lkdtm/x86_64: Add test to hijack a patch mapping
-To: "Christopher M. Riedl" <cmr@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-References: <20210713053113.4632-1-cmr@linux.ibm.com>
- <20210713053113.4632-5-cmr@linux.ibm.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <95de5ec5-8d48-c969-3c9f-966561f9f58e@csgroup.eu>
-Date: Thu, 5 Aug 2021 11:09:06 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
+ smtp.helo=elvis.franken.de (client-ip=193.175.24.41; helo=elvis.franken.de;
+ envelope-from=tsbogend@alpha.franken.de; receiver=<UNKNOWN>)
+Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4GgNL866smz307n
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Aug 2021 19:17:34 +1000 (AEST)
+Received: from uucp (helo=alpha)
+ by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+ id 1mBZV8-0005ti-03; Thu, 05 Aug 2021 11:17:18 +0200
+Received: by alpha.franken.de (Postfix, from userid 1000)
+ id D48DCC052F; Thu,  5 Aug 2021 11:12:18 +0200 (CEST)
+Date: Thu, 5 Aug 2021 11:12:18 +0200
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Subject: Re: [PATCH v2] arch: vdso: remove if-conditionals of
+ $(c-gettimeofday-y)
+Message-ID: <20210805091218.GD5979@alpha.franken.de>
+References: <20210731060020.12913-1-masahiroy@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20210713053113.4632-5-cmr@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210731060020.12913-1-masahiroy@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,102 +43,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: keescook@chromium.org, peterz@infradead.org, x86@kernel.org,
- npiggin@gmail.com, linux-hardening@vger.kernel.org, tglx@linutronix.de,
- dja@axtens.net
+Cc: Albert Ou <aou@eecs.berkeley.edu>, Russell King <linux@armlinux.org.uk>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-csky@vger.kernel.org, linux-mips@vger.kernel.org,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ linux-arm-kernel@lists.infradead.org, Andy Lutomirski <luto@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Guo Ren <guoren@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, Will Deacon <will@kernel.org>,
+ linux-riscv@lists.infradead.org, Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 13/07/2021 à 07:31, Christopher M. Riedl a écrit :
-> A previous commit implemented an LKDTM test on powerpc to exploit the
-> temporary mapping established when patching code with STRICT_KERNEL_RWX
-> enabled. Extend the test to work on x86_64 as well.
+On Sat, Jul 31, 2021 at 03:00:20PM +0900, Masahiro Yamada wrote:
+> arm, arm64, csky, mips, powerpc always select GENERIC_GETTIMEOFDAY,
+> hence $(gettimeofday-y) never becomes empty.
 > 
-> Signed-off-by: Christopher M. Riedl <cmr@linux.ibm.com>
+> riscv conditionally selects GENERIC_GETTIMEOFDAY when MMU=y && 64BIT=y,
+> but arch/riscv/kernel/vdso/vgettimeofday.o is built only under that
+> condition. So, you can always define CFLAGS_vgettimeofday.o
+> 
+> Remove all the meaningless conditionals.
+> 
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 > ---
->   drivers/misc/lkdtm/perms.c | 26 ++++++++++++++++++++++----
->   1 file changed, 22 insertions(+), 4 deletions(-)
 > 
-> diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
-> index 39e7456852229..41e87e5f9cc86 100644
-> --- a/drivers/misc/lkdtm/perms.c
-> +++ b/drivers/misc/lkdtm/perms.c
-> @@ -224,7 +224,7 @@ void lkdtm_ACCESS_NULL(void)
->   }
->   
->   #if (IS_BUILTIN(CONFIG_LKDTM) && defined(CONFIG_STRICT_KERNEL_RWX) && \
-> -	defined(CONFIG_PPC))
-> +	(defined(CONFIG_PPC) || defined(CONFIG_X86_64)))
->   /*
->    * This is just a dummy location to patch-over.
->    */
-> @@ -233,12 +233,25 @@ static void patching_target(void)
->   	return;
->   }
->   
-> -#include <asm/code-patching.h>
->   const u32 *patch_site = (const u32 *)&patching_target;
->   
-> +#ifdef CONFIG_PPC
-> +#include <asm/code-patching.h>
-> +#endif
-> +
-> +#ifdef CONFIG_X86_64
-> +#include <asm/text-patching.h>
-> +#endif
-> +
->   static inline int lkdtm_do_patch(u32 data)
->   {
-> +#ifdef CONFIG_PPC
->   	return patch_instruction((u32 *)patch_site, ppc_inst(data));
-> +#endif
-> +#ifdef CONFIG_X86_64
-> +	text_poke((void *)patch_site, &data, sizeof(u32));
-> +	return 0;
-> +#endif
->   }
->   
->   static inline u32 lkdtm_read_patch_site(void)
-> @@ -249,11 +262,16 @@ static inline u32 lkdtm_read_patch_site(void)
->   /* Returns True if the write succeeds */
->   static inline bool lkdtm_try_write(u32 data, u32 *addr)
->   {
-> +#ifdef CONFIG_PPC
->   	__put_kernel_nofault(addr, &data, u32, err);
->   	return true;
->   
->   err:
->   	return false;
-> +#endif
-> +#ifdef CONFIG_X86_64
-> +	return !__put_user(data, addr);
-> +#endif
->   }
->   
->   static int lkdtm_patching_cpu(void *data)
-> @@ -346,8 +364,8 @@ void lkdtm_HIJACK_PATCH(void)
->   
->   void lkdtm_HIJACK_PATCH(void)
->   {
-> -	if (!IS_ENABLED(CONFIG_PPC))
-> -		pr_err("XFAIL: this test only runs on powerpc\n");
-> +	if (!IS_ENABLED(CONFIG_PPC) && !IS_ENABLED(CONFIG_X86_64))
-> +		pr_err("XFAIL: this test only runs on powerpc and x86_64\n");
->   	if (!IS_ENABLED(CONFIG_STRICT_KERNEL_RWX))
->   		pr_err("XFAIL: this test requires CONFIG_STRICT_KERNEL_RWX\n");
->   	if (!IS_BUILTIN(CONFIG_LKDTM))
+> Changes in v2:
+>   - Fix csky as well
 > 
+>  [..]
+>  arch/mips/vdso/Makefile             |  2 --
 
-Instead of spreading arch specific stuff into LKDTM, wouldn't it make sence to define common a 
-common API ? Because the day another arch like arm64 implements it own approach, do we add specific 
-functions again and again into LKDTM ?
+Acked-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 
-Also, I find it odd to define tests only when they can succeed. For other tests like 
-ACCESS_USERSPACE, they are there all the time, regardless of whether we have selected 
-CONFIG_PPC_KUAP or not. I think it should be the same here, have it all there time, if 
-CONFIG_STRICT_KERNEL_RWX is selected the test succeeds otherwise it fails, but it is always there.
-
-Christophe
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+good idea.                                                [ RFC1925, 2.3 ]
