@@ -1,62 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85FC03E0FF2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Aug 2021 10:10:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02C713E1011
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Aug 2021 10:19:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GgLrM3nXZz3d7l
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Aug 2021 18:10:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GgM2c6BFDz3cjw
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Aug 2021 18:19:04 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=1tfTAD2S;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.221.48; helo=mail-wr1-f48.google.com;
- envelope-from=jirislaby@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com
- [209.85.221.48])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
+ header.a=rsa-sha256 header.s=korg header.b=1tfTAD2S; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GgLqz5QyQz300x
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Aug 2021 18:09:51 +1000 (AEST)
-Received: by mail-wr1-f48.google.com with SMTP id c16so5297021wrp.13
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Aug 2021 01:09:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:from:to:cc:references:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=wOvvcGOWNL43pF5gzZ1KGiUW3rYoHQr+5VBEfIZFYow=;
- b=sYY5ElURzq7tEqWHFQnaD2HQLzXIMfZfbO71+1+oMX4q8x00Kv6rufOLOglLj1jhX7
- hbAzNQTjX912rzH4KppM9lPgXfwKDNiJCnQ4HY+LTzCuV8ml7i5vOiskgp79StkTVR2E
- 5i6W5lOeoIc2Sbxiu5dtygqN6eJzn8s7dJ7t7o3QLTy14fX1ITIetwfZGKHShf2uNuJF
- WbMbBlRw7I/MtoSfZ2idWVt1baTzUKnjccTY6O8UAjcPTtZlXNWK0hFaFa60ii4ROnqN
- qZBdF2SyYUEtr4DP+eJfwlGK9Etopp1E5v7hWZCYJEGxFXVCaCQ3DC7bT9y2tHPo3AXm
- YSoA==
-X-Gm-Message-State: AOAM530333C6sm0JncgPPjl3l2ypk0yY9vRxPKw5qXH5FQbHUPHtY4Rj
- jvh60joT3GKHNLs89tqKRsY=
-X-Google-Smtp-Source: ABdhPJza9yPxZ/Yp1GJ6J7eu3qML/uunC/YdJrWn4YIzJejETB/deUbtlehxI2PyWD7B9IGNnmfT1A==
-X-Received: by 2002:a5d:6691:: with SMTP id l17mr3681771wru.368.1628150988580; 
- Thu, 05 Aug 2021 01:09:48 -0700 (PDT)
-Received: from ?IPv6:2a0b:e7c0:0:107::49? ([2a0b:e7c0:0:107::49])
- by smtp.gmail.com with ESMTPSA id i5sm5215326wrs.85.2021.08.05.01.09.47
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 05 Aug 2021 01:09:48 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GgM2C5X1tz302C
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Aug 2021 18:18:42 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2F0196104F;
+ Thu,  5 Aug 2021 08:18:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+ s=korg; t=1628151520;
+ bh=3Qyqz/XehSHX/KN//v96jroYOCaR+p2m3HMTILA0UBA=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=1tfTAD2SzzVKWhuczBMWWCBkLmJujhVs6ns1DA/ZOSo0U1X148bi5U7Tw/q0OrooI
+ fejyLXMwHkCrIrbtlW97iHgOA0bXRKN2IF340MROLRuSypoXuueXE/6sTbuuy6aRu+
+ umdeCMGPzCKRl1oD9ddTkCi+WD9x7kM4XxVtbiqA=
+Date: Thu, 5 Aug 2021 10:18:38 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Xianting Tian <xianting.tian@linux.alibaba.com>
 Subject: Re: [PATCH v3 1/2] tty: hvc: pass DMA capable memory to put_chars()
-From: Jiri Slaby <jirislaby@kernel.org>
-To: Xianting Tian <xianting.tian@linux.alibaba.com>,
- gregkh@linuxfoundation.org, amit@kernel.org, arnd@arndb.de, osandov@fb.com
+Message-ID: <YQue3tK98e6fAqwP@kroah.com>
 References: <20210804025453.93543-1-xianting.tian@linux.alibaba.com>
  <0f26a1c3-53e8-9282-69e8-8d81a9cafc59@kernel.org>
-Message-ID: <f1b92c7d-0eaf-4eac-ecd2-fbb74fb63b52@kernel.org>
-Date: Thu, 5 Aug 2021 10:09:47 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
+ <40f78d10-0a57-4620-e7e2-f806bd61abca@linux.alibaba.com>
 MIME-Version: 1.0
-In-Reply-To: <0f26a1c3-53e8-9282-69e8-8d81a9cafc59@kernel.org>
-Content-Type: text/plain; charset=iso-8859-2; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <40f78d10-0a57-4620-e7e2-f806bd61abca@linux.alibaba.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,49 +58,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- virtualization@lists.linux-foundation.org
+Cc: arnd@arndb.de, amit@kernel.org, Jiri Slaby <jirislaby@kernel.org>,
+ linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org,
+ linuxppc-dev@lists.ozlabs.org, osandov@fb.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 05. 08. 21, 9:58, Jiri Slaby wrote:
-> Hi,
+On Thu, Aug 05, 2021 at 04:08:46PM +0800, Xianting Tian wrote:
 > 
-> On 04. 08. 21, 4:54, Xianting Tian wrote:
->> @@ -933,6 +949,16 @@ struct hvc_struct *hvc_alloc(uint32_t vtermno, 
->> int data,
->>       hp->outbuf_size = outbuf_size;
->>       hp->outbuf = &((char *)hp)[ALIGN(sizeof(*hp), sizeof(long))];
-
-This deserves cleanup too. Why is "outbuf" not "char outbuf[0] 
-__ALIGNED__" at the end of the structure? The allocation would be easier 
-(using struct_size()) and this line would be gone completely.
-
->> +    /*
->> +     * hvc_con_outbuf is guaranteed to be aligned at least to the
->> +     * size(N_OUTBUF) by kmalloc().
->> +     */
->> +    hp->hvc_con_outbuf = kzalloc(N_OUTBUF, GFP_KERNEL);
->> +    if (!hp->hvc_con_outbuf)
->> +        return ERR_PTR(-ENOMEM);
+> åœ¨ 2021/8/5 ä¸‹åˆ3:58, Jiri Slaby å†™é“:
+> > Hi,
+> > 
+> > On 04. 08. 21, 4:54, Xianting Tian wrote:
+> > > @@ -933,6 +949,16 @@ struct hvc_struct *hvc_alloc(uint32_t vtermno,
+> > > int data,
+> > > Â Â Â Â Â  hp->outbuf_size = outbuf_size;
+> > > Â Â Â Â Â  hp->outbuf = &((char *)hp)[ALIGN(sizeof(*hp), sizeof(long))];
+> > > Â  +Â Â Â  /*
+> > > +Â Â Â Â  * hvc_con_outbuf is guaranteed to be aligned at least to the
+> > > +Â Â Â Â  * size(N_OUTBUF) by kmalloc().
+> > > +Â Â Â Â  */
+> > > +Â Â Â  hp->hvc_con_outbuf = kzalloc(N_OUTBUF, GFP_KERNEL);
+> > > +Â Â Â  if (!hp->hvc_con_outbuf)
+> > > +Â Â Â Â Â Â Â  return ERR_PTR(-ENOMEM);
+> > 
+> > This leaks hp, right?
+> > 
+> > BTW your 2 patches are still not threaded, that is hard to follow.
 > 
-> This leaks hp, right?
-
-Actually, why don't you make
-char c[N_OUTBUF] __ALIGNED__;
-
-part of struct hvc_struct directly?
-
-> BTW your 2 patches are still not threaded, that is hard to follow.
+> yes, thanks, I found the bug, I am preparing to do this in v4.
 > 
->> +
->> +    spin_lock_init(&hp->hvc_con_lock);
->> +
->>       tty_port_init(&hp->port);
->>       hp->port.ops = &hvc_port_ops;
-> 
-> thanks,
--- 
-js
-suse labs
+> It is the first time I send series patches(number >1), I checked the method
+> for sending series patch on LKML.org, I should send '0/2' which is the
+> history info for series patches.
+
+Please use 'git send-email' to send the full series all at once,
+otherwise it is hard to make the emails threaded "by hand" if you do not
+do so.
+
+thanks,
+
+greg k-h
