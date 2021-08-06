@@ -1,75 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3858C3E2889
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 12:26:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9114B3E289A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 12:30:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gh1q00kYSz3dDw
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 20:26:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gh1wJ3jf0z3dDZ
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 20:30:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=gq4wjpiU;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=kUD4D07x;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102e;
- helo=mail-pj1-x102e.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102c;
+ helo=mail-pj1-x102c.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=gq4wjpiU; dkim-atps=neutral
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com
- [IPv6:2607:f8b0:4864:20::102e])
+ header.s=20161025 header.b=kUD4D07x; dkim-atps=neutral
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com
+ [IPv6:2607:f8b0:4864:20::102c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gh1pV1gb8z3cJt
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Aug 2021 20:25:54 +1000 (AEST)
-Received: by mail-pj1-x102e.google.com with SMTP id
- s22-20020a17090a1c16b0290177caeba067so22120881pjs.0
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Aug 2021 03:25:54 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gh1vq259pz3cHR
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Aug 2021 20:30:31 +1000 (AEST)
+Received: by mail-pj1-x102c.google.com with SMTP id
+ dw2-20020a17090b0942b0290177cb475142so22081011pjb.2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Aug 2021 03:30:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=vHll5hrt3Tfly15sgVwP9BPUg47NmiSrfXLIjuKEQUM=;
- b=gq4wjpiUFInOKrTRlCcgF6CknZ3cxsY70MMCFtuxK0AhApZXWjrTPNZ47uBAvZeINN
- zJ8jtDZCQt/nHqROQ6zHxypX9H+rVCQFpRfGZedLoN0M4/an3nRVMPwPLmLpCvPytqiq
- E5DKxuYFNDNkIftQBOFVtlylSMzrkS51tBRsr+G34l0P0may2EDba6TuV3ZDYko41TCu
- 9g4yAs7hQel73gtcnDL1bKXzqICCX06knQRlX15qj4FVNPYsXR8MPCuJBm2wnVEwG0YW
- VsC1etPm46U1y4FaX3H1PwZszyDbG9F0hCSv2GIn71IkQDKEuzhjNK4tIjXnCigijiRL
- NtYw==
+ bh=RSDCfwLxda4JpCU9SjlXf92juYjOfQEJMYSTxW+15xM=;
+ b=kUD4D07x+GoFnNJR/kR0xqNnaCH7E1uTYDEGdPNmsuEHY0LCF6MU+d13cs1kLUJIFl
+ 72NsHqHrXA3qGcGTPnWzVIBvY/Tlq2YL4xA2hahSisgC1/va7F/JnEVQP4RfLNRUZ1fz
+ ZS7OlqLwphfFwpyGDHCnSlvsNWKru46EmGJhuFZ9a+CEp1zaRp79ud8jk91yz00Hegmm
+ groDRCrIw1rYNTXmYwL/g0SEn5hiPjsaLnRnzf1r+BFQKFrbP7yQwYZ9cc51ijlNSgnp
+ 2FfoDKBh8V6+sBAJfnK0GlMii6kTeNqvaQG3xpo6MjnQRrgQ91o7UUL5iW/fQTrDSV7/
+ cwjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=vHll5hrt3Tfly15sgVwP9BPUg47NmiSrfXLIjuKEQUM=;
- b=tCkBpD9yOVlZOfyoNYdtDEPmRzsVSIVX+iaAH59fHDoMkqVmzb6J2PQM/7q7F+25P9
- b0qP2opirPiNrP5OBmsuy+UE7H46/1vpvxa32U6bNXu568xBUPtNGFMs+6ZDeLLtgIFl
- ae3T462/XyL9xmmdQx1ugjY2XL9nWtJ8jE+cwRIoPc79jO6axQKvfgG090NGWatODLXt
- PDfEYsLC231/2VVT8fblsUaVn8MCwXcAuZdiq3YnkEiZeSPwkbBx/k6k1PLYOG2NjUJG
- 5Y+ZnLRznppXZD80mrSOfyiNaEQrz0DsqNEkr6yNHuIBu26oS4YgJL8MIm/XAFXkbJC7
- uGbg==
-X-Gm-Message-State: AOAM533jlH544Axkeum5n1Bdr18/UgGWfJMtg1ordUt1dANqu5UPN+AE
- ymeJHHe5eM62Po27RRSpo6A=
-X-Google-Smtp-Source: ABdhPJzIe0qERi8yRm9ql31ipjDJSifEYxG6SeBMdDKSp1TntY2Li7isVSW/J9ygD35MG7BuKiQ0XA==
-X-Received: by 2002:a63:171d:: with SMTP id x29mr127688pgl.418.1628245550936; 
- Fri, 06 Aug 2021 03:25:50 -0700 (PDT)
+ bh=RSDCfwLxda4JpCU9SjlXf92juYjOfQEJMYSTxW+15xM=;
+ b=MmKido52Q+dtw436DNHV+2IJf3MpRKCnvR8J64vVHHegX0PIVLEEfQOsqDtN/xk9A0
+ P8KP7UdzCjKYpMy7bDIcHF0jWp1pedVV6GgU7/oHlug2Ik2LAYrbhKMLuL9pzkHd3s6X
+ syeSiJ7YuMxMPGVcR/m4g3fXT6cxFlfZhnyIEMfTJZwYx6uIbu0HGBUdkmmL+0+m4NxY
+ uU5+72mcc4GM3hK2zF4eQTzgs9hmG7G7tjbj7amFs7UYw+0F57HygOAk6o61OTOtoFCt
+ q6uV7jIK8JaHmEPRTNc6bM2i24gc2alKMoeKLczNn5uh5H3bHzDU+4GRheWExN+q9KUu
+ 5MZQ==
+X-Gm-Message-State: AOAM532064pkJU1y9HN8a7rpAerLN2HjQLOtUCCHtCeb7clGHXz8zCfk
+ YKfS2cnL9dgy3Qc8pfMVPUw=
+X-Google-Smtp-Source: ABdhPJwydmFwOIF+vnPQj4lcCIlUTmo6ga7SRfz5YCZ2K3b3EHhBlYn+S9L4fDxvj0oda0+r8avJfA==
+X-Received: by 2002:a63:4916:: with SMTP id w22mr301713pga.339.1628245828078; 
+ Fri, 06 Aug 2021 03:30:28 -0700 (PDT)
 Received: from localhost ([118.210.97.79])
- by smtp.gmail.com with ESMTPSA id p2sm10259487pfn.141.2021.08.06.03.25.49
+ by smtp.gmail.com with ESMTPSA id gw4sm8947551pjb.1.2021.08.06.03.30.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Aug 2021 03:25:50 -0700 (PDT)
-Date: Fri, 06 Aug 2021 20:25:45 +1000
+ Fri, 06 Aug 2021 03:30:27 -0700 (PDT)
+Date: Fri, 06 Aug 2021 20:30:23 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v1 02/55] KVM: PPC: Book3S HV P9: Fixes for TM softpatch
- interrupt
-To: kvm-ppc@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v1 11/55] powerpc/time: add API for KVM to re-arm the host
+ timer/decrementer
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, kvm-ppc@vger.kernel.org
 References: <20210726035036.739609-1-npiggin@gmail.com>
- <20210726035036.739609-3-npiggin@gmail.com>
- <87a6lvnzin.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87a6lvnzin.fsf@mpe.ellerman.id.au>
+ <20210726035036.739609-12-npiggin@gmail.com>
+ <370398a9-4429-285e-4a0f-33759f39b2fc@csgroup.eu>
+In-Reply-To: <370398a9-4429-285e-4a0f-33759f39b2fc@csgroup.eu>
 MIME-Version: 1.0
-Message-Id: <1628244726.vqhkwwlqv7.astroid@bobo.none>
+Message-Id: <1628245629.4fpdbi6ce8.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -88,75 +88,84 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Michael Ellerman's message of August 6, 2021 11:16 am:
-> Nicholas Piggin <npiggin@gmail.com> writes:
->> The softpatch interrupt sets HSRR0 to the faulting instruction +4, so
->> it should subtract 4 for the faulting instruction address. Also have it
->> emulate and deliver HFAC interrupts correctly, which is important for
->> nested HV and facility demand-faulting in future.
+Excerpts from Christophe Leroy's message of August 5, 2021 5:22 pm:
 >=20
-> The nip being off by 4 sounds bad. But I guess it's not that big a deal
-> because it's only used for reporting the instruction address?
-
-Yeah currently I think so. It's not that bad of a bug.
-
 >=20
-> Would also be good to have some more explanation of why it's OK to
-> change from illegal to HFAC, which is a guest visible change.
-
-Good point. Again for now it doesn't really matter because the HFAC
-handler turns everything (except msgsndp) into a sigill anyway, so
-becomes important when we start using HFACs. Put that way I'll probably
-split it out.
-
+> Le 26/07/2021 =C3=A0 05:49, Nicholas Piggin a =C3=A9crit=C2=A0:
+>> Rather than have KVM look up the host timer and fiddle with the
+>> irq-work internal details, have the powerpc/time.c code provide a
+>> function for KVM to re-arm the Linux timer code when exiting a
+>> guest.
+>>=20
+>> This is implementation has an improvement over existing code of
+>> marking a decrementer interrupt as soft-pending if a timer has
+>> expired, rather than setting DEC to a -ve value, which tended to
+>> cause host timers to take two interrupts (first hdec to exit the
+>> guest, then the immediate dec).
+>>=20
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>> ---
+>>   arch/powerpc/include/asm/time.h | 16 +++-------
+>>   arch/powerpc/kernel/time.c      | 52 +++++++++++++++++++++++++++------
+>>   arch/powerpc/kvm/book3s_hv.c    |  7 ++---
+>>   3 files changed, 49 insertions(+), 26 deletions(-)
+>>=20
+>> diff --git a/arch/powerpc/include/asm/time.h b/arch/powerpc/include/asm/=
+time.h
+>> index 69b6be617772..924b2157882f 100644
+>> --- a/arch/powerpc/include/asm/time.h
+>> +++ b/arch/powerpc/include/asm/time.h
+>> @@ -99,18 +99,6 @@ extern void div128_by_32(u64 dividend_high, u64 divid=
+end_low,
+>>   extern void secondary_cpu_time_init(void);
+>>   extern void __init time_init(void);
+>>  =20
+>> -#ifdef CONFIG_PPC64
+>> -static inline unsigned long test_irq_work_pending(void)
+>> -{
+>> -	unsigned long x;
+>> -
+>> -	asm volatile("lbz %0,%1(13)"
+>> -		: "=3Dr" (x)
+>> -		: "i" (offsetof(struct paca_struct, irq_work_pending)));
+>> -	return x;
+>> -}
+>> -#endif
+>> -
+>>   DECLARE_PER_CPU(u64, decrementers_next_tb);
+>>  =20
+>>   static inline u64 timer_get_next_tb(void)
+>> @@ -118,6 +106,10 @@ static inline u64 timer_get_next_tb(void)
+>>   	return __this_cpu_read(decrementers_next_tb);
+>>   }
+>>  =20
+>> +#ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
+>> +void timer_rearm_host_dec(u64 now);
+>> +#endif
+>> +
+>>   /* Convert timebase ticks to nanoseconds */
+>>   unsigned long long tb_to_ns(unsigned long long tb_ticks);
+>>  =20
+>> diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
+>> index 72d872b49167..016828b7401b 100644
+>> --- a/arch/powerpc/kernel/time.c
+>> +++ b/arch/powerpc/kernel/time.c
+>> @@ -499,6 +499,16 @@ EXPORT_SYMBOL(profile_pc);
+>>    * 64-bit uses a byte in the PACA, 32-bit uses a per-cpu variable...
+>>    */
+>>   #ifdef CONFIG_PPC64
+>> +static inline unsigned long test_irq_work_pending(void)
+>> +{
+>> +	unsigned long x;
+>> +
+>> +	asm volatile("lbz %0,%1(13)"
+>> +		: "=3Dr" (x)
+>> +		: "i" (offsetof(struct paca_struct, irq_work_pending)));
 >=20
->> diff --git a/arch/powerpc/kvm/book3s_hv_tm.c b/arch/powerpc/kvm/book3s_h=
-v_tm.c
->> index cc90b8b82329..e4fd4a9dee08 100644
->> --- a/arch/powerpc/kvm/book3s_hv_tm.c
->> +++ b/arch/powerpc/kvm/book3s_hv_tm.c
->> @@ -74,19 +74,23 @@ int kvmhv_p9_tm_emulation(struct kvm_vcpu *vcpu)
->>  	case PPC_INST_RFEBB:
->>  		if ((msr & MSR_PR) && (vcpu->arch.vcore->pcr & PCR_ARCH_206)) {
->>  			/* generate an illegal instruction interrupt */
->> +			vcpu->arch.regs.nip -=3D 4;
->>  			kvmppc_core_queue_program(vcpu, SRR1_PROGILL);
->>  			return RESUME_GUEST;
->>  		}
->>  		/* check EBB facility is available */
->>  		if (!(vcpu->arch.hfscr & HFSCR_EBB)) {
->> -			/* generate an illegal instruction interrupt */
->> -			kvmppc_core_queue_program(vcpu, SRR1_PROGILL);
->> -			return RESUME_GUEST;
->> +			vcpu->arch.regs.nip -=3D 4;
->> +			vcpu->arch.hfscr &=3D ~HFSCR_INTR_CAUSE;
->> +			vcpu->arch.hfscr |=3D (u64)FSCR_EBB_LG << 56;
->> +			vcpu->arch.trap =3D BOOK3S_INTERRUPT_H_FAC_UNAVAIL;
->> +			return -1; /* rerun host interrupt handler */
->=20
-> This is EBB not TM. Probably OK to leave it in this patch as long as
-> it's mentioned in the change log?
+> Can we just use READ_ONCE() instead of hard coding the read ?
 
-It is, but you can get a softpatch interrupt on rfebb changing TM state.=20
-Although I haven't actually tested to see if you get a softpatch when
-HFSCR disables EBB or the hardware just gives you the HFAC. For that=20
-matter, same for all the other facility tests.
+Good question, probably yes. Probably calls for its own patch series,=20
+e.g., hw_irq.h has all similar paca accesses.
 
 Thanks,
 Nick
-
->=20
->>  		}
->>  		if ((msr & MSR_PR) && !(vcpu->arch.fscr & FSCR_EBB)) {
->>  			/* generate a facility unavailable interrupt */
->> -			vcpu->arch.fscr =3D (vcpu->arch.fscr & ~(0xffull << 56)) |
->> -				((u64)FSCR_EBB_LG << 56);
->> +			vcpu->arch.regs.nip -=3D 4;
->> +			vcpu->arch.fscr &=3D ~FSCR_INTR_CAUSE;
->> +			vcpu->arch.fscr |=3D (u64)FSCR_EBB_LG << 56;
->=20
-> Same.
->=20
->=20
-> cheers
->=20
