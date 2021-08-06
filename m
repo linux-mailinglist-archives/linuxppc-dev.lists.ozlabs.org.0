@@ -2,54 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EFCC3E2390
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 08:53:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF2B23E242C
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 09:33:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ggx5f1G3Fz3dCH
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 16:53:42 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=GVGwvFBG;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GgxzL5K2Kz3clX
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 17:33:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=GVGwvFBG; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Ggx5C3Bpwz2xtw
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Aug 2021 16:53:18 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Ggx5B1S6Wz9sCD;
- Fri,  6 Aug 2021 16:53:17 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1628232798;
- bh=vD1LTdPK6JfRXO2TE9cg4Rh9PKZx4+TBHw0WLGKC9bU=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=GVGwvFBGLVzVFjPmETJqgZJ/hNeJU5weXVURVKih5fKtMwzCjHMLjXuPm45N12vOp
- Vt6XopcGqXqlT3nEItSo7f5Y3vV5WTJz0POh+T0BOXc7y4DHJwUOBBuhwE+6UAaJWS
- MD/zjJc6lde91EIXiCeaIstPtyrr7kupmStC2oEzbiawq7S6UHRtOX/hbcphSmqTU3
- hSAfl5ju8dTzc/ZoSiAR6ohFFZx+2CDnYOlhavYAwnY3R3A/oIYj5dAsPNpIIT4zgd
- ZYmfx++fkitquwKoVs1KVZYeQXU6OyMWznfHqJN4Ll2SkUbnPBygxyAtgwMom/v0pe
- Mz+ZGp9D9InZg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: sxwjean@me.com, linuxppc-dev@lists.ozlabs.org
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Ggxyw46Mpz2xfk
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Aug 2021 17:32:53 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4Ggxyn4TjKz9sVr;
+ Fri,  6 Aug 2021 09:32:49 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id UbRH5ufXxLP3; Fri,  6 Aug 2021 09:32:49 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4Ggxyn31dfz9sVl;
+ Fri,  6 Aug 2021 09:32:49 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4554C8B80D;
+ Fri,  6 Aug 2021 09:32:49 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id ul3L8Rnr0BtW; Fri,  6 Aug 2021 09:32:49 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D19948B7FD;
+ Fri,  6 Aug 2021 09:32:47 +0200 (CEST)
 Subject: Re: [RFC PATCH 1/4] powerpc: Optimize register usage for esr register
-In-Reply-To: <20210726143053.532839-1-sxwjean@me.com>
+To: Xiongwei Song <sxwjean@gmail.com>
 References: <20210726143053.532839-1-sxwjean@me.com>
-Date: Fri, 06 Aug 2021 16:53:14 +1000
-Message-ID: <874kc3njxh.fsf@mpe.ellerman.id.au>
+ <5e2336aa-90bf-b820-b5e4-e9a63088930f@csgroup.eu>
+ <CAEVVKH-rht+xpwTUL=ny6qENe2Fb0n=3e7DEmc5qzpSq2_1gTA@mail.gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <26814448-c30a-1de1-bad4-79e2bffc3054@csgroup.eu>
+Date: Fri, 6 Aug 2021 09:32:43 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <CAEVVKH-rht+xpwTUL=ny6qENe2Fb0n=3e7DEmc5qzpSq2_1gTA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,132 +64,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ravi.bangoria@linux.ibm.com, Xiongwei Song <sxwjean@gmail.com>,
- oleg@redhat.com, npiggin@gmail.com, linux-kernel@vger.kernel.org,
- efremov@linux.com, paulus@samba.org, aneesh.kumar@linux.ibm.com,
- peterx@redhat.com, akpm@linux-foundation.org, sandipan@linux.ibm.com
+Cc: ravi.bangoria@linux.ibm.com, Xiongwei Song <sxwjean@me.com>,
+ oleg@redhat.com, npiggin@gmail.com,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, efremov@linux.com,
+ Paul Mackerras <paulus@samba.org>, aneesh.kumar@linux.ibm.com,
+ peterx@redhat.com, PowerPC <linuxppc-dev@lists.ozlabs.org>,
+ akpm@linux-foundation.org, sandipan@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-sxwjean@me.com writes:
-> From: Xiongwei Song <sxwjean@gmail.com>
->
-> Create an anonymous union for dsisr and esr regsiters, we can reference
-> esr to get the exception detail when CONFIG_4xx=y or CONFIG_BOOKE=y.
-> Otherwise, reference dsisr. This makes code more clear.
->
-> Signed-off-by: Xiongwei Song <sxwjean@gmail.com>
-> ---
->  arch/powerpc/include/asm/ptrace.h          |  5 ++++-
->  arch/powerpc/include/uapi/asm/ptrace.h     |  5 ++++-
->  arch/powerpc/kernel/process.c              |  2 +-
->  arch/powerpc/kernel/ptrace/ptrace.c        |  2 ++
->  arch/powerpc/kernel/traps.c                |  2 +-
->  arch/powerpc/mm/fault.c                    | 16 ++++++++++++++--
->  arch/powerpc/platforms/44x/machine_check.c |  4 ++--
->  arch/powerpc/platforms/4xx/machine_check.c |  2 +-
->  8 files changed, 29 insertions(+), 9 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/ptrace.h b/arch/powerpc/include/asm/ptrace.h
-> index 3e5d470a6155..c252d04b1206 100644
-> --- a/arch/powerpc/include/asm/ptrace.h
-> +++ b/arch/powerpc/include/asm/ptrace.h
-> @@ -44,7 +44,10 @@ struct pt_regs
->  #endif
->  			unsigned long trap;
->  			unsigned long dar;
-> -			unsigned long dsisr;
-> +			union {
-> +				unsigned long dsisr;
-> +				unsigned long esr;
-> +			};
-
-I don't mind doing that.
-
->  			unsigned long result;
->  		};
->  	};
-> diff --git a/arch/powerpc/include/uapi/asm/ptrace.h b/arch/powerpc/include/uapi/asm/ptrace.h
-> index 7004cfea3f5f..e357288b5f34 100644
-> --- a/arch/powerpc/include/uapi/asm/ptrace.h
-> +++ b/arch/powerpc/include/uapi/asm/ptrace.h
-> @@ -53,7 +53,10 @@ struct pt_regs
->  	/* N.B. for critical exceptions on 4xx, the dar and dsisr
->  	   fields are overloaded to hold srr0 and srr1. */
->  	unsigned long dar;		/* Fault registers */
-> -	unsigned long dsisr;		/* on 4xx/Book-E used for ESR */
-> +	union {
-> +		unsigned long dsisr;		/* on Book-S used for DSISR */
-> +		unsigned long esr;		/* on 4xx/Book-E used for ESR */
-> +	};
->  	unsigned long result;		/* Result of a system call */
->  };
-
-But I'm not sure about the use of anonymous unions in UAPI headers. Old
-compilers don't support them, so there's a risk of breakage.
-
-I'd rather we didn't touch the uapi version.
 
 
-> diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-> index 185beb290580..f74af8f9133c 100644
-> --- a/arch/powerpc/kernel/process.c
-> +++ b/arch/powerpc/kernel/process.c
-> @@ -1499,7 +1499,7 @@ static void __show_regs(struct pt_regs *regs)
->  	    trap == INTERRUPT_DATA_STORAGE ||
->  	    trap == INTERRUPT_ALIGNMENT) {
->  		if (IS_ENABLED(CONFIG_4xx) || IS_ENABLED(CONFIG_BOOKE))
-> -			pr_cont("DEAR: "REG" ESR: "REG" ", regs->dar, regs->dsisr);
-> +			pr_cont("DEAR: "REG" ESR: "REG" ", regs->dar, regs->esr);
->  		else
->  			pr_cont("DAR: "REG" DSISR: %08lx ", regs->dar, regs->dsisr);
->  	}
-> diff --git a/arch/powerpc/kernel/ptrace/ptrace.c b/arch/powerpc/kernel/ptrace/ptrace.c
-> index 0a0a33eb0d28..00789ad2c4a3 100644
-> --- a/arch/powerpc/kernel/ptrace/ptrace.c
-> +++ b/arch/powerpc/kernel/ptrace/ptrace.c
-> @@ -375,6 +375,8 @@ void __init pt_regs_check(void)
->  		     offsetof(struct user_pt_regs, dar));
->  	BUILD_BUG_ON(offsetof(struct pt_regs, dsisr) !=
->  		     offsetof(struct user_pt_regs, dsisr));
-> +	BUILD_BUG_ON(offsetof(struct pt_regs, esr) !=
-> +		     offsetof(struct user_pt_regs, esr));
->  	BUILD_BUG_ON(offsetof(struct pt_regs, result) !=
->  		     offsetof(struct user_pt_regs, result));
->  
-> diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-> index dfbce527c98e..2164f5705a0b 100644
-> --- a/arch/powerpc/kernel/traps.c
-> +++ b/arch/powerpc/kernel/traps.c
-> @@ -562,7 +562,7 @@ static inline int check_io_access(struct pt_regs *regs)
->  #ifdef CONFIG_PPC_ADV_DEBUG_REGS
->  /* On 4xx, the reason for the machine check or program exception
->     is in the ESR. */
-> -#define get_reason(regs)	((regs)->dsisr)
-> +#define get_reason(regs)	((regs)->esr)
->  #define REASON_FP		ESR_FP
->  #define REASON_ILLEGAL		(ESR_PIL | ESR_PUO)
->  #define REASON_PRIVILEGED	ESR_PPR
-> diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-> index a8d0ce85d39a..62953d4e7c93 100644
-> --- a/arch/powerpc/mm/fault.c
-> +++ b/arch/powerpc/mm/fault.c
-> @@ -541,7 +541,11 @@ static __always_inline void __do_page_fault(struct pt_regs *regs)
->  {
->  	long err;
->  
-> -	err = ___do_page_fault(regs, regs->dar, regs->dsisr);
-> +	if (IS_ENABLED(CONFIG_4xx) || IS_ENABLED(CONFIG_BOOKE))
-> +		err = ___do_page_fault(regs, regs->dar, regs->esr);
-> +	else
-> +		err = ___do_page_fault(regs, regs->dar, regs->dsisr);
+Le 06/08/2021 à 05:16, Xiongwei Song a écrit :
+> On Thu, Aug 5, 2021 at 6:06 PM Christophe Leroy
+> <christophe.leroy@csgroup.eu> wrote:
+>>
+>>
+>>
+>> Le 26/07/2021 à 16:30, sxwjean@me.com a écrit :
+>>> From: Xiongwei Song <sxwjean@gmail.com>
+>>>
+>>> Create an anonymous union for dsisr and esr regsiters, we can reference
+>>> esr to get the exception detail when CONFIG_4xx=y or CONFIG_BOOKE=y.
+>>> Otherwise, reference dsisr. This makes code more clear.
+>>
+>> I'm not sure it is worth doing that.
+> Why don't we use "esr" as reference manauls mentioned?
+> 
+>>
+>> What is the point in doing the following when you know that regs->esr and regs->dsisr are exactly
+>> the same:
+>>
+>>   > -    err = ___do_page_fault(regs, regs->dar, regs->dsisr);
+>>   > +    if (IS_ENABLED(CONFIG_4xx) || IS_ENABLED(CONFIG_BOOKE))
+>>   > +            err = ___do_page_fault(regs, regs->dar, regs->esr);
+>>   > +    else
+>>   > +            err = ___do_page_fault(regs, regs->dar, regs->dsisr);
+>>   > +
+> Yes, we can drop this. But it's a bit vague.
+> 
+>> Or even
+>>
+>>   > -    int is_write = page_fault_is_write(regs->dsisr);
+>>   > +    unsigned long err_reg;
+>>   > +    int is_write;
+>>   > +
+>>   > +    if (IS_ENABLED(CONFIG_4xx) || IS_ENABLED(CONFIG_BOOKE))
+>>   > +            err_reg = regs->esr;
+>>   > +    else
+>>   > +            err_reg = regs->dsisr;
+>>   > +
+>>   > +    is_write = page_fault_is_write(err_reg);
+>>
+>>
+>> Artificially growing the code for that makes no sense to me.
+> 
+> We can drop this too.
+>>
+>>
+>> To avoid anbiguity, maybe the best would be to rename regs->dsisr to something like regs->sr , so
+>> that we know it represents the status register, which is DSISR or ESR depending on the platform.
+> 
+> If so, this would make other people more confused. My consideration is
+> to follow what the reference
+> manuals represent.
 
-As Christophe said, I don't thinks this is an improvement.
+Maybe then we could rename the fields as regs->dsisr_esr and regs->dar_dear
 
-It makes the code less readable. If anyone is confused about what is
-passed to ___do_page_fault() they can either read the comment above it,
-or look at the definition of pt_regs to see that esr and dsisr share
-storage.
+That would be more explicit for everyone.
 
-cheers
+The UAPI header however should remain as is because anonymous unions are not supported by old 
+compilers as mentioned by Michael.
+
+But nevertheless, there are also situations where was is stored in regs->dsisr is not what we have 
+in DSISR register. For instance on an ISI exception, we store a subset of the content of SRR1 
+register into regs->dsisr.
+
+Christophe
