@@ -2,51 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8808F3E2384
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 08:50:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EE583E243F
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 09:42:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ggx1g3Sp4z3dK3
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 16:50:15 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=201602 header.b=Aj4nwvgl;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GgyB541T8z3dKQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 17:42:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=dgibson@ozlabs.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
- header.a=rsa-sha256 header.s=201602 header.b=Aj4nwvgl; 
- dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+ smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33;
+ helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de;
+ receiver=<UNKNOWN>)
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
+ [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Ggx0f1Hj2z3cWV
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Aug 2021 16:49:21 +1000 (AEST)
-Received: by ozlabs.org (Postfix, from userid 1007)
- id 4Ggx0T1CHrz9sWl; Fri,  6 Aug 2021 16:49:13 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gibson.dropbear.id.au; s=201602; t=1628232553;
- bh=wZB0IRiRh7mxbArBCrxkxCv0VLMyqrmBvGkiJURNIA4=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=Aj4nwvglI0fNYwEwxBPMTFo+L+nlWKSjSQOHpiywz1dqv/5ZfUNlCczhWM2mJ/v/F
- 4XIMdX5cWxN7DWMZdhlWyDVcowey5NUbqOakaGIz/R8RmrVvaOQZ1IhOWNC8VCiIgL
- mgzf1b4BdBXH5hvwas8u2KpKz7fQDEB8XQ3mvyiA=
-Date: Fri, 6 Aug 2021 16:37:47 +1000
-From: David Gibson <david@gibson.dropbear.id.au>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH v6 3/6] powerpc/pseries: Consolidate different NUMA
- distance update code paths
-Message-ID: <YQzYu8KpqV2L/rIW@yekko>
-References: <20210727100311.310969-1-aneesh.kumar@linux.ibm.com>
- <20210727100311.310969-4-aneesh.kumar@linux.ibm.com>
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Ggx0l2bC4z3cZ1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Aug 2021 16:49:25 +1000 (AEST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <ukl@pengutronix.de>)
+ id 1mBtcu-0007Bd-Gw; Fri, 06 Aug 2021 08:46:40 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+ by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <ukl@pengutronix.de>)
+ id 1mBtce-0004p1-8f; Fri, 06 Aug 2021 08:46:24 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+ (envelope-from <ukl@pengutronix.de>)
+ id 1mBtce-0003LN-5b; Fri, 06 Aug 2021 08:46:24 +0200
+Date: Fri, 6 Aug 2021 08:46:23 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Subject: Re: [PATCH v2 0/6] PCI: Drop duplicated tracking of a pci_dev's
+ bound driver
+Message-ID: <20210806064623.3lxl4clzbjpmchef@pengutronix.de>
+References: <20210803100150.1543597-1-u.kleine-koenig@pengutronix.de>
+ <20210805234234.GA1797883@bjorn-Precision-5520>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="jlzSzmFi8JI6hLnX"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="nllglfksvmzlkdkm"
 Content-Disposition: inline
-In-Reply-To: <20210727100311.310969-4-aneesh.kumar@linux.ibm.com>
+In-Reply-To: <20210805234234.GA1797883@bjorn-Precision-5520>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
+ SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+X-Mailman-Approved-At: Fri, 06 Aug 2021 17:41:54 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,401 +62,163 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+ =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, linux-pci@vger.kernel.org,
+ Alexander Duyck <alexanderduyck@fb.com>, x86@kernel.org,
+ oss-drivers@corigine.com, netdev@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ Jiri Olsa <jolsa@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Taras Chornyi <tchornyi@marvell.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>, linux-scsi@vger.kernel.org,
+ Sathya Prakash <sathya.prakash@broadcom.com>, qat-linux@intel.com,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+ Yisen Zhuang <yisen.zhuang@huawei.com>,
+ Suganath Prabu Subramani <suganath-prabu.subramani@broadcom.com>,
+ Fiona Trahe <fiona.trahe@intel.com>, Oliver O'Halloran <oohall@gmail.com>,
+ Andrew Donnellan <ajd@linux.ibm.com>, Mathias Nyman <mathias.nyman@intel.com>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ Ido Schimmel <idosch@nvidia.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Borislav Petkov <bp@alien8.de>,
+ Michael Buesch <m@bues.ch>, Jiri Pirko <jiri@nvidia.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Namhyung Kim <namhyung@kernel.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Andy Shevchenko <andriy.shevchenko@intel.com>, Juergen Gross <jgross@suse.com>,
+ Salil Mehta <salil.mehta@huawei.com>,
+ Sreekanth Reddy <sreekanth.reddy@broadcom.com>, xen-devel@lists.xenproject.org,
+ Vadym Kochan <vkochan@marvell.com>, MPT-FusionLinux.pdl@broadcom.com,
+ linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+ Zhou Wang <wangzhou1@hisilicon.com>, Arnd Bergmann <arnd@arndb.de>,
+ linux-crypto@vger.kernel.org, kernel@pengutronix.de,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Simon Horman <simon.horman@corigine.com>,
+ Wojciech Ziemba <wojciech.ziemba@intel.com>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---jlzSzmFi8JI6hLnX
-Content-Type: text/plain; charset=us-ascii
+--nllglfksvmzlkdkm
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 27, 2021 at 03:33:08PM +0530, Aneesh Kumar K.V wrote:
-> The associativity details of the newly added resourced are collected from
-> the hypervisor via "ibm,configure-connector" rtas call. Update the numa
-> distance details of the newly added numa node after the above call.
+Hello Bjorn,
+
+On Thu, Aug 05, 2021 at 06:42:34PM -0500, Bjorn Helgaas wrote:
+> On Tue, Aug 03, 2021 at 12:01:44PM +0200, Uwe Kleine-K=F6nig wrote:
+> > Hello,
+> >=20
+> > changes since v1 (https://lore.kernel.org/linux-pci/20210729203740.1377=
+045-1-u.kleine-koenig@pengutronix.de):
+> >=20
+> > - New patch to simplify drivers/pci/xen-pcifront.c, spotted and
+> >   suggested by Boris Ostrovsky
+> > - Fix a possible NULL pointer dereference I introduced in xen-pcifront.c
+> > - A few whitespace improvements
+> > - Add a commit log to patch #6 (formerly #5)
+> >=20
+> > I also expanded the audience for patches #4 and #6 to allow affected
+> > people to actually see the changes to their drivers.
+> >=20
+> > Interdiff can be found below.
+> >=20
+> > The idea is still the same: After a few cleanups (#1 - #3) a new macro
+> > is introduced abstracting access to struct pci_dev->driver. All users
+> > are then converted to use this and in the last patch the macro is
+> > changed to make use of struct pci_dev::dev->driver to get rid of the
+> > duplicated tracking.
 >=20
-> Instead of updating NUMA distance every time we lookup a node id
-> from the associativity property, add helpers that can be used
-> during boot which does this only once. Also remove the distance
-> update from node id lookup helpers.
+> I love the idea of this series!
+
+\o/
+
+> I looked at all the bus_type.probe() methods, it looks like pci_dev is
+> not the only offender here.  At least the following also have a driver
+> pointer in the device struct:
 >=20
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> ---
->  arch/powerpc/include/asm/topology.h           |   2 +
->  arch/powerpc/mm/numa.c                        | 178 +++++++++++++-----
->  arch/powerpc/platforms/pseries/hotplug-cpu.c  |   2 +
->  .../platforms/pseries/hotplug-memory.c        |   2 +
->  4 files changed, 138 insertions(+), 46 deletions(-)
+>   parisc_device.driver
+>   acpi_device.driver
+>   dio_dev.driver
+>   hid_device.driver
+>   pci_dev.driver
+>   pnp_dev.driver
+>   rio_dev.driver
+>   zorro_dev.driver
+
+Right, when I converted zorro_dev it was pointed out that the code was
+copied from pci and the latter has the same construct. :-)
+See
+https://lore.kernel.org/r/20210730191035.1455248-5-u.kleine-koenig@pengutro=
+nix.de
+for the patch, I don't find where pci was pointed out, maybe it was on
+irc only.
+
+> Do you plan to do the same for all of them, or is there some reason
+> why they need the pointer and PCI doesn't?
+
+There is a list of cleanup stuff I intend to work on. Considering how
+working on that list only made it longer in the recent past, maybe it
+makes more sense to not work on it :-)
+
+> In almost all cases, other buses define a "to_<bus>_driver()"
+> interface.  In fact, PCI already has a to_pci_driver().
 >=20
-> diff --git a/arch/powerpc/include/asm/topology.h b/arch/powerpc/include/a=
-sm/topology.h
-> index e4db64c0e184..a6425a70c37b 100644
-> --- a/arch/powerpc/include/asm/topology.h
-> +++ b/arch/powerpc/include/asm/topology.h
-> @@ -64,6 +64,7 @@ static inline int early_cpu_to_node(int cpu)
->  }
-> =20
->  int of_drconf_to_nid_single(struct drmem_lmb *lmb);
-> +void update_numa_distance(struct device_node *node);
-> =20
->  #else
-> =20
-> @@ -93,6 +94,7 @@ static inline int of_drconf_to_nid_single(struct drmem_=
-lmb *lmb)
->  	return first_online_node;
->  }
-> =20
-> +static inline void update_numa_distance(struct device_node *node) {}
->  #endif /* CONFIG_NUMA */
-> =20
->  #if defined(CONFIG_NUMA) && defined(CONFIG_PPC_SPLPAR)
-> diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-> index 368719b14dcc..c695faf67d68 100644
-> --- a/arch/powerpc/mm/numa.c
-> +++ b/arch/powerpc/mm/numa.c
-> @@ -208,22 +208,6 @@ int __node_distance(int a, int b)
->  }
->  EXPORT_SYMBOL(__node_distance);
-> =20
-> -static void initialize_distance_lookup_table(int nid,
-> -		const __be32 *associativity)
-> -{
-> -	int i;
-> -
-> -	if (affinity_form !=3D FORM1_AFFINITY)
-> -		return;
-> -
-> -	for (i =3D 0; i < distance_ref_points_depth; i++) {
-> -		const __be32 *entry;
-> -
-> -		entry =3D &associativity[be32_to_cpu(distance_ref_points[i]) - 1];
-> -		distance_lookup_table[nid][i] =3D of_read_number(entry, 1);
-> -	}
-> -}
-> -
->  /*
->   * Returns nid in the range [0..nr_node_ids], or -1 if no useful NUMA
->   * info is found.
-> @@ -241,15 +225,6 @@ static int associativity_to_nid(const __be32 *associ=
-ativity)
->  	/* POWER4 LPAR uses 0xffff as invalid node */
->  	if (nid =3D=3D 0xffff || nid >=3D nr_node_ids)
->  		nid =3D NUMA_NO_NODE;
-> -
-> -	if (nid > 0 &&
-> -		of_read_number(associativity, 1) >=3D distance_ref_points_depth) {
-> -		/*
-> -		 * Skip the length field and send start of associativity array
-> -		 */
-> -		initialize_distance_lookup_table(nid, associativity + 1);
-> -	}
-> -
->  out:
->  	return nid;
->  }
-> @@ -287,6 +262,48 @@ int of_node_to_nid(struct device_node *device)
->  }
->  EXPORT_SYMBOL(of_node_to_nid);
-> =20
-> +static void __initialize_form1_numa_distance(const __be32 *associativity)
-> +{
-> +	int i, nid;
-> +
-> +	if (affinity_form !=3D FORM1_AFFINITY)
-> +		return;
-> +
-> +	nid =3D associativity_to_nid(associativity);
-> +	if (nid !=3D NUMA_NO_NODE) {
-> +		for (i =3D 0; i < distance_ref_points_depth; i++) {
-> +			const __be32 *entry;
-> +
-> +			entry =3D &associativity[be32_to_cpu(distance_ref_points[i])];
-> +			distance_lookup_table[nid][i] =3D of_read_number(entry, 1);
+> This series adds pci_driver_of_dev(), which basically just means we
+> can do this:
+>=20
+>   pdrv =3D pci_driver_of_dev(pdev);
+>=20
+> instead of this:
+>=20
+>   pdrv =3D to_pci_driver(pdev->dev.driver);
+>=20
+> I don't see any other "<bus>_driver_of_dev()" interfaces, so I assume
+> other buses just live with the latter style?  I'd rather not be
+> different and have two ways to get the "struct pci_driver *" unless
+> there's a good reason.
 
-So, in the conversion from the old initialize_distance_lookup_table()
-you change this from accepting a bare associativity list, to requiring
-the length on the front.  [*]
+Among few the busses I already fixed in this regard pci was the first
+that has a considerable amount of usage. So I considered it worth giving
+it a name.
+=20
+> Looking through the places that care about pci_dev.driver (the ones
+> updated by patch 5/6), many of them are ... a little dubious to begin
+> with.  A few need the "struct pci_error_handlers *err_handler"
+> pointer, so that's probably legitimate.  But many just need a name,
+> and should probably be using dev_driver_string() instead.
 
-> +		}
-> +	}
-> +}
-> +
-> +static void initialize_form1_numa_distance(struct device_node *node)
-> +{
-> +	const __be32 *associativity;
-> +
-> +	associativity =3D of_get_associativity(node);
-> +	if (!associativity)
-> +		return;
-> +
-> +	__initialize_form1_numa_distance(associativity);
-> +}
-> +
-> +/*
-> + * Used to update distance information w.r.t newly added node.
-> + */
-> +void update_numa_distance(struct device_node *node)
-> +{
-> +	if (affinity_form =3D=3D FORM0_AFFINITY)
-> +		return;
-> +	else if (affinity_form =3D=3D FORM1_AFFINITY) {
-> +		initialize_form1_numa_distance(node);
-> +		return;
-> +	}
-> +}
-> +
->  static int __init find_primary_domain_index(void)
->  {
->  	int index;
-> @@ -433,6 +450,48 @@ static int of_get_assoc_arrays(struct assoc_arrays *=
-aa)
->  	return 0;
->  }
-> =20
-> +static int get_nid_and_numa_distance(struct drmem_lmb *lmb)
-> +{
-> +	struct assoc_arrays aa =3D { .arrays =3D NULL };
-> +	int default_nid =3D NUMA_NO_NODE;
+Yeah, I considered adding a function to get the driver name from a
+pci_dev and a function to get the error handlers. Maybe it's an idea to
+introduce these two and then use to_pci_driver(pdev->dev.driver) for the
+few remaining users? Maybe doing that on top of my current series makes
+sense to have a clean switch from pdev->driver to pdev->dev.driver?!
 
-You never change default_nid, so it seems like it would be clearer to
-get rid of this and just use NUMA_NO_NODE inline everywhere below.
-
-> +	int nid =3D default_nid;
-> +	int rc, index;
-> +
-> +	if ((primary_domain_index < 0) || !numa_enabled)
-> +		return default_nid;
-> +
-> +	rc =3D of_get_assoc_arrays(&aa);
-> +	if (rc)
-> +		return default_nid;
-> +
-> +	if (primary_domain_index <=3D aa.array_sz &&
-> +	    !(lmb->flags & DRCONF_MEM_AI_INVALID) && lmb->aa_index < aa.n_array=
-s) {
-> +		index =3D lmb->aa_index * aa.array_sz + primary_domain_index - 1;
-> +		nid =3D of_read_number(&aa.arrays[index], 1);
-> +
-> +		if (nid =3D=3D 0xffff || nid >=3D nr_node_ids)
-> +			nid =3D default_nid;
-> +		if (nid > 0 && affinity_form =3D=3D FORM1_AFFINITY) {
-
-Is the nid > 0 test assuming something about what are and aren't valid
-nids?  Should it be nid !=3D NUMA_NO_NODE instead?
-
-> +			int i;
-> +			const __be32 *associativity;
-> +
-> +			index =3D lmb->aa_index * aa.array_sz;
-> +			associativity =3D &aa.arrays[index];
-
-Again, you can reuse form1_numa_distance() here if it weren't for the
-fact that you broke it at [*] above to no longer accept bare
-associativity lists.
-
-> +			/*
-> +			 * lookup array associativity entries have different format
-> +			 * There is no length of the array as the first element.
-> +			 */
-> +			for (i =3D 0; i < distance_ref_points_depth; i++) {
-> +				const __be32 *entry;
-> +
-> +				entry =3D &associativity[be32_to_cpu(distance_ref_points[i]) - 1];
-> +				distance_lookup_table[nid][i] =3D of_read_number(entry, 1);
-> +			}
-> +		}
-> +	}
-> +	return nid;
-> +}
-> +
->  /*
->   * This is like of_node_to_nid_single() for memory represented in the
->   * ibm,dynamic-reconfiguration-memory node.
-> @@ -458,21 +517,14 @@ int of_drconf_to_nid_single(struct drmem_lmb *lmb)
-> =20
->  		if (nid =3D=3D 0xffff || nid >=3D nr_node_ids)
->  			nid =3D default_nid;
-> -
-> -		if (nid > 0) {
-> -			index =3D lmb->aa_index * aa.array_sz;
-> -			initialize_distance_lookup_table(nid,
-> -							&aa.arrays[index]);
-> -		}
->  	}
-> -
->  	return nid;
->  }
-> =20
->  #ifdef CONFIG_PPC_SPLPAR
-> -static int vphn_get_nid(long lcpu)
-> +
-> +static int __vphn_get_associativity(long lcpu, __be32 *associativity)
->  {
-> -	__be32 associativity[VPHN_ASSOC_BUFSIZE] =3D {0};
->  	long rc, hwid;
-> =20
->  	/*
-> @@ -492,12 +544,30 @@ static int vphn_get_nid(long lcpu)
-> =20
->  		rc =3D hcall_vphn(hwid, VPHN_FLAG_VCPU, associativity);
->  		if (rc =3D=3D H_SUCCESS)
-> -			return associativity_to_nid(associativity);
-> +			return 0;
->  	}
-> =20
-> +	return -1;
-> +}
-> +
-> +static int vphn_get_nid(long lcpu)
-> +{
-> +	__be32 associativity[VPHN_ASSOC_BUFSIZE] =3D {0};
-> +
-> +
-> +	if (!__vphn_get_associativity(lcpu, associativity))
-> +		return associativity_to_nid(associativity);
-> +
->  	return NUMA_NO_NODE;
-> +
->  }
->  #else
-> +
-> +static int __vphn_get_associativity(long lcpu, __be32 *associativity)
-> +{
-> +	return -1;
-> +}
-> +
->  static int vphn_get_nid(long unused)
->  {
->  	return NUMA_NO_NODE;
-> @@ -692,7 +762,7 @@ static int __init numa_setup_drmem_lmb(struct drmem_l=
-mb *lmb,
->  			size =3D read_n_cells(n_mem_size_cells, usm);
->  		}
-> =20
-> -		nid =3D of_drconf_to_nid_single(lmb);
-> +		nid =3D get_nid_and_numa_distance(lmb);
->  		fake_numa_create_new_node(((base + size) >> PAGE_SHIFT),
->  					  &nid);
->  		node_set_online(nid);
-> @@ -709,6 +779,7 @@ static int __init parse_numa_properties(void)
->  	struct device_node *memory;
->  	int default_nid =3D 0;
->  	unsigned long i;
-> +	const __be32 *associativity;
-> =20
->  	if (numa_enabled =3D=3D 0) {
->  		printk(KERN_WARNING "NUMA disabled by user\n");
-> @@ -734,18 +805,30 @@ static int __init parse_numa_properties(void)
->  	 * each node to be onlined must have NODE_DATA etc backing it.
->  	 */
->  	for_each_present_cpu(i) {
-> +		__be32 vphn_assoc[VPHN_ASSOC_BUFSIZE];
->  		struct device_node *cpu;
-> -		int nid =3D vphn_get_nid(i);
-> +		int nid =3D NUMA_NO_NODE;
-> =20
-> -		/*
-> -		 * Don't fall back to default_nid yet -- we will plug
-> -		 * cpus into nodes once the memory scan has discovered
-> -		 * the topology.
-> -		 */
-> -		if (nid =3D=3D NUMA_NO_NODE) {
-> +		memset(vphn_assoc, 0, VPHN_ASSOC_BUFSIZE * sizeof(__be32));
-> +
-> +		if (__vphn_get_associativity(i, vphn_assoc) =3D=3D 0) {
-> +			nid =3D associativity_to_nid(vphn_assoc);
-> +			__initialize_form1_numa_distance(vphn_assoc);
-> +		} else {
-> +
-> +			/*
-> +			 * Don't fall back to default_nid yet -- we will plug
-> +			 * cpus into nodes once the memory scan has discovered
-> +			 * the topology.
-> +			 */
->  			cpu =3D of_get_cpu_node(i, NULL);
->  			BUG_ON(!cpu);
-> -			nid =3D of_node_to_nid_single(cpu);
-> +
-> +			associativity =3D of_get_associativity(cpu);
-> +			if (associativity) {
-> +				nid =3D associativity_to_nid(associativity);
-> +				__initialize_form1_numa_distance(associativity);
-> +			}
->  			of_node_put(cpu);
->  		}
-> =20
-> @@ -781,8 +864,11 @@ static int __init parse_numa_properties(void)
->  		 * have associativity properties.  If none, then
->  		 * everything goes to default_nid.
->  		 */
-> -		nid =3D of_node_to_nid_single(memory);
-> -		if (nid < 0)
-> +		associativity =3D of_get_associativity(memory);
-> +		if (associativity) {
-> +			nid =3D associativity_to_nid(associativity);
-> +			__initialize_form1_numa_distance(associativity);
-> +		} else
->  			nid =3D default_nid;
-> =20
->  		fake_numa_create_new_node(((start + size) >> PAGE_SHIFT), &nid);
-> diff --git a/arch/powerpc/platforms/pseries/hotplug-cpu.c b/arch/powerpc/=
-platforms/pseries/hotplug-cpu.c
-> index 7e970f81d8ff..778b6ab35f0d 100644
-> --- a/arch/powerpc/platforms/pseries/hotplug-cpu.c
-> +++ b/arch/powerpc/platforms/pseries/hotplug-cpu.c
-> @@ -498,6 +498,8 @@ static ssize_t dlpar_cpu_add(u32 drc_index)
->  		return saved_rc;
->  	}
-> =20
-> +	update_numa_distance(dn);
-> +
->  	rc =3D dlpar_online_cpu(dn);
->  	if (rc) {
->  		saved_rc =3D rc;
-> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/power=
-pc/platforms/pseries/hotplug-memory.c
-> index 377d852f5a9a..ee1d81d7e54a 100644
-> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-> @@ -180,6 +180,8 @@ static int update_lmb_associativity_index(struct drme=
-m_lmb *lmb)
->  		return -ENODEV;
->  	}
-> =20
-> +	update_numa_distance(lmb_node);
-> +
->  	dr_node =3D of_find_node_by_path("/ibm,dynamic-reconfiguration-memory");
->  	if (!dr_node) {
->  		dlpar_free_cc_nodes(lmb_node);
+Best regards
+Uwe
 
 --=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
---jlzSzmFi8JI6hLnX
+--nllglfksvmzlkdkm
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmEM2LkACgkQbDjKyiDZ
-s5JSZg//bTpgjcY8s3W3kK4spzX1ZUPZouHKjlfXz5rQqRg2y6WLc1HT3mjBUrlk
-Vj5E3k3nJ3RCi+H4NU/F1CWfBcbvzQYeqVMq/Zd+jVX6p7hFs0tNdFDztTbpNoU6
-XQnHX2i+aNHEZwaeHmMgV+vOvGgHeakHRuhc4+iLT1ivCzoHoZTHq8XU2/v8WzTF
-X3lK0OEs8tuvrNKkeF2rXf49drwVd/E77bNl0d+0nm2SDsxhWoACRTIRr2QpEpW4
-KT/k7+MGJ0EWHWa8wh58fc4KpImlwGlnm2+CypQI50mojoh5/TM1Z4+zCQF185ng
-8QxnSshxcucM14pjRDOCAGc8SVLPEFQekBqhtRSBRNjcpJDpzM5N3ZMjgaPiJVEy
-545Kz66/03aLMoT+Xt4Ksn2rkRp6RCYK3zT7nfyHNVStJ6nOc67F+chTZUz1PqhI
-NL8yEZn5aNJJgyl7RT7CvQ54PYW8CPVxOZXfu6pysZ/ECAkLS2dfIQoW/nLVv44Q
-V5Frab2hnPkIXZ44Xam6iDBcFBlcw9VrVomaxQpF5Wg5kKgmgx8uiI+nYC83onX2
-C1esuKEjYyj2wrIsp7FELeJmpCBN10Eou4pnPQbSSJvrMW5yPFeQaNsi7o/v6Cq0
-QnYgQNe8htwjVm3s5GG5cUrI17l9/7PMu6OzRV5AnlFPF+AZOYQ=
-=AisJ
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmEM2rwACgkQwfwUeK3K
+7AlqBggAh2Z8+ZW+YMYlQQ8AzujRmGYo9gKX26eGdp2jNjZUeOc0CEZwm/GiW4aZ
+9+W1RS3i+O6ToHVYkt9fNEpdUGO3YdBKiMHGWsrkQuwNjm4Yv5Dlx/wRz0dU4vIX
+QQDa5tw6Mow1g0gjZqHvDuwbgKoJyHXzFD115kBaINYN/XqOLST9YvMqxxSsHHsD
+qRmpU59QTxEqHXKIsgABctdVnQBkbixppZH3/6nu+Xh7qkZvczBLpx/C5V1+XeAv
+47LOxaH3wiLQBS/sICKlAFeYcbAyNhwh+nbMxx5i3lG6O6LhaeX46FPMoTG6qiAj
+MaO1mAnwrEO35eTXFBgw4IYh37zS9A==
+=/ZHI
 -----END PGP SIGNATURE-----
 
---jlzSzmFi8JI6hLnX--
+--nllglfksvmzlkdkm--
