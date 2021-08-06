@@ -2,100 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 376DC3E249C
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 09:57:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE61E3E26A9
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 11:00:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GgyWR18hwz3cX0
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 17:57:39 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=C9sJGTzl;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GgzwN6NhRz3cM0
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 19:00:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=in.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=puvichakravarthy@in.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=C9sJGTzl; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GgyVv2XrYz307Z
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Aug 2021 17:57:10 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 1767hsGK173941; Fri, 6 Aug 2021 03:57:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=to : cc : subject : from
- : message-id : date : content-type : content-transfer-encoding :
- mime-version; s=pp1; bh=0BH2xqetlBG6lv0Zh4Y+tDhCIjOHXrQYLAstUQSCNxo=;
- b=C9sJGTzlHbIuUvrScwT1mdFdsmZpWVk+GTk4xETEXntVPz4mZ8XTEwbde9e5HBqLPwp6
- kPtEJ/JBWPMn2ZUaY2MZgjRDpyllVwmW/otMuh/EuOkPszMApg8KerChDc7Q/FAJeSVh
- sF55nPWriq00/p5BJazWIeGsuqQ8ZBpd7fDxp17fGo61oJaExJXZdkwXGUlwWK7gLyxI
- 3rWpc8Fe4J+dz2JyqmRzuunEIxTRf88/3BHa5DlhXCsYJyrPFG0SJpcUBJJLRB2a1Q+L
- 5p9vVeedlkLqs1Po0er6w3QNdfpktQBfwOu/1dad3yTx58CnrhB2s+4G5NeXwpth3liR Lg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3a83gqkb56-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 06 Aug 2021 03:57:04 -0400
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1767hwhm174008;
- Fri, 6 Aug 2021 03:57:03 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3a83gqkb4w-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 06 Aug 2021 03:57:03 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1767qLpJ021758;
- Fri, 6 Aug 2021 07:57:03 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma03dal.us.ibm.com with ESMTP id 3a7ankguf8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 06 Aug 2021 07:57:03 +0000
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 1767v1w113763170
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 6 Aug 2021 07:57:01 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D31B16A051;
- Fri,  6 Aug 2021 07:57:01 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BCA4E6A05F;
- Fri,  6 Aug 2021 07:57:01 +0000 (GMT)
-Received: from mww0882.dal12m.mail.ibm.com (unknown [9.208.88.142])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTPS;
- Fri,  6 Aug 2021 07:57:01 +0000 (GMT)
-To: aneesh.kumar@linux.ibm.com
-Subject: Re: [RFC PATCH] powerpc/book3s64/radix: Upgrade va tlbie to PID tlbie
- if we cross PMD_SIZE
-From: "Puvichakravarthy Ramachandran" <puvichakravarthy@in.ibm.com>
-Message-ID: <OFAE67F802.E3873360-ON00258729.0020407B-65258729.002BAB12@ibm.com>
-Date: Fri, 6 Aug 2021 13:26:59 +0530
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: quoted-printable
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com;
+ envelope-from=pulehui@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Ggzvx6n0Nz3cGw
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Aug 2021 19:00:26 +1000 (AEST)
+Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.53])
+ by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Ggzv23VXmzYll5;
+ Fri,  6 Aug 2021 16:59:42 +0800 (CST)
+Received: from dggpemm500019.china.huawei.com (7.185.36.180) by
+ dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Fri, 6 Aug 2021 16:59:45 +0800
+Received: from [10.67.109.184] (10.67.109.184) by
+ dggpemm500019.china.huawei.com (7.185.36.180) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Fri, 6 Aug 2021 16:59:44 +0800
+Subject: Re: [PATCH] powerpc/kprobes: Fix kprobe Oops happens in booke
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, <oleg@redhat.com>,
+ <mpe@ellerman.id.au>, <benh@kernel.crashing.org>, <paulus@samba.org>,
+ <naveen.n.rao@linux.vnet.ibm.com>, <mhiramat@kernel.org>,
+ <peterz@infradead.org>, <npiggin@gmail.com>, <ruscur@russell.cc>
+References: <20210804143735.148547-1-pulehui@huawei.com>
+ <021cf081-77a9-8e4e-a246-4faaf3937dbe@csgroup.eu>
+From: Pu Lehui <pulehui@huawei.com>
+Message-ID: <4696431d-daea-2cdd-906f-fa0aa7a6abd7@huawei.com>
+Date: Fri, 6 Aug 2021 16:59:44 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-X-KeepSent: AE67F802:E3873360-00258729:0020407B; name=$KeepSent; type=4
-X-Mailer: HCL Notes Build V1101FP3_03312021 SHF15 May 21, 2021
-X-Disclaimed: 37479
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: oZlSlJkPHOItQMM6ixANbhd1_4HBIX-M
-X-Proofpoint-GUID: KsqYNgf2Y6fRzAdzaGmPc6QSv6YOTN9w
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-08-06_02:2021-08-05,
- 2021-08-06 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 bulkscore=0
- phishscore=0 suspectscore=0 impostorscore=0 spamscore=0 adultscore=0
- mlxscore=0 malwarescore=0 priorityscore=1501 lowpriorityscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2107140000 definitions=main-2108060052
+In-Reply-To: <021cf081-77a9-8e4e-a246-4faaf3937dbe@csgroup.eu>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.109.184]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpemm500019.china.huawei.com (7.185.36.180)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,129 +60,199 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com
+Cc: zhangjinhao2@huawei.com, xukuohai@huawei.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> With shared mapping, even though we are unmapping a large range, the=20
-kernel
-> will force a TLB flush with ptl lock held to avoid the race mentioned in
-> commit 1cf35d47712d ("mm: split 'tlb=5Fflush=5Fmmu()' into tlb flushing a=
-nd=20
-memory freeing parts")
-> This results in the kernel issuing a high number of TLB flushes even for =
-
-a large
-> range. This can be improved by making sure the kernel switch to pid=20
-based flush if the
-> kernel is unmapping a 2M range.
->=20
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> ---
->  arch/powerpc/mm/book3s64/radix=5Ftlb.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->=20
-> diff --git a/arch/powerpc/mm/book3s64/radix=5Ftlb.c=20
-b/arch/powerpc/mm/book3s64/radix=5Ftlb.c
-> index aefc100d79a7..21d0f098e43b 100644
-> --- a/arch/powerpc/mm/book3s64/radix=5Ftlb.c
-> +++ b/arch/powerpc/mm/book3s64/radix=5Ftlb.c
-> @@ -1106,7 +1106,7 @@ EXPORT=5FSYMBOL(radix=5F=5Fflush=5Ftlb=5Fkernel=5Fr=
-ange);
->   * invalidating a full PID, so it has a far lower threshold to change=20
-from
->   * individual page flushes to full-pid flushes.
->   */
-> -static unsigned long tlb=5Fsingle=5Fpage=5Fflush=5Fceiling =5F=5Fread=5F=
-mostly =3D 33;
-> +static unsigned long tlb=5Fsingle=5Fpage=5Fflush=5Fceiling =5F=5Fread=5F=
-mostly =3D 32;
->  static unsigned long tlb=5Flocal=5Fsingle=5Fpage=5Fflush=5Fceiling =5F=
-=5Fread=5Fmostly=20
-=3D POWER9=5FTLB=5FSETS=5FRADIX * 2;
->=20
->  static inline void =5F=5Fradix=5F=5Fflush=5Ftlb=5Frange(struct mm=5Fstru=
-ct *mm,
-> @@ -1133,7 +1133,7 @@ static inline void =5F=5Fradix=5F=5Fflush=5Ftlb=5Fr=
-ange(struct=20
-mm=5Fstruct *mm,
->       if (fullmm)
->               flush=5Fpid =3D true;
->       else if (type =3D=3D FLUSH=5FTYPE=5FGLOBAL)
-> -             flush=5Fpid =3D nr=5Fpages > tlb=5Fsingle=5Fpage=5Fflush=5F=
-ceiling;
-> +             flush=5Fpid =3D nr=5Fpages >=3D tlb=5Fsingle=5Fpage=5Fflush=
-=5Fceiling;
->       else
->               flush=5Fpid =3D nr=5Fpages >=20
-tlb=5Flocal=5Fsingle=5Fpage=5Fflush=5Fceiling;
-
-Additional details on the test environment. This was tested on a 2 Node/8=20
-socket Power10 system.
-The LPAR had 105 cores and the LPAR spanned across all the sockets.=20
-
-# perf stat -I 1000 -a -e cycles,instructions -e=20
-"{cpu/config=3D0x030008,name=3DPM=5FEXEC=5FSTALL/}" -e=20
-"{cpu/config=3D0x02E01C,name=3DPM=5FEXEC=5FSTALL=5FTLBIE/}" ./tlbie -i 10 -=
-c 1  -t 1
- Rate of work: =3D 176=20
-#           time             counts unit events
-     1.029206442         4198594519      cycles =20
-     1.029206442         2458254252      instructions              # 0.59=20
-insn per cycle=20
-     1.029206442         3004031488      PM=5FEXEC=5FSTALL  =20
-     1.029206442         1798186036      PM=5FEXEC=5FSTALL=5FTLBIE  =20
- Rate of work: =3D 181=20
-     2.054288539         4183883450      cycles =20
-     2.054288539         2472178171      instructions              # 0.59=20
-insn per cycle=20
-     2.054288539         3014609313      PM=5FEXEC=5FSTALL  =20
-     2.054288539         1797851642      PM=5FEXEC=5FSTALL=5FTLBIE  =20
- Rate of work: =3D 180=20
-     3.078306883         4171250717      cycles =20
-     3.078306883         2468341094      instructions              # 0.59=20
-insn per cycle=20
-     3.078306883         2993036205      PM=5FEXEC=5FSTALL  =20
-     3.078306883         1798181890      PM=5FEXEC=5FSTALL=5FTLBIE  =20
-.
-.=20
-
-# cat /sys/kernel/debug/powerpc/tlb=5Fsingle=5Fpage=5Fflush=5Fceiling
-34
-
-# echo 32 > /sys/kernel/debug/powerpc/tlb=5Fsingle=5Fpage=5Fflush=5Fceiling
-
-# perf stat -I 1000 -a -e cycles,instructions -e=20
-"{cpu/config=3D0x030008,name=3DPM=5FEXEC=5FSTALL/}" -e=20
-"{cpu/config=3D0x02E01C,name=3DPM=5FEXEC=5FSTALL=5FTLBIE/}" ./tlbie -i 10 -=
-c 1  -t 1
- Rate of work: =3D 313=20
-#           time             counts unit events
-     1.030310506         4206071143      cycles =20
-     1.030310506         4314716958      instructions              # 1.03=20
-insn per cycle=20
-     1.030310506         2157762167      PM=5FEXEC=5FSTALL  =20
-     1.030310506          110825573      PM=5FEXEC=5FSTALL=5FTLBIE  =20
- Rate of work: =3D 322=20
-     2.056034068         4331745630      cycles =20
-     2.056034068         4531658304      instructions              # 1.05=20
-insn per cycle=20
-     2.056034068         2288971361      PM=5FEXEC=5FSTALL  =20
-     2.056034068          111267927      PM=5FEXEC=5FSTALL=5FTLBIE  =20
- Rate of work: =3D 321=20
-     3.081216434         4327050349      cycles =20
-     3.081216434         4379679508      instructions              # 1.01=20
-insn per cycle=20
-     3.081216434         2252602550      PM=5FEXEC=5FSTALL  =20
-     3.081216434          110974887      PM=5FEXEC=5FSTALL=5FTLBIE  =20
-.
-.
-=20
-
-Regards,
-Puvichakravarthy Ramachandran
 
 
+On 2021/8/5 17:51, Christophe Leroy wrote:
+> 
+> 
+> Le 04/08/2021 à 16:37, Pu Lehui a écrit :
+>> When using kprobe on powerpc booke series processor, Oops happens
+>> as show bellow:
+>>
+>> [   35.861352] Oops: Exception in kernel mode, sig: 5 [#1]
+>> [   35.861676] BE PAGE_SIZE=4K SMP NR_CPUS=24 QEMU e500
+>> [   35.861905] Modules linked in:
+>> [   35.862144] CPU: 0 PID: 76 Comm: sh Not tainted 
+>> 5.14.0-rc3-00060-g7e96bf476270 #18
+>> [   35.862610] NIP:  c0b96470 LR: c00107b4 CTR: c0161c80
+>> [   35.862805] REGS: c387fe70 TRAP: 0700   Not tainted 
+>> (5.14.0-rc3-00060-g7e96bf476270)
+>> [   35.863198] MSR:  00029002 <CE,EE,ME>  CR: 24022824  XER: 20000000
+>> [   35.863577]
+>> [   35.863577] GPR00: c0015218 c387ff20 c313e300 c387ff50 00000004 
+>> 40000002 40000000 0a1a2cce
+>> [   35.863577] GPR08: 00000000 00000004 00000000 59764000 24022422 
+>> 102490c2 00000000 00000000
+>> [   35.863577] GPR16: 00000000 00000000 00000040 10240000 10240000 
+>> 10240000 10240000 10220000
+>> [   35.863577] GPR24: ffffffff 10240000 00000000 00000000 bfc655e8 
+>> 00000800 c387ff50 00000000
+>> [   35.865367] NIP [c0b96470] schedule+0x0/0x130
+>> [   35.865606] LR [c00107b4] interrupt_exit_user_prepare_main+0xf4/0x100
+>> [   35.865974] Call Trace:
+>> [   35.866142] [c387ff20] [c0053224] irq_exit+0x114/0x120 (unreliable)
+>> [   35.866472] [c387ff40] [c0015218] interrupt_return+0x14/0x13c
+>> [   35.866728] --- interrupt: 900 at 0x100af3dc
+>> [   35.866963] NIP:  100af3dc LR: 100de020 CTR: 00000000
+>> [   35.867177] REGS: c387ff50 TRAP: 0900   Not tainted 
+>> (5.14.0-rc3-00060-g7e96bf476270)
+>> [   35.867488] MSR:  0002f902 <CE,EE,PR,FP,ME>  CR: 20022422  XER: 
+>> 20000000
+>> [   35.867808]
+>> [   35.867808] GPR00: c001509c bfc65570 1024b4d0 00000000 100de020 
+>> 20022422 bfc655a8 100af3dc
+>> [   35.867808] GPR08: 0002f902 00000000 00000000 00000000 72656773 
+>> 102490c2 00000000 00000000
+>> [   35.867808] GPR16: 00000000 00000000 00000040 10240000 10240000 
+>> 10240000 10240000 10220000
+>> [   35.867808] GPR24: ffffffff 10240000 00000000 00000000 bfc655e8 
+>> 10245910 ffffffff 00000001
+>> [   35.869406] NIP [100af3dc] 0x100af3dc
+>> [   35.869578] LR [100de020] 0x100de020
+>> [   35.869751] --- interrupt: 900
+>> [   35.870001] Instruction dump:
+>> [   35.870283] 40c20010 815e0518 714a0100 41e2fd04 39200000 913e00c0 
+>> 3b1e0450 4bfffd80
+>> [   35.870666] 0fe00000 92a10024 4bfff1a9 60000000 <7fe00008> 7c0802a6 
+>> 93e1001c 7c5f1378
+>> [   35.871339] ---[ end trace 23ff848139efa9b9 ]---
+>>
+>> There is no real mode for booke arch and the MMU translation is
+>> always on. The corresponding MSR_IS/MSR_DS bit in booke is used
+>> to switch the address space, but not for real mode judgment.
+> 
+> Can you explain more the link between that explanation and the Oops 
+> itself ?
+> 
+In fact, the same Oops appears when any probed function is hit, like 
+do_nanosleep
 
+/ # echo "p:myprobe do_nanosleep" > /sys/kernel/debug/tracing/kprobe_events
+/ # echo 1 > /sys/kernel/debug/tracing/events/kprobes/myprobe/enable
+/ # sleep 1
+[   50.076730] Oops: Exception in kernel mode, sig: 5 [#1]
+[   50.077017] BE PAGE_SIZE=4K SMP NR_CPUS=24 QEMU e500
+[   50.077221] Modules linked in:
+[   50.077462] CPU: 0 PID: 77 Comm: sleep Not tainted 
+5.14.0-rc4-00022-g251a1524293d #21
+[   50.077887] NIP:  c0b9c4e0 LR: c00ebecc CTR: 00000000
+[   50.078067] REGS: c3883de0 TRAP: 0700   Not tainted 
+(5.14.0-rc4-00022-g251a1524293d)
+[   50.078349] MSR:  00029000 <CE,EE,ME>  CR: 24000228  XER: 20000000
+[   50.078675]
+[   50.078675] GPR00: c00ebdf0 c3883e90 c313e300 c3883ea0 00000001 
+00000000 c3883ecc 00000001
+[   50.078675] GPR08: c100598c c00ea250 00000004 00000000 24000222 
+102490c2 bff4180c 101e60d4
+[   50.078675] GPR16: 00000000 102454ac 00000040 10240000 10241100 
+102410f8 10240000 00500000
+[   50.078675] GPR24: 00000002 00000000 c3883ea0 00000001 00000000 
+0000c350 3b9b8d50 00000000
+[   50.080151] NIP [c0b9c4e0] do_nanosleep+0x0/0x190
+[   50.080352] LR [c00ebecc] hrtimer_nanosleep+0x14c/0x1e0
+[   50.080638] Call Trace:
+[   50.080801] [c3883e90] [c00ebdf0] hrtimer_nanosleep+0x70/0x1e0 
+(unreliable)
+[   50.081110] [c3883f00] [c00ec004] sys_nanosleep_time32+0xa4/0x110
+[   50.081336] [c3883f40] [c001509c] ret_from_syscall+0x0/0x28
+[   50.081541] --- interrupt: c00 at 0x100a4d08
+[   50.081749] NIP:  100a4d08 LR: 101b5234 CTR: 00000003
+[   50.081931] REGS: c3883f50 TRAP: 0c00   Not tainted 
+(5.14.0-rc4-00022-g251a1524293d)
+[   50.082183] MSR:  0002f902 <CE,EE,PR,FP,ME>  CR: 24000222  XER: 00000000
+[   50.082457]
+[   50.082457] GPR00: 000000a2 bf980040 1024b4d0 bf980084 bf980084 
+64000000 00555345 fefefeff
+[   50.082457] GPR08: 7f7f7f7f 101e0000 00000069 00000003 28000422 
+102490c2 bff4180c 101e60d4
+[   50.082457] GPR16: 00000000 102454ac 00000040 10240000 10241100 
+102410f8 10240000 00500000
+[   50.082457] GPR24: 00000002 bf9803f4 10240000 00000000 00000000 
+100039e0 00000000 102444e8
+[   50.083789] NIP [100a4d08] 0x100a4d08
+[   50.083917] LR [101b5234] 0x101b5234
+[   50.084042] --- interrupt: c00
+[   50.084238] Instruction dump:
+[   50.084483] 4bfffc40 60000000 60000000 60000000 9421fff0 39400402 
+914200c0 38210010
+[   50.084841] 4bfffc20 00000000 00000000 00000000 <7fe00008> 7c0802a6 
+7c892378 93c10048
+[   50.085487] ---[ end trace f6fffe98e2fa8f3e ]---
+[   50.085678]
+Trace/breakpoint trap
 
+In current code, kprobe_handler() will be called by 'program check 
+exception' when a probe is hit,
+and kprobe_handler() will check whether it is in real-mode according to 
+MSR_IR/MSR_DR bit.
+When in real-mode(MSR_IR/MSR_DR are 0), the following process will be 
+executed to trigger Oops:
+__exception() -> exception_common() -> die("Exception in kernel mode")
+
+But for booke arch, the corresponding bits, which is called 
+MSR_IS/MSR_DS, are used for switching
+the non-privileged and privileged virtual address spaces, and users can 
+change both spaces by
+setting MSR_IS/MSR_DS bit. So, when kernel in privileged 
+space(MSR_IS/MSR_DS are 0), kprobe trap will
+meet a Oops.
+
+And also, the MMU of booke is always enabled, so when other trap 
+appears, the problem mentioned in
+21f8b2fa3ca5 will never met.
+>>
+>> Fixes: 21f8b2fa3ca5 ("powerpc/kprobes: Ignore traps that happened in 
+>> real mode")
+>> Signed-off-by: Pu Lehui <pulehui@huawei.com>
+>> ---
+>>   arch/powerpc/include/asm/ptrace.h | 6 ++++++
+>>   arch/powerpc/kernel/kprobes.c     | 5 +----
+>>   2 files changed, 7 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/arch/powerpc/include/asm/ptrace.h 
+>> b/arch/powerpc/include/asm/ptrace.h
+>> index 3e5d470a6155..4aec1a97024b 100644
+>> --- a/arch/powerpc/include/asm/ptrace.h
+>> +++ b/arch/powerpc/include/asm/ptrace.h
+>> @@ -187,6 +187,12 @@ static inline unsigned long frame_pointer(struct 
+>> pt_regs *regs)
+>>   #define user_mode(regs) (((regs)->msr & MSR_PR) != 0)
+>>   #endif
+>> +#ifdef CONFIG_BOOKE
+>> +#define real_mode(regs)    0
+>> +#else
+>> +#define real_mode(regs)    (!((regs)->msr & MSR_IR) || !((regs)->msr 
+>> & MSR_DR))
+>> +#endif
+>> +
+> 
+> You don't need an #ifdef stuff here, you can base your testing on 
+> IS_ENABLED(CONFIG_BOOKE)
+>
+I'll fix in v2.
+>>   #define force_successful_syscall_return()   \
+>>       do { \
+>>           set_thread_flag(TIF_NOERROR); \
+>> diff --git a/arch/powerpc/kernel/kprobes.c 
+>> b/arch/powerpc/kernel/kprobes.c
+>> index cbc28d1a2e1b..fac9a5974718 100644
+>> --- a/arch/powerpc/kernel/kprobes.c
+>> +++ b/arch/powerpc/kernel/kprobes.c
+>> @@ -289,10 +289,7 @@ int kprobe_handler(struct pt_regs *regs)
+>>       unsigned int *addr = (unsigned int *)regs->nip;
+>>       struct kprobe_ctlblk *kcb;
+>> -    if (user_mode(regs))
+>> -        return 0;
+>> -
+>> -    if (!(regs->msr & MSR_IR) || !(regs->msr & MSR_DR))
+>> +    if (user_mode(regs) || real_mode(regs))
+>>           return 0;
+>>       /*
+>>
+> .
