@@ -1,75 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9A473E28A5
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 12:33:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EC943E28CB
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 12:39:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gh1yw59Pyz3d8F
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 20:33:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gh2662Hy4z3dDh
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 20:39:26 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=udTY6LYc;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=GEzDGV4h;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635;
- helo=mail-pl1-x635.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::632;
+ helo=mail-pl1-x632.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=udTY6LYc; dkim-atps=neutral
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com
- [IPv6:2607:f8b0:4864:20::635])
+ header.s=20161025 header.b=GEzDGV4h; dkim-atps=neutral
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com
+ [IPv6:2607:f8b0:4864:20::632])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gh1yT5q7yz3cHR
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Aug 2021 20:32:48 +1000 (AEST)
-Received: by mail-pl1-x635.google.com with SMTP id q2so6450963plr.11
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Aug 2021 03:32:48 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gh25h4s6Qz30FD
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Aug 2021 20:39:03 +1000 (AEST)
+Received: by mail-pl1-x632.google.com with SMTP id d1so6526109pll.1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Aug 2021 03:39:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=FY9wGttQOvoswk4T19oVTWVLvt0qApUxTXdsanwYGM4=;
- b=udTY6LYcGvag50UNK8icCVl2/hUtd+ibX7PRLRDjYmiSDsPcw5IV1b46Do9sUSubWr
- xivqS+R0ePIp2Yy6YuFdaIl7TPesFQsUMxYl3RX5tFT6CpS2q+VcCxDuP533HwUIjofq
- 8DocgNH4UShWtP2aMAPacVrQJhvK80dpsEfyo+eINmem4kV8qxctoKKaT/B7OR7iTNQa
- KfCVeAJ1Bf0kSnGE1a5/Slt50M5+wq8x6DTiVaM7Q8Qj70FJK8BneYdAw9OLc0eASY1j
- DeSLQJGsaJ78IzuInVFqRwxsMrlsObSEJFENE1z5IN/YjlpwT4vdSM9ofhaYtYgbv2eG
- 0G8w==
+ bh=88W0lAvp0jwmzu1x9zXpNG3t1sQTUzSTr6wOIBY785I=;
+ b=GEzDGV4hYjzA4lCnSPxqHV0yhACnH9mpQBNYtgI/sT/OnYaclVdJd11Xz+QMAwEgMY
+ sDs1PPyWH+fJpv/oZw4K9B6V+shkctEecJ+/bv6X3jamVl7eXbE9tgmjxjuaKpvK3Qdx
+ BaeINBW5Aq0F18El2dGgsj9V5Wjbr/3Z9edv+ntyzh4xjc29qs0kTJmvQ1xG559cfZ2d
+ keG19TDaIjcYrE++ky5HeCrGPu4K/b6AAkUyDPe5/OrgjB65ixUjXekYkoblHkyJCvIS
+ EWjkpxjUl0i+0n0rl3Y2hzdJz1f1JgK+H4ZAi4ylUxy4iiHnmYA0C3yz2Pl7rwLedUsP
+ HlzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=FY9wGttQOvoswk4T19oVTWVLvt0qApUxTXdsanwYGM4=;
- b=owgFIMc1mkuKReqscANpOu/OvY1/UYNF0bZjz9NK7mcZxXDGWIbk86bHKi9ZnlhXil
- IegOs1Hjt3ONiPugbk74yupkpivRGhAL/orvcfW3PJP6wLw0PiO6NKjP1ZlI5wKimbtC
- dK+Y3imZNvsbRsVsABvXR+xIRjDSbg7nzkNwowa7B1Ei2nLbW4LbxvDOer3BFDrxKGk2
- Q+mpxEmvS0A0PR0SplQ53PMwDQoKjTofbuEP6G2fzW2WXeFCzyc7ngaTKL4keZumjp8z
- tXrDZ8Mw3wRH2eW+2aE6jn00xL6vVlmaHlr6tEvMnKIr59x9Rs/I4stQD1MT6daCz0lQ
- 7mAA==
-X-Gm-Message-State: AOAM533UFQ8sUKW7KQ658BQI7wpJRUaprOz9viWvBvqgPielcCA5egv5
- r3VOJXjOyoweekZ9lnOFJ4Q=
-X-Google-Smtp-Source: ABdhPJyy5l8Ku5yxRyZJNOY07SANGOLCpqkmGWuYVEauPmOHmjBl7NFXhsGcgNp6PAuCWBC2NB+xzQ==
-X-Received: by 2002:a17:90a:e38b:: with SMTP id
- b11mr9806787pjz.70.1628245965861; 
- Fri, 06 Aug 2021 03:32:45 -0700 (PDT)
+ bh=88W0lAvp0jwmzu1x9zXpNG3t1sQTUzSTr6wOIBY785I=;
+ b=DyQ6yEhKYV6ZCkdlxpN/FjItl164EY9IogED95WHKwEAzzd/Uxq4GsAfZyfFnoFlGY
+ 0n8rIb4C1ucpacfIeG3Yo2ao2k5VhrXlByIE0xqzGYXMZf6K/qh06OleFCUI9Mj1I4wF
+ RLur16mHFOWLOT3SAQ4CkI8MOpq4EEfLuM+FMYFXIRjfFE+a6eODBHLBF3K5Tnp7dgWb
+ 3XtcKiO+kriuZk5WxENwIwd8j/yF71V7Xv3gboo3np2c30P/fuT+8SonDqqDJBVCu1oP
+ Y3dtcgwGuB3+/QAd/LbxCvpk8wYE0mNIuMhOlh/8R6twZmmopmRF2vRLHUTBiOU+6NYf
+ LSEQ==
+X-Gm-Message-State: AOAM530s1X3lxhwBsu/u56RRjw1ClUwomzV7J76E+Nf2Ym6nUfylWrtt
+ 2CNP0knLAx//iL0gLVpbXqs=
+X-Google-Smtp-Source: ABdhPJwTnOhhPO7zfzz85sosQbFbOr3bSl5RbGkGOqtE9B0fBF8VMqQ0WniWiM3MReZ3y26IEVvkrQ==
+X-Received: by 2002:a17:902:9042:b029:12c:c03:20e2 with SMTP id
+ w2-20020a1709029042b029012c0c0320e2mr7943795plz.36.1628246340419; 
+ Fri, 06 Aug 2021 03:39:00 -0700 (PDT)
 Received: from localhost ([118.210.97.79])
- by smtp.gmail.com with ESMTPSA id 20sm12630150pgg.36.2021.08.06.03.32.45
+ by smtp.gmail.com with ESMTPSA id o192sm10125805pfd.78.2021.08.06.03.38.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Aug 2021 03:32:45 -0700 (PDT)
-Date: Fri, 06 Aug 2021 20:32:40 +1000
+ Fri, 06 Aug 2021 03:39:00 -0700 (PDT)
+Date: Fri, 06 Aug 2021 20:38:55 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v1 14/55] KVM: PPC: Book3S HV: Don't always save PMU for
- guest capable of nesting
-To: kvm-ppc@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v1 16/55] powerpc/64s: Implement PMU override command line
+ option
+To: kvm-ppc@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>
 References: <20210726035036.739609-1-npiggin@gmail.com>
- <20210726035036.739609-15-npiggin@gmail.com>
- <871r77ni1g.fsf@mpe.ellerman.id.au>
-In-Reply-To: <871r77ni1g.fsf@mpe.ellerman.id.au>
+ <20210726035036.739609-17-npiggin@gmail.com>
+ <e7bb1311-3b50-dcc2-7fb0-1773558e9abc@linux.ibm.com>
+In-Reply-To: <e7bb1311-3b50-dcc2-7fb0-1773558e9abc@linux.ibm.com>
 MIME-Version: 1.0
-Message-Id: <1628245856.8cocc7zj8u.astroid@bobo.none>
+Message-Id: <1628245966.h9u2e2m21l.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -88,34 +88,121 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Michael Ellerman's message of August 6, 2021 5:34 pm:
-> Nicholas Piggin <npiggin@gmail.com> writes:
->> Revert the workaround added by commit 63279eeb7f93a ("KVM: PPC: Book3S
->> HV: Always save guest pmu for guest capable of nesting").
+Excerpts from Madhavan Srinivasan's message of August 6, 2021 5:33 pm:
+>=20
+> On 7/26/21 9:19 AM, Nicholas Piggin wrote:
+>> It can be useful in simulators (with very constrained environments)
+>> to allow some PMCs to run from boot so they can be sampled directly
+>> by a test harness, rather than having to run perf.
 >>
->> Nested capable guests running with the earlier commit ("KVM: PPC: Book3S
->> HV Nested: Indicate guest PMU in-use in VPA") will now indicate the PMU
->> in-use status of their guests, which means the parent does not need to
->> unconditionally save the PMU for nested capable guests.
+>> A previous change freezes counters at boot by default, so provide
+>> a boot time option to un-freeze (plus a bit more flexibility).
 >>
->> This will cause the PMU to break for nested guests when running older
->> nested hypervisor guests under a kernel with this change. It's unclear
->> there's an easy way to avoid that, so this could wait for a release or
->> so for the fix to filter into stable kernels.
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>> ---
+>>   .../admin-guide/kernel-parameters.txt         |  7 ++++
+>>   arch/powerpc/perf/core-book3s.c               | 35 +++++++++++++++++++
+>>   2 files changed, 42 insertions(+)
+>>
+>> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documenta=
+tion/admin-guide/kernel-parameters.txt
+>> index bdb22006f713..96b7d0ebaa40 100644
+>> --- a/Documentation/admin-guide/kernel-parameters.txt
+>> +++ b/Documentation/admin-guide/kernel-parameters.txt
+>> @@ -4089,6 +4089,13 @@
+>>   			Override pmtimer IOPort with a hex value.
+>>   			e.g. pmtmr=3D0x508
+>>
+>> +	pmu=3D		[PPC] Manually enable the PMU.
 >=20
-> I'm not sure PMU inside nested guests is getting much use, but I don't
-> think we can break this quite so casually :)
 >=20
-> Especially as the failure mode will be PMU counts that don't match
-> reality, which is hard to diagnose. It took nearly a year for us to find
-> the original bug.
->=20
-> I think we need to hold this back for a while.
->=20
-> We could put it under a CONFIG option, and then flip that option to off
-> at some point in the future.
+> This is bit confusing, IIUC, we are manually disabling the perf=20
+> registration
+> with this option and not pmu.
+> If this option is used, we will unfreeze the
+> MMCR0_FC (only in the HV_mode) and not register perf subsystem.
 
-Okay that might be a good compromise, I'll do that.
+With the previous patch, this option un-freezes the PMU
+(and disables perf).
+
+> Since this option is valid only for HV_mode, canwe call it
+> kvm_disable_perf or kvm_dis_perf.
+
+It's only disabled for guests because it would require a bit
+of logic to set pmcregs_in_use when we register our lppaca. We could
+add that if needed, but the intention is for use on BML, not exactly
+KVM specific.
+
+I can add HV restriction to the help text. And we could rename the=20
+option. free_run_pmu=3D or something?
 
 Thanks,
 Nick
+
+>=20
+>=20
+>> +			Enable the PMU by setting MMCR0 to 0 (clear FC bit).
+>> +			This option is implemented for Book3S processors.
+>> +			If a number is given, then MMCR1 is set to that number,
+>> +			otherwise (e.g., 'pmu=3Don'), it is left 0. The perf
+>> +			subsystem is disabled if this option is used.
+>> +
+>>   	pm_debug_messages	[SUSPEND,KNL]
+>>   			Enable suspend/resume debug messages during boot up.
+>>
+>> diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-bo=
+ok3s.c
+>> index 65795cadb475..e7cef4fe17d7 100644
+>> --- a/arch/powerpc/perf/core-book3s.c
+>> +++ b/arch/powerpc/perf/core-book3s.c
+>> @@ -2428,8 +2428,24 @@ int register_power_pmu(struct power_pmu *pmu)
+>>   }
+>>
+>>   #ifdef CONFIG_PPC64
+>> +static bool pmu_override =3D false;
+>> +static unsigned long pmu_override_val;
+>> +static void do_pmu_override(void *data)
+>> +{
+>> +	ppc_set_pmu_inuse(1);
+>> +	if (pmu_override_val)
+>> +		mtspr(SPRN_MMCR1, pmu_override_val);
+>> +	mtspr(SPRN_MMCR0, mfspr(SPRN_MMCR0) & ~MMCR0_FC);
+>> +}
+>> +
+>>   static int __init init_ppc64_pmu(void)
+>>   {
+>> +	if (cpu_has_feature(CPU_FTR_HVMODE) && pmu_override) {
+>> +		printk(KERN_WARNING "perf: disabling perf due to pmu=3D command line =
+option.\n");
+>> +		on_each_cpu(do_pmu_override, NULL, 1);
+>> +		return 0;
+>> +	}
+>> +
+>>   	/* run through all the pmu drivers one at a time */
+>>   	if (!init_power5_pmu())
+>>   		return 0;
+>> @@ -2451,4 +2467,23 @@ static int __init init_ppc64_pmu(void)
+>>   		return init_generic_compat_pmu();
+>>   }
+>>   early_initcall(init_ppc64_pmu);
+>> +
+>> +static int __init pmu_setup(char *str)
+>> +{
+>> +	unsigned long val;
+>> +
+>> +	if (!early_cpu_has_feature(CPU_FTR_HVMODE))
+>> +		return 0;
+>> +
+>> +	pmu_override =3D true;
+>> +
+>> +	if (kstrtoul(str, 0, &val))
+>> +		val =3D 0;
+>> +
+>> +	pmu_override_val =3D val;
+>> +
+>> +	return 1;
+>> +}
+>> +__setup("pmu=3D", pmu_setup);
+>> +
+>>   #endif
+>=20
