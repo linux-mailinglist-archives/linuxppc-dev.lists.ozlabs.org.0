@@ -1,73 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28C793E283B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 12:10:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C91AC3E284C
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 12:11:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gh1SL0rJvz3dD9
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 20:10:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gh1Td4xD1z3cGw
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 20:11:17 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Zctwj8I3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=gQeGe6L4;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::636;
- helo=mail-pl1-x636.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62d;
+ helo=mail-pl1-x62d.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Zctwj8I3; dkim-atps=neutral
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com
- [IPv6:2607:f8b0:4864:20::636])
+ header.s=20161025 header.b=gQeGe6L4; dkim-atps=neutral
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com
+ [IPv6:2607:f8b0:4864:20::62d])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gh1Rs0tQvz30FD
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Aug 2021 20:09:44 +1000 (AEST)
-Received: by mail-pl1-x636.google.com with SMTP id c16so6412184plh.7
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Aug 2021 03:09:44 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gh1T92jkWz2xZH
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Aug 2021 20:10:53 +1000 (AEST)
+Received: by mail-pl1-x62d.google.com with SMTP id i10so6440378pla.3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Aug 2021 03:10:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=Qo8+DXARQmZvi0+oDjqz884CmgevIsmESsdKCqREcgM=;
- b=Zctwj8I3SU5NOmdoMrreDhqJ60J3O8nmSt9U2VRjjHFQ4bsj18C4fT4+h9MOWP8Ra2
- 9fRPdwtlloa2tO16VTzdu3d/OD3moBoLGHxMDhD+kCvEli+TVGQnTg1YsE4mkCigBZqk
- OJCZhRKkx2l6KIX70Nykw0D5EX82/6MQ3mzr6aAaerYqmVeIORsV9cMmGN43tMlU7wWB
- vhbkUi9pWgRPCxpwScLLZ8BB1QUNxeq+HjsxKautSEJgTheA83Ivtjm+FtR2z5d2HTX0
- ioFkMb2mXsubwxWW8/2ib1CkkCNaJj+MuqUi+IE4DoCrHJcsHnjGyD7JaGpuPUcocW4g
- 9GgA==
+ bh=xl+toVo+Zrg478hZAS7J1S1eAiWULAkYqgfigtj4ZV8=;
+ b=gQeGe6L4ibmD0WCrfE7fNyfnq8gokIDvjPbGL0eMVtI3oPq2oDd4GYFcPFMCWObQuT
+ LAvVKUuM99ymXmB+ppQV/3jHYe8joyuwhupgngzFrm/v0ei+eMFi+uH27o3zNXuQrj3q
+ R1YMITRi/tQ3ezSktH+nDFe3uVjX96/092rnhGbJEDxKI73KyFpImeD3VRsRYZgLmaZR
+ dLpD7bMbJpkZnWfn5oUoeO07sU+/ECeBjUoyrIPiLeaPxLM09vuaV8q0l41/rYM5lJjz
+ pX9CIwkD0GjH0Hg86nchrl4XwGHPalBG2Uzz1wluVmXfWNtw/XYzj4BBp6rFK9hm0Qnh
+ K1oA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=Qo8+DXARQmZvi0+oDjqz884CmgevIsmESsdKCqREcgM=;
- b=MmGIGG9+THtfgWnNb0J2XjAm4+rvpWH2KcaLF7d/rm8EHCJ5HM6SY1gMRpgzDb5fVj
- K24x8mp88cSNpL7o4S/rv6ubwwPLykQKiMD1J81r6LFT3jomhpzuCwYBU9S9iD6E/qHr
- M2To7TkDWi/HKOWR0UolDRJjxZNq/PU/ZzEqe0RhhrYO1Cb1nCHze5kirLM8OyEqwgIL
- HIB3qsSsLsUD8jS/BCX9vReFJfc8bj1sQJK5JAEHIZQpzOQTVEQYkyzhyfSaI+bsVLfd
- pPXtbRxvKd4D7nLqEF2ly4Sh/fydeyYY+uuWn76Z437vhQfniUIJK7WCiPV3T4ZlzZxQ
- bH0g==
-X-Gm-Message-State: AOAM531nmHhXRJBkFcgEal0SojN0dWwFOMWQHHn8FwmGo+JPf8qJ81qh
- 4cAo9Ot/8zAm+97adQvM0Ts=
-X-Google-Smtp-Source: ABdhPJyStiXqC6J8AG8B7CVFAukaNA0o9kcxJ7ETvnfnz+TAJG9bKKV5IkeLeQ4qByJ2NQw34gINNg==
-X-Received: by 2002:a17:90b:802:: with SMTP id
- bk2mr9737611pjb.51.1628244576979; 
- Fri, 06 Aug 2021 03:09:36 -0700 (PDT)
+ bh=xl+toVo+Zrg478hZAS7J1S1eAiWULAkYqgfigtj4ZV8=;
+ b=QsgHTTjarwyMYupMAcOhvcozHQ4Xo+3w8W2sZ2UWHBYEkSzdbVeQGG8GoqjWskepgd
+ UOMqTF4xS8sZfymdBJfzyLzIlwu91qCn/rDllqPV6OmrgxDrkseI1/K7/VAPHnx+LV24
+ n34CpZVc1enwFexanZuogv4efhn47Gvr6pRFiinn7g26cuWuMvFnkS3T+N6JXklwC4yC
+ rAQ/J2TalyUaewAwkRCCUoEytroWf1WQF6eLRGn8zCdc9VoFxsYkerbPiBXenZiLT6iJ
+ id8Pjx2I5kMtpuIlwHqKU9oLf5PXjehKn4AhItOZ1OEd6mk0AW4Hto1B9WDQkMQXMmMO
+ avGQ==
+X-Gm-Message-State: AOAM531Hx0H/Cx5cdqyC2B68uKhlHOZ8FvQVpK9Oa50lc2luPlLdIwKG
+ K3erQN15BOEHgS0Io1TZwOI=
+X-Google-Smtp-Source: ABdhPJz4dsC4ghXRVNq0gDux6WP/xtTCO/fOTsURJhwjROT+I4DAL//Gs+cnx9EVYCYPV9ATy+ialQ==
+X-Received: by 2002:a17:90a:a087:: with SMTP id
+ r7mr20369035pjp.84.1628244650107; 
+ Fri, 06 Aug 2021 03:10:50 -0700 (PDT)
 Received: from localhost ([118.210.97.79])
- by smtp.gmail.com with ESMTPSA id f5sm8906820pjo.23.2021.08.06.03.09.35
+ by smtp.gmail.com with ESMTPSA id v7sm9473426pfu.39.2021.08.06.03.10.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Aug 2021 03:09:36 -0700 (PDT)
-Date: Fri, 06 Aug 2021 20:09:31 +1000
+ Fri, 06 Aug 2021 03:10:49 -0700 (PDT)
+Date: Fri, 06 Aug 2021 20:10:44 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 1/3] KVM: PPC: Book3S HV: Fix copy_tofrom_guest routines
+Subject: Re: [PATCH v2 2/3] KVM: PPC: Book3S HV: Add sanity check to
+ copy_tofrom_guest
 To: Fabiano Rosas <farosas@linux.ibm.com>, kvm-ppc@vger.kernel.org
 References: <20210805212616.2641017-1-farosas@linux.ibm.com>
- <20210805212616.2641017-2-farosas@linux.ibm.com>
-In-Reply-To: <20210805212616.2641017-2-farosas@linux.ibm.com>
+ <20210805212616.2641017-3-farosas@linux.ibm.com>
+In-Reply-To: <20210805212616.2641017-3-farosas@linux.ibm.com>
 MIME-Version: 1.0
-Message-Id: <1628244553.dbzjakaq9m.astroid@bobo.none>
+Message-Id: <1628244579.t79ynn05df.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -87,74 +88,49 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Excerpts from Fabiano Rosas's message of August 6, 2021 7:26 am:
-> The __kvmhv_copy_tofrom_guest_radix function was introduced along with
-> nested HV guest support. It uses the platform's Radix MMU quadrants to
-> provide a nested hypervisor with fast access to its nested guests
-> memory (H_COPY_TOFROM_GUEST hypercall). It has also since been added
-> as a fast path for the kvmppc_ld/st routines which are used during
-> instruction emulation.
+> Both paths into __kvmhv_copy_tofrom_guest_radix ensure that we arrive
+> with an effective address that is smaller than our total addressable
+> space and addresses quadrant 0.
 >=20
-> The commit def0bfdbd603 ("powerpc: use probe_user_read() and
-> probe_user_write()") changed the low level copy function from
-> raw_copy_from_user to probe_user_read, which adds a check to
-> access_ok. In powerpc that is:
+> - The H_COPY_TOFROM_GUEST hypercall path rejects the call with
+> H_PARAMETER if the effective address has any of the twelve most
+> significant bits set.
 >=20
->  static inline bool __access_ok(unsigned long addr, unsigned long size)
->  {
->          return addr < TASK_SIZE_MAX && size <=3D TASK_SIZE_MAX - addr;
->  }
+> - The kvmhv_copy_tofrom_guest_radix path clears the top twelve bits
+> before calling the internal function.
 >=20
-> and TASK_SIZE_MAX is 0x0010000000000000UL for 64-bit, which means that
-> setting the two MSBs of the effective address (which correspond to the
-> quadrant) now cause access_ok to reject the access.
->=20
-> This was not caught earlier because the most common code path via
-> kvmppc_ld/st contains a fallback (kvm_read_guest) that is likely to
-> succeed for L1 guests. For nested guests there is no fallback.
->=20
-> Another issue is that probe_user_read (now __copy_from_user_nofault)
-> does not return the number of bytes not copied in case of failure, so
-> the destination memory is not being cleared anymore in
-> kvmhv_copy_from_guest_radix:
->=20
->  ret =3D kvmhv_copy_tofrom_guest_radix(vcpu, eaddr, to, NULL, n);
->  if (ret > 0)                            <-- always false!
->          memset(to + (n - ret), 0, ret);
->=20
-> This patch fixes both issues by skipping access_ok and open-coding the
-> low level __copy_to/from_user_inatomic.
->=20
-> Fixes: def0bfdbd603 ("powerpc: use probe_user_read() and probe_user_write=
-()")
+> Although the callers make sure that the effective address is sane, any
+> future use of the function is exposed to a programming error, so add a
+> sanity check.
+
+We possibly should put these into #defines in radix pgtable headers=20
+somewhere but KVM already open codes them so this is good for now.
 
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
+>=20
+> Suggested-by: Nicholas Piggin <npiggin@gmail.com>
 > Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
 > ---
->  arch/powerpc/kvm/book3s_64_mmu_radix.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+>  arch/powerpc/kvm/book3s_64_mmu_radix.c | 3 +++
+>  1 file changed, 3 insertions(+)
 >=20
 > diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/bo=
 ok3s_64_mmu_radix.c
-> index b5905ae4377c..44eb7b1ef289 100644
+> index 44eb7b1ef289..1b1c9e9e539b 100644
 > --- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
 > +++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-> @@ -65,10 +65,12 @@ unsigned long __kvmhv_copy_tofrom_guest_radix(int lpi=
-d, int pid,
->  	}
->  	isync();
+> @@ -44,6 +44,9 @@ unsigned long __kvmhv_copy_tofrom_guest_radix(int lpid,=
+ int pid,
+>  					  (to !=3D NULL) ? __pa(to): 0,
+>  					  (from !=3D NULL) ? __pa(from): 0, n);
 > =20
-> +	pagefault_disable();
->  	if (is_load)
-> -		ret =3D copy_from_user_nofault(to, (const void __user *)from, n);
-> +		ret =3D __copy_from_user_inatomic(to, (const void __user *)from, n);
->  	else
-> -		ret =3D copy_to_user_nofault((void __user *)to, from, n);
-> +		ret =3D __copy_to_user_inatomic((void __user *)to, from, n);
-> +	pagefault_enable();
-> =20
->  	/* switch the pid first to avoid running host with unallocated pid */
->  	if (quadrant =3D=3D 1 && pid !=3D old_pid)
+> +	if (eaddr & (0xFFFUL << 52))
+> +		return ret;
+> +
+>  	quadrant =3D 1;
+>  	if (!pid)
+>  		quadrant =3D 2;
 > --=20
 > 2.29.2
 >=20
