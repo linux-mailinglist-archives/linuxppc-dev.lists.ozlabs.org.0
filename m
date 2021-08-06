@@ -1,104 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FF953E2748
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 11:31:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E36F3E2797
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 11:43:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gh0bh35Fcz3cPF
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 19:31:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gh0sp1CKxz3dBq
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 19:43:42 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ObmAuoNA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=HMYhoaBK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.helo=wout3-smtp.messagingengine.com (client-ip=64.147.123.19;
+ helo=wout3-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=ObmAuoNA; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.a=rsa-sha256 header.s=fm3 header.b=HMYhoaBK; 
+ dkim-atps=neutral
+Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com
+ [64.147.123.19])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gh0b86ljtz309r
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Aug 2021 19:31:00 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 17692oiH015442; Fri, 6 Aug 2021 05:30:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=4s7oqlwn9w3rtTW7J2kUZb7HP6PQ79F4aMAitgNN7O0=;
- b=ObmAuoNAM7LfSdSeK34gTf2y9rzRDm+SrQZaSWdUxQn39+Bz10Ywfb0N5rogImvEKs7R
- AavWHBufBVSSTCepuXXpiHNkFMjwGm/N1YrzWItk/8o162hyleYQRJqh5WTV2agX7m6W
- hCfyIINdVUEPeaaMfJAIYhD1hW4/IBU6BSueKTsUbYMDewwTuM8fTUzJstJWYvM89feb
- 9TYgObY2HJC5xSLgo67jxQbDw+l9LDZjJEtKmuR6oRAgitSG7DNlEMmUMmeoPcpEj9oq
- Z65GLqoBaV44AL8ICvbnyF3PnXUBjhe45eMbVeyJ8aQsv5s7Z3sY2iJwELvMktKjVA9A Ug== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3a859dww78-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 06 Aug 2021 05:30:57 -0400
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 17692vBI015892;
- Fri, 6 Aug 2021 05:30:57 -0400
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3a859dww6m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 06 Aug 2021 05:30:56 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1769Mhpc010160;
- Fri, 6 Aug 2021 09:30:55 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma02fra.de.ibm.com with ESMTP id 3a4x58ukx0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 06 Aug 2021 09:30:55 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 1769UqTa52494652
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 6 Aug 2021 09:30:52 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C26FFA406A;
- Fri,  6 Aug 2021 09:30:52 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DC4A6A4068;
- Fri,  6 Aug 2021 09:30:51 +0000 (GMT)
-Received: from [9.195.43.159] (unknown [9.195.43.159])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Fri,  6 Aug 2021 09:30:51 +0000 (GMT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.6\))
-Subject: Re: [PATCH v1 16/55] powerpc/64s: Implement PMU override command line
- option
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <20210726035036.739609-17-npiggin@gmail.com>
-Date: Fri, 6 Aug 2021 14:58:36 +0530
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <4600EC62-5505-4856-AE23-939ED62287B3@linux.vnet.ibm.com>
-References: <20210726035036.739609-1-npiggin@gmail.com>
- <20210726035036.739609-17-npiggin@gmail.com>
-To: Nicholas Piggin <npiggin@gmail.com>
-X-Mailer: Apple Mail (2.3608.120.23.2.6)
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Cssd7fdc2k171g_7OndDAy1JWYpQ-1QM
-X-Proofpoint-ORIG-GUID: 7UJt4491db0EiiISZk6mPa2oF_53EwLA
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-08-06_02:2021-08-05,
- 2021-08-06 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 mlxlogscore=999
- clxscore=1011 suspectscore=0 malwarescore=0 bulkscore=0 impostorscore=0
- mlxscore=0 adultscore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2107140000
- definitions=main-2108060063
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gh0sL1l22z3bY0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Aug 2021 19:43:16 +1000 (AEST)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+ by mailout.west.internal (Postfix) with ESMTP id 1200032007F9;
+ Fri,  6 Aug 2021 05:43:12 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute1.internal (MEProxy); Fri, 06 Aug 2021 05:43:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to:x-me-proxy
+ :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=uXSb5z
+ vRdpBBpoKWZGGIcly1IPaevPzI84pliwA3HDM=; b=HMYhoaBK3wjMq9iruOPm/t
+ Opih3W37xmD0j6F/epTb23FtHwnjXAxA5xJe1Sm2X6TM90Yxie/QdhgcnPThWdPO
+ hq379pStG3oKGqJhWeelpUbXXkLgMCQBbAD5NTFIzI8zTuOkmTP8HN9kfUoF7WHj
+ fqEj/LulR8xfb9OswmHQQMlgjULIT+lwizxx0PK/fz/DS4g6zfADSKDPTw56IQS9
+ +x/NUiSbWZ0osANuMKxu+koXN4hXJX5MW7QaScgz75Z8YJXm/z7Z78YWlPcLkQbh
+ JMEki/eSzjRRGU6/Jh9WCJZAZLtigbFffSKquTHA76iARM/fMbSJz+7dcLkSSIrw
+ ==
+X-ME-Sender: <xms:LgQNYYegRbY7_KYoTnMaydxJeHs4tJ2JpyEWWqXtcoODPkWE9nxLEg>
+ <xme:LgQNYaO_SIByPQj8xhZtgq-pKt5jD8pbZf152FkNfahWjZah0un_o5ZjFqDGENDG3
+ sBjPIEVKA0Obf_ydNI>
+X-ME-Received: <xmr:LgQNYZhiyvbt6DTLxRzXmA5ZNcy7-Ft2C3OKq7wnMqOu99_Y-btaIcySz5w0GPSQ3sT1F9P6ChzzozKDVzRATbc3qyKcgRAnpnU>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrjedugddujecutefuodetggdotefrodftvf
+ curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+ uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+ fjughrpeffhffvufgjkfhfgggtsehttdertddttddvnecuhfhrohhmpefhihhnnhcuvfhh
+ rghinhcuoehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrghtth
+ gvrhhnpeffjedujeekudejueelvdduhfffgfejieehfeevffduheeuueelkeeltedvieef
+ ffenucffohhmrghinhepthigthdrohhnvgenucevlhhushhtvghrufhiiigvpedtnecurf
+ grrhgrmhepmhgrihhlfhhrohhmpehfthhhrghinheslhhinhhugidqmheikehkrdhorhhg
+X-ME-Proxy: <xmx:LgQNYd_2w-GQ9eyxGCp9qkc1GQrRfEm27Yj_xMUvMuO77URCiudBXg>
+ <xmx:LgQNYUs7FGQA852bNblf8lcjkS3B6oy057-y-SwA87cE-gBln2oZpg>
+ <xmx:LgQNYUE97f2qjV86Fr_yjFiZABTUQXHek7-s4vw-mjxzX4B-r-AhUg>
+ <xmx:LwQNYd5GEVuVJYTYrYU5c0LnKykoh1AsxAq673r8g9F7aEsZUse50w>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 6 Aug 2021 05:43:08 -0400 (EDT)
+Date: Fri, 6 Aug 2021 19:43:03 +1000 (AEST)
+From: Finn Thain <fthain@linux-m68k.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: Debian SID kernel doesn't boot on PowerBook 3400c
+In-Reply-To: <ca0ded24-9fa0-fae4-89cf-20fc1959f69d@csgroup.eu>
+Message-ID: <c031a1e7-fde7-7c39-d9ff-404157cfc0df@linux-m68k.org>
+References: <60841a75-ed7c-8789-15db-272bf43055f5.ref@yahoo.com>
+ <cd7c931c-a578-a2ff-0632-7767a0e90bb9@yahoo.com>
+ <fbd08736-9738-35cf-3b47-b5c9c455c552@csgroup.eu>
+ <b84bb7ff-2dfb-0ae6-6eee-dd3c40661982@yahoo.com>
+ <fac98e72-14a1-802e-8343-9bed9a6eaedc@csgroup.eu>
+ <c535cc2b-3f45-2415-1e81-32ea24b4ec@linux-m68k.org>
+ <b8ae2ca4-56e8-e39a-27a0-f0ee2fea1511@csgroup.eu>
+ <f6a3746e-80ef-a6b3-925a-69aed01ba98c@linux-m68k.org>
+ <b6fe0c8e-8af5-e0e9-629b-fce61750ec2e@yahoo.com>
+ <4ac28304-4519-fb8a-a868-e8c79cb5f9e4@yahoo.com>
+ <7532219a-4fd0-416-6365-304033fa6abd@linux-m68k.org>
+ <9659419d-da9e-5aa6-ffbb-758748e2d6e9@linux-m68k.org>
+ <2eb2b452-51d5-c495-3ffe-896c62a1633f@yahoo.com>
+ <da9c16b4-70bc-6fe0-ad5c-8b226ca08b23@yahoo.com>
+ <cc5a203f-9df5-a0b-a4d7-bcaddde777d5@linux-m68k.org>
+ <6ea50cd7-84d3-5180-0430-1211aaf0e308@yahoo.com>
+ <2619d78-e8f-334a-20c0-2a60c936a293@linux-m68k.org>
+ <ca0ded24-9fa0-fae4-89cf-20fc1959f69d@csgroup.eu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,121 +98,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org
+Cc: debian-powerpc@lists.debian.org, linuxppc-dev@lists.ozlabs.org,
+ Stan Johnson <userm57@yahoo.com>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Fri, 6 Aug 2021, Christophe Leroy wrote:
 
+> > > > > 
+> > > > > Can you check if they DO NOT happen at preceding commit c16728835~
+> > > > > 
+> > > 
+> > > $ git checkout c16728835~
+> > > Previous HEAD position was c16728835eec powerpc/32: Manage KUAP in C
+> > > HEAD is now at 0b45359aa2df powerpc/8xx: Create C version of kuap
+> > > save/restore/check helpers
+> > > $ git am ../message.mbox
+> > > warning: Patch sent with format=flowed; space at the end of lines might be
+> > > lost.
+> > > Applying: powerpc/32: Dismantle EXC_XFER_STD/LITE/TEMPLATE
+> > > $ cp ../dot-config-powermac-5.13 .config
+> > > $ make ARCH=powerpc CROSS_COMPILE=powerpc-linux-gnu- -j4 clean
+> > > olddefconfig vmlinux
+> > > 
+> > > Linux version 5.12.0-rc3-pmac-00077-gc9f6e8dd045
+> > > 
+> > > 3) PB 3400c
+> > > Hangs at boot (Mac OS screen)
+> > > 
+> > > 4) Wallstreet
+> > > X fails, errors in console log (different than test 2), see
+> > > Wallstreet_console-2.txt.
+> > > 
+> > 
+> > This log shows that the errors "xfce4-session[1775]: bus error (7)" and
+> > "kernel BUG at arch/powerpc/kernel/interrupt.c:49!" happen prior to commit
+> > c16728835eec ("powerpc/32: Manage KUAP in C").
+> 
+> As mentionned by Nic, this is due to r11 being cloberred. For the time being
+> the only r11 clobber identified is the one I have provided a fix for. I'm
+> wondering whether it was applied for all further tests or not.
+> 
 
-> On 26-Jul-2021, at 9:19 AM, Nicholas Piggin <npiggin@gmail.com> wrote:
->=20
-> It can be useful in simulators (with very constrained environments)
-> to allow some PMCs to run from boot so they can be sampled directly
-> by a test harness, rather than having to run perf.
->=20
-> A previous change freezes counters at boot by default, so provide
-> a boot time option to un-freeze (plus a bit more flexibility).
->=20
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
-> .../admin-guide/kernel-parameters.txt         |  7 ++++
-> arch/powerpc/perf/core-book3s.c               | 35 +++++++++++++++++++
-> 2 files changed, 42 insertions(+)
->=20
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt =
-b/Documentation/admin-guide/kernel-parameters.txt
-> index bdb22006f713..96b7d0ebaa40 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -4089,6 +4089,13 @@
-> 			Override pmtimer IOPort with a hex value.
-> 			e.g. pmtmr=3D0x508
->=20
-> +	pmu=3D		[PPC] Manually enable the PMU.
-> +			Enable the PMU by setting MMCR0 to 0 (clear FC =
-bit).
-> +			This option is implemented for Book3S =
-processors.
-> +			If a number is given, then MMCR1 is set to that =
-number,
-> +			otherwise (e.g., 'pmu=3Don'), it is left 0. The =
-perf
-> +			subsystem is disabled if this option is used.
-> +
-> 	pm_debug_messages	[SUSPEND,KNL]
-> 			Enable suspend/resume debug messages during boot =
-up.
->=20
-> diff --git a/arch/powerpc/perf/core-book3s.c =
-b/arch/powerpc/perf/core-book3s.c
-> index 65795cadb475..e7cef4fe17d7 100644
-> --- a/arch/powerpc/perf/core-book3s.c
-> +++ b/arch/powerpc/perf/core-book3s.c
-> @@ -2428,8 +2428,24 @@ int register_power_pmu(struct power_pmu *pmu)
-> }
->=20
-> #ifdef CONFIG_PPC64
-> +static bool pmu_override =3D false;
-> +static unsigned long pmu_override_val;
-> +static void do_pmu_override(void *data)
-> +{
-> +	ppc_set_pmu_inuse(1);
-> +	if (pmu_override_val)
-> +		mtspr(SPRN_MMCR1, pmu_override_val);
-> +	mtspr(SPRN_MMCR0, mfspr(SPRN_MMCR0) & ~MMCR0_FC);
+Your fix was applied to this build with "git am ../message.mbox".
 
-Hi Nick
+> ...
+> > > 
+> > > > 
+> > > > > Could you test with CONFIG_PPC_KUAP and CONFIG_PPC_KUAP_DEBUG
+> > > ...
+> > > 
+> > > $scripts/config -e CONFIG_PPC_KUAP
+> > > $ scripts/config -e CONFIG_PPC_KUAP_DEBUG
+> > > $ make ARCH=powerpc CROSS_COMPILE=powerpc-linux-gnu- -j4 clean
+> > > olddefconfig vmlinux
+> > > $ grep CONFIG_PPC_KUAP .config
+> > > CONFIG_PPC_KUAP=y
+> > > CONFIG_PPC_KUAP_DEBUG=y
+> > > 
+> > > Linux version 5.12.0-rc3-pmac-00078-g5cac2bc3752
+> > > 
+> > > 9) PB 3400c
+> > > Hangs at boot (Mac OS screen)
+> > > 
+> > > 10) Wallstreet
+> > > X failed at first login, worked at second login, one error in console
+> > > log ("BUG: Unable to handle kernel instruction fetch"), see
+> > > Wallstreet_console-5.txt.
+> > > 
+> > 
+> > One might expect to see "Kernel attempted to write user page (b3399774) -
+> > exploit attempt?" again here (see c16728835eec build above) but instead
+> > this log says "Oops: Kernel access of bad area, sig: 11".
+> 
+> Maybe the test should be done a second time. As r11 is garbage it may or 
+> may not be a user address. If it is a user address the we get "Kernel 
+> attempted to write user page". If it is a random kernel address, we 
+> likely get "Kernel access of bad area" instead.
+> 
 
-Here, we are not doing any validity check for the value used to set =
-MMCR1.=20
-For advanced users, the option to pass value for MMCR1 is fine. But =
-other cases, it could result in
-invalid event getting used. Do we need to restrict this boot time option =
-for only PMC5/6 ?
-=20
-Thanks
-Athira
-
-> +}
-> +
-> static int __init init_ppc64_pmu(void)
-> {
-> +	if (cpu_has_feature(CPU_FTR_HVMODE) && pmu_override) {
-> +		printk(KERN_WARNING "perf: disabling perf due to pmu=3D =
-command line option.\n");
-> +		on_each_cpu(do_pmu_override, NULL, 1);
-> +		return 0;
-> +	}
-> +
-> 	/* run through all the pmu drivers one at a time */
-> 	if (!init_power5_pmu())
-> 		return 0;
-> @@ -2451,4 +2467,23 @@ static int __init init_ppc64_pmu(void)
-> 		return init_generic_compat_pmu();
-> }
-> early_initcall(init_ppc64_pmu);
-> +
-> +static int __init pmu_setup(char *str)
-> +{
-> +	unsigned long val;
-> +
-> +	if (!early_cpu_has_feature(CPU_FTR_HVMODE))
-> +		return 0;
-> +
-> +	pmu_override =3D true;
-> +
-> +	if (kstrtoul(str, 0, &val))
-> +		val =3D 0;
-> +
-> +	pmu_override_val =3D val;
-> +
-> +	return 1;
-> +}
-> +__setup("pmu=3D", pmu_setup);
-> +
-> #endif
-> --=20
-> 2.23.0
->=20
-
+Your fix was applied here also.
