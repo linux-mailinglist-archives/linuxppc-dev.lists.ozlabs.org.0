@@ -2,50 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC6B23E2FF0
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 21:53:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BC4F3E3086
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Aug 2021 22:45:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GhGPS3yzCz3dGr
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Aug 2021 05:53:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GhHYw1Gg4z3dGb
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Aug 2021 06:45:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BVzg6QCV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=j95/E9up;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=BVzg6QCV; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=j95/E9up; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GhGNy3T5yz30HN
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Aug 2021 05:53:06 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6B09361050;
- Fri,  6 Aug 2021 19:52:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1628279582;
- bh=BcLDKj7BNKRtjpjR5WcTLxkB9iMSb4PMd3ghgcahvXc=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=BVzg6QCVo4RumqCV4MtsueL+OHKlz8ZkExb9h5a2zbbm6visuE/f+XcBNWUj7BIcP
- 2qMMvGvBMnkHNbDqR7qWxBQimBsm1PFgPDrI3/xYckDEILuPZvalxOgWqHKW7vcTun
- zByk+jQCrO3YLut3VT0AbNbX4Xt8MAwp5i+w3pdlTFH7N1/fVUc/oREBsleEVP/6bU
- 3U7JuHQj4EHpQN6GVtxHmODxmnjX6CvRInqgZx4hZPrsZ/MuIbYxDAyAkAl06u5Wa+
- 41bvylD8pQ4dXoaiTVBcbfwbwbTqy81yTYbSjcemD2fN99yGzafUOAc98k1wOwWiBr
- SbbhWhs9XLTKg==
-Date: Fri, 6 Aug 2021 12:52:56 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Nick Desaulniers <ndesaulniers@google.com>
-Subject: Re: [PATCH v2] scripts/Makefile.clang: default to LLVM_IAS=1
-Message-ID: <YQ2TGPwjvn8w4rKs@archlinux-ax161>
-References: <20210806172701.3993843-1-ndesaulniers@google.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GhHYP09yNz3cLc
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Aug 2021 06:45:28 +1000 (AEST)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 176KXnDq162323; Fri, 6 Aug 2021 16:45:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=NlG+se/XKTSFl4tDG+yNmXD9GEls7/ctq2cRzIYOnuM=;
+ b=j95/E9upaWqPDjhnTl1H1F6XiRA2bMKnOIvByKLCEzJ5/KFVoJM5VojLHSg19E8zCZVX
+ QcsNzeEz+IbBd/Q5X1esO1USAEBsKZLkUWFDqtCNhV+2H0bad+EWnokW9M3tkWgRtlI3
+ CosoGu1cedsys4tplaBobn45hpIXrJQPa7PO0tSMfJo7bx6AmAGYPmWzv2ELs/095gU8
+ 8ZYYIz5CLk1bbR23DydRtiw/IT4SUiSJRQiVk2U8AbR7sKH2gEpdQlXOJvs/knz0eP3W
+ mkz2vJTapRuKI+7Oud1XYwAOq4Bn3k/Xkyg1EpTIvmmQwW3VFvudM/I6AlCKBL4F/bDt 4Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3a8m9v5qpg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 06 Aug 2021 16:45:24 -0400
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 176KYPW4166983;
+ Fri, 6 Aug 2021 16:45:24 -0400
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3a8m9v5qpc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 06 Aug 2021 16:45:24 -0400
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 176KcJY4025484;
+ Fri, 6 Aug 2021 20:45:23 GMT
+Received: from b03cxnp07027.gho.boulder.ibm.com
+ (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
+ by ppma05wdc.us.ibm.com with ESMTP id 3a8mqa53f7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 06 Aug 2021 20:45:23 +0000
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+ by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 176KjMAD30474676
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 6 Aug 2021 20:45:22 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9CA867805F;
+ Fri,  6 Aug 2021 20:45:22 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E203578068;
+ Fri,  6 Aug 2021 20:45:21 +0000 (GMT)
+Received: from localhost (unknown [9.211.46.8])
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTPS;
+ Fri,  6 Aug 2021 20:45:21 +0000 (GMT)
+From: Fabiano Rosas <farosas@linux.ibm.com>
+To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
+Subject: Re: [PATCH v1 30/55] KVM: PPC: Book3S HV P9: Only execute mtSPR if
+ the value changed
+In-Reply-To: <20210726035036.739609-31-npiggin@gmail.com>
+References: <20210726035036.739609-1-npiggin@gmail.com>
+ <20210726035036.739609-31-npiggin@gmail.com>
+Date: Fri, 06 Aug 2021 17:45:19 -0300
+Message-ID: <875ywiti8w.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210806172701.3993843-1-ndesaulniers@google.com>
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ii6_keZEddzMnVM3hyJcfgfhdmU3fP5O
+X-Proofpoint-ORIG-GUID: J4j74svicpsIxTuWIkpJ0Jwk4Xr98E9N
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-08-06_06:2021-08-06,
+ 2021-08-06 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ suspectscore=0 bulkscore=0 spamscore=0 mlxscore=0 malwarescore=0
+ priorityscore=1501 phishscore=0 adultscore=0 impostorscore=0 clxscore=1015
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2107140000 definitions=main-2108060136
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,148 +106,143 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Michal Marek <michal.lkml@markovi.net>,
- Vasily Gorbik <gor@linux.ibm.com>, Jonathan Corbet <corbet@lwn.net>,
- Masahiro Yamada <masahiroy@kernel.org>, linux-kbuild@vger.kernel.org,
- linux-doc@vger.kernel.org, Khem Raj <raj.khem@gmail.com>,
- Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org,
- clang-built-linux@googlegroups.com,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Palmer Dabbelt <palmer@dabbelt.com>,
- Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, Heiko Carstens <hca@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Aug 06, 2021 at 10:27:01AM -0700, Nick Desaulniers wrote:
-> LLVM_IAS=1 controls enabling clang's integrated assembler via
-> -integrated-as. This was an explicit opt in until we could enable
-> assembler support in Clang for more architecures. Now we have support
-> and CI coverage of LLVM_IAS=1 for all architecures except a few more
-> bugs affecting s390 and powerpc.
+Nicholas Piggin <npiggin@gmail.com> writes:
 
-The powerpc and s390 folks have been testing with clang, I think they
-should have been on CC for this change (done now).
+> Keep better track of the current SPR value in places where
+> they are to be loaded with a new context, to reduce expensive
+> mtSPR operations.
+>
+> -73 cycles (7354) POWER9 virt-mode NULL hcall
+>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 
-> This commit flips the default from opt in via LLVM_IAS=1 to opt out via
-> LLVM_IAS=0.  CI systems or developers that were previously doing builds
-> with CC=clang or LLVM=1 without explicitly setting LLVM_IAS must now
-> explicitly opt out via LLVM_IAS=0, otherwise they will be implicitly
-> opted-in.
-> 
-> This finally shortens the command line invocation when cross compiling
-> with LLVM to simply:
-> 
-> $ make ARCH=arm64 LLVM=1
-> 
-> Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
-
-I am still not really sure how I feel about this. I would prefer not to
-break people's builds but I suppose this is inevitabile eventually.
-
-A little support matrix that I drafted up where based on ARCH and clang
-version for LLVM_IAS=1 support:
-
-             | 10.x | 11.x | 12.x | 13.x | 14.x |
-ARCH=arm     |  NO  |  NO  |  NO  |  YES |  YES |
-ARCH=arm64   |  NO  |  YES |  YES |  YES |  YES |
-ARCH=i386    |  YES |  YES |  YES |  YES |  YES |
-ARCH=mips*   |  YES |  YES |  YES |  YES |  YES |
-ARCH=powerpc |  NO  |  NO  |  NO  |  NO  |  NO  |
-ARCH=s390    |  NO  |  NO  |  NO  |  NO  |  NO  |
-ARCH=x86_64  |  NO  |  YES |  YES |  YES |  YES |
-
-The main issue that I have with this change is that all of these
-architectures work fine with CC=clang and their build commands that used
-to work fine will not with this change, as they will have to specify
-LLVM_IAS=0. I think that making this change for LLVM=1 makes sense but
-changing the default for just CC=clang feels like a bit much at this
-point in time. I would love to hear from others on this though, I am not
-going to object much further than this.
-
-Regardless of that concern, this patch does what it says so:
-
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Fabiano Rosas <farosas@linux.ibm.com>
 
 > ---
-> Changes v1 -> v2:
-> * Drop "Currently" from Documentation/, as per Matthew.
-> * Drop Makefile and riscv Makefile, rebase on
->   https://lore.kernel.org/lkml/20210805150102.131008-1-masahiroy@kernel.org/
->   as per Masahiro.
-> * Base is kbuild/for-next, plus
->   https://lore.kernel.org/lkml/20210802183910.1802120-1-ndesaulniers@google.com/
->   https://lore.kernel.org/lkml/20210805150102.131008-1-masahiroy@kernel.org/.
-> 
->  Documentation/kbuild/llvm.rst | 14 ++++++++------
->  scripts/Makefile.clang        |  6 +++---
->  2 files changed, 11 insertions(+), 9 deletions(-)
-> 
-> diff --git a/Documentation/kbuild/llvm.rst b/Documentation/kbuild/llvm.rst
-> index f8a360958f4c..e87ed5479963 100644
-> --- a/Documentation/kbuild/llvm.rst
-> +++ b/Documentation/kbuild/llvm.rst
-> @@ -60,17 +60,14 @@ They can be enabled individually. The full list of the parameters: ::
->  	  OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump READELF=llvm-readelf \
->  	  HOSTCC=clang HOSTCXX=clang++ HOSTAR=llvm-ar HOSTLD=ld.lld
->  
-> -Currently, the integrated assembler is disabled by default. You can pass
-> -``LLVM_IAS=1`` to enable it.
-> +The integrated assembler is enabled by default. You can pass ``LLVM_IAS=0`` to
-> +disable it.
->  
->  Omitting CROSS_COMPILE
->  ----------------------
->  
->  As explained above, ``CROSS_COMPILE`` is used to set ``--target=<triple>``.
->  
-> -Unless ``LLVM_IAS=1`` is specified, ``CROSS_COMPILE`` is also used to derive
-> -``--prefix=<path>`` to search for the GNU assembler and linker.
+>  arch/powerpc/kvm/book3s_hv.c | 64 ++++++++++++++++++++++--------------
+>  1 file changed, 39 insertions(+), 25 deletions(-)
+>
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 0d97138e6fa4..56429b53f4dc 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -4009,19 +4009,28 @@ static void switch_pmu_to_host(struct kvm_vcpu *vcpu,
+>  	}
+>  }
+>
+> -static void load_spr_state(struct kvm_vcpu *vcpu)
+> +static void load_spr_state(struct kvm_vcpu *vcpu,
+> +				struct p9_host_os_sprs *host_os_sprs)
+>  {
+> -	mtspr(SPRN_DSCR, vcpu->arch.dscr);
+> -	mtspr(SPRN_IAMR, vcpu->arch.iamr);
+> -	mtspr(SPRN_PSPB, vcpu->arch.pspb);
+> -	mtspr(SPRN_FSCR, vcpu->arch.fscr);
+>  	mtspr(SPRN_TAR, vcpu->arch.tar);
+>  	mtspr(SPRN_EBBHR, vcpu->arch.ebbhr);
+>  	mtspr(SPRN_EBBRR, vcpu->arch.ebbrr);
+>  	mtspr(SPRN_BESCR, vcpu->arch.bescr);
+> -	mtspr(SPRN_TIDR, vcpu->arch.tid);
+> -	mtspr(SPRN_AMR, vcpu->arch.amr);
+> -	mtspr(SPRN_UAMOR, vcpu->arch.uamor);
+> +
+> +	if (!cpu_has_feature(CPU_FTR_ARCH_31))
+> +		mtspr(SPRN_TIDR, vcpu->arch.tid);
+> +	if (host_os_sprs->iamr != vcpu->arch.iamr)
+> +		mtspr(SPRN_IAMR, vcpu->arch.iamr);
+> +	if (host_os_sprs->amr != vcpu->arch.amr)
+> +		mtspr(SPRN_AMR, vcpu->arch.amr);
+> +	if (vcpu->arch.uamor != 0)
+> +		mtspr(SPRN_UAMOR, vcpu->arch.uamor);
+> +	if (host_os_sprs->fscr != vcpu->arch.fscr)
+> +		mtspr(SPRN_FSCR, vcpu->arch.fscr);
+> +	if (host_os_sprs->dscr != vcpu->arch.dscr)
+> +		mtspr(SPRN_DSCR, vcpu->arch.dscr);
+> +	if (vcpu->arch.pspb != 0)
+> +		mtspr(SPRN_PSPB, vcpu->arch.pspb);
+>
+>  	/*
+>  	 * DAR, DSISR, and for nested HV, SPRGs must be set with MSR[RI]
+> @@ -4036,28 +4045,31 @@ static void load_spr_state(struct kvm_vcpu *vcpu)
+>
+>  static void store_spr_state(struct kvm_vcpu *vcpu)
+>  {
+> -	vcpu->arch.ctrl = mfspr(SPRN_CTRLF);
 > -
->  If ``CROSS_COMPILE`` is not specified, the ``--target=<triple>`` is inferred
->  from ``ARCH``.
->  
-> @@ -78,7 +75,12 @@ That means if you use only LLVM tools, ``CROSS_COMPILE`` becomes unnecessary.
->  
->  For example, to cross-compile the arm64 kernel::
->  
-> -	make ARCH=arm64 LLVM=1 LLVM_IAS=1
-> +	make ARCH=arm64 LLVM=1
+> -	vcpu->arch.iamr = mfspr(SPRN_IAMR);
+> -	vcpu->arch.pspb = mfspr(SPRN_PSPB);
+> -	vcpu->arch.fscr = mfspr(SPRN_FSCR);
+>  	vcpu->arch.tar = mfspr(SPRN_TAR);
+>  	vcpu->arch.ebbhr = mfspr(SPRN_EBBHR);
+>  	vcpu->arch.ebbrr = mfspr(SPRN_EBBRR);
+>  	vcpu->arch.bescr = mfspr(SPRN_BESCR);
+> -	vcpu->arch.tid = mfspr(SPRN_TIDR);
 > +
-> +If ``LLVM_IAS=0`` is specified, ``CROSS_COMPILE`` is also used to derive
-> +``--prefix=<path>`` to search for the GNU assembler and linker. ::
+> +	if (!cpu_has_feature(CPU_FTR_ARCH_31))
+> +		vcpu->arch.tid = mfspr(SPRN_TIDR);
+> +	vcpu->arch.iamr = mfspr(SPRN_IAMR);
+>  	vcpu->arch.amr = mfspr(SPRN_AMR);
+>  	vcpu->arch.uamor = mfspr(SPRN_UAMOR);
+> +	vcpu->arch.fscr = mfspr(SPRN_FSCR);
+>  	vcpu->arch.dscr = mfspr(SPRN_DSCR);
+> +	vcpu->arch.pspb = mfspr(SPRN_PSPB);
 > +
-> +	make ARCH=arm64 LLVM=1 LLVM_IAS=0 CROSS_COMPILE=aarch64-linux-gnu-
->  
->  Supported Architectures
->  -----------------------
-> diff --git a/scripts/Makefile.clang b/scripts/Makefile.clang
-> index 1f4e3eb70f88..3ae63bd35582 100644
-> --- a/scripts/Makefile.clang
-> +++ b/scripts/Makefile.clang
-> @@ -22,12 +22,12 @@ else
->  CLANG_FLAGS	+= --target=$(notdir $(CROSS_COMPILE:%-=%))
->  endif # CROSS_COMPILE
->  
-> -ifeq ($(LLVM_IAS),1)
-> -CLANG_FLAGS	+= -integrated-as
-> -else
-> +ifeq ($(LLVM_IAS),0)
->  CLANG_FLAGS	+= -no-integrated-as
->  GCC_TOOLCHAIN_DIR := $(dir $(shell which $(CROSS_COMPILE)elfedit))
->  CLANG_FLAGS	+= --prefix=$(GCC_TOOLCHAIN_DIR)$(notdir $(CROSS_COMPILE))
-> +else
-> +CLANG_FLAGS	+= -integrated-as
->  endif
->  CLANG_FLAGS	+= -Werror=unknown-warning-option
->  KBUILD_CFLAGS	+= $(CLANG_FLAGS)
-> 
-> base-commit: d7a86429dbc691bf540688fcc8542cc20246a85b
-> prerequisite-patch-id: 0d3072ecb5fd06ff6fd6ea81fe601f6c54c23910
-> prerequisite-patch-id: 2654829756eb8a094a0ffad1679caa75a4d86619
-> prerequisite-patch-id: a51e7885ca2376d008bbf146a5589da247806f7b
-> prerequisite-patch-id: 6a0342755115ec459610657edac1075f069faa3d
-> -- 
-> 2.32.0.605.g8dce9f2422-goog
-> 
+> +	vcpu->arch.ctrl = mfspr(SPRN_CTRLF);
+>  }
+>
+>  static void save_p9_host_os_sprs(struct p9_host_os_sprs *host_os_sprs)
+>  {
+> -	host_os_sprs->dscr = mfspr(SPRN_DSCR);
+> -	host_os_sprs->tidr = mfspr(SPRN_TIDR);
+> +	if (!cpu_has_feature(CPU_FTR_ARCH_31))
+> +		host_os_sprs->tidr = mfspr(SPRN_TIDR);
+>  	host_os_sprs->iamr = mfspr(SPRN_IAMR);
+>  	host_os_sprs->amr = mfspr(SPRN_AMR);
+>  	host_os_sprs->fscr = mfspr(SPRN_FSCR);
+> +	host_os_sprs->dscr = mfspr(SPRN_DSCR);
+>  }
+>
+>  /* vcpu guest regs must already be saved */
+> @@ -4066,18 +4078,20 @@ static void restore_p9_host_os_sprs(struct kvm_vcpu *vcpu,
+>  {
+>  	mtspr(SPRN_SPRG_VDSO_WRITE, local_paca->sprg_vdso);
+>
+> -	mtspr(SPRN_PSPB, 0);
+> -	mtspr(SPRN_UAMOR, 0);
+> -
+> -	mtspr(SPRN_DSCR, host_os_sprs->dscr);
+> -	mtspr(SPRN_TIDR, host_os_sprs->tidr);
+> -	mtspr(SPRN_IAMR, host_os_sprs->iamr);
+> -
+> +	if (!cpu_has_feature(CPU_FTR_ARCH_31))
+> +		mtspr(SPRN_TIDR, host_os_sprs->tidr);
+> +	if (host_os_sprs->iamr != vcpu->arch.iamr)
+> +		mtspr(SPRN_IAMR, host_os_sprs->iamr);
+> +	if (vcpu->arch.uamor != 0)
+> +		mtspr(SPRN_UAMOR, 0);
+>  	if (host_os_sprs->amr != vcpu->arch.amr)
+>  		mtspr(SPRN_AMR, host_os_sprs->amr);
+> -
+>  	if (host_os_sprs->fscr != vcpu->arch.fscr)
+>  		mtspr(SPRN_FSCR, host_os_sprs->fscr);
+> +	if (host_os_sprs->dscr != vcpu->arch.dscr)
+> +		mtspr(SPRN_DSCR, host_os_sprs->dscr);
+> +	if (vcpu->arch.pspb != 0)
+> +		mtspr(SPRN_PSPB, 0);
+>
+>  	/* Save guest CTRL register, set runlatch to 1 */
+>  	if (!(vcpu->arch.ctrl & 1))
+> @@ -4169,7 +4183,7 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+>  #endif
+>  	mtspr(SPRN_VRSAVE, vcpu->arch.vrsave);
+>
+> -	load_spr_state(vcpu);
+> +	load_spr_state(vcpu, &host_os_sprs);
+>
+>  	if (kvmhv_on_pseries()) {
+>  		/*
