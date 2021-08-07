@@ -1,56 +1,115 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD0AC3E3573
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Aug 2021 15:09:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C562F3E357B
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Aug 2021 15:10:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GhjNC6FzLz3bT9
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Aug 2021 23:08:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GhjQ05Plsz30GH
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Aug 2021 23:10:32 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256 header.s=s2048 header.b=qoq4Aeqw;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33;
- helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de;
+ smtp.mailfrom=yahoo.com (client-ip=66.163.186.147;
+ helo=sonic302-21.consmr.mail.ne1.yahoo.com; envelope-from=userm57@yahoo.com;
  receiver=<UNKNOWN>)
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
- [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GhcVh5mMCz2xgJ
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Aug 2021 19:29:15 +1000 (AEST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1mCIc5-0000Og-1o; Sat, 07 Aug 2021 11:27:29 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
- by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1mCIbl-0007UG-9f; Sat, 07 Aug 2021 11:27:09 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1mCIbl-0007Ct-6j; Sat, 07 Aug 2021 11:27:09 +0200
-Date: Sat, 7 Aug 2021 11:26:45 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Subject: Re: [PATCH v2 0/6] PCI: Drop duplicated tracking of a pci_dev's
- bound driver
-Message-ID: <20210807092645.52kn4ustyjudztvl@pengutronix.de>
-References: <20210806064623.3lxl4clzbjpmchef@pengutronix.de>
- <20210806212452.GA1867870@bjorn-Precision-5520>
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=yahoo.com header.i=@yahoo.com header.a=rsa-sha256
+ header.s=s2048 header.b=qoq4Aeqw; dkim-atps=neutral
+Received: from sonic302-21.consmr.mail.ne1.yahoo.com
+ (sonic302-21.consmr.mail.ne1.yahoo.com [66.163.186.147])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GhjPT1W5jz2yX8
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Aug 2021 23:10:03 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048;
+ t=1628341799; bh=JVIh0Qy0IhVrSq5bk3F8fOms9/M//DEgOx5iD1Do6fQ=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From:Subject:Reply-To;
+ b=qoq4AeqwZnsPHltCo12/BHjrr7mkRxfPvUXnUBJuiqt9hN5ZVDAZxhNIvU87BZGcHwYu69wGb3FiliEyLhq4r/TFNCDAwW1BcI9h6hPfC4fSzmTKbNdayEFsn8Kp6fNOfXWkkI+avGRAhLdTmiMLKoY0vCjDhl41RcEl+654abcadWoK1BNAKK33pgaaamu2ffv0YKb5zdcvx46X2wCYDsmNgj07t7HAjoJxnSF4Qu+t1ii/E612F2JUnzrkRIcEfa0TI0k/EwNSZo5D/tsW9fuCSCZ1lwfUk6C3fkS83FjlzIeHH4HmnH5vNfrmBt9XQt1hXwedMrDDZTFg05MIAw==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048;
+ t=1628341799; bh=6XnUtwGfM4Uo6JI8yR71kPZmV2nOD1WfiHcExLl0ZTs=;
+ h=X-Sonic-MF:Subject:To:From:Date:From:Subject;
+ b=K2TWOM8FM12sDKYCL1j4TG8pWeus75NSzHZcsbGYTIHS8CtcK5OWBkyKqLbFC5pvlCnD0ih8AFQc6S7FrCTu7OdHZz7Vg0dUNdg8OWW4X74Tc7yZpMfKBBNwtxD94ekW/H7apwHXS9PPIu9PgSZMYoeDj3tw4kX8GGcOhYCzrrT4xUTlEJNgKHi5foFwVOTvTN4T5hQfFdlWqem7ShV2aj6anQXrgYNT+Rs7FctcuWPAaeQ6PCIJomd05nV0mmKBejyRpKs5vUW7pc1B1EGnpSqsp46ibJw/EDeU32MDcp44I/+IGXVIBUILBF1F7eKoHJCls4/NJuQ80G7argxEZw==
+X-YMail-OSG: D2pvDZgVM1lzKlZWV0xmvFIbEESuEcmfGehoF7xG.gX2mkpNJNo8ZLfLtbn8ReD
+ Rbtp_bJJsTDmixlVB1d4dQGO4Qb.cZB7nWRCR4mPsl1m009TwQcBWSeji4GTuyc1VMxoI.4HbEzE
+ c4uzE2skMVd9dZUS2Hzuh09TxrAXWgGJE77BtvXvBJCyJ2efTKf3JzzUe0HSIJ.5nDm0UgJt.Dz9
+ dVp46XQak.MD2k8scRDvu7qe_K4OED1G9TFQhoA8ewrlDPH_Vicvq52OoZstnd0MentzhwL6E9XC
+ WyP.zyz4RLneRIqyM0dbBxyGAWN43P_T9eKuswlk5Pi5maLMbDRB9M_4vOWm2kIAoAmeW1npcD.P
+ h6m0T_iL.hlpRTbL7Rgq.vC26T8iahHm5S_.tlQ5TuqI0WVL24.Wg6guRrR2GoUjsWv9eK6_ED5X
+ 2usBqEQyYusk0HvyXyHOSJFMnKW2o15GiP3gNFwbXcCL6BpcQc1_Vtow1F.AmEBJhyBz1sriGDaU
+ qXImO65APlD2gYJh6WAuf_qgu3zxpvPVq5pVMP_Iggq1XYfM.KfozT7KyhAJHItgrst0m.9fa3A2
+ AdWaUSu53r__q5MCVk4jfDA.gAu2sb8_jbpIEEJo5nqP3jarMPaFiGBtP6_umVu.cQnPRdCtXAL1
+ 3s6QKEDo6w4r2De9ub.4QW.qaYTnwtGmS.tg5W0y3aWuWmlQrrQQCVreAxj9npxdTvNUkaV02PIt
+ wxn.S1eAAKrwQ1oc7VLqUkFURwQFMXkOxIxCWn7oG_146bWA0kbbKTV5uwQIhKUOZoiGUdaoqxS_
+ opmDmHO08o3IERHHJQTebmCkBUK8kCGi37RAiRPiCT1eJdy4HPGY56rJIuUUoO.V8Q9r7X5B69l4
+ l6bo.95rY0QWY8Rf7m_dhWBVy2Oa1oSvcLBVCGH7x0H4tYW0DiSb.9n_76eGOVsMZ4ouMxpJf6TU
+ IDGkrMQXxjAAvU18jwpOD0.hohup9_Ci0_kvn6yk_eUYyLVa1FxUVhsaXlFPtUvDSwSQFFe6aHdI
+ xr9j1z333xSppkrhaCxEqM.oHWLGoAps818Zfvbz_8EXfEVKP8FPGhypFnZiA5jy1hQejW17nATO
+ 5i0pXgpQJsZTUJhGJ6VxOGihTiLvP9zDIqN1vWRM7bi6pn83dcKFoApSo3lHMAydr.0KA9hOW44e
+ 9T0vnxBOI85TgIkv6G42jjBAZAgomJuhxG_W5_3xPnSwunazJvUoCetQGwNU1ryiad9.qqhAb6xm
+ dxcrVEZhq2gU6YxVD3QK2ZmoqDizCnmTfDPB62ClKQRHiq03GGWe16hY51TjeBu6fjsanZo651dX
+ XdnNFF39CzAbEl4wk1K5ucmhkrEGOlURw54kyPilDZMo0eFOMbQPSURlzNena8w6iFPhhm1li47G
+ l8UwcVOeHOVdFN_GqV4wG3KY6PBywdBBP.ucV9wiJbfaA3gQ.Vqb5vnJ1DeT79Cc7C73Nxx_Mi9V
+ Tqkfi3_46QHumXA8r7R5T1UA3f.Ky6hWWfIJLMS4Qbgjc5NKCr252u0SWCDYmPKSXY.7t9IXUANU
+ SjB7zhfTWPOjUvYPsQT9vSkOvdufq.bEN3k85LIh7tDtxzLn_DX5t1CE0wU_FCM4JnVen7M11G_Q
+ tz9Q7NR_9Bf7B6Imsee.nBcBjNsqbknmfI.ADwEg5Dafjarq35X51ANI._89zGzcYGt.gecIIfX6
+ YjJZMfXtUDJCEjm4AiX8sekaUm1B7KlIeFTi8xezfO88OonKeMugrY32WVLXzfbB0NydARpmAhke
+ bExuQRwDU5PSRzt2gGxMCXo5PGNH3azy0S9qUszKCWihA56cGy_PRsqf81bUWTAmcjLT2JlDvH1l
+ w5Krq8MeVmy61hqR5oNk7gLVm0f5yJFVN4qNdKVlDMJXSEoHPT1Nw8wDKt.ZoPFCSF1ceva2LSXM
+ tvCgHb5vkGEsd3XZCALuvp7BfiWOlLYGLohP.JGUP2SXdaKOUwhLEpkfXy.D9O9xwVR2xYonFoPU
+ 7yAEfLIFw1aLYWqHCqeTuz0CXnR_Vlrkt1pBOAXhFTRYE6UCBxch9bIEJZoOVG7uDeg9kawEYT.B
+ 1qKmCo9yQAVXHsFivrVZ.ptNvkPPKuUuuB9thaeMsxPpc2WcIikl_mwZuIHfv6Mmm2js4slmZcDS
+ MzXaN2b0wgL.kRzDjBcpvFVa2E5i54VV7J6KFevaAKxxTqfaajC05WIInJT.Y1yuSR_64eHrRL.M
+ Tvwjp.CLG1cQhwQBIQ3j2Y0XU1wN8JWL_piXi_vCQvgrvjA_y9Q9_FTccNcfFbHXDX_bz7F9upd8
+ AabEksIh8uLzPiwadlnTWhPTflSKeQDC9hL4giwWGleh6MkYc7ZzfXYeRZGABhzmMH0C8tkp3d5Y
+ 11BbII4UOR5IFslDEq2W69feC0RtE0vfHjND4rWwFCEjTcZ6YqSFmzXsJp7rWApwtGHYjrlifQHX
+ cZ4aC_2VCNB6ZYuSL1oMVU5VKc2cD4fSNZ8RA1qD2npIr3nHS9VFrHSeHET7dqocRgIKLdGedYiO
+ KNu5kIPUU1WZRypQfIIgnXM1fmpGKmp9bjOsrLC4ABbG7Hx3ilhHq4QCKJ37XgKAdIoZjzo.uVen
+ jqjBfBtAGAEeuZHKwf86f.B6ny1dmA48Bz_C4Yfjb2uKDiHSqgeYzRrKs9eLIvfxIk7KAWDh.axV
+ 9JAZRIbRVlQDIjbbmVDagz_3fYcEPJYJj5WwSI9oaoMv9alAiDMbXrQfVOiRN5uCdtI3Aed.hyk0
+ 0MUtvL59cCAYH5vNg8iOAZQh0_9.kt9ga6YE8wvqAGe51I4GPvfF2lFMxU0Cc_cXp
+X-Sonic-MF: <userm57@yahoo.com>
+Received: from sonic.gate.mail.ne1.yahoo.com by
+ sonic302.consmr.mail.ne1.yahoo.com with HTTP; Sat, 7 Aug 2021 13:09:59 +0000
+Received: by kubenode541.mail-prod1.omega.ne1.yahoo.com (VZM Hermes SMTP
+ Server) with ESMTPA ID 88e2418bcd298f6686a1e1c5fe41e0de; 
+ Sat, 07 Aug 2021 13:09:57 +0000 (UTC)
+Subject: Re: Debian SID kernel doesn't boot on PowerBook 3400c
+To: Finn Thain <fthain@linux-m68k.org>
+References: <60841a75-ed7c-8789-15db-272bf43055f5.ref@yahoo.com>
+ <c535cc2b-3f45-2415-1e81-32ea24b4ec@linux-m68k.org>
+ <b8ae2ca4-56e8-e39a-27a0-f0ee2fea1511@csgroup.eu>
+ <f6a3746e-80ef-a6b3-925a-69aed01ba98c@linux-m68k.org>
+ <b6fe0c8e-8af5-e0e9-629b-fce61750ec2e@yahoo.com>
+ <4ac28304-4519-fb8a-a868-e8c79cb5f9e4@yahoo.com>
+ <7532219a-4fd0-416-6365-304033fa6abd@linux-m68k.org>
+ <9659419d-da9e-5aa6-ffbb-758748e2d6e9@linux-m68k.org>
+ <2eb2b452-51d5-c495-3ffe-896c62a1633f@yahoo.com>
+ <da9c16b4-70bc-6fe0-ad5c-8b226ca08b23@yahoo.com>
+ <cc5a203f-9df5-a0b-a4d7-bcaddde777d5@linux-m68k.org>
+ <6ea50cd7-84d3-5180-0430-1211aaf0e308@yahoo.com>
+ <2619d78-e8f-334a-20c0-2a60c936a293@linux-m68k.org>
+ <ca0ded24-9fa0-fae4-89cf-20fc1959f69d@csgroup.eu>
+ <c031a1e7-fde7-7c39-d9ff-404157cfc0df@linux-m68k.org>
+ <ee724da4-4a5b-65c3-9c1c-d78954fdc7b4@csgroup.eu>
+ <73921a8e-6d76-7ae9-1ba2-811966df5179@linux-m68k.org>
+ <06ddf5ab-b0c9-1c64-92ea-a9cfbfb9f3b0@yahoo.com>
+ <f23ddb5b-90cb-2ba9-f043-66d475311b7@linux-m68k.org>
+From: Stan Johnson <userm57@yahoo.com>
+Message-ID: <d8e4e491-acb3-4234-813f-e88d52c32bc6@yahoo.com>
+Date: Sat, 7 Aug 2021 07:09:41 -0600
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:60.0)
+ Gecko/20100101 Thunderbird/60.9.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="hfh2djfsv3k2boqr"
-Content-Disposition: inline
-In-Reply-To: <20210806212452.GA1867870@bjorn-Precision-5520>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
- SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
-X-Mailman-Approved-At: Sat, 07 Aug 2021 23:08:41 +1000
+In-Reply-To: <f23ddb5b-90cb-2ba9-f043-66d475311b7@linux-m68k.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.18796
+ mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,165 +121,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>,
- Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
- =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, linux-pci@vger.kernel.org,
- Alexander Duyck <alexanderduyck@fb.com>,
- Sathya Prakash <sathya.prakash@broadcom.com>, oss-drivers@corigine.com,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- Jiri Olsa <jolsa@redhat.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- linux-perf-users@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>,
- Herbert Xu <herbert@gondor.apana.org.au>, linux-scsi@vger.kernel.org,
- Ido Schimmel <idosch@nvidia.com>, x86@kernel.org, qat-linux@intel.com,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Ingo Molnar <mingo@redhat.com>, Wojciech Ziemba <wojciech.ziemba@intel.com>,
- Jakub Kicinski <kuba@kernel.org>, Yisen Zhuang <yisen.zhuang@huawei.com>,
- Fiona Trahe <fiona.trahe@intel.com>, Andrew Donnellan <ajd@linux.ibm.com>,
- Mathias Nyman <mathias.nyman@intel.com>,
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- Suganath Prabu Subramani <suganath-prabu.subramani@broadcom.com>,
- Simon Horman <simon.horman@corigine.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Michael Buesch <m@bues.ch>, Jiri Pirko <jiri@nvidia.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Namhyung Kim <namhyung@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- Andy Shevchenko <andriy.shevchenko@intel.com>, Juergen Gross <jgross@suse.com>,
- Salil Mehta <salil.mehta@huawei.com>,
- Sreekanth Reddy <sreekanth.reddy@broadcom.com>, xen-devel@lists.xenproject.org,
- Vadym Kochan <vkochan@marvell.com>, MPT-FusionLinux.pdl@broadcom.com,
- netdev@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- Taras Chornyi <tchornyi@marvell.com>, Zhou Wang <wangzhou1@hisilicon.com>,
- Arnd Bergmann <arnd@arndb.de>, linux-crypto@vger.kernel.org,
- kernel@pengutronix.de, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Frederic Barrat <fbarrat@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: debian-powerpc@lists.debian.org, linuxppc-dev@lists.ozlabs.org,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 8/6/21 10:08 PM, Finn Thain wrote:
+> 
+> On Fri, 6 Aug 2021, Stan Johnson wrote:
+> 
+>> $ egrep '(CONFIG_PPC_KUAP|CONFIG_VMAP_STACK)' .config
+>> CONFIG_PPC_KUAP=y
+>> CONFIG_PPC_KUAP_DEBUG=y
+>> CONFIG_VMAP_STACK=y
+>> $ strings vmlinux | fgrep "Linux version"
+>> Linux version 5.13.0-pmac-00004-g63e3756d1bd ...
+>> $ cp vmlinux ../vmlinux-5.13.0-pmac-00004-g63e3756d1bd-1
+>>
+>> 1) PB 3400c
+>> vmlinux-5.13.0-pmac-00004-g63e3756d1bd-1
+>> Boots, no errors logging in at (text) fb console. Logging in via ssh and
+>> running "ls -Rail /usr/include" generated errors (and a hung ssh
+>> session). Once errors started, they repeated for almost every command.
+>> See pb3400c-63e3756d1bdf-1.txt.
+>>
+>> 2) Wallstreet
+>> vmlinux-5.13.0-pmac-00004-g63e3756d1bd-1
+>> X login failed, there were errors ("Oops: Kernel access of bad area",
+>> "Oops: Exception in kernel mode"). Logging in via SSH, there were no
+>> additional errors after running "ls -Rail /usr/include" -- the errors
+>> did not escalate as they did on the PB 3400.
+>> See Wallstreet-63e3756d1bdf-1.txt.
+>>
+> ...
+>> $ egrep '(CONFIG_PPC_KUAP|CONFIG_VMAP_STACK)' .config
+>> CONFIG_PPC_KUAP=y
+>> CONFIG_PPC_KUAP_DEBUG=y
+>> # CONFIG_VMAP_STACK is not set
+>> $ strings vmlinux | fgrep "Linux version"
+>> Linux version 5.13.0-pmac-00004-g63e3756d1bd ...
+>> $ cp vmlinux ../vmlinux-5.13.0-pmac-00004-g63e3756d1bd-2
+>>
+>> 3) PB 3400c
+>> vmlinux-5.13.0-pmac-00004-g63e3756d1bd-2
+>> Filesystem was corrupt from the previous test (probably from all the
+>> errors during shutdown). After fixing the filesystem:
+>> Boots, no errors logging in at (text) fb console. Logging in via ssh and
+>> running "ls -Rail /usr/include" generated a few errors. There didn't
+>> seem to be as many errors as in the previous test, there were a few
+>> errors during shutdown but the shutdown was otherwise normal.
+>> See pb3400c-63e3756d1bdf-2.txt.
+>>
+>> 4) Wallstreet
+>> vmlinux-5.13.0-pmac-00004-g63e3756d1bd-2
+>> X login worked, and there were no errors. There were no errors during
+>> ssh access.
+>> See Wallstreet-63e3756d1bdf-2.txt.
+>>
+> 
+> Thanks for collecting these results, Stan. Do you think that the 
+> successful result from test 4) could have been just chance?
 
---hfh2djfsv3k2boqr
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+No. I repeated Test 4 above two more times on the Wallstreet. After
+stomping on it as hard as I could, I didn't see any errors. I ran the
+following tests simultaneously, with no errors:
 
-On Fri, Aug 06, 2021 at 04:24:52PM -0500, Bjorn Helgaas wrote:
-> On Fri, Aug 06, 2021 at 08:46:23AM +0200, Uwe Kleine-K=F6nig wrote:
-> > On Thu, Aug 05, 2021 at 06:42:34PM -0500, Bjorn Helgaas wrote:
->=20
-> > > I looked at all the bus_type.probe() methods, it looks like pci_dev is
-> > > not the only offender here.  At least the following also have a driver
-> > > pointer in the device struct:
-> > >=20
-> > >   parisc_device.driver
-> > >   acpi_device.driver
-> > >   dio_dev.driver
-> > >   hid_device.driver
-> > >   pci_dev.driver
-> > >   pnp_dev.driver
-> > >   rio_dev.driver
-> > >   zorro_dev.driver
-> >=20
-> > Right, when I converted zorro_dev it was pointed out that the code was
-> > copied from pci and the latter has the same construct. :-)
-> > See
-> > https://lore.kernel.org/r/20210730191035.1455248-5-u.kleine-koenig@peng=
-utronix.de
-> > for the patch, I don't find where pci was pointed out, maybe it was on
-> > irc only.
->=20
-> Oh, thanks!  I looked to see if you'd done something similar
-> elsewhere, but I missed this one.
->=20
-> > > Looking through the places that care about pci_dev.driver (the ones
-> > > updated by patch 5/6), many of them are ... a little dubious to begin
-> > > with.  A few need the "struct pci_error_handlers *err_handler"
-> > > pointer, so that's probably legitimate.  But many just need a name,
-> > > and should probably be using dev_driver_string() instead.
-> >=20
-> > Yeah, I considered adding a function to get the driver name from a
-> > pci_dev and a function to get the error handlers. Maybe it's an idea to
-> > introduce these two and then use to_pci_driver(pdev->dev.driver) for the
-> > few remaining users? Maybe doing that on top of my current series makes
-> > sense to have a clean switch from pdev->driver to pdev->dev.driver?!
->=20
-> I'd propose using dev_driver_string() for these places:
->=20
->   eeh_driver_name() (could change callers to use dev_driver_string())
->   bcma_host_pci_probe()
->   qm_alloc_uacce()
->   hns3_get_drvinfo()
->   prestera_pci_probe()
->   mlxsw_pci_probe()
->   nfp_get_drvinfo()
->   ssb_pcihost_probe()
+a) Ping flood the Wallstreet
+862132 packets transmitted, 862117 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 0.316/0.418/12.163/0.143 ms
 
-So the idea is:
+b) "ls -Rail /usr" in an ssh window.
 
-	PCI: Simplify pci_device_remove()
-	PCI: Drop useless check from pci_device_probe()
-	xen/pci: Drop some checks that are always true
+c) "find /usr/include -type f -exec sha1sum {} \;" in a second ssh window.
 
-are kept as is as preparation. (Do you want to take them from this v2,
-or should I include them again in v3?)
+d) With a, b and c running, I logged in at the X console (slow but it
+worked). Load average was 7.0 as reported by uptime.
 
-Then convert the list of functions above to use dev_driver_string() in a
-4th patch.
+So the success seems to be repeatable (or at least the errors are so
+unlikely to happen that I'm not seeing anything).
 
-> The use in mpt_device_driver_register() looks unnecessary: it's only
-> to get a struct pci_device_id *, which is passed to ->probe()
-> functions that don't need it.
+> 
+> It appears that the bug affecting the Powerbook 3400 is unaffected by 
+> CONFIG_VMAP_STACK.
+> 
+> Whereas the bug affecting the Powerbook G3 disappears when 
+> CONFIG_VMAP_STACK is disabled (assuming the result from 4 is reliable).
+> 
+> Either way, these results reiterate that "Oops: Kernel access of bad area, 
+> sig: 11" was not entirely resolved by "powerpc/32s: Fix napping restore in 
+> data storage interrupt (DSI)".
+> 
 
-This is patch #5.
-
-> The use in adf_enable_aer() looks wrong: it sets the err_handler
-> pointer in one of the adf_driver structs.  I think those structs
-> should be basically immutable, and the drivers that call
-> adf_enable_aer() from their .probe() methods should set
-> ".err_handler =3D &adf_err_handler" in their static adf_driver
-> definitions instead.
-
-I don't understand that one without some research, probably this yields
-at least one patch.
-
-> I think that basically leaves these:
->=20
->   uncore_pci_probe()     # .id_table, custom driver "registration"
->   match_id()             # .id_table, arch/x86/kernel/probe_roms.c
->   xhci_pci_quirks()      # .id_table
->   pci_error_handlers()   # roll-your-own AER handling, drivers/misc/cxl/g=
-uest.c
->=20
-> I think it would be fine to use to_pci_driver(pdev->dev.driver) for
-> these few.
-
-Converting these will be patch 7 then and patch 8 can then drop the
-duplicated handling.
-
-Sounds reasonable?
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---hfh2djfsv3k2boqr
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmEOUc0ACgkQwfwUeK3K
-7AnHpgf/RF3DUcUr+MLq/SXC+ZFfynYOmvBgChskJ2ZCMYGHElw/XWeeZ3ypnETk
-Bq9PLYeIZrTWUb6sDYkPOkeSkiNrYOAp2v1vkl8fGpTpxobnkCW2Rv2fYndODqw9
-z5he4PjzBqPSO+LpWQ+XuW6OKaQaPijZm6SgH4JdVW2Etu1RiIeQHnTlFMkx2pd8
-hn3lUEsH/SF+WGd7olILhZ/FxycXldBLR4CjQNbCJ1G7LZ6IuGu+Ir2TbrlnPMPD
-RWuspO5voAOSEaTPlgGYELadA2nNr375R89u659MJOo/DssBdSaNaKik6udH5Vea
-yvZvenIp8//zyIdZpD38UlFSayO1OQ==
-=tPhD
------END PGP SIGNATURE-----
-
---hfh2djfsv3k2boqr--
+That sounds right. Thanks for investigating this.
