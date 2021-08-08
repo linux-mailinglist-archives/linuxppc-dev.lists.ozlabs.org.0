@@ -1,57 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 293263E378D
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Aug 2021 01:18:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 458423E3B38
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Aug 2021 17:57:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ghyv10n2mz3cLx
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Aug 2021 09:18:05 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=e1H+Gg/3;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GjP4108tKz3cM1
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Aug 2021 01:57:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=e1H+Gg/3; 
- dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GhytX5GWRz302W
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 Aug 2021 09:17:39 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4GhytS1fFCz9sWX;
- Sun,  8 Aug 2021 09:17:36 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1628378256;
- bh=PWOzXFIKeUu2qxb6O/vuk6Ol6fUDMqUIaa+119yejJI=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=e1H+Gg/3r/Vew3wnVvXF/EHFO7NVnk/MLYSWGJaGoGoB1R5WLGyp6wdNlxqRFUXwQ
- eMmn+80K80kJO3F4LMUZ+tF7/hwO2CGoBpLTn725GYXlC5qcGgkkcZVvPZn3IRFNHS
- nwRdZfiE+X9gzZNnxPIMPpOoM5jEu1T8m3ndBWG8JPwM0hsuN/btzmL84Zf3wR2zir
- eSNNfy44R2eEzQQhD8E/mak4UcYD4VkytAFwmMjvydsWOVHzZt/cLIMdacbQ1X8zA8
- 08qv8siZo/Lg1gBTQ4KYQ1SavgWSb90QmPddyHlGIlPsy0UsXRAIFZOGcYxS1PeEEe
- akq5aO6s24pDw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
-Subject: Re: [PATCH v1 26/55] KVM: PPC: Book3S HV: Change dec_expires to be
- relative to guest timebase
-In-Reply-To: <20210726035036.739609-27-npiggin@gmail.com>
-References: <20210726035036.739609-1-npiggin@gmail.com>
- <20210726035036.739609-27-npiggin@gmail.com>
-Date: Sun, 08 Aug 2021 09:17:34 +1000
-Message-ID: <87y29cn8tt.fsf@mpe.ellerman.id.au>
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=valentin.schneider@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4GjP3d26mBz2yxS
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Aug 2021 01:56:58 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1E20F31B;
+ Sun,  8 Aug 2021 08:56:54 -0700 (PDT)
+Received: from e113632-lin (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3680A3F718;
+ Sun,  8 Aug 2021 08:56:52 -0700 (PDT)
+From: Valentin Schneider <valentin.schneider@arm.com>
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2 1/2] sched/topology: Skip updating masks for non-online
+ nodes
+In-Reply-To: <20210723143914.GI3836887@linux.vnet.ibm.com>
+References: <20210701041552.112072-1-srikar@linux.vnet.ibm.com>
+ <20210701041552.112072-2-srikar@linux.vnet.ibm.com>
+ <875yxu85wi.mognet@arm.com> <20210712124856.GA3836887@linux.vnet.ibm.com>
+ <87zguqmay9.mognet@arm.com> <20210723143914.GI3836887@linux.vnet.ibm.com>
+Date: Sun, 08 Aug 2021 16:56:47 +0100
+Message-ID: <87h7g09bgg.mognet@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,83 +47,309 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Gautham R Shenoy <ego@linux.vnet.ibm.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>, Rik van Riel <riel@surriel.com>,
+ Peter Zijlstra <peterz@infradead.org>, linuxppc-dev@lists.ozlabs.org,
+ Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>,
+ LKML <linux-kernel@vger.kernel.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Laurent Dufour <ldufour@linux.ibm.com>,
+ Mel Gorman <mgorman@techsingularity.net>, Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
-> Change dec_expires to be relative to the guest timebase, and allow
-> it to be moved into low level P9 guest entry functions, to improve
-> SPR access scheduling.
+
+A bit late, but technically the week isn't over yet! :D
+
+On 23/07/21 20:09, Srikar Dronamraju wrote:
+> * Valentin Schneider <valentin.schneider@arm.com> [2021-07-13 17:32:14]:
+>> Now, let's take examples from your cover letter:
+>>
+>>   node distances:
+>>   node   0   1   2   3   4   5   6   7
+>>     0:  10  20  40  40  40  40  40  40
+>>     1:  20  10  40  40  40  40  40  40
+>>     2:  40  40  10  20  40  40  40  40
+>>     3:  40  40  20  10  40  40  40  40
+>>     4:  40  40  40  40  10  20  40  40
+>>     5:  40  40  40  40  20  10  40  40
+>>     6:  40  40  40  40  40  40  10  20
+>>     7:  40  40  40  40  40  40  20  10
+>>
+>> But the system boots with just nodes 0 and 1, thus only this distance
+>> matrix is valid:
+>>
+>>   node   0   1
+>>     0:  10  20
+>>     1:  20  10
+>>
+>> topology_span_sane() is going to use tl->mask(cpu), and as you reported =
+the
+>> NODE topology level should cause issues. Let's assume all offline nodes =
+say
+>> they're 10 distance away from everyone else, and that we have one CPU per
+>> node. This would give us:
+>>
 >
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->  arch/powerpc/include/asm/kvm_book3s.h   |  6 +++
->  arch/powerpc/include/asm/kvm_host.h     |  2 +-
->  arch/powerpc/kvm/book3s_hv.c            | 58 +++++++++++++------------
->  arch/powerpc/kvm/book3s_hv_nested.c     |  3 ++
->  arch/powerpc/kvm/book3s_hv_p9_entry.c   | 10 ++++-
->  arch/powerpc/kvm/book3s_hv_rmhandlers.S | 14 ------
->  6 files changed, 49 insertions(+), 44 deletions(-)
+> No,
+> All offline nodes would be at a distance of 10 from node 0 only.
+> So here node distance of all offline nodes from node 1 would be 20.
+>
+>>   NODE->mask(0) =3D=3D 0,2-7
+>>   NODE->mask(1) =3D=3D 1-7
+>
+> so
+>
+> NODE->mask(0) =3D=3D 0,2-7
+> NODE->mask(1) should be 1
+> and NODE->mask(2-7) =3D=3D 0,2-7
+>
 
-My p8 is hitting an oops running guests, and bisect points to this. Not
-obvious how the change relates to the oops, but maybe you can see it.
+Ok, so that shouldn't trigger the warning.
 
-cheers
+>>
+>> The intersection is 2-7, we'll trigger the WARN_ON().
+>> Now, with the above snippet, we'll check if that intersection covers any
+>> online CPU. For sched_init_domains(), cpu_map is cpu_active_mask, so we'd
+>> end up with an empty intersection and we shouldn't warn - that's the the=
+ory
+>> at least.
+>
+> Now lets say we onlined CPU 3 and node 3 which was at a actual distance
+> of 20 from node 0.
+>
+> (If we only consider online CPUs, and since scheduler masks like
+> sched_domains_numa_masks arent updated with offline CPUs,)
+> then
+>
+> NODE->mask(0) =3D=3D 0
+> NODE->mask(1) =3D=3D 1
+> NODE->mask(3) =3D=3D 0,3
+>
 
+Wait, doesn't the distance matrix (without any offline node) say
 
-[  716.042962][T16989] Kernel attempted to read user page (0) - exploit attempt? (uid: 0)
-[  716.043020][T16989] BUG: Kernel NULL pointer dereference on read at 0x00000000
-[  716.043028][T16989] Faulting instruction address: 0xc00000000001e1a8
-[  716.043037][T16989] Oops: Kernel access of bad area, sig: 11 [#1]
-[  716.043043][T16989] LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA PowerNV
-[  716.043052][T16989] Modules linked in: xt_MASQUERADE xt_conntrack ipt_REJECT nf_reject_ipv4 xt_tcpudp iptable_mangle iptable_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nfnetlink ip6table_filter ip6_tables iptable_filter tun bridge stp llc fuse kvm_hv kvm binfmt_misc squashfs mlx4_ib ib_uverbs dm_multipath scsi_dh_rdac ib_core scsi_dh_alua mlx4_en sr_mod cdrom lpfc sg mlx4_core bnx2x crc_t10dif crct10dif_generic scsi_transport_fc mdio vmx_crypto gf128mul crct10dif_vpmsum crct10dif_common leds_powernv powernv_rng led_class crc32c_vpmsum rng_core powernv_op_panel sunrpc ip_tables x_tables autofs4
-[  716.043128][T16989] CPU: 56 PID: 16989 Comm: qemu-system-ppc Not tainted 5.14.0-rc4-02329-g9bdd37071243 #1
-[  716.043137][T16989] NIP:  c00000000001e1a8 LR: c00000000001e154 CTR: c00000000016ebb0
-[  716.043144][T16989] REGS: c0000009f1a93480 TRAP: 0300   Not tainted  (5.14.0-rc4-02329-g9bdd37071243)
-[  716.043150][T16989] MSR:  9000000002803033 <SF,HV,VEC,VSX,FP,ME,IR,DR,RI,LE>  CR: 42442444  XER: 20000000
-[  716.043167][T16989] CFAR: c00000000000cd0c DAR: 0000000000000000 DSISR: 40000000 IRQMASK: 3
-[  716.043167][T16989] GPR00: c00000000001eab8 c0000009f1a93720 c000000002459f00 c0000009c0730270
-[  716.043167][T16989] GPR04: 00000000000001f0 0000000000000000 0000000022442448 c0000009c072ec80
-[  716.043167][T16989] GPR08: 00000000000000c2 0000000044000000 9000000002803033 0000000000000001
-[  716.043167][T16989] GPR12: 0000000000002200 c000000ffffec600 00007fff955f4410 0000000000000000
-[  716.043167][T16989] GPR16: 00007fff96280000 00007fff955f0320 00007fff8ee8ebe0 00007fff8e660028
-[  716.043167][T16989] GPR20: c000000803807400 c000000858b243bc 000000000000000a c000000002496eb8
-[  716.043167][T16989] GPR24: c000000801123650 c0000009c0730250 c0000009c072ec80 0000000002802000
-[  716.043167][T16989] GPR28: 0000000000800000 0000000002802000 0000000000800000 c0000009f1a93e80
-[  716.043236][T16989] NIP [c00000000001e1a8] restore_math+0x208/0x310
-[  716.043247][T16989] LR [c00000000001e154] restore_math+0x1b4/0x310
-[  716.043254][T16989] Call Trace:
-[  716.043257][T16989] [c0000009f1a93720] [0000000022442448] 0x22442448 (unreliable)
-[  716.043267][T16989] [c0000009f1a93780] [c00000000001eab8] __switch_to+0x228/0x2f0
-[  716.043274][T16989] [c0000009f1a937e0] [c000000000f7949c] __schedule+0x40c/0xf10
-[  716.043283][T16989] [c0000009f1a938b0] [c000000000f7a034] schedule+0x94/0x170
-[  716.043291][T16989] [c0000009f1a938e0] [c00800000b8e4474] kvmppc_wait_for_exec+0xdc/0xf8 [kvm_hv]
-[  716.043307][T16989] [c0000009f1a93960] [c00800000b8eeb18] kvmppc_vcpu_run_hv+0x900/0x10f0 [kvm_hv]
-[  716.043319][T16989] [c0000009f1a93a10] [c00800000b76355c] kvmppc_vcpu_run+0x34/0x48 [kvm]
-[  716.043340][T16989] [c0000009f1a93a30] [c00800000b75f188] kvm_arch_vcpu_ioctl_run+0x340/0x450 [kvm]
-[  716.043359][T16989] [c0000009f1a93ac0] [c00800000b74d470] kvm_vcpu_ioctl+0x328/0x8f8 [kvm]
-[  716.043378][T16989] [c0000009f1a93ca0] [c0000000004fe9d4] sys_ioctl+0x6b4/0x13b0
-[  716.043386][T16989] [c0000009f1a93db0] [c00000000002f918] system_call_exception+0x168/0x290
-[  716.043394][T16989] [c0000009f1a93e10] [c00000000000c864] system_call_common+0xf4/0x258
-[  716.043402][T16989] --- interrupt: c00 at 0x7fff954af010
-[  716.043407][T16989] NIP:  00007fff954af010 LR: 0000000116243430 CTR: 0000000000000000
-[  716.043413][T16989] REGS: c0000009f1a93e80 TRAP: 0c00   Not tainted  (5.14.0-rc4-02329-g9bdd37071243)
-[  716.043419][T16989] MSR:  900000000000d033 <SF,HV,EE,PR,ME,IR,DR,RI,LE>  CR: 22444442  XER: 00000000
-[  716.043434][T16989] IRQMASK: 0
-[  716.043434][T16989] GPR00: 0000000000000036 00007fff8ee8dc30 00007fff955a7100 000000000000000f
-[  716.043434][T16989] GPR04: 000000002000ae80 0000000000000000 00000000000004fb 0000000000000000
-[  716.043434][T16989] GPR08: 000000000000000f 0000000000000000 0000000000000000 0000000000000000
-[  716.043434][T16989] GPR12: 0000000000000000 00007fff8ee96290 00007fff955f4410 0000000000000000
-[  716.043434][T16989] GPR16: 00007fff96280000 00007fff955f0320 00007fff8ee8ebe0 00007fff8e660028
-[  716.043434][T16989] GPR20: 0000000000000000 0000000000000000 000000011689b0d0 000000002000ae80
-[  716.043434][T16989] GPR24: 00007fff8ffa00ae 0000000000000000 00007fff8ee8f290 00007fff8ffb0010
-[  716.043434][T16989] GPR28: 0000000116e010e0 00007fff8ffb0010 0000000000000000 000000002000ae80
-[  716.043498][T16989] NIP [00007fff954af010] 0x7fff954af010
-[  716.043503][T16989] LR [0000000116243430] 0x116243430
-[  716.043507][T16989] --- interrupt: c00
-[  716.043511][T16989] Instruction dump:
-[  716.043517][T16989] fb610038 67db0200 9907185a 4182005c 7c0802a6 7f63db78 f8010070 4bffeeed
-[  716.043529][T16989] 2c3e0000 408200d4 547ddb78 0082812b <eb000000> 387a1860 7fdcf378 7f7edb78
-[  716.043543][T16989] ---[ end trace b02ece1d913ff866 ]---
+  distance(0, 3) =3D=3D 40
+
+? We should have at the very least:
+
+  node   0   1   2   3
+    0:  10  20  ??  40
+    1:  20  20  ??  40
+    2:  ??  ??  ??  ??
+    3:  40  40  ??  10
+
+Regardless, NODE->mask(x) is sched_domains_numa_masks[0][x], if
+
+  distance(0,3) > LOCAL_DISTANCE
+
+then
+
+  node0 =E2=88=89 NODE->mask(3)
+
+> cpumask_and(intersect, tl->mask(cpu), tl->mask(i));
+> if (!cpumask_equal(tl->mask(cpu), tl->mask(i)) && cpumask_intersects(inte=
+rsect, cpu_map))
+>
+> cpu_map is 0,1,3
+> intersect is 0
+>
+> From above NODE->mask(0) is !equal to NODE->mask(1) and
+> cpumask_intersects(intersect, cpu_map) is also true.
+>
+> I picked Node 3 since if Node 1 is online, we would have faked distance
+> for Node 2 to be at distance of 40.
+>
+> Any node from 3 to 7, we would have faced the same problem.
+>
+>>
+>> Looking at sd_numa_mask(), I think there's a bug with topology_span_sane=
+():
+>> it doesn't run in the right place wrt where sched_domains_curr_level is
+>> updated. Could you try the below on top of the previous snippet?
+>>
+>> If that doesn't help, could you share the node distances / topology masks
+>> that lead to the WARN_ON()? Thanks.
+>>
+>> ---
+>> diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+>> index b77ad49dc14f..cda69dfa4065 100644
+>> --- a/kernel/sched/topology.c
+>> +++ b/kernel/sched/topology.c
+>> @@ -1516,13 +1516,6 @@ sd_init(struct sched_domain_topology_level *tl,
+>>      int sd_id, sd_weight, sd_flags =3D 0;
+>>      struct cpumask *sd_span;
+>>
+>> -#ifdef CONFIG_NUMA
+>> -	/*
+>> -	 * Ugly hack to pass state to sd_numa_mask()...
+>> -	 */
+>> -	sched_domains_curr_level =3D tl->numa_level;
+>> -#endif
+>> -
+>>      sd_weight =3D cpumask_weight(tl->mask(cpu));
+>>
+>>      if (tl->sd_flags)
+>> @@ -2131,7 +2124,12 @@ build_sched_domains(const struct cpumask *cpu_map=
+, struct sched_domain_attr *att
+>>
+>>              sd =3D NULL;
+>>              for_each_sd_topology(tl) {
+>> -
+>> +#ifdef CONFIG_NUMA
+>> +			/*
+>> +			 * Ugly hack to pass state to sd_numa_mask()...
+>> +			 */
+>> +			sched_domains_curr_level =3D tl->numa_level;
+>> +#endif
+>>                      if (WARN_ON(!topology_span_sane(tl, cpu_map, i)))
+>>                              goto error;
+>>
+>>
+>
+> I tested with the above patch too. However it still not helping.
+>
+> Here is the log from my testing.
+>
+> At Boot.
+>
+> (Do remember to arrive at sched_max_numa_levels we faked the
+> numa_distance of node 1 to be at 20 from node 0. All other offline
+> nodes are at a distance of 10 from node 0.)
+>
+
+[...]
+
+> ( First addition of a CPU to a non-online node esp node whose node
+> distance was not faked.)
+>
+> numactl -H
+> available: 3 nodes (0,5,7)
+> node 0 cpus: 0 1 2 3 4 5 6 7
+> node 0 size: 0 MB
+> node 0 free: 0 MB
+> node 5 cpus: 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28=
+ 29 32 33 34 35 40 41 42 43 48 49 50 51 56 57 58 59 64 65 66 67 72 73 74 75=
+ 76 77 78 79 80 81 82 83 84 85 86 87
+> node 5 size: 32038 MB
+> node 5 free: 29024 MB
+> node 7 cpus: 88 89 90 91 92 93 94 95
+> node 7 size: 0 MB
+> node 7 free: 0 MB
+> node distances:
+> node   0   5   7
+>   0:  10  40  40
+>   5:  40  10  20
+>   7:  40  20  10
+> ------------------------------------------------------------------
+> grep -r . /sys/kernel/debug/sched/domains/cpu0/domain{0,1,2,3,4}/{name,fl=
+ags}
+> ------------------------------------------------------------------
+> awk '/domain/{print $1, $2}' /proc/schedstat | sort -u | sed -e 's/000000=
+00,//g'
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> I had added a debug patch to dump some variables that may help to
+> understand the problem
+> ------------------->8--------------------------------------------8<------=
+----
+> diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+> index 5e1abd9a8cc5..146f59381bcc 100644
+> --- a/kernel/sched/topology.c
+> +++ b/kernel/sched/topology.c
+> @@ -2096,7 +2096,8 @@ static bool topology_span_sane(struct sched_domain_=
+topology_level *tl,
+>               cpumask_and(intersect, tl->mask(cpu), tl->mask(i));
+>               if (!cpumask_equal(tl->mask(cpu), tl->mask(i)) &&
+>                   cpumask_intersects(intersect, cpu_map)) {
+> -			pr_err("name=3D%s mask(%d/%d)=3D%*pbl mask(%d/%d)=3D%*pbl", tl->name,=
+ cpu, cpu_to_node(cpu), cpumask_pr_args(tl->mask(cpu)), i, cpu_to_node(i), =
+cpumask_pr_args(tl->mask(i)));
+> +			pr_err("name=3D%s mask(%d/%d)=3D%*pbl mask(%d/%d)=3D%*pbl numa-level=
+=3D%d curr_level=3D%d", tl->name, cpu, cpu_to_node(cpu), cpumask_pr_args(tl=
+->mask(cpu)), i, cpu_to_node(i), cpumask_pr_args(tl->mask(i)), tl->numa_lev=
+el, sched_domains_curr_level);
+> +			pr_err("intersect=3D%*pbl cpu_map=3D%*pbl", cpumask_pr_args(intersect=
+), cpumask_pr_args(cpu_map));
+>                       return false;
+>               }
+>       }
+> ------------------->8--------------------------------------------8<------=
+----
+>
+> From dmesg:
+>
+> [  167.626915] name=3DNODE mask(0/0)=3D0-7 mask(88/7)=3D0-7,88 numa-level=
+=3D0 curr_level=3D0    <-- hunk above
+> [  167.626925] intersect=3D0-7 cpu_map=3D0-19,24-27,32-35,40-43,48-51,56-=
+59,64-67,72-88
+
+> [  168.026621] name=3DNODE mask(0/0)=3D0-7 mask(88/7)=3D0-7,88-89 numa-le=
+vel=3D0 curr_level=3D0
+> [  168.026626] intersect=3D0-7 cpu_map=3D0-19,24-27,32-35,40-43,48-51,56-=
+59,64-67,72-89
+>
+
+Ok so to condense the info, we have:
+
+  node   0   5   7
+    0:  10  40  40
+    5:  40  10  20
+    7:  40  20  10
+
+  node0: 0-7
+  node5: 8-29, 32-35, 40-43, 48-51, 56-59, 64-67, 72-87
+  node7: 88-95
+
+With the above distance map, we should have
+
+  NODE->mask(CPU0) =3D=3D 0-7
+  NODE->mask(CPU8) =3D=3D 8-29, 32-35, 40-43, 48-51, 56-59, 64-67, 72-87
+  NODE->mask(CPU88) =3D=3D 88-95
+
+(this is sched_domains_numa_masks[0][CPUx], and
+sched_domains_numa_distance[0] =3D=3D LOCAL_DISTANCE, thus the mask of CPUs
+LOCAL_DISTANCE away from CPUx).
+
+For some reason you end up with node0 being part of node7's NODE
+mask. Neither nodes are offline, and per the above distance table that
+shouldn't happen.
+
+> Now this keeps repeating.
+>
+> I know I have mentioned this before. (So sorry for repeating)
+
+It can't hurt to reformulate ;)
+
+> Generally on Power node distance is not populated for offline nodes.
+> However to arrive at sched_max_numa_levels, we thought of faking few
+> node distances. In the above case, we faked distance of node 1 as 20
+> (from node 0) node 5 was already at distance of 40 from node 0.
+>
+
+Right, again that gives us the right set of unique distances (10, 20, 40).
+
+> So when sched_domains_numa_masks_set is called to update sd_numa_mask or
+> sched_domains_numa_masks, all CPUs under node 0 get updated for node 2
+> too. (since node 2 is shown as at a local distance from node 0). Do
+> look at the node mask of CPU 88 in the dmesg. It should have been 88,
+> however its 0-7,88 where 0-7 are coming from node 0.
+>
+> Even if we skip updation of sched_domains_numa_masks for offline nodes,
+> on online of a node (i.e when we get the correct node distance), we have
+> to update the sched_domains_numa_masks to ensure CPUs that were already
+> present within a certain distance and skipped are added back. And this
+> was what I tried to do in my patch.
+>
+
+Ok, so it looks like we really can't do without that part - even if we get
+"sensible" distance values for the online nodes, we can't divine values for
+the offline ones.
+
+> --
+> Thanks and Regards
+> Srikar Dronamraju
