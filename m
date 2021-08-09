@@ -2,52 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0BB83E3DC7
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Aug 2021 03:43:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C16F3E3DF8
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Aug 2021 04:36:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gjf4J4MQ4z3bhb
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Aug 2021 11:43:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GjgF40LJdz30Bv
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Aug 2021 12:36:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=134.134.136.126; helo=mga18.intel.com;
- envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=<UNKNOWN>)
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gjf3t58JHz3015
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Aug 2021 11:43:05 +1000 (AEST)
-X-IronPort-AV: E=McAfee;i="6200,9189,10070"; a="201783568"
-X-IronPort-AV: E=Sophos;i="5.84,305,1620716400"; d="scan'208";a="201783568"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
- by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Aug 2021 18:42:00 -0700
-X-IronPort-AV: E=Sophos;i="5.84,305,1620716400"; d="scan'208";a="670624711"
-Received: from ctrondse-mobl.amr.corp.intel.com (HELO
- skuppusw-mobl5.amr.corp.intel.com) ([10.212.77.4])
- by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Aug 2021 18:41:57 -0700
-Subject: Re: [PATCH 00/11] Implement generic prot_guest_has() helper function
-To: Tom Lendacky <thomas.lendacky@amd.com>, linux-kernel@vger.kernel.org,
- x86@kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
- iommu@lists.linux-foundation.org, kvm@vger.kernel.org,
- linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
- linux-graphics-maintainer@vmware.com, amd-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, kexec@lists.infradead.org,
- linux-fsdevel@vger.kernel.org
-References: <cover.1627424773.git.thomas.lendacky@amd.com>
-From: "Kuppuswamy, Sathyanarayanan"
- <sathyanarayanan.kuppuswamy@linux.intel.com>
-Message-ID: <0d75f283-50b7-460d-3165-185cb955bd70@linux.intel.com>
-Date: Sun, 8 Aug 2021 18:41:54 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Firefox/78.0 Thunderbird/78.11.0
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com;
+ envelope-from=pulehui@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GjgDc4qtqz2yxS
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Aug 2021 12:35:41 +1000 (AEST)
+Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.57])
+ by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Gjg7w0FmFz85RR;
+ Mon,  9 Aug 2021 10:31:40 +0800 (CST)
+Received: from dggpemm500019.china.huawei.com (7.185.36.180) by
+ dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Mon, 9 Aug 2021 10:35:33 +0800
+Received: from ubuntu1804.huawei.com (10.67.174.98) by
+ dggpemm500019.china.huawei.com (7.185.36.180) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Mon, 9 Aug 2021 10:35:33 +0800
+From: Pu Lehui <pulehui@huawei.com>
+To: <mpe@ellerman.id.au>, <benh@kernel.crashing.org>, <paulus@samba.org>,
+ <naveen.n.rao@linux.vnet.ibm.com>, <mhiramat@kernel.org>,
+ <peterz@infradead.org>, <christophe.leroy@csgroup.eu>, <npiggin@gmail.com>,
+ <ruscur@russell.cc>
+Subject: [PATCH v2] powerpc/kprobes: Fix kprobe Oops happens in booke
+Date: Mon, 9 Aug 2021 10:36:58 +0800
+Message-ID: <20210809023658.218915-1-pulehui@huawei.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-In-Reply-To: <cover.1627424773.git.thomas.lendacky@amd.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Originating-IP: [10.67.174.98]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpemm500019.china.huawei.com (7.185.36.180)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,137 +54,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Brijesh Singh <brijesh.singh@amd.com>, David Airlie <airlied@linux.ie>,
- Dave Hansen <dave.hansen@linux.intel.com>, Paul Mackerras <paulus@samba.org>,
- Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
- Andi Kleen <ak@linux.intel.com>, Baoquan He <bhe@redhat.com>,
- Joerg Roedel <joro@8bytes.org>, Christian Borntraeger <borntraeger@de.ibm.com>,
- Ingo Molnar <mingo@redhat.com>, Dave Young <dyoung@redhat.com>,
- Tianyu Lan <Tianyu.Lan@microsoft.com>, Thomas Zimmermann <tzimmermann@suse.de>,
- Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Peter Zijlstra <peterz@infradead.org>, Daniel Vetter <daniel@ffwll.ch>
+Cc: zhangjinhao2@huawei.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, pulehui@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Tom,
+When using kprobe on powerpc booke series processor, Oops happens
+as show bellow:
 
-On 7/27/21 3:26 PM, Tom Lendacky wrote:
-> This patch series provides a generic helper function, prot_guest_has(),
-> to replace the sme_active(), sev_active(), sev_es_active() and
-> mem_encrypt_active() functions.
-> 
-> It is expected that as new protected virtualization technologies are
-> added to the kernel, they can all be covered by a single function call
-> instead of a collection of specific function calls all called from the
-> same locations.
-> 
-> The powerpc and s390 patches have been compile tested only. Can the
-> folks copied on this series verify that nothing breaks for them.
+/ # echo "p:myprobe do_nanosleep" > /sys/kernel/debug/tracing/kprobe_events
+/ # echo 1 > /sys/kernel/debug/tracing/events/kprobes/myprobe/enable
+/ # sleep 1
+[   50.076730] Oops: Exception in kernel mode, sig: 5 [#1]
+[   50.077017] BE PAGE_SIZE=4K SMP NR_CPUS=24 QEMU e500
+[   50.077221] Modules linked in:
+[   50.077462] CPU: 0 PID: 77 Comm: sleep Not tainted 5.14.0-rc4-00022-g251a1524293d #21
+[   50.077887] NIP:  c0b9c4e0 LR: c00ebecc CTR: 00000000
+[   50.078067] REGS: c3883de0 TRAP: 0700   Not tainted (5.14.0-rc4-00022-g251a1524293d)
+[   50.078349] MSR:  00029000 <CE,EE,ME>  CR: 24000228  XER: 20000000
+[   50.078675]
+[   50.078675] GPR00: c00ebdf0 c3883e90 c313e300 c3883ea0 00000001 00000000 c3883ecc 00000001
+[   50.078675] GPR08: c100598c c00ea250 00000004 00000000 24000222 102490c2 bff4180c 101e60d4
+[   50.078675] GPR16: 00000000 102454ac 00000040 10240000 10241100 102410f8 10240000 00500000
+[   50.078675] GPR24: 00000002 00000000 c3883ea0 00000001 00000000 0000c350 3b9b8d50 00000000
+[   50.080151] NIP [c0b9c4e0] do_nanosleep+0x0/0x190
+[   50.080352] LR [c00ebecc] hrtimer_nanosleep+0x14c/0x1e0
+[   50.080638] Call Trace:
+[   50.080801] [c3883e90] [c00ebdf0] hrtimer_nanosleep+0x70/0x1e0 (unreliable)
+[   50.081110] [c3883f00] [c00ec004] sys_nanosleep_time32+0xa4/0x110
+[   50.081336] [c3883f40] [c001509c] ret_from_syscall+0x0/0x28
+[   50.081541] --- interrupt: c00 at 0x100a4d08
+[   50.081749] NIP:  100a4d08 LR: 101b5234 CTR: 00000003
+[   50.081931] REGS: c3883f50 TRAP: 0c00   Not tainted (5.14.0-rc4-00022-g251a1524293d)
+[   50.082183] MSR:  0002f902 <CE,EE,PR,FP,ME>  CR: 24000222  XER: 00000000
+[   50.082457]
+[   50.082457] GPR00: 000000a2 bf980040 1024b4d0 bf980084 bf980084 64000000 00555345 fefefeff
+[   50.082457] GPR08: 7f7f7f7f 101e0000 00000069 00000003 28000422 102490c2 bff4180c 101e60d4
+[   50.082457] GPR16: 00000000 102454ac 00000040 10240000 10241100 102410f8 10240000 00500000
+[   50.082457] GPR24: 00000002 bf9803f4 10240000 00000000 00000000 100039e0 00000000 102444e8
+[   50.083789] NIP [100a4d08] 0x100a4d08
+[   50.083917] LR [101b5234] 0x101b5234
+[   50.084042] --- interrupt: c00
+[   50.084238] Instruction dump:
+[   50.084483] 4bfffc40 60000000 60000000 60000000 9421fff0 39400402 914200c0 38210010
+[   50.084841] 4bfffc20 00000000 00000000 00000000 <7fe00008> 7c0802a6 7c892378 93c10048
+[   50.085487] ---[ end trace f6fffe98e2fa8f3e ]---
+[   50.085678]
+Trace/breakpoint trap
 
-With this patch set, select ARCH_HAS_PROTECTED_GUEST and set
-CONFIG_AMD_MEM_ENCRYPT=n, creates following error.
+There is no real mode for booke arch and the MMU translation is
+always on. The corresponding MSR_IS/MSR_DS bit in booke is used
+to switch the address space, but not for real mode judgment.
 
-ld: arch/x86/mm/ioremap.o: in function `early_memremap_is_setup_data':
-arch/x86/mm/ioremap.c:672: undefined reference to `early_memremap_decrypted'
+Fixes: 21f8b2fa3ca5 ("powerpc/kprobes: Ignore traps that happened in real mode")
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
+---
+v1->v2:
+- use IS_ENABLED(CONFIG_BOOKE) as suggested by Michael Ellerman and
+  Christophe Leroy
+- update Oops log to make problem clear
 
-It looks like early_memremap_is_setup_data() is not protected with
-appropriate config.
+ arch/powerpc/kernel/kprobes.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-
-> 
-> Cc: Andi Kleen <ak@linux.intel.com>
-> Cc: Andy Lutomirski <luto@kernel.org>
-> Cc: Ard Biesheuvel <ardb@kernel.org>
-> Cc: Baoquan He <bhe@redhat.com>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: Christian Borntraeger <borntraeger@de.ibm.com>
-> Cc: Daniel Vetter <daniel@ffwll.ch>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: Dave Young <dyoung@redhat.com>
-> Cc: David Airlie <airlied@linux.ie>
-> Cc: Heiko Carstens <hca@linux.ibm.com>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Joerg Roedel <joro@8bytes.org>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: Vasily Gorbik <gor@linux.ibm.com>
-> Cc: VMware Graphics <linux-graphics-maintainer@vmware.com>
-> Cc: Will Deacon <will@kernel.org>
-> 
-> ---
-> 
-> Patches based on:
->    https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git master
->    commit 79e920060fa7 ("Merge branch 'WIP/fixes'")
-> 
-> Tom Lendacky (11):
->    mm: Introduce a function to check for virtualization protection
->      features
->    x86/sev: Add an x86 version of prot_guest_has()
->    powerpc/pseries/svm: Add a powerpc version of prot_guest_has()
->    x86/sme: Replace occurrences of sme_active() with prot_guest_has()
->    x86/sev: Replace occurrences of sev_active() with prot_guest_has()
->    x86/sev: Replace occurrences of sev_es_active() with prot_guest_has()
->    treewide: Replace the use of mem_encrypt_active() with
->      prot_guest_has()
->    mm: Remove the now unused mem_encrypt_active() function
->    x86/sev: Remove the now unused mem_encrypt_active() function
->    powerpc/pseries/svm: Remove the now unused mem_encrypt_active()
->      function
->    s390/mm: Remove the now unused mem_encrypt_active() function
-> 
->   arch/Kconfig                               |  3 ++
->   arch/powerpc/include/asm/mem_encrypt.h     |  5 --
->   arch/powerpc/include/asm/protected_guest.h | 30 +++++++++++
->   arch/powerpc/platforms/pseries/Kconfig     |  1 +
->   arch/s390/include/asm/mem_encrypt.h        |  2 -
->   arch/x86/Kconfig                           |  1 +
->   arch/x86/include/asm/kexec.h               |  2 +-
->   arch/x86/include/asm/mem_encrypt.h         | 13 +----
->   arch/x86/include/asm/protected_guest.h     | 27 ++++++++++
->   arch/x86/kernel/crash_dump_64.c            |  4 +-
->   arch/x86/kernel/head64.c                   |  4 +-
->   arch/x86/kernel/kvm.c                      |  3 +-
->   arch/x86/kernel/kvmclock.c                 |  4 +-
->   arch/x86/kernel/machine_kexec_64.c         | 19 +++----
->   arch/x86/kernel/pci-swiotlb.c              |  9 ++--
->   arch/x86/kernel/relocate_kernel_64.S       |  2 +-
->   arch/x86/kernel/sev.c                      |  6 +--
->   arch/x86/kvm/svm/svm.c                     |  3 +-
->   arch/x86/mm/ioremap.c                      | 16 +++---
->   arch/x86/mm/mem_encrypt.c                  | 60 +++++++++++++++-------
->   arch/x86/mm/mem_encrypt_identity.c         |  3 +-
->   arch/x86/mm/pat/set_memory.c               |  3 +-
->   arch/x86/platform/efi/efi_64.c             |  9 ++--
->   arch/x86/realmode/init.c                   |  8 +--
->   drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c    |  4 +-
->   drivers/gpu/drm/drm_cache.c                |  4 +-
->   drivers/gpu/drm/vmwgfx/vmwgfx_drv.c        |  4 +-
->   drivers/gpu/drm/vmwgfx/vmwgfx_msg.c        |  6 +--
->   drivers/iommu/amd/init.c                   |  7 +--
->   drivers/iommu/amd/iommu.c                  |  3 +-
->   drivers/iommu/amd/iommu_v2.c               |  3 +-
->   drivers/iommu/iommu.c                      |  3 +-
->   fs/proc/vmcore.c                           |  6 +--
->   include/linux/mem_encrypt.h                |  4 --
->   include/linux/protected_guest.h            | 37 +++++++++++++
->   kernel/dma/swiotlb.c                       |  4 +-
->   36 files changed, 218 insertions(+), 104 deletions(-)
->   create mode 100644 arch/powerpc/include/asm/protected_guest.h
->   create mode 100644 arch/x86/include/asm/protected_guest.h
->   create mode 100644 include/linux/protected_guest.h
-> 
-
+diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
+index cbc28d1a2e1b..7a7cd6bda53e 100644
+--- a/arch/powerpc/kernel/kprobes.c
++++ b/arch/powerpc/kernel/kprobes.c
+@@ -292,7 +292,8 @@ int kprobe_handler(struct pt_regs *regs)
+ 	if (user_mode(regs))
+ 		return 0;
+ 
+-	if (!(regs->msr & MSR_IR) || !(regs->msr & MSR_DR))
++	if (!IS_ENABLED(CONFIG_BOOKE) &&
++	    (!(regs->msr & MSR_IR) || !(regs->msr & MSR_DR)))
+ 		return 0;
+ 
+ 	/*
 -- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+2.17.1
+
