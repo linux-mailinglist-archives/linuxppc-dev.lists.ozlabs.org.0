@@ -1,80 +1,135 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D2713E4E30
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Aug 2021 22:57:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 036773E4ECB
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Aug 2021 23:57:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gk7gT2bHtz3bXM
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Aug 2021 06:57:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gk90b5lrBz3cJH
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Aug 2021 07:57:03 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=FnE/mwoX;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=FSu0tPPV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1032;
- helo=mail-pj1-x1032.google.com; envelope-from=danielhb413@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=FnE/mwoX; dkim-atps=neutral
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com
- [IPv6:2607:f8b0:4864:20::1032])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=amd.com
+ (client-ip=40.107.236.54; helo=nam11-bn8-obe.outbound.protection.outlook.com;
+ envelope-from=thomas.lendacky@amd.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256
+ header.s=selector1 header.b=FSu0tPPV; 
+ dkim-atps=neutral
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11on2054.outbound.protection.outlook.com [40.107.236.54])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gk7fp49mhz2xvF
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Aug 2021 06:56:32 +1000 (AEST)
-Received: by mail-pj1-x1032.google.com with SMTP id
- lw7-20020a17090b1807b029017881cc80b7so899928pjb.3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Aug 2021 13:56:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=aHkEfDAWCJ52ci6CWzgHFotFEpQgyQ+sf+J3/pgjMWo=;
- b=FnE/mwoXtb/DMoLH6pkJpeH+iUokfECSyCZxpAPBoAtZ08oUDzmJ9EkAmCQ8cL+Q6W
- 17bfrsbKeLiOXV9Y7YUwvrKM8LmlRrY9XgTjwCgULlDkIK3bLZJCLcJbuhlWWf9nIyYO
- m+08IYHqobyAGKLdO4mcgH45KuvkEE/3FL9D6Qvk9EFpyUOlVSZaSRQXNpps9rmemqgH
- xI32Q0SeE6DcfIA49U0pZ3kU9+eHKhVvuZTMSyG4sCJwIwFzFEU00BdsQUsBAVRZXFPm
- 4JbKuwpqQRY5XMgVnEhKWBBvSEXKcZr4jt4gOD+mBfjaaMxQGvscNW9/L/bFB4RPjTlY
- K4gA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=aHkEfDAWCJ52ci6CWzgHFotFEpQgyQ+sf+J3/pgjMWo=;
- b=NMv/c13FUuoeKNHjya+UZV8JlHKQe6BP7e+EwlTe+2jkmOERfPqCXmquo1JL2art0O
- xF6LfBHrWw5ew2k9GqXG66q8FSLuUphrwFFFFspmuFiI/vfiHQftrqU9eyXMjgp1dyFG
- 3UazaBlNoGzE523YGikrn3Du7BSnpHFRqUA01vBvY8GlxXGSt88IAXD5n7ieaKnIec25
- XIiJwkMcLJHxCDAZAEJxzjR6dhPogqlv5UIo5Op6uhlV3sXNiavznJmk50S4zpAbcgpE
- 7uu6ePQeqBhhFkb6Qr0smjLhnZqYMQqqyT17bYy+FdO74gzFCn+Vziv0TwGQ4wWSZCoh
- 3FeQ==
-X-Gm-Message-State: AOAM533i1+M1iTDje2gfjBnS8nuVf28QLv53a8boCWKdW0ouW/6XzXaz
- aeF3MVP+1+pxio1F5up1ft8=
-X-Google-Smtp-Source: ABdhPJyuh3J7fUBjz7DiAIBd5Rm5t88uDl92NjUk3Hbnwa4NJ/OkA3mOHW8P9BGWvGlKbMs4cqGPiA==
-X-Received: by 2002:a05:6a00:888:b029:3c3:ff1:38e with SMTP id
- q8-20020a056a000888b02903c30ff1038emr19786128pfj.17.1628542588878; 
- Mon, 09 Aug 2021 13:56:28 -0700 (PDT)
-Received: from [192.168.10.222] ([191.19.172.190])
- by smtp.gmail.com with ESMTPSA id e35sm405510pjk.28.2021.08.09.13.56.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 09 Aug 2021 13:56:28 -0700 (PDT)
-Subject: Re: [PATCH v7 0/6] Add support for FORM2 associativity
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-References: <20210809052434.53978-1-aneesh.kumar@linux.ibm.com>
-From: Daniel Henrique Barboza <danielhb413@gmail.com>
-Message-ID: <3eb3146c-dc38-1de8-262f-ed4326ffcfe0@gmail.com>
-Date: Mon, 9 Aug 2021 17:56:25 -0300
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gk8zl55fFz2xtj
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Aug 2021 07:56:17 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Nzg0JsJe3+u5NO7aRkKN43ICh00ZXDe+OW0A/RD+LlkuqiLbY1DiZIZ4GRoqcQ0HfrFjnlrql/9bLYpYcdcki+UkmR8suztzR8D7Ofvrs/qtBc0JEC2MLS8Uj9b+nysfWTlozzkLTBDZE+EuiXOt43VOWTTMe5u55Eqz/1pgAHj5iWrDsezF6QeAFuQOGQQHqyT2zq8opGmwl21gpHb7TeTSz+MAKWrcbiec8ze8ROsQ2/4qiOz/J8XJCQ96HGWfTGfw7LdXcq+5erG9O0JNlXONqoJ1gzXfXPJdu4RjEbSbavorWVnGzHtIJZEomBNICCA2fKXPQynPfVFe7WO5KA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Qjfqcuynl6MNwWd/ZCoVZg3ncqANglufLbMbDorr4IU=;
+ b=Eb5d+tU/FMpC17fcA7BgpwhTd6835rEtKJcRmEEujF3wEqDplREPU+VwQi4GUQG/WInOQGQvrU6vcpNJ10PEYJs3Z8z9dXlsd01NMq3KVysnNHTW1f3hbDXYOnCcuM5naCStFg4Cq45qJnuHh1qNfZT2zZjNVCzQWiZRIvrGcItUqQgq3rB9QrndI2S3GhcaKOUoI7Mm47JXy3O+vdcSMbaOAmrffV8pjZxsZ9hdiu24b/LfeojqdICMK6OtkW6K7b9bmqTVczsOTqtAEcME66aGbdwR4AyqJ6BAmB88zxSQWptANlVu5PxJqpsqMR7QNc9u8hYxr5WkuziVd+fBUw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Qjfqcuynl6MNwWd/ZCoVZg3ncqANglufLbMbDorr4IU=;
+ b=FSu0tPPV2gwlr3Lx/QgZ8K7q+i6UTH800vC3B/j13KkRO4q11lhf8CsgVCTAE1Afmq9X19QEvU7K86G5wtvIKaSvoxY4CZ83uzbbzyCtuC56huvJQ5jaWMywx+Hpitpemfmt19cEiO+rG0DC6Ea9WR61BFiGYd1louHCe8DLLxE=
+Authentication-Results: redhat.com; dkim=none (message not signed)
+ header.d=none;redhat.com; dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB5229.namprd12.prod.outlook.com (2603:10b6:5:398::12)
+ by DM4PR12MB5295.namprd12.prod.outlook.com (2603:10b6:5:39f::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4394.17; Mon, 9 Aug
+ 2021 21:55:56 +0000
+Received: from DM4PR12MB5229.namprd12.prod.outlook.com
+ ([fe80::73:2581:970b:3208]) by DM4PR12MB5229.namprd12.prod.outlook.com
+ ([fe80::73:2581:970b:3208%3]) with mapi id 15.20.4394.023; Mon, 9 Aug 2021
+ 21:55:56 +0000
+Subject: Re: [PATCH 07/11] treewide: Replace the use of mem_encrypt_active()
+ with prot_guest_has()
+To: Sean Christopherson <seanjc@google.com>
+References: <cover.1627424773.git.thomas.lendacky@amd.com>
+ <029791b24c6412f9427cfe6ec598156c64395964.1627424774.git.thomas.lendacky@amd.com>
+ <YQR+ffO92gMfGDbs@google.com>
+From: Tom Lendacky <thomas.lendacky@amd.com>
+Message-ID: <a8a6a63e-3bb7-47a1-1427-55633f1bf211@amd.com>
+Date: Mon, 9 Aug 2021 16:55:53 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
-MIME-Version: 1.0
-In-Reply-To: <20210809052434.53978-1-aneesh.kumar@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <YQR+ffO92gMfGDbs@google.com>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SN7P220CA0014.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:806:123::19) To DM4PR12MB5229.namprd12.prod.outlook.com
+ (2603:10b6:5:398::12)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [10.236.30.241] (165.204.77.1) by
+ SN7P220CA0014.NAMP220.PROD.OUTLOOK.COM (2603:10b6:806:123::19) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4394.15 via Frontend Transport; Mon, 9 Aug 2021 21:55:54 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 0c9c3def-6ac3-4a7f-ad85-08d95b807723
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5295:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <DM4PR12MB5295F82C01BEDC78DB002AEAECF69@DM4PR12MB5295.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: va1GgnlgkQoGJwHV4u/vWPT7qTpos8azTAmvWS6mQTBalS5XDFQ7rPECEiFxbzhVX4g9ynz6AYUXHBRPGK/BG4lHF214foWL5qc8Ipuv0n5mmNDzMO6Hv31jefLDxr2WadSnaBSsjhcOlIOeTWLFx35539aLQslnZfOQcrR9HIQ/6Jd3qwyUn+WpQhxX+RMaadPnpPiWvT9tSAdv9jKY2wvGt+n0iyJAStAkjw27F0ml616aW8od/L4TyCN/Rsf541EY8pzky7JXzvLU7/IGPLbkS9Hvxze0OonQm7R88g9MhsEH3AoxCa1Dm0lfC8HR3hmxX1uEP24QfIQXKcPZfwRKBPLq0NW1sw827/Ze3N7ol42kAYvvUSlkfJ1fdqtgA1kGUUXPxnFYsMw2nJtU9v6jqjnhxQynBDVvxyErLtGxsYZAlEmTNvdX+nmrFLK4DICPDMozvwfe4Oj00+8tawhx77i/3HhvN/VZYNdWL+sJYOkHz2yNX+Lwy5LNmgFVKmK14mEy7WoQSf1Xy8xi5vf+Mxe7pordAYQihwWwnshQp3BI/u3xhBqUxlGblRIQPkCHfOBx98RbAX43hywnlXnNdkX/s+2X2x6Pi/xKfx8gAVBEPaD5OgvLqBbD091GXXkIopa3grc0gvtmehCybzehCkXBaWrV8m3OjyvmpEFoODxwI3Yf98qWX4ZcfLXnsmSKLIhNbAq0Hm0Db0p2zYqIPigk2iJAVqz1CHGYfUQ=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM4PR12MB5229.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(4636009)(376002)(366004)(136003)(396003)(346002)(39860400002)(956004)(16576012)(186003)(6486002)(8936002)(31696002)(86362001)(8676002)(53546011)(7406005)(54906003)(7416002)(478600001)(316002)(2906002)(4326008)(6916009)(26005)(2616005)(36756003)(66556008)(38100700002)(31686004)(4744005)(5660300002)(66476007)(66946007)(45980500001)(43740500002);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YmZMNW96ZEk2QzY2UndOajg2OTJLTVYzanlKMlhka2FENy9NeEFGRXJETkdQ?=
+ =?utf-8?B?aWtaNU9oOCtFYkhVWnJpME9QQTdwT3Q2cXdlT1lxRzhuTHkwdmFaT2p1Y1NU?=
+ =?utf-8?B?VFVveHVIdERHcXNDOGs3Rks1dXlGeUhsc2FqT1BDTlZkNFRuQndsQTl0OFo4?=
+ =?utf-8?B?UllFdXU3RWVUOUFoSnkrOUE5SDVmVCs1YVV1SytqVHNEQW1zQnA1VnIwQW5Q?=
+ =?utf-8?B?TGpld0lkSWZOWEw2OThaZlY3NGs5RG5vSTlKRkFlbUxveThTL2dEM0g3dVpv?=
+ =?utf-8?B?TzZXWkl4WkRhZFViMTc5dk43UHVqRlNWTVdHRDM3N1BRelVrbHVhaDM4N09u?=
+ =?utf-8?B?Rm0wcVRTYS9wSzRhZEdUUkVBRTAyb01zUkdsU1pNRlhPanpvdXlBd2RLV2NJ?=
+ =?utf-8?B?RWN0YjRZTXVSVG1tK0k5cFRuRkd5Z1hiRFJ3dGNYQnU5dUtqVDl4aGtWemhz?=
+ =?utf-8?B?czdBOG4zSzZhQ3ZhK2Z3R2Z3c2xDVnRqc0VyWFZIeThXR054LzF4QTlOMXg3?=
+ =?utf-8?B?N1h2bDRieDB0VEczcXpTSjNyTUJkY3ZtNVB1amhjTmVGQXdUWlVVcVk0L0FF?=
+ =?utf-8?B?N1Q0L1pxUHljbjBXZHY2TWNMZGpUSTlra3ZHV2NNdWE0bmNoVFNvWEtHanR5?=
+ =?utf-8?B?Y3BsTUdwODJXSjhDMS9oNSt0WExzMDUyYkdzWFE3Mm9ZUmdsRy9BYnZjM2R0?=
+ =?utf-8?B?RFVuWlBheFpWejN6S09HSVQwNnA0WVJGZUhkUnhIamhGN1dQajgwSWtLNlVO?=
+ =?utf-8?B?a0JpbTNQWTZUZHRlRkZKWlg5TnpTcE9yN1BmZmN3WE01YXgwMjlJMSs1cXdx?=
+ =?utf-8?B?QzVOMUtoeWN4bytkVjByd0drZlJBNmFtblluOEwvMEpMcGl2T3I4c2tYbERZ?=
+ =?utf-8?B?U014OFVoRUVxSGl1RGo4YnhTSTFrcUQ4ZmYwMSszc2x3OFovZEhLUnFWSlRk?=
+ =?utf-8?B?aDNJWnJwaFhTUTEvZitBMkZPRkZPNE1xc1Z6aC9JaFdrOFFQbUlkb2hJOGlH?=
+ =?utf-8?B?MG9iL01CbERyeWtHRDJTd3pUVDlMS3hod2tNVW1qbTRJN2pzbzRIS0cxSXg3?=
+ =?utf-8?B?cVhLZzdZbjAzMmIwL0VvcStiQkJVSEVuMmw3cFkwQmw0Yzh5Z0tSWlVQNXp6?=
+ =?utf-8?B?cTM4bGx3cjVtV0ZBU1dOZlN3eEJNVk9NdDBaMG4wWEpPeU1mdmJrbmhVM2VJ?=
+ =?utf-8?B?RkMvZ0M2TDkxQXdnbWxKbWN6UkdIaS8wdDFZS1hGRXdsZ2JRcU9PREhOMmp0?=
+ =?utf-8?B?Wk9LcFk4eWQyV3BJTTNyMEl1Y2YrL0JPTDRWckd6OUFLbjBGZmFFbGdja2N5?=
+ =?utf-8?B?KzQ3WE8rODBHSDRxLytmSXBFbDZVL3R1TStDM1ZicjVKOG9aU0tWZGVLb1Fa?=
+ =?utf-8?B?Y1hjUGFscjNhUjRaV25ldllCdGthamREMVFiZ3Q2UThMTTNCbThLNlVnb0g1?=
+ =?utf-8?B?ZXQ1R0tZWWZkL1RjTlYzY2J3NncvNXplQSttT3R1MjFrZDJXSDd2WFhNMUJx?=
+ =?utf-8?B?VXlyQmNFSDR2VzhRVTFUK1V4M3h5L3l6WnNPZ0lteFprQkhNK1JTS3h2cmxq?=
+ =?utf-8?B?YTdMVjd4Nm9zYkdiMit1bGF3VlJIdHdlQUdRMFVvQzlKWktFeWJ3bVFvVlhr?=
+ =?utf-8?B?Y3E2dVFvK2NROUdqZXJmWEtWYStMTW42bWR5K2g2aERiOVRHZytIWGtqQ0tZ?=
+ =?utf-8?B?clhaZVV3blo0L2dRbDJYMUM0QmVFTGQyRjVjenYrN0xoeVhYblUzcFJHb3lu?=
+ =?utf-8?Q?hU5Nt3rVA6gzUChUx3/nd3C3z1WuFX1/ao0tSAJ?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0c9c3def-6ac3-4a7f-ad85-08d95b807723
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5229.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Aug 2021 21:55:56.4514 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: gVMUdJrJtSzpeS/OVG6KXOyXh5yqKz+0hfHnt6FLUw5aHfd3whCwKAMeR092Kk8k7apxnVxc1jIYxygM9OqnpQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5295
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,135 +141,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ linux-efi@vger.kernel.org, Brijesh Singh <brijesh.singh@amd.com>,
+ kvm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org,
+ platform-driver-x86@vger.kernel.org, Will Deacon <will@kernel.org>,
+ linux-s390@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
+ Baoquan He <bhe@redhat.com>, Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
+ amd-gfx@lists.freedesktop.org, David Airlie <airlied@linux.ie>,
+ Ingo Molnar <mingo@redhat.com>, linux-graphics-maintainer@vmware.com,
+ Dave Young <dyoung@redhat.com>, Tianyu Lan <Tianyu.Lan@microsoft.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ iommu@lists.linux-foundation.org, Daniel Vetter <daniel@ffwll.ch>,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 7/30/21 5:34 PM, Sean Christopherson wrote:
+> On Tue, Jul 27, 2021, Tom Lendacky wrote:
+>> @@ -451,7 +450,7 @@ void __init mem_encrypt_free_decrypted_mem(void)
+>>  	 * The unused memory range was mapped decrypted, change the encryption
+>>  	 * attribute from decrypted to encrypted before freeing it.
+>>  	 */
+>> -	if (mem_encrypt_active()) {
+>> +	if (sme_me_mask) {
+> 
+> Any reason this uses sme_me_mask?  The helper it calls, __set_memory_enc_dec(),
+> uses prot_guest_has(PATTR_MEM_ENCRYPT) so I assume it's available?
 
+Probably just a slip on my part. I was debating at one point calling the
+helper vs. referencing the variables/functions directly in the
+mem_encrypt.c file.
 
-On 8/9/21 2:24 AM, Aneesh Kumar K.V wrote:
-> Form2 associativity adds a much more flexible NUMA topology layout
-> than what is provided by Form1. More details can be found in patch 7.
-> 
-> $ numactl -H
-> ...
-> node distances:
-> node   0   1   2   3
->    0:  10  11  222  33
->    1:  44  10  55  66
->    2:  77  88  10  99
->    3:  101  121  132  10
-> $
-> 
-> After DAX kmem memory add
-> # numactl -H
-> available: 5 nodes (0-4)
-> ...
-> node distances:
-> node   0   1   2   3   4
->    0:  10  11  222  33  240
->    1:  44  10  55  66  255
->    2:  77  88  10  99  255
->    3:  101  121  132  10  230
->    4:  255  255  255  230  10
-> 
-> 
-> PAPR SCM now use the numa distance details to find the numa_node and target_node
-> for the device.
-> 
-> kvaneesh@ubuntu-guest:~$ ndctl  list -N -v
-> [
->    {
->      "dev":"namespace0.0",
->      "mode":"devdax",
->      "map":"dev",
->      "size":1071644672,
->      "uuid":"d333d867-3f57-44c8-b386-d4d3abdc2bf2",
->      "raw_uuid":"915361ad-fe6a-42dd-848f-d6dc9f5af362",
->      "daxregion":{
->        "id":0,
->        "size":1071644672,
->        "devices":[
->          {
->            "chardev":"dax0.0",
->            "size":1071644672,
->            "target_node":4,
->            "mode":"devdax"
->          }
->        ]
->      },
->      "align":2097152,
->      "numa_node":3
->    }
-> ]
-> kvaneesh@ubuntu-guest:~$
-> 
-> 
-> The above output is with a Qemu command line
-> 
-> -numa node,nodeid=4 \
-> -numa dist,src=0,dst=1,val=11 -numa dist,src=0,dst=2,val=222 -numa dist,src=0,dst=3,val=33 -numa dist,src=0,dst=4,val=240 \
-> -numa dist,src=1,dst=0,val=44 -numa dist,src=1,dst=2,val=55 -numa dist,src=1,dst=3,val=66 -numa dist,src=1,dst=4,val=255 \
-> -numa dist,src=2,dst=0,val=77 -numa dist,src=2,dst=1,val=88 -numa dist,src=2,dst=3,val=99 -numa dist,src=2,dst=4,val=255 \
-> -numa dist,src=3,dst=0,val=101 -numa dist,src=3,dst=1,val=121 -numa dist,src=3,dst=2,val=132 -numa dist,src=3,dst=4,val=230 \
-> -numa dist,src=4,dst=0,val=255 -numa dist,src=4,dst=1,val=255 -numa dist,src=4,dst=2,val=255 -numa dist,src=4,dst=3,val=230 \
-> -object memory-backend-file,id=memnvdimm1,prealloc=yes,mem-path=$PMEM_DISK,share=yes,size=${PMEM_SIZE}  \
-> -device nvdimm,label-size=128K,memdev=memnvdimm1,id=nvdimm1,slot=4,uuid=72511b67-0b3b-42fd-8d1d-5be3cae8bcaa,node=4
-> 
-> Qemu changes can be found at https://lore.kernel.org/qemu-devel/20210616011944.2996399-1-danielhb413@gmail.com/
-
-
-Series tested with the forementioned QEMU build. All patches:
-
-
-Tested-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+Thanks,
+Tom
 
 > 
-> Changes from v6:
-> * Address review feedback
-> 
-> Changes from v5:
-> * Fix build error reported by kernel test robot
-> * Address review feedback
-> 
-> Changes from v4:
-> * Drop DLPAR related device tree property for now because both Qemu nor PowerVM
->    will provide the distance details of all possible NUMA nodes during boot.
-> * Rework numa distance code based on review feedback.
-> 
-> Changes from v3:
-> * Drop PAPR SCM specific changes and depend completely on NUMA distance information.
-> 
-> Changes from v2:
-> * Add nvdimm list to Cc:
-> * update PATCH 8 commit message.
-> 
-> Changes from v1:
-> * Update FORM2 documentation.
-> * rename max_domain_index to max_associativity_domain_index
-> 
-> 
-> Aneesh Kumar K.V (6):
->    powerpc/pseries: rename min_common_depth to primary_domain_index
->    powerpc/pseries: Rename TYPE1_AFFINITY to FORM1_AFFINITY
->    powerpc/pseries: Consolidate different NUMA distance update code paths
->    powerpc/pseries: Add a helper for form1 cpu distance
->    powerpc/pseries: Add support for FORM2 associativity
->    powerpc/pseries: Consolidate form1 distance initialization into a
->      helper
-> 
->   Documentation/powerpc/associativity.rst       | 103 +++++
->   arch/powerpc/include/asm/firmware.h           |   7 +-
->   arch/powerpc/include/asm/prom.h               |   3 +-
->   arch/powerpc/include/asm/topology.h           |   6 +-
->   arch/powerpc/kernel/prom_init.c               |   3 +-
->   arch/powerpc/mm/numa.c                        | 433 ++++++++++++++----
->   arch/powerpc/platforms/pseries/firmware.c     |   3 +-
->   arch/powerpc/platforms/pseries/hotplug-cpu.c  |   2 +
->   .../platforms/pseries/hotplug-memory.c        |   2 +
->   arch/powerpc/platforms/pseries/lpar.c         |   4 +-
->   10 files changed, 455 insertions(+), 111 deletions(-)
->   create mode 100644 Documentation/powerpc/associativity.rst
+>>  		r = set_memory_encrypted(vaddr, npages);
+>>  		if (r) {
+>>  			pr_warn("failed to free unused decrypted pages\n");
 > 
