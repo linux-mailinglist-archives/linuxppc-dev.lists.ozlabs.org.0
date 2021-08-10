@@ -1,69 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A9DA3E5583
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Aug 2021 10:34:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C422F3E558A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Aug 2021 10:34:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GkR7v2dBzz3bWH
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Aug 2021 18:34:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GkR8c4D3tz3bW9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Aug 2021 18:34:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=ZX9kpQH2;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Vxow0MH4;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::136;
- helo=mail-lf1-x136.google.com; envelope-from=sxwjean@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::131;
+ helo=mail-lf1-x131.google.com; envelope-from=sxwjean@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=ZX9kpQH2; dkim-atps=neutral
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com
- [IPv6:2a00:1450:4864:20::136])
+ header.s=20161025 header.b=Vxow0MH4; dkim-atps=neutral
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com
+ [IPv6:2a00:1450:4864:20::131])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GkR7B3LJ3z304j
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Aug 2021 18:33:41 +1000 (AEST)
-Received: by mail-lf1-x136.google.com with SMTP id w20so13248645lfu.7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Aug 2021 01:33:41 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GkR7p5LGdz3bYx
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Aug 2021 18:34:14 +1000 (AEST)
+Received: by mail-lf1-x131.google.com with SMTP id z20so2760934lfd.2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Aug 2021 01:34:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
  :cc:content-transfer-encoding;
- bh=p2Fr5BJzhcYbE5uoZF3uMydSpmFYCPWUAIM4ZDQIAO8=;
- b=ZX9kpQH2G3eesgI+qHAHL1ZSUCALh+QYm9VkNA2ZVb4n/vvxRRGVrH2bWa1vk9TrG4
- WxOt/pG3CQ1DojqpbuVR2VUvdEnpDh82SwV8LJ9fHWaqlMshBTghsuUy7R+K9Kq1I5EH
- eD5wvl1lFJ7sEiLKpGMZ84snliGClZ20x7TIZZvnTuJaGmti15gmHEEtLmmi9rpM/QYg
- mXzrXV1qeourKNTywlvA3jrQcO2M+coW+i0DxdbhOD676KkBDzhAk2zMfu5zHwUhRu/o
- Sp89C5VSXEQPSyKKGrBmI9gRUzAObj3Y29jcYXn/Cn617MSfFtEqsBJ7EoU54HxTwYBa
- d69g==
+ bh=a6dGXjWO0NCC+0cj+bZFV+qIFXfEn1q96bp9PHM8gws=;
+ b=Vxow0MH4iTUSKGYSfuLuIum/eTzzBI1YAPCzCfZXxGQz2BfVWTfRfbtBdl5j2FjJqX
+ 6qgD7BdR3wVR8R/uX/z0U7o9vI0u/Q6H/rBslZGQvz2Lm1pJXS4Ti70DucY+udnR48an
+ Rl3/zOInosa4ev0POv5PVAA9rn6mQ+VHjFo51QlbE0aDlToVfvMIKgF2tbW+uneZWrxD
+ 3bGoTtwN/9cUzDDVeP2MgTLtH2LdvjJHtkDrgNnwUcWEBy9QEtIdCoOY2yzfUqkVk68z
+ QKsYGmB9FxXsC3aeT31KhRpw7JvP/kNdlzPhb8L9/zor3BMwIq+ZVnTD992Xwlu69yx8
+ g/Jw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc:content-transfer-encoding;
- bh=p2Fr5BJzhcYbE5uoZF3uMydSpmFYCPWUAIM4ZDQIAO8=;
- b=CzYQV7gFJwzxGcPe36lOlje/L82vLiHSwU0GTPR4bG6u2nQRHhuqKSlRsNqaj6YM46
- nhvs0yGm/Q431caVfdaFGFvXdr3NY8fqFxLlfK+FTzM6ynRB5APPMqxeKi7m1HBJ1YC/
- +LstLVcoFnTC8o/pEXhp0VMTAX+MJsYWUevHyGKyu3xXw5sx1ovoB9+jfyTOYfF2UyQe
- BSG7ykkSaiJTOHLNBWpLdctA1mALZEjoH5QmeJT/9XivU7jRP/9sQZMmoMI5lyx1gSRZ
- wdZL469DyhCWCWqbKuW+PkWWHl1qN7zAQBqB4/81uUEvt6quNo+gvpj2oqrliJVjnQJF
- rMPw==
-X-Gm-Message-State: AOAM5317xKnA4ZKUXP46y7HZvcu+UG/NOv2yMFs7W7Fbv5Fo4GdEChN8
- KdiuOiKavTPHjTKscwIjDesF2+M2OKFrtSaYSwk=
-X-Google-Smtp-Source: ABdhPJyrI9dStbUFIFtHPxBjTNID3TeK9D5oT0XbVpIxhRowhuOAkAEEEqiEYMCwd5D31/PuAwcBbvCpSVEWo7Kufs4=
-X-Received: by 2002:a05:6512:53c:: with SMTP id
- o28mr21246802lfc.641.1628584414971; 
- Tue, 10 Aug 2021 01:33:34 -0700 (PDT)
+ bh=a6dGXjWO0NCC+0cj+bZFV+qIFXfEn1q96bp9PHM8gws=;
+ b=Ibq2s35HvsSXjDq2QDCGpjxHqyCpubkUATo08XTjjIcwsrHe0WyXfrRu6kl5NrmxgT
+ FI5S4IKCbv0A+kK7jXDXJELglN6QXRoBn9HVZud8FGi7PQzFfc5H/kOGmGHgUtllukVd
+ WQz5ZOm29oKrtGuuSi+Tl7z6fJ/38+TGQSYdnWR+EsKNtPbVIq7RHklN+PM5BPVs0LXV
+ CskurHJNClnP/3NNJX4v+r1NAyJb5iyuMBTcw3r3pQZ2L4AYkgEQCkz7NYLtN3YDqgod
+ gfX1UHw/TQU5ORhyf/CYfLufi2uylZLfxZT/6keKvqfBTUYy8HyvfcnAFa6p2VepaUPT
+ o7Qw==
+X-Gm-Message-State: AOAM531SYDMxxDfIn1MwWNzbbUbXUgQiZ50KqcZdzQL135c2Z9T2y9Y0
+ SJ31ux88eRuzMU8FTk2DiSWfowfwzvow/xC4zPI=
+X-Google-Smtp-Source: ABdhPJxlem10rUrgwQzm2KR3+POEFuLuoRZoBA7fkmY5PZ8qejYLtr7C/lo8nKg8cuZJ7R0kzYMu6r0f4ANGgsm9PVo=
+X-Received: by 2002:ac2:4ed3:: with SMTP id p19mr20580652lfr.307.1628584450567; 
+ Tue, 10 Aug 2021 01:34:10 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210807010239.416055-1-sxwjean@me.com>
- <20210807010239.416055-2-sxwjean@me.com>
- <127de0c7-5e30-6797-1e72-6414d4a60119@csgroup.eu>
-In-Reply-To: <127de0c7-5e30-6797-1e72-6414d4a60119@csgroup.eu>
+ <20210807010239.416055-4-sxwjean@me.com>
+ <dfd24c4a-c43f-912c-5876-f1cac704f336@csgroup.eu>
+In-Reply-To: <dfd24c4a-c43f-912c-5876-f1cac704f336@csgroup.eu>
 From: Xiongwei Song <sxwjean@gmail.com>
-Date: Tue, 10 Aug 2021 16:33:08 +0800
-Message-ID: <CAEVVKH_G1GjofNU4M0mtuaOAtLyTZ+Fcjjr3ywqeXJrJVwpgrA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] powerpc: Optimize register usage for esr register
+Date: Tue, 10 Aug 2021 16:33:44 +0800
+Message-ID: <CAEVVKH972N2hT-WP=5p6GrYEdEV1DO=D0PJo24WZ9gMVgqzaWA@mail.gmail.com>
+Subject: Re: [PATCH v2 3/4] powerpc: Optimize register usage for dear register
 To: Christophe Leroy <christophe.leroy@csgroup.eu>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -87,7 +86,7 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Aug 7, 2021 at 2:57 PM Christophe Leroy
+On Sat, Aug 7, 2021 at 2:58 PM Christophe Leroy
 <christophe.leroy@csgroup.eu> wrote:
 >
 >
@@ -95,41 +94,38 @@ On Sat, Aug 7, 2021 at 2:57 PM Christophe Leroy
 > Le 07/08/2021 =C3=A0 03:02, sxwjean@me.com a =C3=A9crit :
 > > From: Xiongwei Song <sxwjean@gmail.com>
 > >
-> > Create an anonymous union for dsisr and esr regsiters, we can reference
-> > esr to get the exception detail when CONFIG_4xx=3Dy or CONFIG_BOOKE=3Dy=
-.
-> > Otherwise, reference dsisr. This makes code more clear.
+> > Create an anonymous union for dar and dear regsiters, we can reference
+> > dear to get the effective address when CONFIG_4xx=3Dy or CONFIG_BOOKE=
+=3Dy.
+> > Otherwise, reference dar. This makes code more clear.
 > >
 > > Signed-off-by: Xiongwei Song <sxwjean@gmail.com>
 > > ---
-> >   arch/powerpc/include/asm/ptrace.h          | 5 ++++-
-> >   arch/powerpc/kernel/process.c              | 2 +-
-> >   arch/powerpc/kernel/ptrace/ptrace.c        | 2 ++
-> >   arch/powerpc/kernel/traps.c                | 2 +-
-> >   arch/powerpc/platforms/44x/machine_check.c | 4 ++--
-> >   arch/powerpc/platforms/4xx/machine_check.c | 2 +-
-> >   6 files changed, 11 insertions(+), 6 deletions(-)
+> >   arch/powerpc/include/asm/ptrace.h   | 5 ++++-
+> >   arch/powerpc/kernel/process.c       | 2 +-
+> >   arch/powerpc/kernel/ptrace/ptrace.c | 2 ++
+> >   3 files changed, 7 insertions(+), 2 deletions(-)
 > >
 > > diff --git a/arch/powerpc/include/asm/ptrace.h b/arch/powerpc/include/a=
 sm/ptrace.h
-> > index 3e5d470a6155..c252d04b1206 100644
+> > index c252d04b1206..fa725e3238c2 100644
 > > --- a/arch/powerpc/include/asm/ptrace.h
 > > +++ b/arch/powerpc/include/asm/ptrace.h
-> > @@ -44,7 +44,10 @@ struct pt_regs
+> > @@ -43,7 +43,10 @@ struct pt_regs
+> >                       unsigned long mq;
 > >   #endif
 > >                       unsigned long trap;
-> >                       unsigned long dar;
-> > -                     unsigned long dsisr;
+> > -                     unsigned long dar;
 > > +                     union {
-> > +                             unsigned long dsisr;
-> > +                             unsigned long esr;
+> > +                             unsigned long dar;
+> > +                             unsigned long dear;
 > > +                     };
-> >                       unsigned long result;
-> >               };
-> >       };
+> >                       union {
+> >                               unsigned long dsisr;
+> >                               unsigned long esr;
 > > diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/proces=
 s.c
-> > index 185beb290580..f74af8f9133c 100644
+> > index f74af8f9133c..50436b52c213 100644
 > > --- a/arch/powerpc/kernel/process.c
 > > +++ b/arch/powerpc/kernel/process.c
 > > @@ -1499,7 +1499,7 @@ static void __show_regs(struct pt_regs *regs)
@@ -137,87 +133,35 @@ s.c
 > >           trap =3D=3D INTERRUPT_ALIGNMENT) {
 > >               if (IS_ENABLED(CONFIG_4xx) || IS_ENABLED(CONFIG_BOOKE))
 > > -                     pr_cont("DEAR: "REG" ESR: "REG" ", regs->dar, reg=
-s->dsisr);
-> > +                     pr_cont("DEAR: "REG" ESR: "REG" ", regs->dar, reg=
 s->esr);
+> > +                     pr_cont("DEAR: "REG" ESR: "REG" ", regs->dear, re=
+gs->esr);
 > >               else
 > >                       pr_cont("DAR: "REG" DSISR: %08lx ", regs->dar, re=
 gs->dsisr);
 > >       }
 > > diff --git a/arch/powerpc/kernel/ptrace/ptrace.c b/arch/powerpc/kernel/=
 ptrace/ptrace.c
-> > index 0a0a33eb0d28..a222fd4d6334 100644
+> > index a222fd4d6334..7c7093c17c45 100644
 > > --- a/arch/powerpc/kernel/ptrace/ptrace.c
 > > +++ b/arch/powerpc/kernel/ptrace/ptrace.c
-> > @@ -375,6 +375,8 @@ void __init pt_regs_check(void)
+> > @@ -373,6 +373,8 @@ void __init pt_regs_check(void)
+> >                    offsetof(struct user_pt_regs, trap));
+> >       BUILD_BUG_ON(offsetof(struct pt_regs, dar) !=3D
 > >                    offsetof(struct user_pt_regs, dar));
-> >       BUILD_BUG_ON(offsetof(struct pt_regs, dsisr) !=3D
-> >                    offsetof(struct user_pt_regs, dsisr));
-> > +     BUILD_BUG_ON(offsetof(struct pt_regs, esr) !=3D
-> > +                  offsetof(struct user_pt_regs, dsisr));
+> > +     BUILD_BUG_ON(offsetof(struct pt_regs, dear) !=3D
+> > +                  offsetof(struct user_pt_regs, dar));
 >
-> esr and dsisr are the same, so checking the same thing a second time is p=
-ointless.
+> dar and dear are the same, so checking the same thing a second time is po=
+intless.
 
-Hmm...it's better to check if the changes on pt_regs structure is
-expected I think.
+Same reply as the patch 1.
 
 Regards,
 Xiongwei
 
 >
-> >       BUILD_BUG_ON(offsetof(struct pt_regs, result) !=3D
-> >                    offsetof(struct user_pt_regs, result));
-> >
-> > diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-> > index dfbce527c98e..2164f5705a0b 100644
-> > --- a/arch/powerpc/kernel/traps.c
-> > +++ b/arch/powerpc/kernel/traps.c
-> > @@ -562,7 +562,7 @@ static inline int check_io_access(struct pt_regs *r=
-egs)
-> >   #ifdef CONFIG_PPC_ADV_DEBUG_REGS
-> >   /* On 4xx, the reason for the machine check or program exception
-> >      is in the ESR. */
-> > -#define get_reason(regs)     ((regs)->dsisr)
-> > +#define get_reason(regs)     ((regs)->esr)
-> >   #define REASON_FP           ESR_FP
-> >   #define REASON_ILLEGAL              (ESR_PIL | ESR_PUO)
-> >   #define REASON_PRIVILEGED   ESR_PPR
-> > diff --git a/arch/powerpc/platforms/44x/machine_check.c b/arch/powerpc/=
-platforms/44x/machine_check.c
-> > index a5c898bb9bab..5d19daacd78a 100644
-> > --- a/arch/powerpc/platforms/44x/machine_check.c
-> > +++ b/arch/powerpc/platforms/44x/machine_check.c
-> > @@ -11,7 +11,7 @@
-> >
-> >   int machine_check_440A(struct pt_regs *regs)
-> >   {
-> > -     unsigned long reason =3D regs->dsisr;
-> > +     unsigned long reason =3D regs->esr;
-> >
-> >       printk("Machine check in kernel mode.\n");
-> >       if (reason & ESR_IMCP){
-> > @@ -48,7 +48,7 @@ int machine_check_440A(struct pt_regs *regs)
-> >   #ifdef CONFIG_PPC_47x
-> >   int machine_check_47x(struct pt_regs *regs)
-> >   {
-> > -     unsigned long reason =3D regs->dsisr;
-> > +     unsigned long reason =3D regs->esr;
-> >       u32 mcsr;
-> >
-> >       printk(KERN_ERR "Machine check in kernel mode.\n");
-> > diff --git a/arch/powerpc/platforms/4xx/machine_check.c b/arch/powerpc/=
-platforms/4xx/machine_check.c
-> > index a71c29892a91..a905da1d6f41 100644
-> > --- a/arch/powerpc/platforms/4xx/machine_check.c
-> > +++ b/arch/powerpc/platforms/4xx/machine_check.c
-> > @@ -10,7 +10,7 @@
-> >
-> >   int machine_check_4xx(struct pt_regs *regs)
-> >   {
-> > -     unsigned long reason =3D regs->dsisr;
-> > +     unsigned long reason =3D regs->esr;
-> >
-> >       if (reason & ESR_IMCP) {
-> >               printk("Instruction");
+> >       BUILD_BUG_ON(offsetof(struct pt_regs, dsisr) !=3D
+> >                    offsetof(struct user_pt_regs, dsisr));
+> >       BUILD_BUG_ON(offsetof(struct pt_regs, esr) !=3D
 > >
