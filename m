@@ -2,41 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0B433E5E42
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Aug 2021 16:45:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F2713E7D3D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Aug 2021 18:13:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GkbNQ3zRkz3dbZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Aug 2021 00:45:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GkdL56cZkz3cHh
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Aug 2021 02:13:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=134.134.136.20; helo=mga02.intel.com;
- envelope-from=ricardo.neri-calderon@linux.intel.com; receiver=<UNKNOWN>)
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GkbKC4njJz30Fy
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Aug 2021 00:42:55 +1000 (AEST)
-X-IronPort-AV: E=McAfee;i="6200,9189,10072"; a="202097421"
-X-IronPort-AV: E=Sophos;i="5.84,310,1620716400"; d="scan'208";a="202097421"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
- by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Aug 2021 07:41:48 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.84,310,1620716400"; d="scan'208";a="526170599"
-Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
- by fmsmga002.fm.intel.com with ESMTP; 10 Aug 2021 07:41:45 -0700
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-To: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Ingo Molnar <mingo@kernel.org>, Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>
-Subject: [PATCH v4 6/6] sched/fair: Consider SMT in ASYM_PACKING load balance
-Date: Tue, 10 Aug 2021 07:41:45 -0700
-Message-Id: <20210810144145.18776-7-ricardo.neri-calderon@linux.intel.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210810144145.18776-1-ricardo.neri-calderon@linux.intel.com>
-References: <20210810144145.18776-1-ricardo.neri-calderon@linux.intel.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GkdKc39r6z308Q
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Aug 2021 02:13:21 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4GkdKV0Mccz9sVp;
+ Tue, 10 Aug 2021 18:13:18 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id g3Ry5FICJkrA; Tue, 10 Aug 2021 18:13:17 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4GkdKT5Gjjz9sVm;
+ Tue, 10 Aug 2021 18:13:17 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 693F48B7B9;
+ Tue, 10 Aug 2021 18:13:17 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id Flhc86IN3rmi; Tue, 10 Aug 2021 18:13:17 +0200 (CEST)
+Received: from po9473vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 231028B7C1;
+ Tue, 10 Aug 2021 18:13:17 +0200 (CEST)
+Received: by po9473vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id CD49166271; Tue, 10 Aug 2021 16:13:16 +0000 (UTC)
+Message-Id: <c17d234f4927d39a1d7100864a8e1145323d33a0.1628611927.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH] powerpc/interrupt: Fix OOPS by not calling do_IRQ() from
+ timer_interrupt()
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ npiggin@gmail.com, userm57@yahoo.com, fthain@linux-m68k.org
+Date: Tue, 10 Aug 2021 16:13:16 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,195 +59,154 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Len Brown <len.brown@intel.com>, Aubrey Li <aubrey.li@intel.com>,
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
- "Ravi V. Shankar" <ravi.v.shankar@intel.com>, linuxppc-dev@lists.ozlabs.org,
- Aubrey Li <aubrey.li@linux.intel.com>, Nicholas Piggin <npiggin@gmail.com>,
- Ricardo Neri <ricardo.neri@intel.com>, Steven Rostedt <rostedt@goodmis.org>,
- Quentin Perret <qperret@google.com>, Ben Segall <bsegall@google.com>,
- Mel Gorman <mgorman@suse.de>, Daniel Bristot de Oliveira <bristot@redhat.com>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- "Joel Fernandes \(Google\)" <joel@joelfernandes.org>,
- Tim Chen <tim.c.chen@linux.intel.com>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>, linux-kernel@vger.kernel.org,
- Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When deciding to pull tasks in ASYM_PACKING, it is necessary not only to
-check for the idle state of the destination CPU, dst_cpu, but also of
-its SMT siblings.
+An interrupt handler shall not be called from another interrupt
+handler otherwise this leads to problems like the following:
 
-If dst_cpu is idle but its SMT siblings are busy, performance suffers
-if it pulls tasks from a medium priority CPU that does not have SMT
-siblings.
+	Kernel attempted to write user page (afd4fa84) - exploit attempt? (uid: 1000)
+	------------[ cut here ]------------
+	Bug: Write fault blocked by KUAP!
+	WARNING: CPU: 0 PID: 1617 at arch/powerpc/mm/fault.c:230 do_page_fault+0x484/0x720
+	Modules linked in:
+	CPU: 0 PID: 1617 Comm: sshd Tainted: G        W         5.13.0-pmac-00010-g8393422eb77 #7
+	NIP:  c001b77c LR: c001b77c CTR: 00000000
+	REGS: cb9e5bc0 TRAP: 0700   Tainted: G        W          (5.13.0-pmac-00010-g8393422eb77)
+	MSR:  00021032 <ME,IR,DR,RI>  CR: 24942424  XER: 00000000
 
-Implement asym_smt_can_pull_tasks() to inspect the state of the SMT
-siblings of both dst_cpu and the CPUs in the candidate busiest group.
+	GPR00: c001b77c cb9e5c80 c1582c00 00000021 3ffffbff 085b0000 00000027 c8eb644c
+	GPR08: 00000023 00000000 00000000 00000000 24942424 0063f8c8 00000000 000186a0
+	GPR16: afd52dd4 afd52dd0 afd52dcc afd52dc8 0065a990 c07640c4 cb9e5e98 cb9e5e90
+	GPR24: 00000040 afd4fa96 00000040 02000000 c1fda6c0 afd4fa84 00000300 cb9e5cc0
+	NIP [c001b77c] do_page_fault+0x484/0x720
+	LR [c001b77c] do_page_fault+0x484/0x720
+	Call Trace:
+	[cb9e5c80] [c001b77c] do_page_fault+0x484/0x720 (unreliable)
+	[cb9e5cb0] [c000424c] DataAccess_virt+0xd4/0xe4
+	--- interrupt: 300 at __copy_tofrom_user+0x110/0x20c
+	NIP:  c001f9b4 LR: c03250a0 CTR: 00000004
+	REGS: cb9e5cc0 TRAP: 0300   Tainted: G        W          (5.13.0-pmac-00010-g8393422eb77)
+	MSR:  00009032 <EE,ME,IR,DR,RI>  CR: 48028468  XER: 20000000
+	DAR: afd4fa84 DSISR: 0a000000
+	GPR00: 20726f6f cb9e5d80 c1582c00 00000004 cb9e5e3a 00000016 afd4fa80 00000000
+	GPR08: 3835202d 72777872 2d78722d 00000004 28028464 0063f8c8 00000000 000186a0
+	GPR16: afd52dd4 afd52dd0 afd52dcc afd52dc8 0065a990 c07640c4 cb9e5e98 cb9e5e90
+	GPR24: 00000040 afd4fa96 00000040 cb9e5e0c 00000daa a0000000 cb9e5e98 afd4fa56
+	NIP [c001f9b4] __copy_tofrom_user+0x110/0x20c
+	LR [c03250a0] _copy_to_iter+0x144/0x990
+	--- interrupt: 300
+	[cb9e5d80] [c03e89c0] n_tty_read+0xa4/0x598 (unreliable)
+	[cb9e5df0] [c03e2a0c] tty_read+0xdc/0x2b4
+	[cb9e5e80] [c0156bf8] vfs_read+0x274/0x340
+	[cb9e5f00] [c01571ac] ksys_read+0x70/0x118
+	[cb9e5f30] [c0016048] ret_from_syscall+0x0/0x28
+	--- interrupt: c00 at 0xa7855c88
+	NIP:  a7855c88 LR: a7855c5c CTR: 00000000
+	REGS: cb9e5f40 TRAP: 0c00   Tainted: G        W          (5.13.0-pmac-00010-g8393422eb77)
+	MSR:  0000d032 <EE,PR,ME,IR,DR,RI>  CR: 2402446c  XER: 00000000
 
-Cc: Aubrey Li <aubrey.li@intel.com>
-Cc: Ben Segall <bsegall@google.com>
-Cc: Daniel Bristot de Oliveira <bristot@redhat.com>
-Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: Quentin Perret <qperret@google.com>
-Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Tim Chen <tim.c.chen@linux.intel.com>
-Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Reviewed-by: Len Brown <len.brown@intel.com>
-Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+	GPR00: 00000003 afd4ec70 a72137d0 0000000b afd4ecac 00004000 0065a990 00000800
+	GPR08: 00000000 a7947930 00000000 00000004 c15831b0 0063f8c8 00000000 000186a0
+	GPR16: afd52dd4 afd52dd0 afd52dcc afd52dc8 0065a990 0065a9e0 00000001 0065fac0
+	GPR24: 00000000 00000089 00664050 00000000 00668e30 a720c8dc a7943ff4 0065f9b0
+	NIP [a7855c88] 0xa7855c88
+	LR [a7855c5c] 0xa7855c5c
+	--- interrupt: c00
+	Instruction dump:
+	3884aa88 38630178 48076861 807f0080 48042e45 2f830000 419e0148 3c80c079
+	3c60c076 38841be4 386301c0 4801f705 <0fe00000> 3860000b 4bfffe30 3c80c06b
+	---[ end trace fd69b91a8046c2e5 ]---
+
+Here the problem is that by re-enterring an exception handler,
+kuap_save_and_lock() is called a second time with this time KUAP
+access locked, leading to regs->kuap being overwritten hence
+KUAP not being unlocked at exception exit as expected.
+
+Do not call do_IRQ() from timer_interrupt() directly. Instead,
+redefine do_IRQ() as a standard function named __do_IRQ(), and
+call it from both do_IRQ() and time_interrupt() handlers.
+
+Reported-by: Stan Johnson <userm57@yahoo.com>
+Fixes: 3a96570ffceb ("powerpc: convert interrupt handlers to use wrappers")
+Cc: stable@vger.kernel.org
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Finn Thain <fthain@linux-m68k.org>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
-Changes since v3:
-  * Removed the arch_asym_check_smt_siblings() hook. Discussions with the
-    powerpc folks showed that this patch should not impact them. Also, more
-    recent powerpc processor no longer use asym_packing. (PeterZ)
-  * Removed unnecessary local variable in asym_can_pull_tasks(). (Dietmar)
-  * Removed unnecessary check for local CPUs when the local group has zero
-    utilization. (Joel)
-  * Renamed asym_can_pull_tasks() as asym_smt_can_pull_tasks() to reflect
-    the fact that it deals with SMT cases.
-  * Made asym_smt_can_pull_tasks() return false for !CONFIG_SCHED_SMT so
-    that callers can deal with non-SMT cases.
+ arch/powerpc/include/asm/interrupt.h | 3 +++
+ arch/powerpc/include/asm/irq.h       | 2 +-
+ arch/powerpc/kernel/irq.c            | 7 ++++++-
+ arch/powerpc/kernel/time.c           | 2 +-
+ 4 files changed, 11 insertions(+), 3 deletions(-)
 
-Changes since v2:
-  * Reworded the commit message to reflect updates in code.
-  * Corrected misrepresentation of dst_cpu as the CPU doing the load
-    balancing. (PeterZ)
-  * Removed call to arch_asym_check_smt_siblings() as it is now called in
-    sched_asym().
-
-Changes since v1:
-  * Don't bailout in update_sd_pick_busiest() if dst_cpu cannot pull
-    tasks. Instead, reclassify the candidate busiest group, as it
-    may still be selected. (PeterZ)
-  * Avoid an expensive and unnecessary call to cpumask_weight() when
-    determining if a sched_group is comprised of SMT siblings.
-    (PeterZ).
----
- kernel/sched/fair.c | 95 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 95 insertions(+)
-
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index dd411cefb63f..8a1a2a43732c 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -8531,10 +8531,99 @@ group_type group_classify(unsigned int imbalance_pct,
- 	return group_has_spare;
+diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
+index fc4702bdd119..1e984a35a39f 100644
+--- a/arch/powerpc/include/asm/interrupt.h
++++ b/arch/powerpc/include/asm/interrupt.h
+@@ -590,6 +590,9 @@ DECLARE_INTERRUPT_HANDLER_NMI(hmi_exception_realmode);
+ 
+ DECLARE_INTERRUPT_HANDLER_ASYNC(TAUException);
+ 
++/* irq.c */
++DECLARE_INTERRUPT_HANDLER_ASYNC(do_IRQ);
++
+ void __noreturn unrecoverable_exception(struct pt_regs *regs);
+ 
+ void replay_system_reset(void);
+diff --git a/arch/powerpc/include/asm/irq.h b/arch/powerpc/include/asm/irq.h
+index 4982f3711fc3..2b3278534bc1 100644
+--- a/arch/powerpc/include/asm/irq.h
++++ b/arch/powerpc/include/asm/irq.h
+@@ -52,7 +52,7 @@ extern void *mcheckirq_ctx[NR_CPUS];
+ extern void *hardirq_ctx[NR_CPUS];
+ extern void *softirq_ctx[NR_CPUS];
+ 
+-extern void do_IRQ(struct pt_regs *regs);
++void __do_IRQ(struct pt_regs *regs);
+ extern void __init init_IRQ(void);
+ extern void __do_irq(struct pt_regs *regs);
+ 
+diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
+index 91e63eac4e8f..551b653228c4 100644
+--- a/arch/powerpc/kernel/irq.c
++++ b/arch/powerpc/kernel/irq.c
+@@ -750,7 +750,7 @@ void __do_irq(struct pt_regs *regs)
+ 	trace_irq_exit(regs);
  }
  
-+/**
-+ * asym_smt_can_pull_tasks - Check whether the load balancing CPU can pull tasks
-+ * @dst_cpu:	Destination CPU of the load balancing
-+ * @sds:	Load-balancing data with statistics of the local group
-+ * @sgs:	Load-balancing statistics of the candidate busiest group
-+ * @sg:		The candidate busiet group
-+ *
-+ * Check the state of the SMT siblings of both @sds::local and @sg and decide
-+ * if @dst_cpu can pull tasks. If @dst_cpu does not have SMT siblings, it can
-+ * pull tasks if two or more of the SMT siblings of @sg are busy. If only one
-+ * CPU in @sg is busy, pull tasks only if @dst_cpu has higher priority.
-+ *
-+ * If both @dst_cpu and @sg have SMT siblings, even the number of idle CPUs
-+ * between @sds::local and @sg. Thus, pull tasks from @sg if the difference
-+ * between the number of busy CPUs is 2 or more. If the difference is of 1,
-+ * only pull if @dst_cpu has higher priority. If @sg does not have SMT siblings
-+ * only pull tasks if all of the SMT siblings of @dst_cpu are idle and @sg
-+ * has lower priority.
-+ */
-+static bool asym_smt_can_pull_tasks(int dst_cpu, struct sd_lb_stats *sds,
-+				    struct sg_lb_stats *sgs,
-+				    struct sched_group *sg)
+-DEFINE_INTERRUPT_HANDLER_ASYNC(do_IRQ)
++void __do_IRQ(struct pt_regs *regs)
+ {
+ 	struct pt_regs *old_regs = set_irq_regs(regs);
+ 	void *cursp, *irqsp, *sirqsp;
+@@ -774,6 +774,11 @@ DEFINE_INTERRUPT_HANDLER_ASYNC(do_IRQ)
+ 	set_irq_regs(old_regs);
+ }
+ 
++DEFINE_INTERRUPT_HANDLER_ASYNC(do_IRQ)
 +{
-+#ifdef CONFIG_SCHED_SMT
-+	bool local_is_smt, sg_is_smt;
-+	int sg_busy_cpus;
-+
-+	local_is_smt = sds->local->flags & SD_SHARE_CPUCAPACITY;
-+	sg_is_smt = sg->flags & SD_SHARE_CPUCAPACITY;
-+
-+	sg_busy_cpus = sgs->group_weight - sgs->idle_cpus;
-+
-+	if (!local_is_smt) {
-+		/*
-+		 * If we are here, @dst_cpu is idle and does not have SMT
-+		 * siblings. Pull tasks if candidate group has two or more
-+		 * busy CPUs.
-+		 */
-+		if (sg_is_smt && sg_busy_cpus >= 2)
-+			return true;
-+
-+		/*
-+		 * @dst_cpu does not have SMT siblings. @sg may have SMT
-+		 * siblings and only one is busy. In such case, @dst_cpu
-+		 * can help if it has higher priority and is idle.
-+		 */
-+		return !sds->local_stat.group_util &&
-+		       sched_asym_prefer(dst_cpu, sg->asym_prefer_cpu);
-+	}
-+
-+	/* @dst_cpu has SMT siblings. */
-+
-+	if (sg_is_smt) {
-+		int local_busy_cpus = sds->local->group_weight -
-+				      sds->local_stat.idle_cpus;
-+		int busy_cpus_delta = sg_busy_cpus - local_busy_cpus;
-+
-+		/* Local can always help to even the number busy CPUs. */
-+		if (busy_cpus_delta >= 2)
-+			return true;
-+
-+		if (busy_cpus_delta == 1)
-+			return sched_asym_prefer(dst_cpu,
-+						 sg->asym_prefer_cpu);
-+
-+		return false;
-+	}
-+
-+	/*
-+	 * @sg does not have SMT siblings. Ensure that @sds::local does not end
-+	 * up with more than one busy SMT sibling and only pull tasks if there
-+	 * are not busy CPUs. As CPUs move in and out of idle state frequently,
-+	 * also check the group utilization to smoother the decision.
-+	 */
-+	if (!sds->local_stat.group_util)
-+		return sched_asym_prefer(dst_cpu, sg->asym_prefer_cpu);
-+
-+	return false;
-+#else
-+	/* Always return false so that callers deal with non-SMT cases. */
-+	return false;
-+#endif
++	__do_IRQ(regs);
 +}
 +
- static inline bool
- sched_asym(struct lb_env *env, struct sd_lb_stats *sds,  struct sg_lb_stats *sgs,
- 	   struct sched_group *group)
+ static void *__init alloc_vm_stack(void)
  {
-+	/* Only do SMT checks if either local or candidate have SMT siblings */
-+	if ((sds->local->flags & SD_SHARE_CPUCAPACITY) ||
-+	    (group->flags & SD_SHARE_CPUCAPACITY))
-+		return asym_smt_can_pull_tasks(env->dst_cpu, sds, sgs, group);
-+
- 	return sched_asym_prefer(env->dst_cpu, group->asym_prefer_cpu);
- }
+ 	return __vmalloc_node(THREAD_SIZE, THREAD_ALIGN, THREADINFO_GFP,
+diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
+index e45ce427bffb..c487ba5a6e11 100644
+--- a/arch/powerpc/kernel/time.c
++++ b/arch/powerpc/kernel/time.c
+@@ -586,7 +586,7 @@ DEFINE_INTERRUPT_HANDLER_ASYNC(timer_interrupt)
  
-@@ -9540,6 +9629,12 @@ static struct rq *find_busiest_queue(struct lb_env *env,
- 		    nr_running == 1)
- 			continue;
+ #if defined(CONFIG_PPC32) && defined(CONFIG_PPC_PMAC)
+ 	if (atomic_read(&ppc_n_lost_interrupts) != 0)
+-		do_IRQ(regs);
++		__do_IRQ(regs);
+ #endif
  
-+		/* Make sure we only pull tasks from a CPU of lower priority */
-+		if ((env->sd->flags & SD_ASYM_PACKING) &&
-+		    sched_asym_prefer(i, env->dst_cpu) &&
-+		    nr_running == 1)
-+			continue;
-+
- 		switch (env->migration_type) {
- 		case migrate_load:
- 			/*
+ 	old_regs = set_irq_regs(regs);
 -- 
-2.17.1
+2.25.0
 
