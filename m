@@ -2,82 +2,101 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F09263E58B3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Aug 2021 12:58:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B75383E5952
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Aug 2021 13:46:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GkVKv6WXWz3bX3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Aug 2021 20:58:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GkWP94smxz30Qk
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Aug 2021 21:46:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=AhB9IzC8;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jdULNt1L;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::336;
- helo=mail-wm1-x336.google.com; envelope-from=srinivas.kandagatla@linaro.org;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=AhB9IzC8; dkim-atps=neutral
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com
- [IPv6:2a00:1450:4864:20::336])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=jdULNt1L; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GkVK837D4z2yLm
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Aug 2021 20:57:30 +1000 (AEST)
-Received: by mail-wm1-x336.google.com with SMTP id
- h24-20020a1ccc180000b029022e0571d1a0so2206689wmb.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Aug 2021 03:57:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=tYhapPe5H4mgp99/xIK0U3JAgB8Az9f2F1V7ARndpoI=;
- b=AhB9IzC8N70Gkz+16zkOwjsZF/JBPizz4JhvEBW8U0aZ6Wi5VbDm8loljB0HEFNPoq
- AvzkUISNyWFs/12scBaSXcdcHM0WRbYHdkbvvPy6CTQ0D2RhIJuRRabU4QizyWpgkAMv
- M4rdVgbR9O0/GV+/cUKoRJTWKvA9wUlW/RSfip2F9BCutzu9neQgm5LhhMro6IaUURRT
- g3g3vR5m+ilAjyMo2VNDgldGvH6jkjyW59laaO0TQXlGmqlo1etTkHVlQnJeNA8DePRi
- sInHmvZlz6RwYdOqXbmADv7YCBgHjBCTOwokBMFXbtRyvKypW1X3kM0EUkCQN2py0KuZ
- 62Aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=tYhapPe5H4mgp99/xIK0U3JAgB8Az9f2F1V7ARndpoI=;
- b=YKWvROECmw22NdzJA/bsjqnIZid2GbpvytWVOhPlXGo2ixA0tJTRpt4WObhoblcOIG
- WkQ77wNJjZvk9USL9hTLkltT3RYwyYbVCRMaWB8xAM02Qn0iq8aGZfb4HcwfVB0uCKn+
- 0pzxsfub1QlmV7dn1HZyifqzRnHKFc7CkY37H7HQNrIpArnFhFF4Itcv/fGmc9W9qtDZ
- puqMci1f11M/W/eSJTbaK1/GRmNzrUBlcJJFbxTWenDo6+tJjJR6bRGN/rKHwqNpHX44
- Yxf7vvR3Y1AX6F69Q2YNXOSXVPJ1iuxRnjhFsio4H6dl2umomcMxNkhgPxn5rEuhWEZu
- kWhw==
-X-Gm-Message-State: AOAM531nWzrDIIpEwpxNvkQnPiLWjGcGbDd3IOLPFaRiNSAyR1MxYWlR
- A2+t+Trbk7USCUgCQAMq6HlSww==
-X-Google-Smtp-Source: ABdhPJx+VZCy4y7O0qYRDJKBrvGIBsNubqdg/hBRfB6E8JiB0w1awHjnpL/wVPnZe4LlEaivmn3SVg==
-X-Received: by 2002:a7b:c7d7:: with SMTP id z23mr21542255wmk.136.1628593040855; 
- Tue, 10 Aug 2021 03:57:20 -0700 (PDT)
-Received: from [192.168.86.34]
- (cpc86377-aztw32-2-0-cust226.18-1.cable.virginm.net. [92.233.226.227])
- by smtp.googlemail.com with ESMTPSA id q17sm925952wrr.91.2021.08.10.03.57.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 10 Aug 2021 03:57:20 -0700 (PDT)
-Subject: Re: [PATCH v4 0/5] nvmem: nintendo-otp: Add new driver for the Wii
- and Wii U OTP
-To: Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>,
- Rob Herring <robh+dt@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- devicetree@vger.kernel.org
-References: <20210701225743.14631-1-linkmauve@linkmauve.fr>
- <20210801073822.12452-1-linkmauve@linkmauve.fr>
-From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Message-ID: <cd854a84-7fd3-38bd-5a28-9306867a990f@linaro.org>
-Date: Tue, 10 Aug 2021 11:57:19 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GkWNM1jYhz2yxx
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Aug 2021 21:45:22 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 17ABY09B123658; Tue, 10 Aug 2021 07:45:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : reply-to : references : mime-version : content-type
+ : content-transfer-encoding : in-reply-to; s=pp1;
+ bh=DrxOvVjXvx4Usb0oRpmvjcssmygkJTOd39m1oRTMqWA=;
+ b=jdULNt1L6s1kaRAqq/Pktez8U6DO+82GmMUI2ayh7Pe8fNdaEzmBf8aDQ4c8s+pOWD4c
+ KVKgNdKUxsoDeLKO3QyMTInJo8aTMkEabnTj+CZxXUeyaZdtdC4vVIXbrP3VXAIHnpEk
+ HDKzgUzqY/Sav0mxy5GRbPyVYCn/PmCykhmqtsRwV9IWUww6+A85Y8v5wjwA8xlxvbjP
+ QRYWLXe5SksMGbBbqFa/m+T5c+IE3L9DKteLWAllwHKEIOeEOq8SvA8H6bHId/opKQDY
+ +J+8Q6H5bIWICBS0CYs38SHcbJq99Ln0CrU1x8Pi8zSQT2x0oYhNRI2GfqEAq/X3m7Xi OQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3abq69b53u-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 10 Aug 2021 07:45:08 -0400
+Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 17ABYNHw127420;
+ Tue, 10 Aug 2021 07:45:08 -0400
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3abq69b530-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 10 Aug 2021 07:45:08 -0400
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 17ABhcCZ023174;
+ Tue, 10 Aug 2021 11:45:06 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma01fra.de.ibm.com with ESMTP id 3a9ht8nbhe-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 10 Aug 2021 11:45:05 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 17ABfsXw58065158
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 10 Aug 2021 11:41:54 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2C7EFA408E;
+ Tue, 10 Aug 2021 11:45:03 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5688DA4040;
+ Tue, 10 Aug 2021 11:45:01 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 10 Aug 2021 11:45:01 +0000 (GMT)
+Date: Tue, 10 Aug 2021 17:15:00 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: C?dric Le Goater <clg@kaod.org>
+Subject: Re: [PATCH v2] powerpc/xive: Do not skip CPU-less nodes when
+ creating the IPIs
+Message-ID: <20210810114500.GA21942@linux.vnet.ibm.com>
+References: <20210807072057.184698-1-clg@kaod.org>
 MIME-Version: 1.0
-In-Reply-To: <20210801073822.12452-1-linkmauve@linkmauve.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210807072057.184698-1-clg@kaod.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: fTe7YivEAUtEoM3gO7sMQIp-cilkYyyc
+X-Proofpoint-ORIG-GUID: A84w7q9yz5WAXuzKybwMJINUsSe7ANke
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-08-10_05:2021-08-10,
+ 2021-08-10 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 adultscore=0
+ bulkscore=0 priorityscore=1501 phishscore=0 mlxlogscore=999 clxscore=1011
+ malwarescore=0 lowpriorityscore=0 mlxscore=0 suspectscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2107140000
+ definitions=main-2108100073
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,69 +108,142 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Ash Logan <ash@heyquark.com>,
- =?UTF-8?Q?Jonathan_Neusch=c3=a4fer?= <j.ne@posteo.net>
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Laurent Vivier <lvivier@redhat.com>,
+ Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+* C?dric Le Goater <clg@kaod.org> [2021-08-07 09:20:57]:
+
+> On PowerVM, CPU-less nodes can be populated with hot-plugged CPUs at
+> runtime. Today, the IPI is not created for such nodes, and hot-plugged
+> CPUs use a bogus IPI, which leads to soft lockups.
+> 
+> We can not directly allocate and request the IPI on demand because
+> bringup_up() is called under the IRQ sparse lock. The alternative is
+> to allocate the IPIs for all possible nodes at startup and to request
+> the mapping on demand when the first CPU of a node is brought up.
+> 
+
+Thank you, this version too works for me.
+
+Tested-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 
 
-On 01/08/2021 08:38, Emmanuel Gil Peyrot wrote:
-> The OTP is a read-only memory area which contains various keys and
-> signatures used to decrypt, encrypt or verify various pieces of storage.
+> Fixes: 7dcc37b3eff9 ("powerpc/xive: Map one IPI interrupt per node")
+> Cc: stable@vger.kernel.org # v5.13
+> Reported-by: Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>
+> Cc: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+> Cc: Laurent Vivier <lvivier@redhat.com>
+> Signed-off-by: C�dric Le Goater <clg@kaod.org>
+> Message-Id: <20210629131542.743888-1-clg@kaod.org>
+> Signed-off-by: C�dric Le Goater <clg@kaod.org>
+> ---
+>  arch/powerpc/sysdev/xive/common.c | 35 +++++++++++++++++++++----------
+>  1 file changed, 24 insertions(+), 11 deletions(-)
 > 
-> Its size depends on the console, it is 128 bytes on the Wii and
-> 1024 bytes on the Wii U (split into eight 128 bytes banks).
+> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
+> index dbdbbc2f1dc5..943fd30095af 100644
+> --- a/arch/powerpc/sysdev/xive/common.c
+> +++ b/arch/powerpc/sysdev/xive/common.c
+> @@ -67,6 +67,7 @@ static struct irq_domain *xive_irq_domain;
+>  static struct xive_ipi_desc {
+>  	unsigned int irq;
+>  	char name[16];
+> +	atomic_t started;
+>  } *xive_ipis;
+>  
+>  /*
+> @@ -1120,7 +1121,7 @@ static const struct irq_domain_ops xive_ipi_irq_domain_ops = {
+>  	.alloc  = xive_ipi_irq_domain_alloc,
+>  };
+>  
+> -static int __init xive_request_ipi(void)
+> +static int __init xive_init_ipis(void)
+>  {
+>  	struct fwnode_handle *fwnode;
+>  	struct irq_domain *ipi_domain;
+> @@ -1144,10 +1145,6 @@ static int __init xive_request_ipi(void)
+>  		struct xive_ipi_desc *xid = &xive_ipis[node];
+>  		struct xive_ipi_alloc_info info = { node };
+>  
+> -		/* Skip nodes without CPUs */
+> -		if (cpumask_empty(cpumask_of_node(node)))
+> -			continue;
+> -
+>  		/*
+>  		 * Map one IPI interrupt per node for all cpus of that node.
+>  		 * Since the HW interrupt number doesn't have any meaning,
+> @@ -1159,11 +1156,6 @@ static int __init xive_request_ipi(void)
+>  		xid->irq = ret;
+>  
+>  		snprintf(xid->name, sizeof(xid->name), "IPI-%d", node);
+> -
+> -		ret = request_irq(xid->irq, xive_muxed_ipi_action,
+> -				  IRQF_PERCPU | IRQF_NO_THREAD, xid->name, NULL);
+> -
+> -		WARN(ret < 0, "Failed to request IPI %d: %d\n", xid->irq, ret);
+>  	}
+>  
+>  	return ret;
+> @@ -1178,6 +1170,22 @@ static int __init xive_request_ipi(void)
+>  	return ret;
+>  }
+>  
+> +static int __init xive_request_ipi(unsigned int cpu)
+> +{
+> +	struct xive_ipi_desc *xid = &xive_ipis[early_cpu_to_node(cpu)];
+> +	int ret;
+> +
+> +	if (atomic_inc_return(&xid->started) > 1)
+> +		return 0;
+> +
+> +	ret = request_irq(xid->irq, xive_muxed_ipi_action,
+> +			  IRQF_PERCPU | IRQF_NO_THREAD,
+> +			  xid->name, NULL);
+> +
+> +	WARN(ret < 0, "Failed to request IPI %d: %d\n", xid->irq, ret);
+> +	return ret;
+> +}
+> +
+>  static int xive_setup_cpu_ipi(unsigned int cpu)
+>  {
+>  	unsigned int xive_ipi_irq = xive_ipi_cpu_to_irq(cpu);
+> @@ -1192,6 +1200,9 @@ static int xive_setup_cpu_ipi(unsigned int cpu)
+>  	if (xc->hw_ipi != XIVE_BAD_IRQ)
+>  		return 0;
+>  
+> +	/* Register the IPI */
+> +	xive_request_ipi(cpu);
+> +
+>  	/* Grab an IPI from the backend, this will populate xc->hw_ipi */
+>  	if (xive_ops->get_ipi(cpu, xc))
+>  		return -EIO;
+> @@ -1231,6 +1242,8 @@ static void xive_cleanup_cpu_ipi(unsigned int cpu, struct xive_cpu *xc)
+>  	if (xc->hw_ipi == XIVE_BAD_IRQ)
+>  		return;
+>  
+> +	/* TODO: clear IPI mapping */
+> +
+>  	/* Mask the IPI */
+>  	xive_do_source_set_mask(&xc->ipi_data, true);
+>  
+> @@ -1253,7 +1266,7 @@ void __init xive_smp_probe(void)
+>  	smp_ops->cause_ipi = xive_cause_ipi;
+>  
+>  	/* Register the IPI */
+> -	xive_request_ipi();
+> +	xive_init_ipis();
+>  
+>  	/* Allocate and setup IPI for the boot CPU */
+>  	xive_setup_cpu_ipi(smp_processor_id());
+> -- 
+> 2.31.1
 > 
-> It can be used directly by writing into one register and reading from
-> the other one, without any additional synchronisation.
-> 
-> This series has been tested on both the Wii U (using my downstream
-> master-wiiu branch[1]), as well as on the Wii on mainline.
-> 
-> [1] https://gitlab.com/linkmauve/linux-wiiu/-/commits/master-wiiu
-> 
-> Changes since v1:
-> - Fixed the commit messages so they can be accepted by other email
->    servers, sorry about that.
-> 
-> Changes since v2:
-> - Switched the dt binding documentation to YAML.
-> - Used more obvious register arithmetic, and tested that gcc (at -O1 and
->    above) outputs the exact same rlwinm instructions for them.
-> - Use more #defines to make the code easier to read.
-> - Include some links to the reversed documentation.
-> - Avoid overlapping dt regions by changing the existing control@d800100
->    node to end before the OTP registers, with some bigger dt refactoring
->    left for a future series.
-> 
-> Changes since v3:
-> - Relicense the dt-binding documentation under GPLv2-only or
->    BSD-2-clauses.
-> 
-> Emmanuel Gil Peyrot (5):
->    nvmem: nintendo-otp: Add new driver for the Wii and Wii U OTP
->    dt-bindings: nintendo-otp: Document the Wii and Wii U OTP support
 
-
-Applied 1/5 and 2/5 to nvmem next,
-rest of the patches should go via powerpc dts tree.
-
-thanks,
---srini
->    powerpc: wii.dts: Reduce the size of the control area
->    powerpc: wii.dts: Expose the OTP on this platform
->    powerpc: wii_defconfig: Enable OTP by default
-> 
->   .../bindings/nvmem/nintendo-otp.yaml          |  44 +++++++
->   arch/powerpc/boot/dts/wii.dts                 |  13 +-
->   arch/powerpc/configs/wii_defconfig            |   1 +
->   drivers/nvmem/Kconfig                         |  11 ++
->   drivers/nvmem/Makefile                        |   2 +
->   drivers/nvmem/nintendo-otp.c                  | 124 ++++++++++++++++++
->   6 files changed, 194 insertions(+), 1 deletion(-)
->   create mode 100644 Documentation/devicetree/bindings/nvmem/nintendo-otp.yaml
->   create mode 100644 drivers/nvmem/nintendo-otp.c
-> 
+-- 
+Thanks and Regards
+Srikar Dronamraju
