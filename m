@@ -1,71 +1,106 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C422F3E558A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Aug 2021 10:34:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D5CB3E5694
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Aug 2021 11:17:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GkR8c4D3tz3bW9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Aug 2021 18:34:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GkS696hnxz30Fx
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Aug 2021 19:17:53 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Vxow0MH4;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ifU35MsC;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ifU35MsC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::131;
- helo=mail-lf1-x131.google.com; envelope-from=sxwjean@gmail.com;
+ smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=lvivier@redhat.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Vxow0MH4; dkim-atps=neutral
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com
- [IPv6:2a00:1450:4864:20::131])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=ifU35MsC; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=ifU35MsC; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GkR7p5LGdz3bYx
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Aug 2021 18:34:14 +1000 (AEST)
-Received: by mail-lf1-x131.google.com with SMTP id z20so2760934lfd.2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Aug 2021 01:34:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=a6dGXjWO0NCC+0cj+bZFV+qIFXfEn1q96bp9PHM8gws=;
- b=Vxow0MH4iTUSKGYSfuLuIum/eTzzBI1YAPCzCfZXxGQz2BfVWTfRfbtBdl5j2FjJqX
- 6qgD7BdR3wVR8R/uX/z0U7o9vI0u/Q6H/rBslZGQvz2Lm1pJXS4Ti70DucY+udnR48an
- Rl3/zOInosa4ev0POv5PVAA9rn6mQ+VHjFo51QlbE0aDlToVfvMIKgF2tbW+uneZWrxD
- 3bGoTtwN/9cUzDDVeP2MgTLtH2LdvjJHtkDrgNnwUcWEBy9QEtIdCoOY2yzfUqkVk68z
- QKsYGmB9FxXsC3aeT31KhRpw7JvP/kNdlzPhb8L9/zor3BMwIq+ZVnTD992Xwlu69yx8
- g/Jw==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GkS5N0pL9z306K
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Aug 2021 19:17:09 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1628587024;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=DkeSzP9VkPfYeQax1YyqIkrY67oSguQu+huTioXkYzU=;
+ b=ifU35MsCVs1YJN/k459EmeCWuPDWCZDPpuoRa4WXhQG9yYJ3flVglAw/43ijg7DJt2vqwD
+ vmCqWvBlJpdAuL0Gley5s0lZYgMJOIylYFrcUMG1KYMWVR0b2f9rckZ+QNN71odIlWU6Ff
+ Y09ccf9/P+2ZALP3qcMfoTeWPGIinAM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1628587024;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=DkeSzP9VkPfYeQax1YyqIkrY67oSguQu+huTioXkYzU=;
+ b=ifU35MsCVs1YJN/k459EmeCWuPDWCZDPpuoRa4WXhQG9yYJ3flVglAw/43ijg7DJt2vqwD
+ vmCqWvBlJpdAuL0Gley5s0lZYgMJOIylYFrcUMG1KYMWVR0b2f9rckZ+QNN71odIlWU6Ff
+ Y09ccf9/P+2ZALP3qcMfoTeWPGIinAM=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-241-KGsfx_zMOCeRAKZkC2madQ-1; Tue, 10 Aug 2021 05:17:02 -0400
+X-MC-Unique: KGsfx_zMOCeRAKZkC2madQ-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5-20020a1c00050000b02902e67111d9f0so2414673wma.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Aug 2021 02:17:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=a6dGXjWO0NCC+0cj+bZFV+qIFXfEn1q96bp9PHM8gws=;
- b=Ibq2s35HvsSXjDq2QDCGpjxHqyCpubkUATo08XTjjIcwsrHe0WyXfrRu6kl5NrmxgT
- FI5S4IKCbv0A+kK7jXDXJELglN6QXRoBn9HVZud8FGi7PQzFfc5H/kOGmGHgUtllukVd
- WQz5ZOm29oKrtGuuSi+Tl7z6fJ/38+TGQSYdnWR+EsKNtPbVIq7RHklN+PM5BPVs0LXV
- CskurHJNClnP/3NNJX4v+r1NAyJb5iyuMBTcw3r3pQZ2L4AYkgEQCkz7NYLtN3YDqgod
- gfX1UHw/TQU5ORhyf/CYfLufi2uylZLfxZT/6keKvqfBTUYy8HyvfcnAFa6p2VepaUPT
- o7Qw==
-X-Gm-Message-State: AOAM531SYDMxxDfIn1MwWNzbbUbXUgQiZ50KqcZdzQL135c2Z9T2y9Y0
- SJ31ux88eRuzMU8FTk2DiSWfowfwzvow/xC4zPI=
-X-Google-Smtp-Source: ABdhPJxlem10rUrgwQzm2KR3+POEFuLuoRZoBA7fkmY5PZ8qejYLtr7C/lo8nKg8cuZJ7R0kzYMu6r0f4ANGgsm9PVo=
-X-Received: by 2002:ac2:4ed3:: with SMTP id p19mr20580652lfr.307.1628584450567; 
- Tue, 10 Aug 2021 01:34:10 -0700 (PDT)
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=DkeSzP9VkPfYeQax1YyqIkrY67oSguQu+huTioXkYzU=;
+ b=KhvRFAT/SuE0tUxcNUg5MEWoofjc+J6t24zRnhfl18mzx3KjqlNPRnOJufB2Lrnh5C
+ W6fEwjeCu0X6x1QOUrir1KKnfvFGrOPM2pwqAAb71HPBt4U6Ek8ZsgEDC4XrLu/jJxTB
+ wa2Hpey8JOK0rJTC1pr0RmaFBp9Slpml1lXiExUABwUaq2gLEQtFO2yxqxF4mKdYgzhq
+ X4kj1/BhVzYSG7OZS2LjzvpsGjNN02hLomzu0pNh+DXQJyTSkHTb2F62eww6PMCRxYt6
+ dFYdJQA/SGQTsMaPjp98uvc6Lsxnfri/T0GDMqg4YtDkMw7u57VkVRVJysZrJjYgM4N/
+ f0Sw==
+X-Gm-Message-State: AOAM5321EiycIHRS1KY/Elz7V6co+R5DFqJNMgiaszfSZncNgw98XVjJ
+ EV8HHxhTPblHp54CC1TB6P97AotOeEbJcVP34zaGpRyX90gk0zGIF8a1/521PjCjtfpw6kDwqyU
+ T6Usk28LPhKcX13aN26TrT8W64g==
+X-Received: by 2002:a05:6000:18c8:: with SMTP id
+ w8mr29282045wrq.90.1628587021387; 
+ Tue, 10 Aug 2021 02:17:01 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzPpAi2iIuiLcaawwo2LlD5s7f6gCdx1fyQNes5mi5FZ5eTN577mJvACJkEIhw95UIoeBgHVQ==
+X-Received: by 2002:a05:6000:18c8:: with SMTP id
+ w8mr29282031wrq.90.1628587021170; 
+ Tue, 10 Aug 2021 02:17:01 -0700 (PDT)
+Received: from [192.168.100.42] ([82.142.28.170])
+ by smtp.gmail.com with ESMTPSA id z6sm19515786wmp.1.2021.08.10.02.17.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 10 Aug 2021 02:17:00 -0700 (PDT)
+Subject: Re: [PATCH v2] powerpc/xive: Do not skip CPU-less nodes when creating
+ the IPIs
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ linuxppc-dev@lists.ozlabs.org
+References: <20210807072057.184698-1-clg@kaod.org>
+From: Laurent Vivier <lvivier@redhat.com>
+Message-ID: <350be6b1-a6a9-93f1-5146-d3a76790ed6e@redhat.com>
+Date: Tue, 10 Aug 2021 11:16:59 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-References: <20210807010239.416055-1-sxwjean@me.com>
- <20210807010239.416055-4-sxwjean@me.com>
- <dfd24c4a-c43f-912c-5876-f1cac704f336@csgroup.eu>
-In-Reply-To: <dfd24c4a-c43f-912c-5876-f1cac704f336@csgroup.eu>
-From: Xiongwei Song <sxwjean@gmail.com>
-Date: Tue, 10 Aug 2021 16:33:44 +0800
-Message-ID: <CAEVVKH972N2hT-WP=5p6GrYEdEV1DO=D0PJo24WZ9gMVgqzaWA@mail.gmail.com>
-Subject: Re: [PATCH v2 3/4] powerpc: Optimize register usage for dear register
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20210807072057.184698-1-clg@kaod.org>
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=lvivier@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,91 +112,130 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ravi.bangoria@linux.ibm.com, Xiongwei Song <sxwjean@me.com>,
- oleg@redhat.com, npiggin@gmail.com,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, efremov@linux.com,
- Paul Mackerras <paulus@samba.org>, aneesh.kumar@linux.ibm.com,
- PowerPC <linuxppc-dev@lists.ozlabs.org>
+Cc: Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>,
+ Srikar Dronamraju <srikar@linux.vnet.ibm.com>, stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Aug 7, 2021 at 2:58 PM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
->
->
->
-> Le 07/08/2021 =C3=A0 03:02, sxwjean@me.com a =C3=A9crit :
-> > From: Xiongwei Song <sxwjean@gmail.com>
-> >
-> > Create an anonymous union for dar and dear regsiters, we can reference
-> > dear to get the effective address when CONFIG_4xx=3Dy or CONFIG_BOOKE=
-=3Dy.
-> > Otherwise, reference dar. This makes code more clear.
-> >
-> > Signed-off-by: Xiongwei Song <sxwjean@gmail.com>
-> > ---
-> >   arch/powerpc/include/asm/ptrace.h   | 5 ++++-
-> >   arch/powerpc/kernel/process.c       | 2 +-
-> >   arch/powerpc/kernel/ptrace/ptrace.c | 2 ++
-> >   3 files changed, 7 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/arch/powerpc/include/asm/ptrace.h b/arch/powerpc/include/a=
-sm/ptrace.h
-> > index c252d04b1206..fa725e3238c2 100644
-> > --- a/arch/powerpc/include/asm/ptrace.h
-> > +++ b/arch/powerpc/include/asm/ptrace.h
-> > @@ -43,7 +43,10 @@ struct pt_regs
-> >                       unsigned long mq;
-> >   #endif
-> >                       unsigned long trap;
-> > -                     unsigned long dar;
-> > +                     union {
-> > +                             unsigned long dar;
-> > +                             unsigned long dear;
-> > +                     };
-> >                       union {
-> >                               unsigned long dsisr;
-> >                               unsigned long esr;
-> > diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/proces=
-s.c
-> > index f74af8f9133c..50436b52c213 100644
-> > --- a/arch/powerpc/kernel/process.c
-> > +++ b/arch/powerpc/kernel/process.c
-> > @@ -1499,7 +1499,7 @@ static void __show_regs(struct pt_regs *regs)
-> >           trap =3D=3D INTERRUPT_DATA_STORAGE ||
-> >           trap =3D=3D INTERRUPT_ALIGNMENT) {
-> >               if (IS_ENABLED(CONFIG_4xx) || IS_ENABLED(CONFIG_BOOKE))
-> > -                     pr_cont("DEAR: "REG" ESR: "REG" ", regs->dar, reg=
-s->esr);
-> > +                     pr_cont("DEAR: "REG" ESR: "REG" ", regs->dear, re=
-gs->esr);
-> >               else
-> >                       pr_cont("DAR: "REG" DSISR: %08lx ", regs->dar, re=
-gs->dsisr);
-> >       }
-> > diff --git a/arch/powerpc/kernel/ptrace/ptrace.c b/arch/powerpc/kernel/=
-ptrace/ptrace.c
-> > index a222fd4d6334..7c7093c17c45 100644
-> > --- a/arch/powerpc/kernel/ptrace/ptrace.c
-> > +++ b/arch/powerpc/kernel/ptrace/ptrace.c
-> > @@ -373,6 +373,8 @@ void __init pt_regs_check(void)
-> >                    offsetof(struct user_pt_regs, trap));
-> >       BUILD_BUG_ON(offsetof(struct pt_regs, dar) !=3D
-> >                    offsetof(struct user_pt_regs, dar));
-> > +     BUILD_BUG_ON(offsetof(struct pt_regs, dear) !=3D
-> > +                  offsetof(struct user_pt_regs, dar));
->
-> dar and dear are the same, so checking the same thing a second time is po=
-intless.
+On 07/08/2021 09:20, Cédric Le Goater wrote:
+> On PowerVM, CPU-less nodes can be populated with hot-plugged CPUs at
+> runtime. Today, the IPI is not created for such nodes, and hot-plugged
+> CPUs use a bogus IPI, which leads to soft lockups.
+> 
+> We can not directly allocate and request the IPI on demand because
+> bringup_up() is called under the IRQ sparse lock. The alternative is
+> to allocate the IPIs for all possible nodes at startup and to request
+> the mapping on demand when the first CPU of a node is brought up.
+> 
+> Fixes: 7dcc37b3eff9 ("powerpc/xive: Map one IPI interrupt per node")
+> Cc: stable@vger.kernel.org # v5.13
+> Reported-by: Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>
+> Cc: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+> Cc: Laurent Vivier <lvivier@redhat.com>
+> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+> Message-Id: <20210629131542.743888-1-clg@kaod.org>
+> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+> ---
+>  arch/powerpc/sysdev/xive/common.c | 35 +++++++++++++++++++++----------
+>  1 file changed, 24 insertions(+), 11 deletions(-)
+> 
+> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
+> index dbdbbc2f1dc5..943fd30095af 100644
+> --- a/arch/powerpc/sysdev/xive/common.c
+> +++ b/arch/powerpc/sysdev/xive/common.c
+> @@ -67,6 +67,7 @@ static struct irq_domain *xive_irq_domain;
+>  static struct xive_ipi_desc {
+>  	unsigned int irq;
+>  	char name[16];
+> +	atomic_t started;
+>  } *xive_ipis;
+>  
+>  /*
+> @@ -1120,7 +1121,7 @@ static const struct irq_domain_ops xive_ipi_irq_domain_ops = {
+>  	.alloc  = xive_ipi_irq_domain_alloc,
+>  };
+>  
+> -static int __init xive_request_ipi(void)
+> +static int __init xive_init_ipis(void)
+>  {
+>  	struct fwnode_handle *fwnode;
+>  	struct irq_domain *ipi_domain;
+> @@ -1144,10 +1145,6 @@ static int __init xive_request_ipi(void)
+>  		struct xive_ipi_desc *xid = &xive_ipis[node];
+>  		struct xive_ipi_alloc_info info = { node };
+>  
+> -		/* Skip nodes without CPUs */
+> -		if (cpumask_empty(cpumask_of_node(node)))
+> -			continue;
+> -
+>  		/*
+>  		 * Map one IPI interrupt per node for all cpus of that node.
+>  		 * Since the HW interrupt number doesn't have any meaning,
+> @@ -1159,11 +1156,6 @@ static int __init xive_request_ipi(void)
+>  		xid->irq = ret;
+>  
+>  		snprintf(xid->name, sizeof(xid->name), "IPI-%d", node);
+> -
+> -		ret = request_irq(xid->irq, xive_muxed_ipi_action,
+> -				  IRQF_PERCPU | IRQF_NO_THREAD, xid->name, NULL);
+> -
+> -		WARN(ret < 0, "Failed to request IPI %d: %d\n", xid->irq, ret);
+>  	}
+>  
+>  	return ret;
+> @@ -1178,6 +1170,22 @@ static int __init xive_request_ipi(void)
+>  	return ret;
+>  }
+>  
+> +static int __init xive_request_ipi(unsigned int cpu)
+> +{
+> +	struct xive_ipi_desc *xid = &xive_ipis[early_cpu_to_node(cpu)];
+> +	int ret;
+> +
+> +	if (atomic_inc_return(&xid->started) > 1)
+> +		return 0;
+> +
+> +	ret = request_irq(xid->irq, xive_muxed_ipi_action,
+> +			  IRQF_PERCPU | IRQF_NO_THREAD,
+> +			  xid->name, NULL);
+> +
+> +	WARN(ret < 0, "Failed to request IPI %d: %d\n", xid->irq, ret);
+> +	return ret;
+> +}
+> +
+>  static int xive_setup_cpu_ipi(unsigned int cpu)
+>  {
+>  	unsigned int xive_ipi_irq = xive_ipi_cpu_to_irq(cpu);
+> @@ -1192,6 +1200,9 @@ static int xive_setup_cpu_ipi(unsigned int cpu)
+>  	if (xc->hw_ipi != XIVE_BAD_IRQ)
+>  		return 0;
+>  
+> +	/* Register the IPI */
+> +	xive_request_ipi(cpu);
+> +
+>  	/* Grab an IPI from the backend, this will populate xc->hw_ipi */
+>  	if (xive_ops->get_ipi(cpu, xc))
+>  		return -EIO;
+> @@ -1231,6 +1242,8 @@ static void xive_cleanup_cpu_ipi(unsigned int cpu, struct xive_cpu *xc)
+>  	if (xc->hw_ipi == XIVE_BAD_IRQ)
+>  		return;
+>  
+> +	/* TODO: clear IPI mapping */
+> +
+>  	/* Mask the IPI */
+>  	xive_do_source_set_mask(&xc->ipi_data, true);
+>  
+> @@ -1253,7 +1266,7 @@ void __init xive_smp_probe(void)
+>  	smp_ops->cause_ipi = xive_cause_ipi;
+>  
+>  	/* Register the IPI */
+> -	xive_request_ipi();
+> +	xive_init_ipis();
+>  
+>  	/* Allocate and setup IPI for the boot CPU */
+>  	xive_setup_cpu_ipi(smp_processor_id());
+> 
 
-Same reply as the patch 1.
+Tested-by: Laurent Vivier <lvivier@redhat.com>
 
-Regards,
-Xiongwei
-
->
-> >       BUILD_BUG_ON(offsetof(struct pt_regs, dsisr) !=3D
-> >                    offsetof(struct user_pt_regs, dsisr));
-> >       BUILD_BUG_ON(offsetof(struct pt_regs, esr) !=3D
-> >
