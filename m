@@ -1,66 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C0C33E5047
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Aug 2021 02:08:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA4263E51EF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Aug 2021 06:20:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GkCvg34fVz30J5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Aug 2021 10:07:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GkKVd5DMrz3cd0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Aug 2021 14:20:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=qpeaZfj1;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=201602 header.b=IzxuryAq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=kernel.org (client-ip=210.131.2.91;
- helo=conssluserg-06.nifty.com; envelope-from=masahiroy@kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
- header.s=dec2015msa header.b=qpeaZfj1; 
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=dgibson@ozlabs.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
+ header.a=rsa-sha256 header.s=201602 header.b=IzxuryAq; 
  dkim-atps=neutral
-Received: from conssluserg-06.nifty.com (conssluserg-06.nifty.com
- [210.131.2.91])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GkCtx2DZ7z2yMD
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Aug 2021 10:07:20 +1000 (AEST)
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com
- [209.85.214.182]) (authenticated)
- by conssluserg-06.nifty.com with ESMTP id 17A073AK021311
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Aug 2021 09:07:03 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-06.nifty.com 17A073AK021311
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1628554023;
- bh=YHT1wdO9BJeEnVYWadet580A1QtIyBQoR9aiFtvfZGQ=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=qpeaZfj1S52In9OqzugDwJq7LR5sf7DfsN2Ra4D4/7Mj7Sk8kVQ+Ze4SEJu9nxAWr
- zuOtjmoizVRjdYz+IQ1+0hk8/3F2IkCEiA2JrFs51NCRM2ZTqC5Oz6bzK7nbjxIe86
- Z4E0Ot1qLc47QDixlLSWr2EeR9DD9eoLOPKsiB/dE4KOQ+zO2rG8SnFmK9m//xIJyL
- IzO79wsh46l09Bdey5qYnr7xjz6Mp0DFimoh1qGoaQeyaHrOihwNammcKKBbKJDr2d
- Q0l6y+oOFPYo0z0mNu9C0TpATi4L3yAjIbTSVJ2i+uAHpW8cmyS4JrZDGyxB7uj4bb
- KYwCOXGXlc7XA==
-X-Nifty-SrcIP: [209.85.214.182]
-Received: by mail-pl1-f182.google.com with SMTP id t3so18513225plg.9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Aug 2021 17:07:03 -0700 (PDT)
-X-Gm-Message-State: AOAM5307GTunzEk+6SAgv4b1KQOwhooiuHYnq3X1caiZQcLHLq/UQ5XZ
- lDx5dvRwr3AFSvkA/y0DVUAdgSFbQO4/ELhUSV0=
-X-Google-Smtp-Source: ABdhPJz5g2UH5l3Gvz6QSJjrySe0RZ6IE4VBgrreB7tp3UOmjppEP2ZS0P89yIPjgFj+aYeVphRC5LeTe/8xavReZBE=
-X-Received: by 2002:a63:dd51:: with SMTP id g17mr282732pgj.47.1628554022572;
- Mon, 09 Aug 2021 17:07:02 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GkKSb0Xhkz304R
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Aug 2021 14:18:22 +1000 (AEST)
+Received: by ozlabs.org (Postfix, from userid 1007)
+ id 4GkKSQ5SnVz9sXV; Tue, 10 Aug 2021 14:18:14 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gibson.dropbear.id.au; s=201602; t=1628569094;
+ bh=R4Rfarwm4oFgdSr2eCPJ0F7hx4Ks/MCjeaoosS8XcdI=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=IzxuryAqImHf1+EHZwApe01gvUf9a1tR+AW/GezvqyOZeREstFEVb9/BoJWNv6zwe
+ 3aLftldCN4U0b5g0ym0dBYtXRyG8VUw+Uk+xavxqz433jYTN/0o9DxBwPa6U5tsfSx
+ SXJ01HmF6RojeCO98v8u0bshbUu+hEE9msUAz/qQ=
+Date: Tue, 10 Aug 2021 12:40:39 +1000
+From: David Gibson <david@gibson.dropbear.id.au>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH v7 3/6] powerpc/pseries: Consolidate different NUMA
+ distance update code paths
+Message-ID: <YRHnJ30QLP60D52m@yekko>
+References: <20210809052434.53978-1-aneesh.kumar@linux.ibm.com>
+ <20210809052434.53978-4-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
-References: <20210806172701.3993843-1-ndesaulniers@google.com>
- <YQ2TGPwjvn8w4rKs@archlinux-ax161>
-In-Reply-To: <YQ2TGPwjvn8w4rKs@archlinux-ax161>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Tue, 10 Aug 2021 09:06:25 +0900
-X-Gmail-Original-Message-ID: <CAK7LNARitJhPF5sggQ_k2885TSS3VbKQ0APAE7G8ANsYxxmz1g@mail.gmail.com>
-Message-ID: <CAK7LNARitJhPF5sggQ_k2885TSS3VbKQ0APAE7G8ANsYxxmz1g@mail.gmail.com>
-Subject: Re: [PATCH v2] scripts/Makefile.clang: default to LLVM_IAS=1
-To: Nathan Chancellor <nathan@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="8zM9R+1OE51NsaZW"
+Content-Disposition: inline
+In-Reply-To: <20210809052434.53978-4-aneesh.kumar@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,82 +58,404 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390 <linux-s390@vger.kernel.org>,
- Michal Marek <michal.lkml@markovi.net>,
- "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
- Vasily Gorbik <gor@linux.ibm.com>, Jonathan Corbet <corbet@lwn.net>,
- Heiko Carstens <hca@linux.ibm.com>,
- Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>, Khem Raj <raj.khem@gmail.com>,
- Matthew Wilcox <willy@infradead.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- clang-built-linux <clang-built-linux@googlegroups.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Palmer Dabbelt <palmer@dabbelt.com>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- "open list:SIFIVE DRIVERS" <linux-riscv@lists.infradead.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Christian Borntraeger <borntraeger@de.ibm.com>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Aug 7, 2021 at 4:53 AM Nathan Chancellor <nathan@kernel.org> wrote:
->
-> On Fri, Aug 06, 2021 at 10:27:01AM -0700, Nick Desaulniers wrote:
-> > LLVM_IAS=1 controls enabling clang's integrated assembler via
-> > -integrated-as. This was an explicit opt in until we could enable
-> > assembler support in Clang for more architecures. Now we have support
-> > and CI coverage of LLVM_IAS=1 for all architecures except a few more
-> > bugs affecting s390 and powerpc.
->
-> The powerpc and s390 folks have been testing with clang, I think they
-> should have been on CC for this change (done now).
->
-> > This commit flips the default from opt in via LLVM_IAS=1 to opt out via
-> > LLVM_IAS=0.  CI systems or developers that were previously doing builds
-> > with CC=clang or LLVM=1 without explicitly setting LLVM_IAS must now
-> > explicitly opt out via LLVM_IAS=0, otherwise they will be implicitly
-> > opted-in.
-> >
-> > This finally shortens the command line invocation when cross compiling
-> > with LLVM to simply:
-> >
-> > $ make ARCH=arm64 LLVM=1
-> >
-> > Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
->
-> I am still not really sure how I feel about this. I would prefer not to
-> break people's builds but I suppose this is inevitabile eventually.
->
-> A little support matrix that I drafted up where based on ARCH and clang
-> version for LLVM_IAS=1 support:
->
->              | 10.x | 11.x | 12.x | 13.x | 14.x |
-> ARCH=arm     |  NO  |  NO  |  NO  |  YES |  YES |
-> ARCH=arm64   |  NO  |  YES |  YES |  YES |  YES |
-> ARCH=i386    |  YES |  YES |  YES |  YES |  YES |
-> ARCH=mips*   |  YES |  YES |  YES |  YES |  YES |
-> ARCH=powerpc |  NO  |  NO  |  NO  |  NO  |  NO  |
-> ARCH=s390    |  NO  |  NO  |  NO  |  NO  |  NO  |
-> ARCH=x86_64  |  NO  |  YES |  YES |  YES |  YES |
->
-> The main issue that I have with this change is that all of these
-> architectures work fine with CC=clang and their build commands that used
-> to work fine will not with this change, as they will have to specify
-> LLVM_IAS=0. I think that making this change for LLVM=1 makes sense but
-> changing the default for just CC=clang feels like a bit much at this
-> point in time. I would love to hear from others on this though, I am not
-> going to object much further than this.
->
-> Regardless of that concern, this patch does what it says so:
->
-> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
 
+--8zM9R+1OE51NsaZW
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Applied to linux-kbuild.
-Thanks.
+On Mon, Aug 09, 2021 at 10:54:31AM +0530, Aneesh Kumar K.V wrote:
+> The associativity details of the newly added resourced are collected from
+> the hypervisor via "ibm,configure-connector" rtas call. Update the numa
+> distance details of the newly added numa node after the above call.
+>=20
+> Instead of updating NUMA distance every time we lookup a node id
+> from the associativity property, add helpers that can be used
+> during boot which does this only once. Also remove the distance
+> update from node id lookup helpers.
+>=20
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 
+It would make review easier if you'd folded the fixes/cleanups from
+6/6 in here, rather than having them separate.
 
--- 
-Best Regards
-Masahiro Yamada
+> ---
+>  arch/powerpc/include/asm/topology.h           |   2 +
+>  arch/powerpc/mm/numa.c                        | 178 +++++++++++++-----
+>  arch/powerpc/platforms/pseries/hotplug-cpu.c  |   2 +
+>  .../platforms/pseries/hotplug-memory.c        |   2 +
+>  4 files changed, 138 insertions(+), 46 deletions(-)
+>=20
+> diff --git a/arch/powerpc/include/asm/topology.h b/arch/powerpc/include/a=
+sm/topology.h
+> index e4db64c0e184..a6425a70c37b 100644
+> --- a/arch/powerpc/include/asm/topology.h
+> +++ b/arch/powerpc/include/asm/topology.h
+> @@ -64,6 +64,7 @@ static inline int early_cpu_to_node(int cpu)
+>  }
+> =20
+>  int of_drconf_to_nid_single(struct drmem_lmb *lmb);
+> +void update_numa_distance(struct device_node *node);
+> =20
+>  #else
+> =20
+> @@ -93,6 +94,7 @@ static inline int of_drconf_to_nid_single(struct drmem_=
+lmb *lmb)
+>  	return first_online_node;
+>  }
+> =20
+> +static inline void update_numa_distance(struct device_node *node) {}
+>  #endif /* CONFIG_NUMA */
+> =20
+>  #if defined(CONFIG_NUMA) && defined(CONFIG_PPC_SPLPAR)
+> diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+> index 368719b14dcc..c695faf67d68 100644
+> --- a/arch/powerpc/mm/numa.c
+> +++ b/arch/powerpc/mm/numa.c
+> @@ -208,22 +208,6 @@ int __node_distance(int a, int b)
+>  }
+>  EXPORT_SYMBOL(__node_distance);
+> =20
+> -static void initialize_distance_lookup_table(int nid,
+> -		const __be32 *associativity)
+> -{
+> -	int i;
+> -
+> -	if (affinity_form !=3D FORM1_AFFINITY)
+> -		return;
+> -
+> -	for (i =3D 0; i < distance_ref_points_depth; i++) {
+> -		const __be32 *entry;
+> -
+> -		entry =3D &associativity[be32_to_cpu(distance_ref_points[i]) - 1];
+> -		distance_lookup_table[nid][i] =3D of_read_number(entry, 1);
+> -	}
+> -}
+> -
+>  /*
+>   * Returns nid in the range [0..nr_node_ids], or -1 if no useful NUMA
+>   * info is found.
+> @@ -241,15 +225,6 @@ static int associativity_to_nid(const __be32 *associ=
+ativity)
+>  	/* POWER4 LPAR uses 0xffff as invalid node */
+>  	if (nid =3D=3D 0xffff || nid >=3D nr_node_ids)
+>  		nid =3D NUMA_NO_NODE;
+> -
+> -	if (nid > 0 &&
+> -		of_read_number(associativity, 1) >=3D distance_ref_points_depth) {
+> -		/*
+> -		 * Skip the length field and send start of associativity array
+
+So.. this highlights a point.  In your comments you're treating
+"associativity array" as meaning the value including the length plus
+the assoc IDs, but this comment you've removed is treating it as just
+the assoc IDs.  Personally I think things become clearer to talk about
+if you treat the canonical form of "associativity array" as just the
+assoc IDs (with implicit length), then treat the ibm,associativity
+properties as containing (length + associativity array).
+
+> -		 */
+> -		initialize_distance_lookup_table(nid, associativity + 1);
+> -	}
+> -
+>  out:
+>  	return nid;
+>  }
+> @@ -287,6 +262,48 @@ int of_node_to_nid(struct device_node *device)
+>  }
+>  EXPORT_SYMBOL(of_node_to_nid);
+> =20
+> +static void __initialize_form1_numa_distance(const __be32 *associativity)
+> +{
+> +	int i, nid;
+> +
+> +	if (affinity_form !=3D FORM1_AFFINITY)
+> +		return;
+> +
+> +	nid =3D associativity_to_nid(associativity);
+> +	if (nid !=3D NUMA_NO_NODE) {
+> +		for (i =3D 0; i < distance_ref_points_depth; i++) {
+> +			const __be32 *entry;
+> +
+> +			entry =3D &associativity[be32_to_cpu(distance_ref_points[i])];
+
+So, here you've now removed all checks that distance_ref_points[i]
+doesn't overflow the length of associativity.  It comes back in 6/6,
+but it's still not ideal.
+
+> +			distance_lookup_table[nid][i] =3D of_read_number(entry, 1);
+> +		}
+> +	}
+> +}
+> +
+> +static void initialize_form1_numa_distance(struct device_node *node)
+> +{
+> +	const __be32 *associativity;
+> +
+> +	associativity =3D of_get_associativity(node);
+> +	if (!associativity)
+> +		return;
+> +
+> +	__initialize_form1_numa_distance(associativity);
+> +}
+> +
+> +/*
+> + * Used to update distance information w.r.t newly added node.
+> + */
+> +void update_numa_distance(struct device_node *node)
+> +{
+> +	if (affinity_form =3D=3D FORM0_AFFINITY)
+> +		return;
+> +	else if (affinity_form =3D=3D FORM1_AFFINITY) {
+> +		initialize_form1_numa_distance(node);
+> +		return;
+> +	}
+> +}
+> +
+>  static int __init find_primary_domain_index(void)
+>  {
+>  	int index;
+> @@ -433,6 +450,48 @@ static int of_get_assoc_arrays(struct assoc_arrays *=
+aa)
+>  	return 0;
+>  }
+> =20
+> +static int get_nid_and_numa_distance(struct drmem_lmb *lmb)
+> +{
+> +	struct assoc_arrays aa =3D { .arrays =3D NULL };
+> +	int default_nid =3D NUMA_NO_NODE;
+
+There's still no point I can see to this intermediate variable.
+
+> +	int nid =3D default_nid;
+> +	int rc, index;
+> +
+> +	if ((primary_domain_index < 0) || !numa_enabled)
+> +		return default_nid;
+> +
+> +	rc =3D of_get_assoc_arrays(&aa);
+> +	if (rc)
+> +		return default_nid;
+> +
+> +	if (primary_domain_index <=3D aa.array_sz &&
+> +	    !(lmb->flags & DRCONF_MEM_AI_INVALID) && lmb->aa_index < aa.n_array=
+s) {
+> +		index =3D lmb->aa_index * aa.array_sz + primary_domain_index - 1;
+> +		nid =3D of_read_number(&aa.arrays[index], 1);
+> +
+> +		if (nid =3D=3D 0xffff || nid >=3D nr_node_ids)
+> +			nid =3D default_nid;
+> +		if (nid > 0 && affinity_form =3D=3D FORM1_AFFINITY) {
+> +			int i;
+> +			const __be32 *associativity;
+> +
+> +			index =3D lmb->aa_index * aa.array_sz;
+> +			associativity =3D &aa.arrays[index];
+> +			/*
+> +			 * lookup array associativity entries have different format
+> +			 * There is no length of the array as the first element.
+> +			 */
+> +			for (i =3D 0; i < distance_ref_points_depth; i++) {
+> +				const __be32 *entry;
+> +
+> +				entry =3D &associativity[be32_to_cpu(distance_ref_points[i]) - 1];
+> +				distance_lookup_table[nid][i] =3D of_read_number(entry, 1);
+> +			}
+> +		}
+> +	}
+> +	return nid;
+> +}
+> +
+>  /*
+>   * This is like of_node_to_nid_single() for memory represented in the
+>   * ibm,dynamic-reconfiguration-memory node.
+> @@ -458,21 +517,14 @@ int of_drconf_to_nid_single(struct drmem_lmb *lmb)
+> =20
+>  		if (nid =3D=3D 0xffff || nid >=3D nr_node_ids)
+>  			nid =3D default_nid;
+> -
+> -		if (nid > 0) {
+> -			index =3D lmb->aa_index * aa.array_sz;
+> -			initialize_distance_lookup_table(nid,
+> -							&aa.arrays[index]);
+> -		}
+>  	}
+> -
+>  	return nid;
+>  }
+> =20
+>  #ifdef CONFIG_PPC_SPLPAR
+> -static int vphn_get_nid(long lcpu)
+> +
+> +static int __vphn_get_associativity(long lcpu, __be32 *associativity)
+>  {
+> -	__be32 associativity[VPHN_ASSOC_BUFSIZE] =3D {0};
+>  	long rc, hwid;
+> =20
+>  	/*
+> @@ -492,12 +544,30 @@ static int vphn_get_nid(long lcpu)
+> =20
+>  		rc =3D hcall_vphn(hwid, VPHN_FLAG_VCPU, associativity);
+>  		if (rc =3D=3D H_SUCCESS)
+> -			return associativity_to_nid(associativity);
+> +			return 0;
+>  	}
+> =20
+> +	return -1;
+> +}
+> +
+> +static int vphn_get_nid(long lcpu)
+> +{
+> +	__be32 associativity[VPHN_ASSOC_BUFSIZE] =3D {0};
+> +
+> +
+> +	if (!__vphn_get_associativity(lcpu, associativity))
+> +		return associativity_to_nid(associativity);
+> +
+>  	return NUMA_NO_NODE;
+> +
+>  }
+>  #else
+> +
+> +static int __vphn_get_associativity(long lcpu, __be32 *associativity)
+> +{
+> +	return -1;
+> +}
+> +
+>  static int vphn_get_nid(long unused)
+>  {
+>  	return NUMA_NO_NODE;
+> @@ -692,7 +762,7 @@ static int __init numa_setup_drmem_lmb(struct drmem_l=
+mb *lmb,
+>  			size =3D read_n_cells(n_mem_size_cells, usm);
+>  		}
+> =20
+> -		nid =3D of_drconf_to_nid_single(lmb);
+> +		nid =3D get_nid_and_numa_distance(lmb);
+>  		fake_numa_create_new_node(((base + size) >> PAGE_SHIFT),
+>  					  &nid);
+>  		node_set_online(nid);
+> @@ -709,6 +779,7 @@ static int __init parse_numa_properties(void)
+>  	struct device_node *memory;
+>  	int default_nid =3D 0;
+>  	unsigned long i;
+> +	const __be32 *associativity;
+> =20
+>  	if (numa_enabled =3D=3D 0) {
+>  		printk(KERN_WARNING "NUMA disabled by user\n");
+> @@ -734,18 +805,30 @@ static int __init parse_numa_properties(void)
+>  	 * each node to be onlined must have NODE_DATA etc backing it.
+>  	 */
+>  	for_each_present_cpu(i) {
+> +		__be32 vphn_assoc[VPHN_ASSOC_BUFSIZE];
+>  		struct device_node *cpu;
+> -		int nid =3D vphn_get_nid(i);
+> +		int nid =3D NUMA_NO_NODE;
+> =20
+> -		/*
+> -		 * Don't fall back to default_nid yet -- we will plug
+> -		 * cpus into nodes once the memory scan has discovered
+> -		 * the topology.
+> -		 */
+> -		if (nid =3D=3D NUMA_NO_NODE) {
+> +		memset(vphn_assoc, 0, VPHN_ASSOC_BUFSIZE * sizeof(__be32));
+> +
+> +		if (__vphn_get_associativity(i, vphn_assoc) =3D=3D 0) {
+> +			nid =3D associativity_to_nid(vphn_assoc);
+> +			__initialize_form1_numa_distance(vphn_assoc);
+> +		} else {
+> +
+> +			/*
+> +			 * Don't fall back to default_nid yet -- we will plug
+> +			 * cpus into nodes once the memory scan has discovered
+> +			 * the topology.
+> +			 */
+>  			cpu =3D of_get_cpu_node(i, NULL);
+>  			BUG_ON(!cpu);
+> -			nid =3D of_node_to_nid_single(cpu);
+> +
+> +			associativity =3D of_get_associativity(cpu);
+> +			if (associativity) {
+> +				nid =3D associativity_to_nid(associativity);
+> +				__initialize_form1_numa_distance(associativity);
+> +			}
+>  			of_node_put(cpu);
+>  		}
+> =20
+> @@ -781,8 +864,11 @@ static int __init parse_numa_properties(void)
+>  		 * have associativity properties.  If none, then
+>  		 * everything goes to default_nid.
+>  		 */
+> -		nid =3D of_node_to_nid_single(memory);
+> -		if (nid < 0)
+> +		associativity =3D of_get_associativity(memory);
+> +		if (associativity) {
+> +			nid =3D associativity_to_nid(associativity);
+> +			__initialize_form1_numa_distance(associativity);
+> +		} else
+>  			nid =3D default_nid;
+> =20
+>  		fake_numa_create_new_node(((start + size) >> PAGE_SHIFT), &nid);
+> diff --git a/arch/powerpc/platforms/pseries/hotplug-cpu.c b/arch/powerpc/=
+platforms/pseries/hotplug-cpu.c
+> index 7e970f81d8ff..778b6ab35f0d 100644
+> --- a/arch/powerpc/platforms/pseries/hotplug-cpu.c
+> +++ b/arch/powerpc/platforms/pseries/hotplug-cpu.c
+> @@ -498,6 +498,8 @@ static ssize_t dlpar_cpu_add(u32 drc_index)
+>  		return saved_rc;
+>  	}
+> =20
+> +	update_numa_distance(dn);
+> +
+>  	rc =3D dlpar_online_cpu(dn);
+>  	if (rc) {
+>  		saved_rc =3D rc;
+> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/power=
+pc/platforms/pseries/hotplug-memory.c
+> index 377d852f5a9a..ee1d81d7e54a 100644
+> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
+> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+> @@ -180,6 +180,8 @@ static int update_lmb_associativity_index(struct drme=
+m_lmb *lmb)
+>  		return -ENODEV;
+>  	}
+> =20
+> +	update_numa_distance(lmb_node);
+> +
+>  	dr_node =3D of_find_node_by_path("/ibm,dynamic-reconfiguration-memory");
+>  	if (!dr_node) {
+>  		dlpar_free_cc_nodes(lmb_node);
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--8zM9R+1OE51NsaZW
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmER5yUACgkQbDjKyiDZ
+s5KCxRAAsnxwCv181UqbKLTBYTvTZUly+rpc4dZWfuDIAlmX/QbhgLkKfQedX4ok
+P3oSIImviO3Gc1alQHkeFB8J5yMrWDnSVuYBqb2I/9T/X30FHVB9S/6+PZZynraU
+820di/c6RelhSkl2kdfhRLzQ5hAo3w70pd/mwZWac3+6AEARsiiWPOKYrm9am21y
+Oclor10Ar2eE0TUX0f8ByoMOQkeVffYPaeJZAgbzT0ETnaFVA62yTcTJqAkQC5Qg
+vo2/pnZkH9JNQrFtP0XMTjGIeKPeYRjIMfbLyjwZDOgljXyR92p/XI19OhajZCFY
+25wahYPfB1ECNVG7H65KK0JMlzaNxeycCydW4puEOKzn/K5hWThl6gFnM2c+e49D
+1pyTLttaXjwjhtORjB0D5+3q3222GTvZp/6yyxRk4se/yut/QoZSMCH08tl0eClk
+tETSs/OBbX7WIZc/ED4M7ui6yy74bzBuS+LwNH/Q3lwh1dpVTZK7rwGSN76p02Mz
+0WM8F8a0aT2kSbDhyjIlmEnTcKbeD9Ot1jx/rNLNXGha5vi+ps2RyeXOVvNW9miI
+eONRXH9XhnAnenCye5gSfos59Wy/h9T8XRKsPMlULJSntbv7EAr+GkJQmAJdyqMS
+CUt+UQX4Pk4CnF2Z12yzJE/cEuM+thh8UWMbZJRjqnHCQIsufuY=
+=xNOq
+-----END PGP SIGNATURE-----
+
+--8zM9R+1OE51NsaZW--
