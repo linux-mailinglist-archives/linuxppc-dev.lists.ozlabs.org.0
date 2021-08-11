@@ -1,70 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABECD3E95E8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Aug 2021 18:28:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98ABF3E95E9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Aug 2021 18:29:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GlFcb3zxXz30Jx
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 02:28:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GlFdK45Qhz3ghK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 02:29:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Lx3QQ9od;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=PSPAlFat;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1034;
- helo=mail-pj1-x1034.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::636;
+ helo=mail-pl1-x636.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Lx3QQ9od; dkim-atps=neutral
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com
- [IPv6:2607:f8b0:4864:20::1034])
+ header.s=20161025 header.b=PSPAlFat; dkim-atps=neutral
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com
+ [IPv6:2607:f8b0:4864:20::636])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GlF3l5F4dz3cM0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 02:03:31 +1000 (AEST)
-Received: by mail-pj1-x1034.google.com with SMTP id nt11so4230044pjb.2
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Aug 2021 09:03:31 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GlF3n606lz3dFb
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 02:03:33 +1000 (AEST)
+Received: by mail-pl1-x636.google.com with SMTP id b7so3285562plh.7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Aug 2021 09:03:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=h9r7slMa/wxjs1UUTM7giJfy6Yufgbe7vAh2oRXYxVo=;
- b=Lx3QQ9odZsPvd10rGGcBQyoWkVluSa+FHJrDKFAxKHsXzb/31cevkrNjpB2+FNLTbD
- 0+BPI5fyC+4RtfBNRR3tPVsYKszXK3Lo4KbVgbw25t6Gt7Y/0xattrtkGC59RMX3CgLk
- cIKEW+xpgmh8M3zKsv3bMXjgSnx05gESe1MRf6dIaXSzCpmm5V6uYBgEhhhNK+dTn7bd
- ORZrs3BfxsWP8dgqCDX/mV/tZzdmLdaQ6ihx1pOa4yjkzVBSjZI8UC3g88RnGfTob37K
- 289TuT+csRAzuLYZL1XCbLpUnE/2od0cm4cF7sozCCEkQsG2MVvNVAToSuwNp/juA2mW
- zDCg==
+ bh=seBS1CKh1tdJivnx8ndo4Zu4wItjYVzMJJMUXfTGVvE=;
+ b=PSPAlFatBQ+1B6aLgAp2LKgkYDsDtU4inSnxdbXA2HlkzIVoFdMX5D8W31vAUax/JF
+ /Ug2/aKUrWfP73U3nHdIfG3gD0JmH/L3dumzXvTfmWBfEp9saVhls/jeTWpjsqLm957R
+ Z2T+MF8CCzsmWlBltQZYZTPQ1W3QUuNSMEU1rPIBUohx2bWWzO1PPCmeODkH4VMMLu59
+ f2FZ6T38BEcFSIgcWAS3vPQ/Qp6JugGi703Wb5sSGDArUZisE8ZRH/4nLwT3JATwWbv+
+ I918hmOvE/IIEvoGSn2kCJLfqhPmtw+itIfAB9y8/J46CPudz2HcZht+ycAQlEm1NZ4m
+ STuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=h9r7slMa/wxjs1UUTM7giJfy6Yufgbe7vAh2oRXYxVo=;
- b=kAa80ZXKtvjqEbNThvqA4dGUeYkjyN8uKJY4YpmSFkZAol8hyQN65UuDgYsodaMqXR
- V5XVw+18RKwijmhGki15eExmqOVsCI7mHmogYZxRq8ZQD2uAj089V67WRaP6dW4kcHE1
- oD2VDaN2C9yS3FhQpoYYE5ePGf8Y1NbWeiRC76pl6TybcdgG2j0SR830p/EZZIIhdFf0
- LNUN1daIyy8GzMaMTiuDjCbRxWhSnO8FqNF0NGphHtvDFN1kbbeQ/dDmOPfBjOMIZnxu
- K/tEFe3FDTCCad76Z1FA9xswe1frMdLpvpRvBjaUNcuCPjVy2itxiJYZHi000/ABxzGT
- XmQw==
-X-Gm-Message-State: AOAM530jPaEGRatzMC53Z0jsZMuFH5OrL6M+6oDDOs6U4MsEkEUM8PAX
- CkTCz/nNWuhW+YjEHghyZyw=
-X-Google-Smtp-Source: ABdhPJyKtVY7gsWVHDzOWE5GYD38Ht12rDXBJOgWTbTjSbWADtCV64mrIDjuE+J2LKGlgHw27HiF+w==
-X-Received: by 2002:a05:6a00:ccb:b029:3c6:803d:8e3 with SMTP id
- b11-20020a056a000ccbb02903c6803d08e3mr35308617pfv.0.1628697809419; 
- Wed, 11 Aug 2021 09:03:29 -0700 (PDT)
+ bh=seBS1CKh1tdJivnx8ndo4Zu4wItjYVzMJJMUXfTGVvE=;
+ b=HyHpNQP9YfzkCKqxlrcQQWvAILwBy+K+F3jgG67tGlG4SP7D0BBvIS32O1M3UMCvn0
+ 4kEvJzZqaXswx0AOv8T1n8SjdbufAY4Q1u8++fzoIzNM6VCMqEDBO1qzoqKEvg/oJdDt
+ GtNjvIG5VLFfV4LQHPfkwzTa8mcfBlGtv0a7E/CrA/5BS+WKeVvU01U/eQrelqxNOVVL
+ b+fdo5v/iP9RYSThdrEFRfEkWw8baBdBb1PkDD2FQT5oHFusN78m+DnQ2eT4DvhSqAuJ
+ OrZFn5a0GP6bPmF9MeY3b7Aqp9PxxfubHPP+2emd34WneMJLXsMtwMyAUOkJZndZd4ae
+ eKpA==
+X-Gm-Message-State: AOAM532oneIxw9wN6vuJgxtngGy57eFDv1940IrHyAr2+ExVMzLMCLS4
+ Gtx8U+Q4q9fpRWrLuyf0Qws=
+X-Google-Smtp-Source: ABdhPJzQiy935f6UIsCwZfdi6QtVSrEE6j6Mo3zLJYxYjBVNd49DHIHZaKJEgWaBGYnctR3+MEXiyg==
+X-Received: by 2002:a17:90a:648b:: with SMTP id
+ h11mr10767670pjj.141.1628697812062; 
+ Wed, 11 Aug 2021 09:03:32 -0700 (PDT)
 Received: from bobo.ibm.com ([118.210.97.79])
- by smtp.gmail.com with ESMTPSA id k19sm6596494pff.28.2021.08.11.09.03.27
+ by smtp.gmail.com with ESMTPSA id k19sm6596494pff.28.2021.08.11.09.03.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Aug 2021 09:03:29 -0700 (PDT)
+ Wed, 11 Aug 2021 09:03:31 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org
-Subject: [PATCH v2 40/60] KVM: PPC: Book3S HV P9: Implement TM fastpath for
- guest entry/exit
-Date: Thu, 12 Aug 2021 02:01:14 +1000
-Message-Id: <20210811160134.904987-41-npiggin@gmail.com>
+Subject: [PATCH v2 41/60] KVM: PPC: Book3S HV P9: Switch PMU to guest as late
+ as possible
+Date: Thu, 12 Aug 2021 02:01:15 +1000
+Message-Id: <20210811160134.904987-42-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210811160134.904987-1-npiggin@gmail.com>
 References: <20210811160134.904987-1-npiggin@gmail.com>
@@ -86,56 +86,85 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If TM is not active, only TM register state needs to be saved and
-restored, avoiding several mfmsr/mtmsrd instructions and improving
-performance.
+This moves PMU switch to guest as late as possible in entry, and switch
+back to host as early as possible at exit. This helps the host get the
+most perf coverage of KVM entry/exit code as possible.
+
+This is slightly suboptimal for SPR scheduling point of view when the
+PMU is enabled, but when perf is disabled there is no real difference.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kvm/book3s_hv_p9_entry.c | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ arch/powerpc/kvm/book3s_hv.c          | 6 ++----
+ arch/powerpc/kvm/book3s_hv_p9_entry.c | 6 ++----
+ 2 files changed, 4 insertions(+), 8 deletions(-)
 
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 26872a4993fd..c76deb3de3e9 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -3823,8 +3823,6 @@ static int kvmhv_vcpu_entry_p9_nested(struct kvm_vcpu *vcpu, u64 time_limit, uns
+ 	s64 dec;
+ 	int trap;
+ 
+-	switch_pmu_to_guest(vcpu, &host_os_sprs);
+-
+ 	save_p9_host_os_sprs(&host_os_sprs);
+ 
+ 	/*
+@@ -3887,9 +3885,11 @@ static int kvmhv_vcpu_entry_p9_nested(struct kvm_vcpu *vcpu, u64 time_limit, uns
+ 
+ 	mtspr(SPRN_DAR, vcpu->arch.shregs.dar);
+ 	mtspr(SPRN_DSISR, vcpu->arch.shregs.dsisr);
++	switch_pmu_to_guest(vcpu, &host_os_sprs);
+ 	trap = plpar_hcall_norets(H_ENTER_NESTED, __pa(&hvregs),
+ 				  __pa(&vcpu->arch.regs));
+ 	kvmhv_restore_hv_return_state(vcpu, &hvregs);
++	switch_pmu_to_host(vcpu, &host_os_sprs);
+ 	vcpu->arch.shregs.msr = vcpu->arch.regs.msr;
+ 	vcpu->arch.shregs.dar = mfspr(SPRN_DAR);
+ 	vcpu->arch.shregs.dsisr = mfspr(SPRN_DSISR);
+@@ -3908,8 +3908,6 @@ static int kvmhv_vcpu_entry_p9_nested(struct kvm_vcpu *vcpu, u64 time_limit, uns
+ 
+ 	restore_p9_host_os_sprs(vcpu, &host_os_sprs);
+ 
+-	switch_pmu_to_host(vcpu, &host_os_sprs);
+-
+ 	return trap;
+ }
+ 
 diff --git a/arch/powerpc/kvm/book3s_hv_p9_entry.c b/arch/powerpc/kvm/book3s_hv_p9_entry.c
-index 9ea70736f3d7..e52d8b040970 100644
+index e52d8b040970..48cc94f3d642 100644
 --- a/arch/powerpc/kvm/book3s_hv_p9_entry.c
 +++ b/arch/powerpc/kvm/book3s_hv_p9_entry.c
-@@ -289,8 +289,15 @@ bool load_vcpu_state(struct kvm_vcpu *vcpu,
+@@ -597,8 +597,6 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
+ 	local_paca->kvm_hstate.host_purr = mfspr(SPRN_PURR);
+ 	local_paca->kvm_hstate.host_spurr = mfspr(SPRN_SPURR);
  
- 	if (cpu_has_feature(CPU_FTR_TM) ||
- 	    cpu_has_feature(CPU_FTR_P9_TM_HV_ASSIST)) {
--		kvmppc_restore_tm_hv(vcpu, vcpu->arch.shregs.msr, true);
--		ret = true;
-+		unsigned long guest_msr = vcpu->arch.shregs.msr;
-+		if (MSR_TM_ACTIVE(guest_msr)) {
-+			kvmppc_restore_tm_hv(vcpu, guest_msr, true);
-+			ret = true;
-+		} else {
-+			mtspr(SPRN_TEXASR, vcpu->arch.texasr);
-+			mtspr(SPRN_TFHAR, vcpu->arch.tfhar);
-+			mtspr(SPRN_TFIAR, vcpu->arch.tfiar);
-+		}
- 	}
+-	switch_pmu_to_guest(vcpu, &host_os_sprs);
+-
+ 	save_p9_host_os_sprs(&host_os_sprs);
  
- 	load_spr_state(vcpu, host_os_sprs);
-@@ -316,8 +323,16 @@ void store_vcpu_state(struct kvm_vcpu *vcpu)
- 	vcpu->arch.vrsave = mfspr(SPRN_VRSAVE);
+ 	/*
+@@ -740,7 +738,9 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
  
- 	if (cpu_has_feature(CPU_FTR_TM) ||
--	    cpu_has_feature(CPU_FTR_P9_TM_HV_ASSIST))
--		kvmppc_save_tm_hv(vcpu, vcpu->arch.shregs.msr, true);
-+	    cpu_has_feature(CPU_FTR_P9_TM_HV_ASSIST)) {
-+		unsigned long guest_msr = vcpu->arch.shregs.msr;
-+		if (MSR_TM_ACTIVE(guest_msr)) {
-+			kvmppc_save_tm_hv(vcpu, guest_msr, true);
-+		} else {
-+			vcpu->arch.texasr = mfspr(SPRN_TEXASR);
-+			vcpu->arch.tfhar = mfspr(SPRN_TFHAR);
-+			vcpu->arch.tfiar = mfspr(SPRN_TFIAR);
-+		}
-+	}
- }
- EXPORT_SYMBOL_GPL(store_vcpu_state);
+ 	accumulate_time(vcpu, &vcpu->arch.guest_time);
  
++	switch_pmu_to_guest(vcpu, &host_os_sprs);
+ 	kvmppc_p9_enter_guest(vcpu);
++	switch_pmu_to_host(vcpu, &host_os_sprs);
+ 
+ 	accumulate_time(vcpu, &vcpu->arch.rm_intr);
+ 
+@@ -951,8 +951,6 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
+ 		asm volatile(PPC_CP_ABORT);
+ 
+ out:
+-	switch_pmu_to_host(vcpu, &host_os_sprs);
+-
+ 	end_timing(vcpu);
+ 
+ 	return trap;
 -- 
 2.23.0
 
