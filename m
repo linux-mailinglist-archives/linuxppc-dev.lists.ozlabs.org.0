@@ -1,70 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFF813E9615
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Aug 2021 18:35:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C4F93E961C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Aug 2021 18:35:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GlFmF5g3pz3fcW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 02:35:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GlFn020pYz3ff6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 02:35:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=oD0jskWx;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=XpfG/oBD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62d;
- helo=mail-pl1-x62d.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::633;
+ helo=mail-pl1-x633.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=oD0jskWx; dkim-atps=neutral
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com
- [IPv6:2607:f8b0:4864:20::62d])
+ header.s=20161025 header.b=XpfG/oBD; dkim-atps=neutral
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com
+ [IPv6:2607:f8b0:4864:20::633])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GlF4F0msCz3dHr
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 02:03:56 +1000 (AEST)
-Received: by mail-pl1-x62d.google.com with SMTP id e15so3275606plh.8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Aug 2021 09:03:56 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GlF4H289cz3dK6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 02:03:59 +1000 (AEST)
+Received: by mail-pl1-x633.google.com with SMTP id e15so3275750plh.8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Aug 2021 09:03:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=ln6cdzeucykGbF0vTkTvQZAkd6bVcCqA4wzaEbEDif0=;
- b=oD0jskWxqr7aS/KUJbVu8G2XpHq5H/isMbATGUXHSULeArmjmPzb1JFu64rUrLP4t8
- MpxKHSQsLhCAgfQFPWZ9v1RJjw5u5cuRFYBX+tCk58d/ApJCgh4x747a+NPYeEFIi9QF
- EnYTp0504WSqmFDwomy+g94kBiTsVmFcZDKxWI5aKGdUYNuKOpyOsr5HH4PqO9oQWbmS
- INs5ellFjuo1T9cPWv5kSb7b1cxkGcNhFYwVXFyBkmI8EKFNcNn5bbyyC+u/POMtlHMy
- XZkWaGjRFoeoNuANV0BJDVLR8YqoH/3uEsWHVtQOLl3UDRqnp6HZmcVIEBQwqfFZz7A/
- KX9w==
+ bh=YPJZZMuZFYpGZBXtppoHRcw+wdz7vh9/1f9Siez1f5U=;
+ b=XpfG/oBD/a2Of074nJtLK0nL3jxrc8SSKSvketXMz4tho9Dvh/lmWNL63BCD9CAvKN
+ /XydlZXVqvakb4ONKYLsrTAsRx0mfFBGQ+UD3MRqxcgQ9vJpx0+wZZGbKMubM2Bsw2ky
+ XLcMWNInfU66kcJxbu9nqBvXviXq5tYnWgBvdvqpwNvNwbKzAU9QMRvblIEyi1x01RdT
+ g7MdZ+JZJTHKNxkxY2lf6842EI/GuW7GqrQc2YSwzK0ALL048t7ZVqSN7Ku6xFZgjZ0n
+ MJXn3n6ddYQzJkK1twTOSMFpLbEjeTdbiG/E6ZVJ/PcvTGCaq0NKIZGSWGN3ULmwa8Be
+ QrMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=ln6cdzeucykGbF0vTkTvQZAkd6bVcCqA4wzaEbEDif0=;
- b=gAYW6Mz9LRB0rNLAWYL3oNi4D28esJ5S6ziAbh33ddMEP2UAXBOQBVvEKB2WykOBev
- FmYakLZJ5NSZi2Z3z4KRrNTaUTytSfkeiiHiNoUfZW4OZosmf3z4crNSNRcxDxqVb+BM
- Tjm1O+Jp+J5ytk8YV/ktrxEsejOKdbR2jfgz2vUxlfUxMG4sNY3JyNNX60drGjAX+dFx
- LxBjCKRSkEuLJsV0wpT6IyVAE2QADHCwkw37o71Ar8TyFDpML8TVgEi8A/yn8/jYU66c
- kfxGC/cyTqm7zaY/rE92dDiZ2YAB8Wj2UTOpCQ9Zxeen9vkMxgveJSlTrZ0L8LQEB39C
- oQUQ==
-X-Gm-Message-State: AOAM533wCdoMdxwg9t3fCFa7rmvprBkIsDzAeL8s0hulBNPssKK85uKN
- sTvLIs6IQiRWvqRNLQi6DZUhK3mllyQ=
-X-Google-Smtp-Source: ABdhPJwlcB+1WRxjCluA6sdnTpIqSepiajUMT2RVFM4FcH9PPRIkQXbUMBapQGtwW7FJc/YoF46OIw==
-X-Received: by 2002:a17:90a:ba8e:: with SMTP id
- t14mr38079862pjr.176.1628697835026; 
- Wed, 11 Aug 2021 09:03:55 -0700 (PDT)
+ bh=YPJZZMuZFYpGZBXtppoHRcw+wdz7vh9/1f9Siez1f5U=;
+ b=Mrjs66FTQe9utplvloAtDdxe74ssbV/hTH610sz30JXV1kT7xmz5QPMnsDRIR0xCL1
+ Qro0JR2iWHbB3YeCSF2d1hGNZSPkwrnQ5XKEw39E1X7Q9luKY5k2w8S2sOufOeNBWhO+
+ kckStwjd3Qhj4NFWhiE3Ovu/mgtMbsCGdp5yvegFwb1eOmiFL++dbizfGN+GZTTLLNpG
+ J3KeY5NO6xchKAeIT0N25vjxtUl0GCmumv/bc5A6Ov5vE+jU87mUx9+CmRIULFq32wnE
+ EQashC7fBwb87ZzwtoO6cGK6wQV2Q9SciSf+xhnsdrn9LYwkkxUUEUnms5dl28aoSrV1
+ 4wDA==
+X-Gm-Message-State: AOAM532LMgrSKObU13YMC8bJ7JgSf56JbTbApOx8qI5dqwkH0plVgDq7
+ Gy8WklMB6uERxQYJXFFkaQg=
+X-Google-Smtp-Source: ABdhPJwmzGFeCI5I2sRo2QfWGQYCu8NZ4sdLy7ZTEWbY5glAA6hY6+suelHJzEopfOWKpWdtSDu5uA==
+X-Received: by 2002:a17:902:7611:b029:12b:e55e:6ee8 with SMTP id
+ k17-20020a1709027611b029012be55e6ee8mr4878885pll.4.1628697837491; 
+ Wed, 11 Aug 2021 09:03:57 -0700 (PDT)
 Received: from bobo.ibm.com ([118.210.97.79])
- by smtp.gmail.com with ESMTPSA id k19sm6596494pff.28.2021.08.11.09.03.52
+ by smtp.gmail.com with ESMTPSA id k19sm6596494pff.28.2021.08.11.09.03.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Aug 2021 09:03:54 -0700 (PDT)
+ Wed, 11 Aug 2021 09:03:57 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org
-Subject: [PATCH v2 50/60] KVM: PPC: Book3S HV P9: Avoid tlbsync sequence on
- radix guest exit
-Date: Thu, 12 Aug 2021 02:01:24 +1000
-Message-Id: <20210811160134.904987-51-npiggin@gmail.com>
+Subject: [PATCH v2 51/60] KVM: PPC: Book3S HV Nested: Avoid extra mftb() in
+ nested entry
+Date: Thu, 12 Aug 2021 02:01:25 +1000
+Message-Id: <20210811160134.904987-52-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210811160134.904987-1-npiggin@gmail.com>
 References: <20210811160134.904987-1-npiggin@gmail.com>
@@ -86,93 +86,87 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use the existing TLB flushing logic to IPI the previous CPU and run the
-necessary barriers before running a guest vCPU on a new physical CPU,
-to do the necessary radix GTSE barriers for handling the case of an
-interrupted guest tlbie sequence.
+mftb() is expensive and one can be avoided on nested guest dispatch.
 
-This results in more IPIs than the TLB flush logic requires, but it's
-a significant win for common case scheduling when the vCPU remains on
-the same physical CPU.
+If the time checking code distinguishes between the L0 timer and the
+nested HV timer, then both can be tested in the same place with the
+same mftb() value.
 
-This saves about 520 cycles (nearly 10%) on a guest entry+exit micro
-benchmark on a POWER9.
+This also nicely illustrates the relationship between the L0 and nested
+HV timers.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kvm/book3s_hv.c          | 31 +++++++++++++++++++++++----
- arch/powerpc/kvm/book3s_hv_p9_entry.c |  9 --------
- 2 files changed, 27 insertions(+), 13 deletions(-)
+ arch/powerpc/include/asm/kvm_asm.h  |  1 +
+ arch/powerpc/kvm/book3s_hv.c        | 12 ++++++++++++
+ arch/powerpc/kvm/book3s_hv_nested.c |  5 -----
+ 3 files changed, 13 insertions(+), 5 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/kvm_asm.h b/arch/powerpc/include/asm/kvm_asm.h
+index fbbf3cec92e9..d68d71987d5c 100644
+--- a/arch/powerpc/include/asm/kvm_asm.h
++++ b/arch/powerpc/include/asm/kvm_asm.h
+@@ -79,6 +79,7 @@
+ #define BOOK3S_INTERRUPT_FP_UNAVAIL	0x800
+ #define BOOK3S_INTERRUPT_DECREMENTER	0x900
+ #define BOOK3S_INTERRUPT_HV_DECREMENTER	0x980
++#define BOOK3S_INTERRUPT_NESTED_HV_DECREMENTER	0x1980
+ #define BOOK3S_INTERRUPT_DOORBELL	0xa00
+ #define BOOK3S_INTERRUPT_SYSCALL	0xc00
+ #define BOOK3S_INTERRUPT_TRACE		0xd00
 diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 3983c5fa065a..7d08b826d355 100644
+index 7d08b826d355..7337c0ca94c6 100644
 --- a/arch/powerpc/kvm/book3s_hv.c
 +++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -3028,6 +3028,25 @@ static void radix_flush_cpu(struct kvm *kvm, int cpu, struct kvm_vcpu *vcpu)
- 			smp_call_function_single(i, do_nothing, NULL, 1);
- }
+@@ -1486,6 +1486,10 @@ static int kvmppc_handle_exit_hv(struct kvm_vcpu *vcpu,
+ 	run->ready_for_interrupt_injection = 1;
+ 	switch (vcpu->arch.trap) {
+ 	/* We're good on these - the host merely wanted to get our attention */
++	case BOOK3S_INTERRUPT_NESTED_HV_DECREMENTER:
++		WARN_ON_ONCE(1); /* Should never happen */
++		vcpu->arch.trap = BOOK3S_INTERRUPT_HV_DECREMENTER;
++		fallthrough;
+ 	case BOOK3S_INTERRUPT_HV_DECREMENTER:
+ 		vcpu->stat.dec_exits++;
+ 		r = RESUME_GUEST;
+@@ -1817,6 +1821,12 @@ static int kvmppc_handle_nested_exit(struct kvm_vcpu *vcpu)
+ 		vcpu->stat.ext_intr_exits++;
+ 		r = RESUME_GUEST;
+ 		break;
++	/* These need to go to the nested HV */
++	case BOOK3S_INTERRUPT_NESTED_HV_DECREMENTER:
++		vcpu->arch.trap = BOOK3S_INTERRUPT_HV_DECREMENTER;
++		vcpu->stat.dec_exits++;
++		r = RESUME_HOST;
++		break;
+ 	/* SR/HMI/PMI are HV interrupts that host has handled. Resume guest.*/
+ 	case BOOK3S_INTERRUPT_HMI:
+ 	case BOOK3S_INTERRUPT_PERFMON:
+@@ -3978,6 +3988,8 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+ 		return BOOK3S_INTERRUPT_HV_DECREMENTER;
+ 	if (next_timer < time_limit)
+ 		time_limit = next_timer;
++	else if (*tb >= time_limit) /* nested time limit */
++		return BOOK3S_INTERRUPT_NESTED_HV_DECREMENTER;
  
-+static void do_migrate_away_vcpu(void *arg)
-+{
-+	struct kvm_vcpu *vcpu = arg;
-+	struct kvm *kvm = vcpu->kvm;
-+
-+	/*
-+	 * If the guest has GTSE, it may execute tlbie, so do a eieio; tlbsync;
-+	 * ptesync sequence on the old CPU before migrating to a new one, in
-+	 * case we interrupted the guest between a tlbie ; eieio ;
-+	 * tlbsync; ptesync sequence.
-+	 *
-+	 * Otherwise, ptesync is sufficient.
-+	 */
-+	if (kvm->arch.lpcr & LPCR_GTSE)
-+		asm volatile("eieio; tlbsync; ptesync");
-+	else
-+		asm volatile("ptesync");
-+}
-+
- static void kvmppc_prepare_radix_vcpu(struct kvm_vcpu *vcpu, int pcpu)
- {
- 	struct kvm_nested_guest *nested = vcpu->arch.nested;
-@@ -3055,10 +3074,14 @@ static void kvmppc_prepare_radix_vcpu(struct kvm_vcpu *vcpu, int pcpu)
- 	 * so we use a single bit in .need_tlb_flush for all 4 threads.
- 	 */
- 	if (prev_cpu != pcpu) {
--		if (prev_cpu >= 0 &&
--		    cpu_first_tlb_thread_sibling(prev_cpu) !=
--		    cpu_first_tlb_thread_sibling(pcpu))
--			radix_flush_cpu(kvm, prev_cpu, vcpu);
-+		if (prev_cpu >= 0) {
-+			if (cpu_first_tlb_thread_sibling(prev_cpu) !=
-+			    cpu_first_tlb_thread_sibling(pcpu))
-+				radix_flush_cpu(kvm, prev_cpu, vcpu);
-+
-+			smp_call_function_single(prev_cpu,
-+					do_migrate_away_vcpu, vcpu, 1);
-+		}
- 		if (nested)
- 			nested->prev_cpu[vcpu->arch.nested_vcpu_id] = pcpu;
- 		else
-diff --git a/arch/powerpc/kvm/book3s_hv_p9_entry.c b/arch/powerpc/kvm/book3s_hv_p9_entry.c
-index 183d5884e362..94b15294a388 100644
---- a/arch/powerpc/kvm/book3s_hv_p9_entry.c
-+++ b/arch/powerpc/kvm/book3s_hv_p9_entry.c
-@@ -1045,15 +1045,6 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
+ 	vcpu->arch.ceded = 0;
  
- 	local_paca->kvm_hstate.in_guest = KVM_GUEST_MODE_NONE;
+diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
+index 7bed0b91245e..e57c08b968c0 100644
+--- a/arch/powerpc/kvm/book3s_hv_nested.c
++++ b/arch/powerpc/kvm/book3s_hv_nested.c
+@@ -375,11 +375,6 @@ long kvmhv_enter_nested_guest(struct kvm_vcpu *vcpu)
+ 	vcpu->arch.ret = RESUME_GUEST;
+ 	vcpu->arch.trap = 0;
+ 	do {
+-		if (mftb() >= hdec_exp) {
+-			vcpu->arch.trap = BOOK3S_INTERRUPT_HV_DECREMENTER;
+-			r = RESUME_HOST;
+-			break;
+-		}
+ 		r = kvmhv_run_single_vcpu(vcpu, hdec_exp, lpcr);
+ 	} while (is_kvmppc_resume_guest(r));
  
--	if (kvm_is_radix(kvm)) {
--		/*
--		 * Since this is radix, do a eieio; tlbsync; ptesync sequence
--		 * in case we interrupted the guest between a tlbie and a
--		 * ptesync.
--		 */
--		asm volatile("eieio; tlbsync; ptesync");
--	}
--
- 	/*
- 	 * cp_abort is required if the processor supports local copy-paste
- 	 * to clear the copy buffer that was under control of the guest.
 -- 
 2.23.0
 
