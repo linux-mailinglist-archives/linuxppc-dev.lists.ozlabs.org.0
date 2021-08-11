@@ -1,60 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 586113E9353
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Aug 2021 16:11:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E756C3E9407
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Aug 2021 16:55:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GlBZW1RWLz3cHX
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 00:11:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GlCXt6FcCz3bWS
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 00:55:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=linux.intel.com
+ (client-ip=134.134.136.100; helo=mga07.intel.com;
+ envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=<UNKNOWN>)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GlBZ172sSz2yXW
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 00:11:03 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4GlBYw3mWMz9sWM;
- Wed, 11 Aug 2021 16:11:00 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id lCMQhEIzhF2Y; Wed, 11 Aug 2021 16:11:00 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4GlBYw2ndfz9sSw;
- Wed, 11 Aug 2021 16:11:00 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 07A218B765;
- Wed, 11 Aug 2021 16:11:00 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id juncGdzNjqj0; Wed, 11 Aug 2021 16:10:59 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 943C88B7D9;
- Wed, 11 Aug 2021 16:10:59 +0200 (CEST)
-Subject: Re: clang/ld.lld build fails with `can't create dynamic relocation
- R_PPC64_ADDR64 against local symbol in readonly segment`
-To: Paul Menzel <pmenzel@molgen.mpg.de>, Michael Ellerman
- <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
-References: <b647b710-7ae0-3c7e-6996-92ac974b3b2a@molgen.mpg.de>
- <77a69755-5291-285c-45be-c1e42423fddc@molgen.mpg.de>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <886ac4a5-ad30-b27f-0b80-ec233c571e81@csgroup.eu>
-Date: Wed, 11 Aug 2021 16:10:52 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GlCXT3H8Dz2ydJ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 00:54:47 +1000 (AEST)
+X-IronPort-AV: E=McAfee;i="6200,9189,10072"; a="278883285"
+X-IronPort-AV: E=Sophos;i="5.84,313,1620716400"; d="scan'208";a="278883285"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Aug 2021 07:53:41 -0700
+X-IronPort-AV: E=Sophos;i="5.84,313,1620716400"; d="scan'208";a="571158048"
+Received: from watoney1-mobl.amr.corp.intel.com (HELO
+ skuppusw-mobl5.amr.corp.intel.com) ([10.209.129.121])
+ by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Aug 2021 07:53:40 -0700
+Subject: Re: [PATCH 01/11] mm: Introduce a function to check for
+ virtualization protection features
+To: Tom Lendacky <thomas.lendacky@amd.com>, linux-kernel@vger.kernel.org,
+ x86@kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+ iommu@lists.linux-foundation.org, kvm@vger.kernel.org,
+ linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+ linux-graphics-maintainer@vmware.com, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, kexec@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org
+References: <cover.1627424773.git.thomas.lendacky@amd.com>
+ <cbc875b1d2113225c2b44a2384d5b303d0453cf7.1627424774.git.thomas.lendacky@amd.com>
+From: "Kuppuswamy, Sathyanarayanan"
+ <sathyanarayanan.kuppuswamy@linux.intel.com>
+Message-ID: <805946e3-5138-3565-65eb-3cb8ac6f0b3e@linux.intel.com>
+Date: Wed, 11 Aug 2021 07:53:37 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Firefox/78.0 Thunderbird/78.11.0
 MIME-Version: 1.0
-In-Reply-To: <77a69755-5291-285c-45be-c1e42423fddc@molgen.mpg.de>
+In-Reply-To: <cbc875b1d2113225c2b44a2384d5b303d0453cf7.1627424774.git.thomas.lendacky@amd.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,49 +61,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Derek Parker <parkerderek86@gmail.com>, Dmitrii Okunev <xaionaro@gmail.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Tianyu Lan <Tianyu.Lan@microsoft.com>,
+ Brijesh Singh <brijesh.singh@amd.com>, Joerg Roedel <joro@8bytes.org>,
+ Andi Kleen <ak@linux.intel.com>, Borislav Petkov <bp@alien8.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Le 10/08/2021 à 20:38, Paul Menzel a écrit :
-> Dear Linux folks,
-> 
-> 
-> Am 29.07.21 um 10:23 schrieb Paul Menzel:
-> 
->> I just wanted to make you aware that building Linux for ppc64le with clang/lld.ld fails with [1]:
->>
->>      ld.lld: error: can't create dynamic relocation R_PPC64_ADDR64 against symbol: empty_zero_page 
->> in readonly segment; recompile object files with -fPIC or pass '-Wl,-z,notext' to allow text 
->> relocations in the output
->>      >>> defined in arch/powerpc/kernel/head_64.o
->>      >>> referenced by arch/powerpc/kernel/head_64.o:(___ksymtab+empty_zero_page+0x0)
->>
->> The patch below from one of the comments [2] fixes it.
->>
->> --- i/arch/powerpc/Makefile
->> +++ w/arch/powerpc/Makefile
->> @@ -122,7 +122,7 @@ cflags-$(CONFIG_STACKPROTECTOR)     += -mstack-protector-guard-reg=r2
->>   endif
->>
->>   LDFLAGS_vmlinux-y := -Bstatic
->> -LDFLAGS_vmlinux-$(CONFIG_RELOCATABLE) := -pie
->> +LDFLAGS_vmlinux-$(CONFIG_RELOCATABLE) := -pie -z notext
->>   LDFLAGS_vmlinux        := $(LDFLAGS_vmlinux-y)
->>   LDFLAGS_vmlinux += $(call ld-option,--orphan-handling=warn)
-> 
-> Any comments, if this is the right fix? Current Linux master branch still fails to build with 
-> `LLVM=1` on Ubuntu 21.04 without this change.
+On 7/27/21 3:26 PM, Tom Lendacky wrote:
+> diff --git a/include/linux/protected_guest.h b/include/linux/protected_guest.h
+> new file mode 100644
+> index 000000000000..f8ed7b72967b
+> --- /dev/null
+> +++ b/include/linux/protected_guest.h
+> @@ -0,0 +1,32 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * Protected Guest (and Host) Capability checks
+> + *
+> + * Copyright (C) 2021 Advanced Micro Devices, Inc.
+> + *
+> + * Author: Tom Lendacky<thomas.lendacky@amd.com>
+> + */
+> +
+> +#ifndef _PROTECTED_GUEST_H
+> +#define _PROTECTED_GUEST_H
+> +
+> +#ifndef __ASSEMBLY__
 
-Which kernel version are you building ?
+Can you include headers for bool type and false definition?
 
-Since https://github.com/linuxppc/linux/commit/45b30fafe528601f1a4449c9d68d8ebe7bbc39ad , 
-empty_zero_page[] is in arch/powerpc/mm/mem.c not in arch/powerpc/kernel/head_64.o
+--- a/include/linux/protected_guest.h
++++ b/include/linux/protected_guest.h
+@@ -12,6 +12,9 @@
 
-Do you still have the issue with kernel 5.14 ?
+  #ifndef __ASSEMBLY__
 
-Christophe
++#include <linux/types.h>
++#include <linux/stddef.h>
+
+Otherwise, I see following errors in multi-config auto testing.
+
+include/linux/protected_guest.h:40:15: error: unknown type name 'bool'
+include/linux/protected_guest.h:40:63: error: 'false' undeclared (first use in this functi
+
+
+> +
+> +#define PATTR_MEM_ENCRYPT		0	/* Encrypted memory */
+> +#define PATTR_HOST_MEM_ENCRYPT		1	/* Host encrypted memory */
+> +#define PATTR_GUEST_MEM_ENCRYPT		2	/* Guest encrypted memory */
+> +#define PATTR_GUEST_PROT_STATE		3	/* Guest encrypted state */
+> +
+> +#ifdef CONFIG_ARCH_HAS_PROTECTED_GUEST
+> +
+> +#include <asm/protected_guest.h>
+> +
+> +#else	/* !CONFIG_ARCH_HAS_PROTECTED_GUEST */
+> +
+> +static inline bool prot_guest_has(unsigned int attr) { return false; }
+> +
+> +#endif	/* CONFIG_ARCH_HAS_PROTECTED_GUEST */
+> +
+> +#endif	/* __ASSEMBLY__ */
+> +
+> +#endif	/* _PROTECTED_GUEST_H */
+
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
