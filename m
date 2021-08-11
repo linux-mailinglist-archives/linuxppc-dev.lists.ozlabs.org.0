@@ -2,69 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 419653E955D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Aug 2021 18:03:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD7B73E956A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Aug 2021 18:03:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GlF3K0KLRz3d9G
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 02:03:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GlF3w4CGbz3dG1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 02:03:40 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=OhMFl8HR;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=fzedp2iN;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::632;
- helo=mail-pl1-x632.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102b;
+ helo=mail-pj1-x102b.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=OhMFl8HR; dkim-atps=neutral
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com
- [IPv6:2607:f8b0:4864:20::632])
+ header.s=20161025 header.b=fzedp2iN; dkim-atps=neutral
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com
+ [IPv6:2607:f8b0:4864:20::102b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GlF1r0VQ5z30G2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 02:01:51 +1000 (AEST)
-Received: by mail-pl1-x632.google.com with SMTP id f3so3294484plg.3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Aug 2021 09:01:51 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GlF1t2nvnz30G2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 02:01:54 +1000 (AEST)
+Received: by mail-pj1-x102b.google.com with SMTP id
+ s22-20020a17090a1c16b0290177caeba067so10425269pjs.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Aug 2021 09:01:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=tBUS86yzW++npW3fONJoOYSWPBRI54iAbyTNCBlq0wE=;
- b=OhMFl8HRirrAAMVDyybTuV0EAGt4CgiYNACAlQUI284h4CxKkX2rgbnqjB2AE2yH2a
- RQ7pExWFwFJtK9ol2SixJpujUvcJp76LSbXWZKFhq36PnmDcBbxddt0C45nz/2IF12FF
- rCHfQMaYRUoYpovYL9S41dTR5SA68KZHDcQnq7cG+zA9Z/h5I61AK8kcdOHQ4Q+YkPrn
- mOeTNWtMI3QrpuvYt9YaZxvDn83kamGK0RoAVNXs1WAYDXf0kZM1B62hicW1cfD6ty4m
- MvehYfrq6EpVaSH5+WH1UTFA8BaHa9C+9yv6iG/C+bXRzP2lWDrlusbZxC/9GhN7HA1m
- PpuQ==
+ bh=VBST8AqhrKncX0fAkXnrZxL4xRtwbCPCtY6hZhbOAns=;
+ b=fzedp2iNkDVZSFJUEZt6rIf9covcWofEVp1wWIULIKSSUOVdlFVNuLfSNf4xKeuh2o
+ v8Coq9zLeVfMstaCGb1dtmQ5AQjV/NwYE4PzNEgj458CHi1DoxfVuobkQoQnyYfOj2Ly
+ 29qW/yAllHoEk0sWTpZWL4VA5l19XWEq9vSJJiPXijMTHDdzZi+tfnrLd9h4f51qX/Ok
+ GFZfPrBIX70JfowjVRl7CqCZis0EKOaUvy4/u8soIMpXGTRCRutpr40BuZ3NGHdl5+RA
+ qyH/T2rNAKRq5qh6amY5W4MoNrQNCSEQSKUJkzSFmWPAU4O29H8obTyV7w/Gs8OXopTL
+ oWQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=tBUS86yzW++npW3fONJoOYSWPBRI54iAbyTNCBlq0wE=;
- b=HivsDbvR1P3dusChhNvTlMAd2wM9WICRdCrx1sPGhQ3IEDVKEZWRUpXDmyB5t1kxp4
- qB4jWDzGTzQDEIjMPLB7WbUEX24yZnOGEdr30TzulJfJvbLxj4+nRWFxm6DLOjnz7fH1
- Q6eCnofYI06VXJBRdm/UA81D/djRVS0EvN0SIizC/HV6yvAOwDu4yQhLrEA80FQ/NXYM
- dadikBX9YEO0afcuxKIVu9MwcM4nMrZ5tOWl1WshRUOhHZxExWjmd3BJr4xg+vbIwW/h
- dH3Os4jKSUhWB7bN2KxdPxswrTkR+FxbbenDE0a0CpQuUHFJDkcOcaelAIxScLCRXVk1
- RrUg==
-X-Gm-Message-State: AOAM5318k0jJVQayfhqfQhYBlhhCOsKhlJtFbfFLCPX7/yllwITThCqA
- 9MADMwPRHnJl3H3IcrNq7xg=
-X-Google-Smtp-Source: ABdhPJyGesYYVuFvADexHokYQDJijjGlMpUAGoYMGGFnjf/wHnSaka9QLjpwaUNrFGsegQX5b2QRVA==
-X-Received: by 2002:a17:902:b947:b029:12c:b414:a018 with SMTP id
- h7-20020a170902b947b029012cb414a018mr15908883pls.30.1628697709608; 
- Wed, 11 Aug 2021 09:01:49 -0700 (PDT)
+ bh=VBST8AqhrKncX0fAkXnrZxL4xRtwbCPCtY6hZhbOAns=;
+ b=cNlgnz0niNNTkYQby9ROK49F3QIyaMTYtd/uwmUgf9hQGHDF68OQG3wuP5o1bjgLTX
+ auP1VeCHjLFl0V1EEMibMFp1eYwZUTQ7HHlheTqcfdf6MkoxSEvXhW+a13KoxYusjxct
+ hvCX89VUJZJ/yDMWFVxrZ9mxIlTtbczhlRzMkOOZqNqVwclOUL6t8ZkhZiLjG2cISpQD
+ uFH/MrdjSi3f4vJ9X237PrtN+1i36QEYcMZNThdsdmITWVDRhWTwD4OCmBSRf6eLFcyL
+ GdBa7IqL8KgNGmhBGLuNXll5FOCqOt7a1xz2V3bIyrWh/U+eAyvBb2E5g0YzUXjBr+tP
+ GIeg==
+X-Gm-Message-State: AOAM5318nJ4gcHw5l2PbY25vx9dk0T4IyifCPRg1NSHapZrQrnQekRMV
+ Eu+VohOFLJBLJ4M/bleHWujPKsUZNcI=
+X-Google-Smtp-Source: ABdhPJxDqfy9grce4lnzimGRNfvr4PUNGpKbtsfaYfR4JnNRxSKDAXUDCmTdm9bVnXKMY1zZcYdtxg==
+X-Received: by 2002:a17:903:4094:b029:12d:242e:a68e with SMTP id
+ z20-20020a1709034094b029012d242ea68emr4810396plc.82.1628697712145; 
+ Wed, 11 Aug 2021 09:01:52 -0700 (PDT)
 Received: from bobo.ibm.com ([118.210.97.79])
- by smtp.gmail.com with ESMTPSA id k19sm6596494pff.28.2021.08.11.09.01.47
+ by smtp.gmail.com with ESMTPSA id k19sm6596494pff.28.2021.08.11.09.01.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Aug 2021 09:01:49 -0700 (PDT)
+ Wed, 11 Aug 2021 09:01:51 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org
-Subject: [PATCH v2 02/60] KVM: PPC: Book3S HV: Remove TM emulation from
- POWER7/8 path
-Date: Thu, 12 Aug 2021 02:00:36 +1000
-Message-Id: <20210811160134.904987-3-npiggin@gmail.com>
+Subject: [PATCH v2 03/60] KVM: PPC: Book3S HV P9: Fixes for TM softpatch
+ interrupt NIP
+Date: Thu, 12 Aug 2021 02:00:37 +1000
+Message-Id: <20210811160134.904987-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210811160134.904987-1-npiggin@gmail.com>
 References: <20210811160134.904987-1-npiggin@gmail.com>
@@ -86,74 +87,86 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-TM fake-suspend emulation is only used by POWER9. Remove it from the old
-code path.
+The softpatch interrupt sets HSRR0 to the faulting instruction +4, so
+it should subtract 4 for the faulting instruction address in the case
+it is a TM softpatch interrupt (the instruction was not executed) and
+it was not emulated.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kvm/book3s_hv_rmhandlers.S | 42 -------------------------
- 1 file changed, 42 deletions(-)
+ arch/powerpc/kvm/book3s_hv_tm.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-index 8dd437d7a2c6..75079397c2a5 100644
---- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-+++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-@@ -1088,12 +1088,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
- 	cmpwi	r12, BOOK3S_INTERRUPT_H_INST_STORAGE
- 	beq	kvmppc_hisi
+diff --git a/arch/powerpc/kvm/book3s_hv_tm.c b/arch/powerpc/kvm/book3s_hv_tm.c
+index cc90b8b82329..e7c36f8bf205 100644
+--- a/arch/powerpc/kvm/book3s_hv_tm.c
++++ b/arch/powerpc/kvm/book3s_hv_tm.c
+@@ -46,6 +46,15 @@ int kvmhv_p9_tm_emulation(struct kvm_vcpu *vcpu)
+ 	u64 newmsr, bescr;
+ 	int ra, rs;
  
--#ifdef CONFIG_PPC_TRANSACTIONAL_MEM
--	/* For softpatch interrupt, go off and do TM instruction emulation */
--	cmpwi	r12, BOOK3S_INTERRUPT_HV_SOFTPATCH
--	beq	kvmppc_tm_emul
--#endif
--
- 	/* See if this is a leftover HDEC interrupt */
- 	cmpwi	r12,BOOK3S_INTERRUPT_HV_DECREMENTER
- 	bne	2f
-@@ -1599,42 +1593,6 @@ maybe_reenter_guest:
- 	blt	deliver_guest_interrupt
- 	b	guest_exit_cont
++	/*
++	 * The TM softpatch interrupt sets NIP to the instruction following
++	 * the faulting instruction, which is not executed. Rewind nip to the
++	 * faulting instruction so it looks like a normal synchronous
++	 * interrupt, then update nip in the places where the instruction is
++	 * emulated.
++	 */
++	vcpu->arch.regs.nip -= 4;
++
+ 	/*
+ 	 * rfid, rfebb, and mtmsrd encode bit 31 = 0 since it's a reserved bit
+ 	 * in these instructions, so masking bit 31 out doesn't change these
+@@ -67,7 +76,7 @@ int kvmhv_p9_tm_emulation(struct kvm_vcpu *vcpu)
+ 			       (newmsr & MSR_TM)));
+ 		newmsr = sanitize_msr(newmsr);
+ 		vcpu->arch.shregs.msr = newmsr;
+-		vcpu->arch.cfar = vcpu->arch.regs.nip - 4;
++		vcpu->arch.cfar = vcpu->arch.regs.nip;
+ 		vcpu->arch.regs.nip = vcpu->arch.shregs.srr0;
+ 		return RESUME_GUEST;
  
--#ifdef CONFIG_PPC_TRANSACTIONAL_MEM
--/*
-- * Softpatch interrupt for transactional memory emulation cases
-- * on POWER9 DD2.2.  This is early in the guest exit path - we
-- * haven't saved registers or done a treclaim yet.
-- */
--kvmppc_tm_emul:
--	/* Save instruction image in HEIR */
--	mfspr	r3, SPRN_HEIR
--	stw	r3, VCPU_HEIR(r9)
--
--	/*
--	 * The cases we want to handle here are those where the guest
--	 * is in real suspend mode and is trying to transition to
--	 * transactional mode.
--	 */
--	lbz	r0, HSTATE_FAKE_SUSPEND(r13)
--	cmpwi	r0, 0		/* keep exiting guest if in fake suspend */
--	bne	guest_exit_cont
--	rldicl	r3, r11, 64 - MSR_TS_S_LG, 62
--	cmpwi	r3, 1		/* or if not in suspend state */
--	bne	guest_exit_cont
--
--	/* Call C code to do the emulation */
--	mr	r3, r9
--	bl	kvmhv_p9_tm_emulation_early
--	nop
--	ld	r9, HSTATE_KVM_VCPU(r13)
--	li	r12, BOOK3S_INTERRUPT_HV_SOFTPATCH
--	cmpwi	r3, 0
--	beq	guest_exit_cont		/* continue exiting if not handled */
--	ld	r10, VCPU_PC(r9)
--	ld	r11, VCPU_MSR(r9)
--	b	fast_interrupt_c_return	/* go back to guest if handled */
--#endif /* CONFIG_PPC_TRANSACTIONAL_MEM */
--
- /*
-  * Check whether an HDSI is an HPTE not found fault or something else.
-  * If it is an HPTE not found fault that is due to the guest accessing
+@@ -100,7 +109,7 @@ int kvmhv_p9_tm_emulation(struct kvm_vcpu *vcpu)
+ 		vcpu->arch.bescr = bescr;
+ 		msr = (msr & ~MSR_TS_MASK) | MSR_TS_T;
+ 		vcpu->arch.shregs.msr = msr;
+-		vcpu->arch.cfar = vcpu->arch.regs.nip - 4;
++		vcpu->arch.cfar = vcpu->arch.regs.nip;
+ 		vcpu->arch.regs.nip = vcpu->arch.ebbrr;
+ 		return RESUME_GUEST;
+ 
+@@ -116,6 +125,7 @@ int kvmhv_p9_tm_emulation(struct kvm_vcpu *vcpu)
+ 		newmsr = (newmsr & ~MSR_LE) | (msr & MSR_LE);
+ 		newmsr = sanitize_msr(newmsr);
+ 		vcpu->arch.shregs.msr = newmsr;
++		vcpu->arch.regs.nip += 4;
+ 		return RESUME_GUEST;
+ 
+ 	/* ignore bit 31, see comment above */
+@@ -152,6 +162,7 @@ int kvmhv_p9_tm_emulation(struct kvm_vcpu *vcpu)
+ 				msr = (msr & ~MSR_TS_MASK) | MSR_TS_S;
+ 		}
+ 		vcpu->arch.shregs.msr = msr;
++		vcpu->arch.regs.nip += 4;
+ 		return RESUME_GUEST;
+ 
+ 	/* ignore bit 31, see comment above */
+@@ -189,6 +200,7 @@ int kvmhv_p9_tm_emulation(struct kvm_vcpu *vcpu)
+ 		vcpu->arch.regs.ccr = (vcpu->arch.regs.ccr & 0x0fffffff) |
+ 			(((msr & MSR_TS_MASK) >> MSR_TS_S_LG) << 29);
+ 		vcpu->arch.shregs.msr &= ~MSR_TS_MASK;
++		vcpu->arch.regs.nip += 4;
+ 		return RESUME_GUEST;
+ 
+ 	/* ignore bit 31, see comment above */
+@@ -220,6 +232,7 @@ int kvmhv_p9_tm_emulation(struct kvm_vcpu *vcpu)
+ 		vcpu->arch.regs.ccr = (vcpu->arch.regs.ccr & 0x0fffffff) |
+ 			(((msr & MSR_TS_MASK) >> MSR_TS_S_LG) << 29);
+ 		vcpu->arch.shregs.msr = msr | MSR_TS_S;
++		vcpu->arch.regs.nip += 4;
+ 		return RESUME_GUEST;
+ 	}
+ 
 -- 
 2.23.0
 
