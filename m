@@ -2,135 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0236A3E951E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Aug 2021 17:54:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20C6C3E9542
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Aug 2021 18:02:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GlDs86JmGz3bYj
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 01:54:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GlF2F0Sccz3cKV
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 02:02:13 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=0L7NJW1l;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=U2vlhMT1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=amd.com
- (client-ip=40.107.101.73; helo=nam04-mw2-obe.outbound.protection.outlook.com;
- envelope-from=thomas.lendacky@amd.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256
- header.s=selector1 header.b=0L7NJW1l; 
- dkim-atps=neutral
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam08on2073.outbound.protection.outlook.com [40.107.101.73])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102e;
+ helo=mail-pj1-x102e.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=U2vlhMT1; dkim-atps=neutral
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com
+ [IPv6:2607:f8b0:4864:20::102e])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GlDqx6HbFz309r
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 01:53:15 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TVxXJjaHSdRiohwAE+8zNVbsf3D54dQHusnRJVSSwi4FlpEM6/7A8MLTjQ8ByxSEs8bNYlvTx8hmaWEVY/PCx06TI7GboiiErn4WKFLfuFaOENpCcCoKbgDEBNyP+4K6TkJWZKtdZweUNlb5x2vfuYb8afG0nN2PebS9PhOLj3Bu35Mo65vXIlY76mNIPmZ+V1JivRGDt3ANe1vcYFb14gyJEdwPnbpsKFcHFuzptTMh9gU8rJJXNhYjl4l/puSwUuDPsDr1ZOSmqsJbB7QJPr0J6ZP6BDDixl29W90sgSn96S/iLiQ46pk1n+fKxuPiIngydBdw4ZBLWUHoIRcijg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=C49rqTyfz3/bdpRcw7lWMxc9BXCwJJccswQylOwMjKA=;
- b=RAqKTMcfArEHEAUu7QneQjF7TcJn1x6wgtwcpOT/7iy8vqK6M9LMcD8R60lIieMP33wo9ZCzC87YbWZo7klVfW2fzaNraEIE7pFfm8MBO5TNLEpQ3cPZz5MSDNRPzxstu27UnhRB9lrlVGNDxRZqof7ndWT05vKzKhkWgPA7DAVvwHe6FEfPWwfQMareaJD+J/5mps/q+/uxVzGUfjutgkbde6i3wK6gg8IZ2L4tqIaPzdJehcnPvjMzi+8tqc0I4FHkoVUUOm4z0/cfkr8Y6PRAvjlAYPuKAA9NKLB7qdKgGRjB961IQpj5WE+8YKu2n49OL0xYEL7BZC6OxSF4wA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=C49rqTyfz3/bdpRcw7lWMxc9BXCwJJccswQylOwMjKA=;
- b=0L7NJW1lPcU0elmdj23auZMGESKK2ZOB1uoaFPWc5tkKmv26YZw3humrz816GR/KZ4Mnzjr4NswnpH22OuGrGFsFjX1CDWEcvq6LemIppHbCds9P1Jl74AzeylVmzMiKYwklN43zkQaRRMp+GivmZuKXEvk7g+ELQJMP6PfUs+8=
-Authentication-Results: redhat.com; dkim=none (message not signed)
- header.d=none;redhat.com; dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5229.namprd12.prod.outlook.com (2603:10b6:5:398::12)
- by DM8PR12MB5431.namprd12.prod.outlook.com (2603:10b6:8:34::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4415.16; Wed, 11 Aug 2021 15:52:58 +0000
-Received: from DM4PR12MB5229.namprd12.prod.outlook.com
- ([fe80::d560:d21:cd59:9418]) by DM4PR12MB5229.namprd12.prod.outlook.com
- ([fe80::d560:d21:cd59:9418%6]) with mapi id 15.20.4415.016; Wed, 11 Aug 2021
- 15:52:58 +0000
-Subject: Re: [PATCH 07/11] treewide: Replace the use of mem_encrypt_active()
- with prot_guest_has()
-To: "Kirill A. Shutemov" <kirill@shutemov.name>
-References: <cover.1627424773.git.thomas.lendacky@amd.com>
- <029791b24c6412f9427cfe6ec598156c64395964.1627424774.git.thomas.lendacky@amd.com>
- <166f30d8-9abb-02de-70d8-6e97f44f85df@linux.intel.com>
- <4b885c52-f70a-147e-86bd-c71a8f4ef564@amd.com>
- <20210811121917.ghxi7g4mctuybhbk@box.shutemov.name>
-From: Tom Lendacky <thomas.lendacky@amd.com>
-Message-ID: <0a819549-e481-c004-7da8-82ba427b13ce@amd.com>
-Date: Wed, 11 Aug 2021 10:52:55 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
-In-Reply-To: <20210811121917.ghxi7g4mctuybhbk@box.shutemov.name>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SN1PR12CA0061.namprd12.prod.outlook.com
- (2603:10b6:802:20::32) To DM4PR12MB5229.namprd12.prod.outlook.com
- (2603:10b6:5:398::12)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GlF1l1kZZz2y6C
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 02:01:46 +1000 (AEST)
+Received: by mail-pj1-x102e.google.com with SMTP id oa17so4219013pjb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Aug 2021 09:01:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=wnb1qv9jtR0YHYN8nS9SRaMD7upzhDvCoKMvqB6Y45c=;
+ b=U2vlhMT1D9nXIxdTN6cLBtu3AlINpkLCljMmK/pRy7rtKZmLB02sgP3sJ8Lc0+j5nT
+ darChkZIBtS49CuTKUEnJOVQEWKov81HiGmtr7r62Qfj5e3KazOmQncxJWcppTw6T5pw
+ 0u3iZvn5CvSNA7bPXyNzOSYnPLlQdcOOWIe/emUKpSyHRWwYyJXkHBO/WjuSUtFGPY99
+ vqpNO+hAdLBVSSBbGSmeMP8VYNdgM88iHsKV76J1hdhhT4Dc5jQXH9CXWaEFksL3X2Mm
+ Vg5gcDNFzwlMNQ1qJecsTmg4yX0HvnDfNgwjB1AewmWQFx5bffe7iwre30Jv64Pk6pxs
+ /gdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=wnb1qv9jtR0YHYN8nS9SRaMD7upzhDvCoKMvqB6Y45c=;
+ b=U9gupOyob0VgFC4psEVFWIQj3wyitxSusf4WxDPf+kUn+ss7TCOAgWkytO/TzCPilI
+ wg24AR89HFIQ6yz/GQOqXi2LTfBlPlM7DLQZTU1c+/iOPlK+iDtLyMoDYCYi4AHXWilx
+ rN6JhymRVTfVI8ysyxLG6CD5EdZSxz8YGWiJ9zEVSTVQx4Ac8DomCJMYNXZW2oFcCoP1
+ dLqgsTw8ypDtHZ+WrJkvK7o5zSYuAsLBZE0MOa3GtbGXTJWUVTSBnWGL8QDKkpTwxLjv
+ 0m5JNiMP4tY1L7TmF8Nhxa0tUOUuAdR2AvUwg+xW8NHZ8EvvjUfEsGaPRDy+Vlgp/eh7
+ shIg==
+X-Gm-Message-State: AOAM532LiXUh4+XXG8IC67Mzq6nfmeqe0ExdkumJwF+NlgtPKgfZ1L6h
+ AEHjlqVnOpbKTVM+dt3eg6DoOnKZsig=
+X-Google-Smtp-Source: ABdhPJzLO1NEOpqHs/cm2iF6r+BDk/7p/MVEO6CO5MyvcMe/0S6tEwakMkf3HbebEYYaHqzETU4Npw==
+X-Received: by 2002:a17:90a:de12:: with SMTP id
+ m18mr11170173pjv.221.1628697704064; 
+ Wed, 11 Aug 2021 09:01:44 -0700 (PDT)
+Received: from bobo.ibm.com ([118.210.97.79])
+ by smtp.gmail.com with ESMTPSA id k19sm6596494pff.28.2021.08.11.09.01.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 11 Aug 2021 09:01:43 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: kvm-ppc@vger.kernel.org
+Subject: [PATCH v2 00/60] KVM: PPC: Book3S HV P9: entry/exit optimisations
+Date: Thu, 12 Aug 2021 02:00:34 +1000
+Message-Id: <20210811160134.904987-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [10.236.30.241] (165.204.77.1) by
- SN1PR12CA0061.namprd12.prod.outlook.com (2603:10b6:802:20::32) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4415.16 via Frontend Transport; Wed, 11 Aug 2021 15:52:56 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 7e687563-770c-45e3-d65c-08d95ce0175c
-X-MS-TrafficTypeDiagnostic: DM8PR12MB5431:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <DM8PR12MB543199BEF36F29E3840ABFD6ECF89@DM8PR12MB5431.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: lIs6pFyzfEbI1sSDg110Vyq4ekjEacZhpksNjWqlRVa3iscvvqsWl0yYG/1eyCmYp76Raq8v57Gb/CVJw3Azw8HEQVoEaq5Thx2vbGcOq+o252Owo5UvK6qWL25Zrxi8PuOD3hkirYlIuN16HwHgscJSl1gkfhWWJ+tgIjOCuy9IPlRr/w0GuiLta5pf3Pa5xgeet6tYJ4Bl0qidOz5Dg/DeXaiHaslXYoShv4gf36GqOZjt7OVBHL0CcUKLLE5BX9vEjcLs9L8xzJ3LIZNbgD6sF4TiQc1NVgI2If0QT0apr4XF7PVFWbuBKbMWORwiq/k3DVPSMmRvQJ0Sj4ajUMUfiYed3phlTw0ma14v/MLar3DXPEMPkoraDDkVTFqJCmqlLNaCMiJ7KWn4G7ABOiaOw/PtDkREBrgfp7y1pXpmiTAxJ37f8nv7FTSaIqwOQYle7zjdxABeFkOUGiKVWHAIV3VwjsPtva/gytPiDXBngieb9pNTfqjqslUcpbquE5VNNfzrQpo/mAUPWTCW7/Hu8mXZISL0/1jRU1di2XEp2fpD8BMclqx6M8wtgBunrnc/I0MFR3YU0rkTsHRNeKbOzP5toHxiiXBWgQ3YTYCUDO+cUAajBP/GCFAyXDaEU46ApzPiWI8GMXC3jj1A8O5dVEWbP8I9AF4Irnk5vptD4uwvHRigvbpgHaUrIYn47H+vNKBD29pKWeFXdsPc2Ndusema059/N0MezM6QHA4=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM4PR12MB5229.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(136003)(366004)(346002)(39860400002)(376002)(396003)(26005)(2616005)(66476007)(66556008)(478600001)(38100700002)(186003)(66946007)(36756003)(54906003)(31696002)(6486002)(8676002)(8936002)(7406005)(4326008)(316002)(6916009)(2906002)(86362001)(7416002)(5660300002)(31686004)(83380400001)(956004)(53546011)(16576012)(43740500002)(45980500001);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?REY0eis4c2JROTJ4U0pDcCs5UWZGaVA1c2RGRkNPVm1JakVBWHRjRUt0aWpO?=
- =?utf-8?B?RHBlQkppQklNUWJVSEptUWtuc0xLaDlDRW13TUhlWjdBRDd2T29YQWZxOUNx?=
- =?utf-8?B?d2Q5VlBTYzVYVWYxMUd1eTlpajIyUlJqdlluL0pFMW8veDg0YlNqZDkvUGh0?=
- =?utf-8?B?S2d4aHFCS3pMUDJPS2trYitORnRkNTJ0ZWZrV3ZUR3FVcXBZUWVwcjV0djYw?=
- =?utf-8?B?M1dvRWxodmZOeGhXak1ZYXgyMms1YjZUUDMvbFNxeFRkY0NsUC8vNDVGMDA2?=
- =?utf-8?B?TjhaYnRvUUhnZEcvbkh5RHl0Y2N5L1pQZ0IzNzZLYTBDeEdHNXVueWJIQzRx?=
- =?utf-8?B?a1lFd1h0QnVnM0h2SC9HTFpZMXorMnZtNkdKZHREb0dFbzZyZXNOd29vVkx4?=
- =?utf-8?B?ZTFpTVgwV2NKcU50bTFsbjlJT1UwMTFsdnZlYkw1QzJrQ3YxTm96ZHZXZk5E?=
- =?utf-8?B?bU93UThGNmwzVGRGdFFiTURIS2xBcTJkQ1MwOUlTSGwwbDZIU0QrTzBHZVBx?=
- =?utf-8?B?WmhDZVZ3ZlNLcGt1Ujdsd0VRd0RwQVFHdjBIL09vOGtGMHZiMHpNNnVQc2Z3?=
- =?utf-8?B?R0NFVi9XVDNqWHlja01PMVdSdjA4cWVEVWtJKzdpV2JkUzJOZURRSmNTbnA3?=
- =?utf-8?B?RlVlT0xpQ2FNRkpQUUhNMHUyRHkrcENpSk55LzFWTTEzMGxQSlRNL3dBYVl1?=
- =?utf-8?B?ZjZTY09yb1AwMXI3T3dMT1lnakhscUVkYXl3WUNZOEJ4c3NFUjhMbDdKTE11?=
- =?utf-8?B?YU1oT1FVaGZiNGUvL29nRzM0RWE1Ujl5RXpwL2VwRVJtczl3Q2xLQldwdlQ0?=
- =?utf-8?B?L0wwU25xQjQ2NUVubDVZbUZIRUpUUks2MUUrKzBWZ1Vzak1KYk04V3hybTZM?=
- =?utf-8?B?RXZEQnNhMmtXTHE4Sm1LVjFlT3J2UFFuYVVGVXRxS3R4MUQzeHdLdGZYQk5F?=
- =?utf-8?B?YUk4ZFRaVUJVKzBCS0xTek56YzZRVzMrbndMb0RNYituWUZWMlJVZFc5bW00?=
- =?utf-8?B?WFBDRTJzMGZ1K0Vka0FxRng3QURCSjFLVkhoczF4dElOWWFrdjdUVm5Uekox?=
- =?utf-8?B?Sm5tbmRXUDNSUmdRWHNKdTNIS1ZhUDdCOS8zS2d5dlpSNzJ2Y2JYR2czdTFU?=
- =?utf-8?B?KytSTHByeEtQVEhtVXZHcFN4STQyaXRzbmFqSnYzbFdMeGVCdjgyd2VIOU1H?=
- =?utf-8?B?cjJJVjVXZUZCeWRTcnM3TFVHZHloYkRCQXFKcTBrTEtqbUtGeEMxYWl1YzlE?=
- =?utf-8?B?bUdocE55ZERNRGNXc2s2eGFxTVNaZEhEaldVbkRNMkZVODB5NjlHM1FKOEJ1?=
- =?utf-8?B?dDZ5eGpMMUFaOWZWV2NsMWRPMkhUN1Y3ZHZpNHdKcEVNZXVZRzM1UFhpcTQx?=
- =?utf-8?B?SFlhbUhOZGsvTmRoK2paWWZpUkNOSVl2T0JoUUxkMGlYUFlrV3dkcGw2VDZC?=
- =?utf-8?B?b0kxN2p5TUx4SVJIQmFxWnpmaURudU9RaU1MZW1uY1BqSitLR1FoZUtud0NC?=
- =?utf-8?B?Zkc2d1UvLzZ5YnZBQlhrem9iVnVOWkVMV3BTTmJTY01qdkxMNXRrYTVNMDhK?=
- =?utf-8?B?NHBMZGdWQU96b3pIamxYMGE0bk4wUjdTS1RiR2dnbTMyU3JpdXZlMS8wcTNa?=
- =?utf-8?B?Ykk3NGYvaFFEb1ROUTV2YUhsVDYxWUJhTkxBc2NWdEF6QXNxaTBoSXovSnEy?=
- =?utf-8?B?RkN6Y1ZCUEJTcTNOdmV6ZXRhZ3lGTlJUSUh6K0dwK3lrUnkxcENHZUpYY2s1?=
- =?utf-8?Q?ypRlcF5FeAfEhWsnoICXRzLomNBmaC1bm+lcTDj?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7e687563-770c-45e3-d65c-08d95ce0175c
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5229.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2021 15:52:58.7420 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 584esTti7o/5qkD1Os1NRjUfCdW4Sj5anUfUsR50eGnvfwGD5aGvUGjrOq3sJcZZ9e+qkr0NVlAYoU1YOAdy5A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM8PR12MB5431
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -142,113 +78,178 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Kuppuswamy, Sathyanarayanan" <sathyanarayanan.kuppuswamy@linux.intel.com>,
- linux-efi@vger.kernel.org, Brijesh Singh <brijesh.singh@amd.com>,
- kvm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org,
- platform-driver-x86@vger.kernel.org, Will Deacon <will@kernel.org>,
- linux-s390@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
- Baoquan He <bhe@redhat.com>, Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
- amd-gfx@lists.freedesktop.org, David Airlie <airlied@linux.ie>,
- Ingo Molnar <mingo@redhat.com>, linux-graphics-maintainer@vmware.com,
- Dave Young <dyoung@redhat.com>, Tianyu Lan <Tianyu.Lan@microsoft.com>,
- Thomas Zimmermann <tzimmermann@suse.de>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
- iommu@lists.linux-foundation.org, Daniel Vetter <daniel@ffwll.ch>,
- linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 8/11/21 7:19 AM, Kirill A. Shutemov wrote:
-> On Tue, Aug 10, 2021 at 02:48:54PM -0500, Tom Lendacky wrote:
->> On 8/10/21 1:45 PM, Kuppuswamy, Sathyanarayanan wrote:
->>>
->>>
->>> On 7/27/21 3:26 PM, Tom Lendacky wrote:
->>>> diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
->>>> index de01903c3735..cafed6456d45 100644
->>>> --- a/arch/x86/kernel/head64.c
->>>> +++ b/arch/x86/kernel/head64.c
->>>> @@ -19,7 +19,7 @@
->>>>   #include <linux/start_kernel.h>
->>>>   #include <linux/io.h>
->>>>   #include <linux/memblock.h>
->>>> -#include <linux/mem_encrypt.h>
->>>> +#include <linux/protected_guest.h>
->>>>   #include <linux/pgtable.h>
->>>>     #include <asm/processor.h>
->>>> @@ -285,7 +285,7 @@ unsigned long __head __startup_64(unsigned long
->>>> physaddr,
->>>>        * there is no need to zero it after changing the memory encryption
->>>>        * attribute.
->>>>        */
->>>> -    if (mem_encrypt_active()) {
->>>> +    if (prot_guest_has(PATTR_MEM_ENCRYPT)) {
->>>>           vaddr = (unsigned long)__start_bss_decrypted;
->>>>           vaddr_end = (unsigned long)__end_bss_decrypted;
->>>
->>>
->>> Since this change is specific to AMD, can you replace PATTR_MEM_ENCRYPT with
->>> prot_guest_has(PATTR_SME) || prot_guest_has(PATTR_SEV). It is not used in
->>> TDX.
->>
->> This is a direct replacement for now.
-> 
-> With current implementation of prot_guest_has() for TDX it breaks boot for
-> me.
-> 
-> Looking at code agains, now I *think* the reason is accessing a global
-> variable from __startup_64() inside TDX version of prot_guest_has().
-> 
-> __startup_64() is special. If you access any global variable you need to
-> use fixup_pointer(). See comment before __startup_64().
-> 
-> I'm not sure how you get away with accessing sme_me_mask directly from
-> there. Any clues? Maybe just a luck and complier generates code just right
-> for your case, I donno.
+This reduces radix guest full entry/exit latency on POWER9 and POWER10
+by 2x.
 
-Hmm... yeah, could be that the compiler is using rip-relative addressing
-for it because it lives in the .data section?
+Nested HV guests should see smaller improvements in their L1 entry/exit,
+but this is also combined with most L0 speedups also applying to nested
+entry. nginx localhost throughput test in a SMP nested guest is improved
+about 10% (in a direct guest it doesn't change much because it uses XIVE
+for IPIs) when L0 and L1 are patched.
 
-For the static variables in mem_encrypt_identity.c I did an assembler rip
-relative LEA, but probably could have passed physaddr to sme_enable() and
-used a fixup_pointer() style function, instead.
+It does this in several main ways:
 
-> 
-> A separate point is that TDX version of prot_guest_has() relies on
-> cpu_feature_enabled() which is not ready at this point.
+- Rearrange code to optimise SPR accesses. Mainly, avoid scoreboard
+  stalls.
 
-Does TDX have to do anything special to make memory able to be shared with
-the hypervisor?  You might have to use something that is available earlier
-than cpu_feature_enabled() in that case (should you eventually support
-kvmclock).
+- Test SPR values to avoid mtSPRs where possible. mtSPRs are expensive.
 
-> 
-> I think __bss_decrypted fixup has to be done if sme_me_mask is non-zero.
-> Or just do it uncoditionally because it's NOP for sme_me_mask == 0.
+- Reduce mftb. mftb is expensive.
 
-For SNP, we'll have to additionally call the HV to update the RMP to make
-the memory shared. But that could also be done unconditionally since the
-early_snp_set_memory_shared() routine will check for SNP before doing
-anything.
+- Demand fault certain facilities to avoid saving and/or restoring them
+  (at the cost of fault when they are used, but this is mitigated over
+  a number of entries, like the facilities when context switching 
+  processes). PM, TM, and EBB so far.
 
-Thanks,
-Tom
+- Defer some sequences that are made just in case a guest is interrupted
+  in the middle of a critical section to the case where the guest is
+  scheduled on a different CPU, rather than every time (at the cost of
+  an extra IPI in this case). Namely the tlbsync sequence for radix with
+  GTSE, which is very expensive.
 
-> 
->> I think the change you're requesting
->> should be done as part of the TDX support patches so it's clear why it is
->> being changed.
->>
->> But, wouldn't TDX still need to do something with this shared/unencrypted
->> area, though? Or since it is shared, there's actually nothing you need to
->> do (the bss decrpyted section exists even if CONFIG_AMD_MEM_ENCRYPT is not
->> configured)?
-> 
-> AFAICS, only kvmclock uses __bss_decrypted. We don't enable kvmclock in
-> TDX at the moment. It may change in the future.
-> 
+- Reduce locking, barriers, atomics related to the vcpus-per-vcore > 1
+  handling that the P9 path does not require.
+
+Changes since v1:
+- Verified DPDES changes still work with msgsndp SMT emulation.
+- Fixed HMI handling bug.
+- Split softpatch handling fixes into smaller pieces.
+- Rebased with Fabiano's latest HV sanitising patches.
+- Fix TM demand faulting bug causing nested guest TM tests to TM Bad
+  Thing the host in rare cases.
+- Re-name new "pmu=" command line option to "pmu_override=" and update
+  documentation wording.
+- Add default=y config option rather than unconditionally removing the
+  L0 nested PMU workaround.
+- Remove unnecessary MSR[RI] updates in entry/exit. Down to about 4700
+  cycles now.
+- Another bugfix from Alexey's testing.
+
+Changes since RFC:
+- Rebased with Fabiano's HV sanitising patches at the front.
+- Several demand faulting bug fixes mostly relating to nested guests.
+- Removed facility demand-faulting from L0 nested entry/exit handler.
+  Demand faulting is still done in the L1, but not the L0. The reason
+  is to reduce complexity (although it's only a small amount of
+  complexity), reduce demand faulting overhead that may require several
+
+Fabiano Rosas (3):
+  KVM: PPC: Book3S HV Nested: Sanitise vcpu registers
+  KVM: PPC: Book3S HV Nested: Stop forwarding all HFUs to L1
+  KVM: PPC: Book3S HV Nested: save_hv_return_state does not require trap
+    argument
+
+Nicholas Piggin (57):
+  KVM: PPC: Book3S HV: Initialise vcpu MSR with MSR_ME
+  KVM: PPC: Book3S HV: Remove TM emulation from POWER7/8 path
+  KVM: PPC: Book3S HV P9: Fixes for TM softpatch interrupt NIP
+  KVM: PPC: Book3S HV Nested: Fix TM softpatch HFAC interrupt emulation
+  KVM: PPC: Book3S HV Nested: Make nested HFSCR state accessible
+  KVM: PPC: Book3S HV Nested: Reflect guest PMU in-use to L0 when guest
+    SPRs are live
+  powerpc/64s: Remove WORT SPR from POWER9/10
+  KMV: PPC: Book3S HV P9: Use set_dec to set decrementer to host
+  KVM: PPC: Book3S HV P9: Use host timer accounting to avoid decrementer
+    read
+  KVM: PPC: Book3S HV P9: Use large decrementer for HDEC
+  KVM: PPC: Book3S HV P9: Reduce mftb per guest entry/exit
+  powerpc/time: add API for KVM to re-arm the host timer/decrementer
+  KVM: PPC: Book3S HV: POWER10 enable HAIL when running radix guests
+  powerpc/64s: Keep AMOR SPR a constant ~0 at runtime
+  KVM: PPC: Book3S HV: Don't always save PMU for guest capable of
+    nesting
+  powerpc/64s: Always set PMU control registers to frozen/disabled when
+    not in use
+  powerpc/64s: Implement PMU override command line option
+  KVM: PPC: Book3S HV P9: Implement PMU save/restore in C
+  KVM: PPC: Book3S HV P9: Factor PMU save/load into context switch
+    functions
+  KVM: PPC: Book3S HV P9: Demand fault PMU SPRs when marked not inuse
+  KVM: PPC: Book3S HV P9: Factor out yield_count increment
+  KVM: PPC: Book3S HV: CTRL SPR does not require read-modify-write
+  KVM: PPC: Book3S HV P9: Move SPRG restore to restore_p9_host_os_sprs
+  KVM: PPC: Book3S HV P9: Reduce mtmsrd instructions required to save
+    host SPRs
+  KVM: PPC: Book3S HV P9: Improve mtmsrd scheduling by delaying MSR[EE]
+    disable
+  KVM: PPC: Book3S HV P9: Add kvmppc_stop_thread to match
+    kvmppc_start_thread
+  KVM: PPC: Book3S HV: Change dec_expires to be relative to guest
+    timebase
+  KVM: PPC: Book3S HV P9: Move TB updates
+  KVM: PPC: Book3S HV P9: Optimise timebase reads
+  KVM: PPC: Book3S HV P9: Avoid SPR scoreboard stalls
+  KVM: PPC: Book3S HV P9: Only execute mtSPR if the value changed
+  KVM: PPC: Book3S HV P9: Juggle SPR switching around
+  KVM: PPC: Book3S HV P9: Move vcpu register save/restore into functions
+  KVM: PPC: Book3S HV P9: Move host OS save/restore functions to
+    built-in
+  KVM: PPC: Book3S HV P9: Move nested guest entry into its own function
+  KVM: PPC: Book3S HV P9: Move remaining SPR and MSR access into low
+    level entry
+  KVM: PPC: Book3S HV P9: Implement TM fastpath for guest entry/exit
+  KVM: PPC: Book3S HV P9: Switch PMU to guest as late as possible
+  KVM: PPC: Book3S HV P9: Restrict DSISR canary workaround to processors
+    that require it
+  KVM: PPC: Book3S HV P9: More SPR speed improvements
+  KVM: PPC: Book3S HV P9: Demand fault EBB facility registers
+  KVM: PPC: Book3S HV P9: Demand fault TM facility registers
+  KVM: PPC: Book3S HV P9: Use Linux SPR save/restore to manage some host
+    SPRs
+  KVM: PPC: Book3S HV P9: Comment and fix MMU context switching code
+  KVM: PPC: Book3S HV P9: Test dawr_enabled() before saving host DAWR
+    SPRs
+  KVM: PPC: Book3S HV P9: Don't restore PSSCR if not needed
+  KVM: PPC: Book3S HV P9: Avoid tlbsync sequence on radix guest exit
+  KVM: PPC: Book3S HV Nested: Avoid extra mftb() in nested entry
+  KVM: PPC: Book3S HV P9: Improve mfmsr performance on entry
+  KVM: PPC: Book3S HV P9: Optimise hash guest SLB saving
+  KVM: PPC: Book3S HV P9: Avoid changing MSR[RI] in entry and exit
+  KVM: PPC: Book3S HV P9: Add unlikely annotation for !mmu_ready
+  KVM: PPC: Book3S HV P9: Avoid cpu_in_guest atomics on entry and exit
+  KVM: PPC: Book3S HV P9: Remove most of the vcore logic
+  KVM: PPC: Book3S HV P9: Tidy kvmppc_create_dtl_entry
+  KVM: PPC: Book3S HV P9: Stop using vc->dpdes
+  KVM: PPC: Book3S HV P9: Remove subcore HMI handling
+
+ .../admin-guide/kernel-parameters.txt         |   8 +
+ arch/powerpc/include/asm/asm-prototypes.h     |   5 -
+ arch/powerpc/include/asm/kvm_asm.h            |   1 +
+ arch/powerpc/include/asm/kvm_book3s.h         |   6 +
+ arch/powerpc/include/asm/kvm_book3s_64.h      |   6 +-
+ arch/powerpc/include/asm/kvm_host.h           |   7 +-
+ arch/powerpc/include/asm/kvm_ppc.h            |   1 +
+ arch/powerpc/include/asm/pmc.h                |   7 +
+ arch/powerpc/include/asm/reg.h                |   3 +-
+ arch/powerpc/include/asm/switch_to.h          |   2 +
+ arch/powerpc/include/asm/time.h               |  19 +-
+ arch/powerpc/kernel/cpu_setup_power.c         |  12 +-
+ arch/powerpc/kernel/dt_cpu_ftrs.c             |   8 +-
+ arch/powerpc/kernel/process.c                 |  32 +
+ arch/powerpc/kernel/time.c                    |  54 +-
+ arch/powerpc/kvm/Kconfig                      |  15 +
+ arch/powerpc/kvm/book3s_64_mmu_radix.c        |   4 +
+ arch/powerpc/kvm/book3s_hv.c                  | 890 ++++++++++--------
+ arch/powerpc/kvm/book3s_hv.h                  |  41 +
+ arch/powerpc/kvm/book3s_hv_builtin.c          |   2 +
+ arch/powerpc/kvm/book3s_hv_hmi.c              |   7 +-
+ arch/powerpc/kvm/book3s_hv_interrupts.S       |  13 +-
+ arch/powerpc/kvm/book3s_hv_nested.c           | 109 ++-
+ arch/powerpc/kvm/book3s_hv_p9_entry.c         | 817 +++++++++++++---
+ arch/powerpc/kvm/book3s_hv_ras.c              |  54 ++
+ arch/powerpc/kvm/book3s_hv_rmhandlers.S       | 115 +--
+ arch/powerpc/kvm/book3s_hv_tm.c               |  61 +-
+ arch/powerpc/mm/book3s64/radix_pgtable.c      |  15 -
+ arch/powerpc/perf/core-book3s.c               |  35 +
+ arch/powerpc/platforms/powernv/idle.c         |  10 +-
+ 30 files changed, 1589 insertions(+), 770 deletions(-)
+ create mode 100644 arch/powerpc/kvm/book3s_hv.h
+
+-- 
+2.23.0
+
