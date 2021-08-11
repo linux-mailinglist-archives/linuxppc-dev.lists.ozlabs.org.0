@@ -1,71 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FD943E9620
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Aug 2021 18:37:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE55E3E9621
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Aug 2021 18:37:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GlFpf0xY0z3fj5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 02:37:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GlFqN3w3Bz3hPP
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 02:37:52 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=OZaXx3cU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=UKOkMobR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1036;
- helo=mail-pj1-x1036.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::632;
+ helo=mail-pl1-x632.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=OZaXx3cU; dkim-atps=neutral
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com
- [IPv6:2607:f8b0:4864:20::1036])
+ header.s=20161025 header.b=UKOkMobR; dkim-atps=neutral
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com
+ [IPv6:2607:f8b0:4864:20::632])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GlF4N2chJz3cQx
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 02:04:04 +1000 (AEST)
-Received: by mail-pj1-x1036.google.com with SMTP id
- gz13-20020a17090b0ecdb0290178c0e0ce8bso6313482pjb.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Aug 2021 09:04:04 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GlF4Q5qJkz3dLS
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 02:04:06 +1000 (AEST)
+Received: by mail-pl1-x632.google.com with SMTP id a20so3350000plm.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Aug 2021 09:04:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=tuny/0eGXiUI7uo2gVucclOBaSeF7WVbv1eeHSQKFaE=;
- b=OZaXx3cUvijxkwm0x1eN2JTWJWgtsEwynt9e6yW/0x1n+/J7npACl0cjOAhtGMMY2D
- jO9aVROyUQIK/xurGp7CDQ6HuaFzIw3qKn0DjI+5a2psfC3kMCAmLfPKcXe4xcUb89sP
- iE/rLcnZvQ6w+Gs9xFOCZGDGGHfXHVIML9eZMJi2NcoR+yQuk9WX4548JZ+nl3FyKRuB
- J+G1e01iLqS6USBfWB1F2064lPFWqClXm27wtp8UD6xkUf4TnTAv6tQQJygSlgYvBm6H
- cR6DQCr2Z+/m1KvxbroiBxKJaPTZ9pxDsEbNWJrHZSSBm3e3a91giiW15vW+VflDndfa
- U1tA==
+ bh=lGFwm9eLMc818K8Y7HbXY46Jvms/PHQTfB9Xnbg0In4=;
+ b=UKOkMobR524dzmwACOuDHce1apQN8B3xOUPuWeZ+dEAbTPZ7xWGBwUrDeOFqQwhIKf
+ vu90SPr2ao5wIranB8XSk/XoEbm9hR7SXqSZtmKj3m/W/w/kdrvnnvGY8/5YtC8mz1sN
+ LHWh0E7qj9ZGIoCEYJlg3UHkPpblLCp9wPtW/nygqC5qqdxVWOoP1q0ty94crB2uVxwk
+ qZPVCbo7M3ZWNftVYOMOTIzOXZ2KXsIUPtbk3C5AWDwCRVIuBCBkq1rZKVqz+6aH6VMr
+ 6P8lde9ikwC3rG6R5vECx2XzO3oAAZS9ytowh3BfTBDik3PixzZPIhO14DtYMY0P1tDY
+ M8Lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=tuny/0eGXiUI7uo2gVucclOBaSeF7WVbv1eeHSQKFaE=;
- b=XWjUqPj6ievZjKt/Sz8j8kQqOY/3ELO8h5Kt///Pgg0JPV+XV7yJqya+ntiZYE0du5
- g7iuo0UuNJVEI/eSrbHG+IejWQYBLDyg55idL5IIpnYdozxTI7Ihe44fUQ6+YTm0yT2q
- AL1+ujRzsM5WwOcTrr8Wy4A9GXEZQwFTxVGyOgH0hKeK0PacIrm721fCpu4Hy73S3+Fn
- KwQ8UWtdsOEXsaJV8jmhgLNqJxscQivnP11/S6sEPZQVdchJHvtw3kNeqLUlzRDpI1UF
- nqgk8B7J2msqXcETu2HWgNnnyhWaHncO4YzElHoNSl1QUrv1o0dHkfo2flfyFYvnhqG6
- 4SjA==
-X-Gm-Message-State: AOAM532ISorKVr0avkKsXL63QqAiCmAKqLObJBqrZx8A5op7/yYiyk6k
- E8sgzpFY3n+P/VtQmT9MkGo=
-X-Google-Smtp-Source: ABdhPJy2Iq6P+yIa9UFj5axzhHa+x+EubqFC3tvbbYbE9FTipuyNemwAnPdcJOW0VYk4zQFHOfAaTA==
-X-Received: by 2002:a17:90a:7185:: with SMTP id
- i5mr37588461pjk.236.1628697842379; 
- Wed, 11 Aug 2021 09:04:02 -0700 (PDT)
+ bh=lGFwm9eLMc818K8Y7HbXY46Jvms/PHQTfB9Xnbg0In4=;
+ b=Y4u2b6QUHRMEP1pIrDRr7RDgRCPQwMOn5ucciJOjGk3MPMP8DkR2iNBsW1jGOPyxGG
+ 4/cjedDsTwEmzbcngsFpHG6bC51X95K4NW//AJHQSOvJ58b0SBHB7AmWchxdbrxANtjw
+ xWNDH+nF6uwk5AASFb1NJ3r1xn6GU3fmP+p42BYorvbgidLGSM7b9MniaYNmck4NChGm
+ nq8uNTbR98rFba3AJdaBYSksj80er1K4/Zbhn6irvATrzlQqavqYBcNNS30oXp+KloX9
+ mZF/tTOERtkYlMYhav0neE9Utd0nJgWYT62aA3mr/1WhwAY1YGQrBltpzJEh3lY5iBTN
+ OOjg==
+X-Gm-Message-State: AOAM530UrW21JfF+XNBcFBcl1xYcs2xC5GNB+z/o9Lz1NwaiXx1dV+Js
+ KrZAefQnW1x8wvnpC5EsDv4=
+X-Google-Smtp-Source: ABdhPJz0cgfxKnR+wqNYHrawFiUMpNNJFs8wHnfFYJOWIj1C27SkzJRTWtm2J0AqLhTROVRE3ixSKw==
+X-Received: by 2002:a17:90a:1d44:: with SMTP id
+ u4mr11329555pju.119.1628697844869; 
+ Wed, 11 Aug 2021 09:04:04 -0700 (PDT)
 Received: from bobo.ibm.com ([118.210.97.79])
- by smtp.gmail.com with ESMTPSA id k19sm6596494pff.28.2021.08.11.09.04.00
+ by smtp.gmail.com with ESMTPSA id k19sm6596494pff.28.2021.08.11.09.04.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Aug 2021 09:04:02 -0700 (PDT)
+ Wed, 11 Aug 2021 09:04:04 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org
-Subject: [PATCH v2 53/60] KVM: PPC: Book3S HV P9: Optimise hash guest SLB
- saving
-Date: Thu, 12 Aug 2021 02:01:27 +1000
-Message-Id: <20210811160134.904987-54-npiggin@gmail.com>
+Subject: [PATCH v2 54/60] KVM: PPC: Book3S HV P9: Avoid changing MSR[RI] in
+ entry and exit
+Date: Thu, 12 Aug 2021 02:01:28 +1000
+Message-Id: <20210811160134.904987-55-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210811160134.904987-1-npiggin@gmail.com>
 References: <20210811160134.904987-1-npiggin@gmail.com>
@@ -87,58 +86,116 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-slbmfee/slbmfev instructions are very expensive, moreso than a regular
-mfspr instruction, so minimising them significantly improves hash guest
-exit performance. The slbmfev is only required if slbmfee found a valid
-SLB entry.
+kvm_hstate.in_guest provides the equivalent of MSR[RI]=0 protection,
+and it covers the existing MSR[RI]=0 section in late entry and early
+exit, so clearing and setting MSR[RI] in those cases does not
+actually do anything useful.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Remove the RI manipulation and replace it with comments. Make the
+in_guest memory accesses a bit closer to a proper critical section
+pattern. This speeds up guest entry/exit performance.
+
+This also removes the MSR[RI] warnings which aren't very interesting
+and would cause crashes if they hit due to causing an interrupt in
+non-recoverable code.
+
+From: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kvm/book3s_hv_p9_entry.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+ arch/powerpc/kvm/book3s_hv_p9_entry.c | 50 ++++++++++++---------------
+ 1 file changed, 23 insertions(+), 27 deletions(-)
 
 diff --git a/arch/powerpc/kvm/book3s_hv_p9_entry.c b/arch/powerpc/kvm/book3s_hv_p9_entry.c
-index fa6ac153c0f9..cb865fe2580d 100644
+index cb865fe2580d..5745a49021c3 100644
 --- a/arch/powerpc/kvm/book3s_hv_p9_entry.c
 +++ b/arch/powerpc/kvm/book3s_hv_p9_entry.c
-@@ -483,10 +483,22 @@ static void __accumulate_time(struct kvm_vcpu *vcpu, struct kvmhv_tb_accumulator
- #define accumulate_time(vcpu, next) do {} while (0)
- #endif
+@@ -825,7 +825,15 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
+ 	 * But TM could be split out if this would be a significant benefit.
+ 	 */
  
--static inline void mfslb(unsigned int idx, u64 *slbee, u64 *slbev)
-+static inline u64 mfslbv(unsigned int idx)
- {
--	asm volatile("slbmfev  %0,%1" : "=r" (*slbev) : "r" (idx));
--	asm volatile("slbmfee  %0,%1" : "=r" (*slbee) : "r" (idx));
-+	u64 slbev;
-+
-+	asm volatile("slbmfev  %0,%1" : "=r" (slbev) : "r" (idx));
-+
-+	return slbev;
-+}
-+
-+static inline u64 mfslbe(unsigned int idx)
-+{
-+	u64 slbee;
-+
-+	asm volatile("slbmfee  %0,%1" : "=r" (slbee) : "r" (idx));
-+
-+	return slbee;
- }
+-	local_paca->kvm_hstate.in_guest = KVM_GUEST_MODE_HV_P9;
++	/*
++	 * MSR[RI] does not need to be cleared (and is not, for radix guests
++	 * with no prefetch bug), because in_guest is set. If we take a SRESET
++	 * or MCE with in_guest set but still in HV mode, then
++	 * kvmppc_p9_bad_interrupt handles the interrupt, which effectively
++	 * clears MSR[RI] and doesn't return.
++	 */
++	WRITE_ONCE(local_paca->kvm_hstate.in_guest, KVM_GUEST_MODE_HV_P9);
++	barrier(); /* Open in_guest critical section */
  
- static inline void mtslb(u64 slbee, u64 slbev)
-@@ -616,8 +628,10 @@ static void save_clear_guest_mmu(struct kvm *kvm, struct kvm_vcpu *vcpu)
- 		 */
- 		for (i = 0; i < vcpu->arch.slb_nr; i++) {
- 			u64 slbee, slbev;
--			mfslb(i, &slbee, &slbev);
-+
-+			slbee = mfslbe(i);
- 			if (slbee & SLB_ESID_V) {
-+				slbev = mfslbv(i);
- 				vcpu->arch.slb[nr].orige = slbee | i;
- 				vcpu->arch.slb[nr].origv = slbev;
- 				nr++;
+ 	/*
+ 	 * Hash host, hash guest, or radix guest with prefetch bug, all have
+@@ -837,14 +845,10 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
+ 
+ 	save_clear_host_mmu(kvm);
+ 
+-	if (kvm_is_radix(kvm)) {
++	if (kvm_is_radix(kvm))
+ 		switch_mmu_to_guest_radix(kvm, vcpu, lpcr);
+-		if (!cpu_has_feature(CPU_FTR_P9_RADIX_PREFETCH_BUG))
+-			__mtmsrd(0, 1); /* clear RI */
+-
+-	} else {
++	else
+ 		switch_mmu_to_guest_hpt(kvm, vcpu, lpcr);
+-	}
+ 
+ 	/* TLBIEL uses LPID=LPIDR, so run this after setting guest LPID */
+ 	kvmppc_check_need_tlb_flush(kvm, vc->pcpu, nested);
+@@ -899,19 +903,16 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
+ 	vcpu->arch.regs.gpr[3] = local_paca->kvm_hstate.scratch2;
+ 
+ 	/*
+-	 * Only set RI after reading machine check regs (DAR, DSISR, SRR0/1)
+-	 * and hstate scratch (which we need to move into exsave to make
+-	 * re-entrant vs SRESET/MCE)
++	 * After reading machine check regs (DAR, DSISR, SRR0/1) and hstate
++	 * scratch (which we need to move into exsave to make re-entrant vs
++	 * SRESET/MCE), register state is protected from reentrancy. However
++	 * timebase, MMU, among other state is still set to guest, so don't
++	 * enable MSR[RI] here. It gets enabled at the end, after in_guest
++	 * is cleared.
++	 *
++	 * It is possible an NMI could come in here, which is why it is
++	 * important to save the above state early so it can be debugged.
+ 	 */
+-	if (ri_set) {
+-		if (unlikely(!(mfmsr() & MSR_RI))) {
+-			__mtmsrd(MSR_RI, 1);
+-			WARN_ON_ONCE(1);
+-		}
+-	} else {
+-		WARN_ON_ONCE(mfmsr() & MSR_RI);
+-		__mtmsrd(MSR_RI, 1);
+-	}
+ 
+ 	vcpu->arch.regs.gpr[9] = exsave[EX_R9/sizeof(u64)];
+ 	vcpu->arch.regs.gpr[10] = exsave[EX_R10/sizeof(u64)];
+@@ -969,13 +970,6 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
+ 				 */
+ 				mtspr(SPRN_HSRR0, vcpu->arch.regs.nip);
+ 				mtspr(SPRN_HSRR1, vcpu->arch.shregs.msr);
+-
+-				/*
+-				 * tm_return_to_guest re-loads SRR0/1, DAR,
+-				 * DSISR after RI is cleared, in case they had
+-				 * been clobbered by a MCE.
+-				 */
+-				__mtmsrd(0, 1); /* clear RI */
+ 				goto tm_return_to_guest;
+ 			}
+ 		}
+@@ -1075,7 +1069,9 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
+ 
+ 	restore_p9_host_os_sprs(vcpu, &host_os_sprs);
+ 
+-	local_paca->kvm_hstate.in_guest = KVM_GUEST_MODE_NONE;
++	barrier(); /* Close in_guest critical section */
++	WRITE_ONCE(local_paca->kvm_hstate.in_guest, KVM_GUEST_MODE_NONE);
++	/* Interrupts are recoverable at this point */
+ 
+ 	/*
+ 	 * cp_abort is required if the processor supports local copy-paste
 -- 
 2.23.0
 
