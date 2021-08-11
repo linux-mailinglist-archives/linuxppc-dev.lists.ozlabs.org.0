@@ -1,70 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34E3F3E95A0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Aug 2021 18:12:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3139A3E95A5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Aug 2021 18:13:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GlFGc0PCqz3dgx
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 02:12:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GlFHL0mgWz3fFB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 02:13:34 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=fAA4kxhE;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Qe0/FtQK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102f;
- helo=mail-pj1-x102f.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62a;
+ helo=mail-pl1-x62a.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=fAA4kxhE; dkim-atps=neutral
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com
- [IPv6:2607:f8b0:4864:20::102f])
+ header.s=20161025 header.b=Qe0/FtQK; dkim-atps=neutral
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com
+ [IPv6:2607:f8b0:4864:20::62a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GlF2Z6449z3cTj
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 02:02:30 +1000 (AEST)
-Received: by mail-pj1-x102f.google.com with SMTP id
- mq2-20020a17090b3802b0290178911d298bso5759745pjb.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Aug 2021 09:02:30 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GlF2d1RKCz3bY0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 02:02:32 +1000 (AEST)
+Received: by mail-pl1-x62a.google.com with SMTP id a5so3290178plh.5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Aug 2021 09:02:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=O/sqZTnORdZuItaT1yAiOHwnavM4EItQXgoU+iu2aPc=;
- b=fAA4kxhEbTwbiOXg5yCqxeDBawIM+5SiKntmU59nwBTx3YG48mZV9UCg70OCuh3RY1
- 6gH8dDMObgW8l2UES4ODenHlsxODyww3lPSx4FwEU63f2SpHHIAzxOlAUF8IxaMOaTdX
- hHcPAaEHDgnmKtxvVib6Sbpver9+Gju/6zIVeiLabGGtxpB61pICRtZazWY5ePV0XYIk
- m3Kv9u9kRkXlUG+AJX2to5L07xCljwSxwx3SnaAnLuHCvmF7VJPdOFKdTyGNoijl8mpX
- /50m3BwPnuHYEtP/TA0IjsCyq2JYTVFiqV6/KN7RN35AwXvAwo6PErhTX6Ss7KYWDgBq
- qyEw==
+ bh=cKT4fTx7oGwRWzvpaHxdjqzbrtTqZjyygbqKOYWpOIc=;
+ b=Qe0/FtQKhVwQV1cLcmplgCvwntQW+FjPNErVOqKGPL31gn6QeXoMl/3bNoON4C0gUH
+ lv9QcHtJJ3G2J+FqJa/m5968lJbIzxGJpv7evVhhQxlXwCLdWs7AvWmbPtMCskfBnl7N
+ gRkSo158HYGVTJmIYk3Ncr7DXnyIGqgVJrqgkJJBORe+PSItVe2DXoFTLqNje9qfV6Qs
+ iiKuF5Q/24Pz19o+Ce0yqfyRbDGNL4PZ6fzEGoTkBe/6ueiAJfwGJUj5uEcKKAFBkOwR
+ fd6+FgVRk74o3w7HRbJNBjkquh7y3Cev1tdKMFzEaASR9YqCj9u9Oyj8oVqIyx3J8POs
+ 7Law==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=O/sqZTnORdZuItaT1yAiOHwnavM4EItQXgoU+iu2aPc=;
- b=WcK+f0zqdojW4iavlCEFSfIWKEs7atAXSSswxAxmy0KaIsP1o+98tEe2/AN9lMhdxe
- fLC3oZIKHrlSGEzOActnjCpw0/UmlSgNXgnMyaSiQys8+URuRa1V1OvL4P8q5YZA/3L2
- SGFf7lzC9NwbxKhW3ofmPMx6GP7Xnmjo/ugcV/gVj1WbJuyUHopPdLTQCT5O32dS+3hf
- oOI0nn8mEDfoUiJQYjT7w79K2FGhjtfsP3xKRMeo860be5Yz3UjP8i9V6r4OZxIpXQlx
- ekYBtGi9ErId39RhUvVP84V4Ne1wDs+vL8zxmZkzUYF1tvpB7LtbBhk1Ux6apXJnTQf1
- R5mA==
-X-Gm-Message-State: AOAM531vOOAzmwAk4xBmvpDR2b9MbWoU9WpuU5lW5L0aTZ+DmMRsmfaH
- h3t5SPtUgW2vkB61c1B/8zg=
-X-Google-Smtp-Source: ABdhPJxRk5lT65wV9miwWbYeCWtZRrQEo390TolWS+ANIV1KqhWIz6XYlZ8qMGuWUvaAaA42yJu9og==
-X-Received: by 2002:a17:90a:4481:: with SMTP id
- t1mr38069017pjg.232.1628697748797; 
- Wed, 11 Aug 2021 09:02:28 -0700 (PDT)
+ bh=cKT4fTx7oGwRWzvpaHxdjqzbrtTqZjyygbqKOYWpOIc=;
+ b=O4sl6y2iNa+lOKursNGxumuPfMiWO8YbzyPHlCNHy9DVQwlBozuqzC+DtSNGjlaM/m
+ Qn4ZMVE+Yry7kghfcmoZGKvjkp7XYMWtYizqOP0/j+lwiVT+jDZerQWajxGRNo3gRAs9
+ +jUpav2ricFXubBpaKTohPXtR0Fsz5pyKD+QUJSQXhA+ckBhA3qyk+vEYHRv6Za5q9nP
+ ctrLOYzHQaBqeGj6toV+EcEli0/mWNt9FLtqRtWi08QSjFZFydr/VSybUSgSxglHpgMz
+ G7ilr5gLX9ZNnci+i/gPtqYLUpsuqzt7tkHXt/jgy30oId0LO0Mz88I5rhdIpeA8Y29M
+ tDmw==
+X-Gm-Message-State: AOAM532nKyGLDjXakJzdZQ+zLEioCd5L2+2VX95B7VGQ7MQtY74FKwUD
+ CN6Oe9IPnD7WjeLD+8TGSPA=
+X-Google-Smtp-Source: ABdhPJwQ5ivMxxa21BFrRKDX9Rhm0Iomm4tEiMybappdPSnvp0DlNEF3LTosHm27OJKOt4BGfREdVQ==
+X-Received: by 2002:a17:902:ecc6:b029:12c:44b:40bd with SMTP id
+ a6-20020a170902ecc6b029012c044b40bdmr7605549plh.33.1628697751009; 
+ Wed, 11 Aug 2021 09:02:31 -0700 (PDT)
 Received: from bobo.ibm.com ([118.210.97.79])
- by smtp.gmail.com with ESMTPSA id k19sm6596494pff.28.2021.08.11.09.02.26
+ by smtp.gmail.com with ESMTPSA id k19sm6596494pff.28.2021.08.11.09.02.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Aug 2021 09:02:28 -0700 (PDT)
+ Wed, 11 Aug 2021 09:02:30 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org
-Subject: [PATCH v2 17/60] powerpc/64s: Keep AMOR SPR a constant ~0 at runtime
-Date: Thu, 12 Aug 2021 02:00:51 +1000
-Message-Id: <20210811160134.904987-18-npiggin@gmail.com>
+Subject: [PATCH v2 18/60] KVM: PPC: Book3S HV: Don't always save PMU for guest
+ capable of nesting
+Date: Thu, 12 Aug 2021 02:00:52 +1000
+Message-Id: <20210811160134.904987-19-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210811160134.904987-1-npiggin@gmail.com>
 References: <20210811160134.904987-1-npiggin@gmail.com>
@@ -81,232 +81,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>,
- Fabiano Rosas <farosas@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This register controls supervisor SPR modifications, and as such is only
-relevant for KVM. KVM always sets AMOR to ~0 on guest entry, and never
-restores it coming back out to the host, so it can be kept constant and
-avoid the mtSPR in KVM guest entry.
+Provide a config option that controls the the workaround added by commit
+63279eeb7f93a ("KVM: PPC: Book3S HV: Always save guest pmu for guest
+capable of nesting"). The option defaults to y for now, but is expected
+to go away within a few releases.
 
-Reviewed-by: Fabiano Rosas <farosas@linux.ibm.com>
+Nested capable guests running with the earlier commit ("KVM: PPC: Book3S
+HV Nested: Indicate guest PMU in-use in VPA") will now indicate the PMU
+in-use status of their guests, which means the parent does not need to
+unconditionally save the PMU for nested capable guests.
+
+After this latest round of performance optimisations, this option costs
+about 540 cycles or 10% entry/exit performance on a POWER9 nested-capable
+guest.
+
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/cpu_setup_power.c    |  8 ++++++++
- arch/powerpc/kernel/dt_cpu_ftrs.c        |  2 ++
- arch/powerpc/kvm/book3s_hv_p9_entry.c    |  2 --
- arch/powerpc/kvm/book3s_hv_rmhandlers.S  |  2 --
- arch/powerpc/mm/book3s64/radix_pgtable.c | 15 ---------------
- arch/powerpc/platforms/powernv/idle.c    |  8 +++-----
- 6 files changed, 13 insertions(+), 24 deletions(-)
+ arch/powerpc/kvm/Kconfig     | 15 +++++++++++++++
+ arch/powerpc/kvm/book3s_hv.c | 10 ++++++++--
+ 2 files changed, 23 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kernel/cpu_setup_power.c b/arch/powerpc/kernel/cpu_setup_power.c
-index 3cca88ee96d7..a29dc8326622 100644
---- a/arch/powerpc/kernel/cpu_setup_power.c
-+++ b/arch/powerpc/kernel/cpu_setup_power.c
-@@ -137,6 +137,7 @@ void __setup_cpu_power7(unsigned long offset, struct cpu_spec *t)
- 		return;
+diff --git a/arch/powerpc/kvm/Kconfig b/arch/powerpc/kvm/Kconfig
+index e45644657d49..d57dcbc4eb0f 100644
+--- a/arch/powerpc/kvm/Kconfig
++++ b/arch/powerpc/kvm/Kconfig
+@@ -131,6 +131,21 @@ config KVM_BOOK3S_HV_EXIT_TIMING
  
- 	mtspr(SPRN_LPID, 0);
-+	mtspr(SPRN_AMOR, ~0);
- 	mtspr(SPRN_PCR, PCR_MASK);
- 	init_LPCR_ISA206(mfspr(SPRN_LPCR), LPCR_LPES1 >> LPCR_LPES_SH);
- }
-@@ -150,6 +151,7 @@ void __restore_cpu_power7(void)
- 		return;
+ 	  If unsure, say N.
  
- 	mtspr(SPRN_LPID, 0);
-+	mtspr(SPRN_AMOR, ~0);
- 	mtspr(SPRN_PCR, PCR_MASK);
- 	init_LPCR_ISA206(mfspr(SPRN_LPCR), LPCR_LPES1 >> LPCR_LPES_SH);
- }
-@@ -164,6 +166,7 @@ void __setup_cpu_power8(unsigned long offset, struct cpu_spec *t)
- 		return;
++config KVM_BOOK3S_HV_NESTED_PMU_WORKAROUND
++	bool "Nested L0 host workaround for L1 KVM host PMU handling bug" if EXPERT
++	depends on KVM_BOOK3S_HV_POSSIBLE
++	default !EXPERT
++	help
++	  Old nested HV capable Linux guests have a bug where the don't
++	  reflect the PMU in-use status of their L2 guest to the L0 host
++	  while the L2 PMU registers are live. This can result in loss
++          of L2 PMU register state, causing perf to not work correctly in
++	  L2 guests.
++
++	  Selecting this option for the L0 host implements a workaround for
++	  those buggy L1s which saves the L2 state, at the cost of performance
++	  in all nested-capable guest entry/exit.
++
+ config KVM_BOOKE_HV
+ 	bool
  
- 	mtspr(SPRN_LPID, 0);
-+	mtspr(SPRN_AMOR, ~0);
- 	mtspr(SPRN_PCR, PCR_MASK);
- 	init_LPCR_ISA206(mfspr(SPRN_LPCR) | LPCR_PECEDH, 0); /* LPES = 0 */
- 	init_HFSCR();
-@@ -184,6 +187,7 @@ void __restore_cpu_power8(void)
- 		return;
- 
- 	mtspr(SPRN_LPID, 0);
-+	mtspr(SPRN_AMOR, ~0);
- 	mtspr(SPRN_PCR, PCR_MASK);
- 	init_LPCR_ISA206(mfspr(SPRN_LPCR) | LPCR_PECEDH, 0); /* LPES = 0 */
- 	init_HFSCR();
-@@ -202,6 +206,7 @@ void __setup_cpu_power9(unsigned long offset, struct cpu_spec *t)
- 	mtspr(SPRN_PSSCR, 0);
- 	mtspr(SPRN_LPID, 0);
- 	mtspr(SPRN_PID, 0);
-+	mtspr(SPRN_AMOR, ~0);
- 	mtspr(SPRN_PCR, PCR_MASK);
- 	init_LPCR_ISA300((mfspr(SPRN_LPCR) | LPCR_PECEDH | LPCR_PECE_HVEE |\
- 			 LPCR_HVICE | LPCR_HEIC) & ~(LPCR_UPRT | LPCR_HR), 0);
-@@ -223,6 +228,7 @@ void __restore_cpu_power9(void)
- 	mtspr(SPRN_PSSCR, 0);
- 	mtspr(SPRN_LPID, 0);
- 	mtspr(SPRN_PID, 0);
-+	mtspr(SPRN_AMOR, ~0);
- 	mtspr(SPRN_PCR, PCR_MASK);
- 	init_LPCR_ISA300((mfspr(SPRN_LPCR) | LPCR_PECEDH | LPCR_PECE_HVEE |\
- 			 LPCR_HVICE | LPCR_HEIC) & ~(LPCR_UPRT | LPCR_HR), 0);
-@@ -242,6 +248,7 @@ void __setup_cpu_power10(unsigned long offset, struct cpu_spec *t)
- 	mtspr(SPRN_PSSCR, 0);
- 	mtspr(SPRN_LPID, 0);
- 	mtspr(SPRN_PID, 0);
-+	mtspr(SPRN_AMOR, ~0);
- 	mtspr(SPRN_PCR, PCR_MASK);
- 	init_LPCR_ISA300((mfspr(SPRN_LPCR) | LPCR_PECEDH | LPCR_PECE_HVEE |\
- 			 LPCR_HVICE | LPCR_HEIC) & ~(LPCR_UPRT | LPCR_HR), 0);
-@@ -264,6 +271,7 @@ void __restore_cpu_power10(void)
- 	mtspr(SPRN_PSSCR, 0);
- 	mtspr(SPRN_LPID, 0);
- 	mtspr(SPRN_PID, 0);
-+	mtspr(SPRN_AMOR, ~0);
- 	mtspr(SPRN_PCR, PCR_MASK);
- 	init_LPCR_ISA300((mfspr(SPRN_LPCR) | LPCR_PECEDH | LPCR_PECE_HVEE |\
- 			 LPCR_HVICE | LPCR_HEIC) & ~(LPCR_UPRT | LPCR_HR), 0);
-diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
-index af95f337e54b..38ea20fadc4a 100644
---- a/arch/powerpc/kernel/dt_cpu_ftrs.c
-+++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
-@@ -80,6 +80,7 @@ static void __restore_cpu_cpufeatures(void)
- 	mtspr(SPRN_LPCR, system_registers.lpcr);
- 	if (hv_mode) {
- 		mtspr(SPRN_LPID, 0);
-+		mtspr(SPRN_AMOR, ~0);
- 		mtspr(SPRN_HFSCR, system_registers.hfscr);
- 		mtspr(SPRN_PCR, system_registers.pcr);
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 2fe01dc2062f..197665c1a1cd 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -4033,8 +4033,14 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+ 		vcpu->arch.vpa.dirty = 1;
+ 		save_pmu = lp->pmcregs_in_use;
  	}
-@@ -216,6 +217,7 @@ static int __init feat_enable_hv(struct dt_cpu_feature *f)
- 	}
+-	/* Must save pmu if this guest is capable of running nested guests */
+-	save_pmu |= nesting_enabled(vcpu->kvm);
++	if (IS_ENABLED(CONFIG_KVM_BOOK3S_HV_NESTED_PMU_WORKAROUND)) {
++		/*
++		 * Save pmu if this guest is capable of running nested guests.
++		 * This is option is for old L1s that do not set their
++		 * lppaca->pmcregs_in_use properly when entering their L2.
++		 */
++		save_pmu |= nesting_enabled(vcpu->kvm);
++	}
  
- 	mtspr(SPRN_LPID, 0);
-+	mtspr(SPRN_AMOR, ~0);
- 
- 	lpcr = mfspr(SPRN_LPCR);
- 	lpcr &=  ~LPCR_LPES0; /* HV external interrupts */
-diff --git a/arch/powerpc/kvm/book3s_hv_p9_entry.c b/arch/powerpc/kvm/book3s_hv_p9_entry.c
-index bd8cf0a65ce8..a7f63082b4e3 100644
---- a/arch/powerpc/kvm/book3s_hv_p9_entry.c
-+++ b/arch/powerpc/kvm/book3s_hv_p9_entry.c
-@@ -286,8 +286,6 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
- 	mtspr(SPRN_SPRG2, vcpu->arch.shregs.sprg2);
- 	mtspr(SPRN_SPRG3, vcpu->arch.shregs.sprg3);
- 
--	mtspr(SPRN_AMOR, ~0UL);
--
- 	local_paca->kvm_hstate.in_guest = KVM_GUEST_MODE_HV_P9;
- 
- 	/*
-diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-index 75079397c2a5..9021052f1579 100644
---- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-+++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-@@ -772,10 +772,8 @@ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_207S)
- 	/* Restore AMR and UAMOR, set AMOR to all 1s */
- 	ld	r5,VCPU_AMR(r4)
- 	ld	r6,VCPU_UAMOR(r4)
--	li	r7,-1
- 	mtspr	SPRN_AMR,r5
- 	mtspr	SPRN_UAMOR,r6
--	mtspr	SPRN_AMOR,r7
- 
- 	/* Restore state of CTRL run bit; assume 1 on entry */
- 	lwz	r5,VCPU_CTRL(r4)
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index e50ddf129c15..5aebd70ef66a 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -572,18 +572,6 @@ void __init radix__early_init_devtree(void)
- 	return;
- }
- 
--static void radix_init_amor(void)
--{
--	/*
--	* In HV mode, we init AMOR (Authority Mask Override Register) so that
--	* the hypervisor and guest can setup IAMR (Instruction Authority Mask
--	* Register), enable key 0 and set it to 1.
--	*
--	* AMOR = 0b1100 .... 0000 (Mask for key 0 is 11)
--	*/
--	mtspr(SPRN_AMOR, (3ul << 62));
--}
--
- void __init radix__early_init_mmu(void)
- {
- 	unsigned long lpcr;
-@@ -644,7 +632,6 @@ void __init radix__early_init_mmu(void)
- 		lpcr = mfspr(SPRN_LPCR);
- 		mtspr(SPRN_LPCR, lpcr | LPCR_UPRT | LPCR_HR);
- 		radix_init_partition_table();
--		radix_init_amor();
- 	} else {
- 		radix_init_pseries();
- 	}
-@@ -668,8 +655,6 @@ void radix__early_init_mmu_secondary(void)
- 
- 		set_ptcr_when_no_uv(__pa(partition_tb) |
- 				    (PATB_SIZE_SHIFT - 12));
--
--		radix_init_amor();
- 	}
- 
- 	radix__switch_mmu_context(NULL, &init_mm);
-diff --git a/arch/powerpc/platforms/powernv/idle.c b/arch/powerpc/platforms/powernv/idle.c
-index df19e2ff9d3c..721ac4f7e2d1 100644
---- a/arch/powerpc/platforms/powernv/idle.c
-+++ b/arch/powerpc/platforms/powernv/idle.c
-@@ -306,8 +306,8 @@ struct p7_sprs {
- 	/* per thread SPRs that get lost in shallow states */
- 	u64 amr;
- 	u64 iamr;
--	u64 amor;
- 	u64 uamor;
-+	/* amor is restored to constant ~0 */
- };
- 
- static unsigned long power7_idle_insn(unsigned long type)
-@@ -378,7 +378,6 @@ static unsigned long power7_idle_insn(unsigned long type)
- 	if (cpu_has_feature(CPU_FTR_ARCH_207S)) {
- 		sprs.amr	= mfspr(SPRN_AMR);
- 		sprs.iamr	= mfspr(SPRN_IAMR);
--		sprs.amor	= mfspr(SPRN_AMOR);
- 		sprs.uamor	= mfspr(SPRN_UAMOR);
- 	}
- 
-@@ -397,7 +396,7 @@ static unsigned long power7_idle_insn(unsigned long type)
- 			 */
- 			mtspr(SPRN_AMR,		sprs.amr);
- 			mtspr(SPRN_IAMR,	sprs.iamr);
--			mtspr(SPRN_AMOR,	sprs.amor);
-+			mtspr(SPRN_AMOR,	~0);
- 			mtspr(SPRN_UAMOR,	sprs.uamor);
- 		}
- 	}
-@@ -687,7 +686,6 @@ static unsigned long power9_idle_stop(unsigned long psscr)
- 
- 	sprs.amr	= mfspr(SPRN_AMR);
- 	sprs.iamr	= mfspr(SPRN_IAMR);
--	sprs.amor	= mfspr(SPRN_AMOR);
- 	sprs.uamor	= mfspr(SPRN_UAMOR);
- 
- 	srr1 = isa300_idle_stop_mayloss(psscr);		/* go idle */
-@@ -708,7 +706,7 @@ static unsigned long power9_idle_stop(unsigned long psscr)
- 		 */
- 		mtspr(SPRN_AMR,		sprs.amr);
- 		mtspr(SPRN_IAMR,	sprs.iamr);
--		mtspr(SPRN_AMOR,	sprs.amor);
-+		mtspr(SPRN_AMOR,	~0);
- 		mtspr(SPRN_UAMOR,	sprs.uamor);
- 
- 		/*
+ 	kvmhv_save_guest_pmu(vcpu, save_pmu);
+ #ifdef CONFIG_PPC_PSERIES
 -- 
 2.23.0
 
