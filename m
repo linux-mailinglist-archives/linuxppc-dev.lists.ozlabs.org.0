@@ -1,53 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4A8D3E8850
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Aug 2021 04:55:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 788303E8885
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Aug 2021 05:01:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GkvYt3Lh4z3cH0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Aug 2021 12:54:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gkvjj32J0z3cGY
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Aug 2021 13:01:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com;
- envelope-from=pulehui@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GkvYQ5bpsz2yfg
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Aug 2021 12:54:31 +1000 (AEST)
-Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.54])
- by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4GkvXM3qNVzYmfh;
- Wed, 11 Aug 2021 10:53:39 +0800 (CST)
-Received: from dggpemm500019.china.huawei.com (7.185.36.180) by
- dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Wed, 11 Aug 2021 10:53:54 +0800
-Received: from [10.67.109.184] (10.67.109.184) by
- dggpemm500019.china.huawei.com (7.185.36.180) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Wed, 11 Aug 2021 10:53:53 +0800
-Subject: Re: [PATCH v2] powerpc/kprobes: Fix kprobe Oops happens in booke
-To: <mpe@ellerman.id.au>, <benh@kernel.crashing.org>, <paulus@samba.org>,
- <naveen.n.rao@linux.vnet.ibm.com>, <mhiramat@kernel.org>,
- <peterz@infradead.org>, <christophe.leroy@csgroup.eu>, <npiggin@gmail.com>,
- <ruscur@russell.cc>
-References: <20210809023658.218915-1-pulehui@huawei.com>
-From: Pu Lehui <pulehui@huawei.com>
-Message-ID: <df17030e-484c-ebd4-0225-6923e2982282@huawei.com>
-Date: Wed, 11 Aug 2021 10:53:53 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GkvjD2RT9z2yhd
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Aug 2021 13:01:18 +1000 (AEST)
+X-IronPort-AV: E=McAfee;i="6200,9189,10072"; a="202210258"
+X-IronPort-AV: E=Sophos;i="5.84,311,1620716400"; d="scan'208";a="202210258"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+ by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Aug 2021 20:00:15 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.84,311,1620716400"; d="scan'208";a="506690883"
+Received: from lkp-server01.sh.intel.com (HELO d053b881505b) ([10.239.97.150])
+ by fmsmga004.fm.intel.com with ESMTP; 10 Aug 2021 20:00:14 -0700
+Received: from kbuild by d053b881505b with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1mDeTV-000LBk-H5; Wed, 11 Aug 2021 03:00:13 +0000
+Date: Wed, 11 Aug 2021 11:00:09 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ 43e8f76006592cb1573a959aa287c45421066f9c
+Message-ID: <61133d39.i9jSKwdRf1ADG5hP%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-In-Reply-To: <20210809023658.218915-1-pulehui@huawei.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.109.184]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpemm500019.china.huawei.com (7.185.36.180)
-X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,86 +50,109 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: zhangjinhao2@huawei.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Ping, serious problem here. All booke ppc will trigger Oops when
-perform kprobes related operations.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: 43e8f76006592cb1573a959aa287c45421066f9c  powerpc/kprobes: Fix kprobe Oops happens in booke
 
-On 2021/8/9 10:36, Pu Lehui wrote:
-> When using kprobe on powerpc booke series processor, Oops happens
-> as show bellow:
-> 
-> / # echo "p:myprobe do_nanosleep" > /sys/kernel/debug/tracing/kprobe_events
-> / # echo 1 > /sys/kernel/debug/tracing/events/kprobes/myprobe/enable
-> / # sleep 1
-> [   50.076730] Oops: Exception in kernel mode, sig: 5 [#1]
-> [   50.077017] BE PAGE_SIZE=4K SMP NR_CPUS=24 QEMU e500
-> [   50.077221] Modules linked in:
-> [   50.077462] CPU: 0 PID: 77 Comm: sleep Not tainted 5.14.0-rc4-00022-g251a1524293d #21
-> [   50.077887] NIP:  c0b9c4e0 LR: c00ebecc CTR: 00000000
-> [   50.078067] REGS: c3883de0 TRAP: 0700   Not tainted (5.14.0-rc4-00022-g251a1524293d)
-> [   50.078349] MSR:  00029000 <CE,EE,ME>  CR: 24000228  XER: 20000000
-> [   50.078675]
-> [   50.078675] GPR00: c00ebdf0 c3883e90 c313e300 c3883ea0 00000001 00000000 c3883ecc 00000001
-> [   50.078675] GPR08: c100598c c00ea250 00000004 00000000 24000222 102490c2 bff4180c 101e60d4
-> [   50.078675] GPR16: 00000000 102454ac 00000040 10240000 10241100 102410f8 10240000 00500000
-> [   50.078675] GPR24: 00000002 00000000 c3883ea0 00000001 00000000 0000c350 3b9b8d50 00000000
-> [   50.080151] NIP [c0b9c4e0] do_nanosleep+0x0/0x190
-> [   50.080352] LR [c00ebecc] hrtimer_nanosleep+0x14c/0x1e0
-> [   50.080638] Call Trace:
-> [   50.080801] [c3883e90] [c00ebdf0] hrtimer_nanosleep+0x70/0x1e0 (unreliable)
-> [   50.081110] [c3883f00] [c00ec004] sys_nanosleep_time32+0xa4/0x110
-> [   50.081336] [c3883f40] [c001509c] ret_from_syscall+0x0/0x28
-> [   50.081541] --- interrupt: c00 at 0x100a4d08
-> [   50.081749] NIP:  100a4d08 LR: 101b5234 CTR: 00000003
-> [   50.081931] REGS: c3883f50 TRAP: 0c00   Not tainted (5.14.0-rc4-00022-g251a1524293d)
-> [   50.082183] MSR:  0002f902 <CE,EE,PR,FP,ME>  CR: 24000222  XER: 00000000
-> [   50.082457]
-> [   50.082457] GPR00: 000000a2 bf980040 1024b4d0 bf980084 bf980084 64000000 00555345 fefefeff
-> [   50.082457] GPR08: 7f7f7f7f 101e0000 00000069 00000003 28000422 102490c2 bff4180c 101e60d4
-> [   50.082457] GPR16: 00000000 102454ac 00000040 10240000 10241100 102410f8 10240000 00500000
-> [   50.082457] GPR24: 00000002 bf9803f4 10240000 00000000 00000000 100039e0 00000000 102444e8
-> [   50.083789] NIP [100a4d08] 0x100a4d08
-> [   50.083917] LR [101b5234] 0x101b5234
-> [   50.084042] --- interrupt: c00
-> [   50.084238] Instruction dump:
-> [   50.084483] 4bfffc40 60000000 60000000 60000000 9421fff0 39400402 914200c0 38210010
-> [   50.084841] 4bfffc20 00000000 00000000 00000000 <7fe00008> 7c0802a6 7c892378 93c10048
-> [   50.085487] ---[ end trace f6fffe98e2fa8f3e ]---
-> [   50.085678]
-> Trace/breakpoint trap
-> 
-> There is no real mode for booke arch and the MMU translation is
-> always on. The corresponding MSR_IS/MSR_DS bit in booke is used
-> to switch the address space, but not for real mode judgment.
-> 
-> Fixes: 21f8b2fa3ca5 ("powerpc/kprobes: Ignore traps that happened in real mode")
-> Signed-off-by: Pu Lehui <pulehui@huawei.com>
-> ---
-> v1->v2:
-> - use IS_ENABLED(CONFIG_BOOKE) as suggested by Michael Ellerman and
->    Christophe Leroy
-> - update Oops log to make problem clear
-> 
->   arch/powerpc/kernel/kprobes.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
-> index cbc28d1a2e1b..7a7cd6bda53e 100644
-> --- a/arch/powerpc/kernel/kprobes.c
-> +++ b/arch/powerpc/kernel/kprobes.c
-> @@ -292,7 +292,8 @@ int kprobe_handler(struct pt_regs *regs)
->   	if (user_mode(regs))
->   		return 0;
->   
-> -	if (!(regs->msr & MSR_IR) || !(regs->msr & MSR_DR))
-> +	if (!IS_ENABLED(CONFIG_BOOKE) &&
-> +	    (!(regs->msr & MSR_IR) || !(regs->msr & MSR_DR)))
->   		return 0;
->   
->   	/*
-> 
+elapsed time: 724m
+
+configs tested: 83
+configs skipped: 86
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm64                               defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+x86_64                            allnoconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a004-20210810
+x86_64               randconfig-a006-20210810
+x86_64               randconfig-a003-20210810
+x86_64               randconfig-a005-20210810
+x86_64               randconfig-a002-20210810
+x86_64               randconfig-a001-20210810
+i386                 randconfig-a004-20210810
+i386                 randconfig-a002-20210810
+i386                 randconfig-a001-20210810
+i386                 randconfig-a003-20210810
+i386                 randconfig-a006-20210810
+i386                 randconfig-a005-20210810
+i386                 randconfig-a012-20210809
+i386                 randconfig-a015-20210809
+i386                 randconfig-a011-20210809
+i386                 randconfig-a013-20210809
+i386                 randconfig-a014-20210809
+i386                 randconfig-a016-20210809
+i386                 randconfig-a011-20210810
+i386                 randconfig-a015-20210810
+i386                 randconfig-a013-20210810
+i386                 randconfig-a014-20210810
+i386                 randconfig-a016-20210810
+i386                 randconfig-a012-20210810
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a002-20210808
+x86_64               randconfig-a004-20210808
+x86_64               randconfig-a006-20210808
+x86_64               randconfig-a003-20210808
+x86_64               randconfig-a001-20210808
+x86_64               randconfig-a005-20210808
+x86_64               randconfig-a013-20210810
+x86_64               randconfig-a011-20210810
+x86_64               randconfig-a012-20210810
+x86_64               randconfig-a016-20210810
+x86_64               randconfig-a014-20210810
+x86_64               randconfig-a015-20210810
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
