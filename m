@@ -2,46 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EF5B3E9937
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Aug 2021 21:51:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 092133E99D4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Aug 2021 22:42:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GlL6l1CfZz3cQC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 05:51:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GlMFh057Hz3cR3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 06:42:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
+ smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com;
  envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GlL6C5Ydvz30FS
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 05:50:54 +1000 (AEST)
-X-IronPort-AV: E=McAfee;i="6200,9189,10073"; a="202375255"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GlMF50SJXz2yWG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 06:41:55 +1000 (AEST)
+X-IronPort-AV: E=McAfee;i="6200,9189,10073"; a="214950055"
 X-IronPort-AV: E=Sophos;i="5.84,313,1620716400"; 
- d="gz'50?scan'50,208,50";a="202375255"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
- by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Aug 2021 12:49:50 -0700
+ d="gz'50?scan'50,208,50";a="214950055"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+ by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Aug 2021 13:40:50 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.84,313,1620716400"; 
- d="gz'50?scan'50,208,50";a="446078159"
+ d="gz'50?scan'50,208,50";a="527164932"
 Received: from lkp-server01.sh.intel.com (HELO d053b881505b) ([10.239.97.150])
- by fmsmga007.fm.intel.com with ESMTP; 11 Aug 2021 12:49:47 -0700
+ by fmsmga002.fm.intel.com with ESMTP; 11 Aug 2021 13:40:48 -0700
 Received: from kbuild by d053b881505b with local (Exim 4.92)
  (envelope-from <lkp@intel.com>)
- id 1mDuEV-000M2c-8X; Wed, 11 Aug 2021 19:49:47 +0000
-Date: Thu, 12 Aug 2021 03:49:02 +0800
+ id 1mDv1r-000M4m-Sj; Wed, 11 Aug 2021 20:40:47 +0000
+Date: Thu, 12 Aug 2021 04:40:24 +0800
 From: kernel test robot <lkp@intel.com>
 To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
-Subject: Re: [PATCH v2 27/60] KVM: PPC: Book3S HV P9: Reduce mtmsrd
- instructions required to save host SPRs
-Message-ID: <202108120344.0fu3quk8-lkp@intel.com>
-References: <20210811160134.904987-28-npiggin@gmail.com>
+Subject: Re: [PATCH v2 40/60] KVM: PPC: Book3S HV P9: Implement TM fastpath
+ for guest entry/exit
+Message-ID: <202108120433.5r6wYzGe-lkp@intel.com>
+References: <20210811160134.904987-41-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="C7zPtVaVf+AK4Oqc"
+Content-Type: multipart/mixed; boundary="a8Wt8u1KmwUX3Y2C"
 Content-Disposition: inline
-In-Reply-To: <20210811160134.904987-28-npiggin@gmail.com>
+In-Reply-To: <20210811160134.904987-41-npiggin@gmail.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -61,7 +61,7 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---C7zPtVaVf+AK4Oqc
+--a8Wt8u1KmwUX3Y2C
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
@@ -82,53 +82,108 @@ compiler: powerpc-linux-gcc (GCC) 10.3.0
 reproduce (this is a W=1 build):
         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
         chmod +x ~/bin/make.cross
-        # https://github.com/0day-ci/linux/commit/b5149d8c735b6802aa0433a0cecc73e4d943e795
+        # https://github.com/0day-ci/linux/commit/30a3a9ae99f124a863c41f268c68b647d7116b65
         git remote add linux-review https://github.com/0day-ci/linux
         git fetch --no-tags linux-review Nicholas-Piggin/KVM-PPC-Book3S-HV-P9-entry-exit-optimisations/20210812-000748
-        git checkout b5149d8c735b6802aa0433a0cecc73e4d943e795
+        git checkout 30a3a9ae99f124a863c41f268c68b647d7116b65
         # save the attached .config to linux build tree
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-10.3.0 make.cross ARCH=powerpc64 
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-10.3.0 make.cross O=build_dir ARCH=powerpc SHELL=/bin/bash arch/powerpc/kvm/
 
 If you fix the issue, kindly add following tag as appropriate
 Reported-by: kernel test robot <lkp@intel.com>
 
 All errors (new ones prefixed by >>):
 
->> arch/powerpc/kernel/process.c:596:6: error: no previous prototype for 'save_user_regs_kvm' [-Werror=missing-prototypes]
-     596 | void save_user_regs_kvm(void)
-         |      ^~~~~~~~~~~~~~~~~~
-   cc1: all warnings being treated as errors
+   In file included from arch/powerpc/include/asm/processor.h:11,
+                    from arch/powerpc/include/asm/thread_info.h:40,
+                    from include/linux/thread_info.h:60,
+                    from include/asm-generic/preempt.h:5,
+                    from ./arch/powerpc/include/generated/asm/preempt.h:1,
+                    from include/linux/preempt.h:78,
+                    from include/linux/percpu.h:6,
+                    from include/linux/context_tracking_state.h:5,
+                    from include/linux/hardirq.h:5,
+                    from include/linux/kvm_host.h:7,
+                    from arch/powerpc/kvm/book3s_hv_p9_entry.c:3:
+   arch/powerpc/kvm/book3s_hv_p9_entry.c: In function 'load_vcpu_state':
+>> arch/powerpc/kvm/book3s_hv_p9_entry.c:297:33: error: 'struct kvm_vcpu_arch' has no member named 'texasr'
+     297 |    mtspr(SPRN_TEXASR, vcpu->arch.texasr);
+         |                                 ^
+   arch/powerpc/include/asm/reg.h:1396:33: note: in definition of macro 'mtspr'
+    1396 |          : "r" ((unsigned long)(v)) \
+         |                                 ^
+>> arch/powerpc/kvm/book3s_hv_p9_entry.c:298:33: error: 'struct kvm_vcpu_arch' has no member named 'tfhar'; did you mean 'tar'?
+     298 |    mtspr(SPRN_TFHAR, vcpu->arch.tfhar);
+         |                                 ^~~~~
+   arch/powerpc/include/asm/reg.h:1396:33: note: in definition of macro 'mtspr'
+    1396 |          : "r" ((unsigned long)(v)) \
+         |                                 ^
+>> arch/powerpc/kvm/book3s_hv_p9_entry.c:299:33: error: 'struct kvm_vcpu_arch' has no member named 'tfiar'; did you mean 'tar'?
+     299 |    mtspr(SPRN_TFIAR, vcpu->arch.tfiar);
+         |                                 ^~~~~
+   arch/powerpc/include/asm/reg.h:1396:33: note: in definition of macro 'mtspr'
+    1396 |          : "r" ((unsigned long)(v)) \
+         |                                 ^
+   arch/powerpc/kvm/book3s_hv_p9_entry.c: In function 'store_vcpu_state':
+   arch/powerpc/kvm/book3s_hv_p9_entry.c:331:14: error: 'struct kvm_vcpu_arch' has no member named 'texasr'
+     331 |    vcpu->arch.texasr = mfspr(SPRN_TEXASR);
+         |              ^
+   arch/powerpc/kvm/book3s_hv_p9_entry.c:332:15: error: 'struct kvm_vcpu_arch' has no member named 'tfhar'; did you mean 'tar'?
+     332 |    vcpu->arch.tfhar = mfspr(SPRN_TFHAR);
+         |               ^~~~~
+         |               tar
+   arch/powerpc/kvm/book3s_hv_p9_entry.c:333:15: error: 'struct kvm_vcpu_arch' has no member named 'tfiar'; did you mean 'tar'?
+     333 |    vcpu->arch.tfiar = mfspr(SPRN_TFIAR);
+         |               ^~~~~
+         |               tar
 
 
-vim +/save_user_regs_kvm +596 arch/powerpc/kernel/process.c
+vim +297 arch/powerpc/kvm/book3s_hv_p9_entry.c
 
-   595	
- > 596	void save_user_regs_kvm(void)
-   597	{
-   598		unsigned long usermsr;
-   599	
-   600		if (!current->thread.regs)
-   601			return;
-   602	
-   603		usermsr = current->thread.regs->msr;
-   604	
-   605		if (usermsr & MSR_FP)
-   606			save_fpu(current);
-   607	
-   608		if (usermsr & MSR_VEC)
-   609			save_altivec(current);
-   610	
+   283	
+   284	/* Returns true if current MSR and/or guest MSR may have changed */
+   285	bool load_vcpu_state(struct kvm_vcpu *vcpu,
+   286			     struct p9_host_os_sprs *host_os_sprs)
+   287	{
+   288		bool ret = false;
+   289	
+   290		if (cpu_has_feature(CPU_FTR_TM) ||
+   291		    cpu_has_feature(CPU_FTR_P9_TM_HV_ASSIST)) {
+   292			unsigned long guest_msr = vcpu->arch.shregs.msr;
+   293			if (MSR_TM_ACTIVE(guest_msr)) {
+   294				kvmppc_restore_tm_hv(vcpu, guest_msr, true);
+   295				ret = true;
+   296			} else {
+ > 297				mtspr(SPRN_TEXASR, vcpu->arch.texasr);
+ > 298				mtspr(SPRN_TFHAR, vcpu->arch.tfhar);
+ > 299				mtspr(SPRN_TFIAR, vcpu->arch.tfiar);
+   300			}
+   301		}
+   302	
+   303		load_spr_state(vcpu, host_os_sprs);
+   304	
+   305		load_fp_state(&vcpu->arch.fp);
+   306	#ifdef CONFIG_ALTIVEC
+   307		load_vr_state(&vcpu->arch.vr);
+   308	#endif
+   309		mtspr(SPRN_VRSAVE, vcpu->arch.vrsave);
+   310	
+   311		return ret;
+   312	}
+   313	EXPORT_SYMBOL_GPL(load_vcpu_state);
+   314	
 
 ---
 0-DAY CI Kernel Test Service, Intel Corporation
 https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
 
---C7zPtVaVf+AK4Oqc
+--a8Wt8u1KmwUX3Y2C
 Content-Type: application/gzip
 Content-Disposition: attachment; filename=".config.gz"
 Content-Transfer-Encoding: base64
 
-H4sICOsjFGEAAy5jb25maWcAlDxLc9w20vf8iqnksnuIVw/bsesrHUAS5CBDEhRAjjS6oBRp
+H4sICPEtFGEAAy5jb25maWcAlDxLc9w20vf8iqnksnuIVw/bsesrHUAS5CBDEhRAjjS6oBRp
 nKgiS15plI3//dcN8NEAQdlxlS2zu/Fu9Bv66YefVuzl8Pj5+nB3c31//3X1+/5h/3R92N+u
 Pt3d7/9vlclVLdsVz0T7BojLu4eXv//z5fF/+6cvN6t3b47fvjn6+enmZLXZPz3s71fp48On
 u99foIe7x4cffvohlXUuCpOmZsuVFrI2Lb9sz37se/j5Hvv7+febm9W/ijT99+r46M3pm6Mf
@@ -934,4 +989,4 @@ uoPoqgZdEpbz1K2tR9VbvcEqmx8UJRgoFbv+c+LVpg48pOhQw2jH3iU+bcx6o266FM3u9Q1F
 GYrr+Ol/di9336xn1tdtTu7LDjN1HRcbT1OBfgKwWlBdaQW8ID3ZpgpWFnruKHNxTWGcVahg
 3EqHNg/iefAxsqC/NdXekYOUumAoY3aXLiniFjOQUCtViedIdHI1WArYcdb+D2jZJtXnuAIA
 
---C7zPtVaVf+AK4Oqc--
+--a8Wt8u1KmwUX3Y2C--
