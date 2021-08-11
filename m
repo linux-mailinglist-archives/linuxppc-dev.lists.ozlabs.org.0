@@ -2,69 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D1783E95DC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Aug 2021 18:24:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FE253E95E0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Aug 2021 18:25:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GlFWn1Gz0z3gGF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 02:24:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GlFXf3cCtz3gKq
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 02:25:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=bNwhrFma;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=dJC/kinx;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102f;
- helo=mail-pj1-x102f.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::636;
+ helo=mail-pl1-x636.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=bNwhrFma; dkim-atps=neutral
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com
- [IPv6:2607:f8b0:4864:20::102f])
+ header.s=20161025 header.b=dJC/kinx; dkim-atps=neutral
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com
+ [IPv6:2607:f8b0:4864:20::636])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GlF3S0wyxz3d8J
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 02:03:15 +1000 (AEST)
-Received: by mail-pj1-x102f.google.com with SMTP id j1so4193838pjv.3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Aug 2021 09:03:15 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GlF3V41qVz3dCw
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 02:03:18 +1000 (AEST)
+Received: by mail-pl1-x636.google.com with SMTP id q2so3258661plr.11
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Aug 2021 09:03:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=lgFzwfPPUELBCc+2phoJnC6npoZNQp0x3MsFLsf+uAE=;
- b=bNwhrFmakUBPDLkDNtpxinox1H38Xkd2WP8CUhuif7wxt6tgrasrSwSb9rdqVf05i9
- p78XevjWvfpKzhPrZ1DxDgO0VwVncAqFSIGCXsMBuYsbt9XHVOBuPZ4JBQwwg+Je3V4w
- bB6FMcaxFhegAW+VSgRtoj01huxnPAC4kwN5nfyvrJUorgiTSNgsIJKt2t6skwhGrNan
- BJNsDaGtj5HdIGiwd3AlI2CQtQzrzddPi1qweBJUxvuZr2jq3Pi7UJ8xrJu8v9YFcnWs
- xGc1lkwK9b9770SdjDDHAZvST+6JKLMAz5fliTm+FSU5IeEtckilY57O/9+4A2jstYkt
- n+xw==
+ bh=XEm+DUqj4PUtiyOis8qtw0OTEw1uAY3Zp3uaXAMjEQ4=;
+ b=dJC/kinxyhAdc5J8a4tDG79b2oCr39+gJuy90PWsrsw9a0ps6Mca8mQcPrqYaOV6U5
+ fF1PAfH9PVxfLfLX1aIbZrZqilYHQtksGV/c7MathOCCZSA3kpCo11yJ6zS0uKFSeGjK
+ zk6gQJn/RW7fZUO6cbGOvoqOS/EksCwdpezAp5UjSLmQX/u5dAhyzqp2exkbU+X0T5qv
+ w1IDeiyumd5IwBauDOGe9E0SvOFkIyaSxfUXNV4L1MRGhoEQq7g5t/lBcbMIwMHTYr0N
+ MdOLrqjuKUguerPpxnVUKy6Io/eKxH0QkGIlKwOHF1gi89j8kA2JordYjPw6dJCIwpuG
+ yPyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=lgFzwfPPUELBCc+2phoJnC6npoZNQp0x3MsFLsf+uAE=;
- b=Xit3uokpR5dZ3aKqTQ8ND3ngPwHfQhnGDp5x4yin87lT9H2lowdJIkAetVx3ymu0sF
- mk9QFp9Ga6QN90wHzo1t9SdMQr/HzuzrO9EQiHEUP/z52I7hqr+h1DXQP8PcxKgSrgOA
- hs1B9pTmr8bgO+jvvCmGz7g0Q3mhnugVAG2iBi6jc9A58ITakeoI2kV9wcg2cjz1EppI
- Mj5dOjz6jWn+smuwJ6Myq7YRL7OsoXczVUyVSjtwiFXgRRed1gkND6dFcCT9DOy+Bp6w
- R7Fjlw5kZ5dn2GbMzf2A3WIMX32hYUfgtl/Np4PjUVPgCKWHv1BSaEyPEmK7TTYka8VA
- QBuQ==
-X-Gm-Message-State: AOAM532GfzUkE0Tfu4k3EIZBOKt8OnaHc5YJyEyOxHSM9+85eaxEzrZ0
- zHO06l/jTeZtXxWlNV4uysk=
-X-Google-Smtp-Source: ABdhPJx82QDgyDUc+fNWk0gzv6fLU3PtFqnsDlSQzERROUTDRVYYznRkp80XIBZyA7/DvhcQxHdwuw==
-X-Received: by 2002:a17:902:b188:b029:11b:1549:da31 with SMTP id
- s8-20020a170902b188b029011b1549da31mr4733685plr.7.1628697794080; 
- Wed, 11 Aug 2021 09:03:14 -0700 (PDT)
+ bh=XEm+DUqj4PUtiyOis8qtw0OTEw1uAY3Zp3uaXAMjEQ4=;
+ b=O/we9SsRqtMPtCwaE1ujRdGff+Ir46RsiBOmbjsiLzYjN9mT0nSLt7dT+Tb0vAkCVl
+ zuc6lS3UGvGIxtgHI1sw3Qt8X/qJvGPwun0u+4h5oQYYjIieykg7c5p0hq/nF72Afwus
+ K0oSff1Aq1xpeXPX0LNvRY81as4o3PKmpED6uWc5VDVaRZuyu9Q1O6635iihptQ6lJJL
+ 5e6M7fEpRyxRkOI4KMwNwFKiUggZlC14wDuKXiiRWcQxeMcJY0KZ29bbIoKgAXR1MwOE
+ usqkkeqBhWND3CWR3cWr1Tttoa5XxsLM9rGFh5/A2kIyVj8Au1xwK2zKsqRmFQ4QNEEk
+ VV3w==
+X-Gm-Message-State: AOAM5319ptRyr7SNBp2Lm1+p+eNzVpe4G8fMsuc2n/1iWrXI1btDLH1R
+ SHlidyoxTroEpTaOBq8fSof2pUrnzNw=
+X-Google-Smtp-Source: ABdhPJwbukVAGKjLO2gZJLa3Iwc+KZUCF6MrCW4j/yqRZ8x8u2AzScv9ZLLuH3hXgM/MnFAfSTZUnQ==
+X-Received: by 2002:a17:90a:c006:: with SMTP id
+ p6mr6424106pjt.144.1628697796538; 
+ Wed, 11 Aug 2021 09:03:16 -0700 (PDT)
 Received: from bobo.ibm.com ([118.210.97.79])
- by smtp.gmail.com with ESMTPSA id k19sm6596494pff.28.2021.08.11.09.03.12
+ by smtp.gmail.com with ESMTPSA id k19sm6596494pff.28.2021.08.11.09.03.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Aug 2021 09:03:13 -0700 (PDT)
+ Wed, 11 Aug 2021 09:03:16 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org
-Subject: [PATCH v2 34/60] KVM: PPC: Book3S HV P9: Only execute mtSPR if the
- value changed
-Date: Thu, 12 Aug 2021 02:01:08 +1000
-Message-Id: <20210811160134.904987-35-npiggin@gmail.com>
+Subject: [PATCH v2 35/60] KVM: PPC: Book3S HV P9: Juggle SPR switching around
+Date: Thu, 12 Aug 2021 02:01:09 +1000
+Message-Id: <20210811160134.904987-36-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210811160134.904987-1-npiggin@gmail.com>
 References: <20210811160134.904987-1-npiggin@gmail.com>
@@ -86,134 +85,55 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Keep better track of the current SPR value in places where
-they are to be loaded with a new context, to reduce expensive
-mtSPR operations.
+This juggles SPR switching on the entry and exit sides to be more
+symmetric, which makes the next refactoring patch possible with no
+functional change.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kvm/book3s_hv.c | 64 ++++++++++++++++++++++--------------
- 1 file changed, 39 insertions(+), 25 deletions(-)
+ arch/powerpc/kvm/book3s_hv.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 823e501c5ebe..85f441d9ce63 100644
+index 85f441d9ce63..7867d6793b3e 100644
 --- a/arch/powerpc/kvm/book3s_hv.c
 +++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -4045,19 +4045,28 @@ static void switch_pmu_to_host(struct kvm_vcpu *vcpu,
+@@ -4211,7 +4211,7 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+ 		msr = mfmsr(); /* TM restore can update msr */
  	}
- }
  
--static void load_spr_state(struct kvm_vcpu *vcpu)
-+static void load_spr_state(struct kvm_vcpu *vcpu,
-+				struct p9_host_os_sprs *host_os_sprs)
- {
--	mtspr(SPRN_DSCR, vcpu->arch.dscr);
--	mtspr(SPRN_IAMR, vcpu->arch.iamr);
--	mtspr(SPRN_PSPB, vcpu->arch.pspb);
--	mtspr(SPRN_FSCR, vcpu->arch.fscr);
- 	mtspr(SPRN_TAR, vcpu->arch.tar);
- 	mtspr(SPRN_EBBHR, vcpu->arch.ebbhr);
- 	mtspr(SPRN_EBBRR, vcpu->arch.ebbrr);
- 	mtspr(SPRN_BESCR, vcpu->arch.bescr);
--	mtspr(SPRN_TIDR, vcpu->arch.tid);
--	mtspr(SPRN_AMR, vcpu->arch.amr);
--	mtspr(SPRN_UAMOR, vcpu->arch.uamor);
-+
-+	if (!cpu_has_feature(CPU_FTR_ARCH_31))
-+		mtspr(SPRN_TIDR, vcpu->arch.tid);
-+	if (host_os_sprs->iamr != vcpu->arch.iamr)
-+		mtspr(SPRN_IAMR, vcpu->arch.iamr);
-+	if (host_os_sprs->amr != vcpu->arch.amr)
-+		mtspr(SPRN_AMR, vcpu->arch.amr);
-+	if (vcpu->arch.uamor != 0)
-+		mtspr(SPRN_UAMOR, vcpu->arch.uamor);
-+	if (host_os_sprs->fscr != vcpu->arch.fscr)
-+		mtspr(SPRN_FSCR, vcpu->arch.fscr);
-+	if (host_os_sprs->dscr != vcpu->arch.dscr)
-+		mtspr(SPRN_DSCR, vcpu->arch.dscr);
-+	if (vcpu->arch.pspb != 0)
-+		mtspr(SPRN_PSPB, vcpu->arch.pspb);
+-	switch_pmu_to_guest(vcpu, &host_os_sprs);
++	load_spr_state(vcpu, &host_os_sprs);
  
- 	/*
- 	 * DAR, DSISR, and for nested HV, SPRGs must be set with MSR[RI]
-@@ -4072,28 +4081,31 @@ static void load_spr_state(struct kvm_vcpu *vcpu)
- 
- static void store_spr_state(struct kvm_vcpu *vcpu)
- {
--	vcpu->arch.ctrl = mfspr(SPRN_CTRLF);
--
--	vcpu->arch.iamr = mfspr(SPRN_IAMR);
--	vcpu->arch.pspb = mfspr(SPRN_PSPB);
--	vcpu->arch.fscr = mfspr(SPRN_FSCR);
- 	vcpu->arch.tar = mfspr(SPRN_TAR);
- 	vcpu->arch.ebbhr = mfspr(SPRN_EBBHR);
- 	vcpu->arch.ebbrr = mfspr(SPRN_EBBRR);
- 	vcpu->arch.bescr = mfspr(SPRN_BESCR);
--	vcpu->arch.tid = mfspr(SPRN_TIDR);
-+
-+	if (!cpu_has_feature(CPU_FTR_ARCH_31))
-+		vcpu->arch.tid = mfspr(SPRN_TIDR);
-+	vcpu->arch.iamr = mfspr(SPRN_IAMR);
- 	vcpu->arch.amr = mfspr(SPRN_AMR);
- 	vcpu->arch.uamor = mfspr(SPRN_UAMOR);
-+	vcpu->arch.fscr = mfspr(SPRN_FSCR);
- 	vcpu->arch.dscr = mfspr(SPRN_DSCR);
-+	vcpu->arch.pspb = mfspr(SPRN_PSPB);
-+
-+	vcpu->arch.ctrl = mfspr(SPRN_CTRLF);
- }
- 
- static void save_p9_host_os_sprs(struct p9_host_os_sprs *host_os_sprs)
- {
--	host_os_sprs->dscr = mfspr(SPRN_DSCR);
--	host_os_sprs->tidr = mfspr(SPRN_TIDR);
-+	if (!cpu_has_feature(CPU_FTR_ARCH_31))
-+		host_os_sprs->tidr = mfspr(SPRN_TIDR);
- 	host_os_sprs->iamr = mfspr(SPRN_IAMR);
- 	host_os_sprs->amr = mfspr(SPRN_AMR);
- 	host_os_sprs->fscr = mfspr(SPRN_FSCR);
-+	host_os_sprs->dscr = mfspr(SPRN_DSCR);
- }
- 
- /* vcpu guest regs must already be saved */
-@@ -4102,18 +4114,20 @@ static void restore_p9_host_os_sprs(struct kvm_vcpu *vcpu,
- {
- 	mtspr(SPRN_SPRG_VDSO_WRITE, local_paca->sprg_vdso);
- 
--	mtspr(SPRN_PSPB, 0);
--	mtspr(SPRN_UAMOR, 0);
--
--	mtspr(SPRN_DSCR, host_os_sprs->dscr);
--	mtspr(SPRN_TIDR, host_os_sprs->tidr);
--	mtspr(SPRN_IAMR, host_os_sprs->iamr);
--
-+	if (!cpu_has_feature(CPU_FTR_ARCH_31))
-+		mtspr(SPRN_TIDR, host_os_sprs->tidr);
-+	if (host_os_sprs->iamr != vcpu->arch.iamr)
-+		mtspr(SPRN_IAMR, host_os_sprs->iamr);
-+	if (vcpu->arch.uamor != 0)
-+		mtspr(SPRN_UAMOR, 0);
- 	if (host_os_sprs->amr != vcpu->arch.amr)
- 		mtspr(SPRN_AMR, host_os_sprs->amr);
--
- 	if (host_os_sprs->fscr != vcpu->arch.fscr)
- 		mtspr(SPRN_FSCR, host_os_sprs->fscr);
-+	if (host_os_sprs->dscr != vcpu->arch.dscr)
-+		mtspr(SPRN_DSCR, host_os_sprs->dscr);
-+	if (vcpu->arch.pspb != 0)
-+		mtspr(SPRN_PSPB, 0);
- 
- 	/* Save guest CTRL register, set runlatch to 1 */
- 	if (!(vcpu->arch.ctrl & 1))
-@@ -4205,7 +4219,7 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	load_fp_state(&vcpu->arch.fp);
+ #ifdef CONFIG_ALTIVEC
+@@ -4219,7 +4219,7 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
  #endif
  	mtspr(SPRN_VRSAVE, vcpu->arch.vrsave);
  
--	load_spr_state(vcpu);
-+	load_spr_state(vcpu, &host_os_sprs);
+-	load_spr_state(vcpu, &host_os_sprs);
++	switch_pmu_to_guest(vcpu, &host_os_sprs);
  
  	if (kvmhv_on_pseries()) {
  		/*
+@@ -4319,6 +4319,8 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+ 			vcpu->arch.slb_max = 0;
+ 	}
+ 
++	switch_pmu_to_host(vcpu, &host_os_sprs);
++
+ 	store_spr_state(vcpu);
+ 
+ 	store_fp_state(&vcpu->arch.fp);
+@@ -4333,8 +4335,6 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+ 
+ 	vcpu_vpa_increment_dispatch(vcpu);
+ 
+-	switch_pmu_to_host(vcpu, &host_os_sprs);
+-
+ 	timer_rearm_host_dec(*tb);
+ 
+ 	restore_p9_host_os_sprs(vcpu, &host_os_sprs);
 -- 
 2.23.0
 
