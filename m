@@ -2,106 +2,187 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ED343E91D6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Aug 2021 14:47:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 020BB3E9349
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Aug 2021 16:09:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gl8jd4Lf3z3blF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Aug 2021 22:47:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GlBXB65CBz30Lw
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 00:09:30 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pv79AOHO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2021-07-09 header.b=htbBlgVi;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2020-01-29 header.b=y4WCRMVp;
+	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=fUs7Ii9Y;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com;
+ smtp.mailfrom=oracle.com (client-ip=205.220.177.32;
+ helo=mx0b-00069f02.pphosted.com; envelope-from=boris.ostrovsky@oracle.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=pv79AOHO; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
+ header.s=corp-2021-07-09 header.b=htbBlgVi; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
+ header.s=corp-2020-01-29 header.b=y4WCRMVp; 
+ dkim=pass (1024-bit key;
+ unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com
+ header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com
+ header.b=fUs7Ii9Y; dkim-atps=neutral
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com
+ [205.220.177.32])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gl8hp4nndz302W
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Aug 2021 22:46:50 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 17BCXveI020593; Wed, 11 Aug 2021 08:46:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GlBW53rd6z2y0D
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 00:08:31 +1000 (AEST)
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 17BE5Zcm014476; Wed, 11 Aug 2021 14:07:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=Y4hZ51Uv+Q9tIIeG033/i31F6ICBSLny+IRgHDDF4Ik=;
- b=pv79AOHOJTEDbhf58haV2G7BZi0/zQMMDB+f4BZxtIb68H1KKqKhYUrkNiYHn8wisfl7
- +ER44jBQCPEZE6g84e1NFiWBomrexDV0dQLlv1yodLljxrYNARyPK5EMzrYs3w0i1fCF
- uEMIBHo+Ns0Shjk80NPwwpNX1IMvdbLlvTWWTGQw9roDiDDXjb8XHwn+jVF3nMSxL/sH
- C199U1iZ16E8xg/qbcnjC0l0BTkZI1eyOm15TK6Vqgl+zowJwTmlH4SFDwoAhZjt7+wj
- TikWbtglEPnhAFiw+6WGt1K9wDvB6uIBfguSry357zXXAovwzb2yaoLgsKPseWEtYdpq hA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3abt14f94n-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 11 Aug 2021 08:46:47 -0400
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 17BCXw2l020720;
- Wed, 11 Aug 2021 08:46:47 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3abt14f940-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 11 Aug 2021 08:46:46 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 17BChR9C005980;
- Wed, 11 Aug 2021 12:46:45 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma03ams.nl.ibm.com with ESMTP id 3a9ht9020v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 11 Aug 2021 12:46:45 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 17BCkgD243974992
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 11 Aug 2021 12:46:42 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A61594C06E;
- Wed, 11 Aug 2021 12:46:42 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 871254C066;
- Wed, 11 Aug 2021 12:46:41 +0000 (GMT)
-Received: from Madhavan.PrimaryTP (unknown [9.85.71.29])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 11 Aug 2021 12:46:41 +0000 (GMT)
-Subject: Re: [PATCH v1 16/55] powerpc/64s: Implement PMU override command line
- option
-To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
-References: <20210726035036.739609-1-npiggin@gmail.com>
- <20210726035036.739609-17-npiggin@gmail.com>
- <e7bb1311-3b50-dcc2-7fb0-1773558e9abc@linux.ibm.com>
- <1628245966.h9u2e2m21l.astroid@bobo.none>
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-Message-ID: <c38c0802-1e59-f5bf-6d24-169db49f4427@linux.ibm.com>
-Date: Wed, 11 Aug 2021 18:16:40 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
-MIME-Version: 1.0
-In-Reply-To: <1628245966.h9u2e2m21l.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+ references : from : message-id : date : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2021-07-09;
+ bh=pOImKLoaG3NEUcdH9TmpuA+OG810TNyWPXJfSzA99yc=;
+ b=htbBlgVi1WumoUza2kQJECPUbrc/WQylh7Pk9tDqfA+TZObFnB8uEwbY5bPOcKjtRnmZ
+ 1IewIkG4FkQ33C+AefGXtQgzS0QV7T9g4o1WawFQwQz7EVsiVtgt7OSVGJGqvDI0XIfy
+ 90ErAzZlcrhPQTw3zkpidRa3LQyhKDK4e1pAfj/l4xIq0ZH/XdJHuJ1bYlyD8UOHbG46
+ ZybVn8J7UlY59PSDfjn7dT8oH+RPntz5qPomqlIwC3FqXYc9SpvGDDg/gKsOlPm3DLHH
+ xeTweR/8mL93zhHrGYbMajCj0QvXeaFp/qGlYn8oO+VeoHagomIjSetOJb2P4wL3gCer 4w== 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=subject : to : cc :
+ references : from : message-id : date : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2020-01-29;
+ bh=pOImKLoaG3NEUcdH9TmpuA+OG810TNyWPXJfSzA99yc=;
+ b=y4WCRMVpM3TTz7RXs5VCr8US/LYM6OD3o1S4HZOdHfTSOdyXy4FRpy/HKFfHK73NnLEE
+ QqtA0IoInjDPB44zxHYGRoEg6JGHcRivpc5zGqlqUPI3wsd98KtFNhF1vLdx673vwC+i
+ Xg49g10mWnclkg3GFMPuS3oxNmxlYXqljN4A2bLNWW2rPZEangR7Fo3eQUSXzKbyyxAV
+ f8sB+KFUPdmNQ5RkmT71WuPK2WbZ0b8htkuVR1e3ZVVVE18YcB2iymwD9JGWYqbjKkp+
+ 25JAmP363ddoPdgiwR3Amuj2SsvIwIMSkPqDuoQ4N5/d/JiRTW1l1S9ctO9Ff6UlUw2l Jw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+ by mx0b-00069f02.pphosted.com with ESMTP id 3aceudr70j-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 11 Aug 2021 14:07:37 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+ by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 17BE0c0O065936;
+ Wed, 11 Aug 2021 14:07:36 GMT
+Received: from nam10-mw2-obe.outbound.protection.outlook.com
+ (mail-mw2nam10lp2104.outbound.protection.outlook.com [104.47.55.104])
+ by aserp3030.oracle.com with ESMTP id 3abx3vtmjf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 11 Aug 2021 14:07:36 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=JcD6tecuqXHlhqWjolVakgihSfP7tsDVAPR9EIvUvAGBaLSQ+/EU57+eqIpMgELeWunDXM5WPbLD3v8Fn81boBnYk+NNKKCo3Uz67AfRflQBrQ2jUZa/JBi6SugVur0vg6bCq/ULjVgai/4FhddTkwR/9Dvw8QAz0wYN9/a9wHcYbwyiLtA0S2d3U4feICGWxAEE3lww9TDb6HYWP3WvbRl23g8RUyi+oUvx8th96S+7XS96jE7V7+BsyvyRL0dj85c1mz0FvHQx1j+q5OcF1pTGVUMq2rtiQ70DFK2slCoFIVFqo/8pFOQW8MLh3iM3mfwG8s44QE19+dhib3P00w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pOImKLoaG3NEUcdH9TmpuA+OG810TNyWPXJfSzA99yc=;
+ b=m9o2oatopRzOmhOy3+ixn4kdYNeNM/uuduVG/7h5Oh3BlyZsVlrEZh+9adrwuxWpqYxiIYiV7nCZ3VDbZYrPV57KDy8+U1T9MOwCgYf7j+qm1QZQo2+9asEDG874LyhvGnKJS+A8CPWbgmnGNUHklLKKATH5Rg+WEK4+Cw+IYiw1wYtSeq2bkIGhhRWDLyi1cFPzX3SaxXW5GADg+mWQJD9iKttVymtmodOFi8xKfLiLwtxrvAmnnHw2XLMZVvboPpf9CRy2j0DTsVuVK++Z9K1BztS94aM2DAIZkgRlF/EeE9nethzeEzgs5Ttz9epFOZZiSOHjuU/FZ40HAjt/yQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pOImKLoaG3NEUcdH9TmpuA+OG810TNyWPXJfSzA99yc=;
+ b=fUs7Ii9YJab4cDa7yxImZTgPE+wooTFsJiF5272pYSZnzRWo4kU1iIJrQG0oCy68whtLhCQFlhNSZUfpYsT30fo02aa64N8+RD29kCyCRrrkshH0S6gyUTsYh1RaXVoF1wJsCGQ0xqkZJY+KU8Z6LAGSGAO6+eNBC5FOuVuoSNU=
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none; vger.kernel.org; dmarc=none action=none header.from=oracle.com; 
+Received: from BLAPR10MB5009.namprd10.prod.outlook.com (2603:10b6:208:321::10)
+ by MN2PR10MB4383.namprd10.prod.outlook.com (2603:10b6:208:1d4::21)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4394.21; Wed, 11 Aug
+ 2021 14:07:33 +0000
+Received: from BLAPR10MB5009.namprd10.prod.outlook.com
+ ([fe80::7cd0:8600:6e6e:aa8c]) by BLAPR10MB5009.namprd10.prod.outlook.com
+ ([fe80::7cd0:8600:6e6e:aa8c%7]) with mapi id 15.20.4415.016; Wed, 11 Aug 2021
+ 14:07:33 +0000
+Subject: Re: [PATCH v3 7/8] PCI: Replace pci_dev::driver usage by
+ pci_dev::dev.driver
+To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+ Bjorn Helgaas <helgaas@kernel.org>
+References: <20210811080637.2596434-1-u.kleine-koenig@pengutronix.de>
+ <20210811080637.2596434-8-u.kleine-koenig@pengutronix.de>
+From: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Message-ID: <1f843d53-b6ac-762e-eefc-46afd9ae0ff7@oracle.com>
+Date: Wed, 11 Aug 2021 10:07:17 -0400
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.12.0
+In-Reply-To: <20210811080637.2596434-8-u.kleine-koenig@pengutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 17IApHHt5G8d-4OWExycSnxWezf1NBgC
-X-Proofpoint-GUID: N2t1KoQBOenPW2JtSo2g0cCf4ptimMH3
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-08-11_04:2021-08-11,
- 2021-08-11 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 impostorscore=0
- phishscore=0 malwarescore=0 adultscore=0 suspectscore=0 lowpriorityscore=0
- spamscore=0 mlxlogscore=999 clxscore=1015 bulkscore=0 priorityscore=1501
+X-ClientProxiedBy: BYAPR02CA0067.namprd02.prod.outlook.com
+ (2603:10b6:a03:54::44) To BLAPR10MB5009.namprd10.prod.outlook.com
+ (2603:10b6:208:321::10)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [10.74.99.104] (138.3.201.40) by
+ BYAPR02CA0067.namprd02.prod.outlook.com (2603:10b6:a03:54::44) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4415.13 via Frontend Transport; Wed, 11 Aug 2021 14:07:22 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 07a3b679-01e9-44ca-8ff0-08d95cd15d4b
+X-MS-TrafficTypeDiagnostic: MN2PR10MB4383:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <MN2PR10MB4383E6DA2996D6C0C9F08B228AF89@MN2PR10MB4383.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:326;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: mJ0paZ6vBETkR6J4HwzVLR1fjdkNhZxr/ppMGrmSeAqrWmeNWK6q6wY8G92t9AOnVKJsm0PNHcD9IrW/XXUxID+UAKCk6qooAW0iXSqZWnhVJrxYlDkCBA65f8NK3txkXCOx25Qwm3Np0udtSxLaZgEy1Vk19Rsd7oywIoUr5geUXlsxOiCcqoRc0rMjGOrfSru2BtYGgsC0vvvpW+O3E0k5Px0bWJymOCtdYbMizDXDBDi8oly6k3MHIMHvZkAJ3tbtym0etE9zvlpYjT3ni46Cpooy9u4G6/SufrVUEVT7KMlQAIZ4kfkfc5ewPgzYcfUkiEwLzoQVMcwXwq/GJXc88+ji1kQ3YtKro64yjHiJT8Dg8eRbG3CWIl1WVPnkRfq3+FCBtN2aHUKUSmWraOxWOV9KlBsmjAdWndJ9DX9IycUWfUdVEGOvN5hrT371qnVK2QBcxF/sbeFza4/GoSpfHQoB5zzrCGnQUbToGdqsCOJV8sFQP13JBTXynzqUzkamYqyz6iFdBQc5GP22Hp5o2aFFsVcW0nSh2p0me6dHOYYZnfq7kerQCdUZBoM4JlOD6Vv0q+zfKyC9h+MF0CnDBgezTGH9SOzkjs9XHcwXlbLpVMa8D0e8ffzO1ZeV7H7CQgsTiNZrZ8/x0m2ze13gpS7Xr4E/Uj4hBKveQ/9rstK3lmK+TaaFNJYe2e0geOhdGzyDgQsDBVqR0mK8HJzaxQTHjBCqyazb0vd9SsU=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BLAPR10MB5009.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(376002)(39860400002)(136003)(366004)(396003)(346002)(478600001)(53546011)(86362001)(31696002)(36756003)(110136005)(186003)(7416002)(26005)(6666004)(54906003)(2616005)(8676002)(2906002)(44832011)(66556008)(4744005)(6486002)(7406005)(956004)(66946007)(66476007)(8936002)(5660300002)(16576012)(31686004)(316002)(38100700002)(4326008)(43740500002)(45980500001);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SGRuTmt6aEhSY1ZVb2duVXBHWHNrdjBKQlIrZVEzZG9WV1dIWUhYeGg3eUJM?=
+ =?utf-8?B?QmN6VjdhT0RNZXptWldXWDBxd2MyYmxFTERJT3JOZXF3U244MVhBZ1Vqamdo?=
+ =?utf-8?B?bFc2K3hCSGNtYVlDaTF5eWliK01DdUFJTTJmWTRjVndPSi9ISGVUSGdNY2xY?=
+ =?utf-8?B?V2dSZ0QwV2RaNVFyRWlKSEFKQ3NXL3p2V0hENEJNQXZ2ODI2azFIRStRb3lV?=
+ =?utf-8?B?aGdVclpUNURmN3F5Lzd6dGRqdTJUc3FIMm1IZXpWaXpudkt1ZUtVSDBNaHNy?=
+ =?utf-8?B?bzZ6N2V1aEtUaFJDRklDSVNKZHIxZks5Q2IxeHRLY1VWK0J6TnluQlZBNkxk?=
+ =?utf-8?B?bDgvMDFKU3lJOGN1bzQyUXVOWlRZRTlzaFR5YUtHTlRRRzdaU0tYRDJTZ3Ir?=
+ =?utf-8?B?ZDRLSVZ6VFFiYkV3WHFyeXI5MmJqMnpxb1prcWVlQ2VXMU9aOGJ2NHB2cmk1?=
+ =?utf-8?B?VWJCU1VpY0MycEtnRmJaRHpWYkxWWk01RGkrVTU1SmFzWDRCSmlqbzhlUmdr?=
+ =?utf-8?B?ZXVVNmxGUDV4SWd1S1Q0Y29JSjh3ZTB5TUpTano1ZEg0ZG5Ia0JBUTJDbGVE?=
+ =?utf-8?B?WkhtRU4vUWpHZDQ4bW0rdjJaRWpMZ0pmdTh3SFpxdXA4R3BLbjFvL3dwS0xw?=
+ =?utf-8?B?UGJQMmJCbDJUL1NwMkpvMTBKMGU1cVU3TUJCb3c5bzBBR0JqdDBOZXIwaTFq?=
+ =?utf-8?B?NUNRclB5UTBXT000R0llR2txWmRMbERGbk9LdmpYOGRzQ1hDMDQ2MUUwWEN0?=
+ =?utf-8?B?aUoxcXRXNG5mMjB6Rk1zRWY3cWQ1dFBHOUdzQ2ZXbWVTYkdyZ01waGo3dXNv?=
+ =?utf-8?B?bVhjOSt3UlYyakRCSEtQdzl3amdhTHVmN1YwekNYajhLbXRTUkN4QVRHcEYw?=
+ =?utf-8?B?VDgxRE1qcFJGbTdDanA4QnhKRUdISWZPbG4rbFJWb3FQYTBvVTV6c1cxL1V6?=
+ =?utf-8?B?cW5oME1XbGJiWnV6N2NWQlpaZUVVMURrOFM1aml6UlJTaSs4TTQ1NlU3dlBo?=
+ =?utf-8?B?UlpxMWNFSExvMkQ0azZLMWpCLzlJam51WTV1ZjJGYktydlJ3OFdwamhFcVdo?=
+ =?utf-8?B?VG55aG1yZEhrUDBwZGlmSlg2aDhidEpKUG5YRjcyaHRZTk15cjZxK09ZRFU3?=
+ =?utf-8?B?SHNndk80bm1rN1BhKzRNNEJpTXFtUkZCU0VvS1JGY1RQTm80TEVrMWJ3TENI?=
+ =?utf-8?B?T0VQd0t2VXlyYk5PTVozK1B3b1ZJTS9wSk5WTnkyWmxzdzd0UHhwdlcyMkFN?=
+ =?utf-8?B?aVk1Q0UwWEd4VWZyZFhLdVViRG5qUStqdUtFRXhUMnhZMk9GYzFFdmt4WGEr?=
+ =?utf-8?B?aEZmMkJRYzJ3N09IMXJTZHg2Vko2QmpTMzA4Q3lsS2hBcmNXdWphR2JXTDVr?=
+ =?utf-8?B?ckZGZmdyUVJuZWM0czdySEc1YkszeGMxUDBIMUcxV1VqTzdycytsdTZCQ25V?=
+ =?utf-8?B?NVU4azRiOTB0MGpTMzk3Q1Z3dkFtMmJuTFpvSEJQbjJiNFBsRDFvMnkvYkZT?=
+ =?utf-8?B?RHIydjVJeFNGcUJOZ2VXcWhvN3pPelRLNThSb2tlbjRZU29uaTZHSzdmZXM1?=
+ =?utf-8?B?aG5tYmwrTDFvbmFsVk5CaHVCMnE3OEdPU1V1YmZ5QUJWU2p3bHI4MVJWS2Iw?=
+ =?utf-8?B?SkZzWFNpdmtTNDNlYmtQZGs0S1BodnV1eGh5Rk9FY01CUHhXWnJSSytqS2lx?=
+ =?utf-8?B?MUFlVW1qRTUwYnFHT0VpSHNEODJkZDYvQnJzSDQ0akVYU0JSMGg5RmJ5bDd5?=
+ =?utf-8?Q?luX84VVeQz3HtwhMslpQxWQyrzW8zrWWGyfQSZz?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 07a3b679-01e9-44ca-8ff0-08d95cd15d4b
+X-MS-Exchange-CrossTenant-AuthSource: BLAPR10MB5009.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2021 14:07:33.5666 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jwolo0mL32BhKNdxgkaJuu73dp6oVF9cKNvE7zf4ZLjxzSfrtmEUBgVaa4GyqdHXxilscVUzMHnq7cA2q1UNTfFFxNrq7xFv8SskM2b/DXk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR10MB4383
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=10072
+ signatures=668682
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ mlxscore=0 bulkscore=0
+ spamscore=0 phishscore=0 mlxlogscore=999 suspectscore=0 malwarescore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2107140000
- definitions=main-2108110085
+ definitions=main-2108110095
+X-Proofpoint-ORIG-GUID: 35MWkgmyIv3VJo1ExJX6uD_LN4w-vk7O
+X-Proofpoint-GUID: 35MWkgmyIv3VJo1ExJX6uD_LN4w-vk7O
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,129 +194,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>, Peter Zijlstra <peterz@infradead.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Oliver O'Halloran <oohall@gmail.com>,
+ Jiri Olsa <jolsa@redhat.com>, Stefano Stabellini <sstabellini@kernel.org>,
+ Mathias Nyman <mathias.nyman@intel.com>, x86@kernel.org,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, linux-pci@vger.kernel.org,
+ xen-devel@lists.xenproject.org, Andrew Donnellan <ajd@linux.ibm.com>,
+ Arnd Bergmann <arnd@arndb.de>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>, Borislav Petkov <bp@alien8.de>,
+ Bjorn Helgaas <bhelgaas@google.com>, Namhyung Kim <namhyung@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Juergen Gross <jgross@suse.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, kernel@pengutronix.de,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-On 8/6/21 4:08 PM, Nicholas Piggin wrote:
-> Excerpts from Madhavan Srinivasan's message of August 6, 2021 5:33 pm:
->> On 7/26/21 9:19 AM, Nicholas Piggin wrote:
->>> It can be useful in simulators (with very constrained environments)
->>> to allow some PMCs to run from boot so they can be sampled directly
->>> by a test harness, rather than having to run perf.
->>>
->>> A previous change freezes counters at boot by default, so provide
->>> a boot time option to un-freeze (plus a bit more flexibility).
->>>
->>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->>> ---
->>>    .../admin-guide/kernel-parameters.txt         |  7 ++++
->>>    arch/powerpc/perf/core-book3s.c               | 35 +++++++++++++++++++
->>>    2 files changed, 42 insertions(+)
->>>
->>> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
->>> index bdb22006f713..96b7d0ebaa40 100644
->>> --- a/Documentation/admin-guide/kernel-parameters.txt
->>> +++ b/Documentation/admin-guide/kernel-parameters.txt
->>> @@ -4089,6 +4089,13 @@
->>>    			Override pmtimer IOPort with a hex value.
->>>    			e.g. pmtmr=0x508
->>>
->>> +	pmu=		[PPC] Manually enable the PMU.
->>
->> This is bit confusing, IIUC, we are manually disabling the perf
->> registration
->> with this option and not pmu.
->> If this option is used, we will unfreeze the
->> MMCR0_FC (only in the HV_mode) and not register perf subsystem.
-> With the previous patch, this option un-freezes the PMU
-> (and disables perf).
+On 8/11/21 4:06 AM, Uwe Kleine-König wrote:
+> struct pci_dev::driver contains (apart from a constant offset) the same
+> data as struct pci_dev::dev->driver. Replace all remaining users of the
+> former pointer by the latter to allow removing the former.
 >
->> Since this option is valid only for HV_mode, canwe call it
->> kvm_disable_perf or kvm_dis_perf.
-> It's only disabled for guests because it would require a bit
-> of logic to set pmcregs_in_use when we register our lppaca. We could
-> add that if needed, but the intention is for use on BML, not exactly
-> KVM specific.
->
-> I can add HV restriction to the help text. And we could rename the
-> option. free_run_pmu= or something?
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
 
-yeah having it a different name will be better. I am not sure
-whether we should say "[PPC] Manually enable the PMU",
-because IIUC, if we dont provide this option PMU and perf is
-anyway enabled, but rest looks good to me.
-
-Maddy
+Xen:
 
 
->
-> Thanks,
-> Nick
->
->>
->>> +			Enable the PMU by setting MMCR0 to 0 (clear FC bit).
->>> +			This option is implemented for Book3S processors.
->>> +			If a number is given, then MMCR1 is set to that number,
->>> +			otherwise (e.g., 'pmu=on'), it is left 0. The perf
->>> +			subsystem is disabled if this option is used.
->>> +
->>>    	pm_debug_messages	[SUSPEND,KNL]
->>>    			Enable suspend/resume debug messages during boot up.
->>>
->>> diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
->>> index 65795cadb475..e7cef4fe17d7 100644
->>> --- a/arch/powerpc/perf/core-book3s.c
->>> +++ b/arch/powerpc/perf/core-book3s.c
->>> @@ -2428,8 +2428,24 @@ int register_power_pmu(struct power_pmu *pmu)
->>>    }
->>>
->>>    #ifdef CONFIG_PPC64
->>> +static bool pmu_override = false;
->>> +static unsigned long pmu_override_val;
->>> +static void do_pmu_override(void *data)
->>> +{
->>> +	ppc_set_pmu_inuse(1);
->>> +	if (pmu_override_val)
->>> +		mtspr(SPRN_MMCR1, pmu_override_val);
->>> +	mtspr(SPRN_MMCR0, mfspr(SPRN_MMCR0) & ~MMCR0_FC);
->>> +}
->>> +
->>>    static int __init init_ppc64_pmu(void)
->>>    {
->>> +	if (cpu_has_feature(CPU_FTR_HVMODE) && pmu_override) {
->>> +		printk(KERN_WARNING "perf: disabling perf due to pmu= command line option.\n");
->>> +		on_each_cpu(do_pmu_override, NULL, 1);
->>> +		return 0;
->>> +	}
->>> +
->>>    	/* run through all the pmu drivers one at a time */
->>>    	if (!init_power5_pmu())
->>>    		return 0;
->>> @@ -2451,4 +2467,23 @@ static int __init init_ppc64_pmu(void)
->>>    		return init_generic_compat_pmu();
->>>    }
->>>    early_initcall(init_ppc64_pmu);
->>> +
->>> +static int __init pmu_setup(char *str)
->>> +{
->>> +	unsigned long val;
->>> +
->>> +	if (!early_cpu_has_feature(CPU_FTR_HVMODE))
->>> +		return 0;
->>> +
->>> +	pmu_override = true;
->>> +
->>> +	if (kstrtoul(str, 0, &val))
->>> +		val = 0;
->>> +
->>> +	pmu_override_val = val;
->>> +
->>> +	return 1;
->>> +}
->>> +__setup("pmu=", pmu_setup);
->>> +
->>>    #endif
+Reviewed-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+
+
