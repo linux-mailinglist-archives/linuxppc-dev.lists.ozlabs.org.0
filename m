@@ -2,69 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A40D73E95BF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Aug 2021 18:17:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DFC53E95C5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Aug 2021 18:17:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GlFMM3mNSz3fXR
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 02:17:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GlFN63YWnz3fYR
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 02:17:42 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=agJvXZ1X;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Oga2Xv/c;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630;
- helo=mail-pl1-x630.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1029;
+ helo=mail-pj1-x1029.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=agJvXZ1X; dkim-atps=neutral
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com
- [IPv6:2607:f8b0:4864:20::630])
+ header.s=20161025 header.b=Oga2Xv/c; dkim-atps=neutral
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com
+ [IPv6:2607:f8b0:4864:20::1029])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GlF2v5ZrRz3cX6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 02:02:47 +1000 (AEST)
-Received: by mail-pl1-x630.google.com with SMTP id e19so3260622pla.10
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Aug 2021 09:02:47 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GlF2y2zDbz3cJR
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 02:02:50 +1000 (AEST)
+Received: by mail-pj1-x1029.google.com with SMTP id
+ t7-20020a17090a5d87b029017807007f23so10309023pji.5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Aug 2021 09:02:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=yvgSohBs0lz6ePDfuRJAnsWvsoMCmdvVs4zUHcGUoII=;
- b=agJvXZ1XlDr9WbqXPgqs2E44Rwk7BzWuiMA7pr24MBgFVtUY8P7ffJOJzQ+j6RUwWk
- sbeIiM1mJ1l59xPT3/jKD8WbhYPffXdWDZtHMdCjqVh8NWISleSgO7AUKIuP262yd57q
- GxKrUWb28jtgw4op4AwwdUsWqb1gw5udaRFdb65CRRLT/6k98i6Crd5uZWsS/Ng+x0wu
- QLAeMirLBlCcvEWL0cCFMAD7kNw57YEzu5XzrwP5ybSIHNJgpgZxF5Ieqg29U+dNdYGv
- llUZxrG6llfj97ePmVBhdnz+A32iLss3z1KpIr1RbryP+SoPioHimV1Bh6qBOg5sME9+
- w6kg==
+ bh=QqPmgr/sGr5j1zDNMnH53gsmq1i0Fa0vOmXvGCg74L4=;
+ b=Oga2Xv/cYKmKt+7qubqKM3fMNcJU24OXsL9KjiqLqi0tF9gDQJqkR5UCarU6Ys2Asl
+ Yd+RkuDpGdHGrj4WtMGCQ1UjNAeb9KvlFQYybusL0jtuDX1pY+/0Kfp9FOpFV8OjuEjH
+ g4njjLDRuvVhPEHu+K/8DqgAze4cTvbZKJ2yYutvIce3+hKlJpCa7SugTq0fGHqUtRHf
+ 9qU8ypjya/shZM3RMKgwDiLzCKgl98gH/CNd9Qj1O1xYW29Gg06AvCoS9Bghksz7bfHI
+ TWA9e9Jn0UOpasAlC530YmDUgNDxxYMDtgThop6GLcy1TUzLoso1yKZD23MijgLiQcwu
+ SjJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=yvgSohBs0lz6ePDfuRJAnsWvsoMCmdvVs4zUHcGUoII=;
- b=BCRfTZnArOPo5GH3GjIlsN6wVTOIVjMqJ5Mh+7OtEXuw3hG3fkHabvvmXTyjeMoo5H
- UjN63ELGDgaNF5b39eE4H1Bn3By5k0JAuYAqr4RcKNT7R+TVyQe43Hgnp7O/Q+GmLj/V
- P1WSzdEf04gB+o384Q8Y+/QDsHXnC4sCWXCvDG/Njk8vB1BS447r/zVvTZEh8HM7Fbdl
- uv/YPRHYoIaAaQkh7AEqZchKc9kAvIDHkXMwrZTDzJ7cZ11yu/gv2czFF6xHgQOZeBx1
- LaHDyOdi+scH0syhdDeWirW7oHPWr1txPkrJIHDsf+81sydVh6AAKgE0CqpnihZEVRXT
- LQjA==
-X-Gm-Message-State: AOAM532Q7hZuPmEfMntA/EUKzVlT8WAT+snyppWsG7yoQ58XgjNFwDWH
- jLKO1HVcJ3QrXmLMiIfrvQ8=
-X-Google-Smtp-Source: ABdhPJw542yZIMZfAuFOMn/nPt3pHOZjVUhP8Q+mhuQbFjKj4N+mT65E3Nzh2pBr5yTG8xD7a9yNow==
-X-Received: by 2002:a17:90a:d245:: with SMTP id
- o5mr15625471pjw.57.1628697765701; 
- Wed, 11 Aug 2021 09:02:45 -0700 (PDT)
+ bh=QqPmgr/sGr5j1zDNMnH53gsmq1i0Fa0vOmXvGCg74L4=;
+ b=T5vErfCSgUrWkiuGxsn89XL4P1guCOLOTKFxXXz3lxuqhMkeKKsc44oskej0CEl1i0
+ 7mRxHHCT+w3Gf6GOd4AHpl/WLutyn4m9JiLWIq/zedbOlJ2sV8PgF7JaH75/o3qIFSCj
+ B2XxfLYKWFUY37IgB1mzVmMpr6aE9pmoRPLrMOebjilDUDryubO3Na4IkIRt4D3BmJ8q
+ HKbt3HKrrc2PnvLgMluRaAq/WF4pcPFOT0Qi9hkmm/rbQ2IqApwI6blcoOmcpiravdxt
+ O+oCp+n+UgMvVXgvqQRoyURQA2/56lhvxtrMVwOrH1jHu+PSwGPBBKPxTkRcMFwJTn+D
+ ziUw==
+X-Gm-Message-State: AOAM531rD8AregJbobDICOvENsJbZFqMITgodCVuTMHfQ7INQ0LdUb29
+ kdjw2ScqIsb8C3szkI9lDZsoPoQrpVM=
+X-Google-Smtp-Source: ABdhPJyEilrPW7asJOvFeaFex2/BT3EDl9ATGVLj6BS67i90hGQjqkAIxNbcmDCowWQj7LwcesqaMg==
+X-Received: by 2002:a17:90a:db44:: with SMTP id
+ u4mr11278276pjx.180.1628697768491; 
+ Wed, 11 Aug 2021 09:02:48 -0700 (PDT)
 Received: from bobo.ibm.com ([118.210.97.79])
- by smtp.gmail.com with ESMTPSA id k19sm6596494pff.28.2021.08.11.09.02.43
+ by smtp.gmail.com with ESMTPSA id k19sm6596494pff.28.2021.08.11.09.02.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 11 Aug 2021 09:02:45 -0700 (PDT)
+ Wed, 11 Aug 2021 09:02:48 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org
-Subject: [PATCH v2 23/60] KVM: PPC: Book3S HV P9: Demand fault PMU SPRs when
- marked not inuse
-Date: Thu, 12 Aug 2021 02:00:57 +1000
-Message-Id: <20210811160134.904987-24-npiggin@gmail.com>
+Subject: [PATCH v2 24/60] KVM: PPC: Book3S HV P9: Factor out yield_count
+ increment
+Date: Thu, 12 Aug 2021 02:00:58 +1000
+Message-Id: <20210811160134.904987-25-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210811160134.904987-1-npiggin@gmail.com>
 References: <20210811160134.904987-1-npiggin@gmail.com>
@@ -81,222 +82,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Athira Jajeev <atrajeev@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>,
+ Fabiano Rosas <farosas@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pmcregs_in_use field in the guest VPA can not be trusted to reflect
-what the guest is doing with PMU SPRs, so the PMU must always be managed
-(stopped) when exiting the guest, and SPR values set when entering the
-guest to ensure it can't cause a covert channel or otherwise cause other
-guests or the host to misbehave.
+Factor duplicated code into a helper function.
 
-So prevent guest access to the PMU with HFSCR[PM] if pmcregs_in_use is
-clear, and avoid the PMU SPR access on every partition switch. Guests
-that set pmcregs_in_use incorrectly or when first setting it and using
-the PMU will take a hypervisor facility unavailable interrupt that will
-bring in the PMU SPRs.
-
-Cc: Athira Jajeev <atrajeev@linux.vnet.ibm.com>
+Reviewed-by: Fabiano Rosas <farosas@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kvm/book3s_hv.c | 131 ++++++++++++++++++++++++++---------
- 1 file changed, 98 insertions(+), 33 deletions(-)
+ arch/powerpc/kvm/book3s_hv.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
 diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 0ceb0bd28e13..9ff7e3ea70f9 100644
+index 9ff7e3ea70f9..fa12a3efeeb2 100644
 --- a/arch/powerpc/kvm/book3s_hv.c
 +++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -1421,6 +1421,23 @@ static int kvmppc_emulate_doorbell_instr(struct kvm_vcpu *vcpu)
- 	return RESUME_GUEST;
+@@ -4117,6 +4117,16 @@ static inline bool hcall_is_xics(unsigned long req)
+ 		req == H_IPOLL || req == H_XIRR || req == H_XIRR_X;
  }
  
-+/*
-+ * If the lppaca had pmcregs_in_use clear when we exited the guest, then
-+ * HFSCR_PM is cleared for next entry. If the guest then tries to access
-+ * the PMU SPRs, we get this facility unavailable interrupt. Putting HFSCR_PM
-+ * back in the guest HFSCR will cause the next entry to load the PMU SPRs and
-+ * allow the guest access to continue.
-+ */
-+static int kvmppc_pmu_unavailable(struct kvm_vcpu *vcpu)
++static void vcpu_vpa_increment_dispatch(struct kvm_vcpu *vcpu)
 +{
-+	if (!(vcpu->arch.hfscr_permitted & HFSCR_PM))
-+		return EMULATE_FAIL;
-+
-+	vcpu->arch.hfscr |= HFSCR_PM;
-+
-+	return RESUME_GUEST;
++	struct lppaca *lp = vcpu->arch.vpa.pinned_addr;
++	if (lp) {
++		u32 yield_count = be32_to_cpu(lp->yield_count) + 1;
++		lp->yield_count = cpu_to_be32(yield_count);
++		vcpu->arch.vpa.dirty = 1;
++	}
 +}
 +
- static int kvmppc_handle_exit_hv(struct kvm_vcpu *vcpu,
- 				 struct task_struct *tsk)
- {
-@@ -1705,16 +1722,22 @@ XXX benchmark guest exits
- 	 * to emulate.
- 	 * Otherwise, we just generate a program interrupt to the guest.
- 	 */
--	case BOOK3S_INTERRUPT_H_FAC_UNAVAIL:
-+	case BOOK3S_INTERRUPT_H_FAC_UNAVAIL: {
-+		u64 cause = vcpu->arch.hfscr >> 56;
-+
- 		r = EMULATE_FAIL;
--		if (((vcpu->arch.hfscr >> 56) == FSCR_MSGP_LG) &&
--		    cpu_has_feature(CPU_FTR_ARCH_300))
--			r = kvmppc_emulate_doorbell_instr(vcpu);
-+		if (cpu_has_feature(CPU_FTR_ARCH_300)) {
-+			if (cause == FSCR_MSGP_LG)
-+				r = kvmppc_emulate_doorbell_instr(vcpu);
-+			if (cause == FSCR_PM_LG)
-+				r = kvmppc_pmu_unavailable(vcpu);
-+		}
- 		if (r == EMULATE_FAIL) {
- 			kvmppc_core_queue_program(vcpu, SRR1_PROGILL);
- 			r = RESUME_GUEST;
- 		}
- 		break;
-+	}
+ /*
+  * Guest entry for POWER9 and later CPUs.
+  */
+@@ -4145,12 +4155,7 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	vc->entry_exit_map = 1;
+ 	vc->in_guest = 1;
  
- 	case BOOK3S_INTERRUPT_HV_RM_HARD:
- 		r = RESUME_PASSTHROUGH;
-@@ -2753,6 +2776,11 @@ static int kvmppc_core_vcpu_create_hv(struct kvm_vcpu *vcpu)
- 
- 	vcpu->arch.hfscr_permitted = vcpu->arch.hfscr;
- 
-+	/*
-+	 * PM is demand-faulted so start with it clear.
-+	 */
-+	vcpu->arch.hfscr &= ~HFSCR_PM;
-+
- 	kvmppc_mmu_book3s_hv_init(vcpu);
- 
- 	vcpu->arch.state = KVMPPC_VCPU_NOTREADY;
-@@ -3823,6 +3851,14 @@ static void freeze_pmu(unsigned long mmcr0, unsigned long mmcra)
- static void switch_pmu_to_guest(struct kvm_vcpu *vcpu,
- 				struct p9_host_os_sprs *host_os_sprs)
- {
-+	struct lppaca *lp;
-+	int load_pmu = 1;
-+
-+	lp = vcpu->arch.vpa.pinned_addr;
-+	if (lp)
-+		load_pmu = lp->pmcregs_in_use;
-+
-+	/* Save host */
- 	if (ppc_get_pmu_inuse()) {
- 		/*
- 		 * It might be better to put PMU handling (at least for the
-@@ -3857,41 +3893,47 @@ static void switch_pmu_to_guest(struct kvm_vcpu *vcpu,
- 	}
- 
- #ifdef CONFIG_PPC_PSERIES
-+	/* After saving PMU, before loading guest PMU, flip pmcregs_in_use */
- 	if (kvmhv_on_pseries()) {
- 		barrier();
--		if (vcpu->arch.vpa.pinned_addr) {
--			struct lppaca *lp = vcpu->arch.vpa.pinned_addr;
--			get_lppaca()->pmcregs_in_use = lp->pmcregs_in_use;
--		} else {
--			get_lppaca()->pmcregs_in_use = 1;
--		}
-+		get_lppaca()->pmcregs_in_use = load_pmu;
- 		barrier();
- 	}
- #endif
- 
--	/* load guest */
--	mtspr(SPRN_PMC1, vcpu->arch.pmc[0]);
--	mtspr(SPRN_PMC2, vcpu->arch.pmc[1]);
--	mtspr(SPRN_PMC3, vcpu->arch.pmc[2]);
--	mtspr(SPRN_PMC4, vcpu->arch.pmc[3]);
--	mtspr(SPRN_PMC5, vcpu->arch.pmc[4]);
--	mtspr(SPRN_PMC6, vcpu->arch.pmc[5]);
--	mtspr(SPRN_MMCR1, vcpu->arch.mmcr[1]);
--	mtspr(SPRN_MMCR2, vcpu->arch.mmcr[2]);
--	mtspr(SPRN_SDAR, vcpu->arch.sdar);
--	mtspr(SPRN_SIAR, vcpu->arch.siar);
--	mtspr(SPRN_SIER, vcpu->arch.sier[0]);
-+	/*
-+	 * Load guest. If the VPA said the PMCs are not in use but the guest
-+	 * tried to access them anyway, HFSCR[PM] will be set by the HFAC
-+	 * fault so we can make forward progress.
-+	 */
-+	if (load_pmu || (vcpu->arch.hfscr & HFSCR_PM)) {
-+		mtspr(SPRN_PMC1, vcpu->arch.pmc[0]);
-+		mtspr(SPRN_PMC2, vcpu->arch.pmc[1]);
-+		mtspr(SPRN_PMC3, vcpu->arch.pmc[2]);
-+		mtspr(SPRN_PMC4, vcpu->arch.pmc[3]);
-+		mtspr(SPRN_PMC5, vcpu->arch.pmc[4]);
-+		mtspr(SPRN_PMC6, vcpu->arch.pmc[5]);
-+		mtspr(SPRN_MMCR1, vcpu->arch.mmcr[1]);
-+		mtspr(SPRN_MMCR2, vcpu->arch.mmcr[2]);
-+		mtspr(SPRN_SDAR, vcpu->arch.sdar);
-+		mtspr(SPRN_SIAR, vcpu->arch.siar);
-+		mtspr(SPRN_SIER, vcpu->arch.sier[0]);
-+
-+		if (cpu_has_feature(CPU_FTR_ARCH_31)) {
-+			mtspr(SPRN_MMCR3, vcpu->arch.mmcr[3]);
-+			mtspr(SPRN_SIER2, vcpu->arch.sier[1]);
-+			mtspr(SPRN_SIER3, vcpu->arch.sier[2]);
-+		}
- 
--	if (cpu_has_feature(CPU_FTR_ARCH_31)) {
--		mtspr(SPRN_MMCR3, vcpu->arch.mmcr[3]);
--		mtspr(SPRN_SIER2, vcpu->arch.sier[1]);
--		mtspr(SPRN_SIER3, vcpu->arch.sier[2]);
+-	if (vcpu->arch.vpa.pinned_addr) {
+-		struct lppaca *lp = vcpu->arch.vpa.pinned_addr;
+-		u32 yield_count = be32_to_cpu(lp->yield_count) + 1;
+-		lp->yield_count = cpu_to_be32(yield_count);
+-		vcpu->arch.vpa.dirty = 1;
 -	}
-+		/* Set MMCRA then MMCR0 last */
-+		mtspr(SPRN_MMCRA, vcpu->arch.mmcra);
-+		mtspr(SPRN_MMCR0, vcpu->arch.mmcr[0]);
-+		/* No isync necessary because we're starting counters */
++	vcpu_vpa_increment_dispatch(vcpu);
  
--	/* Set MMCRA then MMCR0 last */
--	mtspr(SPRN_MMCRA, vcpu->arch.mmcra);
--	mtspr(SPRN_MMCR0, vcpu->arch.mmcr[0]);
--	/* No isync necessary because we're starting counters */
-+		if (!vcpu->arch.nested &&
-+				(vcpu->arch.hfscr_permitted & HFSCR_PM))
-+			vcpu->arch.hfscr |= HFSCR_PM;
-+	}
- }
+ 	if (cpu_has_feature(CPU_FTR_TM) ||
+ 	    cpu_has_feature(CPU_FTR_P9_TM_HV_ASSIST))
+@@ -4278,12 +4283,7 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	    cpu_has_feature(CPU_FTR_P9_TM_HV_ASSIST))
+ 		kvmppc_save_tm_hv(vcpu, vcpu->arch.shregs.msr, true);
  
- static void switch_pmu_to_host(struct kvm_vcpu *vcpu,
-@@ -3935,9 +3977,32 @@ static void switch_pmu_to_host(struct kvm_vcpu *vcpu,
- 			vcpu->arch.sier[1] = mfspr(SPRN_SIER2);
- 			vcpu->arch.sier[2] = mfspr(SPRN_SIER3);
- 		}
--	} else {
-+
-+	} else if (vcpu->arch.hfscr & HFSCR_PM) {
-+		/*
-+		 * The guest accessed PMC SPRs without specifying they should
-+		 * be preserved, or it cleared pmcregs_in_use after the last
-+		 * access. Just ensure they are frozen.
-+		 */
- 		freeze_pmu(mfspr(SPRN_MMCR0), mfspr(SPRN_MMCRA));
+-	if (vcpu->arch.vpa.pinned_addr) {
+-		struct lppaca *lp = vcpu->arch.vpa.pinned_addr;
+-		u32 yield_count = be32_to_cpu(lp->yield_count) + 1;
+-		lp->yield_count = cpu_to_be32(yield_count);
+-		vcpu->arch.vpa.dirty = 1;
 -	}
-+
-+		/*
-+		 * Demand-fault PMU register access in the guest.
-+		 *
-+		 * This is used to grab the guest's VPA pmcregs_in_use value
-+		 * and reflect it into the host's VPA in the case of a nested
-+		 * hypervisor.
-+		 *
-+		 * It also avoids having to zero-out SPRs after each guest
-+		 * exit to avoid side-channels when.
-+		 *
-+		 * This is cleared here when we exit the guest, so later HFSCR
-+		 * interrupt handling can add it back to run the guest with
-+		 * PM enabled next time.
-+		 */
-+		if (!vcpu->arch.nested)
-+			vcpu->arch.hfscr &= ~HFSCR_PM;
-+	} /* otherwise the PMU should still be frozen */
++	vcpu_vpa_increment_dispatch(vcpu);
  
- #ifdef CONFIG_PPC_PSERIES
- 	if (kvmhv_on_pseries()) {
+ 	switch_pmu_to_host(vcpu, &host_os_sprs);
+ 
 -- 
 2.23.0
 
