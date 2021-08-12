@@ -2,46 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B06E3EA1AD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 11:14:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6830F3EA24B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 11:46:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Glgxc16wkz3bbF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 19:14:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Glhf31y0Fz3cRy
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 19:46:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.131;
- helo=out30-131.freemail.mail.aliyun.com;
+ smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.57;
+ helo=out30-57.freemail.mail.aliyun.com;
  envelope-from=xianting.tian@linux.alibaba.com; receiver=<UNKNOWN>)
-Received: from out30-131.freemail.mail.aliyun.com
- (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+Received: from out30-57.freemail.mail.aliyun.com
+ (out30-57.freemail.mail.aliyun.com [115.124.30.57])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GlgxB5zswz2yXc
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 19:14:17 +1000 (AEST)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R561e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04394;
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GlhdZ3zvQz2yMG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 19:45:52 +1000 (AEST)
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R261e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04395;
  MF=xianting.tian@linux.alibaba.com; NM=1; PH=DS; RN=9; SR=0;
- TI=SMTPD_---0Uim5XHy_1628759649; 
-Received: from B-LB6YLVDL-0141.local(mailfrom:xianting.tian@linux.alibaba.com
- fp:SMTPD_---0Uim5XHy_1628759649) by smtp.aliyun-inc.com(127.0.0.1);
- Thu, 12 Aug 2021 17:14:09 +0800
-Subject: Re: [PATCH v4 1/2] tty: hvc: pass DMA capable memory to put_chars()
-To: Arnd Bergmann <arnd@arndb.de>
-References: <20210806030138.123479-1-xianting.tian@linux.alibaba.com>
- <20210806030138.123479-2-xianting.tian@linux.alibaba.com>
- <CAK8P3a2=BmVv0tvUKaca+LYxuAussAJtAJW9O3fRN2CbV2-9aw@mail.gmail.com>
- <f18d017b-d6f7-cf87-8859-8d6b50c7c289@linux.alibaba.com>
- <CAK8P3a2ykLvJkhX+wDAOHdyLHjPFAfhOxi5BNM9kTKv_8F7VQg@mail.gmail.com>
-From: Xianting TIan <xianting.tian@linux.alibaba.com>
-Message-ID: <a5bb4fbb-a9c4-9b9a-3cfe-09d3b99c7915@linux.alibaba.com>
-Date: Thu, 12 Aug 2021 17:14:09 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.10.1
+ TI=SMTPD_---0Uim9keQ_1628761534; 
+Received: from localhost(mailfrom:xianting.tian@linux.alibaba.com
+ fp:SMTPD_---0Uim9keQ_1628761534) by smtp.aliyun-inc.com(127.0.0.1);
+ Thu, 12 Aug 2021 17:45:34 +0800
+From: Xianting Tian <xianting.tian@linux.alibaba.com>
+To: gregkh@linuxfoundation.org, jirislaby@kernel.org, amit@kernel.org,
+ arnd@arndb.de, osandov@fb.com
+Subject: [PATCH v6 0/2] make hvc pass dma capable memory to its backend
+Date: Thu, 12 Aug 2021 17:45:30 +0800
+Message-Id: <20210812094532.145497-1-xianting.tian@linux.alibaba.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-In-Reply-To: <CAK8P3a2ykLvJkhX+wDAOHdyLHjPFAfhOxi5BNM9kTKv_8F7VQg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -54,42 +48,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jiri Slaby <jirislaby@kernel.org>, Amit Shah <amit@kernel.org>,
- gregkh <gregkh@linuxfoundation.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- "open list:DRM DRIVER FOR QEMU'S CIRRUS DEVICE"
- <virtualization@lists.linux-foundation.org>, Guo Ren <guoren@kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Omar Sandoval <osandov@fb.com>
+Cc: Xianting Tian <xianting.tian@linux.alibaba.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ virtualization@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Dear all,
 
-在 2021/8/12 下午4:54, Arnd Bergmann 写道:
-> On Thu, Aug 12, 2021 at 10:08 AM Xianting TIan
-> <xianting.tian@linux.alibaba.com> wrote:
->> 在 2021/8/6 下午10:51, Arnd Bergmann 写道:
->>> On Fri, Aug 6, 2021 at 5:01 AM Xianting Tian
->>>> +#define __ALIGNED__ __attribute__((__aligned__(sizeof(long))))
->>> I think you need a higher alignment for DMA buffers, instead of sizeof(long),
->>> I would suggest ARCH_DMA_MINALIGN.
->> As some ARCH(eg, x86, riscv) doesn't define ARCH_DMA_MINALIG, so i think
->> it 's better remain the code unchanged,
->>
->> I will send v5 patch soon.
-> I think you could just use "L1_CACHE_BYTES" as the alignment in this case.
-> This will make the structure slightly larger for architectures that do not have
-> alignment constraints on DMA buffers, but using a smaller alignment is
-> clearly wrong. Another option would be to use ARCH_KMALLOC_MINALIGN.
-yes, I unstand you, the align size must  L1_CACHE_BYTES at least.
->
-> Note that there is a patch to add ARCH_DMA_MINALIGN to riscv already,
-yes, I summited this patch, it is discussing, seems they don't want to 
-apply it.
-> as some implementations do not have coherent DMA. I had failed to
-> realized though that on x86 you do not get an ARCH_DMA_MINALIGN
-> definition.
-I didn't find the definition in arch/x86/include/asm/cache.h and other 
-place, x86 is dma coherent, it may doesn't need it.
->
->         Arnd
+This patch series make hvc framework pass DMA capable memory to
+put_chars() of hvc backend(eg, virtio-console), and revert commit
+c4baad5029 ("virtio-console: avoid DMA from stack”)
+
+V1
+virtio-console: avoid DMA from vmalloc area
+https://lkml.org/lkml/2021/7/27/494
+
+For v1 patch, Arnd Bergmann suggests to fix the issue in the first
+place:
+Make hvc pass DMA capable memory to put_chars()
+The fix suggestion is included in v2.
+
+V2
+[PATCH 1/2] tty: hvc: pass DMA capable memory to put_chars()
+https://lkml.org/lkml/2021/8/1/8
+[PATCH 2/2] virtio-console: remove unnecessary kmemdup()
+https://lkml.org/lkml/2021/8/1/9
+
+For v2 patch, Arnd Bergmann suggests to make new buf part of the
+hvc_struct structure, and fix the compile issue.
+The fix suggestion is included in v3.
+
+V3
+[PATCH v3 1/2] tty: hvc: pass DMA capable memory to put_chars()
+https://lkml.org/lkml/2021/8/3/1347
+[PATCH v3 2/2] virtio-console: remove unnecessary kmemdup()
+https://lkml.org/lkml/2021/8/3/1348
+
+For v3 patch, Jiri Slaby suggests to make 'char c[N_OUTBUF]' part of
+hvc_struct, and make 'hp->outbuf' aligned and use struct_size() to
+calculate the size of hvc_struct. The fix suggestion is included in
+v4.
+
+V4
+[PATCH v4 0/2] make hvc pass dma capable memory to its backend
+https://lkml.org/lkml/2021/8/5/1350
+[PATCH v4 1/2] tty: hvc: pass DMA capable memory to put_chars()
+https://lkml.org/lkml/2021/8/5/1351
+[PATCH v4 2/2] virtio-console: remove unnecessary kmemdup()
+https://lkml.org/lkml/2021/8/5/1352
+
+For v4 patch, Arnd Bergmann suggests to introduce another
+array(cons_outbuf[]) for the buffer pointers next to the cons_ops[]
+and vtermnos[] arrays. This fix included in this v5 patch.
+
+V5
+Arnd Bergmann suggests to use "L1_CACHE_BYTES" as dma alignment,
+use 'sizeof(long)' as dma alignment is wrong. fix it in v6.
+
+
+drivers/char/virtio_console.c | 12 ++----------
+drivers/tty/hvc/hvc_console.c | 40 +++++++++++++++++++++--------------
+drivers/tty/hvc/hvc_console.h | 16 ++++++++++++--
+3 file changed
