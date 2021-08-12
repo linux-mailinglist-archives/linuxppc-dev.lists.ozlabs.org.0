@@ -1,106 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2CEF3E9D09
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 05:37:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B17BB3E9D86
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 06:34:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GlXSG525nz3bmm
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 13:37:18 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jwu+Qrbh;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GlYkg4y13z3bbF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 14:34:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=jwu+Qrbh; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.45;
+ helo=out30-45.freemail.mail.aliyun.com;
+ envelope-from=houwenlong93@linux.alibaba.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 311 seconds by postgrey-1.36 at boromir;
+ Thu, 12 Aug 2021 14:07:59 AEST
+Received: from out30-45.freemail.mail.aliyun.com
+ (out30-45.freemail.mail.aliyun.com [115.124.30.45])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GlXRS2gRmz2yNG
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 13:36:35 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 17C3Y1YY033107; Wed, 11 Aug 2021 23:36:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=L4a3VFcAeDArUKfuwq22defiazqkGdMWb3L5rXVLASo=;
- b=jwu+QrbhoAKQ6BK95m0PLllrxKIeqZEarw+ncre88XAFlojrQHRnWcwmnexGFjbzKT8J
- sOUgJ/uATEguIKWL94afTiWbUrpYOBGt9KZa+FZXoF8ztkkjb1jXiZdokU5dORXsEX6r
- LZ0EgRli5IGNz8PsjIGE9f1sfKGUYTIOAjDetmUz6pfeDUMKOI2CWGvSd6A4pzSS3v9Y
- 5sFQNKFCUZwggnu5Se8DlEFEahis1h68LQy6Zx1UccHxnD+yLL/zZ774L/b9HMfVKmpD
- oV5IJA53JsefXNWPDaxLLWwpZC//2Hhdn8L8uJr71CK0ZF5Gza5ze0nvAlnn8ngTFNbR 4w== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3acm6e1ae9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 11 Aug 2021 23:36:26 -0400
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 17C3YLSM036975;
- Wed, 11 Aug 2021 23:36:26 -0400
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3acm6e1adv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 11 Aug 2021 23:36:26 -0400
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 17C3Qr6V020096;
- Thu, 12 Aug 2021 03:36:24 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma06fra.de.ibm.com with ESMTP id 3abaq4bt4d-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 12 Aug 2021 03:36:24 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 17C3aMlY30146994
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 12 Aug 2021 03:36:22 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E04AC4C04E;
- Thu, 12 Aug 2021 03:36:21 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6D4494C05E;
- Thu, 12 Aug 2021 03:36:20 +0000 (GMT)
-Received: from [9.199.50.186] (unknown [9.199.50.186])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 12 Aug 2021 03:36:20 +0000 (GMT)
-Subject: Re: [PATCH v7 5/6] powerpc/pseries: Add support for FORM2
- associativity
-To: David Gibson <david@gibson.dropbear.id.au>
-References: <20210809052434.53978-1-aneesh.kumar@linux.ibm.com>
- <20210809052434.53978-6-aneesh.kumar@linux.ibm.com> <YRHsXDPaEZyLGLl+@yekko>
- <87a6loaagz.fsf@linux.ibm.com> <YRR8Z0EhlXgEKtY8@yekko>
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Message-ID: <a5f351e5-41a0-f50f-078a-dddae3d3be09@linux.ibm.com>
-Date: Thu, 12 Aug 2021 09:06:19 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GlY7g17yFz2yNK
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 14:07:58 +1000 (AEST)
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R101e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e01424;
+ MF=houwenlong93@linux.alibaba.com; NM=1; PH=DS; RN=38; SR=0;
+ TI=SMTPD_---0UikIOfn_1628740941; 
+Received: from localhost(mailfrom:houwenlong93@linux.alibaba.com
+ fp:SMTPD_---0UikIOfn_1628740941) by smtp.aliyun-inc.com(127.0.0.1);
+ Thu, 12 Aug 2021 12:02:21 +0800
+From: Hou Wenlong <houwenlong93@linux.alibaba.com>
+To: kvm@vger.kernel.org
+Subject: [PATCH v2 1/2] KVM: Refactor kvm_arch_vcpu_fault() to return a struct
+ page pointer
+Date: Thu, 12 Aug 2021 12:02:19 +0800
+Message-Id: <1c510b24fc1d7cbae8aa4b69c0799ebd32e65b82.1628739116.git.houwenlong93@linux.alibaba.com>
+X-Mailer: git-send-email 2.31.1
+In-Reply-To: <YRQcZqCWwVH8bCGc@google.com>
+References: <YRQcZqCWwVH8bCGc@google.com>
 MIME-Version: 1.0
-In-Reply-To: <YRR8Z0EhlXgEKtY8@yekko>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: TbxEjSyzYu_svvFKS_2nvGP7e7oMSvgJ
-X-Proofpoint-GUID: MMZ9omtY5LTjwTHQ2Gwafk9lhiELwOk1
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-08-12_01:2021-08-11,
- 2021-08-12 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 suspectscore=0
- priorityscore=1501 spamscore=0 phishscore=0 clxscore=1015 bulkscore=0
- mlxlogscore=928 malwarescore=0 impostorscore=0 mlxscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2107140000 definitions=main-2108120021
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Thu, 12 Aug 2021 14:34:30 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,74 +52,171 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: x86@kernel.org, Wanpeng Li <wanpengli@tencent.com>,
+ David Hildenbrand <david@redhat.com>, linux-mips@vger.kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Will Deacon <will@kernel.org>, kvmarm@lists.cs.columbia.edu,
+ linux-s390@vger.kernel.org, Janosch Frank <frankja@linux.ibm.com>,
+ Marc Zyngier <maz@kernel.org>, Joerg Roedel <joro@8bytes.org>,
+ Huacai Chen <chenhuacai@kernel.org>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>,
+ Ingo Molnar <mingo@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, kvm-ppc@vger.kernel.org,
+ Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ linux-arm-kernel@lists.infradead.org, Jim Mattson <jmattson@google.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Sean Christopherson <seanjc@google.com>, Cornelia Huck <cohuck@redhat.com>,
+ linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 8/12/21 7:11 AM, David Gibson wrote:
-> On Wed, Aug 11, 2021 at 09:39:32AM +0530, Aneesh Kumar K.V wrote:
->> David Gibson <david@gibson.dropbear.id.au> writes:
->>
->>> On Mon, Aug 09, 2021 at 10:54:33AM +0530, Aneesh Kumar K.V wrote:
->>>> PAPR interface currently supports two different ways of communicating resource
->>>> grouping details to the OS. These are referred to as Form 0 and Form 1
->>>> associativity grouping. Form 0 is the older format and is now considered
->>>> deprecated. This patch adds another resource grouping named FORM2.
->>>>
->>>> Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
->>>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->>>
->>> LGTM, with the exception of some minor nits noted below.
->> ...
->>
->>> +
->>>> +	for (i = 0; i < max_numa_index; i++)
->>>> +		/* +1 skip the max_numa_index in the property */
->>>> +		numa_id_index_table[i] = of_read_number(&numa_lookup_index[i + 1], 1);
->>>> +
->>>> +
->>>> +	if (numa_dist_table_length != max_numa_index * max_numa_index) {
->>>> +
->>>
->>> Stray extra whitespace line here.
->>>
->>>> +		WARN(1, "Wrong NUMA distance information\n");
->>>> +		/* consider everybody else just remote. */
->>>> +		for (i = 0;  i < max_numa_index; i++) {
->>>> +			for (j = 0; j < max_numa_index; j++) {
->>>> +				int nodeA = numa_id_index_table[i];
->>>> +				int nodeB = numa_id_index_table[j];
->>>> +
->>>> +				if (nodeA == nodeB)
->>>> +					numa_distance_table[nodeA][nodeB] = LOCAL_DISTANCE;
->>>> +				else
->>>> +					numa_distance_table[nodeA][nodeB] = REMOTE_DISTANCE;
->>>> +			}
->>>> +		}
->>>
->>> I don't think it's necessarily a problem, but something to consider is
->>> that this fallback will initialize distance for *all* node IDs,
->>> whereas the normal path will only initialize it for nodes that are in
->>> the index table.  Since some later error checks key off whether
->>> certain fields in the distance table are initialized, is that the
->>> outcome you want?
->>>
->>
->> With the device tree details not correct, one of the possible way to
->> make progress is to consider everybody remote. With new node hotplug
->> support we used to check whether the distance table entry is
->> initialized. With the updated spec, we expect all possible numa node
->> distance to be available during boot.
-> 
-> Sure.  But my main point here is that the fallback behaviour in this
-> clause is different from the fallback behaviour if the table is there
-> and parseable, but incomplete - which is also not expected.
-> 
+From: Sean Christopherson <seanjc@google.com>
 
-With FORM2 fallback with bad device tree details is to consider 
-everybody REMOTE. With Form1, we leave the distance table not populated 
-as it was with the current kernel versions.
+Refactor kvm_arch_vcpu_fault() to return 'struct page *' instead of
+'vm_fault_t' to simplify architecture specific implementations that do
+more than return SIGBUS.  Currently this only applies to s390, but a
+future patch will move x86's pio_data handling into x86 where it belongs.
 
--aneesh
+No functional changed intended.
+
+Cc: Hou Wenlong <houwenlong93@linux.alibaba.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Hou Wenlong <houwenlong93@linux.alibaba.com>
+---
+ arch/arm64/kvm/arm.c       |  4 ++--
+ arch/mips/kvm/mips.c       |  4 ++--
+ arch/powerpc/kvm/powerpc.c |  4 ++--
+ arch/s390/kvm/kvm-s390.c   | 12 ++++--------
+ arch/x86/kvm/x86.c         |  4 ++--
+ include/linux/kvm_host.h   |  2 +-
+ virt/kvm/kvm_main.c        |  5 ++++-
+ 7 files changed, 17 insertions(+), 18 deletions(-)
+
+diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+index e9a2b8f27792..83f4ffe3e4f2 100644
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -161,9 +161,9 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+ 	return ret;
+ }
+ 
+-vm_fault_t kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf)
++struct page *kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf)
+ {
+-	return VM_FAULT_SIGBUS;
++	return NULL;
+ }
+ 
+ 
+diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
+index af9dd029a4e1..ae79874e6fd2 100644
+--- a/arch/mips/kvm/mips.c
++++ b/arch/mips/kvm/mips.c
+@@ -1053,9 +1053,9 @@ int kvm_arch_vcpu_ioctl_set_fpu(struct kvm_vcpu *vcpu, struct kvm_fpu *fpu)
+ 	return -ENOIOCTLCMD;
+ }
+ 
+-vm_fault_t kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf)
++struct page *kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf)
+ {
+-	return VM_FAULT_SIGBUS;
++	return NULL;
+ }
+ 
+ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+index be33b5321a76..b9c21f9ab784 100644
+--- a/arch/powerpc/kvm/powerpc.c
++++ b/arch/powerpc/kvm/powerpc.c
+@@ -2090,9 +2090,9 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+ 	return r;
+ }
+ 
+-vm_fault_t kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf)
++struct page *kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf)
+ {
+-	return VM_FAULT_SIGBUS;
++	return NULL;
+ }
+ 
+ static int kvm_vm_ioctl_get_pvinfo(struct kvm_ppc_pvinfo *pvinfo)
+diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+index 02574d7b3612..e1b69833e228 100644
+--- a/arch/s390/kvm/kvm-s390.c
++++ b/arch/s390/kvm/kvm-s390.c
+@@ -4979,17 +4979,13 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+ 	return r;
+ }
+ 
+-vm_fault_t kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf)
++struct page *kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf)
+ {
+ #ifdef CONFIG_KVM_S390_UCONTROL
+-	if ((vmf->pgoff == KVM_S390_SIE_PAGE_OFFSET)
+-		 && (kvm_is_ucontrol(vcpu->kvm))) {
+-		vmf->page = virt_to_page(vcpu->arch.sie_block);
+-		get_page(vmf->page);
+-		return 0;
+-	}
++	if (vmf->pgoff == KVM_S390_SIE_PAGE_OFFSET && kvm_is_ucontrol(vcpu->kvm))
++		return virt_to_page(vcpu->arch.sie_block);
+ #endif
+-	return VM_FAULT_SIGBUS;
++	return NULL;
+ }
+ 
+ /* Section: memory related */
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 3cedc7cc132a..1e3bbe5cd33a 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -5347,9 +5347,9 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+ 	return r;
+ }
+ 
+-vm_fault_t kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf)
++struct page *kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf)
+ {
+-	return VM_FAULT_SIGBUS;
++	return NULL;
+ }
+ 
+ static int kvm_vm_ioctl_set_tss_addr(struct kvm *kvm, unsigned long addr)
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 492d183dd7d0..a949de534722 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -995,7 +995,7 @@ long kvm_arch_dev_ioctl(struct file *filp,
+ 			unsigned int ioctl, unsigned long arg);
+ long kvm_arch_vcpu_ioctl(struct file *filp,
+ 			 unsigned int ioctl, unsigned long arg);
+-vm_fault_t kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf);
++struct page *kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf);
+ 
+ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext);
+ 
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 30d322519253..f7d21418971b 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -3448,7 +3448,10 @@ static vm_fault_t kvm_vcpu_fault(struct vm_fault *vmf)
+ 		    &vcpu->dirty_ring,
+ 		    vmf->pgoff - KVM_DIRTY_LOG_PAGE_OFFSET);
+ 	else
+-		return kvm_arch_vcpu_fault(vcpu, vmf);
++		page = kvm_arch_vcpu_fault(vcpu, vmf);
++	if (!page)
++		return VM_FAULT_SIGBUS;
++
+ 	get_page(page);
+ 	vmf->page = page;
+ 	return 0;
+-- 
+2.31.1
+
