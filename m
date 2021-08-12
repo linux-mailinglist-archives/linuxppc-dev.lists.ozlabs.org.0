@@ -1,68 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73AD73EAC23
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 22:54:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41D383EAD60
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Aug 2021 00:48:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GlzSx2hjGz3cMX
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Aug 2021 06:54:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gm2140TTYz3bnQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Aug 2021 08:48:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20161025 header.b=na6Fi0rS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VwLU2IBE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::136;
- helo=mail-lf1-x136.google.com; envelope-from=ndesaulniers@google.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=vgupta@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=na6Fi0rS; dkim-atps=neutral
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com
- [IPv6:2a00:1450:4864:20::136])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=VwLU2IBE; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GlzSG4hRDz2xKP
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Aug 2021 06:53:49 +1000 (AEST)
-Received: by mail-lf1-x136.google.com with SMTP id p38so16008691lfa.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 13:53:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=9RfJTrGHwJUwvzLhHrIbGQA08huI6dzioQ3vdmozHz8=;
- b=na6Fi0rSI2rLLK64yvV6CbdZqt7hkfyYZAYj0AwXG3vJy5/HfjDhtg9nXxK8j95c7T
- dWfG6/cghm+y3wG5foWV0MC8XuwoBlAsTmNK4ysMaiCFDZnoNaX9edYR/Omz9goAIBaQ
- LudzJ3LBHt659vx78zb3ru+03UAYUjVXr+fTY+xlrYlKDuKZrFGqQmNM5Yy7kMIVcHxK
- 1AyQivcokhPLzvOuqg+CwM1+S5AtOtHkuoMajCB/xbrsC+XyRn2XxlFFNFgX7IfKjCJU
- s4333A5bIHbLDYq+5H8X7Ifs0grku54xMo96dRdUWBA4DU6t9kTOXZMUAhhcxXf6C9x9
- PDhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=9RfJTrGHwJUwvzLhHrIbGQA08huI6dzioQ3vdmozHz8=;
- b=k18QjnujAMXsqbpDVXZzUIUG+3N/fnKQyYLBfsPh+uCOiY1toCwHQr+uJY784aAOIO
- w8XWC8P0vPrSIi7frMxs1II4sbIO/w1A1Wv4ysR5+UBrFL+Tqn03AbFmJHDsPrskzI8d
- AiKnAqfj4ngMmTdCtt6D4nbbL9Zs2JmYbx/eI3ZDxlc3UVTd5l8bqXIkv0HDCQfyVPXl
- SQUAL4xWTMJokskOtIMvavKmdRkzkCBJ5iwYb5e98II2wc3IJCIyYY2nxGtjvylYS3Kw
- p6zLmjU5BKQ4X6RBypIaGD3dm761DMlpgT5lvGDv6UleqSMjMCCva7pkR8U04c1z7Wjf
- bT+g==
-X-Gm-Message-State: AOAM5328VE4c/6HYZCLYldn6htvcqnQieHEaFIjxv/GitWsPY2J4HnoX
- b1ciy8wfBBHf0FNqvBdMO4z2B0JoOscTC45XD8mrqw==
-X-Google-Smtp-Source: ABdhPJzSfb2zL6p4h6mr9zvtdf09aJL2UzLWyGpzFgoKtJP4f7uX8Ov4OP5v83ZcsQUbgZX+2v47ZLMJi3WTEJ2itIw=
-X-Received: by 2002:a05:6512:3989:: with SMTP id
- j9mr3957811lfu.73.1628801624318; 
- Thu, 12 Aug 2021 13:53:44 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GlwtV6BLcz30Gt
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Aug 2021 04:57:54 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 362056103A;
+ Thu, 12 Aug 2021 18:57:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1628794671;
+ bh=9lyFwGGuyLf5GdDUz/aKvERlOFF1uWuGiPBbUIAEKfE=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=VwLU2IBE7pm2CpqhWrWcs09zHfDgGQQ+XwYJ0x4NJ+OYptETg8cUHpeJuXviSEb8m
+ hZwv3aN1LfVIwHZVS+UQ7mB1srMgVxwRZcSfRTFv67A2WL07AvZbrPj/Jz8MICDjiz
+ tSsLyZBkRPIi4PEfw72QWFlCzfTyNhyHc6hoJdLtBX/ALr48Ij7oskYZxfFb8gVUAz
+ MdoO56PMOMA1qSMNTQQWl/YJOfRCSFiinLi5nd/tFripDrfTPOSzz5IN+8rkyBTJL5
+ ClZ1UH9RZQQUjhvz/MyHpPFG2IOOryYDriDcsJsaN4YgRfyjgsTyLvyz3NzaOYphUa
+ cYgcKsD4gQWUw==
+Subject: Re: [PATCH -next] trap: Cleanup trap_init()
+To: Kefeng Wang <wangkefeng.wang@huawei.com>,
+ linux-snps-arc@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, uclinux-h8-devel@lists.sourceforge.jp,
+ linux-hexagon@vger.kernel.org, openrisc@lists.librecores.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-um@lists.infradead.org,
+ linux-mm@kvack.org
+References: <20210812123602.76356-1-wangkefeng.wang@huawei.com>
+From: Vineet Gupta <vgupta@kernel.org>
+Message-ID: <b49eed44-0837-906c-8779-4fffb5609653@kernel.org>
+Date: Thu, 12 Aug 2021 11:57:49 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-References: <20210812204951.1551782-1-morbo@google.com>
-In-Reply-To: <20210812204951.1551782-1-morbo@google.com>
-From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Thu, 12 Aug 2021 13:53:32 -0700
-Message-ID: <CAKwvOdm8R1zh-NPCRZX=_BZhUEey5v=0jjz=ca82tzMn2kFqYg@mail.gmail.com>
-Subject: Re: [PATCH] ppc: add "-z notext" flag to disable diagnostic
-To: Bill Wendling <morbo@google.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20210812123602.76356-1-wangkefeng.wang@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-Mailman-Approved-At: Fri, 13 Aug 2021 08:48:22 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,72 +67,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: itaru.kitayama@riken.jp, linux-kernel@vger.kernel.org,
- Nathan Chancellor <nathan@kernel.org>, clang-built-linux@googlegroups.com,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Jonas Bonn <jonas@southpole.se>, Andrew Morton <akpm@linux-foundation.org>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>,
+ Paul Walmsley <palmerdabbelt@google.com>, Russell King <linux@armlinux.org.uk>,
+ Ley Foon Tan <ley.foon.tan@intel.com>,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Richard Weinberger <richard@nod.at>, Paul Mackerras <paulus@samba.org>,
+ Vineet Gupta <vgupta@kernel.org>, Stafford Horne <shorne@gmail.com>,
+ Jeff Dike <jdike@addtoit.com>, Anton Ivanov <anton.ivanov@cambridgegreys.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 12, 2021 at 1:49 PM Bill Wendling <morbo@google.com> wrote:
+On 8/12/21 5:36 AM, Kefeng Wang wrote:
+> There are some empty trap_init() in different ARCHs, introduce
+> a new weak trap_init() function to cleanup them.
 >
-> The "-z notext" flag disables reporting an error if DT_TEXTREL is set on
-> PPC with CONFIG=kdump:
->
->   ld.lld: error: can't create dynamic relocation R_PPC64_ADDR64 against
->     local symbol in readonly segment; recompile object files with -fPIC
->     or pass '-Wl,-z,notext' to allow text relocations in the output
->   >>> defined in built-in.a(arch/powerpc/kernel/misc.o)
->   >>> referenced by arch/powerpc/kernel/misc.o:(.text+0x20) in archive
->       built-in.a
->
-> The BFD linker disables this by default (though it's configurable in
-> current versions). LLD enables this by default. So we add the flag to
-> keep LLD from emitting the error.
->
-> Signed-off-by: Bill Wendling <morbo@google.com>
-
-Link: https://github.com/ClangBuiltLinux/linux/issues/811
-Reported-by: Itaru Kitayama <itaru.kitayama@riken.jp>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-
->
+> Cc: Vineet Gupta<vgupta@kernel.org>
+> Cc: Russell King<linux@armlinux.org.uk>
+> Cc: Yoshinori Sato<ysato@users.sourceforge.jp>
+> Cc: Ley Foon Tan<ley.foon.tan@intel.com>
+> Cc: Jonas Bonn<jonas@southpole.se>
+> Cc: Stefan Kristiansson<stefan.kristiansson@saunalahti.fi>
+> Cc: Stafford Horne<shorne@gmail.com>
+> Cc: James E.J. Bottomley<James.Bottomley@HansenPartnership.com>
+> Cc: Helge Deller<deller@gmx.de>
+> Cc: Michael Ellerman<mpe@ellerman.id.au>
+> Cc: Benjamin Herrenschmidt<benh@kernel.crashing.org>
+> Cc: Paul Mackerras<paulus@samba.org>
+> Cc: Paul Walmsley<palmerdabbelt@google.com>
+> Cc: Jeff Dike<jdike@addtoit.com>
+> Cc: Richard Weinberger<richard@nod.at>
+> Cc: Anton Ivanov<anton.ivanov@cambridgegreys.com>
+> Cc: Andrew Morton<akpm@linux-foundation.org>
+> Signed-off-by: Kefeng Wang<wangkefeng.wang@huawei.com>
 > ---
-> The output of the "get_maintainer.pl" run just in case no one believes me. :-)
+>   arch/arc/kernel/traps.c      | 5 -----
 
-LOL!
-
->
-> $ ./scripts/get_maintainer.pl arch/powerpc/Makefile
-> Michael Ellerman <mpe@ellerman.id.au> (supporter:LINUX FOR POWERPC (32-BIT AND 64-BIT))
-> Benjamin Herrenschmidt <benh@kernel.crashing.org> (reviewer:LINUX FOR POWERPC (32-BIT AND 64-BIT))
-> Paul Mackerras <paulus@samba.org> (reviewer:LINUX FOR POWERPC (32-BIT AND 64-BIT))
-> Nathan Chancellor <nathan@kernel.org> (supporter:CLANG/LLVM BUILD SUPPORT)
-> Nick Desaulniers <ndesaulniers@google.com> (supporter:CLANG/LLVM BUILD SUPPORT)
-> linuxppc-dev@lists.ozlabs.org (open list:LINUX FOR POWERPC (32-BIT AND 64-BIT))
-> linux-kernel@vger.kernel.org (open list)
-> clang-built-linux@googlegroups.com (open list:CLANG/LLVM BUILD SUPPORT)
-> ---
->  arch/powerpc/Makefile | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-> index 6505d66f1193..17a9fbf9b789 100644
-> --- a/arch/powerpc/Makefile
-> +++ b/arch/powerpc/Makefile
-> @@ -122,6 +122,7 @@ endif
->
->  LDFLAGS_vmlinux-y := -Bstatic
->  LDFLAGS_vmlinux-$(CONFIG_RELOCATABLE) := -pie
-> +LDFLAGS_vmlinux-$(CONFIG_RELOCATABLE) += -z notext
->  LDFLAGS_vmlinux        := $(LDFLAGS_vmlinux-y)
->
->  ifdef CONFIG_PPC64
-> --
-> 2.33.0.rc1.237.g0d66db33f3-goog
->
-
-
--- 
-Thanks,
-~Nick Desaulniers
+Acked-by: Vineet Gupta <vgupt@kernel.org>  #arch/arc
