@@ -2,55 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3FE93EA06A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 10:16:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7974F3EA109
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 10:52:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Glffs6BXpz30BX
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 18:16:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GlgRs38Zbz3bYg
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 18:52:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33;
- helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de;
- receiver=<UNKNOWN>)
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
- [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+ smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.57;
+ helo=out30-57.freemail.mail.aliyun.com;
+ envelope-from=xianting.tian@linux.alibaba.com; receiver=<UNKNOWN>)
+Received: from out30-57.freemail.mail.aliyun.com
+ (out30-57.freemail.mail.aliyun.com [115.124.30.57])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GlffN2Flrz2yhl
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 18:16:26 +1000 (AEST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1mE5rm-0002LU-Am; Thu, 12 Aug 2021 10:15:06 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
- by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1mE5rb-0002s2-AN; Thu, 12 Aug 2021 10:14:55 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1mE5rb-0006R3-8Y; Thu, 12 Aug 2021 10:14:55 +0200
-Date: Thu, 12 Aug 2021 10:14:25 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Christoph Hellwig <hch@infradead.org>
-Subject: Re: [PATCH v3 4/8] PCI: replace pci_dev::driver usage that gets the
- driver name
-Message-ID: <20210812081425.7pjy4a25e2ehkr3x@pengutronix.de>
-References: <20210811080637.2596434-1-u.kleine-koenig@pengutronix.de>
- <20210811080637.2596434-5-u.kleine-koenig@pengutronix.de>
- <YRTIqGm5Dr8du7a7@infradead.org>
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GlgQt1f7Kz3079
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 18:51:32 +1000 (AEST)
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R201e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=alimailimapcm10staff010182156082;
+ MF=xianting.tian@linux.alibaba.com; NM=1; PH=DS; RN=10; SR=0;
+ TI=SMTPD_---0UilvLcw_1628758274; 
+Received: from localhost(mailfrom:xianting.tian@linux.alibaba.com
+ fp:SMTPD_---0UilvLcw_1628758274) by smtp.aliyun-inc.com(127.0.0.1);
+ Thu, 12 Aug 2021 16:51:15 +0800
+From: Xianting Tian <xianting.tian@linux.alibaba.com>
+To: gregkh@linuxfoundation.org, jirislaby@kernel.org, amit@kernel.org,
+ arnd@arndb.de, osandov@fb.com
+Subject: [PATCH v5 0/2] make hvc pass dma capable memory to its backend
+Date: Thu, 12 Aug 2021 16:51:10 +0800
+Message-Id: <20210812085112.145265-1-xianting.tian@linux.alibaba.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="n62mnckfisrc5gc5"
-Content-Disposition: inline
-In-Reply-To: <YRTIqGm5Dr8du7a7@infradead.org>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
- SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,134 +48,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexander Duyck <alexanderduyck@fb.com>, oss-drivers@corigine.com,
- Paul Mackerras <paulus@samba.org>, Herbert Xu <herbert@gondor.apana.org.au>,
- Ido Schimmel <idosch@nvidia.com>, Rafa?? Mi??ecki <zajec5@gmail.com>,
- Jesse Brandeburg <jesse.brandeburg@intel.com>,
- Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org,
- Jakub Kicinski <kuba@kernel.org>, Yisen Zhuang <yisen.zhuang@huawei.com>,
- Vadym Kochan <vkochan@marvell.com>, Michael Buesch <m@bues.ch>,
- Jiri Pirko <jiri@nvidia.com>, Salil Mehta <salil.mehta@huawei.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- Taras Chornyi <tchornyi@marvell.com>, Zhou Wang <wangzhou1@hisilicon.com>,
- linux-crypto@vger.kernel.org, kernel@pengutronix.de, netdev@vger.kernel.org,
- Simon Horman <simon.horman@corigine.com>, Oliver O'Halloran <oohall@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: Xianting Tian <xianting.tian@linux.alibaba.com>, guoren@kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ virtualization@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Dear all,
 
---n62mnckfisrc5gc5
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This patch series make hvc framework pass DMA capable memory to
+put_chars() of hvc backend(eg, virtio-console), and revert commit
+c4baad5029 ("virtio-console: avoid DMA from stack”)
 
-On Thu, Aug 12, 2021 at 08:07:20AM +0100, Christoph Hellwig wrote:
-> On Wed, Aug 11, 2021 at 10:06:33AM +0200, Uwe Kleine-K??nig wrote:
-> >  static inline const char *eeh_driver_name(struct pci_dev *pdev)
-> >  {
-> > -	return (pdev && pdev->driver) ? pdev->driver->name : "<null>";
-> > +	const char *drvstr =3D pdev ? dev_driver_string(&pdev->dev) : "";
-> > +
-> > +	if (*drvstr =3D=3D '\0')
-> > +		return "<null>";
-> > +
-> > +	return drvstr;
->=20
-> This looks rather obsfucated due to the fact that dev_driver_string
-> never returns '\0', and due to the strange mix of a tenary operation
-> and the if on a related condition.
+V1
+virtio-console: avoid DMA from vmalloc area
+https://lkml.org/lkml/2021/7/27/494
 
-dev_driver_string() might return "" (via dev_bus_name()). If that happens
-*drvstr =3D=3D '\0' becomes true.
+For v1 patch, Arnd Bergmann suggests to fix the issue in the first
+place:
+Make hvc pass DMA capable memory to put_chars()
+The fix suggestion is included in v2.
 
-Would the following be better?:
+V2
+[PATCH 1/2] tty: hvc: pass DMA capable memory to put_chars()
+https://lkml.org/lkml/2021/8/1/8
+[PATCH 2/2] virtio-console: remove unnecessary kmemdup()
+https://lkml.org/lkml/2021/8/1/9
 
-	const char *drvstr;
+For v2 patch, Arnd Bergmann suggests to make new buf part of the
+hvc_struct structure, and fix the compile issue.
+The fix suggestion is included in v3.
 
-	if (pdev)
-		return "<null>";
+V3
+[PATCH v3 1/2] tty: hvc: pass DMA capable memory to put_chars()
+https://lkml.org/lkml/2021/8/3/1347
+[PATCH v3 2/2] virtio-console: remove unnecessary kmemdup()
+https://lkml.org/lkml/2021/8/3/1348
 
-	drvstr =3D dev_driver_string(&pdev->dev);
+For v3 patch, Jiri Slaby suggests to make 'char c[N_OUTBUF]' part of
+hvc_struct, and make 'hp->outbuf' aligned and use struct_size() to
+calculate the size of hvc_struct. The fix suggestion is included in
+v4.
 
-	if (!strcmp(drvstr, ""))
-		return "<null>";
+V4
+[PATCH v4 0/2] make hvc pass dma capable memory to its backend
+https://lkml.org/lkml/2021/8/5/1350
+[PATCH v4 1/2] tty: hvc: pass DMA capable memory to put_chars()
+https://lkml.org/lkml/2021/8/5/1351
+[PATCH v4 2/2] virtio-console: remove unnecessary kmemdup()
+https://lkml.org/lkml/2021/8/5/1352
 
-	return drvstr;
+For v4 patch, Arnd Bergmann suggests to introduce another
+array(cons_outbuf[]) for the buffer pointers next to the cons_ops[]
+and vtermnos[] arrays. This fix included in this v5 patch.
 
-When I thought about this hunk I considered it ugly to have "<null>" in
-it twice.
-
-> >  }
-> > =20
-> >  #endif /* CONFIG_EEH */
-> > diff --git a/drivers/bcma/host_pci.c b/drivers/bcma/host_pci.c
-> > index 69c10a7b7c61..dc2ffa686964 100644
-> > --- a/drivers/bcma/host_pci.c
-> > +++ b/drivers/bcma/host_pci.c
-> > @@ -175,9 +175,10 @@ static int bcma_host_pci_probe(struct pci_dev *dev,
-> >  	if (err)
-> >  		goto err_kfree_bus;
-> > =20
-> > -	name =3D dev_name(&dev->dev);
-> > -	if (dev->driver && dev->driver->name)
-> > -		name =3D dev->driver->name;
-> > +	name =3D dev_driver_string(&dev->dev);
-> > +	if (*name =3D=3D '\0')
-> > +		name =3D dev_name(&dev->dev);
->=20
-> Where does this '\0' check come from?
-
-The original code is equivalent to
-
-	if (dev->driver && dev->driver->name)
-		name =3D dev->driver->name;
-	else:
-		name =3D dev_name(...);
-
-As dev_driver_string() implements something like:
-
-	if (dev->driver && dev->driver->name)
-		return dev->driver->name;
-	else
-		return "";
-
-the change looks fine to me. (One could wonder if it's sensible to fall
-back to the device name if the driver has no nice name, but this isn't
-new with my change.)
-
-> > +	name =3D dev_driver_string(&dev->dev);
-> > +	if (*name =3D=3D '\0')
-> > +		name =3D dev_name(&dev->dev);
-> > +
->=20
-> More of this weirdness.
-
-I admit it's not pretty. Would it help to use !strcmp(name, "")
-instead of *name =3D=3D '\0'? Any other constructive suggestion?
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---n62mnckfisrc5gc5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmEU2FkACgkQwfwUeK3K
-7An+dgf/QrRVML0a6qk3HkGyLdsB8Vz7TG3WIJF9aLj4O2kfcEPwkNYsSxN/21iu
-rEFabdOH9lU5Zd2HWHmas7GEMR232ZquxQiELI+9rh01/2S6Y/u/6AVGLvdzqFVZ
-rXTrEHH02r9SqMl/V0Z/M7VIltjkbZwF4eSLW4+5+hHb65DACabRPBWTAjvotPU4
-0WlKPyYnJf0uVw9UF7NqDkXjgdyYzRf0lM6Ie9SLp3JctB9pqnVCu4JQSqBln0Ri
-AoFiE71+XFMORrsnY4gr2qdjhzoIRRGvDVVZ1BqXx0WZ7ZTzxcWXBg4xzrjF5kw0
-FlVhUnMK0NFPQnBoNJXA7B6UG7ZkvA==
-=3HwH
------END PGP SIGNATURE-----
-
---n62mnckfisrc5gc5--
+drivers/char/virtio_console.c | 12 ++----------
+drivers/tty/hvc/hvc_console.c | 40 +++++++++++++++++++++--------------
+drivers/tty/hvc/hvc_console.h | 16 ++++++++++++--
+3 file changed
