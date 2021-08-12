@@ -1,101 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 580A63EA061
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 10:14:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3FE93EA06A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 10:16:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GlfcP1ZmMz30M6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 18:14:45 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KMHoV3mq;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Glffs6BXpz30BX
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Aug 2021 18:16:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33;
+ helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=KMHoV3mq; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Glfbg0ZYVz2yN4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 18:14:06 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 17C84r6h082759; Thu, 12 Aug 2021 04:13:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=Tz0f+lhwc9CETN7Mri9PBdLHToiK3HWAIajWtkM0Gow=;
- b=KMHoV3mqcouCBnV42bh9yVYAJ3h3LgOulM7fvGECcaGgCMpiliri3tMKD3Yk6kn0ZFsA
- i23oW1y/c9CGkbgLf68xPMQiRBwhobnN9qe+a3oUZ9EydwvVvlkhLO9+WPY4NgxNda2h
- H0hZVeULaNYDhuzpx93Oox3I6181wAdTbgiRnRiMTKNSZ16Zj6nKTlbGnrlslVwTNlxj
- bshwLQfxwLlLfUJ1B3s+DGGknz6ZUpfjMfL4QGr/AcnSId15OndSDbOaSZ2ys4H3HQ2V
- UEEMU7diB2t20I3XMcvkgztFiaOQoV3TqCXhWptWxkwpXEt+PxYRqEkrbL95jI7S/8rO Gg== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3acstnh25b-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 12 Aug 2021 04:13:52 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 17C8DX19006105;
- Thu, 12 Aug 2021 08:13:49 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma03ams.nl.ibm.com with ESMTP id 3a9ht91bst-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 12 Aug 2021 08:13:49 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 17C8Dlcf53477680
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 12 Aug 2021 08:13:47 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6250C4C05E;
- Thu, 12 Aug 2021 08:13:47 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7E0A04C04A;
- Thu, 12 Aug 2021 08:13:46 +0000 (GMT)
-Received: from [9.199.50.186] (unknown [9.199.50.186])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 12 Aug 2021 08:13:46 +0000 (GMT)
-Subject: Re: [PATCH] powerpc/book3s64/radix: make
- tlb_single_page_flush_ceiling a debugfs entry
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- linuxppc-dev@lists.ozlabs.org
-References: <20210810045307.11892-1-aneesh.kumar@linux.ibm.com>
- <22c7c194-d75d-bf90-c8e5-83c995c7130c@csgroup.eu>
- <87o8a3m89i.fsf@mpe.ellerman.id.au>
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Message-ID: <bb3855e1-f15d-1df6-5699-9addc69ce1db@linux.ibm.com>
-Date: Thu, 12 Aug 2021 13:43:45 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
+ [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GlffN2Flrz2yhl
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 18:16:26 +1000 (AEST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <ukl@pengutronix.de>)
+ id 1mE5rm-0002LU-Am; Thu, 12 Aug 2021 10:15:06 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+ by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <ukl@pengutronix.de>)
+ id 1mE5rb-0002s2-AN; Thu, 12 Aug 2021 10:14:55 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+ (envelope-from <ukl@pengutronix.de>)
+ id 1mE5rb-0006R3-8Y; Thu, 12 Aug 2021 10:14:55 +0200
+Date: Thu, 12 Aug 2021 10:14:25 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Christoph Hellwig <hch@infradead.org>
+Subject: Re: [PATCH v3 4/8] PCI: replace pci_dev::driver usage that gets the
+ driver name
+Message-ID: <20210812081425.7pjy4a25e2ehkr3x@pengutronix.de>
+References: <20210811080637.2596434-1-u.kleine-koenig@pengutronix.de>
+ <20210811080637.2596434-5-u.kleine-koenig@pengutronix.de>
+ <YRTIqGm5Dr8du7a7@infradead.org>
 MIME-Version: 1.0
-In-Reply-To: <87o8a3m89i.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Pz83zyyiBNDIX35vDw5Md8QShcc9rnm_
-X-Proofpoint-ORIG-GUID: Pz83zyyiBNDIX35vDw5Md8QShcc9rnm_
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-08-12_02:2021-08-11,
- 2021-08-12 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- malwarescore=0 adultscore=0 clxscore=1011 priorityscore=1501 bulkscore=0
- suspectscore=0 mlxlogscore=999 phishscore=0 impostorscore=0 spamscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2107140000 definitions=main-2108120053
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="n62mnckfisrc5gc5"
+Content-Disposition: inline
+In-Reply-To: <YRTIqGm5Dr8du7a7@infradead.org>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
+ SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,42 +62,134 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Alexander Duyck <alexanderduyck@fb.com>, oss-drivers@corigine.com,
+ Paul Mackerras <paulus@samba.org>, Herbert Xu <herbert@gondor.apana.org.au>,
+ Ido Schimmel <idosch@nvidia.com>, Rafa?? Mi??ecki <zajec5@gmail.com>,
+ Jesse Brandeburg <jesse.brandeburg@intel.com>,
+ Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org,
+ Jakub Kicinski <kuba@kernel.org>, Yisen Zhuang <yisen.zhuang@huawei.com>,
+ Vadym Kochan <vkochan@marvell.com>, Michael Buesch <m@bues.ch>,
+ Jiri Pirko <jiri@nvidia.com>, Salil Mehta <salil.mehta@huawei.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Taras Chornyi <tchornyi@marvell.com>, Zhou Wang <wangzhou1@hisilicon.com>,
+ linux-crypto@vger.kernel.org, kernel@pengutronix.de, netdev@vger.kernel.org,
+ Simon Horman <simon.horman@corigine.com>, Oliver O'Halloran <oohall@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 8/12/21 12:58 PM, Michael Ellerman wrote:
-> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->> Le 10/08/2021 à 06:53, Aneesh Kumar K.V a écrit :
->>> Similar to x86/s390 add a debugfs file to tune tlb_single_page_flush_ceiling.
->>>
->>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->>> ---
->>>    arch/powerpc/mm/book3s64/radix_tlb.c | 48 ++++++++++++++++++++++++++++
->>>    1 file changed, 48 insertions(+)
->>>
->>> diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
->>> index aefc100d79a7..5cca0fe130e7 100644
->>> --- a/arch/powerpc/mm/book3s64/radix_tlb.c
->>> +++ b/arch/powerpc/mm/book3s64/radix_tlb.c
->>> @@ -17,6 +17,7 @@
-> ...
->>> +
->>> +static int __init create_tlb_single_page_flush_ceiling(void)
->>> +{
->>> +	debugfs_create_file("tlb_single_page_flush_ceiling", S_IRUSR | S_IWUSR,
->>> +			    powerpc_debugfs_root, NULL, &fops_tlbflush);
->>
->> Could you just use debugfs_create_u32() instead of re-implementing simple read and write ?
-> 
-> Yeah AFAICS that should work fine.
-> 
-> It could probably even be a u16?
-> 
 
-I was looking at switching all that to u64. Should i fallback to u16, 
-considering a tlb_signle_page_flush_ceiling value larger that 2**16 
-doesn't make sense?
+--n62mnckfisrc5gc5
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
--aneesh
+On Thu, Aug 12, 2021 at 08:07:20AM +0100, Christoph Hellwig wrote:
+> On Wed, Aug 11, 2021 at 10:06:33AM +0200, Uwe Kleine-K??nig wrote:
+> >  static inline const char *eeh_driver_name(struct pci_dev *pdev)
+> >  {
+> > -	return (pdev && pdev->driver) ? pdev->driver->name : "<null>";
+> > +	const char *drvstr =3D pdev ? dev_driver_string(&pdev->dev) : "";
+> > +
+> > +	if (*drvstr =3D=3D '\0')
+> > +		return "<null>";
+> > +
+> > +	return drvstr;
+>=20
+> This looks rather obsfucated due to the fact that dev_driver_string
+> never returns '\0', and due to the strange mix of a tenary operation
+> and the if on a related condition.
 
+dev_driver_string() might return "" (via dev_bus_name()). If that happens
+*drvstr =3D=3D '\0' becomes true.
+
+Would the following be better?:
+
+	const char *drvstr;
+
+	if (pdev)
+		return "<null>";
+
+	drvstr =3D dev_driver_string(&pdev->dev);
+
+	if (!strcmp(drvstr, ""))
+		return "<null>";
+
+	return drvstr;
+
+When I thought about this hunk I considered it ugly to have "<null>" in
+it twice.
+
+> >  }
+> > =20
+> >  #endif /* CONFIG_EEH */
+> > diff --git a/drivers/bcma/host_pci.c b/drivers/bcma/host_pci.c
+> > index 69c10a7b7c61..dc2ffa686964 100644
+> > --- a/drivers/bcma/host_pci.c
+> > +++ b/drivers/bcma/host_pci.c
+> > @@ -175,9 +175,10 @@ static int bcma_host_pci_probe(struct pci_dev *dev,
+> >  	if (err)
+> >  		goto err_kfree_bus;
+> > =20
+> > -	name =3D dev_name(&dev->dev);
+> > -	if (dev->driver && dev->driver->name)
+> > -		name =3D dev->driver->name;
+> > +	name =3D dev_driver_string(&dev->dev);
+> > +	if (*name =3D=3D '\0')
+> > +		name =3D dev_name(&dev->dev);
+>=20
+> Where does this '\0' check come from?
+
+The original code is equivalent to
+
+	if (dev->driver && dev->driver->name)
+		name =3D dev->driver->name;
+	else:
+		name =3D dev_name(...);
+
+As dev_driver_string() implements something like:
+
+	if (dev->driver && dev->driver->name)
+		return dev->driver->name;
+	else
+		return "";
+
+the change looks fine to me. (One could wonder if it's sensible to fall
+back to the device name if the driver has no nice name, but this isn't
+new with my change.)
+
+> > +	name =3D dev_driver_string(&dev->dev);
+> > +	if (*name =3D=3D '\0')
+> > +		name =3D dev_name(&dev->dev);
+> > +
+>=20
+> More of this weirdness.
+
+I admit it's not pretty. Would it help to use !strcmp(name, "")
+instead of *name =3D=3D '\0'? Any other constructive suggestion?
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--n62mnckfisrc5gc5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmEU2FkACgkQwfwUeK3K
+7An+dgf/QrRVML0a6qk3HkGyLdsB8Vz7TG3WIJF9aLj4O2kfcEPwkNYsSxN/21iu
+rEFabdOH9lU5Zd2HWHmas7GEMR232ZquxQiELI+9rh01/2S6Y/u/6AVGLvdzqFVZ
+rXTrEHH02r9SqMl/V0Z/M7VIltjkbZwF4eSLW4+5+hHb65DACabRPBWTAjvotPU4
+0WlKPyYnJf0uVw9UF7NqDkXjgdyYzRf0lM6Ie9SLp3JctB9pqnVCu4JQSqBln0Ri
+AoFiE71+XFMORrsnY4gr2qdjhzoIRRGvDVVZ1BqXx0WZ7ZTzxcWXBg4xzrjF5kw0
+FlVhUnMK0NFPQnBoNJXA7B6UG7ZkvA==
+=3HwH
+-----END PGP SIGNATURE-----
+
+--n62mnckfisrc5gc5--
