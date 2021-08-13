@@ -1,71 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C78B23EB1B1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Aug 2021 09:40:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D5013EB28D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Aug 2021 10:23:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GmFpJ5M3Rz3cQg
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Aug 2021 17:40:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GmGlS436Sz3bmf
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Aug 2021 18:23:00 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=aKagUz1P;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XIRKgGne;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::102b;
- helo=mail-pj1-x102b.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=aKagUz1P; dkim-atps=neutral
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com
- [IPv6:2607:f8b0:4864:20::102b])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=XIRKgGne; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GmFng4ywTz30LB
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Aug 2021 17:39:49 +1000 (AEST)
-Received: by mail-pj1-x102b.google.com with SMTP id j1so14085936pjv.3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Aug 2021 00:39:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=rq5NT6ymn5YFPepcSa+GSbpNxqhhGT2CNtfO4KyTyrs=;
- b=aKagUz1P05PT0YM7DfpX5cf7NA8R7V/QF6YoSt15FHoqQ07kkmdlPN/7Eo1yoDemJK
- ChYpzmTZanfjBSXIhvsKJtce/7rj4W7BcxdLmKyaFS5n8622RiTF4lhgZ9HCunSoPalz
- y0gbd4FsnPYvsRxkam5YyD2Hu51FDFHdP8fg0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=rq5NT6ymn5YFPepcSa+GSbpNxqhhGT2CNtfO4KyTyrs=;
- b=lADl3pMgXqDwmkmW8kOQG2SZ65XgOOS5rMsIYLhNtaZ+tPhgkixF318gcPgrxuoZg4
- ZyZH5/UWYELwjpODHCoXHwrp3nx2Rt2TCn310JzZAhVZm/JIcZeokGTNQuijOCBDPGqO
- sXOF0CY45zw16sFKkKdWDC6RPJOYdaUhlBz9WmHsua4zJ8lw4mK3zTFLuiyI/cD6HpuU
- YAWMTsHpaqF/EEoujxHtROPw5CwfjV4Talendht4gErWs8Fk+Oy0Boincrnmsf9mvvO6
- iaED99oIApfc0I5RBF/KOmWP2YKzwosIjiNNPvjkgLDuMGqgxwqiaO85QP27uJfMfGX0
- HseQ==
-X-Gm-Message-State: AOAM533HNEvihW6WcIR/gXXt1OsAJ1T7Y/dBDEZWoEDA713zBnSw9PKS
- R8NNFLusL8looZmzAvp1VvQT+Q==
-X-Google-Smtp-Source: ABdhPJwmqyEDE3FbNdPNqdbkpL+bedpgIi+mPHMtdFXyREhl1/byAHJQgy+33Sm2yqwg5B0GAGtZsw==
-X-Received: by 2002:a17:90a:c8c:: with SMTP id
- v12mr1375028pja.37.1628840384771; 
- Fri, 13 Aug 2021 00:39:44 -0700 (PDT)
-Received: from localhost ([2001:4479:e200:df00:e80c:91ad:1614:aeef])
- by smtp.gmail.com with ESMTPSA id i13sm1137323pfr.79.2021.08.13.00.39.43
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 13 Aug 2021 00:39:44 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: Re: [PATCH v2 1/2] powerpc/book3s64/radix: make
- tlb_single_page_flush_ceiling a debugfs entry
-In-Reply-To: <20210812132831.233794-1-aneesh.kumar@linux.ibm.com>
-References: <20210812132831.233794-1-aneesh.kumar@linux.ibm.com>
-Date: Fri, 13 Aug 2021 17:39:41 +1000
-Message-ID: <87v949eqte.fsf@linkitivity.dja.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GmGkj14vhz30gd
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Aug 2021 18:22:20 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 17D842ho152780; Fri, 13 Aug 2021 04:22:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=c7HMP7WCtuA3u7tWwogQpJwpnJw4HwHAjddpZblJ3RQ=;
+ b=XIRKgGnenEbWPuJ7008ar9cjkx+SQC1y3sRuhlJ++O8gFFuwa3vRkN0DAPWVRd1DQPCm
+ LD+DvBPlprgSc7SIgH9Mgpjf0/hVo88fgRTZRlCgMJtZ97qsS9fHTsG3uErBGcmP2TF+
+ +9SinaPde4oyzqiYQHnTB9SWXWobiV85aEyIZekhLebyM/Y082AkNs7Ev4BuWv9IJG9O
+ hgZtjozGqUhILrDG3WppVDZX7M1GVKwRqpKkt3jRMoe0GwqvE1uPry5BBjc9NnZWutLW
+ 5ofi6MU4L2QDrEmOZ1j5nsx8TdQ8RnZB8qO9SOeY+0J6HzD7GQWGmuEZnElHKYcj6ivc vg== 
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3ad4hy8n6r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 13 Aug 2021 04:22:12 -0400
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 17D8Dp7t030531;
+ Fri, 13 Aug 2021 08:22:10 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma02fra.de.ibm.com with ESMTP id 3acfpgayb6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 13 Aug 2021 08:22:10 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 17D8M6In46137760
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 13 Aug 2021 08:22:06 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 13E6811C058;
+ Fri, 13 Aug 2021 08:22:06 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 493F811C07B;
+ Fri, 13 Aug 2021 08:22:03 +0000 (GMT)
+Received: from localhost.localdomain.com (unknown [9.199.43.137])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 13 Aug 2021 08:22:02 +0000 (GMT)
+From: Kajol Jain <kjain@linux.ibm.com>
+To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/perf/hv-gpci: Fix the logic to compute counter value
+ from the hcall result buffer.
+Date: Fri, 13 Aug 2021 13:51:58 +0530
+Message-Id: <20210813082158.429023-1-kjain@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: iRF2LreeJfHXYDwhO2hSSOLvfC-9eeJf
+X-Proofpoint-GUID: iRF2LreeJfHXYDwhO2hSSOLvfC-9eeJf
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-08-13_01:2021-08-12,
+ 2021-08-13 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ suspectscore=0 bulkscore=0 mlxlogscore=999 spamscore=0 adultscore=0
+ priorityscore=1501 mlxscore=0 phishscore=0 clxscore=1015 impostorscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2107140000 definitions=main-2108130048
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,85 +97,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: kjain@linux.ibm.com, suka@us.ibm.com, maddy@linux.ibm.com,
+ rnsastry@linux.ibm.com, atrajeev@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+H_GetPerformanceCounterInfo (0xF080) hcall returns the counter data in the
+result buffer. Result buffer has specific format defined in the PAPR
+specification. One of the field is counter offset and width of the counter
+data returned.
 
-> Similar to x86/s390 add a debugfs file to tune tlb_single_page_flush_ceiling.
-> Also add a debugfs entry for tlb_local_single_page_flush_ceiling.
->
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> ---
-> Changes from v1:
-> * switch to debugfs_create_u32
->
->  arch/powerpc/mm/book3s64/radix_tlb.c | 16 ++++++++++++++--
->  1 file changed, 14 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
-> index aefc100d79a7..1fa2bc6a969e 100644
-> --- a/arch/powerpc/mm/book3s64/radix_tlb.c
-> +++ b/arch/powerpc/mm/book3s64/radix_tlb.c
-> @@ -17,6 +17,7 @@
->  #include <asm/trace.h>
->  #include <asm/cputhreads.h>
->  #include <asm/plpar_wrappers.h>
-> +#include <asm/debugfs.h>
->  
->  #include "internal.h"
->  
-> @@ -1106,8 +1107,8 @@ EXPORT_SYMBOL(radix__flush_tlb_kernel_range);
->   * invalidating a full PID, so it has a far lower threshold to change from
->   * individual page flushes to full-pid flushes.
->   */
-> -static unsigned long tlb_single_page_flush_ceiling __read_mostly = 33;
-> -static unsigned long tlb_local_single_page_flush_ceiling __read_mostly = POWER9_TLB_SETS_RADIX * 2;
-> +static u32 tlb_single_page_flush_ceiling __read_mostly = 33;
-> +static u32 tlb_local_single_page_flush_ceiling __read_mostly = POWER9_TLB_SETS_RADIX * 2;
->  
->  static inline void __radix__flush_tlb_range(struct mm_struct *mm,
->  					    unsigned long start, unsigned long end)
-> @@ -1524,3 +1525,14 @@ void do_h_rpt_invalidate_prt(unsigned long pid, unsigned long lpid,
->  EXPORT_SYMBOL_GPL(do_h_rpt_invalidate_prt);
->  
->  #endif /* CONFIG_KVM_BOOK3S_HV_POSSIBLE */
-> +
-> +static int __init create_tlb_single_page_flush_ceiling(void)
-> +{
-> +	debugfs_create_u32("tlb_single_page_flush_ceiling", 0600,
-> +			   powerpc_debugfs_root, &tlb_single_page_flush_ceiling);
-> +	debugfs_create_u32("tlb_local_single_page_flush_ceiling", 0600,
-> +			   powerpc_debugfs_root, &tlb_local_single_page_flush_ceiling);
-> +	return 0;
-> +}
-> +late_initcall(create_tlb_single_page_flush_ceiling);
+Counter data are returned in a unsigned char array. To
+get the final counter data, these values should be left shifted
+byte at a time. But commit 220a0c609ad17 ("powerpc/perf: Add support 
+for the hv gpci (get performance counter info) interface") made the
+shifting bitwise. Because of this, hcall counters values could end up
+in lower side, which messes the counter prev vs now calculation. This
+lead to huge counter value reporting
 
-This patch seems to do what the commit message says, and it does seem to
-make sense to have these parameters as tunables.
+[command]#: perf stat -e hv_gpci/system_tlbie_count_and_time_tlbie_instructions_issued/
+           -C 0 -I 1000
+        time             counts unit events
+     1.000078854 18,446,744,073,709,535,232      hv_gpci/system_tlbie_count_and_time_tlbie_instructions_issued/
+     2.000213293                  0      hv_gpci/system_tlbie_count_and_time_tlbie_instructions_issued/
+     3.000320107                  0      hv_gpci/system_tlbie_count_and_time_tlbie_instructions_issued/
+     4.000428392                  0      hv_gpci/system_tlbie_count_and_time_tlbie_instructions_issued/
+     5.000537864                  0      hv_gpci/system_tlbie_count_and_time_tlbie_instructions_issued/
+     6.000649087                  0      hv_gpci/system_tlbie_count_and_time_tlbie_instructions_issued/
+     7.000760312                  0      hv_gpci/system_tlbie_count_and_time_tlbie_instructions_issued/
+     8.000865218             16,448      hv_gpci/system_tlbie_count_and_time_tlbie_instructions_issued/
+     9.000978985 18,446,744,073,709,535,232      hv_gpci/system_tlbie_count_and_time_tlbie_instructions_issued/
+    10.001088891             16,384      hv_gpci/system_tlbie_count_and_time_tlbie_instructions_issued/
+    11.001201435                  0      hv_gpci/system_tlbie_count_and_time_tlbie_instructions_issued/
+    12.001307937 18,446,744,073,709,535,232      hv_gpci/system_tlbie_count_and_time_tlbie_instructions_issued/
 
-I was briefly concerned that switching from an unsigned long to a u32
-might lead to suboptimal code generation in older gcc versions, but it
-doesn't seem to be a case where a single instruction is going to make a
-huge impact.
+Patch here fixes the shifting logic to make is byte-wise with which no more the issue seen. 
 
-I also wondered what the C integer promotion rules would do with a the
-nr_pages > tlb*flush_ceiling comparisons, but if we are trying to flush
-more than 4 billion pages we might have other, bigger problems! (Also,
-if I understand the C integer rules correctly the u32 will get promoted
-to an unsigned long anyway.)
+Fixes: e4f226b1580b3 ("powerpc/perf/hv-gpci: Increase request buffer size")
+Reported-by: Nageswara R Sastry<rnsastry@linux.ibm.com>
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+---
+ arch/powerpc/perf/hv-gpci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-All in all this seems good to me.
+diff --git a/arch/powerpc/perf/hv-gpci.c b/arch/powerpc/perf/hv-gpci.c
+index d48413e28c39..c756228a081f 100644
+--- a/arch/powerpc/perf/hv-gpci.c
++++ b/arch/powerpc/perf/hv-gpci.c
+@@ -175,7 +175,7 @@ static unsigned long single_gpci_request(u32 req, u32 starting_index,
+ 	 */
+ 	count = 0;
+ 	for (i = offset; i < offset + length; i++)
+-		count |= arg->bytes[i] << (i - offset);
++		count |= (u64)(arg->bytes[i]) << ((length - 1 - (i - offset)) * 8);
+ 
+ 	*value = count;
+ out:
+-- 
+2.26.2
 
-Reviewed-by: Daniel Axtens <dja@axtens.net>
-
-Kind regards,
-Daniel
-
-
-
-> +
-> -- 
-> 2.31.1
