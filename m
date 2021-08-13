@@ -2,99 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DFD53EAF6F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Aug 2021 06:55:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D74863EAFCE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Aug 2021 07:54:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GmB850NbTz3cPT
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Aug 2021 14:55:33 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UBurvOKK;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GmCS05B21z3cTX
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Aug 2021 15:54:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=UBurvOKK; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=209.85.128.50; helo=mail-wm1-f50.google.com;
+ envelope-from=jirislaby@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com
+ [209.85.128.50])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GmB7J5N9dz30Gv
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Aug 2021 14:54:52 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 17D4bXUO019616; Fri, 13 Aug 2021 00:54:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=X2H3cSxTkK96kB6K5c2zXcyJlMFtpj/jSNRl5K8+vr0=;
- b=UBurvOKKO2B6jucTPAB3U/TU0iqSSL7UjrfOgR5e5ZdS+8HHExUvT4ZbPgLhRO+MhjJf
- ICNOEJRj7BIxLn1lVFrLHQ02+JgIpPHazPg9AQrBr9ScEZ74Jzih4NbQUrcflh+4YLtB
- lkWsngBY77pDPZTXh8yDIwK7/lqzA8UE4UZAGnBzSW7qQQtdNnYADOs8XZ3sK46Gho6b
- dbFIlneR6BhMDanbd1lAX5Jgq8B0N3cRAX7Grfz2o1n7JcURgE7ydZA2HrRHcQtsIo8F
- 3D5Kgh5RbOEjpvUU9eKEF8lRplzK+3RAvhzli49CQH27FMg5xGcS/SPb77VB18S+6oHg pQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3ad4hy44du-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 13 Aug 2021 00:54:48 -0400
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 17D4bq7c021646;
- Fri, 13 Aug 2021 00:54:47 -0400
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3ad4hy44de-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 13 Aug 2021 00:54:47 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 17D4skZe023085;
- Fri, 13 Aug 2021 04:54:46 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma02fra.de.ibm.com with ESMTP id 3acfpgaqu6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 13 Aug 2021 04:54:46 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 17D4pPSa56295880
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 13 Aug 2021 04:51:25 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C676642047;
- Fri, 13 Aug 2021 04:54:43 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4E0BA42041;
- Fri, 13 Aug 2021 04:54:42 +0000 (GMT)
-Received: from in.ibm.com (unknown [9.102.2.89])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Fri, 13 Aug 2021 04:54:42 +0000 (GMT)
-Date: Fri, 13 Aug 2021 10:24:39 +0530
-From: Bharata B Rao <bharata@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [RFC PATCH v0 5/5] pseries: Asynchronous page fault support
-Message-ID: <YRX7DyCz1xp34xfK@in.ibm.com>
-References: <20210805072439.501481-1-bharata@linux.ibm.com>
- <20210805072439.501481-6-bharata@linux.ibm.com>
- <1628825941.uhcogyrzjc.astroid@bobo.none>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GmCRX5gVwz2yXf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Aug 2021 15:53:58 +1000 (AEST)
+Received: by mail-wm1-f50.google.com with SMTP id
+ k5-20020a05600c1c85b02902e699a4d20cso6155984wms.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Aug 2021 22:53:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=kDicGygeeiPHvZ/oC8eypBw+MyBw86cziX0DHpCxNAc=;
+ b=FU2y2j/FoAR5wpYs3EfLf5vz341S2R9qT8f0+zTm5Dw8w7Ia6ZX4RCEb4Gw6ecXUit
+ q4tcH+hWviPPF9/zNU+/+ObKGBgQvf4eJPnSl9usT9s4fgQd03i8o0V1XTS4Q5Rr7eEG
+ 9+9Tda57D3WWJr1CuEWUjN4F/hYxWMqEyw72gGf5+wsYGpfgrVKnbsk1PIgS1h/Qs5WJ
+ Qfc4bKWzYXxW6VThNGeWYwPZ8W7lXHu8h8dVLCmMwcT2kShVKJDE0gKgI67Aof/ntI78
+ nZlaz+KzbW8SYo00S9fmzzBiACs9rFNhVnED+9MiDqlBBBtsjO5k2Tz5RP/u3738ADU2
+ kcow==
+X-Gm-Message-State: AOAM53163yvnm41ft4c/JZMpg+WAaSwDbCf0u3GQwm/7bAS9PWyOw4DP
+ YPmWhDuVTP7sSySRyI7xClA=
+X-Google-Smtp-Source: ABdhPJy8wAfKyM+oLt0Q9y4Hp5Drbt085CfMeHVfhn6+xq33iBgJferYKQ07teGjmNfJzUb9YyPx7g==
+X-Received: by 2002:a7b:c399:: with SMTP id s25mr917659wmj.180.1628834033697; 
+ Thu, 12 Aug 2021 22:53:53 -0700 (PDT)
+Received: from ?IPv6:2a0b:e7c0:0:107::49? ([2a0b:e7c0:0:107::49])
+ by smtp.gmail.com with ESMTPSA id l7sm388877wmj.9.2021.08.12.22.53.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 12 Aug 2021 22:53:52 -0700 (PDT)
+Subject: Re: [PATCH v6 1/2] tty: hvc: pass DMA capable memory to put_chars()
+To: kernel test robot <lkp@intel.com>,
+ Xianting Tian <xianting.tian@linux.alibaba.com>, gregkh@linuxfoundation.org,
+ amit@kernel.org, arnd@arndb.de, osandov@fb.com
+References: <20210812094532.145497-2-xianting.tian@linux.alibaba.com>
+ <202108122040.lBf24DNp-lkp@intel.com>
+From: Jiri Slaby <jirislaby@kernel.org>
+Message-ID: <0c808001-7643-fdcf-66ba-738654ec0c21@kernel.org>
+Date: Fri, 13 Aug 2021 07:53:51 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1628825941.uhcogyrzjc.astroid@bobo.none>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: HKKLaq-gc61MbdtQx-nckLCMc1Cv0I-w
-X-Proofpoint-GUID: 9ljl69I8TDnMIS-D8d9ZVZ6KuIXEIH7I
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-08-13_01:2021-08-12,
- 2021-08-13 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- suspectscore=0 bulkscore=0 mlxlogscore=999 spamscore=0 adultscore=0
- priorityscore=1501 mlxscore=0 phishscore=0 clxscore=1015 impostorscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2107140000 definitions=main-2108130027
+In-Reply-To: <202108122040.lBf24DNp-lkp@intel.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,99 +70,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: bharata@linux.ibm.com
-Cc: aneesh.kumar@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- kvm@vger.kernel.org, kvm-ppc@vger.kernel.org, bharata.rao@gmail.com
+Cc: clang-built-linux@googlegroups.com, kbuild-all@lists.01.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ virtualization@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Aug 13, 2021 at 02:06:40PM +1000, Nicholas Piggin wrote:
-> Excerpts from Bharata B Rao's message of August 5, 2021 5:24 pm:
-> > Add asynchronous page fault support for pseries guests.
-> > 
-> > 1. Setup the guest to handle async-pf
-> >    - Issue H_REG_SNS hcall to register the SNS region.
-> >    - Setup the subvention interrupt irq.
-> >    - Enable async-pf by updating the byte_b9 of VPA for each
-> >      CPU.
-> > 2. Check if the page fault is an expropriation notification
-> >    (SRR1_PROGTRAP set in SRR1) and if so put the task on
-> >    wait queue based on the expropriation correlation number
-> >    read from the VPA.
-> > 3. Handle subvention interrupt to wake any waiting tasks.
-> >    The wait and wakeup mechanism from x86 async-pf implementation
-> >    is being reused here.
-> 
-> I don't know too much about the background of this.
-> 
-> How much benefit does this give? What situations?
+Hi,
 
-I haven't yet gotten into measuring the benefit of this. Once
-the patches are bit more stable than what they are currently,
-we need to measure and evaluate the benefits.
+On 12. 08. 21, 14:26, kernel test robot wrote:
+>>> drivers/tty/hvc/hvc_console.c:190:26: warning: variable 'hp' is uninitialized when used here [-Wuninitialized]
+>             spin_unlock_irqrestore(&hp->c_lock, flags);
+>                                     ^~
+>     drivers/tty/hvc/hvc_console.c:149:23: note: initialize the variable 'hp' to silence this warning
+>             struct hvc_struct *hp;
+>                                  ^
+>                                   = NULL
 
-> Does PowerVM implement it?
+So you clearly didn't test your change as it would crash quite 
+instantly. I wonder, where do you intend to get hp from in the 
+console::print() hook?
 
-I suppose so, need to check though.
-
-> Do other architectures KVM have something similar?
-
-Yes, x86 and s390 KVM have had this feature for a while now
-and generic KVM interfaces exist to support it.
-
-> 
-> The SRR1 setting for the DSI is in PAPR? In that case it should be okay,
-> it might be good to add a small comment in exceptions-64s.S.
-
-Yes, SRR1 setting is part of PAPR.
-
-> 
-> [...]
-> 
-> > @@ -395,6 +395,11 @@ static int ___do_page_fault(struct pt_regs *regs, unsigned long address,
-> >  	vm_fault_t fault, major = 0;
-> >  	bool kprobe_fault = kprobe_page_fault(regs, 11);
-> >  
-> > +#ifdef CONFIG_PPC_PSERIES
-> > +	if (handle_async_page_fault(regs, address))
-> > +		return 0;
-> > +#endif
-> > +
-> >  	if (unlikely(debugger_fault_handler(regs) || kprobe_fault))
-> >  		return 0;
-> 
-> [...]
-> 
-> > +int handle_async_page_fault(struct pt_regs *regs, unsigned long addr)
-> > +{
-> > +	struct async_pf_sleep_node n;
-> > +	DECLARE_SWAITQUEUE(wait);
-> > +	unsigned long exp_corr_nr;
-> > +
-> > +	/* Is this Expropriation notification? */
-> > +	if (!(mfspr(SPRN_SRR1) & SRR1_PROGTRAP))
-> > +		return 0;
-> 
-> Yep this should be an inline that is guarded by a static key, and then 
-> probably have an inline check for SRR1_PROGTRAP. You shouldn't need to
-> mfspr here, but just use regs->msr.
-
-Right.
-
-> 
-> > +
-> > +	if (unlikely(!user_mode(regs)))
-> > +		panic("Host injected async PF in kernel mode\n");
-> 
-> Hmm. Is there anything in the PAPR interface that specifies that the
-> OS can only deal with problem state access faults here? Or is that
-> inherent in the expropriation feature?
-
-Didn't see anything specific to that effect in PAPR. However since
-this puts the faulting guest process to sleep until the page
-becomes ready in the host, I have limited it to guest user space
-faults.
-
-Regards,
-Bharata.
+thanks,
+-- 
+js
+suse labs
