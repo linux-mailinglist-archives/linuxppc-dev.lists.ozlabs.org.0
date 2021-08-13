@@ -2,52 +2,126 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A46B3EBA79
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Aug 2021 18:55:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAF883EBAB5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Aug 2021 19:00:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GmV696d88z3cW5
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Aug 2021 02:54:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GmVDz5Y5mz30Ls
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Aug 2021 03:00:51 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=dkim header.b=nnPxnFFL;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=GP2tPUUo;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=alien8.de (client-ip=5.9.137.197; helo=mail.skyhub.de;
- envelope-from=bp@alien8.de; receiver=<UNKNOWN>)
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=amd.com
+ (client-ip=40.107.212.82; helo=nam02-bn1-obe.outbound.protection.outlook.com;
+ envelope-from=thomas.lendacky@amd.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256
+ header.s=selector1 header.b=GP2tPUUo; 
+ dkim-atps=neutral
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com
+ (mail-bn1nam07on2082.outbound.protection.outlook.com [40.107.212.82])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GmV5N1Rzxz30L2
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Aug 2021 02:54:09 +1000 (AEST)
-Received: from zn.tnic (p200300ec2f0a0d00fd43514a4e38f781.dip0.t-ipconnect.de
- [IPv6:2003:ec:2f0a:d00:fd43:514a:4e38:f781])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 804C41EC0411;
- Fri, 13 Aug 2021 18:53:56 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
- t=1628873636;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
- bh=/84z6Jt71TwxTIyDYITeuLKD4Ta4roESLEjk8oftwvw=;
- b=nnPxnFFLQXpCfOvbEt0Av0rUZgOj1mCuG52fzxh3GPPNWTGmksMlvf0COZbS6GeG7w/U4X
- 7mZL51Ynycu3lBpXmVHvv8/wQCm+WKZrzwUcxFqB4d6xvMbh86UVysShSR99PoH2kwcun4
- oA4KUqxbZo0t2RUufvPoKKaeCKXRSRk=
-Date: Fri, 13 Aug 2021 18:54:34 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-Subject: Re: [PATCH] powerpc/svm: Don't issue ultracalls if
- !mem_encrypt_active()
-Message-ID: <YRajyuHdlJuO0shK@zn.tnic>
-References: <20210730114231.23445-1-will@kernel.org>
- <871r7cks8x.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GmVDC1P5Rz2ymS
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Aug 2021 03:00:08 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=YecWqdxpsUyhpB1XAJVOmdJO6pp43+eN37KdIh9u8lCdySkg5f7E5AA95L9jlKPvGyRWb8xcYfXGpz4RZqS5vzIjc/AixahbV0V6vQ5vVCbAs1htAyusl4QRNQEnrvkcHMPob6Wc4yByOvCYQVpooxq2Tp9voFShxje7t55jQnIWeDvlWCzxe/Q3yRfWFzpyBZGLR1YKIqaHj8GA+Ngf7OPqT4x2IbM+2C+wAeEG8WrWZQj2V9oq3mW6v1V6jZiSfDNWnznMx5NwiGWhkdwrsFXiHJPvezyBLwzy8CN9pq4l88yEVrQ9uGNFfZu8pEtrHcfUAUSF1OubcaA5WxXO2w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BWzTLcRgQIBHZlbZOTVWx1Rv9q0wGjrnFS2LFcomRVM=;
+ b=O6+Nx+/iaAY60NOM2EKEKVXtCuzvCLFmpWGnqxO6DQ0l3o9WISBB8QkUhYuhWyF/90Eco7dgAz4S0vDIIXEgkZH/573AVDfP/I8/sTC0h4E1MHGYdsTw/Z2XIeMq8PNpXjC25yyHPwBfCdqv6H2bKgFDOM/QrE06uj2iKbVJgIEKkDaImxFOgkbP6e6WnaT3z0Rg6AR+ra24QV1sPp09B8I+gwfnSrMGW8KmVHXKzWo8LxbuwDN5XhkncNxTsfuCJNeEQ2Io8HpPO1QlmEKw1URD/kBqZRZglTiDD/Q8TZDE0YBfWAlSjGw9nLUA6fbYI9F6TZBXkzY5OI8eOpegOQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BWzTLcRgQIBHZlbZOTVWx1Rv9q0wGjrnFS2LFcomRVM=;
+ b=GP2tPUUoOmnmbDnKYTQ/sRPzj1ugGRdcBqma7+D9V5ordvm1GHahoKzFCuNmn0ORbxaWukZCi8ReJ1cA3nGxtzI4INF+oGj0HVLbCPRHXBD+Qsiimv8toD2aO7rOlfUsQaHiDsw2eU4rBCRjqL3tYHiQrFtuL4QBjuLa8WobFOQ=
+Authentication-Results: vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB5229.namprd12.prod.outlook.com (2603:10b6:5:398::12)
+ by DM6PR12MB5518.namprd12.prod.outlook.com (2603:10b6:5:1b9::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4415.14; Fri, 13 Aug
+ 2021 16:59:47 +0000
+Received: from DM4PR12MB5229.namprd12.prod.outlook.com
+ ([fe80::d560:d21:cd59:9418]) by DM4PR12MB5229.namprd12.prod.outlook.com
+ ([fe80::d560:d21:cd59:9418%6]) with mapi id 15.20.4415.019; Fri, 13 Aug 2021
+ 16:59:47 +0000
+From: Tom Lendacky <thomas.lendacky@amd.com>
+To: linux-kernel@vger.kernel.org, x86@kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+ iommu@lists.linux-foundation.org, kvm@vger.kernel.org,
+ linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+ linux-graphics-maintainer@vmware.com, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, kexec@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org
+Subject: [PATCH v2 00/12] Implement generic prot_guest_has() helper function
+Date: Fri, 13 Aug 2021 11:59:19 -0500
+Message-Id: <cover.1628873970.git.thomas.lendacky@amd.com>
+X-Mailer: git-send-email 2.32.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SA0PR11CA0181.namprd11.prod.outlook.com
+ (2603:10b6:806:1bc::6) To DM4PR12MB5229.namprd12.prod.outlook.com
+ (2603:10b6:5:398::12)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <871r7cks8x.fsf@mpe.ellerman.id.au>
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from tlendack-t1.amd.com (165.204.77.1) by
+ SA0PR11CA0181.namprd11.prod.outlook.com (2603:10b6:806:1bc::6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4415.15 via Frontend Transport; Fri, 13 Aug 2021 16:59:45 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: a40d64de-b98f-4120-9263-08d95e7bc1bf
+X-MS-TrafficTypeDiagnostic: DM6PR12MB5518:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <DM6PR12MB5518687F1DE01326E42EEAB2ECFA9@DM6PR12MB5518.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 0Tlc8p598j4x5j/Lp8tz9PLueR/DIMP/xJV8yoxqvGn3wufIX0iALoCSnB6xHvPaobgaxv5qA/ym4kTHjgj17Gg88m3kGRKzi1O2/OixN85iUGAxMqmOtAy/9dKVRJz8FB02/S2vY5Ghg/KFhOluMg0Lsfi7dQrTapoBm9uFuUBXdDvALipbFlkAQQz3/d+m2YNVoESsNfxicYs4umn7mzKSbUK6Lew8LB2JraprUxxyhfneCxbTRivywfHGt/qSATpYGzlrRpH5o7AErQPorPyTVblM6rfCySZ1+aS/oQFsFeO0gYP3rNbF3tPgmfOBeKDfeGB8vHzMwO64vHxkVrJ8CB4U9kFQQvLplo3nsw5u7CZrmFMNUPbaY0BIwOr6u1Fpqu8Mg1LWq8todTYpPv5ocir6Fu0kvxX5ARwhC9IC5vzXPHGUBIx2JXT8RuszsxDL9+GRreLgCTR6DwCva/oVBP1x6/NFDEUXnwsyY4PcRS1gT152ddDfCkGJj7O0IX84ktid4Csby4zQIoYjcLBNmbAFY2EdkcDx5aPgfBSRtOUe8Cw+xyc7TLgWzLyocW9BN5fI2vmczOGQBlH4HAMn2iUhJe7dPe1xDI+N28M0dTjgT72Y6FNRvuCEe9B+QkZIr0tBoW8ezEZRkejd37kPxZFAo0S0bl52kt8r3+1iOoWZPKtxC1fPu6p0FsMhW4i9mtcpw70c21FAuvmzJ73pr2wOU96NCigUcLKhFjb+lbV4+m0KRyqOlKMZXgKqjQgS2u9O0WEFn2m41O6N4uLCwIoM798gbQC9vCMHiZ0tCJPzqvzg21mXgARxlNtEbZOxMH2J8zFNCo5vTlBt4Q==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM4PR12MB5229.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(4636009)(39860400002)(366004)(136003)(346002)(396003)(376002)(66946007)(66476007)(966005)(66556008)(478600001)(921005)(7696005)(8936002)(8676002)(26005)(52116002)(6666004)(36756003)(186003)(86362001)(2906002)(7406005)(7416002)(83380400001)(2616005)(38100700002)(956004)(38350700002)(5660300002)(4326008)(6486002)(316002)(54906003)(41533002);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?+cNFt6anDiaWU3AK+8p9O5t7ynHjjKJp3ojthH0Zk8QoI1GDqL0paf3WfbCs?=
+ =?us-ascii?Q?73rxogGxgP4TYedg+o6cTXd9khz40t+q/+OeHEOu4VQ4Yv/+v8FtTe2QSgjL?=
+ =?us-ascii?Q?yRZJf+yxILobMp7Bjiv4EVi627qpSOHMGRUwWUqV9ynDmkRo+7t//+hS+CJI?=
+ =?us-ascii?Q?RR5Her4lR+fGWnN+2vEW4K3FmgQIiER12JR04HDzCq9gmA/D5XowL9HDjVAe?=
+ =?us-ascii?Q?DKxJ9eQsLDRRaoW8FvbXSxAAoSc4uyNKRTHDxOyK3HIRAXA0PsbUXRFfo8eq?=
+ =?us-ascii?Q?inRp1efyQCjYK+3DQ9kA8XShY8XWoqbaoXrCDXND59RzA+QAC4nsc9T8aNcT?=
+ =?us-ascii?Q?fjsNR+dGuZS2mHV0LEdxH5SFYaYVuydfPrxCPN75Tm+VCwE9XW0NV6YM/JEw?=
+ =?us-ascii?Q?ASc0/c3ORcbHePik8bwpkI+H1NwxozpE/G7Gc85XAdjolNoNtOoD/p59XSyF?=
+ =?us-ascii?Q?9ExR//vLRXCVwAetqc6YuODZ2MW29Kmv4ehHjKHZ37b0z4amJK1nnHoQSYzj?=
+ =?us-ascii?Q?iWv0BnqNdcxTY8gbqnsk0vdLDOR6J08a3CES7G6TaQS9ZoBqXQZqi1twUGfI?=
+ =?us-ascii?Q?YB4Wsxm44D4OiX4gBTRnjxP4o9+ACdYCisktYhvrs0ua/iDh/KEG7BN9lEKV?=
+ =?us-ascii?Q?dYlbO1h0p03SkPZr0I+zqVtJ5qELEYGFEAK8qjXcjI5RXk/oMSFOLWN5P4GD?=
+ =?us-ascii?Q?T5t3JIoVeF+2MJ/5WHVGL3YD4Bf3jRwo7hk5B0BEhbjHME1GhuUmqmN7OPil?=
+ =?us-ascii?Q?/r+DEeYN4ktk6aWvDyX56obhpICoyDzauv9fMhw8UBiJUhhen2WrbAgEk95Z?=
+ =?us-ascii?Q?TlZLN7Td3jf8FkNKUqlaVzyju+FRUTMFgr6tI+Hv4e7NDnxeMTnakJiuZG1z?=
+ =?us-ascii?Q?pov8I2uOLmtVukMxymrdRNpkcnnPBPwKv+Gr0MlFN9jUE3M6exCvuYmete6K?=
+ =?us-ascii?Q?y+7X1F1Zq258SCGZozazKkg4QUEnc/FO3vgiKM6TpxWi4d9sKoU81fXWKxS8?=
+ =?us-ascii?Q?/TM1+2tgxiF9i2KfH0Wi3vHhBuYsnUV7NpQQGpYRuVHdDr2J1VvERZb2zhEI?=
+ =?us-ascii?Q?R0IW4z22+5fol3PBZ3iEIJHYLLZmEEINbZ9czrabrNQFqBxlwGSC3SDEqW/C?=
+ =?us-ascii?Q?3RlndvmCdqL97VywfrGRrHgIRjbh8tKxcKnWhOutVuKiEK4HcuocFACAVGgs?=
+ =?us-ascii?Q?lpLqjiGRfdU81J+46M+4YA0QEKBtf2W43cDhzKt4pZDxg6NPyZpvZYAhSL5Q?=
+ =?us-ascii?Q?ETk9hARbR8CH3+OR/9xsEeBZbKd1QBOyrVXYFnkZH47vmnHQzWzxfdyoFtzW?=
+ =?us-ascii?Q?w+LYu/MDYFySZ0nakn5+az9P?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a40d64de-b98f-4120-9263-08d95e7bc1bf
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5229.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2021 16:59:47.5605 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nYp6yT+9lSoVV7NLlbbh020IR6qxssckMjTIgYmpR7D6u6pyPE7XxnAMYb5IEyfY+PXxRhCV//fDcjgg9wtbPA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB5518
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,70 +133,134 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, Will Deacon <will@kernel.org>,
- linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
- Nathan Chancellor <nathan@kernel.org>, iommu@lists.linux-foundation.org,
- Claire Chang <tientzu@chromium.org>, linuxppc-dev@lists.ozlabs.org,
- Christoph Hellwig <hch@lst.de>, Robin Murphy <robin.murphy@arm.com>
+Cc: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Brijesh Singh <brijesh.singh@amd.com>, David Airlie <airlied@linux.ie>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Paul Mackerras <paulus@samba.org>,
+ Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+ Andi Kleen <ak@linux.intel.com>, Baoquan He <bhe@redhat.com>,
+ Joerg Roedel <joro@8bytes.org>, Christian Borntraeger <borntraeger@de.ibm.com>,
+ Ingo Molnar <mingo@redhat.com>, Dave Young <dyoung@redhat.com>,
+ Tianyu Lan <Tianyu.Lan@microsoft.com>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Peter Zijlstra <peterz@infradead.org>, Daniel Vetter <daniel@ffwll.ch>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 02, 2021 at 09:20:30PM +1000, Michael Ellerman wrote:
-> Will Deacon <will@kernel.org> writes:
-> > Commit ad6c00283163 ("swiotlb: Free tbl memory in swiotlb_exit()")
-> > introduced a set_memory_encrypted() call to swiotlb_exit() so that the
-> > buffer pages are returned to an encrypted state prior to being freed.
-> >
-> > Sachin reports that this leads to the following crash on a Power server:
-> >
-> > [    0.010799] software IO TLB: tearing down default memory pool
-> > [    0.010805] ------------[ cut here ]------------
-> > [    0.010808] kernel BUG at arch/powerpc/kernel/interrupt.c:98!
-> >
-> > Nick spotted that this is because set_memory_encrypted() is issuing an
-> > ultracall which doesn't exist for the processor, and should therefore
-> > be gated by mem_encrypt_active() to mirror the x86 implementation.
-> >
-> > Cc: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-> > Cc: Claire Chang <tientzu@chromium.org>
-> > Cc: Christoph Hellwig <hch@lst.de>
-> > Cc: Robin Murphy <robin.murphy@arm.com>
-> > Fixes: ad6c00283163 ("swiotlb: Free tbl memory in swiotlb_exit()")
-> > Suggested-by: Nicholas Piggin <npiggin@gmail.com>
-> > Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-> > Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-> > Tested-by: Nathan Chancellor <nathan@kernel.org>
-> > Link: https://lore.kernel.org/r/1905CD70-7656-42AE-99E2-A31FC3812EAC@linux.vnet.ibm.com/
-> > Signed-off-by: Will Deacon <will@kernel.org>
-> > ---
-> >  arch/powerpc/platforms/pseries/svm.c | 6 ++++++
-> >  1 file changed, 6 insertions(+)
-> 
-> Thanks.
-> 
-> Acked-by: Michael Ellerman <mpe@ellerman.id.au>
-> 
-> 
-> I assume Konrad will take this via the swiotlb tree?
+This patch series provides a generic helper function, prot_guest_has(),
+to replace the sme_active(), sev_active(), sev_es_active() and
+mem_encrypt_active() functions.
 
-Btw, we're currently reworking that whole "am I running as a
-confidential guest" querying, see:
+It is expected that as new protected virtualization technologies are
+added to the kernel, they can all be covered by a single function call
+instead of a collection of specific function calls all called from the
+same locations.
 
-https://lkml.kernel.org/r/029791b24c6412f9427cfe6ec598156c64395964.1627424774.git.thomas.lendacky@amd.com
+The powerpc and s390 patches have been compile tested only. Can the
+folks copied on this series verify that nothing breaks for them.
 
-for example.
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Christian Borntraeger <borntraeger@de.ibm.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: David Airlie <airlied@linux.ie>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Joerg Roedel <joro@8bytes.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: VMware Graphics <linux-graphics-maintainer@vmware.com>
+Cc: Will Deacon <will@kernel.org>
 
-I see Konrad has queued this for 5.15 in his devel/for-linus-5.15 branch
-so if he sends it to Linus in the upcoming merge window (right Konrad?)
-then I can base the rework ontop, once 5.15-rc1 releases, so that there
-are no build breakages...
+---
 
-Thx.
+Patches based on:
+  https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git master
+  0b52902cd2d9 ("Merge branch 'efi/urgent'")
+
+Changes since v1:
+- Move some arch ioremap functions within #ifdef CONFIG_AMD_MEM_ENCRYPT
+  in prep for use of prot_guest_has() by TDX.
+- Add type includes to the the protected_guest.h header file to prevent
+  build errors outside of x86.
+- Make amd_prot_guest_has() EXPORT_SYMBOL_GPL
+- Use amd_prot_guest_has() in place of checking sme_me_mask in the
+  arch/x86/mm/mem_encrypt.c file.
+
+Tom Lendacky (12):
+  x86/ioremap: Selectively build arch override encryption functions
+  mm: Introduce a function to check for virtualization protection
+    features
+  x86/sev: Add an x86 version of prot_guest_has()
+  powerpc/pseries/svm: Add a powerpc version of prot_guest_has()
+  x86/sme: Replace occurrences of sme_active() with prot_guest_has()
+  x86/sev: Replace occurrences of sev_active() with prot_guest_has()
+  x86/sev: Replace occurrences of sev_es_active() with prot_guest_has()
+  treewide: Replace the use of mem_encrypt_active() with
+    prot_guest_has()
+  mm: Remove the now unused mem_encrypt_active() function
+  x86/sev: Remove the now unused mem_encrypt_active() function
+  powerpc/pseries/svm: Remove the now unused mem_encrypt_active()
+    function
+  s390/mm: Remove the now unused mem_encrypt_active() function
+
+ arch/Kconfig                               |  3 ++
+ arch/powerpc/include/asm/mem_encrypt.h     |  5 --
+ arch/powerpc/include/asm/protected_guest.h | 30 +++++++++++
+ arch/powerpc/platforms/pseries/Kconfig     |  1 +
+ arch/s390/include/asm/mem_encrypt.h        |  2 -
+ arch/x86/Kconfig                           |  1 +
+ arch/x86/include/asm/io.h                  |  8 +++
+ arch/x86/include/asm/kexec.h               |  2 +-
+ arch/x86/include/asm/mem_encrypt.h         | 13 +----
+ arch/x86/include/asm/protected_guest.h     | 29 +++++++++++
+ arch/x86/kernel/crash_dump_64.c            |  4 +-
+ arch/x86/kernel/head64.c                   |  4 +-
+ arch/x86/kernel/kvm.c                      |  3 +-
+ arch/x86/kernel/kvmclock.c                 |  4 +-
+ arch/x86/kernel/machine_kexec_64.c         | 19 +++----
+ arch/x86/kernel/pci-swiotlb.c              |  9 ++--
+ arch/x86/kernel/relocate_kernel_64.S       |  2 +-
+ arch/x86/kernel/sev.c                      |  6 +--
+ arch/x86/kvm/svm/svm.c                     |  3 +-
+ arch/x86/mm/ioremap.c                      | 18 +++----
+ arch/x86/mm/mem_encrypt.c                  | 60 +++++++++++++++-------
+ arch/x86/mm/mem_encrypt_identity.c         |  3 +-
+ arch/x86/mm/pat/set_memory.c               |  3 +-
+ arch/x86/platform/efi/efi_64.c             |  9 ++--
+ arch/x86/realmode/init.c                   |  8 +--
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c    |  4 +-
+ drivers/gpu/drm/drm_cache.c                |  4 +-
+ drivers/gpu/drm/vmwgfx/vmwgfx_drv.c        |  4 +-
+ drivers/gpu/drm/vmwgfx/vmwgfx_msg.c        |  6 +--
+ drivers/iommu/amd/init.c                   |  7 +--
+ drivers/iommu/amd/iommu.c                  |  3 +-
+ drivers/iommu/amd/iommu_v2.c               |  3 +-
+ drivers/iommu/iommu.c                      |  3 +-
+ fs/proc/vmcore.c                           |  6 +--
+ include/linux/mem_encrypt.h                |  4 --
+ include/linux/protected_guest.h            | 40 +++++++++++++++
+ kernel/dma/swiotlb.c                       |  4 +-
+ 37 files changed, 232 insertions(+), 105 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/protected_guest.h
+ create mode 100644 arch/x86/include/asm/protected_guest.h
+ create mode 100644 include/linux/protected_guest.h
 
 -- 
-Regards/Gruss,
-    Boris.
+2.32.0
 
-https://people.kernel.org/tglx/notes-about-netiquette
