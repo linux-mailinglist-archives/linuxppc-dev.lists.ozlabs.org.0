@@ -1,40 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 724373EAE99
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Aug 2021 04:32:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25D7D3EAEA1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Aug 2021 04:40:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gm6z93FWVz3cSQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Aug 2021 12:32:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gm78Q04FHz30Fy
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Aug 2021 12:40:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com;
+ smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com;
  envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gm6yl17bHz2yyK
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Aug 2021 12:32:13 +1000 (AEST)
-X-IronPort-AV: E=McAfee;i="6200,9189,10074"; a="279228280"
-X-IronPort-AV: E=Sophos;i="5.84,317,1620716400"; d="scan'208";a="279228280"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
- by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Aug 2021 19:31:08 -0700
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gm77w2zWmz309K
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Aug 2021 12:40:11 +1000 (AEST)
+X-IronPort-AV: E=McAfee;i="6200,9189,10074"; a="237530632"
+X-IronPort-AV: E=Sophos;i="5.84,317,1620716400"; d="scan'208";a="237530632"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+ by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Aug 2021 19:39:08 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.84,317,1620716400"; d="scan'208";a="677171524"
+X-IronPort-AV: E=Sophos;i="5.84,317,1620716400"; d="scan'208";a="590981674"
 Received: from lkp-server01.sh.intel.com (HELO d053b881505b) ([10.239.97.150])
- by fmsmga005.fm.intel.com with ESMTP; 12 Aug 2021 19:31:06 -0700
+ by fmsmga001.fm.intel.com with ESMTP; 12 Aug 2021 19:39:07 -0700
 Received: from kbuild by d053b881505b with local (Exim 4.92)
  (envelope-from <lkp@intel.com>)
- id 1mEMyQ-000NFJ-4s; Fri, 13 Aug 2021 02:31:06 +0000
-Date: Fri, 13 Aug 2021 10:30:30 +0800
+ id 1mEN6A-000NFj-9c; Fri, 13 Aug 2021 02:39:06 +0000
+Date: Fri, 13 Aug 2021 10:38:34 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- cbc06f051c524dcfe52ef0d1f30647828e226d30
-Message-ID: <6115d946.Hjt8mMVh2N8pwDLE%lkp@intel.com>
+Subject: [powerpc:next-test] BUILD REGRESSION
+ aaf01a9f507c108cc8e86f420b0a81e21354be1b
+Message-ID: <6115db2a./orL/By7NAPaoCqD%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -55,16 +55,27 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: cbc06f051c524dcfe52ef0d1f30647828e226d30  powerpc/xive: Do not skip CPU-less nodes when creating the IPIs
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
+branch HEAD: aaf01a9f507c108cc8e86f420b0a81e21354be1b  cpufreq: powernv: Fix init_chip_info initialization in numa=off
 
-elapsed time: 721m
+Error/Warning reports:
 
-configs tested: 134
-configs skipped: 108
+https://lore.kernel.org/lkml/202108130432.0md3hWU2-lkp@intel.com
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Error/Warning in current branch:
+
+arch/powerpc/platforms/pseries/hotplug-cpu.c:1022:8: error: 'node_to_cpumask_map' undeclared (first use in this function)
+
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+`-- powerpc-randconfig-r005-20210812
+    `-- arch-powerpc-platforms-pseries-hotplug-cpu.c:error:node_to_cpumask_map-undeclared-(first-use-in-this-function)
+
+elapsed time: 727m
+
+configs tested: 115
+configs skipped: 3
 
 gcc tested configs:
 arm                                 defconfig
@@ -74,31 +85,27 @@ arm                              allyesconfig
 arm                              allmodconfig
 i386                 randconfig-c001-20210812
 i386                 randconfig-c001-20210813
+powerpc                     mpc5200_defconfig
+parisc                              defconfig
+powerpc                         wii_defconfig
+arm                      integrator_defconfig
+arm                        trizeps4_defconfig
 sh                          polaris_defconfig
 powerpc                      bamboo_defconfig
 powerpc                       holly_defconfig
 powerpc                mpc7448_hpc2_defconfig
 powerpc                        cell_defconfig
 powerpc                 mpc837x_rdb_defconfig
-powerpc                     redwood_defconfig
-arm                         at91_dt_defconfig
-sh                   secureedge5410_defconfig
-powerpc                     pseries_defconfig
-powerpc                      makalu_defconfig
-arm                      jornada720_defconfig
 m68k                             alldefconfig
 sh                          rsk7264_defconfig
 sh                            titan_defconfig
 powerpc                     asp8347_defconfig
+powerpc                        icon_defconfig
 arc                          axs103_defconfig
-powerpc                     mpc5200_defconfig
-arm                     eseries_pxa_defconfig
-powerpc                 mpc8540_ads_defconfig
-arm                         vf610m4_defconfig
-powerpc                      ppc40x_defconfig
-powerpc                      ppc44x_defconfig
+riscv                    nommu_k210_defconfig
 m68k                       m5208evb_defconfig
 x86_64                           alldefconfig
+powerpc                     pseries_defconfig
 mips                            gpr_defconfig
 mips                      maltaaprp_defconfig
 xtensa                generic_kc705_defconfig
@@ -106,26 +113,11 @@ arm                           stm32_defconfig
 arm                           omap1_defconfig
 arc                           tb10x_defconfig
 arm                          exynos_defconfig
+mips                          ath25_defconfig
 mips                        workpad_defconfig
 mips                     decstation_defconfig
-mips                          ath25_defconfig
 powerpc                     ppa8548_defconfig
 arc                        nsimosci_defconfig
-arm                     davinci_all_defconfig
-mips                           gcw0_defconfig
-arm                            xcep_defconfig
-riscv                             allnoconfig
-powerpc64                        alldefconfig
-powerpc                     ksi8560_defconfig
-powerpc                      pcm030_defconfig
-arm                         s5pv210_defconfig
-powerpc                        icon_defconfig
-sh                         ap325rxa_defconfig
-arm                          gemini_defconfig
-sh                               alldefconfig
-sh                         apsh4a3a_defconfig
-powerpc                      cm5200_defconfig
-powerpc                           allnoconfig
 arm                            zeus_defconfig
 sh                             sh03_defconfig
 arm                       aspeed_g5_defconfig
@@ -150,7 +142,6 @@ xtensa                           allyesconfig
 h8300                            allyesconfig
 arc                                 defconfig
 sh                               allmodconfig
-parisc                              defconfig
 s390                             allyesconfig
 s390                             allmodconfig
 parisc                           allyesconfig
@@ -163,6 +154,7 @@ mips                             allyesconfig
 mips                             allmodconfig
 powerpc                          allyesconfig
 powerpc                          allmodconfig
+powerpc                           allnoconfig
 x86_64               randconfig-a006-20210812
 x86_64               randconfig-a004-20210812
 x86_64               randconfig-a003-20210812
@@ -181,9 +173,9 @@ i386                 randconfig-a013-20210812
 i386                 randconfig-a014-20210812
 i386                 randconfig-a016-20210812
 i386                 randconfig-a012-20210812
-riscv                    nommu_k210_defconfig
 riscv                            allyesconfig
 riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
 riscv                               defconfig
 riscv                          rv32_defconfig
 riscv                            allmodconfig
