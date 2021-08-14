@@ -1,54 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDAD53EC3CB
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Aug 2021 18:23:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 021E33EC47C
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Aug 2021 20:33:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gn5MQ66Cnz3cWQ
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Aug 2021 02:23:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gn8F15YxVz3cR8
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Aug 2021 04:33:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=dkim header.b=b8PJl1yU;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=dkim header.b=E4Qk5UWH;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=alien8.de (client-ip=5.9.137.197; helo=mail.skyhub.de;
- envelope-from=bp@alien8.de; receiver=<UNKNOWN>)
+ smtp.mailfrom=alien8.de (client-ip=2a01:4f8:190:11c2::b:1457;
+ helo=mail.skyhub.de; envelope-from=bp@alien8.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256
- header.s=dkim header.b=b8PJl1yU; dkim-atps=neutral
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+ header.s=dkim header.b=E4Qk5UWH; dkim-atps=neutral
+X-Greylist: delayed 11266 seconds by postgrey-1.36 at boromir;
+ Sun, 15 Aug 2021 04:32:28 AEST
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gn5Ll0Cb9z3029
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Aug 2021 02:22:54 +1000 (AEST)
-Received: from zn.tnic (p200300ec2f1db900ce77af1d85349a0a.dip0.t-ipconnect.de
- [IPv6:2003:ec:2f1d:b900:ce77:af1d:8534:9a0a])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gn8DD1VtRz30CX
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Aug 2021 04:32:26 +1000 (AEST)
+Received: from zn.tnic (p200300ec2f1db90092f0c5d5424adff0.dip0.t-ipconnect.de
+ [IPv6:2003:ec:2f1d:b900:92f0:c5d5:424a:dff0])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id F29E81EC0570;
- Sat, 14 Aug 2021 18:22:47 +0200 (CEST)
+ by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 18F4D1EC03D5;
+ Sat, 14 Aug 2021 20:32:10 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
- t=1628958168;
+ t=1628965930;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
- bh=/brh2LY3ZxgqLfUVFe3O+xJ1nWBytl741a1Y0kx+hZ8=;
- b=b8PJl1yU5zBqaA2/nWRJwh/Y1GFQpGr8U9i00b3uXAK038Jc2Z1POSCalShC5L7ljhom/o
- fCO7xRLVffdQF0GweIKtmdPFvymLaNoyum8xoYvWOvNqL9K4onwtHo7DlZohuGq0Zs3adS
- HqvSQaPyaR3nR1KdMycZfdDQxct9Lyg=
-Date: Sat, 14 Aug 2021 18:23:26 +0200
+ bh=wF+abY2BQsJbjTrcR+vEXegmF8fSVZNnTVHwv8EJcnQ=;
+ b=E4Qk5UWHuniXg4G1qquKyzpgwZxdDOaCXRqHrAIJykq2qzFHsvToSzhtSszwEfmGfSV6v2
+ I5QqIZa+pz8OAA9XFKUyZCM9wxA5OIK4n52a7NMv/GJIh9ii9QfkxahlKZf58K1pY/P4Uq
+ 2W5ojEdMC06o3XDrAinHQLW8qtTO9aY=
+Date: Sat, 14 Aug 2021 20:32:48 +0200
 From: Borislav Petkov <bp@alien8.de>
-To: Herbert Xu <herbert@gondor.apana.org.au>
-Subject: Re: [PATCH] crypto: DRBG - select SHA512
-Message-ID: <YRft/tuKE6MjHhY7@zn.tnic>
-References: <304ee0376383d9ceecddbfd216c035215bbff861.camel@chronox.de>
- <20210716081411.GA2062@gondor.apana.org.au>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Subject: Re: [PATCH v2 02/12] mm: Introduce a function to check for
+ virtualization protection features
+Message-ID: <YRgMUHqdH60jDB06@zn.tnic>
+References: <cover.1628873970.git.thomas.lendacky@amd.com>
+ <482fe51f1671c1cd081039801b03db7ec0036332.1628873970.git.thomas.lendacky@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20210716081411.GA2062@gondor.apana.org.au>
+In-Reply-To: <482fe51f1671c1cd081039801b03db7ec0036332.1628873970.git.thomas.lendacky@amd.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,67 +63,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stephan Mueller <smueller@chronox.de>, sachinp@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org,
- lkml <linux-kernel@vger.kernel.org>
+Cc: linux-s390@vger.kernel.org,
+ Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ linux-efi@vger.kernel.org, Brijesh Singh <brijesh.singh@amd.com>,
+ kvm@vger.kernel.org, Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
+ kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ amd-gfx@lists.freedesktop.org, platform-driver-x86@vger.kernel.org,
+ iommu@lists.linux-foundation.org, Andi Kleen <ak@linux.intel.com>,
+ linux-graphics-maintainer@vmware.com, dri-devel@lists.freedesktop.org,
+ Joerg Roedel <jroedel@suse.de>, linux-fsdevel@vger.kernel.org,
+ Tianyu Lan <Tianyu.Lan@microsoft.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jul 16, 2021 at 04:14:12PM +0800, Herbert Xu wrote:
-> Stephan Mueller <smueller@chronox.de> wrote:
-> > With the swtich to use HMAC(SHA-512) as the default DRBG type, the
-> > configuration must now also select SHA-512.
-> > 
-> > Fixes: 9b7b94683a9b "crypto: DRBG - switch to HMAC SHA512 DRBG as default
-> > DRBG"
-> > Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-> > Signed-off-by: Stephan Mueller <smueller@chronox.com>
-> > ---
-> > crypto/Kconfig | 2 +-
-> > 1 file changed, 1 insertion(+), 1 deletion(-)
+On Fri, Aug 13, 2021 at 11:59:21AM -0500, Tom Lendacky wrote:
+> In prep for other protected virtualization technologies, introduce a
+> generic helper function, prot_guest_has(), that can be used to check
+> for specific protection attributes, like memory encryption. This is
+> intended to eliminate having to add multiple technology-specific checks
+> to the code (e.g. if (sev_active() || tdx_active())).
 > 
-> Patch applied.  Thanks.
+> Reviewed-by: Joerg Roedel <jroedel@suse.de>
+> Co-developed-by: Andi Kleen <ak@linux.intel.com>
+> Signed-off-by: Andi Kleen <ak@linux.intel.com>
+> Co-developed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+> Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+> ---
+>  arch/Kconfig                    |  3 +++
+>  include/linux/protected_guest.h | 35 +++++++++++++++++++++++++++++++++
+>  2 files changed, 38 insertions(+)
+>  create mode 100644 include/linux/protected_guest.h
+> 
+> diff --git a/arch/Kconfig b/arch/Kconfig
+> index 98db63496bab..bd4f60c581f1 100644
+> --- a/arch/Kconfig
+> +++ b/arch/Kconfig
+> @@ -1231,6 +1231,9 @@ config RELR
+>  config ARCH_HAS_MEM_ENCRYPT
+>  	bool
+>  
+> +config ARCH_HAS_PROTECTED_GUEST
+> +	bool
+> +
+>  config HAVE_SPARSE_SYSCALL_NR
+>         bool
+>         help
+> diff --git a/include/linux/protected_guest.h b/include/linux/protected_guest.h
+> new file mode 100644
+> index 000000000000..43d4dde94793
+> --- /dev/null
+> +++ b/include/linux/protected_guest.h
+> @@ -0,0 +1,35 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * Protected Guest (and Host) Capability checks
+> + *
+> + * Copyright (C) 2021 Advanced Micro Devices, Inc.
+> + *
+> + * Author: Tom Lendacky <thomas.lendacky@amd.com>
+> + */
+> +
+> +#ifndef _PROTECTED_GUEST_H
+> +#define _PROTECTED_GUEST_H
+> +
+> +#ifndef __ASSEMBLY__
+	   ^^^^^^^^^^^^^
 
-Is that patch going to Linus anytime soon?
-
-I still see it on latest rc5+:
-
-DRBG: could not allocate digest TFM handle: hmac(sha512)
-alg: drbg: Failed to reset rng
-alg: drbg: Test 0 failed for drbg_nopr_hmac_sha512
-------------[ cut here ]------------
-alg: self-tests for drbg_nopr_hmac_sha512 (stdrng) failed (rc=-22)
-WARNING: CPU: 3 PID: 76 at crypto/testmgr.c:5652 alg_test.part.0+0x132/0x3c0
-Modules linked in:
-CPU: 3 PID: 76 Comm: cryptomgr_test Not tainted 5.14.0-rc5+ #1
-Hardware name: LENOVO 2320CTO/2320CTO, BIOS G2ET86WW (2.06 ) 11/13/2012
-RIP: 0010:alg_test.part.0+0x132/0x3c0
-Code: c0 74 2e 80 3d 7f 61 ad 02 00 0f 85 c0 64 5f 00 44 89 c1 4c 89 f2 4c 89 ee 44 89 44 24 04 48 c7 c7 f8 0a 11 82 e8 8c 57 5e 00 <0f> 0b 44 8b 44 24 04 48 8b 84 24 98 00 00 00 65 48 2b 04 25 28 00
-RSP: 0000:ffffc9000078fe38 EFLAGS: 00010292
-RAX: 0000000000000042 RBX: 00000000ffffffff RCX: 0000000000000000
-RDX: 0000000000000001 RSI: ffffffff810f520f RDI: ffffffff810f520f
-RBP: 0000000000000053 R08: 0000000000000001 R09: 0000000000000001
-R10: ffff888219df9000 R11: 3fffffffffffffff R12: 0000000000000053
-R13: ffff888100c0ee00 R14: ffff888100c0ee80 R15: 00000000000014c0
-FS:  0000000000000000(0000) GS:ffff888211f80000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 0000000002412001 CR4: 00000000001706e0
-Call Trace:
- ? lock_is_held_type+0xd5/0x130
- ? find_held_lock+0x2b/0x80
- ? preempt_count_sub+0x9b/0xd0
- ? crypto_acomp_scomp_free_ctx+0x30/0x30
- cryptomgr_test+0x27/0x50
- kthread+0x144/0x170
- ? set_kthread_struct+0x40/0x40
- ret_from_fork+0x22/0x30
-irq event stamp: 411
-hardirqs last  enabled at (419): [<ffffffff810f6972>] console_unlock+0x332/0x570
-hardirqs last disabled at (426): [<ffffffff810f6a1f>] console_unlock+0x3df/0x570
-softirqs last  enabled at (234): [<ffffffff81c00329>] __do_softirq+0x329/0x496
-softirqs last disabled at (151): [<ffffffff8108248d>] irq_exit_rcu+0xdd/0x130
----[ end trace edfdfd51982deb2d ]---
+Do you really need that guard? It builds fine without it too. Or
+something coming later does need it...?
 
 -- 
 Regards/Gruss,
