@@ -1,56 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A4473EC291
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Aug 2021 14:31:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79B263EC2AC
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Aug 2021 14:44:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gn0CS0g92z3cLk
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Aug 2021 22:31:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gn0W12l8Hz3cM6
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Aug 2021 22:44:45 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=NPCfpJb1;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Qga7hx4U;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
  envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=NPCfpJb1; 
+ header.a=rsa-sha256 header.s=201909 header.b=Qga7hx4U; 
  dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gn0Bq5PTZz309g
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Aug 2021 22:30:43 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gn0VH6zvZz2yR7
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Aug 2021 22:44:07 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Gn0Bp5D5Rz9sX3;
- Sat, 14 Aug 2021 22:30:42 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Gn0VG43wDz9sX3;
+ Sat, 14 Aug 2021 22:44:06 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1628944242;
- bh=Pkr3cszIxlLMnMLXrJT4ko5HkJAnTVD8qVcifK3aENE=;
+ s=201909; t=1628945046;
+ bh=BTEI22855V1ISRnzYjMKp2Rh6WOt8Yp+8E9gKeZmqX4=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=NPCfpJb1e+c2pkOJXYK65NH8SpOP4V4DMMfk8JUcYwu1Wm2RrZlwghTUv2rMW83gH
- G65uSE2QttuC3tC47S9BJmUiJB9MLubZrYKeJ0WcKV5RY0zS8AOYUVVjd9xWeUmE+U
- XcAC2uyOk2pKZzVvgiFj9KOif2A94BxEbGre9uKxcPoYrVLc/GxYDp9mfBjfHkL2Qn
- x6zJpOUNMbnXdNnbI9wJdZWqcYI6fmP1pJo7Dy0l1kFovihsKQQbCy5o4k7ZJrvTqZ
- hNCRiDbU/oYW+t7mYeOXwbQ7uVb7cnBsssNiZ6ET22KUcjK87eS9b7Ng4gF1//+VO6
- oA4/OLsgufkkA==
+ b=Qga7hx4USZ2eiuakEs4N6pT5+VNLWwmOT+/X9lhvgRgUUq69ujVxsIhzEY+3C258N
+ T2qqlFDrMRQw+AbqqKkcwAk4zWphg4efoPnJziYIVANWkREt6zt4jx0OLabfPz9mI6
+ snhMeu4mb6SysgZjXBFZn4ICwaNq7soO0Ks8XhRicY/wI38SK1o47/fWXoZ+bZ1i5V
+ jBarcwaciw/YPUSYI+QlgGB2CcffEvNvfIyVy6rzoH+n5Jcq79lQEYNU9Q/NX6JyEs
+ mbqoaPyeKpUzIP9/ytJdoeBp5GKzA3XWkjPuXmpg7FXUJX3bnrXJUdpzEp0Fh1xitZ
+ D0leYuJoZZFYg==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, kajoljain
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Kajol Jain
  <kjain@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2 1/2] powerpc/perf: Use stack siar instead of mfspr
-In-Reply-To: <9662dfbf-d163-c313-745e-aeda0f638e98@csgroup.eu>
+Subject: Re: [PATCH v2 2/2] powerpc/perf: Return regs->nip as instruction
+ pointer value when SIAR is 0
+In-Reply-To: <c6110aa1-90e2-77aa-1ab5-355975037227@csgroup.eu>
 References: <20210813082450.429320-1-kjain@linux.ibm.com>
- <37c6279f-a05c-7dd9-b034-05ca524bc6b0@linux.ibm.com>
- <9662dfbf-d163-c313-745e-aeda0f638e98@csgroup.eu>
-Date: Sat, 14 Aug 2021 22:30:41 +1000
-Message-ID: <8735rcmcni.fsf@mpe.ellerman.id.au>
+ <20210813082450.429320-2-kjain@linux.ibm.com>
+ <c6110aa1-90e2-77aa-1ab5-355975037227@csgroup.eu>
+Date: Sat, 14 Aug 2021 22:44:05 +1000
+Message-ID: <871r6wmc16.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -71,24 +72,46 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Le 13/08/2021 =C3=A0 10:29, kajoljain a =C3=A9crit=C2=A0:
->>=20
->> On 8/13/21 1:54 PM, Kajol Jain wrote:
->>> Minor optimization in the 'perf_instruction_pointer' function code by
->>> making use of stack siar instead of mfspr.
->>>
->>> Fixes: 75382aa72f06 ("powerpc/perf: Move code to select SIAR or pt_regs
->>> into perf_read_regs")
->>> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
->>=20
->> Please ignore this patch-set as I mentioned wrong version number. I will=
- resend
->> this patch-set again with correct version. Sorry for the confusion.
->
-> I fear you are creating even more confusion by sending a v1 after sending=
- a v2 ...
+> Le 13/08/2021 =C3=A0 10:24, Kajol Jain a =C3=A9crit=C2=A0:
+>> Incase of random sampling, there can be scenarios where SIAR is not
+>> latching sample address and results in 0 value. Since current code
+>> directly returning the siar value, we could see multiple instruction
+>> pointer values as 0 in perf report.
 
-Yeah in future just reply to the v2 saying "oops I sent v2 instead of
-v1" and leave it at that.
+Can you please give more detail on that? What scenarios? On what CPUs?
+
+>> Patch resolves this issue by adding a ternary condition to return
+>> regs->nip incase SIAR is 0.
+>
+> Your description seems rather similar to=20
+> https://github.com/linuxppc/linux/commit/2ca13a4cc56c920a6c9fc8ee45d02bcc=
+acd7f46c
+>
+> Does it mean that the problem occurs on more than the power10 DD1 ?
+>
+> In that case, can the solution be common instead of doing something for p=
+ower10 DD1 and something=20
+> for others ?
+
+Agreed.
+
+This change would seem to make that P10 DD1 logic superfluous.
+
+Also we already have a fallback to regs->nip in the else case of the if,
+so we should just use that rather than adding a ternary condition.
+
+eg.
+
+	if (use_siar && siar_valid(regs) && siar)
+		return siar + perf_ip_adjust(regs);
+	else if (use_siar)
+		return 0;		// no valid instruction pointer
+	else
+		return regs->nip;
+
+
+I'm also not sure why we have that return 0 case, I can't think of why
+we'd ever want to do that rather than using nip. So maybe we should do
+another patch to drop that case.
 
 cheers
