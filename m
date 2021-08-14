@@ -1,106 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D01A83EC10E
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Aug 2021 09:12:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89ED43EC172
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Aug 2021 10:42:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gms885QDrz3cK4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Aug 2021 17:12:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gmv7G1qGyz3cP2
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Aug 2021 18:42:18 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LKTTU+Tz;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=rpZ/Hf6O;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+ smtp.mailfrom=casper.srs.infradead.org (client-ip=2001:8b0:10b:1236::1;
+ helo=casper.infradead.org;
+ envelope-from=batv+f92b0dcacd1ebb3841ba+6565+infradead.org+hch@casper.srs.infradead.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=LKTTU+Tz; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=rpZ/Hf6O; 
+ dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gms7L4LHLz308Q
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Aug 2021 17:12:13 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 17E75QhP108066; Sat, 14 Aug 2021 03:12:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=WMjQ/rc9cB56lT2lW/xyJhRkEFSCK+/IVTiYhMDsRgw=;
- b=LKTTU+TzzyKWuTHJuQT2xsUazxsHRC9L0hiVZ9MfMNiThJ0takIfi+FK3cDnDFcebUPJ
- TIktvff40G8rw4pdyyGmYndS7XSrkkMqDQHZMabm0PnU6ewCCN4IAzX4mg4HKESNCWE/
- t8IFYygsNKAppFcucjJb5njTrFTADGLiLr2OtdWGvkwrGrvQdnBINzf1/FAmqSdweVXy
- 0WzaBfEIdYGthYTm+ECBFgwQqYRoctmbZy4JXzrReqNqL0/mlCzBLpLi5Yc4rYKTv15c
- heKWPdDlvL0d/aaf0KjoK+f0dxyHMLal7Dn5IlYOA2Bys9NaCqCcq80McnWnO+nbLUvM 2Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3adrp55m26-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 14 Aug 2021 03:12:09 -0400
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 17E7C91j125346;
- Sat, 14 Aug 2021 03:12:09 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3adrp55m1x-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 14 Aug 2021 03:12:09 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 17E6xfC6003894;
- Sat, 14 Aug 2021 07:12:07 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma03ams.nl.ibm.com with ESMTP id 3ae5f886y3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 14 Aug 2021 07:12:07 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 17E7C5b454198566
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 14 Aug 2021 07:12:05 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 26F67AE057;
- Sat, 14 Aug 2021 07:12:05 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3E6AFAE055;
- Sat, 14 Aug 2021 07:12:04 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.195.35.224])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Sat, 14 Aug 2021 07:12:04 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.120.0.1.13\))
-Subject: Re: [PATCH v1 17/55] KVM: PPC: Book3S HV P9: Implement PMU
- save/restore in C
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <1628827731.ai2zz7xxwa.astroid@bobo.none>
-Date: Sat, 14 Aug 2021 12:42:01 +0530
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <D683A065-D7DB-45E2-8625-E74B682015C4@linux.vnet.ibm.com>
-References: <20210726035036.739609-1-npiggin@gmail.com>
- <20210726035036.739609-18-npiggin@gmail.com>
- <1A47BBEF-FC8C-4C4D-8393-9DE66B7FF96C@linux.vnet.ibm.com>
- <1628827731.ai2zz7xxwa.astroid@bobo.none>
-To: Nicholas Piggin <npiggin@gmail.com>
-X-Mailer: Apple Mail (2.3654.120.0.1.13)
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: M3RjjLXOy9ce4iclpcjtXKG439Fer_9d
-X-Proofpoint-GUID: 4lr-HUtG9oFOCdUXeDgAGrWBx8L4YOkc
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-08-14_02:2021-08-13,
- 2021-08-14 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- mlxlogscore=993 malwarescore=0 bulkscore=0 impostorscore=0 phishscore=0
- priorityscore=1501 spamscore=0 mlxscore=0 adultscore=0 suspectscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2107140000 definitions=main-2108140043
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gmv6V1xtwz2yN4
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Aug 2021 18:41:35 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=62Vas8vfgaU4Fg6a79+EgFsfJwf25X3qtqREVjssypo=; b=rpZ/Hf6OytEohJ44VJerrJnY/s
+ TEFsUGwQv3vlbUI/UJ63t6E2YTwPjll3r0wySKJteuhDjjHUkTC891M2EaZAtSmzc/6A7VtDUYdeZ
+ sj04B0bK0q7cXgHrj4BkRf93eUFG3YOvax+SqxiXEMu68HGkPpVwIx3Bxu1nSZfJ9kMUCSzXM+sto
+ M6hSpq59VxPiY/BdGTlq9OS61Y6ZM0kqRjZzvGbgjN7M74UQJlVY3yE+PFufg32Mk50/mGh+9hFnM
+ AZlp+9VpV1p/UVgYqoI5Yt2M0GsKqu2cVVjHNlp2YnwDTFsE9y6r5rwyYuCw4Obj52pcnajsvDSDo
+ yGLfyGTw==;
+Received: from hch by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat
+ Linux)) id 1mEpBa-00GXfB-Cb; Sat, 14 Aug 2021 08:38:41 +0000
+Date: Sat, 14 Aug 2021 09:38:34 +0100
+From: Christoph Hellwig <hch@infradead.org>
+To: Uwe Kleine-K??nig <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH v3 4/8] PCI: replace pci_dev::driver usage that gets the
+ driver name
+Message-ID: <YReBCtWxvmDx7Uqg@infradead.org>
+References: <20210811080637.2596434-1-u.kleine-koenig@pengutronix.de>
+ <20210811080637.2596434-5-u.kleine-koenig@pengutronix.de>
+ <YRTIqGm5Dr8du7a7@infradead.org>
+ <20210812081425.7pjy4a25e2ehkr3x@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210812081425.7pjy4a25e2ehkr3x@pengutronix.de>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,76 +67,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org
+Cc: Alexander Duyck <alexanderduyck@fb.com>, oss-drivers@corigine.com,
+ Paul Mackerras <paulus@samba.org>, Herbert Xu <herbert@gondor.apana.org.au>,
+ Ido Schimmel <idosch@nvidia.com>, Rafa?? Mi??ecki <zajec5@gmail.com>,
+ Jesse Brandeburg <jesse.brandeburg@intel.com>,
+ Christoph Hellwig <hch@infradead.org>, Bjorn Helgaas <helgaas@kernel.org>,
+ linux-pci@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+ Yisen Zhuang <yisen.zhuang@huawei.com>, Vadym Kochan <vkochan@marvell.com>,
+ Michael Buesch <m@bues.ch>, Jiri Pirko <jiri@nvidia.com>,
+ Salil Mehta <salil.mehta@huawei.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Taras Chornyi <tchornyi@marvell.com>, Zhou Wang <wangzhou1@hisilicon.com>,
+ linux-crypto@vger.kernel.org, kernel@pengutronix.de, netdev@vger.kernel.org,
+ Simon Horman <simon.horman@corigine.com>, Oliver O'Halloran <oohall@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, Aug 12, 2021 at 10:14:25AM +0200, Uwe Kleine-K??nig wrote:
+> dev_driver_string() might return "" (via dev_bus_name()). If that happens
+> *drvstr == '\0' becomes true.
+> 
+> Would the following be better?:
+> 
+> 	const char *drvstr;
+> 
+> 	if (pdev)
+> 		return "<null>";
+> 
+> 	drvstr = dev_driver_string(&pdev->dev);
+> 
+> 	if (!strcmp(drvstr, ""))
+> 		return "<null>";
+> 
+> 	return drvstr;
+> 
+> When I thought about this hunk I considered it ugly to have "<null>" in
+> it twice.
 
+Well, if you want to avoid that you can do:
 
-> On 13-Aug-2021, at 9:54 AM, Nicholas Piggin <npiggin@gmail.com> wrote:
->=20
-> Excerpts from Athira Rajeev's message of August 9, 2021 1:03 pm:
->>=20
->>=20
->>> On 26-Jul-2021, at 9:19 AM, Nicholas Piggin <npiggin@gmail.com> =
-wrote:
->=20
->=20
->>> +static void freeze_pmu(unsigned long mmcr0, unsigned long mmcra)
->>> +{
->>> +	if (!(mmcr0 & MMCR0_FC))
->>> +		goto do_freeze;
->>> +	if (mmcra & MMCRA_SAMPLE_ENABLE)
->>> +		goto do_freeze;
->>> +	if (cpu_has_feature(CPU_FTR_ARCH_31)) {
->>> +		if (!(mmcr0 & MMCR0_PMCCEXT))
->>> +			goto do_freeze;
->>> +		if (!(mmcra & MMCRA_BHRB_DISABLE))
->>> +			goto do_freeze;
->>> +	}
->>> +	return;
->>> +
->>> +do_freeze:
->>> +	mmcr0 =3D MMCR0_FC;
->>> +	mmcra =3D 0;
->>> +	if (cpu_has_feature(CPU_FTR_ARCH_31)) {
->>> +		mmcr0 |=3D MMCR0_PMCCEXT;
->>> +		mmcra =3D MMCRA_BHRB_DISABLE;
->>> +	}
->>> +
->>> +	mtspr(SPRN_MMCR0, mmcr0);
->>> +	mtspr(SPRN_MMCRA, mmcra);
->>> +	isync();
->>> +}
->>> +
->> Hi Nick,
->>=20
->> After feezing pmu, do we need to clear =E2=80=9Cpmcregs_in_use=E2=80=9D=
- as well?
->=20
-> Not until we save the values out of the registers. pmcregs_in_use =3D =
-0=20
-> means our hypervisor is free to clear our PMU register contents.
->=20
->> Also can=E2=80=99t we unconditionally do the MMCR0/MMCRA/ freeze =
-settings in here ? do we need the if conditions for FC/PMCCEXT/BHRB ?
->=20
-> I think it's possible, but pretty minimal advantage. I would prefer to=20=
+	if (pdev) {
+		const char *name = dev_driver_string(&pdev->dev);
 
-> set them the way perf does for now.
+		if (strcmp(drvstr, ""))
+			return name;
+	}
+	return "<null>";
 
-Sure Nick,=20
-
-Other changes looks good to me.
-
-Reviewed-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-
-Thanks
-Athira
-> If we can move this code into perf/
-> it should become easier for you to tweak things.
->=20
-> Thanks,
-> Nick
-
+Which would be a lot more readable.
