@@ -1,54 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56C7F3ECBA9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Aug 2021 00:24:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 320FA3ECBAE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Aug 2021 00:28:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GnsKX183tz3cHB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Aug 2021 08:24:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GnsQ60Xflz3cLs
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Aug 2021 08:28:30 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=rCc+gnCJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=ArJ+wmRg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
- envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=canb.auug.org.au (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=sfr@canb.auug.org.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=rCc+gnCJ; 
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=ArJ+wmRg; 
  dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
+Received: from ozlabs.org (ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GnsJn0Tmwz2yMG
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Aug 2021 08:23:52 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
- Content-ID:Content-Description:In-Reply-To:References;
- bh=pTmqCP6bDwFCjXTWd+UHBKtuuPwOHDbSrKzlepP0BUE=; b=rCc+gnCJNt6uQBsnSfjHECCJaQ
- RR2RCy+gM9PIBaLzI6yeTNNaWpVxrHG2KZr8wDCjTivJqG4m3xg1jSgSUNR1nH7zmx9WqbGHxjXpk
- e2FtzH7M36jJIAE8dAVu6qvAGu59fh5h5yOW4p6ZUVdAtK5oQnultq+Bvr2TAMZeyI1ZMcbfAiDzA
- D0Qs7FCkRFrdPdPOaIXW7gC6MJ/HmZ6re9xerz+2afIszMMye0b4xki4gcaNH4B7Wvnzv62NeVqdt
- /6/7KP0QIgKNxc7m7sI2yQSMaW+P0LPnC2wMC5qniRTQFqqEJpegXvRhxYEeB98Pkvv+vOlmRkr9l
- Szdy269g==;
-Received: from [2601:1c0:6280:3f0:e65e:37ff:febd:ee53]
- (helo=bombadil.infradead.org)
- by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mFOXX-00Fj6S-CE; Sun, 15 Aug 2021 22:23:35 +0000
-From: Randy Dunlap <rdunlap@infradead.org>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH] powerpc/head_check: use stdout for error messages
-Date: Sun, 15 Aug 2021 15:23:34 -0700
-Message-Id: <20210815222334.9575-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.31.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GnsPS5r2Yz2yZ2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Aug 2021 08:27:55 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4GnsPQ386Wz9sW5;
+ Mon, 16 Aug 2021 08:27:54 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+ s=201702; t=1629066474;
+ bh=GL0WkzuJBwb4nB1CUPHXfzKvAmz2FBpioUMDj69Vrw4=;
+ h=Date:From:To:Cc:Subject:From;
+ b=ArJ+wmRgQnsVs5WSYPO/H0OL9uRI0h9Z8orQJeRdsW8gmqBjc6mHhrEMfF1gxQ7eu
+ AOnSvyUTh7DHM3RrIMHeIBlA/MNnLkFsCv9cNmZNEMh1ZDth9bSyXVdExLzZpiff9o
+ IwrC1ml6V5JTGlC3LP0K4V+VGTe/tRRdy3fSQBBl6+R9NaWwt7ZIV6HjwDK1n8Uk/i
+ bIGcuLZ+62126ex10ASRgwcqERZFs3UETRs/1K1cob1wx+k77Hi461HeecMmdKCgdu
+ YqZXqfIiqCrzp2WmnROC+qXiiJaPcspjY0cdxlCHxT6WBkT2hO3T1f+rmqf9fvHdov
+ LfFvpy76xGHEA==
+Date: Mon, 16 Aug 2021 08:27:52 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Michael Ellerman <mpe@ellerman.id.au>, PowerPC
+ <linuxppc-dev@lists.ozlabs.org>
+Subject: linux-next: manual merge of the powerpc tree with Linus' tree
+Message-ID: <20210816082752.415ae787@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="Sig_/8YGGvlsd/AQ7543ZTVBmOiu";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,53 +61,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Chen, Rong A" <rong.a.chen@intel.com>,
- Randy Dunlap <rdunlap@infradead.org>, Nicholas Piggin <npiggin@gmail.com>,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
+ =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@kaod.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Prefer stderr instead of stdout for error messages.
-This is a good practice and can help CI error detecting and
-reporting (0day in this case).
+--Sig_/8YGGvlsd/AQ7543ZTVBmOiu
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: "Chen, Rong A" <rong.a.chen@intel.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/tools/head_check.sh |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+Hi all,
 
---- linux-next-20210813.orig/arch/powerpc/tools/head_check.sh
-+++ linux-next-20210813/arch/powerpc/tools/head_check.sh
-@@ -56,9 +56,9 @@ expected_start_head_addr=$vma
- start_head_addr=$(cat .tmp_symbols.txt | grep " t start_first_256B$" | cut -d' ' -f1)
- 
- if [ "$start_head_addr" != "$expected_start_head_addr" ]; then
--	echo "ERROR: head code starts at $start_head_addr, should be $expected_start_head_addr"
--	echo "ERROR: try to enable LD_HEAD_STUB_CATCH config option"
--	echo "ERROR: see comments in arch/powerpc/tools/head_check.sh"
-+	echo "ERROR: head code starts at $start_head_addr, should be $expected_start_head_addr" 1>&2
-+	echo "ERROR: try to enable LD_HEAD_STUB_CATCH config option" 1>&2
-+	echo "ERROR: see comments in arch/powerpc/tools/head_check.sh" 1>&2
- 
- 	exit 1
- fi
-@@ -70,9 +70,9 @@ expected_start_text_addr=$(cat .tmp_symb
- start_text_addr=$(cat .tmp_symbols.txt | grep " t start_text$" | cut -d' ' -f1)
- 
- if [ "$start_text_addr" != "$expected_start_text_addr" ]; then
--	echo "ERROR: start_text address is $start_text_addr, should be $expected_start_text_addr"
--	echo "ERROR: try to enable LD_HEAD_STUB_CATCH config option"
--	echo "ERROR: see comments in arch/powerpc/tools/head_check.sh"
-+	echo "ERROR: start_text address is $start_text_addr, should be $expected_start_text_addr" 1>&2
-+	echo "ERROR: try to enable LD_HEAD_STUB_CATCH config option" 1>&2
-+	echo "ERROR: see comments in arch/powerpc/tools/head_check.sh" 1>&2
- 
- 	exit 1
- fi
+Today's linux-next merge of the powerpc tree got a conflict in:
+
+  arch/powerpc/sysdev/xive/common.c
+
+between commit:
+
+  cbc06f051c52 ("powerpc/xive: Do not skip CPU-less nodes when creating the=
+ IPIs")
+
+from Linus' tree and commit:
+
+  17df41fec5b8 ("powerpc: use IRQF_NO_DEBUG for IPIs")
+
+from the powerpc tree.
+
+I fixed it up (see below) and can carry the fix as necessary. This
+is now fixed as far as linux-next is concerned, but any non trivial
+conflicts should be mentioned to your upstream maintainer when your tree
+is submitted for merging.  You may also want to consider cooperating
+with the maintainer of the conflicting tree to minimise any particularly
+complex conflicts.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+diff --cc arch/powerpc/sysdev/xive/common.c
+index 943fd30095af,458645c7a72b..000000000000
+--- a/arch/powerpc/sysdev/xive/common.c
++++ b/arch/powerpc/sysdev/xive/common.c
+@@@ -1170,22 -1166,6 +1157,22 @@@ out
+  	return ret;
+  }
+ =20
+ +static int __init xive_request_ipi(unsigned int cpu)
+ +{
+ +	struct xive_ipi_desc *xid =3D &xive_ipis[early_cpu_to_node(cpu)];
+ +	int ret;
+ +
+ +	if (atomic_inc_return(&xid->started) > 1)
+ +		return 0;
+ +
+ +	ret =3D request_irq(xid->irq, xive_muxed_ipi_action,
+- 			  IRQF_PERCPU | IRQF_NO_THREAD,
+++			  IRQF_NO_DEBUG | IRQF_PERCPU | IRQF_NO_THREAD,
+ +			  xid->name, NULL);
+ +
+ +	WARN(ret < 0, "Failed to request IPI %d: %d\n", xid->irq, ret);
+ +	return ret;
+ +}
+ +
+  static int xive_setup_cpu_ipi(unsigned int cpu)
+  {
+  	unsigned int xive_ipi_irq =3D xive_ipi_cpu_to_irq(cpu);
+
+--Sig_/8YGGvlsd/AQ7543ZTVBmOiu
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmEZlOgACgkQAVBC80lX
+0GzhFQf+PCiOx9n8QJgOMbL2b8dYOSvDlS7Q7e4n1g+ea3B9MdCbAUYVDP/XH7vQ
+o0CD5hdNKcXiVOIKMVHmYB5pwTPFIjtDkxeECtUEKBseKVNJZM0NdwUgiPsR1JOu
+yfNdQO6B8FFLIKjsA4b86cElyWEiSermEDm24hZLJ0NqFwSe/M4guMDxelRjHwKe
+I+Z1D8rYJfpYRGan/QLOhe8fifnhGGwqq49noyidb53U3DKY6aoqEdP2lXbDPodT
+GYrp2jIQTSrd3v7qUTNo9Rgrg1M/KDqDcl0bKbEqJ8e4LK0JuQ11eROcjuqtRHaL
+w4b4hroL0r8GQxFss945ochaxSrv7A==
+=ALq1
+-----END PGP SIGNATURE-----
+
+--Sig_/8YGGvlsd/AQ7543ZTVBmOiu--
