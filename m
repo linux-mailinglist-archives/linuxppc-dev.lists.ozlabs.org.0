@@ -1,60 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5750D3ECA65
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Aug 2021 19:01:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56C7F3ECBA9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Aug 2021 00:24:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gnk8W3465z30FF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Aug 2021 03:01:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GnsKX183tz3cHB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Aug 2021 08:24:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=c6/WvWhx;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=rCc+gnCJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=pr-tracker-bot@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=c6/WvWhx; 
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=bombadil.20210309 header.b=rCc+gnCJ; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gnk7n6QL4z3035
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Aug 2021 03:00:37 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPS id 774D860C40;
- Sun, 15 Aug 2021 17:00:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1629046833;
- bh=LWofAuKgdrrv7tvkrVcI9fizKdir0cMFEtvUqwVIIx4=;
- h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
- b=c6/WvWhxLqrOAUP3nqScBhI2mlDicd69OYWsQr+JujBzSM4bMDO8vIGypX0ByA310
- v3wbvRbHgMsBO3k4J5fQWe2GJNiMLL0OXEkjU0L+eLcK49edQ575no6VeiwHV30BOD
- g7Uedr4LoCNwNME4Xnbdse7iKj9Rvmnqjj9CgU5PaxC8VT5JLhIWjj0PaeFnVmAC8D
- We2CRietVwStAzvKNb6H1tpwLyW85PQw/a18a/a+bqBsukRzPRU9gylT5Vu2aO9UDe
- VeL3D/PiCQQ3cDOd6wo9VSQpkkebIcV12qOXH3xcUwazSIBO/UveasFsQ93gmDkXPc
- GEsoprt/a6Ngg==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain
- [127.0.0.1])
- by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 6CA1D60A69;
- Sun, 15 Aug 2021 17:00:33 +0000 (UTC)
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.14-5 tag
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <87tujqlvpo.fsf@mpe.ellerman.id.au>
-References: <87tujqlvpo.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <87tujqlvpo.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
- tags/powerpc-5.14-5
-X-PR-Tracked-Commit-Id: cbc06f051c524dcfe52ef0d1f30647828e226d30
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: ecf93431963a95c0f475921101bedc0dd62ec96d
-Message-Id: <162904683343.11260.6565674688445410753.pr-tracker-bot@kernel.org>
-Date: Sun, 15 Aug 2021 17:00:33 +0000
-To: Michael Ellerman <mpe@ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GnsJn0Tmwz2yMG
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Aug 2021 08:23:52 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+ MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+ Content-ID:Content-Description:In-Reply-To:References;
+ bh=pTmqCP6bDwFCjXTWd+UHBKtuuPwOHDbSrKzlepP0BUE=; b=rCc+gnCJNt6uQBsnSfjHECCJaQ
+ RR2RCy+gM9PIBaLzI6yeTNNaWpVxrHG2KZr8wDCjTivJqG4m3xg1jSgSUNR1nH7zmx9WqbGHxjXpk
+ e2FtzH7M36jJIAE8dAVu6qvAGu59fh5h5yOW4p6ZUVdAtK5oQnultq+Bvr2TAMZeyI1ZMcbfAiDzA
+ D0Qs7FCkRFrdPdPOaIXW7gC6MJ/HmZ6re9xerz+2afIszMMye0b4xki4gcaNH4B7Wvnzv62NeVqdt
+ /6/7KP0QIgKNxc7m7sI2yQSMaW+P0LPnC2wMC5qniRTQFqqEJpegXvRhxYEeB98Pkvv+vOlmRkr9l
+ Szdy269g==;
+Received: from [2601:1c0:6280:3f0:e65e:37ff:febd:ee53]
+ (helo=bombadil.infradead.org)
+ by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1mFOXX-00Fj6S-CE; Sun, 15 Aug 2021 22:23:35 +0000
+From: Randy Dunlap <rdunlap@infradead.org>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH] powerpc/head_check: use stdout for error messages
+Date: Sun, 15 Aug 2021 15:23:34 -0700
+Message-Id: <20210815222334.9575-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.31.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,22 +60,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
- linux-kernel@vger.kernel.org, clg@kaod.org, pulehui@huawei.com,
- ldufour@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: "Chen, Rong A" <rong.a.chen@intel.com>,
+ Randy Dunlap <rdunlap@infradead.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pull request you sent on Sun, 15 Aug 2021 22:48:51 +1000:
+Prefer stderr instead of stdout for error messages.
+This is a good practice and can help CI error detecting and
+reporting (0day in this case).
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.14-5
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: "Chen, Rong A" <rong.a.chen@intel.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/tools/head_check.sh |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/ecf93431963a95c0f475921101bedc0dd62ec96d
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+--- linux-next-20210813.orig/arch/powerpc/tools/head_check.sh
++++ linux-next-20210813/arch/powerpc/tools/head_check.sh
+@@ -56,9 +56,9 @@ expected_start_head_addr=$vma
+ start_head_addr=$(cat .tmp_symbols.txt | grep " t start_first_256B$" | cut -d' ' -f1)
+ 
+ if [ "$start_head_addr" != "$expected_start_head_addr" ]; then
+-	echo "ERROR: head code starts at $start_head_addr, should be $expected_start_head_addr"
+-	echo "ERROR: try to enable LD_HEAD_STUB_CATCH config option"
+-	echo "ERROR: see comments in arch/powerpc/tools/head_check.sh"
++	echo "ERROR: head code starts at $start_head_addr, should be $expected_start_head_addr" 1>&2
++	echo "ERROR: try to enable LD_HEAD_STUB_CATCH config option" 1>&2
++	echo "ERROR: see comments in arch/powerpc/tools/head_check.sh" 1>&2
+ 
+ 	exit 1
+ fi
+@@ -70,9 +70,9 @@ expected_start_text_addr=$(cat .tmp_symb
+ start_text_addr=$(cat .tmp_symbols.txt | grep " t start_text$" | cut -d' ' -f1)
+ 
+ if [ "$start_text_addr" != "$expected_start_text_addr" ]; then
+-	echo "ERROR: start_text address is $start_text_addr, should be $expected_start_text_addr"
+-	echo "ERROR: try to enable LD_HEAD_STUB_CATCH config option"
+-	echo "ERROR: see comments in arch/powerpc/tools/head_check.sh"
++	echo "ERROR: start_text address is $start_text_addr, should be $expected_start_text_addr" 1>&2
++	echo "ERROR: try to enable LD_HEAD_STUB_CATCH config option" 1>&2
++	echo "ERROR: see comments in arch/powerpc/tools/head_check.sh" 1>&2
+ 
+ 	exit 1
+ fi
