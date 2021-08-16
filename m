@@ -1,55 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 320FA3ECBAE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Aug 2021 00:28:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D5D53ECC88
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Aug 2021 04:06:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GnsQ60Xflz3cLs
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Aug 2021 08:28:30 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=ArJ+wmRg;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GnyFn5ggRz3bn6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Aug 2021 12:06:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=canb.auug.org.au (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=sfr@canb.auug.org.au; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.a=rsa-sha256 header.s=201702 header.b=ArJ+wmRg; 
- dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GnsPS5r2Yz2yZ2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Aug 2021 08:27:55 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4GnsPQ386Wz9sW5;
- Mon, 16 Aug 2021 08:27:54 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
- s=201702; t=1629066474;
- bh=GL0WkzuJBwb4nB1CUPHXfzKvAmz2FBpioUMDj69Vrw4=;
- h=Date:From:To:Cc:Subject:From;
- b=ArJ+wmRgQnsVs5WSYPO/H0OL9uRI0h9Z8orQJeRdsW8gmqBjc6mHhrEMfF1gxQ7eu
- AOnSvyUTh7DHM3RrIMHeIBlA/MNnLkFsCv9cNmZNEMh1ZDth9bSyXVdExLzZpiff9o
- IwrC1ml6V5JTGlC3LP0K4V+VGTe/tRRdy3fSQBBl6+R9NaWwt7ZIV6HjwDK1n8Uk/i
- bIGcuLZ+62126ex10ASRgwcqERZFs3UETRs/1K1cob1wx+k77Hi461HeecMmdKCgdu
- YqZXqfIiqCrzp2WmnROC+qXiiJaPcspjY0cdxlCHxT6WBkT2hO3T1f+rmqf9fvHdov
- LfFvpy76xGHEA==
-Date: Mon, 16 Aug 2021 08:27:52 +1000
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, PowerPC
- <linuxppc-dev@lists.ozlabs.org>
-Subject: linux-next: manual merge of the powerpc tree with Linus' tree
-Message-ID: <20210816082752.415ae787@canb.auug.org.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GnyFH4mLfz2ymN
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Aug 2021 12:06:07 +1000 (AEST)
+X-IronPort-AV: E=McAfee;i="6200,9189,10077"; a="215509947"
+X-IronPort-AV: E=Sophos;i="5.84,324,1620716400"; d="scan'208";a="215509947"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+ by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Aug 2021 19:05:04 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.84,324,1620716400"; d="scan'208";a="448295239"
+Received: from lkp-server01.sh.intel.com (HELO d053b881505b) ([10.239.97.150])
+ by fmsmga007.fm.intel.com with ESMTP; 15 Aug 2021 19:05:02 -0700
+Received: from kbuild by d053b881505b with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1mFRzp-000QIV-IE; Mon, 16 Aug 2021 02:05:01 +0000
+Date: Mon, 16 Aug 2021 10:04:51 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:next] BUILD SUCCESS 1e688dd2a3d6759d416616ff07afc4bb836c4213
+Message-ID: <6119c7c3.1Rwu4BvPkI6Zy7Jf%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/8YGGvlsd/AQ7543ZTVBmOiu";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,88 +49,198 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
- =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@kaod.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/8YGGvlsd/AQ7543ZTVBmOiu
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+branch HEAD: 1e688dd2a3d6759d416616ff07afc4bb836c4213  powerpc/bug: Provide better flexibility to WARN_ON/__WARN_FLAGS() with asm goto
 
-Hi all,
+elapsed time: 722m
 
-Today's linux-next merge of the powerpc tree got a conflict in:
+configs tested: 172
+configs skipped: 3
 
-  arch/powerpc/sysdev/xive/common.c
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-between commit:
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm64                               defconfig
+i386                 randconfig-c001-20210816
+i386                 randconfig-c001-20210815
+nios2                         3c120_defconfig
+sh                          landisk_defconfig
+sh                           se7712_defconfig
+arm                        trizeps4_defconfig
+sh                   secureedge5410_defconfig
+powerpc                     tqm8540_defconfig
+arm                        neponset_defconfig
+powerpc                     stx_gp3_defconfig
+nios2                         10m50_defconfig
+powerpc                    klondike_defconfig
+mips                malta_qemu_32r6_defconfig
+arm                        mini2440_defconfig
+arc                              alldefconfig
+h8300                     edosk2674_defconfig
+arm                          moxart_defconfig
+arm                          ixp4xx_defconfig
+mips                        bcm63xx_defconfig
+arm                  colibri_pxa300_defconfig
+sh                 kfr2r09-romimage_defconfig
+arm                           viper_defconfig
+arm                         s3c6400_defconfig
+parisc                generic-32bit_defconfig
+sh                           se7343_defconfig
+arm                           tegra_defconfig
+h8300                               defconfig
+powerpc                     tqm5200_defconfig
+powerpc                      walnut_defconfig
+mips                      bmips_stb_defconfig
+sh                           se7619_defconfig
+arm                         orion5x_defconfig
+sh                          r7785rp_defconfig
+m68k                       m5275evb_defconfig
+xtensa                       common_defconfig
+mips                   sb1250_swarm_defconfig
+powerpc                         ps3_defconfig
+powerpc               mpc834x_itxgp_defconfig
+arm                         lubbock_defconfig
+arm                        magician_defconfig
+powerpc                 mpc837x_rdb_defconfig
+m68k                          hp300_defconfig
+mips                            ar7_defconfig
+i386                                defconfig
+openrisc                    or1ksim_defconfig
+powerpc                     pq2fads_defconfig
+sh                             espt_defconfig
+arm                   milbeaut_m10v_defconfig
+mips                            gpr_defconfig
+powerpc                     mpc5200_defconfig
+i386                             alldefconfig
+powerpc                 mpc832x_rdb_defconfig
+arm                        spear6xx_defconfig
+sparc                       sparc64_defconfig
+sh                          polaris_defconfig
+powerpc                    amigaone_defconfig
+powerpc                     mpc83xx_defconfig
+sh                          lboxre2_defconfig
+arm                         shannon_defconfig
+mips                        workpad_defconfig
+m68k                        mvme16x_defconfig
+arm                          badge4_defconfig
+sh                           se7705_defconfig
+mips                         bigsur_defconfig
+mips                      pic32mzda_defconfig
+powerpc                     rainier_defconfig
+arm                            hisi_defconfig
+powerpc                      bamboo_defconfig
+csky                             alldefconfig
+alpha                               defconfig
+arm                          collie_defconfig
+arm                             pxa_defconfig
+m68k                          atari_defconfig
+arm                          pxa910_defconfig
+powerpc                 mpc85xx_cds_defconfig
+powerpc                      mgcoge_defconfig
+sh                               j2_defconfig
+ia64                      gensparse_defconfig
+powerpc                     ksi8560_defconfig
+x86_64                            allnoconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a004-20210815
+i386                 randconfig-a001-20210815
+i386                 randconfig-a002-20210815
+i386                 randconfig-a003-20210815
+i386                 randconfig-a006-20210815
+i386                 randconfig-a005-20210815
+i386                 randconfig-a004-20210816
+i386                 randconfig-a003-20210816
+i386                 randconfig-a002-20210816
+i386                 randconfig-a001-20210816
+i386                 randconfig-a006-20210816
+i386                 randconfig-a005-20210816
+x86_64               randconfig-a013-20210815
+x86_64               randconfig-a011-20210815
+x86_64               randconfig-a016-20210815
+x86_64               randconfig-a012-20210815
+x86_64               randconfig-a014-20210815
+x86_64               randconfig-a015-20210815
+i386                 randconfig-a011-20210815
+i386                 randconfig-a015-20210815
+i386                 randconfig-a014-20210815
+i386                 randconfig-a013-20210815
+i386                 randconfig-a016-20210815
+i386                 randconfig-a012-20210815
+i386                 randconfig-a011-20210816
+i386                 randconfig-a015-20210816
+i386                 randconfig-a013-20210816
+i386                 randconfig-a014-20210816
+i386                 randconfig-a016-20210816
+i386                 randconfig-a012-20210816
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
 
-  cbc06f051c52 ("powerpc/xive: Do not skip CPU-less nodes when creating the=
- IPIs")
+clang tested configs:
+x86_64               randconfig-c001-20210815
+x86_64               randconfig-a004-20210815
+x86_64               randconfig-a006-20210815
+x86_64               randconfig-a003-20210815
+x86_64               randconfig-a001-20210815
+x86_64               randconfig-a002-20210815
+x86_64               randconfig-a005-20210815
+x86_64               randconfig-a011-20210816
+x86_64               randconfig-a013-20210816
+x86_64               randconfig-a016-20210816
+x86_64               randconfig-a012-20210816
+x86_64               randconfig-a015-20210816
+x86_64               randconfig-a014-20210816
 
-from Linus' tree and commit:
-
-  17df41fec5b8 ("powerpc: use IRQF_NO_DEBUG for IPIs")
-
-from the powerpc tree.
-
-I fixed it up (see below) and can carry the fix as necessary. This
-is now fixed as far as linux-next is concerned, but any non trivial
-conflicts should be mentioned to your upstream maintainer when your tree
-is submitted for merging.  You may also want to consider cooperating
-with the maintainer of the conflicting tree to minimise any particularly
-complex conflicts.
-
---=20
-Cheers,
-Stephen Rothwell
-
-diff --cc arch/powerpc/sysdev/xive/common.c
-index 943fd30095af,458645c7a72b..000000000000
---- a/arch/powerpc/sysdev/xive/common.c
-+++ b/arch/powerpc/sysdev/xive/common.c
-@@@ -1170,22 -1166,6 +1157,22 @@@ out
-  	return ret;
-  }
- =20
- +static int __init xive_request_ipi(unsigned int cpu)
- +{
- +	struct xive_ipi_desc *xid =3D &xive_ipis[early_cpu_to_node(cpu)];
- +	int ret;
- +
- +	if (atomic_inc_return(&xid->started) > 1)
- +		return 0;
- +
- +	ret =3D request_irq(xid->irq, xive_muxed_ipi_action,
-- 			  IRQF_PERCPU | IRQF_NO_THREAD,
-++			  IRQF_NO_DEBUG | IRQF_PERCPU | IRQF_NO_THREAD,
- +			  xid->name, NULL);
- +
- +	WARN(ret < 0, "Failed to request IPI %d: %d\n", xid->irq, ret);
- +	return ret;
- +}
- +
-  static int xive_setup_cpu_ipi(unsigned int cpu)
-  {
-  	unsigned int xive_ipi_irq =3D xive_ipi_cpu_to_irq(cpu);
-
---Sig_/8YGGvlsd/AQ7543ZTVBmOiu
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmEZlOgACgkQAVBC80lX
-0GzhFQf+PCiOx9n8QJgOMbL2b8dYOSvDlS7Q7e4n1g+ea3B9MdCbAUYVDP/XH7vQ
-o0CD5hdNKcXiVOIKMVHmYB5pwTPFIjtDkxeECtUEKBseKVNJZM0NdwUgiPsR1JOu
-yfNdQO6B8FFLIKjsA4b86cElyWEiSermEDm24hZLJ0NqFwSe/M4guMDxelRjHwKe
-I+Z1D8rYJfpYRGan/QLOhe8fifnhGGwqq49noyidb53U3DKY6aoqEdP2lXbDPodT
-GYrp2jIQTSrd3v7qUTNo9Rgrg1M/KDqDcl0bKbEqJ8e4LK0JuQ11eROcjuqtRHaL
-w4b4hroL0r8GQxFss945ochaxSrv7A==
-=ALq1
------END PGP SIGNATURE-----
-
---Sig_/8YGGvlsd/AQ7543ZTVBmOiu--
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
