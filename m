@@ -2,75 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D087E3ED02F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Aug 2021 10:26:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CA5F3ED056
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Aug 2021 10:32:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gp6hY5CJpz3dG8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Aug 2021 18:26:53 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=jT7PHESt;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gp6q843Mcz3d8S
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Aug 2021 18:32:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1032;
- helo=mail-pj1-x1032.google.com; envelope-from=joel.stan@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=jT7PHESt; dkim-atps=neutral
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com
- [IPv6:2607:f8b0:4864:20::1032])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gp6dx5LX2z3bbx
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Aug 2021 18:24:37 +1000 (AEST)
-Received: by mail-pj1-x1032.google.com with SMTP id
- j12-20020a17090aeb0c00b00179530520b3so10681134pjz.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Aug 2021 01:24:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=2ez5nRjqbyCLB7lm8hB7epSqLa5vR5YmVpdnQUI3QfY=;
- b=jT7PHEStIC9OiP7hVe1Il+bqxY3kIyjQuCmTCPEYroUVGIKH7+DT1PLZ1u8ByboTWD
- J6sMx/hR7DgHZU+MYW1YOIy/Mp4P3yjsdQij7U5CAfkDtZS2LRFQx6ecSsXGdPRxIWjs
- SY2VqTauFZbfJVYmjPSn0OjzwVmDsyj1paLTiBYXZweq1Fxjd4kacLqqZ3rTvpKc32OU
- 5TftEWvUrRlqDq+Db0NbRmpTbnByPv6DWMtgrYjlXrvuSuezu680VDfcSDhDcDYKk9bW
- r/mQ/c03oEuPuzLHNk+5l70AYkAzMlkPeLARa77sqzNjNBV7Sa91dfUtUYthcz0ztK6U
- DNiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
- :in-reply-to:references:mime-version:content-transfer-encoding;
- bh=2ez5nRjqbyCLB7lm8hB7epSqLa5vR5YmVpdnQUI3QfY=;
- b=gW16QDJbLcrjhA2LaGe8fdbm5HG8wbE7ty+7oYyZKokvbMSeM5TcVND+SQH+u+OO8u
- 9g3e+koGOApsMLxPPmtgrzKRdDG0PLPAGkCzIBNykQxnmPlF4ecZ2dilleHQoUAOU8eS
- vQY89ZSxYGiVUE58nnThGnG3+2hSilKLT/edRE1PfguLIXR2ZCBttxgLpB4gz7SLVzzD
- lFfSwA9rz8DFhg3zd/9ulotbb0wnUtbwwkr9srey0AtVGqMEKJ86Jq99+8kABEBCL/99
- xCXy6Bb7tV0EMNA2H/wRS8FLkPJwDXJlTAoXTSx6CsT1EtBeMtjii4/ZFavvxuROFqct
- DODA==
-X-Gm-Message-State: AOAM531uMbOg7T/1HpyjEbOySmeBlugTuFb0++n0J5XB9/xt4eAb5At3
- jx3Jp2PA1kCC7J7yg6DOQPs=
-X-Google-Smtp-Source: ABdhPJw3TZc2M6QWwTA0ZOwBxq6+qgWGYC/OU5iZbIDZB6+o8ehBEFev/3yWRQiO2hzuDj9RtNeXPg==
-X-Received: by 2002:a63:6983:: with SMTP id
- e125mr14966187pgc.389.1629102275204; 
- Mon, 16 Aug 2021 01:24:35 -0700 (PDT)
-Received: from voyager.lan ([45.124.203.15])
- by smtp.gmail.com with ESMTPSA id u24sm10542358pfm.85.2021.08.16.01.24.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Aug 2021 01:24:34 -0700 (PDT)
-From: Joel Stanley <joel@jms.id.au>
-To: Paul Mackerras <paulus@samba.org>, Michael Neuling <mikey@neuling.org>,
- Anton Blanchard <anton@ozlabs.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 3/3] powerpc/microwatt: CPU doesn't (yet) have speculation bugs
-Date: Mon, 16 Aug 2021 17:54:03 +0930
-Message-Id: <20210816082403.2293846-4-joel@jms.id.au>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20210816082403.2293846-1-joel@jms.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gp6p34hVCz3029
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Aug 2021 18:31:35 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4Gp6nw15cVz9sVG;
+ Mon, 16 Aug 2021 10:31:32 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id qIU4wgJ1r51a; Mon, 16 Aug 2021 10:31:32 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4Gp6nw06Nfz9sV8;
+ Mon, 16 Aug 2021 10:31:32 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D82368B78C;
+ Mon, 16 Aug 2021 10:31:31 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id jj1ANunAVcqM; Mon, 16 Aug 2021 10:31:31 +0200 (CEST)
+Received: from [172.25.230.100] (po15451.idsi0.si.c-s.fr [172.25.230.100])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 690FA8B788;
+ Mon, 16 Aug 2021 10:31:31 +0200 (CEST)
+Subject: Re: [PATCH 1/3] powerpc/64s: Fix build when !PPC_BARRIER_NOSPEC
+To: Joel Stanley <joel@jms.id.au>, Paul Mackerras <paulus@samba.org>,
+ Michael Neuling <mikey@neuling.org>, Anton Blanchard <anton@ozlabs.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org
 References: <20210816082403.2293846-1-joel@jms.id.au>
+ <20210816082403.2293846-2-joel@jms.id.au>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <71820896-9c74-bc68-79c5-cc6d6d63fb65@csgroup.eu>
+Date: Mon, 16 Aug 2021 10:31:23 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
+In-Reply-To: <20210816082403.2293846-2-joel@jms.id.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -88,23 +71,46 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Signed-off-by: Joel Stanley <joel@jms.id.au>
----
- arch/powerpc/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 663766fbf505..d5af6667c206 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -279,6 +279,7 @@ config PPC_BARRIER_NOSPEC
- 	bool
- 	default y
- 	depends on PPC_BOOK3S_64 || PPC_FSL_BOOK3E
-+	depends on !PPC_MICROWATT
- 
- config EARLY_PRINTK
- 	bool
--- 
-2.32.0
 
+Le 16/08/2021 à 10:24, Joel Stanley a écrit :
+> When disabling PPC_BARRIER_NOSPEC the do_barrier_nospec_fixups_range
+> definition is still included, as well as a stub in asm/setup.h:
+> 
+> ../arch/powerpc/lib/feature-fixups.c:502:6: error: redefinition of ‘do_barrier_nospec_fixu>
+>    502 | void do_barrier_nospec_fixups_range(bool enable, void *fixup_start, void *fixup_en>
+>        |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> In file included from ../arch/powerpc/lib/feature-fixups.c:23:
+> ../arch/powerpc/include/asm/setup.h:70:20: note: previous definition of ‘do_barrier_nospec>
+>     70 | static inline void do_barrier_nospec_fixups_range(bool enable, void *start, void *>
+>        |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> 
+> I assume the intent was to put the just do_barrier_nospec_fixups
+> behind PPC_BARRIER_NOSPEC and let the compiler drop _range when there
+> are no users. (There is a caller in module.c, but this is behind
+> PPC_BARRIER_NOSPEC).
+
+The compiler won't drop do_barrier_nospec_fixups_range() because it is not static.
+
+> 
+> This makes PPC_BOOK3S_64 match how the PPC_FSL_BOOK3E build works.
+> 
+> Signed-off-by: Joel Stanley <joel@jms.id.au>
+> ---
+>   arch/powerpc/include/asm/setup.h | 2 --
+>   1 file changed, 2 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/setup.h b/arch/powerpc/include/asm/setup.h
+> index 6c1a7d217d1a..71012284c044 100644
+> --- a/arch/powerpc/include/asm/setup.h
+> +++ b/arch/powerpc/include/asm/setup.h
+> @@ -66,8 +66,6 @@ extern bool barrier_nospec_enabled;
+>   
+>   #ifdef CONFIG_PPC_BARRIER_NOSPEC
+>   void do_barrier_nospec_fixups_range(bool enable, void *start, void *end);
+> -#else
+> -static inline void do_barrier_nospec_fixups_range(bool enable, void *start, void *end) { }
+>   #endif
+>   
+>   #ifdef CONFIG_PPC_FSL_BOOK3E
+> 
