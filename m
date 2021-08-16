@@ -1,66 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62CD53ED3F8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Aug 2021 14:30:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B93303ED9BE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Aug 2021 17:17:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GpD5G2BVkz3cM2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Aug 2021 22:30:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GpHpq3qRWz3cPn
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 01:17:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=IG6yzZHn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TTNUJxcq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo4-p00-ob.smtp.rzone.de (client-ip=85.215.255.25;
- helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=IG6yzZHn; 
- dkim-atps=neutral
-Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de
- [85.215.255.25])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=TTNUJxcq; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GpD4V5TQhz30L2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Aug 2021 22:29:28 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1629116962;
- s=strato-dkim-0002; d=xenosoft.de;
- h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:Cc:Date:
- From:Subject:Sender;
- bh=FxbcwOPiYU3UCC04T+4rOtzjTGFEtDMBuZ3tUtpOc5U=;
- b=IG6yzZHnDRkebCKK6/mUS8rf2SRKDgoQmFZvfMsYnsTsgd3VGiJ6QPM0PxDMI7yq57
- 0vN7OpfTj5H69zrdWvEBaYaJgyJpSAYdVhWh4VeOMKCQ0zoaZ92TRw8Y0kK2+6xXYFoC
- 5lMffGqE3xtcUR5TDCXUUXSjQsQZ0KsetV9pcAXeAgLD3TxhZK6wwFX1lt5lrK0D4/ut
- uzgEIuPoB8lAE0h33UMva0Afjf3lb5Az6pqjhsmQAaV73FIgX63PzTC1aBZcElxlllWB
- 9FJ69iBJihyZxQWP8Nk3cfW+W1VJwY4TRpo/OCnF8JYqop7dD2NKRIqfKZRzqHakbWxm
- MMXg==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPgGcl1JmBEA1yGCL+d+0mk8mOaC3A=="
-X-RZG-CLASS-ID: mo00
-Received: from Christians-iMac.fritz.box by smtp.strato.de (RZmta 47.31.0 AUTH)
- with ESMTPSA id j01e29x7GCTLqfQ
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Mon, 16 Aug 2021 14:29:21 +0200 (CEST)
-Subject: Re: [FSL P50x0] lscpu reports wrong values since the RC1 of kernel
- 5.13
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-References: <a7098505-2162-d3cc-b8f9-ef8c8a7d441f@xenosoft.de>
-Message-ID: <c16c3747-8c6c-fb27-4e07-a893b83a5580@xenosoft.de>
-Date: Mon, 16 Aug 2021 14:29:21 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.13.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GpHp35wzgz300b
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Aug 2021 01:17:15 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 17GF4LmG096244; Mon, 16 Aug 2021 11:17:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=77OMHVAJ+sap+19YlcRQVh76SBmswR9LELxGKC+kib8=;
+ b=TTNUJxcqtv9Ey2IHuuIRcYfJAzRk3Dq4OHmqFlfJe0kk7dpAZyGv4K7Eh/HgjKeUM0FT
+ G0wC0iwb3U3/tpF1FinAUSyKsymPB5Y3aN9mk57okrjk5VHLKwqGL++A5TaBy5u77r8F
+ Tb98aI1lnv9LmvUdS9LK97KSopKaf9DXQLrcn73pQaQJRl4b2R+WjZlMPL8j+2wyaSwt
+ YMSazxZG309yQyK0uthpcvUM0DGUWVkAVfMTNtd5IrvuJxfpNIvMBkpgEeMX7qmyguZG
+ +96975kowiGXGvRvtZHcLLwVsuHEd3yHSvZAhqjdo5zCzAcVxeeVGHmH3WxfzQDz7djR bQ== 
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3aetr6bf0m-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 16 Aug 2021 11:17:08 -0400
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 17GFCwbN031595;
+ Mon, 16 Aug 2021 15:17:07 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
+ [9.57.198.23]) by ppma04wdc.us.ibm.com with ESMTP id 3ae5fb4q2s-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 16 Aug 2021 15:17:07 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 17GFH6IE30736862
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 16 Aug 2021 15:17:06 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 408E028059;
+ Mon, 16 Aug 2021 15:17:06 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0CDC328060;
+ Mon, 16 Aug 2021 15:17:06 +0000 (GMT)
+Received: from localhost (unknown [9.211.33.17])
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Mon, 16 Aug 2021 15:17:05 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/pseries/cpuhp: fix non-NUMA build
+Date: Mon, 16 Aug 2021 10:17:05 -0500
+Message-Id: <20210816151705.2786296-1-nathanl@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-In-Reply-To: <a7098505-2162-d3cc-b8f9-ef8c8a7d441f@xenosoft.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: de-DE
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: H_KVEExRApqhaMaf_HW9-JkuTmzzjvay
+X-Proofpoint-ORIG-GUID: H_KVEExRApqhaMaf_HW9-JkuTmzzjvay
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-08-16_05:2021-08-16,
+ 2021-08-16 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 impostorscore=0
+ malwarescore=0 spamscore=0 priorityscore=1501 mlxlogscore=997 phishscore=0
+ clxscore=1015 adultscore=0 bulkscore=0 suspectscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2107140000
+ definitions=main-2108160096
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,166 +95,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mad skateman <madskateman@gmail.com>,
- Darren Stevens <darren@stevens-zone.net>, qemu-devel@nongnu.org,
- "R.T.Dickinson" <rtd2@xtra.co.nz>
+Cc: ldufour@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi All,
+With CONFIG_NUMA unset, direct references to node_to_cpumask_map don't
+work:
 
-I tested the RC6 of kernel 5.14 today and unfortunately the issue still 
-exists. We have figured out that only P5040 SoCs are affected. [1]
-P5020 SoCs display the correct values.
-Please check the CPU changes in the PowerPC updates 5.13-1 and 5.13-2.
+   arch/powerpc/platforms/pseries/hotplug-cpu.c: In function 'pseries_cpu_hotplug_init':
+>> arch/powerpc/platforms/pseries/hotplug-cpu.c:1022:8: error: 'node_to_cpumask_map' undeclared (first use in this
+>> function)
+    1022 |        node_to_cpumask_map[node]);
+	 |        ^~~~~~~~~~~~~~~~~~~
 
-Thanks,
-Christian
+Use cpumask_of_node() here instead.
 
-[1] https://forum.hyperion-entertainment.com/viewtopic.php?p=53775#p53775
+Fixes: bd1dd4c5f528 ("powerpc/pseries: Prevent free CPU ids being reused on another node")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+---
+ arch/powerpc/platforms/pseries/hotplug-cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-
-On 09 August 2021 um 02:37 pm, Christian Zigotzky wrote:
-> Hi All,
->
-> Lscpu reports wrong values [1] since the RC1 of kernel 5.13 on my FSL 
-> P5040 Cyrus+ board (A-EON AmigaOne X5000). [2]
-> The differences are:
->
-> Since the RC1 of kernel 5.13 (wrong values):
->
-> Core(s) per socket: 1
-> Socket(s): 3
->
-> Before (correct values):
->
-> Core(s) per socket: 4
-> Socket(s): 1
->
-> Through the wrong values, I can't use "-smp 4" with a virtual e5500 
-> QEMU machine with KVM HV anymore.  [3]
-> "-smp 3" works with KVM HV.
->
-> Maybe the file_load_64 commit from the PowerPC updates 5.13-2 is the 
-> problem ( powerpc/kexec_file: Use current CPU info while setting up 
-> FDT). [4]
->
-> Or maybe this change (PowerPC updates 5.13-1):
->
-> -#ifdef CONFIG_PPC_BOOK3E_64
-> -    state->ctx_state = exception_enter();
-> -    if (user_mode(regs))
-> -        account_cpu_user_entry();
-> -#endif
->
-> ---
->
-> Or maybe this change (PowerPC updates 5.13-1):
->
-> diff --git a/arch/powerpc/include/asm/smp.h 
-> b/arch/powerpc/include/asm/smp.h
-> index 7a13bc20f0a0c..03b3d010cbab6 100644
-> --- a/arch/powerpc/include/asm/smp.h
-> +++ b/arch/powerpc/include/asm/smp.h
-> @@ -31,6 +31,7 @@ extern u32 *cpu_to_phys_id;
->  extern bool coregroup_enabled;
->
->  extern int cpu_to_chip_id(int cpu);
-> +extern int *chip_id_lookup_table;
->
->  #ifdef CONFIG_SMP
->
-> @@ -121,6 +122,11 @@ static inline struct cpumask 
-> *cpu_sibling_mask(int cpu)
->      return per_cpu(cpu_sibling_map, cpu);
->  }
->
-> +static inline struct cpumask *cpu_core_mask(int cpu)
-> +{
-> +    return per_cpu(cpu_core_map, cpu);
-> +}
-> +
->  static inline struct cpumask *cpu_l2_cache_mask(int cpu)
->  {
->      return per_cpu(cpu_l2_cache_map, cpu);
->
-> ---
->
-> I have found a lot of other changes in the PowerPC updates 5.13-1 
-> regarding the CPU.
->
-> Could you please check the CPU changes in the PowerPC updates 5.13-1 
-> and 5.13-2?
->
-> Please find attached the kernel 5.14-rc5 config.
->
-> Thanks,
-> Christian
->
->
-> [1]
->
-> lscpu with the correct values before the RC1 of kernel 5.13:
->
-> Architecture: ppc64
-> CPU op-mode(s): 32-bit, 64-bit
-> Byte Order: Big Endian
-> CPU(s): 4
-> On-line CPU(s) list: 0-3
-> Thread(s) per core: 1
-> Core(s) per socket: 4
-> Socket(s): 1
-> Model: 1.2 (pvr 8024 0012)
-> Model name: e5500
-> L1d cache: 128 KiB
-> L1i cache: 128 KiB
-> L2 cache: 2 MiB
-> L3 cache: 2 MiB
-> Vulnerability Itlb multihit: Not affected
-> Vulnerability L1tf: Not affected
-> Vulnerability Mds: Not affected
-> Vulnerability Meltdown: Not affected
-> Vulnerability Spec store bypass: Not affected
-> Vulnerability Spectre v1: Mitigation; __user pointer sanitization
-> Vulnerability Spectre v2: Mitigation; Branch predictor state flush
-> Vulnerability Srbds: Not affected
-> Vulnerability Tsx async abort: Not affected
->
-> ---
->
-> lscpu with the wrong values since the RC1 of kernel 5.13:
->
-> Architecture: ppc64
-> CPU op-mode(s): 32-bit, 64-bit
-> Byte Order: Big Endian
-> CPU(s): 4
-> On-line CPU(s) list: 0-3
-> Thread(s) per core: 1
-> Core(s) per socket: 1
-> Socket(s): 3
-> Model: 1.2 (pvr 8024 0012)
-> Model name: e5500
-> L1d cache: 128 KiB
-> L1i cache: 128 KiB
-> L2 cache: 2 MiB
-> L3 cache: 2 MiB
-> Vulnerability Itlb multihit: Not affected
-> Vulnerability L1tf: Not affected
-> Vulnerability Mds: Not affected
-> Vulnerability Meltdown: Not affected
-> Vulnerability Spec store bypass: Not affected
-> Vulnerability Spectre v1: Mitigation; __user pointer sanitization
-> Vulnerability Spectre v2: Mitigation; Branch predictor state flush
-> Vulnerability Srbds: Not affected
-> Vulnerability Tsx async abort: Not affected
->
-> ---
->
-> [2] http://wiki.amiga.org/index.php?title=X5000
->
-> [3] https://lists.ozlabs.org/pipermail/linuxppc-dev/2021-May/229103.html
->
-> [4] 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/diff/arch/powerpc/kexec/file_load_64.c?id=ab159ac569fddf812c0a217d6dbffaa5d93ef88f
+diff --git a/arch/powerpc/platforms/pseries/hotplug-cpu.c b/arch/powerpc/platforms/pseries/hotplug-cpu.c
+index 1ef40ef699a6..d646c22e94ab 100644
+--- a/arch/powerpc/platforms/pseries/hotplug-cpu.c
++++ b/arch/powerpc/platforms/pseries/hotplug-cpu.c
+@@ -1021,7 +1021,7 @@ static int __init pseries_cpu_hotplug_init(void)
+ 			/* Record ids of CPU added at boot time */
+ 			cpumask_or(node_recorded_ids_map[node],
+ 				   node_recorded_ids_map[node],
+-				   node_to_cpumask_map[node]);
++				   cpumask_of_node(node));
+ 		}
+ 
+ 		of_reconfig_notifier_register(&pseries_smp_nb);
+-- 
+2.31.1
 
