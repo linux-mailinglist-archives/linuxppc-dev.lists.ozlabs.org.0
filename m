@@ -2,102 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 540C13ED20E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Aug 2021 12:35:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 614E33ED324
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Aug 2021 13:35:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gp9XS1JgJz3cV2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Aug 2021 20:35:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GpBth0kGPz3bWw
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Aug 2021 21:35:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XSiURWvh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=uiJ+O46L;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1029;
+ helo=mail-pj1-x1029.google.com; envelope-from=cgel.zte@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=XSiURWvh; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=uiJ+O46L; dkim-atps=neutral
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com
+ [IPv6:2607:f8b0:4864:20::1029])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gp9Wj1HxRz30K7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Aug 2021 20:34:24 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 17GAWqTO088486; Mon, 16 Aug 2021 06:33:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=5av6NHoF+9D8KsZzLIfgybg2fcuVJ3/w9uvWlIZ0S8E=;
- b=XSiURWvhMUM8bUl7ohQj/FuEneCHvAhrCp1nzc2YA9I+Y4Evl5eiOlifEEGAGtgIJ/Nk
- D/3yFRlyNIkfcXbWnV24eofq/qJH7O8c/uHruBOX7BeHGvgL3AQC6q9NGQJR2hGLGuau
- ad0cGLYu+Hg1xmf6wxwYGxtEdp+3oMUTHd4+GpUwIeDwDPQFTzVSniQgvL6A5pTFlfu+
- 2+4HdYXbH6j9KBHnckVlARx1SdJ+q+qdmVJw6SBoJa7NN4XAZY7fPJYfPZ1dR0XMlvqt
- bRR+A9D7oNutrrcsGVauWndn2vM0kQXTxz9ap7anskp6JHD6ol7ph1ZHGbk95QXNUsUm Pw== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3aetwauads-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 16 Aug 2021 06:33:56 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 17GABxX5025816;
- Mon, 16 Aug 2021 10:33:55 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma03ams.nl.ibm.com with ESMTP id 3ae5f8b1v5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 16 Aug 2021 10:33:54 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 17GAXpDG56820028
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 16 Aug 2021 10:33:51 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 73CC4A407B;
- Mon, 16 Aug 2021 10:33:51 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DE56EA4065;
- Mon, 16 Aug 2021 10:33:47 +0000 (GMT)
-Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Mon, 16 Aug 2021 10:33:47 +0000 (GMT)
-Date: Mon, 16 Aug 2021 16:03:47 +0530
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Valentin Schneider <valentin.schneider@arm.com>,
- Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v2 1/2] sched/topology: Skip updating masks for
- non-online nodes
-Message-ID: <20210816103347.GC21942@linux.vnet.ibm.com>
-References: <20210701041552.112072-1-srikar@linux.vnet.ibm.com>
- <20210701041552.112072-2-srikar@linux.vnet.ibm.com>
- <875yxu85wi.mognet@arm.com>
- <20210712124856.GA3836887@linux.vnet.ibm.com>
- <87zguqmay9.mognet@arm.com>
- <20210723143914.GI3836887@linux.vnet.ibm.com>
- <87h7g09bgg.mognet@arm.com>
- <20210809065235.GH4072958@linux.vnet.ibm.com>
- <875yweaig9.mognet@arm.com>
- <20210810114727.GB21942@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GpBsm71dCz3bXT
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Aug 2021 21:35:07 +1000 (AEST)
+Received: by mail-pj1-x1029.google.com with SMTP id oa17so26010801pjb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Aug 2021 04:35:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=uTWDBNi6gTv/e5E0tvAcisNF+AyHlVmsBNOwg6nhosY=;
+ b=uiJ+O46LF9jTBxwtfXWMff33cOA8Ou1xpCH0ZVK+7dXjEgjcJgHspSjXykP/2bYEk3
+ 8CvEI7yJK7uJQt1d0xW4Lv/CgqsT4Uh6VVjwSLV9Ux/liECea6NzQYGNLIurqx0rYv0H
+ LtW5z41qVvSPG/gq5p2LQklYCM84sHmjWQuAWXCSQzZIPJ2XBmWsqftnIS7Sd5rSNrzH
+ 1PrR8dXoEn6XY4trxBdPXl/1DjWe5XIDEY98vJnsO/l65arpeTRoaBWdU1J0IVs9kjQU
+ stqU0hpBDbBhvDBy2WhsulDGbw5x7zke3HfjUSoYuwvm7njhzdJrlUMDIFVGeKGaexxk
+ 1l+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=uTWDBNi6gTv/e5E0tvAcisNF+AyHlVmsBNOwg6nhosY=;
+ b=oYqvPWGyofNfxuafwMayQDd2VCUjZWiLi+CfGBM4jHux7j1JRoLZSbjAIIOsdHl/qQ
+ jiTWrMSna8DyBBisWvIKg0OT8j3fvzImrUW5uRdj9O3ulwvVy9T4WKXGhyq+nbWJnFOJ
+ 1gIepKaMlStkNUs7oL2e8d7i+uWnGVxVcGlqEOZJ13iIpl76DEUYAEjCwEGDhhwYrxg+
+ bHx5tvdauIULf6aOiOi+pkh6aWxd63Q/tDOWj22xSv2GB/S6awKbLlO8Wyc24BSzmz7G
+ Yerx0zIje0DkOu5Wx1mnGgsaMk6ArutnkLfB5fWjy2Mgn7yJMKottBWMNEcgIALPDymS
+ X0VQ==
+X-Gm-Message-State: AOAM533zB5HfXVS0elFlAFmV1aLG/uQYWeoLZ5xg7EGcRhORmHfJb6SM
+ im+Vq1/794ZkMQv9yxq2Bq4=
+X-Google-Smtp-Source: ABdhPJzwO6blgdz0F18gt6MsWwZVdFCucyeH3BBL9qX8uGuPL/I7OdXuyzBIis+56p29NRMkXFFIQA==
+X-Received: by 2002:a17:90a:8909:: with SMTP id
+ u9mr16901957pjn.9.1629113705802; 
+ Mon, 16 Aug 2021 04:35:05 -0700 (PDT)
+Received: from localhost.localdomain ([193.203.214.57])
+ by smtp.gmail.com with ESMTPSA id l126sm13677088pgl.14.2021.08.16.04.35.03
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 16 Aug 2021 04:35:05 -0700 (PDT)
+From: cgel.zte@gmail.com
+X-Google-Original-From: lv.ruyi@zte.com.cn
+To: mpe@ellerman.id.au
+Subject: [PATCH linux-next] module: remove duplicate include in interrupt.c
+Date: Mon, 16 Aug 2021 04:34:53 -0700
+Message-Id: <20210816113453.126939-1-lv.ruyi@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <20210810114727.GB21942@linux.vnet.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: lc-xZ-bSsq-whyxuvFTxQWN5R-J4ehy4
-X-Proofpoint-ORIG-GUID: lc-xZ-bSsq-whyxuvFTxQWN5R-J4ehy4
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-08-16_03:2021-08-16,
- 2021-08-16 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- priorityscore=1501 malwarescore=0 phishscore=0 suspectscore=0 bulkscore=0
- adultscore=0 clxscore=1015 mlxscore=0 impostorscore=0 spamscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2107140000 definitions=main-2108160065
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,31 +79,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Gautham R Shenoy <ego@linux.vnet.ibm.com>,
- Vincent Guittot <vincent.guittot@linaro.org>, Rik van Riel <riel@surriel.com>,
- linuxppc-dev@lists.ozlabs.org,
- Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>,
- LKML <linux-kernel@vger.kernel.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Thomas Gleixner <tglx@linutronix.de>, Laurent Dufour <ldufour@linux.ibm.com>,
- Mel Gorman <mgorman@techsingularity.net>, Ingo Molnar <mingo@kernel.org>
+Cc: Lv Ruyi <lv.ruyi@zte.com.cn>, linux-kernel@vger.kernel.org,
+ paulus@samba.org, npiggin@gmail.com, linuxppc-dev@lists.ozlabs.org,
+ Zeal Robot <zealci@zte.com.cn>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> 
-> Your version is much much better than mine.
-> And I have verified that it works as expected.
-> 
-> 
+From: Lv Ruyi <lv.ruyi@zte.com.cn>
 
-Hey Peter/Valentin
+'asm/interrupt.h' included in 'interrupt.c' is duplicated.
 
-Are we waiting for any more feedback/testing for this?
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Lv Ruyi <lv.ruyi@zte.com.cn>
+---
+ arch/powerpc/kernel/interrupt.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-
+diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
+index 21bbd615ca41..8a936515e4e4 100644
+--- a/arch/powerpc/kernel/interrupt.c
++++ b/arch/powerpc/kernel/interrupt.c
+@@ -10,7 +10,6 @@
+ #include <asm/cputime.h>
+ #include <asm/interrupt.h>
+ #include <asm/hw_irq.h>
+-#include <asm/interrupt.h>
+ #include <asm/kprobes.h>
+ #include <asm/paca.h>
+ #include <asm/ptrace.h>
 -- 
-Thanks and Regards
-Srikar Dronamraju
+2.25.1
+
