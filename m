@@ -1,51 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D250A3ECCB8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Aug 2021 04:40:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90CCF3ECD7F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Aug 2021 06:11:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gnz0Y4wZlz3cVb
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Aug 2021 12:40:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gp11x3vRxz3c8Y
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Aug 2021 14:11:33 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=FyQWuOlc;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=FyQWuOlc; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gnz041Z63z301B
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Aug 2021 12:39:44 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4Gnyzv5hMNzBBtB;
- Mon, 16 Aug 2021 04:39:39 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 3zLKgHYKhixx; Mon, 16 Aug 2021 04:39:39 +0200 (CEST)
-Received: from vm-hermes.si.c-s.fr (vm-hermes.si.c-s.fr [192.168.25.253])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4Gnyzv2JJNzBBrY;
- Mon, 16 Aug 2021 04:39:39 +0200 (CEST)
-Received: by vm-hermes.si.c-s.fr (Postfix, from userid 33)
- id 824B8248; Mon, 16 Aug 2021 04:45:14 +0200 (CEST)
-Received: from 37.165.172.2 ([37.165.172.2]) by messagerie.c-s.fr (Horde
- Framework) with HTTP; Mon, 16 Aug 2021 04:45:14 +0200
-Date: Mon, 16 Aug 2021 04:45:14 +0200
-Message-ID: <20210816044514.Horde.WAvjInneMUMGu0ryEZHgrQ8@messagerie.c-s.fr>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Herbert Xu <herbert@gondor.apana.org.au>
-Subject: Re: [PATCH] crypto: DRBG - select SHA512
-References: <304ee0376383d9ceecddbfd216c035215bbff861.camel@chronox.de>
- <20210716081411.GA2062@gondor.apana.org.au> <YRft/tuKE6MjHhY7@zn.tnic>
- <20210816020735.GA10021@gondor.apana.org.au>
-In-Reply-To: <20210816020735.GA10021@gondor.apana.org.au>
-User-Agent: Internet Messaging Program (IMP) H5 (6.2.3)
-Content-Type: text/plain; charset=UTF-8; format=flowed; DelSp=Yes
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gp11H211Jz301J
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Aug 2021 14:10:59 +1000 (AEST)
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 4Gp11C0SrQz9sWw; Mon, 16 Aug 2021 14:10:54 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1629087055;
+ bh=vL6PDLUTi4v2XAGCSY2os4ZBsblrndcYDG5h8EUgeyo=;
+ h=From:To:Cc:Subject:Date:From;
+ b=FyQWuOlcZm2GrjoI6G0//rqi8i1tuL9CU94oKd3rbEHKouH26AYEtSAhcNCxmJ+zB
+ ZFwbav5AXgmvGoOt0NqZWYtlCUkJk6ZQXD3eZR/2L2CN+W9WiWUGWTqfKUAnHzShGH
+ 7pSFSiIAgzs1Znu/axkbl0T/PPmUcd3Rde1lu+JmLW9wR4p4ww/H8/Ri9yfhazFZXW
+ t161L7RhS3C2XzwZhyFmMrf1KbjOk51ADNQ4E2nkzA2tdg351bbVlpWLviKOe1Gw+b
+ Wb3UUXym2cwQg7/bhJND/Ab9OkgNRYHwVaeh4mKExDu0/Un+yBmbEW/bCqF5MPCD2w
+ 0/Qb41mS7V68Q==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/pseries: Fix build error when NUMA=n
+Date: Mon, 16 Aug 2021 14:10:32 +1000
+Message-Id: <20210816041032.2839343-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,47 +56,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sachinp@linux.vnet.ibm.com, Stephan Mueller <smueller@chronox.de>,
- lkml <linux-kernel@vger.kernel.org>, Borislav Petkov <bp@alien8.de>,
- linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: ldufour@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Herbert Xu <herbert@gondor.apana.org.au> a =C3=A9crit=C2=A0:
+As reported by lkp, if NUMA=n we see a build error:
 
-> On Sat, Aug 14, 2021 at 06:23:26PM +0200, Borislav Petkov wrote:
->> On Fri, Jul 16, 2021 at 04:14:12PM +0800, Herbert Xu wrote:
->> > Stephan Mueller <smueller@chronox.de> wrote:
->> > > With the swtich to use HMAC(SHA-512) as the default DRBG type, the
->> > > configuration must now also select SHA-512.
->> > >
->> > > Fixes: 9b7b94683a9b "crypto: DRBG - switch to HMAC SHA512 DRBG=20=20
->>=20as default
->> > > DRBG"
->> > > Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
->> > > Signed-off-by: Stephan Mueller <smueller@chronox.com>
->> > > ---
->> > > crypto/Kconfig | 2 +-
->> > > 1 file changed, 1 insertion(+), 1 deletion(-)
->> >
->> > Patch applied.  Thanks.
->>
->> Is that patch going to Linus anytime soon?
->>
->> I still see it on latest rc5+:
->
-> I'll push it up this week.
+   arch/powerpc/platforms/pseries/hotplug-cpu.c: In function 'pseries_cpu_hotplug_init':
+   arch/powerpc/platforms/pseries/hotplug-cpu.c:1022:8: error: 'node_to_cpumask_map' undeclared
+    1022 |        node_to_cpumask_map[node]);
 
-The fixes tag has a problem it seems. Should be corrected before pushing.
+Use cpumask_of_node() which has an empty stub for NUMA=n, and when
+NUMA=y does a lookup from node_to_cpumask_map[].
 
-Christophe
+Fixes: bd1dd4c5f528 ("powerpc/pseries: Prevent free CPU ids being reused on another node")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/platforms/pseries/hotplug-cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
->
-> Thanks,
-> --
-> Email: Herbert Xu <herbert@gondor.apana.org.au>
-> Home Page: http://gondor.apana.org.au/~herbert/
-> PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
-
+diff --git a/arch/powerpc/platforms/pseries/hotplug-cpu.c b/arch/powerpc/platforms/pseries/hotplug-cpu.c
+index 1ef40ef699a6..d646c22e94ab 100644
+--- a/arch/powerpc/platforms/pseries/hotplug-cpu.c
++++ b/arch/powerpc/platforms/pseries/hotplug-cpu.c
+@@ -1021,7 +1021,7 @@ static int __init pseries_cpu_hotplug_init(void)
+ 			/* Record ids of CPU added at boot time */
+ 			cpumask_or(node_recorded_ids_map[node],
+ 				   node_recorded_ids_map[node],
+-				   node_to_cpumask_map[node]);
++				   cpumask_of_node(node));
+ 		}
+ 
+ 		of_reconfig_notifier_register(&pseries_smp_nb);
+-- 
+2.25.1
 
