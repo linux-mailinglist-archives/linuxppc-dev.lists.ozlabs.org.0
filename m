@@ -1,67 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E54D3EDFAE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 00:05:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B6133EE0A4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 02:02:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GpSsL4Bdxz3cGg
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 08:05:42 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20161025 header.b=edCdElco;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GpWS12jhJz3cQq
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 10:02:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::22a;
- helo=mail-lj1-x22a.google.com; envelope-from=ndesaulniers@google.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=edCdElco; dkim-atps=neutral
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com
- [IPv6:2a00:1450:4864:20::22a])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GpSrh2CWsz2xvM
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Aug 2021 08:05:05 +1000 (AEST)
-Received: by mail-lj1-x22a.google.com with SMTP id h11so29502789ljo.12
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Aug 2021 15:05:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=e31P/2GOTWbuV4ckMdMmZ6I8R+PPJnAJhAHl1ZjYZ8Y=;
- b=edCdElcoohq5GytpdhwlPhshLDfbAh2jQXYj6et58GR+T01k1EgZoToCc2jeM3lMVd
- ycx3Io8gwiap261C2Y425b4a3KTRN4VfoqLxoQH4KG1qXQ0ILBUL/pQUZwlhjz2HLMkd
- HFHumSLdIGBYYGlKRnKqqfC/Fp4JWsKkWSw0B0iCtxRXhd56ecNT5HJZl0uW5mRHPp77
- mdHGgZMfiXShNgRy/kU/7N9MDTbLwJGS850Wa6HiXN8BEQs+q0SLdMgboC3JQ2xg6AGX
- LNrOD/8aQVxZg5KtZO3FoAIBh+U7nQ6fHNMAe7dVhGnFMI8s1FEOYl9Pz1boylAkGo8t
- yG6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=e31P/2GOTWbuV4ckMdMmZ6I8R+PPJnAJhAHl1ZjYZ8Y=;
- b=mHThVXvnyyhZ/JciDf464T+LK6fI8qHX/UNLkUeN+sBjr15FS9IWYMQcHeYuZREPz7
- +lXTXLrcxvoKOKZuSYfIiX6dG1fYdk0ZF8Zfu4Mnmm7ddPLvW7teTLiTltVjrb19XHKH
- djNUojuUsyvu/PJBxPh9Y1eLc/N6luJIZ34JB5w1NG7jqMwVUdIPZYmzp2MVRW1z8jDl
- ys46eVn6l5NyEhOOUZbpC49m9YVSgc4Df/a9um0lvZcMV655cG7z38fgqkHr4hdDIj+K
- 766O4uXvykBYb2tZfUU+T0VBthcL1pZBq7JpxgzUVs1zC7rNxoA27fwV4TS0eJfFaSOj
- UUFQ==
-X-Gm-Message-State: AOAM531TpGfH/5qcPH8zijfeJ7CxCNm76CaMqJ3w7yP29F9CBRPeMs90
- CxkrnJaax/mVXfxrcwrGIbMkn8ayTy/W8dFXOQ3hgA==
-X-Google-Smtp-Source: ABdhPJwxox6PXnfkmEMOrVyFZontRVeS9j/tsjqaDmcNw1hGPr+mKuthyVG+b+ZoQf9FyySDg4k5it5Il/2XusHAYTE=
-X-Received: by 2002:a05:651c:83:: with SMTP id 3mr301012ljq.341.1629151498062; 
- Mon, 16 Aug 2021 15:04:58 -0700 (PDT)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=valentin.schneider@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4GpWRW6rVkz303t
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Aug 2021 10:01:57 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 016031FB;
+ Mon, 16 Aug 2021 17:01:54 -0700 (PDT)
+Received: from e113632-lin (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EBE6D3F66F;
+ Mon, 16 Aug 2021 17:01:51 -0700 (PDT)
+From: Valentin Schneider <valentin.schneider@arm.com>
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH v2 1/2] sched/topology: Skip updating masks for non-online
+ nodes
+In-Reply-To: <20210816103347.GC21942@linux.vnet.ibm.com>
+References: <20210701041552.112072-1-srikar@linux.vnet.ibm.com>
+ <20210701041552.112072-2-srikar@linux.vnet.ibm.com>
+ <875yxu85wi.mognet@arm.com> <20210712124856.GA3836887@linux.vnet.ibm.com>
+ <87zguqmay9.mognet@arm.com> <20210723143914.GI3836887@linux.vnet.ibm.com>
+ <87h7g09bgg.mognet@arm.com> <20210809065235.GH4072958@linux.vnet.ibm.com>
+ <875yweaig9.mognet@arm.com> <20210810114727.GB21942@linux.vnet.ibm.com>
+ <20210816103347.GC21942@linux.vnet.ibm.com>
+Date: Tue, 17 Aug 2021 01:01:46 +0100
+Message-ID: <87mtph6is5.mognet@arm.com>
 MIME-Version: 1.0
-References: <20210816185711.21563-1-nathan@kernel.org>
-In-Reply-To: <20210816185711.21563-1-nathan@kernel.org>
-From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Mon, 16 Aug 2021 15:04:46 -0700
-Message-ID: <CAKwvOdkOCraDC0QccntgWD-ZkW8c2+RG8WeOD7aQH3BHZM2BHw@mail.gmail.com>
-Subject: Re: [PATCH] powerpc/xive: Do not mark xive_request_ipi() as __init
-To: Nathan Chancellor <nathan@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,58 +50,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Gautham R Shenoy <ego@linux.vnet.ibm.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>, Rik van Riel <riel@surriel.com>,
+ linuxppc-dev@lists.ozlabs.org,
+ Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>,
+ LKML <linux-kernel@vger.kernel.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Laurent Dufour <ldufour@linux.ibm.com>,
+ Mel Gorman <mgorman@techsingularity.net>, Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 16, 2021 at 12:06 PM Nathan Chancellor <nathan@kernel.org> wrote:
+On 16/08/21 16:03, Srikar Dronamraju wrote:
+>>
+>> Your version is much much better than mine.
+>> And I have verified that it works as expected.
+>>
+>>
 >
-> Compiling ppc64le_defconfig with clang-14 shows a modpost warning:
+> Hey Peter/Valentin
 >
-> WARNING: modpost: vmlinux.o(.text+0xa74e0): Section mismatch in
-> reference from the function xive_setup_cpu_ipi() to the function
-> .init.text:xive_request_ipi()
-> The function xive_setup_cpu_ipi() references
-> the function __init xive_request_ipi().
-> This is often because xive_setup_cpu_ipi lacks a __init
-> annotation or the annotation of xive_request_ipi is wrong.
+> Are we waiting for any more feedback/testing for this?
 >
-> xive_request_ipi() is called from xive_setup_cpu_ipi(), which is not
-> __init, so xive_request_ipi() should not be marked __init. Remove the
-> attribute so there is no more warning.
->
-> Fixes: cbc06f051c52 ("powerpc/xive: Do not skip CPU-less nodes when creating the IPIs")
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 
-Thanks for the patch!
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+I'm not overly fond of that last one, but AFAICT the only alternative is
+doing a full-fledged NUMA topology rebuild on new-node onlining (i.e. make
+calling sched_init_numa() more than once work). It's a lot more work for a
+very particular usecase.
 
-> ---
->  arch/powerpc/sysdev/xive/common.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
-> index 943fd30095af..8183ca343675 100644
-> --- a/arch/powerpc/sysdev/xive/common.c
-> +++ b/arch/powerpc/sysdev/xive/common.c
-> @@ -1170,7 +1170,7 @@ static int __init xive_init_ipis(void)
->         return ret;
->  }
->
-> -static int __init xive_request_ipi(unsigned int cpu)
-> +static int xive_request_ipi(unsigned int cpu)
->  {
->         struct xive_ipi_desc *xid = &xive_ipis[early_cpu_to_node(cpu)];
->         int ret;
->
-> base-commit: a2824f19e6065a0d3735acd9fe7155b104e7edf5
 > --
-> 2.33.0.rc2
->
-
-
--- 
-Thanks,
-~Nick Desaulniers
+> Thanks and Regards
+> Srikar Dronamraju
