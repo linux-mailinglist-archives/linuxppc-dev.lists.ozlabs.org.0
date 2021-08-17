@@ -1,45 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7757C3EF15D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 20:06:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88B453EF18B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 20:12:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GpzW41PKPz3cW5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Aug 2021 04:06:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GpzdH3JL9z3cLg
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Aug 2021 04:12:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 4GpzVc1Ctnz308Z
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Aug 2021 04:06:15 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 17HI3p37025443;
- Tue, 17 Aug 2021 13:03:51 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 17HI3o06025440;
- Tue, 17 Aug 2021 13:03:50 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Tue, 17 Aug 2021 13:03:50 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/32s: Fix random crashes by adding isync() after
- locking/unlocking KUEP
-Message-ID: <20210817180350.GH1583@gate.crashing.org>
-References: <1d28441dd80845e6428d693c0724cb6457247466.1629211378.git.christophe.leroy@csgroup.eu>
- <20210817162239.GF1583@gate.crashing.org>
- <0426a0d3-bdc6-1a34-1018-71b34282a6c6@csgroup.eu>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+ spf=none (no SPF record) smtp.mailfrom=perches.com
+ (client-ip=216.40.44.205; helo=smtprelay.hostedemail.com;
+ envelope-from=joe@perches.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 369 seconds by postgrey-1.36 at boromir;
+ Wed, 18 Aug 2021 04:11:41 AEST
+Received: from smtprelay.hostedemail.com (smtprelay0205.hostedemail.com
+ [216.40.44.205])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gpzcs30Ryz30DY
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Aug 2021 04:11:39 +1000 (AEST)
+Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com
+ [10.5.19.251])
+ by smtpgrave06.hostedemail.com (Postfix) with ESMTP id 1F6B2807221F
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Aug 2021 18:05:33 +0000 (UTC)
+Received: from omf04.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+ by smtprelay01.hostedemail.com (Postfix) with ESMTP id 79D5E100A44A9;
+ Tue, 17 Aug 2021 18:05:27 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by
+ omf04.hostedemail.com (Postfix) with ESMTPA id 67452D1517; 
+ Tue, 17 Aug 2021 18:05:26 +0000 (UTC)
+Message-ID: <79ad056a8d6b71df0a793f18c5752c2eaf8c836c.camel@perches.com>
+Subject: Re: [PATCH] macintosh: no need to initilise statics to 0
+From: Joe Perches <joe@perches.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Jason Wang
+ <wangborong@cdjrlc.com>, benh@kernel.crashing.org
+Date: Tue, 17 Aug 2021 11:05:24 -0700
+In-Reply-To: <2105ef52-b736-cc18-def9-02ac174d1922@csgroup.eu>
+References: <20210817115104.30057-1-wangborong@cdjrlc.com>
+ <2105ef52-b736-cc18-def9-02ac174d1922@csgroup.eu>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.40.0-1 
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <0426a0d3-bdc6-1a34-1018-71b34282a6c6@csgroup.eu>
-User-Agent: Mutt/1.4.2.3i
+X-Stat-Signature: r6f78e9dki483a97e8tpk5gf81t9mny4
+X-Rspamd-Server: rspamout03
+X-Rspamd-Queue-Id: 67452D1517
+X-Spam-Status: No, score=0.19
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX18NRR3d9r9nOd9Sa3Pmevs4UvdI+JZtr+I=
+X-HE-Tag: 1629223526-123757
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,84 +63,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: userm57@yahoo.com, fthain@linux-m68k.org, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: yukuai3@huawei.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi!
-
-On Tue, Aug 17, 2021 at 07:13:44PM +0200, Christophe Leroy wrote:
-> Le 17/08/2021 à 18:22, Segher Boessenkool a écrit :
-> >On Tue, Aug 17, 2021 at 02:43:15PM +0000, Christophe Leroy wrote:
-> >>Commit b5efec00b671 ("powerpc/32s: Move KUEP locking/unlocking in C")
-> >>removed the 'isync' instruction after adding/removing NX bit in user
-> >>segments. The reasoning behind this change was that when setting the
-> >>NX bit we don't mind it taking effect with delay as the kernel never
-> >>executes text from userspace, and when clearing the NX bit this is
-> >>to return to userspace and then the 'rfi' should synchronise the
-> >>context.
-> >>
-> >>However, it looks like on book3s/32 having a hash page table, at least
-> >>on the G3 processor, we get an unexpected fault from userspace, then
-> >>this is followed by something wrong in the verification of MSR_PR
-> >>at end of another interrupt.
-> >>
-> >>This is fixed by adding back the removed isync() following update
-> >>of NX bit in user segment registers. Only do it for cores with an
-> >>hash table, as 603 cores don't exhibit that problem and the two isync
-> >>increase ./null_syscall selftest by 6 cycles on an MPC 832x.
-> >>
-> >>First problem: unexpected PROTFAULT
-> >>
-> >>	[   62.896426] WARNING: CPU: 0 PID: 1660 at 
-> >>	arch/powerpc/mm/fault.c:354 do_page_fault+0x6c/0x5b0
-> >>	[   62.918111] Modules linked in:
-> >>	[   62.923350] CPU: 0 PID: 1660 Comm: Xorg Not tainted 
-> >>	5.13.0-pmac-00028-gb3c15b60339a #40
-> >>	[   62.943476] NIP:  c001b5c8 LR: c001b6f8 CTR: 00000000
-> >>	[   62.954714] REGS: e2d09e40 TRAP: 0700   Not tainted  
-> >>	(5.13.0-pmac-00028-gb3c15b60339a)
-> >
-> >That is not a protection fault.  What causes this?
+On Tue, 2021-08-17 at 13:59 +0200, Christophe Leroy wrote:
 > 
-> That's the WARN_ON(error_code & DSISR_PROTFAULT) at
+> Le 17/08/2021 à 13:51, Jason Wang a écrit :
+> > Global static variables dont need to be initialised to 0. Because
+> > the compiler will initilise them.
 > 
-> https://elixir.bootlin.com/linux/v5.13/source/arch/powerpc/mm/fault.c#L354
-
-Ah okay.  How confusing :-/
-
-> >A CSI (like isync) is required both before and after mtsr.  It may work
-> >on some cores without -- what part of that is luck, if there is anything
-> >that guarantees it, is anyone's guess :-/
+> It is not the compiler, it is the Kernel. It is done here:
 > 
-> kuep_lock() is called when entering interrupts, it means we recently got an 
-> 'rfi' to re-enable MMU.
-> kuep_unlock() is called when exit interrupts, it means we are soon going to 
-> call 'rfi' to go back to user.
-> 
-> In between, nobody is going to exec any userspace code, so who minds that 
-> the 'mtsr' changing user segments is not completely finished ?
+> https://elixir.bootlin.com/linux/v5.14-rc6/source/arch/powerpc/kernel/early_32.c
 
-Hey, that is my question!  :-)
+I don't know why that's done generally.
 
-So why does this not work on 750 then?
-
-> >>@@ -28,6 +30,8 @@ static inline void kuep_lock(void)
-> >>  		return;
-> >>  
-> >>  	update_user_segments(mfsr(0) | SR_NX);
-> >>+	if (mmu_has_feature(MMU_FTR_HPTE_TABLE))
-> >>+		isync();	/* Context sync required after mtsr() */
-> >>  }
-> >
-> >This needs a comment why you are not doing this for systems without
-> >hardware page table walk, at the least?
-> 
-> Ok, will add a comment tomorrow.
-
-Thanks!
+From memory, it's also required by the c spec unless it's for a union
+where the first union member is smaller in size than other members.
 
 
-Segher
