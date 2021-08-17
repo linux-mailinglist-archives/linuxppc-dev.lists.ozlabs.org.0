@@ -1,63 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 007E53EEC9D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 14:39:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4B023EECCC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 14:50:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GprFF6fx7z3cLw
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 22:39:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GprTg3wHJz3cK8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 22:49:59 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=KYXSccDf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Okm274n1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
  envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=KYXSccDf; 
+ header.a=rsa-sha256 header.s=201909 header.b=Okm274n1; 
  dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GprDX61lvz2yX8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Aug 2021 22:38:35 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GprT1260fz2ymS
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Aug 2021 22:49:25 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4GprDF2h3Tz9sSn;
- Tue, 17 Aug 2021 22:38:21 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4GprSz4CfZz9sSs;
+ Tue, 17 Aug 2021 22:49:23 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1629203905;
- bh=NQyXzwQlAo0xsgc18yZpAOusgLGX71Fk6ueV1qdw5rA=;
+ s=201909; t=1629204564;
+ bh=TSTAxhtCtdppesAv6FTLycAyK4ryy4vXUJm5VCnWWtU=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=KYXSccDfXzjB2hBx15MoEIDf+kWmkDX50zC9GoNA+zRe2h6A0PbLhChR5Cdkwlare
- Skall5IaM+JNYijtEffokiKW2vk3GcnrIXL9w6cyu8ks9EO2+V9EOw5R+GGu1PiYQv
- D9NxQxRHQN8/BYGs83P6DhfXjoNRsufAILW0QoxjiCBqx4FvSdnLWb7NReYqLmQl3x
- p3W/80//lGcl/AzT+8dWLeaLNqPIEQLIUJX653gw3u6fYoSlh4acLTdYAto8S4VL1T
- o4r+VgRPi55oy+/sUiu+QbwiFA1DMF8zLkBn1HY/7VQPrYtD408/c7FtLIJoHUe5Qi
- Ap9BkljmAJJGw==
+ b=Okm274n1QU8+i3Rtaj5p5cBT4UQcJ8PEHNEDvdcQSRVyl2IxrBOc3r75abEuOw5uv
+ XqXmHkLnbgt6/nvxrDaFtwdKzcpe9hKMUcuW+yHO2AY5qGxWkvSYt0GFNlWOqjf9XM
+ XW4N/S1nKflnvI3JUYnE3p7Py4yGppU3CLTUyrDlPODjgOK3S/fVfeirPpSoJ8jL7A
+ kXlJGx9mjBc1mROnR/pCT0k7Jv9qVTrQQzKoGHq6PyTq9k3w0SNodBNpBy9l194Uxr
+ BcUeP+4pdB2RKSr2Euxg9f+4D6pbJfPKbpGZrGVg058iSBtWybAgZsX9lKsQnHeKNK
+ fgrzF9GzXyfyA==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Tom Lendacky <thomas.lendacky@amd.com>, linux-kernel@vger.kernel.org,
- x86@kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
- iommu@lists.linux-foundation.org, kvm@vger.kernel.org,
- linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
- linux-graphics-maintainer@vmware.com, amd-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, kexec@lists.infradead.org,
- linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v2 04/12] powerpc/pseries/svm: Add a powerpc version of
- prot_guest_has()
-In-Reply-To: <000f627ce20c6504dd8d118d85bd69e7717b752f.1628873970.git.thomas.lendacky@amd.com>
-References: <cover.1628873970.git.thomas.lendacky@amd.com>
- <000f627ce20c6504dd8d118d85bd69e7717b752f.1628873970.git.thomas.lendacky@amd.com>
-Date: Tue, 17 Aug 2021 22:38:19 +1000
-Message-ID: <874kbogsas.fsf@mpe.ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, kajoljain
+ <kjain@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v2 2/2] powerpc/perf: Return regs->nip as instruction
+ pointer value when SIAR is 0
+In-Reply-To: <3a34c79d-b800-1a11-7a4b-1fb3babb9df1@csgroup.eu>
+References: <20210813082450.429320-1-kjain@linux.ibm.com>
+ <20210813082450.429320-2-kjain@linux.ibm.com>
+ <c6110aa1-90e2-77aa-1ab5-355975037227@csgroup.eu>
+ <871r6wmc16.fsf@mpe.ellerman.id.au>
+ <0068dbc4-fa4b-ce98-9e89-3f02f939720d@linux.ibm.com>
+ <3a34c79d-b800-1a11-7a4b-1fb3babb9df1@csgroup.eu>
+Date: Tue, 17 Aug 2021 22:49:22 +1000
+Message-ID: <871r6sgrsd.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,52 +69,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Andi Kleen <ak@linux.intel.com>, Tianyu Lan <Tianyu.Lan@microsoft.com>,
- Joerg Roedel <joro@8bytes.org>, Borislav Petkov <bp@alien8.de>,
- Brijesh Singh <brijesh.singh@amd.com>, Paul Mackerras <paulus@samba.org>
+Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
+ atrajeev@linux.vnet.ibm.com, maddy@linux.ibm.com, rnsastry@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Tom Lendacky <thomas.lendacky@amd.com> writes:
-> Introduce a powerpc version of the prot_guest_has() function. This will
-> be used to replace the powerpc mem_encrypt_active() implementation, so
-> the implementation will initially only support the PATTR_MEM_ENCRYPT
-> attribute.
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 16/08/2021 =C3=A0 08:44, kajoljain a =C3=A9crit=C2=A0:
+>> On 8/14/21 6:14 PM, Michael Ellerman wrote:
+...
+>>>
+>>> eg.
+>>>
+>>> 	if (use_siar && siar_valid(regs) && siar)
+>>> 		return siar + perf_ip_adjust(regs);
+>>> 	else if (use_siar)
+>>> 		return 0;		// no valid instruction pointer
+>>> 	else
+>>> 		return regs->nip;
+>>>
+>>>
+>>> I'm also not sure why we have that return 0 case, I can't think of why
+>>> we'd ever want to do that rather than using nip. So maybe we should do
+>>> another patch to drop that case.
+>>=20
+>> Yeah make sense. I will remove return 0 case in my next version.
 >
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-> ---
->  arch/powerpc/include/asm/protected_guest.h | 30 ++++++++++++++++++++++
->  arch/powerpc/platforms/pseries/Kconfig     |  1 +
->  2 files changed, 31 insertions(+)
->  create mode 100644 arch/powerpc/include/asm/protected_guest.h
+> This was added by commit=20
+> https://github.com/linuxppc/linux/commit/e6878835ac4794f25385522d29c634b7=
+bbb7cca9
 >
-> diff --git a/arch/powerpc/include/asm/protected_guest.h b/arch/powerpc/include/asm/protected_guest.h
-> new file mode 100644
-> index 000000000000..ce55c2c7e534
-> --- /dev/null
-> +++ b/arch/powerpc/include/asm/protected_guest.h
-> @@ -0,0 +1,30 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * Protected Guest (and Host) Capability checks
-> + *
-> + * Copyright (C) 2021 Advanced Micro Devices, Inc.
-> + *
-> + * Author: Tom Lendacky <thomas.lendacky@amd.com>
-> + */
-> +
-> +#ifndef _POWERPC_PROTECTED_GUEST_H
-> +#define _POWERPC_PROTECTED_GUEST_H
+> Are we sure it was an error to add it and it can be removed ?
 
-Minor nit, we would usually use _ASM_POWERPC_PROTECTED_GUEST_H
+I think so.
 
-Otherwise looks OK to me.
+That commit added siar_valid(), and updated record_and_restart() to only
+record if siar_valid() returned true.
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+  -                        record =3D 1;
+  +                        record =3D siar_valid(regs);
+
+It then also changed perf_instruction_pointer():
+
+  -        if (use_siar)
+  +        if (use_siar && siar_valid(regs))
+                   return mfspr(SPRN_SIAR) + perf_ip_adjust(regs);
+  +        else if (use_siar)
+  +                return 0;                // no valid instruction pointer
+           else
+                   return regs->nip;
+
+
+The first change means we would never even call
+perf_instruction_pointer() if siar_valid() is false, so we could never
+hit the use_siar && !siar_valid() case.
+
+But even so it's always preferable to use regs->nip than 0, even if nip
+is somewhat skewed due to interrupts being disabled etc.
 
 cheers
