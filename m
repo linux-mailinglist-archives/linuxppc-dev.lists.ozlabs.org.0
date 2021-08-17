@@ -1,82 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 805B33EE67E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 08:13:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDDE83EE6B5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 08:40:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gpgh02JmXz3bjX
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 16:13:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GphHj5Fbvz3cPP
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 16:40:49 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=BBCXvOXw;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=dhkEDDeR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::82e;
- helo=mail-qt1-x82e.google.com; envelope-from=leobras.c@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::733;
+ helo=mail-qk1-x733.google.com; envelope-from=leobras.c@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=BBCXvOXw; dkim-atps=neutral
-Received: from mail-qt1-x82e.google.com (mail-qt1-x82e.google.com
- [IPv6:2607:f8b0:4864:20::82e])
+ header.s=20161025 header.b=dhkEDDeR; dkim-atps=neutral
+Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com
+ [IPv6:2607:f8b0:4864:20::733])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GpggH0Ntqz2yR8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Aug 2021 16:12:42 +1000 (AEST)
-Received: by mail-qt1-x82e.google.com with SMTP id t16so16266256qta.9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Aug 2021 23:12:41 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GphH55081z2yNZ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Aug 2021 16:40:16 +1000 (AEST)
+Received: by mail-qk1-x733.google.com with SMTP id t3so21912573qkg.11
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Aug 2021 23:40:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :user-agent:mime-version:content-transfer-encoding;
- bh=G5q2kw4t+Ye13oI9DBMvvqvug6wc8CKiiXAR6p+W89I=;
- b=BBCXvOXw4li2gIL9kkbvJ5ZcdZ+itbeWzg1qIECAHIFLOfIX2XSQzcKwfXQTU/IqWt
- 0btORgGye8PrIQUXPygvdchbdYCaQyo1Q4GcGhYSSzziVV8bTFIgxygtUDIcpe2aDVp4
- Ov2YFEmfPew8Zm21hM8gN6zOq6CR4/7HL5YLQuJcHgHM4TBgJSCHH3D6NtnqekbbjINL
- 6TCJgs9NbqCw9HqgEa8hR4bHgGT7MSpU8rwwB+Gwu8dsD7lWtUre0X0uyZyzW4gI7gR0
- M6mjWK2nRH6HVtCKI9chJv5JQUDsjo2GIvvXVjANDGjxbPFQyV+cUAD/Eg6sWgk7wfkM
- 8W0A==
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=umkzGAmsCipKcKjsq0UFHjXQk1tsTPDtPzncTzoDpWk=;
+ b=dhkEDDeRVf4DvQXo2P8JcmKd4CS1xAqu5SDnIsMBn20kLiSkcazFNxMNh9x0JMf9gT
+ kyPoX1AUHqbIpe0G2j8XSu7ZSASV4qY5QCp9GgNryZhs6y1YLhmcHjM2JP6e3yuWgj7l
+ NLjW2kXSead72edYz+1wVIhMx1KBzx1PJfSmqqBnaSecekMeZUwJRSy8CDb8ZlvcGQcZ
+ kvJezVVYiGToD4Kb62jQV0gvjUkvsMBCJy38crRD2CwUI7Y/9VeOIoU2i61tTQuogluy
+ LiDOh4V2ggxV4Zr2U8S6rnw020oy83iO5gvNJ8nFcX16k5LKU36e6Kzs+bUUI7Eubh61
+ oYlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:user-agent:mime-version:content-transfer-encoding;
- bh=G5q2kw4t+Ye13oI9DBMvvqvug6wc8CKiiXAR6p+W89I=;
- b=Zoy5m3RmOFT9L3/xLjF1RMpHFy8dKvaLrLSz2Igymw2BYEqwswUQqQZAhchEl5ZGRd
- QJLhB6xoWkwPKPW0loI2S5jVBf5QVseqXyXENyj9VZ3B92BPnghsRpe1t8QY+XQMJhnY
- WSC1KRIWrfMNVavQuGy6ak64ClfHEQ06v/MbabkZfmXObJIsmjQIYHG8P90swgldA/Yl
- vcJJpJ02KomLpK8Isn2GYP+pHeI8Wmf+3U1v06NCLVYHOEs8bcP9XqPxluIxnHvmuV09
- jQJ1YEZyH2b98gfTqzESMVC3/KE774L4DkkwQq4gdXa4ysQw/6FLnJoCEGe0L53PtPDe
- M/XQ==
-X-Gm-Message-State: AOAM532c3xyM7GnV8r4K3WsPevZ88FXdRguww2RjCbqT5OdSzDTDDi/Q
- 7RQxp/T22o1rGq5bm8nNHaQ=
-X-Google-Smtp-Source: ABdhPJyol1AUFCOLYakvjk8k/FnQSFqpYVx52TWd46ga3LUw/FtBCvvKbLt20uNE3CMvS+SRsEfk+Q==
-X-Received: by 2002:a05:622a:612:: with SMTP id
- z18mr1635720qta.330.1629180756978; 
- Mon, 16 Aug 2021 23:12:36 -0700 (PDT)
-Received: from ?IPv6:2804:431:c7f0:30b2:5c9e:50:88f3:269a?
- ([2804:431:c7f0:30b2:5c9e:50:88f3:269a])
- by smtp.gmail.com with ESMTPSA id w6sm750513qkf.95.2021.08.16.23.12.34
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=umkzGAmsCipKcKjsq0UFHjXQk1tsTPDtPzncTzoDpWk=;
+ b=jge3ps4dJhVx4dLzr+mVs9A+xnc95usk+xBvHvdSfq34EorF0mkDNMuwY7xhHLGpKi
+ Tr+QNhTHDTDWZ7+dVSzWg7oswSQEp0nvtgqF5sQQIaISKISkuwhsJL1doNgk0h9ePsD2
+ qKGYyzXSb+CmWPeJ8kKw1qi05FkDHWBsnczdM41A+oBO2PvFBDWNM4SadsN/nPKlQo03
+ vEhWrHSsXYybl6Jj2UjdT7o67Vs3GZWMi1yLGbZ1d+xHoOkVqUviIXNKNvDzIouSpCYt
+ POB1o5Q51VPGwua3PYwQkFONt9mVgk/Qm/KwwDJhB3jb9d15ClfH7IYyBP/8aUSbH8uz
+ tJzQ==
+X-Gm-Message-State: AOAM5329VNPDkzT1xNnbOAhk6OdQjVeOxkO76wroS1AFJ6qmkajPwuvy
+ GfQNQZvgPjKbV3zJBsquyR4=
+X-Google-Smtp-Source: ABdhPJyajYj4hl23zFyNyv42DsXx4eYSAfVWsfQ0OLUSx4u3Kj8mraD0IP62bNK7hXucw7MTROIEGg==
+X-Received: by 2002:a05:620a:1455:: with SMTP id
+ i21mr1429218qkl.116.1629182413199; 
+ Mon, 16 Aug 2021 23:40:13 -0700 (PDT)
+Received: from LeoBras.redhat.com ([2804:431:c7f0:30b2:5c9e:50:88f3:269a])
+ by smtp.gmail.com with ESMTPSA id c11sm526938qth.29.2021.08.16.23.40.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Aug 2021 23:12:36 -0700 (PDT)
-Message-ID: <f9f7bcd75d534ebde7cc83c4138176da4680e30f.camel@gmail.com>
-Subject: Re: [PATCH v5 08/11] powerpc/pseries/iommu: Update
- remove_dma_window() to accept property name
-From: Leonardo =?ISO-8859-1?Q?Br=E1s?= <leobras.c@gmail.com>
-To: Frederic Barrat <fbarrat@linux.ibm.com>, Michael Ellerman
- <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, 
- Paul Mackerras <paulus@samba.org>, Alexey Kardashevskiy <aik@ozlabs.ru>,
- David Gibson <david@gibson.dropbear.id.au>, kernel test robot
- <lkp@intel.com>, Nicolin Chen <nicoleotsuka@gmail.com>
-Date: Tue, 17 Aug 2021 03:12:38 -0300
-In-Reply-To: <2653ee3e582ba181651e4842821e64d3323fa566.camel@gmail.com>
-References: <20210716082755.428187-1-leobras.c@gmail.com>
- <20210716082755.428187-9-leobras.c@gmail.com>
- <8dbd08fb-375c-9f21-f8ab-bec163b157bf@linux.ibm.com>
- <2653ee3e582ba181651e4842821e64d3323fa566.camel@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.40.3 
+ Mon, 16 Aug 2021 23:40:12 -0700 (PDT)
+From: Leonardo Bras <leobras.c@gmail.com>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Leonardo Bras <leobras.c@gmail.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ kernel test robot <lkp@intel.com>, Nicolin Chen <nicoleotsuka@gmail.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>
+Subject: [PATCH v6 00/11] DDW + Indirect Mapping
+Date: Tue, 17 Aug 2021 03:39:18 -0300
+Message-Id: <20210817063929.38701-1-leobras.c@gmail.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -95,71 +89,123 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2021-08-17 at 02:59 -0300, Leonardo Brás wrote:
-> Hello Fred, thanks for the feedback!
-> 
-> On Tue, 2021-07-20 at 19:51 +0200, Frederic Barrat wrote:
-> > 
-> > 
-> > On 16/07/2021 10:27, Leonardo Bras wrote:
-> > > Update remove_dma_window() so it can be used to remove DDW with a
-> > > given
-> > > property name.
-> > > 
-> > > This enables the creation of new property names for DDW, so we
-> > > can
-> > > have different usage for it, like indirect mapping.
-> > > 
-> > > Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
-> > > Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-> > > ---
-> > >   arch/powerpc/platforms/pseries/iommu.c | 21 +++++++++++--------
-> > > --
-> > >   1 file changed, 11 insertions(+), 10 deletions(-)
-> > > 
-> > > diff --git a/arch/powerpc/platforms/pseries/iommu.c
-> > > b/arch/powerpc/platforms/pseries/iommu.c
-> > > index 108c3dcca686..17c6f4706e76 100644
-> > > --- a/arch/powerpc/platforms/pseries/iommu.c
-> > > +++ b/arch/powerpc/platforms/pseries/iommu.c
-> > > @@ -830,31 +830,32 @@ static void remove_dma_window(struct
-> > > device_node *np, u32 *ddw_avail,
-> > >                         np, ret,
-> > > ddw_avail[DDW_REMOVE_PE_DMA_WIN],
-> > > liobn);
-> > >   }
-> > >   
-> > > -static void remove_ddw(struct device_node *np, bool remove_prop)
-> > > +static int remove_ddw(struct device_node *np, bool remove_prop,
-> > > const char *win_name)
-> > >   {
-> > 
-> > 
-> > Why switch to returning an int? None of the callers check it.
-> 
-> IIRC, in a previous version it did make sense, which is not the case
-> anymore. I will revert this.
-> 
-> Thanks!
+So far it's assumed possible to map the guest RAM 1:1 to the bus, which
+works with a small number of devices. SRIOV changes it as the user can
+configure hundreds VFs and since phyp preallocates TCEs and does not
+allow IOMMU pages bigger than 64K, it has to limit the number of TCEs
+per a PE to limit waste of physical pages.
 
-Oh, sorry about that, it is in fact still needed:
+As of today, if the assumed direct mapping is not possible, DDW creation
+is skipped and the default DMA window "ibm,dma-window" is used instead.
 
-It will make sense in patch v5 10/11:
-On iommu_reconfig_notifier(), if (action == OF_RECONFIG_DETACH_NODE),
-we need to remove a DDW if it exists.
+Using the DDW instead of the default DMA window may allow to expand the
+amount of memory that can be DMA-mapped, given the number of pages (TCEs)
+may stay the same (or increase) and the default DMA window offers only
+4k-pages while DDW may offer larger pages (4k, 64k, 16M ...).
 
-As there may be different window names, it tests for DIRECT64_PROPNAME,
-and if it's not found, it tests for DMA64_PROPNAME.
+Patch #1 replaces hard-coded 4K page size with a variable containing the
+correct page size for the window.
 
-This approach will skip scanning for DMA64_PROPNAME if
-DIRECT64_PROPNAME was found, as both may not exist in the same node.
-But for this approach to work we need remove_ddw() to return error if
-the property is not found.
+Patch #2 introduces iommu_table_in_use(), and replace manual bit-field
+checking where it's used. It will be used for aborting enable_ddw() if
+there is any current iommu allocation and we are trying single window
+indirect mapping.
 
-Does it make sense? or should I just test for both?
+Patch #3 introduces iommu_pseries_alloc_table() that will be helpful
+when indirect mapping needs to replace the iommu_table.
 
-Best regards,
-Leonardo Bras
+Patch #4 adds helpers for adding DDWs in the list.
+
+Patch #5 refactors enable_ddw() so it returns if direct mapping is
+possible, instead of DMA offset. It helps for next patches on
+indirect DMA mapping and also allows DMA windows starting at 0x00.
+
+Patch #6 bring new helper to simplify enable_ddw(), allowing
+some reorganization for introducing indirect mapping DDW.
+
+Patch #7 adds new helper _iommu_table_setparms() and use it in other
+*setparams*() to fill iommu_table. It will also be used for creating a
+new iommu_table for indirect mapping.
+
+Patch #8 updates remove_dma_window() to accept different property names,
+so we can introduce a new property for indirect mapping.
+
+Patch #9 extracts find_existing_ddw_windows() into
+find_existing_ddw_windows_named(), and calls it by it's property name.
+This will be useful when the property for indirect mapping is created,
+so we can search the device-tree for both properties.
+
+Patch #10:
+Instead of destroying the created DDW if it doesn't map the whole
+partition, make use of it instead of the default DMA window as it improves
+performance. Also, update the iommu_table and re-generate the pools.
+It introduces a new property name for DDW with indirect DMA mapping.
+
+Patch #11:
+Does some renaming of 'direct window' to 'dma window', given the DDW
+created can now be also used in indirect mapping if direct mapping is not
+available.
+
+All patches were tested into an LPAR with an virtio-net interface that
+allows default DMA window and DDW to coexist.
+
+Changes since v5:
+- Reviews from Frederic Barrat
+- 02/11 : memset bitmap only if tbl not in use
+- 06/11 : remove_ddw() is not used in enable_ddw() error path anymore 
+  New helpers were created for that.
+- 10/11 : There was a typo, but got replaced due to 06/11 fix.
+v5 Link: http://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=253799&state=%2A&archive=both
+
+Changes since v4:
+- Solve conflicts with new upstream versions
+- Avoid unecessary code moving by doing variable declaration before definition
+- Rename _iommu_table_setparms to iommu_table_setparms_common and changed base
+  parameter from unsigned long to void* in order to avoid unecessary casting.
+- Fix breaking case for existing direct-mapping.
+- Fix IORESOURCE_MEM bound issue
+- Move new tbl to pci->table_group->tables[1] instead of replacing [0]
+v4 Link: https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=241597&state=%2A&archive=both
+
+Changes since v3:
+- Fixed inverted free order at ddw_property_create()
+- Updated goto tag naming
+v3 Link: https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=240287&state=%2A&archive=both
+
+Changes since v2:
+- Some patches got removed from the series and sent by themselves,
+- New tbl created for DDW + indirect mapping reserves MMIO32 space,
+- Improved reserved area algorithm,
+- Improved commit messages,
+- Removed define for default DMA window prop name,
+- Avoided some unnecessary renaming,
+- Removed some unnecessary empty lines,
+- Changed some code moving to forward declarations.
+v2 Link: http://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=201210&state=%2A&archive=both
 
 
+Leonardo Bras (11):
+  powerpc/pseries/iommu: Replace hard-coded page shift
+  powerpc/kernel/iommu: Add new iommu_table_in_use() helper
+  powerpc/pseries/iommu: Add iommu_pseries_alloc_table() helper
+  powerpc/pseries/iommu: Add ddw_list_new_entry() helper
+  powerpc/pseries/iommu: Allow DDW windows starting at 0x00
+  powerpc/pseries/iommu: Add ddw_property_create() and refactor
+    enable_ddw()
+  powerpc/pseries/iommu: Reorganize iommu_table_setparms*() with new
+    helper
+  powerpc/pseries/iommu: Update remove_dma_window() to accept property
+    name
+  powerpc/pseries/iommu: Find existing DDW with given property name
+  powerpc/pseries/iommu: Make use of DDW for indirect mapping
+  powerpc/pseries/iommu: Rename "direct window" to "dma window"
+
+ arch/powerpc/include/asm/iommu.h       |   1 +
+ arch/powerpc/include/asm/tce.h         |   8 -
+ arch/powerpc/kernel/iommu.c            |  65 ++--
+ arch/powerpc/platforms/pseries/iommu.c | 481 +++++++++++++++----------
+ 4 files changed, 330 insertions(+), 225 deletions(-)
+
+-- 
+2.32.0
 
