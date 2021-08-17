@@ -2,49 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F22B73EECD7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 14:52:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD7EC3EECFA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 15:03:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GprXc5j45z3bZr
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 22:52:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gprnk40QTz3bvH
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 23:03:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Q3G7FtWh;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=g3H9J0xa;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=g3H9J0xa;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=Q3G7FtWh; 
+ smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=jstancek@redhat.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=g3H9J0xa; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=g3H9J0xa; 
  dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GprWx2XcWz2ymS
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Aug 2021 22:51:57 +1000 (AEST)
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 4GprWw6dhlz9sSs; Tue, 17 Aug 2021 22:51:56 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1629204716;
- bh=mQUAK/HzO9T7KBftkpjO2ercyE19GP6SIB20HYPz1zg=;
- h=From:To:Subject:Date:From;
- b=Q3G7FtWhjXyb76GKBJog4TQcTO/HKCYw1UVUEAAiV6RRrY8wNkCLUpKgB6sBUm8oy
- maqKUkbvsYm9/KGgOjzPLlKqcyQq6bLjLONvD2dhtelePAKo5cE4EuMI3BHnF9dah0
- RApYxzrqk7KSgKc5v0C9+oXfPn0atjUJojdg/sC1hgeL0MaBxci1Skhvp7a4NFtAmR
- QlBeh/x3NmjnKdCrvYuv5UZfy5wRgP8GMSvFGS/EsA5SGnuXGqzvo9SGfkMqjksAuI
- cnHR+gvAgiqq6OC+jMO2ymabxEVsllklKR8T/PpR/b465UJJO/yGapHNCV1uQVB68r
- AgkFS84AFovNA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/head_check: Fix shellcheck errors
-Date: Tue, 17 Aug 2021 22:51:54 +1000
-Message-Id: <20210817125154.3369884-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.25.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gprn20bJSz2ymS
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Aug 2021 23:03:15 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1629205391;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=oQqo8hoVlThMMKnyM3FPqRihSiJEUC2ucaiuvvbW2TA=;
+ b=g3H9J0xadxyXedJQhVfBLp7W14Fqlvwne3diwo8SxvivzI42hjoKymO6tWvF+8FCPbe6oY
+ XbBVuAOoh00uxOioWTv1WdjisSEX4dxm6cHEzGG6bLIbWvgvjoi7NRVNpAZjJAAtg9uELy
+ WE7ELLDyac32nSSqOY/EZIntSnq32oU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1629205391;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=oQqo8hoVlThMMKnyM3FPqRihSiJEUC2ucaiuvvbW2TA=;
+ b=g3H9J0xadxyXedJQhVfBLp7W14Fqlvwne3diwo8SxvivzI42hjoKymO6tWvF+8FCPbe6oY
+ XbBVuAOoh00uxOioWTv1WdjisSEX4dxm6cHEzGG6bLIbWvgvjoi7NRVNpAZjJAAtg9uELy
+ WE7ELLDyac32nSSqOY/EZIntSnq32oU=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-449-sR4Wrbx7Nd6psWd4z1W6HQ-1; Tue, 17 Aug 2021 09:03:06 -0400
+X-MC-Unique: sR4Wrbx7Nd6psWd4z1W6HQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
+ [10.5.11.16])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 5013EC73A0;
+ Tue, 17 Aug 2021 13:03:05 +0000 (UTC)
+Received: from janakin.usersys.redhat.com (unknown [10.40.208.10])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 514A95C1D5;
+ Tue, 17 Aug 2021 13:03:03 +0000 (UTC)
+From: Jan Stancek <jstancek@redhat.com>
+To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+ christophe.leroy@csgroup.eu, linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH/RFC] powerpc/module_64: allow .init_array constructors to run
+Date: Tue, 17 Aug 2021 15:02:54 +0200
+Message-Id: <920acea9aa18e4f2956581a8e158bdaa376fdf63.1629203945.git.jstancek@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,52 +80,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-kernel@vger.kernel.org, jstancek@redhat.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Replace "cat file | grep pattern" with "grep pattern file", and quote a
-few variables. Together that fixes all shellcheck errors.
+gcov and kasan rely on compiler generated constructor code.
+For modules, gcc-8 with gcov enabled generates .init_array section,
+but on ppc64le it doesn't get executed. find_module_sections() never
+finds .init_array section, because module_frob_arch_sections() renames
+it to _init_array.
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Avoid renaming .init_array section, so do_mod_ctors() can use it.
+
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Jan Stancek <jstancek@redhat.com>
 ---
- arch/powerpc/tools/head_check.sh | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+I wasn't able to trace the comment:
+  "We don't handle .init for the moment: rename to _init"
+to original patch (it pre-dates .git). I'm not sure if it
+still applies today, so I limited patch to .init_array. This
+fixes gcov for modules for me on ppc64le 5.14.0-rc6.
 
-diff --git a/arch/powerpc/tools/head_check.sh b/arch/powerpc/tools/head_check.sh
-index e477837fdc58..689907cda996 100644
---- a/arch/powerpc/tools/head_check.sh
-+++ b/arch/powerpc/tools/head_check.sh
-@@ -49,11 +49,11 @@ vmlinux="$2"
- $nm "$vmlinux" | grep -e " [TA] _stext$" -e " t start_first_256B$" -e " a text_start$" -e " t start_text$" > .tmp_symbols.txt
+Renaming issue is also mentioned in kasan patches here:
+  https://patchwork.ozlabs.org/project/linuxppc-dev/cover/20210319144058.772525-1-dja@axtens
+
+ arch/powerpc/kernel/module_64.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/module_64.c
+index 6baa676e7cb6..c604b13ea6bf 100644
+--- a/arch/powerpc/kernel/module_64.c
++++ b/arch/powerpc/kernel/module_64.c
+@@ -299,8 +299,16 @@ int module_frob_arch_sections(Elf64_Ehdr *hdr,
+ 					  sechdrs[i].sh_size);
  
+ 		/* We don't handle .init for the moment: rename to _init */
+-		while ((p = strstr(secstrings + sechdrs[i].sh_name, ".init")))
++		while ((p = strstr(secstrings + sechdrs[i].sh_name, ".init"))) {
++#ifdef CONFIG_CONSTRUCTORS
++			/* find_module_sections() needs .init_array intact */
++			if (strstr(secstrings + sechdrs[i].sh_name,
++				".init_array")) {
++				break;
++			}
++#endif
+ 			p[0] = '_';
++		}
  
--vma=$(cat .tmp_symbols.txt | grep -e " [TA] _stext$" | cut -d' ' -f1)
-+vma=$(grep -e " [TA] _stext$" .tmp_symbols.txt | cut -d' ' -f1)
- 
--expected_start_head_addr=$vma
-+expected_start_head_addr="$vma"
- 
--start_head_addr=$(cat .tmp_symbols.txt | grep " t start_first_256B$" | cut -d' ' -f1)
-+start_head_addr=$(grep " t start_first_256B$" .tmp_symbols.txt | cut -d' ' -f1)
- 
- if [ "$start_head_addr" != "$expected_start_head_addr" ]; then
- 	echo "ERROR: head code starts at $start_head_addr, should be $expected_start_head_addr" 1>&2
-@@ -63,11 +63,11 @@ if [ "$start_head_addr" != "$expected_start_head_addr" ]; then
- 	exit 1
- fi
- 
--top_vma=$(echo $vma | cut -d'0' -f1)
-+top_vma=$(echo "$vma" | cut -d'0' -f1)
- 
--expected_start_text_addr=$(cat .tmp_symbols.txt | grep " a text_start$" | cut -d' ' -f1 | sed "s/^0/$top_vma/")
-+expected_start_text_addr=$(grep " a text_start$" .tmp_symbols.txt | cut -d' ' -f1 | sed "s/^0/$top_vma/")
- 
--start_text_addr=$(cat .tmp_symbols.txt | grep " t start_text$" | cut -d' ' -f1)
-+start_text_addr=$(grep " t start_text$" .tmp_symbols.txt | cut -d' ' -f1)
- 
- if [ "$start_text_addr" != "$expected_start_text_addr" ]; then
- 	echo "ERROR: start_text address is $start_text_addr, should be $expected_start_text_addr" 1>&2
+ 		if (sechdrs[i].sh_type == SHT_SYMTAB)
+ 			dedotify((void *)hdr + sechdrs[i].sh_offset,
 -- 
-2.25.1
+2.27.0
 
