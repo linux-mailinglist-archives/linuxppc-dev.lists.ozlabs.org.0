@@ -1,135 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2EE53EEE40
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 16:13:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 735643EEE5B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 16:21:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GptKZ5cXqz30LB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Aug 2021 00:13:06 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=tJdl7wZF;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GptWF3KLWz3bhb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Aug 2021 00:21:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=amd.com
- (client-ip=40.107.93.58; helo=nam10-dm6-obe.outbound.protection.outlook.com;
- envelope-from=thomas.lendacky@amd.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256
- header.s=selector1 header.b=tJdl7wZF; 
- dkim-atps=neutral
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam10on2058.outbound.protection.outlook.com [40.107.93.58])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GptJk622bz2xMw
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Aug 2021 00:12:20 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Uk+YiVt19MCvUAVXgfk+LEih8nCIgACOeLb8VKEMJALdmRhucJJhMwX2QxwVqybJomkki/C2ToDtQdzw/GG82igxOhTNO2VP6s1jmS0ljzNEJL5GM68qSDz/ddS6e+m/Rl6Y5It2WrGNI/4mzLDdVxAqfKG5WSZwh+/FtPEcGPB+taMISr6WyUwf2euKsC1xz/pNSd/a7pLKEiDC5B16N1vg04eOQf0s0q8Quon8ic/9h29SPZSiedeqPofCJ0gJmGqpUtmq0ipCVR3uywjTECU8PdLqi2R8thleIcae4AAsqMLUhzJBXWE8qmVeezzUnNtOxs89cZG8oiSfm3fHlg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3lqvgc3MxYbKsVgklPeW3fUTtOlNjtFWBUt/iYNTeZs=;
- b=E3c2cxByPFxbYJrkXzxkYrVgak61ZuGjtV2CcwC5RDyzjICSLcscIlqQGz6zgm3Z1SzJkeovMYst99oOh2dqxRFZFBhsR6y+9VUPulmv/BJfW1x8UXkxddWN29uT9lC4UjBzw4zSU4JoeOWjF9/V6tRotV7fIRyyRL6Cxnu7z1qXkItQ3aArhDG8nroi+/4ZGsvbvrbXfdTtLT7h5DN9SI/qYKd4G129b8V+ZS0r0saQyzWFzs2rZZ+GdrNDNxvLewIHPBV3I8u2Q3FnzWcq2Qxv2O4jthbAt8cMN3dd16ZBqjOKuyehc04XfdEYykL1LZAjBx1Gn9RzRHoGS7A+gQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3lqvgc3MxYbKsVgklPeW3fUTtOlNjtFWBUt/iYNTeZs=;
- b=tJdl7wZFPiKTu9TlRhgC2Tdewc7IGJNWF30PDKfIVqkLR+PcyrU8pRITXcjd8RE3C2RaELqSaI1DmqWiDHJwlnaVQqxF1Q0fO7R68r+K0cOaBE/5n0y/hfsaOPhCSQxAs9hASEJlqolSLmeB5Zj5KLPfvtJ2UekWUSb4XyH7ROg=
-Authentication-Results: samba.org; dkim=none (message not signed)
- header.d=none;samba.org; dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5229.namprd12.prod.outlook.com (2603:10b6:5:398::12)
- by DM6PR12MB5533.namprd12.prod.outlook.com (2603:10b6:5:1bc::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4415.14; Tue, 17 Aug
- 2021 14:12:01 +0000
-Received: from DM4PR12MB5229.namprd12.prod.outlook.com
- ([fe80::d560:d21:cd59:9418]) by DM4PR12MB5229.namprd12.prod.outlook.com
- ([fe80::d560:d21:cd59:9418%6]) with mapi id 15.20.4415.024; Tue, 17 Aug 2021
- 14:12:01 +0000
-Subject: Re: [PATCH v2 04/12] powerpc/pseries/svm: Add a powerpc version of
- prot_guest_has()
-To: Borislav Petkov <bp@alien8.de>
-References: <cover.1628873970.git.thomas.lendacky@amd.com>
- <000f627ce20c6504dd8d118d85bd69e7717b752f.1628873970.git.thomas.lendacky@amd.com>
- <YRt01F6Mw6sB+hF8@zn.tnic>
-From: Tom Lendacky <thomas.lendacky@amd.com>
-Message-ID: <66b3b6f1-2ffc-9eca-f7a4-6db7532a2983@amd.com>
-Date: Tue, 17 Aug 2021 09:11:58 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
-In-Reply-To: <YRt01F6Mw6sB+hF8@zn.tnic>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA9PR13CA0149.namprd13.prod.outlook.com
- (2603:10b6:806:27::34) To DM4PR12MB5229.namprd12.prod.outlook.com
- (2603:10b6:5:398::12)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GptVm3g0gz2y0C
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Aug 2021 00:21:02 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4GptVg1S4tz9sTn;
+ Tue, 17 Aug 2021 16:20:59 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id Kg1vQZTlC7JE; Tue, 17 Aug 2021 16:20:59 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4GptVg0Lxbz9sTm;
+ Tue, 17 Aug 2021 16:20:59 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id E58258B7C3;
+ Tue, 17 Aug 2021 16:20:58 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id xUpsHLch3XvW; Tue, 17 Aug 2021 16:20:58 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 620DC8B7A9;
+ Tue, 17 Aug 2021 16:20:58 +0200 (CEST)
+Subject: Re: [PATCH] powerpc/mm: Fix set_memory_*() against concurrent accesses
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+References: <20210817132552.3375738-1-mpe@ellerman.id.au>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <c6a51687-0d80-bd43-cd45-7cbe65c5abf5@csgroup.eu>
+Date: Tue, 17 Aug 2021 16:20:57 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [10.236.30.241] (165.204.77.1) by
- SA9PR13CA0149.namprd13.prod.outlook.com (2603:10b6:806:27::34) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4436.9 via Frontend Transport; Tue, 17 Aug 2021 14:12:00 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: b50b3f8a-2121-4dfe-4d6e-08d96188fb94
-X-MS-TrafficTypeDiagnostic: DM6PR12MB5533:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <DM6PR12MB5533EABFFF3A869022838DB7ECFE9@DM6PR12MB5533.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:1775;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: TdP1pPBBx/GUlSL3nrSNLZmoKlbeElJ3GHxsgSowo9ZL71e403aUX1OQKQM1GDj5G9mCMpKu17MoxUy1u12cM2v88yzHIjoWDnBhN6jRovgSbF+vJYTkOLbhY5b3vI3TA0PJd07ka/rkZxTIF5jDmk6g4hhFR/j4Z9LXUT0zdC3NEUIGoQ19yfqBTGRwReFMjS2vzjeSXZFe3IluFJ3yZRrbDfAoyOENwpnyk22hyK9lKp1dgkyPJw1lCavSDmjZvTBmRTXcBIC3uJY60G/57sDjWR3ns2Asev2Z7s3BnhifhMtSkSS/UwiaB8aXMrmoVo/iK85UyitoVpDj6rv67cRLVGllNYeYRMLDeJYD4zMs19/8O5n0+yKvvBe8qlu835PHVhk7lJepIvORp62Dobzqnt/MrbzpKkYEGmZglpKmN67mO70d6F6LbjIwwq5RxFOOyP22J7Yg+DJZ6sfiFsTJdukLF6JD1evnsukcT7VKGdFAQB223olOOfEIsMNqaPUeaV/7HYS9AYtCtrjBx5YGo4H6cnawwcorxJCjqJ0C7Rbs9FpbN7c1ut5vUofrqFwGZLot7e1iJInijdbdyx2lEERORfQ2iKTg6Dz5Rtssln7C+bGcgr2jE65OEqg0dx15BuqsFrdbnGf7RirOiVFwY90byogAdJHpGyUMdrzgIgD+NPtOse2Wr8ZyaWMtp8DatPEzpB317olfrStrbRnIaKRLe55k62aSNLtgRHA=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM4PR12MB5229.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(366004)(376002)(346002)(136003)(396003)(39860400002)(4326008)(5660300002)(53546011)(316002)(6486002)(186003)(38100700002)(956004)(8676002)(16576012)(31686004)(66946007)(31696002)(36756003)(6916009)(8936002)(2906002)(54906003)(26005)(66556008)(66476007)(86362001)(2616005)(7416002)(478600001)(45980500001)(43740500002);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?T1ArdE5TVFZyUllyUHRhNG02REVQbjk0VzlGd0lJc1NyZk1nNTF0NE8zM2dB?=
- =?utf-8?B?QmQrenI3c1NhMFIwR09iNFFEaHhLd1ZEL2ZmMDRMeFRQZWljeWMxVS82a0I3?=
- =?utf-8?B?SlljMkFsUTBncUNEWXJhdkhuVExiWG5xL1luSmlHTjc0ZlE5NGorS1dVMUdS?=
- =?utf-8?B?Y29kUVozYW1BTXNZNXp3WnZXYWh3dlVqcVJnUU42UW9UbVRFOGE5L21FcjFy?=
- =?utf-8?B?MWJhTE1mdGw1RzNNME5wNC83SHlXMTVPQ1I0c3BPRVowRE5mVUNJTU13MG4r?=
- =?utf-8?B?bEk5Nm9LUWlWdXlUZytCM3V6dHBacDNuN2RqVUYrYXZlemVTRnpuRnlkK3lZ?=
- =?utf-8?B?eHg5bXBBNkVFdzBFdXNLUkZRSVNacks1MDI1bzNKeWZCQ05jUXNZQlVEbTI4?=
- =?utf-8?B?cEloNzhYY3NHLzFISXlOVXAwVld4eU0xMnV3SUtoVEMzVUtCdjAxbkxWdktr?=
- =?utf-8?B?TVZQc2RFY05RTDRQZDlOYWcxOHZKOHdacTVxd1pMUDFZLzlHVjd2cVRNdU8r?=
- =?utf-8?B?MnNGM2VxcTVyYUtkWmJweGxGeitxUWlqT1VkRXk2eE5Sd3N4ZGxQQkNJQTFs?=
- =?utf-8?B?a3ZuUTNGMnVBb09GNmc4N0Q1K01nVmhKaitDY1JMN1l0SGM0NG1oMWEvajBK?=
- =?utf-8?B?TC9lNFYyeEhNeVlwR0d5T1NadFZIUzRkZVNjQUtJdVdRdUxRZWZNamRqWml2?=
- =?utf-8?B?aXFsdWJQREpOYnRTQzZXd1NxcFpHbTBtOUtlSVRiNEswaXVxc1RBMVAyR0JX?=
- =?utf-8?B?UEpFekNMSnppbnNVUEdab21MMzVkeGljVEtNZzM5NGdpbFF3cDNFRktJYTdO?=
- =?utf-8?B?YXphU1dKR0N5MnhsNUF5OGNzbjNzYlhTNG5FZU52eDJRUE0wQW0yZHBJZFVn?=
- =?utf-8?B?ZHgxeUxlVTNnVVJFaE93MWh5R0tGY2k3VXlGREVpaFc0VzNRVGN5ZXlpdEJQ?=
- =?utf-8?B?Wlp2N3llTFJpdGNvd05pb2d5UXpSbUhFZWFvdHV3Q2ZCVCsyQUljeWVicEZz?=
- =?utf-8?B?SFR5cktNOVM2dzZ0NGQ2WkJIdU50OHRpdWMzZUluZGdaV25ad3cwMVBleno4?=
- =?utf-8?B?cGlXT3ZHQWdvcHlsdk5RSi95OEtXeEh4ekx6dWZONGhJNkdiWkU5QVlpbThS?=
- =?utf-8?B?bFRhc2FZVTRTZXp5ZjFFSUQ3bnd3TmNPS2FBQ01VcllHZ3p6ajN1cDQxaWtj?=
- =?utf-8?B?Zm5oZGdZTTIrNFhKazNEeTBGZHNmalRkRWxuMWtDcTlBODRzWktEeUNPRVN4?=
- =?utf-8?B?TUZJQXhtQlE2bDQvK3NDMnVvVEhSSk5DcDZKR3RJQkV0dit2c2x6NzA3aCtt?=
- =?utf-8?B?M0dYSlRTVHdlOTA5RWdEMU0rb1lJZk9KdXgxZllNVG5nQTUxNjNlR3k0dkZv?=
- =?utf-8?B?b1pGbVV1ZkpUZkxiNG16dlh5RGpvcWdRV0lyRCtyKyt4RkZ4NUFqTGNLMjR2?=
- =?utf-8?B?YzZSYUtBaXQ1NVpKUUdjWERhRGhtZ3VpRUxQRnNCYWllY1hya3hJamlGUlhC?=
- =?utf-8?B?RE1aeFR3NTRHQlJyNVZEZkVyTkpBVjgwZmdpQm5nREE1bmhVeWczQTVBSXRL?=
- =?utf-8?B?emhTMHdUR1BuMlhuRDB6Tm9yY3Fub0hnTm10ZC9Hc3hmZWJVeW9XU1luNXQ4?=
- =?utf-8?B?Y04vNEltUUdaZ0JFc2piSXNTa015SGlMS3BsRS9UR250cUh6RGkxbE5sSVhq?=
- =?utf-8?B?Z1B1T0ZtY2l2M3Rsb1R5NGZ1bWdFWGxDNGN3QS9uNXQvUkU2K1BYUzNnZXI5?=
- =?utf-8?Q?wl6XMcPSZgNp+5Nu1IfXwDZ5sm/3rjd1QCvbLdQ?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b50b3f8a-2121-4dfe-4d6e-08d96188fb94
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5229.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2021 14:12:01.7367 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: V2CFQkDa7LnYaT8s9+R3zdkwp2Am9q+i+mGYHP+N7ZDllAaICN9I3Aie0LiX9vFIxI4RMBMeg7Ckkleqp5Qtrw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB5533
+In-Reply-To: <20210817132552.3375738-1-mpe@ellerman.id.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -141,67 +62,177 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org,
- Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
- linux-efi@vger.kernel.org, Brijesh Singh <brijesh.singh@amd.com>,
- kvm@vger.kernel.org, Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
- kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
- amd-gfx@lists.freedesktop.org, platform-driver-x86@vger.kernel.org,
- iommu@lists.linux-foundation.org, Andi Kleen <ak@linux.intel.com>,
- linux-graphics-maintainer@vmware.com, dri-devel@lists.freedesktop.org,
- linux-fsdevel@vger.kernel.org, Tianyu Lan <Tianyu.Lan@microsoft.com>,
- linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>
+Cc: lvivier@redhat.com, jniethe5@gmail.com, aneesh.kumar@linux.ibm.com,
+ npiggin@gmail.com, farosas@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 8/17/21 3:35 AM, Borislav Petkov wrote:
-> On Fri, Aug 13, 2021 at 11:59:23AM -0500, Tom Lendacky wrote:
->> Introduce a powerpc version of the prot_guest_has() function. This will
->> be used to replace the powerpc mem_encrypt_active() implementation, so
->> the implementation will initially only support the PATTR_MEM_ENCRYPT
->> attribute.
->>
->> Cc: Michael Ellerman <mpe@ellerman.id.au>
->> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
->> Cc: Paul Mackerras <paulus@samba.org>
->> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
->> ---
->>  arch/powerpc/include/asm/protected_guest.h | 30 ++++++++++++++++++++++
->>  arch/powerpc/platforms/pseries/Kconfig     |  1 +
->>  2 files changed, 31 insertions(+)
->>  create mode 100644 arch/powerpc/include/asm/protected_guest.h
->>
->> diff --git a/arch/powerpc/include/asm/protected_guest.h b/arch/powerpc/include/asm/protected_guest.h
->> new file mode 100644
->> index 000000000000..ce55c2c7e534
->> --- /dev/null
->> +++ b/arch/powerpc/include/asm/protected_guest.h
->> @@ -0,0 +1,30 @@
->> +/* SPDX-License-Identifier: GPL-2.0-only */
->> +/*
->> + * Protected Guest (and Host) Capability checks
->> + *
->> + * Copyright (C) 2021 Advanced Micro Devices, Inc.
->> + *
->> + * Author: Tom Lendacky <thomas.lendacky@amd.com>
->> + */
->> +
->> +#ifndef _POWERPC_PROTECTED_GUEST_H
->> +#define _POWERPC_PROTECTED_GUEST_H
->> +
->> +#include <asm/svm.h>
->> +
->> +#ifndef __ASSEMBLY__
+
+
+Le 17/08/2021 à 15:25, Michael Ellerman a écrit :
+> Laurent reported that STRICT_MODULE_RWX was causing intermittent crashes
+> on one of his systems:
 > 
-> Same thing here. Pls audit the whole set whether those __ASSEMBLY__
-> guards are really needed and remove them if not.
-
-Will do.
-
-Thanks,
-Tom
-
+>    kernel tried to execute exec-protected page (c008000004073278) - exploit attempt? (uid: 0)
+>    BUG: Unable to handle kernel instruction fetch
+>    Faulting instruction address: 0xc008000004073278
+>    Oops: Kernel access of bad area, sig: 11 [#1]
+>    LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
+>    Modules linked in: drm virtio_console fuse drm_panel_orientation_quirks ...
+>    CPU: 3 PID: 44 Comm: kworker/3:1 Not tainted 5.14.0-rc4+ #12
+>    Workqueue: events control_work_handler [virtio_console]
+>    NIP:  c008000004073278 LR: c008000004073278 CTR: c0000000001e9de0
+>    REGS: c00000002e4ef7e0 TRAP: 0400   Not tainted  (5.14.0-rc4+)
+>    MSR:  800000004280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 24002822 XER: 200400cf
+>    ...
+>    NIP fill_queue+0xf0/0x210 [virtio_console]
+>    LR  fill_queue+0xf0/0x210 [virtio_console]
+>    Call Trace:
+>      fill_queue+0xb4/0x210 [virtio_console] (unreliable)
+>      add_port+0x1a8/0x470 [virtio_console]
+>      control_work_handler+0xbc/0x1e8 [virtio_console]
+>      process_one_work+0x290/0x590
+>      worker_thread+0x88/0x620
+>      kthread+0x194/0x1a0
+>      ret_from_kernel_thread+0x5c/0x64
 > 
-> Thx.
+> Jordan, Fabiano & Murilo were able to reproduce and identify that the
+> problem is caused by the call to module_enable_ro() in do_init_module(),
+> which happens after the module's init function has already been called.
+> 
+> Our current implementation of change_page_attr() is not safe against
+> concurrent accesses, because it invalidates the PTE before flushing the
+> TLB and then installing the new PTE. That leaves a window in time where
+> there is no valid PTE for the page, if another CPU tries to access the
+> page at that time we see something like the fault above.
+> 
+> We can't simply switch to set_pte_at()/flush TLB, because our hash MMU
+> code doesn't handle a set_pte_at() of a valid PTE. See [1].
+> 
+> But we do have pte_update(), which replaces the old PTE with the new,
+> meaning there's no window where the PTE is invalid. And the hash MMU
+> version hash__pte_update() deals with synchronising the hash page table
+> correctly.
+> 
+> Because pte_update() takes the set of PTE bits to set and clear we can't
+> use our existing helpers, eg. pte_wrprotect() etc. and instead have to
+> open code the set of flags. We will clean that up somehow in a future
+> commit.
+> 
+> [1]: https://lore.kernel.org/linuxppc-dev/87y318wp9r.fsf@linux.ibm.com/
+> 
+> Fixes: 1f9ad21c3b38 ("powerpc/mm: Implement set_memory() routines")
+> Reported-by: Laurent Vivier <lvivier@redhat.com>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> ---
+>   arch/powerpc/mm/pageattr.c | 45 +++++++++++++++++++++++---------------
+>   1 file changed, 27 insertions(+), 18 deletions(-)
+> 
+> diff --git a/arch/powerpc/mm/pageattr.c b/arch/powerpc/mm/pageattr.c
+> index 0876216ceee6..72425b61eb7e 100644
+> --- a/arch/powerpc/mm/pageattr.c
+> +++ b/arch/powerpc/mm/pageattr.c
+> @@ -18,52 +18,61 @@
+>   /*
+>    * Updates the attributes of a page in three steps:
+>    *
+> - * 1. invalidate the page table entry
+> - * 2. flush the TLB
+> - * 3. install the new entry with the updated attributes
+> - *
+> - * Invalidating the pte means there are situations where this will not work
+> - * when in theory it should.
+> - * For example:
+> - * - removing write from page whilst it is being executed
+> - * - setting a page read-only whilst it is being read by another CPU
+> + * 1. take the page_table_lock
+> + * 2. install the new entry with the updated attributes
+> + * 3. flush the TLB
+>    *
+> + * This sequence is safe against concurrent updates, and also allows updating the
+> + * attributes of a page currently being executed or accessed.
+>    */
+>   static int change_page_attr(pte_t *ptep, unsigned long addr, void *data)
+>   {
+>   	long action = (long)data;
+> -	pte_t pte;
+> +	unsigned long set, clear;
+>   
+>   	spin_lock(&init_mm.page_table_lock);
+>   
+> -	/* invalidate the PTE so it's safe to modify */
+> -	pte = ptep_get_and_clear(&init_mm, addr, ptep);
+> -	flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+> +	set = clear = 0;
+>   
+>   	/* modify the PTE bits as desired, then apply */
+>   	switch (action) {
+>   	case SET_MEMORY_RO:
+> -		pte = pte_wrprotect(pte);
+> +#ifdef CONFIG_PPC_BOOK3S_64
+> +		clear = _PAGE_WRITE;
+> +#elif defined(CONFIG_PPC_8xx)
+> +		set = _PAGE_RO;
+> +#else
+> +		clear = _PAGE_RW;
+> +#endif
+
+I think it can be handle as follows (untested):
+
+new = pte_wrprotect(pte);
+
+set = pte_val(new) & ~pte_val(pte);
+clear = ~pte_val(new) & pte_val(pte);
+
+So just put those two lines before the pte_update() and only change the switch cases to create a 
+'new' pte instead of changing it.
+
+
+Or you can do the way we do in ptep_set_wrprotect() in <asm/nohash/32/pgtable.h>
+
+Or can __ptep_set_access_flags() be used ?
+
+>   		break;
+>   	case SET_MEMORY_RW:
+> -		pte = pte_mkwrite(pte_mkdirty(pte));
+> +#ifdef CONFIG_PPC_8xx
+> +		clear = _PAGE_RO;
+> +#elif defined(CONFIG_PPC_BOOK3S_64)
+> +		set = _PAGE_RW | _PAGE_DIRTY | _PAGE_SOFT_DIRTY;
+> +#else
+> +		set = _PAGE_RW | _PAGE_DIRTY;
+> +#endif
+>   		break;
+>   	case SET_MEMORY_NX:
+> -		pte = pte_exprotect(pte);
+> +		clear = _PAGE_EXEC;
+>   		break;
+>   	case SET_MEMORY_X:
+> -		pte = pte_mkexec(pte);
+> +		set = _PAGE_EXEC;
+>   		break;
+>   	default:
+>   		WARN_ON_ONCE(1);
+>   		break;
+>   	}
+>   
+> -	set_pte_at(&init_mm, addr, ptep, pte);
+> +	pte_update(&init_mm, addr, ptep, clear, set, 0);
+>   
+>   	/* See ptesync comment in radix__set_pte_at() */
+>   	if (radix_enabled())
+>   		asm volatile("ptesync": : :"memory");
+> +
+> +	flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+
+Can we use a page version like flush_tlb_page() in order to avoid a 'tlbia' ? (maybe another page as 
+it was already there).
+
+> +
+>   	spin_unlock(&init_mm.page_table_lock);
+>   
+>   	return 0;
+> 
+> base-commit: cbc06f051c524dcfe52ef0d1f30647828e226d30
 > 
