@@ -2,57 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 466643EE49C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 04:53:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C972D3EE528
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 05:41:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GpbF81WZSz30C4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 12:53:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GpcJt5JW2z30GM
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 13:41:34 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=nQOfwUs5;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=201602 header.b=g1pIjmyW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=nQOfwUs5; 
+ smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=dgibson@ozlabs.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
+ header.a=rsa-sha256 header.s=201602 header.b=g1pIjmyW; 
  dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GpbDT33FWz2yRS
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Aug 2021 12:52:40 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4GpbDQ3bDgz9sSs;
- Tue, 17 Aug 2021 12:52:38 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1629168759;
- bh=ZcLwqPNyFGgNGXWnp5QzLIMHYBfTDJ+axVOzNxoaC5A=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=nQOfwUs5Wk2yPKh4WpMNbc/e9yesGDDoEodhWaw3Pu5zHC3cLqIz5clYdnwTi270C
- OzQgs4FX71P7pDD6pmS0tSZyeOOr+9324FVMwwtfe4CeJkIKqhw3wPmcW0O+4UNJOi
- r8x5ZdZyGKUzxZdCCqJxv6v26BQJr874T9u/4ep8A9WjwSGtrp418zsFth0VR43taG
- GKysHrk88bnssfosAEBIlnnDJSQi9hu8Jgpg54EMqPuB9cWipYV6aicYKWekkAKWNQ
- HxBcyV8Z829/D1pI3r7IdZw/JOIrm4ALLSoV5FM4CcfuX0ydCjFOiMVy1YlmwMQ8Hi
- lWTSb5EX1qWvg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Joel Stanley <joel@jms.id.au>, Paul Mackerras <paulus@samba.org>,
- Michael Neuling <mikey@neuling.org>, Anton Blanchard <anton@ozlabs.org>,
- Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 2/3] powerpc: Fix undefined static key
-In-Reply-To: <20210816082403.2293846-3-joel@jms.id.au>
-References: <20210816082403.2293846-1-joel@jms.id.au>
- <20210816082403.2293846-3-joel@jms.id.au>
-Date: Tue, 17 Aug 2021 12:52:37 +1000
-Message-ID: <877dgkhjey.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GpcJ80XP0z2yZL
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Aug 2021 13:40:55 +1000 (AEST)
+Received: by ozlabs.org (Postfix, from userid 1007)
+ id 4GpcJ54TNWz9sSs; Tue, 17 Aug 2021 13:40:53 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gibson.dropbear.id.au; s=201602; t=1629171653;
+ bh=mDYvwgbNhuUVm8IDRx97J78CqvO14Rf+1xEDabDlgok=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=g1pIjmyWJHVWBcT8rLrrEOmh/9sqJWsUG1dtC6B2TAz1ZSUgMW42gdhrdx6JLvOt+
+ uLjLG+6S4eEVHdvoXezFxDzAeXhaMdiQ6I0YZzn0PSP7XNXor5xscAgMTqwggCNZUD
+ +m+xgX6/eOXzla9RPuTZg9/jdZ384mxCmBnXoOjk=
+Date: Tue, 17 Aug 2021 13:27:16 +1000
+From: David Gibson <david@gibson.dropbear.id.au>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH v8 3/5] powerpc/pseries: Consolidate different NUMA
+ distance update code paths
+Message-ID: <YRsslK9jf91T+ly7@yekko>
+References: <20210812132223.225214-1-aneesh.kumar@linux.ibm.com>
+ <20210812132223.225214-4-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="p2G2N+zRlDDgbm+P"
+Content-Disposition: inline
+In-Reply-To: <20210812132223.225214-4-aneesh.kumar@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,43 +58,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Daniel Axtens <dja@axtens.net>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Joel Stanley <joel@jms.id.au> writes:
-> When CONFIG_PPC_BARRIER_NOSPEC=n, security.c is not built leading to a
-> missing definition of uaccess_flush_key.
->
->   LD      vmlinux.o
->   MODPOST vmlinux.symvers
->   MODINFO modules.builtin.modinfo
->   GEN     modules.builtin
->   LD      .tmp_vmlinux.kallsyms1
-> powerpc64le-linux-gnu-ld: arch/powerpc/kernel/align.o:(.toc+0x0): undefined reference to `uaccess_flush_key'
-> powerpc64le-linux-gnu-ld: arch/powerpc/kernel/signal_64.o:(.toc+0x0): undefined reference to `uaccess_flush_key'
-> powerpc64le-linux-gnu-ld: arch/powerpc/kernel/process.o:(.toc+0x0): undefined reference to `uaccess_flush_key'
-> powerpc64le-linux-gnu-ld: arch/powerpc/kernel/traps.o:(.toc+0x0): undefined reference to `uaccess_flush_key'
-> powerpc64le-linux-gnu-ld: arch/powerpc/kernel/hw_breakpoint_constraints.o:(.toc+0x0): undefined reference to `uaccess_flush_key'
-> powerpc64le-linux-gnu-ld: arch/powerpc/kernel/ptrace/ptrace.o:(.toc+0x0): more undefined references to `uaccess_flush_key' follow
-> make[1]: *** [Makefile:1176: vmlinux] Error 1
->
-> Hack one in to fix the build.
 
-Yeah sorry that is a bit of a hack :)
+--p2G2N+zRlDDgbm+P
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I think the root cause here is that we don't have a CONFIG for "want
-security workaround stuff", because so far we haven't had a CPU that
-wants to turn that all off.
+On Thu, Aug 12, 2021 at 06:52:21PM +0530, Aneesh Kumar K.V wrote:
+> The associativity details of the newly added resourced are collected from
+> the hypervisor via "ibm,configure-connector" rtas call. Update the numa
+> distance details of the newly added numa node after the above call.
+>=20
+> Instead of updating NUMA distance every time we lookup a node id
+> from the associativity property, add helpers that can be used
+> during boot which does this only once. Also remove the distance
+> update from node id lookup helpers.
+>=20
+> Currently, we duplicate parsing code for ibm,associativity and
+> ibm,associativity-lookup-arrays in the kernel. The associativity array pr=
+ovided
+> by these device tree properties are very similar and hence can use
+> a helper to parse the node id and numa distance details.
+>=20
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 
-The generic code uses CONFIG_GENERIC_CPU_VULNERABILITIES, so I guess we
-should follow that example and add PPC_CPU_VULNERABILITIES.
+Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
 
-Then we'd use that to disable all the security.c stuff, and
-PPC_BARRIER_NOSPEC would depend on it also.
+There are a handful of nits it would be nice to clean up as followups, thou=
+gh:
 
-Then we could allow configuring that off for Microwatt, or possibly for
-all platforms if people want to do that.
+[snip]
+> +static int get_nid_and_numa_distance(struct drmem_lmb *lmb)
+> +{
+> +	struct assoc_arrays aa =3D { .arrays =3D NULL };
+> +	int default_nid =3D NUMA_NO_NODE;
 
-cheers
+I don't think there's any point to the 'default_nid' variable.
+
+> +	int nid =3D default_nid;
+> +	int rc, index;
+> +
+> +	if ((primary_domain_index < 0) || !numa_enabled)
+> +		return default_nid;
+> +
+> +	rc =3D of_get_assoc_arrays(&aa);
+> +	if (rc)
+> +		return default_nid;
+> +
+> +	if (primary_domain_index <=3D aa.array_sz &&
+
+You don't need this test any more - it's included in __associativity_to_nid=
+().
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--p2G2N+zRlDDgbm+P
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmEbLJIACgkQbDjKyiDZ
+s5JhDRAA4Ca8mYNvobzIeaER/AZx+zFR+dUVVuAPZMHNCma4Pv/r/Ty66xo70NuN
+S8OA7CQomj4cfFFUUS8kUC67g3SP+2JIcwnjVWkiFwOvPQrgz3ElmF0oZjMwlhFB
+Qu7KxSSg4ZQji4CGRO1tJPljOgzOUejAzXX+cvHg851/lzr8vVSAHsUTf0Ze7nJ7
+t2z1n5mCa0MN2lQofao3FbfHpiOod/1SDHxtBc7lYL2o66bLBsSwXwBQQphpdhYW
+18maJjk3i0wTZZG0zgnObQYFhiH6sfTFT0XW3iw/QLfv0bzBbaUeviarNIYjPXCO
+SFPcroECe76QbOmgbx/kmSQv+LvJovzQEN91kOZKUm6ktz9z6nYoyUb4kEmyafEK
+nDFT/7xv3plpq0aGDFQCRs2GxgIhm2MreGZSS/xi+HE6DJdfLxWMtzuuBP6Z56Zk
+PtoqUbxQOmlPkGNRgYBDQiDwFN06mMJ3nUJZccyoRMOCdKgFD26Kf6kw06Zfhuyc
+An0F9lqsbHaDF5ZyWqbFrZbSp/80RhC5NKjYVXMjbf8zdFMXL/Ko2/LRS2SWXPiF
+VWejV7NvHO4HSZpBhmx+fiFziMU2OJjDxNCpHwebem32cQMvrQG36BaTx/yyakdi
++IAk2Xlj4DwO6DNrII1ugKoHH2GrLjKYmdi+nUx4+Q2jWZ/r+is=
+=lnHr
+-----END PGP SIGNATURE-----
+
+--p2G2N+zRlDDgbm+P--
