@@ -2,75 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDDE83EE6B5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 08:40:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 698623EE6BC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 08:41:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GphHj5Fbvz3cPP
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 16:40:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GphJQ2J5Xz3cTj
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 16:41:26 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=dhkEDDeR;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=jjEQRbVV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::733;
- helo=mail-qk1-x733.google.com; envelope-from=leobras.c@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::82c;
+ helo=mail-qt1-x82c.google.com; envelope-from=leobras.c@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=dhkEDDeR; dkim-atps=neutral
-Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com
- [IPv6:2607:f8b0:4864:20::733])
+ header.s=20161025 header.b=jjEQRbVV; dkim-atps=neutral
+Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com
+ [IPv6:2607:f8b0:4864:20::82c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GphH55081z2yNZ
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Aug 2021 16:40:16 +1000 (AEST)
-Received: by mail-qk1-x733.google.com with SMTP id t3so21912573qkg.11
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Aug 2021 23:40:16 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GphH63kGlz2yNZ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Aug 2021 16:40:18 +1000 (AEST)
+Received: by mail-qt1-x82c.google.com with SMTP id x5so7809373qtq.13
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Aug 2021 23:40:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=umkzGAmsCipKcKjsq0UFHjXQk1tsTPDtPzncTzoDpWk=;
- b=dhkEDDeRVf4DvQXo2P8JcmKd4CS1xAqu5SDnIsMBn20kLiSkcazFNxMNh9x0JMf9gT
- kyPoX1AUHqbIpe0G2j8XSu7ZSASV4qY5QCp9GgNryZhs6y1YLhmcHjM2JP6e3yuWgj7l
- NLjW2kXSead72edYz+1wVIhMx1KBzx1PJfSmqqBnaSecekMeZUwJRSy8CDb8ZlvcGQcZ
- kvJezVVYiGToD4Kb62jQV0gvjUkvsMBCJy38crRD2CwUI7Y/9VeOIoU2i61tTQuogluy
- LiDOh4V2ggxV4Zr2U8S6rnw020oy83iO5gvNJ8nFcX16k5LKU36e6Kzs+bUUI7Eubh61
- oYlw==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=11QfhZZXT8JfVDYl1/SoG66DLWNqpspPq55877vwnTs=;
+ b=jjEQRbVVJ3aqaNmEeivYcMEmnyn8axdwbQ86NAzkkwVPTL/mJbcQ4sNy4EvCuqFpnY
+ 83SIx5Tenj+W7szY/z0Hb7SkimPGRlFp+7Q6ctUtswEzweYpgQ6+aExOE6JpTg4HBJrh
+ rx9ZqrJtRwcUw5UphBHS8zqoF5htDkuLwIMlEaS3xgUG4vuloccnTUQ8+xvwQ/ow270+
+ PKsWG52EjIoX84DNKnsiZV3mINLiXVn0fk2xw+j5SZx1vTTax37SnfwyEdKvYaisTUUi
+ xEKxLgOSEl7NIuqkrKGw2AE/k4De4zP9iO6Hmvik0pj873bVafFTRA0HR/Ox9mnOaOMV
+ kpng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=umkzGAmsCipKcKjsq0UFHjXQk1tsTPDtPzncTzoDpWk=;
- b=jge3ps4dJhVx4dLzr+mVs9A+xnc95usk+xBvHvdSfq34EorF0mkDNMuwY7xhHLGpKi
- Tr+QNhTHDTDWZ7+dVSzWg7oswSQEp0nvtgqF5sQQIaISKISkuwhsJL1doNgk0h9ePsD2
- qKGYyzXSb+CmWPeJ8kKw1qi05FkDHWBsnczdM41A+oBO2PvFBDWNM4SadsN/nPKlQo03
- vEhWrHSsXYybl6Jj2UjdT7o67Vs3GZWMi1yLGbZ1d+xHoOkVqUviIXNKNvDzIouSpCYt
- POB1o5Q51VPGwua3PYwQkFONt9mVgk/Qm/KwwDJhB3jb9d15ClfH7IYyBP/8aUSbH8uz
- tJzQ==
-X-Gm-Message-State: AOAM5329VNPDkzT1xNnbOAhk6OdQjVeOxkO76wroS1AFJ6qmkajPwuvy
- GfQNQZvgPjKbV3zJBsquyR4=
-X-Google-Smtp-Source: ABdhPJyajYj4hl23zFyNyv42DsXx4eYSAfVWsfQ0OLUSx4u3Kj8mraD0IP62bNK7hXucw7MTROIEGg==
-X-Received: by 2002:a05:620a:1455:: with SMTP id
- i21mr1429218qkl.116.1629182413199; 
- Mon, 16 Aug 2021 23:40:13 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=11QfhZZXT8JfVDYl1/SoG66DLWNqpspPq55877vwnTs=;
+ b=JFEAD3yhl5LaJZtFR2IQcyJke/r4YVqphgqDD93fr0DFbP6jRM9azM4dQiupZ6QuTX
+ IIWj0Wh8mPPcoSfbukpSmwHybDkPofAPCUj08MwFkv8Jp+EIA7gKHuqNBqIolsnMtuM2
+ NJds6DPiYlttnSoqi3lJ89i/J8L8xzI5+O4LHjkr6Zes3+HCeXH9o5X/sbeSBGA7Zll4
+ JQ81JfFLHppZOGV9ejToWE+jmnXk6hqybPOBiSp7qCPBuUm2OXNX9ivRAOWIRjjXMSzR
+ WsyoqJQMmN53x7P0QgD5sfa5LYKEFaMdDvJHn0gvKA45HjqvSOs6Ng3JXSzctcdoSC58
+ 2UVg==
+X-Gm-Message-State: AOAM5323A0wdU6RbySwJ6YRX1hZ/VJub0B3Inn0zvIn5J/r/Yl06qCAc
+ XN9tOzlIdnOyPsQ49enKGKs=
+X-Google-Smtp-Source: ABdhPJzYU2Hsoq7YeTJwFwen5ddxBZyE6s8yZQzRgOqFTu4o52ase3mWHCtOH4z/FUAafLxz1bRksw==
+X-Received: by 2002:ac8:5d8d:: with SMTP id d13mr1636500qtx.386.1629182416048; 
+ Mon, 16 Aug 2021 23:40:16 -0700 (PDT)
 Received: from LeoBras.redhat.com ([2804:431:c7f0:30b2:5c9e:50:88f3:269a])
- by smtp.gmail.com with ESMTPSA id c11sm526938qth.29.2021.08.16.23.40.10
+ by smtp.gmail.com with ESMTPSA id c11sm526938qth.29.2021.08.16.23.40.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 16 Aug 2021 23:40:12 -0700 (PDT)
+ Mon, 16 Aug 2021 23:40:15 -0700 (PDT)
 From: Leonardo Bras <leobras.c@gmail.com>
 To: Michael Ellerman <mpe@ellerman.id.au>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Leonardo Bras <leobras.c@gmail.com>,
  Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Frederic Barrat <fbarrat@linux.ibm.com>,
  David Gibson <david@gibson.dropbear.id.au>,
- kernel test robot <lkp@intel.com>, Nicolin Chen <nicoleotsuka@gmail.com>,
- Frederic Barrat <fbarrat@linux.ibm.com>
-Subject: [PATCH v6 00/11] DDW + Indirect Mapping
-Date: Tue, 17 Aug 2021 03:39:18 -0300
-Message-Id: <20210817063929.38701-1-leobras.c@gmail.com>
+ Nicolin Chen <nicoleotsuka@gmail.com>, kernel test robot <lkp@intel.com>
+Subject: [PATCH v6 01/11] powerpc/pseries/iommu: Replace hard-coded page shift
+Date: Tue, 17 Aug 2021 03:39:19 -0300
+Message-Id: <20210817063929.38701-2-leobras.c@gmail.com>
 X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20210817063929.38701-1-leobras.c@gmail.com>
+References: <20210817063929.38701-1-leobras.c@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -89,123 +90,185 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-So far it's assumed possible to map the guest RAM 1:1 to the bus, which
-works with a small number of devices. SRIOV changes it as the user can
-configure hundreds VFs and since phyp preallocates TCEs and does not
-allow IOMMU pages bigger than 64K, it has to limit the number of TCEs
-per a PE to limit waste of physical pages.
+Some functions assume IOMMU page size can only be 4K (pageshift == 12).
+Update them to accept any page size passed, so we can use 64K pages.
 
-As of today, if the assumed direct mapping is not possible, DDW creation
-is skipped and the default DMA window "ibm,dma-window" is used instead.
+In the process, some defines like TCE_SHIFT were made obsolete, and then
+removed.
 
-Using the DDW instead of the default DMA window may allow to expand the
-amount of memory that can be DMA-mapped, given the number of pages (TCEs)
-may stay the same (or increase) and the default DMA window offers only
-4k-pages while DDW may offer larger pages (4k, 64k, 16M ...).
+IODA3 Revision 3.0_prd1 (OpenPowerFoundation), Figures 3.4 and 3.5 show
+a RPN of 52-bit, and considers a 12-bit pageshift, so there should be
+no need of using TCE_RPN_MASK, which masks out any bit after 40 in rpn.
+It's usage removed from tce_build_pSeries(), tce_build_pSeriesLP(), and
+tce_buildmulti_pSeriesLP().
 
-Patch #1 replaces hard-coded 4K page size with a variable containing the
-correct page size for the window.
+Most places had a tbl struct, so using tbl->it_page_shift was simple.
+tce_free_pSeriesLP() was a special case, since callers not always have a
+tbl struct, so adding a tceshift parameter seems the right thing to do.
 
-Patch #2 introduces iommu_table_in_use(), and replace manual bit-field
-checking where it's used. It will be used for aborting enable_ddw() if
-there is any current iommu allocation and we are trying single window
-indirect mapping.
+Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
+Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
+---
+ arch/powerpc/include/asm/tce.h         |  8 ------
+ arch/powerpc/platforms/pseries/iommu.c | 39 +++++++++++++++-----------
+ 2 files changed, 23 insertions(+), 24 deletions(-)
 
-Patch #3 introduces iommu_pseries_alloc_table() that will be helpful
-when indirect mapping needs to replace the iommu_table.
-
-Patch #4 adds helpers for adding DDWs in the list.
-
-Patch #5 refactors enable_ddw() so it returns if direct mapping is
-possible, instead of DMA offset. It helps for next patches on
-indirect DMA mapping and also allows DMA windows starting at 0x00.
-
-Patch #6 bring new helper to simplify enable_ddw(), allowing
-some reorganization for introducing indirect mapping DDW.
-
-Patch #7 adds new helper _iommu_table_setparms() and use it in other
-*setparams*() to fill iommu_table. It will also be used for creating a
-new iommu_table for indirect mapping.
-
-Patch #8 updates remove_dma_window() to accept different property names,
-so we can introduce a new property for indirect mapping.
-
-Patch #9 extracts find_existing_ddw_windows() into
-find_existing_ddw_windows_named(), and calls it by it's property name.
-This will be useful when the property for indirect mapping is created,
-so we can search the device-tree for both properties.
-
-Patch #10:
-Instead of destroying the created DDW if it doesn't map the whole
-partition, make use of it instead of the default DMA window as it improves
-performance. Also, update the iommu_table and re-generate the pools.
-It introduces a new property name for DDW with indirect DMA mapping.
-
-Patch #11:
-Does some renaming of 'direct window' to 'dma window', given the DDW
-created can now be also used in indirect mapping if direct mapping is not
-available.
-
-All patches were tested into an LPAR with an virtio-net interface that
-allows default DMA window and DDW to coexist.
-
-Changes since v5:
-- Reviews from Frederic Barrat
-- 02/11 : memset bitmap only if tbl not in use
-- 06/11 : remove_ddw() is not used in enable_ddw() error path anymore 
-  New helpers were created for that.
-- 10/11 : There was a typo, but got replaced due to 06/11 fix.
-v5 Link: http://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=253799&state=%2A&archive=both
-
-Changes since v4:
-- Solve conflicts with new upstream versions
-- Avoid unecessary code moving by doing variable declaration before definition
-- Rename _iommu_table_setparms to iommu_table_setparms_common and changed base
-  parameter from unsigned long to void* in order to avoid unecessary casting.
-- Fix breaking case for existing direct-mapping.
-- Fix IORESOURCE_MEM bound issue
-- Move new tbl to pci->table_group->tables[1] instead of replacing [0]
-v4 Link: https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=241597&state=%2A&archive=both
-
-Changes since v3:
-- Fixed inverted free order at ddw_property_create()
-- Updated goto tag naming
-v3 Link: https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=240287&state=%2A&archive=both
-
-Changes since v2:
-- Some patches got removed from the series and sent by themselves,
-- New tbl created for DDW + indirect mapping reserves MMIO32 space,
-- Improved reserved area algorithm,
-- Improved commit messages,
-- Removed define for default DMA window prop name,
-- Avoided some unnecessary renaming,
-- Removed some unnecessary empty lines,
-- Changed some code moving to forward declarations.
-v2 Link: http://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=201210&state=%2A&archive=both
-
-
-Leonardo Bras (11):
-  powerpc/pseries/iommu: Replace hard-coded page shift
-  powerpc/kernel/iommu: Add new iommu_table_in_use() helper
-  powerpc/pseries/iommu: Add iommu_pseries_alloc_table() helper
-  powerpc/pseries/iommu: Add ddw_list_new_entry() helper
-  powerpc/pseries/iommu: Allow DDW windows starting at 0x00
-  powerpc/pseries/iommu: Add ddw_property_create() and refactor
-    enable_ddw()
-  powerpc/pseries/iommu: Reorganize iommu_table_setparms*() with new
-    helper
-  powerpc/pseries/iommu: Update remove_dma_window() to accept property
-    name
-  powerpc/pseries/iommu: Find existing DDW with given property name
-  powerpc/pseries/iommu: Make use of DDW for indirect mapping
-  powerpc/pseries/iommu: Rename "direct window" to "dma window"
-
- arch/powerpc/include/asm/iommu.h       |   1 +
- arch/powerpc/include/asm/tce.h         |   8 -
- arch/powerpc/kernel/iommu.c            |  65 ++--
- arch/powerpc/platforms/pseries/iommu.c | 481 +++++++++++++++----------
- 4 files changed, 330 insertions(+), 225 deletions(-)
-
+diff --git a/arch/powerpc/include/asm/tce.h b/arch/powerpc/include/asm/tce.h
+index db5fc2f2262d..0c34d2756d92 100644
+--- a/arch/powerpc/include/asm/tce.h
++++ b/arch/powerpc/include/asm/tce.h
+@@ -19,15 +19,7 @@
+ #define TCE_VB			0
+ #define TCE_PCI			1
+ 
+-/* TCE page size is 4096 bytes (1 << 12) */
+-
+-#define TCE_SHIFT	12
+-#define TCE_PAGE_SIZE	(1 << TCE_SHIFT)
+-
+ #define TCE_ENTRY_SIZE		8		/* each TCE is 64 bits */
+-
+-#define TCE_RPN_MASK		0xfffffffffful  /* 40-bit RPN (4K pages) */
+-#define TCE_RPN_SHIFT		12
+ #define TCE_VALID		0x800		/* TCE valid */
+ #define TCE_ALLIO		0x400		/* TCE valid for all lpars */
+ #define TCE_PCI_WRITE		0x2		/* write from PCI allowed */
+diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+index 0c55b991f665..b1b8d12bab39 100644
+--- a/arch/powerpc/platforms/pseries/iommu.c
++++ b/arch/powerpc/platforms/pseries/iommu.c
+@@ -107,6 +107,8 @@ static int tce_build_pSeries(struct iommu_table *tbl, long index,
+ 	u64 proto_tce;
+ 	__be64 *tcep;
+ 	u64 rpn;
++	const unsigned long tceshift = tbl->it_page_shift;
++	const unsigned long pagesize = IOMMU_PAGE_SIZE(tbl);
+ 
+ 	proto_tce = TCE_PCI_READ; // Read allowed
+ 
+@@ -117,10 +119,10 @@ static int tce_build_pSeries(struct iommu_table *tbl, long index,
+ 
+ 	while (npages--) {
+ 		/* can't move this out since we might cross MEMBLOCK boundary */
+-		rpn = __pa(uaddr) >> TCE_SHIFT;
+-		*tcep = cpu_to_be64(proto_tce | (rpn & TCE_RPN_MASK) << TCE_RPN_SHIFT);
++		rpn = __pa(uaddr) >> tceshift;
++		*tcep = cpu_to_be64(proto_tce | rpn << tceshift);
+ 
+-		uaddr += TCE_PAGE_SIZE;
++		uaddr += pagesize;
+ 		tcep++;
+ 	}
+ 	return 0;
+@@ -146,7 +148,7 @@ static unsigned long tce_get_pseries(struct iommu_table *tbl, long index)
+ 	return be64_to_cpu(*tcep);
+ }
+ 
+-static void tce_free_pSeriesLP(unsigned long liobn, long, long);
++static void tce_free_pSeriesLP(unsigned long liobn, long, long, long);
+ static void tce_freemulti_pSeriesLP(struct iommu_table*, long, long);
+ 
+ static int tce_build_pSeriesLP(unsigned long liobn, long tcenum, long tceshift,
+@@ -166,12 +168,12 @@ static int tce_build_pSeriesLP(unsigned long liobn, long tcenum, long tceshift,
+ 		proto_tce |= TCE_PCI_WRITE;
+ 
+ 	while (npages--) {
+-		tce = proto_tce | (rpn & TCE_RPN_MASK) << tceshift;
++		tce = proto_tce | rpn << tceshift;
+ 		rc = plpar_tce_put((u64)liobn, (u64)tcenum << tceshift, tce);
+ 
+ 		if (unlikely(rc == H_NOT_ENOUGH_RESOURCES)) {
+ 			ret = (int)rc;
+-			tce_free_pSeriesLP(liobn, tcenum_start,
++			tce_free_pSeriesLP(liobn, tcenum_start, tceshift,
+ 			                   (npages_start - (npages + 1)));
+ 			break;
+ 		}
+@@ -205,10 +207,11 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
+ 	long tcenum_start = tcenum, npages_start = npages;
+ 	int ret = 0;
+ 	unsigned long flags;
++	const unsigned long tceshift = tbl->it_page_shift;
+ 
+ 	if ((npages == 1) || !firmware_has_feature(FW_FEATURE_PUT_TCE_IND)) {
+ 		return tce_build_pSeriesLP(tbl->it_index, tcenum,
+-					   tbl->it_page_shift, npages, uaddr,
++					   tceshift, npages, uaddr,
+ 		                           direction, attrs);
+ 	}
+ 
+@@ -225,13 +228,13 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
+ 		if (!tcep) {
+ 			local_irq_restore(flags);
+ 			return tce_build_pSeriesLP(tbl->it_index, tcenum,
+-					tbl->it_page_shift,
++					tceshift,
+ 					npages, uaddr, direction, attrs);
+ 		}
+ 		__this_cpu_write(tce_page, tcep);
+ 	}
+ 
+-	rpn = __pa(uaddr) >> TCE_SHIFT;
++	rpn = __pa(uaddr) >> tceshift;
+ 	proto_tce = TCE_PCI_READ;
+ 	if (direction != DMA_TO_DEVICE)
+ 		proto_tce |= TCE_PCI_WRITE;
+@@ -245,12 +248,12 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
+ 		limit = min_t(long, npages, 4096/TCE_ENTRY_SIZE);
+ 
+ 		for (l = 0; l < limit; l++) {
+-			tcep[l] = cpu_to_be64(proto_tce | (rpn & TCE_RPN_MASK) << TCE_RPN_SHIFT);
++			tcep[l] = cpu_to_be64(proto_tce | rpn << tceshift);
+ 			rpn++;
+ 		}
+ 
+ 		rc = plpar_tce_put_indirect((u64)tbl->it_index,
+-					    (u64)tcenum << 12,
++					    (u64)tcenum << tceshift,
+ 					    (u64)__pa(tcep),
+ 					    limit);
+ 
+@@ -277,12 +280,13 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
+ 	return ret;
+ }
+ 
+-static void tce_free_pSeriesLP(unsigned long liobn, long tcenum, long npages)
++static void tce_free_pSeriesLP(unsigned long liobn, long tcenum, long tceshift,
++			       long npages)
+ {
+ 	u64 rc;
+ 
+ 	while (npages--) {
+-		rc = plpar_tce_put((u64)liobn, (u64)tcenum << 12, 0);
++		rc = plpar_tce_put((u64)liobn, (u64)tcenum << tceshift, 0);
+ 
+ 		if (rc && printk_ratelimit()) {
+ 			printk("tce_free_pSeriesLP: plpar_tce_put failed. rc=%lld\n", rc);
+@@ -301,9 +305,11 @@ static void tce_freemulti_pSeriesLP(struct iommu_table *tbl, long tcenum, long n
+ 	u64 rc;
+ 
+ 	if (!firmware_has_feature(FW_FEATURE_STUFF_TCE))
+-		return tce_free_pSeriesLP(tbl->it_index, tcenum, npages);
++		return tce_free_pSeriesLP(tbl->it_index, tcenum,
++					  tbl->it_page_shift, npages);
+ 
+-	rc = plpar_tce_stuff((u64)tbl->it_index, (u64)tcenum << 12, 0, npages);
++	rc = plpar_tce_stuff((u64)tbl->it_index,
++			     (u64)tcenum << tbl->it_page_shift, 0, npages);
+ 
+ 	if (rc && printk_ratelimit()) {
+ 		printk("tce_freemulti_pSeriesLP: plpar_tce_stuff failed\n");
+@@ -319,7 +325,8 @@ static unsigned long tce_get_pSeriesLP(struct iommu_table *tbl, long tcenum)
+ 	u64 rc;
+ 	unsigned long tce_ret;
+ 
+-	rc = plpar_tce_get((u64)tbl->it_index, (u64)tcenum << 12, &tce_ret);
++	rc = plpar_tce_get((u64)tbl->it_index,
++			   (u64)tcenum << tbl->it_page_shift, &tce_ret);
+ 
+ 	if (rc && printk_ratelimit()) {
+ 		printk("tce_get_pSeriesLP: plpar_tce_get failed. rc=%lld\n", rc);
 -- 
 2.32.0
 
