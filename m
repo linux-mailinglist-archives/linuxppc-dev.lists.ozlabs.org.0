@@ -1,55 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DFC33EE904
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 11:01:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 041F63EE9A7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 11:22:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GplPS2fxGz30GT
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 19:01:00 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=dkim header.b=cLyGe6Vf;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gplsx6Srlz3bX3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Aug 2021 19:22:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=alien8.de (client-ip=5.9.137.197; helo=mail.skyhub.de;
- envelope-from=bp@alien8.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256
- header.s=dkim header.b=cLyGe6Vf; dkim-atps=neutral
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GplNm4v71z2ymN
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Aug 2021 19:00:24 +1000 (AEST)
-Received: from zn.tnic (p200300ec2f1175003091845243004ed4.dip0.t-ipconnect.de
- [IPv6:2003:ec:2f11:7500:3091:8452:4300:4ed4])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C31EA1EC01B5;
- Tue, 17 Aug 2021 11:00:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
- t=1629190817;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
- bh=CTZxwlhCTYBphd87lvceDZBtTDENyNB6RWw2n2fhNqo=;
- b=cLyGe6Vfp/ZbXlGAJcu8s+oDyI+Cek5fSPumAUCPjd+TtrDcq8WnlTuq148AmmSefmwouf
- U4RljFOl7bpVd/jo/MMo7NW5c66AcB8pntylvfCw1TSAnl6S3l0D/M7WEba3xU2EPv7jkK
- R7PUFWJBwQxeCIeQqdKssk1UJ8FLB8Y=
-Date: Tue, 17 Aug 2021 11:00:56 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Subject: Re: [PATCH v2 05/12] x86/sme: Replace occurrences of sme_active()
- with prot_guest_has()
-Message-ID: <YRt6yCNCBLwyyx5X@zn.tnic>
-References: <cover.1628873970.git.thomas.lendacky@amd.com>
- <c6c38d6253dc78381f9ff0f1823b6ee5ddeefacc.1628873970.git.thomas.lendacky@amd.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GplsV5plVz2yXy
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Aug 2021 19:21:47 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4GplsJ24qlz9sTm;
+ Tue, 17 Aug 2021 11:21:40 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id k7YWyVUjcKY5; Tue, 17 Aug 2021 11:21:40 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4GplsJ0mjqz9sTT;
+ Tue, 17 Aug 2021 11:21:40 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id E82168B7A6;
+ Tue, 17 Aug 2021 11:21:39 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id nEYXPrjcp5Y5; Tue, 17 Aug 2021 11:21:39 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4E8A28B765;
+ Tue, 17 Aug 2021 11:21:39 +0200 (CEST)
+Subject: Re: [PATCH 2/3] powerpc: Fix undefined static key
+To: Joel Stanley <joel@jms.id.au>
+References: <20210816082403.2293846-1-joel@jms.id.au>
+ <20210816082403.2293846-3-joel@jms.id.au>
+ <492edb10-ccef-c6f2-2fd3-71cf8ae54cfc@csgroup.eu>
+ <CACPK8XcVEUMS0G+NBJY4B0xE6sFFtYH5-RJtQ8J+KiuyOQx=1A@mail.gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <a5dc60d8-7c4b-2186-747e-e32894d38286@csgroup.eu>
+Date: Tue, 17 Aug 2021 11:21:31 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <c6c38d6253dc78381f9ff0f1823b6ee5ddeefacc.1628873970.git.thomas.lendacky@amd.com>
+In-Reply-To: <CACPK8XcVEUMS0G+NBJY4B0xE6sFFtYH5-RJtQ8J+KiuyOQx=1A@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,119 +65,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
- linux-efi@vger.kernel.org, Brijesh Singh <brijesh.singh@amd.com>,
- kvm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org,
- platform-driver-x86@vger.kernel.org, Will Deacon <will@kernel.org>,
- linux-s390@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
- Joerg Roedel <joro@8bytes.org>, x86@kernel.org, amd-gfx@lists.freedesktop.org,
- Ingo Molnar <mingo@redhat.com>, linux-graphics-maintainer@vmware.com,
- Joerg Roedel <jroedel@suse.de>, Tianyu Lan <Tianyu.Lan@microsoft.com>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
- iommu@lists.linux-foundation.org, linux-fsdevel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Michael Neuling <mikey@neuling.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Aug 13, 2021 at 11:59:24AM -0500, Tom Lendacky wrote:
-> diff --git a/arch/x86/mm/mem_encrypt.c b/arch/x86/mm/mem_encrypt.c
-> index edc67ddf065d..5635ca9a1fbe 100644
-> --- a/arch/x86/mm/mem_encrypt.c
-> +++ b/arch/x86/mm/mem_encrypt.c
-> @@ -144,7 +144,7 @@ void __init sme_unmap_bootdata(char *real_mode_data)
->  	struct boot_params *boot_data;
->  	unsigned long cmdline_paddr;
->  
-> -	if (!sme_active())
-> +	if (!amd_prot_guest_has(PATTR_SME))
->  		return;
->  
->  	/* Get the command line address before unmapping the real_mode_data */
-> @@ -164,7 +164,7 @@ void __init sme_map_bootdata(char *real_mode_data)
->  	struct boot_params *boot_data;
->  	unsigned long cmdline_paddr;
->  
-> -	if (!sme_active())
-> +	if (!amd_prot_guest_has(PATTR_SME))
->  		return;
->  
->  	__sme_early_map_unmap_mem(real_mode_data, sizeof(boot_params), true);
-> @@ -378,7 +378,7 @@ bool sev_active(void)
->  	return sev_status & MSR_AMD64_SEV_ENABLED;
->  }
->  
-> -bool sme_active(void)
-> +static bool sme_active(void)
 
-Just get rid of it altogether. Also, there's an
 
-EXPORT_SYMBOL_GPL(sev_active);
+Le 17/08/2021 à 04:44, Joel Stanley a écrit :
+> On Mon, 16 Aug 2021 at 08:39, Christophe Leroy
+> <christophe.leroy@csgroup.eu> wrote:
+>>
+>>
+>>
+>> Le 16/08/2021 à 10:24, Joel Stanley a écrit :
+>>> When CONFIG_PPC_BARRIER_NOSPEC=n, security.c is not built leading to a
+>>> missing definition of uaccess_flush_key.
+>>>
+>>>     LD      vmlinux.o
+>>>     MODPOST vmlinux.symvers
+>>>     MODINFO modules.builtin.modinfo
+>>>     GEN     modules.builtin
+>>>     LD      .tmp_vmlinux.kallsyms1
+>>> powerpc64le-linux-gnu-ld: arch/powerpc/kernel/align.o:(.toc+0x0): undefined reference to `uaccess_flush_key'
+>>> powerpc64le-linux-gnu-ld: arch/powerpc/kernel/signal_64.o:(.toc+0x0): undefined reference to `uaccess_flush_key'
+>>> powerpc64le-linux-gnu-ld: arch/powerpc/kernel/process.o:(.toc+0x0): undefined reference to `uaccess_flush_key'
+>>> powerpc64le-linux-gnu-ld: arch/powerpc/kernel/traps.o:(.toc+0x0): undefined reference to `uaccess_flush_key'
+>>> powerpc64le-linux-gnu-ld: arch/powerpc/kernel/hw_breakpoint_constraints.o:(.toc+0x0): undefined reference to `uaccess_flush_key'
+>>> powerpc64le-linux-gnu-ld: arch/powerpc/kernel/ptrace/ptrace.o:(.toc+0x0): more undefined references to `uaccess_flush_key' follow
+>>> make[1]: *** [Makefile:1176: vmlinux] Error 1
+>>>
+>>> Hack one in to fix the build.
+>>>
+>>> Signed-off-by: Joel Stanley <joel@jms.id.au>
+>>> ---
+>>>    arch/powerpc/include/asm/security_features.h | 3 +++
+>>>    1 file changed, 3 insertions(+)
+>>>
+>>> diff --git a/arch/powerpc/include/asm/security_features.h b/arch/powerpc/include/asm/security_features.h
+>>> index 792eefaf230b..46ade7927a4c 100644
+>>> --- a/arch/powerpc/include/asm/security_features.h
+>>> +++ b/arch/powerpc/include/asm/security_features.h
+>>> @@ -39,6 +39,9 @@ static inline bool security_ftr_enabled(u64 feature)
+>>>        return !!(powerpc_security_features & feature);
+>>>    }
+>>>
+>>> +#ifndef CONFIG_PPC_BARRIER_NOSPEC
+>>> +DEFINE_STATIC_KEY_FALSE(uaccess_flush_key);
+>>> +#endif
+>>
+>> It will then be re-defined by each file that includes asm/security_features.h ....
+>>
+>> You can't use a DEFINE_ in a .h
+>>
+>> You have to fix the problem at its source.
+>>
+>> Cleanest way I see it to modify asm/book3s/64/kup.h and something like
+>>
+>> if (IS_ENABLED(CONFIG_PPC_BARRIER_NOSPEC) && static_branch_unlikely(&uaccess_flush_key)
+> 
+> This won't work either as there's no declaration for uaccess_flush_key:
+> 
+> arch/powerpc/include/asm/book3s/64/kup.h:411:78: error:
+> ‘uaccess_flush_key’ undeclared (first use in this function)
 
-which needs to go under the actual function. Here's a diff ontop:
+I can't understand that.
 
----
-diff --git a/arch/x86/mm/mem_encrypt.c b/arch/x86/mm/mem_encrypt.c
-index 5635ca9a1fbe..a3a2396362a5 100644
---- a/arch/x86/mm/mem_encrypt.c
-+++ b/arch/x86/mm/mem_encrypt.c
-@@ -364,8 +364,9 @@ int __init early_set_memory_encrypted(unsigned long vaddr, unsigned long size)
- /*
-  * SME and SEV are very similar but they are not the same, so there are
-  * times that the kernel will need to distinguish between SME and SEV. The
-- * sme_active() and sev_active() functions are used for this.  When a
-- * distinction isn't needed, the mem_encrypt_active() function can be used.
-+ * PATTR_HOST_MEM_ENCRYPT and PATTR_GUEST_MEM_ENCRYPT flags to
-+ * amd_prot_guest_has() are used for this. When a distinction isn't needed,
-+ * the mem_encrypt_active() function can be used.
-  *
-  * The trampoline code is a good example for this requirement.  Before
-  * paging is activated, SME will access all memory as decrypted, but SEV
-@@ -377,11 +378,6 @@ bool sev_active(void)
- {
- 	return sev_status & MSR_AMD64_SEV_ENABLED;
- }
--
--static bool sme_active(void)
--{
--	return sme_me_mask && !sev_active();
--}
- EXPORT_SYMBOL_GPL(sev_active);
- 
- /* Needs to be called from non-instrumentable code */
-@@ -398,7 +394,7 @@ bool amd_prot_guest_has(unsigned int attr)
- 
- 	case PATTR_SME:
- 	case PATTR_HOST_MEM_ENCRYPT:
--		return sme_active();
-+		return sme_me_mask && !sev_active();
- 
- 	case PATTR_SEV:
- 	case PATTR_GUEST_MEM_ENCRYPT:
+According to your commit message, you have reached linking step. It means that the necessary 
+declarations were present.
 
->  {
->  	return sme_me_mask && !sev_active();
->  }
-> @@ -428,7 +428,7 @@ bool force_dma_unencrypted(struct device *dev)
->  	 * device does not support DMA to addresses that include the
->  	 * encryption mask.
->  	 */
-> -	if (sme_active()) {
-> +	if (amd_prot_guest_has(PATTR_SME)) {
+Adding a condition on IS_ENABLED(CONFIG_PPC_BARRIER_NOSPEC) will get you rid of the code past that 
+condition at compile step, then linking will succeed because the code referencing 
+'uaccess_flush_key' won't be there anymore when you proceed with linking.
 
-So I'm not sure: you add PATTR_SME which you call with
-amd_prot_guest_has() and PATTR_HOST_MEM_ENCRYPT which you call with
-prot_guest_has() and they both end up being the same thing on AMD.
 
-So why even bother with PATTR_SME?
+> 
+> We could add an extern for it, but that is distasteful as the static
+> key API suggests using the structs directly is deprecated, and the
+> macros we're supposed to use perform initialisation.
 
-This is only going to cause confusion later and I'd say let's simply use
-prot_guest_has(PATTR_HOST_MEM_ENCRYPT) everywhere...
 
--- 
-Regards/Gruss,
-    Boris.
+You already have DECLARE_STATIC_KEY_FALSE(uaccess_flush_key); in <asm/book3s/64/kup.h>
 
-https://people.kernel.org/tglx/notes-about-netiquette
+That doesn't initialise anythink but provides the declaration.
+
+> 
+> Could we assume microwatt-like platforms will not gain pkeys support,
+> and have a stubbed out set of prevent/restore_user_access for systems
+> that turn off either pkeys or BARRIER_NOSPEC?
+> 
+> Or do we get rid of PPC_BARRIER_NOSPEC as an option, and have machines
+> rely on disabling it at runtime?
+> 
