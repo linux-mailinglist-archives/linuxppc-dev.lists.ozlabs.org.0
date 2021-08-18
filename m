@@ -2,38 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 697E53F0D3F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Aug 2021 23:22:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E94313F0E2C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Aug 2021 00:30:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gqgpc2b3tz3ckr
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Aug 2021 07:22:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GqjKL5xbqz3cP2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Aug 2021 08:30:46 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=HXqi8rpN;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=wanadoo.fr
- (client-ip=80.12.242.127; helo=smtp.smtpout.orange.fr;
- envelope-from=christophe.jaillet@wanadoo.fr; receiver=<UNKNOWN>)
-Received: from smtp.smtpout.orange.fr (smtp05.smtpout.orange.fr
- [80.12.242.127])
- (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::62e;
+ helo=mail-pl1-x62e.google.com; envelope-from=keescook@chromium.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=HXqi8rpN; dkim-atps=neutral
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com
+ [IPv6:2607:f8b0:4864:20::62e])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GqgpB0Gskz302G
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Aug 2021 07:22:07 +1000 (AEST)
-Received: from pop-os.home ([90.126.253.178]) by mwinf5d40 with ME
- id j9N1250013riaq2039N1R2; Wed, 18 Aug 2021 23:22:02 +0200
-X-ME-Helo: pop-os.home
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Wed, 18 Aug 2021 23:22:02 +0200
-X-ME-IP: 90.126.253.178
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: leoyang.li@nxp.com
-Subject: [PATCH] soc: fsl: guts: Fix a resource leak in the error handling
- path of 'fsl_guts_probe()'
-Date: Wed, 18 Aug 2021 23:21:59 +0200
-Message-Id: <b12e8c5c5d6ab3061d9504de8fbaefcad6bbc385.1629321668.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.30.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GqjJd4tQqz2yXt
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Aug 2021 08:30:07 +1000 (AEST)
+Received: by mail-pl1-x62e.google.com with SMTP id n12so2769990plf.4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Aug 2021 15:30:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:content-transfer-encoding:in-reply-to;
+ bh=DUTuMfsQqxqX+3pR2oz9dVJNWsHg80kq142ck8zdj0s=;
+ b=HXqi8rpNQlqRCRobulkOlcaA4+c6J/4aW1kHG07w5z+LW3VAsPY7L3ovHbYLAvr6BW
+ z8PYA40q5a4/E1aSSd1f0X7nRnd2FNDMsOqvNHCn+M7iSwPw+3HB842oCYFV1odUjD4+
+ aowm4n1LLC28ISLDG0efepefjXmirvRMkeWhE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:content-transfer-encoding
+ :in-reply-to;
+ bh=DUTuMfsQqxqX+3pR2oz9dVJNWsHg80kq142ck8zdj0s=;
+ b=PeJ7Va0EvPX0GH3z4cDELGGx6Fc3f0tkbzOPbsuCsFbYO3ahzYIFVFGfbjOBVvGHEt
+ G7RdmDh47kvm3qJ6EN6UMLqSdcGYz+TKtNW0agUbY1jFKXzGK4M91VS5y8gnAejsC4+r
+ 7JSw4OmyhmbCgixnEgWivsDTrHZE0Ypg7a85Oigz2QHO/XNJvLoUnOEKKLFE/w06rBK4
+ fyqQA7eCUzXlboUMe6OEVuqknQGINJjMGuorKhD4Q8W1whyhnYa/qLsXFkPpz3mFMCoq
+ tJN89Ngx/GcCyG0+MjVV9vycNcJ62uTsVlt1MC87QcM5FvTt+3RQ5T7YwG9xCLCqAJaD
+ nyCg==
+X-Gm-Message-State: AOAM532incomhsePwQpCLTRZ0ocBXSVxAJTNF9BeMj/Mz7Yn2y27sRCu
+ r9jXdu1t4uI56Qtl6NZ3KLF7AQ==
+X-Google-Smtp-Source: ABdhPJwejqek+pQNgEJHoUL+LD8id8sswOa0BezZLWGyCwRRYJ3BmiAhJE1bgJAMyKte9lbr8NDHRw==
+X-Received: by 2002:a17:90a:a581:: with SMTP id
+ b1mr1663300pjq.153.1629325803017; 
+ Wed, 18 Aug 2021 15:30:03 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+ by smtp.gmail.com with ESMTPSA id n185sm862325pfn.171.2021.08.18.15.30.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 18 Aug 2021 15:30:02 -0700 (PDT)
+Date: Wed, 18 Aug 2021 15:30:01 -0700
+From: Kees Cook <keescook@chromium.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2 61/63] powerpc: Split memset() to avoid multi-field
+ overflow
+Message-ID: <202108181528.9CDB56FEC@keescook>
+References: <20210818060533.3569517-1-keescook@chromium.org>
+ <20210818060533.3569517-62-keescook@chromium.org>
+ <7630b0bc-4389-6283-d8b9-c532df916d60@csgroup.eu>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <7630b0bc-4389-6283-d8b9-c532df916d60@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,89 +82,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel-janitors@vger.kernel.org,
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ clang-built-linux@googlegroups.com,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Wang Wensheng <wangwensheng4@huawei.com>, linux-staging@lists.linux.dev,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Qinglang Miao <miaoqinglang@huawei.com>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>, linux-block@vger.kernel.org,
+ Hulk Robot <hulkci@huawei.com>, dri-devel@lists.freedesktop.org,
+ netdev@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kbuild@vger.kernel.org,
+ linux-hardening@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If an error occurs after 'of_find_node_by_path()', the reference taken for
-'root' will never be released and some memory will leak.
+On Wed, Aug 18, 2021 at 08:42:18AM +0200, Christophe Leroy wrote:
+> 
+> 
+> Le 18/08/2021 à 08:05, Kees Cook a écrit :
+> > In preparation for FORTIFY_SOURCE performing compile-time and run-time
+> > field bounds checking for memset(), avoid intentionally writing across
+> > neighboring fields.
+> > 
+> > Instead of writing across a field boundary with memset(), move the call
+> > to just the array, and an explicit zeroing of the prior field.
+> > 
+> > Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> > Cc: Qinglang Miao <miaoqinglang@huawei.com>
+> > Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+> > Cc: Hulk Robot <hulkci@huawei.com>
+> > Cc: Wang Wensheng <wangwensheng4@huawei.com>
+> > Cc: linuxppc-dev@lists.ozlabs.org
+> > Signed-off-by: Kees Cook <keescook@chromium.org>
+> > Reviewed-by: Michael Ellerman <mpe@ellerman.id.au>
+> > Link: https://lore.kernel.org/lkml/87czqsnmw9.fsf@mpe.ellerman.id.au
+> > ---
+> >   drivers/macintosh/smu.c | 3 ++-
+> >   1 file changed, 2 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/macintosh/smu.c b/drivers/macintosh/smu.c
+> > index 94fb63a7b357..59ce431da7ef 100644
+> > --- a/drivers/macintosh/smu.c
+> > +++ b/drivers/macintosh/smu.c
+> > @@ -848,7 +848,8 @@ int smu_queue_i2c(struct smu_i2c_cmd *cmd)
+> >   	cmd->read = cmd->info.devaddr & 0x01;
+> >   	switch(cmd->info.type) {
+> >   	case SMU_I2C_TRANSFER_SIMPLE:
+> > -		memset(&cmd->info.sublen, 0, 4);
+> > +		cmd->info.sublen = 0;
+> > +		memset(&cmd->info.subaddr, 0, 3);
+> 
+> subaddr[] is a table, should the & be avoided ?
 
-Instead of adding an error handling path and modifying all the
-'return -SOMETHING' into 'goto errorpath', use 'devm_add_action_or_reset()'
-to release the reference when needed.
+It results in the same thing, but it's better form to not have the &; I
+will fix this.
 
-Simplify the remove function accordingly.
+> And while at it, why not use sizeof(subaddr) instead of 3 ?
 
-As an extra benefit, the 'root' global variable can now be removed as well.
+Agreed. :)
 
-Fixes: 3c0d64e867ed ("soc: fsl: guts: reuse machine name from device tree")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-Compile tested only
----
- drivers/soc/fsl/guts.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+Thanks!
 
-diff --git a/drivers/soc/fsl/guts.c b/drivers/soc/fsl/guts.c
-index d5e9a5f2c087..4d9476c7b87c 100644
---- a/drivers/soc/fsl/guts.c
-+++ b/drivers/soc/fsl/guts.c
-@@ -28,7 +28,6 @@ struct fsl_soc_die_attr {
- static struct guts *guts;
- static struct soc_device_attribute soc_dev_attr;
- static struct soc_device *soc_dev;
--static struct device_node *root;
- 
- 
- /* SoC die attribute definition for QorIQ platform */
-@@ -136,14 +135,23 @@ static u32 fsl_guts_get_svr(void)
- 	return svr;
- }
- 
-+static void fsl_guts_put_root(void *data)
-+{
-+	struct device_node *root = data;
-+
-+	of_node_put(root);
-+}
-+
- static int fsl_guts_probe(struct platform_device *pdev)
- {
- 	struct device_node *np = pdev->dev.of_node;
- 	struct device *dev = &pdev->dev;
-+	struct device_node *root;
- 	struct resource *res;
- 	const struct fsl_soc_die_attr *soc_die;
- 	const char *machine;
- 	u32 svr;
-+	int ret;
- 
- 	/* Initialize guts */
- 	guts = devm_kzalloc(dev, sizeof(*guts), GFP_KERNEL);
-@@ -159,6 +167,10 @@ static int fsl_guts_probe(struct platform_device *pdev)
- 
- 	/* Register soc device */
- 	root = of_find_node_by_path("/");
-+	ret = devm_add_action_or_reset(dev, fsl_guts_put_root, root);
-+	if (ret)
-+		return ret;
-+
- 	if (of_property_read_string(root, "model", &machine))
- 		of_property_read_string_index(root, "compatible", 0, &machine);
- 	if (machine)
-@@ -197,7 +209,7 @@ static int fsl_guts_probe(struct platform_device *pdev)
- static int fsl_guts_remove(struct platform_device *dev)
- {
- 	soc_device_unregister(soc_dev);
--	of_node_put(root);
-+
- 	return 0;
- }
- 
 -- 
-2.30.2
-
+Kees Cook
