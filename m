@@ -1,72 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9A413EF89B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Aug 2021 05:33:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BE4C3EF8B4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Aug 2021 05:35:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GqD574QSrz3cQp
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Aug 2021 13:33:31 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=f5QVtgRN;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GqD7q57X6z30KN
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Aug 2021 13:35:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::52b;
- helo=mail-pg1-x52b.google.com; envelope-from=dja@axtens.net;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=f5QVtgRN; dkim-atps=neutral
-Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com
- [IPv6:2607:f8b0:4864:20::52b])
+ smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.132;
+ helo=out30-132.freemail.mail.aliyun.com;
+ envelope-from=xianting.tian@linux.alibaba.com; receiver=<UNKNOWN>)
+Received: from out30-132.freemail.mail.aliyun.com
+ (out30-132.freemail.mail.aliyun.com [115.124.30.132])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GqD4N5fPyz303t
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Aug 2021 13:32:50 +1000 (AEST)
-Received: by mail-pg1-x52b.google.com with SMTP id q2so823473pgt.6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Aug 2021 20:32:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=JVWM1e48keuxJEZyPP2QSd2itI/kmHuk3JHjusMRB3Y=;
- b=f5QVtgRN/qQ8FRYVFoZwMFtXsA3QJioXXHGLyaapm7AYSJeP/YIXdzI3BHSxU/y/gY
- ASRo/SBMqVA2BNWF95fRBWuyREnofh6y/OLunUB6gsUXUSCxJAXtnxHFqyQ0dd/mVO7L
- I886hJpCoAm9B7UaWYBoyG+H6ISSNuZCchDIw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=JVWM1e48keuxJEZyPP2QSd2itI/kmHuk3JHjusMRB3Y=;
- b=XJ8eOGh2/2uXFEdKrn1ZwJ643ekWE9QcfBNUcM0ZQ170+ksqbh6P1uM1zY2fFTNM3J
- ccDM+NPC2bxr+eQJJyFUSDrEM+u1Svy47HHaeihHXDhhfEJTK9gSKzxftbsTus8U+PKo
- AE4DUry03hLgz/uXsXhmUYmDyAqjJmHglb1PHFqGYjevV6zVMCNgUd+6yjDn4FPh1O2N
- LIjqtGcTlLh/C7Lpzc9ydQb5CCmcvtgIN5fYLh0mZpT1f0yBWW9Ep2mqmx57wGRMR0pX
- 5kVWelGjnQyeQbEq/kl6IfRpVGMLdKnVx8vrEep7m2VgFEDOcj6cUvoKVJkT/HOL4eKr
- aLYA==
-X-Gm-Message-State: AOAM531bxs+lCoB1ebDITVICOLTz3rvIlUf5oxfZtJS4ywt3wB36J6ik
- hGuMovSTPWnY3PDPE92+0t8/bg==
-X-Google-Smtp-Source: ABdhPJwWhyoAOgoayOIjXjOosORW76E6dR6lxM5gqxM+kdBP2Aigtgkr96w1mxbR3nPsawKqh7JNYg==
-X-Received: by 2002:aa7:8bdd:0:b0:3e2:13fc:dd2f with SMTP id
- s29-20020aa78bdd000000b003e213fcdd2fmr7077243pfd.53.1629257567442; 
- Tue, 17 Aug 2021 20:32:47 -0700 (PDT)
-Received: from localhost ([2001:4479:e000:e400:bb2:9104:6a48:5aa6])
- by smtp.gmail.com with ESMTPSA id r16sm3499715pje.10.2021.08.17.20.32.46
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 17 Aug 2021 20:32:46 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: Jan Stancek <jstancek@redhat.com>, mpe@ellerman.id.au,
- benh@kernel.crashing.org, paulus@samba.org, christophe.leroy@csgroup.eu,
- linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH/RFC] powerpc/module_64: allow .init_array constructors
- to run
-In-Reply-To: <920acea9aa18e4f2956581a8e158bdaa376fdf63.1629203945.git.jstancek@redhat.com>
-References: <920acea9aa18e4f2956581a8e158bdaa376fdf63.1629203945.git.jstancek@redhat.com>
-Date: Wed, 18 Aug 2021 13:32:43 +1000
-Message-ID: <877dgjbf6s.fsf@dja-thinkpad.axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GqD7M1xkVz303t
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Aug 2021 13:35:22 +1000 (AEST)
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R221e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04395;
+ MF=xianting.tian@linux.alibaba.com; NM=1; PH=DS; RN=8; SR=0;
+ TI=SMTPD_---0Ujd4SCS_1629257711; 
+Received: from B-LB6YLVDL-0141.local(mailfrom:xianting.tian@linux.alibaba.com
+ fp:SMTPD_---0Ujd4SCS_1629257711) by smtp.aliyun-inc.com(127.0.0.1);
+ Wed, 18 Aug 2021 11:35:11 +0800
+Subject: Re: [PATCH v7 1/2] tty: hvc: pass DMA capable memory to put_chars()
+To: Jiri Slaby <jirislaby@kernel.org>, gregkh@linuxfoundation.org,
+ amit@kernel.org, arnd@arndb.de, osandov@fb.com
+References: <20210817132300.165014-1-xianting.tian@linux.alibaba.com>
+ <20210817132300.165014-2-xianting.tian@linux.alibaba.com>
+ <5b728c71-a754-b3ef-4ad3-6e33db1b7647@kernel.org>
+From: Xianting TIan <xianting.tian@linux.alibaba.com>
+Message-ID: <a0e671da-e2e9-3696-950d-16b931e1fe9a@linux.alibaba.com>
+Date: Wed, 18 Aug 2021 11:35:11 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <5b728c71-a754-b3ef-4ad3-6e33db1b7647@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,73 +53,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, jstancek@redhat.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ virtualization@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Jan Stancek <jstancek@redhat.com> writes:
 
-> gcov and kasan rely on compiler generated constructor code.
-> For modules, gcc-8 with gcov enabled generates .init_array section,
-> but on ppc64le it doesn't get executed. find_module_sections() never
-> finds .init_array section, because module_frob_arch_sections() renames
-> it to _init_array.
+在 2021/8/18 上午11:17, Jiri Slaby 写道:
+> Hi,
 >
-> Avoid renaming .init_array section, so do_mod_ctors() can use it.
+> On 17. 08. 21, 15:22, Xianting Tian wrote:
+>> As well known, hvc backend can register its opertions to hvc backend.
+>> the opertions contain put_chars(), get_chars() and so on.
+>
+> "operations". And there too:
+>
+>> Some hvc backend may do dma in its opertions. eg, put_chars() of
+>> virtio-console. But in the code of hvc framework, it may pass DMA
+>> incapable memory to put_chars() under a specific configuration, which
+>> is explained in commit c4baad5029(virtio-console: avoid DMA from stack):
+>> 1, c[] is on stack,
+>>     hvc_console_print():
+>>     char c[N_OUTBUF] __ALIGNED__;
+>>     cons_ops[index]->put_chars(vtermnos[index], c, i);
+>> 2, ch is on stack,
+>>     static void hvc_poll_put_char(,,char ch)
+>>     {
+>>     struct tty_struct *tty = driver->ttys[0];
+>>     struct hvc_struct *hp = tty->driver_data;
+>>     int n;
+>>
+>>     do {
+>>         n = hp->ops->put_chars(hp->vtermno, &ch, 1);
+>>     } while (n <= 0);
+>>     }
+>>
+>> Commit c4baad5029 is just the fix to avoid DMA from stack memory, which
+>> is passed to virtio-console by hvc framework in above code. But I think
+>> the fix is aggressive, it directly uses kmemdup() to alloc new buffer
+>> from kmalloc area and do memcpy no matter the memory is in kmalloc area
+>> or not. But most importantly, it should better be fixed in the hvc
+>> framework, by changing it to never pass stack memory to the put_chars()
+>> function in the first place. Otherwise, we still face the same issue if
+>> a new hvc backend using dma added in the furture.
+>>
+>> We make 'char c[N_OUTBUF]' part of 'struct hvc_struct', so hp->c is no
+>> longer the stack memory. we can use it in above two cases.
+>
+> In fact, you need only a single char for the poll case 
+> (hvc_poll_put_char), so hvc_struct needs to contain only c, not an array.
+>
+> OTOH, you need c[N_OUTBUF] in the console case (hvc_console_print), 
+> but not whole hvc_struct. So cons_hvcs should be an array of structs 
+> composed of only the lock and the buffer.
+>
+> Hum.
+>
+> Or maybe rethink and take care of the console case by kmemdup and be 
+> done with that case? What problem do you have with allocating 16 
+> bytes? It should be quite easy and really fast (lockless) in most 
+> cases. On the contrary, your solution has to take a spinlock to access 
+> the global buffer.
 
-This (the existing renaming) breaks a KASAN test too, so I'd love to see
-this fixed.
+May be we can change hvc_struct as below,
 
-However, I don't know that renaming the section is a complete fix: from
-memory it is still be possible to get relocations that are too far away
-and require separate trampolines. But I wasn't able to construct a
-module that exhibited this behaviour and test a fix before I got pulled
-away to other things.
+struct hvc_struct {
 
-Kind regards,
-Daniel
+         ...
+         char out_ch;
+         char c[N_OUTBUF] __ALIGNED__;
+         int outbuf_size;
+         char outbuf[0] __ALIGNED__;
+};
 
+c[N_OUTBUF]  is only used for hvc_console_print(); out_ch is only used 
+for hvc_poll_put_char(). Thus no competition exits, the spinlock can be 
+removed.
+
+Then cons_hvcs array can only contains the buffer.
+
+Is it OK for you?  thanks
 >
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Signed-off-by: Jan Stancek <jstancek@redhat.com>
-> ---
-> I wasn't able to trace the comment:
->   "We don't handle .init for the moment: rename to _init"
-> to original patch (it pre-dates .git). I'm not sure if it
-> still applies today, so I limited patch to .init_array. This
-> fixes gcov for modules for me on ppc64le 5.14.0-rc6.
+>> Other fix is use L1_CACHE_BYTES as the alignment, use 'sizeof(long)' as
+>> dma alignment is wrong. And use struct_size() to calculate size of
+>> hvc_struct.
 >
-> Renaming issue is also mentioned in kasan patches here:
->   https://patchwork.ozlabs.org/project/linuxppc-dev/cover/20210319144058.772525-1-dja@axtens
+> This ought to be in separate patches.
+OK, thanks
 >
->  arch/powerpc/kernel/module_64.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/module_64.c
-> index 6baa676e7cb6..c604b13ea6bf 100644
-> --- a/arch/powerpc/kernel/module_64.c
-> +++ b/arch/powerpc/kernel/module_64.c
-> @@ -299,8 +299,16 @@ int module_frob_arch_sections(Elf64_Ehdr *hdr,
->  					  sechdrs[i].sh_size);
->  
->  		/* We don't handle .init for the moment: rename to _init */
-> -		while ((p = strstr(secstrings + sechdrs[i].sh_name, ".init")))
-> +		while ((p = strstr(secstrings + sechdrs[i].sh_name, ".init"))) {
-> +#ifdef CONFIG_CONSTRUCTORS
-> +			/* find_module_sections() needs .init_array intact */
-> +			if (strstr(secstrings + sechdrs[i].sh_name,
-> +				".init_array")) {
-> +				break;
-> +			}
-> +#endif
->  			p[0] = '_';
-> +		}
->  
->  		if (sechdrs[i].sh_type == SHT_SYMTAB)
->  			dedotify((void *)hdr + sechdrs[i].sh_offset,
-> -- 
-> 2.27.0
+> thanks,
