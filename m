@@ -2,46 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BE4C3EF8B4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Aug 2021 05:35:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45C7B3EFCE0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Aug 2021 08:35:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GqD7q57X6z30KN
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Aug 2021 13:35:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GqJ6t12mkz3cVk
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Aug 2021 16:35:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.132;
- helo=out30-132.freemail.mail.aliyun.com;
- envelope-from=xianting.tian@linux.alibaba.com; receiver=<UNKNOWN>)
-Received: from out30-132.freemail.mail.aliyun.com
- (out30-132.freemail.mail.aliyun.com [115.124.30.132])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=92.121.34.13; helo=inva020.nxp.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 562 seconds by postgrey-1.36 at boromir;
+ Wed, 18 Aug 2021 16:34:57 AEST
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GqD7M1xkVz303t
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Aug 2021 13:35:22 +1000 (AEST)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R221e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04395;
- MF=xianting.tian@linux.alibaba.com; NM=1; PH=DS; RN=8; SR=0;
- TI=SMTPD_---0Ujd4SCS_1629257711; 
-Received: from B-LB6YLVDL-0141.local(mailfrom:xianting.tian@linux.alibaba.com
- fp:SMTPD_---0Ujd4SCS_1629257711) by smtp.aliyun-inc.com(127.0.0.1);
- Wed, 18 Aug 2021 11:35:11 +0800
-Subject: Re: [PATCH v7 1/2] tty: hvc: pass DMA capable memory to put_chars()
-To: Jiri Slaby <jirislaby@kernel.org>, gregkh@linuxfoundation.org,
- amit@kernel.org, arnd@arndb.de, osandov@fb.com
-References: <20210817132300.165014-1-xianting.tian@linux.alibaba.com>
- <20210817132300.165014-2-xianting.tian@linux.alibaba.com>
- <5b728c71-a754-b3ef-4ad3-6e33db1b7647@kernel.org>
-From: Xianting TIan <xianting.tian@linux.alibaba.com>
-Message-ID: <a0e671da-e2e9-3696-950d-16b931e1fe9a@linux.alibaba.com>
-Date: Wed, 18 Aug 2021 11:35:11 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.10.1
-MIME-Version: 1.0
-In-Reply-To: <5b728c71-a754-b3ef-4ad3-6e33db1b7647@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GqJ6T0Ht3z302C
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Aug 2021 16:34:56 +1000 (AEST)
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 629391A1481;
+ Wed, 18 Aug 2021 08:25:30 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com
+ (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 2AD7D1A146D;
+ Wed, 18 Aug 2021 08:25:30 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net
+ [10.192.224.44])
+ by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id BA890183AD27;
+ Wed, 18 Aug 2021 14:25:28 +0800 (+08)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
+ alsa-devel@alsa-project.org
+Subject: [PATCH] ASoC: fsl_rpmsg: Check -EPROBE_DEFER for getting clocks
+Date: Wed, 18 Aug 2021 14:03:34 +0800
+Message-Id: <1629266614-6942-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,93 +51,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- virtualization@lists.linux-foundation.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+The devm_clk_get() may return -EPROBE_DEFER, then clocks
+will be assigned to NULL wrongly. As the clocks are
+optional so we can use devm_clk_get_optional() instead of
+devm_clk_get().
 
-在 2021/8/18 上午11:17, Jiri Slaby 写道:
-> Hi,
->
-> On 17. 08. 21, 15:22, Xianting Tian wrote:
->> As well known, hvc backend can register its opertions to hvc backend.
->> the opertions contain put_chars(), get_chars() and so on.
->
-> "operations". And there too:
->
->> Some hvc backend may do dma in its opertions. eg, put_chars() of
->> virtio-console. But in the code of hvc framework, it may pass DMA
->> incapable memory to put_chars() under a specific configuration, which
->> is explained in commit c4baad5029(virtio-console: avoid DMA from stack):
->> 1, c[] is on stack,
->>     hvc_console_print():
->>     char c[N_OUTBUF] __ALIGNED__;
->>     cons_ops[index]->put_chars(vtermnos[index], c, i);
->> 2, ch is on stack,
->>     static void hvc_poll_put_char(,,char ch)
->>     {
->>     struct tty_struct *tty = driver->ttys[0];
->>     struct hvc_struct *hp = tty->driver_data;
->>     int n;
->>
->>     do {
->>         n = hp->ops->put_chars(hp->vtermno, &ch, 1);
->>     } while (n <= 0);
->>     }
->>
->> Commit c4baad5029 is just the fix to avoid DMA from stack memory, which
->> is passed to virtio-console by hvc framework in above code. But I think
->> the fix is aggressive, it directly uses kmemdup() to alloc new buffer
->> from kmalloc area and do memcpy no matter the memory is in kmalloc area
->> or not. But most importantly, it should better be fixed in the hvc
->> framework, by changing it to never pass stack memory to the put_chars()
->> function in the first place. Otherwise, we still face the same issue if
->> a new hvc backend using dma added in the furture.
->>
->> We make 'char c[N_OUTBUF]' part of 'struct hvc_struct', so hp->c is no
->> longer the stack memory. we can use it in above two cases.
->
-> In fact, you need only a single char for the poll case 
-> (hvc_poll_put_char), so hvc_struct needs to contain only c, not an array.
->
-> OTOH, you need c[N_OUTBUF] in the console case (hvc_console_print), 
-> but not whole hvc_struct. So cons_hvcs should be an array of structs 
-> composed of only the lock and the buffer.
->
-> Hum.
->
-> Or maybe rethink and take care of the console case by kmemdup and be 
-> done with that case? What problem do you have with allocating 16 
-> bytes? It should be quite easy and really fast (lockless) in most 
-> cases. On the contrary, your solution has to take a spinlock to access 
-> the global buffer.
+Fixes: b73d9e6225e8 ("ASoC: fsl_rpmsg: Add CPU DAI driver for audio base on rpmsg")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+---
+ sound/soc/fsl/fsl_rpmsg.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-May be we can change hvc_struct as below,
+diff --git a/sound/soc/fsl/fsl_rpmsg.c b/sound/soc/fsl/fsl_rpmsg.c
+index ea5c973e2e84..d60f4dac6c1b 100644
+--- a/sound/soc/fsl/fsl_rpmsg.c
++++ b/sound/soc/fsl/fsl_rpmsg.c
+@@ -165,25 +165,25 @@ static int fsl_rpmsg_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	/* Get the optional clocks */
+-	rpmsg->ipg = devm_clk_get(&pdev->dev, "ipg");
++	rpmsg->ipg = devm_clk_get_optional(&pdev->dev, "ipg");
+ 	if (IS_ERR(rpmsg->ipg))
+-		rpmsg->ipg = NULL;
++		return PTR_ERR(rpmsg->ipg);
+ 
+-	rpmsg->mclk = devm_clk_get(&pdev->dev, "mclk");
++	rpmsg->mclk = devm_clk_get_optional(&pdev->dev, "mclk");
+ 	if (IS_ERR(rpmsg->mclk))
+-		rpmsg->mclk = NULL;
++		return PTR_ERR(rpmsg->mclk);
+ 
+-	rpmsg->dma = devm_clk_get(&pdev->dev, "dma");
++	rpmsg->dma = devm_clk_get_optional(&pdev->dev, "dma");
+ 	if (IS_ERR(rpmsg->dma))
+-		rpmsg->dma = NULL;
++		return PTR_ERR(rpmsg->dma);
+ 
+-	rpmsg->pll8k = devm_clk_get(&pdev->dev, "pll8k");
++	rpmsg->pll8k = devm_clk_get_optional(&pdev->dev, "pll8k");
+ 	if (IS_ERR(rpmsg->pll8k))
+-		rpmsg->pll8k = NULL;
++		return PTR_ERR(rpmsg->pll8k);
+ 
+-	rpmsg->pll11k = devm_clk_get(&pdev->dev, "pll11k");
++	rpmsg->pll11k = devm_clk_get_optional(&pdev->dev, "pll11k");
+ 	if (IS_ERR(rpmsg->pll11k))
+-		rpmsg->pll11k = NULL;
++		return PTR_ERR(rpmsg->pll11k);
+ 
+ 	platform_set_drvdata(pdev, rpmsg);
+ 	pm_runtime_enable(&pdev->dev);
+-- 
+2.27.0
 
-struct hvc_struct {
-
-         ...
-         char out_ch;
-         char c[N_OUTBUF] __ALIGNED__;
-         int outbuf_size;
-         char outbuf[0] __ALIGNED__;
-};
-
-c[N_OUTBUF]  is only used for hvc_console_print(); out_ch is only used 
-for hvc_poll_put_char(). Thus no competition exits, the spinlock can be 
-removed.
-
-Then cons_hvcs array can only contains the buffer.
-
-Is it OK for you?  thanks
->
->> Other fix is use L1_CACHE_BYTES as the alignment, use 'sizeof(long)' as
->> dma alignment is wrong. And use struct_size() to calculate size of
->> hvc_struct.
->
-> This ought to be in separate patches.
-OK, thanks
->
-> thanks,
