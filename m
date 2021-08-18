@@ -2,31 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8A233F053B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Aug 2021 15:49:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE9C03F0531
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Aug 2021 15:48:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GqTmH3w2Bz3f2j
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Aug 2021 23:49:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GqTkY4VVyz3dk7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Aug 2021 23:48:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
+ smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
  envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GqTgq6GZTz3cTj
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Aug 2021 23:45:59 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GqTgq1GPlz3cR9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Aug 2021 23:45:57 +1000 (AEST)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4GqTgq2rJ7z9t14; Wed, 18 Aug 2021 23:45:59 +1000 (AEST)
+ id 4GqTgj1JYkz9sWw; Wed, 18 Aug 2021 23:45:52 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Jordan Niethe <jniethe5@gmail.com>
-In-Reply-To: <20210804013724.514468-1-jniethe5@gmail.com>
-References: <20210804013724.514468-1-jniethe5@gmail.com>
-Subject: Re: [PATCH] powerpc: Always inline radix_enabled() to fix build
- failure
-Message-Id: <162929392409.3619265.15852958754556713429.b4-ty@ellerman.id.au>
+To: Anton Blanchard <anton@ozlabs.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Paul Mackerras <paulus@samba.org>, Joel Stanley <joel@jms.id.au>
+In-Reply-To: <20210805112005.3cb1f412@kryten.localdomain>
+References: <20210805112005.3cb1f412@kryten.localdomain>
+Subject: Re: [PATCH] powerpc/configs: Disable legacy ptys on microwatt
+ defconfig
+Message-Id: <162929392477.3619265.8829552508891310353.b4-ty@ellerman.id.au>
 Date: Wed, 18 Aug 2021 23:38:44 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,26 +43,18 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: erhard_f@mailbox.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 4 Aug 2021 11:37:24 +1000, Jordan Niethe wrote:
-> This is the same as commit acdad8fb4a15 ("powerpc: Force inlining of
-> mmu_has_feature to fix build failure") but for radix_enabled().  The
-> config in the linked bugzilla causes the following build failure:
-> 
-> LD      .tmp_vmlinux.kallsyms1
-> powerpc64-linux-ld: arch/powerpc/mm/pgtable.o: in function `.__ptep_set_access_flags':
-> pgtable.c:(.text+0x17c): undefined reference to `.radix__ptep_set_access_flags'
-...
-> 
-> [...]
+On Thu, 5 Aug 2021 11:20:05 +1000, Anton Blanchard wrote:
+> We shouldn't need legacy ptys, and disabling the option improves boot
+> time by about 0.5 seconds.
 
 Applied to powerpc/next.
 
-[1/1] powerpc: Always inline radix_enabled() to fix build failure
-      https://git.kernel.org/powerpc/c/27fd1111051dc218e5b6cb2da5dbb3f342879ff1
+[1/1] powerpc/configs: Disable legacy ptys on microwatt defconfig
+      https://git.kernel.org/powerpc/c/9b49f979b3d560cb75ea9f1a596baf432d566798
 
 cheers
