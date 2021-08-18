@@ -2,55 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3190C3EFE2D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Aug 2021 09:47:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F213F3EFF10
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Aug 2021 10:22:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GqKk40sWXz3bc4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Aug 2021 17:47:24 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qMoZkzge;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GqLVY6g4bz3cGc
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Aug 2021 18:22:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=qMoZkzge; 
- dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
+ smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.44;
+ helo=out30-44.freemail.mail.aliyun.com;
+ envelope-from=xianting.tian@linux.alibaba.com; receiver=<UNKNOWN>)
+Received: from out30-44.freemail.mail.aliyun.com
+ (out30-44.freemail.mail.aliyun.com [115.124.30.44])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GqKjM2Cblz2y0D
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Aug 2021 17:46:46 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4GqKjK5Rr7z9sWq;
- Wed, 18 Aug 2021 17:46:45 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1629272806;
- bh=KgNbeJ7DXM2VriOwIcdiRdwFjqTg+4C2mmpo8d288kA=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=qMoZkzge9D1M1fk07RWdbI7/FnTh9WYwMiAdQ2RnW8bzjq8DfC3c8dFWXu0o5Pb/b
- u1cDbKNWARvq3iN+q2WssdNm7Ik+8lDOgfal4oLJwsMTbBFlPLeI8Tl+Fm7onX3nGI
- 1mNFbxYA6N9JBYVllZQ3Eo01/8NjSUPuAnT/9ayzPhEGVc+kJ77GJU+5mzff+pGVPz
- SX+bPS/3cKzgJUU5lwTjpBHVVdNKeMso4KeZHfx3cmv/GonU7dGwiFAMmKnkZCyXMX
- OQH+9F8J2jA4q4cF6x5vpDAC6bmJ4hceITg7dd9yJUObCKnsDm1BYnTEka8tBgCNZW
- ybr75Z/xsEx+A==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Fabiano Rosas <farosas@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] powerpc/mm: Fix set_memory_*() against concurrent accesses
-In-Reply-To: <87sfz8tam3.fsf@linux.ibm.com>
-References: <20210817132552.3375738-1-mpe@ellerman.id.au>
- <87sfz8tam3.fsf@linux.ibm.com>
-Date: Wed, 18 Aug 2021 17:46:42 +1000
-Message-ID: <87v943fb4t.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GqLTj2bq1z30LB
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Aug 2021 18:21:43 +1000 (AEST)
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R121e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04394;
+ MF=xianting.tian@linux.alibaba.com; NM=1; PH=DS; RN=10; SR=0;
+ TI=SMTPD_---0Ujfv4hp_1629274884; 
+Received: from localhost(mailfrom:xianting.tian@linux.alibaba.com
+ fp:SMTPD_---0Ujfv4hp_1629274884) by smtp.aliyun-inc.com(127.0.0.1);
+ Wed, 18 Aug 2021 16:21:25 +0800
+From: Xianting Tian <xianting.tian@linux.alibaba.com>
+To: gregkh@linuxfoundation.org, jirislaby@kernel.org, amit@kernel.org,
+ arnd@arndb.de, osandov@fb.com
+Subject: [PATCH v8 0/3] make hvc pass dma capable memory to its backend
+Date: Wed, 18 Aug 2021 16:21:19 +0800
+Message-Id: <20210818082122.166881-1-xianting.tian@linux.alibaba.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,106 +48,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: lvivier@redhat.com, jniethe5@gmail.com, npiggin@gmail.com,
- aneesh.kumar@linux.ibm.com
+Cc: Xianting Tian <xianting.tian@linux.alibaba.com>,
+ shile.zhang@linux.alibaba.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fabiano Rosas <farosas@linux.ibm.com> writes:
-> Michael Ellerman <mpe@ellerman.id.au> writes:
->
-> Hi, I already mentioned these things in private, but I'll post here so
-> everyone can see:
->
->> Because pte_update() takes the set of PTE bits to set and clear we can't
->> use our existing helpers, eg. pte_wrprotect() etc. and instead have to
->> open code the set of flags. We will clean that up somehow in a future
->> commit.
->
-> I tested the following on P9 and it seems to work fine. Not sure if it
-> works for CONFIG_PPC_8xx, though.
->
->
->  static int change_page_attr(pte_t *ptep, unsigned long addr, void *data)
->  {
->  	long action = (long)data;
->  	pte_t pte;
->  
->  	spin_lock(&init_mm.page_table_lock);
-> -
-> -	/* invalidate the PTE so it's safe to modify */
-> -	pte = ptep_get_and_clear(&init_mm, addr, ptep);
-> -	flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
-> +	pte = *ptep;
->  
->  	/* modify the PTE bits as desired, then apply */
->  	switch (action) {
-> @@ -59,11 +42,9 @@ static int change_page_attr(pte_t *ptep, unsigned long addr, void *data)
->  		break;
->  	}
->  
-> -	set_pte_at(&init_mm, addr, ptep, pte);
-> +	pte_update(&init_mm, addr, ptep, ~0UL, pte_val(pte), 0);
+Dear all,
 
-I avoided that because it's not atomic, but pte_update() is not atomic
-on some platforms anyway. And for now at least we still have the
-page_table_lock as well.
+This patch series make hvc framework pass DMA capable memory to
+put_chars() of hvc backend(eg, virtio-console), and revert commit
+c4baad5029 ("virtio-console: avoid DMA from stack”)
 
-So you're right that's a nicer way to do it.
+V1
+virtio-console: avoid DMA from vmalloc area
+https://lkml.org/lkml/2021/7/27/494
 
-And I'll use ptep_get() as Christophe suggested.
+For v1 patch, Arnd Bergmann suggests to fix the issue in the first
+place:
+Make hvc pass DMA capable memory to put_chars()
+The fix suggestion is included in v2.
 
-> +	flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
->  
-> -	/* See ptesync comment in radix__set_pte_at() */
-> -	if (radix_enabled())
-> -		asm volatile("ptesync": : :"memory");
+V2
+[PATCH 1/2] tty: hvc: pass DMA capable memory to put_chars()
+https://lkml.org/lkml/2021/8/1/8
+[PATCH 2/2] virtio-console: remove unnecessary kmemdup()
+https://lkml.org/lkml/2021/8/1/9
 
-I didn't do that because I wanted to keep the patch minimal. We can do
-that as a separate patch.
+For v2 patch, Arnd Bergmann suggests to make new buf part of the
+hvc_struct structure, and fix the compile issue.
+The fix suggestion is included in v3.
 
->  	spin_unlock(&init_mm.page_table_lock);
->  
->  	return 0;
-> ---
->
-> For reference, the full patch is here:
-> https://github.com/farosas/linux/commit/923c95c84d7081d7be9503bf5b276dd93bd17036.patch
->
->>
->> [1]: https://lore.kernel.org/linuxppc-dev/87y318wp9r.fsf@linux.ibm.com/
->>
->> Fixes: 1f9ad21c3b38 ("powerpc/mm: Implement set_memory() routines")
->> Reported-by: Laurent Vivier <lvivier@redhat.com>
->> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
->> ---
->
-> ...
->
->> -	set_pte_at(&init_mm, addr, ptep, pte);
->> +	pte_update(&init_mm, addr, ptep, clear, set, 0);
->>  
->>  	/* See ptesync comment in radix__set_pte_at() */
->>  	if (radix_enabled())
->>  		asm volatile("ptesync": : :"memory");
->> +
->> +	flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
->
-> I think there's an optimization possible here, when relaxing access, to
-> skip the TLB flush. Would still need the ptesync though. Similar to what
-> Nick did in e5f7cb58c2b7 ("powerpc/64s/radix: do not flush TLB when
-> relaxing access").
+V3
+[PATCH v3 1/2] tty: hvc: pass DMA capable memory to put_chars()
+https://lkml.org/lkml/2021/8/3/1347
+[PATCH v3 2/2] virtio-console: remove unnecessary kmemdup()
+https://lkml.org/lkml/2021/8/3/1348
 
-That commit is specific to Radix, whereas this code needs to work on all
-platforms.
+For v3 patch, Jiri Slaby suggests to make 'char c[N_OUTBUF]' part of
+hvc_struct, and make 'hp->outbuf' aligned and use struct_size() to
+calculate the size of hvc_struct. The fix suggestion is included in
+v4.
 
-We'd need to verify that it's safe to skip the flush on all platforms
-and CPU versions.
+V4
+[PATCH v4 0/2] make hvc pass dma capable memory to its backend
+https://lkml.org/lkml/2021/8/5/1350
+[PATCH v4 1/2] tty: hvc: pass DMA capable memory to put_chars()
+https://lkml.org/lkml/2021/8/5/1351
+[PATCH v4 2/2] virtio-console: remove unnecessary kmemdup()
+https://lkml.org/lkml/2021/8/5/1352
 
-What I think we can do, and would possibly be a more meaningful
-optimisation, is to move the TLB flush out of the loop and up into
-change_memory_attr(). So we just do it once for the range, rather than
-per page. But that too would be a separate patch.
+For v4 patch, Arnd Bergmann suggests to introduce another
+array(cons_outbuf[]) for the buffer pointers next to the cons_ops[]
+and vtermnos[] arrays. This fix included in this v5 patch.
 
-cheers
+V5
+Arnd Bergmann suggests to use "L1_CACHE_BYTES" as dma alignment,
+use 'sizeof(long)' as dma alignment is wrong. fix it in v6.
+
+V6
+It contains coding error, fix it in v7 and it worked normally
+according to test result.
+
+V7
+Greg KH suggests to add test and code review developer,
+Jiri Slaby suggests to use lockless buffer and fix dma alignment
+in separate patch.
+fix above things in v8. 
+
+drivers/tty/hvc/hvc_console.c | 27 ++++++++++++---------------
+drivers/tty/hvc/hvc_console.h | 16 ++++++++++++++--
+drivers/tty/hvc/hvc_console.h | 16 ++++++++++++--
+3 file changed
