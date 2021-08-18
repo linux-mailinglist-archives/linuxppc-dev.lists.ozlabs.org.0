@@ -2,87 +2,102 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 340B73F086F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Aug 2021 17:51:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7A9F3F08AE
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Aug 2021 18:04:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GqXSq6VQTz3cP2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Aug 2021 01:51:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GqXl94vcyz3ck2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Aug 2021 02:04:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fdHAF1Br;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=c3J7mLhy;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=c3J7mLhy;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=riteshh@linux.ibm.com;
+ smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=lvivier@redhat.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=fdHAF1Br; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=c3J7mLhy; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=c3J7mLhy; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [170.10.133.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GqXS14Y46z3bWw
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Aug 2021 01:50:57 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 17IFX2nd182121
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Aug 2021 11:50:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=y1l/gIc+iOlMZlP7SdePjlnpa12Kml7IrnOhP2mKkVE=;
- b=fdHAF1BrBtqiEU7c9Fb1mCLbId7Pu4DCfODvR8UaaJO9xWHQCIvDjPdHU9SHLzEu2PjD
- w/avgRgT9UTnyH0ybKrdXMsTNR+C4j/E/3V0NPK8Z1RjMXzSY6RXV/pcdFN8u5l6D2g1
- 46gVp7n/WDYFiqIcyKxvfoxTKIIfQwmGwI6x/DMOdSPOptoQ9TDcIyC/ItVPETrSTrK2
- bd/eYaq27ZZPOr8dq/dLQ5Z6+vWb6jtYEX0uvKxy120rsEJ+gO3fyn3Joos6yPWinnTT
- Fsmx/tyTqLFJDcBpvU6U3IuK7QTlDgUJ9rzyNVPCod6HoihryTqXMOKBoJyNPcCPVhCy PQ== 
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.108])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3agp1p8t5u-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Aug 2021 11:50:53 -0400
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
- by ppma05fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 17IFmrpm012228
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Aug 2021 15:50:51 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma05fra.de.ibm.com with ESMTP id 3afwrhtkf6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Aug 2021 15:50:51 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 17IFlKkO34734492
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 18 Aug 2021 15:47:20 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 74F7B5204E;
- Wed, 18 Aug 2021 15:50:47 +0000 (GMT)
-Received: from localhost (unknown [9.77.196.84])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 1649652051;
- Wed, 18 Aug 2021 15:50:46 +0000 (GMT)
-From: Ritesh Harjani <riteshh@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 1/1] selftests/powerpc: Add memmove_64 test
-Date: Wed, 18 Aug 2021 21:20:38 +0530
-Message-Id: <c152ad80dc3a80cd362f6cbbccd626798ab0d5db.1629300331.git.riteshh@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GqXkN5wr7z2yfc
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Aug 2021 02:03:23 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1629302599;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=geMsOaSX8G2jQ6SrVG274+400JaUA+Ul+P9UImTHy3w=;
+ b=c3J7mLhyhxmslFQ78BUgkcuSpjJ9f8K9O7nb4/W9BsoHa2mxPuuEpA/TbrSYS0D9QAjz3C
+ xLmWGrU3E0eb5F4ikGSPqFJfGQS5STdM0gODXvL84t7B08ku8TSo6T4XH5ODfNkfaE4PkG
+ 1bt5BlIfBTWks38AfqIWasiDQ7nlM7c=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1629302599;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=geMsOaSX8G2jQ6SrVG274+400JaUA+Ul+P9UImTHy3w=;
+ b=c3J7mLhyhxmslFQ78BUgkcuSpjJ9f8K9O7nb4/W9BsoHa2mxPuuEpA/TbrSYS0D9QAjz3C
+ xLmWGrU3E0eb5F4ikGSPqFJfGQS5STdM0gODXvL84t7B08ku8TSo6T4XH5ODfNkfaE4PkG
+ 1bt5BlIfBTWks38AfqIWasiDQ7nlM7c=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-138-zVclq6OIPu2PY6lh3NytjQ-1; Wed, 18 Aug 2021 12:03:18 -0400
+X-MC-Unique: zVclq6OIPu2PY6lh3NytjQ-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 10-20020a05600c024a00b002e6bf2ee820so2392701wmj.6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Aug 2021 09:03:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=geMsOaSX8G2jQ6SrVG274+400JaUA+Ul+P9UImTHy3w=;
+ b=Q1/tQinR1ciT+scnfnB43h0Z7BfZjpABq7QDTpUpbnXEb+yqyUlv+68X2XczI4JI7T
+ ffaGkwtq3gigD8mNdp0OxaGsTzM5NxHzEUcaMupctzBeDAJZ+wqJt2RFyAZlorJFap8r
+ iq5kBScBhzmaAgUICHpohBGJgdnhBdGrFHG3mf3ibo9c8DMLIObfcdu1z5Eh/ri5mfMy
+ e2Ay47os0gON0mwaBx17hk1e80yx5bzOFlJxHwjmP4qzqqLKsPIYQtmi274AMyodVzqO
+ W1H2qRZdtC3zQ+tDhVUioeZz5HTQb3SGDFLgt7TYMSmw1aRySePlabZ9OcovdUM3D78Z
+ /i/Q==
+X-Gm-Message-State: AOAM531qZUNL8I10nZ/QOuH0GuoyztiH9eMwV6+znxH3cnb5vIcYXC2E
+ PGsWaMA4GqDMcS1yY7rPocK5ZbM3reEG0Aw+xKcKLh/Lf6SLGpGnfGDs5Ol0jYu1XP5hbjJL+aZ
+ xlu2XZnZ8HfB7Wl1aY5l2+Qbgzg==
+X-Received: by 2002:a1c:a401:: with SMTP id n1mr9251242wme.74.1629302596803;
+ Wed, 18 Aug 2021 09:03:16 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyqQ4O1fShvS8d12r/Ta379U55FYE4B7YUvjAFZfdblVR0tYkFtq/pVYIC6v0kgE19S7J8DBw==
+X-Received: by 2002:a1c:a401:: with SMTP id n1mr9251212wme.74.1629302596534;
+ Wed, 18 Aug 2021 09:03:16 -0700 (PDT)
+Received: from [192.168.100.42] ([82.142.22.194])
+ by smtp.gmail.com with ESMTPSA id 19sm236316wmj.23.2021.08.18.09.03.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 18 Aug 2021 09:03:16 -0700 (PDT)
+Subject: Re: [PATCH v2] powerpc/mm: Fix set_memory_*() against concurrent
+ accesses
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+References: <20210818120518.3603172-1-mpe@ellerman.id.au>
+From: Laurent Vivier <lvivier@redhat.com>
+Message-ID: <15f0e863-6c86-50ef-51ec-64bb981734e5@redhat.com>
+Date: Wed, 18 Aug 2021 18:03:14 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: OvlMrZgh3OVLehNl0Dvva0eI1_1E4w5t
-X-Proofpoint-ORIG-GUID: OvlMrZgh3OVLehNl0Dvva0eI1_1E4w5t
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-08-18_05:2021-08-17,
- 2021-08-18 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 mlxlogscore=999
- mlxscore=0 suspectscore=0 bulkscore=0 malwarescore=0 lowpriorityscore=0
- phishscore=0 priorityscore=1501 spamscore=0 impostorscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2107140000
- definitions=main-2108180097
+In-Reply-To: <20210818120518.3603172-1-mpe@ellerman.id.au>
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=lvivier@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,250 +109,126 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Ritesh Harjani <riteshh@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>
+Cc: jniethe5@gmail.com, npiggin@gmail.com, aneesh.kumar@linux.ibm.com,
+ farosas@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-While debugging an issue, we wanted to check whether the arch specific
-kernel memmove implementation is correct. This selftest could help test that.
+On 18/08/2021 14:05, Michael Ellerman wrote:
+> Laurent reported that STRICT_MODULE_RWX was causing intermittent crashes
+> on one of his systems:
+> 
+>   kernel tried to execute exec-protected page (c008000004073278) - exploit attempt? (uid: 0)
+>   BUG: Unable to handle kernel instruction fetch
+>   Faulting instruction address: 0xc008000004073278
+>   Oops: Kernel access of bad area, sig: 11 [#1]
+>   LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
+>   Modules linked in: drm virtio_console fuse drm_panel_orientation_quirks ...
+>   CPU: 3 PID: 44 Comm: kworker/3:1 Not tainted 5.14.0-rc4+ #12
+>   Workqueue: events control_work_handler [virtio_console]
+>   NIP:  c008000004073278 LR: c008000004073278 CTR: c0000000001e9de0
+>   REGS: c00000002e4ef7e0 TRAP: 0400   Not tainted  (5.14.0-rc4+)
+>   MSR:  800000004280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 24002822 XER: 200400cf
+>   ...
+>   NIP fill_queue+0xf0/0x210 [virtio_console]
+>   LR  fill_queue+0xf0/0x210 [virtio_console]
+>   Call Trace:
+>     fill_queue+0xb4/0x210 [virtio_console] (unreliable)
+>     add_port+0x1a8/0x470 [virtio_console]
+>     control_work_handler+0xbc/0x1e8 [virtio_console]
+>     process_one_work+0x290/0x590
+>     worker_thread+0x88/0x620
+>     kthread+0x194/0x1a0
+>     ret_from_kernel_thread+0x5c/0x64
+> 
+> Jordan, Fabiano & Murilo were able to reproduce and identify that the
+> problem is caused by the call to module_enable_ro() in do_init_module(),
+> which happens after the module's init function has already been called.
+> 
+> Our current implementation of change_page_attr() is not safe against
+> concurrent accesses, because it invalidates the PTE before flushing the
+> TLB and then installing the new PTE. That leaves a window in time where
+> there is no valid PTE for the page, if another CPU tries to access the
+> page at that time we see something like the fault above.
+> 
+> We can't simply switch to set_pte_at()/flush TLB, because our hash MMU
+> code doesn't handle a set_pte_at() of a valid PTE. See [1].
+> 
+> But we do have pte_update(), which replaces the old PTE with the new,
+> meaning there's no window where the PTE is invalid. And the hash MMU
+> version hash__pte_update() deals with synchronising the hash page table
+> correctly.
+> 
+> [1]: https://lore.kernel.org/linuxppc-dev/87y318wp9r.fsf@linux.ibm.com/
+> 
+> Fixes: 1f9ad21c3b38 ("powerpc/mm: Implement set_memory() routines")
+> Reported-by: Laurent Vivier <lvivier@redhat.com>
+> Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> ---
+>  arch/powerpc/mm/pageattr.c | 23 ++++++++++-------------
+>  1 file changed, 10 insertions(+), 13 deletions(-)
+> 
+> v2: Use pte_update(..., ~0, pte_val(pte), ...) as suggested by Fabiano,
+>     and ptep_get() as suggested by Christophe.
+> 
+> diff --git a/arch/powerpc/mm/pageattr.c b/arch/powerpc/mm/pageattr.c
+> index 0876216ceee6..edea388e9d3f 100644
+> --- a/arch/powerpc/mm/pageattr.c
+> +++ b/arch/powerpc/mm/pageattr.c
+> @@ -18,16 +18,12 @@
+>  /*
+>   * Updates the attributes of a page in three steps:
+>   *
+> - * 1. invalidate the page table entry
+> - * 2. flush the TLB
+> - * 3. install the new entry with the updated attributes
+> - *
+> - * Invalidating the pte means there are situations where this will not work
+> - * when in theory it should.
+> - * For example:
+> - * - removing write from page whilst it is being executed
+> - * - setting a page read-only whilst it is being read by another CPU
+> + * 1. take the page_table_lock
+> + * 2. install the new entry with the updated attributes
+> + * 3. flush the TLB
+>   *
+> + * This sequence is safe against concurrent updates, and also allows updating the
+> + * attributes of a page currently being executed or accessed.
+>   */
+>  static int change_page_attr(pte_t *ptep, unsigned long addr, void *data)
+>  {
+> @@ -36,9 +32,7 @@ static int change_page_attr(pte_t *ptep, unsigned long addr, void *data)
+>  
+>  	spin_lock(&init_mm.page_table_lock);
+>  
+> -	/* invalidate the PTE so it's safe to modify */
+> -	pte = ptep_get_and_clear(&init_mm, addr, ptep);
+> -	flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+> +	pte = ptep_get(ptep);
+>  
+>  	/* modify the PTE bits as desired, then apply */
+>  	switch (action) {
+> @@ -59,11 +53,14 @@ static int change_page_attr(pte_t *ptep, unsigned long addr, void *data)
+>  		break;
+>  	}
+>  
+> -	set_pte_at(&init_mm, addr, ptep, pte);
+> +	pte_update(&init_mm, addr, ptep, ~0UL, pte_val(pte), 0);
+>  
+>  	/* See ptesync comment in radix__set_pte_at() */
+>  	if (radix_enabled())
+>  		asm volatile("ptesync": : :"memory");
+> +
+> +	flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+> +
+>  	spin_unlock(&init_mm.page_table_lock);
+>  
+>  	return 0;
+> 
+> base-commit: cbc06f051c524dcfe52ef0d1f30647828e226d30
+> 
 
-Suggested-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Suggested-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-Signed-off-by: Ritesh Harjani <riteshh@linux.ibm.com>
----
- tools/testing/selftests/powerpc/Makefile      |  1 +
- .../selftests/powerpc/memmoveloop/.gitignore  |  2 +
- .../selftests/powerpc/memmoveloop/Makefile    | 19 +++++++
- .../powerpc/memmoveloop/asm/asm-compat.h      |  0
- .../powerpc/memmoveloop/asm/export.h          |  4 ++
- .../powerpc/memmoveloop/asm/feature-fixups.h  |  0
- .../selftests/powerpc/memmoveloop/asm/kasan.h |  0
- .../powerpc/memmoveloop/asm/ppc_asm.h         | 39 +++++++++++++
- .../powerpc/memmoveloop/asm/processor.h       |  0
- .../selftests/powerpc/memmoveloop/mem_64.S    |  1 +
- .../selftests/powerpc/memmoveloop/memcpy_64.S |  1 +
- .../selftests/powerpc/memmoveloop/stubs.S     |  8 +++
- .../selftests/powerpc/memmoveloop/validate.c  | 56 +++++++++++++++++++
- 13 files changed, 131 insertions(+)
- create mode 100644 tools/testing/selftests/powerpc/memmoveloop/.gitignore
- create mode 100644 tools/testing/selftests/powerpc/memmoveloop/Makefile
- create mode 100644 tools/testing/selftests/powerpc/memmoveloop/asm/asm-compat.h
- create mode 100644 tools/testing/selftests/powerpc/memmoveloop/asm/export.h
- create mode 100644 tools/testing/selftests/powerpc/memmoveloop/asm/feature-fixups.h
- create mode 100644 tools/testing/selftests/powerpc/memmoveloop/asm/kasan.h
- create mode 100644 tools/testing/selftests/powerpc/memmoveloop/asm/ppc_asm.h
- create mode 100644 tools/testing/selftests/powerpc/memmoveloop/asm/processor.h
- create mode 120000 tools/testing/selftests/powerpc/memmoveloop/mem_64.S
- create mode 120000 tools/testing/selftests/powerpc/memmoveloop/memcpy_64.S
- create mode 100644 tools/testing/selftests/powerpc/memmoveloop/stubs.S
- create mode 100644 tools/testing/selftests/powerpc/memmoveloop/validate.c
-
-diff --git a/tools/testing/selftests/powerpc/Makefile b/tools/testing/selftests/powerpc/Makefile
-index 0830e63818c1..d110b3e5cbcd 100644
---- a/tools/testing/selftests/powerpc/Makefile
-+++ b/tools/testing/selftests/powerpc/Makefile
-@@ -16,6 +16,7 @@ export CFLAGS
- SUB_DIRS = alignment		\
- 	   benchmarks		\
- 	   cache_shape		\
-+	   memmoveloop		\
- 	   copyloops		\
- 	   dscr			\
- 	   mm			\
-diff --git a/tools/testing/selftests/powerpc/memmoveloop/.gitignore b/tools/testing/selftests/powerpc/memmoveloop/.gitignore
-new file mode 100644
-index 000000000000..56c1426013d5
---- /dev/null
-+++ b/tools/testing/selftests/powerpc/memmoveloop/.gitignore
-@@ -0,0 +1,2 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+memmove_64
-diff --git a/tools/testing/selftests/powerpc/memmoveloop/Makefile b/tools/testing/selftests/powerpc/memmoveloop/Makefile
-new file mode 100644
-index 000000000000..d58d8c100099
---- /dev/null
-+++ b/tools/testing/selftests/powerpc/memmoveloop/Makefile
-@@ -0,0 +1,19 @@
-+# SPDX-License-Identifier: GPL-2.0
-+CFLAGS += -m64
-+CFLAGS += -I$(CURDIR)
-+CFLAGS += -D SELFTEST
-+CFLAGS += -maltivec
-+
-+ASFLAGS = $(CFLAGS) -Wa,-mpower4
-+
-+TEST_GEN_PROGS := memmove_64
-+EXTRA_SOURCES := validate.c ../harness.c stubs.S
-+CPPFLAGS += -D TEST_MEMMOVE=test_memmove
-+
-+top_srcdir = ../../../../..
-+include ../../lib.mk
-+
-+$(OUTPUT)/memmove_64: mem_64.S memcpy_64.S $(EXTRA_SOURCES)
-+	$(CC) $(CPPFLAGS) $(CFLAGS) \
-+		-D TEST_MEMMOVE=test_memmove \
-+		-o $@ $^
-diff --git a/tools/testing/selftests/powerpc/memmoveloop/asm/asm-compat.h b/tools/testing/selftests/powerpc/memmoveloop/asm/asm-compat.h
-new file mode 100644
-index 000000000000..e69de29bb2d1
-diff --git a/tools/testing/selftests/powerpc/memmoveloop/asm/export.h b/tools/testing/selftests/powerpc/memmoveloop/asm/export.h
-new file mode 100644
-index 000000000000..e6b80d5fbd14
---- /dev/null
-+++ b/tools/testing/selftests/powerpc/memmoveloop/asm/export.h
-@@ -0,0 +1,4 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#define EXPORT_SYMBOL(x)
-+#define EXPORT_SYMBOL_GPL(x)
-+#define EXPORT_SYMBOL_KASAN(x)
-diff --git a/tools/testing/selftests/powerpc/memmoveloop/asm/feature-fixups.h b/tools/testing/selftests/powerpc/memmoveloop/asm/feature-fixups.h
-new file mode 100644
-index 000000000000..e69de29bb2d1
-diff --git a/tools/testing/selftests/powerpc/memmoveloop/asm/kasan.h b/tools/testing/selftests/powerpc/memmoveloop/asm/kasan.h
-new file mode 100644
-index 000000000000..e69de29bb2d1
-diff --git a/tools/testing/selftests/powerpc/memmoveloop/asm/ppc_asm.h b/tools/testing/selftests/powerpc/memmoveloop/asm/ppc_asm.h
-new file mode 100644
-index 000000000000..117005c56e19
---- /dev/null
-+++ b/tools/testing/selftests/powerpc/memmoveloop/asm/ppc_asm.h
-@@ -0,0 +1,39 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __SELFTESTS_POWERPC_PPC_ASM_H
-+#define __SELFTESTS_POWERPC_PPC_ASM_H
-+#include <ppc-asm.h>
-+
-+#define CONFIG_ALTIVEC
-+
-+#define r1	1
-+
-+#define R14 r14
-+#define R15 r15
-+#define R16 r16
-+#define R17 r17
-+#define R18 r18
-+#define R19 r19
-+#define R20 r20
-+#define R21 r21
-+#define R22 r22
-+#define R29 r29
-+#define R30 r30
-+#define R31 r31
-+
-+#define STACKFRAMESIZE	256
-+#define STK_REG(i)	(112 + ((i)-14)*8)
-+
-+#define _GLOBAL(A) FUNC_START(test_ ## A)
-+#define _GLOBAL_TOC(A) _GLOBAL(A)
-+#define _GLOBAL_TOC_KASAN(A) _GLOBAL(A)
-+#define _GLOBAL_KASAN(A) _GLOBAL(A)
-+
-+#define PPC_MTOCRF(A, B)	mtocrf A, B
-+
-+#define BEGIN_FTR_SECTION
-+#define FTR_SECTION_ELSE
-+#define ALT_FTR_SECTION_END_IFCLR(x)
-+#define ALT_FTR_SECTION_END(x, y)
-+#define END_FTR_SECTION_IFCLR(x)
-+
-+#endif /* __SELFTESTS_POWERPC_PPC_ASM_H */
-diff --git a/tools/testing/selftests/powerpc/memmoveloop/asm/processor.h b/tools/testing/selftests/powerpc/memmoveloop/asm/processor.h
-new file mode 100644
-index 000000000000..e69de29bb2d1
-diff --git a/tools/testing/selftests/powerpc/memmoveloop/mem_64.S b/tools/testing/selftests/powerpc/memmoveloop/mem_64.S
-new file mode 120000
-index 000000000000..db254c9a5f5c
---- /dev/null
-+++ b/tools/testing/selftests/powerpc/memmoveloop/mem_64.S
-@@ -0,0 +1 @@
-+../../../../../arch/powerpc/lib/mem_64.S
-\ No newline at end of file
-diff --git a/tools/testing/selftests/powerpc/memmoveloop/memcpy_64.S b/tools/testing/selftests/powerpc/memmoveloop/memcpy_64.S
-new file mode 120000
-index 000000000000..cce33fb6f9d8
---- /dev/null
-+++ b/tools/testing/selftests/powerpc/memmoveloop/memcpy_64.S
-@@ -0,0 +1 @@
-+../../../../../arch/powerpc/lib/memcpy_64.S
-\ No newline at end of file
-diff --git a/tools/testing/selftests/powerpc/memmoveloop/stubs.S b/tools/testing/selftests/powerpc/memmoveloop/stubs.S
-new file mode 100644
-index 000000000000..d9baa832fa49
---- /dev/null
-+++ b/tools/testing/selftests/powerpc/memmoveloop/stubs.S
-@@ -0,0 +1,8 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#include <asm/ppc_asm.h>
-+
-+FUNC_START(memcpy)
-+	b test_memcpy
-+
-+FUNC_START(backwards_memcpy)
-+	b test_backwards_memcpy
-diff --git a/tools/testing/selftests/powerpc/memmoveloop/validate.c b/tools/testing/selftests/powerpc/memmoveloop/validate.c
-new file mode 100644
-index 000000000000..52f7d32bb3fe
---- /dev/null
-+++ b/tools/testing/selftests/powerpc/memmoveloop/validate.c
-@@ -0,0 +1,56 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <malloc.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <assert.h>
-+#include "utils.h"
-+
-+void *TEST_MEMMOVE(const void *s1, const void *s2, size_t n);
-+
-+#define BUF_LEN 65536
-+#define MAX_OFFSET 512
-+
-+size_t max(size_t a, size_t b)
-+{
-+	if (a >= b) return a;
-+	return b;
-+}
-+
-+static int testcase_run(void)
-+{
-+	size_t i, src_off, dst_off, len;
-+
-+	char *usermap = memalign(BUF_LEN, BUF_LEN);
-+	char *kernelmap = memalign(BUF_LEN, BUF_LEN);
-+
-+	assert(usermap != NULL);
-+	assert(kernelmap != NULL);
-+
-+	memset(usermap, 0, BUF_LEN);
-+	memset(kernelmap, 0, BUF_LEN);
-+
-+	for (i = 0; i < BUF_LEN; i++) {
-+		usermap[i] = i & 0xff;
-+		kernelmap[i] = i & 0xff;
-+	}
-+
-+	for (src_off = 0; src_off < MAX_OFFSET; src_off++) {
-+		for (dst_off = 0; dst_off < MAX_OFFSET; dst_off++) {
-+			for (len = 1; len < MAX_OFFSET - max(src_off, dst_off); len++) {
-+
-+				memmove(usermap + dst_off, usermap + src_off, len);
-+				TEST_MEMMOVE(kernelmap + dst_off, kernelmap + src_off, len);
-+				if (memcmp(usermap, kernelmap, MAX_OFFSET) != 0) {
-+					printf("memmove failed at %ld %ld %ld\n", src_off, dst_off, len);
-+					abort();
-+				}
-+			}
-+		}
-+	}
-+	return 0;
-+}
-+
-+int main(void)
-+{
-+	return test_harness(testcase_run, "memmove");
-+}
---
-2.31.1
+Tested-by: Laurent Vivier <lvivier@redhat.com>
 
