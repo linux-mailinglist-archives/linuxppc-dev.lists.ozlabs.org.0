@@ -1,33 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D48E3F0533
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Aug 2021 15:48:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A09F3F052A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Aug 2021 15:46:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GqTl02LL5z3dnp
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Aug 2021 23:48:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GqThq1gsfz3dKH
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Aug 2021 23:46:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ smtp.mailfrom=ozlabs.org (client-ip=203.11.71.1; helo=ozlabs.org;
  envelope-from=michael@ozlabs.org; receiver=<UNKNOWN>)
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GqTgq4jBPz3cSd
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GqTgn73Wbz3cKv
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Aug 2021 23:45:57 +1000 (AEST)
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 4GqTgh48fMz9sWq; Wed, 18 Aug 2021 23:45:52 +1000 (AEST)
+ id 4GqTgm5LQJz9sX3; Wed, 18 Aug 2021 23:45:56 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-In-Reply-To: <20210812132223.225214-1-aneesh.kumar@linux.ibm.com>
-References: <20210812132223.225214-1-aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH v8 0/5] Add support for FORM2 associativity
-Message-Id: <162929393258.3619265.13986258706271193307.b4-ty@ellerman.id.au>
-Date: Wed, 18 Aug 2021 23:38:52 +1000
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>
+In-Reply-To: <b286e07fb771a664b631cd07a40b09c06f26e64b.1618331881.git.christophe.leroy@csgroup.eu>
+References: <b286e07fb771a664b631cd07a40b09c06f26e64b.1618331881.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2 1/2] powerpc/bug: Remove specific powerpc BUG_ON() and
+ WARN_ON() on PPC32
+Message-Id: <162929393381.3619265.1023243092279572637.b4-ty@ellerman.id.au>
+Date: Wed, 18 Aug 2021 23:38:53 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,40 +44,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 12 Aug 2021 18:52:18 +0530, Aneesh Kumar K.V wrote:
-> Form2 associativity adds a much more flexible NUMA topology layout
-> than what is provided by Form1. More details can be found in patch 7.
+On Tue, 13 Apr 2021 16:38:09 +0000 (UTC), Christophe Leroy wrote:
+> powerpc BUG_ON() and WARN_ON() are based on using twnei instruction.
 > 
-> $ numactl -H
-> ...
-> node distances:
-> node   0   1   2   3
->   0:  10  11  222  33
->   1:  44  10  55  66
->   2:  77  88  10  99
->   3:  101  121  132  10
-> $
+> For catching simple conditions like a variable having value 0, this
+> is efficient because it does the test and the trap at the same time.
+> But most conditions used with BUG_ON or WARN_ON are more complex and
+> forces GCC to format the condition into a 0 or 1 value in a register.
+> This will usually require 2 to 3 instructions.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/5] powerpc/pseries: rename min_common_depth to primary_domain_index
-      https://git.kernel.org/powerpc/c/7e35ef662ca05c42dbc2f401bb76d9219dd7fd02
-[2/5] powerpc/pseries: Rename TYPE1_AFFINITY to FORM1_AFFINITY
-      https://git.kernel.org/powerpc/c/0eacd06bb8adea8dd9edb0a30144166d9f227e64
-[3/5] powerpc/pseries: Consolidate different NUMA distance update code paths
-      https://git.kernel.org/powerpc/c/8ddc6448ec5a5ef50eaa581a7dec0e12a02850ff
-[4/5] powerpc/pseries: Add a helper for form1 cpu distance
-      https://git.kernel.org/powerpc/c/ef31cb83d19c4c589d650747cd5a7e502be9f665
-[5/5] powerpc/pseries: Add support for FORM2 associativity
-      https://git.kernel.org/powerpc/c/1c6b5a7e74052768977855f95d6b8812f6e7772c
+[1/2] powerpc/bug: Remove specific powerpc BUG_ON() and WARN_ON() on PPC32
+      https://git.kernel.org/powerpc/c/db87a7199229b75c9996bf78117eceb81854fce2
+[2/2] powerpc/bug: Provide better flexibility to WARN_ON/__WARN_FLAGS() with asm goto
+      https://git.kernel.org/powerpc/c/1e688dd2a3d6759d416616ff07afc4bb836c4213
 
 cheers
