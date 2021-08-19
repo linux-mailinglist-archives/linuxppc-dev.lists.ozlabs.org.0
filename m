@@ -2,60 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 627903F1886
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Aug 2021 13:51:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 764B73F19E1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Aug 2021 14:59:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gr35M29NQz3cfn
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Aug 2021 21:51:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gr4bw2NdPz3ddt
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Aug 2021 22:59:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=softfail (domain owner discourages use of this
+ host) smtp.mailfrom=kaod.org (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=clg@kaod.org;
+ receiver=<UNKNOWN>)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gr34t6zpbz2yWR
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Aug 2021 21:51:07 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4Gr34l5TcZz9sVF;
- Thu, 19 Aug 2021 13:51:03 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 8ARKzqg-cxod; Thu, 19 Aug 2021 13:51:03 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4Gr34l4VMRz9sV3;
- Thu, 19 Aug 2021 13:51:03 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3ED028B764;
- Thu, 19 Aug 2021 13:51:03 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id IQcQ15z_cd96; Thu, 19 Aug 2021 13:51:03 +0200 (CEST)
-Received: from [172.25.230.102] (po15451.idsi0.si.c-s.fr [172.25.230.102])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E94A48B836;
- Thu, 19 Aug 2021 13:51:02 +0200 (CEST)
-Subject: Re: [PATCH v2 0/2] Kconfig symbol fixes on powerpc
-To: Lukas Bulwahn <lukas.bulwahn@gmail.com>,
- Paul Mackerras <paulus@ozlabs.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Michael Neuling <mikey@neuling.org>,
- Anshuman Khandual <anshuman.khandual@arm.com>, kvm-ppc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
-References: <20210819113954.17515-1-lukas.bulwahn@gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <2784c69e-898d-3a40-a0f7-b7769a57980b@csgroup.eu>
-Date: Thu, 19 Aug 2021 13:50:57 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gr4YM2nWMz3cQK
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Aug 2021 22:57:26 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 17JCcDrn195333; Thu, 19 Aug 2021 08:57:06 -0400
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3agkvnpt2g-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 19 Aug 2021 08:57:06 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 17JClHU1001188;
+ Thu, 19 Aug 2021 12:57:04 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma03fra.de.ibm.com with ESMTP id 3agh2xjksk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 19 Aug 2021 12:57:03 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 17JCv1qx50201006
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 19 Aug 2021 12:57:01 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 342104204D;
+ Thu, 19 Aug 2021 12:57:01 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DBB184204F;
+ Thu, 19 Aug 2021 12:57:00 +0000 (GMT)
+Received: from smtp.tlslab.ibm.com (unknown [9.101.4.1])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Thu, 19 Aug 2021 12:57:00 +0000 (GMT)
+Received: from yukon.ibmuc.com (unknown [9.171.93.229])
+ by smtp.tlslab.ibm.com (Postfix) with ESMTP id EAD5622003E;
+ Thu, 19 Aug 2021 14:56:59 +0200 (CEST)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 0/6] W=1 fixes
+Date: Thu, 19 Aug 2021 14:56:50 +0200
+Message-Id: <20210819125656.14498-1-clg@kaod.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-In-Reply-To: <20210819113954.17515-1-lukas.bulwahn@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: mYc8iJWBwafL5YDW-hcPtFCdE2gxdh2u
+X-Proofpoint-GUID: mYc8iJWBwafL5YDW-hcPtFCdE2gxdh2u
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-08-19_04:2021-08-17,
+ 2021-08-19 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=426 clxscore=1034
+ priorityscore=1501 malwarescore=0 impostorscore=0 mlxscore=0 phishscore=0
+ spamscore=0 bulkscore=0 lowpriorityscore=0 suspectscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2107140000
+ definitions=main-2108190072
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,39 +86,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hello,
 
+With this small series, I could compile the ppc kernel with W=3D1. There
+are certainly other configs which will need more fixes but it's a good
+start.=20
 
-Le 19/08/2021 à 13:39, Lukas Bulwahn a écrit :
-> Dear powerpc maintainers,
-> 
-> The script ./scripts/checkkconfigsymbols.py warns on invalid references to
-> Kconfig symbols (often, minor typos, name confusions or outdated references).
-> 
-> This patch series addresses all issues reported by
-> ./scripts/checkkconfigsymbols.py in ./drivers/usb/ for Kconfig and Makefile
-> files. Issues in the Kconfig and Makefile files indicate some shortcomings in
-> the overall build definitions, and often are true actionable issues to address.
-> 
-> These issues can be identified and filtered by:
-> 
->    ./scripts/checkkconfigsymbols.py | grep -E "arch/powerpc/.*(Kconfig|Makefile)" -B 1 -A 1
-> 
-> After applying this patch series on linux-next (next-20210817), the command
-> above yields just two false positives (SHELL, r13) due to tool shortcomings.
-> 
-> As these two patches are fixes, please consider if they are suitable for
-> backporting to stable.
-> 
-> v1 -> v2:
->    Followed Christophe Leroy's comment and drop the obsolete select.
-> 
+The last 2 patches look hacky. Christophe, could you help with these
+to find a better place to include the declarations ?
 
+Thanks,
 
-No need to change anything now, but as your two patches are completely independent, you could have 
-submitted them separately. That would have avoided to resend both when changing the first one only.
+C.
+
+C=C3=A9dric Le Goater (6):
+  powerpc/prom: Introduce early_reserve_mem_old()
+  powerpc/pseries/vas: Declare pseries_vas_fault_thread_fn() as static
+  KVM: PPC: Book3S PR: Declare kvmppc_handle_exit_pr()
+  KVM: PPC: Book3S PR: Remove unused variable
+  audit: Declare ppc32_classify_syscall()
+  powerpc/compat_sys: Declare syscalls
+
+ arch/powerpc/include/asm/syscalls.h  | 31 +++++++++++++++++++++++
+ arch/powerpc/include/asm/unistd.h    |  3 +++
+ arch/powerpc/kvm/book3s.h            |  1 +
+ arch/powerpc/kernel/audit.c          |  1 -
+ arch/powerpc/kernel/prom.c           | 37 +++++++++++++++-------------
+ arch/powerpc/kvm/book3s_64_mmu.c     |  3 +--
+ arch/powerpc/platforms/pseries/vas.c |  2 +-
+ 7 files changed, 57 insertions(+), 21 deletions(-)
+
+--=20
+2.31.1
+
