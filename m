@@ -2,68 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8728D3F24CC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Aug 2021 04:35:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A2623F24F7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Aug 2021 04:50:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GrQhs2rydz3cLL
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Aug 2021 12:35:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GrR2102Dmz3cWM
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Aug 2021 12:50:01 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=lHDeTH5e;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=ZyOVOXdd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f35;
- helo=mail-qv1-xf35.google.com; envelope-from=cgel.zte@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::82b;
+ helo=mail-qt1-x82b.google.com; envelope-from=cgel.zte@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=lHDeTH5e; dkim-atps=neutral
-Received: from mail-qv1-xf35.google.com (mail-qv1-xf35.google.com
- [IPv6:2607:f8b0:4864:20::f35])
+ header.s=20161025 header.b=ZyOVOXdd; dkim-atps=neutral
+Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com
+ [IPv6:2607:f8b0:4864:20::82b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GrQh833R1z3bTV
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Aug 2021 12:34:30 +1000 (AEST)
-Received: by mail-qv1-xf35.google.com with SMTP id g11so4798885qvd.2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Aug 2021 19:34:30 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GrR1J2TGLz3035
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Aug 2021 12:49:23 +1000 (AEST)
+Received: by mail-qt1-x82b.google.com with SMTP id y9so6386504qtv.7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Aug 2021 19:49:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=VoGBCWp3KCNfgB/Df5rElpIhp6P6dUadsEIrn/tjMyk=;
- b=lHDeTH5eYqmuMWehbWpNCnLy2x0qltq/wnwxqkp574COOjpeXYoxZVWThj7NyFE4Hi
- l/CnAimflK3MxW5xhT4W8ka6ZLHUaDWQzpkFPzTpzq3Og5s6yvjiG8zfsBaO/jgD4YGO
- bTnRSmIAKyJZMc5pUS4M2QvBR3CpGElgz8DMmvu6ifKoqlKVCpzNNafrJgsxgUo2kQUG
- a08TX9h1Kl0IOdPoAgesC+DBRz1YaJfYqE7qbb4vKSDkqtDMMgaqa6fGRpB9wFvFkNsh
- vUQZUBeAwGQnBdpkhEsSP5WxmfJXE8fi9YY5Qa+bEoHeN7heCyMtez5XMOojON14pFip
- fAWg==
+ bh=LavvvFG+/VWmsfKchesDD9nAqBZFVJWxsg7nQ7rHqRM=;
+ b=ZyOVOXddVzS20gMkSzEofQ+rakCMaCmpjv3y1E2c/rjfVyBBDfLFFvvhNAUx6clEh2
+ 8eUvn3CpIgc5de/kt5srn5ndVr+21VoMGhl2KLnV2uGyFTPICxWbL01yjJ4n5Azyol9j
+ uSAvYaEZv0aK+w0VTIavWPlImW11ivpcI/A65/aamjudKnp3FJavC6VPMNv8BD2XHfsS
+ w5rBsdOC8ziKyzTtr3Mik8f7W5GFmbAH6sPNoQob/flpc8+azELGygdPM7gt9PcA6+HL
+ +r+7rk4fo6ghtbe0js/f4ZbgUizWTCckaIQivLJfmENei94/mN0ZHXtwouXYdk4hG2Ss
+ 7E4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=VoGBCWp3KCNfgB/Df5rElpIhp6P6dUadsEIrn/tjMyk=;
- b=GM7QQV9DEYI3ry5QU3iJHFjSEVPYDlOxzTUAl65YPQp1QJDKmabHiE2sVAZZNWPAng
- 4RHvM/STiDJ7JCAfqHZDwYGPbIu6Cp/8sqbpcqME+4rgrgR26t4WmGOsW4JHhCIB86iV
- nulrLUsgnpb7SFs9BH6j93UrZEY/g45dRoN79AIn+hAKAmqLbl6ZY7DjucQg7NHlKia5
- lTJlHO7hEZERnfT2gut46ZyQ2s1NYTQPRQmFNwP2n3FOp1z4fgbz/D25GOooZHGJCMtz
- dzUsj6+g07iNHlS5yJqPg8/0SMCXHejMGijVy+F4Z7VRYldRgPewpz5MOaPqkvpfSDLO
- 8c7g==
-X-Gm-Message-State: AOAM531ti3oTKFYbLsmwa1JhRhkD6lLBcykfJJJClcPGeLaXFilnzS1q
- FirPNzOLUx5Kpm3aAWa00r0=
-X-Google-Smtp-Source: ABdhPJzYzgrCRZIg+O/2IZU7ylfpuT40S9ORMT3V/sxyKAAUeNrRmqvLLZ+J+8sSB2r4iqlr4XJ2AQ==
-X-Received: by 2002:ad4:54f2:: with SMTP id k18mr17878753qvx.24.1629426866086; 
- Thu, 19 Aug 2021 19:34:26 -0700 (PDT)
+ bh=LavvvFG+/VWmsfKchesDD9nAqBZFVJWxsg7nQ7rHqRM=;
+ b=ueoLvyI6S6xDDVwINFU9rUcjtK0N0S8D154zSK3N5vk2URpzTCpAglcfGx0JDi1s5k
+ 4NgUgL328lTXzk0Rvz0sDHcf+yKplYvZ+ZDBOrZDzgTxiBwB8sSsuXxhlCHhT34jT100
+ Bvk5nH+UqprfBwDQndvB914utSdNgp1Z74dQybpqwU9lYn4A3WYkp5te8Pg/NVvRw4Gy
+ MwCPwsDcfuaa5qsqhKrj0lMT9iLtoJZyW9YEEC6XCvP5PdjSBXEKY1K7QuVSnG2RRaMz
+ lLfTSIZwUzj4W9pTH1em/vX/SaseMtsOAuBjmsGBWt4L3p/7cTQuWR2D0Me0C5VZb8Rh
+ dWyA==
+X-Gm-Message-State: AOAM530HRacjd09qbPZqMImXcjpMugmLEwClO0KVY3VOgcLPNr8ADReV
+ Gci8aqAASzdDzS/kZD7CnKQ=
+X-Google-Smtp-Source: ABdhPJzzzprAAUL+AN13Sa5wgzLdwdedt+qOOHoPCRfYFoAiJJJ0SfKXNdDpTO9EG+HI2HuAefm2/A==
+X-Received: by 2002:ac8:53d6:: with SMTP id c22mr8870860qtq.38.1629427760206; 
+ Thu, 19 Aug 2021 19:49:20 -0700 (PDT)
 Received: from localhost.localdomain ([193.203.214.57])
- by smtp.gmail.com with ESMTPSA id r18sm2119277qtm.96.2021.08.19.19.34.24
+ by smtp.gmail.com with ESMTPSA id 75sm2505262qko.100.2021.08.19.19.49.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Aug 2021 19:34:25 -0700 (PDT)
+ Thu, 19 Aug 2021 19:49:19 -0700 (PDT)
 From: jing yangyang <cgel.zte@gmail.com>
 X-Google-Original-From: jing yangyang <jing.yangyang@zte.com.cn>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Subject: [PATCH linux-next] macintosh: fix warning comparing pointer to 0
-Date: Thu, 19 Aug 2021 19:34:14 -0700
-Message-Id: <b12b200502312957065a12f8d78e8d250c244d21.1629193159.git.jing.yangyang@zte.com.cn>
+To: Geoff Levand <geoff@infradead.org>
+Subject: [PATCH linux-next] ps3: remove unneeded semicolon
+Date: Thu, 19 Aug 2021 19:49:01 -0700
+Message-Id: <01647102607ce9640c9f27786d976109a3c4ea7e.1629197153.git.jing.yangyang@zte.com.cn>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -78,35 +78,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Zeal Robot <zealci@zte.com.cn>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, jing yangyang <jing.yangyang@zte.com.cn>
+Cc: jing yangyang <jing.yangyang@zte.com.cn>, Zeal Robot <zealci@zte.com.cn>,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fix the following coccicheck warning:
+Eliminate the following coccicheck warning:
 
-./drivers/macintosh/windfarm_pm91.c:152:12-13:WARNING comparing pointer to 0
+./arch/powerpc/platforms/ps3/system-bus.c:606:2-3: Unneeded semicolon
+./arch/powerpc/platforms/ps3/system-bus.c:765:2-3: Unneeded semicolon
 
 Reported-by: Zeal Robot <zealci@zte.com.cn>
 Signed-off-by: jing yangyang <jing.yangyang@zte.com.cn>
 ---
- drivers/macintosh/windfarm_pm91.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/platforms/ps3/system-bus.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/macintosh/windfarm_pm91.c b/drivers/macintosh/windfarm_pm91.c
-index 3f346af..568f8a2 100644
---- a/drivers/macintosh/windfarm_pm91.c
-+++ b/drivers/macintosh/windfarm_pm91.c
-@@ -149,7 +149,7 @@ static void wf_smu_create_cpu_fans(void)
+diff --git a/arch/powerpc/platforms/ps3/system-bus.c b/arch/powerpc/platforms/ps3/system-bus.c
+index c8b50fe..b637bf2 100644
+--- a/arch/powerpc/platforms/ps3/system-bus.c
++++ b/arch/powerpc/platforms/ps3/system-bus.c
+@@ -603,7 +603,7 @@ static dma_addr_t ps3_ioc0_map_page(struct device *_dev, struct page *page,
+ 	default:
+ 		/* not happned */
+ 		BUG();
+-	};
++	}
+ 	result = ps3_dma_map(dev->d_region, (unsigned long)ptr, size,
+ 			     &bus_addr, iopte_flag);
  
- 	/* First, locate the PID params in SMU SBD */
- 	hdr = smu_get_sdb_partition(SMU_SDB_CPUPIDDATA_ID, NULL);
--	if (hdr == 0) {
-+	if (!hdr) {
- 		printk(KERN_WARNING "windfarm: CPU PID fan config not found "
- 		       "max fan speed\n");
- 		goto fail;
+@@ -762,7 +762,7 @@ int ps3_system_bus_device_register(struct ps3_system_bus_device *dev)
+ 		break;
+ 	default:
+ 		BUG();
+-	};
++	}
+ 
+ 	dev->core.of_node = NULL;
+ 	set_dev_node(&dev->core, 0);
 -- 
 1.8.3.1
 
