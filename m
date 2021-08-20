@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C87A43F318A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Aug 2021 18:35:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB1BF3F318B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Aug 2021 18:35:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GrnL04TPwz3cX8
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Aug 2021 02:35:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GrnLy4xJMz3cW4
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Aug 2021 02:35:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RVNbe8ei;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KKPQ8O5T;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,32 +18,32 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=RVNbe8ei; 
+ header.s=k20201202 header.b=KKPQ8O5T; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GrnKF4Rj3z3btZ
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Aug 2021 02:34:25 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPS id AE42D6113B
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Aug 2021 16:34:22 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GrnL951RGz3cGT
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Aug 2021 02:35:13 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPS id 7996961152
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Aug 2021 16:35:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1629477262;
- bh=spEuRmRauuOGMc6x+BErmOsK9cKwFeyxXiWyf0jTFm8=;
+ s=k20201202; t=1629477311;
+ bh=jLEFjJwIsun7fvdhSgnodbqqoxKQR1fjIQxU8AW1xYk=;
  h=From:To:Subject:Date:In-Reply-To:References:From;
- b=RVNbe8eikZbQLtO/ugPWbOtv1nyT5BO+hYY0vagI/JXD3GK2A6q8BnokqDhqFog+Z
- CwsWIPC+lksKVqq6o9o99TXdgzT8SYcfO9qZRXVVKpDiCIMG9qDXJg32VmDtYXxI5X
- p0a9+/WadOGzt+MUcb4A+iQnX/yk60ArqgNkRJzRMWU/AZ4569khABaWLnxOhuIAKx
- 7SO0V/IObeVsM0SnklG89MCj7MExQLIa0uHq36x68WKUw2GI+E1v5lZtLqaYAKu6Ab
- cxyJDfnxKnTZqfKMW8AM++veWN90ACD6Ip5PI/LJmC7m+Rm1gEY1K5IRfkcJFbkdAc
- r16b8V+kAoyag==
+ b=KKPQ8O5TGMIz0AHQ6MjOCX+OcQUUC/mGx6uGvyfYdplww9BP0S84gX//ECXe2qVsn
+ 7PBxKVIQ/71hekRhCj8FDqUqwHi3wA3a+/gqVqEw7ZZykm8jlyP/MoTZfVDuow6xYd
+ rRBUutAiB+cA7qVk5KNI1C/hhhcU6vF/m5mVJRC/28ztISFqKgsUXR5xvZZEIeyfR4
+ 4pZa8n2FSm6BJT+S+1upl3rh3Qb1kgofak6ITtUhB42+xBZBMpyHPfgWc7ngXn9y2h
+ TLhwjvlL0/SEmXG59GwG0yGXj2eO0MefQ4IJzVIEaWZCpYuSShplUaBCmwl3eeONsE
+ p1W7nppZfxAsQ==
 Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
- id A5B6A60EBC; Fri, 20 Aug 2021 16:34:22 +0000 (UTC)
+ id 73AEC60F36; Fri, 20 Aug 2021 16:35:11 +0000 (UTC)
 From: bugzilla-daemon@bugzilla.kernel.org
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 213837] "Kernel panic - not syncing: corrupted stack end
  detected inside scheduler" at building via distcc on a G5
-Date: Fri, 20 Aug 2021 16:34:22 +0000
+Date: Fri, 20 Aug 2021 16:35:11 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: CC platform_ppc-64@kernel-bugs.osdl.org
@@ -59,7 +59,7 @@ X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: akpm@linux-foundation.org
 X-Bugzilla-Flags: 
 X-Bugzilla-Changed-Fields: attachments.created
-Message-ID: <bug-213837-206035-NkW3bS47hu@https.bugzilla.kernel.org/>
+Message-ID: <bug-213837-206035-9BpscMP0ai@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-213837-206035@https.bugzilla.kernel.org/>
 References: <bug-213837-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -84,60 +84,10 @@ Sender: "Linuxppc-dev"
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D213837
 
---- Comment #2 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 298393
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D298393&action=3Dedit
-dmesg (5.14-rc6, PowerMac G5 11,2)
-
-Happens also on 5.14-rc6:
-
-[...]
-Kernel panic - not syncing: corrupted stack end detected inside scheduler
-CPU: 1 PID: 32354 Comm: powerpc64-unkno Tainted: G        W=20=20=20=20=20=
-=20=20=20
-5.14.0-rc6-PowerMacG5+ #3
-Call Trace:
-[c000000062feb4c0] [c00000000054de04] .dump_stack_lvl+0x98/0xe0 (unreliable)
-[c000000062feb550] [c000000000068f4c] .panic+0x160/0x40c
-[c000000062feb600] [c000000000818d3c] .__schedule+0x7c/0x840
-[c000000062feb6d0] [c00000000081964c] .preempt_schedule_common+0x28/0x48
-[c000000062feb750] [c00000000081969c] .__cond_resched+0x30/0x4c
-[c000000062feb7d0] [c0000000004ee8f8] .copy_page_to_iter+0xbc/0x32c
-[c000000062feb8a0] [c0000000001c9c20] .filemap_read+0x574/0x618
-[c000000062feba60] [c000000000333c18] .ext4_file_read_iter+0xb8/0x11c
-[c000000062febb00] [c000000000275488] .new_sync_read+0x94/0xe0
-[c000000062febc00] [c000000000276c2c] .vfs_read+0x128/0x12c
-[c000000062febca0] [c000000000276fc4] .ksys_read+0x78/0xc4
-[c000000062febd60] [c000000000022808] .system_call_exception+0x1a4/0x1dc
-[c000000062febe10] [c00000000000b4cc] system_call_common+0xec/0x250
---- interrupt: c00 at 0x3fff999e0cd0
-NIP:  00003fff999e0cd0 LR: 00000001039d3660 CTR: 0000000000000000
-REGS: c000000062febe80 TRAP: 0c00   Tainted: G        W=20=20=20=20=20=20=
-=20=20=20
-(5.14.0-rc6-PowerMacG5+)
-MSR:  900000000200f032 <SF,HV,VEC,EE,PR,FP,ME,IR,DR,RI>  CR: 24000442  XER:
-00000000
-IRQMASK: 0=20
-GPR00: 0000000000000003 00003ffff4e23690 00003fff99a0df00 0000000000000004=
-=20
-GPR04: 00003fff99699010 00000000000583ca 00003fff999c1320 0000000000000000=
-=20
-GPR08: 00003fff999c12e0 0000000000000000 0000000000000000 0000000000000000=
-=20
-GPR12: 0000000000000000 00003fff99a93c20 000000011fbcf950 000000017149a1d0=
-=20
-GPR16: 00000001039dec38 00003ffff4e23b78 00000001039deb28 00003ffff4e239c8=
-=20
-GPR20: 00003ffff4e23d80 ffffffffffffffff 000000011fbce540 0000000000000000=
-=20
-GPR24: 000000011fbcf930 000000011fbcfa90 0000000000000005 00003ffff4e238e0=
-=20
-GPR28: 0000000103a268e8 0000000000000004 00003fff99699010 00000000000583ca=
-=20
-NIP [00003fff999e0cd0] 0x3fff999e0cd0
-LR [00000001039d3660] 0x1039d3660
---- interrupt: c00
-Rebooting in 40 seconds..
+--- Comment #3 from Erhard F. (erhard_f@mailbox.org) ---
+Created attachment 298395
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D298395&action=3Dedit
+kernel .config (5.14-rc6, PowerMac G5 11,2)
 
 --=20
 You may reply to this email to add a comment.
