@@ -1,74 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F4273F23FB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Aug 2021 02:03:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 310203F240E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Aug 2021 02:13:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GrMLG0qgwz3cW8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Aug 2021 10:03:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GrMY00gVtz3bhp
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Aug 2021 10:13:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=bUVS0z1t;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZJbsTj1x;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::532;
- helo=mail-pg1-x532.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=bugzilla.kernel.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=bUVS0z1t; dkim-atps=neutral
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com
- [IPv6:2607:f8b0:4864:20::532])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=ZJbsTj1x; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GrMKc3ltQz305v
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Aug 2021 10:03:14 +1000 (AEST)
-Received: by mail-pg1-x532.google.com with SMTP id y23so7445408pgi.7
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Aug 2021 17:03:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=vRFO+rG5NKULoNq4nrGremPyKJ3sp4O0aBsDwvD+Jws=;
- b=bUVS0z1tbTEuTnJpUI0DCsREOWqYBS393adFo6vkPpAcDd3VFldkcu6Bu8+NPNkVIr
- zVB/aqzwm03BccvSPAo1MxAZoGqM1V3G7Ml6IdOp9vADp+ZnRlfr9+qSxRd7e6+I4Agi
- 5JhMzvnd1IByLpNrXS8swwAmSNZRyvnAn463M=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=vRFO+rG5NKULoNq4nrGremPyKJ3sp4O0aBsDwvD+Jws=;
- b=DTDCTdjDHGjhRE3r4agqExXsyCZnKejmIvK89Ru3HJUWHBVdzE8nfcFHGTXp3Fug6O
- OCROTCV6z/UoLYm1/gxx8NN0HxWqLivgSr0jalvzya0JXjIt4eN0SpsbMCmelpAGoot9
- mIQss57dNrhhoHgLhJJNtNWKeayrMDlNDeJh1CyK9Sqo9QN+quT74itpldebDw7ONeSI
- LRQGLPrNbJjYVND68n2Fxnl1tLdjRYKvzMBDFwMzS+cAgbCHq7vTVnXXA9aRdQRCJIv8
- /htDwT4+zl2UPeY92HMuu4OGageTxOya5EwBas24Lgj/oWETDM854l+pqFeYdupGz3oi
- n8NQ==
-X-Gm-Message-State: AOAM531JUQtp8iqRHK/oyb8MS6pkcw3FeUZb2yEez4DKL9UGbeLBEoq/
- k1IHzFxSRmGI3wg4AmndZi1emg==
-X-Google-Smtp-Source: ABdhPJxUAM4AJRANovdfNIBfj6aTNBPXbXy30qW0KYGlBj+lnS2H5nQpOUOt6OPGf27oUrWy+/Ipjg==
-X-Received: by 2002:a63:2242:: with SMTP id t2mr15735424pgm.111.1629417791779; 
- Thu, 19 Aug 2021 17:03:11 -0700 (PDT)
-Received: from localhost ([2001:4479:e000:e400:3a83:f47e:d5a3:378a])
- by smtp.gmail.com with ESMTPSA id d15sm3189825pfh.34.2021.08.19.17.03.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 19 Aug 2021 17:03:11 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: Lukas Bulwahn <lukas.bulwahn@gmail.com>, Paul Mackerras
- <paulus@ozlabs.org>, Michael Ellerman <mpe@ellerman.id.au>, Benjamin
- Herrenschmidt <benh@kernel.crashing.org>, Michael Neuling
- <mikey@neuling.org>, Anshuman Khandual <anshuman.khandual@arm.com>,
- kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2 2/2] powerpc: rectify selection to
- ARCH_ENABLE_SPLIT_PMD_PTLOCK
-In-Reply-To: <20210819113954.17515-3-lukas.bulwahn@gmail.com>
-References: <20210819113954.17515-1-lukas.bulwahn@gmail.com>
- <20210819113954.17515-3-lukas.bulwahn@gmail.com>
-Date: Fri, 20 Aug 2021 10:03:08 +1000
-Message-ID: <87pmu99e4j.fsf@dja-thinkpad.axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GrMXF5tLLz2yLg
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Aug 2021 10:12:29 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPS id 89AA7601FD
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Aug 2021 00:12:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1629418345;
+ bh=Ne1SzyvHdxWEyCw3Jur4wNVLlOTVsja+Od+Db2m4baM=;
+ h=From:To:Subject:Date:In-Reply-To:References:From;
+ b=ZJbsTj1xGLERyadfaYcfJFcSR/7W4ZxJm0BzW+PyX+hLrauDzrhAgHHhSH5IooISv
+ bIbTc4v7qcvZbrUPKJugAXLEivkmCdVYqSFyZEizH8UrRamCImUlEXIC0+/YXbLHkC
+ /FxcU+8N3TIFXUShmGxX7VfyigUj6htLuI6vbQ0QT1Dv2Qty9VCTYDwYP0dLMtLtlJ
+ JwSQdJIkQbG8CuY7Icb0TSOFQAIIM+BGD2v7FNNs/0zSM7LUeMSNyd1BQ+rFlzPD2a
+ srVtxdMHB9K8+39M4D+5aTW7+mhatXEJA04tmxMmWpQaQ7tTjfR5PpOWGvNsTl2ydv
+ R1RptH2Sxl+fA==
+Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
+ id 7C2AC60F6E; Fri, 20 Aug 2021 00:12:25 +0000 (UTC)
+From: bugzilla-daemon@bugzilla.kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 213079] [bisected] IRQ problems and crashes on a PowerMac G5
+ with 5.12.3
+Date: Fri, 20 Aug 2021 00:12:24 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: attachments.isobsolete attachments.created
+Message-ID: <bug-213079-206035-IH0Hx5AIPj@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-213079-206035@https.bugzilla.kernel.org/>
+References: <bug-213079-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,72 +78,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Lukas Bulwahn <lukas.bulwahn@gmail.com>, kernel-janitors@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Lukas Bulwahn <lukas.bulwahn@gmail.com> writes:
+https://bugzilla.kernel.org/show_bug.cgi?id=3D213079
 
-> Commit 66f24fa766e3 ("mm: drop redundant ARCH_ENABLE_SPLIT_PMD_PTLOCK")
-> selects the non-existing config ARCH_ENABLE_PMD_SPLIT_PTLOCK in
-> ./arch/powerpc/platforms/Kconfig.cputype, but clearly it intends to select
-> ARCH_ENABLE_SPLIT_PMD_PTLOCK here (notice the word swapping!), as this
-> commit does select that for all other architectures.
->
-> Rectify selection to ARCH_ENABLE_SPLIT_PMD_PTLOCK instead.
->
+Erhard F. (erhard_f@mailbox.org) changed:
 
-Yikes, yes, 66f24fa766e3 does seem to have got that wrong. It looks like
-that went into 5.13.
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+ Attachment #297473|0                           |1
+        is obsolete|                            |
 
-I think we want to specifically target this for stable so that we don't
-lose the perfomance and scalability benefits of split pmd ptlocks:
+--- Comment #16 from Erhard F. (erhard_f@mailbox.org) ---
+Created attachment 298371
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D298371&action=3Dedit
+dmesg (5.14-rc6, PowerMac G5 11,2)
 
-Cc: stable@vger.kernel.org # v5.13+
+As there is a fix now for bug #213803 I was able to build v5.14-rc6 and gav=
+e it
+a testride. Looks like the issue persists:
 
-(I don't think you need to do another revision for this, I think mpe
-could add it when merging.)
+[...]
+irq 63: nobody cared (try booting with the "irqpoll" option)
+CPU: 0 PID: 10732 Comm: emerge Tainted: G        W=20=20=20=20=20=20=20=20
+5.14.0-rc6-PowerMacG5+ #2
+Call Trace:
+[c00000000fff7af0] [c00000000054de24] .dump_stack_lvl+0x98/0xe0 (unreliable)
+[c00000000fff7b80] [c0000000000e1724] .__report_bad_irq+0x34/0xf0
+[c00000000fff7c20] [c0000000000e160c] .note_interrupt+0x258/0x300
+[c00000000fff7ce0] [c0000000000dd840] .handle_irq_event_percpu+0x5c/0x88
+[c00000000fff7d70] [c0000000000dd8b0] .handle_irq_event+0x44/0x70
+[c00000000fff7e00] [c0000000000e2d34] .handle_fasteoi_irq+0xac/0x158
+[c00000000fff7ea0] [c0000000000dc8bc] .handle_irq_desc+0x34/0x54
+[c00000000fff7f10] [c000000000012058] .__do_irq+0x15c/0x238
+[c00000000fff7f90] [c000000000012978] .__do_IRQ+0xac/0xb4
+[c00000001e9cfcf0] [c00000001e9cfd90] 0xc00000001e9cfd90
+[c00000001e9cfd90] [c000000000012ac4] .do_IRQ+0x144/0x194
+[c00000001e9cfe10] [c000000000008050]
+hardware_interrupt_common_virt+0x210/0x220
+--- interrupt: 500 at 0x3fffb9b25d9c
+NIP:  00003fffb9b25d9c LR: 00003fffb9b2811c CTR: 00003fffb9b25d9c
+REGS: c00000001e9cfe80 TRAP: 0500   Tainted: G        W=20=20=20=20=20=20=
+=20=20=20
+(5.14.0-rc6-PowerMacG5+)
+MSR:  900000000000f032 <SF,HV,EE,PR,FP,ME,IR,DR,RI>  CR: 22482822  XER:
+20000000
+IRQMASK: 0=20
+GPR00: 00003fffb9b28100 00003ffffd4e7550 00003fffb9ef6200 00003fffb7977790=
+=20
+GPR04: 00003fffb7977790 00003fffb55e8b80 0000000000000000 00003fffb9eccac0=
+=20
+GPR08: 00003fffb9b25d9c 0000000000000000 000000000000000f 0000000000000000=
+=20
+GPR12: 00003fffb9b7eeb0 00003fffb9fc8890 00003ffffd4e7658 00003fffb395c548=
+=20
+GPR16: 00003ffffd4e7670 ffffffffffffffff 00003fffb7902480 ffffffffffffffff=
+=20
+GPR20: 0000000000000000 00003fffb395c528 000000014b8f7878 0000000000000000=
+=20
+GPR24: 00003fffb7969a80 000000014b8f7830 00003fffb7a750d0 000000000000000a=
+=20
+GPR28: 00003fffb7a750dc 000000000000007c 000000014b8f9420 00003fffb395c3c0=
+=20
+NIP [00003fffb9b25d9c] 0x3fffb9b25d9c
+LR [00003fffb9b2811c] 0x3fffb9b2811c
+--- interrupt: 500
+handlers:
+[<c0000000015a6568>] .nvme_irq
+[<c0000000015a6568>] .nvme_irq
+Disabling IRQ #63
 
-I tried to check whether we accidentally broke SPLIT_PMD_PTLOCKs while
-they were disabled:
+--=20
+You may reply to this email to add a comment.
 
- - There hasn't been any change to the pgtable_pmd_page_ctor or _dtor
-   prototypes, and we haven't made any relevant changes to any of the
-   files in arch/powerpc that called it.
-
- - I checked out v5.13 and powerpc/merge, applied this patch, built a
-   pseries_le_defconfig and boot tested it in qemu. It didn't crash on
-   boot or with /bin/sh and some shell commands, but I didn't exactly
-   stress test the VM subsystem either.
-
-This gives me some confidence it's both good for powerpc and stable-worthy.
-
-Overall:
-Reviewed-by: Daniel Axtens <dja@axtens.net>
-
-Kind regards,
-Daniel
-
-> Fixes: 66f24fa766e3 ("mm: drop redundant ARCH_ENABLE_SPLIT_PMD_PTLOCK")
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> ---
->  arch/powerpc/platforms/Kconfig.cputype | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-> index 6794145603de..a208997ade88 100644
-> --- a/arch/powerpc/platforms/Kconfig.cputype
-> +++ b/arch/powerpc/platforms/Kconfig.cputype
-> @@ -98,7 +98,7 @@ config PPC_BOOK3S_64
->  	select PPC_HAVE_PMU_SUPPORT
->  	select HAVE_ARCH_TRANSPARENT_HUGEPAGE
->  	select ARCH_ENABLE_HUGEPAGE_MIGRATION if HUGETLB_PAGE && MIGRATION
-> -	select ARCH_ENABLE_PMD_SPLIT_PTLOCK
-> +	select ARCH_ENABLE_SPLIT_PMD_PTLOCK
->  	select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
->  	select ARCH_SUPPORTS_HUGETLBFS
->  	select ARCH_SUPPORTS_NUMA_BALANCING
-> -- 
-> 2.26.2
+You are receiving this mail because:
+You are watching the assignee of the bug.=
