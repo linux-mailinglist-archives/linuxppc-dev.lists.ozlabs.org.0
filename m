@@ -2,43 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC7B23F2418
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Aug 2021 02:20:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8728D3F24CC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Aug 2021 04:35:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GrMjC4Rvdz3clX
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Aug 2021 10:20:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GrQhs2rydz3cLL
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Aug 2021 12:35:09 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=lHDeTH5e;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f35;
+ helo=mail-qv1-xf35.google.com; envelope-from=cgel.zte@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=lHDeTH5e; dkim-atps=neutral
+Received: from mail-qv1-xf35.google.com (mail-qv1-xf35.google.com
+ [IPv6:2607:f8b0:4864:20::f35])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GrMhl4vK7z2yMM
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Aug 2021 10:19:45 +1000 (AEST)
-X-IronPort-AV: E=McAfee;i="6200,9189,10081"; a="216411830"
-X-IronPort-AV: E=Sophos;i="5.84,336,1620716400"; d="scan'208";a="216411830"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
- by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Aug 2021 17:18:42 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.84,336,1620716400"; d="scan'208";a="681964712"
-Received: from lkp-server01.sh.intel.com (HELO d053b881505b) ([10.239.97.150])
- by fmsmga005.fm.intel.com with ESMTP; 19 Aug 2021 17:18:41 -0700
-Received: from kbuild by d053b881505b with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1mGsF6-000UOI-HD; Fri, 20 Aug 2021 00:18:40 +0000
-Date: Fri, 20 Aug 2021 08:18:09 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- 9f7853d7609d59172eecfc5e7ccf503bc1b690bd
-Message-ID: <611ef4c1.xa2uh/ZFSK8bMyt5%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GrQh833R1z3bTV
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Aug 2021 12:34:30 +1000 (AEST)
+Received: by mail-qv1-xf35.google.com with SMTP id g11so4798885qvd.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Aug 2021 19:34:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=VoGBCWp3KCNfgB/Df5rElpIhp6P6dUadsEIrn/tjMyk=;
+ b=lHDeTH5eYqmuMWehbWpNCnLy2x0qltq/wnwxqkp574COOjpeXYoxZVWThj7NyFE4Hi
+ l/CnAimflK3MxW5xhT4W8ka6ZLHUaDWQzpkFPzTpzq3Og5s6yvjiG8zfsBaO/jgD4YGO
+ bTnRSmIAKyJZMc5pUS4M2QvBR3CpGElgz8DMmvu6ifKoqlKVCpzNNafrJgsxgUo2kQUG
+ a08TX9h1Kl0IOdPoAgesC+DBRz1YaJfYqE7qbb4vKSDkqtDMMgaqa6fGRpB9wFvFkNsh
+ vUQZUBeAwGQnBdpkhEsSP5WxmfJXE8fi9YY5Qa+bEoHeN7heCyMtez5XMOojON14pFip
+ fAWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=VoGBCWp3KCNfgB/Df5rElpIhp6P6dUadsEIrn/tjMyk=;
+ b=GM7QQV9DEYI3ry5QU3iJHFjSEVPYDlOxzTUAl65YPQp1QJDKmabHiE2sVAZZNWPAng
+ 4RHvM/STiDJ7JCAfqHZDwYGPbIu6Cp/8sqbpcqME+4rgrgR26t4WmGOsW4JHhCIB86iV
+ nulrLUsgnpb7SFs9BH6j93UrZEY/g45dRoN79AIn+hAKAmqLbl6ZY7DjucQg7NHlKia5
+ lTJlHO7hEZERnfT2gut46ZyQ2s1NYTQPRQmFNwP2n3FOp1z4fgbz/D25GOooZHGJCMtz
+ dzUsj6+g07iNHlS5yJqPg8/0SMCXHejMGijVy+F4Z7VRYldRgPewpz5MOaPqkvpfSDLO
+ 8c7g==
+X-Gm-Message-State: AOAM531ti3oTKFYbLsmwa1JhRhkD6lLBcykfJJJClcPGeLaXFilnzS1q
+ FirPNzOLUx5Kpm3aAWa00r0=
+X-Google-Smtp-Source: ABdhPJzYzgrCRZIg+O/2IZU7ylfpuT40S9ORMT3V/sxyKAAUeNrRmqvLLZ+J+8sSB2r4iqlr4XJ2AQ==
+X-Received: by 2002:ad4:54f2:: with SMTP id k18mr17878753qvx.24.1629426866086; 
+ Thu, 19 Aug 2021 19:34:26 -0700 (PDT)
+Received: from localhost.localdomain ([193.203.214.57])
+ by smtp.gmail.com with ESMTPSA id r18sm2119277qtm.96.2021.08.19.19.34.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 19 Aug 2021 19:34:25 -0700 (PDT)
+From: jing yangyang <cgel.zte@gmail.com>
+X-Google-Original-From: jing yangyang <jing.yangyang@zte.com.cn>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Subject: [PATCH linux-next] macintosh: fix warning comparing pointer to 0
+Date: Thu, 19 Aug 2021 19:34:14 -0700
+Message-Id: <b12b200502312957065a12f8d78e8d250c244d21.1629193159.git.jing.yangyang@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,156 +78,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Zeal Robot <zealci@zte.com.cn>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, jing yangyang <jing.yangyang@zte.com.cn>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: 9f7853d7609d59172eecfc5e7ccf503bc1b690bd  powerpc/mm: Fix set_memory_*() against concurrent accesses
+Fix the following coccicheck warning:
 
-elapsed time: 1357m
+./drivers/macintosh/windfarm_pm91.c:152:12-13:WARNING comparing pointer to 0
 
-configs tested: 129
-configs skipped: 123
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-i386                 randconfig-c001-20210819
-i386                 randconfig-c001-20210818
-powerpc                      pcm030_defconfig
-arm                         socfpga_defconfig
-m68k                       m5275evb_defconfig
-sh                           se7619_defconfig
-powerpc                  iss476-smp_defconfig
-mips                         rt305x_defconfig
-arc                              allyesconfig
-powerpc                 linkstation_defconfig
-arm                       netwinder_defconfig
-alpha                               defconfig
-arm                         hackkit_defconfig
-mips                  maltasmvp_eva_defconfig
-mips                            ar7_defconfig
-x86_64                              defconfig
-arm                          ixp4xx_defconfig
-powerpc                 mpc834x_mds_defconfig
-powerpc                         ps3_defconfig
-sh                           se7724_defconfig
-parisc                generic-32bit_defconfig
-powerpc                      pmac32_defconfig
-sh                          rsk7203_defconfig
-arm                           stm32_defconfig
-powerpc                       ppc64_defconfig
-mips                 decstation_r4k_defconfig
-powerpc                    sam440ep_defconfig
-powerpc                     pq2fads_defconfig
-m68k                        m5407c3_defconfig
-sh                               j2_defconfig
-m68k                         amcore_defconfig
-arm                           viper_defconfig
-riscv                    nommu_k210_defconfig
-powerpc                      ep88xc_defconfig
-arm                        cerfcube_defconfig
-arm                       aspeed_g4_defconfig
-nios2                         10m50_defconfig
-m68k                       m5249evb_defconfig
-m68k                       bvme6000_defconfig
-microblaze                          defconfig
-um                                  defconfig
-x86_64                           allyesconfig
-mips                          rm200_defconfig
-sh                   sh7770_generic_defconfig
-arm                          iop32x_defconfig
-powerpc                        icon_defconfig
-x86_64                            allnoconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a004-20210818
-x86_64               randconfig-a006-20210818
-x86_64               randconfig-a003-20210818
-x86_64               randconfig-a005-20210818
-x86_64               randconfig-a002-20210818
-x86_64               randconfig-a001-20210818
-i386                 randconfig-a004-20210818
-i386                 randconfig-a006-20210818
-i386                 randconfig-a002-20210818
-i386                 randconfig-a001-20210818
-i386                 randconfig-a003-20210818
-i386                 randconfig-a005-20210818
-i386                 randconfig-a015-20210819
-i386                 randconfig-a011-20210819
-i386                 randconfig-a014-20210819
-i386                 randconfig-a013-20210819
-i386                 randconfig-a016-20210819
-i386                 randconfig-a012-20210819
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-x86_64                    rhel-8.3-kselftests
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
-
-clang tested configs:
-i386                 randconfig-c001-20210818
-x86_64               randconfig-a004-20210819
-x86_64               randconfig-a006-20210819
-x86_64               randconfig-a003-20210819
-x86_64               randconfig-a002-20210819
-x86_64               randconfig-a005-20210819
-x86_64               randconfig-a001-20210819
-i386                 randconfig-a004-20210819
-i386                 randconfig-a006-20210819
-i386                 randconfig-a001-20210819
-i386                 randconfig-a002-20210819
-i386                 randconfig-a003-20210819
-i386                 randconfig-a005-20210819
-x86_64               randconfig-a013-20210818
-x86_64               randconfig-a011-20210818
-x86_64               randconfig-a012-20210818
-x86_64               randconfig-a016-20210818
-x86_64               randconfig-a014-20210818
-x86_64               randconfig-a015-20210818
-
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: jing yangyang <jing.yangyang@zte.com.cn>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ drivers/macintosh/windfarm_pm91.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/macintosh/windfarm_pm91.c b/drivers/macintosh/windfarm_pm91.c
+index 3f346af..568f8a2 100644
+--- a/drivers/macintosh/windfarm_pm91.c
++++ b/drivers/macintosh/windfarm_pm91.c
+@@ -149,7 +149,7 @@ static void wf_smu_create_cpu_fans(void)
+ 
+ 	/* First, locate the PID params in SMU SBD */
+ 	hdr = smu_get_sdb_partition(SMU_SDB_CPUPIDDATA_ID, NULL);
+-	if (hdr == 0) {
++	if (!hdr) {
+ 		printk(KERN_WARNING "windfarm: CPU PID fan config not found "
+ 		       "max fan speed\n");
+ 		goto fail;
+-- 
+1.8.3.1
+
+
