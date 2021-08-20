@@ -1,47 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD2853F289E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Aug 2021 10:44:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2D013F2914
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Aug 2021 11:26:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GrZtr63pkz3cVc
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Aug 2021 18:44:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Grbqd4RkQz3d8r
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Aug 2021 19:26:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.130;
- helo=out30-130.freemail.mail.aliyun.com;
- envelope-from=xianting.tian@linux.alibaba.com; receiver=<UNKNOWN>)
-Received: from out30-130.freemail.mail.aliyun.com
- (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GrZtM71vDz2yWn
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Aug 2021 18:43:52 +1000 (AEST)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R151e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04400;
- MF=xianting.tian@linux.alibaba.com; NM=1; PH=DS; RN=10; SR=0;
- TI=SMTPD_---0UkJj0o4_1629449013; 
-Received: from B-LB6YLVDL-0141.local(mailfrom:xianting.tian@linux.alibaba.com
- fp:SMTPD_---0UkJj0o4_1629449013) by smtp.aliyun-inc.com(127.0.0.1);
- Fri, 20 Aug 2021 16:43:33 +0800
-Subject: Re: [PATCH v8 2/3] tty: hvc: pass DMA capable memory to put_chars()
-To: Daniel Axtens <dja@axtens.net>, gregkh@linuxfoundation.org,
- jirislaby@kernel.org, amit@kernel.org, arnd@arndb.de, osandov@fb.com
-References: <20210818082122.166881-1-xianting.tian@linux.alibaba.com>
- <20210818082122.166881-3-xianting.tian@linux.alibaba.com>
- <87pmu8ehkk.fsf@linkitivity.dja.id.au>
-From: Xianting TIan <xianting.tian@linux.alibaba.com>
-Message-ID: <6e36640d-b55f-ece4-4cab-437ecec0964a@linux.alibaba.com>
-Date: Fri, 20 Aug 2021 16:43:33 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.10.1
-MIME-Version: 1.0
-In-Reply-To: <87pmu8ehkk.fsf@linkitivity.dja.id.au>
-Content-Type: text/plain; charset=gbk; format=flowed
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Grbq853Mdz30Hn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Aug 2021 19:26:08 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4Grbq143h3z9sW6;
+ Fri, 20 Aug 2021 11:26:05 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id cOX1mvPEk9rR; Fri, 20 Aug 2021 11:26:05 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4Grbq136J2z9sW5;
+ Fri, 20 Aug 2021 11:26:05 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 504A18B87A;
+ Fri, 20 Aug 2021 11:26:05 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id D13dkWQaE3Al; Fri, 20 Aug 2021 11:26:05 +0200 (CEST)
+Received: from po9473vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0993A8B875;
+ Fri, 20 Aug 2021 11:26:05 +0200 (CEST)
+Received: by po9473vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id BA99F6BB81; Fri, 20 Aug 2021 09:26:04 +0000 (UTC)
+Message-Id: <075703befe8f7e0f5cef3fe7455e648f12c210a5.1629451489.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [RFC PATCH] powerpc/audit: Convert powerpc to
+ AUDIT_ARCH_COMPAT_GENERIC
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Fri, 20 Aug 2021 09:26:04 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,121 +58,201 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: shile.zhang@linux.alibaba.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+No time to finalise commit description and testing before the
+weekend, sending out as RFC to eventually get some feedback.
 
-ÔÚ 2021/8/20 ÏÂÎç2:49, Daniel Axtens Ð´µÀ:
-> Xianting Tian <xianting.tian@linux.alibaba.com> writes:
->
->> As well known, hvc backend driver(eg, virtio-console) can register its
->> operations to hvc framework. The operations can contain put_chars(),
->> get_chars() and so on.
->>
->> Some hvc backend may do dma in its operations. eg, put_chars() of
->> virtio-console. But in the code of hvc framework, it may pass DMA
->> incapable memory to put_chars() under a specific configuration, which
->> is explained in commit c4baad5029(virtio-console: avoid DMA from stack):
-> We could also run into issues on powerpc where Andrew is working on
-> adding vmap-stack but the opal hvc driver assumes that it is passed a
-> buffer which is not in vmalloc space but in the linear mapping. So it
-> would be good to fix this (or more clearly document what drivers can
-> expect).
->
->> 1, c[] is on stack,
->>     hvc_console_print():
->> 	char c[N_OUTBUF] __ALIGNED__;
->> 	cons_ops[index]->put_chars(vtermnos[index], c, i);
->> 2, ch is on stack,
->>     static void hvc_poll_put_char(,,char ch)
->>     {
->> 	struct tty_struct *tty = driver->ttys[0];
->> 	struct hvc_struct *hp = tty->driver_data;
->> 	int n;
->>
->> 	do {
->> 		n = hp->ops->put_chars(hp->vtermno, &ch, 1);
->> 	} while (n <= 0);
->>     }
->>
->> Commit c4baad5029 is just the fix to avoid DMA from stack memory, which
->> is passed to virtio-console by hvc framework in above code. But I think
->> the fix is aggressive, it directly uses kmemdup() to alloc new buffer
->> from kmalloc area and do memcpy no matter the memory is in kmalloc area
->> or not. But most importantly, it should better be fixed in the hvc
->> framework, by changing it to never pass stack memory to the put_chars()
->> function in the first place. Otherwise, we still face the same issue if
->> a new hvc backend using dma added in the future.
->>
->> In this patch, we make 'char out_buf[N_OUTBUF]' and 'chat out_ch' part
->> of 'struct hvc_struct', so both two buf are no longer the stack memory.
->> we can use it in above two cases separately.
->>
->> Introduce another array(cons_outbufs[]) for buffer pointers next to
->> the cons_ops[] and vtermnos[] arrays. With the array, we can easily find
->> the buffer, instead of traversing hp list.
->>
->> With the patch, we can remove the fix c4baad5029.
->>
->> Signed-off-by: Xianting Tian <xianting.tian@linux.alibaba.com>
->> Reviewed-by: Shile Zhang <shile.zhang@linux.alibaba.com>
->>   struct hvc_struct {
->>   	struct tty_port port;
->>   	spinlock_t lock;
->>   	int index;
->>   	int do_wakeup;
->> -	char *outbuf;
->> -	int outbuf_size;
->>   	int n_outbuf;
->>   	uint32_t vtermno;
->>   	const struct hv_ops *ops;
->> @@ -48,6 +56,10 @@ struct hvc_struct {
->>   	struct work_struct tty_resize;
->>   	struct list_head next;
->>   	unsigned long flags;
->> +	char out_ch;
->> +	char out_buf[N_OUTBUF] __ALIGNED__;
->> +	int outbuf_size;
->> +	char outbuf[0] __ALIGNED__;
-> I'm trying to understand this patch but I am finding it very difficult
-> to understand what the difference between `out_buf` and `outbuf`
-> (without the underscore) is supposed to be. `out_buf` is statically
-> sized and the size of `outbuf` is supposed to depend on the arguments to
-> hvc_alloc(), but I can't quite figure out what the roles of each one are
-> and their names are confusingly similiar!
->
-> I looked briefly at the older revisions of the series but it didn't make
-> things much clearer.
->
-> Could you give them clearer names?
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/Kconfig               |  5 +-
+ arch/powerpc/kernel/Makefile       |  3 --
+ arch/powerpc/kernel/audit.c        | 84 ------------------------------
+ arch/powerpc/kernel/compat_audit.c | 44 ----------------
+ 4 files changed, 1 insertion(+), 135 deletions(-)
+ delete mode 100644 arch/powerpc/kernel/audit.c
+ delete mode 100644 arch/powerpc/kernel/compat_audit.c
 
-thanks for the comments,
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 663766fbf505..5472358609d2 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -163,6 +163,7 @@ config PPC
+ 	select ARCH_WANT_IRQS_OFF_ACTIVATE_MM
+ 	select ARCH_WANT_LD_ORPHAN_WARN
+ 	select ARCH_WEAK_RELEASE_ACQUIRE
++	select AUDIT_ARCH_COMPAT_GENERIC
+ 	select BINFMT_ELF
+ 	select BUILDTIME_TABLE_SORT
+ 	select CLONE_BACKWARDS
+@@ -316,10 +317,6 @@ config GENERIC_TBSYNC
+ 	bool
+ 	default y if PPC32 && SMP
+ 
+-config AUDIT_ARCH
+-	bool
+-	default y
+-
+ config GENERIC_BUG
+ 	bool
+ 	default y
+diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
+index 7be36c1e1db6..825121eba3c2 100644
+--- a/arch/powerpc/kernel/Makefile
++++ b/arch/powerpc/kernel/Makefile
+@@ -125,9 +125,6 @@ obj-$(CONFIG_PCI)		+= pci_$(BITS).o $(pci64-y) \
+ 				   pci-common.o pci_of_scan.o
+ obj-$(CONFIG_PCI_MSI)		+= msi.o
+ 
+-obj-$(CONFIG_AUDIT)		+= audit.o
+-obj64-$(CONFIG_AUDIT)		+= compat_audit.o
+-
+ obj-$(CONFIG_PPC_IO_WORKAROUNDS)	+= io-workarounds.o
+ 
+ obj-y				+= trace/
+diff --git a/arch/powerpc/kernel/audit.c b/arch/powerpc/kernel/audit.c
+deleted file mode 100644
+index a2dddd7f3d09..000000000000
+--- a/arch/powerpc/kernel/audit.c
++++ /dev/null
+@@ -1,84 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-#include <linux/init.h>
+-#include <linux/types.h>
+-#include <linux/audit.h>
+-#include <asm/unistd.h>
+-
+-static unsigned dir_class[] = {
+-#include <asm-generic/audit_dir_write.h>
+-~0U
+-};
+-
+-static unsigned read_class[] = {
+-#include <asm-generic/audit_read.h>
+-~0U
+-};
+-
+-static unsigned write_class[] = {
+-#include <asm-generic/audit_write.h>
+-~0U
+-};
+-
+-static unsigned chattr_class[] = {
+-#include <asm-generic/audit_change_attr.h>
+-~0U
+-};
+-
+-static unsigned signal_class[] = {
+-#include <asm-generic/audit_signal.h>
+-~0U
+-};
+-
+-int audit_classify_arch(int arch)
+-{
+-#ifdef CONFIG_PPC64
+-	if (arch == AUDIT_ARCH_PPC)
+-		return 1;
+-#endif
+-	return 0;
+-}
+-
+-int audit_classify_syscall(int abi, unsigned syscall)
+-{
+-#ifdef CONFIG_PPC64
+-	extern int ppc32_classify_syscall(unsigned);
+-	if (abi == AUDIT_ARCH_PPC)
+-		return ppc32_classify_syscall(syscall);
+-#endif
+-	switch(syscall) {
+-	case __NR_open:
+-		return 2;
+-	case __NR_openat:
+-		return 3;
+-	case __NR_socketcall:
+-		return 4;
+-	case __NR_execve:
+-		return 5;
+-	default:
+-		return 0;
+-	}
+-}
+-
+-static int __init audit_classes_init(void)
+-{
+-#ifdef CONFIG_PPC64
+-	extern __u32 ppc32_dir_class[];
+-	extern __u32 ppc32_write_class[];
+-	extern __u32 ppc32_read_class[];
+-	extern __u32 ppc32_chattr_class[];
+-	extern __u32 ppc32_signal_class[];
+-	audit_register_class(AUDIT_CLASS_WRITE_32, ppc32_write_class);
+-	audit_register_class(AUDIT_CLASS_READ_32, ppc32_read_class);
+-	audit_register_class(AUDIT_CLASS_DIR_WRITE_32, ppc32_dir_class);
+-	audit_register_class(AUDIT_CLASS_CHATTR_32, ppc32_chattr_class);
+-	audit_register_class(AUDIT_CLASS_SIGNAL_32, ppc32_signal_class);
+-#endif
+-	audit_register_class(AUDIT_CLASS_WRITE, write_class);
+-	audit_register_class(AUDIT_CLASS_READ, read_class);
+-	audit_register_class(AUDIT_CLASS_DIR_WRITE, dir_class);
+-	audit_register_class(AUDIT_CLASS_CHATTR, chattr_class);
+-	audit_register_class(AUDIT_CLASS_SIGNAL, signal_class);
+-	return 0;
+-}
+-
+-__initcall(audit_classes_init);
+diff --git a/arch/powerpc/kernel/compat_audit.c b/arch/powerpc/kernel/compat_audit.c
+deleted file mode 100644
+index 55c6ccda0a85..000000000000
+--- a/arch/powerpc/kernel/compat_audit.c
++++ /dev/null
+@@ -1,44 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-#undef __powerpc64__
+-#include <asm/unistd.h>
+-
+-unsigned ppc32_dir_class[] = {
+-#include <asm-generic/audit_dir_write.h>
+-~0U
+-};
+-
+-unsigned ppc32_chattr_class[] = {
+-#include <asm-generic/audit_change_attr.h>
+-~0U
+-};
+-
+-unsigned ppc32_write_class[] = {
+-#include <asm-generic/audit_write.h>
+-~0U
+-};
+-
+-unsigned ppc32_read_class[] = {
+-#include <asm-generic/audit_read.h>
+-~0U
+-};
+-
+-unsigned ppc32_signal_class[] = {
+-#include <asm-generic/audit_signal.h>
+-~0U
+-};
+-
+-int ppc32_classify_syscall(unsigned syscall)
+-{
+-	switch(syscall) {
+-	case __NR_open:
+-		return 2;
+-	case __NR_openat:
+-		return 3;
+-	case __NR_socketcall:
+-		return 4;
+-	case __NR_execve:
+-		return 5;
+-	default:
+-		return 1;
+-	}
+-}
+-- 
+2.25.0
 
-It is indeed not easy to understand by the name. I will change it to a 
-proper name if we have next version patch.
-
-Jiri Slaby is worring about the performance, because we need add two 
-locks to protect 'out_ch' and 'out_buf' separately, the origin on-stack 
-buffer is lockless.
-
-I don't know whether this solution can be accepted, just waiting for 
-Jiri's further commtents.
-
->
-> Also, looking at Documentation/process/deprecated.rst, it looks like
-> maybe we want to use a 'flexible array member' instead:
->
-> .. note:: If you are using struct_size() on a structure containing a zero-length
->          or a one-element array as a trailing array member, please refactor such
->          array usage and switch to a `flexible array member
->          <#zero-length-and-one-element-arrays>`_ instead.
->
-> I think we want:
-thanks, we should use [], not [0].
->
->> +	char outbuf[] __ALIGNED__;
-> Kind regards,
-> Daniel
