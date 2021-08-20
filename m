@@ -2,61 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F3B13F25DE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Aug 2021 06:26:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C2FD3F2665
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Aug 2021 07:16:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GrT8m3YyDz3cWN
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Aug 2021 14:26:00 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qudDX4J8;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GrVHC1vdvz3d89
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Aug 2021 15:16:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=qudDX4J8; 
- dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GrT853bvfz2yxF
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Aug 2021 14:25:24 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4GrT7x1KM1z9sW5;
- Fri, 20 Aug 2021 14:25:17 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1629433517;
- bh=TY6nLrmjoHyAzLgmjUDiH3O3rM9kTfEtWkmi+ZvE6rY=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=qudDX4J8UWi+6+7ay40xF74TpJv5cn1tKDShtykYbqO0aN8uz7Dk+LBw4Gl6G5AXk
- /6jCrrW4nVyt2fmGYJy/vu8bu1j1y3yTDdDvMgHc0SDQRiTlnLzeJJ0UBwRIrqIvSU
- d/EFP6j2FHPpLCx1w5KGwNtKJ7PhGlIJuBMr/u2TdiPESqu76d2WNgpczVCBFFiH/X
- qidFxO9hZBiSMGIPElyGlVAsc1mtkzp2STrpSIXCawTHn6q4ne1W3x8xXP/sY8FYR1
- QBM71FxIuPndLFePXsK3aY761+IdT+UOAW3HRLllVgfahmq5wBwPeAQkmPe7b66adV
- mJy8XZkR/kZUQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Daniel Axtens <dja@axtens.net>, Lukas Bulwahn <lukas.bulwahn@gmail.com>,
- Paul Mackerras <paulus@ozlabs.org>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Michael Neuling <mikey@neuling.org>, Anshuman
- Khandual <anshuman.khandual@arm.com>, kvm-ppc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2 2/2] powerpc: rectify selection to
- ARCH_ENABLE_SPLIT_PMD_PTLOCK
-In-Reply-To: <87pmu99e4j.fsf@dja-thinkpad.axtens.net>
-References: <20210819113954.17515-1-lukas.bulwahn@gmail.com>
- <20210819113954.17515-3-lukas.bulwahn@gmail.com>
- <87pmu99e4j.fsf@dja-thinkpad.axtens.net>
-Date: Fri, 20 Aug 2021 14:25:12 +1000
-Message-ID: <87a6lceo9j.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GrVGj2wDkz3bSt
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Aug 2021 15:16:09 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4GrVGZ54MGz9sVZ;
+ Fri, 20 Aug 2021 07:16:06 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id ATiTfI51WLBX; Fri, 20 Aug 2021 07:16:06 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4GrVGZ49dvz9sVF;
+ Fri, 20 Aug 2021 07:16:06 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6E0738B76A;
+ Fri, 20 Aug 2021 07:16:06 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id Cgy46c8AJQ5G; Fri, 20 Aug 2021 07:16:06 +0200 (CEST)
+Received: from po9473vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3AFB68B773;
+ Fri, 20 Aug 2021 07:16:06 +0200 (CEST)
+Received: by po9473vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id EAB9466977; Fri, 20 Aug 2021 05:16:05 +0000 (UTC)
+Message-Id: <91b1d242525307ceceec7ef6e832bfbacdd4501b.1629436472.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH] powerpc/32: indirect function call use bctrl rather than blrl
+ in ret_from_kernel_thread
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Fri, 20 Aug 2021 05:16:05 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,57 +58,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Lukas Bulwahn <lukas.bulwahn@gmail.com>, kernel-janitors@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Daniel Axtens <dja@axtens.net> writes:
-> Lukas Bulwahn <lukas.bulwahn@gmail.com> writes:
->
->> Commit 66f24fa766e3 ("mm: drop redundant ARCH_ENABLE_SPLIT_PMD_PTLOCK")
->> selects the non-existing config ARCH_ENABLE_PMD_SPLIT_PTLOCK in
->> ./arch/powerpc/platforms/Kconfig.cputype, but clearly it intends to select
->> ARCH_ENABLE_SPLIT_PMD_PTLOCK here (notice the word swapping!), as this
->> commit does select that for all other architectures.
->>
->> Rectify selection to ARCH_ENABLE_SPLIT_PMD_PTLOCK instead.
->>
->
-> Yikes, yes, 66f24fa766e3 does seem to have got that wrong. It looks like
-> that went into 5.13.
->
-> I think we want to specifically target this for stable so that we don't
-> lose the perfomance and scalability benefits of split pmd ptlocks:
->
-> Cc: stable@vger.kernel.org # v5.13+
->
-> (I don't think you need to do another revision for this, I think mpe
-> could add it when merging.)
+Copied from commit 89bbe4c798bc ("powerpc/64: indirect function call
+use bctrl rather than blrl in ret_from_kernel_thread")
 
-Yeah. I rewrote the change log a bit to make it clear this is a bug fix,
-not a harmless cleanup.
+blrl is not recommended to use as an indirect function call, as it may
+corrupt the link stack predictor.
 
-cheers
+This is not a performance critical path but this should be fixed for
+consistency.
 
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/kernel/entry_32.S | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-  powerpc: Re-enable ARCH_ENABLE_SPLIT_PMD_PTLOCK
-  
-  Commit 66f24fa766e3 ("mm: drop redundant ARCH_ENABLE_SPLIT_PMD_PTLOCK")
-  broke PMD split page table lock for powerpc.
-  
-  It selects the non-existent config ARCH_ENABLE_PMD_SPLIT_PTLOCK in
-  arch/powerpc/platforms/Kconfig.cputype, but clearly intended to
-  select ARCH_ENABLE_SPLIT_PMD_PTLOCK (notice the word swapping!), as
-  that commit did for all other architectures.
-  
-  Fix it by selecting the correct symbol ARCH_ENABLE_SPLIT_PMD_PTLOCK.
-  
-  Fixes: 66f24fa766e3 ("mm: drop redundant ARCH_ENABLE_SPLIT_PMD_PTLOCK")
-  Cc: stable@vger.kernel.org # v5.13+
-  Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-  Reviewed-by: Daniel Axtens <dja@axtens.net>
-  [mpe: Reword change log to make it clear this is a bug fix]
-  Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-  Link: https://lore.kernel.org/r/20210819113954.17515-3-lukas.bulwahn@gmail.com
+diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
+index 0273a1349006..61fdd53cdd9a 100644
+--- a/arch/powerpc/kernel/entry_32.S
++++ b/arch/powerpc/kernel/entry_32.S
+@@ -161,10 +161,10 @@ ret_from_fork:
+ ret_from_kernel_thread:
+ 	REST_NVGPRS(r1)
+ 	bl	schedule_tail
+-	mtlr	r14
++	mtctr	r14
+ 	mr	r3,r15
+ 	PPC440EP_ERR42
+-	blrl
++	bctrl
+ 	li	r3,0
+ 	b	ret_from_syscall
+ 
+-- 
+2.25.0
+
