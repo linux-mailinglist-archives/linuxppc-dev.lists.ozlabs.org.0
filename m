@@ -2,72 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7B303F3058
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Aug 2021 17:56:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C87A43F318A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Aug 2021 18:35:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GrmTk1m24z3cmc
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Aug 2021 01:56:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GrnL04TPwz3cX8
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Aug 2021 02:35:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Tn/7uDGM;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RVNbe8ei;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::529;
- helo=mail-pg1-x529.google.com; envelope-from=keescook@chromium.org;
+ smtp.mailfrom=bugzilla.kernel.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=Tn/7uDGM; dkim-atps=neutral
-Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com
- [IPv6:2607:f8b0:4864:20::529])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=RVNbe8ei; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GrmSz4GWTz306m
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Aug 2021 01:56:01 +1000 (AEST)
-Received: by mail-pg1-x529.google.com with SMTP id k14so9600895pga.13
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Aug 2021 08:56:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=DfMkWVrhrXjOa4WT8fjUg2g99cfma/KNVtPegOy6YVA=;
- b=Tn/7uDGMiPjXxAM3ovBYEVyLtygFwlSJAWHrob1PWt4oz/x2Imgk0GhPN2Q3ecFemj
- 9aGJEzabYG/yp6A5N5Z9cTlvPVLlh/yP6oNypqN5vG8oOziU+OSzJRTu7fqXk/NgneL3
- +EIYwoyeYH2hiFo8BxwiCpYmqjeLAOAaaL9bA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=DfMkWVrhrXjOa4WT8fjUg2g99cfma/KNVtPegOy6YVA=;
- b=LlysrCwVt3qgAUBawvDhFkyAiPNX/HL/5yeUR9DFPI6sQ2gyRVSpxd6l8zOuKDAygF
- RWXg1ARjy7UvBQ6LCjvhqp3lrPT7O/KVR3+LU6t8WPYwuG29dxB24pRk3VRMt6j+0zIC
- /k3VRnoBWwr6gNX3uvGpmD3KYkv5jiRlhCMo/DI+dNAL4J1hZ921PZ2LdHLKUv509P4a
- ZpTy0ihTK2Gvy8ODUaxPTDTsqRw3TcMzw1YZVa17YZEaIymtGwM6S6jJVPMY4aIvNy8R
- An8ekw8mk1QR9MgCe5IMS7aqAjSBffK/+gnw1GprVyRNd25NzIgaQRv+JFT97H5/wrOb
- OyDQ==
-X-Gm-Message-State: AOAM531oT2MjtSPB8rWGxh650xG/VIM12uAgl4NC6ETpQHtk1QjrBE+R
- UXBQxtiwOs0al1zTKSvTMWwhpg==
-X-Google-Smtp-Source: ABdhPJxNmkkLS0IYvcJdUty1efO3ATpriVc4oMEh5d9+VW4AFW/Rt8LdZFCR+Kj2vvrc2GQCiXZJ9w==
-X-Received: by 2002:a63:4d24:: with SMTP id a36mr6002323pgb.37.1629474957688; 
- Fri, 20 Aug 2021 08:55:57 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id o10sm6412690pjg.34.2021.08.20.08.55.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Aug 2021 08:55:57 -0700 (PDT)
-Date: Fri, 20 Aug 2021 08:55:56 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v2 57/63] powerpc/signal32: Use struct_group() to zero
- spe regs
-Message-ID: <202108200851.8AF09CDB71@keescook>
-References: <20210818060533.3569517-1-keescook@chromium.org>
- <20210818060533.3569517-58-keescook@chromium.org>
- <877dggeesw.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GrnKF4Rj3z3btZ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Aug 2021 02:34:25 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPS id AE42D6113B
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Aug 2021 16:34:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1629477262;
+ bh=spEuRmRauuOGMc6x+BErmOsK9cKwFeyxXiWyf0jTFm8=;
+ h=From:To:Subject:Date:In-Reply-To:References:From;
+ b=RVNbe8eikZbQLtO/ugPWbOtv1nyT5BO+hYY0vagI/JXD3GK2A6q8BnokqDhqFog+Z
+ CwsWIPC+lksKVqq6o9o99TXdgzT8SYcfO9qZRXVVKpDiCIMG9qDXJg32VmDtYXxI5X
+ p0a9+/WadOGzt+MUcb4A+iQnX/yk60ArqgNkRJzRMWU/AZ4569khABaWLnxOhuIAKx
+ 7SO0V/IObeVsM0SnklG89MCj7MExQLIa0uHq36x68WKUw2GI+E1v5lZtLqaYAKu6Ab
+ cxyJDfnxKnTZqfKMW8AM++veWN90ACD6Ip5PI/LJmC7m+Rm1gEY1K5IRfkcJFbkdAc
+ r16b8V+kAoyag==
+Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
+ id A5B6A60EBC; Fri, 20 Aug 2021 16:34:22 +0000 (UTC)
+From: bugzilla-daemon@bugzilla.kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 213837] "Kernel panic - not syncing: corrupted stack end
+ detected inside scheduler" at building via distcc on a G5
+Date: Fri, 20 Aug 2021 16:34:22 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: CC platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Memory Management
+X-Bugzilla-Component: Other
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: akpm@linux-foundation.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: attachments.created
+Message-ID: <bug-213837-206035-NkW3bS47hu@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-213837-206035@https.bugzilla.kernel.org/>
+References: <bug-213837-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <877dggeesw.fsf@mpe.ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,107 +78,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel test robot <lkp@intel.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-staging@lists.linux.dev,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>, linux-block@vger.kernel.org,
- clang-built-linux@googlegroups.com, netdev@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, dri-devel@lists.freedesktop.org,
- Sudeep Holla <sudeep.holla@arm.com>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kbuild@vger.kernel.org,
- linux-hardening@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Aug 20, 2021 at 05:49:35PM +1000, Michael Ellerman wrote:
-> Kees Cook <keescook@chromium.org> writes:
-> > In preparation for FORTIFY_SOURCE performing compile-time and run-time
-> > field bounds checking for memset(), avoid intentionally writing across
-> > neighboring fields.
-> >
-> > Add a struct_group() for the spe registers so that memset() can correctly reason
-> > about the size:
-> >
-> >    In function 'fortify_memset_chk',
-> >        inlined from 'restore_user_regs.part.0' at arch/powerpc/kernel/signal_32.c:539:3:
-> >>> include/linux/fortify-string.h:195:4: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
-> >      195 |    __write_overflow_field();
-> >          |    ^~~~~~~~~~~~~~~~~~~~~~~~
-> >
-> > Cc: Michael Ellerman <mpe@ellerman.id.au>
-> > Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> > Cc: Paul Mackerras <paulus@samba.org>
-> > Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> > Cc: Sudeep Holla <sudeep.holla@arm.com>
-> > Cc: linuxppc-dev@lists.ozlabs.org
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > Signed-off-by: Kees Cook <keescook@chromium.org>
-> > ---
-> >  arch/powerpc/include/asm/processor.h | 6 ++++--
-> >  arch/powerpc/kernel/signal_32.c      | 6 +++---
-> >  2 files changed, 7 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
-> > index f348e564f7dd..05dc567cb9a8 100644
-> > --- a/arch/powerpc/include/asm/processor.h
-> > +++ b/arch/powerpc/include/asm/processor.h
-> > @@ -191,8 +191,10 @@ struct thread_struct {
-> >  	int		used_vsr;	/* set if process has used VSX */
-> >  #endif /* CONFIG_VSX */
-> >  #ifdef CONFIG_SPE
-> > -	unsigned long	evr[32];	/* upper 32-bits of SPE regs */
-> > -	u64		acc;		/* Accumulator */
-> > +	struct_group(spe,
-> > +		unsigned long	evr[32];	/* upper 32-bits of SPE regs */
-> > +		u64		acc;		/* Accumulator */
-> > +	);
-> >  	unsigned long	spefscr;	/* SPE & eFP status */
-> >  	unsigned long	spefscr_last;	/* SPEFSCR value on last prctl
-> >  					   call or trap return */
-> > diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/signal_32.c
-> > index 0608581967f0..77b86caf5c51 100644
-> > --- a/arch/powerpc/kernel/signal_32.c
-> > +++ b/arch/powerpc/kernel/signal_32.c
-> > @@ -532,11 +532,11 @@ static long restore_user_regs(struct pt_regs *regs,
-> >  	regs_set_return_msr(regs, regs->msr & ~MSR_SPE);
-> >  	if (msr & MSR_SPE) {
-> >  		/* restore spe registers from the stack */
-> > -		unsafe_copy_from_user(current->thread.evr, &sr->mc_vregs,
-> > -				      ELF_NEVRREG * sizeof(u32), failed);
-> > +		unsafe_copy_from_user(&current->thread.spe, &sr->mc_vregs,
-> > +				      sizeof(current->thread.spe), failed);
-> 
-> This makes me nervous, because the ABI is that we copy ELF_NEVRREG *
-> sizeof(u32) bytes, not whatever sizeof(current->thread.spe) happens to
-> be.
-> 
-> ie. if we use sizeof an inadvertent change to the fields in
-> thread_struct could change how many bytes we copy out to userspace,
-> which would be an ABI break.
-> 
-> And that's not that hard to do, because it's not at all obvious that the
-> size and layout of fields in thread_struct affects the user ABI.
-> 
-> At the same time we don't want to copy the right number of bytes but
-> the wrong content, so from that point of view using sizeof is good :)
-> 
-> The way we handle it in ptrace is to have BUILD_BUG_ON()s to verify that
-> things match up, so maybe we should do that here too.
-> 
-> ie. add:
-> 
-> 	BUILD_BUG_ON(sizeof(current->thread.spe) == ELF_NEVRREG * sizeof(u32));
-> 
-> Not sure if you are happy doing that as part of this patch. I can always
-> do it later if not.
+https://bugzilla.kernel.org/show_bug.cgi?id=3D213837
 
-Sounds good to me; I did that in a few other cases in the series where
-the relationships between things seemed tenuous. :) I'll add this (as
-!=) in v3.
+--- Comment #2 from Erhard F. (erhard_f@mailbox.org) ---
+Created attachment 298393
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D298393&action=3Dedit
+dmesg (5.14-rc6, PowerMac G5 11,2)
 
-Thanks!
+Happens also on 5.14-rc6:
 
--- 
-Kees Cook
+[...]
+Kernel panic - not syncing: corrupted stack end detected inside scheduler
+CPU: 1 PID: 32354 Comm: powerpc64-unkno Tainted: G        W=20=20=20=20=20=
+=20=20=20
+5.14.0-rc6-PowerMacG5+ #3
+Call Trace:
+[c000000062feb4c0] [c00000000054de04] .dump_stack_lvl+0x98/0xe0 (unreliable)
+[c000000062feb550] [c000000000068f4c] .panic+0x160/0x40c
+[c000000062feb600] [c000000000818d3c] .__schedule+0x7c/0x840
+[c000000062feb6d0] [c00000000081964c] .preempt_schedule_common+0x28/0x48
+[c000000062feb750] [c00000000081969c] .__cond_resched+0x30/0x4c
+[c000000062feb7d0] [c0000000004ee8f8] .copy_page_to_iter+0xbc/0x32c
+[c000000062feb8a0] [c0000000001c9c20] .filemap_read+0x574/0x618
+[c000000062feba60] [c000000000333c18] .ext4_file_read_iter+0xb8/0x11c
+[c000000062febb00] [c000000000275488] .new_sync_read+0x94/0xe0
+[c000000062febc00] [c000000000276c2c] .vfs_read+0x128/0x12c
+[c000000062febca0] [c000000000276fc4] .ksys_read+0x78/0xc4
+[c000000062febd60] [c000000000022808] .system_call_exception+0x1a4/0x1dc
+[c000000062febe10] [c00000000000b4cc] system_call_common+0xec/0x250
+--- interrupt: c00 at 0x3fff999e0cd0
+NIP:  00003fff999e0cd0 LR: 00000001039d3660 CTR: 0000000000000000
+REGS: c000000062febe80 TRAP: 0c00   Tainted: G        W=20=20=20=20=20=20=
+=20=20=20
+(5.14.0-rc6-PowerMacG5+)
+MSR:  900000000200f032 <SF,HV,VEC,EE,PR,FP,ME,IR,DR,RI>  CR: 24000442  XER:
+00000000
+IRQMASK: 0=20
+GPR00: 0000000000000003 00003ffff4e23690 00003fff99a0df00 0000000000000004=
+=20
+GPR04: 00003fff99699010 00000000000583ca 00003fff999c1320 0000000000000000=
+=20
+GPR08: 00003fff999c12e0 0000000000000000 0000000000000000 0000000000000000=
+=20
+GPR12: 0000000000000000 00003fff99a93c20 000000011fbcf950 000000017149a1d0=
+=20
+GPR16: 00000001039dec38 00003ffff4e23b78 00000001039deb28 00003ffff4e239c8=
+=20
+GPR20: 00003ffff4e23d80 ffffffffffffffff 000000011fbce540 0000000000000000=
+=20
+GPR24: 000000011fbcf930 000000011fbcfa90 0000000000000005 00003ffff4e238e0=
+=20
+GPR28: 0000000103a268e8 0000000000000004 00003fff99699010 00000000000583ca=
+=20
+NIP [00003fff999e0cd0] 0x3fff999e0cd0
+LR [00000001039d3660] 0x1039d3660
+--- interrupt: c00
+Rebooting in 40 seconds..
+
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching someone on the CC list of the bug.=
