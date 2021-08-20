@@ -1,72 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 833213F2A27
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Aug 2021 12:35:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 792D73F2BCF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Aug 2021 14:14:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GrdLw3SFjz3cSd
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Aug 2021 20:35:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GrgYS30hSz3cnJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Aug 2021 22:14:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=mOrUjni5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Cg5iz+Fr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::530;
- helo=mail-pg1-x530.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=mOrUjni5; dkim-atps=neutral
-Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com
- [IPv6:2607:f8b0:4864:20::530])
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=Cg5iz+Fr; 
+ dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GrdLG54M2z3bTV
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Aug 2021 20:34:45 +1000 (AEST)
-Received: by mail-pg1-x530.google.com with SMTP id o2so8715175pgr.9
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Aug 2021 03:34:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=FvFA8OvjYF0NHx6jFUT6i973XvFUrP0HUeve6gGw7oc=;
- b=mOrUjni5EReHow2Hc2sk7PgilAAmGZtC+oPHIepS80kAaJGbZeTh06VB7yvwj0VxHn
- iJO7eIKVr/EwCwVLliRvYqAjKel47Yx2dDrFmZjwd4G4xXICmFZCiIueojk7mXcBP4sx
- 5ADS/Bt4Nk1mnkZqeCjjLCPJwH7m/PehbFDhKgLCYnzASSqhAsR/gZn1X3355nhnwLt/
- lvzm94s0yPO0WI7Boord4l2+PddebZwjNqHRg7jYg1R9xSNCyvuNMZFWQCSnwqSbioRT
- 1ofAntuMuceTNoSL9xpG1n+ENturtQvOvuzFSijQ2rkVjNRqDo1gEwuim+ZjXQo1uZBB
- Ttqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=FvFA8OvjYF0NHx6jFUT6i973XvFUrP0HUeve6gGw7oc=;
- b=Z7x41b9Y4LwzOfXEh3hSWmU+4/xt36x/Cgp4flZNjMGJyMe4WOMkM+fz9LgI0Ag03b
- G+onhfM9siewZNrUJmTRRH7rTdXeJnYf+2y2HWt2iGO1Oe96ufYd83o7EOw2C+tKAMqD
- Pru7B9ercOvRRBXJ2x6ga0BHoXCvlLq4BeTCyq70X8RGwh/C/UsS0sqMAKoFxgBnZMm9
- sd+DN4XkReDV2BmBOsDpyg6zguGs7N2Ia52F5gu1Rq1INEM/RNuiTMDgcZLR+mJmShpz
- pRAKLWZ2N72zopFfNFsGqprQVhvJKi+xJI/0Ewvu/zK/UPisszp8op6OoRAQddA1C9Jf
- XtIQ==
-X-Gm-Message-State: AOAM533IkWf0y2UqNkyoHltLPtt+sALGvHiDQGJnAQF24CsjC+qeGd7w
- LPTbz127D0RQrmImOgBIUoddW2sg684=
-X-Google-Smtp-Source: ABdhPJwA2nxqm0NnNARkbJXvkXF6FJzn0oD5i2P4HBy7D48DXd7Wxkc2IOgatRrBtV7Ar3EU51LVIw==
-X-Received: by 2002:a63:f654:: with SMTP id u20mr17795184pgj.130.1629455680852; 
- Fri, 20 Aug 2021 03:34:40 -0700 (PDT)
-Received: from bobo.ibm.com (193-116-119-33.tpgi.com.au. [193.116.119.33])
- by smtp.gmail.com with ESMTPSA id j185sm6466056pfb.86.2021.08.20.03.34.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Aug 2021 03:34:40 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v1] powerpc/64s: Fix scv implicit soft-mask table for
- relocated kernels
-Date: Fri, 20 Aug 2021 20:34:31 +1000
-Message-Id: <20210820103431.1701240-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GrgXl4QNwz30FB
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Aug 2021 22:13:58 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4GrgXg1cMHz9sSs;
+ Fri, 20 Aug 2021 22:13:54 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1629461637;
+ bh=GaPKIeDl8hhkmPkLrvrJ9stzgKavrRQRLEdG6v/pbF8=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=Cg5iz+FrUHTpi7DCGlIH7oXwkf4XcqnUHNlNAsx67J8ipGyBRlXQyjIQBkg1fYcl8
+ GV+t0VyhBXDRR97pVPUxVgp868U+GNvxTlPP6U2zCnk47Np7XQp1FjrHxff4fmXpif
+ 8KAqXR527PErlM6JgshcTwv7RJvULaJSG2WBf/CdesX8nJ3mGPOyc/62wOlIhiuiK4
+ pHFjOmTd7s4UU/4Kk0VVQGMkOsTQ4C/5DX7na2EhBWLRpjDz6EOnwY09XINL4JSd2V
+ 9F5kX7hGtMD+XnYF6MYL6RHkdxZzx1LCjbCfB1+2VyGkTnXO9jkpYniGuZF7TGKKHz
+ ymJThU067ZGkA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Kees Cook
+ <keescook@chromium.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 57/63] powerpc/signal32: Use struct_group() to zero
+ spe regs
+In-Reply-To: <0f6e508e-62b6-3840-5ff4-eb5a77635bd1@csgroup.eu>
+References: <20210818060533.3569517-1-keescook@chromium.org>
+ <20210818060533.3569517-58-keescook@chromium.org>
+ <877dggeesw.fsf@mpe.ellerman.id.au>
+ <0f6e508e-62b6-3840-5ff4-eb5a77635bd1@csgroup.eu>
+Date: Fri, 20 Aug 2021 22:13:53 +1000
+Message-ID: <874kbke2ke.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,54 +67,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Hari Bathini <hbathini@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
+Cc: kernel test robot <lkp@intel.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-staging@lists.linux.dev,
+ linux-wireless@vger.kernel.org, "Gustavo
+ A. R. Silva" <gustavoars@kernel.org>, dri-devel@lists.freedesktop.org,
+ linux-block@vger.kernel.org, clang-built-linux@googlegroups.com,
+ netdev@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ linux-hardening@vger.kernel.org, Sudeep Holla <sudeep.holla@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kbuild@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The implict soft-mask table addresses get relocated if they use a
-relative symbol like a label. This is right for code that runs relocated
-but not for unrelocated. The scv interrupt vectors run unrelocated, so
-absolute addresses are required for their soft-mask table entry.
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 20/08/2021 =C3=A0 09:49, Michael Ellerman a =C3=A9crit=C2=A0:
+>> Kees Cook <keescook@chromium.org> writes:
+>>> In preparation for FORTIFY_SOURCE performing compile-time and run-time
+>>> field bounds checking for memset(), avoid intentionally writing across
+>>> neighboring fields.
+>>>
+>>> Add a struct_group() for the spe registers so that memset() can correct=
+ly reason
+>>> about the size:
+>>>
+>>>     In function 'fortify_memset_chk',
+>>>         inlined from 'restore_user_regs.part.0' at arch/powerpc/kernel/=
+signal_32.c:539:3:
+>>>>> include/linux/fortify-string.h:195:4: error: call to '__write_overflo=
+w_field' declared with attribute warning: detected write beyond size of fie=
+ld (1st parameter); maybe use struct_group()? [-Werror=3Dattribute-warning]
+>>>       195 |    __write_overflow_field();
+>>>           |    ^~~~~~~~~~~~~~~~~~~~~~~~
+>>>
+>>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>>> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+>>> Cc: Paul Mackerras <paulus@samba.org>
+>>> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+>>> Cc: Sudeep Holla <sudeep.holla@arm.com>
+>>> Cc: linuxppc-dev@lists.ozlabs.org
+>>> Reported-by: kernel test robot <lkp@intel.com>
+>>> Signed-off-by: Kees Cook <keescook@chromium.org>
+>>> ---
+>>>   arch/powerpc/include/asm/processor.h | 6 ++++--
+>>>   arch/powerpc/kernel/signal_32.c      | 6 +++---
+>>>   2 files changed, 7 insertions(+), 5 deletions(-)
+>>>
+>>> diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/includ=
+e/asm/processor.h
+>>> index f348e564f7dd..05dc567cb9a8 100644
+>>> --- a/arch/powerpc/include/asm/processor.h
+>>> +++ b/arch/powerpc/include/asm/processor.h
+>>> @@ -191,8 +191,10 @@ struct thread_struct {
+>>>   	int		used_vsr;	/* set if process has used VSX */
+>>>   #endif /* CONFIG_VSX */
+>>>   #ifdef CONFIG_SPE
+>>> -	unsigned long	evr[32];	/* upper 32-bits of SPE regs */
+>>> -	u64		acc;		/* Accumulator */
+>>> +	struct_group(spe,
+>>> +		unsigned long	evr[32];	/* upper 32-bits of SPE regs */
+>>> +		u64		acc;		/* Accumulator */
+>>> +	);
+>>>   	unsigned long	spefscr;	/* SPE & eFP status */
+>>>   	unsigned long	spefscr_last;	/* SPEFSCR value on last prctl
+>>>   					   call or trap return */
+>>> diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/sign=
+al_32.c
+>>> index 0608581967f0..77b86caf5c51 100644
+>>> --- a/arch/powerpc/kernel/signal_32.c
+>>> +++ b/arch/powerpc/kernel/signal_32.c
+>>> @@ -532,11 +532,11 @@ static long restore_user_regs(struct pt_regs *reg=
+s,
+>>>   	regs_set_return_msr(regs, regs->msr & ~MSR_SPE);
+>>>   	if (msr & MSR_SPE) {
+>>>   		/* restore spe registers from the stack */
+>>> -		unsafe_copy_from_user(current->thread.evr, &sr->mc_vregs,
+>>> -				      ELF_NEVRREG * sizeof(u32), failed);
+>>> +		unsafe_copy_from_user(&current->thread.spe, &sr->mc_vregs,
+>>> +				      sizeof(current->thread.spe), failed);
+>>=20
+>> This makes me nervous, because the ABI is that we copy ELF_NEVRREG *
+>> sizeof(u32) bytes, not whatever sizeof(current->thread.spe) happens to
+>> be.
+>>=20
+>> ie. if we use sizeof an inadvertent change to the fields in
+>> thread_struct could change how many bytes we copy out to userspace,
+>> which would be an ABI break.
+>>=20
+>> And that's not that hard to do, because it's not at all obvious that the
+>> size and layout of fields in thread_struct affects the user ABI.
+>>=20
+>> At the same time we don't want to copy the right number of bytes but
+>> the wrong content, so from that point of view using sizeof is good :)
+>>=20
+>> The way we handle it in ptrace is to have BUILD_BUG_ON()s to verify that
+>> things match up, so maybe we should do that here too.
+>>=20
+>> ie. add:
+>>=20
+>> 	BUILD_BUG_ON(sizeof(current->thread.spe) =3D=3D ELF_NEVRREG * sizeof(u3=
+2));
+>
+> You mean !=3D I guess ?
 
-This fixes crashing with relocated kernels, usually an asynchronous
-interrupt hitting in the scv handler, then hitting the trap that checks
-whether r1 is in userspace.
+Gah. Yes I do :)
 
-Cc: Hari Bathini <hbathini@linux.ibm.com>
-Fixes: 325678fd0522 ("powerpc/64s: add a table of implicit soft-masked addresses")
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/kernel/exceptions-64s.S | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 4aec59a77d4c..37859e62a8dc 100644
---- a/arch/powerpc/kernel/exceptions-64s.S
-+++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -812,7 +812,6 @@ __start_interrupts:
-  * syscall register convention is in Documentation/powerpc/syscall64-abi.rst
-  */
- EXC_VIRT_BEGIN(system_call_vectored, 0x3000, 0x1000)
--1:
- 	/* SCV 0 */
- 	mr	r9,r13
- 	GET_PACA(r13)
-@@ -842,10 +841,12 @@ EXC_VIRT_BEGIN(system_call_vectored, 0x3000, 0x1000)
- 	b	system_call_vectored_sigill
- #endif
- 	.endr
--2:
- EXC_VIRT_END(system_call_vectored, 0x3000, 0x1000)
- 
--SOFT_MASK_TABLE(1b, 2b) // Treat scv vectors as soft-masked, see comment above.
-+// Treat scv vectors as soft-masked, see comment above.
-+// Use absolute values rather than labels here, so they don't get relocated,
-+// because this code runs unrelocated.
-+SOFT_MASK_TABLE(0xc000000000003000, 0xc000000000004000)
- 
- #ifdef CONFIG_RELOCATABLE
- TRAMP_VIRT_BEGIN(system_call_vectored_tramp)
--- 
-2.23.0
-
+cheers
