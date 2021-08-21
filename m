@@ -1,89 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3104C3F370D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Aug 2021 00:54:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 731343F38DA
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Aug 2021 07:40:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GrxlX0JMzz3dZP
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Aug 2021 08:54:16 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20161025 header.b=TA/KEkzC;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gs6mL32WXz3clv
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Aug 2021 15:40:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=flex--seanjc.bounces.google.com
- (client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com;
- envelope-from=3uzegyqykdk4gsobxquccuzs.qcazwbilddq-rsjzwghg.cnzopg.cfu@flex--seanjc.bounces.google.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=TA/KEkzC; dkim-atps=neutral
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com
- [IPv6:2607:f8b0:4864:20::b4a])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GrxgK4WH1z3cVk
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Aug 2021 08:50:37 +1000 (AEST)
-Received: by mail-yb1-xb4a.google.com with SMTP id
- b127-20020a25e485000000b005943f1efa05so11136408ybh.15
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Aug 2021 15:50:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=reply-to:date:in-reply-to:message-id:mime-version:references
- :subject:from:to:cc;
- bh=Ut0lClAqKM9RGqTS5MESEM+F5WoPZRTQUckNTBRjTyg=;
- b=TA/KEkzCm9eGIgSQhw9KNiaLFa6mERWpjzl8Sm2LP0D8MHshBELhR9PNTUHRE29ifz
- mo90lRoRaNLAOUKwpDqprlo0/pMwtc5l0/AtaGDQuwQPp72yFVvsNL3ynlMO5kSBRj5m
- LzAltW2EylkOxsEkvhRVhVSBOVOdYc11dmbjDqZ/XhKiygxbSFOOyUayIR4kGClbFLgR
- /kFKufJdXalO6BD5koMO2tBk/9JBu0VO4U4stsueIYQrrElmsEUFhO7RIz6hEZLybaDq
- KKumExIW2OSfE2RbrTkormhrvk3570q+R6kLizKIzC3ltGy9bDIK5NfDidM6k/fKRiu/
- zAPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:reply-to:date:in-reply-to:message-id
- :mime-version:references:subject:from:to:cc;
- bh=Ut0lClAqKM9RGqTS5MESEM+F5WoPZRTQUckNTBRjTyg=;
- b=oiCru0xK0pYimL2iacKnh10bWnXUHWcs1sRqVjV8KnwU1JxNX44ZSE660Ssspy0dZz
- 19kS9V9h7lTFkqkI5aqnC8DJmAI82wgdfPFmPwGZFqFqaWo1prN8bHwW/nZU2Eq877Dr
- xjBHpbYMDdDZyJ9mD/CwpiB25TGg7Ywi2l43wpdFKwlSxVNe6iQpk4d9OB4UQGIW9olP
- B30A/2ecRQz0n/q+MhppH5BBafl1ghQz0sDQfRRbVSC2Faob4P+bwC9T3IAt2gT6YHS3
- p+Gf6Hhy/aTmMSFxjqYF6wJbbPT9gEVHgAPu3No0oKtVO1gjijmlw35O6cttXwFP6iJw
- VPkQ==
-X-Gm-Message-State: AOAM5314AjA9jkLR53cD9XO5N4Gqf5qfdX1A7xPKN9Vum4qEOehikNB0
- Ef6CzniqRJcb0FRWAdh5JwiwOj22I0o=
-X-Google-Smtp-Source: ABdhPJx3Gy465odAHrKuwh+xxU3EOcrY9EoPkXADk8KHQbivIS4NsZANbgwhJ1nQlBB3M+0Hs3NCAAyvqg4=
-X-Received: from seanjc798194.pdx.corp.google.com
- ([2620:15c:90:200:f11d:a281:af9b:5de6])
- (user=seanjc job=sendgmr) by 2002:a25:acc4:: with SMTP id
- x4mr8790476ybd.376.1629499835531; 
- Fri, 20 Aug 2021 15:50:35 -0700 (PDT)
-Date: Fri, 20 Aug 2021 15:50:02 -0700
-In-Reply-To: <20210820225002.310652-1-seanjc@google.com>
-Message-Id: <20210820225002.310652-6-seanjc@google.com>
-Mime-Version: 1.0
-References: <20210820225002.310652-1-seanjc@google.com>
-X-Mailer: git-send-email 2.33.0.rc2.250.ged5fa647cd-goog
-Subject: [PATCH v2 5/5] KVM: selftests: Remove __NR_userfaultfd syscall
- fallback
-From: Sean Christopherson <seanjc@google.com>
-To: Russell King <linux@armlinux.org.uk>,
- Catalin Marinas <catalin.marinas@arm.com>, 
- Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>, 
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Michael Ellerman <mpe@ellerman.id.au>, 
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Steven Rostedt <rostedt@goodmis.org>, 
- Ingo Molnar <mingo@redhat.com>, Oleg Nesterov <oleg@redhat.com>,
- Thomas Gleixner <tglx@linutronix.de>, 
- Peter Zijlstra <peterz@infradead.org>, Andy Lutomirski <luto@kernel.org>, 
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- "Paul E. McKenney" <paulmck@kernel.org>, 
- Boqun Feng <boqun.feng@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Shuah Khan <shuah@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gs6ls0TJ6z308Z
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Aug 2021 15:40:03 +1000 (AEST)
+X-IronPort-AV: E=McAfee;i="6200,9189,10082"; a="216909502"
+X-IronPort-AV: E=Sophos;i="5.84,338,1620716400"; d="scan'208";a="216909502"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+ by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Aug 2021 22:38:59 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.84,338,1620716400"; d="scan'208";a="682742590"
+Received: from lkp-server01.sh.intel.com (HELO d053b881505b) ([10.239.97.150])
+ by fmsmga005.fm.intel.com with ESMTP; 20 Aug 2021 22:38:58 -0700
+Received: from kbuild by d053b881505b with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1mHJib-000Va1-KF; Sat, 21 Aug 2021 05:38:57 +0000
+Date: Sat, 21 Aug 2021 13:38:02 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS 14f6db7ef1d167a6f8e172d24ee5f682afebd44c
+Message-ID: <6120913a.kns+Ae5URlDjkZY4%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,43 +49,174 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Sean Christopherson <seanjc@google.com>
-Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org,
- Ben Gardon <bgardon@google.com>, linux-kernel@vger.kernel.org,
- linux-csky@vger.kernel.org, linux-mips@vger.kernel.org,
- Peter Foley <pefoley@google.com>, Paul Mackerras <paulus@samba.org>,
- linux-kselftest@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
- Shakeel Butt <shakeelb@google.com>, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Revert the __NR_userfaultfd syscall fallback added for KVM selftests now
-that x86's unistd_{32,63}.h overrides are under uapi/ and thus not in
-KVM sefltests' search path, i.e. now that KVM gets x86 syscall numbers
-from the installed kernel headers.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: 14f6db7ef1d167a6f8e172d24ee5f682afebd44c  Automatic merge of 'next' into merge (2021-08-18 23:55)
 
-No functional change intended.
+elapsed time: 3808m
 
-Cc: Ben Gardon <bgardon@google.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+configs tested: 147
+configs skipped: 3
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                 randconfig-c001-20210816
+i386                 randconfig-c001-20210820
+arm                         lpc18xx_defconfig
+sh                         ap325rxa_defconfig
+mips                         db1xxx_defconfig
+arm                        vexpress_defconfig
+powerpc                     tqm8560_defconfig
+powerpc                 mpc836x_mds_defconfig
+powerpc                 xes_mpc85xx_defconfig
+mips                malta_qemu_32r6_defconfig
+mips                     loongson1c_defconfig
+csky                             alldefconfig
+arm                          ixp4xx_defconfig
+arm                      jornada720_defconfig
+sh                          rsk7203_defconfig
+m68k                             allmodconfig
+arm                           stm32_defconfig
+powerpc                       ppc64_defconfig
+mips                 decstation_r4k_defconfig
+arc                              allyesconfig
+xtensa                    smp_lx200_defconfig
+alpha                               defconfig
+mips                         rt305x_defconfig
+arm                             pxa_defconfig
+powerpc                      chrp32_defconfig
+mips                     loongson2k_defconfig
+sh                         ecovec24_defconfig
+arm                              alldefconfig
+arc                     haps_hs_smp_defconfig
+powerpc                    klondike_defconfig
+powerpc                        fsp2_defconfig
+mips                       capcella_defconfig
+mips                          ath25_defconfig
+arm                           viper_defconfig
+arm                       aspeed_g4_defconfig
+riscv                    nommu_virt_defconfig
+x86_64                            allnoconfig
+mips                   sb1250_swarm_defconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a004-20210818
+x86_64               randconfig-a006-20210818
+x86_64               randconfig-a003-20210818
+x86_64               randconfig-a005-20210818
+x86_64               randconfig-a002-20210818
+x86_64               randconfig-a001-20210818
+x86_64               randconfig-a005-20210820
+x86_64               randconfig-a006-20210820
+x86_64               randconfig-a001-20210820
+x86_64               randconfig-a003-20210820
+x86_64               randconfig-a004-20210820
+x86_64               randconfig-a002-20210820
+i386                 randconfig-a004-20210818
+i386                 randconfig-a006-20210818
+i386                 randconfig-a002-20210818
+i386                 randconfig-a001-20210818
+i386                 randconfig-a003-20210818
+i386                 randconfig-a005-20210818
+i386                 randconfig-a006-20210820
+i386                 randconfig-a001-20210820
+i386                 randconfig-a002-20210820
+i386                 randconfig-a005-20210820
+i386                 randconfig-a003-20210820
+i386                 randconfig-a004-20210820
+x86_64               randconfig-a013-20210819
+x86_64               randconfig-a011-20210819
+x86_64               randconfig-a012-20210819
+x86_64               randconfig-a016-20210819
+x86_64               randconfig-a014-20210819
+x86_64               randconfig-a015-20210819
+i386                 randconfig-a015-20210819
+i386                 randconfig-a011-20210819
+i386                 randconfig-a014-20210819
+i386                 randconfig-a013-20210819
+i386                 randconfig-a016-20210819
+i386                 randconfig-a012-20210819
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
+clang tested configs:
+i386                 randconfig-c001-20210818
+i386                 randconfig-c001-20210820
+i386                 randconfig-c001-20210819
+x86_64               randconfig-a004-20210819
+x86_64               randconfig-a006-20210819
+x86_64               randconfig-a003-20210819
+x86_64               randconfig-a002-20210819
+x86_64               randconfig-a005-20210819
+x86_64               randconfig-a001-20210819
+i386                 randconfig-a004-20210819
+i386                 randconfig-a006-20210819
+i386                 randconfig-a001-20210819
+i386                 randconfig-a002-20210819
+i386                 randconfig-a003-20210819
+i386                 randconfig-a005-20210819
+x86_64               randconfig-a014-20210820
+x86_64               randconfig-a016-20210820
+x86_64               randconfig-a015-20210820
+x86_64               randconfig-a013-20210820
+x86_64               randconfig-a012-20210820
+x86_64               randconfig-a011-20210820
+i386                 randconfig-a015-20210818
+i386                 randconfig-a011-20210818
+i386                 randconfig-a013-20210818
+i386                 randconfig-a014-20210818
+i386                 randconfig-a016-20210818
+i386                 randconfig-a012-20210818
+
 ---
- tools/arch/x86/include/uapi/asm/unistd_64.h | 3 ---
- 1 file changed, 3 deletions(-)
-
-diff --git a/tools/arch/x86/include/uapi/asm/unistd_64.h b/tools/arch/x86/include/uapi/asm/unistd_64.h
-index 4205ed4158bf..cb52a3a8b8fc 100644
---- a/tools/arch/x86/include/uapi/asm/unistd_64.h
-+++ b/tools/arch/x86/include/uapi/asm/unistd_64.h
-@@ -1,7 +1,4 @@
- /* SPDX-License-Identifier: GPL-2.0 */
--#ifndef __NR_userfaultfd
--#define __NR_userfaultfd 282
--#endif
- #ifndef __NR_perf_event_open
- # define __NR_perf_event_open 298
- #endif
--- 
-2.33.0.rc2.250.ged5fa647cd-goog
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
