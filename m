@@ -2,114 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD0273F3D14
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Aug 2021 04:12:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2792B3F3E74
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Aug 2021 09:52:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gsf5M5fRvz3d8J
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Aug 2021 12:12:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GsnfW0PGjz3d82
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Aug 2021 17:52:51 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=IISxpUq6;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=VJB3FTt5;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nvidia.com (client-ip=40.107.94.44;
- helo=nam10-mw2-obe.outbound.protection.outlook.com;
- envelope-from=sdonthineni@nvidia.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256
- header.s=selector2 header.b=IISxpUq6; 
- dkim-atps=neutral
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam10on2044.outbound.protection.outlook.com [40.107.94.44])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::1034;
+ helo=mail-pj1-x1034.google.com; envelope-from=keescook@chromium.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=VJB3FTt5; dkim-atps=neutral
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com
+ [IPv6:2607:f8b0:4864:20::1034])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GsMmd6nG2z30Cj
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Aug 2021 01:26:38 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KSRHI4UNmIxkZZlNxMdmF/de+5Yi8Hi/OP/gSygU/vI3c+mXpU6kgenqRN7V86lQAEP9GLwC5fyy+SawdvSdvyOFgSaXy8XXCm/XN2824mUYqSPe3lMQEEF/Dvix3HEXaypket7ds3Bv7uoOcUsarGMaIw51yOS3DOKwjtvWT0dgUWLCF435IWkF8XixfHoPpUWzx87uew/ZS6l0rfEBx5pV7aTberJhpUfCuf0t+px2TAl6pTWKRTVRqqDy5weZewTdvfYBVu0EXqn6FrHNGfRsB26dF0nBZLPF068xhOhbAP+usY4aQWWcoWOza5Ulbx2WR3D0PU9Zm68W9ZplXQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xwjPogDO3TSbsa82gbCFuwOlaaer8naLrSo43m9KRuw=;
- b=eG4py7hW0IcCR8LgVCXK/u4F+ZY7yGH/tBKY3Q0Fotg5mZI+lAVN2ItKx3SSr02wJolCbUFfBjs990I8uKj9uHE3+wJJoVNxiwFO0GTe0AdPCo6NqwzdAKcsEBCmd8+6+2kg1GuH/gBMBCMw2p+m08vLd0vTBBJpXBZILZH5iidhJvMyXkIfuqDznOsGRBDQjREV31JywBXTcuOQrzqOm0G0m23tuwRXFyfS/oTGeC/2T5oiS2qJxNp2Tz2+8MW7XdzQTH5q4cP1nR0bSvJD8mA4KOFUo6Xq2BZMi6+B4cnR0FT9zFCG1T00arxvYXDfY0mCFsNwWU+I8JHxIPmGAg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.112.36) smtp.rcpttodomain=russell.cc smtp.mailfrom=nvidia.com;
- dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=nvidia.com; 
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xwjPogDO3TSbsa82gbCFuwOlaaer8naLrSo43m9KRuw=;
- b=IISxpUq6mdFEhrOMTm/m0t+icIIrVBexkPfaf56r7/K00CZuYepEDnie8TiYeqsQga3j0/mc7EkPq6Mq8a/9qDq8tqo9nVPQd/nx9z4QAjezBbMmmjyiP/dQloQMHRdpVuRqeqfNITJ81FECRk2On9MJYwnujtYQTQQLV6S1c10A2gUtRgoe+HaAPiB3ot+2IAAMK4LyV+ejhTE42H1P/FwhJUuQ1ImeqEMX8cfndS/pbvI5jFJ0syfEhva1kfMdo2OjiEgJmwAWUEpW9cRwMtkCr+59uarKU+y75b7ABZFzKehUlet4YekZRrhM1ESTjKqGrAMhd9wYA+fT3576zw==
-Received: from BN9PR03CA0562.namprd03.prod.outlook.com (2603:10b6:408:138::27)
- by DM6PR12MB4370.namprd12.prod.outlook.com (2603:10b6:5:2aa::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4436.19; Sat, 21 Aug
- 2021 15:26:20 +0000
-Received: from BN8NAM11FT059.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:138:cafe::9a) by BN9PR03CA0562.outlook.office365.com
- (2603:10b6:408:138::27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4436.19 via Frontend
- Transport; Sat, 21 Aug 2021 15:26:20 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.112.36)
- smtp.mailfrom=nvidia.com; russell.cc; dkim=none (message not signed)
- header.d=none;russell.cc; dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.112.36 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.112.36; helo=mail.nvidia.com;
-Received: from mail.nvidia.com (216.228.112.36) by
- BN8NAM11FT059.mail.protection.outlook.com (10.13.177.120) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.20.4436.19 via Frontend Transport; Sat, 21 Aug 2021 15:26:19 +0000
-Received: from DRHQMAIL107.nvidia.com (10.27.9.16) by HQMAIL101.nvidia.com
- (172.20.187.10) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Sat, 21 Aug
- 2021 15:26:19 +0000
-Received: from [10.20.115.83] (172.20.187.6) by DRHQMAIL107.nvidia.com
- (10.27.9.16) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Sat, 21 Aug
- 2021 15:26:17 +0000
-Subject: Re: [PATCH] PCI/AER: Continue AER recovery of device with
- NO_BUS_RESET set
-To: Bjorn Helgaas <bhelgaas@google.com>
-References: <20210821133058.31583-1-sdonthineni@nvidia.com>
-From: Shanker R Donthineni <sdonthineni@nvidia.com>
-Message-ID: <f8719589-e56a-25c1-b955-4abd67cf7490@nvidia.com>
-Date: Sat, 21 Aug 2021 10:26:16 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gsnd21DmRz2yxL
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Aug 2021 17:51:32 +1000 (AEST)
+Received: by mail-pj1-x1034.google.com with SMTP id bo18so10082393pjb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Aug 2021 00:51:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=kwHDlRYGw2pe2VpozCEASD85dDS6sHxCPa/xDSIICvM=;
+ b=VJB3FTt5q3R3nGTwAgDC29A/KPNoR+UpkxoBw0Dq4oRvBhiadsp7xDfQYieHFnlYbk
+ 4FxWfTV91NYwkFNCEBLbyPpmTlxrZQr0gC271DLHzeiQnbnlhlxApp/G+sbOQk8iU7Eg
+ P4t+2DpWPq78fX+VsMvxWmM5/zw7BIsDMwPjo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=kwHDlRYGw2pe2VpozCEASD85dDS6sHxCPa/xDSIICvM=;
+ b=Qx/4AJdHJGZSgww8n+slxcTo1v79b/MYocw++4VtvUaXmdv071GiXjvgk/v/e9Rdzy
+ N4+JzAk6/wLMPmxE5q/xMjYGiYBevctqSlDtmeeVi8R5V762zX1oDsDu7yNXX3dCBAXK
+ GlRnV9atscdWuB2nuLUsVPQfVVOGLmUzD1Xulj1+znI1inhL+Xzh8DNyfkLhXSP7dPdz
+ WDkh78zsQYPCKGN8D7vWhA0lNEKavKGF7usW3ziNDr/pHHRBf96gY/1RQSVcvcEEv06S
+ VYU0W4H6HmPrVKll8DkpyewbqIEilpQ4Kc4MbLRmHhkqLJ2czlucfbDGTpNVkTGE5q1/
+ XPNw==
+X-Gm-Message-State: AOAM5319Pz6Ny54Ytc0XSsDttVYJaXNe1iWaeHLhnwGkHi6C/+6C9fKX
+ l+QvOz2IJbTO4BCYnUeBXEKZKg==
+X-Google-Smtp-Source: ABdhPJy91PqrhLQGvyTAftsayxdZqXZXrWDF2+1RCGOwRui/AsaObRqzH9olXGQRjCk+pfD4T5l3Nw==
+X-Received: by 2002:a17:90a:1f09:: with SMTP id
+ u9mr13451822pja.206.1629618689283; 
+ Sun, 22 Aug 2021 00:51:29 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+ by smtp.gmail.com with ESMTPSA id j5sm16177432pjv.56.2021.08.22.00.51.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 22 Aug 2021 00:51:27 -0700 (PDT)
+From: Kees Cook <keescook@chromium.org>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH for-next 01/25] scsi: ibmvscsi: Avoid multi-field memset()
+ overflow by aiming at srp
+Date: Sun, 22 Aug 2021 00:50:58 -0700
+Message-Id: <20210822075122.864511-2-keescook@chromium.org>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210822075122.864511-1-keescook@chromium.org>
+References: <20210822075122.864511-1-keescook@chromium.org>
 MIME-Version: 1.0
-In-Reply-To: <20210821133058.31583-1-sdonthineni@nvidia.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Originating-IP: [172.20.187.6]
-X-ClientProxiedBy: HQMAIL111.nvidia.com (172.20.187.18) To
- DRHQMAIL107.nvidia.com (10.27.9.16)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: c13ad4fc-55e3-4433-ae4e-08d964b806b3
-X-MS-TrafficTypeDiagnostic: DM6PR12MB4370:
-X-Microsoft-Antispam-PRVS: <DM6PR12MB437017EFF3C560E7E60DA2DDC7C29@DM6PR12MB4370.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:2000;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: pqdH+0qm0zQk6qkauCbc7r0woW9uftT4l/da0vnpqpyi93tJGJ4YlWDEgc6l5yCZeq9RewpNUmsl8Z4uDvG6hcGg4bgClVfy9L9Z+peMAKLM5bxr9pNvs3T9qRivNrCPd79cn/uQMOlsWC/kCK3wCkvvUJ7/Mdxs3XMjVuzqZaLYp76gZVbCAX8IuFn0NiAqL4C8LPCrtFCs+lu6GZLVIQhjECgqlcx9KTbOTdVufr3TD7sfRUClL7tp5MQ2KKjTYpG3OiVzdHrgBHC0k1xbCB2czrQxDCUDGG4EsnIu9CtAiZoRFkWn+3fV5bC1oKMSOB/JoTGco6EI3SYxGu6px8AtpBCmygTu8ueYtBuRjPDDAvy47/uCVDN953OcJD1KKVdtRC4VTnSo3yc4qlrCJ2ruMam5ft6JCIVwevy6SklrEwyJHPepNrtEh07kp1fjaLxUQ5zaQhHFQRJCyuann1jPzvJObFbIasJSCC/krh9KYLl3cl3Vn/FwB3dfAtvlftiOz/rphsnIzCdkfBWUDp19E9UhZ8EhYAmb1K4hQK06PHYJLUEbiid5GZP3hwcDMPOiTxeKhx9jgsMZipZ+2lUk5dctwN6/wGPFVHQEt38LYWHOA6STcabvnvj/1UD4yaFhqmJap3PJ9OcwWROsvM/ESit3wYOHMfx2fKefB+7J5ruWNNxDL7AMHhrW9JJEQKaVRJHn7X8nrilkxmOcUICP9f4P97g5TUup0REeZbyRL3ojSHRRIzkVkobGc7boS97Kjcm36aEA5X/rNTRhwA==
-X-Forefront-Antispam-Report: CIP:216.228.112.36; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:schybrid05.nvidia.com; CAT:NONE;
- SFS:(4636009)(136003)(376002)(396003)(346002)(39860400002)(36840700001)(46966006)(31696002)(82310400003)(8676002)(47076005)(2906002)(478600001)(36756003)(426003)(316002)(70206006)(16576012)(336012)(70586007)(8936002)(36906005)(2616005)(54906003)(36860700001)(31686004)(26005)(16526019)(82740400003)(53546011)(83380400001)(5660300002)(4326008)(186003)(6916009)(86362001)(356005)(7636003)(21314003)(43740500002);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2021 15:26:19.7325 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c13ad4fc-55e3-4433-ae4e-08d964b806b3
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.112.36];
- Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT059.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4370
-X-Mailman-Approved-At: Sun, 22 Aug 2021 12:10:44 +1000
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1793; h=from:subject;
+ bh=ug7KtAnqHA97F0XIHxj84B1vcjl5KTaHRbDt5BL2iJc=;
+ b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBhIgH029iMytTOfEkySdRelPdaDhR6VhLaGeRkdoDa
+ 4ABOm4yJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYSIB9AAKCRCJcvTf3G3AJjv2D/
+ 48Fr/XBXtchVss+4cH6PQaHpgRQzDXtB1e3n+pg90FdtK9Gu2IOW5Eeo4HeRN99/sieQG+UcSe490f
+ qdjzZblkN7rCOZs5uC7Qv2WpSpX0BBhVlJiGfxEbCTMtN/McHWDMfDGmctuVYCjiFd7y7Qpjh/L95Y
+ m7MEuz01lgiYVwA7kXYcrKV101D+aRlU+gawH0a187wiLOGq8y3BJAooZKrFbYl1355a2kJZCjPGoC
+ hfz0Zlx7XRVAVlQj2eCSdwACSCDiDmZx+gKHkVGAa0CtgE0F32xohvWP2x4Yt3yFRHQZDV+m2xqDvg
+ jdu7NtA6bQe03uJ61mDeZEZmxbYOgkiliI38njvH83Gv+Oio1sCmUJjxyDGm325T/wynBN5hbw25If
+ e7zPYndMKDwfXXY+dtyCHCMOh0rwCnS8C5qg3Z+ez6sc/fc1H3oGeSo4BsvngOPFd0iFMrdzhmT9Y4
+ eXJZW8YHVV7l2UMynV+iVHszGnG5p93QrqnK5KN++aRu+Vr8WKiP9AlwHb8ALA+9vT6sy4fojF/6p1
+ yL/9kO9S1YrHvKzdaJA1a0FZiq0azd5ExdJrqy3oB43u2iZm/iUYWiea6jYZ0NIrVuHaNcIy9Dn8By
+ CUJjki1mhqlzaYinYiWB2xUvQmLUuuYrVcDc6adS96luBv0lQeyKTVjBPPdw==
+X-Developer-Key: i=keescook@chromium.org; a=openpgp;
+ fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -121,73 +93,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- Alex Williamson <alex.williamson@redhat.com>, Oliver
- O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>,
+ Francis Laniel <laniel_francis@privacyrequired.com>,
+ Kees Cook <keescook@chromium.org>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ clang-built-linux@googlegroups.com,
+ "James E.J. Bottomley" <jejb@linux.ibm.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-scsi@vger.kernel.org,
+ linux-mm@kvack.org, Daniel Micay <danielmicay@gmail.com>,
+ Paul Mackerras <paulus@samba.org>, linux-hardening@vger.kernel.org,
+ David Gow <davidgow@google.com>, linuxppc-dev@lists.ozlabs.org,
+ Bart Van Assche <bvanassche@acm.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+In preparation for FORTIFY_SOURCE performing compile-time and run-time
+field bounds checking for memset(), avoid intentionally writing across
+neighboring fields.
 
+Instead of writing beyond the end of evt_struct->iu.srp.cmd, target the
+upper union (evt_struct->iu.srp) instead, as that's what is being wiped.
 
-On 8/21/21 8:30 AM, Shanker Donthineni wrote:
-> External email: Use caution opening links or attachments
->
->
-> In the current implementation, the AER FATAL and NONFTAL recovery will be
-> terminated for the device that exhibits NO_BUS_RESET quirk. The non-zero
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: "James E.J. Bottomley" <jejb@linux.ibm.com>
+Cc: "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: linux-scsi@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Acked-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lore.kernel.org/lkml/yq135rzp79c.fsf@ca-mkp.ca.oracle.com
+Acked-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+Link: https://lore.kernel.org/lkml/6eae8434-e9a7-aa74-628b-b515b3695359@linux.ibm.com
+---
+ drivers/scsi/ibmvscsi/ibmvscsi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Correction, this problem happens only for AER_FATAL recovery case.
-
-> return value from pci_bus_error_reset() is treated as an error condition
-> in aer_root_reset() which leads to return PCI_ERS_RESULT_DISCONNECT.
->
->   aer_recover_work_func()
->     pcie_do_recovery()
->       report_frozen_detected()
->       if (aer_root_reset() == PCI_ERS_RESULT_DISCONNECT)
->          goto failed           # termimates here because of NO_BUS_RESET
->
->       ...
->       report_mmio_enabled()
->       report_resume()
->       pcie_clear_xxx_status()
->       ...
->       return 0
->   failed:
->       pci_uevent_ers(PCI_ERS_RESULT_DISCONNECT);
->
-> The return value -ENOTTY from pci_bus_error_reset() indicates SBR was
-> skipped but no real errors were encountered. This scenario could be
-> considered as a non-error case so that the PCI device driver gets the
-> opportunity to recover the device back to an operational state instead
-> of keeping it in the DISCONNECT state.
->
-> Signed-off-by: Shanker Donthineni <sdonthineni@nvidia.com>
-> ---
->  drivers/pci/pcie/aer.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index 9784fdcf30061..8cf6bd6a3376d 100644
-> --- a/drivers/pci/pcie/aer.c
-> +++ b/drivers/pci/pcie/aer.c
-> @@ -1414,8 +1414,12 @@ static pci_ers_result_t aer_root_reset(struct pci_dev *dev)
->                         pci_info(dev, "not reset (no FLR support: %d)\n", rc);
->         } else {
->                 rc = pci_bus_error_reset(dev);
-> -               pci_info(dev, "%s Port link has been reset (%d)\n",
-> -                       pci_is_root_bus(dev->bus) ? "Root" : "Downstream", rc);
-> +               pci_info(dev, "%s Port link has %sbeen reset (%d)\n",
-> +                       pci_is_root_bus(dev->bus) ? "Root" : "Downstream",
-> +                       rc == -ENOTTY ? "not " : "", rc);
-> +
-> +               if (rc == -ENOTTY)
-> +                       rc = 0;
->         }
->
->         if ((host->native_aer || pcie_ports_native) && aer) {
-> --
-> 2.25.1
->
+diff --git a/drivers/scsi/ibmvscsi/ibmvscsi.c b/drivers/scsi/ibmvscsi/ibmvscsi.c
+index e6a3eaaa57d9..3bd3a0124123 100644
+--- a/drivers/scsi/ibmvscsi/ibmvscsi.c
++++ b/drivers/scsi/ibmvscsi/ibmvscsi.c
+@@ -1055,8 +1055,9 @@ static int ibmvscsi_queuecommand_lck(struct scsi_cmnd *cmnd,
+ 		return SCSI_MLQUEUE_HOST_BUSY;
+ 
+ 	/* Set up the actual SRP IU */
++	BUILD_BUG_ON(sizeof(evt_struct->iu.srp) != SRP_MAX_IU_LEN);
++	memset(&evt_struct->iu.srp, 0x00, sizeof(evt_struct->iu.srp));
+ 	srp_cmd = &evt_struct->iu.srp.cmd;
+-	memset(srp_cmd, 0x00, SRP_MAX_IU_LEN);
+ 	srp_cmd->opcode = SRP_CMD;
+ 	memcpy(srp_cmd->cdb, cmnd->cmnd, sizeof(srp_cmd->cdb));
+ 	int_to_scsilun(lun, &srp_cmd->lun);
+-- 
+2.30.2
 
