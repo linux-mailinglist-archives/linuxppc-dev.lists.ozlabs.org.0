@@ -2,83 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2792B3F3E74
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Aug 2021 09:52:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 370BF3F3E72
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Aug 2021 09:52:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GsnfW0PGjz3d82
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Aug 2021 17:52:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gsndn1BC9z3cLY
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Aug 2021 17:52:13 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=VJB3FTt5;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=A29wjJma;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::1034;
- helo=mail-pj1-x1034.google.com; envelope-from=keescook@chromium.org;
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::1030;
+ helo=mail-pj1-x1030.google.com; envelope-from=keescook@chromium.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=VJB3FTt5; dkim-atps=neutral
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com
- [IPv6:2607:f8b0:4864:20::1034])
+ header.s=google header.b=A29wjJma; dkim-atps=neutral
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com
+ [IPv6:2607:f8b0:4864:20::1030])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gsnd21DmRz2yxL
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gsnd21nggz2yxP
  for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Aug 2021 17:51:32 +1000 (AEST)
-Received: by mail-pj1-x1034.google.com with SMTP id bo18so10082393pjb.0
+Received: by mail-pj1-x1030.google.com with SMTP id
+ m24-20020a17090a7f98b0290178b1a81700so10057213pjl.4
  for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Aug 2021 00:51:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=kwHDlRYGw2pe2VpozCEASD85dDS6sHxCPa/xDSIICvM=;
- b=VJB3FTt5q3R3nGTwAgDC29A/KPNoR+UpkxoBw0Dq4oRvBhiadsp7xDfQYieHFnlYbk
- 4FxWfTV91NYwkFNCEBLbyPpmTlxrZQr0gC271DLHzeiQnbnlhlxApp/G+sbOQk8iU7Eg
- P4t+2DpWPq78fX+VsMvxWmM5/zw7BIsDMwPjo=
+ bh=swoxKUxBx5afVLnEB5LhIDPkkheQprnH5K11Nt9R4rs=;
+ b=A29wjJmazwrwxGZxMq+h34s9h8NzAPtZ5DxKcdKlMgNObBxVDvNDynzqlcY71e41mj
+ U4426P8/21pDEkSEQl5Vye5goYrgP8qo83lOcPnb8Mluvdkf2mU/RrS+84b6r0rkTA7n
+ NWDx2rvLg8JBxbks9wmwuHN3s+p3Igzuid9d8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=kwHDlRYGw2pe2VpozCEASD85dDS6sHxCPa/xDSIICvM=;
- b=Qx/4AJdHJGZSgww8n+slxcTo1v79b/MYocw++4VtvUaXmdv071GiXjvgk/v/e9Rdzy
- N4+JzAk6/wLMPmxE5q/xMjYGiYBevctqSlDtmeeVi8R5V762zX1oDsDu7yNXX3dCBAXK
- GlRnV9atscdWuB2nuLUsVPQfVVOGLmUzD1Xulj1+znI1inhL+Xzh8DNyfkLhXSP7dPdz
- WDkh78zsQYPCKGN8D7vWhA0lNEKavKGF7usW3ziNDr/pHHRBf96gY/1RQSVcvcEEv06S
- VYU0W4H6HmPrVKll8DkpyewbqIEilpQ4Kc4MbLRmHhkqLJ2czlucfbDGTpNVkTGE5q1/
- XPNw==
-X-Gm-Message-State: AOAM5319Pz6Ny54Ytc0XSsDttVYJaXNe1iWaeHLhnwGkHi6C/+6C9fKX
- l+QvOz2IJbTO4BCYnUeBXEKZKg==
-X-Google-Smtp-Source: ABdhPJy91PqrhLQGvyTAftsayxdZqXZXrWDF2+1RCGOwRui/AsaObRqzH9olXGQRjCk+pfD4T5l3Nw==
-X-Received: by 2002:a17:90a:1f09:: with SMTP id
- u9mr13451822pja.206.1629618689283; 
- Sun, 22 Aug 2021 00:51:29 -0700 (PDT)
+ bh=swoxKUxBx5afVLnEB5LhIDPkkheQprnH5K11Nt9R4rs=;
+ b=azX8pb3uY6P4I9droDI3ucl3fHA1qhPI2zDgfciCj0y7aqsQdUqP1mwpFekOkBc1de
+ agjLYZKsdkt245v/ki+MiIm/fhsizgFAhGsuuQ/oKCCljsGqS7lG+WWxDKr68IcRgYe2
+ +xSQlJ4U5FBwPntNAJRjDA35zt+4QQ3PQIlw4II8v3sOW1TBb84a1y5WSCBUZfSDbTgM
+ WDxCvXYUyH0hnN8Qyj7sJwSyHI7Lut5ndFL+dEGADcMXt0ag6QxHb7XMW5n8dV2mnP8s
+ +M1uztGfbP2KEg7kKR1GFyX9mMNMHUawzyoZWtSH9t7PV+13sj+PhHnQox3QB2mUFHvt
+ v8Jw==
+X-Gm-Message-State: AOAM5308eZG9d67MDb8F8qVAwlcTKfLbMPrOdu23meoL5rhpykjAXM//
+ UUy4/7X0Kd5hzGB0stH5hxPvTw==
+X-Google-Smtp-Source: ABdhPJxCvC5U8Hsd1nche8TY3/3w65Fwg7CcKKRcABytGvVOTqdPGhB5VrMGcJgmSP25a1YwSAnEXg==
+X-Received: by 2002:a17:90a:9205:: with SMTP id
+ m5mr13759811pjo.172.1629618687826; 
+ Sun, 22 Aug 2021 00:51:27 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id j5sm16177432pjv.56.2021.08.22.00.51.26
+ by smtp.gmail.com with ESMTPSA id x4sm784551pjq.20.2021.08.22.00.51.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Sun, 22 Aug 2021 00:51:27 -0700 (PDT)
 From: Kees Cook <keescook@chromium.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH for-next 01/25] scsi: ibmvscsi: Avoid multi-field memset()
- overflow by aiming at srp
-Date: Sun, 22 Aug 2021 00:50:58 -0700
-Message-Id: <20210822075122.864511-2-keescook@chromium.org>
+Subject: [PATCH for-next 02/25] powerpc: Split memset() to avoid multi-field
+ overflow
+Date: Sun, 22 Aug 2021 00:50:59 -0700
+Message-Id: <20210822075122.864511-3-keescook@chromium.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210822075122.864511-1-keescook@chromium.org>
 References: <20210822075122.864511-1-keescook@chromium.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1793; h=from:subject;
- bh=ug7KtAnqHA97F0XIHxj84B1vcjl5KTaHRbDt5BL2iJc=;
- b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBhIgH029iMytTOfEkySdRelPdaDhR6VhLaGeRkdoDa
- 4ABOm4yJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYSIB9AAKCRCJcvTf3G3AJjv2D/
- 48Fr/XBXtchVss+4cH6PQaHpgRQzDXtB1e3n+pg90FdtK9Gu2IOW5Eeo4HeRN99/sieQG+UcSe490f
- qdjzZblkN7rCOZs5uC7Qv2WpSpX0BBhVlJiGfxEbCTMtN/McHWDMfDGmctuVYCjiFd7y7Qpjh/L95Y
- m7MEuz01lgiYVwA7kXYcrKV101D+aRlU+gawH0a187wiLOGq8y3BJAooZKrFbYl1355a2kJZCjPGoC
- hfz0Zlx7XRVAVlQj2eCSdwACSCDiDmZx+gKHkVGAa0CtgE0F32xohvWP2x4Yt3yFRHQZDV+m2xqDvg
- jdu7NtA6bQe03uJ61mDeZEZmxbYOgkiliI38njvH83Gv+Oio1sCmUJjxyDGm325T/wynBN5hbw25If
- e7zPYndMKDwfXXY+dtyCHCMOh0rwCnS8C5qg3Z+ez6sc/fc1H3oGeSo4BsvngOPFd0iFMrdzhmT9Y4
- eXJZW8YHVV7l2UMynV+iVHszGnG5p93QrqnK5KN++aRu+Vr8WKiP9AlwHb8ALA+9vT6sy4fojF/6p1
- yL/9kO9S1YrHvKzdaJA1a0FZiq0azd5ExdJrqy3oB43u2iZm/iUYWiea6jYZ0NIrVuHaNcIy9Dn8By
- CUJjki1mhqlzaYinYiWB2xUvQmLUuuYrVcDc6adS96luBv0lQeyKTVjBPPdw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1383; h=from:subject;
+ bh=fQWaTRNAnHwzjDX7zkAYJFkFU9dO7FLED20FxzY84uw=;
+ b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBhIgH0nC39QXqUTtg73y7LwI1M2THJ6kxy1tIRNS78
+ 0fFAH3qJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYSIB9AAKCRCJcvTf3G3AJnv2D/
+ wObLbEonTkdJhW6C+/WSz4E6oGnBggzSnLMUS882u8jeYadM5HfcUGcFJ1IZoQ6kX6jFoodlo/qVnf
+ lv6ENdcXT7oa5GLQDJd4zp1Un3jz2a3qKkKwRJJSPIvUcVqp9VUZniIeP+gfhhYaPISc6W1RDet5PU
+ ROdHz5TDjq6eCQV5GY1zKOsKcoUcvC0OVslx6dQsCCfN8mKnM3iHXqaPAB7G5IuV403ICtdQhZvuJH
+ FJuzCsKGcftKt80P0Zoel7L966sN/WwnqiHtjEj5Q4Ha+cpB4OZbMjB+2+M/jH0QC3oVuUo3AU3yj0
+ ok95VgvvkcJN0Htt9NFvC5AlZBlnB5QI8JUP8jSvS4z1ZL/G4JQLsEr1riP0klpc4IOAfStks3pI70
+ FKMswg8epOans0r7tNzpu4yUEjM53slyrCrPKvmlCkCQH6PZ9HpL5UeSdjvmKMkopb4mcKpOJKZpPV
+ 2y8VLpuG0jg5g4hX+/itWAXGLAwnR7BX1ZxzgZ28P0SF6/C4DDHWrrDeF9XVdF9bcQkO4TLjui7wbi
+ nL4Fc4wq+gL4gtVmXqAAe18gdYsilyD4H0XXHcga+xLL80dr04yJe/zWFZWwb7pCdm/o3CVYxCoA4Y
+ oQBZ3nMgYoV4HF+OrXkF4vTxkiD1vjqS4oYPHI5RM0UIBNPZH+F7nsJ6feWg==
 X-Developer-Key: i=keescook@chromium.org; a=openpgp;
  fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
@@ -93,17 +94,15 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>,
- Francis Laniel <laniel_francis@privacyrequired.com>,
- Kees Cook <keescook@chromium.org>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- clang-built-linux@googlegroups.com,
- "James E.J. Bottomley" <jejb@linux.ibm.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-scsi@vger.kernel.org,
- linux-mm@kvack.org, Daniel Micay <danielmicay@gmail.com>,
- Paul Mackerras <paulus@samba.org>, linux-hardening@vger.kernel.org,
- David Gow <davidgow@google.com>, linuxppc-dev@lists.ozlabs.org,
- Bart Van Assche <bvanassche@acm.org>
+Cc: Francis Laniel <laniel_francis@privacyrequired.com>,
+ Kees Cook <keescook@chromium.org>, linux-mm@kvack.org,
+ Wang Wensheng <wangwensheng4@huawei.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Qinglang Miao <miaoqinglang@huawei.com>, Hulk Robot <hulkci@huawei.com>,
+ Daniel Micay <danielmicay@gmail.com>, linux-hardening@vger.kernel.org,
+ clang-built-linux@googlegroups.com, David Gow <davidgow@google.com>,
+ linuxppc-dev@lists.ozlabs.org, Bart Van Assche <bvanassche@acm.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
@@ -112,41 +111,36 @@ In preparation for FORTIFY_SOURCE performing compile-time and run-time
 field bounds checking for memset(), avoid intentionally writing across
 neighboring fields.
 
-Instead of writing beyond the end of evt_struct->iu.srp.cmd, target the
-upper union (evt_struct->iu.srp) instead, as that's what is being wiped.
+Instead of writing across a field boundary with memset(), move the call
+to just the array, and an explicit zeroing of the prior field.
 
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
 Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: "James E.J. Bottomley" <jejb@linux.ibm.com>
-Cc: "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: linux-scsi@vger.kernel.org
+Cc: Qinglang Miao <miaoqinglang@huawei.com>
+Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: Hulk Robot <hulkci@huawei.com>
+Cc: Wang Wensheng <wangwensheng4@huawei.com>
 Cc: linuxppc-dev@lists.ozlabs.org
 Signed-off-by: Kees Cook <keescook@chromium.org>
-Acked-by: Martin K. Petersen <martin.petersen@oracle.com>
-Link: https://lore.kernel.org/lkml/yq135rzp79c.fsf@ca-mkp.ca.oracle.com
-Acked-by: Tyrel Datwyler <tyreld@linux.ibm.com>
-Link: https://lore.kernel.org/lkml/6eae8434-e9a7-aa74-628b-b515b3695359@linux.ibm.com
+Reviewed-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/lkml/87czqsnmw9.fsf@mpe.ellerman.id.au
 ---
- drivers/scsi/ibmvscsi/ibmvscsi.c | 3 ++-
+ drivers/macintosh/smu.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/ibmvscsi/ibmvscsi.c b/drivers/scsi/ibmvscsi/ibmvscsi.c
-index e6a3eaaa57d9..3bd3a0124123 100644
---- a/drivers/scsi/ibmvscsi/ibmvscsi.c
-+++ b/drivers/scsi/ibmvscsi/ibmvscsi.c
-@@ -1055,8 +1055,9 @@ static int ibmvscsi_queuecommand_lck(struct scsi_cmnd *cmnd,
- 		return SCSI_MLQUEUE_HOST_BUSY;
- 
- 	/* Set up the actual SRP IU */
-+	BUILD_BUG_ON(sizeof(evt_struct->iu.srp) != SRP_MAX_IU_LEN);
-+	memset(&evt_struct->iu.srp, 0x00, sizeof(evt_struct->iu.srp));
- 	srp_cmd = &evt_struct->iu.srp.cmd;
--	memset(srp_cmd, 0x00, SRP_MAX_IU_LEN);
- 	srp_cmd->opcode = SRP_CMD;
- 	memcpy(srp_cmd->cdb, cmnd->cmnd, sizeof(srp_cmd->cdb));
- 	int_to_scsilun(lun, &srp_cmd->lun);
+diff --git a/drivers/macintosh/smu.c b/drivers/macintosh/smu.c
+index 94fb63a7b357..3e2b25ea58a3 100644
+--- a/drivers/macintosh/smu.c
++++ b/drivers/macintosh/smu.c
+@@ -848,7 +848,8 @@ int smu_queue_i2c(struct smu_i2c_cmd *cmd)
+ 	cmd->read = cmd->info.devaddr & 0x01;
+ 	switch(cmd->info.type) {
+ 	case SMU_I2C_TRANSFER_SIMPLE:
+-		memset(&cmd->info.sublen, 0, 4);
++		cmd->info.sublen = 0;
++		memset(cmd->info.subaddr, 0, sizeof(cmd->info.subaddr));
+ 		break;
+ 	case SMU_I2C_TRANSFER_COMBINED:
+ 		cmd->info.devaddr &= 0xfe;
 -- 
 2.30.2
 
