@@ -1,61 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C80D23F46A3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 10:31:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D06853F4690
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 10:25:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GtQS44wNtz2yJn
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 18:31:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GtQKc5S4Mz2xrG
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 18:25:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=178.32.125.2;
- helo=smtpout1.mo529.mail-out.ovh.net; envelope-from=clg@kaod.org;
- receiver=<UNKNOWN>)
-X-Greylist: delayed 572 seconds by postgrey-1.36 at boromir;
- Mon, 23 Aug 2021 18:30:34 AEST
-Received: from smtpout1.mo529.mail-out.ovh.net
- (smtpout1.mo529.mail-out.ovh.net [178.32.125.2])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GtQRZ0bQmz2xXh
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Aug 2021 18:30:33 +1000 (AEST)
-Received: from mxplan5.mail.ovh.net (unknown [10.108.1.108])
- by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 54235BA8158A;
- Mon, 23 Aug 2021 10:20:54 +0200 (CEST)
-Received: from kaod.org (37.59.142.96) by DAG4EX1.mxp5.local (172.16.2.31)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.14; Mon, 23 Aug
- 2021 10:20:53 +0200
-Authentication-Results: garm.ovh; auth=pass
- (GARM-96R0015d4601f9-e0fb-4695-8867-0b4476002d43,
- 6C3DA580BFD2A03B9CD9C7EDF86CA127720438B1) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 83.199.102.86
-Subject: Re: [PATCH 1/6] powerpc/prom: Introduce early_reserve_mem_old()
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- <linuxppc-dev@lists.ozlabs.org>
-References: <20210819125656.14498-1-clg@kaod.org>
- <20210819125656.14498-2-clg@kaod.org>
- <d79611e0-b42b-e74b-d628-5db718e6ebfa@csgroup.eu>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <8c9d3bfa-bf4c-900c-6746-7c0988b57a44@kaod.org>
-Date: Mon, 23 Aug 2021 10:20:53 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
-MIME-Version: 1.0
-In-Reply-To: <d79611e0-b42b-e74b-d628-5db718e6ebfa@csgroup.eu>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.96]
-X-ClientProxiedBy: DAG8EX2.mxp5.local (172.16.2.72) To DAG4EX1.mxp5.local
- (172.16.2.31)
-X-Ovh-Tracer-GUID: d21427e2-007d-4a28-a8e9-bc079d85b400
-X-Ovh-Tracer-Id: 6513893914420218848
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvtddruddthedgtdefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepuffvfhfhkffffgggjggtgfhisehtkeertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepjeekudeuudevleegudeugeekleffveeludejteffiedvledvgfekueefudehheefnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrdelieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehmgihplhgrnhehrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtoheptghhrhhishhtohhphhgvrdhlvghrohihsegtshhgrhhouhhprdgvuh
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GtQK91Nytz2xYG
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Aug 2021 18:24:59 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4GtQK44DCZz9sXW;
+ Mon, 23 Aug 2021 10:24:56 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id LCLwRsP_MEaD; Mon, 23 Aug 2021 10:24:56 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4GtQJP4L7qz9sXd;
+ Mon, 23 Aug 2021 10:24:21 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 695458B78C;
+ Mon, 23 Aug 2021 10:24:21 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 4w-KcZf10o0n; Mon, 23 Aug 2021 10:24:21 +0200 (CEST)
+Received: from po9473vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
+ [172.25.230.100])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 310F78B788;
+ Mon, 23 Aug 2021 10:24:21 +0200 (CEST)
+Received: by po9473vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 019496BC75; Mon, 23 Aug 2021 08:24:20 +0000 (UTC)
+Message-Id: <385ead49ccb66a259b25fee3eebf0bd4094068f3.1629707037.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v3 1/3] powerpc: Remove MSR_PR check in
+ interrupt_exit_{user/kernel}_prepare()
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ npiggin@gmail.com
+Date: Mon, 23 Aug 2021 08:24:20 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,115 +60,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 8/19/21 4:42 PM, Christophe Leroy wrote:
-> 
-> 
-> Le 19/08/2021 à 14:56, Cédric Le Goater a écrit :
->> and condition its call with IS_ENABLED(CONFIG_PPC32). This fixes a
->> compile error with W=1.
->>
->> arch/powerpc/kernel/prom.c: In function ‘early_reserve_mem’:
->> arch/powerpc/kernel/prom.c:625:10: error: variable ‘reserve_map’ set but not used [-Werror=unused-but-set-variable]
->>    __be64 *reserve_map;
->>            ^~~~~~~~~~~
->> cc1: all warnings being treated as errors
->>
->> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
->> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->> ---
->>
->>   Christophe, I think you had comments on this one ? Yes, I am being a bit lazy.
-> 
-> 
-> Yeah, my comment was to leave thing almost as is, just drop the #ifdef CONFIG_PPC32 and instead put something like:
-> 
->     if (!IS_ENABLED(CONFIG_PPC32))
->         return;
-> 
->>
->>   arch/powerpc/kernel/prom.c | 37 ++++++++++++++++++++-----------------
->>   1 file changed, 20 insertions(+), 17 deletions(-)
->>
->> diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
->> index f620e04dc9bf..52869d12bc1d 100644
->> --- a/arch/powerpc/kernel/prom.c
->> +++ b/arch/powerpc/kernel/prom.c
->> @@ -621,27 +621,14 @@ static void __init early_reserve_mem_dt(void)
->>       }
->>   }
->>   -static void __init early_reserve_mem(void)
->> +static void __init early_reserve_mem_old(void)
-> 
-> Why old ? Because ppc32 ?
+In those hot functions that are called at every interrupt, any saved
+cycle is worth it.
 
-No. because there is message a bit below saying :
+interrupt_exit_user_prepare() and interrupt_exit_kernel_prepare() are
+called from three places:
+- From entry_32.S
+- From interrupt_64.S
+- From interrupt_exit_user_restart() and interrupt_exit_kernel_restart()
 
-		DBG("Found old 32-bit reserve map\n");
+In entry_32.S, there are inambiguously called based on MSR_PR:
 
-> I think that's more changes than needed.
+	interrupt_return:
+		lwz	r4,_MSR(r1)
+		addi	r3,r1,STACK_FRAME_OVERHEAD
+		andi.	r0,r4,MSR_PR
+		beq	.Lkernel_interrupt_return
+		bl	interrupt_exit_user_prepare
+	...
+	.Lkernel_interrupt_return:
+		bl	interrupt_exit_kernel_prepare
 
-OK. np. I will use your suggestion.
+In interrupt_64.S, that's similar:
 
-Thanks,
+	interrupt_return_\srr\():
+		ld	r4,_MSR(r1)
+		andi.	r0,r4,MSR_PR
+		beq	interrupt_return_\srr\()_kernel
+	interrupt_return_\srr\()_user: /* make backtraces match the _kernel variant */
+		addi	r3,r1,STACK_FRAME_OVERHEAD
+		bl	interrupt_exit_user_prepare
+	...
+	interrupt_return_\srr\()_kernel:
+		addi	r3,r1,STACK_FRAME_OVERHEAD
+		bl	interrupt_exit_kernel_prepare
 
-C. 
+In interrupt_exit_user_restart() and interrupt_exit_kernel_restart(),
+MSR_PR is verified respectively by BUG_ON(!user_mode(regs)) and
+BUG_ON(user_mode(regs)) prior to calling interrupt_exit_user_prepare()
+and interrupt_exit_kernel_prepare().
 
+The verification in interrupt_exit_user_prepare() and
+interrupt_exit_kernel_prepare() are therefore useless and can be removed.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Acked-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/kernel/interrupt.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
+index 21bbd615ca41..f26caf911ab5 100644
+--- a/arch/powerpc/kernel/interrupt.c
++++ b/arch/powerpc/kernel/interrupt.c
+@@ -465,7 +465,6 @@ notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs)
  
-> 
-> 
->>   {
->>       __be64 *reserve_map;
->>         reserve_map = (__be64 *)(((unsigned long)initial_boot_params) +
->>               fdt_off_mem_rsvmap(initial_boot_params));
->>   -    /* Look for the new "reserved-regions" property in the DT */
->> -    early_reserve_mem_dt();
->> -
->> -#ifdef CONFIG_BLK_DEV_INITRD
->> -    /* Then reserve the initrd, if any */
->> -    if (initrd_start && (initrd_end > initrd_start)) {
->> -        memblock_reserve(ALIGN_DOWN(__pa(initrd_start), PAGE_SIZE),
->> -            ALIGN(initrd_end, PAGE_SIZE) -
->> -            ALIGN_DOWN(initrd_start, PAGE_SIZE));
->> -    }
->> -#endif /* CONFIG_BLK_DEV_INITRD */
->> -
->> -#ifdef CONFIG_PPC32
->> -    /*
->> +    /*
->>        * Handle the case where we might be booting from an old kexec
->>        * image that setup the mem_rsvmap as pairs of 32-bit values
->>        */
->> @@ -659,9 +646,25 @@ static void __init early_reserve_mem(void)
->>               DBG("reserving: %x -> %x\n", base_32, size_32);
->>               memblock_reserve(base_32, size_32);
->>           }
->> -        return;
->>       }
->> -#endif
->> +}
->> +
->> +static void __init early_reserve_mem(void)
->> +{
->> +    /* Look for the new "reserved-regions" property in the DT */
->> +    early_reserve_mem_dt();
->> +
->> +#ifdef CONFIG_BLK_DEV_INITRD
->> +    /* Then reserve the initrd, if any */
->> +    if (initrd_start && (initrd_end > initrd_start)) {
->> +        memblock_reserve(ALIGN_DOWN(__pa(initrd_start), PAGE_SIZE),
->> +            ALIGN(initrd_end, PAGE_SIZE) -
->> +            ALIGN_DOWN(initrd_start, PAGE_SIZE));
->> +    }
->> +#endif /* CONFIG_BLK_DEV_INITRD */
->> +
->> +    if (IS_ENABLED(CONFIG_PPC32))
->> +        early_reserve_mem_old();
->>   }
->>     #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
->>
+ 	if (!IS_ENABLED(CONFIG_BOOKE) && !IS_ENABLED(CONFIG_40x))
+ 		BUG_ON(!(regs->msr & MSR_RI));
+-	BUG_ON(!(regs->msr & MSR_PR));
+ 	BUG_ON(arch_irq_disabled_regs(regs));
+ 	CT_WARN_ON(ct_state() == CONTEXT_USER);
+ 
+@@ -499,7 +498,6 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs)
+ 	if (!IS_ENABLED(CONFIG_BOOKE) && !IS_ENABLED(CONFIG_40x) &&
+ 	    unlikely(!(regs->msr & MSR_RI)))
+ 		unrecoverable_exception(regs);
+-	BUG_ON(regs->msr & MSR_PR);
+ 	/*
+ 	 * CT_WARN_ON comes here via program_check_exception,
+ 	 * so avoid recursion.
+-- 
+2.25.0
 
