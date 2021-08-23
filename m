@@ -1,57 +1,101 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 665C03F48EB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 12:48:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E41143F490C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 12:54:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GtTW16f07z2xrs
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 20:48:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GtTdp57szz2yJp
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 20:54:38 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=FFy1BuB3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JgYC0gOD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=canb.auug.org.au (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=sfr@canb.auug.org.au; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=schnelle@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.a=rsa-sha256 header.s=201702 header.b=FFy1BuB3; 
- dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=JgYC0gOD; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GtTVK0ncZz2xrT
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Aug 2021 20:48:07 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4GtTVD3CQ5z9sWc;
- Mon, 23 Aug 2021 20:48:04 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
- s=201702; t=1629715685;
- bh=ytEvyC+DEnLTTfZkIg3wkrRmLBORVvoxKCJVWjIoJH8=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=FFy1BuB3h/44cQ8yyheLTod8gxRDOgY3fD4DlBfZI6fru5t0lc2n9QtLOeq+d3DDa
- xD5etjFiIlQziNsGx+PMbqdI8Q67eaCPdlfMqWpZJi9E10vTHFIMmpWSZPnFHrlRrW
- ul6z6eDmmubA8/1FpvWbVz6un9R6SZAtOWp0IeatzKQ+N1XM+6EQv7TmIWD/LhoKU4
- JoK2ghRkWZVki6NA5zAGnGdZlws9Qi2W4gedFCP3op7Z3h3Jsvk1HPfL+WFZWnD3Ns
- tExLyFsN70uPBfbHQUZeYzr+vx25SqJWKnUvi9CihCiXy6LOFgX6petrVzB8qQ/sYG
- WsjneOXuzY1XQ==
-Date: Mon, 23 Aug 2021 20:48:03 +1000
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, PowerPC
- <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: linux-next: build warning after merge of the powerpc tree
-Message-ID: <20210823204803.7cb76778@canb.auug.org.au>
-In-Reply-To: <20210823195540.4d7363ed@canb.auug.org.au>
-References: <20210823195540.4d7363ed@canb.auug.org.au>
-MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/sxdg6gsIpF4HdmJ_XxRwn8Z";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GtTd154QHz2xgy
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Aug 2021 20:53:56 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 17NAYN3b039643; Mon, 23 Aug 2021 06:53:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=VK03W+30BqBYeXpGwPZrGnWV+vbZaZ/TMMug5lrNGn8=;
+ b=JgYC0gODFl8HmCalHaHw745zt3POR0EpG3aUrewK2WN3A769e5hI0hS3/2YOTQH06x3G
+ Q1pjiH/hapDcLXmUAwOk2qFU13UZnthyIjxBz/ne+KttOywWrOaYOGuVmVaAZfh/iYZQ
+ gbFFyn9vcCFfjAGpjpIC8iJG1tRTFgqolcqZAn2Tb4r8iFmYJNE6ZNbtS1xpNt7BJ9RA
+ LrzVk4WnbOsKIFz6Hf0gZDIcsybzmNJkh7JOXGvvCOa/NUCS1xxeVFurkJ/1j5hNTJzA
+ +PIdzBFyv8+hzUonJGSBTokfD8jrltSd2N1EpZiB44fbpfeBiTl6bt8dm1o0C8RqjFoG Gg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3am358artv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 23 Aug 2021 06:53:46 -0400
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 17NAYciQ040734;
+ Mon, 23 Aug 2021 06:53:46 -0400
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3am358artg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 23 Aug 2021 06:53:46 -0400
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 17NArNtJ006021;
+ Mon, 23 Aug 2021 10:53:44 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma04fra.de.ibm.com with ESMTP id 3ajs48jpv0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 23 Aug 2021 10:53:44 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 17NArets26280222
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 23 Aug 2021 10:53:40 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6B5E2A4096;
+ Mon, 23 Aug 2021 10:53:40 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EC76FA4098;
+ Mon, 23 Aug 2021 10:53:39 +0000 (GMT)
+Received: from sig-9-145-159-82.de.ibm.com (unknown [9.145.159.82])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 23 Aug 2021 10:53:39 +0000 (GMT)
+Message-ID: <7595397d6c32ae8745201085956696866cc400b6.camel@linux.ibm.com>
+Subject: Re: [PATCH v3] PCI: Move pci_dev_is/assign_added() to pci.h
+From: Niklas Schnelle <schnelle@linux.ibm.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Date: Mon, 23 Aug 2021 12:53:39 +0200
+In-Reply-To: <20210820223734.GA3366782@bjorn-Precision-5520>
+References: <20210820223734.GA3366782@bjorn-Precision-5520>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-16.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: sPEaVfThlIByYT9mCQ6fz2K2kUsFA1OW
+X-Proofpoint-GUID: Srhjx2oMjFIXmjyTPWQ2Mu1yV3gTT4k-
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-08-23_02:2021-08-23,
+ 2021-08-23 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 suspectscore=0
+ mlxlogscore=999 spamscore=0 impostorscore=0 lowpriorityscore=0
+ adultscore=0 bulkscore=0 phishscore=0 clxscore=1011 priorityscore=1501
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2107140000 definitions=main-2108230070
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,142 +107,126 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Jonathan Corbet <corbet@lwn.net>
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ linux-pci@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/sxdg6gsIpF4HdmJ_XxRwn8Z
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On Fri, 2021-08-20 at 17:37 -0500, Bjorn Helgaas wrote:
+> On Tue, Jul 20, 2021 at 05:01:45PM +0200, Niklas Schnelle wrote:
+> > The helper function pci_dev_is_added() from drivers/pci/pci.h is used in
+> > PCI arch code of both s390 and powerpc leading to awkward relative
+> > includes. Move it to the global include/linux/pci.h and get rid of these
+> > includes just for that one function.
+> 
+> I agree the includes are awkward.
+> 
+> But the arch code *using* pci_dev_is_added() seems awkward, too.
 
-Hi all,
+See below for my interpretation why s390 has some driver like
+functionality in its arch code which isn't necessarily awkward.
 
-[cc'ing Jon in case he can fix the sphix hang - or knows anything about it]
+Independent from that I have found pci_dev_is_added() as the only way
+deal with the case that one might be looking at a struct pci_dev
+reference that has been removed via pci_stop_and_remove_bus_device() or
+has never been fully scanned. This is quite useful when handling error
+events which on s390 are part of the adapter event mechanism shared
+with channel I/O devices.
 
-On Mon, 23 Aug 2021 19:55:40 +1000 Stephen Rothwell <sfr@canb.auug.org.au> =
-wrote:
->
-> After merging the powerpc tree, today's linux-next build (htmldocs)
-> produced this warning:
->=20
+> 
+> AFAICS, in powerpc, pci_dev_is_added() is only used by
+> pnv_pci_ioda_fixup_iov() and pseries_pci_fixup_iov_resources().  Those
+> are only called from pcibios_add_device(), which is only called from
+> pci_device_add().
+> 
+> Is it even possible for pci_dev_is_added() to be true in that path?
+> 
+> s390 uses pci_dev_is_added() in recover_store()
 
-I missed a line:
+I'm actually looking into this as I'm working on an s390 implementation
+of the PCI recovery flow described in Documentation/PCI/pci-error-
+recovery.rst that would also call pci_dev_is_added() because when we
+get a platform notification of a PCI reset done by firmware it may be
+that the sturct pci_dev is going away i.e. we still have a ref count
+but it is not added to the PCI bus anymore. And pci_dev_is_added() is
+the only way I've found to check for this state.
 
-Sphinx parallel build error:
+> , but I don't know what
+> that is (looks like a sysfs file, but it's not documented) or why s390
+> is the only arch that does this.
 
-> docutils.utils.SystemMessage: Documentation/powerpc/associativity.rst:1: =
-(SEVERE/4) Title overline & underline mismatch.
->=20
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D
-> NUMA resource associativity
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
->=20
-> Introduced by commit
->=20
->   1c6b5a7e7405 ("powerpc/pseries: Add support for FORM2 associativity")
->=20
-> There are other obvious problems with this document (but sphinx seems
-> to have hung before it reported them).
->=20
-> Like
->=20
-> Form 0
-> -----
->=20
-> and
->=20
-> Form 1
-> -----
->=20
-> and
->=20
-> Form 2
-> -------
+Good point about this not being documented, I'll look into adding docs.
 
-I also get the following warning:
+This is a sysfs attribute that basically removes the pci_dev and re-
+adds it. This has the complication that since the attribute sits at
+/sys/bus/pci/devices/<dev>/recover it deletes its own parent directory
+which requires extra caution and means concurrent accesses block on
+pci_lock_rescan_remove() instead of a kernfs lock.
+Long story short when concurrently triggering the attribute one thread
+proceeds into the pci_lock_rescan_remove() section and does the
+removal, while others would block on pci_lock_rescan_remove(). Now when
+the threads unblock the removal is done. In this case there is a new
+struct pci_dev found in the rescan but the previously blocked threads
+still have references to the old struct pci_dev which was removed and
+as far as I could tell can only be distinguihsed by checking
+pci_dev_is_added().
 
-Documentation/powerpc/associativity.rst: WARNING: document isn't included i=
-n any toctree
+> 
+> Maybe we should make powerpc and s390 less special?
 
-And applying the following patch is enough to allow sphinx to finish
-(rather than livelocking):
+On s390, as I see it, the reason for this is that all of the PCI
+functionality is directly defined in the Architecture as special CPU
+instructions which are kind of hypercalls but also an ISA extension.
 
-diff --git a/Documentation/powerpc/associativity.rst b/Documentation/powerp=
-c/associativity.rst
-index 07e7dd3d6c87..b77c6ccbd6cb 100644
---- a/Documentation/powerpc/associativity.rst
-+++ b/Documentation/powerpc/associativity.rst
-@@ -1,6 +1,6 @@
--=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D
-+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
- NUMA resource associativity
--=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
-=20
- Associativity represents the groupings of the various platform resources i=
-nto
- domains of substantially similar mean performance relative to resources ou=
-tside
-@@ -20,11 +20,11 @@ A value of 1 indicates the usage of Form 1 associativit=
-y. For Form 2 associativi
- bit 2 of byte 5 in the "ibm,architecture-vec-5" property is used.
-=20
- Form 0
-------
-+------
- Form 0 associativity supports only two NUMA distances (LOCAL and REMOTE).
-=20
- Form 1
-------
-+------
- With Form 1 a combination of ibm,associativity-reference-points, and ibm,a=
-ssociativity
- device tree properties are used to determine the NUMA distance between res=
-ource groups/domains.
-=20
-@@ -45,7 +45,7 @@ level of the resource group, the kernel doubles the NUMA =
-distance between the
- comparing domains.
-=20
- Form 2
---------
-+------
- Form 2 associativity format adds separate device tree properties represent=
-ing NUMA node distance
- thereby making the node distance computation flexible. Form 2 also allows =
-flexible primary
- domain numbering. With numa distance computation now detached from the ind=
-ex value in
+These instructions range from the basic PCI memory accesses (no real
+MMIO) to enumeration of the devices and on to reporting of hot-plug and
+and resets/recovery events. Importantly we do not have any kind of
+direct access to a real or virtual PCI controller and the architecture
+has no concept of a comparable entity.
 
---=20
-Cheers,
-Stephen Rothwell
+So in my opinion while there is some of the functionality of a PCI
+controller in arch/s390/pci the cut off between controller
+functionality and arch support isn't clear at all and exposing PCI
+support as CPU instructions doesn't map well to the controller concept.
 
---Sig_/sxdg6gsIpF4HdmJ_XxRwn8Z
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+That said, in principle I'm open to moving some of that into
+drivers/pci/controller/ if you think that would improve things and we
+can find a good argument what should go where. One possible cut off
+would be to have arch/s390/pci/ provide wrappers to the PCI
+instructions but move all their uses to  e.g.
+drivers/pci/controller/s390/. This would of course be a major
+refactoring and none of that code would be useful on any other
+architecture but it would move a lot the accesses to PCI common code
+functionality out of the arch code.
 
------BEGIN PGP SIGNATURE-----
+> 
+> > Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+> > ---
+> > Since v1 (and bad v2):
+> > - Fixed accidental removal of PCI_DPC_RECOVERED, PCI_DPC_RECOVERING
+> >   defines and also move these to include/linux/pci.h
+> > 
+> >  arch/powerpc/platforms/powernv/pci-sriov.c |  3 ---
+> >  arch/powerpc/platforms/pseries/setup.c     |  1 -
+> >  arch/s390/pci/pci_sysfs.c                  |  2 --
+> >  drivers/pci/hotplug/acpiphp_glue.c         |  1 -
+> >  drivers/pci/pci.h                          | 15 ---------------
+> >  include/linux/pci.h                        | 15 +++++++++++++++
+> >  6 files changed, 15 insertions(+), 22 deletions(-)
+> > 
+> > diff --git a/arch/powerpc/platforms/powernv/pci-sriov.c b/arch/powerpc/platforms/powernv/pci-sriov.c
+> > index 28aac933a439..2e0ca5451e85 100644
+> > --- a/arch/powerpc/platforms/powernv/pci-sriov.c
+> > +++ b/arch/powerpc/platforms/powernv/pci-sriov.c
+> > @@ -9,9 +9,6 @@
+> >  
+> >  #include "pci.h"
+> >  
+> > -/* for pci_dev_is_added() */
+> > -#include "../../../../drivers/pci/pci.h"
+> > 
+.. snip ..
 
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmEjfOMACgkQAVBC80lX
-0GyLKggAhCMrgdwGxkXle5T2qBzbCLLt9t4orSVuLnnyOdL/bZOW3T4uZoeNrwE3
-ZgvcuzFGHpNjiT84wlMR1Ui6tD/cSF95PEyno26ZoifhPQELvZxBgiYQtCirrgIJ
-Co8qEQPsScICE8fvNNhwbliv/xYTei+Hfj2tED/FugRbaHHqoOOjUVUfO/PI0roZ
-kRD8H5x35d+oYVUwhqmzmYWMYtcdnyXcu3vsx587Nr3O9yk0n+PLwU6OaAgSPtt7
-PMo+QNZsm+E/Uyvvjkc1wPU5x8UGlU0nOGsLFAjycWrhBeTztpZlunjAHKyfqPQX
-GLRByUmgTZmQw9Gs0SfxO+QhZpkYCQ==
-=4JXF
------END PGP SIGNATURE-----
-
---Sig_/sxdg6gsIpF4HdmJ_XxRwn8Z--
