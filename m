@@ -2,94 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED3A13F4833
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 12:05:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 682233F4840
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 12:08:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GtSY567gYz2y6B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 20:05:29 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=i20ISQEg;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GtSc215xKz2yHD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 20:08:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=i20ISQEg; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GtSXK4FcBz2xX9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Aug 2021 20:04:48 +1000 (AEST)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 17NA2tBd119390; Mon, 23 Aug 2021 06:04:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=wwHYIxO6MCjjflmV7eo6FG+yNgtnQ/OuwP/+KKyCMlo=;
- b=i20ISQEgH4opuxqAA8psGOvj/gbGlEKDqKTNkry0kL30tDp/N4csNOYkGO8AV/Nb1VxI
- 3lvb0G4+L/tS9pJRZK21L/fKKaWpCABTvHZbW2lWwyJPfulaAUnl+resMklh6hPEGrQ5
- 4EiHA7qjM9F4eznH429iMrL+0SnFM06e/R7e1UvDcJ55ofb56CC8fPSVIdXInKlTjLM7
- ighIv7CXid8dB1WkU/kHIxQT9FGjz17HCf9NFlruN7vszcTy5zAeldrkXM1/26iq8lM+
- AbxMym53sAfYfa0qJZzapfjwgSoVEWTfklIPiTrKL2LlI5Cq01JqB+wF8N9MxncbKxBj JQ== 
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3am28wj5jx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Aug 2021 06:04:25 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 17NA3ITo017136;
- Mon, 23 Aug 2021 10:04:23 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma04fra.de.ibm.com with ESMTP id 3ajs48jn25-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Aug 2021 10:04:22 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 17NA4Fgi48235000
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 23 Aug 2021 10:04:15 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 69AC9A4067;
- Mon, 23 Aug 2021 10:04:15 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 01849A4070;
- Mon, 23 Aug 2021 10:04:11 +0000 (GMT)
-Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Mon, 23 Aug 2021 10:04:10 +0000 (GMT)
-Date: Mon, 23 Aug 2021 15:34:09 +0530
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-Subject: Re: [PATCH 1/3] powerpc/smp: Fix a crash while booting kvm guest
- with nr_cpus=2
-Message-ID: <20210823100409.GM21942@linux.vnet.ibm.com>
-References: <20210821092419.167454-1-srikar@linux.vnet.ibm.com>
- <20210821092419.167454-2-srikar@linux.vnet.ibm.com>
- <20210823061122.GC8104@in.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <20210823061122.GC8104@in.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: w2Q9YzoEnbUL-_lO4Bu9GlRvLpEwSo61
-X-Proofpoint-ORIG-GUID: w2Q9YzoEnbUL-_lO4Bu9GlRvLpEwSo61
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-08-23_02:2021-08-23,
- 2021-08-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- suspectscore=0 clxscore=1015 adultscore=0 mlxlogscore=999 phishscore=0
- lowpriorityscore=0 spamscore=0 mlxscore=0 impostorscore=0 bulkscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2107140000 definitions=main-2108230067
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GtSbX5kVnz2xXL
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Aug 2021 20:07:34 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4GtSbR5lzTz9sTF;
+ Mon, 23 Aug 2021 12:07:31 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id trzcqDxyUJ-y; Mon, 23 Aug 2021 12:07:31 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4GtSbR4S6Jz9sSl;
+ Mon, 23 Aug 2021 12:07:31 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 54E428B78C;
+ Mon, 23 Aug 2021 12:07:31 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id noyFMA_O5PtN; Mon, 23 Aug 2021 12:07:31 +0200 (CEST)
+Received: from po9473vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
+ [172.25.230.100])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2EEE98B796;
+ Mon, 23 Aug 2021 12:07:31 +0200 (CEST)
+Received: by po9473vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id E513A663D4; Mon, 23 Aug 2021 10:07:30 +0000 (UTC)
+Message-Id: <84a44c20e8878a37d7dcfccaad71109c012ff3cf.1629713148.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH] powerpc/32s: Fix random crashes by adding isync() after
+ locking/unlocking KUEP
+To: stable@vger.kernel.org
+Date: Mon, 23 Aug 2021 10:07:30 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,102 +58,151 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Valentin Schneider <valentin.schneider@arm.com>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@kernel.org>
+Cc: fthain@linux-m68k.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, userm57@yahoo.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Gautham R Shenoy <ego@linux.vnet.ibm.com> [2021-08-23 11:41:22]:
+Backport for kernel 5.13
 
-> On Sat, Aug 21, 2021 at 02:54:17PM +0530, Srikar Dronamraju wrote:
-> > Aneesh reported a crash with a fairly recent upstream kernel when
-> > booting kernel whose commandline was appended with nr_cpus=2
-> > 
-> > 1:mon> e
-> > cpu 0x1: Vector: 300 (Data Access) at [c000000008a67bd0]
-> >     pc: c00000000002557c: cpu_to_chip_id+0x3c/0x100
-> >     lr: c000000000058380: start_secondary+0x460/0xb00
-> >     sp: c000000008a67e70
-> >    msr: 8000000000001033
-> >    dar: 10
-> >  dsisr: 80000
-> >   current = 0xc00000000891bb00
-> >   paca    = 0xc0000018ff981f80   irqmask: 0x03   irq_happened: 0x01
-> >     pid   = 0, comm = swapper/1
-> > Linux version 5.13.0-rc3-15704-ga050a6d2b7e8 (kvaneesh@ltc-boston8) (gcc (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0, GNU ld (GNU Binutils for Ubuntu) 2.34) #433 SMP Tue May 25 02:38:49 CDT 2021
-> > 1:mon> t
-> > [link register   ] c000000000058380 start_secondary+0x460/0xb00
-> > [c000000008a67e70] c000000008a67eb0 (unreliable)
-> > [c000000008a67eb0] c0000000000589d4 start_secondary+0xab4/0xb00
-> > [c000000008a67f90] c00000000000c654 start_secondary_prolog+0x10/0x14
-> > 
-> > Current code assumes that num_possible_cpus() is always greater than
-> > threads_per_core. However this may not be true when using nr_cpus=2 or
-> > similar options. Handle the case where num_possible_cpus is smaller than
-> > threads_per_core.
-> >
-> > Cc: linuxppc-dev@lists.ozlabs.org
-> > Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> > Cc: Nathan Lynch <nathanl@linux.ibm.com>
-> > Cc: Michael Ellerman <mpe@ellerman.id.au>
-> > Cc: Ingo Molnar <mingo@kernel.org>
-> > Cc: Peter Zijlstra <peterz@infradead.org>
-> > Cc: Valentin Schneider <valentin.schneider@arm.com>
-> > Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-> > Cc: Vincent Guittot <vincent.guittot@linaro.org>
-> > Fixes: c1e53367dab1 ("powerpc/smp: Cache CPU to chip lookup")
-> > Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> > Debugged-by: Michael Ellerman <mpe@ellerman.id.au>
-> > Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-> > ---
-> >  arch/powerpc/kernel/smp.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-> > index 6c6e4d934d86..3d6874fe1937 100644
-> > --- a/arch/powerpc/kernel/smp.c
-> > +++ b/arch/powerpc/kernel/smp.c
-> > @@ -1074,7 +1074,7 @@ void __init smp_prepare_cpus(unsigned int max_cpus)
-> >  	}
-> > 
-> >  	if (cpu_to_chip_id(boot_cpuid) != -1) {
-> > -		int idx = num_possible_cpus() / threads_per_core;
-> > +		int idx = max((int)num_possible_cpus() / threads_per_core, 1);
-> 
-> I think this code was assuming that num_possible_cpus() is a multiple
-> of threads_per_core.
-> 
-> So, on a system with threads_per_core=8, if we pass nr_cpus=10, we
-> will still get idx=1. Thus, we will allocate only one entry in
-> chip_id_lookup_table[] even though there are two cores and
-> chip_id_lookup_table[] is expected to have one entry per core.
-> 
-> Is this a valid scenario ? If yes, should we use
-> 
->    idx = DIV_ROUND_UP(num_possible_cpus, threads_per_core);
-> 
+(cherry picked from commit ef486bf448a057a6e2d50e40ae879f7add6585da)
 
-Yes, this can be done.
-will resend this patch with this change.
+Commit b5efec00b671 ("powerpc/32s: Move KUEP locking/unlocking in C")
+removed the 'isync' instruction after adding/removing NX bit in user
+segments. The reasoning behind this change was that when setting the
+NX bit we don't mind it taking effect with delay as the kernel never
+executes text from userspace, and when clearing the NX bit this is
+to return to userspace and then the 'rfi' should synchronise the
+context.
 
-> 
-> > 
-> >  		/*
-> >  		 * All threads of a core will all belong to the same core,
-> > -- 
-> > 2.18.2
-> > 
-> 
-> --
-> Thanks and Regards
-> gautham.
+However, it looks like on book3s/32 having a hash page table, at least
+on the G3 processor, we get an unexpected fault from userspace, then
+this is followed by something wrong in the verification of MSR_PR
+at end of another interrupt.
 
+This is fixed by adding back the removed isync() following update
+of NX bit in user segment registers. Only do it for cores with an
+hash table, as 603 cores don't exhibit that problem and the two isync
+increase ./null_syscall selftest by 6 cycles on an MPC 832x.
+
+First problem: unexpected WARN_ON() for mysterious PROTFAULT
+
+  WARNING: CPU: 0 PID: 1660 at arch/powerpc/mm/fault.c:354 do_page_fault+0x6c/0x5b0
+  Modules linked in:
+  CPU: 0 PID: 1660 Comm: Xorg Not tainted 5.13.0-pmac-00028-gb3c15b60339a #40
+  NIP:  c001b5c8 LR: c001b6f8 CTR: 00000000
+  REGS: e2d09e40 TRAP: 0700   Not tainted  (5.13.0-pmac-00028-gb3c15b60339a)
+  MSR:  00021032 <ME,IR,DR,RI>  CR: 42d04f30  XER: 20000000
+  GPR00: c000424c e2d09f00 c301b680 e2d09f40 0000001e 42000000 00cba028 00000000
+  GPR08: 08000000 48000010 c301b680 e2d09f30 22d09f30 00c1fff0 00cba000 a7b7ba4c
+  GPR16: 00000031 00000000 00000000 00000000 00000000 00000000 a7b7b0d0 00c5c010
+  GPR24: a7b7b64c a7b7d2f0 00000004 00000000 c1efa6c0 00cba02c 00000300 e2d09f40
+  NIP [c001b5c8] do_page_fault+0x6c/0x5b0
+  LR [c001b6f8] do_page_fault+0x19c/0x5b0
+  Call Trace:
+  [e2d09f00] [e2d09f04] 0xe2d09f04 (unreliable)
+  [e2d09f30] [c000424c] DataAccess_virt+0xd4/0xe4
+  --- interrupt: 300 at 0xa7a261dc
+  NIP:  a7a261dc LR: a7a253bc CTR: 00000000
+  REGS: e2d09f40 TRAP: 0300   Not tainted  (5.13.0-pmac-00028-gb3c15b60339a)
+  MSR:  0000d032 <EE,PR,ME,IR,DR,RI>  CR: 228428e2  XER: 20000000
+  DAR: 00cba02c DSISR: 42000000
+  GPR00: a7a27448 afa6b0e0 a74c35c0 a7b7b614 0000001e a7b7b614 00cba028 00000000
+  GPR08: 00020fd9 00000031 00cb9ff8 a7a273b0 220028e2 00c1fff0 00cba000 a7b7ba4c
+  GPR16: 00000031 00000000 00000000 00000000 00000000 00000000 a7b7b0d0 00c5c010
+  GPR24: a7b7b64c a7b7d2f0 00000004 00000002 0000001e a7b7b614 a7b7aff4 00000030
+  NIP [a7a261dc] 0xa7a261dc
+  LR [a7a253bc] 0xa7a253bc
+  --- interrupt: 300
+  Instruction dump:
+  7c4a1378 810300a0 75278410 83820298 83a300a4 553b018c 551e0036 4082038c
+  2e1b0000 40920228 75280800 41820220 <0fe00000> 3b600000 41920214 81420594
+
+Second problem: MSR PR is seen unset allthough the interrupt frame shows it set
+
+  kernel BUG at arch/powerpc/kernel/interrupt.c:458!
+  Oops: Exception in kernel mode, sig: 5 [#1]
+  BE PAGE_SIZE=4K MMU=Hash SMP NR_CPUS=2 PowerMac
+  Modules linked in:
+  CPU: 0 PID: 1660 Comm: Xorg Tainted: G        W         5.13.0-pmac-00028-gb3c15b60339a #40
+  NIP:  c0011434 LR: c001629c CTR: 00000000
+  REGS: e2d09e70 TRAP: 0700   Tainted: G        W          (5.13.0-pmac-00028-gb3c15b60339a)
+  MSR:  00029032 <EE,ME,IR,DR,RI>  CR: 42d09f30  XER: 00000000
+  GPR00: 00000000 e2d09f30 c301b680 e2d09f40 83440000 c44d0e68 e2d09e8c 00000000
+  GPR08: 00000002 00dc228a 00004000 e2d09f30 22d09f30 00c1fff0 afa6ceb4 00c26144
+  GPR16: 00c25fb8 00c26140 afa6ceb8 90000000 00c944d8 0000001c 00000000 00200000
+  GPR24: 00000000 000001fb afa6d1b4 00000001 00000000 a539a2a0 a530fd80 00000089
+  NIP [c0011434] interrupt_exit_kernel_prepare+0x10/0x70
+  LR [c001629c] interrupt_return+0x9c/0x144
+  Call Trace:
+  [e2d09f30] [c000424c] DataAccess_virt+0xd4/0xe4 (unreliable)
+  --- interrupt: 300 at 0xa09be008
+  NIP:  a09be008 LR: a09bdfe8 CTR: a09bdfc0
+  REGS: e2d09f40 TRAP: 0300   Tainted: G        W          (5.13.0-pmac-00028-gb3c15b60339a)
+  MSR:  0000d032 <EE,PR,ME,IR,DR,RI>  CR: 420028e2  XER: 20000000
+  DAR: a539a308 DSISR: 0a000000
+  GPR00: a7b90d50 afa6b2d0 a74c35c0 a0a8b690 a0a8b698 a5365d70 a4fa82a8 00000004
+  GPR08: 00000000 a09bdfc0 00000000 a5360000 a09bde7c 00c1fff0 afa6ceb4 00c26144
+  GPR16: 00c25fb8 00c26140 afa6ceb8 90000000 00c944d8 0000001c 00000000 00200000
+  GPR24: 00000000 000001fb afa6d1b4 00000001 00000000 a539a2a0 a530fd80 00000089
+  NIP [a09be008] 0xa09be008
+  LR [a09bdfe8] 0xa09bdfe8
+  --- interrupt: 300
+  Instruction dump:
+  80010024 83e1001c 7c0803a6 4bffff80 3bc00800 4bffffd0 486b42fd 4bffffcc
+  81430084 71480002 41820038 554a0462 <0f0a0000> 80620060 74630001 40820034
+
+Fixes: b5efec00b671 ("powerpc/32s: Move KUEP locking/unlocking in C")
+Cc: stable@vger.kernel.org # v5.13+
+Reported-by: Stan Johnson <userm57@yahoo.com>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/4856f5574906e2aec0522be17bf3848a22b2cd0b.1629269345.git.christophe.leroy@csgroup.eu
+---
+ arch/powerpc/mm/book3s32/kuep.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/arch/powerpc/mm/book3s32/kuep.c b/arch/powerpc/mm/book3s32/kuep.c
+index 8ed1b8634839..7015bd489063 100644
+--- a/arch/powerpc/mm/book3s32/kuep.c
++++ b/arch/powerpc/mm/book3s32/kuep.c
+@@ -4,6 +4,7 @@
+ #include <asm/reg.h>
+ #include <asm/task_size_32.h>
+ #include <asm/mmu.h>
++#include <asm/synch.h>
+ 
+ #define KUEP_UPDATE_TWO_USER_SEGMENTS(n) do {		\
+ 	if (TASK_SIZE > ((n) << 28))			\
+@@ -32,9 +33,27 @@ static __always_inline void kuep_update(u32 val)
+ void kuep_lock(void)
+ {
+ 	kuep_update(mfsr(0) | SR_NX);
++	/*
++	 * This isync() shouldn't be necessary as the kernel is not excepted to
++	 * run any instruction in userspace soon after the update of segments,
++	 * but hash based cores (at least G3) seem to exhibit a random
++	 * behaviour when the 'isync' is not there. 603 cores don't have this
++	 * behaviour so don't do the 'isync' as it saves several CPU cycles.
++	 */
++	if (mmu_has_feature(MMU_FTR_HPTE_TABLE))
++		isync();	/* Context sync required after mtsr() */
+ }
+ 
+ void kuep_unlock(void)
+ {
+ 	kuep_update(mfsr(0) & ~SR_NX);
++	/*
++	 * This isync() shouldn't be necessary as a 'rfi' will soon be executed
++	 * to return to userspace, but hash based cores (at least G3) seem to
++	 * exhibit a random behaviour when the 'isync' is not there. 603 cores
++	 * don't have this behaviour so don't do the 'isync' as it saves several
++	 * CPU cycles.
++	 */
++	if (mmu_has_feature(MMU_FTR_HPTE_TABLE))
++		isync();	/* Context sync required after mtsr() */
+ }
 -- 
-Thanks and Regards
-Srikar Dronamraju
+2.25.0
+
