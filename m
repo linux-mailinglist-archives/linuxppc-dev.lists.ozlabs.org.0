@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 230D73F4D55
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 17:21:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCB0F3F4D5C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 17:22:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GtbYq0918z305W
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Aug 2021 01:21:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GtbZG0gK4z3c6N
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Aug 2021 01:21:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -14,40 +14,41 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GtbXw6l7Mz2yHD
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Aug 2021 01:20:46 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GtbY06810z2yJG
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Aug 2021 01:20:52 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4GtbXq1Y6Nz9sT3;
- Mon, 23 Aug 2021 17:20:43 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4GtbXr1NF9z9sVN;
+ Mon, 23 Aug 2021 17:20:44 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id hBju9igGbz3q; Mon, 23 Aug 2021 17:20:43 +0200 (CEST)
+ with ESMTP id qJVD9jWR5y9k; Mon, 23 Aug 2021 17:20:44 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4GtbXq0Jflz9sT2;
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4GtbXq6xjVz9sT2;
  Mon, 23 Aug 2021 17:20:43 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id DE6B58B7B3;
- Mon, 23 Aug 2021 17:20:42 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id CD4538B7B3;
+ Mon, 23 Aug 2021 17:20:43 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id lnbyMjsGF0x4; Mon, 23 Aug 2021 17:20:42 +0200 (CEST)
+ with ESMTP id wKp50bCM43qQ; Mon, 23 Aug 2021 17:20:43 +0200 (CEST)
 Received: from po18078vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
  [172.25.230.100])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B1BBE8B7AF;
- Mon, 23 Aug 2021 17:20:42 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A03BB8B7AF;
+ Mon, 23 Aug 2021 17:20:43 +0200 (CEST)
 Received: by po18078vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 812696BC76; Mon, 23 Aug 2021 15:20:42 +0000 (UTC)
-Message-Id: <343d06ab9ea7b8b6358308753ec1e8fa7e3d4f11.1629731144.git.christophe.leroy@csgroup.eu>
+ id 90F296BC76; Mon, 23 Aug 2021 15:20:43 +0000 (UTC)
+Message-Id: <5c42e3516eea33cb820e43912cebc9e11fbc22d5.1629731144.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <343d06ab9ea7b8b6358308753ec1e8fa7e3d4f11.1629731144.git.christophe.leroy@csgroup.eu>
+References: <343d06ab9ea7b8b6358308753ec1e8fa7e3d4f11.1629731144.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v3 1/2] powerpc/32s: Do kuep_lock() and kuep_unlock() in
- assembly
+Subject: [PATCH v3 2/2] powerpc/32s: Save content of sr0 to avoid 'mfsr'
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 23 Aug 2021 15:20:42 +0000 (UTC)
+Date: Mon, 23 Aug 2021 15:20:43 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,344 +65,223 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When interrupt and syscall entries where converted to C, KUEP locking
-and unlocking was also converted. It improved performance by unrolling
-the loop, and allowed easily implementing boot time deactivation of
-KUEP.
+Calling 'mfsr' to get the content of segment registers is heavy,
+in addition it requires clearing of the 'reserved' bits.
 
-However, null_syscall selftest shows that KUEP is still heavy
-(361 cycles with KUEP, 212 cycles without).
+In order to avoid this operation, save it in mm context and in
+thread struct.
 
-A way to improve more is to group 'mtsr's together, instead of
-repeating 'addi' + 'mtsr' several times.
+The saved sr0 is the one used by kernel, this means that on
+locking entry it can be used as is.
 
-In order to do that, more registers need to be available. In C, GCC
-will always be able to provide the requested number of registers, but
-at the cost of saving some data on the stack, which is counter
-performant here.
+For unlocking, the only thing to do is to clear SR_NX.
 
-So let's do it in assembly, when we have full control of which
-register can be used. It also has the advantage of locking earlier
-and unlocking later and it helps GCC generating less tricky code.
-The only drawback is to make boot time deactivation less straight
-forward and require 'hand' instruction patching.
+This improves null_syscall selftest by 12 cycles, ie 4%.
 
-Group 'mtsr's by 4.
-
-With this change, null_syscall selftest reports 336 cycles. Without
-the change it was 361 cycles, that's a 7% reduction.
-
-For the time being, capability to deactive at boot time is disabled.
-It will be re-enabled in following patch.
+Capability to deactive KUEP at boot time is re-enabled by this patch.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
-v3:
-- Add isync after updating segments
-- Only group by 4. Grouping by 6 only saves one more cycle.
-- Implement subfunctions kuep_lock and kuep_unlock.
-
-v2: Fixed build failure for non book3s/32
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+v3: Simplified patching implied by simplified preceding patch
 ---
- arch/powerpc/include/asm/book3s/32/kup.h      | 34 --------
- arch/powerpc/include/asm/book3s/32/mmu-hash.h | 77 ++++++++++++++++++-
- arch/powerpc/include/asm/interrupt.h          |  6 +-
- arch/powerpc/include/asm/kup.h                |  5 --
- arch/powerpc/kernel/entry_32.S                | 31 ++++++++
- arch/powerpc/kernel/head_32.h                 |  6 ++
- arch/powerpc/kernel/interrupt.c               |  3 -
- arch/powerpc/mm/book3s32/kuep.c               |  7 +-
- 8 files changed, 121 insertions(+), 48 deletions(-)
+ arch/powerpc/include/asm/book3s/32/kup.h      |  2 ++
+ arch/powerpc/include/asm/book3s/32/mmu-hash.h |  1 +
+ arch/powerpc/include/asm/processor.h          |  1 +
+ arch/powerpc/kernel/entry_32.S                | 11 +++++----
+ arch/powerpc/mm/book3s32/kuap.c               |  5 +++-
+ arch/powerpc/mm/book3s32/kuep.c               | 24 ++++++++++++-------
+ arch/powerpc/mm/book3s32/mmu_context.c        | 15 ++++++------
+ arch/powerpc/mm/mmu_context.c                 |  3 +++
+ 8 files changed, 40 insertions(+), 22 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/book3s/32/kup.h b/arch/powerpc/include/asm/book3s/32/kup.h
-index d4b145b279f6..f159efd04ebc 100644
+index f159efd04ebc..f03fe357471f 100644
 --- a/arch/powerpc/include/asm/book3s/32/kup.h
 +++ b/arch/powerpc/include/asm/book3s/32/kup.h
-@@ -24,40 +24,6 @@ static __always_inline bool kuep_is_disabled(void)
- 	return !IS_ENABLED(CONFIG_PPC_KUEP) || static_branch_unlikely(&disable_kuep_key);
- }
+@@ -14,6 +14,8 @@
+ extern struct static_key_false disable_kuap_key;
+ extern struct static_key_false disable_kuep_key;
  
--static inline void kuep_lock(void)
--{
--	if (kuep_is_disabled())
--		return;
--
--	update_user_segments(mfsr(0) | SR_NX);
--	/*
--	 * This isync() shouldn't be necessary as the kernel is not excepted to
--	 * run any instruction in userspace soon after the update of segments,
--	 * but hash based cores (at least G3) seem to exhibit a random
--	 * behaviour when the 'isync' is not there. 603 cores don't have this
--	 * behaviour so don't do the 'isync' as it saves several CPU cycles.
--	 */
--	if (mmu_has_feature(MMU_FTR_HPTE_TABLE))
--		isync();	/* Context sync required after mtsr() */
--}
--
--static inline void kuep_unlock(void)
--{
--	if (kuep_is_disabled())
--		return;
--
--	update_user_segments(mfsr(0) & ~SR_NX);
--	/*
--	 * This isync() shouldn't be necessary as a 'rfi' will soon be executed
--	 * to return to userspace, but hash based cores (at least G3) seem to
--	 * exhibit a random behaviour when the 'isync' is not there. 603 cores
--	 * don't have this behaviour so don't do the 'isync' as it saves several
--	 * CPU cycles.
--	 */
--	if (mmu_has_feature(MMU_FTR_HPTE_TABLE))
--		isync();	/* Context sync required after mtsr() */
--}
--
- #ifdef CONFIG_PPC_KUAP
- 
- #include <linux/sched.h>
++extern s32 patch__kuep_lock, patch__kuep_unlock;
++
+ static __always_inline bool kuap_is_disabled(void)
+ {
+ 	return !IS_ENABLED(CONFIG_PPC_KUAP) || static_branch_unlikely(&disable_kuap_key);
 diff --git a/arch/powerpc/include/asm/book3s/32/mmu-hash.h b/arch/powerpc/include/asm/book3s/32/mmu-hash.h
-index f5be185cbdf8..e2f7ccc13edb 100644
+index e2f7ccc13edb..ecc148c1e795 100644
 --- a/arch/powerpc/include/asm/book3s/32/mmu-hash.h
 +++ b/arch/powerpc/include/asm/book3s/32/mmu-hash.h
-@@ -64,7 +64,82 @@ struct ppc_bat {
- #define SR_KP	0x20000000	/* User key */
- #define SR_KS	0x40000000	/* Supervisor key */
+@@ -175,6 +175,7 @@ struct hash_pte {
  
--#ifndef __ASSEMBLY__
-+#ifdef __ASSEMBLY__
-+
-+#include <asm/asm-offsets.h>
-+
-+.macro uus_addi sr reg1 reg2 imm
-+	.if NUM_USER_SEGMENTS > \sr
-+	addi	\reg1,\reg2,\imm
-+	.endif
-+.endm
-+
-+.macro uus_mtsr sr reg1
-+	.if NUM_USER_SEGMENTS > \sr
-+	mtsr	\sr, \reg1
-+	.endif
-+.endm
-+
-+/*
-+ * This isync() shouldn't be necessary as the kernel is not excepted to run
-+ * any instruction in userspace soon after the update of segments and 'rfi'
-+ * instruction is used to return to userspace, but hash based cores
-+ * (at least G3) seem to exhibit a random behaviour when the 'isync' is not
-+ * there. 603 cores don't have this behaviour so don't do the 'isync' as it
-+ * saves several CPU cycles.
-+ */
-+.macro uus_isync
-+#ifdef CONFIG_PPC_BOOK3S_604
-+BEGIN_MMU_FTR_SECTION
-+	isync
-+END_MMU_FTR_SECTION_IFSET(MMU_FTR_HPTE_TABLE)
-+#endif
-+.endm
-+
-+.macro update_user_segments_by_4 tmp1 tmp2 tmp3 tmp4
-+	uus_addi	1, \tmp2, \tmp1, 0x111
-+	uus_addi	2, \tmp3, \tmp1, 0x222
-+	uus_addi	3, \tmp4, \tmp1, 0x333
-+
-+	uus_mtsr	0, \tmp1
-+	uus_mtsr	1, \tmp2
-+	uus_mtsr	2, \tmp3
-+	uus_mtsr	3, \tmp4
-+
-+	uus_addi	4, \tmp1, \tmp1, 0x444
-+	uus_addi	5, \tmp2, \tmp2, 0x444
-+	uus_addi	6, \tmp3, \tmp3, 0x444
-+	uus_addi	7, \tmp4, \tmp4, 0x444
-+
-+	uus_mtsr	4, \tmp1
-+	uus_mtsr	5, \tmp2
-+	uus_mtsr	6, \tmp3
-+	uus_mtsr	7, \tmp4
-+
-+	uus_addi	8, \tmp1, \tmp1, 0x444
-+	uus_addi	9, \tmp2, \tmp2, 0x444
-+	uus_addi	10, \tmp3, \tmp3, 0x444
-+	uus_addi	11, \tmp4, \tmp4, 0x444
-+
-+	uus_mtsr	8, \tmp1
-+	uus_mtsr	9, \tmp2
-+	uus_mtsr	10, \tmp3
-+	uus_mtsr	11, \tmp4
-+
-+	uus_addi	12, \tmp1, \tmp1, 0x444
-+	uus_addi	13, \tmp2, \tmp2, 0x444
-+	uus_addi	14, \tmp3, \tmp3, 0x444
-+	uus_addi	15, \tmp4, \tmp4, 0x444
-+
-+	uus_mtsr	12, \tmp1
-+	uus_mtsr	13, \tmp2
-+	uus_mtsr	14, \tmp3
-+	uus_mtsr	15, \tmp4
-+
-+	uus_isync
-+.endm
-+
-+#else
+ typedef struct {
+ 	unsigned long id;
++	unsigned long sr0;
+ 	void __user *vdso;
+ } mm_context_t;
  
- /*
-  * This macro defines the mapping from contexts to VSIDs (virtual
-diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
-index 6b800d3e2681..03afc4e7928e 100644
---- a/arch/powerpc/include/asm/interrupt.h
-+++ b/arch/powerpc/include/asm/interrupt.h
-@@ -139,12 +139,10 @@ static inline void interrupt_enter_prepare(struct pt_regs *regs, struct interrup
- 	if (!arch_irq_disabled_regs(regs))
- 		trace_hardirqs_off();
- 
--	if (user_mode(regs)) {
--		kuep_lock();
-+	if (user_mode(regs))
- 		account_cpu_user_entry();
--	} else {
-+	else
- 		kuap_save_and_lock(regs);
--	}
+diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
+index f348e564f7dd..4b13f94a4f42 100644
+--- a/arch/powerpc/include/asm/processor.h
++++ b/arch/powerpc/include/asm/processor.h
+@@ -157,6 +157,7 @@ struct thread_struct {
+ #ifdef CONFIG_PPC_BOOK3S_32
+ 	unsigned long	r0, r3, r4, r5, r6, r8, r9, r11;
+ 	unsigned long	lr, ctr;
++	unsigned long	sr0;
  #endif
- 
- #ifdef CONFIG_PPC64
-diff --git a/arch/powerpc/include/asm/kup.h b/arch/powerpc/include/asm/kup.h
-index 1df763002726..34ff86e3686e 100644
---- a/arch/powerpc/include/asm/kup.h
-+++ b/arch/powerpc/include/asm/kup.h
-@@ -38,11 +38,6 @@ void setup_kuep(bool disabled);
- static inline void setup_kuep(bool disabled) { }
- #endif /* CONFIG_PPC_KUEP */
- 
--#ifndef CONFIG_PPC_BOOK3S_32
--static inline void kuep_lock(void) { }
--static inline void kuep_unlock(void) { }
--#endif
--
- #ifdef CONFIG_PPC_KUAP
- void setup_kuap(bool disabled);
- #else
+ #endif /* CONFIG_PPC32 */
+ 	/* Debug Registers */
 diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
-index 0273a1349006..14269313d5dd 100644
+index 14269313d5dd..784be0a0dd9d 100644
 --- a/arch/powerpc/kernel/entry_32.S
 +++ b/arch/powerpc/kernel/entry_32.S
-@@ -73,6 +73,34 @@ prepare_transfer_to_handler:
- _ASM_NOKPROBE_SYMBOL(prepare_transfer_to_handler)
- #endif /* CONFIG_PPC_BOOK3S_32 || CONFIG_E500 */
+@@ -33,6 +33,7 @@
+ #include <asm/kup.h>
+ #include <asm/bug.h>
+ #include <asm/interrupt.h>
++#include <asm/code-patching-asm.h>
  
-+#if defined(CONFIG_PPC_KUEP) && defined(CONFIG_PPC_BOOK3S_32)
-+	.globl	__kuep_lock
-+__kuep_lock:
-+	mfsr    r9,0
-+	rlwinm  r9,r9,0,8,3
-+	oris    r9,r9,SR_NX@h
-+	update_user_segments_by_4 r9, r10, r11, r12
-+	blr
-+
-+__kuep_unlock:
-+	mfsr    r9,0
-+	rlwinm  r9,r9,0,8,2
-+	update_user_segments_by_4 r9, r10, r11, r12
-+	blr
-+
-+.macro	kuep_lock
-+	bl	__kuep_lock
-+.endm
-+.macro	kuep_unlock
-+	bl	__kuep_unlock
-+.endm
-+#else
-+.macro	kuep_lock
-+.endm
-+.macro	kuep_unlock
-+.endm
-+#endif
-+
- 	.globl	transfer_to_syscall
- transfer_to_syscall:
- 	stw	r11, GPR1(r1)
-@@ -94,6 +122,7 @@ transfer_to_syscall:
- 	SAVE_2GPRS(7, r1)
- 	addi	r2,r10,-THREAD
- 	SAVE_NVGPRS(r1)
-+	kuep_lock
+ #include "head_32.h"
  
- 	/* Calling convention has r9 = orig r0, r10 = regs */
- 	addi	r10,r1,STACK_FRAME_OVERHEAD
-@@ -110,6 +139,7 @@ ret_from_syscall:
- 	cmplwi	cr0,r5,0
- 	bne-	2f
- #endif /* CONFIG_PPC_47x */
-+	kuep_unlock
- 	lwz	r4,_LINK(r1)
- 	lwz	r5,_CCR(r1)
- 	mtlr	r4
-@@ -273,6 +303,7 @@ interrupt_return:
- 	beq	.Lkernel_interrupt_return
- 	bl	interrupt_exit_user_prepare
- 	cmpwi	r3,0
-+	kuep_unlock
- 	bne-	.Lrestore_nvgprs
+@@ -76,17 +77,17 @@ _ASM_NOKPROBE_SYMBOL(prepare_transfer_to_handler)
+ #if defined(CONFIG_PPC_KUEP) && defined(CONFIG_PPC_BOOK3S_32)
+ 	.globl	__kuep_lock
+ __kuep_lock:
+-	mfsr    r9,0
+-	rlwinm  r9,r9,0,8,3
+-	oris    r9,r9,SR_NX@h
++0:	blr	/* lwz	r9, current->thread.sr0(r2) */
+ 	update_user_segments_by_4 r9, r10, r11, r12
+ 	blr
++	patch_site	0b, patch__kuep_lock
  
- .Lfast_user_interrupt_return:
-diff --git a/arch/powerpc/kernel/head_32.h b/arch/powerpc/kernel/head_32.h
-index 6b1ec9e3541b..133197039775 100644
---- a/arch/powerpc/kernel/head_32.h
-+++ b/arch/powerpc/kernel/head_32.h
-@@ -136,6 +136,12 @@ _ASM_NOKPROBE_SYMBOL(\name\()_virt)
- 	andi.	r12,r9,MSR_PR
- 	bne	777f
- 	bl	prepare_transfer_to_handler
-+#ifdef CONFIG_PPC_KUEP
-+	b	778f
-+777:
-+	bl	__kuep_lock
-+778:
-+#endif
- 777:
- #endif
- .endm
-diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
-index 21bbd615ca41..cd6139003776 100644
---- a/arch/powerpc/kernel/interrupt.c
-+++ b/arch/powerpc/kernel/interrupt.c
-@@ -81,8 +81,6 @@ notrace long system_call_exception(long r3, long r4, long r5,
+ __kuep_unlock:
+-	mfsr    r9,0
+-	rlwinm  r9,r9,0,8,2
++0:	blr	/* lwz	r9, current->thread.sr0(r2) */
++	rlwinm  r9,r9,0,~SR_NX
+ 	update_user_segments_by_4 r9, r10, r11, r12
+ 	blr
++	patch_site	0b, patch__kuep_unlock
+ 
+ .macro	kuep_lock
+ 	bl	__kuep_lock
+diff --git a/arch/powerpc/mm/book3s32/kuap.c b/arch/powerpc/mm/book3s32/kuap.c
+index 0f920f09af57..28676cabb005 100644
+--- a/arch/powerpc/mm/book3s32/kuap.c
++++ b/arch/powerpc/mm/book3s32/kuap.c
+@@ -20,8 +20,11 @@ EXPORT_SYMBOL(kuap_unlock_all_ool);
+ 
+ void setup_kuap(bool disabled)
  {
- 	syscall_fn f;
- 
--	kuep_lock();
--
- 	regs->orig_gpr3 = r3;
- 
- 	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
-@@ -365,7 +363,6 @@ interrupt_exit_user_prepare_main(unsigned long ret, struct pt_regs *regs)
- 
- 	/* Restore user access locks last */
- 	kuap_user_restore(regs);
--	kuep_unlock();
- 
- 	return ret;
- }
-diff --git a/arch/powerpc/mm/book3s32/kuep.c b/arch/powerpc/mm/book3s32/kuep.c
-index c20733d6e02c..45c9967f9aef 100644
---- a/arch/powerpc/mm/book3s32/kuep.c
-+++ b/arch/powerpc/mm/book3s32/kuep.c
-@@ -7,8 +7,13 @@ struct static_key_false disable_kuep_key;
- 
- void setup_kuep(bool disabled)
- {
-+	if (disabled) {
-+		pr_info("KUEP cannot be disabled for the time being\n");
-+		disabled = false;
+-	if (!disabled)
++	if (!disabled) {
+ 		kuap_lock_all_ool();
++		init_mm.context.sr0 |= SR_KS;
++		current->thread.sr0 |= SR_KS;
 +	}
-+
- 	if (!disabled)
--		kuep_lock();
-+		update_user_segments(mfsr(0) | SR_NX);
  
  	if (smp_processor_id() != boot_cpuid)
  		return;
+diff --git a/arch/powerpc/mm/book3s32/kuep.c b/arch/powerpc/mm/book3s32/kuep.c
+index 45c9967f9aef..0be25492b42d 100644
+--- a/arch/powerpc/mm/book3s32/kuep.c
++++ b/arch/powerpc/mm/book3s32/kuep.c
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ 
++#include <asm/code-patching.h>
+ #include <asm/kup.h>
+ #include <asm/smp.h>
+ 
+@@ -7,19 +8,26 @@ struct static_key_false disable_kuep_key;
+ 
+ void setup_kuep(bool disabled)
+ {
+-	if (disabled) {
+-		pr_info("KUEP cannot be disabled for the time being\n");
+-		disabled = false;
+-	}
++	u32 insn;
+ 
+-	if (!disabled)
+-		update_user_segments(mfsr(0) | SR_NX);
++	if (!disabled) {
++		init_mm.context.sr0 |= SR_NX;
++		current->thread.sr0 |= SR_NX;
++		update_user_segments(init_mm.context.sr0);
++	}
+ 
+ 	if (smp_processor_id() != boot_cpuid)
+ 		return;
+ 
+ 	if (disabled)
+ 		static_branch_enable(&disable_kuep_key);
+-	else
+-		pr_info("Activating Kernel Userspace Execution Prevention\n");
++
++	if (disabled)
++		return;
++
++	insn = PPC_RAW_LWZ(_R9, _R2, offsetof(struct task_struct, thread.sr0));
++	patch_instruction_site(&patch__kuep_lock, ppc_inst(insn));
++	patch_instruction_site(&patch__kuep_unlock, ppc_inst(insn));
++
++	pr_info("Activating Kernel Userspace Execution Prevention\n");
+ }
+diff --git a/arch/powerpc/mm/book3s32/mmu_context.c b/arch/powerpc/mm/book3s32/mmu_context.c
+index e2708e387dc3..269a3eb25a73 100644
+--- a/arch/powerpc/mm/book3s32/mmu_context.c
++++ b/arch/powerpc/mm/book3s32/mmu_context.c
+@@ -69,6 +69,12 @@ EXPORT_SYMBOL_GPL(__init_new_context);
+ int init_new_context(struct task_struct *t, struct mm_struct *mm)
+ {
+ 	mm->context.id = __init_new_context();
++	mm->context.sr0 = CTX_TO_VSID(mm->context.id, 0);
++
++	if (!kuep_is_disabled())
++		mm->context.sr0 |= SR_NX;
++	if (!kuap_is_disabled())
++		mm->context.sr0 |= SR_KS;
+ 
+ 	return 0;
+ }
+@@ -108,20 +114,13 @@ void __init mmu_context_init(void)
+ void switch_mmu_context(struct mm_struct *prev, struct mm_struct *next, struct task_struct *tsk)
+ {
+ 	long id = next->context.id;
+-	unsigned long val;
+ 
+ 	if (id < 0)
+ 		panic("mm_struct %p has no context ID", next);
+ 
+ 	isync();
+ 
+-	val = CTX_TO_VSID(id, 0);
+-	if (!kuep_is_disabled())
+-		val |= SR_NX;
+-	if (!kuap_is_disabled())
+-		val |= SR_KS;
+-
+-	update_user_segments(val);
++	update_user_segments(next->context.sr0);
+ 
+ 	if (IS_ENABLED(CONFIG_BDI_SWITCH))
+ 		abatron_pteptrs[1] = next->pgd;
+diff --git a/arch/powerpc/mm/mmu_context.c b/arch/powerpc/mm/mmu_context.c
+index 74246536b832..e618d5442a28 100644
+--- a/arch/powerpc/mm/mmu_context.c
++++ b/arch/powerpc/mm/mmu_context.c
+@@ -18,6 +18,9 @@ static inline void switch_mm_pgdir(struct task_struct *tsk,
+ {
+ 	/* 32-bit keeps track of the current PGDIR in the thread struct */
+ 	tsk->thread.pgdir = mm->pgd;
++#ifdef CONFIG_PPC_BOOK3S_32
++	tsk->thread.sr0 = mm->context.sr0;
++#endif
+ }
+ #elif defined(CONFIG_PPC_BOOK3E_64)
+ static inline void switch_mm_pgdir(struct task_struct *tsk,
 -- 
 2.25.0
 
