@@ -1,59 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85B973F4698
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 10:29:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1ABE3F46AA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 10:34:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GtQPp3LYPz2yZw
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 18:29:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GtQXF4KMwz2ywv
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 18:34:37 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=aHpeNTob;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=desiato.20200630 header.b=aHpeNTob; 
+ dkim-atps=neutral
+Received: from desiato.infradead.org (desiato.infradead.org
+ [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GtQPL0rbqz2xZm
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Aug 2021 18:28:37 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4GtQPG4KRPz9sWx;
- Mon, 23 Aug 2021 10:28:34 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id ziZo7kWfVZ-c; Mon, 23 Aug 2021 10:28:34 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4GtQP93kVXz9sTv;
- Mon, 23 Aug 2021 10:28:29 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 34CBE8B780;
- Mon, 23 Aug 2021 10:28:29 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id jk5eCs7qyjjO; Mon, 23 Aug 2021 10:28:29 +0200 (CEST)
-Received: from [172.25.230.100] (po15451.idsi0.si.c-s.fr [172.25.230.100])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0B6C28B78F;
- Mon, 23 Aug 2021 10:28:29 +0200 (CEST)
-Subject: Re: [PATCH 5/6] audit: Declare ppc32_classify_syscall()
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- linuxppc-dev@lists.ozlabs.org
-References: <20210819125656.14498-1-clg@kaod.org>
- <20210819125656.14498-6-clg@kaod.org>
- <d268f141-4ec3-eb1d-a6c1-4cd5f535ea49@csgroup.eu>
-Message-ID: <e1acf07a-772d-101d-2f28-24965f630248@csgroup.eu>
-Date: Mon, 23 Aug 2021 10:28:20 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GtQWR1GrBz2xv0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Aug 2021 18:33:54 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=ZqQlJEs3+S/YbegzWanXys/MVIhQy2d1jIm/fVWjrbc=; b=aHpeNTobIPGNP3awR0rnjFJYpN
+ hwJg6bbdwFk0KAouDD7NF2fx57Ccbugi68CglwfRLBNefWqiJSWV9Eca4zzNJOXV8wtTZetSH1lZw
+ 0I0NSGNGV/4n3DwGVVijDL+VFfPCMeeT5MpagugwZwSam+s4KjIlS6vOzSdtbjRHvSZChlvD9TgTS
+ QR4/ug2NyxWHTSkC4g7rorLgk6gWv8JRyEscGz9a7fOzVCZa7d5Glge5lrvYgsXwp1FAdnTWsCVFe
+ aW1dV7QwCFacUHKYKYb9iSbm3xL4+uC99Y04Sqd6NNEQtUTsXC7cbX28PxAIWmySKy1j4GV5LmDX0
+ rZBZ3WTQ==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1mI5Oe-00CGJH-PG; Mon, 23 Aug 2021 08:33:32 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id C58BC30067B;
+ Mon, 23 Aug 2021 10:33:30 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id 8488025D644A1; Mon, 23 Aug 2021 10:33:30 +0200 (CEST)
+Date: Mon, 23 Aug 2021 10:33:30 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2 0/3] Updates to powerpc for robust CPU online/offline
+Message-ID: <YSNdWhxVWtMJKAWi@hirez.programming.kicks-ass.net>
+References: <20210821102535.169643-1-srikar@linux.vnet.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <d268f141-4ec3-eb1d-a6c1-4cd5f535ea49@csgroup.eu>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210821102535.169643-1-srikar@linux.vnet.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,69 +71,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Gautham R Shenoy <ego@linux.vnet.ibm.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>,
+ Valentin Schneider <valentin.schneider@arm.com>,
+ Laurent Dufour <ldufour@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Sat, Aug 21, 2021 at 03:55:32PM +0530, Srikar Dronamraju wrote:
+> Scheduler expects unique number of node distances to be available
+> at boot. It uses node distance to calculate this unique node
+> distances. On Power Servers, node distances for offline nodes is not
+> available. However, Power Servers already knows unique possible node
+> distances. Fake the offline node's distance_lookup_table entries so
+> that all possible node distances are updated.
+> 
+> For example distance info from numactl from a fully populated 8 node
+> system at boot may look like this.
+> 
+> node distances:
+> node   0   1   2   3   4   5   6   7
+>   0:  10  20  40  40  40  40  40  40
+>   1:  20  10  40  40  40  40  40  40
+>   2:  40  40  10  20  40  40  40  40
+>   3:  40  40  20  10  40  40  40  40
+>   4:  40  40  40  40  10  20  40  40
+>   5:  40  40  40  40  20  10  40  40
+>   6:  40  40  40  40  40  40  10  20
+>   7:  40  40  40  40  40  40  20  10
+> 
+> However the same system when only two nodes are online at boot, then
+> distance info from numactl will look like
+> node distances:
+> node   0   1
+>   0:  10  20
+>   1:  20  10
+> 
+> With the faked numa distance at boot, the node distance table will look
+> like
+> node   0   1   2
+>   0:  10  20  40
+>   1:  20  10  40
+>   2:  40  40  10
+> 
+> The actual distance will be populated once the nodes are onlined.
 
-
-Le 19/08/2021 à 16:56, Christophe Leroy a écrit :
-> 
-> 
-> Le 19/08/2021 à 14:56, Cédric Le Goater a écrit :
->> This fixes a compile error with W=1.
->>
->> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
->> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->> ---
->>
->>   I don't think this is correct. Which file could we use ?
-> 
-> I think you can completely remove ppc32_classify_syscall(), and instead add the following in the 
-> default case in audit_classify_syscall():
-> 
->       default:
-> +        if (IS_ENABLED(CONFIG_PPC64) && abi == AUDIT_ARCH_PPC)
-> +            return 1;
->           return 0;
-> 
-
-Forget that comment, it was crazy, because PPC32 and PPC64 use different syscall numbers.
-
-By the way, I have submitted a patch to completely remove this stuff, see 
-https://patchwork.ozlabs.org/project/linuxppc-dev/patch/dc14509a28a993738b1325211f412be72a4f9b1e.1629701132.git.christophe.leroy@csgroup.eu/
-
-> 
->>
->>   arch/powerpc/include/asm/unistd.h | 3 +++
->>   arch/powerpc/kernel/audit.c       | 1 -
->>   2 files changed, 3 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/powerpc/include/asm/unistd.h b/arch/powerpc/include/asm/unistd.h
->> index b541c690a31c..d9025a7e973c 100644
->> --- a/arch/powerpc/include/asm/unistd.h
->> +++ b/arch/powerpc/include/asm/unistd.h
->> @@ -47,6 +47,9 @@
->>   #define __ARCH_WANT_SYS_UTIME
->>   #define __ARCH_WANT_SYS_NEWFSTATAT
->>   #define __ARCH_WANT_COMPAT_SYS_SENDFILE
->> +#ifdef CONFIG_AUDIT
->> +extern int ppc32_classify_syscall(unsigned int syscall);
->> +#endif
->>   #endif
->>   #define __ARCH_WANT_SYS_FORK
->>   #define __ARCH_WANT_SYS_VFORK
->> diff --git a/arch/powerpc/kernel/audit.c b/arch/powerpc/kernel/audit.c
->> index a2dddd7f3d09..c3c6c6a1069b 100644
->> --- a/arch/powerpc/kernel/audit.c
->> +++ b/arch/powerpc/kernel/audit.c
->> @@ -41,7 +41,6 @@ int audit_classify_arch(int arch)
->>   int audit_classify_syscall(int abi, unsigned syscall)
->>   {
->>   #ifdef CONFIG_PPC64
->> -    extern int ppc32_classify_syscall(unsigned);
->>       if (abi == AUDIT_ARCH_PPC)
->>           return ppc32_classify_syscall(syscall);
->>   #endif
->>
+How did you want all this merged? I picked up Valentin's patch, do you
+want me to pick up these PowerPC patches in the same tree, or do you
+want to route them seperately?
