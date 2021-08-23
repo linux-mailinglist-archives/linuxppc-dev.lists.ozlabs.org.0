@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23C0E3F4D9E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 17:36:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE2D73F4D9F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 17:37:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GtbvC0F7jz3bN5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Aug 2021 01:36:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gtbvd3yN2z2yJR
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Aug 2021 01:37:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,40 +16,39 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GtbtS3JV1z2xtb
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Aug 2021 01:36:00 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GtbtX1smbz2yK6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Aug 2021 01:36:04 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4GtbtK5qwBz9sWs;
- Mon, 23 Aug 2021 17:35:53 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4GtbtL3fhlz9sT5;
+ Mon, 23 Aug 2021 17:35:54 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id Ext5xMQIZ3Nl; Mon, 23 Aug 2021 17:35:53 +0200 (CEST)
+ with ESMTP id y5iTCjVg7hjg; Mon, 23 Aug 2021 17:35:54 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4GtbtJ4ndxz9sT5;
- Mon, 23 Aug 2021 17:35:52 +0200 (CEST)
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4GtbtK4Tthz9sWm;
+ Mon, 23 Aug 2021 17:35:53 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 8481F8B7AF;
- Mon, 23 Aug 2021 17:35:52 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 80CA58B7AF;
+ Mon, 23 Aug 2021 17:35:53 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id C87AxL4hLxiq; Mon, 23 Aug 2021 17:35:52 +0200 (CEST)
+ with ESMTP id AgmLn7dR3tfH; Mon, 23 Aug 2021 17:35:53 +0200 (CEST)
 Received: from po18078vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
  [172.25.230.100])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5BCD18B7AD;
- Mon, 23 Aug 2021 17:35:52 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 62DBC8B7AD;
+ Mon, 23 Aug 2021 17:35:53 +0200 (CEST)
 Received: by po18078vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 54CA96BC7C; Mon, 23 Aug 2021 15:35:52 +0000 (UTC)
-Message-Id: <1e1b76f778c28e2e79a7ec303fd36bcd64bf639d.1629732940.git.christophe.leroy@csgroup.eu>
+ id 5BFAE6BC7C; Mon, 23 Aug 2021 15:35:53 +0000 (UTC)
+Message-Id: <a94be61f008ab29c231b805e1a97e9dab35cb0cc.1629732940.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <fd7938d94008711d441551c06b25a033669a0618.1629732940.git.christophe.leroy@csgroup.eu>
 References: <fd7938d94008711d441551c06b25a033669a0618.1629732940.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v2 2/5] powerpc/signal: Include the new stack frame inside the
- user access block
+Subject: [PATCH v2 3/5] signal: Add unsafe_copy_siginfo_to_user()
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 23 Aug 2021 15:35:52 +0000 (UTC)
+Date: Mon, 23 Aug 2021 15:35:53 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,181 +65,73 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Include the new stack frame inside the user access block and set it up
-using unsafe_put_user().
+In the same spirit as commit fb05121fd6a2 ("signal: Add
+unsafe_get_compat_sigset()"), implement an 'unsafe' version of
+copy_siginfo_to_user() in order to use it within user access blocks.
 
-On an mpc 8321 (book3s/32) the improvment is about 4% on a process
-sending a signal to itself.
+For that, also add an 'unsafe' version of clear_user().
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/kernel/signal_32.c | 29 +++++++++++++----------------
- arch/powerpc/kernel/signal_64.c | 14 +++++++-------
- 2 files changed, 20 insertions(+), 23 deletions(-)
+ include/linux/signal.h  | 15 +++++++++++++++
+ include/linux/uaccess.h |  1 +
+ kernel/signal.c         |  5 -----
+ 3 files changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/signal_32.c
-index 0608581967f0..ff101e2b3bab 100644
---- a/arch/powerpc/kernel/signal_32.c
-+++ b/arch/powerpc/kernel/signal_32.c
-@@ -726,7 +726,7 @@ int handle_rt_signal32(struct ksignal *ksig, sigset_t *oldset,
- 	struct rt_sigframe __user *frame;
- 	struct mcontext __user *mctx;
- 	struct mcontext __user *tm_mctx = NULL;
--	unsigned long newsp = 0;
-+	unsigned long __user *newsp;
- 	unsigned long tramp;
- 	struct pt_regs *regs = tsk->thread.regs;
- 	/* Save the thread's msr before get_tm_stackpointer() changes it */
-@@ -734,6 +734,7 @@ int handle_rt_signal32(struct ksignal *ksig, sigset_t *oldset,
+diff --git a/include/linux/signal.h b/include/linux/signal.h
+index 3454c7ff0778..659bd43daf10 100644
+--- a/include/linux/signal.h
++++ b/include/linux/signal.h
+@@ -35,6 +35,21 @@ static inline void copy_siginfo_to_external(siginfo_t *to,
+ int copy_siginfo_to_user(siginfo_t __user *to, const kernel_siginfo_t *from);
+ int copy_siginfo_from_user(kernel_siginfo_t *to, const siginfo_t __user *from);
  
- 	/* Set up Signal Frame */
- 	frame = get_sigframe(ksig, tsk, sizeof(*frame), 1);
-+	newsp = (unsigned long __user *)((unsigned long)frame - (__SIGNAL_FRAMESIZE + 16));
- 	mctx = &frame->uc.uc_mcontext;
- #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
- 	tm_mctx = &frame->uc_transact.uc_mcontext;
-@@ -743,7 +744,7 @@ int handle_rt_signal32(struct ksignal *ksig, sigset_t *oldset,
- 	else
- 		prepare_save_user_regs(1);
- 
--	if (!user_access_begin(frame, sizeof(*frame)))
-+	if (!user_access_begin(newsp, __SIGNAL_FRAMESIZE + 16 + sizeof(*frame)))
- 		goto badframe;
- 
- 	/* Put the siginfo & fill in most of the ucontext */
-@@ -779,6 +780,9 @@ int handle_rt_signal32(struct ksignal *ksig, sigset_t *oldset,
- 	}
- 	unsafe_put_sigset_t(&frame->uc.uc_sigmask, oldset, failed);
- 
-+	/* create a stack frame for the caller of the handler */
-+	unsafe_put_user(regs->gpr[1], newsp, failed);
++static __always_inline char __user *si_expansion(const siginfo_t __user *info)
++{
++	return ((char __user *)info) + sizeof(struct kernel_siginfo);
++}
 +
- 	user_access_end();
- 
- 	if (copy_siginfo_to_user(&frame->info, &ksig->info))
-@@ -790,13 +794,8 @@ int handle_rt_signal32(struct ksignal *ksig, sigset_t *oldset,
- 	tsk->thread.fp_state.fpscr = 0;	/* turn off all fp exceptions */
++#define unsafe_copy_siginfo_to_user(to, from, label) do {		\
++	siginfo_t __user *__ucs_to = to;				\
++	const kernel_siginfo_t *__ucs_from = from;			\
++	char __user *__ucs_expansion = si_expansion(__ucs_to);		\
++									\
++	unsafe_copy_to_user(__ucs_to, __ucs_from,			\
++			    sizeof(struct kernel_siginfo), label);	\
++	unsafe_clear_user(__ucs_expansion, SI_EXPANSION_SIZE, label);	\
++} while (0)
++
+ enum siginfo_layout {
+ 	SIL_KILL,
+ 	SIL_TIMER,
+diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
+index c05e903cef02..37073caac474 100644
+--- a/include/linux/uaccess.h
++++ b/include/linux/uaccess.h
+@@ -398,6 +398,7 @@ long strnlen_user_nofault(const void __user *unsafe_addr, long count);
+ #define unsafe_put_user(x,p,e) unsafe_op_wrap(__put_user(x,p),e)
+ #define unsafe_copy_to_user(d,s,l,e) unsafe_op_wrap(__copy_to_user(d,s,l),e)
+ #define unsafe_copy_from_user(d,s,l,e) unsafe_op_wrap(__copy_from_user(d,s,l),e)
++#define unsafe_clear_user(d, l, e) unsafe_op_wrap(__clear_user(d, l), e)
+ static inline unsigned long user_access_save(void) { return 0UL; }
+ static inline void user_access_restore(unsigned long flags) { }
  #endif
+diff --git a/kernel/signal.c b/kernel/signal.c
+index a3229add4455..83b5971e4304 100644
+--- a/kernel/signal.c
++++ b/kernel/signal.c
+@@ -3261,11 +3261,6 @@ enum siginfo_layout siginfo_layout(unsigned sig, int si_code)
+ 	return layout;
+ }
  
--	/* create a stack frame for the caller of the handler */
--	newsp = ((unsigned long)frame) - (__SIGNAL_FRAMESIZE + 16);
--	if (put_user(regs->gpr[1], (u32 __user *)newsp))
--		goto badframe;
+-static inline char __user *si_expansion(const siginfo_t __user *info)
+-{
+-	return ((char __user *)info) + sizeof(struct kernel_siginfo);
+-}
 -
- 	/* Fill registers for signal handler */
--	regs->gpr[1] = newsp;
-+	regs->gpr[1] = (unsigned long)newsp;
- 	regs->gpr[3] = ksig->sig;
- 	regs->gpr[4] = (unsigned long)&frame->info;
- 	regs->gpr[5] = (unsigned long)&frame->uc;
-@@ -826,7 +825,7 @@ int handle_signal32(struct ksignal *ksig, sigset_t *oldset,
- 	struct sigframe __user *frame;
- 	struct mcontext __user *mctx;
- 	struct mcontext __user *tm_mctx = NULL;
--	unsigned long newsp = 0;
-+	unsigned long __user *newsp;
- 	unsigned long tramp;
- 	struct pt_regs *regs = tsk->thread.regs;
- 	/* Save the thread's msr before get_tm_stackpointer() changes it */
-@@ -834,6 +833,7 @@ int handle_signal32(struct ksignal *ksig, sigset_t *oldset,
- 
- 	/* Set up Signal Frame */
- 	frame = get_sigframe(ksig, tsk, sizeof(*frame), 1);
-+	newsp = (unsigned long __user *)((unsigned long)frame - __SIGNAL_FRAMESIZE);
- 	mctx = &frame->mctx;
- #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
- 	tm_mctx = &frame->mctx_transact;
-@@ -843,7 +843,7 @@ int handle_signal32(struct ksignal *ksig, sigset_t *oldset,
- 	else
- 		prepare_save_user_regs(1);
- 
--	if (!user_access_begin(frame, sizeof(*frame)))
-+	if (!user_access_begin(newsp, __SIGNAL_FRAMESIZE + sizeof(*frame)))
- 		goto badframe;
- 	sc = (struct sigcontext __user *) &frame->sctx;
- 
-@@ -873,6 +873,8 @@ int handle_signal32(struct ksignal *ksig, sigset_t *oldset,
- 		unsafe_put_user(PPC_RAW_SC(), &mctx->mc_pad[1], failed);
- 		asm("dcbst %y0; sync; icbi %y0; sync" :: "Z" (mctx->mc_pad[0]));
- 	}
-+	/* create a stack frame for the caller of the handler */
-+	unsafe_put_user(regs->gpr[1], newsp, failed);
- 	user_access_end();
- 
- 	regs->link = tramp;
-@@ -881,12 +883,7 @@ int handle_signal32(struct ksignal *ksig, sigset_t *oldset,
- 	tsk->thread.fp_state.fpscr = 0;	/* turn off all fp exceptions */
- #endif
- 
--	/* create a stack frame for the caller of the handler */
--	newsp = ((unsigned long)frame) - __SIGNAL_FRAMESIZE;
--	if (put_user(regs->gpr[1], (u32 __user *)newsp))
--		goto badframe;
--
--	regs->gpr[1] = newsp;
-+	regs->gpr[1] = (unsigned long)newsp;
- 	regs->gpr[3] = ksig->sig;
- 	regs->gpr[4] = (unsigned long) sc;
- 	regs_set_return_ip(regs, (unsigned long) ksig->ka.sa.sa_handler);
-diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/signal_64.c
-index 790c450c2de8..2cca6c8febe1 100644
---- a/arch/powerpc/kernel/signal_64.c
-+++ b/arch/powerpc/kernel/signal_64.c
-@@ -847,13 +847,14 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
- 		struct task_struct *tsk)
+ int copy_siginfo_to_user(siginfo_t __user *to, const kernel_siginfo_t *from)
  {
- 	struct rt_sigframe __user *frame;
--	unsigned long newsp = 0;
-+	unsigned long __user *newsp;
- 	long err = 0;
- 	struct pt_regs *regs = tsk->thread.regs;
- 	/* Save the thread's msr before get_tm_stackpointer() changes it */
- 	unsigned long msr = regs->msr;
- 
- 	frame = get_sigframe(ksig, tsk, sizeof(*frame), 0);
-+	newsp = (unsigned long __user *)((unsigned long)frame - __SIGNAL_FRAMESIZE);
- 
- 	/*
- 	 * This only applies when calling unsafe_setup_sigcontext() and must be
-@@ -862,7 +863,7 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
- 	if (!MSR_TM_ACTIVE(msr))
- 		prepare_setup_sigcontext(tsk);
- 
--	if (!user_write_access_begin(frame, sizeof(*frame)))
-+	if (!user_write_access_begin(newsp, __SIGNAL_FRAMESIZE + sizeof(*frame)))
- 		goto badframe;
- 
- 	unsafe_put_user(&frame->info, &frame->pinfo, badframe_block);
-@@ -900,6 +901,9 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
- 	}
- 
- 	unsafe_copy_to_user(&frame->uc.uc_sigmask, set, sizeof(*set), badframe_block);
-+	/* Allocate a dummy caller frame for the signal handler. */
-+	unsafe_put_user(regs->gpr[1], newsp, badframe_block);
-+
- 	user_write_access_end();
- 
- 	/* Save the siginfo outside of the unsafe block. */
-@@ -919,10 +923,6 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
- 		regs_set_return_ip(regs, (unsigned long) &frame->tramp[0]);
- 	}
- 
--	/* Allocate a dummy caller frame for the signal handler. */
--	newsp = ((unsigned long)frame) - __SIGNAL_FRAMESIZE;
--	err |= put_user(regs->gpr[1], (unsigned long __user *)newsp);
--
- 	/* Set up "regs" so we "return" to the signal handler. */
- 	if (is_elf2_task()) {
- 		regs->ctr = (unsigned long) ksig->ka.sa.sa_handler;
-@@ -952,7 +952,7 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
- 
- 	/* enter the signal handler in native-endian mode */
- 	regs_set_return_msr(regs, (regs->msr & ~MSR_LE) | (MSR_KERNEL & MSR_LE));
--	regs->gpr[1] = newsp;
-+	regs->gpr[1] = (unsigned long)newsp;
- 	regs->gpr[3] = ksig->sig;
- 	regs->result = 0;
- 	if (ksig->ka.sa.sa_flags & SA_SIGINFO) {
+ 	char __user *expansion = si_expansion(to);
 -- 
 2.25.0
 
