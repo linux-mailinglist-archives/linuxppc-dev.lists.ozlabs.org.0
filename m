@@ -2,103 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E5FC3F538C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Aug 2021 01:12:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2382D3F539F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Aug 2021 01:22:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gtp1T3cCsz2yPK
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Aug 2021 09:12:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GtpDh4sTfz2yLQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Aug 2021 09:22:28 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GhoJXtV1;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=Ha7yOGiy;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=canb.auug.org.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=sfr@canb.auug.org.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=GhoJXtV1; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=Ha7yOGiy; 
+ dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GthGr5lZZz2xYP
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Aug 2021 04:53:56 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 17NIYPpM055175; Mon, 23 Aug 2021 14:53:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type; s=pp1; bh=x+sM6L9lKi1NwenP9acWV1EaMmm4HAfMaJ/dx1sufko=;
- b=GhoJXtV1P+nObHWKLhRb1T0r7u3sqcPRFmIYiReiGLdono3Lq+rb/BHX4kFHRYXqGut3
- HTOv22UX+E3k2noBvupD2eSXxTmnsupYW8n/tq1om8TQG3cRsGXmjAFoPSfMkzlg5UH4
- wRxqquXR/zICSlTX3AYMU/lNPudLX/AjgVO292jewYIHznOpKRmN7qTJkAy/L96TDYBW
- xPiGpbeYEz5pTfT7Oxoqkgb8uCB0aGvYmITJU82k6yOr3/06LhjoUaZmZ1co7kaU76Ci
- jvrtpWKHLy25c7NnPUkMFwrXrNYl1WABdeX9oSi4kZFbUU5fXc0WWq/gQ7p4sNp0NzQn Ew== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3amcjjhn50-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Aug 2021 14:53:47 -0400
-Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 17NIYura056185;
- Mon, 23 Aug 2021 14:53:47 -0400
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3amcjjhn4m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Aug 2021 14:53:47 -0400
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 17NIrYRb018279;
- Mon, 23 Aug 2021 18:53:45 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma06fra.de.ibm.com with ESMTP id 3ajrrhu8ap-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 Aug 2021 18:53:45 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 17NIrhPu28574056
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 23 Aug 2021 18:53:43 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0A7AD42041;
- Mon, 23 Aug 2021 18:53:43 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2F0364204C;
- Mon, 23 Aug 2021 18:53:41 +0000 (GMT)
-Received: from li-c7b85bcc-2727-11b2-a85c-a9ba7f3a2193.ibm.com (unknown
- [9.199.46.131])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 23 Aug 2021 18:53:40 +0000 (GMT)
-Subject: Re: [PATCH v2 1/3] powerpc/pseries: Parse control memory access error
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-References: <20210805092025.272871-1-ganeshgr@linux.ibm.com>
-From: Ganesh <ganeshgr@linux.ibm.com>
-Message-ID: <1e5a7f4b-ddf7-69f2-bbaf-913644175c3e@linux.ibm.com>
-Date: Tue, 24 Aug 2021 00:23:39 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GtpD06HWHz2xZS
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Aug 2021 09:21:50 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4GtpCs65Dpz9sW8;
+ Tue, 24 Aug 2021 09:21:45 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+ s=201702; t=1629760906;
+ bh=b0ZxJuwzSUSBcceBjtdBJjO4eyuakOm7MJUOTiuTHLQ=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=Ha7yOGiyl+YIm018VL3Cj0FLpQWyqjqrykNErgA3boJOcicgl3KXJUKpsn8Nnd724
+ BaQJN/p6VBYxOApjDv3kvrQZlB4xHhNxV4tiji9keSS1WVJqgwWmGYKBTC8UweD2Rg
+ Mx/SBkVwXqAq2EJqcCobi71q0Z6k7WH8BaJfZC9zqx+BvWhdKn51FBfFslJRSq7oZI
+ B+VJnzDmdo2wMUrdcnfKV1YzypuIb2ifUxId7tGHaTQXHX1XX1m6tNMoVTbTrmQnjg
+ 2ImuUh24/HRUCPsQ9sF29zPOn0P0bgzEN4AoQVRVhGnpLx7lZDqoarWHDIVGtjgKpc
+ Vo+F0AYE2L6gA==
+Date: Tue, 24 Aug 2021 09:21:44 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Jonathan Corbet <corbet@lwn.net>
+Subject: Re: linux-next: build warning after merge of the powerpc tree
+Message-ID: <20210824092110.3987fde9@elm.ozlabs.ibm.com>
+In-Reply-To: <87a6l8p7kd.fsf@meer.lwn.net>
+References: <20210823195540.4d7363ed@canb.auug.org.au>
+ <20210823204803.7cb76778@canb.auug.org.au>
+ <87a6l8p7kd.fsf@meer.lwn.net>
 MIME-Version: 1.0
-In-Reply-To: <20210805092025.272871-1-ganeshgr@linux.ibm.com>
-Content-Type: multipart/alternative;
- boundary="------------462BBB08512A27BD48916A3D"
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: EzFFMjuATQZrJbZpIQO-mcD84XN8zhMc
-X-Proofpoint-ORIG-GUID: RY_qO7iSqFUOojLRZlFJWHUMn2DCYnsV
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-08-23_04:2021-08-23,
- 2021-08-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 mlxlogscore=999
- malwarescore=0 phishscore=0 lowpriorityscore=0 adultscore=0
- impostorscore=0 bulkscore=0 suspectscore=0 mlxscore=0 spamscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2107140000 definitions=main-2108230126
-X-Mailman-Approved-At: Tue, 24 Aug 2021 09:12:09 +1000
+Content-Type: multipart/signed; boundary="Sig_/IaClMUsqOS7XXChrmTxxKyG";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,167 +64,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, mahesh@linux.ibm.com, npiggin@gmail.com
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ PowerPC <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a multi-part message in MIME format.
---------------462BBB08512A27BD48916A3D
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+--Sig_/IaClMUsqOS7XXChrmTxxKyG
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Hi mpe, Any comments on this patchset?
+Hi Jona,
 
-On 8/5/21 2:50 PM, Ganesh Goudar wrote:
-
-> Add support to parse and log control memory access
-> error for pseries.
+On Mon, 23 Aug 2021 08:19:30 -0600 Jonathan Corbet <corbet@lwn.net> wrote:
 >
-> Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
-> ---
-> v2: No changes in this patch.
-> ---
->   arch/powerpc/platforms/pseries/ras.c | 21 +++++++++++++++++++++
->   1 file changed, 21 insertions(+)
->
-> diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
-> index 167f2e1b8d39..608c35cad0c3 100644
-> --- a/arch/powerpc/platforms/pseries/ras.c
-> +++ b/arch/powerpc/platforms/pseries/ras.c
-> @@ -80,6 +80,7 @@ struct pseries_mc_errorlog {
->   #define MC_ERROR_TYPE_TLB		0x04
->   #define MC_ERROR_TYPE_D_CACHE		0x05
->   #define MC_ERROR_TYPE_I_CACHE		0x07
-> +#define MC_ERROR_TYPE_CTRL_MEM_ACCESS	0x08
->   
->   /* RTAS pseries MCE error sub types */
->   #define MC_ERROR_UE_INDETERMINATE		0
-> @@ -103,6 +104,9 @@ struct pseries_mc_errorlog {
->   #define MC_ERROR_TLB_MULTIHIT		2
->   #define MC_ERROR_TLB_INDETERMINATE	3
->   
-> +#define MC_ERROR_CTRL_MEM_ACCESS_PTABLE_WALK	0
-> +#define MC_ERROR_CTRL_MEM_ACCESS_OP_ACCESS	1
-> +
->   static inline u8 rtas_mc_error_sub_type(const struct pseries_mc_errorlog *mlog)
->   {
->   	switch (mlog->error_type) {
-> @@ -112,6 +116,8 @@ static inline u8 rtas_mc_error_sub_type(const struct pseries_mc_errorlog *mlog)
->   	case	MC_ERROR_TYPE_ERAT:
->   	case	MC_ERROR_TYPE_TLB:
->   		return (mlog->sub_err_type & 0x03);
-> +	case	MC_ERROR_TYPE_CTRL_MEM_ACCESS:
-> +		return (mlog->sub_err_type & 0x70) >> 4;
->   	default:
->   		return 0;
->   	}
-> @@ -699,6 +705,21 @@ static int mce_handle_err_virtmode(struct pt_regs *regs,
->   	case MC_ERROR_TYPE_I_CACHE:
->   		mce_err.error_type = MCE_ERROR_TYPE_ICACHE;
->   		break;
-> +	case MC_ERROR_TYPE_CTRL_MEM_ACCESS:
-> +		mce_err.error_type = MCE_ERROR_TYPE_RA;
-> +		if (mce_log->sub_err_type & 0x80)
-> +			eaddr = be64_to_cpu(mce_log->effective_address);
-> +		switch (err_sub_type) {
-> +		case MC_ERROR_CTRL_MEM_ACCESS_PTABLE_WALK:
-> +			mce_err.u.ra_error_type =
-> +				MCE_RA_ERROR_PAGE_TABLE_WALK_LOAD_STORE_FOREIGN;
-> +			break;
-> +		case MC_ERROR_CTRL_MEM_ACCESS_OP_ACCESS:
-> +			mce_err.u.ra_error_type =
-> +				MCE_RA_ERROR_LOAD_STORE_FOREIGN;
-> +			break;
-> +		}
-> +		break;
->   	case MC_ERROR_TYPE_UNKNOWN:
->   	default:
->   		mce_err.error_type = MCE_ERROR_TYPE_UNKNOWN;
+> Stephen Rothwell <sfr@canb.auug.org.au> writes:
+>=20
+> > Hi all,
+> >
+> > [cc'ing Jon in case he can fix the sphix hang - or knows anything about=
+ it] =20
+>=20
+> That's new to me.  Which version of sphinx?
 
---------------462BBB08512A27BD48916A3D
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 7bit
+3.4.3-2, its a Debian version.
 
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <pre>Hi mpe, Any comments on this patchset?
-</pre>
-    <div class="moz-cite-prefix">
-      <pre>On 8/5/21 2:50 PM, Ganesh Goudar wrote:</pre>
-    </div>
-    <blockquote type="cite"
-      cite="mid:20210805092025.272871-1-ganeshgr@linux.ibm.com">
-      <pre class="moz-quote-pre" wrap="">Add support to parse and log control memory access
-error for pseries.
+--=20
+Cheers,
+Stephen Rothwell
 
-Signed-off-by: Ganesh Goudar <a class="moz-txt-link-rfc2396E" href="mailto:ganeshgr@linux.ibm.com">&lt;ganeshgr@linux.ibm.com&gt;</a>
----
-v2: No changes in this patch.
----
- arch/powerpc/platforms/pseries/ras.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+--Sig_/IaClMUsqOS7XXChrmTxxKyG
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
-diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
-index 167f2e1b8d39..608c35cad0c3 100644
---- a/arch/powerpc/platforms/pseries/ras.c
-+++ b/arch/powerpc/platforms/pseries/ras.c
-@@ -80,6 +80,7 @@ struct pseries_mc_errorlog {
- #define MC_ERROR_TYPE_TLB		0x04
- #define MC_ERROR_TYPE_D_CACHE		0x05
- #define MC_ERROR_TYPE_I_CACHE		0x07
-+#define MC_ERROR_TYPE_CTRL_MEM_ACCESS	0x08
- 
- /* RTAS pseries MCE error sub types */
- #define MC_ERROR_UE_INDETERMINATE		0
-@@ -103,6 +104,9 @@ struct pseries_mc_errorlog {
- #define MC_ERROR_TLB_MULTIHIT		2
- #define MC_ERROR_TLB_INDETERMINATE	3
- 
-+#define MC_ERROR_CTRL_MEM_ACCESS_PTABLE_WALK	0
-+#define MC_ERROR_CTRL_MEM_ACCESS_OP_ACCESS	1
-+
- static inline u8 rtas_mc_error_sub_type(const struct pseries_mc_errorlog *mlog)
- {
- 	switch (mlog-&gt;error_type) {
-@@ -112,6 +116,8 @@ static inline u8 rtas_mc_error_sub_type(const struct pseries_mc_errorlog *mlog)
- 	case	MC_ERROR_TYPE_ERAT:
- 	case	MC_ERROR_TYPE_TLB:
- 		return (mlog-&gt;sub_err_type &amp; 0x03);
-+	case	MC_ERROR_TYPE_CTRL_MEM_ACCESS:
-+		return (mlog-&gt;sub_err_type &amp; 0x70) &gt;&gt; 4;
- 	default:
- 		return 0;
- 	}
-@@ -699,6 +705,21 @@ static int mce_handle_err_virtmode(struct pt_regs *regs,
- 	case MC_ERROR_TYPE_I_CACHE:
- 		mce_err.error_type = MCE_ERROR_TYPE_ICACHE;
- 		break;
-+	case MC_ERROR_TYPE_CTRL_MEM_ACCESS:
-+		mce_err.error_type = MCE_ERROR_TYPE_RA;
-+		if (mce_log-&gt;sub_err_type &amp; 0x80)
-+			eaddr = be64_to_cpu(mce_log-&gt;effective_address);
-+		switch (err_sub_type) {
-+		case MC_ERROR_CTRL_MEM_ACCESS_PTABLE_WALK:
-+			mce_err.u.ra_error_type =
-+				MCE_RA_ERROR_PAGE_TABLE_WALK_LOAD_STORE_FOREIGN;
-+			break;
-+		case MC_ERROR_CTRL_MEM_ACCESS_OP_ACCESS:
-+			mce_err.u.ra_error_type =
-+				MCE_RA_ERROR_LOAD_STORE_FOREIGN;
-+			break;
-+		}
-+		break;
- 	case MC_ERROR_TYPE_UNKNOWN:
- 	default:
- 		mce_err.error_type = MCE_ERROR_TYPE_UNKNOWN;
-</pre>
-    </blockquote>
-  </body>
-</html>
+-----BEGIN PGP SIGNATURE-----
 
---------------462BBB08512A27BD48916A3D--
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmEkLYgACgkQAVBC80lX
+0GyRKAf+IhpB8PEvLXX2i9jJFy5IApkuwZ9VzvkhM6zFrwuCGRXuOtAM2sazlN4r
+5H05Re09Swyee032TkLJ16z3Zuy2vaSslA6tYabtRhjGkqUAHMk7LjZEUk9DYOSR
+l3ktyWJEWgiFY2nKJO0LZzAayeA8mVve8fsW/FASL51KCczxn5t9qOTK0Nlz2fUN
+SSa7rw7oDGnBgx+n/51qyRYX38HYXP4x9G9wSFeoKCBNRrdENb/ZjOh+co3SFk/R
+MG8fUyJiD79q+GNi4pJI1jk+zLmxm/8ot6ARwKqSBJpSHLf5Afv7id7pRg/a25UV
+/NTdLdw4HWfBGJ6sPzebwH0QwrTkOQ==
+=vfmb
+-----END PGP SIGNATURE-----
 
+--Sig_/IaClMUsqOS7XXChrmTxxKyG--
