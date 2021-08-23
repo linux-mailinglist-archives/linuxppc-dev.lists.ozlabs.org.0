@@ -1,55 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00E083F46A8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 10:34:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DB213F46AC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 10:35:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GtQWZ5ycvz2xt7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 18:34:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GtQYM17tbz2xb8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 18:35:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nefkom.net (client-ip=212.18.0.9; helo=mail-out.m-online.net;
- envelope-from=whitebox@nefkom.net; receiver=<UNKNOWN>)
-Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.9])
+ smtp.mailfrom=kaod.org (client-ip=178.32.125.2;
+ helo=smtpout1.mo529.mail-out.ovh.net; envelope-from=clg@kaod.org;
+ receiver=<UNKNOWN>)
+Received: from smtpout1.mo529.mail-out.ovh.net
+ (smtpout1.mo529.mail-out.ovh.net [178.32.125.2])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GtQW81xhVz2xKY
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Aug 2021 18:33:38 +1000 (AEST)
-Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
- by mail-out.m-online.net (Postfix) with ESMTP id 4GtQVz6xw4z1qwy3;
- Mon, 23 Aug 2021 10:33:31 +0200 (CEST)
-Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
- by mail.m-online.net (Postfix) with ESMTP id 4GtQVz5854z1qqkb;
- Mon, 23 Aug 2021 10:33:31 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at mnet-online.de
-Received: from mail.mnet-online.de ([192.168.8.182])
- by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new,
- port 10024)
- with ESMTP id GGDnTnGS58eH; Mon, 23 Aug 2021 10:33:31 +0200 (CEST)
-X-Auth-Info: a+1O7isek3JZDPNKtVNsCYwHfVgro13FVrH+P18vbWUWubMUmcVgyl/tu9OSSa3n
-Received: from igel.home (ppp-46-244-177-181.dynamic.mnet-online.de
- [46.244.177.181])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.mnet-online.de (Postfix) with ESMTPSA;
- Mon, 23 Aug 2021 10:33:30 +0200 (CEST)
-Received: by igel.home (Postfix, from userid 1000)
- id 3F0B32C07D8; Mon, 23 Aug 2021 10:33:30 +0200 (CEST)
-From: Andreas Schwab <schwab@linux-m68k.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/syscalls: Remove __NR__exit
-References: <6457eb4f327313323ed1f70e540bbb4ddc9178fa.1629701106.git.christophe.leroy@csgroup.eu>
-X-Yow: Is this BOISE??
-Date: Mon, 23 Aug 2021 10:33:30 +0200
-In-Reply-To: <6457eb4f327313323ed1f70e540bbb4ddc9178fa.1629701106.git.christophe.leroy@csgroup.eu>
- (Christophe Leroy's message of "Mon, 23 Aug 2021 06:45:20 +0000
- (UTC)")
-Message-ID: <87y28ssgpx.fsf@igel.home>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.2 (gnu/linux)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GtQXx5h0qz2xXh
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Aug 2021 18:35:12 +1000 (AEST)
+Received: from mxplan5.mail.ovh.net (unknown [10.109.138.5])
+ by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 65A08BA8214F;
+ Mon, 23 Aug 2021 10:35:10 +0200 (CEST)
+Received: from kaod.org (37.59.142.98) by DAG4EX1.mxp5.local (172.16.2.31)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.14; Mon, 23 Aug
+ 2021 10:35:09 +0200
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-98R0021070a8b7-d4da-4b00-a984-2c3dd9893ddc,
+ 6C3DA580BFD2A03B9CD9C7EDF86CA127720438B1) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 83.199.102.86
+Subject: Re: [PATCH 5/6] audit: Declare ppc32_classify_syscall()
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ <linuxppc-dev@lists.ozlabs.org>
+References: <20210819125656.14498-1-clg@kaod.org>
+ <20210819125656.14498-6-clg@kaod.org>
+ <d268f141-4ec3-eb1d-a6c1-4cd5f535ea49@csgroup.eu>
+ <e1acf07a-772d-101d-2f28-24965f630248@csgroup.eu>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+Message-ID: <6f040090-4d9e-8f1a-1916-2da7625766af@kaod.org>
+Date: Mon, 23 Aug 2021 10:35:09 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <e1acf07a-772d-101d-2f28-24965f630248@csgroup.eu>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [37.59.142.98]
+X-ClientProxiedBy: DAG7EX1.mxp5.local (172.16.2.61) To DAG4EX1.mxp5.local
+ (172.16.2.31)
+X-Ovh-Tracer-GUID: 422a32c3-dd53-43ee-83c8-19242777aad8
+X-Ovh-Tracer-Id: 6754836494901611488
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvtddruddthedgtdeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepuffvfhfhkffffgggjggtgfhisehtkeertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepjeehtdeviefhgfeugfevjeeiveefvedtvdehhfejleduveejieefhfeffeetfeeunecuffhomhgrihhnpehoiihlrggsshdrohhrghenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddrleeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohiestghsghhrohhuphdrvghu
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,21 +66,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
- linux-kernel@vger.kernel.org
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Aug 23 2021, Christophe Leroy wrote:
+On 8/23/21 10:28 AM, Christophe Leroy wrote:
+> 
+> 
+> Le 19/08/2021 à 16:56, Christophe Leroy a écrit :
+>>
+>>
+>> Le 19/08/2021 à 14:56, Cédric Le Goater a écrit :
+>>> This fixes a compile error with W=1.
+>>>
+>>> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+>>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+>>> ---
+>>>
+>>>   I don't think this is correct. Which file could we use ?
+>>
+>> I think you can completely remove ppc32_classify_syscall(), and instead add the following in the default case in audit_classify_syscall():
+>>
+>>       default:
+>> +        if (IS_ENABLED(CONFIG_PPC64) && abi == AUDIT_ARCH_PPC)
+>> +            return 1;
+>>           return 0;
+>>
+> 
+> Forget that comment, it was crazy, because PPC32 and PPC64 use different syscall numbers.
+> 
+> By the way, I have submitted a patch to completely remove this stuff, see https://patchwork.ozlabs.org/project/linuxppc-dev/patch/dc14509a28a993738b1325211f412be72a4f9b1e.1629701132.git.christophe.leroy@csgroup.eu/
 
-> __NR_exit is nowhere used. On most architectures it was removed by
+Nice ! Let's merge that instead.
 
-ITYM __NR__exit, which is what you are removing.
+Thanks,
 
-Andreas.
+C. 
 
--- 
-Andreas Schwab, schwab@linux-m68k.org
-GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
-"And now for something completely different."
+
+> 
+>>
+>>>
+>>>   arch/powerpc/include/asm/unistd.h | 3 +++
+>>>   arch/powerpc/kernel/audit.c       | 1 -
+>>>   2 files changed, 3 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/arch/powerpc/include/asm/unistd.h b/arch/powerpc/include/asm/unistd.h
+>>> index b541c690a31c..d9025a7e973c 100644
+>>> --- a/arch/powerpc/include/asm/unistd.h
+>>> +++ b/arch/powerpc/include/asm/unistd.h
+>>> @@ -47,6 +47,9 @@
+>>>   #define __ARCH_WANT_SYS_UTIME
+>>>   #define __ARCH_WANT_SYS_NEWFSTATAT
+>>>   #define __ARCH_WANT_COMPAT_SYS_SENDFILE
+>>> +#ifdef CONFIG_AUDIT
+>>> +extern int ppc32_classify_syscall(unsigned int syscall);
+>>> +#endif
+>>>   #endif
+>>>   #define __ARCH_WANT_SYS_FORK
+>>>   #define __ARCH_WANT_SYS_VFORK
+>>> diff --git a/arch/powerpc/kernel/audit.c b/arch/powerpc/kernel/audit.c
+>>> index a2dddd7f3d09..c3c6c6a1069b 100644
+>>> --- a/arch/powerpc/kernel/audit.c
+>>> +++ b/arch/powerpc/kernel/audit.c
+>>> @@ -41,7 +41,6 @@ int audit_classify_arch(int arch)
+>>>   int audit_classify_syscall(int abi, unsigned syscall)
+>>>   {
+>>>   #ifdef CONFIG_PPC64
+>>> -    extern int ppc32_classify_syscall(unsigned);
+>>>       if (abi == AUDIT_ARCH_PPC)
+>>>           return ppc32_classify_syscall(syscall);
+>>>   #endif
+>>>
+
