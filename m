@@ -1,52 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 682233F4840
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 12:08:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 665C03F48EB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 12:48:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GtSc215xKz2yHD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 20:08:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GtTW16f07z2xrs
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 20:48:45 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=FFy1BuB3;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ smtp.mailfrom=canb.auug.org.au (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=sfr@canb.auug.org.au; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=FFy1BuB3; 
+ dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GtSbX5kVnz2xXL
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Aug 2021 20:07:34 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4GtSbR5lzTz9sTF;
- Mon, 23 Aug 2021 12:07:31 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id trzcqDxyUJ-y; Mon, 23 Aug 2021 12:07:31 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4GtSbR4S6Jz9sSl;
- Mon, 23 Aug 2021 12:07:31 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 54E428B78C;
- Mon, 23 Aug 2021 12:07:31 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id noyFMA_O5PtN; Mon, 23 Aug 2021 12:07:31 +0200 (CEST)
-Received: from po9473vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
- [172.25.230.100])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 2EEE98B796;
- Mon, 23 Aug 2021 12:07:31 +0200 (CEST)
-Received: by po9473vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id E513A663D4; Mon, 23 Aug 2021 10:07:30 +0000 (UTC)
-Message-Id: <84a44c20e8878a37d7dcfccaad71109c012ff3cf.1629713148.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH] powerpc/32s: Fix random crashes by adding isync() after
- locking/unlocking KUEP
-To: stable@vger.kernel.org
-Date: Mon, 23 Aug 2021 10:07:30 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GtTVK0ncZz2xrT
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Aug 2021 20:48:07 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4GtTVD3CQ5z9sWc;
+ Mon, 23 Aug 2021 20:48:04 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+ s=201702; t=1629715685;
+ bh=ytEvyC+DEnLTTfZkIg3wkrRmLBORVvoxKCJVWjIoJH8=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=FFy1BuB3h/44cQ8yyheLTod8gxRDOgY3fD4DlBfZI6fru5t0lc2n9QtLOeq+d3DDa
+ xD5etjFiIlQziNsGx+PMbqdI8Q67eaCPdlfMqWpZJi9E10vTHFIMmpWSZPnFHrlRrW
+ ul6z6eDmmubA8/1FpvWbVz6un9R6SZAtOWp0IeatzKQ+N1XM+6EQv7TmIWD/LhoKU4
+ JoK2ghRkWZVki6NA5zAGnGdZlws9Qi2W4gedFCP3op7Z3h3Jsvk1HPfL+WFZWnD3Ns
+ tExLyFsN70uPBfbHQUZeYzr+vx25SqJWKnUvi9CihCiXy6LOFgX6petrVzB8qQ/sYG
+ WsjneOXuzY1XQ==
+Date: Mon, 23 Aug 2021 20:48:03 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Michael Ellerman <mpe@ellerman.id.au>, PowerPC
+ <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: linux-next: build warning after merge of the powerpc tree
+Message-ID: <20210823204803.7cb76778@canb.auug.org.au>
+In-Reply-To: <20210823195540.4d7363ed@canb.auug.org.au>
+References: <20210823195540.4d7363ed@canb.auug.org.au>
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="Sig_/sxdg6gsIpF4HdmJ_XxRwn8Z";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,151 +63,142 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: fthain@linux-m68k.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, userm57@yahoo.com
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Backport for kernel 5.13
+--Sig_/sxdg6gsIpF4HdmJ_XxRwn8Z
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-(cherry picked from commit ef486bf448a057a6e2d50e40ae879f7add6585da)
+Hi all,
 
-Commit b5efec00b671 ("powerpc/32s: Move KUEP locking/unlocking in C")
-removed the 'isync' instruction after adding/removing NX bit in user
-segments. The reasoning behind this change was that when setting the
-NX bit we don't mind it taking effect with delay as the kernel never
-executes text from userspace, and when clearing the NX bit this is
-to return to userspace and then the 'rfi' should synchronise the
-context.
+[cc'ing Jon in case he can fix the sphix hang - or knows anything about it]
 
-However, it looks like on book3s/32 having a hash page table, at least
-on the G3 processor, we get an unexpected fault from userspace, then
-this is followed by something wrong in the verification of MSR_PR
-at end of another interrupt.
+On Mon, 23 Aug 2021 19:55:40 +1000 Stephen Rothwell <sfr@canb.auug.org.au> =
+wrote:
+>
+> After merging the powerpc tree, today's linux-next build (htmldocs)
+> produced this warning:
+>=20
 
-This is fixed by adding back the removed isync() following update
-of NX bit in user segment registers. Only do it for cores with an
-hash table, as 603 cores don't exhibit that problem and the two isync
-increase ./null_syscall selftest by 6 cycles on an MPC 832x.
+I missed a line:
 
-First problem: unexpected WARN_ON() for mysterious PROTFAULT
+Sphinx parallel build error:
 
-  WARNING: CPU: 0 PID: 1660 at arch/powerpc/mm/fault.c:354 do_page_fault+0x6c/0x5b0
-  Modules linked in:
-  CPU: 0 PID: 1660 Comm: Xorg Not tainted 5.13.0-pmac-00028-gb3c15b60339a #40
-  NIP:  c001b5c8 LR: c001b6f8 CTR: 00000000
-  REGS: e2d09e40 TRAP: 0700   Not tainted  (5.13.0-pmac-00028-gb3c15b60339a)
-  MSR:  00021032 <ME,IR,DR,RI>  CR: 42d04f30  XER: 20000000
-  GPR00: c000424c e2d09f00 c301b680 e2d09f40 0000001e 42000000 00cba028 00000000
-  GPR08: 08000000 48000010 c301b680 e2d09f30 22d09f30 00c1fff0 00cba000 a7b7ba4c
-  GPR16: 00000031 00000000 00000000 00000000 00000000 00000000 a7b7b0d0 00c5c010
-  GPR24: a7b7b64c a7b7d2f0 00000004 00000000 c1efa6c0 00cba02c 00000300 e2d09f40
-  NIP [c001b5c8] do_page_fault+0x6c/0x5b0
-  LR [c001b6f8] do_page_fault+0x19c/0x5b0
-  Call Trace:
-  [e2d09f00] [e2d09f04] 0xe2d09f04 (unreliable)
-  [e2d09f30] [c000424c] DataAccess_virt+0xd4/0xe4
-  --- interrupt: 300 at 0xa7a261dc
-  NIP:  a7a261dc LR: a7a253bc CTR: 00000000
-  REGS: e2d09f40 TRAP: 0300   Not tainted  (5.13.0-pmac-00028-gb3c15b60339a)
-  MSR:  0000d032 <EE,PR,ME,IR,DR,RI>  CR: 228428e2  XER: 20000000
-  DAR: 00cba02c DSISR: 42000000
-  GPR00: a7a27448 afa6b0e0 a74c35c0 a7b7b614 0000001e a7b7b614 00cba028 00000000
-  GPR08: 00020fd9 00000031 00cb9ff8 a7a273b0 220028e2 00c1fff0 00cba000 a7b7ba4c
-  GPR16: 00000031 00000000 00000000 00000000 00000000 00000000 a7b7b0d0 00c5c010
-  GPR24: a7b7b64c a7b7d2f0 00000004 00000002 0000001e a7b7b614 a7b7aff4 00000030
-  NIP [a7a261dc] 0xa7a261dc
-  LR [a7a253bc] 0xa7a253bc
-  --- interrupt: 300
-  Instruction dump:
-  7c4a1378 810300a0 75278410 83820298 83a300a4 553b018c 551e0036 4082038c
-  2e1b0000 40920228 75280800 41820220 <0fe00000> 3b600000 41920214 81420594
+> docutils.utils.SystemMessage: Documentation/powerpc/associativity.rst:1: =
+(SEVERE/4) Title overline & underline mismatch.
+>=20
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D
+> NUMA resource associativity
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+>=20
+> Introduced by commit
+>=20
+>   1c6b5a7e7405 ("powerpc/pseries: Add support for FORM2 associativity")
+>=20
+> There are other obvious problems with this document (but sphinx seems
+> to have hung before it reported them).
+>=20
+> Like
+>=20
+> Form 0
+> -----
+>=20
+> and
+>=20
+> Form 1
+> -----
+>=20
+> and
+>=20
+> Form 2
+> -------
 
-Second problem: MSR PR is seen unset allthough the interrupt frame shows it set
+I also get the following warning:
 
-  kernel BUG at arch/powerpc/kernel/interrupt.c:458!
-  Oops: Exception in kernel mode, sig: 5 [#1]
-  BE PAGE_SIZE=4K MMU=Hash SMP NR_CPUS=2 PowerMac
-  Modules linked in:
-  CPU: 0 PID: 1660 Comm: Xorg Tainted: G        W         5.13.0-pmac-00028-gb3c15b60339a #40
-  NIP:  c0011434 LR: c001629c CTR: 00000000
-  REGS: e2d09e70 TRAP: 0700   Tainted: G        W          (5.13.0-pmac-00028-gb3c15b60339a)
-  MSR:  00029032 <EE,ME,IR,DR,RI>  CR: 42d09f30  XER: 00000000
-  GPR00: 00000000 e2d09f30 c301b680 e2d09f40 83440000 c44d0e68 e2d09e8c 00000000
-  GPR08: 00000002 00dc228a 00004000 e2d09f30 22d09f30 00c1fff0 afa6ceb4 00c26144
-  GPR16: 00c25fb8 00c26140 afa6ceb8 90000000 00c944d8 0000001c 00000000 00200000
-  GPR24: 00000000 000001fb afa6d1b4 00000001 00000000 a539a2a0 a530fd80 00000089
-  NIP [c0011434] interrupt_exit_kernel_prepare+0x10/0x70
-  LR [c001629c] interrupt_return+0x9c/0x144
-  Call Trace:
-  [e2d09f30] [c000424c] DataAccess_virt+0xd4/0xe4 (unreliable)
-  --- interrupt: 300 at 0xa09be008
-  NIP:  a09be008 LR: a09bdfe8 CTR: a09bdfc0
-  REGS: e2d09f40 TRAP: 0300   Tainted: G        W          (5.13.0-pmac-00028-gb3c15b60339a)
-  MSR:  0000d032 <EE,PR,ME,IR,DR,RI>  CR: 420028e2  XER: 20000000
-  DAR: a539a308 DSISR: 0a000000
-  GPR00: a7b90d50 afa6b2d0 a74c35c0 a0a8b690 a0a8b698 a5365d70 a4fa82a8 00000004
-  GPR08: 00000000 a09bdfc0 00000000 a5360000 a09bde7c 00c1fff0 afa6ceb4 00c26144
-  GPR16: 00c25fb8 00c26140 afa6ceb8 90000000 00c944d8 0000001c 00000000 00200000
-  GPR24: 00000000 000001fb afa6d1b4 00000001 00000000 a539a2a0 a530fd80 00000089
-  NIP [a09be008] 0xa09be008
-  LR [a09bdfe8] 0xa09bdfe8
-  --- interrupt: 300
-  Instruction dump:
-  80010024 83e1001c 7c0803a6 4bffff80 3bc00800 4bffffd0 486b42fd 4bffffcc
-  81430084 71480002 41820038 554a0462 <0f0a0000> 80620060 74630001 40820034
+Documentation/powerpc/associativity.rst: WARNING: document isn't included i=
+n any toctree
 
-Fixes: b5efec00b671 ("powerpc/32s: Move KUEP locking/unlocking in C")
-Cc: stable@vger.kernel.org # v5.13+
-Reported-by: Stan Johnson <userm57@yahoo.com>
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/4856f5574906e2aec0522be17bf3848a22b2cd0b.1629269345.git.christophe.leroy@csgroup.eu
----
- arch/powerpc/mm/book3s32/kuep.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+And applying the following patch is enough to allow sphinx to finish
+(rather than livelocking):
 
-diff --git a/arch/powerpc/mm/book3s32/kuep.c b/arch/powerpc/mm/book3s32/kuep.c
-index 8ed1b8634839..7015bd489063 100644
---- a/arch/powerpc/mm/book3s32/kuep.c
-+++ b/arch/powerpc/mm/book3s32/kuep.c
-@@ -4,6 +4,7 @@
- #include <asm/reg.h>
- #include <asm/task_size_32.h>
- #include <asm/mmu.h>
-+#include <asm/synch.h>
- 
- #define KUEP_UPDATE_TWO_USER_SEGMENTS(n) do {		\
- 	if (TASK_SIZE > ((n) << 28))			\
-@@ -32,9 +33,27 @@ static __always_inline void kuep_update(u32 val)
- void kuep_lock(void)
- {
- 	kuep_update(mfsr(0) | SR_NX);
-+	/*
-+	 * This isync() shouldn't be necessary as the kernel is not excepted to
-+	 * run any instruction in userspace soon after the update of segments,
-+	 * but hash based cores (at least G3) seem to exhibit a random
-+	 * behaviour when the 'isync' is not there. 603 cores don't have this
-+	 * behaviour so don't do the 'isync' as it saves several CPU cycles.
-+	 */
-+	if (mmu_has_feature(MMU_FTR_HPTE_TABLE))
-+		isync();	/* Context sync required after mtsr() */
- }
- 
- void kuep_unlock(void)
- {
- 	kuep_update(mfsr(0) & ~SR_NX);
-+	/*
-+	 * This isync() shouldn't be necessary as a 'rfi' will soon be executed
-+	 * to return to userspace, but hash based cores (at least G3) seem to
-+	 * exhibit a random behaviour when the 'isync' is not there. 603 cores
-+	 * don't have this behaviour so don't do the 'isync' as it saves several
-+	 * CPU cycles.
-+	 */
-+	if (mmu_has_feature(MMU_FTR_HPTE_TABLE))
-+		isync();	/* Context sync required after mtsr() */
- }
--- 
-2.25.0
+diff --git a/Documentation/powerpc/associativity.rst b/Documentation/powerp=
+c/associativity.rst
+index 07e7dd3d6c87..b77c6ccbd6cb 100644
+--- a/Documentation/powerpc/associativity.rst
++++ b/Documentation/powerpc/associativity.rst
+@@ -1,6 +1,6 @@
+-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D
+ NUMA resource associativity
+-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D
+=20
+ Associativity represents the groupings of the various platform resources i=
+nto
+ domains of substantially similar mean performance relative to resources ou=
+tside
+@@ -20,11 +20,11 @@ A value of 1 indicates the usage of Form 1 associativit=
+y. For Form 2 associativi
+ bit 2 of byte 5 in the "ibm,architecture-vec-5" property is used.
+=20
+ Form 0
+------
++------
+ Form 0 associativity supports only two NUMA distances (LOCAL and REMOTE).
+=20
+ Form 1
+------
++------
+ With Form 1 a combination of ibm,associativity-reference-points, and ibm,a=
+ssociativity
+ device tree properties are used to determine the NUMA distance between res=
+ource groups/domains.
+=20
+@@ -45,7 +45,7 @@ level of the resource group, the kernel doubles the NUMA =
+distance between the
+ comparing domains.
+=20
+ Form 2
+--------
++------
+ Form 2 associativity format adds separate device tree properties represent=
+ing NUMA node distance
+ thereby making the node distance computation flexible. Form 2 also allows =
+flexible primary
+ domain numbering. With numa distance computation now detached from the ind=
+ex value in
 
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/sxdg6gsIpF4HdmJ_XxRwn8Z
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmEjfOMACgkQAVBC80lX
+0GyLKggAhCMrgdwGxkXle5T2qBzbCLLt9t4orSVuLnnyOdL/bZOW3T4uZoeNrwE3
+ZgvcuzFGHpNjiT84wlMR1Ui6tD/cSF95PEyno26ZoifhPQELvZxBgiYQtCirrgIJ
+Co8qEQPsScICE8fvNNhwbliv/xYTei+Hfj2tED/FugRbaHHqoOOjUVUfO/PI0roZ
+kRD8H5x35d+oYVUwhqmzmYWMYtcdnyXcu3vsx587Nr3O9yk0n+PLwU6OaAgSPtt7
+PMo+QNZsm+E/Uyvvjkc1wPU5x8UGlU0nOGsLFAjycWrhBeTztpZlunjAHKyfqPQX
+GLRByUmgTZmQw9Gs0SfxO+QhZpkYCQ==
+=4JXF
+-----END PGP SIGNATURE-----
+
+--Sig_/sxdg6gsIpF4HdmJ_XxRwn8Z--
