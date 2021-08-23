@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B11613F4DA0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 17:37:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63DF73F4DA2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 17:37:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gtbw341hvz3cD6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Aug 2021 01:37:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GtbwV22hyz3cJq
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Aug 2021 01:37:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,39 +16,39 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gtbtc0bpSz2xtk
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Aug 2021 01:36:08 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gtbth0msnz2yg3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Aug 2021 01:36:11 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4GtbtM3Y7gz9sWt;
- Mon, 23 Aug 2021 17:35:55 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4GtbtN6ThDz9sWx;
+ Mon, 23 Aug 2021 17:35:56 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id jHYq65ia1aAv; Mon, 23 Aug 2021 17:35:55 +0200 (CEST)
+ with ESMTP id q3MsoyM3ZJve; Mon, 23 Aug 2021 17:35:56 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4GtbtL4yHqz9sWm;
- Mon, 23 Aug 2021 17:35:54 +0200 (CEST)
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4GtbtM5bkyz9sWm;
+ Mon, 23 Aug 2021 17:35:55 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 8F62E8B7AF;
- Mon, 23 Aug 2021 17:35:54 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9035A8B7AF;
+ Mon, 23 Aug 2021 17:35:55 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id HlAq6WByRKMp; Mon, 23 Aug 2021 17:35:54 +0200 (CEST)
+ with ESMTP id R3keXlOwx4s6; Mon, 23 Aug 2021 17:35:55 +0200 (CEST)
 Received: from po18078vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
  [172.25.230.100])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6CA438B7AD;
- Mon, 23 Aug 2021 17:35:54 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 728DF8B7AD;
+ Mon, 23 Aug 2021 17:35:55 +0200 (CEST)
 Received: by po18078vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 654E26BC7C; Mon, 23 Aug 2021 15:35:54 +0000 (UTC)
-Message-Id: <ba0ea6e1fdb49d241a8be7d14fd5c13f76e2b7c8.1629732940.git.christophe.leroy@csgroup.eu>
+ id 6B4476BC7C; Mon, 23 Aug 2021 15:35:55 +0000 (UTC)
+Message-Id: <7d391d915d2bd1c0f601f55f61f8dd4c70066229.1629732940.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <fd7938d94008711d441551c06b25a033669a0618.1629732940.git.christophe.leroy@csgroup.eu>
 References: <fd7938d94008711d441551c06b25a033669a0618.1629732940.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v2 4/5] powerpc/uaccess: Add unsafe_clear_user()
+Subject: [PATCH v2 5/5] powerpc/signal: Use unsafe_copy_siginfo_to_user()
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 23 Aug 2021 15:35:54 +0000 (UTC)
+Date: Mon, 23 Aug 2021 15:35:55 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,48 +65,77 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Implement unsafe_clear_user() for powerpc.
-It's a copy/paste of unsafe_copy_to_user() with value 0 as source.
+Use unsafe_copy_siginfo_to_user() in order to do the copy
+within the user access block.
 
-It may be improved in a later patch by using 'dcbz' instruction
-to zeroize full cache lines at once.
+On an mpc 8321 (book3s/32) the improvment is about 5% on a process
+sending a signal to itself.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/uaccess.h | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ arch/powerpc/kernel/signal_32.c | 13 ++++++-------
+ arch/powerpc/kernel/signal_64.c |  5 +----
+ 2 files changed, 7 insertions(+), 11 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index 22c79ab40006..962b675485ff 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -467,6 +467,26 @@ do {									\
- 		unsafe_put_user(*(u8*)(_src + _i), (u8 __user *)(_dst + _i), e); \
- } while (0)
+diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/signal_32.c
+index ff101e2b3bab..f9e16d108bc8 100644
+--- a/arch/powerpc/kernel/signal_32.c
++++ b/arch/powerpc/kernel/signal_32.c
+@@ -710,12 +710,6 @@ static long restore_tm_user_regs(struct pt_regs *regs, struct mcontext __user *s
+ }
+ #endif
  
-+#define unsafe_clear_user(d, l, e)					\
-+do {									\
-+	u8 __user *_dst = (u8 __user *)(d);				\
-+	size_t _len = (l);						\
-+	int _i;								\
-+									\
-+	for (_i = 0; _i < (_len & ~(sizeof(u64) - 1)); _i += sizeof(u64)) \
-+		unsafe_put_user(0, (u64 __user *)(_dst + _i), e);	\
-+	if (_len & 4) {							\
-+		unsafe_put_user(0, (u32 __user *)(_dst + _i), e);	\
-+		_i += 4;						\
-+	}								\
-+	if (_len & 2) {							\
-+		unsafe_put_user(0, (u16 __user *)(_dst + _i), e);	\
-+		_i += 2;						\
-+	}								\
-+	if (_len & 1)							\
-+		unsafe_put_user(0, (u8 __user *)(_dst + _i), e);	\
-+} while (0)
-+
- #define HAVE_GET_KERNEL_NOFAULT
+-#ifdef CONFIG_PPC64
+-
+-#define copy_siginfo_to_user	copy_siginfo_to_user32
+-
+-#endif /* CONFIG_PPC64 */
+-
+ /*
+  * Set up a signal frame for a "real-time" signal handler
+  * (one which gets siginfo).
+@@ -779,14 +773,19 @@ int handle_rt_signal32(struct ksignal *ksig, sigset_t *oldset,
+ 		asm("dcbst %y0; sync; icbi %y0; sync" :: "Z" (mctx->mc_pad[0]));
+ 	}
+ 	unsafe_put_sigset_t(&frame->uc.uc_sigmask, oldset, failed);
++#ifndef CONFIG_COMPAT
++	unsafe_copy_siginfo_to_user(&frame->info, &ksig->info, failed);
++#endif
  
- #define __get_kernel_nofault(dst, src, type, err_label)			\
+ 	/* create a stack frame for the caller of the handler */
+ 	unsafe_put_user(regs->gpr[1], newsp, failed);
+ 
+ 	user_access_end();
+ 
+-	if (copy_siginfo_to_user(&frame->info, &ksig->info))
++#ifdef CONFIG_COMPAT
++	if (copy_siginfo_to_user32(&frame->info, &ksig->info))
+ 		goto badframe;
++#endif
+ 
+ 	regs->link = tramp;
+ 
+diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/signal_64.c
+index 2cca6c8febe1..82b73fbd937d 100644
+--- a/arch/powerpc/kernel/signal_64.c
++++ b/arch/powerpc/kernel/signal_64.c
+@@ -901,15 +901,12 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
+ 	}
+ 
+ 	unsafe_copy_to_user(&frame->uc.uc_sigmask, set, sizeof(*set), badframe_block);
++	unsafe_copy_siginfo_to_user(&frame->info, &ksig->info, badframe_block);
+ 	/* Allocate a dummy caller frame for the signal handler. */
+ 	unsafe_put_user(regs->gpr[1], newsp, badframe_block);
+ 
+ 	user_write_access_end();
+ 
+-	/* Save the siginfo outside of the unsafe block. */
+-	if (copy_siginfo_to_user(&frame->info, &ksig->info))
+-		goto badframe;
+-
+ 	/* Make sure signal handler doesn't get spurious FP exceptions */
+ 	tsk->thread.fp_state.fpscr = 0;
+ 
 -- 
 2.25.0
 
