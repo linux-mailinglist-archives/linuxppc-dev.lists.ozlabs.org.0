@@ -2,73 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FA0C3F4D54
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 17:21:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 230D73F4D55
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Aug 2021 17:21:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GtbYB0Dp7z2yJ8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Aug 2021 01:21:02 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=default header.b=LBQNAG/k;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GtbYq0918z305W
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Aug 2021 01:21:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=efficios.com (client-ip=167.114.26.124; helo=mail.efficios.com;
- envelope-from=compudj@efficios.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256
- header.s=default header.b=LBQNAG/k; dkim-atps=neutral
-Received: from mail.efficios.com (mail.efficios.com [167.114.26.124])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GtbXS23K6z2xrL
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Aug 2021 01:20:24 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GtbXw6l7Mz2yHD
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Aug 2021 01:20:46 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4GtbXq1Y6Nz9sT3;
+ Mon, 23 Aug 2021 17:20:43 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id hBju9igGbz3q; Mon, 23 Aug 2021 17:20:43 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4GtbXq0Jflz9sT2;
+ Mon, 23 Aug 2021 17:20:43 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by mail.efficios.com (Postfix) with ESMTP id 3DD74334FF2;
- Mon, 23 Aug 2021 11:20:22 -0400 (EDT)
-Received: from mail.efficios.com ([127.0.0.1])
- by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10032)
- with ESMTP id LJrPNFGBu5KN; Mon, 23 Aug 2021 11:20:17 -0400 (EDT)
-Received: from localhost (localhost [127.0.0.1])
- by mail.efficios.com (Postfix) with ESMTP id C3F7D334FF1;
- Mon, 23 Aug 2021 11:20:17 -0400 (EDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.efficios.com C3F7D334FF1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
- s=default; t=1629732017;
- bh=S5wesjMNZpOVqMilT2oI+HzIPYcgfplpkn76pAJBUMs=;
- h=Date:From:To:Message-ID:MIME-Version;
- b=LBQNAG/kxGwqMN/Yd/hfOrxjE9t0y6mTOaFLuI1QnbF1Bwvo7LrjI6NIOizCVYXli
- lu6pQIj77Aqgl/KXZ6F3PfMoWWhnub9YC9zozMs5LtB2BmOxbuKCqnl5C7d3ptaPBN
- dVRV5F5ddn8WzFJJGinjIgDsc4ynmGgeUgMlotbRLV/D7mk1Fh76BbQIXs+VTG6u7e
- aSXJiuhHVrV/iGfRd/aBKOv1s5wN2oTSSHOLrUGcv/SqxuaiRHdDhLrcpnRI80I8qb
- y4OQAUHBlP/s8zu6Qqyre3oGuDakv+xU8On9JdL5oSi3xx3v39S8TQC7PJOvLtRIRM
- MEy0mb4AWmGCg==
-X-Virus-Scanned: amavisd-new at efficios.com
-Received: from mail.efficios.com ([127.0.0.1])
- by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10026)
- with ESMTP id TyoIgPSn19Z2; Mon, 23 Aug 2021 11:20:17 -0400 (EDT)
-Received: from mail03.efficios.com (mail03.efficios.com [167.114.26.124])
- by mail.efficios.com (Postfix) with ESMTP id A4BF83351E7;
- Mon, 23 Aug 2021 11:20:17 -0400 (EDT)
-Date: Mon, 23 Aug 2021 11:20:17 -0400 (EDT)
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-To: Sean Christopherson <seanjc@google.com>, Darren Hart <dvhart@infradead.org>
-Message-ID: <282257549.21721.1629732017655.JavaMail.zimbra@efficios.com>
-In-Reply-To: <766990430.21713.1629731934069.JavaMail.zimbra@efficios.com>
-References: <20210820225002.310652-1-seanjc@google.com>
- <20210820225002.310652-5-seanjc@google.com>
- <766990430.21713.1629731934069.JavaMail.zimbra@efficios.com>
-Subject: Re: [PATCH v2 4/5] KVM: selftests: Add a test for KVM_RUN+rseq to
- detect task migration bugs
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [167.114.26.124]
-X-Mailer: Zimbra 8.8.15_GA_4101 (ZimbraWebClient - FF90 (Linux)/8.8.15_GA_4059)
-Thread-Topic: selftests: Add a test for KVM_RUN+rseq to detect task migration
- bugs
-Thread-Index: 9INcR4B9tvRD6E6sZQ8uPmTSeu5zxPtDkgBM
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id DE6B58B7B3;
+ Mon, 23 Aug 2021 17:20:42 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id lnbyMjsGF0x4; Mon, 23 Aug 2021 17:20:42 +0200 (CEST)
+Received: from po18078vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
+ [172.25.230.100])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B1BBE8B7AF;
+ Mon, 23 Aug 2021 17:20:42 +0200 (CEST)
+Received: by po18078vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 812696BC76; Mon, 23 Aug 2021 15:20:42 +0000 (UTC)
+Message-Id: <343d06ab9ea7b8b6358308753ec1e8fa7e3d4f11.1629731144.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v3 1/2] powerpc/32s: Do kuep_lock() and kuep_unlock() in
+ assembly
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Mon, 23 Aug 2021 15:20:42 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,207 +59,349 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: KVM list <kvm@vger.kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- linux-kernel <linux-kernel@vger.kernel.org>, Will Deacon <will@kernel.org>,
- Guo Ren <guoren@kernel.org>, linux-kselftest <linux-kselftest@vger.kernel.org>,
- Ben Gardon <bgardon@google.com>, shuah <shuah@kernel.org>,
- Paul Mackerras <paulus@samba.org>, linux-s390 <linux-s390@vger.kernel.org>,
- gor <gor@linux.ibm.com>, "Russell King, ARM Linux" <linux@armlinux.org.uk>,
- linux-csky <linux-csky@vger.kernel.org>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- linux-mips <linux-mips@vger.kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
- paulmck <paulmck@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
- rostedt <rostedt@goodmis.org>, Shakeel Butt <shakeelb@google.com>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Peter Foley <pefoley@google.com>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Oleg Nesterov <oleg@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-[ re-send to Darren Hart ]
+When interrupt and syscall entries where converted to C, KUEP locking
+and unlocking was also converted. It improved performance by unrolling
+the loop, and allowed easily implementing boot time deactivation of
+KUEP.
 
------ On Aug 23, 2021, at 11:18 AM, Mathieu Desnoyers mathieu.desnoyers@efficios.com wrote:
+However, null_syscall selftest shows that KUEP is still heavy
+(361 cycles with KUEP, 212 cycles without).
 
-> ----- On Aug 20, 2021, at 6:50 PM, Sean Christopherson seanjc@google.com wrote:
-> 
->> Add a test to verify an rseq's CPU ID is updated correctly if the task is
->> migrated while the kernel is handling KVM_RUN.  This is a regression test
->> for a bug introduced by commit 72c3c0fe54a3 ("x86/kvm: Use generic xfer
->> to guest work function"), where TIF_NOTIFY_RESUME would be cleared by KVM
->> without updating rseq, leading to a stale CPU ID and other badness.
->> 
-> 
-> [...]
-> 
-> +#define RSEQ_SIG 0xdeadbeef
-> 
-> Is there any reason for defining a custom signature rather than including
-> tools/testing/selftests/rseq/rseq.h ? This should take care of including
-> the proper architecture header which will define the appropriate signature.
-> 
-> Arguably you don't define rseq critical sections in this test per se, but
-> I'm wondering why the custom signature here.
-> 
-> [...]
-> 
->> +
->> +static void *migration_worker(void *ign)
->> +{
->> +	cpu_set_t allowed_mask;
->> +	int r, i, nr_cpus, cpu;
->> +
->> +	CPU_ZERO(&allowed_mask);
->> +
->> +	nr_cpus = CPU_COUNT(&possible_mask);
->> +
->> +	for (i = 0; i < 20000; i++) {
->> +		cpu = i % nr_cpus;
->> +		if (!CPU_ISSET(cpu, &possible_mask))
->> +			continue;
->> +
->> +		CPU_SET(cpu, &allowed_mask);
->> +
->> +		/*
->> +		 * Bump the sequence count twice to allow the reader to detect
->> +		 * that a migration may have occurred in between rseq and sched
->> +		 * CPU ID reads.  An odd sequence count indicates a migration
->> +		 * is in-progress, while a completely different count indicates
->> +		 * a migration occurred since the count was last read.
->> +		 */
->> +		atomic_inc(&seq_cnt);
-> 
-> So technically this atomic_inc contains the required barriers because the
-> selftests
-> implementation uses "__sync_add_and_fetch(&addr->val, 1)". But it's rather odd
-> that
-> the semantic differs from the kernel implementation in terms of memory barriers:
-> the
-> kernel implementation of atomic_inc guarantees no memory barriers, but this one
-> happens to provide full barriers pretty much by accident (selftests
-> futex/include/atomic.h documents no such guarantee).
-> 
-> If this full barrier guarantee is indeed provided by the selftests atomic.h
-> header,
-> I would really like a comment stating that in the atomic.h header so the carpet
-> is
-> not pulled from under our feet by a future optimization.
-> 
-> 
->> +		r = sched_setaffinity(0, sizeof(allowed_mask), &allowed_mask);
->> +		TEST_ASSERT(!r, "sched_setaffinity failed, errno = %d (%s)",
->> +			    errno, strerror(errno));
->> +		atomic_inc(&seq_cnt);
->> +
->> +		CPU_CLR(cpu, &allowed_mask);
->> +
->> +		/*
->> +		 * Let the read-side get back into KVM_RUN to improve the odds
->> +		 * of task migration coinciding with KVM's run loop.
-> 
-> This comment should be about increasing the odds of letting the seqlock
-> read-side
-> complete. Otherwise, the delay between the two back-to-back atomic_inc is so
-> small
-> that the seqlock read-side may never have time to complete the reading the rseq
-> cpu id and the sched_getcpu() call, and can retry forever.
-> 
-> I'm wondering if 1 microsecond is sufficient on other architectures as well. One
-> alternative way to make this depend less on the architecture's implementation of
-> sched_getcpu (whether it's a vDSO, or goes through a syscall) would be to read
-> the rseq cpu id and call sched_getcpu a few times (e.g. 3 times) in the
-> migration
-> thread rather than use usleep, and throw away the value read. This would ensure
-> the delay is appropriate on all architectures.
-> 
-> Thanks!
-> 
-> Mathieu
-> 
->> +		 */
->> +		usleep(1);
->> +	}
->> +	done = true;
->> +	return NULL;
->> +}
->> +
->> +int main(int argc, char *argv[])
->> +{
->> +	struct kvm_vm *vm;
->> +	u32 cpu, rseq_cpu;
->> +	int r, snapshot;
->> +
->> +	/* Tell stdout not to buffer its content */
->> +	setbuf(stdout, NULL);
->> +
->> +	r = sched_getaffinity(0, sizeof(possible_mask), &possible_mask);
->> +	TEST_ASSERT(!r, "sched_getaffinity failed, errno = %d (%s)", errno,
->> +		    strerror(errno));
->> +
->> +	if (CPU_COUNT(&possible_mask) < 2) {
->> +		print_skip("Only one CPU, task migration not possible\n");
->> +		exit(KSFT_SKIP);
->> +	}
->> +
->> +	sys_rseq(0);
->> +
->> +	/*
->> +	 * Create and run a dummy VM that immediately exits to userspace via
->> +	 * GUEST_SYNC, while concurrently migrating the process by setting its
->> +	 * CPU affinity.
->> +	 */
->> +	vm = vm_create_default(VCPU_ID, 0, guest_code);
->> +
->> +	pthread_create(&migration_thread, NULL, migration_worker, 0);
->> +
->> +	while (!done) {
->> +		vcpu_run(vm, VCPU_ID);
->> +		TEST_ASSERT(get_ucall(vm, VCPU_ID, NULL) == UCALL_SYNC,
->> +			    "Guest failed?");
->> +
->> +		/*
->> +		 * Verify rseq's CPU matches sched's CPU.  Ensure migration
->> +		 * doesn't occur between sched_getcpu() and reading the rseq
->> +		 * cpu_id by rereading both if the sequence count changes, or
->> +		 * if the count is odd (migration in-progress).
->> +		 */
->> +		do {
->> +			/*
->> +			 * Drop bit 0 to force a mismatch if the count is odd,
->> +			 * i.e. if a migration is in-progress.
->> +			 */
->> +			snapshot = atomic_read(&seq_cnt) & ~1;
->> +			smp_rmb();
->> +			cpu = sched_getcpu();
->> +			rseq_cpu = READ_ONCE(__rseq.cpu_id);
->> +			smp_rmb();
->> +		} while (snapshot != atomic_read(&seq_cnt));
->> +
->> +		TEST_ASSERT(rseq_cpu == cpu,
->> +			    "rseq CPU = %d, sched CPU = %d\n", rseq_cpu, cpu);
->> +	}
->> +
->> +	pthread_join(migration_thread, NULL);
->> +
->> +	kvm_vm_free(vm);
->> +
->> +	sys_rseq(RSEQ_FLAG_UNREGISTER);
->> +
->> +	return 0;
->> +}
->> --
->> 2.33.0.rc2.250.ged5fa647cd-goog
-> 
-> --
-> Mathieu Desnoyers
-> EfficiOS Inc.
-> http://www.efficios.com
+A way to improve more is to group 'mtsr's together, instead of
+repeating 'addi' + 'mtsr' several times.
 
+In order to do that, more registers need to be available. In C, GCC
+will always be able to provide the requested number of registers, but
+at the cost of saving some data on the stack, which is counter
+performant here.
+
+So let's do it in assembly, when we have full control of which
+register can be used. It also has the advantage of locking earlier
+and unlocking later and it helps GCC generating less tricky code.
+The only drawback is to make boot time deactivation less straight
+forward and require 'hand' instruction patching.
+
+Group 'mtsr's by 4.
+
+With this change, null_syscall selftest reports 336 cycles. Without
+the change it was 361 cycles, that's a 7% reduction.
+
+For the time being, capability to deactive at boot time is disabled.
+It will be re-enabled in following patch.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+v3:
+- Add isync after updating segments
+- Only group by 4. Grouping by 6 only saves one more cycle.
+- Implement subfunctions kuep_lock and kuep_unlock.
+
+v2: Fixed build failure for non book3s/32
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/include/asm/book3s/32/kup.h      | 34 --------
+ arch/powerpc/include/asm/book3s/32/mmu-hash.h | 77 ++++++++++++++++++-
+ arch/powerpc/include/asm/interrupt.h          |  6 +-
+ arch/powerpc/include/asm/kup.h                |  5 --
+ arch/powerpc/kernel/entry_32.S                | 31 ++++++++
+ arch/powerpc/kernel/head_32.h                 |  6 ++
+ arch/powerpc/kernel/interrupt.c               |  3 -
+ arch/powerpc/mm/book3s32/kuep.c               |  7 +-
+ 8 files changed, 121 insertions(+), 48 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/book3s/32/kup.h b/arch/powerpc/include/asm/book3s/32/kup.h
+index d4b145b279f6..f159efd04ebc 100644
+--- a/arch/powerpc/include/asm/book3s/32/kup.h
++++ b/arch/powerpc/include/asm/book3s/32/kup.h
+@@ -24,40 +24,6 @@ static __always_inline bool kuep_is_disabled(void)
+ 	return !IS_ENABLED(CONFIG_PPC_KUEP) || static_branch_unlikely(&disable_kuep_key);
+ }
+ 
+-static inline void kuep_lock(void)
+-{
+-	if (kuep_is_disabled())
+-		return;
+-
+-	update_user_segments(mfsr(0) | SR_NX);
+-	/*
+-	 * This isync() shouldn't be necessary as the kernel is not excepted to
+-	 * run any instruction in userspace soon after the update of segments,
+-	 * but hash based cores (at least G3) seem to exhibit a random
+-	 * behaviour when the 'isync' is not there. 603 cores don't have this
+-	 * behaviour so don't do the 'isync' as it saves several CPU cycles.
+-	 */
+-	if (mmu_has_feature(MMU_FTR_HPTE_TABLE))
+-		isync();	/* Context sync required after mtsr() */
+-}
+-
+-static inline void kuep_unlock(void)
+-{
+-	if (kuep_is_disabled())
+-		return;
+-
+-	update_user_segments(mfsr(0) & ~SR_NX);
+-	/*
+-	 * This isync() shouldn't be necessary as a 'rfi' will soon be executed
+-	 * to return to userspace, but hash based cores (at least G3) seem to
+-	 * exhibit a random behaviour when the 'isync' is not there. 603 cores
+-	 * don't have this behaviour so don't do the 'isync' as it saves several
+-	 * CPU cycles.
+-	 */
+-	if (mmu_has_feature(MMU_FTR_HPTE_TABLE))
+-		isync();	/* Context sync required after mtsr() */
+-}
+-
+ #ifdef CONFIG_PPC_KUAP
+ 
+ #include <linux/sched.h>
+diff --git a/arch/powerpc/include/asm/book3s/32/mmu-hash.h b/arch/powerpc/include/asm/book3s/32/mmu-hash.h
+index f5be185cbdf8..e2f7ccc13edb 100644
+--- a/arch/powerpc/include/asm/book3s/32/mmu-hash.h
++++ b/arch/powerpc/include/asm/book3s/32/mmu-hash.h
+@@ -64,7 +64,82 @@ struct ppc_bat {
+ #define SR_KP	0x20000000	/* User key */
+ #define SR_KS	0x40000000	/* Supervisor key */
+ 
+-#ifndef __ASSEMBLY__
++#ifdef __ASSEMBLY__
++
++#include <asm/asm-offsets.h>
++
++.macro uus_addi sr reg1 reg2 imm
++	.if NUM_USER_SEGMENTS > \sr
++	addi	\reg1,\reg2,\imm
++	.endif
++.endm
++
++.macro uus_mtsr sr reg1
++	.if NUM_USER_SEGMENTS > \sr
++	mtsr	\sr, \reg1
++	.endif
++.endm
++
++/*
++ * This isync() shouldn't be necessary as the kernel is not excepted to run
++ * any instruction in userspace soon after the update of segments and 'rfi'
++ * instruction is used to return to userspace, but hash based cores
++ * (at least G3) seem to exhibit a random behaviour when the 'isync' is not
++ * there. 603 cores don't have this behaviour so don't do the 'isync' as it
++ * saves several CPU cycles.
++ */
++.macro uus_isync
++#ifdef CONFIG_PPC_BOOK3S_604
++BEGIN_MMU_FTR_SECTION
++	isync
++END_MMU_FTR_SECTION_IFSET(MMU_FTR_HPTE_TABLE)
++#endif
++.endm
++
++.macro update_user_segments_by_4 tmp1 tmp2 tmp3 tmp4
++	uus_addi	1, \tmp2, \tmp1, 0x111
++	uus_addi	2, \tmp3, \tmp1, 0x222
++	uus_addi	3, \tmp4, \tmp1, 0x333
++
++	uus_mtsr	0, \tmp1
++	uus_mtsr	1, \tmp2
++	uus_mtsr	2, \tmp3
++	uus_mtsr	3, \tmp4
++
++	uus_addi	4, \tmp1, \tmp1, 0x444
++	uus_addi	5, \tmp2, \tmp2, 0x444
++	uus_addi	6, \tmp3, \tmp3, 0x444
++	uus_addi	7, \tmp4, \tmp4, 0x444
++
++	uus_mtsr	4, \tmp1
++	uus_mtsr	5, \tmp2
++	uus_mtsr	6, \tmp3
++	uus_mtsr	7, \tmp4
++
++	uus_addi	8, \tmp1, \tmp1, 0x444
++	uus_addi	9, \tmp2, \tmp2, 0x444
++	uus_addi	10, \tmp3, \tmp3, 0x444
++	uus_addi	11, \tmp4, \tmp4, 0x444
++
++	uus_mtsr	8, \tmp1
++	uus_mtsr	9, \tmp2
++	uus_mtsr	10, \tmp3
++	uus_mtsr	11, \tmp4
++
++	uus_addi	12, \tmp1, \tmp1, 0x444
++	uus_addi	13, \tmp2, \tmp2, 0x444
++	uus_addi	14, \tmp3, \tmp3, 0x444
++	uus_addi	15, \tmp4, \tmp4, 0x444
++
++	uus_mtsr	12, \tmp1
++	uus_mtsr	13, \tmp2
++	uus_mtsr	14, \tmp3
++	uus_mtsr	15, \tmp4
++
++	uus_isync
++.endm
++
++#else
+ 
+ /*
+  * This macro defines the mapping from contexts to VSIDs (virtual
+diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
+index 6b800d3e2681..03afc4e7928e 100644
+--- a/arch/powerpc/include/asm/interrupt.h
++++ b/arch/powerpc/include/asm/interrupt.h
+@@ -139,12 +139,10 @@ static inline void interrupt_enter_prepare(struct pt_regs *regs, struct interrup
+ 	if (!arch_irq_disabled_regs(regs))
+ 		trace_hardirqs_off();
+ 
+-	if (user_mode(regs)) {
+-		kuep_lock();
++	if (user_mode(regs))
+ 		account_cpu_user_entry();
+-	} else {
++	else
+ 		kuap_save_and_lock(regs);
+-	}
+ #endif
+ 
+ #ifdef CONFIG_PPC64
+diff --git a/arch/powerpc/include/asm/kup.h b/arch/powerpc/include/asm/kup.h
+index 1df763002726..34ff86e3686e 100644
+--- a/arch/powerpc/include/asm/kup.h
++++ b/arch/powerpc/include/asm/kup.h
+@@ -38,11 +38,6 @@ void setup_kuep(bool disabled);
+ static inline void setup_kuep(bool disabled) { }
+ #endif /* CONFIG_PPC_KUEP */
+ 
+-#ifndef CONFIG_PPC_BOOK3S_32
+-static inline void kuep_lock(void) { }
+-static inline void kuep_unlock(void) { }
+-#endif
+-
+ #ifdef CONFIG_PPC_KUAP
+ void setup_kuap(bool disabled);
+ #else
+diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
+index 0273a1349006..14269313d5dd 100644
+--- a/arch/powerpc/kernel/entry_32.S
++++ b/arch/powerpc/kernel/entry_32.S
+@@ -73,6 +73,34 @@ prepare_transfer_to_handler:
+ _ASM_NOKPROBE_SYMBOL(prepare_transfer_to_handler)
+ #endif /* CONFIG_PPC_BOOK3S_32 || CONFIG_E500 */
+ 
++#if defined(CONFIG_PPC_KUEP) && defined(CONFIG_PPC_BOOK3S_32)
++	.globl	__kuep_lock
++__kuep_lock:
++	mfsr    r9,0
++	rlwinm  r9,r9,0,8,3
++	oris    r9,r9,SR_NX@h
++	update_user_segments_by_4 r9, r10, r11, r12
++	blr
++
++__kuep_unlock:
++	mfsr    r9,0
++	rlwinm  r9,r9,0,8,2
++	update_user_segments_by_4 r9, r10, r11, r12
++	blr
++
++.macro	kuep_lock
++	bl	__kuep_lock
++.endm
++.macro	kuep_unlock
++	bl	__kuep_unlock
++.endm
++#else
++.macro	kuep_lock
++.endm
++.macro	kuep_unlock
++.endm
++#endif
++
+ 	.globl	transfer_to_syscall
+ transfer_to_syscall:
+ 	stw	r11, GPR1(r1)
+@@ -94,6 +122,7 @@ transfer_to_syscall:
+ 	SAVE_2GPRS(7, r1)
+ 	addi	r2,r10,-THREAD
+ 	SAVE_NVGPRS(r1)
++	kuep_lock
+ 
+ 	/* Calling convention has r9 = orig r0, r10 = regs */
+ 	addi	r10,r1,STACK_FRAME_OVERHEAD
+@@ -110,6 +139,7 @@ ret_from_syscall:
+ 	cmplwi	cr0,r5,0
+ 	bne-	2f
+ #endif /* CONFIG_PPC_47x */
++	kuep_unlock
+ 	lwz	r4,_LINK(r1)
+ 	lwz	r5,_CCR(r1)
+ 	mtlr	r4
+@@ -273,6 +303,7 @@ interrupt_return:
+ 	beq	.Lkernel_interrupt_return
+ 	bl	interrupt_exit_user_prepare
+ 	cmpwi	r3,0
++	kuep_unlock
+ 	bne-	.Lrestore_nvgprs
+ 
+ .Lfast_user_interrupt_return:
+diff --git a/arch/powerpc/kernel/head_32.h b/arch/powerpc/kernel/head_32.h
+index 6b1ec9e3541b..133197039775 100644
+--- a/arch/powerpc/kernel/head_32.h
++++ b/arch/powerpc/kernel/head_32.h
+@@ -136,6 +136,12 @@ _ASM_NOKPROBE_SYMBOL(\name\()_virt)
+ 	andi.	r12,r9,MSR_PR
+ 	bne	777f
+ 	bl	prepare_transfer_to_handler
++#ifdef CONFIG_PPC_KUEP
++	b	778f
++777:
++	bl	__kuep_lock
++778:
++#endif
+ 777:
+ #endif
+ .endm
+diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
+index 21bbd615ca41..cd6139003776 100644
+--- a/arch/powerpc/kernel/interrupt.c
++++ b/arch/powerpc/kernel/interrupt.c
+@@ -81,8 +81,6 @@ notrace long system_call_exception(long r3, long r4, long r5,
+ {
+ 	syscall_fn f;
+ 
+-	kuep_lock();
+-
+ 	regs->orig_gpr3 = r3;
+ 
+ 	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
+@@ -365,7 +363,6 @@ interrupt_exit_user_prepare_main(unsigned long ret, struct pt_regs *regs)
+ 
+ 	/* Restore user access locks last */
+ 	kuap_user_restore(regs);
+-	kuep_unlock();
+ 
+ 	return ret;
+ }
+diff --git a/arch/powerpc/mm/book3s32/kuep.c b/arch/powerpc/mm/book3s32/kuep.c
+index c20733d6e02c..45c9967f9aef 100644
+--- a/arch/powerpc/mm/book3s32/kuep.c
++++ b/arch/powerpc/mm/book3s32/kuep.c
+@@ -7,8 +7,13 @@ struct static_key_false disable_kuep_key;
+ 
+ void setup_kuep(bool disabled)
+ {
++	if (disabled) {
++		pr_info("KUEP cannot be disabled for the time being\n");
++		disabled = false;
++	}
++
+ 	if (!disabled)
+-		kuep_lock();
++		update_user_segments(mfsr(0) | SR_NX);
+ 
+ 	if (smp_processor_id() != boot_cpuid)
+ 		return;
 -- 
-Mathieu Desnoyers
-EfficiOS Inc.
-http://www.efficios.com
+2.25.0
+
