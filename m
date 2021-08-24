@@ -1,57 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E5BF3F5E63
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Aug 2021 14:49:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E89AC3F5ED8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Aug 2021 15:18:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gv87N4xH6z2yV4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Aug 2021 22:49:04 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=iPkOuMY2;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gv8nm4zTTz2yny
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Aug 2021 23:18:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=iPkOuMY2; 
- dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gv86h5h4Pz2xh0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Aug 2021 22:48:27 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Gv86Y0n5Dz9sW8;
- Tue, 24 Aug 2021 22:48:21 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1629809301;
- bh=NExqkuTHd0k6NpHo96VYURFCcgje+xKujpFjugDRlHA=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=iPkOuMY2LPbLVcOe0buCmZdbj62dNYbqge4aXZIpkm2u+Hl9Mew/nV2r9PZYGra1J
- ZcEcy9gCmRwmO5Dr2fuMs3Q36WW8LxQ49J3nf2PaV6MQDe6ZaYNruc8av5Ww1kWfB4
- u6/FiBvSMdCYG8eyQxV0nYQ+nAIwR9Eph+raDRKv5P8V6G9a/+7EUg1yljVr1uD3PY
- 9YPXY+HdhdD9ozxc1UwHph+FKj3zlHPMSM1mTw8W108L5F8ZbeiEfci57VDU5Z521o
- f5iPohomn3tsSxm2eZDhNXme/Fkr49LawSANAsgrWUZGJDcucxO7kwxbVooNyGXkm3
- l+ru1k9x4wqRg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Ganesh Goudar <ganeshgr@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2 2/3] selftests/powerpc: Add test for real address
- error handling
-In-Reply-To: <20210805092025.272871-2-ganeshgr@linux.ibm.com>
-References: <20210805092025.272871-1-ganeshgr@linux.ibm.com>
- <20210805092025.272871-2-ganeshgr@linux.ibm.com>
-Date: Tue, 24 Aug 2021 22:48:17 +1000
-Message-ID: <87a6l7c8ku.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+Authentication-Results: lists.ozlabs.org;
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4Gv8nH166gz2xZB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Aug 2021 23:18:26 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 17ODG1TV005019;
+ Tue, 24 Aug 2021 08:16:01 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 17ODG02l005018;
+ Tue, 24 Aug 2021 08:16:00 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Tue, 24 Aug 2021 08:16:00 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc/32: Don't use lmw/stmw for saving/restoring non
+ volatile regs
+Message-ID: <20210824131600.GF1583@gate.crashing.org>
+References: <316c543b8906712c108985c8463eec09c8db577b.1629732542.git.christophe.leroy@csgroup.eu>
+ <20210823184648.GY1583@gate.crashing.org>
+ <9bbc9797-cfc7-1484-90ad-2146ff1a5e18@csgroup.eu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9bbc9797-cfc7-1484-90ad-2146ff1a5e18@csgroup.eu>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,134 +51,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, Ganesh Goudar <ganeshgr@linux.ibm.com>,
- mahesh@linux.ibm.com, npiggin@gmail.com
+Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Ganesh Goudar <ganeshgr@linux.ibm.com> writes:
-> Add test for real address or control memory address access
-> error handling, using NX-GZIP engine.
->
-> The error is injected by accessing the control memory address
-> using illegal instruction, on successful handling the process
-> attempting to access control memory address using illegal
-> instruction receives SIGBUS.
-...
+Hi!
 
-> diff --git a/tools/testing/selftests/powerpc/mce/inject-ra-err.sh b/tools/testing/selftests/powerpc/mce/inject-ra-err.sh
-> new file mode 100755
-> index 000000000000..3633cdc651a1
-> --- /dev/null
-> +++ b/tools/testing/selftests/powerpc/mce/inject-ra-err.sh
-> @@ -0,0 +1,18 @@
-> +#!/bin/bash
-> +# SPDX-License-Identifier: GPL-2.0-or-later
-> +
-> +if [[ ! -w /dev/crypto/nx-gzip ]]; then
-> +	echo "WARN: Can't access /dev/crypto/nx-gzip, skipping"
-> +	exit 0
-> +fi
-> +
-> +timeout 5 ./inject-ra-err
-> +
-> +# 128 + 7 (SIGBUS) = 135, 128 is a exit code with special meaning.
-> +if [ $? -ne 135 ]; then
-> +	echo "FAILED: Real address or Control memory access error not handled"
-> +	exit $?
-> +fi
-> +
-> +echo "OK: Real address or Control memory access error is handled"
-> +exit 0
+On Tue, Aug 24, 2021 at 07:54:22AM +0200, Christophe Leroy wrote:
+> Le 23/08/2021 à 20:46, Segher Boessenkool a écrit :
+> >On Mon, Aug 23, 2021 at 03:29:12PM +0000, Christophe Leroy wrote:
+> >>Instructions lmw/stmw are interesting for functions that are rarely
+> >>used and not in the cache, because only one instruction is to be
+> >>copied into the instruction cache instead of 19. However those
+> >>instruction are less performant than 19x raw lwz/stw as they require
+> >>synchronisation plus one additional cycle.
+> >
+> >lmw takes N+2 cycles for loading N words on 603/604/750/7400, and N+3 on
+> >7450.  stmw takes N+1 cycles for storing N words on 603, N+2 on 604/750/
+> >7400, and N+3 on 7450 (load latency is 3 instead of 2 on 7450).
+> >
+> >There is no synchronisation needed, although there is some serialisation,
+> >which of course doesn't mean much since there can be only 6 or 8 or so
+> >insns executing at once anyway.
+> 
+> Yes I meant serialisation, isn't it the same as synchronisation ?
 
-I don't think we really need the shell script, we should be able to do
-all that in the C code.
+Ha no, synchronisation are insns like sync and eieio :-)  Synchronisation
+is architectural, serialisation is (mostly) not, it is a feature of the
+specific core.
 
-Can you try this?
+> >So, these insns are almost never slower, they can easily win cycles back
+> >because of the smaller code, too.
+> >
+> >What 32-bit core do you see where load/store multiple are more than a
+> >fraction of a cycle (per memory access) slower?
+> >
+> >>SAVE_NVGPRS / REST_NVGPRS are used in only a few places which are
+> >>mostly in interrupts entries/exits and in task switch so they are
+> >>likely already in the cache.
+> >
+> >Nothing is likely in the cache on the older cores (except in
+> >microbenchmarks), the caches are not big enough for that!
+> 
+> Even syscall entries/exit pathes and/or most frequent interrupts entries 
+> and interrupt exit ?
 
-cheers
+It has to be measured.  You are probably right for programs that use a
+lot of system calls, and (unmeasurably :-) ) wrong for those that don't.
 
-diff --git a/tools/testing/selftests/powerpc/mce/Makefile b/tools/testing/selftests/powerpc/mce/Makefile
-new file mode 100644
-index 000000000000..2424513982d9
---- /dev/null
-+++ b/tools/testing/selftests/powerpc/mce/Makefile
-@@ -0,0 +1,7 @@
-+#SPDX-License-Identifier: GPL-2.0-or-later
-+
-+TEST_GEN_PROGS := inject-ra-err
-+
-+include ../../lib.mk
-+
-+$(TEST_GEN_PROGS): ../harness.c
-diff --git a/tools/testing/selftests/powerpc/mce/inject-ra-err.c b/tools/testing/selftests/powerpc/mce/inject-ra-err.c
-new file mode 100644
-index 000000000000..ba0f9c28f786
---- /dev/null
-+++ b/tools/testing/selftests/powerpc/mce/inject-ra-err.c
-@@ -0,0 +1,64 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <signal.h>
-+#include <stdio.h>
-+#include <string.h>
-+#include <sys/ioctl.h>
-+#include <sys/mman.h>
-+#include <sys/stat.h>
-+#include <sys/types.h>
-+#include <unistd.h>
-+
-+#include "vas-api.h"
-+#include "utils.h"
-+
-+static bool faulted;
-+
-+static void sigbus_handler(int n, siginfo_t *info, void *ctxt_v)
-+{
-+	ucontext_t *ctxt = (ucontext_t *)ctxt_v;
-+	struct pt_regs *regs = ctxt->uc_mcontext.regs;
-+
-+	faulted = true;
-+	regs->nip += 4;
-+}
-+
-+static int test_ra_error(void)
-+{
-+	struct vas_tx_win_open_attr attr;
-+	int fd, *paste_addr;
-+	char *devname = "/dev/crypto/nx-gzip";
-+	struct sigaction act = {
-+		.sa_sigaction = sigbus_handler,
-+		.sa_flags = SA_SIGINFO,
-+	};
-+
-+	memset(&attr, 0, sizeof(attr));
-+	attr.version = 1;
-+	attr.vas_id = 0;
-+
-+	SKIP_IF(!access(devname, F_OK));
-+
-+	fd = open(devname, O_RDWR);
-+	FAIL_IF(fd < 0);
-+	FAIL_IF(ioctl(fd, VAS_TX_WIN_OPEN, &attr) < 0);
-+	FAIL_IF(sigaction(SIGBUS, &act, NULL) != 0);
-+
-+	paste_addr = mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0ULL);
-+
-+	/* The following assignment triggers exception */
-+	mb();
-+	*paste_addr = 1;
-+	mb();
-+
-+	FAIL_IF(!faulted);
-+
-+	return 0;
-+}
-+
-+int main(void)
-+{
-+	return test_harness(test_ra_error, "inject-ra-err");
-+}
+So that is a good argument: it speeds up some scenarios, and does not
+make any real impact on anything else.
+
+This also does not replace all {l,st}mw in the kernel, only those on
+interrupt paths.  So it is not necessarily bad :-)
+
+> >>Using standard lwz improves null_syscall selftest by:
+> >>- 10 cycles on mpc832x.
+> >>- 2 cycles on mpc8xx.
+> >
+> >And in real benchmarks?
+> 
+> Don't know, what benchmark should I use to evaluate syscall entry/exit if 
+> 'null_syscall' selftest is not relevant ?
+
+Some real workload (something that uses memory and computational insns a
+lot, in addition to many syscalls).
+
+> >On mpccore both lmw and stmw are only N+1 btw.  But the serialization
+> >might cost another cycle here?
+> 
+> That coherent on MPC8xx, that's only 2 cycles.
+> But on the mpc832x which has a e300c2 core, it looks like I have 10 cycles 
+> difference. Is anything wrong ?
+
+I don't know that core very well, I'll have a look.
+
+
+Segher
