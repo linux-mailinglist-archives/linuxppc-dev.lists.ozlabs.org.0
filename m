@@ -1,96 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 953A83F5A41
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Aug 2021 10:57:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E5BF3F5E63
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Aug 2021 14:49:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gv30M23zJz2yPm
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Aug 2021 18:57:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gv87N4xH6z2yV4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Aug 2021 22:49:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cetFPRl5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=iPkOuMY2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=cetFPRl5; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=iPkOuMY2; 
+ dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gv2zZ3Tl9z2yHY
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Aug 2021 18:56:57 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 17O8YHWG176112; Tue, 24 Aug 2021 04:56:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=TN4DDib0sMGVyRRXyINUx3mu1Wj4tum7kRkSPU/zLt0=;
- b=cetFPRl5xdnLp6Wf89PnHbHJ4ivPy+F5YQkKwTZhk3XdMcjbK9a1VB1hpc8ReJRHQXnr
- Nlne6ztuq04Amphpbsh0NrH7sXzDBAKzDkCDDmgXzlVtmc9m80IAFybr0gHcSaJ3dmZx
- 5Xj6ysKUim9O/fNxx81cffEgVt6Lg9UGKKd+16QxiLlzb3Xrw5umnwLQ2uuO6J3qT+Rk
- W8i+ydTxH0/CaCxwW0I4zxr5NPohj84w5+xA/Zkd1Ahf9yB+AW2qvfOP2JoTBcEU1Z8D
- trZhCY0PU0EMZuStdtQOycI+YmMmpT22jjHXYWGxchyJeF1SR94wDR7Kcp92mZz+Ta92 EA== 
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3amwaj8na3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 24 Aug 2021 04:56:37 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 17O8qtIi031285;
- Tue, 24 Aug 2021 08:56:37 GMT
-Received: from b03cxnp07027.gho.boulder.ibm.com
- (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
- by ppma02dal.us.ibm.com with ESMTP id 3ajs4cqddp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 24 Aug 2021 08:56:37 +0000
-Received: from b03ledav002.gho.boulder.ibm.com
- (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
- by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 17O8uaST34341362
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 24 Aug 2021 08:56:36 GMT
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D6E43136063;
- Tue, 24 Aug 2021 08:56:35 +0000 (GMT)
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 101FE136060;
- Tue, 24 Aug 2021 08:56:30 +0000 (GMT)
-Received: from sofia.ibm.com (unknown [9.43.32.176])
- by b03ledav002.gho.boulder.ibm.com (Postfix) with SMTP;
- Tue, 24 Aug 2021 08:56:30 +0000 (GMT)
-Received: by sofia.ibm.com (Postfix, from userid 1000)
- id AE6042E318C; Tue, 24 Aug 2021 14:25:57 +0530 (IST)
-Date: Tue, 24 Aug 2021 14:25:57 +0530
-From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH 3/3] powerpc/smp: Enable CACHE domain for shared processor
-Message-ID: <20210824085557.GA13164@in.ibm.com>
-References: <20210821092419.167454-1-srikar@linux.vnet.ibm.com>
- <20210821092419.167454-4-srikar@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gv86h5h4Pz2xh0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Aug 2021 22:48:27 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Gv86Y0n5Dz9sW8;
+ Tue, 24 Aug 2021 22:48:21 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1629809301;
+ bh=NExqkuTHd0k6NpHo96VYURFCcgje+xKujpFjugDRlHA=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=iPkOuMY2LPbLVcOe0buCmZdbj62dNYbqge4aXZIpkm2u+Hl9Mew/nV2r9PZYGra1J
+ ZcEcy9gCmRwmO5Dr2fuMs3Q36WW8LxQ49J3nf2PaV6MQDe6ZaYNruc8av5Ww1kWfB4
+ u6/FiBvSMdCYG8eyQxV0nYQ+nAIwR9Eph+raDRKv5P8V6G9a/+7EUg1yljVr1uD3PY
+ 9YPXY+HdhdD9ozxc1UwHph+FKj3zlHPMSM1mTw8W108L5F8ZbeiEfci57VDU5Z521o
+ f5iPohomn3tsSxm2eZDhNXme/Fkr49LawSANAsgrWUZGJDcucxO7kwxbVooNyGXkm3
+ l+ru1k9x4wqRg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Ganesh Goudar <ganeshgr@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v2 2/3] selftests/powerpc: Add test for real address
+ error handling
+In-Reply-To: <20210805092025.272871-2-ganeshgr@linux.ibm.com>
+References: <20210805092025.272871-1-ganeshgr@linux.ibm.com>
+ <20210805092025.272871-2-ganeshgr@linux.ibm.com>
+Date: Tue, 24 Aug 2021 22:48:17 +1000
+Message-ID: <87a6l7c8ku.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210821092419.167454-4-srikar@linux.vnet.ibm.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: NtYBGtzjLcI11RT1xllo1apHPFewI97v
-X-Proofpoint-ORIG-GUID: NtYBGtzjLcI11RT1xllo1apHPFewI97v
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-08-24_02:2021-08-24,
- 2021-08-24 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- suspectscore=0 bulkscore=0 adultscore=0 mlxlogscore=999 mlxscore=0
- priorityscore=1501 lowpriorityscore=0 clxscore=1015 phishscore=0
- malwarescore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2107140000 definitions=main-2108240057
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,43 +63,134 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: ego@linux.vnet.ibm.com
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- Gautham R Shenoy <ego@linux.vnet.ibm.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Valentin Schneider <valentin.schneider@arm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@kernel.org>
+Cc: mikey@neuling.org, Ganesh Goudar <ganeshgr@linux.ibm.com>,
+ mahesh@linux.ibm.com, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Srikar,
+Ganesh Goudar <ganeshgr@linux.ibm.com> writes:
+> Add test for real address or control memory address access
+> error handling, using NX-GZIP engine.
+>
+> The error is injected by accessing the control memory address
+> using illegal instruction, on successful handling the process
+> attempting to access control memory address using illegal
+> instruction receives SIGBUS.
+...
 
-On Sat, Aug 21, 2021 at 02:54:19PM +0530, Srikar Dronamraju wrote:
-[..snip..]
+> diff --git a/tools/testing/selftests/powerpc/mce/inject-ra-err.sh b/tools/testing/selftests/powerpc/mce/inject-ra-err.sh
+> new file mode 100755
+> index 000000000000..3633cdc651a1
+> --- /dev/null
+> +++ b/tools/testing/selftests/powerpc/mce/inject-ra-err.sh
+> @@ -0,0 +1,18 @@
+> +#!/bin/bash
+> +# SPDX-License-Identifier: GPL-2.0-or-later
+> +
+> +if [[ ! -w /dev/crypto/nx-gzip ]]; then
+> +	echo "WARN: Can't access /dev/crypto/nx-gzip, skipping"
+> +	exit 0
+> +fi
+> +
+> +timeout 5 ./inject-ra-err
+> +
+> +# 128 + 7 (SIGBUS) = 135, 128 is a exit code with special meaning.
+> +if [ $? -ne 135 ]; then
+> +	echo "FAILED: Real address or Control memory access error not handled"
+> +	exit $?
+> +fi
+> +
+> +echo "OK: Real address or Control memory access error is handled"
+> +exit 0
 
-The patch looks good to me.
+I don't think we really need the shell script, we should be able to do
+all that in the C code.
 
-Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
+Can you try this?
 
-> ---
->  arch/powerpc/kernel/smp.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-> index 3d26d3c61e94..47b15f31cc29 100644
-> --- a/arch/powerpc/kernel/smp.c
-> +++ b/arch/powerpc/kernel/smp.c
-> @@ -1365,7 +1365,7 @@ static bool update_mask_by_l2(int cpu, cpumask_var_t *mask)
->  	l2_cache = cpu_to_l2cache(cpu);
->  	if (!l2_cache || !*mask) {
->  		/* Assume only core siblings share cache with this CPU */
-> -		for_each_cpu(i, submask_fn(cpu))
-> +		for_each_cpu(i, cpu_sibling_mask(cpu))
->  			set_cpus_related(cpu, i, cpu_l2_cache_mask);
-> 
->  		return false;
-> -- 
-> 2.18.2
-> 
+cheers
+
+diff --git a/tools/testing/selftests/powerpc/mce/Makefile b/tools/testing/selftests/powerpc/mce/Makefile
+new file mode 100644
+index 000000000000..2424513982d9
+--- /dev/null
++++ b/tools/testing/selftests/powerpc/mce/Makefile
+@@ -0,0 +1,7 @@
++#SPDX-License-Identifier: GPL-2.0-or-later
++
++TEST_GEN_PROGS := inject-ra-err
++
++include ../../lib.mk
++
++$(TEST_GEN_PROGS): ../harness.c
+diff --git a/tools/testing/selftests/powerpc/mce/inject-ra-err.c b/tools/testing/selftests/powerpc/mce/inject-ra-err.c
+new file mode 100644
+index 000000000000..ba0f9c28f786
+--- /dev/null
++++ b/tools/testing/selftests/powerpc/mce/inject-ra-err.c
+@@ -0,0 +1,64 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++
++#include <errno.h>
++#include <fcntl.h>
++#include <signal.h>
++#include <stdio.h>
++#include <string.h>
++#include <sys/ioctl.h>
++#include <sys/mman.h>
++#include <sys/stat.h>
++#include <sys/types.h>
++#include <unistd.h>
++
++#include "vas-api.h"
++#include "utils.h"
++
++static bool faulted;
++
++static void sigbus_handler(int n, siginfo_t *info, void *ctxt_v)
++{
++	ucontext_t *ctxt = (ucontext_t *)ctxt_v;
++	struct pt_regs *regs = ctxt->uc_mcontext.regs;
++
++	faulted = true;
++	regs->nip += 4;
++}
++
++static int test_ra_error(void)
++{
++	struct vas_tx_win_open_attr attr;
++	int fd, *paste_addr;
++	char *devname = "/dev/crypto/nx-gzip";
++	struct sigaction act = {
++		.sa_sigaction = sigbus_handler,
++		.sa_flags = SA_SIGINFO,
++	};
++
++	memset(&attr, 0, sizeof(attr));
++	attr.version = 1;
++	attr.vas_id = 0;
++
++	SKIP_IF(!access(devname, F_OK));
++
++	fd = open(devname, O_RDWR);
++	FAIL_IF(fd < 0);
++	FAIL_IF(ioctl(fd, VAS_TX_WIN_OPEN, &attr) < 0);
++	FAIL_IF(sigaction(SIGBUS, &act, NULL) != 0);
++
++	paste_addr = mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0ULL);
++
++	/* The following assignment triggers exception */
++	mb();
++	*paste_addr = 1;
++	mb();
++
++	FAIL_IF(!faulted);
++
++	return 0;
++}
++
++int main(void)
++{
++	return test_harness(test_ra_error, "inject-ra-err");
++}
