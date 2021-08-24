@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CDFE3F5986
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Aug 2021 09:57:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 835263F5987
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Aug 2021 09:57:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gv1fM2QW0z2yp3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Aug 2021 17:56:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gv1fn2v4Mz3096
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Aug 2021 17:57:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -14,39 +14,38 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gv1dx13ySz2y8S
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Aug 2021 17:56:32 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gv1f04XdQz2y8S
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Aug 2021 17:56:40 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4Gv1dl5t9Fz9sVf;
- Tue, 24 Aug 2021 09:56:27 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4Gv1dw4Pnkz9sVj;
+ Tue, 24 Aug 2021 09:56:36 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id knBcwI99jOVu; Tue, 24 Aug 2021 09:56:27 +0200 (CEST)
+ with ESMTP id uIG8z8ySajFn; Tue, 24 Aug 2021 09:56:36 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4Gv1dl4lmlz9sTx;
- Tue, 24 Aug 2021 09:56:27 +0200 (CEST)
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4Gv1dw39hBz9sTx;
+ Tue, 24 Aug 2021 09:56:36 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 8060A8B7DC;
- Tue, 24 Aug 2021 09:56:27 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4B31E8B7DA;
+ Tue, 24 Aug 2021 09:56:36 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id eI6F6-gc5WXP; Tue, 24 Aug 2021 09:56:27 +0200 (CEST)
+ with ESMTP id MwG8-KYn4ZtM; Tue, 24 Aug 2021 09:56:36 +0200 (CEST)
 Received: from po18078vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 170948B7D1;
- Tue, 24 Aug 2021 09:56:27 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0B1BD8B7D1;
+ Tue, 24 Aug 2021 09:56:36 +0200 (CEST)
 Received: by po18078vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id C156B6BC7E; Tue, 24 Aug 2021 07:56:26 +0000 (UTC)
-Message-Id: <e9fbc285eceb720e6c0e032ef47fe8b05f669b48.1629791751.git.christophe.leroy@csgroup.eu>
+ id D51B86BC7E; Tue, 24 Aug 2021 07:56:35 +0000 (UTC)
+Message-Id: <c6eabb4fb6c156f75d56dcbcc6f243e5ac0fba42.1629791763.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v3] powerpc/booke: Avoid link stack corruption in several
- places
+Subject: [PATCH v2] powerpc: Avoid link stack corruption in misc asm functions
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Tue, 24 Aug 2021 07:56:26 +0000 (UTC)
+Date: Tue, 24 Aug 2021 07:56:35 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,6 +62,8 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+bl;mflr is used at several places to get code position.
+
 Use bcl 20,31,+4 instead of bl in order to preserve link stack.
 
 See commit c974809a26a1 ("powerpc/vdso: Avoid link stack corruption
@@ -70,185 +71,125 @@ in __get_datapage()") for details.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
-v3: Use $+4 as destination instead of label
-v2: Added missing ; in LOAD_REG_ADDR_PIC()
+v2: Use $+4 instead of label ; squashed several commits together
 ---
- arch/powerpc/include/asm/ppc_asm.h            | 2 +-
- arch/powerpc/kernel/exceptions-64e.S          | 6 +++---
- arch/powerpc/kernel/fsl_booke_entry_mapping.S | 8 ++++----
- arch/powerpc/kernel/head_44x.S                | 6 +++---
- arch/powerpc/kernel/head_fsl_booke.S          | 6 +++---
- arch/powerpc/mm/nohash/tlb_low.S              | 4 ++--
- 6 files changed, 16 insertions(+), 16 deletions(-)
+ arch/powerpc/kernel/misc.S       |  2 +-
+ arch/powerpc/kernel/misc_32.S    |  2 +-
+ arch/powerpc/kernel/misc_64.S    |  2 +-
+ arch/powerpc/kernel/reloc_32.S   |  2 +-
+ arch/powerpc/kexec/relocate_32.S | 12 ++++++------
+ 5 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/ppc_asm.h b/arch/powerpc/include/asm/ppc_asm.h
-index 349fc0ec0dbb..7be24048b8d1 100644
---- a/arch/powerpc/include/asm/ppc_asm.h
-+++ b/arch/powerpc/include/asm/ppc_asm.h
-@@ -260,7 +260,7 @@ GLUE(.,name):
- 
- /* Be careful, this will clobber the lr register. */
- #define LOAD_REG_ADDR_PIC(reg, name)		\
--	bl	0f;				\
-+	bcl	20,31,$+4;			\
- 0:	mflr	reg;				\
- 	addis	reg,reg,(name - 0b)@ha;		\
- 	addi	reg,reg,(name - 0b)@l;
-diff --git a/arch/powerpc/kernel/exceptions-64e.S b/arch/powerpc/kernel/exceptions-64e.S
-index 1401787b0b93..7e0943d9f9b0 100644
---- a/arch/powerpc/kernel/exceptions-64e.S
-+++ b/arch/powerpc/kernel/exceptions-64e.S
-@@ -1127,7 +1127,7 @@ found_iprot:
-  * r3 = MAS0_TLBSEL (for the iprot array)
-  * r4 = SPRN_TLBnCFG
+diff --git a/arch/powerpc/kernel/misc.S b/arch/powerpc/kernel/misc.S
+index 5be96feccb55..fb7de3543c03 100644
+--- a/arch/powerpc/kernel/misc.S
++++ b/arch/powerpc/kernel/misc.S
+@@ -29,7 +29,7 @@ _GLOBAL(reloc_offset)
+ 	li	r3, 0
+ _GLOBAL(add_reloc_offset)
+ 	mflr	r0
+-	bl	1f
++	bcl	20,31,$+4
+ 1:	mflr	r5
+ 	PPC_LL	r4,(2f-1b)(r5)
+ 	subf	r5,r4,r5
+diff --git a/arch/powerpc/kernel/misc_32.S b/arch/powerpc/kernel/misc_32.S
+index d8645efff902..e5127b19fec2 100644
+--- a/arch/powerpc/kernel/misc_32.S
++++ b/arch/powerpc/kernel/misc_32.S
+@@ -67,7 +67,7 @@ _GLOBAL(reloc_got2)
+ 	srwi.	r8,r8,2
+ 	beqlr
+ 	mtctr	r8
+-	bl	1f
++	bcl	20,31,$+4
+ 1:	mflr	r0
+ 	lis	r4,1b@ha
+ 	addi	r4,r4,1b@l
+diff --git a/arch/powerpc/kernel/misc_64.S b/arch/powerpc/kernel/misc_64.S
+index 4b761a18a74d..d38a019b38e1 100644
+--- a/arch/powerpc/kernel/misc_64.S
++++ b/arch/powerpc/kernel/misc_64.S
+@@ -255,7 +255,7 @@ _GLOBAL(scom970_write)
+  * Physical (hardware) cpu id should be in r3.
   */
--	bl	invstr				/* Find our address */
+ _GLOBAL(kexec_wait)
+-	bl	1f
++	bcl	20,31,$+4
+ 1:	mflr	r5
+ 	addi	r5,r5,kexec_flag-1b
+ 
+diff --git a/arch/powerpc/kernel/reloc_32.S b/arch/powerpc/kernel/reloc_32.S
+index 10e96f3e22fe..0508c14b4c28 100644
+--- a/arch/powerpc/kernel/reloc_32.S
++++ b/arch/powerpc/kernel/reloc_32.S
+@@ -30,7 +30,7 @@ R_PPC_RELATIVE = 22
+ _GLOBAL(relocate)
+ 
+ 	mflr	r0		/* Save our LR */
+-	bl	0f		/* Find our current runtime address */
++	bcl	20,31,$+4	/* Find our current runtime address */
+ 0:	mflr	r12		/* Make it accessible */
+ 	mtlr	r0
+ 
+diff --git a/arch/powerpc/kexec/relocate_32.S b/arch/powerpc/kexec/relocate_32.S
+index 61946c19e07c..cf6e52bdf8d8 100644
+--- a/arch/powerpc/kexec/relocate_32.S
++++ b/arch/powerpc/kexec/relocate_32.S
+@@ -93,7 +93,7 @@ wmmucr:
+ 	 * Invalidate all the TLB entries except the current entry
+ 	 * where we are running from
+ 	 */
+-	bl	0f				/* Find our address */
 +	bcl	20,31,$+4			/* Find our address */
- invstr:	mflr	r6				/* Make it accessible */
- 	mfmsr	r7
- 	rlwinm	r5,r7,27,31,31			/* extract MSR[IS] */
-@@ -1196,7 +1196,7 @@ skpinv:	addi	r6,r6,1				/* Increment */
- 	mfmsr	r6
- 	xori	r6,r6,MSR_IS
- 	mtspr	SPRN_SRR1,r6
--	bl	1f		/* Find our address */
-+	bcl	20,31,$+4	/* Find our address */
- 1:	mflr	r6
- 	addi	r6,r6,(2f - 1b)
- 	mtspr	SPRN_SRR0,r6
-@@ -1256,7 +1256,7 @@ skpinv:	addi	r6,r6,1				/* Increment */
-  * r4 = MAS0 w/TLBSEL & ESEL for the temp mapping
-  */
- 	/* Now we branch the new virtual address mapped by this entry */
--	bl	1f		/* Find our address */
-+	bcl	20,31,$+4	/* Find our address */
- 1:	mflr	r6
- 	addi	r6,r6,(2f - 1b)
- 	tovirt(r6,r6)
-diff --git a/arch/powerpc/kernel/fsl_booke_entry_mapping.S b/arch/powerpc/kernel/fsl_booke_entry_mapping.S
-index 8bccce6544b5..dedc17fac8f8 100644
---- a/arch/powerpc/kernel/fsl_booke_entry_mapping.S
-+++ b/arch/powerpc/kernel/fsl_booke_entry_mapping.S
-@@ -1,7 +1,7 @@
- /* SPDX-License-Identifier: GPL-2.0 */
- 
- /* 1. Find the index of the entry we're executing in */
--	bl	invstr				/* Find our address */
-+	bcl	20,31,$+4				/* Find our address */
- invstr:	mflr	r6				/* Make it accessible */
- 	mfmsr	r7
- 	rlwinm	r4,r7,27,31,31			/* extract MSR[IS] */
-@@ -85,7 +85,7 @@ skpinv:	addi	r6,r6,1				/* Increment */
- 	addi	r6,r6,10
- 	slw	r6,r8,r6	/* convert to mask */
- 
--	bl	1f		/* Find our address */
-+	bcl	20,31,$+4	/* Find our address */
- 1:	mflr	r7
- 
- 	mfspr	r8,SPRN_MAS3
-@@ -117,7 +117,7 @@ skpinv:	addi	r6,r6,1				/* Increment */
- 
- 	xori	r6,r4,1
- 	slwi	r6,r6,5		/* setup new context with other address space */
--	bl	1f		/* Find our address */
-+	bcl	20,31,$+4	/* Find our address */
- 1:	mflr	r9
- 	rlwimi	r7,r9,0,20,31
- 	addi	r7,r7,(2f - 1b)
-@@ -207,7 +207,7 @@ next_tlb_setup:
- 
- 	lis	r7,MSR_KERNEL@h
- 	ori	r7,r7,MSR_KERNEL@l
--	bl	1f			/* Find our address */
-+	bcl	20,31,$+4		/* Find our address */
- 1:	mflr	r9
- 	rlwimi	r6,r9,0,20,31
- 	addi	r6,r6,(2f - 1b)
-diff --git a/arch/powerpc/kernel/head_44x.S b/arch/powerpc/kernel/head_44x.S
-index ddc978a2d381..02d2928d1e01 100644
---- a/arch/powerpc/kernel/head_44x.S
-+++ b/arch/powerpc/kernel/head_44x.S
-@@ -70,7 +70,7 @@ _ENTRY(_start);
-  * address.
-  * r21 will be loaded with the physical runtime address of _stext
-  */
--	bl	0f				/* Get our runtime address */
-+	bcl	20,31,$+4			/* Get our runtime address */
- 0:	mflr	r21				/* Make it accessible */
- 	addis	r21,r21,(_stext - 0b)@ha
- 	addi	r21,r21,(_stext - 0b)@l 	/* Get our current runtime base */
-@@ -853,7 +853,7 @@ _GLOBAL(init_cpu_state)
- wmmucr:	mtspr	SPRN_MMUCR,r3			/* Put MMUCR */
- 	sync
- 
--	bl	invstr				/* Find our address */
-+	bcl	20,31,$+4			/* Find our address */
- invstr:	mflr	r5				/* Make it accessible */
+ 0:	mflr	r5				/* Make it accessible */
  	tlbsx	r23,0,r5			/* Find entry we are in */
  	li	r4,0				/* Start at TLB entry 0 */
-@@ -1045,7 +1045,7 @@ head_start_47x:
+@@ -158,7 +158,7 @@ write_out:
+ 	/* Switch to other address space in MSR */
+ 	insrwi	r9, r7, 1, 26		/* Set MSR[IS] = r7 */
+ 
+-	bl	1f
++	bcl	20,31,$+4
+ 1:	mflr	r8
+ 	addi	r8, r8, (2f-1b)		/* Find the target offset */
+ 
+@@ -202,7 +202,7 @@ next_tlb:
+ 	li	r9,0
+ 	insrwi	r9, r7, 1, 26			/* Set MSR[IS] = r7 */
+ 
+-	bl	1f
++	bcl	20,31,$+4
+ 1:	mflr	r8
+ 	and	r8, r8, r11			/* Get our offset within page */
+ 	addi	r8, r8, (2f-1b)
+@@ -240,7 +240,7 @@ setup_map_47x:
  	sync
  
  	/* Find the entry we are running from */
--	bl	1f
-+	bcl	20,31,$+4
- 1:	mflr	r23
- 	tlbsx	r23,0,r23
- 	tlbre	r24,r23,0
-diff --git a/arch/powerpc/kernel/head_fsl_booke.S b/arch/powerpc/kernel/head_fsl_booke.S
-index 0f9642f36b49..dbf3b89e543c 100644
---- a/arch/powerpc/kernel/head_fsl_booke.S
-+++ b/arch/powerpc/kernel/head_fsl_booke.S
-@@ -79,7 +79,7 @@ _ENTRY(_start);
- 	mr	r23,r3
- 	mr	r25,r4
- 
--	bl	0f
-+	bcl	20,31,$+4
- 0:	mflr	r8
- 	addis	r3,r8,(is_second_reloc - 0b)@ha
- 	lwz	r19,(is_second_reloc - 0b)@l(r3)
-@@ -1132,7 +1132,7 @@ _GLOBAL(switch_to_as1)
- 	bne	1b
- 
- 	/* Get the tlb entry used by the current running code */
--	bl	0f
-+	bcl	20,31,$+4
- 0:	mflr	r4
- 	tlbsx	0,r4
- 
-@@ -1166,7 +1166,7 @@ _GLOBAL(switch_to_as1)
- _GLOBAL(restore_to_as0)
- 	mflr	r0
- 
--	bl	0f
-+	bcl	20,31,$+4
- 0:	mflr	r9
- 	addi	r9,r9,1f - 0b
- 
-diff --git a/arch/powerpc/mm/nohash/tlb_low.S b/arch/powerpc/mm/nohash/tlb_low.S
-index 4613bf8e9aae..5add4a51e51f 100644
---- a/arch/powerpc/mm/nohash/tlb_low.S
-+++ b/arch/powerpc/mm/nohash/tlb_low.S
-@@ -199,7 +199,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_476_DD2)
-  * Touch enough instruction cache lines to ensure cache hits
-  */
- 1:	mflr	r9
 -	bl	2f
 +	bcl	20,31,$+4
- 2:	mflr	r6
- 	li	r7,32
- 	PPC_ICBT(0,R6,R7)		/* touch next cache line */
-@@ -414,7 +414,7 @@ _GLOBAL(loadcam_multi)
- 	 * Set up temporary TLB entry that is the same as what we're
- 	 * running from, but in AS=1.
- 	 */
+ 2:	mflr	r23
+ 	tlbsx	r23, 0, r23
+ 	tlbre	r24, r23, 0			/* TLB Word 0 */
+@@ -296,7 +296,7 @@ clear_utlb_entry:
+ 	/* Update the msr to the new TS */
+ 	insrwi	r5, r7, 1, 26
+ 
 -	bl	1f
 +	bcl	20,31,$+4
  1:	mflr	r6
- 	tlbsx	0,r8
- 	mfspr	r6,SPRN_MAS1
+ 	addi	r6, r6, (2f-1b)
+ 
+@@ -355,7 +355,7 @@ write_utlb:
+ 	/* Defaults to 256M */
+ 	lis	r10, 0x1000
+ 
+-	bl	1f
++	bcl	20,31,$+4
+ 1:	mflr	r4
+ 	addi	r4, r4, (2f-1b)			/* virtual address  of 2f */
+ 
 -- 
 2.25.0
 
