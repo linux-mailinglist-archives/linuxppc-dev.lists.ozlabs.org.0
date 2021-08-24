@@ -1,60 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A2AF3F58CE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Aug 2021 09:17:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CDFE3F5986
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Aug 2021 09:57:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gv0n42blwz2yg6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Aug 2021 17:17:44 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=l0RA5+0l;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gv1fM2QW0z2yp3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Aug 2021 17:56:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=casper.srs.infradead.org (client-ip=2001:8b0:10b:1236::1;
- helo=casper.infradead.org;
- envelope-from=batv+f96701cc9b95d8800a83+6575+infradead.org+hch@casper.srs.infradead.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=l0RA5+0l; 
- dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gv0mM1bfZz2xnd
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Aug 2021 17:17:04 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=u2jjKxNoYoIqkuUBOVaU0g9hA7j5FEUKEzONmfPEFRs=; b=l0RA5+0lIDtpN8Qsm8qgG9uLOs
- 8eClxBaokH3TyZM/fu8ykw6ZD3oCED17rxUrpLs0TtHot/9XJECBVSsY9dqwrfZEMuNDPQh43FRwB
- gwr+bd3HMFV1W5C6/t8vtIAK0gchzdE/kqUnfspiLdm9pQGzx1360mkBMMfe+XyJFRijFq2K3ePSr
- Jff3vPErlsbRwyhgZ70I86mOyH8JMJcY3mI4n/qCuMatfUmzB4kKpKhH3faryhLixp+fcY+HXVAOh
- PoC9+BbF8dkfZF5wppyEi6qopLgHXvjed9HLCvhzBV9c0zMcG0Q8n3Oaf7OpZqZFQwTLhSiLC+K35
- CAj2ybqg==;
-Received: from hch by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat
- Linux)) id 1mIQdm-00AhZQ-Cu; Tue, 24 Aug 2021 07:14:45 +0000
-Date: Tue, 24 Aug 2021 08:14:34 +0100
-From: Christoph Hellwig <hch@infradead.org>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Subject: Re: [PATCH v2 03/12] x86/sev: Add an x86 version of prot_guest_has()
-Message-ID: <YSScWvpXeVXw/ed5@infradead.org>
-References: <cover.1628873970.git.thomas.lendacky@amd.com>
- <7d55bac0cf2e73f53816bce3a3097877ed9663f3.1628873970.git.thomas.lendacky@amd.com>
- <YR4p9TqKTLdN1A96@infradead.org>
- <4272eaf5-b654-2669-62ac-ba768acd6b91@amd.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4272eaf5-b654-2669-62ac-ba768acd6b91@amd.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gv1dx13ySz2y8S
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Aug 2021 17:56:32 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4Gv1dl5t9Fz9sVf;
+ Tue, 24 Aug 2021 09:56:27 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id knBcwI99jOVu; Tue, 24 Aug 2021 09:56:27 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4Gv1dl4lmlz9sTx;
+ Tue, 24 Aug 2021 09:56:27 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 8060A8B7DC;
+ Tue, 24 Aug 2021 09:56:27 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id eI6F6-gc5WXP; Tue, 24 Aug 2021 09:56:27 +0200 (CEST)
+Received: from po18078vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 170948B7D1;
+ Tue, 24 Aug 2021 09:56:27 +0200 (CEST)
+Received: by po18078vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id C156B6BC7E; Tue, 24 Aug 2021 07:56:26 +0000 (UTC)
+Message-Id: <e9fbc285eceb720e6c0e032ef47fe8b05f669b48.1629791751.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v3] powerpc/booke: Avoid link stack corruption in several
+ places
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Tue, 24 Aug 2021 07:56:26 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,59 +58,197 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
- linux-efi@vger.kernel.org, Brijesh Singh <brijesh.singh@amd.com>,
- kvm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org,
- platform-driver-x86@vger.kernel.org, linux-s390@vger.kernel.org,
- Andi Kleen <ak@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
- x86@kernel.org, amd-gfx@lists.freedesktop.org,
- Christoph Hellwig <hch@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- linux-graphics-maintainer@vmware.com, Joerg Roedel <jroedel@suse.de>,
- Tianyu Lan <Tianyu.Lan@microsoft.com>, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
- iommu@lists.linux-foundation.org, linux-fsdevel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 19, 2021 at 01:33:09PM -0500, Tom Lendacky wrote:
-> I did it as inline originally because the presence of the function will be
-> decided based on the ARCH_HAS_PROTECTED_GUEST config. For now, that is
-> only selected by the AMD memory encryption support, so if I went out of
-> line I could put in mem_encrypt.c. But with TDX wanting to also use it, it
-> would have to be in an always built file with some #ifdefs or in its own
-> file that is conditionally built based on the ARCH_HAS_PROTECTED_GUEST
-> setting (they've already tried building with ARCH_HAS_PROTECTED_GUEST=y
-> and AMD_MEM_ENCRYPT not set).
-> 
-> To take it out of line, I'm leaning towards the latter, creating a new
-> file that is built based on the ARCH_HAS_PROTECTED_GUEST setting.
+Use bcl 20,31,+4 instead of bl in order to preserve link stack.
 
-Yes.  In general everytime architectures have to provide the prototype
-and not just the implementation of something we end up with a giant mess
-sooner or later.  In a few cases that is still warranted due to
-performance concerns, but i don't think that is the case here.
+See commit c974809a26a1 ("powerpc/vdso: Avoid link stack corruption
+in __get_datapage()") for details.
 
-> 
-> > 
-> >> +/* 0x800 - 0x8ff reserved for AMD */
-> >> +#define PATTR_SME			0x800
-> >> +#define PATTR_SEV			0x801
-> >> +#define PATTR_SEV_ES			0x802
-> > 
-> > Why do we need reservations for a purely in-kernel namespace?
-> > 
-> > And why are you overoading a brand new generic API with weird details
-> > of a specific implementation like this?
-> 
-> There was some talk about this on the mailing list where TDX and SEV may
-> need to be differentiated, so we wanted to reserve a range of values per
-> technology. I guess I can remove them until they are actually needed.
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+v3: Use $+4 as destination instead of label
+v2: Added missing ; in LOAD_REG_ADDR_PIC()
+---
+ arch/powerpc/include/asm/ppc_asm.h            | 2 +-
+ arch/powerpc/kernel/exceptions-64e.S          | 6 +++---
+ arch/powerpc/kernel/fsl_booke_entry_mapping.S | 8 ++++----
+ arch/powerpc/kernel/head_44x.S                | 6 +++---
+ arch/powerpc/kernel/head_fsl_booke.S          | 6 +++---
+ arch/powerpc/mm/nohash/tlb_low.S              | 4 ++--
+ 6 files changed, 16 insertions(+), 16 deletions(-)
 
-In that case add a flag for the differing behavior.  And only add them
-when actually needed.  And either way there is absolutely no need to
-reserve ranges.
+diff --git a/arch/powerpc/include/asm/ppc_asm.h b/arch/powerpc/include/asm/ppc_asm.h
+index 349fc0ec0dbb..7be24048b8d1 100644
+--- a/arch/powerpc/include/asm/ppc_asm.h
++++ b/arch/powerpc/include/asm/ppc_asm.h
+@@ -260,7 +260,7 @@ GLUE(.,name):
+ 
+ /* Be careful, this will clobber the lr register. */
+ #define LOAD_REG_ADDR_PIC(reg, name)		\
+-	bl	0f;				\
++	bcl	20,31,$+4;			\
+ 0:	mflr	reg;				\
+ 	addis	reg,reg,(name - 0b)@ha;		\
+ 	addi	reg,reg,(name - 0b)@l;
+diff --git a/arch/powerpc/kernel/exceptions-64e.S b/arch/powerpc/kernel/exceptions-64e.S
+index 1401787b0b93..7e0943d9f9b0 100644
+--- a/arch/powerpc/kernel/exceptions-64e.S
++++ b/arch/powerpc/kernel/exceptions-64e.S
+@@ -1127,7 +1127,7 @@ found_iprot:
+  * r3 = MAS0_TLBSEL (for the iprot array)
+  * r4 = SPRN_TLBnCFG
+  */
+-	bl	invstr				/* Find our address */
++	bcl	20,31,$+4			/* Find our address */
+ invstr:	mflr	r6				/* Make it accessible */
+ 	mfmsr	r7
+ 	rlwinm	r5,r7,27,31,31			/* extract MSR[IS] */
+@@ -1196,7 +1196,7 @@ skpinv:	addi	r6,r6,1				/* Increment */
+ 	mfmsr	r6
+ 	xori	r6,r6,MSR_IS
+ 	mtspr	SPRN_SRR1,r6
+-	bl	1f		/* Find our address */
++	bcl	20,31,$+4	/* Find our address */
+ 1:	mflr	r6
+ 	addi	r6,r6,(2f - 1b)
+ 	mtspr	SPRN_SRR0,r6
+@@ -1256,7 +1256,7 @@ skpinv:	addi	r6,r6,1				/* Increment */
+  * r4 = MAS0 w/TLBSEL & ESEL for the temp mapping
+  */
+ 	/* Now we branch the new virtual address mapped by this entry */
+-	bl	1f		/* Find our address */
++	bcl	20,31,$+4	/* Find our address */
+ 1:	mflr	r6
+ 	addi	r6,r6,(2f - 1b)
+ 	tovirt(r6,r6)
+diff --git a/arch/powerpc/kernel/fsl_booke_entry_mapping.S b/arch/powerpc/kernel/fsl_booke_entry_mapping.S
+index 8bccce6544b5..dedc17fac8f8 100644
+--- a/arch/powerpc/kernel/fsl_booke_entry_mapping.S
++++ b/arch/powerpc/kernel/fsl_booke_entry_mapping.S
+@@ -1,7 +1,7 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+ 
+ /* 1. Find the index of the entry we're executing in */
+-	bl	invstr				/* Find our address */
++	bcl	20,31,$+4				/* Find our address */
+ invstr:	mflr	r6				/* Make it accessible */
+ 	mfmsr	r7
+ 	rlwinm	r4,r7,27,31,31			/* extract MSR[IS] */
+@@ -85,7 +85,7 @@ skpinv:	addi	r6,r6,1				/* Increment */
+ 	addi	r6,r6,10
+ 	slw	r6,r8,r6	/* convert to mask */
+ 
+-	bl	1f		/* Find our address */
++	bcl	20,31,$+4	/* Find our address */
+ 1:	mflr	r7
+ 
+ 	mfspr	r8,SPRN_MAS3
+@@ -117,7 +117,7 @@ skpinv:	addi	r6,r6,1				/* Increment */
+ 
+ 	xori	r6,r4,1
+ 	slwi	r6,r6,5		/* setup new context with other address space */
+-	bl	1f		/* Find our address */
++	bcl	20,31,$+4	/* Find our address */
+ 1:	mflr	r9
+ 	rlwimi	r7,r9,0,20,31
+ 	addi	r7,r7,(2f - 1b)
+@@ -207,7 +207,7 @@ next_tlb_setup:
+ 
+ 	lis	r7,MSR_KERNEL@h
+ 	ori	r7,r7,MSR_KERNEL@l
+-	bl	1f			/* Find our address */
++	bcl	20,31,$+4		/* Find our address */
+ 1:	mflr	r9
+ 	rlwimi	r6,r9,0,20,31
+ 	addi	r6,r6,(2f - 1b)
+diff --git a/arch/powerpc/kernel/head_44x.S b/arch/powerpc/kernel/head_44x.S
+index ddc978a2d381..02d2928d1e01 100644
+--- a/arch/powerpc/kernel/head_44x.S
++++ b/arch/powerpc/kernel/head_44x.S
+@@ -70,7 +70,7 @@ _ENTRY(_start);
+  * address.
+  * r21 will be loaded with the physical runtime address of _stext
+  */
+-	bl	0f				/* Get our runtime address */
++	bcl	20,31,$+4			/* Get our runtime address */
+ 0:	mflr	r21				/* Make it accessible */
+ 	addis	r21,r21,(_stext - 0b)@ha
+ 	addi	r21,r21,(_stext - 0b)@l 	/* Get our current runtime base */
+@@ -853,7 +853,7 @@ _GLOBAL(init_cpu_state)
+ wmmucr:	mtspr	SPRN_MMUCR,r3			/* Put MMUCR */
+ 	sync
+ 
+-	bl	invstr				/* Find our address */
++	bcl	20,31,$+4			/* Find our address */
+ invstr:	mflr	r5				/* Make it accessible */
+ 	tlbsx	r23,0,r5			/* Find entry we are in */
+ 	li	r4,0				/* Start at TLB entry 0 */
+@@ -1045,7 +1045,7 @@ head_start_47x:
+ 	sync
+ 
+ 	/* Find the entry we are running from */
+-	bl	1f
++	bcl	20,31,$+4
+ 1:	mflr	r23
+ 	tlbsx	r23,0,r23
+ 	tlbre	r24,r23,0
+diff --git a/arch/powerpc/kernel/head_fsl_booke.S b/arch/powerpc/kernel/head_fsl_booke.S
+index 0f9642f36b49..dbf3b89e543c 100644
+--- a/arch/powerpc/kernel/head_fsl_booke.S
++++ b/arch/powerpc/kernel/head_fsl_booke.S
+@@ -79,7 +79,7 @@ _ENTRY(_start);
+ 	mr	r23,r3
+ 	mr	r25,r4
+ 
+-	bl	0f
++	bcl	20,31,$+4
+ 0:	mflr	r8
+ 	addis	r3,r8,(is_second_reloc - 0b)@ha
+ 	lwz	r19,(is_second_reloc - 0b)@l(r3)
+@@ -1132,7 +1132,7 @@ _GLOBAL(switch_to_as1)
+ 	bne	1b
+ 
+ 	/* Get the tlb entry used by the current running code */
+-	bl	0f
++	bcl	20,31,$+4
+ 0:	mflr	r4
+ 	tlbsx	0,r4
+ 
+@@ -1166,7 +1166,7 @@ _GLOBAL(switch_to_as1)
+ _GLOBAL(restore_to_as0)
+ 	mflr	r0
+ 
+-	bl	0f
++	bcl	20,31,$+4
+ 0:	mflr	r9
+ 	addi	r9,r9,1f - 0b
+ 
+diff --git a/arch/powerpc/mm/nohash/tlb_low.S b/arch/powerpc/mm/nohash/tlb_low.S
+index 4613bf8e9aae..5add4a51e51f 100644
+--- a/arch/powerpc/mm/nohash/tlb_low.S
++++ b/arch/powerpc/mm/nohash/tlb_low.S
+@@ -199,7 +199,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_476_DD2)
+  * Touch enough instruction cache lines to ensure cache hits
+  */
+ 1:	mflr	r9
+-	bl	2f
++	bcl	20,31,$+4
+ 2:	mflr	r6
+ 	li	r7,32
+ 	PPC_ICBT(0,R6,R7)		/* touch next cache line */
+@@ -414,7 +414,7 @@ _GLOBAL(loadcam_multi)
+ 	 * Set up temporary TLB entry that is the same as what we're
+ 	 * running from, but in AS=1.
+ 	 */
+-	bl	1f
++	bcl	20,31,$+4
+ 1:	mflr	r6
+ 	tlbsx	0,r8
+ 	mfspr	r6,SPRN_MAS1
+-- 
+2.25.0
 
