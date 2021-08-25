@@ -2,49 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF0A23F7C8C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Aug 2021 21:05:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CABAA3F7DB5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Aug 2021 23:26:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GvwR76r8Vz2yfm
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Aug 2021 05:05:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GvzYN4nTFz2yfg
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Aug 2021 07:26:00 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aFZjR+1h;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JFqjPb4Y;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
+ envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=aFZjR+1h; 
+ header.s=k20201202 header.b=JFqjPb4Y; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GvwQV0tq4z2yJT
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Aug 2021 05:04:50 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3A0F0610A3;
- Wed, 25 Aug 2021 19:04:46 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GvzXg0cGRz2xrk
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Aug 2021 07:25:22 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7FA79610A1;
+ Wed, 25 Aug 2021 21:25:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1629918286;
- bh=WE8rqI012Bzl/S5TbfbNOjLun8qlZXOdpo6l9ED62V4=;
- h=Date:From:To:Cc:Subject:In-Reply-To:From;
- b=aFZjR+1honOKjKC+pRz6jj7Was9KpFFUMPJh/UkYpvNBL2xVPn87lwG5cA5CFX1Ob
- 4d5l/IrV8H+baIQvliFhmTXOTRgi8dfJxK/W0qgzFpt3XGIlPRifkxOuV1CZQA/JcY
- NPNiDNbZCV41w9FxGUuENiifVKyythlsS+XYAh30GUvC2RXkn4ugxxAx0b8ImPsHNx
- BcRYaLUiJv5rVJkjPymrj/3G8FzteXPNpSZIRpwMVKF96tN5/D4+woPrIBdUCTiM4e
- JZTW4SJvS9/JzOU23fBU2hlAFlMWE7iUynCjK7I6g3wJA3jhw4zgjCkGqLde/haUzp
- ydK1CXk21JDZQ==
-Date: Wed, 25 Aug 2021 14:04:44 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Niklas Schnelle <schnelle@linux.ibm.com>
-Subject: Re: [PATCH v3] PCI: Move pci_dev_is/assign_added() to pci.h
-Message-ID: <20210825190444.GA3593752@bjorn-Precision-5520>
+ s=k20201202; t=1629926719;
+ bh=CeaJGcL5TPB/VT6KtN5ovF2oKKTE6SyCZvsi7/rIFac=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=JFqjPb4YCOxJ3F/skQ4AkEBps8jk75StB3LkrUJR8feAcsRe5Me1TUncHxQsy1gRd
+ Flmf5hWWVMn3MBcinFB0+0tZkp6AnwnslcOEdckuU6qrpsDp1vZ5mBP3dDEuCJMJpj
+ dcgb2RI2Fv0Ixi8aC8YjVEyrz77AgfnMBBuBhG0F1DHBCGrQ2BgTzCXUigTcARAE2b
+ W6VHz+TPKL6iW17twl/nHji5rRLuwL/P6XekIWjeRpMQHHVpdX3bVOY/nLuNa+sl6V
+ uyrMitUvlt6dCeC9QidrWNJ51xqGJciS9zlamUD4L2HKiStAJAwzLNz6XYqW/4vw+n
+ IZso0669nQ2TA==
+Date: Wed, 25 Aug 2021 14:25:15 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2 2/2] powerpc/bug: Provide better flexibility to
+ WARN_ON/__WARN_FLAGS() with asm goto
+Message-ID: <YSa1O4fcX1nNKqN/@Ryzen-9-3900X.localdomain>
+References: <b286e07fb771a664b631cd07a40b09c06f26e64b.1618331881.git.christophe.leroy@csgroup.eu>
+ <389962b1b702e3c78d169e59bcfac56282889173.1618331882.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7595397d6c32ae8745201085956696866cc400b6.camel@linux.ibm.com>
+In-Reply-To: <389962b1b702e3c78d169e59bcfac56282889173.1618331882.git.christophe.leroy@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,141 +59,145 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- linux-pci@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+Cc: linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
+ Paul Mackerras <paulus@samba.org>, llvm@list.linux.dev,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 23, 2021 at 12:53:39PM +0200, Niklas Schnelle wrote:
-> On Fri, 2021-08-20 at 17:37 -0500, Bjorn Helgaas wrote:
-> > On Tue, Jul 20, 2021 at 05:01:45PM +0200, Niklas Schnelle wrote:
-> > > The helper function pci_dev_is_added() from drivers/pci/pci.h is used in
-> > > PCI arch code of both s390 and powerpc leading to awkward relative
-> > > includes. Move it to the global include/linux/pci.h and get rid of these
-> > > includes just for that one function.
-> > 
-> > I agree the includes are awkward.
-> > 
-> > But the arch code *using* pci_dev_is_added() seems awkward, too.
-> 
-> See below for my interpretation why s390 has some driver like
-> functionality in its arch code which isn't necessarily awkward.
-> 
-> Independent from that I have found pci_dev_is_added() as the only way
-> deal with the case that one might be looking at a struct pci_dev
-> reference that has been removed via pci_stop_and_remove_bus_device() or
-> has never been fully scanned. This is quite useful when handling error
-> events which on s390 are part of the adapter event mechanism shared
-> with channel I/O devices.
-> 
-> > AFAICS, in powerpc, pci_dev_is_added() is only used by
-> > pnv_pci_ioda_fixup_iov() and pseries_pci_fixup_iov_resources().  Those
-> > are only called from pcibios_add_device(), which is only called from
-> > pci_device_add().
-> > 
-> > Is it even possible for pci_dev_is_added() to be true in that path?
+Hi Christophe,
 
-If the pci_dev_is_added() in powerpc is unreachable, we can remove it
-and at least reduce this to an s390-only problem.
+On Tue, Apr 13, 2021 at 04:38:10PM +0000, Christophe Leroy wrote:
+> Using asm goto in __WARN_FLAGS() and WARN_ON() allows more
+> flexibility to GCC.
+> 
+> For that add an entry to the exception table so that
+> program_check_exception() knowns where to resume execution
+> after a WARNING.
+> 
+> Here are two exemples. The first one is done on PPC32 (which
+> benefits from the previous patch), the second is on PPC64.
+> 
+> 	unsigned long test(struct pt_regs *regs)
+> 	{
+> 		int ret;
+> 
+> 		WARN_ON(regs->msr & MSR_PR);
+> 
+> 		return regs->gpr[3];
+> 	}
+> 
+> 	unsigned long test9w(unsigned long a, unsigned long b)
+> 	{
+> 		if (WARN_ON(!b))
+> 			return 0;
+> 		return a / b;
+> 	}
+> 
+> Before the patch:
+> 
+> 	000003a8 <test>:
+> 	 3a8:	81 23 00 84 	lwz     r9,132(r3)
+> 	 3ac:	71 29 40 00 	andi.   r9,r9,16384
+> 	 3b0:	40 82 00 0c 	bne     3bc <test+0x14>
+> 	 3b4:	80 63 00 0c 	lwz     r3,12(r3)
+> 	 3b8:	4e 80 00 20 	blr
+> 
+> 	 3bc:	0f e0 00 00 	twui    r0,0
+> 	 3c0:	80 63 00 0c 	lwz     r3,12(r3)
+> 	 3c4:	4e 80 00 20 	blr
+> 
+> 	0000000000000bf0 <.test9w>:
+> 	 bf0:	7c 89 00 74 	cntlzd  r9,r4
+> 	 bf4:	79 29 d1 82 	rldicl  r9,r9,58,6
+> 	 bf8:	0b 09 00 00 	tdnei   r9,0
+> 	 bfc:	2c 24 00 00 	cmpdi   r4,0
+> 	 c00:	41 82 00 0c 	beq     c0c <.test9w+0x1c>
+> 	 c04:	7c 63 23 92 	divdu   r3,r3,r4
+> 	 c08:	4e 80 00 20 	blr
+> 
+> 	 c0c:	38 60 00 00 	li      r3,0
+> 	 c10:	4e 80 00 20 	blr
+> 
+> After the patch:
+> 
+> 	000003a8 <test>:
+> 	 3a8:	81 23 00 84 	lwz     r9,132(r3)
+> 	 3ac:	71 29 40 00 	andi.   r9,r9,16384
+> 	 3b0:	40 82 00 0c 	bne     3bc <test+0x14>
+> 	 3b4:	80 63 00 0c 	lwz     r3,12(r3)
+> 	 3b8:	4e 80 00 20 	blr
+> 
+> 	 3bc:	0f e0 00 00 	twui    r0,0
+> 
+> 	0000000000000c50 <.test9w>:
+> 	 c50:	7c 89 00 74 	cntlzd  r9,r4
+> 	 c54:	79 29 d1 82 	rldicl  r9,r9,58,6
+> 	 c58:	0b 09 00 00 	tdnei   r9,0
+> 	 c5c:	7c 63 23 92 	divdu   r3,r3,r4
+> 	 c60:	4e 80 00 20 	blr
+> 
+> 	 c70:	38 60 00 00 	li      r3,0
+> 	 c74:	4e 80 00 20 	blr
+> 
+> In the first exemple, we see GCC doesn't need to duplicate what
+> happens after the trap.
+> 
+> In the second exemple, we see that GCC doesn't need to emit a test
+> and a branch in the likely path in addition to the trap.
+> 
+> We've got some WARN_ON() in .softirqentry.text section so it needs
+> to be added in the OTHER_TEXT_SECTIONS in modpost.c
+> 
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-> > s390 uses pci_dev_is_added() in recover_store()
-> 
-> I'm actually looking into this as I'm working on an s390 implementation
-> of the PCI recovery flow described in Documentation/PCI/pci-error-
-> recovery.rst that would also call pci_dev_is_added() because when we
-> get a platform notification of a PCI reset done by firmware it may be
-> that the struct pci_dev is going away i.e. we still have a ref count
-> but it is not added to the PCI bus anymore. And pci_dev_is_added() is
-> the only way I've found to check for this state.
-> 
-> > , but I don't know what
-> > that is (looks like a sysfs file, but it's not documented) or why s390
-> > is the only arch that does this.
-> 
-> Good point about this not being documented, I'll look into adding docs.
-> 
-> This is a sysfs attribute that basically removes the pci_dev and re-
-> adds it. This has the complication that since the attribute sits at
-> /sys/bus/pci/devices/<dev>/recover it deletes its own parent directory
-> which requires extra caution and means concurrent accesses block on
-> pci_lock_rescan_remove() instead of a kernfs lock.
-> Long story short when concurrently triggering the attribute one thread
-> proceeds into the pci_lock_rescan_remove() section and does the
-> removal, while others would block on pci_lock_rescan_remove(). Now when
-> the threads unblock the removal is done. In this case there is a new
-> struct pci_dev found in the rescan but the previously blocked threads
-> still have references to the old struct pci_dev which was removed and
-> as far as I could tell can only be distinguished by checking
-> pci_dev_is_added().
+This patch as commit 1e688dd2a3d6 ("powerpc/bug: Provide better
+flexibility to WARN_ON/__WARN_FLAGS() with asm goto") cause a WARN_ON in
+klist_add_tail to trigger over and over on boot when compiling with
+clang:
 
-Is this locking issue different from concurrently writing to
-/sys/.../remove on other architectures?
+[    2.177416][    T1] WARNING: CPU: 0 PID: 1 at lib/klist.c:62 .klist_add_tail+0x3c/0x110
+[    2.177456][    T1] Modules linked in:
+[    2.177481][    T1] CPU: 0 PID: 1 Comm: swapper/0 Tainted: G        W         5.14.0-rc7-next-20210825 #1
+[    2.177520][    T1] NIP:  c0000000007ff81c LR: c00000000090a038 CTR: 0000000000000000
+[    2.177557][    T1] REGS: c0000000073c32a0 TRAP: 0700   Tainted: G        W          (5.14.0-rc7-next-20210825)
+[    2.177593][    T1] MSR:  8000000002029032 <SF,VEC,EE,ME,IR,DR,RI>  CR: 22000a40  XER: 00000000
+[    2.177667][    T1] CFAR: c00000000090a034 IRQMASK: 0
+[    2.177667][    T1] GPR00: c00000000090a038 c0000000073c3540 c000000001be3200 0000000000000001
+[    2.177667][    T1] GPR04: c0000000072d65c0 0000000000000000 c0000000091ba798 c0000000091bb0a0
+[    2.177667][    T1] GPR08: 0000000000000001 0000000000000000 c000000008581918 fffffffffffffc00
+[    2.177667][    T1] GPR12: 0000000044000240 c000000001dd0000 c000000000012300 0000000000000000
+[    2.177667][    T1] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    2.177667][    T1] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    2.177667][    T1] GPR24: 0000000000000000 c0000000017e3200 0000000000000000 c000000001a0e778
+[    2.177667][    T1] GPR28: c0000000072d65b0 c0000000072d65a8 c000000007de72c8 c0000000073c35d0
+[    2.178019][    T1] NIP [c0000000007ff81c] .klist_add_tail+0x3c/0x110
+[    2.178058][    T1] LR [c00000000090a038] .bus_add_driver+0x148/0x290
+[    2.178088][    T1] Call Trace:
+[    2.178105][    T1] [c0000000073c3540] [c0000000073c35d0] 0xc0000000073c35d0 (unreliable)
+[    2.178150][    T1] [c0000000073c35d0] [c00000000090a038] .bus_add_driver+0x148/0x290
+[    2.178190][    T1] [c0000000073c3670] [c00000000090fae8] .driver_register+0xb8/0x190
+[    2.178234][    T1] [c0000000073c3700] [c000000000be55c0] .__hid_register_driver+0x70/0xd0
+[    2.178275][    T1] [c0000000073c37a0] [c00000000116955c] .redragon_driver_init+0x34/0x58
+[    2.178314][    T1] [c0000000073c3820] [c000000000011ae0] .do_one_initcall+0x130/0x3b0
+[    2.178357][    T1] [c0000000073c3bb0] [c0000000011065e0] .do_initcall_level+0xd8/0x188
+[    2.178403][    T1] [c0000000073c3c50] [c0000000011064a8] .do_initcalls+0x7c/0xdc
+[    2.178445][    T1] [c0000000073c3ce0] [c000000001106238] .kernel_init_freeable+0x178/0x21c
+[    2.178491][    T1] [c0000000073c3d90] [c000000000012334] .kernel_init+0x34/0x220
+[    2.178530][    T1] [c0000000073c3e10] [c00000000000cf50] .ret_from_kernel_thread+0x58/0x60
+[    2.178569][    T1] Instruction dump:
+[    2.178592][    T1] fba10078 7c7d1b78 38600001 fb810070 3b9d0008 fbc10080 7c9e2378 389d0018
+[    2.178662][    T1] fb9d0008 fb9d0010 90640000 fbdd0000 <0b1e0000> e87e0018 28230000 41820024
+[    2.178728][    T1] ---[ end trace 52ed3431f58f1847 ]---
 
-> > Maybe we should make powerpc and s390 less special?
-> 
-> On s390, as I see it, the reason for this is that all of the PCI
-> functionality is directly defined in the Architecture as special CPU
-> instructions which are kind of hypercalls but also an ISA extension.
-> 
-> These instructions range from the basic PCI memory accesses (no real
-> MMIO) to enumeration of the devices and on to reporting of hot-plug and
-> and resets/recovery events. Importantly we do not have any kind of
-> direct access to a real or virtual PCI controller and the architecture
-> has no concept of a comparable entity.
-> 
-> So in my opinion while there is some of the functionality of a PCI
-> controller in arch/s390/pci the cut off between controller
-> functionality and arch support isn't clear at all and exposing PCI
-> support as CPU instructions doesn't map well to the controller concept.
-> 
-> That said, in principle I'm open to moving some of that into
-> drivers/pci/controller/ if you think that would improve things and we
-> can find a good argument what should go where. One possible cut off
-> would be to have arch/s390/pci/ provide wrappers to the PCI
-> instructions but move all their uses to  e.g.
-> drivers/pci/controller/s390/. This would of course be a major
-> refactoring and none of that code would be useful on any other
-> architecture but it would move a lot the accesses to PCI common code
-> functionality out of the arch code.
+Is this a bug with clang or is there something wrong with the patch? The
+vmlinux image is available at [1] if you want to inspect it and our QEMU
+command and the warning at boot can be viewed at [2]. If there is any
+other information I can provide, please let me know.
 
-Looks like hotplug is already in drivers/pci/hotplug/s390_pci_hpc.c.
+[1] https://builds.tuxbuild.com/1xDcmp3Tvno0TTGxDVPedRKIKM2/
+[2] https://github.com/ClangBuiltLinux/continuous-integration2/commit/cee159b66a58eb57fa2359e7888074b9da24126c/checks/3422232736/logs
 
-Might be worth considering putting the other PCI core-ish code in
-drivers/pci as well, though it doesn't feel urgent to me.  Maybe a
-good internship or mentoring project.
-
-I'm not sure this juggling around is worth it basically to just clean
-up the include path.  The downside to me is exposing
-pci_dev_is_added() to outside the PCI core, because I don't want
-to encourage any other users.
-
-> > > Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-> > > ---
-> > > Since v1 (and bad v2):
-> > > - Fixed accidental removal of PCI_DPC_RECOVERED, PCI_DPC_RECOVERING
-> > >   defines and also move these to include/linux/pci.h
-> > > 
-> > >  arch/powerpc/platforms/powernv/pci-sriov.c |  3 ---
-> > >  arch/powerpc/platforms/pseries/setup.c     |  1 -
-> > >  arch/s390/pci/pci_sysfs.c                  |  2 --
-> > >  drivers/pci/hotplug/acpiphp_glue.c         |  1 -
-> > >  drivers/pci/pci.h                          | 15 ---------------
-> > >  include/linux/pci.h                        | 15 +++++++++++++++
-> > >  6 files changed, 15 insertions(+), 22 deletions(-)
-> > > 
-> > > diff --git a/arch/powerpc/platforms/powernv/pci-sriov.c b/arch/powerpc/platforms/powernv/pci-sriov.c
-> > > index 28aac933a439..2e0ca5451e85 100644
-> > > --- a/arch/powerpc/platforms/powernv/pci-sriov.c
-> > > +++ b/arch/powerpc/platforms/powernv/pci-sriov.c
-> > > @@ -9,9 +9,6 @@
-> > >  
-> > >  #include "pci.h"
-> > >  
-> > > -/* for pci_dev_is_added() */
-> > > -#include "../../../../drivers/pci/pci.h"
-> > > 
-> .. snip ..
-> 
+Cheers,
+Nathan
