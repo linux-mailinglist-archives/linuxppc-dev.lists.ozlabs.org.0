@@ -2,57 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D88C3F6ECD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Aug 2021 07:28:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C555A3F6EEC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Aug 2021 07:45:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GvZJ40bLlz2ynS
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Aug 2021 15:28:04 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=HwJnYeTK;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GvZhN4jLmz2yZB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Aug 2021 15:45:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=HwJnYeTK; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GvZHM4yhBz2xjR
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Aug 2021 15:27:27 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4GvZHH0xwTz9sW8;
- Wed, 25 Aug 2021 15:27:23 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1629869244;
- bh=piMp678SY23RlkKblnlJz3x7vve0PTSeMYbmkKycX6E=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=HwJnYeTKh8xD9IFZCs53L4xkr1Usjvrd6AS9CTigFtJMcrqlVTfbidEeDj38/w3VG
- flLS25RORjjXJqRqSKiPBxfa1P/VGGbbAIZq2p77HTSxVZQpUmYvMh57uokmK4lmnZ
- FFqmjK1Qn3CkJkprLbxVCiXwoSV2M9czV7wzvLiW+ULPWmh/O0rH5zRDsD01Of2n82
- ewgPWCmspZXFsE4PZ1asTmSCOZvwFznLZtz1F4YVj0axH8zDQAYjHmMhxUabEFlDxO
- WUx6mXn7UF8BPKQdwt8nJbtQFYeFy9wPMBwam7V6ApFAi+rIXRXIyiXrHOEVqhzcWC
- bqq0kCM1NdfsA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>,
- npiggin@gmail.com
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GvZgt4hr1z2yJC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Aug 2021 15:45:10 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4GvZgk5Lc4z9sTx;
+ Wed, 25 Aug 2021 07:45:06 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id RKrMKKLXkpmR; Wed, 25 Aug 2021 07:45:06 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4GvZgk4C0qz9sTt;
+ Wed, 25 Aug 2021 07:45:06 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6E1438B83B;
+ Wed, 25 Aug 2021 07:45:06 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id dxNafVVCFkYi; Wed, 25 Aug 2021 07:45:06 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id EB8758B76A;
+ Wed, 25 Aug 2021 07:45:05 +0200 (CEST)
 Subject: Re: [PATCH v3 1/3] powerpc: Remove MSR_PR check in
  interrupt_exit_{user/kernel}_prepare()
-In-Reply-To: <385ead49ccb66a259b25fee3eebf0bd4094068f3.1629707037.git.christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, npiggin@gmail.com
 References: <385ead49ccb66a259b25fee3eebf0bd4094068f3.1629707037.git.christophe.leroy@csgroup.eu>
-Date: Wed, 25 Aug 2021 15:27:22 +1000
-Message-ID: <87zgt6aybp.fsf@mpe.ellerman.id.au>
+ <87zgt6aybp.fsf@mpe.ellerman.id.au>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <f5f598a5-3830-ee21-aff5-cba06deeb959@csgroup.eu>
+Date: Wed, 25 Aug 2021 07:45:02 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <87zgt6aybp.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,56 +71,62 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> In those hot functions that are called at every interrupt, any saved
-> cycle is worth it.
->
-> interrupt_exit_user_prepare() and interrupt_exit_kernel_prepare() are
-> called from three places:
-> - From entry_32.S
-> - From interrupt_64.S
-> - From interrupt_exit_user_restart() and interrupt_exit_kernel_restart()
->
-> In entry_32.S, there are inambiguously called based on MSR_PR:
->
-> 	interrupt_return:
-> 		lwz	r4,_MSR(r1)
-> 		addi	r3,r1,STACK_FRAME_OVERHEAD
-> 		andi.	r0,r4,MSR_PR
-> 		beq	.Lkernel_interrupt_return
-> 		bl	interrupt_exit_user_prepare
-> 	...
-> 	.Lkernel_interrupt_return:
-> 		bl	interrupt_exit_kernel_prepare
->
-> In interrupt_64.S, that's similar:
->
-> 	interrupt_return_\srr\():
-> 		ld	r4,_MSR(r1)
-> 		andi.	r0,r4,MSR_PR
-> 		beq	interrupt_return_\srr\()_kernel
-> 	interrupt_return_\srr\()_user: /* make backtraces match the _kernel variant */
-> 		addi	r3,r1,STACK_FRAME_OVERHEAD
-> 		bl	interrupt_exit_user_prepare
-> 	...
-> 	interrupt_return_\srr\()_kernel:
-> 		addi	r3,r1,STACK_FRAME_OVERHEAD
-> 		bl	interrupt_exit_kernel_prepare
->
-> In interrupt_exit_user_restart() and interrupt_exit_kernel_restart(),
-> MSR_PR is verified respectively by BUG_ON(!user_mode(regs)) and
-> BUG_ON(user_mode(regs)) prior to calling interrupt_exit_user_prepare()
-> and interrupt_exit_kernel_prepare().
->
-> The verification in interrupt_exit_user_prepare() and
-> interrupt_exit_kernel_prepare() are therefore useless and can be removed.
->
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Acked-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->  arch/powerpc/kernel/interrupt.c | 2 --
->  1 file changed, 2 deletions(-)
 
-I'll pick this one up independent of the other two patches.
 
-cheers
+Le 25/08/2021 à 07:27, Michael Ellerman a écrit :
+> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+>> In those hot functions that are called at every interrupt, any saved
+>> cycle is worth it.
+>>
+>> interrupt_exit_user_prepare() and interrupt_exit_kernel_prepare() are
+>> called from three places:
+>> - From entry_32.S
+>> - From interrupt_64.S
+>> - From interrupt_exit_user_restart() and interrupt_exit_kernel_restart()
+>>
+>> In entry_32.S, there are inambiguously called based on MSR_PR:
+>>
+>> 	interrupt_return:
+>> 		lwz	r4,_MSR(r1)
+>> 		addi	r3,r1,STACK_FRAME_OVERHEAD
+>> 		andi.	r0,r4,MSR_PR
+>> 		beq	.Lkernel_interrupt_return
+>> 		bl	interrupt_exit_user_prepare
+>> 	...
+>> 	.Lkernel_interrupt_return:
+>> 		bl	interrupt_exit_kernel_prepare
+>>
+>> In interrupt_64.S, that's similar:
+>>
+>> 	interrupt_return_\srr\():
+>> 		ld	r4,_MSR(r1)
+>> 		andi.	r0,r4,MSR_PR
+>> 		beq	interrupt_return_\srr\()_kernel
+>> 	interrupt_return_\srr\()_user: /* make backtraces match the _kernel variant */
+>> 		addi	r3,r1,STACK_FRAME_OVERHEAD
+>> 		bl	interrupt_exit_user_prepare
+>> 	...
+>> 	interrupt_return_\srr\()_kernel:
+>> 		addi	r3,r1,STACK_FRAME_OVERHEAD
+>> 		bl	interrupt_exit_kernel_prepare
+>>
+>> In interrupt_exit_user_restart() and interrupt_exit_kernel_restart(),
+>> MSR_PR is verified respectively by BUG_ON(!user_mode(regs)) and
+>> BUG_ON(user_mode(regs)) prior to calling interrupt_exit_user_prepare()
+>> and interrupt_exit_kernel_prepare().
+>>
+>> The verification in interrupt_exit_user_prepare() and
+>> interrupt_exit_kernel_prepare() are therefore useless and can be removed.
+>>
+>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>> Acked-by: Nicholas Piggin <npiggin@gmail.com>
+>> ---
+>>   arch/powerpc/kernel/interrupt.c | 2 --
+>>   1 file changed, 2 deletions(-)
+> 
+> I'll pick this one up independent of the other two patches.
+> 
+
+Second patch should be ok as well, no ?
+
+Christophe
