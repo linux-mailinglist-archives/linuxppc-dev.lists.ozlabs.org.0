@@ -2,75 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A7F53F6FBD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Aug 2021 08:43:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60F7F3F6FE6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Aug 2021 08:56:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gvbz61tT1z2yQB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Aug 2021 16:43:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GvcGN2MxMz2yPS
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Aug 2021 16:56:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=euqwfrYJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=aCB2aXtl;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::734;
- helo=mail-qk1-x734.google.com; envelope-from=cgel.zte@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=euqwfrYJ; dkim-atps=neutral
-Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com
- [IPv6:2607:f8b0:4864:20::734])
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=aCB2aXtl; 
+ dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gvby81xy8z2yXM
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Aug 2021 16:42:40 +1000 (AEST)
-Received: by mail-qk1-x734.google.com with SMTP id ay33so14485913qkb.10
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Aug 2021 23:42:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=bFYGx05HsHjbbBDCITQXjISDYjMAJovwLRHhmmvHL2Y=;
- b=euqwfrYJBAHrHzaLF3oDa3/4omT5QOIXAyafgBruf3Xedb/rmYSzGfG/PV6NfpCPwQ
- 0CG27TLdcu7qSxrBJ4HwvC0ZGqlyV1a/rWqo/VrQSbIfdLmdnLHHJWxIL0vTFlhr9P5K
- qx0F0XB0e+3o8IetQpE5Es6+iBTbosKW1sKciKoU5BIWrkCbge0an+mXMd/DIDawQX5K
- lWPOL5Owek9t/uWyJYBXdL8ludDazIH/o4Jmla1tutAgEXCPp+n1/+IKOgV48g0kwbVW
- Ee9gDGsMenc4SGKQwPkVMFniG9Z4Xzhx72GJqxP498ix/eBUILvvYpfIubkCrClaCoww
- WFTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=bFYGx05HsHjbbBDCITQXjISDYjMAJovwLRHhmmvHL2Y=;
- b=p82VHHqY4wm9I6DYV3YMH92RvSMWKeDMt1vP91eznsJCyOwPPsNQN4VbClPOtEHl6R
- lBGC6ixlShe+4ocQFkR4dyH3naJTBeFgDkrjNIRRTgt3Qay979McKdLfLfhQO8YtYLlS
- uGs3lLkpQO7lweBhKHjtQXH/BuA/rqF6uea909TOrYKcD8SRUg+mUfPR666XorwTWj80
- sOnBoo4E1zaNYYqyro2IlnTnGXgMUQ89tWiuK7mLa0ljUvYDF//s9d45LrA1fr8fWxV+
- oYzsja2m+70OUqjEdeFmum5fIdssOimz4PUc1LzDdEgZqnFzsB3ZIN9/gRX4Kn/vysu/
- 0WdA==
-X-Gm-Message-State: AOAM532xzmCfA+iXTnKlE3oC+YKYQ4xsi6slpSujBwzMcAMX0gMpIMCl
- 5uw4BLbmc9CYNE3/IruFHJM=
-X-Google-Smtp-Source: ABdhPJz9cuBhiCQl3AhOKS9j6zyMvbY8uDFjCZBxlL+ObcXfzsmQUB25tMZKfMq+U2pclfye7g/S3g==
-X-Received: by 2002:ae9:eb91:: with SMTP id
- b139mr30275671qkg.149.1629873756642; 
- Tue, 24 Aug 2021 23:42:36 -0700 (PDT)
-Received: from localhost.localdomain ([193.203.214.57])
- by smtp.gmail.com with ESMTPSA id c2sm5413442qte.22.2021.08.24.23.42.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 24 Aug 2021 23:42:36 -0700 (PDT)
-From: CGEL <cgel.zte@gmail.com>
-X-Google-Original-From: CGEL <deng.changcheng@zte.com.cn>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Sandipan Das <sandipan@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: [PATCH linux-next] power:pkeys: fix bugon.cocci warnings
-Date: Tue, 24 Aug 2021 23:42:28 -0700
-Message-Id: <20210825064228.70487-1-deng.changcheng@zte.com.cn>
-X-Mailer: git-send-email 2.25.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GvcFg56vVz2yHq
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Aug 2021 16:56:06 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4GvcFc43ytz9sRf;
+ Wed, 25 Aug 2021 16:56:04 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1629874565;
+ bh=jSlsrM1HwMJvkNNLTTYatOR6fzYRjXvzYjOwr9yNskQ=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=aCB2aXtlQfFCgiUkftH6/Do/ODK3fAMwydmKyqU4Qs/jlULSY4ST4uY/SN7FgNRZf
+ D2VriOe51K+kzhkcDehiISDHUD1T3NltEfnSI0gslH8WXsZoimlPZ0/eII3DO/1slt
+ gnbd1P3fZuPKP3dRxX0xEKu4nZYG82nmfaRm8YWXq921tg6+KAacsjqQUM36jT1vaS
+ 9JW8ScwrUy8UUJ1/JPjfmspves05/kq1sDkCXhrCWBmJxHNsTQ1rItG/dis+Yw+5CG
+ Zpa/1JiUMbKQSvIY02jLgn0sxQx1EmZeKh485JNT9peMbi7v8SQnYRxuk8B0+xwCYG
+ phIfScszNAVzw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>,
+ npiggin@gmail.com
+Subject: Re: [PATCH v3 1/3] powerpc: Remove MSR_PR check in
+ interrupt_exit_{user/kernel}_prepare()
+In-Reply-To: <f5f598a5-3830-ee21-aff5-cba06deeb959@csgroup.eu>
+References: <385ead49ccb66a259b25fee3eebf0bd4094068f3.1629707037.git.christophe.leroy@csgroup.eu>
+ <87zgt6aybp.fsf@mpe.ellerman.id.au>
+ <f5f598a5-3830-ee21-aff5-cba06deeb959@csgroup.eu>
+Date: Wed, 25 Aug 2021 16:56:01 +1000
+Message-ID: <87wnoaau7y.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,51 +67,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Zeal Robot <zealci@zte.com.cn>, Jing Yangyang <jing.yangyang@zte.com.cn>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Jing Yangyang <jing.yangyang@zte.com.cn>
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 25/08/2021 =C3=A0 07:27, Michael Ellerman a =C3=A9crit=C2=A0:
+>> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+>>> In those hot functions that are called at every interrupt, any saved
+>>> cycle is worth it.
+>>>
+>>> interrupt_exit_user_prepare() and interrupt_exit_kernel_prepare() are
+>>> called from three places:
+>>> - From entry_32.S
+>>> - From interrupt_64.S
+>>> - From interrupt_exit_user_restart() and interrupt_exit_kernel_restart()
+>>>
+>>> In entry_32.S, there are inambiguously called based on MSR_PR:
+>>>
+>>> 	interrupt_return:
+>>> 		lwz	r4,_MSR(r1)
+>>> 		addi	r3,r1,STACK_FRAME_OVERHEAD
+>>> 		andi.	r0,r4,MSR_PR
+>>> 		beq	.Lkernel_interrupt_return
+>>> 		bl	interrupt_exit_user_prepare
+>>> 	...
+>>> 	.Lkernel_interrupt_return:
+>>> 		bl	interrupt_exit_kernel_prepare
+>>>
+>>> In interrupt_64.S, that's similar:
+>>>
+>>> 	interrupt_return_\srr\():
+>>> 		ld	r4,_MSR(r1)
+>>> 		andi.	r0,r4,MSR_PR
+>>> 		beq	interrupt_return_\srr\()_kernel
+>>> 	interrupt_return_\srr\()_user: /* make backtraces match the _kernel va=
+riant */
+>>> 		addi	r3,r1,STACK_FRAME_OVERHEAD
+>>> 		bl	interrupt_exit_user_prepare
+>>> 	...
+>>> 	interrupt_return_\srr\()_kernel:
+>>> 		addi	r3,r1,STACK_FRAME_OVERHEAD
+>>> 		bl	interrupt_exit_kernel_prepare
+>>>
+>>> In interrupt_exit_user_restart() and interrupt_exit_kernel_restart(),
+>>> MSR_PR is verified respectively by BUG_ON(!user_mode(regs)) and
+>>> BUG_ON(user_mode(regs)) prior to calling interrupt_exit_user_prepare()
+>>> and interrupt_exit_kernel_prepare().
+>>>
+>>> The verification in interrupt_exit_user_prepare() and
+>>> interrupt_exit_kernel_prepare() are therefore useless and can be remove=
+d.
+>>>
+>>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>>> Acked-by: Nicholas Piggin <npiggin@gmail.com>
+>>> ---
+>>>   arch/powerpc/kernel/interrupt.c | 2 --
+>>>   1 file changed, 2 deletions(-)
+>>=20
+>> I'll pick this one up independent of the other two patches.
+>
+> Second patch should be ok as well, no ?
 
-Use BUG_ON instead of a if condition followed by BUG.
+Yeah I guess.
 
-./arch/powerpc/include/asm/book3s/64/pkeys.h:21:2-5:WARNING
-Use BUG_ON instead of if condition followed by BUG.
-./arch/powerpc/include/asm/book3s/64/pkeys.h:14:2-5:WARNING
-Use BUG_ON instead of if condition followed by BUG.
+I'm not sure if we'll want to keep cpu_has_msr_ri() if we have a
+CONFIG_PPC_MSR_RI, but that's a pretty minor detail.
 
-Generated by: scripts/coccinelle/misc/bugon.cocci
+So yeah I'll take patch 2 as well.
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Jing Yangyang <jing.yangyang@zte.com.cn>
----
- arch/powerpc/include/asm/book3s/64/pkeys.h | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/book3s/64/pkeys.h b/arch/powerpc/include/asm/book3s/64/pkeys.h
-index 5b17813..5f74f0c 100644
---- a/arch/powerpc/include/asm/book3s/64/pkeys.h
-+++ b/arch/powerpc/include/asm/book3s/64/pkeys.h
-@@ -10,15 +10,13 @@ static inline u64 vmflag_to_pte_pkey_bits(u64 vm_flags)
- 	if (!mmu_has_feature(MMU_FTR_PKEY))
- 		return 0x0UL;
- 
--	if (radix_enabled())
--		BUG();
-+	BUG_ON(radix_enabled());
- 	return hash__vmflag_to_pte_pkey_bits(vm_flags);
- }
- 
- static inline u16 pte_to_pkey_bits(u64 pteflags)
- {
--	if (radix_enabled())
--		BUG();
-+	BUG_ON(radix_enabled());
- 	return hash__pte_to_pkey_bits(pteflags);
- }
- 
--- 
-1.8.3.1
-
-
+cheers
