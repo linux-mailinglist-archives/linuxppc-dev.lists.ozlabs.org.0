@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A46493F709C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Aug 2021 09:44:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BBE53F709D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Aug 2021 09:45:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GvdKc3cMMz2ywf
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Aug 2021 17:44:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GvdL36gpNz2yPs
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Aug 2021 17:44:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -14,39 +14,40 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GvdKC40Dxz2yJC
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Aug 2021 17:44:12 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GvdKG49ZQz2yMN
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Aug 2021 17:44:18 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4GvdK57084z9sV5;
- Wed, 25 Aug 2021 09:44:09 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4GvdK76RQ8z9sV9;
+ Wed, 25 Aug 2021 09:44:11 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id ZqwCJz_SePGa; Wed, 25 Aug 2021 09:44:09 +0200 (CEST)
+ with ESMTP id eYKjK29SAHjb; Wed, 25 Aug 2021 09:44:11 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4GvdK55q9gz9sTL;
- Wed, 25 Aug 2021 09:44:09 +0200 (CEST)
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4GvdK65ZHsz9sTL;
+ Wed, 25 Aug 2021 09:44:10 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 832058B83B;
- Wed, 25 Aug 2021 09:44:09 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9F24A8B83B;
+ Wed, 25 Aug 2021 09:44:10 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id FpgDAUI6KbCv; Wed, 25 Aug 2021 09:44:09 +0200 (CEST)
+ with ESMTP id zg26FGoTMAqv; Wed, 25 Aug 2021 09:44:10 +0200 (CEST)
 Received: from po18078vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 34C788B76A;
- Wed, 25 Aug 2021 09:44:09 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2E9A78B76A;
+ Wed, 25 Aug 2021 09:44:10 +0200 (CEST)
 Received: by po18078vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 01BC86BC7B; Wed, 25 Aug 2021 07:44:08 +0000 (UTC)
-Message-Id: <8ea2d4065ec5a0137e5ad9b75773ed27c03bfc91.1629877436.git.christophe.leroy@csgroup.eu>
+ id 0B1C76BC7B; Wed, 25 Aug 2021 07:44:10 +0000 (UTC)
+Message-Id: <c52963b674d5bf11e6aa5b91a48f8e85c58ff409.1629877436.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <8ea2d4065ec5a0137e5ad9b75773ed27c03bfc91.1629877436.git.christophe.leroy@csgroup.eu>
+References: <8ea2d4065ec5a0137e5ad9b75773ed27c03bfc91.1629877436.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v4 1/2] powerpc/perf: Use PVR rather than oprofile field to
- determine CPU version
+Subject: [PATCH v4 2/2] powerpc: Remove remaining parts of oprofile
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Wed, 25 Aug 2021 07:44:08 +0000 (UTC)
+Date: Wed, 25 Aug 2021 07:44:10 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,262 +64,505 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Rashmica Gupta <rashmica.g@gmail.com>
+Commit 9850b6c69356 ("arch: powerpc: Remove oprofile") removed
+oprofile.
 
-Currently the perf CPU backend drivers detect what CPU they're on using
-cur_cpu_spec->oprofile_cpu_type.
+Remove all remaining parts of it.
 
-Although that works, it's a bit crufty to be using oprofile related fields,
-especially seeing as oprofile is more or less unused these days.
-
-It also means perf is reliant on the fragile logic in setup_cpu_spec()
-which detects when we're using a logical PVR and copies back the PMU
-related fields from the raw CPU entry. So lets check the PVR directly.
-
-Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Rashmica Gupta <rashmica.g@gmail.com>
-Reviewed-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
-[chleroy: Added power10 and fixed checkpatch issues]
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-and-tested-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Reviewed-and-tested-By: Kajol Jain <kjain@linux.ibm.com> [For 24x7 side changes]
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
 ---
-v4:
-- No change to the series
-- Added additional Reviewed-by/Tested-by.
-- Rebased
-- Resending to get some CI result this time
----
- arch/powerpc/perf/e500-pmu.c    | 9 +++++----
- arch/powerpc/perf/e6500-pmu.c   | 5 +++--
- arch/powerpc/perf/hv-24x7.c     | 6 +++---
- arch/powerpc/perf/mpc7450-pmu.c | 5 +++--
- arch/powerpc/perf/power10-pmu.c | 6 ++----
- arch/powerpc/perf/power5+-pmu.c | 6 +++---
- arch/powerpc/perf/power5-pmu.c  | 5 +++--
- arch/powerpc/perf/power6-pmu.c  | 5 +++--
- arch/powerpc/perf/power7-pmu.c  | 7 ++++---
- arch/powerpc/perf/power8-pmu.c  | 5 +++--
- arch/powerpc/perf/power9-pmu.c  | 4 +---
- arch/powerpc/perf/ppc970-pmu.c  | 7 ++++---
- 12 files changed, 37 insertions(+), 33 deletions(-)
+ arch/powerpc/include/asm/cputable.h       |  3 --
+ arch/powerpc/kernel/cputable.c            | 66 +----------------------
+ arch/powerpc/kernel/dt_cpu_ftrs.c         |  4 --
+ arch/powerpc/platforms/cell/spufs/spufs.h |  2 +-
+ 4 files changed, 3 insertions(+), 72 deletions(-)
 
-diff --git a/arch/powerpc/perf/e500-pmu.c b/arch/powerpc/perf/e500-pmu.c
-index a59c33bed32a..e3e1a68eb1d5 100644
---- a/arch/powerpc/perf/e500-pmu.c
-+++ b/arch/powerpc/perf/e500-pmu.c
-@@ -118,12 +118,13 @@ static struct fsl_emb_pmu e500_pmu = {
+diff --git a/arch/powerpc/include/asm/cputable.h b/arch/powerpc/include/asm/cputable.h
+index e85c849214a2..850129d13d46 100644
+--- a/arch/powerpc/include/asm/cputable.h
++++ b/arch/powerpc/include/asm/cputable.h
+@@ -70,9 +70,6 @@ struct cpu_spec {
+ 	/* Used to restore cpu setup on secondary processors and at resume */
+ 	cpu_restore_t	cpu_restore;
  
- static int init_e500_pmu(void)
- {
--	if (!cur_cpu_spec->oprofile_cpu_type)
--		return -ENODEV;
-+	unsigned int pvr = mfspr(SPRN_PVR);
+-	/* Used by oprofile userspace to select the right counters */
+-	char		*oprofile_cpu_type;
+-
+ 	/* Name of processor class, for the ELF AT_PLATFORM entry */
+ 	char		*platform;
  
--	if (!strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc/e500mc"))
-+	/* ec500mc */
-+	if (PVR_VER(pvr) == PVR_VER_E500MC || PVR_VER(pvr) == PVR_VER_E5500)
- 		num_events = 256;
--	else if (strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc/e500"))
-+	/* e500 */
-+	else if (PVR_VER(pvr) != PVR_VER_E500V1 && PVR_VER(pvr) != PVR_VER_E500V2)
- 		return -ENODEV;
+diff --git a/arch/powerpc/kernel/cputable.c b/arch/powerpc/kernel/cputable.c
+index ae0fdef0ac11..0fc812ac7519 100644
+--- a/arch/powerpc/kernel/cputable.c
++++ b/arch/powerpc/kernel/cputable.c
+@@ -149,7 +149,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.pmc_type		= PPC_PMC_IBM,
+ 		.cpu_setup		= __setup_cpu_ppc970,
+ 		.cpu_restore		= __restore_cpu_ppc970,
+-		.oprofile_cpu_type	= "ppc64/970",
+ 		.platform		= "ppc970",
+ 	},
+ 	{	/* PPC970FX */
+@@ -166,7 +165,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.pmc_type		= PPC_PMC_IBM,
+ 		.cpu_setup		= __setup_cpu_ppc970,
+ 		.cpu_restore		= __restore_cpu_ppc970,
+-		.oprofile_cpu_type	= "ppc64/970",
+ 		.platform		= "ppc970",
+ 	},
+ 	{	/* PPC970MP DD1.0 - no DEEPNAP, use regular 970 init */
+@@ -183,7 +181,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.pmc_type		= PPC_PMC_IBM,
+ 		.cpu_setup		= __setup_cpu_ppc970,
+ 		.cpu_restore		= __restore_cpu_ppc970,
+-		.oprofile_cpu_type	= "ppc64/970MP",
+ 		.platform		= "ppc970",
+ 	},
+ 	{	/* PPC970MP */
+@@ -200,7 +197,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.pmc_type		= PPC_PMC_IBM,
+ 		.cpu_setup		= __setup_cpu_ppc970MP,
+ 		.cpu_restore		= __restore_cpu_ppc970,
+-		.oprofile_cpu_type	= "ppc64/970MP",
+ 		.platform		= "ppc970",
+ 	},
+ 	{	/* PPC970GX */
+@@ -216,7 +212,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.num_pmcs		= 8,
+ 		.pmc_type		= PPC_PMC_IBM,
+ 		.cpu_setup		= __setup_cpu_ppc970,
+-		.oprofile_cpu_type	= "ppc64/970",
+ 		.platform		= "ppc970",
+ 	},
+ 	{	/* Power5 GR */
+@@ -230,7 +225,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.dcache_bsize		= 128,
+ 		.num_pmcs		= 6,
+ 		.pmc_type		= PPC_PMC_IBM,
+-		.oprofile_cpu_type	= "ppc64/power5",
+ 		.platform		= "power5",
+ 	},
+ 	{	/* Power5++ */
+@@ -243,7 +237,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.icache_bsize		= 128,
+ 		.dcache_bsize		= 128,
+ 		.num_pmcs		= 6,
+-		.oprofile_cpu_type	= "ppc64/power5++",
+ 		.platform		= "power5+",
+ 	},
+ 	{	/* Power5 GS */
+@@ -257,7 +250,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.dcache_bsize		= 128,
+ 		.num_pmcs		= 6,
+ 		.pmc_type		= PPC_PMC_IBM,
+-		.oprofile_cpu_type	= "ppc64/power5+",
+ 		.platform		= "power5+",
+ 	},
+ 	{	/* POWER6 in P5+ mode; 2.04-compliant processor */
+@@ -269,7 +261,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.mmu_features		= MMU_FTRS_POWER5,
+ 		.icache_bsize		= 128,
+ 		.dcache_bsize		= 128,
+-		.oprofile_cpu_type	= "ppc64/ibm-compat-v1",
+ 		.platform		= "power5+",
+ 	},
+ 	{	/* Power6 */
+@@ -284,7 +275,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.dcache_bsize		= 128,
+ 		.num_pmcs		= 6,
+ 		.pmc_type		= PPC_PMC_IBM,
+-		.oprofile_cpu_type	= "ppc64/power6",
+ 		.platform		= "power6x",
+ 	},
+ 	{	/* 2.05-compliant processor, i.e. Power6 "architected" mode */
+@@ -296,7 +286,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.mmu_features		= MMU_FTRS_POWER6,
+ 		.icache_bsize		= 128,
+ 		.dcache_bsize		= 128,
+-		.oprofile_cpu_type	= "ppc64/ibm-compat-v1",
+ 		.platform		= "power6",
+ 	},
+ 	{	/* 2.06-compliant processor, i.e. Power7 "architected" mode */
+@@ -309,7 +298,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.mmu_features		= MMU_FTRS_POWER7,
+ 		.icache_bsize		= 128,
+ 		.dcache_bsize		= 128,
+-		.oprofile_cpu_type	= "ppc64/ibm-compat-v1",
+ 		.cpu_setup		= __setup_cpu_power7,
+ 		.cpu_restore		= __restore_cpu_power7,
+ 		.machine_check_early	= __machine_check_early_realmode_p7,
+@@ -325,7 +313,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.mmu_features		= MMU_FTRS_POWER8,
+ 		.icache_bsize		= 128,
+ 		.dcache_bsize		= 128,
+-		.oprofile_cpu_type	= "ppc64/ibm-compat-v1",
+ 		.cpu_setup		= __setup_cpu_power8,
+ 		.cpu_restore		= __restore_cpu_power8,
+ 		.machine_check_early	= __machine_check_early_realmode_p8,
+@@ -341,7 +328,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.mmu_features		= MMU_FTRS_POWER9,
+ 		.icache_bsize		= 128,
+ 		.dcache_bsize		= 128,
+-		.oprofile_cpu_type	= "ppc64/ibm-compat-v1",
+ 		.cpu_setup		= __setup_cpu_power9,
+ 		.cpu_restore		= __restore_cpu_power9,
+ 		.platform		= "power9",
+@@ -356,7 +342,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.mmu_features		= MMU_FTRS_POWER10,
+ 		.icache_bsize		= 128,
+ 		.dcache_bsize		= 128,
+-		.oprofile_cpu_type	= "ppc64/ibm-compat-v1",
+ 		.cpu_setup		= __setup_cpu_power10,
+ 		.cpu_restore		= __restore_cpu_power10,
+ 		.platform		= "power10",
+@@ -373,7 +358,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.dcache_bsize		= 128,
+ 		.num_pmcs		= 6,
+ 		.pmc_type		= PPC_PMC_IBM,
+-		.oprofile_cpu_type	= "ppc64/power7",
+ 		.cpu_setup		= __setup_cpu_power7,
+ 		.cpu_restore		= __restore_cpu_power7,
+ 		.machine_check_early	= __machine_check_early_realmode_p7,
+@@ -391,7 +375,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.dcache_bsize		= 128,
+ 		.num_pmcs		= 6,
+ 		.pmc_type		= PPC_PMC_IBM,
+-		.oprofile_cpu_type	= "ppc64/power7",
+ 		.cpu_setup		= __setup_cpu_power7,
+ 		.cpu_restore		= __restore_cpu_power7,
+ 		.machine_check_early	= __machine_check_early_realmode_p7,
+@@ -409,7 +392,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.dcache_bsize		= 128,
+ 		.num_pmcs		= 6,
+ 		.pmc_type		= PPC_PMC_IBM,
+-		.oprofile_cpu_type	= "ppc64/power8",
+ 		.cpu_setup		= __setup_cpu_power8,
+ 		.cpu_restore		= __restore_cpu_power8,
+ 		.machine_check_early	= __machine_check_early_realmode_p8,
+@@ -427,7 +409,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.dcache_bsize		= 128,
+ 		.num_pmcs		= 6,
+ 		.pmc_type		= PPC_PMC_IBM,
+-		.oprofile_cpu_type	= "ppc64/power8",
+ 		.cpu_setup		= __setup_cpu_power8,
+ 		.cpu_restore		= __restore_cpu_power8,
+ 		.machine_check_early	= __machine_check_early_realmode_p8,
+@@ -445,7 +426,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.dcache_bsize		= 128,
+ 		.num_pmcs		= 6,
+ 		.pmc_type		= PPC_PMC_IBM,
+-		.oprofile_cpu_type	= "ppc64/power8",
+ 		.cpu_setup		= __setup_cpu_power8,
+ 		.cpu_restore		= __restore_cpu_power8,
+ 		.machine_check_early	= __machine_check_early_realmode_p8,
+@@ -463,7 +443,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.dcache_bsize		= 128,
+ 		.num_pmcs		= 6,
+ 		.pmc_type		= PPC_PMC_IBM,
+-		.oprofile_cpu_type	= "ppc64/power9",
+ 		.cpu_setup		= __setup_cpu_power9,
+ 		.cpu_restore		= __restore_cpu_power9,
+ 		.machine_check_early	= __machine_check_early_realmode_p9,
+@@ -481,7 +460,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.dcache_bsize		= 128,
+ 		.num_pmcs		= 6,
+ 		.pmc_type		= PPC_PMC_IBM,
+-		.oprofile_cpu_type	= "ppc64/power9",
+ 		.cpu_setup		= __setup_cpu_power9,
+ 		.cpu_restore		= __restore_cpu_power9,
+ 		.machine_check_early	= __machine_check_early_realmode_p9,
+@@ -499,7 +477,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.dcache_bsize		= 128,
+ 		.num_pmcs		= 6,
+ 		.pmc_type		= PPC_PMC_IBM,
+-		.oprofile_cpu_type	= "ppc64/power9",
+ 		.cpu_setup		= __setup_cpu_power9,
+ 		.cpu_restore		= __restore_cpu_power9,
+ 		.machine_check_early	= __machine_check_early_realmode_p9,
+@@ -517,7 +494,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.dcache_bsize		= 128,
+ 		.num_pmcs		= 6,
+ 		.pmc_type		= PPC_PMC_IBM,
+-		.oprofile_cpu_type	= "ppc64/power10",
+ 		.cpu_setup		= __setup_cpu_power10,
+ 		.cpu_restore		= __restore_cpu_power10,
+ 		.machine_check_early	= __machine_check_early_realmode_p10,
+@@ -536,7 +512,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.dcache_bsize		= 128,
+ 		.num_pmcs		= 4,
+ 		.pmc_type		= PPC_PMC_IBM,
+-		.oprofile_cpu_type	= "ppc64/cell-be",
+ 		.platform		= "ppc-cell-be",
+ 	},
+ 	{	/* PA Semi PA6T */
+@@ -552,7 +527,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.pmc_type		= PPC_PMC_PA6T,
+ 		.cpu_setup		= __setup_cpu_pa6t,
+ 		.cpu_restore		= __restore_cpu_pa6t,
+-		.oprofile_cpu_type	= "ppc64/pa6t",
+ 		.platform		= "pa6t",
+ 	},
+ 	{	/* default match */
+@@ -716,7 +690,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.cpu_setup		= __setup_cpu_750,
+ 		.machine_check		= machine_check_generic,
+ 		.platform		= "ppc750",
+-		.oprofile_cpu_type      = "ppc/750",
+ 	},
+ 	{	/* 745/755 */
+ 		.pvr_mask		= 0xfffff000,
+@@ -747,7 +720,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.cpu_setup		= __setup_cpu_750,
+ 		.machine_check		= machine_check_generic,
+ 		.platform		= "ppc750",
+-		.oprofile_cpu_type      = "ppc/750",
+ 	},
+ 	{	/* 750FX rev 2.0 must disable HID0[DPM] */
+ 		.pvr_mask		= 0xffffffff,
+@@ -763,7 +735,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.cpu_setup		= __setup_cpu_750,
+ 		.machine_check		= machine_check_generic,
+ 		.platform		= "ppc750",
+-		.oprofile_cpu_type      = "ppc/750",
+ 	},
+ 	{	/* 750FX (All revs except 2.0) */
+ 		.pvr_mask		= 0xffff0000,
+@@ -779,7 +750,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.cpu_setup		= __setup_cpu_750fx,
+ 		.machine_check		= machine_check_generic,
+ 		.platform		= "ppc750",
+-		.oprofile_cpu_type      = "ppc/750",
+ 	},
+ 	{	/* 750GX */
+ 		.pvr_mask		= 0xffff0000,
+@@ -795,7 +765,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.cpu_setup		= __setup_cpu_750fx,
+ 		.machine_check		= machine_check_generic,
+ 		.platform		= "ppc750",
+-		.oprofile_cpu_type      = "ppc/750",
+ 	},
+ 	{	/* 740/750 (L2CR bit need fixup for 740) */
+ 		.pvr_mask		= 0xffff0000,
+@@ -873,7 +842,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.num_pmcs		= 6,
+ 		.pmc_type		= PPC_PMC_G4,
+ 		.cpu_setup		= __setup_cpu_745x,
+-		.oprofile_cpu_type      = "ppc/7450",
+ 		.machine_check		= machine_check_generic,
+ 		.platform		= "ppc7450",
+ 	},
+@@ -890,7 +858,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.num_pmcs		= 6,
+ 		.pmc_type		= PPC_PMC_G4,
+ 		.cpu_setup		= __setup_cpu_745x,
+-		.oprofile_cpu_type      = "ppc/7450",
+ 		.machine_check		= machine_check_generic,
+ 		.platform		= "ppc7450",
+ 	},
+@@ -907,7 +874,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.num_pmcs		= 6,
+ 		.pmc_type		= PPC_PMC_G4,
+ 		.cpu_setup		= __setup_cpu_745x,
+-		.oprofile_cpu_type      = "ppc/7450",
+ 		.machine_check		= machine_check_generic,
+ 		.platform		= "ppc7450",
+ 	},
+@@ -924,7 +890,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.num_pmcs		= 6,
+ 		.pmc_type		= PPC_PMC_G4,
+ 		.cpu_setup		= __setup_cpu_745x,
+-		.oprofile_cpu_type      = "ppc/7450",
+ 		.machine_check		= machine_check_generic,
+ 		.platform		= "ppc7450",
+ 	},
+@@ -941,7 +906,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.num_pmcs		= 6,
+ 		.pmc_type		= PPC_PMC_G4,
+ 		.cpu_setup		= __setup_cpu_745x,
+-		.oprofile_cpu_type      = "ppc/7450",
+ 		.machine_check		= machine_check_generic,
+ 		.platform		= "ppc7450",
+ 	},
+@@ -958,7 +922,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.num_pmcs		= 6,
+ 		.pmc_type		= PPC_PMC_G4,
+ 		.cpu_setup		= __setup_cpu_745x,
+-		.oprofile_cpu_type      = "ppc/7450",
+ 		.machine_check		= machine_check_generic,
+ 		.platform		= "ppc7450",
+ 	},
+@@ -975,7 +938,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.num_pmcs		= 6,
+ 		.pmc_type		= PPC_PMC_G4,
+ 		.cpu_setup		= __setup_cpu_745x,
+-		.oprofile_cpu_type      = "ppc/7450",
+ 		.machine_check		= machine_check_generic,
+ 		.platform		= "ppc7450",
+ 	},
+@@ -992,7 +954,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.num_pmcs		= 6,
+ 		.pmc_type		= PPC_PMC_G4,
+ 		.cpu_setup		= __setup_cpu_745x,
+-		.oprofile_cpu_type      = "ppc/7450",
+ 		.machine_check		= machine_check_generic,
+ 		.platform		= "ppc7450",
+ 	},
+@@ -1008,7 +969,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.num_pmcs		= 6,
+ 		.pmc_type		= PPC_PMC_G4,
+ 		.cpu_setup		= __setup_cpu_745x,
+-		.oprofile_cpu_type      = "ppc/7450",
+ 		.machine_check		= machine_check_generic,
+ 		.platform		= "ppc7450",
+ 	},
+@@ -1025,7 +985,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.num_pmcs		= 6,
+ 		.pmc_type		= PPC_PMC_G4,
+ 		.cpu_setup		= __setup_cpu_745x,
+-		.oprofile_cpu_type      = "ppc/7450",
+ 		.machine_check		= machine_check_generic,
+ 		.platform		= "ppc7450",
+ 	},
+@@ -1042,7 +1001,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.num_pmcs		= 6,
+ 		.pmc_type		= PPC_PMC_G4,
+ 		.cpu_setup		= __setup_cpu_745x,
+-		.oprofile_cpu_type      = "ppc/7450",
+ 		.machine_check		= machine_check_generic,
+ 		.platform		= "ppc7450",
+ 	},
+@@ -1154,7 +1112,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.cpu_setup		= __setup_cpu_603,
+ 		.machine_check		= machine_check_83xx,
+ 		.num_pmcs		= 4,
+-		.oprofile_cpu_type	= "ppc/e300",
+ 		.platform		= "ppc603",
+ 	},
+ 	{	/* e300c4 (e300c1, plus one IU) */
+@@ -1170,7 +1127,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.cpu_setup		= __setup_cpu_603,
+ 		.machine_check		= machine_check_83xx,
+ 		.num_pmcs		= 4,
+-		.oprofile_cpu_type	= "ppc/e300",
+ 		.platform		= "ppc603",
+ 	},
+ #endif
+@@ -1866,7 +1822,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.icache_bsize		= 32,
+ 		.dcache_bsize		= 32,
+ 		.num_pmcs		= 4,
+-		.oprofile_cpu_type	= "ppc/e500",
+ 		.cpu_setup		= __setup_cpu_e500v1,
+ 		.machine_check		= machine_check_e500,
+ 		.platform		= "ppc8540",
+@@ -1885,7 +1840,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.icache_bsize		= 32,
+ 		.dcache_bsize		= 32,
+ 		.num_pmcs		= 4,
+-		.oprofile_cpu_type	= "ppc/e500",
+ 		.cpu_setup		= __setup_cpu_e500v2,
+ 		.machine_check		= machine_check_e500,
+ 		.platform		= "ppc8548",
+@@ -1904,7 +1858,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.icache_bsize		= 64,
+ 		.dcache_bsize		= 64,
+ 		.num_pmcs		= 4,
+-		.oprofile_cpu_type	= "ppc/e500mc",
+ 		.cpu_setup		= __setup_cpu_e500mc,
+ 		.machine_check		= machine_check_e500mc,
+ 		.platform		= "ppce500mc",
+@@ -1925,7 +1878,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.icache_bsize		= 64,
+ 		.dcache_bsize		= 64,
+ 		.num_pmcs		= 4,
+-		.oprofile_cpu_type	= "ppc/e500mc",
+ 		.cpu_setup		= __setup_cpu_e5500,
+ #ifndef CONFIG_PPC32
+ 		.cpu_restore		= __restore_cpu_e5500,
+@@ -1947,7 +1899,6 @@ static struct cpu_spec __initdata cpu_specs[] = {
+ 		.icache_bsize		= 64,
+ 		.dcache_bsize		= 64,
+ 		.num_pmcs		= 6,
+-		.oprofile_cpu_type	= "ppc/e6500",
+ 		.cpu_setup		= __setup_cpu_e6500,
+ #ifndef CONFIG_PPC32
+ 		.cpu_restore		= __restore_cpu_e6500,
+@@ -2015,23 +1966,10 @@ static struct cpu_spec * __init setup_cpu_spec(unsigned long offset,
+ 		t->pmc_type = old.pmc_type;
  
- 	return register_fsl_emb_pmu(&e500_pmu);
-diff --git a/arch/powerpc/perf/e6500-pmu.c b/arch/powerpc/perf/e6500-pmu.c
-index 44ad65da82ed..bd779a2338f8 100644
---- a/arch/powerpc/perf/e6500-pmu.c
-+++ b/arch/powerpc/perf/e6500-pmu.c
-@@ -107,8 +107,9 @@ static struct fsl_emb_pmu e6500_pmu = {
+ 		/*
+-		 * If we have passed through this logic once before and
+-		 * have pulled the default case because the real PVR was
+-		 * not found inside cpu_specs[], then we are possibly
+-		 * running in compatibility mode. In that case, let the
+-		 * oprofiler know which set of compatibility counters to
+-		 * pull from by making sure the oprofile_cpu_type string
+-		 * is set to that of compatibility mode. If the
+-		 * oprofile_cpu_type already has a value, then we are
+-		 * possibly overriding a real PVR with a logical one,
+-		 * and, in that case, keep the current value for
+-		 * oprofile_cpu_type. Futhermore, let's ensure that the
++		 * Let's ensure that the
+ 		 * fix for the PMAO bug is enabled on compatibility mode.
+ 		 */
+-		if (old.oprofile_cpu_type != NULL) {
+-			t->oprofile_cpu_type = old.oprofile_cpu_type;
+-			t->cpu_features |= old.cpu_features & CPU_FTR_PMAO_BUG;
+-		}
++		t->cpu_features |= old.cpu_features & CPU_FTR_PMAO_BUG;
+ 	}
  
- static int init_e6500_pmu(void)
- {
--	if (!cur_cpu_spec->oprofile_cpu_type ||
--		strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc/e6500"))
-+	unsigned int pvr = mfspr(SPRN_PVR);
-+
-+	if (PVR_VER(pvr) != PVR_VER_E6500)
- 		return -ENODEV;
+ 	*PTRRELOC(&cur_cpu_spec) = &the_cpu_spec;
+diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
+index 358aee7c2d79..2bb1a5ca2cff 100644
+--- a/arch/powerpc/kernel/dt_cpu_ftrs.c
++++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
+@@ -101,7 +101,6 @@ static struct cpu_spec __initdata base_cpu_spec = {
+ 	.dcache_bsize		= 32, /* cache info init.             */
+ 	.num_pmcs		= 0,
+ 	.pmc_type		= PPC_PMC_DEFAULT,
+-	.oprofile_cpu_type	= NULL,
+ 	.cpu_setup		= NULL,
+ 	.cpu_restore		= __restore_cpu_cpufeatures,
+ 	.machine_check_early	= NULL,
+@@ -379,7 +378,6 @@ static int __init feat_enable_pmu_power8(struct dt_cpu_feature *f)
  
- 	return register_fsl_emb_pmu(&e6500_pmu);
-diff --git a/arch/powerpc/perf/hv-24x7.c b/arch/powerpc/perf/hv-24x7.c
-index 1816f560a465..63e84075fd64 100644
---- a/arch/powerpc/perf/hv-24x7.c
-+++ b/arch/powerpc/perf/hv-24x7.c
-@@ -1718,16 +1718,16 @@ static int hv_24x7_init(void)
- {
- 	int r;
- 	unsigned long hret;
-+	unsigned int pvr = mfspr(SPRN_PVR);
- 	struct hv_perf_caps caps;
+ 	cur_cpu_spec->num_pmcs		= 6;
+ 	cur_cpu_spec->pmc_type		= PPC_PMC_IBM;
+-	cur_cpu_spec->oprofile_cpu_type	= "ppc64/power8";
  
- 	if (!firmware_has_feature(FW_FEATURE_LPAR)) {
- 		pr_debug("not a virtualized system, not enabling\n");
- 		return -ENODEV;
--	} else if (!cur_cpu_spec->oprofile_cpu_type)
--		return -ENODEV;
-+	}
+ 	return 1;
+ }
+@@ -415,7 +413,6 @@ static int __init feat_enable_pmu_power9(struct dt_cpu_feature *f)
  
- 	/* POWER8 only supports v1, while POWER9 only supports v2. */
--	if (!strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power8"))
-+	if (PVR_VER(pvr) == PVR_POWER8)
- 		interface_version = 1;
- 	else {
- 		interface_version = 2;
-diff --git a/arch/powerpc/perf/mpc7450-pmu.c b/arch/powerpc/perf/mpc7450-pmu.c
-index e39b15b79a83..552d51a925d3 100644
---- a/arch/powerpc/perf/mpc7450-pmu.c
-+++ b/arch/powerpc/perf/mpc7450-pmu.c
-@@ -417,8 +417,9 @@ struct power_pmu mpc7450_pmu = {
+ 	cur_cpu_spec->num_pmcs		= 6;
+ 	cur_cpu_spec->pmc_type		= PPC_PMC_IBM;
+-	cur_cpu_spec->oprofile_cpu_type	= "ppc64/power9";
  
- static int __init init_mpc7450_pmu(void)
- {
--	if (!cur_cpu_spec->oprofile_cpu_type ||
--	    strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc/7450"))
-+	unsigned int pvr = mfspr(SPRN_PVR);
-+
-+	if (PVR_VER(pvr) != PVR_7450)
- 		return -ENODEV;
+ 	return 1;
+ }
+@@ -441,7 +438,6 @@ static int __init feat_enable_pmu_power10(struct dt_cpu_feature *f)
  
- 	return register_power_pmu(&mpc7450_pmu);
-diff --git a/arch/powerpc/perf/power10-pmu.c b/arch/powerpc/perf/power10-pmu.c
-index f9d64c63bb4a..53b14deda088 100644
---- a/arch/powerpc/perf/power10-pmu.c
-+++ b/arch/powerpc/perf/power10-pmu.c
-@@ -579,12 +579,10 @@ int init_power10_pmu(void)
- 	unsigned int pvr;
- 	int rc;
+ 	cur_cpu_spec->num_pmcs          = 6;
+ 	cur_cpu_spec->pmc_type          = PPC_PMC_IBM;
+-	cur_cpu_spec->oprofile_cpu_type = "ppc64/power10";
  
--	/* Comes from cpu_specs[] */
--	if (!cur_cpu_spec->oprofile_cpu_type ||
--	    strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power10"))
-+	pvr = mfspr(SPRN_PVR);
-+	if (PVR_VER(pvr) != PVR_POWER10)
- 		return -ENODEV;
+ 	return 1;
+ }
+diff --git a/arch/powerpc/platforms/cell/spufs/spufs.h b/arch/powerpc/platforms/cell/spufs/spufs.h
+index afc1d6604d12..23c6799cfa5a 100644
+--- a/arch/powerpc/platforms/cell/spufs/spufs.h
++++ b/arch/powerpc/platforms/cell/spufs/spufs.h
+@@ -76,7 +76,7 @@ struct spu_context {
+ 	struct address_space *mss;	   /* 'mss' area mappings. */
+ 	struct address_space *psmap;	   /* 'psmap' area mappings. */
+ 	struct mutex mapping_lock;
+-	u64 object_id;		   /* user space pointer for oprofile */
++	u64 object_id;		   /* user space pointer for GNU Debugger */
  
--	pvr = mfspr(SPRN_PVR);
- 	/* Add the ppmu flag for power10 DD1 */
- 	if ((PVR_CFG(pvr) == 1))
- 		power10_pmu.flags |= PPMU_P10_DD1;
-diff --git a/arch/powerpc/perf/power5+-pmu.c b/arch/powerpc/perf/power5+-pmu.c
-index 18732267993a..a79eae40ef6d 100644
---- a/arch/powerpc/perf/power5+-pmu.c
-+++ b/arch/powerpc/perf/power5+-pmu.c
-@@ -679,9 +679,9 @@ static struct power_pmu power5p_pmu = {
- 
- int init_power5p_pmu(void)
- {
--	if (!cur_cpu_spec->oprofile_cpu_type ||
--	    (strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power5+")
--	     && strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power5++")))
-+	unsigned int pvr = mfspr(SPRN_PVR);
-+
-+	if (PVR_VER(pvr) != PVR_POWER5p)
- 		return -ENODEV;
- 
- 	return register_power_pmu(&power5p_pmu);
-diff --git a/arch/powerpc/perf/power5-pmu.c b/arch/powerpc/perf/power5-pmu.c
-index cb611c1e7abe..35a9d7f3b4b9 100644
---- a/arch/powerpc/perf/power5-pmu.c
-+++ b/arch/powerpc/perf/power5-pmu.c
-@@ -620,8 +620,9 @@ static struct power_pmu power5_pmu = {
- 
- int init_power5_pmu(void)
- {
--	if (!cur_cpu_spec->oprofile_cpu_type ||
--	    strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power5"))
-+	unsigned int pvr = mfspr(SPRN_PVR);
-+
-+	if (PVR_VER(pvr) != PVR_POWER5)
- 		return -ENODEV;
- 
- 	return register_power_pmu(&power5_pmu);
-diff --git a/arch/powerpc/perf/power6-pmu.c b/arch/powerpc/perf/power6-pmu.c
-index 69ef38216418..8aa220c712a7 100644
---- a/arch/powerpc/perf/power6-pmu.c
-+++ b/arch/powerpc/perf/power6-pmu.c
-@@ -541,8 +541,9 @@ static struct power_pmu power6_pmu = {
- 
- int init_power6_pmu(void)
- {
--	if (!cur_cpu_spec->oprofile_cpu_type ||
--	    strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power6"))
-+	unsigned int pvr = mfspr(SPRN_PVR);
-+
-+	if (PVR_VER(pvr) != PVR_POWER6)
- 		return -ENODEV;
- 
- 	return register_power_pmu(&power6_pmu);
-diff --git a/arch/powerpc/perf/power7-pmu.c b/arch/powerpc/perf/power7-pmu.c
-index 894c17f9a762..ca7373143b02 100644
---- a/arch/powerpc/perf/power7-pmu.c
-+++ b/arch/powerpc/perf/power7-pmu.c
-@@ -447,11 +447,12 @@ static struct power_pmu power7_pmu = {
- 
- int init_power7_pmu(void)
- {
--	if (!cur_cpu_spec->oprofile_cpu_type ||
--	    strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power7"))
-+	unsigned int pvr = mfspr(SPRN_PVR);
-+
-+	if (PVR_VER(pvr) != PVR_POWER7 && PVR_VER(pvr) != PVR_POWER7p)
- 		return -ENODEV;
- 
--	if (pvr_version_is(PVR_POWER7p))
-+	if (PVR_VER(pvr) == PVR_POWER7p)
- 		power7_pmu.flags |= PPMU_SIAR_VALID;
- 
- 	return register_power_pmu(&power7_pmu);
-diff --git a/arch/powerpc/perf/power8-pmu.c b/arch/powerpc/perf/power8-pmu.c
-index 5282e8415ddf..5a396ba8bf58 100644
---- a/arch/powerpc/perf/power8-pmu.c
-+++ b/arch/powerpc/perf/power8-pmu.c
-@@ -381,9 +381,10 @@ static struct power_pmu power8_pmu = {
- int init_power8_pmu(void)
- {
- 	int rc;
-+	unsigned int pvr = mfspr(SPRN_PVR);
- 
--	if (!cur_cpu_spec->oprofile_cpu_type ||
--	    strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power8"))
-+	if (PVR_VER(pvr) != PVR_POWER8E && PVR_VER(pvr) != PVR_POWER8NVL &&
-+	    PVR_VER(pvr) != PVR_POWER8)
- 		return -ENODEV;
- 
- 	rc = register_power_pmu(&power8_pmu);
-diff --git a/arch/powerpc/perf/power9-pmu.c b/arch/powerpc/perf/power9-pmu.c
-index ff3382140d7e..147767ca0039 100644
---- a/arch/powerpc/perf/power9-pmu.c
-+++ b/arch/powerpc/perf/power9-pmu.c
-@@ -457,9 +457,7 @@ int init_power9_pmu(void)
- 	int rc = 0;
- 	unsigned int pvr = mfspr(SPRN_PVR);
- 
--	/* Comes from cpu_specs[] */
--	if (!cur_cpu_spec->oprofile_cpu_type ||
--	    strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power9"))
-+	if (PVR_VER(pvr) != PVR_POWER9)
- 		return -ENODEV;
- 
- 	/* Blacklist events */
-diff --git a/arch/powerpc/perf/ppc970-pmu.c b/arch/powerpc/perf/ppc970-pmu.c
-index 1f8263785286..39a0a4d7841c 100644
---- a/arch/powerpc/perf/ppc970-pmu.c
-+++ b/arch/powerpc/perf/ppc970-pmu.c
-@@ -491,9 +491,10 @@ static struct power_pmu ppc970_pmu = {
- 
- int init_ppc970_pmu(void)
- {
--	if (!cur_cpu_spec->oprofile_cpu_type ||
--	    (strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/970")
--	     && strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/970MP")))
-+	unsigned int pvr = mfspr(SPRN_PVR);
-+
-+	if (PVR_VER(pvr) != PVR_970 && PVR_VER(pvr) != PVR_970MP &&
-+	    PVR_VER(pvr) != PVR_970FX && PVR_VER(pvr) != PVR_970GX)
- 		return -ENODEV;
- 
- 	return register_power_pmu(&ppc970_pmu);
+ 	enum { SPU_STATE_RUNNABLE, SPU_STATE_SAVED } state;
+ 	struct mutex state_mutex;
 -- 
 2.25.0
 
