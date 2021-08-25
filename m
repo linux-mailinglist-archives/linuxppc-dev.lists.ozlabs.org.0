@@ -1,72 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74C213F7534
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Aug 2021 14:39:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 753693F7535
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Aug 2021 14:40:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GvlsX2ZMBz3bjF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Aug 2021 22:39:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GvltQ1sM9z2yMq
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Aug 2021 22:39:58 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=FcVpK6V/;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=uPDAgZy4;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1031;
- helo=mail-pj1-x1031.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::432;
+ helo=mail-pf1-x432.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=FcVpK6V/; dkim-atps=neutral
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com
- [IPv6:2607:f8b0:4864:20::1031])
+ header.s=20161025 header.b=uPDAgZy4; dkim-atps=neutral
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com
+ [IPv6:2607:f8b0:4864:20::432])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GvlqV3sMyz2yHY
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Aug 2021 22:37:26 +1000 (AEST)
-Received: by mail-pj1-x1031.google.com with SMTP id
- oc2-20020a17090b1c0200b00179e56772d6so4066615pjb.4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Aug 2021 05:37:26 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GvlqX2WPxz2yMG
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Aug 2021 22:37:28 +1000 (AEST)
+Received: by mail-pf1-x432.google.com with SMTP id y11so21153553pfl.13
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Aug 2021 05:37:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=lEXsKF9hWGiU6RhM1jR2tg0EfhoLWsgwZpMwRa0ejRE=;
- b=FcVpK6V/sn7NAIu/xm+UMPfmn07y3raR9UHoAskwnV/dTOVf8XdmdSVBSQR3jMxY7P
- gW4rx/vwqD2wYKJKg4ovPA7WPyP+CSaiTCJjsY/aZRsJbLcSofr6Bx7ftYzUj9rOlczr
- qPhAl120o2DmpggtHQq8X/VQONKz1aeuutg2bAZ28wmYgcby5gZilDqTDaolmAZr5FHh
- 0E63nlm7yiMk7vVScthD0Owoz6yYPoMJSVGZz1fxMchQaiZslj/R2IRMNfA6NOgl6mVV
- 5SYAtuqLMdICCOJhsJhVPcIO4DmQXULrHB6AcP4EdO1XLkOUj1pKkzuUfvf/dx0KS3jb
- e0+A==
+ bh=i/ySyDykokmlH6z9bwxhPDX2ouRoSz0sZlJzqXWZ2/w=;
+ b=uPDAgZy4qNjcYbEOtz9ttFrxfKN58LsV2rKzGZNbfMLccciZrrDwg2W7DJkFOZwmIX
+ BsCyCbNDmrN9UvcycOJZj8kX25i5eFgXpE+9t4WdkXfgXqSkDYPKulPVMUX3FKotDIpL
+ e/idnU7TrIiU1Bup3wqv3dxj8nnuabLYuuVAKvCQnVzio7yNzcfOwGmj5bB2avAqPkll
+ C0ZP2pVJZHRPSDbDrVSeoIf4vGWfJnW3vqat1X53EaTw7jMVvcwXWjCJ1+Hmt1Mlh0lY
+ L014+m/lE4v2bw7gcAVIqkcPF5mOB9ApEYq7P7D+sb99R8FjaSHp/BIpSsFIanpJa6Pc
+ PraQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=lEXsKF9hWGiU6RhM1jR2tg0EfhoLWsgwZpMwRa0ejRE=;
- b=XIbjvBtlOLzro2qy+G8OoryVW712FQhjb7q55dPNq7UnfSeDee3B4vUQMysuMwOJxA
- RksFX9Yd3ZGNMMGlT+LvXwURq3Y3Ltq7KFxfEEm3WkjvqngL0SZctQ6oJLCS3PZRtA2/
- UrpK37/nZwzkwK1Nju99WjyfYhkslNYFSAmU5obgt+LsKL95KQB/j5uj+/+iVHvIutFQ
- 4G4sbs+OQ9jovk1BZwiOaTDDBTwIzWoi0E1qYaJVXxhUKiIiuRyA5pRtFLSDufatrtvr
- NaXXMuBbt+8f5mUpYTIJMpIr+mPnWaSUsVRjuLdOdy7znptqOJtVgqBMYazVkDVU0vOl
- hqcA==
-X-Gm-Message-State: AOAM533PbQqS3wQAhHcf9MjUotosMPLNzqsO1ZbnXc2cdlezVIzKvks7
- A2nkzO2+ryBTzS4esxuvYBkEF3lMld4=
-X-Google-Smtp-Source: ABdhPJx7msNB/9Vq44BkJ8W/HrDIdk0NPo12RLbu6O30LzBRjc1baVnFt+gmQpgpGPGeI38tnpEWmw==
-X-Received: by 2002:a17:90a:6782:: with SMTP id
- o2mr10278820pjj.165.1629895043959; 
- Wed, 25 Aug 2021 05:37:23 -0700 (PDT)
+ bh=i/ySyDykokmlH6z9bwxhPDX2ouRoSz0sZlJzqXWZ2/w=;
+ b=eiKLCA5jwBeDzCJIUj0+cY9MA1qlKTXk1S+9XSl8KWKIRa8zOSXhjT6gdReSAaYRSf
+ uKaO1Qe1QoREh1nVKDoiKzF8cFtOLWQ+u7APrY5roqNb8X1mckdPYESvSO2B1Ury+/Qf
+ LdMjxxn+GqJSrgJW8u5YfiqN8d0M9yBJC7Y2bbRCIjzNes01CcceQCkBCcLeSs9xchdY
+ k/AEAlnGc9/PLvG98v1UPoqIewDq7bAvkkScegDC+tdTwMl0bwktADw9IhVALz+OhZI6
+ 9SiOAlq+U/Y29QtsjHr9P0OsfBGgHepo3F9NdInEHSkm6JtXt+aKYcvzU23d/NvClMY/
+ m2FA==
+X-Gm-Message-State: AOAM532hMw2ctbuyoXkfXjNDeMasayRAFTI3wo4pPzQhOsvPOVVo7gi6
+ arPZMt8InjbNxtIzMiSvTa3rp//5rXo=
+X-Google-Smtp-Source: ABdhPJyswviniEJC9zqolMJcWNGpOSsXOO2KGJuKIKPNswSPz+CFnuWgs/QSmNcf9hoQPw5Wlga9PA==
+X-Received: by 2002:a63:ea58:: with SMTP id l24mr2035883pgk.334.1629895045898; 
+ Wed, 25 Aug 2021 05:37:25 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (193-116-119-33.tpgi.com.au.
  [193.116.119.33])
- by smtp.gmail.com with ESMTPSA id j6sm22043162pfi.220.2021.08.25.05.37.22
+ by smtp.gmail.com with ESMTPSA id j6sm22043162pfi.220.2021.08.25.05.37.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 25 Aug 2021 05:37:23 -0700 (PDT)
+ Wed, 25 Aug 2021 05:37:25 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 2/4] powerpc/64s/perf: add power_pmu_wants_prompt_pmi to
- say whether perf wants PMIs to be soft-NMI
-Date: Wed, 25 Aug 2021 22:37:12 +1000
-Message-Id: <20210825123714.706201-3-npiggin@gmail.com>
+Subject: [PATCH v2 3/4] powerpc/64s/interrupt: Don't enable MSR[EE] in irq
+ handlers unless perf is in use
+Date: Wed, 25 Aug 2021 22:37:13 +1000
+Message-Id: <20210825123714.706201-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20210825123714.706201-1-npiggin@gmail.com>
 References: <20210825123714.706201-1-npiggin@gmail.com>
@@ -88,79 +86,171 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Interrupt code enables MSR[EE] in some irq handlers while keeping local
-irqs disabled via soft-mask, allowing PMI interrupts to be taken as
-soft-NMI to improve profiling of irq handlers.
+Enabling MSR[EE] in interrupt handlers while interrupts are still soft
+masked allows PMIs to profile interrupt handlers to some degree, beyond
+what SIAR latching allows.
 
-When perf is not enabled, there is no point to doing this, it's
-additional overhead. So provide a function that can say if PMIs should
-be taken promptly if possible.
+When perf is not being used, this is almost useless work. It requires an
+extra mtmsrd in the irq handler, and it also opens the door to masked
+interrupts hitting and requiring replay, which is more expensive than
+just taking them directly. This effect can be noticable in high IRQ
+workloads.
+
+Avoid enabling MSR[EE] unless perf is currently in use. This saves about
+60 cycles (or 8%) on a simple decrementer interrupt microbenchmark.
+Replayed interrupts drop from 1.4% of interrupts to 0.003%.
+
+This does prevent the soft-nmi interrupt being taken in these handlers,
+but that's not too reliable anyway. The SMP watchdog will continue to be
+the reliable way to catch lockups.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/hw_irq.h |  2 ++
- arch/powerpc/perf/core-book3s.c   | 28 ++++++++++++++++++++++++++++
- 2 files changed, 30 insertions(+)
+ arch/powerpc/include/asm/hw_irq.h | 55 ++++++++++++++++++++++++++-----
+ arch/powerpc/kernel/dbell.c       |  3 +-
+ arch/powerpc/kernel/irq.c         |  3 +-
+ arch/powerpc/kernel/time.c        | 31 ++++++++---------
+ 4 files changed, 66 insertions(+), 26 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/hw_irq.h b/arch/powerpc/include/asm/hw_irq.h
-index 21cc571ea9c2..b987822e552e 100644
+index b987822e552e..8c78c40c006e 100644
 --- a/arch/powerpc/include/asm/hw_irq.h
 +++ b/arch/powerpc/include/asm/hw_irq.h
-@@ -306,6 +306,8 @@ static inline bool lazy_irq_pending_nocheck(void)
- 	return __lazy_irq_pending(local_paca->irq_happened);
- }
+@@ -309,17 +309,54 @@ static inline bool lazy_irq_pending_nocheck(void)
+ bool power_pmu_wants_prompt_pmi(void);
  
-+bool power_pmu_wants_prompt_pmi(void);
-+
  /*
-  * This is called by asynchronous interrupts to conditionally
-  * re-enable hard interrupts after having cleared the source
-diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-index bb0ee716de91..771f49aea8f4 100644
---- a/arch/powerpc/perf/core-book3s.c
-+++ b/arch/powerpc/perf/core-book3s.c
-@@ -17,6 +17,7 @@
- #include <asm/firmware.h>
- #include <asm/ptrace.h>
- #include <asm/code-patching.h>
-+#include <asm/hw_irq.h>
- #include <asm/interrupt.h>
- 
- #ifdef CONFIG_PPC64
-@@ -2380,6 +2381,33 @@ static void perf_event_interrupt(struct pt_regs *regs)
- 	perf_sample_event_took(sched_clock() - start_clock);
- }
- 
-+/*
-+ * If the perf subsystem wants performance monitor interrupts as soon as
-+ * possible (e.g., to sample the instruction address and stack chain),
-+ * this should return true. The IRQ masking code can then enable MSR[EE]
-+ * in some places (e.g., interrupt handlers) that allows PMI interrupts
-+ * though to improve accuracy of profiles, at the cost of some performance.
-+ *
-+ * The PMU counters can be enabled by other means (e.g., sysfs raw SPR
-+ * access), but in that case there is no need for prompt PMI handling.
-+ *
-+ * This currently returns true if any perf counter is being used. It
-+ * could possibly return false if only events are being counted rather than
-+ * samples being taken, but for now this is good enough.
-+ */
-+bool power_pmu_wants_prompt_pmi(void)
-+{
-+	struct cpu_hw_events *cpuhw;
-+
-+	/* Could this simply test local_paca->pmcregs_in_use? */
-+
-+	if (!ppmu)
+- * This is called by asynchronous interrupts to conditionally
+- * re-enable hard interrupts after having cleared the source
+- * of the interrupt. They are kept disabled if there is a different
+- * soft-masked interrupt pending that requires hard masking.
++ * This is called by asynchronous interrupts to check whether to
++ * conditionally re-enable hard interrupts after having cleared
++ * the source of the interrupt. They are kept disabled if there
++ * is a different soft-masked interrupt pending that requires hard
++ * masking.
+  */
+-static inline void may_hard_irq_enable(void)
++static inline bool should_hard_irq_enable(void)
+ {
+-	if (!(get_paca()->irq_happened & PACA_IRQ_MUST_HARD_MASK)) {
+-		get_paca()->irq_happened &= ~PACA_IRQ_HARD_DIS;
+-		__hard_irq_enable();
+-	}
++#ifdef CONFIG_PPC_IRQ_SOFT_MASK_DEBUG
++	WARN_ON(irq_soft_mask_return() == IRQS_ENABLED);
++	WARN_ON(mfmsr() & MSR_EE);
++#endif
++#ifdef CONFIG_PERF_EVENTS
++	/*
++	 * If the PMU is not running, there is not much reason to enable
++	 * MSR[EE] in irq handlers because any interrupts would just be
++	 * soft-masked.
++	 *
++	 * TODO: Add test for 64e
++	 */
++	if (IS_ENABLED(CONFIG_PPC_BOOK3S_64) && !power_pmu_wants_prompt_pmi())
 +		return false;
 +
-+	cpuhw = this_cpu_ptr(&cpu_hw_events);
-+	return cpuhw->n_events;
++	if (get_paca()->irq_happened & PACA_IRQ_MUST_HARD_MASK)
++		return false;
++
++	return true;
++#else
++	return false;
++#endif
 +}
 +
- static int power_pmu_prepare_cpu(unsigned int cpu)
- {
- 	struct cpu_hw_events *cpuhw = &per_cpu(cpu_hw_events, cpu);
++/*
++ * Do the hard enabling, only call this if should_hard_irq_enable is true.
++ */
++static inline void do_hard_irq_enable(void)
++{
++#ifdef CONFIG_PPC_IRQ_SOFT_MASK_DEBUG
++	WARN_ON(irq_soft_mask_return() == IRQS_ENABLED);
++	WARN_ON(get_paca()->irq_happened & PACA_IRQ_MUST_HARD_MASK);
++	WARN_ON(mfmsr() & MSR_EE);
++#endif
++	/*
++	 * This allows PMI interrupts (and watchdog soft-NMIs) through.
++	 * There is no other reason to enable this way.
++	 */
++	get_paca()->irq_happened &= ~PACA_IRQ_HARD_DIS;
++	__hard_irq_enable();
+ }
+ 
+ static inline bool arch_irq_disabled_regs(struct pt_regs *regs)
+diff --git a/arch/powerpc/kernel/dbell.c b/arch/powerpc/kernel/dbell.c
+index 5545c9cd17c1..f55c6fb34a3a 100644
+--- a/arch/powerpc/kernel/dbell.c
++++ b/arch/powerpc/kernel/dbell.c
+@@ -27,7 +27,8 @@ DEFINE_INTERRUPT_HANDLER_ASYNC(doorbell_exception)
+ 
+ 	ppc_msgsync();
+ 
+-	may_hard_irq_enable();
++	if (should_hard_irq_enable())
++		do_hard_irq_enable();
+ 
+ 	kvmppc_clear_host_ipi(smp_processor_id());
+ 	__this_cpu_inc(irq_stat.doorbell_irqs);
+diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
+index 551b653228c4..f658aa22a21e 100644
+--- a/arch/powerpc/kernel/irq.c
++++ b/arch/powerpc/kernel/irq.c
+@@ -739,7 +739,8 @@ void __do_irq(struct pt_regs *regs)
+ 	irq = ppc_md.get_irq();
+ 
+ 	/* We can hard enable interrupts now to allow perf interrupts */
+-	may_hard_irq_enable();
++	if (should_hard_irq_enable())
++		do_hard_irq_enable();
+ 
+ 	/* And finally process it */
+ 	if (unlikely(!irq))
+diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
+index c487ba5a6e11..e7aab5540d09 100644
+--- a/arch/powerpc/kernel/time.c
++++ b/arch/powerpc/kernel/time.c
+@@ -567,22 +567,23 @@ DEFINE_INTERRUPT_HANDLER_ASYNC(timer_interrupt)
+ 		return;
+ 	}
+ 
+-	/* Ensure a positive value is written to the decrementer, or else
+-	 * some CPUs will continue to take decrementer exceptions. When the
+-	 * PPC_WATCHDOG (decrementer based) is configured, keep this at most
+-	 * 31 bits, which is about 4 seconds on most systems, which gives
+-	 * the watchdog a chance of catching timer interrupt hard lockups.
+-	 */
+-	if (IS_ENABLED(CONFIG_PPC_WATCHDOG))
+-		set_dec(0x7fffffff);
+-	else
+-		set_dec(decrementer_max);
+-
+-	/* Conditionally hard-enable interrupts now that the DEC has been
+-	 * bumped to its maximum value
+-	 */
+-	may_hard_irq_enable();
++	/* Conditionally hard-enable interrupts. */
++	if (should_hard_irq_enable()) {
++		/*
++		 * Ensure a positive value is written to the decrementer, or
++		 * else some CPUs will continue to take decrementer exceptions.
++		 * When the PPC_WATCHDOG (decrementer based) is configured,
++		 * keep this at most 31 bits, which is about 4 seconds on most
++		 * systems, which gives the watchdog a chance of catching timer
++		 * interrupt hard lockups.
++		 */
++		if (IS_ENABLED(CONFIG_PPC_WATCHDOG))
++			set_dec(0x7fffffff);
++		else
++			set_dec(decrementer_max);
+ 
++		do_hard_irq_enable();
++	}
+ 
+ #if defined(CONFIG_PPC32) && defined(CONFIG_PPC_PMAC)
+ 	if (atomic_read(&ppc_n_lost_interrupts) != 0)
 -- 
 2.23.0
 
