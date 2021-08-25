@@ -2,55 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEF543F6FB9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Aug 2021 08:42:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A7F53F6FBD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Aug 2021 08:43:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GvbyR5SYpz2yw3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Aug 2021 16:42:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gvbz61tT1z2yQB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Aug 2021 16:43:30 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=euqwfrYJ;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::734;
+ helo=mail-qk1-x734.google.com; envelope-from=cgel.zte@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=euqwfrYJ; dkim-atps=neutral
+Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com
+ [IPv6:2607:f8b0:4864:20::734])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gvby32VzGz2xTK
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Aug 2021 16:42:33 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4Gvbxy1fXhz9sVG;
- Wed, 25 Aug 2021 08:42:30 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 4y7WKXTVXuup; Wed, 25 Aug 2021 08:42:30 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4Gvbxy0f1Vz9sV9;
- Wed, 25 Aug 2021 08:42:30 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id EC0218B76A;
- Wed, 25 Aug 2021 08:42:29 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 8_K7q7wLCYoh; Wed, 25 Aug 2021 08:42:29 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5388A8B83C;
- Wed, 25 Aug 2021 08:42:29 +0200 (CEST)
-Subject: Re: [PATCH linux-next] powerpc:security: replace
- DEFINE_SIMPLE_ATTRIBUTE with DEFINE_DEBUGFS_ATTRIBUTE
-To: CGEL <cgel.zte@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>
-References: <20210825064016.70421-1-deng.changcheng@zte.com.cn>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <9521dd23-34f6-837e-a397-ee2771675967@csgroup.eu>
-Date: Wed, 25 Aug 2021 08:42:24 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gvby81xy8z2yXM
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Aug 2021 16:42:40 +1000 (AEST)
+Received: by mail-qk1-x734.google.com with SMTP id ay33so14485913qkb.10
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Aug 2021 23:42:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=bFYGx05HsHjbbBDCITQXjISDYjMAJovwLRHhmmvHL2Y=;
+ b=euqwfrYJBAHrHzaLF3oDa3/4omT5QOIXAyafgBruf3Xedb/rmYSzGfG/PV6NfpCPwQ
+ 0CG27TLdcu7qSxrBJ4HwvC0ZGqlyV1a/rWqo/VrQSbIfdLmdnLHHJWxIL0vTFlhr9P5K
+ qx0F0XB0e+3o8IetQpE5Es6+iBTbosKW1sKciKoU5BIWrkCbge0an+mXMd/DIDawQX5K
+ lWPOL5Owek9t/uWyJYBXdL8ludDazIH/o4Jmla1tutAgEXCPp+n1/+IKOgV48g0kwbVW
+ Ee9gDGsMenc4SGKQwPkVMFniG9Z4Xzhx72GJqxP498ix/eBUILvvYpfIubkCrClaCoww
+ WFTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=bFYGx05HsHjbbBDCITQXjISDYjMAJovwLRHhmmvHL2Y=;
+ b=p82VHHqY4wm9I6DYV3YMH92RvSMWKeDMt1vP91eznsJCyOwPPsNQN4VbClPOtEHl6R
+ lBGC6ixlShe+4ocQFkR4dyH3naJTBeFgDkrjNIRRTgt3Qay979McKdLfLfhQO8YtYLlS
+ uGs3lLkpQO7lweBhKHjtQXH/BuA/rqF6uea909TOrYKcD8SRUg+mUfPR666XorwTWj80
+ sOnBoo4E1zaNYYqyro2IlnTnGXgMUQ89tWiuK7mLa0ljUvYDF//s9d45LrA1fr8fWxV+
+ oYzsja2m+70OUqjEdeFmum5fIdssOimz4PUc1LzDdEgZqnFzsB3ZIN9/gRX4Kn/vysu/
+ 0WdA==
+X-Gm-Message-State: AOAM532xzmCfA+iXTnKlE3oC+YKYQ4xsi6slpSujBwzMcAMX0gMpIMCl
+ 5uw4BLbmc9CYNE3/IruFHJM=
+X-Google-Smtp-Source: ABdhPJz9cuBhiCQl3AhOKS9j6zyMvbY8uDFjCZBxlL+ObcXfzsmQUB25tMZKfMq+U2pclfye7g/S3g==
+X-Received: by 2002:ae9:eb91:: with SMTP id
+ b139mr30275671qkg.149.1629873756642; 
+ Tue, 24 Aug 2021 23:42:36 -0700 (PDT)
+Received: from localhost.localdomain ([193.203.214.57])
+ by smtp.gmail.com with ESMTPSA id c2sm5413442qte.22.2021.08.24.23.42.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 24 Aug 2021 23:42:36 -0700 (PDT)
+From: CGEL <cgel.zte@gmail.com>
+X-Google-Original-From: CGEL <deng.changcheng@zte.com.cn>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Sandipan Das <sandipan@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: [PATCH linux-next] power:pkeys: fix bugon.cocci warnings
+Date: Tue, 24 Aug 2021 23:42:28 -0700
+Message-Id: <20210825064228.70487-1-deng.changcheng@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <20210825064016.70421-1-deng.changcheng@zte.com.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -63,69 +82,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jing Yangyang <jing.yangyang@zte.com.cn>,
- Alexey Kardashevskiy <aik@ozlabs.ru>, Zeal Robot <zealci@zte.com.cn>,
- linux-kernel@vger.kernel.org, Li Huafei <lihuafei1@huawei.com>,
- Paul Mackerras <paulus@samba.org>, Nicholas Piggin <npiggin@gmail.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Zeal Robot <zealci@zte.com.cn>, Jing Yangyang <jing.yangyang@zte.com.cn>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+From: Jing Yangyang <jing.yangyang@zte.com.cn>
 
-Le 25/08/2021 à 08:40, CGEL a écrit :
-> From: Jing Yangyang <jing.yangyang@zte.com.cn>
-> 
-> Fix the following coccicheck warning:
-> ./arch/powerpc/kernel/security.c:807:0-23: WARNING:
->   fops_entry_flush should be defined with DEFINE_DEBUGFS_ATTRIBUTE
-> ./arch/powerpc/kernel/security.c:781:0-23:WARNING:
-> fops_rfi_flush should be defined with DEFINE_DEBUGFS_ATTRIBUTE
-> ./arch/powerpc/kernel/security.c:833:0-23:WARNING:
-> fops_uaccess_flush should be defined with DEFINE_DEBUGFS_ATTRIBUTE
+Use BUG_ON instead of a if condition followed by BUG.
 
-Can you give a few more details why the suggestion from coccicheck is a good suggestion ?
+./arch/powerpc/include/asm/book3s/64/pkeys.h:21:2-5:WARNING
+Use BUG_ON instead of if condition followed by BUG.
+./arch/powerpc/include/asm/book3s/64/pkeys.h:14:2-5:WARNING
+Use BUG_ON instead of if condition followed by BUG.
 
-Thanks
-Christophe
+Generated by: scripts/coccinelle/misc/bugon.cocci
 
-> 
-> Reported-by: Zeal Robot <zealci@zte.com.cn>
-> Signed-off-by: Jing Yangyang <jing.yangyang@zte.com.cn>
-> ---
->   arch/powerpc/kernel/security.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/security.c b/arch/powerpc/kernel/security.c
-> index 1a99849..cf8ce24 100644
-> --- a/arch/powerpc/kernel/security.c
-> +++ b/arch/powerpc/kernel/security.c
-> @@ -778,7 +778,7 @@ static int rfi_flush_get(void *data, u64 *val)
->   	return 0;
->   }
->   
-> -DEFINE_SIMPLE_ATTRIBUTE(fops_rfi_flush, rfi_flush_get, rfi_flush_set, "%llu\n");
-> +DEFINE_DEBUGFS_ATTRIBUTE(fops_rfi_flush, rfi_flush_get, rfi_flush_set, "%llu\n");
->   
->   static int entry_flush_set(void *data, u64 val)
->   {
-> @@ -804,7 +804,7 @@ static int entry_flush_get(void *data, u64 *val)
->   	return 0;
->   }
->   
-> -DEFINE_SIMPLE_ATTRIBUTE(fops_entry_flush, entry_flush_get, entry_flush_set, "%llu\n");
-> +DEFINE_DEBUGFS_ATTRIBUTE(fops_entry_flush, entry_flush_get, entry_flush_set, "%llu\n");
->   
->   static int uaccess_flush_set(void *data, u64 val)
->   {
-> @@ -830,7 +830,7 @@ static int uaccess_flush_get(void *data, u64 *val)
->   	return 0;
->   }
->   
-> -DEFINE_SIMPLE_ATTRIBUTE(fops_uaccess_flush, uaccess_flush_get, uaccess_flush_set, "%llu\n");
-> +DEFINE_DEBUGFS_ATTRIBUTE(fops_uaccess_flush, uaccess_flush_get, uaccess_flush_set, "%llu\n");
->   
->   static __init int rfi_flush_debugfs_init(void)
->   {
-> 
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Jing Yangyang <jing.yangyang@zte.com.cn>
+---
+ arch/powerpc/include/asm/book3s/64/pkeys.h | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/book3s/64/pkeys.h b/arch/powerpc/include/asm/book3s/64/pkeys.h
+index 5b17813..5f74f0c 100644
+--- a/arch/powerpc/include/asm/book3s/64/pkeys.h
++++ b/arch/powerpc/include/asm/book3s/64/pkeys.h
+@@ -10,15 +10,13 @@ static inline u64 vmflag_to_pte_pkey_bits(u64 vm_flags)
+ 	if (!mmu_has_feature(MMU_FTR_PKEY))
+ 		return 0x0UL;
+ 
+-	if (radix_enabled())
+-		BUG();
++	BUG_ON(radix_enabled());
+ 	return hash__vmflag_to_pte_pkey_bits(vm_flags);
+ }
+ 
+ static inline u16 pte_to_pkey_bits(u64 pteflags)
+ {
+-	if (radix_enabled())
+-		BUG();
++	BUG_ON(radix_enabled());
+ 	return hash__pte_to_pkey_bits(pteflags);
+ }
+ 
+-- 
+1.8.3.1
+
+
