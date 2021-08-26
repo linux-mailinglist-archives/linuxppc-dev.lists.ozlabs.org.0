@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DCFA3F8512
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Aug 2021 12:09:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD6033F8515
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Aug 2021 12:10:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GwJV725Tvz3cQJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Aug 2021 20:09:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GwJW34Z4yz3c9x
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Aug 2021 20:10:07 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=B527dtQw;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SgILZjvs;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,75 +18,75 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=B527dtQw; dkim-atps=neutral
+ header.s=pp1 header.b=SgILZjvs; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GwJQJ1xLQz3bYD
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Aug 2021 20:06:00 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GwJQP5fcYz3bjW
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Aug 2021 20:06:05 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 17QA41YX003606; Thu, 26 Aug 2021 06:05:50 -0400
+ 17QA2rJH168359; Thu, 26 Aug 2021 06:05:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=JrabRAnQegGZZ+j2Zx81OBofZ7thrKq1bTaWqQaycIM=;
- b=B527dtQwtPQi1n+Z80nWdCiZ+giMBN5S7J0h+xf3iNVqnD/ETJcSydgpLj9Ca9ZiSmv4
- BRhEplsjfmJFhKmNvJZdR+7IHFH3i5Mc6RgEXG/Lt+r2k2Ru+/lGC67IK4oCghPCUhdU
- oVIJGPRHkOnV5+KFmR+UvuoovmdypTVRhu778YhQ8HK5mGl2MPhezhW8zOK9uv8Dr+FZ
- P42lNoAO8rLKk5SmqhZnzsUZ9fv8Fqtwna7bsqbwQ/Qbtok8Cerpj1FOQu2eErpSCcP3
- VRHE+mkHlXvhlSL/X018o/BnQYCY5BYulHF06Y2oEiUhEeNHF1v0o7sDqbb5/NtfEjWU Mw== 
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3ap1sktjdg-1
+ bh=F9jdUPo7U7mcClw6TJKbr/TJBnjB0VxEYhhL5nNqr6Q=;
+ b=SgILZjvsMhc4gutvByZasCUcF/9K+1y0KsQe7gYYiazHL7nRVpBvGJodBOPTKu+9Qtec
+ ZG/lR/T24OUGWTUTKp6naz/Np5qA+6UHc8fnR7BsyZF6iN1O/m7htMGdaMav6T6uhXDz
+ kFZxGDBsZEtjJ/AKYxkls3JyJLaXFoOpHAGQl/5xmyHRD7HyB4ABxaccdVgs5SQDEI8y
+ byY7NulJUYhbNm1Fu4A4/rwSNXIUmvHjQ7n99kuy6Aqk0KlzbeBXdtzYUF4T5+0H/ORX
+ NaznnIx1t99ypzxB9MpEhk96A4Jxh4SbnEJa/mnJLMQ53vnCYdkvlUNhR1VA5EYzyNue Mw== 
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3ap4n96n3t-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 26 Aug 2021 06:05:49 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 17QA2jqh026974;
- Thu, 26 Aug 2021 10:05:47 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma02fra.de.ibm.com with ESMTP id 3ajs48fp2b-1
+ Thu, 26 Aug 2021 06:05:54 -0400
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 17QA2v3Q002141;
+ Thu, 26 Aug 2021 10:05:52 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma01fra.de.ibm.com with ESMTP id 3ajs48fnmt-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 26 Aug 2021 10:05:47 +0000
+ Thu, 26 Aug 2021 10:05:52 +0000
 Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
  [9.149.105.62])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 17QA1udr37093878
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 17QA5kSx55247278
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 26 Aug 2021 10:01:56 GMT
+ Thu, 26 Aug 2021 10:05:46 GMT
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BF6A5AE08D;
- Thu, 26 Aug 2021 10:05:41 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 45B78AE072;
+ Thu, 26 Aug 2021 10:05:46 +0000 (GMT)
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 91407AE053;
- Thu, 26 Aug 2021 10:05:37 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 6A7CAAE095;
+ Thu, 26 Aug 2021 10:05:42 +0000 (GMT)
 Received: from saptagiri.in.ibm.com (unknown [9.43.43.205])
  by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 26 Aug 2021 10:05:37 +0000 (GMT)
+ Thu, 26 Aug 2021 10:05:42 +0000 (GMT)
 From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v3 3/5] powerpc/numa: Print debug statements only when required
-Date: Thu, 26 Aug 2021 15:35:19 +0530
-Message-Id: <20210826100521.412639-4-srikar@linux.vnet.ibm.com>
+Subject: [PATCH v3 4/5] powerpc/numa: Update cpu_cpu_map on CPU online/offline
+Date: Thu, 26 Aug 2021 15:35:20 +0530
+Message-Id: <20210826100521.412639-5-srikar@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210826100521.412639-1-srikar@linux.vnet.ibm.com>
 References: <20210826100521.412639-1-srikar@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 4PxOXyNgyFQ1P6hUEYSep3uDBmWbkt_v
-X-Proofpoint-GUID: 4PxOXyNgyFQ1P6hUEYSep3uDBmWbkt_v
+X-Proofpoint-ORIG-GUID: nfnUyl5_g1shF29Yh2Bwosi5EHGE8kh2
+X-Proofpoint-GUID: nfnUyl5_g1shF29Yh2Bwosi5EHGE8kh2
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
  definitions=2021-08-26_02:2021-08-26,
  2021-08-26 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 spamscore=0
- impostorscore=0 priorityscore=1501 lowpriorityscore=0 mlxlogscore=631
- mlxscore=0 malwarescore=0 phishscore=0 bulkscore=0 clxscore=1015
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ adultscore=0 impostorscore=0
+ mlxlogscore=999 mlxscore=0 phishscore=0 bulkscore=0 suspectscore=0
+ clxscore=1015 malwarescore=0 priorityscore=1501 spamscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2107140000 definitions=main-2108260061
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -112,9 +112,56 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently, a debug message gets printed every time an attempt to
-add(remove) a CPU. However this is redundant if the CPU is already added
-(removed) from the node.
+cpu_cpu_map holds all the CPUs in the DIE. However in PowerPC, when
+onlining/offlining of CPUs, this mask doesn't get updated.  This mask
+is however updated when CPUs are added/removed. So when both
+operations like online/offline of CPUs and adding/removing of CPUs are
+done simultaneously, then cpumaps end up broken.
+
+WARNING: CPU: 13 PID: 1142 at kernel/sched/topology.c:898
+build_sched_domains+0xd48/0x1720
+Modules linked in: rpadlpar_io rpaphp mptcp_diag xsk_diag tcp_diag
+udp_diag raw_diag inet_diag unix_diag af_packet_diag netlink_diag
+bonding tls nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib
+nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct
+nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ip_set
+rfkill nf_tables nfnetlink pseries_rng xts vmx_crypto uio_pdrv_genirq
+uio binfmt_misc ip_tables xfs libcrc32c dm_service_time sd_mod t10_pi sg
+ibmvfc scsi_transport_fc ibmveth dm_multipath dm_mirror dm_region_hash
+dm_log dm_mod fuse
+CPU: 13 PID: 1142 Comm: kworker/13:2 Not tainted 5.13.0-rc6+ #28
+Workqueue: events cpuset_hotplug_workfn
+NIP:  c0000000001caac8 LR: c0000000001caac4 CTR: 00000000007088ec
+REGS: c00000005596f220 TRAP: 0700   Not tainted  (5.13.0-rc6+)
+MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 48828222  XER:
+00000009
+CFAR: c0000000001ea698 IRQMASK: 0
+GPR00: c0000000001caac4 c00000005596f4c0 c000000001c4a400 0000000000000036
+GPR04: 00000000fffdffff c00000005596f1d0 0000000000000027 c0000018cfd07f90
+GPR08: 0000000000000023 0000000000000001 0000000000000027 c0000018fe68ffe8
+GPR12: 0000000000008000 c00000001e9d1880 c00000013a047200 0000000000000800
+GPR16: c000000001d3c7d0 0000000000000240 0000000000000048 c000000010aacd18
+GPR20: 0000000000000001 c000000010aacc18 c00000013a047c00 c000000139ec2400
+GPR24: 0000000000000280 c000000139ec2520 c000000136c1b400 c000000001c93060
+GPR28: c00000013a047c20 c000000001d3c6c0 c000000001c978a0 000000000000000d
+NIP [c0000000001caac8] build_sched_domains+0xd48/0x1720
+LR [c0000000001caac4] build_sched_domains+0xd44/0x1720
+Call Trace:
+[c00000005596f4c0] [c0000000001caac4] build_sched_domains+0xd44/0x1720 (unreliable)
+[c00000005596f670] [c0000000001cc5ec] partition_sched_domains_locked+0x3ac/0x4b0
+[c00000005596f710] [c0000000002804e4] rebuild_sched_domains_locked+0x404/0x9e0
+[c00000005596f810] [c000000000283e60] rebuild_sched_domains+0x40/0x70
+[c00000005596f840] [c000000000284124] cpuset_hotplug_workfn+0x294/0xf10
+[c00000005596fc60] [c000000000175040] process_one_work+0x290/0x590
+[c00000005596fd00] [c0000000001753c8] worker_thread+0x88/0x620
+[c00000005596fda0] [c000000000181704] kthread+0x194/0x1a0
+[c00000005596fe10] [c00000000000ccec] ret_from_kernel_thread+0x5c/0x70
+Instruction dump:
+485af049 60000000 2fa30800 409e0028 80fe0000 e89a00f8 e86100e8 38da0120
+7f88e378 7ce53b78 4801fb91 60000000 <0fe00000> 39000000 38e00000 38c00000
+
+Fix this by updating cpu_cpu_map aka cpumask_of_node() on every CPU
+online/offline.
 
 Cc: linuxppc-dev@lists.ozlabs.org
 Cc: Nathan Lynch <nathanl@linux.ibm.com>
@@ -128,39 +175,94 @@ Cc: Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>
 Cc: Laurent Dufour <ldufour@linux.ibm.com>
 Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 ---
- arch/powerpc/mm/numa.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ arch/powerpc/include/asm/topology.h | 12 ++++++++++++
+ arch/powerpc/kernel/smp.c           |  3 +++
+ arch/powerpc/mm/numa.c              |  7 ++-----
+ 3 files changed, 17 insertions(+), 5 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/topology.h b/arch/powerpc/include/asm/topology.h
+index e4db64c0e184..2f0a4d7b95f6 100644
+--- a/arch/powerpc/include/asm/topology.h
++++ b/arch/powerpc/include/asm/topology.h
+@@ -65,6 +65,11 @@ static inline int early_cpu_to_node(int cpu)
+ 
+ int of_drconf_to_nid_single(struct drmem_lmb *lmb);
+ 
++extern void map_cpu_to_node(int cpu, int node);
++#ifdef CONFIG_HOTPLUG_CPU
++extern void unmap_cpu_from_node(unsigned long cpu);
++#endif /* CONFIG_HOTPLUG_CPU */
++
+ #else
+ 
+ static inline int early_cpu_to_node(int cpu) { return 0; }
+@@ -93,6 +98,13 @@ static inline int of_drconf_to_nid_single(struct drmem_lmb *lmb)
+ 	return first_online_node;
+ }
+ 
++#ifdef CONFIG_SMP
++static inline void map_cpu_to_node(int cpu, int node) {}
++#ifdef CONFIG_HOTPLUG_CPU
++static inline void unmap_cpu_from_node(unsigned long cpu) {}
++#endif /* CONFIG_HOTPLUG_CPU */
++#endif /* CONFIG_SMP */
++
+ #endif /* CONFIG_NUMA */
+ 
+ #if defined(CONFIG_NUMA) && defined(CONFIG_PPC_SPLPAR)
+diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+index b31b8ca3ae2e..d947a4fd753c 100644
+--- a/arch/powerpc/kernel/smp.c
++++ b/arch/powerpc/kernel/smp.c
+@@ -1407,6 +1407,8 @@ static void remove_cpu_from_masks(int cpu)
+ 	struct cpumask *(*mask_fn)(int) = cpu_sibling_mask;
+ 	int i;
+ 
++	unmap_cpu_from_node(cpu);
++
+ 	if (shared_caches)
+ 		mask_fn = cpu_l2_cache_mask;
+ 
+@@ -1491,6 +1493,7 @@ static void add_cpu_to_masks(int cpu)
+ 	 * This CPU will not be in the online mask yet so we need to manually
+ 	 * add it to it's own thread sibling mask.
+ 	 */
++	map_cpu_to_node(cpu, cpu_to_node(cpu));
+ 	cpumask_set_cpu(cpu, cpu_sibling_mask(cpu));
+ 	cpumask_set_cpu(cpu, cpu_core_mask(cpu));
+ 
 diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-index 9af38b1c618b..6655ecdeddef 100644
+index 6655ecdeddef..87ade2f56f45 100644
 --- a/arch/powerpc/mm/numa.c
 +++ b/arch/powerpc/mm/numa.c
-@@ -138,10 +138,10 @@ static void map_cpu_to_node(int cpu, int node)
+@@ -134,7 +134,7 @@ static void reset_numa_cpu_lookup_table(void)
+ 		numa_cpu_lookup_table[cpu] = -1;
+ }
+ 
+-static void map_cpu_to_node(int cpu, int node)
++void map_cpu_to_node(int cpu, int node)
  {
  	update_numa_cpu_lookup_table(cpu, node);
  
--	pr_debug("adding cpu %d to node %d\n", cpu, node);
--
--	if (!(cpumask_test_cpu(cpu, node_to_cpumask_map[node])))
-+	if (!(cpumask_test_cpu(cpu, node_to_cpumask_map[node]))) {
-+		pr_debug("adding cpu %d to node %d\n", cpu, node);
- 		cpumask_set_cpu(cpu, node_to_cpumask_map[node]);
-+	}
+@@ -145,7 +145,7 @@ static void map_cpu_to_node(int cpu, int node)
  }
  
  #if defined(CONFIG_HOTPLUG_CPU) || defined(CONFIG_PPC_SPLPAR)
-@@ -149,10 +149,9 @@ static void unmap_cpu_from_node(unsigned long cpu)
+-static void unmap_cpu_from_node(unsigned long cpu)
++void unmap_cpu_from_node(unsigned long cpu)
  {
  	int node = numa_cpu_lookup_table[cpu];
  
--	pr_debug("removing cpu %lu from node %d\n", cpu, node);
--
- 	if (cpumask_test_cpu(cpu, node_to_cpumask_map[node])) {
- 		cpumask_clear_cpu(cpu, node_to_cpumask_map[node]);
-+		pr_debug("removing cpu %lu from node %d\n", cpu, node);
- 	} else {
- 		pr_warn("WARNING: cpu %lu not found in node %d\n", cpu, node);
- 	}
+@@ -592,9 +592,6 @@ static int ppc_numa_cpu_prepare(unsigned int cpu)
+ 
+ static int ppc_numa_cpu_dead(unsigned int cpu)
+ {
+-#ifdef CONFIG_HOTPLUG_CPU
+-	unmap_cpu_from_node(cpu);
+-#endif
+ 	return 0;
+ }
+ 
 -- 
 2.18.2
 
