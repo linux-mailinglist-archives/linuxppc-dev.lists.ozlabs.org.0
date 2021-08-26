@@ -2,46 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 246B73F8A45
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Aug 2021 16:40:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ED5B3F8A39
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Aug 2021 16:38:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GwQWT0SL0z2ywr
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 00:40:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GwQS06sg2z2ypM
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 00:37:52 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YKJXlsA8;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 4GwQW43cHLz2xXd
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Aug 2021 00:40:32 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 17QEb8u8022174;
- Thu, 26 Aug 2021 09:37:08 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 17QEb8T2022173;
- Thu, 26 Aug 2021 09:37:08 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Thu, 26 Aug 2021 09:37:08 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 1/2] powerpc/bug: Remove specific powerpc BUG_ON() and
- WARN_ON() on PPC32
-Message-ID: <20210826143708.GC1583@gate.crashing.org>
-References: <b286e07fb771a664b631cd07a40b09c06f26e64b.1618331881.git.christophe.leroy@csgroup.eu>
- <1628834356.pr4zgn1xf1.astroid@bobo.none>
- <20210818150653.GJ1583@gate.crashing.org>
- <1629946707.f6ptz0tgle.astroid@bobo.none>
- <20210826124901.GY1583@gate.crashing.org>
- <1629983260.5jkx2jf0y8.astroid@bobo.none>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1629983260.5jkx2jf0y8.astroid@bobo.none>
-User-Agent: Mutt/1.4.2.3i
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=YKJXlsA8; 
+ dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GwQRH3Tlgz2yQm
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Aug 2021 00:37:15 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4GwQRG4Nvqz9sWc;
+ Fri, 27 Aug 2021 00:37:14 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1629988634;
+ bh=lo7cl1uonA1pf1xotZqGtlkiFRxBwZnWeoVot97pM0c=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=YKJXlsA8pB4LnE9qKK6tUN7LBnWjEDnZE4ijV7LpTrqh1zd68gTI2Q1g9Dt9Aj8Yj
+ V8oKEp7wVkDAUd3Zi0ZkojOj2zrx3eT2b+yvnFVPokoGaaI3kejwDLkyLcJ6eAP+zh
+ lO2F+xHtKy/n1kY1dH072Bwi5UYsaZJe2oX92jWHMgJL9mq5eRLF6v0ahgHcSqtTF4
+ x6ZdUW6tfngH8bnlkAbd3UQqTMWrLNgXEEUKX4/logpoJeRyETFeiMDODbEotiWK8D
+ VW2M+6VqesgrCuI3j4pAQjjjp9GS4RUDHMVmk5Y2dQeXPfYHMKkmNkeEQostaCu18Y
+ Vd/y/IaFrVClg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Paul Moore <paul@paul-moore.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2 RESEND] powerpc/audit: Convert powerpc to
+ AUDIT_ARCH_COMPAT_GENERIC
+In-Reply-To: <CAHC9VhSG8tPAkAAz5Z77HDMKXLAiaEOanxR+oY5c1E_Xoiso9Q@mail.gmail.com>
+References: <a4b3951d1191d4183d92a07a6097566bde60d00a.1629812058.git.christophe.leroy@csgroup.eu>
+ <CAHC9VhR3E6=5HmRaWMWbp4WHsua02niwnzaRGM3tLqd4Y4LA6w@mail.gmail.com>
+ <5a2692b6-5077-21b4-8ebf-73b1c2b83a40@csgroup.eu>
+ <CAHC9VhSG8tPAkAAz5Z77HDMKXLAiaEOanxR+oY5c1E_Xoiso9Q@mail.gmail.com>
+Date: Fri, 27 Aug 2021 00:37:12 +1000
+Message-ID: <87tujc9srr.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,90 +67,140 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+Cc: linux-kernel@vger.kernel.org, Eric Paris <eparis@redhat.com>,
+ linux-audit@redhat.com, Paul Mackerras <paulus@samba.org>,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 26, 2021 at 11:57:52PM +1000, Nicholas Piggin wrote:
-> Excerpts from Segher Boessenkool's message of August 26, 2021 10:49 pm:
-> > On Thu, Aug 26, 2021 at 01:26:14PM +1000, Nicholas Piggin wrote:
-> >> Excerpts from Segher Boessenkool's message of August 19, 2021 1:06 am:
-> >> > On Fri, Aug 13, 2021 at 04:08:13PM +1000, Nicholas Piggin wrote:
-> >> >> This one possibly the branches end up in predictors, whereas conditional 
-> >> >> trap is always just speculated not to hit. Branches may also have a
-> >> >> throughput limit on execution whereas trap could be more (1 per cycle
-> >> >> vs 4 per cycle on POWER9).
-> >> > 
-> >> > I thought only *taken* branches are just one per cycle?
-> >> 
-> >> Taken branches are fetched by the front end at one per cycle (assuming 
-> >> they hit the BTAC), but all branches have to be executed by BR at one 
-> >> per cycle
-> > 
-> > This is not true.  (Simple) predicted not-taken conditional branches are
-> > just folded out, never hit the issue queues.  And they are fetched as
-> > many together as fit in a fetch group, can complete without limits as
-> > well.
-> 
-> No, they are all dispatched and issue to the BRU for execution. It's 
-> trivial to construct a test of a lot of not taken branches in a row
-> and time a loop of it to see it executes at 1 cycle per branch.
+Paul Moore <paul@paul-moore.com> writes:
+> On Tue, Aug 24, 2021 at 1:11 PM Christophe Leroy
+> <christophe.leroy@csgroup.eu> wrote:
+>> Le 24/08/2021 =C3=A0 16:47, Paul Moore a =C3=A9crit :
+>> > On Tue, Aug 24, 2021 at 9:36 AM Christophe Leroy
+>> > <christophe.leroy@csgroup.eu> wrote:
+>> >>
+>> >> Commit e65e1fc2d24b ("[PATCH] syscall class hookup for all normal
+>> >> targets") added generic support for AUDIT but that didn't include
+>> >> support for bi-arch like powerpc.
+>> >>
+>> >> Commit 4b58841149dc ("audit: Add generic compat syscall support")
+>> >> added generic support for bi-arch.
+>> >>
+>> >> Convert powerpc to that bi-arch generic audit support.
+>> >>
+>> >> Cc: Paul Moore <paul@paul-moore.com>
+>> >> Cc: Eric Paris <eparis@redhat.com>
+>> >> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>> >> ---
+>> >> Resending v2 with Audit people in Cc
+>> >>
+>> >> v2:
+>> >> - Missing 'git add' for arch/powerpc/include/asm/unistd32.h
+>> >> - Finalised commit description
+>> >> ---
+>> >>   arch/powerpc/Kconfig                |  5 +-
+>> >>   arch/powerpc/include/asm/unistd32.h |  7 +++
+>> >>   arch/powerpc/kernel/Makefile        |  3 --
+>> >>   arch/powerpc/kernel/audit.c         | 84 --------------------------=
+---
+>> >>   arch/powerpc/kernel/compat_audit.c  | 44 ---------------
+>> >>   5 files changed, 8 insertions(+), 135 deletions(-)
+>> >>   create mode 100644 arch/powerpc/include/asm/unistd32.h
+>> >>   delete mode 100644 arch/powerpc/kernel/audit.c
+>> >>   delete mode 100644 arch/powerpc/kernel/compat_audit.c
+>> >
+>> > Can you explain, in detail please, the testing you have done to verify
+>> > this patch?
+>> >
+>>
+>> I built ppc64_defconfig and checked that the generated code is functionn=
+aly equivalent.
+>>
+>> ppc32_classify_syscall() is exactly the same as audit_classify_compat_sy=
+scall() except that the
+>> later takes the syscall as second argument (ie in r4) whereas the former=
+ takes it as first argument
+>> (ie in r3).
+>>
+>> audit_classify_arch() and powerpc audit_classify_syscall() are slightly =
+different between the
+>> powerpc version and the generic version because the powerpc version chec=
+ks whether it is
+>> AUDIT_ARCH_PPC or not (ie value 20), while the generic one checks whethe=
+r it has bit
+>> __AUDIT_ARCH_64BIT set or not (__AUDIT_ARCH_64BIT is the sign bit of a w=
+ord), but taking into
+>> account that the abi is either AUDIT_ARCH_PPC, AUDIT_ARCH_PPC64 or AUDIT=
+_ARCH_PPC64LE, the result is
+>> the same.
+>>
+>> If you are asking I guess you saw something wrong ?
+>
+> I was asking because I didn't see any mention of testing, and when you
+> are enabling something significant like this it is nice to see that it
+> has been verified to work :)
+>
+> While binary dumps and comparisons are nice, it is always good to see
+> verification from a test suite.  I don't have access to the necessary
+> hardware to test this, but could you verify that the audit-testsuite
+> passes on your test system with your patches applied?
+>
+>  * https://github.com/linux-audit/audit-testsuite
 
-(s/dispatched/issued/)
+I tested on ppc64le. Both before and after the patch I get the result
+below.
 
-Huh, this was true on p8 already.  Sorry for my confusion.  In my
-defence, this doesn't matter for performance on "real code".
+So I guess the patch is OK, but maybe we have some existing issue.
 
-> > Correctly predicted simple conditional branches just get their prediction
-> > validated (and that is not done in the execution units).  Incorrectly
-> > predicted branches the same, but those cause a redirect and refetch.
-> 
-> How could it validate prediction without issuing? It wouldn't know when
-> sources are ready.
+I had a bit of a look at the test code, but my perl is limited. I think
+it was running the command below, and it returned "<no matches>", but
+not really sure what that means.
 
-In the backend.  But that is just how it worked on older cores :-/
+  $ sudo ausearch -i -m SYSCALL -p 216440 -ui 0 -gi 0 -ul 0 -su unconfined =
+_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 -ts recent
+  <no matches>
 
-> >> The first problem seems like the show stopper though. AFAIKS it would 
-> >> need a special builtin support that does something to create the table
-> >> entry, or a guarantee that we could put an inline asm right after the
-> >> builtin as a recognized pattern and that would give us the instruction
-> >> following the trap.
-> > 
-> > I'm not quite sure what this means.  Can't you always just put a
-> > 
-> > bla:	asm("");
-> > 
-> > in there, and use the address of "bla"?
-> 
-> Not AFAIKS. Put it where?
-
-After wherever you want to know the address after.  You will have to
-make sure they stay together somehow.
-
-It is much easier to get the address of something, not the address after
-it.  If you know it is just one insn anyway, that isn't hard to handle
-either (even if prefixed insns exist).
-
-> > If not, you need to say a lot
-> > more about what you actually want to do :-/
-> 
-> We need to put the address (or relative offset) of the trap instruction
-> into an entry in a different section. Basically this:
-> 
->    __builtin_trap();
->    asm ("1:                               \n\t"
->         "    .section __bug_table,\"aw\"  \n\t"
->         "2:  .4byte 1b - 2b - 4           \n\t"
->         "    .previous");
-> 
-> Where the 1: label must follow immediately after the trap instruction, 
-> and where the asm must be emitted even for the case of no-return traps 
-> (but anything following the asm could be omitted).
-
-The address *after* the trap insn?  That is much much harder than the
-address *of* the trap insn.
+cheers
 
 
-Segher
+
+Running as   user    root
+        with context unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+        on   system  Fedora
+
+backlog_wait_time_actual_reset/test .. ok
+exec_execve/test ..................... ok
+exec_name/test ....................... ok
+file_create/test ..................... ok
+file_delete/test ..................... ok
+file_rename/test ..................... ok
+filter_exclude/test .................. 1/21
+# Test 20 got: "256" (filter_exclude/test at line 167)
+#    Expected: "0"
+#  filter_exclude/test line 167 is: ok( $result, 0 );
+# Test 21 got: "0" (filter_exclude/test at line 179)
+#    Expected: "1"
+#  filter_exclude/test line 179 is: ok( $found_msg, 1 );
+filter_exclude/test .................. Failed 2/21 subtests
+filter_saddr_fam/test ................ ok
+filter_sessionid/test ................ ok
+login_tty/test ....................... ok
+lost_reset/test ...................... ok
+netfilter_pkt/test ................... ok
+syscalls_file/test ................... ok
+syscall_module/test .................. ok
+time_change/test ..................... ok
+user_msg/test ........................ ok
+fanotify/test ........................ ok
+bpf/test ............................. ok
+
+Test Summary Report
+-------------------
+filter_exclude/test                (Wstat: 0 Tests: 21 Failed: 2)
+  Failed tests:  20-21
+Files=3D18, Tests=3D202, 45 wallclock secs ( 0.18 usr  0.03 sys + 20.15 cus=
+r  0.92 csys =3D 21.28 CPU)
+Result: FAIL
+Failed 1/18 test programs. 2/202 subtests failed.
