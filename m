@@ -2,43 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5537F3F80EF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Aug 2021 05:28:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 285453F80EB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Aug 2021 05:27:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gw7bC1c4Wz301j
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Aug 2021 13:28:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gw7Yy0Rktz2ybM
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Aug 2021 13:27:02 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=agl6gwgI;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102b;
+ helo=mail-pj1-x102b.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=agl6gwgI; dkim-atps=neutral
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com
+ [IPv6:2607:f8b0:4864:20::102b])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gw7Zl4twPz2xsJ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Aug 2021 13:27:41 +1000 (AEST)
-X-IronPort-AV: E=McAfee;i="6200,9189,10087"; a="281372457"
-X-IronPort-AV: E=Sophos;i="5.84,352,1620716400"; d="scan'208";a="281372457"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
- by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Aug 2021 20:26:38 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.84,352,1620716400"; d="scan'208";a="686785192"
-Received: from lkp-server01.sh.intel.com (HELO 4fbc2b3ce5aa) ([10.239.97.150])
- by fmsmga005.fm.intel.com with ESMTP; 25 Aug 2021 20:26:36 -0700
-Received: from kbuild by 4fbc2b3ce5aa with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1mJ62G-0000if-88; Thu, 26 Aug 2021 03:26:36 +0000
-Date: Thu, 26 Aug 2021 11:25:34 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:topic/ppc-kvm] BUILD SUCCESS
- 0c8fb653d487d2873f5eefdcaf4cecff4e103828
-Message-ID: <612709ae.ze8ji54r+uLWmtOW%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gw7YD1XJNz2xrt
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Aug 2021 13:26:23 +1000 (AEST)
+Received: by mail-pj1-x102b.google.com with SMTP id
+ u13-20020a17090abb0db0290177e1d9b3f7so5604303pjr.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Aug 2021 20:26:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=gTlQCJHQbFHWNH1/OUl4/6XKO8pY5t2nEBNZMA5JnuM=;
+ b=agl6gwgInLeQrzWMkp3jywI1vMjb4RiB+d/PJei+WDcwfCro/MnwPd4edz/dLv1ngH
+ +qQ8u7Es8xXG2FmMqiNWQHLQprou/umjrMyvj8yYPnELjsnHOyLVBN2cIxWkGjV7Skdo
+ SvQE6aCqYcKDlWVL4yNXhj/iw6eK/qFeS5eef/oTyEZoz5T/s2Dl/S832NFRhWzCMRce
+ bRraNuTJKtckKPVBjRNQ3+LOjChwXN3dGhIYlIDqODqe35NzRg4Njd8vJPdqbfZNZu0o
+ zyZRdHTSEP8q1TACyi4qu3pxdTyAMSxmQ8xDq8lHM+Tx1EaWgER4CtTUMmrR5TCycplJ
+ C/jQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=gTlQCJHQbFHWNH1/OUl4/6XKO8pY5t2nEBNZMA5JnuM=;
+ b=MyWJOq2pUWPFHLtbvPQEKbxBa013ZNws+htr6/E3+XfpEAnHCZaJtZq9WR62+otnZD
+ n6mOPPAiFEzelRdJGy/ZBNuIe1oH6mJWQ69m93iPTGY7X2TNqOaqKsLLh3zO1wKJK0PA
+ dJZ8sqR4Le4IDYcXTGuF+/cf9m+ztZj4tMnEggmtgkIvIaooUjIYAdhKWdDWvtoA10tV
+ GvsUtEKMDXUS7lWehMNAnQaR7N/dCAtlVXNBVtO0HqkqTiCq0cROgWr4KroLh5iyVlGt
+ T3604NwRw+Rn5PwR1QdVY/uMXdfahHrtWUdUI3hNqraFcoBG+u21YRSMxluz4S+U+CoY
+ D4mw==
+X-Gm-Message-State: AOAM531n/Ix+WuL45Yh5FEnZkNS0WXeMMmHMYt9mYkmZpuViVFJ7NttG
+ vC6UuSc9BOSkSH0L3/t+QMk=
+X-Google-Smtp-Source: ABdhPJxICERuP2fpSTN98/UbrL/fs2rew1tUinpjIxBVcK1KJ8ykJkAd3tE39jBvlFCgtTjJK6Z4aA==
+X-Received: by 2002:a17:902:dcc9:b0:134:92c7:3cb6 with SMTP id
+ t9-20020a170902dcc900b0013492c73cb6mr1697569pll.79.1629948379830; 
+ Wed, 25 Aug 2021 20:26:19 -0700 (PDT)
+Received: from localhost (193-116-119-33.tpgi.com.au. [193.116.119.33])
+ by smtp.gmail.com with ESMTPSA id l14sm6684825pjq.13.2021.08.25.20.26.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 25 Aug 2021 20:26:19 -0700 (PDT)
+Date: Thu, 26 Aug 2021 13:26:14 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2 1/2] powerpc/bug: Remove specific powerpc BUG_ON() and
+ WARN_ON() on PPC32
+To: Segher Boessenkool <segher@kernel.crashing.org>
+References: <b286e07fb771a664b631cd07a40b09c06f26e64b.1618331881.git.christophe.leroy@csgroup.eu>
+ <1628834356.pr4zgn1xf1.astroid@bobo.none>
+ <20210818150653.GJ1583@gate.crashing.org>
+In-Reply-To: <20210818150653.GJ1583@gate.crashing.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Message-Id: <1629946707.f6ptz0tgle.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,156 +84,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git topic/ppc-kvm
-branch HEAD: 0c8fb653d487d2873f5eefdcaf4cecff4e103828  powerpc/64s: Remove WORT SPR from POWER9/10
+Excerpts from Segher Boessenkool's message of August 19, 2021 1:06 am:
+> On Fri, Aug 13, 2021 at 04:08:13PM +1000, Nicholas Piggin wrote:
+>> This one possibly the branches end up in predictors, whereas conditional=
+=20
+>> trap is always just speculated not to hit. Branches may also have a
+>> throughput limit on execution whereas trap could be more (1 per cycle
+>> vs 4 per cycle on POWER9).
+>=20
+> I thought only *taken* branches are just one per cycle?
 
-elapsed time: 736m
+Taken branches are fetched by the front end at one per cycle (assuming=20
+they hit the BTAC), but all branches have to be executed by BR at one=20
+per cycle. On POWER9 BR even has to execute some other things like mflr
+as well, but at least that's improved on POWER10.
 
-configs tested: 130
-configs skipped: 86
+Trap is executed at 4 per cycle and will never use branch table entries=20
+or alias with a non-tagged predictor and mispredict.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+> And those
+> branches are only taken for the exceptional condition (or the case where
+> we do not care about performance, anyway, if we do have an error most of
+> the time ;-) )
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-i386                 randconfig-c001-20210825
-sh                          rsk7269_defconfig
-powerpc                      cm5200_defconfig
-arm                           u8500_defconfig
-powerpc                     mpc512x_defconfig
-powerpc                       ebony_defconfig
-arm                           sama5_defconfig
-m68k                          amiga_defconfig
-m68k                          sun3x_defconfig
-xtensa                       common_defconfig
-h8300                               defconfig
-powerpc                     ep8248e_defconfig
-powerpc                      katmai_defconfig
-xtensa                  audio_kc705_defconfig
-powerpc                    gamecube_defconfig
-mips                      maltasmvp_defconfig
-powerpc                   microwatt_defconfig
-arm                         assabet_defconfig
-sh                           se7343_defconfig
-powerpc                 canyonlands_defconfig
-powerpc                  mpc885_ads_defconfig
-powerpc                      ep88xc_defconfig
-alpha                            alldefconfig
-sh                          r7780mp_defconfig
-powerpc                     tqm5200_defconfig
-arm                           tegra_defconfig
-arm                         axm55xx_defconfig
-mips                         tb0219_defconfig
-arm                          moxart_defconfig
-mips                     decstation_defconfig
-powerpc                 mpc8560_ads_defconfig
-sh                            migor_defconfig
-sh                               j2_defconfig
-powerpc                      arches_defconfig
-arc                            hsdk_defconfig
-mips                         tb0226_defconfig
-arm                        neponset_defconfig
-powerpc                 mpc837x_mds_defconfig
-powerpc                     ksi8560_defconfig
-riscv                          rv32_defconfig
-arm                             pxa_defconfig
-powerpc                     tqm8540_defconfig
-microblaze                      mmu_defconfig
-powerpc                 mpc834x_itx_defconfig
-mips                     loongson2k_defconfig
-powerpc                 mpc8540_ads_defconfig
-powerpc                     tqm8548_defconfig
-ia64                             allyesconfig
-arm                       netwinder_defconfig
-arm                          imote2_defconfig
-sh                      rts7751r2d1_defconfig
-powerpc                     tqm8541_defconfig
-sh                   sh7770_generic_defconfig
-arm                       imx_v4_v5_defconfig
-sh                          sdk7786_defconfig
-powerpc                        icon_defconfig
-m68k                          multi_defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-x86_64                            allnoconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a014-20210825
-x86_64               randconfig-a015-20210825
-x86_64               randconfig-a016-20210825
-x86_64               randconfig-a013-20210825
-x86_64               randconfig-a012-20210825
-x86_64               randconfig-a011-20210825
-i386                 randconfig-a011-20210825
-i386                 randconfig-a016-20210825
-i386                 randconfig-a012-20210825
-i386                 randconfig-a014-20210825
-i386                 randconfig-a013-20210825
-i386                 randconfig-a015-20210825
-arc                  randconfig-r043-20210825
-riscv                randconfig-r042-20210825
-s390                 randconfig-r044-20210825
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-x86_64                    rhel-8.3-kselftests
-um                           x86_64_defconfig
-um                             i386_defconfig
+It's not that big a deal, but trap is really the best instruction for=20
+this.
 
-clang tested configs:
-x86_64               randconfig-a005-20210825
-x86_64               randconfig-a001-20210825
-x86_64               randconfig-a006-20210825
-x86_64               randconfig-a003-20210825
-x86_64               randconfig-a004-20210825
-x86_64               randconfig-a002-20210825
-i386                 randconfig-a006-20210825
-i386                 randconfig-a001-20210825
-i386                 randconfig-a002-20210825
-i386                 randconfig-a005-20210825
-i386                 randconfig-a004-20210825
-i386                 randconfig-a003-20210825
+>=20
+>> On typical ppc32 CPUs, maybe it's a more obvious win. As you say there
+>> is the CFAR issue as well which makes it a problem for 64s. It would
+>> have been nice if it could use the same code though.
+>=20
+> On 64-bit the code looks better for the no-error path as well.
+>=20
+>> Maybe one day gcc's __builtin_trap() will become smart enough around
+>> conditional statements that it it generates better code and tries to
+>> avoid branches.
+>=20
+> Internally *all* traps are conditional, in GCC.  It also can optimise
+> them quite well.  There must be something in the kernel macros that
+> prevents good optimisation.
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+I did take a look at it at one point.
+
+One problem is that the kernel needs the address of the trap instruction=20
+to create the entry for it. The other problem is that __builtin_trap=20
+does not return so it can't be used for WARN. LLVM at least seems to=20
+have a __builtin_debugtrap which does return.
+
+The first problem seems like the show stopper though. AFAIKS it would=20
+need a special builtin support that does something to create the table
+entry, or a guarantee that we could put an inline asm right after the
+builtin as a recognized pattern and that would give us the instruction
+following the trap.
+
+Thanks,
+Nick
