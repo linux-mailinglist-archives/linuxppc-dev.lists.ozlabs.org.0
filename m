@@ -1,76 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81B3E3F8E0A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Aug 2021 20:43:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49FFC3F8E3F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Aug 2021 20:55:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GwWtx30sbz2yxv
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 04:43:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GwX8j026kz3059
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 04:55:01 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=default header.b=k1F7XJGK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iRxoH25F;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=efficios.com (client-ip=167.114.26.124; helo=mail.efficios.com;
- envelope-from=compudj@efficios.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256
- header.s=default header.b=k1F7XJGK; dkim-atps=neutral
-Received: from mail.efficios.com (mail.efficios.com [167.114.26.124])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=iRxoH25F; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GwWt65q8hz2xKY
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Aug 2021 04:42:21 +1000 (AEST)
-Received: from localhost (localhost [127.0.0.1])
- by mail.efficios.com (Postfix) with ESMTP id 074BB37A06D;
- Thu, 26 Aug 2021 14:42:17 -0400 (EDT)
-Received: from mail.efficios.com ([127.0.0.1])
- by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10032)
- with ESMTP id hyX1F_x0infM; Thu, 26 Aug 2021 14:42:12 -0400 (EDT)
-Received: from localhost (localhost [127.0.0.1])
- by mail.efficios.com (Postfix) with ESMTP id 6C19237A436;
- Thu, 26 Aug 2021 14:42:12 -0400 (EDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.efficios.com 6C19237A436
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
- s=default; t=1630003332;
- bh=MHHcFtZedk5dfBxVUbSOnkW6LP6W2tP2mrVDcSXqhw8=;
- h=Date:From:To:Message-ID:MIME-Version;
- b=k1F7XJGKCycLJ8+hy0uElUJQUfXIoFIlQhvVyEMy0Z6EgL3dHeMXWBPIY3wy0QmQF
- 1pd+brzQueTHV8L6NrVCIChphOnuSThyO35g/pTOpMRyeOgWiVev/+/2hACIUBh45T
- v9rZBZw+QeLwCR+0SLJvKhSCnAupnSaA+37NUYHJF3xahjuqyuVIGoshV5Vj/TyeMK
- 7RF+8KVS1osPynBZdXF5qnP4TGEtI+DqI8Xyz5WouRSxvk8E/WhbtfxSrVI5GDb7AL
- qq0IoZGDzzFGeJDZTDgfoeiSbA/KdKomuNYUeohR40Fux8jYBNItpxiSW7dR1FfV3l
- +TrK9KA3zsW1g==
-X-Virus-Scanned: amavisd-new at efficios.com
-Received: from mail.efficios.com ([127.0.0.1])
- by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10026)
- with ESMTP id lVLwZn_2C8lo; Thu, 26 Aug 2021 14:42:12 -0400 (EDT)
-Received: from mail03.efficios.com (mail03.efficios.com [167.114.26.124])
- by mail.efficios.com (Postfix) with ESMTP id 39CBB37A1FC;
- Thu, 26 Aug 2021 14:42:12 -0400 (EDT)
-Date: Thu, 26 Aug 2021 14:42:12 -0400 (EDT)
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-To: Sean Christopherson <seanjc@google.com>
-Message-ID: <1700758714.29394.1630003332081.JavaMail.zimbra@efficios.com>
-In-Reply-To: <YSblqrrpKcORzilX@google.com>
-References: <20210820225002.310652-1-seanjc@google.com>
- <20210820225002.310652-5-seanjc@google.com>
- <766990430.21713.1629731934069.JavaMail.zimbra@efficios.com>
- <282257549.21721.1629732017655.JavaMail.zimbra@efficios.com>
- <YSblqrrpKcORzilX@google.com>
-Subject: Re: [PATCH v2 4/5] KVM: selftests: Add a test for KVM_RUN+rseq to
- detect task migration bugs
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GwX806F9Vz2yJ7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Aug 2021 04:54:24 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7F0756103A;
+ Thu, 26 Aug 2021 18:54:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1630004061;
+ bh=awLNwXH+S/inqd/CMY5NTZlgpCSMS3Jv7uZhGbj/w9g=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=iRxoH25Fg40Bl4Ny4D0JEobBQAtJyDpKn1tMc2LdkoFPOzLY9zuK7oiOLjNXfTWH6
+ JwWb77BiZhvzWLmrWQvwnD13xL/8fi5N9SXvajKjl3KPIIwhxNaSDJiprQemRNV73d
+ 0upR3I7qmFFbPt6JXvU+TCChTqafUoAAlY2gjlclzgtbqf62JfjG/4SlgWoFkvIUzU
+ 2Umu2t2rhlqYTglYRKvmpx/Iq/yuaKFoQYSi7wNDXkScwpChdppr4OPJ67Qu54JKgk
+ X/G35E3QspQnsfDHDp7X7zObHK0PO6CENBxeud29P7hsDNruB5xyrVxNNTn8Gtvn4k
+ fHj1ypPXNRWSw==
+Date: Thu, 26 Aug 2021 11:54:17 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v2 2/2] powerpc/bug: Provide better flexibility to
+ WARN_ON/__WARN_FLAGS() with asm goto
+Message-ID: <YSfjWfGbZbpYBn+w@Ryzen-9-3900X.localdomain>
+References: <b286e07fb771a664b631cd07a40b09c06f26e64b.1618331881.git.christophe.leroy@csgroup.eu>
+ <389962b1b702e3c78d169e59bcfac56282889173.1618331882.git.christophe.leroy@csgroup.eu>
+ <YSa1O4fcX1nNKqN/@Ryzen-9-3900X.localdomain>
+ <87h7fcc2m4.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [167.114.26.124]
-X-Mailer: Zimbra 8.8.15_GA_4101 (ZimbraWebClient - FF91 (Linux)/8.8.15_GA_4059)
-Thread-Topic: selftests: Add a test for KVM_RUN+rseq to detect task migration
- bugs
-Thread-Index: JTQ3Sjskf2jZ9hZQxbhtvyInF90Pow==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87h7fcc2m4.fsf@mpe.ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,226 +61,241 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: KVM list <kvm@vger.kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- linux-kernel <linux-kernel@vger.kernel.org>, Will Deacon <will@kernel.org>,
- Guo Ren <guoren@kernel.org>, linux-kselftest <linux-kselftest@vger.kernel.org>,
- Ben Gardon <bgardon@google.com>, shuah <shuah@kernel.org>,
- Paul Mackerras <paulus@samba.org>, linux-s390 <linux-s390@vger.kernel.org>,
- gor <gor@linux.ibm.com>, "Russell King, ARM Linux" <linux@armlinux.org.uk>,
- linux-csky <linux-csky@vger.kernel.org>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- dvhart <dvhart@infradead.org>, linux-mips <linux-mips@vger.kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>, paulmck <paulmck@kernel.org>,
- Heiko Carstens <hca@linux.ibm.com>, rostedt <rostedt@goodmis.org>,
- Shakeel Butt <shakeelb@google.com>, Andy Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, Peter Foley <pefoley@google.com>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Oleg Nesterov <oleg@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: llvm@lists.linux.dev, linux-kernel@vger.kernel.org,
+ clang-built-linux@googlegroups.com, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------ On Aug 25, 2021, at 8:51 PM, Sean Christopherson seanjc@google.com wrote:
-
-> On Mon, Aug 23, 2021, Mathieu Desnoyers wrote:
->> [ re-send to Darren Hart ]
->> 
->> ----- On Aug 23, 2021, at 11:18 AM, Mathieu Desnoyers
->> mathieu.desnoyers@efficios.com wrote:
->> 
->> > ----- On Aug 20, 2021, at 6:50 PM, Sean Christopherson seanjc@google.com wrote:
->> > 
->> >> Add a test to verify an rseq's CPU ID is updated correctly if the task is
->> >> migrated while the kernel is handling KVM_RUN.  This is a regression test
->> >> for a bug introduced by commit 72c3c0fe54a3 ("x86/kvm: Use generic xfer
->> >> to guest work function"), where TIF_NOTIFY_RESUME would be cleared by KVM
->> >> without updating rseq, leading to a stale CPU ID and other badness.
->> >> 
->> > 
->> > [...]
->> > 
->> > +#define RSEQ_SIG 0xdeadbeef
->> > 
->> > Is there any reason for defining a custom signature rather than including
->> > tools/testing/selftests/rseq/rseq.h ? This should take care of including
->> > the proper architecture header which will define the appropriate signature.
->> > 
->> > Arguably you don't define rseq critical sections in this test per se, but
->> > I'm wondering why the custom signature here.
+On Thu, Aug 26, 2021 at 01:21:39PM +1000, Michael Ellerman wrote:
+> Nathan Chancellor <nathan@kernel.org> writes:
+> > On Tue, Apr 13, 2021 at 04:38:10PM +0000, Christophe Leroy wrote:
+> >> Using asm goto in __WARN_FLAGS() and WARN_ON() allows more
+> >> flexibility to GCC.
+> ...
+> >
+> > This patch as commit 1e688dd2a3d6 ("powerpc/bug: Provide better
+> > flexibility to WARN_ON/__WARN_FLAGS() with asm goto") cause a WARN_ON in
+> > klist_add_tail to trigger over and over on boot when compiling with
+> > clang:
+> >
+> > [    2.177416][    T1] WARNING: CPU: 0 PID: 1 at lib/klist.c:62 .klist_add_tail+0x3c/0x110
+> > [    2.177456][    T1] Modules linked in:
+> > [    2.177481][    T1] CPU: 0 PID: 1 Comm: swapper/0 Tainted: G        W         5.14.0-rc7-next-20210825 #1
+> > [    2.177520][    T1] NIP:  c0000000007ff81c LR: c00000000090a038 CTR: 0000000000000000
+> > [    2.177557][    T1] REGS: c0000000073c32a0 TRAP: 0700   Tainted: G        W          (5.14.0-rc7-next-20210825)
+> > [    2.177593][    T1] MSR:  8000000002029032 <SF,VEC,EE,ME,IR,DR,RI>  CR: 22000a40  XER: 00000000
+> > [    2.177667][    T1] CFAR: c00000000090a034 IRQMASK: 0
+> > [    2.177667][    T1] GPR00: c00000000090a038 c0000000073c3540 c000000001be3200 0000000000000001
+> > [    2.177667][    T1] GPR04: c0000000072d65c0 0000000000000000 c0000000091ba798 c0000000091bb0a0
+> > [    2.177667][    T1] GPR08: 0000000000000001 0000000000000000 c000000008581918 fffffffffffffc00
+> > [    2.177667][    T1] GPR12: 0000000044000240 c000000001dd0000 c000000000012300 0000000000000000
+> > [    2.177667][    T1] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+> > [    2.177667][    T1] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+> > [    2.177667][    T1] GPR24: 0000000000000000 c0000000017e3200 0000000000000000 c000000001a0e778
+> > [    2.177667][    T1] GPR28: c0000000072d65b0 c0000000072d65a8 c000000007de72c8 c0000000073c35d0
+> > [    2.178019][    T1] NIP [c0000000007ff81c] .klist_add_tail+0x3c/0x110
+> > [    2.178058][    T1] LR [c00000000090a038] .bus_add_driver+0x148/0x290
+> > [    2.178088][    T1] Call Trace:
+> > [    2.178105][    T1] [c0000000073c3540] [c0000000073c35d0] 0xc0000000073c35d0 (unreliable)
+> > [    2.178150][    T1] [c0000000073c35d0] [c00000000090a038] .bus_add_driver+0x148/0x290
+> > [    2.178190][    T1] [c0000000073c3670] [c00000000090fae8] .driver_register+0xb8/0x190
+> > [    2.178234][    T1] [c0000000073c3700] [c000000000be55c0] .__hid_register_driver+0x70/0xd0
+> > [    2.178275][    T1] [c0000000073c37a0] [c00000000116955c] .redragon_driver_init+0x34/0x58
+> > [    2.178314][    T1] [c0000000073c3820] [c000000000011ae0] .do_one_initcall+0x130/0x3b0
+> > [    2.178357][    T1] [c0000000073c3bb0] [c0000000011065e0] .do_initcall_level+0xd8/0x188
+> > [    2.178403][    T1] [c0000000073c3c50] [c0000000011064a8] .do_initcalls+0x7c/0xdc
+> > [    2.178445][    T1] [c0000000073c3ce0] [c000000001106238] .kernel_init_freeable+0x178/0x21c
+> > [    2.178491][    T1] [c0000000073c3d90] [c000000000012334] .kernel_init+0x34/0x220
+> > [    2.178530][    T1] [c0000000073c3e10] [c00000000000cf50] .ret_from_kernel_thread+0x58/0x60
+> > [    2.178569][    T1] Instruction dump:
+> > [    2.178592][    T1] fba10078 7c7d1b78 38600001 fb810070 3b9d0008 fbc10080 7c9e2378 389d0018
+> > [    2.178662][    T1] fb9d0008 fb9d0010 90640000 fbdd0000 <0b1e0000> e87e0018 28230000 41820024
+> > [    2.178728][    T1] ---[ end trace 52ed3431f58f1847 ]---
+> >
+> > Is this a bug with clang or is there something wrong with the patch? The
+> > vmlinux image is available at [1] if you want to inspect it and our QEMU
+> > command and the warning at boot can be viewed at [2]. If there is any
+> > other information I can provide, please let me know.
+> >
+> > [1] https://builds.tuxbuild.com/1xDcmp3Tvno0TTGxDVPedRKIKM2/
+> > [2] https://github.com/ClangBuiltLinux/continuous-integration2/commit/cee159b66a58eb57fa2359e7888074b9da24126c/checks/3422232736/logs
 > 
-> Partly to avoid taking a dependency on rseq.h, and partly to try to call out
-> that
-> the test doesn't actually do any rseq critical sections.
-
-It might be good to add a comment near this define stating this then, so nobody
-attempts to copy this as an example.
-
+> Thanks.
 > 
->> > [...]
->> > 
->> >> +
->> >> +static void *migration_worker(void *ign)
->> >> +{
->> >> +	cpu_set_t allowed_mask;
->> >> +	int r, i, nr_cpus, cpu;
->> >> +
->> >> +	CPU_ZERO(&allowed_mask);
->> >> +
->> >> +	nr_cpus = CPU_COUNT(&possible_mask);
->> >> +
->> >> +	for (i = 0; i < 20000; i++) {
->> >> +		cpu = i % nr_cpus;
->> >> +		if (!CPU_ISSET(cpu, &possible_mask))
->> >> +			continue;
->> >> +
->> >> +		CPU_SET(cpu, &allowed_mask);
->> >> +
->> >> +		/*
->> >> +		 * Bump the sequence count twice to allow the reader to detect
->> >> +		 * that a migration may have occurred in between rseq and sched
->> >> +		 * CPU ID reads.  An odd sequence count indicates a migration
->> >> +		 * is in-progress, while a completely different count indicates
->> >> +		 * a migration occurred since the count was last read.
->> >> +		 */
->> >> +		atomic_inc(&seq_cnt);
->> > 
->> > So technically this atomic_inc contains the required barriers because the
->> > selftests implementation uses "__sync_add_and_fetch(&addr->val, 1)". But
->> > it's rather odd that the semantic differs from the kernel implementation in
->> > terms of memory barriers: the kernel implementation of atomic_inc
->> > guarantees no memory barriers, but this one happens to provide full
->> > barriers pretty much by accident (selftests futex/include/atomic.h
->> > documents no such guarantee).
+> This is the generated assembly:
 > 
-> Yeah, I got quite lost trying to figure out what atomics the test would actually
-> end up with.
-
-At the very least, until things are clarified in the selftests atomic header, I would
-recommend adding a comment stating which memory barriers are required alongside each
-use of atomic_inc here. I would even prefer that we add extra (currently unneeded)
-write barriers to make extra sure that this stays documented. Performance of the write-side
-does not matter much here.
-
+> c0000000007ff600 <.klist_add_tail>:
+> c0000000007ff600:       7c 08 02 a6     mflr    r0
+> c0000000007ff604:       f8 01 00 10     std     r0,16(r1)
+> c0000000007ff608:       f8 21 ff 71     stdu    r1,-144(r1)	^ prolog
+> c0000000007ff60c:       fb a1 00 78     std     r29,120(r1)	save r29 to stack
+> c0000000007ff610:       7c 7d 1b 78     mr      r29,r3		r29 = struct klist_node *n
+> c0000000007ff614:       38 60 00 01     li      r3,1		r3 = 1
+> c0000000007ff618:       fb 81 00 70     std     r28,112(r1)	save r28 to stack
+> c0000000007ff61c:       3b 9d 00 08     addi    r28,r29,8	r28 = &n->n_node
+> c0000000007ff620:       fb c1 00 80     std     r30,128(r1)	save r30 to stack
+> c0000000007ff624:       7c 9e 23 78     mr      r30,r4		r30 = struct klist *k
+> c0000000007ff628:       38 9d 00 18     addi    r4,r29,24	r4 = &n->n_ref
+> c0000000007ff62c:       fb 9d 00 08     std     r28,8(r29)	n->n_node.next = &n->n_node	INIT_LIST_HEAD
+> c0000000007ff630:       fb 9d 00 10     std     r28,16(r29)	n->n_node.prev = &n->n_node
+> c0000000007ff634:       90 64 00 00     stw     r3,0(r4)	kref_init(&n->n_ref)
+> c0000000007ff638:       fb dd 00 00     std     r30,0(r29)	n->n_klist = k
+> c0000000007ff63c:       0b 1e 00 00     tdnei   r30,0		trap if r30 (k) is not zero
 > 
->> > If this full barrier guarantee is indeed provided by the selftests atomic.h
->> > header, I would really like a comment stating that in the atomic.h header
->> > so the carpet is not pulled from under our feet by a future optimization.
->> > 
->> > 
->> >> +		r = sched_setaffinity(0, sizeof(allowed_mask), &allowed_mask);
->> >> +		TEST_ASSERT(!r, "sched_setaffinity failed, errno = %d (%s)",
->> >> +			    errno, strerror(errno));
->> >> +		atomic_inc(&seq_cnt);
->> >> +
->> >> +		CPU_CLR(cpu, &allowed_mask);
->> >> +
->> >> +		/*
->> >> +		 * Let the read-side get back into KVM_RUN to improve the odds
->> >> +		 * of task migration coinciding with KVM's run loop.
->> > 
->> > This comment should be about increasing the odds of letting the seqlock
->> > read-side complete. Otherwise, the delay between the two back-to-back
->> > atomic_inc is so small that the seqlock read-side may never have time to
->> > complete the reading the rseq cpu id and the sched_getcpu() call, and can
->> > retry forever.
 > 
-> Hmm, but that's not why there's a delay.  I'm not arguing that a livelock isn't
-> possible (though that syscall would have to be screaming fast),
-
-I don't think we have the same understanding of the livelock scenario. AFAIU the livelock
-would be caused by a too-small delay between the two consecutive atomic_inc() from one
-loop iteration to the next compared to the time it takes to perform a read-side critical
-section of the seqlock. Back-to-back atomic_inc can be performed very quickly, so I
-doubt that the sched_getcpu implementation have good odds to be fast enough to complete
-in that narrow window, leading to lots of read seqlock retry.
-
-> but the primary
-> motivation is very much to allow the read-side enough time to get back into KVM
-> proper.
-
-I'm puzzled by your statement. AFAIU, let's say we don't have the delay, then we
-have:
-
-migration thread                             KVM_RUN/read-side thread
------------------------------------------------------------------------------------
-                                             - ioctl(KVM_RUN)
-- atomic_inc_seq_cst(&seqcnt)
-- sched_setaffinity
-- atomic_inc_seq_cst(&seqcnt)
-                                             - a = atomic_load(&seqcnt) & ~1
-                                             - smp_rmb()
-                                             - b = LOAD_ONCE(__rseq_abi->cpu_id);
-                                             - sched_getcpu()
-                                             - smp_rmb()
-                                             - re-load seqcnt/compare (succeeds)
-                                               - Can only succeed if entire read-side happens while the seqcnt
-                                                 is in an even numbered state.
-                                             - if (a != b) abort()
-  /* no delay. Even counter state is very
-     short. */
-- atomic_inc_seq_cst(&seqcnt)
-  /* Let's suppose the lack of delay causes the
-     setaffinity to complete too early compared
-     with KVM_RUN ioctl */
-- sched_setaffinity
-- atomic_inc_seq_cst(&seqcnt)
-
-  /* no delay. Even counter state is very
-     short. */
-- atomic_inc_seq_cst(&seqcnt)
-  /* Then a setaffinity from a following
-     migration thread loop will run
-     concurrently with KVM_RUN */
-                                             - ioctl(KVM_RUN)
-- sched_setaffinity
-- atomic_inc_seq_cst(&seqcnt)
-
-As pointed out here, if the first setaffinity runs too early compared with KVM_RUN,
-a following setaffinity will run concurrently with it. However, the fact that 
-the even counter state is very short may very well hurt progress of the read seqlock.
-
+> From:
 > 
-> To encounter the bug, TIF_NOTIFY_RESUME has to be recognized by KVM in its run
-> loop, i.e. sched_setaffinity() must induce task migration after the read-side
-> has
-> invoked ioctl(KVM_RUN).
-
-No argument here.
-
+> static void knode_set_klist(struct klist_node *knode, struct klist *klist)
+> {
+> 	knode->n_klist = klist;
+> 	/* no knode deserves to start its life dead */
+> 	WARN_ON(knode_dead(knode));
+>                 ^^^^^^^^^^^^^^^^^
+> }
 > 
->> > I'm wondering if 1 microsecond is sufficient on other architectures as
->> > well.
+> Which expands to:
 > 
-> I'm definitely wondering that as well :-)
+> static void knode_set_klist(struct klist_node *knode, struct klist *klist)
+> {
+> 	knode->n_klist = klist;
 > 
->> > One alternative way to make this depend less on the architecture's
->> > implementation of sched_getcpu (whether it's a vDSO, or goes through a
->> > syscall) would be to read the rseq cpu id and call sched_getcpu a few times
->> > (e.g. 3 times) in the migration thread rather than use usleep, and throw
->> > away the value read. This would ensure the delay is appropriate on all
->> > architectures.
+> 	({
+> 		bool __ret_warn_on = false;
+> 		do {
+>                 ...
+> 			} else {
+> 				__label__ __label_warn_on;
+> 				do {
+> 					asm goto(
+> 						"1:   "
+> 						"tdnei"
+> 						"
+> 						" " % 4,
+> 						0 " "\n " ".section __ex_table,\"a\";"
+> 										" "
+> 										".balign 4;"
+> 										" "
+> 										".long (1b) - . ;"
+> 										" "
+> 										".long (%l[__label_warn_on]) - . ;"
+> 										" "
+> 										".previous"
+> 										" "
+> 										".section __bug_table,\"aw\"\n"
+> 										"2:\t.4byte 1b - 2b, %0 - 2b\n"
+> 										"\t.short %1, %2\n"
+> 										".org 2b+%3\n"
+> 										".previous\n"
+> 						:
+> 						: "i"("lib/klist.c"), "i"(62),
+> 						  "i"((1 << 0) | ((9) << 8)),
+> 						  "i"(sizeof(struct bug_entry)),
+> 						  "r"(knode_dead(knode))
+>                                                   ^^^^^^^^^^^^^^^^^^^^^
 > 
-> As above, I think an arbitrary delay is required regardless of how fast
-> sched_getcpu() can execute.  One thought would be to do sched_getcpu() _and_
-> usleep() to account for sched_getcpu() overhead and to satisfy the KVM_RUN part,
-> but I don't know that that adds meaningful value.
+> 						:
+> 						: __label_warn_on);
+> 					asm("");
+> 				} while (0);
+> 				break;
+> 			__label_warn_on:
+> 				__ret_warn_on = true;
+> 			}
+> 		} while (0);
+> 		__builtin_expect(!!(__ret_warn_on), 0);
+> 	});
+> }
 > 
-> The real test is if someone could see if the bug repros on non-x86 hardware...
+> And knode_dead is:
+> 
+> #define KNODE_DEAD		1LU
+> 
+> static bool knode_dead(struct klist_node *knode)
+> {
+> 	return (unsigned long)knode->n_klist & KNODE_DEAD;
+> }
+> 
+> 
+> So it's meant to warn if (n_klist & KNODE_DEAD) is not equal to zero.
+> 
+> But in the asm:
+> 
+> c0000000007ff600 <.klist_add_tail>:
+> ...
+> c0000000007ff624:       7c 9e 23 78     mr      r30,r4		r30 = struct klist *k
+> ...
+> c0000000007ff638:       fb dd 00 00     std     r30,0(r29)	n->n_klist = k
+> c0000000007ff63c:       0b 1e 00 00     tdnei   r30,0		trap if r30 (k) is not zero
+> 
+> 
+> It's just warning if n_klist is not equal to zero. ie. we lost the "& KNODE_DEAD".
+> 
+> In the GCC output you can see it:
+> 
+> c0000000008c8a30 <.klist_node_init>:
+> c0000000008c8a30:       39 24 00 08     addi    r9,r4,8
+> c0000000008c8a34:       39 40 00 01     li      r10,1
+> c0000000008c8a38:       f9 24 00 08     std     r9,8(r4)
+> c0000000008c8a3c:       f9 24 00 10     std     r9,16(r4)
+> c0000000008c8a40:       91 44 00 18     stw     r10,24(r4)
+> c0000000008c8a44:       f8 64 00 00     std     r3,0(r4)
+> c0000000008c8a48:       54 69 07 fe     clrlwi  r9,r3,31
+> c0000000008c8a4c:       0b 09 00 00     tdnei   r9,0
+> 
+> ie. the clrlwi is "clear left (word) immediate", and zeroes everything
+> except bit 0, which is equivalent to "& KNODE_DEAD".
+> 
+> 
+> So there seems to be some misunderstanding with clang, it doesn't like
+> us passing an expression to the inline asm.
+> 
+> AFAIK it is legal to pass expressions as inputs to inline asm, ie. it
+> doesn't have to just be a variable name.
+> 
+> This patch seems to fix it. Not sure if that's just papering over it though.
+> 
+> diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
+> index 1ee0f22313ee..75fcb4370d96 100644
+> --- a/arch/powerpc/include/asm/bug.h
+> +++ b/arch/powerpc/include/asm/bug.h
+> @@ -119,7 +119,7 @@ __label_warn_on:						\
+>  								\
+>  			WARN_ENTRY(PPC_TLNEI " %4, 0",		\
+>  				   BUGFLAG_WARNING | BUGFLAG_TAINT(TAINT_WARN),	\
+> -				   __label_warn_on, "r" (x));	\
+> +				   __label_warn_on, "r" (!!(x))); \
+>  			break;					\
+>  __label_warn_on:						\
+>  			__ret_warn_on = true;			\
+> 
+> 
+> Generates:
+> 
+> c0000000008e2ac0 <.klist_add_tail>:
+> c0000000008e2ac0:       7c 08 02 a6     mflr    r0
+> c0000000008e2ac4:       f8 01 00 10     std     r0,16(r1)
+> c0000000008e2ac8:       f8 21 ff 71     stdu    r1,-144(r1)
+> c0000000008e2acc:       fb a1 00 78     std     r29,120(r1)
+> c0000000008e2ad0:       7c 7d 1b 78     mr      r29,r3
+> c0000000008e2ad4:       38 60 00 01     li      r3,1
+> c0000000008e2ad8:       fb c1 00 80     std     r30,128(r1)
+> c0000000008e2adc:       7c 9e 23 78     mr      r30,r4
+> c0000000008e2ae0:       38 9d 00 18     addi    r4,r29,24
+> c0000000008e2ae4:       57 c5 07 fe     clrlwi  r5,r30,31	<-
+> c0000000008e2ae8:       fb 81 00 70     std     r28,112(r1)
+> c0000000008e2aec:       3b 9d 00 08     addi    r28,r29,8
+> c0000000008e2af0:       fb 9d 00 08     std     r28,8(r29)
+> c0000000008e2af4:       fb 9d 00 10     std     r28,16(r29)
+> c0000000008e2af8:       90 64 00 00     stw     r3,0(r4)
+> c0000000008e2afc:       fb dd 00 00     std     r30,0(r29)
+> c0000000008e2b00:       0b 05 00 00     tdnei   r5,0		<-
 
-As I explain in the scenario above, I don't think we agree on the reason why the
-delay is required. One way to confirm this would be to run the code without delay,
-and count how many seqcnt read-side succeed vs fail. We can then compare that with
-a run with a 1us delay between the migration thread loops. This data should help us
-come to a common understanding of the delay's role.
+Thank you for the in-depth explanation and triage! I have gone ahead and
+created a standalone reproducer that shows this based on the
+preprocessed file and opened https://bugs.llvm.org/show_bug.cgi?id=51634
+so the LLVM developers can take a look.
 
-Thanks,
-
-Mathieu
-
--- 
-Mathieu Desnoyers
-EfficiOS Inc.
-http://www.efficios.com
+Cheers,
+Nathan
