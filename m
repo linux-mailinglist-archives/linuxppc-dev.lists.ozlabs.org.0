@@ -1,60 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D81F93F8A11
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Aug 2021 16:27:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 246B73F8A45
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Aug 2021 16:40:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GwQCW51nMz3057
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 00:27:03 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=kNmPLfrB;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GwQWT0SL0z2ywr
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 00:40:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=kNmPLfrB; 
- dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GwQBv65ZFz2xrZ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Aug 2021 00:26:31 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4GwQBt1DP4z9sWS;
- Fri, 27 Aug 2021 00:26:30 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1629987991;
- bh=8REjizoyXa6lG5/G29mltG5ReN+I4Z6Qc6NDe7l49QM=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=kNmPLfrBKi04ZkPkGpmV7+/oJadisLEfK1+pFTyhStOvkRxkseTXEN8PdArVzP5Cm
- kRFq1EOMrB1WoWaQM79CrgGuwALLpz0MEZ80j82uHAeJM7KH14mHCJe8RKd5QD59pD
- UwSTK0ac1IZh5fpEewtwXUQqfRCiMgd+3yS5aId8VihS4/jPW17sOR1u+PvmKSd71C
- zDJ82ruv1AKxXlOA9+KYj9lYzK16CK1h6NaLa2QRw9bBx+5ov8BwzUSXR2Xb+fiR6p
- g2Jp0Qbd3DsZAR4wswp/IsCbTULnB48hNjOEMRrnrZolEFW68ftEX+vJ6/Tdpb9SWa
- w/P035zUTKlnQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Shuah Khan
- <skhan@linuxfoundation.org>, cgel.zte@gmail.com
-Subject: Re: [PATCH linux-next] powerpc/tm: remove duplicate include in
- tm-poison.c
-In-Reply-To: <4bc97c33-7fc0-ff9d-041b-e773f682c5d2@csgroup.eu>
-References: <20210805065255.628170-1-yong.yiran@zte.com.cn>
- <c5e9900b-1c2d-8e72-ad83-a6024b876fd2@linuxfoundation.org>
- <4bc97c33-7fc0-ff9d-041b-e773f682c5d2@csgroup.eu>
-Date: Fri, 27 Aug 2021 00:26:29 +1000
-Message-ID: <87wno89t9m.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Authentication-Results: lists.ozlabs.org;
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4GwQW43cHLz2xXd
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Aug 2021 00:40:32 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 17QEb8u8022174;
+ Thu, 26 Aug 2021 09:37:08 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 17QEb8T2022173;
+ Thu, 26 Aug 2021 09:37:08 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Thu, 26 Aug 2021 09:37:08 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2 1/2] powerpc/bug: Remove specific powerpc BUG_ON() and
+ WARN_ON() on PPC32
+Message-ID: <20210826143708.GC1583@gate.crashing.org>
+References: <b286e07fb771a664b631cd07a40b09c06f26e64b.1618331881.git.christophe.leroy@csgroup.eu>
+ <1628834356.pr4zgn1xf1.astroid@bobo.none>
+ <20210818150653.GJ1583@gate.crashing.org>
+ <1629946707.f6ptz0tgle.astroid@bobo.none>
+ <20210826124901.GY1583@gate.crashing.org>
+ <1629983260.5jkx2jf0y8.astroid@bobo.none>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1629983260.5jkx2jf0y8.astroid@bobo.none>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,49 +53,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: yong.yiran@zte.com.cn, shuah@kernel.org, Zeal Robot <zealci@zte.com.cn>,
- linux-kernel@vger.kernel.org, paulus@samba.org,
- linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Le 24/08/2021 =C3=A0 16:40, Shuah Khan a =C3=A9crit=C2=A0:
->> On 8/5/21 12:52 AM, cgel.zte@gmail.com wrote:
->>> From: yong yiran <yong.yiran@zte.com.cn>
->>>
->>> 'inttypes.h' included in 'tm-poison.c' is duplicated.
->>> Remove all but the first include of inttypes.h from tm-poison.c.
->>>
->>> Reported-by: Zeal Robot <zealci@zte.com.cn>
->>> Signed-off-by: yong yiran <yong.yiran@zte.com.cn>
->>> ---
->>> =C2=A0 tools/testing/selftests/powerpc/tm/tm-poison.c | 1 -
->>> =C2=A0 1 file changed, 1 deletion(-)
->>>
->>> diff --git a/tools/testing/selftests/powerpc/tm/tm-poison.c=20
->>> b/tools/testing/selftests/powerpc/tm/tm-poison.c
->>> index 29e5f26af7b9..27c083a03d1f 100644
->>> --- a/tools/testing/selftests/powerpc/tm/tm-poison.c
->>> +++ b/tools/testing/selftests/powerpc/tm/tm-poison.c
->>> @@ -20,7 +20,6 @@
->>> =C2=A0 #include <sched.h>
->>> =C2=A0 #include <sys/types.h>
->>> =C2=A0 #include <signal.h>
->>> -#include <inttypes.h>
->>> =C2=A0 #include "tm.h"
->>>
->>=20
->> We can't accept this patch. The from and Signed-off-by don't match.
->>=20
->
-> As far as I can see they match. You have:
->
-> From: yong yiran <yong.yiran@zte.com.cn>
-> Signed-off-by: yong yiran <yong.yiran@zte.com.cn>
+On Thu, Aug 26, 2021 at 11:57:52PM +1000, Nicholas Piggin wrote:
+> Excerpts from Segher Boessenkool's message of August 26, 2021 10:49 pm:
+> > On Thu, Aug 26, 2021 at 01:26:14PM +1000, Nicholas Piggin wrote:
+> >> Excerpts from Segher Boessenkool's message of August 19, 2021 1:06 am:
+> >> > On Fri, Aug 13, 2021 at 04:08:13PM +1000, Nicholas Piggin wrote:
+> >> >> This one possibly the branches end up in predictors, whereas conditional 
+> >> >> trap is always just speculated not to hit. Branches may also have a
+> >> >> throughput limit on execution whereas trap could be more (1 per cycle
+> >> >> vs 4 per cycle on POWER9).
+> >> > 
+> >> > I thought only *taken* branches are just one per cycle?
+> >> 
+> >> Taken branches are fetched by the front end at one per cycle (assuming 
+> >> they hit the BTAC), but all branches have to be executed by BR at one 
+> >> per cycle
+> > 
+> > This is not true.  (Simple) predicted not-taken conditional branches are
+> > just folded out, never hit the issue queues.  And they are fetched as
+> > many together as fit in a fetch group, can complete without limits as
+> > well.
+> 
+> No, they are all dispatched and issue to the BRU for execution. It's 
+> trivial to construct a test of a lot of not taken branches in a row
+> and time a loop of it to see it executes at 1 cycle per branch.
 
-Regardless I already have a patch queued to fix this, from a different
-CI bot.
+(s/dispatched/issued/)
 
-cheers
+Huh, this was true on p8 already.  Sorry for my confusion.  In my
+defence, this doesn't matter for performance on "real code".
+
+> > Correctly predicted simple conditional branches just get their prediction
+> > validated (and that is not done in the execution units).  Incorrectly
+> > predicted branches the same, but those cause a redirect and refetch.
+> 
+> How could it validate prediction without issuing? It wouldn't know when
+> sources are ready.
+
+In the backend.  But that is just how it worked on older cores :-/
+
+> >> The first problem seems like the show stopper though. AFAIKS it would 
+> >> need a special builtin support that does something to create the table
+> >> entry, or a guarantee that we could put an inline asm right after the
+> >> builtin as a recognized pattern and that would give us the instruction
+> >> following the trap.
+> > 
+> > I'm not quite sure what this means.  Can't you always just put a
+> > 
+> > bla:	asm("");
+> > 
+> > in there, and use the address of "bla"?
+> 
+> Not AFAIKS. Put it where?
+
+After wherever you want to know the address after.  You will have to
+make sure they stay together somehow.
+
+It is much easier to get the address of something, not the address after
+it.  If you know it is just one insn anyway, that isn't hard to handle
+either (even if prefixed insns exist).
+
+> > If not, you need to say a lot
+> > more about what you actually want to do :-/
+> 
+> We need to put the address (or relative offset) of the trap instruction
+> into an entry in a different section. Basically this:
+> 
+>    __builtin_trap();
+>    asm ("1:                               \n\t"
+>         "    .section __bug_table,\"aw\"  \n\t"
+>         "2:  .4byte 1b - 2b - 4           \n\t"
+>         "    .previous");
+> 
+> Where the 1: label must follow immediately after the trap instruction, 
+> and where the asm must be emitted even for the case of no-return traps 
+> (but anything following the asm could be omitted).
+
+The address *after* the trap insn?  That is much much harder than the
+address *of* the trap insn.
+
+
+Segher
