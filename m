@@ -1,70 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 446F23F876E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Aug 2021 14:29:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EA693F8770
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Aug 2021 14:29:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GwMbH1B20z2ymk
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Aug 2021 22:28:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GwMc06c0mz3cB2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Aug 2021 22:29:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=il0wgKVT;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=c41ncWUj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::634;
- helo=mail-pl1-x634.google.com; envelope-from=joel.stan@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52e;
+ helo=mail-pg1-x52e.google.com; envelope-from=joel.stan@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=il0wgKVT; dkim-atps=neutral
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com
- [IPv6:2607:f8b0:4864:20::634])
+ header.s=20161025 header.b=c41ncWUj; dkim-atps=neutral
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com
+ [IPv6:2607:f8b0:4864:20::52e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GwMYJ31ZLz2yZf
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Aug 2021 22:27:16 +1000 (AEST)
-Received: by mail-pl1-x634.google.com with SMTP id u15so1670551plg.13
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Aug 2021 05:27:16 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GwMYN26lhz2ynF
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Aug 2021 22:27:20 +1000 (AEST)
+Received: by mail-pg1-x52e.google.com with SMTP id k24so2910329pgh.8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Aug 2021 05:27:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=ryP8RcAuuRvMSKlPfni1/npXw+1pi/AcjAhpzZJND8Q=;
- b=il0wgKVTB8xcB/6qp8hJAQ2/xRLv5/yifpOo3avmAvwQhEIRcNX1TpLmR8QCFgIZ+E
- jMVKHEP3oroMxzjAI5AymjtMbEFt3h8biI4BP4t6bW+v5v4FEyaFeiBXRyvX7kqiPVtz
- xmEvR1WKa3rT1E9HOQmRpipgCPo+c0bnsCj+BM7P51XvFMMrRZ27lK4+bg75r8Nrcirz
- xuIWQsKD/Klm35canfI2GMEe6/+l6xPApCetqx50rc5s0Hd+ZEan78Z9bteqN/B3j7Hu
- nOtH/Yi8DZwFzeyjsCO1hamy1KWW62ECIJ7k9oWjs5apFbJ9JSkw4xOfa2QCiC0KrHTg
- CFiA==
+ bh=GKPA4su1Buqj4xjgmRngmGoWZggf3e4D6yOp0HD1SZk=;
+ b=c41ncWUjSN+CjXeckhhtv3KJCBDwtCPxKZEzpBlhVcrDlKf7VTOHS1DAc+YzySgv3p
+ ImCpDzpITy5nBOLTQyloZkkr5EpWhZ7nZKUHslcRcFTqkwJo3msK1SYfuK7bII+Ac/N+
+ yCCT31Fxl9nXwcX8LOBUQzxA6V2CU0DQMTsAUiZLhjo1x8DLH5eZf2KRod0mArL5f+XS
+ UvDEn3YNr6a++YVNHIDYaIslErv0hA/QfjnXYeVNgjXvloVSh4aybobWkZP11VtqNzT+
+ UvHEahEnKHeGtpL/kfX6TX4mXWFzR3xJvx6C1FFuLlGRdowBPOpDQOYwIk/KHuYmg/X+
+ TfIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
  :in-reply-to:references:mime-version:content-transfer-encoding;
- bh=ryP8RcAuuRvMSKlPfni1/npXw+1pi/AcjAhpzZJND8Q=;
- b=p7R4U78kK+SvWy/jGCO1wh7wIYniKksIW2MwJlMyw5Ry+tgDyYqrX3igE5JApBze4c
- j5zP1xKM2IxosPYMvxSZ/rc+NRmTKXstCIqcsQ2uAsVY07gK4DWcc4tYiGoTSDF2wEfB
- TRwsETFwV2U9pgrd30WXqXElW+KjEVuvbbHiID1qSTbDQmf8KySGpQQG+90SDOJx34d9
- ZZzQvFQWCBWUmcFGWvir5SdwrTokXg0b8nHaaZQhmrsRHLutVZMfLNhEs9o4jrdtRlrP
- wkFu/kXuVjz/343Ew1nyhmkeixNILkqub3mo6yYDsT36PMILlg7hsw3ind2afJ3MLf+9
- yrvg==
-X-Gm-Message-State: AOAM531qE2vgFdmYMo4+ZqFolIZZlgYS6wG8f/cysNX4bD6L0SYjDDz2
- NbbDn6f2TqoQEzkZ6cJtVMk=
-X-Google-Smtp-Source: ABdhPJyutsBxdY9Hf9O0MDaduStZuiNspuskd8v20MHJoejqpo7OQsGN9mR6mYrBA4kPznu5mwbRTQ==
-X-Received: by 2002:a17:90a:4316:: with SMTP id
- q22mr16549995pjg.151.1629980834057; 
- Thu, 26 Aug 2021 05:27:14 -0700 (PDT)
+ bh=GKPA4su1Buqj4xjgmRngmGoWZggf3e4D6yOp0HD1SZk=;
+ b=QHTDMFnQVqDm2QQQFP81vDzRZ/QADGHAtfaeDVI4KAZVUm/Iulty8CWT1Sd0JrMxIb
+ pK9LSMBQ33airHi+2i0uOfKmO3y4uG7uBYdffKnHv/JwiEb8ihSI3kUnyxOGjbto33tY
+ Kd5QWv0qKiM+NX+3ld4KqPlQk7M9woHeKmydQav1SsgmNmuYRpLUWPHsMORM45r+tu3E
+ ZFmtJUc4w/Ojyb85zkr1JsjpAnNHxQ1VTWhBivaj2+bARSwVb36TW3vaHKiIg9cK7aaC
+ 9Nn+24yg1Yzb3ldAlo3JKS06egCNV9uUdU1LtRHZjNksa8ErdYRIPEdbDOemEvHOzJ/h
+ pt3Q==
+X-Gm-Message-State: AOAM533xVs6yK1hPt0pEXl3RgBGf4BgED6mP2UUBNAR0sg0z3PuznmgA
+ XZIAbSGiIvrazbKabrlLeQU=
+X-Google-Smtp-Source: ABdhPJy9QdGPIUjTGpW+6le301Q7uxWN3D7Fdf/3wDbQlolKkZg8Jw1C/ddkmmDQUvU0Mv8A2uO9Vg==
+X-Received: by 2002:a62:b414:0:b029:317:52d:7fd5 with SMTP id
+ h20-20020a62b4140000b0290317052d7fd5mr3562693pfn.30.1629980837765; 
+ Thu, 26 Aug 2021 05:27:17 -0700 (PDT)
 Received: from localhost.localdomain ([45.124.203.15])
- by smtp.gmail.com with ESMTPSA id o2sm3683188pgu.76.2021.08.26.05.27.10
+ by smtp.gmail.com with ESMTPSA id o2sm3683188pgu.76.2021.08.26.05.27.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 26 Aug 2021 05:27:12 -0700 (PDT)
+ Thu, 26 Aug 2021 05:27:16 -0700 (PDT)
 From: Joel Stanley <joel@jms.id.au>
 To: Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>,
  Anton Blanchard <anton@ozlabs.org>, Michael Neuling <mikey@neuling.org>
-Subject: [PATCH 2/3] powerpc/configs/microwattt: Enable Liteeth
-Date: Thu, 26 Aug 2021 21:56:52 +0930
-Message-Id: <20210826122653.3236867-3-joel@jms.id.au>
+Subject: [PATCH 3/3] powerpc/configs/microwatt: Enable options for systemd
+Date: Thu, 26 Aug 2021 21:56:53 +0930
+Message-Id: <20210826122653.3236867-4-joel@jms.id.au>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20210826122653.3236867-1-joel@jms.id.au>
 References: <20210826122653.3236867-1-joel@jms.id.au>
@@ -86,25 +86,39 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Liteeth is the network device used by Microwatt.
+When booting with systemd these options are required.
+
+This increases the image by about 50KB, or 2%.
 
 Signed-off-by: Joel Stanley <joel@jms.id.au>
 ---
- arch/powerpc/configs/microwatt_defconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/configs/microwatt_defconfig | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/arch/powerpc/configs/microwatt_defconfig b/arch/powerpc/configs/microwatt_defconfig
-index a08b739123da..2f8b1fec9a16 100644
+index 2f8b1fec9a16..4a4924cd056e 100644
 --- a/arch/powerpc/configs/microwatt_defconfig
 +++ b/arch/powerpc/configs/microwatt_defconfig
-@@ -53,6 +53,7 @@ CONFIG_MTD_SPI_NOR=y
- CONFIG_BLK_DEV_LOOP=y
- CONFIG_BLK_DEV_RAM=y
- CONFIG_NETDEVICES=y
-+CONFIG_LITEX_LITEETH=y
- # CONFIG_WLAN is not set
- # CONFIG_INPUT is not set
- # CONFIG_SERIO is not set
+@@ -5,6 +5,7 @@ CONFIG_PREEMPT_VOLUNTARY=y
+ CONFIG_TICK_CPU_ACCOUNTING=y
+ CONFIG_LOG_BUF_SHIFT=16
+ CONFIG_PRINTK_SAFE_LOG_BUF_SHIFT=12
++CONFIG_CGROUPS=y
+ CONFIG_BLK_DEV_INITRD=y
+ CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+ CONFIG_KALLSYMS_ALL=y
+@@ -77,8 +78,10 @@ CONFIG_SPI_SPIDEV=y
+ CONFIG_EXT4_FS=y
+ # CONFIG_FILE_LOCKING is not set
+ # CONFIG_DNOTIFY is not set
+-# CONFIG_INOTIFY_USER is not set
++CONFIG_AUTOFS_FS=y
++CONFIG_TMPFS=y
+ # CONFIG_MISC_FILESYSTEMS is not set
++CONFIG_CRYPTO_SHA256=y
+ # CONFIG_CRYPTO_HW is not set
+ # CONFIG_XZ_DEC_X86 is not set
+ # CONFIG_XZ_DEC_IA64 is not set
 -- 
 2.33.0
 
