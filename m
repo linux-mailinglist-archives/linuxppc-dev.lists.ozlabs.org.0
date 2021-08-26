@@ -2,59 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B15F23F81D2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Aug 2021 06:56:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 019133F81D4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Aug 2021 06:58:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gw9Y04RNPz301g
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Aug 2021 14:56:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gw9bN5rcjz2yNN
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Aug 2021 14:58:24 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=L5kddt7Q;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=L5kddt7Q; 
+ dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gw9XZ6ML3z2xXh
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Aug 2021 14:55:55 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4Gw9XR4Bclz9sV0;
- Thu, 26 Aug 2021 06:55:51 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id wXGpXvuB0tMJ; Thu, 26 Aug 2021 06:55:51 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4Gw9XR333yz9sTw;
- Thu, 26 Aug 2021 06:55:51 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 444C88B875;
- Thu, 26 Aug 2021 06:55:51 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id xTJD91pQL4sF; Thu, 26 Aug 2021 06:55:51 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E11DD8B774;
- Thu, 26 Aug 2021 06:55:50 +0200 (CEST)
-Subject: Re: [PATCH] powerpc: Make set_endian() return EINVAL when not
- supporting little endian
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
-References: <b29c29d205737a833262df38e01c07139f1c3dec.1629899011.git.christophe.leroy@csgroup.eu>
- <87bl5kc1os.fsf@mpe.ellerman.id.au>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <df2e9b65-9303-070e-b803-c64e20e2620d@csgroup.eu>
-Date: Thu, 26 Aug 2021 06:55:49 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gw9Zj4zL6z2xXh
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Aug 2021 14:57:48 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Gw9Zb2cq8z9sXM;
+ Thu, 26 Aug 2021 14:57:43 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1629953863;
+ bh=Wc8gisJFzR+NRbBpxFzMI1jqsCul17TIuMj9lRWpS9M=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=L5kddt7Q9EwoKdr7oDa9NIdSnMu6IfoKHyMvMlyv2Zt3z7ORaQZZlDD1PoeRpxEgJ
+ qbYoSwg8tvBE5itxezRxDO19sV467M3aK4khMrEeqvbHSFmqR0dzgvy5P+zoMX67uV
+ T4SQakC6x0/TG6zk6C7VMibohBD8ZyQxj4emEWK/CbhKA46kMfTZZnIuPZvX78zcef
+ cmQ2330nS0tSNCZuacnhT3ChHxMh02k3xPxI8CwLq98BJP6ViJC8eKoFrQh1UKPzUA
+ uS7hotZyB3/u5Mn4lxmqjS5s/+llsjfUD6nShhyHd7g73CCGoEiornanDS3jktue7t
+ 3aoXDwpzqs1Xw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>
+Subject: Re: [PATCH] powerpc: Redefine HMT_xxx macros as empty on PPC32
+In-Reply-To: <c5a07fadea33d640ad10cecf0ac8faaec1c524e0.1629898474.git.christophe.leroy@csgroup.eu>
+References: <c5a07fadea33d640ad10cecf0ac8faaec1c524e0.1629898474.git.christophe.leroy@csgroup.eu>
+Date: Thu, 26 Aug 2021 14:57:42 +1000
+Message-ID: <878s0oby61.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <87bl5kc1os.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,26 +67,54 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> HMT_xxx macros are macros for adjusting thread priority
+> (hardware multi-threading) are macros inherited from PPC64
+> via commit 5f7c690728ac ("[PATCH] powerpc: Merged ppc_asm.h")
+>
+> Those instructions are pointless on PPC32, but some common
+> fonctions like arch_cpu_idle() use them.
+>
+> So make them empty on PPC32 to avoid those instructions.
 
+I guess we're pretty sure no 32-bit CPUs do anything with those.
 
-Le 26/08/2021 à 05:41, Michael Ellerman a écrit :
-> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->> There is no point in modifying MSR_LE bit on CPUs not supporting
->> little endian.
-> 
-> Isn't that an ABI break?
+e6500 can run in 32-bit mode, and is 2-way threaded AIUI, so it's
+*possible* it could use them.
 
-Or an ABI fix ? I don't know.
+But I can't find any mention of those special nops in the e6500 core
+manual. And actually it does have documentation about thread priority
+registers, PPR32, TPRI0/1, but it says they're not used in e6500.
 
-My first thought was that all other 32 bits architectures were returning -EINVAL, but looking at the 
-man page of prctl, it is explicit that this is powerpc only.
+So I guess this seems safe, I'll pick it up.
 
-> 
-> set_endian(PR_ENDIAN_BIG) should work on a big endian CPU, even if it
-> does nothing useful.
+cheers
 
-Fair enough. But shouldn't in that case get_endian() return PR_ENDIAN_BIG instead of returning EINVAL ?
-
-We can do one or the other, but I think it should at least be consistant between them, shouldn't it ?
-
-Christophe
+> diff --git a/arch/powerpc/include/asm/vdso/processor.h b/arch/powerpc/include/asm/vdso/processor.h
+> index e072577bc7c0..8d79f994b4aa 100644
+> --- a/arch/powerpc/include/asm/vdso/processor.h
+> +++ b/arch/powerpc/include/asm/vdso/processor.h
+> @@ -5,12 +5,21 @@
+>  #ifndef __ASSEMBLY__
+>  
+>  /* Macros for adjusting thread priority (hardware multi-threading) */
+> +#ifdef CONFIG_PPC64
+>  #define HMT_very_low()		asm volatile("or 31, 31, 31	# very low priority")
+>  #define HMT_low()		asm volatile("or 1, 1, 1	# low priority")
+>  #define HMT_medium_low()	asm volatile("or 6, 6, 6	# medium low priority")
+>  #define HMT_medium()		asm volatile("or 2, 2, 2	# medium priority")
+>  #define HMT_medium_high()	asm volatile("or 5, 5, 5	# medium high priority")
+>  #define HMT_high()		asm volatile("or 3, 3, 3	# high priority")
+> +#else
+> +#define HMT_very_low()
+> +#define HMT_low()
+> +#define HMT_medium_low()
+> +#define HMT_medium()
+> +#define HMT_medium_high()
+> +#define HMT_high()
+> +#endif
+>  
+>  #ifdef CONFIG_PPC64
+>  #define cpu_relax()	do { HMT_low(); HMT_medium(); barrier(); } while (0)
+> -- 
+> 2.25.0
