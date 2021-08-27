@@ -2,69 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68ABC3F9C91
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 18:34:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8141D3F9C93
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 18:35:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gx50R1dXpz3btR
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Aug 2021 02:34:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gx5172fTrz3c9m
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Aug 2021 02:35:23 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=UxEhwv13;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=eWVphLen;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::429;
- helo=mail-pf1-x429.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1036;
+ helo=mail-pj1-x1036.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=UxEhwv13; dkim-atps=neutral
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com
- [IPv6:2607:f8b0:4864:20::429])
+ header.s=20161025 header.b=eWVphLen; dkim-atps=neutral
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com
+ [IPv6:2607:f8b0:4864:20::1036])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gx4zw74w8z2yd6
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Aug 2021 02:34:19 +1000 (AEST)
-Received: by mail-pf1-x429.google.com with SMTP id e16so5710333pfc.6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Aug 2021 09:34:19 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gx4zx3mTTz2yd6
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Aug 2021 02:34:21 +1000 (AEST)
+Received: by mail-pj1-x1036.google.com with SMTP id
+ g13-20020a17090a3c8d00b00196286963b9so2278322pjc.3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Aug 2021 09:34:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=wY8+szznmE152jYf8mqg/hGPdJjKzi+Dd5U0xnmTLEI=;
- b=UxEhwv13lEE8IsmsIS1A/oE2ZAIMn7MahYfo99hGTtkWctlP3b7px7W2BBFOr/8jBh
- uLrlp4rI3DB9x4tNjwswQT3tJGwX6VEmRMGKZ+TLKYY8ZjJ38T/ps5nSn7VFFKgd0oAr
- fxHhvjcDCPpX4D+ogDr1Zu7IoICZPxhfSWl5udDRsf1eqXnbwUjcxW1gXE1viTxBqcMC
- dMqxRfYoqES8+MJdOjqqkbSLsX7ySNEhD/zRKuWSxVl+dAgJw/U7En/YdGCfu4dG/6wa
- EHYPA14MjZ9A1eAxtFhQrTh6LbMl/FOYjtbnxCtqBhdp+S+syskuJ5DuNCofW90lQgPN
- oNEw==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=HtmwT8vhW+Y+D4cWH4otl9pkKTymcFpPF2qJbGTC360=;
+ b=eWVphLenKgK+bg6luoHoine9WrJW6N814UDqURG75XpthbPEibv5dWKZdbztybZyZj
+ 8eE21dHWL6sdIROkeqyig3jhbvVa4VP1nCoITETxvlFCyZgySToIU9PNw4MAbh2SyISA
+ 0gD04KxbcLsDSt1VJQJlAgBELPLACDq2Pc5yislxayKLbDTD8eijQRWSlzcAtWZu5dr/
+ RTXwYSB5+8KAkfzpNp1HSOA8pvPefPdMXA88s/DLYS2RzkPw640Sqbuv+ylwUnRLU8iw
+ al1fGBVeJhr87EFBsFzqKc2HOq6bhG/u3OajarJJJHEwaJ5i5Km+OT8MWBA7UP53JcMx
+ nlpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=wY8+szznmE152jYf8mqg/hGPdJjKzi+Dd5U0xnmTLEI=;
- b=oEljHfqk+b8UzHOPP8MuP3mNIUD/e5sFoeIdtBBD65Y47RIGBqiZ8UwJrHZpEOr7EI
- ZtxLiE9Kp/0zNv/AZsrFrt3qrcBFMjY2+76rQrPbAv7j6SOmOwcZjvrXSm4JrJ/7bNj/
- UNnhSDAc3eOJcK2VbiA21cOZV0gxi83wGLbi65Lvi55WExuGn+FNwcJ41QV4zcQV/+fN
- oA5b9xkfOWeLLNofYZ7BLNaxTopw6mD3nOiH20qXb56oGNbCj7vVwekjniGyj6wUH5mx
- Son8dfi4GmTLNKynFuHXWOp5TWVPhbkGaR/lsmvu2pgZnacXfx/FXMoAQnv3J/fpAZzG
- OSpQ==
-X-Gm-Message-State: AOAM5316tcGUhfducsSHUaK1bZTBbheQv3dD79AKRvs2Npj4hp+zWAU2
- 9+3N+ecra8Wm5GQY8awE7XN8LDwX/q0=
-X-Google-Smtp-Source: ABdhPJyi+MQpkccdiubmw36IpNuLPMY5Hlz/MF9DQRQ+tA+Uqrmx8tVB5hbAv/T/JmWMg0TIt9YlTw==
-X-Received: by 2002:aa7:80d9:0:b029:2ed:49fa:6dc5 with SMTP id
- a25-20020aa780d90000b02902ed49fa6dc5mr9867444pfn.3.1630082056791; 
- Fri, 27 Aug 2021 09:34:16 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=HtmwT8vhW+Y+D4cWH4otl9pkKTymcFpPF2qJbGTC360=;
+ b=QmoGO63xQqvSbltqbTXxws7k68AUNvXQGJcB86mKtTwwIyBYAu3Sv99H/03/XavtMf
+ XSeY9CDGHHdjO5gDYMSZY1NG+cHS4KgKpWnLdczzMrCgn1L4EYea8I0oaRfJKYTT2d2n
+ rq0TT2s71XqAqm0ECTpihO2KAv6uBdXfALynrEeUu9wfdkvmWuqAtzZ1SHb76E4NMeZe
+ RoFUOCXnTjXDP486SfgvFT7X0RR668cEsmCTwdrtIalWaSk0e4qYF319g7QWP+mqIjdY
+ dbKmrmmolpdyWO6DoaMMScTgJ1Z1Ewv9l/UTElxch13PaL5wnR/Aw/4cLYiu1fscaxBQ
+ s8zA==
+X-Gm-Message-State: AOAM533Q6yaorjiFK9RcOSzU7+BDccZV/B8BcZ3aWGaVr32EWKnSFw2W
+ vTvlWcmQ1EJfRbuW4/YT8tSVEjztoxk=
+X-Google-Smtp-Source: ABdhPJyPgFAtpQGKW5SrZ7OKIMs+OSeF3nErdkbCuoVw4YzqLtimhumKdQxc2SxkqKFxOsCZ5WYlrw==
+X-Received: by 2002:a17:902:b711:b029:11e:6480:258a with SMTP id
+ d17-20020a170902b711b029011e6480258amr9383867pls.41.1630082058994; 
+ Fri, 27 Aug 2021 09:34:18 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (220-244-72-10.tpgi.com.au. [220.244.72.10])
- by smtp.gmail.com with ESMTPSA id u24sm7083852pfm.85.2021.08.27.09.34.14
+ by smtp.gmail.com with ESMTPSA id u24sm7083852pfm.85.2021.08.27.09.34.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 27 Aug 2021 09:34:16 -0700 (PDT)
+ Fri, 27 Aug 2021 09:34:18 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH 0/6] powerpc: Make hash MMU code build configurable
-Date: Sat, 28 Aug 2021 02:34:04 +1000
-Message-Id: <20210827163410.1177154-1-npiggin@gmail.com>
+Subject: [RFC PATCH 1/6] powerpc: Remove unused FW_FEATURE_NATIVE references
+Date: Sat, 28 Aug 2021 02:34:05 +1000
+Message-Id: <20210827163410.1177154-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
+In-Reply-To: <20210827163410.1177154-1-npiggin@gmail.com>
+References: <20210827163410.1177154-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -83,80 +86,47 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now that there's a platform that can make good use of it, here's
-a series that can prevent the hash MMU code being built for 64s
-platforms that don't need it.
+FW_FEATURE_NATIVE_ALWAYS and FW_FEATURE_NATIVE_POSSIBLE are always
+zero and never do anything. Remove them.
 
-Thanks,
-Nick
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/include/asm/firmware.h | 8 --------
+ 1 file changed, 8 deletions(-)
 
-Nicholas Piggin (6):
-  powerpc: Remove unused FW_FEATURE_NATIVE references
-  powerpc: Rename PPC_NATIVE to PPC_HASH_MMU_NATIVE
-  powerpc/pseries: Stop selecting PPC_HASH_MMU_NATIVE
-  powerpc/64s: Make hash MMU code build configurable
-  powerpc/microwatt: select POWER9_CPU
-  powerpc/microwatt: Stop building the hash MMU code
-
- arch/powerpc/Kconfig                          |   1 +
- arch/powerpc/configs/microwatt_defconfig      |   2 +-
- arch/powerpc/include/asm/book3s/64/mmu.h      |  22 +++-
- .../include/asm/book3s/64/tlbflush-hash.h     |   7 ++
- arch/powerpc/include/asm/book3s/64/tlbflush.h |   4 -
- arch/powerpc/include/asm/book3s/pgtable.h     |   4 +
- arch/powerpc/include/asm/firmware.h           |   8 --
- arch/powerpc/include/asm/mmu.h                |  38 +++++-
- arch/powerpc/include/asm/mmu_context.h        |   2 +
- arch/powerpc/include/asm/paca.h               |   8 ++
- arch/powerpc/kernel/asm-offsets.c             |   2 +
- arch/powerpc/kernel/dt_cpu_ftrs.c             |  10 +-
- arch/powerpc/kernel/entry_64.S                |   4 +-
- arch/powerpc/kernel/exceptions-64s.S          |  16 +++
- arch/powerpc/kernel/mce.c                     |   2 +-
- arch/powerpc/kernel/mce_power.c               |  10 +-
- arch/powerpc/kernel/paca.c                    |  18 ++-
- arch/powerpc/kernel/process.c                 |  13 +-
- arch/powerpc/kernel/prom.c                    |   2 +
- arch/powerpc/kernel/setup_64.c                |   4 +
- arch/powerpc/kexec/core_64.c                  |   4 +-
- arch/powerpc/kexec/ranges.c                   |   4 +
- arch/powerpc/kvm/Kconfig                      |   1 +
- arch/powerpc/mm/book3s64/Makefile             |  19 +--
- arch/powerpc/mm/book3s64/hash_native.c        | 104 ----------------
- arch/powerpc/mm/book3s64/hash_pgtable.c       |   1 -
- arch/powerpc/mm/book3s64/hash_utils.c         | 116 ++++++++++++++++--
- .../{hash_hugetlbpage.c => hugetlbpage.c}     |   6 +
- arch/powerpc/mm/book3s64/mmu_context.c        |  16 +++
- arch/powerpc/mm/book3s64/pgtable.c            |  22 +++-
- arch/powerpc/mm/book3s64/radix_pgtable.c      |   4 +
- arch/powerpc/mm/book3s64/slb.c                |  16 ---
- arch/powerpc/mm/copro_fault.c                 |   2 +
- arch/powerpc/mm/fault.c                       |  17 +++
- arch/powerpc/mm/pgtable.c                     |  10 +-
- arch/powerpc/platforms/52xx/Kconfig           |   2 +-
- arch/powerpc/platforms/Kconfig                |   4 +-
- arch/powerpc/platforms/Kconfig.cputype        |  21 +++-
- arch/powerpc/platforms/cell/Kconfig           |   3 +-
- arch/powerpc/platforms/chrp/Kconfig           |   2 +-
- arch/powerpc/platforms/embedded6xx/Kconfig    |   2 +-
- arch/powerpc/platforms/maple/Kconfig          |   3 +-
- arch/powerpc/platforms/microwatt/Kconfig      |   2 +-
- arch/powerpc/platforms/pasemi/Kconfig         |   3 +-
- arch/powerpc/platforms/powermac/Kconfig       |   3 +-
- arch/powerpc/platforms/powernv/Kconfig        |   2 +-
- arch/powerpc/platforms/powernv/idle.c         |   2 +
- arch/powerpc/platforms/powernv/setup.c        |   2 +
- arch/powerpc/platforms/pseries/Kconfig        |   1 -
- arch/powerpc/platforms/pseries/lpar.c         |  68 +++++-----
- arch/powerpc/platforms/pseries/lparcfg.c      |   2 +-
- arch/powerpc/platforms/pseries/mobility.c     |   6 +
- arch/powerpc/platforms/pseries/ras.c          |   4 +
- arch/powerpc/platforms/pseries/reconfig.c     |   2 +
- arch/powerpc/platforms/pseries/setup.c        |   6 +-
- arch/powerpc/xmon/xmon.c                      |   8 +-
- 56 files changed, 427 insertions(+), 240 deletions(-)
- rename arch/powerpc/mm/book3s64/{hash_hugetlbpage.c => hugetlbpage.c} (95%)
-
+diff --git a/arch/powerpc/include/asm/firmware.h b/arch/powerpc/include/asm/firmware.h
+index 7604673787d6..df9e4aae917e 100644
+--- a/arch/powerpc/include/asm/firmware.h
++++ b/arch/powerpc/include/asm/firmware.h
+@@ -79,8 +79,6 @@ enum {
+ 	FW_FEATURE_POWERNV_ALWAYS = 0,
+ 	FW_FEATURE_PS3_POSSIBLE = FW_FEATURE_LPAR | FW_FEATURE_PS3_LV1,
+ 	FW_FEATURE_PS3_ALWAYS = FW_FEATURE_LPAR | FW_FEATURE_PS3_LV1,
+-	FW_FEATURE_NATIVE_POSSIBLE = 0,
+-	FW_FEATURE_NATIVE_ALWAYS = 0,
+ 	FW_FEATURE_POSSIBLE =
+ #ifdef CONFIG_PPC_PSERIES
+ 		FW_FEATURE_PSERIES_POSSIBLE |
+@@ -90,9 +88,6 @@ enum {
+ #endif
+ #ifdef CONFIG_PPC_PS3
+ 		FW_FEATURE_PS3_POSSIBLE |
+-#endif
+-#ifdef CONFIG_PPC_NATIVE
+-		FW_FEATURE_NATIVE_ALWAYS |
+ #endif
+ 		0,
+ 	FW_FEATURE_ALWAYS =
+@@ -104,9 +99,6 @@ enum {
+ #endif
+ #ifdef CONFIG_PPC_PS3
+ 		FW_FEATURE_PS3_ALWAYS &
+-#endif
+-#ifdef CONFIG_PPC_NATIVE
+-		FW_FEATURE_NATIVE_ALWAYS &
+ #endif
+ 		FW_FEATURE_POSSIBLE,
+ 
 -- 
 2.23.0
 
