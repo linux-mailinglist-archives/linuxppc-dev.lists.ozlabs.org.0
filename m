@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 106FF3F9A34
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 15:33:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A24943F9A33
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 15:32:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gx0yj6xmxz3dh1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 23:33:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gx0yH3ldSz3gDj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 23:32:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,22 +16,20 @@ Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gx0lC0fLlz3cFv
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Aug 2021 23:23:03 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gx0l85ncTz3cGb
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Aug 2021 23:23:00 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Gx0lB0y5Yz9tkd;
- Fri, 27 Aug 2021 23:23:02 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Gx0l34th3z9tk2;
+ Fri, 27 Aug 2021 23:22:55 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Zheng Yongjun <zhengyongjun3@huawei.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Shuah Khan <shuah@kernel.org>
-In-Reply-To: <20210326064808.3262568-1-zhengyongjun3@huawei.com>
-References: <20210326064808.3262568-1-zhengyongjun3@huawei.com>
-Subject: Re: [PATCH -next] selftests/powerpc: Remove duplicated include from
- tm-poison.c
-Message-Id: <163007013895.52768.7064716282025160989.b4-ty@ellerman.id.au>
+To: Frederic Weisbecker <frederic@kernel.org>, Paul Mackerras <paulus@samba.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, Pingfan Liu <kernelfans@gmail.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Wan Jiabing <wanjiabing@vivo.com>, Ganesh Goudar <ganeshgr@linux.ibm.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Randy Dunlap <rdunlap@infradead.org>, Cédric Le Goater <clg@kaod.org>, Michael Ellerman <mpe@ellerman.id.au>, Geert Uytterhoeven <geert+renesas@glider.be>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Michal Suchanek <msuchanek@suse.de>
+In-Reply-To: <20210323062916.295346-1-wanjiabing@vivo.com>
+References: <20210323062916.295346-1-wanjiabing@vivo.com>
+Subject: Re: [PATCH] [v2] arch: powerpc: Remove duplicate includes
+Message-Id: <163007013805.52768.8530805049704388181.b4-ty@ellerman.id.au>
 Date: Fri, 27 Aug 2021 23:15:38 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -47,22 +45,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel-janitors@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kselftest@vger.kernel.org, Hulk Robot <hulkci@huawei.com>
+Cc: kael_w@yeah.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 26 Mar 2021 14:48:08 +0800, Zheng Yongjun wrote:
-> Remove duplicated include.
+On Tue, 23 Mar 2021 14:29:05 +0800, Wan Jiabing wrote:
+> mmu-hash.h: asm/bug.h has been included at line 12, so remove
+> the duplicate one at line 21.
+> interrupt.c: asm/interrupt.h has been included at line 12, so
+> remove the duplicate one at line 10.
+> time.c: linux/sched/clock.h has been included at line 33,so
+> remove the duplicate one at line 56 and move sched/cputime.h
+> under sched including segament.
 > 
-> 
-> 
-> 
+> [...]
 
 Applied to powerpc/next.
 
-[1/1] selftests/powerpc: Remove duplicated include from tm-poison.c
-      https://git.kernel.org/powerpc/c/6af0b5570b59ce8dd1608a8e48f59eff3f4bdd04
+[1/1] arch: powerpc: Remove duplicate includes
+      https://git.kernel.org/powerpc/c/e225c4d6bc389701f2f63fc246420a1da3465ab5
 
 cheers
