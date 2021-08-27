@@ -1,46 +1,39 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0B5C3FA01C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 21:46:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A0653FA02C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 21:57:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gx9Fs482Yz3bjX
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Aug 2021 05:46:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gx9Tw2VPcz3bWb
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Aug 2021 05:57:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=134.134.136.100; helo=mga07.intel.com;
- envelope-from=ricardo.neri-calderon@linux.intel.com; receiver=<UNKNOWN>)
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (no SPF record) smtp.mailfrom=wanadoo.fr
+ (client-ip=80.12.242.135; helo=smtp.smtpout.orange.fr;
+ envelope-from=christophe.jaillet@wanadoo.fr; receiver=<UNKNOWN>)
+Received: from smtp.smtpout.orange.fr (smtp13.smtpout.orange.fr
+ [80.12.242.135])
+ (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gx9FS1rpcz2yYl
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Aug 2021 05:46:19 +1000 (AEST)
-X-IronPort-AV: E=McAfee;i="6200,9189,10089"; a="281735251"
-X-IronPort-AV: E=Sophos;i="5.84,357,1620716400"; d="scan'208";a="281735251"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
- by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Aug 2021 12:45:13 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.84,357,1620716400"; d="scan'208";a="465548314"
-Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
- by orsmga007.jf.intel.com with ESMTP; 27 Aug 2021 12:45:12 -0700
-Date: Fri, 27 Aug 2021 12:45:03 -0700
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-To: Vincent Guittot <vincent.guittot@linaro.org>
-Subject: Re: [PATCH v4 6/6] sched/fair: Consider SMT in ASYM_PACKING load
- balance
-Message-ID: <20210827194503.GB14720@ranerica-svr.sc.intel.com>
-References: <20210810144145.18776-1-ricardo.neri-calderon@linux.intel.com>
- <20210810144145.18776-7-ricardo.neri-calderon@linux.intel.com>
- <CAKfTPtArtmhLG5QYR6TzKevDrEuiQu2HJxm_C3pe549XdGU-1g@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gx9TQ6lvSz2ymc
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Aug 2021 05:56:40 +1000 (AEST)
+Received: from pop-os.home ([90.126.253.178]) by mwinf5d77 with ME
+ id mjwU2500F3riaq203jwVS9; Fri, 27 Aug 2021 21:56:35 +0200
+X-ME-Helo: pop-os.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Fri, 27 Aug 2021 21:56:35 +0200
+X-ME-IP: 90.126.253.178
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: kou.ishizaki@toshiba.co.jp, geoff@infradead.org, davem@davemloft.net,
+ kuba@kernel.org
+Subject: [PATCH] net: spider_net: switch from 'pci_' to 'dma_' API
+Date: Fri, 27 Aug 2021 21:56:28 +0200
+Message-Id: <60abc3d0c8b4ef8368a4d63326a25a5cb3cd218c.1630094078.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKfTPtArtmhLG5QYR6TzKevDrEuiQu2HJxm_C3pe549XdGU-1g@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,45 +45,139 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, Aubrey Li <aubrey.li@linux.intel.com>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
- "Ravi V. Shankar" <ravi.v.shankar@intel.com>,
- "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
- Ricardo Neri <ricardo.neri@intel.com>, Ben Segall <bsegall@google.com>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- "Joel Fernandes \(Google\)" <joel@joelfernandes.org>,
- Ingo Molnar <mingo@kernel.org>,
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
- Steven Rostedt <rostedt@goodmis.org>, Mel Gorman <mgorman@suse.de>,
- Len Brown <len.brown@intel.com>, Nicholas Piggin <npiggin@gmail.com>,
- Aubrey Li <aubrey.li@intel.com>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Tim Chen <tim.c.chen@linux.intel.com>, Quentin Perret <qperret@google.com>,
- Daniel Bristot de Oliveira <bristot@redhat.com>,
- linux-kernel <linux-kernel@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Aug 27, 2021 at 12:13:42PM +0200, Vincent Guittot wrote:
-> On Tue, 10 Aug 2021 at 16:41, Ricardo Neri
-> <ricardo.neri-calderon@linux.intel.com> wrote:
-> > @@ -9540,6 +9629,12 @@ static struct rq *find_busiest_queue(struct lb_env *env,
-> >                     nr_running == 1)
-> >                         continue;
-> >
-> > +               /* Make sure we only pull tasks from a CPU of lower priority */
-> > +               if ((env->sd->flags & SD_ASYM_PACKING) &&
-> > +                   sched_asym_prefer(i, env->dst_cpu) &&
-> > +                   nr_running == 1)
-> > +                       continue;
-> 
-> This really looks similar to the test above for SD_ASYM_CPUCAPACITY.
-> More generally speaking SD_ASYM_PACKING and SD_ASYM_CPUCAPACITY share
-> a lot of common policy and I wonder if at some point we could not
-> merge their behavior in LB
+In [1], Christoph Hellwig has proposed to remove the wrappers in
+include/linux/pci-dma-compat.h.
 
-I would like to confirm with you that you are not expecting this merge
-as part of this series, right?
+Some reasons why this API should be removed have been given by Julia
+Lawall in [2].
 
-Thanks and BR,
-Ricardo
+A coccinelle script has been used to perform the needed transformation
+Only relevant parts are given below.
+
+@@ @@
+-    PCI_DMA_BIDIRECTIONAL
++    DMA_BIDIRECTIONAL
+
+@@ @@
+-    PCI_DMA_TODEVICE
++    DMA_TO_DEVICE
+
+@@ @@
+-    PCI_DMA_FROMDEVICE
++    DMA_FROM_DEVICE
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_single(e1, e2, e3, e4)
++    dma_map_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_single(e1, e2, e3, e4)
++    dma_unmap_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2;
+@@
+-    pci_dma_mapping_error(e1, e2)
++    dma_mapping_error(&e1->dev, e2)
+
+
+[1]: https://lore.kernel.org/kernel-janitors/20200421081257.GA131897@infradead.org/
+[2]: https://lore.kernel.org/kernel-janitors/alpine.DEB.2.22.394.2007120902170.2424@hadrien/
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+It has *not* been compile tested because I don't have the needed
+configuration or cross-compiler. However, the modification is completely
+mechanical and done by coccinelle.
+---
+ drivers/net/ethernet/toshiba/spider_net.c | 27 +++++++++++++----------
+ 1 file changed, 15 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/net/ethernet/toshiba/spider_net.c b/drivers/net/ethernet/toshiba/spider_net.c
+index 087f0af56c50..66d4e024d11e 100644
+--- a/drivers/net/ethernet/toshiba/spider_net.c
++++ b/drivers/net/ethernet/toshiba/spider_net.c
+@@ -354,9 +354,10 @@ spider_net_free_rx_chain_contents(struct spider_net_card *card)
+ 	descr = card->rx_chain.head;
+ 	do {
+ 		if (descr->skb) {
+-			pci_unmap_single(card->pdev, descr->hwdescr->buf_addr,
++			dma_unmap_single(&card->pdev->dev,
++					 descr->hwdescr->buf_addr,
+ 					 SPIDER_NET_MAX_FRAME,
+-					 PCI_DMA_BIDIRECTIONAL);
++					 DMA_BIDIRECTIONAL);
+ 			dev_kfree_skb(descr->skb);
+ 			descr->skb = NULL;
+ 		}
+@@ -411,9 +412,9 @@ spider_net_prepare_rx_descr(struct spider_net_card *card,
+ 	if (offset)
+ 		skb_reserve(descr->skb, SPIDER_NET_RXBUF_ALIGN - offset);
+ 	/* iommu-map the skb */
+-	buf = pci_map_single(card->pdev, descr->skb->data,
+-			SPIDER_NET_MAX_FRAME, PCI_DMA_FROMDEVICE);
+-	if (pci_dma_mapping_error(card->pdev, buf)) {
++	buf = dma_map_single(&card->pdev->dev, descr->skb->data,
++			     SPIDER_NET_MAX_FRAME, DMA_FROM_DEVICE);
++	if (dma_mapping_error(&card->pdev->dev, buf)) {
+ 		dev_kfree_skb_any(descr->skb);
+ 		descr->skb = NULL;
+ 		if (netif_msg_rx_err(card) && net_ratelimit())
+@@ -653,8 +654,9 @@ spider_net_prepare_tx_descr(struct spider_net_card *card,
+ 	dma_addr_t buf;
+ 	unsigned long flags;
+ 
+-	buf = pci_map_single(card->pdev, skb->data, skb->len, PCI_DMA_TODEVICE);
+-	if (pci_dma_mapping_error(card->pdev, buf)) {
++	buf = dma_map_single(&card->pdev->dev, skb->data, skb->len,
++			     DMA_TO_DEVICE);
++	if (dma_mapping_error(&card->pdev->dev, buf)) {
+ 		if (netif_msg_tx_err(card) && net_ratelimit())
+ 			dev_err(&card->netdev->dev, "could not iommu-map packet (%p, %i). "
+ 				  "Dropping packet\n", skb->data, skb->len);
+@@ -666,7 +668,8 @@ spider_net_prepare_tx_descr(struct spider_net_card *card,
+ 	descr = card->tx_chain.head;
+ 	if (descr->next == chain->tail->prev) {
+ 		spin_unlock_irqrestore(&chain->lock, flags);
+-		pci_unmap_single(card->pdev, buf, skb->len, PCI_DMA_TODEVICE);
++		dma_unmap_single(&card->pdev->dev, buf, skb->len,
++				 DMA_TO_DEVICE);
+ 		return -ENOMEM;
+ 	}
+ 	hwdescr = descr->hwdescr;
+@@ -822,8 +825,8 @@ spider_net_release_tx_chain(struct spider_net_card *card, int brutal)
+ 
+ 		/* unmap the skb */
+ 		if (skb) {
+-			pci_unmap_single(card->pdev, buf_addr, skb->len,
+-					PCI_DMA_TODEVICE);
++			dma_unmap_single(&card->pdev->dev, buf_addr, skb->len,
++					 DMA_TO_DEVICE);
+ 			dev_consume_skb_any(skb);
+ 		}
+ 	}
+@@ -1165,8 +1168,8 @@ spider_net_decode_one_descr(struct spider_net_card *card)
+ 	/* unmap descriptor */
+ 	hw_buf_addr = hwdescr->buf_addr;
+ 	hwdescr->buf_addr = 0xffffffff;
+-	pci_unmap_single(card->pdev, hw_buf_addr,
+-			SPIDER_NET_MAX_FRAME, PCI_DMA_FROMDEVICE);
++	dma_unmap_single(&card->pdev->dev, hw_buf_addr, SPIDER_NET_MAX_FRAME,
++			 DMA_FROM_DEVICE);
+ 
+ 	if ( (status == SPIDER_NET_DESCR_RESPONSE_ERROR) ||
+ 	     (status == SPIDER_NET_DESCR_PROTECTION_ERROR) ||
+-- 
+2.30.2
+
