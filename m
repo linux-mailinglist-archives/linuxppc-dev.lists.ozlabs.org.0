@@ -1,108 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B9013F915F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 02:48:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9EB73F9170
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 02:53:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gwh061jTfz2yx9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 10:48:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gwh64403Nz2ynX
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 10:53:16 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=D8HTcPpq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=paul-moore-com.20150623.gappssmtp.com header.i=@paul-moore-com.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=bk6vfNTo;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=paul-moore.com
+ (client-ip=2a00:1450:4864:20::62b; helo=mail-ej1-x62b.google.com;
+ envelope-from=paul@paul-moore.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=D8HTcPpq; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=paul-moore-com.20150623.gappssmtp.com
+ header.i=@paul-moore-com.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=bk6vfNTo; dkim-atps=neutral
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com
+ [IPv6:2a00:1450:4864:20::62b])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GwNF44TWTz2xgy
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Aug 2021 22:58:16 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 17QCZM78043574; Thu, 26 Aug 2021 08:58:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type; s=pp1; bh=DEc+s6MvO0OlrxaoOK4pT2yqX1vyKCqy7cL3MqV0QQs=;
- b=D8HTcPpqQ9Q1rNleh8QKBYI6jQzktRoaB+z3MlHaGemBP5+DPvX+xPrAkm/iSnqjgkeG
- isD7r4A2IAYA0VeHEKyVXK+UinBOSDSdDXwa45sgbav7aXkim4h8ex16lVeX/WyEu94h
- Db3A2vW9qBwsM7WuRctDYttZ5Irv5mdnxYQAIrmGVH2CSLJvcykUOd28kISivlbbOIRw
- wz5JlWA+II1LODRqgY929UhRgaFpaXKlOQ1M/PZOlw70kFrXBAOP7yqCaqUJp6PiAMww
- OQZOVpDf8HTdWTN0TMR8nDW4iuaQyBNcO2DknTSw8QCw701hBgIRQivg9K8axhnZUgn6 uw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3ap5qu13tn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 26 Aug 2021 08:58:08 -0400
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 17QCZUt8044090;
- Thu, 26 Aug 2021 08:58:07 -0400
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3ap5qu13sv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 26 Aug 2021 08:58:07 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 17QCusxZ028786;
- Thu, 26 Aug 2021 12:58:05 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma04fra.de.ibm.com with ESMTP id 3ajs48qwpy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 26 Aug 2021 12:58:05 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 17QCw2X733620352
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 26 Aug 2021 12:58:02 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7FB7A42054;
- Thu, 26 Aug 2021 12:58:02 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 49E7F42045;
- Thu, 26 Aug 2021 12:58:00 +0000 (GMT)
-Received: from li-c7b85bcc-2727-11b2-a85c-a9ba7f3a2193.ibm.com (unknown
- [9.43.90.145]) by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 26 Aug 2021 12:57:59 +0000 (GMT)
-Subject: Re: [PATCH v2 2/3] selftests/powerpc: Add test for real address error
- handling
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-References: <20210805092025.272871-1-ganeshgr@linux.ibm.com>
- <20210805092025.272871-2-ganeshgr@linux.ibm.com>
- <87a6l7c8ku.fsf@mpe.ellerman.id.au>
- <8edb13f5-f036-2f9d-4c89-55c51c4cdbc0@linux.ibm.com>
- <87eeagc2c1.fsf@mpe.ellerman.id.au>
-From: Ganesh <ganeshgr@linux.ibm.com>
-Message-ID: <902f49c7-31d7-b174-2e99-0880bec599f3@linux.ibm.com>
-Date: Thu, 26 Aug 2021 18:27:58 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gwh5J57VQz2xY0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Aug 2021 10:52:34 +1000 (AEST)
+Received: by mail-ej1-x62b.google.com with SMTP id bt14so10207712ejb.3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Aug 2021 17:52:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=kcZjG66xtA/jY29pBRQOPOds6aYeDhJ8jQhY1pZY80A=;
+ b=bk6vfNTov+ymNHAHaSlYzg+pXn1z2h9fT4GVPYxh4e4SQY71Z+fwbcXFztimoz1hRx
+ zAwLQ1RSvbuz4IRt0ig1e+XVKOZaaMxfKyoyq+Rt6S6gaf9zftZdOG7AxEarsGi3Il2O
+ B2czlprwtwo/7hHgL6EAXw4s6UpUrMvEmls2ejoH8ChoWFOu5CcXvRH1ZJUhmrh9yCov
+ QOr+bT67MTqhZcIxXeHriyMGroLP6PBDJJ+Q5AMb/5W8KyTeBJVKeIQpy0xmNRi/FRsH
+ yEHvmu62DIMfdmj7f4Y5VDYPjELEslbXVqjS0Z6fIHLehadImqvThpAD+b0KDXV31pA/
+ hGag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=kcZjG66xtA/jY29pBRQOPOds6aYeDhJ8jQhY1pZY80A=;
+ b=C1LpiEbO25AIbs/pUNOhhsv27iKXfP3fRMyAsblsqnoIiaKWG3BqHotx7ilW4hLYco
+ HgMeMnhWZFIqkJesNeEVKIseZpLLJl8tEwsjpeFTCcNrHRKisUf+1ZoHe68Nw5eFNyX4
+ IYBLY9VYOLzjKTGqnvpoZEDIOCkegkcI/o5LasjYWFwkaOiSSfZPNrwfJhDVFORF+AkF
+ GwVGFQSs7tVg/yOkOGMz/9t/bkrtLL8YemOGVw/6qww1uW7GYpu7iMEYiaGdpWxAcxBB
+ cm0oFnaTXlR/z22RApTsd1THR6QKEHCmFvDo/DXx3Uy2T/+0kKL1qwImTM8k7GhvUGxl
+ apBg==
+X-Gm-Message-State: AOAM531fKD6NRZpBmfMifIQC9TuyLbytgJcaFjlGIyM1erkAIudHK+iu
+ M8x/lBHHYIaWtabS8xGkWu9zMvHWDqmteHCfhodI
+X-Google-Smtp-Source: ABdhPJzNgmgA/Zd8FwouLieIWH2ENsJn+2AobXdHZoN8I7oJKtub/jVE993grloLZb9EUOCjaGUaPDPKuDihcP2ySkI=
+X-Received: by 2002:a17:906:1d59:: with SMTP id
+ o25mr7136046ejh.431.1630025548172; 
+ Thu, 26 Aug 2021 17:52:28 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <87eeagc2c1.fsf@mpe.ellerman.id.au>
-Content-Type: multipart/alternative;
- boundary="------------B8AF3DD1984CF88B0F360EA4"
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 5m5p9SUQ7SP6tuK4izJszvt-3yHUtV4G
-X-Proofpoint-ORIG-GUID: sSwUfV3LqT4OWtRlfU49s8LtwcMhTbaj
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-08-26_03:2021-08-26,
- 2021-08-26 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 adultscore=0
- impostorscore=0 suspectscore=0 spamscore=0 lowpriorityscore=0 phishscore=0
- priorityscore=1501 mlxlogscore=999 malwarescore=0 bulkscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2107140000 definitions=main-2108260077
-X-Mailman-Approved-At: Fri, 27 Aug 2021 10:47:27 +1000
+References: <a4b3951d1191d4183d92a07a6097566bde60d00a.1629812058.git.christophe.leroy@csgroup.eu>
+ <CAHC9VhR3E6=5HmRaWMWbp4WHsua02niwnzaRGM3tLqd4Y4LA6w@mail.gmail.com>
+ <5a2692b6-5077-21b4-8ebf-73b1c2b83a40@csgroup.eu>
+ <CAHC9VhSG8tPAkAAz5Z77HDMKXLAiaEOanxR+oY5c1E_Xoiso9Q@mail.gmail.com>
+ <87tujc9srr.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87tujc9srr.fsf@mpe.ellerman.id.au>
+From: Paul Moore <paul@paul-moore.com>
+Date: Thu, 26 Aug 2021 20:52:17 -0400
+Message-ID: <CAHC9VhRAbsjifuO+fw4_KpK3ErVM0Dk0Ru3LuZKkeTZvWYc5=w@mail.gmail.com>
+Subject: Re: [PATCH v2 RESEND] powerpc/audit: Convert powerpc to
+ AUDIT_ARCH_COMPAT_GENERIC
+To: Michael Ellerman <mpe@ellerman.id.au>, rgb@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -114,153 +83,178 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, mahesh@linux.ibm.com, npiggin@gmail.com
+Cc: linux-kernel@vger.kernel.org, Eric Paris <eparis@redhat.com>,
+ linux-audit@redhat.com, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a multi-part message in MIME format.
---------------B8AF3DD1984CF88B0F360EA4
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+On Thu, Aug 26, 2021 at 10:37 AM Michael Ellerman <mpe@ellerman.id.au> wrot=
+e:
+> Paul Moore <paul@paul-moore.com> writes:
+> > On Tue, Aug 24, 2021 at 1:11 PM Christophe Leroy
+> > <christophe.leroy@csgroup.eu> wrote:
+> >> Le 24/08/2021 =C3=A0 16:47, Paul Moore a =C3=A9crit :
+> >> > On Tue, Aug 24, 2021 at 9:36 AM Christophe Leroy
+> >> > <christophe.leroy@csgroup.eu> wrote:
+> >> >>
+> >> >> Commit e65e1fc2d24b ("[PATCH] syscall class hookup for all normal
+> >> >> targets") added generic support for AUDIT but that didn't include
+> >> >> support for bi-arch like powerpc.
+> >> >>
+> >> >> Commit 4b58841149dc ("audit: Add generic compat syscall support")
+> >> >> added generic support for bi-arch.
+> >> >>
+> >> >> Convert powerpc to that bi-arch generic audit support.
+> >> >>
+> >> >> Cc: Paul Moore <paul@paul-moore.com>
+> >> >> Cc: Eric Paris <eparis@redhat.com>
+> >> >> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> >> >> ---
+> >> >> Resending v2 with Audit people in Cc
+> >> >>
+> >> >> v2:
+> >> >> - Missing 'git add' for arch/powerpc/include/asm/unistd32.h
+> >> >> - Finalised commit description
+> >> >> ---
+> >> >>   arch/powerpc/Kconfig                |  5 +-
+> >> >>   arch/powerpc/include/asm/unistd32.h |  7 +++
+> >> >>   arch/powerpc/kernel/Makefile        |  3 --
+> >> >>   arch/powerpc/kernel/audit.c         | 84 ------------------------=
+-----
+> >> >>   arch/powerpc/kernel/compat_audit.c  | 44 ---------------
+> >> >>   5 files changed, 8 insertions(+), 135 deletions(-)
+> >> >>   create mode 100644 arch/powerpc/include/asm/unistd32.h
+> >> >>   delete mode 100644 arch/powerpc/kernel/audit.c
+> >> >>   delete mode 100644 arch/powerpc/kernel/compat_audit.c
+> >> >
+> >> > Can you explain, in detail please, the testing you have done to veri=
+fy
+> >> > this patch?
+> >> >
+> >>
+> >> I built ppc64_defconfig and checked that the generated code is functio=
+nnaly equivalent.
+> >>
+> >> ppc32_classify_syscall() is exactly the same as audit_classify_compat_=
+syscall() except that the
+> >> later takes the syscall as second argument (ie in r4) whereas the form=
+er takes it as first argument
+> >> (ie in r3).
+> >>
+> >> audit_classify_arch() and powerpc audit_classify_syscall() are slightl=
+y different between the
+> >> powerpc version and the generic version because the powerpc version ch=
+ecks whether it is
+> >> AUDIT_ARCH_PPC or not (ie value 20), while the generic one checks whet=
+her it has bit
+> >> __AUDIT_ARCH_64BIT set or not (__AUDIT_ARCH_64BIT is the sign bit of a=
+ word), but taking into
+> >> account that the abi is either AUDIT_ARCH_PPC, AUDIT_ARCH_PPC64 or AUD=
+IT_ARCH_PPC64LE, the result is
+> >> the same.
+> >>
+> >> If you are asking I guess you saw something wrong ?
+> >
+> > I was asking because I didn't see any mention of testing, and when you
+> > are enabling something significant like this it is nice to see that it
+> > has been verified to work :)
+> >
+> > While binary dumps and comparisons are nice, it is always good to see
+> > verification from a test suite.  I don't have access to the necessary
+> > hardware to test this, but could you verify that the audit-testsuite
+> > passes on your test system with your patches applied?
+> >
+> >  * https://github.com/linux-audit/audit-testsuite
+>
+> I tested on ppc64le. Both before and after the patch I get the result
+> below.
+>
+> So I guess the patch is OK, but maybe we have some existing issue.
+>
+> I had a bit of a look at the test code, but my perl is limited. I think
+> it was running the command below, and it returned "<no matches>", but
+> not really sure what that means.
 
+If it makes you feel any better, my perl is *very* limited; thankfully
+this isn't my first time looking at that test :)
 
-On 8/26/21 8:57 AM, Michael Ellerman wrote:
-> Ganesh <ganeshgr@linux.ibm.com> writes:
->> On 8/24/21 6:18 PM, Michael Ellerman wrote:
->>
->>> Ganesh Goudar <ganeshgr@linux.ibm.com> writes:
->>>> Add test for real address or control memory address access
->>>> error handling, using NX-GZIP engine.
->>>>
->>>> The error is injected by accessing the control memory address
->>>> using illegal instruction, on successful handling the process
->>>> attempting to access control memory address using illegal
->>>> instruction receives SIGBUS.
->>> ...
->>>
->>>> diff --git a/tools/testing/selftests/powerpc/mce/inject-ra-err.sh b/tools/testing/selftests/powerpc/mce/inject-ra-err.sh
->>>> new file mode 100755
->>>> index 000000000000..3633cdc651a1
->>>> --- /dev/null
->>>> +++ b/tools/testing/selftests/powerpc/mce/inject-ra-err.sh
->>>> @@ -0,0 +1,18 @@
->>>> +#!/bin/bash
->>>> +# SPDX-License-Identifier: GPL-2.0-or-later
->>>> +
->>>> +if [[ ! -w /dev/crypto/nx-gzip ]]; then
->>>> +	echo "WARN: Can't access /dev/crypto/nx-gzip, skipping"
->>>> +	exit 0
->>>> +fi
->>>> +
->>>> +timeout 5 ./inject-ra-err
->>>> +
->>>> +# 128 + 7 (SIGBUS) = 135, 128 is a exit code with special meaning.
->>>> +if [ $? -ne 135 ]; then
->>>> +	echo "FAILED: Real address or Control memory access error not handled"
->>>> +	exit $?
->>>> +fi
->>>> +
->>>> +echo "OK: Real address or Control memory access error is handled"
->>>> +exit 0
->>> I don't think we really need the shell script, we should be able to do
->>> all that in the C code.
->>>
->>> Can you try this?
->> it works!, We need to set timeout, with 120 sec timeout we may flood the dmesg.
-> Hmm. Does it keep faulting? The regs->nip += 4 is meant to avoid that.
+It's a little odd, but after some basic sanity tests at the top, the
+test sets a watch on a file, /tmp/<rando_string>, and tells the kernel
+to generate audit records for any syscall that operates on that file.
+It then creates, and removes, a series of exclude audit filters to
+check if the exclude filtering is working as expected, e.g. when
+syscall filtering is excluded there should be no syscall records in
+the audit log.
 
-Yes, it keeps faulting, if we fail to handle and not send SIGBUS to the process.
+In the case you describe, it looks like it looks like the audit
+exclude filter is removed (that's what line 147 does), the
+/tmp/<rando_string> file is removed (line 152), and then we check to
+see if any syscall records exist (line 164, and yes, there should be
+*something* there for the unlink/rm).
 
+It may be of little consolation, but this test works just fine on
+recent kernels running on both x86_64 and aarch64.  I don't have
+access to a powerpc system of any vintage, but I added Richard to the
+To line above in case he has easier access to a test system (I suspect
+the RH/IBM linkage should help in this regard).  Otherwise I would
+suggest starting to debug this by simply doing some basic tests using
+auditctl to create rules and exclude rules to see what is working, and
+what isn't; that might provide some clues.
+
+Sorry I'm not much more help at this point :/
+
+>   $ sudo ausearch -i -m SYSCALL -p 216440 -ui 0 -gi 0 -ul 0 -su unconfine=
+d _u:unconfined_r:unconfined_t:s0-s0:c0.c1023 -ts recent
+>   <no matches>
 >
 > cheers
+>
+>
+>
+> Running as   user    root
+>         with context unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c102=
+3
+>         on   system  Fedora
+>
+> backlog_wait_time_actual_reset/test .. ok
+> exec_execve/test ..................... ok
+> exec_name/test ....................... ok
+> file_create/test ..................... ok
+> file_delete/test ..................... ok
+> file_rename/test ..................... ok
+> filter_exclude/test .................. 1/21
+> # Test 20 got: "256" (filter_exclude/test at line 167)
+> #    Expected: "0"
+> #  filter_exclude/test line 167 is: ok( $result, 0 );
+> # Test 21 got: "0" (filter_exclude/test at line 179)
+> #    Expected: "1"
+> #  filter_exclude/test line 179 is: ok( $found_msg, 1 );
+> filter_exclude/test .................. Failed 2/21 subtests
+> filter_saddr_fam/test ................ ok
+> filter_sessionid/test ................ ok
+> login_tty/test ....................... ok
+> lost_reset/test ...................... ok
+> netfilter_pkt/test ................... ok
+> syscalls_file/test ................... ok
+> syscall_module/test .................. ok
+> time_change/test ..................... ok
+> user_msg/test ........................ ok
+> fanotify/test ........................ ok
+> bpf/test ............................. ok
+>
+> Test Summary Report
+> -------------------
+> filter_exclude/test                (Wstat: 0 Tests: 21 Failed: 2)
+>   Failed tests:  20-21
+> Files=3D18, Tests=3D202, 45 wallclock secs ( 0.18 usr  0.03 sys + 20.15 c=
+usr  0.92 csys =3D 21.28 CPU)
+> Result: FAIL
+> Failed 1/18 test programs. 2/202 subtests failed.
 
---------------B8AF3DD1984CF88B0F360EA4
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 7bit
 
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">On 8/26/21 8:57 AM, Michael Ellerman
-      wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:87eeagc2c1.fsf@mpe.ellerman.id.au">
-      <pre class="moz-quote-pre" wrap="">Ganesh <a class="moz-txt-link-rfc2396E" href="mailto:ganeshgr@linux.ibm.com">&lt;ganeshgr@linux.ibm.com&gt;</a> writes:
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">On 8/24/21 6:18 PM, Michael Ellerman wrote:
 
-</pre>
-        <blockquote type="cite">
-          <pre class="moz-quote-pre" wrap="">Ganesh Goudar <a class="moz-txt-link-rfc2396E" href="mailto:ganeshgr@linux.ibm.com">&lt;ganeshgr@linux.ibm.com&gt;</a> writes:
-</pre>
-          <blockquote type="cite">
-            <pre class="moz-quote-pre" wrap="">Add test for real address or control memory address access
-error handling, using NX-GZIP engine.
-
-The error is injected by accessing the control memory address
-using illegal instruction, on successful handling the process
-attempting to access control memory address using illegal
-instruction receives SIGBUS.
-</pre>
-          </blockquote>
-          <pre class="moz-quote-pre" wrap="">...
-
-</pre>
-          <blockquote type="cite">
-            <pre class="moz-quote-pre" wrap="">diff --git a/tools/testing/selftests/powerpc/mce/inject-ra-err.sh b/tools/testing/selftests/powerpc/mce/inject-ra-err.sh
-new file mode 100755
-index 000000000000..3633cdc651a1
---- /dev/null
-+++ b/tools/testing/selftests/powerpc/mce/inject-ra-err.sh
-@@ -0,0 +1,18 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+if [[ ! -w /dev/crypto/nx-gzip ]]; then
-+	echo "WARN: Can't access /dev/crypto/nx-gzip, skipping"
-+	exit 0
-+fi
-+
-+timeout 5 ./inject-ra-err
-+
-+# 128 + 7 (SIGBUS) = 135, 128 is a exit code with special meaning.
-+if [ $? -ne 135 ]; then
-+	echo "FAILED: Real address or Control memory access error not handled"
-+	exit $?
-+fi
-+
-+echo "OK: Real address or Control memory access error is handled"
-+exit 0
-</pre>
-          </blockquote>
-          <pre class="moz-quote-pre" wrap="">I don't think we really need the shell script, we should be able to do
-all that in the C code.
-
-Can you try this?
-</pre>
-        </blockquote>
-        <pre class="moz-quote-pre" wrap="">
-it works!, We need to set timeout, with 120 sec timeout we may flood the dmesg.
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-Hmm. Does it keep faulting? The regs-&gt;nip += 4 is meant to avoid that.</pre>
-    </blockquote>
-    <pre>Yes, it keeps faulting, if we fail to handle and not send SIGBUS to the process.</pre>
-    <blockquote type="cite" cite="mid:87eeagc2c1.fsf@mpe.ellerman.id.au">
-      <pre class="moz-quote-pre" wrap="">
-
-cheers
-</pre>
-    </blockquote>
-  </body>
-</html>
-
---------------B8AF3DD1984CF88B0F360EA4--
-
+--=20
+paul moore
+www.paul-moore.com
