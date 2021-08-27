@@ -2,75 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9EB73F9170
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 02:53:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F14113F91E6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 03:29:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gwh64403Nz2ynX
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 10:53:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GwhvY4Ytjz2ynh
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 11:29:13 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=paul-moore-com.20150623.gappssmtp.com header.i=@paul-moore-com.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=bk6vfNTo;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=NA9GElv4;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=paul-moore.com
- (client-ip=2a00:1450:4864:20::62b; helo=mail-ej1-x62b.google.com;
- envelope-from=paul@paul-moore.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::634;
+ helo=mail-pl1-x634.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=paul-moore-com.20150623.gappssmtp.com
- header.i=@paul-moore-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=bk6vfNTo; dkim-atps=neutral
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com
- [IPv6:2a00:1450:4864:20::62b])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=NA9GElv4; dkim-atps=neutral
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com
+ [IPv6:2607:f8b0:4864:20::634])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gwh5J57VQz2xY0
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Aug 2021 10:52:34 +1000 (AEST)
-Received: by mail-ej1-x62b.google.com with SMTP id bt14so10207712ejb.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Aug 2021 17:52:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=kcZjG66xtA/jY29pBRQOPOds6aYeDhJ8jQhY1pZY80A=;
- b=bk6vfNTov+ymNHAHaSlYzg+pXn1z2h9fT4GVPYxh4e4SQY71Z+fwbcXFztimoz1hRx
- zAwLQ1RSvbuz4IRt0ig1e+XVKOZaaMxfKyoyq+Rt6S6gaf9zftZdOG7AxEarsGi3Il2O
- B2czlprwtwo/7hHgL6EAXw4s6UpUrMvEmls2ejoH8ChoWFOu5CcXvRH1ZJUhmrh9yCov
- QOr+bT67MTqhZcIxXeHriyMGroLP6PBDJJ+Q5AMb/5W8KyTeBJVKeIQpy0xmNRi/FRsH
- yEHvmu62DIMfdmj7f4Y5VDYPjELEslbXVqjS0Z6fIHLehadImqvThpAD+b0KDXV31pA/
- hGag==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gwhtr5dNmz2yK3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Aug 2021 11:28:35 +1000 (AEST)
+Received: by mail-pl1-x634.google.com with SMTP id e15so2896208plh.8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Aug 2021 18:28:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=sW8AGYIk/UaGtGqdRe+NjeOpRZWC7qxLFst7xNdC0P0=;
+ b=NA9GElv4yx2yFAsW8GYz0PWrtd793+HB9JwiDJjGJeG9ze2sjL8rd5kEvMeSagaIhu
+ plKh710FVM8K7UIHpjWJ5vixYMm7MV5nROhYAYEw9zCGNAhaXlEj/kYY3KgR7/WLP6nL
+ oeNsuz0Cv7nqhqDF1UjRH0BC6H4jQ+lhdo5F6BLdXCd7xIyjesNPbCCRGAdFXiv2Z6h8
+ A8tDhe4R4JnWx36RHXRgoqQqxfMy35tvryWao1PpGKvw2H49s3aevoHsSKMpQH6r49am
+ BWIxAmhpgaqxJZqh1uBC4R5APVJktAY0PrPkF6NL8bskHktZJc+SJKInoNXYgY9w8rJd
+ wT1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=kcZjG66xtA/jY29pBRQOPOds6aYeDhJ8jQhY1pZY80A=;
- b=C1LpiEbO25AIbs/pUNOhhsv27iKXfP3fRMyAsblsqnoIiaKWG3BqHotx7ilW4hLYco
- HgMeMnhWZFIqkJesNeEVKIseZpLLJl8tEwsjpeFTCcNrHRKisUf+1ZoHe68Nw5eFNyX4
- IYBLY9VYOLzjKTGqnvpoZEDIOCkegkcI/o5LasjYWFwkaOiSSfZPNrwfJhDVFORF+AkF
- GwVGFQSs7tVg/yOkOGMz/9t/bkrtLL8YemOGVw/6qww1uW7GYpu7iMEYiaGdpWxAcxBB
- cm0oFnaTXlR/z22RApTsd1THR6QKEHCmFvDo/DXx3Uy2T/+0kKL1qwImTM8k7GhvUGxl
- apBg==
-X-Gm-Message-State: AOAM531fKD6NRZpBmfMifIQC9TuyLbytgJcaFjlGIyM1erkAIudHK+iu
- M8x/lBHHYIaWtabS8xGkWu9zMvHWDqmteHCfhodI
-X-Google-Smtp-Source: ABdhPJzNgmgA/Zd8FwouLieIWH2ENsJn+2AobXdHZoN8I7oJKtub/jVE993grloLZb9EUOCjaGUaPDPKuDihcP2ySkI=
-X-Received: by 2002:a17:906:1d59:: with SMTP id
- o25mr7136046ejh.431.1630025548172; 
- Thu, 26 Aug 2021 17:52:28 -0700 (PDT)
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=sW8AGYIk/UaGtGqdRe+NjeOpRZWC7qxLFst7xNdC0P0=;
+ b=arqGSc+n8VCxgXO3UssJQG+07aCa3bufFi+Nt9mA09WuFrRvHaT/2CLsrW9gvGZ7uJ
+ rS+2YI05/NS7phFZ2jUNUB8eTU8aQSf94eeJlJGLk0eEDQF6BToQd7+BEzGPmZ7ZGVmr
+ MEG5nXxnDReUunyWgoS0gEK9t1op6zDVZjbWTAU+JzxnfldaA+wFotSxrOSsEhiqyDR6
+ qNLx4YtwChxTQpYfUWPpN1hvGGlTWpArTHxyTVPSYfsYdHYcYhWtqKacmIpejzJ9uyc/
+ RRzsigJRJtn7r+JWF4XGJMfRjfIsjrA/Yz9To1I5lATdkoeNyAXY7SbOAUzUeAtpwV25
+ +GKw==
+X-Gm-Message-State: AOAM5310qJ23IRiRfyJao/A4/N/IDFlE/Ekd8PquDFtUEtQTnKpObQyw
+ Y8A4/pXYx2PnhZsKDPMmmxA=
+X-Google-Smtp-Source: ABdhPJwlZNJmjEB36AnHjCJJwKiJSOBKwTPeBc0R+VveBiO4pUkDqmT6pw2Bq6rUOWaeLIECUwCZRg==
+X-Received: by 2002:a17:90b:360c:: with SMTP id
+ ml12mr19108240pjb.158.1630027713636; 
+ Thu, 26 Aug 2021 18:28:33 -0700 (PDT)
+Received: from localhost (220-244-72-10.tpgi.com.au. [220.244.72.10])
+ by smtp.gmail.com with ESMTPSA id d22sm4635766pgi.73.2021.08.26.18.28.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 26 Aug 2021 18:28:33 -0700 (PDT)
+Date: Fri, 27 Aug 2021 11:28:27 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2 1/2] powerpc/bug: Remove specific powerpc BUG_ON() and
+ WARN_ON() on PPC32
+To: Segher Boessenkool <segher@kernel.crashing.org>
+References: <b286e07fb771a664b631cd07a40b09c06f26e64b.1618331881.git.christophe.leroy@csgroup.eu>
+ <1628834356.pr4zgn1xf1.astroid@bobo.none>
+ <20210818150653.GJ1583@gate.crashing.org>
+ <1629946707.f6ptz0tgle.astroid@bobo.none>
+ <20210826124901.GY1583@gate.crashing.org>
+ <1629983260.5jkx2jf0y8.astroid@bobo.none>
+ <20210826143708.GC1583@gate.crashing.org>
+ <1629989540.drlhb24t2w.astroid@bobo.none>
+ <20210826153048.GD1583@gate.crashing.org>
+In-Reply-To: <20210826153048.GD1583@gate.crashing.org>
 MIME-Version: 1.0
-References: <a4b3951d1191d4183d92a07a6097566bde60d00a.1629812058.git.christophe.leroy@csgroup.eu>
- <CAHC9VhR3E6=5HmRaWMWbp4WHsua02niwnzaRGM3tLqd4Y4LA6w@mail.gmail.com>
- <5a2692b6-5077-21b4-8ebf-73b1c2b83a40@csgroup.eu>
- <CAHC9VhSG8tPAkAAz5Z77HDMKXLAiaEOanxR+oY5c1E_Xoiso9Q@mail.gmail.com>
- <87tujc9srr.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87tujc9srr.fsf@mpe.ellerman.id.au>
-From: Paul Moore <paul@paul-moore.com>
-Date: Thu, 26 Aug 2021 20:52:17 -0400
-Message-ID: <CAHC9VhRAbsjifuO+fw4_KpK3ErVM0Dk0Ru3LuZKkeTZvWYc5=w@mail.gmail.com>
-Subject: Re: [PATCH v2 RESEND] powerpc/audit: Convert powerpc to
- AUDIT_ARCH_COMPAT_GENERIC
-To: Michael Ellerman <mpe@ellerman.id.au>, rgb@redhat.com
-Content-Type: text/plain; charset="UTF-8"
+Message-Id: <1630026648.b7bpnt3hrh.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -83,178 +89,113 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Eric Paris <eparis@redhat.com>,
- linux-audit@redhat.com, Paul Mackerras <paulus@samba.org>,
+Cc: linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 26, 2021 at 10:37 AM Michael Ellerman <mpe@ellerman.id.au> wrot=
-e:
-> Paul Moore <paul@paul-moore.com> writes:
-> > On Tue, Aug 24, 2021 at 1:11 PM Christophe Leroy
-> > <christophe.leroy@csgroup.eu> wrote:
-> >> Le 24/08/2021 =C3=A0 16:47, Paul Moore a =C3=A9crit :
-> >> > On Tue, Aug 24, 2021 at 9:36 AM Christophe Leroy
-> >> > <christophe.leroy@csgroup.eu> wrote:
-> >> >>
-> >> >> Commit e65e1fc2d24b ("[PATCH] syscall class hookup for all normal
-> >> >> targets") added generic support for AUDIT but that didn't include
-> >> >> support for bi-arch like powerpc.
-> >> >>
-> >> >> Commit 4b58841149dc ("audit: Add generic compat syscall support")
-> >> >> added generic support for bi-arch.
-> >> >>
-> >> >> Convert powerpc to that bi-arch generic audit support.
-> >> >>
-> >> >> Cc: Paul Moore <paul@paul-moore.com>
-> >> >> Cc: Eric Paris <eparis@redhat.com>
-> >> >> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> >> >> ---
-> >> >> Resending v2 with Audit people in Cc
-> >> >>
-> >> >> v2:
-> >> >> - Missing 'git add' for arch/powerpc/include/asm/unistd32.h
-> >> >> - Finalised commit description
-> >> >> ---
-> >> >>   arch/powerpc/Kconfig                |  5 +-
-> >> >>   arch/powerpc/include/asm/unistd32.h |  7 +++
-> >> >>   arch/powerpc/kernel/Makefile        |  3 --
-> >> >>   arch/powerpc/kernel/audit.c         | 84 ------------------------=
------
-> >> >>   arch/powerpc/kernel/compat_audit.c  | 44 ---------------
-> >> >>   5 files changed, 8 insertions(+), 135 deletions(-)
-> >> >>   create mode 100644 arch/powerpc/include/asm/unistd32.h
-> >> >>   delete mode 100644 arch/powerpc/kernel/audit.c
-> >> >>   delete mode 100644 arch/powerpc/kernel/compat_audit.c
-> >> >
-> >> > Can you explain, in detail please, the testing you have done to veri=
-fy
-> >> > this patch?
-> >> >
-> >>
-> >> I built ppc64_defconfig and checked that the generated code is functio=
-nnaly equivalent.
-> >>
-> >> ppc32_classify_syscall() is exactly the same as audit_classify_compat_=
-syscall() except that the
-> >> later takes the syscall as second argument (ie in r4) whereas the form=
-er takes it as first argument
-> >> (ie in r3).
-> >>
-> >> audit_classify_arch() and powerpc audit_classify_syscall() are slightl=
-y different between the
-> >> powerpc version and the generic version because the powerpc version ch=
-ecks whether it is
-> >> AUDIT_ARCH_PPC or not (ie value 20), while the generic one checks whet=
-her it has bit
-> >> __AUDIT_ARCH_64BIT set or not (__AUDIT_ARCH_64BIT is the sign bit of a=
- word), but taking into
-> >> account that the abi is either AUDIT_ARCH_PPC, AUDIT_ARCH_PPC64 or AUD=
-IT_ARCH_PPC64LE, the result is
-> >> the same.
-> >>
-> >> If you are asking I guess you saw something wrong ?
-> >
-> > I was asking because I didn't see any mention of testing, and when you
-> > are enabling something significant like this it is nice to see that it
-> > has been verified to work :)
-> >
-> > While binary dumps and comparisons are nice, it is always good to see
-> > verification from a test suite.  I don't have access to the necessary
-> > hardware to test this, but could you verify that the audit-testsuite
-> > passes on your test system with your patches applied?
-> >
-> >  * https://github.com/linux-audit/audit-testsuite
->
-> I tested on ppc64le. Both before and after the patch I get the result
-> below.
->
-> So I guess the patch is OK, but maybe we have some existing issue.
->
-> I had a bit of a look at the test code, but my perl is limited. I think
-> it was running the command below, and it returned "<no matches>", but
-> not really sure what that means.
+Excerpts from Segher Boessenkool's message of August 27, 2021 1:30 am:
+> On Fri, Aug 27, 2021 at 01:04:36AM +1000, Nicholas Piggin wrote:
+>> Excerpts from Segher Boessenkool's message of August 27, 2021 12:37 am:
+>> >> No, they are all dispatched and issue to the BRU for execution. It's=20
+>> >> trivial to construct a test of a lot of not taken branches in a row
+>> >> and time a loop of it to see it executes at 1 cycle per branch.
+>> >=20
+>> > (s/dispatched/issued/)
+>>=20
+>> ?
+>=20
+> Dispatch is from decode to the issue queues.  Issue is from there to
+> execution units.  Dispatch is in-order, issue is not.
 
-If it makes you feel any better, my perl is *very* limited; thankfully
-this isn't my first time looking at that test :)
+I know what those mean, I wonder what your s/dispatched/issued means.
+I was saying they are dispatched in response to you saying they never
+hit the issue queue.
 
-It's a little odd, but after some basic sanity tests at the top, the
-test sets a watch on a file, /tmp/<rando_string>, and tells the kernel
-to generate audit records for any syscall that operates on that file.
-It then creates, and removes, a series of exclude audit filters to
-check if the exclude filtering is working as expected, e.g. when
-syscall filtering is excluded there should be no syscall records in
-the audit log.
+>=20
+>> >> How could it validate prediction without issuing? It wouldn't know wh=
+en
+>> >> sources are ready.
+>> >=20
+>> > In the backend.  But that is just how it worked on older cores :-/
+>>=20
+>> Okay. I don't know about older cores than POWER9. Backend would normally=
+=20
+>> include execution though.
+>> Only other place you could do it if you don't
+>> issue/exec would be after it goes back in order, like completion.
+>=20
+> You do not have to do the verification in-order: the insn cannot finish
+> until it is no longer speculative, that takes care of all ordering
+> needed.
 
-In the case you describe, it looks like it looks like the audit
-exclude filter is removed (that's what line 147 does), the
-/tmp/<rando_string> file is removed (line 152), and then we check to
-see if any syscall records exist (line 164, and yes, there should be
-*something* there for the unlink/rm).
+Branches *can* finish out of order and speculative as they do in P9 and=20
+P10. Are you talking about these CPUs or something else which can=20
+verify branches without issuing them?
 
-It may be of little consolation, but this test works just fine on
-recent kernels running on both x86_64 and aarch64.  I don't have
-access to a powerpc system of any vintage, but I added Richard to the
-To line above in case he has easier access to a test system (I suspect
-the RH/IBM linkage should help in this regard).  Otherwise I would
-suggest starting to debug this by simply doing some basic tests using
-auditctl to create rules and exclude rules to see what is working, and
-what isn't; that might provide some clues.
+>=20
+>> But that would be horrible for mispredict penalty.
+>=20
+> See the previous point.  Also, any insn known to be mispredicted can be
+> flushed immediately anyway.
 
-Sorry I'm not much more help at this point :/
+The point is it has to know sources (CR) to verify (aka execute) the=20
+branch prediction was right, and if it needs sources then it needs to=20
+either issue and execute in the out of order part, or it needs to wait
+until completion which would seem to be prohibitively expensive. I am
+interested to know how it works.
 
->   $ sudo ausearch -i -m SYSCALL -p 216440 -ui 0 -gi 0 -ul 0 -su unconfine=
-d _u:unconfined_r:unconfined_t:s0-s0:c0.c1023 -ts recent
->   <no matches>
->
-> cheers
->
->
->
-> Running as   user    root
->         with context unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c102=
-3
->         on   system  Fedora
->
-> backlog_wait_time_actual_reset/test .. ok
-> exec_execve/test ..................... ok
-> exec_name/test ....................... ok
-> file_create/test ..................... ok
-> file_delete/test ..................... ok
-> file_rename/test ..................... ok
-> filter_exclude/test .................. 1/21
-> # Test 20 got: "256" (filter_exclude/test at line 167)
-> #    Expected: "0"
-> #  filter_exclude/test line 167 is: ok( $result, 0 );
-> # Test 21 got: "0" (filter_exclude/test at line 179)
-> #    Expected: "1"
-> #  filter_exclude/test line 179 is: ok( $found_msg, 1 );
-> filter_exclude/test .................. Failed 2/21 subtests
-> filter_saddr_fam/test ................ ok
-> filter_sessionid/test ................ ok
-> login_tty/test ....................... ok
-> lost_reset/test ...................... ok
-> netfilter_pkt/test ................... ok
-> syscalls_file/test ................... ok
-> syscall_module/test .................. ok
-> time_change/test ..................... ok
-> user_msg/test ........................ ok
-> fanotify/test ........................ ok
-> bpf/test ............................. ok
->
-> Test Summary Report
-> -------------------
-> filter_exclude/test                (Wstat: 0 Tests: 21 Failed: 2)
->   Failed tests:  20-21
-> Files=3D18, Tests=3D202, 45 wallclock secs ( 0.18 usr  0.03 sys + 20.15 c=
-usr  0.92 csys =3D 21.28 CPU)
-> Result: FAIL
-> Failed 1/18 test programs. 2/202 subtests failed.
+>=20
+>> >> >> The first problem seems like the show stopper though. AFAIKS it wo=
+uld=20
+>> >> >> need a special builtin support that does something to create the t=
+able
+>> >> >> entry, or a guarantee that we could put an inline asm right after =
+the
+>> >> >> builtin as a recognized pattern and that would give us the instruc=
+tion
+>> >> >> following the trap.
+>> >> >=20
+>> >> > I'm not quite sure what this means.  Can't you always just put a
+>> >> >=20
+>> >> > bla:	asm("");
+>> >> >=20
+>> >> > in there, and use the address of "bla"?
+>> >>=20
+>> >> Not AFAIKS. Put it where?
+>> >=20
+>> > After wherever you want to know the address after.  You will have to
+>> > make sure they stay together somehow.
+>>=20
+>> I still don't follow.
+>=20
+> some_thing_you_want_to_know_the_address_after_let_us_call_it_A;
+> empty_asm_that_we_can_take_the_address_of_known_as_B;
+>=20
+> You have to make sure the compiler keeps A and B together, does not
+> insert anything between them, does put them in the assembler output in
+> the same fragment, etc.
 
+How does all this help our problem of putting the address of the trap=20
+into the table?
 
+>=20
+>> If you could give a built in that put a label at the address of the trap=
+=20
+>> instruction that could be used later by inline asm then that could work
+>> too:
+>>=20
+>>     __builtin_labeled_trap("1:");
+>>     asm ("    .section __bug_table,\"aw\"  \n\t"
+>>          "2:  .4byte 1b - 2b               \n\t"
+>>          "    .previous");
+>=20
+> How could a compiler do anything like that?!
 
---=20
-paul moore
-www.paul-moore.com
+How could it add a label at the trap instruction it generates? It didn't=20
+seem like an outlandish thing to do, but I'm not a compiler writer. It was=20
+just a handwaving idea to show what we want to be able to do.
+
+Thanks,
+Nick
