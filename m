@@ -1,37 +1,37 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CB5E3F9A1B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 15:30:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD5C33F9A16
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 15:29:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gx0v51J87z307D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 23:29:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gx0sn1nHTz3fQ1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 23:28:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
  envelope-from=michael@ellerman.id.au; receiver=<UNKNOWN>)
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gx0kn6gc7z3c7l
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Aug 2021 23:22:41 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gx0kd0s3xz2ynj
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Aug 2021 23:22:33 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Gx0kn2HGjz9sX3;
- Fri, 27 Aug 2021 23:22:41 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Gx0kb67Ftz9sWq;
+ Fri, 27 Aug 2021 23:22:31 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, christophe.leroy@csgroup.eu,
- mpe@ellerman.id.au, Kajol Jain <kjain@linux.ibm.com>
-In-Reply-To: <20210818171556.36912-1-kjain@linux.ibm.com>
-References: <20210818171556.36912-1-kjain@linux.ibm.com>
-Subject: Re: [PATCH v4 1/3] powerpc/perf: Use stack siar instead of mfspr
-Message-Id: <163007016630.52768.2542052893705342167.b4-ty@ellerman.id.au>
-Date: Fri, 27 Aug 2021 23:16:06 +1000
+To: linuxppc-dev@lists.ozlabs.org, Jordan Niethe <jniethe5@gmail.com>
+In-Reply-To: <20210729041317.366612-1-jniethe5@gmail.com>
+References: <20210729041317.366612-1-jniethe5@gmail.com>
+Subject: Re: [PATCH v2 1/2] selftests/powerpc: Add missing clobbered register
+ to to ptrace TM tests
+Message-Id: <163007016833.52768.1911021541749287636.b4-ty@ellerman.id.au>
+Date: Fri, 27 Aug 2021 23:16:08 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -46,26 +46,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: atrajeev@linux.vnet.ibm.com, maddy@linux.ibm.com, rnsastry@linux.ibm.com
+Cc: mikey@neuling.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 18 Aug 2021 22:45:54 +0530, Kajol Jain wrote:
-> Minor optimization in the 'perf_instruction_pointer' function code by
-> making use of stack siar instead of mfspr.
+On Thu, 29 Jul 2021 14:13:16 +1000, Jordan Niethe wrote:
+> ISA v3.1 removes TM but includes a synthetic implementation for
+> backwards compatibility.  With this implementation,  the tests
+> ptrace-tm-spd-gpr and ptrace-tm-gpr should never be able to make any
+> forward progress and eventually should be killed by the timeout.
+> Instead on a P10 running in P9 mode, ptrace_tm_gpr fails like so:
 > 
+> test: ptrace_tm_gpr
+> tags: git_version:unknown
+> Starting the child
+> ...
+> ...
+> GPR[27]: 1 Expected: 2
+> GPR[28]: 1 Expected: 2
+> GPR[29]: 1 Expected: 2
+> GPR[30]: 1 Expected: 2
+> GPR[31]: 1 Expected: 2
+> [FAIL] Test FAILED on line 98
+> failure: ptrace_tm_gpr
+> selftests:  ptrace-tm-gpr [FAIL]
 > 
-> 
-> 
+> [...]
 
 Applied to powerpc/next.
 
-[1/3] powerpc/perf: Use stack siar instead of mfspr
-      https://git.kernel.org/powerpc/c/b1643084d164cea0c107a39bcdf0119fc52619af
-[2/3] powerpc/perf: Drop the case of returning 0 as instruction pointer
-      https://git.kernel.org/powerpc/c/cc90c6742ef5b438f4cb86029d7a794bd0a44a06
-[3/3] powerpc/perf: Fix the check for SIAR value
-      https://git.kernel.org/powerpc/c/3c69a5f22223fa3e312689ec218b5059784d49d7
+[1/2] selftests/powerpc: Add missing clobbered register to to ptrace TM tests
+      https://git.kernel.org/powerpc/c/c95278a0534449efc64ac8169382bce217963be2
+[2/2] selftests: Skip TM tests on synthetic TM implementations
+      https://git.kernel.org/powerpc/c/e42edf9b9d126bb1c743f2e7984877ba27f09fe7
 
 cheers
