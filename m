@@ -2,30 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41D8B3F9351
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 06:07:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 812413F9441
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 08:23:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GwmQQ44PLz30RK
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 14:07:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GwqR632JZz2ynV
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 16:23:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=107.174.27.60; helo=ozlabs.ru;
- envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
-Received: from ozlabs.ru (ozlabs.ru [107.174.27.60])
- by lists.ozlabs.org (Postfix) with ESMTP id 4GwmPx53pXz2yJT
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Aug 2021 14:07:16 +1000 (AEST)
-Received: from fstn1-p1.ozlabs.ibm.com. (localhost [IPv6:::1])
- by ozlabs.ru (Postfix) with ESMTP id 4666FAE80030;
- Fri, 27 Aug 2021 00:07:09 -0400 (EDT)
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH kernel] KVM: PPC: Fix clearing never mapped TCEs in realmode
-Date: Fri, 27 Aug 2021 14:07:06 +1000
-Message-Id: <20210827040706.517652-1-aik@ozlabs.ru>
-X-Mailer: git-send-email 2.30.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=92.121.34.21; helo=inva021.nxp.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GwqQh3Crkz2yJ6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Aug 2021 16:23:07 +1000 (AEST)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 55FD1200FE7;
+ Fri, 27 Aug 2021 08:23:04 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com
+ (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id DBF18200E4B;
+ Fri, 27 Aug 2021 08:23:03 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net
+ [10.192.224.44])
+ by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 6E4D8183AC8B;
+ Fri, 27 Aug 2021 14:23:02 +0800 (+08)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
+ alsa-devel@alsa-project.org
+Subject: [PATCH v2] ASoC: fsl_rpmsg: add soc specific data structure
+Date: Fri, 27 Aug 2021 14:00:38 +0800
+Message-Id: <1630044038-19036-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,69 +49,128 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Leonardo Bras <leobras.c@gmail.com>,
- kvm-ppc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Since e1a1ef84cd07, pages for TCE tables for KVM guests are allocated
-only when needed. This allows skipping any update when clearing TCEs.
-This works mostly fine as TCE updates are handled when MMU is enabled.
-The realmode handlers fail with H_TOO_HARD when pages are not yet
-allocated except when clearing a TCE in which case KVM prints a warning
-but proceeds to dereference a NULL pointer which crashes the host OS.
+Each platform has different supported rates and
+formats, so add soc specific data for each platform.
+This soc specific data is attached with compatible string.
 
-This has not been caught so far as the change is reasonably new,
-POWER9 runs mostly radix which does not use realmode handlers.
-With hash, the default TCE table is memset() by QEMU the machine reset
-which triggers page faults and the KVM TCE device's kvm_spapr_tce_fault()
-handles those with MMU on. And the huge DMA windows are not cleared
-by VMs whicn instead successfully create a DMA window big enough to map
-the VM memory 1:1 and then VMs just map everything without clearing.
-
-This started crashing now as upcoming sriov-under-powervm support added
-a mode when a dymanic DMA window not big enough to map the VM memory 1:1
-but it is used anyway, and the VM now is the first (i.e. not QEMU) to
-clear a just created table. Note that the upstream QEMU needs to be
-modified to trigger the VM to trigger the host OS crash.
-
-This replaces WARN_ON_ONCE_RM() with a check and return.
-This adds another warning if TCE is not being cleared.
-
-Cc: Leonardo Bras <leobras.c@gmail.com>
-Fixes: e1a1ef84cd07 ("KVM: PPC: Book3S: Allocate guest TCEs on demand too")
-Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
 ---
+changes in v2:
+- remove checking rpmsg->soc_data is NULL
+- add Reviewed-by Fabio
 
-With recent changes in the printk() department, calling pr_err() when MMU
-off causes lockdep lockups which I did not dig any further so we should
-start getting rid of the realmode's WARN_ON_ONCE_RM().
----
- arch/powerpc/kvm/book3s_64_vio_hv.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ sound/soc/fsl/fsl_rpmsg.c | 46 +++++++++++++++++++++++++++++++++++----
+ sound/soc/fsl/fsl_rpmsg.h | 12 ++++++++++
+ 2 files changed, 54 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_64_vio_hv.c b/arch/powerpc/kvm/book3s_64_vio_hv.c
-index 083a4e037718..e5ba96c41f3f 100644
---- a/arch/powerpc/kvm/book3s_64_vio_hv.c
-+++ b/arch/powerpc/kvm/book3s_64_vio_hv.c
-@@ -173,10 +173,13 @@ static void kvmppc_rm_tce_put(struct kvmppc_spapr_tce_table *stt,
- 	idx -= stt->offset;
- 	page = stt->pages[idx / TCES_PER_PAGE];
- 	/*
--	 * page must not be NULL in real mode,
--	 * kvmppc_rm_ioba_validate() must have taken care of this.
-+	 * kvmppc_rm_ioba_validate() allows pages not be allocated if TCE is
-+	 * being cleared, otherwise it returns H_TOO_HARD and we skip this.
- 	 */
--	WARN_ON_ONCE_RM(!page);
-+	if (!page) {
-+		WARN_ON_ONCE_RM(tce != 0);
-+		return;
-+	}
- 	tbl = kvmppc_page_address(page);
+diff --git a/sound/soc/fsl/fsl_rpmsg.c b/sound/soc/fsl/fsl_rpmsg.c
+index d60f4dac6c1b..07abad7fe372 100644
+--- a/sound/soc/fsl/fsl_rpmsg.c
++++ b/sound/soc/fsl/fsl_rpmsg.c
+@@ -138,11 +138,42 @@ static const struct snd_soc_component_driver fsl_component = {
+ 	.name           = "fsl-rpmsg",
+ };
  
- 	tbl[idx % TCES_PER_PAGE] = tce;
++static const struct fsl_rpmsg_soc_data imx7ulp_data = {
++	.rates = SNDRV_PCM_RATE_8000 | SNDRV_PCM_RATE_16000 |
++		 SNDRV_PCM_RATE_48000,
++	.formats = SNDRV_PCM_FMTBIT_S16_LE,
++};
++
++static const struct fsl_rpmsg_soc_data imx8mm_data = {
++	.rates = SNDRV_PCM_RATE_KNOT,
++	.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE |
++		   SNDRV_PCM_FMTBIT_S32_LE | SNDRV_PCM_FMTBIT_DSD_U8 |
++		   SNDRV_PCM_FMTBIT_DSD_U16_LE | SNDRV_PCM_FMTBIT_DSD_U32_LE,
++};
++
++static const struct fsl_rpmsg_soc_data imx8mn_data = {
++	.rates = SNDRV_PCM_RATE_32000 | SNDRV_PCM_RATE_44100 |
++		 SNDRV_PCM_RATE_48000 | SNDRV_PCM_RATE_88200 |
++		 SNDRV_PCM_RATE_96000 | SNDRV_PCM_RATE_176400 |
++		 SNDRV_PCM_RATE_192000,
++	.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE |
++		   SNDRV_PCM_FMTBIT_S32_LE,
++};
++
++static const struct fsl_rpmsg_soc_data imx8mp_data = {
++	.rates = SNDRV_PCM_RATE_32000 | SNDRV_PCM_RATE_44100 |
++		 SNDRV_PCM_RATE_48000 | SNDRV_PCM_RATE_88200 |
++		 SNDRV_PCM_RATE_96000 | SNDRV_PCM_RATE_176400 |
++		 SNDRV_PCM_RATE_192000,
++	.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE |
++		   SNDRV_PCM_FMTBIT_S32_LE,
++};
++
+ static const struct of_device_id fsl_rpmsg_ids[] = {
+-	{ .compatible = "fsl,imx7ulp-rpmsg-audio"},
+-	{ .compatible = "fsl,imx8mm-rpmsg-audio"},
+-	{ .compatible = "fsl,imx8mn-rpmsg-audio"},
+-	{ .compatible = "fsl,imx8mp-rpmsg-audio"},
++	{ .compatible = "fsl,imx7ulp-rpmsg-audio", .data = &imx7ulp_data},
++	{ .compatible = "fsl,imx8mm-rpmsg-audio", .data = &imx8mm_data},
++	{ .compatible = "fsl,imx8mn-rpmsg-audio", .data = &imx8mn_data},
++	{ .compatible = "fsl,imx8mp-rpmsg-audio", .data = &imx8mp_data},
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, fsl_rpmsg_ids);
+@@ -157,6 +188,13 @@ static int fsl_rpmsg_probe(struct platform_device *pdev)
+ 	if (!rpmsg)
+ 		return -ENOMEM;
+ 
++	rpmsg->soc_data = of_device_get_match_data(&pdev->dev);
++
++	fsl_rpmsg_dai.playback.rates = rpmsg->soc_data->rates;
++	fsl_rpmsg_dai.capture.rates = rpmsg->soc_data->rates;
++	fsl_rpmsg_dai.playback.formats = rpmsg->soc_data->formats;
++	fsl_rpmsg_dai.capture.formats = rpmsg->soc_data->formats;
++
+ 	if (of_property_read_bool(np, "fsl,enable-lpa")) {
+ 		rpmsg->enable_lpa = 1;
+ 		rpmsg->buffer_size = LPA_LARGE_BUFFER_SIZE;
+diff --git a/sound/soc/fsl/fsl_rpmsg.h b/sound/soc/fsl/fsl_rpmsg.h
+index 4f5b49eb18d8..b04086fbf828 100644
+--- a/sound/soc/fsl/fsl_rpmsg.h
++++ b/sound/soc/fsl/fsl_rpmsg.h
+@@ -6,6 +6,16 @@
+ #ifndef __FSL_RPMSG_H
+ #define __FSL_RPMSG_H
+ 
++/*
++ * struct fsl_rpmsg_soc_data
++ * @rates: supported rates
++ * @formats: supported formats
++ */
++struct fsl_rpmsg_soc_data {
++	int rates;
++	u64 formats;
++};
++
+ /*
+  * struct fsl_rpmsg - rpmsg private data
+  *
+@@ -15,6 +25,7 @@
+  * @pll8k: parent clock for multiple of 8kHz frequency
+  * @pll11k: parent clock for multiple of 11kHz frequency
+  * @card_pdev: Platform_device pointer to register a sound card
++ * @soc_data: soc specific data
+  * @mclk_streams: Active streams that are using baudclk
+  * @force_lpa: force enable low power audio routine if condition satisfy
+  * @enable_lpa: enable low power audio routine according to dts setting
+@@ -27,6 +38,7 @@ struct fsl_rpmsg {
+ 	struct clk *pll8k;
+ 	struct clk *pll11k;
+ 	struct platform_device *card_pdev;
++	const struct fsl_rpmsg_soc_data *soc_data;
+ 	unsigned int mclk_streams;
+ 	int force_lpa;
+ 	int enable_lpa;
 -- 
-2.30.2
+2.17.1
 
