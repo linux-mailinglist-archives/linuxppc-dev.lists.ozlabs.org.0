@@ -1,40 +1,39 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0FB93F99BD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 15:25:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79E7B3F99BB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 15:25:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gx0pB4ppmz3dmh
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 23:25:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gx0nL2m10z3dcx
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 23:24:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
  envelope-from=michael@ellerman.id.au; receiver=<UNKNOWN>)
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gx0kH4Blfz3083
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Aug 2021 23:22:15 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gx0kD1rXkz3035
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Aug 2021 23:22:12 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Gx0kG1Lftz9sVw;
- Fri, 27 Aug 2021 23:22:14 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Gx0kC2ppdz9t0T;
+ Fri, 27 Aug 2021 23:22:11 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: Michael Ellerman <mpe@ellerman.id.au>,
  Christophe Leroy <christophe.leroy@csgroup.eu>,
  Paul Mackerras <paulus@samba.org>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>
-In-Reply-To: <c6eabb4fb6c156f75d56dcbcc6f243e5ac0fba42.1629791763.git.christophe.leroy@csgroup.eu>
-References: <c6eabb4fb6c156f75d56dcbcc6f243e5ac0fba42.1629791763.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v2] powerpc: Avoid link stack corruption in misc asm
- functions
-Message-Id: <163007015730.52768.16250473929486782356.b4-ty@ellerman.id.au>
-Date: Fri, 27 Aug 2021 23:15:57 +1000
+In-Reply-To: <373ec500f386374bc5735007df3d3869eac47be1.1624618701.git.christophe.leroy@csgroup.eu>
+References: <373ec500f386374bc5735007df3d3869eac47be1.1624618701.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc/syscalls: Simplify do_mmap2()
+Message-Id: <163007016188.52768.15412686650316297072.b4-ty@ellerman.id.au>
+Date: Fri, 27 Aug 2021 23:16:01 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -54,19 +53,19 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 24 Aug 2021 07:56:35 +0000 (UTC), Christophe Leroy wrote:
-> bl;mflr is used at several places to get code position.
+On Fri, 25 Jun 2021 10:58:33 +0000 (UTC), Christophe Leroy wrote:
+> When shift is nul, operations remain valid so no test needed.
 > 
-> Use bcl 20,31,+4 instead of bl in order to preserve link stack.
+> And 'ret' is unnecessary.
 > 
-> See commit c974809a26a1 ("powerpc/vdso: Avoid link stack corruption
-> in __get_datapage()") for details.
+> And use IS_ALIGNED() to check alignment, that's more clear.
+> 
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc: Avoid link stack corruption in misc asm functions
-      https://git.kernel.org/powerpc/c/33e1402435cb9f3021439a15935ea2dc69ec1844
+[1/1] powerpc/syscalls: Simplify do_mmap2()
+      https://git.kernel.org/powerpc/c/316389e904f968d24d44cd96a6d171ee1ef269cf
 
 cheers
