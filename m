@@ -2,39 +2,35 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C32513F999A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 15:22:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2DE53F9A23
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 15:31:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gx0kr1wz6z3bYW
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 23:22:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gx0wX3w78z3fvY
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 23:31:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
  envelope-from=michael@ellerman.id.au; receiver=<UNKNOWN>)
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gx0k41HXdz2yPc
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Aug 2021 23:22:04 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gx0kw1SSjz3cBN
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Aug 2021 23:22:48 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Gx0k33Dwyz9sWq;
- Fri, 27 Aug 2021 23:22:03 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Gx0kv2jnYz9tJD;
+ Fri, 27 Aug 2021 23:22:47 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Paul Mackerras <paulus@samba.org>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>
-In-Reply-To: <c04cce578b97a76a9e69a096698b1d89f721768a.1629276437.git.christophe.leroy@csgroup.eu>
-References: <c04cce578b97a76a9e69a096698b1d89f721768a.1629276437.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/32: Remove unneccessary calculations in
- load_up_{fpu/altivec}
-Message-Id: <163007013987.52768.9451271906730834709.b4-ty@ellerman.id.au>
-Date: Fri, 27 Aug 2021 23:15:39 +1000
+To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
+In-Reply-To: <20210816041032.2839343-1-mpe@ellerman.id.au>
+References: <20210816041032.2839343-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/pseries: Fix build error when NUMA=n
+Message-Id: <163007014079.52768.17457843527177515212.b4-ty@ellerman.id.au>
+Date: Fri, 27 Aug 2021 23:15:40 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -49,24 +45,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: ldufour@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 18 Aug 2021 08:47:28 +0000 (UTC), Christophe Leroy wrote:
-> No need to re-read SPRN_THREAD, we can calculate thread address
-> from current (r2).
+On Mon, 16 Aug 2021 14:10:32 +1000, Michael Ellerman wrote:
+> As reported by lkp, if NUMA=n we see a build error:
 > 
-> And remove a reload of value 1 into r4 as r4 is already 1.
+>    arch/powerpc/platforms/pseries/hotplug-cpu.c: In function 'pseries_cpu_hotplug_init':
+>    arch/powerpc/platforms/pseries/hotplug-cpu.c:1022:8: error: 'node_to_cpumask_map' undeclared
+>     1022 |        node_to_cpumask_map[node]);
 > 
-> 
+> Use cpumask_of_node() which has an empty stub for NUMA=n, and when
+> NUMA=y does a lookup from node_to_cpumask_map[].
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/32: Remove unneccessary calculations in load_up_{fpu/altivec}
-      https://git.kernel.org/powerpc/c/51ed00e71f0130e0f3534b8e7d78facd16829426
+[1/1] powerpc/pseries: Fix build error when NUMA=n
+      https://git.kernel.org/powerpc/c/8b893ef190b0c440877de04f767efca4bf4d6af8
 
 cheers
