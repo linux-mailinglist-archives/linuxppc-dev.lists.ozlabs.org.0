@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1B903F9A14
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 15:28:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89FC93F99C3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 15:27:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gx0sL5QFWz3cYL
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 23:28:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gx0r333PTz3f5y
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Aug 2021 23:27:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,24 +16,21 @@ Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gx0kZ63fGz3bW5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Aug 2021 23:22:30 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gx0kT6whFz2ymg
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Aug 2021 23:22:25 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Gx0kZ19q8z9t5m;
- Fri, 27 Aug 2021 23:22:30 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Gx0kS2flKz9t54;
+ Fri, 27 Aug 2021 23:22:24 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>,
- Finn Thain <fthain@linux-m68k.org>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>
-In-Reply-To: <44ab381741916a51e783c4a50d0b186abdd8f280.1629334014.git.fthain@linux-m68k.org>
-References: <44ab381741916a51e783c4a50d0b186abdd8f280.1629334014.git.fthain@linux-m68k.org>
-Subject: Re: [PATCH] powerpc/tau: Add 'static' storage qualifier to 'tau_work'
- definition
-Message-Id: <163007014335.52768.13507331045109682641.b4-ty@ellerman.id.au>
-Date: Fri, 27 Aug 2021 23:15:43 +1000
+To: linuxppc-dev@lists.ozlabs.org, Cédric Le Goater <clg@kaod.org>
+In-Reply-To: <20210819125656.14498-1-clg@kaod.org>
+References: <20210819125656.14498-1-clg@kaod.org>
+Subject: Re: [PATCH 0/6] W=1 fixes
+Message-Id: <163007014714.52768.12295409571909724728.b4-ty@ellerman.id.au>
+Date: Fri, 27 Aug 2021 23:15:47 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -48,24 +45,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 19 Aug 2021 10:46:54 +1000, Finn Thain wrote:
-> This patch prevents the following sparse warning.
+On Thu, 19 Aug 2021 14:56:50 +0200, Cédric Le Goater wrote:
+> With this small series, I could compile the ppc kernel with W=1. There
+> are certainly other configs which will need more fixes but it's a good
+> start.
 > 
-> arch/powerpc/kernel/tau_6xx.c:199:1: sparse: sparse: symbol 'tau_work'
-> was not declared. Should it be static?
-> 
-> 
+> The last 2 patches look hacky. Christophe, could you help with these
+> to find a better place to include the declarations ?
 > 
 > [...]
 
-Applied to powerpc/next.
+Patches 2-4 applied to powerpc/next.
 
-[1/1] powerpc/tau: Add 'static' storage qualifier to 'tau_work' definition
-      https://git.kernel.org/powerpc/c/6cd717fe9b3a787f8e8f9d0bc9b7634a9c104b3e
+[2/6] powerpc/pseries/vas: Declare pseries_vas_fault_thread_fn() as static
+      https://git.kernel.org/powerpc/c/4cb266074aa17e9cafed3a92e9f43b161516569f
+[3/6] KVM: PPC: Book3S PR: Declare kvmppc_handle_exit_pr()
+      https://git.kernel.org/powerpc/c/cb53a93e33e108bfec00a13cd12696e1c0ccc8b6
+[4/6] KVM: PPC: Book3S PR: Remove unused variable
+      https://git.kernel.org/powerpc/c/b352ddae7b2ccd2cb29f495ca0a7c9b6848b623f
 
 cheers
