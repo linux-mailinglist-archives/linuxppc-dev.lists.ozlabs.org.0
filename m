@@ -2,56 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F9023FA4E8
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Aug 2021 12:00:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E61F3FA5AD
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Aug 2021 14:46:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GxXBt3zwSz3bXS
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Aug 2021 20:00:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gxbtv3Qdlz30Qv
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Aug 2021 22:46:47 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=NwZyAE2X;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=NwZyAE2X; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GxXBS56YRz2xZg
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Aug 2021 19:59:59 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4GxXBN5r9vz9sTv;
- Sat, 28 Aug 2021 11:59:56 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id ndDW_xyxJXCf; Sat, 28 Aug 2021 11:59:56 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4GxXBN4cXvz9sT3;
- Sat, 28 Aug 2021 11:59:56 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6BA498B76D;
- Sat, 28 Aug 2021 11:59:56 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id h2Mz2DsWcjDx; Sat, 28 Aug 2021 11:59:56 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E70E38B763;
- Sat, 28 Aug 2021 11:59:55 +0200 (CEST)
-Subject: Re: [RFC PATCH 4/6] powerpc/64s: Make hash MMU code build configurable
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20210827163410.1177154-1-npiggin@gmail.com>
- <20210827163410.1177154-5-npiggin@gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <da2863dc-f8d9-f58b-0d52-7e1bd668718c@csgroup.eu>
-Date: Sat, 28 Aug 2021 11:59:55 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GxbtB6j63z2xl7
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Aug 2021 22:46:09 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Gxbt71cB7z9sxS;
+ Sat, 28 Aug 2021 22:46:07 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1630154767;
+ bh=Ib/F1AUkPbtr95ajbp8rWSPbdz/DrlSAGa1a1EJ/h+M=;
+ h=From:To:Cc:Subject:Date:From;
+ b=NwZyAE2XEmm2A8vpYoFnO19QxEBgrN7+eIlX6PY1yNuI0s7Gj62NydjsLEZAKwLCL
+ sNnw/aStJ99SaSI4osnSeRJrQqZsgL9mez1hZjGxnWnn2fnrmrGXgsQqkyYaVlTp7Q
+ IeHRFrSyk7SfltJx5jWLV4GY4oaLE/lbUaAWaUx5PXiMxhswoQ8vhfT8aoxmJX1XB6
+ P52OcDlww+hIQMbf13zP54S0CufzPKkWbR5ttnRmO6RVr0x+HcFCDosizXuwKqP3xR
+ eWfpZjA6e6KV37jcfKgM7KDJyAS7hTD/Zk9Yc+lZOvx/DFvP2LK3IMdBSfrUBa+ejB
+ Sy1/hVuEuSdZQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.14-7 tag
+Date: Sat, 28 Aug 2021 22:46:02 +1000
+Message-ID: <874kb9g2k5.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20210827163410.1177154-5-npiggin@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,77 +59,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: lukas.bulwahn@gmail.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+Hi Linus,
+
+Please pull two more powerpc fixes for 5.14:
+
+The following changes since commit 9f7853d7609d59172eecfc5e7ccf503bc1b690bd:
+
+  powerpc/mm: Fix set_memory_*() against concurrent accesses (2021-08-19 09:41:54 +1000)
+
+are available in the git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.14-7
+
+for you to fetch changes up to 787c70f2f9990b5a197320152d2fc32cd8a6ad1a:
+
+  powerpc/64s: Fix scv implicit soft-mask table for relocated kernels (2021-08-20 22:35:18 +1000)
+
+- ------------------------------------------------------------------
+powerpc fixes for 5.14 #7
+
+ - Fix scv implicit soft-mask table for relocated (eg. kdump) kernels.
+ - Re-enable ARCH_ENABLE_SPLIT_PMD_PTLOCK, which was disabled due to a typo.
+
+Thanks to: Lukas Bulwahn, Nicholas Piggin, Daniel Axtens.
+
+- ------------------------------------------------------------------
+Lukas Bulwahn (1):
+      powerpc: Re-enable ARCH_ENABLE_SPLIT_PMD_PTLOCK
+
+Nicholas Piggin (1):
+      powerpc/64s: Fix scv implicit soft-mask table for relocated kernels
 
 
-Le 27/08/2021 à 18:34, Nicholas Piggin a écrit :
-> Introduce a new option CONFIG_PPC_64S_HASH_MMU which allows the 64s hash
-> MMU code to be compiled out if radix is selected and the minimum
-> supported CPU type is POWER9 or higher, and KVM is not selected.
-> 
-> This saves 128kB kernel image size (90kB text) on powernv_defconfig
-> minus KVM, 350kB on pseries_defconfig minus KVM, 40kB on a tiny config.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   arch/powerpc/Kconfig                          |  1 +
->   arch/powerpc/include/asm/book3s/64/mmu.h      | 22 +++++-
->   .../include/asm/book3s/64/tlbflush-hash.h     |  7 ++
->   arch/powerpc/include/asm/book3s/pgtable.h     |  4 ++
->   arch/powerpc/include/asm/mmu.h                | 38 +++++++++--
->   arch/powerpc/include/asm/mmu_context.h        |  2 +
->   arch/powerpc/include/asm/paca.h               |  8 +++
->   arch/powerpc/kernel/asm-offsets.c             |  2 +
->   arch/powerpc/kernel/dt_cpu_ftrs.c             | 10 ++-
->   arch/powerpc/kernel/entry_64.S                |  4 +-
->   arch/powerpc/kernel/exceptions-64s.S          | 16 +++++
->   arch/powerpc/kernel/mce.c                     |  2 +-
->   arch/powerpc/kernel/mce_power.c               | 10 ++-
->   arch/powerpc/kernel/paca.c                    | 18 ++---
->   arch/powerpc/kernel/process.c                 | 13 ++--
->   arch/powerpc/kernel/prom.c                    |  2 +
->   arch/powerpc/kernel/setup_64.c                |  4 ++
->   arch/powerpc/kexec/core_64.c                  |  4 +-
->   arch/powerpc/kexec/ranges.c                   |  4 ++
->   arch/powerpc/kvm/Kconfig                      |  1 +
->   arch/powerpc/mm/book3s64/Makefile             | 17 +++--
->   arch/powerpc/mm/book3s64/hash_pgtable.c       |  1 -
->   arch/powerpc/mm/book3s64/hash_utils.c         | 10 ---
->   .../{hash_hugetlbpage.c => hugetlbpage.c}     |  6 ++
->   arch/powerpc/mm/book3s64/mmu_context.c        | 16 +++++
->   arch/powerpc/mm/book3s64/pgtable.c            | 22 +++++-
->   arch/powerpc/mm/book3s64/radix_pgtable.c      |  4 ++
->   arch/powerpc/mm/book3s64/slb.c                | 16 -----
->   arch/powerpc/mm/copro_fault.c                 |  2 +
->   arch/powerpc/mm/fault.c                       | 17 +++++
->   arch/powerpc/mm/pgtable.c                     | 10 ++-
->   arch/powerpc/platforms/Kconfig.cputype        | 20 +++++-
->   arch/powerpc/platforms/cell/Kconfig           |  1 +
->   arch/powerpc/platforms/maple/Kconfig          |  1 +
->   arch/powerpc/platforms/microwatt/Kconfig      |  2 +-
->   arch/powerpc/platforms/pasemi/Kconfig         |  1 +
->   arch/powerpc/platforms/powermac/Kconfig       |  1 +
->   arch/powerpc/platforms/powernv/Kconfig        |  2 +-
->   arch/powerpc/platforms/powernv/idle.c         |  2 +
->   arch/powerpc/platforms/powernv/setup.c        |  2 +
->   arch/powerpc/platforms/pseries/lpar.c         | 68 ++++++++++---------
->   arch/powerpc/platforms/pseries/lparcfg.c      |  2 +-
->   arch/powerpc/platforms/pseries/mobility.c     |  6 ++
->   arch/powerpc/platforms/pseries/ras.c          |  4 ++
->   arch/powerpc/platforms/pseries/reconfig.c     |  2 +
->   arch/powerpc/platforms/pseries/setup.c        |  6 +-
->   arch/powerpc/xmon/xmon.c                      |  8 ++-
->   47 files changed, 310 insertions(+), 111 deletions(-)
->   rename arch/powerpc/mm/book3s64/{hash_hugetlbpage.c => hugetlbpage.c} (95%)
+ arch/powerpc/kernel/exceptions-64s.S   | 7 ++++---
+ arch/powerpc/platforms/Kconfig.cputype | 2 +-
+ 2 files changed, 5 insertions(+), 4 deletions(-)
+-----BEGIN PGP SIGNATURE-----
 
-Whaou ! Huge patch.
-
-Several places you should be able to use IS_ENABLED() or simply radix_enabled() instead of #ifdefs 
-and rely on GCC to opt out stuff when radix_enabled() folds into 'true'.
-
-I may do more detailed comments later when I have time.
-
-Christophe
+iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmEqL8QACgkQUevqPMjh
+pYDvjQ//dYPmb8eTLrWTRXUy6vLnem+CuJv6gyLEG+7s6T8qZMSA2uvKr4zXAvgF
+2QOAoVYWDth6blxjfHc5zqpdERhZHhOq0o2ofuJYGz1J/HAymvIohGFmiIwvOu5n
+rPI8NMmsw61W35jJS7dgRr86b3rBwZSzRpDL14g+zQRRzuCqnBdOCA3Ixxn5JQ/F
+D1AhyWL61IpVdg0Tz6FRU8s+VKYHh4Yr/CsozkFRMgqZZ2k3zs7aTcluyN8JhEta
+BoqejJStrgRt2KOJPr3HXk5fHaoz/9AJn3lSauhnEPFR/Li2ChjkDZPd9KQysHI/
+f56HfO/jRx3lY/qhHQ3HeGVJ8rsQrzEILj7KqL0KHwfQoqAhP3E2sut6oqZBFWii
+HzfNl0vDrVkjBW7WDV/Y1hlGYaeiGt6DgXwh6wifek6JhMSABwyrd+Uoi9efG7sg
+fOUl11VHvBHHQoT+h526urQrdSvgNn+M2iwjElK3LC+tDStNVZTxEiS/KtvpK1vC
+I7f7CuwS+z3y4kPs2lwr1t0qQOnmOsvJP82+IDb7Tq4LJRgajyFlGdUEtMrpxZvP
+whpFxWrxlQabX6QEr3CGYTGjbiYaGUCfWLkwhwpcftp7QcadjYko7u6nxIyOjI2G
+8XG3+CMcPkNB4fSo4Ijt5upaTjhjl4JUGEenLHbyzdcixfj9Z9w=
+=yPpX
+-----END PGP SIGNATURE-----
