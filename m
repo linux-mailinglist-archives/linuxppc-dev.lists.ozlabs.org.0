@@ -1,60 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 647873FA809
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Aug 2021 02:10:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BD7B3FAA10
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Aug 2021 10:01:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gxv494Jd1z2yg2
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Aug 2021 10:10:49 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=rFQSsr9R;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gy5WR6d4kz3089
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Aug 2021 18:01:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org;
- envelope-from=geoff@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=desiato.20200630 header.b=rFQSsr9R; 
- dkim-atps=neutral
-Received: from desiato.infradead.org (desiato.infradead.org
- [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gxv3Q5tMQz2xsT
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Aug 2021 10:10:07 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
- :In-Reply-To:MIME-Version:Date:Message-ID:References:Cc:To:From:Subject:
- Sender:Reply-To:Content-ID:Content-Description;
- bh=EaN8NsPelxHrvU9ofAOrjRtk0WsMGCySofzS1ta0LL8=; b=rFQSsr9R9EiuFOn4iq4RDbszO7
- fyAMZk8WbJPtAI5zR8nO3a/p5REX476tl9mC/UH8580CwSQfLkMSlgN2ofiTAfvpvHYLvVGLgNj3q
- fUyByVWWnobgsvT/b1BFUsbw30727eWMcT0TBqpNfsEmY+hd40IqiJZDZfeqD9qtMgTgHDb69Y40j
- PrDWB2Eckw+rxIiKParyR5aKp5+phAvcgnQkT15EfsMUnEEuiu1iKO5MC0TqLhWbs5x1BV3m7nn3/
- h41FF2qzwS1rRMm9wVruv/GESqJVJBuSuenrOFDSvNiell4ywVuotbiUnt+wQTXcL7mHgmGGlSwUu
- 24a09n6Q==;
-Received: from [2602:306:c5a2:a380:1dfb:b2e0:5ace:2d5]
- by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mK8OU-00DzjX-2F; Sun, 29 Aug 2021 00:09:50 +0000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gy5Vz3KB6z2xrk
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Aug 2021 18:01:11 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4Gy5Vr4nytz9sVn;
+ Sun, 29 Aug 2021 10:01:08 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 8bMiWTobom5H; Sun, 29 Aug 2021 10:01:08 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4Gy5Vr3pKlz9sVH;
+ Sun, 29 Aug 2021 10:01:08 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 63E878B767;
+ Sun, 29 Aug 2021 10:01:08 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id uyQ1It10e89s; Sun, 29 Aug 2021 10:01:08 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D4BB68B763;
+ Sun, 29 Aug 2021 10:01:07 +0200 (CEST)
 Subject: Re: [PATCH] net: spider_net: switch from 'pci_' to 'dma_' API
-From: Geoff Levand <geoff@infradead.org>
 To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- kou.ishizaki@toshiba.co.jp, davem@davemloft.net, kuba@kernel.org
+ kou.ishizaki@toshiba.co.jp, geoff@infradead.org, davem@davemloft.net,
+ kuba@kernel.org
 References: <60abc3d0c8b4ef8368a4d63326a25a5cb3cd218c.1630094078.git.christophe.jaillet@wanadoo.fr>
- <4f3113d1-b76e-a085-df2d-fd97d4b45faf@infradead.org>
-Message-ID: <2b1a0085-de94-dc41-9b9d-3ba1fcdbb6f4@infradead.org>
-Date: Sat, 28 Aug 2021 17:09:45 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <90220a35-bd0a-ccf3-91b1-c2a459c447e7@csgroup.eu>
+Date: Sun, 29 Aug 2021 10:01:02 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-In-Reply-To: <4f3113d1-b76e-a085-df2d-fd97d4b45faf@infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <60abc3d0c8b4ef8368a4d63326a25a5cb3cd218c.1630094078.git.christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,23 +70,14 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christophe,
 
-On 8/27/21 6:34 PM, Geoff Levand wrote:
-> On 8/27/21 12:56 PM, Christophe JAILLET wrote:
->> It has *not* been compile tested because I don't have the needed
->> configuration or cross-compiler.
-> 
-> The powerpc ppc64_defconfig has CONFIG_SPIDER_NET set. My
-> tdd-builder Docker image has the needed gcc-powerpc-linux-gnu
-> cross compiler to build ppc64_defconfig:
-> 
->   https://hub.docker.com/r/glevand/tdd-builder
 
-Just to follow up, I applied your patch to v5.14-rc7 and built
-ppc64_defconfig. No warnings or errors were seen.
+Le 27/08/2021 à 21:56, Christophe JAILLET a écrit :
+> ---
+> It has *not* been compile tested because I don't have the needed
+> configuration or cross-compiler. However, the modification is completely
+> mechanical and done by coccinelle.
 
-Thanks for your contribution.
+All you need is at https://mirrors.edge.kernel.org/pub/tools/crosstool/
 
-Acked-by: Geoff Levand <geoff@infradead.org>
-
+Christophe
