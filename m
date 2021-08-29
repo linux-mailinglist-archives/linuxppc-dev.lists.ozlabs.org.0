@@ -2,57 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BD7B3FAA10
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Aug 2021 10:01:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 647543FAAAF
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Aug 2021 12:00:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gy5WR6d4kz3089
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Aug 2021 18:01:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gy88q3LxLz2ypn
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Aug 2021 20:00:43 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Qn4y4Eo/;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=Qn4y4Eo/; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gy5Vz3KB6z2xrk
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Aug 2021 18:01:11 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4Gy5Vr4nytz9sVn;
- Sun, 29 Aug 2021 10:01:08 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 8bMiWTobom5H; Sun, 29 Aug 2021 10:01:08 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4Gy5Vr3pKlz9sVH;
- Sun, 29 Aug 2021 10:01:08 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 63E878B767;
- Sun, 29 Aug 2021 10:01:08 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id uyQ1It10e89s; Sun, 29 Aug 2021 10:01:08 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D4BB68B763;
- Sun, 29 Aug 2021 10:01:07 +0200 (CEST)
-Subject: Re: [PATCH] net: spider_net: switch from 'pci_' to 'dma_' API
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- kou.ishizaki@toshiba.co.jp, geoff@infradead.org, davem@davemloft.net,
- kuba@kernel.org
-References: <60abc3d0c8b4ef8368a4d63326a25a5cb3cd218c.1630094078.git.christophe.jaillet@wanadoo.fr>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <90220a35-bd0a-ccf3-91b1-c2a459c447e7@csgroup.eu>
-Date: Sun, 29 Aug 2021 10:01:02 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gy8893mWQz2xnb
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Aug 2021 20:00:09 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPS id C82C960C41;
+ Sun, 29 Aug 2021 10:00:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1630231205;
+ bh=qJuSD3NSpuGrNVH+pOlPEVpW4+BSg5IPon0/mGKDSRY=;
+ h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+ b=Qn4y4Eo/6pneaKGHySRPiDJnTfQWMGmUKP10uMHZjPfD8W0KnpfhiuxnTwxodGrom
+ GHovug9RtYKxKK67w1zqSHIXB9SIjqlKed78yJmjJOMa1hJW3VrlUb2FRqNuRdWsRK
+ OFfnHpQUb45P6k0xCNaASTxqEk8wVrtsswDqCXkJAimCKh96M5XMnNfgn23t/j5LCX
+ q+La6hNpdYT1UceFf7+8oEODF65tjXAwccbDKSqP5HtCDp6lOOjA8vHAbWOyrR0eU/
+ pOyIPa6iuXzbDQjFfqRt4F2CrK4zUw1E2tol3Ri9kK8BIxvICwam91fNsSIt6cTUGr
+ tL8ZUSH5uLROA==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain
+ [127.0.0.1])
+ by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id BD92460A14;
+ Sun, 29 Aug 2021 10:00:05 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-In-Reply-To: <60abc3d0c8b4ef8368a4d63326a25a5cb3cd218c.1630094078.git.christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] net: spider_net: switch from 'pci_' to 'dma_' API
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: <163023120577.23170.14559498942761787716.git-patchwork-notify@kernel.org>
+Date: Sun, 29 Aug 2021 10:00:05 +0000
+References: <60abc3d0c8b4ef8368a4d63326a25a5cb3cd218c.1630094078.git.christophe.jaillet@wanadoo.fr>
+In-Reply-To: <60abc3d0c8b4ef8368a4d63326a25a5cb3cd218c.1630094078.git.christophe.jaillet@wanadoo.fr>
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,20 +61,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: geoff@infradead.org, netdev@vger.kernel.org,
+ kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org, kuba@kernel.org,
+ linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hello:
+
+This patch was applied to netdev/net-next.git (refs/heads/master):
+
+On Fri, 27 Aug 2021 21:56:28 +0200 you wrote:
+> In [1], Christoph Hellwig has proposed to remove the wrappers in
+> include/linux/pci-dma-compat.h.
+> 
+> Some reasons why this API should be removed have been given by Julia
+> Lawall in [2].
+> 
+> A coccinelle script has been used to perform the needed transformation
+> Only relevant parts are given below.
+> 
+> [...]
+
+Here is the summary with links:
+  - net: spider_net: switch from 'pci_' to 'dma_' API
+    https://git.kernel.org/netdev/net-next/c/27d57f85102b
+
+You are awesome, thank you!
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-Le 27/08/2021 à 21:56, Christophe JAILLET a écrit :
-> ---
-> It has *not* been compile tested because I don't have the needed
-> configuration or cross-compiler. However, the modification is completely
-> mechanical and done by coccinelle.
-
-All you need is at https://mirrors.edge.kernel.org/pub/tools/crosstool/
-
-Christophe
