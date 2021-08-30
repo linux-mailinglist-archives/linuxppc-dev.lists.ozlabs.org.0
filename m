@@ -2,62 +2,96 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91F803FB6CF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Aug 2021 15:16:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E36B03FBB37
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Aug 2021 19:49:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GyrSL4G6Nz2yQ3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Aug 2021 23:16:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GyyWP55Jrz2yfb
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Aug 2021 03:49:37 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=h6ZSTmQY;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=drc@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=h6ZSTmQY; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GyrRs3lGwz2xYR
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Aug 2021 23:16:05 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4GyrRk0Shhz9sTS;
- Mon, 30 Aug 2021 15:16:02 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id jMCmx73LbZIa; Mon, 30 Aug 2021 15:16:01 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4GyrRj6Vm0z9sTQ;
- Mon, 30 Aug 2021 15:16:01 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B864E8B798;
- Mon, 30 Aug 2021 15:16:01 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id I8dfxxDy3IZ2; Mon, 30 Aug 2021 15:16:01 +0200 (CEST)
-Received: from [172.25.230.100] (po15451.idsi0.si.c-s.fr [172.25.230.100])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 7175C8B794;
- Mon, 30 Aug 2021 15:16:01 +0200 (CEST)
-Subject: Re: [PATCH v4 4/4] powerpc/ptdump: Convert powerpc to GENERIC_PTDUMP
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Nathan Chancellor <nathan@kernel.org>
-References: <b864a92693ca8413ef0b19f0c12065c212899b6e.1625762905.git.christophe.leroy@csgroup.eu>
- <03166d569526be70214fe9370a7bad219d2f41c8.1625762907.git.christophe.leroy@csgroup.eu>
- <YSvYFTSwP5EkXQZ0@Ryzen-9-3900X.localdomain>
- <5c479866-f31a-3579-9d71-357c85b777d0@csgroup.eu>
- <87tuj7e5e5.fsf@mpe.ellerman.id.au>
- <2bd9fa19-07b0-c187-c7dd-c6d544e34739@csgroup.eu>
- <87r1ebdu4t.fsf@mpe.ellerman.id.au>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <55783e78-3159-9ab2-7955-fb5aa8aa0ddd@csgroup.eu>
-Date: Mon, 30 Aug 2021 15:16:01 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GyyVc3F3kz2xtp
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Aug 2021 03:48:56 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 17UHiaxV149432
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Aug 2021 13:48:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=Jiqr1ABepFlp4sZSXyl9sCisA0q2/dGfA2xrF4Iccsk=;
+ b=h6ZSTmQYqBs83p5PQeOi3Nw6EsWSWcIeR3FqIf32bvOVvmLQPqp/yZC8ZKIR19CyU89Y
+ 58IzW01mw7xPuAJ6i3AeMoawL3osbIKZNr6TtuDEushUOkBua3j69ICj9eS0jGXD4tqq
+ 4Dh61rnfGTUyIKrsAjdwPPIU92V/mHwfzBLgdA56sZ/hrcqrpYauMeS+1af8i7x6otXE
+ iroSz/SBklETakNNBtdceuYE1C89g4UC9qyAkIJhmK5k4v84EAv+ttWuguxPS8teHw1i
+ 0m6TfSMVOQ5NV+VNmfCBygkVnF8jFrWzpWSi9FDK0/I8z+NtkORDlL9WyL7nxLV3RcIu MA== 
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3as408030p-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Aug 2021 13:48:52 -0400
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 17UHlSMv007110
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Aug 2021 17:48:51 GMT
+Received: from b03cxnp07028.gho.boulder.ibm.com
+ (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+ by ppma03wdc.us.ibm.com with ESMTP id 3aqcsb7h2k-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Aug 2021 17:48:51 +0000
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+ by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 17UHmoK339649788
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Aug 2021 17:48:50 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 490157806B
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Aug 2021 17:48:50 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2CC0578060
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Aug 2021 17:48:50 +0000 (GMT)
+Received: from Davids-MBP.randomparity.org (unknown [9.211.151.69])
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Aug 2021 17:48:49 +0000 (GMT)
+Subject: Re: [PATCH v6 00/11] DDW + Indirect Mapping
+To: linuxppc-dev@lists.ozlabs.org
+References: <20210817063929.38701-1-leobras.c@gmail.com>
+From: David Christensen <drc@linux.vnet.ibm.com>
+Message-ID: <82ca56ab-6a0a-7cbb-a5e7-facc40f35c3c@linux.vnet.ibm.com>
+Date: Mon, 30 Aug 2021 10:48:49 -0700
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.13.0
 MIME-Version: 1.0
-In-Reply-To: <87r1ebdu4t.fsf@mpe.ellerman.id.au>
+In-Reply-To: <20210817063929.38701-1-leobras.c@gmail.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: KpGbHsmxrsmxxEJeo3t6ZvtFvOaXhhu2
+X-Proofpoint-ORIG-GUID: KpGbHsmxrsmxxEJeo3t6ZvtFvOaXhhu2
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-08-30_06:2021-08-30,
+ 2021-08-30 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0
+ mlxlogscore=999 lowpriorityscore=0 phishscore=0 clxscore=1011
+ priorityscore=1501 mlxscore=0 adultscore=0 impostorscore=0 suspectscore=0
+ spamscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2107140000 definitions=main-2108300118
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,127 +103,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
- linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Le 30/08/2021 à 13:55, Michael Ellerman a écrit :
-> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->> Le 30/08/2021 à 09:52, Michael Ellerman a écrit :
->>> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->>>> Le 29/08/2021 à 20:55, Nathan Chancellor a écrit :
->>>>> On Thu, Jul 08, 2021 at 04:49:43PM +0000, Christophe Leroy wrote:
->>>>>> This patch converts powerpc to the generic PTDUMP implementation.
->>>>>>
->>>>>
->>>>> This patch as commit e084728393a5 ("powerpc/ptdump: Convert powerpc to
->>>>> GENERIC_PTDUMP") in powerpc/next causes a panic with Fedora's ppc64le
->>>>> config [1] when booting up in QEMU with [2]:
->>>>>
->>>>> [    1.621864] BUG: Unable to handle kernel data access on read at 0xc0eeff7f00000000
->>>>> [    1.623058] Faulting instruction address: 0xc00000000045e5fc
->>>>> [    1.623832] Oops: Kernel access of bad area, sig: 11 [#1]
->>>>> [    1.624318] LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA PowerNV
->>>>> [    1.625015] Modules linked in:
->>>>> [    1.625463] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.14.0-rc7-next-20210827 #16
->>>>> [    1.626237] NIP:  c00000000045e5fc LR: c00000000045e580 CTR: c000000000518220
->>>>> [    1.626839] REGS: c00000000752b820 TRAP: 0380   Not tainted  (5.14.0-rc7-next-20210827)
->>>>> [    1.627528] MSR:  9000000002009033 <SF,HV,VEC,EE,ME,IR,DR,RI,LE>  CR: 84002482  XER: 20000000
->>>>> [    1.628449] CFAR: c000000000518300 IRQMASK: 0
->>>>> [    1.628449] GPR00: c00000000045e580 c00000000752bac0 c0000000028a9300 0000000000000000
->>>>> [    1.628449] GPR04: c200800000000000 ffffffffffffffff 000000000000000a 0000000000000001
->>>>> [    1.628449] GPR08: c0eeff7f00000000 0000000000000012 0000000000000000 0000000000000000
->>>>> [    1.628449] GPR12: 0000000000000000 c000000002b20000 fffffffffffffffe c000000002971a70
->>>>> [    1.628449] GPR16: c000000002960040 c0000000011a8f98 c00000000752bbf0 ffffffffffffffff
->>>>> [    1.628449] GPR20: c2008fffffffffff c0eeff7f00000000 c000000002971a68 c00a0003ff000000
->>>>> [    1.628449] GPR24: c000000002971a78 0000000000000002 0000000000000001 c0000000011a8f98
->>>>> [    1.628449] GPR28: c0000000011a8f98 c0000000028daef8 c200800000000000 c200900000000000
->>>>> [    1.634090] NIP [c00000000045e5fc] __walk_page_range+0x2bc/0xce0
->>>>> [    1.635117] LR [c00000000045e580] __walk_page_range+0x240/0xce0
->>>>> [    1.635755] Call Trace:
->>>>> [    1.636018] [c00000000752bac0] [c00000000045e580] __walk_page_range+0x240/0xce0 (unreliable)
->>>>> [    1.636811] [c00000000752bbd0] [c00000000045f234] walk_page_range_novma+0x74/0xb0
->>>>> [    1.637459] [c00000000752bc20] [c000000000518448] ptdump_walk_pgd+0x98/0x170
->>>>> [    1.638138] [c00000000752bc70] [c0000000000aa988] ptdump_check_wx+0x88/0xd0
->>>>> [    1.638738] [c00000000752bd50] [c00000000008d6d8] mark_rodata_ro+0x48/0x80
->>>>> [    1.639299] [c00000000752bdb0] [c000000000012a34] kernel_init+0x74/0x1a0
->>>>> [    1.639842] [c00000000752be10] [c00000000000cfd4] ret_from_kernel_thread+0x5c/0x64
->>>>> [    1.640597] Instruction dump:
->>>>> [    1.641021] 38e7ffff 39490010 7ce707b4 7fca5436 79081564 7d4a3838 7908f082 794a1f24
->>>>> [    1.641740] 78a8f00e 30e6ffff 7ea85214 7ce73110 <7d48502a> 78f90fa4 2c2a0000 39290010
->>>>> [    1.642771] ---[ end trace 6cf72b085097ad52 ]---
->>>>> [    1.643220]
->>>>> [    2.644228] Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
->>>>> [    2.645523] ---[ end Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b ]---
->>>>>
->>>>> This is not compiler specific, I can reproduce it with GCC 11.2.0 and
->>>>> binutils 2.37. If there is any additional information I can provide,
->>>>> please let me know.
->>>>
->>>> Can you provide a dissassembly of __walk_page_range() ? Or provide your vmlinux binary.
->>>
->>> It seems to be walking of the end of the pgd.
->>>
->>> [    3.373800] walk_p4d_range: addr c00fff0000000000 end c00fff8000000000
->>> [    3.373852] walk_p4d_range: addr c00fff8000000000 end c010000000000000	<- end of pgd at PAGE_OFFSET + 4PB
->>> [    3.373905] walk_p4d_range: addr c010000000000000 end c010008000000000
->>
->> Yes, I want it to walk from TASK_SIZE_MAX up to 0xffffffffffffffff :)
+On 8/16/21 11:39 PM, Leonardo Bras wrote:
+> So far it's assumed possible to map the guest RAM 1:1 to the bus, which
+> works with a small number of devices. SRIOV changes it as the user can
+> configure hundreds VFs and since phyp preallocates TCEs and does not
+> allow IOMMU pages bigger than 64K, it has to limit the number of TCEs
+> per a PE to limit waste of physical pages.
 > 
-> But the page table doesn't span that far? 0_o
+> As of today, if the assumed direct mapping is not possible, DDW creation
+> is skipped and the default DMA window "ibm,dma-window" is used instead.
 > 
->> static struct ptdump_range ptdump_range[] __ro_after_init = {
->> 	{TASK_SIZE_MAX, ~0UL},
->> 	{0, 0}
->> };
->>
->> Ok, well, ppc32 go up to 0xffffffff
->>
->> What's the top address to be used for ppc64 ?
-> 
-> It's different for (hash | radix) x page size.
-> 
-> The below works, and matches what we used to do.
-> 
-> Possibly we can come up with something cleaner, not sure.
-> 
-> cheers
-> 
-> 
-> diff --git a/arch/powerpc/mm/ptdump/ptdump.c b/arch/powerpc/mm/ptdump/ptdump.c
-> index 2d80d775d15e..3d3778a74969 100644
-> --- a/arch/powerpc/mm/ptdump/ptdump.c
-> +++ b/arch/powerpc/mm/ptdump/ptdump.c
-> @@ -359,6 +359,8 @@ static int __init ptdump_init(void)
->   		ptdump_range[0].start = KERN_VIRT_START;
->   	else
->   		ptdump_range[0].start = PAGE_OFFSET;
-> +
-> +	ptdump_range[0].end = ptdump_range[0].start + (PGDIR_SIZE * PTRS_PER_PGD);
+> Using the DDW instead of the default DMA window may allow to expand the
+> amount of memory that can be DMA-mapped, given the number of pages (TCEs)
+> may stay the same (or increase) and the default DMA window offers only
+> 4k-pages while DDW may offer larger pages (4k, 64k, 16M ...).
 
-Hum ...
+So if I'm reading this correctly, VFIO applications requiring hugepage 
+DMA mappings (e.g. 16M or 2GB) can be supported on an LPAR or DLPAR 
+after this change, is that correct?  Any limitations based on processor 
+or pHyp revision levels?
 
-It was:
-
-	for (i = pgd_index(addr); i < PTRS_PER_PGD; i++, pgd++, addr += PGDIR_SIZE) {
-
-And there is
-
-#define pgd_index(a)  (((a) >> PGDIR_SHIFT) & (PTRS_PER_PGD - 1))
-
-
-Do we have the following ?
-
-	pgd_index(KERN_VIRT_START) == 0
-
-
-Shouldn't it be something like
-
-	ptdump_range[0].end = PAGE_OFFSET + (PGDIR_SIZE * PTRS_PER_PGD);
-
-
-Christophe
+Dave
