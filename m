@@ -1,77 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DCA43FB17C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Aug 2021 08:58:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDC523FB1B5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Aug 2021 09:13:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gyh4P6RFXz2yfk
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Aug 2021 16:58:45 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=fyW6a1Vn;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GyhP9534Jz2yV4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Aug 2021 17:13:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52e;
- helo=mail-pg1-x52e.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=fyW6a1Vn; dkim-atps=neutral
-Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com
- [IPv6:2607:f8b0:4864:20::52e])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gyh3l4lZbz2xZZ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Aug 2021 16:58:10 +1000 (AEST)
-Received: by mail-pg1-x52e.google.com with SMTP id q68so12456158pga.9
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Aug 2021 23:58:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:references:in-reply-to:mime-version:message-id
- :content-transfer-encoding;
- bh=Ijh/yZq8yxgSu/pObHwQoPCUoOSK74kfuTjf6qlR0cY=;
- b=fyW6a1Vn8CUjmhhMnN9Vg6Wr5M2OKS26ZvRuXVgCj4JsVhB+TCcLeNBJeL18G9y4dh
- JWzSTa5wbcf9d8lKJB89iRpMZSyc4RmAEGDFMcSg1mGayDiYO/GMzoSVH6zjAfhISqon
- ayj6pGYzjyA9m9/vSRo0wkJppZd+hFwUM+iQPbRN3VLMtWsWD5Ap7SCMSjG6rcOQ1QiA
- pq2AXwz8SY+DwHIRjAnMPRzJcx9M3Pqi2q1yiDgAqWtf0eVFrbG2xmLSghoo4YgZjOYF
- NudEW2dWREinjaebqU+da1aTr56aoWlDhenw+s1MPcXFi3sl7jhM8wmw1JKAiXCTJwoB
- XMYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=Ijh/yZq8yxgSu/pObHwQoPCUoOSK74kfuTjf6qlR0cY=;
- b=A7++R5ggB2px6nv+jDi032+Bq7Hx6bA5oxfCtHUMMOIWtUMADYWqZwv8z91akSCwox
- 0FNxjR3RjYdkbKwbqtGi0hNH7drd9FHq5rogyALNPuanryp7HVN/8Do7QS6o3MtpSl2R
- da/sPXKcbZYsyNneWFfTiJ1ZH3muoMbZFp9vf5jHj+xkjKXJ6AkzifC4fnsCp3INq74c
- tQMuweiuZhkVgF+4aDA1fUfeOF698k19iwEE5HoQjNBfFdGvlozUo8OqF8KVyBATKQkn
- TNMzpE4oVo2JXOmXTKrY92BOll6vIhXNYnRNIkjRP7ynCQsMWUWPquLxDnh4OPR2MXKS
- Vf1Q==
-X-Gm-Message-State: AOAM5332qgwZBkP4YrXsKzjhWJvHlH8EZkM6zbPtWgYWFAnCVeX8bBo9
- kriqc7aH1T9Mg9ysg7DOwoer4P6pKfA=
-X-Google-Smtp-Source: ABdhPJxeZ06VCVQ6l+PIRaxHZKQJavEJ4iaxGIBM8gzJEaog0QJFL5tbnXwiZ9fm3+cc9d1MKx++QA==
-X-Received: by 2002:a63:5812:: with SMTP id m18mr16980475pgb.131.1630306687764; 
- Sun, 29 Aug 2021 23:58:07 -0700 (PDT)
-Received: from localhost (220-244-72-10.tpgi.com.au. [220.244.72.10])
- by smtp.gmail.com with ESMTPSA id n15sm13912895pff.149.2021.08.29.23.58.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 29 Aug 2021 23:58:07 -0700 (PDT)
-Date: Mon, 30 Aug 2021 16:58:02 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [RFC PATCH 6/6] powerpc/microwatt: Stop building the hash MMU code
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GyhNl49pRz2xrN
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Aug 2021 17:12:51 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4GyhNc0NP3z9sT7;
+ Mon, 30 Aug 2021 09:12:48 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id KS3m4OP4GZGC; Mon, 30 Aug 2021 09:12:47 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4GyhNb6Kvyz9sT6;
+ Mon, 30 Aug 2021 09:12:47 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A9BD78B777;
+ Mon, 30 Aug 2021 09:12:47 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id r89ZxSzcKTiE; Mon, 30 Aug 2021 09:12:47 +0200 (CEST)
+Received: from [172.25.230.100] (po15451.idsi0.si.c-s.fr [172.25.230.100])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 7A8858B763;
+ Mon, 30 Aug 2021 09:12:47 +0200 (CEST)
+Subject: Re: [RFC PATCH 4/6] powerpc/64s: Make hash MMU code build configurable
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
 References: <20210827163410.1177154-1-npiggin@gmail.com>
- <20210827163410.1177154-7-npiggin@gmail.com>
- <1d1484fe-70db-bafc-016f-29671e941bc8@csgroup.eu>
- <87y28jehrt.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87y28jehrt.fsf@mpe.ellerman.id.au>
+ <20210827163410.1177154-5-npiggin@gmail.com>
+ <da2863dc-f8d9-f58b-0d52-7e1bd668718c@csgroup.eu>
+ <1630306319.j6p7gkgn6s.astroid@bobo.none>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <2374bc94-f1b1-574c-ceca-4787d9ef2382@csgroup.eu>
+Date: Mon, 30 Aug 2021 09:12:45 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Message-Id: <1630306597.92woqvxutn.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <1630306319.j6p7gkgn6s.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,57 +69,93 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Michael Ellerman's message of August 30, 2021 1:24 pm:
-> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->> Le 27/08/2021 =C3=A0 18:34, Nicholas Piggin a =C3=A9crit=C2=A0:
->>> Microwatt is radix-only, so stop selecting the hash MMU code.
->>>=20
->>> This saves 20kB compressed dtbImage and 56kB vmlinux size.
->>>=20
+
+
+Le 30/08/2021 à 08:55, Nicholas Piggin a écrit :
+> Excerpts from Christophe Leroy's message of August 28, 2021 7:59 pm:
+>>
+>>
+>> Le 27/08/2021 à 18:34, Nicholas Piggin a écrit :
+>>> Introduce a new option CONFIG_PPC_64S_HASH_MMU which allows the 64s hash
+>>> MMU code to be compiled out if radix is selected and the minimum
+>>> supported CPU type is POWER9 or higher, and KVM is not selected.
+>>>
+>>> This saves 128kB kernel image size (90kB text) on powernv_defconfig
+>>> minus KVM, 350kB on pseries_defconfig minus KVM, 40kB on a tiny config.
+>>>
 >>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 >>> ---
->>>   arch/powerpc/configs/microwatt_defconfig | 1 -
->>>   arch/powerpc/platforms/Kconfig.cputype   | 1 +
->>>   arch/powerpc/platforms/microwatt/Kconfig | 1 -
->>>   3 files changed, 1 insertion(+), 2 deletions(-)
->>>=20
->>> diff --git a/arch/powerpc/configs/microwatt_defconfig b/arch/powerpc/co=
-nfigs/microwatt_defconfig
->>> index bf5f2e5905eb..6fbad42f9e3d 100644
->>> --- a/arch/powerpc/configs/microwatt_defconfig
->>> +++ b/arch/powerpc/configs/microwatt_defconfig
->>> @@ -26,7 +26,6 @@ CONFIG_PPC_MICROWATT=3Dy
->>>   # CONFIG_PPC_OF_BOOT_TRAMPOLINE is not set
->>>   CONFIG_CPU_FREQ=3Dy
->>>   CONFIG_HZ_100=3Dy
->>> -# CONFIG_PPC_MEM_KEYS is not set
->>>   # CONFIG_SECCOMP is not set
->>>   # CONFIG_MQ_IOSCHED_KYBER is not set
->>>   # CONFIG_COREDUMP is not set
->>> diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/plat=
-forms/Kconfig.cputype
->>> index 9b90fc501ed4..b9acd6c68c81 100644
->>> --- a/arch/powerpc/platforms/Kconfig.cputype
->>> +++ b/arch/powerpc/platforms/Kconfig.cputype
->>> @@ -371,6 +371,7 @@ config SPE
->>>   config PPC_64S_HASH_MMU
->>>   	bool "Hash MMU Support"
->>>   	depends on PPC_BOOK3S_64
->>> +	depends on !PPC_MICROWATT
+>>>    arch/powerpc/Kconfig                          |  1 +
+>>>    arch/powerpc/include/asm/book3s/64/mmu.h      | 22 +++++-
+>>>    .../include/asm/book3s/64/tlbflush-hash.h     |  7 ++
+>>>    arch/powerpc/include/asm/book3s/pgtable.h     |  4 ++
+>>>    arch/powerpc/include/asm/mmu.h                | 38 +++++++++--
+>>>    arch/powerpc/include/asm/mmu_context.h        |  2 +
+>>>    arch/powerpc/include/asm/paca.h               |  8 +++
+>>>    arch/powerpc/kernel/asm-offsets.c             |  2 +
+>>>    arch/powerpc/kernel/dt_cpu_ftrs.c             | 10 ++-
+>>>    arch/powerpc/kernel/entry_64.S                |  4 +-
+>>>    arch/powerpc/kernel/exceptions-64s.S          | 16 +++++
+>>>    arch/powerpc/kernel/mce.c                     |  2 +-
+>>>    arch/powerpc/kernel/mce_power.c               | 10 ++-
+>>>    arch/powerpc/kernel/paca.c                    | 18 ++---
+>>>    arch/powerpc/kernel/process.c                 | 13 ++--
+>>>    arch/powerpc/kernel/prom.c                    |  2 +
+>>>    arch/powerpc/kernel/setup_64.c                |  4 ++
+>>>    arch/powerpc/kexec/core_64.c                  |  4 +-
+>>>    arch/powerpc/kexec/ranges.c                   |  4 ++
+>>>    arch/powerpc/kvm/Kconfig                      |  1 +
+>>>    arch/powerpc/mm/book3s64/Makefile             | 17 +++--
+>>>    arch/powerpc/mm/book3s64/hash_pgtable.c       |  1 -
+>>>    arch/powerpc/mm/book3s64/hash_utils.c         | 10 ---
+>>>    .../{hash_hugetlbpage.c => hugetlbpage.c}     |  6 ++
+>>>    arch/powerpc/mm/book3s64/mmu_context.c        | 16 +++++
+>>>    arch/powerpc/mm/book3s64/pgtable.c            | 22 +++++-
+>>>    arch/powerpc/mm/book3s64/radix_pgtable.c      |  4 ++
+>>>    arch/powerpc/mm/book3s64/slb.c                | 16 -----
+>>>    arch/powerpc/mm/copro_fault.c                 |  2 +
+>>>    arch/powerpc/mm/fault.c                       | 17 +++++
+>>>    arch/powerpc/mm/pgtable.c                     | 10 ++-
+>>>    arch/powerpc/platforms/Kconfig.cputype        | 20 +++++-
+>>>    arch/powerpc/platforms/cell/Kconfig           |  1 +
+>>>    arch/powerpc/platforms/maple/Kconfig          |  1 +
+>>>    arch/powerpc/platforms/microwatt/Kconfig      |  2 +-
+>>>    arch/powerpc/platforms/pasemi/Kconfig         |  1 +
+>>>    arch/powerpc/platforms/powermac/Kconfig       |  1 +
+>>>    arch/powerpc/platforms/powernv/Kconfig        |  2 +-
+>>>    arch/powerpc/platforms/powernv/idle.c         |  2 +
+>>>    arch/powerpc/platforms/powernv/setup.c        |  2 +
+>>>    arch/powerpc/platforms/pseries/lpar.c         | 68 ++++++++++---------
+>>>    arch/powerpc/platforms/pseries/lparcfg.c      |  2 +-
+>>>    arch/powerpc/platforms/pseries/mobility.c     |  6 ++
+>>>    arch/powerpc/platforms/pseries/ras.c          |  4 ++
+>>>    arch/powerpc/platforms/pseries/reconfig.c     |  2 +
+>>>    arch/powerpc/platforms/pseries/setup.c        |  6 +-
+>>>    arch/powerpc/xmon/xmon.c                      |  8 ++-
+>>>    47 files changed, 310 insertions(+), 111 deletions(-)
+>>>    rename arch/powerpc/mm/book3s64/{hash_hugetlbpage.c => hugetlbpage.c} (95%)
 >>
->> Do we really want to start nit picking which platforms can select such o=
-r such option ?
->> Isn't it enough to get it off through the defconfig ?
+>> Whaou ! Huge patch.
 >>
->> Is PPC_MICROWATT mutually exclusive with other book3s64 configs ? Don't =
-we build multiplatform kernels ?
->=20
-> Yeah that belongs in the microwatt defconfig, not as a forced exclusion
-> in Kconfig.
+>> Several places you should be able to use IS_ENABLED() or simply radix_enabled() instead of #ifdefs
+>> and rely on GCC to opt out stuff when radix_enabled() folds into 'true'.
+> 
+> A lot of it couldn't be done because of data structures but I'm sure I
+> missed a lot. I will go over it again.
+> 
+>> I may do more detailed comments later when I have time.
+> 
+> Very much appreciated, but let me send out another version before you
+> get the fine toothed comb out so I don't waste too much of your time.
 
-Okay I'll fix that up. In that case the select POWER9 should not be in=20
-Kconfig but just defconfig too. Which is fine, it just means oldconfig
-won't change it.
+One thing that would probably help reduce the size of the patch and help focus on the real changes 
+would be to put pure code moves in a previous patch I think.
 
-Thanks,
-Nick
+> If there are no objections to the idea from a high level.
+
+I think the idea is good, I always wondered why we kept HASH and RADIX at the same time.
+
+I did similar thing on book3s/32 when I separated 603 and 604+ so that you could build one or the 
+other or both.
+
+Christophe
