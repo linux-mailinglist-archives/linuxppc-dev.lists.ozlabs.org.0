@@ -1,76 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D002F3FB16E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Aug 2021 08:52:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 099D83FB173
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Aug 2021 08:55:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GygxF34HNz2ymZ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Aug 2021 16:52:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gyh165mTNz2yWN
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Aug 2021 16:55:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=Ej9TCAma;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=TDgR5LU+;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1033;
- helo=mail-pj1-x1033.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::533;
+ helo=mail-pg1-x533.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Ej9TCAma; dkim-atps=neutral
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com
- [IPv6:2607:f8b0:4864:20::1033])
+ header.s=20161025 header.b=TDgR5LU+; dkim-atps=neutral
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com
+ [IPv6:2607:f8b0:4864:20::533])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GygwZ4grKz2xs6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Aug 2021 16:51:57 +1000 (AEST)
-Received: by mail-pj1-x1033.google.com with SMTP id
- n13-20020a17090a4e0d00b0017946980d8dso13126478pjh.5
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Aug 2021 23:51:57 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gyh0R24ZQz2xqy
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Aug 2021 16:55:19 +1000 (AEST)
+Received: by mail-pg1-x533.google.com with SMTP id g184so12482418pgc.6
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Aug 2021 23:55:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:references:in-reply-to:mime-version:message-id
  :content-transfer-encoding;
- bh=aX1xBl38mZQKejRSAClnnHxvkM20r3w8OGOn8f4j3uc=;
- b=Ej9TCAma1r5v4cbFP15tTRik6yTGUo+NgfvKClvSdcp/pF7+OCY4TtpMWnbvkixt6U
- IOzKzev9zFU8NncetuZpNSr13ss2sU8Z5l0GPU8ZLz2Z9WeW82Guomd2vYzopikSXplo
- 4o/vijsmnuKoXJnZA/nFHZHg2XHcljiFWMLommDm1348wtOPfsqKgwHgG8orjmJa7Lww
- wZOdsuaE3krDw6ofLSJOvDwQHGlWfIvchR9UFsgSYX0U/peMaxSNnITmzGRw8T2MKMqb
- 1TWUB6RrbKenkQ6MwDKlXKTzYpJl5tgCiaHyqyrts0jMyBTWRawB8ejfkrqhYiTStrzA
- NAsw==
+ bh=CKAm+UKmrtIo6FlGBmpSgsqY15aRUn+G8Cai+bB1w0c=;
+ b=TDgR5LU+4Huo8Myw75NykScL1650PMIPrUYSmMv6c+WXLiTbKWWrncPhkmkoUNaytP
+ clY2qMUXIJU7drx9/wIB7T//BGzDdn0GhR8s8+p8f9qEDgY1Mt2QSb0YOL5o+9Fj3e3W
+ qFTq+0TZbue2FPYEqmcvqVArAmB0iuybb2BT+VgTjkXiWKXs0LXiiEUIi5Rl7SCTsmNq
+ qBB1QsyUUj1RwAgqsvdTdFFr7vTNr5aeDLDqjiL+9jJ1PHCSmcLtqe6+c95W2ayQqXE5
+ +Ij6jA7RRK4yMzSYuL8jPFoEXJ7z3wep+9Ff6aXxj9XDbtXrhhALA630E60RzG9Nr7qe
+ YwIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=aX1xBl38mZQKejRSAClnnHxvkM20r3w8OGOn8f4j3uc=;
- b=CVCbWCSUbHIqzrWQkAfklz2bJsd8IaH7dEPtH4J/E6reDdpdJ8UYE39qlw1OqU5ftR
- mtDM4eBm8JWWq14n2Vm6P+ZcNCfhinyItCMSMbMh4kKoz4U5PaUPi3mPvvvroiGrnSs0
- 5ZOjNGQl8p/LwjKAL+/vdVXRhqankM0wEZCsa8QU8H8OJrgiKTAoNfm34UPU+gX/FRLM
- RFPtKQNUITB+XQPZ6MRNa1yIR1FdpaKpS71Mb64frPQUMM+1lV8AI83WTafGyTLCodIK
- i+Q3xYyGEGt8ZM0Bw8LpQmRxODJ3bGDXsEDy3f2n+ut3yAsWGvQ8iLSmV9U3bHc3FvHV
- INhg==
-X-Gm-Message-State: AOAM532ZZcU1T6oz9Zztt0pRQ8xhsBZgQIFYEqZdjeb43xCQWZM3Esq9
- rRtCq9k0pKKWl/1DYpVqg4o=
-X-Google-Smtp-Source: ABdhPJyfnHTWSeR59J9WEdpG19T30AUgg5AehrlFqk1C40AIMeAGaTshkL6wbp0lp+o2uX85kcuJOg==
-X-Received: by 2002:a17:902:9b89:b0:12d:7f02:f6a5 with SMTP id
- y9-20020a1709029b8900b0012d7f02f6a5mr20365671plp.39.1630306314453; 
- Sun, 29 Aug 2021 23:51:54 -0700 (PDT)
+ bh=CKAm+UKmrtIo6FlGBmpSgsqY15aRUn+G8Cai+bB1w0c=;
+ b=eLPTjxGK0sjZ7xCgUDblWECMbAd+Pql39kHEgFwcyR/Ady/10r4rY2B3GWLQ3W/Itr
+ FTDKTcSG9ConpwW9COU5q/OcFX/qdlVjZHM5MvoNQmJorb6xlD2w3ntDDYgBsHZjxs3J
+ PzYTlQwrm6uuMt9gCw2MormoVQm819vbAkTmFxVTCPFQeiiulsZbQ37SiD2lVrPHq6zt
+ pdjBFHI/eLu/potdwyzDulTr1zBck2Ojtzl+LJlG6TnHQtg89p3w0KipuJw87PuEYaAL
+ ZIRaEys1OnfiUsWhCPkQB/M6qa8UCBDHVZZoHQzyzXmI0YKs9JxpkchpbhrAYtToQqOH
+ +IYg==
+X-Gm-Message-State: AOAM531AFUMP8tooYMUtlF+EyEeDwDGOdZ3UMp+HR0e0VSIUtdV//a4V
+ 92eC6pX0TfLlAzJKJKf0A173Sg5MayM=
+X-Google-Smtp-Source: ABdhPJzLoZKcPtAhA2YjcyxdbrO4ov7gtZWTGNaMajJAZTPZkZ+u+FLdvsfWP3H1PEswNa8ntqgFCg==
+X-Received: by 2002:a63:1f24:: with SMTP id f36mr20355138pgf.6.1630306516015; 
+ Sun, 29 Aug 2021 23:55:16 -0700 (PDT)
 Received: from localhost (220-244-72-10.tpgi.com.au. [220.244.72.10])
- by smtp.gmail.com with ESMTPSA id t38sm13258545pfg.207.2021.08.29.23.51.53
+ by smtp.gmail.com with ESMTPSA id b13sm14178707pfr.72.2021.08.29.23.55.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 29 Aug 2021 23:51:54 -0700 (PDT)
-Date: Mon, 30 Aug 2021 16:51:48 +1000
+ Sun, 29 Aug 2021 23:55:15 -0700 (PDT)
+Date: Mon, 30 Aug 2021 16:55:11 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
 Subject: Re: [RFC PATCH 4/6] powerpc/64s: Make hash MMU code build configurable
 To: Christophe Leroy <christophe.leroy@csgroup.eu>,
  linuxppc-dev@lists.ozlabs.org
 References: <20210827163410.1177154-1-npiggin@gmail.com>
  <20210827163410.1177154-5-npiggin@gmail.com>
- <3b419b53-02b8-1a52-2f22-7b8ca49c4460@csgroup.eu>
-In-Reply-To: <3b419b53-02b8-1a52-2f22-7b8ca49c4460@csgroup.eu>
+ <da2863dc-f8d9-f58b-0d52-7e1bd668718c@csgroup.eu>
+In-Reply-To: <da2863dc-f8d9-f58b-0d52-7e1bd668718c@csgroup.eu>
 MIME-Version: 1.0
-Message-Id: <1630306030.3s9bpofbg9.astroid@bobo.none>
+Message-Id: <1630306319.j6p7gkgn6s.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -88,7 +86,7 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Christophe Leroy's message of August 28, 2021 7:34 pm:
+Excerpts from Christophe Leroy's message of August 28, 2021 7:59 pm:
 >=20
 >=20
 > Le 27/08/2021 =C3=A0 18:34, Nicholas Piggin a =C3=A9crit=C2=A0:
@@ -101,55 +99,71 @@ Excerpts from Christophe Leroy's message of August 28, 2021 7:34 pm:
 >>=20
 >> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 >> ---
+>>   arch/powerpc/Kconfig                          |  1 +
+>>   arch/powerpc/include/asm/book3s/64/mmu.h      | 22 +++++-
+>>   .../include/asm/book3s/64/tlbflush-hash.h     |  7 ++
+>>   arch/powerpc/include/asm/book3s/pgtable.h     |  4 ++
+>>   arch/powerpc/include/asm/mmu.h                | 38 +++++++++--
+>>   arch/powerpc/include/asm/mmu_context.h        |  2 +
+>>   arch/powerpc/include/asm/paca.h               |  8 +++
+>>   arch/powerpc/kernel/asm-offsets.c             |  2 +
+>>   arch/powerpc/kernel/dt_cpu_ftrs.c             | 10 ++-
+>>   arch/powerpc/kernel/entry_64.S                |  4 +-
+>>   arch/powerpc/kernel/exceptions-64s.S          | 16 +++++
+>>   arch/powerpc/kernel/mce.c                     |  2 +-
+>>   arch/powerpc/kernel/mce_power.c               | 10 ++-
+>>   arch/powerpc/kernel/paca.c                    | 18 ++---
+>>   arch/powerpc/kernel/process.c                 | 13 ++--
+>>   arch/powerpc/kernel/prom.c                    |  2 +
+>>   arch/powerpc/kernel/setup_64.c                |  4 ++
+>>   arch/powerpc/kexec/core_64.c                  |  4 +-
+>>   arch/powerpc/kexec/ranges.c                   |  4 ++
+>>   arch/powerpc/kvm/Kconfig                      |  1 +
+>>   arch/powerpc/mm/book3s64/Makefile             | 17 +++--
+>>   arch/powerpc/mm/book3s64/hash_pgtable.c       |  1 -
+>>   arch/powerpc/mm/book3s64/hash_utils.c         | 10 ---
+>>   .../{hash_hugetlbpage.c =3D> hugetlbpage.c}     |  6 ++
+>>   arch/powerpc/mm/book3s64/mmu_context.c        | 16 +++++
+>>   arch/powerpc/mm/book3s64/pgtable.c            | 22 +++++-
+>>   arch/powerpc/mm/book3s64/radix_pgtable.c      |  4 ++
+>>   arch/powerpc/mm/book3s64/slb.c                | 16 -----
+>>   arch/powerpc/mm/copro_fault.c                 |  2 +
+>>   arch/powerpc/mm/fault.c                       | 17 +++++
+>>   arch/powerpc/mm/pgtable.c                     | 10 ++-
+>>   arch/powerpc/platforms/Kconfig.cputype        | 20 +++++-
+>>   arch/powerpc/platforms/cell/Kconfig           |  1 +
+>>   arch/powerpc/platforms/maple/Kconfig          |  1 +
+>>   arch/powerpc/platforms/microwatt/Kconfig      |  2 +-
+>>   arch/powerpc/platforms/pasemi/Kconfig         |  1 +
+>>   arch/powerpc/platforms/powermac/Kconfig       |  1 +
+>>   arch/powerpc/platforms/powernv/Kconfig        |  2 +-
+>>   arch/powerpc/platforms/powernv/idle.c         |  2 +
+>>   arch/powerpc/platforms/powernv/setup.c        |  2 +
+>>   arch/powerpc/platforms/pseries/lpar.c         | 68 ++++++++++---------
+>>   arch/powerpc/platforms/pseries/lparcfg.c      |  2 +-
+>>   arch/powerpc/platforms/pseries/mobility.c     |  6 ++
+>>   arch/powerpc/platforms/pseries/ras.c          |  4 ++
+>>   arch/powerpc/platforms/pseries/reconfig.c     |  2 +
+>>   arch/powerpc/platforms/pseries/setup.c        |  6 +-
+>>   arch/powerpc/xmon/xmon.c                      |  8 ++-
+>>   47 files changed, 310 insertions(+), 111 deletions(-)
+>>   rename arch/powerpc/mm/book3s64/{hash_hugetlbpage.c =3D> hugetlbpage.c=
+} (95%)
 >=20
-> ...
+> Whaou ! Huge patch.
 >=20
->> @@ -324,6 +330,7 @@ static inline void assert_pte_locked(struct mm_struc=
-t *mm, unsigned long addr)
->>   }
->>   #endif /* !CONFIG_DEBUG_VM */
->>  =20
->> +#if defined(CONFIG_PPC_RADIX_MMU) && defined(CONFIG_PPC_64S_HASH_MMU)
->>   static inline bool radix_enabled(void)
->>   {
->>   	return mmu_has_feature(MMU_FTR_TYPE_RADIX);
->> @@ -333,6 +340,27 @@ static inline bool early_radix_enabled(void)
->>   {
->>   	return early_mmu_has_feature(MMU_FTR_TYPE_RADIX);
->>   }
->> +#elif defined(CONFIG_PPC_64S_HASH_MMU)
->> +static inline bool radix_enabled(void)
->> +{
->> +	return false;
->> +}
->> +
->> +static inline bool early_radix_enabled(void)
->> +{
->> +	return false;
->> +}
->> +#else
->> +static inline bool radix_enabled(void)
->> +{
->> +	return true;
->> +}
->> +
->> +static inline bool early_radix_enabled(void)
->> +{
->> +	return true;
->> +}
->> +#endif
->=20
-> You don't need something that complex. You don't need to change that at a=
-ll indeed, just have to=20
-> ensure that when CONFIG_PPC_64S_HASH_MMU is not selected you have MMU_FTR=
-_TYPE_RADIX included in=20
-> MMU_FTRS_ALWAYS and voila.
+> Several places you should be able to use IS_ENABLED() or simply radix_ena=
+bled() instead of #ifdefs=20
+> and rely on GCC to opt out stuff when radix_enabled() folds into 'true'.
 
-Yeah I had that as a later patch that fixes up the MMU ftrs for 64s=20
-which does that, I think was required before some of your patches were=20
-upstreamed.
+A lot of it couldn't be done because of data structures but I'm sure I=20
+missed a lot. I will go over it again.
 
-But looks like it is now trivial so I should just pull that in here.
+> I may do more detailed comments later when I have time.
+
+Very much appreciated, but let me send out another version before you
+get the fine toothed comb out so I don't waste too much of your time.
+If there are no objections to the idea from a high level.
 
 Thanks,
 Nick
