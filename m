@@ -1,76 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1FC93FC77D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Aug 2021 14:43:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53D613FC7EE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Aug 2021 15:13:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GzRh953w1z2yPd
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Aug 2021 22:43:53 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=nfZ6GVy6;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GzSKl3g9Kz2ybB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Aug 2021 23:12:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::102c;
- helo=mail-pj1-x102c.google.com; envelope-from=dja@axtens.net;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=nfZ6GVy6; dkim-atps=neutral
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com
- [IPv6:2607:f8b0:4864:20::102c])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GzRgT0G4Sz2yHl
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Aug 2021 22:43:14 +1000 (AEST)
-Received: by mail-pj1-x102c.google.com with SMTP id
- j4-20020a17090a734400b0018f6dd1ec97so2300643pjs.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Aug 2021 05:43:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version:content-transfer-encoding;
- bh=1T9uonz6ZV23kuXHurfGRVVB5lj7jIMJH16i3NUSCRI=;
- b=nfZ6GVy6XIZpVYmM2uOlyVC1X/U0qS3IIyNg9Nzojxlxxo1q4qjqwJkv99OFwFFelU
- /TI02CsSbxj5tiUl8aw/d+B2sy7z/krc9mKngFTEwZ6nuyaf9z3dT9Dt4efJcgshuF27
- /tFGNWA7GjwDT+fPl83WNTH1BxiKsufoewBTo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version:content-transfer-encoding;
- bh=1T9uonz6ZV23kuXHurfGRVVB5lj7jIMJH16i3NUSCRI=;
- b=HIH6xhg1vFJGiiZzL/YKwQEr2/FRQhQmFolrrlzzisHc+q7A38UI8fW63i5wx+RFOv
- f58owTxbZh60g7xxeBKPb3GY0ejN1wFO+L+NkWtCVE6BT5yAFooE/4Pp7Nkzt8fnbtMC
- 5ocnL2I8TRxr4UxfB7UWATBEd5gipxl1u7WSQpDbXbZI71opXWD7TrLvbdZyHqyzo2+J
- De4K+nKtVJctPqCyfR4SBK3uPPlLkUvFHoL8xj8HtvaEVsM76oDpZtALBHJp+6ZhTYTC
- 8WKDspPkn+t3NEJ3cYmJi5rErqKnduJErIs6+vlkDOtzIwBCuWejMjOl0I1no6t3KGVb
- x6oQ==
-X-Gm-Message-State: AOAM531WexX32ZlTINv17ek3NUJZeA7XcE7bBNqo+dIN7IRvaX868G5Q
- qg6wQmVaxkd2gLO7E/xEOzVuzg==
-X-Google-Smtp-Source: ABdhPJy8ox3UGj+wMMB7zStDq/2+tdrLtd+0Un35XhLM9MdTTTqfb0lFaJjKx8bldixJYj9H8JfvFw==
-X-Received: by 2002:a17:902:7c93:b029:12c:b603:150d with SMTP id
- y19-20020a1709027c93b029012cb603150dmr4544469pll.5.1630413787686; 
- Tue, 31 Aug 2021 05:43:07 -0700 (PDT)
-Received: from localhost ([2001:4479:e200:df00:a664:ffe7:ee94:4600])
- by smtp.gmail.com with ESMTPSA id t38sm17484590pfg.207.2021.08.31.05.43.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 31 Aug 2021 05:43:07 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael
- Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/64: Avoid link stack corruption in kexec_wait()
-In-Reply-To: <9f43118b-ef81-9a80-0e0b-5e74433e0b8c@csgroup.eu>
-References: <3ffe7775f3fcda8e5fca6a7bc7db0b8251153c67.1629705147.git.christophe.leroy@csgroup.eu>
- <87ilzm6str.fsf@dja-thinkpad.axtens.net>
- <9f43118b-ef81-9a80-0e0b-5e74433e0b8c@csgroup.eu>
-Date: Tue, 31 Aug 2021 22:43:04 +1000
-Message-ID: <87fsup7pk7.fsf@dja-thinkpad.axtens.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GzSKG2GRJz2yHD
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Aug 2021 23:12:30 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4GzSK802cBz9sTX;
+ Tue, 31 Aug 2021 15:12:28 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id oIgIQjJLmJuV; Tue, 31 Aug 2021 15:12:27 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4GzSK75vDfz9sT9;
+ Tue, 31 Aug 2021 15:12:27 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 8A0E38B7EE;
+ Tue, 31 Aug 2021 15:12:27 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id nvzuqENngpjM; Tue, 31 Aug 2021 15:12:27 +0200 (CEST)
+Received: from po18078vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 426448B7ED;
+ Tue, 31 Aug 2021 15:12:27 +0200 (CEST)
+Received: by po18078vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 00A596BCA2; Tue, 31 Aug 2021 13:12:26 +0000 (UTC)
+Message-Id: <97f252fcd63e145f54fbf85124c75fb01e96e1bb.1630415517.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v2] powerpc/32: Add support for out-of-line static calls
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Tue, 31 Aug 2021 13:12:26 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,77 +57,211 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
+ Steven Rostedt <rostedt@goodmis.org>, Jason Baron <jbaron@akamai.com>,
+ Josh Poimboeuf <jpoimboe@redhat.com>, linuxppc-dev@lists.ozlabs.org,
+ Ard Biesheuvel <ardb@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+Add support for out-of-line static calls on PPC32. This change
+improve performance of calls to global function pointers by
+using direct calls instead of indirect calls.
 
-> Le 31/08/2021 =C3=A0 08:17, Daniel Axtens a =C3=A9crit=C2=A0:
->> Hi Christophe,
->>=20
->>> Use bcl 20,31,+4 instead of bl in order to preserve link stack.
->>>
->>> See commit c974809a26a1 ("powerpc/vdso: Avoid link stack corruption
->>> in __get_datapage()") for details.
->>=20
->>  From my understanding of that commit message, the change helps to keep
->> the link stack correctly balanced which is helpful for performance,
->> rather than for correctness. If I understand correctly, kexec_wait is
->> not in a hot path - rather it is where CPUs spin while waiting for
->> kexec. Is there any benefit in using the more complicated opcode in this
->> situation?
->
-> AFAICS the main benefit is to keep things consistent over the kernel and =
-not have to wonder "is it a=20
-> hot path or not ? If it is I use bcl 20,31, if it is not I use bl". The b=
-est way to keep things in=20
-> order is to always use the right instruction.
+The trampoline is initialy populated with a 'blr' or branch to target,
+followed by an unreachable long jump sequence.
 
-Yeah, Nick Piggin convinced me of this offline as well.
+In order to cater with parallele execution, the trampoline needs to
+be updated in a way that ensures it remains consistent at all time.
+This means we can't use the traditional lis/addi to load r12 with
+the target address, otherwise there would be a window during which
+the first instruction contains the upper part of the new target
+address while the second instruction still contains the lower part of
+the old target address. To avoid that the target address is stored
+just after the 'bctr' and loaded from there with a single instruction.
 
->
->>=20
->>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->>> ---
->>>   arch/powerpc/kernel/misc_64.S | 2 +-
->>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/arch/powerpc/kernel/misc_64.S b/arch/powerpc/kernel/misc_6=
-4.S
->>> index 4b761a18a74d..613509907166 100644
->>> --- a/arch/powerpc/kernel/misc_64.S
->>> +++ b/arch/powerpc/kernel/misc_64.S
->>> @@ -255,7 +255,7 @@ _GLOBAL(scom970_write)
->>>    * Physical (hardware) cpu id should be in r3.
->>>    */
->>>   _GLOBAL(kexec_wait)
->>> -	bl	1f
->>> +	bcl	20,31,1f
->>>   1:	mflr	r5
->>=20
->> Would it be better to create a macro of some sort to wrap this unusual
->> special form so that the meaning is more clear?
->
-> Not sure, I think people working with assembly will easily recognise that=
- form whereas an obscure=20
-> macro is always puzzling.
->
-> I like macros when they allow you to not repeat again and again the same =
-sequence of several=20
-> instructions, but here it is a single quite simple instruction which is n=
-ot worth a macro in my mind.
->
+Then, depending on the target distance, arch_static_call_transform()
+will either replace the first instruction by a direct 'bl <target>' or
+'nop' in order to have the trampoline fall through the long jump
+sequence.
 
+Performancewise the long jump sequence is probably not better than
+the indirect calls set by GCC when we don't use static calls, but
+such calls are unlikely to be required on powerpc32: With most
+configurations the kernel size is far below 32 Mbytes so only
+modules may happen to be too far. And even modules are likely to
+be close enough as they are allocated below the kernel core and
+as close as possible of the kernel text.
 
-Sure - I was mostly thinking specifically of the bcl; mflr situation but
-I agree that for the single instruction it's not needed.
+static_call selftest is running successfully with this change.
 
-In short, I am convinced, and so:
-Reviewed-by: Daniel Axtens <dja@axtens.net>
+With this patch, __do_irq() has the following sequence to trace
+irq entries:
 
-Kind regards,
-Daniel
+	c0004a00 <__SCT__tp_func_irq_entry>:
+	c0004a00:	48 00 00 e0 	b       c0004ae0 <__traceiter_irq_entry>
+	c0004a04:	3d 80 c0 00 	lis     r12,-16384
+	c0004a08:	81 8c 4a 14 	lwz     r12,18964(r12)
+	c0004a0c:	7d 89 03 a6 	mtctr   r12
+	c0004a10:	4e 80 04 20 	bctr
+	c0004a14:	00 00 00 00 	.long 0x0
+	c0004a18:	60 00 00 00 	nop
+	c0004a1c:	60 00 00 00 	nop
+...
+	c0005654 <__do_irq>:
+...
+	c0005664:	7c 7f 1b 78 	mr      r31,r3
+...
+	c00056a0:	81 22 00 00 	lwz     r9,0(r2)
+	c00056a4:	39 29 00 01 	addi    r9,r9,1
+	c00056a8:	91 22 00 00 	stw     r9,0(r2)
+	c00056ac:	3d 20 c0 af 	lis     r9,-16209
+	c00056b0:	81 29 74 cc 	lwz     r9,29900(r9)
+	c00056b4:	2c 09 00 00 	cmpwi   r9,0
+	c00056b8:	41 82 00 10 	beq     c00056c8 <__do_irq+0x74>
+	c00056bc:	80 69 00 04 	lwz     r3,4(r9)
+	c00056c0:	7f e4 fb 78 	mr      r4,r31
+	c00056c4:	4b ff f3 3d 	bl      c0004a00 <__SCT__tp_func_irq_entry>
 
-> Christophe
+Before this patch, __do_irq() was doing the following to trace irq
+entries:
+
+	c0005700 <__do_irq>:
+...
+	c0005710:	7c 7e 1b 78 	mr      r30,r3
+...
+	c000574c:	93 e1 00 0c 	stw     r31,12(r1)
+	c0005750:	81 22 00 00 	lwz     r9,0(r2)
+	c0005754:	39 29 00 01 	addi    r9,r9,1
+	c0005758:	91 22 00 00 	stw     r9,0(r2)
+	c000575c:	3d 20 c0 af 	lis     r9,-16209
+	c0005760:	83 e9 f4 cc 	lwz     r31,-2868(r9)
+	c0005764:	2c 1f 00 00 	cmpwi   r31,0
+	c0005768:	41 82 00 24 	beq     c000578c <__do_irq+0x8c>
+	c000576c:	81 3f 00 00 	lwz     r9,0(r31)
+	c0005770:	80 7f 00 04 	lwz     r3,4(r31)
+	c0005774:	7d 29 03 a6 	mtctr   r9
+	c0005778:	7f c4 f3 78 	mr      r4,r30
+	c000577c:	4e 80 04 21 	bctrl
+	c0005780:	85 3f 00 0c 	lwzu    r9,12(r31)
+	c0005784:	2c 09 00 00 	cmpwi   r9,0
+	c0005788:	40 82 ff e4 	bne     c000576c <__do_irq+0x6c>
+
+Behind the fact of now using a direct 'bl' instead of a
+'load/mtctr/bctr' sequence, we can also see that we get one less
+register on the stack.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+v2: Use indirect load in long jump sequence to cater with parallele execution and preemption.
+---
+ arch/powerpc/Kconfig                   |  1 +
+ arch/powerpc/include/asm/static_call.h | 25 ++++++++++++++++++
+ arch/powerpc/kernel/Makefile           |  2 +-
+ arch/powerpc/kernel/static_call.c      | 36 ++++++++++++++++++++++++++
+ 4 files changed, 63 insertions(+), 1 deletion(-)
+ create mode 100644 arch/powerpc/include/asm/static_call.h
+ create mode 100644 arch/powerpc/kernel/static_call.c
+
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 36b72d972568..a0fe69d8ec83 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -247,6 +247,7 @@ config PPC
+ 	select HAVE_SOFTIRQ_ON_OWN_STACK
+ 	select HAVE_STACKPROTECTOR		if PPC32 && $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=r2)
+ 	select HAVE_STACKPROTECTOR		if PPC64 && $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=r13)
++	select HAVE_STATIC_CALL			if PPC32
+ 	select HAVE_SYSCALL_TRACEPOINTS
+ 	select HAVE_VIRT_CPU_ACCOUNTING
+ 	select HUGETLB_PAGE_SIZE_VARIABLE	if PPC_BOOK3S_64 && HUGETLB_PAGE
+diff --git a/arch/powerpc/include/asm/static_call.h b/arch/powerpc/include/asm/static_call.h
+new file mode 100644
+index 000000000000..2402c6d32439
+--- /dev/null
++++ b/arch/powerpc/include/asm/static_call.h
+@@ -0,0 +1,25 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASM_POWERPC_STATIC_CALL_H
++#define _ASM_POWERPC_STATIC_CALL_H
++
++#define __POWERPC_SCT(name, inst)					\
++	asm(".pushsection .text, \"ax\"				\n"	\
++	    ".align 5						\n"	\
++	    ".globl " STATIC_CALL_TRAMP_STR(name) "		\n"	\
++	    STATIC_CALL_TRAMP_STR(name) ":			\n"	\
++	    inst "						\n"	\
++	    "	lis	12,1f@ha				\n"	\
++	    "	lwz	12,1f@l(12)				\n"	\
++	    "	mtctr	12					\n"	\
++	    "	bctr						\n"	\
++	    "1:	.long 0						\n"	\
++	    "	nop						\n"	\
++	    "	nop						\n"	\
++	    ".type " STATIC_CALL_TRAMP_STR(name) ", @function	\n"	\
++	    ".size " STATIC_CALL_TRAMP_STR(name) ", . - " STATIC_CALL_TRAMP_STR(name) " \n" \
++	    ".popsection					\n")
++
++#define ARCH_DEFINE_STATIC_CALL_TRAMP(name, func)	__POWERPC_SCT(name, "b " #func)
++#define ARCH_DEFINE_STATIC_CALL_NULL_TRAMP(name)	__POWERPC_SCT(name, "blr")
++
++#endif /* _ASM_POWERPC_STATIC_CALL_H */
+diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
+index 7be36c1e1db6..0e3640e14eb1 100644
+--- a/arch/powerpc/kernel/Makefile
++++ b/arch/powerpc/kernel/Makefile
+@@ -106,7 +106,7 @@ extra-y				+= vmlinux.lds
+ 
+ obj-$(CONFIG_RELOCATABLE)	+= reloc_$(BITS).o
+ 
+-obj-$(CONFIG_PPC32)		+= entry_32.o setup_32.o early_32.o
++obj-$(CONFIG_PPC32)		+= entry_32.o setup_32.o early_32.o static_call.o
+ obj-$(CONFIG_PPC64)		+= dma-iommu.o iommu.o
+ obj-$(CONFIG_KGDB)		+= kgdb.o
+ obj-$(CONFIG_BOOTX_TEXT)	+= btext.o
+diff --git a/arch/powerpc/kernel/static_call.c b/arch/powerpc/kernel/static_call.c
+new file mode 100644
+index 000000000000..e5e78205ccb4
+--- /dev/null
++++ b/arch/powerpc/kernel/static_call.c
+@@ -0,0 +1,36 @@
++// SPDX-License-Identifier: GPL-2.0
++#include <linux/memory.h>
++#include <linux/static_call.h>
++
++#include <asm/code-patching.h>
++
++void arch_static_call_transform(void *site, void *tramp, void *func, bool tail)
++{
++	int err;
++	unsigned long target = (long)func;
++	bool is_short = is_offset_in_branch_range((long)target - (long)tramp);
++
++	if (!tramp)
++		return;
++
++	mutex_lock(&text_mutex);
++
++	if (func && !is_short) {
++		err = patch_instruction(tramp + 20, ppc_inst(target));
++		if (err)
++			goto out;
++	}
++
++	if (!func)
++		err = patch_instruction(tramp, ppc_inst(PPC_RAW_BLR()));
++	else if (is_short)
++		err = patch_branch(tramp, target, 0);
++	else
++		err = patch_instruction(tramp, ppc_inst(PPC_RAW_NOP()));
++out:
++	mutex_unlock(&text_mutex);
++
++	if (err)
++		panic("%s: patching failed %pS at %pS\n", __func__, func, tramp);
++}
++EXPORT_SYMBOL_GPL(arch_static_call_transform);
+-- 
+2.25.0
+
