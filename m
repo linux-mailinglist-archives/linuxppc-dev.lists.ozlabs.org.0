@@ -1,75 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E9753FCD21
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Aug 2021 21:00:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F79C3FCDC1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Aug 2021 21:47:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gzc2f1wClz2yJR
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Sep 2021 05:00:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Gzd4S3G3Jz2ymZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Sep 2021 05:47:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=paul-moore-com.20150623.gappssmtp.com header.i=@paul-moore-com.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=m/p6PQxM;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KPnVgyVh;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=paul-moore.com
- (client-ip=2a00:1450:4864:20::62f; helo=mail-ej1-x62f.google.com;
- envelope-from=paul@paul-moore.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=paul-moore-com.20150623.gappssmtp.com
- header.i=@paul-moore-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=m/p6PQxM; dkim-atps=neutral
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com
- [IPv6:2a00:1450:4864:20::62f])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=KPnVgyVh; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gzc1x2YNmz2xsT
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Sep 2021 04:59:48 +1000 (AEST)
-Received: by mail-ej1-x62f.google.com with SMTP id a25so983594ejv.6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Aug 2021 11:59:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=K4O58ZgiMsf0cCMtsvw/t7AJFM1T3tlDvm3uUGsU/to=;
- b=m/p6PQxMro/Ee7fR7WvozEwx71BnscpCpL2xs1XR6unVL7bfCWki5mm/DL8tzkxtlv
- IgmDAUJlZv7+KUUNuYAb3NRkVROzdUIxdGRwwrqEOUO0vD6Cu/HZq+bSFieTd9983AeD
- YktyhmMz20Tq1h8uROtJTQQFwlHuUy+Bds8+ZIoQqHDYDTRBZ7xIrXRop6SBBaMcqz3D
- KSsC4i4L46l25F26x2rXCk4fmowpOEt5kNPUpUjO3ZN5jtoqzJulRjdNVM64Yw8ZBWOt
- rXYGE77kjE3hfKV3j/NE4j8c0xfhsFszf/XJGAR6u3atTQlztdBXyq7sYYSIi6VfUO2y
- mhuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=K4O58ZgiMsf0cCMtsvw/t7AJFM1T3tlDvm3uUGsU/to=;
- b=SLi1Xp+3Rk5w1hUzY4uT0Ck6Cbw8pEKV8KnrkYqghj8qUzxmy4ORcDvIIlEVCcJZHV
- VaEEQ0wLiNVRssmEQ5f91aCekx7Kk3nOg9FNrTQIWNITAaLNwXHEcJnQKqwexjyrYp8W
- Zqx2iF4vl7y/kOgHnopEiEgDU/TWyrOtewSfess+u5eRQC0jTZZZY64a95+S7C/+cBFk
- 3WVmF7oUxQyftiNQwMgwW4nZDhnZKvtEE6pp7Fh+gEancilitiE1Ee9x0//Gt+HLzX+z
- Q0XtkGpLeYSadrfWfHx3bfA21+YMuy0Ges7qJeo9gBlhnqF5pu73UVdn2ObqY0iHPRGO
- tilQ==
-X-Gm-Message-State: AOAM533PKHsxVsr6cEHQ1wlSzUW2JEW2MP3bcjwxreCgo2LRC/71bYTU
- Kbs44cDeSezkzTJvoN8aTZ8g3+rKYpDGB3ve626s
-X-Google-Smtp-Source: ABdhPJynhzjWiT5WygcinC1v/vpSrVXtKhAajoj91Y8oOaAf641QOi9pajzp20JXEjTMXZ2nBzK8acBfiZKG6sYGsHg=
-X-Received: by 2002:a17:906:2cd6:: with SMTP id
- r22mr31706715ejr.398.1630436382385; 
- Tue, 31 Aug 2021 11:59:42 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Gzd3l094Nz2xXL
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Sep 2021 05:46:27 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id CAD9960FC3;
+ Tue, 31 Aug 2021 19:46:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1630439184;
+ bh=PyNkkVj1FtkBNKwq/0/RnvD7p0sFQxysf+dr6PUIhjU=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=KPnVgyVhBg07g5BBa6mdR2FJKIsnW2sUVhDbSyPNe6ImDQSIcKabi30wMNewGs6C7
+ GlA0oDffBlXwwnHafeG2REY/1rSQalrych2kgIZnmJnuEF9Cny3NbN5jSD21PneThZ
+ OAQNNs8iaPGEVC5eQ9aL4QkBIsESzIw90jqsJxK1j9EOmVyUuAbPKAHhIV7zGL+JrV
+ SOkTIAQp7EZm9BEtVBp6L3+OXxX8IYTGwZnZJqJJbC48VHIfdJE8uD92iGJMzff38x
+ REhXSZ8NAipV9DrR1DXJPQldLlPGauNgZFrDxbfbItqZYWNRjE/5az9YKauRSohDDv
+ rlEp1877oLYPw==
+Date: Tue, 31 Aug 2021 12:46:21 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/bug: Cast to unsigned long before passing to
+ inline asm
+Message-ID: <YS6HDZ/XMY6HT4It@Ryzen-9-3900X.localdomain>
+References: <20210831132720.881643-1-mpe@ellerman.id.au>
 MIME-Version: 1.0
-References: <20210616085118.1141101-1-omosnace@redhat.com>
- <CAPcyv4jvR8CT4rYODR5KUHNdiqMwQSwJZ+OkVf61kLT3JfjC_Q@mail.gmail.com>
- <CAFqZXNtuH0329Xvcb415Kar-=o6wwrkFuiP8BZ_2OQhHLqkkAg@mail.gmail.com>
- <CAHC9VhTGECM2p+Q8n48aSdfJzY6XrpXQ5tcFurjWc4A3n8Qxjg@mail.gmail.com>
- <CAPcyv4i8YXo=xOL2vO67KLABQRDNAxzrzT=a1xtwtrts5pVPKw@mail.gmail.com>
-In-Reply-To: <CAPcyv4i8YXo=xOL2vO67KLABQRDNAxzrzT=a1xtwtrts5pVPKw@mail.gmail.com>
-From: Paul Moore <paul@paul-moore.com>
-Date: Tue, 31 Aug 2021 14:59:31 -0400
-Message-ID: <CAHC9VhReGcV=cngDMmAcEiS2NpkXZQ6b09go9m0omzxLdrUQXg@mail.gmail.com>
-Subject: Re: [PATCH v3] lockdown,selinux: fix wrong subject in some SELinux
- lockdown checks
-To: Dan Williams <dan.j.williams@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210831132720.881643-1-mpe@ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,73 +58,150 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-efi <linux-efi@vger.kernel.org>,
- Linux PCI <linux-pci@vger.kernel.org>, linux-cxl@vger.kernel.org,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Steffen Klassert <steffen.klassert@secunet.com>,
- Herbert Xu <herbert@gondor.apana.org.au>, X86 ML <x86@kernel.org>,
- James Morris <jmorris@namei.org>, Linux ACPI <linux-acpi@vger.kernel.org>,
- Ingo Molnar <mingo@redhat.com>, linux-serial@vger.kernel.org,
- Linux-pm mailing list <linux-pm@vger.kernel.org>,
- SElinux list <selinux@vger.kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Casey Schaufler <casey@schaufler-ca.com>, Netdev <netdev@vger.kernel.org>,
- Stephen Smalley <stephen.smalley.work@gmail.com>,
- Kexec Mailing List <kexec@lists.infradead.org>,
- Ondrej Mosnacek <omosnace@redhat.com>,
- Linux Security Module list <linux-security-module@vger.kernel.org>,
- linux-fsdevel <linux-fsdevel@vger.kernel.org>, bpf <bpf@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "David S . Miller" <davem@davemloft.net>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Aug 31, 2021 at 2:58 PM Dan Williams <dan.j.williams@intel.com> wrote:
-> On Tue, Aug 31, 2021 at 6:53 AM Paul Moore <paul@paul-moore.com> wrote:
-> > On Tue, Aug 31, 2021 at 5:09 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
-> > > On Sat, Jun 19, 2021 at 12:18 AM Dan Williams <dan.j.williams@intel.com> wrote:
-> > > > On Wed, Jun 16, 2021 at 1:51 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
-> >
-> > ...
-> >
-> > > > > diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
-> > > > > index 2acc6173da36..c1747b6555c7 100644
-> > > > > --- a/drivers/cxl/mem.c
-> > > > > +++ b/drivers/cxl/mem.c
-> > > > > @@ -568,7 +568,7 @@ static bool cxl_mem_raw_command_allowed(u16 opcode)
-> > > > >         if (!IS_ENABLED(CONFIG_CXL_MEM_RAW_COMMANDS))
-> > > > >                 return false;
-> > > > >
-> > > > > -       if (security_locked_down(LOCKDOWN_NONE))
-> > > > > +       if (security_locked_down(current_cred(), LOCKDOWN_NONE))
-> > > >
-> > > > Acked-by: Dan Williams <dan.j.williams@intel.com>
-> > > >
-> > > > ...however that usage looks wrong. The expectation is that if kernel
-> > > > integrity protections are enabled then raw command access should be
-> > > > disabled. So I think that should be equivalent to LOCKDOWN_PCI_ACCESS
-> > > > in terms of the command capabilities to filter.
-> > >
-> > > Yes, the LOCKDOWN_NONE seems wrong here... but it's a pre-existing bug
-> > > and I didn't want to go down yet another rabbit hole trying to fix it.
-> > > I'll look at this again once this patch is settled - it may indeed be
-> > > as simple as replacing LOCKDOWN_NONE with LOCKDOWN_PCI_ACCESS.
-> >
-> > At this point you should be well aware of my distaste for merging
-> > patches that have known bugs in them.  Yes, this is a pre-existing
-> > condition, but it seems well within the scope of this work to address
-> > it as well.
-> >
-> > This isn't something that is going to get merged while the merge
-> > window is open, so at the very least you've got almost two weeks to
-> > sort this out - please do that.
->
-> Yes, apologies, I should have sent the fix shortly after noticing the
-> problem. I'll get the CXL bug fix out of the way so Ondrej can move
-> this along.
+On Tue, Aug 31, 2021 at 11:27:20PM +1000, Michael Ellerman wrote:
+> In commit 1e688dd2a3d6 ("powerpc/bug: Provide better flexibility to
+> WARN_ON/__WARN_FLAGS() with asm goto") we changed WARN_ON(). Previously
+> it would take the warning condition, x, and double negate it before
+> converting the result to int, and passing that int to the underlying
+> inline asm. ie:
+> 
+>   #define WARN_ON(x) ({
+>   	int __ret_warn_on = !!(x);
+>   	if (__builtin_constant_p(__ret_warn_on)) {
+>   	...
+>   	} else {
+>   		BUG_ENTRY(PPC_TLNEI " %4, 0",
+>   			  BUGFLAG_WARNING | BUGFLAG_TAINT(TAINT_WARN),
+>   			  "r" (__ret_warn_on));
+> 
+> The asm then does a full register width comparison with zero and traps
+> if it is non-zero (PPC_TLNEI).
+> 
+> The new code instead passes the full expression, x, with some unknown
+> type, to the inline asm:
+> 
+>   #define WARN_ON(x) ({
+> 	...
+> 	do {
+> 		if (__builtin_constant_p((x))) {
+> 		...
+> 		} else {
+> 			...
+> 			WARN_ENTRY(PPC_TLNEI " %4, 0",
+> 				   BUGFLAG_WARNING | BUGFLAG_TAINT(TAINT_WARN),
+> 				   __label_warn_on, "r" (x));
+> 
+> This was not seen to cause any issues with GCC, however with clang in at
+> least one case it leads to a WARN_ON() that fires incorrectly and
+> repeatedly at boot, as reported[1] by Nathan:
+> 
+>   WARNING: CPU: 0 PID: 1 at lib/klist.c:62 .klist_add_tail+0x3c/0x110
+>   Modules linked in:
+>   CPU: 0 PID: 1 Comm: swapper/0 Tainted: G        W         5.14.0-rc7-next-20210825 #1
+>   NIP:  c0000000007ff81c LR: c00000000090a038 CTR: 0000000000000000
+>   REGS: c0000000073c32a0 TRAP: 0700   Tainted: G        W          (5.14.0-rc7-next-20210825)
+>   MSR:  8000000002029032 <SF,VEC,EE,ME,IR,DR,RI>  CR: 22000a40  XER: 00000000
+>   CFAR: c00000000090a034 IRQMASK: 0
+>   GPR00: c00000000090a038 c0000000073c3540 c000000001be3200 0000000000000001
+>   GPR04: c0000000072d65c0 0000000000000000 c0000000091ba798 c0000000091bb0a0
+>   GPR08: 0000000000000001 0000000000000000 c000000008581918 fffffffffffffc00
+>   GPR12: 0000000044000240 c000000001dd0000 c000000000012300 0000000000000000
+>   GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+>   GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+>   GPR24: 0000000000000000 c0000000017e3200 0000000000000000 c000000001a0e778
+>   GPR28: c0000000072d65b0 c0000000072d65a8 c000000007de72c8 c0000000073c35d0
+>   NIP .klist_add_tail+0x3c/0x110
+>   LR  .bus_add_driver+0x148/0x290
+>   Call Trace:
+>     0xc0000000073c35d0 (unreliable)
+>     .bus_add_driver+0x148/0x290
+>     .driver_register+0xb8/0x190
+>     .__hid_register_driver+0x70/0xd0
+>     .redragon_driver_init+0x34/0x58
+>     .do_one_initcall+0x130/0x3b0
+>     .do_initcall_level+0xd8/0x188
+>     .do_initcalls+0x7c/0xdc
+>     .kernel_init_freeable+0x178/0x21c
+>     .kernel_init+0x34/0x220
+>     .ret_from_kernel_thread+0x58/0x60
+>   Instruction dump:
+>   fba10078 7c7d1b78 38600001 fb810070 3b9d0008 fbc10080 7c9e2378 389d0018
+>   fb9d0008 fb9d0010 90640000 fbdd0000 <0b1e0000> e87e0018 28230000 41820024
+> 
+> The instruction dump shows that we are trapping because r30 is not zero:
+>   tdnei   r30,0
+> 
+> Where r30 = c000000007de72c8
+> 
+> The WARN_ON() comes from:
+> 
+>   static void knode_set_klist(struct klist_node *knode, struct klist *klist)
+>   {
+>   	knode->n_klist = klist;
+>   	/* no knode deserves to start its life dead */
+>   	WARN_ON(knode_dead(knode));
+>   		^^^^^^^^^^^^^^^^^
+> 
+> Where:
+> 
+>   #define KNODE_DEAD		1LU
+> 
+>   static bool knode_dead(struct klist_node *knode)
+>   {
+>   	return (unsigned long)knode->n_klist & KNODE_DEAD;
+>   }
+> 
+> The full disassembly shows that the compiler has not generated any code
+> to apply the "& KNODE_DEAD" to the n_klist pointer, which is surprising.
+> 
+> Nathan filed an LLVM bug [2], in which Eli Friedman explained that "if
+> you pass a value of a type that's narrower than a register to an inline
+> asm, the high bits are undefined". In this case we are passing a bool
+> to the inline asm, which is a single bit value, and so the compiler
+> thinks it can leave the high bits of r30 unmasked, because only the
+> value of bit 0 matters.
+> 
+> Because the inline asm compares the full width of the register (32 or
+> 64-bit) we need to ensure the value passed to the inline asm has all
+> bits defined. So fix it by casting to long.
+> 
+> We also already cast to long for the similar case in BUG_ENTRY(), which
+> it turns out was added to fix a similar bug in 2005 in commit
+> 32818c2eb6b8 ("[PATCH] ppc64: Fix issue with gcc 4.0 compiled kernels").
+> 
+> [1]: http://lore.kernel.org/r/YSa1O4fcX1nNKqN/@Ryzen-9-3900X.localdomain
+> [2]: https://bugs.llvm.org/show_bug.cgi?id=51634
+> 
+> Fixes: 1e688dd2a3d6 ("powerpc/bug: Provide better flexibility to WARN_ON/__WARN_FLAGS() with asm goto")
+> Reported-by: Nathan Chancellor <nathan@kernel.org>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 
-Thanks Dan.
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
 
--- 
-paul moore
-www.paul-moore.com
+> ---
+>  arch/powerpc/include/asm/bug.h | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
+> index 1ee0f22313ee..02c08d1492f8 100644
+> --- a/arch/powerpc/include/asm/bug.h
+> +++ b/arch/powerpc/include/asm/bug.h
+> @@ -119,7 +119,8 @@ __label_warn_on:						\
+>  								\
+>  			WARN_ENTRY(PPC_TLNEI " %4, 0",		\
+>  				   BUGFLAG_WARNING | BUGFLAG_TAINT(TAINT_WARN),	\
+> -				   __label_warn_on, "r" (x));	\
+> +				   __label_warn_on,		\
+> +				   "r" ((__force long)(x)));	\
+>  			break;					\
+>  __label_warn_on:						\
+>  			__ret_warn_on = true;			\
+> 
+> -- 
+> 2.25.1
