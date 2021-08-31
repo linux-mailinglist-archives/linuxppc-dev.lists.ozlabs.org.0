@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3837E3FC434
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Aug 2021 10:30:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69A213FC435
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Aug 2021 10:31:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GzL410F52z30JT
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Aug 2021 18:30:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GzL4S1Z9nz3c6Y
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Aug 2021 18:31:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,36 +16,36 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GzL3b38c2z2yHq
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Aug 2021 18:30:19 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GzL3m1j0Wz2ywY
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Aug 2021 18:30:28 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4GzL3X4wt4z9sTX;
- Tue, 31 Aug 2021 10:30:16 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4GzL3j2c6Nz9sTX;
+ Tue, 31 Aug 2021 10:30:25 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id Cym_Uc7otZ0i; Tue, 31 Aug 2021 10:30:16 +0200 (CEST)
+ with ESMTP id Ha_H_sx_ILRv; Tue, 31 Aug 2021 10:30:25 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4GzL3X3rllz9sTR;
- Tue, 31 Aug 2021 10:30:16 +0200 (CEST)
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4GzL3j1LPQz9sTk;
+ Tue, 31 Aug 2021 10:30:25 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 518E98B7DE;
- Tue, 31 Aug 2021 10:30:16 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0ED768B7DE;
+ Tue, 31 Aug 2021 10:30:25 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id SRZG-eXB5LeO; Tue, 31 Aug 2021 10:30:16 +0200 (CEST)
+ with ESMTP id 44dcfM13DqZ2; Tue, 31 Aug 2021 10:30:24 +0200 (CEST)
 Received: from po18078vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 08A9E8B7DD;
- Tue, 31 Aug 2021 10:30:16 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id BE1A58B7DD;
+ Tue, 31 Aug 2021 10:30:24 +0200 (CEST)
 Received: by po18078vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id D05556BCA2; Tue, 31 Aug 2021 08:30:15 +0000 (UTC)
+ id 974506BCA2; Tue, 31 Aug 2021 08:30:24 +0000 (UTC)
 Message-Id: <24d4ca0ada683c9436a5f812a7aeb0a1362afa2b.1630398606.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 Subject: [PATCH] powerpc/machdep: Remove stale functions from ppc_md structure
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Tue, 31 Aug 2021 08:30:15 +0000 (UTC)
+Date: Tue, 31 Aug 2021 08:30:24 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
