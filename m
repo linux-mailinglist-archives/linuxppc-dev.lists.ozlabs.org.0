@@ -1,83 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6CCB3FCED2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Aug 2021 22:50:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E4243FCF34
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Aug 2021 23:37:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4GzfT359w3z2ymb
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Sep 2021 06:49:59 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20161025 header.b=OPzpmN8i;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GzgWc0MgMz2ywc
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Sep 2021 07:37:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::729;
- helo=mail-qk1-x729.google.com; envelope-from=leobras.c@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=OPzpmN8i; dkim-atps=neutral
-Received: from mail-qk1-x729.google.com (mail-qk1-x729.google.com
- [IPv6:2607:f8b0:4864:20::729])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4GzfSM6pl2z2yJ5
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Sep 2021 06:49:22 +1000 (AEST)
-Received: by mail-qk1-x729.google.com with SMTP id a66so796751qkc.1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Aug 2021 13:49:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :user-agent:mime-version:content-transfer-encoding;
- bh=0XGq0QWFCnzYO26yFWXj5mnRnRTvlRa41ppVOuxHxJw=;
- b=OPzpmN8iojb71hEsYdQswFgRF9J5uQa4An56DALbmyvZw6zJCR/N8Q6ipsBdsFV2M3
- MmPKYVkEgHeOL711NOoxm4vRV0ZpnAmOFR2Zn/5vnLtSM4TBvzoBuQ1dCa+5xCTzcy4T
- YXtZhbysJ3yFxd4kXf7oCr2LfWoSx5zAJMHS5KbGIPzvCzXf9EeHPa9JSji2fs9CsbKj
- vp35vzB5nH0/g4LS5we3vACD2iPRT5T2XTqUKvcDP1XTBeWgyzgsaAXT66+CRfmOqiyn
- fl5hr8udJncyK9g9khAmpIOgwuEUjL1yTA+FfAIv11tQsET/e45BQOr9CwCOtvie93wo
- +DFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:user-agent:mime-version:content-transfer-encoding;
- bh=0XGq0QWFCnzYO26yFWXj5mnRnRTvlRa41ppVOuxHxJw=;
- b=R09nAShrtX/rEo1oSYmS0IoaavumkknxZRK4nu0Q4UXxNpTz/tUomUBLAceWAYcYnR
- CLQ/2yrtpLWCuEtK6LcRsevN3pYt/q68xp13/JSnxnDIrORbIPWbtvreN4TyrIKTiOeb
- AFzPxTG1yiEpri5DhIgWiaMgC6uRLE91VGVBURaAE8JVI3kHFCo5XCTNt2ZF47F2hrPZ
- bBb54o4VDIMDzvnSfTYIzPjmw/cmKvEmNcOcCpC4kaNRT1V8Y61GJ+6jk7GkTmeinrEP
- 3FBbnIcfQbJ3lHTo/zK+pnpKZjDgHkBrGhHSE8vf3rnUowuHtEA/6ZklBwTHf49xHu/E
- JXoA==
-X-Gm-Message-State: AOAM530lr5j/s2if6LG0m4CwzzfJCrHccsYWhgBrI2vVVHrs7koGoCw4
- AbLXP0Ou2qVxiQJh5rGywqk=
-X-Google-Smtp-Source: ABdhPJzHNi57SmFcQgygfZZHQNyCxnxCZeGp0wu/IiKtXd+dWkDZkVnEU/lmwwE0ENmjHdWWIDCBDA==
-X-Received: by 2002:a37:a853:: with SMTP id r80mr4977523qke.326.1630442959347; 
- Tue, 31 Aug 2021 13:49:19 -0700 (PDT)
-Received: from ?IPv6:2804:431:c7f1:e948:8e69:9cd6:5512:12f4?
- ([2804:431:c7f1:e948:8e69:9cd6:5512:12f4])
- by smtp.gmail.com with ESMTPSA id x27sm5300509qtm.23.2021.08.31.13.49.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 31 Aug 2021 13:49:18 -0700 (PDT)
-Message-ID: <dc80ad61dbd52a3fda5cd47ab5e60e45009b511d.camel@gmail.com>
-Subject: Re: [PATCH v6 00/11] DDW + Indirect Mapping
-From: Leonardo =?ISO-8859-1?Q?Br=E1s?= <leobras.c@gmail.com>
-To: David Christensen <drc@linux.vnet.ibm.com>, Michael Ellerman
- <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, 
- Paul Mackerras <paulus@samba.org>, Alexey Kardashevskiy <aik@ozlabs.ru>,
- David Gibson <david@gibson.dropbear.id.au>, kernel test robot
- <lkp@intel.com>, Nicolin Chen <nicoleotsuka@gmail.com>, Frederic Barrat
- <fbarrat@linux.ibm.com>
-Date: Tue, 31 Aug 2021 17:49:36 -0300
-In-Reply-To: <311ece8f-bedc-b3f7-0d1b-2cb78438890f@linux.vnet.ibm.com>
-References: <20210817063929.38701-1-leobras.c@gmail.com>
- <82ca56ab-6a0a-7cbb-a5e7-facc40f35c3c@linux.vnet.ibm.com>
- <e867b4ddce01adf318bc8837c997ceb64e44c1c5.camel@gmail.com>
- <311ece8f-bedc-b3f7-0d1b-2cb78438890f@linux.vnet.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.40.4 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Authentication-Results: lists.ozlabs.org;
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4GzgW65VzCz2yHq
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Sep 2021 07:36:48 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 17VLYYqK007329;
+ Tue, 31 Aug 2021 16:34:34 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 17VLYWgX007321;
+ Tue, 31 Aug 2021 16:34:32 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Tue, 31 Aug 2021 16:34:32 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/bug: Cast to unsigned long before passing to
+ inline asm
+Message-ID: <20210831213432.GF1583@gate.crashing.org>
+References: <20210831132720.881643-1-mpe@ellerman.id.au>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210831132720.881643-1-mpe@ellerman.id.au>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,38 +48,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: nathan@kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2021-08-31 at 13:39 -0700, David Christensen wrote:
-> > 
-> > This series allow Indirect DMA using DDW when available, which
-> > usually
-> > means bigger pagesizes and more TCEs, and so more DMA space.
+Hi!
+
+On Tue, Aug 31, 2021 at 11:27:20PM +1000, Michael Ellerman wrote:
+> Nathan filed an LLVM bug [2], in which Eli Friedman explained that "if
+> you pass a value of a type that's narrower than a register to an inline
+> asm, the high bits are undefined". In this case we are passing a bool
+> to the inline asm, which is a single bit value, and so the compiler
+> thinks it can leave the high bits of r30 unmasked, because only the
+> value of bit 0 matters.
 > 
-> How is the mapping method selected?  LPAR creation via the HMC, Linux
-> kernel load parameter, or some other method?
-
-At device/bus probe, if there is enough DMA space available for Direct
-DMA, then it's used. If not, it uses indirect DMA.
-
+> Because the inline asm compares the full width of the register (32 or
+> 64-bit) we need to ensure the value passed to the inline asm has all
+> bits defined. So fix it by casting to long.
 > 
-> The hcall overhead doesn't seem too worrisome when mapping 1GB pages
-> so 
-> the Indirect DMA method might be best in my situation (DPDK).
+> We also already cast to long for the similar case in BUG_ENTRY(), which
+> it turns out was added to fix a similar bug in 2005 in commit
+> 32818c2eb6b8 ("[PATCH] ppc64: Fix issue with gcc 4.0 compiled kernels").
 
-Well, it depends on usage.
-I mean, the recommended use of IOMMU is to map, transmit and then
-unmap, but this will vary on the implementation of the driver.
+That points to <https://gcc.gnu.org/PR23422>, which shows the correct
+explanation.
 
-If, for example, there is some reuse of the DMA mapping, as in a
-previous patchset I sent (IOMMU Pagecache), then the hcall overhead can
-be reduced drastically.
+The code as it was did **not** pass a bool.  It perhaps passed an int
+(so many macros in play, it is hard to tell for sure, but it is int or
+long int, perhaps unsigned (which does not change anything here).  But
+td wants a 64-bit register, not a 32-bit one (which are the only two
+possibilities for the "r" constraint on PowerPC).  The cast to "long" is
+fine for powerpc64, but it has nothing to do with "narrower than a
+register".
 
-> 
-> Dave
-Best regards,
-Leonardo
+If this is not the correct explanation for LLVM, it needs to solve some
+other bug.
 
+
+Segher
