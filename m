@@ -2,70 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E44453FE076
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Sep 2021 18:55:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F32363FE07B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Sep 2021 18:55:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H09CY663Wz2ynY
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Sep 2021 02:55:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H09DH5zy8z304w
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Sep 2021 02:55:43 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=oW6Vl9Ky;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ZnfkKAQh;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::536;
- helo=mail-pg1-x536.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1031;
+ helo=mail-pj1-x1031.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=oW6Vl9Ky; dkim-atps=neutral
-Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com
- [IPv6:2607:f8b0:4864:20::536])
+ header.s=20210112 header.b=ZnfkKAQh; dkim-atps=neutral
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com
+ [IPv6:2607:f8b0:4864:20::1031])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H09Bw00y5z2xrg
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Sep 2021 02:54:29 +1000 (AEST)
-Received: by mail-pg1-x536.google.com with SMTP id w8so45780pgf.5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Sep 2021 09:54:29 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H09Bw054cz2xsd
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Sep 2021 02:54:31 +1000 (AEST)
+Received: by mail-pj1-x1031.google.com with SMTP id fz10so39576pjb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Sep 2021 09:54:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=d3kI7+BUsr3OVzhTjzR2IW/TBxPALK/7LDl3mNUQLaQ=;
- b=oW6Vl9KyQnaFt46fWNMVcBmSOFFEhe5CHagPLQYbCq3QHqrY+MKcJrKGFJFLPCZbx7
- R6PicJjgx4hfce24jIvkK2aMkP0wisNEzB9LhlOZE9FOtMJ1ShtIFwTe6ART0M0oAETI
- E4uN45kSJ1AH1eqk9VpiYFXoI+AQISCIiQ+KM4qr9tULe8bJrkfwdBQwt74CfZNIoAcr
- g9og7/Ft8B3Ws3UBX0qEJuCFuFaOLFmezieeRApGxBuv75b90TFmx3R957CPoDm8GqkE
- cvu2nJUv7iT/OjNP4mrY1b1fy7PcI/ujP+ak/TZbPY5Bp9ji62W03LzGEAc+tP7QxMYf
- tOiQ==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=oxgPHOcTvXn7ID9uIvueQgBl1RxjQyez3dSB0V/E5EQ=;
+ b=ZnfkKAQhvyhlG2ndtunjseb0aGWNFG848OwhzoPIdj/IaifK3y77JlJ6iP6sQ3K3j3
+ 1XyEQx+kM+RbLMpVGWlcmgWwAX9DPbiZLG9H6+dEeq/DoD0JeCF7Fy3X9THQBT8W/P6n
+ /Z7fuvr5TFgN7POxnouftm2xk33MfW6tgiJrenh3cOe5EnnzaclsoIJAFxynr38xkI7F
+ nSWUWgAQCIJurwjI85JtBLXOAg+k0yh9pBzWE2ZuWGM65tqrX1sxp5UgTJv3RgwOFEJh
+ J5yuBgSAK3FFdjmCikP4/tSNLtWjCnJSJduqHYsjw868VZ5bwNO9108PjNgU8VfPDeII
+ dcAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=d3kI7+BUsr3OVzhTjzR2IW/TBxPALK/7LDl3mNUQLaQ=;
- b=hwYVz/MfpsWqvuw6b1xWB+V0LYddUauzxM7zJ0S15n5fJuUf5jbmcbNMVnd7AjndDc
- u6E25e/yv8ayInUjK9rFV0TL1sRCHRy8acLXUYTVZ/941ZTRPrEVslxn0UmEI46TdQgT
- YjKYHYLmFndjb8d0kcV0r/XX6aDkAtKvYtOiLOkWrSXfy3f+hX5DHYxmISTnkJU+1RNB
- 6+dQZBcuJvMUlgQBwmFWoBFENcusFZ2WW3GvyLP4BAJq1P6qNm8QYqyyAT0xkNI3h+nj
- RLCFrSQExMIhWSkoFUJ0NdK2AVM0ysW3faucM422kuD90Lk+gfl/dumI7DFmZCCZGXnj
- Plmw==
-X-Gm-Message-State: AOAM531ZPIUWB5zXsjYuAWb2QtZK0yopoLxXxGU9CGkAGq3x8fIkD+Io
- SxAK/oY5hZlWBh8dFzi8vwrmMGPQ+SU=
-X-Google-Smtp-Source: ABdhPJynTDOL7DwduubDKuwrxoAD3YI0g0X1mzZInS4t1RLdFgVedM6n/Io6DltQUY3H5vycMBZ5WQ==
-X-Received: by 2002:a62:5846:0:b0:3f2:805b:50b1 with SMTP id
- m67-20020a625846000000b003f2805b50b1mr350151pfb.74.1630515266602; 
- Wed, 01 Sep 2021 09:54:26 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=oxgPHOcTvXn7ID9uIvueQgBl1RxjQyez3dSB0V/E5EQ=;
+ b=hfzRHaBfgSSWZtLFos32GZ/InRSoegz7umA1MGz6lvIaujCyx0jOA3qOSPGqSu2MCk
+ uvn+DJ+4rqCe8UHW+SaYQuDyAtxLZ9oNH16xHdykLJl9XOLLplbkc5CAoXYqsW0ww5Fd
+ V6KBSWlHLl3LFx3onP7p1ZP3Hq4bPWmOFl+9BgQrHFDI7VmRCADh7fAlhyEtdIPNx9KH
+ MGmlxQkpnK6wfavrSLPR6uBA/z42audoVQ0fMF1xWLcenug32lYwuvs9xePggBNFnrqU
+ d2fvrHhcifMSLjt8663GqWkq0bOpZyLGFceOoavCb8Lwq6SF7hhZif8ABUlAoqgMWeCZ
+ UPYg==
+X-Gm-Message-State: AOAM533i9yddvBStCvguTeXgR9Z+0CPMhBzpG8fS6E4RvIBOnmPfHS+4
+ jWlBAhIS1SYPuiRqnCA4XcGnZbCa4cw=
+X-Google-Smtp-Source: ABdhPJx9gj0igu+rJ/LwdEkeqqSV89RtCdujf1lmTiULVOQYaCLEsakWmNJCrUg8NcNAE9W0Sjigdw==
+X-Received: by 2002:a17:90b:1e08:: with SMTP id pg8mr350079pjb.3.1630515268797; 
+ Wed, 01 Sep 2021 09:54:28 -0700 (PDT)
 Received: from bobo.ibm.com (220-244-72-10.tpgi.com.au. [220.244.72.10])
- by smtp.gmail.com with ESMTPSA id m64sm221824pga.55.2021.09.01.09.54.24
+ by smtp.gmail.com with ESMTPSA id m64sm221824pga.55.2021.09.01.09.54.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Sep 2021 09:54:26 -0700 (PDT)
+ Wed, 01 Sep 2021 09:54:28 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 1/2] powerpc/64s: system call scv tabort fix for corrupt
- irq soft-mask state
-Date: Thu,  2 Sep 2021 02:54:17 +1000
-Message-Id: <20210901165418.1412891-1-npiggin@gmail.com>
+Subject: [PATCH v2 2/2] selftests/powerpc: Add scv versions of the basic TM
+ syscall tests
+Date: Thu,  2 Sep 2021 02:54:18 +1000
+Message-Id: <20210901165418.1412891-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
+In-Reply-To: <20210901165418.1412891-1-npiggin@gmail.com>
+References: <20210901165418.1412891-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -84,56 +85,154 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If a system call is made with a transaction active, the kernel
-immediately aborts it and returns. scv system calls disable irqs even
-earlier in their interrupt handler, and tabort_syscall does not fix this
-up.
+The basic TM vs syscall test code hard codes an sc instruction for the
+system call, which fails to cover scv even when the userspace libc has
+support for it.
 
-This can result in irq soft-mask state being messed up on the next
-kernel entry, and crashing at BUG_ON(arch_irq_disabled_regs(regs)) in
-the kernel exit handlers, or possibly worse.
+Duplicate the tests with hard coded scv variants so both are tested
+when possible.
 
-Fix this by having tabort_syscall setting irq soft-mask back to enabled
-(which requires MSR[EE] be disabled first).
-
-Reported-by: Eirik Fuller <efuller@redhat.com>
-Fixes: 7fa95f9adaee7 ("powerpc/64s: system call support for scv/rfscv instructions")
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
+ .../selftests/powerpc/tm/tm-syscall-asm.S     | 46 +++++++++++++++++++
+ .../testing/selftests/powerpc/tm/tm-syscall.c | 36 ++++++++++++---
+ 2 files changed, 75 insertions(+), 7 deletions(-)
 
-Tested the wrong kernel before sending v1 and missed a bug, sorry.
-
- arch/powerpc/kernel/interrupt_64.S | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/kernel/interrupt_64.S b/arch/powerpc/kernel/interrupt_64.S
-index d4212d2ff0b5..9c31d65b4851 100644
---- a/arch/powerpc/kernel/interrupt_64.S
-+++ b/arch/powerpc/kernel/interrupt_64.S
-@@ -428,16 +428,22 @@ RESTART_TABLE(.Lsyscall_rst_start, .Lsyscall_rst_end, syscall_restart)
- #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
- tabort_syscall:
- _ASM_NOKPROBE_SYMBOL(tabort_syscall)
--	/* Firstly we need to enable TM in the kernel */
-+	/* We need to enable TM in the kernel, and disable EE (for scv) */
- 	mfmsr	r10
- 	li	r9, 1
- 	rldimi	r10, r9, MSR_TM_LG, 63-MSR_TM_LG
-+	LOAD_REG_IMMEDIATE(r9, MSR_EE)
-+	andc	r10, r10, r9
- 	mtmsrd	r10, 0
+diff --git a/tools/testing/selftests/powerpc/tm/tm-syscall-asm.S b/tools/testing/selftests/powerpc/tm/tm-syscall-asm.S
+index bd1ca25febe4..849316831e6a 100644
+--- a/tools/testing/selftests/powerpc/tm/tm-syscall-asm.S
++++ b/tools/testing/selftests/powerpc/tm/tm-syscall-asm.S
+@@ -2,6 +2,10 @@
+ #include <ppc-asm.h>
+ #include <asm/unistd.h>
  
- 	/* tabort, this dooms the transaction, nothing else */
- 	li	r9, (TM_CAUSE_SYSCALL|TM_CAUSE_PERSISTENT)
- 	TABORT(R9)
- 
-+	/* scv has disabled irqs so must re-enable. sc just remains enabled */
-+	li	r9,IRQS_ENABLED
-+	stb	r9,PACAIRQSOFTMASK(r13)
++/* ppc-asm.h does not define r0 or r1 */
++#define r0 0
++#define r1 1
 +
- 	/*
- 	 * Return directly to userspace. We have corrupted user register state,
- 	 * but userspace will never see that register state. Execution will
+ 	.text
+ FUNC_START(getppid_tm_active)
+ 	tbegin.
+@@ -26,3 +30,45 @@ FUNC_START(getppid_tm_suspended)
+ 1:
+ 	li	r3, -1
+ 	blr
++
++FUNC_START(getppid_scv_tm_active)
++	mflr	r0
++	std	r0,16(r1)
++	stdu	r1,-32(r1)
++	tbegin.
++	beq 1f
++	li	r0, __NR_getppid
++	scv	0
++	tend.
++	addi	r1,r1,32
++	ld	r0,16(r1)
++	mtlr	r0
++	blr
++1:
++	li	r3, -1
++	addi	r1,r1,32
++	ld	r0,16(r1)
++	mtlr	r0
++	blr
++
++FUNC_START(getppid_scv_tm_suspended)
++	mflr	r0
++	std	r0,16(r1)
++	stdu	r1,-32(r1)
++	tbegin.
++	beq 1f
++	li	r0, __NR_getppid
++	tsuspend.
++	scv	0
++	tresume.
++	tend.
++	addi	r1,r1,32
++	ld	r0,16(r1)
++	mtlr	r0
++	blr
++1:
++	li	r3, -1
++	addi	r1,r1,32
++	ld	r0,16(r1)
++	mtlr	r0
++	blr
+diff --git a/tools/testing/selftests/powerpc/tm/tm-syscall.c b/tools/testing/selftests/powerpc/tm/tm-syscall.c
+index becb8207b432..9a822208680e 100644
+--- a/tools/testing/selftests/powerpc/tm/tm-syscall.c
++++ b/tools/testing/selftests/powerpc/tm/tm-syscall.c
+@@ -19,24 +19,37 @@
+ #include "utils.h"
+ #include "tm.h"
+ 
++#ifndef PPC_FEATURE2_SCV
++#define PPC_FEATURE2_SCV               0x00100000 /* scv syscall */
++#endif
++
+ extern int getppid_tm_active(void);
+ extern int getppid_tm_suspended(void);
++extern int getppid_scv_tm_active(void);
++extern int getppid_scv_tm_suspended(void);
+ 
+ unsigned retries = 0;
+ 
+ #define TEST_DURATION 10 /* seconds */
+ #define TM_RETRIES 100
+ 
+-pid_t getppid_tm(bool suspend)
++pid_t getppid_tm(bool scv, bool suspend)
+ {
+ 	int i;
+ 	pid_t pid;
+ 
+ 	for (i = 0; i < TM_RETRIES; i++) {
+-		if (suspend)
+-			pid = getppid_tm_suspended();
+-		else
+-			pid = getppid_tm_active();
++		if (suspend) {
++			if (scv)
++				pid = getppid_scv_tm_suspended();
++			else
++				pid = getppid_tm_suspended();
++		} else {
++			if (scv)
++				pid = getppid_scv_tm_active();
++			else
++				pid = getppid_tm_active();
++		}
+ 
+ 		if (pid >= 0)
+ 			return pid;
+@@ -82,15 +95,24 @@ int tm_syscall(void)
+ 		 * Test a syscall within a suspended transaction and verify
+ 		 * that it succeeds.
+ 		 */
+-		FAIL_IF(getppid_tm(true) == -1); /* Should succeed. */
++		FAIL_IF(getppid_tm(false, true) == -1); /* Should succeed. */
+ 
+ 		/*
+ 		 * Test a syscall within an active transaction and verify that
+ 		 * it fails with the correct failure code.
+ 		 */
+-		FAIL_IF(getppid_tm(false) != -1);  /* Should fail... */
++		FAIL_IF(getppid_tm(false, false) != -1);  /* Should fail... */
+ 		FAIL_IF(!failure_is_persistent()); /* ...persistently... */
+ 		FAIL_IF(!failure_is_syscall());    /* ...with code syscall. */
++
++		/* Now do it all again with scv if it is available. */
++		if (have_hwcap2(PPC_FEATURE2_SCV)) {
++			FAIL_IF(getppid_tm(true, true) == -1); /* Should succeed. */
++			FAIL_IF(getppid_tm(true, false) != -1);  /* Should fail... */
++			FAIL_IF(!failure_is_persistent()); /* ...persistently... */
++			FAIL_IF(!failure_is_syscall());    /* ...with code syscall. */
++		}
++
+ 		gettimeofday(&now, 0);
+ 	}
+ 
 -- 
 2.23.0
 
