@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 541363FE488
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Sep 2021 23:07:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9FE73FE489
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Sep 2021 23:07:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H0GpF11Fdz3cY0
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Sep 2021 07:07:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H0Gpx67frz3ckp
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Sep 2021 07:07:37 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=umTaGx9x;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=kl1a1pEs;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,27 +18,27 @@ Authentication-Results: lists.ozlabs.org;
  envelope-from=mcgrof@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=umTaGx9x; 
+ header.s=bombadil.20210309 header.b=kl1a1pEs; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H0Gh34m4lz2xYR
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Sep 2021 07:01:38 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H0Gh36NNBz2xtc
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Sep 2021 07:01:39 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=adUhWGLmSwGDCmYJPL/wycZ+ESyOItTDyVeSKbBPSXk=; b=umTaGx9xje14epeqy42Bbujh2A
- ZoC7wjPbm0+6zTaI3JWxcPFpd1SVuV1aWnauPvnimangWfy+s2Q/9VLcTt+voKJrcvpRTX0fJ2CES
- NT/0sepfsS9ivwzi2NOdZd4iSZ9TwsfzkuMb2ctH5tDNebMFO47+gZ5rIVGt5OnqM2V30qnsnbcx4
- Ylej2AKlmxgrLM6SxK4y7zhh1gC4GI1pdBKhkwmoa4mG9XwIx8+sleU4H1apJfXOQW+g6YnAs86IC
- RZ6mRnhU/RRwmEAkiOrd5UI+ZZkV3+tBQuqo92zVqMai3LjlBs/pqRB+PT6kXrAfGLy7gxG1F4zcu
- HSqMoUvQ==;
+ bh=JRWTgzBcm05V8ySpKi+Sn387LcpeiWI92yzQrCXgXhI=; b=kl1a1pEs/O1MjKDT3DuuKuvw1l
+ RU/YUFtCV9wDhR63yCM9HdHPKiLWOnLa88uZdGwvqKr6Y13I4TZ/F9AHcBQR+fBU5a5IqvOv9JIWz
+ n9hV+VjRfIMbQhctvbOSYofEh13x3QnbR6M/nbXvF+sRZhjec48vlJkMKl2H0fbOIA7O57AQ/Dw7P
+ aIdfcfG8F1/M/hK53XxXEHGJlURZa0gcRWEgq8Ic6G/i6bjTqVZ6NKV0SD0Jt61uv849mhiTIw8Yh
+ d840MIdm8we0/9mhcOqXDNx9sfFcTNfSz0jsnHo7Sr3cd1C9xpJ3sZxBFDn7RnYHkq3k1pClgm5MI
+ J3RoDHLg==;
 Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2
- (Red Hat Linux)) id 1mLXLR-007LW3-7L; Wed, 01 Sep 2021 21:00:29 +0000
+ (Red Hat Linux)) id 1mLXLR-007LW5-9b; Wed, 01 Sep 2021 21:00:29 +0000
 From: Luis Chamberlain <mcgrof@kernel.org>
 To: axboe@kernel.dk, bhelgaas@google.com, liushixin2@huawei.com,
  thunder.leizhen@huawei.com, lee.jones@linaro.org, geoff@infradead.org,
@@ -46,9 +46,9 @@ To: axboe@kernel.dk, bhelgaas@google.com, liushixin2@huawei.com,
  jim@jtan.com, haris.iqbal@ionos.com, jinpu.wang@ionos.com,
  josh.h.morris@us.ibm.com, pjk1939@linux.ibm.com, tim@cyberelk.net,
  richard@nod.at, miquel.raynal@bootlin.com, vigneshr@ti.com
-Subject: [PATCH 01/10] mtip32xx: add error handling support for add_disk()
-Date: Wed,  1 Sep 2021 14:00:19 -0700
-Message-Id: <20210901210028.1750956-2-mcgrof@kernel.org>
+Subject: [PATCH 02/10] pktcdvd: add error handling support for add_disk()
+Date: Wed,  1 Sep 2021 14:00:20 -0700
+Message-Id: <20210901210028.1750956-3-mcgrof@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210901210028.1750956-1-mcgrof@kernel.org>
 References: <20210901210028.1750956-1-mcgrof@kernel.org>
@@ -76,29 +76,29 @@ We never checked for errors on add_disk() as this function
 returned void. Now that this is fixed, use the shiny new
 error handling.
 
-The read_capacity_error error label already does what we need,
-so just re-use that.
+The out_mem2 error label already does what we need so
+re-use that.
 
 Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 ---
- drivers/block/mtip32xx/mtip32xx.c | 4 +++-
+ drivers/block/pktcdvd.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/block/mtip32xx/mtip32xx.c b/drivers/block/mtip32xx/mtip32xx.c
-index 901855717cb5..d0b40309f47e 100644
---- a/drivers/block/mtip32xx/mtip32xx.c
-+++ b/drivers/block/mtip32xx/mtip32xx.c
-@@ -3633,7 +3633,9 @@ static int mtip_block_initialize(struct driver_data *dd)
- 	set_capacity(dd->disk, capacity);
+diff --git a/drivers/block/pktcdvd.c b/drivers/block/pktcdvd.c
+index 0f26b2510a75..415248962e67 100644
+--- a/drivers/block/pktcdvd.c
++++ b/drivers/block/pktcdvd.c
+@@ -2729,7 +2729,9 @@ static int pkt_setup_dev(dev_t dev, dev_t* pkt_dev)
+ 	/* inherit events of the host device */
+ 	disk->events = pd->bdev->bd_disk->events;
  
- 	/* Enable the block device and add it to /dev */
--	device_add_disk(&dd->pdev->dev, dd->disk, mtip_disk_attr_groups);
-+	rv = device_add_disk(&dd->pdev->dev, dd->disk, mtip_disk_attr_groups);
-+	if (rv)
-+		goto read_capacity_error;
+-	add_disk(disk);
++	ret = add_disk(disk);
++	if (ret)
++		goto out_mem2;
  
- 	if (dd->mtip_svc_handler) {
- 		set_bit(MTIP_DDF_INIT_DONE_BIT, &dd->dd_flag);
+ 	pkt_sysfs_dev_new(pd);
+ 	pkt_debugfs_dev_new(pd);
 -- 
 2.30.2
 
