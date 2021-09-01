@@ -2,100 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E34E3FD893
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Sep 2021 13:20:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB6143FD8AC
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Sep 2021 13:26:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H01n92Q79z2yNq
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Sep 2021 21:20:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H01w45nXBz2yZp
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Sep 2021 21:26:12 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aLPlckcq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=i1EJYFEn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=abdhalee@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=michael@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=aLPlckcq; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=i1EJYFEn; 
+ dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H01mQ1Hn4z2xvM
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Sep 2021 21:19:33 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 181B2k2M081119; Wed, 1 Sep 2021 07:19:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : subject : to : cc
- : message-id : date : mime-version : content-type :
- content-transfer-encoding; s=pp1;
- bh=1uLl+JCz4S9e6TN+jLW/Ny/+ozUjBZuusm7jdYXuDbc=;
- b=aLPlckcqnJDWF2cEBPNEkmUQ+nV6MBNHc8sU0vGUsDHj6b66R8lvhm+fisrpJyBZEq4A
- UXYS3dqkcXX1UsJT16WwkLyD7HLnvobJq70VwOSjHZxUWdSJ/PUNETFd+wf1JvUurrao
- K7KyaxpV6B7R8gZOqlZR6zAGImPZyFT5wHse+y9UGoBvJGZdq5L96JVzrhbt5ZZIlnsw
- 2KKFHYvt7l3K/LML+QvAJuZF+HKImYnPfIiSs+d6mMilL5m3mLYSEacMxdAV82xxx3ak
- 5rKway2hhuOHardXybapfxwgHNa8D1g8Svpb0YYMfye7BYNXUdEzg10o5U6bToEGxDI+ Zw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3at56b600m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 01 Sep 2021 07:19:27 -0400
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 181B3Bjg083331;
- Wed, 1 Sep 2021 07:19:27 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3at56b600b-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 01 Sep 2021 07:19:27 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 181B6hFq030147;
- Wed, 1 Sep 2021 11:19:26 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
- [9.57.198.29]) by ppma03dal.us.ibm.com with ESMTP id 3aqcsdfs7k-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 01 Sep 2021 11:19:26 +0000
-Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
- [9.57.199.107])
- by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 181BJPn042205626
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 1 Sep 2021 11:19:25 GMT
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3090A12416D;
- Wed,  1 Sep 2021 11:19:25 +0000 (GMT)
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 31E67124164;
- Wed,  1 Sep 2021 11:19:20 +0000 (GMT)
-Received: from [9.43.110.185] (unknown [9.43.110.185])
- by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed,  1 Sep 2021 11:19:19 +0000 (GMT)
-From: Abdul Haleem <abdhalee@linux.vnet.ibm.com>
-Subject: [next-20210827][ppc][multipathd] INFO: task hung in
- dm_table_add_target
-To: linux-kernel <linux-kernel@vger.kernel.org>
-Message-ID: <68dde454-965a-0c44-374a-a0ca277150ee@linux.vnet.ibm.com>
-Date: Wed, 1 Sep 2021 16:47:26 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H01vN2jv5z2xYv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Sep 2021 21:25:35 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1630495531;
+ bh=8hGAA/QOr6F5kU5gS2k45AniEpmHZXueI2jDE5wUmQE=;
+ h=From:To:Cc:Subject:Date:From;
+ b=i1EJYFEnOURK75nzv6RaesyermwD1GanN9E/fZSuK+q8Ld3fu5XZi1IVMaid3umEs
+ MIIhPnIJr/f/LE2EkxTk5/KLQAGW0KY7fjpjEMQMeX9u1KhRMQ9TTDjLBVEGPmEiuY
+ YLPq0kN64G6UPxntldYAKxgetC0rEQ/c4FJDA0eKjVEq3+9YjOUP8gGFmSvomS8lva
+ BPtHVaukBHFzBweBsBFoH3axLmiosoonDNnsiCVAeUuekf8qjyJHxLWBgLBjqKrlKQ
+ VkZFBnJSztshib5+v0OOAWG8tO5tl229SLFtZP6Lt6Ah8icnkb1e3GsLhNAOedzoNk
+ qIcyYEbusEGYw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4H01vH1gdvz9sRN;
+ Wed,  1 Sep 2021 21:25:31 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2] powerpc/bug: Cast to unsigned long before passing to
+ inline asm
+Date: Wed,  1 Sep 2021 21:25:22 +1000
+Message-Id: <20210901112522.1085134-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ODi_EXi2QsMDI05CgcyxWJs4FQ6SWvtN
-X-Proofpoint-ORIG-GUID: _jbh_IrJ6PcIkJ9w3qX0Kua1qO_ZKvIT
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-09-01_03:2021-09-01,
- 2021-09-01 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0
- malwarescore=0 priorityscore=1501 phishscore=0 suspectscore=0 mlxscore=0
- clxscore=1011 mlxlogscore=999 lowpriorityscore=0 bulkscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2107140000 definitions=main-2109010065
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,162 +61,150 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: axboe@kernel.dk, sachinp <sachinp@linux.vnet.ibm.com>, jack@suse.cz,
- linux-scsi <linux-scsi@vger.kernel.org>, dm-devel@redhat.com,
- linux-next <linux-next@vger.kernel.org>, dougmill@us.ibm.com,
- Brian King <brking@linux.vnet.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, hch@lst.de
+Cc: nathan@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Greeting's
+In commit 1e688dd2a3d6 ("powerpc/bug: Provide better flexibility to
+WARN_ON/__WARN_FLAGS() with asm goto") we changed WARN_ON(). Previously
+it would take the warning condition, x, and double negate it before
+converting the result to int, and passing that int to the underlying
+inline asm. ie:
 
-multiple task hung while adding the vfc disk back to the multipath on my 
-powerpc box running linux-next kernel
+  #define WARN_ON(x) ({
+  	int __ret_warn_on = !!(x);
+  	if (__builtin_constant_p(__ret_warn_on)) {
+  	...
+  	} else {
+  		BUG_ENTRY(PPC_TLNEI " %4, 0",
+  			  BUGFLAG_WARNING | BUGFLAG_TAINT(TAINT_WARN),
+  			  "r" (__ret_warn_on));
 
-Test:
-$ multipathd -k"remove path sde"
-$ multipathd -k"add path sde"
+The asm then does a full register width comparison with zero and traps
+if it is non-zero (PPC_TLNEI).
 
-After above command multipathd task hung with continuous call traces on 
-console, it requires reboot to stop call traces
+The new code instead passes the full expression, x, with some arbitrary
+type, to the inline asm:
 
-systemd-udevd[180359]: Process '/sbin/mdadm -I /dev/dm-8' failed with 
-exit code 1.
-multipathd[180272]: mpathf: load table [0 62914560 multipath 1 
-queue_if_no_path 1 alua 2 1 round-robin 0 2 1 8:64 1 65:0 1 round-robin 
-0 2 1 8:144 1 65:80 1]
-systemd[1]: Started Device-Mapper Multipath Device Controller.
-multipathd[180272]: mpatha: sdl - tur checker reports path is up
-multipathd[180272]: 8:176: reinstated
-multipathd[180272]: mpatha: remaining active paths: 2
-multipathd[180272]: sde: remove path (operator)
-multipathd[180272]: mpathf: load table [0 62914560 multipath 1 
-queue_if_no_path 1 alua 2 1 round-robin 0 1 1 65:0 1 round-robin 0 2 1 
-8:144 1 65:80 1]
-multipathd[180272]: sde [8:64]: path removed from map mpathf
-multipathd[180272]: sdq: remove path (operator)
-multipathd[180272]: mpathf: load table [0 62914560 multipath 1 
-queue_if_no_path 1 alua 1 1 round-robin 0 2 1 8:144 1 65:80 1]
-multipathd[180272]: sdq [65:0]: path removed from map mpathf
-multipathd[180272]: sdj: remove path (operator)
-multipathd[180272]: mpathf: load table [0 62914560 multipath 1 
-queue_if_no_path 1 alua 1 1 round-robin 0 1 1 65:80 1]
-multipathd[180272]: sdj [8:144]: path removed from map mpathf
-multipathd[180272]: sdv: remove path (operator)
-multipathd[180272]: mpathf: map in use
-multipathd[180272]: mpathf: can't flush
-multipathd[180272]: mpathf: load table [0 62914560 multipath 1 
-queue_if_no_path 0 0 0]
-multipathd[180272]: sdv [65:80]: path removed from map mpathf
-systemd[1]: Starting system activity accounting tool...
-systemd[1]: sysstat-collect.service: Succeeded.
-systemd[1]: Started system activity accounting tool.
-systemd-udevd[1156]: seq 5678 '/devices/virtual/block/dm-10' is taking a 
-long time
-systemd-udevd[1156]: seq 5678 '/devices/virtual/block/dm-10' killed
-multipathd[180272]: sde: add path (operator)
-systemd[1]: Stopping Device-Mapper Multipath Device Controller...
-systemd[1]: multipathd.service: State 'stop-sigterm' timed out. Killing.
-systemd[1]: multipathd.service: Killing process 180272 (multipathd) with 
-signal SIGKILL.
-systemd[1]: multipathd.service: Processes still around after SIGKILL. 
-Ignoring.
-dbus-daemon[1920]: [system] Activating via systemd: service 
-name='net.reactivated.Fprint' unit='fprintd.service' requested by 
-':1.255' (uid=0 pid=95173 comm="/bin/login -p --      ")
-systemd[1]: Starting Fingerprint Authentication Daemon...
-dbus-daemon[1920]: [system] Successfully activated service 
-'net.reactivated.Fprint'
-systemd[1]: Started Fingerprint Authentication Daemon.
-systemd-logind[2032]: New session 6 of user root.
-systemd[1]: Started Session 6 of user root.
-kernel: INFO: task multipathd:180274 blocked for more than 122 seconds.
-kernel:      Not tainted 5.14.0-rc7-next-20210827-autotest #1
-kernel: "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this 
-message.
-kernel: task:multipathd      state:D stack:    0 pid:180274 ppid:     1 
-flags:0x00040082
-kernel: Call Trace:
-kernel: [c00000002aaa72c0] [c00000002aaa73a0] 0xc00000002aaa73a0 
-(unreliable)
-kernel: [c00000002aaa74b0] [c00000000001e638] __switch_to+0x278/0x490
-kernel: [c00000002aaa7510] [c000000000c89cfc] __schedule+0x31c/0xa10
-kernel: [c00000002aaa75d0] [c000000000c8a468] schedule+0x78/0x130
-kernel: [c00000002aaa7600] [c000000000c8aa08] 
-schedule_preempt_disabled+0x18/0x30
-kernel: [c00000002aaa7620] [c000000000c8cf0c] 
-__mutex_lock.isra.11+0x36c/0x700
-kernel: [c00000002aaa76b0] [c00000000067efe4] bd_link_disk_holder+0x34/0x270
-kernel: [c00000002aaa7700] [c0080000003e3b78] 
-dm_get_table_device+0x1e0/0x2c0 [dm_mod]
-kernel: [c00000002aaa77a0] [c0080000003e7e48] dm_get_device+0x130/0x2f0 
-[dm_mod]
-kernel: [c00000002aaa7850] [c008000000745234] multipath_ctr+0x9bc/0xff0 
-[dm_multipath]
-kernel: [c00000002aaa79d0] [c0080000003e883c] 
-dm_table_add_target+0x1a4/0x420 [dm_mod]
-kernel: [c00000002aaa7a90] [c0080000003ee874] table_load+0x15c/0x4a0 
-[dm_mod]
-kernel: [c00000002aaa7b40] [c0080000003f1454] ctl_ioctl+0x27c/0x770 [dm_mod]
-kernel: [c00000002aaa7d40] [c0080000003f1960] dm_ctl_ioctl+0x18/0x30 
-[dm_mod]
-kernel: [c00000002aaa7d60] [c000000000481198] sys_ioctl+0xf8/0x150
-kernel: [c00000002aaa7db0] [c00000000002ff28] 
-system_call_exception+0x158/0x2c0
-kernel: [c00000002aaa7e10] [c00000000000c764] system_call_common+0xf4/0x258
-kernel: --- interrupt: c00 at 0x7fffa06f4480
-kernel: NIP:  00007fffa06f4480 LR: 00007fffa0ad6714 CTR: 0000000000000000
-kernel: REGS: c00000002aaa7e80 TRAP: 0c00   Not tainted 
-(5.14.0-rc7-next-20210827-autotest)
-kernel: MSR:  800000000000d033 <SF,EE,PR,ME,IR,DR,RI,LE>  CR: 24042204  
-XER: 00000000
-kernel: IRQMASK: 0 #012GPR00: 0000000000000036 00007fff9fd4c3a0 
-00007fffa07e7100 0000000000000005 #012GPR04: 00000000c138fd09 
-00007fff9806a0c0 00007fffa0ad9f18 00007fff9fd4a298 #012GPR08: 
-0000000000000005 0000000000000000 0000000000000000 0000000000000000 
-#012GPR12: 0000000000000000 00007fff9fd56300 00007fff9806a0c0 
-00007fffa0ad9c80 #012GPR16: 00007fffa0ad9c80 00007fffa0ad9c80 
-00007fffa0b13670 0000000000000000 #012GPR20: 00007fffa0ae3260 
-00007fffa0b12040 00007fff9806a0f0 00007fff9800eca0 #012GPR24: 
-00007fffa0ad9c80 00007fffa0ad9c80 00007fffa0ad9c80 0000000000000000 
-#012GPR28: 00007fffa0ad9c80 00007fffa0ad9c80 0000000000000000 
-00007fffa0ad9c80
-kernel: NIP [00007fffa06f4480] 0x7fffa06f4480
-kernel: LR [00007fffa0ad6714] 0x7fffa0ad6714
-kernel: --- interrupt: c00
-kernel: INFO: task systemd-udevd:180404 blocked for more than 122 seconds.
-kernel:      Not tainted 5.14.0-rc7-next-20210827-autotest #1
-kernel: "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this 
-message.
-kernel: task:systemd-udevd   state:D stack:    0 pid:180404 ppid:  1156 
-flags:0x00042482
-kernel: Call Trace:
+  #define WARN_ON(x) ({
+	...
+	do {
+		if (__builtin_constant_p((x))) {
+		...
+		} else {
+			...
+			WARN_ENTRY(PPC_TLNEI " %4, 0",
+				   BUGFLAG_WARNING | BUGFLAG_TAINT(TAINT_WARN),
+				   __label_warn_on, "r" (x));
 
-Before test
-------------
-$multipath -ll
-mpathf (360050768108001b3a8000000000000e8) dm-10 IBM,2145
-size=30G features='1 queue_if_no_path' hwhandler='1 alua' wp=rw
-|-+- policy='round-robin 0' prio=50 status=active
-| |- 1:0:0:4 sde 8:64  active ready running
-| `- 2:0:0:4 sdq 65:0  active ready running
-`-+- policy='round-robin 0' prio=10 status=enabled
-   |- 1:0:1:4 sdj 8:144 active ready running
-   `- 2:0:1:4 sdv 65:80 active ready running
-$
+As reported[1] by Nathan, when building with clang this can cause
+spurious warnings to fire repeatedly at boot:
 
-After test fail
-------------
-$ multipath -ll
-mpathf (360050768108001b3a8000000000000e8) dm-10 ##,##
-size=30G features='1 queue_if_no_path' hwhandler='0' wp=rw
-$
+  WARNING: CPU: 0 PID: 1 at lib/klist.c:62 .klist_add_tail+0x3c/0x110
+  Modules linked in:
+  CPU: 0 PID: 1 Comm: swapper/0 Tainted: G        W         5.14.0-rc7-next-20210825 #1
+  NIP:  c0000000007ff81c LR: c00000000090a038 CTR: 0000000000000000
+  REGS: c0000000073c32a0 TRAP: 0700   Tainted: G        W          (5.14.0-rc7-next-20210825)
+  MSR:  8000000002029032 <SF,VEC,EE,ME,IR,DR,RI>  CR: 22000a40  XER: 00000000
+  CFAR: c00000000090a034 IRQMASK: 0
+  GPR00: c00000000090a038 c0000000073c3540 c000000001be3200 0000000000000001
+  GPR04: c0000000072d65c0 0000000000000000 c0000000091ba798 c0000000091bb0a0
+  GPR08: 0000000000000001 0000000000000000 c000000008581918 fffffffffffffc00
+  GPR12: 0000000044000240 c000000001dd0000 c000000000012300 0000000000000000
+  GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+  GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+  GPR24: 0000000000000000 c0000000017e3200 0000000000000000 c000000001a0e778
+  GPR28: c0000000072d65b0 c0000000072d65a8 c000000007de72c8 c0000000073c35d0
+  NIP .klist_add_tail+0x3c/0x110
+  LR  .bus_add_driver+0x148/0x290
+  Call Trace:
+    0xc0000000073c35d0 (unreliable)
+    .bus_add_driver+0x148/0x290
+    .driver_register+0xb8/0x190
+    .__hid_register_driver+0x70/0xd0
+    .redragon_driver_init+0x34/0x58
+    .do_one_initcall+0x130/0x3b0
+    .do_initcall_level+0xd8/0x188
+    .do_initcalls+0x7c/0xdc
+    .kernel_init_freeable+0x178/0x21c
+    .kernel_init+0x34/0x220
+    .ret_from_kernel_thread+0x58/0x60
+  Instruction dump:
+  fba10078 7c7d1b78 38600001 fb810070 3b9d0008 fbc10080 7c9e2378 389d0018
+  fb9d0008 fb9d0010 90640000 fbdd0000 <0b1e0000> e87e0018 28230000 41820024
 
+The instruction dump shows that we are trapping because r30 is not zero:
+  tdnei   r30,0
+
+Where r30 = c000000007de72c8
+
+The WARN_ON() comes from:
+
+  static void knode_set_klist(struct klist_node *knode, struct klist *klist)
+  {
+  	knode->n_klist = klist;
+  	/* no knode deserves to start its life dead */
+  	WARN_ON(knode_dead(knode));
+  		      ^^^^^^^^^^^^^^^^^
+
+Where:
+
+  #define KNODE_DEAD		1LU
+
+  static bool knode_dead(struct klist_node *knode)
+  {
+  	return (unsigned long)knode->n_klist & KNODE_DEAD;
+  }
+
+The full disassembly shows that clang has not generated any code to
+apply the "& KNODE_DEAD" to the n_klist pointer, which is surprising.
+
+Nathan filed an LLVM bug [2], in which Eli Friedman explained that clang
+believes it is only passing a single bit to the asm (ie. a bool) and so
+the mask of bit 0 with 1 can be omitted, and suggested that if we want
+the full 64-bit value passed to the inline asm we should cast to a
+64-bit type (or 32-bit on 32-bits).
+
+In fact we already do that for BUG_ENTRY(), which was added to fix a
+possibly similar bug in 2005 in commit 32818c2eb6b8 ("[PATCH] ppc64: Fix
+issue with gcc 4.0 compiled kernels").
+
+So cast the value we pass to the inline asm to long.
+
+For GCC this appears to have no effect on code generation, other than
+causing sign extension in some cases.
+
+[1]: http://lore.kernel.org/r/YSa1O4fcX1nNKqN/@Ryzen-9-3900X.localdomain
+[2]: https://bugs.llvm.org/show_bug.cgi?id=51634
+
+Fixes: 1e688dd2a3d6 ("powerpc/bug: Provide better flexibility to WARN_ON/__WARN_FLAGS() with asm goto")
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/include/asm/bug.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+v2: Reword the change log a bit to hopefully make it clearer that it's clang that believes
+it only needs to pass a single bit for bool, whether that's correct behaviour can be
+discussed on the list at a later date :)
+
+diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
+index 1ee0f22313ee..02c08d1492f8 100644
+--- a/arch/powerpc/include/asm/bug.h
++++ b/arch/powerpc/include/asm/bug.h
+@@ -119,7 +119,8 @@ __label_warn_on:						\
+ 								\
+ 			WARN_ENTRY(PPC_TLNEI " %4, 0",		\
+ 				   BUGFLAG_WARNING | BUGFLAG_TAINT(TAINT_WARN),	\
+-				   __label_warn_on, "r" (x));	\
++				   __label_warn_on,		\
++				   "r" ((__force long)(x)));	\
+ 			break;					\
+ __label_warn_on:						\
+ 			__ret_warn_on = true;			\
 -- 
-Regard's
-
-Abdul Haleem
-IBM Linux Technology Center
+2.25.1
 
