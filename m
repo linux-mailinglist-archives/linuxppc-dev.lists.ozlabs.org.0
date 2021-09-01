@@ -2,50 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2AFC3FD56B
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Sep 2021 10:31:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C3343FD5D1
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Sep 2021 10:44:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Gzy1v6CqFz2ynp
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Sep 2021 18:30:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4GzyJw44vmz2yRS
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Sep 2021 18:44:00 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=hjUn6tSB;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::102c;
+ helo=mail-pj1-x102c.google.com; envelope-from=aik@ozlabs.ru;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=hjUn6tSB; dkim-atps=neutral
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com
+ [IPv6:2607:f8b0:4864:20::102c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Gzy1P0PpTz2xl8
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Sep 2021 18:30:29 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4Gzy1B6Kngz9sTQ;
- Wed,  1 Sep 2021 10:30:22 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id Bg4E-lIXqjZ7; Wed,  1 Sep 2021 10:30:22 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4Gzy1B5F34z9sT9;
- Wed,  1 Sep 2021 10:30:22 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 987E68B81F;
- Wed,  1 Sep 2021 10:30:22 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id uUNSHlIDpySo; Wed,  1 Sep 2021 10:30:22 +0200 (CEST)
-Received: from po18078vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 30E888B81E;
- Wed,  1 Sep 2021 10:30:22 +0200 (CEST)
-Received: by po18078vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id EF42B6BCA3; Wed,  1 Sep 2021 08:30:21 +0000 (UTC)
-Message-Id: <6ec2a7865ed6a5ec54ab46d026785bafe1d837ea.1630484892.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v3] powerpc/32: Add support for out-of-line static calls
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Wed,  1 Sep 2021 08:30:21 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4GzyJF55Wnz2xXZ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Sep 2021 18:43:25 +1000 (AEST)
+Received: by mail-pj1-x102c.google.com with SMTP id
+ mw10-20020a17090b4d0a00b0017b59213831so4115055pjb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Sep 2021 01:43:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=message-id:date:mime-version:user-agent:subject:content-language
+ :from:to:cc:references:in-reply-to:content-transfer-encoding;
+ bh=jifE2Va9ngQVAsLiT6zsdqzc3alMTgVxLxw4d+gYC7c=;
+ b=hjUn6tSBjVMyCEFXDGiHzQbvgBVfJfqWQUUhcCQ9dYwx2x4AlzQoWGJwPEylu6i3PL
+ oXctYcv0W45J+6OsxfEKbY6Wrk+CjPvEtPyKpzGuj2EjezsZPmjoobLJcaLN1a6LFeyI
+ T8HNz4SxTD8Xg3jJ8ZLv2BsznfDnNe9T2IEK3CgUot97C8w19ROdMzb67o54FNCLcFIN
+ KEHV7evbhjv9FQzLbkl78FJ+jGtVft2z1W9+vWQh4BJme4IGZBQIX9Ealmym3NTSSt4/
+ Rwk914Y3RT+fXPevPN5OxTEsSVQVJHxlNbbJP1ey7zBNsZSlkgOgcOB9eURqVeJ1cG56
+ 4XJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+ :content-language:from:to:cc:references:in-reply-to
+ :content-transfer-encoding;
+ bh=jifE2Va9ngQVAsLiT6zsdqzc3alMTgVxLxw4d+gYC7c=;
+ b=GhxiZKDbq49qh0tyMGVrl9P/fW/CIOSCfymhUcq4HbomkYwE0kzxQOmLNyuBEq8rlY
+ cMM2Ipen3WZbRJKOQ9sBhnm+5pzSVx/tUOC38u+rj0W1Vh7/zRgs9T1lxVA6NcfEtUry
+ Ueyd/CQxfGqGp8vzwUk3p344GRcXSGUgcKmG5ysB83337cIBurAognTYcjuDFq9nNL8k
+ F2QG094e7vteONOAq09ONSRagJJIu52X6if2eYuD28JiojzAJud15QH/VutFzZ1DGs5R
+ 5uitAMNxmoWsc16hghkrf2vGs1doeyMWZCUAAkRlFkvDPWCfNIO5ir3aENS75rAu7U9W
+ 50XQ==
+X-Gm-Message-State: AOAM533eUiB6/S9iksx2plA+BFZWhzab3D710eetxTKoDSfUUXdVaE1i
+ m7OgRuJuXouzYvnbrvlEmKGuig==
+X-Google-Smtp-Source: ABdhPJxETG81vftSZB2RUO0c8C8UNQNcTK0CdjrctNYeUQ2KjZrYdKB/cIN20h/a2ZaIoK2Q+uGIug==
+X-Received: by 2002:a17:902:74c3:b0:132:287a:c052 with SMTP id
+ f3-20020a17090274c300b00132287ac052mr8684453plt.32.1630485803503; 
+ Wed, 01 Sep 2021 01:43:23 -0700 (PDT)
+Received: from [192.168.10.23] (124-171-108-209.dyn.iinet.net.au.
+ [124.171.108.209])
+ by smtp.gmail.com with UTF8SMTPSA id t23sm5191221pjs.16.2021.09.01.01.43.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 01 Sep 2021 01:43:23 -0700 (PDT)
+Message-ID: <2fe01488-5a9b-785e-7c05-1d527dead18d@ozlabs.ru>
+Date: Wed, 1 Sep 2021 18:43:18 +1000
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.0
+Subject: Re: [PATCH kernel] KVM: PPC: Book3S HV: Make unique debugfs nodename
+Content-Language: en-US
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+To: Fabiano Rosas <farosas@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <20210707041344.3803554-1-aik@ozlabs.ru>
+ <be02290c-60a0-48af-0491-61e8a6d5b7b7@ozlabs.ru>
+ <87pmubu306.fsf@linux.ibm.com>
+ <a1be1913-f564-924b-1750-03efa859a0b1@ozlabs.ru>
+In-Reply-To: <a1be1913-f564-924b-1750-03efa859a0b1@ozlabs.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,221 +92,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
- Steven Rostedt <rostedt@goodmis.org>, Jason Baron <jbaron@akamai.com>,
- Josh Poimboeuf <jpoimboe@redhat.com>, linuxppc-dev@lists.ozlabs.org,
- Ard Biesheuvel <ardb@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add support for out-of-line static calls on PPC32. This change
-improve performance of calls to global function pointers by
-using direct calls instead of indirect calls.
 
-The trampoline is initialy populated with a 'blr' or branch to target,
-followed by an unreachable long jump sequence.
 
-In order to cater with parallele execution, the trampoline needs to
-be updated in a way that ensures it remains consistent at all time.
-This means we can't use the traditional lis/addi to load r12 with
-the target address, otherwise there would be a window during which
-the first instruction contains the upper part of the new target
-address while the second instruction still contains the lower part of
-the old target address. To avoid that the target address is stored
-just after the 'bctr' and loaded from there with a single instruction.
+On 24/08/2021 18:37, Alexey Kardashevskiy wrote:
+> 
+> 
+> On 18/08/2021 08:20, Fabiano Rosas wrote:
+>> Alexey Kardashevskiy <aik@ozlabs.ru> writes:
+>>
+>>> On 07/07/2021 14:13, Alexey Kardashevskiy wrote:
+>>
+>>> alternatively move this debugfs stuff under the platform-independent
+>>> directory, how about that?
+>>
+>> That's a good idea. I only now realized we have two separate directories
+>> for the same guest:
+>>
+>> $ ls /sys/kernel/debug/kvm/ | grep $pid
+>> 19062-11
+>> vm19062
+>>
+>> Looks like we would have to implement kvm_arch_create_vcpu_debugfs for
+>> the vcpu information and add a similar hook for the vm.
+> 
+> Something like that. From the git history, it looks like the ppc folder 
+> was added first and then the generic kvm folder was added but apparently 
+> they did not notice the ppc one due to natural reasons :)
+> 
+> If you are not too busy, can you please merge the ppc one into the 
+> generic one and post the patch, so we won't need to fix these 
+> duplication warnings again? Thanks,
 
-Then, depending on the target distance, arch_static_call_transform()
-will either replace the first instruction by a direct 'bl <target>' or
-'nop' in order to have the trampoline fall through the long jump
-sequence.
 
-For the special case of __static_call_return0(), to avoid the risk of
-a far branch, a version of it is inlined at the end of the trampoline.
 
-Performancewise the long jump sequence is probably not better than
-the indirect calls set by GCC when we don't use static calls, but
-such calls are unlikely to be required on powerpc32: With most
-configurations the kernel size is far below 32 Mbytes so only
-modules may happen to be too far. And even modules are likely to
-be close enough as they are allocated below the kernel core and
-as close as possible of the kernel text.
+Turns out it is not that straight forward as I thought as the common KVM 
+debugfs entry is created after PPC HV KVM created its own and there is 
+no obvious way to change the order (no "post init" hook in kvmppc_ops).
 
-static_call selftest is running successfully with this change.
+Also, unlike the common KVM debugfs setup, we do not allocate structures 
+to support debugfs nodes so we do not leak anything to bother with a 
+mutex like 85cd39af14f4 did.
 
-With this patch, __do_irq() has the following sequence to trace
-irq entries:
+So I'd stick to the original patch to reduce the noise in the dmesg, and 
+it also exposes lpid which I find rather useful for finding the right 
+partition scope tree in partition_tb.
 
-	c0004a00 <__SCT__tp_func_irq_entry>:
-	c0004a00:	48 00 00 e0 	b       c0004ae0 <__traceiter_irq_entry>
-	c0004a04:	3d 80 c0 00 	lis     r12,-16384
-	c0004a08:	81 8c 4a 1c 	lwz     r12,18972(r12)
-	c0004a0c:	7d 89 03 a6 	mtctr   r12
-	c0004a10:	4e 80 04 20 	bctr
-	c0004a14:	38 60 00 00 	li      r3,0
-	c0004a18:	4e 80 00 20 	blr
-	c0004a1c:	00 00 00 00 	.long 0x0
-...
-	c0005654 <__do_irq>:
-...
-	c0005664:	7c 7f 1b 78 	mr      r31,r3
-...
-	c00056a0:	81 22 00 00 	lwz     r9,0(r2)
-	c00056a4:	39 29 00 01 	addi    r9,r9,1
-	c00056a8:	91 22 00 00 	stw     r9,0(r2)
-	c00056ac:	3d 20 c0 af 	lis     r9,-16209
-	c00056b0:	81 29 74 cc 	lwz     r9,29900(r9)
-	c00056b4:	2c 09 00 00 	cmpwi   r9,0
-	c00056b8:	41 82 00 10 	beq     c00056c8 <__do_irq+0x74>
-	c00056bc:	80 69 00 04 	lwz     r3,4(r9)
-	c00056c0:	7f e4 fb 78 	mr      r4,r31
-	c00056c4:	4b ff f3 3d 	bl      c0004a00 <__SCT__tp_func_irq_entry>
+Michael?
 
-Before this patch, __do_irq() was doing the following to trace irq
-entries:
 
-	c0005700 <__do_irq>:
-...
-	c0005710:	7c 7e 1b 78 	mr      r30,r3
-...
-	c000574c:	93 e1 00 0c 	stw     r31,12(r1)
-	c0005750:	81 22 00 00 	lwz     r9,0(r2)
-	c0005754:	39 29 00 01 	addi    r9,r9,1
-	c0005758:	91 22 00 00 	stw     r9,0(r2)
-	c000575c:	3d 20 c0 af 	lis     r9,-16209
-	c0005760:	83 e9 f4 cc 	lwz     r31,-2868(r9)
-	c0005764:	2c 1f 00 00 	cmpwi   r31,0
-	c0005768:	41 82 00 24 	beq     c000578c <__do_irq+0x8c>
-	c000576c:	81 3f 00 00 	lwz     r9,0(r31)
-	c0005770:	80 7f 00 04 	lwz     r3,4(r31)
-	c0005774:	7d 29 03 a6 	mtctr   r9
-	c0005778:	7f c4 f3 78 	mr      r4,r30
-	c000577c:	4e 80 04 21 	bctrl
-	c0005780:	85 3f 00 0c 	lwzu    r9,12(r31)
-	c0005784:	2c 09 00 00 	cmpwi   r9,0
-	c0005788:	40 82 ff e4 	bne     c000576c <__do_irq+0x6c>
+> 
+> 
+> 
+>>>> ---
+>>>>    arch/powerpc/kvm/book3s_hv.c | 2 +-
+>>>>    1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/arch/powerpc/kvm/book3s_hv.c 
+>>>> b/arch/powerpc/kvm/book3s_hv.c
+>>>> index 1d1fcc290fca..0223ddc0eed0 100644
+>>>> --- a/arch/powerpc/kvm/book3s_hv.c
+>>>> +++ b/arch/powerpc/kvm/book3s_hv.c
+>>>> @@ -5227,7 +5227,7 @@ static int kvmppc_core_init_vm_hv(struct kvm 
+>>>> *kvm)
+>>>>        /*
+>>>>         * Create a debugfs directory for the VM
+>>>>         */
+>>>> -    snprintf(buf, sizeof(buf), "vm%d", current->pid);
+>>>> +    snprintf(buf, sizeof(buf), "vm%d-lp%ld", current->pid, lpid);
+>>>>        kvm->arch.debugfs_dir = debugfs_create_dir(buf, 
+>>>> kvm_debugfs_dir);
+>>>>        kvmppc_mmu_debugfs_init(kvm);
+>>>>        if (radix_enabled())
+>>>>
+> 
 
-Behind the fact of now using a direct 'bl' instead of a
-'load/mtctr/bctr' sequence, we can also see that we get one less
-register on the stack.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
-v3: Adding the special case of __static_call_return0()
-
-v2: Use indirect load in long jump sequence to cater with parallele execution and preemption.
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/Kconfig                   |  1 +
- arch/powerpc/include/asm/static_call.h | 28 +++++++++++++++++++
- arch/powerpc/kernel/Makefile           |  2 +-
- arch/powerpc/kernel/static_call.c      | 37 ++++++++++++++++++++++++++
- 4 files changed, 67 insertions(+), 1 deletion(-)
- create mode 100644 arch/powerpc/include/asm/static_call.h
- create mode 100644 arch/powerpc/kernel/static_call.c
-
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 36b72d972568..a0fe69d8ec83 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -247,6 +247,7 @@ config PPC
- 	select HAVE_SOFTIRQ_ON_OWN_STACK
- 	select HAVE_STACKPROTECTOR		if PPC32 && $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=r2)
- 	select HAVE_STACKPROTECTOR		if PPC64 && $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=r13)
-+	select HAVE_STATIC_CALL			if PPC32
- 	select HAVE_SYSCALL_TRACEPOINTS
- 	select HAVE_VIRT_CPU_ACCOUNTING
- 	select HUGETLB_PAGE_SIZE_VARIABLE	if PPC_BOOK3S_64 && HUGETLB_PAGE
-diff --git a/arch/powerpc/include/asm/static_call.h b/arch/powerpc/include/asm/static_call.h
-new file mode 100644
-index 000000000000..0a0bc79bd1fa
---- /dev/null
-+++ b/arch/powerpc/include/asm/static_call.h
-@@ -0,0 +1,28 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_POWERPC_STATIC_CALL_H
-+#define _ASM_POWERPC_STATIC_CALL_H
-+
-+#define __PPC_SCT(name, inst)					\
-+	asm(".pushsection .text, \"ax\"				\n"	\
-+	    ".align 5						\n"	\
-+	    ".globl " STATIC_CALL_TRAMP_STR(name) "		\n"	\
-+	    STATIC_CALL_TRAMP_STR(name) ":			\n"	\
-+	    inst "						\n"	\
-+	    "	lis	12,2f@ha				\n"	\
-+	    "	lwz	12,2f@l(12)				\n"	\
-+	    "	mtctr	12					\n"	\
-+	    "	bctr						\n"	\
-+	    "1:	li	3, 0					\n"	\
-+	    "	blr						\n"	\
-+	    "2:	.long 0						\n"	\
-+	    ".type " STATIC_CALL_TRAMP_STR(name) ", @function	\n"	\
-+	    ".size " STATIC_CALL_TRAMP_STR(name) ", . - " STATIC_CALL_TRAMP_STR(name) " \n" \
-+	    ".popsection					\n")
-+
-+#define PPC_SCT_RET0		20		/* Offset of label 1 */
-+#define PPC_SCT_DATA		28		/* Offset of label 2 */
-+
-+#define ARCH_DEFINE_STATIC_CALL_TRAMP(name, func)	__PPC_SCT(name, "b " #func)
-+#define ARCH_DEFINE_STATIC_CALL_NULL_TRAMP(name)	__PPC_SCT(name, "blr")
-+
-+#endif /* _ASM_POWERPC_STATIC_CALL_H */
-diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
-index 7be36c1e1db6..0e3640e14eb1 100644
---- a/arch/powerpc/kernel/Makefile
-+++ b/arch/powerpc/kernel/Makefile
-@@ -106,7 +106,7 @@ extra-y				+= vmlinux.lds
- 
- obj-$(CONFIG_RELOCATABLE)	+= reloc_$(BITS).o
- 
--obj-$(CONFIG_PPC32)		+= entry_32.o setup_32.o early_32.o
-+obj-$(CONFIG_PPC32)		+= entry_32.o setup_32.o early_32.o static_call.o
- obj-$(CONFIG_PPC64)		+= dma-iommu.o iommu.o
- obj-$(CONFIG_KGDB)		+= kgdb.o
- obj-$(CONFIG_BOOTX_TEXT)	+= btext.o
-diff --git a/arch/powerpc/kernel/static_call.c b/arch/powerpc/kernel/static_call.c
-new file mode 100644
-index 000000000000..863a7aa24650
---- /dev/null
-+++ b/arch/powerpc/kernel/static_call.c
-@@ -0,0 +1,37 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <linux/memory.h>
-+#include <linux/static_call.h>
-+
-+#include <asm/code-patching.h>
-+
-+void arch_static_call_transform(void *site, void *tramp, void *func, bool tail)
-+{
-+	int err;
-+	bool is_ret0 = (func == __static_call_return0);
-+	unsigned long target = (unsigned long)(is_ret0 ? tramp + PPC_SCT_RET0 : func);
-+	bool is_short = is_offset_in_branch_range((long)target - (long)tramp);
-+
-+	if (!tramp)
-+		return;
-+
-+	mutex_lock(&text_mutex);
-+
-+	if (func && !is_short) {
-+		err = patch_instruction(tramp + PPC_SCT_DATA, ppc_inst(target));
-+		if (err)
-+			goto out;
-+	}
-+
-+	if (!func)
-+		err = patch_instruction(tramp, ppc_inst(PPC_RAW_BLR()));
-+	else if (is_short)
-+		err = patch_branch(tramp, target, 0);
-+	else
-+		err = patch_instruction(tramp, ppc_inst(PPC_RAW_NOP()));
-+out:
-+	mutex_unlock(&text_mutex);
-+
-+	if (err)
-+		panic("%s: patching failed %pS at %pS\n", __func__, func, tramp);
-+}
-+EXPORT_SYMBOL_GPL(arch_static_call_transform);
 -- 
-2.25.0
-
+Alexey
