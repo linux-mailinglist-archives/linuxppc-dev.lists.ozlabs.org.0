@@ -1,95 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 961093FDE9F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Sep 2021 17:26:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A21C73FDF9D
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Sep 2021 18:19:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H07Fs2wxDz2yLJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Sep 2021 01:26:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H08Pv4LDfz2yb3
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Sep 2021 02:18:59 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YM83bdR7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=WNxhuzCC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::629;
+ helo=mail-pl1-x629.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=YM83bdR7; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=WNxhuzCC; dkim-atps=neutral
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com
+ [IPv6:2607:f8b0:4864:20::629])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H07F35pNxz2xY1
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Sep 2021 01:26:14 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 181F36v7108365; Wed, 1 Sep 2021 11:26:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=o9gDLNcRFjSNsFzIPCKeyxaw9Ra4/1Hcw6ozwNSHkVo=;
- b=YM83bdR7jkhS2OhLgSu5xrtbvMtvyagp+ZfS89aru7FOJ30IlU4u87L4QDJHKT6npVWU
- 0LW3ADqVcsKc/mB1uCYkVj7VwLMF7DnDz1mj2UBSRJxfuGmicygWmdtbXZ87KOYiXz2H
- DyKamxAswX6HGidoCmRpZFWRe3uRrpla+jXPSQMXmi+qOKTwvcXrwRegyT8FGS/3Fwqc
- XE2yHa8gg6Dhy6390x/mCgoF7S0lWde2I2+3FmMhFxpxJzBmnLeWY7bRrfteT7c0U9c/
- KTCvgg0K/ozlM9BhQ9Lu4I9b1r8ebx5F5K1AnS/SnhKkt6K+a/94Z6SZF/gw60k9Yt6/ pQ== 
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3atafabhp4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 01 Sep 2021 11:26:08 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 181FIfGA031727;
- Wed, 1 Sep 2021 15:26:06 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
- [9.57.198.24]) by ppma04dal.us.ibm.com with ESMTP id 3aqcse7g7f-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 01 Sep 2021 15:26:06 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 181FQ5up43581950
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 1 Sep 2021 15:26:05 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E991311207D;
- Wed,  1 Sep 2021 15:26:04 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E149A112072;
- Wed,  1 Sep 2021 15:26:03 +0000 (GMT)
-Received: from localhost (unknown [9.211.58.54])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTPS;
- Wed,  1 Sep 2021 15:26:03 +0000 (GMT)
-From: Fabiano Rosas <farosas@linux.ibm.com>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH kernel] KVM: PPC: Book3S HV: Make unique debugfs nodename
-In-Reply-To: <87lf4gv0hf.fsf@linux.ibm.com>
-References: <20210707041344.3803554-1-aik@ozlabs.ru>
- <be02290c-60a0-48af-0491-61e8a6d5b7b7@ozlabs.ru>
- <87pmubu306.fsf@linux.ibm.com>
- <a1be1913-f564-924b-1750-03efa859a0b1@ozlabs.ru>
- <2fe01488-5a9b-785e-7c05-1d527dead18d@ozlabs.ru>
- <87lf4gv0hf.fsf@linux.ibm.com>
-Date: Wed, 01 Sep 2021 12:26:00 -0300
-Message-ID: <87czpsuxkn.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H08PD5rrtz2xh1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Sep 2021 02:18:23 +1000 (AEST)
+Received: by mail-pl1-x629.google.com with SMTP id q21so1807944plq.3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Sep 2021 09:18:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=R1KAvDybghA49rnK1KgFcFNqnqba7IMOtASvqepVLCE=;
+ b=WNxhuzCCewaDEs4zji4k6vdkah/Pd2laLAC3tLzqBD0NyqY16vBjjxaBKP8A8U7cTs
+ VioelpDQssUC2oMidW80be6+OKBcHSYnfIj5Fb5Wc+ZyUlWnTneOwd470ddUuF8sm7lI
+ mK+IzSkY40gIl53YaHL003/6+c3/sb6fixBod5Vb1hQ5G74vE2n1Kt4kwNDQ7SVFf55X
+ 5SwSYObB+qAbanXq0LrjhiVdKDWGRqbFp3HZoz4cZw7M/g7dvTgMfuA48jU3imEMUe4h
+ oPhSrUVmCF2NnZTqMj+Z371T8HFoYZ2dFEuA9b9MBLB7KKsu+4waCACHQT8gcIP/lxen
+ Dr1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=R1KAvDybghA49rnK1KgFcFNqnqba7IMOtASvqepVLCE=;
+ b=bhpdNApE8GtaZE99Td+Q/lzs0OgRymqo89CYp5Bs/b71fCeTUAIl0H9ikqsTPDkUH3
+ QoNSFfdROPBg/k8cJIMPnUcBvs9znxq+JwDbF6erivrnsRqVQ+GNjmrbFUkqucSJD1b/
+ PbJkivMqGys/tSIhBwUKHy/tQ++eFHfv30BEqD5hqWHRr3f3JMfc7dVMt/lYMTloqknN
+ Bkg4vqP7BtS9i6uFnK0q/XhgNp9X0Z8/3cCmiH9r5rj9lC8Lhz0sB8lEdMSJ40mc9BJi
+ RAfJ7b8M+OszNDVW1el3z02wLzZ6D3n5Ouv/07jkPL35rgokeonNKc8rxFO2AnrpaNln
+ 4qFA==
+X-Gm-Message-State: AOAM532t1rObGMoIYsst1G+3vxE0Nk2HoLJSQfRXu1PLaDUrfCjGMder
+ hzwKoQ4BGgHc+/3fTv5eb9JZJOCLxYs=
+X-Google-Smtp-Source: ABdhPJw2jvtUWwVH6/H9DD7zyVE223+HfdX7p7wfBVNmn6myWhuDB3Q9+j3dtKbIvOeTweRjcs3p9Q==
+X-Received: by 2002:a17:903:143:b0:138:e2f9:7211 with SMTP id
+ r3-20020a170903014300b00138e2f97211mr264840plc.30.1630513100103; 
+ Wed, 01 Sep 2021 09:18:20 -0700 (PDT)
+Received: from bobo.ibm.com (220-244-72-10.tpgi.com.au. [220.244.72.10])
+ by smtp.gmail.com with ESMTPSA id d7sm155261pgu.78.2021.09.01.09.18.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 01 Sep 2021 09:18:19 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v1 1/2] powerpc/64s: system call scv tabort fix for corrupt
+ irq soft-mask state
+Date: Thu,  2 Sep 2021 02:18:09 +1000
+Message-Id: <20210901161810.1411015-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: CFkKSQvx1QVx1ajLDPnoLgxB4hboUs5Y
-X-Proofpoint-GUID: CFkKSQvx1QVx1ajLDPnoLgxB4hboUs5Y
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-09-01_05:2021-09-01,
- 2021-09-01 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015
- priorityscore=1501 bulkscore=0 adultscore=0 impostorscore=0 spamscore=0
- suspectscore=0 lowpriorityscore=0 mlxlogscore=795 mlxscore=0 phishscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2107140000 definitions=main-2109010087
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,17 +79,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- kvm-ppc@vger.kernel.org
+Cc: Eirik Fuller <efuller@redhat.com>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fabiano Rosas <farosas@linux.ibm.com> writes:
+If a system call is made with a transaction active, the kernel
+immediately aborts it and returns. scv system calls disable irqs even
+earlier in their interrupt handler, and tabort_syscall does not fix this
+up.
 
-> That is why I mentioned creating a hook similar to
-> kvm_create_vcpu_debugfs in the common KVM code. kvm_create_vm_debugfs or
-> something.
+This can result in irq soft-mask state being messed up on the next
+kernel entry, and crashing at BUG_ON(arch_irq_disabled_regs(regs)) in
+the kernel exit handlers, or possibly worse.
 
-s/kvm/kvm_arch/
+Fix this by having tabort_syscall setting irq soft-mask back to enabled.
+
+Reported-by: Eirik Fuller <efuller@redhat.com>
+Fixes: 7fa95f9adaee7 ("powerpc/64s: system call support for scv/rfscv instructions")
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/kernel/interrupt_64.S | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/powerpc/kernel/interrupt_64.S b/arch/powerpc/kernel/interrupt_64.S
+index d4212d2ff0b5..44f99df36fb2 100644
+--- a/arch/powerpc/kernel/interrupt_64.S
++++ b/arch/powerpc/kernel/interrupt_64.S
+@@ -438,6 +438,10 @@ _ASM_NOKPROBE_SYMBOL(tabort_syscall)
+ 	li	r9, (TM_CAUSE_SYSCALL|TM_CAUSE_PERSISTENT)
+ 	TABORT(R9)
+ 
++	/* scv has disabled irqs so must re-enable. sc just remains enabled */
++	li	r9,IRQS_ENABLED
++	stb	r9,PACAIRQSOFTMASK(r13)
++
+ 	/*
+ 	 * Return directly to userspace. We have corrupted user register state,
+ 	 * but userspace will never see that register state. Execution will
+-- 
+2.23.0
 
