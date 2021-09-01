@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07C8B3FE48E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Sep 2021 23:08:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 231043FE47E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Sep 2021 23:04:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H0Gqd6W8Hz3d9P
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Sep 2021 07:08:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H0GlS74dVz3cCg
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Sep 2021 07:04:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=JbKHmZMa;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=SzHIvJZz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,27 +18,27 @@ Authentication-Results: lists.ozlabs.org;
  envelope-from=mcgrof@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=JbKHmZMa; 
+ header.s=bombadil.20210309 header.b=SzHIvJZz; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H0Gh34tXRz2xfH
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Sep 2021 07:01:38 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H0Gh36YG2z2xtd
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Sep 2021 07:01:39 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=6NZfHmNoX5N/dbslA9tEZ3wm71g//v2MOeHuD/3FoC0=; b=JbKHmZMaqVAxm6cl00sFMC5SCj
- aCjZcL7uSMwtO8GUwPvTU6v18DXdVUTNyRQ/ZUCRYcD4XxYgslxZbtB82QNykdkKIANHunCzsHrAB
- iDpLzyPWFcXhf2ofBZaCZB7Q0CcrfIZBKysT24q8obus8VZk6WrH4u/vSm/R/zDVnWaKgn3lIBU4l
- 9PV9qK4XzK06i2ZyBnQeBNKGWp5D7NPqSHeyQm7V92qj5hmJ3/RWw4X++wxFObgSq1yjOyIfITWcx
- S238uMNcCFzbSZ1IrrJVUYLA4WMCA1RaVN1Jbbgk/YggT3Fk0XMeFUC9NoD3ugPbyCRKXxNI8wVz1
- C30MKfvQ==;
+ bh=wOOlMIO7pXBFH4QkHNFjXL8agvAGzSmiCHZUsNiB+04=; b=SzHIvJZzOVOyvRWXpDw/AzP9q+
+ 90JpfRz0S1KO2h7KUparaRBJNruFmjh+VhL3248s11lv+BQiSRHckuekz16nkoALArglL4HQzmQFJ
+ E0J4G8PyRgUjWXzSVxzbZzazcgFH6MpS8+OfQJd8KS8c1JO6ddY0SxeTXCVCbWpHZw7/mcSns2ECO
+ mlpxywZU0o9+Lk9skne4C3Xoriwx0DJLp8m+h3Ww3o6M3iSE56avTJgDcka/qrCvq2FGiimeMOCK3
+ M0MGR6FynRq09LZkJH1RuW3zVZJCjdoeC9dYSoxt2LAyH611XhwR1zznLAwdVxqvcITG8ulK1RSqE
+ jO1BCYNw==;
 Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2
- (Red Hat Linux)) id 1mLXLR-007LW9-E5; Wed, 01 Sep 2021 21:00:29 +0000
+ (Red Hat Linux)) id 1mLXLR-007LWB-GJ; Wed, 01 Sep 2021 21:00:29 +0000
 From: Luis Chamberlain <mcgrof@kernel.org>
 To: axboe@kernel.dk, bhelgaas@google.com, liushixin2@huawei.com,
  thunder.leizhen@huawei.com, lee.jones@linaro.org, geoff@infradead.org,
@@ -46,9 +46,9 @@ To: axboe@kernel.dk, bhelgaas@google.com, liushixin2@huawei.com,
  jim@jtan.com, haris.iqbal@ionos.com, jinpu.wang@ionos.com,
  josh.h.morris@us.ibm.com, pjk1939@linux.ibm.com, tim@cyberelk.net,
  richard@nod.at, miquel.raynal@bootlin.com, vigneshr@ti.com
-Subject: [PATCH 04/10] ps3vram: add error handling support for add_disk()
-Date: Wed,  1 Sep 2021 14:00:22 -0700
-Message-Id: <20210901210028.1750956-5-mcgrof@kernel.org>
+Subject: [PATCH 05/10] rnbd: add error handling support for add_disk()
+Date: Wed,  1 Sep 2021 14:00:23 -0700
+Message-Id: <20210901210028.1750956-6-mcgrof@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210901210028.1750956-1-mcgrof@kernel.org>
 References: <20210901210028.1750956-1-mcgrof@kernel.org>
@@ -78,29 +78,48 @@ error handling.
 
 Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 ---
- drivers/block/ps3vram.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/block/rnbd/rnbd-clt.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/block/ps3vram.c b/drivers/block/ps3vram.c
-index c7b19e128b03..af2a0d09c598 100644
---- a/drivers/block/ps3vram.c
-+++ b/drivers/block/ps3vram.c
-@@ -755,9 +755,14 @@ static int ps3vram_probe(struct ps3_system_bus_device *dev)
- 	dev_info(&dev->core, "%s: Using %llu MiB of GPU memory\n",
- 		 gendisk->disk_name, get_capacity(gendisk) >> 11);
+diff --git a/drivers/block/rnbd/rnbd-clt.c b/drivers/block/rnbd/rnbd-clt.c
+index bd4a41afbbfc..1ba1c868535a 100644
+--- a/drivers/block/rnbd/rnbd-clt.c
++++ b/drivers/block/rnbd/rnbd-clt.c
+@@ -1384,8 +1384,10 @@ static void setup_request_queue(struct rnbd_clt_dev *dev)
+ 	blk_queue_write_cache(dev->queue, dev->wc, dev->fua);
+ }
  
--	device_add_disk(&dev->core, gendisk, NULL);
-+	error = device_add_disk(&dev->core, gendisk, NULL);
-+	if (error)
-+		goto out_cleanup_disk;
+-static void rnbd_clt_setup_gen_disk(struct rnbd_clt_dev *dev, int idx)
++static int rnbd_clt_setup_gen_disk(struct rnbd_clt_dev *dev, int idx)
+ {
++	int err;
 +
- 	return 0;
+ 	dev->gd->major		= rnbd_client_major;
+ 	dev->gd->first_minor	= idx << RNBD_PART_BITS;
+ 	dev->gd->minors		= 1 << RNBD_PART_BITS;
+@@ -1410,7 +1412,11 @@ static void rnbd_clt_setup_gen_disk(struct rnbd_clt_dev *dev, int idx)
  
-+out_cleanup_disk:
-+	blk_cleanup_disk(gendisk);
- out_cache_cleanup:
- 	remove_proc_entry(DEVICE_NAME, NULL);
- 	ps3vram_cache_cleanup(dev);
+ 	if (!dev->rotational)
+ 		blk_queue_flag_set(QUEUE_FLAG_NONROT, dev->queue);
+-	add_disk(dev->gd);
++	err = add_disk(dev->gd);
++	if (err)
++		blk_cleanup_disk(dev->gd);
++
++	return err;
+ }
+ 
+ static int rnbd_client_setup_device(struct rnbd_clt_dev *dev)
+@@ -1426,8 +1432,7 @@ static int rnbd_client_setup_device(struct rnbd_clt_dev *dev)
+ 	rnbd_init_mq_hw_queues(dev);
+ 
+ 	setup_request_queue(dev);
+-	rnbd_clt_setup_gen_disk(dev, idx);
+-	return 0;
++	return rnbd_clt_setup_gen_disk(dev, idx);
+ }
+ 
+ static struct rnbd_clt_dev *init_dev(struct rnbd_clt_session *sess,
 -- 
 2.30.2
 
