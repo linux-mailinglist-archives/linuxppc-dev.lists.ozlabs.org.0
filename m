@@ -2,72 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9D973FF037
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Sep 2021 17:29:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F334E3FF0B4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Sep 2021 18:06:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H0lGC6RrCz2ypg
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Sep 2021 01:29:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H0m4f6thrz2ymg
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Sep 2021 02:06:10 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=default header.b=PkYRnHv/;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=dn11zXMq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=efficios.com (client-ip=167.114.26.124; helo=mail.efficios.com;
- envelope-from=compudj@efficios.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256
- header.s=default header.b=PkYRnHv/; dkim-atps=neutral
-Received: from mail.efficios.com (mail.efficios.com [167.114.26.124])
+ smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::129;
+ helo=mail-lf1-x129.google.com; envelope-from=torvalds@linuxfoundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.a=rsa-sha256 header.s=google header.b=dn11zXMq; 
+ dkim-atps=neutral
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com
+ [IPv6:2a00:1450:4864:20::129])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H0lFS2414z2xs8
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Sep 2021 01:28:43 +1000 (AEST)
-Received: from localhost (localhost [127.0.0.1])
- by mail.efficios.com (Postfix) with ESMTP id 34F1F374320;
- Thu,  2 Sep 2021 11:28:37 -0400 (EDT)
-Received: from mail.efficios.com ([127.0.0.1])
- by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10032)
- with ESMTP id LP_tK4KXAATN; Thu,  2 Sep 2021 11:28:36 -0400 (EDT)
-Received: from localhost (localhost [127.0.0.1])
- by mail.efficios.com (Postfix) with ESMTP id 4757D37431D;
- Thu,  2 Sep 2021 11:28:36 -0400 (EDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.efficios.com 4757D37431D
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
- s=default; t=1630596516;
- bh=lyEy5Tw3HF5zzHal3IxuH63JnLhK6o3BByEcr5vw1rg=;
- h=Date:From:To:Message-ID:MIME-Version;
- b=PkYRnHv/ofNva5xCGCWueWu5kG7//pAcru9Vl9Em5Gr3OvbQeSUiRGgWKTmzh2OfI
- Sjtr9l+kUcUIU9XZlToc+Z4wJQBVyFWbHEHUeSa+2RDCaXhYGy6qHgpoOj5xKQtN1V
- nNnhbYFS65/K1T/uccIE8G+ADHVcibcfGmbWCoPO3tZKw3cRLH6j//CQvxXLj4F0Xk
- 2daMpjzb9zUYo73hQUpnKiVqJdvVS9W+rw3XPFfCIThSmgxJdsdRNZF0M2JsUcIFNZ
- O76eGLqYGHd+qIENC46Yt2seVQPY/F6Nz2q4acGRDTmp90tKL4W3jimKfH2bSHiM3a
- 5YgHnoT9xiBDQ==
-X-Virus-Scanned: amavisd-new at efficios.com
-Received: from mail.efficios.com ([127.0.0.1])
- by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10026)
- with ESMTP id OXXEWNoZQrO3; Thu,  2 Sep 2021 11:28:36 -0400 (EDT)
-Received: from mail03.efficios.com (mail03.efficios.com [167.114.26.124])
- by mail.efficios.com (Postfix) with ESMTP id 1CA5F37431C;
- Thu,  2 Sep 2021 11:28:36 -0400 (EDT)
-Date: Thu, 2 Sep 2021 11:28:36 -0400 (EDT)
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-To: Sean Christopherson <seanjc@google.com>
-Message-ID: <93105975.4876.1630596516005.JavaMail.zimbra@efficios.com>
-In-Reply-To: <20210901203030.1292304-5-seanjc@google.com>
-References: <20210901203030.1292304-1-seanjc@google.com>
- <20210901203030.1292304-5-seanjc@google.com>
-Subject: Re: [PATCH v3 4/5] KVM: selftests: Add a test for KVM_RUN+rseq to
- detect task migration bugs
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H0m3w0L15z2xtQ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Sep 2021 02:05:30 +1000 (AEST)
+Received: by mail-lf1-x129.google.com with SMTP id bq28so5395885lfb.7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Sep 2021 09:05:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux-foundation.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=F57f7dVpJfotG0ZNhC9Jf0r1S23wHXlht59pY76lP5Q=;
+ b=dn11zXMq7ooJ/wfmhg8E+OLuNJ5QEsMU7P/mm3M/yU8U6EmtmkLHvwPSHOyZJBA/tq
+ lzIg5qITAnC5ZlDTbPdqkUYQuPljtkB27eKVU7OqT/rTtxnTf46Q1mq0ts0hPKpZ9TW+
+ mlG98gvUPhvCnaKD3f02Jt+wVXhVi3Xzt8kek=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=F57f7dVpJfotG0ZNhC9Jf0r1S23wHXlht59pY76lP5Q=;
+ b=q3Kr1Imeak2nPjnUqBaWI1aZUc/JSGE6WYX0xMIHkqvEIrAIB5Cnc0olR2Hc5+ogv3
+ yTRiDeEvXo33lpNsaaA4xu2ByImHb4Iq2vUZjqHNP3wHf84H9T1LV5Soo5UiqaDatiCe
+ sZH8JlXY5eo1nZ8+tj3rPTNwBV2fdJ3CO8otOvUGttXA0h4ubNTN2FJYarGNCrcHuSWU
+ +j8tz5y0K3H5Cu+V0PCfTrvcMvOsiR/Rdd0EYBqmjhBfoCfzNokr5t5T2h4pQ6PIA55c
+ WkiWBbmXSZ+8hQNqydpyuEfgbv1vU1LQBryUjQK13S6W9glb89I5S0nINg+0ZhaNdE50
+ /VIA==
+X-Gm-Message-State: AOAM532MYzzTXoxZ4jThv3jBKj8K1GzciK0gtGDqVG9PlIWbnHoER4SX
+ o2D98uJVEt97a2cz73JV1ri5BqH4lkAMGtwv
+X-Google-Smtp-Source: ABdhPJwPounqX7E8fLsEmBdGeKSsX2Ym+DsIg1HFiPEm9pjaqdnvtFE7hZVMEZDGJV2mE0G098vRoQ==
+X-Received: by 2002:a05:6512:32c9:: with SMTP id
+ f9mr3044891lfg.249.1630598721779; 
+ Thu, 02 Sep 2021 09:05:21 -0700 (PDT)
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com.
+ [209.85.167.49])
+ by smtp.gmail.com with ESMTPSA id y23sm236113lfg.277.2021.09.02.09.05.21
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 02 Sep 2021 09:05:21 -0700 (PDT)
+Received: by mail-lf1-f49.google.com with SMTP id h16so2546950lfk.10
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Sep 2021 09:05:21 -0700 (PDT)
+X-Received: by 2002:a05:6512:230b:: with SMTP id
+ o11mr2990046lfu.377.1630598720898; 
+ Thu, 02 Sep 2021 09:05:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [167.114.26.124]
-X-Mailer: Zimbra 8.8.15_GA_4125 (ZimbraWebClient - FF91 (Linux)/8.8.15_GA_4059)
-Thread-Topic: selftests: Add a test for KVM_RUN+rseq to detect task migration
- bugs
-Thread-Index: EyGVp1d/A2F7ckYRHUvub8wzNHGsxA==
+References: <fd7938d94008711d441551c06b25a033669a0618.1629732940.git.christophe.leroy@csgroup.eu>
+ <a94be61f008ab29c231b805e1a97e9dab35cb0cc.1629732940.git.christophe.leroy@csgroup.eu>
+ <YTB1F7o15FrxmmP1@infradead.org>
+In-Reply-To: <YTB1F7o15FrxmmP1@infradead.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Thu, 2 Sep 2021 09:05:05 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjUN=Eu_FqY8sSU3yT+NUD+khQwhaD8FvfvgbhDYE-mqw@mail.gmail.com>
+Message-ID: <CAHk-=wjUN=Eu_FqY8sSU3yT+NUD+khQwhaD8FvfvgbhDYE-mqw@mail.gmail.com>
+Subject: Re: [PATCH v2 3/5] signal: Add unsafe_copy_siginfo_to_user()
+To: Christoph Hellwig <hch@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,335 +87,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: KVM list <kvm@vger.kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- linux-kernel <linux-kernel@vger.kernel.org>, Will Deacon <will@kernel.org>,
- Guo Ren <guoren@kernel.org>, linux-kselftest <linux-kselftest@vger.kernel.org>,
- Ben Gardon <bgardon@google.com>, shuah <shuah@kernel.org>,
- Paul Mackerras <paulus@samba.org>, "Russell King,
- ARM Linux" <linux@armlinux.org.uk>, linux-csky <linux-csky@vger.kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>,
- paulmck <paulmck@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
- rostedt <rostedt@goodmis.org>, Shakeel Butt <shakeelb@google.com>,
- Andy Lutomirski <luto@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Thomas Gleixner <tglx@linutronix.de>, Peter Foley <pefoley@google.com>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- linux-mips <linux-mips@vger.kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+Cc: Peter Zijlstra <peterz@infradead.org>, Josh Poimboeuf <jpoimboe@redhat.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>,
  linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------ On Sep 1, 2021, at 4:30 PM, Sean Christopherson seanjc@google.com wrote:
+On Wed, Sep 1, 2021 at 11:55 PM Christoph Hellwig <hch@infradead.org> wrote:
+>
+> I'm a little worried about all these unsafe helper in powerpc and the
+> ever increasing scope of the unsafe sections.  Can you at least at
+> powerpc support to objtool to verify them?  objtool verifications has
+> helped to find quite a few bugs in unsafe sections on x86.
 
-> Add a test to verify an rseq's CPU ID is updated correctly if the task is
-> migrated while the kernel is handling KVM_RUN.  This is a regression test
-> for a bug introduced by commit 72c3c0fe54a3 ("x86/kvm: Use generic xfer
-> to guest work function"), where TIF_NOTIFY_RESUME would be cleared by KVM
-> without updating rseq, leading to a stale CPU ID and other badness.
-> 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+.. yeah, objdump was particularly useful for the really subtle ones
+where there are random function calls due to things like KASAN etc.
 
-Thanks!
+No human would ever have noticed "oh, we're walking the kernel stack
+with user mode accesses enabled because the compiler inserted magical
+debug code here". Objdump sees those things - assuming you teach it
+about that special user space access enable/disable sequence.
 
-Acked-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-
-> ---
-> tools/testing/selftests/kvm/.gitignore  |   1 +
-> tools/testing/selftests/kvm/Makefile    |   3 +
-> tools/testing/selftests/kvm/rseq_test.c | 236 ++++++++++++++++++++++++
-> 3 files changed, 240 insertions(+)
-> create mode 100644 tools/testing/selftests/kvm/rseq_test.c
-> 
-> diff --git a/tools/testing/selftests/kvm/.gitignore
-> b/tools/testing/selftests/kvm/.gitignore
-> index 0709af0144c8..6d031ff6b68e 100644
-> --- a/tools/testing/selftests/kvm/.gitignore
-> +++ b/tools/testing/selftests/kvm/.gitignore
-> @@ -47,6 +47,7 @@
-> /kvm_page_table_test
-> /memslot_modification_stress_test
-> /memslot_perf_test
-> +/rseq_test
-> /set_memory_region_test
-> /steal_time
-> /kvm_binary_stats_test
-> diff --git a/tools/testing/selftests/kvm/Makefile
-> b/tools/testing/selftests/kvm/Makefile
-> index 5832f510a16c..0756e79cb513 100644
-> --- a/tools/testing/selftests/kvm/Makefile
-> +++ b/tools/testing/selftests/kvm/Makefile
-> @@ -80,6 +80,7 @@ TEST_GEN_PROGS_x86_64 += kvm_create_max_vcpus
-> TEST_GEN_PROGS_x86_64 += kvm_page_table_test
-> TEST_GEN_PROGS_x86_64 += memslot_modification_stress_test
-> TEST_GEN_PROGS_x86_64 += memslot_perf_test
-> +TEST_GEN_PROGS_x86_64 += rseq_test
-> TEST_GEN_PROGS_x86_64 += set_memory_region_test
-> TEST_GEN_PROGS_x86_64 += steal_time
-> TEST_GEN_PROGS_x86_64 += kvm_binary_stats_test
-> @@ -92,6 +93,7 @@ TEST_GEN_PROGS_aarch64 += dirty_log_test
-> TEST_GEN_PROGS_aarch64 += dirty_log_perf_test
-> TEST_GEN_PROGS_aarch64 += kvm_create_max_vcpus
-> TEST_GEN_PROGS_aarch64 += kvm_page_table_test
-> +TEST_GEN_PROGS_aarch64 += rseq_test
-> TEST_GEN_PROGS_aarch64 += set_memory_region_test
-> TEST_GEN_PROGS_aarch64 += steal_time
-> TEST_GEN_PROGS_aarch64 += kvm_binary_stats_test
-> @@ -103,6 +105,7 @@ TEST_GEN_PROGS_s390x += demand_paging_test
-> TEST_GEN_PROGS_s390x += dirty_log_test
-> TEST_GEN_PROGS_s390x += kvm_create_max_vcpus
-> TEST_GEN_PROGS_s390x += kvm_page_table_test
-> +TEST_GEN_PROGS_s390x += rseq_test
-> TEST_GEN_PROGS_s390x += set_memory_region_test
-> TEST_GEN_PROGS_s390x += kvm_binary_stats_test
-> 
-> diff --git a/tools/testing/selftests/kvm/rseq_test.c
-> b/tools/testing/selftests/kvm/rseq_test.c
-> new file mode 100644
-> index 000000000000..060538bd405a
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/rseq_test.c
-> @@ -0,0 +1,236 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +#define _GNU_SOURCE /* for program_invocation_short_name */
-> +#include <errno.h>
-> +#include <fcntl.h>
-> +#include <pthread.h>
-> +#include <sched.h>
-> +#include <stdio.h>
-> +#include <stdlib.h>
-> +#include <string.h>
-> +#include <signal.h>
-> +#include <syscall.h>
-> +#include <sys/ioctl.h>
-> +#include <asm/barrier.h>
-> +#include <linux/atomic.h>
-> +#include <linux/rseq.h>
-> +#include <linux/unistd.h>
-> +
-> +#include "kvm_util.h"
-> +#include "processor.h"
-> +#include "test_util.h"
-> +
-> +#define VCPU_ID 0
-> +
-> +static __thread volatile struct rseq __rseq = {
-> +	.cpu_id = RSEQ_CPU_ID_UNINITIALIZED,
-> +};
-> +
-> +/*
-> + * Use an arbitrary, bogus signature for configuring rseq, this test does not
-> + * actually enter an rseq critical section.
-> + */
-> +#define RSEQ_SIG 0xdeadbeef
-> +
-> +/*
-> + * Any bug related to task migration is likely to be timing-dependent; perform
-> + * a large number of migrations to reduce the odds of a false negative.
-> + */
-> +#define NR_TASK_MIGRATIONS 100000
-> +
-> +static pthread_t migration_thread;
-> +static cpu_set_t possible_mask;
-> +static bool done;
-> +
-> +static atomic_t seq_cnt;
-> +
-> +static void guest_code(void)
-> +{
-> +	for (;;)
-> +		GUEST_SYNC(0);
-> +}
-> +
-> +static void sys_rseq(int flags)
-> +{
-> +	int r;
-> +
-> +	r = syscall(__NR_rseq, &__rseq, sizeof(__rseq), flags, RSEQ_SIG);
-> +	TEST_ASSERT(!r, "rseq failed, errno = %d (%s)", errno, strerror(errno));
-> +}
-> +
-> +static void *migration_worker(void *ign)
-> +{
-> +	cpu_set_t allowed_mask;
-> +	int r, i, nr_cpus, cpu;
-> +
-> +	CPU_ZERO(&allowed_mask);
-> +
-> +	nr_cpus = CPU_COUNT(&possible_mask);
-> +
-> +	for (i = 0; i < NR_TASK_MIGRATIONS; i++) {
-> +		cpu = i % nr_cpus;
-> +		if (!CPU_ISSET(cpu, &possible_mask))
-> +			continue;
-> +
-> +		CPU_SET(cpu, &allowed_mask);
-> +
-> +		/*
-> +		 * Bump the sequence count twice to allow the reader to detect
-> +		 * that a migration may have occurred in between rseq and sched
-> +		 * CPU ID reads.  An odd sequence count indicates a migration
-> +		 * is in-progress, while a completely different count indicates
-> +		 * a migration occurred since the count was last read.
-> +		 */
-> +		atomic_inc(&seq_cnt);
-> +
-> +		/*
-> +		 * Ensure the odd count is visible while sched_getcpu() isn't
-> +		 * stable, i.e. while changing affinity is in-progress.
-> +		 */
-> +		smp_wmb();
-> +		r = sched_setaffinity(0, sizeof(allowed_mask), &allowed_mask);
-> +		TEST_ASSERT(!r, "sched_setaffinity failed, errno = %d (%s)",
-> +			    errno, strerror(errno));
-> +		smp_wmb();
-> +		atomic_inc(&seq_cnt);
-> +
-> +		CPU_CLR(cpu, &allowed_mask);
-> +
-> +		/*
-> +		 * Wait 1-10us before proceeding to the next iteration and more
-> +		 * specifically, before bumping seq_cnt again.  A delay is
-> +		 * needed on three fronts:
-> +		 *
-> +		 *  1. To allow sched_setaffinity() to prompt migration before
-> +		 *     ioctl(KVM_RUN) enters the guest so that TIF_NOTIFY_RESUME
-> +		 *     (or TIF_NEED_RESCHED, which indirectly leads to handling
-> +		 *     NOTIFY_RESUME) is handled in KVM context.
-> +		 *
-> +		 *     If NOTIFY_RESUME/NEED_RESCHED is set after KVM enters
-> +		 *     the guest, the guest will trigger a IO/MMIO exit all the
-> +		 *     way to userspace and the TIF flags will be handled by
-> +		 *     the generic "exit to userspace" logic, not by KVM.  The
-> +		 *     exit to userspace is necessary to give the test a chance
-> +		 *     to check the rseq CPU ID (see #2).
-> +		 *
-> +		 *     Alternatively, guest_code() could include an instruction
-> +		 *     to trigger an exit that is handled by KVM, but any such
-> +		 *     exit requires architecture specific code.
-> +		 *
-> +		 *  2. To let ioctl(KVM_RUN) make its way back to the test
-> +		 *     before the next round of migration.  The test's check on
-> +		 *     the rseq CPU ID must wait for migration to complete in
-> +		 *     order to avoid false positive, thus any kernel rseq bug
-> +		 *     will be missed if the next migration starts before the
-> +		 *     check completes.
-> +		 *
-> +		 *  3. To ensure the read-side makes efficient forward progress,
-> +		 *     e.g. if sched_getcpu() involves a syscall.  Stalling the
-> +		 *     read-side means the test will spend more time waiting for
-> +		 *     sched_getcpu() to stabilize and less time trying to hit
-> +		 *     the timing-dependent bug.
-> +		 *
-> +		 * Because any bug in this area is likely to be timing-dependent,
-> +		 * run with a range of delays at 1us intervals from 1us to 10us
-> +		 * as a best effort to avoid tuning the test to the point where
-> +		 * it can hit _only_ the original bug and not detect future
-> +		 * regressions.
-> +		 *
-> +		 * The original bug can reproduce with a delay up to ~500us on
-> +		 * x86-64, but starts to require more iterations to reproduce
-> +		 * as the delay creeps above ~10us, and the average runtime of
-> +		 * each iteration obviously increases as well.  Cap the delay
-> +		 * at 10us to keep test runtime reasonable while minimizing
-> +		 * potential coverage loss.
-> +		 *
-> +		 * The lower bound for reproducing the bug is likely below 1us,
-> +		 * e.g. failures occur on x86-64 with nanosleep(0), but at that
-> +		 * point the overhead of the syscall likely dominates the delay.
-> +		 * Use usleep() for simplicity and to avoid unnecessary kernel
-> +		 * dependencies.
-> +		 */
-> +		usleep((i % 10) + 1);
-> +	}
-> +	done = true;
-> +	return NULL;
-> +}
-> +
-> +int main(int argc, char *argv[])
-> +{
-> +	int r, i, snapshot;
-> +	struct kvm_vm *vm;
-> +	u32 cpu, rseq_cpu;
-> +
-> +	/* Tell stdout not to buffer its content */
-> +	setbuf(stdout, NULL);
-> +
-> +	r = sched_getaffinity(0, sizeof(possible_mask), &possible_mask);
-> +	TEST_ASSERT(!r, "sched_getaffinity failed, errno = %d (%s)", errno,
-> +		    strerror(errno));
-> +
-> +	if (CPU_COUNT(&possible_mask) < 2) {
-> +		print_skip("Only one CPU, task migration not possible\n");
-> +		exit(KSFT_SKIP);
-> +	}
-> +
-> +	sys_rseq(0);
-> +
-> +	/*
-> +	 * Create and run a dummy VM that immediately exits to userspace via
-> +	 * GUEST_SYNC, while concurrently migrating the process by setting its
-> +	 * CPU affinity.
-> +	 */
-> +	vm = vm_create_default(VCPU_ID, 0, guest_code);
-> +
-> +	pthread_create(&migration_thread, NULL, migration_worker, 0);
-> +
-> +	for (i = 0; !done; i++) {
-> +		vcpu_run(vm, VCPU_ID);
-> +		TEST_ASSERT(get_ucall(vm, VCPU_ID, NULL) == UCALL_SYNC,
-> +			    "Guest failed?");
-> +
-> +		/*
-> +		 * Verify rseq's CPU matches sched's CPU.  Ensure migration
-> +		 * doesn't occur between sched_getcpu() and reading the rseq
-> +		 * cpu_id by rereading both if the sequence count changes, or
-> +		 * if the count is odd (migration in-progress).
-> +		 */
-> +		do {
-> +			/*
-> +			 * Drop bit 0 to force a mismatch if the count is odd,
-> +			 * i.e. if a migration is in-progress.
-> +			 */
-> +			snapshot = atomic_read(&seq_cnt) & ~1;
-> +
-> +			/*
-> +			 * Ensure reading sched_getcpu() and rseq.cpu_id
-> +			 * complete in a single "no migration" window, i.e. are
-> +			 * not reordered across the seq_cnt reads.
-> +			 */
-> +			smp_rmb();
-> +			cpu = sched_getcpu();
-> +			rseq_cpu = READ_ONCE(__rseq.cpu_id);
-> +			smp_rmb();
-> +		} while (snapshot != atomic_read(&seq_cnt));
-> +
-> +		TEST_ASSERT(rseq_cpu == cpu,
-> +			    "rseq CPU = %d, sched CPU = %d\n", rseq_cpu, cpu);
-> +	}
-> +
-> +	/*
-> +	 * Sanity check that the test was able to enter the guest a reasonable
-> +	 * number of times, e.g. didn't get stalled too often/long waiting for
-> +	 * sched_getcpu() to stabilize.  A 2:1 migration:KVM_RUN ratio is a
-> +	 * fairly conservative ratio on x86-64, which can do _more_ KVM_RUNs
-> +	 * than migrations given the 1us+ delay in the migration task.
-> +	 */
-> +	TEST_ASSERT(i > (NR_TASK_MIGRATIONS / 2),
-> +		    "Only performed %d KVM_RUNs, task stalled too much?\n", i);
-> +
-> +	pthread_join(migration_thread, NULL);
-> +
-> +	kvm_vm_free(vm);
-> +
-> +	sys_rseq(RSEQ_FLAG_UNREGISTER);
-> +
-> +	return 0;
-> +}
-> --
-> 2.33.0.153.gba50c8fa24-goog
-
--- 
-Mathieu Desnoyers
-EfficiOS Inc.
-http://www.efficios.com
+            Linus
