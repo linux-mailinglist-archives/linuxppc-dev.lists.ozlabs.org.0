@@ -1,65 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C85113FEE9E
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Sep 2021 15:25:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44E733FEF7B
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Sep 2021 16:33:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H0hWL4mB0z2ywh
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Sep 2021 23:25:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H0k1z1mp9z2ywJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Sep 2021 00:33:43 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=k4UcL29f;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=aculab.com (client-ip=185.58.86.151;
- helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
  receiver=<UNKNOWN>)
-X-Greylist: delayed 65 seconds by postgrey-1.36 at boromir;
- Thu, 02 Sep 2021 23:25:06 AEST
-Received: from eu-smtp-delivery-151.mimecast.com
- (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=k4UcL29f; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H0hVp6Qttz2xr7
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Sep 2021 23:25:06 +1000 (AEST)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-179-p9qiScvWMG6-RCRrz6y5Wg-1; Thu, 02 Sep 2021 14:23:52 +0100
-X-MC-Unique: p9qiScvWMG6-RCRrz6y5Wg-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
- Server (TLS) id 15.0.1497.23; Thu, 2 Sep 2021 14:23:51 +0100
-Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
- AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
- 15.00.1497.023; Thu, 2 Sep 2021 14:23:51 +0100
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Fabiano Rosas' <farosas@linux.ibm.com>, Alexey Kardashevskiy
- <aik@ozlabs.ru>, "linuxppc-dev@lists.ozlabs.org"
- <linuxppc-dev@lists.ozlabs.org>
-Subject: RE: [PATCH kernel] KVM: PPC: Book3S: Suppress warnings when
- allocating too big memory slots
-Thread-Topic: [PATCH kernel] KVM: PPC: Book3S: Suppress warnings when
- allocating too big memory slots
-Thread-Index: AQHXn/uuqy9zH8mqjEavl+BakB/R26uQuo6Q
-Date: Thu, 2 Sep 2021 13:23:51 +0000
-Message-ID: <58cdff0ef02346f2990bddd526f08f34@AcuMS.aculab.com>
-References: <20210901084512.1658628-1-aik@ozlabs.ru>
- <87fsuouysc.fsf@linux.ibm.com>
- <a72edcd2-a990-a549-2f31-dab134bef6a6@ozlabs.ru>
- <878s0funuy.fsf@linux.ibm.com>
-In-Reply-To: <878s0funuy.fsf@linux.ibm.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H0k164yDmz2yHZ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Sep 2021 00:32:58 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 182EQd2Y195118; Thu, 2 Sep 2021 10:32:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=aAVa1iMgsObqCCRrewhu6b9lpHRpplNatmoD++YDd94=;
+ b=k4UcL29fcJxCWMcXvrqCiBVMtdlkeROlWbsPLp87vXBdI6NpRqxy++g6FnrI97XCXDbS
+ IqxhdQqN35PXw3ZqnGyI/FoSezGrAyNkxttuNrN2s1r0MZ7JvuJEhfpAnPOF3Qir/I0H
+ CIkpI7KbWhnogqXAjjoqkpVA2H0+ZjOfyMA9v9H2fzt69+nnZ2WGlvzR5py+3Ihg03sh
+ wgulkfuwueDHm8c/WR2iXAsvOBFkJv5YOYf/r8w0WsC7HDrWFEfXVFBqgqZ92ZiaqRGV
+ 0as/yusEr1zToAc36iI98QuF3pNMRScwJSyMATtjidYf6NfzHGXJz4o4aRLTOs3Jpuz0 Xw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3atyhytbe3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 02 Sep 2021 10:32:49 -0400
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 182E5gk7033611;
+ Thu, 2 Sep 2021 10:32:48 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3atyhytbd2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 02 Sep 2021 10:32:48 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 182EIpm1006353;
+ Thu, 2 Sep 2021 14:32:47 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
+ [9.57.198.24]) by ppma03dal.us.ibm.com with ESMTP id 3atdxca7tj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 02 Sep 2021 14:32:47 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
+ [9.57.199.111])
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 182EWk0s42402180
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 2 Sep 2021 14:32:46 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 51BF4AC059;
+ Thu,  2 Sep 2021 14:32:46 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 02864AC06A;
+ Thu,  2 Sep 2021 14:32:44 +0000 (GMT)
+Received: from localhost (unknown [9.211.46.111])
+ by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTPS;
+ Thu,  2 Sep 2021 14:32:44 +0000 (GMT)
+From: Fabiano Rosas <farosas@linux.ibm.com>
+To: David Gibson <david@gibson.dropbear.id.au>
+Subject: Re: [PATCH 0/5] KVM: PPC: Book3S: Modules cleanup and unification
+In-Reply-To: <YTAownlTy46X4jGV@yekko>
+References: <20210901173357.3183658-1-farosas@linux.ibm.com>
+ <YTAownlTy46X4jGV@yekko>
+Date: Thu, 02 Sep 2021 11:32:41 -0300
+Message-ID: <875yvjujxy.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Xdbtb5OlaprufF_i_COtlJX7Wr7giHQ3
+X-Proofpoint-ORIG-GUID: RqosU1aBjPXLNTxvY8sBi-yAujJmdqW6
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-09-02_04:2021-09-02,
+ 2021-09-02 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0
+ priorityscore=1501 bulkscore=0 adultscore=0 mlxscore=0 lowpriorityscore=0
+ phishscore=0 spamscore=0 mlxlogscore=999 impostorscore=0 clxscore=1015
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2108310000 definitions=main-2109020086
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,32 +104,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "kvm-ppc@vger.kernel.org" <kvm-ppc@vger.kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-...
-> > This is from my deep Windows past :)
-> >
-> > https://docs.microsoft.com/en-us/windows/win32/stg/coding-style-convent=
-ions
->=20
-> =3DD How interesting! And according to that link 'sz' means "Zero termina=
-ted
-> String". Imagine the confusion.. haha
+David Gibson <david@gibson.dropbear.id.au> writes:
 
-Is that document responsible for some of the general unreadability
-of windows code?
-(I'm not going to addle by brain by trying to read it.)
+> On Wed, Sep 01, 2021 at 02:33:52PM -0300, Fabiano Rosas wrote:
+>> This series merges our three kvm modules kvm.ko, kvm-hv.ko and
+>> kvm-pr.ko into one kvm.ko module.
+>
+> That doesn't sound like a good idea to me.  People who aren't on BookS
+> servers don't want - and can't use - kvm-hv.  Almost nobody wants
+> kvm-pr.  It's also kind of inconsistent with x86, which has the
+> separate AMD and Intel modules.
 
-Types like DWORD_PTR really shouldn't exist.
-You won't guess what it is...
+But this is not altering the ability of having only kvm-hv or only
+kvm-pr. I'm taking the Kconfig options that used to produce separate
+modules and using them to select which code gets built into the one
+kvm.ko module.
 
-=09David
+Currently:
 
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
-PT, UK
-Registration No: 1397386 (Wales)
+CONFIG_KVM_BOOK3S_64=m     <-- produces kvm.ko
+CONFIG_KVM_BOOK3S_64_HV=m  <-- produces kvm-hv.ko
+CONFIG_KVM_BOOK3S_64_PR=m  <-- produces kvm-pr.ko
 
+I'm making it so we now have one kvm.ko everywhere, but there is still:
+
+CONFIG_KVM_BOOK3S_64=m           <-- produces kvm.ko
+CONFIG_KVM_BOOK3S_HV_POSSIBLE=y  <-- includes HV in kvm.ko
+CONFIG_KVM_BOOK3S_PR_POSSIBLE=y  <-- includes PR in kvm.ko
+
+In other words, if you are going to have at least two modules loaded at
+all times (kvm + kvm-hv or kvm + kvm-pr), why not put all that into one
+module? No one needs to build code they are not going to use, this is
+not changing.
+
+
+About consistency with x86, this situation is not analogous because we
+need to be able to load both modules at the same time, which means
+kvm.ko needs to stick around when one module goes away in case we want
+to load the other module. The KVM common code states that it expects to
+have at most one implementation:
+
+        /*
+         * kvm_arch_init makes sure there's at most one caller
+         * for architectures that support multiple implementations,
+         * like intel and amd on x86.
+         (...)
+
+which is not true in our case due to this requirement of having two
+separate modules loading independently.
+
+(tangent) We are already quite different from other architectures since
+we're not making use of kvm_arch_init and some other KVM hooks, such as
+kvm_arch_check_processor_compat. So while other archs have their init
+dispatched by kvm common code, our init and cleanup happens
+independently in the ppc-specific modules, which obviously works but is
+needlessly different and has subtleties in the ordering of operations
+wrt. the kvm common code. (tangent)
