@@ -2,49 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AB873FE724
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Sep 2021 03:29:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 409363FE7F9
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Sep 2021 05:28:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H0Nd26Rdsz2ymw
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Sep 2021 11:29:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H0RFn5Ksbz2yY0
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Sep 2021 13:27:57 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=201602 header.b=EjRQwr5H;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=WuJ6Y60V;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=dgibson@ozlabs.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
- header.a=rsa-sha256 header.s=201602 header.b=EjRQwr5H; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62e;
+ helo=mail-pl1-x62e.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=WuJ6Y60V; dkim-atps=neutral
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com
+ [IPv6:2607:f8b0:4864:20::62e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H0NcM0gL4z2xfN
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Sep 2021 11:28:50 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gibson.dropbear.id.au; s=201602; t=1630546121;
- bh=RgHzcOwuQ4CV3C8nRK9MP+jkRJA9XMcQ4G0XWUSnVqI=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=EjRQwr5HFxCxQ3UBbSghNd/K8t48ExXeSfoU7c0p3543VcJj2if/4kttbR9tsgeTX
- A+SY27wLEWlxKieHJKenBdoSEnJMdIm3A37fzibYUmrrKaifLDNNEVEcrLsGLRbG3b
- d3AAXhaRnk3zzwvHPX5l590Pc/d5qthpkTEPJ5IY=
-Received: by ozlabs.org (Postfix, from userid 1007)
- id 4H0Nc96rTJz9sVw; Thu,  2 Sep 2021 11:28:41 +1000 (AEST)
-Date: Thu, 2 Sep 2021 11:28:34 +1000
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Fabiano Rosas <farosas@linux.ibm.com>
-Subject: Re: [PATCH 0/5] KVM: PPC: Book3S: Modules cleanup and unification
-Message-ID: <YTAownlTy46X4jGV@yekko>
-References: <20210901173357.3183658-1-farosas@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H0RF60dvbz2xfH
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Sep 2021 13:27:21 +1000 (AEST)
+Received: by mail-pl1-x62e.google.com with SMTP id bg1so312325plb.13
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Sep 2021 20:27:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=6QD7KcqHqWk+4BIQfPfj1iaDtoIE4Sgeo7R8ZXZLjDs=;
+ b=WuJ6Y60VGfFaGPaXATN60HaoSwBU+F6GP6ygzG2L3zVy5cQwuTdI2ulerMO9axuADS
+ 0CiHAaJ3DS2NMGSAAWdc2uPGcvrn4JS0v3TdowfIhkDuwSAdjzzxEYPc06GpNbppOBEl
+ D4Tuntk3E7roTSGQYXL5g/ZFzuzi+mptD7hM4vtqWRdpe/4PYc5NKa79NI1GzXmTbBMg
+ zRU8gv7VSLBkzdBO2OmX8OAUI4cM9LicpuAHPBBfZ1LC8t89cNHQ0dWL9thXiUV1pLE7
+ TssKMzqGKVjkH+oOigYMdueXJgETPI37aJ8Tzglmc4gEovU6dwAxTozfAc5FBqaXAIiv
+ pXXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=6QD7KcqHqWk+4BIQfPfj1iaDtoIE4Sgeo7R8ZXZLjDs=;
+ b=Q70hwPeoN1tJRwVWiZE/xJp7PZ6/5uQuJew8Y2TBNNJbhEThaM+R5JGfVSz/pxb+16
+ lp9urHvHKdAlxYgGnzTtksKYTu29pVwrbjQcFPRruHTrfXAJuQ13Dn/TPrq+dwZHjlRt
+ rg5R84b9wdnC3WH4MAHO3T8Q4T8FG46/he4yRzQjkv8Za1+rf2VL092CPJqSgbGc9TKO
+ ae7jLX2uDDdq+z2urFqVbeNVzqQSrH5oAXwRhO7wzrlVcKgZ+8iqqJWBL0kjrXoO+oB1
+ DjRKifN9x+5pHfaogzr7ZsPqpRzEmUG8Lne3oCalyZYlzdnQ+CtPKvPaENZK5UR1waMH
+ Twqw==
+X-Gm-Message-State: AOAM530N7eTqMAxo3s0lZuncal4MoIifvZyIkkzA8nvnZukJATwROPZF
+ +ETYFc8JTYPkY2uOz6AO0wU=
+X-Google-Smtp-Source: ABdhPJxaDXuztHzx8rrM3TI5P+LdaLepeAcVjX/BVqP0TLQrhGURSsuGiLjUk5Wdo21camVz+Ee3CQ==
+X-Received: by 2002:a17:90a:fb90:: with SMTP id
+ cp16mr1387259pjb.140.1630553236095; 
+ Wed, 01 Sep 2021 20:27:16 -0700 (PDT)
+Received: from localhost (220-244-72-10.tpgi.com.au. [220.244.72.10])
+ by smtp.gmail.com with ESMTPSA id h8sm363637pfr.219.2021.09.01.20.27.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 01 Sep 2021 20:27:15 -0700 (PDT)
+Date: Thu, 02 Sep 2021 13:27:10 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2 2/2] selftests/powerpc: Add scv versions of the basic
+ TM syscall tests
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ linuxppc-dev@lists.ozlabs.org
+References: <20210901165418.1412891-1-npiggin@gmail.com>
+ <20210901165418.1412891-2-npiggin@gmail.com>
+ <f99fa6c6-cebe-c261-0971-0f485cbcea2d@csgroup.eu>
+In-Reply-To: <f99fa6c6-cebe-c261-0971-0f485cbcea2d@csgroup.eu>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="cTM27LM3Y9l15LL2"
-Content-Disposition: inline
-In-Reply-To: <20210901173357.3183658-1-farosas@linux.ibm.com>
+Message-Id: <1630553190.fkqnk0by89.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,106 +84,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, kvm-ppc@vger.kernel.org
+Cc: Eirik Fuller <efuller@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
---cTM27LM3Y9l15LL2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Sep 01, 2021 at 02:33:52PM -0300, Fabiano Rosas wrote:
-> This series merges our three kvm modules kvm.ko, kvm-hv.ko and
-> kvm-pr.ko into one kvm.ko module.
-
-That doesn't sound like a good idea to me.  People who aren't on BookS
-servers don't want - and can't use - kvm-hv.  Almost nobody wants
-kvm-pr.  It's also kind of inconsistent with x86, which has the
-separate AMD and Intel modules.
-
-> The main reason for this is to deal with the issue that kvm.ko can be
-> loaded on its own without any of the other modules present. This can
-> happen if one or both of the modules fail to init or if the user loads
-> kvm.ko only.
+Excerpts from Christophe Leroy's message of September 2, 2021 3:15 am:
 >=20
-> With only kvm.ko loaded, the userspace can call any of the KVM ioctls
-> which will fail more or less gracefully depending on what kind of
-> verification we do in powerpc.c.
-
-I see that that's awkward, but I'm not sure it justifies compromising
-the actual natural structure of the dependencies.
-
-> Instead of adding a check to every entry point or finding a hack to
-> link the modules so that when one fails (hv/pr), the other (kvm)
-> exits, I think it is cleaner to just make them all a single module.
 >=20
-> The two KVM implementations are already selected by Kconfig options,
-> so the only thing that changes is that they are now in the same
-> module. I also kept kvm-hv and kvm-pr as aliases to kvm, so that
-> people don't get too surprised with the change.
+> Le 01/09/2021 =C3=A0 18:54, Nicholas Piggin a =C3=A9crit=C2=A0:
+>> The basic TM vs syscall test code hard codes an sc instruction for the
+>> system call, which fails to cover scv even when the userspace libc has
+>> support for it.
+>>=20
+>> Duplicate the tests with hard coded scv variants so both are tested
+>> when possible.
+>>=20
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>> ---
+>>   .../selftests/powerpc/tm/tm-syscall-asm.S     | 46 +++++++++++++++++++
+>>   .../testing/selftests/powerpc/tm/tm-syscall.c | 36 ++++++++++++---
+>>   2 files changed, 75 insertions(+), 7 deletions(-)
+>>=20
+>> diff --git a/tools/testing/selftests/powerpc/tm/tm-syscall-asm.S b/tools=
+/testing/selftests/powerpc/tm/tm-syscall-asm.S
+>> index bd1ca25febe4..849316831e6a 100644
+>> --- a/tools/testing/selftests/powerpc/tm/tm-syscall-asm.S
+>> +++ b/tools/testing/selftests/powerpc/tm/tm-syscall-asm.S
+>> @@ -2,6 +2,10 @@
+>>   #include <ppc-asm.h>
+>>   #include <asm/unistd.h>
+>>  =20
+>> +/* ppc-asm.h does not define r0 or r1 */
+>> +#define r0 0
+>> +#define r1 1
+>> +
 >=20
-> There is a possible issue with the larger module size for kernel
-> builds that should support both HV-only and PR-only environments, but
-> PR is usually not used in production so I'm not sure if that is a real
-> issue.
+> See https://github.com/gcc-mirror/gcc/blob/master/gcc/config/rs6000/ppc-a=
+sm.h
 >=20
-> Patches 1,2,3 are standalone cleanups.
-> Patches 4,5 are the unification work.
->=20
-> Fabiano Rosas (5):
->   KVM: PPC: Book3S HV: Check return value of kvmppc_radix_init
->   KVM: PPC: Book3S HV: Delay setting of kvm ops
->   KVM: PPC: Book3S HV: Free allocated memory if module init fails
->   KVM: PPC: Book3S: Unify kvm-hv and kvm-pr modules
->   KVM: PPC: Book3S: Stop exporting non-builtin symbols
->=20
->  arch/powerpc/configs/powernv_defconfig |  2 +-
->  arch/powerpc/configs/ppc64_defconfig   |  2 +-
->  arch/powerpc/configs/pseries_defconfig |  2 +-
->  arch/powerpc/kvm/Kconfig               | 72 ++++++++++++--------------
->  arch/powerpc/kvm/Makefile              | 11 ++--
->  arch/powerpc/kvm/book3s.c              | 61 ++++++++++++++--------
->  arch/powerpc/kvm/book3s.h              | 19 +++++++
->  arch/powerpc/kvm/book3s_64_mmu_radix.c |  3 --
->  arch/powerpc/kvm/book3s_64_vio.c       |  3 --
->  arch/powerpc/kvm/book3s_hv.c           | 38 ++++++++------
->  arch/powerpc/kvm/book3s_pr.c           | 13 -----
->  arch/powerpc/kvm/book3s_rtas.c         |  1 -
->  arch/powerpc/kvm/book3s_xics.c         |  4 --
->  arch/powerpc/kvm/book3s_xive.c         |  6 ---
->  arch/powerpc/kvm/emulate.c             |  1 -
->  arch/powerpc/kvm/powerpc.c             | 14 -----
->  kernel/irq/irqdesc.c                   |  2 +-
->  17 files changed, 125 insertions(+), 129 deletions(-)
->=20
+> It doesn't not define r1 but it defines r0.
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+Oops, I'll fix that.
 
---cTM27LM3Y9l15LL2
-Content-Type: application/pgp-signature; name="signature.asc"
+> And it defines 'sp' as register 1.
 
------BEGIN PGP SIGNATURE-----
+Does userspace code typically use that? Kernel code AFAIKS does not.
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmEwKMAACgkQbDjKyiDZ
-s5IJ8hAAxoqpnAeYoAekbeRGGod/ln+VczLwlefJzgGS2y9ZHs1nxpuP11S7VsfH
-oyM8xZZJHQK5r3FIXpRHmhnYoUT5OZDdsCiZkPHZBqda4/AsZB93nGjtTtXOk34G
-r48+0TWL35f3lAyPQhdK7WgU+DD0RxoDW4Vn1HGK7e+PXIak4UT4sM6j5oMjWTtL
-hHw+ScgZNHa3/i4MHBcgfyYk5gbnV3n0AzkW1nVNu17uaowKommJ2tvNMBCEtuE+
-4wUXaQ8vP21/LSj6TMA6rIX6/PhQrOOinfYbWsaOuuiW6j/0Qcrh/Ho9vyoIK9q7
-kJSmCtrelqe55OMTA0BwBELv40bbxy9nbw1gS1rcb4ykDQsfQ51JVQZGzomal4vj
-zih9VUJiE27mQAmqN3mEYWYVsMFuBtcIPb+GEhWId4EkMBFTChTqeiiznRzHLhal
-QRIZ2+9iNDf+c9SVYbu8xXK4IUMaRQvXrzxFBE7NEZFWlFXNyUgCa8V2svPo8P5u
-O24dKNB019FyUZ/6ynv0+a9wC4ce5/uCBg3xfhW/2V5Ncw1fApOiV/4eYoOuSD1h
-wmld4S9LRJ6ElO8KCWiRRdUxl4yM4VWdN7GIcHXX8EPUti3CY8re2ehqNxqMaJpQ
-4djK+MbZ6tRxgQEUqyX6cg7dpr/CVk1QbnysUt6pNysn0DIS29M=
-=TeXO
------END PGP SIGNATURE-----
-
---cTM27LM3Y9l15LL2--
+Thanks,
+Nick
