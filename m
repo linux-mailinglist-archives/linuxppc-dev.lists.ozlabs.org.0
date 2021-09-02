@@ -1,82 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 717AC3FE88B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Sep 2021 06:25:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 064B93FE8B6
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Sep 2021 07:32:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H0SXZ1tJRz2yp2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Sep 2021 14:25:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H0V1271w5z2yNr
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Sep 2021 15:32:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=RxbL8dN2;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=MfxsRipP;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::1033;
- helo=mail-pj1-x1033.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::529;
+ helo=mail-pg1-x529.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
  header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=RxbL8dN2; dkim-atps=neutral
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com
- [IPv6:2607:f8b0:4864:20::1033])
+ header.s=20150623 header.b=MfxsRipP; dkim-atps=neutral
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com
+ [IPv6:2607:f8b0:4864:20::529])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H0SWt0dxmz2xry
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Sep 2021 14:25:11 +1000 (AEST)
-Received: by mail-pj1-x1033.google.com with SMTP id
- f11-20020a17090aa78b00b0018e98a7cddaso540881pjq.4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Sep 2021 21:25:11 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H0V0H6ttPz2xs2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Sep 2021 15:31:24 +1000 (AEST)
+Received: by mail-pg1-x529.google.com with SMTP id w8so743477pgf.5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Sep 2021 22:31:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=message-id:date:mime-version:user-agent:subject:content-language:to
  :cc:references:from:in-reply-to:content-transfer-encoding;
- bh=o/fdA9EiQAmnjCZwLE6dEup3eAwqC+a9XVZ0mxlaGiM=;
- b=RxbL8dN2qZkf2mEv2PmrK4gxrU8XmkYq8nc1/8Kvb3SVXXcPYRbTkkjcWCWqR/Qm14
- Vt7XAcc/y1RrzND0fZwF69pUbP8yZJNc2m9/gt2NIs2xkhABxvVTEf2P7Pbmsd2O2Egv
- AQi9sZvGKgshwe4seCdOJ1iqigt1AWzyVCkC1mROqMj/ybHleMbZ6980qm7GxGHaSOA+
- MWtbpQ6674CECRxd1L/dDDV+U+l7Je8cmA1hGHrvYrry5j60pZfkTKlOJNAW0qrbNgRY
- d3solZPvG6Wl6nVj+9e/qY48RraFq/mojIED4S7Dw9JRHLaw7vL6rz9FVL2iDs8QXDlr
- GApw==
+ bh=JnfRFT5cGQON1porM5TsyHMCnu1AD+Z9R9PTnGkoCRw=;
+ b=MfxsRipP8toGzFUC+AXMbc9EN3kdJLP+mfCDduwiD42To7foPxBCU36YQML4tX4XOw
+ Xk1UZVUVknGGLDqfhWzxEc8fUXVJADeY6KC2ZEA0eMNqGUpDrtIpTvvrZIbPV3gygnnH
+ 2F5U/3DPfUmsm86sAwm6pCphF1+0cFyD3etTaGidx+OL2uEGO/jrWQtNdRala/8viaKr
+ 5Wn2jjbZPa5uKRMtU1UtTPvjXBLBVaiX6H9xg9GRBIJ0Ffiv7Mx/+YqNzlFBQPUlH+uB
+ VQS0kfWEWaOaaF0bABB8oqP8KX6xqNWqZLmIIsGD06NuYB8dp0WHM+hd91M+br2UEJHF
+ 4/qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
  :content-language:to:cc:references:from:in-reply-to
  :content-transfer-encoding;
- bh=o/fdA9EiQAmnjCZwLE6dEup3eAwqC+a9XVZ0mxlaGiM=;
- b=nJgbkJXH9GpvqEYUe5RgQjIPtw+2h0bqKqAU2z4KNcLlXoxlcYvk816Gl6uFsmz9hz
- uI4k8s9Kz8TxVvb6H7RY3kh7ziYfMqnrK2uaVvXI+wt2yluZZVT587yEK0eBY7oWvkFN
- uB8PDi/j/GSF5oPO51dX+dWEiROVwUueQ/3pnZevVoPHmKWfH7FvhBcOGfPz8o29DpQB
- wa2UdJHeykKMYXnkN+tqPx05DckX8ImesrDTI9TGmDlQqbtqZ9w+6meMPBHOTSX/qFvN
- zqlm5OZ4IfvxMy6U5PtyVOQTuFMOl/JMthBsCAs+yHcB+ghHmBwO7OhTswJvnQuCIsa0
- d5eg==
-X-Gm-Message-State: AOAM533uxM5N7SsR8qYBtqFedqqojOxbVlY/j50SqOis+cGnJR9E679Z
- 7FY5x2wR2m1d8VkyBPurIkekLA==
-X-Google-Smtp-Source: ABdhPJwcbWkTnTvfgneRQA2NLuCqjbeOV7NKEUCvFLXhAVerLpVk540v9Y8BlwnhrT4TAhyL2WUeYQ==
-X-Received: by 2002:a17:90a:b795:: with SMTP id
- m21mr1483001pjr.143.1630556708274; 
- Wed, 01 Sep 2021 21:25:08 -0700 (PDT)
+ bh=JnfRFT5cGQON1porM5TsyHMCnu1AD+Z9R9PTnGkoCRw=;
+ b=AZi37hfNaQuinukZVIBlzGO3+KWOJ9/6Smy0aj6qV53mOMT8dNVD9wdwl7OwON5O8F
+ u81DLzrx2hf9nLBdpAbAqI7JX4iacl5RtjTDJZeD3pcvoxilAdlnohPDcqGfu4lGK/tl
+ Px7kCucqNeRwM64W3lwK3z4VxqsRBblRl/0+c9JmXlSOT+lWZkUZEZVnu8Or5pXNxB1U
+ X4S9w31A+WYK8ay/8FtNGuQ5+PtXCokFndm8p1gU/ASSjUkPMppSJZvl+dGVggErhDa4
+ 2lrLMeJBwm6IYTNveQX1AZgmelspVvr17+/aB0fXit8k4Z2JTix1sdNZCT3iRxVbTWb8
+ mIVA==
+X-Gm-Message-State: AOAM530pq8GS2hv/fLgKezDVswtwB+E7/Am62c88Y0sT0RWRiAe/y8EN
+ YILQkx+yi2Ur+JzJ0FulkA1HhA==
+X-Google-Smtp-Source: ABdhPJyHNgu5yKytrzSh73Ye5fwnOwcrpcl3VMRMIzomrZJ+aH/g+uvi3a1TKz4CPv07fNn1u/rDbw==
+X-Received: by 2002:a63:1e4e:: with SMTP id p14mr1462580pgm.261.1630560681199; 
+ Wed, 01 Sep 2021 22:31:21 -0700 (PDT)
 Received: from [192.168.10.23] (124-171-108-209.dyn.iinet.net.au.
  [124.171.108.209])
- by smtp.gmail.com with ESMTPSA id c123sm526061pfc.50.2021.09.01.21.25.05
+ by smtp.gmail.com with ESMTPSA id s14sm867387pgf.4.2021.09.01.22.31.16
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 01 Sep 2021 21:25:07 -0700 (PDT)
-Message-ID: <a72edcd2-a990-a549-2f31-dab134bef6a6@ozlabs.ru>
-Date: Thu, 2 Sep 2021 14:25:03 +1000
+ Wed, 01 Sep 2021 22:31:20 -0700 (PDT)
+Message-ID: <4af71498-30ac-04e2-4fa7-f13d23acb03c@ozlabs.ru>
+Date: Thu, 2 Sep 2021 15:31:14 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:92.0) Gecko/20100101
  Thunderbird/92.0
-Subject: Re: [PATCH kernel] KVM: PPC: Book3S: Suppress warnings when
- allocating too big memory slots
+Subject: Re: [PATCH kernel] KVM: PPC: Book3S HV: Make unique debugfs nodename
 Content-Language: en-US
-To: Fabiano Rosas <farosas@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-References: <20210901084512.1658628-1-aik@ozlabs.ru>
- <87fsuouysc.fsf@linux.ibm.com>
+To: Fabiano Rosas <farosas@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <20210707041344.3803554-1-aik@ozlabs.ru>
+ <be02290c-60a0-48af-0491-61e8a6d5b7b7@ozlabs.ru>
+ <87pmubu306.fsf@linux.ibm.com>
+ <a1be1913-f564-924b-1750-03efa859a0b1@ozlabs.ru>
+ <2fe01488-5a9b-785e-7c05-1d527dead18d@ozlabs.ru>
+ <87lf4gv0hf.fsf@linux.ibm.com>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
-In-Reply-To: <87fsuouysc.fsf@linux.ibm.com>
+In-Reply-To: <87lf4gv0hf.fsf@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -90,63 +92,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm-ppc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 02/09/2021 00:59, Fabiano Rosas wrote:
+On 02/09/2021 00:23, Fabiano Rosas wrote:
 > Alexey Kardashevskiy <aik@ozlabs.ru> writes:
 > 
->> The userspace can trigger "vmalloc size %lu allocation failure: exceeds
->> total pages" via the KVM_SET_USER_MEMORY_REGION ioctl.
+>> On 24/08/2021 18:37, Alexey Kardashevskiy wrote:
+>>>
+>>>
+>>> On 18/08/2021 08:20, Fabiano Rosas wrote:
+>>>> Alexey Kardashevskiy <aik@ozlabs.ru> writes:
+>>>>
+>>>>> On 07/07/2021 14:13, Alexey Kardashevskiy wrote:
+>>>>
+>>>>> alternatively move this debugfs stuff under the platform-independent
+>>>>> directory, how about that?
+>>>>
+>>>> That's a good idea. I only now realized we have two separate directories
+>>>> for the same guest:
+>>>>
+>>>> $ ls /sys/kernel/debug/kvm/ | grep $pid
+>>>> 19062-11
+>>>> vm19062
+>>>>
+>>>> Looks like we would have to implement kvm_arch_create_vcpu_debugfs for
+>>>> the vcpu information and add a similar hook for the vm.
+>>>
+>>> Something like that. From the git history, it looks like the ppc folder
+>>> was added first and then the generic kvm folder was added but apparently
+>>> they did not notice the ppc one due to natural reasons :)
+>>>
+>>> If you are not too busy, can you please merge the ppc one into the
+>>> generic one and post the patch, so we won't need to fix these
+>>> duplication warnings again? Thanks,
 >>
->> This silences the warning by checking the limit before calling vzalloc()
->> and returns ENOMEM if failed.
 >>
->> This does not call underlying valloc helpers as __vmalloc_node() is only
->> exported when CONFIG_TEST_VMALLOC_MODULE and __vmalloc_node_range() is not
->> exported at all.
 >>
->> Spotted by syzkaller.
->>
->> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
->> ---
->>   arch/powerpc/kvm/book3s_hv.c | 8 ++++++--
->>   1 file changed, 6 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
->> index 474c0cfde384..a59f1cccbcf9 100644
->> --- a/arch/powerpc/kvm/book3s_hv.c
->> +++ b/arch/powerpc/kvm/book3s_hv.c
->> @@ -4830,8 +4830,12 @@ static int kvmppc_core_prepare_memory_region_hv(struct kvm *kvm,
->>   	unsigned long npages = mem->memory_size >> PAGE_SHIFT;
->>
->>   	if (change == KVM_MR_CREATE) {
->> -		slot->arch.rmap = vzalloc(array_size(npages,
->> -					  sizeof(*slot->arch.rmap)));
->> +		unsigned long cb = array_size(npages, sizeof(*slot->arch.rmap));
+>> Turns out it is not that straight forward as I thought as the common KVM
+>> debugfs entry is created after PPC HV KVM created its own and there is
+>> no obvious way to change the order (no "post init" hook in
+>> kvmppc_ops).
 > 
-> What does cb mean?
+> That is why I mentioned creating a hook similar to
+> kvm_create_vcpu_debugfs in the common KVM code. kvm_create_vm_debugfs or
+> something.
 
-"count of bytes"
-
-This is from my deep Windows past :)
-
-https://docs.microsoft.com/en-us/windows/win32/stg/coding-style-conventions
+ah sorry I missed that :-/
 
 
-> 
->> +
->> +		if ((cb >> PAGE_SHIFT) > totalram_pages())
->> +			return -ENOMEM;
->> +
->> +		slot->arch.rmap = vzalloc(cb);
->>   		if (!slot->arch.rmap)
->>   			return -ENOMEM;
->>   	}
+> Alternatively, maybe kvm_create_vm_debugfs could be moved earlier into
+> kvm_create_vm, before kvm_arch_post_init_vm and we could move our code
+> into kvm_arch_post_init_vm.
+
+kvm_arch_create_vcpu_debugfs() or kvm_arch_post_init_vm() will still 
+require hooks in kvmppc_ops and such bikeshedding may take a while :)
+
+
+>>
+>> Also, unlike the common KVM debugfs setup, we do not allocate structures
+>> to support debugfs nodes so we do not leak anything to bother with a
+>> mutex like 85cd39af14f4 did.
+>>
+>> So I'd stick to the original patch to reduce the noise in the dmesg, and
+>> it also exposes lpid which I find rather useful for finding the right
+>> partition scope tree in partition_tb.
+>>
+>> Michael?
+>>
+>>
+>>>
+>>>
+>>>
+>>>>>> ---
+>>>>>>     arch/powerpc/kvm/book3s_hv.c | 2 +-
+>>>>>>     1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>>>
+>>>>>> diff --git a/arch/powerpc/kvm/book3s_hv.c
+>>>>>> b/arch/powerpc/kvm/book3s_hv.c
+>>>>>> index 1d1fcc290fca..0223ddc0eed0 100644
+>>>>>> --- a/arch/powerpc/kvm/book3s_hv.c
+>>>>>> +++ b/arch/powerpc/kvm/book3s_hv.c
+>>>>>> @@ -5227,7 +5227,7 @@ static int kvmppc_core_init_vm_hv(struct kvm
+>>>>>> *kvm)
+>>>>>>         /*
+>>>>>>          * Create a debugfs directory for the VM
+>>>>>>          */
+>>>>>> -    snprintf(buf, sizeof(buf), "vm%d", current->pid);
+>>>>>> +    snprintf(buf, sizeof(buf), "vm%d-lp%ld", current->pid, lpid);
+>>>>>>         kvm->arch.debugfs_dir = debugfs_create_dir(buf,
+>>>>>> kvm_debugfs_dir);
+>>>>>>         kvmppc_mmu_debugfs_init(kvm);
+>>>>>>         if (radix_enabled())
+>>>>>>
+>>>
 
 -- 
 Alexey
