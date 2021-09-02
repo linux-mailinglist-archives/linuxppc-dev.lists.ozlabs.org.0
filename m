@@ -2,57 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 445893FE992
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Sep 2021 08:55:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E9AB3FEA19
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Sep 2021 09:35:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H0Wsd1KLsz2yP9
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Sep 2021 16:55:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H0Xlt0ZtDz2ymv
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Sep 2021 17:35:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=J7gbN5uh;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=k4FaKyUH;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=casper.srs.infradead.org (client-ip=2001:8b0:10b:1236::1;
- helo=casper.infradead.org;
- envelope-from=batv+1fe5bfb7fcaf9fee4071+6584+infradead.org+hch@casper.srs.infradead.org;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=J7gbN5uh; 
- dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=k4FaKyUH; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H0Wrz1pH8z2xY8
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Sep 2021 16:55:14 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=Mh8OchEd6FmGVIr9IY/rauTsPqFSK4QQAj2HctJHOu4=; b=J7gbN5uh8SlTASWpJ8YSA/TxVp
- lRefSwd0KAjIrpx1kPoz69y1TgfsjptLpjnJhJjVCNoq4eLwgV/iU4LLKroQEzsRRIV4Inn2yRl/L
- ugMpGLIjN2S0kQE2XT2wxm/typgyWvsbF/YlAETUK69H3vZiuvlp7aT2oykWDvWdisTh0/3ZuIcY4
- 5rMX90ZC0EhcOVMDYtEHLqQqREiPJU16Zdvr3/93rVTJWGzem6aYyq49AUGjQ9ect9XpVT9rgFoDY
- vEZu9ETLADTmtAa37kANnFDsc3RABHwM9ZwGKcS7nb5m1bNvbQHXEBEvtSg04DtDQeHPmUa076fxh
- gNSWBQ6Q==;
-Received: from hch by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat
- Linux)) id 1mLgc3-003BxP-Er; Thu, 02 Sep 2021 06:54:28 +0000
-Date: Thu, 2 Sep 2021 07:54:15 +0100
-From: Christoph Hellwig <hch@infradead.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v2 3/5] signal: Add unsafe_copy_siginfo_to_user()
-Message-ID: <YTB1F7o15FrxmmP1@infradead.org>
-References: <fd7938d94008711d441551c06b25a033669a0618.1629732940.git.christophe.leroy@csgroup.eu>
- <a94be61f008ab29c231b805e1a97e9dab35cb0cc.1629732940.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H0Xl24k37z2xsj
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Sep 2021 17:35:10 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 1827Wj2R034706; Thu, 2 Sep 2021 03:35:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=U09cb4nfZo4pbpTcJxbWIBzk5iG8iee8vnxVdFTAA5o=;
+ b=k4FaKyUHrdvBiMrMPiJm2K4TuCUXXcecfumO0mQS0BYEgRS8NV/TBUrtCawatRt2siEj
+ 61BQ324ZI+R6u2zoo8s8AQ/IQxQnff6MGICuyjYnHwmyrvpi16rUEFNaoELcSQl83ijt
+ mS0CV18JyFnamQSCHbfTGt3cpSwfg/p0HOIJ/2mPyc5rCbam/BtM9nHt/yziwXxqAG4N
+ wgSqeUnCKS6t4SwX2HACN9OHIZkMfxvjJYPpncihnV0FxLzMoiC4hahpA2n1aKfOIfYc
+ Wd207q3mAAz1eTYLiFKa6GAocebcAGoNkCi6mR7VEUOlVM6m8XZGlNqHiRS2pxU9eVaS sw== 
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3att9gr22j-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 02 Sep 2021 03:35:01 -0400
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1827QqBd024770;
+ Thu, 2 Sep 2021 07:35:01 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma05wdc.us.ibm.com with ESMTP id 3atdxdd02h-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 02 Sep 2021 07:35:01 +0000
+Received: from b03ledav003.gho.boulder.ibm.com
+ (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1827YxU635455358
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 2 Sep 2021 07:34:59 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 339E16A04D;
+ Thu,  2 Sep 2021 07:34:59 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BB35F6A047;
+ Thu,  2 Sep 2021 07:34:56 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.43.51.175])
+ by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu,  2 Sep 2021 07:34:56 +0000 (GMT)
+Subject: Re: [PATCH 0/2] powerpc/perf: Add instruction and data address
+ registers to extended regs
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, mpe@ellerman.id.au,
+ acme@kernel.org, jolsa@kernel.org
+References: <1624200360-1429-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+From: kajoljain <kjain@linux.ibm.com>
+Message-ID: <bd5a9388-483d-91ca-b371-ab92ae4c08bc@linux.ibm.com>
+Date: Thu, 2 Sep 2021 13:04:55 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a94be61f008ab29c231b805e1a97e9dab35cb0cc.1629732940.git.christophe.leroy@csgroup.eu>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <1624200360-1429-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: QV34mpE7L08Ujcg6DzZxZ73zum7xGS-Q
+X-Proofpoint-ORIG-GUID: QV34mpE7L08Ujcg6DzZxZ73zum7xGS-Q
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-09-02_02:2021-09-01,
+ 2021-09-02 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 lowpriorityscore=0
+ bulkscore=0 malwarescore=0 mlxlogscore=999 clxscore=1011 adultscore=0
+ phishscore=0 priorityscore=1501 suspectscore=0 spamscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2108310000
+ definitions=main-2109020049
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,89 +104,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Paul Mackerras <paulus@samba.org>, Josh Poimboeuf <jpoimboe@redhat.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, rnsastry@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 23, 2021 at 03:35:53PM +0000, Christophe Leroy wrote:
-> In the same spirit as commit fb05121fd6a2 ("signal: Add
-> unsafe_get_compat_sigset()"), implement an 'unsafe' version of
-> copy_siginfo_to_user() in order to use it within user access blocks.
-> 
-> For that, also add an 'unsafe' version of clear_user().
 
-I'm a little worried about all these unsafe helper in powerpc and the
-ever increasing scope of the unsafe sections.  Can you at least at
-powerpc support to objtool to verify them?  objtool verifications has
-helped to find quite a few bugs in unsafe sections on x86.
 
+On 6/20/21 8:15 PM, Athira Rajeev wrote:
+> Patch set adds PMU registers namely Sampled Instruction Address Register
+> (SIAR) and Sampled Data Address Register (SDAR) as part of extended regs
+> in PowerPC. These registers provides the instruction/data address and
+> adding these to extended regs helps in debug purposes.
 > 
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->  include/linux/signal.h  | 15 +++++++++++++++
->  include/linux/uaccess.h |  1 +
->  kernel/signal.c         |  5 -----
->  3 files changed, 16 insertions(+), 5 deletions(-)
+> Patch 1/2 adds SIAR and SDAR as part of the extended regs mask.
+> Patch 2/2 includes perf tools side changes to add the SPRs to
+> sample_reg_mask to use with -I? option.
 > 
-> diff --git a/include/linux/signal.h b/include/linux/signal.h
-> index 3454c7ff0778..659bd43daf10 100644
-> --- a/include/linux/signal.h
-> +++ b/include/linux/signal.h
-> @@ -35,6 +35,21 @@ static inline void copy_siginfo_to_external(siginfo_t *to,
->  int copy_siginfo_to_user(siginfo_t __user *to, const kernel_siginfo_t *from);
->  int copy_siginfo_from_user(kernel_siginfo_t *to, const siginfo_t __user *from);
->  
-> +static __always_inline char __user *si_expansion(const siginfo_t __user *info)
-> +{
-> +	return ((char __user *)info) + sizeof(struct kernel_siginfo);
-> +}
-> +
-> +#define unsafe_copy_siginfo_to_user(to, from, label) do {		\
-> +	siginfo_t __user *__ucs_to = to;				\
-> +	const kernel_siginfo_t *__ucs_from = from;			\
-> +	char __user *__ucs_expansion = si_expansion(__ucs_to);		\
-> +									\
-> +	unsafe_copy_to_user(__ucs_to, __ucs_from,			\
-> +			    sizeof(struct kernel_siginfo), label);	\
-> +	unsafe_clear_user(__ucs_expansion, SI_EXPANSION_SIZE, label);	\
-> +} while (0)
-> +
->  enum siginfo_layout {
->  	SIL_KILL,
->  	SIL_TIMER,
-> diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
-> index c05e903cef02..37073caac474 100644
-> --- a/include/linux/uaccess.h
-> +++ b/include/linux/uaccess.h
-> @@ -398,6 +398,7 @@ long strnlen_user_nofault(const void __user *unsafe_addr, long count);
->  #define unsafe_put_user(x,p,e) unsafe_op_wrap(__put_user(x,p),e)
->  #define unsafe_copy_to_user(d,s,l,e) unsafe_op_wrap(__copy_to_user(d,s,l),e)
->  #define unsafe_copy_from_user(d,s,l,e) unsafe_op_wrap(__copy_from_user(d,s,l),e)
-> +#define unsafe_clear_user(d, l, e) unsafe_op_wrap(__clear_user(d, l), e)
->  static inline unsigned long user_access_save(void) { return 0UL; }
->  static inline void user_access_restore(unsigned long flags) { }
->  #endif
-> diff --git a/kernel/signal.c b/kernel/signal.c
-> index a3229add4455..83b5971e4304 100644
-> --- a/kernel/signal.c
-> +++ b/kernel/signal.c
-> @@ -3261,11 +3261,6 @@ enum siginfo_layout siginfo_layout(unsigned sig, int si_code)
->  	return layout;
->  }
->  
-> -static inline char __user *si_expansion(const siginfo_t __user *info)
-> -{
-> -	return ((char __user *)info) + sizeof(struct kernel_siginfo);
-> -}
-> -
->  int copy_siginfo_to_user(siginfo_t __user *to, const kernel_siginfo_t *from)
->  {
->  	char __user *expansion = si_expansion(to);
-> -- 
-> 2.25.0
+> Athira Rajeev (2):
+>   powerpc/perf: Expose instruction and data address registers as part of
+>     extended regs
+>   tools/perf: Add perf tools support to expose instruction and data
+>     address registers as part of extended regs
 > 
----end quoted text---
+
+Patchset looks good to me.
+
+Reviewed-By: kajol Jain<kjain@linux.ibm.com>
+
+Thanks,
+Kajol Jain
+
+>  arch/powerpc/include/uapi/asm/perf_regs.h       | 12 +++++++-----
+>  arch/powerpc/perf/perf_regs.c                   |  4 ++++
+>  tools/arch/powerpc/include/uapi/asm/perf_regs.h | 12 +++++++-----
+>  tools/perf/arch/powerpc/include/perf_regs.h     |  2 ++
+>  tools/perf/arch/powerpc/util/perf_regs.c        |  2 ++
+>  5 files changed, 22 insertions(+), 10 deletions(-)
+> 
