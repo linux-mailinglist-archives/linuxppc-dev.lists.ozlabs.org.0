@@ -1,77 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EC4D3FE80B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Sep 2021 05:33:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 811023FE821
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Sep 2021 05:45:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H0RNf12wGz2yn1
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Sep 2021 13:33:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H0Rdk2t0pz2yJS
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Sep 2021 13:45:14 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=M3GbzRdO;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=RBVYmLXy;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102c;
- helo=mail-pj1-x102c.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=M3GbzRdO; dkim-atps=neutral
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com
- [IPv6:2607:f8b0:4864:20::102c])
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=RBVYmLXy; 
+ dkim-atps=neutral
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H0RN0261yz2xrH
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Sep 2021 13:33:19 +1000 (AEST)
-Received: by mail-pj1-x102c.google.com with SMTP id
- ot2-20020a17090b3b4200b0019127f8ed87so425484pjb.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Sep 2021 20:33:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=7mZEJvEeWjoa4IhkJWH4PCP4T0nimH38+qZyA/ffZfE=;
- b=M3GbzRdOMrOx2xn5WPHiIt79QHD3yp5rwHRKlWTmlcfeuzvfftr9ouktIJhIBC9NFg
- dnK60qo+gp2c4ZYmoovDTsL+1Nv24Ed702BVJU9kyH7h2SM3P+IvPeLO72f0ChKEXvoU
- P10RmrqJpgrOgIpqJ0lkXzff/Bsewf9p1krVgFCRzOjZxmpO2N/XEB3DdHx5EpNdGSKM
- Q/pa5VATPYOczDMz0twp2Nok/0/DnQPpRGRNzd3xJuZtHV/zQhFuRNiUUDT7VJZUyVFj
- AQmJDJTEG56Zaz6DdBYbCztEhbDzj6lpH5BSlosuCwAVSbA8df3d48vNUUvCpDZfRRhn
- Hc1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=7mZEJvEeWjoa4IhkJWH4PCP4T0nimH38+qZyA/ffZfE=;
- b=sqoxcmsg/ZcQZzHTTshM5mBW0peEO69SzNzmncfdgf7Oj1tT3FPX0AcZDFYf/AtENb
- A+PmWwT2rJz3GNqgYS1QPAV6YZpMSyN7Q+6gBZtD7yvk4xumVfucrpriQSbcO8FutfT5
- zS838GJ94kfCZkGXcrEZAg5f46wwbvmnT5bzVAvxkbZJLMqeeRCoYXoUOS39zC/d0ZgD
- dkTewpIc9+iOEXl8Qapb7d+XnXjKikBaqxlDl6hifu5QPrdEa8Myh8wmYRRGMfdDKedK
- GcdcQ0y0IHGHXCWSpl8w7ZiXxZx1cjZfksFPvGndXVe8Q7887y9eiDYHft3EqpWPW2KH
- r0qA==
-X-Gm-Message-State: AOAM53108fqq50sxzcQl7gRft6L1Rox/sX2+qy4o9f/45rUsyVPY0jC3
- /Spwf+laiTwYHe4ZMVX5GVc=
-X-Google-Smtp-Source: ABdhPJxS9+bjSC8qSonAZwtaqgNEKF2PVnp0CXcTO9sxgSvSM2qtVeCvO95wJ47u3t+XY6H/4nlwPg==
-X-Received: by 2002:a17:90a:428e:: with SMTP id
- p14mr1407256pjg.92.1630553596412; 
- Wed, 01 Sep 2021 20:33:16 -0700 (PDT)
-Received: from localhost (220-244-72-10.tpgi.com.au. [220.244.72.10])
- by smtp.gmail.com with ESMTPSA id g4sm398354pgs.42.2021.09.01.20.33.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Sep 2021 20:33:16 -0700 (PDT)
-Date: Thu, 02 Sep 2021 13:33:10 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 1/2] powerpc/64s: system call scv tabort fix for
- corrupt irq soft-mask state
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- linuxppc-dev@lists.ozlabs.org
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H0Rd23W3Mz2xXS
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Sep 2021 13:44:37 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1630554272;
+ bh=kyC4P43jTqdCXlepq9Qq0VFKDAg7rIYohtTsxd8bJnA=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=RBVYmLXyXx+XEvmBnwR+fFdIE33VfmZRCYa2duRWeEolkf0mTHfxcAYVNMNsyx0ut
+ RyqkZmAllAme9WPCKo2L9JQR1+Etxvl539QCg/i6nIPv1CXjK3HOXiZsx0qxe7phhG
+ nVPSEwEwId64OY5qSV67SvtwzID4l8sCWXHsiBV7gg+eNq41ksKHJvoq653ZuQ8cdY
+ SV/sII/DsuS2uRnJZGffiD1NBrqyeWThTCem7z0X13IvRIRwbV/diF3e6fABKwcWhR
+ IAe5MIfSQoRQMkLRKlaeaRonfn07kbAMUx1WOX3X6+gD8avpzRi+gPK+L4IRYoDxxo
+ vlwHuCIj3W31g==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4H0Rcv2qSzz9sXk;
+ Thu,  2 Sep 2021 13:44:31 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v2 2/2] selftests/powerpc: Add scv versions of the basic
+ TM syscall tests
+In-Reply-To: <1630553190.fkqnk0by89.astroid@bobo.none>
 References: <20210901165418.1412891-1-npiggin@gmail.com>
- <65ed1ac8-f4af-742a-1d2a-e5db7e71a920@csgroup.eu>
-In-Reply-To: <65ed1ac8-f4af-742a-1d2a-e5db7e71a920@csgroup.eu>
+ <20210901165418.1412891-2-npiggin@gmail.com>
+ <f99fa6c6-cebe-c261-0971-0f485cbcea2d@csgroup.eu>
+ <1630553190.fkqnk0by89.astroid@bobo.none>
+Date: Thu, 02 Sep 2021 13:44:29 +1000
+Message-ID: <87o89b3ale.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Message-Id: <1630553233.5hjr91skvz.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -89,86 +72,49 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Christophe Leroy's message of September 2, 2021 3:21 am:
->=20
->=20
-> Le 01/09/2021 =C3=A0 18:54, Nicholas Piggin a =C3=A9crit=C2=A0:
->> If a system call is made with a transaction active, the kernel
->> immediately aborts it and returns. scv system calls disable irqs even
->> earlier in their interrupt handler, and tabort_syscall does not fix this
->> up.
+Nicholas Piggin <npiggin@gmail.com> writes:
+> Excerpts from Christophe Leroy's message of September 2, 2021 3:15 am:
+>> Le 01/09/2021 =C3=A0 18:54, Nicholas Piggin a =C3=A9crit=C2=A0:
+>>> The basic TM vs syscall test code hard codes an sc instruction for the
+>>> system call, which fails to cover scv even when the userspace libc has
+>>> support for it.
+>>>=20
+>>> Duplicate the tests with hard coded scv variants so both are tested
+>>> when possible.
+>>>=20
+>>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>>> ---
+>>>   .../selftests/powerpc/tm/tm-syscall-asm.S     | 46 +++++++++++++++++++
+>>>   .../testing/selftests/powerpc/tm/tm-syscall.c | 36 ++++++++++++---
+>>>   2 files changed, 75 insertions(+), 7 deletions(-)
+>>>=20
+>>> diff --git a/tools/testing/selftests/powerpc/tm/tm-syscall-asm.S b/tool=
+s/testing/selftests/powerpc/tm/tm-syscall-asm.S
+>>> index bd1ca25febe4..849316831e6a 100644
+>>> --- a/tools/testing/selftests/powerpc/tm/tm-syscall-asm.S
+>>> +++ b/tools/testing/selftests/powerpc/tm/tm-syscall-asm.S
+>>> @@ -2,6 +2,10 @@
+>>>   #include <ppc-asm.h>
+>>>   #include <asm/unistd.h>
+>>>=20=20=20
+>>> +/* ppc-asm.h does not define r0 or r1 */
+>>> +#define r0 0
+>>> +#define r1 1
+>>> +
 >>=20
->> This can result in irq soft-mask state being messed up on the next
->> kernel entry, and crashing at BUG_ON(arch_irq_disabled_regs(regs)) in
->> the kernel exit handlers, or possibly worse.
+>> See https://github.com/gcc-mirror/gcc/blob/master/gcc/config/rs6000/ppc-=
+asm.h
 >>=20
->> Fix this by having tabort_syscall setting irq soft-mask back to enabled
->> (which requires MSR[EE] be disabled first).
->>=20
->> Reported-by: Eirik Fuller <efuller@redhat.com>
->> Fixes: 7fa95f9adaee7 ("powerpc/64s: system call support for scv/rfscv in=
-structions")
->> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->> ---
->>=20
->> Tested the wrong kernel before sending v1 and missed a bug, sorry.
->>=20
->>   arch/powerpc/kernel/interrupt_64.S | 8 +++++++-
->>   1 file changed, 7 insertions(+), 1 deletion(-)
->>=20
->> diff --git a/arch/powerpc/kernel/interrupt_64.S b/arch/powerpc/kernel/in=
-terrupt_64.S
->> index d4212d2ff0b5..9c31d65b4851 100644
->> --- a/arch/powerpc/kernel/interrupt_64.S
->> +++ b/arch/powerpc/kernel/interrupt_64.S
->> @@ -428,16 +428,22 @@ RESTART_TABLE(.Lsyscall_rst_start, .Lsyscall_rst_e=
-nd, syscall_restart)
->>   #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
->>   tabort_syscall:
->>   _ASM_NOKPROBE_SYMBOL(tabort_syscall)
->> -	/* Firstly we need to enable TM in the kernel */
->> +	/* We need to enable TM in the kernel, and disable EE (for scv) */
->>   	mfmsr	r10
->>   	li	r9, 1
->>   	rldimi	r10, r9, MSR_TM_LG, 63-MSR_TM_LG
->> +	LOAD_REG_IMMEDIATE(r9, MSR_EE)
->> +	andc	r10, r10, r9
->=20
-> Why not use 'rlwinm' to mask out MSR_EE ?
->=20
-> Something like
->=20
-> 	rlwinm	r10, r10, 0, ~MSR_EE
+>> It doesn't not define r1 but it defines r0.
+>
+> Oops, I'll fix that.
+>
+>> And it defines 'sp' as register 1.
+>
+> Does userspace code typically use that? Kernel code AFAIKS does not.
 
-Mainly because I'm bad at powerpc assembly. Why do you think I'm trying=20
-to change as much as possible to C?
+Some does, but it's not used consistently IME.
 
-Actually there should really be no need for mfmsr either, I wanted to
-rewrite the thing entirely as
+I'd prefer you just use %r1.
 
-	ld      r10,PACAKMSR(r13)
-	LOAD_REG_IMMEDIATE(r9, MSR_TM)
-	or	r10,r10,r9
-	mtmsrd	r10
-
-But I thought that's not a minimal bug fix.
-
-Thanks,
-Nick
->=20
->>   	mtmsrd	r10, 0
->>  =20
->>   	/* tabort, this dooms the transaction, nothing else */
->>   	li	r9, (TM_CAUSE_SYSCALL|TM_CAUSE_PERSISTENT)
->>   	TABORT(R9)
->>  =20
->> +	/* scv has disabled irqs so must re-enable. sc just remains enabled */
->> +	li	r9,IRQS_ENABLED
->> +	stb	r9,PACAIRQSOFTMASK(r13)
->> +
->>   	/*
->>   	 * Return directly to userspace. We have corrupted user register stat=
-e,
->>   	 * but userspace will never see that register state. Execution will
->>=20
->=20
+cheers
