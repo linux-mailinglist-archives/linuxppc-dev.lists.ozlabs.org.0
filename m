@@ -1,99 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF5DB400144
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Sep 2021 16:29:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6D60400147
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Sep 2021 16:31:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H1Ktj5K1Vz2yWR
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Sep 2021 00:29:33 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nL7zq4gP;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H1KwM3Xxdz304r
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Sep 2021 00:30:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=nL7zq4gP; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=maz@kernel.org; receiver=<UNKNOWN>)
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H1Ksz0rZLz2xr0
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Sep 2021 00:28:54 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 183E3i5U088954; Fri, 3 Sep 2021 10:28:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=4Oxv1YL44c0LlpLj7WGBe+IWuuPb9AUMeaMAL8IRp5w=;
- b=nL7zq4gP1kFbnp7fu5XFWMpF/p4gRLR/FfIC+qrniY7f/zwrG0FcIbYnrYoWn1TR0V4s
- JhDjbRnmiURQDDCxLB4Yu0NDTmyE3K5PiGQEGmnq2/vqyFkkcHIFjXYnAUembYCABduw
- xyR3OCc0hyElmZjqXzYaeZAIcdwSIBbKA2RAfSkQ8DqLLiUP8FE3ZmSyMQ1nx6mURo3Z
- TftdKZ8N78eFuLH0YaL2qRlhnGukmZqCG7mipLIC/ilpwxfif9GIjp5ke5tNGXmmawHn
- 69osPhAV8iLTkM+M9Ju6qPctGt3g9vBgfNf+PxfkoKX/4Ah+KX11/SqbTeZbAiaOIT+v 2A== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3audm441cp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 03 Sep 2021 10:28:46 -0400
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 183E3qT6089720;
- Fri, 3 Sep 2021 10:28:45 -0400
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3audm441c8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 03 Sep 2021 10:28:45 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 183ECpld029274;
- Fri, 3 Sep 2021 14:28:45 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma01wdc.us.ibm.com with ESMTP id 3au6pjqsuh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 03 Sep 2021 14:28:45 +0000
-Received: from b03ledav006.gho.boulder.ibm.com
- (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 183ESi4J18612948
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 3 Sep 2021 14:28:44 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 10218C6062;
- Fri,  3 Sep 2021 14:28:44 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4FC8CC605F;
- Fri,  3 Sep 2021 14:28:43 +0000 (GMT)
-Received: from localhost (unknown [9.211.32.78])
- by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTPS;
- Fri,  3 Sep 2021 14:28:42 +0000 (GMT)
-From: Fabiano Rosas <farosas@linux.ibm.com>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH kernel] KVM: PPC: Book3S: Merge powerpc's debugfs entry
- content into generic entry
-In-Reply-To: <20210903052257.2348036-1-aik@ozlabs.ru>
-References: <20210903052257.2348036-1-aik@ozlabs.ru>
-Date: Fri, 03 Sep 2021 11:28:41 -0300
-Message-ID: <87v93hens6.fsf@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 2VXsMFf1U_aBGmOz8Tmuq8PRhImPoOOr
-X-Proofpoint-GUID: ufHLN5Lu48IB9JtOWR1HPAJ4cmH5x0x4
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-09-03_05:2021-09-03,
- 2021-09-03 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 clxscore=1015
- adultscore=0 impostorscore=0 mlxlogscore=999 bulkscore=0
- priorityscore=1501 suspectscore=0 lowpriorityscore=0 mlxscore=0
- spamscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2108310000 definitions=main-2109030088
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H1Kvw2t0nz2xrD
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Sep 2021 00:30:36 +1000 (AEST)
+Received: from disco-boy.misterjones.org (disco-boy.misterjones.org
+ [51.254.78.96])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 569D260295;
+ Fri,  3 Sep 2021 14:30:32 +0000 (UTC)
+Received: from sofa.misterjones.org ([185.219.108.64] helo=why.misterjones.org)
+ by disco-boy.misterjones.org with esmtpsa (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
+ (envelope-from <maz@kernel.org>)
+ id 1mMAD8-008rfE-95; Fri, 03 Sep 2021 15:30:30 +0100
+Date: Fri, 03 Sep 2021 15:30:29 +0100
+Message-ID: <8735qlwx2y.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.15-1 tag
+In-Reply-To: <87pmtppypy.fsf@mpe.ellerman.id.au>
+References: <87pmtppypy.fsf@mpe.ellerman.id.au>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/27.1
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: mpe@ellerman.id.au, torvalds@linux-foundation.org,
+ aik@ozlabs.ru, aneesh.kumar@linux.ibm.com, anton@ozlabs.org,
+ bigeasy@linutronix.de, christophe.leroy@csgroup.eu, clg@kaod.org,
+ ego@linux.vnet.ibm.com, farosas@linux.ibm.com, fthain@linux-m68k.org,
+ hbathini@linux.ibm.com, jniethe5@gmail.com, joel@jms.id.au,
+ kjain@linux.ibm.com, ldufour@linux.ibm.com, leobras.c@gmail.com,
+ linkmauve@linkmauve.fr, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, lkp@intel.com, lukas.bulwahn@gmail.com,
+ masahiroy@kernel.org, maskray@google.com, msuchanek@suse.de, nathan@kernel.org,
+ npiggin@gmail.com, oss@buserror.net, parth@linux.ibm.com,
+ paul.gortmaker@windriver.com, psampat@linux.ibm.com, rdunlap@infradead.org,
+ srikar@linux.vnet.ibm.com, sxwjean@gmail.com, wanjiabing@vivo.com,
+ zhengyongjun3@huawei.com, tglx@linutronix.de
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org);
+ SAEximRunCond expanded to false
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,76 +69,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Paolo Bonzini <pbonzini@redhat.com>,
- kvm-ppc@vger.kernel.org, kvm@vger.kernel.org
+Cc: ego@linux.vnet.ibm.com, srikar@linux.vnet.ibm.com, parth@linux.ibm.com,
+ aik@ozlabs.ru, jniethe5@gmail.com, bigeasy@linutronix.de,
+ psampat@linux.ibm.com, paul.gortmaker@windriver.com, leobras.c@gmail.com,
+ wanjiabing@vivo.com, lkp@intel.com, maskray@google.com, linkmauve@linkmauve.fr,
+ aneesh.kumar@linux.ibm.com, masahiroy@kernel.org, joel@jms.id.au,
+ lukas.bulwahn@gmail.com, kjain@linux.ibm.com, npiggin@gmail.com,
+ nathan@kernel.org, clg@kaod.org, Thomas Gleixner <tglx@linutronix.de>,
+ ldufour@linux.ibm.com, hbathini@linux.ibm.com, oss@buserror.net,
+ msuchanek@suse.de, fthain@linux-m68k.org, farosas@linux.ibm.com,
+ sxwjean@gmail.com, Linus Torvalds <torvalds@linux-foundation.org>,
+ rdunlap@infradead.org, linux-kernel@vger.kernel.org, zhengyongjun3@huawei.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Alexey Kardashevskiy <aik@ozlabs.ru> writes:
+Hi Michael,
 
-> At the moment the generic KVM code creates an "%pid-%fd" entry per a KVM
-> instance; and the PPC HV KVM creates its own at "vm%pid".
+On Fri, 03 Sep 2021 14:36:57 +0100,
+Michael Ellerman <mpe@ellerman.id.au> wrote:
 >
-> The rproblems with the PPC entries are:
-> 1. they do not allow multiple VMs in the same process (which is extremely
-> rare case mostly used by syzkaller fuzzer);
-> 2. prone to race bugs like the generic KVM code had fixed in
-> commit 85cd39af14f4 ("KVM: Do not leak memory for duplicate debugfs
-> directories").
->
-> This defines kvm_arch_create_kvm_debugfs() similar to one for vcpus.
+> Hi Linus,
+>=20
+> Please pull powerpc updates for 5.15.
+>=20
+> A bit of a small batch this time.
+>=20
+> There was one conflict against my own fixes branch, and the resolution wa=
+s a little bit
+> messy, so I just did a merge of fixes myself to resolve the conflict. I d=
+idn't think there
+> was any value in having you resolve a conflict between two of my own bran=
+ches.
+>=20
+> Notable out of area changes:
+>   scripts/mod/modpost.c		# 1e688dd2a3d6 powerpc/bug: Provide better flexi=
+bility to WARN_ON/__WARN_FLAGS() with asm goto
+>   kernel/irq/irqdomain.c	# 51be9e51a800 KVM: PPC: Book3S HV: XIVE: Fix ma=
+pping of passthrough interrupts
+>=20
+> That second one generated a bit of discussion[1] with tglx and maz,
+> who asked if we could avoid adding the export of
+> irq_get_default_host(). C=C3=A9dric replied explaining that we don't
+> really have good way to avoid it, but we never heard back from them,
+> so in the end I decided to merge it.
 
-I think kvm_arch_create_vm_debugfs is a bit mode accurate?
-                        ^
-> This defines 2 hooks in kvmppc_ops for allowing specific KVM
-> implementations to add necessary entries.
->
-> This makes use of already existing kvm_arch_create_vcpu_debugfs.
->
-> This removes no more used debugfs_dir pointers from PPC kvm_arch structs.
->
-> Suggested-by: Fabiano Rosas <farosas@linux.ibm.com>
-> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+Apologies for this, I clearly have lost track of it.
 
-...
+It clearly isn't pretty, but it isn't a deal breaker either. In the
+end, it will be easier to address with the code being in the tree.
 
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index c8f12b056968..325b388c725a 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -2771,19 +2771,14 @@ static const struct file_operations debugfs_timings_ops = {
->  };
->  
->  /* Create a debugfs directory for the vcpu */
-> -static void debugfs_vcpu_init(struct kvm_vcpu *vcpu, unsigned int id)
-> +static void kvmppc_arch_create_vcpu_debugfs_hv(struct kvm_vcpu *vcpu, struct dentry *debugfs_dentry)
+Thanks,
 
-This could lose the 'arch' since it is already inside our code and
-accessed only via ops. I see that we already have a
-kvmppc_create_vcpu_debugfs that's used for some BookE processor, this
-would make:
+	M.
 
-kvmppc_create_vcpu_debugfs
-kvmppc_create_vcpu_debugfs_hv
-kvmppc_create_vcpu_debugfs_pr (possibly)
-
-which perhaps is more consistent.
-
->  {
-> -	char buf[16];
-> -	struct kvm *kvm = vcpu->kvm;
-> -
-> -	snprintf(buf, sizeof(buf), "vcpu%u", id);
-> -	vcpu->arch.debugfs_dir = debugfs_create_dir(buf, kvm->arch.debugfs_dir);
-> -	debugfs_create_file("timings", 0444, vcpu->arch.debugfs_dir, vcpu,
-> +	debugfs_create_file("timings", 0444, debugfs_dentry, vcpu,
->  			    &debugfs_timings_ops);
->  }
->  
->  #else /* CONFIG_KVM_BOOK3S_HV_EXIT_TIMING */
-> -static void debugfs_vcpu_init(struct kvm_vcpu *vcpu, unsigned int id)
-> +static void kvmppc_arch_create_vcpu_debugfs_hv(struct kvm_vcpu *vcpu, struct dentry *debugfs_dentry)
->  {
->  }
->  #endif /* CONFIG_KVM_BOOK3S_HV_EXIT_TIMING */
+--=20
+Without deviation from the norm, progress is not possible.
