@@ -1,51 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A25C3FF9F3
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Sep 2021 07:14:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 605E53FFA01
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Sep 2021 07:24:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H15Zb0lQNz3cCl
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Sep 2021 15:14:47 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=201602 header.b=pi4gUp4Y;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H15nF2YXyz2yWR
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Sep 2021 15:24:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.org (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
- envelope-from=dgibson@ozlabs.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
- header.a=rsa-sha256 header.s=201602 header.b=pi4gUp4Y; 
- dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H15Yt1kl7z2yJN
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Sep 2021 15:14:09 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gibson.dropbear.id.au; s=201602; t=1630646041;
- bh=6ILjOh+kIuiDJYXTi/RPyp3NIhH+Al2Jv7RlEtYBSbU=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=pi4gUp4YG5ns5iot1nsYqUDbV7rdNGQN64aFAaUQ4zj2UZy/qE6vLSeCzpD+dO3la
- johT1E8S3d1Eb/BNp4RoeyiRqNwqv4tBOgVeumJEn7hcRN2M3s9oefAxl+mKzNGb/9
- qQcQCzBv38lVHRkYb4qWjgXkZZXt1IX1Mca2fhcY=
-Received: by ozlabs.org (Postfix, from userid 1007)
- id 4H15Yj1MXRz9sW4; Fri,  3 Sep 2021 15:14:01 +1000 (AEST)
-Date: Fri, 3 Sep 2021 15:13:55 +1000
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Fabiano Rosas <farosas@linux.ibm.com>
-Subject: Re: [PATCH 0/5] KVM: PPC: Book3S: Modules cleanup and unification
-Message-ID: <YTGvE9o9e0qCz9xA@yekko>
-References: <20210901173357.3183658-1-farosas@linux.ibm.com>
- <YTAownlTy46X4jGV@yekko> <875yvjujxy.fsf@linux.ibm.com>
+ smtp.mailfrom=ozlabs.ru (client-ip=107.174.27.60; helo=ozlabs.ru;
+ envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
+Received: from ozlabs.ru (ozlabs.ru [107.174.27.60])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4H15mq18Tvz2xfw
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Sep 2021 15:23:37 +1000 (AEST)
+Received: from fstn1-p1.ozlabs.ibm.com. (localhost [IPv6:::1])
+ by ozlabs.ru (Postfix) with ESMTP id 07ECBAE80212;
+ Fri,  3 Sep 2021 01:22:59 -0400 (EDT)
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH kernel] KVM: PPC: Book3S: Merge powerpc's debugfs entry
+ content into generic entry
+Date: Fri,  3 Sep 2021 15:22:57 +1000
+Message-Id: <20210903052257.2348036-1-aik@ozlabs.ru>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="ZzHFj0RmvuubG6he"
-Content-Disposition: inline
-In-Reply-To: <875yvjujxy.fsf@linux.ibm.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,111 +38,245 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, kvm-ppc@vger.kernel.org
+Cc: kvm@vger.kernel.org, Fabiano Rosas <farosas@linux.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>, kvm-ppc@vger.kernel.org,
+ Paolo Bonzini <pbonzini@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+At the moment the generic KVM code creates an "%pid-%fd" entry per a KVM
+instance; and the PPC HV KVM creates its own at "vm%pid".
 
---ZzHFj0RmvuubG6he
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The rproblems with the PPC entries are:
+1. they do not allow multiple VMs in the same process (which is extremely
+rare case mostly used by syzkaller fuzzer);
+2. prone to race bugs like the generic KVM code had fixed in
+commit 85cd39af14f4 ("KVM: Do not leak memory for duplicate debugfs
+directories").
 
-On Thu, Sep 02, 2021 at 11:32:41AM -0300, Fabiano Rosas wrote:
-> David Gibson <david@gibson.dropbear.id.au> writes:
->=20
-> > On Wed, Sep 01, 2021 at 02:33:52PM -0300, Fabiano Rosas wrote:
-> >> This series merges our three kvm modules kvm.ko, kvm-hv.ko and
-> >> kvm-pr.ko into one kvm.ko module.
-> >
-> > That doesn't sound like a good idea to me.  People who aren't on BookS
-> > servers don't want - and can't use - kvm-hv.  Almost nobody wants
-> > kvm-pr.  It's also kind of inconsistent with x86, which has the
-> > separate AMD and Intel modules.
->=20
-> But this is not altering the ability of having only kvm-hv or only
-> kvm-pr. I'm taking the Kconfig options that used to produce separate
-> modules and using them to select which code gets built into the one
-> kvm.ko module.
+This defines kvm_arch_create_kvm_debugfs() similar to one for vcpus.
 
->=20
-> Currently:
->=20
-> CONFIG_KVM_BOOK3S_64=3Dm     <-- produces kvm.ko
-> CONFIG_KVM_BOOK3S_64_HV=3Dm  <-- produces kvm-hv.ko
-> CONFIG_KVM_BOOK3S_64_PR=3Dm  <-- produces kvm-pr.ko
->=20
-> I'm making it so we now have one kvm.ko everywhere, but there is still:
->=20
-> CONFIG_KVM_BOOK3S_64=3Dm           <-- produces kvm.ko
-> CONFIG_KVM_BOOK3S_HV_POSSIBLE=3Dy  <-- includes HV in kvm.ko
-> CONFIG_KVM_BOOK3S_PR_POSSIBLE=3Dy  <-- includes PR in kvm.ko
->=20
-> In other words, if you are going to have at least two modules loaded at
-> all times (kvm + kvm-hv or kvm + kvm-pr), why not put all that into one
-> module? No one needs to build code they are not going to use, this is
-> not changing.
+This defines 2 hooks in kvmppc_ops for allowing specific KVM
+implementations to add necessary entries.
 
-Ah.. I see, you're removing the runtime switch from one to the other
-at the same time as having just a single one loaded, but leaving the
-ability to compile time switch.  And compile time is arguably good
-enough for the cases I've described.
+This makes use of already existing kvm_arch_create_vcpu_debugfs.
 
-Ok, I see your point.
+This removes no more used debugfs_dir pointers from PPC kvm_arch structs.
 
-I still think it's conceptually not ideal, but the practical benefit
-is more important.  Objection withdrawn.
+Suggested-by: Fabiano Rosas <farosas@linux.ibm.com>
+Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+---
+ arch/powerpc/include/asm/kvm_host.h    |  6 +++---
+ arch/powerpc/include/asm/kvm_ppc.h     |  2 ++
+ include/linux/kvm_host.h               |  3 +++
+ arch/powerpc/kvm/book3s_64_mmu_hv.c    |  2 +-
+ arch/powerpc/kvm/book3s_64_mmu_radix.c |  2 +-
+ arch/powerpc/kvm/book3s_hv.c           | 30 +++++++++-----------------
+ arch/powerpc/kvm/powerpc.c             | 12 +++++++++++
+ virt/kvm/kvm_main.c                    |  3 +++
+ 8 files changed, 35 insertions(+), 25 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
+index 2bcac6da0a4b..e4f2feb67b53 100644
+--- a/arch/powerpc/include/asm/kvm_host.h
++++ b/arch/powerpc/include/asm/kvm_host.h
+@@ -296,7 +296,6 @@ struct kvm_arch {
+ 	bool dawr1_enabled;
+ 	pgd_t *pgtable;
+ 	u64 process_table;
+-	struct dentry *debugfs_dir;
+ 	struct kvm_resize_hpt *resize_hpt; /* protected by kvm->lock */
+ #endif /* CONFIG_KVM_BOOK3S_HV_POSSIBLE */
+ #ifdef CONFIG_KVM_BOOK3S_PR_POSSIBLE
+@@ -828,8 +827,6 @@ struct kvm_vcpu_arch {
+ 	struct kvmhv_tb_accumulator rm_exit;	/* real-mode exit code */
+ 	struct kvmhv_tb_accumulator guest_time;	/* guest execution */
+ 	struct kvmhv_tb_accumulator cede_time;	/* time napping inside guest */
+-
+-	struct dentry *debugfs_dir;
+ #endif /* CONFIG_KVM_BOOK3S_HV_EXIT_TIMING */
+ };
+ 
+@@ -868,4 +865,7 @@ static inline void kvm_arch_vcpu_blocking(struct kvm_vcpu *vcpu) {}
+ static inline void kvm_arch_vcpu_unblocking(struct kvm_vcpu *vcpu) {}
+ static inline void kvm_arch_vcpu_block_finish(struct kvm_vcpu *vcpu) {}
+ 
++#define __KVM_HAVE_ARCH_VCPU_DEBUGFS
++#define __KVM_HAVE_ARCH_KVM_DEBUGFS
++
+ #endif /* __POWERPC_KVM_HOST_H__ */
+diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
+index 6355a6980ccf..8b3f7f6e3f12 100644
+--- a/arch/powerpc/include/asm/kvm_ppc.h
++++ b/arch/powerpc/include/asm/kvm_ppc.h
+@@ -316,6 +316,8 @@ struct kvmppc_ops {
+ 	int (*svm_off)(struct kvm *kvm);
+ 	int (*enable_dawr1)(struct kvm *kvm);
+ 	bool (*hash_v3_possible)(void);
++	void (*create_kvm_debugfs)(struct kvm *kvm);
++	void (*create_vcpu_debugfs)(struct kvm_vcpu *vcpu, struct dentry *debugfs_dentry);
+ };
+ 
+ extern struct kvmppc_ops *kvmppc_hv_ops;
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index ae7735b490b4..74d2c1c3df1b 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1021,6 +1021,9 @@ int kvm_arch_pm_notifier(struct kvm *kvm, unsigned long state);
+ #ifdef __KVM_HAVE_ARCH_VCPU_DEBUGFS
+ void kvm_arch_create_vcpu_debugfs(struct kvm_vcpu *vcpu, struct dentry *debugfs_dentry);
+ #endif
++#ifdef __KVM_HAVE_ARCH_KVM_DEBUGFS
++void kvm_arch_create_kvm_debugfs(struct kvm *kvm);
++#endif
+ 
+ int kvm_arch_hardware_enable(void);
+ void kvm_arch_hardware_disable(void);
+diff --git a/arch/powerpc/kvm/book3s_64_mmu_hv.c b/arch/powerpc/kvm/book3s_64_mmu_hv.c
+index c63e263312a4..33dae253a0ac 100644
+--- a/arch/powerpc/kvm/book3s_64_mmu_hv.c
++++ b/arch/powerpc/kvm/book3s_64_mmu_hv.c
+@@ -2112,7 +2112,7 @@ static const struct file_operations debugfs_htab_fops = {
+ 
+ void kvmppc_mmu_debugfs_init(struct kvm *kvm)
+ {
+-	debugfs_create_file("htab", 0400, kvm->arch.debugfs_dir, kvm,
++	debugfs_create_file("htab", 0400, kvm->debugfs_dentry, kvm,
+ 			    &debugfs_htab_fops);
+ }
+ 
+diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book3s_64_mmu_radix.c
+index c5508744e14c..f4e083c20872 100644
+--- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
++++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
+@@ -1452,7 +1452,7 @@ static const struct file_operations debugfs_radix_fops = {
+ 
+ void kvmhv_radix_debugfs_init(struct kvm *kvm)
+ {
+-	debugfs_create_file("radix", 0400, kvm->arch.debugfs_dir, kvm,
++	debugfs_create_file("radix", 0400, kvm->debugfs_dentry, kvm,
+ 			    &debugfs_radix_fops);
+ }
+ 
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index c8f12b056968..325b388c725a 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -2771,19 +2771,14 @@ static const struct file_operations debugfs_timings_ops = {
+ };
+ 
+ /* Create a debugfs directory for the vcpu */
+-static void debugfs_vcpu_init(struct kvm_vcpu *vcpu, unsigned int id)
++static void kvmppc_arch_create_vcpu_debugfs_hv(struct kvm_vcpu *vcpu, struct dentry *debugfs_dentry)
+ {
+-	char buf[16];
+-	struct kvm *kvm = vcpu->kvm;
+-
+-	snprintf(buf, sizeof(buf), "vcpu%u", id);
+-	vcpu->arch.debugfs_dir = debugfs_create_dir(buf, kvm->arch.debugfs_dir);
+-	debugfs_create_file("timings", 0444, vcpu->arch.debugfs_dir, vcpu,
++	debugfs_create_file("timings", 0444, debugfs_dentry, vcpu,
+ 			    &debugfs_timings_ops);
+ }
+ 
+ #else /* CONFIG_KVM_BOOK3S_HV_EXIT_TIMING */
+-static void debugfs_vcpu_init(struct kvm_vcpu *vcpu, unsigned int id)
++static void kvmppc_arch_create_vcpu_debugfs_hv(struct kvm_vcpu *vcpu, struct dentry *debugfs_dentry)
+ {
+ }
+ #endif /* CONFIG_KVM_BOOK3S_HV_EXIT_TIMING */
+@@ -2907,8 +2902,6 @@ static int kvmppc_core_vcpu_create_hv(struct kvm_vcpu *vcpu)
+ 	vcpu->arch.cpu_type = KVM_CPU_3S_64;
+ 	kvmppc_sanity_check(vcpu);
+ 
+-	debugfs_vcpu_init(vcpu, id);
+-
+ 	return 0;
+ }
+ 
+@@ -5186,7 +5179,6 @@ void kvmppc_free_host_rm_ops(void)
+ static int kvmppc_core_init_vm_hv(struct kvm *kvm)
+ {
+ 	unsigned long lpcr, lpid;
+-	char buf[32];
+ 	int ret;
+ 
+ 	mutex_init(&kvm->arch.uvmem_lock);
+@@ -5319,16 +5311,14 @@ static int kvmppc_core_init_vm_hv(struct kvm *kvm)
+ 		kvm->arch.smt_mode = 1;
+ 	kvm->arch.emul_smt_mode = 1;
+ 
+-	/*
+-	 * Create a debugfs directory for the VM
+-	 */
+-	snprintf(buf, sizeof(buf), "vm%d", current->pid);
+-	kvm->arch.debugfs_dir = debugfs_create_dir(buf, kvm_debugfs_dir);
++	return 0;
++}
++
++static void kvmppc_arch_create_kvm_debugfs_hv(struct kvm *kvm)
++{
+ 	kvmppc_mmu_debugfs_init(kvm);
+ 	if (radix_enabled())
+ 		kvmhv_radix_debugfs_init(kvm);
+-
+-	return 0;
+ }
+ 
+ static void kvmppc_free_vcores(struct kvm *kvm)
+@@ -5342,8 +5332,6 @@ static void kvmppc_free_vcores(struct kvm *kvm)
+ 
+ static void kvmppc_core_destroy_vm_hv(struct kvm *kvm)
+ {
+-	debugfs_remove_recursive(kvm->arch.debugfs_dir);
+-
+ 	if (!cpu_has_feature(CPU_FTR_ARCH_300))
+ 		kvm_hv_vm_deactivated();
+ 
+@@ -5996,6 +5984,8 @@ static struct kvmppc_ops kvm_ops_hv = {
+ 	.svm_off = kvmhv_svm_off,
+ 	.enable_dawr1 = kvmhv_enable_dawr1,
+ 	.hash_v3_possible = kvmppc_hash_v3_possible,
++	.create_vcpu_debugfs = kvmppc_arch_create_vcpu_debugfs_hv,
++	.create_kvm_debugfs = kvmppc_arch_create_kvm_debugfs_hv,
+ };
+ 
+ static int kvm_init_subcore_bitmap(void)
+diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+index b4e6f70b97b9..9c18d599171b 100644
+--- a/arch/powerpc/kvm/powerpc.c
++++ b/arch/powerpc/kvm/powerpc.c
+@@ -2505,3 +2505,15 @@ int kvm_arch_init(void *opaque)
+ }
+ 
+ EXPORT_TRACEPOINT_SYMBOL_GPL(kvm_ppc_instr);
++
++void kvm_arch_create_vcpu_debugfs(struct kvm_vcpu *vcpu, struct dentry *debugfs_dentry)
++{
++	if (vcpu->kvm->arch.kvm_ops->create_vcpu_debugfs)
++		vcpu->kvm->arch.kvm_ops->create_vcpu_debugfs(vcpu, debugfs_dentry);
++}
++
++void kvm_arch_create_kvm_debugfs(struct kvm *kvm)
++{
++	if (kvm->arch.kvm_ops->create_kvm_debugfs)
++		kvm->arch.kvm_ops->create_kvm_debugfs(kvm);
++}
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index b50dbe269f4b..f9d423535f00 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -954,6 +954,9 @@ static int kvm_create_vm_debugfs(struct kvm *kvm, int fd)
+ 				    kvm->debugfs_dentry, stat_data,
+ 				    &stat_fops_per_vm);
+ 	}
++#ifdef __KVM_HAVE_ARCH_KVM_DEBUGFS
++	kvm_arch_create_kvm_debugfs(kvm);
++#endif
+ 	return 0;
+ }
+ 
+-- 
+2.30.2
 
-> About consistency with x86, this situation is not analogous because we
-> need to be able to load both modules at the same time, which means
-> kvm.ko needs to stick around when one module goes away in case we want
-> to load the other module. The KVM common code states that it expects to
-> have at most one implementation:
->=20
->         /*
->          * kvm_arch_init makes sure there's at most one caller
->          * for architectures that support multiple implementations,
->          * like intel and amd on x86.
->          (...)
->=20
-> which is not true in our case due to this requirement of having two
-> separate modules loading independently.
->=20
-> (tangent) We are already quite different from other architectures since
-> we're not making use of kvm_arch_init and some other KVM hooks, such as
-> kvm_arch_check_processor_compat. So while other archs have their init
-> dispatched by kvm common code, our init and cleanup happens
-> independently in the ppc-specific modules, which obviously works but is
-> needlessly different and has subtleties in the ordering of operations
-> wrt. the kvm common code. (tangent)
->=20
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---ZzHFj0RmvuubG6he
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAmExrxMACgkQbDjKyiDZ
-s5KohA/9Gfq6pHibFuBWjrN/3iQF/0n0TzlL6x1jWavUn8C6eW+QySpkHDQ1CMV0
-27NLIaan0NNq7H4TDxeI4QnVlJOQUXxeTKmtbi8F3fdTceF61M4frRMtH5sMS5fC
-0g+t5vzD4Hd1cz8d/fuVVGWiR8HI+L6+ft+V2F7qQA1ruHcG1TPhMFKg+iZidfnL
-JEfQHgyQseyYxux96pMumgXHWnX5N5jvvcjMKl22PWQaQRGuavt+iqNeeUTFFrCD
-q7VTBsJwvmaXZ255MrbMT7DDtNMFEy/PbV5tWbM7Lb6Y5IQvDeK+kwUsZKi1cYph
-U8RzVueTpF2yeK58ZyypXNB8EgMK6SiSycy/Wc1eyiPE4MCFmw0eVgjW4AdUtZpv
-4/H8u4+izQOBOLZZ1MoXU36Tdap8v1ApPnFiMTRycIrbEBKJURzjakrI+IDerJF5
-6fvfTP1/60PUhdNkjSBDa6SoLi3AKAhetiNcIwAoo4jhIykwoRe+QLTg+ZAzQi2X
-SXAKwMKlF8AacTfilP5qiZ0P00UO7fDyDwHXJ5IrPeHNwb+38MbA33d+K9eOgqCv
-LtNw6HuGK7G9Z6RPWEB0hrhEPVjeqw3XPLxxkXesEHOnnA+nBMC/gcoiEGCkTF2s
-Hw7nJGIsPDYug//XJxY9LQkIV82qkkM9t407sEEoQC2Q+XEstpQ=
-=hJiE
------END PGP SIGNATURE-----
-
---ZzHFj0RmvuubG6he--
