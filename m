@@ -1,78 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3E0C400B45
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Sep 2021 14:00:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33B50400B80
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Sep 2021 15:36:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H1tXS5BFkz2yg8
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Sep 2021 22:00:40 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=V/PDsqjv;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H1wfn5j3lz306n
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Sep 2021 23:36:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1036;
- helo=mail-pj1-x1036.google.com; envelope-from=o451686892@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=V/PDsqjv; dkim-atps=neutral
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com
- [IPv6:2607:f8b0:4864:20::1036])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H1tWj3NqNz2xtw
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Sep 2021 22:00:00 +1000 (AEST)
-Received: by mail-pj1-x1036.google.com with SMTP id fz10so1325603pjb.0
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 04 Sep 2021 05:00:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-transfer-encoding:content-language;
- bh=cSlbZmXpuYD8xFeqZ0DwF8X1WWOBci0BBC9riaxZUYA=;
- b=V/PDsqjvnlJBrJ+JE89/2f5evnVWxc43lhab6iUxot8bmYz+k40WJyKDXQ4ADGSfpn
- SP/aotyqNyc9kL2HYOrc9BpAmWTCKz8FSnqj1J0FsqZA5wkQ4FRt4kFsFVPOvt5Yb+sr
- JmDzj4fa2KlG+O109gOcKvbkkoLWQBV0YL/i5AEuut3omZNT3FWgfwM2Oo14pv2N9o1L
- kxMZLAkfy3GNBL2rPG08tKEF8IIomALvwgQjBC5qOE8Ag9YrjJxA3FstQiTkUf7ltZPL
- 8nv83RBDTNJCHU0CzhxrnbeL1pQOZRn+l3h1XXCV6RjYe52sAPWYc2fgymiBKkDrXJSZ
- VFyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-transfer-encoding
- :content-language;
- bh=cSlbZmXpuYD8xFeqZ0DwF8X1WWOBci0BBC9riaxZUYA=;
- b=Ct/NyPJNMSbDXJdtqTHPMpqM0t33UH1ybEF6X1fRBymkkxjUPeogR3zdhI9HCCefmx
- 4gjStK9K30U4CN0IHXGonAONQd+ekDDPi4cqq1eaeM5xZnpf+9L6QYTIz4Uxak5hhjZW
- UkIULzq7BvLmhyRS2ghcBM/XE6gWQgIoF01ZCI+LX/C9+T41xkre9wgila+jTU70SR1u
- joz0ntdhgoLrWzwtlnO4jILmfTevu73VxcDrGjjoevYtgqRKg2BHD5euB1XeAHae1Gve
- GWwQeZhhF5otsVaKawqrGULkNHDJAsc3P+b6CwUkWB3YQ1Yy/pfk2r+fw/NQiEf57v7t
- VwmQ==
-X-Gm-Message-State: AOAM5308C1mueadq+ptqQx2N7ig8YVclKKN3rIAk9PyXsJYypgfSNGzh
- 5GYm0VV31Q96daCLja/7rUw=
-X-Google-Smtp-Source: ABdhPJwgObY05FTJzW20N4IfqsEwUWKxifFXB24KxwFfOt7JwTfAmgET7xmnoFJ+rG39t5ClYQmC5w==
-X-Received: by 2002:a17:90b:4c4f:: with SMTP id
- np15mr3954617pjb.30.1630756797323; 
- Sat, 04 Sep 2021 04:59:57 -0700 (PDT)
-Received: from owniadeMacBook-Pro.local ([103.97.201.4])
- by smtp.gmail.com with ESMTPSA id z11sm2306331pfr.157.2021.09.04.04.59.49
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 04 Sep 2021 04:59:56 -0700 (PDT)
-Subject: Re: [PATCH] ftrace: Cleanup ftrace_dyn_arch_init()
-To: rostedt@goodmis.org, mingo@redhat.com
-References: <20210903071817.1162938-1-o451686892@gmail.com>
-From: Weizhao Ouyang <o451686892@gmail.com>
-Message-ID: <609ef9ee-079a-8d46-4ebe-ef8ab3e1e7ab@gmail.com>
-Date: Sat, 4 Sep 2021 19:59:48 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.13.0
+ smtp.mailfrom=ozlabs.ru (client-ip=107.174.27.60; helo=ozlabs.ru;
+ envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
+Received: from ozlabs.ru (ozlabs.ru [107.174.27.60])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4H1wfJ2QtNz2yHq
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Sep 2021 23:35:50 +1000 (AEST)
+Received: from fstn1-p1.ozlabs.ibm.com. (localhost [IPv6:::1])
+ by ozlabs.ru (Postfix) with ESMTP id E3196AE80024;
+ Sat,  4 Sep 2021 09:35:41 -0400 (EDT)
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH kernel v2] KVM: PPC: Merge powerpc's debugfs entry content
+ into generic entry
+Date: Sat,  4 Sep 2021 23:35:32 +1000
+Message-Id: <20210904133532.2871562-1-aik@ozlabs.ru>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-In-Reply-To: <20210903071817.1162938-1-o451686892@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,296 +38,361 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-mips@vger.kernel.org, James.Bottomley@HansenPartnership.com,
- guoren@kernel.org, hpa@zytor.com, sparclinux@vger.kernel.org,
- linux-riscv@lists.infradead.org, deanbo422@gmail.com, will@kernel.org,
- linux-s390@vger.kernel.org, ysato@users.sourceforge.jp, deller@gmx.de,
- x86@kernel.org, linux@armlinux.org.uk, linux-csky@vger.kernel.org,
- borntraeger@de.ibm.com, catalin.marinas@arm.com, aou@eecs.berkeley.edu,
- gor@linux.ibm.com, hca@linux.ibm.com, bp@alien8.de, green.hu@gmail.com,
- paul.walmsley@sifive.com, tglx@linutronix.de,
- linux-arm-kernel@lists.infradead.org, monstr@monstr.eu,
- tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, nickhu@andestech.com,
- linux-kernel@vger.kernel.org, palmer@dabbelt.com, paulus@samba.org,
- linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: kvm@vger.kernel.org, Fabiano Rosas <farosas@linux.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>, kvm-ppc@vger.kernel.org,
+ Paolo Bonzini <pbonzini@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+At the moment the generic KVM code creates an "%pid-%fd" entry per a KVM
+instance; and the PPC HV KVM creates its own at "vm%pid". The Book3E KVM
+creates its own entry for timings.
 
-On 2021/9/3 15:18, Weizhao Ouyang wrote:
-> Most ARCHs use empty ftrace_dyn_arch_init(), introduce a weak common
-> ftrace_dyn_arch_init() to cleanup them.
->
-> Signed-off-by: Weizhao Ouyang <o451686892@gmail.com>
-> ---
->  arch/arm/kernel/ftrace.c          | 5 -----
->  arch/arm64/kernel/ftrace.c        | 5 -----
->  arch/csky/kernel/ftrace.c         | 5 -----
->  arch/ia64/kernel/ftrace.c         | 6 ------
->  arch/microblaze/kernel/ftrace.c   | 5 -----
->  arch/mips/include/asm/ftrace.h    | 2 ++
->  arch/nds32/kernel/ftrace.c        | 5 -----
->  arch/parisc/kernel/ftrace.c       | 5 -----
->  arch/powerpc/include/asm/ftrace.h | 4 ++++
->  arch/riscv/kernel/ftrace.c        | 5 -----
->  arch/s390/kernel/ftrace.c         | 5 -----
->  arch/sh/kernel/ftrace.c           | 5 -----
->  arch/sparc/kernel/ftrace.c        | 5 -----
->  arch/x86/kernel/ftrace.c          | 5 -----
->  include/linux/ftrace.h            | 1 -
->  kernel/trace/ftrace.c             | 5 +++++
->  16 files changed, 11 insertions(+), 62 deletions(-)
->
-> diff --git a/arch/arm/kernel/ftrace.c b/arch/arm/kernel/ftrace.c
-> index 3c83b5d29697..a006585e1c09 100644
-> --- a/arch/arm/kernel/ftrace.c
-> +++ b/arch/arm/kernel/ftrace.c
-> @@ -193,11 +193,6 @@ int ftrace_make_nop(struct module *mod,
->  
->  	return ret;
->  }
-> -
-> -int __init ftrace_dyn_arch_init(void)
-> -{
-> -	return 0;
-> -}
->  #endif /* CONFIG_DYNAMIC_FTRACE */
->  
->  #ifdef CONFIG_FUNCTION_GRAPH_TRACER
-> diff --git a/arch/arm64/kernel/ftrace.c b/arch/arm64/kernel/ftrace.c
-> index 7f467bd9db7a..fc62dfe73f93 100644
-> --- a/arch/arm64/kernel/ftrace.c
-> +++ b/arch/arm64/kernel/ftrace.c
-> @@ -236,11 +236,6 @@ void arch_ftrace_update_code(int command)
->  	command |= FTRACE_MAY_SLEEP;
->  	ftrace_modify_all_code(command);
->  }
-> -
-> -int __init ftrace_dyn_arch_init(void)
-> -{
-> -	return 0;
-> -}
->  #endif /* CONFIG_DYNAMIC_FTRACE */
->  
->  #ifdef CONFIG_FUNCTION_GRAPH_TRACER
-> diff --git a/arch/csky/kernel/ftrace.c b/arch/csky/kernel/ftrace.c
-> index b4a7ec1517ff..50bfcf129078 100644
-> --- a/arch/csky/kernel/ftrace.c
-> +++ b/arch/csky/kernel/ftrace.c
-> @@ -133,11 +133,6 @@ int ftrace_update_ftrace_func(ftrace_func_t func)
->  				(unsigned long)func, true, true);
->  	return ret;
->  }
-> -
-> -int __init ftrace_dyn_arch_init(void)
-> -{
-> -	return 0;
-> -}
->  #endif /* CONFIG_DYNAMIC_FTRACE */
->  
->  #ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
-> diff --git a/arch/ia64/kernel/ftrace.c b/arch/ia64/kernel/ftrace.c
-> index b2ab2d58fb30..d6360fd404ab 100644
-> --- a/arch/ia64/kernel/ftrace.c
-> +++ b/arch/ia64/kernel/ftrace.c
-> @@ -194,9 +194,3 @@ int ftrace_update_ftrace_func(ftrace_func_t func)
->  	flush_icache_range(addr, addr + 16);
->  	return 0;
->  }
-> -
-> -/* run from kstop_machine */
-> -int __init ftrace_dyn_arch_init(void)
-> -{
-> -	return 0;
-> -}
-> diff --git a/arch/microblaze/kernel/ftrace.c b/arch/microblaze/kernel/ftrace.c
-> index 224eea40e1ee..188749d62709 100644
-> --- a/arch/microblaze/kernel/ftrace.c
-> +++ b/arch/microblaze/kernel/ftrace.c
-> @@ -163,11 +163,6 @@ int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
->  	return ret;
->  }
->  
-> -int __init ftrace_dyn_arch_init(void)
-> -{
-> -	return 0;
-> -}
-> -
->  int ftrace_update_ftrace_func(ftrace_func_t func)
->  {
->  	unsigned long ip = (unsigned long)(&ftrace_call);
-> diff --git a/arch/mips/include/asm/ftrace.h b/arch/mips/include/asm/ftrace.h
-> index b463f2aa5a61..ed013e767390 100644
-> --- a/arch/mips/include/asm/ftrace.h
-> +++ b/arch/mips/include/asm/ftrace.h
-> @@ -76,6 +76,8 @@ do {						\
->  
->  
->  #ifdef CONFIG_DYNAMIC_FTRACE
-> +int __init ftrace_dyn_arch_init(void);
-> +
->  static inline unsigned long ftrace_call_adjust(unsigned long addr)
->  {
->  	return addr;
-> diff --git a/arch/nds32/kernel/ftrace.c b/arch/nds32/kernel/ftrace.c
-> index 0e23e3a8df6b..f0ef4842d191 100644
-> --- a/arch/nds32/kernel/ftrace.c
-> +++ b/arch/nds32/kernel/ftrace.c
-> @@ -84,11 +84,6 @@ void _ftrace_caller(unsigned long parent_ip)
->  	/* restore all state needed by the compiler epilogue */
->  }
->  
-> -int __init ftrace_dyn_arch_init(void)
-> -{
-> -	return 0;
-> -}
-> -
->  static unsigned long gen_sethi_insn(unsigned long addr)
->  {
->  	unsigned long opcode = 0x46000000;
-> diff --git a/arch/parisc/kernel/ftrace.c b/arch/parisc/kernel/ftrace.c
-> index 0a1e75af5382..01581f715737 100644
-> --- a/arch/parisc/kernel/ftrace.c
-> +++ b/arch/parisc/kernel/ftrace.c
-> @@ -94,11 +94,6 @@ int ftrace_disable_ftrace_graph_caller(void)
->  #endif
->  
->  #ifdef CONFIG_DYNAMIC_FTRACE
-> -
-> -int __init ftrace_dyn_arch_init(void)
-> -{
-> -	return 0;
-> -}
->  int ftrace_update_ftrace_func(ftrace_func_t func)
->  {
->  	return 0;
-> diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
-> index debe8c4f7062..4db83cf4283f 100644
-> --- a/arch/powerpc/include/asm/ftrace.h
-> +++ b/arch/powerpc/include/asm/ftrace.h
-> @@ -61,6 +61,10 @@ struct dyn_arch_ftrace {
->  };
->  #endif /* __ASSEMBLY__ */
->  
-> +#ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
-> +int __init ftrace_dyn_arch_init(void);
-> +#endif
-> +
+The problems with the PPC entries are:
+1. they do not allow multiple VMs in the same process (which is extremely
+rare case mostly used by syzkaller fuzzer);
+2. prone to race bugs like the generic KVM code had fixed in
+commit 85cd39af14f4 ("KVM: Do not leak memory for duplicate debugfs
+directories").
 
-Sorry there is a mistake CONFIG, I will send a v2 patch later.
+This defines kvm_arch_create_kvm_debugfs() similar to one for vcpus.
 
->  #ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
->  #define ARCH_SUPPORTS_FTRACE_OPS 1
->  #endif
-> diff --git a/arch/riscv/kernel/ftrace.c b/arch/riscv/kernel/ftrace.c
-> index 7f1e5203de88..4716f4cdc038 100644
-> --- a/arch/riscv/kernel/ftrace.c
-> +++ b/arch/riscv/kernel/ftrace.c
-> @@ -154,11 +154,6 @@ int ftrace_update_ftrace_func(ftrace_func_t func)
->  
->  	return ret;
->  }
-> -
-> -int __init ftrace_dyn_arch_init(void)
-> -{
-> -	return 0;
-> -}
->  #endif
->  
->  #ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
-> diff --git a/arch/s390/kernel/ftrace.c b/arch/s390/kernel/ftrace.c
-> index 0a464d328467..3fd80397ff52 100644
-> --- a/arch/s390/kernel/ftrace.c
-> +++ b/arch/s390/kernel/ftrace.c
-> @@ -262,11 +262,6 @@ int ftrace_update_ftrace_func(ftrace_func_t func)
->  	return 0;
->  }
->  
-> -int __init ftrace_dyn_arch_init(void)
-> -{
-> -	return 0;
-> -}
-> -
->  void arch_ftrace_update_code(int command)
->  {
->  	if (ftrace_shared_hotpatch_trampoline(NULL))
-> diff --git a/arch/sh/kernel/ftrace.c b/arch/sh/kernel/ftrace.c
-> index 295c43315bbe..930001bb8c6a 100644
-> --- a/arch/sh/kernel/ftrace.c
-> +++ b/arch/sh/kernel/ftrace.c
-> @@ -252,11 +252,6 @@ int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
->  
->  	return ftrace_modify_code(rec->ip, old, new);
->  }
-> -
-> -int __init ftrace_dyn_arch_init(void)
-> -{
-> -	return 0;
-> -}
->  #endif /* CONFIG_DYNAMIC_FTRACE */
->  
->  #ifdef CONFIG_FUNCTION_GRAPH_TRACER
-> diff --git a/arch/sparc/kernel/ftrace.c b/arch/sparc/kernel/ftrace.c
-> index 684b84ce397f..eaead3da8e03 100644
-> --- a/arch/sparc/kernel/ftrace.c
-> +++ b/arch/sparc/kernel/ftrace.c
-> @@ -82,11 +82,6 @@ int ftrace_update_ftrace_func(ftrace_func_t func)
->  	new = ftrace_call_replace(ip, (unsigned long)func);
->  	return ftrace_modify_code(ip, old, new);
->  }
-> -
-> -int __init ftrace_dyn_arch_init(void)
-> -{
-> -	return 0;
-> -}
->  #endif
->  
->  #ifdef CONFIG_FUNCTION_GRAPH_TRACER
-> diff --git a/arch/x86/kernel/ftrace.c b/arch/x86/kernel/ftrace.c
-> index 1b3ce3b4a2a2..23d221a9a3cd 100644
-> --- a/arch/x86/kernel/ftrace.c
-> +++ b/arch/x86/kernel/ftrace.c
-> @@ -252,11 +252,6 @@ void arch_ftrace_update_code(int command)
->  	ftrace_modify_all_code(command);
->  }
->  
-> -int __init ftrace_dyn_arch_init(void)
-> -{
-> -	return 0;
-> -}
-> -
->  /* Currently only x86_64 supports dynamic trampolines */
->  #ifdef CONFIG_X86_64
->  
-> diff --git a/include/linux/ftrace.h b/include/linux/ftrace.h
-> index 832e65f06754..f1eca123d89d 100644
-> --- a/include/linux/ftrace.h
-> +++ b/include/linux/ftrace.h
-> @@ -573,7 +573,6 @@ ftrace_set_early_filter(struct ftrace_ops *ops, char *buf, int enable);
->  
->  /* defined in arch */
->  extern int ftrace_ip_converted(unsigned long ip);
-> -extern int ftrace_dyn_arch_init(void);
->  extern void ftrace_replace_code(int enable);
->  extern int ftrace_update_ftrace_func(ftrace_func_t func);
->  extern void ftrace_caller(void);
-> diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-> index 7efbc8aaf7f6..4c090323198d 100644
-> --- a/kernel/trace/ftrace.c
-> +++ b/kernel/trace/ftrace.c
-> @@ -6846,6 +6846,11 @@ void __init ftrace_free_init_mem(void)
->  	ftrace_free_mem(NULL, start, end);
->  }
->  
-> +int __init __weak ftrace_dyn_arch_init(void)
-> +{
-> +	return 0;
-> +}
-> +
->  void __init ftrace_init(void)
->  {
->  	extern unsigned long __start_mcount_loc[];
+This defines 2 hooks in kvmppc_ops for allowing specific KVM
+implementations to add necessary entries. This defines handlers
+for HV KVM and defines the Book3E debugfs vcpu helper as a handler.
 
-Thanks.
+This makes use of already existing kvm_arch_create_vcpu_debugfs
+on PPC.
+
+This removes no more used debugfs_dir pointers from PPC kvm_arch structs.
+
+Suggested-by: Fabiano Rosas <farosas@linux.ibm.com>
+Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+---
+Changes:
+v2:
+* handled powerpc-booke
+* s/kvm/vm/ in arch hooks
+---
+ arch/powerpc/include/asm/kvm_host.h    |  7 +++---
+ arch/powerpc/include/asm/kvm_ppc.h     |  2 ++
+ arch/powerpc/kvm/timing.h              |  7 +++---
+ include/linux/kvm_host.h               |  3 +++
+ arch/powerpc/kvm/book3s_64_mmu_hv.c    |  2 +-
+ arch/powerpc/kvm/book3s_64_mmu_radix.c |  2 +-
+ arch/powerpc/kvm/book3s_hv.c           | 30 +++++++++-----------------
+ arch/powerpc/kvm/e500.c                |  1 +
+ arch/powerpc/kvm/e500mc.c              |  1 +
+ arch/powerpc/kvm/powerpc.c             | 15 ++++++++++---
+ arch/powerpc/kvm/timing.c              | 20 ++++-------------
+ virt/kvm/kvm_main.c                    |  3 +++
+ 12 files changed, 44 insertions(+), 49 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
+index 2bcac6da0a4b..f29b66cc2163 100644
+--- a/arch/powerpc/include/asm/kvm_host.h
++++ b/arch/powerpc/include/asm/kvm_host.h
+@@ -296,7 +296,6 @@ struct kvm_arch {
+ 	bool dawr1_enabled;
+ 	pgd_t *pgtable;
+ 	u64 process_table;
+-	struct dentry *debugfs_dir;
+ 	struct kvm_resize_hpt *resize_hpt; /* protected by kvm->lock */
+ #endif /* CONFIG_KVM_BOOK3S_HV_POSSIBLE */
+ #ifdef CONFIG_KVM_BOOK3S_PR_POSSIBLE
+@@ -672,7 +671,6 @@ struct kvm_vcpu_arch {
+ 	u64 timing_min_duration[__NUMBER_OF_KVM_EXIT_TYPES];
+ 	u64 timing_max_duration[__NUMBER_OF_KVM_EXIT_TYPES];
+ 	u64 timing_last_exit;
+-	struct dentry *debugfs_exit_timing;
+ #endif
+ 
+ #ifdef CONFIG_PPC_BOOK3S
+@@ -828,8 +826,6 @@ struct kvm_vcpu_arch {
+ 	struct kvmhv_tb_accumulator rm_exit;	/* real-mode exit code */
+ 	struct kvmhv_tb_accumulator guest_time;	/* guest execution */
+ 	struct kvmhv_tb_accumulator cede_time;	/* time napping inside guest */
+-
+-	struct dentry *debugfs_dir;
+ #endif /* CONFIG_KVM_BOOK3S_HV_EXIT_TIMING */
+ };
+ 
+@@ -868,4 +864,7 @@ static inline void kvm_arch_vcpu_blocking(struct kvm_vcpu *vcpu) {}
+ static inline void kvm_arch_vcpu_unblocking(struct kvm_vcpu *vcpu) {}
+ static inline void kvm_arch_vcpu_block_finish(struct kvm_vcpu *vcpu) {}
+ 
++#define __KVM_HAVE_ARCH_VCPU_DEBUGFS
++#define __KVM_HAVE_ARCH_KVM_DEBUGFS
++
+ #endif /* __POWERPC_KVM_HOST_H__ */
+diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
+index 6355a6980ccf..fd841e844b90 100644
+--- a/arch/powerpc/include/asm/kvm_ppc.h
++++ b/arch/powerpc/include/asm/kvm_ppc.h
+@@ -316,6 +316,8 @@ struct kvmppc_ops {
+ 	int (*svm_off)(struct kvm *kvm);
+ 	int (*enable_dawr1)(struct kvm *kvm);
+ 	bool (*hash_v3_possible)(void);
++	void (*create_vm_debugfs)(struct kvm *kvm);
++	void (*create_vcpu_debugfs)(struct kvm_vcpu *vcpu, struct dentry *debugfs_dentry);
+ };
+ 
+ extern struct kvmppc_ops *kvmppc_hv_ops;
+diff --git a/arch/powerpc/kvm/timing.h b/arch/powerpc/kvm/timing.h
+index feef7885ba82..36f7c201c6f1 100644
+--- a/arch/powerpc/kvm/timing.h
++++ b/arch/powerpc/kvm/timing.h
+@@ -14,8 +14,8 @@
+ #ifdef CONFIG_KVM_EXIT_TIMING
+ void kvmppc_init_timing_stats(struct kvm_vcpu *vcpu);
+ void kvmppc_update_timing_stats(struct kvm_vcpu *vcpu);
+-void kvmppc_create_vcpu_debugfs(struct kvm_vcpu *vcpu, unsigned int id);
+-void kvmppc_remove_vcpu_debugfs(struct kvm_vcpu *vcpu);
++void kvmppc_create_vcpu_debugfs(struct kvm_vcpu *vcpu,
++				struct dentry *debugfs_dentry);
+ 
+ static inline void kvmppc_set_exit_type(struct kvm_vcpu *vcpu, int type)
+ {
+@@ -27,8 +27,7 @@ static inline void kvmppc_set_exit_type(struct kvm_vcpu *vcpu, int type)
+ static inline void kvmppc_init_timing_stats(struct kvm_vcpu *vcpu) {}
+ static inline void kvmppc_update_timing_stats(struct kvm_vcpu *vcpu) {}
+ static inline void kvmppc_create_vcpu_debugfs(struct kvm_vcpu *vcpu,
+-						unsigned int id) {}
+-static inline void kvmppc_remove_vcpu_debugfs(struct kvm_vcpu *vcpu) {}
++					      struct dentry *debugfs_dentry) {}
+ static inline void kvmppc_set_exit_type(struct kvm_vcpu *vcpu, int type) {}
+ #endif /* CONFIG_KVM_EXIT_TIMING */
+ 
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index ae7735b490b4..4f22b1201a0d 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1021,6 +1021,9 @@ int kvm_arch_pm_notifier(struct kvm *kvm, unsigned long state);
+ #ifdef __KVM_HAVE_ARCH_VCPU_DEBUGFS
+ void kvm_arch_create_vcpu_debugfs(struct kvm_vcpu *vcpu, struct dentry *debugfs_dentry);
+ #endif
++#ifdef __KVM_HAVE_ARCH_KVM_DEBUGFS
++void kvm_arch_create_vm_debugfs(struct kvm *kvm);
++#endif
+ 
+ int kvm_arch_hardware_enable(void);
+ void kvm_arch_hardware_disable(void);
+diff --git a/arch/powerpc/kvm/book3s_64_mmu_hv.c b/arch/powerpc/kvm/book3s_64_mmu_hv.c
+index c63e263312a4..33dae253a0ac 100644
+--- a/arch/powerpc/kvm/book3s_64_mmu_hv.c
++++ b/arch/powerpc/kvm/book3s_64_mmu_hv.c
+@@ -2112,7 +2112,7 @@ static const struct file_operations debugfs_htab_fops = {
+ 
+ void kvmppc_mmu_debugfs_init(struct kvm *kvm)
+ {
+-	debugfs_create_file("htab", 0400, kvm->arch.debugfs_dir, kvm,
++	debugfs_create_file("htab", 0400, kvm->debugfs_dentry, kvm,
+ 			    &debugfs_htab_fops);
+ }
+ 
+diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book3s_64_mmu_radix.c
+index c5508744e14c..f4e083c20872 100644
+--- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
++++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
+@@ -1452,7 +1452,7 @@ static const struct file_operations debugfs_radix_fops = {
+ 
+ void kvmhv_radix_debugfs_init(struct kvm *kvm)
+ {
+-	debugfs_create_file("radix", 0400, kvm->arch.debugfs_dir, kvm,
++	debugfs_create_file("radix", 0400, kvm->debugfs_dentry, kvm,
+ 			    &debugfs_radix_fops);
+ }
+ 
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index c8f12b056968..046df9e0d462 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -2771,19 +2771,14 @@ static const struct file_operations debugfs_timings_ops = {
+ };
+ 
+ /* Create a debugfs directory for the vcpu */
+-static void debugfs_vcpu_init(struct kvm_vcpu *vcpu, unsigned int id)
++static void kvmppc_arch_create_vcpu_debugfs_hv(struct kvm_vcpu *vcpu, struct dentry *debugfs_dentry)
+ {
+-	char buf[16];
+-	struct kvm *kvm = vcpu->kvm;
+-
+-	snprintf(buf, sizeof(buf), "vcpu%u", id);
+-	vcpu->arch.debugfs_dir = debugfs_create_dir(buf, kvm->arch.debugfs_dir);
+-	debugfs_create_file("timings", 0444, vcpu->arch.debugfs_dir, vcpu,
++	debugfs_create_file("timings", 0444, debugfs_dentry, vcpu,
+ 			    &debugfs_timings_ops);
+ }
+ 
+ #else /* CONFIG_KVM_BOOK3S_HV_EXIT_TIMING */
+-static void debugfs_vcpu_init(struct kvm_vcpu *vcpu, unsigned int id)
++static void kvmppc_arch_create_vcpu_debugfs_hv(struct kvm_vcpu *vcpu, struct dentry *debugfs_dentry)
+ {
+ }
+ #endif /* CONFIG_KVM_BOOK3S_HV_EXIT_TIMING */
+@@ -2907,8 +2902,6 @@ static int kvmppc_core_vcpu_create_hv(struct kvm_vcpu *vcpu)
+ 	vcpu->arch.cpu_type = KVM_CPU_3S_64;
+ 	kvmppc_sanity_check(vcpu);
+ 
+-	debugfs_vcpu_init(vcpu, id);
+-
+ 	return 0;
+ }
+ 
+@@ -5186,7 +5179,6 @@ void kvmppc_free_host_rm_ops(void)
+ static int kvmppc_core_init_vm_hv(struct kvm *kvm)
+ {
+ 	unsigned long lpcr, lpid;
+-	char buf[32];
+ 	int ret;
+ 
+ 	mutex_init(&kvm->arch.uvmem_lock);
+@@ -5319,16 +5311,14 @@ static int kvmppc_core_init_vm_hv(struct kvm *kvm)
+ 		kvm->arch.smt_mode = 1;
+ 	kvm->arch.emul_smt_mode = 1;
+ 
+-	/*
+-	 * Create a debugfs directory for the VM
+-	 */
+-	snprintf(buf, sizeof(buf), "vm%d", current->pid);
+-	kvm->arch.debugfs_dir = debugfs_create_dir(buf, kvm_debugfs_dir);
++	return 0;
++}
++
++static void kvmppc_arch_create_vm_debugfs_hv(struct kvm *kvm)
++{
+ 	kvmppc_mmu_debugfs_init(kvm);
+ 	if (radix_enabled())
+ 		kvmhv_radix_debugfs_init(kvm);
+-
+-	return 0;
+ }
+ 
+ static void kvmppc_free_vcores(struct kvm *kvm)
+@@ -5342,8 +5332,6 @@ static void kvmppc_free_vcores(struct kvm *kvm)
+ 
+ static void kvmppc_core_destroy_vm_hv(struct kvm *kvm)
+ {
+-	debugfs_remove_recursive(kvm->arch.debugfs_dir);
+-
+ 	if (!cpu_has_feature(CPU_FTR_ARCH_300))
+ 		kvm_hv_vm_deactivated();
+ 
+@@ -5996,6 +5984,8 @@ static struct kvmppc_ops kvm_ops_hv = {
+ 	.svm_off = kvmhv_svm_off,
+ 	.enable_dawr1 = kvmhv_enable_dawr1,
+ 	.hash_v3_possible = kvmppc_hash_v3_possible,
++	.create_vcpu_debugfs = kvmppc_arch_create_vcpu_debugfs_hv,
++	.create_vm_debugfs = kvmppc_arch_create_vm_debugfs_hv,
+ };
+ 
+ static int kvm_init_subcore_bitmap(void)
+diff --git a/arch/powerpc/kvm/e500.c b/arch/powerpc/kvm/e500.c
+index 7e8b69015d20..d82e70c3e0a9 100644
+--- a/arch/powerpc/kvm/e500.c
++++ b/arch/powerpc/kvm/e500.c
+@@ -495,6 +495,7 @@ static struct kvmppc_ops kvm_ops_e500 = {
+ 	.emulate_op = kvmppc_core_emulate_op_e500,
+ 	.emulate_mtspr = kvmppc_core_emulate_mtspr_e500,
+ 	.emulate_mfspr = kvmppc_core_emulate_mfspr_e500,
++	.create_vcpu_debugfs = kvmppc_create_vcpu_debugfs,
+ };
+ 
+ static int __init kvmppc_e500_init(void)
+diff --git a/arch/powerpc/kvm/e500mc.c b/arch/powerpc/kvm/e500mc.c
+index 1c189b5aadcc..45eacd949f4b 100644
+--- a/arch/powerpc/kvm/e500mc.c
++++ b/arch/powerpc/kvm/e500mc.c
+@@ -381,6 +381,7 @@ static struct kvmppc_ops kvm_ops_e500mc = {
+ 	.emulate_op = kvmppc_core_emulate_op_e500,
+ 	.emulate_mtspr = kvmppc_core_emulate_mtspr_e500,
+ 	.emulate_mfspr = kvmppc_core_emulate_mfspr_e500,
++	.create_vcpu_debugfs = kvmppc_create_vcpu_debugfs,
+ };
+ 
+ static int __init kvmppc_e500mc_init(void)
+diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+index c248d6d8b9e3..c895521ac6e9 100644
+--- a/arch/powerpc/kvm/powerpc.c
++++ b/arch/powerpc/kvm/powerpc.c
+@@ -763,7 +763,6 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
+ 		goto out_vcpu_uninit;
+ 
+ 	vcpu->arch.waitp = &vcpu->wait;
+-	kvmppc_create_vcpu_debugfs(vcpu, vcpu->vcpu_id);
+ 	return 0;
+ 
+ out_vcpu_uninit:
+@@ -780,8 +779,6 @@ void kvm_arch_vcpu_destroy(struct kvm_vcpu *vcpu)
+ 	/* Make sure we're not using the vcpu anymore */
+ 	hrtimer_cancel(&vcpu->arch.dec_timer);
+ 
+-	kvmppc_remove_vcpu_debugfs(vcpu);
+-
+ 	switch (vcpu->arch.irq_type) {
+ 	case KVMPPC_IRQ_MPIC:
+ 		kvmppc_mpic_disconnect_vcpu(vcpu->arch.mpic, vcpu);
+@@ -2505,3 +2502,15 @@ int kvm_arch_init(void *opaque)
+ }
+ 
+ EXPORT_TRACEPOINT_SYMBOL_GPL(kvm_ppc_instr);
++
++void kvm_arch_create_vcpu_debugfs(struct kvm_vcpu *vcpu, struct dentry *debugfs_dentry)
++{
++	if (vcpu->kvm->arch.kvm_ops->create_vcpu_debugfs)
++		vcpu->kvm->arch.kvm_ops->create_vcpu_debugfs(vcpu, debugfs_dentry);
++}
++
++void kvm_arch_create_vm_debugfs(struct kvm *kvm)
++{
++	if (kvm->arch.kvm_ops->create_vm_debugfs)
++		kvm->arch.kvm_ops->create_vm_debugfs(kvm);
++}
+diff --git a/arch/powerpc/kvm/timing.c b/arch/powerpc/kvm/timing.c
+index ba56a5cbba97..e1c17afc714d 100644
+--- a/arch/powerpc/kvm/timing.c
++++ b/arch/powerpc/kvm/timing.c
+@@ -204,21 +204,9 @@ static const struct file_operations kvmppc_exit_timing_fops = {
+ 	.release = single_release,
+ };
+ 
+-void kvmppc_create_vcpu_debugfs(struct kvm_vcpu *vcpu, unsigned int id)
++void kvmppc_create_vcpu_debugfs(struct kvm_vcpu *vcpu,
++				struct dentry *debugfs_dentry)
+ {
+-	static char dbg_fname[50];
+-	struct dentry *debugfs_file;
+-
+-	snprintf(dbg_fname, sizeof(dbg_fname), "vm%u_vcpu%u_timing",
+-		 current->pid, id);
+-	debugfs_file = debugfs_create_file(dbg_fname, 0666, kvm_debugfs_dir,
+-						vcpu, &kvmppc_exit_timing_fops);
+-
+-	vcpu->arch.debugfs_exit_timing = debugfs_file;
+-}
+-
+-void kvmppc_remove_vcpu_debugfs(struct kvm_vcpu *vcpu)
+-{
+-	debugfs_remove(vcpu->arch.debugfs_exit_timing);
+-	vcpu->arch.debugfs_exit_timing = NULL;
++	debugfs_create_file("timing", 0666, debugfs_dentry,
++			    vcpu, &kvmppc_exit_timing_fops);
+ }
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index b50dbe269f4b..85b2550e18e7 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -954,6 +954,9 @@ static int kvm_create_vm_debugfs(struct kvm *kvm, int fd)
+ 				    kvm->debugfs_dentry, stat_data,
+ 				    &stat_fops_per_vm);
+ 	}
++#ifdef __KVM_HAVE_ARCH_KVM_DEBUGFS
++	kvm_arch_create_vm_debugfs(kvm);
++#endif
+ 	return 0;
+ }
+ 
+-- 
+2.30.2
+
