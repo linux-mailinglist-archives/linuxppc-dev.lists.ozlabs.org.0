@@ -1,55 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDB46401AC1
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Sep 2021 13:48:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2067E401B3E
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Sep 2021 14:33:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H369q5Q2Wz2yNx
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Sep 2021 21:48:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H379k0Ym7z2yP3
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Sep 2021 22:33:46 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GCIGLnFO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=o5TYITBa;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=GCIGLnFO; 
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=o5TYITBa; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H368W4btlz2yJk
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Sep 2021 21:47:39 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C39FC60F14;
- Mon,  6 Sep 2021 11:47:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1630928856;
- bh=6aDKCqu7JUaygznso9JGDgn2RHl3/CuxBKHsT/8A0lk=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=GCIGLnFO443t/wH9KJX7gxqLZ/AsJXnCQeOdnOvRaq7CiFd7g0bIgyW+MbtaUM3Wr
- +sxyua/eKGw5Sfq4WoOKHmmesRwMGddAp3FjvdsSwSzQ05eF0aS2l6Q/l5C/7vNG+5
- OYWPmzJbTspXA5CBPo4BY42TShaJN/bN1FyZfl2i/qCiqxXNMkuHMGPDJNrVINtYpU
- WMGk4ssNYLLwZriGXW9Fn8nxoxJc+XpcHR06q8YTYE+SBWdDATYCV/TujPKtm++atD
- GoxWhlRTdZ1RDI+I7yV/AUllx0E4hIU0oKXJaFwYDAp7CD0NnxJLCc08haFk7Pu/XL
- C3f3MXG+u8tPQ==
-Date: Mon, 6 Sep 2021 12:47:01 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH for-5.15 0/5] ASoC: fsl: register platform component
- before registering cpu dai
-Message-ID: <20210906114701.GC4309@sirena.org.uk>
-References: <1630665006-31437-1-git-send-email-shengjiu.wang@nxp.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H379352mNz2yHN
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Sep 2021 22:33:11 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1630931589;
+ bh=/smZUmuGNe2IlwNNrAxF6f+YLIIHuDJ5EMF7z2sv5eg=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=o5TYITBaxTAxndR7UAFEssUIJjrasWREPCI4w9ehnDd8iXJkrSbFirQ5CyFl366qL
+ eR0OnhF5OQ39QUiMMJE+rDfUEP02jcXcpZ5wSIT72ew63rU56JwLrrkaG7XiRaVSQj
+ eai03Jt9q2cTWhum9Af+Otty5J11G4+H1+OhsqYSvb7Z0Mjmo0q2YWzT10O2TH+w/d
+ 4EXF6OoYtbByzj1QKaKnBE8f5Z8pPQ/OeZfT19pllBiRVj8T/goKUvDGPAPqTAPPcz
+ W1GxrlH3yUGqf2gcsnfo9sRf3qPmiALmidHSIA1Svt5tWt3VhbfQETbaviREmDddyG
+ h0ayhc3xzCuMw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4H37906Zg7z9sW4;
+ Mon,  6 Sep 2021 22:33:08 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Ganesh Goudar <ganeshgr@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc/mce: Fix access error in mce handler
+In-Reply-To: <20210906081823.181509-1-ganeshgr@linux.ibm.com>
+References: <20210906081823.181509-1-ganeshgr@linux.ibm.com>
+Date: Mon, 06 Sep 2021 22:33:04 +1000
+Message-ID: <87y289natb.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="vOmOzSkFvhd7u8Ms"
-Content-Disposition: inline
-In-Reply-To: <1630665006-31437-1-git-send-email-shengjiu.wang@nxp.com>
-X-Cookie: I smell a RANCID CORN DOG!
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,44 +61,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
- linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, perex@perex.cz,
- nicoleotsuka@gmail.com, festevam@gmail.com, linux-kernel@vger.kernel.org
+Cc: Ganesh Goudar <ganeshgr@linux.ibm.com>, mahesh@linux.ibm.com,
+ npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Ganesh Goudar <ganeshgr@linux.ibm.com> writes:
+> We queue an irq work for deferred processing of mce event
+> in realmode mce handler, where translation is disabled.
+> Queuing of the work may result in accessing memory outside
+> RMO region, such access needs the translation to be enabled
+> for an LPAR running with hash mmu else the kernel crashes.
+>
+> So enable the translation before queuing the work.
+>
+> Without this change following trace is seen on injecting machine
+> check error in an LPAR running with hash mmu.
 
---vOmOzSkFvhd7u8Ms
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+What type of error are you injecting?
 
-On Fri, Sep 03, 2021 at 06:30:01PM +0800, Shengjiu Wang wrote:
+> Oops: Kernel access of bad area, sig: 11 [#1]
+> LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+> CPU: 5 PID: 1883 Comm: insmod Tainted: G        OE     5.14.0-mce+ #137
+> NIP:  c000000000735d60 LR: c000000000318640 CTR: 0000000000000000
+> REGS: c00000001ebff9a0 TRAP: 0300   Tainted: G       OE      (5.14.0-mce+)
+> MSR:  8000000000001003 <SF,ME,RI,LE>  CR: 28008228  XER: 00000001
+> CFAR: c00000000031863c DAR: c00000027fa8fe08 DSISR: 40000000 IRQMASK: 0
+> GPR00: c0000000003186d0 c00000001ebffc40 c000000001b0df00 c0000000016337e8
+> GPR04: c0000000016337e8 c00000027fa8fe08 0000000000000023 c0000000016337f0
+> GPR08: 0000000000000023 c0000000012ffe08 0000000000000000 c008000001460240
+> GPR12: 0000000000000000 c00000001ec9a900 c00000002ac4bd00 0000000000000000
+> GPR16: 00000000000005a0 c0080000006b0000 c0080000006b05a0 c000000000ff3068
+> GPR20: c00000002ac4bbc0 0000000000000001 c00000002ac4bbc0 c008000001490298
+> GPR24: c008000001490108 c000000001636198 c008000001470090 c008000001470058
+> GPR28: 0000000000000510 c008000001000000 c008000008000019 0000000000000019
+> NIP [c000000000735d60] llist_add_batch+0x0/0x40
+> LR [c000000000318640] __irq_work_queue_local+0x70/0xc0
+> Call Trace:
+> [c00000001ebffc40] [c00000001ebffc0c] 0xc00000001ebffc0c (unreliable)
+> [c00000001ebffc60] [c0000000003186d0] irq_work_queue+0x40/0x70
+> [c00000001ebffc80] [c00000000004425c] machine_check_queue_event+0xbc/0xd0
+> [c00000001ebffcf0] [c00000000000838c] machine_check_early_common+0x16c/0x1f4
+>
+> Fixes: 74c3354bc1d89 ("powerpc/pseries/mce: restore msr before returning from handler")
 
-> There is no defer probe when adding platform component to
-> snd_soc_pcm_runtime(rtd), the code is in snd_soc_add_pcm_runtime()
+Please explain in more detail why that commit caused this breakage.
 
-...
+> diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
+> index 47a683cd00d2..9d1e39d42e3e 100644
+> --- a/arch/powerpc/kernel/mce.c
+> +++ b/arch/powerpc/kernel/mce.c
+> @@ -249,6 +249,7 @@ void machine_check_queue_event(void)
+>  {
+>  	int index;
+>  	struct machine_check_event evt;
+> +	unsigned long msr;
+>  
+>  	if (!get_mce_event(&evt, MCE_EVENT_RELEASE))
+>  		return;
+> @@ -262,8 +263,19 @@ void machine_check_queue_event(void)
+>  	memcpy(&local_paca->mce_info->mce_event_queue[index],
+>  	       &evt, sizeof(evt));
+>  
+> -	/* Queue irq work to process this event later. */
+> -	irq_work_queue(&mce_event_process_work);
+> +	/* Queue irq work to process this event later. Before
+> +	 * queuing the work enable translation for non radix LPAR,
+> +	 * as irq_work_queue may try to access memory outside RMO
+> +	 * region.
+> +	 */
+> +	if (!radix_enabled() && firmware_has_feature(FW_FEATURE_LPAR)) {
+> +		msr = mfmsr();
+> +		mtmsr(msr | MSR_IR | MSR_DR);
+> +		irq_work_queue(&mce_event_process_work);
+> +		mtmsr(msr);
+> +	} else {
+> +		irq_work_queue(&mce_event_process_work);
+> +	}
+>  }
 
-> So if the platform component is not ready at that time, then the
-> sound card still registered successfully, but platform component
-> is empty, the sound card can't be used.
+We already went to virtual mode and queued (different) irq work in
+arch/powerpc/platforms/pseries/ras.c:mce_handle_error()
 
-This sounds like a bug which should be fixed there?
+We also called save_mce_event() which also might have queued irq work,
+via machine_check_ue_event().
 
---vOmOzSkFvhd7u8Ms
-Content-Type: application/pgp-signature; name="signature.asc"
+So it really feels like something about the design is wrong if we have
+to go to virtual mode again and queue more irq work here.
 
------BEGIN PGP SIGNATURE-----
+I guess we can probably merge this as a backportable fix, doing anything
+else would be a bigger change.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmE1/7QACgkQJNaLcl1U
-h9A2PQf+MXqqe36AsD9bn8IpQ83/IyczIGKq7d94luUncaivHbSF3i18scHq2SrW
-d1wUCYn+J0TbavlsquPzmuuFzGVQ8B0I0mWvqfLvcCOboaEce6os/pgXqxJKctqd
-XimllKcJFViLzssrsJG1q2XHCwXw1mj9clwKXZ6iOjQxtTN5GqFEBdQd14hy+Zod
-wKhPoCb87qO/ngT6iSwVqGoET5xip9q4WkeeO5QCTCcTyW1Mc4YbuV9dnqV2DjQ0
-9rW4xZ0xA1ZbLekeaYzqChqmYyWxn0RGdVa/wiyDXPS0I/FaYJAJ6xkD0VvyYF6E
-ObuvLN4+E7wgeufVxAeSwXbORT6/uA==
-=PvOc
------END PGP SIGNATURE-----
+Looking at ras.c there's the comment:
 
---vOmOzSkFvhd7u8Ms--
+	 * Enable translation as we will be accessing per-cpu variables
+	 * in save_mce_event() which may fall outside RMO region, also
+
+But AFAICS it's only irq_work_queue() that touches anything percpu?
+
+So maybe we should just not be using irq_work_queue(). It's a pretty
+thin wrapper around set_dec(1), perhaps we just need to hand-roll some
+real-mode friendly way of doing that.
+
+cheers
