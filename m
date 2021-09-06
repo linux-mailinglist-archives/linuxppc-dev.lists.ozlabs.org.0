@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2067E401B3E
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Sep 2021 14:33:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34C43401CEE
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Sep 2021 16:23:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H379k0Ym7z2yP3
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Sep 2021 22:33:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H39cR17nnz2ynB
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Sep 2021 00:23:35 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=o5TYITBa;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=gPDFVvcg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,37 +17,38 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=o5TYITBa; 
+ header.a=rsa-sha256 header.s=201909 header.b=gPDFVvcg; 
  dkim-atps=neutral
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H379352mNz2yHN
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Sep 2021 22:33:11 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H39bn3Q0vz2yHW
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Sep 2021 00:23:00 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1630931589;
- bh=/smZUmuGNe2IlwNNrAxF6f+YLIIHuDJ5EMF7z2sv5eg=;
+ s=201909; t=1630938178;
+ bh=a1ig8YTFMn8o0S8xZRd6vor5m3Cp6vgqt+R8f3Aaqr8=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=o5TYITBaxTAxndR7UAFEssUIJjrasWREPCI4w9ehnDd8iXJkrSbFirQ5CyFl366qL
- eR0OnhF5OQ39QUiMMJE+rDfUEP02jcXcpZ5wSIT72ew63rU56JwLrrkaG7XiRaVSQj
- eai03Jt9q2cTWhum9Af+Otty5J11G4+H1+OhsqYSvb7Z0Mjmo0q2YWzT10O2TH+w/d
- 4EXF6OoYtbByzj1QKaKnBE8f5Z8pPQ/OeZfT19pllBiRVj8T/goKUvDGPAPqTAPPcz
- W1GxrlH3yUGqf2gcsnfo9sRf3qPmiALmidHSIA1Svt5tWt3VhbfQETbaviREmDddyG
- h0ayhc3xzCuMw==
+ b=gPDFVvcgFKVCtnnFcqifi3/U7sQu2oKLjlWmQLo9QKNWq1U2MACHRnqyFWKrnad56
+ uL+i5BVZJzimDdNdOdWWL97qyY3vQEru4eOyRsCgGll1qxWgWbklqZekpDGcAGKuCf
+ 7DC9/fmleSs/J6PLf3UKelktEfEUDK/VqMn/+w368Z5+i7rKCZizeZ9JNKFm1pNAA5
+ h4LY2z9lptO/oPnnmWr1502XTFsZvG+pEmckwN3k0Ifrq04O0itioFFI4oF6PBSbWI
+ occtjlLIAW9X8Cbc98/3bwK1W8QWf6J3uswp0ONhi5bpMTYeu0fzaFaimB7DadN/5M
+ jHul5fcpFPOCA==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4H37906Zg7z9sW4;
- Mon,  6 Sep 2021 22:33:08 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4H39bX6gcYz9sW4;
+ Tue,  7 Sep 2021 00:22:48 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Ganesh Goudar <ganeshgr@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] powerpc/mce: Fix access error in mce handler
-In-Reply-To: <20210906081823.181509-1-ganeshgr@linux.ibm.com>
-References: <20210906081823.181509-1-ganeshgr@linux.ibm.com>
-Date: Mon, 06 Sep 2021 22:33:04 +1000
-Message-ID: <87y289natb.fsf@mpe.ellerman.id.au>
+To: Weizhao Ouyang <o451686892@gmail.com>, Steven Rostedt
+ <rostedt@goodmis.org>, Ingo Molnar <mingo@redhat.com>
+Subject: Re: [PATCH v2] ftrace: Cleanup ftrace_dyn_arch_init()
+In-Reply-To: <20210906111626.1259867-1-o451686892@gmail.com>
+References: <20210906111626.1259867-1-o451686892@gmail.com>
+Date: Tue, 07 Sep 2021 00:22:46 +1000
+Message-ID: <87v93dn5qh.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -61,107 +62,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ganesh Goudar <ganeshgr@linux.ibm.com>, mahesh@linux.ibm.com,
- npiggin@gmail.com
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
+ linux-mips@vger.kernel.org, "James E.J.
+ Bottomley" <James.Bottomley@HansenPartnership.com>, Guo Ren <guoren@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+ linux-riscv@lists.infradead.org, Vincent Chen <deanbo422@gmail.com>,
+ Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>,
+ x86@kernel.org, Russell King <linux@armlinux.org.uk>,
+ linux-csky@vger.kernel.org, Christian Borntraeger <borntraeger@de.ibm.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Weizhao Ouyang <o451686892@gmail.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Borislav Petkov <bp@alien8.de>, Greentime Hu <green.hu@gmail.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-arm-kernel@lists.infradead.org, Michal Simek <monstr@monstr.eu>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ Nick Hu <nickhu@andestech.com>, linux-kernel@vger.kernel.org,
+ Palmer Dabbelt <palmer@dabbelt.com>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Ganesh Goudar <ganeshgr@linux.ibm.com> writes:
-> We queue an irq work for deferred processing of mce event
-> in realmode mce handler, where translation is disabled.
-> Queuing of the work may result in accessing memory outside
-> RMO region, such access needs the translation to be enabled
-> for an LPAR running with hash mmu else the kernel crashes.
+Weizhao Ouyang <o451686892@gmail.com> writes:
+> Most of ARCHs use empty ftrace_dyn_arch_init(), introduce a weak common
+> ftrace_dyn_arch_init() to cleanup them.
 >
-> So enable the translation before queuing the work.
+> Signed-off-by: Weizhao Ouyang <o451686892@gmail.com>
+> Acked-by: Heiko Carstens <hca@linux.ibm.com> (s390)
 >
-> Without this change following trace is seen on injecting machine
-> check error in an LPAR running with hash mmu.
-
-What type of error are you injecting?
-
-> Oops: Kernel access of bad area, sig: 11 [#1]
-> LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
-> CPU: 5 PID: 1883 Comm: insmod Tainted: G        OE     5.14.0-mce+ #137
-> NIP:  c000000000735d60 LR: c000000000318640 CTR: 0000000000000000
-> REGS: c00000001ebff9a0 TRAP: 0300   Tainted: G       OE      (5.14.0-mce+)
-> MSR:  8000000000001003 <SF,ME,RI,LE>  CR: 28008228  XER: 00000001
-> CFAR: c00000000031863c DAR: c00000027fa8fe08 DSISR: 40000000 IRQMASK: 0
-> GPR00: c0000000003186d0 c00000001ebffc40 c000000001b0df00 c0000000016337e8
-> GPR04: c0000000016337e8 c00000027fa8fe08 0000000000000023 c0000000016337f0
-> GPR08: 0000000000000023 c0000000012ffe08 0000000000000000 c008000001460240
-> GPR12: 0000000000000000 c00000001ec9a900 c00000002ac4bd00 0000000000000000
-> GPR16: 00000000000005a0 c0080000006b0000 c0080000006b05a0 c000000000ff3068
-> GPR20: c00000002ac4bbc0 0000000000000001 c00000002ac4bbc0 c008000001490298
-> GPR24: c008000001490108 c000000001636198 c008000001470090 c008000001470058
-> GPR28: 0000000000000510 c008000001000000 c008000008000019 0000000000000019
-> NIP [c000000000735d60] llist_add_batch+0x0/0x40
-> LR [c000000000318640] __irq_work_queue_local+0x70/0xc0
-> Call Trace:
-> [c00000001ebffc40] [c00000001ebffc0c] 0xc00000001ebffc0c (unreliable)
-> [c00000001ebffc60] [c0000000003186d0] irq_work_queue+0x40/0x70
-> [c00000001ebffc80] [c00000000004425c] machine_check_queue_event+0xbc/0xd0
-> [c00000001ebffcf0] [c00000000000838c] machine_check_early_common+0x16c/0x1f4
+> ---
 >
-> Fixes: 74c3354bc1d89 ("powerpc/pseries/mce: restore msr before returning from handler")
+> Changes in v2:
+> -- correct CONFIG_DYNAMIC_FTRACE on PowerPC
+> -- add Acked-by tag
 
-Please explain in more detail why that commit caused this breakage.
-
-> diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
-> index 47a683cd00d2..9d1e39d42e3e 100644
-> --- a/arch/powerpc/kernel/mce.c
-> +++ b/arch/powerpc/kernel/mce.c
-> @@ -249,6 +249,7 @@ void machine_check_queue_event(void)
->  {
->  	int index;
->  	struct machine_check_event evt;
-> +	unsigned long msr;
+> diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
+> index debe8c4f7062..d59f67c0225f 100644
+> --- a/arch/powerpc/include/asm/ftrace.h
+> +++ b/arch/powerpc/include/asm/ftrace.h
+> @@ -61,6 +61,10 @@ struct dyn_arch_ftrace {
+>  };
+>  #endif /* __ASSEMBLY__ */
 >  
->  	if (!get_mce_event(&evt, MCE_EVENT_RELEASE))
->  		return;
-> @@ -262,8 +263,19 @@ void machine_check_queue_event(void)
->  	memcpy(&local_paca->mce_info->mce_event_queue[index],
->  	       &evt, sizeof(evt));
->  
-> -	/* Queue irq work to process this event later. */
-> -	irq_work_queue(&mce_event_process_work);
-> +	/* Queue irq work to process this event later. Before
-> +	 * queuing the work enable translation for non radix LPAR,
-> +	 * as irq_work_queue may try to access memory outside RMO
-> +	 * region.
-> +	 */
-> +	if (!radix_enabled() && firmware_has_feature(FW_FEATURE_LPAR)) {
-> +		msr = mfmsr();
-> +		mtmsr(msr | MSR_IR | MSR_DR);
-> +		irq_work_queue(&mce_event_process_work);
-> +		mtmsr(msr);
-> +	} else {
-> +		irq_work_queue(&mce_event_process_work);
-> +	}
->  }
+> +#ifdef CONFIG_DYNAMIC_FTRACE
+> +int __init ftrace_dyn_arch_init(void);
+> +#endif /* CONFIG_DYNAMIC_FTRACE */
+> +
+>  #ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
+>  #define ARCH_SUPPORTS_FTRACE_OPS 1
+>  #endif
 
-We already went to virtual mode and queued (different) irq work in
-arch/powerpc/platforms/pseries/ras.c:mce_handle_error()
+That breaks the build for powerpc:
 
-We also called save_mce_event() which also might have queued irq work,
-via machine_check_ue_event().
+  /linux/arch/powerpc/include/asm/ftrace.h: Assembler messages:
+  /linux/arch/powerpc/include/asm/ftrace.h:65: Error: unrecognized opcode: `int'
+  make[4]: *** [/linux/scripts/Makefile.build:352: arch/powerpc/kernel/trace/ftrace_64.o] Error 1
+  make[3]: *** [/linux/scripts/Makefile.build:514: arch/powerpc/kernel/trace] Error 2
+  make[2]: *** [/linux/scripts/Makefile.build:514: arch/powerpc/kernel] Error 2
+  make[1]: *** [/linux/Makefile:1861: arch/powerpc] Error 2
+  make[1]: *** Waiting for unfinished jobs....
 
-So it really feels like something about the design is wrong if we have
-to go to virtual mode again and queue more irq work here.
-
-I guess we can probably merge this as a backportable fix, doing anything
-else would be a bigger change.
-
-Looking at ras.c there's the comment:
-
-	 * Enable translation as we will be accessing per-cpu variables
-	 * in save_mce_event() which may fall outside RMO region, also
-
-But AFAICS it's only irq_work_queue() that touches anything percpu?
-
-So maybe we should just not be using irq_work_queue(). It's a pretty
-thin wrapper around set_dec(1), perhaps we just need to hand-roll some
-real-mode friendly way of doing that.
+It needs to be inside an #ifndef __ASSEMBLY__ section.
 
 cheers
