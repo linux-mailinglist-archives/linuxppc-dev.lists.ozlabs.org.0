@@ -2,69 +2,102 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C3224030A4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Sep 2021 00:00:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A16854030AD
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Sep 2021 00:02:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H3zjh01z1z2yPc
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Sep 2021 08:00:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H3zlM4V9Tz2yPM
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Sep 2021 08:02:23 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel-com.20150623.gappssmtp.com header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=elcY35Sr;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=adKivwUW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::431;
- helo=mail-pf1-x431.google.com; envelope-from=dan.j.williams@intel.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=elcY35Sr; dkim-atps=neutral
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com
- [IPv6:2607:f8b0:4864:20::431])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=adKivwUW; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H3zhx2k23z2xMF
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Sep 2021 08:00:10 +1000 (AEST)
-Received: by mail-pf1-x431.google.com with SMTP id x19so272894pfu.4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Sep 2021 15:00:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=eEjYbhAR02sgc7ovVsHyjAGZLSxtoc/tH2wPYp1Ypy8=;
- b=elcY35Sre5FRsVc5U7wrWxG59izHA38dFgmaHKIrZXPYnJABcHEWwH4WRekxYV8xTl
- 72KxyD9kGd9FiJUW5mBrfPqmXaB7MxDmL/3NzRhvIoKpdxZaWEf99X1ru0Q/XLHtzFDL
- sGIZeHs9IHxA7Lee/Gkkoh145uPlhwzHwkNlzNSP5tDnh6igl77FtJr0SzfyTd3PPxSO
- YFlOudrMPSjcolvyPVOp+QbwxZNIWEzD3MAmIGB89LH6AIs2RV1hpD38ds8V5sh37dUK
- 1vN3GRRPQeLW2fVGN9oQOvTv7wuPTOPJljZI1PXxlA6zhShM74+qRVpdIcijDHAjiD5f
- WX2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=eEjYbhAR02sgc7ovVsHyjAGZLSxtoc/tH2wPYp1Ypy8=;
- b=aLZWtKyOesE/JmVABsnA1+4Y6D5xDky7rMl5An7SV4t41feLbtXAKvCRB3NH3ckPjx
- JKmWFunFSK1Z6jAa0Dbi73q1YgMbP2r9i4yp06fl8Zssyaj2CFpQn0DzmwKsLhhW8/at
- l2GZEiaEfQDIfxTqQCNhbEBa102/idcvi9LLJjCOeilalZ7Sx0oVLxH4sg3YQ+DVf6SM
- J89f7siwZYq1DjKS8ec6qB+rQWnwhicrWcT7ifAivGalMOnXccnf3ebsW5cpqBQlK90E
- 3rsOc/1wNJgI+HWGORBweFK9nYG0FzFQjaJ4KUlTlW05B7S4KK4qtcEfobmadz4Oa/AC
- KnUg==
-X-Gm-Message-State: AOAM53043TS4wilJsgmIP0/GE5WvifJhXQUaP5ifsufgcZiCkjBKIeC6
- UbYLGLIuGjzO6Kia+awnTQdRSADELyyyRxZQllAUBg==
-X-Google-Smtp-Source: ABdhPJxx4EjbJvjL93bRoVayl6mm//Jv0BDO7s4EwjYNl8kM2qselsqA630wkktzF+3PhiHaezOvZrqOY7JxvIWmAUs=
-X-Received: by 2002:a63:1e0e:: with SMTP id e14mr452534pge.5.1631052005753;
- Tue, 07 Sep 2021 15:00:05 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H3zkg4Tpkz2xY1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Sep 2021 08:01:47 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 187LwiZr031968; Tue, 7 Sep 2021 18:01:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=M3NLre3imKrWCdFZG/thQ+NIcwjy1kwY8mADZafIJBs=;
+ b=adKivwUWvdKFHffSRurfPdtaU757HHkXhTo0vcXKGCni78MgrOaFXprKOWpAxwSTY6UA
+ X1h3RD1wauYmTchUyHrbmwRS/8PMIZs3qGMBnxGYfQVqIdko8IeALjGZc9zOm82oBh8e
+ Jc5ACzlU5DUW1hwu/cj7gjeQlA6lKS7eXBKJ4dfBH4ywjo4PTjHe850OxaoksJCY0JXP
+ haqbf/8nnU+vpMHN+AlRgJLK62l23w0gLSrizr/IG4DOFjgqRqvlk9ti68UTtHEK22HD
+ aRd3CSaCBGSvhbZpqwtmIPjnBzqqiZVT8v2Sd8P8NtrdtUPcI4c45W8GiMLKdmzIB6k0 gg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3axgfm81up-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 07 Sep 2021 18:01:34 -0400
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 187M01Uq033905;
+ Tue, 7 Sep 2021 18:01:34 -0400
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3axgfm81u9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 07 Sep 2021 18:01:34 -0400
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 187LvvER015141;
+ Tue, 7 Sep 2021 22:01:33 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma02wdc.us.ibm.com with ESMTP id 3axcnn4pur-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 07 Sep 2021 22:01:33 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
+ [9.57.199.107])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 187M1W1U23200132
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 7 Sep 2021 22:01:33 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D6FB6124055;
+ Tue,  7 Sep 2021 22:01:32 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BC5DD12406B;
+ Tue,  7 Sep 2021 22:01:31 +0000 (GMT)
+Received: from oc6857751186.ibm.com (unknown [9.160.169.122])
+ by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue,  7 Sep 2021 22:01:31 +0000 (GMT)
+Subject: Re: [PATCH] pci/hotplug/pnv-php: Remove probable double put
+To: Xu Wang <vulab@iscas.ac.cn>, mpe@ellerman.id.au, benh@kernel.crashing.org, 
+ paulus@samba.org, bhelgaas@google.com
+References: <20210907085946.21694-1-vulab@iscas.ac.cn>
+From: Tyrel Datwyler <tyreld@linux.ibm.com>
+Message-ID: <0fa7ddfa-cd65-583e-a83f-4cbcd4e7337f@linux.ibm.com>
+Date: Tue, 7 Sep 2021 15:01:30 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 MIME-Version: 1.0
-References: <20210903050914.273525-1-kjain@linux.ibm.com>
- <20210903050914.273525-2-kjain@linux.ibm.com>
-In-Reply-To: <20210903050914.273525-2-kjain@linux.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 7 Sep 2021 14:59:55 -0700
-Message-ID: <CAPcyv4jSL2cDxGiXEtyyce3eNEE_QUnnMjuLXb3iCwO8_7a7LQ@mail.gmail.com>
-Subject: Re: [RESEND PATCH v4 1/4] drivers/nvdimm: Add nvdimm pmu structure
-To: Kajol Jain <kjain@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20210907085946.21694-1-vulab@iscas.ac.cn>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: a16-xvygUGq7bfcHPNiwH3asPIJqqLKr
+X-Proofpoint-ORIG-GUID: JSSbdBOQQusVuBTPysKKMj22cm6ZMSgJ
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-09-07_08:2021-09-07,
+ 2021-09-07 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 adultscore=0
+ impostorscore=0 mlxscore=0 malwarescore=0 bulkscore=0 lowpriorityscore=0
+ mlxlogscore=999 suspectscore=0 priorityscore=1501 clxscore=1011
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2109030001 definitions=main-2109070135
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,129 +109,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux NVDIMM <nvdimm@lists.linux.dev>, Santosh Sivaraj <santosh@fossix.org>,
- maddy@linux.ibm.com, "Weiny, Ira" <ira.weiny@intel.com>,
- rnsastry@linux.ibm.com, Peter Zijlstra <peterz@infradead.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- atrajeev@linux.vnet.ibm.com, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Vishal L Verma <vishal.l.verma@intel.com>,
- Vaibhav Jain <vaibhav@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Kajol,
-
-Apologies for the delay in responding to this series, some comments below:
-
-On Thu, Sep 2, 2021 at 10:10 PM Kajol Jain <kjain@linux.ibm.com> wrote:
->
-> A structure is added, called nvdimm_pmu, for performance
-> stats reporting support of nvdimm devices. It can be used to add
-> nvdimm pmu data such as supported events and pmu event functions
-> like event_init/add/read/del with cpu hotplug support.
->
-> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Reviewed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-> Tested-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
-> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+On 9/7/21 1:59 AM, Xu Wang wrote:
+> Device node iterators put the previous value of the index variable,
+> so an explicit put causes a double put.
+> 
+> Signed-off-by: Xu Wang <vulab@iscas.ac.cn>
 > ---
->  include/linux/nd.h | 43 +++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 43 insertions(+)
->
-> diff --git a/include/linux/nd.h b/include/linux/nd.h
-> index ee9ad76afbba..712499cf7335 100644
-> --- a/include/linux/nd.h
-> +++ b/include/linux/nd.h
-> @@ -8,6 +8,8 @@
->  #include <linux/ndctl.h>
->  #include <linux/device.h>
->  #include <linux/badblocks.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/perf_event.h>
->
->  enum nvdimm_event {
->         NVDIMM_REVALIDATE_POISON,
-> @@ -23,6 +25,47 @@ enum nvdimm_claim_class {
->         NVDIMM_CCLASS_UNKNOWN,
->  };
->
-> +/* Event attribute array index */
-> +#define NVDIMM_PMU_FORMAT_ATTR         0
-> +#define NVDIMM_PMU_EVENT_ATTR          1
-> +#define NVDIMM_PMU_CPUMASK_ATTR                2
-> +#define NVDIMM_PMU_NULL_ATTR           3
-> +
-> +/**
-> + * struct nvdimm_pmu - data structure for nvdimm perf driver
-> + *
-> + * @name: name of the nvdimm pmu device.
-> + * @pmu: pmu data structure for nvdimm performance stats.
-> + * @dev: nvdimm device pointer.
-> + * @functions(event_init/add/del/read): platform specific pmu functions.
+>  drivers/pci/hotplug/pnv_php.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
+> index 04565162a449..ed4d1a2c3f22 100644
+> --- a/drivers/pci/hotplug/pnv_php.c
+> +++ b/drivers/pci/hotplug/pnv_php.c
+> @@ -158,7 +158,6 @@ static void pnv_php_detach_device_nodes(struct device_node *parent)
+>  	for_each_child_of_node(parent, dn) {
+>  		pnv_php_detach_device_nodes(dn);
+> 
+> -		of_node_put(dn);
+>  		of_detach_node(dn);
 
-This is not valid kernel-doc:
+Are you sure this is a double put? This looks to me like its meant to drive tear
+down of the device by putting a long term reference and not the short term get
+that is part of the iterator.
 
-include/linux/nd.h:67: warning: Function parameter or member
-'event_init' not described in 'nvdimm_pmu'
-include/linux/nd.h:67: warning: Function parameter or member 'add' not
-described in 'nvdimm_pmu'
-include/linux/nd.h:67: warning: Function parameter or member 'del' not
-described in 'nvdimm_pmu'
-include/linux/nd.h:67: warning: Function parameter or member 'read'
-not described in 'nvdimm_pmu'
+-Tyrel
 
-...but I think rather than fixing those up 'struct nvdimm_pmu' should be pruned.
+>  	}
+>  }
+> 
 
-It's not clear to me that it is worth the effort to describe these
-details to the nvdimm core which is just going to turn around and call
-the pmu core. I'd just as soon have the driver call the pmu core
-directly, optionally passing in attributes and callbacks that come
-from the nvdimm core and/or the nvdimm provider.
-
-Otherwise it's also not clear which of these structure members are
-used at runtime vs purely used as temporary storage to pass parameters
-to the pmu core.
-
-> + * @attr_groups: data structure for events, formats and cpumask
-> + * @cpu: designated cpu for counter access.
-> + * @node: node for cpu hotplug notifier link.
-> + * @cpuhp_state: state for cpu hotplug notification.
-> + * @arch_cpumask: cpumask to get designated cpu for counter access.
-> + */
-> +struct nvdimm_pmu {
-> +       const char *name;
-> +       struct pmu pmu;
-> +       struct device *dev;
-> +       int (*event_init)(struct perf_event *event);
-> +       int  (*add)(struct perf_event *event, int flags);
-> +       void (*del)(struct perf_event *event, int flags);
-> +       void (*read)(struct perf_event *event);
-> +       /*
-> +        * Attribute groups for the nvdimm pmu. Index 0 used for
-> +        * format attribute, index 1 used for event attribute,
-> +        * index 2 used for cpusmask attribute and index 3 kept as NULL.
-> +        */
-> +       const struct attribute_group *attr_groups[4];
-
-Following from above, I'd rather this was organized as static
-attributes with an is_visible() helper for the groups for any dynamic
-aspects. That mirrors the behavior of nvdimm_create() and allows for
-device drivers to compose the attribute groups from a core set and /
-or a provider specific set.
-
-> +       int cpu;
-> +       struct hlist_node node;
-> +       enum cpuhp_state cpuhp_state;
-> +
-> +       /* cpumask provided by arch/platform specific code */
-> +       struct cpumask arch_cpumask;
-> +};
-> +
->  struct nd_device_driver {
->         struct device_driver drv;
->         unsigned long type;
-> --
-> 2.26.2
->
