@@ -1,74 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D597A4037B1
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Sep 2021 12:18:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31C0740382B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Sep 2021 12:47:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H4J4L4xVFz2yS9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Sep 2021 20:18:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H4Jjf0d4zz2yfn
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Sep 2021 20:47:02 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=d1FDrK4D;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tE8QpkXA;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::436;
- helo=mail-pf1-x436.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=d1FDrK4D; dkim-atps=neutral
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com
- [IPv6:2607:f8b0:4864:20::436])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=tE8QpkXA; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H4J3g38Tbz2xsN
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Sep 2021 20:17:33 +1000 (AEST)
-Received: by mail-pf1-x436.google.com with SMTP id q22so1669901pfu.0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Sep 2021 03:17:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=sZpvq7x2lHuZWsil0sfaEPemJ8g24kmEc0HiGKQSHYo=;
- b=d1FDrK4DwZVEKSJ+CCu2erJOj3mUVKWHDH4jl0iZnD/kwWvbrAenl2iXvHL4U795hF
- STP8lnfwJzuw2GSezB2N6ayq8FbHEQnacWEOA4mkLCyAzGflTBviGZ1dYKxihLUHRdBT
- VYjzuVytNWpwMIx64AOihV2JCvvadFbvO0OtSi5uwGfePngQZfQdcFyBKTtypZV46qNM
- fDXYfbyt7ATTqwIkBZUfAypXbw6nfr4o4YwgMVHEc6e1tPW4cOimTHvx88goHbV23EVU
- EoIElQcP4Vsv7dPsb2x+aogFTWVO4i33C0eIUIiBxQYcXlqf//baRBqY0uAIq+A3Z1ej
- 4bxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=sZpvq7x2lHuZWsil0sfaEPemJ8g24kmEc0HiGKQSHYo=;
- b=yuLH8GrqagvxK8N5gHTS8ZQ1MRwOZ1jlDPTJrNO9uxx+4VXSv34A2G6GIA18URqc0m
- Ghg7EPKvywDgfz5zQdFGsYS67z+3T97dxqwBZ2li+UcFu+U8Mhn1S+A9lrZr9ByQMx+I
- ygrU5bFAV3Vk0465bPqG8N76CtgKtdkhoDdUcN/IOHpUm2mkWQP0//kZg7ApL4IFnV/B
- OmoOP/X9o0udIG4P3icdNe7Kf9HMYKStdIVW1RSiMwpxJPkSdpvwFyXk7ic3OpDddbIE
- U7nxvTot9hnuBKjhuWd8Ml4SVDEA7e+TDUOVo2zLheVDK8osyip7sF4N/cP93/9wctrM
- oL/A==
-X-Gm-Message-State: AOAM533XWHHHuVZOjhyQn+jYytzdnND1uOM8mMMteja22yit5aO0GSmW
- I3v6OsdO2Oxv9VAU0P0DMHovNemKvO0=
-X-Google-Smtp-Source: ABdhPJyiU+4j19v7oPN6Tl7GXyP+OVn/YtiRXqPOSVzWdoiB0Z3l1smI2rJU0h0lE/IZQupm+24FrQ==
-X-Received: by 2002:a63:1358:: with SMTP id 24mr2913654pgt.327.1631096251508; 
- Wed, 08 Sep 2021 03:17:31 -0700 (PDT)
-Received: from bobo.ibm.com (115-64-207-17.tpgi.com.au. [115.64.207.17])
- by smtp.gmail.com with ESMTPSA id bj13sm1722019pjb.28.2021.09.08.03.17.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 08 Sep 2021 03:17:31 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v1 2/2] KVM: PPC: Book3S HV: Tolerate treclaim. in
- fake-suspend mode changing registers
-Date: Wed,  8 Sep 2021 20:17:18 +1000
-Message-Id: <20210908101718.118522-2-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20210908101718.118522-1-npiggin@gmail.com>
-References: <20210908101718.118522-1-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H4Jhw22Pcz2yHP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Sep 2021 20:46:23 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 188AYM8W007749; Wed, 8 Sep 2021 06:46:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : content-type :
+ mime-version; s=pp1; bh=Bf1jLT0XZ2n0j8yKCerL0h64crrSOksW2ucsLj/LGGg=;
+ b=tE8QpkXA80ZTCkAmqrc34c+F5IdNNtZ6n/g/pvPmUIvs4+RBZQJfzNcs7Wj6VtrfwtR4
+ SHZEBp9/rWnyVCfiM5FObFIXAz1Euy6tUr5U0YNb3h6nr3T2Wz7tBxzTU8Qtr9NkhR62
+ pfQMg/N78GyFtr9FllF9krsGtU/vUysaYhomub3gmPu/bR8+xni1OuSJbifqag7bsevl
+ 9P+sGAQj3WCqZa/jbBNWOyCEGmCB3TDGncEjwFO+Cawg9YVvnbXHgdampJIT+DmuASUQ
+ wlp7yrqPa13xiMHtOYPlXp6DK0TErKIjKlSoG2ArAk57YE1wneVKzoR+FLKiDTKl6Qce tw== 
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3axhcendy3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 08 Sep 2021 06:46:11 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 188AhPVM025426;
+ Wed, 8 Sep 2021 10:46:09 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma04ams.nl.ibm.com with ESMTP id 3axcnp7gh3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 08 Sep 2021 10:46:09 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 188Ak6Z445023498
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 8 Sep 2021 10:46:06 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EE942AE05D;
+ Wed,  8 Sep 2021 10:46:05 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6D3EAAE051;
+ Wed,  8 Sep 2021 10:46:02 +0000 (GMT)
+Received: from vajain21.in.ibm.com (unknown [9.43.55.200])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Wed,  8 Sep 2021 10:46:02 +0000 (GMT)
+Received: by vajain21.in.ibm.com (sSMTP sendmail emulation);
+ Wed, 08 Sep 2021 16:16:01 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, Shivaprasad G Bhat
+ <sbhat@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2] powerpc/papr_scm: Move duplicate definitions to
+ common header files
+In-Reply-To: <87sfyfmzhh.fsf@mpe.ellerman.id.au>
+References: <163092037510.812.12838160593592476913.stgit@82313cf9f602>
+ <87sfyfmzhh.fsf@mpe.ellerman.id.au>
+Date: Wed, 08 Sep 2021 16:16:00 +0530
+Message-ID: <878s07s5uf.fsf@vajain21.in.ibm.com>
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: KhecTvEg0T7ZqrdissAhXJUgmvbPa4ZT
+X-Proofpoint-ORIG-GUID: KhecTvEg0T7ZqrdissAhXJUgmvbPa4ZT
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-09-08_05:2021-09-07,
+ 2021-09-08 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999
+ priorityscore=1501 adultscore=0 phishscore=0 impostorscore=0 clxscore=1011
+ mlxscore=0 malwarescore=0 suspectscore=0 lowpriorityscore=0 spamscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2109030001 definitions=main-2109080067
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,98 +104,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Eirik Fuller <efuller@redhat.com>, kvm-ppc@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: nvdimm@lists.linux.dev, dan.j.williams@intel.com, sbhat@linux.ibm.com,
+ aneesh.kumar@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-POWER9 DD2.2 and 2.3 hardware implements a "fake-suspend" mode where
-certain TM instructions executed in HV=0 mode cause softpatch interrupts
-so the hypervisor can emulate them and prevent problematic processor
-conditions. In this fake-suspend mode, the treclaim. instruction does
-not modify registers.
+Hi Mpe,
 
-Unfortunately the rfscv instruction executed by the guest do not
-generate softpatch interrupts, which can cause the hypervisor to lose
-track of the fake-suspend mode, and it can execute this treclaim. while
-not in fake-suspend mode. This modifies GPRs and crashes the hypervisor.
+Thanks for looking into this patch.
 
-It's not trivial to disable scv in the guest with HFSCR now, because
-they assume a POWER9 has scv available. So this fix saves and restores
-checkpointed registers across the treclaim.
+Michael Ellerman <mpe@ellerman.id.au> writes:
 
-Fixes: 7854f7545bff ("KVM: PPC: Book3S: Rework TM save/restore code and make it C-callable")
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/kvm/book3s_hv_rmhandlers.S | 36 +++++++++++++++++++++++--
- 1 file changed, 34 insertions(+), 2 deletions(-)
+> Shivaprasad G Bhat <sbhat@linux.ibm.com> writes:
+>> papr_scm and ndtest share common PDSM payload structs like
+>> nd_papr_pdsm_health. Presently these structs are duplicated across papr_pdsm.h
+>> and ndtest.h header files. Since 'ndtest' is essentially arch independent and can
+>> run on platforms other than PPC64, a way needs to be deviced to avoid redundancy
+>> and duplication of PDSM structs in future.
+>>
+>> So the patch proposes moving the PDSM header from arch/powerpc/include/uapi/ to
+>> the generic include/uapi/linux directory. Also, there are some #defines common
+>> between papr_scm and ndtest which are not exported to the user space. So, move
+>> them to a header file which can be shared across ndtest and papr_scm via newly
+>> introduced include/linux/papr_scm.h.
+>>
+>> Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+>> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+>> Suggested-by: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+>> ---
+>> Changelog:
+>>
+>> Since v1:
+>> Link: https://patchwork.kernel.org/project/linux-nvdimm/patch/162505488483.72147.12741153746322191381.stgit@56e104a48989/
+>> * Removed dependency on this patch for the other patches
+>>
+>>  MAINTAINERS                               |    2 
+>>  arch/powerpc/include/uapi/asm/papr_pdsm.h |  165 -----------------------------
+>>  arch/powerpc/platforms/pseries/papr_scm.c |   43 --------
+>>  include/linux/papr_scm.h                  |   48 ++++++++
+>>  include/uapi/linux/papr_pdsm.h            |  165 +++++++++++++++++++++++++++++
+>
+> This doesn't make sense to me.
+>
+> Anything with papr (or PAPR) in the name is fundamentally powerpc
+> specific, it doesn't belong in a generic header, or in a generic
+> location.
+>
+> What's the actual problem you're trying to solve?
+>
+The ndtest module (tools/testing/nvdimm/test/ndtest.c) is implemented in
+an arch independed way to enable testing of PAPR PDSMs on non ppc64
+platforms like x86_64. It uses the same PDSM structs as used by papr_scm
+to communicate with libndctl userspace. 
 
-diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-index 8dd437d7a2c6..dd18e1c44751 100644
---- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-+++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-@@ -2578,7 +2578,7 @@ END_FTR_SECTION_IFCLR(CPU_FTR_P9_TM_HV_ASSIST)
- 	/* The following code handles the fake_suspend = 1 case */
- 	mflr	r0
- 	std	r0, PPC_LR_STKOFF(r1)
--	stdu	r1, -PPC_MIN_STKFRM(r1)
-+	stdu	r1, -TM_FRAME_SIZE(r1)
- 
- 	/* Turn on TM. */
- 	mfmsr	r8
-@@ -2593,10 +2593,42 @@ BEGIN_FTR_SECTION
- END_FTR_SECTION_IFSET(CPU_FTR_P9_TM_XER_SO_BUG)
- 	nop
- 
-+	/*
-+	 * It's possible that treclaim. may modify registers, if we have lost
-+	 * track of fake-suspend state in the guest due to it using rfscv.
-+	 * Save and restore registers in case this occurs.
-+	 */
-+	mfspr	r3, SPRN_DSCR
-+	mfspr	r4, SPRN_XER
-+	mfspr	r5, SPRN_AMR
-+	/* SPRN_TAR would need to be saved here if the kernel ever used it */
-+	mfcr	r12
-+	SAVE_NVGPRS(r1)
-+	SAVE_GPR(2, r1)
-+	SAVE_GPR(3, r1)
-+	SAVE_GPR(4, r1)
-+	SAVE_GPR(5, r1)
-+	stw	r12, 8(r1)
-+	std	r1, HSTATE_HOST_R1(r13)
-+
- 	/* We have to treclaim here because that's the only way to do S->N */
- 	li	r3, TM_CAUSE_KVM_RESCHED
- 	TRECLAIM(R3)
- 
-+	GET_PACA(r13)
-+	ld	r1, HSTATE_HOST_R1(r13)
-+	REST_GPR(2, r1)
-+	REST_GPR(3, r1)
-+	REST_GPR(4, r1)
-+	REST_GPR(5, r1)
-+	lwz	r12, 8(r1)
-+	REST_NVGPRS(r1)
-+	mtspr	SPRN_DSCR, r3
-+	mtspr	SPRN_XER, r4
-+	mtspr	SPRN_AMR, r5
-+	mtcr	r12
-+	HMT_MEDIUM
-+
- 	/*
- 	 * We were in fake suspend, so we are not going to save the
- 	 * register state as the guest checkpointed state (since
-@@ -2624,7 +2656,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_P9_TM_XER_SO_BUG)
- 	std	r5, VCPU_TFHAR(r9)
- 	std	r6, VCPU_TFIAR(r9)
- 
--	addi	r1, r1, PPC_MIN_STKFRM
-+	addi	r1, r1, TM_FRAME_SIZE
- 	ld	r0, PPC_LR_STKOFF(r1)
- 	mtlr	r0
- 	blr
+Since papr_scm is ppc64 arch specific we were so far duplicating the
+PDSM structures between ndtest and papr_scm. The patch tries to solve
+this duplication by moving the shared structs to arch independent common
+include dirs.
+
+Secondly, PDSMs describes how userspace can use NVDIMM_FAMILY_PAPR to
+interact with NVDIMMs. So potentially a new NVDIMM beyond powerpc arch
+can add its support and would need access to the same structs used by
+papr_scm and ndtest. In that context it would make sense to move PDSM
+headers to generic include dirs.
+
+> If it's just including papr_scm bits into ndtest.c then that should be
+> as simple as:
+>
+> #ifdef __powerpc__
+> #include <asm/papr_scm.h>
+> #endif
+>
+> Shouldn't it?
+>
+No, as ndtest implements support for NVDIMM_FAMILY_PAPR and would need
+access to PDSM related structs which presently are only available for
+powerpc.
+
+> cheers
+>
+
 -- 
-2.23.0
-
+Cheers
+~ Vaibhav
