@@ -2,70 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1B2940320C
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Sep 2021 03:04:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 141FA40323D
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Sep 2021 03:38:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H43nt5dgMz2yhl
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Sep 2021 11:04:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H44XC6tmkz2yRK
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Sep 2021 11:38:03 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel-com.20150623.gappssmtp.com header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=gA2AKqSY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=bithVZit;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::630;
- helo=mail-pl1-x630.google.com; envelope-from=dan.j.williams@intel.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f2c;
+ helo=mail-qv1-xf2c.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=gA2AKqSY; dkim-atps=neutral
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com
- [IPv6:2607:f8b0:4864:20::630])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=bithVZit; dkim-atps=neutral
+Received: from mail-qv1-xf2c.google.com (mail-qv1-xf2c.google.com
+ [IPv6:2607:f8b0:4864:20::f2c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H43n70MDSz2xry
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Sep 2021 11:04:03 +1000 (AEST)
-Received: by mail-pl1-x630.google.com with SMTP id l11so250891plk.6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Sep 2021 18:04:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H44WX1kpmz2xYG
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Sep 2021 11:37:26 +1000 (AEST)
+Received: by mail-qv1-xf2c.google.com with SMTP id gf5so351518qvb.9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Sep 2021 18:37:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=0iKng76PsWyRz/8pjKL65aYQlih1TWo8dnb6KnDDehM=;
- b=gA2AKqSYLA1MsQE3BMExMBWz0L/kPrN0d88m681N9dDRm9y82WlVbC6+jWD0ghSlB2
- SyFe6JEC96j2lU/x/FecVxc0WYkUZcUG9uoZpqzpweENWnSLhz5JKPTrGO9eCS27Vbvc
- ewatD2c1ew2eWWvkKyoX+9LBmuw46PIVIINoX6SHItS4Kk47q7OabMVfkxbBnPtll2SG
- Uqu7JK1N11ylCIyfv3MbaMrhirdiv3iPRTLfZIakN0PCojZw5OfR2W7zsOippo2Hb2UC
- XSBHw7iAga4VdN4tdA1JthLBERWT0L+AMeMHrii+pyS1jLW0BcEpe1VSAu9txz4ZfQZo
- Th3g==
+ :cc; bh=ciBzCjagQnTip0jhcuPtA6NB3onzElPc291uOOyrzyM=;
+ b=bithVZitjX59Lt3RcjNnDfJU/uUHPRrRkBDyknarhntnoXj1G1iASqbCbdRhUo8Pt+
+ FLV7z+W1O2JmgFRT+v3sCKCrhguRv38WbDPivEuQAOrdEMPR978YFR3uo5M1/7qdBI3L
+ TVR/BczxCBKRzQm1liSpdbfmtiPuA/JChcClxVYzaFBzPn/Cy+Z8XC2f6n37GxzuY+k7
+ mhKRqTyFNeV2HN22zApu3nlxxMFMxcSTf26Ecxz813ag7CQbzOdaOVR8LEX2t27h3E7L
+ gypmOInhelID1nSq5dNuub0y5sPGnWK4RVggceJIxrdRlZthcZ/fZRuDxRVAl91y3Tci
+ rQAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=0iKng76PsWyRz/8pjKL65aYQlih1TWo8dnb6KnDDehM=;
- b=VbbbF/VNpljHk8gzdV9LpoNLSKeLmSbmjnHdAFOtuXf5O1Kow9FmKD6PEIJVe2WfwQ
- lnSsEtRYLbGOtaJxI5xHJDXNYb0xo3sNyvyVwciFSOBhCsRLKy95kphTR88jRpd1MN4u
- CBJ6223Epv206KnwnjbeASq+RecMfLVt9WrXwUFbchFDuskPUt+XPxiqQalB3O8muf1/
- +m96o6HWpb0ZXPh0gDhquYTKsak5S1ouBQQ50xsSTWWnKbHb3RYstDOoXIcgr9FwDTFp
- V0ovkURRf5Jjtb0SKRiw6v+xjY2kW8VatzCAIZNvr1/ZztUkSvKK8cguWYH4HMwZPIeS
- vXrQ==
-X-Gm-Message-State: AOAM532ce0lAUpRFBKhZXmKYt7n5psyGSgAGc6noanQyvHBODZmc6tQT
- 1w9NlEwDt+AAkGJFovedAcCgAmTV9IJry036JJN+yg==
-X-Google-Smtp-Source: ABdhPJyamM17dGx2IKarxEjJH/roNB9B0xLZUNSeDoP4i/s+QWcFqzVWNormFy+djtNq4zfCina5FNZQADngZlT7D84=
-X-Received: by 2002:a17:90b:3b84:: with SMTP id
- pc4mr1194364pjb.220.1631063038886; 
- Tue, 07 Sep 2021 18:03:58 -0700 (PDT)
+ bh=ciBzCjagQnTip0jhcuPtA6NB3onzElPc291uOOyrzyM=;
+ b=SHFE7KT2N6lvTn63PAOmBwA6mpCgiYMTx8rvtrIF4W5yePwdv4i3/YWSRKIvi/dn1c
+ zl72Lq0nqP/8sqYYQj7PPTMq1E5Q8OFhmnDpI/XtfRLLMet0jv4zOcsBwUqJewsgYgGu
+ glMYjTSq6WBHz+rMYM5jfjv8yfnVDtJ+TMl/BKDWLfijd/o+L/4+6bvnJV1I85lQIMTA
+ XdbMfV82svEj5D94bvvKL9SmwleMBQNLqsulaPMJBj5XD+/mKz1O3q98mN8bp0deqjo2
+ g6Uyaodb9xse20XUW8MDNsPrXaaPQkt/Enn/vj5FQcopKwiRLXa0QXIv8z54+v0CpRag
+ VLsw==
+X-Gm-Message-State: AOAM530IeDaqWhRIizUhJrQOgP3pYbHK9F/CV+dRdK5auBIJVrkcyelB
+ oTyBu9v4tC4y5ZDTfZM7/PLO177F8S22KIuzd+Q=
+X-Google-Smtp-Source: ABdhPJyZX8Ws4H4CK//9vF6DwOfMVVDxAED9g7heseyQVdqgO/Dg6FserqZ3XyM3raWxTLzCUa//Kzk5ma7acROdNGk=
+X-Received: by 2002:a0c:80ce:: with SMTP id 72mr1195106qvb.39.1631065042341;
+ Tue, 07 Sep 2021 18:37:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210903050914.273525-1-kjain@linux.ibm.com>
- <20210903050914.273525-5-kjain@linux.ibm.com>
-In-Reply-To: <20210903050914.273525-5-kjain@linux.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 7 Sep 2021 18:03:48 -0700
-Message-ID: <CAPcyv4h-MgZmteMSUfdeQL+XCxL5HvxK87HA3JYB0OoQUaPipQ@mail.gmail.com>
-Subject: Re: [RESEND PATCH v4 4/4] powerpc/papr_scm: Document papr_scm sysfs
- event format entries
-To: Kajol Jain <kjain@linux.ibm.com>
+References: <20210906094927.524106-1-schnelle@linux.ibm.com>
+ <CAOSf1CFyuf9FaeSNparj+7W0mKTPvtcM8vxjHDSFsNDC6k_7xQ@mail.gmail.com>
+ <e739c2919f97e277849a1bc1324a20df6a7d59eb.camel@linux.ibm.com>
+ <0c9326c943c0e6aa572cc132ee2deb952bf41c7f.camel@linux.ibm.com>
+In-Reply-To: <0c9326c943c0e6aa572cc132ee2deb952bf41c7f.camel@linux.ibm.com>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Wed, 8 Sep 2021 11:37:11 +1000
+Message-ID: <CAOSf1CH2T-R44qx1mGpJQ8WgD0upxG8sQNud_5L3SHYZJm9LRA@mail.gmail.com>
+Subject: Re: [PATCH 0/5] s390/pci: automatic error recovery
+To: Niklas Schnelle <schnelle@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -78,96 +76,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux NVDIMM <nvdimm@lists.linux.dev>, Santosh Sivaraj <santosh@fossix.org>,
- maddy@linux.ibm.com, "Weiny, Ira" <ira.weiny@intel.com>,
- rnsastry@linux.ibm.com, Peter Zijlstra <peterz@infradead.org>,
+Cc: linux-s390@vger.kernel.org, Pierre Morel <pmorel@linux.ibm.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- atrajeev@linux.vnet.ibm.com, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Vishal L Verma <vishal.l.verma@intel.com>,
- Vaibhav Jain <vaibhav@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Bjorn Helgaas <bhelgaas@google.com>, Linas Vepstas <linasvepstas@gmail.com>,
  linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Sep 2, 2021 at 10:11 PM Kajol Jain <kjain@linux.ibm.com> wrote:
+On Tue, Sep 7, 2021 at 10:21 PM Niklas Schnelle <schnelle@linux.ibm.com> wrote:
 >
-> Details is added for the event, cpumask and format attributes
-> in the ABI documentation.
->
-> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Reviewed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-> Tested-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
-> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-> ---
->  Documentation/ABI/testing/sysfs-bus-papr-pmem | 31 +++++++++++++++++++
->  1 file changed, 31 insertions(+)
->
-> diff --git a/Documentation/ABI/testing/sysfs-bus-papr-pmem b/Documentation/ABI/testing/sysfs-bus-papr-pmem
-> index 95254cec92bf..4d86252448f8 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-papr-pmem
-> +++ b/Documentation/ABI/testing/sysfs-bus-papr-pmem
-> @@ -61,3 +61,34 @@ Description:
->                 * "CchRHCnt" : Cache Read Hit Count
->                 * "CchWHCnt" : Cache Write Hit Count
->                 * "FastWCnt" : Fast Write Count
-> +
-> +What:          /sys/devices/nmemX/format
-> +Date:          June 2021
-> +Contact:       linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, nvdimm@lists.linux.dev,
-> +Description:   (RO) Attribute group to describe the magic bits
-> +                that go into perf_event_attr.config for a particular pmu.
-> +                (See ABI/testing/sysfs-bus-event_source-devices-format).
-> +
-> +                Each attribute under this group defines a bit range of the
-> +                perf_event_attr.config. Supported attribute is listed
-> +                below::
-> +
-> +                   event  = "config:0-4"  - event ID
-> +
-> +               For example::
-> +                   noopstat = "event=0x1"
-> +
-> +What:          /sys/devices/nmemX/events
+> On Tue, 2021-09-07 at 10:45 +0200, Niklas Schnelle wrote:
+> > On Tue, 2021-09-07 at 12:04 +1000, Oliver O'Halloran wrote:
+> > > On Mon, Sep 6, 2021 at 7:49 PM Niklas Schnelle <schnelle@linux.ibm.com> wrote:
+> > > > Patch 3 I already sent separately resulting in the discussion below but without
+> > > > a final conclusion.
+> > > >
+> > > > https://lore.kernel.org/lkml/20210720150145.640727-1-schnelle@linux.ibm.com/
+> > > >
+> > > > I believe even though there were some doubts about the use of
+> > > > pci_dev_is_added() by arch code the existing uses as well as the use in the
+> > > > final patch of this series warrant this export.
+> > >
+> > > The use of pci_dev_is_added() in arch/powerpc was because in the past
+> > > pci_bus_add_device() could be called before pci_device_add(). That was
+> > > fixed a while ago so It should be safe to remove those calls now.
+> >
+> > Hmm, ok that confirms Bjorns suspicion and explains how it came to be.
+> > I can certainly sent a patch for that. This would then leave only the
+> > existing use in s390 which I added because of a dead lock prevention
+> > and explained here:
+> > https://lore.kernel.org/lkml/87d15d5eead35c9eaa667958d057cf4a81a8bf13.camel@linux.ibm.com/
+> >
+> > Plus the need to use it in the recovery code of this series. I think in
+> > the EEH code the need for a similar check is alleviated by the checks
+> > in the beginning of
+> > arch/powerpc/kernel/eeh_driver.c:eeh_handle_normal_event() especially
+> > eeh_slot_presence_check() which checks presence via the hotplug slot.
+> > I guess we could use our own state tracking in a similar way but felt
+> > like pci_dev_is_added() is the more logical choice.
 
-That's not a valid sysfs path. Did you mean /sys/bus/nd/devices/nmemX?
+The slot check is mainly there to prevent attempts to "recover"
+devices that have been surprise removed (i.e NVMe hot-unplug). The
+actual recovery process operates off the eeh_pe tree which is frozen
+in place when an error is detected. If a pci_dev is added or removed
+it's not really a problem since those are only ever looked at when
+notifying drivers which is done with the rescan_remove lock held. That
+said, I wouldn't really encourage anyone to follow the EEH model since
+it's pretty byzantine.
 
-> +Date:          June 2021
-> +Contact:       linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, nvdimm@lists.linux.dev,
-> +Description:    (RO) Attribute group to describe performance monitoring
-> +                events specific to papr-scm. Each attribute in this group describes
-> +                a single performance monitoring event supported by this nvdimm pmu.
-> +                The name of the file is the name of the event.
-> +                (See ABI/testing/sysfs-bus-event_source-devices-events).
+> Looking into this again, I think we actually can't easily track this
+> state ourselves outside struct pci_dev. The reason for this is that
+> when e.g. arch/s390/pci/pci_sysfs.c:recover_store() removes the struct
+> pci_dev and scans it again the new struct pci_dev re-uses the same
+> struct zpci_dev because from a platform point of view the PCI device
+> was never removed but only disabled and re-enabled. Thus we can only
+> distinguish the stale struct pci_dev by looking at things stored in
+> struct pci_dev itself.
 
-Given these events are in the generic namespace the ABI documentation
-should be generic as well. So I think move these entries to
-Documentation/ABI/testing/sysfs-bus-nvdimm directly.
+IMO the real problem is removing and re-adding the pci_dev. I think
+it's something that's done largely because the PCI core doesn't really
+provide any better mechanism for getting a device back into a
+known-good state so it's abused to implement error recovery. This is
+something that's always annoyed me since it conflates recovery with
+hotplug. After a hot-(un)plug we might have a different device or no
+device. In the recovery case we expect to start and end with the same
+device. Why not apply the same logic to the pci_dev?
 
-You can still mention papr-scm, but I would expect something like:
+Something I was tinkering with before I left IBM was re-working the
+way EEH handles recovering devices that don't have a driver with error
+handling callbacks to something like:
 
-What:           /sys/bus/nd/devices/nmemX/events
-Date:           September 2021
-KernelVersion:  5.16
-Contact:        Kajol Jain <kjain@linux.ibm.com>
-Description:
-                (RO) Attribute group to describe performance monitoring events
-                for the nvdimm memory device. Each attribute in this group
-                describes a single performance monitoring event supported by
-                this nvdimm pmu.  The name of the file is the name of the event.
-                (See ABI/testing/sysfs-bus-event_source-devices-events). A
-                listing of the events supported by a given nvdimm provider type
-                can be found in Documentation/driver-api/nvdimm/$provider, for
-                example: Documentation/driver-api/nvdimm/papr-scm.
+1. unbind the driver
+2. pci_save_state()
+3. do the reset
+4. pci_restore_state()
+5. re-bind the driver
 
+That would allow keeping the pci_dev around and let me delete a pile
+of confusing code which handles binding the eeh_dev to the new
+pci_dev. The obvious problem with that approach is the assumption the
+device is functional enough to allow saving the config space, but I
+don't think that's a deal breaker. We could stash a copy of the device
+state before we allow drivers to attach and use that to restore the
+device after the reset. The end result would be the same known-good
+state that we'd get after a re-scan.
 
+> That said, I think for the recovery case we might be able to drop the
+> pci_dev_is_added() and rely on pdev->driver != NULL which we check
+> anyway and that should catch any PCI device that was already removed.
 
-> +
-> +What:          /sys/devices/nmemX/cpumask
-> +Date:          June 2021
-> +Contact:       linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, nvdimm@lists.linux.dev,
-> +Description:   (RO) This sysfs file exposes the cpumask which is designated to make
-> +                HCALLs to retrieve nvdimm pmu event counter data.
-
-Seems this one would be provider generic, so no need to refer to PPC
-specific concepts like HCALLs.
+Would that work if there was an error on a device without a driver
+bound? If you're just trying to stop races between recovery and device
+removal then pci_dev_is_added() is probably the right tool for the
+job. Trying to substitute it with a proxy seems like a bad idea.
