@@ -1,37 +1,39 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D06E7403548
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Sep 2021 09:28:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A065403546
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Sep 2021 09:27:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H4DJW5HMMz3c67
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Sep 2021 17:28:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H4DHd2wSSz2ypC
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Sep 2021 17:27:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=baidu.com (client-ip=220.181.3.85; helo=baidu.com;
+ smtp.mailfrom=baidu.com (client-ip=111.202.115.85; helo=baidu.com;
  envelope-from=caihuoqing@baidu.com; receiver=<UNKNOWN>)
-Received: from baidu.com (mx21.baidu.com [220.181.3.85])
- by lists.ozlabs.org (Postfix) with ESMTP id 4H4DHB26wmz2xnc
+X-Greylist: delayed 931 seconds by postgrey-1.36 at boromir;
+ Wed, 08 Sep 2021 17:27:17 AEST
+Received: from baidu.com (mx20.baidu.com [111.202.115.85])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4H4DH93lzmz2xgN
  for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Sep 2021 17:27:12 +1000 (AEST)
-Received: from BC-Mail-Ex31.internal.baidu.com (unknown [172.31.51.25])
- by Forcepoint Email with ESMTPS id 1004E927106F60D5A71A;
- Wed,  8 Sep 2021 15:11:35 +0800 (CST)
+Received: from BC-Mail-Ex30.internal.baidu.com (unknown [172.31.51.24])
+ by Forcepoint Email with ESMTPS id 3224E2BA1E951A9254FA;
+ Wed,  8 Sep 2021 15:11:38 +0800 (CST)
 Received: from BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) by
- BC-Mail-Ex31.internal.baidu.com (172.31.51.25) with Microsoft SMTP Server
+ BC-Mail-Ex30.internal.baidu.com (172.31.51.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2242.12; Wed, 8 Sep 2021 15:11:34 +0800
+ 15.1.2242.12; Wed, 8 Sep 2021 15:11:37 +0800
 Received: from LAPTOP-UKSR4ENP.internal.baidu.com (172.31.63.8) by
  BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2308.14; Wed, 8 Sep 2021 15:11:33 +0800
+ 15.1.2308.14; Wed, 8 Sep 2021 15:11:36 +0800
 From: Cai Huoqing <caihuoqing@baidu.com>
 To: <caihuoqing@baidu.com>
-Subject: [PATCH 1/2] soc: bcm: bcm-pmb: Make use of the helper function
+Subject: [PATCH 1/2] soc: fsl: guts: Make use of the helper function
  devm_platform_ioremap_resource()
-Date: Wed, 8 Sep 2021 15:11:12 +0800
-Message-ID: <20210908071123.348-2-caihuoqing@baidu.com>
+Date: Wed, 8 Sep 2021 15:11:13 +0800
+Message-ID: <20210908071123.348-3-caihuoqing@baidu.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210908071123.348-1-caihuoqing@baidu.com>
 References: <20210908071123.348-1-caihuoqing@baidu.com>
@@ -77,30 +79,30 @@ separately
 
 Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
 ---
- drivers/soc/bcm/bcm63xx/bcm-pmb.c | 4 +---
+ drivers/soc/fsl/guts.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/soc/bcm/bcm63xx/bcm-pmb.c b/drivers/soc/bcm/bcm63xx/bcm-pmb.c
-index 774465c119be..7bbe46ea5f94 100644
---- a/drivers/soc/bcm/bcm63xx/bcm-pmb.c
-+++ b/drivers/soc/bcm/bcm63xx/bcm-pmb.c
-@@ -276,7 +276,6 @@ static int bcm_pmb_probe(struct platform_device *pdev)
+diff --git a/drivers/soc/fsl/guts.c b/drivers/soc/fsl/guts.c
+index d5e9a5f2c087..072473a16f4d 100644
+--- a/drivers/soc/fsl/guts.c
++++ b/drivers/soc/fsl/guts.c
+@@ -140,7 +140,6 @@ static int fsl_guts_probe(struct platform_device *pdev)
+ {
+ 	struct device_node *np = pdev->dev.of_node;
  	struct device *dev = &pdev->dev;
- 	const struct bcm_pmb_pd_data *table;
- 	const struct bcm_pmb_pd_data *e;
 -	struct resource *res;
- 	struct bcm_pmb *pmb;
- 	int max_id;
- 	int err;
-@@ -287,8 +286,7 @@ static int bcm_pmb_probe(struct platform_device *pdev)
+ 	const struct fsl_soc_die_attr *soc_die;
+ 	const char *machine;
+ 	u32 svr;
+@@ -152,8 +151,7 @@ static int fsl_guts_probe(struct platform_device *pdev)
  
- 	pmb->dev = dev;
+ 	guts->little_endian = of_property_read_bool(np, "little-endian");
  
 -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	pmb->base = devm_ioremap_resource(&pdev->dev, res);
-+	pmb->base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(pmb->base))
- 		return PTR_ERR(pmb->base);
+-	guts->regs = devm_ioremap_resource(dev, res);
++	guts->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(guts->regs))
+ 		return PTR_ERR(guts->regs);
  
 -- 
 2.25.1
