@@ -2,66 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 953E9403175
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Sep 2021 01:18:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1B2940320C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Sep 2021 03:04:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H41RR46Nqz2yV7
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Sep 2021 09:18:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H43nt5dgMz2yhl
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Sep 2021 11:04:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=puMEaI8X;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel-com.20150623.gappssmtp.com header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=gA2AKqSY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f2e;
- helo=mail-qv1-xf2e.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::630;
+ helo=mail-pl1-x630.google.com; envelope-from=dan.j.williams@intel.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=puMEaI8X; dkim-atps=neutral
-Received: from mail-qv1-xf2e.google.com (mail-qv1-xf2e.google.com
- [IPv6:2607:f8b0:4864:20::f2e])
+ unprotected) header.d=intel-com.20150623.gappssmtp.com
+ header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=gA2AKqSY; dkim-atps=neutral
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com
+ [IPv6:2607:f8b0:4864:20::630])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H41Qj5NwRz2xtS
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Sep 2021 09:18:03 +1000 (AEST)
-Received: by mail-qv1-xf2e.google.com with SMTP id z12so344711qvx.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Sep 2021 16:18:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H43n70MDSz2xry
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Sep 2021 11:04:03 +1000 (AEST)
+Received: by mail-pl1-x630.google.com with SMTP id l11so250891plk.6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Sep 2021 18:04:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=6C+UtyiW8etyIzvp1bSQYtwL6nt/zyAE4orGv5NIebE=;
- b=puMEaI8X9kp7QcnZkvnzMXidvJ8oGSkYKvYc/UV/g8KQlI424kmo1dJSCv3lm39c35
- bn0OJMX3hL9Bg3gE/eOKrQWXmwT6E72nTOXHBSqrvdABa/K5y2a2GkIAtOehmWMHx7BH
- vldMocWf05mpZDnaDFKWCta5scmeM3rnytdbepdKd8641BxiQxDwYOa4TaaVQO5AZ40x
- 9/rnQ6KZZTM/Ug393WL0U1xznAkrnQchQixFgqYXF4TByQayfO5k9ytxozaf7V5qfUHq
- +I/s2as/yQah+8zBfwT2bsdhxbTNS3GQ7CCZ0mWkBWrxktvwjyPgZaEVVxkNYq73Ak95
- bwHg==
+ :cc; bh=0iKng76PsWyRz/8pjKL65aYQlih1TWo8dnb6KnDDehM=;
+ b=gA2AKqSYLA1MsQE3BMExMBWz0L/kPrN0d88m681N9dDRm9y82WlVbC6+jWD0ghSlB2
+ SyFe6JEC96j2lU/x/FecVxc0WYkUZcUG9uoZpqzpweENWnSLhz5JKPTrGO9eCS27Vbvc
+ ewatD2c1ew2eWWvkKyoX+9LBmuw46PIVIINoX6SHItS4Kk47q7OabMVfkxbBnPtll2SG
+ Uqu7JK1N11ylCIyfv3MbaMrhirdiv3iPRTLfZIakN0PCojZw5OfR2W7zsOippo2Hb2UC
+ XSBHw7iAga4VdN4tdA1JthLBERWT0L+AMeMHrii+pyS1jLW0BcEpe1VSAu9txz4ZfQZo
+ Th3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=6C+UtyiW8etyIzvp1bSQYtwL6nt/zyAE4orGv5NIebE=;
- b=Yo6pfKpVNG8qM0mGsKELMwZPDGTdkOrdCIK4ETntvpvJqL/2iC5U5PE2WHLh3dmxxk
- PaQK763zunNB4jVOfytMsWYoK+2FzqQy0dBp2fu0UZkjxW+9OQyxXKM1qS+zxCZbfRmJ
- RRCzcPKZ0DLYeikLKbkiOF9Dws7ukYuieMQ+gLQW1Rw9irF0K8nXiSl3Oxt6Mi996lF3
- w/Ei4kGOwtWd9eSxU1fR3IYwoh0Y/eXwkQ5GZkkoG7ouvyY+Kpwam8M7BDPeQL4Xk49r
- xzdzl9I5eH+KqdHEhNPt/YA1+WoiaGhvxcFOa4Mf3/UuLm54Dpn9wMNaahfIsBJo1UVV
- jm6Q==
-X-Gm-Message-State: AOAM530ugc6mIgEBEaNr661GWBTqLDC4g49SMQVVjf+UtGcBvdXxF+at
- H0H09DxN9xDNU4eC8HCDOS3s5PGr4fJ0k4lyE9c=
-X-Google-Smtp-Source: ABdhPJyzdMj0I5Gsf1Kc4FI/9QXRITr/yhY0akNaeNEEODZjb8ejyKvGmVHwxFTs6qaL9e5qzsXJfiEMJgISbB+nHd0=
-X-Received: by 2002:a0c:e04a:: with SMTP id y10mr737242qvk.14.1631056680456;
- Tue, 07 Sep 2021 16:18:00 -0700 (PDT)
+ bh=0iKng76PsWyRz/8pjKL65aYQlih1TWo8dnb6KnDDehM=;
+ b=VbbbF/VNpljHk8gzdV9LpoNLSKeLmSbmjnHdAFOtuXf5O1Kow9FmKD6PEIJVe2WfwQ
+ lnSsEtRYLbGOtaJxI5xHJDXNYb0xo3sNyvyVwciFSOBhCsRLKy95kphTR88jRpd1MN4u
+ CBJ6223Epv206KnwnjbeASq+RecMfLVt9WrXwUFbchFDuskPUt+XPxiqQalB3O8muf1/
+ +m96o6HWpb0ZXPh0gDhquYTKsak5S1ouBQQ50xsSTWWnKbHb3RYstDOoXIcgr9FwDTFp
+ V0ovkURRf5Jjtb0SKRiw6v+xjY2kW8VatzCAIZNvr1/ZztUkSvKK8cguWYH4HMwZPIeS
+ vXrQ==
+X-Gm-Message-State: AOAM532ce0lAUpRFBKhZXmKYt7n5psyGSgAGc6noanQyvHBODZmc6tQT
+ 1w9NlEwDt+AAkGJFovedAcCgAmTV9IJry036JJN+yg==
+X-Google-Smtp-Source: ABdhPJyamM17dGx2IKarxEjJH/roNB9B0xLZUNSeDoP4i/s+QWcFqzVWNormFy+djtNq4zfCina5FNZQADngZlT7D84=
+X-Received: by 2002:a17:90b:3b84:: with SMTP id
+ pc4mr1194364pjb.220.1631063038886; 
+ Tue, 07 Sep 2021 18:03:58 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210907085946.21694-1-vulab@iscas.ac.cn>
- <0fa7ddfa-cd65-583e-a83f-4cbcd4e7337f@linux.ibm.com>
-In-Reply-To: <0fa7ddfa-cd65-583e-a83f-4cbcd4e7337f@linux.ibm.com>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Wed, 8 Sep 2021 09:17:49 +1000
-Message-ID: <CAOSf1CGEAhXzqEU_-F39um8ri98r1Ww+AtsXJqZu4U7a_ODi9w@mail.gmail.com>
-Subject: Re: [PATCH] pci/hotplug/pnv-php: Remove probable double put
-To: Tyrel Datwyler <tyreld@linux.ibm.com>
+References: <20210903050914.273525-1-kjain@linux.ibm.com>
+ <20210903050914.273525-5-kjain@linux.ibm.com>
+In-Reply-To: <20210903050914.273525-5-kjain@linux.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Tue, 7 Sep 2021 18:03:48 -0700
+Message-ID: <CAPcyv4h-MgZmteMSUfdeQL+XCxL5HvxK87HA3JYB0OoQUaPipQ@mail.gmail.com>
+Subject: Re: [RESEND PATCH v4 4/4] powerpc/papr_scm: Document papr_scm sysfs
+ event format entries
+To: Kajol Jain <kjain@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -74,39 +78,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>, Xu Wang <vulab@iscas.ac.cn>,
- linux-pci <linux-pci@vger.kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+Cc: Linux NVDIMM <nvdimm@lists.linux.dev>, Santosh Sivaraj <santosh@fossix.org>,
+ maddy@linux.ibm.com, "Weiny, Ira" <ira.weiny@intel.com>,
+ rnsastry@linux.ibm.com, Peter Zijlstra <peterz@infradead.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ atrajeev@linux.vnet.ibm.com, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Vishal L Verma <vishal.l.verma@intel.com>,
+ Vaibhav Jain <vaibhav@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>,
  linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 8, 2021 at 8:02 AM Tyrel Datwyler <tyreld@linux.ibm.com> wrote:
+On Thu, Sep 2, 2021 at 10:11 PM Kajol Jain <kjain@linux.ibm.com> wrote:
 >
-> On 9/7/21 1:59 AM, Xu Wang wrote:
-> > Device node iterators put the previous value of the index variable,
-> > so an explicit put causes a double put.
-> >
-> > Signed-off-by: Xu Wang <vulab@iscas.ac.cn>
-> > ---
-> >  drivers/pci/hotplug/pnv_php.c | 1 -
-> >  1 file changed, 1 deletion(-)
-> >
-> > diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
-> > index 04565162a449..ed4d1a2c3f22 100644
-> > --- a/drivers/pci/hotplug/pnv_php.c
-> > +++ b/drivers/pci/hotplug/pnv_php.c
-> > @@ -158,7 +158,6 @@ static void pnv_php_detach_device_nodes(struct device_node *parent)
-> >       for_each_child_of_node(parent, dn) {
-> >               pnv_php_detach_device_nodes(dn);
-> >
-> > -             of_node_put(dn);
-> >               of_detach_node(dn);
+> Details is added for the event, cpumask and format attributes
+> in the ABI documentation.
 >
-> Are you sure this is a double put? This looks to me like its meant to drive tear
-> down of the device by putting a long term reference and not the short term get
-> that is part of the iterator.
+> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Reviewed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+> Tested-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
+> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+> ---
+>  Documentation/ABI/testing/sysfs-bus-papr-pmem | 31 +++++++++++++++++++
+>  1 file changed, 31 insertions(+)
+>
+> diff --git a/Documentation/ABI/testing/sysfs-bus-papr-pmem b/Documentation/ABI/testing/sysfs-bus-papr-pmem
+> index 95254cec92bf..4d86252448f8 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-papr-pmem
+> +++ b/Documentation/ABI/testing/sysfs-bus-papr-pmem
+> @@ -61,3 +61,34 @@ Description:
+>                 * "CchRHCnt" : Cache Read Hit Count
+>                 * "CchWHCnt" : Cache Write Hit Count
+>                 * "FastWCnt" : Fast Write Count
+> +
+> +What:          /sys/devices/nmemX/format
+> +Date:          June 2021
+> +Contact:       linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, nvdimm@lists.linux.dev,
+> +Description:   (RO) Attribute group to describe the magic bits
+> +                that go into perf_event_attr.config for a particular pmu.
+> +                (See ABI/testing/sysfs-bus-event_source-devices-format).
+> +
+> +                Each attribute under this group defines a bit range of the
+> +                perf_event_attr.config. Supported attribute is listed
+> +                below::
+> +
+> +                   event  = "config:0-4"  - event ID
+> +
+> +               For example::
+> +                   noopstat = "event=0x1"
+> +
+> +What:          /sys/devices/nmemX/events
 
-Yeah, the put is there is to drop the initial ref so the node can be
-released. It might be worth adding a comment.
+That's not a valid sysfs path. Did you mean /sys/bus/nd/devices/nmemX?
+
+> +Date:          June 2021
+> +Contact:       linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, nvdimm@lists.linux.dev,
+> +Description:    (RO) Attribute group to describe performance monitoring
+> +                events specific to papr-scm. Each attribute in this group describes
+> +                a single performance monitoring event supported by this nvdimm pmu.
+> +                The name of the file is the name of the event.
+> +                (See ABI/testing/sysfs-bus-event_source-devices-events).
+
+Given these events are in the generic namespace the ABI documentation
+should be generic as well. So I think move these entries to
+Documentation/ABI/testing/sysfs-bus-nvdimm directly.
+
+You can still mention papr-scm, but I would expect something like:
+
+What:           /sys/bus/nd/devices/nmemX/events
+Date:           September 2021
+KernelVersion:  5.16
+Contact:        Kajol Jain <kjain@linux.ibm.com>
+Description:
+                (RO) Attribute group to describe performance monitoring events
+                for the nvdimm memory device. Each attribute in this group
+                describes a single performance monitoring event supported by
+                this nvdimm pmu.  The name of the file is the name of the event.
+                (See ABI/testing/sysfs-bus-event_source-devices-events). A
+                listing of the events supported by a given nvdimm provider type
+                can be found in Documentation/driver-api/nvdimm/$provider, for
+                example: Documentation/driver-api/nvdimm/papr-scm.
+
+
+
+> +
+> +What:          /sys/devices/nmemX/cpumask
+> +Date:          June 2021
+> +Contact:       linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, nvdimm@lists.linux.dev,
+> +Description:   (RO) This sysfs file exposes the cpumask which is designated to make
+> +                HCALLs to retrieve nvdimm pmu event counter data.
+
+Seems this one would be provider generic, so no need to refer to PPC
+specific concepts like HCALLs.
