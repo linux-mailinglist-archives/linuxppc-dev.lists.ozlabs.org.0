@@ -2,37 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F1BA403547
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Sep 2021 09:28:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D06E7403548
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Sep 2021 09:28:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H4DJ46Q1pz30Hr
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Sep 2021 17:28:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H4DJW5HMMz3c67
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Sep 2021 17:28:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=baidu.com (client-ip=220.181.3.85; helo=baidu.com;
  envelope-from=caihuoqing@baidu.com; receiver=<UNKNOWN>)
 Received: from baidu.com (mx21.baidu.com [220.181.3.85])
- by lists.ozlabs.org (Postfix) with ESMTP id 4H4DH93q2bz2xnc
+ by lists.ozlabs.org (Postfix) with ESMTP id 4H4DHB26wmz2xnc
  for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Sep 2021 17:27:12 +1000 (AEST)
-Received: from BC-Mail-Ex32.internal.baidu.com (unknown [172.31.51.26])
- by Forcepoint Email with ESMTPS id 607D8EDA2FE6260E1176;
- Wed,  8 Sep 2021 15:11:31 +0800 (CST)
+Received: from BC-Mail-Ex31.internal.baidu.com (unknown [172.31.51.25])
+ by Forcepoint Email with ESMTPS id 1004E927106F60D5A71A;
+ Wed,  8 Sep 2021 15:11:35 +0800 (CST)
 Received: from BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) by
- BC-Mail-Ex32.internal.baidu.com (172.31.51.26) with Microsoft SMTP Server
+ BC-Mail-Ex31.internal.baidu.com (172.31.51.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2242.12; Wed, 8 Sep 2021 15:11:31 +0800
+ 15.1.2242.12; Wed, 8 Sep 2021 15:11:34 +0800
 Received: from LAPTOP-UKSR4ENP.internal.baidu.com (172.31.63.8) by
  BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2308.14; Wed, 8 Sep 2021 15:11:30 +0800
+ 15.1.2308.14; Wed, 8 Sep 2021 15:11:33 +0800
 From: Cai Huoqing <caihuoqing@baidu.com>
 To: <caihuoqing@baidu.com>
-Subject: [PATCH 1/2] soc: amlogic: canvas: Make use of the helper function
+Subject: [PATCH 1/2] soc: bcm: bcm-pmb: Make use of the helper function
  devm_platform_ioremap_resource()
-Date: Wed, 8 Sep 2021 15:11:11 +0800
-Message-ID: <20210908071123.348-1-caihuoqing@baidu.com>
+Date: Wed, 8 Sep 2021 15:11:12 +0800
+Message-ID: <20210908071123.348-2-caihuoqing@baidu.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20210908071123.348-1-caihuoqing@baidu.com>
+References: <20210908071123.348-1-caihuoqing@baidu.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [172.31.63.8]
@@ -75,30 +77,30 @@ separately
 
 Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
 ---
- drivers/soc/amlogic/meson-canvas.c | 4 +---
+ drivers/soc/bcm/bcm63xx/bcm-pmb.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/soc/amlogic/meson-canvas.c b/drivers/soc/amlogic/meson-canvas.c
-index d0329ad170d1..383b0cfc584e 100644
---- a/drivers/soc/amlogic/meson-canvas.c
-+++ b/drivers/soc/amlogic/meson-canvas.c
-@@ -168,7 +168,6 @@ EXPORT_SYMBOL_GPL(meson_canvas_free);
- 
- static int meson_canvas_probe(struct platform_device *pdev)
- {
--	struct resource *res;
- 	struct meson_canvas *canvas;
+diff --git a/drivers/soc/bcm/bcm63xx/bcm-pmb.c b/drivers/soc/bcm/bcm63xx/bcm-pmb.c
+index 774465c119be..7bbe46ea5f94 100644
+--- a/drivers/soc/bcm/bcm63xx/bcm-pmb.c
++++ b/drivers/soc/bcm/bcm63xx/bcm-pmb.c
+@@ -276,7 +276,6 @@ static int bcm_pmb_probe(struct platform_device *pdev)
  	struct device *dev = &pdev->dev;
+ 	const struct bcm_pmb_pd_data *table;
+ 	const struct bcm_pmb_pd_data *e;
+-	struct resource *res;
+ 	struct bcm_pmb *pmb;
+ 	int max_id;
+ 	int err;
+@@ -287,8 +286,7 @@ static int bcm_pmb_probe(struct platform_device *pdev)
  
-@@ -176,8 +175,7 @@ static int meson_canvas_probe(struct platform_device *pdev)
- 	if (!canvas)
- 		return -ENOMEM;
+ 	pmb->dev = dev;
  
 -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	canvas->reg_base = devm_ioremap_resource(dev, res);
-+	canvas->reg_base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(canvas->reg_base))
- 		return PTR_ERR(canvas->reg_base);
+-	pmb->base = devm_ioremap_resource(&pdev->dev, res);
++	pmb->base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(pmb->base))
+ 		return PTR_ERR(pmb->base);
  
 -- 
 2.25.1
