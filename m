@@ -2,92 +2,111 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9771F403EF9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Sep 2021 20:18:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1185D404178
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Sep 2021 01:00:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H4Vkp3zH7z2yp5
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Sep 2021 04:18:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H4czL6yfkz2yNr
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Sep 2021 08:59:58 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=bU+w2z9v;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=xmission.com (client-ip=166.70.13.231;
- helo=out01.mta.xmission.com; envelope-from=ebiederm@xmission.com;
- receiver=<UNKNOWN>)
-Received: from out01.mta.xmission.com (out01.mta.xmission.com [166.70.13.231])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H4VkJ0lMTz2xgN
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Sep 2021 04:18:14 +1000 (AEST)
-Received: from in02.mta.xmission.com ([166.70.13.52]:36066)
- by out01.mta.xmission.com with esmtps (TLS1.3) tls
- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.93)
- (envelope-from <ebiederm@xmission.com>)
- id 1mO299-00646x-0B; Wed, 08 Sep 2021 12:18:07 -0600
-Received: from ip68-227-160-95.om.om.cox.net ([68.227.160.95]:51806
- helo=email.xmission.com)
- by in02.mta.xmission.com with esmtpsa (TLS1.3) tls
- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.93)
- (envelope-from <ebiederm@xmission.com>)
- id 1mO297-006PT4-LO; Wed, 08 Sep 2021 12:18:06 -0600
-From: ebiederm@xmission.com (Eric W. Biederman)
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-References: <fd7938d94008711d441551c06b25a033669a0618.1629732940.git.christophe.leroy@csgroup.eu>
- <a94be61f008ab29c231b805e1a97e9dab35cb0cc.1629732940.git.christophe.leroy@csgroup.eu>
- <87mtoux1hi.fsf@disp2133>
- <2715792c-eb10-eeb8-3d49-24486abe953b@csgroup.eu>
-Date: Wed, 08 Sep 2021 13:17:39 -0500
-In-Reply-To: <2715792c-eb10-eeb8-3d49-24486abe953b@csgroup.eu> (Christophe
- Leroy's message of "Fri, 3 Sep 2021 10:56:14 +0200")
-Message-ID: <877dfrrkxo.fsf@disp2133>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=amd.com
+ (client-ip=40.107.244.70; helo=nam12-mw2-obe.outbound.protection.outlook.com;
+ envelope-from=thomas.lendacky@amd.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256
+ header.s=selector1 header.b=bU+w2z9v; 
+ dkim-atps=neutral
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam12on2070.outbound.protection.outlook.com [40.107.244.70])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H4cyX3hYRz2xYv
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Sep 2021 08:59:13 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=UPu0b+JDkq/ZC0JxyB6BNg3OwZ7ji3o5UjovTzBdWtMzL1SocATjZ2O7Jysh9BJOh8h+djd59LFwqE4Q1uPVGjJQJFLrsbGhzas1PQCJKpYh665ZJtwArqj4zns1Xkho4HsAq9ou6rCIcMJXkcog7XbudBPTWPMOnMj2jbcMod5lHPbpYKQdG0qP8ly7CjcQa8YHLdorPdUDRD//c5tFcaRCy51JKa0lLl4NsC8JILNjxmrhLSNQji5OLVvoNiqLzb3YdtAzEua4c7d6C/yKDWMgAXM2mHeAgwe93KXTwd4rh2OPaZTj0KcNy5t6RLc/Q6bjoB/hLq95kQJXrOhA1w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version; 
+ bh=7Wh2FFXsJRDtCqhHeo4NGZGQQSRx6vJ90yxYFUVmHqY=;
+ b=OFn8JEyWPasNOG1h5TOQMV/whVBs0BWXi472ElAlTTqzfUHBKhLBseEZxniBcKIUc2UtzU2NvjuYA2XPWkcWPSoBnhn4wMqBw8voldmrln3xURmzb6lljCP5OFtKb9SjVxII0vBKmVQbyI+0Wb0vkSBorDZItQu20KgO2iMezmF53/EoLLaPMbMWITonw2WS7iQEPpamKQjsrUgfOoEYlnu1EccdtM3Acxr+FJtUL1CbuJkDCZxcl7qMifCGlE/H8hoyGE0vowHjkzYlVCobnjN5NMycpiuIzLWRFNPReUU7P0mXi8ywuulU0MQojOQihKMNI8CMkHeuZGaq39BKrQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7Wh2FFXsJRDtCqhHeo4NGZGQQSRx6vJ90yxYFUVmHqY=;
+ b=bU+w2z9vlwNclNtevXBdzfIrg5DLck5syjSbqsD3R50+ARmaTzDju6S2ggOSpaWWkBFRnGG9vyYGrRoWA10v3G36/F/6AZ+trQalpNOCAR2Hu4TTdwNZVqH4fZ2fPFU8v+4WnXOJgAxDk+olxKWLgbDFO6bPFlQPkkl+wwagcwQ=
+Received: from DM5PR18CA0081.namprd18.prod.outlook.com (2603:10b6:3:3::19) by
+ BN9PR12MB5195.namprd12.prod.outlook.com (2603:10b6:408:11c::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4478.19; Wed, 8 Sep
+ 2021 22:58:54 +0000
+Received: from DM6NAM11FT028.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:3:3:cafe::9d) by DM5PR18CA0081.outlook.office365.com
+ (2603:10b6:3:3::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4500.14 via Frontend
+ Transport; Wed, 8 Sep 2021 22:58:54 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DM6NAM11FT028.mail.protection.outlook.com (10.13.173.140) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.4500.14 via Frontend Transport; Wed, 8 Sep 2021 22:58:53 +0000
+Received: from tlendack-t1.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.8; Wed, 8 Sep 2021
+ 17:58:51 -0500
+From: Tom Lendacky <thomas.lendacky@amd.com>
+To: <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
+ <linuxppc-dev@lists.ozlabs.org>, <linux-s390@vger.kernel.org>,
+ <iommu@lists.linux-foundation.org>, <kvm@vger.kernel.org>,
+ <linux-efi@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
+ <linux-graphics-maintainer@vmware.com>, <amd-gfx@lists.freedesktop.org>,
+ <dri-devel@lists.freedesktop.org>, <kexec@lists.infradead.org>,
+ <linux-fsdevel@vger.kernel.org>
+Subject: [PATCH v3 0/8] Implement generic cc_platform_has() helper function
+Date: Wed, 8 Sep 2021 17:58:31 -0500
+Message-ID: <cover.1631141919.git.thomas.lendacky@amd.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-XM-SPF: eid=1mO297-006PT4-LO; ; ; mid=<877dfrrkxo.fsf@disp2133>; ; ;
- hst=in02.mta.xmission.com; ; ; ip=68.227.160.95; ; ; frm=ebiederm@xmission.com;
- ; ; spf=neutral
-X-XM-AID: U2FsdGVkX19yL/kIwex/zyiK501Jr7g1bR/ayZ/xJWY=
-X-SA-Exim-Connect-IP: 68.227.160.95
-X-SA-Exim-Mail-From: ebiederm@xmission.com
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa07.xmission.com
-X-Spam-Level: ***
-X-Spam-Status: No, score=3.2 required=8.0 tests=ALL_TRUSTED,BAYES_50,
- DCC_CHECK_NEGATIVE,T_TM2_M_HEADER_IN_MSG,T_TooManySym_01,
- T_TooManySym_02,T_TooManySym_03,XMGappySubj_01,XMGappySubj_02,
- XMSubLong,XM_B_SpammyTLD,XM_B_SpammyWords,XM_B_Unicode,XM_B_Unicode3
- autolearn=disabled version=3.4.2
-X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
- *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
- *      [score: 0.4778] *  0.7 XMSubLong Long Subject
- *  0.5 XMGappySubj_01 Very gappy subject
- *  1.0 XMGappySubj_02 Gappier still
- *  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
- *  0.0 XM_B_Unicode BODY: Testing for specific types of unicode
- *  0.0 XM_B_Unicode3 BODY: Testing for specific types of unicode
- * -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
- *      [sa07 1397; Body=1 Fuz1=1 Fuz2=1]
- *  0.0 T_TooManySym_03 6+ unique symbols in subject
- *  0.2 XM_B_SpammyWords One or more commonly used spammy words
- *  1.0 XM_B_SpammyTLD Contains uncommon/spammy TLD
- *  0.0 T_TooManySym_02 5+ unique symbols in subject
- *  0.0 T_TooManySym_01 4+ unique symbols in subject
-X-Spam-DCC: XMission; sa07 1397; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: ***;Christophe Leroy <christophe.leroy@csgroup.eu>
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 763 ms - load_scoreonly_sql: 0.04 (0.0%),
- signal_user_changed: 10 (1.3%), b_tie_ro: 9 (1.2%), parse: 0.97 (0.1%),
- extract_message_metadata: 16 (2.0%), get_uri_detail_list: 2.6 (0.3%),
- tests_pri_-1000: 15 (1.9%), tests_pri_-950: 1.24 (0.2%),
- tests_pri_-900: 1.00 (0.1%), tests_pri_-90: 313 (41.0%), check_bayes:
- 304 (39.9%), b_tokenize: 10 (1.3%), b_tok_get_all: 9 (1.2%),
- b_comp_prob: 2.6 (0.3%), b_tok_touch_all: 279 (36.6%), b_finish: 1.12
- (0.1%), tests_pri_0: 390 (51.2%), check_dkim_signature: 0.66 (0.1%),
- check_dkim_adsp: 3.3 (0.4%), poll_dns_idle: 0.03 (0.0%), tests_pri_10:
- 3.1 (0.4%), tests_pri_500: 10 (1.3%), rewrite_mail: 0.00 (0.0%)
-Subject: Re: [PATCH v2 3/5] signal: Add unsafe_copy_siginfo_to_user()
-X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
-X-SA-Exim-Scanned: Yes (on in02.mta.xmission.com)
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: d8edaccc-5d97-45c7-b500-08d9731c3b44
+X-MS-TrafficTypeDiagnostic: BN9PR12MB5195:
+X-Microsoft-Antispam-PRVS: <BN9PR12MB51955B56FFF2FA3E4078B327ECD49@BN9PR12MB5195.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2887;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: KPQV3Dld0tKh03daLbVsw8fNE40OpEf6zkH4Hh4z7l/FAYUN/MPv82J4MeHd87eSFtlQ8dRQ5QO+7UZ8ghypbyg1l34pNPEPcVI3RWyRii4bHyLgflt+hmUWSgMSpIkxR4V9+bs36hzwwCdIDa3A5cN252dbn9p3L8xUCpM3c8uCkjL2D70B4NzpTGMqGRowi5LbfviG+v7XzaRQV6nsJr5MpzreseU11nNTcIh8kePueBrzl2QLFLER3V62KEiPALgln4ipFMHqLeekGgR3KXItUimhMnszmnAk8eXUJOW3yjaPRwl/54zrhkoMQDvQPSbMxCbt6Om1ibNsjtR8o5F7K33JEhRDaKSqW5NftdqCeb5teCpBR5xMecmhFenFiYmbHvX3gsaRYNiSRU0DRgqwxBMA8W0kvqdcRAWma8peJ1A8mQlOfKpbDKQyMopWExjcSvXe09Q5L5br9wiOSBQyrShpkvyQNZvEanwBZ75wYYoYsbO0Gfp5nci8o666rmnhxGfNc8ixysJ66NOKYTP5mcITphxkY/rJswvgO+4qvZWbFwKXav+9NDKU1I8Hdky3P6/cjpB290suAG6ib8SCgu8sO6QP4eznN3AngfsaYrqdD7nczfasB2zApCzy2XIZr443JHT08SR6BFZqDBw4EBFc1nRqKMUdGtNmpRdEYzkJlTQlCSRjLKo09VwObdWxFzqECBKKdRHJQoq36HFHkriIhqK+8owFy+4NRo5jziTWZr+STXGQt3CO/l+j9XjB4c0XigDlF9tBvkEcd4t5ycgWWxQy5EfUO5JKd1XQImAeAp1GUKGEzUuqHgFixX4hfsAsMdrwmU2gji+ef0OjBiqaYvrrXQIbTd2fL7tdCgumDFgrxgJcT4+VfDYQhdDqJUyDeGf/9JEymi7Nehxt22yklmAa907ANajbWk8=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(4636009)(136003)(376002)(346002)(396003)(39860400002)(46966006)(36840700001)(4326008)(7416002)(478600001)(7696005)(81166007)(47076005)(8936002)(2616005)(36860700001)(26005)(6666004)(83380400001)(966005)(2906002)(336012)(426003)(186003)(316002)(86362001)(70206006)(70586007)(8676002)(7406005)(5660300002)(16526019)(921005)(36756003)(82740400003)(356005)(82310400003)(110136005)(54906003)(41533002)(2101003)(83996005)(36900700001);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2021 22:58:53.9334 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d8edaccc-5d97-45c7-b500-08d9731c3b44
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT028.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR12MB5195
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,128 +118,150 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
- linux-kernel@vger.kernel.org
+Cc: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Brijesh Singh <brijesh.singh@amd.com>, David Airlie <airlied@linux.ie>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Paul Mackerras <paulus@samba.org>,
+ Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+ Andi Kleen <ak@linux.intel.com>, Baoquan
+ He <bhe@redhat.com>, Joerg Roedel <joro@8bytes.org>,
+ Christoph Hellwig <hch@infradead.org>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Dave Young <dyoung@redhat.com>, Tianyu Lan <Tianyu.Lan@microsoft.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>, Vasily Gorbik <gor@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Peter Zijlstra <peterz@infradead.org>, Daniel Vetter <daniel@ffwll.ch>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+This patch series provides a generic helper function, cc_platform_has(),
+to replace the sme_active(), sev_active(), sev_es_active() and
+mem_encrypt_active() functions.
 
-> Le 02/09/2021 =C3=A0 20:43, Eric W. Biederman a =C3=A9crit=C2=A0:
->> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->>
->>> In the same spirit as commit fb05121fd6a2 ("signal: Add
->>> unsafe_get_compat_sigset()"), implement an 'unsafe' version of
->>> copy_siginfo_to_user() in order to use it within user access blocks.
->>>
->>> For that, also add an 'unsafe' version of clear_user().
->>
->> Looking at your use cases you need the 32bit compat version of this
->> as well.
->>
->> The 32bit compat version is too complicated to become a macro, so I
->> don't think you can make this work correctly for the 32bit compat case.
->
-> When looking into patch 5/5 that you nacked, I think you missed the fact =
-that we
-> keep using copy_siginfo_to_user32() as it for the 32 bit compat case.
+It is expected that as new confidential computing technologies are
+added to the kernel, they can all be covered by a single function call
+instead of a collection of specific function calls all called from the
+same locations.
 
-I did.  My mistake.
+The powerpc and s390 patches have been compile tested only. Can the
+folks copied on this series verify that nothing breaks for them. Also,
+a new file, arch/powerpc/platforms/pseries/cc_platform.c, has been
+created for powerpc to hold the out of line function.
 
-However that mistake was so easy I think it mirrors the comments others
-have made that this looks like a maintenance hazard.
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Christian Borntraeger <borntraeger@de.ibm.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: David Airlie <airlied@linux.ie>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Joerg Roedel <joro@8bytes.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: VMware Graphics <linux-graphics-maintainer@vmware.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org>
 
-Is improving the performance of 32bit kernels interesting?
-Is improving the performance of 32bit compat support interesting?
+---
 
-If performance one or either of those cases is interesting it looks like
-we already have copy_siginfo_to_external32 the factor you would need
-to build unsafe_copy_siginfo_to_user32.
+Patches based on:
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+  4b93c544e90e ("thunderbolt: test: split up test cases in tb_test_credit_alloc_all")
 
-So I am not going to say impossible but please make something
-maintainable.  I unified all of the compat 32bit siginfo logic because
-it simply did not get enough love and attention when it was implemented
-per architecture.
+Changes since v2:
+- Changed the name from prot_guest_has() to cc_platform_has()
+- Took the cc_platform_has() function out of line. Created two new files,
+  cc_platform.c, in both x86 and ppc to implment the function. As a
+  result, also changed the attribute defines into enums.
+- Removed any received Reviewed-by's and Acked-by's given changes in this
+  version.
+- Added removal of new instances of mem_encrypt_active() usage in powerpc
+  arch.
+- Based on latest Linux tree to pick up powerpc changes related to the
+  mem_encrypt_active() function.
 
-In general I think that concern applies to this case as well.  We really
-need an implementation that shares as much burden as possible with other
-architectures.
+Changes since v1:
+- Moved some arch ioremap functions within #ifdef CONFIG_AMD_MEM_ENCRYPT
+  in prep for use of prot_guest_has() by TDX.
+- Added type includes to the the protected_guest.h header file to prevent
+  build errors outside of x86.
+- Made amd_prot_guest_has() EXPORT_SYMBOL_GPL
+- Used amd_prot_guest_has() in place of checking sme_me_mask in the
+  arch/x86/mm/mem_encrypt.c file.
 
-Eric
+Tom Lendacky (8):
+  x86/ioremap: Selectively build arch override encryption functions
+  mm: Introduce a function to check for confidential computing features
+  x86/sev: Add an x86 version of cc_platform_has()
+  powerpc/pseries/svm: Add a powerpc version of cc_platform_has()
+  x86/sme: Replace occurrences of sme_active() with cc_platform_has()
+  x86/sev: Replace occurrences of sev_active() with cc_platform_has()
+  x86/sev: Replace occurrences of sev_es_active() with cc_platform_has()
+  treewide: Replace the use of mem_encrypt_active() with
+    cc_platform_has()
+
+ arch/Kconfig                                 |  3 +
+ arch/powerpc/include/asm/mem_encrypt.h       |  5 --
+ arch/powerpc/platforms/pseries/Kconfig       |  1 +
+ arch/powerpc/platforms/pseries/Makefile      |  2 +
+ arch/powerpc/platforms/pseries/cc_platform.c | 26 ++++++
+ arch/powerpc/platforms/pseries/svm.c         |  5 +-
+ arch/s390/include/asm/mem_encrypt.h          |  2 -
+ arch/x86/Kconfig                             |  1 +
+ arch/x86/include/asm/io.h                    |  8 ++
+ arch/x86/include/asm/kexec.h                 |  2 +-
+ arch/x86/include/asm/mem_encrypt.h           | 14 +---
+ arch/x86/kernel/Makefile                     |  3 +
+ arch/x86/kernel/cc_platform.c                | 21 +++++
+ arch/x86/kernel/crash_dump_64.c              |  4 +-
+ arch/x86/kernel/head64.c                     |  4 +-
+ arch/x86/kernel/kvm.c                        |  3 +-
+ arch/x86/kernel/kvmclock.c                   |  4 +-
+ arch/x86/kernel/machine_kexec_64.c           | 19 +++--
+ arch/x86/kernel/pci-swiotlb.c                |  9 +-
+ arch/x86/kernel/relocate_kernel_64.S         |  2 +-
+ arch/x86/kernel/sev.c                        |  6 +-
+ arch/x86/kvm/svm/svm.c                       |  3 +-
+ arch/x86/mm/ioremap.c                        | 18 ++--
+ arch/x86/mm/mem_encrypt.c                    | 57 +++++++------
+ arch/x86/mm/mem_encrypt_identity.c           |  3 +-
+ arch/x86/mm/pat/set_memory.c                 |  3 +-
+ arch/x86/platform/efi/efi_64.c               |  9 +-
+ arch/x86/realmode/init.c                     |  8 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c      |  4 +-
+ drivers/gpu/drm/drm_cache.c                  |  4 +-
+ drivers/gpu/drm/vmwgfx/vmwgfx_drv.c          |  4 +-
+ drivers/gpu/drm/vmwgfx/vmwgfx_msg.c          |  6 +-
+ drivers/iommu/amd/init.c                     |  7 +-
+ drivers/iommu/amd/iommu.c                    |  3 +-
+ drivers/iommu/amd/iommu_v2.c                 |  3 +-
+ drivers/iommu/iommu.c                        |  3 +-
+ fs/proc/vmcore.c                             |  6 +-
+ include/linux/cc_platform.h                  | 88 ++++++++++++++++++++
+ include/linux/mem_encrypt.h                  |  4 -
+ kernel/dma/swiotlb.c                         |  4 +-
+ 40 files changed, 267 insertions(+), 114 deletions(-)
+ create mode 100644 arch/powerpc/platforms/pseries/cc_platform.c
+ create mode 100644 arch/x86/kernel/cc_platform.c
+ create mode 100644 include/linux/cc_platform.h
 
 
->> Probably-Not-by: "Eric W. Biederman" <ebiederm@xmission.com>
->>
->> Eric
->>
->>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->>> ---
->>>   include/linux/signal.h  | 15 +++++++++++++++
->>>   include/linux/uaccess.h |  1 +
->>>   kernel/signal.c         |  5 -----
->>>   3 files changed, 16 insertions(+), 5 deletions(-)
->>>
->>> diff --git a/include/linux/signal.h b/include/linux/signal.h
->>> index 3454c7ff0778..659bd43daf10 100644
->>> --- a/include/linux/signal.h
->>> +++ b/include/linux/signal.h
->>> @@ -35,6 +35,21 @@ static inline void copy_siginfo_to_external(siginfo_=
-t *to,
->>>   int copy_siginfo_to_user(siginfo_t __user *to, const kernel_siginfo_t=
- *from);
->>>   int copy_siginfo_from_user(kernel_siginfo_t *to, const siginfo_t __us=
-er *from);
->>>   +static __always_inline char __user *si_expansion(const siginfo_t __u=
-ser
->>> *info)
->>> +{
->>> +	return ((char __user *)info) + sizeof(struct kernel_siginfo);
->>> +}
->>> +
->>> +#define unsafe_copy_siginfo_to_user(to, from, label) do {		\
->>> +	siginfo_t __user *__ucs_to =3D to;				\
->>> +	const kernel_siginfo_t *__ucs_from =3D from;			\
->>> +	char __user *__ucs_expansion =3D si_expansion(__ucs_to);		\
->>> +									\
->>> +	unsafe_copy_to_user(__ucs_to, __ucs_from,			\
->>> +			    sizeof(struct kernel_siginfo), label);	\
->>> +	unsafe_clear_user(__ucs_expansion, SI_EXPANSION_SIZE, label);	\
->>> +} while (0)
->>> +
->>>   enum siginfo_layout {
->>>   	SIL_KILL,
->>>   	SIL_TIMER,
->>> diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
->>> index c05e903cef02..37073caac474 100644
->>> --- a/include/linux/uaccess.h
->>> +++ b/include/linux/uaccess.h
->>> @@ -398,6 +398,7 @@ long strnlen_user_nofault(const void __user *unsafe=
-_addr, long count);
->>>   #define unsafe_put_user(x,p,e) unsafe_op_wrap(__put_user(x,p),e)
->>>   #define unsafe_copy_to_user(d,s,l,e) unsafe_op_wrap(__copy_to_user(d,=
-s,l),e)
->>>   #define unsafe_copy_from_user(d,s,l,e) unsafe_op_wrap(__copy_from_use=
-r(d,s,l),e)
->>> +#define unsafe_clear_user(d, l, e) unsafe_op_wrap(__clear_user(d, l), =
-e)
->>>   static inline unsigned long user_access_save(void) { return 0UL; }
->>>   static inline void user_access_restore(unsigned long flags) { }
->>>   #endif
->>> diff --git a/kernel/signal.c b/kernel/signal.c
->>> index a3229add4455..83b5971e4304 100644
->>> --- a/kernel/signal.c
->>> +++ b/kernel/signal.c
->>> @@ -3261,11 +3261,6 @@ enum siginfo_layout siginfo_layout(unsigned sig,=
- int si_code)
->>>   	return layout;
->>>   }
->>>   -static inline char __user *si_expansion(const siginfo_t __user *info)
->>> -{
->>> -	return ((char __user *)info) + sizeof(struct kernel_siginfo);
->>> -}
->>> -
->>>   int copy_siginfo_to_user(siginfo_t __user *to, const kernel_siginfo_t=
- *from)
->>>   {
->>>   	char __user *expansion =3D si_expansion(to);
+base-commit: 4b93c544e90e2b28326182d31ee008eb80e02074
+-- 
+2.33.0
+
