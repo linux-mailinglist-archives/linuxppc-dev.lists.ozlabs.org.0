@@ -2,67 +2,96 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06DA8404530
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Sep 2021 07:51:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B6A14045C2
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Sep 2021 08:44:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H4p5x6zTpz2yJs
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Sep 2021 15:51:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H4qHL39BGz2ygB
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Sep 2021 16:44:30 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=CmWrpGJW;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bTs8+T2I;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b2d;
- helo=mail-yb1-xb2d.google.com; envelope-from=andrii.nakryiko@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=CmWrpGJW; dkim-atps=neutral
-Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com
- [IPv6:2607:f8b0:4864:20::b2d])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=bTs8+T2I; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H4p5J0f4hz2xrM
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Sep 2021 15:50:43 +1000 (AEST)
-Received: by mail-yb1-xb2d.google.com with SMTP id c206so1564100ybb.12
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Sep 2021 22:50:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=rbAwJn7fFiGfPLrVocqe11Q3q7IsLXBF5Gxx03pmlXE=;
- b=CmWrpGJWf7JI1pP0j0mp45iHU8XkQe2EqAUzjV7ZmD/9FcnGbJAjU+KHRVJytckonC
- vujUXfoq2DKOdHDooun6rux/zPb5UUNw6F0/rYYiG63z0gXl5FRo9mM4D/ZHlcjFEoT5
- TSsPsN+5dKnBSLAhkl0Su9JKaQpr90RBEm4Bp9T0uBXdLr0wrGO5QAHwK8IFJ0/Bufj4
- 1xgY7VRPTUjHu9eIZWZuoV3u6fgcauS7FWhKhnxCRypxO896NpcBImOjOFxkiiobXx1x
- j7DRcXdP4TINM1IE+y5xZAS4KExdFRwogWOejAehtF6YEY4uO6oaSr2HYcGFJo7eD5l9
- eReQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=rbAwJn7fFiGfPLrVocqe11Q3q7IsLXBF5Gxx03pmlXE=;
- b=uIN/XMlgn21nfN6XHSUM+DBSAPtOCH+FCT+0RdKzzv35Ytlf/upN1HO10AOBUUak8/
- hvQW44z3QTOJQ9qNVGcHTKpsu3Qu5BBB+r6sBBi2Tp6T601+PLR/YkhtNEfmymvPWVFp
- Bg7/N1ohp8JEKBTXu5fjkjfQqc7yyKaMO+FhfL1uH25pQLdpfCIU0QifmksyYm2MP4QJ
- +apcvVOtxq3564OYrnJZ2uF+SCKYeYBJxGqKgOgNBM5CAMshB2mrApHfW7U6Lfjx/pYo
- 84vOsApgFVFd19IkzNyUeNAgp1tBkC5dDF/U8ZDVjBQuMf9GNkcb8MHJ5YxlZdgqS10W
- kGYg==
-X-Gm-Message-State: AOAM531e6xC+k643Q8It+Pug/s09E7Et6HneOkm1sCOMhBOYoQLE/7rJ
- HkyTOn+UYJ+ftqZ8c/GLuXTrSyCs51CQze8wjjY=
-X-Google-Smtp-Source: ABdhPJxt1xA0uM8Q0oqALtqvGBUDGndJ4a+HcDFgyDfaBTs5y9qs8UNRpk1kp/Lb9NyUROynnQ45aqXim7JNzY/Zqj0=
-X-Received: by 2002:a5b:702:: with SMTP id g2mr1597430ybq.307.1631166635450;
- Wed, 08 Sep 2021 22:50:35 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H4qGc6czDz2xr3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Sep 2021 16:43:51 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 1896YXxJ038779; Thu, 9 Sep 2021 02:43:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=SAFVYrvO7XhAlvD1QXYCtVsegFrP1kW4t7gztd+tL+8=;
+ b=bTs8+T2IRZ/rSPvS1/23lVV4GnBXkarMSU7RegNFL3RPu5z9L1ujBF6NHFA7Nf9EKNCW
+ eAGhbjOP6kJcE67lPoG2+BeHAnHWbJntlYJe0rrSYf1lmf0A6WCqCMd7y95I17kxOql/
+ oWGTwuGF1/O2yYP8qDRPaSadQ0wfbo+tFpWxH0EWRoSD1+a1Tfiu2dS8iNpUvQKsEayr
+ bIxRoiMU3HuXu2tV68mdgr7ZEkW8N4PTuZ4bNiFO1ZeiESQuau3qrMu2/GXJi14UJTsY
+ 1OqD917gO/YwLM9blyoX3o8IqOWNgPzj/L+O+xwd/zXKRx2KiGYVO3CL6YLlx29bpwC8 2A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3ay7s3e3g3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 09 Sep 2021 02:43:44 -0400
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1896ZkCO044299;
+ Thu, 9 Sep 2021 02:43:44 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3ay7s3e3fg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 09 Sep 2021 02:43:44 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1896hWIG013922;
+ Thu, 9 Sep 2021 06:43:42 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma04ams.nl.ibm.com with ESMTP id 3axcnpgy64-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 09 Sep 2021 06:43:41 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 1896dI9V49742122
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 9 Sep 2021 06:39:19 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 761004C058;
+ Thu,  9 Sep 2021 06:43:38 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4FB724C05C;
+ Thu,  9 Sep 2021 06:43:36 +0000 (GMT)
+Received: from li-c7b85bcc-2727-11b2-a85c-a9ba7f3a2193.ibm.com.com (unknown
+ [9.43.69.11]) by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  9 Sep 2021 06:43:35 +0000 (GMT)
+From: Ganesh Goudar <ganeshgr@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+Subject: [PATCH v2] powerpc/mce: Fix access error in mce handler
+Date: Thu,  9 Sep 2021 12:13:30 +0530
+Message-Id: <20210909064330.312432-1-ganeshgr@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-References: <1631158350-3661-1-git-send-email-yangtiezhu@loongson.cn>
-In-Reply-To: <1631158350-3661-1-git-send-email-yangtiezhu@loongson.cn>
-From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Date: Wed, 8 Sep 2021 22:50:24 -0700
-Message-ID: <CAEf4BzZqoVZ7keWCLmC=A5oPPwj_xMNRWDkJUcjWn9yE_z1gSg@mail.gmail.com>
-Subject: Re: [PATCH bpf-next] bpf: Change value of MAX_TAIL_CALL_CNT from 32
- to 33
-To: Tiezhu Yang <yangtiezhu@loongson.cn>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: tIhp3t5BEjdb2BZWLOT3HqNG1iFPZnFV
+X-Proofpoint-ORIG-GUID: 2BpsFLRE3D-5VGA6WO7VstxwBSShdXA-
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-09-09_01:2021-09-07,
+ 2021-09-09 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 adultscore=0
+ bulkscore=0 suspectscore=0 malwarescore=0 spamscore=0 lowpriorityscore=0
+ mlxscore=0 priorityscore=1501 mlxlogscore=999 impostorscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2109030001
+ definitions=main-2109090037
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,117 +103,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Song Liu <songliubraving@fb.com>, Catalin Marinas <catalin.marinas@arm.com>,
- Zi Shen Lim <zlim.lnx@gmail.com>, Alexei Starovoitov <ast@kernel.org>,
- Russell King <linux@armlinux.org.uk>, Paul Mackerras <paulus@samba.org>,
- sparclinux@vger.kernel.org, Shubham Bansal <illusionist.neo@gmail.com>,
- linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
- Paul Burton <paulburton@kernel.org>, Paul Chaignon <paul@cilium.io>,
- John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
- naveen.n.rao@linux.ibm.com, Yonghong Song <yhs@fb.com>,
- linux-mips@vger.kernel.org, Xi Wang <xi.wang@gmail.com>,
- Albert Ou <aou@eecs.berkeley.edu>,
- Johan Almbladh <johan.almbladh@anyfinetworks.com>,
- Luke Nelson <luke.r.nels@gmail.com>, KP Singh <kpsingh@kernel.org>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Daniel Borkmann <daniel@iogearbox.net>, Networking <netdev@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>,
- "David S. Miller" <davem@davemloft.net>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, bpf <bpf@vger.kernel.org>,
- linuxppc-dev@lists.ozlabs.org, Martin KaFai Lau <kafai@fb.com>
+Cc: Ganesh Goudar <ganeshgr@linux.ibm.com>, mahesh@linux.ibm.com,
+ npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 8, 2021 at 8:33 PM Tiezhu Yang <yangtiezhu@loongson.cn> wrote:
->
-> In the current code, the actual max tail call count is 33 which is greater
-> than MAX_TAIL_CALL_CNT (defined as 32), the actual limit is not consistent
-> with the meaning of MAX_TAIL_CALL_CNT, there is some confusion and need to
-> spend some time to think the reason at the first glance.
+We queue an irq work for deferred processing of mce event
+in realmode mce handler, where translation is disabled.
+Queuing of the work may result in accessing memory outside
+RMO region, such access needs the translation to be enabled
+for an LPAR running with hash mmu else the kernel crashes.
 
-think *about* the reason
+After enabling translation in mce_handle_error() we used to
+leave it enabled to avoid crashing here, but now with the
+commit 74c3354bc1d89 ("powerpc/pseries/mce: restore msr before
+returning from handler") we are restoring the MSR to disable
+translation.
 
->
-> We can see the historical evolution from commit 04fd61ab36ec ("bpf: allow
-> bpf programs to tail-call other bpf programs") and commit f9dabe016b63
-> ("bpf: Undo off-by-one in interpreter tail call count limit").
->
-> In order to avoid changing existing behavior, the actual limit is 33 now,
-> this is resonable.
+Hence to fix this enable the translation before queuing the work.
 
-typo: reasonable
+Without this change following trace is seen on injecting SLB
+multihit in an LPAR running with hash mmu.
 
->
-> After commit 874be05f525e ("bpf, tests: Add tail call test suite"), we can
-> see there exists failed testcase.
->
-> On all archs when CONFIG_BPF_JIT_ALWAYS_ON is not set:
->  # echo 0 > /proc/sys/net/core/bpf_jit_enable
->  # modprobe test_bpf
->  # dmesg | grep -w FAIL
->  Tail call error path, max count reached jited:0 ret 34 != 33 FAIL
->
-> On some archs:
->  # echo 1 > /proc/sys/net/core/bpf_jit_enable
->  # modprobe test_bpf
->  # dmesg | grep -w FAIL
->  Tail call error path, max count reached jited:1 ret 34 != 33 FAIL
->
-> So it is necessary to change the value of MAX_TAIL_CALL_CNT from 32 to 33,
-> then do some small changes of the related code.
->
-> With this patch, it does not change the current limit, MAX_TAIL_CALL_CNT
-> can reflect the actual max tail call count, and the above failed testcase
-> can be fixed.
->
-> Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-> ---
+Oops: Kernel access of bad area, sig: 11 [#1]
+LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+CPU: 5 PID: 1883 Comm: insmod Tainted: G        OE     5.14.0-mce+ #137
+NIP:  c000000000735d60 LR: c000000000318640 CTR: 0000000000000000
+REGS: c00000001ebff9a0 TRAP: 0300   Tainted: G       OE      (5.14.0-mce+)
+MSR:  8000000000001003 <SF,ME,RI,LE>  CR: 28008228  XER: 00000001
+CFAR: c00000000031863c DAR: c00000027fa8fe08 DSISR: 40000000 IRQMASK: 0
+GPR00: c0000000003186d0 c00000001ebffc40 c000000001b0df00 c0000000016337e8
+GPR04: c0000000016337e8 c00000027fa8fe08 0000000000000023 c0000000016337f0
+GPR08: 0000000000000023 c0000000012ffe08 0000000000000000 c008000001460240
+GPR12: 0000000000000000 c00000001ec9a900 c00000002ac4bd00 0000000000000000
+GPR16: 00000000000005a0 c0080000006b0000 c0080000006b05a0 c000000000ff3068
+GPR20: c00000002ac4bbc0 0000000000000001 c00000002ac4bbc0 c008000001490298
+GPR24: c008000001490108 c000000001636198 c008000001470090 c008000001470058
+GPR28: 0000000000000510 c008000001000000 c008000008000019 0000000000000019
+NIP [c000000000735d60] llist_add_batch+0x0/0x40
+LR [c000000000318640] __irq_work_queue_local+0x70/0xc0
+Call Trace:
+[c00000001ebffc40] [c00000001ebffc0c] 0xc00000001ebffc0c (unreliable)
+[c00000001ebffc60] [c0000000003186d0] irq_work_queue+0x40/0x70
+[c00000001ebffc80] [c00000000004425c] machine_check_queue_event+0xbc/0xd0
+[c00000001ebffcf0] [c00000000000838c] machine_check_early_common+0x16c/0x1f4
 
-This change breaks selftests ([0]), please fix them at the same time
-as you are changing the kernel behavior:
+Fixes: 74c3354bc1d89 ("powerpc/pseries/mce: restore msr before returning from handler")
+Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
+---
+v2: Change in commit message.
+---
+ arch/powerpc/kernel/mce.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-  test_tailcall_2:PASS:tailcall 128 nsec
-  test_tailcall_2:PASS:tailcall 128 nsec
-  test_tailcall_2:FAIL:tailcall err 0 errno 2 retval 4
-  #135/2 tailcalls/tailcall_2:FAIL
-  test_tailcall_3:PASS:tailcall 128 nsec
-  test_tailcall_3:FAIL:tailcall count err 0 errno 2 count 34
-  test_tailcall_3:PASS:tailcall 128 nsec
-  #135/3 tailcalls/tailcall_3:FAIL
-  #135/4 tailcalls/tailcall_4:OK
-  #135/5 tailcalls/tailcall_5:OK
-  #135/6 tailcalls/tailcall_bpf2bpf_1:OK
-  test_tailcall_bpf2bpf_2:PASS:tailcall 128 nsec
-  test_tailcall_bpf2bpf_2:FAIL:tailcall count err 0 errno 2 count 34
-  test_tailcall_bpf2bpf_2:PASS:tailcall 128 nsec
-  #135/7 tailcalls/tailcall_bpf2bpf_2:FAIL
-  #135/8 tailcalls/tailcall_bpf2bpf_3:OK
-  test_tailcall_bpf2bpf_4:PASS:tailcall 54 nsec
-  test_tailcall_bpf2bpf_4:FAIL:tailcall count err 0 errno 2 count 32
-  #135/9 tailcalls/tailcall_bpf2bpf_4:FAIL
-  test_tailcall_bpf2bpf_4:PASS:tailcall 54 nsec
-  test_tailcall_bpf2bpf_4:FAIL:tailcall count err 0 errno 2 count 32
-  #135/10 tailcalls/tailcall_bpf2bpf_5:FAIL
-  #135 tailcalls:FAIL
+diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
+index 47a683cd00d2..9d1e39d42e3e 100644
+--- a/arch/powerpc/kernel/mce.c
++++ b/arch/powerpc/kernel/mce.c
+@@ -249,6 +249,7 @@ void machine_check_queue_event(void)
+ {
+ 	int index;
+ 	struct machine_check_event evt;
++	unsigned long msr;
+ 
+ 	if (!get_mce_event(&evt, MCE_EVENT_RELEASE))
+ 		return;
+@@ -262,8 +263,19 @@ void machine_check_queue_event(void)
+ 	memcpy(&local_paca->mce_info->mce_event_queue[index],
+ 	       &evt, sizeof(evt));
+ 
+-	/* Queue irq work to process this event later. */
+-	irq_work_queue(&mce_event_process_work);
++	/* Queue irq work to process this event later. Before
++	 * queuing the work enable translation for non radix LPAR,
++	 * as irq_work_queue may try to access memory outside RMO
++	 * region.
++	 */
++	if (!radix_enabled() && firmware_has_feature(FW_FEATURE_LPAR)) {
++		msr = mfmsr();
++		mtmsr(msr | MSR_IR | MSR_DR);
++		irq_work_queue(&mce_event_process_work);
++		mtmsr(msr);
++	} else {
++		irq_work_queue(&mce_event_process_work);
++	}
+ }
+ 
+ void mce_common_process_ue(struct pt_regs *regs,
+-- 
+2.31.1
 
-
-  [0] https://github.com/kernel-patches/bpf/pull/1747/checks?check_run_id=3552002906
-
->  arch/arm/net/bpf_jit_32.c         | 11 ++++++-----
->  arch/arm64/net/bpf_jit_comp.c     |  7 ++++---
->  arch/mips/net/ebpf_jit.c          |  4 ++--
->  arch/powerpc/net/bpf_jit_comp32.c |  4 ++--
->  arch/powerpc/net/bpf_jit_comp64.c | 12 ++++++------
->  arch/riscv/net/bpf_jit_comp32.c   |  4 ++--
->  arch/riscv/net/bpf_jit_comp64.c   |  4 ++--
->  arch/sparc/net/bpf_jit_comp_64.c  |  8 ++++----
->  include/linux/bpf.h               |  2 +-
->  kernel/bpf/core.c                 |  4 ++--
->  10 files changed, 31 insertions(+), 29 deletions(-)
->
-
-[...]
