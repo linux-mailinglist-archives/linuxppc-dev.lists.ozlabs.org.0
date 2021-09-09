@@ -1,97 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B6A14045C2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Sep 2021 08:44:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F323404621
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Sep 2021 09:26:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H4qHL39BGz2ygB
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Sep 2021 16:44:30 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bTs8+T2I;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H4rCG389Vz2yPt
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Sep 2021 17:26:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=bTs8+T2I; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H4qGc6czDz2xr3
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Sep 2021 16:43:51 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 1896YXxJ038779; Thu, 9 Sep 2021 02:43:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=SAFVYrvO7XhAlvD1QXYCtVsegFrP1kW4t7gztd+tL+8=;
- b=bTs8+T2IRZ/rSPvS1/23lVV4GnBXkarMSU7RegNFL3RPu5z9L1ujBF6NHFA7Nf9EKNCW
- eAGhbjOP6kJcE67lPoG2+BeHAnHWbJntlYJe0rrSYf1lmf0A6WCqCMd7y95I17kxOql/
- oWGTwuGF1/O2yYP8qDRPaSadQ0wfbo+tFpWxH0EWRoSD1+a1Tfiu2dS8iNpUvQKsEayr
- bIxRoiMU3HuXu2tV68mdgr7ZEkW8N4PTuZ4bNiFO1ZeiESQuau3qrMu2/GXJi14UJTsY
- 1OqD917gO/YwLM9blyoX3o8IqOWNgPzj/L+O+xwd/zXKRx2KiGYVO3CL6YLlx29bpwC8 2A== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3ay7s3e3g3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 09 Sep 2021 02:43:44 -0400
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1896ZkCO044299;
- Thu, 9 Sep 2021 02:43:44 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3ay7s3e3fg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 09 Sep 2021 02:43:44 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1896hWIG013922;
- Thu, 9 Sep 2021 06:43:42 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma04ams.nl.ibm.com with ESMTP id 3axcnpgy64-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 09 Sep 2021 06:43:41 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 1896dI9V49742122
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 9 Sep 2021 06:39:19 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 761004C058;
- Thu,  9 Sep 2021 06:43:38 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4FB724C05C;
- Thu,  9 Sep 2021 06:43:36 +0000 (GMT)
-Received: from li-c7b85bcc-2727-11b2-a85c-a9ba7f3a2193.ibm.com.com (unknown
- [9.43.69.11]) by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu,  9 Sep 2021 06:43:35 +0000 (GMT)
-From: Ganesh Goudar <ganeshgr@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH v2] powerpc/mce: Fix access error in mce handler
-Date: Thu,  9 Sep 2021 12:13:30 +0530
-Message-Id: <20210909064330.312432-1-ganeshgr@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H4rBp30kqz2xrH
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Sep 2021 17:25:35 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4H4rBd5z43z9sWc;
+ Thu,  9 Sep 2021 09:25:29 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id tI4gb1MB9n_o; Thu,  9 Sep 2021 09:25:29 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4H4rBd4d9gz9sWb;
+ Thu,  9 Sep 2021 09:25:29 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 837618B77E;
+ Thu,  9 Sep 2021 09:25:29 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id D01rvl7fvhrg; Thu,  9 Sep 2021 09:25:29 +0200 (CEST)
+Received: from po9476vm.idsi0.si.c-s.fr (po22017.idsi0.si.c-s.fr
+ [192.168.7.20])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9CE478B77D;
+ Thu,  9 Sep 2021 09:25:27 +0200 (CEST)
+Subject: Re: [PATCH v3 8/8] treewide: Replace the use of mem_encrypt_active()
+ with cc_platform_has()
+To: Tom Lendacky <thomas.lendacky@amd.com>, linux-kernel@vger.kernel.org,
+ x86@kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+ iommu@lists.linux-foundation.org, kvm@vger.kernel.org,
+ linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+ linux-graphics-maintainer@vmware.com, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, kexec@lists.infradead.org,
+ linux-fsdevel@vger.kernel.org
+References: <cover.1631141919.git.thomas.lendacky@amd.com>
+ <46a18427dc4e9dda985b10e472965e3e4c769f1d.1631141919.git.thomas.lendacky@amd.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <a9d9a6a7-b3b3-570c-ef3d-2f5f0b61eb0b@csgroup.eu>
+Date: Thu, 9 Sep 2021 07:25:25 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: tIhp3t5BEjdb2BZWLOT3HqNG1iFPZnFV
-X-Proofpoint-ORIG-GUID: 2BpsFLRE3D-5VGA6WO7VstxwBSShdXA-
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-09-09_01:2021-09-07,
- 2021-09-09 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 adultscore=0
- bulkscore=0 suspectscore=0 malwarescore=0 spamscore=0 lowpriorityscore=0
- mlxscore=0 priorityscore=1501 mlxlogscore=999 impostorscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2109030001
- definitions=main-2109090037
+In-Reply-To: <46a18427dc4e9dda985b10e472965e3e4c769f1d.1631141919.git.thomas.lendacky@amd.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,94 +71,146 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ganesh Goudar <ganeshgr@linux.ibm.com>, mahesh@linux.ibm.com,
- npiggin@gmail.com
+Cc: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Brijesh Singh <brijesh.singh@amd.com>, David Airlie <airlied@linux.ie>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Paul Mackerras <paulus@samba.org>,
+ Will Deacon <will@kernel.org>, Andi Kleen <ak@linux.intel.com>,
+ Baoquan He <bhe@redhat.com>, Christian Borntraeger <borntraeger@de.ibm.com>,
+ Joerg Roedel <joro@8bytes.org>, Christoph Hellwig <hch@infradead.org>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Dave Young <dyoung@redhat.com>, Tianyu Lan <Tianyu.Lan@microsoft.com>,
+ Daniel Vetter <daniel@ffwll.ch>, Vasily Gorbik <gor@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Thomas Zimmermann <tzimmermann@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-We queue an irq work for deferred processing of mce event
-in realmode mce handler, where translation is disabled.
-Queuing of the work may result in accessing memory outside
-RMO region, such access needs the translation to be enabled
-for an LPAR running with hash mmu else the kernel crashes.
 
-After enabling translation in mce_handle_error() we used to
-leave it enabled to avoid crashing here, but now with the
-commit 74c3354bc1d89 ("powerpc/pseries/mce: restore msr before
-returning from handler") we are restoring the MSR to disable
-translation.
 
-Hence to fix this enable the translation before queuing the work.
+On 9/8/21 10:58 PM, Tom Lendacky wrote:
+> 
+> diff --git a/arch/powerpc/include/asm/mem_encrypt.h b/arch/powerpc/include/asm/mem_encrypt.h
+> index ba9dab07c1be..2f26b8fc8d29 100644
+> --- a/arch/powerpc/include/asm/mem_encrypt.h
+> +++ b/arch/powerpc/include/asm/mem_encrypt.h
+> @@ -10,11 +10,6 @@
+>   
+>   #include <asm/svm.h>
+>   
+> -static inline bool mem_encrypt_active(void)
+> -{
+> -	return is_secure_guest();
+> -}
+> -
+>   static inline bool force_dma_unencrypted(struct device *dev)
+>   {
+>   	return is_secure_guest();
+> diff --git a/arch/powerpc/platforms/pseries/svm.c b/arch/powerpc/platforms/pseries/svm.c
+> index 87f001b4c4e4..c083ecbbae4d 100644
+> --- a/arch/powerpc/platforms/pseries/svm.c
+> +++ b/arch/powerpc/platforms/pseries/svm.c
+> @@ -8,6 +8,7 @@
+>   
+>   #include <linux/mm.h>
+>   #include <linux/memblock.h>
+> +#include <linux/cc_platform.h>
+>   #include <asm/machdep.h>
+>   #include <asm/svm.h>
+>   #include <asm/swiotlb.h>
+> @@ -63,7 +64,7 @@ void __init svm_swiotlb_init(void)
+>   
+>   int set_memory_encrypted(unsigned long addr, int numpages)
+>   {
+> -	if (!mem_encrypt_active())
+> +	if (!cc_platform_has(CC_ATTR_MEM_ENCRYPT))
+>   		return 0;
+>   
+>   	if (!PAGE_ALIGNED(addr))
+> @@ -76,7 +77,7 @@ int set_memory_encrypted(unsigned long addr, int numpages)
+>   
+>   int set_memory_decrypted(unsigned long addr, int numpages)
+>   {
+> -	if (!mem_encrypt_active())
+> +	if (!cc_platform_has(CC_ATTR_MEM_ENCRYPT))
+>   		return 0;
+>   
+>   	if (!PAGE_ALIGNED(addr))
 
-Without this change following trace is seen on injecting SLB
-multihit in an LPAR running with hash mmu.
+This change unnecessarily complexifies the two functions. This is due to 
+cc_platform_has() being out-line. It should really remain inline.
 
-Oops: Kernel access of bad area, sig: 11 [#1]
-LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
-CPU: 5 PID: 1883 Comm: insmod Tainted: G        OE     5.14.0-mce+ #137
-NIP:  c000000000735d60 LR: c000000000318640 CTR: 0000000000000000
-REGS: c00000001ebff9a0 TRAP: 0300   Tainted: G       OE      (5.14.0-mce+)
-MSR:  8000000000001003 <SF,ME,RI,LE>  CR: 28008228  XER: 00000001
-CFAR: c00000000031863c DAR: c00000027fa8fe08 DSISR: 40000000 IRQMASK: 0
-GPR00: c0000000003186d0 c00000001ebffc40 c000000001b0df00 c0000000016337e8
-GPR04: c0000000016337e8 c00000027fa8fe08 0000000000000023 c0000000016337f0
-GPR08: 0000000000000023 c0000000012ffe08 0000000000000000 c008000001460240
-GPR12: 0000000000000000 c00000001ec9a900 c00000002ac4bd00 0000000000000000
-GPR16: 00000000000005a0 c0080000006b0000 c0080000006b05a0 c000000000ff3068
-GPR20: c00000002ac4bbc0 0000000000000001 c00000002ac4bbc0 c008000001490298
-GPR24: c008000001490108 c000000001636198 c008000001470090 c008000001470058
-GPR28: 0000000000000510 c008000001000000 c008000008000019 0000000000000019
-NIP [c000000000735d60] llist_add_batch+0x0/0x40
-LR [c000000000318640] __irq_work_queue_local+0x70/0xc0
-Call Trace:
-[c00000001ebffc40] [c00000001ebffc0c] 0xc00000001ebffc0c (unreliable)
-[c00000001ebffc60] [c0000000003186d0] irq_work_queue+0x40/0x70
-[c00000001ebffc80] [c00000000004425c] machine_check_queue_event+0xbc/0xd0
-[c00000001ebffcf0] [c00000000000838c] machine_check_early_common+0x16c/0x1f4
+Before the change we got:
 
-Fixes: 74c3354bc1d89 ("powerpc/pseries/mce: restore msr before returning from handler")
-Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
----
-v2: Change in commit message.
----
- arch/powerpc/kernel/mce.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+0000000000000000 <.set_memory_encrypted>:
+    0:	7d 20 00 a6 	mfmsr   r9
+    4:	75 29 00 40 	andis.  r9,r9,64
+    8:	41 82 00 48 	beq     50 <.set_memory_encrypted+0x50>
+    c:	78 69 04 20 	clrldi  r9,r3,48
+   10:	2c 29 00 00 	cmpdi   r9,0
+   14:	40 82 00 4c 	bne     60 <.set_memory_encrypted+0x60>
+   18:	7c 08 02 a6 	mflr    r0
+   1c:	7c 85 23 78 	mr      r5,r4
+   20:	78 64 85 02 	rldicl  r4,r3,48,20
+   24:	61 23 f1 34 	ori     r3,r9,61748
+   28:	f8 01 00 10 	std     r0,16(r1)
+   2c:	f8 21 ff 91 	stdu    r1,-112(r1)
+   30:	48 00 00 01 	bl      30 <.set_memory_encrypted+0x30>
+			30: R_PPC64_REL24	.ucall_norets
+   34:	60 00 00 00 	nop
+   38:	38 60 00 00 	li      r3,0
+   3c:	38 21 00 70 	addi    r1,r1,112
+   40:	e8 01 00 10 	ld      r0,16(r1)
+   44:	7c 08 03 a6 	mtlr    r0
+   48:	4e 80 00 20 	blr
+   50:	38 60 00 00 	li      r3,0
+   54:	4e 80 00 20 	blr
+   60:	38 60 ff ea 	li      r3,-22
+   64:	4e 80 00 20 	blr
 
-diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
-index 47a683cd00d2..9d1e39d42e3e 100644
---- a/arch/powerpc/kernel/mce.c
-+++ b/arch/powerpc/kernel/mce.c
-@@ -249,6 +249,7 @@ void machine_check_queue_event(void)
- {
- 	int index;
- 	struct machine_check_event evt;
-+	unsigned long msr;
- 
- 	if (!get_mce_event(&evt, MCE_EVENT_RELEASE))
- 		return;
-@@ -262,8 +263,19 @@ void machine_check_queue_event(void)
- 	memcpy(&local_paca->mce_info->mce_event_queue[index],
- 	       &evt, sizeof(evt));
- 
--	/* Queue irq work to process this event later. */
--	irq_work_queue(&mce_event_process_work);
-+	/* Queue irq work to process this event later. Before
-+	 * queuing the work enable translation for non radix LPAR,
-+	 * as irq_work_queue may try to access memory outside RMO
-+	 * region.
-+	 */
-+	if (!radix_enabled() && firmware_has_feature(FW_FEATURE_LPAR)) {
-+		msr = mfmsr();
-+		mtmsr(msr | MSR_IR | MSR_DR);
-+		irq_work_queue(&mce_event_process_work);
-+		mtmsr(msr);
-+	} else {
-+		irq_work_queue(&mce_event_process_work);
-+	}
- }
- 
- void mce_common_process_ue(struct pt_regs *regs,
--- 
-2.31.1
+After the change we get:
+
+0000000000000000 <.set_memory_encrypted>:
+    0:	7c 08 02 a6 	mflr    r0
+    4:	fb c1 ff f0 	std     r30,-16(r1)
+    8:	fb e1 ff f8 	std     r31,-8(r1)
+    c:	7c 7f 1b 78 	mr      r31,r3
+   10:	38 60 00 00 	li      r3,0
+   14:	7c 9e 23 78 	mr      r30,r4
+   18:	f8 01 00 10 	std     r0,16(r1)
+   1c:	f8 21 ff 81 	stdu    r1,-128(r1)
+   20:	48 00 00 01 	bl      20 <.set_memory_encrypted+0x20>
+			20: R_PPC64_REL24	.cc_platform_has
+   24:	60 00 00 00 	nop
+   28:	2c 23 00 00 	cmpdi   r3,0
+   2c:	41 82 00 44 	beq     70 <.set_memory_encrypted+0x70>
+   30:	7b e9 04 20 	clrldi  r9,r31,48
+   34:	2c 29 00 00 	cmpdi   r9,0
+   38:	40 82 00 58 	bne     90 <.set_memory_encrypted+0x90>
+   3c:	38 60 00 00 	li      r3,0
+   40:	7f c5 f3 78 	mr      r5,r30
+   44:	7b e4 85 02 	rldicl  r4,r31,48,20
+   48:	60 63 f1 34 	ori     r3,r3,61748
+   4c:	48 00 00 01 	bl      4c <.set_memory_encrypted+0x4c>
+			4c: R_PPC64_REL24	.ucall_norets
+   50:	60 00 00 00 	nop
+   54:	38 60 00 00 	li      r3,0
+   58:	38 21 00 80 	addi    r1,r1,128
+   5c:	e8 01 00 10 	ld      r0,16(r1)
+   60:	eb c1 ff f0 	ld      r30,-16(r1)
+   64:	eb e1 ff f8 	ld      r31,-8(r1)
+   68:	7c 08 03 a6 	mtlr    r0
+   6c:	4e 80 00 20 	blr
+   70:	38 21 00 80 	addi    r1,r1,128
+   74:	38 60 00 00 	li      r3,0
+   78:	e8 01 00 10 	ld      r0,16(r1)
+   7c:	eb c1 ff f0 	ld      r30,-16(r1)
+   80:	eb e1 ff f8 	ld      r31,-8(r1)
+   84:	7c 08 03 a6 	mtlr    r0
+   88:	4e 80 00 20 	blr
+   90:	38 60 ff ea 	li      r3,-22
+   94:	4b ff ff c4 	b       58 <.set_memory_encrypted+0x58>
 
