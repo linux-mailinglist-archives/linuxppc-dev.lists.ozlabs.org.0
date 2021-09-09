@@ -1,99 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7244C4046B4
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Sep 2021 10:04:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB0E2404782
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Sep 2021 11:04:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H4s3h0gXmz2ynq
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Sep 2021 18:04:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H4tNN4SCFz2yPF
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Sep 2021 19:04:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gTLK95O0;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ow8B+4vt;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102b;
+ helo=mail-pj1-x102b.google.com; envelope-from=o451686892@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=gTLK95O0; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=ow8B+4vt; dkim-atps=neutral
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com
+ [IPv6:2607:f8b0:4864:20::102b])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H4s2z6VJNz2xYX
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Sep 2021 18:03:55 +1000 (AEST)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 1897ahcN114438; Thu, 9 Sep 2021 04:03:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=7NDctDKZ9OagMfyBYzyLTXP07dMs9RZei5vrG+DTorg=;
- b=gTLK95O0Od3Njwkp39IElv0d82qsGxN1PnAh4Wed8Oss3na+9WDDnAz6let0FnIotJAL
- YaYUkb6nJ0XbGRl+VzeLjL4Wk5D+1778oCrHND5HmXdvvG6XyM8BMReblmKJfRYZhLJp
- GjDp2y/8EyfZZxI9dQAmg6M4Yla5GWm9HHjVO5TqIgAYVHRrlvF6UjtTHYxmqKB5zaV1
- QMvKFb/zMk5F5TSlgvhMrzGObyL0+jIGCbCzLIGw8GSa9e6ksUTPlHZ1Fg0ckS3C5KGK
- VwLAIgAseko9YwE2ZS7tLykO9RCZnIbxquDTYkGzCVzPnjv0Q0YFf+sY6Y0+4ULF5OJp UQ== 
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3axp75j9ed-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 09 Sep 2021 04:03:32 -0400
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1897vUnO005639;
- Thu, 9 Sep 2021 08:03:30 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com
- (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
- by ppma03wdc.us.ibm.com with ESMTP id 3axcnpwx5j-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 09 Sep 2021 08:03:30 +0000
-Received: from b03ledav002.gho.boulder.ibm.com
- (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 18983T6D46072196
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 9 Sep 2021 08:03:29 GMT
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3002D13604F;
- Thu,  9 Sep 2021 08:03:29 +0000 (GMT)
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 418F2136059;
- Thu,  9 Sep 2021 08:03:24 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.43.32.15])
- by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu,  9 Sep 2021 08:03:23 +0000 (GMT)
-Subject: Re: [RESEND PATCH v4 4/4] powerpc/papr_scm: Document papr_scm sysfs
- event format entries
-To: Dan Williams <dan.j.williams@intel.com>
-References: <20210903050914.273525-1-kjain@linux.ibm.com>
- <20210903050914.273525-5-kjain@linux.ibm.com>
- <CAPcyv4h-MgZmteMSUfdeQL+XCxL5HvxK87HA3JYB0OoQUaPipQ@mail.gmail.com>
-From: kajoljain <kjain@linux.ibm.com>
-Message-ID: <09823156-2797-af1d-23ce-d31ae86770d9@linux.ibm.com>
-Date: Thu, 9 Sep 2021 13:33:22 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H4tMf4DLNz2xfN
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Sep 2021 19:03:24 +1000 (AEST)
+Received: by mail-pj1-x102b.google.com with SMTP id k23so917154pji.0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Sep 2021 02:03:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=oxrt0Di1Z5ok1Wnf6tUzyGoie6Gm8VDj4Nc/fyIhFs0=;
+ b=ow8B+4vt1F9pLfHYV9Ij+hl6+gQr9b6FrcTZp87zzgq1QFzurdhRot3GR615SQjlCw
+ Zh4RokFDllDi62GMhO7kFspujGar5GxlzpGSBRNRsZfQbQVIAbEOyPCqPhV1TBKXPJ+s
+ u9zasRNTyWq8lIbx1jH8+5ssE7WtjYRbI0SxC0XjXbWBG7dNmL5jDpm04aYaqCtEHPMd
+ oLMLrY6dxdb9aYvbcIz452wViyDA59FwyRhJgVKZpONOjEDjVsaSYv3vx/vOrl7m0wyK
+ ghHlPZ1M7WyydtleY3pZPxr+zKPmwqTqIBcA98XBRxv6yxV4tWBWRIp7oAV3uoS7xKav
+ JWeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=oxrt0Di1Z5ok1Wnf6tUzyGoie6Gm8VDj4Nc/fyIhFs0=;
+ b=IQzHlbOgO7/MXtDZIFYdTMPbmYlFYpsQBsGiTF0CPZAV4h/Hc8DCL6uvjNPn5V03A0
+ HqWTDAC5ESDwLH1/8dtrCTY+2By1y0it0aVkXem+D4lZuxlcJlrh8czzTZnRgFor766Z
+ qxS3lgtMPyTNAB0b2kHzqJExbEF2gX+APrFIVBqfEi3pb/V3tgevQLe/TYDhFn6Gbtsx
+ uZUdh7EIF+2NGNfPMCHlggsjC236+LcsrSO1fTO7ppd6Aq0amRkzbw+T0L3t+bBPPhbd
+ 23KaAQU4wnpfJEAiZkIRH/5DS7DwPuCbKZ8O2QXFjy7x5StELvyJkBvaEBWXtcmI9Auv
+ 6dDw==
+X-Gm-Message-State: AOAM533Jkx8F5C8K+fJxB3X2DLZ2zaeKYcTmRtI+z+GnNBULYtHVR8rY
+ xICW/LHyzHrfIvscdB84Stw=
+X-Google-Smtp-Source: ABdhPJxHu9zJJ9FJUWJZJWQdpknTVzTkm8TBNRuaQJzThvN9YUYI4ouL8lSFHZOTHz+j9wwl1nI78w==
+X-Received: by 2002:a17:902:d486:b0:135:9335:795b with SMTP id
+ c6-20020a170902d48600b001359335795bmr1692439plg.73.1631178199865; 
+ Thu, 09 Sep 2021 02:03:19 -0700 (PDT)
+Received: from ownia.. ([173.248.225.217])
+ by smtp.gmail.com with ESMTPSA id q126sm1600085pfc.156.2021.09.09.02.03.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 09 Sep 2021 02:03:19 -0700 (PDT)
+From: Weizhao Ouyang <o451686892@gmail.com>
+To: Steven Rostedt <rostedt@goodmis.org>,
+	Ingo Molnar <mingo@redhat.com>
+Subject: [PATCH v4] ftrace: Cleanup ftrace_dyn_arch_init()
+Date: Thu,  9 Sep 2021 17:02:16 +0800
+Message-Id: <20210909090216.1955240-1-o451686892@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-In-Reply-To: <CAPcyv4h-MgZmteMSUfdeQL+XCxL5HvxK87HA3JYB0OoQUaPipQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: o7CiklJZumpKrb--ptNKPiFQhS6LFcUI
-X-Proofpoint-ORIG-GUID: o7CiklJZumpKrb--ptNKPiFQhS6LFcUI
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-09-09_02:2021-09-07,
- 2021-09-09 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 phishscore=0
- adultscore=0 priorityscore=1501 suspectscore=0 mlxlogscore=999 mlxscore=0
- spamscore=0 lowpriorityscore=0 bulkscore=0 malwarescore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2109030001
- definitions=main-2109090044
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,113 +79,270 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux NVDIMM <nvdimm@lists.linux.dev>, Santosh Sivaraj <santosh@fossix.org>,
- maddy@linux.ibm.com, "Weiny, Ira" <ira.weiny@intel.com>,
- rnsastry@linux.ibm.com, Peter Zijlstra <peterz@infradead.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- atrajeev@linux.vnet.ibm.com, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Vishal L Verma <vishal.l.verma@intel.com>,
- Vaibhav Jain <vaibhav@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, linux-mips@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Vincent Chen <deanbo422@gmail.com>, Will Deacon <will@kernel.org>,
+ linux-s390@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Helge Deller <deller@gmx.de>, x86@kernel.org,
+ Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Weizhao Ouyang <o451686892@gmail.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Borislav Petkov <bp@alien8.de>,
+ Greentime Hu <green.hu@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Michal Simek <monstr@monstr.eu>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ Nick Hu <nickhu@andestech.com>, linux-kernel@vger.kernel.org,
+ Palmer Dabbelt <palmer@dabbelt.com>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Most of ARCHs use empty ftrace_dyn_arch_init(), introduce a weak common
+ftrace_dyn_arch_init() to cleanup them.
 
+Signed-off-by: Weizhao Ouyang <o451686892@gmail.com>
+Acked-by: Heiko Carstens <hca@linux.ibm.com> (s390)
+Acked-by: Helge Deller <deller@gmx.de> (parisc)
 
-On 9/8/21 6:33 AM, Dan Williams wrote:
-> On Thu, Sep 2, 2021 at 10:11 PM Kajol Jain <kjain@linux.ibm.com> wrote:
->>
->> Details is added for the event, cpumask and format attributes
->> in the ABI documentation.
->>
->> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
->> Reviewed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
->> Tested-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
->> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
->> ---
->>  Documentation/ABI/testing/sysfs-bus-papr-pmem | 31 +++++++++++++++++++
->>  1 file changed, 31 insertions(+)
->>
->> diff --git a/Documentation/ABI/testing/sysfs-bus-papr-pmem b/Documentation/ABI/testing/sysfs-bus-papr-pmem
->> index 95254cec92bf..4d86252448f8 100644
->> --- a/Documentation/ABI/testing/sysfs-bus-papr-pmem
->> +++ b/Documentation/ABI/testing/sysfs-bus-papr-pmem
->> @@ -61,3 +61,34 @@ Description:
->>                 * "CchRHCnt" : Cache Read Hit Count
->>                 * "CchWHCnt" : Cache Write Hit Count
->>                 * "FastWCnt" : Fast Write Count
->> +
->> +What:          /sys/devices/nmemX/format
->> +Date:          June 2021
->> +Contact:       linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, nvdimm@lists.linux.dev,
->> +Description:   (RO) Attribute group to describe the magic bits
->> +                that go into perf_event_attr.config for a particular pmu.
->> +                (See ABI/testing/sysfs-bus-event_source-devices-format).
->> +
->> +                Each attribute under this group defines a bit range of the
->> +                perf_event_attr.config. Supported attribute is listed
->> +                below::
->> +
->> +                   event  = "config:0-4"  - event ID
->> +
->> +               For example::
->> +                   noopstat = "event=0x1"
->> +
->> +What:          /sys/devices/nmemX/events
-> 
-> That's not a valid sysfs path. Did you mean /sys/bus/nd/devices/nmemX?
+---
+Changes in v4:
+-- revert the generic declaration
 
-Hi Dan,
-  Thanks, I will correct it and update it to `/sys/bus/event_source/devices/`
-where perf creates sysfs files for given pmu.
+Changes in v3:
+-- fix unrecognized opcode on PowerPC
 
-> 
->> +Date:          June 2021
->> +Contact:       linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, nvdimm@lists.linux.dev,
->> +Description:    (RO) Attribute group to describe performance monitoring
->> +                events specific to papr-scm. Each attribute in this group describes
->> +                a single performance monitoring event supported by this nvdimm pmu.
->> +                The name of the file is the name of the event.
->> +                (See ABI/testing/sysfs-bus-event_source-devices-events).
-> 
-> Given these events are in the generic namespace the ABI documentation
-> should be generic as well. So I think move these entries to
-> Documentation/ABI/testing/sysfs-bus-nvdimm directly.
-> 
-> You can still mention papr-scm, but I would expect something like:
-> 
-> What:           /sys/bus/nd/devices/nmemX/events
-> Date:           September 2021
-> KernelVersion:  5.16
-> Contact:        Kajol Jain <kjain@linux.ibm.com>
-> Description:
->                 (RO) Attribute group to describe performance monitoring events
->                 for the nvdimm memory device. Each attribute in this group
->                 describes a single performance monitoring event supported by
->                 this nvdimm pmu.  The name of the file is the name of the event.
->                 (See ABI/testing/sysfs-bus-event_source-devices-events). A
->                 listing of the events supported by a given nvdimm provider type
->                 can be found in Documentation/driver-api/nvdimm/$provider, for
->                 example: Documentation/driver-api/nvdimm/papr-scm.
-> 
-> 
+Changes in v2:
+-- correct CONFIG_DYNAMIC_FTRACE on PowerPC
+-- add Acked-by tag
 
-I will update it accordingly.
+---
+ arch/arm/kernel/ftrace.c        | 5 -----
+ arch/arm64/kernel/ftrace.c      | 5 -----
+ arch/csky/kernel/ftrace.c       | 5 -----
+ arch/ia64/kernel/ftrace.c       | 6 ------
+ arch/microblaze/kernel/ftrace.c | 5 -----
+ arch/nds32/kernel/ftrace.c      | 5 -----
+ arch/parisc/kernel/ftrace.c     | 5 -----
+ arch/riscv/kernel/ftrace.c      | 5 -----
+ arch/s390/kernel/ftrace.c       | 5 -----
+ arch/sh/kernel/ftrace.c         | 5 -----
+ arch/sparc/kernel/ftrace.c      | 5 -----
+ arch/x86/kernel/ftrace.c        | 5 -----
+ kernel/trace/ftrace.c           | 5 +++++
+ 13 files changed, 5 insertions(+), 61 deletions(-)
 
-> 
->> +
->> +What:          /sys/devices/nmemX/cpumask
->> +Date:          June 2021
->> +Contact:       linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, nvdimm@lists.linux.dev,
->> +Description:   (RO) This sysfs file exposes the cpumask which is designated to make
->> +                HCALLs to retrieve nvdimm pmu event counter data.
-> 
-> Seems this one would be provider generic, so no need to refer to PPC
-> specific concepts like HCALLs.
-> 
+diff --git a/arch/arm/kernel/ftrace.c b/arch/arm/kernel/ftrace.c
+index 3c83b5d29697..a006585e1c09 100644
+--- a/arch/arm/kernel/ftrace.c
++++ b/arch/arm/kernel/ftrace.c
+@@ -193,11 +193,6 @@ int ftrace_make_nop(struct module *mod,
+ 
+ 	return ret;
+ }
+-
+-int __init ftrace_dyn_arch_init(void)
+-{
+-	return 0;
+-}
+ #endif /* CONFIG_DYNAMIC_FTRACE */
+ 
+ #ifdef CONFIG_FUNCTION_GRAPH_TRACER
+diff --git a/arch/arm64/kernel/ftrace.c b/arch/arm64/kernel/ftrace.c
+index 7f467bd9db7a..fc62dfe73f93 100644
+--- a/arch/arm64/kernel/ftrace.c
++++ b/arch/arm64/kernel/ftrace.c
+@@ -236,11 +236,6 @@ void arch_ftrace_update_code(int command)
+ 	command |= FTRACE_MAY_SLEEP;
+ 	ftrace_modify_all_code(command);
+ }
+-
+-int __init ftrace_dyn_arch_init(void)
+-{
+-	return 0;
+-}
+ #endif /* CONFIG_DYNAMIC_FTRACE */
+ 
+ #ifdef CONFIG_FUNCTION_GRAPH_TRACER
+diff --git a/arch/csky/kernel/ftrace.c b/arch/csky/kernel/ftrace.c
+index b4a7ec1517ff..50bfcf129078 100644
+--- a/arch/csky/kernel/ftrace.c
++++ b/arch/csky/kernel/ftrace.c
+@@ -133,11 +133,6 @@ int ftrace_update_ftrace_func(ftrace_func_t func)
+ 				(unsigned long)func, true, true);
+ 	return ret;
+ }
+-
+-int __init ftrace_dyn_arch_init(void)
+-{
+-	return 0;
+-}
+ #endif /* CONFIG_DYNAMIC_FTRACE */
+ 
+ #ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
+diff --git a/arch/ia64/kernel/ftrace.c b/arch/ia64/kernel/ftrace.c
+index b2ab2d58fb30..d6360fd404ab 100644
+--- a/arch/ia64/kernel/ftrace.c
++++ b/arch/ia64/kernel/ftrace.c
+@@ -194,9 +194,3 @@ int ftrace_update_ftrace_func(ftrace_func_t func)
+ 	flush_icache_range(addr, addr + 16);
+ 	return 0;
+ }
+-
+-/* run from kstop_machine */
+-int __init ftrace_dyn_arch_init(void)
+-{
+-	return 0;
+-}
+diff --git a/arch/microblaze/kernel/ftrace.c b/arch/microblaze/kernel/ftrace.c
+index 224eea40e1ee..188749d62709 100644
+--- a/arch/microblaze/kernel/ftrace.c
++++ b/arch/microblaze/kernel/ftrace.c
+@@ -163,11 +163,6 @@ int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
+ 	return ret;
+ }
+ 
+-int __init ftrace_dyn_arch_init(void)
+-{
+-	return 0;
+-}
+-
+ int ftrace_update_ftrace_func(ftrace_func_t func)
+ {
+ 	unsigned long ip = (unsigned long)(&ftrace_call);
+diff --git a/arch/nds32/kernel/ftrace.c b/arch/nds32/kernel/ftrace.c
+index 0e23e3a8df6b..f0ef4842d191 100644
+--- a/arch/nds32/kernel/ftrace.c
++++ b/arch/nds32/kernel/ftrace.c
+@@ -84,11 +84,6 @@ void _ftrace_caller(unsigned long parent_ip)
+ 	/* restore all state needed by the compiler epilogue */
+ }
+ 
+-int __init ftrace_dyn_arch_init(void)
+-{
+-	return 0;
+-}
+-
+ static unsigned long gen_sethi_insn(unsigned long addr)
+ {
+ 	unsigned long opcode = 0x46000000;
+diff --git a/arch/parisc/kernel/ftrace.c b/arch/parisc/kernel/ftrace.c
+index 0a1e75af5382..01581f715737 100644
+--- a/arch/parisc/kernel/ftrace.c
++++ b/arch/parisc/kernel/ftrace.c
+@@ -94,11 +94,6 @@ int ftrace_disable_ftrace_graph_caller(void)
+ #endif
+ 
+ #ifdef CONFIG_DYNAMIC_FTRACE
+-
+-int __init ftrace_dyn_arch_init(void)
+-{
+-	return 0;
+-}
+ int ftrace_update_ftrace_func(ftrace_func_t func)
+ {
+ 	return 0;
+diff --git a/arch/riscv/kernel/ftrace.c b/arch/riscv/kernel/ftrace.c
+index 7f1e5203de88..4716f4cdc038 100644
+--- a/arch/riscv/kernel/ftrace.c
++++ b/arch/riscv/kernel/ftrace.c
+@@ -154,11 +154,6 @@ int ftrace_update_ftrace_func(ftrace_func_t func)
+ 
+ 	return ret;
+ }
+-
+-int __init ftrace_dyn_arch_init(void)
+-{
+-	return 0;
+-}
+ #endif
+ 
+ #ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
+diff --git a/arch/s390/kernel/ftrace.c b/arch/s390/kernel/ftrace.c
+index 0a464d328467..3fd80397ff52 100644
+--- a/arch/s390/kernel/ftrace.c
++++ b/arch/s390/kernel/ftrace.c
+@@ -262,11 +262,6 @@ int ftrace_update_ftrace_func(ftrace_func_t func)
+ 	return 0;
+ }
+ 
+-int __init ftrace_dyn_arch_init(void)
+-{
+-	return 0;
+-}
+-
+ void arch_ftrace_update_code(int command)
+ {
+ 	if (ftrace_shared_hotpatch_trampoline(NULL))
+diff --git a/arch/sh/kernel/ftrace.c b/arch/sh/kernel/ftrace.c
+index 295c43315bbe..930001bb8c6a 100644
+--- a/arch/sh/kernel/ftrace.c
++++ b/arch/sh/kernel/ftrace.c
+@@ -252,11 +252,6 @@ int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
+ 
+ 	return ftrace_modify_code(rec->ip, old, new);
+ }
+-
+-int __init ftrace_dyn_arch_init(void)
+-{
+-	return 0;
+-}
+ #endif /* CONFIG_DYNAMIC_FTRACE */
+ 
+ #ifdef CONFIG_FUNCTION_GRAPH_TRACER
+diff --git a/arch/sparc/kernel/ftrace.c b/arch/sparc/kernel/ftrace.c
+index 684b84ce397f..eaead3da8e03 100644
+--- a/arch/sparc/kernel/ftrace.c
++++ b/arch/sparc/kernel/ftrace.c
+@@ -82,11 +82,6 @@ int ftrace_update_ftrace_func(ftrace_func_t func)
+ 	new = ftrace_call_replace(ip, (unsigned long)func);
+ 	return ftrace_modify_code(ip, old, new);
+ }
+-
+-int __init ftrace_dyn_arch_init(void)
+-{
+-	return 0;
+-}
+ #endif
+ 
+ #ifdef CONFIG_FUNCTION_GRAPH_TRACER
+diff --git a/arch/x86/kernel/ftrace.c b/arch/x86/kernel/ftrace.c
+index 1b3ce3b4a2a2..23d221a9a3cd 100644
+--- a/arch/x86/kernel/ftrace.c
++++ b/arch/x86/kernel/ftrace.c
+@@ -252,11 +252,6 @@ void arch_ftrace_update_code(int command)
+ 	ftrace_modify_all_code(command);
+ }
+ 
+-int __init ftrace_dyn_arch_init(void)
+-{
+-	return 0;
+-}
+-
+ /* Currently only x86_64 supports dynamic trampolines */
+ #ifdef CONFIG_X86_64
+ 
+diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
+index 7efbc8aaf7f6..4c090323198d 100644
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -6846,6 +6846,11 @@ void __init ftrace_free_init_mem(void)
+ 	ftrace_free_mem(NULL, start, end);
+ }
+ 
++int __init __weak ftrace_dyn_arch_init(void)
++{
++	return 0;
++}
++
+ void __init ftrace_init(void)
+ {
+ 	extern unsigned long __start_mcount_loc[];
+-- 
+2.30.2
 
-Sure will update it.
-
-Thanks,
-Kajol Jain
