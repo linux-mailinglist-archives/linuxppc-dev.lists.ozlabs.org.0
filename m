@@ -2,97 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEA4A404695
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Sep 2021 09:57:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 763924046ED
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Sep 2021 10:20:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H4rv520DJz2ynD
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Sep 2021 17:57:05 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=egF8pC+O;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H4sQX0n17z2ypb
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Sep 2021 18:20:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
+ smtp.mailfrom=iogearbox.net (client-ip=213.133.104.62;
+ helo=www62.your-server.de; envelope-from=daniel@iogearbox.net;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=egF8pC+O; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+X-Greylist: delayed 1349 seconds by postgrey-1.36 at boromir;
+ Thu, 09 Sep 2021 18:20:25 AEST
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H4rtL4K4Mz2xfP
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Sep 2021 17:56:25 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
- 1897Whjm143815; Thu, 9 Sep 2021 03:56:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=PTPm0p4IxBQUznI62xHHOA822jwtiq7XV+4FXi4+I44=;
- b=egF8pC+OWTFAYjrqprZWvQ/iYoOuQyo6u6MCvOrq3UoTbcBWtGZJBT1dQ7zllArxo6Qt
- RlPE7XlFYdbQqKBCSibclhxV6jLgt5+PMonlMPs4tLP1V/hajMWjVpqokxntDVp57NI9
- hujfqJ1mBTUsXk6C1gErmisuRNhu0JtuAzE6e3Y0Sr9AzoOnznCICQl9L3T2ffJjGYHp
- 5EWAmSoP51+DL4W4yWd7hD3y9iix3caUR5pxxrOW+yUfeWLZc2h14BtMTk2DGPiZUsz8
- ynoDQfy7f4Hx++L3ovtIw938OwXytr7tI1Q7plE/fJq42tKv73n7k3aKp57cbIDZqa6J QQ== 
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3ayd20su5d-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 09 Sep 2021 03:56:01 -0400
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1897pToV027760;
- Thu, 9 Sep 2021 07:56:00 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma03wdc.us.ibm.com with ESMTP id 3axcnpwr72-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 09 Sep 2021 07:56:00 +0000
-Received: from b03ledav002.gho.boulder.ibm.com
- (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 1897txMk30933342
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 9 Sep 2021 07:55:59 GMT
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E4952136055;
- Thu,  9 Sep 2021 07:55:58 +0000 (GMT)
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E1B9B13604F;
- Thu,  9 Sep 2021 07:55:53 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.43.32.15])
- by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu,  9 Sep 2021 07:55:53 +0000 (GMT)
-Subject: Re: [RESEND PATCH v4 1/4] drivers/nvdimm: Add nvdimm pmu structure
-To: Dan Williams <dan.j.williams@intel.com>
-References: <20210903050914.273525-1-kjain@linux.ibm.com>
- <20210903050914.273525-2-kjain@linux.ibm.com>
- <CAPcyv4jSL2cDxGiXEtyyce3eNEE_QUnnMjuLXb3iCwO8_7a7LQ@mail.gmail.com>
-From: kajoljain <kjain@linux.ibm.com>
-Message-ID: <d7f8bf51-059f-4496-37c4-6516a703e209@linux.ibm.com>
-Date: Thu, 9 Sep 2021 13:25:52 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H4sQ137cyz2xfw
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Sep 2021 18:20:25 +1000 (AEST)
+Received: from sslproxy01.your-server.de ([78.46.139.224])
+ by www62.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+ (Exim 4.92.3) (envelope-from <daniel@iogearbox.net>)
+ id 1mOEvf-0001T3-P1; Thu, 09 Sep 2021 09:57:03 +0200
+Received: from [85.5.47.65] (helo=linux.home)
+ by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+ (Exim 4.92) (envelope-from <daniel@iogearbox.net>)
+ id 1mOEvf-000H3n-3x; Thu, 09 Sep 2021 09:57:03 +0200
+Subject: Re: [PATCH bpf-next] bpf: Change value of MAX_TAIL_CALL_CNT from 32
+ to 33
+To: Andrii Nakryiko <andrii.nakryiko@gmail.com>,
+ Tiezhu Yang <yangtiezhu@loongson.cn>
+References: <1631158350-3661-1-git-send-email-yangtiezhu@loongson.cn>
+ <CAEf4BzZqoVZ7keWCLmC=A5oPPwj_xMNRWDkJUcjWn9yE_z1gSg@mail.gmail.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
+Message-ID: <e9063116-617a-5916-bc6f-a1e917776bd7@iogearbox.net>
+Date: Thu, 9 Sep 2021 09:57:02 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-In-Reply-To: <CAPcyv4jSL2cDxGiXEtyyce3eNEE_QUnnMjuLXb3iCwO8_7a7LQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <CAEf4BzZqoVZ7keWCLmC=A5oPPwj_xMNRWDkJUcjWn9yE_z1gSg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: S7uiPZdrlEIqpATK11BGtF6zHBKzKQU6
-X-Proofpoint-ORIG-GUID: S7uiPZdrlEIqpATK11BGtF6zHBKzKQU6
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
- definitions=2021-09-09_02:2021-09-07,
- 2021-09-09 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015
- lowpriorityscore=0 mlxscore=0 suspectscore=0 spamscore=0 mlxlogscore=999
- phishscore=0 malwarescore=0 priorityscore=1501 bulkscore=0 impostorscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2109030001 definitions=main-2109090044
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.103.2/26288/Wed Sep  8 10:22:21 2021)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,155 +58,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux NVDIMM <nvdimm@lists.linux.dev>, Santosh Sivaraj <santosh@fossix.org>,
- maddy@linux.ibm.com, "Weiny, Ira" <ira.weiny@intel.com>,
- rnsastry@linux.ibm.com, Peter Zijlstra <peterz@infradead.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- atrajeev@linux.vnet.ibm.com, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Vishal L Verma <vishal.l.verma@intel.com>,
- Vaibhav Jain <vaibhav@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Song Liu <songliubraving@fb.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ Zi Shen Lim <zlim.lnx@gmail.com>, Alexei Starovoitov <ast@kernel.org>,
+ Russell King <linux@armlinux.org.uk>, Paul Mackerras <paulus@samba.org>,
+ sparclinux@vger.kernel.org, Shubham Bansal <illusionist.neo@gmail.com>,
+ linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
+ Paul Burton <paulburton@kernel.org>, Paul Chaignon <paul@cilium.io>,
+ John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
+ naveen.n.rao@linux.ibm.com, Yonghong Song <yhs@fb.com>,
+ linux-mips@vger.kernel.org, Xi Wang <xi.wang@gmail.com>,
+ Albert Ou <aou@eecs.berkeley.edu>,
+ Johan Almbladh <johan.almbladh@anyfinetworks.com>,
+ Luke Nelson <luke.r.nels@gmail.com>, KP Singh <kpsingh@kernel.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Networking <netdev@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, bpf <bpf@vger.kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, Martin KaFai Lau <kafai@fb.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 9/8/21 3:29 AM, Dan Williams wrote:
-> Hi Kajol,
-> 
-> Apologies for the delay in responding to this series, some comments below:
-
-Hi Dan,
-    No issues, thanks for reviewing the patches.
-
-> 
-> On Thu, Sep 2, 2021 at 10:10 PM Kajol Jain <kjain@linux.ibm.com> wrote:
+On 9/9/21 7:50 AM, Andrii Nakryiko wrote:
+> On Wed, Sep 8, 2021 at 8:33 PM Tiezhu Yang <yangtiezhu@loongson.cn> wrote:
 >>
->> A structure is added, called nvdimm_pmu, for performance
->> stats reporting support of nvdimm devices. It can be used to add
->> nvdimm pmu data such as supported events and pmu event functions
->> like event_init/add/read/del with cpu hotplug support.
+>> In the current code, the actual max tail call count is 33 which is greater
+>> than MAX_TAIL_CALL_CNT (defined as 32), the actual limit is not consistent
+>> with the meaning of MAX_TAIL_CALL_CNT, there is some confusion and need to
+>> spend some time to think the reason at the first glance.
+> 
+> think *about* the reason
+> 
+>> We can see the historical evolution from commit 04fd61ab36ec ("bpf: allow
+>> bpf programs to tail-call other bpf programs") and commit f9dabe016b63
+>> ("bpf: Undo off-by-one in interpreter tail call count limit").
 >>
->> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
->> Reviewed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
->> Tested-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
->> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+>> In order to avoid changing existing behavior, the actual limit is 33 now,
+>> this is resonable.
+> 
+> typo: reasonable
+> 
+>> After commit 874be05f525e ("bpf, tests: Add tail call test suite"), we can
+>> see there exists failed testcase.
+>>
+>> On all archs when CONFIG_BPF_JIT_ALWAYS_ON is not set:
+>>   # echo 0 > /proc/sys/net/core/bpf_jit_enable
+>>   # modprobe test_bpf
+>>   # dmesg | grep -w FAIL
+>>   Tail call error path, max count reached jited:0 ret 34 != 33 FAIL
+>>
+>> On some archs:
+>>   # echo 1 > /proc/sys/net/core/bpf_jit_enable
+>>   # modprobe test_bpf
+>>   # dmesg | grep -w FAIL
+>>   Tail call error path, max count reached jited:1 ret 34 != 33 FAIL
+>>
+>> So it is necessary to change the value of MAX_TAIL_CALL_CNT from 32 to 33,
+>> then do some small changes of the related code.
+>>
+>> With this patch, it does not change the current limit, MAX_TAIL_CALL_CNT
+>> can reflect the actual max tail call count, and the above failed testcase
+>> can be fixed.
+>>
+>> Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
 >> ---
->>  include/linux/nd.h | 43 +++++++++++++++++++++++++++++++++++++++++++
->>  1 file changed, 43 insertions(+)
+> 
+> This change breaks selftests ([0]), please fix them at the same time
+> as you are changing the kernel behavior:
+
+The below selftests shouldn't have to change given there is no change in
+behavior intended (MAX_TAIL_CALL_CNT is bumped to 33 but counter inc'ed
+prior to the comparison). It just means that /all/ JITs must be changed
+and in particular properly _tested_.
+
+>    test_tailcall_2:PASS:tailcall 128 nsec
+>    test_tailcall_2:PASS:tailcall 128 nsec
+>    test_tailcall_2:FAIL:tailcall err 0 errno 2 retval 4
+>    #135/2 tailcalls/tailcall_2:FAIL
+>    test_tailcall_3:PASS:tailcall 128 nsec
+>    test_tailcall_3:FAIL:tailcall count err 0 errno 2 count 34
+>    test_tailcall_3:PASS:tailcall 128 nsec
+>    #135/3 tailcalls/tailcall_3:FAIL
+>    #135/4 tailcalls/tailcall_4:OK
+>    #135/5 tailcalls/tailcall_5:OK
+>    #135/6 tailcalls/tailcall_bpf2bpf_1:OK
+>    test_tailcall_bpf2bpf_2:PASS:tailcall 128 nsec
+>    test_tailcall_bpf2bpf_2:FAIL:tailcall count err 0 errno 2 count 34
+>    test_tailcall_bpf2bpf_2:PASS:tailcall 128 nsec
+>    #135/7 tailcalls/tailcall_bpf2bpf_2:FAIL
+>    #135/8 tailcalls/tailcall_bpf2bpf_3:OK
+>    test_tailcall_bpf2bpf_4:PASS:tailcall 54 nsec
+>    test_tailcall_bpf2bpf_4:FAIL:tailcall count err 0 errno 2 count 32
+>    #135/9 tailcalls/tailcall_bpf2bpf_4:FAIL
+>    test_tailcall_bpf2bpf_4:PASS:tailcall 54 nsec
+>    test_tailcall_bpf2bpf_4:FAIL:tailcall count err 0 errno 2 count 32
+>    #135/10 tailcalls/tailcall_bpf2bpf_5:FAIL
+>    #135 tailcalls:FAIL
+> 
+>    [0] https://github.com/kernel-patches/bpf/pull/1747/checks?check_run_id=3552002906
+> 
+>>   arch/arm/net/bpf_jit_32.c         | 11 ++++++-----
+>>   arch/arm64/net/bpf_jit_comp.c     |  7 ++++---
+>>   arch/mips/net/ebpf_jit.c          |  4 ++--
+>>   arch/powerpc/net/bpf_jit_comp32.c |  4 ++--
+>>   arch/powerpc/net/bpf_jit_comp64.c | 12 ++++++------
+>>   arch/riscv/net/bpf_jit_comp32.c   |  4 ++--
+>>   arch/riscv/net/bpf_jit_comp64.c   |  4 ++--
+>>   arch/sparc/net/bpf_jit_comp_64.c  |  8 ++++----
+>>   include/linux/bpf.h               |  2 +-
+>>   kernel/bpf/core.c                 |  4 ++--
+>>   10 files changed, 31 insertions(+), 29 deletions(-)
 >>
->> diff --git a/include/linux/nd.h b/include/linux/nd.h
->> index ee9ad76afbba..712499cf7335 100644
->> --- a/include/linux/nd.h
->> +++ b/include/linux/nd.h
->> @@ -8,6 +8,8 @@
->>  #include <linux/ndctl.h>
->>  #include <linux/device.h>
->>  #include <linux/badblocks.h>
->> +#include <linux/platform_device.h>
->> +#include <linux/perf_event.h>
->>
->>  enum nvdimm_event {
->>         NVDIMM_REVALIDATE_POISON,
->> @@ -23,6 +25,47 @@ enum nvdimm_claim_class {
->>         NVDIMM_CCLASS_UNKNOWN,
->>  };
->>
->> +/* Event attribute array index */
->> +#define NVDIMM_PMU_FORMAT_ATTR         0
->> +#define NVDIMM_PMU_EVENT_ATTR          1
->> +#define NVDIMM_PMU_CPUMASK_ATTR                2
->> +#define NVDIMM_PMU_NULL_ATTR           3
->> +
->> +/**
->> + * struct nvdimm_pmu - data structure for nvdimm perf driver
->> + *
->> + * @name: name of the nvdimm pmu device.
->> + * @pmu: pmu data structure for nvdimm performance stats.
->> + * @dev: nvdimm device pointer.
->> + * @functions(event_init/add/del/read): platform specific pmu functions.
 > 
-> This is not valid kernel-doc:
+> [...]
 > 
-> include/linux/nd.h:67: warning: Function parameter or member
-> 'event_init' not described in 'nvdimm_pmu'
-> include/linux/nd.h:67: warning: Function parameter or member 'add' not
-> described in 'nvdimm_pmu'
-> include/linux/nd.h:67: warning: Function parameter or member 'del' not
-> described in 'nvdimm_pmu'
-> include/linux/nd.h:67: warning: Function parameter or member 'read'
-> not described in 'nvdimm_pmu'
-> 
-> ...but I think rather than fixing those up 'struct nvdimm_pmu' should be pruned.
-> 
-> It's not clear to me that it is worth the effort to describe these
-> details to the nvdimm core which is just going to turn around and call
-> the pmu core. I'd just as soon have the driver call the pmu core
-> directly, optionally passing in attributes and callbacks that come
-> from the nvdimm core and/or the nvdimm provider.
 
-The intend for adding these callbacks(event_init/add/del/read) is to give
-flexibility to the nvdimm core to add some common checks/routines if required
-in the future. Those checks can be common for all architecture with still having the
-ability to call arch/platform specific driver code to use its own routines.
-
-But as you said, currently we don't have any common checks and it directly
-calling platform specific code, so we can get rid of it. 
-Should we remove this part for now?
-  
-
-> 
-> Otherwise it's also not clear which of these structure members are
-> used at runtime vs purely used as temporary storage to pass parameters
-> to the pmu core.
-> 
->> + * @attr_groups: data structure for events, formats and cpumask
->> + * @cpu: designated cpu for counter access.
->> + * @node: node for cpu hotplug notifier link.
->> + * @cpuhp_state: state for cpu hotplug notification.
->> + * @arch_cpumask: cpumask to get designated cpu for counter access.
->> + */
->> +struct nvdimm_pmu {
->> +       const char *name;
->> +       struct pmu pmu;
->> +       struct device *dev;
->> +       int (*event_init)(struct perf_event *event);
->> +       int  (*add)(struct perf_event *event, int flags);
->> +       void (*del)(struct perf_event *event, int flags);
->> +       void (*read)(struct perf_event *event);
->> +       /*
->> +        * Attribute groups for the nvdimm pmu. Index 0 used for
->> +        * format attribute, index 1 used for event attribute,
->> +        * index 2 used for cpusmask attribute and index 3 kept as NULL.
->> +        */
->> +       const struct attribute_group *attr_groups[4];
-> 
-> Following from above, I'd rather this was organized as static
-> attributes with an is_visible() helper for the groups for any dynamic
-> aspects. That mirrors the behavior of nvdimm_create() and allows for
-> device drivers to compose the attribute groups from a core set and /
-> or a provider specific set.
-
-Since we don't have any common events right now, Can I use papr
-attributes directly or should we create dummy events for common thing and
-then merged it with papr event list.
-
-Thanks,
-Kajol Jain
-
-> 
->> +       int cpu;
->> +       struct hlist_node node;
->> +       enum cpuhp_state cpuhp_state;
->> +
->> +       /* cpumask provided by arch/platform specific code */
->> +       struct cpumask arch_cpumask;
->> +};
->> +
->>  struct nd_device_driver {
->>         struct device_driver drv;
->>         unsigned long type;
->> --
->> 2.26.2
->>
