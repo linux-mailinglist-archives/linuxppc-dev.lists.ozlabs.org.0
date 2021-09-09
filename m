@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C9E4404CA4
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Sep 2021 13:58:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE7E5404CB3
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Sep 2021 14:00:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H4yFm0FHxz2yn4
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Sep 2021 21:58:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H4yHV6CJGz2yPy
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Sep 2021 22:00:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f3UMrPjt;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eJDYDaA6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,35 +17,35 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=f3UMrPjt; 
+ header.s=k20201202 header.b=eJDYDaA6; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H4yF660SRz2xMw
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Sep 2021 21:58:02 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 79681613E6;
- Thu,  9 Sep 2021 11:57:59 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H4yGt65B4z2xMw
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Sep 2021 21:59:34 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B59DB6328A;
+ Thu,  9 Sep 2021 11:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1631188680;
- bh=v6+CyDVCHXj4E1pUKK8Z0p2O+fCTC4zZOPVHoRbrJqc=;
+ s=k20201202; t=1631188772;
+ bh=PPM/jXHmTtR/M9ZsSaVnvwKdTCr9Kp3n0mIOVTS9KFA=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=f3UMrPjtwwCEmMllKZIHCjUKopWfURW0np1FEpA78T+xF0B5CdABwSd3yAVuhDvWd
- FeXDGnQ6ZBkDWhNef9Wj6zV1/r0qCVWHoTxFHnCpaJcXs6GQlEbVd26+jBARVmIy5X
- OS2kNBoO6OGloxmZKkgXpCBRkVf5mLueXJbb+8oznxt0ZS65YKPVU6mNB9a/PZ3jaA
- 1SYBxayC/1UvDFjaG3lcedrE6yuv6qqsctuV6BAJu7pEogr5YyTqW3R14cSN2heHYJ
- 44VTrfkfevIqsTJsRTCEIzhwI3u4m/VJMTJg3E3fg+2y5KjRZcF7mRsElMehm1eS1a
- cZk/eH2fJuEwA==
+ b=eJDYDaA6KwzEuA32SxPN5r1+U5b5e09urfX2K8DX4NmqZS2xQkeAh2BCWErJ3k9uc
+ MxNggo/cL2rvsYgmGch8aU5moBmqobgy5gr1hD+YIAA8Lwq1pY1lo7VtnlVlLgtp0r
+ nGUJbFQ5+GDT7ozUug9/Y3SOT7o6lUWz/iS1TuGxnn6n+SjM5jmLNFG2lmZBUY44Ai
+ 25fESPbzVt0TOLt1M/25W+01YtbmKAlPfkSlYgcb/3UBXpvWh80lGwb3PRdWTAkl+G
+ ECZF612lhalo19pCccPNM1J4smBpuQd5znTJlr2gczWe9OBXTqmYPBhHTftkLhFyD9
+ cViNhfzdeypXQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 27/74] hvsi: don't panic on tty_register_driver
+Subject: [PATCH AUTOSEL 4.14 25/59] hvsi: don't panic on tty_register_driver
  failure
-Date: Thu,  9 Sep 2021 07:56:39 -0400
-Message-Id: <20210909115726.149004-27-sashal@kernel.org>
+Date: Thu,  9 Sep 2021 07:58:26 -0400
+Message-Id: <20210909115900.149795-25-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210909115726.149004-1-sashal@kernel.org>
-References: <20210909115726.149004-1-sashal@kernel.org>
+In-Reply-To: <20210909115900.149795-1-sashal@kernel.org>
+References: <20210909115900.149795-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -92,10 +92,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 16 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/tty/hvc/hvsi.c b/drivers/tty/hvc/hvsi.c
-index 66f95f758be0..73226337f561 100644
+index 2e578d6433af..7d7fdfc578a9 100644
 --- a/drivers/tty/hvc/hvsi.c
 +++ b/drivers/tty/hvc/hvsi.c
-@@ -1038,7 +1038,7 @@ static const struct tty_operations hvsi_ops = {
+@@ -1051,7 +1051,7 @@ static const struct tty_operations hvsi_ops = {
  
  static int __init hvsi_init(void)
  {
@@ -104,7 +104,7 @@ index 66f95f758be0..73226337f561 100644
  
  	hvsi_driver = alloc_tty_driver(hvsi_count);
  	if (!hvsi_driver)
-@@ -1069,12 +1069,25 @@ static int __init hvsi_init(void)
+@@ -1082,12 +1082,25 @@ static int __init hvsi_init(void)
  	}
  	hvsi_wait = wait_for_state; /* irqs active now */
  
