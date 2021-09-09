@@ -1,52 +1,99 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 763924046ED
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Sep 2021 10:20:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7244C4046B4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Sep 2021 10:04:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H4sQX0n17z2ypb
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Sep 2021 18:20:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H4s3h0gXmz2ynq
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Sep 2021 18:04:32 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gTLK95O0;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=iogearbox.net (client-ip=213.133.104.62;
- helo=www62.your-server.de; envelope-from=daniel@iogearbox.net;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
  receiver=<UNKNOWN>)
-X-Greylist: delayed 1349 seconds by postgrey-1.36 at boromir;
- Thu, 09 Sep 2021 18:20:25 AEST
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=gTLK95O0; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H4sQ137cyz2xfw
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Sep 2021 18:20:25 +1000 (AEST)
-Received: from sslproxy01.your-server.de ([78.46.139.224])
- by www62.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
- (Exim 4.92.3) (envelope-from <daniel@iogearbox.net>)
- id 1mOEvf-0001T3-P1; Thu, 09 Sep 2021 09:57:03 +0200
-Received: from [85.5.47.65] (helo=linux.home)
- by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
- (Exim 4.92) (envelope-from <daniel@iogearbox.net>)
- id 1mOEvf-000H3n-3x; Thu, 09 Sep 2021 09:57:03 +0200
-Subject: Re: [PATCH bpf-next] bpf: Change value of MAX_TAIL_CALL_CNT from 32
- to 33
-To: Andrii Nakryiko <andrii.nakryiko@gmail.com>,
- Tiezhu Yang <yangtiezhu@loongson.cn>
-References: <1631158350-3661-1-git-send-email-yangtiezhu@loongson.cn>
- <CAEf4BzZqoVZ7keWCLmC=A5oPPwj_xMNRWDkJUcjWn9yE_z1gSg@mail.gmail.com>
-From: Daniel Borkmann <daniel@iogearbox.net>
-Message-ID: <e9063116-617a-5916-bc6f-a1e917776bd7@iogearbox.net>
-Date: Thu, 9 Sep 2021 09:57:02 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H4s2z6VJNz2xYX
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Sep 2021 18:03:55 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id
+ 1897ahcN114438; Thu, 9 Sep 2021 04:03:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=7NDctDKZ9OagMfyBYzyLTXP07dMs9RZei5vrG+DTorg=;
+ b=gTLK95O0Od3Njwkp39IElv0d82qsGxN1PnAh4Wed8Oss3na+9WDDnAz6let0FnIotJAL
+ YaYUkb6nJ0XbGRl+VzeLjL4Wk5D+1778oCrHND5HmXdvvG6XyM8BMReblmKJfRYZhLJp
+ GjDp2y/8EyfZZxI9dQAmg6M4Yla5GWm9HHjVO5TqIgAYVHRrlvF6UjtTHYxmqKB5zaV1
+ QMvKFb/zMk5F5TSlgvhMrzGObyL0+jIGCbCzLIGw8GSa9e6ksUTPlHZ1Fg0ckS3C5KGK
+ VwLAIgAseko9YwE2ZS7tLykO9RCZnIbxquDTYkGzCVzPnjv0Q0YFf+sY6Y0+4ULF5OJp UQ== 
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3axp75j9ed-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 09 Sep 2021 04:03:32 -0400
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1897vUnO005639;
+ Thu, 9 Sep 2021 08:03:30 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com
+ (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+ by ppma03wdc.us.ibm.com with ESMTP id 3axcnpwx5j-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 09 Sep 2021 08:03:30 +0000
+Received: from b03ledav002.gho.boulder.ibm.com
+ (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
+ by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 18983T6D46072196
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 9 Sep 2021 08:03:29 GMT
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3002D13604F;
+ Thu,  9 Sep 2021 08:03:29 +0000 (GMT)
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 418F2136059;
+ Thu,  9 Sep 2021 08:03:24 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.43.32.15])
+ by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu,  9 Sep 2021 08:03:23 +0000 (GMT)
+Subject: Re: [RESEND PATCH v4 4/4] powerpc/papr_scm: Document papr_scm sysfs
+ event format entries
+To: Dan Williams <dan.j.williams@intel.com>
+References: <20210903050914.273525-1-kjain@linux.ibm.com>
+ <20210903050914.273525-5-kjain@linux.ibm.com>
+ <CAPcyv4h-MgZmteMSUfdeQL+XCxL5HvxK87HA3JYB0OoQUaPipQ@mail.gmail.com>
+From: kajoljain <kjain@linux.ibm.com>
+Message-ID: <09823156-2797-af1d-23ce-d31ae86770d9@linux.ibm.com>
+Date: Thu, 9 Sep 2021 13:33:22 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-In-Reply-To: <CAEf4BzZqoVZ7keWCLmC=A5oPPwj_xMNRWDkJUcjWn9yE_z1gSg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <CAPcyv4h-MgZmteMSUfdeQL+XCxL5HvxK87HA3JYB0OoQUaPipQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.103.2/26288/Wed Sep  8 10:22:21 2021)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: o7CiklJZumpKrb--ptNKPiFQhS6LFcUI
+X-Proofpoint-ORIG-GUID: o7CiklJZumpKrb--ptNKPiFQhS6LFcUI
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391, 18.0.790
+ definitions=2021-09-09_02:2021-09-07,
+ 2021-09-09 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 phishscore=0
+ adultscore=0 priorityscore=1501 suspectscore=0 mlxlogscore=999 mlxscore=0
+ spamscore=0 lowpriorityscore=0 bulkscore=0 malwarescore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2109030001
+ definitions=main-2109090044
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,121 +105,113 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Song Liu <songliubraving@fb.com>, Catalin Marinas <catalin.marinas@arm.com>,
- Zi Shen Lim <zlim.lnx@gmail.com>, Alexei Starovoitov <ast@kernel.org>,
- Russell King <linux@armlinux.org.uk>, Paul Mackerras <paulus@samba.org>,
- sparclinux@vger.kernel.org, Shubham Bansal <illusionist.neo@gmail.com>,
- linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
- Paul Burton <paulburton@kernel.org>, Paul Chaignon <paul@cilium.io>,
- John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
- naveen.n.rao@linux.ibm.com, Yonghong Song <yhs@fb.com>,
- linux-mips@vger.kernel.org, Xi Wang <xi.wang@gmail.com>,
- Albert Ou <aou@eecs.berkeley.edu>,
- Johan Almbladh <johan.almbladh@anyfinetworks.com>,
- Luke Nelson <luke.r.nels@gmail.com>, KP Singh <kpsingh@kernel.org>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Networking <netdev@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
- "David S. Miller" <davem@davemloft.net>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, bpf <bpf@vger.kernel.org>,
- linuxppc-dev@lists.ozlabs.org, Martin KaFai Lau <kafai@fb.com>
+Cc: Linux NVDIMM <nvdimm@lists.linux.dev>, Santosh Sivaraj <santosh@fossix.org>,
+ maddy@linux.ibm.com, "Weiny, Ira" <ira.weiny@intel.com>,
+ rnsastry@linux.ibm.com, Peter Zijlstra <peterz@infradead.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ atrajeev@linux.vnet.ibm.com, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Vishal L Verma <vishal.l.verma@intel.com>,
+ Vaibhav Jain <vaibhav@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 9/9/21 7:50 AM, Andrii Nakryiko wrote:
-> On Wed, Sep 8, 2021 at 8:33 PM Tiezhu Yang <yangtiezhu@loongson.cn> wrote:
+
+
+On 9/8/21 6:33 AM, Dan Williams wrote:
+> On Thu, Sep 2, 2021 at 10:11 PM Kajol Jain <kjain@linux.ibm.com> wrote:
 >>
->> In the current code, the actual max tail call count is 33 which is greater
->> than MAX_TAIL_CALL_CNT (defined as 32), the actual limit is not consistent
->> with the meaning of MAX_TAIL_CALL_CNT, there is some confusion and need to
->> spend some time to think the reason at the first glance.
-> 
-> think *about* the reason
-> 
->> We can see the historical evolution from commit 04fd61ab36ec ("bpf: allow
->> bpf programs to tail-call other bpf programs") and commit f9dabe016b63
->> ("bpf: Undo off-by-one in interpreter tail call count limit").
+>> Details is added for the event, cpumask and format attributes
+>> in the ABI documentation.
 >>
->> In order to avoid changing existing behavior, the actual limit is 33 now,
->> this is resonable.
-> 
-> typo: reasonable
-> 
->> After commit 874be05f525e ("bpf, tests: Add tail call test suite"), we can
->> see there exists failed testcase.
->>
->> On all archs when CONFIG_BPF_JIT_ALWAYS_ON is not set:
->>   # echo 0 > /proc/sys/net/core/bpf_jit_enable
->>   # modprobe test_bpf
->>   # dmesg | grep -w FAIL
->>   Tail call error path, max count reached jited:0 ret 34 != 33 FAIL
->>
->> On some archs:
->>   # echo 1 > /proc/sys/net/core/bpf_jit_enable
->>   # modprobe test_bpf
->>   # dmesg | grep -w FAIL
->>   Tail call error path, max count reached jited:1 ret 34 != 33 FAIL
->>
->> So it is necessary to change the value of MAX_TAIL_CALL_CNT from 32 to 33,
->> then do some small changes of the related code.
->>
->> With this patch, it does not change the current limit, MAX_TAIL_CALL_CNT
->> can reflect the actual max tail call count, and the above failed testcase
->> can be fixed.
->>
->> Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+>> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+>> Reviewed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+>> Tested-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
+>> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
 >> ---
-> 
-> This change breaks selftests ([0]), please fix them at the same time
-> as you are changing the kernel behavior:
-
-The below selftests shouldn't have to change given there is no change in
-behavior intended (MAX_TAIL_CALL_CNT is bumped to 33 but counter inc'ed
-prior to the comparison). It just means that /all/ JITs must be changed
-and in particular properly _tested_.
-
->    test_tailcall_2:PASS:tailcall 128 nsec
->    test_tailcall_2:PASS:tailcall 128 nsec
->    test_tailcall_2:FAIL:tailcall err 0 errno 2 retval 4
->    #135/2 tailcalls/tailcall_2:FAIL
->    test_tailcall_3:PASS:tailcall 128 nsec
->    test_tailcall_3:FAIL:tailcall count err 0 errno 2 count 34
->    test_tailcall_3:PASS:tailcall 128 nsec
->    #135/3 tailcalls/tailcall_3:FAIL
->    #135/4 tailcalls/tailcall_4:OK
->    #135/5 tailcalls/tailcall_5:OK
->    #135/6 tailcalls/tailcall_bpf2bpf_1:OK
->    test_tailcall_bpf2bpf_2:PASS:tailcall 128 nsec
->    test_tailcall_bpf2bpf_2:FAIL:tailcall count err 0 errno 2 count 34
->    test_tailcall_bpf2bpf_2:PASS:tailcall 128 nsec
->    #135/7 tailcalls/tailcall_bpf2bpf_2:FAIL
->    #135/8 tailcalls/tailcall_bpf2bpf_3:OK
->    test_tailcall_bpf2bpf_4:PASS:tailcall 54 nsec
->    test_tailcall_bpf2bpf_4:FAIL:tailcall count err 0 errno 2 count 32
->    #135/9 tailcalls/tailcall_bpf2bpf_4:FAIL
->    test_tailcall_bpf2bpf_4:PASS:tailcall 54 nsec
->    test_tailcall_bpf2bpf_4:FAIL:tailcall count err 0 errno 2 count 32
->    #135/10 tailcalls/tailcall_bpf2bpf_5:FAIL
->    #135 tailcalls:FAIL
-> 
->    [0] https://github.com/kernel-patches/bpf/pull/1747/checks?check_run_id=3552002906
-> 
->>   arch/arm/net/bpf_jit_32.c         | 11 ++++++-----
->>   arch/arm64/net/bpf_jit_comp.c     |  7 ++++---
->>   arch/mips/net/ebpf_jit.c          |  4 ++--
->>   arch/powerpc/net/bpf_jit_comp32.c |  4 ++--
->>   arch/powerpc/net/bpf_jit_comp64.c | 12 ++++++------
->>   arch/riscv/net/bpf_jit_comp32.c   |  4 ++--
->>   arch/riscv/net/bpf_jit_comp64.c   |  4 ++--
->>   arch/sparc/net/bpf_jit_comp_64.c  |  8 ++++----
->>   include/linux/bpf.h               |  2 +-
->>   kernel/bpf/core.c                 |  4 ++--
->>   10 files changed, 31 insertions(+), 29 deletions(-)
+>>  Documentation/ABI/testing/sysfs-bus-papr-pmem | 31 +++++++++++++++++++
+>>  1 file changed, 31 insertions(+)
 >>
+>> diff --git a/Documentation/ABI/testing/sysfs-bus-papr-pmem b/Documentation/ABI/testing/sysfs-bus-papr-pmem
+>> index 95254cec92bf..4d86252448f8 100644
+>> --- a/Documentation/ABI/testing/sysfs-bus-papr-pmem
+>> +++ b/Documentation/ABI/testing/sysfs-bus-papr-pmem
+>> @@ -61,3 +61,34 @@ Description:
+>>                 * "CchRHCnt" : Cache Read Hit Count
+>>                 * "CchWHCnt" : Cache Write Hit Count
+>>                 * "FastWCnt" : Fast Write Count
+>> +
+>> +What:          /sys/devices/nmemX/format
+>> +Date:          June 2021
+>> +Contact:       linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, nvdimm@lists.linux.dev,
+>> +Description:   (RO) Attribute group to describe the magic bits
+>> +                that go into perf_event_attr.config for a particular pmu.
+>> +                (See ABI/testing/sysfs-bus-event_source-devices-format).
+>> +
+>> +                Each attribute under this group defines a bit range of the
+>> +                perf_event_attr.config. Supported attribute is listed
+>> +                below::
+>> +
+>> +                   event  = "config:0-4"  - event ID
+>> +
+>> +               For example::
+>> +                   noopstat = "event=0x1"
+>> +
+>> +What:          /sys/devices/nmemX/events
 > 
-> [...]
+> That's not a valid sysfs path. Did you mean /sys/bus/nd/devices/nmemX?
+
+Hi Dan,
+  Thanks, I will correct it and update it to `/sys/bus/event_source/devices/`
+where perf creates sysfs files for given pmu.
+
+> 
+>> +Date:          June 2021
+>> +Contact:       linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, nvdimm@lists.linux.dev,
+>> +Description:    (RO) Attribute group to describe performance monitoring
+>> +                events specific to papr-scm. Each attribute in this group describes
+>> +                a single performance monitoring event supported by this nvdimm pmu.
+>> +                The name of the file is the name of the event.
+>> +                (See ABI/testing/sysfs-bus-event_source-devices-events).
+> 
+> Given these events are in the generic namespace the ABI documentation
+> should be generic as well. So I think move these entries to
+> Documentation/ABI/testing/sysfs-bus-nvdimm directly.
+> 
+> You can still mention papr-scm, but I would expect something like:
+> 
+> What:           /sys/bus/nd/devices/nmemX/events
+> Date:           September 2021
+> KernelVersion:  5.16
+> Contact:        Kajol Jain <kjain@linux.ibm.com>
+> Description:
+>                 (RO) Attribute group to describe performance monitoring events
+>                 for the nvdimm memory device. Each attribute in this group
+>                 describes a single performance monitoring event supported by
+>                 this nvdimm pmu.  The name of the file is the name of the event.
+>                 (See ABI/testing/sysfs-bus-event_source-devices-events). A
+>                 listing of the events supported by a given nvdimm provider type
+>                 can be found in Documentation/driver-api/nvdimm/$provider, for
+>                 example: Documentation/driver-api/nvdimm/papr-scm.
+> 
 > 
 
+I will update it accordingly.
+
+> 
+>> +
+>> +What:          /sys/devices/nmemX/cpumask
+>> +Date:          June 2021
+>> +Contact:       linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, nvdimm@lists.linux.dev,
+>> +Description:   (RO) This sysfs file exposes the cpumask which is designated to make
+>> +                HCALLs to retrieve nvdimm pmu event counter data.
+> 
+> Seems this one would be provider generic, so no need to refer to PPC
+> specific concepts like HCALLs.
+> 
+
+Sure will update it.
+
+Thanks,
+Kajol Jain
