@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BB2240610A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 02:32:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 984F540610C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 02:33:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H5Gzj2BLSz3dg2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 10:32:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H5H0Y3k1Kz3fTW
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 10:33:17 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rqxPysnY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SYXNa6xG;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,32 +17,32 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=rqxPysnY; 
+ header.s=k20201202 header.b=SYXNa6xG; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H5Gkn1Rk7z3c6s
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Sep 2021 10:21:21 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 077CC610A3;
- Fri, 10 Sep 2021 00:21:18 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H5Gkp3sL4z3cVL
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Sep 2021 10:21:22 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2CEAB61101;
+ Fri, 10 Sep 2021 00:21:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1631233279;
- bh=4aQWlZnBWxN/bryoXBadspe7w/Zqfu8krxC08mH3III=;
+ s=k20201202; t=1631233281;
+ bh=kCj+4aZO+DvUx9y/TDplYYtEDTnkG+JXAuGDumH7g8A=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=rqxPysnY4K2qtkMt9bB+Kji/NGAR6I9I2glaH+guvLANLN2iQcourHZJJeUawIedj
- wdJO2m7h0C223MjwPKw+USkEFCr4XP88gpU7zypFhrkGLqMWM8FtaryIvkMGbREqIV
- 6c2Jw8aTcICLHtKyjy8ziKu4A2hhUgPUhPuBFKgrkwW5GMYMif8nbS7y6W7FoOE0rD
- xV6E9ZhNRKGDGgeIn1iN9a+gjkseUXqMUUj0xb4tSRMXzZ0C1uM/u+vRzgKByy6gvj
- fyrcazNTNZw3e0bIoMoVxnC1+OswwnuZ789oWaBAXtWfDLuRVk1yRnu/fMgXv17qeY
- w/DUuj1wdbtCw==
+ b=SYXNa6xGppaYSyrlggwzzx7dVgGKh2J788n0uQbMexHMsjKWemkyqsZImU53MRben
+ l8X4RnwdUWjit08/m6+1mB0PJfGWmc5DvWBEROb12OO9R4hJXPYuxJvROltBcrfLNd
+ YYsP2jp2rQty24bgrD0/ip0x4OjkCABgK6yQB85RrIF9Z89pqU5PWay2nQHPmrlK4C
+ Fg8l01/rKyQilMoHsHuoUuxkgmgTyOPZaYGgQE0A99bbnzkqP77jkp8o31Pd2X/oBh
+ ELhs6K7jtnaLN0ye7mzHSzEhfO6BcIORP16CDLTIcZ7ROztD6mPzF/Vok7xawP8m69
+ ygcW5ATY5lXWg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 37/53] powerpc: Avoid link stack corruption in
- misc asm functions
-Date: Thu,  9 Sep 2021 20:20:12 -0400
-Message-Id: <20210910002028.175174-37-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 38/53] KVM: PPC: Book3S HV: Initialise vcpu MSR
+ with MSR_ME
+Date: Thu,  9 Sep 2021 20:20:13 -0400
+Message-Id: <20210910002028.175174-38-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210910002028.175174-1-sashal@kernel.org>
 References: <20210910002028.175174-1-sashal@kernel.org>
@@ -61,144 +61,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, Alexey Kardashevskiy <aik@ozlabs.ru>,
+ kvm-ppc@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-[ Upstream commit 33e1402435cb9f3021439a15935ea2dc69ec1844 ]
+[ Upstream commit fd42b7b09c602c904452c0c3e5955ca21d8e387a ]
 
-bl;mflr is used at several places to get code position.
+It is possible to create a VCPU without setting the MSR before running
+it, which results in a warning in kvmhv_vcpu_entry_p9() that MSR_ME is
+not set. This is pretty harmless because the MSR_ME bit is added to
+HSRR1 before HRFID to guest, and a normal qemu guest doesn't hit it.
 
-Use bcl 20,31,+4 instead of bl in order to preserve link stack.
+Initialise the vcpu MSR with MSR_ME set.
 
-See commit c974809a26a1 ("powerpc/vdso: Avoid link stack corruption
-in __get_datapage()") for details.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reported-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/c6eabb4fb6c156f75d56dcbcc6f243e5ac0fba42.1629791763.git.christophe.leroy@csgroup.eu
+Link: https://lore.kernel.org/r/20210811160134.904987-2-npiggin@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/misc.S       |  2 +-
- arch/powerpc/kernel/misc_32.S    |  2 +-
- arch/powerpc/kernel/misc_64.S    |  2 +-
- arch/powerpc/kernel/reloc_32.S   |  2 +-
- arch/powerpc/kexec/relocate_32.S | 12 ++++++------
- 5 files changed, 10 insertions(+), 10 deletions(-)
+ arch/powerpc/kvm/book3s_hv.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/kernel/misc.S b/arch/powerpc/kernel/misc.S
-index 5be96feccb55..fb7de3543c03 100644
---- a/arch/powerpc/kernel/misc.S
-+++ b/arch/powerpc/kernel/misc.S
-@@ -29,7 +29,7 @@ _GLOBAL(reloc_offset)
- 	li	r3, 0
- _GLOBAL(add_reloc_offset)
- 	mflr	r0
--	bl	1f
-+	bcl	20,31,$+4
- 1:	mflr	r5
- 	PPC_LL	r4,(2f-1b)(r5)
- 	subf	r5,r4,r5
-diff --git a/arch/powerpc/kernel/misc_32.S b/arch/powerpc/kernel/misc_32.S
-index 717e658b90fd..9511f077842b 100644
---- a/arch/powerpc/kernel/misc_32.S
-+++ b/arch/powerpc/kernel/misc_32.S
-@@ -106,7 +106,7 @@ _GLOBAL(reloc_got2)
- 	srwi.	r8,r8,2
- 	beqlr
- 	mtctr	r8
--	bl	1f
-+	bcl	20,31,$+4
- 1:	mflr	r0
- 	lis	r4,1b@ha
- 	addi	r4,r4,1b@l
-diff --git a/arch/powerpc/kernel/misc_64.S b/arch/powerpc/kernel/misc_64.S
-index 070465825c21..81870c1c827f 100644
---- a/arch/powerpc/kernel/misc_64.S
-+++ b/arch/powerpc/kernel/misc_64.S
-@@ -277,7 +277,7 @@ _GLOBAL(scom970_write)
-  * Physical (hardware) cpu id should be in r3.
-  */
- _GLOBAL(kexec_wait)
--	bl	1f
-+	bcl	20,31,$+4
- 1:	mflr	r5
- 	addi	r5,r5,kexec_flag-1b
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index bd7350a608d4..8e16dfecbe36 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -2353,6 +2353,7 @@ static int kvmppc_core_vcpu_create_hv(struct kvm_vcpu *vcpu)
+ 	spin_lock_init(&vcpu->arch.vpa_update_lock);
+ 	spin_lock_init(&vcpu->arch.tbacct_lock);
+ 	vcpu->arch.busy_preempt = TB_NIL;
++	vcpu->arch.shregs.msr = MSR_ME;
+ 	vcpu->arch.intr_msr = MSR_SF | MSR_ME;
  
-diff --git a/arch/powerpc/kernel/reloc_32.S b/arch/powerpc/kernel/reloc_32.S
-index 10e96f3e22fe..0508c14b4c28 100644
---- a/arch/powerpc/kernel/reloc_32.S
-+++ b/arch/powerpc/kernel/reloc_32.S
-@@ -30,7 +30,7 @@ R_PPC_RELATIVE = 22
- _GLOBAL(relocate)
- 
- 	mflr	r0		/* Save our LR */
--	bl	0f		/* Find our current runtime address */
-+	bcl	20,31,$+4	/* Find our current runtime address */
- 0:	mflr	r12		/* Make it accessible */
- 	mtlr	r0
- 
-diff --git a/arch/powerpc/kexec/relocate_32.S b/arch/powerpc/kexec/relocate_32.S
-index 61946c19e07c..cf6e52bdf8d8 100644
---- a/arch/powerpc/kexec/relocate_32.S
-+++ b/arch/powerpc/kexec/relocate_32.S
-@@ -93,7 +93,7 @@ wmmucr:
- 	 * Invalidate all the TLB entries except the current entry
- 	 * where we are running from
- 	 */
--	bl	0f				/* Find our address */
-+	bcl	20,31,$+4			/* Find our address */
- 0:	mflr	r5				/* Make it accessible */
- 	tlbsx	r23,0,r5			/* Find entry we are in */
- 	li	r4,0				/* Start at TLB entry 0 */
-@@ -158,7 +158,7 @@ write_out:
- 	/* Switch to other address space in MSR */
- 	insrwi	r9, r7, 1, 26		/* Set MSR[IS] = r7 */
- 
--	bl	1f
-+	bcl	20,31,$+4
- 1:	mflr	r8
- 	addi	r8, r8, (2f-1b)		/* Find the target offset */
- 
-@@ -202,7 +202,7 @@ next_tlb:
- 	li	r9,0
- 	insrwi	r9, r7, 1, 26			/* Set MSR[IS] = r7 */
- 
--	bl	1f
-+	bcl	20,31,$+4
- 1:	mflr	r8
- 	and	r8, r8, r11			/* Get our offset within page */
- 	addi	r8, r8, (2f-1b)
-@@ -240,7 +240,7 @@ setup_map_47x:
- 	sync
- 
- 	/* Find the entry we are running from */
--	bl	2f
-+	bcl	20,31,$+4
- 2:	mflr	r23
- 	tlbsx	r23, 0, r23
- 	tlbre	r24, r23, 0			/* TLB Word 0 */
-@@ -296,7 +296,7 @@ clear_utlb_entry:
- 	/* Update the msr to the new TS */
- 	insrwi	r5, r7, 1, 26
- 
--	bl	1f
-+	bcl	20,31,$+4
- 1:	mflr	r6
- 	addi	r6, r6, (2f-1b)
- 
-@@ -355,7 +355,7 @@ write_utlb:
- 	/* Defaults to 256M */
- 	lis	r10, 0x1000
- 
--	bl	1f
-+	bcl	20,31,$+4
- 1:	mflr	r4
- 	addi	r4, r4, (2f-1b)			/* virtual address  of 2f */
- 
+ 	/*
 -- 
 2.30.2
 
