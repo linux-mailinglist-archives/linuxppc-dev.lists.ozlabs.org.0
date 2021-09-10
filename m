@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C329A4060F8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 02:24:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25B3F4060FA
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 02:25:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H5GpH4xwfz302W
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 10:24:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H5Gq1041yz3dkq
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 10:25:01 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AsVjwJFt;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JjK8XoY6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,36 +17,37 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=AsVjwJFt; 
+ header.s=k20201202 header.b=JjK8XoY6; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H5Gh72WHhz2yx9
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Sep 2021 10:19:03 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 0E50B611AF;
- Fri, 10 Sep 2021 00:19:00 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H5GhF33PTz308v
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Sep 2021 10:19:09 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A92D4611C2;
+ Fri, 10 Sep 2021 00:19:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1631233141;
- bh=4i0FMzCXh/A5Ie7Ab+TC6N2jHv8OoP+o6EcwIegyOTM=;
+ s=k20201202; t=1631233147;
+ bh=EzVc4+9z8jJm3006a4PiHOFkM6wMDw2uoZJqKWC7Rz8=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=AsVjwJFta0D1+D4G3xD8FWncwB5EWzOrLqlvhMVhXNUqjnQxml7gPvr31JxWxZG5g
- gOTjWOYMtMSAOZMVb3jxP1/U7ge1OpWETbu7WXce99jJ+eMuid1ePpBQos4iTmPJU6
- YaOJpTzW+eI2+uqUL30Qr/DBcR24M4UutdWCpiZakdYdoYXYRJifd4yfJkdae+mZlQ
- 4AQ7m0KiJ6vbW4WxDKKCO+1NdWiARg7F+BiJsUnXrXWL0mDV9bddt3d8RzG9cxoQsy
- NuOAdigL1kAsf7WEmZVNProJXhotoyvjig5w5fXcKXqfq8gkamhcNBom21KIT/RQ9x
- 7Q13Rhyne1N/Q==
+ b=JjK8XoY61T71LIr3dIYYdc01p6UJMuamzPA6uha8dgRoRgcp3vanJrY3HKnegvV/C
+ ngLva2mWvFNYmfuuL8PIcgCVgIywlocDI0a8Lt1ihT+UU/9wyeY57e4iMNuPnuwP3d
+ oqToHElSyqnHkmajCHnDDybvP1QuI+aDRRM26urT8yClQEuloNwnrAaOOxxdC+ZAGs
+ EZFr4WkFB+OYYk7xhX4CLKJbNyJq7eK3TQ/uxhPNB314Yhz9FLdcvVbToSx+R0abn2
+ EEYcqGKGDuCKOXA/WZuyDsBzZpmYt1agm4qruW1BusJRbU8RyI+lrYTD8ZQ8hrK03Z
+ F/JAQ0y6JkKQA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.13 28/88] powerpc: make the install target not
- depend on any build artifact
-Date: Thu,  9 Sep 2021 20:17:20 -0400
-Message-Id: <20210910001820.174272-28-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.13 32/88] KVM: PPC: Book3S HV: XICS: Fix mapping of
+ passthrough interrupts
+Date: Thu,  9 Sep 2021 20:17:24 -0400
+Message-Id: <20210910001820.174272-32-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210910001820.174272-1-sashal@kernel.org>
 References: <20210910001820.174272-1-sashal@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -61,71 +62,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Cédric Le Goater <clg@kaod.org>
 
-[ Upstream commit 9bef456b20581e630ef9a13555ca04fed65a859d ]
+[ Upstream commit 1753081f2d445f9157550692fcc4221cd3ff0958 ]
 
-The install target should not depend on any build artifact.
+PCI MSIs now live in an MSI domain but the underlying calls, which
+will EOI the interrupt in real mode, need an HW IRQ number mapped in
+the XICS IRQ domain. Grab it there.
 
-The reason is explained in commit 19514fc665ff ("arm, kbuild: make
-"make install" not depend on vmlinux").
-
-Change the PowerPC installation code in a similar way.
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20210729141937.445051-2-masahiroy@kernel.org
+Link: https://lore.kernel.org/r/20210701132750.1475580-31-clg@kaod.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/boot/Makefile   |  2 +-
- arch/powerpc/boot/install.sh | 14 ++++++++++++++
- 2 files changed, 15 insertions(+), 1 deletion(-)
+ arch/powerpc/kvm/book3s_hv.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
-index 2b8da923ceca..a1b330f66a03 100644
---- a/arch/powerpc/boot/Makefile
-+++ b/arch/powerpc/boot/Makefile
-@@ -441,7 +441,7 @@ $(obj)/zImage.initrd:	$(addprefix $(obj)/, $(initrd-y))
- 	$(Q)rm -f $@; ln $< $@
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 395f98158e81..a284999a3171 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -5170,6 +5170,7 @@ static int kvmppc_set_passthru_irq(struct kvm *kvm, int host_irq, int guest_gsi)
+ 	struct kvmppc_passthru_irqmap *pimap;
+ 	struct irq_chip *chip;
+ 	int i, rc = 0;
++	struct irq_data *host_data;
  
- # Only install the vmlinux
--install: $(CONFIGURE) $(addprefix $(obj)/, $(image-y))
-+install:
- 	sh -x $(srctree)/$(src)/install.sh "$(KERNELRELEASE)" vmlinux System.map "$(INSTALL_PATH)"
- 
- # Install the vmlinux and other built boot targets.
-diff --git a/arch/powerpc/boot/install.sh b/arch/powerpc/boot/install.sh
-index b6a256bc96ee..8d669cf1ccda 100644
---- a/arch/powerpc/boot/install.sh
-+++ b/arch/powerpc/boot/install.sh
-@@ -21,6 +21,20 @@
- # Bail with error code if anything goes wrong
- set -e
- 
-+verify () {
-+	if [ ! -f "$1" ]; then
-+		echo ""                                                   1>&2
-+		echo " *** Missing file: $1"                              1>&2
-+		echo ' *** You need to run "make" before "make install".' 1>&2
-+		echo ""                                                   1>&2
-+		exit 1
-+	fi
-+}
+ 	if (!kvm_irq_bypass)
+ 		return 1;
+@@ -5234,7 +5235,14 @@ static int kvmppc_set_passthru_irq(struct kvm *kvm, int host_irq, int guest_gsi)
+ 	 * the KVM real mode handler.
+ 	 */
+ 	smp_wmb();
+-	irq_map->r_hwirq = desc->irq_data.hwirq;
 +
-+# Make sure the files actually exist
-+verify "$2"
-+verify "$3"
-+
- # User may have a custom install script
++	/*
++	 * The 'host_irq' number is mapped in the PCI-MSI domain but
++	 * the underlying calls, which will EOI the interrupt in real
++	 * mode, need an HW IRQ number mapped in the XICS IRQ domain.
++	 */
++	host_data = irq_domain_get_irq_data(irq_get_default_host(), host_irq);
++	irq_map->r_hwirq = (unsigned int)irqd_to_hwirq(host_data);
  
- if [ -x ~/bin/${INSTALLKERNEL} ]; then exec ~/bin/${INSTALLKERNEL} "$@"; fi
+ 	if (i == pimap->n_mapped)
+ 		pimap->n_mapped++;
+@@ -5242,7 +5250,7 @@ static int kvmppc_set_passthru_irq(struct kvm *kvm, int host_irq, int guest_gsi)
+ 	if (xics_on_xive())
+ 		rc = kvmppc_xive_set_mapped(kvm, guest_gsi, desc);
+ 	else
+-		kvmppc_xics_set_mapped(kvm, guest_gsi, desc->irq_data.hwirq);
++		kvmppc_xics_set_mapped(kvm, guest_gsi, irq_map->r_hwirq);
+ 	if (rc)
+ 		irq_map->r_hwirq = 0;
+ 
 -- 
 2.30.2
 
