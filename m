@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 238574060C0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 02:19:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A10D4060CC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 02:19:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H5Gh50wnHz3c83
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 10:19:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H5Ghw2ZB8z30R1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 10:19:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oFfPqXH9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RJwg+ko2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,37 +17,36 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=oFfPqXH9; 
+ header.s=k20201202 header.b=RJwg+ko2; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H5Gdd5Vf2z2yfk
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Sep 2021 10:16:53 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3217961207;
- Fri, 10 Sep 2021 00:16:51 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H5GfR3CpWz303x
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Sep 2021 10:17:35 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2A897611CE;
+ Fri, 10 Sep 2021 00:17:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1631233012;
- bh=5QHMzjuKFZj8EELoxq77L9sxWasggjwmQgGgG+hbvEg=;
+ s=k20201202; t=1631233052;
+ bh=2w3CfM81UXHMrSm3u6yO2WyGTxebKw3iwdEfJLS67O4=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=oFfPqXH96IeJlDskuSn3iIA7g0CQoMgaqUizcCCZZGDOnW5REBqxCBvJC8PjGub6K
- 7KA2MPAq4izMlhw4BL0Fy61hIcIqb7bStSZNZGenTQdyWHCAJxoXCjC+uBTzhjciOs
- B9tZmYD+HRV/haiotUr/+PHQojFYM2CV6CaotcKSGo82FM/S2PAMXcG5GKHdhWM+xS
- Bbm/LpJawPr/iivNBW03+tWSsm2OUNb3EPanSiKmdEJZPyv7JFezGaNrR7JgtWHqrX
- mHHBfgMA55eQmPxgkuZHjz62ubQsSM/LBJCD5qBMThcESw+DM1zgRIrLA3OMDZrNni
- qetwFMUuu9SuA==
+ b=RJwg+ko2vsJGVA2k0ISIPu1fnMNvVFQ/Ka4QwLcchi8su1ZUHAD2nibv8ehlh9lCz
+ yaqlp9Ix0M52mNc0q79DnFcMh8Q5v038AnQLlCkD0kPTwtuTC6xQXZII7OXkGpCrKJ
+ vJaFdA2wg1IGGj7VqSONFY5xQbb5nEMxZmMdB4rNJ0BkZ/nakkhUatm3ti+3OApHkk
+ S0FfCXTNGfVH2b9KiXLSkJlyRuo055h6IMp0dD715ONEQqA1Q5JG8GVl0HaNPseQfw
+ oJDE35BHWOUoftnP5HzzVE41YqIy+lyI+26lPXXSqvX5W/n0s1KMgUbngKpKHUDBTO
+ yqfneN/Le4Rtg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.14 38/99] KVM: PPC: Book3S HV: XICS: Fix mapping of
- passthrough interrupts
-Date: Thu,  9 Sep 2021 20:14:57 -0400
-Message-Id: <20210910001558.173296-38-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.14 68/99] powerpc/32: indirect function call use
+ bctrl rather than blrl in ret_from_kernel_thread
+Date: Thu,  9 Sep 2021 20:15:27 -0400
+Message-Id: <20210910001558.173296-68-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210910001558.173296-1-sashal@kernel.org>
 References: <20210910001558.173296-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -62,64 +61,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, kvm-ppc@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Cédric Le Goater <clg@kaod.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 1753081f2d445f9157550692fcc4221cd3ff0958 ]
+[ Upstream commit 113ec9ccc8049c3772f0eab46b62c5d6654c09f7 ]
 
-PCI MSIs now live in an MSI domain but the underlying calls, which
-will EOI the interrupt in real mode, need an HW IRQ number mapped in
-the XICS IRQ domain. Grab it there.
+Copied from commit 89bbe4c798bc ("powerpc/64: indirect function call
+use bctrl rather than blrl in ret_from_kernel_thread")
 
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
+blrl is not recommended to use as an indirect function call, as it may
+corrupt the link stack predictor.
+
+This is not a performance critical path but this should be fixed for
+consistency.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20210701132750.1475580-31-clg@kaod.org
+Link: https://lore.kernel.org/r/91b1d242525307ceceec7ef6e832bfbacdd4501b.1629436472.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kvm/book3s_hv.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ arch/powerpc/kernel/entry_32.S | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 085fb8ecbf68..1ca0a4f760bc 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -5328,6 +5328,7 @@ static int kvmppc_set_passthru_irq(struct kvm *kvm, int host_irq, int guest_gsi)
- 	struct kvmppc_passthru_irqmap *pimap;
- 	struct irq_chip *chip;
- 	int i, rc = 0;
-+	struct irq_data *host_data;
- 
- 	if (!kvm_irq_bypass)
- 		return 1;
-@@ -5392,7 +5393,14 @@ static int kvmppc_set_passthru_irq(struct kvm *kvm, int host_irq, int guest_gsi)
- 	 * the KVM real mode handler.
- 	 */
- 	smp_wmb();
--	irq_map->r_hwirq = desc->irq_data.hwirq;
-+
-+	/*
-+	 * The 'host_irq' number is mapped in the PCI-MSI domain but
-+	 * the underlying calls, which will EOI the interrupt in real
-+	 * mode, need an HW IRQ number mapped in the XICS IRQ domain.
-+	 */
-+	host_data = irq_domain_get_irq_data(irq_get_default_host(), host_irq);
-+	irq_map->r_hwirq = (unsigned int)irqd_to_hwirq(host_data);
- 
- 	if (i == pimap->n_mapped)
- 		pimap->n_mapped++;
-@@ -5400,7 +5408,7 @@ static int kvmppc_set_passthru_irq(struct kvm *kvm, int host_irq, int guest_gsi)
- 	if (xics_on_xive())
- 		rc = kvmppc_xive_set_mapped(kvm, guest_gsi, desc);
- 	else
--		kvmppc_xics_set_mapped(kvm, guest_gsi, desc->irq_data.hwirq);
-+		kvmppc_xics_set_mapped(kvm, guest_gsi, irq_map->r_hwirq);
- 	if (rc)
- 		irq_map->r_hwirq = 0;
+diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
+index 0273a1349006..61fdd53cdd9a 100644
+--- a/arch/powerpc/kernel/entry_32.S
++++ b/arch/powerpc/kernel/entry_32.S
+@@ -161,10 +161,10 @@ ret_from_fork:
+ ret_from_kernel_thread:
+ 	REST_NVGPRS(r1)
+ 	bl	schedule_tail
+-	mtlr	r14
++	mtctr	r14
+ 	mr	r3,r15
+ 	PPC440EP_ERR42
+-	blrl
++	bctrl
+ 	li	r3,0
+ 	b	ret_from_syscall
  
 -- 
 2.30.2
