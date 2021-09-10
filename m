@@ -1,52 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F144B406DE9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 17:03:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5490B406F12
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 18:10:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H5fJJ66xzz3050
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Sep 2021 01:03:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H5gnL1zGGz301B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Sep 2021 02:09:58 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=dkim header.b=mZ0JcBF5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dxluCGT0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=alien8.de (client-ip=5.9.137.197; helo=mail.skyhub.de;
- envelope-from=bp@alien8.de; receiver=<UNKNOWN>)
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=dxluCGT0; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H5fHX5DRrz2xrg
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Sep 2021 01:02:28 +1000 (AEST)
-Received: from zn.tnic (p200300ec2f0f0700e42ce33fe8cf6a79.dip0.t-ipconnect.de
- [IPv6:2003:ec:2f0f:700:e42c:e33f:e8cf:6a79])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 93BC61EC0277;
- Fri, 10 Sep 2021 17:02:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
- t=1631286138;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
- bh=40kPdt7aP/VJYkQyMREfQyPgJ8o6qpk6K8Mxu6v6cSc=;
- b=mZ0JcBF56mTU6V0YTC61tZbPl8X0LCaqV1t+QlhEk3mjWHgSHZF5dXkxFXSXhGUION3Odd
- 8c/8BBNjWwb218w1V8+ZjDkG7xQbIB2escJ8cg5SbXRf2ClULwId1eDLbmvqpxW7H+B37m
- j71cPf0I4R1mC5Q61ol+StbImh1Vte8=
-Date: Fri, 10 Sep 2021 17:02:10 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Subject: Re: [PATCH v3 2/8] mm: Introduce a function to check for
- confidential computing features
-Message-ID: <YTtzcoFdi7Ond8Kt@zn.tnic>
-References: <cover.1631141919.git.thomas.lendacky@amd.com>
- <0a7618d54e7e954ee56c22ad1b94af2ffe69543a.1631141919.git.thomas.lendacky@amd.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H5gmj56fHz2xtR
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Sep 2021 02:09:25 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8424E61207;
+ Fri, 10 Sep 2021 16:09:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1631290163;
+ bh=NAdHDVgWOlnGUIEsitFUU7JyMJqE/TRMT6To3NgX/WY=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=dxluCGT0bYGZFNFZc85+kqYpMMa0oSSx6DNqXX7YihcTVNTGe7Vdu90gLK4t067S9
+ 1qqEytrA1vk7vaYdpMp8z2teqlcndAbpD8lbdzuNKJEYlr/MCeGazHlO2XeMoD1Vju
+ zqHXBGaR7//552U2lQDB3KA/dFOcTuprLUs4RkHRqK16IfR6Ob6a4FfW2fylcmrtfD
+ /D3J8FfVsVTsC4aiDVJvQodQ28gUMa1A40zJM0eF5U8EFJHrEWuHI8rAhUL/Wa0+w6
+ dU0qlvOP7IK9SDGA0MVX4bM3v4kN1dcFAwS8ZpbVw96jx2SbJSlthTi6iPfqkdTvuj
+ UTvGrdegzUnUA==
+From: Mark Brown <broonie@kernel.org>
+To: Xiubo.Lee@gmail.com, perex@perex.cz, nicoleotsuka@gmail.com,
+ Shengjiu Wang <shengjiu.wang@nxp.com>, alsa-devel@alsa-project.org,
+ tiwai@suse.com, timur@kernel.org, festevam@gmail.com
+Subject: Re: [PATCH for-5.15 0/5] ASoC: fsl: register platform component
+ before registering cpu dai
+Date: Fri, 10 Sep 2021 17:08:43 +0100
+Message-Id: <163128974014.2897.9681301071931751805.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <1630665006-31437-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1630665006-31437-1-git-send-email-shengjiu.wang@nxp.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <0a7618d54e7e954ee56c22ad1b94af2ffe69543a.1631141919.git.thomas.lendacky@amd.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,55 +61,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org,
- Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
- linux-efi@vger.kernel.org, Brijesh Singh <brijesh.singh@amd.com>,
- kvm@vger.kernel.org, Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
- kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
- amd-gfx@lists.freedesktop.org, platform-driver-x86@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>, iommu@lists.linux-foundation.org,
- Andi Kleen <ak@linux.intel.com>, linux-graphics-maintainer@vmware.com,
- dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org,
- Tianyu Lan <Tianyu.Lan@microsoft.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Mark Brown <broonie@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 08, 2021 at 05:58:33PM -0500, Tom Lendacky wrote:
-> In prep for other confidential computing technologies, introduce a generic
+On Fri, 3 Sep 2021 18:30:01 +0800, Shengjiu Wang wrote:
+> There is no defer probe when adding platform component to
+> snd_soc_pcm_runtime(rtd), the code is in snd_soc_add_pcm_runtime()
+> 
+> snd_soc_register_card()
+>   -> snd_soc_bind_card()
+>     -> snd_soc_add_pcm_runtime()
+>       -> adding cpu dai
+>       -> adding codec dai
+>       -> adding platform component.
+> 
+> [...]
 
-preparation
+Applied to
 
-> helper function, cc_platform_has(), that can be used to check for specific
-> active confidential computing attributes, like memory encryption. This is
-> intended to eliminate having to add multiple technology-specific checks to
-> the code (e.g. if (sev_active() || tdx_active())).
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-...
+Thanks!
 
-> diff --git a/include/linux/cc_platform.h b/include/linux/cc_platform.h
-> new file mode 100644
-> index 000000000000..253f3ea66cd8
-> --- /dev/null
-> +++ b/include/linux/cc_platform.h
-> @@ -0,0 +1,88 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * Confidential Computing Platform Capability checks
-> + *
-> + * Copyright (C) 2021 Advanced Micro Devices, Inc.
-> + *
-> + * Author: Tom Lendacky <thomas.lendacky@amd.com>
-> + */
-> +
-> +#ifndef _CC_PLATFORM_H
+[1/5] ASoC: fsl_sai: register platform component before registering cpu dai
+      commit: 9c3ad33b5a412d8bc0a377e7cd9baa53ed52f22d
+[2/5] ASoC: fsl_esai: register platform component before registering cpu dai
+      commit: f12ce92e98b21c1fc669cd74e12c54a0fe3bc2eb
+[3/5] ASoC: fsl_micfil: register platform component before registering cpu dai
+      commit: 0adf292069dcca8bab76a603251fcaabf77468ca
+[4/5] ASoC: fsl_spdif: register platform component before registering cpu dai
+      commit: ee8ccc2eb5840e34fce088bdb174fd5329153ef0
+[5/5] ASoC: fsl_xcvr: register platform component before registering cpu dai
+      commit: c590fa80b39287a91abeb487829f3190e7ae775f
 
-	_LINUX_CC_PLATFORM_H
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-> +#define _CC_PLATFORM_H
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
--- 
-Regards/Gruss,
-    Boris.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
