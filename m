@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41C5340611F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 02:39:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 745EC406120
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 02:40:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H5H7y0kSWz3dyt
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 10:39:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H5H8d2f7qz3g5k
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 10:40:17 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Hs98F9B5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NWvq4ZkE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,32 +17,32 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=Hs98F9B5; 
+ header.s=k20201202 header.b=NWvq4ZkE; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H5GmR1xtSz3bP7
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Sep 2021 10:22:47 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9963060FDA;
- Fri, 10 Sep 2021 00:22:44 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H5GmZ5C7bz3cn3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Sep 2021 10:22:54 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3995C611BD;
+ Fri, 10 Sep 2021 00:22:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1631233365;
- bh=JGRZ0v7BLrXwQQwhLpNAc+DttmogUpwUrK6mmHk0Uig=;
+ s=k20201202; t=1631233372;
+ bh=vYoucGos+pTt0QUBpjP1CVCtT57uTeJsNcdvISAoRMc=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Hs98F9B5J4MVAkm0EMR6bJSa8S/DH5vnA1QeQnk6GsXheiiQny5koIYKkOdjNwi48
- ltRbuP3Zm+p/bG0wwULjU+Bqxv6evrLAioWxQWiNcNiwmRbupz+dNAGIL2pn9BCet+
- HcgqQEI99lZDpKWxwl7kBxJwmhu0PhmK3IXfHUnEWE9LONmcqwAjt18OoOSIT5ilq+
- 6xoQpGzgDdLEjExxyNEXFnOGVfxIsNO2BBIIFt4QiWgJOpZGvjUhh00eksndh6qMiv
- q8Ku6UNY3/92gDgAirJjII+9whvA+9h1Qkk9BQTt9RgFqW4V7PgYkk+Ms+ck3wlK8P
- uQ5ghU9DLdDhA==
+ b=NWvq4ZkEv2hlRXeqgTdMvVY2tSnE+BTtLZPEX9Hg9t9ei9qUXwXb2CIJd5linnWoZ
+ F76IurN0uN3BZ18kGriV3CAN95uEBndxsC4UyvLJ3AVFAPTTNpzKD6jvQJFPNlnWdF
+ 5CVtHgQXGBqOnu4nJyt5SjmOiWMlNtbjBD6CH8LBXZh2c8wS23wCBjWwH5UB8FyPjS
+ 2MHvyR2bzSs0shOvGxuP0Yl2NwSkc3wcl7FB6OGS2bmwgkMXFblFg0Ew8drYPATh0z
+ q0DqL6LoNxj0KLc1KLLS6GYGw4QUjn299Ckm0AtOBQA7npntCYAkXIED4S3EOkRmKp
+ lnTDsdOPmtVrw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 08/25] powerpc: make the install target not
- depend on any build artifact
-Date: Thu,  9 Sep 2021 20:22:16 -0400
-Message-Id: <20210910002234.176125-8-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 14/25] powerpc/32: indirect function call use
+ bctrl rather than blrl in ret_from_kernel_thread
+Date: Thu,  9 Sep 2021 20:22:22 -0400
+Message-Id: <20210910002234.176125-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210910002234.176125-1-sashal@kernel.org>
 References: <20210910002234.176125-1-sashal@kernel.org>
@@ -61,71 +61,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 9bef456b20581e630ef9a13555ca04fed65a859d ]
+[ Upstream commit 113ec9ccc8049c3772f0eab46b62c5d6654c09f7 ]
 
-The install target should not depend on any build artifact.
+Copied from commit 89bbe4c798bc ("powerpc/64: indirect function call
+use bctrl rather than blrl in ret_from_kernel_thread")
 
-The reason is explained in commit 19514fc665ff ("arm, kbuild: make
-"make install" not depend on vmlinux").
+blrl is not recommended to use as an indirect function call, as it may
+corrupt the link stack predictor.
 
-Change the PowerPC installation code in a similar way.
+This is not a performance critical path but this should be fixed for
+consistency.
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20210729141937.445051-2-masahiroy@kernel.org
+Link: https://lore.kernel.org/r/91b1d242525307ceceec7ef6e832bfbacdd4501b.1629436472.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/boot/Makefile   |  2 +-
- arch/powerpc/boot/install.sh | 14 ++++++++++++++
- 2 files changed, 15 insertions(+), 1 deletion(-)
+ arch/powerpc/kernel/entry_32.S | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
-index 7a83b5e136e0..5f9a8ff76a65 100644
---- a/arch/powerpc/boot/Makefile
-+++ b/arch/powerpc/boot/Makefile
-@@ -442,7 +442,7 @@ $(obj)/zImage.initrd:	$(addprefix $(obj)/, $(initrd-y))
- 	$(Q)rm -f $@; ln $< $@
+diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
+index 26b3f853cbf6..0f40119cb5cb 100644
+--- a/arch/powerpc/kernel/entry_32.S
++++ b/arch/powerpc/kernel/entry_32.S
+@@ -477,10 +477,10 @@ ret_from_fork:
+ ret_from_kernel_thread:
+ 	REST_NVGPRS(r1)
+ 	bl	schedule_tail
+-	mtlr	r14
++	mtctr	r14
+ 	mr	r3,r15
+ 	PPC440EP_ERR42
+-	blrl
++	bctrl
+ 	li	r3,0
+ 	b	ret_from_syscall
  
- # Only install the vmlinux
--install: $(CONFIGURE) $(addprefix $(obj)/, $(image-y))
-+install:
- 	sh -x $(srctree)/$(src)/install.sh "$(KERNELRELEASE)" vmlinux System.map "$(INSTALL_PATH)"
- 
- # Install the vmlinux and other built boot targets.
-diff --git a/arch/powerpc/boot/install.sh b/arch/powerpc/boot/install.sh
-index b6a256bc96ee..8d669cf1ccda 100644
---- a/arch/powerpc/boot/install.sh
-+++ b/arch/powerpc/boot/install.sh
-@@ -21,6 +21,20 @@
- # Bail with error code if anything goes wrong
- set -e
- 
-+verify () {
-+	if [ ! -f "$1" ]; then
-+		echo ""                                                   1>&2
-+		echo " *** Missing file: $1"                              1>&2
-+		echo ' *** You need to run "make" before "make install".' 1>&2
-+		echo ""                                                   1>&2
-+		exit 1
-+	fi
-+}
-+
-+# Make sure the files actually exist
-+verify "$2"
-+verify "$3"
-+
- # User may have a custom install script
- 
- if [ -x ~/bin/${INSTALLKERNEL} ]; then exec ~/bin/${INSTALLKERNEL} "$@"; fi
 -- 
 2.30.2
 
