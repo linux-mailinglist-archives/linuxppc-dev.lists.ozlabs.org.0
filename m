@@ -2,42 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1B9C406938
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 11:42:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CF9B406935
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 11:41:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H5W9l4mbWz308h
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 19:42:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H5W8z1kPWz2yp2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 19:41:23 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eZq41meV;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.13; helo=inva020.nxp.com;
- envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=bugzilla.kernel.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=eZq41meV; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H5W9L5MfRz2xrw
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Sep 2021 19:41:42 +1000 (AEST)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 1D5311A258D;
- Fri, 10 Sep 2021 11:41:39 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com
- (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id D95DA1A2591;
- Fri, 10 Sep 2021 11:41:38 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net
- [10.192.224.44])
- by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 649AB183AD26;
- Fri, 10 Sep 2021 17:41:37 +0800 (+08)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
- festevam@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
- alsa-devel@alsa-project.org
-Subject: [PATCH] ASoC: fsl_xcvr: Fix channel swap issue with ARC
-Date: Fri, 10 Sep 2021 17:18:30 +0800
-Message-Id: <1631265510-27384-1-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-X-Virus-Scanned: ClamAV using ClamSMTP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H5W8B1fRkz2yHw
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Sep 2021 19:40:42 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPS id E3E42611B0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Sep 2021 09:40:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1631266838;
+ bh=d27uS/z0lXQOU31/7tRayHD8sEEM2bjiuaB76DBqdZ0=;
+ h=From:To:Subject:Date:In-Reply-To:References:From;
+ b=eZq41meVji7RRhCYvlFzqONV69Hj4FgiO3v1yJdwLcUyCEC9gKrK2SvwsHyA1quC7
+ OuXLVZovLaD6txUZEn3Uu7NcFI5mYq7Sk1nblFo+ST52CWdGp4y9PVdhQTU7TLmXXO
+ LOPR6nOLyq/mSCGGwY+qQxnFmh3OFDYkgm8iZ5necYAabV1Vfik4bi0wCrYSbWVgfn
+ cNF/CpD+GA6lP5GQ6Y6mtykAN+XvPWlgzYHcB5Ve6BnHl7SRvsjsyPHu7TDCIlkrRW
+ 0z9KObNK4Ir50bLqTAdu8TRvhSpMItc4Vl+tDQQKbZImnfXO+X0wsUaOPjvZNP55+l
+ wd3IP4bZCQ52Q==
+Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
+ id CD2CC610D0; Fri, 10 Sep 2021 09:40:38 +0000 (UTC)
+From: bugzilla-daemon@bugzilla.kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 206669] Little-endian kernel crashing on POWER8 on heavy
+ big-endian PowerKVM load
+Date: Fri, 10 Sep 2021 09:40:38 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: glaubitz@physik.fu-berlin.de
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-206669-206035-bHcZ5lKSPy@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-206669-206035@https.bugzilla.kernel.org/>
+References: <bug-206669-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
+MIME-Version: 1.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,68 +78,18 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With pause and resume test for ARC, there is occasionally
-channel swap issue. The reason is that currently driver set
-the DPATH out of reset first, then start the DMA, the first
-data got from FIFO may not be the Left channel.
+https://bugzilla.kernel.org/show_bug.cgi?id=3D206669
 
-Moving DPATH out of reset operation after the dma enablement
-to fix this issue.
+--- Comment #14 from John Paul Adrian Glaubitz (glaubitz@physik.fu-berlin.d=
+e) ---
+Still reproduces with Linux 5.10.46 from Debian Bullseye.
 
-Fixes: 28564486866f ("ASoC: fsl_xcvr: Add XCVR ASoC CPU DAI driver")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- sound/soc/fsl/fsl_xcvr.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+--=20
+You may reply to this email to add a comment.
 
-diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
-index 31c5ee641fe7..6e67033b6cde 100644
---- a/sound/soc/fsl/fsl_xcvr.c
-+++ b/sound/soc/fsl/fsl_xcvr.c
-@@ -487,8 +487,9 @@ static int fsl_xcvr_prepare(struct snd_pcm_substream *substream,
- 		return ret;
- 	}
- 
--	/* clear DPATH RESET */
-+	/* set DPATH RESET */
- 	m_ctl |= FSL_XCVR_EXT_CTRL_DPTH_RESET(tx);
-+	v_ctl |= FSL_XCVR_EXT_CTRL_DPTH_RESET(tx);
- 	ret = regmap_update_bits(xcvr->regmap, FSL_XCVR_EXT_CTRL, m_ctl, v_ctl);
- 	if (ret < 0) {
- 		dev_err(dai->dev, "Error while setting EXT_CTRL: %d\n", ret);
-@@ -590,10 +591,6 @@ static void fsl_xcvr_shutdown(struct snd_pcm_substream *substream,
- 		val  |= FSL_XCVR_EXT_CTRL_CMDC_RESET(tx);
- 	}
- 
--	/* set DPATH RESET */
--	mask |= FSL_XCVR_EXT_CTRL_DPTH_RESET(tx);
--	val  |= FSL_XCVR_EXT_CTRL_DPTH_RESET(tx);
--
- 	ret = regmap_update_bits(xcvr->regmap, FSL_XCVR_EXT_CTRL, mask, val);
- 	if (ret < 0) {
- 		dev_err(dai->dev, "Err setting DPATH RESET: %d\n", ret);
-@@ -643,6 +640,16 @@ static int fsl_xcvr_trigger(struct snd_pcm_substream *substream, int cmd,
- 			dev_err(dai->dev, "Failed to enable DMA: %d\n", ret);
- 			return ret;
- 		}
-+
-+		/* clear DPATH RESET */
-+		ret = regmap_update_bits(xcvr->regmap, FSL_XCVR_EXT_CTRL,
-+					 FSL_XCVR_EXT_CTRL_DPTH_RESET(tx),
-+					 0);
-+		if (ret < 0) {
-+			dev_err(dai->dev, "Failed to clear DPATH RESET: %d\n", ret);
-+			return ret;
-+		}
-+
- 		break;
- 	case SNDRV_PCM_TRIGGER_STOP:
- 	case SNDRV_PCM_TRIGGER_SUSPEND:
--- 
-2.17.1
-
+You are receiving this mail because:
+You are watching the assignee of the bug.=
