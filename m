@@ -2,54 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99703406389
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 02:49:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCD9940658F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 04:12:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H5HMc3JQ4z3gxW
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 10:49:48 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hoxot8uU;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H5KCW5Hjkz303F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 12:12:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=hoxot8uU; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=92.121.34.13; helo=inva020.nxp.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H5GpB5yQcz3dgx
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Sep 2021 10:24:18 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 791D1610A3;
- Fri, 10 Sep 2021 00:24:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1631233457;
- bh=/3PyN0Qj3YLPH/F6yY8D0aSJtt251I6XUp7vJyGCqWU=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=hoxot8uU4jWmv+pDQ0AqzcnSRAdV//lNfZ0UKDhyUhsVmL144cnlyMO0QMuYCXGvS
- Bjh5m5zIDzQ9oWnczW/EtkDguPuC9kxQ14pOn4MiC+CWrDEuftvCK4b9P10tbFaG6P
- CxLXD5L81BYf02ijW5eqGUoI5GEODlYAOOooTuZAjh0iB0MutOz618xRqMn7ZefMpR
- CySAXtWo6braHY8u6uTHkv48FPPPxQveNPRJehQ3l7ezfvYpAHWope3FKd9O10GPuj
- OxRoHXG457RXAaEkJnzcOouyekOouQdjLOCymhYKinQWXBI9yjnSytxpF91DmLw/L8
- T/VyDymuEkbXg==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 10/14] KVM: PPC: Book3S HV: Initialise vcpu MSR
- with MSR_ME
-Date: Thu,  9 Sep 2021 20:23:59 -0400
-Message-Id: <20210910002403.176887-10-sashal@kernel.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210910002403.176887-1-sashal@kernel.org>
-References: <20210910002403.176887-1-sashal@kernel.org>
-MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H5KC53dtJz2xXn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Sep 2021 12:12:32 +1000 (AEST)
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id CA1BE1A5FED;
+ Fri, 10 Sep 2021 04:12:28 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com
+ (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 92D251A0AD8;
+ Fri, 10 Sep 2021 04:12:28 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net
+ [10.192.224.44])
+ by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 22F50183AD05;
+ Fri, 10 Sep 2021 10:12:27 +0800 (+08)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
+ alsa-devel@alsa-project.org
+Subject: [PATCH] ASoC: fsl_spdif: Add support for i.MX8ULP
+Date: Fri, 10 Sep 2021 09:49:22 +0800
+Message-Id: <1631238562-27081-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,45 +49,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Alexey Kardashevskiy <aik@ozlabs.ru>,
- kvm-ppc@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nicholas Piggin <npiggin@gmail.com>
+On i.MX8ULP the spdif works with EDMA, so add compatible
+string and soc specific data for i.MX8ULP.
 
-[ Upstream commit fd42b7b09c602c904452c0c3e5955ca21d8e387a ]
-
-It is possible to create a VCPU without setting the MSR before running
-it, which results in a warning in kvmhv_vcpu_entry_p9() that MSR_ME is
-not set. This is pretty harmless because the MSR_ME bit is added to
-HSRR1 before HRFID to guest, and a normal qemu guest doesn't hit it.
-
-Initialise the vcpu MSR with MSR_ME set.
-
-Reported-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20210811160134.904987-2-npiggin@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 ---
- arch/powerpc/kvm/book3s_hv.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/fsl/fsl_spdif.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 54c6ba87a25a..ba72bf95c80e 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -1651,6 +1651,7 @@ static struct kvm_vcpu *kvmppc_core_vcpu_create_hv(struct kvm *kvm,
- 	spin_lock_init(&vcpu->arch.vpa_update_lock);
- 	spin_lock_init(&vcpu->arch.tbacct_lock);
- 	vcpu->arch.busy_preempt = TB_NIL;
-+	vcpu->arch.shregs.msr = MSR_ME;
- 	vcpu->arch.intr_msr = MSR_SF | MSR_ME;
+diff --git a/sound/soc/fsl/fsl_spdif.c b/sound/soc/fsl/fsl_spdif.c
+index 8ffb1a6048d6..61ba08322f23 100644
+--- a/sound/soc/fsl/fsl_spdif.c
++++ b/sound/soc/fsl/fsl_spdif.c
+@@ -186,6 +186,16 @@ static struct fsl_spdif_soc_data fsl_spdif_imx8mm = {
+ 	.tx_formats = FSL_SPDIF_FORMATS_PLAYBACK,
+ };
  
- 	kvmppc_mmu_book3s_hv_init(vcpu);
++static struct fsl_spdif_soc_data fsl_spdif_imx8ulp = {
++	.imx = true,
++	.shared_root_clock = true,
++	.raw_capture_mode = false,
++	.interrupts = 1,
++	.tx_burst = 2,		/* Applied for EDMA */
++	.rx_burst = 2,		/* Applied for EDMA */
++	.tx_formats = SNDRV_PCM_FMTBIT_S24_LE,	/* Applied for EDMA */
++};
++
+ /* Check if clk is a root clock that does not share clock source with others */
+ static inline bool fsl_spdif_can_set_clk_rate(struct fsl_spdif_priv *spdif, int clk)
+ {
+@@ -1556,6 +1566,7 @@ static const struct of_device_id fsl_spdif_dt_ids[] = {
+ 	{ .compatible = "fsl,imx6sx-spdif", .data = &fsl_spdif_imx6sx, },
+ 	{ .compatible = "fsl,imx8qm-spdif", .data = &fsl_spdif_imx8qm, },
+ 	{ .compatible = "fsl,imx8mm-spdif", .data = &fsl_spdif_imx8mm, },
++	{ .compatible = "fsl,imx8ulp-spdif", .data = &fsl_spdif_imx8ulp, },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, fsl_spdif_dt_ids);
 -- 
-2.30.2
+2.17.1
 
