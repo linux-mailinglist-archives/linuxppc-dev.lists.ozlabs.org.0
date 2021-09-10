@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 184B2406104
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 02:29:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21BA1406106
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 02:30:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H5Gw40GZ3z3f8C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 10:29:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H5Gww0mTfz3dKW
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 10:30:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=r8kD9z0h;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FrieefCA;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,35 +17,35 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=r8kD9z0h; 
+ header.s=k20201202 header.b=FrieefCA; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H5GjF5VkMz3bbx
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Sep 2021 10:20:01 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 14455611BD;
- Fri, 10 Sep 2021 00:19:58 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H5GkC1B7Vz3cPD
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Sep 2021 10:20:51 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 1817D611BF;
+ Fri, 10 Sep 2021 00:20:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1631233199;
- bh=b5h1dwTTieFwPf786YZtojqkIfHbdY83JOwPANYLZSE=;
+ s=k20201202; t=1631233248;
+ bh=bFudKSCOtqCJSbzerv9YL80dTH1IVwrlA8bgY8TI2qs=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=r8kD9z0hq0vutGSycxAZTxxm0rxn7sqqHB3cWb6bjYPVRLCFXUl7BLPEgKO4R12XE
- TS6ayx9OfBEdWApVVJR51Zk7mIAzOgMSABLcEYnCBjjn2vwFpSywXvl9IsmL6dyHGJ
- C2a+je7cg13kaKo3fjyA6HBU8WzI4aDPpRtKDU0ptHdk77v7TvEL3umR43GzmuaJle
- d2DcR8lOnxJoSatIpTI6ZEjLrY11McaXgAkSnuhvrwEeObVAu7JTk7E4m8Y1JO/sWo
- DtkbgNewYIx5UEJc5TKV5mq+ZSyYBkjtAG95TsOTdmcMUFnM+MymY/2shI5276q/S1
- CMdJDJK0fJVqg==
+ b=FrieefCADGWs7dKCpmXIkMyg0HVrcB0qyO6uI8PYR7gNc/13eAmK9wHPF51FQHHPD
+ ANCYzGpso+DLL+XJSKPyWEELQNbBWJLgxONBgDQbiVw1OMK03I3t3UshyMZ9fqs+9v
+ GCTMBbj6Bx333/ln0cHUSdOZXSAnGm2yxYZhI4xt1V3tsltlpwQ38qj+T/jFt23EWx
+ Yesd3ZLSJoi5j44H1PVh7dYatg+T/BASO9Ii1f3q5DAJpxH05DFTO5iU5xJLs4H8ft
+ ZCN3rgO/0nlT5n1vuEhEAIbHlHffhtgsa1KBKRVa7dSAEPEuSDFMsGQFi7ChGdUzmB
+ QJEentlR9qtvw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.13 70/88] powerpc/pseries/iommu: Allow DDW windows
- starting at 0x00
-Date: Thu,  9 Sep 2021 20:18:02 -0400
-Message-Id: <20210910001820.174272-70-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 14/53] cpuidle: pseries: Do not cap the CEDE0
+ latency in fixup_cede0_latency()
+Date: Thu,  9 Sep 2021 20:19:49 -0400
+Message-Id: <20210910002028.175174-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210910001820.174272-1-sashal@kernel.org>
-References: <20210910001820.174272-1-sashal@kernel.org>
+In-Reply-To: <20210910002028.175174-1-sashal@kernel.org>
+References: <20210910002028.175174-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -61,150 +61,125 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Leonardo Bras <leobras.c@gmail.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>, Frederic Barrat <fbarrat@linux.ibm.com>,
+Cc: Sasha Levin <sashal@kernel.org>,
+ "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>, linux-pm@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Leonardo Bras <leobras.c@gmail.com>
+From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
 
-[ Upstream commit 2ca73c54ce24489518a56d816331b774044c2445 ]
+[ Upstream commit 71737a6c2a8f801622d2b71567d1ec1e4c5b40b8 ]
 
-enable_ddw() currently returns the address of the DMA window, which is
-considered invalid if has the value 0x00.
+Currently in fixup_cede0_latency() code, we perform the fixup the
+CEDE(0) exit latency value only if minimum advertized extended CEDE
+latency values are less than 10us. This was done so as to not break
+the expected behaviour on POWER8 platforms where the advertised
+latency was higher than the default 10us, which would delay the SMT
+folding on the core.
 
-Also, it only considers valid an address returned from find_existing_ddw
-if it's not 0x00.
+However, after the earlier patch "cpuidle/pseries: Fixup CEDE0 latency
+only for POWER10 onwards", we can be sure that the fixup of CEDE0
+latency is going to happen only from POWER10 onwards. Hence
+unconditionally use the minimum exit latency provided by the platform.
 
-Changing this behavior makes sense, given the users of enable_ddw() only
-need to know if direct mapping is possible. It can also allow a DMA window
-starting at 0x00 to be used.
-
-This will be helpful for using a DDW with indirect mapping, as the window
-address will be different than 0x00, but it will not map the whole
-partition.
-
-Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
-Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
+Signed-off-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20210817063929.38701-6-leobras.c@gmail.com
+Link: https://lore.kernel.org/r/1626676399-15975-3-git-send-email-ego@linux.vnet.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/iommu.c | 36 +++++++++++++-------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+ drivers/cpuidle/cpuidle-pseries.c | 59 ++++++++++++++++---------------
+ 1 file changed, 30 insertions(+), 29 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index 0c55b991f665..a189178ca8e0 100644
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -843,25 +843,26 @@ static void remove_ddw(struct device_node *np, bool remove_prop)
- 			np, ret);
- }
- 
--static u64 find_existing_ddw(struct device_node *pdn, int *window_shift)
-+static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr, int *window_shift)
+diff --git a/drivers/cpuidle/cpuidle-pseries.c b/drivers/cpuidle/cpuidle-pseries.c
+index a2b5c6f60cf0..18747e5287c8 100644
+--- a/drivers/cpuidle/cpuidle-pseries.c
++++ b/drivers/cpuidle/cpuidle-pseries.c
+@@ -346,11 +346,9 @@ static int pseries_cpuidle_driver_init(void)
+ static void __init fixup_cede0_latency(void)
  {
- 	struct direct_window *window;
- 	const struct dynamic_dma_window_prop *direct64;
--	u64 dma_addr = 0;
-+	bool found = false;
+ 	struct xcede_latency_payload *payload;
+-	u64 min_latency_us;
++	u64 min_xcede_latency_us = UINT_MAX;
+ 	int i;
  
- 	spin_lock(&direct_window_list_lock);
- 	/* check if we already created a window and dupe that config if so */
- 	list_for_each_entry(window, &direct_window_list, list) {
- 		if (window->device == pdn) {
- 			direct64 = window->prop;
--			dma_addr = be64_to_cpu(direct64->dma_base);
-+			*dma_addr = be64_to_cpu(direct64->dma_base);
- 			*window_shift = be32_to_cpu(direct64->window_shift);
-+			found = true;
- 			break;
- 		}
- 	}
- 	spin_unlock(&direct_window_list_lock);
+-	min_latency_us = dedicated_states[1].exit_latency; // CEDE latency
+-
+ 	if (parse_cede_parameters())
+ 		return;
  
--	return dma_addr;
-+	return found;
- }
+@@ -358,42 +356,45 @@ static void __init fixup_cede0_latency(void)
+ 		nr_xcede_records);
  
- static int find_existing_ddw_windows(void)
-@@ -1139,20 +1140,20 @@ static int iommu_get_page_shift(u32 query_page_size)
-  * pdn: the parent pe node with the ibm,dma_window property
-  * Future: also check if we can remap the base window for our base page size
-  *
-- * returns the dma offset for use by the direct mapped DMA code.
-+ * returns true if can map all pages (direct mapping), false otherwise..
-  */
--static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
-+static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- {
- 	int len = 0, ret;
- 	int max_ram_len = order_base_2(ddw_memory_hotplug_max());
- 	struct ddw_query_response query;
- 	struct ddw_create_response create;
- 	int page_shift;
--	u64 dma_addr;
- 	struct device_node *dn;
- 	u32 ddw_avail[DDW_APPLICABLE_SIZE];
- 	struct direct_window *window;
- 	struct property *win64;
-+	bool ddw_enabled = false;
- 	struct dynamic_dma_window_prop *ddwprop;
- 	struct failed_ddw_pdn *fpdn;
- 	bool default_win_removed = false;
-@@ -1164,9 +1165,10 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 	payload = &xcede_latency_parameter.payload;
++
++	/*
++	 * The CEDE idle state maps to CEDE(0). While the hypervisor
++	 * does not advertise CEDE(0) exit latency values, it does
++	 * advertise the latency values of the extended CEDE states.
++	 * We use the lowest advertised exit latency value as a proxy
++	 * for the exit latency of CEDE(0).
++	 */
+ 	for (i = 0; i < nr_xcede_records; i++) {
+ 		struct xcede_latency_record *record = &payload->records[i];
++		u8 hint = record->hint;
+ 		u64 latency_tb = be64_to_cpu(record->latency_ticks);
+ 		u64 latency_us = DIV_ROUND_UP_ULL(tb_to_ns(latency_tb), NSEC_PER_USEC);
  
- 	mutex_lock(&direct_window_init_mutex);
+-		if (latency_us == 0)
+-			pr_warn("cpuidle: xcede record %d has an unrealistic latency of 0us.\n", i);
+-
+-		if (latency_us < min_latency_us)
+-			min_latency_us = latency_us;
+-	}
+-
+-	/*
+-	 * By default, we assume that CEDE(0) has exit latency 10us,
+-	 * since there is no way for us to query from the platform.
+-	 *
+-	 * However, if the wakeup latency of an Extended CEDE state is
+-	 * smaller than 10us, then we can be sure that CEDE(0)
+-	 * requires no more than that.
+-	 *
+-	 * Perform the fix-up.
+-	 */
+-	if (min_latency_us < dedicated_states[1].exit_latency) {
+ 		/*
+-		 * We set a minimum of 1us wakeup latency for cede0 to
+-		 * distinguish it from snooze
++		 * We expect the exit latency of an extended CEDE
++		 * state to be non-zero, it to since it takes at least
++		 * a few nanoseconds to wakeup the idle CPU and
++		 * dispatch the virtual processor into the Linux
++		 * Guest.
++		 *
++		 * So we consider only non-zero value for performing
++		 * the fixup of CEDE(0) latency.
+ 		 */
+-		u64 cede0_latency = 1;
++		if (latency_us == 0) {
++			pr_warn("cpuidle: Skipping xcede record %d [hint=%d]. Exit latency = 0us\n",
++				i, hint);
++			continue;
++		}
  
--	dma_addr = find_existing_ddw(pdn, &len);
--	if (dma_addr != 0)
-+	if (find_existing_ddw(pdn, &dev->dev.archdata.dma_offset, &len)) {
-+		ddw_enabled = true;
- 		goto out_unlock;
+-		if (min_latency_us > cede0_latency)
+-			cede0_latency = min_latency_us - 1;
++		if (latency_us < min_xcede_latency_us)
++			min_xcede_latency_us = latency_us;
 +	}
  
- 	/*
- 	 * If we already went through this for a previous function of
-@@ -1322,7 +1324,8 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 	list_add(&window->list, &direct_window_list);
- 	spin_unlock(&direct_window_list_lock);
- 
--	dma_addr = be64_to_cpu(ddwprop->dma_base);
-+	dev->dev.archdata.dma_offset = be64_to_cpu(ddwprop->dma_base);
-+	ddw_enabled = true;
- 	goto out_unlock;
- 
- out_free_window:
-@@ -1354,10 +1357,10 @@ static u64 enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 	 * as RAM, then we failed to create a window to cover persistent
- 	 * memory and need to set the DMA limit.
- 	 */
--	if (pmem_present && dma_addr && (len == max_ram_len))
--		dev->dev.bus_dma_limit = dma_addr + (1ULL << len);
-+	if (pmem_present && ddw_enabled && (len == max_ram_len))
-+		dev->dev.bus_dma_limit = dev->dev.archdata.dma_offset + (1ULL << len);
- 
--	return dma_addr;
-+	return ddw_enabled;
- }
- 
- static void pci_dma_dev_setup_pSeriesLP(struct pci_dev *dev)
-@@ -1436,11 +1439,8 @@ static bool iommu_bypass_supported_pSeriesLP(struct pci_dev *pdev, u64 dma_mask)
- 			break;
+-		dedicated_states[1].exit_latency = cede0_latency;
+-		dedicated_states[1].target_residency = 10 * (cede0_latency);
++	if (min_xcede_latency_us != UINT_MAX) {
++		dedicated_states[1].exit_latency = min_xcede_latency_us;
++		dedicated_states[1].target_residency = 10 * (min_xcede_latency_us);
+ 		pr_info("cpuidle: Fixed up CEDE exit latency to %llu us\n",
+-			cede0_latency);
++			min_xcede_latency_us);
  	}
  
--	if (pdn && PCI_DN(pdn)) {
--		pdev->dev.archdata.dma_offset = enable_ddw(pdev, pdn);
--		if (pdev->dev.archdata.dma_offset)
--			return true;
--	}
-+	if (pdn && PCI_DN(pdn))
-+		return enable_ddw(pdev, pdn);
- 
- 	return false;
  }
 -- 
 2.30.2
