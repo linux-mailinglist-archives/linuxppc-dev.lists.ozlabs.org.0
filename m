@@ -2,56 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D68CF4069F2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 12:17:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EC9F406A23
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 12:27:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H5WyM5pHJz2ywl
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 20:17:15 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=c0EJ5RdG;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H5XBM3RfRz2ywK
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Sep 2021 20:27:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=c0EJ5RdG; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H5Wxj0KVhz2xX8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Sep 2021 20:16:40 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3A9346103D;
- Fri, 10 Sep 2021 10:16:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1631268998;
- bh=DY9aUAMbBWXj6/6sstLfJLZSxcBTc37Ktwo5jblB5ac=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=c0EJ5RdGelCNfqbVedB9LASXFUKnF5Fj99u2lkKeBiKwH8aotzLwyA9jXOFCQGNXR
- mDKshJW5sAKtcRjGLg5qVttQAdQ+mrvCafQ7D8kKzu3X6EqMvnqT7ZP5rUtKHq44UQ
- AnkQe9J2va7gDW2lNSBrCd32TGIEszuj3hxEM36biyod2oa3xxN01f1Gopu6Vp9OD8
- sMpcqbaCrOrHJbX4jzqLC8ZT++/1LmxujNnA/yNFzFi6hCZPuANbNreWK8kE9ThEFO
- hZUs892f1Z5SmSIyVe3Qbu7XIbE7q9qHPFF11ll50TXaOl3SHWA4juTyyx+Mj0ccQe
- 69rlzRlA6S5zw==
-Date: Fri, 10 Sep 2021 11:16:01 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Shengjiu Wang <shengjiu.wang@gmail.com>
-Subject: Re: [PATCH for-5.15 0/5] ASoC: fsl: register platform component
- before registering cpu dai
-Message-ID: <20210910101601.GB4474@sirena.org.uk>
-References: <1630665006-31437-1-git-send-email-shengjiu.wang@nxp.com>
- <20210906114701.GC4309@sirena.org.uk>
- <CAA+D8APjyq74FECmH6ZzyVKHOz6MEV0bt+D4-Xkfc-6C5n9hZg@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H5X9s55bjz2yNx
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Sep 2021 20:27:11 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4H5X9j2q1rz9sVM;
+ Fri, 10 Sep 2021 12:27:05 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 88gl3r46r1PN; Fri, 10 Sep 2021 12:27:05 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4H5X9j1NDRz9sV6;
+ Fri, 10 Sep 2021 12:27:05 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 140988B781;
+ Fri, 10 Sep 2021 12:27:05 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id ECM4fsn4G9tT; Fri, 10 Sep 2021 12:27:05 +0200 (CEST)
+Received: from localhost.localdomain (po22017.idsi0.si.c-s.fr [192.168.7.20])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id AACA18B763;
+ Fri, 10 Sep 2021 12:27:04 +0200 (CEST)
+Subject: Re: [PATCH v2 3/5] signal: Add unsafe_copy_siginfo_to_user()
+To: "Eric W. Biederman" <ebiederm@xmission.com>
+References: <fd7938d94008711d441551c06b25a033669a0618.1629732940.git.christophe.leroy@csgroup.eu>
+ <a94be61f008ab29c231b805e1a97e9dab35cb0cc.1629732940.git.christophe.leroy@csgroup.eu>
+ <87mtoux1hi.fsf@disp2133> <2715792c-eb10-eeb8-3d49-24486abe953b@csgroup.eu>
+ <877dfrrkxo.fsf@disp2133>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <7caf5127-36fc-7c77-00f1-7be82d6f26e0@csgroup.eu>
+Date: Fri, 10 Sep 2021 10:27:03 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="IrhDeMKUP4DT/M7F"
-Content-Disposition: inline
-In-Reply-To: <CAA+D8APjyq74FECmH6ZzyVKHOz6MEV0bt+D4-Xkfc-6C5n9hZg@mail.gmail.com>
-X-Cookie: You are standing on my toes.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <877dfrrkxo.fsf@disp2133>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,43 +65,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, Timur Tabi <timur@kernel.org>,
- Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
- Shengjiu Wang <shengjiu.wang@nxp.com>, Takashi Iwai <tiwai@suse.com>,
- linux-kernel <linux-kernel@vger.kernel.org>,
- Nicolin Chen <nicoleotsuka@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---IrhDeMKUP4DT/M7F
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Tue, Sep 07, 2021 at 10:43:26AM +0800, Shengjiu Wang wrote:
+On 9/8/21 6:17 PM, Eric W. Biederman wrote:
+> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> 
+>> Le 02/09/2021 à 20:43, Eric W. Biederman a écrit :
+>>> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+>>>
+>>>> In the same spirit as commit fb05121fd6a2 ("signal: Add
+>>>> unsafe_get_compat_sigset()"), implement an 'unsafe' version of
+>>>> copy_siginfo_to_user() in order to use it within user access blocks.
+>>>>
+>>>> For that, also add an 'unsafe' version of clear_user().
+>>>
+>>> Looking at your use cases you need the 32bit compat version of this
+>>> as well.
+>>>
+>>> The 32bit compat version is too complicated to become a macro, so I
+>>> don't think you can make this work correctly for the 32bit compat case.
+>>
+>> When looking into patch 5/5 that you nacked, I think you missed the fact that we
+>> keep using copy_siginfo_to_user32() as it for the 32 bit compat case.
+> 
+> I did.  My mistake.
+> 
+> However that mistake was so easy I think it mirrors the comments others
+> have made that this looks like a maintenance hazard.
+> 
+> Is improving the performance of 32bit kernels interesting?
 
-> It is hard to add conditions here for defer probe.  And maybe
-> some drivers need the same components for cpu and platform.
-> Do you have any suggestions?
+Yes it is, and that's what this series do.
 
-I would expect that in this situation the same component would be able
-to fill both roles.
+> Is improving the performance of 32bit compat support interesting?
 
---IrhDeMKUP4DT/M7F
-Content-Type: application/pgp-signature; name="signature.asc"
+For me this is a corner case, so I left it aside for now.
 
------BEGIN PGP SIGNATURE-----
+> 
+> If performance one or either of those cases is interesting it looks like
+> we already have copy_siginfo_to_external32 the factor you would need
+> to build unsafe_copy_siginfo_to_user32.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmE7MGAACgkQJNaLcl1U
-h9BmyAf+LFLU0qRNu/j0JR6PE/8Cy8MmuyW9DYr0CDki8qhipKQWJLaE5/l9diiL
-W6V5q2giENDxPZKAyyHs08abuAq9JD0EEQu7z03P9x2UWrLxhcJ8itPNJZixH3KX
-hpfg66wdAFS6QoqdQ0qLaFYzsnXMe2Zv6x6O70ddG9hLbUT6d5OfYVPWJHvKh1+U
-xM/cI74vCSkZ0LG1PvEirEPw2qGWIyS610sqjZcWNUxLTtG8s+clPXy+hsNc/Mbm
-jiDFUf2Ixz5TgZDlgfJElBOz9x2QHypCVsatoXe2XW50T1TYLdUAGpvmRD2F4Y/d
-cvlkwzMtFFP3/6IRvYPYReyYl2Lc6w==
-=EL+Z
------END PGP SIGNATURE-----
+I'm not sure I understand your saying here. What do you expect me to do 
+with copy_siginfo_to_external32() ?
 
---IrhDeMKUP4DT/M7F--
+copy_siginfo_to_user32() is for compat only.
+
+Native 32 bits powerpc use copy_siginfo_to_user()
+
+> 
+> So I am not going to say impossible but please make something
+> maintainable.  I unified all of the compat 32bit siginfo logic because
+> it simply did not get enough love and attention when it was implemented
+> per architecture.
+
+Yes, and ? I didn't do any modification to the compat case, so what you 
+did remains.
+
+
+> 
+> In general I think that concern applies to this case as well.  We really
+> need an implementation that shares as much burden as possible with other
+> architectures.
+
+I think yes, that's the reason why I made a generic 
+unsafe_copy_siginfo_to_user() and didn't make a powerpc dedicated change.
+
+Once this is merged any other architecture can use 
+unsafe_copy_siginfo_to_user().
+
+Did I miss something ?
+
+Christophe
