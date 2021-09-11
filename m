@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCD7F407464
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Sep 2021 03:22:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79B40407465
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Sep 2021 03:22:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H5w2X4fhNz3cNj
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Sep 2021 11:22:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H5w3031xDz3cXv
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Sep 2021 11:22:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,25 +16,25 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H5w0J5Hndz2yHb
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Sep 2021 11:20:16 +1000 (AEST)
-X-IronPort-AV: E=McAfee;i="6200,9189,10103"; a="221271942"
-X-IronPort-AV: E=Sophos;i="5.85,284,1624345200"; d="scan'208";a="221271942"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H5w0K4q74z2yHb
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Sep 2021 11:20:17 +1000 (AEST)
+X-IronPort-AV: E=McAfee;i="6200,9189,10103"; a="221271943"
+X-IronPort-AV: E=Sophos;i="5.85,284,1624345200"; d="scan'208";a="221271943"
 Received: from fmsmga006.fm.intel.com ([10.253.24.20])
  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  10 Sep 2021 18:19:08 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.85,284,1624345200"; d="scan'208";a="695261638"
+X-IronPort-AV: E=Sophos;i="5.85,284,1624345200"; d="scan'208";a="695261642"
 Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
  by fmsmga006.fm.intel.com with ESMTP; 10 Sep 2021 18:19:08 -0700
 From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 To: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
  Ingo Molnar <mingo@kernel.org>, Juri Lelli <juri.lelli@redhat.com>,
  Vincent Guittot <vincent.guittot@linaro.org>
-Subject: [PATCH v5 4/6] sched/fair: Provide update_sg_lb_stats() with sched
- domain statistics
-Date: Fri, 10 Sep 2021 18:18:17 -0700
-Message-Id: <20210911011819.12184-5-ricardo.neri-calderon@linux.intel.com>
+Subject: [PATCH v5 5/6] sched/fair: Carve out logic to mark a group for
+ asymmetric packing
+Date: Fri, 10 Sep 2021 18:18:18 -0700
+Message-Id: <20210911011819.12184-6-ricardo.neri-calderon@linux.intel.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210911011819.12184-1-ricardo.neri-calderon@linux.intel.com>
 References: <20210911011819.12184-1-ricardo.neri-calderon@linux.intel.com>
@@ -66,12 +66,10 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Before deciding to pull tasks when using asymmetric packing of tasks,
-on some architectures (e.g., x86) it is necessary to know not only the
-state of dst_cpu but also of its SMT siblings. The decision to classify
-a candidate busiest group as group_asym_packing is done in
-update_sg_lb_stats(). Give this function access to the scheduling domain
-statistics, which contains the statistics of the local group.
+Create a separate function, sched_asym(). A subsequent changeset will
+introduce logic to deal with SMT in conjunction with asmymmetric
+packing. Such logic will need the statistics of the scheduling
+group provided as argument. Update them before calling sched_asym().
 
 Cc: Aubrey Li <aubrey.li@intel.com>
 Cc: Ben Segall <bsegall@google.com>
@@ -85,7 +83,7 @@ Cc: Steven Rostedt <rostedt@goodmis.org>
 Cc: Tim Chen <tim.c.chen@linux.intel.com>
 Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
 Reviewed-by: Len Brown <len.brown@intel.com>
-Originally-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Co-developed-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 ---
@@ -93,7 +91,9 @@ Changes since v4:
   * None
 
 Changes since v3:
-  * None
+  * Remove a redundant check for the local group in sched_asym().
+    (Dietmar)
+  * Reworded commit message for clarity. (Len)
 
 Changes since v2:
   * Introduced this patch.
@@ -101,39 +101,52 @@ Changes since v2:
 Changes since v1:
   * N/A
 ---
- kernel/sched/fair.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ kernel/sched/fair.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 7a054f528bcc..c5851260b4d8 100644
+index c5851260b4d8..26db017c14a3 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -8605,6 +8605,7 @@ group_type group_classify(unsigned int imbalance_pct,
-  * @sg_status: Holds flag indicating the status of the sched_group
-  */
- static inline void update_sg_lb_stats(struct lb_env *env,
-+				      struct sd_lb_stats *sds,
- 				      struct sched_group *group,
- 				      struct sg_lb_stats *sgs,
- 				      int *sg_status)
-@@ -8613,7 +8614,7 @@ static inline void update_sg_lb_stats(struct lb_env *env,
+@@ -8597,6 +8597,13 @@ group_type group_classify(unsigned int imbalance_pct,
+ 	return group_has_spare;
+ }
  
- 	memset(sgs, 0, sizeof(*sgs));
- 
--	local_group = cpumask_test_cpu(env->dst_cpu, sched_group_span(group));
-+	local_group = group == sds->local;
- 
- 	for_each_cpu_and(i, sched_group_span(group), env->cpus) {
- 		struct rq *rq = cpu_rq(i);
-@@ -9176,7 +9177,7 @@ static inline void update_sd_lb_stats(struct lb_env *env, struct sd_lb_stats *sd
- 				update_group_capacity(env->sd, env->dst_cpu);
++static inline bool
++sched_asym(struct lb_env *env, struct sd_lb_stats *sds,  struct sg_lb_stats *sgs,
++	   struct sched_group *group)
++{
++	return sched_asym_prefer(env->dst_cpu, group->asym_prefer_cpu);
++}
++
+ /**
+  * update_sg_lb_stats - Update sched_group's statistics for load balancing.
+  * @env: The load balancing environment.
+@@ -8657,18 +8664,17 @@ static inline void update_sg_lb_stats(struct lb_env *env,
  		}
+ 	}
  
--		update_sg_lb_stats(env, sg, sgs, &sg_status);
-+		update_sg_lb_stats(env, sds, sg, sgs, &sg_status);
++	sgs->group_capacity = group->sgc->capacity;
++
++	sgs->group_weight = group->group_weight;
++
+ 	/* Check if dst CPU is idle and preferred to this group */
+ 	if (!local_group && env->sd->flags & SD_ASYM_PACKING &&
+-	    env->idle != CPU_NOT_IDLE &&
+-	    sgs->sum_h_nr_running &&
+-	    sched_asym_prefer(env->dst_cpu, group->asym_prefer_cpu)) {
++	    env->idle != CPU_NOT_IDLE && sgs->sum_h_nr_running &&
++	    sched_asym(env, sds, sgs, group)) {
+ 		sgs->group_asym_packing = 1;
+ 	}
  
- 		if (local_group)
- 			goto next_group;
+-	sgs->group_capacity = group->sgc->capacity;
+-
+-	sgs->group_weight = group->group_weight;
+-
+ 	sgs->group_type = group_classify(env->sd->imbalance_pct, group, sgs);
+ 
+ 	/* Computing avg_load makes sense only when group is overloaded */
 -- 
 2.17.1
 
