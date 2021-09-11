@@ -2,41 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62B4F407466
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Sep 2021 03:23:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62BFA40748A
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Sep 2021 03:57:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H5w3c1ncpz3ckT
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Sep 2021 11:23:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H5wpv1t9Qz305Q
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Sep 2021 11:57:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=134.134.136.65; helo=mga03.intel.com;
- envelope-from=ricardo.neri-calderon@linux.intel.com; receiver=<UNKNOWN>)
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H5w0L4RbKz2yHj
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Sep 2021 11:20:18 +1000 (AEST)
-X-IronPort-AV: E=McAfee;i="6200,9189,10103"; a="221271944"
-X-IronPort-AV: E=Sophos;i="5.85,284,1624345200"; d="scan'208";a="221271944"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
- by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2021 18:19:09 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.85,284,1624345200"; d="scan'208";a="695261645"
-Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
- by fmsmga006.fm.intel.com with ESMTP; 10 Sep 2021 18:19:08 -0700
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-To: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Ingo Molnar <mingo@kernel.org>, Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>
-Subject: [PATCH v5 6/6] sched/fair: Consider SMT in ASYM_PACKING load balance
-Date: Fri, 10 Sep 2021 18:18:19 -0700
-Message-Id: <20210911011819.12184-7-ricardo.neri-calderon@linux.intel.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210911011819.12184-1-ricardo.neri-calderon@linux.intel.com>
-References: <20210911011819.12184-1-ricardo.neri-calderon@linux.intel.com>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=loongson.cn (client-ip=114.242.206.163; helo=loongson.cn;
+ envelope-from=yangtiezhu@loongson.cn; receiver=<UNKNOWN>)
+Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4H5wpM5GD7z2xtN
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Sep 2021 11:56:39 +1000 (AEST)
+Received: from linux.localdomain (unknown [113.200.148.30])
+ by mail.loongson.cn (Coremail) with SMTP id AQAAf9DxJeWxDDxhOA4EAA--.13143S2; 
+ Sat, 11 Sep 2021 09:56:02 +0800 (CST)
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
+To: Shubham Bansal <illusionist.neo@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <kafai@fb.com>,
+ Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+ John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
+ Zi Shen Lim <zlim.lnx@gmail.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Paul Burton <paulburton@kernel.org>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ naveen.n.rao@linux.ibm.com, Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Luke Nelson <luke.r.nels@gmail.com>,
+ Xi Wang <xi.wang@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ bjorn@kernel.org, davem@davemloft.net,
+ Johan Almbladh <johan.almbladh@anyfinetworks.com>,
+ Paul Chaignon <paul@cilium.io>
+Subject: [PATCH bpf-next v2] bpf: Change value of MAX_TAIL_CALL_CNT from 32 to
+ 33
+Date: Sat, 11 Sep 2021 09:56:01 +0800
+Message-Id: <1631325361-9851-1-git-send-email-yangtiezhu@loongson.cn>
+X-Mailer: git-send-email 2.1.0
+X-CM-TRANSID: AQAAf9DxJeWxDDxhOA4EAA--.13143S2
+X-Coremail-Antispam: 1UD129KBjvJXoW3tFy3XF15Cw17Gw47GryfWFg_yoWkKr17pr
+ 18twnakrWvqw1rAa4xta1UXw4UKF4v9F47KFs5CrWSy3ZFvr9rWF13Kw15ZFZ0vrW8Jw1r
+ XFZ0kry3C3WkXwUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUUvlb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
+ 0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+ A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xII
+ jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4
+ A2jsIEc7CjxVAFwI0_Gr1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+ 0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr
+ 1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4IIrI8v6xkF7I0E8cxan2IY
+ 04v7MxkIecxEwVAFwVWkMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI
+ 8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AK
+ xVWrXVW8Jr1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjx
+ v20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6rWUJVWrZr1UMIIF0xvE
+ x4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvj
+ DU0xZFpf9x07b0GQgUUUUU=
+X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,200 +71,340 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Len Brown <len.brown@intel.com>, Aubrey Li <aubrey.li@intel.com>,
- "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
- "Ravi V. Shankar" <ravi.v.shankar@intel.com>, linuxppc-dev@lists.ozlabs.org,
- Aubrey Li <aubrey.li@linux.intel.com>, Nicholas Piggin <npiggin@gmail.com>,
- Ricardo Neri <ricardo.neri@intel.com>, Steven Rostedt <rostedt@goodmis.org>,
- Quentin Perret <qperret@google.com>, Ben Segall <bsegall@google.com>,
- Mel Gorman <mgorman@suse.de>, Daniel Bristot de Oliveira <bristot@redhat.com>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- "Joel Fernandes \(Google\)" <joel@joelfernandes.org>,
- Tim Chen <tim.c.chen@linux.intel.com>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>, linux-kernel@vger.kernel.org,
- Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mips@vger.kernel.org, sparclinux@vger.kernel.org, bpf@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When deciding to pull tasks in ASYM_PACKING, it is necessary not only to
-check for the idle state of the destination CPU, dst_cpu, but also of
-its SMT siblings.
+In the current code, the actual max tail call count is 33 which is greater
+than MAX_TAIL_CALL_CNT (defined as 32), the actual limit is not consistent
+with the meaning of MAX_TAIL_CALL_CNT, there is some confusion and need to
+spend some time to think about the reason at the first glance.
 
-If dst_cpu is idle but its SMT siblings are busy, performance suffers
-if it pulls tasks from a medium priority CPU that does not have SMT
-siblings.
+We can see the historical evolution from commit 04fd61ab36ec ("bpf: allow
+bpf programs to tail-call other bpf programs") and commit f9dabe016b63
+("bpf: Undo off-by-one in interpreter tail call count limit").
 
-Implement asym_smt_can_pull_tasks() to inspect the state of the SMT
-siblings of both dst_cpu and the CPUs in the candidate busiest group.
+In order to avoid changing existing behavior, the actual limit is 33 now,
+this is reasonable.
 
-Cc: Aubrey Li <aubrey.li@intel.com>
-Cc: Ben Segall <bsegall@google.com>
-Cc: Daniel Bristot de Oliveira <bristot@redhat.com>
-Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: Quentin Perret <qperret@google.com>
-Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Tim Chen <tim.c.chen@linux.intel.com>
-Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Reviewed-by: Len Brown <len.brown@intel.com>
-Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+After commit 874be05f525e ("bpf, tests: Add tail call test suite"), we can
+see there exists failed testcase.
+
+On all archs when CONFIG_BPF_JIT_ALWAYS_ON is not set:
+ # echo 0 > /proc/sys/net/core/bpf_jit_enable
+ # modprobe test_bpf
+ # dmesg | grep -w FAIL
+ Tail call error path, max count reached jited:0 ret 34 != 33 FAIL
+
+On some archs:
+ # echo 1 > /proc/sys/net/core/bpf_jit_enable
+ # modprobe test_bpf
+ # dmesg | grep -w FAIL
+ Tail call error path, max count reached jited:1 ret 34 != 33 FAIL
+
+So it is necessary to change the value of MAX_TAIL_CALL_CNT from 32 to 33,
+then do some small changes of the related code.
+
+With this patch, it does not change the current limit 33, MAX_TAIL_CALL_CNT
+can reflect the actual max tail call count, the tailcall selftests can work
+well, and also the above failed testcase in test_bpf can be fixed for the
+interpreter (all archs) and the JIT (all archs except for x86).
+
+ # uname -m
+ x86_64
+ # echo 1 > /proc/sys/net/core/bpf_jit_enable
+ # modprobe test_bpf
+ # dmesg | grep -w FAIL
+ Tail call error path, max count reached jited:1 ret 33 != 34 FAIL
+
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
 ---
-Changes since v4:
-  * Use sg_lb_stats::sum_nr_running the idle state of a scheduling group.
-    (Vincent, Peter)
-  * Do not even idle CPUs in asym_smt_can_pull_tasks(). (Vincent)
-  * Updated function documentation and corrected a typo.
 
-Changes since v3:
-  * Removed the arch_asym_check_smt_siblings() hook. Discussions with the
-    powerpc folks showed that this patch should not impact them. Also, more
-    recent powerpc processor no longer use asym_packing. (PeterZ)
-  * Removed unnecessary local variable in asym_can_pull_tasks(). (Dietmar)
-  * Removed unnecessary check for local CPUs when the local group has zero
-    utilization. (Joel)
-  * Renamed asym_can_pull_tasks() as asym_smt_can_pull_tasks() to reflect
-    the fact that it deals with SMT cases.
-  * Made asym_smt_can_pull_tasks() return false for !CONFIG_SCHED_SMT so
-    that callers can deal with non-SMT cases.
+v2:
+  -- fix the typos in the commit message and update the commit message.
+  -- fix the failed tailcall selftests for x86 jit.
+     I am not quite sure the change on x86 is proper, with this change,
+     tailcall selftests passed, but tailcall limit test in test_bpf.ko
+     failed, I do not know the reason now, I think this is another issue,
+     maybe someone more versed in x86 jit could take a look.
 
-Changes since v2:
-  * Reworded the commit message to reflect updates in code.
-  * Corrected misrepresentation of dst_cpu as the CPU doing the load
-    balancing. (PeterZ)
-  * Removed call to arch_asym_check_smt_siblings() as it is now called in
-    sched_asym().
+ arch/arm/net/bpf_jit_32.c         | 11 ++++++-----
+ arch/arm64/net/bpf_jit_comp.c     |  7 ++++---
+ arch/mips/net/ebpf_jit.c          |  4 ++--
+ arch/powerpc/net/bpf_jit_comp32.c |  4 ++--
+ arch/powerpc/net/bpf_jit_comp64.c | 12 ++++++------
+ arch/riscv/net/bpf_jit_comp32.c   |  4 ++--
+ arch/riscv/net/bpf_jit_comp64.c   |  4 ++--
+ arch/sparc/net/bpf_jit_comp_64.c  |  8 ++++----
+ arch/x86/net/bpf_jit_comp.c       | 10 +++++-----
+ include/linux/bpf.h               |  2 +-
+ kernel/bpf/core.c                 |  4 ++--
+ 11 files changed, 36 insertions(+), 34 deletions(-)
 
-Changes since v1:
-  * Don't bailout in update_sd_pick_busiest() if dst_cpu cannot pull
-    tasks. Instead, reclassify the candidate busiest group, as it
-    may still be selected. (PeterZ)
-  * Avoid an expensive and unnecessary call to cpumask_weight() when
-    determining if a sched_group is comprised of SMT siblings.
-    (PeterZ).
----
- kernel/sched/fair.c | 94 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 94 insertions(+)
-
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 26db017c14a3..8d763dd0174b 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -8597,10 +8597,98 @@ group_type group_classify(unsigned int imbalance_pct,
- 	return group_has_spare;
- }
+diff --git a/arch/arm/net/bpf_jit_32.c b/arch/arm/net/bpf_jit_32.c
+index a951276..39d9ae9 100644
+--- a/arch/arm/net/bpf_jit_32.c
++++ b/arch/arm/net/bpf_jit_32.c
+@@ -1180,18 +1180,19 @@ static int emit_bpf_tail_call(struct jit_ctx *ctx)
  
-+/**
-+ * asym_smt_can_pull_tasks - Check whether the load balancing CPU can pull tasks
-+ * @dst_cpu:	Destination CPU of the load balancing
-+ * @sds:	Load-balancing data with statistics of the local group
-+ * @sgs:	Load-balancing statistics of the candidate busiest group
-+ * @sg:		The candidate busiest group
-+ *
-+ * Check the state of the SMT siblings of both @sds::local and @sg and decide
-+ * if @dst_cpu can pull tasks.
-+ *
-+ * If @dst_cpu does not have SMT siblings, it can pull tasks if two or more of
-+ * the SMT siblings of @sg are busy. If only one CPU in @sg is busy, pull tasks
-+ * only if @dst_cpu has higher priority.
-+ *
-+ * If both @dst_cpu and @sg have SMT siblings, and @sg has exactly one more
-+ * busy CPU than @sds::local, let @dst_cpu pull tasks if it has higher priority.
-+ * Bigger imbalances in the number of busy CPUs will be dealt with in
-+ * update_sd_pick_busiest().
-+ *
-+ * If @sg does not have SMT siblings, only pull tasks if all of the SMT siblings
-+ * of @dst_cpu are idle and @sg has lower priority.
-+ */
-+static bool asym_smt_can_pull_tasks(int dst_cpu, struct sd_lb_stats *sds,
-+				    struct sg_lb_stats *sgs,
-+				    struct sched_group *sg)
-+{
-+#ifdef CONFIG_SCHED_SMT
-+	bool local_is_smt, sg_is_smt;
-+	int sg_busy_cpus;
-+
-+	local_is_smt = sds->local->flags & SD_SHARE_CPUCAPACITY;
-+	sg_is_smt = sg->flags & SD_SHARE_CPUCAPACITY;
-+
-+	sg_busy_cpus = sgs->group_weight - sgs->idle_cpus;
-+
-+	if (!local_is_smt) {
-+		/*
-+		 * If we are here, @dst_cpu is idle and does not have SMT
-+		 * siblings. Pull tasks if candidate group has two or more
-+		 * busy CPUs.
-+		 */
-+		if (sg_is_smt && sg_busy_cpus >= 2)
-+			return true;
-+
-+		/*
-+		 * @dst_cpu does not have SMT siblings. @sg may have SMT
-+		 * siblings and only one is busy. In such case, @dst_cpu
-+		 * can help if it has higher priority and is idle (i.e.,
-+		 * it has no running tasks).
-+		 */
-+		return !sds->local_stat.sum_nr_running &&
-+		       sched_asym_prefer(dst_cpu, sg->asym_prefer_cpu);
-+	}
-+
-+	/* @dst_cpu has SMT siblings. */
-+
-+	if (sg_is_smt) {
-+		int local_busy_cpus = sds->local->group_weight -
-+				      sds->local_stat.idle_cpus;
-+		int busy_cpus_delta = sg_busy_cpus - local_busy_cpus;
-+
-+		if (busy_cpus_delta == 1)
-+			return sched_asym_prefer(dst_cpu,
-+						 sg->asym_prefer_cpu);
-+
-+		return false;
-+	}
+ 	/* tmp2[0] = array, tmp2[1] = index */
+ 
+-	/* if (tail_call_cnt > MAX_TAIL_CALL_CNT)
+-	 *	goto out;
++	/*
+ 	 * tail_call_cnt++;
++	 * if (tail_call_cnt > MAX_TAIL_CALL_CNT)
++	 *	goto out;
+ 	 */
++	tc = arm_bpf_get_reg64(tcc, tmp, ctx);
++	emit(ARM_ADDS_I(tc[1], tc[1], 1), ctx);
++	emit(ARM_ADC_I(tc[0], tc[0], 0), ctx);
+ 	lo = (u32)MAX_TAIL_CALL_CNT;
+ 	hi = (u32)((u64)MAX_TAIL_CALL_CNT >> 32);
+-	tc = arm_bpf_get_reg64(tcc, tmp, ctx);
+ 	emit(ARM_CMP_I(tc[0], hi), ctx);
+ 	_emit(ARM_COND_EQ, ARM_CMP_I(tc[1], lo), ctx);
+ 	_emit(ARM_COND_HI, ARM_B(jmp_offset), ctx);
+-	emit(ARM_ADDS_I(tc[1], tc[1], 1), ctx);
+-	emit(ARM_ADC_I(tc[0], tc[0], 0), ctx);
+ 	arm_bpf_put_reg64(tcc, tmp, ctx);
+ 
+ 	/* prog = array->ptrs[index]
+diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
+index 41c23f4..5d6c843 100644
+--- a/arch/arm64/net/bpf_jit_comp.c
++++ b/arch/arm64/net/bpf_jit_comp.c
+@@ -286,14 +286,15 @@ static int emit_bpf_tail_call(struct jit_ctx *ctx)
+ 	emit(A64_CMP(0, r3, tmp), ctx);
+ 	emit(A64_B_(A64_COND_CS, jmp_offset), ctx);
+ 
+-	/* if (tail_call_cnt > MAX_TAIL_CALL_CNT)
+-	 *     goto out;
++	/*
+ 	 * tail_call_cnt++;
++	 * if (tail_call_cnt > MAX_TAIL_CALL_CNT)
++	 *     goto out;
+ 	 */
++	emit(A64_ADD_I(1, tcc, tcc, 1), ctx);
+ 	emit_a64_mov_i64(tmp, MAX_TAIL_CALL_CNT, ctx);
+ 	emit(A64_CMP(1, tcc, tmp), ctx);
+ 	emit(A64_B_(A64_COND_HI, jmp_offset), ctx);
+-	emit(A64_ADD_I(1, tcc, tcc, 1), ctx);
+ 
+ 	/* prog = array->ptrs[index];
+ 	 * if (prog == NULL)
+diff --git a/arch/mips/net/ebpf_jit.c b/arch/mips/net/ebpf_jit.c
+index 3a73e93..029fc34 100644
+--- a/arch/mips/net/ebpf_jit.c
++++ b/arch/mips/net/ebpf_jit.c
+@@ -617,14 +617,14 @@ static int emit_bpf_tail_call(struct jit_ctx *ctx, int this_idx)
+ 	b_off = b_imm(this_idx + 1, ctx);
+ 	emit_instr(ctx, bne, MIPS_R_AT, MIPS_R_ZERO, b_off);
+ 	/*
+-	 * if (TCC-- < 0)
++	 * if (--TCC < 0)
+ 	 *     goto out;
+ 	 */
+ 	/* Delay slot */
+ 	tcc_reg = (ctx->flags & EBPF_TCC_IN_V1) ? MIPS_R_V1 : MIPS_R_S4;
+ 	emit_instr(ctx, daddiu, MIPS_R_T5, tcc_reg, -1);
+ 	b_off = b_imm(this_idx + 1, ctx);
+-	emit_instr(ctx, bltz, tcc_reg, b_off);
++	emit_instr(ctx, bltz, MIPS_R_T5, b_off);
+ 	/*
+ 	 * prog = array->ptrs[index];
+ 	 * if (prog == NULL)
+diff --git a/arch/powerpc/net/bpf_jit_comp32.c b/arch/powerpc/net/bpf_jit_comp32.c
+index beb12cb..b5585ad 100644
+--- a/arch/powerpc/net/bpf_jit_comp32.c
++++ b/arch/powerpc/net/bpf_jit_comp32.c
+@@ -221,12 +221,12 @@ static void bpf_jit_emit_tail_call(u32 *image, struct codegen_context *ctx, u32
+ 	PPC_BCC(COND_GE, out);
+ 
+ 	/*
++	 * tail_call_cnt++;
+ 	 * if (tail_call_cnt > MAX_TAIL_CALL_CNT)
+ 	 *   goto out;
+ 	 */
+-	EMIT(PPC_RAW_CMPLWI(_R0, MAX_TAIL_CALL_CNT));
+-	/* tail_call_cnt++; */
+ 	EMIT(PPC_RAW_ADDIC(_R0, _R0, 1));
++	EMIT(PPC_RAW_CMPLWI(_R0, MAX_TAIL_CALL_CNT));
+ 	PPC_BCC(COND_GT, out);
+ 
+ 	/* prog = array->ptrs[index]; */
+diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
+index b87a63d..bb15cc4 100644
+--- a/arch/powerpc/net/bpf_jit_comp64.c
++++ b/arch/powerpc/net/bpf_jit_comp64.c
+@@ -227,6 +227,12 @@ static void bpf_jit_emit_tail_call(u32 *image, struct codegen_context *ctx, u32
+ 	PPC_BCC(COND_GE, out);
+ 
+ 	/*
++	 * tail_call_cnt++;
++	 */
++	EMIT(PPC_RAW_ADDI(b2p[TMP_REG_1], b2p[TMP_REG_1], 1));
++	PPC_BPF_STL(b2p[TMP_REG_1], 1, bpf_jit_stack_tailcallcnt(ctx));
 +
 +	/*
-+	 * @sg does not have SMT siblings. Ensure that @sds::local does not end
-+	 * up with more than one busy SMT sibling and only pull tasks if there
-+	 * are not busy CPUs (i.e., no CPU has running tasks).
-+	 */
-+	if (!sds->local_stat.sum_nr_running)
-+		return sched_asym_prefer(dst_cpu, sg->asym_prefer_cpu);
-+
-+	return false;
-+#else
-+	/* Always return false so that callers deal with non-SMT cases. */
-+	return false;
-+#endif
-+}
-+
- static inline bool
- sched_asym(struct lb_env *env, struct sd_lb_stats *sds,  struct sg_lb_stats *sgs,
- 	   struct sched_group *group)
- {
-+	/* Only do SMT checks if either local or candidate have SMT siblings */
-+	if ((sds->local->flags & SD_SHARE_CPUCAPACITY) ||
-+	    (group->flags & SD_SHARE_CPUCAPACITY))
-+		return asym_smt_can_pull_tasks(env->dst_cpu, sds, sgs, group);
-+
- 	return sched_asym_prefer(env->dst_cpu, group->asym_prefer_cpu);
- }
+ 	 * if (tail_call_cnt > MAX_TAIL_CALL_CNT)
+ 	 *   goto out;
+ 	 */
+@@ -234,12 +240,6 @@ static void bpf_jit_emit_tail_call(u32 *image, struct codegen_context *ctx, u32
+ 	EMIT(PPC_RAW_CMPLWI(b2p[TMP_REG_1], MAX_TAIL_CALL_CNT));
+ 	PPC_BCC(COND_GT, out);
  
-@@ -9606,6 +9694,12 @@ static struct rq *find_busiest_queue(struct lb_env *env,
- 		    nr_running == 1)
- 			continue;
+-	/*
+-	 * tail_call_cnt++;
+-	 */
+-	EMIT(PPC_RAW_ADDI(b2p[TMP_REG_1], b2p[TMP_REG_1], 1));
+-	PPC_BPF_STL(b2p[TMP_REG_1], 1, bpf_jit_stack_tailcallcnt(ctx));
+-
+ 	/* prog = array->ptrs[index]; */
+ 	EMIT(PPC_RAW_MULI(b2p[TMP_REG_1], b2p_index, 8));
+ 	EMIT(PPC_RAW_ADD(b2p[TMP_REG_1], b2p[TMP_REG_1], b2p_bpf_array));
+diff --git a/arch/riscv/net/bpf_jit_comp32.c b/arch/riscv/net/bpf_jit_comp32.c
+index e649742..1608d94 100644
+--- a/arch/riscv/net/bpf_jit_comp32.c
++++ b/arch/riscv/net/bpf_jit_comp32.c
+@@ -800,12 +800,12 @@ static int emit_bpf_tail_call(int insn, struct rv_jit_context *ctx)
  
-+		/* Make sure we only pull tasks from a CPU of lower priority */
-+		if ((env->sd->flags & SD_ASYM_PACKING) &&
-+		    sched_asym_prefer(i, env->dst_cpu) &&
-+		    nr_running == 1)
-+			continue;
+ 	/*
+ 	 * temp_tcc = tcc - 1;
+-	 * if (tcc < 0)
++	 * if (temp_tcc < 0)
+ 	 *   goto out;
+ 	 */
+ 	emit(rv_addi(RV_REG_T1, RV_REG_TCC, -1), ctx);
+ 	off = ninsns_rvoff(tc_ninsn - (ctx->ninsns - start_insn));
+-	emit_bcc(BPF_JSLT, RV_REG_TCC, RV_REG_ZERO, off, ctx);
++	emit_bcc(BPF_JSLT, RV_REG_T1, RV_REG_ZERO, off, ctx);
+ 
+ 	/*
+ 	 * prog = array->ptrs[index];
+diff --git a/arch/riscv/net/bpf_jit_comp64.c b/arch/riscv/net/bpf_jit_comp64.c
+index 3af4131..6e9ba83 100644
+--- a/arch/riscv/net/bpf_jit_comp64.c
++++ b/arch/riscv/net/bpf_jit_comp64.c
+@@ -311,12 +311,12 @@ static int emit_bpf_tail_call(int insn, struct rv_jit_context *ctx)
+ 	off = ninsns_rvoff(tc_ninsn - (ctx->ninsns - start_insn));
+ 	emit_branch(BPF_JGE, RV_REG_A2, RV_REG_T1, off, ctx);
+ 
+-	/* if (TCC-- < 0)
++	/* if (--TCC < 0)
+ 	 *     goto out;
+ 	 */
+ 	emit_addi(RV_REG_T1, tcc, -1, ctx);
+ 	off = ninsns_rvoff(tc_ninsn - (ctx->ninsns - start_insn));
+-	emit_branch(BPF_JSLT, tcc, RV_REG_ZERO, off, ctx);
++	emit_branch(BPF_JSLT, RV_REG_T1, RV_REG_ZERO, off, ctx);
+ 
+ 	/* prog = array->ptrs[index];
+ 	 * if (!prog)
+diff --git a/arch/sparc/net/bpf_jit_comp_64.c b/arch/sparc/net/bpf_jit_comp_64.c
+index 9a2f20c..50d914c 100644
+--- a/arch/sparc/net/bpf_jit_comp_64.c
++++ b/arch/sparc/net/bpf_jit_comp_64.c
+@@ -863,6 +863,10 @@ static void emit_tail_call(struct jit_ctx *ctx)
+ 	emit_branch(BGEU, ctx->idx, ctx->idx + OFFSET1, ctx);
+ 	emit_nop(ctx);
+ 
++	emit_alu_K(ADD, tmp, 1, ctx);
++	off = BPF_TAILCALL_CNT_SP_OFF;
++	emit(ST32 | IMMED | RS1(SP) | S13(off) | RD(tmp), ctx);
 +
- 		switch (env->migration_type) {
- 		case migrate_load:
- 			/*
+ 	off = BPF_TAILCALL_CNT_SP_OFF;
+ 	emit(LD32 | IMMED | RS1(SP) | S13(off) | RD(tmp), ctx);
+ 	emit_cmpi(tmp, MAX_TAIL_CALL_CNT, ctx);
+@@ -870,10 +874,6 @@ static void emit_tail_call(struct jit_ctx *ctx)
+ 	emit_branch(BGU, ctx->idx, ctx->idx + OFFSET2, ctx);
+ 	emit_nop(ctx);
+ 
+-	emit_alu_K(ADD, tmp, 1, ctx);
+-	off = BPF_TAILCALL_CNT_SP_OFF;
+-	emit(ST32 | IMMED | RS1(SP) | S13(off) | RD(tmp), ctx);
+-
+ 	emit_alu3_K(SLL, bpf_index, 3, tmp, ctx);
+ 	emit_alu(ADD, bpf_array, tmp, ctx);
+ 	off = offsetof(struct bpf_array, ptrs);
+diff --git a/arch/x86/net/bpf_jit_comp.c b/arch/x86/net/bpf_jit_comp.c
+index 0fe6aac..74a9e61 100644
+--- a/arch/x86/net/bpf_jit_comp.c
++++ b/arch/x86/net/bpf_jit_comp.c
+@@ -402,7 +402,7 @@ static int get_pop_bytes(bool *callee_regs_used)
+  * ... bpf_tail_call(void *ctx, struct bpf_array *array, u64 index) ...
+  *   if (index >= array->map.max_entries)
+  *     goto out;
+- *   if (++tail_call_cnt > MAX_TAIL_CALL_CNT)
++ *   if (tail_call_cnt++ == MAX_TAIL_CALL_CNT)
+  *     goto out;
+  *   prog = array->ptrs[index];
+  *   if (prog == NULL)
+@@ -452,13 +452,13 @@ static void emit_bpf_tail_call_indirect(u8 **pprog, bool *callee_regs_used,
+ 	EMIT2(X86_JBE, OFFSET1);                  /* jbe out */
+ 
+ 	/*
+-	 * if (tail_call_cnt > MAX_TAIL_CALL_CNT)
++	 * if (tail_call_cnt++ == MAX_TAIL_CALL_CNT)
+ 	 *	goto out;
+ 	 */
+ 	EMIT2_off32(0x8B, 0x85, tcc_off);         /* mov eax, dword ptr [rbp - tcc_off] */
+ 	EMIT3(0x83, 0xF8, MAX_TAIL_CALL_CNT);     /* cmp eax, MAX_TAIL_CALL_CNT */
+ #define OFFSET2 (off2 + RETPOLINE_RCX_BPF_JIT_SIZE)
+-	EMIT2(X86_JA, OFFSET2);                   /* ja out */
++	EMIT2(X86_JE, OFFSET2);                   /* je out */
+ 	EMIT3(0x83, 0xC0, 0x01);                  /* add eax, 1 */
+ 	EMIT2_off32(0x89, 0x85, tcc_off);         /* mov dword ptr [rbp - tcc_off], eax */
+ 
+@@ -530,12 +530,12 @@ static void emit_bpf_tail_call_direct(struct bpf_jit_poke_descriptor *poke,
+ 	}
+ 
+ 	/*
+-	 * if (tail_call_cnt > MAX_TAIL_CALL_CNT)
++	 * if (tail_call_cnt++ == MAX_TAIL_CALL_CNT)
+ 	 *	goto out;
+ 	 */
+ 	EMIT2_off32(0x8B, 0x85, tcc_off);             /* mov eax, dword ptr [rbp - tcc_off] */
+ 	EMIT3(0x83, 0xF8, MAX_TAIL_CALL_CNT);         /* cmp eax, MAX_TAIL_CALL_CNT */
+-	EMIT2(X86_JA, off1);                          /* ja out */
++	EMIT2(X86_JE, off1);                          /* je out */
+ 	EMIT3(0x83, 0xC0, 0x01);                      /* add eax, 1 */
+ 	EMIT2_off32(0x89, 0x85, tcc_off);             /* mov dword ptr [rbp - tcc_off], eax */
+ 
+diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+index f4c16f1..224cc7e 100644
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -1046,7 +1046,7 @@ struct bpf_array {
+ };
+ 
+ #define BPF_COMPLEXITY_LIMIT_INSNS      1000000 /* yes. 1M insns */
+-#define MAX_TAIL_CALL_CNT 32
++#define MAX_TAIL_CALL_CNT 33
+ 
+ #define BPF_F_ACCESS_MASK	(BPF_F_RDONLY |		\
+ 				 BPF_F_RDONLY_PROG |	\
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index 9f4636d..8edb1c3 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -1564,10 +1564,10 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
+ 
+ 		if (unlikely(index >= array->map.max_entries))
+ 			goto out;
+-		if (unlikely(tail_call_cnt > MAX_TAIL_CALL_CNT))
+-			goto out;
+ 
+ 		tail_call_cnt++;
++		if (unlikely(tail_call_cnt > MAX_TAIL_CALL_CNT))
++			goto out;
+ 
+ 		prog = READ_ONCE(array->ptrs[index]);
+ 		if (!prog)
 -- 
-2.17.1
+2.1.0
 
