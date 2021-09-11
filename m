@@ -1,54 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53AAB407606
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Sep 2021 12:11:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D787E407621
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Sep 2021 12:44:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H67mq24xFz2ywK
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Sep 2021 20:11:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H68WZ582Pz2yxm
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Sep 2021 20:44:42 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=dkim header.b=I197+52K;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=R6ZXpzlb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=alien8.de (client-ip=5.9.137.197; helo=mail.skyhub.de;
- envelope-from=bp@alien8.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256
- header.s=dkim header.b=I197+52K; dkim-atps=neutral
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=ellerman.id.au (client-ip=2401:3900:2:1::2; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=R6ZXpzlb; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H67m66686z2xWt
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Sep 2021 20:10:30 +1000 (AEST)
-Received: from zn.tnic (p200300ec2f1e14001f3479bbc118498e.dip0.t-ipconnect.de
- [IPv6:2003:ec:2f1e:1400:1f34:79bb:c118:498e])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B0AD71EC0136;
- Sat, 11 Sep 2021 12:10:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
- t=1631355022;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
- bh=HR27o8pZq+/+uFK0n68ub/mxfkE1ISiJNZUKmCms7j8=;
- b=I197+52KgpqBBgLvuSMSrQpQNRo13IqV+FgdnGwdscix9JqjZo6kiEOakrW3iQQS6u0uVD
- WzR3O2CXEOh8ZykdepQmAsy+NBoupC0qZ8IdrqxtxuX9zNND17uAXyBpIh83Qsid6C7Ugn
- zY+/3Zj7u8+b/OQlEkEddX/RceOjyqA=
-Date: Sat, 11 Sep 2021 12:10:14 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Subject: Re: [PATCH v3 3/8] x86/sev: Add an x86 version of cc_platform_has()
-Message-ID: <YTyAhmPf39Vqd7G9@zn.tnic>
-References: <cover.1631141919.git.thomas.lendacky@amd.com>
- <f9951644147e27772bf4512325e8ba6472e363b7.1631141919.git.thomas.lendacky@amd.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H68Vy14QDz2y0G
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Sep 2021 20:44:09 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1631357040;
+ bh=IAM6TXV6wXFq89B5Tg489wwFMphvmD5Og9aY6yFESQg=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=R6ZXpzlbpiL9jKuN4WCfe1KuLWTgLxflTVJRzGiDwa0pTXkvhcPYgdcqb9H4N9qiG
+ 8YEQ7ydw8LYh1/3D6ULsiYSP/DMc+YZTYTW+45tyjXHzu2lx4k0hSZmJm6MVkk3sYd
+ pu1rcfjKjFOrZLYgRGg3z2cysyHY2x5M4m/FjY1tIGH7O1GkPxLsZCbPhk5UMMi/0n
+ 1eKfoEKCNAg0wXJdTwH47G+1h/05x9gA7FiSr4kB5BZQ4IoTXYqsJMlid5dtVttVSf
+ C/xR4iqL2YXJQ993AakossuahedxPa1CEg1CMLimvXL7ZQEYMVZEjeyIfdfcr0s6sz
+ wOQDz+okAuIIg==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4H68Vj4T5kz9sXk;
+ Sat, 11 Sep 2021 20:43:57 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers
+ <ndesaulniers@google.com>, Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 06/10] powerpc: remove GCC version check for UPD_CONSTR
+In-Reply-To: <b940bd2c-21d2-dfe9-e171-e265085a2b11@kernel.org>
+References: <20210910234047.1019925-1-ndesaulniers@google.com>
+ <20210910234047.1019925-7-ndesaulniers@google.com>
+ <b940bd2c-21d2-dfe9-e171-e265085a2b11@kernel.org>
+Date: Sat, 11 Sep 2021 20:43:57 +1000
+Message-ID: <87zgsjl7de.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <f9951644147e27772bf4512325e8ba6472e363b7.1631141919.git.thomas.lendacky@amd.com>
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,81 +64,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
- linux-efi@vger.kernel.org, Brijesh Singh <brijesh.singh@amd.com>,
- kvm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org,
- platform-driver-x86@vger.kernel.org, linux-s390@vger.kernel.org,
- Andi Kleen <ak@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
- x86@kernel.org, amd-gfx@lists.freedesktop.org,
- Christoph Hellwig <hch@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- linux-graphics-maintainer@vmware.com, Tianyu Lan <Tianyu.Lan@microsoft.com>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
- iommu@lists.linux-foundation.org, linux-fsdevel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>, linuxppc-dev@lists.ozlabs.org,
+ Arnd Bergmann <arnd@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>,
+ llvm@lists.linux.dev, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Joe Perches <joe@perches.com>, Linus Torvalds <torvalds@linux-foundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 08, 2021 at 05:58:34PM -0500, Tom Lendacky wrote:
-> diff --git a/arch/x86/kernel/cc_platform.c b/arch/x86/kernel/cc_platform.c
-> new file mode 100644
-> index 000000000000..3c9bacd3c3f3
-> --- /dev/null
-> +++ b/arch/x86/kernel/cc_platform.c
-> @@ -0,0 +1,21 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Confidential Computing Platform Capability checks
-> + *
-> + * Copyright (C) 2021 Advanced Micro Devices, Inc.
-> + *
-> + * Author: Tom Lendacky <thomas.lendacky@amd.com>
-> + */
-> +
-> +#include <linux/export.h>
-> +#include <linux/cc_platform.h>
-> +#include <linux/mem_encrypt.h>
-> +
-> +bool cc_platform_has(enum cc_attr attr)
-> +{
-> +	if (sme_me_mask)
+Nathan Chancellor <nathan@kernel.org> writes:
+> On 9/10/2021 4:40 PM, Nick Desaulniers wrote:
+>> Now that GCC 5.1 is the minimum supported version, we can drop this
+>> workaround for older versions of GCC. This adversely affected clang,
+>> too.
+>> 
+>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+>> Cc: Paul Mackerras <paulus@samba.org>
+>> Cc: Segher Boessenkool <segher@kernel.crashing.org>
+>> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+>> Cc: linuxppc-dev@lists.ozlabs.org
+>> Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+>> ---
+>>   arch/powerpc/include/asm/asm-const.h | 10 ----------
+>>   1 file changed, 10 deletions(-)
+>> 
+>> diff --git a/arch/powerpc/include/asm/asm-const.h b/arch/powerpc/include/asm/asm-const.h
+>> index 0ce2368bd20f..dbfa5e1e3198 100644
+>> --- a/arch/powerpc/include/asm/asm-const.h
+>> +++ b/arch/powerpc/include/asm/asm-const.h
+>> @@ -12,16 +12,6 @@
+>>   #  define ASM_CONST(x)		__ASM_CONST(x)
+>>   #endif
+>>   
+>> -/*
+>> - * Inline assembly memory constraint
+>> - *
+>> - * GCC 4.9 doesn't properly handle pre update memory constraint "m<>"
+>> - *
+>> - */
+>> -#if defined(GCC_VERSION) && GCC_VERSION < 50000
+>> -#define UPD_CONSTR ""
+>> -#else
+>>   #define UPD_CONSTR "<>"
+>> -#endif
+>
+> The only reason this exists is because of commit 592bbe9c505d 
+> ("powerpc/uaccess: Don't use "m<>" constraint with GCC 4.9"). It is 
+> probably just worth sinking "<>" into all of the callsites and removing
+> UPD_CONSTR.
 
-Why are you still checking the sme_me_mask here? AFAIR, we said that
-we'll do that only when the KVM folks come with a valid use case...
+Yeah that would be great if you're doing a v2. Or we can do it as a
+follow-up.
 
-> +		return amd_cc_platform_has(attr);
-> +
-> +	return false;
-> +}
-> +EXPORT_SYMBOL_GPL(cc_platform_has);
-> diff --git a/arch/x86/mm/mem_encrypt.c b/arch/x86/mm/mem_encrypt.c
-> index ff08dc463634..18fe19916bc3 100644
-> --- a/arch/x86/mm/mem_encrypt.c
-> +++ b/arch/x86/mm/mem_encrypt.c
-> @@ -20,6 +20,7 @@
->  #include <linux/bitops.h>
->  #include <linux/dma-mapping.h>
->  #include <linux/virtio_config.h>
-> +#include <linux/cc_platform.h>
->  
->  #include <asm/tlbflush.h>
->  #include <asm/fixmap.h>
-> @@ -389,6 +390,26 @@ bool noinstr sev_es_active(void)
->  	return sev_status & MSR_AMD64_SEV_ES_ENABLED;
->  }
->  
-> +bool amd_cc_platform_has(enum cc_attr attr)
-> +{
-> +	switch (attr) {
-> +	case CC_ATTR_MEM_ENCRYPT:
-> +		return sme_me_mask != 0;
-
-No need for the "!= 0"
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+cheers
