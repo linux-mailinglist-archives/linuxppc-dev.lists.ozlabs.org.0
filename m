@@ -2,63 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1384409722
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Sep 2021 17:21:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E8E3409746
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Sep 2021 17:28:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H7VZB4Rpnz3cMd
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 01:21:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H7Vjf1GNcz2ypP
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 01:28:06 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=iEd1ch44;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102b;
+ helo=mail-pj1-x102b.google.com; envelope-from=oohall@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=iEd1ch44; dkim-atps=neutral
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com
+ [IPv6:2607:f8b0:4864:20::102b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H7VX430W2z2yp9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Sep 2021 01:19:48 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4H7VWm3dBGz9sVf;
- Mon, 13 Sep 2021 17:19:32 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id ALW_r9C92Jf8; Mon, 13 Sep 2021 17:19:32 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4H7VWh3dSRz9sVr;
- Mon, 13 Sep 2021 17:19:28 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5D3288B781;
- Mon, 13 Sep 2021 17:19:28 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id sRnfFZEVp5ui; Mon, 13 Sep 2021 17:19:28 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.25.230.107])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 2DDBE8B775;
- Mon, 13 Sep 2021 17:19:28 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 18DFJKkt157780
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Mon, 13 Sep 2021 17:19:20 +0200
-Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 18DFJKuW157779;
- Mon, 13 Sep 2021 17:19:20 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
- christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H7Vhz6dqfz2xZ3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Sep 2021 01:27:30 +1000 (AEST)
+Received: by mail-pj1-x102b.google.com with SMTP id
+ k23-20020a17090a591700b001976d2db364so293967pji.2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Sep 2021 08:27:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=/tK5hxsL9MKG9mZXvZLPwX/0laXRMWVr+vDqTQ0On9o=;
+ b=iEd1ch44ADvzc7AnSXEjexg63fNl59NQecaaBa7kfUyi1h02BdQhzwcYN+6iOd8chn
+ 9dgRf9MHYUvc1s484FH+SSqSqKZatgQwWf3Jgc5oJZfA1F2BQxXc+JO7zNWD0cirggxM
+ Y5R1LvVJZPZGdeRXa1ClwM7Lh4A7NyYB8I3JEfXmZncIz1RBrq2A/t/0ASSRuqrEEunJ
+ 42rYEjeaUuaP962e1+M0wknqwHkctOePV8yJdk2alrbwl0hjNQ0WKJOI0AJY9C8nuhPS
+ 4dUqYTpZ4mN0Ig2t4FTU8pqRo+S8DzrzU6z0lF1SDUiigSVIOxr+zo0PvVc/8hBxxGIA
+ vt6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=/tK5hxsL9MKG9mZXvZLPwX/0laXRMWVr+vDqTQ0On9o=;
+ b=anizpe9LC1h6czxUksKPQP3Xlvc5zs9HtPrS+P42adlqVMIL1lvm080vNiaIy3UetK
+ oYj/n8GEY16qnPRQvAPnQXMlAj9V5HT1pCBR9ADIH7b3BLkubj5WFWZjVXWkeJCQWHUy
+ jjFivz7tDfjcVmZ/ydv09iYbpx0kS0m+ShNw3jqUOENPLdGVqZ7sLHAg68DZ7rZZRDlv
+ nT8OE7LmlvzgR6YfNOHllOzB4O+KZ4QsAE5/IggznJne2PWfQ9vwE9NnitGC5EnciUgs
+ tRR4Sfy/FzbkkIPmMsMjt8uYEXeA1Li28v6Sueu1+/Du/PYZnpkty7KE4o/mgdKLc+OY
+ 5rxA==
+X-Gm-Message-State: AOAM531KoiYilW6JxhVLb9ejMAr4HbXnA09xuicKxV3wOw21YWxls6c0
+ ue7bwLTuRP3eox5Nip/xszI=
+X-Google-Smtp-Source: ABdhPJxKLqjOhkuORNZ3Up/yYXp3q7+GN3+gwvIWOUw2ecMs6Sg+9n/SUtp6aa6IAYZEAQhfuXcoRQ==
+X-Received: by 2002:a17:90b:3b84:: with SMTP id
+ pc4mr54776pjb.220.1631546846505; 
+ Mon, 13 Sep 2021 08:27:26 -0700 (PDT)
+Received: from localhost.localdomain (14-200-52-220.static.tpgi.com.au.
+ [14.200.52.220])
+ by smtp.gmail.com with ESMTPSA id k127sm7597875pfd.1.2021.09.13.08.27.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 13 Sep 2021 08:27:26 -0700 (PDT)
+From: Oliver O'Halloran <oohall@gmail.com>
+To: Michal Simek <monstr@monstr.eu>, Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>,
- Michael Ellerman <mpe@ellerman.id.au>, ebiederm@xmission.com,
- hch@infradead.org
-Subject: [PATCH RESEND v3 6/6] powerpc/signal: Use
- unsafe_copy_siginfo_to_user()
-Date: Mon, 13 Sep 2021 17:19:10 +0200
-Message-Id: <2b179deba4fd4ec0868cdc48a0230dfa3aa5a22f.1631537060.git.christophe.leroy@csgroup.eu>
+ Niklas Schnelle <schnelle@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Bjorn Helgaas <bhelgaas@google.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
+Subject: [PATCH] pci: Rename pcibios_add_device to match
+Date: Tue, 14 Sep 2021 01:27:08 +1000
+Message-Id: <20210913152709.48013-1-oohall@gmail.com>
 X-Mailer: git-send-email 2.31.1
-In-Reply-To: <1718f38859d5366f82d5bef531f255cedf537b5d.1631537060.git.christophe.leroy@csgroup.eu>
-References: <1718f38859d5366f82d5bef531f255cedf537b5d.1631537060.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -72,79 +90,174 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-s390@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Oliver O'Halloran <oohall@gmail.com>,
+ sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use unsafe_copy_siginfo_to_user() in order to do the copy
-within the user access block.
+The general convention for pcibios_* hooks is that they're named after
+the corresponding pci_* function they provide a hook for. The exception
+is pcibios_add_device() which provides a hook for pci_device_add(). This
+has been irritating me for years so rename it.
 
-On an mpc 8321 (book3s/32) the improvment is about 5% on a process
-sending a signal to itself.
+Also, remove the export of the microblaze version. The only caller
+must be compiled as a built-in so there's no reason for the export.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 ---
-v3: Don't leave compat aside, use the new unsafe_copy_siginfo_to_user32()
----
- arch/powerpc/kernel/signal_32.c | 8 +++-----
- arch/powerpc/kernel/signal_64.c | 5 +----
- 2 files changed, 4 insertions(+), 9 deletions(-)
+ arch/microblaze/pci/pci-common.c           | 3 +--
+ arch/powerpc/kernel/pci-common.c           | 2 +-
+ arch/powerpc/platforms/powernv/pci-sriov.c | 2 +-
+ arch/s390/pci/pci.c                        | 2 +-
+ arch/sparc/kernel/pci.c                    | 2 +-
+ arch/x86/pci/common.c                      | 2 +-
+ drivers/pci/pci.c                          | 4 ++--
+ drivers/pci/probe.c                        | 4 ++--
+ include/linux/pci.h                        | 2 +-
+ 9 files changed, 11 insertions(+), 12 deletions(-)
 
-diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/signal_32.c
-index ff101e2b3bab..3a2db8af2d65 100644
---- a/arch/powerpc/kernel/signal_32.c
-+++ b/arch/powerpc/kernel/signal_32.c
-@@ -710,9 +710,9 @@ static long restore_tm_user_regs(struct pt_regs *regs, struct mcontext __user *s
+diff --git a/arch/microblaze/pci/pci-common.c b/arch/microblaze/pci/pci-common.c
+index 557585f1be41..622a4867f9e9 100644
+--- a/arch/microblaze/pci/pci-common.c
++++ b/arch/microblaze/pci/pci-common.c
+@@ -587,13 +587,12 @@ static void pcibios_fixup_resources(struct pci_dev *dev)
  }
- #endif
+ DECLARE_PCI_FIXUP_HEADER(PCI_ANY_ID, PCI_ANY_ID, pcibios_fixup_resources);
  
--#ifdef CONFIG_PPC64
-+#ifndef CONFIG_PPC64
+-int pcibios_add_device(struct pci_dev *dev)
++int pcibios_device_add(struct pci_dev *dev)
+ {
+ 	dev->irq = of_irq_parse_and_map_pci(dev, 0, 0);
  
--#define copy_siginfo_to_user	copy_siginfo_to_user32
-+#define unsafe_copy_siginfo_to_user32	unsafe_copy_siginfo_to_user
+ 	return 0;
+ }
+-EXPORT_SYMBOL(pcibios_add_device);
  
- #endif /* CONFIG_PPC64 */
+ /*
+  * Reparent resource children of pr that conflict with res
+diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
+index c3573430919d..6749905932f4 100644
+--- a/arch/powerpc/kernel/pci-common.c
++++ b/arch/powerpc/kernel/pci-common.c
+@@ -1059,7 +1059,7 @@ void pcibios_bus_add_device(struct pci_dev *dev)
+ 		ppc_md.pcibios_bus_add_device(dev);
+ }
  
-@@ -779,15 +779,13 @@ int handle_rt_signal32(struct ksignal *ksig, sigset_t *oldset,
- 		asm("dcbst %y0; sync; icbi %y0; sync" :: "Z" (mctx->mc_pad[0]));
- 	}
- 	unsafe_put_sigset_t(&frame->uc.uc_sigmask, oldset, failed);
-+	unsafe_copy_siginfo_to_user32(&frame->info, &ksig->info, failed);
+-int pcibios_add_device(struct pci_dev *dev)
++int pcibios_device_add(struct pci_dev *dev)
+ {
+ 	struct irq_domain *d;
  
- 	/* create a stack frame for the caller of the handler */
- 	unsafe_put_user(regs->gpr[1], newsp, failed);
+diff --git a/arch/powerpc/platforms/powernv/pci-sriov.c b/arch/powerpc/platforms/powernv/pci-sriov.c
+index 28aac933a439..486c2937b159 100644
+--- a/arch/powerpc/platforms/powernv/pci-sriov.c
++++ b/arch/powerpc/platforms/powernv/pci-sriov.c
+@@ -54,7 +54,7 @@
+  * to "new_size", calculated above. Implementing this is a convoluted process
+  * which requires several hooks in the PCI core:
+  *
+- * 1. In pcibios_add_device() we call pnv_pci_ioda_fixup_iov().
++ * 1. In pcibios_device_add() we call pnv_pci_ioda_fixup_iov().
+  *
+  *    At this point the device has been probed and the device's BARs are sized,
+  *    but no resource allocations have been done. The SR-IOV BARs are sized
+diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
+index e7e6788d75a8..ded3321b7208 100644
+--- a/arch/s390/pci/pci.c
++++ b/arch/s390/pci/pci.c
+@@ -561,7 +561,7 @@ static void zpci_cleanup_bus_resources(struct zpci_dev *zdev)
+ 	zdev->has_resources = 0;
+ }
  
- 	user_access_end();
+-int pcibios_add_device(struct pci_dev *pdev)
++int pcibios_device_add(struct pci_dev *pdev)
+ {
+ 	struct zpci_dev *zdev = to_zpci(pdev);
+ 	struct resource *res;
+diff --git a/arch/sparc/kernel/pci.c b/arch/sparc/kernel/pci.c
+index 9c2b720bfd20..31b0c1983286 100644
+--- a/arch/sparc/kernel/pci.c
++++ b/arch/sparc/kernel/pci.c
+@@ -1010,7 +1010,7 @@ void pcibios_set_master(struct pci_dev *dev)
+ }
  
--	if (copy_siginfo_to_user(&frame->info, &ksig->info))
--		goto badframe;
--
- 	regs->link = tramp;
+ #ifdef CONFIG_PCI_IOV
+-int pcibios_add_device(struct pci_dev *dev)
++int pcibios_device_add(struct pci_dev *dev)
+ {
+ 	struct pci_dev *pdev;
  
- #ifdef CONFIG_PPC_FPU_REGS
-diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/signal_64.c
-index d80ff83cacb9..56c0c74aa28c 100644
---- a/arch/powerpc/kernel/signal_64.c
-+++ b/arch/powerpc/kernel/signal_64.c
-@@ -901,15 +901,12 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
- 	}
+diff --git a/arch/x86/pci/common.c b/arch/x86/pci/common.c
+index 3507f456fcd0..9e1e6b8d8876 100644
+--- a/arch/x86/pci/common.c
++++ b/arch/x86/pci/common.c
+@@ -632,7 +632,7 @@ static void set_dev_domain_options(struct pci_dev *pdev)
+ 		pdev->hotplug_user_indicators = 1;
+ }
  
- 	unsafe_copy_to_user(&frame->uc.uc_sigmask, set, sizeof(*set), badframe_block);
-+	unsafe_copy_siginfo_to_user(&frame->info, &ksig->info, badframe_block);
- 	/* Allocate a dummy caller frame for the signal handler. */
- 	unsafe_put_user(regs->gpr[1], newsp, badframe_block);
+-int pcibios_add_device(struct pci_dev *dev)
++int pcibios_device_add(struct pci_dev *dev)
+ {
+ 	struct pci_setup_rom *rom;
+ 	struct irq_domain *msidom;
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index ce2ab62b64cf..c63598c1cdd8 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -2091,14 +2091,14 @@ void pcim_pin_device(struct pci_dev *pdev)
+ EXPORT_SYMBOL(pcim_pin_device);
  
- 	user_write_access_end();
+ /*
+- * pcibios_add_device - provide arch specific hooks when adding device dev
++ * pcibios_device_add - provide arch specific hooks when adding device dev
+  * @dev: the PCI device being added
+  *
+  * Permits the platform to provide architecture specific functionality when
+  * devices are added. This is the default implementation. Architecture
+  * implementations can override this.
+  */
+-int __weak pcibios_add_device(struct pci_dev *dev)
++int __weak pcibios_device_add(struct pci_dev *dev)
+ {
+ 	return 0;
+ }
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index d9fc02a71baa..2ba43b6adf31 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -2450,7 +2450,7 @@ static struct irq_domain *pci_dev_msi_domain(struct pci_dev *dev)
+ 	struct irq_domain *d;
  
--	/* Save the siginfo outside of the unsafe block. */
--	if (copy_siginfo_to_user(&frame->info, &ksig->info))
--		goto badframe;
--
- 	/* Make sure signal handler doesn't get spurious FP exceptions */
- 	tsk->thread.fp_state.fpscr = 0;
+ 	/*
+-	 * If a domain has been set through the pcibios_add_device()
++	 * If a domain has been set through the pcibios_device_add()
+ 	 * callback, then this is the one (platform code knows best).
+ 	 */
+ 	d = dev_get_msi_domain(&dev->dev);
+@@ -2518,7 +2518,7 @@ void pci_device_add(struct pci_dev *dev, struct pci_bus *bus)
+ 	list_add_tail(&dev->bus_list, &bus->devices);
+ 	up_write(&pci_bus_sem);
  
+-	ret = pcibios_add_device(dev);
++	ret = pcibios_device_add(dev);
+ 	WARN_ON(ret < 0);
+ 
+ 	/* Set up MSI IRQ domain */
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index cd8aa6fce204..7e0ce3a4d5a1 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -2126,7 +2126,7 @@ void pcibios_disable_device(struct pci_dev *dev);
+ void pcibios_set_master(struct pci_dev *dev);
+ int pcibios_set_pcie_reset_state(struct pci_dev *dev,
+ 				 enum pcie_reset_state state);
+-int pcibios_add_device(struct pci_dev *dev);
++int pcibios_device_add(struct pci_dev *dev);
+ void pcibios_release_device(struct pci_dev *dev);
+ #ifdef CONFIG_PCI
+ void pcibios_penalize_isa_irq(int irq, int active);
 -- 
 2.31.1
 
