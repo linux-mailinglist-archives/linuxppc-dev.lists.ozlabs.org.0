@@ -1,66 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36D25409275
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Sep 2021 16:10:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1E2F4091B1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Sep 2021 16:03:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H7T0T0m3mz3076
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 00:10:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H7Sqx55Ymz2yPJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 00:03:25 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=SppJC966;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=i4a/effg;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=i4a/effg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=suse.com (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
- envelope-from=jgross@suse.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=omosnace@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
- header.s=susede1 header.b=SppJC966; dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=i4a/effg; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=i4a/effg; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H7SzF5jXxz2yLV
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Sep 2021 00:09:45 +1000 (AEST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 5A2BB21E9F;
- Mon, 13 Sep 2021 13:57:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
- t=1631541470; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=xJEQIgnm1bmcNwzuG5m4RwXUlGdjbwBKYPhETx8x9T4=;
- b=SppJC966jR24NoJJCtelnYM/GwS+HnuxXgAyhhwfiHlT68GxC5oRuf9dfylpsoVz4vbsCM
- yhoWzylsRQYhrOWqirpfhZncs5cXGrEoRdPGjUHuC1RbzS/ozy8YMOkJeAYnhpONXZsMAg
- SamdwZZojI6B4jKKkB9KAZ3uub1koGQ=
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 7B98113AB2;
- Mon, 13 Sep 2021 13:57:49 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id 6MxvHN1YP2FMUwAAMHmgww
- (envelope-from <jgross@suse.com>); Mon, 13 Sep 2021 13:57:49 +0000
-From: Juergen Gross <jgross@suse.com>
-To: kvm@vger.kernel.org, x86@kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
- kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kselftest@vger.kernel.org
-Subject: [PATCH 2/2] kvm: rename KVM_MAX_VCPU_ID to KVM_MAX_VCPU_IDS
-Date: Mon, 13 Sep 2021 15:57:44 +0200
-Message-Id: <20210913135745.13944-3-jgross@suse.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20210913135745.13944-1-jgross@suse.com>
-References: <20210913135745.13944-1-jgross@suse.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H7Sq744fWz2xtc
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Sep 2021 00:02:41 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1631541756;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=6wouKqCG4n/fFOqZ1urSUYIdu0vWQ6BIKUtXDxLwm5M=;
+ b=i4a/effgUts6NwAEMeR8JVF3gliAd74y0CxUJMOXdcHdgtPtNzv5DJ6t3YrCTVDs68bx/x
+ V+EbVA0H934lGMUOQ4LUm042xnb9mpCIZ6+hLvUdApnIG5IvZZQ7dvOsCiThIYapDkfVSf
+ 0X5eZzpJSv+DWsa4Xv2rUM1eg6ppS1I=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1631541756;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=6wouKqCG4n/fFOqZ1urSUYIdu0vWQ6BIKUtXDxLwm5M=;
+ b=i4a/effgUts6NwAEMeR8JVF3gliAd74y0CxUJMOXdcHdgtPtNzv5DJ6t3YrCTVDs68bx/x
+ V+EbVA0H934lGMUOQ4LUm042xnb9mpCIZ6+hLvUdApnIG5IvZZQ7dvOsCiThIYapDkfVSf
+ 0X5eZzpJSv+DWsa4Xv2rUM1eg6ppS1I=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-235-zMe8dV3SPa2ZNoJOsKy8Mg-1; Mon, 13 Sep 2021 10:02:33 -0400
+X-MC-Unique: zMe8dV3SPa2ZNoJOsKy8Mg-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ j21-20020a05600c1c1500b00300f1679e4dso3641327wms.4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Sep 2021 07:02:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=6wouKqCG4n/fFOqZ1urSUYIdu0vWQ6BIKUtXDxLwm5M=;
+ b=ReAPWUiO69ip28BIeTmgD3hEq4EM8LnY3uWBt+/47YeqDMEmlypoDycRNqZkwq+fL3
+ QpKyMO5DTqdiaTWOJcNAun3HMe+ncZXvmHgCPX+JwS8Se/NQjV7y9lDSmjoFEgVTSMqB
+ GtO9YEDOkQ2qUFb25NCrm8KV/gw9Zo6jO0jevW+9b9jErIIR/RWfXi9UUhFy+vVGkf8L
+ fS5fj4IZwaF9gL1OYoAT0bQ+8FLhvNzgOx5UBYPPV0+uuNJKABfAJna1u+XjnAx/wHCm
+ T/c0+suKnpj55ayKf0UMH6afDaE3ef3liHbT3A06RaoCuQY5dJScdbbOAQVuTPz2FFrC
+ efWg==
+X-Gm-Message-State: AOAM532ShCWCCr/5HvWvyBDK34ARq5wIhLn63g9wR97kKX9XZbM66dRh
+ BJ8TVRe6U6u3HDcYzYK5dwDVSSa3PV8JURsKc7rN1tOF+haHhXizhYr22TRgEEV+o3+WV61ENKe
+ lvH0m2lH5HCRUi1stGgcirjsWww==
+X-Received: by 2002:a5d:4950:: with SMTP id r16mr10916916wrs.265.1631541751523; 
+ Mon, 13 Sep 2021 07:02:31 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzXPAoOiOiH85dVI4KYg2sY1nIuUfn4VxFJiCQ1hi7/2VHXmCkI/MqcXK+NFO3zXUxpc/zubg==
+X-Received: by 2002:a5d:4950:: with SMTP id r16mr10916847wrs.265.1631541750940; 
+ Mon, 13 Sep 2021 07:02:30 -0700 (PDT)
+Received: from localhost.localdomain (nat-pool-brq-t.redhat.com.
+ [213.175.37.10])
+ by smtp.gmail.com with ESMTPSA id l124sm6923192wml.8.2021.09.13.07.02.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 13 Sep 2021 07:02:30 -0700 (PDT)
+From: Ondrej Mosnacek <omosnace@redhat.com>
+To: linux-security-module@vger.kernel.org,
+	James Morris <jmorris@namei.org>
+Subject: [PATCH v4] lockdown,
+ selinux: fix wrong subject in some SELinux lockdown checks
+Date: Mon, 13 Sep 2021 16:02:29 +0200
+Message-Id: <20210913140229.24797-1-omosnace@redhat.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=omosnace@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,242 +104,1008 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Wanpeng Li <wanpengli@tencent.com>, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, Joerg Roedel <joro@8bytes.org>,
- Huacai Chen <chenhuacai@kernel.org>,
- Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>,
- Ingo Molnar <mingo@redhat.com>, Eduardo Habkost <ehabkost@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Shuah Khan <skhan@linuxfoundation.org>,
- Thomas Gleixner <tglx@linutronix.de>, Jim Mattson <jmattson@google.com>,
- Juergen Gross <jgross@suse.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc: linux-efi@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-cxl@vger.kernel.org, Steffen Klassert <steffen.klassert@secunet.com>,
+ Paul Moore <paul@paul-moore.com>, x86@kernel.org, linux-acpi@vger.kernel.org,
+ Ingo Molnar <mingo@redhat.com>, linux-serial@vger.kernel.org,
+ linux-pm@vger.kernel.org, selinux@vger.kernel.org,
+ Steven Rostedt <rostedt@goodmis.org>, linux-fsdevel@vger.kernel.org,
+ Dan Williams <dan.j.williams@intel.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>, netdev@vger.kernel.org,
+ Stephen Smalley <stephen.smalley.work@gmail.com>, kexec@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Casey Schaufler <casey@schaufler-ca.com>,
+ bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-KVM_MAX_VCPU_ID is not specifying the highest allowed vcpu-id, but the
-number of allowed vcpu-ids. This has already led to confusion, so
-rename KVM_MAX_VCPU_ID to KVM_MAX_VCPU_IDS to make its semantics more
-clear
+Commit 59438b46471a ("security,lockdown,selinux: implement SELinux
+lockdown") added an implementation of the locked_down LSM hook to
+SELinux, with the aim to restrict which domains are allowed to perform
+operations that would breach lockdown.
 
-Suggested-by: Eduardo Habkost <ehabkost@redhat.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+However, in several places the security_locked_down() hook is called in
+situations where the current task isn't doing any action that would
+directly breach lockdown, leading to SELinux checks that are basically
+bogus.
+
+To fix this, add an explicit struct cred pointer argument to
+security_lockdown() and define NULL as a special value to pass instead
+of current_cred() in such situations. LSMs that take the subject
+credentials into account can then fall back to some default or ignore
+such calls altogether. In the SELinux lockdown hook implementation, use
+SECINITSID_KERNEL in case the cred argument is NULL.
+
+Most of the callers are updated to pass current_cred() as the cred
+pointer, thus maintaining the same behavior. The following callers are
+modified to pass NULL as the cred pointer instead:
+1. arch/powerpc/xmon/xmon.c
+     Seems to be some interactive debugging facility. It appears that
+     the lockdown hook is called from interrupt context here, so it
+     should be more appropriate to request a global lockdown decision.
+2. fs/tracefs/inode.c:tracefs_create_file()
+     Here the call is used to prevent creating new tracefs entries when
+     the kernel is locked down. Assumes that locking down is one-way -
+     i.e. if the hook returns non-zero once, it will never return zero
+     again, thus no point in creating these files. Also, the hook is
+     often called by a module's init function when it is loaded by
+     userspace, where it doesn't make much sense to do a check against
+     the current task's creds, since the task itself doesn't actually
+     use the tracing functionality (i.e. doesn't breach lockdown), just
+     indirectly makes some new tracepoints available to whoever is
+     authorized to use them.
+3. net/xfrm/xfrm_user.c:copy_to_user_*()
+     Here a cryptographic secret is redacted based on the value returned
+     from the hook. There are two possible actions that may lead here:
+     a) A netlink message XFRM_MSG_GETSA with NLM_F_DUMP set - here the
+        task context is relevant, since the dumped data is sent back to
+        the current task.
+     b) When adding/deleting/updating an SA via XFRM_MSG_xxxSA, the
+        dumped SA is broadcasted to tasks subscribed to XFRM events -
+        here the current task context is not relevant as it doesn't
+        represent the tasks that could potentially see the secret.
+     It doesn't seem worth it to try to keep using the current task's
+     context in the a) case, since the eventual data leak can be
+     circumvented anyway via b), plus there is no way for the task to
+     indicate that it doesn't care about the actual key value, so the
+     check could generate a lot of "false alert" denials with SELinux.
+     Thus, let's pass NULL instead of current_cred() here faute de
+     mieux.
+
+Improvements-suggested-by: Casey Schaufler <casey@schaufler-ca.com>
+Improvements-suggested-by: Paul Moore <paul@paul-moore.com>
+Fixes: 59438b46471a ("security,lockdown,selinux: implement SELinux lockdown")
+Acked-by: Dan Williams <dan.j.williams@intel.com>         [cxl]
+Acked-by: Steffen Klassert <steffen.klassert@secunet.com> [xfrm]
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
 ---
- Documentation/virt/kvm/devices/xics.rst            | 2 +-
- Documentation/virt/kvm/devices/xive.rst            | 2 +-
- arch/mips/kvm/mips.c                               | 2 +-
- arch/powerpc/include/asm/kvm_book3s.h              | 2 +-
- arch/powerpc/include/asm/kvm_host.h                | 4 ++--
- arch/powerpc/kvm/book3s_xive.c                     | 2 +-
- arch/powerpc/kvm/powerpc.c                         | 2 +-
- arch/x86/include/asm/kvm_host.h                    | 2 +-
- arch/x86/kvm/ioapic.c                              | 2 +-
- arch/x86/kvm/ioapic.h                              | 4 ++--
- arch/x86/kvm/x86.c                                 | 2 +-
- include/linux/kvm_host.h                           | 4 ++--
- tools/testing/selftests/kvm/kvm_create_max_vcpus.c | 2 +-
- virt/kvm/kvm_main.c                                | 2 +-
- 14 files changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/Documentation/virt/kvm/devices/xics.rst b/Documentation/virt/kvm/devices/xics.rst
-index 2d6927e0b776..bf32c77174ab 100644
---- a/Documentation/virt/kvm/devices/xics.rst
-+++ b/Documentation/virt/kvm/devices/xics.rst
-@@ -22,7 +22,7 @@ Groups:
-   Errors:
+v4:
+- rebase on top of TODO
+- fix rebase conflicts:
+  * drivers/cxl/pci.c
+    - trivial: the lockdown reason was corrected in mainline
+  * kernel/bpf/helpers.c, kernel/trace/bpf_trace.c
+    - trivial: LOCKDOWN_BPF_READ was renamed to LOCKDOWN_BPF_READ_KERNEL
+      in mainline
+  * kernel/power/hibernate.c
+    - trivial: !secretmem_active() was added to the condition in
+      hibernation_available()
+- cover new security_locked_down() call in kernel/bpf/helpers.c
+  (LOCKDOWN_BPF_WRITE_USER in BPF_FUNC_probe_write_user case)
+
+v3: https://lore.kernel.org/lkml/20210616085118.1141101-1-omosnace@redhat.com/
+- add the cred argument to security_locked_down() and adapt all callers
+- keep using current_cred() in BPF, as the hook calls have been shifted
+  to program load time (commit ff40e51043af ("bpf, lockdown, audit: Fix
+  buggy SELinux lockdown permission checks"))
+- in SELinux, don't ignore hook calls where cred == NULL, but use
+  SECINITSID_KERNEL as the subject instead
+- update explanations in the commit message
+
+v2: https://lore.kernel.org/lkml/20210517092006.803332-1-omosnace@redhat.com/
+- change to a single hook based on suggestions by Casey Schaufler
+
+v1: https://lore.kernel.org/lkml/20210507114048.138933-1-omosnace@redhat.com/
+
+ arch/powerpc/xmon/xmon.c             |  4 ++--
+ arch/x86/kernel/ioport.c             |  4 ++--
+ arch/x86/kernel/msr.c                |  4 ++--
+ arch/x86/mm/testmmiotrace.c          |  2 +-
+ drivers/acpi/acpi_configfs.c         |  2 +-
+ drivers/acpi/custom_method.c         |  2 +-
+ drivers/acpi/osl.c                   |  3 ++-
+ drivers/acpi/tables.c                |  2 +-
+ drivers/char/mem.c                   |  2 +-
+ drivers/cxl/pci.c                    |  2 +-
+ drivers/firmware/efi/efi.c           |  2 +-
+ drivers/firmware/efi/test/efi_test.c |  2 +-
+ drivers/pci/pci-sysfs.c              |  6 +++---
+ drivers/pci/proc.c                   |  6 +++---
+ drivers/pci/syscall.c                |  2 +-
+ drivers/pcmcia/cistpl.c              |  2 +-
+ drivers/tty/serial/serial_core.c     |  2 +-
+ fs/debugfs/file.c                    |  2 +-
+ fs/debugfs/inode.c                   |  2 +-
+ fs/proc/kcore.c                      |  2 +-
+ fs/tracefs/inode.c                   |  2 +-
+ include/linux/lsm_hook_defs.h        |  2 +-
+ include/linux/lsm_hooks.h            |  1 +
+ include/linux/security.h             |  4 ++--
+ kernel/bpf/helpers.c                 | 10 ++++++----
+ kernel/events/core.c                 |  2 +-
+ kernel/kexec.c                       |  2 +-
+ kernel/kexec_file.c                  |  2 +-
+ kernel/module.c                      |  2 +-
+ kernel/params.c                      |  2 +-
+ kernel/power/hibernate.c             |  2 +-
+ kernel/trace/bpf_trace.c             | 25 +++++++++++++++----------
+ kernel/trace/ftrace.c                |  4 ++--
+ kernel/trace/ring_buffer.c           |  2 +-
+ kernel/trace/trace.c                 | 10 +++++-----
+ kernel/trace/trace_events.c          |  2 +-
+ kernel/trace/trace_events_hist.c     |  4 ++--
+ kernel/trace/trace_events_synth.c    |  2 +-
+ kernel/trace/trace_events_trigger.c  |  2 +-
+ kernel/trace/trace_kprobe.c          |  6 +++---
+ kernel/trace/trace_printk.c          |  2 +-
+ kernel/trace/trace_stack.c           |  2 +-
+ kernel/trace/trace_stat.c            |  2 +-
+ kernel/trace/trace_uprobe.c          |  4 ++--
+ net/xfrm/xfrm_user.c                 | 11 +++++++++--
+ security/lockdown/lockdown.c         |  3 ++-
+ security/security.c                  |  4 ++--
+ security/selinux/hooks.c             |  7 +++++--
+ 48 files changed, 99 insertions(+), 79 deletions(-)
+
+diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+index dd8241c009e5..47464e873749 100644
+--- a/arch/powerpc/xmon/xmon.c
++++ b/arch/powerpc/xmon/xmon.c
+@@ -309,7 +309,7 @@ static bool xmon_is_locked_down(void)
+ 	static bool lockdown;
  
-     =======  ==========================================
--    -EINVAL  Value greater than KVM_MAX_VCPU_ID.
-+    -EINVAL  Value greater than KVM_MAX_VCPU_IDS.
-     -EFAULT  Invalid user pointer for attr->addr.
-     -EBUSY   A vcpu is already connected to the device.
-     =======  ==========================================
-diff --git a/Documentation/virt/kvm/devices/xive.rst b/Documentation/virt/kvm/devices/xive.rst
-index 8bdf3dc38f01..8b5e7b40bdf8 100644
---- a/Documentation/virt/kvm/devices/xive.rst
-+++ b/Documentation/virt/kvm/devices/xive.rst
-@@ -91,7 +91,7 @@ the legacy interrupt mode, referred as XICS (POWER7/8).
-     Errors:
+ 	if (!lockdown) {
+-		lockdown = !!security_locked_down(LOCKDOWN_XMON_RW);
++		lockdown = !!security_locked_down(NULL, LOCKDOWN_XMON_RW);
+ 		if (lockdown) {
+ 			printf("xmon: Disabled due to kernel lockdown\n");
+ 			xmon_is_ro = true;
+@@ -317,7 +317,7 @@ static bool xmon_is_locked_down(void)
+ 	}
  
-       =======  ==========================================
--      -EINVAL  Value greater than KVM_MAX_VCPU_ID.
-+      -EINVAL  Value greater than KVM_MAX_VCPU_IDS.
-       -EFAULT  Invalid user pointer for attr->addr.
-       -EBUSY   A vCPU is already connected to the device.
-       =======  ==========================================
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index 75c6f264c626..562aa878b266 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -1073,7 +1073,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- 		r = KVM_MAX_VCPUS;
- 		break;
- 	case KVM_CAP_MAX_VCPU_ID:
--		r = KVM_MAX_VCPU_ID;
-+		r = KVM_MAX_VCPU_IDS;
- 		break;
- 	case KVM_CAP_MIPS_FPU:
- 		/* We don't handle systems with inconsistent cpu_has_fpu */
-diff --git a/arch/powerpc/include/asm/kvm_book3s.h b/arch/powerpc/include/asm/kvm_book3s.h
-index caaa0f592d8e..3d31f2c59e43 100644
---- a/arch/powerpc/include/asm/kvm_book3s.h
-+++ b/arch/powerpc/include/asm/kvm_book3s.h
-@@ -434,7 +434,7 @@ extern int kvmppc_h_logical_ci_store(struct kvm_vcpu *vcpu);
- #define SPLIT_HACK_OFFS			0xfb000000
- 
- /*
-- * This packs a VCPU ID from the [0..KVM_MAX_VCPU_ID) space down to the
-+ * This packs a VCPU ID from the [0..KVM_MAX_VCPU_IDS) space down to the
-  * [0..KVM_MAX_VCPUS) space, using knowledge of the guest's core stride
-  * (but not its actual threading mode, which is not available) to avoid
-  * collisions.
-diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
-index 080a7feb7731..59cb38b04ede 100644
---- a/arch/powerpc/include/asm/kvm_host.h
-+++ b/arch/powerpc/include/asm/kvm_host.h
-@@ -33,11 +33,11 @@
- 
- #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
- #include <asm/kvm_book3s_asm.h>		/* for MAX_SMT_THREADS */
--#define KVM_MAX_VCPU_ID		(MAX_SMT_THREADS * KVM_MAX_VCORES)
-+#define KVM_MAX_VCPU_IDS	(MAX_SMT_THREADS * KVM_MAX_VCORES)
- #define KVM_MAX_NESTED_GUESTS	KVMPPC_NR_LPIDS
- 
- #else
--#define KVM_MAX_VCPU_ID		KVM_MAX_VCPUS
-+#define KVM_MAX_VCPU_IDS	KVM_MAX_VCPUS
- #endif /* CONFIG_KVM_BOOK3S_HV_POSSIBLE */
- 
- #define __KVM_HAVE_ARCH_INTC_INITIALIZED
-diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xive.c
-index a18db9e16ea4..225008882958 100644
---- a/arch/powerpc/kvm/book3s_xive.c
-+++ b/arch/powerpc/kvm/book3s_xive.c
-@@ -1928,7 +1928,7 @@ int kvmppc_xive_set_nr_servers(struct kvmppc_xive *xive, u64 addr)
- 
- 	pr_devel("%s nr_servers=%u\n", __func__, nr_servers);
- 
--	if (!nr_servers || nr_servers > KVM_MAX_VCPU_ID)
-+	if (!nr_servers || nr_servers > KVM_MAX_VCPU_IDS)
+ 	if (!xmon_is_ro) {
+-		xmon_is_ro = !!security_locked_down(LOCKDOWN_XMON_WR);
++		xmon_is_ro = !!security_locked_down(NULL, LOCKDOWN_XMON_WR);
+ 		if (xmon_is_ro)
+ 			printf("xmon: Read-only due to kernel lockdown\n");
+ 	}
+diff --git a/arch/x86/kernel/ioport.c b/arch/x86/kernel/ioport.c
+index e2fab3ceb09f..838ba45ecc71 100644
+--- a/arch/x86/kernel/ioport.c
++++ b/arch/x86/kernel/ioport.c
+@@ -71,7 +71,7 @@ long ksys_ioperm(unsigned long from, unsigned long num, int turn_on)
+ 	if ((from + num <= from) || (from + num > IO_BITMAP_BITS))
  		return -EINVAL;
- 
- 	mutex_lock(&xive->lock);
-diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-index b4e6f70b97b9..8ab90ce8738f 100644
---- a/arch/powerpc/kvm/powerpc.c
-+++ b/arch/powerpc/kvm/powerpc.c
-@@ -649,7 +649,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- 		r = KVM_MAX_VCPUS;
- 		break;
- 	case KVM_CAP_MAX_VCPU_ID:
--		r = KVM_MAX_VCPU_ID;
-+		r = KVM_MAX_VCPU_IDS;
- 		break;
- #ifdef CONFIG_PPC_BOOK3S_64
- 	case KVM_CAP_PPC_GET_SMMU_INFO:
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index f8f48a7ec577..261b7d857fc0 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -50,7 +50,7 @@
-  * so ratio of 4 should be enough.
-  */
- #define KVM_VCPU_ID_RATIO 4
--#define KVM_MAX_VCPU_ID (KVM_MAX_VCPUS * KVM_VCPU_ID_RATIO)
-+#define KVM_MAX_VCPU_IDS (KVM_MAX_VCPUS * KVM_VCPU_ID_RATIO)
- 
- /* memory slots that are not exposed to userspace */
- #define KVM_PRIVATE_MEM_SLOTS 3
-diff --git a/arch/x86/kvm/ioapic.c b/arch/x86/kvm/ioapic.c
-index 698969e18fe3..3358123be946 100644
---- a/arch/x86/kvm/ioapic.c
-+++ b/arch/x86/kvm/ioapic.c
-@@ -96,7 +96,7 @@ static unsigned long ioapic_read_indirect(struct kvm_ioapic *ioapic,
- static void rtc_irq_eoi_tracking_reset(struct kvm_ioapic *ioapic)
- {
- 	ioapic->rtc_status.pending_eoi = 0;
--	bitmap_zero(ioapic->rtc_status.dest_map.map, KVM_MAX_VCPU_ID);
-+	bitmap_zero(ioapic->rtc_status.dest_map.map, KVM_MAX_VCPU_IDS);
- }
- 
- static void kvm_rtc_eoi_tracking_restore_all(struct kvm_ioapic *ioapic);
-diff --git a/arch/x86/kvm/ioapic.h b/arch/x86/kvm/ioapic.h
-index 27e61ff3ac3e..e66e620c3bed 100644
---- a/arch/x86/kvm/ioapic.h
-+++ b/arch/x86/kvm/ioapic.h
-@@ -39,13 +39,13 @@ struct kvm_vcpu;
- 
- struct dest_map {
- 	/* vcpu bitmap where IRQ has been sent */
--	DECLARE_BITMAP(map, KVM_MAX_VCPU_ID);
-+	DECLARE_BITMAP(map, KVM_MAX_VCPU_IDS);
+ 	if (turn_on && (!capable(CAP_SYS_RAWIO) ||
+-			security_locked_down(LOCKDOWN_IOPORT)))
++			security_locked_down(current_cred(), LOCKDOWN_IOPORT)))
+ 		return -EPERM;
  
  	/*
- 	 * Vector sent to a given vcpu, only valid when
- 	 * the vcpu's bit in map is set
+@@ -187,7 +187,7 @@ SYSCALL_DEFINE1(iopl, unsigned int, level)
+ 	/* Trying to gain more privileges? */
+ 	if (level > old) {
+ 		if (!capable(CAP_SYS_RAWIO) ||
+-		    security_locked_down(LOCKDOWN_IOPORT))
++		    security_locked_down(current_cred(), LOCKDOWN_IOPORT))
+ 			return -EPERM;
+ 	}
+ 
+diff --git a/arch/x86/kernel/msr.c b/arch/x86/kernel/msr.c
+index ed8ac6bcbafb..6a687d91515b 100644
+--- a/arch/x86/kernel/msr.c
++++ b/arch/x86/kernel/msr.c
+@@ -116,7 +116,7 @@ static ssize_t msr_write(struct file *file, const char __user *buf,
+ 	int err = 0;
+ 	ssize_t bytes = 0;
+ 
+-	err = security_locked_down(LOCKDOWN_MSR);
++	err = security_locked_down(current_cred(), LOCKDOWN_MSR);
+ 	if (err)
+ 		return err;
+ 
+@@ -179,7 +179,7 @@ static long msr_ioctl(struct file *file, unsigned int ioc, unsigned long arg)
+ 			err = -EFAULT;
+ 			break;
+ 		}
+-		err = security_locked_down(LOCKDOWN_MSR);
++		err = security_locked_down(current_cred(), LOCKDOWN_MSR);
+ 		if (err)
+ 			break;
+ 
+diff --git a/arch/x86/mm/testmmiotrace.c b/arch/x86/mm/testmmiotrace.c
+index bda73cb7a044..c43a13241ae8 100644
+--- a/arch/x86/mm/testmmiotrace.c
++++ b/arch/x86/mm/testmmiotrace.c
+@@ -116,7 +116,7 @@ static void do_test_bulk_ioremapping(void)
+ static int __init init(void)
+ {
+ 	unsigned long size = (read_far) ? (8 << 20) : (16 << 10);
+-	int ret = security_locked_down(LOCKDOWN_MMIOTRACE);
++	int ret = security_locked_down(current_cred(), LOCKDOWN_MMIOTRACE);
+ 
+ 	if (ret)
+ 		return ret;
+diff --git a/drivers/acpi/acpi_configfs.c b/drivers/acpi/acpi_configfs.c
+index c970792b11a4..17c4e79b596e 100644
+--- a/drivers/acpi/acpi_configfs.c
++++ b/drivers/acpi/acpi_configfs.c
+@@ -26,7 +26,7 @@ static ssize_t acpi_table_aml_write(struct config_item *cfg,
+ {
+ 	const struct acpi_table_header *header = data;
+ 	struct acpi_table *table;
+-	int ret = security_locked_down(LOCKDOWN_ACPI_TABLES);
++	int ret = security_locked_down(current_cred(), LOCKDOWN_ACPI_TABLES);
+ 
+ 	if (ret)
+ 		return ret;
+diff --git a/drivers/acpi/custom_method.c b/drivers/acpi/custom_method.c
+index d39a9b474727..8cac7f683245 100644
+--- a/drivers/acpi/custom_method.c
++++ b/drivers/acpi/custom_method.c
+@@ -30,7 +30,7 @@ static ssize_t cm_write(struct file *file, const char __user *user_buf,
+ 	acpi_status status;
+ 	int ret;
+ 
+-	ret = security_locked_down(LOCKDOWN_ACPI_TABLES);
++	ret = security_locked_down(current_cred(), LOCKDOWN_ACPI_TABLES);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
+index a43f1521efe6..11c462788db8 100644
+--- a/drivers/acpi/osl.c
++++ b/drivers/acpi/osl.c
+@@ -198,7 +198,8 @@ acpi_physical_address __init acpi_os_get_root_pointer(void)
+ 	 * specific location (if appropriate) so it can be carried
+ 	 * over further kexec()s.
  	 */
--	u8 vectors[KVM_MAX_VCPU_ID];
-+	u8 vectors[KVM_MAX_VCPU_IDS];
- };
+-	if (acpi_rsdp && !security_locked_down(LOCKDOWN_ACPI_TABLES)) {
++	if (acpi_rsdp && !security_locked_down(current_cred(),
++					       LOCKDOWN_ACPI_TABLES)) {
+ 		acpi_arch_set_root_pointer(acpi_rsdp);
+ 		return acpi_rsdp;
+ 	}
+diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
+index f9383736fa0f..6569ccacd24b 100644
+--- a/drivers/acpi/tables.c
++++ b/drivers/acpi/tables.c
+@@ -577,7 +577,7 @@ void __init acpi_table_upgrade(void)
+ 	if (table_nr == 0)
+ 		return;
+ 
+-	if (security_locked_down(LOCKDOWN_ACPI_TABLES)) {
++	if (security_locked_down(current_cred(), LOCKDOWN_ACPI_TABLES)) {
+ 		pr_notice("kernel is locked down, ignoring table override\n");
+ 		return;
+ 	}
+diff --git a/drivers/char/mem.c b/drivers/char/mem.c
+index 1c596b5cdb27..330749897cd7 100644
+--- a/drivers/char/mem.c
++++ b/drivers/char/mem.c
+@@ -617,7 +617,7 @@ static int open_port(struct inode *inode, struct file *filp)
+ 	if (!capable(CAP_SYS_RAWIO))
+ 		return -EPERM;
+ 
+-	rc = security_locked_down(LOCKDOWN_DEV_MEM);
++	rc = security_locked_down(current_cred(), LOCKDOWN_DEV_MEM);
+ 	if (rc)
+ 		return rc;
+ 
+diff --git a/drivers/cxl/pci.c b/drivers/cxl/pci.c
+index 8e45aa07d662..539c91959234 100644
+--- a/drivers/cxl/pci.c
++++ b/drivers/cxl/pci.c
+@@ -575,7 +575,7 @@ static bool cxl_mem_raw_command_allowed(u16 opcode)
+ 	if (!IS_ENABLED(CONFIG_CXL_MEM_RAW_COMMANDS))
+ 		return false;
+ 
+-	if (security_locked_down(LOCKDOWN_PCI_ACCESS))
++	if (security_locked_down(current_cred(), LOCKDOWN_PCI_ACCESS))
+ 		return false;
+ 
+ 	if (cxl_raw_allow_all)
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index 847f33ffc4ae..a885b4c38358 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -200,7 +200,7 @@ static void generic_ops_unregister(void)
+ static char efivar_ssdt[EFIVAR_SSDT_NAME_MAX] __initdata;
+ static int __init efivar_ssdt_setup(char *str)
+ {
+-	int ret = security_locked_down(LOCKDOWN_ACPI_TABLES);
++	int ret = security_locked_down(current_cred(), LOCKDOWN_ACPI_TABLES);
+ 
+ 	if (ret)
+ 		return ret;
+diff --git a/drivers/firmware/efi/test/efi_test.c b/drivers/firmware/efi/test/efi_test.c
+index 47d67bb0a516..942c25843665 100644
+--- a/drivers/firmware/efi/test/efi_test.c
++++ b/drivers/firmware/efi/test/efi_test.c
+@@ -722,7 +722,7 @@ static long efi_test_ioctl(struct file *file, unsigned int cmd,
+ 
+ static int efi_test_open(struct inode *inode, struct file *file)
+ {
+-	int ret = security_locked_down(LOCKDOWN_EFI_TEST);
++	int ret = security_locked_down(current_cred(), LOCKDOWN_EFI_TEST);
+ 
+ 	if (ret)
+ 		return ret;
+diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
+index 7fb5cd17cc98..b76055dbbb03 100644
+--- a/drivers/pci/pci-sysfs.c
++++ b/drivers/pci/pci-sysfs.c
+@@ -753,7 +753,7 @@ static ssize_t pci_write_config(struct file *filp, struct kobject *kobj,
+ 	u8 *data = (u8 *) buf;
+ 	int ret;
+ 
+-	ret = security_locked_down(LOCKDOWN_PCI_ACCESS);
++	ret = security_locked_down(current_cred(), LOCKDOWN_PCI_ACCESS);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1047,7 +1047,7 @@ static int pci_mmap_resource(struct kobject *kobj, struct bin_attribute *attr,
+ 	struct resource *res = &pdev->resource[bar];
+ 	int ret;
+ 
+-	ret = security_locked_down(LOCKDOWN_PCI_ACCESS);
++	ret = security_locked_down(current_cred(), LOCKDOWN_PCI_ACCESS);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1128,7 +1128,7 @@ static ssize_t pci_write_resource_io(struct file *filp, struct kobject *kobj,
+ {
+ 	int ret;
+ 
+-	ret = security_locked_down(LOCKDOWN_PCI_ACCESS);
++	ret = security_locked_down(current_cred(), LOCKDOWN_PCI_ACCESS);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/pci/proc.c b/drivers/pci/proc.c
+index cb18f8a13ab6..1dbdcdf0eff5 100644
+--- a/drivers/pci/proc.c
++++ b/drivers/pci/proc.c
+@@ -119,7 +119,7 @@ static ssize_t proc_bus_pci_write(struct file *file, const char __user *buf,
+ 	int size = dev->cfg_size;
+ 	int cnt, ret;
+ 
+-	ret = security_locked_down(LOCKDOWN_PCI_ACCESS);
++	ret = security_locked_down(current_cred(), LOCKDOWN_PCI_ACCESS);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -202,7 +202,7 @@ static long proc_bus_pci_ioctl(struct file *file, unsigned int cmd,
+ #endif /* HAVE_PCI_MMAP */
+ 	int ret = 0;
+ 
+-	ret = security_locked_down(LOCKDOWN_PCI_ACCESS);
++	ret = security_locked_down(current_cred(), LOCKDOWN_PCI_ACCESS);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -249,7 +249,7 @@ static int proc_bus_pci_mmap(struct file *file, struct vm_area_struct *vma)
+ 	int i, ret, write_combine = 0, res_bit = IORESOURCE_MEM;
+ 
+ 	if (!capable(CAP_SYS_RAWIO) ||
+-	    security_locked_down(LOCKDOWN_PCI_ACCESS))
++	    security_locked_down(current_cred(), LOCKDOWN_PCI_ACCESS))
+ 		return -EPERM;
+ 
+ 	if (fpriv->mmap_state == pci_mmap_io) {
+diff --git a/drivers/pci/syscall.c b/drivers/pci/syscall.c
+index 61a6fe3cde21..e88cacf8d418 100644
+--- a/drivers/pci/syscall.c
++++ b/drivers/pci/syscall.c
+@@ -93,7 +93,7 @@ SYSCALL_DEFINE5(pciconfig_write, unsigned long, bus, unsigned long, dfn,
+ 	int err = 0;
+ 
+ 	if (!capable(CAP_SYS_ADMIN) ||
+-	    security_locked_down(LOCKDOWN_PCI_ACCESS))
++	    security_locked_down(current_cred(), LOCKDOWN_PCI_ACCESS))
+ 		return -EPERM;
+ 
+ 	dev = pci_get_domain_bus_and_slot(0, bus, dfn);
+diff --git a/drivers/pcmcia/cistpl.c b/drivers/pcmcia/cistpl.c
+index 948b763dc451..96c96c1cd6da 100644
+--- a/drivers/pcmcia/cistpl.c
++++ b/drivers/pcmcia/cistpl.c
+@@ -1577,7 +1577,7 @@ static ssize_t pccard_store_cis(struct file *filp, struct kobject *kobj,
+ 	struct pcmcia_socket *s;
+ 	int error;
+ 
+-	error = security_locked_down(LOCKDOWN_PCMCIA_CIS);
++	error = security_locked_down(current_cred(), LOCKDOWN_PCMCIA_CIS);
+ 	if (error)
+ 		return error;
+ 
+diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+index 0e2e35ab64c7..7fbec2644b1b 100644
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -840,7 +840,7 @@ static int uart_set_info(struct tty_struct *tty, struct tty_port *port,
+ 	}
+ 
+ 	if (change_irq || change_port) {
+-		retval = security_locked_down(LOCKDOWN_TIOCSSERIAL);
++		retval = security_locked_down(current_cred(), LOCKDOWN_TIOCSSERIAL);
+ 		if (retval)
+ 			goto exit;
+ 	}
+diff --git a/fs/debugfs/file.c b/fs/debugfs/file.c
+index 7d162b0efbf0..a8e44f3e11d2 100644
+--- a/fs/debugfs/file.c
++++ b/fs/debugfs/file.c
+@@ -154,7 +154,7 @@ static int debugfs_locked_down(struct inode *inode,
+ 	    !real_fops->mmap)
+ 		return 0;
+ 
+-	if (security_locked_down(LOCKDOWN_DEBUGFS))
++	if (security_locked_down(current_cred(), LOCKDOWN_DEBUGFS))
+ 		return -EPERM;
+ 
+ 	return 0;
+diff --git a/fs/debugfs/inode.c b/fs/debugfs/inode.c
+index 8129a430d789..17f6438cc1b5 100644
+--- a/fs/debugfs/inode.c
++++ b/fs/debugfs/inode.c
+@@ -48,7 +48,7 @@ static int debugfs_setattr(struct user_namespace *mnt_userns,
+ 	int ret;
+ 
+ 	if (ia->ia_valid & (ATTR_MODE | ATTR_UID | ATTR_GID)) {
+-		ret = security_locked_down(LOCKDOWN_DEBUGFS);
++		ret = security_locked_down(current_cred(), LOCKDOWN_DEBUGFS);
+ 		if (ret)
+ 			return ret;
+ 	}
+diff --git a/fs/proc/kcore.c b/fs/proc/kcore.c
+index 982e694aae77..f386fd373ea6 100644
+--- a/fs/proc/kcore.c
++++ b/fs/proc/kcore.c
+@@ -586,7 +586,7 @@ out:
+ 
+ static int open_kcore(struct inode *inode, struct file *filp)
+ {
+-	int ret = security_locked_down(LOCKDOWN_KCORE);
++	int ret = security_locked_down(current_cred(), LOCKDOWN_KCORE);
+ 
+ 	if (!capable(CAP_SYS_RAWIO))
+ 		return -EPERM;
+diff --git a/fs/tracefs/inode.c b/fs/tracefs/inode.c
+index 1261e8b41edb..9db8dd52d429 100644
+--- a/fs/tracefs/inode.c
++++ b/fs/tracefs/inode.c
+@@ -396,7 +396,7 @@ struct dentry *tracefs_create_file(const char *name, umode_t mode,
+ 	struct dentry *dentry;
+ 	struct inode *inode;
+ 
+-	if (security_locked_down(LOCKDOWN_TRACEFS))
++	if (security_locked_down(NULL, LOCKDOWN_TRACEFS))
+ 		return NULL;
+ 
+ 	if (!(mode & S_IFMT))
+diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
+index 2adeea44c0d5..a83a370cc284 100644
+--- a/include/linux/lsm_hook_defs.h
++++ b/include/linux/lsm_hook_defs.h
+@@ -393,7 +393,7 @@ LSM_HOOK(int, 0, bpf_prog_alloc_security, struct bpf_prog_aux *aux)
+ LSM_HOOK(void, LSM_RET_VOID, bpf_prog_free_security, struct bpf_prog_aux *aux)
+ #endif /* CONFIG_BPF_SYSCALL */
+ 
+-LSM_HOOK(int, 0, locked_down, enum lockdown_reason what)
++LSM_HOOK(int, 0, locked_down, const struct cred *cred, enum lockdown_reason what)
+ 
+ #ifdef CONFIG_PERF_EVENTS
+ LSM_HOOK(int, 0, perf_event_open, struct perf_event_attr *attr, int type)
+diff --git a/include/linux/lsm_hooks.h b/include/linux/lsm_hooks.h
+index 5c4c5c0602cb..8156f2dbaab7 100644
+--- a/include/linux/lsm_hooks.h
++++ b/include/linux/lsm_hooks.h
+@@ -1543,6 +1543,7 @@
+  *     Determine whether a kernel feature that potentially enables arbitrary
+  *     code execution in kernel space should be permitted.
+  *
++ *     @cred: credential asociated with the operation, or NULL if not applicable
+  *     @what: kernel feature being accessed
+  *
+  * Security hooks for perf events
+diff --git a/include/linux/security.h b/include/linux/security.h
+index 5b7288521300..a9001c0ed885 100644
+--- a/include/linux/security.h
++++ b/include/linux/security.h
+@@ -471,7 +471,7 @@ void security_inode_invalidate_secctx(struct inode *inode);
+ int security_inode_notifysecctx(struct inode *inode, void *ctx, u32 ctxlen);
+ int security_inode_setsecctx(struct dentry *dentry, void *ctx, u32 ctxlen);
+ int security_inode_getsecctx(struct inode *inode, void **ctx, u32 *ctxlen);
+-int security_locked_down(enum lockdown_reason what);
++int security_locked_down(const struct cred *cred, enum lockdown_reason what);
+ #else /* CONFIG_SECURITY */
+ 
+ static inline int call_blocking_lsm_notifier(enum lsm_event event, void *data)
+@@ -1344,7 +1344,7 @@ static inline int security_inode_getsecctx(struct inode *inode, void **ctx, u32
+ {
+ 	return -EOPNOTSUPP;
+ }
+-static inline int security_locked_down(enum lockdown_reason what)
++static inline int security_locked_down(struct cred *cred, enum lockdown_reason what)
+ {
+ 	return 0;
+ }
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index 9aabf84afd4b..61a9645f9b8f 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -1424,13 +1424,15 @@ bpf_base_func_proto(enum bpf_func_id func_id)
+ 	case BPF_FUNC_probe_read_user:
+ 		return &bpf_probe_read_user_proto;
+ 	case BPF_FUNC_probe_read_kernel:
+-		return security_locked_down(LOCKDOWN_BPF_READ_KERNEL) < 0 ?
+-		       NULL : &bpf_probe_read_kernel_proto;
++		if (security_locked_down(current_cred(), LOCKDOWN_BPF_READ_KERNEL) < 0)
++			return NULL;
++		return &bpf_probe_read_kernel_proto;
+ 	case BPF_FUNC_probe_read_user_str:
+ 		return &bpf_probe_read_user_str_proto;
+ 	case BPF_FUNC_probe_read_kernel_str:
+-		return security_locked_down(LOCKDOWN_BPF_READ_KERNEL) < 0 ?
+-		       NULL : &bpf_probe_read_kernel_str_proto;
++		if (security_locked_down(current_cred(), LOCKDOWN_BPF_READ_KERNEL) < 0)
++			return NULL;
++		return &bpf_probe_read_kernel_str_proto;
+ 	case BPF_FUNC_snprintf_btf:
+ 		return &bpf_snprintf_btf_proto;
+ 	case BPF_FUNC_snprintf:
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 744e8726c5b2..d2836e320948 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -12017,7 +12017,7 @@ SYSCALL_DEFINE5(perf_event_open,
+ 
+ 	/* REGS_INTR can leak data, lockdown must prevent this */
+ 	if (attr.sample_type & PERF_SAMPLE_REGS_INTR) {
+-		err = security_locked_down(LOCKDOWN_PERF);
++		err = security_locked_down(current_cred(), LOCKDOWN_PERF);
+ 		if (err)
+ 			return err;
+ 	}
+diff --git a/kernel/kexec.c b/kernel/kexec.c
+index b5e40f069768..f908dd7889de 100644
+--- a/kernel/kexec.c
++++ b/kernel/kexec.c
+@@ -208,7 +208,7 @@ static inline int kexec_load_check(unsigned long nr_segments,
+ 	 * kexec can be used to circumvent module loading restrictions, so
+ 	 * prevent loading in that case
+ 	 */
+-	result = security_locked_down(LOCKDOWN_KEXEC);
++	result = security_locked_down(current_cred(), LOCKDOWN_KEXEC);
+ 	if (result)
+ 		return result;
+ 
+diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
+index 33400ff051a8..add00b325f4f 100644
+--- a/kernel/kexec_file.c
++++ b/kernel/kexec_file.c
+@@ -204,7 +204,7 @@ kimage_validate_signature(struct kimage *image)
+ 		 * down.
+ 		 */
+ 		if (!ima_appraise_signature(READING_KEXEC_IMAGE) &&
+-		    security_locked_down(LOCKDOWN_KEXEC))
++		    security_locked_down(current_cred(), LOCKDOWN_KEXEC))
+ 			return -EPERM;
+ 
+ 		pr_debug("kernel signature verification failed (%d).\n", ret);
+diff --git a/kernel/module.c b/kernel/module.c
+index 40ec9a030eec..3cad8055d7a2 100644
+--- a/kernel/module.c
++++ b/kernel/module.c
+@@ -2931,7 +2931,7 @@ static int module_sig_check(struct load_info *info, int flags)
+ 		return -EKEYREJECTED;
+ 	}
+ 
+-	return security_locked_down(LOCKDOWN_MODULE_SIGNATURE);
++	return security_locked_down(current_cred(), LOCKDOWN_MODULE_SIGNATURE);
+ }
+ #else /* !CONFIG_MODULE_SIG */
+ static int module_sig_check(struct load_info *info, int flags)
+diff --git a/kernel/params.c b/kernel/params.c
+index 8299bd764e42..619bf8ad8416 100644
+--- a/kernel/params.c
++++ b/kernel/params.c
+@@ -100,7 +100,7 @@ bool parameq(const char *a, const char *b)
+ static bool param_check_unsafe(const struct kernel_param *kp)
+ {
+ 	if (kp->flags & KERNEL_PARAM_FL_HWPARAM &&
+-	    security_locked_down(LOCKDOWN_MODULE_PARAMETERS))
++	    security_locked_down(current_cred(), LOCKDOWN_MODULE_PARAMETERS))
+ 		return false;
+ 
+ 	if (kp->flags & KERNEL_PARAM_FL_UNSAFE) {
+diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
+index 559acef3fddb..2625d531ee0e 100644
+--- a/kernel/power/hibernate.c
++++ b/kernel/power/hibernate.c
+@@ -83,7 +83,7 @@ void hibernate_release(void)
+ bool hibernation_available(void)
+ {
+ 	return nohibernate == 0 &&
+-		!security_locked_down(LOCKDOWN_HIBERNATION) &&
++		!security_locked_down(current_cred(), LOCKDOWN_HIBERNATION) &&
+ 		!secretmem_active();
+ }
+ 
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index 8e2eb950aa82..51bdbdf75a5c 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -1066,25 +1066,30 @@ bpf_tracing_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
+ 	case BPF_FUNC_get_prandom_u32:
+ 		return &bpf_get_prandom_u32_proto;
+ 	case BPF_FUNC_probe_write_user:
+-		return security_locked_down(LOCKDOWN_BPF_WRITE_USER) < 0 ?
+-		       NULL : bpf_get_probe_write_proto();
++		if (security_locked_down(current_cred(), LOCKDOWN_BPF_WRITE_USER) < 0)
++			return NULL;
++		return bpf_get_probe_write_proto();
+ 	case BPF_FUNC_probe_read_user:
+ 		return &bpf_probe_read_user_proto;
+ 	case BPF_FUNC_probe_read_kernel:
+-		return security_locked_down(LOCKDOWN_BPF_READ_KERNEL) < 0 ?
+-		       NULL : &bpf_probe_read_kernel_proto;
++		if (security_locked_down(current_cred(), LOCKDOWN_BPF_READ_KERNEL) < 0)
++			return NULL;
++		return &bpf_probe_read_kernel_proto;
+ 	case BPF_FUNC_probe_read_user_str:
+ 		return &bpf_probe_read_user_str_proto;
+ 	case BPF_FUNC_probe_read_kernel_str:
+-		return security_locked_down(LOCKDOWN_BPF_READ_KERNEL) < 0 ?
+-		       NULL : &bpf_probe_read_kernel_str_proto;
++		if (security_locked_down(current_cred(), LOCKDOWN_BPF_READ_KERNEL) < 0)
++			return NULL;
++		return &bpf_probe_read_kernel_str_proto;
+ #ifdef CONFIG_ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
+ 	case BPF_FUNC_probe_read:
+-		return security_locked_down(LOCKDOWN_BPF_READ_KERNEL) < 0 ?
+-		       NULL : &bpf_probe_read_compat_proto;
++		if (security_locked_down(current_cred(), LOCKDOWN_BPF_READ_KERNEL) < 0)
++			return NULL;
++		return &bpf_probe_read_compat_proto;
+ 	case BPF_FUNC_probe_read_str:
+-		return security_locked_down(LOCKDOWN_BPF_READ_KERNEL) < 0 ?
+-		       NULL : &bpf_probe_read_compat_str_proto;
++		if (security_locked_down(current_cred(), LOCKDOWN_BPF_READ_KERNEL) < 0)
++			return NULL;
++		return &bpf_probe_read_compat_str_proto;
+ #endif
+ #ifdef CONFIG_CGROUPS
+ 	case BPF_FUNC_get_current_cgroup_id:
+diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
+index 7efbc8aaf7f6..5c1b2681c371 100644
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -3694,7 +3694,7 @@ ftrace_avail_open(struct inode *inode, struct file *file)
+ 	struct ftrace_iterator *iter;
+ 	int ret;
+ 
+-	ret = security_locked_down(LOCKDOWN_TRACEFS);
++	ret = security_locked_down(current_cred(), LOCKDOWN_TRACEFS);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -5822,7 +5822,7 @@ __ftrace_graph_open(struct inode *inode, struct file *file,
+ 	int ret;
+ 	struct ftrace_hash *new_hash = NULL;
+ 
+-	ret = security_locked_down(LOCKDOWN_TRACEFS);
++	ret = security_locked_down(current_cred(), LOCKDOWN_TRACEFS);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index c5a3fbf19617..13669fcbd466 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -5880,7 +5880,7 @@ static __init int test_ringbuffer(void)
+ 	int cpu;
+ 	int ret = 0;
+ 
+-	if (security_locked_down(LOCKDOWN_TRACEFS)) {
++	if (security_locked_down(current_cred(), LOCKDOWN_TRACEFS)) {
+ 		pr_warn("Lockdown is enabled, skipping ring buffer tests\n");
+ 		return 0;
+ 	}
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 7896d30d90f7..2bac9688ff6a 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -486,7 +486,7 @@ int tracing_check_open_get_tr(struct trace_array *tr)
+ {
+ 	int ret;
+ 
+-	ret = security_locked_down(LOCKDOWN_TRACEFS);
++	ret = security_locked_down(current_cred(), LOCKDOWN_TRACEFS);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -2071,7 +2071,7 @@ int __init register_tracer(struct tracer *type)
+ 		return -1;
+ 	}
+ 
+-	if (security_locked_down(LOCKDOWN_TRACEFS)) {
++	if (security_locked_down(current_cred(), LOCKDOWN_TRACEFS)) {
+ 		pr_warn("Can not register tracer %s due to lockdown\n",
+ 			   type->name);
+ 		return -EPERM;
+@@ -9527,7 +9527,7 @@ int tracing_init_dentry(void)
+ {
+ 	struct trace_array *tr = &global_trace;
+ 
+-	if (security_locked_down(LOCKDOWN_TRACEFS)) {
++	if (security_locked_down(current_cred(), LOCKDOWN_TRACEFS)) {
+ 		pr_warn("Tracing disabled due to lockdown\n");
+ 		return -EPERM;
+ 	}
+@@ -9989,7 +9989,7 @@ __init static int tracer_alloc_buffers(void)
+ 	int ret = -ENOMEM;
  
  
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 28ef14155726..fec43997522b 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -4070,7 +4070,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- 		r = KVM_MAX_VCPUS;
- 		break;
- 	case KVM_CAP_MAX_VCPU_ID:
--		r = KVM_MAX_VCPU_ID;
-+		r = KVM_MAX_VCPU_IDS;
- 		break;
- 	case KVM_CAP_PV_MMU:	/* obsolete */
- 		r = 0;
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 041ca7f15ea4..d2b405170f6e 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -39,8 +39,8 @@
- #include <asm/kvm_host.h>
- #include <linux/kvm_dirty_ring.h>
+-	if (security_locked_down(LOCKDOWN_TRACEFS)) {
++	if (security_locked_down(current_cred(), LOCKDOWN_TRACEFS)) {
+ 		pr_warn("Tracing disabled due to lockdown\n");
+ 		return -EPERM;
+ 	}
+@@ -10155,7 +10155,7 @@ __init static void tracing_set_default_clock(void)
+ {
+ 	/* sched_clock_stable() is determined in late_initcall */
+ 	if (!trace_boot_clock && !sched_clock_stable()) {
+-		if (security_locked_down(LOCKDOWN_TRACEFS)) {
++		if (security_locked_down(current_cred(), LOCKDOWN_TRACEFS)) {
+ 			pr_warn("Can not set tracing clock due to lockdown\n");
+ 			return;
+ 		}
+diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
+index 830b3b9940f4..c1e4f7f93c0e 100644
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -2130,7 +2130,7 @@ ftrace_event_open(struct inode *inode, struct file *file,
+ 	struct seq_file *m;
+ 	int ret;
  
--#ifndef KVM_MAX_VCPU_ID
--#define KVM_MAX_VCPU_ID KVM_MAX_VCPUS
-+#ifndef KVM_MAX_VCPU_IDS
-+#define KVM_MAX_VCPU_IDS KVM_MAX_VCPUS
+-	ret = security_locked_down(LOCKDOWN_TRACEFS);
++	ret = security_locked_down(current_cred(), LOCKDOWN_TRACEFS);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index a6061a69aa84..e122f0467421 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -4917,7 +4917,7 @@ static int event_hist_open(struct inode *inode, struct file *file)
+ {
+ 	int ret;
+ 
+-	ret = security_locked_down(LOCKDOWN_TRACEFS);
++	ret = security_locked_down(current_cred(), LOCKDOWN_TRACEFS);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -5189,7 +5189,7 @@ static int event_hist_debug_open(struct inode *inode, struct file *file)
+ {
+ 	int ret;
+ 
+-	ret = security_locked_down(LOCKDOWN_TRACEFS);
++	ret = security_locked_down(current_cred(), LOCKDOWN_TRACEFS);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/kernel/trace/trace_events_synth.c b/kernel/trace/trace_events_synth.c
+index d54094b7a9d7..deac45f00f3a 100644
+--- a/kernel/trace/trace_events_synth.c
++++ b/kernel/trace/trace_events_synth.c
+@@ -2174,7 +2174,7 @@ static int synth_events_open(struct inode *inode, struct file *file)
+ {
+ 	int ret;
+ 
+-	ret = security_locked_down(LOCKDOWN_TRACEFS);
++	ret = security_locked_down(current_cred(), LOCKDOWN_TRACEFS);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/kernel/trace/trace_events_trigger.c b/kernel/trace/trace_events_trigger.c
+index 3d5c07239a2a..38226c386f82 100644
+--- a/kernel/trace/trace_events_trigger.c
++++ b/kernel/trace/trace_events_trigger.c
+@@ -190,7 +190,7 @@ static int event_trigger_regex_open(struct inode *inode, struct file *file)
+ {
+ 	int ret;
+ 
+-	ret = security_locked_down(LOCKDOWN_TRACEFS);
++	ret = security_locked_down(current_cred(), LOCKDOWN_TRACEFS);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
+index 3a64ba4bbad6..9178ad52290e 100644
+--- a/kernel/trace/trace_kprobe.c
++++ b/kernel/trace/trace_kprobe.c
+@@ -479,7 +479,7 @@ static int __register_trace_kprobe(struct trace_kprobe *tk)
+ {
+ 	int i, ret;
+ 
+-	ret = security_locked_down(LOCKDOWN_KPROBES);
++	ret = security_locked_down(current_cred(), LOCKDOWN_KPROBES);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1141,7 +1141,7 @@ static int probes_open(struct inode *inode, struct file *file)
+ {
+ 	int ret;
+ 
+-	ret = security_locked_down(LOCKDOWN_TRACEFS);
++	ret = security_locked_down(current_cred(), LOCKDOWN_TRACEFS);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1199,7 +1199,7 @@ static int profile_open(struct inode *inode, struct file *file)
+ {
+ 	int ret;
+ 
+-	ret = security_locked_down(LOCKDOWN_TRACEFS);
++	ret = security_locked_down(current_cred(), LOCKDOWN_TRACEFS);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/kernel/trace/trace_printk.c b/kernel/trace/trace_printk.c
+index 4b320fe7df70..47c808484cb2 100644
+--- a/kernel/trace/trace_printk.c
++++ b/kernel/trace/trace_printk.c
+@@ -362,7 +362,7 @@ ftrace_formats_open(struct inode *inode, struct file *file)
+ {
+ 	int ret;
+ 
+-	ret = security_locked_down(LOCKDOWN_TRACEFS);
++	ret = security_locked_down(current_cred(), LOCKDOWN_TRACEFS);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/kernel/trace/trace_stack.c b/kernel/trace/trace_stack.c
+index 63c285042051..63b6ebe7bdce 100644
+--- a/kernel/trace/trace_stack.c
++++ b/kernel/trace/trace_stack.c
+@@ -477,7 +477,7 @@ static int stack_trace_open(struct inode *inode, struct file *file)
+ {
+ 	int ret;
+ 
+-	ret = security_locked_down(LOCKDOWN_TRACEFS);
++	ret = security_locked_down(current_cred(), LOCKDOWN_TRACEFS);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/kernel/trace/trace_stat.c b/kernel/trace/trace_stat.c
+index 8d141c3825a9..2f6ae81ee67e 100644
+--- a/kernel/trace/trace_stat.c
++++ b/kernel/trace/trace_stat.c
+@@ -236,7 +236,7 @@ static int tracing_stat_open(struct inode *inode, struct file *file)
+ 	struct seq_file *m;
+ 	struct stat_session *session = inode->i_private;
+ 
+-	ret = security_locked_down(LOCKDOWN_TRACEFS);
++	ret = security_locked_down(current_cred(), LOCKDOWN_TRACEFS);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/kernel/trace/trace_uprobe.c b/kernel/trace/trace_uprobe.c
+index 225ce569bf8f..4b114e4fe436 100644
+--- a/kernel/trace/trace_uprobe.c
++++ b/kernel/trace/trace_uprobe.c
+@@ -781,7 +781,7 @@ static int probes_open(struct inode *inode, struct file *file)
+ {
+ 	int ret;
+ 
+-	ret = security_locked_down(LOCKDOWN_TRACEFS);
++	ret = security_locked_down(current_cred(), LOCKDOWN_TRACEFS);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -836,7 +836,7 @@ static int profile_open(struct inode *inode, struct file *file)
+ {
+ 	int ret;
+ 
+-	ret = security_locked_down(LOCKDOWN_TRACEFS);
++	ret = security_locked_down(current_cred(), LOCKDOWN_TRACEFS);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index 03b66d154b2b..ffd560514d8f 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -850,8 +850,15 @@ static int copy_user_offload(struct xfrm_state_offload *xso, struct sk_buff *skb
+ 
+ static bool xfrm_redact(void)
+ {
+-	return IS_ENABLED(CONFIG_SECURITY) &&
+-		security_locked_down(LOCKDOWN_XFRM_SECRET);
++	/* Don't use current_cred() here, since this may be called when
++	 * broadcasting a notification that an SA has been created/deleted.
++	 * In that case current task is the one triggering the notification,
++	 * but the SA key is actually leaked to the event subscribers.
++	 * Since we can't easily do the redact decision per-subscriber,
++	 * just pass NULL here, indicating to the LSMs that a global lockdown
++	 * decision should be made instead.
++	 */
++	return security_locked_down(NULL, LOCKDOWN_XFRM_SECRET);
+ }
+ 
+ static int copy_to_user_auth(struct xfrm_algo_auth *auth, struct sk_buff *skb)
+diff --git a/security/lockdown/lockdown.c b/security/lockdown/lockdown.c
+index 87cbdc64d272..2abe92157e82 100644
+--- a/security/lockdown/lockdown.c
++++ b/security/lockdown/lockdown.c
+@@ -55,7 +55,8 @@ early_param("lockdown", lockdown_param);
+  * lockdown_is_locked_down - Find out if the kernel is locked down
+  * @what: Tag to use in notice generated if lockdown is in effect
+  */
+-static int lockdown_is_locked_down(enum lockdown_reason what)
++static int lockdown_is_locked_down(const struct cred *cred,
++				   enum lockdown_reason what)
+ {
+ 	if (WARN(what >= LOCKDOWN_CONFIDENTIALITY_MAX,
+ 		 "Invalid lockdown reason"))
+diff --git a/security/security.c b/security/security.c
+index 9ffa9e9c5c55..51245e37b351 100644
+--- a/security/security.c
++++ b/security/security.c
+@@ -2593,9 +2593,9 @@ void security_bpf_prog_free(struct bpf_prog_aux *aux)
+ }
+ #endif /* CONFIG_BPF_SYSCALL */
+ 
+-int security_locked_down(enum lockdown_reason what)
++int security_locked_down(const struct cred *cred, enum lockdown_reason what)
+ {
+-	return call_int_hook(locked_down, 0, what);
++	return call_int_hook(locked_down, 0, cred, what);
+ }
+ EXPORT_SYMBOL(security_locked_down);
+ 
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index 6517f221d52c..300bc9e1ffbf 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -7013,10 +7013,10 @@ static void selinux_bpf_prog_free(struct bpf_prog_aux *aux)
+ }
  #endif
  
- /*
-diff --git a/tools/testing/selftests/kvm/kvm_create_max_vcpus.c b/tools/testing/selftests/kvm/kvm_create_max_vcpus.c
-index 0299cd81b8ba..f968dfd4ee88 100644
---- a/tools/testing/selftests/kvm/kvm_create_max_vcpus.c
-+++ b/tools/testing/selftests/kvm/kvm_create_max_vcpus.c
-@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
- 		kvm_max_vcpu_id = kvm_max_vcpus;
- 
- 	TEST_ASSERT(kvm_max_vcpu_id >= kvm_max_vcpus,
--		    "KVM_MAX_VCPU_ID (%d) must be at least as large as KVM_MAX_VCPUS (%d).",
-+		    "KVM_MAX_VCPU_IDS (%d) must be at least as large as KVM_MAX_VCPUS (%d).",
- 		    kvm_max_vcpu_id, kvm_max_vcpus);
- 
- 	test_vcpu_creation(0, kvm_max_vcpus);
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 439d3b4cd1a9..62fcbc897e1c 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -3557,7 +3557,7 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, u32 id)
- 	struct kvm_vcpu *vcpu;
- 	struct page *page;
- 
--	if (id >= KVM_MAX_VCPU_ID)
-+	if (id >= KVM_MAX_VCPU_IDS)
+-static int selinux_lockdown(enum lockdown_reason what)
++static int selinux_lockdown(const struct cred *cred, enum lockdown_reason what)
+ {
+ 	struct common_audit_data ad;
+-	u32 sid = current_sid();
++	u32 sid;
+ 	int invalid_reason = (what <= LOCKDOWN_NONE) ||
+ 			     (what == LOCKDOWN_INTEGRITY_MAX) ||
+ 			     (what >= LOCKDOWN_CONFIDENTIALITY_MAX);
+@@ -7028,6 +7028,9 @@ static int selinux_lockdown(enum lockdown_reason what)
  		return -EINVAL;
+ 	}
  
- 	mutex_lock(&kvm->lock);
++	/* Use SECINITSID_KERNEL if there is no relevant cred to check against */
++	sid = cred ? cred_sid(cred) : SECINITSID_KERNEL;
++
+ 	ad.type = LSM_AUDIT_DATA_LOCKDOWN;
+ 	ad.u.reason = what;
+ 
 -- 
-2.26.2
+2.31.1
 
