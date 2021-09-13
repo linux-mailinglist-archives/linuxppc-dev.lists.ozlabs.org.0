@@ -1,72 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D962E408822
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Sep 2021 11:25:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A13E408883
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Sep 2021 11:48:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H7Lfn5pR6z2ykR
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Sep 2021 19:25:05 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pWJtdro9;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H7MBJ28l4z2ywZ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Sep 2021 19:48:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=bugzilla.kernel.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=pWJtdro9; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=molgen.mpg.de (client-ip=141.14.17.11; helo=mx1.molgen.mpg.de;
+ envelope-from=pmenzel@molgen.mpg.de; receiver=<UNKNOWN>)
+Received: from mx1.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H7Lf42k5gz2xrp
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Sep 2021 19:24:28 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPS id 324F760FDA
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Sep 2021 09:24:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1631525066;
- bh=fw/9dCOaUHRe8sMnhYcqfCO0S/pV8KWC4DmzZexuJ80=;
- h=From:To:Subject:Date:In-Reply-To:References:From;
- b=pWJtdro9uM7F2SO9g1o7jiT1XJaHy0Z4xSTrkWVwCGijQJpopre6kA+exhxivpmGC
- Nrvr85gpf+ARZQDRPZ7Qov5C3swU9yKB5bZfALyrf8c2qwhBvyWAlpZfvpbMvK1gDG
- OwoKasSDoQLeWzE8gM+vvsxDUOkoSiGzEelyUJoXTXgFdkGZFGMOuQnjoMV4QurPO+
- hbLAqle/Ury0lb0hGHujYg9Y3kUuzJQ8REGRyjAhvNWw/ZtXKISIZy4QUGKCNe2Tqd
- /F70s8G3mETfLeJqX/ak1pxVBPzmxUTnhhcuk16JBOfrxD15QzDTI5Fp0bbCps5Rch
- avrnH2vLy7xzw==
-Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
- id 2837460F59; Mon, 13 Sep 2021 09:24:26 +0000 (UTC)
-From: bugzilla-daemon@bugzilla.kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 206669] Little-endian kernel crashing on POWER8 on heavy
- big-endian PowerKVM load
-Date: Mon, 13 Sep 2021 09:24:25 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: glaubitz@physik.fu-berlin.de
-X-Bugzilla-Status: NEEDINFO
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-206669-206035-BxC4KK75AL@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-206669-206035@https.bugzilla.kernel.org/>
-References: <bug-206669-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H7M9r3dp2z2yHb
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Sep 2021 19:48:29 +1000 (AEST)
+Received: from [192.168.0.4] (ip5f5aef84.dynamic.kabel-deutschland.de
+ [95.90.239.132])
+ (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested) (Authenticated sender: pmenzel)
+ by mx.molgen.mpg.de (Postfix) with ESMTPSA id 7107561E5FE00;
+ Mon, 13 Sep 2021 11:48:21 +0200 (CEST)
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+Subject: LLVM/clang ias build fails with unsupported arguments '-mpower4' and
+ '-many' to option 'Wa,'
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
+Message-ID: <62cc7e62-d072-7b16-8b6c-006f067b1ed7@molgen.mpg.de>
+Date: Mon, 13 Sep 2021 11:48:21 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,49 +50,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Derek Parker <parkerderek86@gmail.com>, llvm@lists.linux.dev,
+ Nick Desaulniers <ndesaulniers@google.com>,
+ Nathan Chancellor <nathan@kernel.org>, Dmitrii Okunev <xaionaro@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D206669
+Dear Linux folks,
 
---- Comment #16 from John Paul Adrian Glaubitz (glaubitz@physik.fu-berlin.d=
-e) ---
-Hi Michael!
 
-Thanks a lot for looking into this!
+Building Linux with LLVM’s integrated assembler fails with the error 
+below [1].
 
-If you have installed a Debian unstable big-endian system, the easiest way =
-to
-get such a setup by creating an sbuild chroot. You should set up an sbuild
-chroot for both powerpc and ppc64:
+```
+$ ARCH=powerpc CROSS_COMPILE=powerpc64le-linux-gnu- make LLVM=1 
+LLVM_IAS=1 -j72 pseries_defconfig arch/powerpc/kernel/vdso32/gettimeofday.o
+...
+arch/powerpc/kernel/vdso32/gettimeofday.S:72:8: error: unsupported 
+directive '.stabs'
+.stabs "_restgpr_31_x:F-1",36,0,0,_restgpr_31_x; .globl _restgpr_31_x; 
+_restgpr_31_x:
+        ^
+arch/powerpc/kernel/vdso32/gettimeofday.S:73:8: error: unsupported 
+directive '.stabs'
+.stabs "_rest32gpr_31_x:F-1",36,0,0,_rest32gpr_31_x; .globl 
+_rest32gpr_31_x; _rest32gpr_31_x:
+        ^
+```
 
-$ sbuild-createchroot --arch=3Dpowerpc
-$ sbuild-createchroot --arch=3Dppc64
+The LLVM developers are not planning on implementing this, as Stab has 
+been succeeded by DWARF [2].
 
-and then build the glibc package using sbuild for both powerpc and ppc64 in
-parallel which is what makes the VM and the host crash during the testsuite:
 
-$ dget -u https://deb.debian.org/debian/pool/main/g/glibc/glibc_2.32-2.dsc
+Kind regards,
 
-In one shell:
+Paul
 
-$ sbuild -d sid --arch=3Dppc64 --no-arch-all glibc_2.32-2.dsc
 
-and in a second one:
-
-$ sbuild -d sid --arch=3Dpowerpc --no-arch-all glibc_2.32-2.dsc
-
-If glibc doesn't trigger the crash, try gcc-10 or llvm-toolchain-13:
-
-$ dget -u
-https://deb.debian.org/debian/pool/main/l/llvm-toolchain-13/llvm-toolchain-=
-13_13.0.0~+rc2-3.dsc
-$ dget -u https://deb.debian.org/debian/pool/main/g/gcc-11/gcc-11_11.2.0-5.=
-dsc
-
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+[1]: https://github.com/ClangBuiltLinux/linux/issues/1418
+[2]: https://bugs.llvm.org/show_bug.cgi?id=31134
