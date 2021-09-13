@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1E85408797
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Sep 2021 10:53:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D962E408822
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Sep 2021 11:25:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H7KyT4qkSz2yQ3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Sep 2021 18:53:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H7Lfn5pR6z2ykR
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Sep 2021 19:25:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kDcz0DZl;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pWJtdro9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,32 +18,32 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=kDcz0DZl; 
+ header.s=k20201202 header.b=pWJtdro9; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H7Kxk4xd8z2xg5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Sep 2021 18:52:58 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPS id AC04560F6D
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Sep 2021 08:52:55 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H7Lf42k5gz2xrp
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Sep 2021 19:24:28 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPS id 324F760FDA
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Sep 2021 09:24:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1631523175;
- bh=N85t6wybuY1vs01UQ+dbi18CijmFyxoSLwQR8wvM6og=;
+ s=k20201202; t=1631525066;
+ bh=fw/9dCOaUHRe8sMnhYcqfCO0S/pV8KWC4DmzZexuJ80=;
  h=From:To:Subject:Date:In-Reply-To:References:From;
- b=kDcz0DZlQ/Nqk/xUQuEO5c73vTZHU+x+b+sSVJwZl15sfW1urfcOrkxP/CgM0Xjc0
- Mop6HC9Jy0WRDPC1BAceLBBTDRHC+81Sza2TUdioRuDJs+adacUMJodIBDryGEuiTg
- Jak82IyhMCk4etNjl2nGs6Q/aQ9B1d4PCIYckfdEkIC4NE2EnlSut8ug1oVPg3Qwx3
- tOji8ZVA4+HBII810KKa0FLURsd03G8adrHjf9WvZmRG5FhfeaE7Yp32d1K4WbMk/c
- 584iW5lXk5X/sHyUp435jriZWDLDqvwQN4h0e5T/IdGeVwXHfviVQ/ECtq3wKFdNTV
- 9S4EN8My23mVA==
+ b=pWJtdro9uM7F2SO9g1o7jiT1XJaHy0Z4xSTrkWVwCGijQJpopre6kA+exhxivpmGC
+ Nrvr85gpf+ARZQDRPZ7Qov5C3swU9yKB5bZfALyrf8c2qwhBvyWAlpZfvpbMvK1gDG
+ OwoKasSDoQLeWzE8gM+vvsxDUOkoSiGzEelyUJoXTXgFdkGZFGMOuQnjoMV4QurPO+
+ hbLAqle/Ury0lb0hGHujYg9Y3kUuzJQ8REGRyjAhvNWw/ZtXKISIZy4QUGKCNe2Tqd
+ /F70s8G3mETfLeJqX/ak1pxVBPzmxUTnhhcuk16JBOfrxD15QzDTI5Fp0bbCps5Rch
+ avrnH2vLy7xzw==
 Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
- id A380F60F5D; Mon, 13 Sep 2021 08:52:55 +0000 (UTC)
+ id 2837460F59; Mon, 13 Sep 2021 09:24:26 +0000 (UTC)
 From: bugzilla-daemon@bugzilla.kernel.org
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 206669] Little-endian kernel crashing on POWER8 on heavy
  big-endian PowerKVM load
-Date: Mon, 13 Sep 2021 08:52:55 +0000
+Date: Mon, 13 Sep 2021 09:24:25 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
@@ -52,14 +52,14 @@ X-Bugzilla-Component: PPC-64
 X-Bugzilla-Version: 2.5
 X-Bugzilla-Keywords: 
 X-Bugzilla-Severity: normal
-X-Bugzilla-Who: michael@ellerman.id.au
+X-Bugzilla-Who: glaubitz@physik.fu-berlin.de
 X-Bugzilla-Status: NEEDINFO
 X-Bugzilla-Resolution: 
 X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_status cc
-Message-ID: <bug-206669-206035-B2ZEGB6ZP1@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-206669-206035-BxC4KK75AL@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-206669-206035@https.bugzilla.kernel.org/>
 References: <bug-206669-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -84,31 +84,40 @@ Sender: "Linuxppc-dev"
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D206669
 
-Michael Ellerman (michael@ellerman.id.au) changed:
+--- Comment #16 from John Paul Adrian Glaubitz (glaubitz@physik.fu-berlin.d=
+e) ---
+Hi Michael!
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-             Status|NEW                         |NEEDINFO
-                 CC|                            |michael@ellerman.id.au
+Thanks a lot for looking into this!
 
---- Comment #15 from Michael Ellerman (michael@ellerman.id.au) ---
-After a day and a half I have managed to get BE debian installed in a VM :}
+If you have installed a Debian unstable big-endian system, the easiest way =
+to
+get such a setup by creating an sbuild chroot. You should set up an sbuild
+chroot for both powerpc and ppc64:
 
-You said "running the glibc testsuite" was enough to trigger it. Do you mean
-from the glibc git tree? I can't get upstream, or the debian packaged glibc
-sources to build.
+$ sbuild-createchroot --arch=3Dpowerpc
+$ sbuild-createchroot --arch=3Dppc64
 
-Both fail building with:
+and then build the glibc package using sbuild for both powerpc and ppc64 in
+parallel which is what makes the VM and the host crash during the testsuite:
 
-../include/setjmp.h:42:3: error: static assertion failed: "size of jmp_buf =
-!=3D
-656"
-   42 |   _Static_assert (sizeof (type) =3D=3D size, \
-      |   ^~~~~~~~~~~~~~
+$ dget -u https://deb.debian.org/debian/pool/main/g/glibc/glibc_2.32-2.dsc
 
-I guess I'm doing something wrong.
+In one shell:
 
-Any pointers on what your setup is?
+$ sbuild -d sid --arch=3Dppc64 --no-arch-all glibc_2.32-2.dsc
+
+and in a second one:
+
+$ sbuild -d sid --arch=3Dpowerpc --no-arch-all glibc_2.32-2.dsc
+
+If glibc doesn't trigger the crash, try gcc-10 or llvm-toolchain-13:
+
+$ dget -u
+https://deb.debian.org/debian/pool/main/l/llvm-toolchain-13/llvm-toolchain-=
+13_13.0.0~+rc2-3.dsc
+$ dget -u https://deb.debian.org/debian/pool/main/g/gcc-11/gcc-11_11.2.0-5.=
+dsc
 
 --=20
 You may reply to this email to add a comment.
