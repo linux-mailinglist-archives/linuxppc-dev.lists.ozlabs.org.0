@@ -1,37 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1389C40B32B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 17:31:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EFB540B354
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 17:42:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H86kt6qXkz305v
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Sep 2021 01:31:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H86zf0tN5z2xvf
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Sep 2021 01:42:22 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=BpcuMcoH;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::62e;
+ helo=mail-ej1-x62e.google.com; envelope-from=torvalds@linuxfoundation.org;
  receiver=<UNKNOWN>)
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.a=rsa-sha256 header.s=google header.b=BpcuMcoH; 
+ dkim-atps=neutral
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com
+ [IPv6:2a00:1450:4864:20::62e])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H86kQ0TPTz2xfM
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Sep 2021 01:30:53 +1000 (AEST)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id 375B567373; Tue, 14 Sep 2021 17:30:47 +0200 (CEST)
-Date: Tue, 14 Sep 2021 17:30:46 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Jan Beulich <jbeulich@suse.com>
-Subject: Re: [PATCH] swiotlb: set IO TLB segment size via cmdline
-Message-ID: <20210914153046.GB815@lst.de>
-References: <20210914151016.3174924-1-Roman_Skakun@epam.com>
- <7c04db79-7de1-93ff-0908-9bad60a287b9@suse.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H86yy4tcTz2xtY
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Sep 2021 01:41:44 +1000 (AEST)
+Received: by mail-ej1-x62e.google.com with SMTP id h9so29973768ejs.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Sep 2021 08:41:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux-foundation.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=dgZDRvewpIcHvEl+aClDgx6dxTBkhTg+5FlC2P6kQVc=;
+ b=BpcuMcoHH1B5L3A9rysqIc0UNfq5noiLE14zKeR1TSa0gFC85lOw2Beo8dO5honWby
+ rYyCHFnHkKNi7MCpw7JrIjMcXxBeTw1cz/rDSABmNfOTKR6Ymn6YfZNGpWuykLc9dauc
+ iTDBkLKWwlR9RhIlCft6lceQmUvWAku/ar3t0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=dgZDRvewpIcHvEl+aClDgx6dxTBkhTg+5FlC2P6kQVc=;
+ b=Njdrbf7Wws2K149bl/PvGOWp6+/DJNWNwPWPv5yJ+ZnNOkEPjEvWXngOt9k2QQtbUC
+ NiOgOuvoeIrhFk4GeptUpPkJJaeib67N4/Qg0rhOaXQ532y72jVp+K0Luz+0cArIBi12
+ uxhW1NY/KMRFbIeRbRTx1yoU91UNDAqDRKA6P5gE6q5/dss7x8ChRI7ZDhye/KsepGIO
+ YTf4bY7KhmzEv/PU4b+V4WdKui3+IopRZx784/zLnb26oQMmknM2nagvD6TwBhJHM69k
+ IEBfOTQBB84m/t8JbSMe5wstHHVi5QnEkVQyS5sIf2Mj9gDxm1K5rnkviRn1AsNh+2sK
+ G1xQ==
+X-Gm-Message-State: AOAM532Mn/58DVne1JGZFkIdRNnpv2rG1bgvwVp+YxvJC8TFu0Hua315
+ FFE2ng1YSJtI5hPgY6M7+6eP9PobscUNdkNr/zg=
+X-Google-Smtp-Source: ABdhPJwVfdD4m+M1wMk4bm/HHDGtbpoVYC1UCvEl5zgBULVkO95x5J4tDNLnUTGeGyvPQCcQVYr+wQ==
+X-Received: by 2002:a17:906:a195:: with SMTP id
+ s21mr18902959ejy.181.1631634100303; 
+ Tue, 14 Sep 2021 08:41:40 -0700 (PDT)
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com.
+ [209.85.218.43])
+ by smtp.gmail.com with ESMTPSA id gx4sm3781077ejb.116.2021.09.14.08.41.39
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 14 Sep 2021 08:41:39 -0700 (PDT)
+Received: by mail-ej1-f43.google.com with SMTP id kt8so29907989ejb.13
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Sep 2021 08:41:39 -0700 (PDT)
+X-Received: by 2002:a2e:a7d0:: with SMTP id x16mr15637818ljp.494.1631634089537; 
+ Tue, 14 Sep 2021 08:41:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7c04db79-7de1-93ff-0908-9bad60a287b9@suse.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+References: <20210914121036.3975026-1-ardb@kernel.org>
+ <20210914121036.3975026-2-ardb@kernel.org>
+In-Reply-To: <20210914121036.3975026-2-ardb@kernel.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Tue, 14 Sep 2021 08:41:13 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whkCzP-wyZ08r9RDJRx9cbANVHy-jy=vJAGTkSbXm50iA@mail.gmail.com>
+Message-ID: <CAHk-=whkCzP-wyZ08r9RDJRx9cbANVHy-jy=vJAGTkSbXm50iA@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/8] arm64: add CPU field to struct thread_info
+To: Ard Biesheuvel <ardb@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,34 +85,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Roman Skakun <rm.skakun@gmail.com>, linux-doc@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>, Viresh Kumar <viresh.kumar@linaro.org>,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Will Deacon <will@kernel.org>, Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Stefano Stabellini <sstabellini@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Christoph Hellwig <hch@lst.de>, xen-devel@lists.xenproject.org,
- "Paul E. McKenney" <paulmck@kernel.org>,
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- Muchun Song <songmuchun@bytedance.com>, Thomas Gleixner <tglx@linutronix.de>,
- Juergen Gross <jgross@suse.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Andrii Anisov <andrii_anisov@epam.com>, linuxppc-dev@lists.ozlabs.org,
- Randy Dunlap <rdunlap@infradead.org>, linux-mips@vger.kernel.org,
- iommu@lists.linux-foundation.org, Roman Skakun <roman_skakun@epam.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lu Baolu <baolu.lu@linux.intel.com>,
- Robin Murphy <robin.murphy@arm.com>, Mike Rapoport <rppt@kernel.org>,
- "Maciej W. Rozycki" <macro@orcam.me.uk>
+Cc: Peter Zijlstra <peterz@infradead.org>, Paul Mackerras <paulus@samba.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>, Will Deacon <will@kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Russell King <linux@armlinux.org.uk>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Kees Cook <keescook@chromium.org>, Vasily Gorbik <gor@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Keith Packard <keithpac@amazon.com>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Sep 14, 2021 at 05:29:07PM +0200, Jan Beulich wrote:
-> I'm not convinced the swiotlb use describe there falls under "intended
-> use" - mapping a 1280x720 framebuffer in a single chunk? (As an aside,
-> the bottom of this page is also confusing, as following "Then we can
-> confirm the modified swiotlb size in the boot log:" there is a log
-> fragment showing the same original size of 64Mb.
+On Tue, Sep 14, 2021 at 5:10 AM Ard Biesheuvel <ardb@kernel.org> wrote:
+>
+> The CPU field will be moved back into thread_info even when
+> THREAD_INFO_IN_TASK is enabled, so add it back to arm64's definition of
+> struct thread_info.
 
-It doesn't.  We also do not add hacks to the kernel for whacky out
-of tree modules.
+The series looks sane to me, but it strikes me that it's inconsistent
+- here for arm64, you make it unconditional, but for the other
+architectures you end up putting it inside a #ifdef CONFIG_SMP.
+
+Was there some reason for this odd behavior?
+
+           Linus
