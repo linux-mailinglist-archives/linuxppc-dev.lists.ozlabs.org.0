@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4194240AD4C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 14:15:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D235940AD51
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 14:16:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H82Nz1TTYz309j
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 22:15:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H82Pd5Ljlz3cl2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 22:16:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eGqXq7Su;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ig+JhbgZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,31 +17,31 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=ardb@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=eGqXq7Su; 
+ header.s=k20201202 header.b=ig+JhbgZ; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H82JL2KQGz305L
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Sep 2021 22:11:30 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id CD1916112D;
- Tue, 14 Sep 2021 12:11:22 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H82JR62rsz2yg3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Sep 2021 22:11:35 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C83CF6113B;
+ Tue, 14 Sep 2021 12:11:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1631621488;
- bh=3Eo7aeQUKWhSuHa2Yy03uZkrXM9xu16VG+SpPZYmMqA=;
+ s=k20201202; t=1631621494;
+ bh=Un8y/D+KQ7QnI5WCuToXds/wfl/En/jtOwh4rNfj9R8=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=eGqXq7SuYLFaSMofX/n34tYQjKjRKyp2rUzLBToahvHZpcV5HQmhV2FBHm2Ccvydo
- l8eo30W842/61Yv9t4FWfZFFCGvufPKBQHi5kkzh+DiJf8bANhWqwVnOcsZQCs4tBo
- LwvK8qr+yFOoPIfEEsMV0GmzoMeSanwUR9HQH8m0w85cDn2VmVj9fvfvT0iJ6jkJVd
- V1Y5Zjr0h7fIov1IHkiMaS3YxTC0kg2/JZyRIPQGbQSIl6Qr03blMuKQ1zOpFsItLu
- KIGqTNePxnKgfiuTrnr+3WECWPE9NgfnPAYGBNCwFRbbCChEoiqOnPHALJhShPddgZ
- TOxAb7CtKizuQ==
+ b=ig+JhbgZYvBpoEkePCkGJri/drWhd/zNQud4qJwR8VAt84t30tIDeaFs97pqovpnU
+ WCFrlyeMm6+1wzrVATtgyga9C5qWYHs1yX99yykHrOJ3pCi9FXJKirLieFGvLxzC0K
+ Mywhpb0yr9NkpYWBDViktx8s3C+pE5TggWsvKK4IyjcPZc1m8gjUT/JKfmfVm6FX8H
+ CX7KnVaCKBdHWEu2l+bHSQiZ1f1aWajC83sfiAJLI1WCxOKfU4PeSC6JVYfKKmXY+Q
+ NIiIwTM/plhEKszesgnnR42HGaTtjXF+XLsz785RrqO0IDw4DjfEQpDioB90gj8vwG
+ AVBFyfowsQ6nQ==
 From: Ard Biesheuvel <ardb@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 7/8] riscv: rely on core code to keep thread_info::cpu
+Subject: [RFC PATCH 8/8] ARM: rely on core code to keep thread_info::cpu
  updated
-Date: Tue, 14 Sep 2021 14:10:35 +0200
-Message-Id: <20210914121036.3975026-8-ardb@kernel.org>
+Date: Tue, 14 Sep 2021 14:10:36 +0200
+Message-Id: <20210914121036.3975026-9-ardb@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210914121036.3975026-1-ardb@kernel.org>
 References: <20210914121036.3975026-1-ardb@kernel.org>
@@ -81,51 +81,56 @@ just drop the code that does this.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/riscv/kernel/asm-offsets.c | 1 -
- arch/riscv/kernel/entry.S       | 5 -----
- arch/riscv/kernel/head.S        | 1 -
- 3 files changed, 7 deletions(-)
+This patch applies onto [0], which we hope to get merged for v5.16
 
-diff --git a/arch/riscv/kernel/asm-offsets.c b/arch/riscv/kernel/asm-offsets.c
-index 90f8ce64fa6f..478d9f02dab5 100644
---- a/arch/riscv/kernel/asm-offsets.c
-+++ b/arch/riscv/kernel/asm-offsets.c
-@@ -33,7 +33,6 @@ void asm_offsets(void)
- 	OFFSET(TASK_TI_PREEMPT_COUNT, task_struct, thread_info.preempt_count);
- 	OFFSET(TASK_TI_KERNEL_SP, task_struct, thread_info.kernel_sp);
- 	OFFSET(TASK_TI_USER_SP, task_struct, thread_info.user_sp);
--	OFFSET(TASK_TI_CPU, task_struct, thread_info.cpu);
+[0] https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=arm32-ti-in-task-v5
+
+ arch/arm/include/asm/switch_to.h | 14 --------------
+ arch/arm/kernel/smp.c            |  3 ---
+ 2 files changed, 17 deletions(-)
+
+diff --git a/arch/arm/include/asm/switch_to.h b/arch/arm/include/asm/switch_to.h
+index db2be1f6550d..61e4a3c4ca6e 100644
+--- a/arch/arm/include/asm/switch_to.h
++++ b/arch/arm/include/asm/switch_to.h
+@@ -23,23 +23,9 @@
+  */
+ extern struct task_struct *__switch_to(struct task_struct *, struct thread_info *, struct thread_info *);
  
- 	OFFSET(TASK_THREAD_F0,  task_struct, thread.fstate.f[0]);
- 	OFFSET(TASK_THREAD_F1,  task_struct, thread.fstate.f[1]);
-diff --git a/arch/riscv/kernel/entry.S b/arch/riscv/kernel/entry.S
-index 98f502654edd..459eb1714353 100644
---- a/arch/riscv/kernel/entry.S
-+++ b/arch/riscv/kernel/entry.S
-@@ -544,11 +544,6 @@ ENTRY(__switch_to)
- 	REG_L s9,  TASK_THREAD_S9_RA(a4)
- 	REG_L s10, TASK_THREAD_S10_RA(a4)
- 	REG_L s11, TASK_THREAD_S11_RA(a4)
--	/* Swap the CPU entry around. */
--	lw a3, TASK_TI_CPU(a0)
--	lw a4, TASK_TI_CPU(a1)
--	sw a3, TASK_TI_CPU(a1)
--	sw a4, TASK_TI_CPU(a0)
- 	/* The offset of thread_info in task_struct is zero. */
- 	move tp, a1
- 	ret
-diff --git a/arch/riscv/kernel/head.S b/arch/riscv/kernel/head.S
-index fce5184b22c3..d5ec30ef6f5d 100644
---- a/arch/riscv/kernel/head.S
-+++ b/arch/riscv/kernel/head.S
-@@ -317,7 +317,6 @@ clear_bss_done:
- 	call setup_trap_vector
- 	/* Restore C environment */
- 	la tp, init_task
--	sw zero, TASK_TI_CPU(tp)
- 	la sp, init_thread_union + THREAD_SIZE
+-static inline void set_ti_cpu(struct task_struct *p)
+-{
+-#ifdef CONFIG_THREAD_INFO_IN_TASK
+-	/*
+-	 * The core code no longer maintains the thread_info::cpu field once
+-	 * CONFIG_THREAD_INFO_IN_TASK is in effect, but we rely on it for
+-	 * raw_smp_processor_id(), which cannot access struct task_struct*
+-	 * directly for reasons of circular #inclusion hell.
+-	 */
+-	task_thread_info(p)->cpu = p->cpu;
+-#endif
+-}
+-
+ #define switch_to(prev,next,last)					\
+ do {									\
+ 	__complete_pending_tlbi();					\
+-	set_ti_cpu(next);						\
+ 	if (IS_ENABLED(CONFIG_CURRENT_POINTER_IN_TPIDRURO))		\
+ 		__this_cpu_write(__entry_task, next);			\
+ 	last = __switch_to(prev,task_thread_info(prev), task_thread_info(next));	\
+diff --git a/arch/arm/kernel/smp.c b/arch/arm/kernel/smp.c
+index cde5b6d8bac5..97ee6b1567e9 100644
+--- a/arch/arm/kernel/smp.c
++++ b/arch/arm/kernel/smp.c
+@@ -154,9 +154,6 @@ int __cpu_up(unsigned int cpu, struct task_struct *idle)
+ 	secondary_data.swapper_pg_dir = get_arch_pgd(swapper_pg_dir);
+ #endif
+ 	secondary_data.task = idle;
+-	if (IS_ENABLED(CONFIG_THREAD_INFO_IN_TASK))
+-		task_thread_info(idle)->cpu = cpu;
+-
+ 	sync_cache_w(&secondary_data);
  
- #ifdef CONFIG_KASAN
+ 	/*
 -- 
 2.30.2
 
