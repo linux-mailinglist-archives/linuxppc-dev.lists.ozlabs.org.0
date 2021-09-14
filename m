@@ -2,60 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30D9240B409
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 18:01:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1027340B406
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 18:00:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H87F05yfBz2ybB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Sep 2021 01:53:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H87N35XC8z305J
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Sep 2021 02:00:03 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kr18PPZp;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=bXLrDvRw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=ardb@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=kr18PPZp; 
+ smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::236;
+ helo=mail-lj1-x236.google.com; envelope-from=torvalds@linuxfoundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.a=rsa-sha256 header.s=google header.b=bXLrDvRw; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com
+ [IPv6:2a00:1450:4864:20::236])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H87DM5qD0z2yJh
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Sep 2021 01:53:23 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B264460F11
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Sep 2021 15:53:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1631634801;
- bh=SyILGKt3RsxWQZLKn6wlRw/UVoEX8mvp4miVI+z/vYo=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=kr18PPZpXsMdsQPT0HfQKft0E75vzXmhrldkFKd3PhPjFx0/GLNfxW9jgdQSQsa4v
- zViuZ3v17JtM352fw1FwXJYgxDbkGvzXIdYW54BZFmaXJOGFP58m682PGaKd7TqKCj
- 9IEnpE1kdKBngNEXmS8ovu2ikvN5u5KVNAoDlKKo4+0xt0b/znmTzHNvE/kYVGNbod
- E2vUEgsSrmvTj3dVol7gzZ4SXDKwq2y5/lMABg1NaoH/h/qFywdFitAf3ZnJWnEX5J
- 9jh02qpQ5URODBOQaBwbxoxKiXUTBoHxiyHLSiVDgYoR6ZGAUhqsbZ2xMtN3nkAqPr
- XNgvWCbX0rMDA==
-Received: by mail-ot1-f48.google.com with SMTP id
- l7-20020a0568302b0700b0051c0181deebso19090714otv.12
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Sep 2021 08:53:21 -0700 (PDT)
-X-Gm-Message-State: AOAM533m+D98BNu76nC2rS3XTYeGzTQ7OvFSZWVdc36oAUcLRamtxRMj
- 0ZThVfXkV2rRZ4NGiIFQF9Lkbf1hHSN5geJxM8o=
-X-Google-Smtp-Source: ABdhPJyDFc9VSO5h/RiqccbxZgmZOWSklBB73HxlIVY43T/ttJWTuXgDpoHxXQAJINO0RmpPM1mGY0nlklwutQHfE4k=
-X-Received: by 2002:a4a:c904:: with SMTP id v4mr14629736ooq.26.1631634790945; 
- Tue, 14 Sep 2021 08:53:10 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H87MQ1kF8z2xxn
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Sep 2021 01:59:28 +1000 (AEST)
+Received: by mail-lj1-x236.google.com with SMTP id f2so24847626ljn.1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Sep 2021 08:59:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux-foundation.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=XpWi4volfcYSm2oFWphGxI70Xoc4gQDszmXfggbAPag=;
+ b=bXLrDvRwiE9LUrsUdTaOb8qv3MpstEI39Z126QnyB2PTkNIRA+z5Ylw/tbECp2MHmV
+ gX1JHV2JOFK1e1MJCTTlwV1kibUe3fFGD3LyBUKt18UoGfT0okDbQ+10t1fJme/j5P5U
+ D2vgNrnv1RgcRafeCGUDJ8RsTcI/ITO4E3K7Y=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=XpWi4volfcYSm2oFWphGxI70Xoc4gQDszmXfggbAPag=;
+ b=6nOPHNfgiMdiTi0B2K3aZrXIMHr9ybQz+d7gADdSSEbzf8+JcJe6n/V5qeMBqZEV5K
+ AKY7y/6tlL5Suh9sNLfhVCYGGY41av+bv5XWOaneDIv/Bwl8sZXTPylQg7l8pN409+1b
+ eTm2ViZGTbotlq+Ozcy1+mV88py/E+2WD14pAAwKCWbqJrCpf+19HHuXNDhmUYjGAfKL
+ 4SSAD66FIGEuTnPyEbLCIhca7msDdD0NE4+f+IwiQSuvPwBDMLuZ8Tq2UKorfb38+lZw
+ aqxY4fb/8b6sB1JpFd+jhe8LnYy5/TATgXUVub9KJWdb2qHZxc7pzsD02JMsxNazW+k7
+ H6jA==
+X-Gm-Message-State: AOAM531rq7o1L47hRvQ+T1M84KVZZhKb1DDTPyMrYSVEThdWnLoU9rVu
+ rzVfy5nu+J66azRAB41SpEMdIsRo4qp8eKWdCuk=
+X-Google-Smtp-Source: ABdhPJw/qsG4reje+RXXyWydLZHAIRH/xx9oJK7KufmhCYCq0X+s6dlQDxWJfAKtmNUi/KalPriKmg==
+X-Received: by 2002:a05:651c:3dd:: with SMTP id
+ f29mr16359738ljp.69.1631635165038; 
+ Tue, 14 Sep 2021 08:59:25 -0700 (PDT)
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com.
+ [209.85.208.175])
+ by smtp.gmail.com with ESMTPSA id r2sm1386658ljj.14.2021.09.14.08.59.24
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 14 Sep 2021 08:59:24 -0700 (PDT)
+Received: by mail-lj1-f175.google.com with SMTP id w4so24797281ljh.13
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Sep 2021 08:59:24 -0700 (PDT)
+X-Received: by 2002:a2e:8107:: with SMTP id d7mr16501365ljg.68.1631635154125; 
+ Tue, 14 Sep 2021 08:59:14 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210914121036.3975026-1-ardb@kernel.org>
  <20210914121036.3975026-6-ardb@kernel.org>
  <CAHk-=whLEofPLzzTKXN5etnH5WqsTPQRLVv8uQgHnx7c59omBg@mail.gmail.com>
-In-Reply-To: <CAHk-=whLEofPLzzTKXN5etnH5WqsTPQRLVv8uQgHnx7c59omBg@mail.gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Tue, 14 Sep 2021 17:52:59 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXH_Q4a4Gsi0Xuw=YsV-b7Mu8TQndk3Ei-JFaRV=GSiqUQ@mail.gmail.com>
-Message-ID: <CAMj1kXH_Q4a4Gsi0Xuw=YsV-b7Mu8TQndk3Ei-JFaRV=GSiqUQ@mail.gmail.com>
+ <CAMj1kXH_Q4a4Gsi0Xuw=YsV-b7Mu8TQndk3Ei-JFaRV=GSiqUQ@mail.gmail.com>
+In-Reply-To: <CAMj1kXH_Q4a4Gsi0Xuw=YsV-b7Mu8TQndk3Ei-JFaRV=GSiqUQ@mail.gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Tue, 14 Sep 2021 08:58:58 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiaVLChOjJ=7fdoQXKE4JHb98MjDtg8pPkA8EYfd5aj3g@mail.gmail.com>
+Message-ID: <CAHk-=wiaVLChOjJ=7fdoQXKE4JHb98MjDtg8pPkA8EYfd5aj3g@mail.gmail.com>
 Subject: Re: [RFC PATCH 5/8] sched: move CPU field back into thread_info if
  THREAD_INFO_IN_TASK=y
-To: Linus Torvalds <torvalds@linux-foundation.org>
+To: Ard Biesheuvel <ardb@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -86,38 +106,25 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 14 Sept 2021 at 17:49, Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
+On Tue, Sep 14, 2021 at 8:53 AM Ard Biesheuvel <ardb@kernel.org> wrote:
 >
-> On Tue, Sep 14, 2021 at 5:11 AM Ard Biesheuvel <ardb@kernel.org> wrote:
-> >
-> >  static inline unsigned int task_cpu(const struct task_struct *p)
-> >  {
-> >  #ifdef CONFIG_THREAD_INFO_IN_TASK
-> > -       return READ_ONCE(p->cpu);
-> > +       return READ_ONCE(p->thread_info.cpu);
-> >  #else
-> >         return READ_ONCE(task_thread_info(p)->cpu);
-> >  #endif
->
-> Those two lines look different, but aren't.
->
-> Please just remove the CONFIG_THREAD_INFO_IN_TASK conditional, and use
->
->           return READ_ONCE(task_thread_info(p)->cpu);
->
-> unconditionally, which now does the right thing regardless.
->
+> task_cpu() takes a 'const struct task_struct *', whereas
+> task_thread_info() takes a 'struct task_struct *'.
 
-Unfortunately not.
+Oh, annoying, but that's easily fixed. Just make that
 
-task_cpu() takes a 'const struct task_struct *', whereas
-task_thread_info() takes a 'struct task_struct *'.
+   static inline struct thread_info *task_thread_info(struct
+task_struct *task) ..
 
-Since task_thread_info()-><foo> is widely used as an lvalue, I would
-need to update task_cpu()'s prototype and fix up all the callers, some
-of which take the const flavor themselves. Or introduce
-'const_task_thread_info()' which takes the const flavor, and cannot be
-used to instantiate lvalues.
+be a simple
 
-Suggestions welcome, but this is the cleanest I could come up with.
+  #define task_thread_info(tsk) (&(tsk)->thread_info)
+
+instead. That actually then matches the !THREAD_INFO_IN_TASK case anyway.
+
+Make the commit comment be about how that fixes the type problem.
+
+Because while in many cases inline functions are superior to macros,
+it clearly isn't the case in this case.
+
+              Linus
