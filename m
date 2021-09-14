@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9940A40AD27
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 14:12:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 090DD40AD2B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 14:12:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H82Jt3bybz2yw0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 22:11:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H82KW6v7kz305p
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 22:12:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eUi18+jG;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=N6PMg+sW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,30 +17,30 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=ardb@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=eUi18+jG; 
+ header.s=k20201202 header.b=N6PMg+sW; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H82Hf00rwz2xjR
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Sep 2021 22:10:53 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id DF0126112E;
- Tue, 14 Sep 2021 12:10:46 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H82Hm6JD7z2yYl
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Sep 2021 22:11:00 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id DCDDD60ED8;
+ Tue, 14 Sep 2021 12:10:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1631621452;
- bh=ctJUbexNag4Ww69LjFDSR84qdpCMaKBOhiN3IwJaXws=;
+ s=k20201202; t=1631621458;
+ bh=6eta5IaVQyecbFieqH1slYSKBR/IBlo0wo4FWcGW+A0=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=eUi18+jGcKYL2ZIvzB4Tdp9umFvvNxr8SxEbgK2vtVURDyopcc4j8SVgQHYRl+oSd
- jD1HDDdHCS0X2qFkxVSwjhCpW6s8Hp96/ONOJXprkzVEv8iiCPPpPOYqaeQC++qK+F
- gMuM2eHySUa6p6L2J2o9DQ8lStY2DIvZxyAiwjDg113m5y+NwLSEqaJgx8B5T++7Lg
- UVHXMyz3FmlndLNHzJ7jUxNrZyF0581QLC+4yGgW9GL8aZV0rNJVKBxnvp5vmlGZgc
- uCZQvfC/GHAQYEp5nHmE0lrfk4JBdK+S+UglEzmm10Apwya4T9Lm64gd4aM4NsUaOa
- Su6kXY2gKmo+A==
+ b=N6PMg+sWDjuXVYOpHuiBJTnlf+P2umXdEtKmIi5OJ2aR2reaLlexXQ+BPFTYvAylb
+ FGT0YjQHmGh3dGIlYYmBzqoSD54+cAEAAPF5fpPnUlkdtCjkYsyO2FQH+OngVLu5QW
+ zjZ42wCUKiM4AfqGPvzRk2Y4+bmX5oKye50C8ybF71uM5ansUx/KNU37Apfn6nngWT
+ N0D+mesAhaqSK9PoTvOGoHT+kyWZdG1kZFSs07USsnr/8n8pDqDGm3ZKGW6urjoJew
+ h7lgbd80Wd6mMWq7N2dwW/0FEFfVxaKKW9ogZAu70f1G6C/NobToXYV9OCrPKF7WFc
+ ZwWItb/PrKNDg==
 From: Ard Biesheuvel <ardb@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 1/8] arm64: add CPU field to struct thread_info
-Date: Tue, 14 Sep 2021 14:10:29 +0200
-Message-Id: <20210914121036.3975026-2-ardb@kernel.org>
+Subject: [RFC PATCH 2/8] x86: add CPU field to struct thread_info
+Date: Tue, 14 Sep 2021 14:10:30 +0200
+Message-Id: <20210914121036.3975026-3-ardb@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210914121036.3975026-1-ardb@kernel.org>
 References: <20210914121036.3975026-1-ardb@kernel.org>
@@ -75,39 +75,28 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 The CPU field will be moved back into thread_info even when
-THREAD_INFO_IN_TASK is enabled, so add it back to arm64's definition of
+THREAD_INFO_IN_TASK is enabled, so add it back to x86's definition of
 struct thread_info.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/arm64/include/asm/thread_info.h | 1 +
- arch/arm64/kernel/asm-offsets.c      | 1 +
- 2 files changed, 2 insertions(+)
+ arch/x86/include/asm/thread_info.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/include/asm/thread_info.h b/arch/arm64/include/asm/thread_info.h
-index 6623c99f0984..c02bc8c183c3 100644
---- a/arch/arm64/include/asm/thread_info.h
-+++ b/arch/arm64/include/asm/thread_info.h
-@@ -42,6 +42,7 @@ struct thread_info {
- 	void			*scs_base;
- 	void			*scs_sp;
- #endif
-+	u32			cpu;
+diff --git a/arch/x86/include/asm/thread_info.h b/arch/x86/include/asm/thread_info.h
+index cf132663c219..ebec69c35e95 100644
+--- a/arch/x86/include/asm/thread_info.h
++++ b/arch/x86/include/asm/thread_info.h
+@@ -57,6 +57,9 @@ struct thread_info {
+ 	unsigned long		flags;		/* low level flags */
+ 	unsigned long		syscall_work;	/* SYSCALL_WORK_ flags */
+ 	u32			status;		/* thread synchronous flags */
++#ifdef CONFIG_SMP
++	u32			cpu;		/* current CPU */
++#endif
  };
  
- #define thread_saved_pc(tsk)	\
-diff --git a/arch/arm64/kernel/asm-offsets.c b/arch/arm64/kernel/asm-offsets.c
-index 551427ae8cc5..cee9f3e9f906 100644
---- a/arch/arm64/kernel/asm-offsets.c
-+++ b/arch/arm64/kernel/asm-offsets.c
-@@ -29,6 +29,7 @@ int main(void)
-   DEFINE(TSK_ACTIVE_MM,		offsetof(struct task_struct, active_mm));
-   DEFINE(TSK_CPU,		offsetof(struct task_struct, cpu));
-   BLANK();
-+  DEFINE(TSK_TI_CPU,		offsetof(struct task_struct, thread_info.cpu));
-   DEFINE(TSK_TI_FLAGS,		offsetof(struct task_struct, thread_info.flags));
-   DEFINE(TSK_TI_PREEMPT,	offsetof(struct task_struct, thread_info.preempt_count));
- #ifdef CONFIG_ARM64_SW_TTBR0_PAN
+ #define INIT_THREAD_INFO(tsk)			\
 -- 
 2.30.2
 
