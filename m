@@ -2,49 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECA9340AB0B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 11:40:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E87840AB81
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 12:17:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H7yxY6ZQvz305V
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 19:40:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H7zml6gWfz2ywh
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 20:17:27 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VHNncq+Z;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux-m68k.org
- (client-ip=195.130.137.77; helo=leibniz.telenet-ops.be;
- envelope-from=geert@linux-m68k.org; receiver=<UNKNOWN>)
-X-Greylist: delayed 574 seconds by postgrey-1.36 at boromir;
- Tue, 14 Sep 2021 19:39:37 AEST
-Received: from leibniz.telenet-ops.be (leibniz.telenet-ops.be [195.130.137.77])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=hegdevasant@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=VHNncq+Z; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H7yx54JLgz2xrm
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Sep 2021 19:39:36 +1000 (AEST)
-Received: from xavier.telenet-ops.be (xavier.telenet-ops.be
- [IPv6:2a02:1800:120:4::f00:14])
- by leibniz.telenet-ops.be (Postfix) with ESMTPS id 4H7yjv19XMzMqgC8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Sep 2021 11:29:55 +0200 (CEST)
-Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed20:d46f:7eb5:4a37:9d14])
- by xavier.telenet-ops.be with bizsmtp
- id tlVr2500F2aSKa101lVr2l; Tue, 14 Sep 2021 11:29:54 +0200
-Received: from rox.of.borg ([192.168.97.57])
- by ramsan.of.borg with esmtps (TLS1.3) tls
- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.93)
- (envelope-from <geert@linux-m68k.org>)
- id 1mQ4lC-004R8x-M8; Tue, 14 Sep 2021 11:29:50 +0200
-Received: from geert by rox.of.borg with local (Exim 4.93)
- (envelope-from <geert@linux-m68k.org>)
- id 1mQ4lC-000i9G-7c; Tue, 14 Sep 2021 11:29:50 +0200
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
-Subject: [PATCH] nvmem: NVMEM_NINTENDO_OTP should depend on WII
-Date: Tue, 14 Sep 2021 11:29:49 +0200
-Message-Id: <01318920709dddc4d85fe895e2083ca0eee234d8.1631611652.git.geert+renesas@glider.be>
-X-Mailer: git-send-email 2.25.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H7zm069PRz2xl7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Sep 2021 20:16:48 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.0.43) with SMTP id 18E8ZfC0009664;
+ Tue, 14 Sep 2021 06:16:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=JncKNZDWNGq9FqdhCrqp/+cYuD2d1iHNpRq15yhxUIU=;
+ b=VHNncq+Z2T6lzA2oUW3+SPggETnNe4JDni+SrmGtsjpTAhlk9J5wKZJrO9/ociVNVOnF
+ dSC2tgaPtDgSFHwIBMd4WfrQnWWRjJworHdAgMUV3Cb75SlNS97c8VlPCtM1wcs45Z3p
+ EX3PyeGd3qROgkQMQLmwlktu0vs5fCTrryJ+zMU2cpMw5l2KMFGthkyKTQjbuwIiGY0Z
+ 8AuIGRHfpUWIYkX5O/QR1aFPL0Bz2f/tbbM+Rw82XkjBMPOQnWPeygnFfUJGtOXmTyEs
+ DFb1L85M0hrtjU5/qeVeNYHu1V8GRYhN++1WzgtGzxlP/FZjh6y9D3alvUwdAXNXF62X 4w== 
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3b2rc6swjc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 14 Sep 2021 06:16:41 -0400
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 18EAEBam009880;
+ Tue, 14 Sep 2021 10:16:39 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma02fra.de.ibm.com with ESMTP id 3b0m399646-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 14 Sep 2021 10:16:39 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 18EAGaJ237618002
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 14 Sep 2021 10:16:36 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C01A64C050;
+ Tue, 14 Sep 2021 10:16:36 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8D96A4C04A;
+ Tue, 14 Sep 2021 10:16:35 +0000 (GMT)
+Received: from hegdevasant.ibm.com (unknown [9.43.34.115])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 14 Sep 2021 10:16:35 +0000 (GMT)
+From: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/powernv/flash: Check OPAL flash calls exist before
+ using
+Date: Tue, 14 Sep 2021 15:46:30 +0530
+Message-Id: <20210914101630.30613-1-hegdevasant@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: t5zttqTulas5zABqT6ve_nsbTW6nWG_1
+X-Proofpoint-ORIG-GUID: t5zttqTulas5zABqT6ve_nsbTW6nWG_1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.687,Hydra:6.0.235,FMLib:17.0.607.475
+ definitions=2020-10-13_15,2020-10-13_02,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 malwarescore=0
+ clxscore=1011 lowpriorityscore=0 suspectscore=0 spamscore=0 mlxscore=0
+ impostorscore=0 priorityscore=1501 adultscore=0 mlxlogscore=988
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2109030001 definitions=main-2109140042
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,35 +97,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The Nintendo Wii and Wii U OTP is only present on Nintendo Wii and Wii U
-consoles.  Hence add a dependency on WII, to prevent asking the user
-about this driver when configuring a kernel without Nintendo Wii and Wii
-U console support.
+Currently only FSP based powernv systems supports firmware update
+interfaces. Hence check that the token OPAL_FLASH_VALIDATE exists
+before initalising the flash driver.
 
-Fixes: 3683b761fe3a10ad ("nvmem: nintendo-otp: Add new driver for the Wii and Wii U OTP")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>
 ---
- drivers/nvmem/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/platforms/powernv/opal-flash.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/nvmem/Kconfig b/drivers/nvmem/Kconfig
-index 39854d43758be3fb..da414617a54d4b99 100644
---- a/drivers/nvmem/Kconfig
-+++ b/drivers/nvmem/Kconfig
-@@ -109,6 +109,7 @@ config MTK_EFUSE
+diff --git a/arch/powerpc/platforms/powernv/opal-flash.c b/arch/powerpc/platforms/powernv/opal-flash.c
+index 7e7d38b17420..05490fc22fae 100644
+--- a/arch/powerpc/platforms/powernv/opal-flash.c
++++ b/arch/powerpc/platforms/powernv/opal-flash.c
+@@ -520,6 +520,10 @@ void __init opal_flash_update_init(void)
+ {
+ 	int ret;
  
- config NVMEM_NINTENDO_OTP
- 	tristate "Nintendo Wii and Wii U OTP Support"
-+	depends on WII || COMPILE_TEST
- 	help
- 	  This is a driver exposing the OTP of a Nintendo Wii or Wii U console.
- 
++	/* Firmware update is not supported by firmware */
++	if (!opal_check_token(OPAL_FLASH_VALIDATE))
++		return;
++
+ 	/* Allocate validate image buffer */
+ 	validate_flash_data.buf = kzalloc(VALIDATE_BUF_SIZE, GFP_KERNEL);
+ 	if (!validate_flash_data.buf) {
 -- 
-2.25.1
+2.31.1
 
