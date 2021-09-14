@@ -2,69 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8719240ACC5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 13:50:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D60F40ACEC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 13:59:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H81rT3fbTz2ygC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 21:50:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H82233whfz301N
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 21:59:07 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=lHcgxOs9;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=dkim header.b=bxwwIzIy;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=desiato.20200630 header.b=lHcgxOs9; 
- dkim-atps=neutral
-Received: from desiato.infradead.org (desiato.infradead.org
- [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=alien8.de (client-ip=2a01:4f8:190:11c2::b:1457;
+ helo=mail.skyhub.de; envelope-from=bp@alien8.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256
+ header.s=dkim header.b=bxwwIzIy; dkim-atps=neutral
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H81qj33JHz2xtT
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Sep 2021 21:50:04 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=sOiknpjgebMSxy2rtFAmjlZL6dFw6P6xeEwKRmQVXg0=; b=lHcgxOs9L6fdd3/+naCd5qQGlF
- pBVcAvJFdwbcipUDn3MAungQE/UDwwcjdE4P26PJBdFwImkfE8A7ZJPKZxLEVHx/eWrW8eJ1h5uPF
- 0C0tB/ICoezZgM599DPveVdneMoc2UXuTSLf07nbskrkBr0PfZqNaHN4XlXfcPl7yPyFC8obu513a
- RbBhUaTjm5UMorLyaZHEIXU4yHjti7VOV/wDTXqAvnNaa1vLi2M4emPfSSZBPvll4MWTqvgnr/ZlF
- 5PTC8s6cNUxV/d5nmo6ssLaCjR6xRyZkIfKsJCd8PjU8HCdHtvBncErwY50T81RTOvhsYT8qsTxlx
- yKDbMtgw==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mQ6wV-0038BB-9f; Tue, 14 Sep 2021 11:49:39 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 74ED8300129;
- Tue, 14 Sep 2021 13:49:37 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id 5CF822D1FEA0A; Tue, 14 Sep 2021 13:49:37 +0200 (CEST)
-Date: Tue, 14 Sep 2021 13:49:37 +0200
-From: Peter Zijlstra <peterz@infradead.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H821F5yZgz2yHR
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Sep 2021 21:58:20 +1000 (AEST)
+Received: from zn.tnic (p200300ec2f1048001e15ef619509992f.dip0.t-ipconnect.de
+ [IPv6:2003:ec:2f10:4800:1e15:ef61:9509:992f])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8B7241EC04EC;
+ Tue, 14 Sep 2021 13:58:10 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+ t=1631620690;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+ bh=b/N09IsvqYn24JfFZ47aDfAefXmwmXR82Pt3awNAfbs=;
+ b=bxwwIzIyK+Rg4oIy01BbpgT86ORE1XKclCEYAaQ9uu2p2YFJBhtO9vvO21Z67RPc0ptMoP
+ 47+Ry7kCX0P48iid+/PmdkrtsbH5uZdiuAmR5uxqjBKZy74znSrvhF2nYkipmdb9VWoPx/
+ PSVn04awQpG91qOKWcYNAHUkxFtjb44=
+Date: Tue, 14 Sep 2021 13:58:04 +0200
+From: Borislav Petkov <bp@alien8.de>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH 1/3] perf: Add macros to specify onchip L2/L3 accesses
-Message-ID: <YUCMUZbchMjD54eY@hirez.programming.kicks-ass.net>
-References: <20210904064932.307610-1-kjain@linux.ibm.com>
- <87ilzbmt7i.fsf@mpe.ellerman.id.au>
- <YTiBqbxe7ieqY2OE@hirez.programming.kicks-ass.net>
- <87czphnchp.fsf@mpe.ellerman.id.au>
- <YTob/xfn1gt901K4@hirez.programming.kicks-ass.net>
- <87k0jjl9sp.fsf@mpe.ellerman.id.au>
+Subject: Re: [PATCH v3 4/8] powerpc/pseries/svm: Add a powerpc version of
+ cc_platform_has()
+Message-ID: <YUCOTIPPsJJpLO/d@zn.tnic>
+References: <cover.1631141919.git.thomas.lendacky@amd.com>
+ <9d4fc3f8ea7b325aaa1879beab1286876f45d450.1631141919.git.thomas.lendacky@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <87k0jjl9sp.fsf@mpe.ellerman.id.au>
+In-Reply-To: <9d4fc3f8ea7b325aaa1879beab1286876f45d450.1631141919.git.thomas.lendacky@amd.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,39 +61,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, atrajeev@linux.vnet.ibm.com, ak@linux.intel.com,
- daniel@iogearbox.net, rnsastry@linux.ibm.com,
- alexander.shishkin@linux.intel.com, Kajol Jain <kjain@linux.ibm.com>,
- linux-kernel@vger.kernel.org, acme@kernel.org, ast@kernel.org,
- linux-perf-users@vger.kernel.org, yao.jin@linux.intel.com, mingo@redhat.com,
- paulus@samba.org, maddy@linux.ibm.com, jolsa@kernel.org, namhyung@kernel.org,
- songliubraving@fb.com, linuxppc-dev@lists.ozlabs.org,
- kan.liang@linux.intel.com
+Cc: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ linux-efi@vger.kernel.org, Brijesh Singh <brijesh.singh@amd.com>,
+ kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ platform-driver-x86@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ linux-s390@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
+ Joerg Roedel <joro@8bytes.org>, x86@kernel.org, amd-gfx@lists.freedesktop.org,
+ Christoph Hellwig <hch@infradead.org>, linux-graphics-maintainer@vmware.com,
+ Tom Lendacky <thomas.lendacky@amd.com>, Tianyu Lan <Tianyu.Lan@microsoft.com>,
+ kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ iommu@lists.linux-foundation.org, linux-fsdevel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Sep 14, 2021 at 08:40:38PM +1000, Michael Ellerman wrote:
-> Peter Zijlstra <peterz@infradead.org> writes:
-
-> > I'm thinking we ought to keep hops as steps along the NUMA fabric, with
-> > 0 hops being the local node. That only gets us:
-> >
-> >  L2, remote=0, hops=HOPS_0 -- our L2
-> >  L2, remote=1, hops=HOPS_0 -- L2 on the local node but not ours
-> >  L2, remote=1, hops!=HOPS_0 -- L2 on a remote node
+On Wed, Sep 08, 2021 at 05:58:35PM -0500, Tom Lendacky wrote:
+> Introduce a powerpc version of the cc_platform_has() function. This will
+> be used to replace the powerpc mem_encrypt_active() implementation, so
+> the implementation will initially only support the CC_ATTR_MEM_ENCRYPT
+> attribute.
 > 
-> Hmm. I'm not sure about tying it directly to NUMA hops. I worry we're
-> going to see more and more systems where there's a hierarchy within the
-> chip/package, in addition to the traditional NUMA hierarchy.
-> 
-> Although then I guess it becomes a question of what exactly is a NUMA
-> hop, maybe the answer is that on those future systems those
-> intra-chip/package hops should be represented as NUMA hops.
-> 
-> It's not like we have a hard definition of what a NUMA hop is?
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+> ---
+>  arch/powerpc/platforms/pseries/Kconfig       |  1 +
+>  arch/powerpc/platforms/pseries/Makefile      |  2 ++
+>  arch/powerpc/platforms/pseries/cc_platform.c | 26 ++++++++++++++++++++
+>  3 files changed, 29 insertions(+)
+>  create mode 100644 arch/powerpc/platforms/pseries/cc_platform.c
 
-Not really, typically whatever the BIOS/DT/whatever tables tell us. I
-think in case of Power you're mostly making things up in software :-)
+Michael,
 
-But yeah, I think we have plenty wriggle room there.
+can I get an ACK for the ppc bits to carry them through the tip tree
+pls?
+
+Btw, on a related note, cross-compiling this throws the following error here:
+
+$ make CROSS_COMPILE=/home/share/src/crosstool/gcc-9.4.0-nolibc/powerpc64-linux/bin/powerpc64-linux- V=1 ARCH=powerpc
+
+...
+
+/home/share/src/crosstool/gcc-9.4.0-nolibc/powerpc64-linux/bin/powerpc64-linux-gcc -Wp,-MD,arch/powerpc/boot/.crt0.o.d -D__ASSEMBLY__ -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -O2 -msoft-float -mno-altivec -mno-vsx -pipe -fomit-frame-pointer -fno-builtin -fPIC -nostdinc -include ./include/linux/compiler_attributes.h -I./arch/powerpc/include -I./arch/powerpc/include/generated  -I./include -I./arch/powerpc/include/uapi -I./arch/powerpc/include/generated/uapi -I./include/uapi -I./include/generated/uapi -include ./include/linux/compiler-version.h -include ./include/linux/kconfig.h -m32 -isystem /home/share/src/crosstool/gcc-9.4.0-nolibc/powerpc64-linux/bin/../lib/gcc/powerpc64-linux/9.4.0/include -mbig-endian -nostdinc -c -o arch/powerpc/boot/crt0.o arch/powerpc/boot/crt0.S
+In file included from <command-line>:
+././include/linux/compiler_attributes.h:62:5: warning: "__has_attribute" is not defined, evaluates to 0 [-Wundef]
+   62 | #if __has_attribute(__assume_aligned__)
+      |     ^~~~~~~~~~~~~~~
+././include/linux/compiler_attributes.h:62:20: error: missing binary operator before token "("
+   62 | #if __has_attribute(__assume_aligned__)
+      |                    ^
+././include/linux/compiler_attributes.h:88:5: warning: "__has_attribute" is not defined, evaluates to 0 [-Wundef]
+   88 | #if __has_attribute(__copy__)
+      |     ^~~~~~~~~~~~~~~
+...
+
+Known issue?
+
+This __has_attribute() thing is supposed to be supported
+in gcc since 5.1 and I'm using the crosstool stuff from
+https://www.kernel.org/pub/tools/crosstool/ and gcc-9.4 above is pretty
+new so that should not happen actually.
+
+But it does...
+
+Hmmm.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
