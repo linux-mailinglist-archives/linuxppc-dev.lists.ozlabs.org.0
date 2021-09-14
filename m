@@ -2,70 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04E1640ADE3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 14:37:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81B8D40AEE8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 15:29:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H82tV0541z2ywB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 22:37:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H842r3j8vz2ynj
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 23:29:56 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256 header.s=google header.b=jDEbjtKp;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=loongson.cn (client-ip=114.242.206.163; helo=loongson.cn;
- envelope-from=yangtiezhu@loongson.cn; receiver=<UNKNOWN>)
-Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
- by lists.ozlabs.org (Postfix) with ESMTP id 4H82sy5xlYz2xrx
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Sep 2021 22:37:08 +1000 (AEST)
-Received: from [10.130.0.135] (unknown [113.200.148.30])
- by mail.loongson.cn (Coremail) with SMTP id AQAAf9Dxn2tEl0BhhZgGAA--.14513S3; 
- Tue, 14 Sep 2021 20:36:22 +0800 (CST)
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
-Subject: Re: [PATCH bpf-next v2] bpf: Change value of MAX_TAIL_CALL_CNT from
- 32 to 33
-To: Daniel Borkmann <daniel@iogearbox.net>,
- Shubham Bansal <illusionist.neo@gmail.com>,
- Russell King <linux@armlinux.org.uk>, Alexei Starovoitov <ast@kernel.org>,
- Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <kafai@fb.com>,
- Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
- John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
- Zi Shen Lim <zlim.lnx@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>, Paul Burton <paulburton@kernel.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, naveen.n.rao@linux.ibm.com,
- Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Luke Nelson <luke.r.nels@gmail.com>,
- Xi Wang <xi.wang@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- bjorn@kernel.org, davem@davemloft.net,
- Johan Almbladh <johan.almbladh@anyfinetworks.com>,
- Paul Chaignon <paul@cilium.io>
-References: <1631325361-9851-1-git-send-email-yangtiezhu@loongson.cn>
- <0fb8d16f-67e7-7197-fce2-a4c17f1e5987@iogearbox.net>
-Message-ID: <9ad382ca-a254-f897-9ec6-c9b1920a6174@loongson.cn>
-Date: Tue, 14 Sep 2021 20:36:20 +0800
-User-Agent: Mozilla/5.0 (X11; Linux mips64; rv:45.0) Gecko/20100101
- Thunderbird/45.4.0
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::82d;
+ helo=mail-qt1-x82d.google.com; envelope-from=joel.stan@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256
+ header.s=google header.b=jDEbjtKp; dkim-atps=neutral
+Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com
+ [IPv6:2607:f8b0:4864:20::82d])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H842B0dCSz2yHP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Sep 2021 23:29:20 +1000 (AEST)
+Received: by mail-qt1-x82d.google.com with SMTP id c19so11365900qte.7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Sep 2021 06:29:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jms.id.au; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=4FgA1glgZpagJ46LOd0B4shdbVImYVYjwX8zKpoYQeE=;
+ b=jDEbjtKplhqhXyAvHLkStbE1o4RIlBRFgSo8rAoCRc1dsvJ1o73j8m29Rhs0b4lI3T
+ j/SV1Xmpm9UMXh5D8ccZ0WW2Uw01tMueV8W9uhphq8igdxLedOnmf9g8Tl5zPzKcf+Vs
+ tXtDi+9H7Syf6f3Hd6XW/eTqtZ0nH5uPN2/Mg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=4FgA1glgZpagJ46LOd0B4shdbVImYVYjwX8zKpoYQeE=;
+ b=taGkEo0kxtNbYmcs2UOgif94wz7fOS73+nO/m+L62NkxU0b6R/WLXgdzKCg//o8Ndk
+ jAtWexJd7cTHEM8ihFDA+vXofw06YfJIPYoiZd4E7nYlx9qRPJea8VQWFvDUX9TdVvyF
+ Epkjz1ScTxE2pNAToluJqUs5arHWodXAk1zBlsdwRaNdotJkHnSXRhi95ye/ZmHE4PYe
+ m+Inr4LNuCVNFLuyUIvFBzxkQYtMth/SJjNA1qDFH1Wdvo9HCBn22iBJ5wsxJH5gHrF5
+ KQdsApvUWjRnpH5uePThWDrxsLTBBb91DoKME2cGe1bB895vIMTNZiXD7Ix3G5D6bu8Z
+ Ds5w==
+X-Gm-Message-State: AOAM5311vuaLhLUctMnu2RUFBrANLm9IVEJ2vayAnwThGV+uObcvAwRd
+ oJiddJ3D/iO/3/tVq8NaLa0qDCy7oAKNXFi01Q0=
+X-Google-Smtp-Source: ABdhPJypqmbCZYSk67vRVazqeAmaKYPsT6JfdEZ1xwf7q6WP0XaamibAsFO4kXA1PTCxstxVix3KgjhCgFGfB2W7d9c=
+X-Received: by 2002:ac8:7dca:: with SMTP id c10mr4542279qte.259.1631626155462; 
+ Tue, 14 Sep 2021 06:29:15 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <0fb8d16f-67e7-7197-fce2-a4c17f1e5987@iogearbox.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID: AQAAf9Dxn2tEl0BhhZgGAA--.14513S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxurW7Gw1DJw1UGw4xGFW3KFg_yoW5Ar43pr
- WUJanakr4kXFyrC3ZrKa1xZay0vFZ8tryUGrWrK342yFn8Zrn5WF4xK3yFgF1UAryrta4F
- 9ayFkr95C3WkZFJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDU0xBIdaVrnRJUUU9Gb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
- 0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
- A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xII
- jxv20xvEc7CjxVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I
- 8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
- 64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVW8JVWxJw
- Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l
- c7I2V7IY0VAS07AlzVAYIcxG8wCY02Avz4vE14v_Xr1l42xK82IYc2Ij64vIr41l4I8I3I
- 0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWU
- GVWUWwC2zVAF1VAY17CE14v26rWY6r4UJwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14
- v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xva
- j40_Wr1j6rW3Jr1lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxV
- W8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU5lsj5UUUUU==
-X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
+References: <20210914101646.30684-1-hegdevasant@linux.vnet.ibm.com>
+In-Reply-To: <20210914101646.30684-1-hegdevasant@linux.vnet.ibm.com>
+From: Joel Stanley <joel@jms.id.au>
+Date: Tue, 14 Sep 2021 13:29:03 +0000
+Message-ID: <CACPK8XdamQu4B+6keMjjn4EXyR1mx+r6Y5z03-V0dJm+6gqxTA@mail.gmail.com>
+Subject: Re: [PATCH trivial] powerpc/powernv/dump: Fix typo is comment
+To: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,104 +70,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mips@vger.kernel.org, sparclinux@vger.kernel.org, bpf@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 09/14/2021 03:30 PM, Daniel Borkmann wrote:
-> On 9/11/21 3:56 AM, Tiezhu Yang wrote:
->>
-[...]
->> With this patch, it does not change the current limit 33, 
->> MAX_TAIL_CALL_CNT
->> can reflect the actual max tail call count, the tailcall selftests 
->> can work
->> well, and also the above failed testcase in test_bpf can be fixed for 
->> the
->> interpreter (all archs) and the JIT (all archs except for x86).
->>
->>   # uname -m
->>   x86_64
->>   # echo 1 > /proc/sys/net/core/bpf_jit_enable
->>   # modprobe test_bpf
->>   # dmesg | grep -w FAIL
->>   Tail call error path, max count reached jited:1 ret 33 != 34 FAIL
+On Tue, 14 Sept 2021 at 10:17, Vasant Hegde
+<hegdevasant@linux.vnet.ibm.com> wrote:
 >
-> Could you also state in here which archs you have tested with this 
-> change? I
-> presume /every/ arch which has a JIT?
+> Signed-off-by: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>
 
-OK, will do it in v3.
-I have tested on x86 and mips.
+There's a typo in your commit message :)
 
+> ---
+>  arch/powerpc/platforms/powernv/opal-dump.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
->> Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
->> ---
->>
->> v2:
->>    -- fix the typos in the commit message and update the commit message.
->>    -- fix the failed tailcall selftests for x86 jit.
->>       I am not quite sure the change on x86 is proper, with this change,
->>       tailcall selftests passed, but tailcall limit test in test_bpf.ko
->>       failed, I do not know the reason now, I think this is another 
->> issue,
->>       maybe someone more versed in x86 jit could take a look.
+> diff --git a/arch/powerpc/platforms/powernv/opal-dump.c b/arch/powerpc/platforms/powernv/opal-dump.c
+> index 00c5a59d82d9..717d1d30ade5 100644
+> --- a/arch/powerpc/platforms/powernv/opal-dump.c
+> +++ b/arch/powerpc/platforms/powernv/opal-dump.c
+> @@ -419,7 +419,7 @@ void __init opal_platform_dump_init(void)
+>         int rc;
+>         int dump_irq;
 >
-> There should be a series from Johan coming today with regards to 
-> test_bpf.ko
-> that will fix the "tail call error path, max count reached" test which 
-> had an
-> assumption in that R0 would always be valid for the fall-through and 
-> could be
-> passed to the bpf_exit insn whereas it is not guaranteed and verifier, 
-> for
-> example, forbids a subsequent access to R0 w/o reinit. For your 
-> testing, I
-> would suggested to recheck once this series is out.
-
-I will test the following patch on x86 and mips:
-
-[PATCH bpf v4 13/14] bpf/tests: Fix error in tail call limit tests
-
-[...]
-
->> diff --git a/arch/x86/net/bpf_jit_comp.c b/arch/x86/net/bpf_jit_comp.c
->> index 0fe6aac..74a9e61 100644
->> --- a/arch/x86/net/bpf_jit_comp.c
->> +++ b/arch/x86/net/bpf_jit_comp.c
->> @@ -402,7 +402,7 @@ static int get_pop_bytes(bool *callee_regs_used)
->>    * ... bpf_tail_call(void *ctx, struct bpf_array *array, u64 index) 
->> ...
->>    *   if (index >= array->map.max_entries)
->>    *     goto out;
->> - *   if (++tail_call_cnt > MAX_TAIL_CALL_CNT)
->> + *   if (tail_call_cnt++ == MAX_TAIL_CALL_CNT)
+> -       /* ELOG not supported by firmware */
+> +       /* Dump not supported by firmware */
+>         if (!opal_check_token(OPAL_DUMP_READ))
+>                 return;
 >
-> Why such inconsistency to e.g. above with arm64 case but also compared to
-> x86 32 bit which uses JAE? If so, we should cleanly follow the reference
-> implementation (== interpreter) _everywhere_ and _not_ introduce 
-> additional
-> variants/implementations across JITs.
-
-In order tokeep consistencyand make as few changes as possible,
-<javascript:void(0);>I will modify the check condition as follows:
-
-#define MAX_TAIL_CALL_CNT 33
-(1) for x86, arm64, ... (0 ~ 32)
-tcc = 0;
-if (tcc == MAX_TAIL_CALL_CNT)
-     goto out;
-tcc++;
-
-(2) for mips, riscv (33 ~ 1)
-tcc = MAX_TAIL_CALL_CNT;
-if (tcc == 0)
-     goto out;
-tcc--;
-
-[...]
-
+> --
+> 2.31.1
+>
