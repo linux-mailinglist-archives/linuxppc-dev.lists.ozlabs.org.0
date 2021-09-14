@@ -2,53 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14F3D40A1C6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 02:09:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB93540A1D3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 02:20:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H7kHH6jBcz2ymr
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 10:09:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H7kWw1GBMz2ymb
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 10:20:28 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=IOEknN+e;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=SclZiWrk;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=canb.auug.org.au (client-ip=203.11.71.1; helo=ozlabs.org;
- envelope-from=sfr@canb.auug.org.au; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.a=rsa-sha256 header.s=201702 header.b=IOEknN+e; 
+ smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::129;
+ helo=mail-lf1-x129.google.com; envelope-from=torvalds@linuxfoundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.a=rsa-sha256 header.s=google header.b=SclZiWrk; 
  dkim-atps=neutral
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com
+ [IPv6:2a00:1450:4864:20::129])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H7kGc51Mqz2xtM
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Sep 2021 10:08:54 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
- s=201702; t=1631578134;
- bh=v90zIYjxmWk7ZcxcpQ8ejCaQLB9RypWd6ospIYJbweg=;
- h=Date:From:To:Cc:Subject:From;
- b=IOEknN+eZ8Adpj7/vLgyXCC7SV+e6VM1rumxhZfOx8snd515mlwrccDEbFtki+ZAF
- 4pg2bFjNEgaQJK5I8TEgXOZzS2tAZzC8XojQ+u0E0hypfVpM+c1epPwRGyBcjRDLMD
- yWKlBvUWfedU5iLpoo7KMPuw10zAQaO9wi6l6MuCWUju8b/s87IVXvi4mlrogfJ8p+
- wLiJH2zS8xDdM6d4B2KLCqFnrLmAC878bu3EyHHl+blPZyRLQPJpnMB0SE0Z167Zuc
- 2L1P86WHhEy2Lh/jeFs8rwQaBNzfarahn8ensDgE0Z7cMl7AvdEgiATZ7qIvStexeG
- pikMI9BGhTC0g==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4H7kGZ0yPlz9sW4;
- Tue, 14 Sep 2021 10:08:53 +1000 (AEST)
-Date: Tue, 14 Sep 2021 10:08:53 +1000
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: linux-next: build failure after merge of the origin tree
-Message-ID: <20210914100853.3f502bc9@canb.auug.org.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H7kWH4mfXz2yHb
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Sep 2021 10:19:53 +1000 (AEST)
+Received: by mail-lf1-x129.google.com with SMTP id c8so24781677lfi.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Sep 2021 17:19:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux-foundation.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=OJCOVeO589IX0eZ2k9PI4XmEqC+ha+gDBXVAR0aVS3A=;
+ b=SclZiWrkT5KucTv1KidhHP6yMCpKWMNqoOiS1UgRHORAfJuSSMf+xaeagNjetAELs6
+ Bh2TOhuIaWLPnM+/W2Yzq/TD4x6e1lZqhBUlLoChPi52C7bRjop+4ZM3lAIpZzJOEVn9
+ lcHuoBjFShp/uD8fDDM5+JSs5YrWYKB9IWsGY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=OJCOVeO589IX0eZ2k9PI4XmEqC+ha+gDBXVAR0aVS3A=;
+ b=7pznX5m+A1WYH+rnhjt/ZANFUV0C4xx0UoKcxyQi9VTCZMgGUYpLs7tjTd0y57MHkP
+ hn2iwldZgB1kmF+QzUr6TkDu5COzDmUx9ntouS1fk4SnFM7aK69dQCmDghkVL7V5cp6+
+ fAHf7crrcIIlq0ETN+VOYRRIhkHfEGoEBX3MZuKbayxtdm9eHrbRrvV+EDmK0hFy0Tn/
+ eR9MaLbRlddcaU7st+thzRsUaCUojoqpY4j5Jj2eSguzscQMJlnhj2t2GWkL3LGaH7/I
+ pFjtFgPll6LR1/dlCfhhbx88JvMq0T8MUue7xxs/7/DgCq45/Dtr+hHsStMSJi/xzCM7
+ gGiQ==
+X-Gm-Message-State: AOAM531/+iyBKZRumya3krOimidXNZAoZtlMhUEDvihisL2KHA24MCMw
+ M4H9jfeaBgZW6RveOwqgdMaWFjInXWYW6d9DMKA=
+X-Google-Smtp-Source: ABdhPJxdgwkhxQJ01yTWNiysKnpG30HLa8qr6HvpC1nnREDCRWeh4geAxirmpBQEVsVuBX6yWVb5lA==
+X-Received: by 2002:a05:6512:2202:: with SMTP id
+ h2mr10871464lfu.494.1631578785609; 
+ Mon, 13 Sep 2021 17:19:45 -0700 (PDT)
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com.
+ [209.85.208.180])
+ by smtp.gmail.com with ESMTPSA id q26sm965607lfb.271.2021.09.13.17.19.44
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 13 Sep 2021 17:19:45 -0700 (PDT)
+Received: by mail-lj1-f180.google.com with SMTP id o11so12877585ljp.8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Sep 2021 17:19:44 -0700 (PDT)
+X-Received: by 2002:a2e:b53a:: with SMTP id z26mr12192430ljm.95.1631578784223; 
+ Mon, 13 Sep 2021 17:19:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/+fAm=g2A=.HjuXM/KZoYRo=";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+References: <20210914100853.3f502bc9@canb.auug.org.au>
+In-Reply-To: <20210914100853.3f502bc9@canb.auug.org.au>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Mon, 13 Sep 2021 17:19:27 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whOv-LZKxBqQr8yzmhi7sN4zoFG7t8ALNx+2XFhXjGTpA@mail.gmail.com>
+Message-ID: <CAHk-=whOv-LZKxBqQr8yzmhi7sN4zoFG7t8ALNx+2XFhXjGTpA@mail.gmail.com>
+Subject: Re: linux-next: build failure after merge of the origin tree
+To: Stephen Rothwell <sfr@canb.auug.org.au>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,158 +91,13 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/+fAm=g2A=.HjuXM/KZoYRo=
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On Mon, Sep 13, 2021 at 5:09 PM Stephen Rothwell <sfr@canb.auug.org.au> wrote:
+>
+>   gcc -Wp,-MD,arch/powerpc/boot/.crt0.o.d
 
-Hi all,
+Ok, so it's not the funky "clang reports gcc-4" that caused tool breakage.
 
-After merging the origin tree, today's linux-next build (powerpc
-ppc64_defconfig) failed like this:
+What version of gcc is this? Are you maybe on gcc-4.9 and we just
+didn't check that properly?
 
-In file included from <command-line>:
-include/linux/compiler_attributes.h:62:5: warning: "__has_attribute" is not=
- defined, evaluates to 0 [-Wundef]
-   62 | #if __has_attribute(__assume_aligned__)
-      |     ^~~~~~~~~~~~~~~
-include/linux/compiler_attributes.h:62:20: error: missing binary operator b=
-efore token "("
-   62 | #if __has_attribute(__assume_aligned__)
-      |                    ^
-include/linux/compiler_attributes.h:88:5: warning: "__has_attribute" is not=
- defined, evaluates to 0 [-Wundef]
-   88 | #if __has_attribute(__copy__)
-      |     ^~~~~~~~~~~~~~~
-include/linux/compiler_attributes.h:88:20: error: missing binary operator b=
-efore token "("
-   88 | #if __has_attribute(__copy__)
-      |                    ^
-include/linux/compiler_attributes.h:113:5: warning: "__has_attribute" is no=
-t defined, evaluates to 0 [-Wundef]
-  113 | #if __has_attribute(__designated_init__)
-      |     ^~~~~~~~~~~~~~~
-include/linux/compiler_attributes.h:113:20: error: missing binary operator =
-before token "("
-  113 | #if __has_attribute(__designated_init__)
-      |                    ^
-include/linux/compiler_attributes.h:124:5: warning: "__has_attribute" is no=
-t defined, evaluates to 0 [-Wundef]
-  124 | #if __has_attribute(__error__)
-      |     ^~~~~~~~~~~~~~~
-include/linux/compiler_attributes.h:124:20: error: missing binary operator =
-before token "("
-  124 | #if __has_attribute(__error__)
-      |                    ^
-include/linux/compiler_attributes.h:135:5: warning: "__has_attribute" is no=
-t defined, evaluates to 0 [-Wundef]
-  135 | #if __has_attribute(__externally_visible__)
-      |     ^~~~~~~~~~~~~~~
-include/linux/compiler_attributes.h:135:20: error: missing binary operator =
-before token "("
-  135 | #if __has_attribute(__externally_visible__)
-      |                    ^
-In file included from <command-line>:
-include/linux/compiler_attributes.h:171:5: warning: "__has_attribute" is no=
-t defined, evaluates to 0 [-Wundef]
-  171 | #if __has_attribute(__no_caller_saved_registers__)
-      |     ^~~~~~~~~~~~~~~
-include/linux/compiler_attributes.h:171:20: error: missing binary operator =
-before token "("
-  171 | #if __has_attribute(__no_caller_saved_registers__)
-      |                    ^
-include/linux/compiler_attributes.h:182:5: warning: "__has_attribute" is no=
-t defined, evaluates to 0 [-Wundef]
-  182 | #if __has_attribute(__noclone__)
-      |     ^~~~~~~~~~~~~~~
-include/linux/compiler_attributes.h:182:20: error: missing binary operator =
-before token "("
-  182 | #if __has_attribute(__noclone__)
-      |                    ^
-include/linux/compiler_attributes.h:199:5: warning: "__has_attribute" is no=
-t defined, evaluates to 0 [-Wundef]
-  199 | #if __has_attribute(__fallthrough__)
-      |     ^~~~~~~~~~~~~~~
-include/linux/compiler_attributes.h:199:20: error: missing binary operator =
-before token "("
-  199 | #if __has_attribute(__fallthrough__)
-      |                    ^
-include/linux/compiler_attributes.h:226:5: warning: "__has_attribute" is no=
-t defined, evaluates to 0 [-Wundef]
-  226 | #if __has_attribute(__nonstring__)
-      |     ^~~~~~~~~~~~~~~
-include/linux/compiler_attributes.h:226:20: error: missing binary operator =
-before token "("
-  226 | #if __has_attribute(__nonstring__)
-      |                    ^
-include/linux/compiler_attributes.h:238:5: warning: "__has_attribute" is no=
-t defined, evaluates to 0 [-Wundef]
-  238 | #if __has_attribute(__no_profile_instrument_function__)
-      |     ^~~~~~~~~~~~~~~
-include/linux/compiler_attributes.h:238:20: error: missing binary operator =
-before token "("
-  238 | #if __has_attribute(__no_profile_instrument_function__)
-      |                    ^
-include/linux/compiler_attributes.h:296:5: warning: "__has_attribute" is no=
-t defined, evaluates to 0 [-Wundef]
-  296 | #if __has_attribute(__warning__)
-      |     ^~~~~~~~~~~~~~~
-include/linux/compiler_attributes.h:296:20: error: missing binary operator =
-before token "("
-  296 | #if __has_attribute(__warning__)
-      |                    ^
-make[2]: *** [arch/powerpc/boot/Makefile:225: arch/powerpc/boot/crt0.o] Err=
-or 1
-
-Exposed by commit
-
-  6d2ef226f2f1 ("compiler_attributes.h: drop __has_attribute() support for =
-gcc4")
-
-Powerpc uses BOOTAS to build arch/powerpc/boot/crt0.o (and others)
-which (with V=3D1) is
-
-  gcc -Wp,-MD,arch/powerpc/boot/.crt0.o.d -D__ASSEMBLY__ -Wall -Wundef -Wst=
-rict-prototypes -Wno-trigraphs -fno-strict-aliasing -O2 -msoft-float -mno-a=
-ltivec -mno-vsx -pipe -fomit-frame-pointer -fno-builtin -fPIC -nostdinc -in=
-clude /home/sfr/next/next/include/linux/compiler_attributes.h -I/home/sfr/n=
-ext/next/arch/powerpc/include -I./arch/powerpc/include/generated -I/home/sf=
-r/next/next/include -I./include -I/home/sfr/next/next/arch/powerpc/include/=
-uapi -I./arch/powerpc/include/generated/uapi -I/home/sfr/next/next/include/=
-uapi -I./include/generated/uapi -include /home/sfr/next/next/include/linux/=
-compiler-version.h -include /home/sfr/next/next/include/linux/kconfig.h -m3=
-2 -isystem /usr/lib/gcc/powerpc64le-linux-gnu/10/include -mbig-endian -nost=
-dinc -c -o arch/powerpc/boot/crt0.o /home/sfr/next/next/arch/powerpc/boot/c=
-rt0.S
-
-I am not sure what is missing here to get __has_attribute defined.
-
-I have reverted the above commit for today ( and reapplied the bits
-from commits
-
-  7ed012969bbc ("Compiler Attributes: fix __has_attribute(__no_sanitize_cov=
-erage__) for GCC 4")
-  b83a908498d6 ("compiler_attributes.h: move __compiletime_{error|warning}")
-).
-
-I assume that this needs some work in the powerpc arch Makfile(s) ...
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/+fAm=g2A=.HjuXM/KZoYRo=
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmE/6BUACgkQAVBC80lX
-0GyYQgf6Ak0293PpiqdwsDmQ5V0aJ0jtRJdt/XPFzeDcvOIRHcA2T4ReoWyXlcHP
-GYVekkSInE/9x0vIeMGIEh4DRVj0X5gntdQ7O4IblUYwypEjyuCB8wz8QatIzeg2
-hrbtN3SFApTC7haf83VwDXalisCfpEIaJpNpJqNOzj4gQs0PEEmRsVrkusAT73C7
-sD799LU/XK+09tE6D9xHZm1FsQg1aRtdswuJAojUBNSwQDjgwDeVAOUNC3VQ4pyj
-POscsAoFX+Cskg7KVOK5tJgD/okG8UkZ9/PqI9ISGZltnyH+BO8QINXxhchO0E9H
-t7aB3eAHqU/+vQxCNdJ9PED32BDMAQ==
-=HgYZ
------END PGP SIGNATURE-----
-
---Sig_/+fAm=g2A=.HjuXM/KZoYRo=--
+              Linus
