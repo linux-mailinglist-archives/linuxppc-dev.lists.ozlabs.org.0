@@ -2,74 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB93540A1D3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 02:20:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4977340A1E1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 02:25:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H7kWw1GBMz2ymb
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 10:20:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H7kdJ0vyvz2ypM
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 10:25:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=SclZiWrk;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=OyWldn4c;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::129;
- helo=mail-lf1-x129.google.com; envelope-from=torvalds@linuxfoundation.org;
+ smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::22c;
+ helo=mail-lj1-x22c.google.com; envelope-from=torvalds@linuxfoundation.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
- header.a=rsa-sha256 header.s=google header.b=SclZiWrk; 
+ header.a=rsa-sha256 header.s=google header.b=OyWldn4c; 
  dkim-atps=neutral
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com
- [IPv6:2a00:1450:4864:20::129])
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com
+ [IPv6:2a00:1450:4864:20::22c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H7kWH4mfXz2yHb
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Sep 2021 10:19:53 +1000 (AEST)
-Received: by mail-lf1-x129.google.com with SMTP id c8so24781677lfi.3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Sep 2021 17:19:53 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H7kcd0dlHz2xrD
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Sep 2021 10:24:32 +1000 (AEST)
+Received: by mail-lj1-x22c.google.com with SMTP id s3so20384592ljp.11
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Sep 2021 17:24:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linux-foundation.org; s=google;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=OJCOVeO589IX0eZ2k9PI4XmEqC+ha+gDBXVAR0aVS3A=;
- b=SclZiWrkT5KucTv1KidhHP6yMCpKWMNqoOiS1UgRHORAfJuSSMf+xaeagNjetAELs6
- Bh2TOhuIaWLPnM+/W2Yzq/TD4x6e1lZqhBUlLoChPi52C7bRjop+4ZM3lAIpZzJOEVn9
- lcHuoBjFShp/uD8fDDM5+JSs5YrWYKB9IWsGY=
+ :cc; bh=Ilht7yuGeza7KxnmHTP+E2966EzjBhfJp58VMsQTPTY=;
+ b=OyWldn4cRJVLyXq6LgbpKqWBqxTaQjehON/ag/GIf4HbIUXBoHl9V8OzGKT2Ylw04i
+ uUG63w1xUjKTcrlLMVBNRKtBukGdfVoxMaymciw4pdsgxR1SflagLJb66lTfifVfnZuV
+ nGyWGAvhm/vMudecgclcQqVLBtG8dwi+c08xc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=OJCOVeO589IX0eZ2k9PI4XmEqC+ha+gDBXVAR0aVS3A=;
- b=7pznX5m+A1WYH+rnhjt/ZANFUV0C4xx0UoKcxyQi9VTCZMgGUYpLs7tjTd0y57MHkP
- hn2iwldZgB1kmF+QzUr6TkDu5COzDmUx9ntouS1fk4SnFM7aK69dQCmDghkVL7V5cp6+
- fAHf7crrcIIlq0ETN+VOYRRIhkHfEGoEBX3MZuKbayxtdm9eHrbRrvV+EDmK0hFy0Tn/
- eR9MaLbRlddcaU7st+thzRsUaCUojoqpY4j5Jj2eSguzscQMJlnhj2t2GWkL3LGaH7/I
- pFjtFgPll6LR1/dlCfhhbx88JvMq0T8MUue7xxs/7/DgCq45/Dtr+hHsStMSJi/xzCM7
- gGiQ==
-X-Gm-Message-State: AOAM531/+iyBKZRumya3krOimidXNZAoZtlMhUEDvihisL2KHA24MCMw
- M4H9jfeaBgZW6RveOwqgdMaWFjInXWYW6d9DMKA=
-X-Google-Smtp-Source: ABdhPJxdgwkhxQJ01yTWNiysKnpG30HLa8qr6HvpC1nnREDCRWeh4geAxirmpBQEVsVuBX6yWVb5lA==
-X-Received: by 2002:a05:6512:2202:: with SMTP id
- h2mr10871464lfu.494.1631578785609; 
- Mon, 13 Sep 2021 17:19:45 -0700 (PDT)
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com.
- [209.85.208.180])
- by smtp.gmail.com with ESMTPSA id q26sm965607lfb.271.2021.09.13.17.19.44
+ bh=Ilht7yuGeza7KxnmHTP+E2966EzjBhfJp58VMsQTPTY=;
+ b=5FSFDbuKpVuzwX2RLEYI/QpyNgO0fJn6TPDNfGyewNH5+uGhL6iRIU8fWefuRlblAN
+ v1ZLRX1v4Zs4NsHPQgfHzUWaxXSIQpd1ROccTNl3SY9sizD/6dzITjL6ZqcqM6A0cXk0
+ Xq3jlMbWfF4eG6KXSh+6TXMcd7AV7RQTRgczWvXdo0MwG0KEfUeRYenEx2YnhdzYBn8y
+ kBfS9V6cy74nKrJbZUWHfAmbmbTqAkEk1IINujT5R7W/c6hrdqJhUB4h3S0Qui93kYh8
+ UuTO18D0bv2M2JIux+VrtfC8DMgka/fz2wFg76CG4JmeOPrQh/Q3RuJd8+Y4wV0K3U1T
+ 0y4g==
+X-Gm-Message-State: AOAM530u1DFnCUtFv1LuvU6A0L/whtlUo5nmPwiyFmfUPtSKr3kdYjhU
+ DP0/8doqO4FxJNkyxXKzfEsfxVWx6w7ZBe+BZ2Q=
+X-Google-Smtp-Source: ABdhPJyOZFGSWhR5L/MdO8TqafEbf2MUTC5WZU2Bt0GLBlCgMOVFZoj6yXvcxzzg7NNmyHKAef51RA==
+X-Received: by 2002:a2e:804c:: with SMTP id p12mr12855040ljg.118.1631579068262; 
+ Mon, 13 Sep 2021 17:24:28 -0700 (PDT)
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com.
+ [209.85.167.53])
+ by smtp.gmail.com with ESMTPSA id z13sm1150918ljo.37.2021.09.13.17.24.27
  for <linuxppc-dev@lists.ozlabs.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 13 Sep 2021 17:19:45 -0700 (PDT)
-Received: by mail-lj1-f180.google.com with SMTP id o11so12877585ljp.8
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Sep 2021 17:19:44 -0700 (PDT)
-X-Received: by 2002:a2e:b53a:: with SMTP id z26mr12192430ljm.95.1631578784223; 
- Mon, 13 Sep 2021 17:19:44 -0700 (PDT)
+ Mon, 13 Sep 2021 17:24:27 -0700 (PDT)
+Received: by mail-lf1-f53.google.com with SMTP id k4so24766214lfj.7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Sep 2021 17:24:27 -0700 (PDT)
+X-Received: by 2002:a05:6512:94e:: with SMTP id
+ u14mr5107509lft.173.1631579067472; 
+ Mon, 13 Sep 2021 17:24:27 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210914100853.3f502bc9@canb.auug.org.au>
-In-Reply-To: <20210914100853.3f502bc9@canb.auug.org.au>
+ <CAHk-=whOv-LZKxBqQr8yzmhi7sN4zoFG7t8ALNx+2XFhXjGTpA@mail.gmail.com>
+In-Reply-To: <CAHk-=whOv-LZKxBqQr8yzmhi7sN4zoFG7t8ALNx+2XFhXjGTpA@mail.gmail.com>
 From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Mon, 13 Sep 2021 17:19:27 -0700
-X-Gmail-Original-Message-ID: <CAHk-=whOv-LZKxBqQr8yzmhi7sN4zoFG7t8ALNx+2XFhXjGTpA@mail.gmail.com>
-Message-ID: <CAHk-=whOv-LZKxBqQr8yzmhi7sN4zoFG7t8ALNx+2XFhXjGTpA@mail.gmail.com>
+Date: Mon, 13 Sep 2021 17:24:11 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whGuEkYmQcJx8WfZ7MFhbKGJDcA6NUZWtrnM6Y6xFqATw@mail.gmail.com>
+Message-ID: <CAHk-=whGuEkYmQcJx8WfZ7MFhbKGJDcA6NUZWtrnM6Y6xFqATw@mail.gmail.com>
 Subject: Re: linux-next: build failure after merge of the origin tree
 To: Stephen Rothwell <sfr@canb.auug.org.au>
 Content-Type: text/plain; charset="UTF-8"
@@ -91,13 +92,19 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Sep 13, 2021 at 5:09 PM Stephen Rothwell <sfr@canb.auug.org.au> wrote:
+On Mon, Sep 13, 2021 at 5:19 PM Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
 >
->   gcc -Wp,-MD,arch/powerpc/boot/.crt0.o.d
+> What version of gcc is this? Are you maybe on gcc-4.9 and we just
+> didn't check that properly?
 
-Ok, so it's not the funky "clang reports gcc-4" that caused tool breakage.
+Hmm. That version check works for me (tested by just arbitrarily
+making min-tool-version return version 15 for gcc ;)
 
-What version of gcc is this? Are you maybe on gcc-4.9 and we just
-didn't check that properly?
+So you got far enough that I don't believe you have gcc-4.
 
-              Linus
+I have no idea why it then complains about removal of the GCC4 macros.
+
+Can somebody hit me with the clue-bat?
+
+            Linus
