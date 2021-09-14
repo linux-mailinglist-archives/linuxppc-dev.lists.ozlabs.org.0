@@ -1,63 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56B8440B0B7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 16:33:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1F7F40B0C8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Sep 2021 16:34:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H85Ry283gz3c9b
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Sep 2021 00:33:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H85Tk4Gz8z3cVT
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Sep 2021 00:34:50 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jfnoiHVx;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=mchehab@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=jfnoiHVx; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H85Ql4mbWz2ynV
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Sep 2021 00:32:15 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4H85QX3qYZz9sRk;
- Tue, 14 Sep 2021 16:32:04 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id XYgw1Yn0ldCd; Tue, 14 Sep 2021 16:32:04 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4H85QS53Wkz9sTZ;
- Tue, 14 Sep 2021 16:32:00 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 99E3D8B77A;
- Tue, 14 Sep 2021 16:32:00 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id B9IoxFGY8MA8; Tue, 14 Sep 2021 16:32:00 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.204.207])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 27EA28B763;
- Tue, 14 Sep 2021 16:32:00 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 18EEVoBI336584
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Tue, 14 Sep 2021 16:31:50 +0200
-Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 18EEVoLK336583;
- Tue, 14 Sep 2021 16:31:50 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
- christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>,
- Michael Ellerman <mpe@ellerman.id.au>, ebiederm@xmission.com,
- hch@infradead.org
-Subject: [PATCH v4 5/5] powerpc/signal: Use unsafe_copy_siginfo_to_user()
-Date: Tue, 14 Sep 2021 16:31:27 +0200
-Message-Id: <6ddc23da4a0a505436c0f6bb969c8553ecf9382f.1631629700.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H85RV0btSz3bsp
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Sep 2021 00:32:54 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9A1DD6113E;
+ Tue, 14 Sep 2021 14:32:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1631629970;
+ bh=bx3eNw9JOL5+zZqI1OEY2aJtfPAlh9PS4CL694WVv58=;
+ h=From:To:Cc:Subject:Date:From;
+ b=jfnoiHVxtBYsUSxOV6zLXSMXfjiZsRkW/G+dJeExP4I1rpLyg1xu+brEzSXipnnUQ
+ G63mVRCVPptiA1YRc1OkfLV3Sq+kOQf1j8O1LmnDKAQLWu9BoXE82mGjpZzuZXqpNo
+ Wufz0EQJT7oanxewUmhkJeBN59hgNK1m9UGiUm6gugfzRhzgV7nIA6lf+ycHcD0GOf
+ gFquyg6rQqabKsni1qxB8MHSIg4kMXd05oQeZ2HyW220DCSiytcSgVHZmrK2hlX7fX
+ Rjwll/xj1x/9c1ZtAiYZKjbTgnyHlT47ggTuS4P9ao26PM9XWCkfGgpEBkbRlrsaj5
+ rlIOKnnXeiP6A==
+Received: by mail.kernel.org with local (Exim 4.94.2)
+ (envelope-from <mchehab@kernel.org>)
+ id 1mQ9UN-000KkD-8d; Tue, 14 Sep 2021 16:32:47 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Subject: [PATCH v2 00/29] Change wildcards on ABI files
+Date: Tue, 14 Sep 2021 16:32:15 +0200
+Message-Id: <cover.1631629496.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.31.1
-In-Reply-To: <1718f38859d5366f82d5bef531f255cedf537b5d.1631629700.git.christophe.leroy@csgroup.eu>
-References: <1718f38859d5366f82d5bef531f255cedf537b5d.1631629700.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -71,103 +59,111 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Kees Cook <keescook@chromium.org>, Jonathan Corbet <corbet@lwn.net>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, netdev@vger.kernel.org,
+ Richard Cochran <richardcochran@gmail.com>, Anton Vorontsov <anton@enomsg.org>,
+ linux-kernel@vger.kernel.org, Johan Hovold <johan@kernel.org>,
+ Tony Luck <tony.luck@intel.com>, Colin Cross <ccross@android.com>,
+ linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Peter Rosin <peda@axentia.se>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use unsafe_copy_siginfo_to_user() in order to do the copy
-within the user access block.
+The ABI files are meant to be parsed via a script (scripts/get_abi.pl).
 
-On an mpc 8321 (book3s/32) the improvment is about 5% on a process
-sending a signal to itself.
+A new improvement on it will allow it to help to detect if an ABI description
+is missing, or if the What: field won't match the actual location of the symbol.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
-v4: Use another approach for compat: drop the unsafe_copy_siginfo_to_user32(), instead directly call copy_siginfo_to_external32() before user_access_begin()
+In order for get_abi.pl to convert What: into regex, changes are needed on
+existing ABI files, as the conversion should not be ambiguous.
 
-v3: Don't leave compat aside, use the new unsafe_copy_siginfo_to_user32()
----
- arch/powerpc/kernel/signal_32.c | 17 ++++++++---------
- arch/powerpc/kernel/signal_64.c |  5 +----
- 2 files changed, 9 insertions(+), 13 deletions(-)
+One alternative would be to convert everything into regexes, but this
+would generate a huge amount of patches/changes. So, instead, let's
+touch only the ABI files that aren't following the de-facto wildcard 
+standards already found on most of the ABI files, e. g.:
 
-diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/signal_32.c
-index ff101e2b3bab..f1f5dde0885f 100644
---- a/arch/powerpc/kernel/signal_32.c
-+++ b/arch/powerpc/kernel/signal_32.c
-@@ -710,12 +710,6 @@ static long restore_tm_user_regs(struct pt_regs *regs, struct mcontext __user *s
- }
- #endif
- 
--#ifdef CONFIG_PPC64
--
--#define copy_siginfo_to_user	copy_siginfo_to_user32
--
--#endif /* CONFIG_PPC64 */
--
- /*
-  * Set up a signal frame for a "real-time" signal handler
-  * (one which gets siginfo).
-@@ -731,6 +725,7 @@ int handle_rt_signal32(struct ksignal *ksig, sigset_t *oldset,
- 	struct pt_regs *regs = tsk->thread.regs;
- 	/* Save the thread's msr before get_tm_stackpointer() changes it */
- 	unsigned long msr = regs->msr;
-+	compat_siginfo_t uinfo;
- 
- 	/* Set up Signal Frame */
- 	frame = get_sigframe(ksig, tsk, sizeof(*frame), 1);
-@@ -744,6 +739,9 @@ int handle_rt_signal32(struct ksignal *ksig, sigset_t *oldset,
- 	else
- 		prepare_save_user_regs(1);
- 
-+	if (IS_ENABLED(CONFIG_COMPAT))
-+		copy_siginfo_to_external32(&uinfo, &ksig->info);
-+
- 	if (!user_access_begin(newsp, __SIGNAL_FRAMESIZE + 16 + sizeof(*frame)))
- 		goto badframe;
- 
-@@ -779,15 +777,16 @@ int handle_rt_signal32(struct ksignal *ksig, sigset_t *oldset,
- 		asm("dcbst %y0; sync; icbi %y0; sync" :: "Z" (mctx->mc_pad[0]));
- 	}
- 	unsafe_put_sigset_t(&frame->uc.uc_sigmask, oldset, failed);
-+	if (IS_ENABLED(CONFIG_COMPAT))
-+		unsafe_copy_to_user(&frame->info, &uinfo, sizeof(frame->info), failed);
-+	else
-+		unsafe_copy_siginfo_to_user((void *)&frame->info, &ksig->info, failed);
- 
- 	/* create a stack frame for the caller of the handler */
- 	unsafe_put_user(regs->gpr[1], newsp, failed);
- 
- 	user_access_end();
- 
--	if (copy_siginfo_to_user(&frame->info, &ksig->info))
--		goto badframe;
--
- 	regs->link = tramp;
- 
- #ifdef CONFIG_PPC_FPU_REGS
-diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/signal_64.c
-index d80ff83cacb9..56c0c74aa28c 100644
---- a/arch/powerpc/kernel/signal_64.c
-+++ b/arch/powerpc/kernel/signal_64.c
-@@ -901,15 +901,12 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
- 	}
- 
- 	unsafe_copy_to_user(&frame->uc.uc_sigmask, set, sizeof(*set), badframe_block);
-+	unsafe_copy_siginfo_to_user(&frame->info, &ksig->info, badframe_block);
- 	/* Allocate a dummy caller frame for the signal handler. */
- 	unsafe_put_user(regs->gpr[1], newsp, badframe_block);
- 
- 	user_write_access_end();
- 
--	/* Save the siginfo outside of the unsafe block. */
--	if (copy_siginfo_to_user(&frame->info, &ksig->info))
--		goto badframe;
--
- 	/* Make sure signal handler doesn't get spurious FP exceptions */
- 	tsk->thread.fp_state.fpscr = 0;
- 
+	/.../
+	*
+	<foo>
+	(option1|option2)
+	X
+	Y
+	Z
+	[0-9] (and variants)
+
+A couple of the patches here came from v1, but most of the patches were
+written to address things like rcN, where N is a wildcard.
+
+We can't teach get_abi.pl to use an uppercase "N" letter to be a wildcard,
+as the USB ABI already uses "N" inside some of their symbols, like 
+bNumEndpoints.
+
+Mauro Carvalho Chehab (29):
+  ABI: sysfs-bus-usb: better document variable argument
+  ABI: sysfs-tty: better document module name parameter
+  ABI: sysfs-kernel-slab: use a wildcard for the cache name
+  ABI: security: fix location for evm and ima_policy
+  ABI: sysfs-class-tpm: use wildcards for pcr-* nodes
+  ABI: sysfs-bus-rapidio: use wildcards on What definitions
+  ABI: sysfs-class-cxl: place "not in a guest" at description
+  ABI: sysfs-class-devfreq-event: use the right wildcards on What
+  ABI: sysfs-class-mic: use the right wildcards on What definitions
+  ABI: pstore: Fix What field
+  ABI: sysfs-class-typec: fix a bad What field
+  ABI: sysfs-ata: use a proper wildcard for ata_*
+  ABI: sysfs-class-infiniband: use wildcards on What definitions
+  ABI: sysfs-bus-pci: use wildcards on What definitions
+  ABI: sysfs-bus-soundwire-master: use wildcards on What definitions
+  ABI: sysfs-bus-soundwire-slave: use wildcards on What definitions
+  ABI: sysfs-class-gnss: use wildcards on What definitions
+  ABI: sysfs-class-mei: use wildcards on What definitions
+  ABI: sysfs-class-mux: use wildcards on What definitions
+  ABI: sysfs-class-pwm: use wildcards on What definitions
+  ABI: sysfs-class-rc: use wildcards on What definitions
+  ABI: sysfs-class-rc-nuvoton: use wildcards on What definitions
+  ABI: sysfs-class-uwb_rc: use wildcards on What definitions
+  ABI: sysfs-class-uwb_rc-wusbhc: use wildcards on What definitions
+  ABI: sysfs-devices-platform-dock: use wildcards on What definitions
+  ABI: sysfs-devices-system-cpu: use wildcards on What definitions
+  ABI: sysfs-firmware-efi-esrt: use wildcards on What definitions
+  ABI: sysfs-platform-sst-atom: use wildcards on What definitions
+  ABI: sysfs-ptp: use wildcards on What definitions
+
+ .../ABI/stable/sysfs-class-infiniband         | 64 ++++++-------
+ Documentation/ABI/stable/sysfs-class-tpm      |  2 +-
+ Documentation/ABI/testing/evm                 |  4 +-
+ Documentation/ABI/testing/ima_policy          |  2 +-
+ Documentation/ABI/testing/pstore              |  3 +-
+ Documentation/ABI/testing/sysfs-ata           |  2 +-
+ Documentation/ABI/testing/sysfs-bus-pci       |  2 +-
+ Documentation/ABI/testing/sysfs-bus-rapidio   | 32 +++----
+ .../ABI/testing/sysfs-bus-soundwire-master    |  2 +-
+ .../ABI/testing/sysfs-bus-soundwire-slave     |  2 +-
+ Documentation/ABI/testing/sysfs-bus-usb       | 16 ++--
+ Documentation/ABI/testing/sysfs-class-cxl     | 15 ++-
+ .../ABI/testing/sysfs-class-devfreq-event     | 12 +--
+ Documentation/ABI/testing/sysfs-class-gnss    |  2 +-
+ Documentation/ABI/testing/sysfs-class-mei     | 18 ++--
+ Documentation/ABI/testing/sysfs-class-mic     | 24 ++---
+ Documentation/ABI/testing/sysfs-class-mux     |  2 +-
+ Documentation/ABI/testing/sysfs-class-pwm     | 20 ++--
+ Documentation/ABI/testing/sysfs-class-rc      | 14 +--
+ .../ABI/testing/sysfs-class-rc-nuvoton        |  2 +-
+ Documentation/ABI/testing/sysfs-class-typec   |  2 +-
+ Documentation/ABI/testing/sysfs-class-uwb_rc  | 26 ++---
+ .../ABI/testing/sysfs-class-uwb_rc-wusbhc     | 10 +-
+ .../ABI/testing/sysfs-devices-platform-dock   | 10 +-
+ .../ABI/testing/sysfs-devices-system-cpu      | 16 ++--
+ .../ABI/testing/sysfs-firmware-efi-esrt       | 16 ++--
+ Documentation/ABI/testing/sysfs-kernel-slab   | 94 +++++++++----------
+ .../ABI/testing/sysfs-platform-sst-atom       |  2 +-
+ Documentation/ABI/testing/sysfs-ptp           | 30 +++---
+ Documentation/ABI/testing/sysfs-tty           | 32 +++----
+ 30 files changed, 242 insertions(+), 236 deletions(-)
+
 -- 
 2.31.1
+
 
