@@ -2,105 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51AF540BE4A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Sep 2021 05:34:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF47F40BEBB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Sep 2021 06:09:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H8Qn11kdpz2ywB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Sep 2021 13:34:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H8RYJ6MX6z2ypD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Sep 2021 14:09:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Kl9f2kL4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel-com.20150623.gappssmtp.com header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256 header.s=20150623 header.b=ZhFEJREK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
+ smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::1033;
+ helo=mail-pj1-x1033.google.com; envelope-from=dan.j.williams@intel.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Kl9f2kL4; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=intel-com.20150623.gappssmtp.com
+ header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=ZhFEJREK; dkim-atps=neutral
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com
+ [IPv6:2607:f8b0:4864:20::1033])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H8QmB58f0z2xr4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Sep 2021 13:33:29 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.0.43) with SMTP id 18F0Tu2d015659;
- Tue, 14 Sep 2021 23:33:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=BRjAQIdENxqRUy9PFv5aAg1MPkBvqrtMXYjCJQcsNdE=;
- b=Kl9f2kL4qw3Qc0uuiCRCmrg5r3yOkFZD9Ha22gpnC9L9Mp3mJVjaGqr+I1wAQg9UrkwE
- tvDTWYjcC4trSZkw88kGVwuaC5C8/JzbIUedNlQEDWDKmgC7NtYwqyLsFKboNRFXhRWd
- VA/I169MwJkPqocKej6N3FXUyLve6OsUMcG1n+y5vmA75ajntZgxSbYeN0EKzY/hXP1D
- P+TsdtXhM2OL8NQ4SqjkuLbg2/4afUp8nPsqw9qFNl//bq2sGyr57bknyg5TaFR+S7pw
- CWPt3nNCDj7dyp4ygxp0ysBPFYpKE1x7D84w+mG8SeMglYpbpXRWSJWFdmCqdCXkjYVW Rw== 
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3b36bftwha-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 14 Sep 2021 23:33:24 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 18F3XCgN011738;
- Wed, 15 Sep 2021 03:33:22 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma04ams.nl.ibm.com with ESMTP id 3b0m3a1mf9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 15 Sep 2021 03:33:22 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 18F3XK3s42991878
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 15 Sep 2021 03:33:20 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E90DD11C04C;
- Wed, 15 Sep 2021 03:33:19 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 450A011C04A;
- Wed, 15 Sep 2021 03:33:19 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 15 Sep 2021 03:33:19 +0000 (GMT)
-Received: from [9.206.163.168] (unknown [9.206.163.168])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 5263C600F5;
- Wed, 15 Sep 2021 13:33:17 +1000 (AEST)
-Subject: Re: [PATCH v2 07/29] ABI: sysfs-class-cxl: place "not in a guest" at
- description
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Linux Doc Mailing List <linux-doc@vger.kernel.org>
-References: <cover.1631629496.git.mchehab+huawei@kernel.org>
- <88ce67c9eed1ae08af3d3992415032723184af9e.1631629496.git.mchehab+huawei@kernel.org>
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Message-ID: <3334441d-03f0-5d21-49d3-84e87a5eddc5@linux.ibm.com>
-Date: Wed, 15 Sep 2021 13:33:13 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
-In-Reply-To: <88ce67c9eed1ae08af3d3992415032723184af9e.1631629496.git.mchehab+huawei@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: -ODydiBoNOxTCJj2e_ZKxDXlgzfX2ghS
-X-Proofpoint-ORIG-GUID: -ODydiBoNOxTCJj2e_ZKxDXlgzfX2ghS
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H8RXb0sQ8z2xrL
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Sep 2021 14:08:24 +1000 (AEST)
+Received: by mail-pj1-x1033.google.com with SMTP id
+ lb1-20020a17090b4a4100b001993f863df2so1247100pjb.5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Sep 2021 21:08:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=CQDNNNFEo1X3i4ZbWhtXjvPLmTOQuS2HCDWIbVD2T9k=;
+ b=ZhFEJREKfFheqoxU3Yuv65eBxZoE6XDInKedcwQtq/qCcAAOvHlm6ZKydu7I94PYL2
+ UVXNGpOFirKknWbmqfzzfdSWdVtT3NMXIulWDhTI9gFXDzKh7SMtfsTMGPkSkuFEYgeb
+ 055LPaGzuBBw9GKNuUNmOLVtbOZZzQU4rr3UGDcpGjF9sYKZbrAYSo0+fWfbBg5DcWev
+ 5ALFWGzqTsz6daJ7gWjTFDX1B+y/DsNE/9YUaCCYVCVLJv758hcffSe13MtCM3yEb+6z
+ v35aDUDQ1+WjjoSlJgkfiHF1btNWkUK7QeuUCRdP69thJe6VF813nOn8eNbzE392lQpf
+ 2oLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=CQDNNNFEo1X3i4ZbWhtXjvPLmTOQuS2HCDWIbVD2T9k=;
+ b=DTmePxp2d25HW+Q2mAESSqjsp1SQZ2ywuOdTXoy/0ReC8Dst08gW4xgYR3zNmxZdCY
+ HESpWcnkYB+JWgr5UWfpk+Skg4JF5ehWb2NrusAwvTGvhx49h3GTBjhJ98fLU4sLCtXj
+ /EOW2FCidZBIDUGTwXjG6YyjtpVgC7PsXKNJq1q6JXlurCMFAJZUP1XpyjjeJkbAAY4A
+ pg7rx5X2Qo1x0KyFyL+FmofxCLVzrQSJEHXdPDSC886wAOrqa0tXyvgN7pTFBR8Eltv4
+ qtQU+gmHN1DE95hKB4JN1+58+KHFy4ExE5aArp8yUOka17z/XxdVFbLvksYogp3/H7iY
+ vNog==
+X-Gm-Message-State: AOAM530nFvgWwe9QU/D3wj06Rurg7SEOlDGifacJVJoLcoEDWhURYc2+
+ vd6KKW3wFXgANehBceu4J9CKETitYs4SXeVtBBonsg==
+X-Google-Smtp-Source: ABdhPJz6jSy3QNZ774ZvbFCFT/locOJKKFJeswe7GHvEF4/9SaC8NfwBZ1lNaqgJ2388QzKNtHhAWeVE3LX4MRmizIA=
+X-Received: by 2002:a17:90b:3b84:: with SMTP id
+ pc4mr6086447pjb.220.1631678900879; 
+ Tue, 14 Sep 2021 21:08:20 -0700 (PDT)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.687,Hydra:6.0.235,FMLib:17.0.607.475
- definitions=2020-10-13_15,2020-10-13_02,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- phishscore=0 bulkscore=0 mlxscore=0 clxscore=1011 impostorscore=0
- adultscore=0 suspectscore=0 spamscore=0 malwarescore=0 lowpriorityscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2109030001 definitions=main-2109140132
+References: <20210903050914.273525-1-kjain@linux.ibm.com>
+ <20210903050914.273525-2-kjain@linux.ibm.com>
+ <CAPcyv4jSL2cDxGiXEtyyce3eNEE_QUnnMjuLXb3iCwO8_7a7LQ@mail.gmail.com>
+ <d7f8bf51-059f-4496-37c4-6516a703e209@linux.ibm.com>
+In-Reply-To: <d7f8bf51-059f-4496-37c4-6516a703e209@linux.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Tue, 14 Sep 2021 21:08:10 -0700
+Message-ID: <CAPcyv4hE4rh5R+8zy3X4gDJeuPzQ0oQHmHbe_pppgWB2_RjfAg@mail.gmail.com>
+Subject: Re: [RESEND PATCH v4 1/4] drivers/nvdimm: Add nvdimm pmu structure
+To: kajoljain <kjain@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,95 +80,144 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>
+Cc: Linux NVDIMM <nvdimm@lists.linux.dev>, Santosh Sivaraj <santosh@fossix.org>,
+ maddy@linux.ibm.com, "Weiny, Ira" <ira.weiny@intel.com>,
+ rnsastry@linux.ibm.com, Peter Zijlstra <peterz@infradead.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ atrajeev@linux.vnet.ibm.com, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Vishal L Verma <vishal.l.verma@intel.com>,
+ Vaibhav Jain <vaibhav@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 15/9/21 12:32 am, Mauro Carvalho Chehab wrote:
-> The What: field should have just the location of the ABI.
-> Anything else should be inside the description.
-> 
-> This fixes its parsing by get_abi.pl script.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+On Thu, Sep 9, 2021 at 12:56 AM kajoljain <kjain@linux.ibm.com> wrote:
+>
+>
+>
+> On 9/8/21 3:29 AM, Dan Williams wrote:
+> > Hi Kajol,
+> >
+> > Apologies for the delay in responding to this series, some comments below:
+>
+> Hi Dan,
+>     No issues, thanks for reviewing the patches.
+>
+> >
+> > On Thu, Sep 2, 2021 at 10:10 PM Kajol Jain <kjain@linux.ibm.com> wrote:
+> >>
+> >> A structure is added, called nvdimm_pmu, for performance
+> >> stats reporting support of nvdimm devices. It can be used to add
+> >> nvdimm pmu data such as supported events and pmu event functions
+> >> like event_init/add/read/del with cpu hotplug support.
+> >>
+> >> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> >> Reviewed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+> >> Tested-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
+> >> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+> >> ---
+> >>  include/linux/nd.h | 43 +++++++++++++++++++++++++++++++++++++++++++
+> >>  1 file changed, 43 insertions(+)
+> >>
+> >> diff --git a/include/linux/nd.h b/include/linux/nd.h
+> >> index ee9ad76afbba..712499cf7335 100644
+> >> --- a/include/linux/nd.h
+> >> +++ b/include/linux/nd.h
+> >> @@ -8,6 +8,8 @@
+> >>  #include <linux/ndctl.h>
+> >>  #include <linux/device.h>
+> >>  #include <linux/badblocks.h>
+> >> +#include <linux/platform_device.h>
+> >> +#include <linux/perf_event.h>
+> >>
+> >>  enum nvdimm_event {
+> >>         NVDIMM_REVALIDATE_POISON,
+> >> @@ -23,6 +25,47 @@ enum nvdimm_claim_class {
+> >>         NVDIMM_CCLASS_UNKNOWN,
+> >>  };
+> >>
+> >> +/* Event attribute array index */
+> >> +#define NVDIMM_PMU_FORMAT_ATTR         0
+> >> +#define NVDIMM_PMU_EVENT_ATTR          1
+> >> +#define NVDIMM_PMU_CPUMASK_ATTR                2
+> >> +#define NVDIMM_PMU_NULL_ATTR           3
+> >> +
+> >> +/**
+> >> + * struct nvdimm_pmu - data structure for nvdimm perf driver
+> >> + *
+> >> + * @name: name of the nvdimm pmu device.
+> >> + * @pmu: pmu data structure for nvdimm performance stats.
+> >> + * @dev: nvdimm device pointer.
+> >> + * @functions(event_init/add/del/read): platform specific pmu functions.
+> >
+> > This is not valid kernel-doc:
+> >
+> > include/linux/nd.h:67: warning: Function parameter or member
+> > 'event_init' not described in 'nvdimm_pmu'
+> > include/linux/nd.h:67: warning: Function parameter or member 'add' not
+> > described in 'nvdimm_pmu'
+> > include/linux/nd.h:67: warning: Function parameter or member 'del' not
+> > described in 'nvdimm_pmu'
+> > include/linux/nd.h:67: warning: Function parameter or member 'read'
+> > not described in 'nvdimm_pmu'
+> >
+> > ...but I think rather than fixing those up 'struct nvdimm_pmu' should be pruned.
+> >
+> > It's not clear to me that it is worth the effort to describe these
+> > details to the nvdimm core which is just going to turn around and call
+> > the pmu core. I'd just as soon have the driver call the pmu core
+> > directly, optionally passing in attributes and callbacks that come
+> > from the nvdimm core and/or the nvdimm provider.
+>
+> The intend for adding these callbacks(event_init/add/del/read) is to give
+> flexibility to the nvdimm core to add some common checks/routines if required
+> in the future. Those checks can be common for all architecture with still having the
+> ability to call arch/platform specific driver code to use its own routines.
+>
+> But as you said, currently we don't have any common checks and it directly
+> calling platform specific code, so we can get rid of it.
+> Should we remove this part for now?
 
-Looks fine to me.
+Yes, lets go direct to the perf api for now and await the need for a
+common core wrapper to present itself.
 
-Acked-by: Andrew Donnellan <ajd@linux.ibm.com>
+>
+>
+> >
+> > Otherwise it's also not clear which of these structure members are
+> > used at runtime vs purely used as temporary storage to pass parameters
+> > to the pmu core.
+> >
+> >> + * @attr_groups: data structure for events, formats and cpumask
+> >> + * @cpu: designated cpu for counter access.
+> >> + * @node: node for cpu hotplug notifier link.
+> >> + * @cpuhp_state: state for cpu hotplug notification.
+> >> + * @arch_cpumask: cpumask to get designated cpu for counter access.
+> >> + */
+> >> +struct nvdimm_pmu {
+> >> +       const char *name;
+> >> +       struct pmu pmu;
+> >> +       struct device *dev;
+> >> +       int (*event_init)(struct perf_event *event);
+> >> +       int  (*add)(struct perf_event *event, int flags);
+> >> +       void (*del)(struct perf_event *event, int flags);
+> >> +       void (*read)(struct perf_event *event);
+> >> +       /*
+> >> +        * Attribute groups for the nvdimm pmu. Index 0 used for
+> >> +        * format attribute, index 1 used for event attribute,
+> >> +        * index 2 used for cpusmask attribute and index 3 kept as NULL.
+> >> +        */
+> >> +       const struct attribute_group *attr_groups[4];
+> >
+> > Following from above, I'd rather this was organized as static
+> > attributes with an is_visible() helper for the groups for any dynamic
+> > aspects. That mirrors the behavior of nvdimm_create() and allows for
+> > device drivers to compose the attribute groups from a core set and /
+> > or a provider specific set.
+>
+> Since we don't have any common events right now, Can I use papr
+> attributes directly or should we create dummy events for common thing and
+> then merged it with papr event list.
 
-> ---
->   Documentation/ABI/testing/sysfs-class-cxl | 15 ++++++++++-----
->   1 file changed, 10 insertions(+), 5 deletions(-)
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-class-cxl b/Documentation/ABI/testing/sysfs-class-cxl
-> index 818f55970efb..3c77677e0ca7 100644
-> --- a/Documentation/ABI/testing/sysfs-class-cxl
-> +++ b/Documentation/ABI/testing/sysfs-class-cxl
-> @@ -166,10 +166,11 @@ Description:    read only
->                   Decimal value of the Per Process MMIO space length.
->   Users:		https://github.com/ibm-capi/libcxl
->   
-> -What:           /sys/class/cxl/<afu>m/pp_mmio_off (not in a guest)
-> +What:           /sys/class/cxl/<afu>m/pp_mmio_off
->   Date:           September 2014
->   Contact:        linuxppc-dev@lists.ozlabs.org
->   Description:    read only
-> +                (not in a guest)
->                   Decimal value of the Per Process MMIO space offset.
->   Users:		https://github.com/ibm-capi/libcxl
->   
-> @@ -190,28 +191,31 @@ Description:    read only
->                   Identifies the revision level of the PSL.
->   Users:		https://github.com/ibm-capi/libcxl
->   
-> -What:           /sys/class/cxl/<card>/base_image (not in a guest)
-> +What:           /sys/class/cxl/<card>/base_image
->   Date:           September 2014
->   Contact:        linuxppc-dev@lists.ozlabs.org
->   Description:    read only
-> +                (not in a guest)
->                   Identifies the revision level of the base image for devices
->                   that support loadable PSLs. For FPGAs this field identifies
->                   the image contained in the on-adapter flash which is loaded
->                   during the initial program load.
->   Users:		https://github.com/ibm-capi/libcxl
->   
-> -What:           /sys/class/cxl/<card>/image_loaded (not in a guest)
-> +What:           /sys/class/cxl/<card>/image_loaded
->   Date:           September 2014
->   Contact:        linuxppc-dev@lists.ozlabs.org
->   Description:    read only
-> +                (not in a guest)
->                   Will return "user" or "factory" depending on the image loaded
->                   onto the card.
->   Users:		https://github.com/ibm-capi/libcxl
->   
-> -What:           /sys/class/cxl/<card>/load_image_on_perst (not in a guest)
-> +What:           /sys/class/cxl/<card>/load_image_on_perst
->   Date:           December 2014
->   Contact:        linuxppc-dev@lists.ozlabs.org
->   Description:    read/write
-> +                (not in a guest)
->                   Valid entries are "none", "user", and "factory".
->                   "none" means PERST will not cause image to be loaded to the
->                   card.  A power cycle is required to load the image.
-> @@ -235,10 +239,11 @@ Description:    write only
->                   contexts on the card AFUs.
->   Users:		https://github.com/ibm-capi/libcxl
->   
-> -What:		/sys/class/cxl/<card>/perst_reloads_same_image (not in a guest)
-> +What:		/sys/class/cxl/<card>/perst_reloads_same_image
->   Date:		July 2015
->   Contact:	linuxppc-dev@lists.ozlabs.org
->   Description:	read/write
-> +                (not in a guest)
->   		Trust that when an image is reloaded via PERST, it will not
->   		have changed.
->   
-> 
-
--- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
+Just use papr events directly.
