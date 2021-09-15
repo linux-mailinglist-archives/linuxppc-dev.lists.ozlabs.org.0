@@ -1,60 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 597F540CB8E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Sep 2021 19:19:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C7C940CBB1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Sep 2021 19:27:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H8n4s1rW9z305v
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 03:19:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H8nGf0D75z2ynY
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 03:27:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=linux.intel.com
+ (client-ip=134.134.136.31; helo=mga06.intel.com;
+ envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=<UNKNOWN>)
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H8n4K4hkcz2yJP
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Sep 2021 03:18:40 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4H8n4F0x0Hz9sV4;
- Wed, 15 Sep 2021 19:18:37 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id PKzNyxImFUbI; Wed, 15 Sep 2021 19:18:37 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4H8n4D73HWz9sV3;
- Wed, 15 Sep 2021 19:18:36 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D8C808B77C;
- Wed, 15 Sep 2021 19:18:36 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id QXqNkIx7zBCr; Wed, 15 Sep 2021 19:18:36 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.204.250])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 11BA38B763;
- Wed, 15 Sep 2021 19:18:34 +0200 (CEST)
-Subject: Re: [PATCH v3 4/8] powerpc/pseries/svm: Add a powerpc version of
- cc_platform_has()
-To: Borislav Petkov <bp@alien8.de>, Michael Ellerman <mpe@ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H8nGB3hxQz2yHR
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Sep 2021 03:27:13 +1000 (AEST)
+X-IronPort-AV: E=McAfee;i="6200,9189,10108"; a="283385213"
+X-IronPort-AV: E=Sophos;i="5.85,296,1624345200"; d="scan'208";a="283385213"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Sep 2021 10:26:10 -0700
+X-IronPort-AV: E=Sophos;i="5.85,296,1624345200"; d="scan'208";a="434215304"
+Received: from rlad-mobl.amr.corp.intel.com (HELO
+ skuppusw-mobl5.amr.corp.intel.com) ([10.212.118.184])
+ by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Sep 2021 10:26:08 -0700
+Subject: Re: [PATCH v3 0/8] Implement generic cc_platform_has() helper function
+To: Borislav Petkov <bp@alien8.de>, Tom Lendacky <thomas.lendacky@amd.com>
 References: <cover.1631141919.git.thomas.lendacky@amd.com>
- <9d4fc3f8ea7b325aaa1879beab1286876f45d450.1631141919.git.thomas.lendacky@amd.com>
- <YUCOTIPPsJJpLO/d@zn.tnic> <87lf3yk7g4.fsf@mpe.ellerman.id.au>
- <YUHGDbtiGrDz5+NS@zn.tnic>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <f8388f18-5e90-5d0f-d681-0b17f8307dd4@csgroup.eu>
-Date: Wed, 15 Sep 2021 19:18:34 +0200
+ <YUIjS6lKEY5AadZx@zn.tnic>
+From: "Kuppuswamy, Sathyanarayanan"
+ <sathyanarayanan.kuppuswamy@linux.intel.com>
+Message-ID: <d48e6a17-d2b4-67da-56d1-fc9a61dfe2b8@linux.intel.com>
+Date: Wed, 15 Sep 2021 10:26:06 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ Firefox/78.0 Thunderbird/78.13.0
 MIME-Version: 1.0
-In-Reply-To: <YUHGDbtiGrDz5+NS@zn.tnic>
+In-Reply-To: <YUIjS6lKEY5AadZx@zn.tnic>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr-FR
-Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,60 +54,169 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org,
- Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
- linux-efi@vger.kernel.org, Brijesh Singh <brijesh.singh@amd.com>,
- kvm@vger.kernel.org, Tom Lendacky <thomas.lendacky@amd.com>,
- Tianyu Lan <Tianyu.Lan@microsoft.com>, Joerg Roedel <joro@8bytes.org>,
- x86@kernel.org, kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, platform-driver-x86@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>, iommu@lists.linux-foundation.org,
- Andi Kleen <ak@linux.intel.com>, Paul Mackerras <paulus@samba.org>,
- amd-gfx@lists.freedesktop.org, linux-fsdevel@vger.kernel.org,
- linux-graphics-maintainer@vmware.com, linuxppc-dev@lists.ozlabs.org
+Cc: linux-efi@vger.kernel.org, Brijesh Singh <brijesh.singh@amd.com>,
+ kvm@vger.kernel.org, David Airlie <airlied@linux.ie>,
+ Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org,
+ platform-driver-x86@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+ linux-s390@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
+ Baoquan He <bhe@redhat.com>, Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
+ amd-gfx@lists.freedesktop.org, Christoph Hellwig <hch@infradead.org>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ linux-graphics-maintainer@vmware.com, Dave Young <dyoung@redhat.com>,
+ Tianyu Lan <Tianyu.Lan@microsoft.com>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
+ kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ iommu@lists.linux-foundation.org, Daniel Vetter <daniel@ffwll.ch>,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Le 15/09/2021 à 12:08, Borislav Petkov a écrit :
-> On Wed, Sep 15, 2021 at 10:28:59AM +1000, Michael Ellerman wrote:
->> I don't love it, a new C file and an out-of-line call to then call back
->> to a static inline that for most configuration will return false ... but
->> whatever :)
+On 9/15/21 9:46 AM, Borislav Petkov wrote:
+> Sathya,
 > 
-> Yeah, hch thinks it'll cause a big mess otherwise:
-> 
-> https://lore.kernel.org/lkml/YSScWvpXeVXw%2Fed5@infradead.org/
+> if you want to prepare the Intel variant intel_cc_platform_has() ontop
+> of those and send it to me, that would be good because then I can
+> integrate it all in one branch which can be used to base future work
+> ontop.
 
-Could you please provide more explicit explanation why inlining such an 
-helper is considered as bad practice and messy ?
-
-Because as demonstrated in my previous response some days ago, taking 
-that outline ends up with an unneccessary ugly generated code and we 
-don't benefit front GCC's capability to fold in and opt out unreachable 
-code.
-
-As pointed by Michael in most cases the function will just return false 
-so behind the performance concern, there is also the code size and code 
-coverage topic that is to be taken into account. And even when the 
-function doesn't return false, the only thing it does folds into a 
-single powerpc instruction so there is really no point in making a 
-dedicated out-of-line fonction for that and suffer the cost and the size 
-of a function call and to justify the addition of a dedicated C file.
+I have a Intel variant patch (please check following patch). But it includes
+TDX changes as well. Shall I move TDX changes to different patch and just
+create a separate patch for adding intel_cc_platform_has()?
 
 
-> 
-> I guess less ifdeffery is nice too.
+commit fc5f98a0ed94629d903827c5b44ee9295f835831
+Author: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Date:   Wed May 12 11:35:13 2021 -0700
 
-I can't see your point here. Inlining the function wouldn't add any 
-ifdeffery as far as I can see.
+     x86/tdx: Add confidential guest support for TDX guest
 
-So, would you mind reconsidering your approach and allow architectures 
-to provide inline implementation by just not enforcing a generic 
-prototype ? Or otherwise provide more details and exemple of why the 
-cons are more important versus the pros ?
+     TDX architecture provides a way for VM guests to be highly secure and
+     isolated (from untrusted VMM). To achieve this requirement, any data
+     coming from VMM cannot be completely trusted. TDX guest fixes this
+     issue by hardening the IO drivers against the attack from the VMM.
+     So, when adding hardening fixes to the generic drivers, to protect
+     custom fixes use cc_platform_has() API.
 
-Thanks
-Christophe
+     Also add TDX guest support to cc_platform_has() API to protect the
+     TDX specific fixes.
+
+     Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index a5b14de03458..2e78358923a1 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -871,6 +871,7 @@ config INTEL_TDX_GUEST
+         depends on SECURITY
+         select X86_X2APIC
+         select SECURITY_LOCKDOWN_LSM
++       select ARCH_HAS_CC_PLATFORM
+         help
+           Provide support for running in a trusted domain on Intel processors
+           equipped with Trusted Domain eXtensions. TDX is a new Intel
+diff --git a/arch/x86/include/asm/intel_cc_platform.h b/arch/x86/include/asm/intel_cc_platform.h
+new file mode 100644
+index 000000000000..472c3174beac
+--- /dev/null
++++ b/arch/x86/include/asm/intel_cc_platform.h
+@@ -0,0 +1,13 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright (C) 2021 Intel Corporation */
++#ifndef _ASM_X86_INTEL_CC_PLATFORM_H
++#define _ASM_X86_INTEL_CC_PLATFORM_H
++
++#if defined(CONFIG_CPU_SUP_INTEL) && defined(CONFIG_ARCH_HAS_CC_PLATFORM)
++bool intel_cc_platform_has(unsigned int flag);
++#else
++static inline bool intel_cc_platform_has(unsigned int flag) { return false; }
++#endif
++
++#endif /* _ASM_X86_INTEL_CC_PLATFORM_H */
++
+diff --git a/arch/x86/kernel/cc_platform.c b/arch/x86/kernel/cc_platform.c
+index 3c9bacd3c3f3..e83bc2f48efe 100644
+--- a/arch/x86/kernel/cc_platform.c
++++ b/arch/x86/kernel/cc_platform.c
+@@ -10,11 +10,16 @@
+  #include <linux/export.h>
+  #include <linux/cc_platform.h>
+  #include <linux/mem_encrypt.h>
++#include <linux/processor.h>
++
++#include <asm/intel_cc_platform.h>
+
+  bool cc_platform_has(enum cc_attr attr)
+  {
+         if (sme_me_mask)
+                 return amd_cc_platform_has(attr);
++       else if (boot_cpu_data.x86_vendor == X86_VENDOR_INTEL)
++               return intel_cc_platform_has(attr);
+
+         return false;
+  }
+diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
+index 8321c43554a1..ab486a3b1eb0 100644
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -11,6 +11,7 @@
+  #include <linux/init.h>
+  #include <linux/uaccess.h>
+  #include <linux/delay.h>
++#include <linux/cc_platform.h>
+
+  #include <asm/cpufeature.h>
+  #include <asm/msr.h>
+@@ -60,6 +61,21 @@ static u64 msr_test_ctrl_cache __ro_after_init;
+   */
+  static bool cpu_model_supports_sld __ro_after_init;
+
++#ifdef CONFIG_ARCH_HAS_CC_PLATFORM
++bool intel_cc_platform_has(enum cc_attr attr)
++{
++       switch (attr) {
++       case CC_ATTR_GUEST_TDX:
++               return cpu_feature_enabled(X86_FEATURE_TDX_GUEST);
++       default:
++               return false;
++       }
++
++       return false;
++}
++EXPORT_SYMBOL_GPL(intel_cc_platform_has);
++#endif
++
+  /*
+   * Processors which have self-snooping capability can handle conflicting
+   * memory type across CPUs by snooping its own cache. However, there exists
+diff --git a/include/linux/cc_platform.h b/include/linux/cc_platform.h
+index 253f3ea66cd8..e38430e6e396 100644
+--- a/include/linux/cc_platform.h
++++ b/include/linux/cc_platform.h
+@@ -61,6 +61,15 @@ enum cc_attr {
+          * Examples include SEV-ES.
+          */
+         CC_ATTR_GUEST_STATE_ENCRYPT,
++
++       /**
++        * @CC_ATTR_GUEST_TDX: Trusted Domain Extension Support
++        *
++        * The platform/OS is running as a TDX guest/virtual machine.
++        *
++        * Examples include SEV-ES.
++        */
++       CC_ATTR_GUEST_TDX,
+  };
+
+  #ifdef CONFIG_ARCH_HAS_CC_PLATFORM
+
+
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
