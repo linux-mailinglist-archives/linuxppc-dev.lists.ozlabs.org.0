@@ -1,64 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14F9540C188
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Sep 2021 10:20:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6A8D40C35B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Sep 2021 12:09:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H8Y6m6tG4z2yMM
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Sep 2021 18:20:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H8bXj5sfnz2ymZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Sep 2021 20:09:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256 header.s=google header.b=J0DDJu/c;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=dkim header.b=gQHDZFKP;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::729;
- helo=mail-qk1-x729.google.com; envelope-from=joel.stan@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=alien8.de (client-ip=2a01:4f8:190:11c2::b:1457;
+ helo=mail.skyhub.de; envelope-from=bp@alien8.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256
- header.s=google header.b=J0DDJu/c; dkim-atps=neutral
-Received: from mail-qk1-x729.google.com (mail-qk1-x729.google.com
- [IPv6:2607:f8b0:4864:20::729])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256
+ header.s=dkim header.b=gQHDZFKP; dkim-atps=neutral
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H8Y666Gvcz2yHj
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Sep 2021 18:19:26 +1000 (AEST)
-Received: by mail-qk1-x729.google.com with SMTP id f22so2564247qkm.5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Sep 2021 01:19:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jms.id.au; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=kIBJ8wNlSomcWlEfQCfLH6DKLYq1ryWRKSRlIoGRw/g=;
- b=J0DDJu/cRLkXZjoOitMkM2qlhZpouO9rhijAawdOY717LRDIIGz3oM/KZ9QC7XZIxD
- Lc/11iC0GPg+HsCx6CeWS+OKG3Az6WDdGqM3PHL6zaxhWX0aqSZyrKHbyiV/8BT605Ny
- 7o3Q02tZVtcwDPkQcC7mCJVyku5hqzMgFkRXk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=kIBJ8wNlSomcWlEfQCfLH6DKLYq1ryWRKSRlIoGRw/g=;
- b=Ru/Oq+278q9agYVnN0KbJOC+EdKctxZYgfFTg2SyWK0zuW1NJZ3Q0F2EmLnnu7kkd/
- g7I852+LYOJjKkqT2rXUETL+xyJ32x/KFJa2GsuRw19nj+WCZUiWbEmemF1zBg4VDZuC
- qhYZ3+6z586PDFvchFT4k31MAnpO6D5FfEKdCnx0+B4+mXqbc/Ee3yonsysGkyvtabbJ
- cSIC8aBGTf/SCecO/aqZZowKcqdAgZN5aIcxEhbrJo3KnnzOKNV/A0oRsjDX4Au3f45I
- 3BmR8Rry2fD0VC0w1dpetYpaQfqipAKfu9h/kXq9GdwuV3dIJGaI1UMtfuMsXqcohmSq
- txXw==
-X-Gm-Message-State: AOAM533tp108DJ0HpKG8BUpOWqbpW1QHFtk5p7wkjdZqcm0aED4Tvawe
- /vQhDSafZOz6RO/+KtDMKja41RqBa9ZI8xl+Ey1m/79Q2NA=
-X-Google-Smtp-Source: ABdhPJz7ot6EFXk++shTcxF35oqEaXM3cFUvWNkimv5c7JlnzqTZDJb/DdtxT2iSbhrdp4/KtrnIIwm2/1LDPOTZTE4=
-X-Received: by 2002:a37:64cc:: with SMTP id y195mr9089425qkb.291.1631693961280; 
- Wed, 15 Sep 2021 01:19:21 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H8bX05wjsz2yHL
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Sep 2021 20:08:32 +1000 (AEST)
+Received: from zn.tnic (p200300ec2f0d070015682a2dbfe19a41.dip0.t-ipconnect.de
+ [IPv6:2003:ec:2f0d:700:1568:2a2d:bfe1:9a41])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5C8AF1EC0493;
+ Wed, 15 Sep 2021 12:08:20 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+ t=1631700500;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+ bh=84AiMC3UCE921bKjcL3MviV5+eDqG9h6JWVKVYivIsk=;
+ b=gQHDZFKPDYNc3V1KjxBVvsh4bR+MVuvX2NsJ94AUYxVbw0WYPPRaOZoLdvqoJQnogW9X+8
+ u/7mWvb/k4xW3BpHLLo/9AEwVjVY3UUhPajUzAZXgzgKnGBfWm5RVt5J0yPjSayDNAKsPC
+ qBW9c0rQVO5QzNWXYERX94I+rK+vCYU=
+Date: Wed, 15 Sep 2021 12:08:13 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v3 4/8] powerpc/pseries/svm: Add a powerpc version of
+ cc_platform_has()
+Message-ID: <YUHGDbtiGrDz5+NS@zn.tnic>
+References: <cover.1631141919.git.thomas.lendacky@amd.com>
+ <9d4fc3f8ea7b325aaa1879beab1286876f45d450.1631141919.git.thomas.lendacky@amd.com>
+ <YUCOTIPPsJJpLO/d@zn.tnic> <87lf3yk7g4.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <20210914143802.54325-1-hegdevasant@linux.vnet.ibm.com>
-In-Reply-To: <20210914143802.54325-1-hegdevasant@linux.vnet.ibm.com>
-From: Joel Stanley <joel@jms.id.au>
-Date: Wed, 15 Sep 2021 08:19:09 +0000
-Message-ID: <CACPK8Xc2YLPzgTEJcwoiSsYzc6oe+ow-ULP+8zACnzjb_sVhKg@mail.gmail.com>
-Subject: Re: [PATCH trivial v2] powerpc/powernv/dump: Fix typo in comment
-To: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87lf3yk7g4.fsf@mpe.ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,35 +62,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ linux-efi@vger.kernel.org, Brijesh Singh <brijesh.singh@amd.com>,
+ kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ platform-driver-x86@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ linux-s390@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
+ Joerg Roedel <joro@8bytes.org>, x86@kernel.org, amd-gfx@lists.freedesktop.org,
+ Christoph Hellwig <hch@infradead.org>, linux-graphics-maintainer@vmware.com,
+ Tom Lendacky <thomas.lendacky@amd.com>, Tianyu Lan <Tianyu.Lan@microsoft.com>,
+ kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ iommu@lists.linux-foundation.org, linux-fsdevel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 14 Sept 2021 at 14:38, Vasant Hegde
-<hegdevasant@linux.vnet.ibm.com> wrote:
->
-> Signed-off-by: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>
+On Wed, Sep 15, 2021 at 10:28:59AM +1000, Michael Ellerman wrote:
+> I don't love it, a new C file and an out-of-line call to then call back
+> to a static inline that for most configuration will return false ... but
+> whatever :)
 
-Reviewed-by: Joel Stanley <joel@jms.id.au>
+Yeah, hch thinks it'll cause a big mess otherwise:
 
-> ---
->  arch/powerpc/platforms/powernv/opal-dump.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/platforms/powernv/opal-dump.c b/arch/powerpc/platforms/powernv/opal-dump.c
-> index 00c5a59d82d9..717d1d30ade5 100644
-> --- a/arch/powerpc/platforms/powernv/opal-dump.c
-> +++ b/arch/powerpc/platforms/powernv/opal-dump.c
-> @@ -419,7 +419,7 @@ void __init opal_platform_dump_init(void)
->         int rc;
->         int dump_irq;
->
-> -       /* ELOG not supported by firmware */
-> +       /* Dump not supported by firmware */
->         if (!opal_check_token(OPAL_DUMP_READ))
->                 return;
->
-> --
-> 2.31.1
->
+https://lore.kernel.org/lkml/YSScWvpXeVXw%2Fed5@infradead.org/
+
+I guess less ifdeffery is nice too.
+
+> Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+
+Thx.
+
+> Yeah, fixed in mainline today, thanks for trying to cross compile :)
+
+Always!
+
+:-)
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
