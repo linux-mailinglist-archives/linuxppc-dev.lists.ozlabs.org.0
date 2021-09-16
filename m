@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38C1D40D80E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 12:58:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB83440D919
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 13:52:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H9Db415K7z305C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 20:58:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H9Fn85h5Cz2yKJ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 21:52:12 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=j+eAgDzF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=T879eZw4;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,43 +17,44 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=j+eAgDzF; 
+ header.a=rsa-sha256 header.s=201909 header.b=T879eZw4; 
  dkim-atps=neutral
 Received: from ozlabs.org (ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H9DZN5f6mz2y6F
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Sep 2021 20:57:47 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H9FmW01TCz2xvG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Sep 2021 21:51:38 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1631789866;
- bh=ZispAWzioAVbjxueTjRm+hiDj1TZC69+PxYkYh1lWBA=;
+ s=201909; t=1631793098;
+ bh=hO8MM7rkDgtjlX2BKCZzkCfApidbr4y2lSSjjuo6Spc=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=j+eAgDzFwK8z9d+QuWLV+d7slJps5jsQp4dRysMAI+bc19oxRoC8W4gbJ+tvcEdnd
- OV2H7AyiQ98cJ1M1hJPOy9WzyJZGxPXetztdknB+TV3itWhfCbwUYqNda2H7F5rKGl
- v5PQOTfUBCoqPjOcUHDrFXrCHKBTRaWHnRljM57KoahGZ14xe4Sym8HQsqfCoxiGrL
- yvcZVavQ4K++0YtDp2ga0MRoW53N+PSqS04tLBKAsidBQPPNGm8+aTwzrp5OpyqfRw
- vzHUXrwm9n8fw2XHX9ZJzr30Rl33MOMtza+QITtUVgXy8QQfXoMkk9SAlT5UJ6ujxi
- mleoa0SUsg08Q==
+ b=T879eZw4oyZmXCoQBzMn6TSL7TK2u4yA9WcOVdZAZ0H1ES0BfZh+c8qlaAlgIPIpC
+ EZnQfXlJ4z5xni7cnClkogAdyVLHlN0VyzknQ+r9zr6EpGugkqsddQqZZrBGZDfrR0
+ 9M+jMUqC/HazPpVpqowHJ+tlxvnuziqzSjk0KDQRmXiXxxaF7vMYJKwoebP5X7vITE
+ bMJsOzJQ7uNDCIvfTBD7ylQk7c+vA2OSB/um9B8TH/DnrN+ZCARHPzrHaVfJh6WWqX
+ eRpDp98PeMg6OvGq/UiCuletGr7nCgKoxmLkqF4TIS7Ah9AEH2oeKN2Got5wDxjEQU
+ 5Tn4zy5KEZ4Kw==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4H9DZJ1Ny9z9sW8;
- Thu, 16 Sep 2021 20:57:44 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4H9FmR1HjKz9sXS;
+ Thu, 16 Sep 2021 21:51:33 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH 1/3] perf: Add macros to specify onchip L2/L3 accesses
-In-Reply-To: <YUCMUZbchMjD54eY@hirez.programming.kicks-ass.net>
-References: <20210904064932.307610-1-kjain@linux.ibm.com>
- <87ilzbmt7i.fsf@mpe.ellerman.id.au>
- <YTiBqbxe7ieqY2OE@hirez.programming.kicks-ass.net>
- <87czphnchp.fsf@mpe.ellerman.id.au>
- <YTob/xfn1gt901K4@hirez.programming.kicks-ass.net>
- <87k0jjl9sp.fsf@mpe.ellerman.id.au>
- <YUCMUZbchMjD54eY@hirez.programming.kicks-ass.net>
-Date: Thu, 16 Sep 2021 20:57:33 +1000
-Message-ID: <87fsu4kcte.fsf@mpe.ellerman.id.au>
+To: Christoph Hellwig <hch@infradead.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v3 4/8] powerpc/pseries/svm: Add a powerpc version of
+ cc_platform_has()
+In-Reply-To: <YULztMRLJ55YLVU9@infradead.org>
+References: <cover.1631141919.git.thomas.lendacky@amd.com>
+ <9d4fc3f8ea7b325aaa1879beab1286876f45d450.1631141919.git.thomas.lendacky@amd.com>
+ <YUCOTIPPsJJpLO/d@zn.tnic> <87lf3yk7g4.fsf@mpe.ellerman.id.au>
+ <YUHGDbtiGrDz5+NS@zn.tnic>
+ <f8388f18-5e90-5d0f-d681-0b17f8307dd4@csgroup.eu>
+ <YULztMRLJ55YLVU9@infradead.org>
+Date: Thu, 16 Sep 2021 21:51:30 +1000
+Message-ID: <87czp8kabh.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -67,46 +68,127 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, atrajeev@linux.vnet.ibm.com, ak@linux.intel.com,
- daniel@iogearbox.net, rnsastry@linux.ibm.com,
- alexander.shishkin@linux.intel.com, Kajol Jain <kjain@linux.ibm.com>,
- linux-kernel@vger.kernel.org, acme@kernel.org, ast@kernel.org,
- linux-perf-users@vger.kernel.org, yao.jin@linux.intel.com, mingo@redhat.com,
- paulus@samba.org, maddy@linux.ibm.com, jolsa@kernel.org, namhyung@kernel.org,
- songliubraving@fb.com, linuxppc-dev@lists.ozlabs.org,
- kan.liang@linux.intel.com
+Cc: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ linux-efi@vger.kernel.org, Brijesh Singh <brijesh.singh@amd.com>,
+ kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ platform-driver-x86@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ linux-s390@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
+ Joerg Roedel <joro@8bytes.org>, x86@kernel.org, amd-gfx@lists.freedesktop.org,
+ Christoph Hellwig <hch@infradead.org>, linux-graphics-maintainer@vmware.com,
+ Tom Lendacky <thomas.lendacky@amd.com>, Tianyu Lan <Tianyu.Lan@microsoft.com>,
+ Borislav Petkov <bp@alien8.de>, kexec@lists.infradead.org,
+ linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Peter Zijlstra <peterz@infradead.org> writes:
-> On Tue, Sep 14, 2021 at 08:40:38PM +1000, Michael Ellerman wrote:
->> Peter Zijlstra <peterz@infradead.org> writes:
+Christoph Hellwig <hch@infradead.org> writes:
+> On Wed, Sep 15, 2021 at 07:18:34PM +0200, Christophe Leroy wrote:
+>> Could you please provide more explicit explanation why inlining such an
+>> helper is considered as bad practice and messy ?
 >
->> > I'm thinking we ought to keep hops as steps along the NUMA fabric, with
->> > 0 hops being the local node. That only gets us:
->> >
->> >  L2, remote=0, hops=HOPS_0 -- our L2
->> >  L2, remote=1, hops=HOPS_0 -- L2 on the local node but not ours
->> >  L2, remote=1, hops!=HOPS_0 -- L2 on a remote node
->> 
->> Hmm. I'm not sure about tying it directly to NUMA hops. I worry we're
->> going to see more and more systems where there's a hierarchy within the
->> chip/package, in addition to the traditional NUMA hierarchy.
->> 
->> Although then I guess it becomes a question of what exactly is a NUMA
->> hop, maybe the answer is that on those future systems those
->> intra-chip/package hops should be represented as NUMA hops.
->> 
->> It's not like we have a hard definition of what a NUMA hop is?
+> Because now we get architectures to all subly differ.  Look at the mess
+> for ioremap and the ioremap* variant.
 >
-> Not really, typically whatever the BIOS/DT/whatever tables tell us. I
-> think in case of Power you're mostly making things up in software :-)
+> The only good reason to allow for inlines if if they are used in a hot
+> path.  Which cc_platform_has is not, especially not on powerpc.
 
-Firmware is software so yes :)
+Yes I agree, it's not a hot path so it doesn't really matter, which is
+why I Acked it.
 
-> But yeah, I think we have plenty wriggle room there.
+I think it is possible to do both, share the declaration across arches
+but also give arches flexibility to use an inline if they prefer, see
+patch below.
 
-OK.
+I'm not suggesting we actually do that for this series now, but I think
+it would solve the problem if we ever needed to in future.
 
 cheers
+
+
+diff --git a/arch/powerpc/platforms/pseries/cc_platform.c b/arch/powerpc/include/asm/cc_platform.h
+similarity index 74%
+rename from arch/powerpc/platforms/pseries/cc_platform.c
+rename to arch/powerpc/include/asm/cc_platform.h
+index e8021af83a19..6285c3c385a6 100644
+--- a/arch/powerpc/platforms/pseries/cc_platform.c
++++ b/arch/powerpc/include/asm/cc_platform.h
+@@ -7,13 +7,10 @@
+  * Author: Tom Lendacky <thomas.lendacky@amd.com>
+  */
+ 
+-#include <linux/export.h>
+ #include <linux/cc_platform.h>
+-
+-#include <asm/machdep.h>
+ #include <asm/svm.h>
+ 
+-bool cc_platform_has(enum cc_attr attr)
++static inline bool arch_cc_platform_has(enum cc_attr attr)
+ {
+ 	switch (attr) {
+ 	case CC_ATTR_MEM_ENCRYPT:
+@@ -23,4 +20,3 @@ bool cc_platform_has(enum cc_attr attr)
+ 		return false;
+ 	}
+ }
+-EXPORT_SYMBOL_GPL(cc_platform_has);
+diff --git a/arch/x86/include/asm/cc_platform.h b/arch/x86/include/asm/cc_platform.h
+new file mode 100644
+index 000000000000..0a4220697043
+--- /dev/null
++++ b/arch/x86/include/asm/cc_platform.h
+@@ -0,0 +1,7 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASM_X86_CC_PLATFORM_H_
++#define _ASM_X86_CC_PLATFORM_H_
++
++bool arch_cc_platform_has(enum cc_attr attr);
++
++#endif // _ASM_X86_CC_PLATFORM_H_
+diff --git a/arch/x86/kernel/cc_platform.c b/arch/x86/kernel/cc_platform.c
+index 3c9bacd3c3f3..77e8c3465979 100644
+--- a/arch/x86/kernel/cc_platform.c
++++ b/arch/x86/kernel/cc_platform.c
+@@ -11,11 +11,11 @@
+ #include <linux/cc_platform.h>
+ #include <linux/mem_encrypt.h>
+ 
+-bool cc_platform_has(enum cc_attr attr)
++bool arch_cc_platform_has(enum cc_attr attr)
+ {
+ 	if (sme_me_mask)
+ 		return amd_cc_platform_has(attr);
+ 
+ 	return false;
+ }
+-EXPORT_SYMBOL_GPL(cc_platform_has);
++EXPORT_SYMBOL_GPL(arch_cc_platform_has);
+diff --git a/include/linux/cc_platform.h b/include/linux/cc_platform.h
+index 253f3ea66cd8..f3306647c5d9 100644
+--- a/include/linux/cc_platform.h
++++ b/include/linux/cc_platform.h
+@@ -65,6 +65,8 @@ enum cc_attr {
+ 
+ #ifdef CONFIG_ARCH_HAS_CC_PLATFORM
+ 
++#include <asm/cc_platform.h>
++
+ /**
+  * cc_platform_has() - Checks if the specified cc_attr attribute is active
+  * @attr: Confidential computing attribute to check
+@@ -77,7 +79,10 @@ enum cc_attr {
+  * * TRUE  - Specified Confidential Computing attribute is active
+  * * FALSE - Specified Confidential Computing attribute is not active
+  */
+-bool cc_platform_has(enum cc_attr attr);
++static inline bool cc_platform_has(enum cc_attr attr)
++{
++	return arch_cc_platform_has(attr);
++}
+ 
+ #else	/* !CONFIG_ARCH_HAS_CC_PLATFORM */
+ 
+
+
