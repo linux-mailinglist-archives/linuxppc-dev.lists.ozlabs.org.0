@@ -1,59 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 064D840D3BB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 09:24:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3C4440D3F4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 09:39:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H97rD6qcpz305j
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 17:24:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H989x62HJz2yww
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 17:39:49 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=fWRQGiko;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=casper.srs.infradead.org (client-ip=2001:8b0:10b:1236::1;
+ helo=casper.infradead.org;
+ envelope-from=batv+622a1d3d74a148fee988+6598+infradead.org+hch@casper.srs.infradead.org;
+ receiver=<UNKNOWN>)
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H97qp04gWz2xjR
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Sep 2021 17:24:03 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4H97qh40qXz9sVF;
- Thu, 16 Sep 2021 09:24:00 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id wKKfxh6TCdGx; Thu, 16 Sep 2021 09:24:00 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4H97qf313Xz9sVD;
- Thu, 16 Sep 2021 09:23:58 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 521AF8B763;
- Thu, 16 Sep 2021 09:23:58 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id pa4JKxB2Kswe; Thu, 16 Sep 2021 09:23:58 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.202.5])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A6F368B77E;
- Thu, 16 Sep 2021 09:23:57 +0200 (CEST)
-Subject: Re: [PATCH] powerpc: warn on emulation of dcbz instruction
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-References: <62b33ca839f3d1d7d4b64b6f56af0bbe4d2c9057.1631716292.git.christophe.leroy@csgroup.eu>
- <2c0fd775625c76c4dd09b3e923da4405a003f3bd.camel@kernel.crashing.org>
- <eb1a39368401bf46e805ca64256604cc649f771e.camel@kernel.crashing.org>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <43f736d4-8625-2848-786f-79b902d5c753@csgroup.eu>
-Date: Thu, 16 Sep 2021 09:23:57 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H98984frJz2xr9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Sep 2021 17:39:04 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=2++NPtO3N0EKqFjod0lHOXuAnY0BGUp6aM9ZEKLL5JE=; b=fWRQGikoRH60qW6X6cnfcWri00
+ fDV87hJx5JKFIvzB1VghIwXfR96995PVo8kJThgH16NHXA2LcXb/0OUEJDBAk0Bl2qY21EgB/LD6j
+ yuWyo9QXuRb+rz8UdmseafctcU4F9oq4wcHZEeHDZVIzPeJnu/6YD92kHFeC+wADiwV5E0NuXTS9x
+ jELwwp0a1YxSUBTjc7IgjCeSLvhtV8GlZBWss3rZbkljK+45CzD5XrvvLhnYPJ9BPLbg34ibU5Ghh
+ G1NZvE9u3nz/CT9pZxRqgWh1izea0fJlYNRSpJ58AX24QI5uzGRKRidRWQ1bEE28SggGB+0Z9QdPn
+ qQ0W6UAQ==;
+Received: from hch by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat
+ Linux)) id 1mQlvQ-00GQBb-Sl; Thu, 16 Sep 2021 07:35:38 +0000
+Date: Thu, 16 Sep 2021 08:35:16 +0100
+From: Christoph Hellwig <hch@infradead.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v3 4/8] powerpc/pseries/svm: Add a powerpc version of
+ cc_platform_has()
+Message-ID: <YULztMRLJ55YLVU9@infradead.org>
+References: <cover.1631141919.git.thomas.lendacky@amd.com>
+ <9d4fc3f8ea7b325aaa1879beab1286876f45d450.1631141919.git.thomas.lendacky@amd.com>
+ <YUCOTIPPsJJpLO/d@zn.tnic> <87lf3yk7g4.fsf@mpe.ellerman.id.au>
+ <YUHGDbtiGrDz5+NS@zn.tnic>
+ <f8388f18-5e90-5d0f-d681-0b17f8307dd4@csgroup.eu>
 MIME-Version: 1.0
-In-Reply-To: <eb1a39368401bf46e805ca64256604cc649f771e.camel@kernel.crashing.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr-FR
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f8388f18-5e90-5d0f-d681-0b17f8307dd4@csgroup.eu>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,65 +64,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Finn Thain <fthain@linux-m68k.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Stan Johnson <userm57@yahoo.com>
+Cc: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ linux-efi@vger.kernel.org, Brijesh Singh <brijesh.singh@amd.com>,
+ kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ platform-driver-x86@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ linux-s390@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
+ Joerg Roedel <joro@8bytes.org>, x86@kernel.org, amd-gfx@lists.freedesktop.org,
+ Christoph Hellwig <hch@infradead.org>, linux-graphics-maintainer@vmware.com,
+ Tom Lendacky <thomas.lendacky@amd.com>, Tianyu Lan <Tianyu.Lan@microsoft.com>,
+ Borislav Petkov <bp@alien8.de>, kexec@lists.infradead.org,
+ linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed, Sep 15, 2021 at 07:18:34PM +0200, Christophe Leroy wrote:
+> Could you please provide more explicit explanation why inlining such an
+> helper is considered as bad practice and messy ?
 
+Because now we get architectures to all subly differ.  Look at the mess
+for ioremap and the ioremap* variant.
 
-Le 16/09/2021 à 09:16, Benjamin Herrenschmidt a écrit :
-> On Thu, 2021-09-16 at 17:15 +1000, Benjamin Herrenschmidt wrote:
->> On Wed, 2021-09-15 at 16:31 +0200, Christophe Leroy wrote:
->>> dcbz instruction shouldn't be used on non-cached memory. Using
->>> it on non-cached memory can result in alignment exception and
->>> implies a heavy handling.
->>>
->>> Instead of silentely emulating the instruction and resulting in
->>> high
->>> performance degradation, warn whenever an alignment exception is
->>> taken due to dcbz, so that the user is made aware that dcbz
->>> instruction has been used unexpectedly.
->>>
->>> Reported-by: Stan Johnson <userm57@yahoo.com>
->>> Cc: Finn Thain <fthain@linux-m68k.org>
->>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->>> ---
->>>   arch/powerpc/kernel/align.c | 1 +
->>>   1 file changed, 1 insertion(+)
->>>
->>> diff --git a/arch/powerpc/kernel/align.c
->>> b/arch/powerpc/kernel/align.c
->>> index bbb4181621dd..adc3a4a9c6e4 100644
->>> --- a/arch/powerpc/kernel/align.c
->>> +++ b/arch/powerpc/kernel/align.c
->>> @@ -349,6 +349,7 @@ int fix_alignment(struct pt_regs *regs)
->>>   		if (op.type != CACHEOP + DCBZ)
->>>   			return -EINVAL;
->>>   		PPC_WARN_ALIGNMENT(dcbz, regs);
->>> +		WARN_ON_ONCE(1);
->>
->> This is heavy handed ... It will be treated as an oops by various
->> things uselessly spit out a kernel backtrace. Isn't
->> PPC_WARN_ALIGNMENT
->> enough ?
-
-
-PPC_WARN_ALIGNMENT() only warns if explicitely activated, I want to 
-catch uses on 'dcbz' on non-cached memory all the time as they are most 
-often the result of using memset() instead of memset_io().
-
-> 
-> Ah I saw your other one about fbdev...  Ok what about you do that in a
-> if (!user_mode(regs)) ?
-
-Yes I can do WARN_ON_ONCE(!user_mode(regs)); instead.
-
-> 
-> Indeed the kernel should not do that.
-
-
-Does userspace accesses non-cached memory directly ?
-
-Christophe
+The only good reason to allow for inlines if if they are used in a hot
+path.  Which cc_platform_has is not, especially not on powerpc.
