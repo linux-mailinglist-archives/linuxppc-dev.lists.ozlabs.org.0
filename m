@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54D1740D558
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 11:00:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CC0B40D559
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 11:01:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H99z91st2z2yQH
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 19:00:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H99zs39sXz304j
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 19:01:13 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LLhS5oBL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DvR3Qf+k;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,35 +17,38 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=mchehab@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=LLhS5oBL; 
+ header.s=k20201202 header.b=DvR3Qf+k; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H99yY2HkHz2xMF
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H99yY2qXjz2xXV
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Sep 2021 19:00:05 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 0B4A561186;
- Thu, 16 Sep 2021 09:00:01 +0000 (UTC)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 55B786124E;
+ Thu, 16 Sep 2021 09:00:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
  s=k20201202; t=1631782802;
- bh=yv/P65NUKvPLn6I6fZBzrh0PDDXSPJiG66WIrAPEy9s=;
- h=From:To:Cc:Subject:Date:From;
- b=LLhS5oBLZruJX3JmpWVk5IJo2JNurjB95S2PHKc/CjWbGOnVz3yL0gyDWBmOqlW5U
- mUrGY1dBe1BoEgWBrVxkc3HZgpj7iss+nGNQJGM1txpZL8ELg9bGll6NiJKG1u/zFO
- iYCjhBrW4XyjR4/Z8CDOyxLtzEuGaqzUA2Wuv1+f8fvvFkseQEi+g3WZC5KIRaV/xM
- 8Cbck66UVwFx55O/f7tip/Txp0RtzTMqRjKrQ7pFcY2qI9nvSw0p5Bexf1yTv5f3lE
- NCPvtJdfgA4M/FC8k95UL3I5p16D9dwqkNhsQwLi/b7s4FiEAMsdTwZXaeuw1KCCot
- I7xNhLeMbVqjg==
+ bh=XrTWM3XUmOYwQg4h4rg2YNW0ywb33mfG3HDzuCggoYg=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=DvR3Qf+k/Q7sPFc4MBwz51EaAvKJS/UdfZCZtp+fB1aWz64p5452UgaJQB9pPj/zp
+ hLzgdD/QRhw/OolRl3HCzN1sJh16kiv/KsNRlX1Ctq4AR0ZNfAFA49X1DkNaf0Noay
+ B4JL2Li/HCzg75I1BvoIthtAizZt+XXqqucULD095PIBbsiz3UL1RDtPbx0eDE9DMP
+ wD8yqKixtftLzR8uJ02DFLSLfTmpCacw6lvBbNGbqECFGwQWHX+WqwQWqPnCUqiQXy
+ NEoDShuOX4la3jiqsqPAUrDhCbZ6n8JoWdSl+u1zr3HzG5/CRgj4Voj4ewc+dx3E4d
+ DZgGY/TiMbHpw==
 Received: by mail.kernel.org with local (Exim 4.94.2)
  (envelope-from <mchehab@kernel.org>)
- id 1mQnFQ-001qjS-5M; Thu, 16 Sep 2021 11:00:00 +0200
+ id 1mQnFQ-001qjz-IM; Thu, 16 Sep 2021 11:00:00 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH v3 00/30]Change wildcards on ABI files
-Date: Thu, 16 Sep 2021 10:59:27 +0200
-Message-Id: <cover.1631782432.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v3 07/30] ABI: sysfs-class-cxl: place "not in a guest" at
+ description
+Date: Thu, 16 Sep 2021 10:59:34 +0200
+Message-Id: <cb1f2af183369d682a46efa4e5c01ad5f66e99c4.1631782432.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <cover.1631782432.git.mchehab+huawei@kernel.org>
+References: <cover.1631782432.git.mchehab+huawei@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -59,118 +62,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Kees Cook <keescook@chromium.org>, Jonathan Corbet <corbet@lwn.net>,
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, netdev@vger.kernel.org,
- Richard Cochran <richardcochran@gmail.com>, Anton Vorontsov <anton@enomsg.org>,
- linux-kernel@vger.kernel.org, Johan Hovold <johan@kernel.org>,
- Tony Luck <tony.luck@intel.com>, Colin Cross <ccross@android.com>,
- linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Peter Rosin <peda@axentia.se>
+Cc: Andrew Donnellan <ajd@linux.ibm.com>, Jonathan Corbet <corbet@lwn.net>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ linux-kernel@vger.kernel.org, Frederic Barrat <fbarrat@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The ABI files are meant to be parsed via a script (scripts/get_abi.pl).
+The What: field should have just the location of the ABI.
+Anything else should be inside the description.
 
-A new improvement on it will allow it to help to detect if an ABI description
-is missing, or if the What: field won't match the actual location of the symbol.
+This fixes its parsing by get_abi.pl script.
 
-In order for get_abi.pl to convert What: into regex, changes are needed on
-existing ABI files, as the conversion should not be ambiguous.
-
-One alternative would be to convert everything into regexes, but this
-would generate a huge amount of patches/changes. So, instead, let's
-touch only the ABI files that aren't following the de-facto wildcard 
-standards already found on most of the ABI files, e. g.:
-
-	/.../
-	*
-	<foo>
-	(option1|option2)
-	X
-	Y
-	Z
-	[0-9] (and variants)
-
+Acked-by: Andrew Donnellan <ajd@linux.ibm.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
+ Documentation/ABI/testing/sysfs-class-cxl | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-v3:
-   - Added a new patch for sysfs-class-rapidio;
-   - sysfs-class-typec had a typo, instead of a wildcard;
-   - sysfs-bus-soundwire-* had some additional What to be fixed;
-   - added some reviewed-by/acked-by tags.
-
-v2:
-   - Added several patches to address uppercase "N" meaning
-     as a wildcard.
-
-Mauro Carvalho Chehab (30):
-  ABI: sysfs-bus-usb: better document variable argument
-  ABI: sysfs-tty: better document module name parameter
-  ABI: sysfs-kernel-slab: use a wildcard for the cache name
-  ABI: security: fix location for evm and ima_policy
-  ABI: sysfs-class-tpm: use wildcards for pcr-* nodes
-  ABI: sysfs-bus-rapidio: use wildcards on What definitions
-  ABI: sysfs-class-cxl: place "not in a guest" at description
-  ABI: sysfs-class-devfreq-event: use the right wildcards on What
-  ABI: sysfs-class-mic: use the right wildcards on What definitions
-  ABI: pstore: Fix What field
-  ABI:  fix a typo on a What field
-  ABI: sysfs-ata: use a proper wildcard for ata_*
-  ABI: sysfs-class-infiniband: use wildcards on What definitions
-  ABI: sysfs-bus-pci: use wildcards on What definitions
-  ABI: -master: use wildcards on What definitions
-  ABI: sysfs-bus-soundwire-slave: use wildcards on What definitions
-  ABI: sysfs-class-gnss: use wildcards on What definitions
-  ABI: sysfs-class-mei: use wildcards on What definitions
-  ABI: sysfs-class-mux: use wildcards on What definitions
-  ABI: sysfs-class-pwm: use wildcards on What definitions
-  ABI: sysfs-class-rc: use wildcards on What definitions
-  ABI: sysfs-class-rc-nuvoton: use wildcards on What definitions
-  ABI: sysfs-class-uwb_rc: use wildcards on What definitions
-  ABI: sysfs-class-uwb_rc-wusbhc: use wildcards on What definitions
-  ABI: sysfs-devices-platform-dock: use wildcards on What definitions
-  ABI: sysfs-devices-system-cpu: use wildcards on What definitions
-  ABI: sysfs-firmware-efi-esrt: use wildcards on What definitions
-  ABI: sysfs-platform-sst-atom: use wildcards on What definitions
-  ABI: sysfs-ptp: use wildcards on What definitions
-  ABI: sysfs-class-rapidio: use wildcards on What definitions
-
- .../ABI/stable/sysfs-class-infiniband         | 64 ++++++-------
- Documentation/ABI/stable/sysfs-class-tpm      |  2 +-
- Documentation/ABI/testing/evm                 |  4 +-
- Documentation/ABI/testing/ima_policy          |  2 +-
- Documentation/ABI/testing/pstore              |  3 +-
- Documentation/ABI/testing/sysfs-ata           |  2 +-
- Documentation/ABI/testing/sysfs-bus-pci       |  2 +-
- Documentation/ABI/testing/sysfs-bus-rapidio   | 32 +++----
- .../ABI/testing/sysfs-bus-soundwire-master    | 20 ++--
- .../ABI/testing/sysfs-bus-soundwire-slave     | 60 ++++++------
- Documentation/ABI/testing/sysfs-bus-usb       | 16 ++--
- Documentation/ABI/testing/sysfs-class-cxl     | 15 ++-
- .../ABI/testing/sysfs-class-devfreq-event     | 12 +--
- Documentation/ABI/testing/sysfs-class-gnss    |  2 +-
- Documentation/ABI/testing/sysfs-class-mei     | 18 ++--
- Documentation/ABI/testing/sysfs-class-mic     | 24 ++---
- Documentation/ABI/testing/sysfs-class-mux     |  2 +-
- Documentation/ABI/testing/sysfs-class-pwm     | 20 ++--
- Documentation/ABI/testing/sysfs-class-rapidio |  4 +-
- Documentation/ABI/testing/sysfs-class-rc      | 14 +--
- .../ABI/testing/sysfs-class-rc-nuvoton        |  2 +-
- Documentation/ABI/testing/sysfs-class-typec   |  2 +-
- Documentation/ABI/testing/sysfs-class-uwb_rc  | 26 ++---
- .../ABI/testing/sysfs-class-uwb_rc-wusbhc     | 10 +-
- .../ABI/testing/sysfs-devices-platform-dock   | 10 +-
- .../ABI/testing/sysfs-devices-system-cpu      | 16 ++--
- .../ABI/testing/sysfs-firmware-efi-esrt       | 16 ++--
- Documentation/ABI/testing/sysfs-kernel-slab   | 94 +++++++++----------
- .../ABI/testing/sysfs-platform-sst-atom       |  2 +-
- Documentation/ABI/testing/sysfs-ptp           | 30 +++---
- Documentation/ABI/testing/sysfs-tty           | 32 +++----
- 31 files changed, 282 insertions(+), 276 deletions(-)
-
+diff --git a/Documentation/ABI/testing/sysfs-class-cxl b/Documentation/ABI/testing/sysfs-class-cxl
+index 818f55970efb..3c77677e0ca7 100644
+--- a/Documentation/ABI/testing/sysfs-class-cxl
++++ b/Documentation/ABI/testing/sysfs-class-cxl
+@@ -166,10 +166,11 @@ Description:    read only
+                 Decimal value of the Per Process MMIO space length.
+ Users:		https://github.com/ibm-capi/libcxl
+ 
+-What:           /sys/class/cxl/<afu>m/pp_mmio_off (not in a guest)
++What:           /sys/class/cxl/<afu>m/pp_mmio_off
+ Date:           September 2014
+ Contact:        linuxppc-dev@lists.ozlabs.org
+ Description:    read only
++                (not in a guest)
+                 Decimal value of the Per Process MMIO space offset.
+ Users:		https://github.com/ibm-capi/libcxl
+ 
+@@ -190,28 +191,31 @@ Description:    read only
+                 Identifies the revision level of the PSL.
+ Users:		https://github.com/ibm-capi/libcxl
+ 
+-What:           /sys/class/cxl/<card>/base_image (not in a guest)
++What:           /sys/class/cxl/<card>/base_image
+ Date:           September 2014
+ Contact:        linuxppc-dev@lists.ozlabs.org
+ Description:    read only
++                (not in a guest)
+                 Identifies the revision level of the base image for devices
+                 that support loadable PSLs. For FPGAs this field identifies
+                 the image contained in the on-adapter flash which is loaded
+                 during the initial program load.
+ Users:		https://github.com/ibm-capi/libcxl
+ 
+-What:           /sys/class/cxl/<card>/image_loaded (not in a guest)
++What:           /sys/class/cxl/<card>/image_loaded
+ Date:           September 2014
+ Contact:        linuxppc-dev@lists.ozlabs.org
+ Description:    read only
++                (not in a guest)
+                 Will return "user" or "factory" depending on the image loaded
+                 onto the card.
+ Users:		https://github.com/ibm-capi/libcxl
+ 
+-What:           /sys/class/cxl/<card>/load_image_on_perst (not in a guest)
++What:           /sys/class/cxl/<card>/load_image_on_perst
+ Date:           December 2014
+ Contact:        linuxppc-dev@lists.ozlabs.org
+ Description:    read/write
++                (not in a guest)
+                 Valid entries are "none", "user", and "factory".
+                 "none" means PERST will not cause image to be loaded to the
+                 card.  A power cycle is required to load the image.
+@@ -235,10 +239,11 @@ Description:    write only
+                 contexts on the card AFUs.
+ Users:		https://github.com/ibm-capi/libcxl
+ 
+-What:		/sys/class/cxl/<card>/perst_reloads_same_image (not in a guest)
++What:		/sys/class/cxl/<card>/perst_reloads_same_image
+ Date:		July 2015
+ Contact:	linuxppc-dev@lists.ozlabs.org
+ Description:	read/write
++                (not in a guest)
+ 		Trust that when an image is reloaded via PERST, it will not
+ 		have changed.
+ 
 -- 
 2.31.1
-
 
