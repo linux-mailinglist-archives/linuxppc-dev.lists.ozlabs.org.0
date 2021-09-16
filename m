@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 098AE40DF9F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 18:11:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0827A40E0A7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 18:26:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H9MWt0Bltz304y
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Sep 2021 02:11:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H9Mt66ZgFz305Z
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Sep 2021 02:26:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=AVpe0Ipk;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=n+fu/LTs;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,30 +18,30 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
- header.a=rsa-sha256 header.s=korg header.b=AVpe0Ipk; 
+ header.a=rsa-sha256 header.s=korg header.b=n+fu/LTs; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H9MWD540Vz2xsB
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Sep 2021 02:10:31 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id CDCB861251;
- Thu, 16 Sep 2021 16:10:27 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H9MsW5LDlz2xbB
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Sep 2021 02:26:22 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 874CD61269;
+ Thu, 16 Sep 2021 16:26:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
- s=korg; t=1631808628;
+ s=korg; t=1631809580;
  bh=HJZadhkc3lcjE7AapxAuKY6kRDDcL5N6KsyajWYJPs4=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=AVpe0Ipk99EfZZiChYmiykqT/haUIG2Oux5Wp033Ll6S8q7Kjgd4PYrFoCKpT/7NC
- +NJOin62nEXYmm1rkSHeeys8mrIQyftfGtLXLRN0Es8hXg1HRKq35hkvTbsnmHhair
- zbQcL22MbX/hKgjfreYQ8lBTOW7bVG03C+DMIqHU=
+ b=n+fu/LTsY4u5CM9PiD1tXSqusLN2bSQ+xdtIVfb5Bmw+YeN28ORzowB61UavB/Psc
+ EHqO5G5tEh8UzfrFD4PzgXBBrM4LEoutHKqQCuawiuaC6fFRWvpY9UFh8pSUDd/K/9
+ 5G8b6jmtH4/DvbM5+Hq8Ap/5NfDHBnL8RSCX6p0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 5.10 163/306] hvsi: dont panic on tty_register_driver failure
-Date: Thu, 16 Sep 2021 17:58:28 +0200
-Message-Id: <20210916155759.643929193@linuxfoundation.org>
+Subject: [PATCH 5.13 205/380] hvsi: dont panic on tty_register_driver failure
+Date: Thu, 16 Sep 2021 17:59:22 +0200
+Message-Id: <20210916155811.041705800@linuxfoundation.org>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20210916155753.903069397@linuxfoundation.org>
-References: <20210916155753.903069397@linuxfoundation.org>
+In-Reply-To: <20210916155803.966362085@linuxfoundation.org>
+References: <20210916155803.966362085@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
