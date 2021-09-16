@@ -1,57 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6808640D591
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 11:09:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4324440D66A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 11:41:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H9B932X4Hz2yQL
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 19:09:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H9BtG0bpTz2xYR
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 19:41:26 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=R8zNlq+6;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=jPcF0P+c;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=johan@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::131;
+ helo=mail-lf1-x131.google.com; envelope-from=rm.skakun@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=R8zNlq+6; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=jPcF0P+c; dkim-atps=neutral
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com
+ [IPv6:2a00:1450:4864:20::131])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H9B8Q24w4z2xY4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Sep 2021 19:08:38 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id BCA8460F93;
- Thu, 16 Sep 2021 09:08:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1631783315;
- bh=WVZp7zAxrJcGJFceYnaC30L3NEug/ghHkDrrF8bTKWI=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=R8zNlq+6LDpDSB6aIwW2FWWR18uvGGQl1jdbf63U4ouezWknqHqVmp3lEJDDV1pRu
- Fp/4G4fmivvsMWB2H3DVg/Q0l/Mhfh4TXTChCNcOWcNFwqneRbmLGMSRhpA0BTiBz4
- Xzvyb9Gjne5oOLhHdP1BXJtfqjjP+WGGA5DLbbBqscjFZknBvDLhYCaa2KZj0/cAwX
- ZkjPAiHcvdE6Hra3tpgqRr3xGPtl0m3vEOfqSZH4D/64PuJC/FQd+bbUpJVV1n3vHT
- sHhJeLOgNyijxqPAXxKOZJbcwVWhywOhamAXhrlCfRGRaskksh6YiDQpJqSMvTkJPR
- YgIqyI8Kwmalw==
-Received: from johan by xi.lan with local (Exim 4.94.2)
- (envelope-from <johan@kernel.org>)
- id 1mQnNj-00059h-Oc; Thu, 16 Sep 2021 11:08:36 +0200
-Date: Thu, 16 Sep 2021 11:08:35 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH] serial: 8250: SERIAL_8250_FSL should not default to y
- when compile-testing
-Message-ID: <YUMJk6VKI40Caq5x@hovoldconsulting.com>
-References: <c5f8aa5c081755f3c960b86fc61c2baaa33edcd9.1631710216.git.geert+renesas@glider.be>
- <YUMESxr907YHM3ZT@hovoldconsulting.com>
- <CAMuHMdX7_AOuGEjvTHpQ-4KHMH+m800KTu7wads6UTfMZiu9BQ@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H9BsX2f3Xz2xfD
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Sep 2021 19:40:47 +1000 (AEST)
+Received: by mail-lf1-x131.google.com with SMTP id c8so16149223lfi.3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Sep 2021 02:40:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=f4r5L82T8lVgmjDxktA/sisuupFmx7x30+6IlhMnYag=;
+ b=jPcF0P+cHfyIuFllT9s+XQDbpTKL/DP/WZ12xBmDnC0LZJsbJeGpydQ+nj1jG3vyhQ
+ MXkF+s9f9DZe82C3OUmuCqssXSW6Xy1D8PFT7XMOVkyU74aEXJL7HBQJL//WLAcHnHlT
+ 6JAWY0XBjZ7XwV9xpdiHpNmVxyHHj5cWcQPRN6QHBZx1dqJ5C5ttXeA+io6IcnyWEI1q
+ dTKH6A8fDq2gQ2GNoUTTZGZkVAhST9ZUJ+pdKy05GPpnzXG3EkGwi93ZGAuCS4fkFkql
+ PEeqVQZUULvnCU7rK1P4+9aDwbpW2w/MkOtNecCIBYtcqqkOy4RB/4LhCrlLfobSeeON
+ wc2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=f4r5L82T8lVgmjDxktA/sisuupFmx7x30+6IlhMnYag=;
+ b=bNFZSb59s+ZpSzrJW7KNdjCiPQ/dfcmInx1B1kmBtV5A29i2NgLaGwfNlXez2jQjz+
+ Fx0iooFUrsq1dqioky/8YGEj4T+XnJzD2UVEmL+aHE3jYldGCFSnRxOSnus/IfPBfqM8
+ KFW/vFbFNjQc2o715+aRWDz72UpCNOHIEGv3RPy4hT+9a0nSfEkssisQ/U5SoIOuIKUJ
+ v5cRey/8n4Z+YQx4+eqMEEDNSbv96rt2RK+L69h4GTC+AkLNEk/sQG/P1KQCKMb8XiJz
+ qLW5/eLc3m8XNgWHXM+8XvfmWYv6fzqcPZuP6UUwP4jOnB6i+4o1Xl7rhOmh9uZqBHPg
+ GBcA==
+X-Gm-Message-State: AOAM533wBnRCs5BsLmtCVqUBj1cIsCWgqiSr8412qsosnfRVT/tkELhW
+ 3kY+4si58Ri/Xe0myrPGri26HZConHKUnCfKbwA=
+X-Google-Smtp-Source: ABdhPJyIIyf4A7fhfDx7l6dTfpk1Ec/zzEqy4u9mdnznrZCiaqfyA9V5XQj08EEuePeq9U7P318zvMYzkOuwjxToNGM=
+X-Received: by 2002:a2e:1508:: with SMTP id s8mr3587923ljd.240.1631785239506; 
+ Thu, 16 Sep 2021 02:40:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdX7_AOuGEjvTHpQ-4KHMH+m800KTu7wads6UTfMZiu9BQ@mail.gmail.com>
+References: <20210914151016.3174924-1-Roman_Skakun@epam.com>
+ <7c04db79-7de1-93ff-0908-9bad60a287b9@suse.com> <20210914153046.GB815@lst.de>
+ <alpine.DEB.2.21.2109141838290.21985@sstabellini-ThinkPad-T480s>
+In-Reply-To: <alpine.DEB.2.21.2109141838290.21985@sstabellini-ThinkPad-T480s>
+From: Roman Skakun <rm.skakun@gmail.com>
+Date: Thu, 16 Sep 2021 12:40:28 +0300
+Message-ID: <CADu_u-OjpYB0-B=tLKYsZH=auvQF-o7PJb-11W=1emY8jaA-mg@mail.gmail.com>
+Subject: Re: [PATCH] swiotlb: set IO TLB segment size via cmdline
+To: Stefano Stabellini <sstabellini@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,49 +77,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Li Yang <leoyang.li@nxp.com>,
- Scott Wood <oss@buserror.net>,
- "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Jiri Slaby <jirislaby@kernel.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: linux-doc@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>, Jan Beulich <jbeulich@suse.com>,
+ Will Deacon <will@kernel.org>, Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, Jonathan Corbet <corbet@lwn.net>,
+ Christoph Hellwig <hch@lst.de>, xen-devel@lists.xenproject.org,
+ "Paul E. McKenney" <paulmck@kernel.org>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ Muchun Song <songmuchun@bytedance.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Juergen Gross <jgross@suse.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Andrii Anisov <andrii_anisov@epam.com>, linuxppc-dev@lists.ozlabs.org,
+ Randy Dunlap <rdunlap@infradead.org>, linux-mips@vger.kernel.org,
+ iommu <iommu@lists.linux-foundation.org>, Roman Skakun <roman_skakun@epam.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Maciej W. Rozycki" <macro@orcam.me.uk>, Robin Murphy <robin.murphy@arm.com>,
+ Mike Rapoport <rppt@kernel.org>, Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Sep 16, 2021 at 10:55:49AM +0200, Geert Uytterhoeven wrote:
-> Hi Johan,
-> 
-> On Thu, Sep 16, 2021 at 10:46 AM Johan Hovold <johan@kernel.org> wrote:
-> > On Wed, Sep 15, 2021 at 02:56:52PM +0200, Geert Uytterhoeven wrote:
-> > > Commit b1442c55ce8977aa ("serial: 8250: extend compile-test coverage")
-> > > added compile-test support to the Freescale 16550 driver.  However, as
-> > > SERIAL_8250_FSL is an invisible symbol, merely enabling COMPILE_TEST now
-> > > enables this driver.
-> > >
-> > > Fix this by making SERIAL_8250_FSL visible.  Tighten the dependencies to
-> > > prevent asking the user about this driver when configuring a kernel
-> > > without appropriate Freescale SoC or ACPI support.
+Hi Stefano,
+
+> Also, Option 1 listed in the webpage seems to be a lot better. Any
+> reason you can't do that? Because that option both solves the problem
+> and increases performance.
+
+Yes, Option 1 is probably more efficient.
+But I use another platform under Xen without DMA adjustment functionality.
+I pinned this webpage only for example to describe the similar problem I ha=
+d.
+
+Cheers,
+Roman
+
+=D1=81=D1=80, 15 =D1=81=D0=B5=D0=BD=D1=82. 2021 =D0=B3. =D0=B2 04:51, Stefa=
+no Stabellini <sstabellini@kernel.org>:
+
+>
+> On Tue, 14 Sep 2021, Christoph Hellwig wrote:
+> > On Tue, Sep 14, 2021 at 05:29:07PM +0200, Jan Beulich wrote:
+> > > I'm not convinced the swiotlb use describe there falls under "intende=
+d
+> > > use" - mapping a 1280x720 framebuffer in a single chunk? (As an aside=
+,
+> > > the bottom of this page is also confusing, as following "Then we can
+> > > confirm the modified swiotlb size in the boot log:" there is a log
+> > > fragment showing the same original size of 64Mb.
 > >
-> > This tightening is arguable a separate change which risk introducing
-> > regressions if you get it wrong and should go in a separate patch at
-> > least.
-> 
-> Getting it wrong would indeed be a regression, but not tightening
-> that at the same time would mean I have to send a separate patch with
-> a Fixes tag referring to this fix, following this template:
-> 
->     foo should depend on bar
-> 
->     The foo hardware is only present on bar SoCs.  Hence add a
->     dependency on bar, to prevent asking the user about this driver
->     when configuring a kernel without bar support.
+> > It doesn't.  We also do not add hacks to the kernel for whacky out
+> > of tree modules.
+>
+> Also, Option 1 listed in the webpage seems to be a lot better. Any
+> reason you can't do that? Because that option both solves the problem
+> and increases performance.
 
-I know this is a pet peeve of yours, but asking users about one more
-symbol when configuring their kernels is hardly something that requires
-a Fixes tag.
 
-Either way it's a pretty weak argument for not separating the change.
 
-Johan
+--
+Best Regards, Roman.
