@@ -1,53 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFFB240D530
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 10:56:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54D1740D558
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 11:00:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H99tN5dFVz3089
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 18:56:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H99z91st2z2yQH
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 19:00:37 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LLhS5oBL;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.217.41; helo=mail-vs1-f41.google.com;
- envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com
- [209.85.217.41])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=mchehab@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=LLhS5oBL; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H99sy5PZFz2xXX
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Sep 2021 18:56:05 +1000 (AEST)
-Received: by mail-vs1-f41.google.com with SMTP id n17so4757496vsr.10
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Sep 2021 01:56:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=+EQOzi6GoX/Ngw6/fSChQOM/x46HyAvx0gYxin2/a30=;
- b=xMhJa7JAnpn3gC8glM29nRX8WEaUVRZO9hz16NGWtlQDYBKDAmi9TIVUHw8NrM4E7l
- tp1WOF8IEZIQWgmPhoYJB0UOUPvqpJXGktqP/rZ6cnFNSH8540tVd8idN5CNfMT63foE
- +8e3hrB4nGlqxrto0kTrwtqMNobgeDB1hgBCsEWAKmQXRQF9Ad9BCRgUTqOemlYQ7m/S
- Sba9n4/2Mglh6TkIIlrwxXgYA/BQYcsXW4UndjthRMfIpEBcYtz95Knjed5oYiCoKlbt
- fSQ6a5ZAbbj+dWiYlDDLFZEk6/z0QUA/6xkz9QONQSAjBL+p4QeLR8k0wcdso7UlqsNi
- FVug==
-X-Gm-Message-State: AOAM530MfNsSz0qP9Mgz6hYEti7K3sBhMGfpczLLFhyd+NO+0Mkv6BIL
- a3GbaaKP4gdcC2I6wuDSGhLsbNeegFVLOBWst4s=
-X-Google-Smtp-Source: ABdhPJyvOyxa/pmzGY2Bx+ipIQAdYpVoYfpJmNto/Se29JgkEW5BfsmTxPaq1OwYBhfxiruK4W7wSZsYRWnpM3+5lho=
-X-Received: by 2002:a67:cb0a:: with SMTP id b10mr3281079vsl.9.1631782561209;
- Thu, 16 Sep 2021 01:56:01 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H99yY2HkHz2xMF
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Sep 2021 19:00:05 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 0B4A561186;
+ Thu, 16 Sep 2021 09:00:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1631782802;
+ bh=yv/P65NUKvPLn6I6fZBzrh0PDDXSPJiG66WIrAPEy9s=;
+ h=From:To:Cc:Subject:Date:From;
+ b=LLhS5oBLZruJX3JmpWVk5IJo2JNurjB95S2PHKc/CjWbGOnVz3yL0gyDWBmOqlW5U
+ mUrGY1dBe1BoEgWBrVxkc3HZgpj7iss+nGNQJGM1txpZL8ELg9bGll6NiJKG1u/zFO
+ iYCjhBrW4XyjR4/Z8CDOyxLtzEuGaqzUA2Wuv1+f8fvvFkseQEi+g3WZC5KIRaV/xM
+ 8Cbck66UVwFx55O/f7tip/Txp0RtzTMqRjKrQ7pFcY2qI9nvSw0p5Bexf1yTv5f3lE
+ NCPvtJdfgA4M/FC8k95UL3I5p16D9dwqkNhsQwLi/b7s4FiEAMsdTwZXaeuw1KCCot
+ I7xNhLeMbVqjg==
+Received: by mail.kernel.org with local (Exim 4.94.2)
+ (envelope-from <mchehab@kernel.org>)
+ id 1mQnFQ-001qjS-5M; Thu, 16 Sep 2021 11:00:00 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH v3 00/30]Change wildcards on ABI files
+Date: Thu, 16 Sep 2021 10:59:27 +0200
+Message-Id: <cover.1631782432.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-References: <c5f8aa5c081755f3c960b86fc61c2baaa33edcd9.1631710216.git.geert+renesas@glider.be>
- <YUMESxr907YHM3ZT@hovoldconsulting.com>
-In-Reply-To: <YUMESxr907YHM3ZT@hovoldconsulting.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 16 Sep 2021 10:55:49 +0200
-Message-ID: <CAMuHMdX7_AOuGEjvTHpQ-4KHMH+m800KTu7wads6UTfMZiu9BQ@mail.gmail.com>
-Subject: Re: [PATCH] serial: 8250: SERIAL_8250_FSL should not default to y
- when compile-testing
-To: Johan Hovold <johan@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,95 +59,118 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Li Yang <leoyang.li@nxp.com>,
- Scott Wood <oss@buserror.net>,
- "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Jiri Slaby <jirislaby@kernel.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Kees Cook <keescook@chromium.org>, Jonathan Corbet <corbet@lwn.net>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, netdev@vger.kernel.org,
+ Richard Cochran <richardcochran@gmail.com>, Anton Vorontsov <anton@enomsg.org>,
+ linux-kernel@vger.kernel.org, Johan Hovold <johan@kernel.org>,
+ Tony Luck <tony.luck@intel.com>, Colin Cross <ccross@android.com>,
+ linux-usb@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Peter Rosin <peda@axentia.se>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Johan,
+The ABI files are meant to be parsed via a script (scripts/get_abi.pl).
 
-On Thu, Sep 16, 2021 at 10:46 AM Johan Hovold <johan@kernel.org> wrote:
-> On Wed, Sep 15, 2021 at 02:56:52PM +0200, Geert Uytterhoeven wrote:
-> > Commit b1442c55ce8977aa ("serial: 8250: extend compile-test coverage")
-> > added compile-test support to the Freescale 16550 driver.  However, as
-> > SERIAL_8250_FSL is an invisible symbol, merely enabling COMPILE_TEST now
-> > enables this driver.
-> >
-> > Fix this by making SERIAL_8250_FSL visible.  Tighten the dependencies to
-> > prevent asking the user about this driver when configuring a kernel
-> > without appropriate Freescale SoC or ACPI support.
->
-> This tightening is arguable a separate change which risk introducing
-> regressions if you get it wrong and should go in a separate patch at
-> least.
+A new improvement on it will allow it to help to detect if an ABI description
+is missing, or if the What: field won't match the actual location of the symbol.
 
-Getting it wrong would indeed be a regression, but not tightening
-that at the same time would mean I have to send a separate patch with
-a Fixes tag referring to this fix, following this template:
+In order for get_abi.pl to convert What: into regex, changes are needed on
+existing ABI files, as the conversion should not be ambiguous.
 
-    foo should depend on bar
+One alternative would be to convert everything into regexes, but this
+would generate a huge amount of patches/changes. So, instead, let's
+touch only the ABI files that aren't following the de-facto wildcard 
+standards already found on most of the ABI files, e. g.:
 
-    The foo hardware is only present on bar SoCs.  Hence add a
-    dependency on bar, to prevent asking the user about this driver
-    when configuring a kernel without bar support.
+	/.../
+	*
+	<foo>
+	(option1|option2)
+	X
+	Y
+	Z
+	[0-9] (and variants)
 
-> > Fixes: b1442c55ce8977aa ("serial: 8250: extend compile-test coverage")
-> > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> > ---
-> > Yes, it's ugly, but I see no better solution. Do you?
-> >
-> >  drivers/tty/serial/8250/Kconfig | 8 ++++++--
-> >  1 file changed, 6 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/tty/serial/8250/Kconfig b/drivers/tty/serial/8250/Kconfig
-> > index 808268edd2e82a45..a2978b31144e94f2 100644
-> > --- a/drivers/tty/serial/8250/Kconfig
-> > +++ b/drivers/tty/serial/8250/Kconfig
-> > @@ -361,9 +361,13 @@ config SERIAL_8250_BCM2835AUX
-> >         If unsure, say N.
-> >
-> >  config SERIAL_8250_FSL
-> > -     bool
-> > +     bool "Freescale 16550-style UART support (8250 based driver)"
-> >       depends on SERIAL_8250_CONSOLE
-> > -     default PPC || ARM || ARM64 || COMPILE_TEST
-> > +     depends on FSL_SOC || ARCH_LAYERSCAPE || SOC_LS1021A || (ARM64 && ACPI) || COMPILE_TEST
-> > +     default FSL_SOC || ARCH_LAYERSCAPE || SOC_LS1021A || (ARM64 && ACPI)
->
-> I'd suggest just doing
->
->         bool "Freescale 16550-style UART support (8250 based driver)"
->         depends on SERIAL_8250_CONSOLE
->         default PPC || ARM || ARM64
->
-> Since neither of the symbols you add to that "depends on" line is an
-> actual build or runtime dependency.
+---
 
-They are.
+v3:
+   - Added a new patch for sysfs-class-rapidio;
+   - sysfs-class-typec had a typo, instead of a wildcard;
+   - sysfs-bus-soundwire-* had some additional What to be fixed;
+   - added some reviewed-by/acked-by tags.
 
-> Then you can refine the "default" line in a follow up (or argue why you
-> think there should be a "depends on FSL_SOC || ...").
->
-> > +     help
-> > +       Selecting this option will add support for the 16550-style serial
-> > +       port hardware found on Freescale SoCs.
-> >
-> >  config SERIAL_8250_DW
-> >       tristate "Support for Synopsys DesignWare 8250 quirks"
+v2:
+   - Added several patches to address uppercase "N" meaning
+     as a wildcard.
 
-Gr{oetje,eeting}s,
+Mauro Carvalho Chehab (30):
+  ABI: sysfs-bus-usb: better document variable argument
+  ABI: sysfs-tty: better document module name parameter
+  ABI: sysfs-kernel-slab: use a wildcard for the cache name
+  ABI: security: fix location for evm and ima_policy
+  ABI: sysfs-class-tpm: use wildcards for pcr-* nodes
+  ABI: sysfs-bus-rapidio: use wildcards on What definitions
+  ABI: sysfs-class-cxl: place "not in a guest" at description
+  ABI: sysfs-class-devfreq-event: use the right wildcards on What
+  ABI: sysfs-class-mic: use the right wildcards on What definitions
+  ABI: pstore: Fix What field
+  ABI:  fix a typo on a What field
+  ABI: sysfs-ata: use a proper wildcard for ata_*
+  ABI: sysfs-class-infiniband: use wildcards on What definitions
+  ABI: sysfs-bus-pci: use wildcards on What definitions
+  ABI: -master: use wildcards on What definitions
+  ABI: sysfs-bus-soundwire-slave: use wildcards on What definitions
+  ABI: sysfs-class-gnss: use wildcards on What definitions
+  ABI: sysfs-class-mei: use wildcards on What definitions
+  ABI: sysfs-class-mux: use wildcards on What definitions
+  ABI: sysfs-class-pwm: use wildcards on What definitions
+  ABI: sysfs-class-rc: use wildcards on What definitions
+  ABI: sysfs-class-rc-nuvoton: use wildcards on What definitions
+  ABI: sysfs-class-uwb_rc: use wildcards on What definitions
+  ABI: sysfs-class-uwb_rc-wusbhc: use wildcards on What definitions
+  ABI: sysfs-devices-platform-dock: use wildcards on What definitions
+  ABI: sysfs-devices-system-cpu: use wildcards on What definitions
+  ABI: sysfs-firmware-efi-esrt: use wildcards on What definitions
+  ABI: sysfs-platform-sst-atom: use wildcards on What definitions
+  ABI: sysfs-ptp: use wildcards on What definitions
+  ABI: sysfs-class-rapidio: use wildcards on What definitions
 
-                        Geert
+ .../ABI/stable/sysfs-class-infiniband         | 64 ++++++-------
+ Documentation/ABI/stable/sysfs-class-tpm      |  2 +-
+ Documentation/ABI/testing/evm                 |  4 +-
+ Documentation/ABI/testing/ima_policy          |  2 +-
+ Documentation/ABI/testing/pstore              |  3 +-
+ Documentation/ABI/testing/sysfs-ata           |  2 +-
+ Documentation/ABI/testing/sysfs-bus-pci       |  2 +-
+ Documentation/ABI/testing/sysfs-bus-rapidio   | 32 +++----
+ .../ABI/testing/sysfs-bus-soundwire-master    | 20 ++--
+ .../ABI/testing/sysfs-bus-soundwire-slave     | 60 ++++++------
+ Documentation/ABI/testing/sysfs-bus-usb       | 16 ++--
+ Documentation/ABI/testing/sysfs-class-cxl     | 15 ++-
+ .../ABI/testing/sysfs-class-devfreq-event     | 12 +--
+ Documentation/ABI/testing/sysfs-class-gnss    |  2 +-
+ Documentation/ABI/testing/sysfs-class-mei     | 18 ++--
+ Documentation/ABI/testing/sysfs-class-mic     | 24 ++---
+ Documentation/ABI/testing/sysfs-class-mux     |  2 +-
+ Documentation/ABI/testing/sysfs-class-pwm     | 20 ++--
+ Documentation/ABI/testing/sysfs-class-rapidio |  4 +-
+ Documentation/ABI/testing/sysfs-class-rc      | 14 +--
+ .../ABI/testing/sysfs-class-rc-nuvoton        |  2 +-
+ Documentation/ABI/testing/sysfs-class-typec   |  2 +-
+ Documentation/ABI/testing/sysfs-class-uwb_rc  | 26 ++---
+ .../ABI/testing/sysfs-class-uwb_rc-wusbhc     | 10 +-
+ .../ABI/testing/sysfs-devices-platform-dock   | 10 +-
+ .../ABI/testing/sysfs-devices-system-cpu      | 16 ++--
+ .../ABI/testing/sysfs-firmware-efi-esrt       | 16 ++--
+ Documentation/ABI/testing/sysfs-kernel-slab   | 94 +++++++++----------
+ .../ABI/testing/sysfs-platform-sst-atom       |  2 +-
+ Documentation/ABI/testing/sysfs-ptp           | 30 +++---
+ Documentation/ABI/testing/sysfs-tty           | 32 +++----
+ 31 files changed, 282 insertions(+), 276 deletions(-)
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.31.1
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+
