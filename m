@@ -1,55 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB87B40DD81
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 17:03:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 098AE40DF9F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 18:11:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H9L1q5Txhz305h
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Sep 2021 01:03:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H9MWt0Bltz304y
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Sep 2021 02:11:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=dkim header.b=dzihOSpZ;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=AVpe0Ipk;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=alien8.de (client-ip=5.9.137.197; helo=mail.skyhub.de;
- envelope-from=bp@alien8.de; receiver=<UNKNOWN>)
+ smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256
- header.s=dkim header.b=dzihOSpZ; dkim-atps=neutral
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+ unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
+ header.a=rsa-sha256 header.s=korg header.b=AVpe0Ipk; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H9L1B4H3Kz2xvf
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Sep 2021 01:02:53 +1000 (AEST)
-Received: from zn.tnic (p200300ec2f11c600e73b4cdd38695acb.dip0.t-ipconnect.de
- [IPv6:2003:ec:2f11:c600:e73b:4cdd:3869:5acb])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 56F431EC0136;
- Thu, 16 Sep 2021 17:02:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
- t=1631804566;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
- bh=Ry9NO0W0dY1PlRpeMUb1ltduv1HjeDhspaE6VFY8fE0=;
- b=dzihOSpZSIsZh7rL/9DrKrEUKj+fwC3WBoadhJkTSM7ks3hY+DLbUVbUxsNt3sZ013SNbv
- 1uoFXr/UPHLRN/IWfbqSc9ua9o0PdzpF9X5dQXtDeWZUajOJiu0Yx7FrtLENXoeeq5i90A
- kjm7WIQn/Y72ZtAGCfVPiXsaokbbn6M=
-Date: Thu, 16 Sep 2021 17:02:40 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: "Kuppuswamy, Sathyanarayanan" <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: Re: [PATCH v3 0/8] Implement generic cc_platform_has() helper function
-Message-ID: <YUNckGH0+KXdEmqu@zn.tnic>
-References: <cover.1631141919.git.thomas.lendacky@amd.com>
- <YUIjS6lKEY5AadZx@zn.tnic>
- <d48e6a17-d2b4-67da-56d1-fc9a61dfe2b8@linux.intel.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H9MWD540Vz2xsB
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Sep 2021 02:10:31 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id CDCB861251;
+ Thu, 16 Sep 2021 16:10:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+ s=korg; t=1631808628;
+ bh=HJZadhkc3lcjE7AapxAuKY6kRDDcL5N6KsyajWYJPs4=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=AVpe0Ipk99EfZZiChYmiykqT/haUIG2Oux5Wp033Ll6S8q7Kjgd4PYrFoCKpT/7NC
+ +NJOin62nEXYmm1rkSHeeys8mrIQyftfGtLXLRN0Es8hXg1HRKq35hkvTbsnmHhair
+ zbQcL22MbX/hKgjfreYQ8lBTOW7bVG03C+DMIqHU=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH 5.10 163/306] hvsi: dont panic on tty_register_driver failure
+Date: Thu, 16 Sep 2021 17:58:28 +0200
+Message-Id: <20210916155759.643929193@linuxfoundation.org>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20210916155753.903069397@linuxfoundation.org>
+References: <20210916155753.903069397@linuxfoundation.org>
+User-Agent: quilt/0.66
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <d48e6a17-d2b4-67da-56d1-fc9a61dfe2b8@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,41 +57,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-efi@vger.kernel.org, Brijesh Singh <brijesh.singh@amd.com>,
- kvm@vger.kernel.org, David Airlie <airlied@linux.ie>,
- Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org,
- platform-driver-x86@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
- linux-s390@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
- Baoquan He <bhe@redhat.com>, Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
- amd-gfx@lists.freedesktop.org, Christoph Hellwig <hch@infradead.org>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- linux-graphics-maintainer@vmware.com, Dave Young <dyoung@redhat.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, Tianyu Lan <Tianyu.Lan@microsoft.com>,
- Thomas Zimmermann <tzimmermann@suse.de>, Vasily Gorbik <gor@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Andy Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
- kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
- iommu@lists.linux-foundation.org, Daniel Vetter <daniel@ffwll.ch>,
- linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jslaby@suse.cz>,
+ linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 15, 2021 at 10:26:06AM -0700, Kuppuswamy, Sathyanarayanan wrote:
-> I have a Intel variant patch (please check following patch). But it includes
-> TDX changes as well. Shall I move TDX changes to different patch and just
-> create a separate patch for adding intel_cc_platform_has()?
+From: Jiri Slaby <jslaby@suse.cz>
 
-Yes, please, so that I can expedite that stuff separately and so that it
-can go in early in order for future work to be based ontop.
+[ Upstream commit 7ccbdcc4d08a6d7041e4849219bbb12ffa45db4c ]
 
-Thx.
+The alloc_tty_driver failure is handled gracefully in hvsi_init. But
+tty_register_driver is not. panic is called if that one fails.
 
+So handle the failure of tty_register_driver gracefully too. This will
+keep at least the console functional as it was enabled earlier by
+console_initcall in hvsi_console_init. Instead of shooting down the
+whole system.
+
+This means, we disable interrupts and restore hvsi_wait back to
+poll_for_state().
+
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+Link: https://lore.kernel.org/r/20210723074317.32690-3-jslaby@suse.cz
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/tty/hvc/hvsi.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/tty/hvc/hvsi.c b/drivers/tty/hvc/hvsi.c
+index e8c58f9bd263..d6afaae1729a 100644
+--- a/drivers/tty/hvc/hvsi.c
++++ b/drivers/tty/hvc/hvsi.c
+@@ -1038,7 +1038,7 @@ static const struct tty_operations hvsi_ops = {
+ 
+ static int __init hvsi_init(void)
+ {
+-	int i;
++	int i, ret;
+ 
+ 	hvsi_driver = alloc_tty_driver(hvsi_count);
+ 	if (!hvsi_driver)
+@@ -1069,12 +1069,25 @@ static int __init hvsi_init(void)
+ 	}
+ 	hvsi_wait = wait_for_state; /* irqs active now */
+ 
+-	if (tty_register_driver(hvsi_driver))
+-		panic("Couldn't register hvsi console driver\n");
++	ret = tty_register_driver(hvsi_driver);
++	if (ret) {
++		pr_err("Couldn't register hvsi console driver\n");
++		goto err_free_irq;
++	}
+ 
+ 	printk(KERN_DEBUG "HVSI: registered %i devices\n", hvsi_count);
+ 
+ 	return 0;
++err_free_irq:
++	hvsi_wait = poll_for_state;
++	for (i = 0; i < hvsi_count; i++) {
++		struct hvsi_struct *hp = &hvsi_ports[i];
++
++		free_irq(hp->virq, hp);
++	}
++	tty_driver_kref_put(hvsi_driver);
++
++	return ret;
+ }
+ device_initcall(hvsi_init);
+ 
 -- 
-Regards/Gruss,
-    Boris.
+2.30.2
 
-https://people.kernel.org/tglx/notes-about-netiquette
+
+
