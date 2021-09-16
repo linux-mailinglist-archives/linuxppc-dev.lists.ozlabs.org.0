@@ -1,56 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 234A640DD6C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 16:59:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB87B40DD81
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 17:03:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H9Kwq0cTpz2yhl
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Sep 2021 00:59:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H9L1q5Txhz305h
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Sep 2021 01:03:27 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HuUVKWhN;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=dkim header.b=dzihOSpZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=HuUVKWhN; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ smtp.mailfrom=alien8.de (client-ip=5.9.137.197; helo=mail.skyhub.de;
+ envelope-from=bp@alien8.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256
+ header.s=dkim header.b=dzihOSpZ; dkim-atps=neutral
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H9Kw76fdGz2xv2
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Sep 2021 00:58:31 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C0DF860F6B;
- Thu, 16 Sep 2021 14:58:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1631804309;
- bh=AgqdIcDpy91eL8LK1OITNsHLzbyaPNMmq9RB0DZLZQ8=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=HuUVKWhN0Cyc3CwcojR+XB+bbOC/LqtJv/hJmtqmtM3VctvEWQLqUSvol9yx3+vxP
- ursQPNIXbL6KAvPrdcxJ/WvldvdmJAEBvlQ3vvNoj5I7eKH1Z6XvsU9PXrzuXEVnPL
- +wUuxZgO8GpkpffycTf1COG/dR8Jkht3YwJDqHhL5Xo/r6thIa3oAy5d0KM5916EG8
- KEGdZGyVc7VZSrcRzy7rVOD9bugyjPV39/0tBW1qrBpoCCMRI4Rk62EBrQMkLhULib
- 9Pq0UOJbjh4fPJ6fxnBnt2fEpsBDuvINm3PK7z1Lg4FF70fU90ORMU5SJqLJadmQzA
- BSwdASIONLGXg==
-Subject: Re: [PATCH] lib/zlib_inflate/inffast: Check config in C to avoid
- unused function warning
-To: Paul Menzel <pmenzel@molgen.mpg.de>,
- Nick Desaulniers <ndesaulniers@google.com>
-References: <20210916142210.26722-1-pmenzel@molgen.mpg.de>
-From: Nathan Chancellor <nathan@kernel.org>
-Message-ID: <decede05-591b-b51c-bd5f-d844b1895e54@kernel.org>
-Date: Thu, 16 Sep 2021 07:58:27 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H9L1B4H3Kz2xvf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Sep 2021 01:02:53 +1000 (AEST)
+Received: from zn.tnic (p200300ec2f11c600e73b4cdd38695acb.dip0.t-ipconnect.de
+ [IPv6:2003:ec:2f11:c600:e73b:4cdd:3869:5acb])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 56F431EC0136;
+ Thu, 16 Sep 2021 17:02:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+ t=1631804566;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+ bh=Ry9NO0W0dY1PlRpeMUb1ltduv1HjeDhspaE6VFY8fE0=;
+ b=dzihOSpZSIsZh7rL/9DrKrEUKj+fwC3WBoadhJkTSM7ks3hY+DLbUVbUxsNt3sZ013SNbv
+ 1uoFXr/UPHLRN/IWfbqSc9ua9o0PdzpF9X5dQXtDeWZUajOJiu0Yx7FrtLENXoeeq5i90A
+ kjm7WIQn/Y72ZtAGCfVPiXsaokbbn6M=
+Date: Thu, 16 Sep 2021 17:02:40 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: "Kuppuswamy, Sathyanarayanan" <sathyanarayanan.kuppuswamy@linux.intel.com>
+Subject: Re: [PATCH v3 0/8] Implement generic cc_platform_has() helper function
+Message-ID: <YUNckGH0+KXdEmqu@zn.tnic>
+References: <cover.1631141919.git.thomas.lendacky@amd.com>
+ <YUIjS6lKEY5AadZx@zn.tnic>
+ <d48e6a17-d2b4-67da-56d1-fc9a61dfe2b8@linux.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20210916142210.26722-1-pmenzel@molgen.mpg.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <d48e6a17-d2b4-67da-56d1-fc9a61dfe2b8@linux.intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,57 +61,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: llvm@lists.linux.dev, Zhen Lei <thunder.leizhen@huawei.com>,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-efi@vger.kernel.org, Brijesh Singh <brijesh.singh@amd.com>,
+ kvm@vger.kernel.org, David Airlie <airlied@linux.ie>,
+ Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org,
+ platform-driver-x86@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+ linux-s390@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
+ Baoquan He <bhe@redhat.com>, Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
+ amd-gfx@lists.freedesktop.org, Christoph Hellwig <hch@infradead.org>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ linux-graphics-maintainer@vmware.com, Dave Young <dyoung@redhat.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Tianyu Lan <Tianyu.Lan@microsoft.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>, Vasily Gorbik <gor@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
+ kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ iommu@lists.linux-foundation.org, Daniel Vetter <daniel@ffwll.ch>,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Paul,
+On Wed, Sep 15, 2021 at 10:26:06AM -0700, Kuppuswamy, Sathyanarayanan wrote:
+> I have a Intel variant patch (please check following patch). But it includes
+> TDX changes as well. Shall I move TDX changes to different patch and just
+> create a separate patch for adding intel_cc_platform_has()?
 
-On 9/16/2021 7:22 AM, Paul Menzel wrote:
-> Building Linux for ppc64le with Ubuntu clang version 12.0.0-3ubuntu1~21.04.1
-> shows the warning below.
-> 
->      arch/powerpc/boot/inffast.c:20:1: warning: unused function 'get_unaligned16' [-Wunused-function]
->      get_unaligned16(const unsigned short *p)
->      ^
->      1 warning generated.
-> 
-> Fix it, by moving the check from the preprocessor to C, so the compiler
-> sees the use.
-> 
-> Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
-> ---
->   lib/zlib_inflate/inffast.c | 6 +-----
->   1 file changed, 1 insertion(+), 5 deletions(-)
-> 
-> diff --git a/lib/zlib_inflate/inffast.c b/lib/zlib_inflate/inffast.c
-> index f19c4fbe1be7..444ad3c3ccd3 100644
-> --- a/lib/zlib_inflate/inffast.c
-> +++ b/lib/zlib_inflate/inffast.c
-> @@ -254,11 +254,7 @@ void inflate_fast(z_streamp strm, unsigned start)
->   			sfrom = (unsigned short *)(from);
->   			loops = len >> 1;
->   			do
-> -#ifdef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
-> -			    *sout++ = *sfrom++;
-> -#else
-> -			    *sout++ = get_unaligned16(sfrom++);
-> -#endif
-> +			    *sout++ = CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS ? *sfrom++ : get_unaligned16(sfrom++);
->   			while (--loops);
->   			out = (unsigned char *)sout;
->   			from = (unsigned char *)sfrom;
-> 
+Yes, please, so that I can expedite that stuff separately and so that it
+can go in early in order for future work to be based ontop.
 
-Thanks for the patch. This should probably be
+Thx.
 
-IS_ENABLED(CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS) ? ...
+-- 
+Regards/Gruss,
+    Boris.
 
-which matches the rest of the kernel tree, as certain CONFIG_... values 
-are not guaranteed to always be defined.
-
-Cheers,
-Nathan
+https://people.kernel.org/tglx/notes-about-netiquette
