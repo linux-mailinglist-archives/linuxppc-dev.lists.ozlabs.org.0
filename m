@@ -2,57 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 196D840CCCB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Sep 2021 20:48:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D05EA40D0CA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 02:23:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H8q3v6Jwtz305p
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 04:48:27 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=dkim header.b=XN5RscNf;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H8yVp2mlYz30KC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Sep 2021 10:23:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=alien8.de (client-ip=5.9.137.197; helo=mail.skyhub.de;
- envelope-from=bp@alien8.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256
- header.s=dkim header.b=XN5RscNf; dkim-atps=neutral
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=bluescreens.de (client-ip=2001:67c:2050::465:103;
+ helo=mout-p-103.mailbox.org; envelope-from=cmr@bluescreens.de;
+ receiver=<UNKNOWN>)
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org
+ [IPv6:2001:67c:2050::465:103])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H8q3C0g4fz2yHR
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Sep 2021 04:47:50 +1000 (AEST)
-Received: from zn.tnic (p200300ec2f0d0700f7a2811245428a79.dip0.t-ipconnect.de
- [IPv6:2003:ec:2f0d:700:f7a2:8112:4542:8a79])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 2DD591EC0257;
- Wed, 15 Sep 2021 20:47:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
- t=1631731663;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
- bh=lm6vQs2/Rhr3v+Gkqez9mosqAUPoKD4IW0wHjidPrGY=;
- b=XN5RscNfsftBTFcuRzGdY1iuAMSDX6NKtwpYReOnfaZk/QSrf/8VqAHOkAjfLPxC1UO6qn
- 9BHTplTlRlxpF7vtQWQch60eAekg1676yowhlJTxL/nJGxhj8z9rv3ulfK5vkpFuCcwh8v
- CPa1Q28irpOcNBFG98fwkSAbgq7mLSg=
-Date: Wed, 15 Sep 2021 20:47:37 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v3 4/8] powerpc/pseries/svm: Add a powerpc version of
- cc_platform_has()
-Message-ID: <YUI/yaut2f9ZoJBd@zn.tnic>
-References: <cover.1631141919.git.thomas.lendacky@amd.com>
- <9d4fc3f8ea7b325aaa1879beab1286876f45d450.1631141919.git.thomas.lendacky@amd.com>
- <YUCOTIPPsJJpLO/d@zn.tnic> <87lf3yk7g4.fsf@mpe.ellerman.id.au>
- <YUHGDbtiGrDz5+NS@zn.tnic>
- <f8388f18-5e90-5d0f-d681-0b17f8307dd4@csgroup.eu>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <f8388f18-5e90-5d0f-d681-0b17f8307dd4@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H8yVM3N4Hz2yJ5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Sep 2021 10:23:20 +1000 (AEST)
+Received: from smtp202.mailbox.org (smtp202.mailbox.org
+ [IPv6:2001:67c:2050:105:465:1:4:0])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4H8yV572d8zQjld;
+ Thu, 16 Sep 2021 02:23:09 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v6 1/4] powerpc/64s: Introduce temporary mm for Radix MMU
+From: "Christopher M. Riedl" <cmr@bluescreens.de>
+To: "Jordan Niethe" <jniethe5@gmail.com>
+Date: Wed, 15 Sep 2021 19:24:12 -0500
+Message-Id: <CEAVR8LKNP66.HVO0DKKWEHOE@wrwlf0000>
+In-Reply-To: <CACzsE9rThU0JBACJoeeHOyEOA8CbFwRExrOhTsySaOH44yJa6g@mail.gmail.com>
+X-Rspamd-Queue-Id: C4D8B26A
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,67 +49,220 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
- linux-efi@vger.kernel.org, Brijesh Singh <brijesh.singh@amd.com>,
- kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
- platform-driver-x86@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- linux-s390@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
- Joerg Roedel <joro@8bytes.org>, x86@kernel.org, amd-gfx@lists.freedesktop.org,
- Christoph Hellwig <hch@infradead.org>, linux-graphics-maintainer@vmware.com,
- Tom Lendacky <thomas.lendacky@amd.com>, Tianyu Lan <Tianyu.Lan@microsoft.com>,
- kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
- iommu@lists.linux-foundation.org, linux-fsdevel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-hardening@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 15, 2021 at 07:18:34PM +0200, Christophe Leroy wrote:
-> Could you please provide more explicit explanation why inlining such an
-> helper is considered as bad practice and messy ?
+On Sat Sep 11, 2021 at 3:26 AM CDT, Jordan Niethe wrote:
+> On Sat, Sep 11, 2021 at 12:35 PM Christopher M. Riedl
+> <cmr@bluescreens.de> wrote:
+> >
+> > x86 supports the notion of a temporary mm which restricts access to
+> > temporary PTEs to a single CPU. A temporary mm is useful for situations
+> > where a CPU needs to perform sensitive operations (such as patching a
+> > STRICT_KERNEL_RWX kernel) requiring temporary mappings without exposing
+> > said mappings to other CPUs. Another benefit is that other CPU TLBs do
+> > not need to be flushed when the temporary mm is torn down.
+> >
+> > Mappings in the temporary mm can be set in the userspace portion of the
+> > address-space.
+> >
+> > Interrupts must be disabled while the temporary mm is in use. HW
+> > breakpoints, which may have been set by userspace as watchpoints on
+> > addresses now within the temporary mm, are saved and disabled when
+> > loading the temporary mm. The HW breakpoints are restored when unloadin=
+g
+> > the temporary mm. All HW breakpoints are indiscriminately disabled whil=
+e
+> > the temporary mm is in use - this may include breakpoints set by perf.
+>
+> I had thought CPUs with a DAWR might not need to do this because the
+> privilege level that breakpoints trigger on can be configured. But it
+> turns out in ptrace, etc we use HW_BRK_TYPE_PRIV_ALL.
 
-Tom already told you to look at the previous threads. Let's read them
-together. This one, for example:
+Thanks for double checking :)
 
-https://lore.kernel.org/lkml/YSScWvpXeVXw%2Fed5@infradead.org/
+>
+> >
+> > Based on x86 implementation:
+> >
+> > commit cefa929c034e
+> > ("x86/mm: Introduce temporary mm structs")
+> >
+> > Signed-off-by: Christopher M. Riedl <cmr@bluescreens.de>
+> >
+> > ---
+> >
+> > v6:  * Use {start,stop}_using_temporary_mm() instead of
+> >        {use,unuse}_temporary_mm() as suggested by Christophe.
+> >
+> > v5:  * Drop support for using a temporary mm on Book3s64 Hash MMU.
+> >
+> > v4:  * Pass the prev mm instead of NULL to switch_mm_irqs_off() when
+> >        using/unusing the temp mm as suggested by Jann Horn to keep
+> >        the context.active counter in-sync on mm/nohash.
+> >      * Disable SLB preload in the temporary mm when initializing the
+> >        temp_mm struct.
+> >      * Include asm/debug.h header to fix build issue with
+> >        ppc44x_defconfig.
+> > ---
+> >  arch/powerpc/include/asm/debug.h |  1 +
+> >  arch/powerpc/kernel/process.c    |  5 +++
+> >  arch/powerpc/lib/code-patching.c | 56 ++++++++++++++++++++++++++++++++
+> >  3 files changed, 62 insertions(+)
+> >
+> > diff --git a/arch/powerpc/include/asm/debug.h b/arch/powerpc/include/as=
+m/debug.h
+> > index 86a14736c76c..dfd82635ea8b 100644
+> > --- a/arch/powerpc/include/asm/debug.h
+> > +++ b/arch/powerpc/include/asm/debug.h
+> > @@ -46,6 +46,7 @@ static inline int debugger_fault_handler(struct pt_re=
+gs *regs) { return 0; }
+> >  #endif
+> >
+> >  void __set_breakpoint(int nr, struct arch_hw_breakpoint *brk);
+> > +void __get_breakpoint(int nr, struct arch_hw_breakpoint *brk);
+> >  bool ppc_breakpoint_available(void);
+> >  #ifdef CONFIG_PPC_ADV_DEBUG_REGS
+> >  extern void do_send_trap(struct pt_regs *regs, unsigned long address,
+> > diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/proces=
+s.c
+> > index 50436b52c213..6aa1f5c4d520 100644
+> > --- a/arch/powerpc/kernel/process.c
+> > +++ b/arch/powerpc/kernel/process.c
+> > @@ -865,6 +865,11 @@ static inline int set_breakpoint_8xx(struct arch_h=
+w_breakpoint *brk)
+> >         return 0;
+> >  }
+> >
+> > +void __get_breakpoint(int nr, struct arch_hw_breakpoint *brk)
+> > +{
+> > +       memcpy(brk, this_cpu_ptr(&current_brk[nr]), sizeof(*brk));
+> > +}
+>
+> The breakpoint code is already a little hard to follow. I'm worried
+> doing this might spread breakpoint handling into more places in the
+> future.
+> What about something like having a breakpoint_pause() function which
+> clears the hardware registers only and then a breakpoint_resume()
+> function that copies from current_brk[] back to the hardware
+> registers?
+> Then we don't have to make another copy of the breakpoint state.
 
-| > To take it out of line, I'm leaning towards the latter, creating a new
-| > file that is built based on the ARCH_HAS_PROTECTED_GUEST setting.
-| 
-| Yes.  In general everytime architectures have to provide the prototype
-| and not just the implementation of something we end up with a giant mess
-| sooner or later.  In a few cases that is still warranted due to
-| performance concerns, but i don't think that is the case here.
+I think that sounds reasonable - I'll add those functions instead with
+the next spin.
 
-So I think what Christoph means here is that you want to have the
-generic prototype defined in a header and arches get to implement it
-exactly to the letter so that there's no mess.
+>
+> > +
+> >  void __set_breakpoint(int nr, struct arch_hw_breakpoint *brk)
+> >  {
+> >         memcpy(this_cpu_ptr(&current_brk[nr]), brk, sizeof(*brk));
+> > diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-p=
+atching.c
+> > index f9a3019e37b4..8d61a7d35b89 100644
+> > --- a/arch/powerpc/lib/code-patching.c
+> > +++ b/arch/powerpc/lib/code-patching.c
+>
+> Sorry I might have missed it, but what was the reason for not putting
+> this stuff in mmu_context.h?
 
-As to what mess exactly, I'd let him explain that.
+x86 ended up moving this code into their code-patching file as well. I
+suppose nobody has thought of another use for a temporary mm like this
+yet :)
 
-> Because as demonstrated in my previous response some days ago, taking that
-> outline ends up with an unneccessary ugly generated code and we don't
-> benefit front GCC's capability to fold in and opt out unreachable code.
+>
+> > @@ -17,6 +17,9 @@
+> >  #include <asm/code-patching.h>
+> >  #include <asm/setup.h>
+> >  #include <asm/inst.h>
+> > +#include <asm/mmu_context.h>
+> > +#include <asm/debug.h>
+> > +#include <asm/tlb.h>
+> >
+> >  static int __patch_instruction(u32 *exec_addr, struct ppc_inst instr, =
+u32 *patch_addr)
+> >  {
+> > @@ -45,6 +48,59 @@ int raw_patch_instruction(u32 *addr, struct ppc_inst=
+ instr)
+> >  }
+> >
+> >  #ifdef CONFIG_STRICT_KERNEL_RWX
+> > +
+> > +struct temp_mm {
+> > +       struct mm_struct *temp;
+> > +       struct mm_struct *prev;
+> > +       struct arch_hw_breakpoint brk[HBP_NUM_MAX];
+> ^ Then we wouldn't need this.
+> > +};
+> > +
+> > +static inline void init_temp_mm(struct temp_mm *temp_mm, struct mm_str=
+uct *mm)
+> > +{
+> > +       /* We currently only support temporary mm on the Book3s64 Radix=
+ MMU */
+> > +       WARN_ON(!radix_enabled());
+> > +
+> > +       temp_mm->temp =3D mm;
+> > +       temp_mm->prev =3D NULL;
+> > +       memset(&temp_mm->brk, 0, sizeof(temp_mm->brk));
+> > +}
+> > +
+> > +static inline void start_using_temporary_mm(struct temp_mm *temp_mm)
+> > +{
+> > +       lockdep_assert_irqs_disabled();
+> > +
+> > +       temp_mm->prev =3D current->active_mm;
+> > +       switch_mm_irqs_off(temp_mm->prev, temp_mm->temp, current);
+>
+> Now that we only support radix it should be fine again to have it like
+> this:
+> switch_mm_irqs_off(NULL, temp_mm->temp, current);?
+> It was changed from that because it would cause issues on nohash I
+> thought.
 
-And this is real fast path where a couple of instructions matter or what?
+That's true - but if we want to support the other MMUs in the future
+I'd rather just keep it as-is. AFAICS there's no harm in passing
+temp_mm->prev here instead of NULL.
 
-set_memory_encrypted/_decrypted doesn't look like one to me.
+>
+> > +
+> > +       WARN_ON(!mm_is_thread_local(temp_mm->temp));
+> > +
+> > +       if (ppc_breakpoint_available()) {
+> > +               struct arch_hw_breakpoint null_brk =3D {0};
+> > +               int i =3D 0;
+> > +
+> > +               for (; i < nr_wp_slots(); ++i) {
+> > +                       __get_breakpoint(i, &temp_mm->brk[i]);
+> > +                       if (temp_mm->brk[i].type !=3D 0)
+> > +                               __set_breakpoint(i, &null_brk);
+> > +               }
+> > +       }
+> > +}
+> > +
+> > +static inline void stop_using_temporary_mm(struct temp_mm *temp_mm)
+> > +{
+> > +       lockdep_assert_irqs_disabled();
+> > +
+> > +       switch_mm_irqs_off(temp_mm->temp, temp_mm->prev, current);
+> > +
+> > +       if (ppc_breakpoint_available()) {
+> > +               int i =3D 0;
+> > +
+> > +               for (; i < nr_wp_slots(); ++i)
+> > +                       if (temp_mm->brk[i].type !=3D 0)
+> > +                               __set_breakpoint(i, &temp_mm->brk[i]);
+> > +       }
+> > +}
+> > +
+> >  static DEFINE_PER_CPU(struct vm_struct *, text_poke_area);
+> >
+> >  static int text_area_cpu_up(unsigned int cpu)
+> > --
+> > 2.32.0
+> >
+> Thanks,
+> Jordan
 
-> I can't see your point here. Inlining the function wouldn't add any
-> ifdeffery as far as I can see.
-
-If the function is touching defines etc, they all need to be visible.
-If that function needs to call other functions - which is the case on
-x86, perhaps not so much on power - then you need to either ifdef around
-them or provide stubs with ifdeffery in the headers. And you need to
-make them global functions instead of keeping them static to the same
-compilation unit, etc, etc.
-
-With a separate compilation unit, you don't need any of that and it is
-all kept in that single file.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
