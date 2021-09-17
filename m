@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE76E40F9D3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Sep 2021 15:57:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CCF440F9D4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Sep 2021 15:58:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H9wWk4lgdz2yp4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Sep 2021 23:57:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H9wXC0LWXz3c6v
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Sep 2021 23:58:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -14,45 +14,45 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H9wWJ1GdFz2yJB
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Sep 2021 23:57:28 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H9wWZ0yfTz307l
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Sep 2021 23:57:45 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4H9wWB00Y7z9sTL;
- Fri, 17 Sep 2021 15:57:26 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4H9wWV63PWz9sTL;
+ Fri, 17 Sep 2021 15:57:42 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id mq8u4Dr3i_yh; Fri, 17 Sep 2021 15:57:25 +0200 (CEST)
+ with ESMTP id 2Vvp1TjPwSN4; Fri, 17 Sep 2021 15:57:42 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4H9wW965g5z9sT4;
- Fri, 17 Sep 2021 15:57:25 +0200 (CEST)
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4H9wWV5Bb0z9sT4;
+ Fri, 17 Sep 2021 15:57:42 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id BDA2F8B799;
- Fri, 17 Sep 2021 15:57:25 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9E7908B799;
+ Fri, 17 Sep 2021 15:57:42 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id VEuDH_Cq9m4x; Fri, 17 Sep 2021 15:57:25 +0200 (CEST)
+ with ESMTP id gyuS0UJzf1no; Fri, 17 Sep 2021 15:57:42 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.202.36])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 770798B768;
- Fri, 17 Sep 2021 15:57:25 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 514108B768;
+ Fri, 17 Sep 2021 15:57:42 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 18HDvEW4674941
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 18HDvWBM675083
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Fri, 17 Sep 2021 15:57:14 +0200
+ Fri, 17 Sep 2021 15:57:32 +0200
 Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 18HDvCRr674940;
- Fri, 17 Sep 2021 15:57:12 +0200
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 18HDvWBk675082;
+ Fri, 17 Sep 2021 15:57:32 +0200
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
  christophe.leroy@csgroup.eu using -f
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v2] powerpc/8xx: Simplify TLB handling
-Date: Fri, 17 Sep 2021 15:57:12 +0200
-Message-Id: <fb324f1c8f2ddb57cf6aad1cea26329558f1c1c0.1631887021.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v2] powerpc/32: Don't use a struct based type for pte_t
+Date: Fri, 17 Sep 2021 15:57:31 +0200
+Message-Id: <c904599f33aaf6bb7ee2836a9ff8368509e0d78d.1631887042.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -72,138 +72,115 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In the old days, TLB handling for 8xx was using tlbie and tlbia
-instructions directly as much as possible.
+Long time ago we had a config item called STRICT_MM_TYPECHECKS
+to build the kernel with pte_t defined as a structure in order
+to perform additional build checks or build it with pte_t
+defined as a simple type in order to get simpler generated code.
 
-But commit f048aace29e0 ("powerpc/mm: Add SMP support to no-hash
-TLB handling") broke that by introducing out-of-line unnecessary
-complex functions for booke/smp which don't have tlbie/tlbia
-instructions and require more complex handling.
+Commit 670eea924198 ("powerpc/mm: Always use STRICT_MM_TYPECHECKS")
+made the struct based definition the only one, considering that the
+generated code was similar in both cases.
 
-Restore direct use of tlbie and tlbia for 8xx which is never SMP.
+That's right on ppc64 because the ABI is such that the content of a
+struct having a single simple type element is passed as register,
+but on ppc32 such a structure is passed via the stack like any
+structure.
+
+Simple test function:
+
+	pte_t test(pte_t pte)
+	{
+		return pte;
+	}
+
+Before this patch we get
+
+	c00108ec <test>:
+	c00108ec:	81 24 00 00 	lwz     r9,0(r4)
+	c00108f0:	91 23 00 00 	stw     r9,0(r3)
+	c00108f4:	4e 80 00 20 	blr
+
+So, for PPC32, restore the simple type behaviour we got before
+commit 670eea924198, but instead of adding a config option to
+activate type check, do it when __CHECKER__ is set so that type
+checking is performed by 'sparse' and provides feedback like:
+
+	arch/powerpc/mm/pgtable.c:466:16: warning: incorrect type in return expression (different base types)
+	arch/powerpc/mm/pgtable.c:466:16:    expected unsigned long
+	arch/powerpc/mm/pgtable.c:466:16:    got struct pte_t [usertype] x
 
 With this patch we now get
 
-	c00ecc68 <ptep_clear_flush>:
-	c00ecc68:	39 00 00 00 	li      r8,0
-	c00ecc6c:	81 46 00 00 	lwz     r10,0(r6)
-	c00ecc70:	91 06 00 00 	stw     r8,0(r6)
-	c00ecc74:	7c 00 2a 64 	tlbie   r5,r0
-	c00ecc78:	7c 00 04 ac 	hwsync
-	c00ecc7c:	91 43 00 00 	stw     r10,0(r3)
-	c00ecc80:	4e 80 00 20 	blr
-
-Before it was
-
-	c0012880 <local_flush_tlb_page>:
-	c0012880:	2c 03 00 00 	cmpwi   r3,0
-	c0012884:	41 82 00 54 	beq     c00128d8 <local_flush_tlb_page+0x58>
-	c0012888:	81 22 00 00 	lwz     r9,0(r2)
-	c001288c:	81 43 00 20 	lwz     r10,32(r3)
-	c0012890:	39 29 00 01 	addi    r9,r9,1
-	c0012894:	91 22 00 00 	stw     r9,0(r2)
-	c0012898:	2c 0a 00 00 	cmpwi   r10,0
-	c001289c:	41 82 00 10 	beq     c00128ac <local_flush_tlb_page+0x2c>
-	c00128a0:	81 2a 01 dc 	lwz     r9,476(r10)
-	c00128a4:	2c 09 ff ff 	cmpwi   r9,-1
-	c00128a8:	41 82 00 0c 	beq     c00128b4 <local_flush_tlb_page+0x34>
-	c00128ac:	7c 00 22 64 	tlbie   r4,r0
-	c00128b0:	7c 00 04 ac 	hwsync
-	c00128b4:	81 22 00 00 	lwz     r9,0(r2)
-	c00128b8:	39 29 ff ff 	addi    r9,r9,-1
-	c00128bc:	2c 09 00 00 	cmpwi   r9,0
-	c00128c0:	91 22 00 00 	stw     r9,0(r2)
-	c00128c4:	4c a2 00 20 	bclr+   4,eq
-	c00128c8:	81 22 00 70 	lwz     r9,112(r2)
-	c00128cc:	71 29 00 04 	andi.   r9,r9,4
-	c00128d0:	4d 82 00 20 	beqlr
-	c00128d4:	48 65 76 74 	b       c0669f48 <preempt_schedule>
-	c00128d8:	81 22 00 00 	lwz     r9,0(r2)
-	c00128dc:	39 29 00 01 	addi    r9,r9,1
-	c00128e0:	91 22 00 00 	stw     r9,0(r2)
-	c00128e4:	4b ff ff c8 	b       c00128ac <local_flush_tlb_page+0x2c>
-...
-	c00ecdc8 <ptep_clear_flush>:
-	c00ecdc8:	94 21 ff f0 	stwu    r1,-16(r1)
-	c00ecdcc:	39 20 00 00 	li      r9,0
-	c00ecdd0:	93 c1 00 08 	stw     r30,8(r1)
-	c00ecdd4:	83 c6 00 00 	lwz     r30,0(r6)
-	c00ecdd8:	91 26 00 00 	stw     r9,0(r6)
-	c00ecddc:	93 e1 00 0c 	stw     r31,12(r1)
-	c00ecde0:	7c 08 02 a6 	mflr    r0
-	c00ecde4:	7c 7f 1b 78 	mr      r31,r3
-	c00ecde8:	7c 83 23 78 	mr      r3,r4
-	c00ecdec:	7c a4 2b 78 	mr      r4,r5
-	c00ecdf0:	90 01 00 14 	stw     r0,20(r1)
-	c00ecdf4:	4b f2 5a 8d 	bl      c0012880 <local_flush_tlb_page>
-	c00ecdf8:	93 df 00 00 	stw     r30,0(r31)
-	c00ecdfc:	7f e3 fb 78 	mr      r3,r31
-	c00ece00:	80 01 00 14 	lwz     r0,20(r1)
-	c00ece04:	83 c1 00 08 	lwz     r30,8(r1)
-	c00ece08:	83 e1 00 0c 	lwz     r31,12(r1)
-	c00ece0c:	7c 08 03 a6 	mtlr    r0
-	c00ece10:	38 21 00 10 	addi    r1,r1,16
-	c00ece14:	4e 80 00 20 	blr
+	c0010890 <test>:
+	c0010890:	4e 80 00 20 	blr
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
-v2: Remove tracing of tlbie and tlbia as it generates circular dependency problems. Will see later if it can be added back. Not a big issue though.
+v2: Properly handle 8xx 16k pages
 ---
- arch/powerpc/include/asm/nohash/tlbflush.h | 15 +++++++++++++++
- arch/powerpc/mm/nohash/tlb.c               |  2 ++
- 2 files changed, 17 insertions(+)
+ arch/powerpc/include/asm/nohash/32/pgtable.h |  2 +-
+ arch/powerpc/include/asm/pgtable-types.h     | 14 +++++++++++++-
+ arch/powerpc/mm/pgtable.c                    |  2 +-
+ 3 files changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/nohash/tlbflush.h b/arch/powerpc/include/asm/nohash/tlbflush.h
-index 1edb7243e515..c08d25e3e626 100644
---- a/arch/powerpc/include/asm/nohash/tlbflush.h
-+++ b/arch/powerpc/include/asm/nohash/tlbflush.h
-@@ -32,11 +32,26 @@ extern void flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
- 			    unsigned long end);
- extern void flush_tlb_kernel_range(unsigned long start, unsigned long end);
- 
-+#ifdef CONFIG_PPC_8xx
-+static inline void local_flush_tlb_mm(struct mm_struct *mm)
-+{
-+	unsigned int pid = READ_ONCE(mm->context.id);
-+
-+	if (pid != MMU_NO_CONTEXT)
-+		asm volatile ("sync; tlbia; isync" : : : "memory");
-+}
-+
-+static inline void local_flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr)
-+{
-+	asm volatile ("tlbie %0; sync" : : "r" (vmaddr) : "memory");
-+}
+diff --git a/arch/powerpc/include/asm/nohash/32/pgtable.h b/arch/powerpc/include/asm/nohash/32/pgtable.h
+index f06ae00f2a65..34ce50da1850 100644
+--- a/arch/powerpc/include/asm/nohash/32/pgtable.h
++++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
+@@ -245,7 +245,7 @@ static int number_of_cells_per_pte(pmd_t *pmd, pte_basic_t val, int huge)
+ static inline pte_basic_t pte_update(struct mm_struct *mm, unsigned long addr, pte_t *p,
+ 				     unsigned long clr, unsigned long set, int huge)
+ {
+-	pte_basic_t *entry = &p->pte;
++	pte_basic_t *entry = (pte_basic_t *)p;
+ 	pte_basic_t old = pte_val(*p);
+ 	pte_basic_t new = (old & ~(pte_basic_t)clr) | set;
+ 	int num, i;
+diff --git a/arch/powerpc/include/asm/pgtable-types.h b/arch/powerpc/include/asm/pgtable-types.h
+index d11b4c61d686..c60199fc6fa6 100644
+--- a/arch/powerpc/include/asm/pgtable-types.h
++++ b/arch/powerpc/include/asm/pgtable-types.h
+@@ -5,14 +5,26 @@
+ /* PTE level */
+ #if defined(CONFIG_PPC_8xx) && defined(CONFIG_PPC_16K_PAGES)
+ typedef struct { pte_basic_t pte, pte1, pte2, pte3; } pte_t;
+-#else
++#elif defined(__CHECKER__) || !defined(CONFIG_PPC32)
+ typedef struct { pte_basic_t pte; } pte_t;
 +#else
- extern void local_flush_tlb_mm(struct mm_struct *mm);
- extern void local_flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr);
- 
- extern void __local_flush_tlb_page(struct mm_struct *mm, unsigned long vmaddr,
- 				   int tsize, int ind);
-+#endif
- 
- #ifdef CONFIG_SMP
- extern void flush_tlb_mm(struct mm_struct *mm);
-diff --git a/arch/powerpc/mm/nohash/tlb.c b/arch/powerpc/mm/nohash/tlb.c
-index 5872f69141d5..6d8cb68f6efb 100644
---- a/arch/powerpc/mm/nohash/tlb.c
-+++ b/arch/powerpc/mm/nohash/tlb.c
-@@ -185,6 +185,7 @@ EXPORT_PER_CPU_SYMBOL(next_tlbcam_idx);
-  *    processor
-  */
- 
-+#ifndef CONFIG_PPC_8xx
- /*
-  * These are the base non-SMP variants of page and mm flushing
-  */
-@@ -218,6 +219,7 @@ void local_flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr)
- 			       mmu_get_tsize(mmu_virtual_psize), 0);
++typedef pte_basic_t pte_t;
+ #endif
++
++#if defined(__CHECKER__) || !defined(CONFIG_PPC32) || \
++    (defined(CONFIG_PPC_8xx) && defined(CONFIG_PPC_16K_PAGES))
+ #define __pte(x)	((pte_t) { (x) })
+ static inline pte_basic_t pte_val(pte_t x)
+ {
+ 	return x.pte;
  }
- EXPORT_SYMBOL(local_flush_tlb_page);
++#else
++#define __pte(x)	((pte_t)(x))
++static inline pte_basic_t pte_val(pte_t x)
++{
++	return x;
++}
 +#endif
  
- /*
-  * And here are the SMP non-local implementations
+ /* PMD level */
+ #ifdef CONFIG_PPC64
+diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
+index cd16b407f47e..ce9482383144 100644
+--- a/arch/powerpc/mm/pgtable.c
++++ b/arch/powerpc/mm/pgtable.c
+@@ -271,7 +271,7 @@ void set_huge_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep, pte_
+ {
+ 	pmd_t *pmd = pmd_off(mm, addr);
+ 	pte_basic_t val;
+-	pte_basic_t *entry = &ptep->pte;
++	pte_basic_t *entry = (pte_basic_t *)ptep;
+ 	int num, i;
+ 
+ 	/*
 -- 
 2.31.1
 
