@@ -1,105 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0274340F461
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Sep 2021 10:47:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4E9840F496
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Sep 2021 11:17:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H9nd56MmCz305h
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Sep 2021 18:47:05 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RlazjpnM;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H9pHy4Fp7z2yp5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Sep 2021 19:17:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=RlazjpnM; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H9nTK2n7Mz2xvG
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Sep 2021 18:40:20 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18H8Qh1L012099; 
- Fri, 17 Sep 2021 04:40:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type; s=pp1; bh=mYy2uboKlr/gD81W+0jUXFmzk5rbAxGpEzENeLc+aDE=;
- b=RlazjpnMIC7oegwqRx/TIkANFlLnYELxiex7NHZ7OEhAYEBtN4yyb33TdxUfWnm5mpBI
- 2Bg+8Vd54+znLjdAFhK4TvuRrmRgV5HIXOiLmNf5cUhC8zKAqkswO8YHbI5tDGaOlj/q
- 0/lON0oDS5qGHrKSxR3INMvHW1aIwuArh32sf0uMjeOj34sP6nUjxyGeICfxQk1EpCt+
- iVNsWW3Lvq9gP6m+ZfYqRM86h7qyf7tJKWtmjf7AHMKyyL0Q9o34zEP6qe6CtD+1WKU0
- v3IGvEADALK6k3yTE/VnbXrnH9Etgp4xhKJA/AxwwDxbGBgolRjx/KMWXn4iBophZdSw aA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3b4jqypra0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 17 Sep 2021 04:40:12 -0400
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 18H7vYqr026731;
- Fri, 17 Sep 2021 04:40:11 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3b4jqypr9j-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 17 Sep 2021 04:40:11 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 18H8X32X025776;
- Fri, 17 Sep 2021 08:40:09 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma04ams.nl.ibm.com with ESMTP id 3b0m3av1yg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 17 Sep 2021 08:40:09 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 18H8e7t740698326
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 17 Sep 2021 08:40:07 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F10B5AE067;
- Fri, 17 Sep 2021 08:40:06 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 36A8EAE045;
- Fri, 17 Sep 2021 08:40:05 +0000 (GMT)
-Received: from li-c7b85bcc-2727-11b2-a85c-a9ba7f3a2193.ibm.com (unknown
- [9.43.80.218]) by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 17 Sep 2021 08:40:04 +0000 (GMT)
-Subject: Re: [PATCH v2] powerpc/mce: Fix access error in mce handler
-To: Daniel Axtens <dja@axtens.net>, linuxppc-dev@lists.ozlabs.org,
- mpe@ellerman.id.au
-References: <20210909064330.312432-1-ganeshgr@linux.ibm.com>
- <87lf3v903y.fsf@linkitivity.dja.id.au>
-From: Ganesh <ganeshgr@linux.ibm.com>
-Message-ID: <d0a9d52f-b427-757e-0fab-e63ef7c035b1@linux.ibm.com>
-Date: Fri, 17 Sep 2021 14:10:03 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H9pHS03sQz2yHb
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Sep 2021 19:16:48 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4H9pHK5gnNz9sV5;
+ Fri, 17 Sep 2021 11:16:45 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id ztcfKQ7GnnFR; Fri, 17 Sep 2021 11:16:45 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4H9pHK4lJhz9sS4;
+ Fri, 17 Sep 2021 11:16:45 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 903158B783;
+ Fri, 17 Sep 2021 11:16:45 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 71PENj4KiEWQ; Fri, 17 Sep 2021 11:16:45 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.202.36])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4728D8B768;
+ Fri, 17 Sep 2021 11:16:45 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 18H9GYmP553829
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+ Fri, 17 Sep 2021 11:16:34 +0200
+Received: (from chleroy@localhost)
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 18H9GWAJ553827;
+ Fri, 17 Sep 2021 11:16:32 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
+ christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH] powerpc/8xx: Simplify TLB handling
+Date: Fri, 17 Sep 2021 11:16:22 +0200
+Message-Id: <5f5bb00293c4bf8115c327eb80488b3aa01b9f36.1631870171.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-In-Reply-To: <87lf3v903y.fsf@linkitivity.dja.id.au>
-Content-Type: multipart/alternative;
- boundary="------------6C24F535DA50341CB001A694"
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Rit6zHGmMr6egaU6jgUDaDTVYsgf7uCG
-X-Proofpoint-GUID: Xkft6wkz4w6fh2fNyy5OUQibjDCM1lXW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
- definitions=2021-09-17_04,2021-09-16_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- clxscore=1011 priorityscore=1501 suspectscore=0 mlxlogscore=999
- malwarescore=0 adultscore=0 mlxscore=0 phishscore=0 impostorscore=0
- spamscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2109030001 definitions=main-2109170054
-X-Mailman-Approved-At: Fri, 17 Sep 2021 18:46:29 +1000
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,183 +67,146 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mahesh@linux.ibm.com, npiggin@gmail.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a multi-part message in MIME format.
---------------6C24F535DA50341CB001A694
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+In the old days, TLB handling for 8xx was using tlbie and tlbia
+instructions directly as much as possible.
 
-On 9/17/21 12:09 PM, Daniel Axtens wrote:
+But commit f048aace29e0 ("powerpc/mm: Add SMP support to no-hash
+TLB handling") broke that by introducing out-of-line unnecessary
+complex functions for booke/smp which don't have tlbie/tlbia
+instructions and require more complex handling.
 
-> Hi Ganesh,
->
->> We queue an irq work for deferred processing of mce event
->> in realmode mce handler, where translation is disabled.
->> Queuing of the work may result in accessing memory outside
->> RMO region, such access needs the translation to be enabled
->> for an LPAR running with hash mmu else the kernel crashes.
->>
->> After enabling translation in mce_handle_error() we used to
->> leave it enabled to avoid crashing here, but now with the
->> commit 74c3354bc1d89 ("powerpc/pseries/mce: restore msr before
->> returning from handler") we are restoring the MSR to disable
->> translation.
->>
->> Hence to fix this enable the translation before queuing the work.
-> [snip]
->
->> Fixes: 74c3354bc1d89 ("powerpc/pseries/mce: restore msr before returning from handler")
-> That patch changes arch/powerpc/powerpc/platforms/pseries/ras.c just
-> below this comment:
->
->      /*
->       * Enable translation as we will be accessing per-cpu variables
->       * in save_mce_event() which may fall outside RMO region, also
->       * leave it enabled because subsequently we will be queuing work
->       * to workqueues where again per-cpu variables accessed, besides
->       * fwnmi_release_errinfo() crashes when called in realmode on
->       * pseries.
->       * Note: All the realmode handling like flushing SLB entries for
->       *       SLB multihit is done by now.
->       */
->
-> That suggests per-cpu variables need protection. In your patch, you
-> enable translations just around irq_work_queue:
+Restore direct use of tlbie and tlbia for 8xx which is never SMP.
 
-The comment is bit old, most of it doesn't make any sense now, yes per-cpu
-variables cannot be accessed in realmode, but with commit 923b3cf00b3f
-("powerpc/mce: Remove per cpu variables from MCE handlers") we moved all of
-them to paca.
+With this patch we now get
 
->> +	/* Queue irq work to process this event later. Before
->> +	 * queuing the work enable translation for non radix LPAR,
->> +	 * as irq_work_queue may try to access memory outside RMO
->> +	 * region.
->> +	 */
->> +	if (!radix_enabled() && firmware_has_feature(FW_FEATURE_LPAR)) {
->> +		msr = mfmsr();
->> +		mtmsr(msr | MSR_IR | MSR_DR);
->> +		irq_work_queue(&mce_event_process_work);
->> +		mtmsr(msr);
->> +	} else {
->> +		irq_work_queue(&mce_event_process_work);
->> +	}
-> However, just before that in the function, there are a few things that
-> access per-cpu variables via the local_paca, e.g.:
->
-> memcpy(&local_paca->mce_info->mce_event_queue[index],
->         &evt, sizeof(evt));
->
-> Do we need to widen the window where translations are enabled in order
-> to protect accesses to local_paca?
+	c00ecc68 <ptep_clear_flush>:
+	c00ecc68:	39 00 00 00 	li      r8,0
+	c00ecc6c:	81 46 00 00 	lwz     r10,0(r6)
+	c00ecc70:	91 06 00 00 	stw     r8,0(r6)
+	c00ecc74:	7c 00 2a 64 	tlbie   r5,r0
+	c00ecc78:	7c 00 04 ac 	hwsync
+	c00ecc7c:	91 43 00 00 	stw     r10,0(r3)
+	c00ecc80:	4e 80 00 20 	blr
 
-paca will be within Real Mode Area, so it can be accessed with translate off.
+Before it was
 
+	c0012880 <local_flush_tlb_page>:
+	c0012880:	2c 03 00 00 	cmpwi   r3,0
+	c0012884:	41 82 00 54 	beq     c00128d8 <local_flush_tlb_page+0x58>
+	c0012888:	81 22 00 00 	lwz     r9,0(r2)
+	c001288c:	81 43 00 20 	lwz     r10,32(r3)
+	c0012890:	39 29 00 01 	addi    r9,r9,1
+	c0012894:	91 22 00 00 	stw     r9,0(r2)
+	c0012898:	2c 0a 00 00 	cmpwi   r10,0
+	c001289c:	41 82 00 10 	beq     c00128ac <local_flush_tlb_page+0x2c>
+	c00128a0:	81 2a 01 dc 	lwz     r9,476(r10)
+	c00128a4:	2c 09 ff ff 	cmpwi   r9,-1
+	c00128a8:	41 82 00 0c 	beq     c00128b4 <local_flush_tlb_page+0x34>
+	c00128ac:	7c 00 22 64 	tlbie   r4,r0
+	c00128b0:	7c 00 04 ac 	hwsync
+	c00128b4:	81 22 00 00 	lwz     r9,0(r2)
+	c00128b8:	39 29 ff ff 	addi    r9,r9,-1
+	c00128bc:	2c 09 00 00 	cmpwi   r9,0
+	c00128c0:	91 22 00 00 	stw     r9,0(r2)
+	c00128c4:	4c a2 00 20 	bclr+   4,eq
+	c00128c8:	81 22 00 70 	lwz     r9,112(r2)
+	c00128cc:	71 29 00 04 	andi.   r9,r9,4
+	c00128d0:	4d 82 00 20 	beqlr
+	c00128d4:	48 65 76 74 	b       c0669f48 <preempt_schedule>
+	c00128d8:	81 22 00 00 	lwz     r9,0(r2)
+	c00128dc:	39 29 00 01 	addi    r9,r9,1
+	c00128e0:	91 22 00 00 	stw     r9,0(r2)
+	c00128e4:	4b ff ff c8 	b       c00128ac <local_flush_tlb_page+0x2c>
+...
+	c00ecdc8 <ptep_clear_flush>:
+	c00ecdc8:	94 21 ff f0 	stwu    r1,-16(r1)
+	c00ecdcc:	39 20 00 00 	li      r9,0
+	c00ecdd0:	93 c1 00 08 	stw     r30,8(r1)
+	c00ecdd4:	83 c6 00 00 	lwz     r30,0(r6)
+	c00ecdd8:	91 26 00 00 	stw     r9,0(r6)
+	c00ecddc:	93 e1 00 0c 	stw     r31,12(r1)
+	c00ecde0:	7c 08 02 a6 	mflr    r0
+	c00ecde4:	7c 7f 1b 78 	mr      r31,r3
+	c00ecde8:	7c 83 23 78 	mr      r3,r4
+	c00ecdec:	7c a4 2b 78 	mr      r4,r5
+	c00ecdf0:	90 01 00 14 	stw     r0,20(r1)
+	c00ecdf4:	4b f2 5a 8d 	bl      c0012880 <local_flush_tlb_page>
+	c00ecdf8:	93 df 00 00 	stw     r30,0(r31)
+	c00ecdfc:	7f e3 fb 78 	mr      r3,r31
+	c00ece00:	80 01 00 14 	lwz     r0,20(r1)
+	c00ece04:	83 c1 00 08 	lwz     r30,8(r1)
+	c00ece08:	83 e1 00 0c 	lwz     r31,12(r1)
+	c00ece0c:	7c 08 03 a6 	mtlr    r0
+	c00ece10:	38 21 00 10 	addi    r1,r1,16
+	c00ece14:	4e 80 00 20 	blr
 
---------------6C24F535DA50341CB001A694
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 7bit
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/include/asm/nohash/tlbflush.h | 20 ++++++++++++++++++++
+ arch/powerpc/mm/nohash/tlb.c               |  2 ++
+ 2 files changed, 22 insertions(+)
 
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <div class="moz-cite-prefix">
-      <pre>On 9/17/21 12:09 PM, Daniel Axtens wrote:</pre>
-    </div>
-    <blockquote type="cite"
-      cite="mid:87lf3v903y.fsf@linkitivity.dja.id.au">
-      <pre class="moz-quote-pre" wrap="">Hi Ganesh,
-
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">We queue an irq work for deferred processing of mce event
-in realmode mce handler, where translation is disabled.
-Queuing of the work may result in accessing memory outside
-RMO region, such access needs the translation to be enabled
-for an LPAR running with hash mmu else the kernel crashes.
-
-After enabling translation in mce_handle_error() we used to
-leave it enabled to avoid crashing here, but now with the
-commit 74c3354bc1d89 ("powerpc/pseries/mce: restore msr before
-returning from handler") we are restoring the MSR to disable
-translation.
-
-Hence to fix this enable the translation before queuing the work.
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-[snip]
-
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">Fixes: 74c3354bc1d89 ("powerpc/pseries/mce: restore msr before returning from handler")
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-That patch changes arch/powerpc/powerpc/platforms/pseries/ras.c just
-below this comment:
-
-    /*
-     * Enable translation as we will be accessing per-cpu variables
-     * in save_mce_event() which may fall outside RMO region, also
-     * leave it enabled because subsequently we will be queuing work
-     * to workqueues where again per-cpu variables accessed, besides
-     * fwnmi_release_errinfo() crashes when called in realmode on
-     * pseries.
-     * Note: All the realmode handling like flushing SLB entries for
-     *       SLB multihit is done by now.
-     */
-
-That suggests per-cpu variables need protection. In your patch, you
-enable translations just around irq_work_queue:</pre>
-    </blockquote>
-    <pre class="moz-quote-pre" wrap="">The comment is bit old, most of it doesn't make any sense now, yes per-cpu
-variables cannot be accessed in realmode, but with commit 923b3cf00b3f
-("powerpc/mce: Remove per cpu variables from MCE handlers") we moved all of
-them to paca.
-
-</pre>
-    <blockquote type="cite"
-      cite="mid:87lf3v903y.fsf@linkitivity.dja.id.au">
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">+	/* Queue irq work to process this event later. Before
-+	 * queuing the work enable translation for non radix LPAR,
-+	 * as irq_work_queue may try to access memory outside RMO
-+	 * region.
-+	 */
-+	if (!radix_enabled() &amp;&amp; firmware_has_feature(FW_FEATURE_LPAR)) {
-+		msr = mfmsr();
-+		mtmsr(msr | MSR_IR | MSR_DR);
-+		irq_work_queue(&amp;mce_event_process_work);
-+		mtmsr(msr);
-+	} else {
-+		irq_work_queue(&amp;mce_event_process_work);
+diff --git a/arch/powerpc/include/asm/nohash/tlbflush.h b/arch/powerpc/include/asm/nohash/tlbflush.h
+index 1edb7243e515..a7ec171d79a6 100644
+--- a/arch/powerpc/include/asm/nohash/tlbflush.h
++++ b/arch/powerpc/include/asm/nohash/tlbflush.h
+@@ -32,11 +32,31 @@ extern void flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
+ 			    unsigned long end);
+ extern void flush_tlb_kernel_range(unsigned long start, unsigned long end);
+ 
++#ifdef CONFIG_PPC_8xx
++#include <asm/trace.h>
++
++static inline void local_flush_tlb_mm(struct mm_struct *mm)
++{
++	unsigned int pid = READ_ONCE(mm->context.id);
++
++	if (pid != MMU_NO_CONTEXT) {
++		asm volatile ("sync; tlbia; isync" : : : "memory");
++		trace_tlbia(pid);
 +	}
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-However, just before that in the function, there are a few things that
-access per-cpu variables via the local_paca, e.g.:
-
-memcpy(&amp;local_paca-&gt;mce_info-&gt;mce_event_queue[index],
-       &amp;evt, sizeof(evt));
-
-Do we need to widen the window where translations are enabled in order
-to protect accesses to local_paca?</pre>
-    </blockquote>
-    <pre class="moz-quote-pre" wrap="">paca will be within Real Mode Area, so it can be accessed with translate off. 
-</pre>
-    <blockquote type="cite"
-      cite="mid:87lf3v903y.fsf@linkitivity.dja.id.au">
-    </blockquote>
-  </body>
-</html>
-
---------------6C24F535DA50341CB001A694--
++}
++
++static inline void local_flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr)
++{
++	asm volatile ("tlbie %0; sync" : : "r" (vmaddr) : "memory");
++	trace_tlbie(0, 0, vmaddr, vma ? vma->vm_mm->context.id : 0, 0, 0, 0);
++}
++#else
+ extern void local_flush_tlb_mm(struct mm_struct *mm);
+ extern void local_flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr);
+ 
+ extern void __local_flush_tlb_page(struct mm_struct *mm, unsigned long vmaddr,
+ 				   int tsize, int ind);
++#endif
+ 
+ #ifdef CONFIG_SMP
+ extern void flush_tlb_mm(struct mm_struct *mm);
+diff --git a/arch/powerpc/mm/nohash/tlb.c b/arch/powerpc/mm/nohash/tlb.c
+index 5872f69141d5..6d8cb68f6efb 100644
+--- a/arch/powerpc/mm/nohash/tlb.c
++++ b/arch/powerpc/mm/nohash/tlb.c
+@@ -185,6 +185,7 @@ EXPORT_PER_CPU_SYMBOL(next_tlbcam_idx);
+  *    processor
+  */
+ 
++#ifndef CONFIG_PPC_8xx
+ /*
+  * These are the base non-SMP variants of page and mm flushing
+  */
+@@ -218,6 +219,7 @@ void local_flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr)
+ 			       mmu_get_tsize(mmu_virtual_psize), 0);
+ }
+ EXPORT_SYMBOL(local_flush_tlb_page);
++#endif
+ 
+ /*
+  * And here are the SMP non-local implementations
+-- 
+2.31.1
 
