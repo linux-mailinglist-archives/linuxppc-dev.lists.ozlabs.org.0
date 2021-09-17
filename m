@@ -1,58 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23BD240FE43
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Sep 2021 18:58:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8F3B40FED1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Sep 2021 19:47:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HB0Wy0fyWz2ywd
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Sep 2021 02:58:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HB1d04Ypmz305K
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Sep 2021 03:47:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HB0WW5knGz2xrT
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Sep 2021 02:57:58 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4HB0WS0Bk0z9sTL;
- Fri, 17 Sep 2021 18:57:56 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id Q-t8XLaWNuNY; Fri, 17 Sep 2021 18:57:55 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4HB0WR6B2dz9sT0;
- Fri, 17 Sep 2021 18:57:55 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id BB3DE8B799;
- Fri, 17 Sep 2021 18:57:55 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id TA_mV7fAT1MU; Fri, 17 Sep 2021 18:57:55 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.202.36])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 975A58B768;
- Fri, 17 Sep 2021 18:57:54 +0200 (CEST)
-Subject: Re: [PATCH v2 8/8] bpf ppc32: Add addr > TASK_SIZE_MAX explicit check
-To: Hari Bathini <hbathini@linux.ibm.com>, naveen.n.rao@linux.ibm.com,
- mpe@ellerman.id.au, ast@kernel.org, daniel@iogearbox.net
-References: <20210917153047.177141-1-hbathini@linux.ibm.com>
- <20210917153047.177141-9-hbathini@linux.ibm.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <cc61ff09-dd94-64d1-7c8b-4b628c1e8de2@csgroup.eu>
-Date: Fri, 17 Sep 2021 18:57:53 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HB1cX6F2Rz2xsB
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Sep 2021 03:47:19 +1000 (AEST)
+X-IronPort-AV: E=McAfee;i="6200,9189,10110"; a="222882564"
+X-IronPort-AV: E=Sophos;i="5.85,302,1624345200"; d="scan'208";a="222882564"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+ by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Sep 2021 10:46:15 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.85,302,1624345200"; d="scan'208";a="530928172"
+Received: from lkp-server01.sh.intel.com (HELO 285e7b116627) ([10.239.97.150])
+ by fmsmga004.fm.intel.com with ESMTP; 17 Sep 2021 10:46:13 -0700
+Received: from kbuild by 285e7b116627 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1mRHwC-0004J3-Uv; Fri, 17 Sep 2021 17:46:12 +0000
+Date: Sat, 18 Sep 2021 01:46:11 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ c006a06508db4841d256d82f42da392d6391f3d9
+Message-ID: <6144d463.yZpyENSG0IyS2yaD%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-In-Reply-To: <20210917153047.177141-9-hbathini@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr-FR
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,100 +50,166 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: songliubraving@fb.com, netdev@vger.kernel.org, john.fastabend@gmail.com,
- andrii@kernel.org, kpsingh@kernel.org, paulus@samba.org, yhs@fb.com,
- bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, kafai@fb.com
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: c006a06508db4841d256d82f42da392d6391f3d9  powerpc/xics: Set the IRQ chip data for the ICS native backend
 
+elapsed time: 1508m
 
-Le 17/09/2021 à 17:30, Hari Bathini a écrit :
-> With KUAP enabled, any kernel code which wants to access userspace
-> needs to be surrounded by disable-enable KUAP. But that is not
-> happening for BPF_PROBE_MEM load instruction. Though PPC32 does not
-> support read protection, considering the fact that PTR_TO_BTF_ID
-> (which uses BPF_PROBE_MEM mode) could either be a valid kernel pointer
-> or NULL but should never be a pointer to userspace address, execute
-> BPF_PROBE_MEM load only if addr > TASK_SIZE_MAX, otherwise set
-> dst_reg=0 and move on.
+configs tested: 138
+configs skipped: 3
 
-Same comment as patch 6.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-> 
-> This will catch NULL, valid or invalid userspace pointers. Only bad
-> kernel pointer will be handled by BPF exception table.
-> 
-> [Alexei suggested for x86]
-> Suggested-by: Alexei Starovoitov <ast@kernel.org>
-> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-> ---
-> 
-> Changes in v2:
-> * New patch to handle bad userspace pointers on PPC32.
-> 
-> 
->   arch/powerpc/net/bpf_jit_comp32.c | 39 +++++++++++++++++++++++++++++++
->   1 file changed, 39 insertions(+)
-> 
-> diff --git a/arch/powerpc/net/bpf_jit_comp32.c b/arch/powerpc/net/bpf_jit_comp32.c
-> index c6262289dcc4..faa8047fcf4a 100644
-> --- a/arch/powerpc/net/bpf_jit_comp32.c
-> +++ b/arch/powerpc/net/bpf_jit_comp32.c
-> @@ -821,6 +821,45 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
->   		/* dst = *(u64 *)(ul) (src + off) */
->   		case BPF_LDX | BPF_MEM | BPF_DW:
->   		case BPF_LDX | BPF_PROBE_MEM | BPF_DW:
-> +			/*
-> +			 * As PTR_TO_BTF_ID that uses BPF_PROBE_MEM mode could either be a valid
-> +			 * kernel pointer or NULL but not a userspace address, execute BPF_PROBE_MEM
-> +			 * load only if addr > TASK_SIZE_MAX, otherwise set dst_reg=0 and move on.
-> +			 */
-> +			if (BPF_MODE(code) == BPF_PROBE_MEM) {
-> +				bool extra_insn_needed = false;
-> +				unsigned int adjusted_idx;
-> +
-> +				/*
-> +				 * For BPF_DW case, "li reg_h,0" would be needed when
-> +				 * !fp->aux->verifier_zext. Adjust conditional branch'ing
-> +				 * address accordingly.
-> +				 */
-> +				if ((size == BPF_DW) && !fp->aux->verifier_zext)
-> +					extra_insn_needed = true;
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                 randconfig-c001-20210916
+sh                          rsk7269_defconfig
+powerpc                     ep8248e_defconfig
+riscv                    nommu_virt_defconfig
+powerpc                      chrp32_defconfig
+arm                         bcm2835_defconfig
+arm                         at91_dt_defconfig
+s390                             allyesconfig
+arm                            hisi_defconfig
+sh                           se7780_defconfig
+arm                            qcom_defconfig
+nios2                         10m50_defconfig
+arc                 nsimosci_hs_smp_defconfig
+mips                            ar7_defconfig
+arm                       netwinder_defconfig
+sh                          landisk_defconfig
+um                           x86_64_defconfig
+arm                        mvebu_v7_defconfig
+arc                        nsimosci_defconfig
+mips                     loongson1b_defconfig
+sh                           se7712_defconfig
+powerpc                        warp_defconfig
+arm                      integrator_defconfig
+powerpc                 mpc837x_rdb_defconfig
+powerpc                     tqm8541_defconfig
+powerpc                    klondike_defconfig
+powerpc                     tqm8548_defconfig
+powerpc                     kmeter1_defconfig
+powerpc                  mpc885_ads_defconfig
+arm                         cm_x300_defconfig
+sh                               alldefconfig
+m68k                         amcore_defconfig
+arm                        oxnas_v6_defconfig
+ia64                          tiger_defconfig
+powerpc                      katmai_defconfig
+arm                        mini2440_defconfig
+arm                        trizeps4_defconfig
+xtensa                  cadence_csp_defconfig
+arm                              alldefconfig
+powerpc                     powernv_defconfig
+mips                          rm200_defconfig
+mips                     cu1000-neo_defconfig
+arm                          ep93xx_defconfig
+xtensa                  audio_kc705_defconfig
+xtensa                          iss_defconfig
+sh                                  defconfig
+x86_64                           allyesconfig
+powerpc                  storcenter_defconfig
+arm                        keystone_defconfig
+arm                             ezx_defconfig
+mips                           ip27_defconfig
+arm                       imx_v6_v7_defconfig
+arm                     am200epdkit_defconfig
+m68k                            mac_defconfig
+mips                        nlm_xlr_defconfig
+x86_64               randconfig-c001-20210916
+arm                  randconfig-c002-20210916
+ia64                             allmodconfig
+ia64                             allyesconfig
+ia64                                defconfig
+m68k                             allmodconfig
+m68k                             allyesconfig
+m68k                                defconfig
+nios2                               defconfig
+nds32                             allnoconfig
+arc                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+xtensa                           allyesconfig
+parisc                           allyesconfig
+parisc                              defconfig
+s390                             allmodconfig
+s390                                defconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                             allyesconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+x86_64               randconfig-a016-20210916
+x86_64               randconfig-a013-20210916
+x86_64               randconfig-a012-20210916
+x86_64               randconfig-a011-20210916
+x86_64               randconfig-a014-20210916
+x86_64               randconfig-a015-20210916
+i386                 randconfig-a016-20210916
+i386                 randconfig-a015-20210916
+i386                 randconfig-a011-20210916
+i386                 randconfig-a012-20210916
+i386                 randconfig-a013-20210916
+i386                 randconfig-a014-20210916
+riscv                randconfig-r042-20210916
+s390                 randconfig-r044-20210916
+arc                  randconfig-r043-20210916
+riscv                    nommu_k210_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allyesconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                             i386_defconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
 
-Don't make it too complicated. That's a fallback that should never 
-happen, no need to optimise. You can put that instruction all the time 
-(or put a NOP) and keep the jumps always the same.
+clang tested configs:
+riscv                randconfig-c006-20210916
+x86_64               randconfig-c007-20210916
+mips                 randconfig-c004-20210916
+powerpc              randconfig-c003-20210916
+arm                  randconfig-c002-20210916
+i386                 randconfig-c001-20210916
+s390                 randconfig-c005-20210916
+x86_64               randconfig-a002-20210916
+x86_64               randconfig-a003-20210916
+x86_64               randconfig-a006-20210916
+x86_64               randconfig-a004-20210916
+x86_64               randconfig-a005-20210916
+x86_64               randconfig-a001-20210916
+i386                 randconfig-a004-20210916
+i386                 randconfig-a005-20210916
+i386                 randconfig-a006-20210916
+i386                 randconfig-a002-20210916
+i386                 randconfig-a003-20210916
+i386                 randconfig-a001-20210916
+hexagon              randconfig-r045-20210916
+hexagon              randconfig-r041-20210916
 
-> +
-> +				/*
-> +				 * Need to jump two instructions instead of one for BPF_DW case
-> +				 * as there are two load instructions for dst_reg_h & dst_reg
-> +				 * respectively.
-> +				 */
-> +				adjusted_idx = (size == BPF_DW) ? 1 : 0;
-
-Same comment as patch 6, drop adjusted_idx and do an if/else directly 
-for the PPC_JMP.
-
-> +
-> +				EMIT(PPC_RAW_ADDI(b2p[TMP_REG], src_reg, off));
-> +				PPC_LI32(_R0, TASK_SIZE_MAX);
-> +				EMIT(PPC_RAW_CMPLW(b2p[TMP_REG], _R0));
-> +				PPC_BCC(COND_GT, (ctx->idx + 4 + (extra_insn_needed ? 1 : 0)) * 4);
-> +				EMIT(PPC_RAW_LI(dst_reg, 0));
-> +				/*
-> +				 * Note that "li reg_h,0" is emitted for BPF_B/H/W case,
-> +				 * if necessary. So, jump there insted of emitting an
-> +				 * additional "li reg_h,0" instruction.
-> +				 */
-> +				if (extra_insn_needed)
-> +					EMIT(PPC_RAW_LI(dst_reg_h, 0));
-> +				PPC_JMP((ctx->idx + 2 + adjusted_idx) * 4);
-> +			}
-> +
->   			switch (size) {
->   			case BPF_B:
->   				EMIT(PPC_RAW_LBZ(dst_reg, src_reg, off));
-> 
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
