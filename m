@@ -1,61 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CCF440F9D4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Sep 2021 15:58:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEA3240FA36
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Sep 2021 16:32:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H9wXC0LWXz3c6v
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Sep 2021 23:58:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H9xJ96xzSz308h
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Sep 2021 00:32:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ smtp.mailfrom=aculab.com (client-ip=185.58.85.151;
+ helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
+ receiver=<UNKNOWN>)
+Received: from eu-smtp-delivery-151.mimecast.com
+ (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H9wWZ0yfTz307l
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Sep 2021 23:57:45 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4H9wWV63PWz9sTL;
- Fri, 17 Sep 2021 15:57:42 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 2Vvp1TjPwSN4; Fri, 17 Sep 2021 15:57:42 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4H9wWV5Bb0z9sT4;
- Fri, 17 Sep 2021 15:57:42 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 9E7908B799;
- Fri, 17 Sep 2021 15:57:42 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id gyuS0UJzf1no; Fri, 17 Sep 2021 15:57:42 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.202.36])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 514108B768;
- Fri, 17 Sep 2021 15:57:42 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 18HDvWBM675083
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Fri, 17 Sep 2021 15:57:32 +0200
-Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 18HDvWBk675082;
- Fri, 17 Sep 2021 15:57:32 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
- christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v2] powerpc/32: Don't use a struct based type for pte_t
-Date: Fri, 17 Sep 2021 15:57:31 +0200
-Message-Id: <c904599f33aaf6bb7ee2836a9ff8368509e0d78d.1631887042.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.31.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H9xHj0p8jz2yHP
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Sep 2021 00:32:31 +1000 (AEST)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-62-I8DWIADxNXumcC2ZvYPdxg-1; Fri, 17 Sep 2021 15:32:25 +0100
+X-MC-Unique: I8DWIADxNXumcC2ZvYPdxg-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.23; Fri, 17 Sep 2021 15:32:23 +0100
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.023; Fri, 17 Sep 2021 15:32:23 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Christophe Leroy' <christophe.leroy@csgroup.eu>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, "Michael
+ Ellerman" <mpe@ellerman.id.au>
+Subject: RE: [PATCH v2] powerpc/32: Don't use a struct based type for pte_t
+Thread-Topic: [PATCH v2] powerpc/32: Don't use a struct based type for pte_t
+Thread-Index: AQHXq8wPR5JW25uF60m9xktVKLekzquoSMug
+Date: Fri, 17 Sep 2021 14:32:22 +0000
+Message-ID: <505920070e5f4bf8ad7ccaa12f346469@AcuMS.aculab.com>
+References: <c904599f33aaf6bb7ee2836a9ff8368509e0d78d.1631887042.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <c904599f33aaf6bb7ee2836a9ff8368509e0d78d.1631887042.git.christophe.leroy@csgroup.eu>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,120 +64,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Long time ago we had a config item called STRICT_MM_TYPECHECKS
-to build the kernel with pte_t defined as a structure in order
-to perform additional build checks or build it with pte_t
-defined as a simple type in order to get simpler generated code.
+From: Christophe Leroy
+> Sent: 17 September 2021 14:58
+>=20
+> Long time ago we had a config item called STRICT_MM_TYPECHECKS
+> to build the kernel with pte_t defined as a structure in order
+> to perform additional build checks or build it with pte_t
+> defined as a simple type in order to get simpler generated code.
+>=20
+...
+> diff --git a/arch/powerpc/include/asm/pgtable-types.h b/arch/powerpc/incl=
+ude/asm/pgtable-types.h
+> index d11b4c61d686..c60199fc6fa6 100644
+> --- a/arch/powerpc/include/asm/pgtable-types.h
+> +++ b/arch/powerpc/include/asm/pgtable-types.h
+> @@ -5,14 +5,26 @@
+>  /* PTE level */
+>  #if defined(CONFIG_PPC_8xx) && defined(CONFIG_PPC_16K_PAGES)
+>  typedef struct { pte_basic_t pte, pte1, pte2, pte3; } pte_t;
+> -#else
+> +#elif defined(__CHECKER__) || !defined(CONFIG_PPC32)
+>  typedef struct { pte_basic_t pte; } pte_t;
+> +#else
+> +typedef pte_basic_t pte_t;
+>  #endif
+> +
+> +#if defined(__CHECKER__) || !defined(CONFIG_PPC32) || \
+> +    (defined(CONFIG_PPC_8xx) && defined(CONFIG_PPC_16K_PAGES))
+>  #define __pte(x)=09((pte_t) { (x) })
+>  static inline pte_basic_t pte_val(pte_t x)
+>  {
+>  =09return x.pte;
+>  }
+> +#else
+> +#define __pte(x)=09((pte_t)(x))
+> +static inline pte_basic_t pte_val(pte_t x)
+> +{
+> +=09return x;
+> +}
+> +#endif
 
-Commit 670eea924198 ("powerpc/mm: Always use STRICT_MM_TYPECHECKS")
-made the struct based definition the only one, considering that the
-generated code was similar in both cases.
+Would it be better to define:
+static inline pte_basic_*pte_basic(pte_t *x)
+{
+#if xxx
+=09return x;
+#else
+=09return &x->pte;
+#endif
+}
 
-That's right on ppc64 because the ABI is such that the content of a
-struct having a single simple type element is passed as register,
-but on ppc32 such a structure is passed via the stack like any
-structure.
+Then pte_val(x) is always *pt_basic(x)
+and the casts like:
 
-Simple test function:
+> -=09pte_basic_t *entry =3D &ptep->pte;
+> +=09pte_basic_t *entry =3D (pte_basic_t *)ptep;
 
-	pte_t test(pte_t pte)
-	{
-		return pte;
-	}
+can go away.
 
-Before this patch we get
+=09David
 
-	c00108ec <test>:
-	c00108ec:	81 24 00 00 	lwz     r9,0(r4)
-	c00108f0:	91 23 00 00 	stw     r9,0(r3)
-	c00108f4:	4e 80 00 20 	blr
-
-So, for PPC32, restore the simple type behaviour we got before
-commit 670eea924198, but instead of adding a config option to
-activate type check, do it when __CHECKER__ is set so that type
-checking is performed by 'sparse' and provides feedback like:
-
-	arch/powerpc/mm/pgtable.c:466:16: warning: incorrect type in return expression (different base types)
-	arch/powerpc/mm/pgtable.c:466:16:    expected unsigned long
-	arch/powerpc/mm/pgtable.c:466:16:    got struct pte_t [usertype] x
-
-With this patch we now get
-
-	c0010890 <test>:
-	c0010890:	4e 80 00 20 	blr
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
-v2: Properly handle 8xx 16k pages
----
- arch/powerpc/include/asm/nohash/32/pgtable.h |  2 +-
- arch/powerpc/include/asm/pgtable-types.h     | 14 +++++++++++++-
- arch/powerpc/mm/pgtable.c                    |  2 +-
- 3 files changed, 15 insertions(+), 3 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/nohash/32/pgtable.h b/arch/powerpc/include/asm/nohash/32/pgtable.h
-index f06ae00f2a65..34ce50da1850 100644
---- a/arch/powerpc/include/asm/nohash/32/pgtable.h
-+++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
-@@ -245,7 +245,7 @@ static int number_of_cells_per_pte(pmd_t *pmd, pte_basic_t val, int huge)
- static inline pte_basic_t pte_update(struct mm_struct *mm, unsigned long addr, pte_t *p,
- 				     unsigned long clr, unsigned long set, int huge)
- {
--	pte_basic_t *entry = &p->pte;
-+	pte_basic_t *entry = (pte_basic_t *)p;
- 	pte_basic_t old = pte_val(*p);
- 	pte_basic_t new = (old & ~(pte_basic_t)clr) | set;
- 	int num, i;
-diff --git a/arch/powerpc/include/asm/pgtable-types.h b/arch/powerpc/include/asm/pgtable-types.h
-index d11b4c61d686..c60199fc6fa6 100644
---- a/arch/powerpc/include/asm/pgtable-types.h
-+++ b/arch/powerpc/include/asm/pgtable-types.h
-@@ -5,14 +5,26 @@
- /* PTE level */
- #if defined(CONFIG_PPC_8xx) && defined(CONFIG_PPC_16K_PAGES)
- typedef struct { pte_basic_t pte, pte1, pte2, pte3; } pte_t;
--#else
-+#elif defined(__CHECKER__) || !defined(CONFIG_PPC32)
- typedef struct { pte_basic_t pte; } pte_t;
-+#else
-+typedef pte_basic_t pte_t;
- #endif
-+
-+#if defined(__CHECKER__) || !defined(CONFIG_PPC32) || \
-+    (defined(CONFIG_PPC_8xx) && defined(CONFIG_PPC_16K_PAGES))
- #define __pte(x)	((pte_t) { (x) })
- static inline pte_basic_t pte_val(pte_t x)
- {
- 	return x.pte;
- }
-+#else
-+#define __pte(x)	((pte_t)(x))
-+static inline pte_basic_t pte_val(pte_t x)
-+{
-+	return x;
-+}
-+#endif
- 
- /* PMD level */
- #ifdef CONFIG_PPC64
-diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
-index cd16b407f47e..ce9482383144 100644
---- a/arch/powerpc/mm/pgtable.c
-+++ b/arch/powerpc/mm/pgtable.c
-@@ -271,7 +271,7 @@ void set_huge_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep, pte_
- {
- 	pmd_t *pmd = pmd_off(mm, addr);
- 	pte_basic_t val;
--	pte_basic_t *entry = &ptep->pte;
-+	pte_basic_t *entry = (pte_basic_t *)ptep;
- 	int num, i;
- 
- 	/*
--- 
-2.31.1
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK
+Registration No: 1397386 (Wales)
 
