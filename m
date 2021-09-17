@@ -1,44 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8F3B40FED1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Sep 2021 19:47:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24DC340FF86
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Sep 2021 20:39:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HB1d04Ypmz305K
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Sep 2021 03:47:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HB2m40jlgz3c9H
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Sep 2021 04:39:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HB1cX6F2Rz2xsB
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Sep 2021 03:47:19 +1000 (AEST)
-X-IronPort-AV: E=McAfee;i="6200,9189,10110"; a="222882564"
-X-IronPort-AV: E=Sophos;i="5.85,302,1624345200"; d="scan'208";a="222882564"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
- by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Sep 2021 10:46:15 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.85,302,1624345200"; d="scan'208";a="530928172"
-Received: from lkp-server01.sh.intel.com (HELO 285e7b116627) ([10.239.97.150])
- by fmsmga004.fm.intel.com with ESMTP; 17 Sep 2021 10:46:13 -0700
-Received: from kbuild by 285e7b116627 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1mRHwC-0004J3-Uv; Fri, 17 Sep 2021 17:46:12 +0000
-Date: Sat, 18 Sep 2021 01:46:11 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- c006a06508db4841d256d82f42da392d6391f3d9
-Message-ID: <6144d463.yZpyENSG0IyS2yaD%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HB2lB73S8z2ydk
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Sep 2021 04:38:14 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4HB2l31phRz9sTp;
+ Fri, 17 Sep 2021 20:38:07 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id fpT5YYv1Fgam; Fri, 17 Sep 2021 20:38:07 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4HB2l16Tn4z9sTL;
+ Fri, 17 Sep 2021 20:38:05 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C3B748B79F;
+ Fri, 17 Sep 2021 20:38:05 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id G_FOuxccVNM8; Fri, 17 Sep 2021 20:38:05 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.202.36])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 7A5668B768;
+ Fri, 17 Sep 2021 20:38:05 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 18HIbsal758057
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+ Fri, 17 Sep 2021 20:37:54 +0200
+Received: (from chleroy@localhost)
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 18HIbph3758055;
+ Fri, 17 Sep 2021 20:37:51 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
+ christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 1/3] powerpc/inst: Refactor ___get_user_instr()
+Date: Fri, 17 Sep 2021 20:37:38 +0200
+Message-Id: <9607dfbecab2ecccb712bbd25d2d5da882239d4c.1631903846.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,166 +67,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: c006a06508db4841d256d82f42da392d6391f3d9  powerpc/xics: Set the IRQ chip data for the ICS native backend
+PPC64 version of ___get_user_instr() can be used for PPC32 as well,
+by simply disabling the suffix part with IS_ENABLED(CONFIG_PPC64).
 
-elapsed time: 1508m
-
-configs tested: 138
-configs skipped: 3
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-i386                 randconfig-c001-20210916
-sh                          rsk7269_defconfig
-powerpc                     ep8248e_defconfig
-riscv                    nommu_virt_defconfig
-powerpc                      chrp32_defconfig
-arm                         bcm2835_defconfig
-arm                         at91_dt_defconfig
-s390                             allyesconfig
-arm                            hisi_defconfig
-sh                           se7780_defconfig
-arm                            qcom_defconfig
-nios2                         10m50_defconfig
-arc                 nsimosci_hs_smp_defconfig
-mips                            ar7_defconfig
-arm                       netwinder_defconfig
-sh                          landisk_defconfig
-um                           x86_64_defconfig
-arm                        mvebu_v7_defconfig
-arc                        nsimosci_defconfig
-mips                     loongson1b_defconfig
-sh                           se7712_defconfig
-powerpc                        warp_defconfig
-arm                      integrator_defconfig
-powerpc                 mpc837x_rdb_defconfig
-powerpc                     tqm8541_defconfig
-powerpc                    klondike_defconfig
-powerpc                     tqm8548_defconfig
-powerpc                     kmeter1_defconfig
-powerpc                  mpc885_ads_defconfig
-arm                         cm_x300_defconfig
-sh                               alldefconfig
-m68k                         amcore_defconfig
-arm                        oxnas_v6_defconfig
-ia64                          tiger_defconfig
-powerpc                      katmai_defconfig
-arm                        mini2440_defconfig
-arm                        trizeps4_defconfig
-xtensa                  cadence_csp_defconfig
-arm                              alldefconfig
-powerpc                     powernv_defconfig
-mips                          rm200_defconfig
-mips                     cu1000-neo_defconfig
-arm                          ep93xx_defconfig
-xtensa                  audio_kc705_defconfig
-xtensa                          iss_defconfig
-sh                                  defconfig
-x86_64                           allyesconfig
-powerpc                  storcenter_defconfig
-arm                        keystone_defconfig
-arm                             ezx_defconfig
-mips                           ip27_defconfig
-arm                       imx_v6_v7_defconfig
-arm                     am200epdkit_defconfig
-m68k                            mac_defconfig
-mips                        nlm_xlr_defconfig
-x86_64               randconfig-c001-20210916
-arm                  randconfig-c002-20210916
-ia64                             allmodconfig
-ia64                             allyesconfig
-ia64                                defconfig
-m68k                             allmodconfig
-m68k                             allyesconfig
-m68k                                defconfig
-nios2                               defconfig
-nds32                             allnoconfig
-arc                              allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-xtensa                           allyesconfig
-parisc                           allyesconfig
-parisc                              defconfig
-s390                             allmodconfig
-s390                                defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-i386                             allyesconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-x86_64               randconfig-a016-20210916
-x86_64               randconfig-a013-20210916
-x86_64               randconfig-a012-20210916
-x86_64               randconfig-a011-20210916
-x86_64               randconfig-a014-20210916
-x86_64               randconfig-a015-20210916
-i386                 randconfig-a016-20210916
-i386                 randconfig-a015-20210916
-i386                 randconfig-a011-20210916
-i386                 randconfig-a012-20210916
-i386                 randconfig-a013-20210916
-i386                 randconfig-a014-20210916
-riscv                randconfig-r042-20210916
-s390                 randconfig-r044-20210916
-arc                  randconfig-r043-20210916
-riscv                    nommu_k210_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allyesconfig
-riscv                            allmodconfig
-x86_64                    rhel-8.3-kselftests
-um                             i386_defconfig
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
-
-clang tested configs:
-riscv                randconfig-c006-20210916
-x86_64               randconfig-c007-20210916
-mips                 randconfig-c004-20210916
-powerpc              randconfig-c003-20210916
-arm                  randconfig-c002-20210916
-i386                 randconfig-c001-20210916
-s390                 randconfig-c005-20210916
-x86_64               randconfig-a002-20210916
-x86_64               randconfig-a003-20210916
-x86_64               randconfig-a006-20210916
-x86_64               randconfig-a004-20210916
-x86_64               randconfig-a005-20210916
-x86_64               randconfig-a001-20210916
-i386                 randconfig-a004-20210916
-i386                 randconfig-a005-20210916
-i386                 randconfig-a006-20210916
-i386                 randconfig-a002-20210916
-i386                 randconfig-a003-20210916
-i386                 randconfig-a001-20210916
-hexagon              randconfig-r045-20210916
-hexagon              randconfig-r041-20210916
-
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ arch/powerpc/include/asm/inst.h | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/inst.h b/arch/powerpc/include/asm/inst.h
+index b11c0e2f9639..fea4d46155a9 100644
+--- a/arch/powerpc/include/asm/inst.h
++++ b/arch/powerpc/include/asm/inst.h
+@@ -4,8 +4,6 @@
+ 
+ #include <asm/ppc-opcode.h>
+ 
+-#ifdef CONFIG_PPC64
+-
+ #define ___get_user_instr(gu_op, dest, ptr)				\
+ ({									\
+ 	long __gui_ret;							\
+@@ -16,7 +14,7 @@
+ 	__chk_user_ptr(ptr);						\
+ 	__gui_ret = gu_op(__prefix, __gui_ptr);				\
+ 	if (__gui_ret == 0) {						\
+-		if ((__prefix >> 26) == OP_PREFIX) {			\
++		if (IS_ENABLED(CONFIG_PPC64) && (__prefix >> 26) == OP_PREFIX) { \
+ 			__gui_ret = gu_op(__suffix, __gui_ptr + 1);	\
+ 			__gui_inst = ppc_inst_prefix(__prefix, __suffix); \
+ 		} else {						\
+@@ -27,13 +25,6 @@
+ 	}								\
+ 	__gui_ret;							\
+ })
+-#else /* !CONFIG_PPC64 */
+-#define ___get_user_instr(gu_op, dest, ptr)				\
+-({									\
+-	__chk_user_ptr(ptr);						\
+-	gu_op((dest).val, (u32 __user *)(ptr));				\
+-})
+-#endif /* CONFIG_PPC64 */
+ 
+ #define get_user_instr(x, ptr) ___get_user_instr(get_user, x, ptr)
+ 
+-- 
+2.31.1
+
