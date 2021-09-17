@@ -2,57 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEA3240FA36
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Sep 2021 16:32:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06A8D40FC35
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Sep 2021 17:25:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H9xJ96xzSz308h
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Sep 2021 00:32:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H9yTG6xFyz2ynd
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Sep 2021 01:25:54 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Zh3W3Da0;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=aculab.com (client-ip=185.58.85.151;
- helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
+ smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::731;
+ helo=mail-qk1-x731.google.com; envelope-from=vincent.guittot@linaro.org;
  receiver=<UNKNOWN>)
-Received: from eu-smtp-delivery-151.mimecast.com
- (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=Zh3W3Da0; dkim-atps=neutral
+Received: from mail-qk1-x731.google.com (mail-qk1-x731.google.com
+ [IPv6:2607:f8b0:4864:20::731])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H9xHj0p8jz2yHP
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Sep 2021 00:32:31 +1000 (AEST)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-62-I8DWIADxNXumcC2ZvYPdxg-1; Fri, 17 Sep 2021 15:32:25 +0100
-X-MC-Unique: I8DWIADxNXumcC2ZvYPdxg-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
- Server (TLS) id 15.0.1497.23; Fri, 17 Sep 2021 15:32:23 +0100
-Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
- AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
- 15.00.1497.023; Fri, 17 Sep 2021 15:32:23 +0100
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Christophe Leroy' <christophe.leroy@csgroup.eu>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, "Michael
- Ellerman" <mpe@ellerman.id.au>
-Subject: RE: [PATCH v2] powerpc/32: Don't use a struct based type for pte_t
-Thread-Topic: [PATCH v2] powerpc/32: Don't use a struct based type for pte_t
-Thread-Index: AQHXq8wPR5JW25uF60m9xktVKLekzquoSMug
-Date: Fri, 17 Sep 2021 14:32:22 +0000
-Message-ID: <505920070e5f4bf8ad7ccaa12f346469@AcuMS.aculab.com>
-References: <c904599f33aaf6bb7ee2836a9ff8368509e0d78d.1631887042.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <c904599f33aaf6bb7ee2836a9ff8368509e0d78d.1631887042.git.christophe.leroy@csgroup.eu>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H9ySZ1Sq6z2yNM
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Sep 2021 01:25:15 +1000 (AEST)
+Received: by mail-qk1-x731.google.com with SMTP id c7so13055906qka.2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Sep 2021 08:25:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=Th9Dectw0xwMPChqk9pLJzZcuXtG5lCvKTCrxYFTnPc=;
+ b=Zh3W3Da0kbNcul9/QjTY8/GOdUPlHVJfwPwUB1inXpRaRf2uVc8uJcpZ7xnSgztj+s
+ kcTxi0c+md7rzAoqgWmFCsaR/KQMsljf2yFeKfWLIAY7dxQmo4Nev5uc7/YbmTlsN7x0
+ oesDVqfNzM0vERyFjSwyxWaaiCnpb5ca3IOIvGp3ylUV79SflMZgIcvpEk8UCUTvI5HO
+ XkfN1812wdixqPtIrJ5d62Ha04GecIyaId6y5wBdb1sIe+Wx+zLYdWh37aFHbXkpqMhW
+ ADGYCo8r2JpmPWR9wFsP+dLU7KklHTbAyBYqKJxTI1QYKpsdA/R81nqIuApohRMTNrLa
+ Xttw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=Th9Dectw0xwMPChqk9pLJzZcuXtG5lCvKTCrxYFTnPc=;
+ b=sZM9XZXFneo8Q+Ph7eF7PyZeoc7x1HTiwY2GEhUawlma9lfwVuztHgu1aDtCPaXUI1
+ yw8A4f5JsBX7Oi62Nz5SsqQptoMgnvclFtmiNowED015fTbEVMUxo0QFPRQDJcfQLrwV
+ fpX1ABE+5I70PT/u3aaAPR1A1NLVA+Zu/TDgSffoSLbSpl7I3fIrbtn6+yOeNqVegasi
+ S/9/VHLfNOF8WPsAvJJZ2n9cEQ90dRYPqB2bghuuNqLYawIVJGp/MCf8mXnWqrPu7mfU
+ qsNSpNeZ1dcms1Bu1cJRGU4Vps7glZAmzpVjcDM9iW1jU684QTrIjood06EpfOMIFKn7
+ fM1A==
+X-Gm-Message-State: AOAM5325jk+ZEmUQ6748Hay9kVK3S7PPr9cQL/4K501BRb5RIzvWzot0
+ kl2q4+KTAB8fcJNiABWCnVDGe/gDSEHdVguMRwqRaQ==
+X-Google-Smtp-Source: ABdhPJzi+ecvVDZHy16eTUV4B931Trwh6EgK/voL8hMSSwIkuUjyW0X15/qP2d5cA0l+DPQ8R0OiJeElYN/SoNclYEU=
+X-Received: by 2002:a25:9001:: with SMTP id s1mr13884940ybl.191.1631892313004; 
+ Fri, 17 Sep 2021 08:25:13 -0700 (PDT)
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+References: <20210911011819.12184-1-ricardo.neri-calderon@linux.intel.com>
+ <20210911011819.12184-7-ricardo.neri-calderon@linux.intel.com>
+ <CAKfTPtBcDP3Yp54sd4+1kP=o=4e_1HEmOf=eMXydag_J38CEng@mail.gmail.com>
+ <20210917010044.GA23727@ranerica-svr.sc.intel.com>
+In-Reply-To: <20210917010044.GA23727@ranerica-svr.sc.intel.com>
+From: Vincent Guittot <vincent.guittot@linaro.org>
+Date: Fri, 17 Sep 2021 17:25:02 +0200
+Message-ID: <CAKfTPtCh72m86pbT5vY_rWzU79Q9NP9t6mcrO8ewbZkBJdN03Q@mail.gmail.com>
+Subject: Re: [PATCH v5 6/6] sched/fair: Consider SMT in ASYM_PACKING load
+ balance
+To: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,74 +77,195 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: Juri Lelli <juri.lelli@redhat.com>, Aubrey Li <aubrey.li@linux.intel.com>,
+ Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+ "Ravi V. Shankar" <ravi.v.shankar@intel.com>,
+ "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
+ Ricardo Neri <ricardo.neri@intel.com>, Ben Segall <bsegall@google.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ "Joel Fernandes \(Google\)" <joel@joelfernandes.org>,
+ Ingo Molnar <mingo@kernel.org>,
+ "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Mel Gorman <mgorman@suse.de>,
+ Len Brown <len.brown@intel.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Aubrey Li <aubrey.li@intel.com>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Tim Chen <tim.c.chen@linux.intel.com>, Quentin Perret <qperret@google.com>,
+ Daniel Bristot de Oliveira <bristot@redhat.com>,
+ linux-kernel <linux-kernel@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Christophe Leroy
-> Sent: 17 September 2021 14:58
->=20
-> Long time ago we had a config item called STRICT_MM_TYPECHECKS
-> to build the kernel with pte_t defined as a structure in order
-> to perform additional build checks or build it with pte_t
-> defined as a simple type in order to get simpler generated code.
->=20
-...
-> diff --git a/arch/powerpc/include/asm/pgtable-types.h b/arch/powerpc/incl=
-ude/asm/pgtable-types.h
-> index d11b4c61d686..c60199fc6fa6 100644
-> --- a/arch/powerpc/include/asm/pgtable-types.h
-> +++ b/arch/powerpc/include/asm/pgtable-types.h
-> @@ -5,14 +5,26 @@
->  /* PTE level */
->  #if defined(CONFIG_PPC_8xx) && defined(CONFIG_PPC_16K_PAGES)
->  typedef struct { pte_basic_t pte, pte1, pte2, pte3; } pte_t;
-> -#else
-> +#elif defined(__CHECKER__) || !defined(CONFIG_PPC32)
->  typedef struct { pte_basic_t pte; } pte_t;
-> +#else
-> +typedef pte_basic_t pte_t;
->  #endif
-> +
-> +#if defined(__CHECKER__) || !defined(CONFIG_PPC32) || \
-> +    (defined(CONFIG_PPC_8xx) && defined(CONFIG_PPC_16K_PAGES))
->  #define __pte(x)=09((pte_t) { (x) })
->  static inline pte_basic_t pte_val(pte_t x)
->  {
->  =09return x.pte;
->  }
-> +#else
-> +#define __pte(x)=09((pte_t)(x))
-> +static inline pte_basic_t pte_val(pte_t x)
-> +{
-> +=09return x;
-> +}
-> +#endif
+On Fri, 17 Sept 2021 at 03:01, Ricardo Neri
+<ricardo.neri-calderon@linux.intel.com> wrote:
+>
+> On Wed, Sep 15, 2021 at 05:43:44PM +0200, Vincent Guittot wrote:
+> > On Sat, 11 Sept 2021 at 03:19, Ricardo Neri
+> > <ricardo.neri-calderon@linux.intel.com> wrote:
+> > >
+> > > When deciding to pull tasks in ASYM_PACKING, it is necessary not only to
+> > > check for the idle state of the destination CPU, dst_cpu, but also of
+> > > its SMT siblings.
+> > >
+> > > If dst_cpu is idle but its SMT siblings are busy, performance suffers
+> > > if it pulls tasks from a medium priority CPU that does not have SMT
+> > > siblings.
+> > >
+> > > Implement asym_smt_can_pull_tasks() to inspect the state of the SMT
+> > > siblings of both dst_cpu and the CPUs in the candidate busiest group.
+> > >
+> > > Cc: Aubrey Li <aubrey.li@intel.com>
+> > > Cc: Ben Segall <bsegall@google.com>
+> > > Cc: Daniel Bristot de Oliveira <bristot@redhat.com>
+> > > Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+> > > Cc: Mel Gorman <mgorman@suse.de>
+> > > Cc: Quentin Perret <qperret@google.com>
+> > > Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > > Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+> > > Cc: Steven Rostedt <rostedt@goodmis.org>
+> > > Cc: Tim Chen <tim.c.chen@linux.intel.com>
+> > > Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+> > > Reviewed-by: Len Brown <len.brown@intel.com>
+> > > Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+> > > ---
+> > > Changes since v4:
+> > >   * Use sg_lb_stats::sum_nr_running the idle state of a scheduling group.
+> > >     (Vincent, Peter)
+> > >   * Do not even idle CPUs in asym_smt_can_pull_tasks(). (Vincent)
+> > >   * Updated function documentation and corrected a typo.
+> > >
+> > > Changes since v3:
+> > >   * Removed the arch_asym_check_smt_siblings() hook. Discussions with the
+> > >     powerpc folks showed that this patch should not impact them. Also, more
+> > >     recent powerpc processor no longer use asym_packing. (PeterZ)
+> > >   * Removed unnecessary local variable in asym_can_pull_tasks(). (Dietmar)
+> > >   * Removed unnecessary check for local CPUs when the local group has zero
+> > >     utilization. (Joel)
+> > >   * Renamed asym_can_pull_tasks() as asym_smt_can_pull_tasks() to reflect
+> > >     the fact that it deals with SMT cases.
+> > >   * Made asym_smt_can_pull_tasks() return false for !CONFIG_SCHED_SMT so
+> > >     that callers can deal with non-SMT cases.
+> > >
+> > > Changes since v2:
+> > >   * Reworded the commit message to reflect updates in code.
+> > >   * Corrected misrepresentation of dst_cpu as the CPU doing the load
+> > >     balancing. (PeterZ)
+> > >   * Removed call to arch_asym_check_smt_siblings() as it is now called in
+> > >     sched_asym().
+> > >
+> > > Changes since v1:
+> > >   * Don't bailout in update_sd_pick_busiest() if dst_cpu cannot pull
+> > >     tasks. Instead, reclassify the candidate busiest group, as it
+> > >     may still be selected. (PeterZ)
+> > >   * Avoid an expensive and unnecessary call to cpumask_weight() when
+> > >     determining if a sched_group is comprised of SMT siblings.
+> > >     (PeterZ).
+> > > ---
+> > >  kernel/sched/fair.c | 94 +++++++++++++++++++++++++++++++++++++++++++++
+> > >  1 file changed, 94 insertions(+)
+> > >
+> > > diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+> > > index 26db017c14a3..8d763dd0174b 100644
+> > > --- a/kernel/sched/fair.c
+> > > +++ b/kernel/sched/fair.c
+> > > @@ -8597,10 +8597,98 @@ group_type group_classify(unsigned int imbalance_pct,
+> > >         return group_has_spare;
+> > >  }
+> > >
+> > > +/**
+> > > + * asym_smt_can_pull_tasks - Check whether the load balancing CPU can pull tasks
+> > > + * @dst_cpu:   Destination CPU of the load balancing
+> > > + * @sds:       Load-balancing data with statistics of the local group
+> > > + * @sgs:       Load-balancing statistics of the candidate busiest group
+> > > + * @sg:                The candidate busiest group
+> > > + *
+> > > + * Check the state of the SMT siblings of both @sds::local and @sg and decide
+> > > + * if @dst_cpu can pull tasks.
+> > > + *
+> > > + * If @dst_cpu does not have SMT siblings, it can pull tasks if two or more of
+> > > + * the SMT siblings of @sg are busy. If only one CPU in @sg is busy, pull tasks
+> > > + * only if @dst_cpu has higher priority.
+> > > + *
+> > > + * If both @dst_cpu and @sg have SMT siblings, and @sg has exactly one more
+> > > + * busy CPU than @sds::local, let @dst_cpu pull tasks if it has higher priority.
+> > > + * Bigger imbalances in the number of busy CPUs will be dealt with in
+> > > + * update_sd_pick_busiest().
+> > > + *
+> > > + * If @sg does not have SMT siblings, only pull tasks if all of the SMT siblings
+> > > + * of @dst_cpu are idle and @sg has lower priority.
+> > > + */
+> > > +static bool asym_smt_can_pull_tasks(int dst_cpu, struct sd_lb_stats *sds,
+> > > +                                   struct sg_lb_stats *sgs,
+> > > +                                   struct sched_group *sg)
+> > > +{
+> > > +#ifdef CONFIG_SCHED_SMT
+> > > +       bool local_is_smt, sg_is_smt;
+> > > +       int sg_busy_cpus;
+> > > +
+> > > +       local_is_smt = sds->local->flags & SD_SHARE_CPUCAPACITY;
+> > > +       sg_is_smt = sg->flags & SD_SHARE_CPUCAPACITY;
+> > > +
+> > > +       sg_busy_cpus = sgs->group_weight - sgs->idle_cpus;
+> > > +
+> > > +       if (!local_is_smt) {
+> > > +               /*
+> > > +                * If we are here, @dst_cpu is idle and does not have SMT
+> > > +                * siblings. Pull tasks if candidate group has two or more
+> > > +                * busy CPUs.
+> > > +                */
+> > > +               if (sg_is_smt && sg_busy_cpus >= 2)
+> >
+> > Do you really need to test sg_is_smt ? if sg_busy_cpus >= 2 then
+> > sd_is_smt must be true ?
+>
+> Thank you very much for your feedback Vincent!
+>
+> Yes, it is true that sg_busy_cpus >=2 is only true if @sg is SMT. I will
+> remove this check.
+>
+> >
+> > Also, This is the default behavior where we want to even the number of
+> > busy cpu. Shouldn't you return false and fall back to the default
+> > behavior ?
+>
+> This is also true.
+>
+> >
+> > That being said, the default behavior tries to even the number of idle
+> > cpus which is easier to compute and is equal to even the number of
+> > busy cpus in "normal" system with the same number of cpus in groups
+> > but this is not the case here. It could be good to change the default
+> > behavior to even the number of busy cpus and that you use the default
+> > behavior here. Additional condition will be used to select the busiest
+> > group like more busy cpu or more number of running tasks
+>
+> That is a very good observation. Checking the number of idle CPUs
+> assumes that both groups have the same number of CPUs. I'll look into
+> modifying the default behavior.
 
-Would it be better to define:
-static inline pte_basic_*pte_basic(pte_t *x)
-{
-#if xxx
-=09return x;
-#else
-=09return &x->pte;
-#endif
-}
+Because this change will impact default smt/smp system, we might
+prefer to do that in a separate step
 
-Then pte_val(x) is always *pt_basic(x)
-and the casts like:
+With the removal of the condition !sds->local_stat.sum_nr_running
+which seems useless because dst_cpu is idle and not SMT, this patch
+looks good to me
 
-> -=09pte_basic_t *entry =3D &ptep->pte;
-> +=09pte_basic_t *entry =3D (pte_basic_t *)ptep;
-
-can go away.
-
-=09David
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
-PT, UK
-Registration No: 1397386 (Wales)
-
+>
+> >
+> > > +                       return true;
+> > > +
+> > > +               /*
+> > > +                * @dst_cpu does not have SMT siblings. @sg may have SMT
+> > > +                * siblings and only one is busy. In such case, @dst_cpu
+> > > +                * can help if it has higher priority and is idle (i.e.,
+> > > +                * it has no running tasks).
+> >
+> > The previous comment above assume that "@dst_cpu is idle" but now you
+> > need to check that sds->local_stat.sum_nr_running == 0
+>
+> But we already know that, right? We are here because in
+> update_sg_lb_stats() we determine that dst CPU is idle (env->idle !=
+> CPU_NOT_IDLE).
+>
+> Thanks and BR,
+> Ricardo
