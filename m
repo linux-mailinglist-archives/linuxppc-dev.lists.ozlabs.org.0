@@ -1,69 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06A8D40FC35
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Sep 2021 17:25:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 284D040FC3C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Sep 2021 17:26:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4H9yTG6xFyz2ynd
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Sep 2021 01:25:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4H9yVN0t7Fz2ynj
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Sep 2021 01:26:52 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Zh3W3Da0;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=pcT+euw9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::731;
- helo=mail-qk1-x731.google.com; envelope-from=vincent.guittot@linaro.org;
+ smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::736;
+ helo=mail-qk1-x736.google.com; envelope-from=vincent.guittot@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=Zh3W3Da0; dkim-atps=neutral
-Received: from mail-qk1-x731.google.com (mail-qk1-x731.google.com
- [IPv6:2607:f8b0:4864:20::731])
+ header.s=google header.b=pcT+euw9; dkim-atps=neutral
+Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com
+ [IPv6:2607:f8b0:4864:20::736])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4H9ySZ1Sq6z2yNM
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Sep 2021 01:25:15 +1000 (AEST)
-Received: by mail-qk1-x731.google.com with SMTP id c7so13055906qka.2
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Sep 2021 08:25:15 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4H9yTj6HDmz2xX6
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Sep 2021 01:26:17 +1000 (AEST)
+Received: by mail-qk1-x736.google.com with SMTP id b64so18646240qkg.0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Sep 2021 08:26:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=Th9Dectw0xwMPChqk9pLJzZcuXtG5lCvKTCrxYFTnPc=;
- b=Zh3W3Da0kbNcul9/QjTY8/GOdUPlHVJfwPwUB1inXpRaRf2uVc8uJcpZ7xnSgztj+s
- kcTxi0c+md7rzAoqgWmFCsaR/KQMsljf2yFeKfWLIAY7dxQmo4Nev5uc7/YbmTlsN7x0
- oesDVqfNzM0vERyFjSwyxWaaiCnpb5ca3IOIvGp3ylUV79SflMZgIcvpEk8UCUTvI5HO
- XkfN1812wdixqPtIrJ5d62Ha04GecIyaId6y5wBdb1sIe+Wx+zLYdWh37aFHbXkpqMhW
- ADGYCo8r2JpmPWR9wFsP+dLU7KklHTbAyBYqKJxTI1QYKpsdA/R81nqIuApohRMTNrLa
- Xttw==
+ :cc; bh=TM+ZvTPf59AjLNF10A7BeoUcO09QDb2XjgFhcgEDZCg=;
+ b=pcT+euw9MpfxQpJL8z5inrpc9UbXVQZQ2nVgy3O0RT7nq5c/czEiRM05cSO6EWRAuU
+ gE3sH5RezrEgqj9lPVJEAu1Uzrg63Jak+ajw250s5JXTUVdhdSWTpDiwqoZNqO6W2BTl
+ iNiiM8l0WCOGD/sAV79DF7a1IHO3945+rAGe8zfPj+wOUu4ATHL6jo3lqNChqMEEN412
+ cJ0vLnhz7SNKPo0tENlJC/VFRAMZ9oFiGUgIcgYmTaG8TThWqqImE82NqnednT5wz7/Y
+ LyRhnDQUB7rs2oy5bGl5O3HzHYdQHhgq2TJI78EruFDheVBMN8yXNEsxozl98C+G0V4B
+ mm6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=Th9Dectw0xwMPChqk9pLJzZcuXtG5lCvKTCrxYFTnPc=;
- b=sZM9XZXFneo8Q+Ph7eF7PyZeoc7x1HTiwY2GEhUawlma9lfwVuztHgu1aDtCPaXUI1
- yw8A4f5JsBX7Oi62Nz5SsqQptoMgnvclFtmiNowED015fTbEVMUxo0QFPRQDJcfQLrwV
- fpX1ABE+5I70PT/u3aaAPR1A1NLVA+Zu/TDgSffoSLbSpl7I3fIrbtn6+yOeNqVegasi
- S/9/VHLfNOF8WPsAvJJZ2n9cEQ90dRYPqB2bghuuNqLYawIVJGp/MCf8mXnWqrPu7mfU
- qsNSpNeZ1dcms1Bu1cJRGU4Vps7glZAmzpVjcDM9iW1jU684QTrIjood06EpfOMIFKn7
- fM1A==
-X-Gm-Message-State: AOAM5325jk+ZEmUQ6748Hay9kVK3S7PPr9cQL/4K501BRb5RIzvWzot0
- kl2q4+KTAB8fcJNiABWCnVDGe/gDSEHdVguMRwqRaQ==
-X-Google-Smtp-Source: ABdhPJzi+ecvVDZHy16eTUV4B931Trwh6EgK/voL8hMSSwIkuUjyW0X15/qP2d5cA0l+DPQ8R0OiJeElYN/SoNclYEU=
-X-Received: by 2002:a25:9001:: with SMTP id s1mr13884940ybl.191.1631892313004; 
- Fri, 17 Sep 2021 08:25:13 -0700 (PDT)
+ bh=TM+ZvTPf59AjLNF10A7BeoUcO09QDb2XjgFhcgEDZCg=;
+ b=uCGDfFRiagoo5ptQ3Db4EZ8xidLRD5cNXZMBMWohkNmcTMammDfVyg8OUiTzu7Ptfp
+ FI+L2WqhxcCsGT+83HNv3q+Z+rob9cIjvt6/31+alYaPobTdqiriLjQ/YfCH7Yr8v0N8
+ MeFDn26GTHzmCdHy7c6151zKkrVyt5Uz0IUg7MTJk1IwkS0HIBtnlHNAY7xCcmt/q36N
+ RJ/+CqqI5jee9QMezhBRaGV0uzqb29/kCcmQlVxMmnzYbresxNg9roUO3JfgzEVZNBp7
+ ItNp28mFtfCU4uhthdj1mBh9zwA54/8yWnoUTnlV4vvsMq8IiC6qpHL1Jyo12+JnJYQq
+ NV6Q==
+X-Gm-Message-State: AOAM531DKtHp2J4UMWuz4jRenEJbrBZ5fAJcVOcROLBFOmCYR0ZsKKIk
+ MZIM6LXEBSJFC3Crs7GRgDggPxORraOSOq9AWbPcBQ==
+X-Google-Smtp-Source: ABdhPJxYtMwzo8aY4gkreJvqG8Rt6IjAobZ8kHMhtN1A5QYsNekX9RpcATkzUqrXx8D61aktoQcUcLetCjDmy3mwdzs=
+X-Received: by 2002:a25:5645:: with SMTP id k66mr14018619ybb.259.1631892372580; 
+ Fri, 17 Sep 2021 08:26:12 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210911011819.12184-1-ricardo.neri-calderon@linux.intel.com>
- <20210911011819.12184-7-ricardo.neri-calderon@linux.intel.com>
- <CAKfTPtBcDP3Yp54sd4+1kP=o=4e_1HEmOf=eMXydag_J38CEng@mail.gmail.com>
- <20210917010044.GA23727@ranerica-svr.sc.intel.com>
-In-Reply-To: <20210917010044.GA23727@ranerica-svr.sc.intel.com>
+ <20210911011819.12184-3-ricardo.neri-calderon@linux.intel.com>
+In-Reply-To: <20210911011819.12184-3-ricardo.neri-calderon@linux.intel.com>
 From: Vincent Guittot <vincent.guittot@linaro.org>
-Date: Fri, 17 Sep 2021 17:25:02 +0200
-Message-ID: <CAKfTPtCh72m86pbT5vY_rWzU79Q9NP9t6mcrO8ewbZkBJdN03Q@mail.gmail.com>
-Subject: Re: [PATCH v5 6/6] sched/fair: Consider SMT in ASYM_PACKING load
- balance
+Date: Fri, 17 Sep 2021 17:26:01 +0200
+Message-ID: <CAKfTPtDHJxtczRCATGJfuHHuQy9NbpXZAsPL1R9Qf=Jd46TU-A@mail.gmail.com>
+Subject: Re: [PATCH v5 2/6] sched/topology: Introduce sched_group::flags
 To: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -96,176 +93,119 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 17 Sept 2021 at 03:01, Ricardo Neri
+On Sat, 11 Sept 2021 at 03:19, Ricardo Neri
 <ricardo.neri-calderon@linux.intel.com> wrote:
 >
-> On Wed, Sep 15, 2021 at 05:43:44PM +0200, Vincent Guittot wrote:
-> > On Sat, 11 Sept 2021 at 03:19, Ricardo Neri
-> > <ricardo.neri-calderon@linux.intel.com> wrote:
-> > >
-> > > When deciding to pull tasks in ASYM_PACKING, it is necessary not only to
-> > > check for the idle state of the destination CPU, dst_cpu, but also of
-> > > its SMT siblings.
-> > >
-> > > If dst_cpu is idle but its SMT siblings are busy, performance suffers
-> > > if it pulls tasks from a medium priority CPU that does not have SMT
-> > > siblings.
-> > >
-> > > Implement asym_smt_can_pull_tasks() to inspect the state of the SMT
-> > > siblings of both dst_cpu and the CPUs in the candidate busiest group.
-> > >
-> > > Cc: Aubrey Li <aubrey.li@intel.com>
-> > > Cc: Ben Segall <bsegall@google.com>
-> > > Cc: Daniel Bristot de Oliveira <bristot@redhat.com>
-> > > Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
-> > > Cc: Mel Gorman <mgorman@suse.de>
-> > > Cc: Quentin Perret <qperret@google.com>
-> > > Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> > > Cc: Steven Rostedt <rostedt@goodmis.org>
-> > > Cc: Tim Chen <tim.c.chen@linux.intel.com>
-> > > Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-> > > Reviewed-by: Len Brown <len.brown@intel.com>
-> > > Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-> > > ---
-> > > Changes since v4:
-> > >   * Use sg_lb_stats::sum_nr_running the idle state of a scheduling group.
-> > >     (Vincent, Peter)
-> > >   * Do not even idle CPUs in asym_smt_can_pull_tasks(). (Vincent)
-> > >   * Updated function documentation and corrected a typo.
-> > >
-> > > Changes since v3:
-> > >   * Removed the arch_asym_check_smt_siblings() hook. Discussions with the
-> > >     powerpc folks showed that this patch should not impact them. Also, more
-> > >     recent powerpc processor no longer use asym_packing. (PeterZ)
-> > >   * Removed unnecessary local variable in asym_can_pull_tasks(). (Dietmar)
-> > >   * Removed unnecessary check for local CPUs when the local group has zero
-> > >     utilization. (Joel)
-> > >   * Renamed asym_can_pull_tasks() as asym_smt_can_pull_tasks() to reflect
-> > >     the fact that it deals with SMT cases.
-> > >   * Made asym_smt_can_pull_tasks() return false for !CONFIG_SCHED_SMT so
-> > >     that callers can deal with non-SMT cases.
-> > >
-> > > Changes since v2:
-> > >   * Reworded the commit message to reflect updates in code.
-> > >   * Corrected misrepresentation of dst_cpu as the CPU doing the load
-> > >     balancing. (PeterZ)
-> > >   * Removed call to arch_asym_check_smt_siblings() as it is now called in
-> > >     sched_asym().
-> > >
-> > > Changes since v1:
-> > >   * Don't bailout in update_sd_pick_busiest() if dst_cpu cannot pull
-> > >     tasks. Instead, reclassify the candidate busiest group, as it
-> > >     may still be selected. (PeterZ)
-> > >   * Avoid an expensive and unnecessary call to cpumask_weight() when
-> > >     determining if a sched_group is comprised of SMT siblings.
-> > >     (PeterZ).
-> > > ---
-> > >  kernel/sched/fair.c | 94 +++++++++++++++++++++++++++++++++++++++++++++
-> > >  1 file changed, 94 insertions(+)
-> > >
-> > > diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-> > > index 26db017c14a3..8d763dd0174b 100644
-> > > --- a/kernel/sched/fair.c
-> > > +++ b/kernel/sched/fair.c
-> > > @@ -8597,10 +8597,98 @@ group_type group_classify(unsigned int imbalance_pct,
-> > >         return group_has_spare;
-> > >  }
-> > >
-> > > +/**
-> > > + * asym_smt_can_pull_tasks - Check whether the load balancing CPU can pull tasks
-> > > + * @dst_cpu:   Destination CPU of the load balancing
-> > > + * @sds:       Load-balancing data with statistics of the local group
-> > > + * @sgs:       Load-balancing statistics of the candidate busiest group
-> > > + * @sg:                The candidate busiest group
-> > > + *
-> > > + * Check the state of the SMT siblings of both @sds::local and @sg and decide
-> > > + * if @dst_cpu can pull tasks.
-> > > + *
-> > > + * If @dst_cpu does not have SMT siblings, it can pull tasks if two or more of
-> > > + * the SMT siblings of @sg are busy. If only one CPU in @sg is busy, pull tasks
-> > > + * only if @dst_cpu has higher priority.
-> > > + *
-> > > + * If both @dst_cpu and @sg have SMT siblings, and @sg has exactly one more
-> > > + * busy CPU than @sds::local, let @dst_cpu pull tasks if it has higher priority.
-> > > + * Bigger imbalances in the number of busy CPUs will be dealt with in
-> > > + * update_sd_pick_busiest().
-> > > + *
-> > > + * If @sg does not have SMT siblings, only pull tasks if all of the SMT siblings
-> > > + * of @dst_cpu are idle and @sg has lower priority.
-> > > + */
-> > > +static bool asym_smt_can_pull_tasks(int dst_cpu, struct sd_lb_stats *sds,
-> > > +                                   struct sg_lb_stats *sgs,
-> > > +                                   struct sched_group *sg)
-> > > +{
-> > > +#ifdef CONFIG_SCHED_SMT
-> > > +       bool local_is_smt, sg_is_smt;
-> > > +       int sg_busy_cpus;
-> > > +
-> > > +       local_is_smt = sds->local->flags & SD_SHARE_CPUCAPACITY;
-> > > +       sg_is_smt = sg->flags & SD_SHARE_CPUCAPACITY;
-> > > +
-> > > +       sg_busy_cpus = sgs->group_weight - sgs->idle_cpus;
-> > > +
-> > > +       if (!local_is_smt) {
-> > > +               /*
-> > > +                * If we are here, @dst_cpu is idle and does not have SMT
-> > > +                * siblings. Pull tasks if candidate group has two or more
-> > > +                * busy CPUs.
-> > > +                */
-> > > +               if (sg_is_smt && sg_busy_cpus >= 2)
-> >
-> > Do you really need to test sg_is_smt ? if sg_busy_cpus >= 2 then
-> > sd_is_smt must be true ?
+> There exist situations in which the load balance needs to know the
+> properties of the CPUs in a scheduling group. When using asymmetric
+> packing, for instance, the load balancer needs to know not only the
+> state of dst_cpu but also of its SMT siblings, if any.
 >
-> Thank you very much for your feedback Vincent!
+> Use the flags of the child scheduling domains to initialize scheduling
+> group flags. This will reflect the properties of the CPUs in the
+> group.
 >
-> Yes, it is true that sg_busy_cpus >=2 is only true if @sg is SMT. I will
-> remove this check.
+> A subsequent changeset will make use of these new flags. No functional
+> changes are introduced.
 >
-> >
-> > Also, This is the default behavior where we want to even the number of
-> > busy cpu. Shouldn't you return false and fall back to the default
-> > behavior ?
->
-> This is also true.
->
-> >
-> > That being said, the default behavior tries to even the number of idle
-> > cpus which is easier to compute and is equal to even the number of
-> > busy cpus in "normal" system with the same number of cpus in groups
-> > but this is not the case here. It could be good to change the default
-> > behavior to even the number of busy cpus and that you use the default
-> > behavior here. Additional condition will be used to select the busiest
-> > group like more busy cpu or more number of running tasks
->
-> That is a very good observation. Checking the number of idle CPUs
-> assumes that both groups have the same number of CPUs. I'll look into
-> modifying the default behavior.
+> Cc: Aubrey Li <aubrey.li@intel.com>
+> Cc: Ben Segall <bsegall@google.com>
+> Cc: Daniel Bristot de Oliveira <bristot@redhat.com>
+> Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+> Cc: Mel Gorman <mgorman@suse.de>
+> Cc: Quentin Perret <qperret@google.com>
+> Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+> Cc: Steven Rostedt <rostedt@goodmis.org>
+> Cc: Tim Chen <tim.c.chen@linux.intel.com>
+> Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+> Reviewed-by: Len Brown <len.brown@intel.com>
+> Originally-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 
-Because this change will impact default smt/smp system, we might
-prefer to do that in a separate step
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
 
-With the removal of the condition !sds->local_stat.sum_nr_running
-which seems useless because dst_cpu is idle and not SMT, this patch
-looks good to me
-
+> ---
+> Changes since v4:
+>   * None
 >
-> >
-> > > +                       return true;
-> > > +
-> > > +               /*
-> > > +                * @dst_cpu does not have SMT siblings. @sg may have SMT
-> > > +                * siblings and only one is busy. In such case, @dst_cpu
-> > > +                * can help if it has higher priority and is idle (i.e.,
-> > > +                * it has no running tasks).
-> >
-> > The previous comment above assume that "@dst_cpu is idle" but now you
-> > need to check that sds->local_stat.sum_nr_running == 0
+> Changes since v3:
+>   * Clear the flags of the scheduling groups of a domain if its child is
+>     destroyed.
+>   * Minor rewording of the commit message.
 >
-> But we already know that, right? We are here because in
-> update_sg_lb_stats() we determine that dst CPU is idle (env->idle !=
-> CPU_NOT_IDLE).
+> Changes since v2:
+>   * Introduced this patch.
 >
-> Thanks and BR,
-> Ricardo
+> Changes since v1:
+>   * N/A
+> ---
+>  kernel/sched/sched.h    |  1 +
+>  kernel/sched/topology.c | 21 ++++++++++++++++++---
+>  2 files changed, 19 insertions(+), 3 deletions(-)
+>
+> diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+> index 3d3e5793e117..86ab33ce529d 100644
+> --- a/kernel/sched/sched.h
+> +++ b/kernel/sched/sched.h
+> @@ -1809,6 +1809,7 @@ struct sched_group {
+>         unsigned int            group_weight;
+>         struct sched_group_capacity *sgc;
+>         int                     asym_prefer_cpu;        /* CPU of highest priority in group */
+> +       int                     flags;
+>
+>         /*
+>          * The CPUs this group covers.
+> diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+> index 4e8698e62f07..c56faae461d9 100644
+> --- a/kernel/sched/topology.c
+> +++ b/kernel/sched/topology.c
+> @@ -716,8 +716,20 @@ cpu_attach_domain(struct sched_domain *sd, struct root_domain *rd, int cpu)
+>                 tmp = sd;
+>                 sd = sd->parent;
+>                 destroy_sched_domain(tmp);
+> -               if (sd)
+> +               if (sd) {
+> +                       struct sched_group *sg = sd->groups;
+> +
+> +                       /*
+> +                        * sched groups hold the flags of the child sched
+> +                        * domain for convenience. Clear such flags since
+> +                        * the child is being destroyed.
+> +                        */
+> +                       do {
+> +                               sg->flags = 0;
+> +                       } while (sg != sd->groups);
+> +
+>                         sd->child = NULL;
+> +               }
+>         }
+>
+>         for (tmp = sd; tmp; tmp = tmp->parent)
+> @@ -916,10 +928,12 @@ build_group_from_child_sched_domain(struct sched_domain *sd, int cpu)
+>                 return NULL;
+>
+>         sg_span = sched_group_span(sg);
+> -       if (sd->child)
+> +       if (sd->child) {
+>                 cpumask_copy(sg_span, sched_domain_span(sd->child));
+> -       else
+> +               sg->flags = sd->child->flags;
+> +       } else {
+>                 cpumask_copy(sg_span, sched_domain_span(sd));
+> +       }
+>
+>         atomic_inc(&sg->ref);
+>         return sg;
+> @@ -1169,6 +1183,7 @@ static struct sched_group *get_group(int cpu, struct sd_data *sdd)
+>         if (child) {
+>                 cpumask_copy(sched_group_span(sg), sched_domain_span(child));
+>                 cpumask_copy(group_balance_mask(sg), sched_group_span(sg));
+> +               sg->flags = child->flags;
+>         } else {
+>                 cpumask_set_cpu(cpu, sched_group_span(sg));
+>                 cpumask_set_cpu(cpu, group_balance_mask(sg));
+> --
+> 2.17.1
+>
