@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B095411BE9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Sep 2021 19:02:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB0B7411B3B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Sep 2021 18:55:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HCrTR6JV7z2ywh
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Sep 2021 03:02:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HCrK26H3fz2ypY
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Sep 2021 02:55:18 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=NUydI+aM;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=guODSutV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,30 +18,30 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
- header.a=rsa-sha256 header.s=korg header.b=NUydI+aM; 
+ header.a=rsa-sha256 header.s=korg header.b=guODSutV; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HCrSn3BPwz2yKF
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Sep 2021 03:02:00 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 884B061A82;
- Mon, 20 Sep 2021 17:01:57 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HCrJL5bSWz2yHS
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Sep 2021 02:54:41 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7CD5961371;
+ Mon, 20 Sep 2021 16:54:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
- s=korg; t=1632157318;
- bh=PPM/jXHmTtR/M9ZsSaVnvwKdTCr9Kp3n0mIOVTS9KFA=;
+ s=korg; t=1632156878;
+ bh=3nBlNC0oa4+ec5C6EVkNiBlmrpmCOdwiQ3UX1CZGy/c=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=NUydI+aMCBuhmT0G4epRHyQ8fnGL9N5d0oaTfVxZkLUDNLE2PGu9XMKHHRt7cTPdG
- ESh+cw6AHFpiDb5pVJkpJHAhAligiSQZ0BIgm1LUHrT7IK9bctlx0mLsiUKrcDfsDZ
- VA9+29Ipsb9LAgW/ca6RXvKJqu4jTzyzWYoMrmNs=
+ b=guODSutVvLN58rgPF5x92HqdHfCz9DEMIn+3i5SWWpdgZ3lvK6TP1VlpLE0mKSRPC
+ NNWuOhDpN7Yms7tOLFBPkahSrJN/kyOSSu8d/M2d9KN72G0Vl/khEicUUpAm9hUGFp
+ NQwn+mrJRdzPhGipMv7Iew2fys3LKUrRZcMkiOHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 4.14 154/217] hvsi: dont panic on tty_register_driver failure
-Date: Mon, 20 Sep 2021 18:42:55 +0200
-Message-Id: <20210920163929.856299777@linuxfoundation.org>
+Subject: [PATCH 4.9 127/175] hvsi: dont panic on tty_register_driver failure
+Date: Mon, 20 Sep 2021 18:42:56 +0200
+Message-Id: <20210920163922.233640691@linuxfoundation.org>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20210920163924.591371269@linuxfoundation.org>
-References: <20210920163924.591371269@linuxfoundation.org>
+In-Reply-To: <20210920163918.068823680@linuxfoundation.org>
+References: <20210920163918.068823680@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -89,7 +89,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 16 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/tty/hvc/hvsi.c b/drivers/tty/hvc/hvsi.c
-index 2e578d6433af..7d7fdfc578a9 100644
+index 96ce6bd1cc6f..4b6f93067ae4 100644
 --- a/drivers/tty/hvc/hvsi.c
 +++ b/drivers/tty/hvc/hvsi.c
 @@ -1051,7 +1051,7 @@ static const struct tty_operations hvsi_ops = {
