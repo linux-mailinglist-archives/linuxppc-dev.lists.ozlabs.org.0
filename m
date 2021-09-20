@@ -2,73 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38F264126F8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Sep 2021 21:40:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3E654127F8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Sep 2021 23:25:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HCvzs72VRz2yJV
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Sep 2021 05:40:41 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Z27HSHOX;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HCyKD051qz305T
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Sep 2021 07:25:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::132;
- helo=mail-lf1-x132.google.com; envelope-from=rikard.falkeborn@gmail.com;
+ smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
+ helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=Z27HSHOX; dkim-atps=neutral
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com
- [IPv6:2a00:1450:4864:20::132])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HCvzF1gtnz2yJV
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Sep 2021 05:40:06 +1000 (AEST)
-Received: by mail-lf1-x132.google.com with SMTP id i25so72869230lfg.6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Sep 2021 12:40:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=0d+1u0/MGOf1Q+rRJjNzrlBMOxR6V08d5yL0PRRuFjk=;
- b=Z27HSHOXeONBAxoy541SkWEavFdL299blXuqc2n5ujiwo7gG80cp8+qYAGh1PzTLb+
- f1D74ClKDHTv+VFv1IgQbF9kOYYPrg8ok2OnadReIJlKhVlN5AJv1Ab9aakm5RA6DB+u
- 25Hgq7Qaj11btnrGSzWCi3PdFes+eWMGo5CWJ9rR8fnAeltDP4NffLDjv9NbnQeisFu8
- TH7U86NaUg3q/hLUOoxnXUZfBk23sEjy9c1uaFLcQ4JY7VWeHNBD2J2VZ6UHy4WyFTmZ
- FIru+MgsMYPAx9e7JVmxk2COcGnYkK/9RXdjoimhDOO76gKDZOLWvfQIKehOGJTPtqNo
- t74A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=0d+1u0/MGOf1Q+rRJjNzrlBMOxR6V08d5yL0PRRuFjk=;
- b=VUuDZ3ABX+VfkKNM1lsp82EYE6cUKNoCdYxjC/G95CkKquM3VvE0LLUxTRZL9+1LW6
- 3pjxtuYTgb+xHHxp++AxjMvSrSdaXbDN+MhtIO8vzYMxVuhi5IBUCqcLtdYbfM/mRoZJ
- 6T1exnzfMotex7AYIB55SXWGJ8L+i4mLWFoZRPuzdOVZW0Mx/eVbLPg+XpKWnWOf0F0a
- 9+m39fP8wQ16l5+yaapCCOzq2lVGzSbpmtmdqU5rTyTguxMfVcNzaux51kmOZ/ISeVLp
- 19vxNnq6TZVlna6vwnp2JCmVBbJDHMqLMwmtEHag4CJRKdqVXWYfGS1z8xaYw03dd2+Z
- OlXQ==
-X-Gm-Message-State: AOAM533x2eypq3PCdycbGPXDQtOB7TYNz1h6Ex7w1Ciu1pqyC8wxhFK3
- 7bakfUDOCFr3ORR5++xYNJo=
-X-Google-Smtp-Source: ABdhPJxkMxrniDwwp6a9hFc5k/MvdsynqXqzCzYiuyoNQHhMjqhkhBiYHRLG4GrNFJMcpZTnzrtiTw==
-X-Received: by 2002:a2e:bd8b:: with SMTP id o11mr14743218ljq.321.1632166802693; 
- Mon, 20 Sep 2021 12:40:02 -0700 (PDT)
-Received: from localhost.localdomain (h-98-128-228-193.NA.cust.bahnhof.se.
- [98.128.228.193])
- by smtp.gmail.com with ESMTPSA id y11sm475899lfs.135.2021.09.20.12.40.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 20 Sep 2021 12:40:02 -0700 (PDT)
-From: Rikard Falkeborn <rikard.falkeborn@gmail.com>
-To: Nicolin Chen <nicoleotsuka@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>
-Subject: [PATCH] ASoC: fsl: Constify static snd_soc_ops
-Date: Mon, 20 Sep 2021 21:39:47 +0200
-Message-Id: <20210920193947.10237-1-rikard.falkeborn@gmail.com>
-X-Mailer: git-send-email 2.33.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4HCyJj319Tz2yN4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Sep 2021 07:25:24 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 18KLN6Wr012714;
+ Mon, 20 Sep 2021 16:23:06 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 18KLN4s2012713;
+ Mon, 20 Sep 2021 16:23:04 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Mon, 20 Sep 2021 16:23:04 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v4 1/3] powerpc/bitops: Use immediate operand when possible
+Message-ID: <20210920212303.GZ1583@gate.crashing.org>
+References: <db9d01d5c543c5add4b2beadb03d39e99c7ada2c.1632126669.git.christophe.leroy@csgroup.eu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <db9d01d5c543c5add4b2beadb03d39e99c7ada2c.1632126669.git.christophe.leroy@csgroup.eu>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,78 +46,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, Fabio Estevam <festevam@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, Liam Girdwood <lgirdwood@gmail.com>,
- Rikard Falkeborn <rikard.falkeborn@gmail.com>, linux-kernel@vger.kernel.org,
- Mark Brown <broonie@kernel.org>, NXP Linux Team <linux-imx@nxp.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Shengjiu Wang <shengjiu.wang@gmail.com>, linux-arm-kernel@lists.infradead.org
+Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-These are only assigned to the ops field in the snd_soc_dai_link struct
-which is a pointer to const struct snd_soc_ops. Make them const to allow
-the compiler to put them in read-only memory.
+Hi!
 
-Signed-off-by: Rikard Falkeborn <rikard.falkeborn@gmail.com>
----
- sound/soc/fsl/imx-audmix.c | 4 ++--
- sound/soc/fsl/imx-card.c   | 4 ++--
- sound/soc/fsl/imx-hdmi.c   | 2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+On Mon, Sep 20, 2021 at 10:31:17AM +0200, Christophe Leroy wrote:
+> Today we get the following code generation for bitops like
+> set or clear bit:
+> 
+> 	c0009fe0:	39 40 08 00 	li      r10,2048
+> 	c0009fe4:	7c e0 40 28 	lwarx   r7,0,r8
+> 	c0009fe8:	7c e7 53 78 	or      r7,r7,r10
+> 	c0009fec:	7c e0 41 2d 	stwcx.  r7,0,r8
+> 
+> 	c000d568:	39 00 18 00 	li      r8,6144
+> 	c000d56c:	7c c0 38 28 	lwarx   r6,0,r7
+> 	c000d570:	7c c6 40 78 	andc    r6,r6,r8
+> 	c000d574:	7c c0 39 2d 	stwcx.  r6,0,r7
+> 
+> Most set bits are constant on lower 16 bits, so it can easily
+> be replaced by the "immediate" version of the operation. Allow
+> GCC to choose between the normal or immediate form.
 
-diff --git a/sound/soc/fsl/imx-audmix.c b/sound/soc/fsl/imx-audmix.c
-index a364e2415de0..0d637929bfef 100644
---- a/sound/soc/fsl/imx-audmix.c
-+++ b/sound/soc/fsl/imx-audmix.c
-@@ -132,12 +132,12 @@ static int imx_audmix_be_hw_params(struct snd_pcm_substream *substream,
- 	return ret;
- }
- 
--static struct snd_soc_ops imx_audmix_fe_ops = {
-+static const struct snd_soc_ops imx_audmix_fe_ops = {
- 	.startup = imx_audmix_fe_startup,
- 	.hw_params = imx_audmix_fe_hw_params,
- };
- 
--static struct snd_soc_ops imx_audmix_be_ops = {
-+static const struct snd_soc_ops imx_audmix_be_ops = {
- 	.hw_params = imx_audmix_be_hw_params,
- };
- 
-diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
-index 58fd0639a069..05dff2dc1d19 100644
---- a/sound/soc/fsl/imx-card.c
-+++ b/sound/soc/fsl/imx-card.c
-@@ -442,12 +442,12 @@ static int imx_aif_startup(struct snd_pcm_substream *substream)
- 	return ret;
- }
- 
--static struct snd_soc_ops imx_aif_ops = {
-+static const struct snd_soc_ops imx_aif_ops = {
- 	.hw_params = imx_aif_hw_params,
- 	.startup = imx_aif_startup,
- };
- 
--static struct snd_soc_ops imx_aif_ops_be = {
-+static const struct snd_soc_ops imx_aif_ops_be = {
- 	.hw_params = imx_aif_hw_params,
- };
- 
-diff --git a/sound/soc/fsl/imx-hdmi.c b/sound/soc/fsl/imx-hdmi.c
-index 34a0dceae621..2b663c39edb2 100644
---- a/sound/soc/fsl/imx-hdmi.c
-+++ b/sound/soc/fsl/imx-hdmi.c
-@@ -59,7 +59,7 @@ static int imx_hdmi_hw_params(struct snd_pcm_substream *substream,
- 	return 0;
- }
- 
--static struct snd_soc_ops imx_hdmi_ops = {
-+static const struct snd_soc_ops imx_hdmi_ops = {
- 	.hw_params = imx_hdmi_hw_params,
- };
- 
--- 
-2.33.0
+You can also handle the second sixteen bits (the "shifted" half), by
+using oris etc.  The "%eN" output modifier prints an "s" for this:
+  /* If the low 16 bits are 0, but some other bit is set, write 's'.  */
+But this doesn't handle non-constant arguments, so you're likely better
+off using what you have noe.
 
+> For clear bits, on 32 bits 'rlwinm' can be used instead of 'andc' for
+> when all bits to be cleared are consecutive.
+
+Or when all you want to keep are consecutive (you do handle that now :-) )
+
+> On 64 bits we don't have any equivalent single operation for clearing,
+> single bits or a few bits, we'd need two 'rldicl' so it is not
+> worth it, the li/andc sequence is doing the same.
+
+You can use rlwinm whenever you want to clear all top 32 bits.
+
+A sometimes nice idiom is  ori x,x,N ; xori x,x,N  to clear the bits N
+(or oris/xoris).  But it's two insns no matter what (but no spare
+register is needed).
+
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+
+> +static inline unsigned long test_and_clear_bits(unsigned long mask, volatile unsigned long *_p)
+> +{
+> +	unsigned long old, t;
+> +	unsigned long *p = (unsigned long *)_p;
+> +
+> +	if (IS_ENABLED(CONFIG_PPC32) &&
+> +	    __builtin_constant_p(mask) && is_rlwinm_mask_valid(mask)) {
+
+is_rlwinm_mask_valid(~mask)?  So that test_and_clear_bits(0, ...) will
+work with rlwinm, and test_and_clear_bits(0xffffffff, ...) will not make
+gas scream bloody murder ("illegal bitmask").  Tha mask you pass to the
+instruction is ~mask after all.
+
+Looks great except that one nit.  Thanks :-)
+
+Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
+
+
+Segher
