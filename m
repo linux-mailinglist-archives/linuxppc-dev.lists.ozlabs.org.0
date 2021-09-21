@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79F934135E6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Sep 2021 17:10:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70DFC4135FD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Sep 2021 17:16:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HDPxj33Pgz2ynM
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Sep 2021 01:10:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HDQ3y34gjz306l
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Sep 2021 01:15:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -14,50 +14,43 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HDPxG4cc5z2xrX
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Sep 2021 01:10:07 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HDQ3X5sSTz2xWc
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Sep 2021 01:15:36 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4HDPx81lGBz9sT9;
- Tue, 21 Sep 2021 17:10:04 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4HDQ3T2Bvzz9sTJ;
+ Tue, 21 Sep 2021 17:15:33 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id x7o_Pt_yIspL; Tue, 21 Sep 2021 17:10:04 +0200 (CEST)
+ with ESMTP id SGxHaHHzvTVd; Tue, 21 Sep 2021 17:15:33 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4HDPx80ZxCz9sSw;
- Tue, 21 Sep 2021 17:10:04 +0200 (CEST)
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4HDQ3Q5y23z9sSt;
+ Tue, 21 Sep 2021 17:15:30 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id F10708B773;
- Tue, 21 Sep 2021 17:10:03 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B8DD48B765;
+ Tue, 21 Sep 2021 17:15:30 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id emZZtB7P4WA0; Tue, 21 Sep 2021 17:10:03 +0200 (CEST)
+ with ESMTP id GLz8YS2uY4_Y; Tue, 21 Sep 2021 17:15:30 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.202.127])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 993F88B765;
- Tue, 21 Sep 2021 17:10:03 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 18LF9rjF1071866
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Tue, 21 Sep 2021 17:09:53 +0200
-Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 18LF9rkY1071865;
- Tue, 21 Sep 2021 17:09:53 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
- christophe.leroy@csgroup.eu using -f
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 29C6D8B763;
+ Tue, 21 Sep 2021 17:15:30 +0200 (CEST)
+Subject: Re: [PATCH v4 1/3] powerpc/bitops: Use immediate operand when possible
+To: Segher Boessenkool <segher@kernel.crashing.org>
+References: <db9d01d5c543c5add4b2beadb03d39e99c7ada2c.1632126669.git.christophe.leroy@csgroup.eu>
+ <20210920212303.GZ1583@gate.crashing.org>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v5 3/3] powerpc/atomics: Remove atomic_inc()/atomic_dec() and
- friends
-Date: Tue, 21 Sep 2021 17:09:49 +0200
-Message-Id: <0bc64a2f18726055093dbb2e479cefc60a409cfd.1632236981.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <e6f815d9181bab09df3b350af51149437863e9f9.1632236981.git.christophe.leroy@csgroup.eu>
-References: <e6f815d9181bab09df3b350af51149437863e9f9.1632236981.git.christophe.leroy@csgroup.eu>
+Message-ID: <917987b7-48fd-d2f6-cbe4-7f7442cf86de@csgroup.eu>
+Date: Tue, 21 Sep 2021 17:15:29 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
+In-Reply-To: <20210920212303.GZ1583@gate.crashing.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr-FR
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -70,142 +63,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now that atomic_add() and atomic_sub() handle immediate operands,
-atomic_inc() and atomic_dec() have no added value compared to the
-generic fallback which calls atomic_add(1) and atomic_sub(1).
 
-Also remove atomic_inc_not_zero() which fallsback to
-atomic_add_unless() which itself fallsback to
-atomic_fetch_add_unless() which now handles immediate operands.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
-v4: rebased
+Le 20/09/2021 à 23:23, Segher Boessenkool a écrit :
+> Hi!
+> 
+> On Mon, Sep 20, 2021 at 10:31:17AM +0200, Christophe Leroy wrote:
+>> Today we get the following code generation for bitops like
+>> set or clear bit:
+>>
+>> 	c0009fe0:	39 40 08 00 	li      r10,2048
+>> 	c0009fe4:	7c e0 40 28 	lwarx   r7,0,r8
+>> 	c0009fe8:	7c e7 53 78 	or      r7,r7,r10
+>> 	c0009fec:	7c e0 41 2d 	stwcx.  r7,0,r8
+>>
+>> 	c000d568:	39 00 18 00 	li      r8,6144
+>> 	c000d56c:	7c c0 38 28 	lwarx   r6,0,r7
+>> 	c000d570:	7c c6 40 78 	andc    r6,r6,r8
+>> 	c000d574:	7c c0 39 2d 	stwcx.  r6,0,r7
+>>
+>> Most set bits are constant on lower 16 bits, so it can easily
+>> be replaced by the "immediate" version of the operation. Allow
+>> GCC to choose between the normal or immediate form.
+> 
+> You can also handle the second sixteen bits (the "shifted" half), by
+> using oris etc.  The "%eN" output modifier prints an "s" for this:
+>    /* If the low 16 bits are 0, but some other bit is set, write 's'.  */
+> But this doesn't handle non-constant arguments, so you're likely better
+> off using what you have noe.
+> 
+>> For clear bits, on 32 bits 'rlwinm' can be used instead of 'andc' for
+>> when all bits to be cleared are consecutive.
+> 
+> Or when all you want to keep are consecutive (you do handle that now :-) )
+> 
+>> On 64 bits we don't have any equivalent single operation for clearing,
+>> single bits or a few bits, we'd need two 'rldicl' so it is not
+>> worth it, the li/andc sequence is doing the same.
+> 
+> You can use rlwinm whenever you want to clear all top 32 bits.
+> 
+> A sometimes nice idiom is  ori x,x,N ; xori x,x,N  to clear the bits N
+> (or oris/xoris).  But it's two insns no matter what (but no spare
+> register is needed).
 
-v2: New
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/include/asm/atomic.h | 95 -------------------------------
- 1 file changed, 95 deletions(-)
+Could be a candidate for a follow-up change if someone want to focus on 
+PPC64.
 
-diff --git a/arch/powerpc/include/asm/atomic.h b/arch/powerpc/include/asm/atomic.h
-index ce0d5a013c58..395d1feb5790 100644
---- a/arch/powerpc/include/asm/atomic.h
-+++ b/arch/powerpc/include/asm/atomic.h
-@@ -118,71 +118,6 @@ ATOMIC_OPS(xor, xor, "", K)
- #undef ATOMIC_OP_RETURN_RELAXED
- #undef ATOMIC_OP
- 
--static __inline__ void arch_atomic_inc(atomic_t *v)
--{
--	int t;
--
--	__asm__ __volatile__(
--"1:	lwarx	%0,0,%2		# atomic_inc\n\
--	addic	%0,%0,1\n"
--"	stwcx.	%0,0,%2 \n\
--	bne-	1b"
--	: "=&r" (t), "+m" (v->counter)
--	: "r" (&v->counter)
--	: "cc", "xer");
--}
--#define arch_atomic_inc arch_atomic_inc
--
--static __inline__ int arch_atomic_inc_return_relaxed(atomic_t *v)
--{
--	int t;
--
--	__asm__ __volatile__(
--"1:	lwarx	%0,0,%2		# atomic_inc_return_relaxed\n"
--"	addic	%0,%0,1\n"
--"	stwcx.	%0,0,%2\n"
--"	bne-	1b"
--	: "=&r" (t), "+m" (v->counter)
--	: "r" (&v->counter)
--	: "cc", "xer");
--
--	return t;
--}
--
--static __inline__ void arch_atomic_dec(atomic_t *v)
--{
--	int t;
--
--	__asm__ __volatile__(
--"1:	lwarx	%0,0,%2		# atomic_dec\n\
--	addic	%0,%0,-1\n"
--"	stwcx.	%0,0,%2\n\
--	bne-	1b"
--	: "=&r" (t), "+m" (v->counter)
--	: "r" (&v->counter)
--	: "cc", "xer");
--}
--#define arch_atomic_dec arch_atomic_dec
--
--static __inline__ int arch_atomic_dec_return_relaxed(atomic_t *v)
--{
--	int t;
--
--	__asm__ __volatile__(
--"1:	lwarx	%0,0,%2		# atomic_dec_return_relaxed\n"
--"	addic	%0,%0,-1\n"
--"	stwcx.	%0,0,%2\n"
--"	bne-	1b"
--	: "=&r" (t), "+m" (v->counter)
--	: "r" (&v->counter)
--	: "cc", "xer");
--
--	return t;
--}
--
--#define arch_atomic_inc_return_relaxed arch_atomic_inc_return_relaxed
--#define arch_atomic_dec_return_relaxed arch_atomic_dec_return_relaxed
--
- #define arch_atomic_cmpxchg(v, o, n) \
- 	(arch_cmpxchg(&((v)->counter), (o), (n)))
- #define arch_atomic_cmpxchg_relaxed(v, o, n) \
-@@ -255,36 +190,6 @@ static __inline__ int arch_atomic_fetch_add_unless(atomic_t *v, int a, int u)
- }
- #define arch_atomic_fetch_add_unless arch_atomic_fetch_add_unless
- 
--/**
-- * atomic_inc_not_zero - increment unless the number is zero
-- * @v: pointer of type atomic_t
-- *
-- * Atomically increments @v by 1, so long as @v is non-zero.
-- * Returns non-zero if @v was non-zero, and zero otherwise.
-- */
--static __inline__ int arch_atomic_inc_not_zero(atomic_t *v)
--{
--	int t1, t2;
--
--	__asm__ __volatile__ (
--	PPC_ATOMIC_ENTRY_BARRIER
--"1:	lwarx	%0,0,%2		# atomic_inc_not_zero\n\
--	cmpwi	0,%0,0\n\
--	beq-	2f\n\
--	addic	%1,%0,1\n"
--"	stwcx.	%1,0,%2\n\
--	bne-	1b\n"
--	PPC_ATOMIC_EXIT_BARRIER
--	"\n\
--2:"
--	: "=&r" (t1), "=&r" (t2)
--	: "r" (&v->counter)
--	: "cc", "xer", "memory");
--
--	return t1;
--}
--#define arch_atomic_inc_not_zero(v) arch_atomic_inc_not_zero((v))
--
- /*
-  * Atomically test *v and decrement if it is greater than 0.
-  * The function returns the old value of *v minus 1, even if
--- 
-2.31.1
+> 
+>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> 
+>> +static inline unsigned long test_and_clear_bits(unsigned long mask, volatile unsigned long *_p)
+>> +{
+>> +	unsigned long old, t;
+>> +	unsigned long *p = (unsigned long *)_p;
+>> +
+>> +	if (IS_ENABLED(CONFIG_PPC32) &&
+>> +	    __builtin_constant_p(mask) && is_rlwinm_mask_valid(mask)) {
+> 
+> is_rlwinm_mask_valid(~mask)?  So that test_and_clear_bits(0, ...) will
+> work with rlwinm, and test_and_clear_bits(0xffffffff, ...) will not make
+> gas scream bloody murder ("illegal bitmask").  Tha mask you pass to the
+> instruction is ~mask after all.
 
+Ok, fixed in v5.
+
+> 
+> Looks great except that one nit.  Thanks :-)
+> 
+> Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
+
+Thanks
+
+Christophe
