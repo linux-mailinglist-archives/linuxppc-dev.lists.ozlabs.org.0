@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E9D0413C22
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Sep 2021 23:14:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A881413C29
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Sep 2021 23:15:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HDZ1l0Zsdz2ywN
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Sep 2021 07:14:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HDZ2S0r9kz3c7h
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Sep 2021 07:15:12 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Xdzs3wJK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MB+Khopj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,45 +17,45 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=Xdzs3wJK; 
+ header.s=k20201202 header.b=MB+Khopj; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HDYyK5K28z2ymy
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Sep 2021 07:11:37 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id AF52561183;
- Tue, 21 Sep 2021 21:11:35 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HDYyN4KTHz2ydk
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Sep 2021 07:11:40 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7FFFA60F38;
+ Tue, 21 Sep 2021 21:11:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1632258696;
- bh=ZnM+iqWxm+4OI1WI+vtTm3ZebK6hxw24eEpvjq/BbMU=;
+ s=k20201202; t=1632258699;
+ bh=J7PHhw9cNdQ6BGiWub2EqGalFkm6ejp/i7fbWHUB5Xg=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Xdzs3wJK2yhFJNUr/JDzqUtwQL3MaIG9aOXiRpZyUNbVQzV4dSJmwDsZsXnKbRj7E
- lt7Lg44nn7rqsoo/tjt1JybVXKzjted5pKDRKE/t667tuQRXVXDETrUIz7B0QfaAvt
- tj4UEdeS9OWl8ba01OAeD7wpqR9/CYTh2UI+NU/rRYFn11XbCoGeGIcPDI6H0Y95pw
- H27GXf1vsJEKEd5qgsPwv3pyCDl1bwCkwvTgnGFyKXlF6BAwxM+dG0/98JTdTAe6a2
- oi9s2OJhR0ZIZ+WXz5PdBUadnq/tz3T/CW3eKu94yOCEBiWkWnpWKXF4JCBLz2j/Vo
- oo5rv4vy9yC9w==
+ b=MB+KhopjPmwCDN0Jfy3+D5W5mAChVQf1GP/lKBr4F9oHwv1gaVpb0xKaVvZMugfbD
+ hofkbxNIBRd6f1iAGvu58Gvo0MAYeHlYTOUy764t4QP033JIM1/NHxUrI3BKPfzDX1
+ rBslo0S3uYHi8CmYJHCs2Mk81AZC/4+2qabur+0U8jC5GIZQKU9pd8PYsDz9IXjiXW
+ Xg8b/w8UEPvL2BfBc3u9YiEpfp201NY9Y6VIL4u4sxlsyxxiRbgkmXSOevJqvdejVn
+ 3lBlVhiuSGXsHflfmwDMui0TCIyfJ5FgYNi9ebI3H/QW6EmQ2GYhUFRVaLE1w/GwYg
+ uaxdCVzVLlnFA==
 From: Mark Brown <broonie@kernel.org>
 To: Liam Girdwood <lgirdwood@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>,
  Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
  Shengjiu Wang <shengjiu.wang@gmail.com>
-Subject: [PATCH 05/16] ASoC: fsl-mqs: Update to modern clocking terminology
-Date: Tue, 21 Sep 2021 22:10:29 +0100
-Message-Id: <20210921211040.11624-5-broonie@kernel.org>
+Subject: [PATCH 06/16] ASoC: fsl_sai: Update to modern clocking terminology
+Date: Tue, 21 Sep 2021 22:10:30 +0100
+Message-Id: <20210921211040.11624-6-broonie@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20210921211040.11624-1-broonie@kernel.org>
 References: <20210921211040.11624-1-broonie@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=796; h=from:subject;
- bh=ZnM+iqWxm+4OI1WI+vtTm3ZebK6hxw24eEpvjq/BbMU=;
- b=owEBbAGT/pANAwAKASTWi3JdVIfQAcsmYgBhSkneidR+IfgASeBZcEe7nEyf9oCvyXFXV112DJOT
- KNY5LeSJATIEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCYUpJ3gAKCRAk1otyXVSH0JbRB/
- de8ESQ0uq4MfK/AvcBrek9jQ0ZRAl5lVNxyCOpr30ftA8NFul9vFGoEw/WG5dkXziY3uuef1oUSV/u
- +nEWBHZ/CdRvruf3GualDmOB/S1hWYO3c9YeyMpL2kQE/M0MUKfP9rwtDWt9ntkTIyWN0blHzHpAK4
- doS4yb9bd1jMMBf2ZYNmx5v4Cy6x5125EtAz/PuVqvFPKSBzzJ30wjYcmyEDhImKv+if8w56fXXTTV
- bNzWe7d9DAsxg5+yEuLqqM0+NvbsvZAJJAH1v90F/WRuIvzUzS9f0psYXpwFWm8a8l2FLmLfueBzbL
- 1PEQ224mPgq3VIJh2eFu02jiCJdUQ=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4018; h=from:subject;
+ bh=J7PHhw9cNdQ6BGiWub2EqGalFkm6ejp/i7fbWHUB5Xg=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBhSknf/riLcqzgY6r7/TPu0PUL9kESB/BZ4QzE1WrT
+ 6uteiieJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCYUpJ3wAKCRAk1otyXVSH0EzKB/
+ 9RpEwPeEBjaZtGbyYTF9McchAuteJPD5QFmHF7zxKTidLGiC51NxafCp/Ywzg0RRqPiQ9GHLiacdNd
+ OaCMk/vuHkyuPv9P+FYcksmJcItI1nzIgnx0j5jiNtc1D3HMa/OBRS6p6jQCPGycEeIG3NMnng4d6z
+ p5B+Rq1q8KAkt2H7La5uDUIV+4VJGh2algVYOY8OzQD66pXOwBg7XKnRkGF+s55VtVmcLNydFn1g3E
+ QIacqJUoY5RK6rs6pTxCI9LOudJBu7XtKDVN0P6WSQotahY3un/lYaAd4/aaYrG7XPXW/+Vy+wzVaM
+ VmJHXW9YqFAAON+18FpZ3xMVU38SPI
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 Content-Transfer-Encoding: 8bit
@@ -77,28 +77,118 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 As part of moving to remove the old style defines for the bus clocks update
-the fsl-mqs driver to use more modern terminology for clocking.
+the fsl_sai driver to use more modern terminology for clocking.
 
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- sound/soc/fsl/fsl_mqs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/fsl/fsl_sai.c | 34 +++++++++++++++++-----------------
+ sound/soc/fsl/fsl_sai.h |  2 +-
+ 2 files changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_mqs.c b/sound/soc/fsl/fsl_mqs.c
-index 69aeb0e71844..27b4536dce44 100644
---- a/sound/soc/fsl/fsl_mqs.c
-+++ b/sound/soc/fsl/fsl_mqs.c
-@@ -102,8 +102,8 @@ static int fsl_mqs_set_dai_fmt(struct snd_soc_dai *dai, unsigned int fmt)
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index 38f6362099d5..10544fa27dc0 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -297,23 +297,23 @@ static int fsl_sai_set_dai_fmt_tr(struct snd_soc_dai *cpu_dai,
  		return -EINVAL;
  	}
  
+-	/* DAI clock master masks */
 -	switch (fmt & SND_SOC_DAIFMT_MASTER_MASK) {
 -	case SND_SOC_DAIFMT_CBS_CFS:
++	/* DAI clock provider masks */
 +	switch (fmt & SND_SOC_DAIFMT_CLOCK_PROVIDER_MASK) {
 +	case SND_SOC_DAIFMT_CBC_CFC:
+ 		val_cr2 |= FSL_SAI_CR2_BCD_MSTR;
+ 		val_cr4 |= FSL_SAI_CR4_FSD_MSTR;
+-		sai->is_slave_mode = false;
++		sai->is_consumer_mode = false;
+ 		break;
+-	case SND_SOC_DAIFMT_CBM_CFM:
+-		sai->is_slave_mode = true;
++	case SND_SOC_DAIFMT_CBP_CFP:
++		sai->is_consumer_mode = true;
+ 		break;
+-	case SND_SOC_DAIFMT_CBS_CFM:
++	case SND_SOC_DAIFMT_CBC_CFP:
+ 		val_cr2 |= FSL_SAI_CR2_BCD_MSTR;
+-		sai->is_slave_mode = false;
++		sai->is_consumer_mode = false;
+ 		break;
+-	case SND_SOC_DAIFMT_CBM_CFS:
++	case SND_SOC_DAIFMT_CBP_CFC:
+ 		val_cr4 |= FSL_SAI_CR4_FSD_MSTR;
+-		sai->is_slave_mode = true;
++		sai->is_consumer_mode = true;
  		break;
  	default:
  		return -EINVAL;
+@@ -356,8 +356,8 @@ static int fsl_sai_set_bclk(struct snd_soc_dai *dai, bool tx, u32 freq)
+ 	u32 id;
+ 	int ret = 0;
+ 
+-	/* Don't apply to slave mode */
+-	if (sai->is_slave_mode)
++	/* Don't apply to consumer mode */
++	if (sai->is_consumer_mode)
+ 		return 0;
+ 
+ 	/*
+@@ -462,7 +462,7 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
+ 
+ 	pins = DIV_ROUND_UP(channels, slots);
+ 
+-	if (!sai->is_slave_mode) {
++	if (!sai->is_consumer_mode) {
+ 		if (sai->bclk_ratio)
+ 			ret = fsl_sai_set_bclk(cpu_dai, tx,
+ 					       sai->bclk_ratio *
+@@ -502,12 +502,12 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
+ 		val_cr4 |= FSL_SAI_CR4_CHMOD;
+ 
+ 	/*
+-	 * For SAI master mode, when Tx(Rx) sync with Rx(Tx) clock, Rx(Tx) will
++	 * For SAI provider mode, when Tx(Rx) sync with Rx(Tx) clock, Rx(Tx) will
+ 	 * generate bclk and frame clock for Tx(Rx), we should set RCR4(TCR4),
+ 	 * RCR5(TCR5) for playback(capture), or there will be sync error.
+ 	 */
+ 
+-	if (!sai->is_slave_mode && fsl_sai_dir_is_synced(sai, adir)) {
++	if (!sai->is_consumer_mode && fsl_sai_dir_is_synced(sai, adir)) {
+ 		regmap_update_bits(sai->regmap, FSL_SAI_xCR4(!tx, ofs),
+ 				   FSL_SAI_CR4_SYWD_MASK | FSL_SAI_CR4_FRSZ_MASK |
+ 				   FSL_SAI_CR4_CHMOD_MASK,
+@@ -543,7 +543,7 @@ static int fsl_sai_hw_free(struct snd_pcm_substream *substream,
+ 	regmap_update_bits(sai->regmap, FSL_SAI_xCR3(tx, ofs),
+ 			   FSL_SAI_CR3_TRCE_MASK, 0);
+ 
+-	if (!sai->is_slave_mode &&
++	if (!sai->is_consumer_mode &&
+ 			sai->mclk_streams & BIT(substream->stream)) {
+ 		clk_disable_unprepare(sai->mclk_clk[sai->mclk_id[tx]]);
+ 		sai->mclk_streams &= ~BIT(substream->stream);
+@@ -577,7 +577,7 @@ static void fsl_sai_config_disable(struct fsl_sai *sai, int dir)
+ 	 * This is a hardware bug, and will be fix in the
+ 	 * next sai version.
+ 	 */
+-	if (!sai->is_slave_mode) {
++	if (!sai->is_consumer_mode) {
+ 		/* Software Reset */
+ 		regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR);
+ 		/* Clear SR bit to finish the reset */
+diff --git a/sound/soc/fsl/fsl_sai.h b/sound/soc/fsl/fsl_sai.h
+index bc60030967dd..9aaf231bc024 100644
+--- a/sound/soc/fsl/fsl_sai.h
++++ b/sound/soc/fsl/fsl_sai.h
+@@ -259,7 +259,7 @@ struct fsl_sai {
+ 	struct clk *bus_clk;
+ 	struct clk *mclk_clk[FSL_SAI_MCLK_MAX];
+ 
+-	bool is_slave_mode;
++	bool is_consumer_mode;
+ 	bool is_lsb_first;
+ 	bool is_dsp_mode;
+ 	bool synchronous[2];
 -- 
 2.20.1
 
