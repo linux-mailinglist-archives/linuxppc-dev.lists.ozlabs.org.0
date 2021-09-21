@@ -1,92 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 339884129E0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Sep 2021 02:22:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 055114129CE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Sep 2021 02:06:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HD2Df16NPz2yKZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Sep 2021 10:22:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HD1tP6Xpzz2yw6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Sep 2021 10:06:21 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=embeddedor.com header.i=@embeddedor.com header.a=rsa-sha256 header.s=default header.b=eTNSUnUc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=T+88ASI6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=embeddedor.com (client-ip=192.185.145.113;
- helo=gateway32.websitewelcome.com; envelope-from=gustavo@embeddedor.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::835;
+ helo=mail-qt1-x835.google.com; envelope-from=danielhb413@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=embeddedor.com header.i=@embeddedor.com
- header.a=rsa-sha256 header.s=default header.b=eTNSUnUc; 
- dkim-atps=neutral
-X-Greylist: delayed 1207 seconds by postgrey-1.36 at boromir;
- Tue, 21 Sep 2021 10:21:32 AEST
-Received: from gateway32.websitewelcome.com (gateway32.websitewelcome.com
- [192.185.145.113])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=T+88ASI6; dkim-atps=neutral
+Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com
+ [IPv6:2607:f8b0:4864:20::835])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HD2Cw61wTz2xYP
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Sep 2021 10:21:32 +1000 (AEST)
-Received: from cm16.websitewelcome.com (cm16.websitewelcome.com [100.42.49.19])
- by gateway32.websitewelcome.com (Postfix) with ESMTP id 23E76181721
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Sep 2021 19:01:20 -0500 (CDT)
-Received: from gator4166.hostgator.com ([108.167.133.22]) by cmsmtp with SMTP
- id STDsmLCP3jSwzSTDsmoNBL; Mon, 20 Sep 2021 19:01:20 -0500
-X-Authority-Reason: nr=8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
- In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
- :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=czSdDpNgb0Ii/RJWWpIWH8ssgyJ0ANHKIaZ5AJ+/NWg=; b=eTNSUnUcbS4YXJdyxijuf+L6bU
- +3nwvc5H7uG93RrOlY4XaQr+WJ8j5NasVF1FSOVL0/lk0bOYG9UZE8acN2rotuQu6llY12vdmrkGU
- V/wsZwwCXSGfqjcL47Efj5u5L7QG7rSltVQBuNf465bB8o++v9MW7Ru5j/oTS343jFEKZWZOwZPoZ
- Pm+Cg0lzTlOKUEcweILPt8iBUx3r/LhGmgqJfKT7Ch/3zTdxNnb6PVKumenkJm9EbYGGsCCT1Rt1V
- eT9MOfKYpHUcAA3fr58PiS5injGTx47qqOPbDuIfN/4ufmiTmASdY8S6YpDmURQ6RNucrEwqKf29z
- PtygWsHw==;
-Received: from 187-162-31-110.static.axtel.net ([187.162.31.110]:33780
- helo=[192.168.15.9])
- by gator4166.hostgator.com with esmtpsa (TLS1.2) tls
- TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
- (envelope-from <gustavo@embeddedor.com>)
- id 1mSTDr-000Y7U-Iv; Mon, 20 Sep 2021 19:01:19 -0500
-Subject: Re: [PATCH] KVM: PPC: Replace zero-length array with flexible array
- member
-To: Len Baker <len.baker@gmx.com>, Paul Mackerras <paulus@ozlabs.org>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>
-References: <20210918142138.17709-1-len.baker@gmx.com>
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Message-ID: <bb4faf3a-9fe9-280b-cb4c-e4904b0b2a8f@embeddedor.com>
-Date: Mon, 20 Sep 2021 19:05:07 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HD1sm1mZLz2xrg
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Sep 2021 10:05:47 +1000 (AEST)
+Received: by mail-qt1-x835.google.com with SMTP id j13so12523296qtq.6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Sep 2021 17:05:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=message-id:date:mime-version:user-agent:subject:content-language:to
+ :cc:references:from:in-reply-to:content-transfer-encoding;
+ bh=jpCgNzQxFC4qpARYFl0aMi6+0wE/Rb9Nb4OfxjZUPZs=;
+ b=T+88ASI6NcBVu5o5hmMdsIgqA1x2mb9VR7Q/cfRd2gsVdc/K2LSyYQRAxFtwTcaeo1
+ oN0HzOxD0XYU86igvUviZ6x94H2LYase7eYHNcCcbH1Rw0yDvq/Dgb2+J7MBqYTch4lx
+ 3AbS6VOiD/NaxAkxptAs5oThLXcK9V9hbt7PhXhbjoOffPvbVFKkEdofg25qII2N4CBc
+ BJwN+vlPHQzm7arXeTlWLGJu7tPpUu9RqWsKQxRR97iozMP1+Ay+KdGg42jyf/gkclq4
+ 8nmlPeJhmFQSDsyntSIMe3gICd3TBAXJCYTHLcsvvQOP+Db6vmsDW4cXfbUN2NV+2Y36
+ HSDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+ :content-language:to:cc:references:from:in-reply-to
+ :content-transfer-encoding;
+ bh=jpCgNzQxFC4qpARYFl0aMi6+0wE/Rb9Nb4OfxjZUPZs=;
+ b=pwggDSMJLGpcknzgsSIo4mJLfBoyaj54cbtFHUKsCS3LDabGKWkkf8+r5qSco3kiOb
+ kOA49D6nTlgsxsKA8RGrnPT8BQwUMVHTxVLi3elzAV3pr/wJ4D7YuYGGXX4yDpZHMWMR
+ uDh8uUAjdEOD2djxq8O2bqY2770odKRmuiTt7F6qClAVSpiY2r5rJ1rDD4qfwUbt/2++
+ Pqm6539s8TbzQigfkUbF14dXMWoEHLNr/UGj/MVqRy15Y1JinBhGNBRBdH+zSgc3D8de
+ kFtLjcDL8q3TprJlZ4iJlnSOB+kBhZZAxpLk8FBwvm7e9bhcYzqqCR035ltSIaiGJsRS
+ fbEw==
+X-Gm-Message-State: AOAM533urATn8IdrVaojYhvEB8Fom9a5drPLbO5ynJhvQiY+gO9R1uma
+ E/0dgR1CuUUyRfiiq0riWHY=
+X-Google-Smtp-Source: ABdhPJyOmVb2yiJLWiq1P75iDwajSIE5cqssvhigxtOZUql3kPmrF/OCLsXEVaJfvzI0uT9ToGtOKg==
+X-Received: by 2002:ac8:7d81:: with SMTP id c1mr25429454qtd.229.1632182743887; 
+ Mon, 20 Sep 2021 17:05:43 -0700 (PDT)
+Received: from [192.168.10.222] ([177.189.43.50])
+ by smtp.gmail.com with ESMTPSA id f10sm2193754qkp.50.2021.09.20.17.05.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 20 Sep 2021 17:05:43 -0700 (PDT)
+Message-ID: <c0e3c2ef-10e6-de96-8782-d9cf81198197@gmail.com>
+Date: Mon, 20 Sep 2021 21:05:40 -0300
 MIME-Version: 1.0
-In-Reply-To: <20210918142138.17709-1-len.baker@gmx.com>
-Content-Type: text/plain; charset=utf-8
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.1.0
+Subject: Re: [PATCH 2/3] powerpc/cpuhp: BUG -> WARN conversion in offline path
 Content-Language: en-US
+To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+References: <20210920135504.1792219-1-nathanl@linux.ibm.com>
+ <20210920135504.1792219-3-nathanl@linux.ibm.com>
+From: Daniel Henrique Barboza <danielhb413@gmail.com>
+In-Reply-To: <20210920135504.1792219-3-nathanl@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse,
- please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - lists.ozlabs.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 187.162.31.110
-X-Source-L: No
-X-Exim-ID: 1mSTDr-000Y7U-Iv
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: 187-162-31-110.static.axtel.net ([192.168.15.9])
- [187.162.31.110]:33780
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 8
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,67 +84,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kees Cook <keescook@chromium.org>, linux-kernel@vger.kernel.org,
- kvm-ppc@vger.kernel.org, "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- linux-hardening@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: tyreld@linux.ibm.com, ldufour@linux.ibm.com, aneesh.kumar@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 9/18/21 09:21, Len Baker wrote:
-> There is a regular need in the kernel to provide a way to declare having
-> a dynamically sized set of trailing elements in a structure. Kernel code
-> should always use "flexible array members" [1] for these cases. The
-> older style of one-element or zero-length arrays should no longer be
-> used[2].
+On 9/20/21 10:55, Nathan Lynch wrote:
+> If, due to bugs elsewhere, we get into unregister_cpu_online() with a CPU
+> that isn't marked hotpluggable, we can emit a warning and return an
+> appropriate error instead of crashing.
 > 
-> Also, make use of the struct_size() helper in kzalloc().
-> 
-> [1] https://en.wikipedia.org/wiki/Flexible_array_member
-> [2] https://www.kernel.org/doc/html/latest/process/deprecated.html#zero-length-and-one-element-arrays
-> 
-> Signed-off-by: Len Baker <len.baker@gmx.com>
-
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-
-Thanks
---
-Gustavo
-
+> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
 > ---
->  arch/powerpc/include/asm/kvm_host.h | 2 +-
->  arch/powerpc/kvm/book3s_64_vio.c    | 3 +--
->  2 files changed, 2 insertions(+), 3 deletions(-)
+
+As mentioned by Christophe this will not solve the crash for kernels with
+panic_on_warn, but at least it will panic with a clearer message on those
+and will not panic for everyone else.
+
+
+Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+
+
+
+>   arch/powerpc/kernel/sysfs.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
-> index 080a7feb7731..3aed653373a5 100644
-> --- a/arch/powerpc/include/asm/kvm_host.h
-> +++ b/arch/powerpc/include/asm/kvm_host.h
-> @@ -190,7 +190,7 @@ struct kvmppc_spapr_tce_table {
->  	u64 size;		/* window size in pages */
->  	struct list_head iommu_tables;
->  	struct mutex alloc_lock;
-> -	struct page *pages[0];
-> +	struct page *pages[];
->  };
-> 
->  /* XICS components, defined in book3s_xics.c */
-> diff --git a/arch/powerpc/kvm/book3s_64_vio.c b/arch/powerpc/kvm/book3s_64_vio.c
-> index 6365087f3160..d42b4b6d4a79 100644
-> --- a/arch/powerpc/kvm/book3s_64_vio.c
-> +++ b/arch/powerpc/kvm/book3s_64_vio.c
-> @@ -295,8 +295,7 @@ long kvm_vm_ioctl_create_spapr_tce(struct kvm *kvm,
->  		return ret;
-> 
->  	ret = -ENOMEM;
-> -	stt = kzalloc(sizeof(*stt) + npages * sizeof(struct page *),
-> -		      GFP_KERNEL);
-> +	stt = kzalloc(struct_size(stt, pages, npages), GFP_KERNEL);
->  	if (!stt)
->  		goto fail_acct;
-> 
-> --
-> 2.25.1
+> diff --git a/arch/powerpc/kernel/sysfs.c b/arch/powerpc/kernel/sysfs.c
+> index defecb3b1b15..08d8072d6e7a 100644
+> --- a/arch/powerpc/kernel/sysfs.c
+> +++ b/arch/powerpc/kernel/sysfs.c
+> @@ -928,7 +928,8 @@ static int unregister_cpu_online(unsigned int cpu)
+>   	struct device_attribute *attrs, *pmc_attrs;
+>   	int i, nattrs;
+>   
+> -	BUG_ON(!c->hotpluggable);
+> +	if (WARN_RATELIMIT(!c->hotpluggable, "cpu %d can't be offlined\n", cpu))
+> +		return -EBUSY;
+>   
+>   #ifdef CONFIG_PPC64
+>   	if (cpu_has_feature(CPU_FTR_SMT))
 > 
