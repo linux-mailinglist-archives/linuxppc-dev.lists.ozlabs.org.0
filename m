@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC90D413CB7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Sep 2021 23:41:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4044F413CBF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Sep 2021 23:41:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HDZcG55CKz3000
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Sep 2021 07:41:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HDZd01R6xz3dcx
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Sep 2021 07:41:40 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jPvOfkC9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lkGJflmQ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,45 +17,46 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=jPvOfkC9; 
+ header.s=k20201202 header.b=lkGJflmQ; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HDZWg5kB4z3c80
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Sep 2021 07:37:03 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 4563261019;
- Tue, 21 Sep 2021 21:37:01 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HDZWk1jWMz3c8t
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Sep 2021 07:37:06 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 206F561168;
+ Tue, 21 Sep 2021 21:37:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1632260221;
- bh=G7kWIcw4ckECqndMsfL0TFZeJcsVijEwbp3xeXyzy6s=;
+ s=k20201202; t=1632260224;
+ bh=QnS5Cga8MAQ6BFduVQ+0hsBboMZot1AdyZOYHd/YW4M=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=jPvOfkC95HGyn8KibMlCXjpanucalXwrjPFvpm3YaIhZZraGeYxydLukOaVah10qA
- EFg80auHm8KNvGb3RxCgM7fta9fT5iC6mgPZuApjOY/SXGr9VDov/fhO3+ioB6eBbm
- UzLQ9gkn4i4PaeEHFetcsBPxmJsXbH8Az0WwKrNjbwIoauDreYSNNLl5sKByKmEaSa
- CNtrjBNJt/gelDc5kFoPhLwTx8QTtrHmS0yM8kE8AfbjV3cnwx15xB4K/b1evhyC0A
- 16X9icPl0oJBoY97tYx9ihiTDn9ZXC6OyVs+sLNF+vNTNBi0RMgbUz58/yG7Rq3Qxm
- B7Mhvt31ZLYmQ==
+ b=lkGJflmQ1irbPwaSu9AdC3mB7jVdv8GrB/CwW6u/4LALkY0xSpc/JJJal+CYqh3qk
+ RNM9L6CZntscnmCzoe+2PtinF4o1rIfsWLBia/Xlq72awomnO7hx1POWsPt5cCNCow
+ 0czarRInEb5Og4wQ7iEZTPSqMg7jl2VOsIpFgIO823HygZy7vT0Y3cNGY0aLRJY+w/
+ 3V7GGRmq6YAX9DycqPgQQ8D0nwf9YAdZpK95boEc1gayG51ab7s66ka7g32SAqliOs
+ UryriCHGsFb4B/+SMgbc/EJ0l10VlnGcphca7eRsWP0ir6LmuArbbDtCPqXZz1Lhiy
+ X5r8XqRxG0BvA==
 From: Mark Brown <broonie@kernel.org>
 To: Liam Girdwood <lgirdwood@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>,
  Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
  Shengjiu Wang <shengjiu.wang@gmail.com>
-Subject: [PATCH v2 07/16] ASoC: fsl_ssi: Update to modern clocking terminology
-Date: Tue, 21 Sep 2021 22:35:33 +0100
-Message-Id: <20210921213542.31688-7-broonie@kernel.org>
+Subject: [PATCH v2 08/16] ASoC: imx-audmix: Update to modern clocking
+ terminology
+Date: Tue, 21 Sep 2021 22:35:34 +0100
+Message-Id: <20210921213542.31688-8-broonie@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20210921213542.31688-1-broonie@kernel.org>
 References: <20210921213542.31688-1-broonie@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4340; h=from:subject;
- bh=G7kWIcw4ckECqndMsfL0TFZeJcsVijEwbp3xeXyzy6s=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBhSk8YHTyBkFIgFWPSSM7RcGqhjDLLq/Qb3JfQlk8H
- 8gmQD6yJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCYUpPGAAKCRAk1otyXVSH0CCZB/
- 0RCqCGoZy2uQipO9OTLyfb5kosGNW8wq2v+XhQhjlJ9bXpfLJuHYAdUe3c7ezc24yA3Qj2wWlydFUr
- Cx24LgeYc19drt309/LNlx0RG+MpL2Xj5bOuUXU/cVMppVBt6y7bpXNsqHNfBbOtfwxMbhNumqcC5c
- LxqBsWDFuyjeUFUW+qm3O0MdR3ADugM9MLLfuu4PcVVFGROIwj0dh6tO0CFK+MFtWvXKrsOVo+kLGO
- JQuSGAdlkK/SsnrDsL5rJWGONQTCapjuStkcLlm70b0bVR1nQrPFdHD6Bm5TEZGLbpXo5yicbwuNg4
- Jsick0pSFIxVAhHOYSpSO6q5cizQOH
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1374; h=from:subject;
+ bh=QnS5Cga8MAQ6BFduVQ+0hsBboMZot1AdyZOYHd/YW4M=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBhSk8YpSHJMIZLeNDcthjEQHy+0FccpWtf96EdaQPR
+ DPI46haJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCYUpPGAAKCRAk1otyXVSH0JBjB/
+ 97iZu2iy+lTjwr5PLcT+dorajsmPiup7krFVR3Fyxqrjsy3MbbVJbAcTA5kXabue8UGb0KVXidqfYi
+ IYSGhzHHFSdRYaWVkscPy1JJsdd2H+iQ803QGOUhmPm5f3pAj10ORqgCKHamFtU48XYWgkIGMFVG4O
+ qsov5GM2cju4yvJN4zd8PFzsVxc2pCCL3om23szqzaRZ1xYiYJa7zbjMJyb1wy4f/HnfxE9vd8lqTY
+ BE/FPQE03FTntwdyaDbbhgSMoNP9AWIwVxf1nGBN0bT+e9N6SIfwwMBYXxlua3nqxxUExEjuKb+ych
+ F1loR/t1Ea36IpGrso37RjNTcBQsRJ
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 Content-Transfer-Encoding: 8bit
@@ -77,122 +78,39 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 As part of moving to remove the old style defines for the bus clocks update
-the fsl_ssi driver to use more modern terminology for clocking.
+the imx-audmix driver to use more modern terminology for clocking.
 
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- sound/soc/fsl/fsl_ssi.c | 38 +++++++++++++++++++-------------------
- 1 file changed, 19 insertions(+), 19 deletions(-)
+ sound/soc/fsl/imx-audmix.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_ssi.c b/sound/soc/fsl/fsl_ssi.c
-index ecbc1c365d5b..1169d1104b9e 100644
---- a/sound/soc/fsl/fsl_ssi.c
-+++ b/sound/soc/fsl/fsl_ssi.c
-@@ -350,16 +350,16 @@ static bool fsl_ssi_is_ac97(struct fsl_ssi *ssi)
- 		SND_SOC_DAIFMT_AC97;
- }
+diff --git a/sound/soc/fsl/imx-audmix.c b/sound/soc/fsl/imx-audmix.c
+index a364e2415de0..e8b438a0329e 100644
+--- a/sound/soc/fsl/imx-audmix.c
++++ b/sound/soc/fsl/imx-audmix.c
+@@ -80,8 +80,8 @@ static int imx_audmix_fe_hw_params(struct snd_pcm_substream *substream,
+ 	u32 channels = params_channels(params);
+ 	int ret, dir;
  
--static bool fsl_ssi_is_i2s_master(struct fsl_ssi *ssi)
-+static bool fsl_ssi_is_i2s_clock_provider(struct fsl_ssi *ssi)
- {
--	return (ssi->dai_fmt & SND_SOC_DAIFMT_MASTER_MASK) ==
--		SND_SOC_DAIFMT_CBS_CFS;
-+	return (ssi->dai_fmt & SND_SOC_DAIFMT_CLOCK_PROVIDER_MASK) ==
-+		SND_SOC_DAIFMT_CBC_CFC;
- }
+-	/* For playback the AUDMIX is slave, and for record is master */
+-	fmt |= tx ? SND_SOC_DAIFMT_CBS_CFS : SND_SOC_DAIFMT_CBM_CFM;
++	/* For playback the AUDMIX is consumer, and for record is provider */
++	fmt |= tx ? SND_SOC_DAIFMT_CBC_CFC : SND_SOC_DAIFMT_CBP_CFP;
+ 	dir  = tx ? SND_SOC_CLOCK_OUT : SND_SOC_CLOCK_IN;
  
--static bool fsl_ssi_is_i2s_cbm_cfs(struct fsl_ssi *ssi)
-+static bool fsl_ssi_is_i2s_cbp_cfc(struct fsl_ssi *ssi)
- {
--	return (ssi->dai_fmt & SND_SOC_DAIFMT_MASTER_MASK) ==
--		SND_SOC_DAIFMT_CBM_CFS;
-+	return (ssi->dai_fmt & SND_SOC_DAIFMT_CLOCK_PROVIDER_MASK) ==
-+		SND_SOC_DAIFMT_CBP_CFC;
- }
+ 	/* set DAI configuration */
+@@ -121,8 +121,8 @@ static int imx_audmix_be_hw_params(struct snd_pcm_substream *substream,
+ 	if (!tx)
+ 		return 0;
  
- /**
-@@ -808,7 +808,7 @@ static int fsl_ssi_hw_params(struct snd_pcm_substream *substream,
- 	u32 wl = SSI_SxCCR_WL(sample_size);
- 	int ret;
+-	/* For playback the AUDMIX is slave */
+-	fmt |= SND_SOC_DAIFMT_CBM_CFM;
++	/* For playback the AUDMIX is consumer */
++	fmt |= SND_SOC_DAIFMT_CBP_CFP;
  
--	if (fsl_ssi_is_i2s_master(ssi)) {
-+	if (fsl_ssi_is_i2s_clock_provider(ssi)) {
- 		ret = fsl_ssi_set_bclk(substream, dai, hw_params);
- 		if (ret)
- 			return ret;
-@@ -841,7 +841,7 @@ static int fsl_ssi_hw_params(struct snd_pcm_substream *substream,
- 		u8 i2s_net = ssi->i2s_net;
- 
- 		/* Normal + Network mode to send 16-bit data in 32-bit frames */
--		if (fsl_ssi_is_i2s_cbm_cfs(ssi) && sample_size == 16)
-+		if (fsl_ssi_is_i2s_cbp_cfc(ssi) && sample_size == 16)
- 			i2s_net = SSI_SCR_I2S_MODE_NORMAL | SSI_SCR_NET;
- 
- 		/* Use Normal mode to send mono data at 1st slot of 2 slots */
-@@ -865,7 +865,7 @@ static int fsl_ssi_hw_free(struct snd_pcm_substream *substream,
- 	struct snd_soc_pcm_runtime *rtd = asoc_substream_to_rtd(substream);
- 	struct fsl_ssi *ssi = snd_soc_dai_get_drvdata(asoc_rtd_to_cpu(rtd, 0));
- 
--	if (fsl_ssi_is_i2s_master(ssi) &&
-+	if (fsl_ssi_is_i2s_clock_provider(ssi) &&
- 	    ssi->baudclk_streams & BIT(substream->stream)) {
- 		clk_disable_unprepare(ssi->baudclk);
- 		ssi->baudclk_streams &= ~BIT(substream->stream);
-@@ -891,18 +891,18 @@ static int _fsl_ssi_set_dai_fmt(struct fsl_ssi *ssi, unsigned int fmt)
- 	ssi->i2s_net = SSI_SCR_NET;
- 	switch (fmt & SND_SOC_DAIFMT_FORMAT_MASK) {
- 	case SND_SOC_DAIFMT_I2S:
--		switch (fmt & SND_SOC_DAIFMT_MASTER_MASK) {
--		case SND_SOC_DAIFMT_CBS_CFS:
-+		switch (fmt & SND_SOC_DAIFMT_CLOCK_PROVIDER_MASK) {
-+		case SND_SOC_DAIFMT_CBC_CFC:
- 			if (IS_ERR(ssi->baudclk)) {
- 				dev_err(ssi->dev,
- 					"missing baudclk for master mode\n");
- 				return -EINVAL;
- 			}
- 			fallthrough;
--		case SND_SOC_DAIFMT_CBM_CFS:
-+		case SND_SOC_DAIFMT_CBP_CFC:
- 			ssi->i2s_net |= SSI_SCR_I2S_MODE_MASTER;
- 			break;
--		case SND_SOC_DAIFMT_CBM_CFM:
-+		case SND_SOC_DAIFMT_CBP_CFP:
- 			ssi->i2s_net |= SSI_SCR_I2S_MODE_SLAVE;
- 			break;
- 		default:
-@@ -962,17 +962,17 @@ static int _fsl_ssi_set_dai_fmt(struct fsl_ssi *ssi, unsigned int fmt)
- 		return -EINVAL;
- 	}
- 
--	/* DAI clock master masks */
--	switch (fmt & SND_SOC_DAIFMT_MASTER_MASK) {
--	case SND_SOC_DAIFMT_CBS_CFS:
-+	/* DAI clock provider masks */
-+	switch (fmt & SND_SOC_DAIFMT_CLOCK_PROVIDER_MASK) {
-+	case SND_SOC_DAIFMT_CBC_CFC:
- 		/* Output bit and frame sync clocks */
- 		strcr |= SSI_STCR_TFDIR | SSI_STCR_TXDIR;
- 		scr |= SSI_SCR_SYS_CLK_EN;
- 		break;
--	case SND_SOC_DAIFMT_CBM_CFM:
-+	case SND_SOC_DAIFMT_CBP_CFP:
- 		/* Input bit or frame sync clocks */
- 		break;
--	case SND_SOC_DAIFMT_CBM_CFS:
-+	case SND_SOC_DAIFMT_CBP_CFC:
- 		/* Input bit clock but output frame sync clock */
- 		strcr |= SSI_STCR_TFDIR;
- 		break;
-@@ -1341,7 +1341,7 @@ static int fsl_ssi_imx_probe(struct platform_device *pdev,
- 		}
- 	}
- 
--	/* Do not error out for slave cases that live without a baud clock */
-+	/* Do not error out for consumer cases that live without a baud clock */
- 	ssi->baudclk = devm_clk_get(dev, "baud");
- 	if (IS_ERR(ssi->baudclk))
- 		dev_dbg(dev, "failed to get baud clock: %ld\n",
+ 	/* set AUDMIX DAI configuration */
+ 	ret = snd_soc_dai_set_fmt(asoc_rtd_to_cpu(rtd, 0), fmt);
 -- 
 2.20.1
 
