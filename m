@@ -2,43 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5FD941315A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Sep 2021 12:11:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEDF8413321
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Sep 2021 14:05:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HDHK53d0Tz2yfm
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Sep 2021 20:11:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HDKrb3Dfmz2ywv
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Sep 2021 22:05:51 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JJyTS/Ag;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=molgen.mpg.de (client-ip=141.14.17.11; helo=mx1.molgen.mpg.de;
- envelope-from=pmenzel@molgen.mpg.de; receiver=<UNKNOWN>)
-Received: from mx1.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=ardb@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=JJyTS/Ag; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HDHJc17Lkz2xtf
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Sep 2021 20:11:25 +1000 (AEST)
-Received: from [192.168.178.35] (unknown [88.130.155.181])
- (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested) (Authenticated sender: pmenzel)
- by mx.molgen.mpg.de (Postfix) with ESMTPSA id 53A2761E64760;
- Tue, 21 Sep 2021 12:11:17 +0200 (CEST)
-Subject: Re: [PATCH v3] lib/zlib_inflate/inffast: Check config in C to avoid
- unused function warning
-To: Nathan Chancellor <nathan@kernel.org>
-References: <20210920084332.5752-1-pmenzel@molgen.mpg.de>
- <YUishGbHeaDMJDj+@archlinux-ax161>
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-Message-ID: <d00bb831-211e-0c7b-2734-1ed7769af2ef@molgen.mpg.de>
-Date: Tue, 21 Sep 2021 12:11:16 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HDKqw1JCWz2xv8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Sep 2021 22:05:16 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id EC70961183
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Sep 2021 12:05:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1632225911;
+ bh=DG9JNZQFvl7efc4nexOO4fg+5WMfNAZoucbjG4viZJY=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=JJyTS/Ag55xb5DaeQp7F/jXV/FBOFUAn8DPNofQFs1saJsZ9sCRXEj12daNeZ1Z3U
+ IJy7rdLd28cfnkbFUIPx4l7a+jIPlBdCcqM4P3EccSTxfZw5ypMtQ4wJgi1clqmWah
+ j9Ejl58vKka4j6aQrNPBU/aFzlnNh+0AQfmM4Ih6RjJZmAogI88Ui9hHtLFzYnYTjy
+ /K2gKIXmjvfjrzLNRhsf7+kbOPs1N4Um/G5dQGUjJpf8KBG52ZNUGqVHWux9ZmKhl0
+ 6Erkeugudc5Kx2xaCACxztYTUSoys36n4wnpOGdktFllSKtMgVbKq4alyxOKGVfvib
+ Zpyp6ZjfVtnaA==
+Received: by mail-ot1-f48.google.com with SMTP id
+ c42-20020a05683034aa00b0051f4b99c40cso28026667otu.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Sep 2021 05:05:10 -0700 (PDT)
+X-Gm-Message-State: AOAM532Gwku9bjg7E9oGoM9r7X2OGEXgzYUv06IDYFl6MM0dmfPU9Yc8
+ 8LBqFUgQtU80UNv7UycPQt/HWbeTn1ChxXBoxjo=
+X-Google-Smtp-Source: ABdhPJxUqmu5iQVr6fZ3TQM6eziNelFJiJn18TFwtwwTecybfc/0teebK58ixSK16CBCXGG0Y5zoMsZaVGfK1lcWdYI=
+X-Received: by 2002:a05:6830:3189:: with SMTP id
+ p9mr22365233ots.147.1632225899996; 
+ Tue, 21 Sep 2021 05:04:59 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <YUishGbHeaDMJDj+@archlinux-ax161>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <20210914121036.3975026-1-ardb@kernel.org>
+ <20210914121036.3975026-2-ardb@kernel.org>
+ <YUNXfWKZ7XYvw2EK@arm.com>
+In-Reply-To: <YUNXfWKZ7XYvw2EK@arm.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Tue, 21 Sep 2021 14:04:48 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFkJtVaT2CjigZHLT+AAjmCzU1OgTg+QS-ttJxmejGkRQ@mail.gmail.com>
+Message-ID: <CAMj1kXFkJtVaT2CjigZHLT+AAjmCzU1OgTg+QS-ttJxmejGkRQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/8] arm64: add CPU field to struct thread_info
+To: Catalin Marinas <catalin.marinas@arm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,107 +68,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: llvm@lists.linux.dev, Zhen Lei <thunder.leizhen@huawei.com>,
- Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Peter Zijlstra <peterz@infradead.org>, Paul Mackerras <paulus@samba.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>, Will Deacon <will@kernel.org>,
+ "open list:S390" <linux-s390@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Russell King <linux@armlinux.org.uk>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Kees Cook <keescook@chromium.org>,
+ Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Keith Packard <keithpac@amazon.com>, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
+ <linuxppc-dev@lists.ozlabs.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Dear Linux folks,
+On Thu, 16 Sept 2021 at 16:41, Catalin Marinas <catalin.marinas@arm.com> wrote:
+>
+> On Tue, Sep 14, 2021 at 02:10:29PM +0200, Ard Biesheuvel wrote:
+> > The CPU field will be moved back into thread_info even when
+> > THREAD_INFO_IN_TASK is enabled, so add it back to arm64's definition of
+> > struct thread_info.
+> >
+> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+>
+> Acked-by: Catalin Marinas <catalin.marinas@arm.com>
 
-
-Am 20.09.21 um 17:45 schrieb Nathan Chancellor:
-> On Mon, Sep 20, 2021 at 10:43:33AM +0200, Paul Menzel wrote:
->> Building Linux for ppc64le with Ubuntu clang version 12.0.0-3ubuntu1~21.04.1
->> shows the warning below.
->>
->>      arch/powerpc/boot/inffast.c:20:1: warning: unused function 'get_unaligned16' [-Wunused-function]
->>      get_unaligned16(const unsigned short *p)
->>      ^
->>      1 warning generated.
->>
->> Fix it, by moving the check from the preprocessor to C, so the compiler
->> sees the use.
->>
->> Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
-> 
-> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-> Tested-by: Nathan Chancellor <nathan@kernel.org>
-> 
->> ---
->> v2: Use IS_ENABLED
->> v3: Use if statement over ternary operator as requested by Christophe
->>
->>   lib/zlib_inflate/inffast.c | 13 ++++++-------
->>   1 file changed, 6 insertions(+), 7 deletions(-)
->>
->> diff --git a/lib/zlib_inflate/inffast.c b/lib/zlib_inflate/inffast.c
->> index f19c4fbe1be7..2843f9bb42ac 100644
->> --- a/lib/zlib_inflate/inffast.c
->> +++ b/lib/zlib_inflate/inffast.c
->> @@ -253,13 +253,12 @@ void inflate_fast(z_streamp strm, unsigned start)
->>   
->>   			sfrom = (unsigned short *)(from);
->>   			loops = len >> 1;
->> -			do
->> -#ifdef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
->> -			    *sout++ = *sfrom++;
->> -#else
->> -			    *sout++ = get_unaligned16(sfrom++);
->> -#endif
->> -			while (--loops);
->> +			do {
->> +			    if (IS_ENABLED(CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS))
->> +				*sout++ = *sfrom++;
->> +			    else
->> +				*sout++ = get_unaligned16(sfrom++);
->> +			} while (--loops);
->>   			out = (unsigned char *)sout;
->>   			from = (unsigned char *)sfrom;
->>   		    } else { /* dist == 1 or dist == 2 */
->> -- 
->> 2.33.0
-
-Just for the record,
-
-I compared both object files by running `objdump -d`, and the result is 
-the same.
-
-The binary differed (`vbindiff`), but I guess this is due to the 
-increased revision (`make bindeb-pkg`).
-
-without a change (Linus’ current master):
-
-0000 0B50: 00 00 00 00 00 00 00 00  1F 01 00 00 36 00 00 00  ........ 
-....6...
-                                      ^
-0000 0B60: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  ........ 
-........
-0000 0B70: 00 00 00 00 00 00 00 00  29 01 00 00 32 00 00 00  ........ 
-)...2...
-                                      ^
-
-v2 (ternary operator):
-
-0000 0B50: 00 00 00 00 00 00 00 00  1C 01 00 00 36 00 00 00  ........ 
-....6...
-0000 0B60: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  ........ 
-........
-0000 0B70: 00 00 00 00 00 00 00 00  26 01 00 00 32 00 00 00  ........ 
-&...2...
-
-v3 (if-else statement):
-
-0000 0B50: 00 00 00 00 00 00 00 00  1E 01 00 00 36 00 00 00  ........ 
-....6...
-0000 0B60: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  ........ 
-........
-0000 0B70: 00 00 00 00 00 00 00 00  28 01 00 00 32 00 00 00  ........ 
-(...2...
-
-
-Kind regards,
-
-Paul
+Thanks. I take it this applies to patch #5 as well?
