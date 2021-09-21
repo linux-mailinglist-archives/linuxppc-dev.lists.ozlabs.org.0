@@ -2,55 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08055413BF1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Sep 2021 23:04:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74486413C16
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Sep 2021 23:12:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HDYp66pQdz2yPl
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Sep 2021 07:04:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HDYyk2ynRz306F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Sep 2021 07:11:58 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=NOWNs0gA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ct/epNrz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=canonical.com (client-ip=185.125.188.120;
- helo=smtp-relay-canonical-0.canonical.com;
- envelope-from=cascardo@canonical.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=canonical.com header.i=@canonical.com
- header.a=rsa-sha256 header.s=20210705 header.b=NOWNs0gA; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=ct/epNrz; 
  dkim-atps=neutral
-Received: from smtp-relay-canonical-0.canonical.com
- (smtp-relay-canonical-0.canonical.com [185.125.188.120])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HDYnP6DXrz2yPQ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Sep 2021 07:03:52 +1000 (AEST)
-Received: from mussarela (unknown [179.93.212.127])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id 36E9F4049E
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Sep 2021 21:03:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
- s=20210705; t=1632258225;
- bh=j8GEmTQ54Fik7NmdiBXn7HI4aifxuJkNrEf5sMQwA5Q=;
- h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
- b=NOWNs0gArwReHxyxKjCXMmHPJEA9ewFywv0sbXWSxNcHZ5yZajO0LGlKIrAZ61EZi
- YgMhA644R+b5Qem2zMwW6TboCSRa3R9k9+5SroAnh80mH2+5V9A6jAFJxbhMehgRKl
- HSLDrp3XQfMqJgBWKH0vuy4Vhe7p6lqiTBsGnaPhjw4cPt5enOSWie1aR+X85tUYHq
- GKWbPn48+lD6RTmyARIL6EoVc4q7rzwXZ8QYERjh8C7cNpyM3jLAaZm9SXAU6CBggk
- QQiJqA4J/7Hrm8/dxoZqjK+RrAIZj/bnni3DclGptwVCXZvPpVCseebCqYviiggx+P
- iOkqALkX1K0ww==
-Date: Tue, 21 Sep 2021 18:03:39 -0300
-From: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: coherency issue observed after hotplug on POWER8
-Message-ID: <YUpIqytZqpohq4EM@mussarela>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HDYy76lHjz2yP0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Sep 2021 07:11:27 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id DC36261211;
+ Tue, 21 Sep 2021 21:11:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1632258685;
+ bh=zSHBaEge3vIffxUMJGRccMptS+Nr4Yr8WQuKISPrvVI=;
+ h=From:To:Cc:Subject:Date:From;
+ b=ct/epNrzkQmnSnMxonGErrOp/QZVEaNhSQbCRjdCHaNAA1gi1j2DkTL7Yns28QQpb
+ PDXOyMMn6OzB2yeNLnitJus96FtwKGWmAc8qzGHbE7aCZxBjgIrH4/LcLo3zN4eXWX
+ o04e65caFex96H//m+77IxrOJrPwH4gzfyZkcAk+nBQ1RoLvMaSd47/36Q3CCNCGy7
+ iPmSIq1yLUCIFB5X6lC+D5TbM12U2r6d39Ai+/yQQ5fgUwYagng0dgIWIkIZZsvyx2
+ Abu6ZAq6GR7tMWo6cpQM1D5ULb6sL+qgsoPh0rDMI23RmmhtbVzrLLVke+4vlR1WFE
+ vA7iZ28sYtRKQ==
+From: Mark Brown <broonie@kernel.org>
+To: Liam Girdwood <lgirdwood@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>,
+ Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
+ Shengjiu Wang <shengjiu.wang@gmail.com>
+Subject: [PATCH 01/16] ASoC: eureka-tlv320: Update to modern clocking
+ terminology
+Date: Tue, 21 Sep 2021 22:10:25 +0100
+Message-Id: <20210921211040.11624-1-broonie@kernel.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+X-Developer-Signature: v=1; a=openpgp-sha256; l=818; h=from:subject;
+ bh=zSHBaEge3vIffxUMJGRccMptS+Nr4Yr8WQuKISPrvVI=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBhSknbj/RSRUcVVBm/LLpoHGroCue6wcCm71p7LgUe
+ WE1IRW2JATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCYUpJ2wAKCRAk1otyXVSH0JuDB/
+ 9IvULyXNpryV6KS+Qr/RWVSc51PvQdZ8MoHr+5G70pOzWBEvNhgPG4jFfKOiHXDcYu0LBZxQw4SJgC
+ 9Zsu7PU+CAKe7IO3d/IEI88a7MLpGzdPrkOhd9y3lmodAFNjUev4ARL52eq3UD+4UUFAhb94J3yjn9
+ HbzjgiQXQ1Qg2fwGKN0gsWMqQCjehPTetC0ScZUQSPzMFdPNZUCyyuTJPRUpRTm1/LlEstdq/kyDbt
+ CZT5ifot9tQnk3plaLGrpZZ3XG1Ef7UPB4M/Rh1MTNe3iri4JEkcMJxFD5PiU3YOZdHgv6APriv6db
+ fh/ex1a4LLFZy2ZqTShw0PZBTHdgvo
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,36 +69,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: alsa-devel@alsa-project.org, Mark Brown <broonie@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi, there.
+As part of moving to remove the old style defines for the bus clocks update
+the eureka-tlv320 driver to use more modern terminology for clocking.
 
-We have been investigating an issue we have observed on POWER8 POWERNV systems.
-When running the kernel selftests reuseport_bpf_cpu after a CPU hotplug, we see
-crashes, in different forms. [1]
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ sound/soc/fsl/eukrea-tlv320.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I managed to get xmon on that trap, and did some debugging. [2] I tried to dump
-the BPF JIT code, and it looks different when dumped from CPU#0 and CPU#0x9f
-(the one that was hotplugged, offlined, then onlined).
+diff --git a/sound/soc/fsl/eukrea-tlv320.c b/sound/soc/fsl/eukrea-tlv320.c
+index e13271ea84de..8b61582753c8 100644
+--- a/sound/soc/fsl/eukrea-tlv320.c
++++ b/sound/soc/fsl/eukrea-tlv320.c
+@@ -70,7 +70,7 @@ static struct snd_soc_dai_link eukrea_tlv320_dai = {
+ 	.name		= "tlv320aic23",
+ 	.stream_name	= "TLV320AIC23",
+ 	.dai_fmt	= SND_SOC_DAIFMT_I2S | SND_SOC_DAIFMT_NB_NF |
+-			  SND_SOC_DAIFMT_CBM_CFM,
++			  SND_SOC_DAIFMT_CBP_CFP,
+ 	.ops		= &eukrea_tlv320_snd_ops,
+ 	SND_SOC_DAILINK_REG(hifi),
+ };
+-- 
+2.20.1
 
-Here is my partial analysis [3]. Basically, the BPF JIT fills a page with
-invalid instructions (traps, in ppc64 case), and puts the BPF program in a
-random offset of the page. In the case of the hotplugged CPU, which was the one
-that compiled the program, the page had the expected contents (BPF program
-started at the offset used to run the program). On the other CPU (in many
-cases, CPU #0), the same memory address/page had different contents, with the
-program starting at a different offset.
-
-Is this a case of a bug in the micro-architecture or the firmware when doing
-the hotplug? Can someone chime in?
-
-Notice that we can't reproduce the same issue on a POWER9 system.
-
-Thanks.
-Cascardo.
-
-[1] https://bugs.launchpad.net/ubuntu-kernel-tests/+bug/1927076
-[2] https://bugs.launchpad.net/ubuntu-kernel-tests/+bug/1927076/comments/29
-[3] https://bugs.launchpad.net/ubuntu-kernel-tests/+bug/1927076/comments/30
