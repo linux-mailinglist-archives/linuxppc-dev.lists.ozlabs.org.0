@@ -2,63 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C67A9413CDF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Sep 2021 23:46:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CE81413CE1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Sep 2021 23:47:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HDZkq5L57z3f4c
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Sep 2021 07:46:43 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uOY15jDs;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HDZlJ2JQCz3f8b
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Sep 2021 07:47:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=uOY15jDs; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=linkmauve.fr (client-ip=2a01:e0a:828:c7c0:49:5ff:fe41:d261;
+ helo=luna.linkmauve.fr; envelope-from=linkmauve@linkmauve.fr;
+ receiver=<UNKNOWN>)
+Received: from luna.linkmauve.fr (unknown
+ [IPv6:2a01:e0a:828:c7c0:49:5ff:fe41:d261])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HDZX86xTrz3cGB
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Sep 2021 07:37:28 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E151B61166;
- Tue, 21 Sep 2021 21:37:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1632260247;
- bh=9kvioNqkIrsS8HBoj2GlyRdysXDxOgoRAuVJFCeoBUo=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=uOY15jDsrgthTaNir73Y6vzD7xl5fLU/cBHRothrPthVo3kcEbaanEOiu6zwK244p
- rCWXJ1ftWbyr5GvAVD95SAU5PXTbq7Hhxdygdifb2QiB7vkDZxzgddgpIrwQBvc8Su
- nrV2Hu8gqsXeugV4tzSLF3q8FC0eQoAEmaPbnUdKPxu2KuWom7Y0JJNNZcRDYoh3yj
- FP25k87HopjiKwPng96EJ+uKGN5AM2k+3FY1FTfCjCuZgszKniX2s2wIbiQOJ0bTXR
- qdPzXv7Pp23ji7jxuximnnaHpX+Fu+iwsOKVfVV7lyJk9Qc7cc9xht/xkgu/ZVFH5D
- j/1qsW/itMKcw==
-From: Mark Brown <broonie@kernel.org>
-To: Liam Girdwood <lgirdwood@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>,
- Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
- Shengjiu Wang <shengjiu.wang@gmail.com>
-Subject: [PATCH v2 16/16] ASoC: pl1022_rdk: Update to modern clocking
- terminology
-Date: Tue, 21 Sep 2021 22:35:42 +0100
-Message-Id: <20210921213542.31688-16-broonie@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210921213542.31688-1-broonie@kernel.org>
-References: <20210921213542.31688-1-broonie@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HDZZz0NHxz3cBH
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Sep 2021 07:39:50 +1000 (AEST)
+Received: by luna.linkmauve.fr (Postfix, from userid 1000)
+ id 88C64F40B68; Tue, 21 Sep 2021 23:39:43 +0200 (CEST)
+From: Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
+To: linux-crypto@vger.kernel.org
+Subject: [PATCH 0/4] crypto: nintendo-aes - add a new AES driver
+Date: Tue, 21 Sep 2021 23:39:26 +0200
+Message-Id: <20210921213930.10366-1-linkmauve@linkmauve.fr>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=845; h=from:subject;
- bh=9kvioNqkIrsS8HBoj2GlyRdysXDxOgoRAuVJFCeoBUo=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBhSk8fnpCj8O6TDJnvU0wky8JPu5tjCBxYgZJvjL8x
- 177U4GmJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCYUpPHwAKCRAk1otyXVSH0FjVB/
- 9Ywe58qXb8OE32uPIidA9JwEujm0oJhFQw8tiqvIafVUeAUJVYJIOl2/Gcu2NqU9DugY+iJuaSKWVk
- BwklppUTbyRSf0VWRLCbEM+znePYUfRzT4EOF66eqeivR5RIe31b38dmr/f6b/ESC8RC4hjbxrEbES
- OpoNPlQAZKwAEQAnUJ5jtqfxiWjwYhxZBh4/o3WK2pdpopx8OP3MlQhs8fFZ6mTDV9Dw0qZfUOCPV1
- pUglQ26p59M4zAaZPbiXCI8yS2ylnquFuAY6blUNIepvtEbJrPMFUoxaXHM53tFrBr/G9djypjbqQW
- 0sFuSVgMgD7scU1ffSbRI/p1Lz/SF+
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -71,33 +42,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, Mark Brown <broonie@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: devicetree@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
+ Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>, linux-kernel@vger.kernel.org,
+ Rob Herring <robh+dt@kernel.org>, Paul Mackerras <paulus@samba.org>,
+ Ash Logan <ash@heyquark.com>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>,
+ =?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.ne@posteo.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-As part of moving to remove the old style defines for the bus clocks update
-the pl1022_rdk driver to use more modern terminology for clocking.
+This engine implements AES in CBC mode, using 128-bit keys only.  It is
+present on both the Wii and the Wii U, and is apparently identical in
+both consoles.
 
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- sound/soc/fsl/p1022_rdk.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The hardware is capable of firing an interrupt when the operation is
+done, but this driver currently uses a busy loop, I’m not too sure
+whether it would be preferable to switch, nor how to achieve that.
 
-diff --git a/sound/soc/fsl/p1022_rdk.c b/sound/soc/fsl/p1022_rdk.c
-index 714515b8081f..b395adabe823 100644
---- a/sound/soc/fsl/p1022_rdk.c
-+++ b/sound/soc/fsl/p1022_rdk.c
-@@ -265,7 +265,7 @@ static int p1022_rdk_probe(struct platform_device *pdev)
- 	 * only one way to configure the SSI.
- 	 */
- 	mdata->dai_format = SND_SOC_DAIFMT_NB_NF |
--		SND_SOC_DAIFMT_I2S | SND_SOC_DAIFMT_CBM_CFM;
-+		SND_SOC_DAIFMT_I2S | SND_SOC_DAIFMT_CBP_CFP;
- 	mdata->codec_clk_direction = SND_SOC_CLOCK_OUT;
- 	mdata->cpu_clk_direction = SND_SOC_CLOCK_IN;
- 
+It also supports a mode where no operation is done, and thus could be
+used as a DMA copy engine, but I don’t know how to expose that to the
+kernel or whether it would even be useful.
+
+In my testing, on a Wii U, this driver reaches 80.7 MiB/s, while the
+aes-generic driver only reaches 30.9 MiB/s, so it is a quite welcome
+speedup.
+
+This driver was written based on reversed documentation, see:
+https://wiibrew.org/wiki/Hardware/AES
+
+Emmanuel Gil Peyrot (4):
+  crypto: nintendo-aes - add a new AES driver
+  dt-bindings: nintendo-aes: Document the Wii and Wii U AES support
+  powerpc: wii.dts: Expose the AES engine on this platform
+  powerpc: wii_defconfig: Enable AES by default
+
+ .../bindings/crypto/nintendo-aes.yaml         |  34 +++
+ arch/powerpc/boot/dts/wii.dts                 |   7 +
+ arch/powerpc/configs/wii_defconfig            |   4 +-
+ drivers/crypto/Kconfig                        |  11 +
+ drivers/crypto/Makefile                       |   1 +
+ drivers/crypto/nintendo-aes.c                 | 273 ++++++++++++++++++
+ 6 files changed, 329 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/devicetree/bindings/crypto/nintendo-aes.yaml
+ create mode 100644 drivers/crypto/nintendo-aes.c
+
 -- 
-2.20.1
+2.33.0
 
