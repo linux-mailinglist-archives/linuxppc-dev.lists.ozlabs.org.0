@@ -1,71 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DD40414C72
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Sep 2021 16:50:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD5FD414C7E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Sep 2021 16:55:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HF1SK6kRKz308C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Sep 2021 00:50:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HF1Yv361Kz304m
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Sep 2021 00:55:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=D6ym+NLQ;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=IwDW3HRV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102c;
- helo=mail-pj1-x102c.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102b;
+ helo=mail-pj1-x102b.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=D6ym+NLQ; dkim-atps=neutral
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com
- [IPv6:2607:f8b0:4864:20::102c])
+ header.s=20210112 header.b=IwDW3HRV; dkim-atps=neutral
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com
+ [IPv6:2607:f8b0:4864:20::102b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HF1Rc4XDrz2yP3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Sep 2021 00:50:03 +1000 (AEST)
-Received: by mail-pj1-x102c.google.com with SMTP id
- nn5-20020a17090b38c500b0019af1c4b31fso2486169pjb.3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Sep 2021 07:50:03 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HF1YJ6tM6z2xfG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Sep 2021 00:55:00 +1000 (AEST)
+Received: by mail-pj1-x102b.google.com with SMTP id
+ g13-20020a17090a3c8d00b00196286963b9so4656194pjc.3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Sep 2021 07:55:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=/YujYRJMOJBacdkRVc3iHNwX/GUEPkOf6P3YJogb9hk=;
- b=D6ym+NLQn7vc76ZO6JD7EeKaNm+AGrUQysirr/tkfSA9w7uTtXaMNTNgZG90EsDvb/
- XRuRvagVq60kww70QkJ+2JrB+CH5iw598U2fe/waxWK3NbrCNtWWZJ81Bbw1sSsHcrv4
- UwGhwEJe7O96jRXMOb8Yepp36w/6RgsXQuBBUUfNp5f06IZh7a2g9wXIgyiiNH+NToKr
- 0NZ10T8TsxMbUGL32y5oUHwX4mtpYb8ZpiBkVOmJl/Z3eJh6ceQ8PiEl6ZBlxJtnK9+G
- hEX42VJNfuBGQxjnUH3hfjkLBFBfOng3rvDvAf9SsVTpqL5UsuzxJSctAfCtG5oEqtQ4
- ocEA==
+ bh=ZDfXCbRHlxW/Kz+AjPdRvaFRaMpPaKjcxBHFi7gVvh4=;
+ b=IwDW3HRVn8KVeVfKt0gCK1wwHKB+CcEXQYelYAYjBXwpdQhUfC3UAFr9g+ZP8cw3M+
+ F8RglsV6QU2S6u90HI+yLy/JRp1Pt8fEapOZm1YpkNEYVWBKyoMEcN5fGy4qh5OjwR+f
+ tMkKKl9u+70zLkSj6wzWDGnTQzyM9gvYxa4JDJagyGrDh7x42yjOvkV6Efvy23eAoIDE
+ KqBPhmikbU+3Z27fJbCfn9ipuX6KBiMu/6GRxifomOFTGgOTw9L1qAQszDJLlNbX4xvk
+ 6LOvvWIv3SMGkOXHAadaHwsGtmkcLcGOGJ4lJh4JyrVvmDKAnZ/YuqkU9t2HrQiiQIjZ
+ DoCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=/YujYRJMOJBacdkRVc3iHNwX/GUEPkOf6P3YJogb9hk=;
- b=HAnSqRAJ7neVrIqOSnrHomv+fGQuuX9s/V+QPaAx9bmHhPu8pGWjUd8Vaazyi8ipFy
- 68E8Dz2xocfzUpXlnqlog4kNzvWKSmTE+5WBTGS4XutZPPEioE5qwkDO8BrLVe7iOsqd
- SWe/MAdaiU2/cgf0XVI/zz045O/UERirTTOR8rgAkMS90YC5DgLe4l9iJpC0Ggc8PMv+
- xwO6Do5Ayt7lLx4BnJrJrCrStg1pu6Q1SJDovAiDI/AYZ+a9sKV3oINnfNc4cR2b1+KM
- mAClge+09Xu6uRUv2eRFPAU2dZSDLHQKSnae7LPb8b8cKR091jdxbF9A1AFyZpUKzUqX
- Ka/g==
-X-Gm-Message-State: AOAM5330gPTdr7FXp/Zz8BIE2ED1ErRhzX6K6woEG/SaPJ7Ii/BfikVO
- w/0jexNXH+PhVgwG09YDB8YB1+q/iF0=
-X-Google-Smtp-Source: ABdhPJyn16LGo9KcQG1C/W0tRN0edXuCQagtTHdabSXkBYAwpnyb395efUTVXrFnOH9S+wk1adVv4w==
-X-Received: by 2002:a17:90a:af86:: with SMTP id
- w6mr11937961pjq.8.1632322199782; 
- Wed, 22 Sep 2021 07:49:59 -0700 (PDT)
+ bh=ZDfXCbRHlxW/Kz+AjPdRvaFRaMpPaKjcxBHFi7gVvh4=;
+ b=LmG8o7Y9OBVreYtTvKpdkfwlDH9ONjSg0cBBrdpe3l2HnT6jpTscgYdaKgnjatvY9f
+ AFWFv3LM0k9O4eMfD7F12C8xZqjFaPt10v9dtWXwmo+stlDWurVJPyPcTNErX0vSB3xL
+ wZmJSzeQ+kdfFoUAMDnlxhw4/97y/IyA+LktvRk4nFxuRoZu8DDaDFQ6WtAXRkipE/+p
+ UmbmmPajR7J/xLly+9aSVsWgJKZGeb5DvT0WBitV/s+xhbPqNWEWaqP5faNu4DB2mNRS
+ iMspJgRwSiq8hQzsqjEunRqXbrCpNrMrliYvjr+kBJ3mDLFinDO6PvwQjx2/unph+qE3
+ KDHg==
+X-Gm-Message-State: AOAM5325Ly5d6iJyqgT3Nf8149IuNvwvxzB9egKNyN68rfrex9uBXALh
+ zxZtiXvVPV50AU/giee9dFOihFvmDpM=
+X-Google-Smtp-Source: ABdhPJzRxSRr4QsKi0NBoh7K5NxvHtNqshBgWyplzLEjMeluA0t+5AZHJKe1BVxPbS0dyo21IZ+1qg==
+X-Received: by 2002:a17:90b:1c08:: with SMTP id
+ oc8mr11930650pjb.138.1632322497522; 
+ Wed, 22 Sep 2021 07:54:57 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (115-64-153-41.tpgi.com.au. [115.64.153.41])
- by smtp.gmail.com with ESMTPSA id b13sm2245845pfp.82.2021.09.22.07.49.58
+ by smtp.gmail.com with ESMTPSA id o14sm2856211pfh.145.2021.09.22.07.54.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 22 Sep 2021 07:49:59 -0700 (PDT)
+ Wed, 22 Sep 2021 07:54:57 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v1] powerpc/64/interrupt: Reconcile soft-mask state in NMI and
- fix false BUG
-Date: Thu, 23 Sep 2021 00:49:53 +1000
-Message-Id: <20210922144953.352067-1-npiggin@gmail.com>
+Subject: [PATCH v3 0/6] powerpc/64s: interrupt speedups
+Date: Thu, 23 Sep 2021 00:54:46 +1000
+Message-Id: <20210922145452.352571-1-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -85,46 +84,56 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If a NMI hits early in an interrupt handler before the irq soft-mask
-state is reconciled, that can cause a false-positive BUG with a
-CONFIG_PPC_IRQ_SOFT_MASK_DEBUG assertion.
+Here's a few stragglers. The first patch was submitted already but had
+some bugs with unrecoverable exceptions on HPT (current->blah being
+accessed before MSR[RI] was enabled). Those should be fixed now.
 
-Remove that assertion and instead check the case that if regs->msr has
-EE clear, then regs->softe should be marked as disabled so the irq state
-looks correct to NMI handlers, the same as how it's fixed up in the
-case it was implicit soft-masked.
+The others are generally for helping asynch interrupts, which are a bit
+harder to measure well but important for IO and IPIs.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/include/asm/interrupt.h | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+After this series, the SPR accesses of the interrupt handlers for radix
+are becoming pretty optimal except for PPR which we could improve on,
+and virt CPU accounting which is very costly -- we might disable that
+by default unless someone comes up with a good reason to keep it.
 
-diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
-index b32ed910a8cf..b76ab848aa0d 100644
---- a/arch/powerpc/include/asm/interrupt.h
-+++ b/arch/powerpc/include/asm/interrupt.h
-@@ -265,13 +265,16 @@ static inline void interrupt_nmi_enter_prepare(struct pt_regs *regs, struct inte
- 	local_paca->irq_soft_mask = IRQS_ALL_DISABLED;
- 	local_paca->irq_happened |= PACA_IRQ_HARD_DIS;
- 
--	if (is_implicit_soft_masked(regs)) {
--		// Adjust regs->softe soft implicit soft-mask, so
--		// arch_irq_disabled_regs(regs) behaves as expected.
-+	if (!(regs->msr & MSR_EE) || is_implicit_soft_masked(regs)) {
-+		/*
-+		 * Adjust regs->softe to be soft-masked if it had not been
-+		 * reconcied (e.g., interrupt entry with MSR[EE]=0 but softe
-+		 * not yet set disabled), or if it was in an implicit soft
-+		 * masked state. This makes arch_irq_disabled_regs(regs)
-+		 * behave as expected.
-+		 */
- 		regs->softe = IRQS_ALL_DISABLED;
- 	}
--	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
--		BUG_ON(!arch_irq_disabled_regs(regs) && !(regs->msr & MSR_EE));
- 
- 	/* Don't do any per-CPU operations until interrupt state is fixed */
- 
+Since v1:
+- Compile fixes for 64e.
+- Fixed a SOFT_MASK_DEBUG false positive.
+- Improve function name and comments explaining why patch 2 does not
+  need to hard enable when PMU is enabled via sysfs.
+
+Since v2:
+- Split first patch into patch 1 and 2, improve on the changelogs.
+- More compile fixes.
+- Fixed several review comments from Daniel.
+- Added patch 5.
+
+Thanks,
+Nick
+
+Nicholas Piggin (6):
+  powerpc/64/interrupt: make normal synchronous interrupts enable
+    MSR[EE] if possible
+  powerpc/64s/interrupt: handle MSR EE and RI in interrupt entry wrapper
+  powerpc/64s/perf: add power_pmu_wants_prompt_pmi to say whether perf
+    wants PMIs to be soft-NMI
+  powerpc/64s/interrupt: Don't enable MSR[EE] in irq handlers unless
+    perf is in use
+  powerpc/64/interrupt: reduce expensive debug tests
+  powerpc/64s/interrupt: avoid saving CFAR in some asynchronous
+    interrupts
+
+ arch/powerpc/include/asm/hw_irq.h    |  59 +++++++++++++---
+ arch/powerpc/include/asm/interrupt.h |  58 ++++++++++++---
+ arch/powerpc/kernel/dbell.c          |   3 +-
+ arch/powerpc/kernel/exceptions-64s.S | 101 ++++++++++++++++++---------
+ arch/powerpc/kernel/fpu.S            |   5 ++
+ arch/powerpc/kernel/irq.c            |   3 +-
+ arch/powerpc/kernel/time.c           |  31 ++++----
+ arch/powerpc/kernel/vector.S         |  10 +++
+ arch/powerpc/perf/core-book3s.c      |  31 ++++++++
+ 9 files changed, 232 insertions(+), 69 deletions(-)
+
 -- 
 2.23.0
 
