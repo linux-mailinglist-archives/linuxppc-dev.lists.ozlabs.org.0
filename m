@@ -2,64 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8409E414EFE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Sep 2021 19:26:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DDA4415080
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Sep 2021 21:35:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HF4vh2wF3z2yZx
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Sep 2021 03:26:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HF7mz5xLVz302D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Sep 2021 05:35:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=lOlumiI1;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CO1obGp1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62d;
- helo=mail-pl1-x62d.google.com; envelope-from=carlojpisani@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=lOlumiI1; dkim-atps=neutral
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com
- [IPv6:2607:f8b0:4864:20::62d])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=CO1obGp1; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HF4v33wthz2xtH
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Sep 2021 03:25:34 +1000 (AEST)
-Received: by mail-pl1-x62d.google.com with SMTP id w6so2240912pll.3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Sep 2021 10:25:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=mime-version:from:date:message-id:subject:to;
- bh=qoUCKun9GOqpNGoTy8WaehZ/oDjPVJ/YWHnCEdsLlKI=;
- b=lOlumiI1+oziCAkd5/0aA3H3/+hEOnLGXIusMJhpDcPaDZc4gwE53YLyfaBThcZmqL
- bKAPzUJKWoqZ4iYlILMHa0Idlx3WXy500K7/q2TPhx7tASzXgykABzWzd7pd2LDltcme
- d+aLtugrh5FIrcdFLmKB8WfbpC1uusVdH3uzDm2DYHKo7Wh5Lhbzc3BZ7HjVLIHZ/Hpk
- g0m37ObmoShzoKnybbvXTyJWm/G4AppPdRIHqXAVVIYo5ahKuQlOlqVaeHdusrXLzDZF
- JIsRGVwdjc4pGBWycvMFhIzcSPbt6vziKd4Hlr+kjodgcKbiWv2y5/ZwT9yAnbPwznys
- 2+aQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
- bh=qoUCKun9GOqpNGoTy8WaehZ/oDjPVJ/YWHnCEdsLlKI=;
- b=kJzi+S4mrcaedJWjBuIZcooL1NlWFA/3psghSSHEum1uwqWw4IBkeBQFT2PrddLbF5
- RK6F57B17D6ZABDOJpph6tB/QYkWs1abUjXpZUe0cD0SIXkoidaXdSoHbGOB12qzQr7v
- dc2mQ03bOMyaOYFwAZVHY17SaF2n29vQBMksKddsoL+6xeokKDCmlSOqLwloWLQTVl4l
- CpVv9bathJkYSM+pX1dLOHcce/sx0PQdnW/b0Td8awjB8zDPFdyZm5NeKDMoVKjkmAUm
- 9VWOgLLNudCJaNJEOmrgiZsgwj1sYUMVlNXl4sNj3/XRI2ruTvoR9adMV5PlJCmpcFVT
- 9Pmg==
-X-Gm-Message-State: AOAM530EuXks3+2J/11jzkXoDcfwHp7h/govB3UjHb8Fum07ajx0+isw
- ddymLKWqFYENUHfcpr2xK9zFEhHgSnmjs6enD0MBALFgJRU=
-X-Google-Smtp-Source: ABdhPJyxC3JRRpZG3LkkxGatOXyZC0ojgXzjvV1lz9Y2JO+113tXAcNZQyAATGMuPayxs+JyBN1qg/ni/xqWVEyGjrc=
-X-Received: by 2002:a17:903:2083:b0:13b:f43a:41af with SMTP id
- d3-20020a170903208300b0013bf43a41afmr578854plc.57.1632331531443; Wed, 22 Sep
- 2021 10:25:31 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HF7m96RT1z2yLq
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Sep 2021 05:34:48 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18MIAB8h009140
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Sep 2021 15:34:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=McbJgO9+e9KzA6O9XLwG4JBHBvUsKU2BLfEb6UzAwwY=;
+ b=CO1obGp14N6r/A5itg6KLLOhxOy9DvpV876g1UlmfMNdLK82GL9+xw8k7ST1BUTCMqYT
+ yApXQCZZybGOoadlUUmgIRfW64F99o88F6h46DCKk9c6ln7RdK5kZX6JzjSYFDwRKE8s
+ F3KtZzOJegbmiROUIOjKjh4/Fy4MJwptBFMyjNV5E2BRrSbAdJwAwl6MwoVRbfVG7RCw
+ BKRO+WBmnnDH7UJSSW5mggU+kBrwYvJdvJMZKT4qaHexhm5M0HiFFSLlFVZnI3Sb4K+p
+ tINR67wsCq1Wplpae9S2/m87WB4KpvmCCrboRblUwJyXSZ3l7U6mwSkHDi6whAV6tVHs Ag== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3b823166sr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Sep 2021 15:34:45 -0400
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 18MIijkA000791
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Sep 2021 15:34:45 -0400
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3b823166sg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 22 Sep 2021 15:34:45 -0400
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 18MJS7vP002810;
+ Wed, 22 Sep 2021 19:29:44 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
+ [9.57.198.24]) by ppma01dal.us.ibm.com with ESMTP id 3b7q6u3bsj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 22 Sep 2021 19:29:44 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
+ [9.57.199.111])
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 18MJThj843516342
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 22 Sep 2021 19:29:43 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3E34EAC064;
+ Wed, 22 Sep 2021 19:29:43 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 05DCEAC05B;
+ Wed, 22 Sep 2021 19:29:42 +0000 (GMT)
+Received: from localhost (unknown [9.211.63.177])
+ by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
+ Wed, 22 Sep 2021 19:29:42 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Subject: Re: [PATCH] powerpc/paravirt: correct preempt debug splat in
+ vcpu_is_preempted()
+In-Reply-To: <20210922163351.GB2004@linux.vnet.ibm.com>
+References: <20210921031213.2029824-1-nathanl@linux.ibm.com>
+ <20210922075718.GA2004@linux.vnet.ibm.com> <87ee9gob07.fsf@linux.ibm.com>
+ <20210922163351.GB2004@linux.vnet.ibm.com>
+Date: Wed, 22 Sep 2021 14:29:42 -0500
+Message-ID: <87bl4ko1cp.fsf@linux.ibm.com>
 MIME-Version: 1.0
-From: cp <carlojpisani@gmail.com>
-Date: Wed, 22 Sep 2021 19:25:35 +0200
-Message-ID: <CA+QBN9DheGSvAYwPnjaai3dxJfUHYueR-86kwWvrAw5g1DofDg@mail.gmail.com>
-Subject: doesn't boot when linkaddr=0x0090.0000
-To: linuxppc-dev@lists.ozlabs.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: QsWdB_dvIutxym8Tr1gD6WuGDTR9om2j
+X-Proofpoint-ORIG-GUID: 3psLkFRjUUj_TrrM5rUeZC7q7psJWhss
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
+ definitions=2021-09-22_07,2021-09-22_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ malwarescore=0 adultscore=0 impostorscore=0 suspectscore=0 phishscore=0
+ priorityscore=1501 bulkscore=0 mlxscore=0 clxscore=1015 spamscore=0
+ mlxlogscore=601 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2109200000 definitions=main-2109220128
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,95 +106,111 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-hi
-I am new to this list. Hope this is the right place to ask.
+Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
 
-I am working with a PPC405GP board, and as far as I understand, the
-support for ppc40x platforms like Acadia and Walnut were dropped with
-kernel 5.8.0, so this seems like a pretty straightforward question,
-but extensive experiments from kernel 4.11 to kernel 5.7.19 haven't
-shown a really clear, up-to-date answer.
+> * Nathan Lynch <nathanl@linux.ibm.com> [2021-09-22 11:01:12]:
+>
+>> Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
+>> > * Nathan Lynch <nathanl@linux.ibm.com> [2021-09-20 22:12:13]:
+>> >
+>> >> vcpu_is_preempted() can be used outside of preempt-disabled critical
+>> >> sections, yielding warnings such as:
+>> >> 
+>> >> BUG: using smp_processor_id() in preemptible [00000000] code: systemd-udevd/185
+>> >> caller is rwsem_spin_on_owner+0x1cc/0x2d0
+>> >> CPU: 1 PID: 185 Comm: systemd-udevd Not tainted 5.15.0-rc2+ #33
+>> >> Call Trace:
+>> >> [c000000012907ac0] [c000000000aa30a8] dump_stack_lvl+0xac/0x108 (unreliable)
+>> >> [c000000012907b00] [c000000001371f70] check_preemption_disabled+0x150/0x160
+>> >> [c000000012907b90] [c0000000001e0e8c] rwsem_spin_on_owner+0x1cc/0x2d0
+>> >> [c000000012907be0] [c0000000001e1408] rwsem_down_write_slowpath+0x478/0x9a0
+>> >> [c000000012907ca0] [c000000000576cf4] filename_create+0x94/0x1e0
+>> >> [c000000012907d10] [c00000000057ac08] do_symlinkat+0x68/0x1a0
+>> >> [c000000012907d70] [c00000000057ae18] sys_symlink+0x58/0x70
+>> >> [c000000012907da0] [c00000000002e448] system_call_exception+0x198/0x3c0
+>> >> [c000000012907e10] [c00000000000c54c] system_call_common+0xec/0x250
+>> >> 
+>> >> The result of vcpu_is_preempted() is always subject to invalidation by
+>> >> events inside and outside of Linux; it's just a best guess at a point in
+>> >> time. Use raw_smp_processor_id() to avoid such warnings.
+>> >
+>> > Typically smp_processor_id() and raw_smp_processor_id() except for the
+>> > CONFIG_DEBUG_PREEMPT.
+>> 
+>> Sorry, I don't follow...
+>
+> I meant, Unless CONFIG_DEBUG_PREEMPT, smp_processor_id() is defined as
+> raw_processor_id().
+>
+>> 
+>> > In the CONFIG_DEBUG_PREEMPT case, smp_processor_id()
+>> > is actually debug_smp_processor_id(), which does all the checks.
+>> 
+>> Yes, OK.
+>> 
+>> > I believe these checks in debug_smp_processor_id() are only valid for x86
+>> > case (aka cases were they have __smp_processor_id() defined.)
+>> 
+>> Hmm, I am under the impression that the checks in
+>> debug_smp_processor_id() are valid regardless of whether the arch
+>> overrides __smp_processor_id().
+>
+> From include/linux/smp.h
+>
+> /*
+>  * Allow the architecture to differentiate between a stable and unstable read.
+>  * For example, x86 uses an IRQ-safe asm-volatile read for the unstable but a
+>  * regular asm read for the stable.
+>  */
+> #ifndef __smp_processor_id
+> #define __smp_processor_id(x) raw_smp_processor_id(x)
+> #endif
+>
+> As far as I see, only x86 has a definition of __smp_processor_id.
+> So for archs like Powerpc, __smp_processor_id(), is always
+> defined as raw_smp_processor_id(). Right?
 
-In k4.11 .. k5.7.19, when the kernel size is bigger than 8 MB, the
-final kernel doesn't boot but rather arch/powerpc/boot/main.c dies
-before the first message from the kernel shows up.
+Sure, yes.
 
-Why?
+> I would think debug_smp_processor_id() would be useful if __smp_processor_id()
+> is different from raw_smp_processor_id(). Do note debug_smp_processor_id() 
+> calls raw_smp_processor_id().
 
-Digging deeper I see the relation between the kernel size and link_addr
+I do not think the utility of debug_smp_processor_id() is related to
+whether the arch defines __smp_processor_id().
 
-        # Round the size to next higher MB limit
-        round_size=$(((strip_size + 0xfffff) & 0xfff00000))
+> Or can I understand how debug_smp_processor_id() is useful if
+> __smp_processor_id() is defined as raw_smp_processor_id()?
 
-        round_size=0x$(printf "%x" $round_size)
-        link_addr=$(printf "%d" $link_address)
+So, for powerpc with DEBUG_PREEMPT unset, a call to smp_procesor_id()
+expands to __smp_processor_id() which expands to raw_smp_processor_id(),
+avoiding the preempt safety checks. This is working as intended.
 
-and this is where link_addr is involved
+For powerpc with DEBUG_PREEMPT=y, a call to smp_processor_id() expands
+to the out of line call to debug_smp_processor_id(), which calls
+raw_smp_processor_id() and performs the checks, warning if called in an
+inappropriate context, as seen here. Also working as intended.
 
-        text_start="-Ttext $link_address"
+AFAICT __smp_processor_id() is a performance/codegen-oriented hook, and
+not really related to the debug facility. Please see 9ed7d75b2f09d
+("x86/percpu: Relax smp_processor_id()").
 
-My kernels are compiled for cuboot, and the code that invokes "kentry"
-is entirely located in arch/powerpc/boot/main.c
+>> I think the stack trace here correctly identifies an incorrect use of
+>> smp_processor_id(), and the call site needs to be changed. Do you
+>> disagree?
+>
+> Yes the stack_trace shows that debug_smp_processor_id(). However what
+> I want to understand is why should we even call
+> debug_smp_processor_id(), when our __smp_processor_id() is defined as
+> raw_smp_processor_id().
 
-I instrumned that module, and this is what I see on the condole
+smp_processor_id() should always expand to debug_smp_processor_id() when
+DEBUG_PREEMPT=y, regardless of whether the arch overrides
+__smp_processor_id(). That is how I understand the intent of the code as
+written.
 
-The following is the same kernel, compiled with the same .config, but
-with two link_addr values
-
-A) with link_addr=0x0080.0000
-image loaded from 0x00800000
-SP=0x03eb1b80
-kernel_size = 7411084 bytes
-copying 256 bytes from kernel-image at 0x0080f000 to elfheader
-elf_info.loadsize = 0x00700e68
-elf_info.memsize  = 0x0074234c
-allocating 7611212 bytes for the new kernel
-copying ...
-from = 0x0081f000
-to = 0x00000000
-size = 7343720
-flush_cache, 32Mbyte flushed
-cmdline: uboot bootargs overridden
-cmdline=[console=ttyS0,115200 root=/dev/sda2 rootfstype=ext2 rw
-init=/sbin/init ]
-Finalizing device tree... flat tree at 0xf23b80
-ft_addr=0xf23b80
-my tp1: success
-kernel booting ....
-(it boots)
-
-B) with link_addr=0x0080.0000
-image loaded from 0x00900000
-SP=0x03eb1b80
-kernel_size = 7411084
-copying 256 bytes from kernel-image at 0x0090f000 to elfheader
-elf_info.loadsize = 0x00700e68
-elf_info.memsize  = 0x0074234c
-allocating 7611212 bytes for the new kernel
-copying ...
-from = 0x0091f000
-to = 0x00000000
-size = 7343720
-flush_cache, 32Mbyte flushed
-cmdline: uboot bootargs overridden
-cmdline=[console=ttyS0,115200 root=/dev/sda2 rootfstype=ext2 rw
-init=/sbin/init ]
-Finalizing device tree... flat tree at 0x1023b80
-ft_addr=0x1023b80
-my tp2: success
-my tp3: success
-invalidate_cache 0x00000000+0x02000000
-my tp4: (point of no return)
-calling kentry()...
-kernel booting ....
-(it dies at this point, but without a debugger it's like watching
-something fall into a black hole)
-
-Any ideas?
-I am lost ...
-
-Carlo
