@@ -2,64 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8302E4150C1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Sep 2021 21:52:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75ECA4150DA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Sep 2021 21:59:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HF89413qyz2yZc
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Sep 2021 05:52:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HF8JV6zC8z2ywB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Sep 2021 05:59:22 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=LomNr9jg;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=V0Hdhbci;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102a;
- helo=mail-pj1-x102a.google.com; envelope-from=carlojpisani@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1031;
+ helo=mail-pj1-x1031.google.com; envelope-from=carlojpisani@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=LomNr9jg; dkim-atps=neutral
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com
- [IPv6:2607:f8b0:4864:20::102a])
+ header.s=20210112 header.b=V0Hdhbci; dkim-atps=neutral
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com
+ [IPv6:2607:f8b0:4864:20::1031])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HF88R1wm3z2yHp
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Sep 2021 05:52:22 +1000 (AEST)
-Received: by mail-pj1-x102a.google.com with SMTP id dw14so2867009pjb.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Sep 2021 12:52:22 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HF8Hs73gTz2yHp
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Sep 2021 05:58:47 +1000 (AEST)
+Received: by mail-pj1-x1031.google.com with SMTP id
+ g13-20020a17090a3c8d00b00196286963b9so5294901pjc.3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Sep 2021 12:58:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=mime-version:from:date:message-id:subject:to;
  bh=qoUCKun9GOqpNGoTy8WaehZ/oDjPVJ/YWHnCEdsLlKI=;
- b=LomNr9jgFCD06xI6p/9EgbBbGxIwMAy2W5sH8X26Mk4VqfuZBvQ2FftUX1xxYkef4N
- wlcdofoGcva2ld2NFkQhKgofdr7mDPavpLuRaEPI5EUDwYu7byJspPlAzr/gh8tQgC9N
- gaB6+EHUHpzEel5IFcS8Q2oS+fL+T0CrhT3gpYQfYTw5OiBje2d2430oRmWR/J9p82Ba
- lpqHcEq/M+HTKTKCC7qgmCQoeQnH5c9sWSLHiUTaWSLeEmifODc4mm33+C36YzIrvWHR
- tUMPiH1f5YU6YeLScrRa6iXwk/MDiwfjNM/7x2+qJETpKntrSue6/GFYHKRGu8cnRf7D
- e5IQ==
+ b=V0Hdhbci9z+bQKb/vjsba1qWZWDTd2k6jO+lKKIzgBdxT0wgY5wgqQnRfEaSD8Pj8S
+ UdTyQvveRUzPJ/UzH6IMHnvUVXj/K3DcoorgsT98FPeOu/0A4kLkQdlheSct4/wWINC6
+ 4ENrl5apaq+raoiUKCilri9uBkn2kv1ROlNk30x/pmSljJN6R9naglGT3PHW4tazABEz
+ gfCunWG343hnwMmvHY833gn68Zle1zzHpW1fMrdERoMZR3BdLILpLXYpTX2NWN/jNGu8
+ UplD5PfhAb00er8dPEaMDlrq5wHtkGC/n6ft+jug+/FRZ01PyBvg6U/Hii3JQIc3gYDi
+ fung==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
  bh=qoUCKun9GOqpNGoTy8WaehZ/oDjPVJ/YWHnCEdsLlKI=;
- b=X9EI9qqf81EHO6Toy88E7ak10kkM0P4IU4Y1BdcNqpmQpiHJ4KTEgJlhBgfGiMccEh
- w1a+mwliZvPo8LzMD4nreo3LYzGgRLcemfaN+DeGfd3HVCGmwQlD6ZZjXIlE11gXCRZI
- 11AyqDRtgoBOHcqu+O+kFAW0YjRcGpdIteDlqFYDGYqTibCMZLpx07A7EdBEonbgU3SH
- j4Rden8ZzfZSCWOmYg7m+Au/urszfIf+wSVWE2o3JZOkKVGhecxI99CRPDocbgPRIdAo
- x2gFtknZ3n31sx59HG8GaBN98ACyzwe0e5xlQMvpLO7ucHRvFPZbb+ciF+2lpYukRUR9
- cY1Q==
-X-Gm-Message-State: AOAM532OShTBmj+QrE/QKWDgJjeqVHv1uVKRyVpfx8xMR7W0HjSCLGNu
- gOxYRtoVFed30bOTq3KVpzzWiyd/g7sAbPY/AE8=
-X-Google-Smtp-Source: ABdhPJxy/0/onWRmQUA567wWMzxCZxI/C3l5dTcikXDV69LJW0/Ea7WVVkA9llohbqe/2/DWrS2u40glNZKClf6ZlR4=
-X-Received: by 2002:a17:90b:1642:: with SMTP id
- il2mr13351007pjb.133.1632340339730; 
- Wed, 22 Sep 2021 12:52:19 -0700 (PDT)
+ b=hhjAs8io/abBs0e4YIJA5rnk/hQx8SDorchn+/KexIWmMrr6dymNYHyGrsWLaZ7ilu
+ HvxXWDRvvi/gLpQxcVGcAkzHNfbbUEjWgzNv/cY1iHrkxbXoYblKyOl/eN4J31JIDITr
+ Des40AthPHZxYhqBhwlLB4Ctzy1R5tG7GM8UCSECBf7q0GRvRk5wFb7KOUqxkcSwTSHR
+ dvOWETSklUtCMSI2HIk4u3Gxsy26npFaHNcV1ltsLk454+xxY3bGjGKlEVkI8AAx1sDb
+ PpLyl1GFxTyevugPVVclWop9hQd4OHx61E5GvyGvrNlVqhvOh5hZJUjsAKdSORJF6Duc
+ UiaQ==
+X-Gm-Message-State: AOAM530kfVAHGiqX1XywuX5ZREbrVJxS8CyfnZB3zB8bPvrgcdyKjAAw
+ Y3iZJ0TTF0HiFwAFxFXL92vQhRkyttnc4bNdP5V0nCws4Ww=
+X-Google-Smtp-Source: ABdhPJzsh9orREzJKewycu2GTF5mAfzx+1RLXtsQTIuDG8OJoVDYUeDeFsQDz2Etd4Yp2N6gonPOJ2/8c3+avDvBYPY=
+X-Received: by 2002:a17:90a:191a:: with SMTP id 26mr890627pjg.79.1632340724266; 
+ Wed, 22 Sep 2021 12:58:44 -0700 (PDT)
 MIME-Version: 1.0
 From: cp <carlojpisani@gmail.com>
-Date: Wed, 22 Sep 2021 21:52:23 +0200
-Message-ID: <CA+QBN9AdtFCO3EShTH+Lhcy=_UidKXFtaUbLF+=EXyMYx9bPXg@mail.gmail.com>
-Subject: doesn't boot when linkaddr=0x0090.0000
-To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org, 
- linuxppc-dev@lists.ozlabs.org
+Date: Wed, 22 Sep 2021 21:58:48 +0200
+Message-ID: <CA+QBN9AmMEzeQebU6pCaA+WcSjida7KV3njju0AER4aKa8rnkQ@mail.gmail.com>
+Subject: doesn't boot if linkaddr=0x0090.0000
+To: linuxppc-dev@lists.ozlabs.org
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
