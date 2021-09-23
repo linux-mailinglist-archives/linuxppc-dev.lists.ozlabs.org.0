@@ -1,58 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FF91415B58
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Sep 2021 11:48:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FB1B415CAD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Sep 2021 13:18:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HFVj30kvTz3bYW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Sep 2021 19:48:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HFXhc1D8Tz2ywt
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Sep 2021 21:18:08 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=bWhQSk6S;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ smtp.mailfrom=ellerman.id.au (client-ip=203.11.71.1; helo=ozlabs.org;
+ envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=bWhQSk6S; 
+ dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HFVhY6DFDz2yPR
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Sep 2021 19:47:55 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4HFVhS1HTcz9sTZ;
- Thu, 23 Sep 2021 11:47:52 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id N2iojAvTUjrW; Thu, 23 Sep 2021 11:47:52 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4HFVhS0G8Vz9sTX;
- Thu, 23 Sep 2021 11:47:52 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E65698B775;
- Thu, 23 Sep 2021 11:47:51 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id HEg50hnqH7U5; Thu, 23 Sep 2021 11:47:51 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.202.200])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 224928B763;
- Thu, 23 Sep 2021 11:47:50 +0200 (CEST)
-Subject: Re: [PATCH 3/3] memblock: cleanup memblock_free interface
-To: Mike Rapoport <rppt@kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>
-References: <20210923074335.12583-1-rppt@kernel.org>
- <20210923074335.12583-4-rppt@kernel.org>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <1101e3c7-fcb7-a632-8e22-47f4a01ea02e@csgroup.eu>
-Date: Thu, 23 Sep 2021 11:47:48 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HFXgv1jrbz2yQ4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Sep 2021 21:17:30 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1632395849;
+ bh=wpMAXeUftY90EfwNTfhWfU/kwG7SCN6yvhEYWL11EqU=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=bWhQSk6Sggu/Onr7qRj/U1QMOlbV5qoC9O6hgBA1PCXTD8Wf9IVbuObQ0lTrmJ6mv
+ +0PJ3MIwzBn5vMYPwTlHGdiooxIdZ1kUeM9YrYtuqzDffz1yV51pWjkfvOFSw1VTfW
+ daSANsij4gtEAXgY15U+VA7kYSBWi8iuocweQJzSKU9x/wZhwWF30IHdxgAIR/PwZB
+ fVpV03OF0yGBg57r4X8l6Q46m1D1/b0bW9JwFH2BDguZWv6MiwcMepGS/sE6Tboyur
+ 85huaE0jNYxoVTt7e6Pf0LW4Vdl9TUR7co6/yVmF/c8/U3o0R4oQqMDw77OosD+t5J
+ +Ymu/x+wdr1UA==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4HFXgr3tvvz9sXk;
+ Thu, 23 Sep 2021 21:17:27 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2 3/3] powerpc/numa: Fill distance_lookup_table for
+ offline nodes
+In-Reply-To: <20210901102206.GO21942@linux.vnet.ibm.com>
+References: <20210821102535.169643-1-srikar@linux.vnet.ibm.com>
+ <20210821102535.169643-4-srikar@linux.vnet.ibm.com>
+ <875yvsba4q.fsf@mpe.ellerman.id.au>
+ <20210901102206.GO21942@linux.vnet.ibm.com>
+Date: Thu, 23 Sep 2021 21:17:25 +1000
+Message-ID: <871r5fmth6.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20210923074335.12583-4-rppt@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr-FR
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,87 +65,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-efi@vger.kernel.org, kvm@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-um@lists.infradead.org, linux-kernel@vger.kernel.org,
- kasan-dev@googlegroups.com, Mike Rapoport <rppt@linux.ibm.com>,
- linux-mm@kvack.org, iommu@lists.linux-foundation.org,
- linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
- xen-devel@lists.xenproject.org, Andrew Morton <akpm@linux-foundation.org>,
- linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Gautham R Shenoy <ego@linux.vnet.ibm.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ kernel test robot <lkp@intel.com>, Peter Zijlstra <peterz@infradead.org>,
+ Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>,
+ Valentin Schneider <valentin.schneider@arm.com>,
+ Laurent Dufour <ldufour@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
+> * Michael Ellerman <mpe@ellerman.id.au> [2021-08-26 23:36:53]:
+>
+>> Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
+>> > Scheduler expects unique number of node distances to be available at
+>> > boot.
+...
+>
+>> > Fake the offline node's distance_lookup_table entries so that all
+>> > possible node distances are updated.
+>> 
+>> Does this work if we have a single node offline at boot?
+>> 
+>
+> It should.
+>
+>> Say we start with:
+>> 
+>> node distances:
+>> node   0   1
+>>   0:  10  20
+>>   1:  20  10
+>> 
+>> And node 2 is offline at boot. We can only initialise that nodes entries
+>> in the distance_lookup_table:
+>> 
+>> 		while (i--)
+>> 			distance_lookup_table[node][i] = node;
+>> 
+>> By filling them all with 2 that causes node_distance(2, X) to return the
+>> maximum distance for all other nodes X, because we won't break out of
+>> the loop in __node_distance():
+>> 
+>> 	for (i = 0; i < distance_ref_points_depth; i++) {
+>> 		if (distance_lookup_table[a][i] == distance_lookup_table[b][i])
+>> 			break;
+>> 
+>> 		/* Double the distance for each NUMA level */
+>> 		distance *= 2;
+>> 	}
+>> 
+>> If distance_ref_points_depth was 4 we'd return 160.
+>
+> As you already know, distance 10, 20, .. are defined by Powerpc, form1
+> affinity. PAPR doesn't define actual distances, it only provides us the
+> associativity. If there are distance_ref_points_depth is 4,
+> (distance_ref_points_depth doesn't take local distance into consideration)
+> 10, 20, 40, 80, 160.
+>
+>> 
+>> That'd leave us with 3 unique distances at boot, 10, 20, 160.
+>> 
+>
+> So if there are unique distances, then the distances as per the current
+> code has to be 10, 20, 40, 80.. I dont see a way in which we have a break in
+> the series. like having 160 without 80.
 
+I'm confused what you mean there.
 
-Le 23/09/2021 à 09:43, Mike Rapoport a écrit :
-> From: Mike Rapoport <rppt@linux.ibm.com>
-> 
-> For ages memblock_free() interface dealt with physical addresses even
-> despite the existence of memblock_alloc_xx() functions that return a
-> virtual pointer.
-> 
-> Introduce memblock_phys_free() for freeing physical ranges and repurpose
-> memblock_free() to free virtual pointers to make the following pairing
-> abundantly clear:
-> 
-> 	int memblock_phys_free(phys_addr_t base, phys_addr_t size);
-> 	phys_addr_t memblock_phys_alloc(phys_addr_t base, phys_addr_t size);
-> 
-> 	void *memblock_alloc(phys_addr_t size, phys_addr_t align);
-> 	void memblock_free(void *ptr, size_t size);
-> 
-> Replace intermediate memblock_free_ptr() with memblock_free() and drop
-> unnecessary aliases memblock_free_early() and memblock_free_early_nid().
-> 
-> Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> ---
+If we have a node that's offline at boot then we get 160 for that node,
+that's just the result of having no info for it, so we never break out
+of the for loop.
 
-> diff --git a/arch/s390/kernel/smp.c b/arch/s390/kernel/smp.c
-> index 1a04e5bdf655..37826d8c4f74 100644
-> --- a/arch/s390/kernel/smp.c
-> +++ b/arch/s390/kernel/smp.c
-> @@ -723,7 +723,7 @@ void __init smp_save_dump_cpus(void)
->   			/* Get the CPU registers */
->   			smp_save_cpu_regs(sa, addr, is_boot_cpu, page);
->   	}
-> -	memblock_free(page, PAGE_SIZE);
-> +	memblock_phys_free(page, PAGE_SIZE);
->   	diag_amode31_ops.diag308_reset();
->   	pcpu_set_smt(0);
->   }
-> @@ -880,7 +880,7 @@ void __init smp_detect_cpus(void)
->   
->   	/* Add CPUs present at boot */
->   	__smp_rescan_cpus(info, true);
-> -	memblock_free_early((unsigned long)info, sizeof(*info));
-> +	memblock_free(info, sizeof(*info));
->   }
->   
->   /*
+So if we have two nodes, one hop apart, and then an offline node we get
+10, 20, 160.
 
-I'm a bit lost. IIUC memblock_free_early() and memblock_free() where 
-identical.
+Or if you're using depth = 3 then it's 10, 20, 80.
 
-In the first hunk memblock_free() gets replaced by memblock_phys_free()
-In the second hunk memblock_free_early() gets replaced by memblock_free()
+>> But when node 2 comes online it might introduce more than 1 new distance
+>> value, eg. it could be that the actual distances are:
+>> 
+>> node distances:
+>> node   0   1   2
+>>   0:  10  20  40
+>>   1:  20  10  80
+>>   2:  40  80  10
+>> 
+>> ie. we now have 4 distances, 10, 20, 40, 80.
+>> 
+>> What am I missing?
+>
+> As I said above, I am not sure how we can have a break in the series.
+> If distance_ref_points_depth is 3, the distances has to be 10,20,40,80 as
+> atleast for form1 affinity.
 
-I think it would be easier to follow if you could split it in several 
-patches:
-- First patch: Create memblock_phys_free() and change all relevant 
-memblock_free() to memblock_phys_free() - Or change memblock_free() to 
-memblock_phys_free() and make memblock_free() an alias of it.
-- Second patch: Make memblock_free_ptr() become memblock_free() and 
-change all remaining callers to the new semantics (IIUC 
-memblock_free(__pa(ptr)) becomes memblock_free(ptr) and make 
-memblock_free_ptr() an alias of memblock_free()
-- Fourth patch: Replace and drop memblock_free_ptr()
-- Fifth patch: Drop memblock_free_early() and memblock_free_early_nid() 
-(All users should have been upgraded to memblock_free_phys() in patch 1 
-or memblock_free() in patch 2)
+I agree for depth 3 we have to see 10, 20, 40, 80. But nothing
+guarantees we see each value (other than 10).
 
-Christophe
+We can have two nodes one hop apart, so we have 10 and 20, then a third
+node is added 3 hops away, so we get 10, 20, 80.
+
+The real problem is that the third node could be 3 hops from node 0
+and 2 hops from node 1, and so the addition of the third node causes
+two new distance values (40 & 80) to be required.
+
+I think maybe what you're saying is that in practice we don't see setups
+like that. But I don't know if I'm happy with a solution that doesn't
+work in the general case, and relies on the particular properties of our
+current set of systems.
+
+Possibly we just need to detect that case and WARN about it. The only
+problem is we won't know until the system is already up and running, ie.
+we can't know at boot that the onlining of the third node will cause 2
+new distance values to be added.
+
+cheers
