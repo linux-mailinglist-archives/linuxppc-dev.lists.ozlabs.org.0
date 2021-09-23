@@ -2,87 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C17FF41525F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Sep 2021 23:06:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D910141563A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Sep 2021 05:39:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HF9p94s6Gz2ybN
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Sep 2021 07:06:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HFLVs6Kyzz2xt9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Sep 2021 13:39:01 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=shutemov-name.20210112.gappssmtp.com header.i=@shutemov-name.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=xEkq7SUZ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Pi/OEjz3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=shutemov.name
- (client-ip=2a00:1450:4864:20::12e; helo=mail-lf1-x12e.google.com;
- envelope-from=kirill@shutemov.name; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=shutemov-name.20210112.gappssmtp.com
- header.i=@shutemov-name.20210112.gappssmtp.com header.a=rsa-sha256
- header.s=20210112 header.b=xEkq7SUZ; dkim-atps=neutral
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com
- [IPv6:2a00:1450:4864:20::12e])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=Pi/OEjz3; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HF9nR51HRz2yZc
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Sep 2021 07:06:01 +1000 (AEST)
-Received: by mail-lf1-x12e.google.com with SMTP id u8so16756307lff.9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Sep 2021 14:06:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=shutemov-name.20210112.gappssmtp.com; s=20210112;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=/PcqjgcRCkyIpO5H00bhPWTTbPCMNXWR4nKgirdi3Io=;
- b=xEkq7SUZRewChVZqWhm4cS96l8pPzSSEz+ScgQL56dgjn10FcSw+jLPv0OY9bYezIP
- CYphaUGJXn/snvtDU3KSfg579Nb5Qlk3NtUo6CuASAlclCh3ui7cA33wRO6foyyQk9sK
- Mw3x0Ft59CKVBwMroO3W4lugA/tv5mEWbElbrHB+wIwMc5ZNjOZSS8KT6h+Zon+cf4qv
- JmEltnmffmbEBqUsebTV11v0B5U1mVwBUj3sW1gLZspQ54hm7TrP9j1QPJEblcLAhwI2
- nEggNK9m8gYxewjcBCYSYCHLIhl9iSTZmO6vl1lqR1Tl54TSO4jEGxDT96zBALyLtnLS
- Hi0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=/PcqjgcRCkyIpO5H00bhPWTTbPCMNXWR4nKgirdi3Io=;
- b=nF1ZLAIyu9t2OgKzWfwhc30kA3KwMTx8P9Kg2as1GjqACvwp5x1O8I1C/jdij+I0+T
- 3MYoq7245v6Hsl2JuQ8gWMYKXm3N/3YIaBqWK1hMOjUOHo1b7b5NjPdtQfDT8zvqFxEV
- BK1js8KVB6aTc5gBBPL093PtGhGjnwxLY/0mdKh8f99zqsR33FfOJDyICwfEkSogHteg
- Fq471yAlYE9o+J1bxk424stdH+lD/MIb1JewxsllXFJwAjTfmPX311slQgbbt1mDSMkt
- vgDC2mrFpGMNIFtAjiz6PTZVbg7c76IGOG+gBEw0+ONbdBSwB+N66qEB7uSDH2Ym3cYR
- 4GRw==
-X-Gm-Message-State: AOAM532y2Yypc+MrA44dKCr7trFM+lrzEPLuMWFMk8fO8GMVVc9zuHxT
- OmGxfO5OLMgdFKU8s9p+O8/MfA==
-X-Google-Smtp-Source: ABdhPJxFaBhI/uy8npc3Dtax2q52q/CAXrrCmDjvazERLjrealUJSj+rQLNB+0RcTEMnHlaiKFjmmA==
-X-Received: by 2002:a05:6512:5c2:: with SMTP id
- o2mr917110lfo.207.1632344757440; 
- Wed, 22 Sep 2021 14:05:57 -0700 (PDT)
-Received: from box.localdomain ([86.57.175.117])
- by smtp.gmail.com with ESMTPSA id bi33sm370467ljb.89.2021.09.22.14.05.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 22 Sep 2021 14:05:56 -0700 (PDT)
-Received: by box.localdomain (Postfix, from userid 1000)
- id 60F2A10304D; Thu, 23 Sep 2021 00:05:58 +0300 (+03)
-Date: Thu, 23 Sep 2021 00:05:58 +0300
-From: "Kirill A. Shutemov" <kirill@shutemov.name>
-To: Borislav Petkov <bp@alien8.de>
-Subject: Re: [PATCH v3 5/8] x86/sme: Replace occurrences of sme_active() with
- cc_platform_has()
-Message-ID: <20210922210558.itofvu3725dap5xx@box.shutemov.name>
-References: <77df37e1-0496-aed5-fd1d-302180f1edeb@amd.com>
- <YUoao0LlqQ6+uBrq@zn.tnic>
- <20210921212059.wwlytlmxoft4cdth@box.shutemov.name>
- <YUpONYwM4dQXAOJr@zn.tnic>
- <20210921213401.i2pzaotgjvn4efgg@box.shutemov.name>
- <00f52bf8-cbc6-3721-f40e-2f51744751b0@amd.com>
- <20210921215830.vqxd75r4eyau6cxy@box.shutemov.name>
- <01891f59-7ec3-cf62-a8fc-79f79ca76587@amd.com>
- <20210922143015.vvxvh6ec73lffvkf@box.shutemov.name>
- <YUuJZ2qOgbdpfk6N@zn.tnic>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HFLVD44YRz2xtj
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Sep 2021 13:38:28 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 494B761038;
+ Thu, 23 Sep 2021 03:38:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1632368305;
+ bh=E2JAuSAIaKy4YT1GeUow5Cmp1C1lLNmmgZ1L6/yk0xA=;
+ h=From:To:Cc:Subject:Date:From;
+ b=Pi/OEjz36fmBRMyziA1wfReGHwdm882jDpb23akbkiu2tYX94Wy9VtRc0qjB5iU1V
+ DRsbbqP5hXOerbpM5Vj73g+GhsCX3DGbYQIa5a7AzwklHWOlwNuS3hsunblJ9ER3SN
+ Iw/RW1+1jf0+DTbRC5VtTYG4RGXWLjIATccbrSgydL0uwsIop0m4Cjm8/d6wmtizvP
+ gFKCwEyRxLPt/pqjYg16rowVf83xoki0WxbIppx5kSzpo0j0lSVx3WEPGmZxAYWyZz
+ kzk9aYmgdbIDpDjpXrBj86m0bPJD6W0cXS2j86T/bJlOSV08FkRdpSkiBEY/FIHUou
+ wcy0xGVZnmhkQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.14 01/34] ibmvnic: check failover_pending in login
+ response
+Date: Wed, 22 Sep 2021 23:37:49 -0400
+Message-Id: <20210923033823.1420814-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YUuJZ2qOgbdpfk6N@zn.tnic>
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,40 +59,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
- linux-efi@vger.kernel.org, Brijesh Singh <brijesh.singh@amd.com>,
- kvm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org,
- platform-driver-x86@vger.kernel.org, Will Deacon <will@kernel.org>,
- linux-s390@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
- Joerg Roedel <joro@8bytes.org>, x86@kernel.org, amd-gfx@lists.freedesktop.org,
- Christoph Hellwig <hch@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- linux-graphics-maintainer@vmware.com, Tom Lendacky <thomas.lendacky@amd.com>,
- Tianyu Lan <Tianyu.Lan@microsoft.com>, Andy Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, kexec@lists.infradead.org,
- linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
- linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, netdev@vger.kernel.org, drt@linux.ibm.com,
+ kuba@kernel.org, Sukadev Bhattiprolu <sukadev@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 22, 2021 at 09:52:07PM +0200, Borislav Petkov wrote:
-> On Wed, Sep 22, 2021 at 05:30:15PM +0300, Kirill A. Shutemov wrote:
-> > Not fine, but waiting to blowup with random build environment change.
-> 
-> Why is it not fine?
-> 
-> Are you suspecting that the compiler might generate something else and
-> not a rip-relative access?
+From: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
 
-Yes. We had it before for __supported_pte_mask and other users of
-fixup_pointer().
+[ Upstream commit d437f5aa23aa2b7bd07cd44b839d7546cc17166f ]
 
-See for instance 4a09f0210c8b ("x86/boot/64/clang: Use fixup_pointer() to
-access '__supported_pte_mask'")
+If a failover occurs before a login response is received, the login
+response buffer maybe undefined. Check that there was no failover
+before accessing the login response buffer.
 
-Unless we find other way to guarantee RIP-relative access, we must use
-fixup_pointer() to access any global variables.
+Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/ethernet/ibm/ibmvnic.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
+diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
+index a775c69e4fd7..6aa6ff89a765 100644
+--- a/drivers/net/ethernet/ibm/ibmvnic.c
++++ b/drivers/net/ethernet/ibm/ibmvnic.c
+@@ -4700,6 +4700,14 @@ static int handle_login_rsp(union ibmvnic_crq *login_rsp_crq,
+ 		return 0;
+ 	}
+ 
++	if (adapter->failover_pending) {
++		adapter->init_done_rc = -EAGAIN;
++		netdev_dbg(netdev, "Failover pending, ignoring login response\n");
++		complete(&adapter->init_done);
++		/* login response buffer will be released on reset */
++		return 0;
++	}
++
+ 	netdev->mtu = adapter->req_mtu - ETH_HLEN;
+ 
+ 	netdev_dbg(adapter->netdev, "Login Response Buffer:\n");
 -- 
- Kirill A. Shutemov
+2.30.2
+
