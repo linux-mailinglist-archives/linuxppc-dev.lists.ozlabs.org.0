@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31F2141646F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Sep 2021 19:30:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25EB0416477
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Sep 2021 19:31:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HFhyk0fx6z3bhm
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Sep 2021 03:30:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HFhzB04SGz3cKD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Sep 2021 03:31:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,22 +15,22 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HFhxn42xBz2xZL
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Sep 2021 03:30:05 +1000 (AEST)
-X-IronPort-AV: E=McAfee;i="6200,9189,10116"; a="222014556"
-X-IronPort-AV: E=Sophos;i="5.85,316,1624345200"; d="scan'208";a="222014556"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HFhxp3lxBz2xZL
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Sep 2021 03:30:06 +1000 (AEST)
+X-IronPort-AV: E=McAfee;i="6200,9189,10116"; a="222014558"
+X-IronPort-AV: E=Sophos;i="5.85,316,1624345200"; d="scan'208";a="222014558"
 Received: from fmsmga005.fm.intel.com ([10.253.24.32])
  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Sep 2021 10:26:52 -0700
-X-IronPort-AV: E=Sophos;i="5.85,316,1624345200"; d="scan'208";a="704832519"
+ 23 Sep 2021 10:26:53 -0700
+X-IronPort-AV: E=Sophos;i="5.85,316,1624345200"; d="scan'208";a="704832523"
 Received: from unknown (HELO bad-guy.kumite) ([10.252.132.140])
  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Sep 2021 10:26:51 -0700
+ 23 Sep 2021 10:26:52 -0700
 From: Ben Widawsky <ben.widawsky@intel.com>
 To: linux-cxl@vger.kernel.org
-Subject: [PATCH v2 1/9] cxl: Convert "RBI" to enum
-Date: Thu, 23 Sep 2021 10:26:39 -0700
-Message-Id: <20210923172647.72738-2-ben.widawsky@intel.com>
+Subject: [PATCH v2 2/9] cxl/pci: Remove dev_dbg for unknown register blocks
+Date: Thu, 23 Sep 2021 10:26:40 -0700
+Message-Id: <20210923172647.72738-3-ben.widawsky@intel.com>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20210923172647.72738-1-ben.widawsky@intel.com>
 References: <20210923172647.72738-1-ben.widawsky@intel.com>
@@ -57,48 +57,31 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In preparation for passing around the Register Block Indicator (RBI) as
-a parameter, it is desirable to convert the type to an enum so that the
-interface can use a well defined type checked parameter.
-
-As a result of this change, should future versions of the spec add
-sparsely defined identifiers, it could become a problem if checking for
-invalid identifiers since the code currently checks for the max
-identifier. This is not an issue with current spec, and the algorithm to
-obtain the register blocks will change before those possible additions
-are made.
+While interesting to driver developers, the dev_dbg message doesn't do
+much except clutter up logs. This information should be attainable
+through sysfs, and someday lspci like utilities. This change
+additionally helps reduce the LOC in a subsequent patch to refactor some
+of cxl_pci register mapping.
 
 Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
 ---
- drivers/cxl/pci.h | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/cxl/pci.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/cxl/pci.h b/drivers/cxl/pci.h
-index 8c1a58813816..7d3e4bf06b45 100644
---- a/drivers/cxl/pci.h
-+++ b/drivers/cxl/pci.h
-@@ -20,13 +20,15 @@
- #define CXL_REGLOC_BIR_MASK GENMASK(2, 0)
+diff --git a/drivers/cxl/pci.c b/drivers/cxl/pci.c
+index 64180f46c895..ccc7c2573ddc 100644
+--- a/drivers/cxl/pci.c
++++ b/drivers/cxl/pci.c
+@@ -475,9 +475,6 @@ static int cxl_pci_setup_regs(struct cxl_mem *cxlm)
+ 		cxl_decode_register_block(reg_lo, reg_hi, &bar, &offset,
+ 					  &reg_type);
  
- /* Register Block Identifier (RBI) */
--#define CXL_REGLOC_RBI_MASK GENMASK(15, 8)
--#define CXL_REGLOC_RBI_EMPTY 0
--#define CXL_REGLOC_RBI_COMPONENT 1
--#define CXL_REGLOC_RBI_VIRT 2
--#define CXL_REGLOC_RBI_MEMDEV 3
--#define CXL_REGLOC_RBI_TYPES CXL_REGLOC_RBI_MEMDEV + 1
-+enum cxl_regloc_type {
-+	CXL_REGLOC_RBI_EMPTY = 0,
-+	CXL_REGLOC_RBI_COMPONENT,
-+	CXL_REGLOC_RBI_VIRT,
-+	CXL_REGLOC_RBI_MEMDEV,
-+	CXL_REGLOC_RBI_TYPES
-+};
- 
-+#define CXL_REGLOC_RBI_MASK GENMASK(15, 8)
- #define CXL_REGLOC_ADDR_MASK GENMASK(31, 16)
- 
- #endif /* __CXL_PCI_H__ */
+-		dev_dbg(dev, "Found register block in bar %u @ 0x%llx of type %u\n",
+-			bar, offset, reg_type);
+-
+ 		/* Ignore unknown register block types */
+ 		if (reg_type > CXL_REGLOC_RBI_MEMDEV)
+ 			continue;
 -- 
 2.33.0
 
