@@ -2,103 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 050DD4164CF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Sep 2021 20:08:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4702241652B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Sep 2021 20:22:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HFjnn64V5z2ymx
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Sep 2021 04:08:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HFk5h0m1Pz2ywg
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Sep 2021 04:22:00 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QUvHQqmA;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=dkim header.b=QKT9j+Fc;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=QUvHQqmA; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=alien8.de (client-ip=5.9.137.197; helo=mail.skyhub.de;
+ envelope-from=bp@alien8.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256
+ header.s=dkim header.b=QKT9j+Fc; dkim-atps=neutral
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HFjn62mrqz2ybC
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Sep 2021 04:07:37 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18NHgxD3007990; 
- Thu, 23 Sep 2021 14:07:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=z5s7dzr+PRlJsiCbsJostju2qEbcfwMzYkWfC8lyxD4=;
- b=QUvHQqmAl0qJQkvzJZG1N5nz8zTjA/SJ0/KH5axuGHoFEyG6OuTgxxAeivTmuevZLwqM
- phkFkkGDzCybivtcZVI0u+wc3LvHchFeLKC8Vm+fvifkdU2o0/SFWvBz44vnsqtB1z03
- yHgmb/IE9njEDWXdidEx9B2eghsQA0aP9NDQkddNLhMtODph/vXAGqYPXJnMyFsW0v75
- +jbmqzNDFRhKKV9xsQV8QphRRfFCqxwh6oDxRt4D3LO4ISsJFQrDbvemM8Xqa0+bAd5G
- MkrN3sXcU67qau2ArUJEXzKkxjxMflGuMU8VqQZG0Z8xRHxRS7PklIwxufpkqaeqWVXS qA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3b8pr1dtyc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 23 Sep 2021 14:07:32 -0400
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 18NHRnWP029684;
- Thu, 23 Sep 2021 14:07:32 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3b8pr1dtxr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 23 Sep 2021 14:07:31 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 18NHq8jH023002;
- Thu, 23 Sep 2021 18:02:29 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma04ams.nl.ibm.com with ESMTP id 3b7q6rde91-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 23 Sep 2021 18:02:29 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 18NI2Q0U41026026
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 23 Sep 2021 18:02:26 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BFEC9A4064;
- Thu, 23 Sep 2021 18:02:26 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6BD3DA406F;
- Thu, 23 Sep 2021 18:02:25 +0000 (GMT)
-Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Thu, 23 Sep 2021 18:02:25 +0000 (GMT)
-Date: Thu, 23 Sep 2021 23:32:24 +0530
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/paravirt: correct preempt debug splat in
- vcpu_is_preempted()
-Message-ID: <20210923180224.GD2004@linux.vnet.ibm.com>
-References: <20210921031213.2029824-1-nathanl@linux.ibm.com>
- <20210922075718.GA2004@linux.vnet.ibm.com>
- <87ee9gob07.fsf@linux.ibm.com>
- <20210922163351.GB2004@linux.vnet.ibm.com>
- <87bl4ko1cp.fsf@linux.ibm.com> <874kabn40z.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HFk4z2KM2z2ynf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Sep 2021 04:21:15 +1000 (AEST)
+Received: from zn.tnic (p200300ec2f0d6800010999bf90259edb.dip0.t-ipconnect.de
+ [IPv6:2003:ec:2f0d:6800:109:99bf:9025:9edb])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 31D311EC056D;
+ Thu, 23 Sep 2021 20:21:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+ t=1632421264;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+ bh=sRYoha6VNo1mirZ2tDsvl5M4pw+Lp6nZ+ru63TzNfNk=;
+ b=QKT9j+FcdVSYJR6XqJj56f1VwmVttXbYqJzEh1SRFX0BCeMFEzKjMYiIWUA0PUQHi/v6u7
+ 4en/x3BlyGxbdkIoskyOLkXgWWnAMIwJ3773mYKBf/drdpiGwxNPJqJ1cm4p23LLLRJNSO
+ HKy8yqvOqt2DJB2fdgaAhYC7Oaw9OY0=
+Date: Thu, 23 Sep 2021 20:21:03 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: "Kirill A. Shutemov" <kirill@shutemov.name>
+Subject: Re: [PATCH v3 5/8] x86/sme: Replace occurrences of sme_active() with
+ cc_platform_has()
+Message-ID: <YUzFj+yH79XRc3F3@zn.tnic>
+References: <YUoao0LlqQ6+uBrq@zn.tnic>
+ <20210921212059.wwlytlmxoft4cdth@box.shutemov.name>
+ <YUpONYwM4dQXAOJr@zn.tnic>
+ <20210921213401.i2pzaotgjvn4efgg@box.shutemov.name>
+ <00f52bf8-cbc6-3721-f40e-2f51744751b0@amd.com>
+ <20210921215830.vqxd75r4eyau6cxy@box.shutemov.name>
+ <01891f59-7ec3-cf62-a8fc-79f79ca76587@amd.com>
+ <20210922143015.vvxvh6ec73lffvkf@box.shutemov.name>
+ <YUuJZ2qOgbdpfk6N@zn.tnic>
+ <20210922210558.itofvu3725dap5xx@box.shutemov.name>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <874kabn40z.fsf@mpe.ellerman.id.au>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: vXhiBjYJuBxeXtJ-YngKsw83A77rJWC-
-X-Proofpoint-GUID: rGU4z-1GRnzLzP37SPqrWLHNuBpY7nfA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
- definitions=2021-09-23_05,2021-09-23_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- malwarescore=0 bulkscore=0 suspectscore=0 mlxlogscore=947 impostorscore=0
- phishscore=0 spamscore=0 priorityscore=1501 adultscore=0 clxscore=1015
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2109200000 definitions=main-2109230107
+In-Reply-To: <20210922210558.itofvu3725dap5xx@box.shutemov.name>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,133 +69,195 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- npiggin@gmail.com
+Cc: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ linux-efi@vger.kernel.org, Brijesh Singh <brijesh.singh@amd.com>,
+ kvm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org,
+ platform-driver-x86@vger.kernel.org, Will Deacon <will@kernel.org>,
+ linux-s390@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
+ Joerg Roedel <joro@8bytes.org>, x86@kernel.org, amd-gfx@lists.freedesktop.org,
+ Christoph Hellwig <hch@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ linux-graphics-maintainer@vmware.com, Tom Lendacky <thomas.lendacky@amd.com>,
+ Tianyu Lan <Tianyu.Lan@microsoft.com>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, kexec@lists.infradead.org,
+ linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Michael Ellerman <mpe@ellerman.id.au> [2021-09-23 17:29:32]:
+On Thu, Sep 23, 2021 at 12:05:58AM +0300, Kirill A. Shutemov wrote:
+> Unless we find other way to guarantee RIP-relative access, we must use
+> fixup_pointer() to access any global variables.
 
-> Nathan Lynch <nathanl@linux.ibm.com> writes:
-> > Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
-> >
-> >> * Nathan Lynch <nathanl@linux.ibm.com> [2021-09-22 11:01:12]:
-> >>
-> >>> Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
-> >>> > * Nathan Lynch <nathanl@linux.ibm.com> [2021-09-20 22:12:13]:
-> >>> >
-> >>> >> vcpu_is_preempted() can be used outside of preempt-disabled critical
-> >>> >> sections, yielding warnings such as:
-> >>> >> 
-> >>> >> BUG: using smp_processor_id() in preemptible [00000000] code: systemd-udevd/185
-> >>> >> caller is rwsem_spin_on_owner+0x1cc/0x2d0
-> >>> >> CPU: 1 PID: 185 Comm: systemd-udevd Not tainted 5.15.0-rc2+ #33
-> >>> >> Call Trace:
-> >>> >> [c000000012907ac0] [c000000000aa30a8] dump_stack_lvl+0xac/0x108 (unreliable)
-> >>> >> [c000000012907b00] [c000000001371f70] check_preemption_disabled+0x150/0x160
-> >>> >> [c000000012907b90] [c0000000001e0e8c] rwsem_spin_on_owner+0x1cc/0x2d0
-> >>> >> [c000000012907be0] [c0000000001e1408] rwsem_down_write_slowpath+0x478/0x9a0
-> >>> >> [c000000012907ca0] [c000000000576cf4] filename_create+0x94/0x1e0
-> >>> >> [c000000012907d10] [c00000000057ac08] do_symlinkat+0x68/0x1a0
-> >>> >> [c000000012907d70] [c00000000057ae18] sys_symlink+0x58/0x70
-> >>> >> [c000000012907da0] [c00000000002e448] system_call_exception+0x198/0x3c0
-> >>> >> [c000000012907e10] [c00000000000c54c] system_call_common+0xec/0x250
-> >>> >> 
-> >>> >> The result of vcpu_is_preempted() is always subject to invalidation by
-> >>> >> events inside and outside of Linux; it's just a best guess at a point in
-> >>> >> time. Use raw_smp_processor_id() to avoid such warnings.
-> >>> >
-> >>> > Typically smp_processor_id() and raw_smp_processor_id() except for the
-> >>> > CONFIG_DEBUG_PREEMPT.
-> >>> 
-> >>> Sorry, I don't follow...
-> >>
-> >> I meant, Unless CONFIG_DEBUG_PREEMPT, smp_processor_id() is defined as
-> >> raw_processor_id().
-> >>
-> >>> 
-> >>> > In the CONFIG_DEBUG_PREEMPT case, smp_processor_id()
-> >>> > is actually debug_smp_processor_id(), which does all the checks.
-> >>> 
-> >>> Yes, OK.
-> >>> 
-> >>> > I believe these checks in debug_smp_processor_id() are only valid for x86
-> >>> > case (aka cases were they have __smp_processor_id() defined.)
-> >>> 
-> >>> Hmm, I am under the impression that the checks in
-> >>> debug_smp_processor_id() are valid regardless of whether the arch
-> >>> overrides __smp_processor_id().
-> >>
-> >> From include/linux/smp.h
-> >>
-> >> /*
-> >>  * Allow the architecture to differentiate between a stable and unstable read.
-> >>  * For example, x86 uses an IRQ-safe asm-volatile read for the unstable but a
-> >>  * regular asm read for the stable.
-> >>  */
-> >> #ifndef __smp_processor_id
-> >> #define __smp_processor_id(x) raw_smp_processor_id(x)
-> >> #endif
-> >>
-> >> As far as I see, only x86 has a definition of __smp_processor_id.
-> >> So for archs like Powerpc, __smp_processor_id(), is always
-> >> defined as raw_smp_processor_id(). Right?
-> >
-> > Sure, yes.
-> >
-> >> I would think debug_smp_processor_id() would be useful if __smp_processor_id()
-> >> is different from raw_smp_processor_id(). Do note debug_smp_processor_id() 
-> >> calls raw_smp_processor_id().
-> 
-> Agree.
-> 
-> > I do not think the utility of debug_smp_processor_id() is related to
-> > whether the arch defines __smp_processor_id().
-> >
-> >> Or can I understand how debug_smp_processor_id() is useful if
-> >> __smp_processor_id() is defined as raw_smp_processor_id()?
-> 
-> debug_smp_processor_id() is useful on powerpc, as well as other arches,
-> because it checks that we're in a context where the processor id won't
-> change out from under us.
-> 
-> eg. something like this is unsafe:
-> 
->   int counts[NR_CPUS];
->   int tmp, cpu;
->   
->   cpu = smp_processor_id();
->   tmp = counts[cpu];
->   				<- preempted here and migrated to another CPU
->   counts[cpu] = tmp + 1;
-> 
+Yah, I've asked compiler folks about any guarantees we have wrt
+rip-relative addresses but it doesn't look good. Worst case, we'd have
+to do the fixup_pointer() thing.
 
-If lets say the above call was replaced by raw_smp_processor_id(), how would
-it avoid the preemption / migration to another CPU?
+In the meantime, Tom and I did some more poking at this and here's a
+diff ontop.
 
-Replacing it with raw_smp_processor_id() may avoid, the debug splat but the
-underlying issue would still remain as is. No?
+The direction being that we'll stick both the AMD and Intel
+*cc_platform_has() call into cc_platform.c for which instrumentation
+will be disabled so no issues with that.
 
-> 
-> > So, for powerpc with DEBUG_PREEMPT unset, a call to smp_procesor_id()
-> > expands to __smp_processor_id() which expands to raw_smp_processor_id(),
-> > avoiding the preempt safety checks. This is working as intended.
-> >
-> > For powerpc with DEBUG_PREEMPT=y, a call to smp_processor_id() expands
-> > to the out of line call to debug_smp_processor_id(), which calls
-> > raw_smp_processor_id() and performs the checks, warning if called in an
-> > inappropriate context, as seen here. Also working as intended.
-> >
-> > AFAICT __smp_processor_id() is a performance/codegen-oriented hook, and
-> > not really related to the debug facility. Please see 9ed7d75b2f09d
-> > ("x86/percpu: Relax smp_processor_id()").
-> 
-> Yeah good find.
-> 
-> cheers
+And that will keep all that querying all together in a single file.
+
+---
+diff --git a/arch/x86/include/asm/mem_encrypt.h b/arch/x86/include/asm/mem_encrypt.h
+index a73712b6ee0e..2d4f5c17d79c 100644
+--- a/arch/x86/include/asm/mem_encrypt.h
++++ b/arch/x86/include/asm/mem_encrypt.h
+@@ -51,7 +51,6 @@ void __init mem_encrypt_free_decrypted_mem(void);
+ void __init mem_encrypt_init(void);
+ 
+ void __init sev_es_init_vc_handling(void);
+-bool amd_cc_platform_has(enum cc_attr attr);
+ 
+ #define __bss_decrypted __section(".bss..decrypted")
+ 
+@@ -74,7 +73,6 @@ static inline void __init sme_encrypt_kernel(struct boot_params *bp) { }
+ static inline void __init sme_enable(struct boot_params *bp) { }
+ 
+ static inline void sev_es_init_vc_handling(void) { }
+-static inline bool amd_cc_platform_has(enum cc_attr attr) { return false; }
+ 
+ static inline int __init
+ early_set_memory_decrypted(unsigned long vaddr, unsigned long size) { return 0; }
+@@ -103,12 +101,6 @@ static inline u64 sme_get_me_mask(void)
+ 	return sme_me_mask;
+ }
+ 
+-#if defined(CONFIG_CPU_SUP_INTEL) && defined(CONFIG_ARCH_HAS_CC_PLATFORM)
+-bool intel_cc_platform_has(enum cc_attr attr);
+-#else
+-static inline bool intel_cc_platform_has(enum cc_attr attr) { return false; }
+-#endif
+-
+ #endif	/* __ASSEMBLY__ */
+ 
+ #endif	/* __X86_MEM_ENCRYPT_H__ */
+diff --git a/arch/x86/kernel/cc_platform.c b/arch/x86/kernel/cc_platform.c
+index da54a1805211..97ede7052f77 100644
+--- a/arch/x86/kernel/cc_platform.c
++++ b/arch/x86/kernel/cc_platform.c
+@@ -13,6 +13,52 @@
+ 
+ #include <asm/processor.h>
+ 
++static bool intel_cc_platform_has(enum cc_attr attr)
++{
++#ifdef CONFIG_INTEL_TDX_GUEST
++	return false;
++#else
++	return false;
++#endif
++}
++
++/*
++ * SME and SEV are very similar but they are not the same, so there are
++ * times that the kernel will need to distinguish between SME and SEV. The
++ * cc_platform_has() function is used for this.  When a distinction isn't
++ * needed, the CC_ATTR_MEM_ENCRYPT attribute can be used.
++ *
++ * The trampoline code is a good example for this requirement.  Before
++ * paging is activated, SME will access all memory as decrypted, but SEV
++ * will access all memory as encrypted.  So, when APs are being brought
++ * up under SME the trampoline area cannot be encrypted, whereas under SEV
++ * the trampoline area must be encrypted.
++ */
++static bool amd_cc_platform_has(enum cc_attr attr)
++{
++#ifdef CONFIG_AMD_MEM_ENCRYPT
++	switch (attr) {
++	case CC_ATTR_MEM_ENCRYPT:
++		return sme_me_mask;
++
++	case CC_ATTR_HOST_MEM_ENCRYPT:
++		return sme_me_mask && !(sev_status & MSR_AMD64_SEV_ENABLED);
++
++	case CC_ATTR_GUEST_MEM_ENCRYPT:
++		return sev_status & MSR_AMD64_SEV_ENABLED;
++
++	case CC_ATTR_GUEST_STATE_ENCRYPT:
++		return sev_status & MSR_AMD64_SEV_ES_ENABLED;
++
++	default:
++		return false;
++	}
++#else
++	return false;
++#endif
++}
++
++
+ bool cc_platform_has(enum cc_attr attr)
+ {
+ 	if (sme_me_mask)
+diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
+index 53756ff12295..8321c43554a1 100644
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -60,13 +60,6 @@ static u64 msr_test_ctrl_cache __ro_after_init;
+  */
+ static bool cpu_model_supports_sld __ro_after_init;
+ 
+-#ifdef CONFIG_ARCH_HAS_CC_PLATFORM
+-bool intel_cc_platform_has(enum cc_attr attr)
+-{
+-	return false;
+-}
+-#endif
+-
+ /*
+  * Processors which have self-snooping capability can handle conflicting
+  * memory type across CPUs by snooping its own cache. However, there exists
+diff --git a/arch/x86/mm/mem_encrypt.c b/arch/x86/mm/mem_encrypt.c
+index 9417d404ea92..23d54b810f08 100644
+--- a/arch/x86/mm/mem_encrypt.c
++++ b/arch/x86/mm/mem_encrypt.c
+@@ -361,38 +361,6 @@ int __init early_set_memory_encrypted(unsigned long vaddr, unsigned long size)
+ 	return early_set_memory_enc_dec(vaddr, size, true);
+ }
+ 
+-/*
+- * SME and SEV are very similar but they are not the same, so there are
+- * times that the kernel will need to distinguish between SME and SEV. The
+- * cc_platform_has() function is used for this.  When a distinction isn't
+- * needed, the CC_ATTR_MEM_ENCRYPT attribute can be used.
+- *
+- * The trampoline code is a good example for this requirement.  Before
+- * paging is activated, SME will access all memory as decrypted, but SEV
+- * will access all memory as encrypted.  So, when APs are being brought
+- * up under SME the trampoline area cannot be encrypted, whereas under SEV
+- * the trampoline area must be encrypted.
+- */
+-bool amd_cc_platform_has(enum cc_attr attr)
+-{
+-	switch (attr) {
+-	case CC_ATTR_MEM_ENCRYPT:
+-		return sme_me_mask;
+-
+-	case CC_ATTR_HOST_MEM_ENCRYPT:
+-		return sme_me_mask && !(sev_status & MSR_AMD64_SEV_ENABLED);
+-
+-	case CC_ATTR_GUEST_MEM_ENCRYPT:
+-		return sev_status & MSR_AMD64_SEV_ENABLED;
+-
+-	case CC_ATTR_GUEST_STATE_ENCRYPT:
+-		return sev_status & MSR_AMD64_SEV_ES_ENABLED;
+-
+-	default:
+-		return false;
+-	}
+-}
+-
+ /* Override for DMA direct allocation check - ARCH_HAS_FORCE_DMA_UNENCRYPTED */
+ bool force_dma_unencrypted(struct device *dev)
+ {
 
 -- 
-Thanks and Regards
-Srikar Dronamraju
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
