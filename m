@@ -1,175 +1,101 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A067341678B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Sep 2021 23:36:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EE2841678C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Sep 2021 23:36:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HFpPk3YW0z3bW9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Sep 2021 07:36:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HFpQb4ZPkz307l
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Sep 2021 07:36:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=synopsys.com header.i=@synopsys.com header.a=rsa-sha256 header.s=mail header.b=Gvq9P4b8;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=synopsys.com header.i=@synopsys.com header.a=rsa-sha256 header.s=selector1 header.b=XjlMBsSZ;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oirhiuQy;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=synopsys.com (client-ip=149.117.73.133;
- helo=smtprelay-out1.synopsys.com; envelope-from=shahab.vahedi@synopsys.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=synopsys.com header.i=@synopsys.com header.a=rsa-sha256
- header.s=mail header.b=Gvq9P4b8; 
- dkim=fail reason="signature verification failed" (1024-bit key;
- unprotected) header.d=synopsys.com header.i=@synopsys.com header.a=rsa-sha256
- header.s=selector1 header.b=XjlMBsSZ; 
- dkim-atps=neutral
-X-Greylist: delayed 564 seconds by postgrey-1.36 at boromir;
- Thu, 23 Sep 2021 22:54:02 AEST
-Received: from smtprelay-out1.synopsys.com (smtprelay-out1.synopsys.com
- [149.117.73.133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HFZqG45XVz2yPd
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Sep 2021 22:53:59 +1000 (AEST)
-Received: from mailhost.synopsys.com (badc-mailhost4.synopsys.com
- [10.192.0.82])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
- (Client CN "mailhost.synopsys.com", Issuer "SNPSica2" (verified OK))
- by smtprelay-out1.synopsys.com (Postfix) with ESMTPS id 885924151D;
- Thu, 23 Sep 2021 12:44:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=synopsys.com; s=mail;
- t=1632401072; bh=p8yypIUjB8D1QtzMPOfUh/V1qIMQJPRo2PqJWZ5SYsY=;
- h=From:To:CC:Subject:Date:References:In-Reply-To:From;
- b=Gvq9P4b8YntKHRuxkqZ3tF0YGuSDOH+oVCDf+VSwXXjmaGxF2cK8X33R7WTWMZdxB
- GEf7t9gTDEWUF/5zMlhaPic0Gw9SioFA146VuyVbXAQDD0BMWeYiU9orEq2KpGk5hQ
- i5sYd3qIUy1129LF03W2RQe+YxmxznJiJIdmrk3SdS3mqJQGmbc2z3+ie826v+rXmf
- y2mWag8+iQ0DLDwtixGft2C9TjYEL1Y/KL5EtNn3IHbRSVbKs1VbfEHZw/WNdd8Ppi
- MF1tAfYhy87PyuwzOIovDHwB4mk2cbJzuZ3GcC+8Od9h1/aYntxCPPc7gvFZv9ewLf
- 2ywh1lMEodcdA==
-Received: from o365relay-in.synopsys.com (us03-o365relay3.synopsys.com
- [10.4.161.139])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
- (Client CN "o365relay-in.synopsys.com",
- Issuer "Entrust Certification Authority - L1K" (verified OK))
- by mailhost.synopsys.com (Postfix) with ESMTPS id DAA1AA005C;
- Thu, 23 Sep 2021 12:44:26 +0000 (UTC)
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com
- (mail-sn1anam02lp2047.outbound.protection.outlook.com [104.47.57.47])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=oirhiuQy; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client CN "mail.protection.outlook.com",
- Issuer "DigiCert Cloud Services CA-1" (verified OK))
- by o365relay-in.synopsys.com (Postfix) with ESMTPS id 5410280151;
- Thu, 23 Sep 2021 12:44:22 +0000 (UTC)
-Authentication-Results: o365relay-in.synopsys.com;
- dmarc=pass (p=reject dis=none) header.from=synopsys.com
-Authentication-Results: o365relay-in.synopsys.com;
- spf=pass smtp.mailfrom=shahab@synopsys.com
-Authentication-Results: o365relay-in.synopsys.com; dkim=pass (1024-bit key;
- unprotected) header.d=synopsys.com header.i=@synopsys.com header.b="XjlMBsSZ";
- dkim-atps=neutral
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Ql0OQazr/pNI1ie5lP8Ht8iY8eOUSaANgcsKDZeanbY5JGm2DYN7ViWFq0GSn7YuEdL/lqgPOUwfp6yIwIN7w682q4qOhfVMJJ030VSQuyLahcjVTcTLbj1waahXj9HMRlxKs4Vgg7OqUkLGVtxBHm8v4qbfy5zOmVpGOEgRFzdV+WPfmxr/w2EuS62IYorK7D6PicnCLwUU80cPNmSxzQBIwvJv9I4RLgCW7/OIo59UBGn6ngK54KflPmdMqyk3NB/if51/2tt090fXxKBAVjzRQMpUc9bdssSpKr5TVg7jvM9I1dvnobtwPMo1Rf+9jG2KB1ZQOFtNAl2+M4q1/w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version; 
- bh=p8yypIUjB8D1QtzMPOfUh/V1qIMQJPRo2PqJWZ5SYsY=;
- b=lB/dfGY6qGnlPCzk6jrqPkumxuD6Zle3JmpqYxFguRB+KFcNp6CEFP4jl5p0h3ScILyRfGJGJ6iKV9p6EUIXLi3OjLbHITHcmB3i9qnwN5UvUJ+iHOJpN9M6l6uzRQOqvLaLkjNjU0E+Phxy2TgG8aeY9o8aw+1/5wA0gAX08oYdQXqbqMe4QzUPO3Eju5H0KcnbEjLg54k/UTSE87WlvYxpA0bDlhO5ZZxMYqTaMkGZjoBOqwIIH33tyS1+bGTyH3MjjzIeRu+PbYAUtyPAxkMPpz55xCAno4NSztx5WB43EDkbi0NVyhaRoI8RaQ+rK40gjT3/SxJpzhaG68Z+6Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=synopsys.com; dmarc=pass action=none header.from=synopsys.com;
- dkim=pass header.d=synopsys.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=synopsys.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=p8yypIUjB8D1QtzMPOfUh/V1qIMQJPRo2PqJWZ5SYsY=;
- b=XjlMBsSZIIeMIcn3BV4fq6QTuHKmTlq2wcWFtDSMYpHRIbCRUXHI1j/6Nvc788nfl1iWUG0VjTTkqniwaPBMQvx+hnxM47SXxJ8BHG5lMxGTgpN1OoKMXR+iJA+dKngwgvBc0glcR5Dz2K32DkEYfbZDkaHe+kbDS5mZMs/JArQ=
-Received: from CY4PR12MB1160.namprd12.prod.outlook.com (2603:10b6:903:38::12)
- by CY4PR1201MB0200.namprd12.prod.outlook.com (2603:10b6:910:1d::17)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4544.15; Thu, 23 Sep
- 2021 12:44:19 +0000
-Received: from CY4PR12MB1160.namprd12.prod.outlook.com
- ([fe80::2d3a:44fe:fd31:11e2]) by CY4PR12MB1160.namprd12.prod.outlook.com
- ([fe80::2d3a:44fe:fd31:11e2%7]) with mapi id 15.20.4523.018; Thu, 23 Sep 2021
- 12:44:19 +0000
-X-SNPS-Relay: synopsys.com
-From: Shahab Vahedi <Shahab.Vahedi@synopsys.com>
-To: Mike Rapoport <rppt@kernel.org>, Linus Torvalds
- <torvalds@linux-foundation.org>
-Subject: Re: [PATCH 3/3] memblock: cleanup memblock_free interface
-Thread-Topic: [PATCH 3/3] memblock: cleanup memblock_free interface
-Thread-Index: AQHXsE7r2Z9Q1x5PbkCRzXvVc2eiLKuxkQqA
-Date: Thu, 23 Sep 2021 12:44:18 +0000
-Message-ID: <70364d6d-7569-3cd8-acce-559878ce4596@synopsys.com>
-References: <20210923074335.12583-1-rppt@kernel.org>
- <20210923074335.12583-4-rppt@kernel.org>
-In-Reply-To: <20210923074335.12583-4-rppt@kernel.org>
-Accept-Language: en-US
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HFk6D6RWMz2ymq
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Sep 2021 04:22:28 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18NHeWE8002014
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Sep 2021 14:22:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : in-reply-to : content-type :
+ mime-version; s=pp1; bh=AkJuUJCPcMDHyUM4+j+e0hcxbEBV8IYDKne3G6Qi6YE=;
+ b=oirhiuQyTYqrdTGUVMGKenMKnT5Wwb895s/PxRIlD55WTcEoriiHZELu75dJbvf4uCUo
+ RADEp7L4vwwPNI4paagnJWXJF6RAbJL4G+luIThrlVTxuuBkCnCaBqQc74dtbgg1V97O
+ UC/AZJO2KMXMuaHvIw52ZMCrQOn7eJnqFEnn+0U3qM10MqH32Ha7MKvTbwCAjRG8Ndup
+ kPuMZUJXXL6Kg7udmNtzfVefwZTW0aWf9xpDSezE4LhC5tE8qWCGEWIyCh4vetbvAkxn
+ heN/79LdZ7zcLgKdvel7IKzecITVtGP6T0ZkBhQJ66U2xtVYuqrYzTBvng1C4YLGDFTo kw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3b8rsa2vkm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Sep 2021 14:22:25 -0400
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 18NHoT0R026164
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Sep 2021 14:22:24 -0400
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3b8rsa2vjr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Sep 2021 14:22:23 -0400
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 18NIDlPH007827;
+ Thu, 23 Sep 2021 18:22:22 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma01fra.de.ibm.com with ESMTP id 3b7q6jvpbq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 Sep 2021 18:22:22 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 18NIMJLf54460724
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 23 Sep 2021 18:22:19 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 32B575204E;
+ Thu, 23 Sep 2021 18:22:19 +0000 (GMT)
+Received: from li-c7b85bcc-2727-11b2-a85c-a9ba7f3a2193.ibm.com (unknown
+ [9.43.109.228])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 082885205A;
+ Thu, 23 Sep 2021 18:22:17 +0000 (GMT)
+Subject: Re: [PATCH v1] powerpc/64s: Fix unrecoverable MCE crash
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20210922020247.209409-1-npiggin@gmail.com>
+From: Ganesh <ganeshgr@linux.ibm.com>
+Message-ID: <de062f8e-e99b-04ec-5d9d-0c31d3cd4c2a@linux.ibm.com>
+Date: Thu, 23 Sep 2021 23:52:16 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
+In-Reply-To: <20210922020247.209409-1-npiggin@gmail.com>
+Content-Type: multipart/alternative;
+ boundary="------------05143280F09BE4B28505B5CD"
 Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=synopsys.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: c1e5f238-9c40-4f49-2da5-08d97e8fdc67
-x-ms-traffictypediagnostic: CY4PR1201MB0200:
-x-microsoft-antispam-prvs: <CY4PR1201MB02008C7112226A9E691D827CA6A39@CY4PR1201MB0200.namprd12.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:2958;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: OamkW3UO1/WqFADz4A194HFP4oBQk8gtqnKNjVuDksrLnfE6l+GVJQhwsaegPUSH7gx9t8lMJ1FdmgYJCgJ4OZ3EhKf8RZTD3Ts0zaaHTLojOQ5TBH4ZPl6xEabh2XoGqBvwUOEEFr9uSp9MQZp9dSBW+UcQqhYiFNaSTPWozfT9nTMipLej1e9xdNsDzJwkWvc4Nqfx9vJUpUl1b2y3wVZ1oitLTB5EUrRSlKgJTGqIekv1SR1YFUhPDs3nw9WEL9bXMu/EvTL8nA8XhyS8T5AggLricxDpUq9wYUHjECvPt7tEppOAD3ENQzfE8EgYlSeEkDpjU97d+AXoZrfhgqvMnmxfIN2HYaS9mEsbHWU/v+kC/37zYn4F+xyL7BZ7yyVP3OXhFEbyRjeA1fu5yW3MacAsdznAi8uIZTlBVJnpBYFOXwFAXJRBkzH6xa4sV/7hMat8LxK4cZD3yPIhI0AN4eK6rNxYmtVdMz7h6nIy+EuGpBn1s07XirzbDNP3itQCWqt0TOrchOPjGN3ZLRqsKltq5PAMjMXOxRZdN2dqnUFCweBuWWfCwgrV5044fj0vvvSEUUfHpFWJLJRnyg4c3Eh2g6Ee+cAC9QDPHcsmAgajEJma1cFC1eRoIfuvfIe6apmOy46ssLpPZuMbub2YhBZ5/KLzyz/ik0j7m6nXwWbxN1QdS/7wnLeRcvfuaqggkqHcyct/8HQb0MRs9FG7LhwusDW07wtmQYsIsLg=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CY4PR12MB1160.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(366004)(38100700002)(71200400001)(86362001)(2906002)(83380400001)(54906003)(31686004)(110136005)(38070700005)(91956017)(66946007)(508600001)(66446008)(64756008)(66556008)(66476007)(76116006)(7416002)(5660300002)(8676002)(186003)(8936002)(31696002)(122000001)(6512007)(4744005)(36756003)(53546011)(6506007)(6486002)(2616005)(4326008)(316002)(45980500001);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Z3E1Q1p2dDJNR052VkZ1TG1nK2ZKSGJNWWxCdkIxdlgvemFlRHNZdG55SnAz?=
- =?utf-8?B?NFZnVDlEWVZHN3c5dTc1U2pCY2lTdkhTeXB3QU0xV1pocFhjTHZlUFkzSkhl?=
- =?utf-8?B?UDlnbWhORjBYYXFRUUFnNDM5ZFdHbFlZSVFEa3lIUUxnREc5d2ducFNGY0pt?=
- =?utf-8?B?V2NTVGdxdVFMNlRLemlvQ1M2VUJHMVVYL0ZkaXZ2dEVBQnc3Y0EvQVQzQmo5?=
- =?utf-8?B?dzZDbWtxejJRZnFkN210bmIwczlpMGprc0JqY3Rza01pV2JLU29CWkw0SFRJ?=
- =?utf-8?B?bnNoQVBFbzZIRnBndm5VR2tHWWo5ejdEWURZTktZbGthMkdKbU1rcFNTcWxQ?=
- =?utf-8?B?K0tyNG9pRTNuZEY5NXIxUEF6U1k3Nlg5RVlTT0hTTzlQUWYzNVdiRVlpY1ND?=
- =?utf-8?B?eHRxRmg1aHEvVE9mcTVmZU1kalNoR1NBZmwzSUZmSEFwa2xPL1ZuUWd6ZHll?=
- =?utf-8?B?TS9vNDMzNVY4SUxOVTA3S0hQVjRsODRLWC9abmp1MGg4R1c5YmhlM25sK1Jq?=
- =?utf-8?B?WE1BOEM2bWE3RDN6YWs1TUdCOUdZZm5LaW4wYUVuWVR1SFg3RVRoeXZOSTFY?=
- =?utf-8?B?MjNROHlxdHlWejJzN05uZlBQUGZPVXRSOHl5ZnRlTUFkVndJTHNyTS9CZWtn?=
- =?utf-8?B?ckYycndlMSt4bTk5TlEvZE1HOWFXZlRDRmJtOHY3MTdPZ3NhblhLVFZMYWx1?=
- =?utf-8?B?RFd1NXNBcjZCcjVYZWFyWDZGQzBTSmhzV09qZmZEUkdyOENUdFpteXNqQmFF?=
- =?utf-8?B?ejVtUldNT0swSzllQkNnc251RHhQZVJlN3JpdWlWVksyb3ZHMGZRcE0vOVJJ?=
- =?utf-8?B?U0xCQ0hnN294VDBXT1lOZXdKZEM4ZjZoOHdmVStLVnVSUElvNVZFRm1LWDBP?=
- =?utf-8?B?SVBaUjhXUHhHcEdId2hjRXorVkxiNTNISzFjTzkzb0dMMHBIRUtxZmF1aHRk?=
- =?utf-8?B?NEI0a3lZN0prRlNQTGtGTmNWT3VJSjYvVWltOWswWVAreU9BUkxaOHFhOFdq?=
- =?utf-8?B?TkZBZGdXVE9Icnlyd0YraDFNZHR5TDdrVGZmbVVJRXZDRXFtclFFc21TNEk0?=
- =?utf-8?B?WVdjOUJoRHdPdEpMY1pKMDFiK1RuMFZsbFRJMGRLVklCNTQ2bS9CanI4VENx?=
- =?utf-8?B?RkloOG1BZmU2ZnlRTmJCZjJXdDlYaFJnSzhkTFFTbFJSWFBFOGQrcS80NXVU?=
- =?utf-8?B?YjNqOHVwWVM0TkY1NktBVEVmMnVVV1ZYNWp4Z0xySVJFTC9BSm9qNkNzdmZM?=
- =?utf-8?B?MXFFOEIxWDdieU5BQ1pGZlFWWTFaZjhFbi9XUSs1Y0JHemtQUXhrNElVTzU2?=
- =?utf-8?B?K1JtOG1aQUN4UUVyR1ArNmpvbWdscWFPdlJWTi9mKytoSTN5ZUkvc2dvMDEw?=
- =?utf-8?B?c0lmWWFvcWxLRkNiUFU1VTF1QnRoMDJrVkpNK0FtN2FFUVhqKzV3ZHVVTzh4?=
- =?utf-8?B?RkxWQS9YcnZwcklycTcrZy8rWDhxSEdJalZaMllBQ0FHZEhHL1YzTTJsWUpT?=
- =?utf-8?B?MmNvbnFxYmk4ZllDcnJ5U2UycExRUHRmVEJLTEI4UHFOeDJUWjN3UjdkcU9T?=
- =?utf-8?B?RjBtOTJ0M3VPeTdNVVpSbHQxeXVsVDU3LzBMM2RnNkNCd1BuZlZEalZLbTNG?=
- =?utf-8?B?cHQwc3luVmpwc2ZJWVZEY3IzVENiRTdrRHp5NzM3b2xvRnA5LzlCcWpuTE43?=
- =?utf-8?B?ZkFzTUNlWkxVdlFGQ1NtdDBvZS95aGRTUkNaSlBIQ1NNY2FabGNSWFp5dVpr?=
- =?utf-8?Q?zxZX1W1RS474i7oyqAN1Twr11o31hFkPD6o09yZ?=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <BEE0BCB4DA8E9D4FA42EB8E75B22E457@namprd12.prod.outlook.com>
-Content-Transfer-Encoding: base64
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: jtB3o-vbWpzmOHyIeJd88vS4LrCaKVj7
+X-Proofpoint-ORIG-GUID: Krv0Ti2Z7TtNCfCIbtkekGs5gJKvH3aV
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-X-OriginatorOrg: synopsys.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY4PR12MB1160.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c1e5f238-9c40-4f49-2da5-08d97e8fdc67
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Sep 2021 12:44:19.0739 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: c33c9f88-1eb7-4099-9700-16013fd9e8aa
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: YXVpj8MQIzNFMgREFPcSyNOhb48DBCQjuuwYd+4/FTIRz+7n+fNOo/94DmdqxSrRhwhnoAWwsgrHeewqRJ+nSA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR1201MB0200
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
+ definitions=2021-09-23_05,2021-09-23_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 mlxlogscore=794
+ mlxscore=0 impostorscore=0 suspectscore=0 lowpriorityscore=0 spamscore=0
+ adultscore=0 phishscore=0 priorityscore=1501 bulkscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2109200000
+ definitions=main-2109230107
 X-Mailman-Approved-At: Fri, 24 Sep 2021 07:35:26 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -182,47 +108,163 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
- Mike Rapoport <rppt@linux.ibm.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
- "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
- "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
- "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gOS8yMy8yMSA5OjQzIEFNLCBNaWtlIFJhcG9wb3J0IHdyb3RlOg0KPiBGcm9tOiBNaWtlIFJh
-cG9wb3J0IDxycHB0QGxpbnV4LmlibS5jb20+DQo+IA0KPiBGb3IgYWdlcyBtZW1ibG9ja19mcmVl
-KCkgaW50ZXJmYWNlIGRlYWx0IHdpdGggcGh5c2ljYWwgYWRkcmVzc2VzIGV2ZW4NCj4gZGVzcGl0
-ZSB0aGUgZXhpc3RlbmNlIG9mIG1lbWJsb2NrX2FsbG9jX3h4KCkgZnVuY3Rpb25zIHRoYXQgcmV0
-dXJuIGENCj4gdmlydHVhbCBwb2ludGVyLg0KPiANCj4gSW50cm9kdWNlIG1lbWJsb2NrX3BoeXNf
-ZnJlZSgpIGZvciBmcmVlaW5nIHBoeXNpY2FsIHJhbmdlcyBhbmQgcmVwdXJwb3NlDQo+IG1lbWJs
-b2NrX2ZyZWUoKSB0byBmcmVlIHZpcnR1YWwgcG9pbnRlcnMgdG8gbWFrZSB0aGUgZm9sbG93aW5n
-IHBhaXJpbmcNCj4gYWJ1bmRhbnRseSBjbGVhcjoNCj4gDQo+IAlpbnQgbWVtYmxvY2tfcGh5c19m
-cmVlKHBoeXNfYWRkcl90IGJhc2UsIHBoeXNfYWRkcl90IHNpemUpOw0KPiAJcGh5c19hZGRyX3Qg
-bWVtYmxvY2tfcGh5c19hbGxvYyhwaHlzX2FkZHJfdCBiYXNlLCBwaHlzX2FkZHJfdCBzaXplKTsN
-Cj4gDQo+IAl2b2lkICptZW1ibG9ja19hbGxvYyhwaHlzX2FkZHJfdCBzaXplLCBwaHlzX2FkZHJf
-dCBhbGlnbik7DQo+IAl2b2lkIG1lbWJsb2NrX2ZyZWUodm9pZCAqcHRyLCBzaXplX3Qgc2l6ZSk7
-DQo+IA0KPiBSZXBsYWNlIGludGVybWVkaWF0ZSBtZW1ibG9ja19mcmVlX3B0cigpIHdpdGggbWVt
-YmxvY2tfZnJlZSgpIGFuZCBkcm9wDQo+IHVubmVjZXNzYXJ5IGFsaWFzZXMgbWVtYmxvY2tfZnJl
-ZV9lYXJseSgpIGFuZCBtZW1ibG9ja19mcmVlX2Vhcmx5X25pZCgpLg0KPiANCj4gU3VnZ2VzdGVk
-LWJ5OiBMaW51cyBUb3J2YWxkcyA8dG9ydmFsZHNAbGludXgtZm91bmRhdGlvbi5vcmc+DQo+IFNp
-Z25lZC1vZmYtYnk6IE1pa2UgUmFwb3BvcnQgPHJwcHRAbGludXguaWJtLmNvbT4NCg0KYXJjaC9h
-cmMgcGFydDogUmV2aWV3ZWQtYnk6IFNoYWhhYiBWYWhlZGkgPHNoYWhhYkBzeW5vcHN5cy5jb20+
-DQoNCg0KVGhhbmtzLA0KU2hhaGFiDQo=
+This is a multi-part message in MIME format.
+--------------05143280F09BE4B28505B5CD
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+On 9/22/21 7:32 AM, Nicholas Piggin wrote:
+
+> The machine check handler is not considered NMI on 64s. The early
+> handler is the true NMI handler, and then it schedules the
+> machine_check_exception handler to run when interrupts are enabled.
+>
+> This works fine except the case of an unrecoverable MCE, where the true
+> NMI is taken when MSR[RI] is clear, it can not recover to schedule the
+> next handler, so it calls machine_check_exception directly so something
+> might be done about it.
+>
+> Calling an async handler from NMI context can result in irq state and
+> other things getting corrupted. This can also trigger the BUG at
+> arch/powerpc/include/asm/interrupt.h:168.
+>
+> Fix this by just making the 64s machine_check_exception handler an NMI
+> like it is on other subarchs.
+>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+
+Hi Nick,
+
+If I inject control memory access error in LPAR on top of this patch
+https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20210906084303.183921-1-ganeshgr@linux.ibm.com/
+
+I see the following warning trace
+
+WARNING: CPU: 130 PID: 7122 at arch/powerpc/include/asm/interrupt.h:319 machine_check_exception+0x310/0x340
+  Modules linked in:
+  CPU: 130 PID: 7122 Comm: inj_access_err Kdump: loaded Tainted: G   M              5.15.0-rc2-cma-00054-g4a0d59fbaf71-dirty #22
+  NIP:  c00000000002f980 LR: c00000000002f7e8 CTR: c000000000a31860
+  REGS: c0000039fe51bb20 TRAP: 0700   Tainted: G   M               (5.15.0-rc2-cma-00054-g4a0d59fbaf71-dirty)
+  MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 88000222  XER: 20040000
+  CFAR: c00000000002f844 IRQMASK: 0
+  GPR00: c00000000002f798 c0000039fe51bdc0 c0000000020d0000 0000000000000001
+  GPR04: 0000000000000000 4000000000000002 4000000000000000 00000000000019af
+  GPR08: 00000077e5ad0000 0000000000000000 c0000077ee16c700 0000000000000080
+  GPR12: 0000000088000222 c0000077ee16c700 0000000000000000 0000000000000000
+  GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+  GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+  GPR24: 0000000000000000 0000000000000000 c0000000020fecd8 0000000000000000
+  GPR28: 0000000000000000 0000000000000001 0000000000000001 c0000039fe51be80
+  NIP [c00000000002f980] machine_check_exception+0x310/0x340
+  LR [c00000000002f7e8] machine_check_exception+0x178/0x340
+  Call Trace:
+  [c0000039fe51bdc0] [c00000000002f798] machine_check_exception+0x128/0x340 (unreliable)
+  [c0000039fe51be10] [c0000000000086ec] machine_check_common+0x1ac/0x1b0
+  --- interrupt: 200 at 0x10000968
+  NIP:  0000000010000968 LR: 0000000010000958 CTR: 0000000000000000
+  REGS: c0000039fe51be80 TRAP: 0200   Tainted: G   M               (5.15.0-rc2-cma-00054-g4a0d59fbaf71-dirty)
+  MSR:  8000000002a0f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 22000824  XER: 00000000
+  CFAR: 000000000000021c DAR: 00007fffb00c0000 DSISR: 02000008 IRQMASK: 0
+  GPR00: 0000000022000824 00007fffc9647770 0000000010027f00 00007fffb00c0000
+  GPR04: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+  GPR08: 0000000000000000 00007fffb00c0000 0000000000000001 0000000000000000
+  GPR12: 0000000000000000 00007fffb015a330 0000000000000000 0000000000000000
+  GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+  GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+  GPR24: 0000000000000000 0000000000000000 0000000000000000 000000001000085c
+  GPR28: 00007fffc9647d18 0000000000000001 00000000100009b0 00007fffc9647770
+  NIP [0000000010000968] 0x10000968
+  LR [0000000010000958] 0x10000958
+  --- interrupt: 200
+
+
+--------------05143280F09BE4B28505B5CD
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <div class="moz-cite-prefix">
+      <pre>On 9/22/21 7:32 AM, Nicholas Piggin wrote:</pre>
+    </div>
+    <blockquote type="cite"
+      cite="mid:20210922020247.209409-1-npiggin@gmail.com">
+      <pre class="moz-quote-pre" wrap="">The machine check handler is not considered NMI on 64s. The early
+handler is the true NMI handler, and then it schedules the
+machine_check_exception handler to run when interrupts are enabled.
+
+This works fine except the case of an unrecoverable MCE, where the true
+NMI is taken when MSR[RI] is clear, it can not recover to schedule the
+next handler, so it calls machine_check_exception directly so something
+might be done about it.
+
+Calling an async handler from NMI context can result in irq state and
+other things getting corrupted. This can also trigger the BUG at
+arch/powerpc/include/asm/interrupt.h:168.
+
+Fix this by just making the 64s machine_check_exception handler an NMI
+like it is on other subarchs.
+
+Signed-off-by: Nicholas Piggin <a class="moz-txt-link-rfc2396E" href="mailto:npiggin@gmail.com">&lt;npiggin@gmail.com&gt;</a>
+---
+</pre>
+    </blockquote>
+    <pre>Hi Nick,
+
+If I inject control memory access error in LPAR on top of this patch
+<a class="moz-txt-link-freetext" href="https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20210906084303.183921-1-ganeshgr@linux.ibm.com/">https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20210906084303.183921-1-ganeshgr@linux.ibm.com/</a>
+
+I see the following warning trace
+
+WARNING: CPU: 130 PID: 7122 at arch/powerpc/include/asm/interrupt.h:319 machine_check_exception+0x310/0x340
+ Modules linked in:
+ CPU: 130 PID: 7122 Comm: inj_access_err Kdump: loaded Tainted: G   M              5.15.0-rc2-cma-00054-g4a0d59fbaf71-dirty #22
+ NIP:  c00000000002f980 LR: c00000000002f7e8 CTR: c000000000a31860
+ REGS: c0000039fe51bb20 TRAP: 0700   Tainted: G   M               (5.15.0-rc2-cma-00054-g4a0d59fbaf71-dirty)
+ MSR:  8000000000029033 &lt;SF,EE,ME,IR,DR,RI,LE&gt;  CR: 88000222  XER: 20040000 
+ CFAR: c00000000002f844 IRQMASK: 0 
+ GPR00: c00000000002f798 c0000039fe51bdc0 c0000000020d0000 0000000000000001 
+ GPR04: 0000000000000000 4000000000000002 4000000000000000 00000000000019af 
+ GPR08: 00000077e5ad0000 0000000000000000 c0000077ee16c700 0000000000000080 
+ GPR12: 0000000088000222 c0000077ee16c700 0000000000000000 0000000000000000 
+ GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
+ GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
+ GPR24: 0000000000000000 0000000000000000 c0000000020fecd8 0000000000000000 
+ GPR28: 0000000000000000 0000000000000001 0000000000000001 c0000039fe51be80 
+ NIP [c00000000002f980] machine_check_exception+0x310/0x340
+ LR [c00000000002f7e8] machine_check_exception+0x178/0x340
+ Call Trace:
+ [c0000039fe51bdc0] [c00000000002f798] machine_check_exception+0x128/0x340 (unreliable)
+ [c0000039fe51be10] [c0000000000086ec] machine_check_common+0x1ac/0x1b0
+ --- interrupt: 200 at 0x10000968 
+ NIP:  0000000010000968 LR: 0000000010000958 CTR: 0000000000000000
+ REGS: c0000039fe51be80 TRAP: 0200   Tainted: G   M               (5.15.0-rc2-cma-00054-g4a0d59fbaf71-dirty)
+ MSR:  8000000002a0f033 &lt;SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE&gt;  CR: 22000824  XER: 00000000 
+ CFAR: 000000000000021c DAR: 00007fffb00c0000 DSISR: 02000008 IRQMASK: 0 
+ GPR00: 0000000022000824 00007fffc9647770 0000000010027f00 00007fffb00c0000 
+ GPR04: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
+ GPR08: 0000000000000000 00007fffb00c0000 0000000000000001 0000000000000000
+ GPR12: 0000000000000000 00007fffb015a330 0000000000000000 0000000000000000
+ GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+ GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+ GPR24: 0000000000000000 0000000000000000 0000000000000000 000000001000085c
+ GPR28: 00007fffc9647d18 0000000000000001 00000000100009b0 00007fffc9647770
+ NIP [0000000010000968] 0x10000968
+ LR [0000000010000958] 0x10000958
+ --- interrupt: 200
+
+</pre>
+  </body>
+</html>
+
+--------------05143280F09BE4B28505B5CD--
+
