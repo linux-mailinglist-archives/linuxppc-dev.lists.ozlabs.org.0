@@ -1,102 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EE2841678C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Sep 2021 23:36:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B571416797
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Sep 2021 23:38:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HFpQb4ZPkz307l
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Sep 2021 07:36:55 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oirhiuQy;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HFpSq6RDWz3brX
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Sep 2021 07:38:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=oirhiuQy; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=linux.intel.com
+ (client-ip=134.134.136.126; helo=mga18.intel.com;
+ envelope-from=kan.liang@linux.intel.com; receiver=<UNKNOWN>)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HFk6D6RWMz2ymq
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Sep 2021 04:22:28 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18NHeWE8002014
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Sep 2021 14:22:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : in-reply-to : content-type :
- mime-version; s=pp1; bh=AkJuUJCPcMDHyUM4+j+e0hcxbEBV8IYDKne3G6Qi6YE=;
- b=oirhiuQyTYqrdTGUVMGKenMKnT5Wwb895s/PxRIlD55WTcEoriiHZELu75dJbvf4uCUo
- RADEp7L4vwwPNI4paagnJWXJF6RAbJL4G+luIThrlVTxuuBkCnCaBqQc74dtbgg1V97O
- UC/AZJO2KMXMuaHvIw52ZMCrQOn7eJnqFEnn+0U3qM10MqH32Ha7MKvTbwCAjRG8Ndup
- kPuMZUJXXL6Kg7udmNtzfVefwZTW0aWf9xpDSezE4LhC5tE8qWCGEWIyCh4vetbvAkxn
- heN/79LdZ7zcLgKdvel7IKzecITVtGP6T0ZkBhQJ66U2xtVYuqrYzTBvng1C4YLGDFTo kw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3b8rsa2vkm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Sep 2021 14:22:25 -0400
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 18NHoT0R026164
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Sep 2021 14:22:24 -0400
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.70])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3b8rsa2vjr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 23 Sep 2021 14:22:23 -0400
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 18NIDlPH007827;
- Thu, 23 Sep 2021 18:22:22 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma01fra.de.ibm.com with ESMTP id 3b7q6jvpbq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 23 Sep 2021 18:22:22 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 18NIMJLf54460724
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 23 Sep 2021 18:22:19 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 32B575204E;
- Thu, 23 Sep 2021 18:22:19 +0000 (GMT)
-Received: from li-c7b85bcc-2727-11b2-a85c-a9ba7f3a2193.ibm.com (unknown
- [9.43.109.228])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 082885205A;
- Thu, 23 Sep 2021 18:22:17 +0000 (GMT)
-Subject: Re: [PATCH v1] powerpc/64s: Fix unrecoverable MCE crash
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20210922020247.209409-1-npiggin@gmail.com>
-From: Ganesh <ganeshgr@linux.ibm.com>
-Message-ID: <de062f8e-e99b-04ec-5d9d-0c31d3cd4c2a@linux.ibm.com>
-Date: Thu, 23 Sep 2021 23:52:16 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
-In-Reply-To: <20210922020247.209409-1-npiggin@gmail.com>
-Content-Type: multipart/alternative;
- boundary="------------05143280F09BE4B28505B5CD"
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: jtB3o-vbWpzmOHyIeJd88vS4LrCaKVj7
-X-Proofpoint-ORIG-GUID: Krv0Ti2Z7TtNCfCIbtkekGs5gJKvH3aV
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HFpSP51H4z2xVt
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Sep 2021 07:38:29 +1000 (AEST)
+X-IronPort-AV: E=McAfee;i="6200,9189,10116"; a="211022239"
+X-IronPort-AV: E=Sophos;i="5.85,317,1624345200"; d="scan'208";a="211022239"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Sep 2021 14:37:25 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.85,317,1624345200"; d="scan'208";a="514273504"
+Received: from linux.intel.com ([10.54.29.200])
+ by fmsmga008.fm.intel.com with ESMTP; 23 Sep 2021 14:37:25 -0700
+Received: from [10.212.150.227] (kliang2-MOBL.ccr.corp.intel.com
+ [10.212.150.227])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id BED9D580AD6;
+ Thu, 23 Sep 2021 14:37:23 -0700 (PDT)
+Subject: Re: [PATCH v2 6/9] PCI: Add pci_find_dvsec_capability to find
+ designated VSEC
+To: Ben Widawsky <ben.widawsky@intel.com>, linux-cxl@vger.kernel.org
+References: <20210923172647.72738-1-ben.widawsky@intel.com>
+ <20210923172647.72738-7-ben.widawsky@intel.com>
+From: "Liang, Kan" <kan.liang@linux.intel.com>
+Message-ID: <8dbea1cb-acf8-d77e-aafd-537331cf0588@linux.intel.com>
+Date: Thu, 23 Sep 2021 17:37:22 -0400
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
- definitions=2021-09-23_05,2021-09-23_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 mlxlogscore=794
- mlxscore=0 impostorscore=0 suspectscore=0 lowpriorityscore=0 spamscore=0
- adultscore=0 phishscore=0 priorityscore=1501 bulkscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2109200000
- definitions=main-2109230107
-X-Mailman-Approved-At: Fri, 24 Sep 2021 07:35:26 +1000
+In-Reply-To: <20210923172647.72738-7-ben.widawsky@intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,163 +59,222 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>
+Cc: Andrew Donnellan <ajd@linux.ibm.com>, linux-pci@vger.kernel.org,
+ Frederic Barrat <fbarrat@linux.ibm.com>, iommu@lists.linux-foundation.org,
+ Bjorn Helgaas <helgaas@kernel.org>,
+ "David E . Box" <david.e.box@linux.intel.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Dan Williams <dan.j.williams@intel.com>,
+ linuxppc-dev@lists.ozlabs.org, David Woodhouse <dwmw2@infradead.org>,
+ Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a multi-part message in MIME format.
---------------05143280F09BE4B28505B5CD
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-
-On 9/22/21 7:32 AM, Nicholas Piggin wrote:
-
-> The machine check handler is not considered NMI on 64s. The early
-> handler is the true NMI handler, and then it schedules the
-> machine_check_exception handler to run when interrupts are enabled.
->
-> This works fine except the case of an unrecoverable MCE, where the true
-> NMI is taken when MSR[RI] is clear, it can not recover to schedule the
-> next handler, so it calls machine_check_exception directly so something
-> might be done about it.
->
-> Calling an async handler from NMI context can result in irq state and
-> other things getting corrupted. This can also trigger the BUG at
-> arch/powerpc/include/asm/interrupt.h:168.
->
-> Fix this by just making the 64s machine_check_exception handler an NMI
-> like it is on other subarchs.
->
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
-
-Hi Nick,
-
-If I inject control memory access error in LPAR on top of this patch
-https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20210906084303.183921-1-ganeshgr@linux.ibm.com/
-
-I see the following warning trace
-
-WARNING: CPU: 130 PID: 7122 at arch/powerpc/include/asm/interrupt.h:319 machine_check_exception+0x310/0x340
-  Modules linked in:
-  CPU: 130 PID: 7122 Comm: inj_access_err Kdump: loaded Tainted: G   M              5.15.0-rc2-cma-00054-g4a0d59fbaf71-dirty #22
-  NIP:  c00000000002f980 LR: c00000000002f7e8 CTR: c000000000a31860
-  REGS: c0000039fe51bb20 TRAP: 0700   Tainted: G   M               (5.15.0-rc2-cma-00054-g4a0d59fbaf71-dirty)
-  MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 88000222  XER: 20040000
-  CFAR: c00000000002f844 IRQMASK: 0
-  GPR00: c00000000002f798 c0000039fe51bdc0 c0000000020d0000 0000000000000001
-  GPR04: 0000000000000000 4000000000000002 4000000000000000 00000000000019af
-  GPR08: 00000077e5ad0000 0000000000000000 c0000077ee16c700 0000000000000080
-  GPR12: 0000000088000222 c0000077ee16c700 0000000000000000 0000000000000000
-  GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-  GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-  GPR24: 0000000000000000 0000000000000000 c0000000020fecd8 0000000000000000
-  GPR28: 0000000000000000 0000000000000001 0000000000000001 c0000039fe51be80
-  NIP [c00000000002f980] machine_check_exception+0x310/0x340
-  LR [c00000000002f7e8] machine_check_exception+0x178/0x340
-  Call Trace:
-  [c0000039fe51bdc0] [c00000000002f798] machine_check_exception+0x128/0x340 (unreliable)
-  [c0000039fe51be10] [c0000000000086ec] machine_check_common+0x1ac/0x1b0
-  --- interrupt: 200 at 0x10000968
-  NIP:  0000000010000968 LR: 0000000010000958 CTR: 0000000000000000
-  REGS: c0000039fe51be80 TRAP: 0200   Tainted: G   M               (5.15.0-rc2-cma-00054-g4a0d59fbaf71-dirty)
-  MSR:  8000000002a0f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 22000824  XER: 00000000
-  CFAR: 000000000000021c DAR: 00007fffb00c0000 DSISR: 02000008 IRQMASK: 0
-  GPR00: 0000000022000824 00007fffc9647770 0000000010027f00 00007fffb00c0000
-  GPR04: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-  GPR08: 0000000000000000 00007fffb00c0000 0000000000000001 0000000000000000
-  GPR12: 0000000000000000 00007fffb015a330 0000000000000000 0000000000000000
-  GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-  GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-  GPR24: 0000000000000000 0000000000000000 0000000000000000 000000001000085c
-  GPR28: 00007fffc9647d18 0000000000000001 00000000100009b0 00007fffc9647770
-  NIP [0000000010000968] 0x10000968
-  LR [0000000010000958] 0x10000958
-  --- interrupt: 200
 
 
---------------05143280F09BE4B28505B5CD
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 7bit
+On 9/23/2021 1:26 PM, Ben Widawsky wrote:
+> Add pci_find_dvsec_capability to locate a Designated Vendor-Specific
+> Extended Capability with the specified DVSEC ID.
+> 
+> The Designated Vendor-Specific Extended Capability (DVSEC) allows one or
+> more vendor specific capabilities that aren't tied to the vendor ID of
+> the PCI component.
+> 
+> DVSEC is critical for both the Compute Express Link (CXL) driver as well
+> as the driver for OpenCAPI coherent accelerator (OCXL).
+> 
+> Cc: David E. Box <david.e.box@linux.intel.com>
+> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: linux-pci@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: Andrew Donnellan <ajd@linux.ibm.com>
+> Cc: Lu Baolu <baolu.lu@linux.intel.com>
+> Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
+> Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
 
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <div class="moz-cite-prefix">
-      <pre>On 9/22/21 7:32 AM, Nicholas Piggin wrote:</pre>
-    </div>
-    <blockquote type="cite"
-      cite="mid:20210922020247.209409-1-npiggin@gmail.com">
-      <pre class="moz-quote-pre" wrap="">The machine check handler is not considered NMI on 64s. The early
-handler is the true NMI handler, and then it schedules the
-machine_check_exception handler to run when interrupts are enabled.
+Applied the interface for the perf uncore driver as below. The interface 
+works properly.
 
-This works fine except the case of an unrecoverable MCE, where the true
-NMI is taken when MSR[RI] is clear, it can not recover to schedule the
-next handler, so it calls machine_check_exception directly so something
-might be done about it.
+Tested-by: Kan Liang <kan.liang@linux.intel.com>
 
-Calling an async handler from NMI context can result in irq state and
-other things getting corrupted. This can also trigger the BUG at
-arch/powerpc/include/asm/interrupt.h:168.
 
-Fix this by just making the 64s machine_check_exception handler an NMI
-like it is on other subarchs.
+ From ebb69ba386dca91fb372522b13af9feb84adcbc0 Mon Sep 17 00:00:00 2001
+From: Kan Liang <kan.liang@linux.intel.com>
+Date: Thu, 23 Sep 2021 13:59:24 -0700
+Subject: [PATCH] perf/x86/intel/uncore: Use pci core's DVSEC functionality
 
-Signed-off-by: Nicholas Piggin <a class="moz-txt-link-rfc2396E" href="mailto:npiggin@gmail.com">&lt;npiggin@gmail.com&gt;</a>
+Apply standard interface pci_find_dvsec_capability for perf uncore
+driver and remove unused macros.
+
+Reduce maintenance burden of DVSEC query implementation.
+
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 ---
-</pre>
-    </blockquote>
-    <pre>Hi Nick,
+  arch/x86/events/intel/uncore_discovery.c | 41 
++++++++++++++++-----------------
+  arch/x86/events/intel/uncore_discovery.h |  6 -----
+  2 files changed, 19 insertions(+), 28 deletions(-)
 
-If I inject control memory access error in LPAR on top of this patch
-<a class="moz-txt-link-freetext" href="https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20210906084303.183921-1-ganeshgr@linux.ibm.com/">https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20210906084303.183921-1-ganeshgr@linux.ibm.com/</a>
+diff --git a/arch/x86/events/intel/uncore_discovery.c 
+b/arch/x86/events/intel/uncore_discovery.c
+index 3049c64..f8ea092 100644
+--- a/arch/x86/events/intel/uncore_discovery.c
++++ b/arch/x86/events/intel/uncore_discovery.c
+@@ -21,7 +21,7 @@ static bool has_generic_discovery_table(void)
+  		return false;
 
-I see the following warning trace
+  	/* A discovery table device has the unique capability ID. */
+-	dvsec = pci_find_next_ext_capability(dev, 0, UNCORE_EXT_CAP_ID_DISCOVERY);
++	dvsec = pci_find_next_ext_capability(dev, 0, PCI_EXT_CAP_ID_DVSEC);
+  	pci_dev_put(dev);
+  	if (dvsec)
+  		return true;
+@@ -260,7 +260,7 @@ static int parse_discovery_table(struct pci_dev 
+*dev, int die,
 
-WARNING: CPU: 130 PID: 7122 at arch/powerpc/include/asm/interrupt.h:319 machine_check_exception+0x310/0x340
- Modules linked in:
- CPU: 130 PID: 7122 Comm: inj_access_err Kdump: loaded Tainted: G   M              5.15.0-rc2-cma-00054-g4a0d59fbaf71-dirty #22
- NIP:  c00000000002f980 LR: c00000000002f7e8 CTR: c000000000a31860
- REGS: c0000039fe51bb20 TRAP: 0700   Tainted: G   M               (5.15.0-rc2-cma-00054-g4a0d59fbaf71-dirty)
- MSR:  8000000000029033 &lt;SF,EE,ME,IR,DR,RI,LE&gt;  CR: 88000222  XER: 20040000 
- CFAR: c00000000002f844 IRQMASK: 0 
- GPR00: c00000000002f798 c0000039fe51bdc0 c0000000020d0000 0000000000000001 
- GPR04: 0000000000000000 4000000000000002 4000000000000000 00000000000019af 
- GPR08: 00000077e5ad0000 0000000000000000 c0000077ee16c700 0000000000000080 
- GPR12: 0000000088000222 c0000077ee16c700 0000000000000000 0000000000000000 
- GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
- GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
- GPR24: 0000000000000000 0000000000000000 c0000000020fecd8 0000000000000000 
- GPR28: 0000000000000000 0000000000000001 0000000000000001 c0000039fe51be80 
- NIP [c00000000002f980] machine_check_exception+0x310/0x340
- LR [c00000000002f7e8] machine_check_exception+0x178/0x340
- Call Trace:
- [c0000039fe51bdc0] [c00000000002f798] machine_check_exception+0x128/0x340 (unreliable)
- [c0000039fe51be10] [c0000000000086ec] machine_check_common+0x1ac/0x1b0
- --- interrupt: 200 at 0x10000968 
- NIP:  0000000010000968 LR: 0000000010000958 CTR: 0000000000000000
- REGS: c0000039fe51be80 TRAP: 0200   Tainted: G   M               (5.15.0-rc2-cma-00054-g4a0d59fbaf71-dirty)
- MSR:  8000000002a0f033 &lt;SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE&gt;  CR: 22000824  XER: 00000000 
- CFAR: 000000000000021c DAR: 00007fffb00c0000 DSISR: 02000008 IRQMASK: 0 
- GPR00: 0000000022000824 00007fffc9647770 0000000010027f00 00007fffb00c0000 
- GPR04: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
- GPR08: 0000000000000000 00007fffb00c0000 0000000000000001 0000000000000000
- GPR12: 0000000000000000 00007fffb015a330 0000000000000000 0000000000000000
- GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
- GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
- GPR24: 0000000000000000 0000000000000000 0000000000000000 000000001000085c
- GPR28: 00007fffc9647d18 0000000000000001 00000000100009b0 00007fffc9647770
- NIP [0000000010000968] 0x10000968
- LR [0000000010000958] 0x10000958
- --- interrupt: 200
+  bool intel_uncore_has_discovery_tables(void)
+  {
+-	u32 device, val, entry_id, bar_offset;
++	u32 device, val, bar_offset;
+  	int die, dvsec = 0, ret = true;
+  	struct pci_dev *dev = NULL;
+  	bool parsed = false;
+@@ -275,27 +275,24 @@ bool intel_uncore_has_discovery_tables(void)
+  	 * the discovery table devices.
+  	 */
+  	while ((dev = pci_get_device(PCI_VENDOR_ID_INTEL, device, dev)) != 
+NULL) {
+-		while ((dvsec = pci_find_next_ext_capability(dev, dvsec, 
+UNCORE_EXT_CAP_ID_DISCOVERY))) {
+-			pci_read_config_dword(dev, dvsec + UNCORE_DISCOVERY_DVSEC_OFFSET, &val);
+-			entry_id = val & UNCORE_DISCOVERY_DVSEC_ID_MASK;
+-			if (entry_id != UNCORE_DISCOVERY_DVSEC_ID_PMON)
+-				continue;
+-
+-			pci_read_config_dword(dev, dvsec + UNCORE_DISCOVERY_DVSEC2_OFFSET, 
+&val);
+-
+-			if (val & ~UNCORE_DISCOVERY_DVSEC2_BIR_MASK) {
+-				ret = false;
+-				goto err;
+-			}
+-			bar_offset = UNCORE_DISCOVERY_BIR_BASE +
+-				     (val & UNCORE_DISCOVERY_DVSEC2_BIR_MASK) * 
+UNCORE_DISCOVERY_BIR_STEP;
+-
+-			die = get_device_die_id(dev);
+-			if (die < 0)
+-				continue;
+-
+-			parse_discovery_table(dev, die, bar_offset, &parsed);
++		dvsec = pci_find_dvsec_capability(dev, PCI_VENDOR_ID_INTEL, 
+UNCORE_DISCOVERY_DVSEC_ID_PMON);
++		if (!dvsec)
++			continue;
++
++		pci_read_config_dword(dev, dvsec + UNCORE_DISCOVERY_DVSEC2_OFFSET, &val);
++
++		if (val & ~UNCORE_DISCOVERY_DVSEC2_BIR_MASK) {
++			ret = false;
++			goto err;
+  		}
++		bar_offset = UNCORE_DISCOVERY_BIR_BASE +
++			     (val & UNCORE_DISCOVERY_DVSEC2_BIR_MASK) * 
+UNCORE_DISCOVERY_BIR_STEP;
++
++		die = get_device_die_id(dev);
++		if (die < 0)
++			continue;
++
++		parse_discovery_table(dev, die, bar_offset, &parsed);
+  	}
 
-</pre>
-  </body>
-</html>
+  	/* None of the discovery tables are available */
+diff --git a/arch/x86/events/intel/uncore_discovery.h 
+b/arch/x86/events/intel/uncore_discovery.h
+index 6d735611..84d56e5 100644
+--- a/arch/x86/events/intel/uncore_discovery.h
++++ b/arch/x86/events/intel/uncore_discovery.h
+@@ -2,12 +2,6 @@
 
---------------05143280F09BE4B28505B5CD--
+  /* Generic device ID of a discovery table device */
+  #define UNCORE_DISCOVERY_TABLE_DEVICE		0x09a7
+-/* Capability ID for a discovery table device */
+-#define UNCORE_EXT_CAP_ID_DISCOVERY		0x23
+-/* First DVSEC offset */
+-#define UNCORE_DISCOVERY_DVSEC_OFFSET		0x8
+-/* Mask of the supported discovery entry type */
+-#define UNCORE_DISCOVERY_DVSEC_ID_MASK		0xffff
+  /* PMON discovery entry type ID */
+  #define UNCORE_DISCOVERY_DVSEC_ID_PMON		0x1
+  /* Second DVSEC offset */
+-- 
+2.7.4
 
+Thanks,
+Kan
+
+> ---
+>   drivers/pci/pci.c   | 32 ++++++++++++++++++++++++++++++++
+>   include/linux/pci.h |  1 +
+>   2 files changed, 33 insertions(+)
+> 
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index ce2ab62b64cf..94ac86ff28b0 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -732,6 +732,38 @@ u16 pci_find_vsec_capability(struct pci_dev *dev, u16 vendor, int cap)
+>   }
+>   EXPORT_SYMBOL_GPL(pci_find_vsec_capability);
+>   
+> +/**
+> + * pci_find_dvsec_capability - Find DVSEC for vendor
+> + * @dev: PCI device to query
+> + * @vendor: Vendor ID to match for the DVSEC
+> + * @dvsec: Designated Vendor-specific capability ID
+> + *
+> + * If DVSEC has Vendor ID @vendor and DVSEC ID @dvsec return the capability
+> + * offset in config space; otherwise return 0.
+> + */
+> +u16 pci_find_dvsec_capability(struct pci_dev *dev, u16 vendor, u16 dvsec)
+> +{
+> +	int pos;
+> +
+> +	pos = pci_find_ext_capability(dev, PCI_EXT_CAP_ID_DVSEC);
+> +	if (!pos)
+> +		return 0;
+> +
+> +	while (pos) {
+> +		u16 v, id;
+> +
+> +		pci_read_config_word(dev, pos + PCI_DVSEC_HEADER1, &v);
+> +		pci_read_config_word(dev, pos + PCI_DVSEC_HEADER2, &id);
+> +		if (vendor == v && dvsec == id)
+> +			return pos;
+> +
+> +		pos = pci_find_next_ext_capability(dev, pos, PCI_EXT_CAP_ID_DVSEC);
+> +	}
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(pci_find_dvsec_capability);
+> +
+>   /**
+>    * pci_find_parent_resource - return resource region of parent bus of given
+>    *			      region
+> diff --git a/include/linux/pci.h b/include/linux/pci.h
+> index cd8aa6fce204..c93ccfa4571b 100644
+> --- a/include/linux/pci.h
+> +++ b/include/linux/pci.h
+> @@ -1130,6 +1130,7 @@ u16 pci_find_ext_capability(struct pci_dev *dev, int cap);
+>   u16 pci_find_next_ext_capability(struct pci_dev *dev, u16 pos, int cap);
+>   struct pci_bus *pci_find_next_bus(const struct pci_bus *from);
+>   u16 pci_find_vsec_capability(struct pci_dev *dev, u16 vendor, int cap);
+> +u16 pci_find_dvsec_capability(struct pci_dev *dev, u16 vendor, u16 dvsec);
+>   
+>   u64 pci_get_dsn(struct pci_dev *dev);
+>   
+> 
