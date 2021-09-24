@@ -1,63 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA09A416F9A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Sep 2021 11:52:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83681417089
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Sep 2021 12:58:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HG6lX4QbKz3bjT
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Sep 2021 19:52:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HG8CR2CTdz307F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Sep 2021 20:58:27 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=dkim header.b=CfbAAofZ;
+	dkim=pass (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=rEbFlMU8;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=alien8.de (client-ip=2a01:4f8:190:11c2::b:1457;
- helo=mail.skyhub.de; envelope-from=bp@alien8.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256
- header.s=dkim header.b=CfbAAofZ; dkim-atps=neutral
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=canonical.com (client-ip=185.125.188.123;
+ helo=smtp-relay-internal-1.canonical.com;
+ envelope-from=krzysztof.kozlowski@canonical.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=canonical.com header.i=@canonical.com
+ header.a=rsa-sha256 header.s=20210705 header.b=rEbFlMU8; 
+ dkim-atps=neutral
+Received: from smtp-relay-internal-1.canonical.com
+ (smtp-relay-internal-1.canonical.com [185.125.188.123])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HG6kl3751z2ynX
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Sep 2021 19:51:56 +1000 (AEST)
-Received: from zn.tnic (p200300ec2f0dd600d43e805889b23e24.dip0.t-ipconnect.de
- [IPv6:2003:ec:2f0d:d600:d43e:8058:89b2:3e24])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HG8Bh6qfRz2ypC
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Sep 2021 20:57:47 +1000 (AEST)
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id DC4151EC0301;
- Fri, 24 Sep 2021 11:51:45 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
- t=1632477106;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
- bh=chSLn6PIxzKxo322BTSR3wKHxsK14lHDAqUJBVwt9Eo=;
- b=CfbAAofZ6R9ns5NFPki+7QaitPLpejuXdZJnxlWVBsvBowrNUxHEqrUKe2Y/BdplMet7fD
- Nq3F50WTgrfr42U+7z5YTTrv+pRjCylIw87rlK6B7Va1B8V8LlSqHAb6L8QXwsedXXkhcz
- 4vGmH2JazfBltplsu+R4klbu0kJ61KI=
-Date: Fri, 24 Sep 2021 11:51:44 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Subject: Re: [PATCH v3 5/8] x86/sme: Replace occurrences of sme_active() with
- cc_platform_has()
-Message-ID: <YU2fsCblZVQpgMvC@zn.tnic>
-References: <YUpONYwM4dQXAOJr@zn.tnic>
- <20210921213401.i2pzaotgjvn4efgg@box.shutemov.name>
- <00f52bf8-cbc6-3721-f40e-2f51744751b0@amd.com>
- <20210921215830.vqxd75r4eyau6cxy@box.shutemov.name>
- <01891f59-7ec3-cf62-a8fc-79f79ca76587@amd.com>
- <20210922143015.vvxvh6ec73lffvkf@box.shutemov.name>
- <YUuJZ2qOgbdpfk6N@zn.tnic>
- <20210922210558.itofvu3725dap5xx@box.shutemov.name>
- <YUzFj+yH79XRc3F3@zn.tnic>
- <20210924094132.gxyqp4z3qdk5w4j6@box.shutemov.name>
+ by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id C29AD40783
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Sep 2021 10:57:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+ s=20210705; t=1632481060;
+ bh=5qaBnFV4UUYxgISb8cWftr5quOXHWqv70CjWCUQzcvI=;
+ h=From:To:Subject:Date:Message-Id:MIME-Version:Content-Type;
+ b=rEbFlMU8mo7ueYnR6LSvRkBXiK7Mzhn5rOBhF0q8zil8+IvCBjtYCXRXavPw0uEC5
+ 60Um72p954zqWnRo8UExZ9gmxQuxUqVJTcTUBPsI1SQ7+fxyUxXxQTGPAWaijBjZXV
+ 0UO7Ogza2SRWMjswM7NljWef0H9VEB7jgA/IQZTsLaqA6DtWZlpWsBYz7VxDCeOI+B
+ NTzc9ggJRHuRQM8lY+gQz/vtz5vuVL3j+tsj1t4pcVkxz4KHEiBQ2gTa7PN6E/Pyrh
+ tQ/oUNAJ3u1aZ7ZpBWppKnR2vILDsykKNlOEfvY4eh7NAoLnylfgZ3BqM2p2fRf9GJ
+ XxjHhftkNr1Rw==
+Received: by mail-wr1-f69.google.com with SMTP id
+ s13-20020a5d69cd000000b00159d49442cbso7717285wrw.13
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Sep 2021 03:57:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=5qaBnFV4UUYxgISb8cWftr5quOXHWqv70CjWCUQzcvI=;
+ b=NV+lr7iCiqJceFZl2KzA1xNIHy8y/GTwPoyIsvhGKHko3sm8H8jJqtviyXi4OU0RBZ
+ SVAN4PPcs9F5aoC2Ss+3uvjK1ju6l7oI8aqL16sD/Yraqx38YdiF5h7NKMChdSJWnulK
+ lVA7FTuPZZ7DU6rDdzKEvJDSUdcOXgX4TS/VTHdMc/lfpuyZrwb/3MaLCph2Cg63G/PA
+ HYeo5uTeKfYM09qjrt7yajOfvcw0L/god/IODMZDIQ/TeYDn2lwSe4d60bDSo6nQ1gCI
+ 3Y8o/F8tBabBGzyuhTaICZL5KUjbyCUGbm6U/sj8KdFcQhir4B53dVFgqpTPQlAUnMR/
+ 5IGw==
+X-Gm-Message-State: AOAM531I98pfuT7WKWuUxAhCUlFBXUfYh1K2jk+isaREBrPQ4h0oAETo
+ yqpNYdnXUVnyyDTdWz5BuR/0PcOFhiIzcekMuP6cmcGA0Kl3fldse6JIL7qfnDchgy8aZwF/Q1I
+ qFaAtF3qiLSyK30zq4Y7tyVzs2rT5XhcPURQT65sKB88=
+X-Received: by 2002:a7b:cb49:: with SMTP id v9mr1372339wmj.76.1632481060502;
+ Fri, 24 Sep 2021 03:57:40 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwDVTGZH5QCPK7kyu8GVnvvhqoDPEvq8MgewAmm21kiS/2XNKEsaKIMI9R6BZZAQ/A08Z3BPw==
+X-Received: by 2002:a7b:cb49:: with SMTP id v9mr1372317wmj.76.1632481060111;
+ Fri, 24 Sep 2021 03:57:40 -0700 (PDT)
+Received: from localhost.localdomain
+ (lk.84.20.244.219.dc.cable.static.lj-kabel.net. [84.20.244.219])
+ by smtp.gmail.com with ESMTPSA id x17sm8188836wrc.51.2021.09.24.03.57.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 24 Sep 2021 03:57:39 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>,
+ Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org
+Subject: [PATCH v3 1/2] powerpc/powermac: add missing g5_phy_disable_cpu1()
+ declaration
+Date: Fri, 24 Sep 2021 12:56:52 +0200
+Message-Id: <20210924105653.46963-1-krzysztof.kozlowski@canonical.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210924094132.gxyqp4z3qdk5w4j6@box.shutemov.name>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,58 +98,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
- linux-efi@vger.kernel.org, Brijesh Singh <brijesh.singh@amd.com>,
- kvm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org,
- platform-driver-x86@vger.kernel.org, Will Deacon <will@kernel.org>,
- linux-s390@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
- Joerg Roedel <joro@8bytes.org>, x86@kernel.org, amd-gfx@lists.freedesktop.org,
- Christoph Hellwig <hch@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- linux-graphics-maintainer@vmware.com, Tianyu Lan <Tianyu.Lan@microsoft.com>,
- Andy Lutomirski <luto@kernel.org>, "Kirill A. Shutemov" <kirill@shutemov.name>,
- Thomas Gleixner <tglx@linutronix.de>, kexec@lists.infradead.org,
- linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
- linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Sep 24, 2021 at 12:41:32PM +0300, Kirill A. Shutemov wrote:
-> On Thu, Sep 23, 2021 at 08:21:03PM +0200, Borislav Petkov wrote:
-> > On Thu, Sep 23, 2021 at 12:05:58AM +0300, Kirill A. Shutemov wrote:
-> > > Unless we find other way to guarantee RIP-relative access, we must use
-> > > fixup_pointer() to access any global variables.
-> > 
-> > Yah, I've asked compiler folks about any guarantees we have wrt
-> > rip-relative addresses but it doesn't look good. Worst case, we'd have
-> > to do the fixup_pointer() thing.
-> > 
-> > In the meantime, Tom and I did some more poking at this and here's a
-> > diff ontop.
-> > 
-> > The direction being that we'll stick both the AMD and Intel
-> > *cc_platform_has() call into cc_platform.c for which instrumentation
-> > will be disabled so no issues with that.
-> > 
-> > And that will keep all that querying all together in a single file.
-> 
-> And still do cc_platform_has() calls in __startup_64() codepath?
-> 
-> It's broken.
-> 
-> Intel detection in cc_platform_has() relies on boot_cpu_data.x86_vendor
-> which is not initialized until early_cpu_init() in setup_arch(). Given
-> that X86_VENDOR_INTEL is 0 it leads to false-positive.
+g5_phy_disable_cpu1() is used outside of platforms/powermac/feature.c,
+so it should have a declaration to fix W=1 warning:
 
-Yeah, Tom, I had the same question yesterday.
+  arch/powerpc/platforms/powermac/feature.c:1533:6:
+    error: no previous prototype for ‘g5_phy_disable_cpu1’ [-Werror=missing-prototypes]
 
-/me looks in his direction.
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 
-:-)
+---
 
+Changes since v2:
+1. Put declaration in powermac/pmac.h
+
+Changes since v1:
+1. Drop declaration in powermac/smp.c
+---
+ arch/powerpc/platforms/powermac/pmac.h | 2 ++
+ arch/powerpc/platforms/powermac/smp.c  | 2 --
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/platforms/powermac/pmac.h b/arch/powerpc/platforms/powermac/pmac.h
+index 0d715db434dc..be528e0e507f 100644
+--- a/arch/powerpc/platforms/powermac/pmac.h
++++ b/arch/powerpc/platforms/powermac/pmac.h
+@@ -14,6 +14,8 @@ struct rtc_time;
+ 
+ extern int pmac_newworld;
+ 
++void g5_phy_disable_cpu1(void);
++
+ extern long pmac_time_init(void);
+ extern time64_t pmac_get_boot_time(void);
+ extern void pmac_get_rtc_time(struct rtc_time *);
+diff --git a/arch/powerpc/platforms/powermac/smp.c b/arch/powerpc/platforms/powermac/smp.c
+index 3256a316e884..5d0626f432d5 100644
+--- a/arch/powerpc/platforms/powermac/smp.c
++++ b/arch/powerpc/platforms/powermac/smp.c
+@@ -875,8 +875,6 @@ static int smp_core99_cpu_online(unsigned int cpu)
+ 
+ static void __init smp_core99_bringup_done(void)
+ {
+-	extern void g5_phy_disable_cpu1(void);
+-
+ 	/* Close i2c bus if it was used for tb sync */
+ 	if (pmac_tb_clock_chip_host)
+ 		pmac_i2c_close(pmac_tb_clock_chip_host);
 -- 
-Regards/Gruss,
-    Boris.
+2.30.2
 
-https://people.kernel.org/tglx/notes-about-netiquette
