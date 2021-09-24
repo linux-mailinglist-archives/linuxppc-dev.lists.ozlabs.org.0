@@ -2,57 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FC62416C0F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Sep 2021 08:46:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08B01416C99
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Sep 2021 09:13:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HG2cx323Rz3c5S
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Sep 2021 16:46:41 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=ExiK0QjA;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HG3Ch6ZYwz3bjX
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Sep 2021 17:13:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=casper.srs.infradead.org (client-ip=2001:8b0:10b:1236::1;
- helo=casper.infradead.org;
- envelope-from=batv+911bb142a76b082230e8+6606+infradead.org+hch@casper.srs.infradead.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=ExiK0QjA; 
- dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=linux-m68k.org
+ (client-ip=195.130.137.77; helo=leibniz.telenet-ops.be;
+ envelope-from=geert@linux-m68k.org; receiver=<UNKNOWN>)
+Received: from leibniz.telenet-ops.be (leibniz.telenet-ops.be [195.130.137.77])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HG2cF1XRBz2yPj
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Sep 2021 16:46:03 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=yk37TJ1pv0m2OGjoSFSGGxlGCD0GciEiUSGDQBv+q1U=; b=ExiK0QjAHvn7VukF4+rlC/14Vm
- LC2bgapE+fU1Ac5IN8TOH7oMV+JoT56Q2EMxin+FgHZWhyPvGOovy1m5chiiewrMkZi50AYtvs8iB
- pYFykWdvAjVPdZnO8zNGvYREoJONApQKBAvoldhvcUIXGDxNvgXJFjDxT1h7aYXh7OLq9V0j0mSJE
- xpMrPWN/21I8lYyUIK6h+1Z1pWcC7FyCesrmVbVftrBKyiCG/ZXfEkOyeNrRFw9b3nnBd01G6OeSY
- qh6cZyXTYQxnMVWHZUSRscGikh2QWgRJOEVSELa57arYvW1uwiPhtKx174wgdL3BFb1A0hiwg0D9O
- qncrghsQ==;
-Received: from hch by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat
- Linux)) id 1mTeuh-006vf6-60; Fri, 24 Sep 2021 06:43:02 +0000
-Date: Fri, 24 Sep 2021 07:42:27 +0100
-From: Christoph Hellwig <hch@infradead.org>
-To: Ben Widawsky <ben.widawsky@intel.com>
-Subject: Re: [PATCH v2 9/9] iommu/vt-d: Use pci core's DVSEC functionality
-Message-ID: <YU1zU2jn/mGYDThY@infradead.org>
-References: <20210923172647.72738-1-ben.widawsky@intel.com>
- <20210923172647.72738-10-ben.widawsky@intel.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HG3CB6TyYz2yKV
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Sep 2021 17:12:54 +1000 (AEST)
+Received: from laurent.telenet-ops.be (laurent.telenet-ops.be
+ [IPv6:2a02:1800:110:4::f00:19])
+ by leibniz.telenet-ops.be (Postfix) with ESMTPS id 4HG3Br5rtgzMslqH
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Sep 2021 09:12:36 +0200 (CEST)
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed10:5dd8:9bc4:3752:5710])
+ by laurent.telenet-ops.be with bizsmtp
+ id xjCa250062gynNa01jCa9H; Fri, 24 Sep 2021 09:12:36 +0200
+Received: from rox.of.borg ([192.168.97.57])
+ by ramsan.of.borg with esmtps (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.93)
+ (envelope-from <geert@linux-m68k.org>)
+ id 1mTfNp-008Vbt-Qj; Fri, 24 Sep 2021 09:12:33 +0200
+Received: from geert by rox.of.borg with local (Exim 4.93)
+ (envelope-from <geert@linux-m68k.org>)
+ id 1mTfNp-007LLw-BV; Fri, 24 Sep 2021 09:12:33 +0200
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>, Johan Hovold <johan@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Li Yang <leoyang.li@nxp.com>,
+ Scott Wood <oss@buserror.net>
+Subject: [PATCH v2 1/2] serial: 8250: SERIAL_8250_FSL should not default to y
+ when compile-testing
+Date: Fri, 24 Sep 2021 09:12:30 +0200
+Message-Id: <6421f256407262afd658ffa74ec9430581528a7d.1632467477.git.geert+renesas@glider.be>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210923172647.72738-10-ben.widawsky@intel.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,25 +56,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Donnellan <ajd@linux.ibm.com>, linux-pci@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-cxl@vger.kernel.org,
- iommu@lists.linux-foundation.org, Bjorn Helgaas <helgaas@kernel.org>,
- "David E. Box" <david.e.box@linux.intel.com>,
- Frederic Barrat <fbarrat@linux.ibm.com>, Kan Liang <kan.liang@linux.intel.com>,
- David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org, linux-serial@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Sep 23, 2021 at 10:26:47AM -0700, Ben Widawsky wrote:
->   */
->  static int siov_find_pci_dvsec(struct pci_dev *pdev)
->  {
-> +	return pci_find_dvsec_capability(pdev, PCI_VENDOR_ID_INTEL, 5);
->  }
+Commit b1442c55ce8977aa ("serial: 8250: extend compile-test coverage")
+added compile-test support to the Freescale 16550 driver.  However, as
+SERIAL_8250_FSL is an invisible symbol, merely enabling compile-testing
+now enables this driver.
 
-I hink the siov_find_pci_dvsec helper is pretty pointless now and can be
-folded into its only caller.  And independent of that: this capability
-really needs a symbolic name.  Especially for a vendor like Intel that
-might have a few there should be a list of them somewhere.
+Fix this by dropping the COMPILE_TEST default again, but making the
+SERIAL_8250_FSL symbol visible instead.
+
+Fixes: b1442c55ce8977aa ("serial: 8250: extend compile-test coverage")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+v2:
+  - Split in two parts.
+---
+ drivers/tty/serial/8250/Kconfig | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/tty/serial/8250/Kconfig b/drivers/tty/serial/8250/Kconfig
+index 808268edd2e82a45..0af96f3adab517f6 100644
+--- a/drivers/tty/serial/8250/Kconfig
++++ b/drivers/tty/serial/8250/Kconfig
+@@ -361,9 +361,12 @@ config SERIAL_8250_BCM2835AUX
+ 	  If unsure, say N.
+ 
+ config SERIAL_8250_FSL
+-	bool
++	bool "Freescale 16550-style UART support (8250 based driver)"
+ 	depends on SERIAL_8250_CONSOLE
+-	default PPC || ARM || ARM64 || COMPILE_TEST
++	default PPC || ARM || ARM64
++	help
++	  Selecting this option will add support for the 16550-style serial
++	  port hardware found on Freescale SoCs.
+ 
+ config SERIAL_8250_DW
+ 	tristate "Support for Synopsys DesignWare 8250 quirks"
+-- 
+2.25.1
 
