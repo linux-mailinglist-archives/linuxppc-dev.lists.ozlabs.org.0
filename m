@@ -2,51 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96FF9417F79
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Sep 2021 05:11:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7DF04180DC
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Sep 2021 11:50:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HGYnb45p2z3c6Q
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Sep 2021 13:10:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HGkf04xG3z3bjX
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Sep 2021 19:50:00 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=eK2IM5UQ;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com;
- envelope-from=liushixin2@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HGYn90YCkz2yP0
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Sep 2021 13:10:32 +1000 (AEST)
-Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.57])
- by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4HGYm33mYDz8tFD;
- Sat, 25 Sep 2021 11:09:39 +0800 (CST)
-Received: from dggpemm500009.china.huawei.com (7.185.36.225) by
- dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.8; Sat, 25 Sep 2021 11:10:26 +0800
-Received: from [10.174.179.24] (10.174.179.24) by
- dggpemm500009.china.huawei.com (7.185.36.225) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.8; Sat, 25 Sep 2021 11:10:26 +0800
-Subject: Re: [PATCH] powerpc: don't select KFENCE on platform PPC_FSL_BOOK3E
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Marco Elver
- <elver@google.com>, Michael Ellerman <mpe@ellerman.id.au>, "Benjamin
- Herrenschmidt" <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>
-References: <20210924063927.1341241-1-liushixin2@huawei.com>
- <f8d12860-56d7-5697-7cba-3cac95bb0a1c@csgroup.eu>
-From: Liu Shixin <liushixin2@huawei.com>
-Message-ID: <63e78249-8878-cbe3-0a22-a094ef53164a@huawei.com>
-Date: Sat, 25 Sep 2021 11:10:25 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.7.1
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::430;
+ helo=mail-pf1-x430.google.com; envelope-from=carlojpisani@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=eK2IM5UQ; dkim-atps=neutral
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com
+ [IPv6:2607:f8b0:4864:20::430])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HGkdH1PMbz2yJw
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Sep 2021 19:49:22 +1000 (AEST)
+Received: by mail-pf1-x430.google.com with SMTP id k26so6478726pfi.5
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Sep 2021 02:49:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=mime-version:from:date:message-id:subject:to:cc;
+ bh=qoUCKun9GOqpNGoTy8WaehZ/oDjPVJ/YWHnCEdsLlKI=;
+ b=eK2IM5UQmZeWd3M74yPeXKWLnWuprO7vkbPPvLnnSKAdSDV08+NywCGvzKS31dTRQA
+ MqpoZMBv/w0kBeYtGRANxtGCPpUgl5/BhEJlikqWEpQdXCffoiabCGNLH7aI/dOksfLu
+ SclPzf68kmuQdWh21S5fq5m03jE5dyWNk4WWosj3MTJW0XCYbpgJCqck7Puyu+JUC6nm
+ /81iHWh6uyij//McHywBGhITxfwAWeRNudWzVOe5k+bE0obqhxLwS/iWRkssVezh2Doe
+ L9ICpkP9I53nWba3ptAEzw7EzCmuknMoSgNoZzI7B1x9b2kMnaFgZZughvZa1o9vc+YM
+ dm1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+ bh=qoUCKun9GOqpNGoTy8WaehZ/oDjPVJ/YWHnCEdsLlKI=;
+ b=735tAN1EB7pmmMKECyf9LDK2TiRF4Gs+xFntwOOgNfRuzm5tuNmyfdyccm+E5zPOIL
+ WWWLpKwz1wKBPpz8upl+Khgvm9YygZgR3bmq44njeuJ99hArHybXlhTKb/z7t4+ODCUx
+ onSoQOIvkHZ9+Qiso1REy07BZxHB4Xo/DsSCWOjC0zcgr8SLKuFF1eY6X94E59CUuk4e
+ sIy9PQcmXeJN7FCoNBxXdqbZIAMexBGM+VKF/tPUwIF0MbKBB51yr07HVRspSDKW2G9o
+ a1sIFdoFav0jkQgTK80krjaxrtVg9nWoHSLE2DF0AYowWci2ARbC+oaxn15EK8fwZUnl
+ l4wA==
+X-Gm-Message-State: AOAM533BbBbccgqD5oYAXR6Rgpw/ln3XcSkJvE9V9vV6maD0CFZclaT8
+ kiYIXhmQTa22J1U+aHibcGAnnqXZrC9qsz/wLO3hVX1efK0=
+X-Google-Smtp-Source: ABdhPJxwz4sRl4hyWNYWeeYQ/NGfvW3SBpg41ENEFGYFEzK4HXbNMsSJwmCrsMJz1UzkRC3safjLUItV31F0hqaelco=
+X-Received: by 2002:a05:6a00:c8c:b0:447:bddb:c83 with SMTP id
+ a12-20020a056a000c8c00b00447bddb0c83mr14140350pfv.1.1632563356318; Sat, 25
+ Sep 2021 02:49:16 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <f8d12860-56d7-5697-7cba-3cac95bb0a1c@csgroup.eu>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.179.24]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpemm500009.china.huawei.com (7.185.36.225)
-X-CFilter-Loop: Reflected
+From: cp <carlojpisani@gmail.com>
+Date: Sat, 25 Sep 2021 11:49:13 +0200
+Message-ID: <CA+QBN9AFNSf3+U4iMhwZx7c69MLk-BtSbVODBEA97ObYWRczbQ@mail.gmail.com>
+Subject: ppc32 doesn't boot when linkaddr=0x00900000
+To: linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,103 +71,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: torvalds@linux-foundation.org, paulus@samba.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+hi
+I am new to this list. Hope this is the right place to ask.
 
+I am working with a PPC405GP board, and as far as I understand, the
+support for ppc40x platforms like Acadia and Walnut were dropped with
+kernel 5.8.0, so this seems like a pretty straightforward question,
+but extensive experiments from kernel 4.11 to kernel 5.7.19 haven't
+shown a really clear, up-to-date answer.
 
-On 2021/9/24 14:41, Christophe Leroy wrote:
->
->
-> Le 24/09/2021 à 08:39, Liu Shixin a écrit :
->> On platform PPC_FSL_BOOK3E, all lowmem is managed by tlbcam. That means
->> we didn't really map the kfence pool with page granularity. Therefore,
->> if KFENCE is enabled, the system will hit the following panic:
->
-> Could you please explain a bit more what the problem is ?
->
-> KFENCE has been implemented with the same logic as DEBUG_PAGEALLOC.
->
-> DEBUG_PAGEALLOC is enabled on FSL_BOOK3E.
->
-> In MMU_setup(), __map_without_ltlbs is set to 1 when KFENCE is enabled.
->
-> __map_without_ltlbs should disable the use of tlbcam.
->
->
-> So what's wrong really ?
->
-> Does DEBUG_PAGEALLOC work on FSL_BOOK3E ?
->
-> Thanks
-> Christophe
->
-hi Christophe,
+In k4.11 .. k5.7.19, when the kernel size is bigger than 8 MB, the
+final kernel doesn't boot but rather arch/powerpc/boot/main.c dies
+before the first message from the kernel shows up.
 
-The phenomenon is that kernel panic in the kfence_protect_page function because
-__kfence_pool is not mapped with page granularity.
+Why?
 
-The problem is that in the mapin_ram function, the return value(i.e base) of mmu_mapin_ram
-is equal to top. As a result, no level-2 page table is created for [base, top]. It seems that
-__map_without_ltlbs didn't diable the use of tlbcam.
+Digging deeper I see the relation between the kernel size and link_addr
 
-I have tried to force page table for all lowmem, then this problem will go away
-but the kfence_test failed, which could be explained by the fact that tlbcam is still used.
+        # Round the size to next higher MB limit
+        round_size=$(((strip_size + 0xfffff) & 0xfff00000))
 
-By the way, DEBUG_PAGEALLOC works well on FSL_BOOK3E without level-2 page table.
+        round_size=0x$(printf "%x" $round_size)
+        link_addr=$(printf "%d" $link_address)
 
-Thanks,
->>
->>      BUG: Kernel NULL pointer dereference on read at 0x00000000
->>      Faulting instruction address: 0xc01de598
->>      Oops: Kernel access of bad area, sig: 11 [#1]
->>      BE PAGE_SIZE=4K SMP NR_CPUS=4 MPC8544 DS
->>      Dumping ftrace buffer:
->>         (ftrace buffer empty)
->>      Modules linked in:
->>      CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.12.0-rc3+ #298
->>      NIP:  c01de598 LR: c08ae9c4 CTR: 00000000
->>      REGS: c0b4bea0 TRAP: 0300   Not tainted  (5.12.0-rc3+)
->>      MSR:  00021000 <CE,ME>  CR: 24000228  XER: 20000000
->>      DEAR: 00000000 ESR: 00000000
->>      GPR00: c08ae9c4 c0b4bf60 c0ad64e0 ef720000 00021000 00000000 00000000 00000200
->>      GPR08: c0ad5000 00000000 00000000 00000004 00000000 008fbb30 00000000 00000000
->>      GPR16: 00000000 00000000 00000000 00000000 c0000000 00000000 00000000 00000000
->>      GPR24: c08ca004 c08ca004 c0b6a0e0 c0b60000 c0b58f00 c0850000 c08ca000 ef720000
->>      NIP [c01de598] kfence_protect+0x44/0x6c
->>      LR [c08ae9c4] kfence_init+0xfc/0x2a4
->>      Call Trace:
->>      [c0b4bf60] [efffe160] 0xefffe160 (unreliable)
->>      [c0b4bf70] [c08ae9c4] kfence_init+0xfc/0x2a4
->>      [c0b4bfb0] [c0894d3c] start_kernel+0x3bc/0x574
->>      [c0b4bff0] [c0000470] set_ivor+0x14c/0x188
->>      Instruction dump:
->>      7c0802a6 8109d594 546a653a 90010014 54630026 39200000 7d48502e 2c0a0000
->>      41820010 554a0026 5469b53a 7d295214 <81490000> 38831000 554a003c 91490000
->>      random: get_random_bytes called from print_oops_end_marker+0x40/0x78 with crng_init=0
->>      ---[ end trace 0000000000000000 ]---
->>
->> Signed-off-by: Liu Shixin <liushixin2@huawei.com>
->> ---
->>   arch/powerpc/Kconfig | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
->> index d46db0bfb998..cffd57bcb5e4 100644
->> --- a/arch/powerpc/Kconfig
->> +++ b/arch/powerpc/Kconfig
->> @@ -185,7 +185,7 @@ config PPC
->>       select HAVE_ARCH_KASAN            if PPC32 && PPC_PAGE_SHIFT <= 14
->>       select HAVE_ARCH_KASAN_VMALLOC        if PPC32 && PPC_PAGE_SHIFT <= 14
->>       select HAVE_ARCH_KGDB
->> -    select HAVE_ARCH_KFENCE            if PPC32
->> +    select HAVE_ARCH_KFENCE            if PPC32 && !PPC_FSL_BOOK3E
->>       select HAVE_ARCH_MMAP_RND_BITS
->>       select HAVE_ARCH_MMAP_RND_COMPAT_BITS    if COMPAT
->>       select HAVE_ARCH_NVRAM_OPS
->>
-> .
->
+and this is where link_addr is involved
 
+        text_start="-Ttext $link_address"
+
+My kernels are compiled for cuboot, and the code that invokes "kentry"
+is entirely located in arch/powerpc/boot/main.c
+
+I instrumned that module, and this is what I see on the condole
+
+The following is the same kernel, compiled with the same .config, but
+with two link_addr values
+
+A) with link_addr=0x0080.0000
+image loaded from 0x00800000
+SP=0x03eb1b80
+kernel_size = 7411084 bytes
+copying 256 bytes from kernel-image at 0x0080f000 to elfheader
+elf_info.loadsize = 0x00700e68
+elf_info.memsize  = 0x0074234c
+allocating 7611212 bytes for the new kernel
+copying ...
+from = 0x0081f000
+to = 0x00000000
+size = 7343720
+flush_cache, 32Mbyte flushed
+cmdline: uboot bootargs overridden
+cmdline=[console=ttyS0,115200 root=/dev/sda2 rootfstype=ext2 rw
+init=/sbin/init ]
+Finalizing device tree... flat tree at 0xf23b80
+ft_addr=0xf23b80
+my tp1: success
+kernel booting ....
+(it boots)
+
+B) with link_addr=0x0080.0000
+image loaded from 0x00900000
+SP=0x03eb1b80
+kernel_size = 7411084
+copying 256 bytes from kernel-image at 0x0090f000 to elfheader
+elf_info.loadsize = 0x00700e68
+elf_info.memsize  = 0x0074234c
+allocating 7611212 bytes for the new kernel
+copying ...
+from = 0x0091f000
+to = 0x00000000
+size = 7343720
+flush_cache, 32Mbyte flushed
+cmdline: uboot bootargs overridden
+cmdline=[console=ttyS0,115200 root=/dev/sda2 rootfstype=ext2 rw
+init=/sbin/init ]
+Finalizing device tree... flat tree at 0x1023b80
+ft_addr=0x1023b80
+my tp2: success
+my tp3: success
+invalidate_cache 0x00000000+0x02000000
+my tp4: (point of no return)
+calling kentry()...
+kernel booting ....
+(it dies at this point, but without a debugger it's like watching
+something fall into a black hole)
+
+Any ideas?
+I am lost ...
+
+Carlo
