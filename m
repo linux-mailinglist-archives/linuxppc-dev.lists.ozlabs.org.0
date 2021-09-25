@@ -2,104 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C13C0417E8E
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Sep 2021 02:10:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96FF9417F79
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Sep 2021 05:11:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HGTnr4m3sz30JT
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Sep 2021 10:10:56 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=a3C1lS1x;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HGYnb45p2z3c6Q
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Sep 2021 13:10:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=a3C1lS1x; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HGTn40wgqz2yPj
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Sep 2021 10:10:15 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18ONdMSA006024; 
- Fri, 24 Sep 2021 20:10:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=SZgwi4Qbs5knRIpuI+lxKMhCO8MYHBQOg+HE2jxYuX4=;
- b=a3C1lS1xcuL1PeliM9SJECsYUduIJPWUbfryIx7My30xw6BF9MxzOZAOtl9c53ojjqF3
- Ev93NJ9gXhOZZuO5xIUbwAvhe7XFrrBQohSIJT3SHzkBxqye52TJ6XIfk8rvp/26zwty
- +9sZ7qE0YLXXKzN9kHmkkMgfptsY1ZESimQnoO8b9pnWbTtMtHLmwrbEqBX41QHMso3l
- fIO2Zb9LkUYYmF7wvxXlQv0fllqe7b/8mUb60Hg5G4r3nQL0KFeaVIJGRD1WIvnDsiSI
- tABtl4vL7oBWF7E/AlevCLyFaG7/s84C7vVTKjJFEC/VcBnhGPlCRe04TD5xbqvbuQzY AQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3b9knf5s1n-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 24 Sep 2021 20:10:06 -0400
-Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 18ONmfdj000476;
- Fri, 24 Sep 2021 20:10:06 -0400
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3b9knf5s1d-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 24 Sep 2021 20:10:06 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 18P028Ak016191;
- Sat, 25 Sep 2021 00:10:05 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma04wdc.us.ibm.com with ESMTP id 3b93g9q1s8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 25 Sep 2021 00:10:05 +0000
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 18P0A3YV17760520
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 25 Sep 2021 00:10:04 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CBC5A6A06B;
- Sat, 25 Sep 2021 00:10:03 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AA67F6A067;
- Sat, 25 Sep 2021 00:10:03 +0000 (GMT)
-Received: from localhost (unknown [9.211.135.102])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Sat, 25 Sep 2021 00:10:03 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, Srikar Dronamraju
- <srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH] powerpc/paravirt: correct preempt debug splat in
- vcpu_is_preempted()
-In-Reply-To: <87pmsylli8.fsf@mpe.ellerman.id.au>
-References: <20210921031213.2029824-1-nathanl@linux.ibm.com>
- <20210922075718.GA2004@linux.vnet.ibm.com> <87ee9gob07.fsf@linux.ibm.com>
- <20210922163351.GB2004@linux.vnet.ibm.com> <87bl4ko1cp.fsf@linux.ibm.com>
- <874kabn40z.fsf@mpe.ellerman.id.au>
- <20210923180224.GD2004@linux.vnet.ibm.com>
- <87pmsylli8.fsf@mpe.ellerman.id.au>
-Date: Fri, 24 Sep 2021 19:10:03 -0500
-Message-ID: <878rzlplb8.fsf@linux.ibm.com>
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com;
+ envelope-from=liushixin2@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HGYn90YCkz2yP0
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Sep 2021 13:10:32 +1000 (AEST)
+Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.57])
+ by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4HGYm33mYDz8tFD;
+ Sat, 25 Sep 2021 11:09:39 +0800 (CST)
+Received: from dggpemm500009.china.huawei.com (7.185.36.225) by
+ dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.8; Sat, 25 Sep 2021 11:10:26 +0800
+Received: from [10.174.179.24] (10.174.179.24) by
+ dggpemm500009.china.huawei.com (7.185.36.225) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.8; Sat, 25 Sep 2021 11:10:26 +0800
+Subject: Re: [PATCH] powerpc: don't select KFENCE on platform PPC_FSL_BOOK3E
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Marco Elver
+ <elver@google.com>, Michael Ellerman <mpe@ellerman.id.au>, "Benjamin
+ Herrenschmidt" <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>
+References: <20210924063927.1341241-1-liushixin2@huawei.com>
+ <f8d12860-56d7-5697-7cba-3cac95bb0a1c@csgroup.eu>
+From: Liu Shixin <liushixin2@huawei.com>
+Message-ID: <63e78249-8878-cbe3-0a22-a094ef53164a@huawei.com>
+Date: Sat, 25 Sep 2021 11:10:25 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.7.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: F70uDIZBePtlGs2FxmWmASKJLLt4F98e
-X-Proofpoint-GUID: JCxhnoqCCCcLyBO5AzNtv2n7YWMdYq48
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
- definitions=2021-09-24_05,2021-09-24_02,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 impostorscore=0
- bulkscore=0 adultscore=0 malwarescore=0 mlxlogscore=999 mlxscore=0
- lowpriorityscore=0 suspectscore=0 phishscore=0 clxscore=1015
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2109230001 definitions=main-2109240147
+In-Reply-To: <f8d12860-56d7-5697-7cba-3cac95bb0a1c@csgroup.eu>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.179.24]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpemm500009.china.huawei.com (7.185.36.225)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,112 +58,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Ellerman <mpe@ellerman.id.au> writes:
-> Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
->> * Michael Ellerman <mpe@ellerman.id.au> [2021-09-23 17:29:32]:
+
+
+On 2021/9/24 14:41, Christophe Leroy wrote:
+>
+>
+> Le 24/09/2021 à 08:39, Liu Shixin a écrit :
+>> On platform PPC_FSL_BOOK3E, all lowmem is managed by tlbcam. That means
+>> we didn't really map the kfence pool with page granularity. Therefore,
+>> if KFENCE is enabled, the system will hit the following panic:
+>
+> Could you please explain a bit more what the problem is ?
+>
+> KFENCE has been implemented with the same logic as DEBUG_PAGEALLOC.
+>
+> DEBUG_PAGEALLOC is enabled on FSL_BOOK3E.
+>
+> In MMU_setup(), __map_without_ltlbs is set to 1 when KFENCE is enabled.
+>
+> __map_without_ltlbs should disable the use of tlbcam.
+>
+>
+> So what's wrong really ?
+>
+> Does DEBUG_PAGEALLOC work on FSL_BOOK3E ?
+>
+> Thanks
+> Christophe
+>
+hi Christophe,
+
+The phenomenon is that kernel panic in the kfence_protect_page function because
+__kfence_pool is not mapped with page granularity.
+
+The problem is that in the mapin_ram function, the return value(i.e base) of mmu_mapin_ram
+is equal to top. As a result, no level-2 page table is created for [base, top]. It seems that
+__map_without_ltlbs didn't diable the use of tlbcam.
+
+I have tried to force page table for all lowmem, then this problem will go away
+but the kfence_test failed, which could be explained by the fact that tlbcam is still used.
+
+By the way, DEBUG_PAGEALLOC works well on FSL_BOOK3E without level-2 page table.
+
+Thanks,
 >>
->>> Nathan Lynch <nathanl@linux.ibm.com> writes:
->>> > Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
->>> >
->>> >> * Nathan Lynch <nathanl@linux.ibm.com> [2021-09-22 11:01:12]:
->>> >>
->>> >>> Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
-> ...
->>> >> Or can I understand how debug_smp_processor_id() is useful if
->>> >> __smp_processor_id() is defined as raw_smp_processor_id()?
->>> 
->>> debug_smp_processor_id() is useful on powerpc, as well as other arches,
->>> because it checks that we're in a context where the processor id won't
->>> change out from under us.
->>> 
->>> eg. something like this is unsafe:
->>> 
->>>   int counts[NR_CPUS];
->>>   int tmp, cpu;
->>>   
->>>   cpu = smp_processor_id();
->>>   tmp = counts[cpu];
->>>   				<- preempted here and migrated to another CPU
->>>   counts[cpu] = tmp + 1;
->>> 
+>>      BUG: Kernel NULL pointer dereference on read at 0x00000000
+>>      Faulting instruction address: 0xc01de598
+>>      Oops: Kernel access of bad area, sig: 11 [#1]
+>>      BE PAGE_SIZE=4K SMP NR_CPUS=4 MPC8544 DS
+>>      Dumping ftrace buffer:
+>>         (ftrace buffer empty)
+>>      Modules linked in:
+>>      CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.12.0-rc3+ #298
+>>      NIP:  c01de598 LR: c08ae9c4 CTR: 00000000
+>>      REGS: c0b4bea0 TRAP: 0300   Not tainted  (5.12.0-rc3+)
+>>      MSR:  00021000 <CE,ME>  CR: 24000228  XER: 20000000
+>>      DEAR: 00000000 ESR: 00000000
+>>      GPR00: c08ae9c4 c0b4bf60 c0ad64e0 ef720000 00021000 00000000 00000000 00000200
+>>      GPR08: c0ad5000 00000000 00000000 00000004 00000000 008fbb30 00000000 00000000
+>>      GPR16: 00000000 00000000 00000000 00000000 c0000000 00000000 00000000 00000000
+>>      GPR24: c08ca004 c08ca004 c0b6a0e0 c0b60000 c0b58f00 c0850000 c08ca000 ef720000
+>>      NIP [c01de598] kfence_protect+0x44/0x6c
+>>      LR [c08ae9c4] kfence_init+0xfc/0x2a4
+>>      Call Trace:
+>>      [c0b4bf60] [efffe160] 0xefffe160 (unreliable)
+>>      [c0b4bf70] [c08ae9c4] kfence_init+0xfc/0x2a4
+>>      [c0b4bfb0] [c0894d3c] start_kernel+0x3bc/0x574
+>>      [c0b4bff0] [c0000470] set_ivor+0x14c/0x188
+>>      Instruction dump:
+>>      7c0802a6 8109d594 546a653a 90010014 54630026 39200000 7d48502e 2c0a0000
+>>      41820010 554a0026 5469b53a 7d295214 <81490000> 38831000 554a003c 91490000
+>>      random: get_random_bytes called from print_oops_end_marker+0x40/0x78 with crng_init=0
+>>      ---[ end trace 0000000000000000 ]---
 >>
->> If lets say the above call was replaced by raw_smp_processor_id(), how would
->> it avoid the preemption / migration to another CPU?
+>> Signed-off-by: Liu Shixin <liushixin2@huawei.com>
+>> ---
+>>   arch/powerpc/Kconfig | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
 >>
->> Replacing it with raw_smp_processor_id() may avoid, the debug splat but the
->> underlying issue would still remain as is. No?
+>> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+>> index d46db0bfb998..cffd57bcb5e4 100644
+>> --- a/arch/powerpc/Kconfig
+>> +++ b/arch/powerpc/Kconfig
+>> @@ -185,7 +185,7 @@ config PPC
+>>       select HAVE_ARCH_KASAN            if PPC32 && PPC_PAGE_SHIFT <= 14
+>>       select HAVE_ARCH_KASAN_VMALLOC        if PPC32 && PPC_PAGE_SHIFT <= 14
+>>       select HAVE_ARCH_KGDB
+>> -    select HAVE_ARCH_KFENCE            if PPC32
+>> +    select HAVE_ARCH_KFENCE            if PPC32 && !PPC_FSL_BOOK3E
+>>       select HAVE_ARCH_MMAP_RND_BITS
+>>       select HAVE_ARCH_MMAP_RND_COMPAT_BITS    if COMPAT
+>>       select HAVE_ARCH_NVRAM_OPS
+>>
+> .
 >
-> Correct.
->
-> Using raw_smp_processor_id() is generally the wrong answer. For this
-> example the correct fix is to disable preemption around the code, eg:
->
->    int counts[NR_CPUS];
->    int tmp, cpu;
->    
->    preempt_disable()
->
->    cpu = smp_processor_id();
->    tmp = counts[cpu];
->    counts[cpu] = tmp + 1;
->
->    preempt_enable();
->
->
-> For the original issue I think it is OK to use raw_smp_processor_id(),
-> because we're already doing a racy check of whether another CPU has been
-> preempted by the hypervisor.
->
->         if (!is_kvm_guest()) {
->                 int first_cpu = cpu_first_thread_sibling(smp_processor_id());
->
->                 if (cpu_first_thread_sibling(cpu) == first_cpu)
->                         return false;
->         }
->
-> We could disable preemption around that, eg:
->
->         if (!is_kvm_guest()) {
->                 int first_cpu;
->                 bool is_sibling;
->
->                 preempt_disable();
->                 first_cpu = cpu_first_thread_sibling(smp_processor_id());
->                 is_sibling = (cpu_first_thread_sibling(cpu) == first_cpu)
->                 preempt_enable();
->
->                 // Can be preempted here
->
->                 if (is_sibling)
->                     return false;
->         }
->
-> But before we return we could be preempted, and then is_sibling is no
-> longer necessarily correct. So that doesn't really gain us anything.
->
-> The only way to make that result stable is to disable preemption in the
-> caller, but most callers don't want to AFAICS, because they know they're
-> doing a racy check to begin with.
 
-I'll add that one way I think about this is that when I choose
-smp_processor_id(), I am making a claim about the context in which it is
-used, and when I use raw_smp_processor_id() I am making a different
-claim.
-
-smp_processor_id() => I am sampling the CPU index in a critical section
-where the result equals the CPU that executes the entire critical
-section, and I am relying on that property for the section's
-correctness. This claim is verified by debug_smp_processor_id() when
-DEBUG_PREEMPT=y.
-
-raw_smp_processor_id() => I am sampling the CPU index and using the
-result in a way that is safe even if it differs from the CPU(s) on which
-the surrounding code actually executes.
-
-This framing doesn't cover all situations, but I've found it to be
-generally useful.
