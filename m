@@ -2,71 +2,104 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EB07417DBF
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Sep 2021 00:25:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C13C0417E8E
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Sep 2021 02:10:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HGRSZ3Xshz30Bl
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Sep 2021 08:25:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HGTnr4m3sz30JT
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Sep 2021 10:10:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sYx6kIAG;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=a3C1lS1x;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=bugzilla.kernel.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=sYx6kIAG; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=a3C1lS1x; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HGRRq59Xwz2yPw
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Sep 2021 08:25:11 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPS id 2655E6125F
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Sep 2021 22:25:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1632522309;
- bh=AbEK7rPbNYX9vdwO2HKtZKqB5Kyq65UNcMNiUEwHYa0=;
- h=From:To:Subject:Date:In-Reply-To:References:From;
- b=sYx6kIAGzIptqGxdVD4Ah3lIYFQMmfhIbLJDODmiWyAonoWq2yga3wz1YiXDyEg2k
- BFtXywCrUJ8MKHXeCLPUe9vHD0R0m1S77jFg/iT4zIVbK7iifex+KKok2PFxqdgzAB
- hxGKCyN9r5MwPsmZCdZhXz4jfuGDG6cj2J6llxbbliZYeHBPv1wPrjzYK0YiG6FT+2
- nX1HkaezQovyFGp/aLSw+1VlOwtE1Q0YzH2WWFsQtoYGQnJ6kSV+cMH9SY1b5ADQR0
- bl0pmuSuWRcxL5jlIPjGbraj5nzUKpwGhEnVLX0wk27y2nKn2RBz7TR9vXqLlHwS82
- 6LTmvDM59TDiQ==
-Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
- id 0F82E60FED; Fri, 24 Sep 2021 22:25:09 +0000 (UTC)
-From: bugzilla-daemon@bugzilla.kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 213837] "Kernel panic - not syncing: corrupted stack end
- detected inside scheduler" at building via distcc on a G5
-Date: Fri, 24 Sep 2021 22:25:08 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo CC platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: NEEDINFO
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: attachments.created
-Message-ID: <bug-213837-206035-UVeEquN3So@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-213837-206035@https.bugzilla.kernel.org/>
-References: <bug-213837-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HGTn40wgqz2yPj
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Sep 2021 10:10:15 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18ONdMSA006024; 
+ Fri, 24 Sep 2021 20:10:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=SZgwi4Qbs5knRIpuI+lxKMhCO8MYHBQOg+HE2jxYuX4=;
+ b=a3C1lS1xcuL1PeliM9SJECsYUduIJPWUbfryIx7My30xw6BF9MxzOZAOtl9c53ojjqF3
+ Ev93NJ9gXhOZZuO5xIUbwAvhe7XFrrBQohSIJT3SHzkBxqye52TJ6XIfk8rvp/26zwty
+ +9sZ7qE0YLXXKzN9kHmkkMgfptsY1ZESimQnoO8b9pnWbTtMtHLmwrbEqBX41QHMso3l
+ fIO2Zb9LkUYYmF7wvxXlQv0fllqe7b/8mUb60Hg5G4r3nQL0KFeaVIJGRD1WIvnDsiSI
+ tABtl4vL7oBWF7E/AlevCLyFaG7/s84C7vVTKjJFEC/VcBnhGPlCRe04TD5xbqvbuQzY AQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3b9knf5s1n-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 24 Sep 2021 20:10:06 -0400
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 18ONmfdj000476;
+ Fri, 24 Sep 2021 20:10:06 -0400
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3b9knf5s1d-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 24 Sep 2021 20:10:06 -0400
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 18P028Ak016191;
+ Sat, 25 Sep 2021 00:10:05 GMT
+Received: from b03cxnp08028.gho.boulder.ibm.com
+ (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+ by ppma04wdc.us.ibm.com with ESMTP id 3b93g9q1s8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 25 Sep 2021 00:10:05 +0000
+Received: from b03ledav003.gho.boulder.ibm.com
+ (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+ by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 18P0A3YV17760520
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sat, 25 Sep 2021 00:10:04 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CBC5A6A06B;
+ Sat, 25 Sep 2021 00:10:03 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AA67F6A067;
+ Sat, 25 Sep 2021 00:10:03 +0000 (GMT)
+Received: from localhost (unknown [9.211.135.102])
+ by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Sat, 25 Sep 2021 00:10:03 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, Srikar Dronamraju
+ <srikar@linux.vnet.ibm.com>
+Subject: Re: [PATCH] powerpc/paravirt: correct preempt debug splat in
+ vcpu_is_preempted()
+In-Reply-To: <87pmsylli8.fsf@mpe.ellerman.id.au>
+References: <20210921031213.2029824-1-nathanl@linux.ibm.com>
+ <20210922075718.GA2004@linux.vnet.ibm.com> <87ee9gob07.fsf@linux.ibm.com>
+ <20210922163351.GB2004@linux.vnet.ibm.com> <87bl4ko1cp.fsf@linux.ibm.com>
+ <874kabn40z.fsf@mpe.ellerman.id.au>
+ <20210923180224.GD2004@linux.vnet.ibm.com>
+ <87pmsylli8.fsf@mpe.ellerman.id.au>
+Date: Fri, 24 Sep 2021 19:10:03 -0500
+Message-ID: <878rzlplb8.fsf@linux.ibm.com>
 MIME-Version: 1.0
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: F70uDIZBePtlGs2FxmWmASKJLLt4F98e
+X-Proofpoint-GUID: JCxhnoqCCCcLyBO5AzNtv2n7YWMdYq48
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
+ definitions=2021-09-24_05,2021-09-24_02,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 impostorscore=0
+ bulkscore=0 adultscore=0 malwarescore=0 mlxlogscore=999 mlxscore=0
+ lowpriorityscore=0 suspectscore=0 phishscore=0 clxscore=1015
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2109230001 definitions=main-2109240147
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,145 +111,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D213837
+Michael Ellerman <mpe@ellerman.id.au> writes:
+> Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
+>> * Michael Ellerman <mpe@ellerman.id.au> [2021-09-23 17:29:32]:
+>>
+>>> Nathan Lynch <nathanl@linux.ibm.com> writes:
+>>> > Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
+>>> >
+>>> >> * Nathan Lynch <nathanl@linux.ibm.com> [2021-09-22 11:01:12]:
+>>> >>
+>>> >>> Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
+> ...
+>>> >> Or can I understand how debug_smp_processor_id() is useful if
+>>> >> __smp_processor_id() is defined as raw_smp_processor_id()?
+>>> 
+>>> debug_smp_processor_id() is useful on powerpc, as well as other arches,
+>>> because it checks that we're in a context where the processor id won't
+>>> change out from under us.
+>>> 
+>>> eg. something like this is unsafe:
+>>> 
+>>>   int counts[NR_CPUS];
+>>>   int tmp, cpu;
+>>>   
+>>>   cpu = smp_processor_id();
+>>>   tmp = counts[cpu];
+>>>   				<- preempted here and migrated to another CPU
+>>>   counts[cpu] = tmp + 1;
+>>> 
+>>
+>> If lets say the above call was replaced by raw_smp_processor_id(), how would
+>> it avoid the preemption / migration to another CPU?
+>>
+>> Replacing it with raw_smp_processor_id() may avoid, the debug splat but the
+>> underlying issue would still remain as is. No?
+>
+> Correct.
+>
+> Using raw_smp_processor_id() is generally the wrong answer. For this
+> example the correct fix is to disable preemption around the code, eg:
+>
+>    int counts[NR_CPUS];
+>    int tmp, cpu;
+>    
+>    preempt_disable()
+>
+>    cpu = smp_processor_id();
+>    tmp = counts[cpu];
+>    counts[cpu] = tmp + 1;
+>
+>    preempt_enable();
+>
+>
+> For the original issue I think it is OK to use raw_smp_processor_id(),
+> because we're already doing a racy check of whether another CPU has been
+> preempted by the hypervisor.
+>
+>         if (!is_kvm_guest()) {
+>                 int first_cpu = cpu_first_thread_sibling(smp_processor_id());
+>
+>                 if (cpu_first_thread_sibling(cpu) == first_cpu)
+>                         return false;
+>         }
+>
+> We could disable preemption around that, eg:
+>
+>         if (!is_kvm_guest()) {
+>                 int first_cpu;
+>                 bool is_sibling;
+>
+>                 preempt_disable();
+>                 first_cpu = cpu_first_thread_sibling(smp_processor_id());
+>                 is_sibling = (cpu_first_thread_sibling(cpu) == first_cpu)
+>                 preempt_enable();
+>
+>                 // Can be preempted here
+>
+>                 if (is_sibling)
+>                     return false;
+>         }
+>
+> But before we return we could be preempted, and then is_sibling is no
+> longer necessarily correct. So that doesn't really gain us anything.
+>
+> The only way to make that result stable is to disable preemption in the
+> caller, but most callers don't want to AFAICS, because they know they're
+> doing a racy check to begin with.
 
---- Comment #12 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 298963
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D298963&action=3Dedit
-dmesg (5.15-rc2 + patch, PowerMac G5 11,2) #1
+I'll add that one way I think about this is that when I choose
+smp_processor_id(), I am making a claim about the context in which it is
+used, and when I use raw_smp_processor_id() I am making a different
+claim.
 
-Last stack trace with CONFIG_THREAD_SHIFT=3D14 however did reveal a bit more
-data:
+smp_processor_id() => I am sampling the CPU index in a critical section
+where the result equals the CPU that executes the entire critical
+section, and I am relying on that property for the section's
+correctness. This claim is verified by debug_smp_processor_id() when
+DEBUG_PREEMPT=y.
 
-[...]
-stack: c0000000023effb0: 00000000 28022284 00000000 00000000  ....(."......=
-...
-stack: c0000000023effc0: 00000000 00000c00 00003fff 94c95000  ..........?..=
-.P.
-stack: c0000000023effd0: 00000000 42000000 ffffffff ffffffea  ....B........=
-...
-stack: c0000000023effe0: 00000000 00000000 00000000 00000000  .............=
-...
-stack: c0000000023efff0: 00000000 00000000 00000000 00000000  .............=
-...
-Kernel panic - not syncing: corrupted stack end detected inside scheduler
-CPU: 1 PID: 2652 Comm: cc1plus Tainted: G        W=20=20=20=20=20=20=20=20
-5.15.0-rc2-PowerMacG5+ #4
-Call Trace:
-[c0000000023ef7f0] [c0000000005532d8] .dump_stack_lvl+0x98/0xe0 (unreliable)
-[c0000000023ef880] [c000000000069538] .panic+0x14c/0x3e8
-[c0000000023ef930] [c00000000081d5a0] .__schedule+0xc0/0x874
-[c0000000023efa00] [c00000000081dea0] .preempt_schedule_common+0x28/0x48
-[c0000000023efa80] [c00000000081deec] .__cond_resched+0x2c/0x50
-[c0000000023efaf0] [c00000000029579c] .dput+0x40/0x218
-[c0000000023efba0] [c000000000285204] .path_put+0x1c/0x34
-[c0000000023efc20] [c00000000027eab8] .do_readlinkat+0xdc/0x124
-[c0000000023efcf0] [c00000000027f310] .__se_sys_readlink+0x20/0x30
-[c0000000023efd60] [c000000000022850] .system_call_exception+0x1ac/0x1e4
-[c0000000023efe10] [c00000000000b4cc] system_call_common+0xec/0x250
---- interrupt: c00 at 0x3fff95335500
-NIP:  00003fff95335500 LR: 00003fff95273f6c CTR: 0000000000000000
-REGS: c0000000023efe80 TRAP: 0c00   Tainted: G        W=20=20=20=20=20=20=
-=20=20=20
-(5.15.0-rc2-PowerMacG5+)
-MSR:  900000000200f032 <SF,HV,VEC,EE,PR,FP,ME,IR,DR,RI>  CR: 28022284  XER:
-00000000
-IRQMASK: 0=20
-GPR00: 0000000000000055 00003fffd5fb3600 00003fff95424300 00003fffd5fb4040=
-=20
-GPR04: 00003fffd5fb3b20 00000000000003ff 0000000062697473 000000002bcf8581=
-=20
-GPR08: ffffffffd4307a80 0000000000000000 0000000000000000 0000000000000000=
-=20
-GPR12: 0000000000000000 00003fff95946430 00000000000003ff 00003fffd5fb4030=
-=20
-GPR16: 00003fffd5fb3b20 0000000000000000 00003fffd5fb3700 0000000000000000=
-=20
-GPR20: 000000000000002f 00003fffd5fb3b10 00003fff9593f7b8 00003fffd5fb4080=
-=20
-GPR24: 0000000000000004 00003fffd5fb3710 00003fffd5fb3b20 00003fffd5fb4040=
-=20
-GPR28: 00003fffd5fb4538 00003fffd5fb4084 00003fffd5fb4040 0000000000000000=
-=20
-NIP [00003fff95335500] 0x3fff95335500
-LR [00003fff95273f6c] 0x3fff95273f6c
---- interrupt: c00
-Rebooting in 40 seconds..
+raw_smp_processor_id() => I am sampling the CPU index and using the
+result in a way that is safe even if it differs from the CPU(s) on which
+the surrounding code actually executes.
 
-And another one:
-[...]
-stack: c00000002cd77fb0: 00000000 28042822 00000000 00000000  ....(.(".....=
-...
-stack: c00000002cd77fc0: 00000000 00000c00 00003fff 9b2dd000  ..........?..=
--..
-stack: c00000002cd77fd0: 00000000 42000000 00000000 00000000  ....B........=
-...
-stack: c00000002cd77fe0: 00000000 00000000 00000000 00000000  .............=
-...
-stack: c00000002cd77ff0: 00000000 00000000 00000000 00000000  .............=
-...
-Kernel panic - not syncing: corrupted stack end detected inside scheduler
-CPU: 1 PID: 2713 Comm: cc1plus Tainted: G        W=20=20=20=20=20=20=20=20
-5.15.0-rc2-PowerMacG5+ #4
-Call Trace:
-[c00000002cd76dd0] [c0000000005532d8] .dump_stack_lvl+0x98/0xe0 (unreliable)
-[c00000002cd76e60] [c000000000069538] .panic+0x14c/0x3e8
-[c00000002cd76f10] [c00000000081d5a0] .__schedule+0xc0/0x874
-[c00000002cd76fe0] [c00000000081dea0] .preempt_schedule_common+0x28/0x48
-[c00000002cd77060] [c00000000081deec] .__cond_resched+0x2c/0x50
-[c00000002cd770d0] [c000000000327848] .__ext4_handle_dirty_metadata+0x24/0x=
-214
-[c00000002cd771a0] [c000000000352a6c] .ext4_mb_mark_diskspace_used+0x3e0/0x=
-41c
-[c00000002cd77290] [c000000000355ae4] .ext4_mb_new_blocks+0x580/0xe10
-[c00000002cd773b0] [c00000000033b2f0] .ext4_ind_map_blocks+0x63c/0xb28
-[c00000002cd775a0] [c000000000342bf4] .ext4_map_blocks+0x37c/0x588
-[c00000002cd77680] [c000000000342e64] ._ext4_get_block+0x64/0xec
-[c00000002cd77730] [c0000000002c36a4] .__block_write_begin_int+0x188/0x4a4
-[c00000002cd77850] [c0000000003480f8] .ext4_write_begin+0x2a8/0x3d0
-[c00000002cd77970] [c0000000001c9170] .generic_perform_write+0xb8/0x1f4
-[c00000002cd77a60] [c000000000333d68] .ext4_buffered_write_iter+0xb8/0x154
-[c00000002cd77b00] [c000000000277a14] .new_sync_write+0x94/0xe8
-[c00000002cd77c00] [c000000000278d6c] .vfs_write+0x13c/0x140
-[c00000002cd77ca0] [c000000000278eb4] .ksys_write+0x78/0xc4
-[c00000002cd77d60] [c000000000022850] .system_call_exception+0x1ac/0x1e4
-[c00000002cd77e10] [c00000000000b4cc] system_call_common+0xec/0x250
---- interrupt: c00 at 0x3fff9b804b00
-NIP:  00003fff9b804b00 LR: 00003fff9b780d04 CTR: 0000000000000000
-REGS: c00000002cd77e80 TRAP: 0c00   Tainted: G        W=20=20=20=20=20=20=
-=20=20=20
-(5.15.0-rc2-PowerMacG5+)
-MSR:  900000000200d032 <SF,HV,VEC,EE,PR,ME,IR,DR,RI>  CR: 28042822  XER:
-00000000
-IRQMASK: 0=20
-GPR00: 0000000000000004 00003fffe21d3000 00003fff9b8f6300 0000000000000001=
-=20
-GPR04: 0000000026979780 0000000000001000 0000000000000001 0000000000000036=
-=20
-GPR08: 000000002697a780 0000000000000000 0000000000000000 0000000000000000=
-=20
-GPR12: 0000000000000000 00003fff9be17430 00000000100f1858 0000000010063a50=
-=20
-GPR16: 00000000100639f8 0000000010063968 000000012e83eb28 0000000000000000=
-=20
-GPR20: ffffffffffffffff 0000000011a5b890 0000000000000001 00000000114e5160=
-=20
-GPR24: 00000000114e5170 0000000000000000 0000000026979780 0000000000001000=
-=20
-GPR28: 0000000000001000 00003fff9b8f0920 0000000026979780 0000000000001000=
-=20
-NIP [00003fff9b804b00] 0x3fff9b804b00
-LR [00003fff9b780d04] 0x3fff9b780d04
---- interrupt: c00
-Rebooting in 40 seconds..
-
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.
-You are watching someone on the CC list of the bug.=
+This framing doesn't cover all situations, but I've found it to be
+generally useful.
