@@ -2,55 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CAEA4181E6
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Sep 2021 14:24:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12AF7418322
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Sep 2021 17:15:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HGp4g0Rvvz30J9
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Sep 2021 22:24:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HGssF1TQ7z2yYl
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Sep 2021 01:15:13 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=J5eodTOK;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=desnesn@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=J5eodTOK; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HGp4D50sqz2yMG
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Sep 2021 22:24:26 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4HGp441jPBz9sW7;
- Sat, 25 Sep 2021 14:24:20 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id L3IbZzqePKhm; Sat, 25 Sep 2021 14:24:20 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4HGp440gRfz9sW6;
- Sat, 25 Sep 2021 14:24:20 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id EFB3C8B76D;
- Sat, 25 Sep 2021 14:24:19 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id nRAI_tahIF8c; Sat, 25 Sep 2021 14:24:19 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.203.8])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 8F1E38B763;
- Sat, 25 Sep 2021 14:24:19 +0200 (CEST)
-Subject: Re: ppc32 doesn't boot when linkaddr=0x00900000
-To: cp <carlojpisani@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <CA+QBN9AFNSf3+U4iMhwZx7c69MLk-BtSbVODBEA97ObYWRczbQ@mail.gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <a2d5790b-dad3-f4a6-dbe1-ef33cbb13ff2@csgroup.eu>
-Date: Sat, 25 Sep 2021 14:24:18 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HGsrR3pwgz2xtR
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Sep 2021 01:14:30 +1000 (AEST)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18PBcxgg003061; 
+ Sat, 25 Sep 2021 11:14:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=ZaI3EcatiddSWtTxy8KDie+gV9GvILToE+ZVdnA8tzA=;
+ b=J5eodTOK9UET/2Li84QOFQiKzSYlBHYD52nNma3zXC9IRD5Q8JsNQqW+qd80IFDUUnha
+ 8MUFkmOYUtoe78livBjHdU6f4mPCnUEz9MTjV9lt46tlMM5aXqXCVCgQ4TlOoxTWUYF4
+ mIVQTPqEiPp+RquRQho9FInpvKQa1cD3KYs5GPBFIvI/0iT+9Ah6AS1qrrzwLiB/446r
+ LJfsIuC2kcCIYL6njttYIdnqvrmRVkaDpqRNK8kGs2pkcg6LxfnQ8YyYKU9xP7f0WXvl
+ VufVpplhVro6fV2xE6jBTle7u2QhwLD0SQt7KhS9+D6FHG6d3zjSUaII03K5iTdN7RL+ +g== 
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3b9yv8ctwr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 25 Sep 2021 11:14:27 -0400
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 18PFCDjr000589;
+ Sat, 25 Sep 2021 15:14:26 GMT
+Received: from b03cxnp07027.gho.boulder.ibm.com
+ (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
+ by ppma04wdc.us.ibm.com with ESMTP id 3b9ud9d861-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 25 Sep 2021 15:14:26 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 18PFEO0D11207104
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sat, 25 Sep 2021 15:14:24 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7AFAABE04F;
+ Sat, 25 Sep 2021 15:14:24 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BB7E4BE058;
+ Sat, 25 Sep 2021 15:14:22 +0000 (GMT)
+Received: from ibm.ibmuc.com (unknown [9.160.60.10])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Sat, 25 Sep 2021 15:14:22 +0000 (GMT)
+From: "Desnes A. Nunes do Rosario" <desnesn@linux.ibm.com>
+To: netdev@vger.kernel.org
+Subject: [PATCH] Revert "ibmvnic: check failover_pending in login response"
+Date: Sat, 25 Sep 2021 12:14:18 -0300
+Message-Id: <20210925151418.1614874-1-desnesn@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-In-Reply-To: <CA+QBN9AFNSf3+U4iMhwZx7c69MLk-BtSbVODBEA97ObYWRczbQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr-FR
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: tUBsjFbl1Dsx540taYQXCL5RpfvSXyDs
+X-Proofpoint-GUID: tUBsjFbl1Dsx540taYQXCL5RpfvSXyDs
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
+ definitions=2021-09-25_05,2021-09-24_02,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 impostorscore=0
+ mlxscore=0 malwarescore=0 adultscore=0 mlxlogscore=999 suspectscore=0
+ lowpriorityscore=0 spamscore=0 phishscore=0 priorityscore=1501 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2109230001
+ definitions=main-2109250113
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,31 +96,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: paulus@samba.org, torvalds@linux-foundation.org
+Cc: drt@linux.ibm.com, tlfalcon@linux.ibm.com, sukadev@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org,
+ "Desnes A. Nunes do Rosario" <desnesn@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+This reverts commit d437f5aa23aa2b7bd07cd44b839d7546cc17166f.
 
-Le 25/09/2021 à 11:49, cp a écrit :
-> hi
-> I am new to this list. Hope this is the right place to ask.
-> 
-> I am working with a PPC405GP board, and as far as I understand, the
-> support for ppc40x platforms like Acadia and Walnut were dropped with
-> kernel 5.8.0, so this seems like a pretty straightforward question,
-> but extensive experiments from kernel 4.11 to kernel 5.7.19 haven't
-> shown a really clear, up-to-date answer.
-> 
-> In k4.11 .. k5.7.19, when the kernel size is bigger than 8 MB, the
-> final kernel doesn't boot but rather arch/powerpc/boot/main.c dies
-> before the first message from the kernel shows up.
-> 
-> Why?
+Code has been duplicated through commit <273c29e944bd> "ibmvnic: check
+failover_pending in login response"
 
-That's the fourth time I receive your email. Please give us time to 
-analyse it, there is no point in sending it again and again unless you 
-have additional information to provide.
+Signed-off-by: Desnes A. Nunes do Rosario <desnesn@linux.ibm.com>
+---
+ drivers/net/ethernet/ibm/ibmvnic.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-Christophe
+diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
+index a4579b340120..6aa6ff89a765 100644
+--- a/drivers/net/ethernet/ibm/ibmvnic.c
++++ b/drivers/net/ethernet/ibm/ibmvnic.c
+@@ -4708,14 +4708,6 @@ static int handle_login_rsp(union ibmvnic_crq *login_rsp_crq,
+ 		return 0;
+ 	}
+ 
+-	if (adapter->failover_pending) {
+-		adapter->init_done_rc = -EAGAIN;
+-		netdev_dbg(netdev, "Failover pending, ignoring login response\n");
+-		complete(&adapter->init_done);
+-		/* login response buffer will be released on reset */
+-		return 0;
+-	}
+-
+ 	netdev->mtu = adapter->req_mtu - ETH_HLEN;
+ 
+ 	netdev_dbg(adapter->netdev, "Login Response Buffer:\n");
+-- 
+2.31.1
+
