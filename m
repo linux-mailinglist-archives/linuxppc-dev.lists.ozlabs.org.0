@@ -2,44 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E26F4186DC
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Sep 2021 09:08:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CE1D418719
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Sep 2021 09:19:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HHH1Z3Z0Lz2ypR
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Sep 2021 17:08:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HHHGF2NMXz3bW7
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Sep 2021 17:19:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=baidu.com (client-ip=111.206.215.185; helo=baidu.com;
- envelope-from=caihuoqing@baidu.com; receiver=<UNKNOWN>)
-X-Greylist: delayed 949 seconds by postgrey-1.36 at boromir;
- Sun, 26 Sep 2021 17:08:24 AEST
-Received: from baidu.com (mx24.baidu.com [111.206.215.185])
- by lists.ozlabs.org (Postfix) with ESMTP id 4HHH141QHXz2yNn
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Sep 2021 17:08:19 +1000 (AEST)
-Received: from BC-Mail-Ex11.internal.baidu.com (unknown [172.31.51.51])
- by Forcepoint Email with ESMTPS id C07ABCB2A5B8EE19BD12;
- Sun, 26 Sep 2021 14:52:22 +0800 (CST)
-Received: from BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) by
- BC-Mail-Ex11.internal.baidu.com (172.31.51.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2242.12; Sun, 26 Sep 2021 14:52:22 +0800
-Received: from LAPTOP-UKSR4ENP.internal.baidu.com (172.31.63.8) by
- BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2308.14; Sun, 26 Sep 2021 14:52:21 +0800
-From: Cai Huoqing <caihuoqing@baidu.com>
-To: <caihuoqing@baidu.com>
-Subject: [PATCH v2] ibmveth: Use dma_alloc_coherent() instead of
- kmalloc/dma_map_single()
-Date: Sun, 26 Sep 2021 14:52:14 +0800
-Message-ID: <20210926065214.495-1-caihuoqing@baidu.com>
-X-Mailer: git-send-email 2.17.1
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com;
+ envelope-from=wangkefeng.wang@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HHHDR4pDSz2yPY
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Sep 2021 17:18:15 +1000 (AEST)
+Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.55])
+ by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4HHH7N57H2zRSQg;
+ Sun, 26 Sep 2021 15:13:52 +0800 (CST)
+Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
+ dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.8; Sun, 26 Sep 2021 15:18:07 +0800
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.8; Sun, 26 Sep 2021 15:18:06 +0800
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+To: <arnd@arndb.de>, <linux-arch@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+ <rostedt@goodmis.org>, <mingo@redhat.com>, <davem@davemloft.net>,
+ <ast@kernel.org>, <ryabinin.a.a@gmail.com>, <akpm@linux-foundation.org>
+Subject: [PATCH v3 0/9] sections: Unify kernel sections range check and use
+Date: Sun, 26 Sep 2021 15:20:39 +0800
+Message-ID: <20210926072048.190336-1-wangkefeng.wang@huawei.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Originating-IP: [172.31.63.8]
-X-ClientProxiedBy: BC-Mail-Ex13.internal.baidu.com (172.31.51.53) To
- BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42)
+X-Originating-IP: [10.175.113.25]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpemm500001.china.huawei.com (7.185.36.107)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,77 +55,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Cristobal Forno <cforno12@linux.ibm.com>, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Jakub Kicinski <kuba@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: bpf@vger.kernel.org, paulus@samba.org,
+ Kefeng Wang <wangkefeng.wang@huawei.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Replacing kmalloc/kfree/dma_map_single/dma_unmap_single()
-with dma_alloc_coherent/dma_free_coherent() helps to reduce
-code size, and simplify the code, and coherent DMA will not
-clear the cache every time.
+There are three head files(kallsyms.h, kernel.h and sections.h) which
+include the kernel sections range check, let's make some cleanup and
+unify them.
 
-Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
----
-v1->v2: Remove extra change in Kconfig
+1. cleanup arch specific text/data check and fix address boundary check
+   in kallsyms.h
+2. make all the basic/core kernel range check function into sections.h
+3. update all the callers, and use the helper in sections.h to simplify
+   the code
 
- drivers/net/ethernet/ibm/ibmveth.c | 25 +++++++++----------------
- 1 file changed, 9 insertions(+), 16 deletions(-)
+After this series, we have 5 APIs about kernel sections range check in
+sections.h
 
-diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-index 3d9b4f99d357..3aedb680adb8 100644
---- a/drivers/net/ethernet/ibm/ibmveth.c
-+++ b/drivers/net/ethernet/ibm/ibmveth.c
-@@ -605,17 +605,13 @@ static int ibmveth_open(struct net_device *netdev)
- 	}
- 
- 	rc = -ENOMEM;
--	adapter->bounce_buffer =
--	    kmalloc(netdev->mtu + IBMVETH_BUFF_OH, GFP_KERNEL);
--	if (!adapter->bounce_buffer)
--		goto out_free_irq;
- 
--	adapter->bounce_buffer_dma =
--	    dma_map_single(&adapter->vdev->dev, adapter->bounce_buffer,
--			   netdev->mtu + IBMVETH_BUFF_OH, DMA_BIDIRECTIONAL);
--	if (dma_mapping_error(dev, adapter->bounce_buffer_dma)) {
--		netdev_err(netdev, "unable to map bounce buffer\n");
--		goto out_free_bounce_buffer;
-+	adapter->bounce_buffer = dma_alloc_coherent(&adapter->vdev->dev,
-+						    netdev->mtu + IBMVETH_BUFF_OH,
-+						    &adapter->bounce_buffer_dma, GFP_KERNEL);
-+	if (!adapter->bounce_buffer) {
-+		netdev_err(netdev, "unable to alloc bounce buffer\n");
-+		goto out_free_irq;
- 	}
- 
- 	netdev_dbg(netdev, "initial replenish cycle\n");
-@@ -627,8 +623,6 @@ static int ibmveth_open(struct net_device *netdev)
- 
- 	return 0;
- 
--out_free_bounce_buffer:
--	kfree(adapter->bounce_buffer);
- out_free_irq:
- 	free_irq(netdev->irq, netdev);
- out_free_buffer_pools:
-@@ -702,10 +696,9 @@ static int ibmveth_close(struct net_device *netdev)
- 			ibmveth_free_buffer_pool(adapter,
- 						 &adapter->rx_buff_pool[i]);
- 
--	dma_unmap_single(&adapter->vdev->dev, adapter->bounce_buffer_dma,
--			 adapter->netdev->mtu + IBMVETH_BUFF_OH,
--			 DMA_BIDIRECTIONAL);
--	kfree(adapter->bounce_buffer);
-+	dma_free_coherent(&adapter->vdev->dev,
-+			  adapter->netdev->mtu + IBMVETH_BUFF_OH,
-+			  adapter->bounce_buffer, adapter->bounce_buffer_dma);
- 
- 	netdev_dbg(netdev, "close complete\n");
- 
+ * is_kernel_rodata()		--- already in sections.h
+ * is_kernel_core_data()	--- come from core_kernel_data() in kernel.h
+ * is_kernel_inittext()		--- come from kernel.h and kallsyms.h
+ * __is_kernel_text()		--- add new internal helper
+ * __is_kernel()		--- add new internal helper
+
+Note: For the last two helpers, people should not use directly, consider to
+      use corresponding function in kallsyms.h.
+
+v3:
+- Add Steven's RB to patch2
+- Introduce two internal helper, then use is_kernel_text() in core_kernel_text()
+  and is_kernel() in kernel_or_module_addr() suggested by Steven
+
+v2:
+https://lore.kernel.org/linux-arch/20210728081320.20394-1-wangkefeng.wang@huawei.com/
+- add ACK/RW to patch2, and drop inappropriate fix tag
+- keep 'core' to check kernel data, suggestted by Steven Rostedt
+  <rostedt@goodmis.org>, rename is_kernel_data() to is_kernel_core_data()
+- drop patch8 which is merged
+- drop patch9 which is resend independently
+
+v1:
+https://lore.kernel.org/linux-arch/20210626073439.150586-1-wangkefeng.wang@huawei.com
+
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org 
+Cc: bpf@vger.kernel.org 
+
+Kefeng Wang (9):
+  kallsyms: Remove arch specific text and data check
+  kallsyms: Fix address-checks for kernel related range
+  sections: Move and rename core_kernel_data() to is_kernel_core_data()
+  sections: Move is_kernel_inittext() into sections.h
+  x86: mm: Rename __is_kernel_text() to is_x86_32_kernel_text()
+  sections: Provide internal __is_kernel() and __is_kernel_text() helper
+  mm: kasan: Use is_kernel() helper
+  extable: Use is_kernel_text() helper
+  powerpc/mm: Use is_kernel_text() and is_kernel_inittext() helper
+
+ arch/powerpc/mm/pgtable_32.c   |  7 +---
+ arch/x86/kernel/unwind_orc.c   |  2 +-
+ arch/x86/mm/init_32.c          | 14 +++----
+ include/asm-generic/sections.h | 75 ++++++++++++++++++++++++++--------
+ include/linux/kallsyms.h       | 13 +-----
+ include/linux/kernel.h         |  2 -
+ kernel/extable.c               | 33 ++-------------
+ kernel/locking/lockdep.c       |  3 --
+ kernel/trace/ftrace.c          |  2 +-
+ mm/kasan/report.c              |  2 +-
+ net/sysctl_net.c               |  2 +-
+ 11 files changed, 75 insertions(+), 80 deletions(-)
+
 -- 
-2.25.1
+2.26.2
 
