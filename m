@@ -2,65 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9A47418AFF
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Sep 2021 22:29:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85E92418B11
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Sep 2021 22:50:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HHcn34Jymz303H
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Sep 2021 06:29:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HHdFR33vsz3002
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Sep 2021 06:50:19 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=qag8VEr5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=YNUKZmOz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.51;
- helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+ smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::533;
+ helo=mail-pg1-x533.google.com; envelope-from=rientjes@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=qag8VEr5; 
- dkim-atps=neutral
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de
- [85.215.255.51])
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20210112 header.b=YNUKZmOz; dkim-atps=neutral
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com
+ [IPv6:2607:f8b0:4864:20::533])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HHcmK1sr7z2y8P
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Sep 2021 06:28:30 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1632688064;
- s=strato-dkim-0002; d=xenosoft.de;
- h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:Cc:Date:
- From:Subject:Sender;
- bh=ZwTDZmcdSodzbMMYFurwJvlpTk12WKif2EUrBR/IG+M=;
- b=qag8VEr51IOGxHh7pLDzqZrCwefpVEE99PZXC3ZDpzEdIXPuqiBEnQJELIVg8tojHv
- WWQjg3SRl1Za8o7T9n2IpacMMnvrOBQ4CYssUQYmJ9NuZBKEa9BvlzBLjskmf9K6ARif
- oJhVdpx+aCoM1JLA4vFEchZdXiPrf5mWfXImB4mhYY2bGFnUKVT+a/M8KdY2xEVnkmdk
- EIax6i7nNtSmgU20QRYZrZGtIPFTuYo8r73EdsDtV3E36zesUqHgqFzdIaTyyz1Vpaau
- VOPd6TGNwfR56/D8kAmlBUXxT+tUsgL1Mjy40qhOHW5VAgpqhxgzqSY5a9g7sZ1ix/Eq
- +NAA==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHvJzedV4hp0mZ3BcIsNuXwJHtB9luwoCLxF5vuIzCYIWaT4="
-X-RZG-CLASS-ID: mo00
-Received: from [IPv6:2a01:598:b170:9699:650b:68ce:8bff:6d3]
- by smtp.strato.de (RZmta 47.33.8 AUTH)
- with ESMTPSA id I00cdex8QKRfJjT
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Sun, 26 Sep 2021 22:27:41 +0200 (CEST)
-Subject: Re: Add Apple M1 support to PASemi i2c driver
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-To: sven@svenpeter.dev
-References: <6487d099-e0d6-4ea3-d312-6adbd94589f4@xenosoft.de>
-Message-ID: <3dcc6c36-a0dd-0cad-428d-a6ed0f73e687@xenosoft.de>
-Date: Sun, 26 Sep 2021 22:27:40 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HHdDl5VB6z2xtM
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Sep 2021 06:49:41 +1000 (AEST)
+Received: by mail-pg1-x533.google.com with SMTP id x191so8861057pgd.9
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Sep 2021 13:49:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
+ h=date:from:to:cc:subject:in-reply-to:message-id:references
+ :mime-version; bh=1Xi2zI3xz++jAU4KL461gSjO8O02r5P5HLSbGNQJnPI=;
+ b=YNUKZmOzFiHeJ2mJa7gvVYN7uN2TvfskQSN1D5sRVykhEQSaJ9ruR/0/YcZL/v6m+1
+ ej1FfHbYG0ay7WCE+E3fA04decWx+gxNMJh/2AfKb1EJT5DQhro8je6KQpQGeHKkDbsI
+ 2Vo6bqf1guqWezlCcy2Pu6ROHYsiuxXT4kAlFIb+PM88X+oLVX6srxEMUnpVmYtptPL8
+ WAOiHaRdS1eZovd/jq4qVEL92/LIrjngBpm8KGcaYFTn8I1F9IQaKEEHQjkczzN5zKka
+ GwufIKM8VX78GbMlNVMgRK/KoB016OeVF3XuaLuGYvlJ152+ArnP4IkuG15uKtU0UehI
+ POCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:to:cc:subject:in-reply-to:message-id
+ :references:mime-version;
+ bh=1Xi2zI3xz++jAU4KL461gSjO8O02r5P5HLSbGNQJnPI=;
+ b=xtRdPGM2P7znXZ6Pi+T68JT47C79jkn/2+35TokOhHKU0xCGZ8VloRl8qkUvzvltyZ
+ Rc1UGGUaJJBXT+nI6Bc2QfSzQ2LAdPp8PQS1lm2jJYRftKRSWdySq6g6UFva2k7obr05
+ krxIXB9YyK/Mr21RzPPqhR9Yzyzk8cWOqokiR03a/KqEgjgxpxCLSaBymVY4mhzyyt/L
+ wV2LhbtSWgUIsDoNd+aqLhUE5mop9+1hX+sWMvh5n4Vchwy+dBPZv0oSF0GHq+hTzT+K
+ YDSRVYRM10yELEBCSjaIJu+naza0bP6j/qBsBsfdf/PyUaNYG+qU1eJPuyFAFJRLg8io
+ P4yQ==
+X-Gm-Message-State: AOAM531QRP3G1S7b8czbDEWmIIKadREdmOMg0ZyHF1S5xsUKQ7+8/n4T
+ ytRbYc/pMs82vqgA30RCfG1BzA==
+X-Google-Smtp-Source: ABdhPJzndYH2uLj5kPrP3Kat7T50/IOEb8DNH7IWYo8ePwhsiil1vOxBGyaBm89cXY3NegHO0nVNfg==
+X-Received: by 2002:a63:4457:: with SMTP id t23mr583580pgk.354.1632689377421; 
+ Sun, 26 Sep 2021 13:49:37 -0700 (PDT)
+Received: from [2620:15c:17:3:4d45:c2:971a:f134]
+ ([2620:15c:17:3:4d45:c2:971a:f134])
+ by smtp.gmail.com with ESMTPSA id q13sm6606060pfk.128.2021.09.26.13.49.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 26 Sep 2021 13:49:36 -0700 (PDT)
+Date: Sun, 26 Sep 2021 13:49:35 -0700 (PDT)
+From: David Rientjes <rientjes@google.com>
+To: Stephen Kitt <steve@sk2.org>
+Subject: Re: [PATCH] mm: Remove HARDENED_USERCOPY_FALLBACK
+In-Reply-To: <20210921061149.1091163-1-steve@sk2.org>
+Message-ID: <d2dc495-98c8-9a5c-823f-bb1cd55a8d4@google.com>
+References: <20210921061149.1091163-1-steve@sk2.org>
 MIME-Version: 1.0
-In-Reply-To: <6487d099-e0d6-4ea3-d312-6adbd94589f4@xenosoft.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: de-DE
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,59 +78,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, arnd@arndb.de, marcan@marcan.st,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-i2c@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- alyssa@rosenzweig.io, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- Olof Johansson <olof@lixom.net>, mohamed.mediouni@caramail.com,
- Matthew Leaman <matthew@a-eon.biz>, mark.kettenis@xs4all.nl,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "R.T.Dickinson" <rtd@a-eon.com>,
- linux-arm-kernel@lists.infradead.org, stan@corellium.com
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Kees Cook <keescook@chromium.org>, James Morris <jmorris@namei.org>,
+ linux-kernel@vger.kernel.org, Pekka Enberg <penberg@kernel.org>,
+ linux-mm@kvack.org, linux-security-module@vger.kernel.org,
+ linux-hardening@vger.kernel.org, Christoph Lameter <cl@linux.com>,
+ linuxppc-dev@lists.ozlabs.org, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+ Vlastimil Babka <vbabka@suse.cz>, "Serge E . Hallyn" <serge@hallyn.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Sven,
+On Tue, 21 Sep 2021, Stephen Kitt wrote:
 
-I can't apply your patch 5 (i2c: pasemi: Split pci driver to its own 
-file). [1]
+> This has served its purpose and is no longer used. All usercopy
+> violations appear to have been handled by now, any remaining
+> instances (or new bugs) will cause copies to be rejected.
+> 
+> This isn't a direct revert of commit 2d891fbc3bb6 ("usercopy: Allow
+> strict enforcement of whitelists"); since usercopy_fallback is
+> effectively 0, the fallback handling is removed too.
+> 
+> This also removes the usercopy_fallback module parameter on
+> slab_common.
+> 
+> Link: https://github.com/KSPP/linux/issues/153
+> Signed-off-by: Stephen Kitt <steve@sk2.org>
+> Suggested-by: Kees Cook <keescook@chromium.org>
 
-Error message:
-
-patching file b/drivers/i2c/busses/i2c-pasemi-core.c (renamed from 
-a/drivers/i2c/busses/i2c-pasemi.c)
-Hunk #3 FAILED at 344.
-1 out of 3 hunks FAILED -- saving rejects to file 
-b/drivers/i2c/busses/i2c-pasemi-core.c.rej
-patching file b/drivers/i2c/busses/i2c-pasemi-core.h
-patching file b/drivers/i2c/busses/i2c-pasemi-pci.c
-
-Please post one patch with all your modifications.
-
-Thanks,
-Christian
-
-[1] 
-https://lists.ozlabs.org/pipermail/linuxppc-dev/2021-September/234636.html
-
-
-On 26 September 2021 at 04:55 pm, Christian Zigotzky wrote:
-> Hi Sven,
->
-> Thanks a lot for your nice explanation of the history of the PASemi 
-> i2c driver.
->
-> We are using Nemo boards with 64-bit dual-core PWRficient PA6T-1682M 
-> CPUs (A-EON AmigaOne X1000). [1]
->
-> The RC2 of kernel 5.15 works without any problems on our Nemo boards. [2]
->
-> Could you please post all your patches merged in one patch? It's 
-> easier for me to apply one patch.
->
-> Thanks,
-> Christian
->
-> [1] https://en.wikipedia.org/wiki/AmigaOne_X1000
-> [2] https://forum.hyperion-entertainment.com/viewtopic.php?p=54056#p54056
-
+Acked-by: David Rientjes <rientjes@google.com>
