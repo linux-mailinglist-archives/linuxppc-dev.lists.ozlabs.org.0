@@ -1,92 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAD744188B8
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Sep 2021 14:49:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6728B4188A5
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Sep 2021 14:35:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HHQZD4L2fz3c4c
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Sep 2021 22:49:08 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=svenpeter.dev header.i=@svenpeter.dev header.a=rsa-sha256 header.s=fm2 header.b=TboQyJyt;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=NxAyPacu;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HHQGd2Fcmz3bmx
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Sep 2021 22:35:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=svenpeter.dev (client-ip=66.111.4.224;
- helo=new2-smtp.messagingengine.com; envelope-from=sven@svenpeter.dev;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=svenpeter.dev header.i=@svenpeter.dev
- header.a=rsa-sha256 header.s=fm2 header.b=TboQyJyt; 
- dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm3 header.b=NxAyPacu; 
- dkim-atps=neutral
-Received: from new2-smtp.messagingengine.com (new2-smtp.messagingengine.com
- [66.111.4.224])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HHLxt4zqlz2yWL
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Sep 2021 20:05:54 +1000 (AEST)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.42])
- by mailnew.nyi.internal (Postfix) with ESMTP id 547A3580FDE;
- Sun, 26 Sep 2021 06:00:01 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute2.internal (MEProxy); Sun, 26 Sep 2021 06:00:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=svenpeter.dev;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding; s=fm2; bh=LP/8lz47saqkf
- hCVmeWif4VdrSPwoBp2uj9OD6MO2sI=; b=TboQyJyt4MGPZJh/xJ6qiczrTbGWj
- r5ApKe/VulYN+FhoEFA2Qa93FiZAbXkU1ZtaUwNCSiCTkM7hl0FX9DLDf+jafm3f
- ML33GGGZnp8Er/R2btTDv2FpAhfpz1+x/vLcShzcqnDh5KMv3csTx1pKg2qt2Hm0
- /UFXYA5NG4/gVSYBx6fUSeS8sBt2nV/Zy+VCZk/ZO/7i3diRgpap5XTrSuCsTbnH
- 74QM1QWjmIdItbseJZ8MYjXn7Ex9BL3qaTpC+6dmHWTAA8ULeCMj5bZU1vXr4oPz
- ZtXKW6NHxB50qxOiEEKfzobdWl9ffVpkMaDSh5P9e1riYsA8inkxZo8TQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:content-transfer-encoding:date:from
- :in-reply-to:message-id:mime-version:references:subject:to
- :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm3; bh=LP/8lz47saqkfhCVmeWif4VdrSPwoBp2uj9OD6MO2sI=; b=NxAyPacu
- lGio5pH75/BsAtFRtcWvrptpUnUxDJJjbRfdGf6+/V3X61T4rm7z+D4m3S/dKNN/
- UugMrelKaJ8AdH0p7lN0QCwSvJrLWpKPgwAlAYm17h5Uo5t0ZIZTGiHo09ud4K63
- N6U+7iP8DbcxjQnJ7oz1rC39WRsuofgUdAzRWJTExpc1N62l+C2Sb445bhMsmugi
- dO1hhWz6UaaRf6TZqEKim+KP9vk+8RcQ4u/RW6jlbdOBNsCDlX65pW74QeXdyrj0
- gYYZAfRWYnOPpqgaQnbcr6CAhyuMDhvcEmVLyLTIMPyee6M3eUKaXI54eriFTDtY
- Xnk91yd1fBBC5w==
-X-ME-Sender: <xms:oURQYW6lSjhpfTKbyCfHTwZMKa2urpOLUYQn5zBhmDMUDNiOwSMNFg>
- <xme:oURQYf5fxzX5na2HVZRUfewcI1zj0D7QVIYBWh3j-tcHzaGV_4EDX4YcGqeJP5DU6
- UCEwFgVPR2o3jES5k4>
-X-ME-Received: <xmr:oURQYVdrqr8DLl27asJv6excVrQEXxW1sHHlD8UQmgX-P-gA22DoGN4Y_MOd92rfV4EPvKHNgb4VKDl__dKjlZdVSW_IudK_dnfua0Ee5wkthPJA0kVKrQc>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrudejiedgvdduucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurhephffvufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpefuvhgvnhcu
- rfgvthgvrhcuoehsvhgvnhesshhvvghnphgvthgvrhdruggvvheqnecuggftrfgrthhtvg
- hrnheptedvkeetleeuffffhfekteetffeggffgveehieelueefvddtueffveevlefhfeej
- necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepshhvvg
- hnsehsvhgvnhhpvghtvghrrdguvghv
-X-ME-Proxy: <xmx:oURQYTJKF2PL7JbAJxAMlBB0SbikpwIlZocBMD86dnoGhzw9pMjYog>
- <xmx:oURQYaJH7xtoAqBQUbEcEFUgsah3qTIKr7g8QPpq6-LnbUiybMQz0w>
- <xmx:oURQYUyoe-VxOkdI5BK3V_Gi6acHpUpniaDbfJIF6j-JQhXxKEE2aA>
- <xmx:oURQYVYz0wefuikiDeuRSykuuZ95ZGcm6SDQJ5chrpMvtAIqiEIuKg>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 26 Sep 2021 05:59:59 -0400 (EDT)
-From: Sven Peter <sven@svenpeter.dev>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Olof Johansson <olof@lixom.net>
-Subject: [PATCH 10/10] i2c: pasemi: Set enable bit for Apple variant
-Date: Sun, 26 Sep 2021 11:58:47 +0200
-Message-Id: <20210926095847.38261-11-sven@svenpeter.dev>
-X-Mailer: git-send-email 2.30.1 (Apple Git-130)
-In-Reply-To: <20210926095847.38261-1-sven@svenpeter.dev>
-References: <20210926095847.38261-1-sven@svenpeter.dev>
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com;
+ envelope-from=nixiaoming@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HHQG52Jltz2xr9
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Sep 2021 22:35:05 +1000 (AEST)
+Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.53])
+ by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4HHQ8V1bs5z8yp5;
+ Sun, 26 Sep 2021 20:30:18 +0800 (CST)
+Received: from dggema774-chm.china.huawei.com (10.1.198.216) by
+ dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.2308.8; Sun, 26 Sep 2021 20:34:52 +0800
+Received: from [10.67.102.197] (10.67.102.197) by
+ dggema774-chm.china.huawei.com (10.1.198.216) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2308.8; Sun, 26 Sep 2021 20:34:51 +0800
+Subject: Re: [PATCH] powerpc:85xx: fix timebase sync issue when
+ CONFIG_HOTPLUG_CPU=n
+To: <linux-kernel@vger.kernel.org>, <oss@buserror.net>, <mpe@ellerman.id.au>, 
+ <benh@kernel.crashing.org>, <paulus@samba.org>,
+ <paul.gortmaker@windriver.com>, <Yuantian.Tang@feescale.com>,
+ <chenhui.zhao@freescale.com>, <linuxppc-dev@lists.ozlabs.org>
+References: <20210926025144.55674-1-nixiaoming@huawei.com>
+From: Xiaoming Ni <nixiaoming@huawei.com>
+Message-ID: <021a5ee3-25ef-1de4-0111-d4c3281e0f45@huawei.com>
+Date: Sun, 26 Sep 2021 20:34:51 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.0.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Sun, 26 Sep 2021 22:47:12 +1000
+In-Reply-To: <20210926025144.55674-1-nixiaoming@huawei.com>
+Content-Type: text/plain; charset="gbk"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.67.102.197]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggema774-chm.china.huawei.com (10.1.198.216)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,104 +59,145 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, Sven Peter <sven@svenpeter.dev>,
- Hector Martin <marcan@marcan.st>, linux-kernel@vger.kernel.org,
- linux-i2c@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- Mohamed Mediouni <mohamed.mediouni@caramail.com>,
- Stan Skowronek <stan@corellium.com>, linuxppc-dev@lists.ozlabs.org,
- Alyssa Rosenzweig <alyssa@rosenzweig.io>,
- Mark Kettenis <mark.kettenis@xs4all.nl>
+Cc: wangle6@huawei.com, wangxiongfeng2@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Some later revisions after the original PASemi I2C controller introduce
-what likely is an enable bit to the CTL register. Without setting it the
-actual i2c transmission is never started.
+On 2021/9/26 10:51, Xiaoming Ni wrote:
+> When CONFIG_SMP=y, timebase synchronization is required when the second
+>   kernel is started.
+> 	arch/powerpc/kernel/smp.c:
+> 	int __cpu_up(unsigned int cpu, struct task_struct *tidle)
+> 	{
+> 		...
+> 		if (smp_ops->give_timebase)
+> 			smp_ops->give_timebase();
+> 		...
+> 	}
+> 
+> 	void start_secondary(void *unused)
+> 	{
+> 		...
+> 		if (smp_ops->take_timebase)
+> 			smp_ops->take_timebase();
+> 		...
+> 	}
+> 
+> When CONFIG_HOTPLUG_CPU=n and CONFIG_KEXEC_CORE=n,
+>   smp_85xx_ops.give_timebase is NULL,
+>   smp_85xx_ops.take_timebase is NULL,
+> As a result, the timebase is not synchronized.
+> 
+> Timebase  synchronization does not depend on CONFIG_HOTPLUG_CPU.
+> 
+> Fixes: 56f1ba280719 ("powerpc/mpc85xx: refactor the PM operations")
+> Cc: stable@vger.kernel.org #v4.6
+> Signed-off-by: Xiaoming Ni <nixiaoming@huawei.com>
+> ---
+>   arch/powerpc/platforms/85xx/Makefile         | 2 +-
+>   arch/powerpc/platforms/85xx/mpc85xx_pm_ops.c | 4 ++++
+>   arch/powerpc/platforms/85xx/smp.c            | 9 ++++-----
+>   3 files changed, 9 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/85xx/Makefile b/arch/powerpc/platforms/85xx/Makefile
+> index 60e4e97a929d..71ce1f6b6966 100644
+> --- a/arch/powerpc/platforms/85xx/Makefile
+> +++ b/arch/powerpc/platforms/85xx/Makefile
+> @@ -3,7 +3,7 @@
+>   # Makefile for the PowerPC 85xx linux kernel.
+>   #
+>   obj-$(CONFIG_SMP) += smp.o
+> -obj-$(CONFIG_FSL_PMC)		  += mpc85xx_pm_ops.o
+> +obj-$(CONFIG_SMP) += mpc85xx_pm_ops.o
+>   
+>   obj-y += common.o
+>   
+> diff --git a/arch/powerpc/platforms/85xx/mpc85xx_pm_ops.c b/arch/powerpc/platforms/85xx/mpc85xx_pm_ops.c
+> index 7c0133f558d0..a5656b3e9701 100644
+> --- a/arch/powerpc/platforms/85xx/mpc85xx_pm_ops.c
+> +++ b/arch/powerpc/platforms/85xx/mpc85xx_pm_ops.c
+> @@ -17,6 +17,7 @@
+>   
+>   static struct ccsr_guts __iomem *guts;
+>   
+> +#ifdef CONFIG_FSL_PMC
+>   static void mpc85xx_irq_mask(int cpu)
+>   {
+>   
+> @@ -49,6 +50,7 @@ static void mpc85xx_cpu_up_prepare(int cpu)
+>   {
+>   
+>   }
+> +#endif
+>   
+>   static void mpc85xx_freeze_time_base(bool freeze)
+>   {
+> @@ -76,10 +78,12 @@ static const struct of_device_id mpc85xx_smp_guts_ids[] = {
+>   
+>   static const struct fsl_pm_ops mpc85xx_pm_ops = {
+>   	.freeze_time_base = mpc85xx_freeze_time_base,
+> +#ifdef CONFIG_FSL_PMC
+>   	.irq_mask = mpc85xx_irq_mask,
+>   	.irq_unmask = mpc85xx_irq_unmask,
+>   	.cpu_die = mpc85xx_cpu_die,
+>   	.cpu_up_prepare = mpc85xx_cpu_up_prepare,
+> +#endif
+>   };
+>   
+>   int __init mpc85xx_setup_pmc(void)
+> diff --git a/arch/powerpc/platforms/85xx/smp.c b/arch/powerpc/platforms/85xx/smp.c
+> index c6df294054fe..349298cd9671 100644
+> --- a/arch/powerpc/platforms/85xx/smp.c
+> +++ b/arch/powerpc/platforms/85xx/smp.c
+> @@ -40,7 +40,6 @@ struct epapr_spin_table {
+>   	u32	pir;
+>   };
+>   
+> -#ifdef CONFIG_HOTPLUG_CPU
+>   static u64 timebase;
+>   static int tb_req;
+>   static int tb_valid;
+> @@ -112,6 +111,7 @@ static void mpc85xx_take_timebase(void)
+>   	local_irq_restore(flags);
+>   }
+>   
+> +#ifdef CONFIG_HOTPLUG_CPU
+>   static void smp_85xx_cpu_offline_self(void)
+>   {
+>   	unsigned int cpu = smp_processor_id();
+> @@ -499,17 +499,16 @@ void __init mpc85xx_smp_init(void)
+>   #ifdef CONFIG_FSL_CORENET_RCPM
+>   	fsl_rcpm_init();
+>   #endif
+> -
+> -#ifdef CONFIG_FSL_PMC
+> -	mpc85xx_setup_pmc();
+>   #endif
+> +	mpc85xx_setup_pmc();
+>   	if (qoriq_pm_ops) {
+>   		smp_85xx_ops.give_timebase = mpc85xx_give_timebase;
+>   		smp_85xx_ops.take_timebase = mpc85xx_take_timebase;
+> +#ifdef CONFIG_HOTPLUG_CPU
+>   		smp_85xx_ops.cpu_offline_self = smp_85xx_cpu_offline_self;
+>   		smp_85xx_ops.cpu_die = qoriq_cpu_kill;
+> -	}
+>   #endif
+> +	}
+>   	smp_ops = &smp_85xx_ops;
+>   
+>   #ifdef CONFIG_KEXEC_CORE
+> 
 
-Signed-off-by: Sven Peter <sven@svenpeter.dev>
----
- drivers/i2c/busses/i2c-pasemi-core.c | 8 ++++++++
- drivers/i2c/busses/i2c-pasemi-core.h | 3 +++
- drivers/i2c/busses/i2c-pasemi-pci.c  | 6 ++++++
- 3 files changed, 17 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-pasemi-core.c b/drivers/i2c/busses/i2c-pasemi-core.c
-index 0ec65263fd08..b52a65beda99 100644
---- a/drivers/i2c/busses/i2c-pasemi-core.c
-+++ b/drivers/i2c/busses/i2c-pasemi-core.c
-@@ -22,6 +22,7 @@
- #define REG_MRXFIFO	0x04
- #define REG_SMSTA	0x14
- #define REG_CTL		0x1c
-+#define REG_REV		0x28
- 
- /* Register defs */
- #define MTXFIFO_READ	0x00000400
-@@ -37,6 +38,7 @@
- 
- #define CTL_MRR		0x00000400
- #define CTL_MTR		0x00000200
-+#define CTL_EN		0x00000800
- #define CTL_CLK_M	0x000000ff
- 
- static inline void reg_write(struct pasemi_smbus *smbus, int reg, int val)
-@@ -60,6 +62,9 @@ static void pasemi_reset(struct pasemi_smbus *smbus)
- {
- 	u32 val = (CTL_MTR | CTL_MRR | (smbus->clk_div & CTL_CLK_M));
- 
-+	if (smbus->hw_rev >= 6)
-+		val |= CTL_EN;
-+
- 	reg_write(smbus, REG_CTL, val);
- }
- 
-@@ -335,6 +340,9 @@ int pasemi_i2c_common_probe(struct pasemi_smbus *smbus)
- 	/* set up the sysfs linkage to our parent device */
- 	smbus->adapter.dev.parent = smbus->dev;
- 
-+	if (smbus->hw_rev != PASEMI_HW_REV_PCI)
-+		smbus->hw_rev = reg_read(smbus, REG_REV);
-+
- 	pasemi_reset(smbus);
- 
- 	error = devm_i2c_add_adapter(smbus->dev, &smbus->adapter);
-diff --git a/drivers/i2c/busses/i2c-pasemi-core.h b/drivers/i2c/busses/i2c-pasemi-core.h
-index aca4e2da9089..4655124a37f3 100644
---- a/drivers/i2c/busses/i2c-pasemi-core.h
-+++ b/drivers/i2c/busses/i2c-pasemi-core.h
-@@ -8,11 +8,14 @@
- #include <linux/io.h>
- #include <linux/kernel.h>
- 
-+#define PASEMI_HW_REV_PCI -1
-+
- struct pasemi_smbus {
- 	struct device		*dev;
- 	struct i2c_adapter	 adapter;
- 	void __iomem		*ioaddr;
- 	unsigned int		 clk_div;
-+	int			 hw_rev;
- };
- 
- int pasemi_i2c_common_probe(struct pasemi_smbus *smbus);
-diff --git a/drivers/i2c/busses/i2c-pasemi-pci.c b/drivers/i2c/busses/i2c-pasemi-pci.c
-index c1b8901110c0..2b7be35421bc 100644
---- a/drivers/i2c/busses/i2c-pasemi-pci.c
-+++ b/drivers/i2c/busses/i2c-pasemi-pci.c
-@@ -42,6 +42,12 @@ static int pasemi_smb_pci_probe(struct pci_dev *dev,
- 	size = pci_resource_len(dev, 0);
- 	smbus->clk_div = CLK_100K_DIV;
- 
-+	/*
-+	 * The original PASemi PCI controllers don't have a register for
-+	 * their HW revision.
-+	 */
-+	smbus->hw_rev = PASEMI_HW_REV_PCI;
-+
- 	if (!devm_request_region(&dev->dev, base, size,
- 			    pasemi_smb_pci_driver.name))
- 		return -EBUSY;
--- 
-2.25.1
+I found inconsistent time values on different CPUs on my mpc8572 and 
+used this patch to fix it.
+But today I found out in ppc64 testing that this patch causes the system 
+to trigger oops in the function mpc85xx_freeze_time_base(): the variable 
+"guts" is a null pointer.
 
+I'm sorry to bother you.
+I'll fix it and resend v2 later,
+
+Thanks
+Xiaoming Ni
