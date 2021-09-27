@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A5FA41A235
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 00:04:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5813541A288
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 00:05:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HJGrR1RlGz2yx9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 08:04:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HJGsr20V3z3bnq
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 08:05:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=NVxD3MPj;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=iQqCgxcP;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,27 +18,27 @@ Authentication-Results: lists.ozlabs.org;
  envelope-from=mcgrof@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=NVxD3MPj; 
+ header.s=bombadil.20210309 header.b=iQqCgxcP; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HJGpM56Syz2xtN
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HJGpM2d72z2xsv
  for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Sep 2021 08:02:34 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=/A8e3Exryf4rtAKubPoSRx9wLwUWPXr7luyCqYD7TXw=; b=NVxD3MPjpa4aY2uSH+ULAlbmYg
- 993HhkfEKXhQxHad1WhE1EGBovwbh/SSumqunkuEBuxraHGz6PwfxGrqZGsb3wSzDFOStCeUu5hI1
- jq/eUaHteXK72R8AY7dr+Gk3FMdgCm6DHaityKUOTZxVgIg2CYL2J5weTOCk8nzowdtTwATQWLaz8
- ShfH3PUPfdZSPhzidZfzomCoz6HYhK+PPvd6qqOjjHfzGO39fVGA4NKqWXpV0A6D09NUraWkjJrZt
- QWp+Od6UBE8exAHPbFVCLO4bc/2zoOTSE+RKt1Qa7JdEzsw1V29/IkZWuS44WaPJxpVHfWsP2T6mL
- RYC22D4A==;
+ bh=o2jFAXs2S20ugcqcgWqTKDs1dtJRAdxtjSIxmQce0yE=; b=iQqCgxcPEfR/tT7BcOih0IqCUi
+ rZdLXA0BoJeyuJkOjXPbJPzPcoH/n8om7Tlhp3EbM7OSRMoMphiBNgLlwwBwNWALgBi+SXNBFIrcV
+ PztSxSBtZFEkZMGMUJH/VyeWYSs+3AukRv4/nVnwwqJTKR9J/mqF0WS2/8EZCDMu7s51CVp3tcs17
+ A6lsDP6CF3ZUUakYShG24S7IGolFmr38eHbCdQ5/dAImALfBYSOZCN9ZpgkGOryTnBnDnr71vzG6N
+ jXTHg5V26wp0VGHY1Vmzt2e3YBLG7cM1+PRa62Z67gQ1DmT6aJp1MlesGumQUbskBH1IsCi77cm5t
+ RmUC9XbQ==;
 Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2
- (Red Hat Linux)) id 1mUyhC-004UJT-HL; Mon, 27 Sep 2021 22:01:58 +0000
+ (Red Hat Linux)) id 1mUyhC-004UJX-Ie; Mon, 27 Sep 2021 22:01:58 +0000
 From: Luis Chamberlain <mcgrof@kernel.org>
 To: axboe@kernel.dk, bhelgaas@google.com, liushixin2@huawei.com,
  thunder.leizhen@huawei.com, lee.jones@linaro.org, geoff@infradead.org,
@@ -46,9 +46,9 @@ To: axboe@kernel.dk, bhelgaas@google.com, liushixin2@huawei.com,
  jim@jtan.com, haris.iqbal@ionos.com, jinpu.wang@ionos.com,
  josh.h.morris@us.ibm.com, pjk1939@linux.ibm.com, tim@cyberelk.net,
  richard@nod.at, miquel.raynal@bootlin.com, vigneshr@ti.com
-Subject: [PATCH v2 05/10] rnbd: add error handling support for add_disk()
-Date: Mon, 27 Sep 2021 15:01:52 -0700
-Message-Id: <20210927220157.1069658-6-mcgrof@kernel.org>
+Subject: [PATCH v2 06/10] block/rsxx: add error handling support for add_disk()
+Date: Mon, 27 Sep 2021 15:01:53 -0700
+Message-Id: <20210927220157.1069658-7-mcgrof@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210927220157.1069658-1-mcgrof@kernel.org>
 References: <20210927220157.1069658-1-mcgrof@kernel.org>
@@ -76,51 +76,61 @@ We never checked for errors on add_disk() as this function
 returned void. Now that this is fixed, use the shiny new
 error handling.
 
-Acked-by: Jack Wang <jinpu.wang@ionos.com>
 Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 ---
- drivers/block/rnbd/rnbd-clt.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/block/rsxx/core.c |  4 +++-
+ drivers/block/rsxx/dev.c  | 12 +++++++++---
+ 2 files changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/block/rnbd/rnbd-clt.c b/drivers/block/rnbd/rnbd-clt.c
-index bd4a41afbbfc..1ba1c868535a 100644
---- a/drivers/block/rnbd/rnbd-clt.c
-+++ b/drivers/block/rnbd/rnbd-clt.c
-@@ -1384,8 +1384,10 @@ static void setup_request_queue(struct rnbd_clt_dev *dev)
- 	blk_queue_write_cache(dev->queue, dev->wc, dev->fua);
- }
+diff --git a/drivers/block/rsxx/core.c b/drivers/block/rsxx/core.c
+index 83636714b8d7..8d9d69f5dfbc 100644
+--- a/drivers/block/rsxx/core.c
++++ b/drivers/block/rsxx/core.c
+@@ -935,7 +935,9 @@ static int rsxx_pci_probe(struct pci_dev *dev,
+ 			card->size8 = 0;
+ 	}
  
--static void rnbd_clt_setup_gen_disk(struct rnbd_clt_dev *dev, int idx)
-+static int rnbd_clt_setup_gen_disk(struct rnbd_clt_dev *dev, int idx)
+-	rsxx_attach_dev(card);
++	st = rsxx_attach_dev(card);
++	if (st)
++		goto failed_create_dev;
+ 
+ 	/************* Setup Debugfs *************/
+ 	rsxx_debugfs_dev_new(card);
+diff --git a/drivers/block/rsxx/dev.c b/drivers/block/rsxx/dev.c
+index 1cc40b0ea761..b2d3ac3efce2 100644
+--- a/drivers/block/rsxx/dev.c
++++ b/drivers/block/rsxx/dev.c
+@@ -192,6 +192,8 @@ static bool rsxx_discard_supported(struct rsxx_cardinfo *card)
+ 
+ int rsxx_attach_dev(struct rsxx_cardinfo *card)
  {
-+	int err;
++	int err = 0;
 +
- 	dev->gd->major		= rnbd_client_major;
- 	dev->gd->first_minor	= idx << RNBD_PART_BITS;
- 	dev->gd->minors		= 1 << RNBD_PART_BITS;
-@@ -1410,7 +1412,11 @@ static void rnbd_clt_setup_gen_disk(struct rnbd_clt_dev *dev, int idx)
+ 	mutex_lock(&card->dev_lock);
  
- 	if (!dev->rotational)
- 		blk_queue_flag_set(QUEUE_FLAG_NONROT, dev->queue);
--	add_disk(dev->gd);
-+	err = add_disk(dev->gd);
+ 	/* The block device requires the stripe size from the config. */
+@@ -200,13 +202,17 @@ int rsxx_attach_dev(struct rsxx_cardinfo *card)
+ 			set_capacity(card->gendisk, card->size8 >> 9);
+ 		else
+ 			set_capacity(card->gendisk, 0);
+-		device_add_disk(CARD_TO_DEV(card), card->gendisk, NULL);
+-		card->bdev_attached = 1;
++		err = device_add_disk(CARD_TO_DEV(card), card->gendisk, NULL);
++		if (err == 0)
++			card->bdev_attached = 1;
+ 	}
+ 
+ 	mutex_unlock(&card->dev_lock);
+ 
+-	return 0;
 +	if (err)
-+		blk_cleanup_disk(dev->gd);
++		blk_cleanup_disk(card->gendisk);
 +
 +	return err;
  }
  
- static int rnbd_client_setup_device(struct rnbd_clt_dev *dev)
-@@ -1426,8 +1432,7 @@ static int rnbd_client_setup_device(struct rnbd_clt_dev *dev)
- 	rnbd_init_mq_hw_queues(dev);
- 
- 	setup_request_queue(dev);
--	rnbd_clt_setup_gen_disk(dev, idx);
--	return 0;
-+	return rnbd_clt_setup_gen_disk(dev, idx);
- }
- 
- static struct rnbd_clt_dev *init_dev(struct rnbd_clt_session *sess,
+ void rsxx_detach_dev(struct rsxx_cardinfo *card)
 -- 
 2.30.2
 
