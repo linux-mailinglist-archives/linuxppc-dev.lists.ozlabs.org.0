@@ -2,59 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C48D419782
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Sep 2021 17:13:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4266A419D58
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Sep 2021 19:47:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HJ5ks3t9Qz3bjM
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 01:13:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HJ97s0v6Rz2yRf
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 03:47:21 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kWuv8iV+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZittX7ds;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=ardb@kernel.org; receiver=<UNKNOWN>)
+ envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=kWuv8iV+; 
+ header.s=k20201202 header.b=ZittX7ds; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HJ5jv3Mgtz2yg8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Sep 2021 01:13:07 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3297F6108E
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Sep 2021 15:13:05 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HJ97C3cFvz2xvV
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Sep 2021 03:46:47 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D90CF60FBF;
+ Mon, 27 Sep 2021 17:46:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1632755585;
- bh=CKBeZqx1JroYNLrGq5H114mf1zFlMql7osjtvpITDCw=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=kWuv8iV+xytSwvyJ+WE7p4vZhlegf2K8K6wn11gaiRgiTqo86KkSu/HQc8WKXOYyp
- XOqIbD5SuJS5t7c5OqGBeJWQ+wfSD2VZBZKkvfK6k6vwqnIYxzbAWEk7Yv+HZIpAVl
- Ruj0gfXJN/5D3SnqG1XltMIEn5qjJSOKZF4UE3cWFIqMzV/x/0N0WHFy1GkKwLytjY
- qOPf0WQa3GWZNDmxHeoNKEFIEpKv1HIc1dbdNVTczTdAgfpeDAd7McPoUYytBNRhWt
- YIHXHQRJ58gNh9f1Kam2bK02typDuHssjytfmwZifwxTvvuBmLX6uQBGgXqT7l9DLe
- 6QntdJIkMA4mw==
-Received: by mail-oi1-f172.google.com with SMTP id e24so16085004oig.11
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Sep 2021 08:13:05 -0700 (PDT)
-X-Gm-Message-State: AOAM530XZl6+NyTo8pnz/W/HFpzDX9sGgf56N/Shh3MbEniVC9U3h7J9
- BuJGuegUP2nlewU4+eW8qywK9mY7rpzfYzSma1k=
-X-Google-Smtp-Source: ABdhPJyeC8BgibE5zzxbqU0l8Tut8FIpgncaCT3Q0Qb4RyOfhbEhCIFLxw2ikpv+mDHPe9VMwWn8YxftPxI0HPTWIJ0=
-X-Received: by 2002:aca:32c2:: with SMTP id y185mr501704oiy.47.1632755574136; 
- Mon, 27 Sep 2021 08:12:54 -0700 (PDT)
+ s=k20201202; t=1632764804;
+ bh=H8Mj81WyvY+HesKTc7Fr+jbrmn+2nM8SxLPaQtOgGIk=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:From;
+ b=ZittX7dsrCxpUqN8o37oZKbtwhDDRSMGteLP7htIcE97ezSL5hLEWtgtFTfMftD4e
+ CYwr2z84HijxnJHnlx2Vr2XnnnUzJnIHQBlphYKAODAoFWl2WYj56rnXzj1UAcmrvA
+ 1jlqXZrF6dDHlMQ2+bXx4Iinc4r6Hy4KkHIBwTcgeRtx+LXtO2yw8W1A3qGL+pMzx6
+ cMEZDA5ncBnXfuv1FmQRVuR7TMh1aiOkPpFQXGM3BmoRWzKuKqw+UVVGa3SQ/ddu5A
+ yBrQyDHe//KBx0FqVPhl76WYY/CsBta3w+VoXlryUBMj4/yxoHSpV15GYjV8aQ/7BF
+ r1L7xhiACVKEQ==
+Date: Mon, 27 Sep 2021 12:46:42 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Ben Widawsky <ben.widawsky@intel.com>
+Subject: Re: [PATCH v2 6/9] PCI: Add pci_find_dvsec_capability to find
+ designated VSEC
+Message-ID: <20210927174642.GA661147@bhelgaas>
 MIME-Version: 1.0
-References: <20210914121036.3975026-1-ardb@kernel.org>
- <20210914121036.3975026-5-ardb@kernel.org>
-In-Reply-To: <20210914121036.3975026-5-ardb@kernel.org>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 27 Sep 2021 17:12:43 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEojbQbNzCP39KT4EzFAyW3J1Tfm_stCZ+fGo8_SO90PA@mail.gmail.com>
-Message-ID: <CAMj1kXEojbQbNzCP39KT4EzFAyW3J1Tfm_stCZ+fGo8_SO90PA@mail.gmail.com>
-Subject: Re: [RFC PATCH 4/8] powerpc: add CPU field to struct thread_info
-To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210923172647.72738-7-ben.widawsky@intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,61 +57,113 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Paul Mackerras <paulus@samba.org>,
- linux-riscv <linux-riscv@lists.infradead.org>, Will Deacon <will@kernel.org>,
- "open list:S390" <linux-s390@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Russell King <linux@armlinux.org.uk>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Kees Cook <keescook@chromium.org>,
- Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
- Keith Packard <keithpac@amazon.com>, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
- <linuxppc-dev@lists.ozlabs.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andrew Donnellan <ajd@linux.ibm.com>, linux-pci@vger.kernel.org,
+ linux-cxl@vger.kernel.org, Frederic Barrat <fbarrat@linux.ibm.com>,
+ iommu@lists.linux-foundation.org,
+ "David E . Box" <david.e.box@linux.intel.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Dan Williams <dan.j.williams@intel.com>,
+ Kan Liang <kan.liang@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
+ David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 14 Sept 2021 at 14:11, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> The CPU field will be moved back into thread_info even when
-> THREAD_INFO_IN_TASK is enabled, so add it back to powerpc's definition
-> of struct thread_info.
->
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+s/pci_find_dvsec_capability/pci_find_dvsec_capability()/ in subject
+and commit log.
 
-Michael,
+On Thu, Sep 23, 2021 at 10:26:44AM -0700, Ben Widawsky wrote:
+> Add pci_find_dvsec_capability to locate a Designated Vendor-Specific
+> Extended Capability with the specified DVSEC ID.
 
-Do you have any objections or issues with this patch or the subsequent
-ones cleaning up the task CPU kludge for ppc32? Christophe indicated
-that he was happy with it.
+"specified Vendor ID and Capability ID".
 
-Thanks,
-Ard.
+> The Designated Vendor-Specific Extended Capability (DVSEC) allows one or
+> more vendor specific capabilities that aren't tied to the vendor ID of
+> the PCI component.
+> 
+> DVSEC is critical for both the Compute Express Link (CXL) driver as well
+> as the driver for OpenCAPI coherent accelerator (OCXL).
 
+Strictly speaking, not really relevant for the commit log.
+
+> Cc: David E. Box <david.e.box@linux.intel.com>
+> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: linux-pci@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: Andrew Donnellan <ajd@linux.ibm.com>
+> Cc: Lu Baolu <baolu.lu@linux.intel.com>
+> Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
+> Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
+
+If you want to merge this with the series,
+
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+
+Or if you want me to merge this on a branch, let me know.
 
 > ---
->  arch/powerpc/include/asm/thread_info.h | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
-> index b4ec6c7dd72e..5725029aaa29 100644
-> --- a/arch/powerpc/include/asm/thread_info.h
-> +++ b/arch/powerpc/include/asm/thread_info.h
-> @@ -47,6 +47,9 @@
->  struct thread_info {
->         int             preempt_count;          /* 0 => preemptable,
->                                                    <0 => BUG */
-> +#ifdef CONFIG_SMP
-> +       unsigned int    cpu;
-> +#endif
->         unsigned long   local_flags;            /* private flags for thread */
->  #ifdef CONFIG_LIVEPATCH
->         unsigned long *livepatch_sp;
-> --
-> 2.30.2
->
+>  drivers/pci/pci.c   | 32 ++++++++++++++++++++++++++++++++
+>  include/linux/pci.h |  1 +
+>  2 files changed, 33 insertions(+)
+> 
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index ce2ab62b64cf..94ac86ff28b0 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -732,6 +732,38 @@ u16 pci_find_vsec_capability(struct pci_dev *dev, u16 vendor, int cap)
+>  }
+>  EXPORT_SYMBOL_GPL(pci_find_vsec_capability);
+>  
+> +/**
+> + * pci_find_dvsec_capability - Find DVSEC for vendor
+> + * @dev: PCI device to query
+> + * @vendor: Vendor ID to match for the DVSEC
+> + * @dvsec: Designated Vendor-specific capability ID
+> + *
+> + * If DVSEC has Vendor ID @vendor and DVSEC ID @dvsec return the capability
+> + * offset in config space; otherwise return 0.
+> + */
+> +u16 pci_find_dvsec_capability(struct pci_dev *dev, u16 vendor, u16 dvsec)
+> +{
+> +	int pos;
+> +
+> +	pos = pci_find_ext_capability(dev, PCI_EXT_CAP_ID_DVSEC);
+> +	if (!pos)
+> +		return 0;
+> +
+> +	while (pos) {
+> +		u16 v, id;
+> +
+> +		pci_read_config_word(dev, pos + PCI_DVSEC_HEADER1, &v);
+> +		pci_read_config_word(dev, pos + PCI_DVSEC_HEADER2, &id);
+> +		if (vendor == v && dvsec == id)
+> +			return pos;
+> +
+> +		pos = pci_find_next_ext_capability(dev, pos, PCI_EXT_CAP_ID_DVSEC);
+> +	}
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(pci_find_dvsec_capability);
+> +
+>  /**
+>   * pci_find_parent_resource - return resource region of parent bus of given
+>   *			      region
+> diff --git a/include/linux/pci.h b/include/linux/pci.h
+> index cd8aa6fce204..c93ccfa4571b 100644
+> --- a/include/linux/pci.h
+> +++ b/include/linux/pci.h
+> @@ -1130,6 +1130,7 @@ u16 pci_find_ext_capability(struct pci_dev *dev, int cap);
+>  u16 pci_find_next_ext_capability(struct pci_dev *dev, u16 pos, int cap);
+>  struct pci_bus *pci_find_next_bus(const struct pci_bus *from);
+>  u16 pci_find_vsec_capability(struct pci_dev *dev, u16 vendor, int cap);
+> +u16 pci_find_dvsec_capability(struct pci_dev *dev, u16 vendor, u16 dvsec);
+>  
+>  u64 pci_get_dsn(struct pci_dev *dev);
+>  
+> -- 
+> 2.33.0
+> 
