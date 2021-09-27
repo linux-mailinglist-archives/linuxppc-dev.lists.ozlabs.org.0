@@ -2,67 +2,96 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D2B1419F0D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Sep 2021 21:21:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D8E041A00B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Sep 2021 22:21:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HJCDB1SWKz2yfZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 05:21:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HJDYF2mv8z2ysv
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 06:21:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=dZbo+94n;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EEIHal/z;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62e;
- helo=mail-pl1-x62e.google.com; envelope-from=carlojpisani@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=dZbo+94n; dkim-atps=neutral
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com
- [IPv6:2607:f8b0:4864:20::62e])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=EEIHal/z; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HJCCX6lGrz2xvV
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Sep 2021 05:20:40 +1000 (AEST)
-Received: by mail-pl1-x62e.google.com with SMTP id b22so1692981pls.1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Sep 2021 12:20:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=kS8u3k5T1KXA08+OAzc9EUAXo0kiIq8HfbP/aenr9yo=;
- b=dZbo+94nVzqa6PhiObb1saphVxQtRll6AqXxDp6vjbf76Tw8oNJktDWLETGZJTa0ds
- xO9ucCFdhg9o3rwWLsDKuQTCfffL36OaB4W74TFKXUN5usJoxD0MPeItdSCudnOG177A
- yot8wdZXINTzZk4E+RpCy73VnwCfYPFAPQYXaM1Cu1IdhhO7ZwWbWYqJUI08XPBLASHj
- uRJBa6p7LEeLSvoUIiO49Qg9u1rR7gx1Vpik3QHTnZ91k2BKqczwqbyfj1sTQQLf5Mi6
- q8eY/y02lILEdMOzS6QBfbGhjUc3aJWO3YzP0HuBhA5Z5HDxjAQyErWfD7Ep8/BclbN2
- 7i/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=kS8u3k5T1KXA08+OAzc9EUAXo0kiIq8HfbP/aenr9yo=;
- b=QH5OFqJKipYxJ0kD9JROs9eQvIRjsEKd810GRXsNRfRG19k/H3F+45Vkjx36seGKG7
- g97O62O0YPqYbTIk6NxL47LCgKMwlU9rE6e9uSWLXv+9RX7Qw14LmqYa3SJubnzCWT/e
- IeRQG+WmZIOyyt4UYZHrShjfG/h6gmOkJlOHBH+sfXTJ5tb63oWeOEIQTp09L9QKpduK
- stPb+DVGik+ZI3RhNh2pUtxV4+uHuHGqqpt0VRfPRjR9sN34yC9OLW5XrapTQAnYtqIe
- y3QoxEdbj/8kbwPTISNeJTHDCwgNuGirFWKBhhYMC6lVRrd8pzauwpfqO2VOpnb0jRzR
- u2IQ==
-X-Gm-Message-State: AOAM532anP8fd0KiP+9vvZluAN3Us+xdUMgNB0zqG7OyAPbjRS3Rao5E
- zBcvtLIbK5n0djIkqvLSfZ2f66c5npDJ7gqm9ve1HLjT39s=
-X-Google-Smtp-Source: ABdhPJy/674FVtThOSCXhyTVZAITma+wt/E1md8iTFo+8nDDEO6cGAyoy9t4dtJi3iGifOCR71ntbJUkFiRQorbu3+A=
-X-Received: by 2002:a17:90b:1041:: with SMTP id
- gq1mr804156pjb.11.1632770436627; 
- Mon, 27 Sep 2021 12:20:36 -0700 (PDT)
-MIME-Version: 1.0
-References: <CA+QBN9AFNSf3+U4iMhwZx7c69MLk-BtSbVODBEA97ObYWRczbQ@mail.gmail.com>
-In-Reply-To: <CA+QBN9AFNSf3+U4iMhwZx7c69MLk-BtSbVODBEA97ObYWRczbQ@mail.gmail.com>
-From: cp <carlojpisani@gmail.com>
-Date: Mon, 27 Sep 2021 21:20:26 +0200
-Message-ID: <CA+QBN9CD4dNdATO0qWqmoCMGAEQwmkp0AK=mbDfME-3HZbK1sA@mail.gmail.com>
-Subject: Re: [PATCH] powerpc/40x: Map 32Mbytes of memory at startup
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HJDWl1Rfkz2xXB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Sep 2021 06:19:46 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18RInTTO015170; 
+ Mon, 27 Sep 2021 16:19:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=aTuHyVnA/2jez5bcucd4cKqfUDAwqi3bP3jFzG9k11w=;
+ b=EEIHal/zd0LzOYMsi3IlUV0zFGPCzMyUeRjy1yiSzGDeDn5zUECvlNFVInAQMrxZ88qH
+ L2+Fw5ywpcjawQZs/XowVWTqVq/HD2I79CkiggbQoEqSIAfsRVclUe5F0WOsUGCJr+65
+ 4RXmFrt1I+NSGYmTUqOHQ6oEJ/zIimpl1L4UfsIXSS1I9/01d0Du8lvLvAAmKu8FfgGO
+ ukEHBhAAVMMs/HVd7UH0B/Z9XpxeWgzKjNAZ0lo5My7e4ovoJwdpXtUdrD8c5DsVHrN0
+ ox+wt1SErhzKBFslI1vF0hcfdN52LY4mbI3inCwq7lipwQ9m7LjQTKDg/tu4O8Fjtj8r Fw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3bagub586a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 27 Sep 2021 16:19:40 -0400
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 18RKI4Tw000693;
+ Mon, 27 Sep 2021 16:19:40 -0400
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3bagub585w-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 27 Sep 2021 16:19:40 -0400
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 18RKHP8I001276;
+ Mon, 27 Sep 2021 20:19:39 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma01wdc.us.ibm.com with ESMTP id 3ba00cufpp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 27 Sep 2021 20:19:39 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 18RKJb2E16581266
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 27 Sep 2021 20:19:37 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A623AC605A;
+ Mon, 27 Sep 2021 20:19:37 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5A0BFC6063;
+ Mon, 27 Sep 2021 20:19:34 +0000 (GMT)
+Received: from localhost (unknown [9.211.96.63])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon, 27 Sep 2021 20:19:34 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Content-Type: text/plain; charset="UTF-8"
+Subject: [PATCH v2 0/4] CPU DLPAR/hotplug for v5.16
+Date: Mon, 27 Sep 2021 15:19:29 -0500
+Message-Id: <20210927201933.76786-1-nathanl@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: ph_0dcZVdzX-0ICVr_yzYZC5kAa6Tl04
+X-Proofpoint-GUID: BrGsIgPYP2x7m6dOGYLTegXlOTQB7qup
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
+ definitions=2021-09-27_07,2021-09-24_02,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0
+ priorityscore=1501 clxscore=1015 phishscore=0 bulkscore=0 adultscore=0
+ lowpriorityscore=0 impostorscore=0 mlxscore=0 mlxlogscore=543
+ malwarescore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2109230001 definitions=main-2109270135
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,81 +103,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: torvalds@linux-foundation.org, paulus@samba.org
+Cc: tyreld@linux.ibm.com, ldufour@linux.ibm.com, aneesh.kumar@linux.ibm.com,
+ danielhb413@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-hi,
-this is my first patch-test report.
+Fixes for some vintage bugs in handling cache node addition and removal, a
+miscellaneous BUG->WARN conversion, and removal of the fragile "by count"
+CPU DLPAR code that probably has no users.
 
-Today I have successfully tested Christophe Leroy's patch.
-I had to manually edit lines, but it worked with a kernel sized 9.1MByte :D
+Changes since v1:
+* Remove set but unused local variable (0day)
+* Additional comment cleanup patch
 
-used toolchain:
-- powerpc-unknown-linux-gnu-binutiles-v2.34
-- powerpc-unknown-linux-gnu-gcc-v9.3.0
+Nathan Lynch (4):
+  powerpc/pseries/cpuhp: cache node corrections
+  powerpc/cpuhp: BUG -> WARN conversion in offline path
+  powerpc/pseries/cpuhp: delete add/remove_by_count code
+  powerpc/pseries/cpuhp: remove obsolete comment from pseries_cpu_die
 
-host:
-- macmini-intel, Gentoo cross-compiler
+ arch/powerpc/kernel/sysfs.c                  |   3 +-
+ arch/powerpc/platforms/pseries/hotplug-cpu.c | 298 +++++--------------
+ 2 files changed, 75 insertions(+), 226 deletions(-)
 
-target:
-- AMCC PPC405GP
+-- 
+2.31.1
 
-wrapper:
-- cuboot
-
-Applied to kernel-v5.2.1-vanilla
-
-Attached I report here is the difference between the original file and mine.
-
-Thanks guys!
-Carlo
-
-----------------
-Map 32Mbytes rather than 16MB of memory at startup
---- arch/powerpc/kernel/head_40x.S.original     2021-09-27
-16:32:04.536000000 -0000
-+++ arch/powerpc/kernel/head_40x.S      2021-09-27 16:32:04.532000000 -0000
-@@ -38,6 +38,8 @@
- #include <asm/export.h>
- #include <asm/asm-405.h>
-
-+#include <linux/sizes.h> /* hack, include/linux/sizes.h defines "SZ_16M" */
-+
- #include "head_32.h"
-
- /* As with the other PowerPC ports, it is expected that when code
-@@ -839,18 +841,25 @@
-        mtspr   SPRN_PID,r0
-        sync
-
--       /* Configure and load one entry into TLB slots 63 */
-+       /* Configure and load one entry into TLB slots 62/63 */ /* hacked */
-        clrrwi  r4,r4,10                /* Mask off the real page number */
-        ori     r4,r4,(TLB_WR | TLB_EX) /* Set the write and execute bits */
-
-        clrrwi  r3,r3,10                /* Mask off the effective page number */
-        ori     r3,r3,(TLB_VALID | TLB_PAGESZ(PAGESZ_16M))
-
--        li      r0,63                    /* TLB slot 63 */
--
-+//-- hack begin
------------------------------------------------------------------------------
-+// TLB 63 is used for first 16M page
-+// TLB 62 is for the second 16M page
-+//        li      r0,63                    /* TLB slot 63 */ /* original */
-+        li      r0,62                    /* TLB slot 62 */ /* hacked */
-+// ------------------------------------------------------------------------------------------
-        tlbwe   r4,r0,TLB_DATA          /* Load the data portion of the entry */
-        tlbwe   r3,r0,TLB_TAG           /* Load the tag portion of the entry */
--
-+// ------------------------------------------------------------------------------------------
-+        addis   r4,r4,SZ_16M@h           /* added, hacked */
-+        addis   r3,r3,SZ_16M@h           /* added, hacked */
-+//-- hack end -----------------------------------------------------------------------------
-
-
-        isync
-
-        /* Establish the exception vector base
