@@ -1,58 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB17341A3B6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 01:14:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F167341A3BB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 01:14:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HJJNp5M2gz2yb9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 09:14:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HJJPT6fF9z2yNq
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 09:14:37 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=SpP9Ag4c;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel-com.20210112.gappssmtp.com header.i=@intel-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=y3IML/Ii;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ellerman.id.au (client-ip=150.107.74.76; helo=gandalf.ozlabs.org;
- envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::532;
+ helo=mail-pg1-x532.google.com; envelope-from=dan.j.williams@intel.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=SpP9Ag4c; 
- dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ unprotected) header.d=intel-com.20210112.gappssmtp.com
+ header.i=@intel-com.20210112.gappssmtp.com header.a=rsa-sha256
+ header.s=20210112 header.b=y3IML/Ii; dkim-atps=neutral
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com
+ [IPv6:2607:f8b0:4864:20::532])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HJJNB4lCYz2xtg
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Sep 2021 09:13:29 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4HJJN212Dmz4xVP;
- Tue, 28 Sep 2021 09:13:22 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1632784407;
- bh=CSBhgRacMH4wdNz2+6sz+UADE1Z/+Rt10XRo6G7F4qc=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=SpP9Ag4cak7uAXRzz2oEmCUoFYobVM1YDaU7H2umvim4BfissG2tOopwTVM+QWkPz
- ghgj6oLQBTg5oDf2NWjGYSmE9cyVG2OnhS4PGKCG0kZdLg1y7LnWfeAAXywPMS731F
- QZkED7zLRXNCfN+p5XJsCb/mEfuBMhjK0vBM2M/FronydUaFEXBcGAzRon4NUZDdUi
- c5+mvpDKJwLSK8UzkrhrUYXZtS7fX7Bjmd8BdVkDlYlrHSSNC7PnfeGdU05fUui1SA
- nmOZ+MwplIXOJUwftG2odSSkbquxMriRVgTLz1E8nWEaxVgFqlAtsezQzR2t7KNQX7
- ksfYi+D9EIhBA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Ard Biesheuvel <ardb@kernel.org>, Linux Kernel Mailing List
- <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC PATCH 4/8] powerpc: add CPU field to struct thread_info
-In-Reply-To: <CAMj1kXEojbQbNzCP39KT4EzFAyW3J1Tfm_stCZ+fGo8_SO90PA@mail.gmail.com>
-References: <20210914121036.3975026-1-ardb@kernel.org>
- <20210914121036.3975026-5-ardb@kernel.org>
- <CAMj1kXEojbQbNzCP39KT4EzFAyW3J1Tfm_stCZ+fGo8_SO90PA@mail.gmail.com>
-Date: Tue, 28 Sep 2021 09:13:20 +1000
-Message-ID: <87ee99lii7.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HJJNf4zVfz2yfb
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Sep 2021 09:13:52 +1000 (AEST)
+Received: by mail-pg1-x532.google.com with SMTP id k24so19245068pgh.8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Sep 2021 16:13:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20210112.gappssmtp.com; s=20210112;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=l4MzJ0yx9cD5fkatxhkgcIgfFDenItN2Wh8q8r9GPSA=;
+ b=y3IML/IiRF9nk6cBsuR66v5EtYFXcqv9+kamXCWPCMEmblkdaeE1LDv5amUzTxiTzH
+ smbfxg0LwR2V218iRSPpiFuCgmVRLUSkj7pYqhqmgQnV5vv2TqB24J5ubT28yxUUYXTo
+ D0zbXxwlcZAJWgl4utsPM0PlopLNEmdM3vvLKn57U+H86myKPhwnJQq7IG/s2DwoyAAJ
+ nYdarsvxXFoR6m5U8Ax9XOiRnxhWpSyPG8W9Gzhas3B0QBaG653TjG/ZCDCl3ABXKDFA
+ NhSdzNY1WenPjh42aOdKY/IDxtuxgqRAmxJI5ZgWIONXlzwMUE/HGOxi3qv7aXY9d0cU
+ 8TFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=l4MzJ0yx9cD5fkatxhkgcIgfFDenItN2Wh8q8r9GPSA=;
+ b=ydgJtGNy3dCf7UcTyIBlcEvH8/Vtpsw7QBjlYo7CQxLeu/uMvEKWJv+m3BjeH16cnV
+ RxUl0ZLG4NCaHqHnSuywLuCsUNt3Qa22GD8w+AJccJ6vS9movDj3V/RfFsAttfAeVkMw
+ 0pHaNL+PpTpfGY3iMbD3FEXeOk1zfbVQEFIhsrYZ9IwUBF5Evzx+WciFfyrLKwrn9LLR
+ tMwLReH4ES96kMgDx9/VLWgGIxgoceb4G8ybr2bSD3XMHYYLM2mY0leXgL2U4EYtBRiq
+ x5YXyS8dm8QFZGp76LoYTOX15XLZh8eJRKEK45Xh7QGGMIRZANs71nnX6WqsLW/+DpBs
+ OZag==
+X-Gm-Message-State: AOAM532lik/EYbpQT2bDhk0SVmbLsfrAmsbgjkG0nbEwsNC17Kl1pLIE
+ tsv3Yijcb1kATK6XNc+gVfVXxCfhAOJ5RIlknTsjLQ==
+X-Google-Smtp-Source: ABdhPJzlhMrLY74o1cFWM7LDOyTRznwGcz5LuxyrnypmeeMmsbLgr6YqtHQ2yRKjvE547QjRsLHUH/2m9VYlflG4fcU=
+X-Received: by 2002:a62:7f87:0:b0:444:b077:51ef with SMTP id
+ a129-20020a627f87000000b00444b07751efmr2120157pfd.61.1632784429227; Mon, 27
+ Sep 2021 16:13:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20210923172647.72738-1-ben.widawsky@intel.com>
+ <20210923172647.72738-2-ben.widawsky@intel.com>
+In-Reply-To: <20210923172647.72738-2-ben.widawsky@intel.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Mon, 27 Sep 2021 16:13:41 -0700
+Message-ID: <CAPcyv4gXiW7ap3dULCwcWLy1qkGOrgdJTBonfw5V7h6ZOQ-+AQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/9] cxl: Convert "RBI" to enum
+To: Ben Widawsky <ben.widawsky@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,43 +77,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Paul Mackerras <paulus@samba.org>,
- linux-riscv <linux-riscv@lists.infradead.org>, Will Deacon <will@kernel.org>,
- "open list:S390" <linux-s390@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Russell King <linux@armlinux.org.uk>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Kees Cook <keescook@chromium.org>,
- Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
- Keith Packard <keithpac@amazon.com>, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>, "open list:LINUX FOR POWERPC
- \(32-BIT AND 64-BIT\)" <linuxppc-dev@lists.ozlabs.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andrew Donnellan <ajd@linux.ibm.com>, Linux PCI <linux-pci@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-cxl@vger.kernel.org,
+ "open list:DMA MAPPING HELPERS" <iommu@lists.linux-foundation.org>,
+ Bjorn Helgaas <helgaas@kernel.org>,
+ "David E. Box" <david.e.box@linux.intel.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Lu Baolu <baolu.lu@linux.intel.com>,
+ David Woodhouse <dwmw2@infradead.org>, Kan Liang <kan.liang@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Ard Biesheuvel <ardb@kernel.org> writes:
-> On Tue, 14 Sept 2021 at 14:11, Ard Biesheuvel <ardb@kernel.org> wrote:
->>
->> The CPU field will be moved back into thread_info even when
->> THREAD_INFO_IN_TASK is enabled, so add it back to powerpc's definition
->> of struct thread_info.
->>
->> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Please spell out "register block indicator" in the subject so that the
+shortlog remains somewhat readable.
+
+On Thu, Sep 23, 2021 at 10:27 AM Ben Widawsky <ben.widawsky@intel.com> wrote:
 >
-> Michael,
+> In preparation for passing around the Register Block Indicator (RBI) as
+> a parameter, it is desirable to convert the type to an enum so that the
+> interface can use a well defined type checked parameter.
+
+C wouldn't type check this unless it failed an integer conversion,
+right? It would need to be a struct to get useful type checking.
+
+I don't mind this for the self documenting properties it has for the
+functions that will take this as a parameter, but maybe clarify what
+you mean by type checked parameter?
+
 >
-> Do you have any objections or issues with this patch or the subsequent
-> ones cleaning up the task CPU kludge for ppc32? Christophe indicated
-> that he was happy with it.
+> As a result of this change, should future versions of the spec add
+> sparsely defined identifiers, it could become a problem if checking for
+> invalid identifiers since the code currently checks for the max
+> identifier. This is not an issue with current spec, and the algorithm to
+> obtain the register blocks will change before those possible additions
+> are made.
 
-No objections, it looks good to me, thanks for cleaning up that horror :)
-
-It didn't apply cleanly to master so I haven't tested it at all, if you can point me at a
-git tree with the dependencies I'd be happy to run some tests over it.
-
-cheers
+In general let's not spend changelog space trying to guess what future
+specs may or may not do. I.e. I think this text can be dropped,
+especially because enums can support sparse number spaces.
