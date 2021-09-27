@@ -2,54 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C3BE41A150
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Sep 2021 23:23:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 420AF41A24C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 00:05:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HJFwp25Wrz3bhh
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 07:23:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HJGs81FkFz3cBm
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 08:05:00 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=37HYpCsz;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33;
- helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de;
- receiver=<UNKNOWN>)
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
- [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=mcgrof@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=bombadil.20210309 header.b=37HYpCsz; 
+ dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HJFQ06JL8z2yLm
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Sep 2021 06:59:51 +1000 (AEST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1mUxik-0003sZ-Tr; Mon, 27 Sep 2021 22:59:30 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
- by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1mUxia-0001cX-8M; Mon, 27 Sep 2021 22:59:20 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1mUxia-0001SG-3t; Mon, 27 Sep 2021 22:59:20 +0200
-Date: Mon, 27 Sep 2021 22:59:17 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>
-Subject: Re: [PATCH v4 0/8] PCI: Drop duplicated tracking of a pci_dev's
- bound driver
-Message-ID: <20210927205917.e763q5mojkwk6per@pengutronix.de>
-References: <20210927204326.612555-1-uwe@kleine-koenig.org>
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HJGpM4fvwz2xtH
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Sep 2021 08:02:34 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20210309; h=Sender:Content-Transfer-Encoding:
+ MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+ Content-ID:Content-Description:In-Reply-To:References;
+ bh=Qm1LFoZMfn5lSLKsNTBNPz2MUy7MRXKY17ahzFVUS3I=; b=37HYpCszFL1/b0oe/u8pFd9QH4
+ +c+3j84RuEtSW5Qk6nZIclMOP2UEhpq86fk3g/zNpEtdKHuNE5BW9aa9ZQimPbGtXQ5W1rodKdCwR
+ /Zrz64kre/ZLz98Q0kSUgNiY3OmmRtSWOxnaOgzxEX7YPUEmIItcEVUI0UxGlhpoGvm0TBpDaFjM4
+ f6ccW7cjGNpKb8t58ADq1tt16SwJ/oaYFuW0KmAPiB5snBepZsnNwg3H1tSeitacXdf9g8tsZBa/W
+ NPmUVPHx9iHPOioxoiJc5dEFjQpzx8D7ZXWu3TZeiCzx19T2ruTWOCCouk4YwPTKCN1N9y8RbvfR/
+ ltsoAbLA==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2
+ (Red Hat Linux)) id 1mUyhC-004UJ9-A2; Mon, 27 Sep 2021 22:01:58 +0000
+From: Luis Chamberlain <mcgrof@kernel.org>
+To: axboe@kernel.dk, bhelgaas@google.com, liushixin2@huawei.com,
+ thunder.leizhen@huawei.com, lee.jones@linaro.org, geoff@infradead.org,
+ mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+ jim@jtan.com, haris.iqbal@ionos.com, jinpu.wang@ionos.com,
+ josh.h.morris@us.ibm.com, pjk1939@linux.ibm.com, tim@cyberelk.net,
+ richard@nod.at, miquel.raynal@bootlin.com, vigneshr@ti.com
+Subject: [PATCH v2 00/10] block: fourth batch of add_disk() error handling
+ conversions
+Date: Mon, 27 Sep 2021 15:01:47 -0700
+Message-Id: <20210927220157.1069658-1-mcgrof@kernel.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="upxcpc44c7obtcwt"
-Content-Disposition: inline
-In-Reply-To: <20210927204326.612555-1-uwe@kleine-koenig.org>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
- SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
-X-Mailman-Approved-At: Tue, 28 Sep 2021 07:22:17 +1000
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,85 +64,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
- Mark Rutland <mark.rutland@arm.com>, x86@kernel.org,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Alexander Duyck <alexanderduyck@fb.com>,
- Jesse Brandeburg <jesse.brandeburg@intel.com>,
- Sathya Prakash <sathya.prakash@broadcom.com>, oss-drivers@corigine.com,
- netdev@vger.kernel.org, Oliver O'Halloran <oohall@gmail.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Jiri Olsa <jolsa@redhat.com>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Paul Mackerras <paulus@samba.org>, Marco Chiappero <marco.chiappero@intel.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Herbert Xu <herbert@gondor.apana.org.au>, linux-scsi@vger.kernel.org,
- Ido Schimmel <idosch@nvidia.com>,
- =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>, qat-linux@intel.com,
- Christoph Hellwig <hch@lst.de>, Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>, Bjorn Helgaas <helgaas@kernel.org>,
- linux-pci@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
- Yisen Zhuang <yisen.zhuang@huawei.com>,
- Frederic Barrat <fbarrat@linux.ibm.com>, Fiona Trahe <fiona.trahe@intel.com>,
- Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- Suganath Prabu Subramani <suganath-prabu.subramani@broadcom.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>, Jack Xu <jack.xu@intel.com>,
- Borislav Petkov <bp@alien8.de>, Michael Buesch <m@bues.ch>,
- Jiri Pirko <jiri@nvidia.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Juergen Gross <jgross@suse.com>, Salil Mehta <salil.mehta@huawei.com>,
- Sreekanth Reddy <sreekanth.reddy@broadcom.com>, xen-devel@lists.xenproject.org,
- Vadym Kochan <vkochan@marvell.com>, MPT-FusionLinux.pdl@broadcom.com,
- linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
- Mathias Nyman <mathias.nyman@intel.com>, Zhou Wang <wangzhou1@hisilicon.com>,
- linux-crypto@vger.kernel.org, kernel@pengutronix.de,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Simon Horman <simon.horman@corigine.com>,
- Wojciech Ziemba <wojciech.ziemba@intel.com>,
- Tomaszx Kowalik <tomaszx.kowalik@intel.com>, linuxppc-dev@lists.ozlabs.org,
- Taras Chornyi <tchornyi@marvell.com>, linux-perf-users@vger.kernel.org
+Cc: linux-block@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Luis Chamberlain <mcgrof@kernel.org>, linux-mtd@lists.infradead.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+This is the fourth batch of add_disk() error handling driver
+conversions. This set along with the entire 7 set of driver conversions
+can be found on my 20210927-for-axboe-add-disk-error-handling branch
+[0].
 
---upxcpc44c7obtcwt
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On this v2 series the following modifications have been made since the
+last v1 series of this patch set:
 
-Hello,
+  - rebased onto linux-next tag 20210927
+  - added the only reviewed-by tag for this series for rnbd Jack Wang
 
-On Mon, Sep 27, 2021 at 10:43:18PM +0200, Uwe Kleine-K=F6nig wrote:
-> From: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+[0] https://git.kernel.org/pub/scm/linux/kernel/git/mcgrof/linux-next.git/log/?h=20210927-for-axboe-add-disk-error-handling
 
-I sent the series from the wrong email address :-\ I should have used
-the above address as sender. Also I failed to add Christoph Hellwig to
-Cc: (fixed for this mail). I guess I'll have to send a v5, but I will
-wait a bit until the build bots are done with this series.
+Luis Chamberlain (10):
+  mtip32xx: add error handling support for add_disk()
+  pktcdvd: add error handling support for add_disk()
+  ps3disk: add error handling support for add_disk()
+  ps3vram: add error handling support for add_disk()
+  rnbd: add error handling support for add_disk()
+  block/rsxx: add error handling support for add_disk()
+  block/sunvdc: add error handling support for add_disk()
+  block/sx8: add error handling support for add_disk()
+  pf: add error handling support for add_disk()
+  mtd/ubi/block: add error handling support for add_disk()
 
-Best regards
-Uwe
+ drivers/block/mtip32xx/mtip32xx.c |  4 +++-
+ drivers/block/paride/pf.c         |  4 +++-
+ drivers/block/pktcdvd.c           |  4 +++-
+ drivers/block/ps3disk.c           |  8 ++++++--
+ drivers/block/ps3vram.c           |  7 ++++++-
+ drivers/block/rnbd/rnbd-clt.c     | 13 +++++++++----
+ drivers/block/rsxx/core.c         |  4 +++-
+ drivers/block/rsxx/dev.c          | 12 +++++++++---
+ drivers/block/sunvdc.c            | 14 +++++++++++---
+ drivers/block/sx8.c               | 13 +++++++++----
+ drivers/mtd/ubi/block.c           |  8 +++++++-
+ 11 files changed, 69 insertions(+), 22 deletions(-)
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+-- 
+2.30.2
 
---upxcpc44c7obtcwt
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmFSMKIACgkQwfwUeK3K
-7AnalQgAlpBrfIgHu7fEFcJYkSR/33uv+V4CLZsCsu9MNXsSeds9vT38r8/y0bJl
-rOEKhsH1blIcq3bsV8/AulLrFkmjYRkkih/gA/y9CeoqpbV0/NzhrS4Xo9kMos8z
-n+0f+PzRO1qg1RVWyPL7K4pkXR5cMkqWGoie07ihkt3Y9mVY8ItYl9ny3oDxCRcU
-r8KFjr7Jw0Vo8eI3Kr9lu62KyFZFByf1DDBurR5crF8ZcWM7e9kOezvJrxOQxGPP
-Z82uFafVCkhtIkKaks/6/y9pMmJF9hzDd91ubgKfbkPIMvBjpL7n07Y/Sk4S34vM
-5wdHQGNinogsdgdebn8YdZCULLmXSQ==
-=/nd3
------END PGP SIGNATURE-----
-
---upxcpc44c7obtcwt--
