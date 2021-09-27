@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34C7F41A2B6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 00:08:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15A0141A230
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 00:03:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HJGxN16Bsz3bbx
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 08:08:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HJGq10CNKz2ywd
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 08:03:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=PkFreus+;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=moIXcrbm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,27 +18,27 @@ Authentication-Results: lists.ozlabs.org;
  envelope-from=mcgrof@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=PkFreus+; 
+ header.s=bombadil.20210309 header.b=moIXcrbm; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HJGpM1xd4z2xss
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HJGpM50cjz2xtM
  for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Sep 2021 08:02:34 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=JRWTgzBcm05V8ySpKi+Sn387LcpeiWI92yzQrCXgXhI=; b=PkFreus+OyH9OhtirxXvpPHryN
- E3CEpDcIJqXTbwH3Nn7zTHGIkjKDat1oUO+HMwRsegJ2duFMKCfKasb2I9MihJGYzIiXTk/Cw0M0e
- b5T4RRN1axX1ux1NQ6NgGHkweaYtaGTypTFKKZQRZtidG1B8nU6kP9+r+9WcO2YTe+eGHiawDP7zl
- Qq9RUWwfCC+iOtqeQ0lN/NBnuK39zbbhd0dvQPCKlLTubtUH4UgqGgAClSsGqDUAqxnJpURKoqfjW
- 8juL0YNksH3DHVxMmU/M/8H7Qq75bBYOF5IKUlLW5ofE4D0oVTcGWjt/EjLE1WtMBkLalM2XNOWY6
- Hsd20z5Q==;
+ bh=IGHq/zn5r0bFrYNjymK6TXitnBNWw/sSmMius/3bC28=; b=moIXcrbmWusHJ1/TJ7/4Mkb6zG
+ dNqT6LaggsxiFyDwUnruYVVTTUY6JlN8S/t9JqxBXoJhXTXuvrlb7Q7fXg6la2qmQ8c7MGkqRl5p6
+ DcDGffiuQ26Sj49ctiyfwODudZ5QygKVr+HQhAoVyZYUh9E/z/sAr4Al9goZO73vkh2Rvnm+3t/j3
+ WBZWRIvUOQnoRvcrlt4vJ26SYn9bMpFUGIZTALggRWC8KH+t/oFO9Bp5tHXDOkyx6Armyc0iMJ/w+
+ p8na638LZpqVYKz1zq76yX5XGEKnm5lFFLhM7fc8bqdBEdilBt7wtM6py/V+H1JHoJlEcYCtk7L0Q
+ RIaa5UDg==;
 Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2
- (Red Hat Linux)) id 1mUyhC-004UJI-DG; Mon, 27 Sep 2021 22:01:58 +0000
+ (Red Hat Linux)) id 1mUyhC-004UJM-EV; Mon, 27 Sep 2021 22:01:58 +0000
 From: Luis Chamberlain <mcgrof@kernel.org>
 To: axboe@kernel.dk, bhelgaas@google.com, liushixin2@huawei.com,
  thunder.leizhen@huawei.com, lee.jones@linaro.org, geoff@infradead.org,
@@ -46,9 +46,9 @@ To: axboe@kernel.dk, bhelgaas@google.com, liushixin2@huawei.com,
  jim@jtan.com, haris.iqbal@ionos.com, jinpu.wang@ionos.com,
  josh.h.morris@us.ibm.com, pjk1939@linux.ibm.com, tim@cyberelk.net,
  richard@nod.at, miquel.raynal@bootlin.com, vigneshr@ti.com
-Subject: [PATCH v2 02/10] pktcdvd: add error handling support for add_disk()
-Date: Mon, 27 Sep 2021 15:01:49 -0700
-Message-Id: <20210927220157.1069658-3-mcgrof@kernel.org>
+Subject: [PATCH v2 03/10] ps3disk: add error handling support for add_disk()
+Date: Mon, 27 Sep 2021 15:01:50 -0700
+Message-Id: <20210927220157.1069658-4-mcgrof@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210927220157.1069658-1-mcgrof@kernel.org>
 References: <20210927220157.1069658-1-mcgrof@kernel.org>
@@ -76,29 +76,31 @@ We never checked for errors on add_disk() as this function
 returned void. Now that this is fixed, use the shiny new
 error handling.
 
-The out_mem2 error label already does what we need so
-re-use that.
-
 Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 ---
- drivers/block/pktcdvd.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/block/ps3disk.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/pktcdvd.c b/drivers/block/pktcdvd.c
-index 0f26b2510a75..415248962e67 100644
---- a/drivers/block/pktcdvd.c
-+++ b/drivers/block/pktcdvd.c
-@@ -2729,7 +2729,9 @@ static int pkt_setup_dev(dev_t dev, dev_t* pkt_dev)
- 	/* inherit events of the host device */
- 	disk->events = pd->bdev->bd_disk->events;
+diff --git a/drivers/block/ps3disk.c b/drivers/block/ps3disk.c
+index 8d51efbe045d..3054adf77460 100644
+--- a/drivers/block/ps3disk.c
++++ b/drivers/block/ps3disk.c
+@@ -467,9 +467,13 @@ static int ps3disk_probe(struct ps3_system_bus_device *_dev)
+ 		 gendisk->disk_name, priv->model, priv->raw_capacity >> 11,
+ 		 get_capacity(gendisk) >> 11);
  
--	add_disk(disk);
-+	ret = add_disk(disk);
-+	if (ret)
-+		goto out_mem2;
+-	device_add_disk(&dev->sbd.core, gendisk, NULL);
+-	return 0;
++	error = device_add_disk(&dev->sbd.core, gendisk, NULL);
++	if (error)
++		goto fail_cleanup_disk;
  
- 	pkt_sysfs_dev_new(pd);
- 	pkt_debugfs_dev_new(pd);
++	return 0;
++fail_cleanup_disk:
++	blk_cleanup_disk(gendisk);
+ fail_free_tag_set:
+ 	blk_mq_free_tag_set(&priv->tag_set);
+ fail_teardown:
 -- 
 2.30.2
 
