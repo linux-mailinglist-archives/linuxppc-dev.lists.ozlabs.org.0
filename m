@@ -2,58 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD47C41956C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Sep 2021 15:51:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34C384196AE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Sep 2021 16:48:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HJ3vx5xbWz2yg8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Sep 2021 23:51:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HJ59K1SFfz2yfm
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 00:48:21 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=lo2YMw8a;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.52;
+ helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
+ header.s=strato-dkim-0002 header.b=lo2YMw8a; 
+ dkim-atps=neutral
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de
+ [85.215.255.52])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HJ3vR2bC9z2yMP
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Sep 2021 23:51:13 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4HJ3vL1zTlz9sXy;
- Mon, 27 Sep 2021 15:51:10 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id UxKXWkRZpdci; Mon, 27 Sep 2021 15:51:10 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4HJ3vL0qqRz9sXw;
- Mon, 27 Sep 2021 15:51:10 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 074478B76E;
- Mon, 27 Sep 2021 15:51:10 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id nsEoLaYG6VnV; Mon, 27 Sep 2021 15:51:09 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.25.230.103])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id CA6948B763;
- Mon, 27 Sep 2021 15:51:09 +0200 (CEST)
-Subject: Re: [PATCH 1/3] mm: Make generic arch_is_kernel_initmem_freed() do
- what it says
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Andrew Morton <akpm@linux-foundation.org>, arnd@arndb.de
-References: <0b55650058a5bf64f7d74781871a1ada2298c8b4.1632491308.git.christophe.leroy@csgroup.eu>
- <87h7e6kvs3.fsf@mpe.ellerman.id.au>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <f206b856-f5a8-3e47-03cb-49aaa5c521f0@csgroup.eu>
-Date: Mon, 27 Sep 2021 15:51:09 +0200
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HJ58Z3DNmz2xfD
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Sep 2021 00:47:40 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1632754010;
+ s=strato-dkim-0002; d=xenosoft.de;
+ h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
+ From:Subject:Sender;
+ bh=G44RgpYWm1lf5aJbtqvM3dEwZV68hpUjNCbqcFai2VI=;
+ b=lo2YMw8aaukGvNonTLkxYqC8YyZ9zP/V7FOgY7vzij69NlHvMd1lma39cgaAftn45E
+ vpQAI2pt26HCzo9wF+VIvqsq+G+RoaE7QGmWmIpVoStaNyQO0A7L6eUAvvw0M4Umhkki
+ jbFqvb+y0Wa872yzsWHFeWaUzbjnQGaeEuwtMyaI7fWXowDHXlnrU64OZ5ldXHsxvFMd
+ buaVRTRjVM6Vn15/UVky/jNELgDyswPJ15Ba4ed0ALb8xBevCwlSr0i9R5V3lGXOrQGr
+ PL/0OV+sY3JS4oPzVJwSy4spBAMURkePSy8IDPG8IY2yq0/wqkAjgpPh7Lw8WGzP+BCu
+ 0SgQ==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHvJzedV4hp0mZXC9uZstB89hq66pCQ/IzAuyWHINmLRkeRKr"
+X-RZG-CLASS-ID: mo00
+Received: from [IPv6:2a01:598:b172:60ba:4101:c483:8872:ffac]
+ by smtp.strato.de (RZmta 47.33.8 AUTH)
+ with ESMTPSA id I00cdex8REklONq
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Mon, 27 Sep 2021 16:46:47 +0200 (CEST)
+Subject: Re: Add Apple M1 support to PASemi i2c driver
+To: Michael Ellerman <mpe@ellerman.id.au>, Wolfram Sang <wsa@kernel.org>,
+ Sven Peter <sven@svenpeter.dev>
+References: <6487d099-e0d6-4ea3-d312-6adbd94589f4@xenosoft.de>
+ <3dcc6c36-a0dd-0cad-428d-a6ed0f73e687@xenosoft.de>
+ <d0a646c7-426b-4b40-b3fc-9776c6a1025d@www.fastmail.com>
+ <YVFtrpxfUbzv4XxT@shikoro> <87mtnylaam.fsf@mpe.ellerman.id.au>
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Message-ID: <75053ff2-7adc-178c-81cd-e80a2732c5fc@xenosoft.de>
+Date: Mon, 27 Sep 2021 16:46:47 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
 MIME-Version: 1.0
-In-Reply-To: <87h7e6kvs3.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87mtnylaam.fsf@mpe.ellerman.id.au>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr-FR
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Content-Language: de-DE
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,96 +76,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Darren Stevens <darren@stevens-zone.net>, Arnd Bergmann <arnd@arndb.de>,
+ Hector Martin <marcan@marcan.st>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-i2c@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Alyssa Rosenzweig <alyssa@rosenzweig.io>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ Olof Johansson <olof@lixom.net>, mohamed.mediouni@caramail.com,
+ Matthew Leaman <matthew@a-eon.biz>, Mark Kettenis <mark.kettenis@xs4all.nl>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "R.T.Dickinson" <rtd@a-eon.com>,
+ linux-arm-kernel@lists.infradead.org, Stan Skowronek <stan@corellium.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 27 September 2021 at 09:58 am, Michael Ellerman wrote:
+> Wolfram Sang <wsa@kernel.org> writes:
+>>> Sure, will do that later as well!
+>> But please do it privately. For upstreaming, the patch series you sent
+>> is way better than a single patch.
+> Christian, the whole series is downloadable as a single mbox here:
+>
+> https://patchwork.ozlabs.org/series/264134/mbox/
+>
+> Save that to a file and apply with `git am`.
+>
+> eg:
+>
+>   $ wget -O mbox https://patchwork.ozlabs.org/series/264134/mbox/
+>   $ git am mbox
+>
+> It applies cleanly on v5.15-rc3.
+>
+> cheers
+I was able to patch it with the instructions above. Thanks! I will 
+compile and test the RC3 as soon as possible.
 
-
-Le 27/09/2021 à 15:11, Michael Ellerman a écrit :
-> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->> Commit 7a5da02de8d6 ("locking/lockdep: check for freed initmem in
->> static_obj()") added arch_is_kernel_initmem_freed() which is supposed
->> to report whether an object is part of already freed init memory.
->>
->> For the time being, the generic version of arch_is_kernel_initmem_freed()
->> always reports 'false', allthough free_initmem() is generically called
->> on all architectures.
->>
->> Therefore, change the generic version of arch_is_kernel_initmem_freed()
->> to check whether free_initmem() has been called. If so, then check
->> if a given address falls into init memory.
->>
->> In order to use function init_section_contains(), the fonction is
->> moved at the end of asm-generic/section.h
->>
->> Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
->> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->> ---
->>   include/asm-generic/sections.h | 31 +++++++++++++++++--------------
->>   1 file changed, 17 insertions(+), 14 deletions(-)
->>
->> diff --git a/include/asm-generic/sections.h b/include/asm-generic/sections.h
->> index d16302d3eb59..d1e5bb2c6b72 100644
->> --- a/include/asm-generic/sections.h
->> +++ b/include/asm-generic/sections.h
->> @@ -172,4 +158,21 @@ static inline bool is_kernel_rodata(unsigned long addr)
->>   	       addr < (unsigned long)__end_rodata;
->>   }
->>   
->> +/*
->> + * Check if an address is part of freed initmem. This is needed on architectures
->> + * with virt == phys kernel mapping, for code that wants to check if an address
->> + * is part of a static object within [_stext, _end]. After initmem is freed,
->> + * memory can be allocated from it, and such allocations would then have
->> + * addresses within the range [_stext, _end].
->> + */
->> +#ifndef arch_is_kernel_initmem_freed
->> +static inline int arch_is_kernel_initmem_freed(unsigned long addr)
->> +{
->> +	if (system_state < SYSTEM_RUNNING)
->> +		return 0;
->> +
->> +	return init_section_contains((void *)addr, 1);
->> +}
->> +#endif
-> 
-> This will return an incorrect result for a short period during boot
-> won't it?
-> 
-> See init/main.c:
-> 
-> static int __ref kernel_init(void *unused)
-> {
-> 	...
-> 	free_initmem();			<- memory is freed here
-> 	mark_readonly();
-> 
-> 	/*
-> 	 * Kernel mappings are now finalized - update the userspace page-table
-> 	 * to finalize PTI.
-> 	 */
-> 	pti_finalize();
-> 
-> 	system_state = SYSTEM_RUNNING;
-> 
-> 
-> After free_initmem() we have address ranges that are now freed initmem,
-> but arch_is_kernel_initmem_freed() continues to return 0 (false) for all
-> addresses, until we update system_state.
-> 
-> Possibly that doesn't matter for any of the current callers, but it
-> seems pretty dicey to me.
-> 
-
-Yes I saw it but as function core_kernel_text() uses that criteria for 
-deciding whether a given init text address is valid or not, I thought it 
-was just ok.
-
-Should we add an intermediate state called for exemple 
-SYSTEM_FREEING_INIT just before SYSTEM_RUNNING ?
-
-Christophe
+-- Christian
