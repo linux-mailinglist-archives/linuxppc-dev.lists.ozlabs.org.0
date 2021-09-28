@@ -1,52 +1,107 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4194C41A5DD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 05:07:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 151EB41A748
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 07:51:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HJPZL0sVWz2ym5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 13:07:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HJTCQ0CHlz2ypc
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 15:51:30 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Su1MyId/;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com;
- envelope-from=liushixin2@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HJPYr3bdXz2xv5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Sep 2021 13:07:08 +1000 (AEST)
-Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.55])
- by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4HJPSF4MqWz8ywq;
- Tue, 28 Sep 2021 11:02:21 +0800 (CST)
-Received: from dggpemm500009.china.huawei.com (7.185.36.225) by
- dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.8; Tue, 28 Sep 2021 11:06:58 +0800
-Received: from [10.174.179.24] (10.174.179.24) by
- dggpemm500009.china.huawei.com (7.185.36.225) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.8; Tue, 28 Sep 2021 11:06:58 +0800
-Subject: Re: [PATCH] powerpc: don't select KFENCE on platform PPC_FSL_BOOK3E
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Marco Elver
- <elver@google.com>, Michael Ellerman <mpe@ellerman.id.au>, "Benjamin
- Herrenschmidt" <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>
-References: <20210924063927.1341241-1-liushixin2@huawei.com>
- <f8d12860-56d7-5697-7cba-3cac95bb0a1c@csgroup.eu>
-From: Liu Shixin <liushixin2@huawei.com>
-Message-ID: <861f4a6d-1a9e-c01c-6b65-a7b66794fa8d@huawei.com>
-Date: Tue, 28 Sep 2021 11:06:58 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.7.1
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=Su1MyId/; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HJTBf21ppz2xZL
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Sep 2021 15:50:49 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18S25neO015213; 
+ Tue, 28 Sep 2021 01:50:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=u/08SgPZUwisKxBCFBopTGT1FXF/KS3DrgTJNKvfsWw=;
+ b=Su1MyId/zfXElDfwKdQFm+aBb51QNJQ0llIlvG0W9oPYZewfCBfzCqB8LF8zgaJbjzGg
+ IFmx2ZTi01oLGM1jc7Yh0pwFaOW+1S/gJPlE2rK93Ud/JEnJ0HxucSL/0Jr3K1y67go0
+ oy61Z556Buw8Yn3W6YnyhdrgKtcF0z9NAhiq3HwFska7do/b6tSi+4Cmz9wh/8yyUpWz
+ kw/L6CgGLCEJEJETCtPB11LXPWtL0F77Y4Tt7jJyNPIq7KDoBp4ETwu2sS5uI3x4VAKM
+ 2IMhPsq6auxqAG0FFP5vu+gk/kOirFim8WibJ+OF66Bbc8gcSGaWj9/4ELhYqRiZ4izv rg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3bagubdr29-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 Sep 2021 01:50:35 -0400
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 18S5RsNX018217;
+ Tue, 28 Sep 2021 01:50:35 -0400
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3bagubdr1s-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 Sep 2021 01:50:34 -0400
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 18S5RqA7030074;
+ Tue, 28 Sep 2021 05:50:32 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma04fra.de.ibm.com with ESMTP id 3b9ud9rt90-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 Sep 2021 05:50:32 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 18S5oTUI64356782
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 28 Sep 2021 05:50:29 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8344152063;
+ Tue, 28 Sep 2021 05:50:29 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 2A2EF52052;
+ Tue, 28 Sep 2021 05:50:29 +0000 (GMT)
+Received: from [9.81.209.82] (unknown [9.81.209.82])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id ADAB66013C;
+ Tue, 28 Sep 2021 15:50:27 +1000 (AEST)
+Subject: Re: [PATCH v2 6/9] PCI: Add pci_find_dvsec_capability to find
+ designated VSEC
+To: Ben Widawsky <ben.widawsky@intel.com>, linux-cxl@vger.kernel.org
+References: <20210923172647.72738-1-ben.widawsky@intel.com>
+ <20210923172647.72738-7-ben.widawsky@intel.com>
+From: Andrew Donnellan <ajd@linux.ibm.com>
+Message-ID: <6009c15f-af28-d7ab-4518-ae34f32626a2@linux.ibm.com>
+Date: Tue, 28 Sep 2021 15:50:27 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-In-Reply-To: <f8d12860-56d7-5697-7cba-3cac95bb0a1c@csgroup.eu>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.179.24]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpemm500009.china.huawei.com (7.185.36.225)
-X-CFilter-Loop: Reflected
+In-Reply-To: <20210923172647.72738-7-ben.widawsky@intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: dfjx1jSiH5q1BslcZoUIy5Fe623U8B_f
+X-Proofpoint-GUID: qfYn4FdH2rSoMQJWiL29ItmLOGF8Nqca
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
+ definitions=2021-09-28_03,2021-09-24_02,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0
+ priorityscore=1501 clxscore=1011 phishscore=0 bulkscore=0 adultscore=0
+ lowpriorityscore=0 impostorscore=0 mlxscore=0 mlxlogscore=999
+ malwarescore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2109230001 definitions=main-2109280033
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,109 +113,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-pci@vger.kernel.org, Frederic Barrat <fbarrat@linux.ibm.com>,
+ iommu@lists.linux-foundation.org, Bjorn Helgaas <helgaas@kernel.org>,
+ "David E . Box" <david.e.box@linux.intel.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Dan Williams <dan.j.williams@intel.com>,
+ Kan Liang <kan.liang@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
+ David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2021/9/24 14:41, Christophe Leroy wrote:
->
->
-> Le 24/09/2021 à 08:39, Liu Shixin a écrit :
->> On platform PPC_FSL_BOOK3E, all lowmem is managed by tlbcam. That means
->> we didn't really map the kfence pool with page granularity. Therefore,
->> if KFENCE is enabled, the system will hit the following panic:
->
-> Could you please explain a bit more what the problem is ?
->
-> KFENCE has been implemented with the same logic as DEBUG_PAGEALLOC.
->
-> DEBUG_PAGEALLOC is enabled on FSL_BOOK3E.
->
-> In MMU_setup(), __map_without_ltlbs is set to 1 when KFENCE is enabled.
->
-> __map_without_ltlbs should disable the use of tlbcam.
->
->
-> So what's wrong really ?
->
-> Does DEBUG_PAGEALLOC work on FSL_BOOK3E ?
->
-> Thanks
-> Christophe
-hi Christophe,
+On 24/9/21 3:26 am, Ben Widawsky wrote:
+> Add pci_find_dvsec_capability to locate a Designated Vendor-Specific
+> Extended Capability with the specified DVSEC ID.
+> 
+> The Designated Vendor-Specific Extended Capability (DVSEC) allows one or
+> more vendor specific capabilities that aren't tied to the vendor ID of
+> the PCI component.
+> 
+> DVSEC is critical for both the Compute Express Link (CXL) driver as well
+> as the driver for OpenCAPI coherent accelerator (OCXL).
+> 
+> Cc: David E. Box <david.e.box@linux.intel.com>
+> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: linux-pci@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: Andrew Donnellan <ajd@linux.ibm.com>
+> Cc: Lu Baolu <baolu.lu@linux.intel.com>
+> Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
+> Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
 
-In the last e-mail I have said that DEBUG_PAGEALLOC works well on FSL_BOOK3E, that is wrong.
-Actually, I add some printed information and find DEBUG_PAGEALLOC Skip all pages.
-So neither DEBUG_PAGEALLOC nor kfence is really working.
+Looks good to me, it's essentially identical to the existing 
+implementation in ocxl.
 
-diff --git a/mm/memory.c b/mm/memory.c
-index 25fc46e87214..37fb1b14bc3f 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2564,8 +2564,10 @@ static int apply_to_pmd_range(struct mm_struct *mm, pud_t *pud,
-        }
-        do {
-                next = pmd_addr_end(addr, end);
--               if (pmd_none(*pmd) && !create)
-+               if (pmd_none(*pmd) && !create) {
-+                       pr_info("---------pmd_none----------\n");
-                        continue;
-+               }
-                if (WARN_ON_ONCE(pmd_leaf(*pmd)))
-                        return -EINVAL;
-                if (!pmd_none(*pmd) && WARN_ON_ONCE(pmd_bad(*pmd))) {
+Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
 
->
->>
->>      BUG: Kernel NULL pointer dereference on read at 0x00000000
->>      Faulting instruction address: 0xc01de598
->>      Oops: Kernel access of bad area, sig: 11 [#1]
->>      BE PAGE_SIZE=4K SMP NR_CPUS=4 MPC8544 DS
->>      Dumping ftrace buffer:
->>         (ftrace buffer empty)
->>      Modules linked in:
->>      CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.12.0-rc3+ #298
->>      NIP:  c01de598 LR: c08ae9c4 CTR: 00000000
->>      REGS: c0b4bea0 TRAP: 0300   Not tainted  (5.12.0-rc3+)
->>      MSR:  00021000 <CE,ME>  CR: 24000228  XER: 20000000
->>      DEAR: 00000000 ESR: 00000000
->>      GPR00: c08ae9c4 c0b4bf60 c0ad64e0 ef720000 00021000 00000000 00000000 00000200
->>      GPR08: c0ad5000 00000000 00000000 00000004 00000000 008fbb30 00000000 00000000
->>      GPR16: 00000000 00000000 00000000 00000000 c0000000 00000000 00000000 00000000
->>      GPR24: c08ca004 c08ca004 c0b6a0e0 c0b60000 c0b58f00 c0850000 c08ca000 ef720000
->>      NIP [c01de598] kfence_protect+0x44/0x6c
->>      LR [c08ae9c4] kfence_init+0xfc/0x2a4
->>      Call Trace:
->>      [c0b4bf60] [efffe160] 0xefffe160 (unreliable)
->>      [c0b4bf70] [c08ae9c4] kfence_init+0xfc/0x2a4
->>      [c0b4bfb0] [c0894d3c] start_kernel+0x3bc/0x574
->>      [c0b4bff0] [c0000470] set_ivor+0x14c/0x188
->>      Instruction dump:
->>      7c0802a6 8109d594 546a653a 90010014 54630026 39200000 7d48502e 2c0a0000
->>      41820010 554a0026 5469b53a 7d295214 <81490000> 38831000 554a003c 91490000
->>      random: get_random_bytes called from print_oops_end_marker+0x40/0x78 with crng_init=0
->>      ---[ end trace 0000000000000000 ]---
->>
->> Signed-off-by: Liu Shixin <liushixin2@huawei.com>
->> ---
->>   arch/powerpc/Kconfig | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
->> index d46db0bfb998..cffd57bcb5e4 100644
->> --- a/arch/powerpc/Kconfig
->> +++ b/arch/powerpc/Kconfig
->> @@ -185,7 +185,7 @@ config PPC
->>       select HAVE_ARCH_KASAN            if PPC32 && PPC_PAGE_SHIFT <= 14
->>       select HAVE_ARCH_KASAN_VMALLOC        if PPC32 && PPC_PAGE_SHIFT <= 14
->>       select HAVE_ARCH_KGDB
->> -    select HAVE_ARCH_KFENCE            if PPC32
->> +    select HAVE_ARCH_KFENCE            if PPC32 && !PPC_FSL_BOOK3E
->>       select HAVE_ARCH_MMAP_RND_BITS
->>       select HAVE_ARCH_MMAP_RND_COMPAT_BITS    if COMPAT
->>       select HAVE_ARCH_NVRAM_OPS
->>
-> .
->
-
+-- 
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
