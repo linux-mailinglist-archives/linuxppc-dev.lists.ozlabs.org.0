@@ -1,63 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3912341B140
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 15:53:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D7D041B171
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 15:59:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HJgw51PNWz3035
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 23:53:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HJh2f2rPjz2ynp
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 23:59:38 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MtU6qqn+;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=jlIo7uDM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=ardb@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=MtU6qqn+; 
+ smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
+ header.a=rsa-sha256 header.s=korg header.b=jlIo7uDM; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HJgvQ3fZdz2yNZ
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Sep 2021 23:53:22 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id DE21861206
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Sep 2021 13:53:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1632837199;
- bh=jrbVenceAWLgQkHzrFIo4zTN1wFu086UNecp+tCchZ4=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=MtU6qqn+kJSqX0pnHB39Hyt4TlXOGkDoOSpdfiFiizMF3zB6K4Kj1qU67ylirdEoA
- M3uIAYetRVNsArPrQ3wtdz7x1/5FDCW77d18UD0OLFfJBWxyEh5F3pP3BmIpYNEwux
- nxumzBozjIm4l2W1h2P/shzeKp0uJokfThTl9GfRer/LCavK13SDzYkN7Km4b/b0IU
- 6zSnfS+7+K+WzzCYJgtVdE9FSdZlJJYYHowlP8QpW3ZSfwpzF+dIo4iNQ9RF3bzhES
- W8HnaBJnTgw3Rxsa8c+h19aOA0hPFU2qT/RDYAef3kAS6B5jGOrULAJPErmQwD14Ur
- NFI4KYTvgDq7A==
-Received: by mail-oi1-f169.google.com with SMTP id t189so30065785oie.7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Sep 2021 06:53:19 -0700 (PDT)
-X-Gm-Message-State: AOAM530B3xLcIx85Z4OdcBbutclF5/My2H9uUKIBwsmokVHdLAIyqd/O
- s75Qw2e3k7/7dmF7LuvX605mtLTt9r7FJVd6PsQ=
-X-Google-Smtp-Source: ABdhPJz9to8lWFr60Gpre4Od/46x6s4Nrtse/34SwP3rmoXnxlQkLzOc/1tmIX3U1LqO/1/3HTa84J5WaQo7iINmJLs=
-X-Received: by 2002:a05:6808:1148:: with SMTP id
- u8mr3628695oiu.33.1632837188990; 
- Tue, 28 Sep 2021 06:53:08 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HJh1z5vQPz2yPJ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Sep 2021 23:59:02 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2544860041;
+ Tue, 28 Sep 2021 13:59:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+ s=korg; t=1632837540;
+ bh=dENtZyeL5O1vxrdXUljq/re2h9gN1ZPS4UBK/GKPKZI=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=jlIo7uDMkfRt0dK3+FFyGyJieSw7QeJgHL7gOcAhT/Ob9wzx6ipm1fmTbozHE9RY8
+ Gya2abm+dJkMRuMMbRZlafQkoe2CEKz1Ft8dc2CnInlRZFL/ybURwdkNtUjbVi0psR
+ cfd9Q/6HT4AZk6S7L1E1yZG4lFsOV4915wYMiM0s=
+Date: Tue, 28 Sep 2021 15:58:58 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Pratik Sampat <psampat@linux.ibm.com>
+Subject: Re: [PATCH v8 1/2] powerpc/pseries: Interface to represent PAPR
+ firmware attributes
+Message-ID: <YVMfonwjmbgL/ZCX@kroah.com>
+References: <20210928115102.57117-1-psampat@linux.ibm.com>
+ <20210928115102.57117-2-psampat@linux.ibm.com>
+ <YVMFvyGwfH+rxYPz@kroah.com>
+ <289d2081-7ae8-f76a-5180-49bc6061a05c@linux.ibm.com>
 MIME-Version: 1.0
-References: <20210914121036.3975026-1-ardb@kernel.org>
- <20210914121036.3975026-4-ardb@kernel.org>
-In-Reply-To: <20210914121036.3975026-4-ardb@kernel.org>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Tue, 28 Sep 2021 15:52:57 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGfPYBRKoj5eBefr61kHc=m336g0EbPUeDRy+GZVGw26w@mail.gmail.com>
-Message-ID: <CAMj1kXGfPYBRKoj5eBefr61kHc=m336g0EbPUeDRy+GZVGw26w@mail.gmail.com>
-Subject: Re: [RFC PATCH 3/8] s390: add CPU field to struct thread_info
-To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Heiko Carstens <hca@linux.ibm.com>, 
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <289d2081-7ae8-f76a-5180-49bc6061a05c@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,58 +59,217 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Paul Mackerras <paulus@samba.org>,
- linux-riscv <linux-riscv@lists.infradead.org>, Will Deacon <will@kernel.org>,
- "open list:S390" <linux-s390@vger.kernel.org>,
- Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Kees Cook <keescook@chromium.org>,
- Arnd Bergmann <arnd@arndb.de>, Keith Packard <keithpac@amazon.com>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
- <linuxppc-dev@lists.ozlabs.org>
+Cc: farosas@linux.ibm.com, pratik.r.sampat@gmail.com,
+ linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, paulus@samba.org,
+ linux-kselftest@vger.kernel.org, kjain@linux.ibm.com, shuah@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 14 Sept 2021 at 14:11, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> The CPU field will be moved back into thread_info even when
-> THREAD_INFO_IN_TASK is enabled, so add it back to s390's definition of
-> struct thread_info.
->
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> ---
->  arch/s390/include/asm/thread_info.h | 1 +
->  1 file changed, 1 insertion(+)
->
+On Tue, Sep 28, 2021 at 06:13:18PM +0530, Pratik Sampat wrote:
+> Hello Greg,
+> 
+> Thank you for your review.
+> 
+> On 28/09/21 5:38 pm, Greg KH wrote:
+> > On Tue, Sep 28, 2021 at 05:21:01PM +0530, Pratik R. Sampat wrote:
+> > > Adds a generic interface to represent the energy and frequency related
+> > > PAPR attributes on the system using the new H_CALL
+> > > "H_GET_ENERGY_SCALE_INFO".
+> > > 
+> > > H_GET_EM_PARMS H_CALL was previously responsible for exporting this
+> > > information in the lparcfg, however the H_GET_EM_PARMS H_CALL
+> > > will be deprecated P10 onwards.
+> > > 
+> > > The H_GET_ENERGY_SCALE_INFO H_CALL is of the following call format:
+> > > hcall(
+> > >    uint64 H_GET_ENERGY_SCALE_INFO,  // Get energy scale info
+> > >    uint64 flags,           // Per the flag request
+> > >    uint64 firstAttributeId,// The attribute id
+> > >    uint64 bufferAddress,   // Guest physical address of the output buffer
+> > >    uint64 bufferSize       // The size in bytes of the output buffer
+> > > );
+> > > 
+> > > This H_CALL can query either all the attributes at once with
+> > > firstAttributeId = 0, flags = 0 as well as query only one attribute
+> > > at a time with firstAttributeId = id, flags = 1.
+> > > 
+> > > The output buffer consists of the following
+> > > 1. number of attributes              - 8 bytes
+> > > 2. array offset to the data location - 8 bytes
+> > > 3. version info                      - 1 byte
+> > > 4. A data array of size num attributes, which contains the following:
+> > >    a. attribute ID              - 8 bytes
+> > >    b. attribute value in number - 8 bytes
+> > >    c. attribute name in string  - 64 bytes
+> > >    d. attribute value in string - 64 bytes
+> > > 
+> > > The new H_CALL exports information in direct string value format, hence
+> > > a new interface has been introduced in
+> > > /sys/firmware/papr/energy_scale_info to export this information to
+> > > userspace in an extensible pass-through format.
+> > > 
+> > > The H_CALL returns the name, numeric value and string value (if exists)
+> > > 
+> > > The format of exposing the sysfs information is as follows:
+> > > /sys/firmware/papr/energy_scale_info/
+> > >     |-- <id>/
+> > >       |-- desc
+> > >       |-- value
+> > >       |-- value_desc (if exists)
+> > >     |-- <id>/
+> > >       |-- desc
+> > >       |-- value
+> > >       |-- value_desc (if exists)
+> > > ...
+> > > 
+> > > The energy information that is exported is useful for userspace tools
+> > > such as powerpc-utils. Currently these tools infer the
+> > > "power_mode_data" value in the lparcfg, which in turn is obtained from
+> > > the to be deprecated H_GET_EM_PARMS H_CALL.
+> > > On future platforms, such userspace utilities will have to look at the
+> > > data returned from the new H_CALL being populated in this new sysfs
+> > > interface and report this information directly without the need of
+> > > interpretation.
+> > > 
+> > > Signed-off-by: Pratik R. Sampat <psampat@linux.ibm.com>
+> > > Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
+> > > Reviewed-by: Fabiano Rosas <farosas@linux.ibm.com>
+> > > Reviewed-by: Kajol Jain <kjain@linux.ibm.com>
+> > > ---
+> > >   .../sysfs-firmware-papr-energy-scale-info     |  26 ++
+> > >   arch/powerpc/include/asm/hvcall.h             |  24 +-
+> > >   arch/powerpc/kvm/trace_hv.h                   |   1 +
+> > >   arch/powerpc/platforms/pseries/Makefile       |   3 +-
+> > >   .../pseries/papr_platform_attributes.c        | 312 ++++++++++++++++++
+> > >   5 files changed, 364 insertions(+), 2 deletions(-)
+> > >   create mode 100644 Documentation/ABI/testing/sysfs-firmware-papr-energy-scale-info
+> > >   create mode 100644 arch/powerpc/platforms/pseries/papr_platform_attributes.c
+> > > 
+> > > diff --git a/Documentation/ABI/testing/sysfs-firmware-papr-energy-scale-info b/Documentation/ABI/testing/sysfs-firmware-papr-energy-scale-info
+> > > new file mode 100644
+> > > index 000000000000..139a576c7c9d
+> > > --- /dev/null
+> > > +++ b/Documentation/ABI/testing/sysfs-firmware-papr-energy-scale-info
+> > > @@ -0,0 +1,26 @@
+> > > +What:		/sys/firmware/papr/energy_scale_info
+> > > +Date:		June 2021
+> > > +Contact:	Linux for PowerPC mailing list <linuxppc-dev@ozlabs.org>
+> > > +Description:	Directory hosting a set of platform attributes like
+> > > +		energy/frequency on Linux running as a PAPR guest.
+> > > +
+> > > +		Each file in a directory contains a platform
+> > > +		attribute hierarchy pertaining to performance/
+> > > +		energy-savings mode and processor frequency.
+> > > +
+> > > +What:		/sys/firmware/papr/energy_scale_info/<id>
+> > > +		/sys/firmware/papr/energy_scale_info/<id>/desc
+> > > +		/sys/firmware/papr/energy_scale_info/<id>/value
+> > > +		/sys/firmware/papr/energy_scale_info/<id>/value_desc
+> > > +Date:		June 2021
+> > > +Contact:	Linux for PowerPC mailing list <linuxppc-dev@ozlabs.org>
+> > > +Description:	Energy, frequency attributes directory for POWERVM servers
+> > > +
+> > > +		This directory provides energy, frequency, folding information. It
+> > > +		contains below sysfs attributes:
+> > > +
+> > > +		- desc: String description of the attribute <id>
+> > > +
+> > > +		- value: Numeric value of attribute <id>
+> > > +
+> > > +		- value_desc: String value of attribute <id>
+> > Can you just make 4 different entries in this file, making it easier to
+> > parse and extend over time?
+> 
+> Do you mean I only create one file per attribute and populate it with 4
+> different entries as follows?
+> 
+> # cat /sys/firmware/papr/energy_scale_info/<id>
+> id:
+> desc:
+> value:
+> value_desc:
 
-Heiko, Christian, Vasily,
+No, I mean in this documentation file, have 4 different "What:" entries,
+don't lump 4 of them together into one larger Description for no reason
+like you did here.
 
-Do you have any objections to this change? If you don't, could you
-please ack it so it can be taken through another tree (or if that is
-problematic for you, could you please propose another way of merging
-these changes?)
+The sysfs files themselves are fine.
 
-Thanks,
-Ard.
+> > > +struct papr_attr {
+> > > +	u64 id;
+> > > +	struct kobj_attribute kobj_attr;
+> > Why does an attribute have to be part of this structure?
+> 
+> I bundled both an attribute as well as its ID in a structure because each
+> attributes value could only be queried from the firmware with the corresponding
+> ID.
+> It seemed to be logically connected and that's why I had them in the structure.
+> Are you suggesting we maintain them separately and don't need the coupling?
 
-> diff --git a/arch/s390/include/asm/thread_info.h b/arch/s390/include/asm/thread_info.h
-> index e6674796aa6f..b2ffcb4fe000 100644
-> --- a/arch/s390/include/asm/thread_info.h
-> +++ b/arch/s390/include/asm/thread_info.h
-> @@ -37,6 +37,7 @@
->  struct thread_info {
->         unsigned long           flags;          /* low level flags */
->         unsigned long           syscall_work;   /* SYSCALL_WORK_ flags */
-> +       unsigned int            cpu;            /* current CPU */
->  };
->
->  /*
-> --
-> 2.30.2
->
+The id is connected to the kobject, not the attribute, right?
+Attributes do not have uniqueness like this normally.
+
+
+> > > +static struct papr_ops_info {
+> > > +	const char *attr_name;
+> > > +	ssize_t (*show)(struct kobject *kobj, struct kobj_attribute *kobj_attr,
+> > > +			char *buf);
+> > > +} ops_info[MAX_ATTRS] = {
+> > > +	{ "desc", papr_show_desc },
+> > > +	{ "value", papr_show_value },
+> > > +	{ "value_desc", papr_show_value_desc },
+> > What is wrong with just using the __ATTR_RO() macro and then having an
+> > array of attributes in a single group?  That should be a lot simpler
+> > overall, right?
+> 
+> If I understand this correctly, you mean I can have a array of attributes in a
+> flat single group?
+
+Yes.
+
+> I suppose that would be a simpler, given your earlier suggestion to wrap
+> attribute values up in a single file per attribute.
+> 
+> However, the intent of grouping and keeping files separate was that each sysfs
+> file has only one value to display.
+
+That is correct, and not a problem here at all.
+
+> I can change it to using an array of attributes in a single group too if you
+> believe that is right way to go instead.
+
+You have 3 variables for your attributes:
+
+static struct kobj_attribute papr_desc = __ATTR_RO(desc);
+static struct kobj_attribute papr_value = __ATTR_RO(value);
+static struct kobj_attribute papr_value_desc = __ATTR_RO(value_desc);
+
+and then your attribute group:
+static struct attribute papr_attrs[] = {
+	&papr_desc.attr,
+	&papr_value.attr,
+	&papr_value_desc.attr,
+	NULL,
+};
+
+ATTRIBUTE_GROUPS(papr);
+
+Then take that papr_groups and register that with the kobject when
+needed.
+
+But, you seem to only be having a whole kobject for a subdirectory,
+right?  No need for that, just name your attribute group, so instead of
+
+ATTRIBUTE_GROUPS(papr);
+
+do:
+static const struct attribute_group papr_group = {
+	.name = "Your Subdirectory Name here",
+	.attrs = papr_attrs,
+};
+
+Hope this helps,
+
+greg k-h
