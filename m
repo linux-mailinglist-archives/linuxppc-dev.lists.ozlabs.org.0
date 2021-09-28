@@ -2,55 +2,101 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D76F341AD08
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 12:32:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9498F41AE3E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 13:53:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HJbS55JnCz305C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 20:32:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HJdF72wy2z2ypC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 21:53:31 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lVQG/EJA;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33;
- helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=psampat@linux.ibm.com;
  receiver=<UNKNOWN>)
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
- [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HJbRd3lmXz2xt7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Sep 2021 20:32:27 +1000 (AEST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1mVAOh-0007IU-GX; Tue, 28 Sep 2021 12:31:39 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
- by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1mVAOX-0002lF-WD; Tue, 28 Sep 2021 12:31:30 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1mVAOX-0003v8-Tx; Tue, 28 Sep 2021 12:31:29 +0200
-Date: Tue, 28 Sep 2021 12:31:29 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Simon Horman <simon.horman@corigine.com>
-Subject: Re: [PATCH v4 4/8] PCI: replace pci_dev::driver usage that gets the
- driver name
-Message-ID: <20210928103129.c3gcbnfbarezr3mm@pengutronix.de>
-References: <20210927204326.612555-1-uwe@kleine-koenig.org>
- <20210927204326.612555-5-uwe@kleine-koenig.org>
- <20210928100127.GA16801@corigine.com>
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=lVQG/EJA; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HJdBq1Bvjz2yJP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Sep 2021 21:51:30 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18SApfwK021111; 
+ Tue, 28 Sep 2021 07:51:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : subject :
+ date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=frlVS1az/WulHbrX6D1bYZP2D7LX8/U+EvRFZZvVv3Y=;
+ b=lVQG/EJAye4HaVBUbci1rvRpEFpzoSPx1TXIu2ijVJlj1tYGbNzdsQKFMNI//a7OISjq
+ BB7SPeBNhTNJySZKuL0G5OrsaBTYCkGiscpr5jiVIanvYYgMFfb7yX+Gq1k1yFaocXRC
+ C4nG05eqnfQwO86rdWWNF968lo6gSUFqs4jO4XFI3QYTcd5+xGZ8inuz9VkdsGHUPuZ8
+ fdZTOnM4VqIAnX97gUfHykpC55Yp4z2iTGFrW39+5Kj69om0AIXPdVzYFBCAy+P2A31f
+ paN+gM2LTFcXllhhadQsce4+9p+/GeCmsNhlb66y+LEBdVNwoNfdb/1J7xhMxzLGRbBJ 2Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3bby6qcf4e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 Sep 2021 07:51:14 -0400
+Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 18SAv26Y023990;
+ Tue, 28 Sep 2021 07:51:13 -0400
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3bby6qcf41-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 Sep 2021 07:51:13 -0400
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 18SBhHbe012840;
+ Tue, 28 Sep 2021 11:51:12 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma06fra.de.ibm.com with ESMTP id 3b9u1jux9x-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 Sep 2021 11:51:12 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 18SBp8uG000732
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 28 Sep 2021 11:51:08 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3F9D011C05E;
+ Tue, 28 Sep 2021 11:51:08 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EB89B11C04C;
+ Tue, 28 Sep 2021 11:51:03 +0000 (GMT)
+Received: from pratiks-thinkpad.ibm.com (unknown [9.43.58.127])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 28 Sep 2021 11:51:03 +0000 (GMT)
+From: "Pratik R. Sampat" <psampat@linux.ibm.com>
+To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+ shuah@kernel.org, farosas@linux.ibm.com, kjain@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ psampat@linux.ibm.com, pratik.r.sampat@gmail.com
+Subject: [PATCH v8 0/2] Interface to represent PAPR firmware attributes
+Date: Tue, 28 Sep 2021 17:21:00 +0530
+Message-Id: <20210928115102.57117-1-psampat@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Hr71Fp_CKehqAkrOAFSu_7vVi5AF_6VR
+X-Proofpoint-ORIG-GUID: jjDfv2T8fmnGw42LRkoVeGaBqrtkaeGq
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="65t344eghsh2eaox"
-Content-Disposition: inline
-In-Reply-To: <20210928100127.GA16801@corigine.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
- SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
+ definitions=2021-09-28_05,2021-09-28_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ bulkscore=0 mlxlogscore=999 impostorscore=0 suspectscore=0 phishscore=0
+ mlxscore=0 spamscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2109230001 definitions=main-2109280065
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,100 +108,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexander Duyck <alexanderduyck@fb.com>, oss-drivers@corigine.com,
- Paul Mackerras <paulus@samba.org>, Herbert Xu <herbert@gondor.apana.org.au>,
- Ido Schimmel <idosch@nvidia.com>,
- =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
- Jesse Brandeburg <jesse.brandeburg@intel.com>,
- Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org,
- Jakub Kicinski <kuba@kernel.org>, Yisen Zhuang <yisen.zhuang@huawei.com>,
- Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>,
- Vadym Kochan <vkochan@marvell.com>, Michael Buesch <m@bues.ch>,
- Jiri Pirko <jiri@nvidia.com>, Salil Mehta <salil.mehta@huawei.com>,
- netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org, Taras Chornyi <tchornyi@marvell.com>,
- Zhou Wang <wangzhou1@hisilicon.com>, linux-crypto@vger.kernel.org,
- kernel@pengutronix.de, Oliver O'Halloran <oohall@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+RFC: https://lkml.org/lkml/2021/6/4/791
+PATCH v1: https://lkml.org/lkml/2021/6/16/805
+PATCH v2: https://lkml.org/lkml/2021/7/6/138
+PATCH v3: https://lkml.org/lkml/2021/7/12/2799
+PATCH v4: https://lkml.org/lkml/2021/7/16/532
+PATCH v5: https://lkml.org/lkml/2021/7/19/247
+PATCH v6: https://lkml.org/lkml/2021/7/20/36
+PATCH v7: https://lkml.org/lkml/2021/7/23/26 
 
---65t344eghsh2eaox
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Changelog v7-->v8
+1. Rebased and tested against 5.15
+2. Added a selftest to check if the energy and frequency attribues
+   exist and their files populated
 
-On Tue, Sep 28, 2021 at 12:01:28PM +0200, Simon Horman wrote:
-> On Mon, Sep 27, 2021 at 10:43:22PM +0200, Uwe Kleine-K=F6nig wrote:
-> > From: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> >=20
-> > struct pci_dev::driver holds (apart from a constant offset) the same
-> > data as struct pci_dev::dev->driver. With the goal to remove struct
-> > pci_dev::driver to get rid of data duplication replace getting the
-> > driver name by dev_driver_string() which implicitly makes use of struct
-> > pci_dev::dev->driver.
-> >=20
-> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
->=20
-> ...
->=20
-> > diff --git a/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c b/dri=
-vers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
-> > index 0685ece1f155..23dfb599c828 100644
-> > --- a/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
-> > +++ b/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
-> > @@ -202,7 +202,7 @@ nfp_get_drvinfo(struct nfp_app *app, struct pci_dev=
- *pdev,
-> >  {
-> >  	char nsp_version[ETHTOOL_FWVERS_LEN] =3D {};
-> > =20
-> > -	strlcpy(drvinfo->driver, pdev->driver->name, sizeof(drvinfo->driver));
-> > +	strlcpy(drvinfo->driver, dev_driver_string(&pdev->dev), sizeof(drvinf=
-o->driver));
->=20
-> I'd slightly prefer to maintain lines under 80 columns wide.
-> But not nearly strongly enough to engage in a long debate about it.
+Also, have implemented a POC using this interface for the powerpc-utils'
+ppc64_cpu --frequency command-line tool to utilize this information
+in userspace.
+The POC for the new interface has been sent to the powerpc-utils mailing
+list for early review: https://groups.google.com/g/powerpc-utils-devel/c/r4i7JnlyQ8s
 
-:-)
+Sample output from the powerpc-utils tool is as follows:
 
-Looking at the output of
+# ppc64_cpu --frequency
+Power and Performance Mode: XXXX
+Idle Power Saver Status   : XXXX
+Processor Folding Status  : XXXX --> Printed if Idle power save status is supported
 
-	git grep strlcpy.\*sizeof
+Platform reported frequencies --> Frequencies reported from the platform's H_CALL i.e PAPR interface
+min        :    NNNN GHz
+max        :    NNNN GHz
+static     :    NNNN GHz
 
-I wonder if it would be sensible to introduce something like
+Tool Computed frequencies
+min        :    NNNN GHz (cpu XX)
+max        :    NNNN GHz (cpu XX)
+avg        :    NNNN GHz
 
-	#define strlcpy_array(arr, src) (strlcpy(arr, src, sizeof(arr)) + __must_b=
-e_array(arr))
+Pratik R. Sampat (2):
+  powerpc/pseries: Interface to represent PAPR firmware attributes
+  selftest/powerpc: Add PAPR sysfs attributes sniff test
 
-but not sure this is possible without a long debate either (and this
-line is over 80 chars wide, too :-).
+ .../sysfs-firmware-papr-energy-scale-info     |  26 ++
+ arch/powerpc/include/asm/hvcall.h             |  24 +-
+ arch/powerpc/kvm/trace_hv.h                   |   1 +
+ arch/powerpc/platforms/pseries/Makefile       |   3 +-
+ .../pseries/papr_platform_attributes.c        | 312 ++++++++++++++++++
+ tools/testing/selftests/powerpc/Makefile      |   1 +
+ .../powerpc/papr_attributes/.gitignore        |   2 +
+ .../powerpc/papr_attributes/Makefile          |   7 +
+ .../powerpc/papr_attributes/attr_test.c       | 107 ++++++
+ 9 files changed, 481 insertions(+), 2 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-firmware-papr-energy-scale-info
+ create mode 100644 arch/powerpc/platforms/pseries/papr_platform_attributes.c
+ create mode 100644 tools/testing/selftests/powerpc/papr_attributes/.gitignore
+ create mode 100644 tools/testing/selftests/powerpc/papr_attributes/Makefile
+ create mode 100644 tools/testing/selftests/powerpc/papr_attributes/attr_test.c
 
-> In any case, for the NFP portion of this patch.
->=20
-> Acked-by: Simon Horman <simon.horman@corigine.com>
+-- 
+2.31.1
 
-Thanks
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---65t344eghsh2eaox
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmFS7v4ACgkQwfwUeK3K
-7Al9pwf+I6TDjUNhtsTqkV/J+f3tcMtnjPMZH0hCqv+jXSkmBqkwvn8wxEQXGFBL
-q6aNbMpy8LUCK3yn4+yes6FhZOK+CkMC6LgAv+Kzr43plzOCOvWTSDTi/nKx8sYf
-JqmAcctxmEA1hkAuort6dCBezIVcHHCpWrnsUuokesFvURNzLkytUGekUAkR5NNj
-g1aF021oqz88PJwyABeyfgrnCgwMSk8VlL39MdNJPUZewreVGija36YlIh/pFUyk
-3TvYaY4JrCgqq7AfYcZbZwiqCpi1AxWWY+ACJOQlG4IDCzQr2I7c8IWI+8yxow5o
-9j9Z8N/LPOHLfPGUNx5Cj8qLUoDiIw==
-=IxWL
------END PGP SIGNATURE-----
-
---65t344eghsh2eaox--
