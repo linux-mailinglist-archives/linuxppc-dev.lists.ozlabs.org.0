@@ -2,46 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13E8341B779
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 21:21:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AF5C41B7A0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 21:31:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HJqB159M4z3bj4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Sep 2021 05:21:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HJqNz1Cl0z30Qr
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Sep 2021 05:30:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=192.55.52.93; helo=mga11.intel.com;
- envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=<UNKNOWN>)
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HJq9S64Jfz2xYQ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Sep 2021 05:20:59 +1000 (AEST)
-X-IronPort-AV: E=McAfee;i="6200,9189,10121"; a="221582571"
-X-IronPort-AV: E=Sophos;i="5.85,330,1624345200"; d="scan'208";a="221582571"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
- by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Sep 2021 12:19:53 -0700
-X-IronPort-AV: E=Sophos;i="5.85,330,1624345200"; d="scan'208";a="554270019"
-Received: from oogunmoy-mobl1.amr.corp.intel.com (HELO
- skuppusw-mobl5.amr.corp.intel.com) ([10.212.221.219])
- by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Sep 2021 12:19:51 -0700
-Subject: Re: [PATCH v4 0/8] Implement generic cc_platform_has() helper function
-To: Borislav Petkov <bp@alien8.de>, LKML <linux-kernel@vger.kernel.org>
-References: <20210928191009.32551-1-bp@alien8.de>
-From: "Kuppuswamy, Sathyanarayanan"
- <sathyanarayanan.kuppuswamy@linux.intel.com>
-Message-ID: <80593893-c63b-d481-45f1-42a3a6fd762a@linux.intel.com>
-Date: Tue, 28 Sep 2021 12:19:49 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Firefox/78.0 Thunderbird/78.13.0
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33;
+ helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de;
+ receiver=<UNKNOWN>)
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
+ [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HJqNW2cx2z2xTB
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Sep 2021 05:30:33 +1000 (AEST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <ukl@pengutronix.de>)
+ id 1mVInV-0002NN-Sw; Tue, 28 Sep 2021 21:29:49 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+ by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <ukl@pengutronix.de>)
+ id 1mVInI-0003R4-Vh; Tue, 28 Sep 2021 21:29:36 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+ (envelope-from <ukl@pengutronix.de>)
+ id 1mVInI-00068D-TU; Tue, 28 Sep 2021 21:29:36 +0200
+Date: Tue, 28 Sep 2021 21:29:36 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Subject: Re: [PATCH v4 4/8] PCI: replace pci_dev::driver usage that gets the
+ driver name
+Message-ID: <20210928192936.w5umyzivi4hs6q3r@pengutronix.de>
+References: <20210927204326.612555-5-uwe@kleine-koenig.org>
+ <20210928171759.GA704204@bhelgaas>
 MIME-Version: 1.0
-In-Reply-To: <20210928191009.32551-1-bp@alien8.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="3jbimpqsr3sfse6m"
+Content-Disposition: inline
+In-Reply-To: <20210928171759.GA704204@bhelgaas>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
+ SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,102 +61,181 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-efi@vger.kernel.org, kvm@vger.kernel.org,
- David Airlie <airlied@linux.ie>, dri-devel@lists.freedesktop.org,
- platform-driver-x86@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
- linux-s390@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
- Baoquan He <bhe@redhat.com>, Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
- amd-gfx@lists.freedesktop.org, Christoph Hellwig <hch@infradead.org>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- VMware Graphics <linux-graphics-maintainer@vmware.com>,
- Dave Young <dyoung@redhat.com>, Tom Lendacky <thomas.lendacky@amd.com>,
- Thomas Zimmermann <tzimmermann@suse.de>, Vasily Gorbik <gor@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Andy Lutomirski <luto@kernel.org>,
- "Kirill A. Shutemov" <kirill@shutemov.name>, kexec@lists.infradead.org,
- iommu@lists.linux-foundation.org, Daniel Vetter <daniel@ffwll.ch>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linux-pci@vger.kernel.org, Alexander Duyck <alexanderduyck@fb.com>,
+ oss-drivers@corigine.com, Oliver O'Halloran <oohall@gmail.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>, Ido Schimmel <idosch@nvidia.com>,
+ =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+ Jesse Brandeburg <jesse.brandeburg@intel.com>,
+ Jakub Kicinski <kuba@kernel.org>, Yisen Zhuang <yisen.zhuang@huawei.com>,
+ Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>,
+ Vadym Kochan <vkochan@marvell.com>, Michael Buesch <m@bues.ch>,
+ Jiri Pirko <jiri@nvidia.com>, Salil Mehta <salil.mehta@huawei.com>,
+ netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Taras Chornyi <tchornyi@marvell.com>,
+ Zhou Wang <wangzhou1@hisilicon.com>, linux-crypto@vger.kernel.org,
+ kernel@pengutronix.de, Simon Horman <simon.horman@corigine.com>,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
+--3jbimpqsr3sfse6m
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 9/28/21 12:10 PM, Borislav Petkov wrote:
-> From: Borislav Petkov <bp@suse.de>
-> 
-> Hi all,
-> 
-> here's v4 of the cc_platform_has() patchset with feedback incorporated.
-> 
-> I'm going to route this through tip if there are no objections.
+Hello,
 
-Intel CC support patch is not included in this series. You want me
-to address the issue raised by Joerg before merging it?
+On Tue, Sep 28, 2021 at 12:17:59PM -0500, Bjorn Helgaas wrote:
+> [+to Oliver, Russell for eeh_driver_name() question below]
+>=20
+> On Mon, Sep 27, 2021 at 10:43:22PM +0200, Uwe Kleine-K=F6nig wrote:
+> > From: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> >=20
+> > struct pci_dev::driver holds (apart from a constant offset) the same
+> > data as struct pci_dev::dev->driver. With the goal to remove struct
+> > pci_dev::driver to get rid of data duplication replace getting the
+> > driver name by dev_driver_string() which implicitly makes use of struct
+> > pci_dev::dev->driver.
+>=20
+> When you repost to fix the build issue, can you capitalize the subject
+> line to match the other?
 
-> 
-> Thx.
-> 
-> Tom Lendacky (8):
->    x86/ioremap: Selectively build arch override encryption functions
->    arch/cc: Introduce a function to check for confidential computing
->      features
->    x86/sev: Add an x86 version of cc_platform_has()
->    powerpc/pseries/svm: Add a powerpc version of cc_platform_has()
->    x86/sme: Replace occurrences of sme_active() with cc_platform_has()
->    x86/sev: Replace occurrences of sev_active() with cc_platform_has()
->    x86/sev: Replace occurrences of sev_es_active() with cc_platform_has()
->    treewide: Replace the use of mem_encrypt_active() with
->      cc_platform_has()
-> 
->   arch/Kconfig                                 |  3 +
->   arch/powerpc/include/asm/mem_encrypt.h       |  5 --
->   arch/powerpc/platforms/pseries/Kconfig       |  1 +
->   arch/powerpc/platforms/pseries/Makefile      |  2 +
->   arch/powerpc/platforms/pseries/cc_platform.c | 26 ++++++
->   arch/powerpc/platforms/pseries/svm.c         |  5 +-
->   arch/s390/include/asm/mem_encrypt.h          |  2 -
->   arch/x86/Kconfig                             |  1 +
->   arch/x86/include/asm/io.h                    |  8 ++
->   arch/x86/include/asm/kexec.h                 |  2 +-
->   arch/x86/include/asm/mem_encrypt.h           | 12 +--
->   arch/x86/kernel/Makefile                     |  6 ++
->   arch/x86/kernel/cc_platform.c                | 69 +++++++++++++++
->   arch/x86/kernel/crash_dump_64.c              |  4 +-
->   arch/x86/kernel/head64.c                     |  9 +-
->   arch/x86/kernel/kvm.c                        |  3 +-
->   arch/x86/kernel/kvmclock.c                   |  4 +-
->   arch/x86/kernel/machine_kexec_64.c           | 19 +++--
->   arch/x86/kernel/pci-swiotlb.c                |  9 +-
->   arch/x86/kernel/relocate_kernel_64.S         |  2 +-
->   arch/x86/kernel/sev.c                        |  6 +-
->   arch/x86/kvm/svm/svm.c                       |  3 +-
->   arch/x86/mm/ioremap.c                        | 18 ++--
->   arch/x86/mm/mem_encrypt.c                    | 55 ++++--------
->   arch/x86/mm/mem_encrypt_identity.c           |  9 +-
->   arch/x86/mm/pat/set_memory.c                 |  3 +-
->   arch/x86/platform/efi/efi_64.c               |  9 +-
->   arch/x86/realmode/init.c                     |  8 +-
->   drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c      |  4 +-
->   drivers/gpu/drm/drm_cache.c                  |  4 +-
->   drivers/gpu/drm/vmwgfx/vmwgfx_drv.c          |  4 +-
->   drivers/gpu/drm/vmwgfx/vmwgfx_msg.c          |  6 +-
->   drivers/iommu/amd/init.c                     |  7 +-
->   drivers/iommu/amd/iommu.c                    |  3 +-
->   drivers/iommu/amd/iommu_v2.c                 |  3 +-
->   drivers/iommu/iommu.c                        |  3 +-
->   fs/proc/vmcore.c                             |  6 +-
->   include/linux/cc_platform.h                  | 88 ++++++++++++++++++++
->   include/linux/mem_encrypt.h                  |  4 -
->   kernel/dma/swiotlb.c                         |  4 +-
->   40 files changed, 310 insertions(+), 129 deletions(-)
->   create mode 100644 arch/powerpc/platforms/pseries/cc_platform.c
->   create mode 100644 arch/x86/kernel/cc_platform.c
->   create mode 100644 include/linux/cc_platform.h
-> 
+Yes, sure.
 
--- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+> Also, would you mind using "pci_dev.driver" instead of
+> "pci_dev::driver"?  AFAIK, the "::" operator is not actually part of
+> C, so I think it's more confusing than useful.
+
+pci_dev.driver doesn't work either in C because pci_dev is a type and
+not a variable. This is probably subjective, but for me pci_dev.driver
+looks definitively stranger than pci_dev::driver. And :: is at least not
+unseen in the kernel commit logs. (git log --grep=3D::)
+But if you insist I can change to .
+
+> > diff --git a/arch/powerpc/include/asm/ppc-pci.h b/arch/powerpc/include/=
+asm/ppc-pci.h
+> > index 2b9edbf6e929..e8f1795a2acf 100644
+> > --- a/arch/powerpc/include/asm/ppc-pci.h
+> > +++ b/arch/powerpc/include/asm/ppc-pci.h
+> > @@ -57,7 +57,14 @@ void eeh_sysfs_remove_device(struct pci_dev *pdev);
+> > =20
+> >  static inline const char *eeh_driver_name(struct pci_dev *pdev)
+> >  {
+> > -	return (pdev && pdev->driver) ? pdev->driver->name : "<null>";
+> > +	if (pdev) {
+> > +		const char *drvstr =3D dev_driver_string(&pdev->dev);
+> > +
+> > +		if (strcmp(drvstr, ""))
+> > +			return drvstr;
+> > +	}
+> > +
+> > +	return "<null>";
+>=20
+> Can we just do this?
+>=20
+>   if (pdev)
+>     return dev_driver_string(&pdev->dev);
+>=20
+>   return "<null>";
+
+Works for me, too. It behaves a bit differerently than my suggestion
+(which nearly behaves identical to the status quo), but only in some
+degenerated cases.
+
+> I think it's more complicated than it's worth to include a strcmp().
+> It's possible this will change those error messages about "Might be
+> infinite loop in %s driver", but that doesn't seem like a huge deal.
+>=20
+> I moved Oliver to "to:" and added Russell in case they object.
+>=20
+> >  }
+> > =20
+> >  #endif /* CONFIG_EEH */
+> > diff --git a/drivers/bcma/host_pci.c b/drivers/bcma/host_pci.c
+> > index 69c10a7b7c61..0973022d4b13 100644
+> > --- a/drivers/bcma/host_pci.c
+> > +++ b/drivers/bcma/host_pci.c
+> > @@ -175,9 +175,10 @@ static int bcma_host_pci_probe(struct pci_dev *dev,
+> >  	if (err)
+> >  		goto err_kfree_bus;
+> > =20
+> > -	name =3D dev_name(&dev->dev);
+> > -	if (dev->driver && dev->driver->name)
+> > -		name =3D dev->driver->name;
+> > +	name =3D dev_driver_string(&dev->dev);
+> > +	if (!strcmp(name, ""))
+> > +		name =3D dev_name(&dev->dev);
+> >  	err =3D pci_request_regions(dev, name);
+>=20
+> Again seems more complicated than it's worth to me.  This is in the
+> driver's .probe() method, so really_probe() has already set
+> "dev->driver =3D drv", which means dev->driver is always set to
+> &bcma_pci_bridge_driver here, and bcma_pci_bridge_driver.name is
+> always "bcma-pci-bridge".
+>=20
+> Almost all callers of pci_request_regions() just hardcode the driver
+> name or use a DRV_NAME #define
+>=20
+> So I think we should just do:
+>=20
+>   err =3D pci_request_regions(dev, "bcma-pci-bridge");
+
+Yes, looks right. I'd put this in a separate patch.
+
+> >  	if (err)
+> >  		goto err_pci_disable;
+> > [...]
+> > diff --git a/drivers/ssb/pcihost_wrapper.c b/drivers/ssb/pcihost_wrappe=
+r.c
+> > index 410215c16920..4938ed5cfae5 100644
+> > --- a/drivers/ssb/pcihost_wrapper.c
+> > +++ b/drivers/ssb/pcihost_wrapper.c
+> > @@ -78,9 +78,11 @@ static int ssb_pcihost_probe(struct pci_dev *dev,
+> >  	err =3D pci_enable_device(dev);
+> >  	if (err)
+> >  		goto err_kfree_ssb;
+> > -	name =3D dev_name(&dev->dev);
+> > -	if (dev->driver && dev->driver->name)
+> > -		name =3D dev->driver->name;
+> > +
+> > +	name =3D dev_driver_string(&dev->dev);
+> > +	if (*name =3D=3D '\0')
+> > +		name =3D dev_name(&dev->dev);
+> > +
+> >  	err =3D pci_request_regions(dev, name);
+>=20
+> Also seems like more trouble than it's worth.  This one is a little
+> strange but is always called for either b43_pci_bridge_driver or
+> b44_pci_driver, both of which have .name set, so I think we should
+> simply do:
+>=20
+>   err =3D pci_request_regions(dev, dev_driver_string(&dev->dev));
+
+yes, agreed, too.
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--3jbimpqsr3sfse6m
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmFTbR0ACgkQwfwUeK3K
+7AkC6Af/ZPcvEOEpmwUpNE9viOQkpwE5r7inA2n8+IzHLf0m7dP7WazFs81CvS6i
+HZGQD4L2Ry5WlRHlPAXPVD6fMnoM5OT8vhqQKktvBdtYQ9wlPJlrdQHuIk9ifD/z
+YfkGM/W3gd2V9nA+yxomM57MDRBHhFkjK05VcBnGFO5hXGIyV3gSS/RgIWKPGXuW
+mYyO5SgEEQrK5uOf8gnokzmOE5aHgYZ9bhMUZKk01a1d5vI44/QZf1cLlrHRyamS
+3jeLoyS7nE9+wcMnKG67Qir5YuB99CLu21yGHqDMOQLzZ9FNjVUO682GRS/gnblZ
+IJlg24PzVAR9Feb4374crlRgTrq3+w==
+=LLP8
+-----END PGP SIGNATURE-----
+
+--3jbimpqsr3sfse6m--
