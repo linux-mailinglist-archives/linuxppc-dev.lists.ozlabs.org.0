@@ -2,68 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20C0B41B540
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 19:36:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B073D41B555
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 19:42:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HJmrq6mc9z305T
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Sep 2021 03:36:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HJmzV3y9Tz2yyh
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Sep 2021 03:42:14 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel-com.20210112.gappssmtp.com header.i=@intel-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=wZ2qK0vD;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel-com.20210112.gappssmtp.com header.i=@intel-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=bA7yAxAI;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::1035;
- helo=mail-pj1-x1035.google.com; envelope-from=dan.j.williams@intel.com;
+ smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::52f;
+ helo=mail-pg1-x52f.google.com; envelope-from=dan.j.williams@intel.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=intel-com.20210112.gappssmtp.com
  header.i=@intel-com.20210112.gappssmtp.com header.a=rsa-sha256
- header.s=20210112 header.b=wZ2qK0vD; dkim-atps=neutral
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com
- [IPv6:2607:f8b0:4864:20::1035])
+ header.s=20210112 header.b=bA7yAxAI; dkim-atps=neutral
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com
+ [IPv6:2607:f8b0:4864:20::52f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HJmr85lCzz2yNM
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Sep 2021 03:35:51 +1000 (AEST)
-Received: by mail-pj1-x1035.google.com with SMTP id
- u1-20020a17090ae00100b0019ec31d3ba2so2246501pjy.1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Sep 2021 10:35:51 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HJmys1sZdz2xY5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Sep 2021 03:41:40 +1000 (AEST)
+Received: by mail-pg1-x52f.google.com with SMTP id r2so21972139pgl.10
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Sep 2021 10:41:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=intel-com.20210112.gappssmtp.com; s=20210112;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=z4rpZbh5fY0GJmvqTpqKPOJUU3/CkuLxZ3x2vaW47gs=;
- b=wZ2qK0vDwa/x+WmO54A8bVqDnaE4MxcyOEaPNfghMs0xFBaF5wolp8j+kq8NVd53dl
- rsImtXgdg957L8wghBAufVSqgLyC4EmLedX89tGCu9hdbwa/j0bK+igN5QxEz+2sSMn4
- Jkpzph4lS6pupyWbeuUVoT7QYa/faQ1K5gWMxS69D0LVU584l+LYqEdHM36t5UUJP8KZ
- Ox8vtfVgQGLnLqDI7aAS7eftEkVJGtu441BAiHEGfxU6S8AyhzXUAUXd3857Wfq2hmsT
- U/DpbWTh0lWZxkH3nJrhEHTL0R210cPEJQldelq0QNJ765EUoU+wh6cTG8Wqc7Jl6mzu
- QXyw==
+ :cc; bh=WkidfBLNDflGiXs0oP3mDBZ5il/79hD91IY+k5Xsxuc=;
+ b=bA7yAxAI4PivPTDL2tmtUWSug8cFLm+Lp/M/J8tWpOX7VThwyhD1uHRnHWyn1gypjz
+ /XzmjC9sfErVDuGFsyJvSSHvvhu9nQ7Kso3E+RGxpZnlV1rpwx4LYj/P5l6Z38Y/UEfp
+ dNeWL6kK9unlsA8wG5GEhkIZ+4tvRDOMk+TJy7HzL9rdoix0FJNsfZcPFnfoMkxbst93
+ a/G0KXVU8o79EfFIKtiBKh5+QiY7b/PJds1zfTAHCkczgYa7RB5dkQrraBWKo6v3QHEl
+ TcfvQ5mM+1T1aqcT9TKMJNtVWXVgUrfew9Eem3OwSym9y2/TAeOib1Yk9gpHI3xIahD9
+ clDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=z4rpZbh5fY0GJmvqTpqKPOJUU3/CkuLxZ3x2vaW47gs=;
- b=yz+QAauZM7h2fvVaDnkj51XZmDdY9K+OOFU8utrBThHZGv+6Wy+cS+vCyZbIjX5qMd
- G2psb8CbfQz2X4e3xeIyx67CSwPoVb1+S2wgRWu/Z62wkWTfwtfG8R+utUki/XRszEfp
- rVWdybi9icplF33Qq/4X2moMhZfKCenaN/MN8YUPveJOpbZhHCnrbAUYvAo4QL53p1Oi
- kPBHJuiyme69DPpKCa4ed7pCOqRRNFl6xPVZUBb3uPFOrp4ylXki1o9BRucHaPWeitsR
- tqS3SSxEV0vmvtsQhQkHz9uzMxzdCdol8dJTVBEjj9mPxdArC63zIuH+NnbDhW8sbSsS
- 7K6A==
-X-Gm-Message-State: AOAM5339rQl7uz4ffXXMWnABLAmRCzApSg73PdG8Coh7vuoTIWxum5iL
- nHBKkXD1cz4Pk8pXrmp4GjFdxXF3OpVv44ilEIcCUg==
-X-Google-Smtp-Source: ABdhPJw3YufFCASrMQKrr5qR62jfqEobEWU5JH/XKYq1dn6X8ous0KD9EnMyS9mGmOC2Zwa4E1WW3YScKPZdcYfFVq8=
-X-Received: by 2002:a17:90a:d686:: with SMTP id x6mr1302865pju.8.1632850547865; 
- Tue, 28 Sep 2021 10:35:47 -0700 (PDT)
+ bh=WkidfBLNDflGiXs0oP3mDBZ5il/79hD91IY+k5Xsxuc=;
+ b=XPl1abJQ1Wg0g4vn/74C0qtEmVuMvFG3EVAfiRNPp0WP3IIhn15B41PVx++b/3wvfg
+ Yokke3jQkFQj3y9QNj/pQnti5ypHr0B1+SQhzplbBDr1OHJY5Sxdv80ZuuDz2bifkCfC
+ 8Hu4KbmlpDyaBJjp4t7Y93Z54+0YPoa081nLZdx6uFiVHaK0WOg/Ciue2a5pJW2oou0g
+ CdYV2DdpG3tXoXQZYXq6Sh5Yc8leJGrGyrt8QbgSJ8AER6WXlYKY3SY2bdbb/Ms+eYDY
+ 03VfBQ0l7dLKjKSovPUiaJZy6wJfk2ccR8TT0Qkv7qi0Ic7CiXrjXElOnKJCad2Xtn9/
+ hQ/w==
+X-Gm-Message-State: AOAM531qH1EW5chLzYSkK/g2If7C0mQkITYPOKJkglSpSJCQ8xfLgo9w
+ 8GcCQB8XrHPDscQ8gx57GibVlIaZAlF5POqCkf5Q8Q==
+X-Google-Smtp-Source: ABdhPJxE685ihjSuTSw0+w9d2q6ixqqWA3MsNeG+SfMab1LeeuIrmS8uWL0F1Ylm1UNzWyahPTQwxwoyCoYk+d5LLKY=
+X-Received: by 2002:a63:1e0e:: with SMTP id e14mr5684055pge.5.1632850896968;
+ Tue, 28 Sep 2021 10:41:36 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210923172647.72738-1-ben.widawsky@intel.com>
- <20210923172647.72738-5-ben.widawsky@intel.com>
-In-Reply-To: <20210923172647.72738-5-ben.widawsky@intel.com>
+ <20210923172647.72738-6-ben.widawsky@intel.com>
+In-Reply-To: <20210923172647.72738-6-ben.widawsky@intel.com>
 From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 28 Sep 2021 10:35:34 -0700
-Message-ID: <CAPcyv4i7Dytarp3Hxi_ECtCU+Ve985dNCh07a8wJX0sTgCnR0Q@mail.gmail.com>
-Subject: Re: [PATCH v2 4/9] cxl/pci: Refactor cxl_pci_setup_regs
+Date: Tue, 28 Sep 2021 10:41:24 -0700
+Message-ID: <CAPcyv4j5aRTEX=FDjYv21J0uDWbP66j-xaDPkvjmwdnKmvAWDA@mail.gmail.com>
+Subject: Re: [PATCH v2 5/9] cxl/pci: Make more use of cxl_register_map
 To: Ben Widawsky <ben.widawsky@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -90,42 +89,13 @@ Sender: "Linuxppc-dev"
 
 On Thu, Sep 23, 2021 at 10:27 AM Ben Widawsky <ben.widawsky@intel.com> wrote:
 >
-> In preparation for moving parts of register mapping to cxl_core, the
-> cxl_pci driver is refactored to utilize a new helper to find register
-> blocks by type.
->
-> cxl_pci scanned through all register blocks and mapping the ones that
-> the driver will use. This logic is inverted so that the driver
-> specifically requests the register blocks from a new helper. Under the
-> hood, the same implementation of scanning through all register locator
-> DVSEC entries exists.
->
-> There are 2 behavioral changes (#2 is arguable):
-> 1. A dev_err is introduced if cxl_map_regs fails.
-> 2. The previous logic would try to map component registers and device
->    registers multiple times if there were present and keep the mapping
->    of the last one found (furthest offset in the register locator).
->    While this is disallowed in the spec, CXL 2.0 8.1.9: "Each register
->    block identifier shall only occur once in the Register Locator DVSEC
->    structure" it was how the driver would respond to the spec violation.
->    The new logic will take the first found register block by type and
->    move on.
->
-> Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
->
-> ---
-> Changes since v1:
+> The structure exists to pass around information about register mapping.
+> Using it more extensively cleans up many existing functions.
 
-No changes? Luckily git am strips this section...
-
-Overall I think this refactor can be broken down further for
-readability and cleanup the long standing problem that the driver maps
-component registers for no reason. The main contributing factor to
-readability is that cxl_setup_pci_regs() still exists after the
-refactor, which also contributes to the component register problem. If
-the register mapping is up leveled to the caller of
-cxl_setup_pci_regs() (and drops mapping component registers) then a
-follow-on patch to rename cxl_setup_pci_regs to find_register_block
-becomes easier to read. Moving the cxl_register_map array out of
-cxl_setup_pci_regs() also makes a later patch to pass component
-register enumeration details to the endpoint-port that much cleaner.
+I would have liked to have seen "add @base to cxl_register_map" and
+"use @map for @bar and @offset arguments" somewhere in this changelog
+to set expectations for what changes are included. That would have
+also highlighted that adding a @base to cxl_register_map deserves its
+own patch vs the conversion of @bar and @offset to instead use
+@map->bar and @map->offset. Can you resend with that split and those
+mentions?
