@@ -2,101 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2682541B6CA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 20:58:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66DD741B747
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 21:13:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HJpfx5LD4z3051
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Sep 2021 04:58:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HJq0n0CjGz3cNJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Sep 2021 05:13:29 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YyZ0h/CJ;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=dkim header.b=PgysYne7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=YyZ0h/CJ; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ smtp.mailfrom=alien8.de (client-ip=2a01:4f8:190:11c2::b:1457;
+ helo=mail.skyhub.de; envelope-from=bp@alien8.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256
+ header.s=dkim header.b=PgysYne7; dkim-atps=neutral
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HJpf74tpKz2xr9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Sep 2021 04:57:18 +1000 (AEST)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18SHj583027117
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Sep 2021 14:57:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=wDcB6cLgJz0K6y0t+YVpmDF+y5mx5lwtkuat4ooZrbQ=;
- b=YyZ0h/CJ+YSvpOx3jQY/QoDSz+RJ7ErcW2vNkotP0gKghGXSPAt/yqIfsy2lSt1bI9iP
- rBEcWdK4049NJ45CB/Qw0zn74Fq6nM9HIitDIkbKnCNjaLwOMvxK1WzmExXZCQzeph6y
- M67e2D/ehYLEDgs0LziIVHT9UK5CLExde2TM3gx4Yf0v5zImwb3P3zog2vosJHMOBQi2
- Cnpg0tlzz59yMrb+m/8aqH7cLTZZj383zdVsm0HDpcb9A9OazkH9W6Xy/Pr6tUoNzV54
- upEfsq1FY8/kpqVaX7A5nCYBeEq9rQPh9PyqUuQgVK59QQfENMnHfHTV56EYeJjWimz1 LQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3bc092mqu0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Sep 2021 14:57:15 -0400
-Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 18SIWuAP008325
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Sep 2021 14:57:14 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3bc092mqtn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 28 Sep 2021 14:57:14 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 18SIrFAS010917;
- Tue, 28 Sep 2021 18:57:14 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma02dal.us.ibm.com with ESMTP id 3b9udb7nyv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 28 Sep 2021 18:57:14 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 18SIvDlb32309620
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 28 Sep 2021 18:57:13 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0CD68AE06A;
- Tue, 28 Sep 2021 18:57:13 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7D97DAE060;
- Tue, 28 Sep 2021 18:57:12 +0000 (GMT)
-Received: from oc6857751186.ibm.com (unknown [9.160.61.158])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue, 28 Sep 2021 18:57:12 +0000 (GMT)
-Subject: Re: [PATCH] powerpc: fix unbalanced node refcount in check_kvm_guest()
-To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-References: <20210928124550.132020-1-nathanl@linux.ibm.com>
-From: Tyrel Datwyler <tyreld@linux.ibm.com>
-Message-ID: <1afd9f63-fc20-0717-63f4-21cae7933df2@linux.ibm.com>
-Date: Tue, 28 Sep 2021 11:57:11 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HJpxH09jhz2xfM
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Sep 2021 05:10:26 +1000 (AEST)
+Received: from zn.tnic (p200300ec2f13b20078349fd04295260b.dip0.t-ipconnect.de
+ [IPv6:2003:ec:2f13:b200:7834:9fd0:4295:260b])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 394BC1EC067E;
+ Tue, 28 Sep 2021 21:10:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+ t=1632856218;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:
+ content-transfer-encoding:content-transfer-encoding:in-reply-to:
+ references; bh=GCnPTyFFnPSLiurFbR8iLYuDvIM/ZylVNPX31loBg1U=;
+ b=PgysYne7oRqig38Wg3EljqkqTDirqwkPAzRh5HiMtoiV+jJbJHTdrk3tVWUMlO9AliXjoI
+ QYxOn8YzMjaQP86uf/uYhrT2bAzVSbUmsndVFpCY5/rue9vmSI/Ae0ek/NbRQmmnCheeB1
+ XkhBbUOn81FbH/ZWzpMG01inkCayyvg=
+From: Borislav Petkov <bp@alien8.de>
+To: LKML <linux-kernel@vger.kernel.org>
+Subject: [PATCH v4 0/8] Implement generic cc_platform_has() helper function
+Date: Tue, 28 Sep 2021 21:10:01 +0200
+Message-Id: <20210928191009.32551-1-bp@alien8.de>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-In-Reply-To: <20210928124550.132020-1-nathanl@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: XQuXEnK3a0cFXP8MC9lGdmFmv5mfKjVl
-X-Proofpoint-GUID: NQkN2ZBPOvS_5deFXsn6j83jP2Wx8q6a
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
- definitions=2021-09-28_05,2021-09-28_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1015
- mlxlogscore=999 spamscore=0 bulkscore=0 adultscore=0 mlxscore=0
- lowpriorityscore=0 suspectscore=0 malwarescore=0 phishscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2109230001 definitions=main-2109280109
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,20 +57,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: srikar@linux.vnet.ibm.com, npiggin@gmail.com
+Cc: "Kuppuswamy, Sathyanarayanan" <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ linux-efi@vger.kernel.org, kvm@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, dri-devel@lists.freedesktop.org,
+ platform-driver-x86@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+ linux-s390@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
+ Baoquan He <bhe@redhat.com>, Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
+ amd-gfx@lists.freedesktop.org, Christoph Hellwig <hch@infradead.org>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ VMware Graphics <linux-graphics-maintainer@vmware.com>,
+ Dave Young <dyoung@redhat.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>, Vasily Gorbik <gor@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Andy Lutomirski <luto@kernel.org>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>, kexec@lists.infradead.org,
+ iommu@lists.linux-foundation.org, Daniel Vetter <daniel@ffwll.ch>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 9/28/21 5:45 AM, Nathan Lynch wrote:
-> When check_kvm_guest() succeeds in looking up a /hypervisor OF node, it
-> returns without performing a matching put for the lookup, leaving the
-> node's reference count elevated.
-> 
-> Add the necessary call to of_node_put(), rearranging the code slightly to
-> avoid repetition or goto.
-> 
-> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-> Fixes: 107c55005fbd ("powerpc/pseries: Add KVM guest doorbell restrictions")
+From: Borislav Petkov <bp@suse.de>
 
-Reviewed-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+Hi all,
+
+here's v4 of the cc_platform_has() patchset with feedback incorporated.
+
+I'm going to route this through tip if there are no objections.
+
+Thx.
+
+Tom Lendacky (8):
+  x86/ioremap: Selectively build arch override encryption functions
+  arch/cc: Introduce a function to check for confidential computing
+    features
+  x86/sev: Add an x86 version of cc_platform_has()
+  powerpc/pseries/svm: Add a powerpc version of cc_platform_has()
+  x86/sme: Replace occurrences of sme_active() with cc_platform_has()
+  x86/sev: Replace occurrences of sev_active() with cc_platform_has()
+  x86/sev: Replace occurrences of sev_es_active() with cc_platform_has()
+  treewide: Replace the use of mem_encrypt_active() with
+    cc_platform_has()
+
+ arch/Kconfig                                 |  3 +
+ arch/powerpc/include/asm/mem_encrypt.h       |  5 --
+ arch/powerpc/platforms/pseries/Kconfig       |  1 +
+ arch/powerpc/platforms/pseries/Makefile      |  2 +
+ arch/powerpc/platforms/pseries/cc_platform.c | 26 ++++++
+ arch/powerpc/platforms/pseries/svm.c         |  5 +-
+ arch/s390/include/asm/mem_encrypt.h          |  2 -
+ arch/x86/Kconfig                             |  1 +
+ arch/x86/include/asm/io.h                    |  8 ++
+ arch/x86/include/asm/kexec.h                 |  2 +-
+ arch/x86/include/asm/mem_encrypt.h           | 12 +--
+ arch/x86/kernel/Makefile                     |  6 ++
+ arch/x86/kernel/cc_platform.c                | 69 +++++++++++++++
+ arch/x86/kernel/crash_dump_64.c              |  4 +-
+ arch/x86/kernel/head64.c                     |  9 +-
+ arch/x86/kernel/kvm.c                        |  3 +-
+ arch/x86/kernel/kvmclock.c                   |  4 +-
+ arch/x86/kernel/machine_kexec_64.c           | 19 +++--
+ arch/x86/kernel/pci-swiotlb.c                |  9 +-
+ arch/x86/kernel/relocate_kernel_64.S         |  2 +-
+ arch/x86/kernel/sev.c                        |  6 +-
+ arch/x86/kvm/svm/svm.c                       |  3 +-
+ arch/x86/mm/ioremap.c                        | 18 ++--
+ arch/x86/mm/mem_encrypt.c                    | 55 ++++--------
+ arch/x86/mm/mem_encrypt_identity.c           |  9 +-
+ arch/x86/mm/pat/set_memory.c                 |  3 +-
+ arch/x86/platform/efi/efi_64.c               |  9 +-
+ arch/x86/realmode/init.c                     |  8 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c      |  4 +-
+ drivers/gpu/drm/drm_cache.c                  |  4 +-
+ drivers/gpu/drm/vmwgfx/vmwgfx_drv.c          |  4 +-
+ drivers/gpu/drm/vmwgfx/vmwgfx_msg.c          |  6 +-
+ drivers/iommu/amd/init.c                     |  7 +-
+ drivers/iommu/amd/iommu.c                    |  3 +-
+ drivers/iommu/amd/iommu_v2.c                 |  3 +-
+ drivers/iommu/iommu.c                        |  3 +-
+ fs/proc/vmcore.c                             |  6 +-
+ include/linux/cc_platform.h                  | 88 ++++++++++++++++++++
+ include/linux/mem_encrypt.h                  |  4 -
+ kernel/dma/swiotlb.c                         |  4 +-
+ 40 files changed, 310 insertions(+), 129 deletions(-)
+ create mode 100644 arch/powerpc/platforms/pseries/cc_platform.c
+ create mode 100644 arch/x86/kernel/cc_platform.c
+ create mode 100644 include/linux/cc_platform.h
+
+-- 
+2.29.2
+
