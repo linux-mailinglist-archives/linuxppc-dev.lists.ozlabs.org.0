@@ -1,93 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A8C141AF66
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 14:50:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4FAD41AFDE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 15:19:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HJfVw3Wcfz3cBB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 22:50:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HJg8f4mFZz301F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Sep 2021 23:19:46 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=h5KAHzZN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ccs7XIjx;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=ardb@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=h5KAHzZN; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=Ccs7XIjx; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HJfTN2fyYz3bhg
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Sep 2021 22:49:12 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18SAJ4Eq019457; 
- Tue, 28 Sep 2021 08:48:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=Y0lsPQ3de1hi0HT1iJbp1UbGiO/7GnkeYOUpwVeKUTE=;
- b=h5KAHzZNdK3KLlgER0onYrZGrzUUun2gsSU3KXV7xR9XoIayMvcXZUj12fu37/ZYARbZ
- XeefROo0pkwZEemrkKxlQrhy1lzNICFty02Yx1/hE1RTP3uRfHQ2gBVlAqF4rPov7ezU
- NaCVoOTc64PMCPQ4FwlsQnry7MEQf/oSRDuDzb+wHGNjDCk98WEIqcsXoDY/gO2jyTwd
- PPIkV1AePuA/SsnSlwE1P5I5eB/DTwlCQx7uQxiAgGbgtaMtEbZJworeScIdsit7+9BG
- hVcmP8Z7sIrj3gJIiWkvNSMnGW4D2RpnvX0kQPmKDqdUQqeBvW+jRMnWL4Hn+v9DX4at mg== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3bc16mb5jm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 28 Sep 2021 08:48:53 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 18SChFcT030260;
- Tue, 28 Sep 2021 12:48:52 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma06ams.nl.ibm.com with ESMTP id 3b9u1je28x-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 28 Sep 2021 12:48:51 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 18SCmmRK56361414
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 28 Sep 2021 12:48:48 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 45CD84C058;
- Tue, 28 Sep 2021 12:48:48 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 776474C059;
- Tue, 28 Sep 2021 12:48:42 +0000 (GMT)
-Received: from li-e8dccbcc-2adc-11b2-a85c-bc1f33b9b810.ibm.com.com (unknown
- [9.43.50.245]) by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 28 Sep 2021 12:48:42 +0000 (GMT)
-From: Kajol Jain <kjain@linux.ibm.com>
-To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, nvdimm@lists.linux.dev, 
- linux-kernel@vger.kernel.org, peterz@infradead.org,
- dan.j.williams@intel.com, ira.weiny@intel.com, vishal.l.verma@intel.com
-Subject: [PATCH v5 4/4] docs: ABI: sysfs-bus-nvdimm: Document sysfs event
- format entries for nvdimm pmu
-Date: Tue, 28 Sep 2021 18:18:34 +0530
-Message-Id: <20210928124834.146803-1-kjain@linux.ibm.com>
-X-Mailer: git-send-email 2.27.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HJg7y6HWHz2yNM
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Sep 2021 23:19:10 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id CB6ED61159
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Sep 2021 13:19:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1632835147;
+ bh=VeB5GXPFGYAi+MDx0ZEO0Lyx1tXoFrq/FrWnMOweEWQ=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=Ccs7XIjxXrIgaTUmo/h1V5wzdF3a0jAk0iTbETr1F6rsd8qX6moThIJSBSjGgRk3v
+ s+nCx52LqL7r3C17qq1zt3GP/GlWEXm2kW86RuFqbhj2etiRcmIqNe4vA+I+W4aBIR
+ mobB0a9I5yDSB3Xga2i9ooyu842EJMFZ3XBfW1mDgSWKR7KJw8z371s8T8uI/rGnUd
+ N3ktpLUhjh5O+w3P2MmvH/d32FSZttYpGOfnQEEZ3fTVBp5xCAORolIpK2X+DoAv8D
+ TsAIb6/ZP2nYlkBCFX9siljASoyMdzXltzBvgvBKTN/t4H0qD17jczNAGzYT0DeFqF
+ mLb3o/x05aF/A==
+Received: by mail-oi1-f178.google.com with SMTP id s24so27325296oij.8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Sep 2021 06:19:07 -0700 (PDT)
+X-Gm-Message-State: AOAM5339BfbAeqkceITgDBekdqOUhLGABVLeFbZ/XSc8H7gzxcvBWQSS
+ tCHXyzJcgJXTpGS316o2i2iB/ClaVWXagl4H15A=
+X-Google-Smtp-Source: ABdhPJyep3Pw1Kqo5huUAuGsrpllZ2c8nSuyzA6EOwJFgMmmBzpyy+vZsyEyrP7TXFbetznr+4dx/vVu8duHYpn76tM=
+X-Received: by 2002:a05:6808:1148:: with SMTP id
+ u8mr3509831oiu.33.1632835136613; 
+ Tue, 28 Sep 2021 06:18:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 6vqiGTjGIiT5nhz1KivSxMLR6mekFC9r
-X-Proofpoint-GUID: 6vqiGTjGIiT5nhz1KivSxMLR6mekFC9r
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
- definitions=2021-09-28_05,2021-09-28_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 mlxscore=0
- bulkscore=0 phishscore=0 priorityscore=1501 lowpriorityscore=0
- adultscore=0 clxscore=1015 mlxlogscore=999 impostorscore=0 suspectscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2109230001 definitions=main-2109280071
+References: <20210914121036.3975026-1-ardb@kernel.org>
+ <20210914121036.3975026-5-ardb@kernel.org>
+ <CAMj1kXEojbQbNzCP39KT4EzFAyW3J1Tfm_stCZ+fGo8_SO90PA@mail.gmail.com>
+ <87ee99lii7.fsf@mpe.ellerman.id.au> <87pmst1rn9.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87pmst1rn9.fsf@mpe.ellerman.id.au>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Tue, 28 Sep 2021 15:18:45 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFXtbD3=L+QvCnwbyFr-qbWivZ0wRGT0N4LNxANPD8x4g@mail.gmail.com>
+Message-ID: <CAMj1kXFXtbD3=L+QvCnwbyFr-qbWivZ0wRGT0N4LNxANPD8x4g@mail.gmail.com>
+Subject: Re: [RFC PATCH 4/8] powerpc: add CPU field to struct thread_info
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,64 +68,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: santosh@fossix.org, maddy@linux.ibm.com, rnsastry@linux.ibm.com,
- aneesh.kumar@linux.ibm.com, atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com,
- vaibhav@linux.ibm.com, tglx@linutronix.de
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Paul Mackerras <paulus@samba.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>, Will Deacon <will@kernel.org>,
+ "open list:S390" <linux-s390@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Russell King <linux@armlinux.org.uk>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Kees Cook <keescook@chromium.org>,
+ Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Keith Packard <keithpac@amazon.com>, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
+ <linuxppc-dev@lists.ozlabs.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Details are added for the event, cpumask and format attributes
-in the ABI documentation.
+On Tue, 28 Sept 2021 at 02:16, Michael Ellerman <mpe@ellerman.id.au> wrote:
+>
+> Michael Ellerman <mpe@ellerman.id.au> writes:
+> > Ard Biesheuvel <ardb@kernel.org> writes:
+> >> On Tue, 14 Sept 2021 at 14:11, Ard Biesheuvel <ardb@kernel.org> wrote:
+> >>>
+> >>> The CPU field will be moved back into thread_info even when
+> >>> THREAD_INFO_IN_TASK is enabled, so add it back to powerpc's definition
+> >>> of struct thread_info.
+> >>>
+> >>> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> >>
+> >> Michael,
+> >>
+> >> Do you have any objections or issues with this patch or the subsequent
+> >> ones cleaning up the task CPU kludge for ppc32? Christophe indicated
+> >> that he was happy with it.
+> >
+> > No objections, it looks good to me, thanks for cleaning up that horror :)
+> >
+> > It didn't apply cleanly to master so I haven't tested it at all, if you can point me at a
+> > git tree with the dependencies I'd be happy to run some tests over it.
+>
+> Actually I realised I can just drop the last patch.
+>
+> So that looks fine, passes my standard quick build & boot on qemu tests,
+> and builds with/without stack protector enabled.
+>
 
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
----
- Documentation/ABI/testing/sysfs-bus-nvdimm | 35 ++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+Thanks.
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-nvdimm b/Documentation/ABI/testing/sysfs-bus-nvdimm
-index bff84a16812a..64004d5e4840 100644
---- a/Documentation/ABI/testing/sysfs-bus-nvdimm
-+++ b/Documentation/ABI/testing/sysfs-bus-nvdimm
-@@ -6,3 +6,38 @@ Description:
- 
- The libnvdimm sub-system implements a common sysfs interface for
- platform nvdimm resources. See Documentation/driver-api/nvdimm/.
-+
-+What:           /sys/bus/event_source/devices/nmemX/format
-+Date:           September 2021
-+KernelVersion:  5.16
-+Contact:        Kajol Jain <kjain@linux.ibm.com>
-+Description:	(RO) Attribute group to describe the magic bits
-+		that go into perf_event_attr.config for a particular pmu.
-+		(See ABI/testing/sysfs-bus-event_source-devices-format).
-+
-+		Each attribute under this group defines a bit range of the
-+		perf_event_attr.config. Supported attribute is listed
-+		below::
-+		  event  = "config:0-4"  - event ID
-+
-+		For example::
-+			ctl_res_cnt = "event=0x1"
-+
-+What:           /sys/bus/event_source/devices/nmemX/events
-+Date:           September 2021
-+KernelVersion:  5.16
-+Contact:        Kajol Jain <kjain@linux.ibm.com>
-+Description:	(RO) Attribute group to describe performance monitoring events
-+                for the nvdimm memory device. Each attribute in this group
-+                describes a single performance monitoring event supported by
-+                this nvdimm pmu.  The name of the file is the name of the event.
-+                (See ABI/testing/sysfs-bus-event_source-devices-events). A
-+                listing of the events supported by a given nvdimm provider type
-+                can be found in Documentation/driver-api/nvdimm/$provider.
-+
-+What:          /sys/bus/event_source/devices/nmemX/cpumask
-+Date:          September 2021
-+KernelVersion:  5.16
-+Contact:        Kajol Jain <kjain@linux.ibm.com>
-+Description:	(RO) This sysfs file exposes the cpumask which is designated to
-+		to retrieve nvdimm pmu event counter data.
+Do you have any opinion on how this series should be merged? Kees Cook
+is willing to take them via his cross-arch tree, or you could carry
+them if you prefer. Taking it via multiple trees at the same time is
+going to be tricky, or take two cycles, with I'd prefer to avoid.
+
 -- 
-2.26.2
-
+Ard.
