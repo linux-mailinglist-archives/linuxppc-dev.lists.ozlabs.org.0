@@ -1,54 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2561941BD8D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Sep 2021 05:38:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAABD41BED1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Sep 2021 07:46:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HK2C8061Vz3cBN
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Sep 2021 13:38:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HK53753gTz307f
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Sep 2021 15:46:27 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=PXfL7Qyr;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com;
- envelope-from=nixiaoming@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HK2BF2f0Fz2yKJ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Sep 2021 13:37:25 +1000 (AEST)
-Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.53])
- by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4HK24c65qMzbmvt;
- Wed, 29 Sep 2021 11:32:32 +0800 (CST)
-Received: from dggema774-chm.china.huawei.com (10.1.198.216) by
- dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2308.8; Wed, 29 Sep 2021 11:36:49 +0800
-Received: from use12-sp2.huawei.com (10.67.189.174) by
- dggema774-chm.china.huawei.com (10.1.198.216) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2308.8; Wed, 29 Sep 2021 11:36:49 +0800
-From: Xiaoming Ni <nixiaoming@huawei.com>
-To: <oss@buserror.net>, <mpe@ellerman.id.au>, <benh@kernel.crashing.org>,
- <paulus@samba.org>, <paul.gortmaker@windriver.com>,
- <chenhui.zhao@freescale.com>, <Yuantian.Tang@feescale.com>,
- <linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
- <stable@vger.kernel.org>, <gregkh@linuxfoundation.org>
-Subject: [PATCH v2 2/2] powerpc:85xx: fix timebase sync issue when
- CONFIG_HOTPLUG_CPU=n
-Date: Wed, 29 Sep 2021 11:36:46 +0800
-Message-ID: <20210929033646.39630-3-nixiaoming@huawei.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210929033646.39630-1-nixiaoming@huawei.com>
-References: <021a5ee3-25ef-1de4-0111-d4c3281e0f45@huawei.com>
- <20210929033646.39630-1-nixiaoming@huawei.com>
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HK52V6541z2yNK
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Sep 2021 15:45:54 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=PXfL7Qyr; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4HK52R0dC4z4wgv;
+ Wed, 29 Sep 2021 15:45:51 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1632894351;
+ bh=pAbTTsEc6gj8WOZpeGLrqxgGkSDot/Lxc59JAsfWc/Q=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=PXfL7QyrR5A6DzyG8bpGnJtEe/thq4q1fNaerDqVUUvdhHfSrJ9fZ4TK+B+DXUw71
+ vbXxv999ruWYKOdFnteYQm/jpGApiYLuZ7yuOmVg78SnIIFN5x0m9fUQ81PQToERSj
+ WjZZP1cvdnOi9hkpCDi5Aq+0GSn/KfXujrqghD7WS4rFBXtTjv9jUBLNmGbEDXQRST
+ pIP36gmIPGETvtqLN87rDf6SnA7r85Ff3iUs3aXu9LAcAF3wx9I2orYVubCRGU3ewM
+ ZtzaxbmqFsjxiG1J2mNVdeF6gb9zkmTadk7zFiQTxRwwzs9B56/2sK0r75Bd61hTQ5
+ ph11GhH81R0Ng==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Daniel Henrique Barboza <danielhb413@gmail.com>, Nathan Lynch
+ <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v2 4/4] powerpc/pseries/cpuhp: remove obsolete comment
+ from pseries_cpu_die
+In-Reply-To: <4479e869-1c98-4473-262c-3aeb37b8fca2@gmail.com>
+References: <20210927201933.76786-1-nathanl@linux.ibm.com>
+ <20210927201933.76786-5-nathanl@linux.ibm.com>
+ <4479e869-1c98-4473-262c-3aeb37b8fca2@gmail.com>
+Date: Wed, 29 Sep 2021 15:45:47 +1000
+Message-ID: <87h7e40wac.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Originating-IP: [10.67.189.174]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggema774-chm.china.huawei.com (10.1.198.216)
-X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,142 +63,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: liuwenliang@huawei.com, wangle6@huawei.com, nixiaoming@huawei.com,
- chenjianguo3@huawei.com
+Cc: tyreld@linux.ibm.com, ldufour@linux.ibm.com, aneesh.kumar@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When CONFIG_SMP=y, timebase synchronization is required when the second
- kernel is started.
-	arch/powerpc/kernel/smp.c:
-	int __cpu_up(unsigned int cpu, struct task_struct *tidle)
-	{
-		...
-		if (smp_ops->give_timebase)
-			smp_ops->give_timebase();
-		...
+Daniel Henrique Barboza <danielhb413@gmail.com> writes:
+> On 9/27/21 17:19, Nathan Lynch wrote:
+>> This comment likely refers to the obsolete DLPAR workflow where some
+>> resource state transitions were driven more directly from user space
+>> utilities, but it also seems to contradict itself: "Change isolate state to
+>> Isolate [...]" is at odds with the preceding sentences, and it does not
+>> relate at all to the code that follows.
+>
+> This comment was added by commit 413f7c405a34, a 2006 commit where Mike
+> Ellerman moved code from platform/pseries/smp.c into hotplug-cpu.c.
+>
+> I checked the original code back in smp.c and this comment was added there
+> by commit 1da177e4c3f41, which is Linus's initial git commit, where he mentions
+> that he didn't bothered with full history (although it is available somewhere,
+> allegedly).
+>
+> This is enough to say that we can't easily see the history behind this comment.
+> I also believe that we're better of without it since it doesn't make sense
+> with the current codebase.
+
+It was added by the original CPU hotplug commit for ppc64::
+
+https://github.com/mpe/linux-fullhistory/commit/0e9fd9441cd2113b67b14e739267c9e69761489b
+
+
+The code was fairly similar:
+
+void __cpu_die(unsigned int cpu)
+{
+	int tries;
+	int cpu_status;
+	unsigned int pcpu = get_hard_smp_processor_id(cpu);
+
+	for (tries = 0; tries < 5; tries++) {
+		cpu_status = query_cpu_stopped(pcpu);
+
+		if (cpu_status == 0)
+			break;
+		set_current_state(TASK_UNINTERRUPTIBLE);
+		schedule_timeout(HZ);
+	}
+	if (cpu_status != 0) {
+		printk("Querying DEAD? cpu %i (%i) shows %i\n",
+		       cpu, pcpu, cpu_status);
 	}
 
-	void start_secondary(void *unused)
-	{
-		...
-		if (smp_ops->take_timebase)
-			smp_ops->take_timebase();
-		...
-	}
+	/* Isolation and deallocation are definatly done by
+	 * drslot_chrp_cpu.  If they were not they would be
+	 * done here.  Change isolate state to Isolate and
+	 * change allocation-state to Unusable.
+	 */
+	paca[cpu].xProcStart = 0;
 
-When CONFIG_HOTPLUG_CPU=n and CONFIG_KEXEC_CORE=n,
- smp_85xx_ops.give_timebase is NULL,
- smp_85xx_ops.take_timebase is NULL,
-As a result, the timebase is not synchronized.
+	/* So we can recognize if it fails to come up next time. */
+	cpu_callin_map[cpu] = 0;
+}
 
-Timebase  synchronization does not depend on CONFIG_HOTPLUG_CPU.
 
-Fixes: 56f1ba280719 ("powerpc/mpc85xx: refactor the PM operations")
-Cc: stable@vger.kernel.org #v4.6
-Signed-off-by: Xiaoming Ni <nixiaoming@huawei.com>
----
- arch/powerpc/platforms/85xx/Makefile         |  4 +++-
- arch/powerpc/platforms/85xx/mpc85xx_pm_ops.c |  4 ++++
- arch/powerpc/platforms/85xx/smp.c            | 12 ++++++------
- 3 files changed, 13 insertions(+), 7 deletions(-)
+drslot_chrp_cpu() still exists in drmgr:
 
-diff --git a/arch/powerpc/platforms/85xx/Makefile b/arch/powerpc/platforms/85xx/Makefile
-index 60e4e97a929d..260fbad7967b 100644
---- a/arch/powerpc/platforms/85xx/Makefile
-+++ b/arch/powerpc/platforms/85xx/Makefile
-@@ -3,7 +3,9 @@
- # Makefile for the PowerPC 85xx linux kernel.
- #
- obj-$(CONFIG_SMP) += smp.o
--obj-$(CONFIG_FSL_PMC)		  += mpc85xx_pm_ops.o
-+ifneq ($(CONFIG_FSL_CORENET_RCPM),y)
-+obj-$(CONFIG_SMP) += mpc85xx_pm_ops.o
-+endif
- 
- obj-y += common.o
- 
-diff --git a/arch/powerpc/platforms/85xx/mpc85xx_pm_ops.c b/arch/powerpc/platforms/85xx/mpc85xx_pm_ops.c
-index ffa8a7a6a2db..4a8af80011a6 100644
---- a/arch/powerpc/platforms/85xx/mpc85xx_pm_ops.c
-+++ b/arch/powerpc/platforms/85xx/mpc85xx_pm_ops.c
-@@ -17,6 +17,7 @@
- 
- static struct ccsr_guts __iomem *guts;
- 
-+#ifdef CONFIG_FSL_PMC
- static void mpc85xx_irq_mask(int cpu)
- {
- 
-@@ -49,6 +50,7 @@ static void mpc85xx_cpu_up_prepare(int cpu)
- {
- 
- }
-+#endif
- 
- static void mpc85xx_freeze_time_base(bool freeze)
- {
-@@ -76,10 +78,12 @@ static const struct of_device_id mpc85xx_smp_guts_ids[] = {
- 
- static const struct fsl_pm_ops mpc85xx_pm_ops = {
- 	.freeze_time_base = mpc85xx_freeze_time_base,
-+#ifdef CONFIG_FSL_PMC
- 	.irq_mask = mpc85xx_irq_mask,
- 	.irq_unmask = mpc85xx_irq_unmask,
- 	.cpu_die = mpc85xx_cpu_die,
- 	.cpu_up_prepare = mpc85xx_cpu_up_prepare,
-+#endif
- };
- 
- int __init mpc85xx_setup_pmc(void)
-diff --git a/arch/powerpc/platforms/85xx/smp.c b/arch/powerpc/platforms/85xx/smp.c
-index c6df294054fe..83f4a6389a28 100644
---- a/arch/powerpc/platforms/85xx/smp.c
-+++ b/arch/powerpc/platforms/85xx/smp.c
-@@ -40,7 +40,6 @@ struct epapr_spin_table {
- 	u32	pir;
- };
- 
--#ifdef CONFIG_HOTPLUG_CPU
- static u64 timebase;
- static int tb_req;
- static int tb_valid;
-@@ -112,6 +111,7 @@ static void mpc85xx_take_timebase(void)
- 	local_irq_restore(flags);
- }
- 
-+#ifdef CONFIG_HOTPLUG_CPU
- static void smp_85xx_cpu_offline_self(void)
- {
- 	unsigned int cpu = smp_processor_id();
-@@ -495,21 +495,21 @@ void __init mpc85xx_smp_init(void)
- 		smp_85xx_ops.probe = NULL;
- 	}
- 
--#ifdef CONFIG_HOTPLUG_CPU
- #ifdef CONFIG_FSL_CORENET_RCPM
-+	/* Assign a value to qoriq_pm_ops on PPC_E500MC */
- 	fsl_rcpm_init();
--#endif
--
--#ifdef CONFIG_FSL_PMC
-+#else
-+	/* Assign a value to qoriq_pm_ops on !PPC_E500MC */
- 	mpc85xx_setup_pmc();
- #endif
- 	if (qoriq_pm_ops) {
- 		smp_85xx_ops.give_timebase = mpc85xx_give_timebase;
- 		smp_85xx_ops.take_timebase = mpc85xx_take_timebase;
-+#ifdef CONFIG_HOTPLUG_CPU
- 		smp_85xx_ops.cpu_offline_self = smp_85xx_cpu_offline_self;
- 		smp_85xx_ops.cpu_die = qoriq_cpu_kill;
--	}
- #endif
-+	}
- 	smp_ops = &smp_85xx_ops;
- 
- #ifdef CONFIG_KEXEC_CORE
--- 
-2.27.0
+  https://github.com/ibm-power-utilities/powerpc-utils/blob/e798c4a09fbf0fa0f421e624cfa366a6c405c9fe/src/drmgr/drslot_chrp_cpu.c#L406
 
+
+I agree the comment is no longer meaningful and can be removed.
+
+It might be good to then add a comment explaining why we need to set
+cpu_start = 0.
+
+It's not immediately clear why we need to. When we bring a CPU back
+online in smp_pSeries_kick_cpu() we ask RTAS to start it and then
+immediately set cpu_start = 1, ie. there isn't a separate step that sets
+cpu_start = 1 for hotplugged CPUs.
+
+cheers
