@@ -2,76 +2,111 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE9F641C703
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Sep 2021 16:41:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 052DE41C8AF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Sep 2021 17:46:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HKJwM4jZTz3ckD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Sep 2021 00:41:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HKLM15mrbz30RP
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Sep 2021 01:46:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XFM1BEHp;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XFM1BEHp;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=T/0vUcqJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=XFM1BEHp; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=XFM1BEHp; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=T/0vUcqJ; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HKJsN1TP9z3bjM
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Sep 2021 00:38:47 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1632926325;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zxKKmmMRHJSYhaR7u+5ryK3qo040LzhTNWQ2wFcbJqY=;
- b=XFM1BEHptp+vPkMWhOphZ9bTshL2dNJA90/UwB/Tq+5217sin4mHyU0BPzYm6KyIj59xE5
- wBHs6lusUAsuaRwKU8XQ01hFlD58NxGdrOTNXZRzRo/rDm0pAXUleXu1e4Jwt/saXkSuLk
- /0c2UjtAbX8BE4pGS3riXV1PGCcYLp8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1632926325;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zxKKmmMRHJSYhaR7u+5ryK3qo040LzhTNWQ2wFcbJqY=;
- b=XFM1BEHptp+vPkMWhOphZ9bTshL2dNJA90/UwB/Tq+5217sin4mHyU0BPzYm6KyIj59xE5
- wBHs6lusUAsuaRwKU8XQ01hFlD58NxGdrOTNXZRzRo/rDm0pAXUleXu1e4Jwt/saXkSuLk
- /0c2UjtAbX8BE4pGS3riXV1PGCcYLp8=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-39-8UlB_jwgMrCaCz7PRId56w-1; Wed, 29 Sep 2021 10:37:37 -0400
-X-MC-Unique: 8UlB_jwgMrCaCz7PRId56w-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
- [10.5.11.22])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HKLLJ185dz2ygB
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Sep 2021 01:45:27 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18TFIXs5013454; 
+ Wed, 29 Sep 2021 11:44:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=2lZJdFw4WNk77XQ3gfuFQ0Wu4AQF8qNlzBIEQyCzgpc=;
+ b=T/0vUcqJAa2fgLtyzY4tlQYtWLN8QVM0E25FTA6Zi7YulGd8Xo7QJfagdJ75M9VcA0n3
+ e5TU1HSXPryyf0I8/UZHPWxNlno2R4cb5TY22SkLbPnBHwC8BMRJtj9V5AzF/UaxwtuY
+ 6ozdx9pMD3nIp0LpRP23GSJCB1cwz/V1u4oNvhdKizQ58LwiDQ55qqO0voze+t0jMrsx
+ Q7Gn6g+aahJZ8K19odhcjNOxEOq1cqhn6zoUOeptzFurvTZWEtFGYe4xAywRRaUxG/4p
+ QvzXrQ/vp5FNVPs9hO+wNi1UTQtCH93tezwbf6qv5yeWPPACnypEMeCrGi7e+1XPjByB Hg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3bcs3bkpay-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 29 Sep 2021 11:44:54 -0400
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 18TFKswJ027183;
+ Wed, 29 Sep 2021 11:44:53 -0400
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3bcs3bkp9q-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 29 Sep 2021 11:44:53 -0400
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 18TFI54C008881;
+ Wed, 29 Sep 2021 15:44:51 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma05fra.de.ibm.com with ESMTP id 3bc11evrnx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 29 Sep 2021 15:44:50 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 18TFimIU46596452
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 29 Sep 2021 15:44:48 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1E5C211C050;
+ Wed, 29 Sep 2021 15:44:48 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 70FD011C06E;
+ Wed, 29 Sep 2021 15:44:47 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 29 Sep 2021 15:44:47 +0000 (GMT)
+Received: from [9.206.131.40] (unknown [9.206.131.40])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 897568015C7;
- Wed, 29 Sep 2021 14:37:34 +0000 (UTC)
-Received: from t480s.redhat.com (unknown [10.39.195.135])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 745251017E27;
- Wed, 29 Sep 2021 14:37:28 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH v1 6/6] x86: remove memory hotplug support on X86_32
-Date: Wed, 29 Sep 2021 16:36:00 +0200
-Message-Id: <20210929143600.49379-7-david@redhat.com>
-In-Reply-To: <20210929143600.49379-1-david@redhat.com>
-References: <20210929143600.49379-1-david@redhat.com>
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 5834F600F5;
+ Thu, 30 Sep 2021 01:44:45 +1000 (AEST)
+Subject: Re: [PATCH v5 10/11] PCI: Replace pci_dev::driver usage by
+ pci_dev::dev.driver
+To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>
+References: <20210929085306.2203850-1-u.kleine-koenig@pengutronix.de>
+ <20210929085306.2203850-11-u.kleine-koenig@pengutronix.de>
+ <75dd6d60-08b9-fa68-352c-3a0c5a04c0ab@linux.ibm.com>
+ <20210929134330.e5c57t7mtwu5iner@pengutronix.de>
+From: Andrew Donnellan <ajd@linux.ibm.com>
+Message-ID: <1414b3c5-167c-c271-baed-d3d7f6cd0309@linux.ibm.com>
+Date: Thu, 30 Sep 2021 01:44:44 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
+In-Reply-To: <20210929134330.e5c57t7mtwu5iner@pengutronix.de>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: xoS4V0L0XnAZXIlSObNRrRHFrN-qRdXU
+X-Proofpoint-GUID: aqWPGKvFeDrRCpepuY6Q_1i7K4Jcg0AY
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
+ definitions=2021-09-29_06,2021-09-29_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 phishscore=0
+ impostorscore=0 suspectscore=0 clxscore=1015 mlxlogscore=874
+ malwarescore=0 spamscore=0 priorityscore=1501 adultscore=0 bulkscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2109230001 definitions=main-2109290092
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,107 +118,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, Jason Wang <jasowang@redhat.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- virtualization@lists.linux-foundation.org, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, linux-kselftest@vger.kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>,
- Alex Shi <alexs@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- David Hildenbrand <david@redhat.com>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, Oscar Salvador <osalvador@suse.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-doc@vger.kernel.org,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Mike Rapoport <rppt@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, Peter Zijlstra <peterz@infradead.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Oliver O'Halloran <oohall@gmail.com>,
+ Jiri Olsa <jolsa@redhat.com>, Christoph Hellwig <hch@lst.de>,
+ Stefano Stabellini <sstabellini@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, x86@kernel.org,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, Bjorn Helgaas <helgaas@kernel.org>,
+ linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
+ Mathias Nyman <mathias.nyman@intel.com>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>, Borislav Petkov <bp@alien8.de>,
+ Bjorn Helgaas <bhelgaas@google.com>, Namhyung Kim <namhyung@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Juergen Gross <jgross@suse.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, kernel@pengutronix.de,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-CONFIG_MEMORY_HOTPLUG was marked BROKEN over one year and we just
-restricted it to 64 bit. Let's remove the unused x86 32bit implementation
-and simplify the Kconfig.
+On 29/9/21 11:43 pm, Uwe Kleine-König wrote:> I'm not a huge fan either, 
+I used it to keep the control flow as is and
+> without introducing several calls to to_pci_driver.
+> 
+> The whole code looks as follows:
+> 
+> 	list_for_each_entry(afu_dev, &afu->phb->bus->devices, bus_list) {
+> 		struct pci_driver *afu_drv;
+> 		if (afu_dev->dev.driver &&
+> 		    (afu_drv = to_pci_driver(afu_dev->dev.driver))->err_handler &&
+> 		    afu_drv->err_handler->resume)
+> 			afu_drv->err_handler->resume(afu_dev);
+> 	}
+> 
+> Without assignment in the if it could look as follows:
+> 
+> 	list_for_each_entry(afu_dev, &afu->phb->bus->devices, bus_list) {
+> 		struct pci_driver *afu_drv;
+> 
+> 		if (!afu_dev->dev.driver)
+> 			continue;
+> 
+> 		afu_drv = to_pci_driver(afu_dev->dev.driver));
+> 
+> 		if (afu_drv->err_handler && afu_drv->err_handler->resume)
+> 			afu_drv->err_handler->resume(afu_dev);
+> 	}
+> 
+> Fine for me.
 
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- arch/x86/Kconfig      |  6 +++---
- arch/x86/mm/init_32.c | 31 -------------------------------
- 2 files changed, 3 insertions(+), 34 deletions(-)
+This looks fine.
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index ab83c22d274e..85f4762429f1 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -62,7 +62,7 @@ config X86
- 	select ARCH_32BIT_OFF_T			if X86_32
- 	select ARCH_CLOCKSOURCE_INIT
- 	select ARCH_ENABLE_HUGEPAGE_MIGRATION if X86_64 && HUGETLB_PAGE && MIGRATION
--	select ARCH_ENABLE_MEMORY_HOTPLUG if X86_64 || (X86_32 && HIGHMEM)
-+	select ARCH_ENABLE_MEMORY_HOTPLUG if X86_64
- 	select ARCH_ENABLE_MEMORY_HOTREMOVE if MEMORY_HOTPLUG
- 	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if (PGTABLE_LEVELS > 2) && (X86_64 || X86_PAE)
- 	select ARCH_ENABLE_THP_MIGRATION if X86_64 && TRANSPARENT_HUGEPAGE
-@@ -1615,7 +1615,7 @@ config ARCH_SELECT_MEMORY_MODEL
- 
- config ARCH_MEMORY_PROBE
- 	bool "Enable sysfs memory/probe interface"
--	depends on X86_64 && MEMORY_HOTPLUG
-+	depends on MEMORY_HOTPLUG
- 	help
- 	  This option enables a sysfs memory/probe interface for testing.
- 	  See Documentation/admin-guide/mm/memory-hotplug.rst for more information.
-@@ -2395,7 +2395,7 @@ endmenu
- 
- config ARCH_HAS_ADD_PAGES
- 	def_bool y
--	depends on X86_64 && ARCH_ENABLE_MEMORY_HOTPLUG
-+	depends on ARCH_ENABLE_MEMORY_HOTPLUG
- 
- config ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE
- 	def_bool y
-diff --git a/arch/x86/mm/init_32.c b/arch/x86/mm/init_32.c
-index bd90b8fe81e4..5cd7ea6d645c 100644
---- a/arch/x86/mm/init_32.c
-+++ b/arch/x86/mm/init_32.c
-@@ -779,37 +779,6 @@ void __init mem_init(void)
- 	test_wp_bit();
- }
- 
--#ifdef CONFIG_MEMORY_HOTPLUG
--int arch_add_memory(int nid, u64 start, u64 size,
--		    struct mhp_params *params)
--{
--	unsigned long start_pfn = start >> PAGE_SHIFT;
--	unsigned long nr_pages = size >> PAGE_SHIFT;
--	int ret;
--
--	/*
--	 * The page tables were already mapped at boot so if the caller
--	 * requests a different mapping type then we must change all the
--	 * pages with __set_memory_prot().
--	 */
--	if (params->pgprot.pgprot != PAGE_KERNEL.pgprot) {
--		ret = __set_memory_prot(start, nr_pages, params->pgprot);
--		if (ret)
--			return ret;
--	}
--
--	return __add_pages(nid, start_pfn, nr_pages, params);
--}
--
--void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
--{
--	unsigned long start_pfn = start >> PAGE_SHIFT;
--	unsigned long nr_pages = size >> PAGE_SHIFT;
--
--	__remove_pages(start_pfn, nr_pages, altmap);
--}
--#endif
--
- int kernel_set_to_readonly __read_mostly;
- 
- static void mark_nxdata_nx(void)
+As an aside while writing my email I discovered the existence of 
+container_of_safe(), a version of container_of() that handles the null 
+and err ptr cases... if to_pci_driver() used that, the null check in the 
+caller could be moved until after the to_pci_driver() call which would 
+be neater.
+
+But then, grep tells me that container_of_safe() is used precisely zero 
+times in the entire tree. Interesting.
+
+> (Sidenote: What happens if the device is unbound directly after the
+> check for afu_dev->dev.driver? This is a problem the old code had, too
+> (assuming it is a real problem, didn't check deeply).)
+
+Looking at any of the cxl PCI error handling paths brings back 
+nightmares from a few years ago... Fred: I wonder if we need to add a 
+lock here?
+
 -- 
-2.31.1
-
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
