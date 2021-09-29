@@ -1,138 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCB7A41C296
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Sep 2021 12:18:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D965441C354
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Sep 2021 13:20:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HKC4r5HkYz305f
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Sep 2021 20:18:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HKDSv5DBqz305L
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Sep 2021 21:20:47 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=corigine.onmicrosoft.com header.i=@corigine.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-corigine-onmicrosoft-com header.b=AseZ8Y/f;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CgB3sn9J;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=corigine.com (client-ip=2a01:111:f400:7eaa::72b;
- helo=nam11-dm6-obe.outbound.protection.outlook.com;
- envelope-from=simon.horman@corigine.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=corigine.onmicrosoft.com
- header.i=@corigine.onmicrosoft.com header.a=rsa-sha256
- header.s=selector2-corigine-onmicrosoft-com header.b=AseZ8Y/f; 
- dkim-atps=neutral
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam11on2072b.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7eaa::72b])
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=CgB3sn9J; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HKC400S47z2yPn
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Sep 2021 20:17:35 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=JHy/HzQLyC5taefBYnRzN5CDLHLEC4wub233PE0dS1csKDdTD4m2aL1yKAk3g0zuyMANYBlldPH62u8gtTUaYskZurrFwcaxXgSjX24iCgJA9/aS863o72TOaVZnoLx9qCKZbzfftBtKqKPv3daDituA18wSfV+hfRIGcjds5r+LzLt43MrI1Xo93gX1YnanWn0SA/MW/qdjm5HiLWdIBk9zvY5fmWFOSlQwisy7tDBawdVGiaY8mz47Us4q6x114ekWSzG9mMKt1usAhJi1n5uf/dKLYHTW7WDi9NSq0QWizeJsNfzEmcsWHs6o9rneV2E0NUI45TpMVgRtJIRw3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jyqPAoKXGoqzpWfcWDQA0QwX4xHbYvKVNyPoyY7h72Q=;
- b=kWg++jg03mMjgRVM+vPlBgD4sjtUMfAwIUJq0JiHvTjQrZssLStA7SHHtCEnWcbyLhIv/6YTMK78xFHR2S/a+GccKEzislngQCzRPuH5AzfMUiB6YC9Aa4gx1ptEWymt18cHCpkapUGDQ0GfjE/RK97znUrmQm2JbPkjl3tNnrjL939lGiaN8efR5SxvEy3YQxzMditmCZGVYm3ROWiTtkPzamLWHGISGtSEG85etwxDAkD3MbhUzTMlNzVrs5/SLBdCZfoE6mpc3nf+n4A2Q2bUJAUd870q/33NKzocn0BVgVg1xpERqj1Ti/NnZNvMsbRnqezmmgr8jD0U5UGnGQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
- dkim=pass header.d=corigine.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jyqPAoKXGoqzpWfcWDQA0QwX4xHbYvKVNyPoyY7h72Q=;
- b=AseZ8Y/f5Q3D2JFsjs3t/qCuRdo5v/ugyaDugSgCGc+6LamTeHB8Cn22eypA3E9Ofe+Pqyu3UNuavFNsLvCXDoA8QB7W98ExunO4ljSq40qYYkVJNgfREtVLQC0Rophu80VzjYLpUjinQQahAkGuDNdt7lg2CsfClvVbR3ivysU=
-Authentication-Results: pengutronix.de; dkim=none (message not signed)
- header.d=none;pengutronix.de; dmarc=none action=none
- header.from=corigine.com;
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
- by PH0PR13MB4794.namprd13.prod.outlook.com (2603:10b6:510:96::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4566.8; Wed, 29 Sep
- 2021 10:17:13 +0000
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::e1d9:64d0:cb4f:3e90]) by PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::e1d9:64d0:cb4f:3e90%9]) with mapi id 15.20.4566.014; Wed, 29 Sep 2021
- 10:17:13 +0000
-Date: Wed, 29 Sep 2021 12:17:03 +0200
-From: Simon Horman <simon.horman@corigine.com>
-To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Subject: Re: [PATCH v5 07/11] PCI: Replace pci_dev::driver usage that gets
- the driver name
-Message-ID: <20210929101702.GD13506@corigine.com>
-References: <20210929085306.2203850-1-u.kleine-koenig@pengutronix.de>
- <20210929085306.2203850-8-u.kleine-koenig@pengutronix.de>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210929085306.2203850-8-u.kleine-koenig@pengutronix.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: AM0PR08CA0026.eurprd08.prod.outlook.com
- (2603:10a6:208:d2::39) To PH0PR13MB4842.namprd13.prod.outlook.com
- (2603:10b6:510:78::6)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HKDRT6jw1z2ypC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Sep 2021 21:19:33 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 18TA4qrk030673; 
+ Wed, 29 Sep 2021 07:19:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=ZWpHIqp5l0j8Ky+IoPtjh0WeLQd6iPeLN2HuHiozjH4=;
+ b=CgB3sn9JzEY2JvS/zrOLmsxoqm82jhxlcsljeA4eR9j5qZquWn/G+uMwD07QOhGSwGFj
+ LwNrPRZ0jX11b5GP9tFwXJb7AHkVt6S+3Gure8E/x0wrlMJmn7ZEMVuPa1BkC8Yc3k1V
+ zoQDa4Fayw14nG2j6WOqCoUA2STkHFYlk8aZzaFs/hCoOmPb3SthuJK99u0W75O18A3Y
+ QTAGW8MRPHbzUXXszKVlRerI4iEzJ0X1Sxhx2kHdS8XEqyVPuH07DM+8XQEinFs9uZqi
+ VW16ot1iDvkrSDHqYVf/9N/uJTT55kGCCd6gGWLPDHmrtPYrQHwhsL0yHJbgpnBN7vry BQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3bcp2w1ejc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 29 Sep 2021 07:19:11 -0400
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 18TB6O6G009171;
+ Wed, 29 Sep 2021 07:19:11 -0400
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3bcp2w1ej1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 29 Sep 2021 07:19:11 -0400
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 18TBC0rm024826;
+ Wed, 29 Sep 2021 11:19:09 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma04fra.de.ibm.com with ESMTP id 3b9uda55kh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 29 Sep 2021 11:19:09 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 18TBJ5NH37421448
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 29 Sep 2021 11:19:05 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8C80442072;
+ Wed, 29 Sep 2021 11:19:05 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8552B42070;
+ Wed, 29 Sep 2021 11:19:00 +0000 (GMT)
+Received: from hbathini-workstation.ibm.com.com (unknown [9.43.83.199])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 29 Sep 2021 11:19:00 +0000 (GMT)
+From: Hari Bathini <hbathini@linux.ibm.com>
+To: naveen.n.rao@linux.ibm.com, christophe.leroy@csgroup.eu,
+ mpe@ellerman.id.au, ast@kernel.org, daniel@iogearbox.net
+Subject: [PATCH v4 0/8] bpf powerpc: Add BPF_PROBE_MEM support in powerpc JIT
+ compiler
+Date: Wed, 29 Sep 2021 16:48:47 +0530
+Message-Id: <20210929111855.50254-1-hbathini@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Received: from corigine.com (2001:982:7ed1:403:201:8eff:fe22:8fea) by
- AM0PR08CA0026.eurprd08.prod.outlook.com (2603:10a6:208:d2::39) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4566.14 via Frontend Transport; Wed, 29 Sep 2021 10:17:08 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: ae53e499-2baf-4888-966a-08d983324dec
-X-MS-TrafficTypeDiagnostic: PH0PR13MB4794:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <PH0PR13MB4794052F35552891F4D9EA28E8A99@PH0PR13MB4794.namprd13.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:751;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 2woKV4HKG64SPX5X09IWvfN9MJjcMKLiccyCSNNbpi5SXBR80DUgmbO3bcGUkNgQsWYyUK7aFq4caJKLKe+uohhUdK+4SsDPipTF1dG9UlV5xiqAHuC2s51WZiYCjvl053pSjl2OcoA66YdXS5gJStSr+TGo/unGtQJ5gOAWxp6PwBLd1IuLW12QwYEbzsUitqUYISrWOdhps+dqK5DqpiqJWQ8+VkRc9L+7p3TMJ2V6hB+tsVSo3zJrJ2/abO4nKuOHi1rX6c0yrn2u7vB+MwRFCWLnnkRR5Kde7tfGCWTdgYyKX+kDsHB3tSsRnFHzbGg7n6j50mDYK92eQsrXFASzJoD7L1QyLpRG/5kIBbqpnBTkOhPPrsBW3tReAgbWunAq8NqJzv8fSLFjjWA7jZr29qRGaI7anpj81ZDZmsiw4yuqJsAdbHdjxHCNh9NPV1wiedg2hmjtIY/D9oygroAgrH7a5ssAdlE5QVK4QBMc57NKKpzA066Hrl2zLbZkCUY86X8Vae7o4bU19hQ6TOWSdWwy1v7CIykDA4U5li8kbzNxKwb9FMgLv3CnyZXqGGoZmjwr41SMu+2YG11sC+dxQHoPjbHbIA4ZCyrMyv0R+DsYJcFsLn4N4c7AJs7Em1/mLdZZ0KAMVIa4PozoRg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH0PR13MB4842.namprd13.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(346002)(136003)(396003)(39830400003)(366004)(376002)(33656002)(186003)(36756003)(6916009)(44832011)(508600001)(86362001)(38100700002)(5660300002)(8886007)(55016002)(8936002)(52116002)(316002)(83380400001)(7696005)(54906003)(8676002)(2616005)(66556008)(4326008)(6666004)(66476007)(2906002)(66946007)(107886003)(4744005)(1076003)(7416002);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Yi9ObWFiUzV6bDdYOFpDMEFXc3Bncm53U3F0M2JWYnNrQWFQZGpXWkhkbkxo?=
- =?utf-8?B?Y3JsUUpDeGczcHQxMGFwSXloMUtOWGRMQzhUd1p2WTVqK1NucmVRblFvSGVx?=
- =?utf-8?B?cmN2RnVJaGVqWjVFYmhnT1FROHUvcmg0OW5OZUFzZ1JRVjlvTGRkOTlCZzUw?=
- =?utf-8?B?Y3VoMDJSQk1pSngwekQvYTE2TlJpclRwWXBoSmFqbXllRzNDS0xHK2VTMEhM?=
- =?utf-8?B?QkZzMTQrV2tJQm1SWjBOc0FKYm5VTW15S1UwcVZyRTBrT0lzS3h0ejE0eDhY?=
- =?utf-8?B?ZndSb3pEMndUL21NSEt4cmg5V1N4WlhzVHc0RlM0clNHRFBiam1GQTREZkRt?=
- =?utf-8?B?R3NmVWtGaXgrTmZ3T2RLbGpobU9uVHhPT0ozY0xIR2VKN3NzWUpSbFJONjhK?=
- =?utf-8?B?V0dIR21lWkZZemJ4RlE3OEY0NkJGbi94L1ZKdVZ2MUNxUm5vZGRZelVVMHdB?=
- =?utf-8?B?RlNkeWZCVVNKMTZ2QTlYOTA5bE9zcVNYcmRIM3hkd00vTWRrWHZJc1QxMlRX?=
- =?utf-8?B?YTVKMmtIUzBnTDl3NDVSVDdGNW15eWNENEVGMWlnNlU4cVd1aGtDT0lLK1l2?=
- =?utf-8?B?ei9oRHkwWVFwYWYxbUZGN2VoZERDMk5zWTZsOXRSTUQrY1ZMeFRqamNWS2ZB?=
- =?utf-8?B?c09nc2hnYjdSbWI5NUlVWUlJK2czd1BncjFibEliOVhuNXRWS3FzMURPaW5s?=
- =?utf-8?B?eFgzZXdTdm9DMWc4T2phaHQyMVVVN3VHaFZVNjZHZ0p2bjhwakZSWHVNRkVP?=
- =?utf-8?B?UlVHT29SZHNPa3hPVFQrRjZzVXY2RXhncE1LSXBqOE9xUWROZnRBQndjMWor?=
- =?utf-8?B?MVB0UVZqN1BTZjZTVG1LYXVMVGRRc3QzVmdsQ1hFZFAwWjR0NFFMNGlBRWE4?=
- =?utf-8?B?SXF1eVNCem91WGpKTExHSlQyREQzRnJjcmJaYnNoOVkrL2d2ZDVYdjJ6M25w?=
- =?utf-8?B?ODBTbTNZZzRsbVZyTlY3NUl4dklHeGhMK1cwWURzQmMxbXprd29EaEx5TGRP?=
- =?utf-8?B?TWlZM2F3NGd6L2ZHSUhkdFlwQktYVk1NeThRM2h2OVdKc3Z3SFlOQ0d2d1Fk?=
- =?utf-8?B?TzBhaldlbVp6TlVSNzJwaDhZSjZXUXpPL2xneG1GcHczRXM4WXJZM08zZHBa?=
- =?utf-8?B?NDdsb3B6ekxxc0ZTZ1ZpN21URk04NnpVTEpPVVBocmtQUzM2a1VHS3cwZURX?=
- =?utf-8?B?MGVFdFg3M0JJR2prcFprMVVqUk1WQTE5OEYwTjdiZlNLZGZkaDQ5THdXMmc5?=
- =?utf-8?B?TW5ZSXpOK2doV2xSZVkrS2c3bmdrSndUT09aMWpUYWErZno1S0w5RHZ2ZWNN?=
- =?utf-8?B?NmQzbThxYXlKOE15aGt5b0pyVGExdEFpdU8vYy9oazBRTTZzdllTUUdsSDJu?=
- =?utf-8?B?OVZBN0t2Mkg0eC9hd0hsdFA3cUdvSUxCVXVlWmx4ZDN6dkRtNWpET2ltaXJI?=
- =?utf-8?B?bldpbVBFRC9kNmloOVlGVmMxQmF0MUFneFFzZXpZWXpzZndoNm0vZTRESkMx?=
- =?utf-8?B?dUZlRzQxZjFFQm9Xcy8vQ3ZzZEFSQzJtNVY5MjF5WUhNOVRlR3MyMng4MHI5?=
- =?utf-8?B?VUtRTFVpQUtHaUY5L2ZZMml5aFM4c292NjVsc2JsMitsZlk0bDZZejF4SDlU?=
- =?utf-8?B?WFkySkJKUjJrbnpsR2RhdFgrM1JQOTR0aDBNT3VZbFkzY1hxT0dOVmh4QUpD?=
- =?utf-8?B?Zy8yRkZLYjEvREJjS3dZWm54TDVmZktCR2ZkMWR6L1lWQk5LcUltdG5wT3g2?=
- =?utf-8?B?UE9Bamhha1dUTFg5bDBGakVWbGI5T3A4M2lHMnYwLzNPM2pxOU9ZRVc5OFpN?=
- =?utf-8?B?eVRRR2xMaHFtcXBLL0c3ZFgwaTJRb3RHTVNwc0o0d2h6RGtQdk5LK2FGbFYz?=
- =?utf-8?Q?H62UPyy2H8Shc?=
-X-OriginatorOrg: corigine.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ae53e499-2baf-4888-966a-08d983324dec
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2021 10:17:13.1546 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 83M4CGyBYqSrVCFUH5E4wuUsm79KJB3+U8Y+LE+7kTxGcmB6HjBddsjB4+LvLnNP36y2wZZYatZg89+LHLjQkk+cPcB2ykuOEbbZDTiAbHo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR13MB4794
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 3mklSmZIKOAObbZQf-F4yNRi-6FsQX9j
+X-Proofpoint-ORIG-GUID: 1qANcUD5KHoFXfvMlJ2b909Vrl8cbcyV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
+ definitions=2021-09-29_04,2021-09-29_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 bulkscore=0
+ phishscore=0 priorityscore=1501 adultscore=0 suspectscore=0 clxscore=1015
+ spamscore=0 lowpriorityscore=0 mlxlogscore=867 malwarescore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2109230001 definitions=main-2109290068
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -144,43 +104,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org, Alexander Duyck <alexanderduyck@fb.com>,
- oss-drivers@corigine.com, Paul Mackerras <paulus@samba.org>,
- Christoph Hellwig <hch@lst.de>, Herbert Xu <herbert@gondor.apana.org.au>,
- =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
- Jesse Brandeburg <jesse.brandeburg@intel.com>,
- Bjorn Helgaas <helgaas@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
- Jakub Kicinski <kuba@kernel.org>, Yisen Zhuang <yisen.zhuang@huawei.com>,
- Vadym Kochan <vkochan@marvell.com>, Michael Buesch <m@bues.ch>,
- Jiri Pirko <jiri@nvidia.com>, Salil Mehta <salil.mehta@huawei.com>,
- netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org, Taras Chornyi <tchornyi@marvell.com>,
- Zhou Wang <wangzhou1@hisilicon.com>, linux-crypto@vger.kernel.org,
- kernel@pengutronix.de, Oliver O'Halloran <oohall@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: songliubraving@fb.com, netdev@vger.kernel.org, john.fastabend@gmail.com,
+ andrii@kernel.org, kpsingh@kernel.org, paulus@samba.org, yhs@fb.com,
+ bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, kafai@fb.com,
+ Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 29, 2021 at 10:53:02AM +0200, Uwe Kleine-König wrote:
-> struct pci_dev::driver holds (apart from a constant offset) the same
-> data as struct pci_dev::dev->driver. With the goal to remove struct
-> pci_dev::driver to get rid of data duplication replace getting the
-> driver name by dev_driver_string() which implicitly makes use of struct
-> pci_dev::dev->driver.
-> 
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-> ---
->  drivers/crypto/hisilicon/qm.c                        | 2 +-
->  drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c   | 2 +-
->  drivers/net/ethernet/marvell/prestera/prestera_pci.c | 2 +-
->  drivers/net/ethernet/mellanox/mlxsw/pci.c            | 2 +-
->  drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c | 3 ++-
->  5 files changed, 6 insertions(+), 5 deletions(-)
+Patch #1 & #2 are simple cleanup patches. Patch #3 refactors JIT
+compiler code with the aim to simplify adding BPF_PROBE_MEM support.
+Patch #4 introduces PPC_RAW_BRANCH() macro instead of open coding
+branch instruction. Patch #5 & #7 add BPF_PROBE_MEM support for PPC64
+& PPC32 JIT compilers respectively. Patch #6 & #8 handle bad userspace
+pointers for PPC64 & PPC32 cases respectively.
 
-Thanks Uwe.
+Changes in v4:
+* Addressed all the review comments from Christophe.
 
-For NFP:
 
-Acked-by: Simon Horman <simon.horman@corigine.com>
+Hari Bathini (4):
+  bpf powerpc: refactor JIT compiler code
+  powerpc/ppc-opcode: introduce PPC_RAW_BRANCH() macro
+  bpf ppc32: Add BPF_PROBE_MEM support for JIT
+  bpf ppc32: Access only if addr is kernel address
+
+Ravi Bangoria (4):
+  bpf powerpc: Remove unused SEEN_STACK
+  bpf powerpc: Remove extra_pass from bpf_jit_build_body()
+  bpf ppc64: Add BPF_PROBE_MEM support for JIT
+  bpf ppc64: Access only if addr is kernel address
+
+ arch/powerpc/include/asm/ppc-opcode.h |   2 +
+ arch/powerpc/net/bpf_jit.h            |  19 +++--
+ arch/powerpc/net/bpf_jit_comp.c       |  72 ++++++++++++++++--
+ arch/powerpc/net/bpf_jit_comp32.c     | 101 ++++++++++++++++++++++----
+ arch/powerpc/net/bpf_jit_comp64.c     |  72 ++++++++++++++----
+ 5 files changed, 224 insertions(+), 42 deletions(-)
+
+-- 
+2.31.1
 
