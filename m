@@ -2,57 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDF7141C147
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Sep 2021 11:05:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6EBD41C241
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Sep 2021 12:07:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HK9SN4Vssz3bW7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Sep 2021 19:05:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HKBqk4V1Nz3bYD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Sep 2021 20:06:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33;
- helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de;
- receiver=<UNKNOWN>)
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
- [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HK9Ry3BRdz2yHy
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Sep 2021 19:04:45 +1000 (AEST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1mVVVX-0003JP-91; Wed, 29 Sep 2021 11:04:07 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
- by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1mVVVS-0004kK-3w; Wed, 29 Sep 2021 11:04:02 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1mVVVS-0000V5-1n; Wed, 29 Sep 2021 11:04:02 +0200
-Date: Wed, 29 Sep 2021 11:04:01 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Simon Horman <simon.horman@corigine.com>
-Subject: Re: [PATCH v4 4/8] PCI: replace pci_dev::driver usage that gets the
- driver name
-Message-ID: <20210929090401.qvpjng3jne76o6kw@pengutronix.de>
-References: <20210927204326.612555-1-uwe@kleine-koenig.org>
- <20210927204326.612555-5-uwe@kleine-koenig.org>
- <20210928100127.GA16801@corigine.com>
- <20210928103129.c3gcbnfbarezr3mm@pengutronix.de>
- <20210929080541.GA13506@corigine.com>
+ smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HKBqH4HdNz2yWG
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Sep 2021 20:06:29 +1000 (AEST)
+X-IronPort-AV: E=McAfee;i="6200,9189,10121"; a="211990273"
+X-IronPort-AV: E=Sophos;i="5.85,332,1624345200"; d="scan'208";a="211990273"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+ by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Sep 2021 03:05:25 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.85,332,1624345200"; d="scan'208";a="479174778"
+Received: from lkp-server02.sh.intel.com (HELO f7acefbbae94) ([10.239.97.151])
+ by fmsmga007.fm.intel.com with ESMTP; 29 Sep 2021 03:05:24 -0700
+Received: from kbuild by f7acefbbae94 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1mVWSp-0002OZ-HR; Wed, 29 Sep 2021 10:05:23 +0000
+Date: Wed, 29 Sep 2021 18:04:36 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS 044c2d99d9f43c6d6fde8bed00672517dd9a5a57
+Message-ID: <61543a34.JQTA4RvlAjUDpm1u%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="ey4ikhdxthigr5cx"
-Content-Disposition: inline
-In-Reply-To: <20210929080541.GA13506@corigine.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
- SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,140 +49,146 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org, Alexander Duyck <alexanderduyck@fb.com>,
- oss-drivers@corigine.com, Paul Mackerras <paulus@samba.org>,
- Herbert Xu <herbert@gondor.apana.org.au>, Ido Schimmel <idosch@nvidia.com>,
- =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
- Jesse Brandeburg <jesse.brandeburg@intel.com>,
- Bjorn Helgaas <helgaas@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Yisen Zhuang <yisen.zhuang@huawei.com>,
- Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>,
- Vadym Kochan <vkochan@marvell.com>, Michael Buesch <m@bues.ch>,
- Jiri Pirko <jiri@nvidia.com>, Salil Mehta <salil.mehta@huawei.com>,
- netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org, Taras Chornyi <tchornyi@marvell.com>,
- Zhou Wang <wangzhou1@hisilicon.com>, linux-crypto@vger.kernel.org,
- kernel@pengutronix.de, Oliver O'Halloran <oohall@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: 044c2d99d9f43c6d6fde8bed00672517dd9a5a57  Automatic merge of 'fixes' into merge (2021-09-19 22:18)
 
---ey4ikhdxthigr5cx
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+elapsed time: 730m
 
-Hello Simon,
+configs tested: 118
+configs skipped: 3
 
-On Wed, Sep 29, 2021 at 10:05:42AM +0200, Simon Horman wrote:
-> On Tue, Sep 28, 2021 at 12:31:29PM +0200, Uwe Kleine-K=F6nig wrote:
-> > On Tue, Sep 28, 2021 at 12:01:28PM +0200, Simon Horman wrote:
-> > > On Mon, Sep 27, 2021 at 10:43:22PM +0200, Uwe Kleine-K=F6nig wrote:
-> > > > From: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> > > >=20
-> > > > struct pci_dev::driver holds (apart from a constant offset) the same
-> > > > data as struct pci_dev::dev->driver. With the goal to remove struct
-> > > > pci_dev::driver to get rid of data duplication replace getting the
-> > > > driver name by dev_driver_string() which implicitly makes use of st=
-ruct
-> > > > pci_dev::dev->driver.
-> > > >=20
-> > > > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> > >=20
-> > > ...
-> > >=20
-> > > > diff --git a/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c b=
-/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
-> > > > index 0685ece1f155..23dfb599c828 100644
-> > > > --- a/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
-> > > > +++ b/drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c
-> > > > @@ -202,7 +202,7 @@ nfp_get_drvinfo(struct nfp_app *app, struct pci=
-_dev *pdev,
-> > > >  {
-> > > >  	char nsp_version[ETHTOOL_FWVERS_LEN] =3D {};
-> > > > =20
-> > > > -	strlcpy(drvinfo->driver, pdev->driver->name, sizeof(drvinfo->driv=
-er));
-> > > > +	strlcpy(drvinfo->driver, dev_driver_string(&pdev->dev), sizeof(dr=
-vinfo->driver));
-> > >=20
-> > > I'd slightly prefer to maintain lines under 80 columns wide.
-> > > But not nearly strongly enough to engage in a long debate about it.
-> >=20
-> > :-)
-> >=20
-> > Looking at the output of
-> >=20
-> > 	git grep strlcpy.\*sizeof
-> >=20
-> > I wonder if it would be sensible to introduce something like
-> >=20
-> > 	#define strlcpy_array(arr, src) (strlcpy(arr, src, sizeof(arr)) + __mu=
-st_be_array(arr))
-> >=20
-> > but not sure this is possible without a long debate either (and this
-> > line is over 80 chars wide, too :-).
->=20
-> My main motivation for the 80 char limit in nfp_net_ethtool.c is
-> not that I think 80 char is universally a good limit (although that is tr=
-ue),
-> but rather that I expect that is the prevailing style in nfp_net_ethtool.=
-c.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-I sent out v5 with an additional line break now.
-=20
-> So a macro more than 80 car wide somewhere else is fine by me.
->=20
-> However, when running checkpatch --strict over the patch it told me:
->=20
->     WARNING: Prefer strscpy over strlcpy - see: https://lore.kernel.org/r=
-/CAHk-=3DwgfRnXz0W3D37d01q3JFkr_i_uTL=3DV6A6G1oUZcprmknw@mail.gmail.com/
->     #276: FILE: drivers/net/ethernet/netronome/nfp/nfp_net_ethtool.c:205:
->     +	strlcpy(drvinfo->driver, dev_driver_string(&pdev->dev), sizeof(drvi=
-nfo->driver));
->=20
->     total: 0 errors, 1 warnings, 0 checks, 80 lines checked
->=20
-> (Amusingly, more text wider than 80 column, perhaps suggesting the folly =
-of
->  my original comment, but lets move on from that.)
->=20
-> As your patch doesn't introduce the usage of strlcpy() I was considering a
-> follow-up patch to change it to strscpy(). And in general the email at the
-> link above suggests all usages of strlcpy() should do so. So perhaps
-> creating strscpy_array is a better idea?
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                 randconfig-c001-20210929
+powerpc                    amigaone_defconfig
+powerpc                     ksi8560_defconfig
+sh                           se7722_defconfig
+arm                            pleb_defconfig
+arm                          ep93xx_defconfig
+arm                     am200epdkit_defconfig
+mips                      maltasmvp_defconfig
+powerpc                 mpc837x_rdb_defconfig
+mips                     loongson1c_defconfig
+mips                         mpc30x_defconfig
+riscv             nommu_k210_sdcard_defconfig
+powerpc                     tqm8560_defconfig
+arm                         hackkit_defconfig
+mips                           ci20_defconfig
+arm                            mmp2_defconfig
+arm                         assabet_defconfig
+m68k                            mac_defconfig
+sh                           sh2007_defconfig
+arm                          ixp4xx_defconfig
+sh                          urquell_defconfig
+mips                           ip27_defconfig
+mips                      fuloong2e_defconfig
+sh                          r7780mp_defconfig
+m68k                        m5272c3_defconfig
+powerpc                 linkstation_defconfig
+sh                             shx3_defconfig
+microblaze                      mmu_defconfig
+x86_64               randconfig-c001-20210929
+arm                  randconfig-c002-20210929
+x86_64               randconfig-c001-20210928
+arm                  randconfig-c002-20210928
+i386                 randconfig-c001-20210928
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a014-20210928
+x86_64               randconfig-a011-20210928
+x86_64               randconfig-a013-20210928
+x86_64               randconfig-a012-20210928
+x86_64               randconfig-a015-20210928
+x86_64               randconfig-a016-20210928
+i386                 randconfig-a014-20210928
+i386                 randconfig-a013-20210928
+i386                 randconfig-a016-20210928
+i386                 randconfig-a011-20210928
+i386                 randconfig-a015-20210928
+i386                 randconfig-a012-20210928
+arc                  randconfig-r043-20210928
+riscv                randconfig-r042-20210928
+s390                 randconfig-r044-20210928
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
 
-What I read about strscpy() is that conversions for the sake of the
-conversion are not welcome. When such a conversion comes from someone
-involved with the driver that is also tested this is probably fine.
-=20
-> I have not thought about this much, and probably this just leads us to a
-> deeper part of the rabbit hole.
+clang tested configs:
+powerpc              randconfig-c003-20210929
+mips                 randconfig-c004-20210929
+arm                  randconfig-c002-20210929
+x86_64               randconfig-c007-20210929
+riscv                randconfig-c006-20210929
+s390                 randconfig-c005-20210929
+i386                 randconfig-c001-20210929
+x86_64               randconfig-a002-20210928
+x86_64               randconfig-a005-20210928
+x86_64               randconfig-a001-20210928
+x86_64               randconfig-a006-20210928
+x86_64               randconfig-a003-20210928
+x86_64               randconfig-a004-20210928
+i386                 randconfig-a001-20210928
+i386                 randconfig-a005-20210928
+i386                 randconfig-a002-20210928
+i386                 randconfig-a006-20210928
+i386                 randconfig-a004-20210928
+i386                 randconfig-a003-20210928
+hexagon              randconfig-r045-20210928
+hexagon              randconfig-r041-20210928
 
-I assume so, too.
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---ey4ikhdxthigr5cx
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmFUK/8ACgkQwfwUeK3K
-7AlkTwf/dkfubvexEL8hKb2Rh3bCdHj1QQgkHxBsDLSNCo4lhj+H8iJlt8IyS3H8
-+XjgTjDp2XDrOSbFVQug/BYE5Wk94BoOdy/6cprREtPJZ4oI3QgdaaikCtG1CdwW
-KzFBUgIiRQlfUsxTM/xz9zGA40xpfydtliziKS7R4Kwn1dqfSB0Cl3hm97kC5DEA
-O42j5CvC58tvuAmEV02PSFRtt8xMb20mgqTN43Q9kzPHM2ziW4g0R9U999fyNqmT
-0vHgrGgXXdRc5+VU3Jd1ZCnrTVzWJMpaKoOCzGZVBO47gcB/7/mH6iFzMVACIYKV
-f5p890vGJmfiOE9WD2VDNGj7w2NU/A==
-=vlM1
------END PGP SIGNATURE-----
-
---ey4ikhdxthigr5cx--
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
