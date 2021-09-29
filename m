@@ -2,85 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7982041C0F6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Sep 2021 10:48:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9E2541C112
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Sep 2021 10:54:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HK95g2mScz3086
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Sep 2021 18:48:55 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ozlabs-ru.20210112.gappssmtp.com header.i=@ozlabs-ru.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=jtn0jGIc;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HK9Ct5s6tz3bNB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Sep 2021 18:54:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::636;
- helo=mail-pl1-x636.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33;
+ helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20210112.gappssmtp.com
- header.i=@ozlabs-ru.20210112.gappssmtp.com header.a=rsa-sha256
- header.s=20210112 header.b=jtn0jGIc; dkim-atps=neutral
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com
- [IPv6:2607:f8b0:4864:20::636])
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
+ [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HK94y6lhnz2xrP
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Sep 2021 18:48:16 +1000 (AEST)
-Received: by mail-pl1-x636.google.com with SMTP id c4so1027567pls.6
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Sep 2021 01:48:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20210112.gappssmtp.com; s=20210112;
- h=message-id:date:mime-version:user-agent:subject:content-language:to
- :references:from:cc:in-reply-to:content-transfer-encoding;
- bh=ZQRPGDnBGJonDmWlRby4UA+FFasdTsHdgMXphGq+CjU=;
- b=jtn0jGIcYV8KseGUptQj292Loqd9OYZuEXo0FZ2TllIzxsWSufGnhbm8pbI78D136e
- fuw8amW9G2drgIuVokmm1GCDucDd9Rxa19w9dOodmRBGCXmS9lhKOUnPS88B2OAU2icX
- VnLAVFxdRyNVLy3xzAM2nSlPs6w2cJj2x6u/ck5+30Wg5VzkZCtCGgM4GAXAsURoottW
- jCYnbsnjEeoDq9JKjsmSKQAIZdSJhdFO8NUW1JgXvNjOvlFBRWVcXDGKcHaLI0LtTdmK
- se3+HjvH04c3GHaisRTqVPapKxf9z+V8qAFXZSDeE5fbPNP7H4Aj+2RN7Y7cysdT30Q8
- zZqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
- :content-language:to:references:from:cc:in-reply-to
- :content-transfer-encoding;
- bh=ZQRPGDnBGJonDmWlRby4UA+FFasdTsHdgMXphGq+CjU=;
- b=JBbajySujfWOIVxEM3qHSvmS269A0Q87+uxXmmQjsZLzYAviYGtLuNyHJMACYARDE0
- d94dOAb3L9Zqh/UL/sN9pCo9GVxSj9gKwEJbDsE8KEWYmVsHUgd9aAK76Kz4piwqa7PC
- jIso9PLNATNC04f7/WeOOMB0L6wT8VvxZKtvOvpUSDUJP2uFJ3raKzaf8XTKBcVP5qG4
- yx/lTDUbmw72BuLURnS5TF6CaG3tSgrUzvm0k+uXLKFqps1CDQF44HRK53ZLSz6MmJeO
- T0ObowIsm0chHnwemjy5uFTVcE27xPznM/LdttqCFAuE33v2dg1R+xus26mQ6Upfsxdm
- XKFQ==
-X-Gm-Message-State: AOAM533LYuw/VWbew+by9cHBdxsNHjPieAyOqlbVYTjtwAqAgCskBRIC
- jKdO4G7BNiGtvLZ8lEgW9vXWfw==
-X-Google-Smtp-Source: ABdhPJxJvp0/rVxYGvoVFn5N56POBu9bIRiy1nazI/XyYnaanoTbF3RvOWH2i0JfcKgu09BydTMlxw==
-X-Received: by 2002:a17:90a:ead1:: with SMTP id
- ev17mr5245837pjb.158.1632905292640; 
- Wed, 29 Sep 2021 01:48:12 -0700 (PDT)
-Received: from [192.168.10.23] (124-171-108-209.dyn.iinet.net.au.
- [124.171.108.209])
- by smtp.gmail.com with ESMTPSA id w6sm1737797pfj.179.2021.09.29.01.48.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 29 Sep 2021 01:48:11 -0700 (PDT)
-Message-ID: <8bb9bfd4-f481-e9e6-34d1-fea78ace864f@ozlabs.ru>
-Date: Wed, 29 Sep 2021 18:48:06 +1000
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HK9CP0KZpz2yJ6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Sep 2021 18:53:51 +1000 (AEST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <ukl@pengutronix.de>)
+ id 1mVVL5-0001ik-Qf; Wed, 29 Sep 2021 10:53:19 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+ by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <ukl@pengutronix.de>)
+ id 1mVVL2-0004fp-E0; Wed, 29 Sep 2021 10:53:16 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+ (envelope-from <ukl@pengutronix.de>)
+ id 1mVVL2-0000Qi-Cp; Wed, 29 Sep 2021 10:53:16 +0200
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Bjorn Helgaas <helgaas@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH v5 05/11] powerpc/eeh: Don't use driver member of struct
+ pci_dev and further cleanups
+Date: Wed, 29 Sep 2021 10:53:00 +0200
+Message-Id: <20210929085306.2203850-6-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210929085306.2203850-1-u.kleine-koenig@pengutronix.de>
+References: <20210929085306.2203850-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:93.0) Gecko/20100101
- Thunderbird/93.0
-Subject: Re: [PATCH kernel] powerpc/dma: Fix dma_map_ops::get_required_mask
-Content-Language: en-US
-To: Christoph Hellwig <hch@lst.de>
-References: <20200908015106.79661-1-aik@ozlabs.ru>
- <20200908054416.GA13585@lst.de>
- <94353228-2262-cfa1-7177-7eed2288ca63@ozlabs.ru>
- <20200908121937.GA31559@lst.de>
- <1746dd66810.27bb.1ca38dd7e845b990cd13d431eb58563d@ozlabs.ru>
- <20200909075849.GA12282@lst.de>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-In-Reply-To: <20200909075849.GA12282@lst.de>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-Patch-Hashes: v=1; h=sha256; i=Zpj0MfNpdqb/t0RctaGob3+oRuWP4Yx6JOoywu4XRsI=;
+ m=qLVHAb7UOiGrqQuPN/p5loiFStoGSa1I5N8zuOAmNU8=;
+ p=0U5IO+Yv/dUfU3ayUE/9KpmDUjFv5zoIY+LRFqJ9Pw0=;
+ g=70976583fe04d220fe4cb7c498cea58f830f1545
+X-Patch-Sig: m=pgp; i=u.kleine-koenig@pengutronix.de;
+ s=0x0D2511F322BFAB1C1580266BE2DCDD9132669BD6;
+ b=iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmFUKVMACgkQwfwUeK3K7AmJMAf/fle
+ M7ZSgYoAd9Ai8Nl4D3rswcfDtso0iiuOBUj9/XyN9IR7lmKmEpgd/6+PMeVX62KfJMZkuufkSeOZy
+ c9zIuozCYchsQgZtAui+QSKa56cyDQ7W5fU5hlDlmFTSWz7B9FTw0obuBNZl4bbN/+yxKDzeiHTJb
+ PKtcKtXl9qi+EVdNUfCzRBwiSNr1y4Kie9QMIHJ/4Zt52NRSf/8WK6uu382qbSRhppW28mQegSKEn
+ E8REnf0ykJhdAJuN9C59Cy4cBdTNAAE8YIEmZZVRE/UOsGc6aWHZtA3KKjvYLUld9053OGOUVhoi9
+ 9vQXua1T5nTw6ObqYvrL1SLrjDl6Iww==
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
+ SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,52 +72,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Carol Soto <clsoto@us.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Frederic Barrat <fbarrat@linux.ibm.com>
+Cc: linux-pci@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ kernel@pengutronix.de, Oliver O'Halloran <oohall@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+The driver member of struct pci_dev is to be removed as it tracks
+information already present by tracking of the driver core. So replace
+pdev->driver->name by dev_driver_string() for the corresponding struct
+device.
 
+Also move the function nearer to its only user and instead of the ?:
+operator use a normal if which is more readable.
 
-On 09/09/2020 17:58, Christoph Hellwig wrote:
-> On Tue, Sep 08, 2020 at 11:10:03PM +1000, Alexey Kardashevskiy wrote:
->>>> a-ha, this makes more sense, thanks. Then I guess we need to revert that
->>>> one bit from yours f1565c24b596, do not we?
->>>
->>> Why?  The was the original intent of the API, but now we also use
->>> internally to check the addressing capabilities.
->>
->> The bigger mask the better, no? As it is now, it's limited by the window 
->> size which happens to be bigger than 4GB but smaller then full 64bit (48bit 
->> on my system)
-> 
-> Yes, the bigger mask is better.  But I don't see why you'd want to
-> revert the dma bypass code for that entirely.
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ arch/powerpc/include/asm/ppc-pci.h | 5 -----
+ arch/powerpc/kernel/eeh.c          | 8 ++++++++
+ 2 files changed, 8 insertions(+), 5 deletions(-)
 
-
-Ok we have another victim of this change:
-
-https://github.com/torvalds/linux/blob/master/drivers/scsi/mpt3sas/mpt3sas_base.c#L3007
-
-
-It calls dma_get_required_mask() to know "the mask that the platform
-requires to operate efficiently" (from dma-api.rst). The current
-upstream returns 31 for pseries which in no way is efficient, we can do
-better so we need this hunk back (but just this one):
-https://github.com/torvalds/linux/commit/f1565c24b5965dfd2352f209c417ff160be04db9#diff-18e87e1863bf902c6388d72ad99467b7fcec0dd37084636d96ad5a35a3e59904L156
-(well, almost, move it above the !tbl check).
-
-This does not hit us on powernv/upstream as that returns 44 (or so) and
-the mpt3sas driver (which does the right thing afaict) just assumes that
-">32" == ">=63". What do I miss here? Thanks,
-
-ps:
-https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20200908015106.79661-1-aik@ozlabs.ru/#2528801
-is the rest of the thread I am replying to.
-
-
+diff --git a/arch/powerpc/include/asm/ppc-pci.h b/arch/powerpc/include/asm/ppc-pci.h
+index 2b9edbf6e929..f6cf0159024e 100644
+--- a/arch/powerpc/include/asm/ppc-pci.h
++++ b/arch/powerpc/include/asm/ppc-pci.h
+@@ -55,11 +55,6 @@ void eeh_pe_dev_mode_mark(struct eeh_pe *pe, int mode);
+ void eeh_sysfs_add_device(struct pci_dev *pdev);
+ void eeh_sysfs_remove_device(struct pci_dev *pdev);
+ 
+-static inline const char *eeh_driver_name(struct pci_dev *pdev)
+-{
+-	return (pdev && pdev->driver) ? pdev->driver->name : "<null>";
+-}
+-
+ #endif /* CONFIG_EEH */
+ 
+ #define PCI_BUSNO(bdfn) ((bdfn >> 8) & 0xff)
+diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
+index e9b597ed423c..4b08881c4a1e 100644
+--- a/arch/powerpc/kernel/eeh.c
++++ b/arch/powerpc/kernel/eeh.c
+@@ -399,6 +399,14 @@ static int eeh_phb_check_failure(struct eeh_pe *pe)
+ 	return ret;
+ }
+ 
++static inline const char *eeh_driver_name(struct pci_dev *pdev)
++{
++	if (pdev)
++		return dev_driver_string(&pdev->dev);
++
++	return "<null>";
++}
++
+ /**
+  * eeh_dev_check_failure - Check if all 1's data is due to EEH slot freeze
+  * @edev: eeh device
 -- 
-Alexey
+2.30.2
+
