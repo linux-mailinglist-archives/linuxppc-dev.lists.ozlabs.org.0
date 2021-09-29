@@ -1,67 +1,115 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE76341CD71
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Sep 2021 22:36:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0073741CF23
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Sep 2021 00:13:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HKSnZ3x5Nz30R8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Sep 2021 06:36:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HKVyD62WWz3bVR
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Sep 2021 08:13:40 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dx5126F5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=ooHaE4+E;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=wsa@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=dx5126F5; 
+ smtp.mailfrom=nvidia.com (client-ip=40.107.212.49;
+ helo=nam02-bn1-obe.outbound.protection.outlook.com;
+ envelope-from=idosch@nvidia.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dkim=fail reason="signature verification failed" (2048-bit key;
+ unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256
+ header.s=selector2 header.b=ooHaE4+E; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com
+ (mail-bn1nam07on2049.outbound.protection.outlook.com [40.107.212.49])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HKSmy2bPFz2yK2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Sep 2021 06:35:30 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 80722611C0;
- Wed, 29 Sep 2021 20:35:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1632947728;
- bh=IH2/mcLbbTba4ogzth+XbUzMVfz5COKAcB5rIikRw94=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=dx5126F50lyQID/bfEVzqPq/BLzY11owVpezNFcSvXROFliqNeV2mje/rCsxyQ/+v
- AJxnLUXx+kBHT2w9hX7qqk/Vc2eFOCMeTH5n7B6TUjBVtVpzLaLL8rOFNAFu9KaIOi
- 3aYKm9R4Qr6kufne7uDFsHywV/Eho/GekRU5f6fbPYRi8qhR9QRwTIHIV9ctR1MRbp
- h9PjSjjLYz3I+WkGLYV4/JPbyyuG2f5Dw0GuEXaWRZDliAuwjLb9p9x7n3DcIOwuCZ
- QFRtcpkBcHfYbGSrPEygmw2XH/Fc2Vq7RQHARnQ3+rdprkqinQOw8pTXlu/Gu/t0l6
- Hu5eJ2jp4tm5g==
-Date: Wed, 29 Sep 2021 22:35:25 +0200
-From: Wolfram Sang <wsa@kernel.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH 00/10] Add Apple M1 support to PASemi i2c driver
-Message-ID: <YVTODUqwQM0Ciqi1@kunai>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, Sven Peter <sven@svenpeter.dev>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Olof Johansson <olof@lixom.net>,
- Hector Martin <marcan@marcan.st>,
- Mohamed Mediouni <mohamed.mediouni@caramail.com>,
- Stan Skowronek <stan@corellium.com>,
- Mark Kettenis <mark.kettenis@xs4all.nl>,
- Alyssa Rosenzweig <alyssa@rosenzweig.io>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux I2C <linux-i2c@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <20210926095847.38261-1-sven@svenpeter.dev>
- <CAK8P3a3Lt2QXk+aWLtXUXjjNhKJwNns6d9r=Yh5_aWETuvZTpQ@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HKK0t43WWz2xXm
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Sep 2021 00:45:15 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=TJUgtKrqz8oSWF4pNVyIPuqp5h7VEnuNcY8koxeYvNKJzmN/6w5yBQdlbAQnXJesWGXJtkBcmRvnzhLVh67CJOiDW8hzJT2EJ+BN196bCgzTLmVEkP7/Yr2mmyE+f6lR3jbdkrcv03PqjB6UxG8zG7KAJCFWbYq36LXeQs/hUeZaXYcK02yN1r8+Ig/H+Cn8LwzMYjEmFZAJaIqXg0dxbEsHfQMfUgJ6VtL5/J8FGzTu9VnqfxNzsgWXSPe/OkZrG4mtQqTcBNoeF5ufQcQYuGZSyQ9OyeB+MKiSFROdM+gOMGJLHB4LJ91tslKE0OqTEvMW+wp4KzKn1hxzOWRfjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version; 
+ bh=ZYeW3Ri8eUu3hTK0UHDDxm+umkJ6sbQYE5YEOGT5H64=;
+ b=KQu2f+8ZsDXJPc51VDh0BcSC18lmWuWJEwq+MQbXepS8De5Ax6hpWohwt9ZgKLUXqqijC/ms+vdbWLz+Z5nfVDrB5pz+K4pA4sOsLlF2jdzsZlrSXIZWuHri4l6CKjKYO6ae0JLXuaF/cQUNpYaPlEGVSPFqq+OTQodnn8f8D+xSNFwmlV5hxkdjcZ7a38i7WlMBZTS7io+WsKEvwiPC/Qw9TRrBGsrErG8HkngLigp0Xni10saLBEoNmqqtwcsj+xCqICnuB0A8J7/GibQSL4jr7+9sDBCOWdnYj3OmehvcL4NTKOfPEiXNNAaBfz/PGBdDfArKPd6kbH1FUiMbKw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.112.36) smtp.rcpttodomain=pengutronix.de smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=nvidia.com; 
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZYeW3Ri8eUu3hTK0UHDDxm+umkJ6sbQYE5YEOGT5H64=;
+ b=ooHaE4+EtWRYNKy9b7ZBz+Ikj3kmZwGgrKw8ZnaMhwxI36TTlGrB/CS9E3VUMtnf6Kyj/VYakf9xx+/EWLLhzkBx60rJZWhlvZcF1l7x59aMYyzsKbXVKPH6takE8pX3wIhBeCueoVSkYmXQuo+JOA141j2UaA2vuMl6smE56WzoVpScv5L43Q6HURg2P+/WMeU4WYSGvXYiFd6/CRlE3hV5rYYwBufuTDS5+JumTZmlN6502dO0/DU+ZPbH6qzAnP6kr9/2HiUS/oAotjDKOhOUPbdjsslx5xLJoheBvzy6k9mqhxMJ1fk1jh1nlfR0Q5bDbNUV4GPWaDAJr1kJXw==
+Received: from DM3PR11CA0003.namprd11.prod.outlook.com (2603:10b6:0:54::13) by
+ SJ0PR12MB5502.namprd12.prod.outlook.com (2603:10b6:a03:300::7) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4544.13; Wed, 29 Sep 2021 14:44:57 +0000
+Received: from DM6NAM11FT024.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:0:54:cafe::9d) by DM3PR11CA0003.outlook.office365.com
+ (2603:10b6:0:54::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4566.15 via Frontend
+ Transport; Wed, 29 Sep 2021 14:44:57 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.112.36)
+ smtp.mailfrom=nvidia.com; pengutronix.de; dkim=none (message not signed)
+ header.d=none;pengutronix.de; dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.112.36 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.112.36; helo=mail.nvidia.com;
+Received: from mail.nvidia.com (216.228.112.36) by
+ DM6NAM11FT024.mail.protection.outlook.com (10.13.172.159) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.20.4566.14 via Frontend Transport; Wed, 29 Sep 2021 14:44:56 +0000
+Received: from DRHQMAIL107.nvidia.com (10.27.9.16) by HQMAIL101.nvidia.com
+ (172.20.187.10) with Microsoft SMTP Server (TLS) id 15.0.1497.18; Wed, 29 Sep
+ 2021 14:44:55 +0000
+Received: from localhost (172.20.187.5) by DRHQMAIL107.nvidia.com (10.27.9.16)
+ with Microsoft SMTP Server (TLS) id 15.0.1497.18;
+ Wed, 29 Sep 2021 14:44:55 +0000
+Date: Wed, 29 Sep 2021 17:44:51 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH v5 07/11] PCI: Replace pci_dev::driver usage that gets
+ the driver name
+Message-ID: <YVR74+8Rw6XmTqDD@shredder>
+References: <20210929085306.2203850-1-u.kleine-koenig@pengutronix.de>
+ <20210929085306.2203850-8-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="CeaervSQYJjiQNT9"
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Disposition: inline
-In-Reply-To: <CAK8P3a3Lt2QXk+aWLtXUXjjNhKJwNns6d9r=Yh5_aWETuvZTpQ@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210929085306.2203850-8-u.kleine-koenig@pengutronix.de>
+X-Originating-IP: [172.20.187.5]
+X-ClientProxiedBy: HQMAIL107.nvidia.com (172.20.187.13) To
+ DRHQMAIL107.nvidia.com (10.27.9.16)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: bbc8531f-ebbc-4d27-834c-08d98357b4df
+X-MS-TrafficTypeDiagnostic: SJ0PR12MB5502:
+X-Microsoft-Antispam-PRVS: <SJ0PR12MB55025627DE95DC92EB9E51B9B2A99@SJ0PR12MB5502.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:751;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 0BR+8ElyoKaO3+g2ZEPI7C3QlEytSvEmUDjy7n0W9y39UOp0Jg7Lzn3bHSUNGuA7AbAqxoewWssncw0J8Z1lKWwwJwjYyUUswq0Us1jfEsHit8ODiXqQLUgLu4vyPA4lNtPkmgHRw/ks/6kIWmHbjy0ZmAlykDbKw0c5p0eUGsAV6S3gGbivoMF1LvNVILVL2oKK0quaYeXd3E8dHfBTUU1ywvpwWKeIqncnV8CfLGSgIZODwmofeZxgnm2i5ZgTsEZLWB7XDbYPSqQuW925+zDLmgc0z+7uOgiFuD/wpudiYPPUKB3yx5CijzGU/PEwnHh+EFxkqpc0+KHEJ6smEfSGxyhxJC+r56O11+lvP0odDAWkmltZP2ikzW/y//gdTkAJNA/R6qWheoti+tOdh8UfXTxU51QQ4Z0xswSZVW9hOtYBB5dzr1AG+Ea/yBbF/XV3/4KHzlkSEMknzTqiVX0e4wcftXcT525n+HJw6v3bWLwrj+swwSp+aG2MkeU8H0wnc1qa70znSPGbfkSOVUodAwj4cBvzyhXpB3JA/mYCS+0XfJDKH/KsGIpf54eFp8gh1WxL1tWqpOWSV/YslR2nKWSjpbLuvgeunoEpJxwIxjOuwmfexoEzPT6kjpBZQeUg8WX06CJYi4W9DAVMSEGKvgeHKijX5qr8pKaTB/hPBPM9Xjvrtkz8P9rTjnnn04TTvbaVFjW+lzb9sFI93yFQUP17jI+4XchDaR/IX7A=
+X-Forefront-Antispam-Report: CIP:216.228.112.36; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:schybrid05.nvidia.com; CAT:NONE;
+ SFS:(4636009)(7916004)(36840700001)(46966006)(426003)(16526019)(82310400003)(86362001)(508600001)(8936002)(6916009)(26005)(6666004)(336012)(2906002)(186003)(8676002)(54906003)(356005)(70206006)(7636003)(7416002)(70586007)(5660300002)(4326008)(4744005)(9686003)(36860700001)(36906005)(316002)(33716001)(47076005)(67856001);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2021 14:44:56.8237 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: bbc8531f-ebbc-4d27-834c-08d98357b4df
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.112.36];
+ Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT024.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB5502
+X-Mailman-Approved-At: Thu, 30 Sep 2021 08:13:02 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,55 +121,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sven Peter <sven@svenpeter.dev>, Hector Martin <marcan@marcan.st>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux I2C <linux-i2c@vger.kernel.org>, Paul Mackerras <paulus@samba.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Olof Johansson <olof@lixom.net>,
- Mohamed Mediouni <mohamed.mediouni@caramail.com>,
- Mark Kettenis <mark.kettenis@xs4all.nl>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Alyssa Rosenzweig <alyssa@rosenzweig.io>, Stan Skowronek <stan@corellium.com>
+Cc: linux-pci@vger.kernel.org, Alexander Duyck <alexanderduyck@fb.com>,
+ oss-drivers@corigine.com, Paul Mackerras <paulus@samba.org>,
+ Christoph Hellwig <hch@lst.de>, Herbert Xu <herbert@gondor.apana.org.au>,
+ =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+ Jesse Brandeburg <jesse.brandeburg@intel.com>,
+ Bjorn Helgaas <helgaas@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Yisen Zhuang <yisen.zhuang@huawei.com>, Vadym Kochan <vkochan@marvell.com>,
+ Michael Buesch <m@bues.ch>, Jiri Pirko <jiri@nvidia.com>,
+ Salil Mehta <salil.mehta@huawei.com>, netdev@vger.kernel.org,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Taras Chornyi <tchornyi@marvell.com>, Zhou Wang <wangzhou1@hisilicon.com>,
+ linux-crypto@vger.kernel.org, kernel@pengutronix.de,
+ Simon Horman <simon.horman@corigine.com>, Oliver O'Halloran <oohall@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed, Sep 29, 2021 at 10:53:02AM +0200, Uwe Kleine-König wrote:
+> struct pci_dev::driver holds (apart from a constant offset) the same
+> data as struct pci_dev::dev->driver. With the goal to remove struct
+> pci_dev::driver to get rid of data duplication replace getting the
+> driver name by dev_driver_string() which implicitly makes use of struct
+> pci_dev::dev->driver.
+> 
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
---CeaervSQYJjiQNT9
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+For mlxsw:
 
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Tested-by: Ido Schimmel <idosch@nvidia.com>
 
-> This looks all very good to me, I had one very minor comment.
->=20
-> Whole series
->=20
-> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-
-Thanks for the series and the review!
-
-Same here, looks good to me and I only had one minor comment.
-
-
---CeaervSQYJjiQNT9
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmFUzgwACgkQFA3kzBSg
-Kbbn5A//f+gdLy9AwaxACKw3vT7xnW7HMQLauduB3y1RJmPHcvIkbtxlg6IPP9nV
-Qbd1Tl7PuTtKHxadWeiIcgAh0UjJUAPPv2W4CResqMgRSHTC1Nk44zng53zmv97O
-v+p0hpOTzzb77rN2RFBZ6sfYP+aXJ0M8SLLzmjt57pxck+kV0dRdHKjPOa4ayi0U
-A2dQclLfceyEMU3Yi/DJpBZz6+wRbMqYQwsncS4exsTk7YAIubAL7w2NFq0lUKpD
-P7ghHyD5/9fXgG3MuKV6EKuUN7N4Uq7tk2P/wn+wGTCVoBcgqyIod+4uS6B/iTcG
-QPn5YPhe4N2Q9C3ODaffVvv95EY8+4Rt4uDylxGSGxuXndyIpi+rV8RdPxAUKpOd
-uKuGbdFn7bQ9tKktQp0SJhfSv1eO40G4opaWxgYp8X05OzXDScCocF4pEnLYJLNR
-JW1ZbZe+T47nTcjtougmxLHXfp2+tnERJALkZlfFHP22+RJdUx3296Mh4GUVzZ6g
-8Vbuo4kf1q8YuASb375/3YBxp2lnD409kk46iWhJ2ZTWjUquLNUYz+Owtg0JIMW0
-Nz9upxOiMhIR14ZFn8TVmXxnNUpIfEJugkjNmVoeJ9nDcyoL9KHtXvAZTSZHo/XU
-PwHOVJ5HbZ7vIkXcrxSweCTP2f9RXS9rxME6kzLrPx0o1AgFp3k=
-=AdDI
------END PGP SIGNATURE-----
-
---CeaervSQYJjiQNT9--
+Thanks
