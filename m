@@ -2,68 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4212641D317
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Sep 2021 08:13:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D545D41D371
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Sep 2021 08:32:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HKjbb14Dgz2yxT
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Sep 2021 16:13:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HKk1m5XGfz3bTR
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Sep 2021 16:32:28 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=YrCFVIOH;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=f7IsQBX9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::1035;
- helo=mail-pj1-x1035.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::102b;
+ helo=mail-pj1-x102b.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=YrCFVIOH; dkim-atps=neutral
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com
- [IPv6:2607:f8b0:4864:20::1035])
+ header.s=google header.b=f7IsQBX9; dkim-atps=neutral
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com
+ [IPv6:2607:f8b0:4864:20::102b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HKjZv4Ktbz2yn1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Sep 2021 16:12:37 +1000 (AEST)
-Received: by mail-pj1-x1035.google.com with SMTP id
- om12-20020a17090b3a8c00b0019eff43daf5so3946084pjb.4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Sep 2021 23:12:37 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HKk153YsWz2yn1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Sep 2021 16:31:51 +1000 (AEST)
+Received: by mail-pj1-x102b.google.com with SMTP id
+ na16-20020a17090b4c1000b0019f5bb661f9so207279pjb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Sep 2021 23:31:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
  h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=eL9IL0AbEn2/LZHJKGv2qtw10hAX+B2bRvSWPncsnBs=;
- b=YrCFVIOHjtuDWbOZEmtYC4Pv4n3eaYRJTtFxke2JUeWnawSIQ0qzxhQD+GOhVb8kan
- DMjndI+Nn+zkM5gHjeJ6uClogkpHG6Whw68/12yMlOvwfWW9mnArZxH7F4iWJkPTMQAj
- hMgiaUZiS++S15Wxoiot1IHAVYK2HH49BTQgg=
+ :mime-version; bh=gyrLKv0De6yyODRa16jnm+SfxHUmqz6ZDHmNG+6Xi1g=;
+ b=f7IsQBX97Is3sCYEG6NfEKFwqngoDf7mR6pgldjBnukgc10D6B6oFJBPxV1TFk3gvJ
+ kuwWL+hxm0jFDp6oSHpEG7Ky5d1LVH0UnKJdM70Xdp6l4JaHz6l8PExmHzX8EWnuqWul
+ NKE1ZLrXGLcKbDxR1QC+dYXUXD9hZ72YiqvZE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
  :message-id:mime-version;
- bh=eL9IL0AbEn2/LZHJKGv2qtw10hAX+B2bRvSWPncsnBs=;
- b=2VtGuWMurKDsdMzDx7ADU5WBQtEGm+IIRjUTOYq8+hHL1z8zHz9lojKGTvh3H0VYVS
- CLDWWF17ErBdXoHn1/uJi65/OIFThT595U8nq6zTHfpFkGiWREWKNGfpubvii838FHFZ
- eGaoxKjyWvyLdCY1D43ZTlKqa9bgTUinyr2dhWdx9QhPkOqsEsTxJgRpJGPaSM5rael7
- vFUU+6jFaQO2NElT8EToSPoXfGJxjP5R1sX+ODJBBnu6/lmQy8w4UV20N3qkIEDXVLmL
- IEBQRMVy5/xSuYLrfkJLGawl3bprfenZL/6iDxeWmVhcqWNehbKuDmPhO4C+qC6ipD6P
- 3vrA==
-X-Gm-Message-State: AOAM530dJ1wUSEKR8axZ6EBmgLIlfI2ZP3+a9qBkjzWsvf0GPE07AIUw
- sZw3ZhXmrKBLMiJFXVeGx6DFPg==
-X-Google-Smtp-Source: ABdhPJxcv3d1gIloewA1h+os6v1bwFa6MPtlLIYQb/jc4EjwEUFEUElrEnqa6ck3xEFtSA6dyFk3qg==
-X-Received: by 2002:a17:902:ba8d:b0:13d:cb44:369c with SMTP id
- k13-20020a170902ba8d00b0013dcb44369cmr2476664pls.40.1632982352759; 
- Wed, 29 Sep 2021 23:12:32 -0700 (PDT)
+ bh=gyrLKv0De6yyODRa16jnm+SfxHUmqz6ZDHmNG+6Xi1g=;
+ b=U7HvsCk5BUb4ELf2yY4GVanoTvfbpIhTaoop9eRDZRmx8aOWaYj1tC8WJ4KCNF6VS2
+ OuEI/BfwsK3L7wFrR8SjJihBpg967K9B14GmX2g3e2/AfRqg+9S1peN3lG1brxZntPpL
+ 1h6BfFSguwcgyuFIQaPNsFUeQt/rXmF/WMB4wNIxxkC9kbOSkappuzO02T9vjMMEDoFL
+ 5BE+1jaaCjHRQbAy6uJUw5KehhYO5qfeH2PCYFwG8FVnBQbmhpkaaoR9DEgOXsaW4Zeb
+ ysZUaAbvenAq5xHdc/Ibx86iKi/KmMF5OmJdhDj1AdJG4gfdH6tsFj7bt/2RMsPN6BO1
+ aCnA==
+X-Gm-Message-State: AOAM5306SeomzhRax3KPFkyLO6K5SiC2d45vcJqpJ7WsG0psy++ZFR/Z
+ rGyK1bFI4EvrI+63VNLlEqhosw==
+X-Google-Smtp-Source: ABdhPJxj+BqBDKVAcE0XKUIsqsj9Cvta0er2MBa+BXV44ddtnpR2lYR2YnDfU8srW3rHSV9wrV4tqw==
+X-Received: by 2002:a17:902:db02:b0:13e:683c:7523 with SMTP id
+ m2-20020a170902db0200b0013e683c7523mr2706267plx.43.1632983508394; 
+ Wed, 29 Sep 2021 23:31:48 -0700 (PDT)
 Received: from localhost ([2001:4479:e200:df00:7dea:cb77:bac7:65dc])
- by smtp.gmail.com with ESMTPSA id g3sm1486486pgj.66.2021.09.29.23.12.31
+ by smtp.gmail.com with ESMTPSA id c8sm1633541pfj.204.2021.09.29.23.31.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 29 Sep 2021 23:12:32 -0700 (PDT)
+ Wed, 29 Sep 2021 23:31:48 -0700 (PDT)
 From: Daniel Axtens <dja@axtens.net>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] KVM: PPC: Book3S HV: Use GLOBAL_TOC for
- kvmppc_h_set_dabr/xdabr()
-In-Reply-To: <20210923151031.72408-1-mpe@ellerman.id.au>
-References: <20210923151031.72408-1-mpe@ellerman.id.au>
-Date: Thu, 30 Sep 2021 16:12:29 +1000
-Message-ID: <87bl4a6182.fsf@dja-thinkpad.axtens.net>
+To: Kai Song <songkai01@inspur.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc/eeh:Fix some mistakes in comments
+In-Reply-To: <20210927023507.32564-1-songkai01@inspur.com>
+References: <20210927023507.32564-1-songkai01@inspur.com>
+Date: Thu, 30 Sep 2021 16:31:45 +1000
+Message-ID: <878rze60by.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -77,87 +76,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, npiggin@gmail.com
+Cc: paulus@samba.org, Kai Song <songkai01@inspur.com>, oohall@gmail.com,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael,
+Hi Kai,
 
-> kvmppc_h_set_dabr(), and kvmppc_h_set_xdabr() which jumps into
-> it, need to use _GLOBAL_TOC to setup the kernel TOC pointer, because
-> kvmppc_h_set_dabr() uses LOAD_REG_ADDR() to load dawr_force_enable.
+Thank you for your contribution to the powerpc kernel!
 
-This makes sense. LOAD_REG_ADDR() does ld reg,name@got(r2) and
-_GLOBAL_TOC sets r2 based on r12 and .TOC. .
+> Get rid of warning:
+> arch/powerpc/kernel/eeh.c:774: warning: expecting prototype for eeh_set_pe_freset(). Prototype was for eeh_set_dev_freset() instead
 
-Looking at
-e.g. https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg1610846.html
-it seems that we use GOT and TOC largely interchangeably... so assuming
-I haven't completely misunderstood, the change this patch makes seems to
-make sense to me. :)
+You haven't said where this warning is from. I thought it might be from
+sparse but I couldn't seem to reproduce it - is my version of sparse too
+old or are you using a different tool?
 
-> When called from hcall_try_real_mode() we have the kernel TOC in r2,
-> established near the start of kvmppc_interrupt_hv(), so there is no
-> issue.
->
-> But they can also be called from kvmppc_pseries_do_hcall() which is
-> module code, so the access ends up happening with the kvm-hv module's
-> r2, which will not point at dawr_force_enable and could even cause a
-> fault.
+>  /**
+> - * eeh_set_pe_freset - Check the required reset for the indicated device
+> - * @data: EEH device
+> + * eeh_set_dev_freset - Check the required reset for the indicated device
+> + * @edev: EEH device
+>   * @flag: return value
+>   *
+>   * Each device might have its preferred reset type: fundamental or
 
-I checked and there isn't anywhere else the functions are called, so
-this will now cover everything.
+This looks like a good and correct change.
 
-> With the current code layout and compilers we haven't observed a fault
-> in practice, the load hits somewhere in kvm-hv.ko and silently returns
-> some bogus value.
->
-> Note that we we expect p8/p9 guests to use the DAWR, but SLOF uses
-> h_set_dabr() to test if sc1 works correctly, see SLOF's
-> lib/libhvcall/brokensc1.c.
+I checked through git history with git blame to see when the function
+was renamed. There are 2 commits that should have updated the comment:
+one renamed the function and one renamed an argument. So, I think this
+commit could have:
 
-I assume that something (the module loader?) patches the callsite to
-restore r2 after the function call? I imagine something must otherwise
-things would fall apart pretty quickly...
+Fixes: d6c4932fbf24 ("powerpc/eeh: Strengthen types of eeh traversal functions")
+Fixes: c270a24c59bd ("powerpc/eeh: Do reset based on PE")
 
-> Fixes: c1fe190c0672 ("powerpc: Add force enable of DAWR on P9 option")
+But I don't know if an out of date comment is enough of a 'bug' to
+justify a Fixes: tag? (mpe, I'm sure I've asked this before, sorry!)
 
-That patch seems to only affect the DA_W_R not the DA_B_R - how does it
-cause this bug?
+All up, this is a good correction to the comment.
 
-All in all this looks good to me:
-Reviewed-by: Daniel Axtens <dja@axtens.net>
+There are a few other functions in the file that have incorrect
+docstrings:
+
+ - eeh_pci_enable - missing parameter
+
+ - eeh_pe_reset and eeh_pe_reset_full - missing parameter
+
+ - eeh_init - missing parameter
+
+ - eeh_pe_inject_err - wrong name for a parameter
+
+Could you fix all of the docstrings in the file at once?
 
 Kind regards,
 Daniel
 
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> ---
->  arch/powerpc/kvm/book3s_hv_rmhandlers.S | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> index 90484425a1e6..30a8a07cff18 100644
-> --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> @@ -1999,7 +1999,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
->  	.globl	hcall_real_table_end
->  hcall_real_table_end:
->  
-> -_GLOBAL(kvmppc_h_set_xdabr)
-> +_GLOBAL_TOC(kvmppc_h_set_xdabr)
->  EXPORT_SYMBOL_GPL(kvmppc_h_set_xdabr)
->  	andi.	r0, r5, DABRX_USER | DABRX_KERNEL
->  	beq	6f
-> @@ -2009,7 +2009,7 @@ EXPORT_SYMBOL_GPL(kvmppc_h_set_xdabr)
->  6:	li	r3, H_PARAMETER
->  	blr
->  
-> -_GLOBAL(kvmppc_h_set_dabr)
-> +_GLOBAL_TOC(kvmppc_h_set_dabr)
->  EXPORT_SYMBOL_GPL(kvmppc_h_set_dabr)
->  	li	r5, DABRX_USER | DABRX_KERNEL
->  3:
-> -- 
-> 2.25.1
