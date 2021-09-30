@@ -2,42 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2623F41D1FF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Sep 2021 05:51:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEF2541D1F3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Sep 2021 05:45:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HKfS700fFz305W
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Sep 2021 13:51:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HKfK62k1gz3c4n
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Sep 2021 13:45:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.21; helo=inva021.nxp.com;
- envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HKfRj2gDXz2yRS
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Sep 2021 13:51:12 +1000 (AEST)
-Received: from inva021.nxp.com (localhost [127.0.0.1])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 1E22B20030E;
- Thu, 30 Sep 2021 05:51:09 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com
- (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id DA6F420028A;
- Thu, 30 Sep 2021 05:51:08 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net
- [10.192.224.44])
- by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 6D943183AC94;
- Thu, 30 Sep 2021 11:51:07 +0800 (+08)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com,
- lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
- alsa-devel@alsa-project.org
-Subject: [PATCH] ASoC: fsl_rpmsg: Add rpmsg audio support for i.MX8ULP
-Date: Thu, 30 Sep 2021 11:26:53 +0800
-Message-Id: <1632972413-22130-1-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-X-Virus-Scanned: ClamAV using ClamSMTP
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ozlabs.ru (client-ip=107.174.27.60; helo=ozlabs.ru;
+ envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
+Received: from ozlabs.ru (ozlabs.ru [107.174.27.60])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4HKfJd4zHsz2yKJ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Sep 2021 13:45:04 +1000 (AEST)
+Received: from fstn1-p1.ozlabs.ibm.com. (localhost [IPv6:::1])
+ by ozlabs.ru (Postfix) with ESMTP id B1B46AE8002D;
+ Wed, 29 Sep 2021 23:44:58 -0400 (EDT)
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH kernel] powerpc/iommu: Report the correct most efficient DMA
+ mask for PCI devices
+Date: Thu, 30 Sep 2021 13:44:54 +1000
+Message-Id: <20210930034454.95794-1-aik@ozlabs.ru>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,35 +38,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, iommu@lists.linux-foundation.org,
+ Christoph Hellwig <hch@lst.de>, Carol L Soto <clsoto@us.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On i.MX8ULP the audio interface and codec are controlled
-by Cortex-M domain, Cortex-M core provides audio service
-over rpmsg.
+According to dma-api.rst, the dma_get_required_mask() helper should return
+"the mask that the platform requires to operate efficiently". Which in
+the case of PPC64 means the bypass mask and not a mask from an IOMMU table
+which is shorter and slower to use due to map/unmap operations (especially
+expensive on "pseries").
 
-The rpmsg audio function is almost same as i.MX7ULP
-platform, so share same configuration.
+However the existing implementation ignores the possibility of bypassing
+and returns the IOMMU table mask on the pseries platform which makes some
+drivers (mpt3sas is one example) choose 32bit DMA even though bypass is
+supported. The powernv platform sort of handles it by having a bigger
+default window with a mask >=40 but it only works as drivers choose
+63/64bit if the required mask is >32 which is rather pointless.
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+This reintroduces the bypass capability check to let drivers make
+a better choice of the DMA mask.
+
+Fixes: f1565c24b596 ("powerpc: use the generic dma_ops_bypass mode")
+Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 ---
- sound/soc/fsl/fsl_rpmsg.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/kernel/dma-iommu.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/sound/soc/fsl/fsl_rpmsg.c b/sound/soc/fsl/fsl_rpmsg.c
-index 07abad7fe372..8508bc7f239d 100644
---- a/sound/soc/fsl/fsl_rpmsg.c
-+++ b/sound/soc/fsl/fsl_rpmsg.c
-@@ -174,6 +174,7 @@ static const struct of_device_id fsl_rpmsg_ids[] = {
- 	{ .compatible = "fsl,imx8mm-rpmsg-audio", .data = &imx8mm_data},
- 	{ .compatible = "fsl,imx8mn-rpmsg-audio", .data = &imx8mn_data},
- 	{ .compatible = "fsl,imx8mp-rpmsg-audio", .data = &imx8mp_data},
-+	{ .compatible = "fsl,imx8ulp-rpmsg-audio", .data = &imx7ulp_data},
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, fsl_rpmsg_ids);
+diff --git a/arch/powerpc/kernel/dma-iommu.c b/arch/powerpc/kernel/dma-iommu.c
+index 111249fd619d..d646077bcbcf 100644
+--- a/arch/powerpc/kernel/dma-iommu.c
++++ b/arch/powerpc/kernel/dma-iommu.c
+@@ -184,6 +184,14 @@ u64 dma_iommu_get_required_mask(struct device *dev)
+ 	struct iommu_table *tbl = get_iommu_table_base(dev);
+ 	u64 mask;
+ 
++	if (dev_is_pci(dev)) {
++		u64 bypass_mask = dma_direct_get_required_mask(dev);
++
++		if (dma_iommu_dma_supported(dev, bypass_mask)) {
++			dev_info(dev, "%s: returning bypass mask 0x%llx\n", __func__, bypass_mask);
++			return bypass_mask;
++		}
++	}
+ 	if (!tbl)
+ 		return 0;
+ 
 -- 
-2.17.1
+2.30.2
 
