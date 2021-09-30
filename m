@@ -2,75 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D423F41CFCB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Sep 2021 01:11:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2623F41D1FF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Sep 2021 05:51:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HKXDT4z2pz30R2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Sep 2021 09:11:05 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=VSQ018jC;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HKfS700fFz305W
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Sep 2021 13:51:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::52a;
- helo=mail-pg1-x52a.google.com; envelope-from=keescook@chromium.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=VSQ018jC; dkim-atps=neutral
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com
- [IPv6:2607:f8b0:4864:20::52a])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=92.121.34.21; helo=inva021.nxp.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HKXCq5Yl5z2yfg
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Sep 2021 09:10:29 +1000 (AEST)
-Received: by mail-pg1-x52a.google.com with SMTP id m21so4240324pgu.13
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Sep 2021 16:10:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=aI/ouOII6CJjBOkddynqFqEUpoEDYOKQCNZi7fDl2EE=;
- b=VSQ018jC6qTgHIau1QRTnTodwijVCmralRN9fgDiBIeacF49JRsX9nwdaRGov2W45Z
- Wy+M5+L4KO+HmwabrN4YtS8Cl9AyP2CMw+UiJRSYwHlncurAgHBGnkAiyjiSOeVQBWSa
- ikc6wX7yBW/i3FUnCULlToPllc9632H2aOQSs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=aI/ouOII6CJjBOkddynqFqEUpoEDYOKQCNZi7fDl2EE=;
- b=VBGuyQYSKOcRj/YRjh1QdAFwwXUjwu7W2eaWRSxx/LRmnaU3YwHcVv5hZgZNOQ0Om9
- OBet5vL3/3QaRHFxDu+Es5+3Vuw841kJGQLhzX26LrtM/0xgtO31AU3mCg2V3KiYHvSn
- OnFiwHrd5m9x9OYaoeGS82+Cm+t9uW0cwFfqxnAHgQ7S8/vgK5+V7sVfb9vn55o4OjmS
- FEA8JHHWCuFCct430F4jQiWtejqK64vah6kFllsF7nKjXDtEg8GaZMH47PcAoAd/2CU+
- NGoz+DF4p3rNgv5mner0/+sjIIVg9r2A/Eae8bO84Zd5nt6wMchUIkFhsnTn2nao1o1+
- 0pMA==
-X-Gm-Message-State: AOAM530wvb2acendVUczXX4rr8qHFRhLXCozQi4ts7XYkMj7B2QbHnvY
- bi9LS3cdRU5SxxuSKkj/Q5qNoQ==
-X-Google-Smtp-Source: ABdhPJzdhyqm0dfgODuwIED6/X8gNqLcW4VX+6LUmwnQa2guV3xeth3+9Or0kqN52antddtK95SaVQ==
-X-Received: by 2002:a65:6389:: with SMTP id h9mr2112359pgv.83.1632957025919;
- Wed, 29 Sep 2021 16:10:25 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id f16sm602774pjj.56.2021.09.29.16.10.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 29 Sep 2021 16:10:25 -0700 (PDT)
-Date: Wed, 29 Sep 2021 16:10:24 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [RFC PATCH 4/8] powerpc: add CPU field to struct thread_info
-Message-ID: <202109291609.BC02B39AFF@keescook>
-References: <20210914121036.3975026-1-ardb@kernel.org>
- <20210914121036.3975026-5-ardb@kernel.org>
- <CAMj1kXEojbQbNzCP39KT4EzFAyW3J1Tfm_stCZ+fGo8_SO90PA@mail.gmail.com>
- <87ee99lii7.fsf@mpe.ellerman.id.au>
- <87pmst1rn9.fsf@mpe.ellerman.id.au>
- <CAMj1kXFXtbD3=L+QvCnwbyFr-qbWivZ0wRGT0N4LNxANPD8x4g@mail.gmail.com>
- <878rzf0zmb.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <878rzf0zmb.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HKfRj2gDXz2yRS
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Sep 2021 13:51:12 +1000 (AEST)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 1E22B20030E;
+ Thu, 30 Sep 2021 05:51:09 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com
+ (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id DA6F420028A;
+ Thu, 30 Sep 2021 05:51:08 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net
+ [10.192.224.44])
+ by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 6D943183AC94;
+ Thu, 30 Sep 2021 11:51:07 +0800 (+08)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com,
+ lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
+ alsa-devel@alsa-project.org
+Subject: [PATCH] ASoC: fsl_rpmsg: Add rpmsg audio support for i.MX8ULP
+Date: Thu, 30 Sep 2021 11:26:53 +0800
+Message-Id: <1632972413-22130-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,73 +49,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Paul Mackerras <paulus@samba.org>,
- linux-riscv <linux-riscv@lists.infradead.org>, Will Deacon <will@kernel.org>,
- Ard Biesheuvel <ardb@kernel.org>,
- "open list:S390" <linux-s390@vger.kernel.org>,
- Vasily Gorbik <gor@linux.ibm.com>, Russell King <linux@armlinux.org.uk>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Arnd Bergmann <arnd@arndb.de>,
- Heiko Carstens <hca@linux.ibm.com>, Keith Packard <keithpac@amazon.com>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
- <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Sep 30, 2021 at 08:46:04AM +1000, Michael Ellerman wrote:
-> Ard Biesheuvel <ardb@kernel.org> writes:
-> > On Tue, 28 Sept 2021 at 02:16, Michael Ellerman <mpe@ellerman.id.au> wrote:
-> >>
-> >> Michael Ellerman <mpe@ellerman.id.au> writes:
-> >> > Ard Biesheuvel <ardb@kernel.org> writes:
-> >> >> On Tue, 14 Sept 2021 at 14:11, Ard Biesheuvel <ardb@kernel.org> wrote:
-> >> >>>
-> >> >>> The CPU field will be moved back into thread_info even when
-> >> >>> THREAD_INFO_IN_TASK is enabled, so add it back to powerpc's definition
-> >> >>> of struct thread_info.
-> >> >>>
-> >> >>> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> >> >>
-> >> >> Michael,
-> >> >>
-> >> >> Do you have any objections or issues with this patch or the subsequent
-> >> >> ones cleaning up the task CPU kludge for ppc32? Christophe indicated
-> >> >> that he was happy with it.
-> >> >
-> >> > No objections, it looks good to me, thanks for cleaning up that horror :)
-> >> >
-> >> > It didn't apply cleanly to master so I haven't tested it at all, if you can point me at a
-> >> > git tree with the dependencies I'd be happy to run some tests over it.
-> >>
-> >> Actually I realised I can just drop the last patch.
-> >>
-> >> So that looks fine, passes my standard quick build & boot on qemu tests,
-> >> and builds with/without stack protector enabled.
-> >>
-> >
-> > Thanks.
-> >
-> > Do you have any opinion on how this series should be merged? Kees Cook
-> > is willing to take them via his cross-arch tree, or you could carry
-> > them if you prefer. Taking it via multiple trees at the same time is
-> > going to be tricky, or take two cycles, with I'd prefer to avoid.
-> 
-> I don't really mind. If Kees is happy to take it then that's OK by me.
-> 
-> If Kees put the series in a topic branch based off rc2 then I could
-> merge that, and avoid any conflicts.
+On i.MX8ULP the audio interface and codec are controlled
+by Cortex-M domain, Cortex-M core provides audio service
+over rpmsg.
 
-If that helps, yeah, I can make a separate stable branch. Thanks!
+The rpmsg audio function is almost same as i.MX7ULP
+platform, so share same configuration.
 
--Kees
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+---
+ sound/soc/fsl/fsl_rpmsg.c | 1 +
+ 1 file changed, 1 insertion(+)
 
+diff --git a/sound/soc/fsl/fsl_rpmsg.c b/sound/soc/fsl/fsl_rpmsg.c
+index 07abad7fe372..8508bc7f239d 100644
+--- a/sound/soc/fsl/fsl_rpmsg.c
++++ b/sound/soc/fsl/fsl_rpmsg.c
+@@ -174,6 +174,7 @@ static const struct of_device_id fsl_rpmsg_ids[] = {
+ 	{ .compatible = "fsl,imx8mm-rpmsg-audio", .data = &imx8mm_data},
+ 	{ .compatible = "fsl,imx8mn-rpmsg-audio", .data = &imx8mn_data},
+ 	{ .compatible = "fsl,imx8mp-rpmsg-audio", .data = &imx8mp_data},
++	{ .compatible = "fsl,imx8ulp-rpmsg-audio", .data = &imx7ulp_data},
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, fsl_rpmsg_ids);
 -- 
-Kees Cook
+2.17.1
+
