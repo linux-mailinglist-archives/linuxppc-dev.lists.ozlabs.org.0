@@ -1,77 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56B6C41E058
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Sep 2021 19:48:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BA0341E198
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Sep 2021 20:51:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HL11L19xFz3c5J
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Oct 2021 03:48:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HL2QJ3nXQz306y
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Oct 2021 04:51:20 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=m0rDM0cn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uHnQO7Kn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::62a;
- helo=mail-pl1-x62a.google.com; envelope-from=keescook@chromium.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=m0rDM0cn; dkim-atps=neutral
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com
- [IPv6:2607:f8b0:4864:20::62a])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=uHnQO7Kn; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HL10b45Zxz2yxV
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Oct 2021 03:47:24 +1000 (AEST)
-Received: by mail-pl1-x62a.google.com with SMTP id t4so4611272plo.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Sep 2021 10:47:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=+IS0gEgo7hipR9gibsQw5KtPLx6dQXKFRc1+dywoXVA=;
- b=m0rDM0cnK0yrtL29pL81MAGf7w2Yed+jc4KUJF0fL6YCvGOj2OOT/73pX0N1cuLGzf
- ECJdJfF5q+Tu3Vs0H54vg8YCX4POSPt/jTDx97+sRolpUheG7qnd3LACShH3YDUGL+oL
- edpJws/IQ1QQ+9i+FXscZHebVHzxRo9Z53ybE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=+IS0gEgo7hipR9gibsQw5KtPLx6dQXKFRc1+dywoXVA=;
- b=VlXx2L9vgKcGaJeMMj/Ky60U5u48CuWsP10HDo3+ATSgEuPJOxmaTpW8lYdou7UeuK
- uDiYWIM40ISSCcjvxJOsIzmKtTOueZeAZvuw3uV7tAiP/pu1f4XXGtbpqUohiA9IPGSh
- O4aQd3Ch41q5t69cHVDJSoW064KoDTU67wvKHCVXJ+OBO4niNofXEH583/zC0gpaCSTb
- eSaUnygXhSY1iiW/xzr0Z49WbVRmwrJWyvnK7nlZBL9M8CFn7FdywNDCDxxb5s3bDPoo
- kUrSGai/GFR0O4IkpNJPwCpW2gfbxWeIbDeTA77CGzY3gp+BiaFx5fPMUNYKRD35j1n5
- gnug==
-X-Gm-Message-State: AOAM532Polz1YAk5zIs7SXskCS8FR+puLu5iuTrKbvKe/iMrkxEf+sFZ
- yjR+muNFSuum1pRz13WQ62f6XQ==
-X-Google-Smtp-Source: ABdhPJwKcuP6DGDrVJJap2YBfnw9gJ29cZ6T8aj/WEWFIltD4Sz9lDFqVeOwFghXxQzDWleVwS3vJg==
-X-Received: by 2002:a17:902:e74d:b0:13e:77cd:a300 with SMTP id
- p13-20020a170902e74d00b0013e77cda300mr2394421plf.80.1633024041447; 
- Thu, 30 Sep 2021 10:47:21 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id x19sm3606048pfn.105.2021.09.30.10.47.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 30 Sep 2021 10:47:20 -0700 (PDT)
-Date: Thu, 30 Sep 2021 10:47:19 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [RFC PATCH 4/8] powerpc: add CPU field to struct thread_info
-Message-ID: <202109301045.15DDDA0B@keescook>
-References: <20210914121036.3975026-1-ardb@kernel.org>
- <20210914121036.3975026-5-ardb@kernel.org>
- <CAMj1kXEojbQbNzCP39KT4EzFAyW3J1Tfm_stCZ+fGo8_SO90PA@mail.gmail.com>
- <87ee99lii7.fsf@mpe.ellerman.id.au>
- <87pmst1rn9.fsf@mpe.ellerman.id.au>
- <CAMj1kXFXtbD3=L+QvCnwbyFr-qbWivZ0wRGT0N4LNxANPD8x4g@mail.gmail.com>
- <878rzf0zmb.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HL2Pf1hCNz2yPp
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Oct 2021 04:50:45 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8244C61216;
+ Thu, 30 Sep 2021 18:50:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1633027842;
+ bh=sHuklxRhVNrOUIGACjRjjFQjjWujtmMEebA4SOO7XVI=;
+ h=From:To:Cc:Subject:Date:From;
+ b=uHnQO7KnOuN+F6Kg/VYMCkYNZKP/FQuRQKsHlQ02RSvOU+Lsr6a/Ejf3NJuypnQ0r
+ wgcHaC0oqgL3wh/+Bjpr7enKokEpGkilkhAcBEHhE9uLRLhpb0YgHbs+X+j4bqDpV7
+ 0AkfKl3RUdJBxJT+ECt+6aVhpjwQ315nbX0A7Nb4a9ZuqQ7VSnVENanCiGErOWceKw
+ TlOjeEhAK0IhpTcaKezOnHkaHC7hBR/4sk1qUNqqo7JqlIbR9UE+BEQUtaXKIMytSU
+ 2kYuIhxuTpWdfCtUUQdGYdGcDoSXL5vM5e4zMX86OIlLp0nscaVxPuacUtXLN3LJw1
+ +kT+1vHV0j00g==
+From: Mike Rapoport <rppt@kernel.org>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/6] memblock: cleanup memblock_free interface
+Date: Thu, 30 Sep 2021 21:50:25 +0300
+Message-Id: <20210930185031.18648-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <878rzf0zmb.fsf@mpe.ellerman.id.au>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,79 +55,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Paul Mackerras <paulus@samba.org>,
- linux-riscv <linux-riscv@lists.infradead.org>, Will Deacon <will@kernel.org>,
- Ard Biesheuvel <ardb@kernel.org>,
- "open list:S390" <linux-s390@vger.kernel.org>,
- Vasily Gorbik <gor@linux.ibm.com>, Russell King <linux@armlinux.org.uk>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Arnd Bergmann <arnd@arndb.de>,
- Heiko Carstens <hca@linux.ibm.com>, Keith Packard <keithpac@amazon.com>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
- <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-efi@vger.kernel.org, kvm@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-mm@kvack.org, kasan-dev@googlegroups.com, sparclinux@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ Mike Rapoport <rppt@linux.ibm.com>, xen-devel@lists.xenproject.org,
+ linux-snps-arc@lists.infradead.org, devicetree@vger.kernel.org,
+ linux-um@lists.infradead.org, Shahab Vahedi <Shahab.Vahedi@synopsys.com>,
+ linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org,
+ linux-mips@vger.kernel.org, iommu@lists.linux-foundation.org,
+ linux-alpha@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Sep 30, 2021 at 08:46:04AM +1000, Michael Ellerman wrote:
-> Ard Biesheuvel <ardb@kernel.org> writes:
-> > On Tue, 28 Sept 2021 at 02:16, Michael Ellerman <mpe@ellerman.id.au> wrote:
-> >>
-> >> Michael Ellerman <mpe@ellerman.id.au> writes:
-> >> > Ard Biesheuvel <ardb@kernel.org> writes:
-> >> >> On Tue, 14 Sept 2021 at 14:11, Ard Biesheuvel <ardb@kernel.org> wrote:
-> >> >>>
-> >> >>> The CPU field will be moved back into thread_info even when
-> >> >>> THREAD_INFO_IN_TASK is enabled, so add it back to powerpc's definition
-> >> >>> of struct thread_info.
-> >> >>>
-> >> >>> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> >> >>
-> >> >> Michael,
-> >> >>
-> >> >> Do you have any objections or issues with this patch or the subsequent
-> >> >> ones cleaning up the task CPU kludge for ppc32? Christophe indicated
-> >> >> that he was happy with it.
-> >> >
-> >> > No objections, it looks good to me, thanks for cleaning up that horror :)
-> >> >
-> >> > It didn't apply cleanly to master so I haven't tested it at all, if you can point me at a
-> >> > git tree with the dependencies I'd be happy to run some tests over it.
-> >>
-> >> Actually I realised I can just drop the last patch.
-> >>
-> >> So that looks fine, passes my standard quick build & boot on qemu tests,
-> >> and builds with/without stack protector enabled.
-> >>
-> >
-> > Thanks.
-> >
-> > Do you have any opinion on how this series should be merged? Kees Cook
-> > is willing to take them via his cross-arch tree, or you could carry
-> > them if you prefer. Taking it via multiple trees at the same time is
-> > going to be tricky, or take two cycles, with I'd prefer to avoid.
-> 
-> I don't really mind. If Kees is happy to take it then that's OK by me.
-> 
-> If Kees put the series in a topic branch based off rc2 then I could
-> merge that, and avoid any conflicts.
+From: Mike Rapoport <rppt@linux.ibm.com>
 
-I've created:
+Hi,
 
-git://git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git for-next/thread_info/cpu
+Following the discussion on [1] this is the fix for memblock freeing APIs
+mismatch. 
 
-it includes a --no-ff merge commit, which I'm not sure is desirable? Let
-me know if I should adjust this, or if Linus will yell about this if I
-send him a PR containing a merge commit? I'm not sure what's right here.
+The first patch is a cleanup of numa_distance allocation in arch_numa I've
+spotted during the conversion.
+The second patch is a fix for Xen memory freeing on some of the error
+paths.
 
-Thanks!
+I agree with Christophe that doing step by step makes the thing easier to
+review, so the patches 3-6 do the actual cleanup step by step.
 
+This time I used stricter coccinelle scripts so that only straightforward
+uses would get converted.
+
+There still a couple of (void *) castings for the cases when a virtual
+address has unsigned long type rather than a pointer type, like e.g
+initrd_start.
+
+Since scripts/get_maintainer.pl returned more than 100 addresses I've
+trimmed the distribution list only to the relevant lists.
+
+Juergen and Shahab, I didn't keep your Reviewed-by because the patches are
+a bit different this time.
+
+v2:
+* split changes into several patches
+* use stricter coccinelle scripts 
+
+[1] https://lore.kernel.org/all/CAHk-=wj9k4LZTz+svCxLYs5Y1=+yKrbAUArH1+ghyG3OLd8VVg@mail.gmail.com
+
+Mike Rapoport (6):
+  arch_numa: simplify numa_distance allocation
+  xen/x86: free_p2m_page: use memblock_free_ptr() to free a virtual pointer
+  memblock: drop memblock_free_early_nid() and memblock_free_early()
+  memblock: stop aliasing __memblock_free_late with memblock_free_late
+  memblock: rename memblock_free to memblock_phys_free
+  memblock: use memblock_free for freeing virtual pointers
+
+ arch/alpha/kernel/core_irongate.c         |  2 +-
+ arch/arc/mm/init.c                        |  2 +-
+ arch/arm/mach-hisi/platmcpm.c             |  2 +-
+ arch/arm/mm/init.c                        |  2 +-
+ arch/arm64/mm/mmu.c                       |  4 ++--
+ arch/mips/mm/init.c                       |  2 +-
+ arch/mips/sgi-ip30/ip30-setup.c           |  6 +++---
+ arch/powerpc/kernel/dt_cpu_ftrs.c         |  4 ++--
+ arch/powerpc/kernel/paca.c                |  8 ++++----
+ arch/powerpc/kernel/setup-common.c        |  2 +-
+ arch/powerpc/kernel/setup_64.c            |  2 +-
+ arch/powerpc/platforms/powernv/pci-ioda.c |  2 +-
+ arch/powerpc/platforms/pseries/svm.c      |  3 +--
+ arch/riscv/kernel/setup.c                 |  4 ++--
+ arch/s390/kernel/setup.c                  |  8 ++++----
+ arch/s390/kernel/smp.c                    |  4 ++--
+ arch/s390/kernel/uv.c                     |  2 +-
+ arch/s390/mm/kasan_init.c                 |  2 +-
+ arch/sh/boards/mach-ap325rxa/setup.c      |  2 +-
+ arch/sh/boards/mach-ecovec24/setup.c      |  4 ++--
+ arch/sh/boards/mach-kfr2r09/setup.c       |  2 +-
+ arch/sh/boards/mach-migor/setup.c         |  2 +-
+ arch/sh/boards/mach-se/7724/setup.c       |  4 ++--
+ arch/sparc/kernel/smp_64.c                |  2 +-
+ arch/um/kernel/mem.c                      |  2 +-
+ arch/x86/kernel/setup.c                   |  4 ++--
+ arch/x86/kernel/setup_percpu.c            |  2 +-
+ arch/x86/mm/init.c                        |  2 +-
+ arch/x86/mm/kasan_init_64.c               |  4 ++--
+ arch/x86/mm/numa.c                        |  2 +-
+ arch/x86/mm/numa_emulation.c              |  2 +-
+ arch/x86/xen/mmu_pv.c                     |  6 +++---
+ arch/x86/xen/p2m.c                        |  2 +-
+ arch/x86/xen/setup.c                      |  6 +++---
+ drivers/base/arch_numa.c                  | 10 ++++------
+ drivers/firmware/efi/memmap.c             |  2 +-
+ drivers/macintosh/smu.c                   |  2 +-
+ drivers/of/kexec.c                        |  3 +--
+ drivers/of/of_reserved_mem.c              |  5 +++--
+ drivers/s390/char/sclp_early.c            |  2 +-
+ drivers/usb/early/xhci-dbc.c              | 10 +++++-----
+ drivers/xen/swiotlb-xen.c                 |  2 +-
+ include/linux/memblock.h                  | 23 +++--------------------
+ init/initramfs.c                          |  2 +-
+ init/main.c                               |  2 +-
+ kernel/dma/swiotlb.c                      |  2 +-
+ kernel/printk/printk.c                    |  4 ++--
+ lib/bootconfig.c                          |  2 +-
+ lib/cpumask.c                             |  2 +-
+ mm/cma.c                                  |  2 +-
+ mm/memblock.c                             | 22 +++++++++++-----------
+ mm/memory_hotplug.c                       |  2 +-
+ mm/percpu.c                               |  8 ++++----
+ mm/sparse.c                               |  2 +-
+ 54 files changed, 99 insertions(+), 119 deletions(-)
+
+
+base-commit: 5816b3e6577eaa676ceb00a848f0fd65fe2adc29
 -- 
-Kees Cook
+2.28.0
+
