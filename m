@@ -2,48 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59FE341E2E9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Sep 2021 22:58:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83F1141E33F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Sep 2021 23:21:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HL5FB0hmBz30BM
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Oct 2021 06:58:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HL5ls2ghtz3bmx
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Oct 2021 07:21:45 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=BlxMYaM/;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=iogearbox.net (client-ip=213.133.104.62;
- helo=www62.your-server.de; envelope-from=daniel@iogearbox.net;
+ smtp.mailfrom=linuxfoundation.org (client-ip=2607:f8b0:4864:20::235;
+ helo=mail-oi1-x235.google.com; envelope-from=torvalds@linuxfoundation.org;
  receiver=<UNKNOWN>)
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.a=rsa-sha256 header.s=google header.b=BlxMYaM/; 
+ dkim-atps=neutral
+Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com
+ [IPv6:2607:f8b0:4864:20::235])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HL5Dh1j04z304S
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Oct 2021 06:58:08 +1000 (AEST)
-Received: from sslproxy01.your-server.de ([78.46.139.224])
- by www62.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
- (Exim 4.92.3) (envelope-from <daniel@iogearbox.net>)
- id 1mW37V-000DIq-1m; Thu, 30 Sep 2021 22:57:33 +0200
-Received: from [85.1.206.226] (helo=linux.home)
- by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
- (Exim 4.92) (envelope-from <daniel@iogearbox.net>)
- id 1mW37U-000FDj-Lu; Thu, 30 Sep 2021 22:57:32 +0200
-Subject: Re: [PATCH v4 0/8] bpf powerpc: Add BPF_PROBE_MEM support in powerpc
- JIT compiler
-To: Hari Bathini <hbathini@linux.ibm.com>, naveen.n.rao@linux.ibm.com,
- christophe.leroy@csgroup.eu, mpe@ellerman.id.au, ast@kernel.org
-References: <20210929111855.50254-1-hbathini@linux.ibm.com>
-From: Daniel Borkmann <daniel@iogearbox.net>
-Message-ID: <88b59272-e3f7-30ba-dda0-c4a6b42c0029@iogearbox.net>
-Date: Thu, 30 Sep 2021 22:57:30 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HL5l83gJFz3052
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Oct 2021 07:21:06 +1000 (AEST)
+Received: by mail-oi1-x235.google.com with SMTP id e24so9012283oig.11
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Sep 2021 14:21:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux-foundation.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=h/TBKn03dF9IntMFcuDE9WlvX4rnNMcxTnYaxfj4f3M=;
+ b=BlxMYaM/OWq2QOg73mmSIuZReJqS9WDVJwYpygBxYlCdpjQvMPkG8JUUJuWMEfe7VW
+ Kc4xJOkMskHk8O+awxj6C0zYig/iRuEgT85zngr4j5VHau1O2THU+xT3x/AlUo4/mD7V
+ wX52wLkXcsoyoK8aKbnCd70Ljj6pEqXvKGjjk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=h/TBKn03dF9IntMFcuDE9WlvX4rnNMcxTnYaxfj4f3M=;
+ b=z7C/8FPpIh/2lknn3GNZb+oNkB8YEstiv7xh3/fi7r+xXA16r8zwcXxdUlg6TMuGV7
+ Vk2UKxa2nLcj70po3qk++6VTYhailCIl4mX9q+u9kT49aj3XC1ydgoxbTSXg8lChzB9G
+ G0/VJYU5eGTRt/COkseIweGDezXKt8BxLKvFj2F9hWIy/Oa6iWz02hjxRmu8n+R+fR0R
+ 9wjnlmhsQAkDwcceeJgWdc/S7D1qKYAWFr+nrEfahbmhjBtHCurtMxS3KjqWUFxo2WYg
+ ANmBZxQd4NBM7NVG2h4+zOWI7LsZSOQRH9Ku7Dn9TvuwMs9nEIZR8HYzYLhChmvkj9if
+ Dt9A==
+X-Gm-Message-State: AOAM530wI0VUfj4hvYVByw1aT0HX9CA/k9i/xdDkXZVofr+E19IXsqPi
+ P56Wq+F5ckqhVQGf8QTUtvJhaBEIL26Yu+KJiUY=
+X-Google-Smtp-Source: ABdhPJz17yxILpbV1HWBig4rtHa3HAZNtAozhbSNO2RK2H/89UxrZkw7PNifSmdCkc9SV3h1NQnthA==
+X-Received: by 2002:aca:af56:: with SMTP id y83mr1187720oie.170.1633036861400; 
+ Thu, 30 Sep 2021 14:21:01 -0700 (PDT)
+Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com.
+ [209.85.161.44])
+ by smtp.gmail.com with ESMTPSA id n73sm804424oig.20.2021.09.30.14.21.00
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 30 Sep 2021 14:21:01 -0700 (PDT)
+Received: by mail-oo1-f44.google.com with SMTP id
+ l8-20020a4ae2c8000000b002b5ec765d9fso2257694oot.13
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Sep 2021 14:21:00 -0700 (PDT)
+X-Received: by 2002:a25:df06:: with SMTP id w6mr1562849ybg.459.1633036849801; 
+ Thu, 30 Sep 2021 14:20:49 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210929111855.50254-1-hbathini@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.103.3/26308/Thu Sep 30 11:04:45 2021)
+References: <20210930185031.18648-1-rppt@kernel.org>
+In-Reply-To: <20210930185031.18648-1-rppt@kernel.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Thu, 30 Sep 2021 14:20:33 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjS76My8aJLWJAHd-5GnMEVC1D+kV7DgtV9GjcbtqZdig@mail.gmail.com>
+Message-ID: <CAHk-=wjS76My8aJLWJAHd-5GnMEVC1D+kV7DgtV9GjcbtqZdig@mail.gmail.com>
+Subject: Re: [PATCH v2 0/6] memblock: cleanup memblock_free interface
+To: Mike Rapoport <rppt@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,47 +84,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: songliubraving@fb.com, netdev@vger.kernel.org, john.fastabend@gmail.com,
- andrii@kernel.org, kpsingh@kernel.org, paulus@samba.org, yhs@fb.com,
- bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, kafai@fb.com
+Cc: linux-efi <linux-efi@vger.kernel.org>, KVM list <kvm@vger.kernel.org>,
+ Linux-sh list <linux-sh@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux-MM <linux-mm@kvack.org>, kasan-dev <kasan-dev@googlegroups.com>,
+ linux-sparc <sparclinux@vger.kernel.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Mike Rapoport <rppt@linux.ibm.com>,
+ xen-devel@lists.xenproject.org,
+ "open list:SYNOPSYS ARC ARCHITECTURE" <linux-snps-arc@lists.infradead.org>,
+ devicetree <devicetree@vger.kernel.org>,
+ linux-um <linux-um@lists.infradead.org>,
+ Shahab Vahedi <Shahab.Vahedi@synopsys.com>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Juergen Gross <jgross@suse.com>, linux-usb@vger.kernel.org,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ iommu <iommu@lists.linux-foundation.org>, alpha <linux-alpha@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 9/29/21 1:18 PM, Hari Bathini wrote:
-> Patch #1 & #2 are simple cleanup patches. Patch #3 refactors JIT
-> compiler code with the aim to simplify adding BPF_PROBE_MEM support.
-> Patch #4 introduces PPC_RAW_BRANCH() macro instead of open coding
-> branch instruction. Patch #5 & #7 add BPF_PROBE_MEM support for PPC64
-> & PPC32 JIT compilers respectively. Patch #6 & #8 handle bad userspace
-> pointers for PPC64 & PPC32 cases respectively.
+On Thu, Sep 30, 2021 at 11:50 AM Mike Rapoport <rppt@kernel.org> wrote:
+>
+> The first patch is a cleanup of numa_distance allocation in arch_numa I've
+> spotted during the conversion.
+> The second patch is a fix for Xen memory freeing on some of the error
+> paths.
 
-Michael, are you planning to pick up the series or shall we route via bpf-next?
+Well, at least patch 2 looks like something that should go into 5.15
+and be marked for stable.
 
-Thanks,
-Daniel
+Patch 1 looks like a trivial local cleanup, and could go in
+immediately. Patch 4 might be in that same category.
 
-> Changes in v4:
-> * Addressed all the review comments from Christophe.
-> 
-> 
-> Hari Bathini (4):
->    bpf powerpc: refactor JIT compiler code
->    powerpc/ppc-opcode: introduce PPC_RAW_BRANCH() macro
->    bpf ppc32: Add BPF_PROBE_MEM support for JIT
->    bpf ppc32: Access only if addr is kernel address
-> 
-> Ravi Bangoria (4):
->    bpf powerpc: Remove unused SEEN_STACK
->    bpf powerpc: Remove extra_pass from bpf_jit_build_body()
->    bpf ppc64: Add BPF_PROBE_MEM support for JIT
->    bpf ppc64: Access only if addr is kernel address
-> 
->   arch/powerpc/include/asm/ppc-opcode.h |   2 +
->   arch/powerpc/net/bpf_jit.h            |  19 +++--
->   arch/powerpc/net/bpf_jit_comp.c       |  72 ++++++++++++++++--
->   arch/powerpc/net/bpf_jit_comp32.c     | 101 ++++++++++++++++++++++----
->   arch/powerpc/net/bpf_jit_comp64.c     |  72 ++++++++++++++----
->   5 files changed, 224 insertions(+), 42 deletions(-)
-> 
+The rest look like "next merge window" to me, since they are spread
+out and neither bugfixes nor tiny localized cleanups (iow renaming
+functions, global resulting search-and-replace things).
 
+So my gut feel is that two (maybe three) of these patches should go in
+asap, with three (maybe four) be left for 5.16.
+
+IOW, not trat this as a single series.
+
+Hmm?
+
+             Linus
