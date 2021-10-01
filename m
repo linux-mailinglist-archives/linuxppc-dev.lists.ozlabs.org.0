@@ -1,47 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1341A41ED62
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Oct 2021 14:26:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E90E841EE55
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Oct 2021 15:17:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HLTqS6ZM1z3c6t
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Oct 2021 22:26:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HLVyc6GL6z3c6R
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Oct 2021 23:17:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=collabora.com (client-ip=46.235.227.227;
- helo=bhuna.collabora.co.uk; envelope-from=guillaume.tucker@collabora.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.167.173;
+ helo=mail-oi1-f173.google.com; envelope-from=robherring2@gmail.com;
  receiver=<UNKNOWN>)
-X-Greylist: delayed 390 seconds by postgrey-1.36 at boromir;
- Fri, 01 Oct 2021 19:40:18 AEST
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HLQ824gHmz2yJP
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Oct 2021 19:40:18 +1000 (AEST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
- (Authenticated sender: gtucker) with ESMTPSA id BA1E71F453A9
-Subject: Re: [PATCH v5 6/6] sched/fair: Consider SMT in ASYM_PACKING load
- balance
-From: Guillaume Tucker <guillaume.tucker@collabora.com>
-To: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Ingo Molnar <mingo@kernel.org>, Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>
-References: <20210911011819.12184-1-ricardo.neri-calderon@linux.intel.com>
- <20210911011819.12184-7-ricardo.neri-calderon@linux.intel.com>
- <78608a82-93b8-8036-2bf0-65f53f2f5120@collabora.com>
-Message-ID: <c8e36ef2-f042-9d7e-50ed-7085e291c7bc@collabora.com>
-Date: Fri, 1 Oct 2021 11:40:11 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
-MIME-Version: 1.0
-In-Reply-To: <78608a82-93b8-8036-2bf0-65f53f2f5120@collabora.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Fri, 01 Oct 2021 22:25:51 +1000
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com
+ [209.85.167.173])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HLVy74b9jz2yPK
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Oct 2021 23:17:02 +1000 (AEST)
+Received: by mail-oi1-f173.google.com with SMTP id 24so11450583oix.0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Oct 2021 06:17:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+ :message-id;
+ bh=s93FCbEY6wiV8iS/EDoBTCM7Mo8XJASc8RhUVRLOCxo=;
+ b=OGgYCik7KreMEqPkqRQ3qTfeeF9sfK/1QMJH/Pu7PqVg34VZJLer7vy4SyYvOxfd/D
+ /Be5f0FAoEKNueVc/NT2V/7FL+kC4FxepZCAq2tb8jmgLzk08n71aLmow0JHjqSaBd85
+ 6If6tEHk68n9spcFzoE54k6yE4KCVCKuOvWtbj6ghIv3dxNW0DGhMWFnZsI32Y0Q/hyr
+ /QIYdY+1eDKQRjxV+/5vOEaymY03lSUcj0aqEsNQvZNF0agU8T5vcEsjYi6Y7eKjiGOI
+ YMZa1dnm6i3hBJBY/5iYkzSD66FhXQUZ+zlwRK4zvls0D/vw5xb1smgmMtj69TCWdcg7
+ DrXw==
+X-Gm-Message-State: AOAM533MbV6Hepmi3X5E62kau8vymcxLyOy7Rc8FJZtVqFnwoitat57H
+ sPt9u5X871rDyTtUv5xJWR2irBkCqQ==
+X-Google-Smtp-Source: ABdhPJxqIZBVEGOYTlvgGELRTch2AV0JHIMbH+6kmz85mv3lykRhU/J6zCE6YTwRePhunB+9Higd6A==
+X-Received: by 2002:aca:d686:: with SMTP id n128mr3734516oig.144.1633094219252; 
+ Fri, 01 Oct 2021 06:16:59 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net.
+ [66.90.148.213])
+ by smtp.gmail.com with ESMTPSA id c21sm1124500oiy.18.2021.10.01.06.16.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 01 Oct 2021 06:16:58 -0700 (PDT)
+Received: (nullmailer pid 3666441 invoked by uid 1000);
+ Fri, 01 Oct 2021 13:16:57 -0000
+From: Rob Herring <robh@kernel.org>
+To: Li Yang <leoyang.li@nxp.com>
+In-Reply-To: <20211001000924.15421-2-leoyang.li@nxp.com>
+References: <20211001000924.15421-1-leoyang.li@nxp.com>
+ <20211001000924.15421-2-leoyang.li@nxp.com>
+Subject: Re: [PATCH 1/5] dt-bindings: memory: fsl: convert ifc binding to yaml
+ schema
+Date: Fri, 01 Oct 2021 08:16:57 -0500
+Message-Id: <1633094217.843390.3666440.nullmailer@robh.at.kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,28 +65,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Len Brown <len.brown@intel.com>,
- "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
- "kernelci-results@groups.io" <kernelci-results@groups.io>,
- "Ravi V. Shankar" <ravi.v.shankar@intel.com>, linuxppc-dev@lists.ozlabs.org,
- Aubrey Li <aubrey.li@linux.intel.com>, Nicholas Piggin <npiggin@gmail.com>,
- Ricardo Neri <ricardo.neri@intel.com>, Steven Rostedt <rostedt@goodmis.org>,
- Quentin Perret <qperret@google.com>, Ben Segall <bsegall@google.com>,
- Mel Gorman <mgorman@suse.de>, Daniel Bristot de Oliveira <bristot@redhat.com>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- "Joel Fernandes \(Google\)" <joel@joelfernandes.org>,
- Tim Chen <tim.c.chen@linux.intel.com>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>, linux-kernel@vger.kernel.org,
- Aubrey Li <aubrey.li@intel.com>
+Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Krzysztof Kozlowski <krzk@kernel.org>,
+ Rob Herring <robh+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 01/10/2021 11:33, Guillaume Tucker wrote:
-> Please see the bisection report below about a boot failure on
-> rk3288-rock64.
+On Thu, 30 Sep 2021 19:09:20 -0500, Li Yang wrote:
+> Convert the txt binding to yaml format and add description.  Drop the
+> "simple-bus" compatible string from the example and not allowed by the
+> binding any more.  This will help to enforce the correct probe order
+> between parent device and child devices, but will require the ifc driver
+> to probe the child devices to work properly.
+> 
+> Signed-off-by: Li Yang <leoyang.li@nxp.com>
+> ---
+> updates from previous submission:
+> - Drop "simple-bus" from binding and only "fsl,ifc" as compatible
+> - Fix one identiation problem of "reg"
+> - Add type restriction to "little-endian" property
+> 
+>  .../bindings/memory-controllers/fsl/ifc.txt   |  82 -----------
+>  .../bindings/memory-controllers/fsl/ifc.yaml  | 137 ++++++++++++++++++
+>  2 files changed, 137 insertions(+), 82 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/memory-controllers/fsl/ifc.txt
+>  create mode 100644 Documentation/devicetree/bindings/memory-controllers/fsl/ifc.yaml
+> 
 
-Sorry, I meant rk3328-rock64.
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-Guillaume
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+Documentation/devicetree/bindings/memory-controllers/fsl/ifc.example.dt.yaml:0:0: /example-0/soc/ifc@ffe1e000/flash@1,0: failed to match any schema with compatible: ['fsl,ifc-nand']
+Documentation/devicetree/bindings/memory-controllers/fsl/ifc.example.dt.yaml:0:0: /example-0/soc/ifc@ffe1e000/cpld@3,0: failed to match any schema with compatible: ['fsl,p1010rdb-cpld']
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/patch/1535102
+
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
+
