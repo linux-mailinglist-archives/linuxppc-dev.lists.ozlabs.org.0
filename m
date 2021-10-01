@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DB7C41F6CB
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Oct 2021 23:19:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 873D741F6CC
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Oct 2021 23:20:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HLjfj3NS4z3cQM
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Oct 2021 07:19:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HLjgV3QQyz3bjY
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Oct 2021 07:20:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MLG5vFTq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tYdHKLSW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,78 +18,78 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=MLG5vFTq; dkim-atps=neutral
+ header.s=pp1 header.b=tYdHKLSW; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HLjZh6KCkz306R
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Oct 2021 07:15:56 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HLjZk3gyVz3bVR
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Oct 2021 07:15:58 +1000 (AEST)
 Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 191KgFqJ007707; 
- Fri, 1 Oct 2021 17:15:39 -0400
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 191KgFqL007707; 
+ Fri, 1 Oct 2021 17:15:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=8J+bcjfwIKr/jlNcTSfXonRF14lyFcdDUEuRi6t2ExQ=;
- b=MLG5vFTqPZ5+KfMwLt7jdLMOzGtJyM3pXLm2UjEDwZ8j7nhJIF/EVdcEsB7OFfVPhELm
- SWVLSq+LXm+aq4FQIWMJVPuvvYZx88Ne3pIG56gC7rJ8KdCVXpXyDt+f3SYUXMBxeVAy
- IRsTOJ2/KIdWcDO5eciq6A10SThM8XVowiuUDrSHREAOJpKV7k5Fpx8owCKK1Ez+/OAa
- Q9Gc0KaGNZc3QRaw/Qdp2NoB3vxuIXzW+V83xNaJ34YPS03d/Mq4/+kyRw8IpZPNhewe
- b04u/Lmi08bz0v+AkDSQ4nZNvkVv6clJVDCBtv+/DXDwIS0Hu5qhQrfAH6UKU84XptAK PQ== 
+ bh=HWrt4y2qJpJrMLmbdMZJ2Kkz13DqlfFI4GTWXyOtxWg=;
+ b=tYdHKLSWmyXwcNyDjvOqOSJHanFH4yPXJwShJNxWBJPak5xxCmaeNukSlEmYJkOfPEyI
+ mb0NKdRbpmscuU4/VQCOEsh+XonNavJP5qz+0PNLwMIVI26GdSFyRJR7t6EZiSXbU3zm
+ VXCZDYnjWEVxXrQVJBzrZWHWvwQeBIcfmruAUAcmOfmj1nyKfbi69Z1bA66C/SUDDVer
+ Eh/6vv0gx0/UBAH9lgJTmBlGToY92VRHuNE11l566aQ9ZsqoP5xVEmiSSKg/mDSFFo19
+ igt6cZ5VWYOmMsvwAMqSFpLnf9h9Up8c7JCVwZeQx5Z6u55nHmANeY+wpBLyTQTLumK3 0A== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3be9kj0n1k-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3be9kj0n2g-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 01 Oct 2021 17:15:38 -0400
+ Fri, 01 Oct 2021 17:15:41 -0400
 Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 191Kvk0m003190;
- Fri, 1 Oct 2021 17:15:37 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3be9kj0n11-1
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 191Kuril001413;
+ Fri, 1 Oct 2021 17:15:41 -0400
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3be9kj0n24-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 01 Oct 2021 17:15:37 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 191L6pxO007345;
- Fri, 1 Oct 2021 21:15:35 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma03ams.nl.ibm.com with ESMTP id 3b9udb1yyk-1
+ Fri, 01 Oct 2021 17:15:41 -0400
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 191L6K0m021679;
+ Fri, 1 Oct 2021 21:15:39 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma06fra.de.ibm.com with ESMTP id 3b9u1kx99u-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 01 Oct 2021 21:15:35 +0000
+ Fri, 01 Oct 2021 21:15:39 +0000
 Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
  [9.149.105.58])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 191LAMbt34603334
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 191LFaJg42664212
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 1 Oct 2021 21:10:22 GMT
+ Fri, 1 Oct 2021 21:15:36 GMT
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3C91B4C05A;
+ by IMSVA (Postfix) with ESMTP id 9C7A14C04E;
+ Fri,  1 Oct 2021 21:15:36 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B87944C05E;
  Fri,  1 Oct 2021 21:15:33 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 622F44C044;
- Fri,  1 Oct 2021 21:15:30 +0000 (GMT)
 Received: from naverao1-tp.ibm.com (unknown [9.43.54.98])
  by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri,  1 Oct 2021 21:15:30 +0000 (GMT)
+ Fri,  1 Oct 2021 21:15:33 +0000 (GMT)
 From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
 To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
  Daniel Borkmann <daniel@iogearbox.net>,
  Alexei Starovoitov <alexei.starovoitov@gmail.com>,
  Christophe Leroy <christophe.leroy@csgroup.eu>,
  Johan Almbladh <johan.almbladh@anyfinetworks.com>
-Subject: [PATCH 4/9] powerpc/bpf: Handle large branch ranges with BPF_EXIT
-Date: Sat,  2 Oct 2021 02:44:50 +0530
-Message-Id: <ebc0317ce465cb4f8d6fe485ab468ac5bda7c48f.1633104510.git.naveen.n.rao@linux.vnet.ibm.com>
+Subject: [PATCH 5/9] powerpc/bpf: Fix BPF_MOD when imm == 1
+Date: Sat,  2 Oct 2021 02:44:51 +0530
+Message-Id: <8cb6a1725cf3c38ca90ed7f195f78a5b5a83bb25.1633104510.git.naveen.n.rao@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <cover.1633104510.git.naveen.n.rao@linux.vnet.ibm.com>
 References: <cover.1633104510.git.naveen.n.rao@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 4rnYCtwD0wr5VLXyeOZE_GhXHEDdA_mk
-X-Proofpoint-GUID: 5NEgYGxOTDis30z6b6nVwEWFx0W4-WZo
+X-Proofpoint-ORIG-GUID: H86TEXKI0PtTRURQJQWSGitL1I7AOOM1
+X-Proofpoint-GUID: 9pOu5ko0XZbILzffZuv1Fj8JAnbitEXl
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
  definitions=2021-10-01_05,2021-10-01_02,2020-04-07_01
@@ -115,114 +115,35 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In some scenarios, it is possible that the program epilogue is outside
-the branch range for a BPF_EXIT instruction. Instead of rejecting such
-programs, emit an indirect branch. We track the size of the bpf program
-emitted after the initial run and do a second pass since BPF_EXIT can
-end up emitting different number of instructions depending on the
-program size.
+Only ignore the operation if dividing by 1.
 
-Suggested-by: Jordan Niethe <jniethe5@gmail.com>
+Fixes: 156d0e290e969c ("powerpc/ebpf/jit: Implement JIT compiler for extended BPF")
 Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
 ---
- arch/powerpc/net/bpf_jit.h        |  3 +++
- arch/powerpc/net/bpf_jit_comp.c   | 22 +++++++++++++++++++++-
- arch/powerpc/net/bpf_jit_comp32.c |  2 +-
- arch/powerpc/net/bpf_jit_comp64.c |  2 +-
- 4 files changed, 26 insertions(+), 3 deletions(-)
+ arch/powerpc/net/bpf_jit_comp64.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
-index 89bd744c2bffd4..4023de1698b9f5 100644
---- a/arch/powerpc/net/bpf_jit.h
-+++ b/arch/powerpc/net/bpf_jit.h
-@@ -126,6 +126,7 @@
- 
- #define SEEN_FUNC	0x20000000 /* might call external helpers */
- #define SEEN_TAILCALL	0x40000000 /* uses tail calls */
-+#define SEEN_BIG_PROG	0x80000000 /* large prog, >32MB */
- 
- #define SEEN_VREG_MASK	0x1ff80000 /* Volatile registers r3-r12 */
- #define SEEN_NVREG_MASK	0x0003ffff /* Non volatile registers r14-r31 */
-@@ -179,6 +180,8 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
- void bpf_jit_build_prologue(u32 *image, struct codegen_context *ctx);
- void bpf_jit_build_epilogue(u32 *image, struct codegen_context *ctx);
- void bpf_jit_realloc_regs(struct codegen_context *ctx);
-+int bpf_jit_emit_exit_insn(u32 *image, struct codegen_context *ctx,
-+					int tmp_reg, unsigned long exit_addr);
- 
- #endif
- 
-diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
-index fcbf7a917c566e..3204872fbf2738 100644
---- a/arch/powerpc/net/bpf_jit_comp.c
-+++ b/arch/powerpc/net/bpf_jit_comp.c
-@@ -72,6 +72,21 @@ static int bpf_jit_fixup_subprog_calls(struct bpf_prog *fp, u32 *image,
- 	return 0;
- }
- 
-+int bpf_jit_emit_exit_insn(u32 *image, struct codegen_context *ctx,
-+					int tmp_reg, unsigned long exit_addr)
-+{
-+	if (!(ctx->seen & SEEN_BIG_PROG) && is_offset_in_branch_range(exit_addr)) {
-+		PPC_JMP(exit_addr);
-+	} else {
-+		ctx->seen |= SEEN_BIG_PROG;
-+		PPC_FUNC_ADDR(tmp_reg, (unsigned long)image + exit_addr);
-+		EMIT(PPC_RAW_MTCTR(tmp_reg));
-+		EMIT(PPC_RAW_BCTR());
-+	}
-+
-+	return 0;
-+}
-+
- struct powerpc64_jit_data {
- 	struct bpf_binary_header *header;
- 	u32 *addrs;
-@@ -155,12 +170,17 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
- 		goto out_addrs;
- 	}
- 
-+	if (!is_offset_in_branch_range((long)cgctx.idx * 4))
-+		cgctx.seen |= SEEN_BIG_PROG;
-+
- 	/*
- 	 * If we have seen a tail call, we need a second pass.
- 	 * This is because bpf_jit_emit_common_epilogue() is called
- 	 * from bpf_jit_emit_tail_call() with a not yet stable ctx->seen.
-+	 * We also need a second pass if we ended up with too large
-+	 * a program so as to fix branches.
- 	 */
--	if (cgctx.seen & SEEN_TAILCALL) {
-+	if (cgctx.seen & (SEEN_TAILCALL | SEEN_BIG_PROG)) {
- 		cgctx.idx = 0;
- 		if (bpf_jit_build_body(fp, 0, &cgctx, addrs, false)) {
- 			fp = org_fp;
-diff --git a/arch/powerpc/net/bpf_jit_comp32.c b/arch/powerpc/net/bpf_jit_comp32.c
-index a74d52204f8da2..d2a67574a23066 100644
---- a/arch/powerpc/net/bpf_jit_comp32.c
-+++ b/arch/powerpc/net/bpf_jit_comp32.c
-@@ -852,7 +852,7 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
- 			 * we'll just fall through to the epilogue.
- 			 */
- 			if (i != flen - 1)
--				PPC_JMP(exit_addr);
-+				bpf_jit_emit_exit_insn(image, ctx, tmp_reg, exit_addr);
- 			/* else fall through to the epilogue */
- 			break;
- 
 diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
-index f06c62089b1457..3351a866ef6207 100644
+index 3351a866ef6207..ffb7a2877a8469 100644
 --- a/arch/powerpc/net/bpf_jit_comp64.c
 +++ b/arch/powerpc/net/bpf_jit_comp64.c
-@@ -761,7 +761,7 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
- 			 * we'll just fall through to the epilogue.
- 			 */
- 			if (i != flen - 1)
--				PPC_JMP(exit_addr);
-+				bpf_jit_emit_exit_insn(image, ctx, b2p[TMP_REG_1], exit_addr);
- 			/* else fall through to the epilogue */
- 			break;
+@@ -391,8 +391,14 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
+ 		case BPF_ALU64 | BPF_DIV | BPF_K: /* dst /= imm */
+ 			if (imm == 0)
+ 				return -EINVAL;
+-			else if (imm == 1)
+-				goto bpf_alu32_trunc;
++			if (imm == 1) {
++				if (BPF_OP(code) == BPF_DIV) {
++					goto bpf_alu32_trunc;
++				} else {
++					EMIT(PPC_RAW_LI(dst_reg, 0));
++					break;
++				}
++			}
  
+ 			PPC_LI32(b2p[TMP_REG_1], imm);
+ 			switch (BPF_CLASS(code)) {
 -- 
 2.33.0
 
