@@ -1,63 +1,101 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07F6C41F5EE
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Oct 2021 21:52:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 062B541F6C0
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Oct 2021 23:16:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HLgk448nVz3c5D
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Oct 2021 05:52:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HLjbJ6cDcz3c6P
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Oct 2021 07:16:28 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=E6c0XIft;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.219.47; helo=mail-qv1-f47.google.com;
- envelope-from=pku.leo@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com
- [209.85.219.47])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=E6c0XIft; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HLgjZ1Xkfz2ybL
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Oct 2021 05:51:45 +1000 (AEST)
-Received: by mail-qv1-f47.google.com with SMTP id a14so6260503qvb.6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Oct 2021 12:51:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=CP2czsJFLPOz9RraUZFgCkPw+6TZRIivrlAU3dXRTyE=;
- b=Bqlf4y5xlMoDsq8KAIJrUS59IVSTbySRjvHHhGgv3dgzcfNWB3lBTDwuvqLnXzH42v
- SdS+OQqvc46xzwnwHoV6YOGTz5U4Djwnpa7/v2ZhsnDoO4vFlKkQTumr/Xba+vl9am9g
- axOopV0hyuAWk1yISK2KaMdAAnhhrSPwt3/GfRn0tXJcQXbDtV3YFmADIn+dwkEbuM4t
- 82YJPvqEKvYPUilY4XC2aLivuKwKAaa5zrvOIFJo/oTCsKlg31Mpu2SLoXboaFkdArMj
- bzsPzcoYU1br+/xq+I382LiQen52cIyWnTOa1Js6hBCkuXbethOVBlGhXdfqJCpNw3o2
- KKIw==
-X-Gm-Message-State: AOAM531OOhbwLYbCFmcHk0GgB2ia12G7Oorv26b5q/1yOnWQEpbzPKZc
- 4hjmgYKwym7S5LhVTgYBfL+Qkv8EksA=
-X-Google-Smtp-Source: ABdhPJyotzM4h+81IVtmoQpspZ1QHvsvMcoK7rIcnJ1G7o0XQUC9ViTY1/hHsE+RaBItvny1adEUYA==
-X-Received: by 2002:a0c:9146:: with SMTP id q64mr10924699qvq.38.1633117901750; 
- Fri, 01 Oct 2021 12:51:41 -0700 (PDT)
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com.
- [209.85.160.182])
- by smtp.gmail.com with ESMTPSA id n13sm3459454qke.100.2021.10.01.12.51.40
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 01 Oct 2021 12:51:41 -0700 (PDT)
-Received: by mail-qt1-f182.google.com with SMTP id f15so10068638qtv.9
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Oct 2021 12:51:40 -0700 (PDT)
-X-Received: by 2002:ac8:1e0e:: with SMTP id n14mr14774869qtl.95.1633117900842; 
- Fri, 01 Oct 2021 12:51:40 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HLjZW0HTvz2yTr
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Oct 2021 07:15:46 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 191KmA0A012105; 
+ Fri, 1 Oct 2021 17:15:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=Wm9ssMUwToeW98lV81N19hbAcMm50cGOgb7TpVNaSXA=;
+ b=E6c0XIftIdOK3eJVmcnV9eccWJHFi//dI61QFGnMYh49wUgSubKb5vgHhbHvLrvkAAFk
+ XaaTzNKQmD/BaXH5Z7txgU0+l5yrozkDXvuoQzvakBfFWC0Gng4IPyUM+25PT/e71eFS
+ k3SHgq8um7NzzlySf4ahPZOewTW3Em7zmK/NV5XAovzzxIsGvqugiobCwlL2diqW09Yx
+ dZF9qKQSGMEPVNIIbfb0ruOXEQz+b0KbXvM2Ry2bjRougkS8h7WVaEz2lszMj9gyZtJg
+ S02FOu56mXSobDNX3ABKVbdzo36JzXBsCSP+oT6wdrjPq3lDx1izO+MdksGV9QXQvbGb 9g== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3be9p6rf81-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 01 Oct 2021 17:15:23 -0400
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 191LFNFo036553;
+ Fri, 1 Oct 2021 17:15:23 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3be9p6rf7f-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 01 Oct 2021 17:15:23 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 191L6lAD007329;
+ Fri, 1 Oct 2021 21:15:20 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma03ams.nl.ibm.com with ESMTP id 3b9udb1yww-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 01 Oct 2021 21:15:20 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 191LFHni66322722
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 1 Oct 2021 21:15:17 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 438A04C064;
+ Fri,  1 Oct 2021 21:15:17 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 684A84C04E;
+ Fri,  1 Oct 2021 21:15:14 +0000 (GMT)
+Received: from naverao1-tp.ibm.com (unknown [9.43.54.98])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri,  1 Oct 2021 21:15:14 +0000 (GMT)
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Johan Almbladh <johan.almbladh@anyfinetworks.com>
+Subject: [PATCH 0/9] powerpc/bpf: Various fixes
+Date: Sat,  2 Oct 2021 02:44:46 +0530
+Message-Id: <cover.1633104510.git.naveen.n.rao@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-References: <20211001000924.15421-1-leoyang.li@nxp.com>
- <4697aa5c-35de-8331-e7a9-831837618477@canonical.com>
-In-Reply-To: <4697aa5c-35de-8331-e7a9-831837618477@canonical.com>
-From: Li Yang <leoyang.li@nxp.com>
-Date: Fri, 1 Oct 2021 14:51:29 -0500
-X-Gmail-Original-Message-ID: <CADRPPNRv2n7RHX9=2CTQ25Qce1PNeJnYZ3rt1EwYuCx5Ku5-PQ@mail.gmail.com>
-Message-ID: <CADRPPNRv2n7RHX9=2CTQ25Qce1PNeJnYZ3rt1EwYuCx5Ku5-PQ@mail.gmail.com>
-Subject: Re: [PATCH 0/5] convert ifc binding to yaml and drop "simple-bus"
-To: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: kY4RZhFgsl2koOI7OV93qZMRgIgnKIVF
+X-Proofpoint-ORIG-GUID: zKicyWQ1bmtPiUR2wbjNaz8uA4tBUxrx
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
+ definitions=2021-10-01_05,2021-10-01_02,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0
+ lowpriorityscore=0 mlxscore=0 clxscore=1011 spamscore=0 malwarescore=0
+ adultscore=0 mlxlogscore=655 bulkscore=0 phishscore=0 impostorscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2109230001 definitions=main-2110010147
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,34 +107,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- lkml <linux-kernel@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>,
- "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>
+Cc: bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Oct 1, 2021 at 4:46 AM Krzysztof Kozlowski
-<krzysztof.kozlowski@canonical.com> wrote:
->
-> On 01/10/2021 02:09, Li Yang wrote:
-> > Convert the ifc binding to yaml schema, in the mean while remove the
-> > "simple-bus" compatible from the binding to make sure ifc device probes
-> > before any of the child devices.  Update the driver and existing DTSes
-> > accordingly.
-> >
-> > DTS changes should be merged together with the driver/binding changes
-> > if DTS maintainer is ok with it or after the driver changes are applied.
-> >
->
-> It's discouraged to merge DTS along with drivers (e.g. soc folks don't
-> accept such pull requests), so I propose to apply it in the next cycle.
+Various fixes to the eBPF JIT for powerpc, thanks to some new tests 
+added by Johan. This series fixes all failures in test_bpf on powerpc64.  
+There are still some failures on powerpc32 to be looked into.
 
-Ok.  Will separate the DTS changes in the next version.
+- Naveen
 
->
-> Best regards,
-> Krzysztof
+
+Naveen N. Rao (8):
+  powerpc/lib: Add helper to check if offset is within conditional
+    branch range
+  powerpc/bpf: Validate branch ranges
+  powerpc/bpf: Handle large branch ranges with BPF_EXIT
+  powerpc/bpf: Fix BPF_MOD when imm == 1
+  powerpc/bpf: Fix BPF_SUB when imm == 0x80000000
+  powerpc/bpf: Limit 'ldbrx' to processors compliant with ISA v2.06
+  powerpc/security: Add a helper to query stf_barrier type
+  powerpc/bpf: Emit stf barrier instruction sequences for BPF_NOSPEC
+
+Ravi Bangoria (1):
+  powerpc/bpf: Remove unused SEEN_STACK
+
+ arch/powerpc/include/asm/code-patching.h     |   1 +
+ arch/powerpc/include/asm/ppc-opcode.h        |   1 +
+ arch/powerpc/include/asm/security_features.h |   5 +
+ arch/powerpc/kernel/security.c               |   5 +
+ arch/powerpc/lib/code-patching.c             |   7 +-
+ arch/powerpc/net/bpf_jit.h                   |  39 ++++---
+ arch/powerpc/net/bpf_jit64.h                 |   8 +-
+ arch/powerpc/net/bpf_jit_comp.c              |  28 ++++-
+ arch/powerpc/net/bpf_jit_comp32.c            |  10 +-
+ arch/powerpc/net/bpf_jit_comp64.c            | 113 ++++++++++++++-----
+ 10 files changed, 167 insertions(+), 50 deletions(-)
+
+
+base-commit: 044c2d99d9f43c6d6fde8bed00672517dd9a5a57
+-- 
+2.33.0
+
