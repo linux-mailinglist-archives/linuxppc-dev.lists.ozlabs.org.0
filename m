@@ -1,59 +1,38 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E90E841EE55
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Oct 2021 15:17:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4595141EFA8
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Oct 2021 16:37:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HLVyc6GL6z3c6R
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Oct 2021 23:17:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HLXl10zZVz3bW5
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Oct 2021 00:37:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.167.173;
- helo=mail-oi1-f173.google.com; envelope-from=robherring2@gmail.com;
- receiver=<UNKNOWN>)
-Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com
- [209.85.167.173])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HLVy74b9jz2yPK
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Oct 2021 23:17:02 +1000 (AEST)
-Received: by mail-oi1-f173.google.com with SMTP id 24so11450583oix.0
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Oct 2021 06:17:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
- :message-id;
- bh=s93FCbEY6wiV8iS/EDoBTCM7Mo8XJASc8RhUVRLOCxo=;
- b=OGgYCik7KreMEqPkqRQ3qTfeeF9sfK/1QMJH/Pu7PqVg34VZJLer7vy4SyYvOxfd/D
- /Be5f0FAoEKNueVc/NT2V/7FL+kC4FxepZCAq2tb8jmgLzk08n71aLmow0JHjqSaBd85
- 6If6tEHk68n9spcFzoE54k6yE4KCVCKuOvWtbj6ghIv3dxNW0DGhMWFnZsI32Y0Q/hyr
- /QIYdY+1eDKQRjxV+/5vOEaymY03lSUcj0aqEsNQvZNF0agU8T5vcEsjYi6Y7eKjiGOI
- YMZa1dnm6i3hBJBY/5iYkzSD66FhXQUZ+zlwRK4zvls0D/vw5xb1smgmMtj69TCWdcg7
- DrXw==
-X-Gm-Message-State: AOAM533MbV6Hepmi3X5E62kau8vymcxLyOy7Rc8FJZtVqFnwoitat57H
- sPt9u5X871rDyTtUv5xJWR2irBkCqQ==
-X-Google-Smtp-Source: ABdhPJxqIZBVEGOYTlvgGELRTch2AV0JHIMbH+6kmz85mv3lykRhU/J6zCE6YTwRePhunB+9Higd6A==
-X-Received: by 2002:aca:d686:: with SMTP id n128mr3734516oig.144.1633094219252; 
- Fri, 01 Oct 2021 06:16:59 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net.
- [66.90.148.213])
- by smtp.gmail.com with ESMTPSA id c21sm1124500oiy.18.2021.10.01.06.16.58
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 Oct 2021 06:16:58 -0700 (PDT)
-Received: (nullmailer pid 3666441 invoked by uid 1000);
- Fri, 01 Oct 2021 13:16:57 -0000
-From: Rob Herring <robh@kernel.org>
-To: Li Yang <leoyang.li@nxp.com>
-In-Reply-To: <20211001000924.15421-2-leoyang.li@nxp.com>
-References: <20211001000924.15421-1-leoyang.li@nxp.com>
- <20211001000924.15421-2-leoyang.li@nxp.com>
-Subject: Re: [PATCH 1/5] dt-bindings: memory: fsl: convert ifc binding to yaml
- schema
-Date: Fri, 01 Oct 2021 08:16:57 -0500
-Message-Id: <1633094217.843390.3666440.nullmailer@robh.at.kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HLXkb6V6Mz2xrr
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Oct 2021 00:37:11 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4HLXkY0sk8z4xb7;
+ Sat,  2 Oct 2021 00:37:09 +1000 (AEST)
+From: Michael Ellerman <patch-notifications@ellerman.id.au>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20210930034454.95794-1-aik@ozlabs.ru>
+References: <20210930034454.95794-1-aik@ozlabs.ru>
+Subject: Re: [PATCH kernel] powerpc/iommu: Report the correct most efficient
+ DMA mask for PCI devices
+Message-Id: <163309900983.1612134.6469972296732099183.b4-ty@ellerman.id.au>
+Date: Sat, 02 Oct 2021 00:36:49 +1000
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,56 +44,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Krzysztof Kozlowski <krzk@kernel.org>,
- Rob Herring <robh+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- linux-arm-kernel@lists.infradead.org
+Cc: Carol L Soto <clsoto@us.ibm.com>, iommu@lists.linux-foundation.org,
+ Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 30 Sep 2021 19:09:20 -0500, Li Yang wrote:
-> Convert the txt binding to yaml format and add description.  Drop the
-> "simple-bus" compatible string from the example and not allowed by the
-> binding any more.  This will help to enforce the correct probe order
-> between parent device and child devices, but will require the ifc driver
-> to probe the child devices to work properly.
+On Thu, 30 Sep 2021 13:44:54 +1000, Alexey Kardashevskiy wrote:
+> According to dma-api.rst, the dma_get_required_mask() helper should return
+> "the mask that the platform requires to operate efficiently". Which in
+> the case of PPC64 means the bypass mask and not a mask from an IOMMU table
+> which is shorter and slower to use due to map/unmap operations (especially
+> expensive on "pseries").
 > 
-> Signed-off-by: Li Yang <leoyang.li@nxp.com>
-> ---
-> updates from previous submission:
-> - Drop "simple-bus" from binding and only "fsl,ifc" as compatible
-> - Fix one identiation problem of "reg"
-> - Add type restriction to "little-endian" property
+> However the existing implementation ignores the possibility of bypassing
+> and returns the IOMMU table mask on the pseries platform which makes some
+> drivers (mpt3sas is one example) choose 32bit DMA even though bypass is
+> supported. The powernv platform sort of handles it by having a bigger
+> default window with a mask >=40 but it only works as drivers choose
+> 63/64bit if the required mask is >32 which is rather pointless.
 > 
->  .../bindings/memory-controllers/fsl/ifc.txt   |  82 -----------
->  .../bindings/memory-controllers/fsl/ifc.yaml  | 137 ++++++++++++++++++
->  2 files changed, 137 insertions(+), 82 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/memory-controllers/fsl/ifc.txt
->  create mode 100644 Documentation/devicetree/bindings/memory-controllers/fsl/ifc.yaml
-> 
+> [...]
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+Applied to powerpc/fixes.
 
-yamllint warnings/errors:
+[1/1] powerpc/iommu: Report the correct most efficient DMA mask for PCI devices
+      https://git.kernel.org/powerpc/c/23c216b335d1fbd716076e8263b54a714ea3cf0e
 
-dtschema/dtc warnings/errors:
-Documentation/devicetree/bindings/memory-controllers/fsl/ifc.example.dt.yaml:0:0: /example-0/soc/ifc@ffe1e000/flash@1,0: failed to match any schema with compatible: ['fsl,ifc-nand']
-Documentation/devicetree/bindings/memory-controllers/fsl/ifc.example.dt.yaml:0:0: /example-0/soc/ifc@ffe1e000/cpld@3,0: failed to match any schema with compatible: ['fsl,p1010rdb-cpld']
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/patch/1535102
-
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
-
+cheers
