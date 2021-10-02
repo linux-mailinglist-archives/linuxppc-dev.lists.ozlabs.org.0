@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77CAC41FE5A
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Oct 2021 00:09:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AA1941FE5B
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Oct 2021 00:10:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HMLkM1v6Kz3bht
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Oct 2021 09:09:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HMLl30zJdz2ywk
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Oct 2021 09:10:23 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=anyfinetworks-com.20210112.gappssmtp.com header.i=@anyfinetworks-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=22+n8wT2;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=anyfinetworks-com.20210112.gappssmtp.com header.i=@anyfinetworks-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=YSYMM4Fk;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=anyfinetworks.com (client-ip=2607:f8b0:4864:20::b29;
- helo=mail-yb1-xb29.google.com; envelope-from=johan.almbladh@anyfinetworks.com;
+ smtp.mailfrom=anyfinetworks.com (client-ip=2607:f8b0:4864:20::b2c;
+ helo=mail-yb1-xb2c.google.com; envelope-from=johan.almbladh@anyfinetworks.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=anyfinetworks-com.20210112.gappssmtp.com
  header.i=@anyfinetworks-com.20210112.gappssmtp.com header.a=rsa-sha256
- header.s=20210112 header.b=22+n8wT2; dkim-atps=neutral
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com
- [IPv6:2607:f8b0:4864:20::b29])
+ header.s=20210112 header.b=YSYMM4Fk; dkim-atps=neutral
+Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com
+ [IPv6:2607:f8b0:4864:20::b2c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HMDW7159dz2xX5
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  3 Oct 2021 04:29:37 +1100 (AEDT)
-Received: by mail-yb1-xb29.google.com with SMTP id w10so5136450ybt.4
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 02 Oct 2021 10:29:37 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HMDXL242Kz2yb7
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  3 Oct 2021 04:30:42 +1100 (AEDT)
+Received: by mail-yb1-xb2c.google.com with SMTP id s4so11292292ybs.8
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 02 Oct 2021 10:30:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=anyfinetworks-com.20210112.gappssmtp.com; s=20210112;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=iO8XaEuEsuzD/lSiO++PJ3Sm+hMnmRBCleVyzbaHGi0=;
- b=22+n8wT2iA/PwAePyFvHHjtJhNCZMlNtzQb90jo2fNbjDEvtE6+CmvgGXC8GM30Jzy
- l4K/Q1v0Xrnr0uY5Y+pVm/t/xLTcaiizokyTnPH431nsJ1ax1owlh2r4SBGzo+rQskCV
- N6kyXO9ZvmzwMxGSFIzWSzCaJcY8ym16Rmj79RUcDk1z6Uy909NpD0nM72tMv6uhT/Lf
- +98cWjlQw5JDBH9nctyGmnpwM4cmPH52COQqYxvB+u1fAf7VcgfIi6gd97G4q9FYDrB8
- C7XtpuwrqlIQEnruhGQb/CN5nyXbvIZQXQs4Ulh0MbGzuDnVPbSVl/Dn1pymsBlSmO/V
- giEg==
+ :cc; bh=wXMJtKlLUkpkTeC/ZpG6R1dp/ShOwvvXqINiBv7rTpQ=;
+ b=YSYMM4FkUE8eZebYGJWRLl0+IuMVzn3R2Haf+PpJJFPbAPYWcXc2cXByOZcaQPcCg/
+ lG6FnIIwo67fIC58k0cQUJEJWEisW1zgl3904xD7+XA5mQZQCRkOHPdbYRpimIthdvop
+ 7YENn/BkXqvM4zBQidXgTnRTmNsEHXL1UWgZVu+8q9s/XryNUfqjQ4AC3R/I+vPYtUPd
+ trumoXBvLA57f4c7OSuo+ynZhKGt2+5askS8wLVKDrmMn8Td0zwAmo0VkZMcnAIqwCZ5
+ FtX+lCu+q4B3tNIMfgS68IIPz1tBX5UVnOryRZRUr1TpMuo/A78E8WfrqK98KgTYa1+M
+ K14Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=iO8XaEuEsuzD/lSiO++PJ3Sm+hMnmRBCleVyzbaHGi0=;
- b=6bUZlvPuHneLiUrc+MBER2r3Og1y4GNS9OIHBdK/oOYUWEedr0PV5Ij4trUejTuswv
- RROGeqWpdg4NxyOp68iyebbP6BzqbfvYL6xRil4fjioGSdcd4z7gnUcUxt/KlQUeNNn9
- bgtNdSufsk1/Hg2xN4VXU1qaqzffe3nKUnT63AHDEAhULLsseXLfUo/M6Q4g2xBqg3i3
- NpWizbLkeLjVETUpxvc7W8hZb4I2nGoY6jHns2M4ZKjOg4ei1ikrxOwbZWJdj2mYBH0l
- 9ErmM7TSf8SxF838pxrd8cNV3i7aGlyzpzGwYbhxcj68sRvifhRn7h0rgqN/ltqY18Vk
- Hb2g==
-X-Gm-Message-State: AOAM5325hxcdosAk0CNwc8N7IKEdBNh8ZA2cI8eOBrarQwGlBaaccpy2
- u95w2ALcKpUAWdWvIhbe/lmSpiJwb9dtPJ52rV4ILw==
-X-Google-Smtp-Source: ABdhPJzJI9LHvjsV5TxM5cGJFSJg0xsPva57qWfzeyjHua7BBVEWpMvk3wVjQD+CUR+MNi7DnTRws0tCESSmaH/P4n8=
-X-Received: by 2002:a25:bb08:: with SMTP id z8mr5063830ybg.306.1633195772549; 
- Sat, 02 Oct 2021 10:29:32 -0700 (PDT)
+ bh=wXMJtKlLUkpkTeC/ZpG6R1dp/ShOwvvXqINiBv7rTpQ=;
+ b=Gwe+QmOT+NlAsyFCcyYlRk6iZzzxjRakJyP3rFjUU4eyfMzpG3HkQMcXjwmQXp+HQQ
+ zPIxlmQM06Jl7RQITx9+o0dA0DmLjkKbyUpJCPHVlatdy3xvd5BNnGiloalYTZXE88Rq
+ VWzgkQMalzcReTmQIZPuBZdjSITk18yuPPdb+XgbsWzsgxibWPAfH2FG648sH5PkWIlt
+ Nmrm8lgJqAonDUzHDJ/gmJVw+f0gU6PWQ8vslGKAGkER3M38p9XrmBEStYv3fr/HJmTe
+ 3exT/t1F7RY4lqvbrTHex2UlTF8gD8BnU9heBgIVP/apsMtikJLiR03gQqJ2pSNNrTxY
+ lJnw==
+X-Gm-Message-State: AOAM533QO8L0JKiJnv7qSn2Ve5kKLF0/pwugLjv9HXP8jJ6dVfp2VW4l
+ 08nrJkeF9u5Y6cPte7UFkyDFufli5/eJdi2VymddEQ==
+X-Google-Smtp-Source: ABdhPJx+jygCqca4NLWugI+qdhvBayAOnFyq54a2FPzwA2PSth4+amv+zq5sCxgcWPbUB7b0Z/Z+ZlfkSCgfhNhn53Y=
+X-Received: by 2002:a25:c986:: with SMTP id z128mr4811601ybf.112.1633195839032; 
+ Sat, 02 Oct 2021 10:30:39 -0700 (PDT)
 MIME-Version: 1.0
 References: <cover.1633104510.git.naveen.n.rao@linux.vnet.ibm.com>
- <d4a44c52712468b805cbf5c244b3c9ba0f802ab8.1633104510.git.naveen.n.rao@linux.vnet.ibm.com>
-In-Reply-To: <d4a44c52712468b805cbf5c244b3c9ba0f802ab8.1633104510.git.naveen.n.rao@linux.vnet.ibm.com>
+ <92fcd53a43dede52fbba52dc50c76042a6ce284c.1633104510.git.naveen.n.rao@linux.vnet.ibm.com>
+In-Reply-To: <92fcd53a43dede52fbba52dc50c76042a6ce284c.1633104510.git.naveen.n.rao@linux.vnet.ibm.com>
 From: Johan Almbladh <johan.almbladh@anyfinetworks.com>
-Date: Sat, 2 Oct 2021 19:29:21 +0200
-Message-ID: <CAM1=_QSGQSuN-g4ri42u852cm2GwN_80a2XxUBi=30xnCKtA=g@mail.gmail.com>
-Subject: Re: [PATCH 2/9] powerpc/bpf: Validate branch ranges
+Date: Sat, 2 Oct 2021 19:30:28 +0200
+Message-ID: <CAM1=_QS6GCA0zAUgWSiW8eR6GiVjnMzCWvGrdkmY9nnseeCFeg@mail.gmail.com>
+Subject: Re: [PATCH 3/9] powerpc/bpf: Remove unused SEEN_STACK
 To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Mailman-Approved-At: Sun, 03 Oct 2021 09:09:12 +1100
@@ -87,148 +87,35 @@ Sender: "Linuxppc-dev"
 On Fri, Oct 1, 2021 at 11:15 PM Naveen N. Rao
 <naveen.n.rao@linux.vnet.ibm.com> wrote:
 >
-> Add checks to ensure that we never emit branch instructions with
-> truncated branch offsets.
+> From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 >
-> Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+> SEEN_STACK is unused on PowerPC. Remove it. Also, have
+> SEEN_TAILCALL use 0x40000000.
+>
+> Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
 Acked-by: Johan Almbladh <johan.almbladh@anyfinetworks.com>
 Tested-by: Johan Almbladh <johan.almbladh@anyfinetworks.com>
 
 > ---
->  arch/powerpc/net/bpf_jit.h        | 26 ++++++++++++++++++++------
->  arch/powerpc/net/bpf_jit_comp.c   |  6 +++++-
->  arch/powerpc/net/bpf_jit_comp32.c |  8 ++++++--
->  arch/powerpc/net/bpf_jit_comp64.c |  8 ++++++--
->  4 files changed, 37 insertions(+), 11 deletions(-)
+>  arch/powerpc/net/bpf_jit.h | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 >
 > diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
-> index 935ea95b66359e..7e9b978b768ed9 100644
+> index 7e9b978b768ed9..89bd744c2bffd4 100644
 > --- a/arch/powerpc/net/bpf_jit.h
 > +++ b/arch/powerpc/net/bpf_jit.h
-> @@ -24,16 +24,30 @@
->  #define EMIT(instr)            PLANT_INSTR(image, ctx->idx, instr)
+> @@ -125,8 +125,7 @@
+>  #define COND_LE                (CR0_GT | COND_CMP_FALSE)
 >
->  /* Long jump; (unconditional 'branch') */
-> -#define PPC_JMP(dest)          EMIT(PPC_INST_BRANCH |                        \
-> -                                    (((dest) - (ctx->idx * 4)) & 0x03fffffc))
-> +#define PPC_JMP(dest)                                                        \
-> +       do {                                                                  \
-> +               long offset = (long)(dest) - (ctx->idx * 4);                  \
-> +               if (!is_offset_in_branch_range(offset)) {                     \
-> +                       pr_err_ratelimited("Branch offset 0x%lx (@%u) out of range\n", offset, ctx->idx);                       \
-> +                       return -ERANGE;                                       \
-> +               }                                                             \
-> +               EMIT(PPC_INST_BRANCH | (offset & 0x03fffffc));                \
-> +       } while (0)
-> +
->  /* blr; (unconditional 'branch' with link) to absolute address */
->  #define PPC_BL_ABS(dest)       EMIT(PPC_INST_BL |                            \
->                                      (((dest) - (unsigned long)(image + ctx->idx)) & 0x03fffffc))
->  /* "cond" here covers BO:BI fields. */
-> -#define PPC_BCC_SHORT(cond, dest)      EMIT(PPC_INST_BRANCH_COND |           \
-> -                                            (((cond) & 0x3ff) << 16) |       \
-> -                                            (((dest) - (ctx->idx * 4)) &     \
-> -                                             0xfffc))
-> +#define PPC_BCC_SHORT(cond, dest)                                            \
-> +       do {                                                                  \
-> +               long offset = (long)(dest) - (ctx->idx * 4);                  \
-> +               if (!is_offset_in_cond_branch_range(offset)) {                \
-> +                       pr_err_ratelimited("Conditional branch offset 0x%lx (@%u) out of range\n", offset, ctx->idx);           \
-> +                       return -ERANGE;                                       \
-> +               }                                                             \
-> +               EMIT(PPC_INST_BRANCH_COND | (((cond) & 0x3ff) << 16) | (offset & 0xfffc));                                      \
-> +       } while (0)
-> +
->  /* Sign-extended 32-bit immediate load */
->  #define PPC_LI32(d, i)         do {                                          \
->                 if ((int)(uintptr_t)(i) >= -32768 &&                          \
-> diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
-> index 53aefee3fe70be..fcbf7a917c566e 100644
-> --- a/arch/powerpc/net/bpf_jit_comp.c
-> +++ b/arch/powerpc/net/bpf_jit_comp.c
-> @@ -210,7 +210,11 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
->                 /* Now build the prologue, body code & epilogue for real. */
->                 cgctx.idx = 0;
->                 bpf_jit_build_prologue(code_base, &cgctx);
-> -               bpf_jit_build_body(fp, code_base, &cgctx, addrs, extra_pass);
-> +               if (bpf_jit_build_body(fp, code_base, &cgctx, addrs, extra_pass)) {
-> +                       bpf_jit_binary_free(bpf_hdr);
-> +                       fp = org_fp;
-> +                       goto out_addrs;
-> +               }
->                 bpf_jit_build_epilogue(code_base, &cgctx);
+>  #define SEEN_FUNC      0x20000000 /* might call external helpers */
+> -#define SEEN_STACK     0x40000000 /* uses BPF stack */
+> -#define SEEN_TAILCALL  0x80000000 /* uses tail calls */
+> +#define SEEN_TAILCALL  0x40000000 /* uses tail calls */
 >
->                 if (bpf_jit_enable > 1)
-> diff --git a/arch/powerpc/net/bpf_jit_comp32.c b/arch/powerpc/net/bpf_jit_comp32.c
-> index beb12cbc8c2994..a74d52204f8da2 100644
-> --- a/arch/powerpc/net/bpf_jit_comp32.c
-> +++ b/arch/powerpc/net/bpf_jit_comp32.c
-> @@ -200,7 +200,7 @@ void bpf_jit_emit_func_call_rel(u32 *image, struct codegen_context *ctx, u64 fun
->         }
->  }
->
-> -static void bpf_jit_emit_tail_call(u32 *image, struct codegen_context *ctx, u32 out)
-> +static int bpf_jit_emit_tail_call(u32 *image, struct codegen_context *ctx, u32 out)
->  {
->         /*
->          * By now, the eBPF program has already setup parameters in r3-r6
-> @@ -261,7 +261,9 @@ static void bpf_jit_emit_tail_call(u32 *image, struct codegen_context *ctx, u32
->         bpf_jit_emit_common_epilogue(image, ctx);
->
->         EMIT(PPC_RAW_BCTR());
-> +
->         /* out: */
-> +       return 0;
->  }
->
->  /* Assemble the body code between the prologue & epilogue */
-> @@ -1090,7 +1092,9 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
->                  */
->                 case BPF_JMP | BPF_TAIL_CALL:
->                         ctx->seen |= SEEN_TAILCALL;
-> -                       bpf_jit_emit_tail_call(image, ctx, addrs[i + 1]);
-> +                       ret = bpf_jit_emit_tail_call(image, ctx, addrs[i + 1]);
-> +                       if (ret < 0)
-> +                               return ret;
->                         break;
->
->                 default:
-> diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
-> index b87a63dba9c8fb..f06c62089b1457 100644
-> --- a/arch/powerpc/net/bpf_jit_comp64.c
-> +++ b/arch/powerpc/net/bpf_jit_comp64.c
-> @@ -206,7 +206,7 @@ void bpf_jit_emit_func_call_rel(u32 *image, struct codegen_context *ctx, u64 fun
->         EMIT(PPC_RAW_BCTRL());
->  }
->
-> -static void bpf_jit_emit_tail_call(u32 *image, struct codegen_context *ctx, u32 out)
-> +static int bpf_jit_emit_tail_call(u32 *image, struct codegen_context *ctx, u32 out)
->  {
->         /*
->          * By now, the eBPF program has already setup parameters in r3, r4 and r5
-> @@ -267,7 +267,9 @@ static void bpf_jit_emit_tail_call(u32 *image, struct codegen_context *ctx, u32
->         bpf_jit_emit_common_epilogue(image, ctx);
->
->         EMIT(PPC_RAW_BCTR());
-> +
->         /* out: */
-> +       return 0;
->  }
->
->  /* Assemble the body code between the prologue & epilogue */
-> @@ -993,7 +995,9 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
->                  */
->                 case BPF_JMP | BPF_TAIL_CALL:
->                         ctx->seen |= SEEN_TAILCALL;
-> -                       bpf_jit_emit_tail_call(image, ctx, addrs[i + 1]);
-> +                       ret = bpf_jit_emit_tail_call(image, ctx, addrs[i + 1]);
-> +                       if (ret < 0)
-> +                               return ret;
->                         break;
->
->                 default:
+>  #define SEEN_VREG_MASK 0x1ff80000 /* Volatile registers r3-r12 */
+>  #define SEEN_NVREG_MASK        0x0003ffff /* Non volatile registers r14-r31 */
 > --
 > 2.33.0
 >
