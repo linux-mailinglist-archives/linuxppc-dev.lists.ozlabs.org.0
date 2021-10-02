@@ -1,60 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C3F941F735
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Oct 2021 00:02:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4F0741F8A7
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Oct 2021 02:17:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HLkbp2zVjz3c6k
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Oct 2021 08:01:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HLncW6nKcz3c68
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Oct 2021 10:17:47 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dh0IirtB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hIYJ7rVW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=song@kernel.org; receiver=<UNKNOWN>)
+ envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=dh0IirtB; 
+ header.s=k20201202 header.b=hIYJ7rVW; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HLkb70KVsz2xXm
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Oct 2021 08:01:22 +1000 (AEST)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B31A461AA9
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Oct 2021 22:01:20 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HLnbv0VHPz2yK4
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Oct 2021 10:17:15 +1000 (AEST)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 57C8561A50;
+ Sat,  2 Oct 2021 00:17:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1633125680;
- bh=ct1RiOV8SWaRMqtQR6mhN6Gfe8wqvu8A1heHzzQy0aA=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=dh0IirtB/+Wi6dD9XGhx3U0CM4Oqjbg1yjyxzVfH79jTBKvh67zSVLLW+yb9xlWaA
- iY9tLaBjzHZpfIB2GpqbpkcDS6T6/Y1xevE5IQ7KIXD+9a5qEVTbYTO3I+JxnV+Ob5
- xW6XDm16GdohmiopCX3PbYc0x0JbgwHsEU6UJzMfY41rIUSf27SU4j1TgGqBX82ESK
- nTDiyhLCNh6Mz7oEVi8fip84lbAtjeJuznUzQ2R7+RtNTPgCdHSrxKteZawZWRhDex
- uTrmXo9xrBRHHEkgqRAnZDr8JWekmqKCIMR1JQcHiFqIHVFWU0dBhk9Glevfeh1ipo
- YRyFb5YhvWgKg==
-Received: by mail-lf1-f53.google.com with SMTP id u18so44150923lfd.12
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Oct 2021 15:01:20 -0700 (PDT)
-X-Gm-Message-State: AOAM531o6D1uoqkpC6soNShwb7zZlnMbFI1PDQG9d3qotlHuXSx/WqvB
- wdi4NJN1GGeH5NhaH2f47lgAHxCfOMKt52CHuv0=
-X-Google-Smtp-Source: ABdhPJy5gI/gJV0ZaWKuso9c92vVQLkAnF7492oeobgBYUYyFao+kcaa4K1NVJr55w5x99OKO58aQHYNS5/rz3MJwAw=
-X-Received: by 2002:a05:6512:3048:: with SMTP id
- b8mr410642lfb.650.1633125679001; 
- Fri, 01 Oct 2021 15:01:19 -0700 (PDT)
+ s=k20201202; t=1633133831;
+ bh=kcJKuC0wkvfILqJ9qCwz2Ct/sDna6hfeZwqpy5GIkao=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=hIYJ7rVWkNABVcCbGiHIsO+b18+sNtUvD/mG8R7uv9KMIdo9ntAw+DW5vJlNBaIBZ
+ KZtCyzdd4AQBG9Sa/OHPAnPdZ/wycdqi+XNwgBdvBn4wQG7Bwt9exO5qs52pJd45D1
+ 1pPYvbmzR6b9R0Y3WAOGq76kFQnIp57D3JZZLEfNcUiEGZSLBxLai3+oCAfWT82OOY
+ d5uDt+NQv/SGN2hwSDtzzLMtNJLhhnacxNmGkCh0CkbM74TZ8NDIWNzXtckzE86zSS
+ IP7HNe2E7Ox07Sf/MYQbUPKI6LKvaydplKZvRaUhnZX7AVjdCs6BznzLdFqAMaOuAW
+ UAY0Chk4DRLTg==
+From: Mark Brown <broonie@kernel.org>
+To: festevam@gmail.com, tiwai@suse.com, alsa-devel@alsa-project.org,
+ perex@perex.cz, timur@kernel.org, Xiubo.Lee@gmail.com,
+ Shengjiu Wang <shengjiu.wang@nxp.com>, nicoleotsuka@gmail.com
+Subject: Re: [PATCH] ASoC: fsl_spdif: implement bypass mode from in to out
+Date: Sat,  2 Oct 2021 01:16:34 +0100
+Message-Id: <163313339132.45396.13488907784155100500.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <1632649760-1651-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1632649760-1651-1-git-send-email-shengjiu.wang@nxp.com>
 MIME-Version: 1.0
-References: <cover.1633104510.git.naveen.n.rao@linux.vnet.ibm.com>
- <1912a409447071f46ac6cc957ce8edea0e5232b7.1633104510.git.naveen.n.rao@linux.vnet.ibm.com>
-In-Reply-To: <1912a409447071f46ac6cc957ce8edea0e5232b7.1633104510.git.naveen.n.rao@linux.vnet.ibm.com>
-From: Song Liu <song@kernel.org>
-Date: Fri, 1 Oct 2021 15:01:07 -0700
-X-Gmail-Original-Message-ID: <CAPhsuW5NraEPybLVcKWzHva4ksTa05msv-2PBdFXPt_J+=xTyw@mail.gmail.com>
-Message-ID: <CAPhsuW5NraEPybLVcKWzHva4ksTa05msv-2PBdFXPt_J+=xTyw@mail.gmail.com>
-Subject: Re: [PATCH 6/9] powerpc/bpf: Fix BPF_SUB when imm == 0x80000000
-To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,58 +60,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Daniel Borkmann <daniel@iogearbox.net>,
- Johan Almbladh <johan.almbladh@anyfinetworks.com>,
- Nicholas Piggin <npiggin@gmail.com>, bpf <bpf@vger.kernel.org>,
- linuxppc-dev@lists.ozlabs.org,
- Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Oct 1, 2021 at 2:17 PM Naveen N. Rao
-<naveen.n.rao@linux.vnet.ibm.com> wrote:
->
-> We aren't handling subtraction involving an immediate value of
-> 0x80000000 properly. Fix the same.
->
-> Fixes: 156d0e290e969c ("powerpc/ebpf/jit: Implement JIT compiler for extended BPF")
-> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+On Sun, 26 Sep 2021 17:49:20 +0800, Shengjiu Wang wrote:
+> From: Viorel Suman <viorel.suman@nxp.com>
+> 
+> Implement SPDIF bypass mode. It implies internal SoC
+> routing of SPDIF input signal to SPDIF output signal. The
+> test bed requires two boards: B1 configured in bypass mode,
+> and B2 to feed B1 SPDIF RX port and read B1 SPDIF TX port:
+>    B2 TX -> B1 RX,
+>    B2 RX <- B1 TX.
+> The test procedure:
+>  a) Boot both boards
+>  b) B2: start "arecord <spdifcard> -r 48kHz | aplay <local DAC>"
+>  c) B2: start "aplay <spdifcard> -r 48kHz <2ch 48kHz audio file>"
+>  d) B1: enable bypass mode:
+> 	amixer -cimxspdif cset numid=8,iface=PCM,name='Bypass Mode' on
+>  e) B2: check DAC audio, make sure the same sample rate is used at
+> 	steps b) and c), in example above the rate is 48kHz.
+>  f) B1: try to run "aplay" or "arecord" on imxspdif card while in
+> 	bypass mode - both must fail until bypass mode is disabled
+>  g) B1: disable bypass mode:
+> 	amixer -cimxspdif cset numid=8,iface=PCM,name='Bypass Mode' off
+>  h) B1: check the usual playback and capture on imxspdif card.
+> 	During this test try to set bypass mode - must not be allowed
+> 	while playback or capture is running.
+> 
+> [...]
 
-Acked-by: Song Liu <songliubraving@fb.com>
+Applied to
 
-> ---
->  arch/powerpc/net/bpf_jit_comp64.c | 16 ++++++++--------
->  1 file changed, 8 insertions(+), 8 deletions(-)
->
-> diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
-> index ffb7a2877a8469..4641a50e82d50d 100644
-> --- a/arch/powerpc/net/bpf_jit_comp64.c
-> +++ b/arch/powerpc/net/bpf_jit_comp64.c
-> @@ -333,15 +333,15 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
->                 case BPF_ALU | BPF_SUB | BPF_K: /* (u32) dst -= (u32) imm */
->                 case BPF_ALU64 | BPF_ADD | BPF_K: /* dst += imm */
->                 case BPF_ALU64 | BPF_SUB | BPF_K: /* dst -= imm */
-> -                       if (BPF_OP(code) == BPF_SUB)
-> -                               imm = -imm;
-> -                       if (imm) {
-> -                               if (imm >= -32768 && imm < 32768)
-> -                                       EMIT(PPC_RAW_ADDI(dst_reg, dst_reg, IMM_L(imm)));
-> -                               else {
-> -                                       PPC_LI32(b2p[TMP_REG_1], imm);
-> +                       if (imm > -32768 && imm < 32768) {
-> +                               EMIT(PPC_RAW_ADDI(dst_reg, dst_reg,
-> +                                       BPF_OP(code) == BPF_SUB ? IMM_L(-imm) : IMM_L(imm)));
-> +                       } else {
-> +                               PPC_LI32(b2p[TMP_REG_1], imm);
-> +                               if (BPF_OP(code) == BPF_SUB)
-> +                                       EMIT(PPC_RAW_SUB(dst_reg, dst_reg, b2p[TMP_REG_1]));
-> +                               else
->                                         EMIT(PPC_RAW_ADD(dst_reg, dst_reg, b2p[TMP_REG_1]));
-> -                               }
->                         }
->                         goto bpf_alu32_trunc;
->                 case BPF_ALU | BPF_MUL | BPF_X: /* (u32) dst *= (u32) src */
-> --
-> 2.33.0
->
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+
+Thanks!
+
+[1/1] ASoC: fsl_spdif: implement bypass mode from in to out
+      commit: 83bea088f976a289bc2efe4e404af47ab79d6639
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
