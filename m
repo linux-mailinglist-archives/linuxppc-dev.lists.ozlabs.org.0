@@ -2,89 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFB47420213
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Oct 2021 16:38:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67AFC420263
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Oct 2021 17:46:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HMmfw5zkMz305T
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Oct 2021 01:38:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HMpB22Vxcz305H
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Oct 2021 02:46:50 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=svenpeter.dev header.i=@svenpeter.dev header.a=rsa-sha256 header.s=fm2 header.b=rlvzb2vC;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=nkgefiqJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=jHCVuR3x;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=svenpeter.dev (client-ip=66.111.4.230;
- helo=new4-smtp.messagingengine.com; envelope-from=sven@svenpeter.dev;
+ smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=81.169.146.165;
+ helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=svenpeter.dev header.i=@svenpeter.dev
- header.a=rsa-sha256 header.s=fm2 header.b=rlvzb2vC; 
- dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm1 header.b=nkgefiqJ; 
+ unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
+ header.s=strato-dkim-0002 header.b=jHCVuR3x; 
  dkim-atps=neutral
-Received: from new4-smtp.messagingengine.com (new4-smtp.messagingengine.com
- [66.111.4.230])
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de
+ [81.169.146.165])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HMmfB28Ppz305d
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Oct 2021 01:37:38 +1100 (AEDT)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
- by mailnew.nyi.internal (Postfix) with ESMTP id 369FF580ADF;
- Sun,  3 Oct 2021 10:37:36 -0400 (EDT)
-Received: from imap21 ([10.202.2.71])
- by compute1.internal (MEProxy); Sun, 03 Oct 2021 10:37:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=svenpeter.dev;
- h=mime-version:message-id:in-reply-to:references:date:from:to
- :cc:subject:content-type; s=fm2; bh=5Oua/xYcZ8sUdKkZ+WL2Y13bonyO
- X558R4+E8eOjPK0=; b=rlvzb2vCrzSz6CHr3TI2OaG5/Z8mFul9dCvhpRkOg0fT
- QUoSLH6jjBzOO7fPBSlAD3cbQrOnYwDpSqL7ianjL87WJ07+gs9Qv458OpIEKXrF
- e39spiACDRsEvVS6qnYKOHxVHOcnZXkha1ry12C2xXGE4vJp5WNDplmzxkYbStGV
- zu8SZxD7NhhyJ8rtIXntB50MQvuqeS7Nl+D1BTpg9HMHCn7LeCwBKJY+sJYJn3Ka
- vuKYTRJfOtidGF+c1F8EgiceVz2pG6YsHYL+ABNavQhFWF7/Rk05r4tn92OiufXj
- djZv9cwCd1Lw/xKL9NrrjfB0+mhqI2rKPYc7CNpEjA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to:x-me-proxy
- :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=5Oua/x
- YcZ8sUdKkZ+WL2Y13bonyOX558R4+E8eOjPK0=; b=nkgefiqJ5l2kC+bTcXTrJi
- l+xhq45qU0uVOALdU/XK9Dxn0r7rkx+xzr89VLHQjq8lGTDYhFrgqKxomrLKUfPS
- 1vkk3JvxCbAlOz7a8/Yfg9aWxcWhShynBkXiIOowT0DeX90bqcIAGCR83JfMKrvv
- FEf7rybxB6L32eyR6nsj0K3Rhyn29KPcBYB6P5SKXbr81sKgQZV/bDUhbIHnb8AD
- mqg6BwrPIxc8xJAzeuxjw/giofT+g68fu9oUN0I0eOhmvtOZDt7U3YPphUGOD4fG
- cjXr2yvd03I1cF6KQnaMJBzwYnSIEMSNdEEZQAswZsz4ceEmBekMeLzzTEss2/4g
- ==
-X-ME-Sender: <xms:MMBZYZRr_AzCfIj0Ps92D784AB3B0gNag8E5RNFhiKQvjAOHPHcYcw>
- <xme:MMBZYSzihhz9G1J6eUkFEQL0LlmNxrS0sgCQeQb0vqUkrMxTkh_f-55fzZTcNVxfQ
- U4SzuRP_oAgB_VdzSY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrudeltddgjeejucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurhepofgfggfkjghffffhvffutgesthdtredtreertdenucfhrhhomhepfdfuvhgv
- nhcurfgvthgvrhdfuceoshhvvghnsehsvhgvnhhpvghtvghrrdguvghvqeenucggtffrrg
- htthgvrhhnpefgieegieffuefhtedtjefgteejteefleefgfefgfdvvddtgffhffduhedv
- feekffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
- hsvhgvnhesshhvvghnphgvthgvrhdruggvvh
-X-ME-Proxy: <xmx:MMBZYe0skvR09teY6kd_z8tbmZ_sCqLG0mzC8gkgUkkd4oFqdPsSUA>
- <xmx:MMBZYRB7-asYWIzXyh3Czni4-O5z0-BC_M2_KOQzPHDVERC2r-9ouQ>
- <xmx:MMBZYSiKzewZZfx7YeDH9Mk3Y7xm0wJnoh3ZdC_0aXY7nDvI__LItA>
- <xmx:MMBZYTZt5ozJJDb30AzEiRAH-L4KaZqLoeGZm_E3I5Pa_T9kSOtYPQ>
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
- id 074A551C0060; Sun,  3 Oct 2021 10:37:35 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.5.0-alpha0-1322-g921842b88a-fm-20210929.001-g921842b8
-Mime-Version: 1.0
-Message-Id: <acbacba2-b239-4268-8acf-6596ab0dfded@www.fastmail.com>
-In-Reply-To: <YVTNpt/vOeZI5P+L@kunai>
-References: <20210926095847.38261-1-sven@svenpeter.dev>
- <20210926095847.38261-10-sven@svenpeter.dev> <YVTNpt/vOeZI5P+L@kunai>
-Date: Sun, 03 Oct 2021 16:37:15 +0200
-From: "Sven Peter" <sven@svenpeter.dev>
-To: "Wolfram Sang" <wsa@kernel.org>
-Subject: Re: [PATCH 09/10] i2c: pasemi: Add Apple platform driver
-Content-Type: text/plain
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HMp9H6xgwz2xXC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Oct 2021 02:46:09 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1633275917;
+ s=strato-dkim-0002; d=xenosoft.de;
+ h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
+ From:Subject:Sender;
+ bh=n2U0PeCsRntS+jp/SpPVszJZtYbXqemerUZ0qpTMk3Y=;
+ b=jHCVuR3xGifKlofLLmuBTrzVjBk/X/XTWXVFrjZJBVrGpJDUzUodQFRCUY63HjTqOm
+ MCDgwgKMqJsUmlw/ZBESOwt54n9riq0Kp/02jNPE/l50GRe3TxIh4FJ5ThroT0e+JkGS
+ QZZnKrVyQX6Ns1gWtfwmfnK0bAgJxk3FQb5PZ+vTF5b+cTu3Clo2K/D2fWLCyGp6Ij08
+ +B089K9+ZpQz6FUtqhpaz+h5yJRFdeDXN217EbLZbQ98c3zJI5ycsvLrUCIL9cZ4u767
+ cSweAdnV2Loq9VtqUlwxf7kn/GWKi7LPdoGUHAwWgPi7lgMHOfTOfbAyid2dSgP2zSKL
+ UdDg==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHvJzedV4hp0mZXDvscF/B540qv0BQZVZQLfrrxE4ejuGDN89"
+X-RZG-CLASS-ID: mo00
+Received: from cc-build-machine.a-eon.tld
+ by smtp.strato.de (RZmta 47.33.8 AUTH)
+ with ESMTPSA id I00cdex93FjDhap
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Sun, 3 Oct 2021 17:45:13 +0200 (CEST)
+Subject: Re: Add Apple M1 support to PASemi i2c driver
+To: Sven Peter <sven@svenpeter.dev>
+References: <6487d099-e0d6-4ea3-d312-6adbd94589f4@xenosoft.de>
+ <3dcc6c36-a0dd-0cad-428d-a6ed0f73e687@xenosoft.de>
+ <d0a646c7-426b-4b40-b3fc-9776c6a1025d@www.fastmail.com>
+ <9c1f5c48-bf1a-0ecc-e769-773d2935c66c@xenosoft.de>
+ <49890226-cf04-46ff-bc37-33d1643faea2@www.fastmail.com>
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Message-ID: <d4aa72da-cb0b-45b9-1a20-08f183cde421@xenosoft.de>
+Date: Sun, 3 Oct 2021 17:45:12 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
+MIME-Version: 1.0
+In-Reply-To: <49890226-cf04-46ff-bc37-33d1643faea2@www.fastmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: de-DE
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,28 +76,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, Hector Martin <marcan@marcan.st>,
- linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linux-arm-kernel@lists.infradead.org,
- Olof Johansson <olof@lixom.net>,
- Mohamed Mediouni <mohamed.mediouni@caramail.com>,
- Mark Kettenis <mark.kettenis@xs4all.nl>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Alyssa Rosenzweig <alyssa@rosenzweig.io>, Stan Skowronek <stan@corellium.com>
+Cc: Darren Stevens <darren@stevens-zone.net>, Arnd Bergmann <arnd@arndb.de>,
+ Hector Martin <marcan@marcan.st>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-i2c@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Alyssa Rosenzweig <alyssa@rosenzweig.io>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ Olof Johansson <olof@lixom.net>, mohamed.mediouni@caramail.com,
+ Matthew Leaman <matthew@a-eon.biz>, Mark Kettenis <mark.kettenis@xs4all.nl>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "R.T.Dickinson" <rtd@a-eon.com>,
+ linux-arm-kernel@lists.infradead.org, Stan Skowronek <stan@corellium.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 29, 2021, at 22:33, Wolfram Sang wrote:
->>  drivers/i2c/busses/i2c-pasemi-apple.c | 122 ++++++++++++++++++++++++++
->
-> Can't we name it 'i2c-pasemi-platform.c' instead? Makes more sense to me
-> because the other instance is named -pci.
+On 03 October 2021 at 04:36 pm, Sven Peter wrote:
+ > Hi,
+ >
+ >
+ > On Fri, Oct 1, 2021, at 06:47, Christian Zigotzky wrote:
+ >> On 27 September 2021 at 07:39 am, Sven Peter wrote:
+ >>  > Hi Christian,
+ >>  >
+ >>  > Thanks already for volunteering to test this!
+ >>  >
+ >> Hello Sven,
+ >>
+ >> Damian (Hypex) has successfully tested the RC3 of kernel 5.15 with your
+ >> modified i2c driver on his Nemo board yesterday. [1]
+ >
+ > Thanks a lot, that's great to hear!
+ > If he wants to I can credit him with a Tested-by tag in the commit 
+message,
+ > see e.g. 
+https://www.kernel.org/doc/html/latest/process/submitting-patches.html#using-reported-by-tested-by-reviewed-by-suggested-by-and-fixes.
+ >
+ >
+ > Best,
+ >
+ >
+ > Sven
 
-Sure, that's more consistent. I'll change the filename for v2.
+Hello Sven,
 
+We are still testing your i2c modifications. [1]
+Please wait a litte bit till we finished our tests.
+
+@Darren
+Could you also please check Sven's i2c modifications? He has also 
+modified your source code a little bit. [2]
+
+@Olof
+Are these i2c modifications OK? Do these work on your P.A. Semi board?
 
 Thanks,
+Christian
 
-
-Sven
+[1] https://forum.hyperion-entertainment.com/viewtopic.php?p=54138#p54138
+[2] https://lists.ozlabs.org/pipermail/linuxppc-dev/2017-January/153195.html
