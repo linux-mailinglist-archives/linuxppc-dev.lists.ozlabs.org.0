@@ -2,69 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67AFC420263
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Oct 2021 17:46:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99BB0420318
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Oct 2021 19:20:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HMpB22Vxcz305H
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Oct 2021 02:46:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HMrFd3fyrz3bT7
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Oct 2021 04:20:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=jHCVuR3x;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=HPajL2gR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=81.169.146.165;
- helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d2c;
+ helo=mail-io1-xd2c.google.com; envelope-from=andreyknvl@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=jHCVuR3x; 
- dkim-atps=neutral
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de
- [81.169.146.165])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=HPajL2gR; dkim-atps=neutral
+Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com
+ [IPv6:2607:f8b0:4864:20::d2c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HMp9H6xgwz2xXC
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Oct 2021 02:46:09 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1633275917;
- s=strato-dkim-0002; d=xenosoft.de;
- h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
- From:Subject:Sender;
- bh=n2U0PeCsRntS+jp/SpPVszJZtYbXqemerUZ0qpTMk3Y=;
- b=jHCVuR3xGifKlofLLmuBTrzVjBk/X/XTWXVFrjZJBVrGpJDUzUodQFRCUY63HjTqOm
- MCDgwgKMqJsUmlw/ZBESOwt54n9riq0Kp/02jNPE/l50GRe3TxIh4FJ5ThroT0e+JkGS
- QZZnKrVyQX6Ns1gWtfwmfnK0bAgJxk3FQb5PZ+vTF5b+cTu3Clo2K/D2fWLCyGp6Ij08
- +B089K9+ZpQz6FUtqhpaz+h5yJRFdeDXN217EbLZbQ98c3zJI5ycsvLrUCIL9cZ4u767
- cSweAdnV2Loq9VtqUlwxf7kn/GWKi7LPdoGUHAwWgPi7lgMHOfTOfbAyid2dSgP2zSKL
- UdDg==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHvJzedV4hp0mZXDvscF/B540qv0BQZVZQLfrrxE4ejuGDN89"
-X-RZG-CLASS-ID: mo00
-Received: from cc-build-machine.a-eon.tld
- by smtp.strato.de (RZmta 47.33.8 AUTH)
- with ESMTPSA id I00cdex93FjDhap
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Sun, 3 Oct 2021 17:45:13 +0200 (CEST)
-Subject: Re: Add Apple M1 support to PASemi i2c driver
-To: Sven Peter <sven@svenpeter.dev>
-References: <6487d099-e0d6-4ea3-d312-6adbd94589f4@xenosoft.de>
- <3dcc6c36-a0dd-0cad-428d-a6ed0f73e687@xenosoft.de>
- <d0a646c7-426b-4b40-b3fc-9776c6a1025d@www.fastmail.com>
- <9c1f5c48-bf1a-0ecc-e769-773d2935c66c@xenosoft.de>
- <49890226-cf04-46ff-bc37-33d1643faea2@www.fastmail.com>
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-Message-ID: <d4aa72da-cb0b-45b9-1a20-08f183cde421@xenosoft.de>
-Date: Sun, 3 Oct 2021 17:45:12 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HMrDw44TJz2yK7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Oct 2021 04:19:27 +1100 (AEDT)
+Received: by mail-io1-xd2c.google.com with SMTP id i62so17646010ioa.6
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 03 Oct 2021 10:19:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=LtNAm7zzl2qrgZZh/QTIxNxuRAfc7I+2wFFQB9vnTF0=;
+ b=HPajL2gRll5UGOWQudiLfEhv04bZJLEY04ZU7ZSRAIC019LPw99IB3jcVbN4EN+uaa
+ xyKMFFwUWxMYSoP4ZBJywqtND/RYthdauADK8DHtR06cFEMk7vPzapNi8yp+/BQqu9DS
+ XOr3DnKVtkoe0wPl/79bKfHiDibk91+zdv0sLCel9UFYLCb9bmD47OsCKSwE0mGDtw8/
+ 6gdgpENhRKndxirmzsgGPXX1upChcdibaOTNC3bq+DmwPpNVd9cFYYXmPAmiOvESIXbo
+ CSbSXebOc4mMaPqb0Px805lEkzhdOgcnojNc1+KreKV66iyssiTwe6WqQz88OHS1mJw/
+ GXiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=LtNAm7zzl2qrgZZh/QTIxNxuRAfc7I+2wFFQB9vnTF0=;
+ b=VY5A8z35XDrm+ER0TvMZzt/JIQ02QedXnOAkxVJpgG7P6SMlls8YwS05iLUuJglV66
+ 0ez9rMTgh9Ykfkw2SsUdvACdomi2DoXBNK6I+qnMWX0FivDQi9jh520I7eD5nYmfXicK
+ pO7MGDF+uVv8kskqM4+wX9OYukvXF22FNTovFarBTsYPU0+sar+4/LnOA2Tzl3LIii6X
+ KwBdjUmCZHgGET1SOsYXzA40gJj85z0JQ46pYjpRgNy5bFhSz+i3m9Me/fjQpYED67LN
+ DLJDkW3j+ZNoRg/3EeYQ1QSsZCM2uIZpn8dLrRBUyJ1KF95k9pylw15UXDmzL9i1g0oz
+ 8p6Q==
+X-Gm-Message-State: AOAM531VVJDSu0BiUvjc5CDVohIzrd0lOzi6V0ZNAQK5s2S4XdG9zKAu
+ EHzcqPw7iAoAHNvMIxyGfGcygHmLPBlApwhGMnw=
+X-Google-Smtp-Source: ABdhPJzE8E4NG+zryoNkkGJT+VnCZOOENDmogYIeJjU1ZUgffAvfm3SvEG54YtnyET4C9tYQXAL12Yepc0ZqQhXt644=
+X-Received: by 2002:a05:6602:214f:: with SMTP id
+ y15mr6480548ioy.127.1633281563293; 
+ Sun, 03 Oct 2021 10:19:23 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <49890226-cf04-46ff-bc37-33d1643faea2@www.fastmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: de-DE
+References: <20210930071143.63410-1-wangkefeng.wang@huawei.com>
+ <20210930071143.63410-8-wangkefeng.wang@huawei.com>
+In-Reply-To: <20210930071143.63410-8-wangkefeng.wang@huawei.com>
+From: Andrey Konovalov <andreyknvl@gmail.com>
+Date: Sun, 3 Oct 2021 19:19:12 +0200
+Message-ID: <CA+fCnZd6=sXgb-782KkijqJ7zgBj38oXLeLbi4HoUhm3MY4J8g@mail.gmail.com>
+Subject: Re: [PATCH v4 07/11] mm: kasan: Use is_kernel() helper
+To: Kefeng Wang <wangkefeng.wang@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,60 +75,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, Arnd Bergmann <arnd@arndb.de>,
- Hector Martin <marcan@marcan.st>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-i2c@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Alyssa Rosenzweig <alyssa@rosenzweig.io>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- Olof Johansson <olof@lixom.net>, mohamed.mediouni@caramail.com,
- Matthew Leaman <matthew@a-eon.biz>, Mark Kettenis <mark.kettenis@xs4all.nl>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "R.T.Dickinson" <rtd@a-eon.com>,
- linux-arm-kernel@lists.infradead.org, Stan Skowronek <stan@corellium.com>
+Cc: linux-arch@vger.kernel.org, Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+ bpf <bpf@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ linux-alpha@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Alexei Starovoitov <ast@kernel.org>,
+ mingo@redhat.com, paulus@samba.org, Alexander Potapenko <glider@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ David Miller <davem@davemloft.net>, Dmitry Vyukov <dvyukov@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 03 October 2021 at 04:36 pm, Sven Peter wrote:
- > Hi,
- >
- >
- > On Fri, Oct 1, 2021, at 06:47, Christian Zigotzky wrote:
- >> On 27 September 2021 at 07:39 am, Sven Peter wrote:
- >>  > Hi Christian,
- >>  >
- >>  > Thanks already for volunteering to test this!
- >>  >
- >> Hello Sven,
- >>
- >> Damian (Hypex) has successfully tested the RC3 of kernel 5.15 with your
- >> modified i2c driver on his Nemo board yesterday. [1]
- >
- > Thanks a lot, that's great to hear!
- > If he wants to I can credit him with a Tested-by tag in the commit 
-message,
- > see e.g. 
-https://www.kernel.org/doc/html/latest/process/submitting-patches.html#using-reported-by-tested-by-reviewed-by-suggested-by-and-fixes.
- >
- >
- > Best,
- >
- >
- > Sven
+On Thu, Sep 30, 2021 at 9:09 AM Kefeng Wang <wangkefeng.wang@huawei.com> wrote:
+>
+> Directly use is_kernel() helper in kernel_or_module_addr().
+>
+> Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+> Cc: Alexander Potapenko <glider@google.com>
+> Cc: Andrey Konovalov <andreyknvl@gmail.com>
+> Cc: Dmitry Vyukov <dvyukov@google.com>
+> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> ---
+>  mm/kasan/report.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/mm/kasan/report.c b/mm/kasan/report.c
+> index 3239fd8f8747..1c955e1c98d5 100644
+> --- a/mm/kasan/report.c
+> +++ b/mm/kasan/report.c
+> @@ -226,7 +226,7 @@ static void describe_object(struct kmem_cache *cache, void *object,
+>
+>  static inline bool kernel_or_module_addr(const void *addr)
+>  {
+> -       if (addr >= (void *)_stext && addr < (void *)_end)
+> +       if (is_kernel((unsigned long)addr))
+>                 return true;
+>         if (is_module_address((unsigned long)addr))
+>                 return true;
+> --
+> 2.26.2
+>
 
-Hello Sven,
-
-We are still testing your i2c modifications. [1]
-Please wait a litte bit till we finished our tests.
-
-@Darren
-Could you also please check Sven's i2c modifications? He has also 
-modified your source code a little bit. [2]
-
-@Olof
-Are these i2c modifications OK? Do these work on your P.A. Semi board?
-
-Thanks,
-Christian
-
-[1] https://forum.hyperion-entertainment.com/viewtopic.php?p=54138#p54138
-[2] https://lists.ozlabs.org/pipermail/linuxppc-dev/2017-January/153195.html
+Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
