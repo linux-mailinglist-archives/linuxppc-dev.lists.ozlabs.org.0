@@ -2,51 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D774A4219D7
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 00:17:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81D9E4219D8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 00:18:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HNZpr5m5kz3c8W
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 09:17:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HNZqX2xdkz3cD5
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 09:18:32 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=HD1FAaEt;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33;
- helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635;
+ helo=mail-pl1-x635.google.com; envelope-from=naveennaidu479@gmail.com;
  receiver=<UNKNOWN>)
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
- [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=HD1FAaEt; dkim-atps=neutral
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com
+ [IPv6:2607:f8b0:4864:20::635])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HNLRs46Nfz2ybK
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 00:00:41 +1100 (AEDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
- by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1mXNZO-00054e-PH; Mon, 04 Oct 2021 14:59:50 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
- by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1mXNZF-0000Kt-4h; Mon, 04 Oct 2021 14:59:41 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
- (envelope-from <ukl@pengutronix.de>)
- id 1mXNZE-0000ay-Vr; Mon, 04 Oct 2021 14:59:40 +0200
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Subject: [PATCH v6 00/11] PCI: Drop duplicated tracking of a pci_dev's bound
- driver
-Date: Mon,  4 Oct 2021 14:59:24 +0200
-Message-Id: <20211004125935.2300113-1-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HNMcg09sWz2xgN
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 00:53:20 +1100 (AEDT)
+Received: by mail-pl1-x635.google.com with SMTP id y1so11132629plk.10
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Oct 2021 06:53:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=QehrCbnowDf1RKEEztwsvEnHuiWWf1+by9ueLaqBt5I=;
+ b=HD1FAaEtufc7ayGdPFagvKFo4lY+o6I6/nQOa+nVkJHZWF4gn1Zd86f56QDiJmRERT
+ cJ7/qKo40ISZ9l6pLFbm7BG+GvlqxekUCZucWtRLoGIZL0sAmMTGgGxEbo+89QGomMqk
+ F06R/fZFslZqdzjDhsuFd6DM9UJxmwRmegojJHXlFwjzshrhgKufUcrnmWtk8oQOyKyV
+ 48P036+d1eYmnHMqEMXCm084uNEGSg9txbxUXWiU69JjBsacmUsrPGih+ky85b/2QB3r
+ lLSD1qhYF77rBR/NWuUVA4marCG9VaWVfBOoI9Rnw4dd1xAyB9uJHKQU04cUUSzm0j6p
+ Zhuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=QehrCbnowDf1RKEEztwsvEnHuiWWf1+by9ueLaqBt5I=;
+ b=KkI/VjIkHWY/WThZw2IPuNNGXaVX32nzFdcnF56OVi1h3DEeP80Tnx+2/qWp7vSZAd
+ NZSJNsaI/QrT3GmfskXgJNQemyWAOYjRRZx7GcOFF2kKXq0vDelgkigS1oelEgasOiWH
+ gzn8iT2hoBIUqbCLbTZCaO3FNo6A0cZtYczQAZ4ZtbZtKlppSSRlhMQHOGy46JCGOWfn
+ dJ5EA7u3Q9xMvUU/v65ClNyGYbO+vXWYU9pkFfO0L6nQ6hCq21EZnbKWkZWN/66JqvTu
+ BuR/XsfmC8krgpqpLOtYn1b6cC3SV5DHQddJWRSuJUyKqA2apRt/ljacqWFzNrsdbXR7
+ QayQ==
+X-Gm-Message-State: AOAM532og62c6S3eSi80mVADi57prY+WmF/tS757deLXdlg0niNG1BSH
+ JjtqUSqw+NbDXYysZBXD3FM=
+X-Google-Smtp-Source: ABdhPJyN7WK8TDIV07lY6Vw3BSCzWsRh8SxCdZyrqPzER9GZiXV7WlUHrJTVeRbnHqxrI3lD1Qshqw==
+X-Received: by 2002:a17:90a:1984:: with SMTP id
+ 4mr31119195pji.241.1633355597382; 
+ Mon, 04 Oct 2021 06:53:17 -0700 (PDT)
+Received: from localhost.localdomain ([2406:7400:63:e8f0:c2a7:3579:5fe8:31d9])
+ by smtp.gmail.com with ESMTPSA id
+ k17sm12209548pfu.82.2021.10.04.06.53.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 04 Oct 2021 06:53:16 -0700 (PDT)
+From: Naveen Naidu <naveennaidu479@gmail.com>
+To: bhelgaas@google.com,
+	ruscur@russell.cc,
+	oohall@gmail.com
+Subject: [PATCH 0/8] Fix long standing AER Error Handling Issues 
+Date: Mon,  4 Oct 2021 19:22:35 +0530
+Message-Id: <cover.1633353468.git.naveennaidu479@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
- SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Approved-At: Tue, 05 Oct 2021 09:16:56 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -59,307 +82,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
- Mark Rutland <mark.rutland@arm.com>,
- Sathya Prakash <sathya.prakash@broadcom.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- linux-pci@vger.kernel.org, Alexander Duyck <alexanderduyck@fb.com>,
- x86@kernel.org, qat-linux@intel.com, oss-drivers@corigine.com,
- Oliver O'Halloran <oohall@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>,
- Jiri Olsa <jolsa@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
- Marco Chiappero <marco.chiappero@intel.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Herbert Xu <herbert@gondor.apana.org.au>, linux-scsi@vger.kernel.org,
- =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
- Jesse Brandeburg <jesse.brandeburg@intel.com>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- linux-wireless@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
- Yisen Zhuang <yisen.zhuang@huawei.com>,
- Suganath Prabu Subramani <suganath-prabu.subramani@broadcom.com>,
- Fiona Trahe <fiona.trahe@intel.com>, Andrew Donnellan <ajd@linux.ibm.com>,
- Arnd Bergmann <arnd@arndb.de>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- Ido Schimmel <idosch@nvidia.com>, Simon Horman <simon.horman@corigine.com>,
- linuxppc-dev@lists.ozlabs.org, Arnaldo Carvalho de Melo <acme@kernel.org>,
- Jack Xu <jack.xu@intel.com>, Borislav Petkov <bp@alien8.de>,
- Michael Buesch <m@bues.ch>, Jiri Pirko <jiri@nvidia.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Namhyung Kim <namhyung@kernel.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Juergen Gross <jgross@suse.com>, Salil Mehta <salil.mehta@huawei.com>,
- Sreekanth Reddy <sreekanth.reddy@broadcom.com>, xen-devel@lists.xenproject.org,
- Vadym Kochan <vkochan@marvell.com>, MPT-FusionLinux.pdl@broadcom.com,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
- Wojciech Ziemba <wojciech.ziemba@intel.com>, linux-kernel@vger.kernel.org,
- Mathias Nyman <mathias.nyman@intel.com>, Zhou Wang <wangzhou1@hisilicon.com>,
- linux-crypto@vger.kernel.org, kernel@pengutronix.de, netdev@vger.kernel.org,
- Frederic Barrat <fbarrat@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
- Tomaszx Kowalik <tomaszx.kowalik@intel.com>,
- Taras Chornyi <tchornyi@marvell.com>, "David S. Miller" <davem@davemloft.net>,
- linux-perf-users@vger.kernel.org
+Cc: Naveen Naidu <naveennaidu479@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel-mentees@lists.linuxfoundation.org, linux-kernel@vger.kernel.org,
+ skhan@linuxfoundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+This patch series aims at fixing some of the AER error handling issues
+we have.
 
-this is v6 of the quest to drop the "driver" member from struct pci_dev
-which tracks the same data (apart from a constant offset) as dev.driver.
+Currently we have the following issues:
+ - Confusing message in aer_print_error()
+ - aer_err_info not being initialized completely in DPC path before 
+   we print the AER logs
+ - A bug [1] in clearing of AER registers in the native AER path
 
-Changes since v5:
- - Some Acks added
- - Some fixes in "PCI: Replace pci_dev::driver usage by
-   pci_dev::dev.driver" to properly handle that
-   to_pci_driver(X) is wrong if X is NULL.
-   This should fix the problem reported by Ido Schimmel.
+[1] https://lore.kernel.org/linux-pci/20151229155822.GA17321@localhost/
 
-Full range diff below.
+The primary aim of this patch series is to converge the APEI path and the
+native AER error handling paths. In our current code, we find that we
+have two different behaviours (especially when it comes to clearing of
+the AER registers) for the same functionality.
 
-This patch stack survived an allmodconfig build on arm64, m68k, powerpc,
-riscv, s390, sparc64 and x86_64 on top of v5.15-rc3.
+This patch series, tries to bring the same semantics and hence more 
+commonanlity between the APEI part of code and the native OS 
+handling of AER errors.
 
-Best regards
-Uwe
+PATCH 1: 
+  - Fixes the first issue
 
-Uwe Kleine-König (11):
-  PCI: Simplify pci_device_remove()
-  PCI: Drop useless check from pci_device_probe()
-  xen/pci: Drop some checks that are always true
-  bcma: simplify reference to the driver's name
-  powerpc/eeh: Don't use driver member of struct pci_dev and further
-    cleanups
-  ssb: Simplify determination of driver name
-  PCI: Replace pci_dev::driver usage that gets the driver name
-  scsi: message: fusion: Remove unused parameter of mpt_pci driver's
-    probe()
-  crypto: qat - simplify adf_enable_aer()
-  PCI: Replace pci_dev::driver usage by pci_dev::dev.driver
-  PCI: Drop duplicated tracking of a pci_dev's bound driver
+PATCH 2 - 4:
+  - Fixes the second issue
+  - "Patch 3/8" is dependent on "Patch 2/3" in the series
 
- arch/powerpc/include/asm/ppc-pci.h            |  5 -
- arch/powerpc/kernel/eeh.c                     |  8 ++
- arch/powerpc/kernel/eeh_driver.c              | 10 +-
- arch/x86/events/intel/uncore.c                |  2 +-
- arch/x86/kernel/probe_roms.c                  | 10 +-
- drivers/bcma/host_pci.c                       |  6 +-
- drivers/crypto/hisilicon/qm.c                 |  2 +-
- drivers/crypto/qat/qat_4xxx/adf_drv.c         |  7 +-
- drivers/crypto/qat/qat_c3xxx/adf_drv.c        |  7 +-
- drivers/crypto/qat/qat_c62x/adf_drv.c         |  7 +-
- drivers/crypto/qat/qat_common/adf_aer.c       | 10 +-
- .../crypto/qat/qat_common/adf_common_drv.h    |  3 +-
- drivers/crypto/qat/qat_dh895xcc/adf_drv.c     |  7 +-
- drivers/message/fusion/mptbase.c              |  7 +-
- drivers/message/fusion/mptbase.h              |  2 +-
- drivers/message/fusion/mptctl.c               |  4 +-
- drivers/message/fusion/mptlan.c               |  2 +-
- drivers/misc/cxl/guest.c                      | 24 +++--
- drivers/misc/cxl/pci.c                        | 30 +++---
- .../ethernet/hisilicon/hns3/hns3_ethtool.c    |  2 +-
- .../ethernet/marvell/prestera/prestera_pci.c  |  2 +-
- drivers/net/ethernet/mellanox/mlxsw/pci.c     |  2 +-
- .../ethernet/netronome/nfp/nfp_net_ethtool.c  |  3 +-
- drivers/pci/iov.c                             | 33 +++++--
- drivers/pci/pci-driver.c                      | 96 ++++++++++---------
- drivers/pci/pci.c                             |  4 +-
- drivers/pci/pcie/err.c                        | 36 +++----
- drivers/pci/xen-pcifront.c                    | 63 ++++++------
- drivers/ssb/pcihost_wrapper.c                 |  6 +-
- drivers/usb/host/xhci-pci.c                   |  2 +-
- include/linux/pci.h                           |  1 -
- 31 files changed, 208 insertions(+), 195 deletions(-)
+PATCH 5 - 7
+  - Deals with converging the various paths and to bring more
+    commonality between them
+  - "Patch 6/8" depends on "Patch 1/8"
 
-Range-diff against v5:
- -:  ------------ >  1:  c2b53ab26a6b PCI: Simplify pci_device_remove()
- -:  ------------ >  2:  2c733e1d5186 PCI: Drop useless check from pci_device_probe()
- -:  ------------ >  3:  547ca5a7aa16 xen/pci: Drop some checks that are always true
- -:  ------------ >  4:  40eb07353844 bcma: simplify reference to the driver's name
- -:  ------------ >  5:  bab59c1dff6d powerpc/eeh: Don't use driver member of struct pci_dev and further cleanups
- 1:  abd70de9782d !  6:  92f4d61bbac3 ssb: Simplify determination of driver name
-    @@ Commit message
-         This has the upside of not requiring the driver member of struct pci_dev
-         which is about to be removed and being simpler.
-     
-    +    Acked-by: Michael Büsch <m@bues.ch>
-         Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-     
-      ## drivers/ssb/pcihost_wrapper.c ##
- 2:  735845bd26b9 !  7:  6303f03ab2aa PCI: Replace pci_dev::driver usage that gets the driver name
-    @@ Commit message
-         driver name by dev_driver_string() which implicitly makes use of struct
-         pci_dev::dev->driver.
-     
-    +    Acked-by: Simon Horman <simon.horman@corigine.com> (for NFP)
-         Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-     
-      ## drivers/crypto/hisilicon/qm.c ##
- 3:  1e58019165b9 =  8:  658a6c00ec96 scsi: message: fusion: Remove unused parameter of mpt_pci driver's probe()
- 4:  dea72a470141 =  9:  aceaf5321603 crypto: qat - simplify adf_enable_aer()
- 5:  b4165dda38ea ! 10:  80648d999985 PCI: Replace pci_dev::driver usage by pci_dev::dev.driver
-    @@ arch/x86/kernel/probe_roms.c: static struct resource video_rom_resource = {
-      static bool match_id(struct pci_dev *pdev, unsigned short vendor, unsigned short device)
-      {
-     -	struct pci_driver *drv = pdev->driver;
-    -+	struct pci_driver *drv = to_pci_driver(pdev->dev.driver);
-      	const struct pci_device_id *id;
-      
-      	if (pdev->vendor == vendor && pdev->device == device)
-    + 		return true;
-    + 
-    +-	for (id = drv ? drv->id_table : NULL; id && id->vendor; id++)
-    +-		if (id->vendor == vendor && id->device == device)
-    +-			break;
-    ++	if (pdev->dev.driver) {
-    ++		struct pci_driver *drv = to_pci_driver(pdev->dev.driver);
-    ++		for (id = drv->id_table; id && id->vendor; id++)
-    ++			if (id->vendor == vendor && id->device == device)
-    ++				break;
-    ++	}
-    + 
-    + 	return id && id->vendor;
-    + }
-     
-      ## drivers/misc/cxl/guest.c ##
-     @@ drivers/misc/cxl/guest.c: static void pci_error_handlers(struct cxl_afu *afu,
-    @@ drivers/pci/iov.c: static ssize_t sriov_vf_total_msix_show(struct device *dev,
-      
-      	device_lock(dev);
-     -	if (!pdev->driver || !pdev->driver->sriov_get_vf_total_msix)
-    -+	pdrv = to_pci_driver(dev->driver);
-    -+	if (!pdrv || !pdrv->sriov_get_vf_total_msix)
-    ++	if (!dev->driver)
-      		goto unlock;
-      
-     -	vf_total_msix = pdev->driver->sriov_get_vf_total_msix(pdev);
-    ++	pdrv = to_pci_driver(dev->driver);
-    ++	if (!pdrv->sriov_get_vf_total_msix)
-    ++		goto unlock;
-    ++
-     +	vf_total_msix = pdrv->sriov_get_vf_total_msix(pdev);
-      unlock:
-      	device_unlock(dev);
-    @@ drivers/pci/iov.c: static ssize_t sriov_vf_msix_count_store(struct device *dev,
-      
-      	device_lock(&pdev->dev);
-     -	if (!pdev->driver || !pdev->driver->sriov_set_msix_vec_count) {
-    ++	if (!pdev->dev.driver) {
-    ++		ret = -EOPNOTSUPP;
-    ++		goto err_pdev;
-    ++	}
-    ++
-     +	pdrv = to_pci_driver(pdev->dev.driver);
-    -+	if (!pdrv || !pdrv->sriov_set_msix_vec_count) {
-    ++	if (!pdrv->sriov_set_msix_vec_count) {
-      		ret = -EOPNOTSUPP;
-      		goto err_pdev;
-      	}
-    @@ drivers/pci/pci-driver.c: static void pci_device_remove(struct device *dev)
-      {
-      	struct pci_dev *pci_dev = to_pci_dev(dev);
-     -	struct pci_driver *drv = pci_dev->driver;
-    -+	struct pci_driver *drv = to_pci_driver(pci_dev->dev.driver);
-      
-      	pm_runtime_resume(dev);
-      
-    +-	if (drv && drv->shutdown)
-    +-		drv->shutdown(pci_dev);
-    ++	if (pci_dev->dev.driver) {
-    ++		struct pci_driver *drv = to_pci_driver(pci_dev->dev.driver);
-    ++
-    ++		if (drv->shutdown)
-    ++			drv->shutdown(pci_dev);
-    ++	}
-    + 
-    + 	/*
-    + 	 * If this is a kexec reboot, turn off Bus Master bit on the
-     @@ drivers/pci/pci-driver.c: static int pci_pm_reenable_device(struct pci_dev *pci_dev)
-      static int pci_legacy_suspend(struct device *dev, pm_message_t state)
-      {
-      	struct pci_dev *pci_dev = to_pci_dev(dev);
-     -	struct pci_driver *drv = pci_dev->driver;
-    -+	struct pci_driver *drv = to_pci_driver(dev->driver);
-      
-    - 	if (drv && drv->suspend) {
-    - 		pci_power_t prev = pci_dev->current_state;
-    +-	if (drv && drv->suspend) {
-    +-		pci_power_t prev = pci_dev->current_state;
-    +-		int error;
-    ++	if (dev->driver) {
-    ++		struct pci_driver *drv = to_pci_driver(dev->driver);
-    + 
-    +-		error = drv->suspend(pci_dev, state);
-    +-		suspend_report_result(drv->suspend, error);
-    +-		if (error)
-    +-			return error;
-    ++		if (drv->suspend) {
-    ++			pci_power_t prev = pci_dev->current_state;
-    ++			int error;
-    + 
-    +-		if (!pci_dev->state_saved && pci_dev->current_state != PCI_D0
-    +-		    && pci_dev->current_state != PCI_UNKNOWN) {
-    +-			pci_WARN_ONCE(pci_dev, pci_dev->current_state != prev,
-    +-				      "PCI PM: Device state not saved by %pS\n",
-    +-				      drv->suspend);
-    ++			error = drv->suspend(pci_dev, state);
-    ++			suspend_report_result(drv->suspend, error);
-    ++			if (error)
-    ++				return error;
-    ++
-    ++			if (!pci_dev->state_saved && pci_dev->current_state != PCI_D0
-    ++			    && pci_dev->current_state != PCI_UNKNOWN) {
-    ++				pci_WARN_ONCE(pci_dev, pci_dev->current_state != prev,
-    ++					      "PCI PM: Device state not saved by %pS\n",
-    ++					      drv->suspend);
-    ++			}
-    + 		}
-    + 	}
-    + 
-     @@ drivers/pci/pci-driver.c: static int pci_legacy_suspend_late(struct device *dev, pm_message_t state)
-      static int pci_legacy_resume(struct device *dev)
-      {
-      	struct pci_dev *pci_dev = to_pci_dev(dev);
-     -	struct pci_driver *drv = pci_dev->driver;
-    -+	struct pci_driver *drv = to_pci_driver(pci_dev->dev.driver);
-      
-      	pci_fixup_device(pci_fixup_resume, pci_dev);
-      
-    +-	return drv && drv->resume ?
-    +-			drv->resume(pci_dev) : pci_pm_reenable_device(pci_dev);
-    ++	if (pci_dev->dev.driver) {
-    ++		struct pci_driver *drv = to_pci_driver(pci_dev->dev.driver);
-    ++
-    ++		if (drv->resume)
-    ++			return drv->resume(pci_dev);
-    ++	}
-    ++
-    ++	return pci_pm_reenable_device(pci_dev);
-    + }
-    + 
-    + /* Auxiliary functions used by the new power management framework */
-     @@ drivers/pci/pci-driver.c: static void pci_pm_default_suspend(struct pci_dev *pci_dev)
-      
-      static bool pci_has_legacy_pm_support(struct pci_dev *pci_dev)
-      {
-     -	struct pci_driver *drv = pci_dev->driver;
-    -+	struct pci_driver *drv = to_pci_driver(pci_dev->dev.driver);
-    - 	bool ret = drv && (drv->suspend || drv->resume);
-    +-	bool ret = drv && (drv->suspend || drv->resume);
-    ++	struct pci_driver *drv;
-    ++	bool ret;
-    ++
-    ++	if (!pci_dev->dev.driver)
-    ++		return false;
-    ++
-    ++	drv = to_pci_driver(pci_dev->dev.driver);
-    ++	ret = drv && (drv->suspend || drv->resume);
-      
-      	/*
-    + 	 * Legacy PM support is used by default, so warn if the new framework is
-     @@ drivers/pci/pci-driver.c: static int pci_pm_runtime_suspend(struct device *dev)
-      	int error;
-      
- 6:  d93a138bd7ab = 11:  2686d69bca17 PCI: Drop duplicated tracking of a pci_dev's bound driver
+PATCH 8:
+  -  Adds extra information in AER error logs.
 
-base-commit: 5816b3e6577eaa676ceb00a848f0fd65fe2adc29
+Thanks,
+Naveen Naidu
+
+Naveen Naidu (8):
+ [PATCH 1/8] PCI/AER: Remove ID from aer_agent_string[]
+ [PATCH 2/8] PCI: Cleanup struct aer_err_info
+ [PATCH 3/8] PCI/DPC: Initialize info->id in dpc_process_error()
+ [PATCH 4/8] PCI/DPC: Use pci_aer_clear_status() in dpc_process_error()
+ [PATCH 5/8] PCI/DPC: Converge EDR and DPC Path of clearing AER registers
+ [PATCH 6/8] PCI/AER: Clear error device AER registers in aer_irq()
+ [PATCH 7/8] PCI/ERR: Remove redundant clearing of AER register in pcie_do_recovery()
+ [PATCH 8/8] PCI/AER: Include DEVCTL in aer_print_error()
+
+ drivers/pci/pci.h      |  23 +++-
+ drivers/pci/pcie/aer.c | 265 ++++++++++++++++++++++++++++-------------
+ drivers/pci/pcie/dpc.c |   9 +-
+ drivers/pci/pcie/err.c |   9 +-
+ 4 files changed, 207 insertions(+), 99 deletions(-)
+
 -- 
-2.30.2
+2.25.1
 
