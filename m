@@ -2,70 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F05E742137A
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Oct 2021 18:02:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5909842138A
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Oct 2021 18:03:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HNQTg6jfRz3cMY
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 03:02:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HNQVJ2P8nz3cWC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 03:03:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=i/i7wLrh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=IpCzKUbo;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52e;
- helo=mail-pg1-x52e.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42d;
+ helo=mail-pf1-x42d.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=i/i7wLrh; dkim-atps=neutral
-Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com
- [IPv6:2607:f8b0:4864:20::52e])
+ header.s=20210112 header.b=IpCzKUbo; dkim-atps=neutral
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com
+ [IPv6:2607:f8b0:4864:20::42d])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HNQS45DkLz2yHy
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 03:01:08 +1100 (AEDT)
-Received: by mail-pg1-x52e.google.com with SMTP id s11so16963855pgr.11
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Oct 2021 09:01:08 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HNQS82KJvz2yTq
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 03:01:12 +1100 (AEDT)
+Received: by mail-pf1-x42d.google.com with SMTP id m26so1652946pff.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Oct 2021 09:01:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=Cnfzayer/odaC20bEu/UMo0Ban8qAMEc7NkYV1p/hU8=;
- b=i/i7wLrhPuKj8xef4HNo0yzJAzxsWagLSCJZEm2GVybli0EMdfz1v0EvYh1rvtdAMK
- PLyzi991XdldSAV+o6uOOVlzLSqyfh+k8aIerL+yZDMox4vzWj/LomQ+KnqRV3s3+Oek
- i1t8GJa5GNdzvqTDX5xMZoy05HUBMbmm5eQwrs/aXw/hzHFNA/RhdSQAubcyf3Gzlyep
- Ua5O2JFnzZWaIL3PwVCwlZdadpUfWPJjAuDVAkWCXd64OfFQtqImKxg+9BPLgXC/FL9P
- f9nSXHwj396vz0WBj1QEEpxS0NZ6iT9uAVgh9MXbbycTMzyLVU3TPn4jK0eLNgnylV3z
- wlRA==
+ bh=zf9+rzXTVi8plIkKJnOaRfuWZtrpNKxJ2kRRjgEz1l0=;
+ b=IpCzKUboYsufQlqofbjtwHJ26a3gG3Udd35ZcUoXYGIJVrbHWS8NvVD8VY1vS4hVFt
+ sYLpF35diFkfXr6amvzmSgtVKgKMP9nNvkVFGgeB7OulGx0Txo7lxIbQbW+YqS2iLy+L
+ hnhcUKn9/NDSS1crCYK/xmmsLameS/uGYbpMgJlUyyNvqzfTWV2TqwAEOH/q1sbGuYqk
+ l21kz9E1Y4xdQFGtqgrXS/wfPKBLMfe9jtNmOjpR1JtHSurlnL7hzkpsV+xlRE35ciDj
+ 3eRykrrY7essQHMZbJ4Tnjb9rpywFVpXvl2VcQpK2lFxQbNbvANPCPtao2i8zWeuHHSP
+ p+Kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=Cnfzayer/odaC20bEu/UMo0Ban8qAMEc7NkYV1p/hU8=;
- b=jZlCsh9fovRPqNtGPhJ3NWFHgi6GyWGc89NGEBknXcc9pNW8r++l0oYt/if4jv8bEn
- 2xIN6Opioo4DTfLubs4GyQmRMRY12IWnxwFM/fqttMNCcWqG1grcqVPvFg2zvfJPBLJ/
- 38SLai+5FwJ2l0ynJ9p54pGpyHJszpex/RaCkJKBFhrQiZ8lebQzSdLsPodnwgjAxQdE
- Lb0Jf7N5E0i2bVcrtreHHzeTmFK/qd7sWLOs1wCMERhXoVDHlc7YZ5yB4sW3AO8D122w
- almJiEbIChkjBS5rd5fkI7f93C9qAkjcUDg85qLX9qA3hU2ks+RwFndPRLRBdxCAXSCA
- RHaA==
-X-Gm-Message-State: AOAM5312lOWWfqI5b1a9y9IOW2NTx3F9BU2yEdxtuXzCvHxgsF/8qBww
- vsGgW8S0LxR6rhbWhiAY2Eo=
-X-Google-Smtp-Source: ABdhPJzQidBs0IfBrm6laNxRLmaLqZy0ljGZ98570y7F4m7cBL+iegV6TmHqU8fyrzqwkoW3aFxXdw==
-X-Received: by 2002:aa7:8891:0:b0:44c:255d:391f with SMTP id
- z17-20020aa78891000000b0044c255d391fmr15502813pfe.26.1633363266698; 
- Mon, 04 Oct 2021 09:01:06 -0700 (PDT)
+ bh=zf9+rzXTVi8plIkKJnOaRfuWZtrpNKxJ2kRRjgEz1l0=;
+ b=23/m8GV14Ub7ku39FM1O7R4gZib9jtmJ0/blIL7UVrXZss45EgF2+fKTlIQfSW6JXG
+ t8nQ/9zW8HmTwZ8lotR0SDRmE1Kda4D3mN4oOL5RsHkfC5vV3FM/7nAAt2is4gxx0Wcr
+ IHNgYxmh1aaCwyl95ArGBTyB+V9jtNNS+2N+NH6idZWDW9F8UOn6YUoDKpRrpV0/slSc
+ xsCuS4K7SRJQyOVrYnRNVesqdUzbArzBZqOJcqgr0yEWaIrz2IH8qLVln9Qx98OI369D
+ 65bKZ/VEnL/7kf+KH+5sk+uZTc+4EJYClho5fulOLqNdcmrGkdRXp9XaXTDjBEJZLC7b
+ 6nPw==
+X-Gm-Message-State: AOAM531NCoJl1IKGMW/vQptqtVT2Oze7VkxoOOi7ME2J/gjVgTtoZ8nX
+ XZELw7gVALY9VEQIJrTN1vU=
+X-Google-Smtp-Source: ABdhPJxkFM4brl+777k2MPuDMiwgYuONWj7Oh1/MWWHD9rxebdH1RhU/PvAkmMgOwL/wyQRhqGgKqg==
+X-Received: by 2002:a62:5804:0:b0:44b:b75b:ec8f with SMTP id
+ m4-20020a625804000000b0044bb75bec8fmr25399694pfb.63.1633363269208; 
+ Mon, 04 Oct 2021 09:01:09 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (115-64-153-41.tpgi.com.au. [115.64.153.41])
- by smtp.gmail.com with ESMTPSA id 130sm15557223pfz.77.2021.10.04.09.01.04
+ by smtp.gmail.com with ESMTPSA id 130sm15557223pfz.77.2021.10.04.09.01.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Oct 2021 09:01:06 -0700 (PDT)
+ Mon, 04 Oct 2021 09:01:08 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 02/52] powerpc/64s: guard optional TIDR SPR with CPU ftr
- test
-Date: Tue,  5 Oct 2021 01:59:59 +1000
-Message-Id: <20211004160049.1338837-3-npiggin@gmail.com>
+Subject: [PATCH v3 03/52] KMV: PPC: Book3S HV P9: Use set_dec to set
+ decrementer to host
+Date: Tue,  5 Oct 2021 02:00:00 +1000
+Message-Id: <20211004160049.1338837-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20211004160049.1338837-1-npiggin@gmail.com>
 References: <20211004160049.1338837-1-npiggin@gmail.com>
@@ -82,85 +82,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The TIDR SPR only exists on POWER9. Avoid accessing it when the
-feature bit for it is not set.
+The host Linux timer code arms the decrementer with the value
+'decrementers_next_tb - current_tb' using set_dec(), which stores
+val - 1 on Book3S-64, which is not quite the same as what KVM does
+to re-arm the host decrementer when exiting the guest.
 
+This shouldn't be a significant change, but it makes the logic match
+and avoids this small extra change being brought into the next patch.
+
+Suggested-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kvm/book3s_hv.c | 12 ++++++++----
- arch/powerpc/xmon/xmon.c     | 10 ++++++++--
- 2 files changed, 16 insertions(+), 6 deletions(-)
+ arch/powerpc/kvm/book3s_hv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 2acb1c96cfaf..f4a779fffd18 100644
+index f4a779fffd18..6a07a79f07d8 100644
 --- a/arch/powerpc/kvm/book3s_hv.c
 +++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -3767,7 +3767,8 @@ static void load_spr_state(struct kvm_vcpu *vcpu)
- 	mtspr(SPRN_EBBHR, vcpu->arch.ebbhr);
- 	mtspr(SPRN_EBBRR, vcpu->arch.ebbrr);
- 	mtspr(SPRN_BESCR, vcpu->arch.bescr);
--	mtspr(SPRN_TIDR, vcpu->arch.tid);
-+	if (cpu_has_feature(CPU_FTR_P9_TIDR))
-+		mtspr(SPRN_TIDR, vcpu->arch.tid);
- 	mtspr(SPRN_AMR, vcpu->arch.amr);
- 	mtspr(SPRN_UAMOR, vcpu->arch.uamor);
+@@ -4050,7 +4050,7 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	vc->entry_exit_map = 0x101;
+ 	vc->in_guest = 0;
  
-@@ -3793,7 +3794,8 @@ static void store_spr_state(struct kvm_vcpu *vcpu)
- 	vcpu->arch.ebbhr = mfspr(SPRN_EBBHR);
- 	vcpu->arch.ebbrr = mfspr(SPRN_EBBRR);
- 	vcpu->arch.bescr = mfspr(SPRN_BESCR);
--	vcpu->arch.tid = mfspr(SPRN_TIDR);
-+	if (cpu_has_feature(CPU_FTR_P9_TIDR))
-+		vcpu->arch.tid = mfspr(SPRN_TIDR);
- 	vcpu->arch.amr = mfspr(SPRN_AMR);
- 	vcpu->arch.uamor = mfspr(SPRN_UAMOR);
- 	vcpu->arch.dscr = mfspr(SPRN_DSCR);
-@@ -3813,7 +3815,8 @@ struct p9_host_os_sprs {
- static void save_p9_host_os_sprs(struct p9_host_os_sprs *host_os_sprs)
- {
- 	host_os_sprs->dscr = mfspr(SPRN_DSCR);
--	host_os_sprs->tidr = mfspr(SPRN_TIDR);
-+	if (cpu_has_feature(CPU_FTR_P9_TIDR))
-+		host_os_sprs->tidr = mfspr(SPRN_TIDR);
- 	host_os_sprs->iamr = mfspr(SPRN_IAMR);
- 	host_os_sprs->amr = mfspr(SPRN_AMR);
- 	host_os_sprs->fscr = mfspr(SPRN_FSCR);
-@@ -3827,7 +3830,8 @@ static void restore_p9_host_os_sprs(struct kvm_vcpu *vcpu,
- 	mtspr(SPRN_UAMOR, 0);
- 
- 	mtspr(SPRN_DSCR, host_os_sprs->dscr);
--	mtspr(SPRN_TIDR, host_os_sprs->tidr);
-+	if (cpu_has_feature(CPU_FTR_P9_TIDR))
-+		mtspr(SPRN_TIDR, host_os_sprs->tidr);
- 	mtspr(SPRN_IAMR, host_os_sprs->iamr);
- 
- 	if (host_os_sprs->amr != vcpu->arch.amr)
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index dd8241c009e5..7958e5aae844 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -2107,8 +2107,14 @@ static void dump_300_sprs(void)
- 	if (!cpu_has_feature(CPU_FTR_ARCH_300))
- 		return;
- 
--	printf("pidr   = %.16lx  tidr  = %.16lx\n",
--		mfspr(SPRN_PID), mfspr(SPRN_TIDR));
-+	if (cpu_has_feature(CPU_FTR_P9_TIDR)) {
-+		printf("pidr   = %.16lx  tidr  = %.16lx\n",
-+			mfspr(SPRN_PID), mfspr(SPRN_TIDR));
-+	} else {
-+		printf("pidr   = %.16lx\n",
-+			mfspr(SPRN_PID));
-+	}
-+
- 	printf("psscr  = %.16lx\n",
- 		hv ? mfspr(SPRN_PSSCR) : mfspr(SPRN_PSSCR_PR));
- 
+-	mtspr(SPRN_DEC, local_paca->kvm_hstate.dec_expires - mftb());
++	set_dec(local_paca->kvm_hstate.dec_expires - mftb());
+ 	/* We may have raced with new irq work */
+ 	if (test_irq_work_pending())
+ 		set_dec(1);
 -- 
 2.23.0
 
