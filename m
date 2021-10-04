@@ -1,64 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A7EA4219D6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 00:17:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D774A4219D7
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 00:17:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HNZpK2hnjz2xtc
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 09:17:29 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=Z4bflGLl;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HNZpr5m5kz3c8W
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 09:17:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.50;
- helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+ smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33;
+ helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=Z4bflGLl; 
- dkim-atps=neutral
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de
- [85.215.255.50])
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
+ [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HNFcq3yzrz2xtg
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Oct 2021 20:23:05 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1633339372;
- s=strato-dkim-0002; d=xenosoft.de;
- h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
- From:Subject:Sender;
- bh=ZVOzDss9x9ngtyfGLYvMwz8KKc8tZQuNcPXQgEYTehg=;
- b=Z4bflGLl33esPMUz2wJnbBQd2nleLwFC70O+FjXozH06UA5UrEiX4tTsqjmkQvHodc
- TBk0ODSP75x6qjlEULhAwA5OLZHvm4g8uHRiybw50J3aApm/8bl5Jmaj+onjgfEhnf9H
- /zxheRcctSUcEIutdiD0UN2ds04BJQu6T/IitIyzKJ6B7YyQDkiIkgZeC8XImwHL8pDv
- ODe8B6G+37vagfA+ddVZK6i6HbRe3wl5cBCxXiiewjCpt5Il6q8TuUuGvutgROzb+DGx
- G3llRdEQ/41umuGVAkuam6NR2QN8ltGiOfHoaILCNqsHKUa8LVww0kxCrCI11SIWelLV
- 7lIg==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7R7b2Z2iLowxnW5xdau+4p3FLe2JCuii1Hw7eG9unsd"
-X-RZG-CLASS-ID: mo00
-Received: from smtpclient.apple by smtp.strato.de (RZmta 47.33.8 AUTH)
- with ESMTPSA id I00cdex949Mnl9F
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Mon, 4 Oct 2021 11:22:49 +0200 (CEST)
-Content-Type: multipart/alternative;
- boundary=Apple-Mail-BFABFE53-1E60-40F3-B9EF-BC1F987A543D
-Content-Transfer-Encoding: 7bit
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-Mime-Version: 1.0 (1.0)
-Subject: Re: Add Apple M1 support to PASemi i2c driver
-Date: Mon, 4 Oct 2021 11:22:48 +0200
-Message-Id: <E1746395-FC34-4096-80BA-945559F263F2@xenosoft.de>
-References: <49890226-cf04-46ff-bc37-33d1643faea2@www.fastmail.com>
-In-Reply-To: <49890226-cf04-46ff-bc37-33d1643faea2@www.fastmail.com>
-To: Sven Peter <sven@svenpeter.dev>
-X-Mailer: iPhone Mail (19A346)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HNLRs46Nfz2ybK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 00:00:41 +1100 (AEDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <ukl@pengutronix.de>)
+ id 1mXNZO-00054e-PH; Mon, 04 Oct 2021 14:59:50 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+ by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <ukl@pengutronix.de>)
+ id 1mXNZF-0000Kt-4h; Mon, 04 Oct 2021 14:59:41 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.92)
+ (envelope-from <ukl@pengutronix.de>)
+ id 1mXNZE-0000ay-Vr; Mon, 04 Oct 2021 14:59:40 +0200
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Subject: [PATCH v6 00/11] PCI: Drop duplicated tracking of a pci_dev's bound
+ driver
+Date: Mon,  4 Oct 2021 14:59:24 +0200
+Message-Id: <20211004125935.2300113-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
+ SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Approved-At: Tue, 05 Oct 2021 09:16:56 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -71,244 +59,307 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, Arnd Bergmann <arnd@arndb.de>,
- Hector Martin <marcan@marcan.st>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-i2c@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Alyssa Rosenzweig <alyssa@rosenzweig.io>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- Olof Johansson <olof@lixom.net>, mohamed.mediouni@caramail.com,
- Matthew Leaman <matthew@a-eon.biz>, Mark Kettenis <mark.kettenis@xs4all.nl>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "R.T.Dickinson" <rtd@a-eon.com>,
- linux-arm-kernel@lists.infradead.org, Stan Skowronek <stan@corellium.com>
+Cc: Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Sathya Prakash <sathya.prakash@broadcom.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ linux-pci@vger.kernel.org, Alexander Duyck <alexanderduyck@fb.com>,
+ x86@kernel.org, qat-linux@intel.com, oss-drivers@corigine.com,
+ Oliver O'Halloran <oohall@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ Jiri Olsa <jolsa@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Marco Chiappero <marco.chiappero@intel.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>, linux-scsi@vger.kernel.org,
+ =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
+ Jesse Brandeburg <jesse.brandeburg@intel.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ linux-wireless@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+ Yisen Zhuang <yisen.zhuang@huawei.com>,
+ Suganath Prabu Subramani <suganath-prabu.subramani@broadcom.com>,
+ Fiona Trahe <fiona.trahe@intel.com>, Andrew Donnellan <ajd@linux.ibm.com>,
+ Arnd Bergmann <arnd@arndb.de>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ Ido Schimmel <idosch@nvidia.com>, Simon Horman <simon.horman@corigine.com>,
+ linuxppc-dev@lists.ozlabs.org, Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Jack Xu <jack.xu@intel.com>, Borislav Petkov <bp@alien8.de>,
+ Michael Buesch <m@bues.ch>, Jiri Pirko <jiri@nvidia.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Namhyung Kim <namhyung@kernel.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Juergen Gross <jgross@suse.com>, Salil Mehta <salil.mehta@huawei.com>,
+ Sreekanth Reddy <sreekanth.reddy@broadcom.com>, xen-devel@lists.xenproject.org,
+ Vadym Kochan <vkochan@marvell.com>, MPT-FusionLinux.pdl@broadcom.com,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
+ Wojciech Ziemba <wojciech.ziemba@intel.com>, linux-kernel@vger.kernel.org,
+ Mathias Nyman <mathias.nyman@intel.com>, Zhou Wang <wangzhou1@hisilicon.com>,
+ linux-crypto@vger.kernel.org, kernel@pengutronix.de, netdev@vger.kernel.org,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ Tomaszx Kowalik <tomaszx.kowalik@intel.com>,
+ Taras Chornyi <tchornyi@marvell.com>, "David S. Miller" <davem@davemloft.net>,
+ linux-perf-users@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hello,
 
---Apple-Mail-BFABFE53-1E60-40F3-B9EF-BC1F987A543D
-Content-Type: text/plain;
-	charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+this is v6 of the quest to drop the "driver" member from struct pci_dev
+which tracks the same data (apart from a constant offset) as dev.driver.
 
+Changes since v5:
+ - Some Acks added
+ - Some fixes in "PCI: Replace pci_dev::driver usage by
+   pci_dev::dev.driver" to properly handle that
+   to_pci_driver(X) is wrong if X is NULL.
+   This should fix the problem reported by Ido Schimmel.
 
+Full range diff below.
 
-> On 3. Oct 2021, at 16:36, Sven Peter <sven@svenpeter.dev> wrote:
->=20
-> =EF=BB=BFHi,
->=20
->=20
->> On Fri, Oct 1, 2021, at 06:47, Christian Zigotzky wrote:
->>> On 27 September 2021 at 07:39 am, Sven Peter wrote:
->>> Hi Christian,
->>>=20
->>> Thanks already for volunteering to test this!
->>>=20
->> Hello Sven,
->>=20
->> Damien (Hypex) has successfully tested the RC3 of kernel 5.15 with your=20=
+This patch stack survived an allmodconfig build on arm64, m68k, powerpc,
+riscv, s390, sparc64 and x86_64 on top of v5.15-rc3.
 
->> modified i2c driver on his Nemo board yesterday. [1]
->=20
-> Thanks a lot, that's great to hear!
-> If he wants to I can credit him with a Tested-by tag in the commit message=
-,
-> see e.g. https://www.kernel.org/doc/html/latest/process/submitting-patches=
-.html#using-reported-by-tested-by-reviewed-by-suggested-by-and-fixes.
->=20
->=20
-> Best,
->=20
->=20
-> Sven
+Best regards
+Uwe
 
-Hi Sven,
+Uwe Kleine-König (11):
+  PCI: Simplify pci_device_remove()
+  PCI: Drop useless check from pci_device_probe()
+  xen/pci: Drop some checks that are always true
+  bcma: simplify reference to the driver's name
+  powerpc/eeh: Don't use driver member of struct pci_dev and further
+    cleanups
+  ssb: Simplify determination of driver name
+  PCI: Replace pci_dev::driver usage that gets the driver name
+  scsi: message: fusion: Remove unused parameter of mpt_pci driver's
+    probe()
+  crypto: qat - simplify adf_enable_aer()
+  PCI: Replace pci_dev::driver usage by pci_dev::dev.driver
+  PCI: Drop duplicated tracking of a pci_dev's bound driver
 
-Unfortunately Damien has found an issue. [1]
+ arch/powerpc/include/asm/ppc-pci.h            |  5 -
+ arch/powerpc/kernel/eeh.c                     |  8 ++
+ arch/powerpc/kernel/eeh_driver.c              | 10 +-
+ arch/x86/events/intel/uncore.c                |  2 +-
+ arch/x86/kernel/probe_roms.c                  | 10 +-
+ drivers/bcma/host_pci.c                       |  6 +-
+ drivers/crypto/hisilicon/qm.c                 |  2 +-
+ drivers/crypto/qat/qat_4xxx/adf_drv.c         |  7 +-
+ drivers/crypto/qat/qat_c3xxx/adf_drv.c        |  7 +-
+ drivers/crypto/qat/qat_c62x/adf_drv.c         |  7 +-
+ drivers/crypto/qat/qat_common/adf_aer.c       | 10 +-
+ .../crypto/qat/qat_common/adf_common_drv.h    |  3 +-
+ drivers/crypto/qat/qat_dh895xcc/adf_drv.c     |  7 +-
+ drivers/message/fusion/mptbase.c              |  7 +-
+ drivers/message/fusion/mptbase.h              |  2 +-
+ drivers/message/fusion/mptctl.c               |  4 +-
+ drivers/message/fusion/mptlan.c               |  2 +-
+ drivers/misc/cxl/guest.c                      | 24 +++--
+ drivers/misc/cxl/pci.c                        | 30 +++---
+ .../ethernet/hisilicon/hns3/hns3_ethtool.c    |  2 +-
+ .../ethernet/marvell/prestera/prestera_pci.c  |  2 +-
+ drivers/net/ethernet/mellanox/mlxsw/pci.c     |  2 +-
+ .../ethernet/netronome/nfp/nfp_net_ethtool.c  |  3 +-
+ drivers/pci/iov.c                             | 33 +++++--
+ drivers/pci/pci-driver.c                      | 96 ++++++++++---------
+ drivers/pci/pci.c                             |  4 +-
+ drivers/pci/pcie/err.c                        | 36 +++----
+ drivers/pci/xen-pcifront.c                    | 63 ++++++------
+ drivers/ssb/pcihost_wrapper.c                 |  6 +-
+ drivers/usb/host/xhci-pci.c                   |  2 +-
+ include/linux/pci.h                           |  1 -
+ 31 files changed, 208 insertions(+), 195 deletions(-)
 
-Output of i2cdetect -l with the default RC3 of kernel 5.15 without your modi=
-fications:
+Range-diff against v5:
+ -:  ------------ >  1:  c2b53ab26a6b PCI: Simplify pci_device_remove()
+ -:  ------------ >  2:  2c733e1d5186 PCI: Drop useless check from pci_device_probe()
+ -:  ------------ >  3:  547ca5a7aa16 xen/pci: Drop some checks that are always true
+ -:  ------------ >  4:  40eb07353844 bcma: simplify reference to the driver's name
+ -:  ------------ >  5:  bab59c1dff6d powerpc/eeh: Don't use driver member of struct pci_dev and further cleanups
+ 1:  abd70de9782d !  6:  92f4d61bbac3 ssb: Simplify determination of driver name
+    @@ Commit message
+         This has the upside of not requiring the driver member of struct pci_dev
+         which is about to be removed and being simpler.
+     
+    +    Acked-by: Michael Büsch <m@bues.ch>
+         Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+     
+      ## drivers/ssb/pcihost_wrapper.c ##
+ 2:  735845bd26b9 !  7:  6303f03ab2aa PCI: Replace pci_dev::driver usage that gets the driver name
+    @@ Commit message
+         driver name by dev_driver_string() which implicitly makes use of struct
+         pci_dev::dev->driver.
+     
+    +    Acked-by: Simon Horman <simon.horman@corigine.com> (for NFP)
+         Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+     
+      ## drivers/crypto/hisilicon/qm.c ##
+ 3:  1e58019165b9 =  8:  658a6c00ec96 scsi: message: fusion: Remove unused parameter of mpt_pci driver's probe()
+ 4:  dea72a470141 =  9:  aceaf5321603 crypto: qat - simplify adf_enable_aer()
+ 5:  b4165dda38ea ! 10:  80648d999985 PCI: Replace pci_dev::driver usage by pci_dev::dev.driver
+    @@ arch/x86/kernel/probe_roms.c: static struct resource video_rom_resource = {
+      static bool match_id(struct pci_dev *pdev, unsigned short vendor, unsigned short device)
+      {
+     -	struct pci_driver *drv = pdev->driver;
+    -+	struct pci_driver *drv = to_pci_driver(pdev->dev.driver);
+      	const struct pci_device_id *id;
+      
+      	if (pdev->vendor == vendor && pdev->device == device)
+    + 		return true;
+    + 
+    +-	for (id = drv ? drv->id_table : NULL; id && id->vendor; id++)
+    +-		if (id->vendor == vendor && id->device == device)
+    +-			break;
+    ++	if (pdev->dev.driver) {
+    ++		struct pci_driver *drv = to_pci_driver(pdev->dev.driver);
+    ++		for (id = drv->id_table; id && id->vendor; id++)
+    ++			if (id->vendor == vendor && id->device == device)
+    ++				break;
+    ++	}
+    + 
+    + 	return id && id->vendor;
+    + }
+     
+      ## drivers/misc/cxl/guest.c ##
+     @@ drivers/misc/cxl/guest.c: static void pci_error_handlers(struct cxl_afu *afu,
+    @@ drivers/pci/iov.c: static ssize_t sriov_vf_total_msix_show(struct device *dev,
+      
+      	device_lock(dev);
+     -	if (!pdev->driver || !pdev->driver->sriov_get_vf_total_msix)
+    -+	pdrv = to_pci_driver(dev->driver);
+    -+	if (!pdrv || !pdrv->sriov_get_vf_total_msix)
+    ++	if (!dev->driver)
+      		goto unlock;
+      
+     -	vf_total_msix = pdev->driver->sriov_get_vf_total_msix(pdev);
+    ++	pdrv = to_pci_driver(dev->driver);
+    ++	if (!pdrv->sriov_get_vf_total_msix)
+    ++		goto unlock;
+    ++
+     +	vf_total_msix = pdrv->sriov_get_vf_total_msix(pdev);
+      unlock:
+      	device_unlock(dev);
+    @@ drivers/pci/iov.c: static ssize_t sriov_vf_msix_count_store(struct device *dev,
+      
+      	device_lock(&pdev->dev);
+     -	if (!pdev->driver || !pdev->driver->sriov_set_msix_vec_count) {
+    ++	if (!pdev->dev.driver) {
+    ++		ret = -EOPNOTSUPP;
+    ++		goto err_pdev;
+    ++	}
+    ++
+     +	pdrv = to_pci_driver(pdev->dev.driver);
+    -+	if (!pdrv || !pdrv->sriov_set_msix_vec_count) {
+    ++	if (!pdrv->sriov_set_msix_vec_count) {
+      		ret = -EOPNOTSUPP;
+      		goto err_pdev;
+      	}
+    @@ drivers/pci/pci-driver.c: static void pci_device_remove(struct device *dev)
+      {
+      	struct pci_dev *pci_dev = to_pci_dev(dev);
+     -	struct pci_driver *drv = pci_dev->driver;
+    -+	struct pci_driver *drv = to_pci_driver(pci_dev->dev.driver);
+      
+      	pm_runtime_resume(dev);
+      
+    +-	if (drv && drv->shutdown)
+    +-		drv->shutdown(pci_dev);
+    ++	if (pci_dev->dev.driver) {
+    ++		struct pci_driver *drv = to_pci_driver(pci_dev->dev.driver);
+    ++
+    ++		if (drv->shutdown)
+    ++			drv->shutdown(pci_dev);
+    ++	}
+    + 
+    + 	/*
+    + 	 * If this is a kexec reboot, turn off Bus Master bit on the
+     @@ drivers/pci/pci-driver.c: static int pci_pm_reenable_device(struct pci_dev *pci_dev)
+      static int pci_legacy_suspend(struct device *dev, pm_message_t state)
+      {
+      	struct pci_dev *pci_dev = to_pci_dev(dev);
+     -	struct pci_driver *drv = pci_dev->driver;
+    -+	struct pci_driver *drv = to_pci_driver(dev->driver);
+      
+    - 	if (drv && drv->suspend) {
+    - 		pci_power_t prev = pci_dev->current_state;
+    +-	if (drv && drv->suspend) {
+    +-		pci_power_t prev = pci_dev->current_state;
+    +-		int error;
+    ++	if (dev->driver) {
+    ++		struct pci_driver *drv = to_pci_driver(dev->driver);
+    + 
+    +-		error = drv->suspend(pci_dev, state);
+    +-		suspend_report_result(drv->suspend, error);
+    +-		if (error)
+    +-			return error;
+    ++		if (drv->suspend) {
+    ++			pci_power_t prev = pci_dev->current_state;
+    ++			int error;
+    + 
+    +-		if (!pci_dev->state_saved && pci_dev->current_state != PCI_D0
+    +-		    && pci_dev->current_state != PCI_UNKNOWN) {
+    +-			pci_WARN_ONCE(pci_dev, pci_dev->current_state != prev,
+    +-				      "PCI PM: Device state not saved by %pS\n",
+    +-				      drv->suspend);
+    ++			error = drv->suspend(pci_dev, state);
+    ++			suspend_report_result(drv->suspend, error);
+    ++			if (error)
+    ++				return error;
+    ++
+    ++			if (!pci_dev->state_saved && pci_dev->current_state != PCI_D0
+    ++			    && pci_dev->current_state != PCI_UNKNOWN) {
+    ++				pci_WARN_ONCE(pci_dev, pci_dev->current_state != prev,
+    ++					      "PCI PM: Device state not saved by %pS\n",
+    ++					      drv->suspend);
+    ++			}
+    + 		}
+    + 	}
+    + 
+     @@ drivers/pci/pci-driver.c: static int pci_legacy_suspend_late(struct device *dev, pm_message_t state)
+      static int pci_legacy_resume(struct device *dev)
+      {
+      	struct pci_dev *pci_dev = to_pci_dev(dev);
+     -	struct pci_driver *drv = pci_dev->driver;
+    -+	struct pci_driver *drv = to_pci_driver(pci_dev->dev.driver);
+      
+      	pci_fixup_device(pci_fixup_resume, pci_dev);
+      
+    +-	return drv && drv->resume ?
+    +-			drv->resume(pci_dev) : pci_pm_reenable_device(pci_dev);
+    ++	if (pci_dev->dev.driver) {
+    ++		struct pci_driver *drv = to_pci_driver(pci_dev->dev.driver);
+    ++
+    ++		if (drv->resume)
+    ++			return drv->resume(pci_dev);
+    ++	}
+    ++
+    ++	return pci_pm_reenable_device(pci_dev);
+    + }
+    + 
+    + /* Auxiliary functions used by the new power management framework */
+     @@ drivers/pci/pci-driver.c: static void pci_pm_default_suspend(struct pci_dev *pci_dev)
+      
+      static bool pci_has_legacy_pm_support(struct pci_dev *pci_dev)
+      {
+     -	struct pci_driver *drv = pci_dev->driver;
+    -+	struct pci_driver *drv = to_pci_driver(pci_dev->dev.driver);
+    - 	bool ret = drv && (drv->suspend || drv->resume);
+    +-	bool ret = drv && (drv->suspend || drv->resume);
+    ++	struct pci_driver *drv;
+    ++	bool ret;
+    ++
+    ++	if (!pci_dev->dev.driver)
+    ++		return false;
+    ++
+    ++	drv = to_pci_driver(pci_dev->dev.driver);
+    ++	ret = drv && (drv->suspend || drv->resume);
+      
+      	/*
+    + 	 * Legacy PM support is used by default, so warn if the new framework is
+     @@ drivers/pci/pci-driver.c: static int pci_pm_runtime_suspend(struct device *dev)
+      	int error;
+      
+ 6:  d93a138bd7ab = 11:  2686d69bca17 PCI: Drop duplicated tracking of a pci_dev's bound driver
 
-2c-0	i2c       	Radeon i2c bit bus 0x90         	I2C adapter=
+base-commit: 5816b3e6577eaa676ceb00a848f0fd65fe2adc29
+-- 
+2.30.2
 
-i2c-1	i2c       	Radeon i2c bit bus 0x91         	I2C adapter=
-
-i2c-2	i2c       	Radeon i2c bit bus 0x92         	I2C adapter=
-
-i2c-3	i2c       	Radeon i2c bit bus 0x93         	I2C adapter=
-
-i2c-4	i2c       	Radeon i2c bit bus 0x94         	I2C adapter=
-
-i2c-5	i2c       	Radeon i2c bit bus 0x95         	I2C adapter=
-
-i2c-6	i2c       	Radeon i2c bit bus 0x96         	I2C adapter=
-
-i2c-7	i2c       	Radeon i2c bit bus 0x97         	I2C adapter=
-
-i2c-8	i2c       	PA Semi SMBus adapter at 0x800200	I2C adapter=
-
-i2c-9	i2c       	PA Semi SMBus adapter at 0x800240	I2C adapter=
-
-i2c-10	i2c       	PA Semi SMBus adapter at 0x800280	I2C adapter=
-
-
-Output of i2cdetect -l with your modifications:
-
-i2c-0	i2c       	Radeon i2c bit bus 0x90         	I2C adapter=
-
-i2c-1	i2c       	Radeon i2c bit bus 0x91         	I2C adapter=
-
-i2c-2	i2c       	Radeon i2c bit bus 0x92         	I2C adapter=
-
-i2c-3	i2c       	Radeon i2c bit bus 0x93         	I2C adapter=
-
-i2c-4	i2c       	Radeon i2c bit bus 0x94         	I2C adapter=
-
-i2c-5	i2c       	Radeon i2c bit bus 0x95         	I2C adapter=
-
-i2c-6	i2c       	Radeon i2c bit bus 0x96         	I2C adapter=
-
-i2c-7	i2c       	Radeon i2c bit bus 0x97         	I2C adapter=
-
-i2c-8	i2c       	PA Semi SMBus adapter at 0x(____ptrval____)	I2C=
- adapter
-i2c-9	i2c       	PA Semi SMBus adapter at 0x(____ptrval____)	I2C=
- adapter
-i2c-10	i2c       	PA Semi SMBus adapter at 0x(____ptrval____)	I2C=
- adapter
-
-Please check the outputs.
-
-Thanks,
-Christian
-
-[1] https://forum.hyperion-entertainment.com/viewtopic.php?p=3D54165#p54165=
-
---Apple-Mail-BFABFE53-1E60-40F3-B9EF-BC1F987A543D
-Content-Type: text/html;
-	charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-
-<html><head><meta http-equiv=3D"content-type" content=3D"text/html; charset=3D=
-utf-8"></head><body dir=3D"auto"><br><div dir=3D"ltr"><br><blockquote type=3D=
-"cite">On 3. Oct 2021, at 16:36, Sven Peter &lt;sven@svenpeter.dev&gt; wrote=
-:<br><br></blockquote></div><blockquote type=3D"cite"><div dir=3D"ltr">=EF=BB=
-=BF<span>Hi,</span><br><span></span><br><span></span><br><span>On Fri, Oct 1=
-, 2021, at 06:47, Christian Zigotzky wrote:</span><br><blockquote type=3D"ci=
-te"><span>On 27 September 2021 at 07:39 am, Sven Peter wrote:</span><br></bl=
-ockquote><blockquote type=3D"cite"><blockquote type=3D"cite"><span>Hi Christ=
-ian,</span><br></blockquote></blockquote><blockquote type=3D"cite"><blockquo=
-te type=3D"cite"><span></span><br></blockquote></blockquote><blockquote type=
-=3D"cite"><blockquote type=3D"cite"><span>Thanks already for volunteering to=
- test this!</span><br></blockquote></blockquote><blockquote type=3D"cite"><b=
-lockquote type=3D"cite"><span></span><br></blockquote></blockquote><blockquo=
-te type=3D"cite"><span>Hello Sven,</span><br></blockquote><blockquote type=3D=
-"cite"><span></span><br></blockquote><blockquote type=3D"cite"><span>Damien (=
-Hypex) has successfully tested the RC3 of kernel 5.15 with your </span><br><=
-/blockquote><blockquote type=3D"cite"><span>modified i2c driver on his Nemo b=
-oard yesterday. [1]</span><br></blockquote><span></span><br><span>Thanks a l=
-ot, that's great to hear!</span><br><span>If he wants to I can credit him wi=
-th a Tested-by tag in the commit message,</span><br><span>see e.g. https://w=
-ww.kernel.org/doc/html/latest/process/submitting-patches.html#using-reported=
--by-tested-by-reviewed-by-suggested-by-and-fixes.</span><br><span></span><br=
-><span></span><br><span>Best,</span><br><span></span><br><span></span><br><s=
-pan>Sven</span><br></div></blockquote><br><div>Hi Sven,</div><div><br></div>=
-<div>Unfortunately Damien has found an issue. [1]</div><div><br></div><div>O=
-utput of i2cdetect -l with the default RC3 of kernel 5.15 without your modif=
-ications:</div><div><br></div><div><div>2c-0<span class=3D"Apple-tab-span" s=
-tyle=3D"white-space:pre">	</span>i2c &nbsp; &nbsp; &nbsp; <span class=
-=3D"Apple-tab-span" style=3D"white-space:pre">	</span>Radeon i2c bit bus 0=
-x90 &nbsp; &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-span" style=3D"whit=
-e-space:pre">	</span>I2C adapter</div><div>i2c-1<span class=3D"Apple-tab-=
-span" style=3D"white-space:pre">	</span>i2c &nbsp; &nbsp; &nbsp; <sp=
-an class=3D"Apple-tab-span" style=3D"white-space:pre">	</span>Radeon i2c b=
-it bus 0x91 &nbsp; &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-span" style=
-=3D"white-space:pre">	</span>I2C adapter</div><div>i2c-2<span class=3D"Ap=
-ple-tab-span" style=3D"white-space:pre">	</span>i2c &nbsp; &nbsp; &n=
-bsp; <span class=3D"Apple-tab-span" style=3D"white-space:pre">	</span>Rade=
-on i2c bit bus 0x92 &nbsp; &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-spa=
-n" style=3D"white-space:pre">	</span>I2C adapter</div><div>i2c-3<span cla=
-ss=3D"Apple-tab-span" style=3D"white-space:pre">	</span>i2c &nbsp; &=
-nbsp; &nbsp; <span class=3D"Apple-tab-span" style=3D"white-space:pre">	</s=
-pan>Radeon i2c bit bus 0x93 &nbsp; &nbsp; &nbsp; &nbsp; <span class=3D"Apple=
--tab-span" style=3D"white-space:pre">	</span>I2C adapter</div><div>i2c-4<=
-span class=3D"Apple-tab-span" style=3D"white-space:pre">	</span>i2c &=
-nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-span" style=3D"white-space:pre"=
->	</span>Radeon i2c bit bus 0x94 &nbsp; &nbsp; &nbsp; &nbsp; <span cl=
-ass=3D"Apple-tab-span" style=3D"white-space:pre">	</span>I2C adapter<=
-/div><div>i2c-5<span class=3D"Apple-tab-span" style=3D"white-space:pre">=
-	</span>i2c &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-span" style=3D"whi=
-te-space:pre">	</span>Radeon i2c bit bus 0x95 &nbsp; &nbsp; &nbsp; &nbsp; <=
-span class=3D"Apple-tab-span" style=3D"white-space:pre">	</span>I2C a=
-dapter</div><div>i2c-6<span class=3D"Apple-tab-span" style=3D"white-space:pr=
-e">	</span>i2c &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-span" styl=
-e=3D"white-space:pre">	</span>Radeon i2c bit bus 0x96 &nbsp; &nbsp; &nbsp;=
- &nbsp; <span class=3D"Apple-tab-span" style=3D"white-space:pre">	</s=
-pan>I2C adapter</div><div>i2c-7<span class=3D"Apple-tab-span" style=3D"white=
--space:pre">	</span>i2c &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-sp=
-an" style=3D"white-space:pre">	</span>Radeon i2c bit bus 0x97 &nbsp; &nbsp=
-; &nbsp; &nbsp; <span class=3D"Apple-tab-span" style=3D"white-space:pre">=
-	</span>I2C adapter</div><div>i2c-8<span class=3D"Apple-tab-span" style=3D"w=
-hite-space:pre">	</span>i2c &nbsp; &nbsp; &nbsp; <span class=3D"Appl=
-e-tab-span" style=3D"white-space:pre">	</span>PA Semi SMBus adapter at 0x8=
-00200<span class=3D"Apple-tab-span" style=3D"white-space:pre">	</span>I2C a=
-dapter</div><div>i2c-9<span class=3D"Apple-tab-span" style=3D"white-space:pr=
-e">	</span>i2c &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-span" styl=
-e=3D"white-space:pre">	</span>PA Semi SMBus adapter at 0x800240<span class=
-=3D"Apple-tab-span" style=3D"white-space:pre">	</span>I2C adapter</div><di=
-v>i2c-10<span class=3D"Apple-tab-span" style=3D"white-space:pre">	</s=
-pan>i2c &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-span" style=3D"white-s=
-pace:pre">	</span>PA Semi SMBus adapter at 0x800280<span class=3D"Appl=
-e-tab-span" style=3D"white-space:pre">	</span>I2C adapter</div></div><div>=
-<br></div><div>Output of i2cdetect -l with your modifications:</div><div><br=
-></div><div><div>i2c-0<span class=3D"Apple-tab-span" style=3D"white-space:pr=
-e">	</span>i2c &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-span" styl=
-e=3D"white-space:pre">	</span>Radeon i2c bit bus 0x90 &nbsp; &nbsp; &nbsp;=
- &nbsp; <span class=3D"Apple-tab-span" style=3D"white-space:pre">	</s=
-pan>I2C adapter</div><div>i2c-1<span class=3D"Apple-tab-span" style=3D"white=
--space:pre">	</span>i2c &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-sp=
-an" style=3D"white-space:pre">	</span>Radeon i2c bit bus 0x91 &nbsp; &nbsp=
-; &nbsp; &nbsp; <span class=3D"Apple-tab-span" style=3D"white-space:pre">=
-	</span>I2C adapter</div><div>i2c-2<span class=3D"Apple-tab-span" style=3D"w=
-hite-space:pre">	</span>i2c &nbsp; &nbsp; &nbsp; <span class=3D"Appl=
-e-tab-span" style=3D"white-space:pre">	</span>Radeon i2c bit bus 0x92 &nbs=
-p; &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-span" style=3D"white-space:=
-pre">	</span>I2C adapter</div><div>i2c-3<span class=3D"Apple-tab-span" st=
-yle=3D"white-space:pre">	</span>i2c &nbsp; &nbsp; &nbsp; <span class=
-=3D"Apple-tab-span" style=3D"white-space:pre">	</span>Radeon i2c bit bus 0=
-x93 &nbsp; &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-span" style=3D"whit=
-e-space:pre">	</span>I2C adapter</div><div>i2c-4<span class=3D"Apple-tab-=
-span" style=3D"white-space:pre">	</span>i2c &nbsp; &nbsp; &nbsp; <sp=
-an class=3D"Apple-tab-span" style=3D"white-space:pre">	</span>Radeon i2c b=
-it bus 0x94 &nbsp; &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-span" style=
-=3D"white-space:pre">	</span>I2C adapter</div><div>i2c-5<span class=3D"Ap=
-ple-tab-span" style=3D"white-space:pre">	</span>i2c &nbsp; &nbsp; &n=
-bsp; <span class=3D"Apple-tab-span" style=3D"white-space:pre">	</span>Rade=
-on i2c bit bus 0x95 &nbsp; &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-spa=
-n" style=3D"white-space:pre">	</span>I2C adapter</div><div>i2c-6<span cla=
-ss=3D"Apple-tab-span" style=3D"white-space:pre">	</span>i2c &nbsp; &=
-nbsp; &nbsp; <span class=3D"Apple-tab-span" style=3D"white-space:pre">	</s=
-pan>Radeon i2c bit bus 0x96 &nbsp; &nbsp; &nbsp; &nbsp; <span class=3D"Apple=
--tab-span" style=3D"white-space:pre">	</span>I2C adapter</div><div>i2c-7<=
-span class=3D"Apple-tab-span" style=3D"white-space:pre">	</span>i2c &=
-nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-span" style=3D"white-space:pre"=
->	</span>Radeon i2c bit bus 0x97 &nbsp; &nbsp; &nbsp; &nbsp; <span cl=
-ass=3D"Apple-tab-span" style=3D"white-space:pre">	</span>I2C adapter<=
-/div><div>i2c-8<span class=3D"Apple-tab-span" style=3D"white-space:pre">=
-	</span>i2c &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-span" style=3D"whi=
-te-space:pre">	</span>PA Semi SMBus adapter at 0x(____ptrval____)<span cla=
-ss=3D"Apple-tab-span" style=3D"white-space:pre">	</span>I2C adapter<=
-/div><div>i2c-9<span class=3D"Apple-tab-span" style=3D"white-space:pre">=
-	</span>i2c &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-span" style=3D"whi=
-te-space:pre">	</span>PA Semi SMBus adapter at 0x(____ptrval____)<span cla=
-ss=3D"Apple-tab-span" style=3D"white-space:pre">	</span>I2C adapter<=
-/div><div>i2c-10<span class=3D"Apple-tab-span" style=3D"white-space:pre">=
-	</span>i2c &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-span" style=3D"whi=
-te-space:pre">	</span>PA Semi SMBus adapter at 0x(____ptrval____)<span cla=
-ss=3D"Apple-tab-span" style=3D"white-space:pre">	</span>I2C adapter<=
-/div></div><div><br></div><div>Please check the outputs.</div><div><br></div=
-><div>Thanks,</div><div>Christian</div><div><br></div><div>[1]&nbsp;<a href=3D=
-"https://forum.hyperion-entertainment.com/viewtopic.php?p=3D54165#p54165">ht=
-tps://forum.hyperion-entertainment.com/viewtopic.php?p=3D54165#p54165</a></d=
-iv></body></html>=
-
---Apple-Mail-BFABFE53-1E60-40F3-B9EF-BC1F987A543D--
