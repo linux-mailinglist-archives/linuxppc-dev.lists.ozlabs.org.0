@@ -2,79 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 242E9421A2F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 00:37:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B298B421A29
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 00:35:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HNbFB0D5Zz3fbQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 09:37:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HNbBd4ctNz3cDT
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 09:35:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=gM59//Us;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Iw7vxd3n;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=new3-smtp.messagingengine.com (client-ip=66.111.4.229;
- helo=new3-smtp.messagingengine.com; envelope-from=idosch@idosch.org;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::636;
+ helo=mail-pl1-x636.google.com; envelope-from=naveennaidu479@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm1 header.b=gM59//Us; 
- dkim-atps=neutral
-Received: from new3-smtp.messagingengine.com (new3-smtp.messagingengine.com
- [66.111.4.229])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=Iw7vxd3n; dkim-atps=neutral
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com
+ [IPv6:2607:f8b0:4864:20::636])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HNQZf6Vc3z3djM
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 03:06:50 +1100 (AEDT)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
- by mailnew.nyi.internal (Postfix) with ESMTP id DCB33580A24;
- Mon,  4 Oct 2021 12:06:45 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute1.internal (MEProxy); Mon, 04 Oct 2021 12:06:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:content-transfer-encoding:content-type
- :date:from:in-reply-to:message-id:mime-version:references
- :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm1; bh=UUDC4YPuEtCCTitozLyUXSQK64PbAa0gIhVIGJmIS
- k8=; b=gM59//UsggGrtqThRY9sJqyp8D+9kxjC+UvC7jenhj+AROpr2V0dfX/fq
- h6ehvCOLyj1zbY13J0RFv4HpMy6SMAEX5K/uwt2bcfpRtPSpV3rFp+/j5p5rgavJ
- NUyyosal30d0QXln5Q8fjxIIkwHXSAzv8sdGRmRetfikyw/8NylOSLiIaeHcXLZs
- YnaQzu/hGWx1xjutunU4A8MqMaIbIvUXaFJWF+sjfSBezb9G0uo907QDhO7iF4aw
- 7fC70puO9Bw3YWecSEMZGNFm8zpFdi6oYbLiFHdf0ITrk8yAsZ2S/bYEurSItMlo
- SOkfWQhrsVpq5DpSXCXcRtiveKNYA==
-X-ME-Sender: <xms:kiZbYZK76wrajKm36pl4y5bzwireSQ2PWq2QzmRyqpJBHcInWhTmoQ>
- <xme:kiZbYVIlcj87gCVjNNPK5QPTqd8t1YcvnICIJfanlnR6x2MMVbKa5jV0o1rEMslHs
- 2KNk7EnlWn1VY0>
-X-ME-Received: <xmr:kiZbYRvoGQyS69DlOaXpRPdTlLNyTDyV8yIB-2TQIn8Qxic2MNEvxz1D6gmBj2QJR9O2mzQBZIJXGdgSNGBPLYHwahPH7w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrudelvddgleefucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurhepfffhvffukfhfgggtugfgjgesthekredttddtudenucfhrhhomhepkfguohcu
- ufgthhhimhhmvghluceoihguohhstghhsehiughoshgthhdrohhrgheqnecuggftrfgrth
- htvghrnhepvdffveekfeeiieeuieetudefkeevkeeuhfeuieduudetkeegleefvdegheej
- hefhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepih
- guohhstghhsehiughoshgthhdrohhrgh
-X-ME-Proxy: <xmx:kiZbYaaBVxWoLW4HGq7VH3nQiN1XEhlUkUC98apwzk7l6Fx4FErx0w>
- <xmx:kiZbYQYcCWruVgLFP-TF0YGUHpZOeSxmY5m5m6oa68X5U2Ddai6Mag>
- <xmx:kiZbYeDufN_iwdYLwtcWcpJme_iAsTm2JZudp2486KUXMZDUiY1Kzw>
- <xmx:lSZbYbv6xGNDhED2lZiFwGSYztonTM5evW1J9XCSbgxJbNzywj8tBQ>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 4 Oct 2021 12:06:41 -0400 (EDT)
-Date: Mon, 4 Oct 2021 19:06:38 +0300
-From: Ido Schimmel <idosch@idosch.org>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Subject: Re: [PATCH v6 07/11] PCI: Replace pci_dev::driver usage that gets
- the driver name
-Message-ID: <YVsmjpUYk8P1X6Fr@shredder>
-References: <20211004125935.2300113-1-u.kleine-koenig@pengutronix.de>
- <20211004125935.2300113-8-u.kleine-koenig@pengutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HNT6527QSz2xbB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 05:00:44 +1100 (AEDT)
+Received: by mail-pl1-x636.google.com with SMTP id j4so459104plx.4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Oct 2021 11:00:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=F/kZ/G80MyWYhdKVpqBk0C55lIN/V+L/Ury6/lN0H48=;
+ b=Iw7vxd3nbj0C1OKCrJ5xQgex0PG/Kc/CV2C7tPUsGeWawiJ+Az940Wzu2Uy5AmVN11
+ PYgVr1uisn3pGX1qacas8hTyKYIt8VOmZwZVG1gre/RBFwd13kU/cyjkN896O6+kWsOz
+ aqNCYiEUv+Mql1+gA+oauHx8b4gKZ+g+6JhBQ6JHyELV/qC0+trpinxN3/Si0Y/WpNZt
+ 2otRHBRlasP0qjST8dSK+oXvQx3KF5hIWf8ATarS/AlOYRJtC3LVY4fzb8BFgrY3fyCZ
+ NIsIQLmwRkYPqoZj9GvQx7bJRDS0HPeBuGYOOlPlfaxJXhpXhK3AX18GgU/JfHwFGscp
+ c11Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=F/kZ/G80MyWYhdKVpqBk0C55lIN/V+L/Ury6/lN0H48=;
+ b=3OxHyxWHgPQWhetAN3r4tnEN3E74xF+dz2oEn8RGqtTzdQbZyReheO/XW8KKHBrH+/
+ CI8OF5MVec/QdzhG2OfvEMhO1hgYPXzJ2G1bxMQB6/BdRA+0j8ElOHB7X5n7exka6wxR
+ Sr2kKVk1tYJnPDu6SLk0QxNahbtm1QHEAWBdV+dozWJ+B6LBF9xgcMCLCU1qaYCe/UOJ
+ g8glHS+CDuyefAGJoKoqEVjUmnzohypBQC+3N3Dwga/S9QxUyDdgP91Qoe5I1p7AxXtV
+ 6Lf6lwuSTPuYxkYuSIqjWY4jFE/9Hgodvn7KcdJSMamH07EPEKKwabgK1IT3QRZnqUtX
+ VrKA==
+X-Gm-Message-State: AOAM530HwIbrpMJYfXDmKHqmY/FAcvo0fiJIQ185xttfowu/QmQehUQ5
+ uuf8+8lk+pSWgbr3XYhMEWk=
+X-Google-Smtp-Source: ABdhPJyjTQaAGxBR0yMHdOdR1pG5uX4ZqXJGgnNSDIvUGtfqSnjkdKem5NcrSNhG6aWIO723rBkbDw==
+X-Received: by 2002:a17:90a:4306:: with SMTP id
+ q6mr32152882pjg.17.1633370439363; 
+ Mon, 04 Oct 2021 11:00:39 -0700 (PDT)
+Received: from localhost.localdomain ([2406:7400:63:e8f0:c2a7:3579:5fe8:31d9])
+ by smtp.gmail.com with ESMTPSA id
+ z2sm3641004pfe.210.2021.10.04.11.00.35
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 04 Oct 2021 11:00:38 -0700 (PDT)
+From: Naveen Naidu <naveennaidu479@gmail.com>
+To: bhelgaas@google.com, tsbogend@alpha.franken.de, ruscur@russell.cc,
+ oohall@gmail.com
+Subject: [PATCH 0/6] MIPS: OCTEON: Remove redundant AER code 
+Date: Mon,  4 Oct 2021 23:29:26 +0530
+Message-Id: <cover.1633369560.git.naveennaidu479@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211004125935.2300113-8-u.kleine-koenig@pengutronix.de>
-X-Mailman-Approved-At: Tue, 05 Oct 2021 09:25:25 +1100
+X-Mailman-Approved-At: Tue, 05 Oct 2021 09:16:56 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,40 +81,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org, Alexander Duyck <alexanderduyck@fb.com>,
- oss-drivers@corigine.com, Paul Mackerras <paulus@samba.org>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
- Jesse Brandeburg <jesse.brandeburg@intel.com>,
- Bjorn Helgaas <helgaas@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
- Jakub Kicinski <kuba@kernel.org>, Yisen Zhuang <yisen.zhuang@huawei.com>,
- Vadym Kochan <vkochan@marvell.com>, Michael Buesch <m@bues.ch>,
- Jiri Pirko <jiri@nvidia.com>, Salil Mehta <salil.mehta@huawei.com>,
- netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org, Taras Chornyi <tchornyi@marvell.com>,
- Zhou Wang <wangzhou1@hisilicon.com>, linux-crypto@vger.kernel.org,
- kernel@pengutronix.de, Simon Horman <simon.horman@corigine.com>,
- Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Naveen Naidu <naveennaidu479@gmail.com>, skhan@linuxfoundation.org,
+ linux-kernel-mentees@lists.linuxfoundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Oct 04, 2021 at 02:59:31PM +0200, Uwe Kleine-König wrote:
-> struct pci_dev::driver holds (apart from a constant offset) the same
-> data as struct pci_dev::dev->driver. With the goal to remove struct
-> pci_dev::driver to get rid of data duplication replace getting the
-> driver name by dev_driver_string() which implicitly makes use of struct
-> pci_dev::dev->driver.
-> 
-> Acked-by: Simon Horman <simon.horman@corigine.com> (for NFP)
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+e8635b484f64 ("MIPS: Add Cavium OCTEON PCI support.") added MIPS
+specific code to enable PCIe and AER error reporting (*irrespective
+of CONFIG_PCIEAER value*) because PCI core didn't do that at the time.
 
-For mlxsw:
+But currently, the PCI core clears and enables the AER status registers.
+So it's redundant for octeon code to do so. This patch series removes
+the redundant code from the pci-octeon.c
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Ido Schimmel <idosch@nvidia.com>
+Currently, the correctable and uncorrectable AER mask registers are not
+set to their default value when AER service driver is loaded. This
+defect is also fixed in the "[PATCH 1/6]" in the series.
 
-Tested with the kexec flow that I mentioned last time. Works fine now.
+Please note that "Patch 4/6" is dependent on "Patch 1/6".
 
-Thanks
+Thanks,
+Naveen Naidu
+
+Naveen Naidu (6):
+ [PATCH 1/6] PCI/AER: Enable COR/UNCOR error reporting in set_device_error_reporting()
+ [PATCH 2/6] MIPS: OCTEON: Remove redundant clearing of AER status registers
+ [PATCH 3/6] MIPS: OCTEON: Remove redundant enable of PCIe normal error reporting
+ [PATCH 4/6] MIPS: OCTEON: Remove redundant enable of COR/UNCOR error
+ [PATCH 5/6] MIPS: OCTEON: Remove redundant ECRC Generation Enable
+ [PATCH 6/6] MIPS: OCTEON: Remove redundant enable of RP error reporting
+
+ arch/mips/pci/pci-octeon.c | 50 --------------------------------------
+ drivers/pci/pcie/aer.c     | 13 +++++++++-
+ 2 files changed, 12 insertions(+), 51 deletions(-)
+
+-- 
+2.25.1
+
