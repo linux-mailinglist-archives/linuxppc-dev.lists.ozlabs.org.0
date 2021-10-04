@@ -1,73 +1,107 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5B90421231
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Oct 2021 17:01:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91F92421264
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Oct 2021 17:12:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HNP713wq1z3cXM
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 02:01:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HNPN03sg1z2ynG
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 02:12:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=OqiGrt0D;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dOHSy1Er;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1030;
- helo=mail-pj1-x1030.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=OqiGrt0D; dkim-atps=neutral
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com
- [IPv6:2607:f8b0:4864:20::1030])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HNP386z2xz2yw1
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 01:57:56 +1100 (AEDT)
-Received: by mail-pj1-x1030.google.com with SMTP id np13so1744652pjb.4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Oct 2021 07:57:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=y3UUZ0cNS5SteKRQt8YweO+7E1xDF2fYjVUngXFgFMs=;
- b=OqiGrt0DXmiitRYwusII8DFq+kzJDqQp/2inSwFfjH0xKTskhUi5YBPDIKHevmziFo
- R+MHb5PJAhX1TONIYRepzHIeQ8Mpu6v4oruiNy9ZQzwQeFKTL6PokKv39SJ49tzQNHFv
- mHd5TUNffimvIpIXwJppAswfzceMF87ldMKAkXq4OMSzGX3cPhAaJ8zWi0VmywPTbWTA
- jzK7QkZqPoNXTl7fS/j0asf+GIIkgWSkLFHyzHbt1/1a3eSwmBqAnVPCvi41Byoz4ZWw
- BDQEU7Ca+6nC0CT8DKFnpI0JcyBw/p/1WUtZH8SgfmfFKJKHwx2nicdIgS/qDKoPLIxd
- a7TQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=y3UUZ0cNS5SteKRQt8YweO+7E1xDF2fYjVUngXFgFMs=;
- b=VYm/6QVpsV9rOG0D7/l7QK6SyivD5GxErj5QQPjNx6S/dt5EZ20hzzpbra3EE0GTkC
- NGWOA3jYQ//hVDX2iyhR7eiUhPBo9ORUbzphq10kMQ/BkPWROjAqGRRqkmqULYBFHexP
- cQqjh98RkB9pYc1YlsZzTB8RBic7c3ZygN1ugQjJsvo6mzlvb2B2DGwcD+nRiAnAjbA5
- fqcYKVxBkCFsggShBVqDvEcDfEVBQskCrO4cUFZOqjM68eiWaIIPqt2XfxKYYkHzLWEv
- j7M/XqIqEiWHkVkb67Lua2CdD65PI6McJOBKls/Ki4SqrJR7kxkgno5kmg5dKnB6o/lk
- koGg==
-X-Gm-Message-State: AOAM531CIBzxeT9B3P0cEqF7zAsehh6mbrEl3efrA+e+AcM1zkU5L2c5
- VfppTew6JJHYp4d6SKfHofX4TwltvIc=
-X-Google-Smtp-Source: ABdhPJy6VdjXJ3xNwEf+bMNVUW6gf62/TkzUvDHjF9mPJTiL5ZB1lXsaL4xmtb4HUhzQFbi8cCztfQ==
-X-Received: by 2002:a17:90b:4016:: with SMTP id
- ie22mr17389044pjb.29.1633359474755; 
- Mon, 04 Oct 2021 07:57:54 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com (115-64-153-41.tpgi.com.au. [115.64.153.41])
- by smtp.gmail.com with ESMTPSA id 127sm15052299pfw.10.2021.10.04.07.57.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Oct 2021 07:57:54 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: kvm-ppc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] KVM: PPC: Book3S HV: H_ENTER filter out reserved HPTE[B] value
-Date: Tue,  5 Oct 2021 00:57:49 +1000
-Message-Id: <20211004145749.1331331-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HNPMG3pHbz2yJM
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 02:11:54 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=dOHSy1Er; dkim-atps=neutral
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4HNPMG372rz4xbV
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 02:11:54 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+ id 4HNPMG3536z4xbR; Tue,  5 Oct 2021 02:11:54 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=dOHSy1Er; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by gandalf.ozlabs.org (Postfix) with ESMTPS id 4HNPMG061nz4xb9;
+ Tue,  5 Oct 2021 02:11:53 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 194EslAb013231; 
+ Mon, 4 Oct 2021 11:11:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=/pED2LQC9LqzPJIxtOTF67GmisCBvq2p2EFye0bxS+g=;
+ b=dOHSy1ErN0zyIJDbW/JODWeaoLyGqrVeXVe/bgBll9a599vaxXAP73RFBxGabeoIbQud
+ N+1GC3wAvj5ZXbBzkqsU6o1KMYGm2i6j+FxTCCIHqUF5i63UPCgzPAtIdaICwbEpSx/l
+ AQbPJJralGVaxgLq8PmhrjplqpOkihxFyME1QFjODf2CjRWqZ9wyOEwLRZif4Smk0xF6
+ 9MRQ7HScU1nXpmZ0aS0TGC3ohNCYGnq0mTyuP5d7P8TJjxUUKwWLvmyL2DHSZme7kHz+
+ sKkd2Ffj1evPqV2VgYhgd8jSQNgNCsHCu8L/d5+ONtTLrAfUQ4uCydDqD0KruDc9kJIE aw== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3bg35qhra3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 04 Oct 2021 11:11:50 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 194F962A004392;
+ Mon, 4 Oct 2021 15:11:48 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma03ams.nl.ibm.com with ESMTP id 3bef29rq9u-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 04 Oct 2021 15:11:48 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 194FBin83539496
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 4 Oct 2021 15:11:44 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CC65211C04C;
+ Mon,  4 Oct 2021 15:11:44 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1729B11C07A;
+ Mon,  4 Oct 2021 15:11:43 +0000 (GMT)
+Received: from sjain014.ibmuc.com (unknown [9.43.74.5])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon,  4 Oct 2021 15:11:42 +0000 (GMT)
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH 0/3] Update crashkernel offset to allow kernel to boot on
+ large config LPARs
+Date: Mon,  4 Oct 2021 20:41:39 +0530
+Message-Id: <20211004151142.256251-1-sourabhjain@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: iNvzv-4BJDcjOxbAUGQX5Q8cRZgEYe-D
+X-Proofpoint-ORIG-GUID: iNvzv-4BJDcjOxbAUGQX5Q8cRZgEYe-D
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
+ definitions=2021-10-04_04,2021-10-04_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999 clxscore=1011
+ priorityscore=1501 impostorscore=0 mlxscore=0 lowpriorityscore=0
+ spamscore=0 adultscore=0 phishscore=0 suspectscore=0 malwarescore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2109230001 definitions=main-2110040104
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,63 +113,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: mahesh@linux.vnet.ibm.com, aneesh.kumar@linux.ibm.com,
+ linux-kernel@vger.kernel.org, hbathini@linux.ibm.com, linuxppc-dev@ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The HPTE B field is a 2-bit field with values 0b10 and 0b11 reserved.
-This field is also taken from the HPTE and used when KVM executes
-TLBIEs to set the B field of those instructions.
+As the crashkernel reserve memory at 128MB offset in the first memory
+block, it leaves less than 128MB memory to accommodate other essential
+system resources that need memory reservation in the same block. This
+creates kernel boot failure on large config LPARs having core count
+greater than 192.
 
-Disallow the guest setting B to a reserved value with H_ENTER by
-rejecting it. This is the same approach already taken for rejecting
-reserved (unsupported) LLP values. This prevents the guest from being
-able to induce the host to execute TLBIE with reserved values, which
-is not known to be a problem with current processors but in theory it
-could prevent the TLBIE from working correctly in a future processor.
+Setting the crashkernel to mid of RMA size which can be 512MB or more
+instead of capping it to 128MB by default leaves enough space to allocate
+memory to another system resource in the first memory block.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/include/asm/kvm_book3s_64.h | 4 ++++
- arch/powerpc/kvm/book3s_hv_rm_mmu.c      | 9 +++++++++
- 2 files changed, 13 insertions(+)
+Now keeping the crashkernel at mid of RMA size works fine for the primary
+kernel but creates boot failure for the kdump kernel when the crashekernel
+reservation start offset crosses 256MB. The reason is, in the early boot
+MMU feature of 1T segments support is not detected which restricts the paca
+allocation for boot CPU below 256MB. When the crashkernel itself is
+starting at 256MB offset, attempt to allocate paca below 256MB leads to the
+kdump kernel boot failure.
 
-diff --git a/arch/powerpc/include/asm/kvm_book3s_64.h b/arch/powerpc/include/asm/kvm_book3s_64.h
-index 19b6942c6969..fff391b9b97b 100644
---- a/arch/powerpc/include/asm/kvm_book3s_64.h
-+++ b/arch/powerpc/include/asm/kvm_book3s_64.h
-@@ -378,6 +378,10 @@ static inline unsigned long compute_tlbie_rb(unsigned long v, unsigned long r,
- 		rb |= 1;		/* L field */
- 		rb |= r & 0xff000 & ((1ul << a_pgshift) - 1); /* LP field */
- 	}
-+	/*
-+	 * This sets both bits of the B field in the PTE. 0b1x values are
-+	 * reserved, but those will have been filtered by kvmppc_do_h_enter.
-+	 */
- 	rb |= (v >> HPTE_V_SSIZE_SHIFT) << 8;	/* B field */
- 	return rb;
- }
-diff --git a/arch/powerpc/kvm/book3s_hv_rm_mmu.c b/arch/powerpc/kvm/book3s_hv_rm_mmu.c
-index 632b2545072b..2c1f3c6e72d1 100644
---- a/arch/powerpc/kvm/book3s_hv_rm_mmu.c
-+++ b/arch/powerpc/kvm/book3s_hv_rm_mmu.c
-@@ -207,6 +207,15 @@ long kvmppc_do_h_enter(struct kvm *kvm, unsigned long flags,
- 
- 	if (kvm_is_radix(kvm))
- 		return H_FUNCTION;
-+	/*
-+	 * The HPTE gets used by compute_tlbie_rb() to set TLBIE bits, so
-+	 * these functions should work together -- must ensure a guest can not
-+	 * cause problems with the TLBIE that KVM executes.
-+	 */
-+	if ((pteh >> HPTE_V_SSIZE_SHIFT) & 0x2) {
-+		/* B=0b1x is a reserved value, disallow it. */
-+		return H_PARAMETER;
-+	}
- 	psize = kvmppc_actual_pgsz(pteh, ptel);
- 	if (!psize)
- 		return H_PARAMETER;
+Moving the detection of segment sizes before identifying the boot CPU
+removes the restriction of 256MB limit for boot CPU paca allocation
+which allows the kdump kernel to successfully boot and capture vmcore.
+
+While allocating paca for boot CPU we found that there is a small window
+during kernel boot where early_radix_enabled returns True even though
+the radix is disabled using command-line. This leads to an invalid bolated
+size calculation on which paca limit of boot CPU is dependent. Patch 0001
+closes that window that by fixing the radix bit in mmu_feature.
+
+Mahesh Salgaonkar (2):
+  fixup mmu_features immediately after getting cpu pa features.
+  Remove 256MB limit restriction for boot cpu paca allocation
+
+Sourabh Jain (1):
+  powerpc: Set crashkernel offset to mid of RMA region
+
+ arch/powerpc/include/asm/book3s/64/mmu.h |  2 ++
+ arch/powerpc/include/asm/mmu.h           |  1 +
+ arch/powerpc/kernel/prom.c               |  5 +++++
+ arch/powerpc/kernel/rtas.c               |  3 +++
+ arch/powerpc/kexec/core.c                | 13 +++++++++----
+ arch/powerpc/mm/book3s64/hash_utils.c    |  5 ++++-
+ arch/powerpc/mm/init_64.c                |  5 ++++-
+ 7 files changed, 28 insertions(+), 6 deletions(-)
+
 -- 
-2.23.0
+2.31.1
 
