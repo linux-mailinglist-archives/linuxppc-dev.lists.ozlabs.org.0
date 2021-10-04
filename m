@@ -2,113 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6640E4212BE
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Oct 2021 17:34:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD09C42135A
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Oct 2021 18:01:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HNPsB20W7z2yns
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 02:34:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HNQSd49Wwz2yyQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 03:01:37 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gl32+U8r;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=JukXO/CW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42b;
+ helo=mail-pf1-x42b.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=JukXO/CW; dkim-atps=neutral
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com
+ [IPv6:2607:f8b0:4864:20::42b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HNPrS14qrz2xsW
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 02:33:44 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=gl32+U8r; dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4HNPrS0Z1Yz4xbV
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 02:33:44 +1100 (AEDT)
-Received: by gandalf.ozlabs.org (Postfix)
- id 4HNPrS0DWSz4xbQ; Tue,  5 Oct 2021 02:33:44 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: gandalf.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=gl32+U8r; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by gandalf.ozlabs.org (Postfix) with ESMTPS id 4HNPrR4ldPz4xLs;
- Tue,  5 Oct 2021 02:33:43 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 194F5MVN024037; 
- Mon, 4 Oct 2021 11:33:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=aJqlE+8/C4VMY+Ry3x+jxYihFtrj+7/Dw+o9EM68K6I=;
- b=gl32+U8r0A+9AIJ6AboIzsPMNNkcFmEr7da9k0ti5g9Kg1fTJrM/S5bC04KcY9yfNxJm
- Fq/tHG6XpP+QIIuloKl71LfgkDVKx/bNDa9iHtdB1VcGR4Gu9/z9MhGx057w1rulTuC1
- qK9pz0oMV3BV5R+jh+HiENORV5UpjNARpz2qg6267Sri0R4cDlFQb+UA/yVYIohtnMpd
- tcI/4+ro1Nsurwpn8ZaeFaqjQlwEjVRlwM8ZuFytA6TNK6LPVmV89FheYfiq/eIymAnb
- ZSG1VNDdxqPoGH2k6AClF5c0Nzjl8bnrfna92wEzsCeBGjgY9wUlJ8tex6uXa5+Oilzx sg== 
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3bg3xq0n6v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 Oct 2021 11:33:37 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 194FMVfU013528;
- Mon, 4 Oct 2021 15:32:28 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma04ams.nl.ibm.com with ESMTP id 3bef2agvr3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 Oct 2021 15:32:28 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 194FWPt75177890
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 4 Oct 2021 15:32:25 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5681FAE051;
- Mon,  4 Oct 2021 15:32:25 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1C3B9AE04D;
- Mon,  4 Oct 2021 15:32:23 +0000 (GMT)
-Received: from [9.43.47.122] (unknown [9.43.47.122])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon,  4 Oct 2021 15:32:22 +0000 (GMT)
-Message-ID: <e67acb9b-dd8e-767a-b57b-f12b3b0fd44d@linux.ibm.com>
-Date: Mon, 4 Oct 2021 21:02:21 +0530
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HNQS20qYpz2yHy
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 03:01:04 +1100 (AEDT)
+Received: by mail-pf1-x42b.google.com with SMTP id q23so14897705pfs.9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Oct 2021 09:01:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=E3/DKCuixot+rBhlKO9j8ghHV1VGiVQ2OCyqQ+LwbfU=;
+ b=JukXO/CWwatMz5SxhFcIbBHgaJphaeMUwYM4ZamB2NqhfR+vdHchA+k/AkcLYSNMa6
+ 8uXd6kQv61Z+dUX/NwCFSpJU1ZFCg2Rs2DohiL6hh3iC3A+NcFzpsHn9rTQU/XPzp2FB
+ D9SqG+rbVnHlZU9ZmOpQlI2Y7HeUV3Qn7lPAWJoPORz5SKF85WHPeFTmvyFPNDSTCs2d
+ 9sOd37BXAFeFTBhMKs7EI/yYmYyDbfQDlS0qcafvXIYVXRCsX07sKBNvrABjGTkmTW+l
+ YnsmmZyursbVBkd5m13dhMeaXcoeqwz/i5HWjpd0VCXKvEvljYlp86MMGWh4A0aGctcI
+ 7tIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=E3/DKCuixot+rBhlKO9j8ghHV1VGiVQ2OCyqQ+LwbfU=;
+ b=arZNFvSmaVFzCfNlxT1Zym2snC2WOj3dYm2bVa9cJ6yPKuhS7Vz3K1ViwJUtqirWeD
+ qTZvLFYrfgD/RDbVuIWXwHAPs8LqOKdK13x9NhvTNgnHUfLsjVI6eyJg7WxajzxS6XBH
+ Aho6Y95ta9snr8efMZHmhglsOTqZU/tDFuckbVaiROvWwgA/Fwk5QNfjRKdy76u7vJbx
+ MyFyNcQLO1XrjiVM6yrg+Wu0yeh/qTJT2jGSIX8FOn2ZHSW297FlzKzZEynR3CoW1Vsg
+ vlEaKK1GF3lc3LqEzs2TmjfJLqa2SihCThgCR6ByiPqfndDjZ0apOxRqcelPTFuvx7nE
+ Nwsw==
+X-Gm-Message-State: AOAM530fiEgDBpRTBwZ1OICLL88+jxsISJFy5VZOPpvrw43RmI+OxplL
+ ni9605VdoroCoDXN/O1GTaQ=
+X-Google-Smtp-Source: ABdhPJyiPFmBGhxkhKL3Sqe3aVWJLGBJvZ4cYe/CzTRzt0ekVNfnUBzAGCvEMItzDbrWeB5a8FjD9A==
+X-Received: by 2002:a63:b505:: with SMTP id y5mr11543461pge.91.1633363262377; 
+ Mon, 04 Oct 2021 09:01:02 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com (115-64-153-41.tpgi.com.au. [115.64.153.41])
+ by smtp.gmail.com with ESMTPSA id 130sm15557223pfz.77.2021.10.04.09.01.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 04 Oct 2021 09:01:02 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: kvm-ppc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v3 00/52] KVM: PPC: Book3S HV P9: entry/exit optimisations
+Date: Tue,  5 Oct 2021 01:59:57 +1000
+Message-Id: <20211004160049.1338837-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.1.0
-Subject: Re: [PATCH 1/3] fixup mmu_features immediately after getting cpu pa
- features.
-Content-Language: en-US
-To: Sourabh Jain <sourabhjain@linux.ibm.com>, mpe@ellerman.id.au
-References: <20211004151142.256251-1-sourabhjain@linux.ibm.com>
- <20211004151142.256251-2-sourabhjain@linux.ibm.com>
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-In-Reply-To: <20211004151142.256251-2-sourabhjain@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: iwoamFN3_IxYtEa3cZaRJXXC9rqQHkzm
-X-Proofpoint-ORIG-GUID: iwoamFN3_IxYtEa3cZaRJXXC9rqQHkzm
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
- definitions=2021-10-04_05,2021-10-04_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999
- priorityscore=1501 impostorscore=0 bulkscore=0 phishscore=0 clxscore=1011
- spamscore=0 adultscore=0 lowpriorityscore=0 mlxscore=0 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2109230001 definitions=main-2110040106
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -120,124 +78,176 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@ozlabs.org, mahesh@linux.vnet.ibm.com,
- Mahesh Salgaonkar <mahesh@linux.ibm.com>, linux-kernel@vger.kernel.org,
- Abdul haleem <abdhalee@linux.vnet.ibm.com>, hbathini@linux.ibm.com
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/4/21 20:41, Sourabh Jain wrote:
-> From: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-> 
-> On system with radix support available, early_radix_enabled() starts
-> returning true for a small window (until mmu_early_init_devtree() is
-> called) even when radix mode disabled on kernel command line. This causes
-> ppc64_bolted_size() to return ULONG_MAX in HPT mode instead of supported
-> segment size, during boot cpu paca allocation.
-> 
-> With kernel command line = "... disable_radix":
-> 
-> early_init_devtree:			  <- early_radix_enabled() = false
->    early_init_dt_scan_cpus:		  <- early_radix_enabled() = false
->        ...
->        check_cpu_pa_features:		  <- early_radix_enabled() = false
->        ...				^ <- early_radix_enabled() = TRUE
->        allocate_paca:			| <- early_radix_enabled() = TRUE
->            ...                           |
->            ppc64_bolted_size:		| <- early_radix_enabled() = TRUE
->                if (early_radix_enabled())| <- early_radix_enabled() = TRUE
->                    return ULONG_MAX;     |
->        ...                               |
->    ...					| <- early_radix_enabled() = TRUE
->    ...					| <- early_radix_enabled() = TRUE
->    mmu_early_init_devtree()              V
->    ...					  <- early_radix_enabled() = false
-> 
-> So far we have not seen any issue because allocate_paca() takes minimum of
-> ppc64_bolted_size and rma_size while allocating paca. However it is better
-> to close this window by fixing up the mmu features as early as possible.
-> This fixes early_radix_enabled() and ppc64_bolted_size() to return valid
-> values in radix disable mode. This patch will help subsequent patch to
-> depend on early_radix_enabled() check while detecting supported segment
-> size in HPT mode.
-> 
-> Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-> Reported-and-tested-by: Abdul haleem <abdhalee@linux.vnet.ibm.com>
-> ---
->   arch/powerpc/include/asm/book3s/64/mmu.h | 1 +
->   arch/powerpc/include/asm/mmu.h           | 1 +
->   arch/powerpc/kernel/prom.c               | 1 +
->   arch/powerpc/mm/init_64.c                | 5 ++++-
->   4 files changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/include/asm/book3s/64/mmu.h b/arch/powerpc/include/asm/book3s/64/mmu.h
-> index c02f42d1031e..69a89fa1330d 100644
-> --- a/arch/powerpc/include/asm/book3s/64/mmu.h
-> +++ b/arch/powerpc/include/asm/book3s/64/mmu.h
-> @@ -197,6 +197,7 @@ extern int mmu_vmemmap_psize;
->   extern int mmu_io_psize;
->   
->   /* MMU initialization */
-> +void mmu_cpu_feature_fixup(void);
->   void mmu_early_init_devtree(void);
->   void hash__early_init_devtree(void);
->   void radix__early_init_devtree(void);
-> diff --git a/arch/powerpc/include/asm/mmu.h b/arch/powerpc/include/asm/mmu.h
-> index 8abe8e42e045..c8eafd401fe9 100644
-> --- a/arch/powerpc/include/asm/mmu.h
-> +++ b/arch/powerpc/include/asm/mmu.h
-> @@ -401,6 +401,7 @@ extern void early_init_mmu(void);
->   extern void early_init_mmu_secondary(void);
->   extern void setup_initial_memory_limit(phys_addr_t first_memblock_base,
->   				       phys_addr_t first_memblock_size);
-> +static inline void mmu_cpu_feature_fixup(void) { }
->   static inline void mmu_early_init_devtree(void) { }
->   
->   static inline void pkey_early_init_devtree(void) {}
-> diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-> index 2e67588f6f6e..1727a3abe6c1 100644
-> --- a/arch/powerpc/kernel/prom.c
-> +++ b/arch/powerpc/kernel/prom.c
-> @@ -380,6 +380,7 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
->   		check_cpu_pa_features(node);
->   	}
->   
-> +	mmu_cpu_feature_fixup();
+This reduces radix guest full entry/exit latency on POWER9 and POWER10
+by 2x.
 
-can you do that call inside check_cpu_pa_features? or is it because we 
-have the same issue with baremetal platforms?
+Nested HV guests should see smaller improvements in their L1 entry/exit,
+but this is also combined with most L0 speedups also applying to nested
+entry. nginx localhost throughput test in a SMP nested guest is improved
+about 10% (in a direct guest it doesn't change much because it uses XIVE
+for IPIs) when L0 and L1 are patched.
 
-Can we also rename this to indicate we are sanitizing the feature flag 
-based on kernel command line.  Something like
+It does this in several main ways:
 
-/* Update cpu features based on kernel command line */
-update_cpu_features();
+- Rearrange code to optimise SPR accesses. Mainly, avoid scoreboard
+  stalls.
 
->   	identical_pvr_fixup(node);
->   	init_mmu_slb_size(node);
->   
-> diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
-> index 386be136026e..9ed452605a2c 100644
-> --- a/arch/powerpc/mm/init_64.c
-> +++ b/arch/powerpc/mm/init_64.c
-> @@ -437,12 +437,15 @@ static void __init early_check_vec5(void)
->   	}
->   }
->   
-> -void __init mmu_early_init_devtree(void)
-> +void __init mmu_cpu_feature_fixup(void)
->   {
->   	/* Disable radix mode based on kernel command line. */
->   	if (disable_radix)
->   		cur_cpu_spec->mmu_features &= ~MMU_FTR_TYPE_RADIX;
-> +}
->   
-> +void __init mmu_early_init_devtree(void)
-> +{
->   	/*
->   	 * Check /chosen/ibm,architecture-vec-5 if running as a guest.
->   	 * When running bare-metal, we can use radix if we like
-> 
+- Test SPR values to avoid mtSPRs where possible. mtSPRs are expensive.
+
+- Reduce mftb. mftb is expensive.
+
+- Demand fault certain facilities to avoid saving and/or restoring them
+  (at the cost of fault when they are used, but this is mitigated over
+  a number of entries, like the facilities when context switching 
+  processes). PM, TM, and EBB so far.
+
+- Defer some sequences that are made just in case a guest is interrupted
+  in the middle of a critical section to the case where the guest is
+  scheduled on a different CPU, rather than every time (at the cost of
+  an extra IPI in this case). Namely the tlbsync sequence for radix with
+  GTSE, which is very expensive.
+
+- Reduce locking, barriers, atomics related to the vcpus-per-vcore > 1
+  handling that the P9 path does not require.
+
+Changes since v2:
+- Rebased, several patches from the series were merged in the previous
+  merge window.
+- Fixed some compile errors noticed by kernel test robot.
+- Added RB from Athira for the PMU stuff (thanks!)
+- Split TIDR ftr check (patch 2) out into its own patch.
+- Added a missed license tag on new file.
+
+Changes since v1:
+- Verified DPDES changes still work with msgsndp SMT emulation.
+- Fixed HMI handling bug.
+- Split softpatch handling fixes into smaller pieces.
+- Rebased with Fabiano's latest HV sanitising patches.
+- Fix TM demand faulting bug causing nested guest TM tests to TM Bad
+  Thing the host in rare cases.
+- Re-name new "pmu=" command line option to "pmu_override=" and update
+  documentation wording.
+- Add default=y config option rather than unconditionally removing the
+  L0 nested PMU workaround.
+- Remove unnecessary MSR[RI] updates in entry/exit. Down to about 4700
+  cycles now.
+- Another bugfix from Alexey's testing.
+
+Changes since RFC:
+- Rebased with Fabiano's HV sanitising patches at the front.
+- Several demand faulting bug fixes mostly relating to nested guests.
+- Removed facility demand-faulting from L0 nested entry/exit handler.
+  Demand faulting is still done in the L1, but not the L0. The reason
+  is to reduce complexity (although it's only a small amount of
+  complexity), reduce demand faulting overhead that may require several
+
+Thanks,
+Nick
+
+Nicholas Piggin (52):
+  powerpc/64s: Remove WORT SPR from POWER9/10 (take 2)
+  powerpc/64s: guard optional TIDR SPR with CPU ftr test
+  KMV: PPC: Book3S HV P9: Use set_dec to set decrementer to host
+  KVM: PPC: Book3S HV P9: Use host timer accounting to avoid decrementer
+    read
+  KVM: PPC: Book3S HV P9: Use large decrementer for HDEC
+  KVM: PPC: Book3S HV P9: Reduce mftb per guest entry/exit
+  powerpc/time: add API for KVM to re-arm the host timer/decrementer
+  KVM: PPC: Book3S HV: POWER10 enable HAIL when running radix guests
+  powerpc/64s: Keep AMOR SPR a constant ~0 at runtime
+  KVM: PPC: Book3S HV: Don't always save PMU for guest capable of
+    nesting
+  powerpc/64s: Always set PMU control registers to frozen/disabled when
+    not in use
+  powerpc/64s: Implement PMU override command line option
+  KVM: PPC: Book3S HV P9: Implement PMU save/restore in C
+  KVM: PPC: Book3S HV P9: Factor PMU save/load into context switch
+    functions
+  KVM: PPC: Book3S HV P9: Demand fault PMU SPRs when marked not inuse
+  KVM: PPC: Book3S HV P9: Factor out yield_count increment
+  KVM: PPC: Book3S HV: CTRL SPR does not require read-modify-write
+  KVM: PPC: Book3S HV P9: Move SPRG restore to restore_p9_host_os_sprs
+  KVM: PPC: Book3S HV P9: Reduce mtmsrd instructions required to save
+    host SPRs
+  KVM: PPC: Book3S HV P9: Improve mtmsrd scheduling by delaying MSR[EE]
+    disable
+  KVM: PPC: Book3S HV P9: Add kvmppc_stop_thread to match
+    kvmppc_start_thread
+  KVM: PPC: Book3S HV: Change dec_expires to be relative to guest
+    timebase
+  KVM: PPC: Book3S HV P9: Move TB updates
+  KVM: PPC: Book3S HV P9: Optimise timebase reads
+  KVM: PPC: Book3S HV P9: Avoid SPR scoreboard stalls
+  KVM: PPC: Book3S HV P9: Only execute mtSPR if the value changed
+  KVM: PPC: Book3S HV P9: Juggle SPR switching around
+  KVM: PPC: Book3S HV P9: Move vcpu register save/restore into functions
+  KVM: PPC: Book3S HV P9: Move host OS save/restore functions to
+    built-in
+  KVM: PPC: Book3S HV P9: Move nested guest entry into its own function
+  KVM: PPC: Book3S HV P9: Move remaining SPR and MSR access into low
+    level entry
+  KVM: PPC: Book3S HV P9: Implement TM fastpath for guest entry/exit
+  KVM: PPC: Book3S HV P9: Switch PMU to guest as late as possible
+  KVM: PPC: Book3S HV P9: Restrict DSISR canary workaround to processors
+    that require it
+  KVM: PPC: Book3S HV P9: More SPR speed improvements
+  KVM: PPC: Book3S HV P9: Demand fault EBB facility registers
+  KVM: PPC: Book3S HV P9: Demand fault TM facility registers
+  KVM: PPC: Book3S HV P9: Use Linux SPR save/restore to manage some host
+    SPRs
+  KVM: PPC: Book3S HV P9: Comment and fix MMU context switching code
+  KVM: PPC: Book3S HV P9: Test dawr_enabled() before saving host DAWR
+    SPRs
+  KVM: PPC: Book3S HV P9: Don't restore PSSCR if not needed
+  KVM: PPC: Book3S HV P9: Avoid tlbsync sequence on radix guest exit
+  KVM: PPC: Book3S HV Nested: Avoid extra mftb() in nested entry
+  KVM: PPC: Book3S HV P9: Improve mfmsr performance on entry
+  KVM: PPC: Book3S HV P9: Optimise hash guest SLB saving
+  KVM: PPC: Book3S HV P9: Avoid changing MSR[RI] in entry and exit
+  KVM: PPC: Book3S HV P9: Add unlikely annotation for !mmu_ready
+  KVM: PPC: Book3S HV P9: Avoid cpu_in_guest atomics on entry and exit
+  KVM: PPC: Book3S HV P9: Remove most of the vcore logic
+  KVM: PPC: Book3S HV P9: Tidy kvmppc_create_dtl_entry
+  KVM: PPC: Book3S HV P9: Stop using vc->dpdes
+  KVM: PPC: Book3S HV P9: Remove subcore HMI handling
+
+ .../admin-guide/kernel-parameters.txt         |   8 +
+ arch/powerpc/include/asm/asm-prototypes.h     |   5 -
+ arch/powerpc/include/asm/kvm_asm.h            |   1 +
+ arch/powerpc/include/asm/kvm_book3s.h         |   6 +
+ arch/powerpc/include/asm/kvm_book3s_64.h      |   5 +-
+ arch/powerpc/include/asm/kvm_host.h           |   7 +-
+ arch/powerpc/include/asm/kvm_ppc.h            |   1 +
+ arch/powerpc/include/asm/switch_to.h          |   3 +
+ arch/powerpc/include/asm/time.h               |  19 +-
+ arch/powerpc/kernel/cpu_setup_power.c         |  12 +-
+ arch/powerpc/kernel/dt_cpu_ftrs.c             |   8 +-
+ arch/powerpc/kernel/process.c                 |  34 +
+ arch/powerpc/kernel/time.c                    |  54 +-
+ arch/powerpc/kvm/Kconfig                      |  15 +
+ arch/powerpc/kvm/book3s_64_entry.S            |  11 +-
+ arch/powerpc/kvm/book3s_64_mmu_radix.c        |   4 +
+ arch/powerpc/kvm/book3s_hv.c                  | 836 +++++++++---------
+ arch/powerpc/kvm/book3s_hv.h                  |  42 +
+ arch/powerpc/kvm/book3s_hv_builtin.c          |   2 +
+ arch/powerpc/kvm/book3s_hv_hmi.c              |   7 +-
+ arch/powerpc/kvm/book3s_hv_interrupts.S       |  13 +-
+ arch/powerpc/kvm/book3s_hv_nested.c           |   8 +-
+ arch/powerpc/kvm/book3s_hv_p9_entry.c         | 821 ++++++++++++++---
+ arch/powerpc/kvm/book3s_hv_ras.c              |  54 ++
+ arch/powerpc/kvm/book3s_hv_rmhandlers.S       |  73 +-
+ arch/powerpc/mm/book3s64/radix_pgtable.c      |  15 -
+ arch/powerpc/perf/core-book3s.c               |  35 +
+ arch/powerpc/platforms/powernv/idle.c         |   9 +-
+ arch/powerpc/xmon/xmon.c                      |  10 +-
+ 29 files changed, 1459 insertions(+), 659 deletions(-)
+ create mode 100644 arch/powerpc/kvm/book3s_hv.h
+
+-- 
+2.23.0
 
