@@ -1,72 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B48D4219F1
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 00:24:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E3624219F3
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 00:24:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HNZyB3Gdnz3cTY
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 09:24:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HNZyx1cHMz3cXj
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 09:24:57 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=lilGDKkK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=E+TFvkLS;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::435;
- helo=mail-pf1-x435.google.com; envelope-from=naveennaidu479@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52b;
+ helo=mail-pg1-x52b.google.com; envelope-from=naveennaidu479@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=lilGDKkK; dkim-atps=neutral
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com
- [IPv6:2607:f8b0:4864:20::435])
+ header.s=20210112 header.b=E+TFvkLS; dkim-atps=neutral
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com
+ [IPv6:2607:f8b0:4864:20::52b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HNMy543Nwz2yHX
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 01:08:29 +1100 (AEDT)
-Received: by mail-pf1-x435.google.com with SMTP id g2so14595027pfc.6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Oct 2021 07:08:29 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HNMyG1MgWz2yJx
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 01:08:38 +1100 (AEDT)
+Received: by mail-pg1-x52b.google.com with SMTP id h3so6001705pgb.7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Oct 2021 07:08:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=pG3mj4bKDd7l8ZFqHwjB1MgvpFgzE+2HiTROeiz4Dcw=;
- b=lilGDKkKstiY05E5PyE6eTWtE6sIolLARmbbIcr/hqOA8+se7jC/6nCaMMxpRTSwVK
- UeugaZA+ONPjmn8b7h3jTo6EWExYu9ijMWFU//wEGelNg79uZwL0xe4SBkDT8c0evCBV
- vnYV47fu3GZkLLBReTPf/YnjCzvvOkKOFy/3uEVFQQAyrBBrx633MXBGh4QOWFFcBC6p
- ugF4m9gGPaEQyA6xHFbo3xSP+HRVs0zaWtZybBOaNMJbIOR5ihBDblAIC408n29OvxJN
- mlddVJqrtP9y1cs+I8juih3VPe2CvbZvu+c52hM36JIhR74DyDqzsXyq47rYZl0QU5oe
- WvQw==
+ bh=FR6K5YUYcCv1FDH4y5DK0PhIoCQEDWlRf94cnPNCwds=;
+ b=E+TFvkLSQJvOplJzbRd6c4bA6eLdXlCzyriCZA5Wqc5TF+e74RZsBLXqc+tXDXAo/q
+ UT8xkQl/rR1/w3AnnhPL/CbF0ZIkA/LvQ6x6fuWClo9NoC4MJwQXx0YQhvAs5AaXZf/I
+ qkoxe/YLVKpRnpMmU1vZUjYBdXK5GaAJn1g0qNajQ0H5Dom4MkRP2/ffU1Y2vqx6hmhs
+ EJcNuEt7Rfc6ie3j7rn6pJHwM8SeyKzzZPY87cBOiVYdWOY3FAeNnddsOtEJc5Cwm7rm
+ fJQVevf8GK/Lm14YRbw5ihnNv7QdHEn1R2+B/FhHolky0LEd05k0bvAmqWrQZ/0+rwjS
+ rSRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=pG3mj4bKDd7l8ZFqHwjB1MgvpFgzE+2HiTROeiz4Dcw=;
- b=6OdWhm1DbEkmqOfjcfnLoKut+gOR6cAvAtt6RRlZAaQXk9nOEajd/TsNdQrSjJRnLH
- aOYhpcoFeoDW+Ulo3ytrRS07NOc99SGJXpJeei/WIe0meCGLBZnX5FIlhQ28X3FvcCtN
- Km4463EKwshlZpqkF4SHrU5HgeqgKqUa7dEjdHrA+nx0GDrDW3ZcCzdIuJHk9bXYHI8k
- yNIpAlUJy9G+B3n0cgIvW805btykAQaTIx0JmDb6ectEwhOFCHPN56adfWr30yX2KO83
- qiJugGcn5Spr1KrwsGh6Kc10Qd1s8qmWna2GAgw56Si3GMuUAw1fpLZe/z+B4CKLQKZV
- kw9g==
-X-Gm-Message-State: AOAM530a/vQ0dQWukuxgByJ0mYmOGPCj/HKdRML4naCKkAXEjtHQUOxg
- xeTjF8JhwRUkXE03i8uMXMcJ6jiwoElyAqeh
-X-Google-Smtp-Source: ABdhPJxi5ObVFVVBq0INJgWYPzDSEXSeO16X87FcHRyfY9VfsWk60eCRTs+ik8NdZ3TgjzfU1+S0PA==
-X-Received: by 2002:a05:6a00:140c:b0:447:96be:2ade with SMTP id
- l12-20020a056a00140c00b0044796be2ademr25904944pfu.26.1633356507042; 
- Mon, 04 Oct 2021 07:08:27 -0700 (PDT)
+ bh=FR6K5YUYcCv1FDH4y5DK0PhIoCQEDWlRf94cnPNCwds=;
+ b=nzvsEbQzbfYgaZbiFYJAYFv1GpVLfexcU686MpkbF9GlDCU3r9l11aGg6u6hOzPlAm
+ gbK2PT5tDXF6WZoSOPVuguz8Ingw3mbQFOH5S+rmy5DygwumFKfWEDctAAQVxg/awHd/
+ DaF6nuHOPFCBPiq+p5CkUdcRFJL/TLHQq07F5vLGu+kkzXvYLmcntpRFx9J4vB/WlpGW
+ cZ9I3pOhIvtvE8XsX4rKkUXRG1EMyubDTiehM5KtfPUvJ7KN2iGIBDhw7u2va4PPS3f1
+ LUGRbL04S6QSr0oNNBrRHdGwWIonRz6Op8GhhxFuI5W/MzvnztaFukOKvDpWZc2Lf3sB
+ Qugg==
+X-Gm-Message-State: AOAM53386/NIFzexJD3DHoK4hvHZWeiz0FdbElNiwnDwxRH2crh97xuM
+ 5X9QaMHHTcNoTLGCCG91am4=
+X-Google-Smtp-Source: ABdhPJyck3KTFEhO5ILC3yxxjpAI2DOPtg7DvJQM0OSyr64tht7atYOar8FVU3irGbi8qaG1HdUo1A==
+X-Received: by 2002:a63:7543:: with SMTP id f3mr11075085pgn.449.1633356515744; 
+ Mon, 04 Oct 2021 07:08:35 -0700 (PDT)
 Received: from localhost.localdomain ([2406:7400:63:e8f0:c2a7:3579:5fe8:31d9])
  by smtp.gmail.com with ESMTPSA id
- p2sm15274135pgd.84.2021.10.04.07.08.23
+ p2sm15274135pgd.84.2021.10.04.07.08.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Oct 2021 07:08:26 -0700 (PDT)
+ Mon, 04 Oct 2021 07:08:35 -0700 (PDT)
 From: Naveen Naidu <naveennaidu479@gmail.com>
 To: bhelgaas@google.com,
 	ruscur@russell.cc,
 	oohall@gmail.com
-Subject: [PATCH v2 1/8] PCI/AER: Remove ID from aer_agent_string[]
-Date: Mon,  4 Oct 2021 19:36:27 +0530
-Message-Id: <b4c5a5005d4549420cf6e86f31a01d3fb2876731.1633353468.git.naveennaidu479@gmail.com>
+Subject: [PATCH v2 2/8] PCI: Cleanup struct aer_err_info
+Date: Mon,  4 Oct 2021 19:36:28 +0530
+Message-Id: <247efb0e4168393f4aee5e267a9aa8b3a8adff0f.1633353468.git.naveennaidu479@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1633353468.git.naveennaidu479@gmail.com>
 References: <cover.1633353468.git.naveennaidu479@gmail.com>
@@ -91,67 +90,53 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Before 010caed4ccb6 ("PCI/AER: Decode Error Source RequesterID")
-the AER error logs looked like:
+The id, status and the mask fields of the struct aer_err_info comes
+directly from the registers, hence their sizes should be explicit.
 
-  pcieport 0000:00:03.0: AER: Corrected error received: id=0018
-  pcieport 0000:00:03.0: PCIe Bus Error: severity=Corrected, type=Data Link Layer, id=0018 (Receiver ID)
-  pcieport 0000:00:03.0:   device [1b36:000c] error status/mask=00000040/0000e000
-  pcieport 0000:00:03.0:    [ 6] BadTLP
+The length of these registers are:
+  - id: 16 bits - Represents the Error Source Requester ID
+  - status: 32 bits - COR/UNCOR Error Status
+  - mask: 32 bits - COR/UNCOR Error Mask
 
-In 010caed4ccb6 ("PCI/AER: Decode Error Source Requester ID"),
-the "id" field was removed from the AER error logs, so currently AER
-logs look like:
+Since the length of the above registers are even, use u16 and u32
+to represent their values.
 
-  pcieport 0000:00:03.0: AER: Corrected error received: 0000:00:03:0
-  pcieport 0000:00:03.0: PCIe Bus Error: severity=Corrected, type=Data Link Layer, (Receiver ID)
-  pcieport 0000:00:03.0:   device [1b36:000c] error status/mask=00000040/0000e000
-  pcieport 0000:00:03.0:    [ 6] BadTLP
+Also remove the __pad fields.
 
-The second line in the above logs prints "(Receiver ID)", even when
-there is no "id" in the log line. This is confusing.
-
-Remove the "ID" from the aer_agent_string[]. The error logs will
-look as follows (Sample from dummy error injected by aer-inject):
-
-  pcieport 0000:00:03.0: AER: Corrected error received: 0000:00:03.0
-  pcieport 0000:00:03.0: PCIe Bus Error: severity=Corrected, type=Data Link Layer, (Receiver)
-  pcieport 0000:00:03.0:   device [1b36:000c] error status/mask=00000040/0000e000
-  pcieport 0000:00:03.0:    [ 6] BadTLP
+"pahole" was run on the modified struct aer_err_info and the size
+remains unchanged.
 
 Signed-off-by: Naveen Naidu <naveennaidu479@gmail.com>
 ---
- drivers/pci/pcie/aer.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/pci/pci.h | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index 9784fdcf3006..241ff361b43c 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -516,10 +516,10 @@ static const char *aer_uncorrectable_error_string[] = {
+diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+index 1cce56c2aea0..9be7a966fda7 100644
+--- a/drivers/pci/pci.h
++++ b/drivers/pci/pci.h
+@@ -427,18 +427,16 @@ struct aer_err_info {
+ 	struct pci_dev *dev[AER_MAX_MULTI_ERR_DEVICES];
+ 	int error_dev_num;
+ 
+-	unsigned int id:16;
++	u16	id;
+ 
+ 	unsigned int severity:2;	/* 0:NONFATAL | 1:FATAL | 2:COR */
+-	unsigned int __pad1:5;
+ 	unsigned int multi_error_valid:1;
+ 
+ 	unsigned int first_error:5;
+-	unsigned int __pad2:2;
+ 	unsigned int tlp_header_valid:1;
+ 
+-	unsigned int status;		/* COR/UNCOR Error Status */
+-	unsigned int mask;		/* COR/UNCOR Error Mask */
++	u32 status;		/* COR/UNCOR Error Status */
++	u32 mask;		/* COR/UNCOR Error Mask */
+ 	struct aer_header_log_regs tlp;	/* TLP Header */
  };
  
- static const char *aer_agent_string[] = {
--	"Receiver ID",
--	"Requester ID",
--	"Completer ID",
--	"Transmitter ID"
-+	"Receiver",
-+	"Requester",
-+	"Completer",
-+	"Transmitter"
- };
- 
- #define aer_stats_dev_attr(name, stats_array, strings_array,		\
-@@ -703,7 +703,7 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
- 	const char *level;
- 
- 	if (!info->status) {
--		pci_err(dev, "PCIe Bus Error: severity=%s, type=Inaccessible, (Unregistered Agent ID)\n",
-+		pci_err(dev, "PCIe Bus Error: severity=%s, type=Inaccessible, (Unregistered Agent)\n",
- 			aer_error_severity_string[info->severity]);
- 		goto out;
- 	}
 -- 
 2.25.1
 
