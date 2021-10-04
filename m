@@ -1,73 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48428421A01
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 00:27:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF88A421A02
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 00:28:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HNb1v0jwNz3cJX
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 09:27:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HNb2d4Xy2z3dYV
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 09:28:09 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Si7JSd/K;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Js7Xodu0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62c;
- helo=mail-pl1-x62c.google.com; envelope-from=naveennaidu479@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::433;
+ helo=mail-pf1-x433.google.com; envelope-from=naveennaidu479@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=Si7JSd/K; dkim-atps=neutral
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com
- [IPv6:2607:f8b0:4864:20::62c])
+ header.s=20210112 header.b=Js7Xodu0; dkim-atps=neutral
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com
+ [IPv6:2607:f8b0:4864:20::433])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HNMyz3Wy8z2yM7
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 01:09:15 +1100 (AEDT)
-Received: by mail-pl1-x62c.google.com with SMTP id w11so11163527plz.13
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Oct 2021 07:09:15 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HNMz44p57z2yMq
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 01:09:20 +1100 (AEDT)
+Received: by mail-pf1-x433.google.com with SMTP id m26so1354168pff.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Oct 2021 07:09:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=GUEhHrxHzVocYPRDueBy4ZqExPBHlS+x/5Sx/kTwk+s=;
- b=Si7JSd/KCOLunLi8xM0VLOx2PfEG1rYw8Zg126ccHtdjh+YTOhxwYlmk3G+Z+iOuCf
- MHWlQfDnN9L3IAYokhBuv6RzMXNEwGLY39mOQKAm8xzjypeTvKVCQTCx8KM/NezRyTGI
- TSa03Y3eVG7e/CJ/pJUta1TShaEHhnDHumTQlJwYJCf3Q/8DVlgTE815cyGKa8qtRTXc
- AlfIFxKrM1KIkTARnCET6lxWANzMKgN1pEKjXGsMgdHENp5Cl8NwGBRFQCzr1Myh4Isq
- Ut5lkCVNfJF0Ebmmzx6NwBkhmaW5aH0OLSSbRBazBfBfQ9eZBBVpn0zOlK0pEBRJiJnb
- iP1w==
+ bh=6pWZxY1yQdsUwMEG6Is0voI7d8xdXhwobuZZscOdeBw=;
+ b=Js7Xodu0nHhuvSavGENRD7gNVR5pT8HpUmkI/DCIAemabFBiB2j8txmoJi60UN2wz7
+ SplCKi1ivWiqz5DQU22S3UdHDUHlnjT50HUj57rb6cHL8lv1FIQ+tk0TtBFT/aSdngIM
+ PLPwGvq3+XePTs1Ct0w5u2n7g1U3huhkAl5C2b3msfBXagXusMaGsOqVsqik9AHNCQ/V
+ Uzya6SJ483hXPTgTNhFV9AoCaBADy1Q1hYjvMF2EtTGqPrHPWs+vMD/hzYDrfbM5xY5x
+ eIcH1co5ByBIMW8+kZJkl1tpY+QoDvdpmB9lycLskfFBmiAAzj1W8URYEw5OfPRpcsIM
+ qvIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=GUEhHrxHzVocYPRDueBy4ZqExPBHlS+x/5Sx/kTwk+s=;
- b=uK9HXXD1hUf/HDVJGD5aq+3JehLMfBKgbI9qxRwVp6DIooiC3jAnXOdqkNRhzTSk6N
- 8ZCVwWMoqDoR9RHGXkECBnpZyU8dJjMKPbIFGTpTUpKQ+lzPux7T+F9YMKatQbMtRnUT
- U+tgsqF7xwo2Q9EVGqYIMXTkn6nB/eLrcLh29G3AWiTkU1IQeD86tT+apa5IDSv9acrR
- JYEDQcU71k5Je5o4CKF4qkAEgjpVgw7/SDdrRG5uFvoRizxfoALD7dFman88w+c57SDa
- /s8aMXNQhSpNY7Dwjcnf1bIbaV0hYh5j5XUur3/rXNlHR22brpS8NZKlwCuedXNLlA3v
- K+5g==
-X-Gm-Message-State: AOAM532tY59qNhl/zxLkgtf8ZsUEnOsMl2wKPU+oAbkLPBnrBJAee4Ve
- MVD3iMDnrn590HKK/LWlHwg=
-X-Google-Smtp-Source: ABdhPJzZI+MfrURo1cZfuN3jk5UmArmhStUAiLlG7jckDZv+60lz4zNDTU5W6sSrwZ9tVHHecR8OSQ==
-X-Received: by 2002:a17:902:7ec8:b0:13b:9d7a:6396 with SMTP id
- p8-20020a1709027ec800b0013b9d7a6396mr23741711plb.86.1633356552819; 
- Mon, 04 Oct 2021 07:09:12 -0700 (PDT)
+ bh=6pWZxY1yQdsUwMEG6Is0voI7d8xdXhwobuZZscOdeBw=;
+ b=ZYfeWZYUEIsUsNihMiYg/Den25rdb3FALeTDCkJtZQp3/Ay9Nmn4LOaXAk4jnaNDdG
+ kj0lbY4lnzNLoeCvK6+PDWCiXSDu5TwDIHBQ58XuKP2oxg5GM6y1n/2EYZIY4Cuk4Rci
+ +ezkO/43oBzN3pjB+Mx2AMj5X/XYmy7FpS8Gr7YHIqXc7WC9trXyRPPKfQJWGlfISX13
+ u5RCoZ2+TpxgPi0wXuKaHDjjRedc7JDcOkaCbrJANColPzFy+HOoE7msrXbqKSHNO/Hn
+ 2/vx9iNtSFHpM5tKxoldw/hBaHuep1NIH8FYTlMo2ws+CKGQvxHDNwb1HFYLA8niAGzE
+ m/Hw==
+X-Gm-Message-State: AOAM531tJBgdRAyku7qtKWmI2VjEGxrRjIkaGpWunOn/u67dfXzeevUb
+ 5oBI/Zqvq0mWfe3cvK8Q2oE=
+X-Google-Smtp-Source: ABdhPJxnSXAXJi5hIp0lOUtzf1x/yRQWj+SNX87vbBVD0ZjCAXsG4FzalqJCMIQUHnpIX3Je5Wswcw==
+X-Received: by 2002:a63:a112:: with SMTP id b18mr11069605pgf.387.1633356557863; 
+ Mon, 04 Oct 2021 07:09:17 -0700 (PDT)
 Received: from localhost.localdomain ([2406:7400:63:e8f0:c2a7:3579:5fe8:31d9])
  by smtp.gmail.com with ESMTPSA id
- p2sm15274135pgd.84.2021.10.04.07.09.09
+ p2sm15274135pgd.84.2021.10.04.07.09.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Oct 2021 07:09:12 -0700 (PDT)
+ Mon, 04 Oct 2021 07:09:17 -0700 (PDT)
 From: Naveen Naidu <naveennaidu479@gmail.com>
 To: bhelgaas@google.com,
 	ruscur@russell.cc,
 	oohall@gmail.com
-Subject: [PATCH v2 7/8] PCI/ERR: Remove redundant clearing of AER register in
- pcie_do_recovery()
-Date: Mon,  4 Oct 2021 19:36:33 +0530
-Message-Id: <2360908d0f8406ed63a17a733c4d1defb49ee3d3.1633353468.git.naveennaidu479@gmail.com>
+Subject: [PATCH 8/8] PCI/AER: Include DEVCTL in aer_print_error()
+Date: Mon,  4 Oct 2021 19:36:34 +0530
+Message-Id: <e39df4392e514bae8dbd373a3c92d994d8c2ae49.1633353468.git.naveennaidu479@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1633353468.git.naveennaidu479@gmail.com>
 References: <cover.1633353468.git.naveennaidu479@gmail.com>
@@ -92,91 +90,63 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-pcie_do_recovery() is shared across the following paths:
- - ACPI APEI
- - Native AER path
- - EDR
- - DPC
+Print the contents of Device Control Register of the device which
+detected the error. This might help in faster error diagnosis.
 
-ACPI APEI
-==========
+Sample output from dummy error injected by aer-inject:
 
-  ghes_handle_aer()
-    aer_recover_queue()
-      kfifo_in_spinlocked(aer_recover_ring)
-
-  aer_recover_work_func()
-    while (kfifo_get(aer_recover_ring))
-      pcie_do_recovery()
-
-In this path the system firmware clears the AER registers before
-handing off the record to the OS in ghes_handle_aer()
-
-Native AER
-==========
-
- aer_irq()
-   aer_add_err_devices_to_queue()
-     kfifo_put(&rpc->aer_fifo, *e_dev)
-     clear_error_source_aer_registers()   <---- AER registers are cleard
-
- aer_isr()
-   aer_isr_one_error()
-    handle_error_source()
-      pcie_do_recovery()
-
-The AER registers are cleared during the handling of IRQ, i.e before we
-the recovery starts.
-
-DPC
-=====
-
-  dpc_handler()
-    dpc_process_error()
-    pci_aer_clear_status()       <---- AER registers are cleared
-    pcie_do_recovery()
-
-EDR
-====
-
-  edr_handle_event()
-    dpc_process_error()
-    pci_aer_raw_clear_status()  <---- AER registers are cleared
-    pcie_do_recovery()
-
-In all the above paths, the AER registers are cleared before
-pcie_do_recovery(). The non fatal status AER registers are again cleared
-in pcie_do_recovery(). This is redundant.
-
-Remove redundant clearing of AER register in pcie_do_recovery()
+  pcieport 0000:00:03.0: AER: Corrected error received: 0000:00:03.0
+  pcieport 0000:00:03.0: PCIe Bus Error: severity=Corrected, type=Data Link Layer, (Receiver)
+  pcieport 0000:00:03.0:   device [1b36:000c] error status/mask=00000040/0000e000, devctl=0x000f
+  pcieport 0000:00:03.0:    [ 6] BadTLP
 
 Signed-off-by: Naveen Naidu <naveennaidu479@gmail.com>
 ---
- drivers/pci/pcie/err.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/pci/pci.h      |  2 ++
+ drivers/pci/pcie/aer.c | 10 ++++++++--
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
-index b576aa890c76..fe04b0ae22f4 100644
---- a/drivers/pci/pcie/err.c
-+++ b/drivers/pci/pcie/err.c
-@@ -231,14 +231,11 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
- 
- 	/*
- 	 * If we have native control of AER, clear error status in the device
--	 * that detected the error.  If the platform retained control of AER,
--	 * it is responsible for clearing this status.  In that case, the
--	 * signaling device may not even be visible to the OS.
-+	 * that detected the error.
- 	 */
--	if (host->native_aer || pcie_ports_native) {
-+	if (host->native_aer || pcie_ports_native)
- 		pcie_clear_device_status(dev);
--		pci_aer_clear_nonfatal_status(dev);
--	}
+diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+index eb88d8bfeaf7..48ed7f91113b 100644
+--- a/drivers/pci/pci.h
++++ b/drivers/pci/pci.h
+@@ -437,6 +437,8 @@ struct aer_err_info {
+ 	u32 status;		/* COR/UNCOR Error Status */
+ 	u32 mask;		/* COR/UNCOR Error Mask */
+ 	struct aer_header_log_regs tlp;	/* TLP Header */
 +
- 	pci_info(bridge, "device recovery successful\n");
- 	return status;
++	u16 devctl;
+ };
  
+ /* Preliminary AER error information processed from Root port */
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index 91f91d6ab052..42cae01b6887 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -729,8 +729,8 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
+ 		   aer_error_severity_string[info->severity],
+ 		   aer_error_layer[layer], aer_agent_string[agent]);
+ 
+-	pci_printk(level, dev, "  device [%04x:%04x] error status/mask=%08x/%08x\n",
+-		   dev->vendor, dev->device, info->status, info->mask);
++	pci_printk(level, dev, "  device [%04x:%04x] error status/mask=%08x/%08x, devctl=%#06x\n",
++		   dev->vendor, dev->device, info->status, info->mask, info->devctl);
+ 
+ 	__aer_print_error(dev, info);
+ 
+@@ -1083,6 +1083,12 @@ int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info)
+ 	if (!aer)
+ 		return 0;
+ 
++	/*
++	 * Cache the value of Device Control Register now, because later the
++	 * device might not be available
++	 */
++	pcie_capability_read_word(dev, PCI_EXP_DEVCTL, &info->devctl);
++
+ 	if (info->severity == AER_CORRECTABLE) {
+ 		pci_read_config_dword(dev, aer + PCI_ERR_COR_STATUS,
+ 			&info->status);
 -- 
 2.25.1
 
