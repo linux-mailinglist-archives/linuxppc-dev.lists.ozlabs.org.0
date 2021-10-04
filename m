@@ -1,75 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C864421A03
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 00:28:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB9C8421A09
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 00:29:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HNb3N1D6Dz3f63
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 09:28:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HNb466JdQz3dcY
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 09:29:26 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=NUydINFe;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=dCrrsJvn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::530;
- helo=mail-pg1-x530.google.com; envelope-from=naveennaidu479@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102c;
+ helo=mail-pj1-x102c.google.com; envelope-from=naveennaidu479@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=NUydINFe; dkim-atps=neutral
-Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com
- [IPv6:2607:f8b0:4864:20::530])
+ header.s=20210112 header.b=dCrrsJvn; dkim-atps=neutral
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com
+ [IPv6:2607:f8b0:4864:20::102c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HNN2m2vR1z2yNK
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 01:12:30 +1100 (AEDT)
-Received: by mail-pg1-x530.google.com with SMTP id 66so16241694pgc.9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Oct 2021 07:12:30 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HNNRl3bhhz2yHt
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 01:30:41 +1100 (AEDT)
+Received: by mail-pj1-x102c.google.com with SMTP id k23so796623pji.0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Oct 2021 07:30:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=6pWZxY1yQdsUwMEG6Is0voI7d8xdXhwobuZZscOdeBw=;
- b=NUydINFeaaYz+i9WPJbGyeQUsYFP9zSERxwD1Jn6Zy3MiwxkpVvQ3g86oUYweoEXDn
- g7AO/boeGyjJTIfJs+jbcZvYQnaMw9L97HPI95jvHheem05IGEyontOjc0UTaTno4QTd
- fMOc4+ztxfQkYeEjO6chiS+rUMQKcVKzRBZHPqeoqq3ImqAXzW/9+m/Tps0r9Q9BujQ0
- HY/BmFj4rlxn+bOKAZY3EjI734hi0507/9dFVNHsFShpknbny5hjumwJL6CVQANs/7DF
- 6tod9my1Q5SU43oRK2wEoF0yRZzbY754966s+x8u1QlbRbLLB4tutM5+B4uA0I4juRv3
- iq+w==
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=6rr106+TYNeK97taV8nJ/RZEy+nuSWL8bqPL/aoVjRQ=;
+ b=dCrrsJvny+hB8TpVDzPJqM5XRNvg99gIyL7pccDv7Hg1idhKdsZXpuRzIqSm3k86wK
+ 6EpxKp5R2n/dSTSd3atPrxHHsbxx+oe4QOD9qiSAZBylCjJ/UaJEVRxwhOYJgvYAEwCg
+ 0CzNm2RlWEjNdGNgA4/UBYBB3yQNWWFADdfOlPRfJZb4Qwn7xV0cLfa/mnbiDSaE2V+A
+ J145kLAi1Edyeub2jRxpLg3PP5yJ3pq/1p63zI+4MvIcFjEoGjPVtz07Vu1hRTxdft0L
+ IhSYV9nXW/pt8qQRW7/qijuCW/9s3fZ74iEFxxUI/5U3H+UOjySRtoIH+mIODSuiBZhB
+ G++Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=6pWZxY1yQdsUwMEG6Is0voI7d8xdXhwobuZZscOdeBw=;
- b=AuwzQpK1gek/9XK+amF0Mif/FxIzwGnZ50SIkvyPYJBoOGBXTE42oXed0ofolFf1Ay
- XW6Wgxcw7DrVXxgdV0tDq+SCqkcIN6ZGkXaoTUXruT6O8NL6Xss5DdgUxJ11ehqiq8F5
- ATNWofjRzNr7Fd/EGUK49wdoRvrhz4rQCM4HX6UlPc2q6FVqRvCWoDiaCVVb+RiojBLn
- HFGcThFdw9O46tGrU5hoQsPrWB1wjiNPS7KZmG0Cg3G9Nu4xOGaTYBFcUeUbgqk+ezXU
- LQeNxrMo3ZbutwpVS96UYlQdFe3R5fmsaXFaTjsSXFR6iJM4PkyL5iOSsuFGPh+j0PV7
- IMNQ==
-X-Gm-Message-State: AOAM531TgQi3BedNBpMabv8zwafAHnRf+s1W/eK3RdouEVQibOEmqWty
- OzVZunRNu/JBsrhfZgzWWyY=
-X-Google-Smtp-Source: ABdhPJy637X8uWvHNOw8XJA6f1F6uN2R7daksnQfvQ4CYbdoIpgTFzTfpXCbIoBTqV1cSFppFJQK8w==
-X-Received: by 2002:a62:1ac4:0:b0:44c:4c4e:1d3c with SMTP id
- a187-20020a621ac4000000b0044c4c4e1d3cmr10348659pfa.8.1633356747885; 
- Mon, 04 Oct 2021 07:12:27 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=6rr106+TYNeK97taV8nJ/RZEy+nuSWL8bqPL/aoVjRQ=;
+ b=ONhF3kXulkm48rOaCZqJ8RBLL/x0ECW0fIyCacRdmbJ47pW+apY1Nr2q1DyDGZeTcH
+ oLbJBDT0tctjunROcQy0BS8PRi6n5ub+ipPz84mTZ5eTpf1ZLlCIO+GMYsBq+9YGZhw1
+ 9simIl8Kx1JeF8ZLsqc8d+kMSAJk7g3zSwQvaUQMmd/CCLfCmKbhLCOzT3z4eC4eWn+d
+ haL9Zx4qqjslSqaFeJn8s5OwwCj+8XJJJUKC3cvfuxhYSFCSj3SRAts/g8f3dDsfUsF1
+ +yuEXp7d+QYcT03xvkMX9NKVnPtrFdkMHVNr4dK38KiRUlIkAaKJGKP3/cid2OBcOZzJ
+ ZshA==
+X-Gm-Message-State: AOAM5339Ro8SHdk4ntsODwGJgDfnJtUZyCjjEfWObvx4HSTA6lq6/vJq
+ Wwe8j8PNxzSC0E2mOSDJpho=
+X-Google-Smtp-Source: ABdhPJw6PldeGsjV/EL0pdYEviOaQ4rPP1DQowLQR2PYIHQgBZUm1Hnv61uEdepS0yhN1pwijPziZA==
+X-Received: by 2002:a17:902:9689:b0:138:d2ac:44f with SMTP id
+ n9-20020a170902968900b00138d2ac044fmr23336055plp.85.1633357836449; 
+ Mon, 04 Oct 2021 07:30:36 -0700 (PDT)
 Received: from localhost.localdomain ([2406:7400:63:e8f0:c2a7:3579:5fe8:31d9])
  by smtp.gmail.com with ESMTPSA id
- mt5sm4266860pjb.12.2021.10.04.07.12.24
+ q3sm14489146pgf.18.2021.10.04.07.30.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Oct 2021 07:12:27 -0700 (PDT)
+ Mon, 04 Oct 2021 07:30:36 -0700 (PDT)
 From: Naveen Naidu <naveennaidu479@gmail.com>
 To: bhelgaas@google.com,
 	ruscur@russell.cc,
 	oohall@gmail.com
-Subject: [PATCH v2 8/8] PCI/AER: Include DEVCTL in aer_print_error()
-Date: Mon,  4 Oct 2021 19:42:05 +0530
-Message-Id: <e39df4392e514bae8dbd373a3c92d994d8c2ae49.1633353468.git.naveennaidu479@gmail.com>
+Subject: [PATCH v3 0/8] Fix long standing AER Error Handling Issues
+Date: Mon,  4 Oct 2021 19:59:56 +0530
+Message-Id: <cover.1633357368.git.naveennaidu479@gmail.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1633353468.git.naveennaidu479@gmail.com>
-References: <cover.1633353468.git.naveennaidu479@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Mailman-Approved-At: Tue, 05 Oct 2021 09:16:56 +1100
@@ -91,63 +89,74 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Print the contents of Device Control Register of the device which
-detected the error. This might help in faster error diagnosis.
+This patch series aims at fixing some of the AER error handling issues
+we have.
 
-Sample output from dummy error injected by aer-inject:
+Currently we have the following issues:
+ - Confusing message in aer_print_error()
+ - aer_err_info not being initialized completely in DPC path before
+   we print the AER logs
+ - A bug [1] in clearing of AER registers in the native AER path
 
-  pcieport 0000:00:03.0: AER: Corrected error received: 0000:00:03.0
-  pcieport 0000:00:03.0: PCIe Bus Error: severity=Corrected, type=Data Link Layer, (Receiver)
-  pcieport 0000:00:03.0:   device [1b36:000c] error status/mask=00000040/0000e000, devctl=0x000f
-  pcieport 0000:00:03.0:    [ 6] BadTLP
+[1] https://lore.kernel.org/linux-pci/20151229155822.GA17321@localhost/
 
-Signed-off-by: Naveen Naidu <naveennaidu479@gmail.com>
----
- drivers/pci/pci.h      |  2 ++
- drivers/pci/pcie/aer.c | 10 ++++++++--
- 2 files changed, 10 insertions(+), 2 deletions(-)
+The primary aim of this patch series is to converge the APEI path and the
+native AER error handling paths. In our current code, we find that we
+have two different behaviours (especially when it comes to clearing of
+the AER registers) for the same functionality.
 
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index eb88d8bfeaf7..48ed7f91113b 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -437,6 +437,8 @@ struct aer_err_info {
- 	u32 status;		/* COR/UNCOR Error Status */
- 	u32 mask;		/* COR/UNCOR Error Mask */
- 	struct aer_header_log_regs tlp;	/* TLP Header */
-+
-+	u16 devctl;
- };
- 
- /* Preliminary AER error information processed from Root port */
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index 91f91d6ab052..42cae01b6887 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -729,8 +729,8 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
- 		   aer_error_severity_string[info->severity],
- 		   aer_error_layer[layer], aer_agent_string[agent]);
- 
--	pci_printk(level, dev, "  device [%04x:%04x] error status/mask=%08x/%08x\n",
--		   dev->vendor, dev->device, info->status, info->mask);
-+	pci_printk(level, dev, "  device [%04x:%04x] error status/mask=%08x/%08x, devctl=%#06x\n",
-+		   dev->vendor, dev->device, info->status, info->mask, info->devctl);
- 
- 	__aer_print_error(dev, info);
- 
-@@ -1083,6 +1083,12 @@ int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info)
- 	if (!aer)
- 		return 0;
- 
-+	/*
-+	 * Cache the value of Device Control Register now, because later the
-+	 * device might not be available
-+	 */
-+	pcie_capability_read_word(dev, PCI_EXP_DEVCTL, &info->devctl);
-+
- 	if (info->severity == AER_CORRECTABLE) {
- 		pci_read_config_dword(dev, aer + PCI_ERR_COR_STATUS,
- 			&info->status);
+This patch series, tries to bring the same semantics and hence more
+commonanlity between the APEI part of code and the native OS
+handling of AER errors.
+
+PATCH 1:
+  - Fixes the first issue
+
+PATCH 2 - 4:
+  - Fixes the second issue
+  - "Patch 3/8" is dependent on "Patch 2/3" in the series
+
+PATCH 5 - 7
+  - Deals with converging the various paths and to bring more
+    commonality between them
+  - "Patch 6/8" depends on "Patch 1/8"
+
+PATCH 8:
+  -  Adds extra information in AER error logs.
+
+Thanks,
+Naveen Naidu
+
+Changelog
+=========
+
+v3:
+ - Fix up mail formatting and resend the patches again.
+   Really sorry for all the spam. I messed up in the first try and
+   instead of fixing it well in v2, I messed up again. I have fixed
+   everything now. Apologies for the inconvenience caused. I'll make
+   sure to not repeat it again.
+
+v2:
+  - Apologies for the mistake, I forgot to cc the linux-pci mailing 
+    list.Resent the email with cc to linux-pci
+
+Naveen Naidu (8):
+ [PATCH v3 1/8] PCI/AER: Remove ID from aer_agent_string[]
+ [PATCH v3 2/8] PCI: Cleanup struct aer_err_info
+ [PATCH v3 3/8] PCI/DPC: Initialize info->id in dpc_process_error()
+ [PATCH v3 4/8] PCI/DPC: Use pci_aer_clear_status() in dpc_process_error()
+ [PATCH v3 5/8] PCI/DPC: Converge EDR and DPC Path of clearing AER registers
+ [PATCH v3 6/8] PCI/AER: Clear error device AER registers in aer_irq()
+ [PATCH v3 7/8] PCI/ERR: Remove redundant clearing of AER register in pcie_do_recovery()
+ [PATCH v3 8/8] PCI/AER: Include DEVCTL in aer_print_error()
+
+ drivers/pci/pci.h      |  23 +++-
+ drivers/pci/pcie/aer.c | 265 ++++++++++++++++++++++++++++-------------
+ drivers/pci/pcie/dpc.c |   9 +-
+ drivers/pci/pcie/err.c |   9 +-
+ 4 files changed, 207 insertions(+), 99 deletions(-)
+
 -- 
 2.25.1
 
