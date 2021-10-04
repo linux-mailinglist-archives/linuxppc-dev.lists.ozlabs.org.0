@@ -2,69 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0760B42142F
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Oct 2021 18:35:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6324F421430
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Oct 2021 18:35:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HNRC66j49z3cQp
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 03:34:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HNRD2239Jz3fbK
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 03:35:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=XuviA3b7;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Bhz3Eh6n;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1033;
- helo=mail-pj1-x1033.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::535;
+ helo=mail-pg1-x535.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=XuviA3b7; dkim-atps=neutral
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com
- [IPv6:2607:f8b0:4864:20::1033])
+ header.s=20210112 header.b=Bhz3Eh6n; dkim-atps=neutral
+Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com
+ [IPv6:2607:f8b0:4864:20::535])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HNQVG1KbXz3cX3
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 03:03:01 +1100 (AEDT)
-Received: by mail-pj1-x1033.google.com with SMTP id v19so11896850pjh.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Oct 2021 09:03:01 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HNQVJ3Zckz3cY1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 03:03:04 +1100 (AEDT)
+Received: by mail-pg1-x535.google.com with SMTP id 75so16993273pga.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Oct 2021 09:03:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=iAp5cZPlH2CQn7Ni2mzcHZSZ7/uct2D+QzsCLoH2W/0=;
- b=XuviA3b7q6DWcTCbVp2sJoDpCn3wytM5lazWjg5MGsb/SYjmiZ4E5opHkuVHRuJYIl
- gxi0YzWtIuZ2lc95Lm+FLSCMhTp4vzHU3c4TkEjVlrpqX15E7PJvmXH2x6JX5pFfzPl4
- ZiAKVkhED30oODf3am+0NypHe1VBrwVPKMO1hV2To+MTGv8WyL4jTGlJIo9Q6kqturtB
- +TgkqMH/CZNdPBy7OXUk+GMyaT7jZUYGI4XgQYY5lrF5C+O7bl3BjE4Zw+y6ItUtrMjG
- Q6FH8adB0z8pd09cH7Uai2IZwtDbbjI7pfc2+gXYsQrx9WvB9HIUgGGAlQpG4OQSe2Hm
- qq4g==
+ bh=CkLYCnetbtAZE9M5QXDIsnhwTgD/585hJdfqEy8WJpw=;
+ b=Bhz3Eh6n84uesPvImheylLT3lvMJSApOuL5JN2Tnt09hqDf4YIin64PCQjO+qjUpT3
+ fvQhJTdrW3v97EIH8TPPtmVW7NoGFqUJdpUP+ealpGSf45xxTh4gFGjYjHfqRymFZULZ
+ Q1FvgJEgAjzcwJQv+7kA8ERWKYwwu9pdlqAay4ESyhO2gOcN1BGZO9kPExfrRAmOnJN4
+ +a9zMGWbHSr4bB1kHm4nIj+671/YUZGz2xHFKnPwaS+a5IBYd41XF6pdxIF291R6YIi5
+ QnNI/CMBTgFPah0+UamK2KeKUslXUAC6Fww3CB9vfHDdd+9xW2oqdNEnNqzzMUXclT4M
+ en7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=iAp5cZPlH2CQn7Ni2mzcHZSZ7/uct2D+QzsCLoH2W/0=;
- b=S6iVenvlcRcpp/zcrG2Cj25LiQaO0aiIg6asSXM1eO1peG6p/6HHasOGhAlWwU/NCJ
- XTFMwpODeWItZb+1/f51GsFirk4k1vTmIz7pqF7yZrucSq0JE1jlaXQWSSJv5MRFLRju
- 61Orwby2mTpMe+WUstgMqHtzrqZ6Itjr1ndNruhIp9xWe4MBhmXCgKQR1qW2QDNJKIeT
- j2E7LyZC5aqRbFhBXRz8QVQ/TUy0nkiVTLwR9mifSI6ZbZGKoKYOHSywsMLy5pdXiwdW
- hHUlq11bPRkNUyI+7nOtZyOwsBcfQSQetkFgi4SEFW4u3j3UgyKrEc4tuHICVJtQLFmK
- Jidg==
-X-Gm-Message-State: AOAM533ExTXL49zrHIglg/vHloTYIfRvzbrc0nT4SD+AsjqpzJomsktb
- NrCDEJ+rBUY2oWo5PV6iErpllbc8qqw=
-X-Google-Smtp-Source: ABdhPJw7jTzQ4D3ZQvNDT7P6IeqodWCkjSNS1WudIYUggjGNdSkwjYqfGKnjF+BNSBGxuk7VgLJ6Yw==
-X-Received: by 2002:a17:90b:3591:: with SMTP id
- mm17mr1836820pjb.140.1633363380123; 
- Mon, 04 Oct 2021 09:03:00 -0700 (PDT)
+ bh=CkLYCnetbtAZE9M5QXDIsnhwTgD/585hJdfqEy8WJpw=;
+ b=pdyKARedC03WtfVFBEyXoZk2WWbpnwly3Nrw9oOMzU2bTlgZ8w5UlQl77Fab79UKHW
+ /qYoaHCgTQGc0sRTmZXqPXb65nDR26h8rdaMzqWyCXRnzxMIGHr2rtMyzN9NYh0kYgjR
+ goakQUre4n6zHt6CGDR2KD8fUZ8zhQVqaMauAMzZrwuaVpLEdUA6saTCJZ4Urrue6f50
+ R21deSt1jRIhYQtjHUwTiqvitllFeUKggITY6x09QuSLqqZIptjP1Gvcw5Sv6zRWS2zP
+ XuUmXUOpEiuhjcPiha2+fGzzlfpBvxVX5Z8Eu3sW6rOIhlFQANa3j6FfXwenk5jsyWgb
+ brxg==
+X-Gm-Message-State: AOAM530gLiORD0JFbhBB7FnwFA32mF/TycNBtGylOuyIlMEX77QeP7lz
+ XTOVSXCelI9MEykaHHSHIGzn0QDbaQw=
+X-Google-Smtp-Source: ABdhPJxWQl/NXUBjwkMvCQFlYDmU9y/0E6caP9R6/YaW/XbY9beMQPR/rmTIUKJNDl2uQoEB7ZCVMg==
+X-Received: by 2002:a05:6a00:140c:b0:447:96be:2ade with SMTP id
+ l12-20020a056a00140c00b0044796be2ademr26451699pfu.26.1633363382281; 
+ Mon, 04 Oct 2021 09:03:02 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (115-64-153-41.tpgi.com.au. [115.64.153.41])
- by smtp.gmail.com with ESMTPSA id 130sm15557223pfz.77.2021.10.04.09.02.58
+ by smtp.gmail.com with ESMTPSA id 130sm15557223pfz.77.2021.10.04.09.03.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Oct 2021 09:02:59 -0700 (PDT)
+ Mon, 04 Oct 2021 09:03:02 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 50/52] KVM: PPC: Book3S HV P9: Tidy kvmppc_create_dtl_entry
-Date: Tue,  5 Oct 2021 02:00:47 +1000
-Message-Id: <20211004160049.1338837-51-npiggin@gmail.com>
+Subject: [PATCH v3 51/52] KVM: PPC: Book3S HV P9: Stop using vc->dpdes
+Date: Tue,  5 Oct 2021 02:00:48 +1000
+Message-Id: <20211004160049.1338837-52-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20211004160049.1338837-1-npiggin@gmail.com>
 References: <20211004160049.1338837-1-npiggin@gmail.com>
@@ -86,127 +86,126 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This goes further to removing vcores from the P9 path. Also avoid the
-memset in favour of explicitly initialising all fields.
+The P9 path uses vc->dpdes only for msgsndp / SMT emulation. This adds
+an ordering requirement between vcpu->doorbell_request and vc->dpdes for
+no real benefit. Use vcpu->doorbell_request directly.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kvm/book3s_hv.c | 61 +++++++++++++++++++++---------------
- 1 file changed, 35 insertions(+), 26 deletions(-)
+ arch/powerpc/kvm/book3s_hv.c          | 18 ++++++++++--------
+ arch/powerpc/kvm/book3s_hv_builtin.c  |  2 ++
+ arch/powerpc/kvm/book3s_hv_p9_entry.c | 14 ++++++++++----
+ 3 files changed, 22 insertions(+), 12 deletions(-)
 
 diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index d614f83c7b3f..57bf49c90e73 100644
+index 57bf49c90e73..351018f617fb 100644
 --- a/arch/powerpc/kvm/book3s_hv.c
 +++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -698,41 +698,30 @@ static u64 vcore_stolen_time(struct kvmppc_vcore *vc, u64 now)
- 	return p;
- }
+@@ -761,6 +761,8 @@ static bool kvmppc_doorbell_pending(struct kvm_vcpu *vcpu)
  
--static void kvmppc_create_dtl_entry(struct kvm_vcpu *vcpu,
--				    struct kvmppc_vcore *vc, u64 tb)
-+static void __kvmppc_create_dtl_entry(struct kvm_vcpu *vcpu,
-+					unsigned int pcpu, u64 now,
-+					unsigned long stolen)
- {
- 	struct dtl_entry *dt;
- 	struct lppaca *vpa;
--	unsigned long stolen;
--	unsigned long core_stolen;
--	u64 now;
--	unsigned long flags;
+ 	if (vcpu->arch.doorbell_request)
+ 		return true;
++	if (cpu_has_feature(CPU_FTR_ARCH_300))
++		return false;
+ 	/*
+ 	 * Ensure that the read of vcore->dpdes comes after the read
+ 	 * of vcpu->doorbell_request.  This barrier matches the
+@@ -2185,8 +2187,10 @@ static int kvmppc_get_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
+ 		 * either vcore->dpdes or doorbell_request.
+ 		 * On POWER8, doorbell_request is 0.
+ 		 */
+-		*val = get_reg_val(id, vcpu->arch.vcore->dpdes |
+-				   vcpu->arch.doorbell_request);
++		if (cpu_has_feature(CPU_FTR_ARCH_300))
++			*val = get_reg_val(id, vcpu->arch.doorbell_request);
++		else
++			*val = get_reg_val(id, vcpu->arch.vcore->dpdes);
+ 		break;
+ 	case KVM_REG_PPC_VTB:
+ 		*val = get_reg_val(id, vcpu->arch.vcore->vtb);
+@@ -2423,7 +2427,10 @@ static int kvmppc_set_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
+ 		vcpu->arch.pspb = set_reg_val(id, *val);
+ 		break;
+ 	case KVM_REG_PPC_DPDES:
+-		vcpu->arch.vcore->dpdes = set_reg_val(id, *val);
++		if (cpu_has_feature(CPU_FTR_ARCH_300))
++			vcpu->arch.doorbell_request = set_reg_val(id, *val) & 1;
++		else
++			vcpu->arch.vcore->dpdes = set_reg_val(id, *val);
+ 		break;
+ 	case KVM_REG_PPC_VTB:
+ 		vcpu->arch.vcore->vtb = set_reg_val(id, *val);
+@@ -4472,11 +4479,6 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
  
- 	dt = vcpu->arch.dtl_ptr;
- 	vpa = vcpu->arch.vpa.pinned_addr;
--	now = tb;
--
--	if (cpu_has_feature(CPU_FTR_ARCH_300)) {
--		stolen = 0;
--	} else {
--		core_stolen = vcore_stolen_time(vc, now);
--		stolen = core_stolen - vcpu->arch.stolen_logged;
--		vcpu->arch.stolen_logged = core_stolen;
--		spin_lock_irqsave(&vcpu->arch.tbacct_lock, flags);
--		stolen += vcpu->arch.busy_stolen;
--		vcpu->arch.busy_stolen = 0;
--		spin_unlock_irqrestore(&vcpu->arch.tbacct_lock, flags);
--	}
+ 	if (!nested) {
+ 		kvmppc_core_prepare_to_enter(vcpu);
+-		if (vcpu->arch.doorbell_request) {
+-			vc->dpdes = 1;
+-			smp_wmb();
+-			vcpu->arch.doorbell_request = 0;
+-		}
+ 		if (test_bit(BOOK3S_IRQPRIO_EXTERNAL,
+ 			     &vcpu->arch.pending_exceptions))
+ 			lpcr |= LPCR_MER;
+diff --git a/arch/powerpc/kvm/book3s_hv_builtin.c b/arch/powerpc/kvm/book3s_hv_builtin.c
+index fcf4760a3a0e..a4fc4b2d3806 100644
+--- a/arch/powerpc/kvm/book3s_hv_builtin.c
++++ b/arch/powerpc/kvm/book3s_hv_builtin.c
+@@ -649,6 +649,8 @@ void kvmppc_guest_entry_inject_int(struct kvm_vcpu *vcpu)
+ 	int ext;
+ 	unsigned long lpcr;
  
- 	if (!dt || !vpa)
- 		return;
--	memset(dt, 0, sizeof(struct dtl_entry));
++	WARN_ON_ONCE(cpu_has_feature(CPU_FTR_ARCH_300));
 +
- 	dt->dispatch_reason = 7;
--	dt->processor_id = cpu_to_be16(vc->pcpu + vcpu->arch.ptid);
--	dt->timebase = cpu_to_be64(now + vc->tb_offset);
-+	dt->preempt_reason = 0;
-+	dt->processor_id = cpu_to_be16(pcpu + vcpu->arch.ptid);
- 	dt->enqueue_to_dispatch_time = cpu_to_be32(stolen);
-+	dt->ready_to_enqueue_time = 0;
-+	dt->waiting_to_ready_time = 0;
-+	dt->timebase = cpu_to_be64(now);
-+	dt->fault_addr = 0;
- 	dt->srr0 = cpu_to_be64(kvmppc_get_pc(vcpu));
- 	dt->srr1 = cpu_to_be64(vcpu->arch.shregs.msr);
-+
- 	++dt;
- 	if (dt == vcpu->arch.dtl.pinned_end)
- 		dt = vcpu->arch.dtl.pinned_addr;
-@@ -743,6 +732,27 @@ static void kvmppc_create_dtl_entry(struct kvm_vcpu *vcpu,
- 	vcpu->arch.dtl.dirty = true;
- }
+ 	/* Insert EXTERNAL bit into LPCR at the MER bit position */
+ 	ext = (vcpu->arch.pending_exceptions >> BOOK3S_IRQPRIO_EXTERNAL) & 1;
+ 	lpcr = mfspr(SPRN_LPCR);
+diff --git a/arch/powerpc/kvm/book3s_hv_p9_entry.c b/arch/powerpc/kvm/book3s_hv_p9_entry.c
+index 5a71532a3adf..fbecbdc42c26 100644
+--- a/arch/powerpc/kvm/book3s_hv_p9_entry.c
++++ b/arch/powerpc/kvm/book3s_hv_p9_entry.c
+@@ -705,6 +705,7 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
+ 	unsigned long host_pidr;
+ 	unsigned long host_dawr1;
+ 	unsigned long host_dawrx1;
++	unsigned long dpdes;
  
-+static void kvmppc_create_dtl_entry(struct kvm_vcpu *vcpu,
-+				    struct kvmppc_vcore *vc)
-+{
-+	unsigned long stolen;
-+	unsigned long core_stolen;
-+	u64 now;
-+	unsigned long flags;
-+
-+	now = mftb();
-+
-+	core_stolen = vcore_stolen_time(vc, now);
-+	stolen = core_stolen - vcpu->arch.stolen_logged;
-+	vcpu->arch.stolen_logged = core_stolen;
-+	spin_lock_irqsave(&vcpu->arch.tbacct_lock, flags);
-+	stolen += vcpu->arch.busy_stolen;
-+	vcpu->arch.busy_stolen = 0;
-+	spin_unlock_irqrestore(&vcpu->arch.tbacct_lock, flags);
-+
-+	__kvmppc_create_dtl_entry(vcpu, vc->pcpu, now + vc->tb_offset, stolen);
-+}
-+
- /* See if there is a doorbell interrupt pending for a vcpu */
- static bool kvmppc_doorbell_pending(struct kvm_vcpu *vcpu)
- {
-@@ -3750,7 +3760,7 @@ static noinline void kvmppc_run_core(struct kvmppc_vcore *vc)
- 		pvc->pcpu = pcpu + thr;
- 		for_each_runnable_thread(i, vcpu, pvc) {
- 			kvmppc_start_thread(vcpu, pvc);
--			kvmppc_create_dtl_entry(vcpu, pvc, mftb());
-+			kvmppc_create_dtl_entry(vcpu, pvc);
- 			trace_kvm_guest_enter(vcpu);
- 			if (!vcpu->arch.ptid)
- 				thr0_done = true;
-@@ -4313,7 +4323,7 @@ static int kvmppc_run_vcpu(struct kvm_vcpu *vcpu)
- 		if ((vc->vcore_state == VCORE_PIGGYBACK ||
- 		     vc->vcore_state == VCORE_RUNNING) &&
- 			   !VCORE_IS_EXITING(vc)) {
--			kvmppc_create_dtl_entry(vcpu, vc, mftb());
-+			kvmppc_create_dtl_entry(vcpu, vc);
- 			kvmppc_start_thread(vcpu, vc);
- 			trace_kvm_guest_enter(vcpu);
- 		} else if (vc->vcore_state == VCORE_SLEEPING) {
-@@ -4490,8 +4500,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
- 	local_paca->kvm_hstate.ptid = 0;
- 	local_paca->kvm_hstate.fake_suspend = 0;
+ 	hdec = time_limit - *tb;
+ 	if (hdec < 0)
+@@ -767,8 +768,10 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
  
--	vc->pcpu = pcpu; // for kvmppc_create_dtl_entry
--	kvmppc_create_dtl_entry(vcpu, vc, tb);
-+	__kvmppc_create_dtl_entry(vcpu, pcpu, tb + vc->tb_offset, 0);
+ 	if (vc->pcr)
+ 		mtspr(SPRN_PCR, vc->pcr | PCR_MASK);
+-	if (vc->dpdes)
+-		mtspr(SPRN_DPDES, vc->dpdes);
++	if (vcpu->arch.doorbell_request) {
++		vcpu->arch.doorbell_request = 0;
++		mtspr(SPRN_DPDES, 1);
++	}
  
- 	trace_kvm_guest_enter(vcpu);
+ 	if (dawr_enabled()) {
+ 		if (vcpu->arch.dawr0 != host_dawr0)
+@@ -999,7 +1002,10 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
+ 	vcpu->arch.shregs.sprg2 = mfspr(SPRN_SPRG2);
+ 	vcpu->arch.shregs.sprg3 = mfspr(SPRN_SPRG3);
  
+-	vc->dpdes = mfspr(SPRN_DPDES);
++	dpdes = mfspr(SPRN_DPDES);
++	if (dpdes)
++		vcpu->arch.doorbell_request = 1;
++
+ 	vc->vtb = mfspr(SPRN_VTB);
+ 
+ 	dec = mfspr(SPRN_DEC);
+@@ -1061,7 +1067,7 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
+ 		}
+ 	}
+ 
+-	if (vc->dpdes)
++	if (dpdes)
+ 		mtspr(SPRN_DPDES, 0);
+ 	if (vc->pcr)
+ 		mtspr(SPRN_PCR, PCR_MASK);
 -- 
 2.23.0
 
