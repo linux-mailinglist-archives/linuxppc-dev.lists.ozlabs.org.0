@@ -1,113 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B59142143F
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Oct 2021 18:38:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C46D421439
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Oct 2021 18:37:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HNRGc17Hzz3fj0
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 03:38:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HNRFb2440z3fYZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 03:37:07 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dhTcbDEY;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=gcgnCZEB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52b;
+ helo=mail-pg1-x52b.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=gcgnCZEB; dkim-atps=neutral
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com
+ [IPv6:2607:f8b0:4864:20::52b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HNQtm4x43z3cVb
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 03:20:48 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=dhTcbDEY; dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4HNQtl4ZCWz4xbV
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 03:20:47 +1100 (AEDT)
-Received: by gandalf.ozlabs.org (Postfix)
- id 4HNQtl4Ws8z4xb9; Tue,  5 Oct 2021 03:20:47 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: gandalf.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=dhTcbDEY; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by gandalf.ozlabs.org (Postfix) with ESMTPS id 4HNQtk6HSWz4xLs;
- Tue,  5 Oct 2021 03:20:46 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 194G1hPr019235; 
- Mon, 4 Oct 2021 12:20:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=8mEx5a8kxg3IoTWi18BowCAvWWuK7NgNGuxSUB31DL4=;
- b=dhTcbDEYYhXVs/Zf/JRoOWEZmnJ2AOIPALxDIc/FXxPUyfqRJi6caxEdFcOx2ynUOBBC
- 9uBJ3xpzfE5xgNl8LI7DyUlCsisUjNC4Wb8puj2KxOtBLbSj2a2xmlKF62v8CHxQfP2T
- B2fxOXtAjZtnmJp+ssgKjj5K1gmtLA5idiIiU7KrDpqlOX6I/SB/4CZMm0/b2ko2n8EV
- Hje6PsiRR86DS21DFC8c0fvx4fkl2T0ub/ehzKUwIJfniLn/+RgN7p0W53+4iXO58i9/
- YTydb8tZOg9D4MsZoTcbt/8fyM1rb7lsv8c2O6ix7tz1nfPYI7XfnYgmpAQ8AKtx05Iq Lg== 
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3bg4s98fwq-3
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 Oct 2021 12:20:43 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 194G2VqS027596;
- Mon, 4 Oct 2021 16:06:47 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma02fra.de.ibm.com with ESMTP id 3bef29fwe4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 Oct 2021 16:06:47 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 194G6hal5243392
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 4 Oct 2021 16:06:44 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E27DEAE073;
- Mon,  4 Oct 2021 16:06:43 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A8CFEAE06A;
- Mon,  4 Oct 2021 16:06:40 +0000 (GMT)
-Received: from [9.43.47.122] (unknown [9.43.47.122])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon,  4 Oct 2021 16:06:40 +0000 (GMT)
-Message-ID: <f13e218e-4e38-4076-672f-d555d7abfc02@linux.ibm.com>
-Date: Mon, 4 Oct 2021 21:36:38 +0530
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HNQgQ5HrKz3f4J
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 03:10:57 +1100 (AEDT)
+Received: by mail-pg1-x52b.google.com with SMTP id v11so4406823pgb.8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Oct 2021 09:10:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=0xHApedBwdkV8/VxE9KrIbt5h6CxgC8qD90Q7T0YrQU=;
+ b=gcgnCZEBPm0tWhwCGPQ6D+2q0ZRRwRUiWUH2loWtJ9oWk4PiNBIPUBY0G+5Uap4/YF
+ 8lMjbVGFw5gd5G1MaFAK4tWWkhoOAtHndLlus48/pAxDVV+EmMLUBVwWcgcYd4htDZLp
+ 5jgxJ2G0I8c6WDs7f6ZIMWgRMmo+6nyF6weoFWUnq8NqApkRt88fPEVbhNCVD8b0gbHq
+ TdMWH0UxNbojBCkCBNnT/Adj1SyTZDSajev5+jqzVsVoBYj/senIG+jKXc+HhCOQsfu4
+ GeOJIqvIM+i4rn0/5hYkwkFD8MgR6aNP6mUEWXWQ9X/E60lvnpKyjqywEWKMsQoEjU52
+ CzoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=0xHApedBwdkV8/VxE9KrIbt5h6CxgC8qD90Q7T0YrQU=;
+ b=3I3LN2CWU7CePH5fUZtTOuQ0OHTL8tkY7i3r8DWNBMpTfwUpX4jp1vMP6mv/LeXnsK
+ GsIbpuhAwbDaDMN1pMNy9ylnNauM74y5hHzT0t5ns9rJ01A/xbrit/Sxvj3/tYOhHD9q
+ ml4Iihxj6V/uzASogrypWkCxJbzrzdLz+I/bFWI11mo0aR5JYWO9C7lIcaWbAH39hVOy
+ N2I8PJO64TOcDDShQzSjXMvz/kjy8GkVussUL1O8Jz/XQxqAYmLqTFgEIKQ6K33eleIK
+ ykAusxf1N/Zer2ol04vKO49dFoJnf5pYPAamlLOZlTji7ASLk4XebQi45jQJGmDk4hQs
+ 0dgQ==
+X-Gm-Message-State: AOAM531y+yfccsrZsRvHzZR+Qrt5g0JnXN5k/+YWCt82fyaakgig7Ipq
+ MGetdYj7henaAueDmU++xIw=
+X-Google-Smtp-Source: ABdhPJz8tK92gwyEVbhnZzMCT+XRoRLZSkcjotOWWC7so6DzEC0NY985/G5gzlAj+IaJFiRc6qtoCQ==
+X-Received: by 2002:a65:6a0f:: with SMTP id m15mr11647983pgu.298.1633363855795; 
+ Mon, 04 Oct 2021 09:10:55 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com (115-64-153-41.tpgi.com.au. [115.64.153.41])
+ by smtp.gmail.com with ESMTPSA id n14sm15063968pgd.48.2021.10.04.09.10.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 04 Oct 2021 09:10:55 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: kvm-ppc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [RFC PATCH] KVM: PPC: Book3S HV P9: Move H_CEDE logic mostly to one
+ place
+Date: Tue,  5 Oct 2021 02:10:50 +1000
+Message-Id: <20211004161050.1341845-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.1.0
-Subject: Re: [PATCH 3/3] powerpc: Set crashkernel offset to mid of RMA region
-Content-Language: en-US
-To: Sourabh Jain <sourabhjain@linux.ibm.com>, mpe@ellerman.id.au
-References: <20211004151142.256251-1-sourabhjain@linux.ibm.com>
- <20211004151142.256251-4-sourabhjain@linux.ibm.com>
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-In-Reply-To: <20211004151142.256251-4-sourabhjain@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 61JBjjd8jZRKX-tCbnGeSiqOHzgJ8QbI
-X-Proofpoint-ORIG-GUID: 61JBjjd8jZRKX-tCbnGeSiqOHzgJ8QbI
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
- definitions=2021-10-04_05,2021-10-04_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0
- lowpriorityscore=0 adultscore=0 phishscore=0 mlxlogscore=999 clxscore=1015
- mlxscore=0 bulkscore=0 spamscore=0 priorityscore=1501 impostorscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2109230001 definitions=main-2110040110
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -119,85 +79,351 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Abdul haleem <abdhalee@linux.vnet.ibm.com>, mahesh@linux.vnet.ibm.com,
- linux-kernel@vger.kernel.org, hbathini@linux.ibm.com, linuxppc-dev@ozlabs.org
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/4/21 20:41, Sourabh Jain wrote:
-> On large config LPARs (having 192 and more cores), Linux fails to boot
-> due to insufficient memory in the first memory block. It is due to the
-> reserve crashkernel area starts at 128MB offset by default and which
-> doesn't leave enough space in the first memory block to accommodate
-> memory for other essential system resources.
-> 
-> Given that the RMA region size can be 512MB or more, setting the
-> crashkernel offset to mid of RMA size will leave enough space to
-> kernel to allocate memory for other system resources in the first
-> memory block.
-> 
-> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-> Reported-and-tested-by: Abdul haleem <abdhalee@linux.vnet.ibm.com>
-> ---
->   arch/powerpc/kernel/rtas.c |  3 +++
->   arch/powerpc/kexec/core.c  | 13 +++++++++----
->   2 files changed, 12 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-> index ff80bbad22a5..ce5e62bb4d8e 100644
-> --- a/arch/powerpc/kernel/rtas.c
-> +++ b/arch/powerpc/kernel/rtas.c
-> @@ -1235,6 +1235,9 @@ int __init early_init_dt_scan_rtas(unsigned long node,
->   	entryp = of_get_flat_dt_prop(node, "linux,rtas-entry", NULL);
->   	sizep  = of_get_flat_dt_prop(node, "rtas-size", NULL);
->   
-> +	if (of_get_flat_dt_prop(node, "ibm,hypertas-functions", NULL))
-> +		powerpc_firmware_features |= FW_FEATURE_LPAR;
-> +
+Move the vcpu->arch.ceded, hrtimer, and blocking handling to one place,
+except the xive escalation rearm case. The only special case is the
+xive handling, as it is to be done before the xive context is pulled.
 
-The equivalent check that we currently do more than checking 
-ibm,hypertas-functions.
+This means the P9 path does not run with ceded==1 or the hrtimer armed
+except in the kvmhv_handle_cede function, and hopefully cede handling is
+a bit more understandable.
 
-	if (!strcmp(uname, "rtas") || !strcmp(uname, "rtas@0")) {
-		prop = of_get_flat_dt_prop(node, "ibm,hypertas-functions",
-					   &len);
-		if (prop) {
-			powerpc_firmware_features |= FW_FEATURE_LPAR;
-			fw_hypertas_feature_init(prop, len);
-		}
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/include/asm/kvm_ppc.h    |   4 +-
+ arch/powerpc/kvm/book3s_hv.c          | 137 +++++++++++++-------------
+ arch/powerpc/kvm/book3s_hv_p9_entry.c |   3 +-
+ arch/powerpc/kvm/book3s_xive.c        |  26 ++---
+ 4 files changed, 88 insertions(+), 82 deletions(-)
 
-
-also do we expect other firmware features to be set along with 
-FW_FEATURE_LPAR?
-
->   	if (basep && entryp && sizep) {
->   		rtas.base = *basep;
->   		rtas.entry = *entryp;
-> diff --git a/arch/powerpc/kexec/core.c b/arch/powerpc/kexec/core.c
-> index 48525e8b5730..f69cf3e370ec 100644
-> --- a/arch/powerpc/kexec/core.c
-> +++ b/arch/powerpc/kexec/core.c
-> @@ -147,11 +147,16 @@ void __init reserve_crashkernel(void)
->   	if (!crashk_res.start) {
->   #ifdef CONFIG_PPC64
->   		/*
-> -		 * On 64bit we split the RMO in half but cap it at half of
-> -		 * a small SLB (128MB) since the crash kernel needs to place
-> -		 * itself and some stacks to be in the first segment.
-> +		 * crash kernel needs to placed in the first segment. On LPAR
-> +		 * setting crash kernel start to mid of RMA size (512MB or more)
-> +		 * would help primary kernel to boot properly on large config
-> +		 * LPAR (with core count 192 or more) and for the reset keep
-> +		 * cap the crash kernel start at 128MB offse.
->   		 */
-> -		crashk_res.start = min(0x8000000ULL, (ppc64_rma_size / 2));
-> +		if (firmware_has_feature(FW_FEATURE_LPAR))
-> +			crashk_res.start = ppc64_rma_size / 2;
-> +		else
-> +			crashk_res.start = min(0x8000000ULL, (ppc64_rma_size / 2));
->   #else
->   		crashk_res.start = KDUMP_KERNELBASE;
->   #endif
-> 
+diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
+index 70ffcb3c91bf..e2e6cee9dddf 100644
+--- a/arch/powerpc/include/asm/kvm_ppc.h
++++ b/arch/powerpc/include/asm/kvm_ppc.h
+@@ -674,7 +674,7 @@ extern int kvmppc_xive_set_irq(struct kvm *kvm, int irq_source_id, u32 irq,
+ 			       int level, bool line_status);
+ extern void kvmppc_xive_push_vcpu(struct kvm_vcpu *vcpu);
+ extern void kvmppc_xive_pull_vcpu(struct kvm_vcpu *vcpu);
+-extern void kvmppc_xive_rearm_escalation(struct kvm_vcpu *vcpu);
++extern bool kvmppc_xive_rearm_escalation(struct kvm_vcpu *vcpu);
+ 
+ static inline int kvmppc_xive_enabled(struct kvm_vcpu *vcpu)
+ {
+@@ -712,7 +712,7 @@ static inline int kvmppc_xive_set_irq(struct kvm *kvm, int irq_source_id, u32 ir
+ 				      int level, bool line_status) { return -ENODEV; }
+ static inline void kvmppc_xive_push_vcpu(struct kvm_vcpu *vcpu) { }
+ static inline void kvmppc_xive_pull_vcpu(struct kvm_vcpu *vcpu) { }
+-static inline void kvmppc_xive_rearm_escalation(struct kvm_vcpu *vcpu) { }
++static inline bool kvmppc_xive_rearm_escalation(struct kvm_vcpu *vcpu) { return false; }
+ 
+ static inline int kvmppc_xive_enabled(struct kvm_vcpu *vcpu)
+ 	{ return 0; }
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 36c54f483a02..230f10b67f98 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -1019,6 +1019,8 @@ static long kvmppc_h_rpt_invalidate(struct kvm_vcpu *vcpu,
+ 	return H_SUCCESS;
+ }
+ 
++static int kvmhv_handle_cede(struct kvm_vcpu *vcpu);
++
+ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ {
+ 	struct kvm *kvm = vcpu->kvm;
+@@ -1080,7 +1082,9 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ 		break;
+ 
+ 	case H_CEDE:
++		ret = kvmhv_handle_cede(vcpu);
+ 		break;
++
+ 	case H_PROD:
+ 		target = kvmppc_get_gpr(vcpu, 4);
+ 		tvcpu = kvmppc_find_vcpu(kvm, target);
+@@ -1292,25 +1296,6 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+ 	return RESUME_GUEST;
+ }
+ 
+-/*
+- * Handle H_CEDE in the P9 path where we don't call the real-mode hcall
+- * handlers in book3s_hv_rmhandlers.S.
+- *
+- * This has to be done early, not in kvmppc_pseries_do_hcall(), so
+- * that the cede logic in kvmppc_run_single_vcpu() works properly.
+- */
+-static void kvmppc_cede(struct kvm_vcpu *vcpu)
+-{
+-	vcpu->arch.shregs.msr |= MSR_EE;
+-	vcpu->arch.ceded = 1;
+-	smp_mb();
+-	if (vcpu->arch.prodded) {
+-		vcpu->arch.prodded = 0;
+-		smp_mb();
+-		vcpu->arch.ceded = 0;
+-	}
+-}
+-
+ static int kvmppc_hcall_impl_hv(unsigned long cmd)
+ {
+ 	switch (cmd) {
+@@ -2971,7 +2956,7 @@ static int kvmppc_core_check_requests_hv(struct kvm_vcpu *vcpu)
+ 	return 1;
+ }
+ 
+-static void kvmppc_set_timer(struct kvm_vcpu *vcpu)
++static bool kvmppc_set_timer(struct kvm_vcpu *vcpu)
+ {
+ 	unsigned long dec_nsec, now;
+ 
+@@ -2980,11 +2965,12 @@ static void kvmppc_set_timer(struct kvm_vcpu *vcpu)
+ 		/* decrementer has already gone negative */
+ 		kvmppc_core_queue_dec(vcpu);
+ 		kvmppc_core_prepare_to_enter(vcpu);
+-		return;
++		return false;
+ 	}
+ 	dec_nsec = tb_to_ns(kvmppc_dec_expires_host_tb(vcpu) - now);
+ 	hrtimer_start(&vcpu->arch.dec_timer, dec_nsec, HRTIMER_MODE_REL);
+ 	vcpu->arch.timer_running = 1;
++	return true;
+ }
+ 
+ extern int __kvmppc_vcore_entry(void);
+@@ -4015,21 +4001,11 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	else if (*tb >= time_limit) /* nested time limit */
+ 		return BOOK3S_INTERRUPT_NESTED_HV_DECREMENTER;
+ 
+-	vcpu->arch.ceded = 0;
+-
+ 	vcpu_vpa_increment_dispatch(vcpu);
+ 
+ 	if (kvmhv_on_pseries()) {
+ 		trap = kvmhv_vcpu_entry_p9_nested(vcpu, time_limit, lpcr, tb);
+ 
+-		/* H_CEDE has to be handled now, not later */
+-		if (trap == BOOK3S_INTERRUPT_SYSCALL && !vcpu->arch.nested &&
+-		    kvmppc_get_gpr(vcpu, 3) == H_CEDE) {
+-			kvmppc_cede(vcpu);
+-			kvmppc_set_gpr(vcpu, 3, 0);
+-			trap = 0;
+-		}
+-
+ 	} else {
+ 		struct kvm *kvm = vcpu->kvm;
+ 
+@@ -4043,12 +4019,14 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+ 		    !(vcpu->arch.shregs.msr & MSR_PR)) {
+ 			unsigned long req = kvmppc_get_gpr(vcpu, 3);
+ 
+-			/* H_CEDE has to be handled now, not later */
++			/* Have to rearm before pulling xive, may abort cede */
+ 			if (req == H_CEDE) {
+-				kvmppc_cede(vcpu);
+-				kvmppc_xive_rearm_escalation(vcpu); /* may un-cede */
+-				kvmppc_set_gpr(vcpu, 3, 0);
+-				trap = 0;
++				if (kvmppc_xive_rearm_escalation(vcpu)) {
++					vcpu->arch.shregs.msr |= MSR_EE;
++					vcpu->arch.prodded = 0;
++					kvmppc_set_gpr(vcpu, 3, H_SUCCESS);
++					trap = 0;
++				}
+ 
+ 			/* XICS hcalls must be handled before xive is pulled */
+ 			} else if (hcall_is_xics(req)) {
+@@ -4423,6 +4401,63 @@ static int kvmppc_run_vcpu(struct kvm_vcpu *vcpu)
+ 	return vcpu->arch.ret;
+ }
+ 
++/* H_CEDE for the P9 path, P7/8 is handled by realmode handlers */
++static int kvmhv_handle_cede(struct kvm_vcpu *vcpu)
++{
++	struct kvmppc_vcore *vc = vcpu->arch.vcore;
++	struct kvm_run *run = vcpu->run;
++
++	kvmppc_set_gpr(vcpu, 3, H_SUCCESS);
++	vcpu->arch.trap = 0;
++	vcpu->arch.shregs.msr |= MSR_EE;
++
++	vcpu->arch.ceded = 1;
++	smp_mb();
++	if (vcpu->arch.prodded) {
++		vcpu->arch.prodded = 0;
++		smp_mb();
++		vcpu->arch.ceded = 0;
++		return RESUME_GUEST;
++	}
++
++	if (kvmppc_vcpu_woken(vcpu)) {
++		vcpu->arch.ceded = 0;
++		return RESUME_GUEST;
++	}
++
++	if (!kvmppc_set_timer(vcpu)) {
++		vcpu->arch.ceded = 0;
++		return RESUME_GUEST;
++	}
++
++	prepare_to_rcuwait(&vcpu->wait);
++	for (;;) {
++		set_current_state(TASK_INTERRUPTIBLE);
++		if (signal_pending(current)) {
++			vcpu->stat.signal_exits++;
++			run->exit_reason = KVM_EXIT_INTR;
++			vcpu->arch.ret = -EINTR;
++			break;
++		}
++
++		if (kvmppc_vcpu_woken(vcpu) || !vcpu->arch.ceded)
++			break;
++
++		trace_kvmppc_vcore_blocked(vc, 0);
++		schedule();
++		trace_kvmppc_vcore_blocked(vc, 1);
++	}
++	finish_rcuwait(&vcpu->wait);
++
++	if (vcpu->arch.timer_running) {
++		hrtimer_try_to_cancel(&vcpu->arch.dec_timer);
++		vcpu->arch.timer_running = 0;
++	}
++
++	vcpu->arch.ceded = 0;
++	return RESUME_GUEST;
++}
++
+ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+ 			  unsigned long lpcr)
+ {
+@@ -4442,7 +4477,6 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	vcpu->arch.trap = 0;
+ 
+ 	vc = vcpu->arch.vcore;
+-	vcpu->arch.ceded = 0;
+ 	vcpu->arch.run_task = current;
+ 	vcpu->arch.state = KVMPPC_VCPU_RUNNABLE;
+ 	vcpu->arch.last_inst = KVM_INST_FETCH_FAILED;
+@@ -4488,11 +4522,6 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+ 		goto out;
+ 	}
+ 
+-	if (vcpu->arch.timer_running) {
+-		hrtimer_try_to_cancel(&vcpu->arch.dec_timer);
+-		vcpu->arch.timer_running = 0;
+-	}
+-
+ 	tb = mftb();
+ 
+ 	vcpu->cpu = pcpu;
+@@ -4555,30 +4584,6 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	}
+ 	vcpu->arch.ret = r;
+ 
+-	if (is_kvmppc_resume_guest(r) && !kvmppc_vcpu_check_block(vcpu)) {
+-		kvmppc_set_timer(vcpu);
+-
+-		prepare_to_rcuwait(&vcpu->wait);
+-		for (;;) {
+-			set_current_state(TASK_INTERRUPTIBLE);
+-			if (signal_pending(current)) {
+-				vcpu->stat.signal_exits++;
+-				run->exit_reason = KVM_EXIT_INTR;
+-				vcpu->arch.ret = -EINTR;
+-				break;
+-			}
+-
+-			if (kvmppc_vcpu_check_block(vcpu))
+-				break;
+-
+-			trace_kvmppc_vcore_blocked(vc, 0);
+-			schedule();
+-			trace_kvmppc_vcore_blocked(vc, 1);
+-		}
+-		finish_rcuwait(&vcpu->wait);
+-	}
+-	vcpu->arch.ceded = 0;
+-
+  done:
+ 	trace_kvmppc_run_vcpu_exit(vcpu);
+ 
+diff --git a/arch/powerpc/kvm/book3s_hv_p9_entry.c b/arch/powerpc/kvm/book3s_hv_p9_entry.c
+index 86a222f97e8e..a1fdfcba608f 100644
+--- a/arch/powerpc/kvm/book3s_hv_p9_entry.c
++++ b/arch/powerpc/kvm/book3s_hv_p9_entry.c
+@@ -713,11 +713,10 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
+ 
+ 	WARN_ON_ONCE(vcpu->arch.shregs.msr & MSR_HV);
+ 	WARN_ON_ONCE(!(vcpu->arch.shregs.msr & MSR_ME));
++	WARN_ON_ONCE(vcpu->arch.ceded);
+ 
+ 	start_timing(vcpu, &vcpu->arch.rm_entry);
+ 
+-	vcpu->arch.ceded = 0;
+-
+ 	/* Save MSR for restore, with EE clear. */
+ 	msr = mfmsr() & ~MSR_EE;
+ 
+diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xive.c
+index a18db9e16ea4..7d45764fd6a8 100644
+--- a/arch/powerpc/kvm/book3s_xive.c
++++ b/arch/powerpc/kvm/book3s_xive.c
+@@ -179,37 +179,39 @@ void kvmppc_xive_pull_vcpu(struct kvm_vcpu *vcpu)
+ }
+ EXPORT_SYMBOL_GPL(kvmppc_xive_pull_vcpu);
+ 
+-void kvmppc_xive_rearm_escalation(struct kvm_vcpu *vcpu)
++/* Return true if H_CEDE is to be aborted */
++bool kvmppc_xive_rearm_escalation(struct kvm_vcpu *vcpu)
+ {
+ 	void __iomem *esc_vaddr = (void __iomem *)vcpu->arch.xive_esc_vaddr;
+ 
+ 	if (!esc_vaddr)
+-		return;
++		return false;
+ 
+ 	/* we are using XIVE with single escalation */
+ 
+ 	if (vcpu->arch.xive_esc_on) {
+ 		/*
+-		 * If we still have a pending escalation, abort the cede,
+-		 * and we must set PQ to 10 rather than 00 so that we don't
+-		 * potentially end up with two entries for the escalation
+-		 * interrupt in the XIVE interrupt queue.  In that case
+-		 * we also don't want to set xive_esc_on to 1 here in
+-		 * case we race with xive_esc_irq().
+-		 */
+-		vcpu->arch.ceded = 0;
+-		/*
++		 * If we still have a pending escalation, return true to abort
++		 * the cede, and we must set PQ to 10 rather than 00 so that we
++		 * don't potentially end up with two entries for the escalation
++		 * interrupt in the XIVE interrupt queue.  In that case we also
++		 * don't want to set xive_esc_on to 1 here in case we race with
++		 * xive_esc_irq().
++		 *
+ 		 * The escalation interrupts are special as we don't EOI them.
+ 		 * There is no need to use the load-after-store ordering offset
+ 		 * to set PQ to 10 as we won't use StoreEOI.
+ 		 */
+ 		__raw_readq(esc_vaddr + XIVE_ESB_SET_PQ_10);
++		mb();
++		return true;
+ 	} else {
+ 		vcpu->arch.xive_esc_on = true;
+ 		mb();
+ 		__raw_readq(esc_vaddr + XIVE_ESB_SET_PQ_00);
++		mb();
++		return false;
+ 	}
+-	mb();
+ }
+ EXPORT_SYMBOL_GPL(kvmppc_xive_rearm_escalation);
+ 
+-- 
+2.23.0
 
