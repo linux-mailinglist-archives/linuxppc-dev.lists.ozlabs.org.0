@@ -2,78 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 943E042192E
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Oct 2021 23:23:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A7EA4219D6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 00:17:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HNYbd2r3Qz3bXP
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 08:23:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HNZpK2hnjz2xtc
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 09:17:29 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=YxVu7riC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=Z4bflGLl;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=2607:f8b0:4864:20::d2f;
- helo=mail-io1-xd2f.google.com; envelope-from=skhan@linuxfoundation.org;
+ smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.50;
+ helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
- header.a=rsa-sha256 header.s=google header.b=YxVu7riC; 
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
+ header.s=strato-dkim-0002 header.b=Z4bflGLl; 
  dkim-atps=neutral
-Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com
- [IPv6:2607:f8b0:4864:20::d2f])
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de
+ [85.215.255.50])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HNYZx6BxBz2xsv
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 08:22:31 +1100 (AEDT)
-Received: by mail-io1-xd2f.google.com with SMTP id b78so980841iof.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Oct 2021 14:22:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linuxfoundation.org; s=google;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=MuilptXu/lrbHdYIjm49Orq1L38EfLHYhkCQZMQN58Y=;
- b=YxVu7riC7j4LVz42GKgYXGTFCKJqdQPDoBbNgq6DmDMCPYIgq7r0JSZLEMwRUv3grr
- cdiedFdp4r+iNBBN/mXe7pWqYYu2JUV8jVVKsIYViY6+g5jaCREmtkDy07NScmLqvK+S
- JgdZ4x2qrsy/bvSg3+wlyjybySzvvSnkRl7J4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=MuilptXu/lrbHdYIjm49Orq1L38EfLHYhkCQZMQN58Y=;
- b=o3gJIq/ZGrpoHxOZsb7xxsoL1Dr+hGfJ/zvJOWXi9RF27LF2IlPcF1ZmwAhUafsfoE
- oen3NO8FfwHCSYeKunyDYXEplm0vYJ5lNiOXZDgiB4SZYnLhRwOX/TNsKvsY2DqV8FQ7
- L+mzOIMa8ejFjkpt28tO6GriQ9c4vI0QJC8S+lmr5ecNH/bQhsyDnG4WVgSg+pqqjQmf
- rgQ+61FY5WtN5FdRkIv0C6TFbbwl67dpwKMNbFUz60HsMxCG6gfC1Y4M3CR5FmuJB+NJ
- akORkPtzxdKDunUOlotAefLfeqAAnyIZOiTjdZyPIOAzqnpn8qaiwGfWxdVsvjAv8I6w
- V4BA==
-X-Gm-Message-State: AOAM531+qQlydXbK5HmLsYHdzdRX2bnti31BKQ2kSMJZKBi25eC5LLoL
- iUqG5ZUODuZL4fvSTEfblhAlfw==
-X-Google-Smtp-Source: ABdhPJx1RzTfEn170/4xRIBn0Qw7X57+hgrKnGZ4qAFynZArJaATjwdrmMQXQOmPcAV4ahbaG9Xzng==
-X-Received: by 2002:a5e:a916:: with SMTP id c22mr10780139iod.211.1633382546674; 
- Mon, 04 Oct 2021 14:22:26 -0700 (PDT)
-Received: from [192.168.1.112] (c-24-9-64-241.hsd1.co.comcast.net.
- [24.9.64.241])
- by smtp.gmail.com with ESMTPSA id v63sm9635481ioe.17.2021.10.04.14.22.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 Oct 2021 14:22:26 -0700 (PDT)
-Subject: Re: [PATCH v3 1/8] PCI/AER: Remove ID from aer_agent_string[]
-To: Naveen Naidu <naveennaidu479@gmail.com>, bhelgaas@google.com,
- ruscur@russell.cc, oohall@gmail.com
-References: <cover.1633357368.git.naveennaidu479@gmail.com>
- <b4c5a5005d4549420cf6e86f31a01d3fb2876731.1633357368.git.naveennaidu479@gmail.com>
-From: Shuah Khan <skhan@linuxfoundation.org>
-Message-ID: <a51d90cb-2ffb-8d4e-6097-54d03e6ef693@linuxfoundation.org>
-Date: Mon, 4 Oct 2021 15:22:25 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
-MIME-Version: 1.0
-In-Reply-To: <b4c5a5005d4549420cf6e86f31a01d3fb2876731.1633357368.git.naveennaidu479@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HNFcq3yzrz2xtg
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Oct 2021 20:23:05 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1633339372;
+ s=strato-dkim-0002; d=xenosoft.de;
+ h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
+ From:Subject:Sender;
+ bh=ZVOzDss9x9ngtyfGLYvMwz8KKc8tZQuNcPXQgEYTehg=;
+ b=Z4bflGLl33esPMUz2wJnbBQd2nleLwFC70O+FjXozH06UA5UrEiX4tTsqjmkQvHodc
+ TBk0ODSP75x6qjlEULhAwA5OLZHvm4g8uHRiybw50J3aApm/8bl5Jmaj+onjgfEhnf9H
+ /zxheRcctSUcEIutdiD0UN2ds04BJQu6T/IitIyzKJ6B7YyQDkiIkgZeC8XImwHL8pDv
+ ODe8B6G+37vagfA+ddVZK6i6HbRe3wl5cBCxXiiewjCpt5Il6q8TuUuGvutgROzb+DGx
+ G3llRdEQ/41umuGVAkuam6NR2QN8ltGiOfHoaILCNqsHKUa8LVww0kxCrCI11SIWelLV
+ 7lIg==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7R7b2Z2iLowxnW5xdau+4p3FLe2JCuii1Hw7eG9unsd"
+X-RZG-CLASS-ID: mo00
+Received: from smtpclient.apple by smtp.strato.de (RZmta 47.33.8 AUTH)
+ with ESMTPSA id I00cdex949Mnl9F
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Mon, 4 Oct 2021 11:22:49 +0200 (CEST)
+Content-Type: multipart/alternative;
+ boundary=Apple-Mail-BFABFE53-1E60-40F3-B9EF-BC1F987A543D
 Content-Transfer-Encoding: 7bit
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Mime-Version: 1.0 (1.0)
+Subject: Re: Add Apple M1 support to PASemi i2c driver
+Date: Mon, 4 Oct 2021 11:22:48 +0200
+Message-Id: <E1746395-FC34-4096-80BA-945559F263F2@xenosoft.de>
+References: <49890226-cf04-46ff-bc37-33d1643faea2@www.fastmail.com>
+In-Reply-To: <49890226-cf04-46ff-bc37-33d1643faea2@www.fastmail.com>
+To: Sven Peter <sven@svenpeter.dev>
+X-Mailer: iPhone Mail (19A346)
+X-Mailman-Approved-At: Tue, 05 Oct 2021 09:16:56 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,89 +71,244 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel-mentees@lists.linuxfoundation.org, linux-kernel@vger.kernel.org,
- Shuah Khan <skhan@linuxfoundation.org>
+Cc: Darren Stevens <darren@stevens-zone.net>, Arnd Bergmann <arnd@arndb.de>,
+ Hector Martin <marcan@marcan.st>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-i2c@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Alyssa Rosenzweig <alyssa@rosenzweig.io>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ Olof Johansson <olof@lixom.net>, mohamed.mediouni@caramail.com,
+ Matthew Leaman <matthew@a-eon.biz>, Mark Kettenis <mark.kettenis@xs4all.nl>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "R.T.Dickinson" <rtd@a-eon.com>,
+ linux-arm-kernel@lists.infradead.org, Stan Skowronek <stan@corellium.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/4/21 8:29 AM, Naveen Naidu wrote:
-> Before 010caed4ccb6 ("PCI/AER: Decode Error Source RequesterID")
-> the AER error logs looked like:
-> 
->    pcieport 0000:00:03.0: AER: Corrected error received: id=0018
->    pcieport 0000:00:03.0: PCIe Bus Error: severity=Corrected, type=Data Link Layer, id=0018 (Receiver ID)
->    pcieport 0000:00:03.0:   device [1b36:000c] error status/mask=00000040/0000e000
->    pcieport 0000:00:03.0:    [ 6] BadTLP
-> 
-> In 010caed4ccb6 ("PCI/AER: Decode Error Source Requester ID"),
-> the "id" field was removed from the AER error logs, so currently AER
-> logs look like:
-> 
->    pcieport 0000:00:03.0: AER: Corrected error received: 0000:00:03:0
->    pcieport 0000:00:03.0: PCIe Bus Error: severity=Corrected, type=Data Link Layer, (Receiver ID)
->    pcieport 0000:00:03.0:   device [1b36:000c] error status/mask=00000040/0000e000
->    pcieport 0000:00:03.0:    [ 6] BadTLP
-> 
-> The second line in the above logs prints "(Receiver ID)", even when
-> there is no "id" in the log line. This is confusing.
-> 
 
-Starting your commit log to say that message are confusing and then talk
-about why will make it easier to understand why the change is needed.
+--Apple-Mail-BFABFE53-1E60-40F3-B9EF-BC1F987A543D
+Content-Type: text/plain;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-> Remove the "ID" from the aer_agent_string[]. The error logs will
-> look as follows (Sample from dummy error injected by aer-inject):
-> 
->    pcieport 0000:00:03.0: AER: Corrected error received: 0000:00:03.0
->    pcieport 0000:00:03.0: PCIe Bus Error: severity=Corrected, type=Data Link Layer, (Receiver)
->    pcieport 0000:00:03.0:   device [1b36:000c] error status/mask=00000040/0000e000
->    pcieport 0000:00:03.0:    [ 6] BadTLP
-> 
 
-It is good to see before and after messages. However, it will be helpful
-to know why this change is necessary. It isn't very clear why in this
-commit log.
 
-> Signed-off-by: Naveen Naidu <naveennaidu479@gmail.com
-> Signed-off-by: Naveen Naidu <naveennaidu479@gmail.com>
+> On 3. Oct 2021, at 16:36, Sven Peter <sven@svenpeter.dev> wrote:
+>=20
+> =EF=BB=BFHi,
+>=20
+>=20
+>> On Fri, Oct 1, 2021, at 06:47, Christian Zigotzky wrote:
+>>> On 27 September 2021 at 07:39 am, Sven Peter wrote:
+>>> Hi Christian,
+>>>=20
+>>> Thanks already for volunteering to test this!
+>>>=20
+>> Hello Sven,
+>>=20
+>> Damien (Hypex) has successfully tested the RC3 of kernel 5.15 with your=20=
 
-Extra signed-off-by?
+>> modified i2c driver on his Nemo board yesterday. [1]
+>=20
+> Thanks a lot, that's great to hear!
+> If he wants to I can credit him with a Tested-by tag in the commit message=
+,
+> see e.g. https://www.kernel.org/doc/html/latest/process/submitting-patches=
+.html#using-reported-by-tested-by-reviewed-by-suggested-by-and-fixes.
+>=20
+>=20
+> Best,
+>=20
+>=20
+> Sven
 
-> ---
->   drivers/pci/pcie/aer.c | 10 +++++-----
->   1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index 9784fdcf3006..241ff361b43c 100644
-> --- a/drivers/pci/pcie/aer.c
-> +++ b/drivers/pci/pcie/aer.c
-> @@ -516,10 +516,10 @@ static const char *aer_uncorrectable_error_string[] = {
->   };
->   
->   static const char *aer_agent_string[] = {
-> -	"Receiver ID",
-> -	"Requester ID",
-> -	"Completer ID",
-> -	"Transmitter ID"
-> +	"Receiver",
-> +	"Requester",
-> +	"Completer",
-> +	"Transmitter"
->   };
->   
->   #define aer_stats_dev_attr(name, stats_array, strings_array,		\
-> @@ -703,7 +703,7 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
->   	const char *level;
->   
->   	if (!info->status) {
-> -		pci_err(dev, "PCIe Bus Error: severity=%s, type=Inaccessible, (Unregistered Agent ID)\n",
-> +		pci_err(dev, "PCIe Bus Error: severity=%s, type=Inaccessible, (Unregistered Agent)\n",
->   			aer_error_severity_string[info->severity]);
->   		goto out;
->   	}
-> 
+Hi Sven,
 
-thanks,
--- Shuah
+Unfortunately Damien has found an issue. [1]
+
+Output of i2cdetect -l with the default RC3 of kernel 5.15 without your modi=
+fications:
+
+2c-0	i2c       	Radeon i2c bit bus 0x90         	I2C adapter=
+
+i2c-1	i2c       	Radeon i2c bit bus 0x91         	I2C adapter=
+
+i2c-2	i2c       	Radeon i2c bit bus 0x92         	I2C adapter=
+
+i2c-3	i2c       	Radeon i2c bit bus 0x93         	I2C adapter=
+
+i2c-4	i2c       	Radeon i2c bit bus 0x94         	I2C adapter=
+
+i2c-5	i2c       	Radeon i2c bit bus 0x95         	I2C adapter=
+
+i2c-6	i2c       	Radeon i2c bit bus 0x96         	I2C adapter=
+
+i2c-7	i2c       	Radeon i2c bit bus 0x97         	I2C adapter=
+
+i2c-8	i2c       	PA Semi SMBus adapter at 0x800200	I2C adapter=
+
+i2c-9	i2c       	PA Semi SMBus adapter at 0x800240	I2C adapter=
+
+i2c-10	i2c       	PA Semi SMBus adapter at 0x800280	I2C adapter=
+
+
+Output of i2cdetect -l with your modifications:
+
+i2c-0	i2c       	Radeon i2c bit bus 0x90         	I2C adapter=
+
+i2c-1	i2c       	Radeon i2c bit bus 0x91         	I2C adapter=
+
+i2c-2	i2c       	Radeon i2c bit bus 0x92         	I2C adapter=
+
+i2c-3	i2c       	Radeon i2c bit bus 0x93         	I2C adapter=
+
+i2c-4	i2c       	Radeon i2c bit bus 0x94         	I2C adapter=
+
+i2c-5	i2c       	Radeon i2c bit bus 0x95         	I2C adapter=
+
+i2c-6	i2c       	Radeon i2c bit bus 0x96         	I2C adapter=
+
+i2c-7	i2c       	Radeon i2c bit bus 0x97         	I2C adapter=
+
+i2c-8	i2c       	PA Semi SMBus adapter at 0x(____ptrval____)	I2C=
+ adapter
+i2c-9	i2c       	PA Semi SMBus adapter at 0x(____ptrval____)	I2C=
+ adapter
+i2c-10	i2c       	PA Semi SMBus adapter at 0x(____ptrval____)	I2C=
+ adapter
+
+Please check the outputs.
+
+Thanks,
+Christian
+
+[1] https://forum.hyperion-entertainment.com/viewtopic.php?p=3D54165#p54165=
+
+--Apple-Mail-BFABFE53-1E60-40F3-B9EF-BC1F987A543D
+Content-Type: text/html;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<html><head><meta http-equiv=3D"content-type" content=3D"text/html; charset=3D=
+utf-8"></head><body dir=3D"auto"><br><div dir=3D"ltr"><br><blockquote type=3D=
+"cite">On 3. Oct 2021, at 16:36, Sven Peter &lt;sven@svenpeter.dev&gt; wrote=
+:<br><br></blockquote></div><blockquote type=3D"cite"><div dir=3D"ltr">=EF=BB=
+=BF<span>Hi,</span><br><span></span><br><span></span><br><span>On Fri, Oct 1=
+, 2021, at 06:47, Christian Zigotzky wrote:</span><br><blockquote type=3D"ci=
+te"><span>On 27 September 2021 at 07:39 am, Sven Peter wrote:</span><br></bl=
+ockquote><blockquote type=3D"cite"><blockquote type=3D"cite"><span>Hi Christ=
+ian,</span><br></blockquote></blockquote><blockquote type=3D"cite"><blockquo=
+te type=3D"cite"><span></span><br></blockquote></blockquote><blockquote type=
+=3D"cite"><blockquote type=3D"cite"><span>Thanks already for volunteering to=
+ test this!</span><br></blockquote></blockquote><blockquote type=3D"cite"><b=
+lockquote type=3D"cite"><span></span><br></blockquote></blockquote><blockquo=
+te type=3D"cite"><span>Hello Sven,</span><br></blockquote><blockquote type=3D=
+"cite"><span></span><br></blockquote><blockquote type=3D"cite"><span>Damien (=
+Hypex) has successfully tested the RC3 of kernel 5.15 with your </span><br><=
+/blockquote><blockquote type=3D"cite"><span>modified i2c driver on his Nemo b=
+oard yesterday. [1]</span><br></blockquote><span></span><br><span>Thanks a l=
+ot, that's great to hear!</span><br><span>If he wants to I can credit him wi=
+th a Tested-by tag in the commit message,</span><br><span>see e.g. https://w=
+ww.kernel.org/doc/html/latest/process/submitting-patches.html#using-reported=
+-by-tested-by-reviewed-by-suggested-by-and-fixes.</span><br><span></span><br=
+><span></span><br><span>Best,</span><br><span></span><br><span></span><br><s=
+pan>Sven</span><br></div></blockquote><br><div>Hi Sven,</div><div><br></div>=
+<div>Unfortunately Damien has found an issue. [1]</div><div><br></div><div>O=
+utput of i2cdetect -l with the default RC3 of kernel 5.15 without your modif=
+ications:</div><div><br></div><div><div>2c-0<span class=3D"Apple-tab-span" s=
+tyle=3D"white-space:pre">	</span>i2c &nbsp; &nbsp; &nbsp; <span class=
+=3D"Apple-tab-span" style=3D"white-space:pre">	</span>Radeon i2c bit bus 0=
+x90 &nbsp; &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-span" style=3D"whit=
+e-space:pre">	</span>I2C adapter</div><div>i2c-1<span class=3D"Apple-tab-=
+span" style=3D"white-space:pre">	</span>i2c &nbsp; &nbsp; &nbsp; <sp=
+an class=3D"Apple-tab-span" style=3D"white-space:pre">	</span>Radeon i2c b=
+it bus 0x91 &nbsp; &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-span" style=
+=3D"white-space:pre">	</span>I2C adapter</div><div>i2c-2<span class=3D"Ap=
+ple-tab-span" style=3D"white-space:pre">	</span>i2c &nbsp; &nbsp; &n=
+bsp; <span class=3D"Apple-tab-span" style=3D"white-space:pre">	</span>Rade=
+on i2c bit bus 0x92 &nbsp; &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-spa=
+n" style=3D"white-space:pre">	</span>I2C adapter</div><div>i2c-3<span cla=
+ss=3D"Apple-tab-span" style=3D"white-space:pre">	</span>i2c &nbsp; &=
+nbsp; &nbsp; <span class=3D"Apple-tab-span" style=3D"white-space:pre">	</s=
+pan>Radeon i2c bit bus 0x93 &nbsp; &nbsp; &nbsp; &nbsp; <span class=3D"Apple=
+-tab-span" style=3D"white-space:pre">	</span>I2C adapter</div><div>i2c-4<=
+span class=3D"Apple-tab-span" style=3D"white-space:pre">	</span>i2c &=
+nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-span" style=3D"white-space:pre"=
+>	</span>Radeon i2c bit bus 0x94 &nbsp; &nbsp; &nbsp; &nbsp; <span cl=
+ass=3D"Apple-tab-span" style=3D"white-space:pre">	</span>I2C adapter<=
+/div><div>i2c-5<span class=3D"Apple-tab-span" style=3D"white-space:pre">=
+	</span>i2c &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-span" style=3D"whi=
+te-space:pre">	</span>Radeon i2c bit bus 0x95 &nbsp; &nbsp; &nbsp; &nbsp; <=
+span class=3D"Apple-tab-span" style=3D"white-space:pre">	</span>I2C a=
+dapter</div><div>i2c-6<span class=3D"Apple-tab-span" style=3D"white-space:pr=
+e">	</span>i2c &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-span" styl=
+e=3D"white-space:pre">	</span>Radeon i2c bit bus 0x96 &nbsp; &nbsp; &nbsp;=
+ &nbsp; <span class=3D"Apple-tab-span" style=3D"white-space:pre">	</s=
+pan>I2C adapter</div><div>i2c-7<span class=3D"Apple-tab-span" style=3D"white=
+-space:pre">	</span>i2c &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-sp=
+an" style=3D"white-space:pre">	</span>Radeon i2c bit bus 0x97 &nbsp; &nbsp=
+; &nbsp; &nbsp; <span class=3D"Apple-tab-span" style=3D"white-space:pre">=
+	</span>I2C adapter</div><div>i2c-8<span class=3D"Apple-tab-span" style=3D"w=
+hite-space:pre">	</span>i2c &nbsp; &nbsp; &nbsp; <span class=3D"Appl=
+e-tab-span" style=3D"white-space:pre">	</span>PA Semi SMBus adapter at 0x8=
+00200<span class=3D"Apple-tab-span" style=3D"white-space:pre">	</span>I2C a=
+dapter</div><div>i2c-9<span class=3D"Apple-tab-span" style=3D"white-space:pr=
+e">	</span>i2c &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-span" styl=
+e=3D"white-space:pre">	</span>PA Semi SMBus adapter at 0x800240<span class=
+=3D"Apple-tab-span" style=3D"white-space:pre">	</span>I2C adapter</div><di=
+v>i2c-10<span class=3D"Apple-tab-span" style=3D"white-space:pre">	</s=
+pan>i2c &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-span" style=3D"white-s=
+pace:pre">	</span>PA Semi SMBus adapter at 0x800280<span class=3D"Appl=
+e-tab-span" style=3D"white-space:pre">	</span>I2C adapter</div></div><div>=
+<br></div><div>Output of i2cdetect -l with your modifications:</div><div><br=
+></div><div><div>i2c-0<span class=3D"Apple-tab-span" style=3D"white-space:pr=
+e">	</span>i2c &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-span" styl=
+e=3D"white-space:pre">	</span>Radeon i2c bit bus 0x90 &nbsp; &nbsp; &nbsp;=
+ &nbsp; <span class=3D"Apple-tab-span" style=3D"white-space:pre">	</s=
+pan>I2C adapter</div><div>i2c-1<span class=3D"Apple-tab-span" style=3D"white=
+-space:pre">	</span>i2c &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-sp=
+an" style=3D"white-space:pre">	</span>Radeon i2c bit bus 0x91 &nbsp; &nbsp=
+; &nbsp; &nbsp; <span class=3D"Apple-tab-span" style=3D"white-space:pre">=
+	</span>I2C adapter</div><div>i2c-2<span class=3D"Apple-tab-span" style=3D"w=
+hite-space:pre">	</span>i2c &nbsp; &nbsp; &nbsp; <span class=3D"Appl=
+e-tab-span" style=3D"white-space:pre">	</span>Radeon i2c bit bus 0x92 &nbs=
+p; &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-span" style=3D"white-space:=
+pre">	</span>I2C adapter</div><div>i2c-3<span class=3D"Apple-tab-span" st=
+yle=3D"white-space:pre">	</span>i2c &nbsp; &nbsp; &nbsp; <span class=
+=3D"Apple-tab-span" style=3D"white-space:pre">	</span>Radeon i2c bit bus 0=
+x93 &nbsp; &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-span" style=3D"whit=
+e-space:pre">	</span>I2C adapter</div><div>i2c-4<span class=3D"Apple-tab-=
+span" style=3D"white-space:pre">	</span>i2c &nbsp; &nbsp; &nbsp; <sp=
+an class=3D"Apple-tab-span" style=3D"white-space:pre">	</span>Radeon i2c b=
+it bus 0x94 &nbsp; &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-span" style=
+=3D"white-space:pre">	</span>I2C adapter</div><div>i2c-5<span class=3D"Ap=
+ple-tab-span" style=3D"white-space:pre">	</span>i2c &nbsp; &nbsp; &n=
+bsp; <span class=3D"Apple-tab-span" style=3D"white-space:pre">	</span>Rade=
+on i2c bit bus 0x95 &nbsp; &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-spa=
+n" style=3D"white-space:pre">	</span>I2C adapter</div><div>i2c-6<span cla=
+ss=3D"Apple-tab-span" style=3D"white-space:pre">	</span>i2c &nbsp; &=
+nbsp; &nbsp; <span class=3D"Apple-tab-span" style=3D"white-space:pre">	</s=
+pan>Radeon i2c bit bus 0x96 &nbsp; &nbsp; &nbsp; &nbsp; <span class=3D"Apple=
+-tab-span" style=3D"white-space:pre">	</span>I2C adapter</div><div>i2c-7<=
+span class=3D"Apple-tab-span" style=3D"white-space:pre">	</span>i2c &=
+nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-span" style=3D"white-space:pre"=
+>	</span>Radeon i2c bit bus 0x97 &nbsp; &nbsp; &nbsp; &nbsp; <span cl=
+ass=3D"Apple-tab-span" style=3D"white-space:pre">	</span>I2C adapter<=
+/div><div>i2c-8<span class=3D"Apple-tab-span" style=3D"white-space:pre">=
+	</span>i2c &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-span" style=3D"whi=
+te-space:pre">	</span>PA Semi SMBus adapter at 0x(____ptrval____)<span cla=
+ss=3D"Apple-tab-span" style=3D"white-space:pre">	</span>I2C adapter<=
+/div><div>i2c-9<span class=3D"Apple-tab-span" style=3D"white-space:pre">=
+	</span>i2c &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-span" style=3D"whi=
+te-space:pre">	</span>PA Semi SMBus adapter at 0x(____ptrval____)<span cla=
+ss=3D"Apple-tab-span" style=3D"white-space:pre">	</span>I2C adapter<=
+/div><div>i2c-10<span class=3D"Apple-tab-span" style=3D"white-space:pre">=
+	</span>i2c &nbsp; &nbsp; &nbsp; <span class=3D"Apple-tab-span" style=3D"whi=
+te-space:pre">	</span>PA Semi SMBus adapter at 0x(____ptrval____)<span cla=
+ss=3D"Apple-tab-span" style=3D"white-space:pre">	</span>I2C adapter<=
+/div></div><div><br></div><div>Please check the outputs.</div><div><br></div=
+><div>Thanks,</div><div>Christian</div><div><br></div><div>[1]&nbsp;<a href=3D=
+"https://forum.hyperion-entertainment.com/viewtopic.php?p=3D54165#p54165">ht=
+tps://forum.hyperion-entertainment.com/viewtopic.php?p=3D54165#p54165</a></d=
+iv></body></html>=
+
+--Apple-Mail-BFABFE53-1E60-40F3-B9EF-BC1F987A543D--
