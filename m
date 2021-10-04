@@ -2,69 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 064E04213C9
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Oct 2021 18:14:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B71AD4213CE
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Oct 2021 18:15:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HNQlW00Qlz3c7K
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 03:14:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HNQmC4NWmz3fMP
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 03:15:07 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=EDKj8e2O;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=XITgc8RJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::534;
- helo=mail-pg1-x534.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::433;
+ helo=mail-pf1-x433.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=EDKj8e2O; dkim-atps=neutral
-Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com
- [IPv6:2607:f8b0:4864:20::534])
+ header.s=20210112 header.b=XITgc8RJ; dkim-atps=neutral
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com
+ [IPv6:2607:f8b0:4864:20::433])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HNQSv4cmvz3brd
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 03:01:51 +1100 (AEDT)
-Received: by mail-pg1-x534.google.com with SMTP id q201so4329004pgq.12
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Oct 2021 09:01:51 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HNQSy2W6Yz3c4h
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 03:01:54 +1100 (AEDT)
+Received: by mail-pf1-x433.google.com with SMTP id 187so10490320pfc.10
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Oct 2021 09:01:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=kbNMN5/ycF90abyDvuus1UyFcgyOK6fk2IGspBrPPPc=;
- b=EDKj8e2OCD1oNd6XMKXNSyzhvjqRttg0JdlauhpsHZig3ufREVZQJZXGJ9Pjygq0F3
- 5r7thMf9llIC+mx+PAznq0dMCNPUvg419LUXbxQ/1JE3WnaUb1SB+WM/J0Xih3tYcnis
- BStK+ZJF1FQ3ES5bOQtPtcWHwG2VXEOmSeuMxpXdv8Kt7iKc3T22YE1bzeY2n0VUZM2q
- GOmTYo7z6ldBS9JFkJ/M4kFRUljo2D+/XRIRyrMuuAtX2nqAFPNUMaFDTve1foR/FnhH
- IfuE+g4D0BCajyxF1s4Y2vjtdWzwaT4PNYkI6jONzYSs69nSeDxInXAMlpH1BU7Am55l
- pVww==
+ bh=+uifPGYlRIbN5mTHvUbZjtaaYYRvM7KqJ3vO8EmF4DI=;
+ b=XITgc8RJByYf5tfAAvYEE3fH5jgqKB2ALbN1qiAbVXPBSv3UghC3UhFKAggSOwhafw
+ nd9sbGhwE0w/Ce6sxG/M4VHE4EMtvxNJypiDXY/5Rr5wPcO59ioDlh+FDVev9c/un9zR
+ ZOS6i7BAzbp76Vb7vJpA6JHPtpRUqxcQSpo1eyrH/YY3pWwD6H7uLBZfvrRVRZcqpQDS
+ HihpwPE8PpWqiOQq/+UIirBaDJZfb6utgiZPv9rt3vhQpTBkz0JKHaOR3UksFClgl8PX
+ 2e664zqByaQX1VH0Dq17LnQdUKi6HxhZxhTD7l2Q+78gAa4qUgdvm/mEvYq5ALIlzwa2
+ k6hA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=kbNMN5/ycF90abyDvuus1UyFcgyOK6fk2IGspBrPPPc=;
- b=pYyu8O/6fXC6/cH3VbimzSa7/jwxPvgvf3zfVi2RTwTEmlaxQOpRpZqsp4hqtQcNgk
- ZRV1Anv/xCot9vgbQ8V0fMke3zHrzRXkqYKN7Jo8ixhDHAtRt0TDAR1yGnqVAcK9hfMc
- JgGRTMMQksNbfC7vD9MSwNn2A4KAnrFpEuL2mtdxKkSN42mCQJSH9AZQsmTbJKUVAJRC
- bk4bKIif2ASmLfgX5gGewQj7XBcw8Ub32WR7VT/wY2/Tfc/1heyNeExZJm6Ct4KlSOgP
- gVOBjvEDjYJCdQgkqsJvNdo+WoARRwf/o8c8PBd556jDsKXvpcVAz03+ke/ABI9laUE1
- ai6Q==
-X-Gm-Message-State: AOAM532tEV0SfuvfuwbiSbthkm2yJXfF8ntAqRNOeGjOX+TzJZrXZ3KI
- V+CKkAPazDrJonG6U4ECFUE=
-X-Google-Smtp-Source: ABdhPJxYgoK0eSIGz6nCE8LCrmlN+ynSfHHlsBS/gxu1ZN3R1c4RJZLKXwXJjDWqduKRYw303ZEMVQ==
-X-Received: by 2002:a63:710d:: with SMTP id m13mr11593324pgc.467.1633363309813; 
- Mon, 04 Oct 2021 09:01:49 -0700 (PDT)
+ bh=+uifPGYlRIbN5mTHvUbZjtaaYYRvM7KqJ3vO8EmF4DI=;
+ b=BljN081gdaoI4gIIH5DCAPLBru2g2lUMDhZdhPpyk74p9QiaardHNTtavoP3cVqzZH
+ Stp2O6gDkT/En2xihmGe5dAXySXgru+eXeKYRpPEfMwHb69JQqPoUnzPzzyMyYpS0mGJ
+ JoNNqEpkqaaWMwBg6rSY7pr1jB0mqULgd4g2QzMUnkbLhxfXEinOHprXZ2AK9P+caAB7
+ rakR2u17MPOQubK9c5pn/vAl909vPCJM7YOfZVCB+G2i0BI7NLZY+5bXAkdGVmy4mASv
+ coCr3qmLD70pKnS5FavLLIX0AC1pD9wsjojakaRE4o3Sla7CwFIeKcYADjHJXnFq5gfD
+ WUhQ==
+X-Gm-Message-State: AOAM531Tbdvjtl2viOomFT0OlQmmQxn0EURJNVZr9qBgWDx4KGt7O7Yw
+ JhWFEFjXsKShvIz+qEuE9ikf9hPPA80=
+X-Google-Smtp-Source: ABdhPJyNq27FnsuPIjdFF/2bUzMcOMAx0XQUSvD/HRDWTzd9kWE+rNvvjQl1qezB9/4JVlhHsWfEMQ==
+X-Received: by 2002:a63:ce52:: with SMTP id r18mr11325811pgi.350.1633363312287; 
+ Mon, 04 Oct 2021 09:01:52 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (115-64-153-41.tpgi.com.au. [115.64.153.41])
- by smtp.gmail.com with ESMTPSA id 130sm15557223pfz.77.2021.10.04.09.01.48
+ by smtp.gmail.com with ESMTPSA id 130sm15557223pfz.77.2021.10.04.09.01.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Oct 2021 09:01:49 -0700 (PDT)
+ Mon, 04 Oct 2021 09:01:52 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 20/52] KVM: PPC: Book3S HV P9: Improve mtmsrd scheduling by
- delaying MSR[EE] disable
-Date: Tue,  5 Oct 2021 02:00:17 +1000
-Message-Id: <20211004160049.1338837-21-npiggin@gmail.com>
+Subject: [PATCH v3 21/52] KVM: PPC: Book3S HV P9: Add kvmppc_stop_thread to
+ match kvmppc_start_thread
+Date: Tue,  5 Oct 2021 02:00:18 +1000
+Message-Id: <20211004160049.1338837-22-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20211004160049.1338837-1-npiggin@gmail.com>
 References: <20211004160049.1338837-1-npiggin@gmail.com>
@@ -81,87 +81,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>, Fabiano Rosas <farosas@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Moving the mtmsrd after the host SPRs are saved and before the guest
-SPRs start to be loaded can prevent an SPR scoreboard stall (because
-the mtmsrd is L=1 type which does not cause context synchronisation.
+Small cleanup makes it a bit easier to match up entry and exit
+operations.
 
-This is also now more convenient to combined with the mtmsrd L=0
-instruction to enable facilities just below, but that is not done yet.
-
+Reviewed-by: Fabiano Rosas <farosas@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kvm/book3s_hv.c | 23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ arch/powerpc/kvm/book3s_hv.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
 diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 16365c0e9872..7e8ddffd61c7 100644
+index 7e8ddffd61c7..0a711d929531 100644
 --- a/arch/powerpc/kvm/book3s_hv.c
 +++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -4156,6 +4156,18 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+@@ -3070,6 +3070,13 @@ static void kvmppc_start_thread(struct kvm_vcpu *vcpu, struct kvmppc_vcore *vc)
+ 		kvmppc_ipi_thread(cpu);
+ }
  
- 	save_p9_host_os_sprs(&host_os_sprs);
- 
-+	/*
-+	 * This could be combined with MSR[RI] clearing, but that expands
-+	 * the unrecoverable window. It would be better to cover unrecoverable
-+	 * with KVM bad interrupt handling rather than use MSR[RI] at all.
-+	 *
-+	 * Much more difficult and less worthwhile to combine with IR/DR
-+	 * disable.
-+	 */
-+	hard_irq_disable();
-+	if (lazy_irq_pending())
-+		return 0;
++/* Old path does this in asm */
++static void kvmppc_stop_thread(struct kvm_vcpu *vcpu)
++{
++	vcpu->cpu = -1;
++	vcpu->arch.thread_cpu = -1;
++}
 +
- 	/* MSR bits may have been cleared by context switch */
- 	msr = 0;
- 	if (IS_ENABLED(CONFIG_PPC_FPU))
-@@ -4667,6 +4679,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
- 	struct kvmppc_vcore *vc;
- 	struct kvm *kvm = vcpu->kvm;
- 	struct kvm_nested_guest *nested = vcpu->arch.nested;
-+	unsigned long flags;
+ static void kvmppc_wait_for_nap(int n_threads)
+ {
+ 	int cpu = smp_processor_id();
+@@ -4297,8 +4304,6 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+ 		dec = (s32) dec;
+ 	tb = mftb();
+ 	vcpu->arch.dec_expires = dec + tb;
+-	vcpu->cpu = -1;
+-	vcpu->arch.thread_cpu = -1;
  
- 	trace_kvmppc_run_vcpu_enter(vcpu);
+ 	store_spr_state(vcpu);
  
-@@ -4710,11 +4723,11 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
- 	if (kvm_is_radix(kvm))
- 		kvmppc_prepare_radix_vcpu(vcpu, pcpu);
- 
--	local_irq_disable();
--	hard_irq_disable();
-+	/* flags save not required, but irq_pmu has no disable/enable API */
-+	powerpc_local_irq_pmu_save(flags);
- 	if (signal_pending(current))
- 		goto sigpend;
--	if (lazy_irq_pending() || need_resched() || !kvm->arch.mmu_ready)
-+	if (need_resched() || !kvm->arch.mmu_ready)
- 		goto out;
- 
- 	if (!nested) {
-@@ -4769,7 +4782,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+@@ -4782,6 +4787,8 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
  
  	guest_exit_irqoff();
  
--	local_irq_enable();
-+	powerpc_local_irq_pmu_restore(flags);
++	kvmppc_stop_thread(vcpu);
++
+ 	powerpc_local_irq_pmu_restore(flags);
  
  	cpumask_clear_cpu(pcpu, &kvm->arch.cpu_in_guest);
- 
-@@ -4827,7 +4840,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
- 	run->exit_reason = KVM_EXIT_INTR;
- 	vcpu->arch.ret = -EINTR;
-  out:
--	local_irq_enable();
-+	powerpc_local_irq_pmu_restore(flags);
- 	preempt_enable();
- 	goto done;
- }
 -- 
 2.23.0
 
