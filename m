@@ -2,51 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0D7F420702
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Oct 2021 10:06:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B6D0420788
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Oct 2021 10:44:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HNCwj5bbhz2ypg
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Oct 2021 19:06:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HNDmD6wQPz2yPs
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Oct 2021 19:44:28 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=i76Zi2TS;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=iogearbox.net (client-ip=213.133.104.62;
- helo=www62.your-server.de; envelope-from=daniel@iogearbox.net;
- receiver=<UNKNOWN>)
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HNCwF0LrTz2xrm
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Oct 2021 19:06:19 +1100 (AEDT)
-Received: from sslproxy02.your-server.de ([78.47.166.47])
- by www62.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
- (Exim 4.92.3) (envelope-from <daniel@iogearbox.net>)
- id 1mXIz0-000CRs-N6; Mon, 04 Oct 2021 10:05:58 +0200
-Received: from [85.1.206.226] (helo=linux.home)
- by sslproxy02.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
- (Exim 4.92) (envelope-from <daniel@iogearbox.net>)
- id 1mXIz0-000BaL-Cv; Mon, 04 Oct 2021 10:05:58 +0200
-Subject: Re: [PATCH v4 0/8] bpf powerpc: Add BPF_PROBE_MEM support in powerpc
- JIT compiler
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Hari Bathini <hbathini@linux.ibm.com>, naveen.n.rao@linux.ibm.com,
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HNDlZ6ZmCz2yJF
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Oct 2021 19:43:54 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=i76Zi2TS; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4HNDlR0VHPz4xb7;
+ Mon,  4 Oct 2021 19:43:47 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1633337027;
+ bh=lGiN5YFpQQ1dHQyebaZ+eHrMLRHhQ/tolfu0dgF5gdc=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=i76Zi2TSGeV/SugFPxQ1z4T2iU1ASdx//IkawvUKouym9vTGxNS/l44JjRpp/bKMh
+ ycR5XDmgaXz9dy6S7vSzUfIZv3ZnxtgBsM7JtFy0VAT23ry4u5akHXi5yPg3mGm1Cq
+ 432dQTzCNawvET02o1vnkxzZBrlzTX9L6OktpqwbD43j1UigtcxhY+BF7fMni1088k
+ yDdSZnkf6LxzVOwaOtFOfHBHCnQWvctEvcHkzUkzNEPC1RZ7f/39PILfKZl/mjbFJQ
+ 0DxCYPOk2N3wsyNdEZooAysOtkASbhdXLyNQXVfPW9tdeuraegK/06qP+hCdbq7xl0
+ rmtbbwBbg6rHg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Daniel Borkmann <daniel@iogearbox.net>, Hari Bathini
+ <hbathini@linux.ibm.com>, naveen.n.rao@linux.ibm.com,
  christophe.leroy@csgroup.eu, ast@kernel.org
+Subject: Re: [PATCH v4 0/8] bpf powerpc: Add BPF_PROBE_MEM support in
+ powerpc JIT compiler
+In-Reply-To: <768469ec-a596-9e0c-541c-aca5693d69e7@iogearbox.net>
 References: <20210929111855.50254-1-hbathini@linux.ibm.com>
  <88b59272-e3f7-30ba-dda0-c4a6b42c0029@iogearbox.net>
  <87o885raev.fsf@mpe.ellerman.id.au>
-From: Daniel Borkmann <daniel@iogearbox.net>
-Message-ID: <768469ec-a596-9e0c-541c-aca5693d69e7@iogearbox.net>
-Date: Mon, 4 Oct 2021 10:05:57 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+ <768469ec-a596-9e0c-541c-aca5693d69e7@iogearbox.net>
+Date: Mon, 04 Oct 2021 19:43:45 +1100
+Message-ID: <87lf39qiwu.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <87o885raev.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.103.3/26311/Sun Oct  3 11:08:49 2021)
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,23 +72,25 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/4/21 12:49 AM, Michael Ellerman wrote:
-> Daniel Borkmann <daniel@iogearbox.net> writes:
->> On 9/29/21 1:18 PM, Hari Bathini wrote:
->>> Patch #1 & #2 are simple cleanup patches. Patch #3 refactors JIT
->>> compiler code with the aim to simplify adding BPF_PROBE_MEM support.
->>> Patch #4 introduces PPC_RAW_BRANCH() macro instead of open coding
->>> branch instruction. Patch #5 & #7 add BPF_PROBE_MEM support for PPC64
->>> & PPC32 JIT compilers respectively. Patch #6 & #8 handle bad userspace
->>> pointers for PPC64 & PPC32 cases respectively.
->>
->> Michael, are you planning to pick up the series or shall we route via bpf-next?
-> 
-> Yeah I'll plan to take it, unless you think there is a strong reason it
-> needs to go via the bpf tree (doesn't look like it from the diffstat).
+Daniel Borkmann <daniel@iogearbox.net> writes:
+> On 10/4/21 12:49 AM, Michael Ellerman wrote:
+>> Daniel Borkmann <daniel@iogearbox.net> writes:
+>>> On 9/29/21 1:18 PM, Hari Bathini wrote:
+>>>> Patch #1 & #2 are simple cleanup patches. Patch #3 refactors JIT
+>>>> compiler code with the aim to simplify adding BPF_PROBE_MEM support.
+>>>> Patch #4 introduces PPC_RAW_BRANCH() macro instead of open coding
+>>>> branch instruction. Patch #5 & #7 add BPF_PROBE_MEM support for PPC64
+>>>> & PPC32 JIT compilers respectively. Patch #6 & #8 handle bad userspace
+>>>> pointers for PPC64 & PPC32 cases respectively.
+>>>
+>>> Michael, are you planning to pick up the series or shall we route via bpf-next?
+>> 
+>> Yeah I'll plan to take it, unless you think there is a strong reason it
+>> needs to go via the bpf tree (doesn't look like it from the diffstat).
+>
+> Sounds good to me, in that case, please also route the recent JIT fixes from
+> Naveen through your tree.
 
-Sounds good to me, in that case, please also route the recent JIT fixes from
-Naveen through your tree.
+Will do.
 
-Thanks,
-Daniel
+cheers
