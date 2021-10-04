@@ -2,70 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 479384213C4
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Oct 2021 18:13:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 064E04213C9
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Oct 2021 18:14:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HNQkm1bdXz3dhl
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 03:13:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HNQlW00Qlz3c7K
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 03:14:31 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=CnRmKiLz;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=EDKj8e2O;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62f;
- helo=mail-pl1-x62f.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::534;
+ helo=mail-pg1-x534.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=CnRmKiLz; dkim-atps=neutral
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com
- [IPv6:2607:f8b0:4864:20::62f])
+ header.s=20210112 header.b=EDKj8e2O; dkim-atps=neutral
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com
+ [IPv6:2607:f8b0:4864:20::534])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HNQSs3XPJz3blb
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 03:01:49 +1100 (AEDT)
-Received: by mail-pl1-x62f.google.com with SMTP id c4so203069pls.6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Oct 2021 09:01:49 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HNQSv4cmvz3brd
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 03:01:51 +1100 (AEDT)
+Received: by mail-pg1-x534.google.com with SMTP id q201so4329004pgq.12
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Oct 2021 09:01:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=2M5qUMpszc7y0kTAP66EoNWnoS+C/f8xv2fiQGab9VE=;
- b=CnRmKiLz1JL74iQrGl08XR3HTo747VKcYQ20r0eDBIIsPI+1Lpr+eknpdC4p6KaWDh
- CWnq+y/FYtUwOwfGNF1y3jDh+qCEWw3XC5/LUoL/INrZ71O7njvMKLVmB6yikUD0WFhp
- 4wR3wSfZf4xcSWfarpxiPVCGyGSrZJM0IbhhQs4LJY4Ws0lv+tHLtnc9KD70/c3bgOBe
- aHFhXwjtv0b4JneUN1WYxmJVr+fwhmH7RLG+d/xfwgObQrq8+Ofh+z9tbhyyI7fjFwcn
- 5hE26w2BGI07ihOwRs0Ly+QKnrHJ/ILrCbB5Fyv5y9aeIjY8rhP8Jz4u4be34w+taMss
- V/CQ==
+ bh=kbNMN5/ycF90abyDvuus1UyFcgyOK6fk2IGspBrPPPc=;
+ b=EDKj8e2OCD1oNd6XMKXNSyzhvjqRttg0JdlauhpsHZig3ufREVZQJZXGJ9Pjygq0F3
+ 5r7thMf9llIC+mx+PAznq0dMCNPUvg419LUXbxQ/1JE3WnaUb1SB+WM/J0Xih3tYcnis
+ BStK+ZJF1FQ3ES5bOQtPtcWHwG2VXEOmSeuMxpXdv8Kt7iKc3T22YE1bzeY2n0VUZM2q
+ GOmTYo7z6ldBS9JFkJ/M4kFRUljo2D+/XRIRyrMuuAtX2nqAFPNUMaFDTve1foR/FnhH
+ IfuE+g4D0BCajyxF1s4Y2vjtdWzwaT4PNYkI6jONzYSs69nSeDxInXAMlpH1BU7Am55l
+ pVww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=2M5qUMpszc7y0kTAP66EoNWnoS+C/f8xv2fiQGab9VE=;
- b=NBQmS4Ig4BsiuhfuGnTglVr5xfGSopQI2zoPYQ0FyLBde+Sk74fy0+2C0lx/DO7oWu
- fkPhZyadmJ7u6irezbojr0R9iEs7vttYCgOqaruqJpNoacgfi5/9/7hebT8X8X26QkZI
- OMCbbdN4Hmx6z3Uxow8ef8LQ5fexCb2cKEZcDek6Gce3mJPiPgED4CWXflJcXX/Yjhkp
- ZYG2hhlPRgzlFf11QGTvvOqKvfQ5QcmaXFgzNPBzM4DDxoaqT+csrLfdrZv1oZOcDuaj
- xPmxln0zvn83DZAzzNHwyXVhVQ6JOz+InsP8S0Ebl12It+HhLq6ayvhyZTdYhxtzHiwA
- BapA==
-X-Gm-Message-State: AOAM533rniIxhLGkea/spEGJ8oU6rQSxxbwe8wCb1jEpHschjQEKkmG7
- z6NVnWHURcXOAxzpEEml/KU=
-X-Google-Smtp-Source: ABdhPJzRUb46DftirO/YcVQWJy7uI+GSu/NkkbbWaPfkFPFMnhTIUgJhYF9N0XI6+rrDfjjwoLu3Kw==
-X-Received: by 2002:a17:902:9b88:b0:13e:55b1:2939 with SMTP id
- y8-20020a1709029b8800b0013e55b12939mr424178plp.80.1633363307649; 
- Mon, 04 Oct 2021 09:01:47 -0700 (PDT)
+ bh=kbNMN5/ycF90abyDvuus1UyFcgyOK6fk2IGspBrPPPc=;
+ b=pYyu8O/6fXC6/cH3VbimzSa7/jwxPvgvf3zfVi2RTwTEmlaxQOpRpZqsp4hqtQcNgk
+ ZRV1Anv/xCot9vgbQ8V0fMke3zHrzRXkqYKN7Jo8ixhDHAtRt0TDAR1yGnqVAcK9hfMc
+ JgGRTMMQksNbfC7vD9MSwNn2A4KAnrFpEuL2mtdxKkSN42mCQJSH9AZQsmTbJKUVAJRC
+ bk4bKIif2ASmLfgX5gGewQj7XBcw8Ub32WR7VT/wY2/Tfc/1heyNeExZJm6Ct4KlSOgP
+ gVOBjvEDjYJCdQgkqsJvNdo+WoARRwf/o8c8PBd556jDsKXvpcVAz03+ke/ABI9laUE1
+ ai6Q==
+X-Gm-Message-State: AOAM532tEV0SfuvfuwbiSbthkm2yJXfF8ntAqRNOeGjOX+TzJZrXZ3KI
+ V+CKkAPazDrJonG6U4ECFUE=
+X-Google-Smtp-Source: ABdhPJxYgoK0eSIGz6nCE8LCrmlN+ynSfHHlsBS/gxu1ZN3R1c4RJZLKXwXJjDWqduKRYw303ZEMVQ==
+X-Received: by 2002:a63:710d:: with SMTP id m13mr11593324pgc.467.1633363309813; 
+ Mon, 04 Oct 2021 09:01:49 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (115-64-153-41.tpgi.com.au. [115.64.153.41])
- by smtp.gmail.com with ESMTPSA id 130sm15557223pfz.77.2021.10.04.09.01.45
+ by smtp.gmail.com with ESMTPSA id 130sm15557223pfz.77.2021.10.04.09.01.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Oct 2021 09:01:47 -0700 (PDT)
+ Mon, 04 Oct 2021 09:01:49 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: kvm-ppc@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 19/52] KVM: PPC: Book3S HV P9: Reduce mtmsrd instructions
- required to save host SPRs
-Date: Tue,  5 Oct 2021 02:00:16 +1000
-Message-Id: <20211004160049.1338837-20-npiggin@gmail.com>
+Subject: [PATCH v3 20/52] KVM: PPC: Book3S HV P9: Improve mtmsrd scheduling by
+ delaying MSR[EE] disable
+Date: Tue,  5 Oct 2021 02:00:17 +1000
+Message-Id: <20211004160049.1338837-21-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20211004160049.1338837-1-npiggin@gmail.com>
 References: <20211004160049.1338837-1-npiggin@gmail.com>
@@ -87,216 +86,82 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This reduces the number of mtmsrd required to enable facility bits when
-saving/restoring registers, by having the KVM code set all bits up front
-rather than using individual facility functions that set their particular
-MSR bits.
+Moving the mtmsrd after the host SPRs are saved and before the guest
+SPRs start to be loaded can prevent an SPR scoreboard stall (because
+the mtmsrd is L=1 type which does not cause context synchronisation.
+
+This is also now more convenient to combined with the mtmsrd L=0
+instruction to enable facilities just below, but that is not done yet.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/switch_to.h  |  2 +
- arch/powerpc/kernel/process.c         | 28 +++++++++++++
- arch/powerpc/kvm/book3s_hv.c          | 59 ++++++++++++++++++---------
- arch/powerpc/kvm/book3s_hv_p9_entry.c |  1 +
- 4 files changed, 71 insertions(+), 19 deletions(-)
+ arch/powerpc/kvm/book3s_hv.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/switch_to.h b/arch/powerpc/include/asm/switch_to.h
-index 9d1fbd8be1c7..e8013cd6b646 100644
---- a/arch/powerpc/include/asm/switch_to.h
-+++ b/arch/powerpc/include/asm/switch_to.h
-@@ -112,6 +112,8 @@ static inline void clear_task_ebb(struct task_struct *t)
- #endif
- }
- 
-+void kvmppc_save_user_regs(void);
-+
- extern int set_thread_tidr(struct task_struct *t);
- 
- #endif /* _ASM_POWERPC_SWITCH_TO_H */
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 50436b52c213..3fca321b820d 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -1156,6 +1156,34 @@ static inline void save_sprs(struct thread_struct *t)
- #endif
- }
- 
-+#ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
-+void kvmppc_save_user_regs(void)
-+{
-+	unsigned long usermsr;
-+
-+	if (!current->thread.regs)
-+		return;
-+
-+	usermsr = current->thread.regs->msr;
-+
-+	if (usermsr & MSR_FP)
-+		save_fpu(current);
-+
-+	if (usermsr & MSR_VEC)
-+		save_altivec(current);
-+
-+#ifdef CONFIG_PPC_TRANSACTIONAL_MEM
-+	if (usermsr & MSR_TM) {
-+		current->thread.tm_tfhar = mfspr(SPRN_TFHAR);
-+		current->thread.tm_tfiar = mfspr(SPRN_TFIAR);
-+		current->thread.tm_texasr = mfspr(SPRN_TEXASR);
-+		current->thread.regs->msr &= ~MSR_TM;
-+	}
-+#endif
-+}
-+EXPORT_SYMBOL_GPL(kvmppc_save_user_regs);
-+#endif /* CONFIG_KVM_BOOK3S_HV_POSSIBLE */
-+
- static inline void restore_sprs(struct thread_struct *old_thread,
- 				struct thread_struct *new_thread)
- {
 diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index fca89ed2244f..16365c0e9872 100644
+index 16365c0e9872..7e8ddffd61c7 100644
 --- a/arch/powerpc/kvm/book3s_hv.c
 +++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -4140,6 +4140,7 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
- 	struct p9_host_os_sprs host_os_sprs;
- 	s64 dec;
- 	u64 tb, next_timer;
-+	unsigned long msr;
- 	int trap;
+@@ -4156,6 +4156,18 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
  
- 	WARN_ON_ONCE(vcpu->arch.ceded);
-@@ -4151,8 +4152,23 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
- 	if (next_timer < time_limit)
- 		time_limit = next_timer;
- 
-+	vcpu->arch.ceded = 0;
-+
  	save_p9_host_os_sprs(&host_os_sprs);
  
-+	/* MSR bits may have been cleared by context switch */
-+	msr = 0;
-+	if (IS_ENABLED(CONFIG_PPC_FPU))
-+		msr |= MSR_FP;
-+	if (cpu_has_feature(CPU_FTR_ALTIVEC))
-+		msr |= MSR_VEC;
-+	if (cpu_has_feature(CPU_FTR_VSX))
-+		msr |= MSR_VSX;
-+	if (cpu_has_feature(CPU_FTR_TM) ||
-+	    cpu_has_feature(CPU_FTR_P9_TM_HV_ASSIST))
-+		msr |= MSR_TM;
-+	msr = msr_check_and_set(msr);
++	/*
++	 * This could be combined with MSR[RI] clearing, but that expands
++	 * the unrecoverable window. It would be better to cover unrecoverable
++	 * with KVM bad interrupt handling rather than use MSR[RI] at all.
++	 *
++	 * Much more difficult and less worthwhile to combine with IR/DR
++	 * disable.
++	 */
++	hard_irq_disable();
++	if (lazy_irq_pending())
++		return 0;
 +
- 	kvmppc_subcore_enter_guest();
+ 	/* MSR bits may have been cleared by context switch */
+ 	msr = 0;
+ 	if (IS_ENABLED(CONFIG_PPC_FPU))
+@@ -4667,6 +4679,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	struct kvmppc_vcore *vc;
+ 	struct kvm *kvm = vcpu->kvm;
+ 	struct kvm_nested_guest *nested = vcpu->arch.nested;
++	unsigned long flags;
  
- 	vc->entry_exit_map = 1;
-@@ -4161,12 +4177,13 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
- 	vcpu_vpa_increment_dispatch(vcpu);
+ 	trace_kvmppc_run_vcpu_enter(vcpu);
  
- 	if (cpu_has_feature(CPU_FTR_TM) ||
--	    cpu_has_feature(CPU_FTR_P9_TM_HV_ASSIST))
-+	    cpu_has_feature(CPU_FTR_P9_TM_HV_ASSIST)) {
- 		kvmppc_restore_tm_hv(vcpu, vcpu->arch.shregs.msr, true);
-+		msr = mfmsr(); /* TM restore can update msr */
-+	}
+@@ -4710,11 +4723,11 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	if (kvm_is_radix(kvm))
+ 		kvmppc_prepare_radix_vcpu(vcpu, pcpu);
  
- 	switch_pmu_to_guest(vcpu, &host_os_sprs);
+-	local_irq_disable();
+-	hard_irq_disable();
++	/* flags save not required, but irq_pmu has no disable/enable API */
++	powerpc_local_irq_pmu_save(flags);
+ 	if (signal_pending(current))
+ 		goto sigpend;
+-	if (lazy_irq_pending() || need_resched() || !kvm->arch.mmu_ready)
++	if (need_resched() || !kvm->arch.mmu_ready)
+ 		goto out;
  
--	msr_check_and_set(MSR_FP | MSR_VEC | MSR_VSX);
- 	load_fp_state(&vcpu->arch.fp);
- #ifdef CONFIG_ALTIVEC
- 	load_vr_state(&vcpu->arch.vr);
-@@ -4275,7 +4292,6 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	if (!nested) {
+@@ -4769,7 +4782,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
  
- 	restore_p9_host_os_sprs(vcpu, &host_os_sprs);
+ 	guest_exit_irqoff();
  
--	msr_check_and_set(MSR_FP | MSR_VEC | MSR_VSX);
- 	store_fp_state(&vcpu->arch.fp);
- #ifdef CONFIG_ALTIVEC
- 	store_vr_state(&vcpu->arch.vr);
-@@ -4825,19 +4841,24 @@ static int kvmppc_vcpu_run_hv(struct kvm_vcpu *vcpu)
- 	unsigned long user_tar = 0;
- 	unsigned int user_vrsave;
- 	struct kvm *kvm;
-+	unsigned long msr;
+-	local_irq_enable();
++	powerpc_local_irq_pmu_restore(flags);
  
- 	if (!vcpu->arch.sane) {
- 		run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
- 		return -EINVAL;
- 	}
+ 	cpumask_clear_cpu(pcpu, &kvm->arch.cpu_in_guest);
  
-+	/* No need to go into the guest when all we'll do is come back out */
-+	if (signal_pending(current)) {
-+		run->exit_reason = KVM_EXIT_INTR;
-+		return -EINTR;
-+	}
-+
-+#ifdef CONFIG_PPC_TRANSACTIONAL_MEM
- 	/*
- 	 * Don't allow entry with a suspended transaction, because
- 	 * the guest entry/exit code will lose it.
--	 * If the guest has TM enabled, save away their TM-related SPRs
--	 * (they will get restored by the TM unavailable interrupt).
- 	 */
--#ifdef CONFIG_PPC_TRANSACTIONAL_MEM
- 	if (cpu_has_feature(CPU_FTR_TM) && current->thread.regs &&
- 	    (current->thread.regs->msr & MSR_TM)) {
- 		if (MSR_TM_ACTIVE(current->thread.regs->msr)) {
-@@ -4845,12 +4866,6 @@ static int kvmppc_vcpu_run_hv(struct kvm_vcpu *vcpu)
- 			run->fail_entry.hardware_entry_failure_reason = 0;
- 			return -EINVAL;
- 		}
--		/* Enable TM so we can read the TM SPRs */
--		mtmsr(mfmsr() | MSR_TM);
--		current->thread.tm_tfhar = mfspr(SPRN_TFHAR);
--		current->thread.tm_tfiar = mfspr(SPRN_TFIAR);
--		current->thread.tm_texasr = mfspr(SPRN_TEXASR);
--		current->thread.regs->msr &= ~MSR_TM;
- 	}
- #endif
- 
-@@ -4865,18 +4880,24 @@ static int kvmppc_vcpu_run_hv(struct kvm_vcpu *vcpu)
- 
- 	kvmppc_core_prepare_to_enter(vcpu);
- 
--	/* No need to go into the guest when all we'll do is come back out */
--	if (signal_pending(current)) {
--		run->exit_reason = KVM_EXIT_INTR;
--		return -EINTR;
--	}
--
- 	kvm = vcpu->kvm;
- 	atomic_inc(&kvm->arch.vcpus_running);
- 	/* Order vcpus_running vs. mmu_ready, see kvmppc_alloc_reset_hpt */
- 	smp_mb();
- 
--	flush_all_to_thread(current);
-+	msr = 0;
-+	if (IS_ENABLED(CONFIG_PPC_FPU))
-+		msr |= MSR_FP;
-+	if (cpu_has_feature(CPU_FTR_ALTIVEC))
-+		msr |= MSR_VEC;
-+	if (cpu_has_feature(CPU_FTR_VSX))
-+		msr |= MSR_VSX;
-+	if (cpu_has_feature(CPU_FTR_TM) ||
-+	    cpu_has_feature(CPU_FTR_P9_TM_HV_ASSIST))
-+		msr |= MSR_TM;
-+	msr = msr_check_and_set(msr);
-+
-+	kvmppc_save_user_regs();
- 
- 	/* Save userspace EBB and other register values */
- 	if (cpu_has_feature(CPU_FTR_ARCH_207S)) {
-diff --git a/arch/powerpc/kvm/book3s_hv_p9_entry.c b/arch/powerpc/kvm/book3s_hv_p9_entry.c
-index a7f63082b4e3..fb9cb34445ea 100644
---- a/arch/powerpc/kvm/book3s_hv_p9_entry.c
-+++ b/arch/powerpc/kvm/book3s_hv_p9_entry.c
-@@ -224,6 +224,7 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
- 		vc->tb_offset_applied = vc->tb_offset;
- 	}
- 
-+	/* Could avoid mfmsr by passing around, but probably no big deal */
- 	msr = mfmsr();
- 
- 	host_hfscr = mfspr(SPRN_HFSCR);
+@@ -4827,7 +4840,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	run->exit_reason = KVM_EXIT_INTR;
+ 	vcpu->arch.ret = -EINTR;
+  out:
+-	local_irq_enable();
++	powerpc_local_irq_pmu_restore(flags);
+ 	preempt_enable();
+ 	goto done;
+ }
 -- 
 2.23.0
 
