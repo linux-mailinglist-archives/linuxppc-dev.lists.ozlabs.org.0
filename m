@@ -2,76 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37732421A27
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 00:34:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 242E9421A2F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 00:37:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HNb9x15Zzz3dr3
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 09:34:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HNbFB0D5Zz3fbQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 09:37:18 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=DrFpdMFE;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=gM59//Us;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::530;
- helo=mail-pg1-x530.google.com; envelope-from=naveennaidu479@gmail.com;
+ smtp.helo=new3-smtp.messagingengine.com (client-ip=66.111.4.229;
+ helo=new3-smtp.messagingengine.com; envelope-from=idosch@idosch.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=DrFpdMFE; dkim-atps=neutral
-Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com
- [IPv6:2607:f8b0:4864:20::530])
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.a=rsa-sha256 header.s=fm1 header.b=gM59//Us; 
+ dkim-atps=neutral
+Received: from new3-smtp.messagingengine.com (new3-smtp.messagingengine.com
+ [66.111.4.229])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HNNX03HJzz2yPm
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 01:34:24 +1100 (AEDT)
-Received: by mail-pg1-x530.google.com with SMTP id a73so13782861pge.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Oct 2021 07:34:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=6pWZxY1yQdsUwMEG6Is0voI7d8xdXhwobuZZscOdeBw=;
- b=DrFpdMFEIQmQvoRS5VddB8m+GxhSGCKG1KDkOK4n9yhcyXAsA58jrgorq6Pa3ESPyX
- FmghPXRm5yzs+2NAlYgyVwYaBN8Cv05+e7PF7rxZHGSUT43gTCwv1xFxwQmTmKsOx6B8
- jGSfBj8NXKIOWkHN5MKcyLasaiyV9kyAIFWYOCqvp7LvpibYuqIydO0AwOF7/6xRs0lE
- pYgPgE0OgJ5s7PpzGDxtFdliRnOmLL0xZUxtjlIsJMNBRD3cQhchDclojgZgOj0jaTt6
- hTDWgEo66zRdLi4N/P0wbSJIt444hUoUD3P8E5oN1lxHId5MOo2g3OP8M6UOzdKowoSq
- hWxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=6pWZxY1yQdsUwMEG6Is0voI7d8xdXhwobuZZscOdeBw=;
- b=F/C2nERMtY8wjorYIrbnxlldoVAMOXFTEDp6Sk8PglHVF0vDELGJkiVo3e0WTe4bnI
- lI5eS3aiffwcYux2ZL41f1Wc8VJZlD3CtEVwX0/PgxjG2psDepi9SNvRaUhAvalSU2AT
- kmZUhnRh06z4KbTjhHaFyd8yBDjWa1F+lmL+MzvxNxGP0GxJUISTXatYNPEJ/6GiS8S6
- SF7UfOOKtTNBsyrm9Uooi5zRl/kv2AQv2qAhNzFMprGYF/P7PBgJfLaZn7OnwzAAvicy
- PNCXg14jvTw/bUyUaOnffvK6Qtyix4KV4f90Olnlj4T0mFg9AyF32qOvbJUdz+6BNfIS
- wqeQ==
-X-Gm-Message-State: AOAM533cJWWd3LM8lKkXiaTfnAXDcrF2qfbgOtZqFhlI7ZmOk5X1ZPX7
- V/Y4shTBLgJlHu7V8ldxpbQ=
-X-Google-Smtp-Source: ABdhPJy+sWf8xBhC0RvZ5PKZWz/DDoInn++6/IvE8D6lUPdNyv263NSKhV+bEgdAgv26xYa63HLULg==
-X-Received: by 2002:a63:7d04:: with SMTP id y4mr11390118pgc.131.1633358062410; 
- Mon, 04 Oct 2021 07:34:22 -0700 (PDT)
-Received: from localhost.localdomain ([2406:7400:63:e8f0:c2a7:3579:5fe8:31d9])
- by smtp.gmail.com with ESMTPSA id
- q3sm14489146pgf.18.2021.10.04.07.34.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Oct 2021 07:34:21 -0700 (PDT)
-From: Naveen Naidu <naveennaidu479@gmail.com>
-To: bhelgaas@google.com,
-	ruscur@russell.cc,
-	oohall@gmail.com
-Subject: [PATCH v3 8/8] PCI/AER: Include DEVCTL in aer_print_error()
-Date: Mon,  4 Oct 2021 20:00:04 +0530
-Message-Id: <b86533084b7098fb1d9d03a73e842f023cc6ace7.1633357368.git.naveennaidu479@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1633357368.git.naveennaidu479@gmail.com>
-References: <cover.1633357368.git.naveennaidu479@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HNQZf6Vc3z3djM
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 03:06:50 +1100 (AEDT)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+ by mailnew.nyi.internal (Postfix) with ESMTP id DCB33580A24;
+ Mon,  4 Oct 2021 12:06:45 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute1.internal (MEProxy); Mon, 04 Oct 2021 12:06:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:content-transfer-encoding:content-type
+ :date:from:in-reply-to:message-id:mime-version:references
+ :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm1; bh=UUDC4YPuEtCCTitozLyUXSQK64PbAa0gIhVIGJmIS
+ k8=; b=gM59//UsggGrtqThRY9sJqyp8D+9kxjC+UvC7jenhj+AROpr2V0dfX/fq
+ h6ehvCOLyj1zbY13J0RFv4HpMy6SMAEX5K/uwt2bcfpRtPSpV3rFp+/j5p5rgavJ
+ NUyyosal30d0QXln5Q8fjxIIkwHXSAzv8sdGRmRetfikyw/8NylOSLiIaeHcXLZs
+ YnaQzu/hGWx1xjutunU4A8MqMaIbIvUXaFJWF+sjfSBezb9G0uo907QDhO7iF4aw
+ 7fC70puO9Bw3YWecSEMZGNFm8zpFdi6oYbLiFHdf0ITrk8yAsZ2S/bYEurSItMlo
+ SOkfWQhrsVpq5DpSXCXcRtiveKNYA==
+X-ME-Sender: <xms:kiZbYZK76wrajKm36pl4y5bzwireSQ2PWq2QzmRyqpJBHcInWhTmoQ>
+ <xme:kiZbYVIlcj87gCVjNNPK5QPTqd8t1YcvnICIJfanlnR6x2MMVbKa5jV0o1rEMslHs
+ 2KNk7EnlWn1VY0>
+X-ME-Received: <xmr:kiZbYRvoGQyS69DlOaXpRPdTlLNyTDyV8yIB-2TQIn8Qxic2MNEvxz1D6gmBj2QJR9O2mzQBZIJXGdgSNGBPLYHwahPH7w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrudelvddgleefucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+ cujfgurhepfffhvffukfhfgggtugfgjgesthekredttddtudenucfhrhhomhepkfguohcu
+ ufgthhhimhhmvghluceoihguohhstghhsehiughoshgthhdrohhrgheqnecuggftrfgrth
+ htvghrnhepvdffveekfeeiieeuieetudefkeevkeeuhfeuieduudetkeegleefvdegheej
+ hefhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepih
+ guohhstghhsehiughoshgthhdrohhrgh
+X-ME-Proxy: <xmx:kiZbYaaBVxWoLW4HGq7VH3nQiN1XEhlUkUC98apwzk7l6Fx4FErx0w>
+ <xmx:kiZbYQYcCWruVgLFP-TF0YGUHpZOeSxmY5m5m6oa68X5U2Ddai6Mag>
+ <xmx:kiZbYeDufN_iwdYLwtcWcpJme_iAsTm2JZudp2486KUXMZDUiY1Kzw>
+ <xmx:lSZbYbv6xGNDhED2lZiFwGSYztonTM5evW1J9XCSbgxJbNzywj8tBQ>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 4 Oct 2021 12:06:41 -0400 (EDT)
+Date: Mon, 4 Oct 2021 19:06:38 +0300
+From: Ido Schimmel <idosch@idosch.org>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH v6 07/11] PCI: Replace pci_dev::driver usage that gets
+ the driver name
+Message-ID: <YVsmjpUYk8P1X6Fr@shredder>
+References: <20211004125935.2300113-1-u.kleine-koenig@pengutronix.de>
+ <20211004125935.2300113-8-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Tue, 05 Oct 2021 09:16:56 +1100
+In-Reply-To: <20211004125935.2300113-8-u.kleine-koenig@pengutronix.de>
+X-Mailman-Approved-At: Tue, 05 Oct 2021 09:25:25 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,70 +86,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- Naveen Naidu <naveennaidu479@gmail.com>, skhan@linuxfoundation.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel-mentees@lists.linuxfoundation.org
+Cc: linux-pci@vger.kernel.org, Alexander Duyck <alexanderduyck@fb.com>,
+ oss-drivers@corigine.com, Paul Mackerras <paulus@samba.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+ Jesse Brandeburg <jesse.brandeburg@intel.com>,
+ Bjorn Helgaas <helgaas@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+ Jakub Kicinski <kuba@kernel.org>, Yisen Zhuang <yisen.zhuang@huawei.com>,
+ Vadym Kochan <vkochan@marvell.com>, Michael Buesch <m@bues.ch>,
+ Jiri Pirko <jiri@nvidia.com>, Salil Mehta <salil.mehta@huawei.com>,
+ netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Taras Chornyi <tchornyi@marvell.com>,
+ Zhou Wang <wangzhou1@hisilicon.com>, linux-crypto@vger.kernel.org,
+ kernel@pengutronix.de, Simon Horman <simon.horman@corigine.com>,
+ Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Print the contents of Device Control Register of the device which
-detected the error. This might help in faster error diagnosis.
+On Mon, Oct 04, 2021 at 02:59:31PM +0200, Uwe Kleine-König wrote:
+> struct pci_dev::driver holds (apart from a constant offset) the same
+> data as struct pci_dev::dev->driver. With the goal to remove struct
+> pci_dev::driver to get rid of data duplication replace getting the
+> driver name by dev_driver_string() which implicitly makes use of struct
+> pci_dev::dev->driver.
+> 
+> Acked-by: Simon Horman <simon.horman@corigine.com> (for NFP)
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-Sample output from dummy error injected by aer-inject:
+For mlxsw:
 
-  pcieport 0000:00:03.0: AER: Corrected error received: 0000:00:03.0
-  pcieport 0000:00:03.0: PCIe Bus Error: severity=Corrected, type=Data Link Layer, (Receiver)
-  pcieport 0000:00:03.0:   device [1b36:000c] error status/mask=00000040/0000e000, devctl=0x000f
-  pcieport 0000:00:03.0:    [ 6] BadTLP
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Tested-by: Ido Schimmel <idosch@nvidia.com>
 
-Signed-off-by: Naveen Naidu <naveennaidu479@gmail.com>
----
- drivers/pci/pci.h      |  2 ++
- drivers/pci/pcie/aer.c | 10 ++++++++--
- 2 files changed, 10 insertions(+), 2 deletions(-)
+Tested with the kexec flow that I mentioned last time. Works fine now.
 
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index eb88d8bfeaf7..48ed7f91113b 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -437,6 +437,8 @@ struct aer_err_info {
- 	u32 status;		/* COR/UNCOR Error Status */
- 	u32 mask;		/* COR/UNCOR Error Mask */
- 	struct aer_header_log_regs tlp;	/* TLP Header */
-+
-+	u16 devctl;
- };
- 
- /* Preliminary AER error information processed from Root port */
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index 91f91d6ab052..42cae01b6887 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -729,8 +729,8 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
- 		   aer_error_severity_string[info->severity],
- 		   aer_error_layer[layer], aer_agent_string[agent]);
- 
--	pci_printk(level, dev, "  device [%04x:%04x] error status/mask=%08x/%08x\n",
--		   dev->vendor, dev->device, info->status, info->mask);
-+	pci_printk(level, dev, "  device [%04x:%04x] error status/mask=%08x/%08x, devctl=%#06x\n",
-+		   dev->vendor, dev->device, info->status, info->mask, info->devctl);
- 
- 	__aer_print_error(dev, info);
- 
-@@ -1083,6 +1083,12 @@ int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info)
- 	if (!aer)
- 		return 0;
- 
-+	/*
-+	 * Cache the value of Device Control Register now, because later the
-+	 * device might not be available
-+	 */
-+	pcie_capability_read_word(dev, PCI_EXP_DEVCTL, &info->devctl);
-+
- 	if (info->severity == AER_CORRECTABLE) {
- 		pci_read_config_dword(dev, aer + PCI_ERR_COR_STATUS,
- 			&info->status);
--- 
-2.25.1
-
+Thanks
