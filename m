@@ -1,107 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DC824222AC
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 11:50:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1A904222EE
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 11:57:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HNt9P2sjkz304r
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 20:50:01 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Sd/EXhwZ;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HNtLT3WrDz30Qv
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 20:57:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Sd/EXhwZ; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=maz@kernel.org; receiver=<UNKNOWN>)
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HNt8c0K7Zz2yJF
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 20:49:19 +1100 (AEDT)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1959ZCaP010497; 
- Tue, 5 Oct 2021 05:48:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=eO4uXlRS6S9nvlj+QSvAE+fS6kbSQnna5E/0txyYWFg=;
- b=Sd/EXhwZRgvDbqICy1h0YtwbgRT1G6m+1jRKD12GZRwmRrxrsYpdGqURzXZu/Wc9zZA9
- 6t3bFBPw90tHh+9w4kAXjs9RPJqu3znkkHZfAIIA6vgjbhTzYFUrvVu2tTDm7J0nlSe7
- pyflPhWmrP3WxeoZaBGeTDZuFrazJGqTUsemgrUnYQ7wQiJQMYzLNYVzdGccWDAEoIDi
- Vpr7Ef1aZmqqc3DSnlHCqmri1OO6fXZjl0ehmWorBhU3PSVlrFHfjcSQ1phpr6R04mHs
- fFgNmbn/0mgql4NL0lf5Op7uuxOj55H3+yL3Q9YVYlIz6/bdbIFfanHUKeFO1CSXAjHS ew== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3bghr0kquh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 05 Oct 2021 05:48:54 -0400
-Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1959mjUo031724;
- Tue, 5 Oct 2021 05:48:53 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3bghr0kqu3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 05 Oct 2021 05:48:53 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1959lB7P026575;
- Tue, 5 Oct 2021 09:48:51 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma03ams.nl.ibm.com with ESMTP id 3bef2a0qk6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 05 Oct 2021 09:48:51 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 1959mlbD26214722
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 5 Oct 2021 09:48:47 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2B1DFA406B;
- Tue,  5 Oct 2021 09:48:47 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B471EA404D;
- Tue,  5 Oct 2021 09:48:41 +0000 (GMT)
-Received: from li-e8dccbcc-2adc-11b2-a85c-bc1f33b9b810.ibm.com (unknown
- [9.43.64.84]) by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  5 Oct 2021 09:48:41 +0000 (GMT)
-Subject: Re: [PATCH 1/4] perf: Add comment about current state of
- PERF_MEM_LVL_* namespace and remove an extra line
-To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, peterz@infradead.org, mingo@redhat.com,
- acme@kernel.org, jolsa@kernel.org, namhyung@kernel.org, ak@linux.intel.com
-References: <20211005091837.250044-1-kjain@linux.ibm.com>
-From: kajoljain <kjain@linux.ibm.com>
-Message-ID: <b069104c-73ee-6210-16d4-00bb0087933d@linux.ibm.com>
-Date: Tue, 5 Oct 2021 15:18:40 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
-In-Reply-To: <20211005091837.250044-1-kjain@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Orcyn_HibsoF6e3Oq47juoF6G2yo0bl8
-X-Proofpoint-GUID: WOz0dxa4UOPomjWx1ZQWLyfAl9OiOzJw
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
-MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
- definitions=2021-10-04_05,2021-10-04_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999
- priorityscore=1501 suspectscore=0 mlxscore=0 clxscore=1015 adultscore=0
- bulkscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0 spamscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2109230001 definitions=main-2110050054
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HNtL06QPjz2xt3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 20:57:28 +1100 (AEDT)
+Received: from disco-boy.misterjones.org (disco-boy.misterjones.org
+ [51.254.78.96])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id ECB8F610A5;
+ Tue,  5 Oct 2021 09:57:24 +0000 (UTC)
+Received: from sofa.misterjones.org ([185.219.108.64] helo=why.misterjones.org)
+ by disco-boy.misterjones.org with esmtpsa (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
+ (envelope-from <maz@kernel.org>)
+ id 1mXhCN-00EqLn-1v; Tue, 05 Oct 2021 10:57:23 +0100
+Date: Tue, 05 Oct 2021 10:57:22 +0100
+Message-ID: <87o883rdz1.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH v5 00/14] PCI: Add support for Apple M1
+In-Reply-To: <CACRpkdaL=YEfqSmAogLcP0Gn2gUqSaEXZQrJD1GR5QU+DyuyDQ@mail.gmail.com>
+References: <20210929163847.2807812-1-maz@kernel.org>
+ <20211004083845.GA22336@lpieralisi>
+ <CAL_Jsq+4FF9QYy87aYhJ-AS78qyHp0NkLrL492+WmdyWj-NKaw@mail.gmail.com>
+ <CACRpkdaL=YEfqSmAogLcP0Gn2gUqSaEXZQrJD1GR5QU+DyuyDQ@mail.gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/27.1
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: linus.walleij@linaro.org, robh+dt@kernel.org,
+ linuxppc-dev@lists.ozlabs.org, opensuse-ppc@opensuse.org,
+ lorenzo.pieralisi@arm.com, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, bhelgaas@google.com,
+ kw@linux.com, alyssa@rosenzweig.io, stan@corellium.com, kettenis@openbsd.org,
+ sven@svenpeter.dev, marcan@marcan.st, Robin.Murphy@arm.com, joey.gouly@arm.com,
+ joro@8bytes.org, kernel-team@android.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org);
+ SAEximRunCond expanded to false
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,104 +65,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, songliubraving@fb.com, atrajeev@linux.vnet.ibm.com,
- daniel@iogearbox.net, rnsastry@linux.ibm.com,
- alexander.shishkin@linux.intel.com, ast@kernel.org,
- linux-perf-users@vger.kernel.org, yao.jin@linux.intel.com, maddy@linux.ibm.com,
- paulus@samba.org, kan.liang@linux.intel.com
+Cc: "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, Mark Kettenis <kettenis@openbsd.org>,
+ Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+ Krzysztof =?UTF-8?B?V2lsY3p5xYRza2k=?= <kw@linux.com>,
+ PCI <linux-pci@vger.kernel.org>, Joerg Roedel <joro@8bytes.org>,
+ Sven Peter <sven@svenpeter.dev>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Joey Gouly <joey.gouly@arm.com>, Rob Herring <robh+dt@kernel.org>,
+ Hector Martin <marcan@marcan.st>, Bjorn Helgaas <bhelgaas@google.com>,
+ Robin Murphy <Robin.Murphy@arm.com>,
+ Android Kernel Team <kernel-team@android.com>,
+ "linuxppc-dev@lists.ozlabs.org list" <linuxppc-dev@lists.ozlabs.org>,
+ opensuse-ppc@opensuse.org, Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+ Stan Skowronek <stan@corellium.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
-  Sorry I missed to update correct version details.
-
-Link to the previous patch-set, where discussion related to addition of
-new data source encoding field 'mem_hops' happened:
-
-https://lkml.org/lkml/2021/9/4/37
-
-Changelog:
-
-- Rather then adding new macros for L2.1/L3.1 (same chip, different
-core) entries as part of field lvlnum, we are introducing new field
-called 'mem_hops' which can be used to get hops
-level data(intra-chip/package or inter-chip/off-package details).
-As suggested by Peter Zijlstra.
-
-- Using OnChip to denote data accesses from 'another core of same chip'
-  is not too clear. Update it to 'remote core, same chip' as pointed by
-  Michael Ellerman.
-
-- Update the fix patch of correcting data source encodings to use new
-added field 'mem_hops'.
-
-Thanks,
-Kajol Jain
-
-
-On 10/5/21 2:48 PM, Kajol Jain wrote:
-> Add a comment about PERF_MEM_LVL_* namespace being depricated
-> to some extent in favour of added PERF_MEM_{LVLNUM_,REMOTE_,SNOOPX_}
-> fields.
+On Mon, 04 Oct 2021 21:42:45 +0100,
+Linus Walleij <linus.walleij@linaro.org> wrote:
 > 
-> Remove an extra line present in perf_mem__lvl_scnprintf function.
+> On Mon, Oct 4, 2021 at 9:52 PM Rob Herring <robh+dt@kernel.org> wrote:
 > 
-> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-> ---
->  include/uapi/linux/perf_event.h       | 8 +++++++-
->  tools/include/uapi/linux/perf_event.h | 8 +++++++-
->  tools/perf/util/mem-events.c          | 1 -
->  3 files changed, 14 insertions(+), 3 deletions(-)
+> > FYI, I pushed patches 1-3 to kernelCI and didn't see any regressions.
+> > I am a bit worried about changes to the DT interrupt parsing and
+> > ancient platforms (such as PowerMacs). Most likely there wouldn't be
+> > any report until -rc1 or months later on those old systems.
 > 
-> diff --git a/include/uapi/linux/perf_event.h b/include/uapi/linux/perf_event.h
-> index f92880a15645..e1701e9c7858 100644
-> --- a/include/uapi/linux/perf_event.h
-> +++ b/include/uapi/linux/perf_event.h
-> @@ -1241,7 +1241,13 @@ union perf_mem_data_src {
->  #define PERF_MEM_OP_EXEC	0x10 /* code (execution) */
->  #define PERF_MEM_OP_SHIFT	0
->  
-> -/* memory hierarchy (memory level, hit or miss) */
-> +/*
-> + * PERF_MEM_LVL_* namespace being depricated to some extent in the
-> + * favour of newer composite PERF_MEM_{LVLNUM_,REMOTE_,SNOOPX_} fields.
-> + * Supporting this namespace inorder to not break defined ABIs.
-> + *
-> + * memory hierarchy (memory level, hit or miss)
-> + */
->  #define PERF_MEM_LVL_NA		0x01  /* not available */
->  #define PERF_MEM_LVL_HIT	0x02  /* hit level */
->  #define PERF_MEM_LVL_MISS	0x04  /* miss level  */
-> diff --git a/tools/include/uapi/linux/perf_event.h b/tools/include/uapi/linux/perf_event.h
-> index f92880a15645..e1701e9c7858 100644
-> --- a/tools/include/uapi/linux/perf_event.h
-> +++ b/tools/include/uapi/linux/perf_event.h
-> @@ -1241,7 +1241,13 @@ union perf_mem_data_src {
->  #define PERF_MEM_OP_EXEC	0x10 /* code (execution) */
->  #define PERF_MEM_OP_SHIFT	0
->  
-> -/* memory hierarchy (memory level, hit or miss) */
-> +/*
-> + * PERF_MEM_LVL_* namespace being depricated to some extent in the
-> + * favour of newer composite PERF_MEM_{LVLNUM_,REMOTE_,SNOOPX_} fields.
-> + * Supporting this namespace inorder to not break defined ABIs.
-> + *
-> + * memory hierarchy (memory level, hit or miss)
-> + */
->  #define PERF_MEM_LVL_NA		0x01  /* not available */
->  #define PERF_MEM_LVL_HIT	0x02  /* hit level */
->  #define PERF_MEM_LVL_MISS	0x04  /* miss level  */
-> diff --git a/tools/perf/util/mem-events.c b/tools/perf/util/mem-events.c
-> index f0e75df72b80..ff7289e28192 100644
-> --- a/tools/perf/util/mem-events.c
-> +++ b/tools/perf/util/mem-events.c
-> @@ -320,7 +320,6 @@ int perf_mem__lvl_scnprintf(char *out, size_t sz, struct mem_info *mem_info)
->  	/* already taken care of */
->  	m &= ~(PERF_MEM_LVL_HIT|PERF_MEM_LVL_MISS);
->  
-> -
->  	if (mem_info && mem_info->data_src.mem_remote) {
->  		strcat(out, "Remote ");
->  		l += 7;
-> 
+> Lets page the PPC lists to see if someone can test on some powermac.
+
+/me eyes the XServe-G5 that hasn't been powered on in 10 years. What
+could possibly go wrong?
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
