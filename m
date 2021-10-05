@@ -1,77 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B14574231F0
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 22:26:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69EBF4231F8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 22:27:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HP8JK3jWCz2yhd
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Oct 2021 07:26:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HP8K62H6Rz307j
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Oct 2021 07:27:38 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fclNe8rn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=e9xO5ns6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=fclNe8rn; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ header.s=pp1 header.b=e9xO5ns6; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HP8HY5FmZz2xWf
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Oct 2021 07:26:17 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 195K2TN5006942; 
- Tue, 5 Oct 2021 16:25:54 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HP8Hf2hWrz2xWf
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Oct 2021 07:26:22 +1100 (AEDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 195IGRJt029122; 
+ Tue, 5 Oct 2021 16:26:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
- : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=uVBp3kradOtQzQDWTiNwTty3Dme7j3p9ETm/D2GjOgc=;
- b=fclNe8rnbLpBUtyYHWqg4qaa4TImqspgPiDgGM8/IZozTRzwkkJthKmKKZewxKbJSqXw
- amVa26StCKqYXY3zU098JRsodEG1EP65fTeuiOiRxt5FP+YRakx6nLiJvJ3nXcp1G4Qg
- lZvPo0NQJqO+IG7388TGXI28l2zrk4AykyPJE8olkZ6ItY5Cb3UPOsH7UMYGSENJWZGb
- /vJ3yXzTGcciAO4LFTotI1FI6szTqBUmKalk3UKKtzs9QyVznm17fzp6yXTGwp7C16xx
- H0fvhNC/8JtO/xFzdRfpnCSsxbg6RVtkx6ZwDiInSvuHhn1ny/7mTem52hy3vLc5RA4P ag== 
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=LmFE0hxjZrzghZUAElVYKvtoh+3luW6wVtAiJd9fn5Y=;
+ b=e9xO5ns6ts00F5GkcYLbuQMw4WXtJvKJe4pvEnSaLx94xhL6EdoAqIHOEU3NzEc41jvM
+ mzI+PegPdvxaz0CMRFE4sarozh7lGGAMdPAMFtZBTOc8RgNRIzuogwZQL/AlfQhw5D7P
+ 2MIZq8oAT6QUlXtTW+O8FmWPXBHLd4m6p00wF5uaDhNXwb7LbRlbvArTQkfET+e7YgSS
+ v9MK9iqfAQlvKh595jalS2vF2nioEmXQOUUZ95o5YUUk9VrICCMOSixQcInqdIuWMPp8
+ k0SsAn+V7m20YbznrQ1QgfCaICReXQTT+QdbYPlfogmdDBvgUNKdknBT6MQek0XtvJOR Yg== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3bgs36y3qu-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3bguu8tvs4-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 05 Oct 2021 16:25:53 -0400
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 195KIqpu027895;
- Tue, 5 Oct 2021 16:25:53 -0400
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3bgs36y3qb-1
+ Tue, 05 Oct 2021 16:26:02 -0400
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 195JpBdf032304;
+ Tue, 5 Oct 2021 16:26:02 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3bguu8tvrq-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 05 Oct 2021 16:25:52 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 195KIf0E014426;
- Tue, 5 Oct 2021 20:25:50 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma02fra.de.ibm.com with ESMTP id 3bef29uqjw-1
+ Tue, 05 Oct 2021 16:26:01 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 195KIiNm012989;
+ Tue, 5 Oct 2021 20:26:00 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma04ams.nl.ibm.com with ESMTP id 3bef2ax1m9-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 05 Oct 2021 20:25:50 +0000
+ Tue, 05 Oct 2021 20:26:00 +0000
 Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
  [9.149.105.62])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 195KKR5r51249586
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 195KPvCv43647478
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 5 Oct 2021 20:20:27 GMT
+ Tue, 5 Oct 2021 20:25:57 GMT
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D54ADAE058;
- Tue,  5 Oct 2021 20:25:47 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 9C237AE045;
+ Tue,  5 Oct 2021 20:25:57 +0000 (GMT)
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 76C2FAE05D;
- Tue,  5 Oct 2021 20:25:44 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 3F9FEAE05F;
+ Tue,  5 Oct 2021 20:25:54 +0000 (GMT)
 Received: from naverao1-tp.ibm.com (unknown [9.43.5.112])
  by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  5 Oct 2021 20:25:44 +0000 (GMT)
+ Tue,  5 Oct 2021 20:25:53 +0000 (GMT)
 From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
 To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
  Jordan Niethe <jniethe5@gmail.com>, Daniel Borkmann <daniel@iogearbox.net>,
@@ -79,24 +80,26 @@ To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
  Christophe Leroy <christophe.leroy@csgroup.eu>,
  Johan Almbladh <johan.almbladh@anyfinetworks.com>,
  Song Liu <songliubraving@fb.com>
-Subject: [PATCH v2 00/10] powerpc/bpf: Various fixes
-Date: Wed,  6 Oct 2021 01:55:19 +0530
-Message-Id: <cover.1633464148.git.naveen.n.rao@linux.vnet.ibm.com>
+Subject: [PATCH v2 01/10] powerpc/lib: Add helper to check if offset is within
+ conditional branch range
+Date: Wed,  6 Oct 2021 01:55:20 +0530
+Message-Id: <442b69a34ced32ca346a0d9a855f3f6cfdbbbd41.1633464148.git.naveen.n.rao@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.31.1
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: gnBSDfUAVRmtuXu3efVR6zWoOlsBDou8
-X-Proofpoint-ORIG-GUID: aa3lWVTcM6oP109E-rKw0EznR52GTerj
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+In-Reply-To: <cover.1633464148.git.naveen.n.rao@linux.vnet.ibm.com>
+References: <cover.1633464148.git.naveen.n.rao@linux.vnet.ibm.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: u3U_l7ksKbmKzuhD9HgwXTb4-C8sXkId
+X-Proofpoint-GUID: SK0-Y9tEagPgVu366Fw0PkxpSMEMp9Tn
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
  definitions=2021-10-05_04,2021-10-04_01,2020-04-07_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 mlxscore=0
- phishscore=0 adultscore=0 suspectscore=0 bulkscore=0 mlxlogscore=901
- clxscore=1011 malwarescore=0 lowpriorityscore=0 priorityscore=1501
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ priorityscore=1501
+ clxscore=1015 phishscore=0 mlxlogscore=999 bulkscore=0 malwarescore=0
+ impostorscore=0 spamscore=0 lowpriorityscore=0 adultscore=0 suspectscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2109230001 definitions=main-2110050117
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -114,46 +117,84 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is v2 of the series posted at:
-http://lkml.kernel.org/r/cover.1633104510.git.naveen.n.rao@linux.vnet.ibm.com
+Add a helper to check if a given offset is within the branch range for a
+powerpc conditional branch instruction, and update some sites to use the
+new helper.
 
-Only patches from v1 that need to go into powerpc/fixes are included.
-Other patches will be posted as a separate series for inclusion into
-powerpc/next. 
-
-Patches 7 to 10 are new and fix issues in ppc32.
-
-
-- Naveen
+Acked-by: Song Liu <songliubraving@fb.com>
+Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+---
+Changelog:
+- Change 0x7FFF to 0x7fff, per Christophe
 
 
-Naveen N. Rao (10):
-  powerpc/lib: Add helper to check if offset is within conditional
-    branch range
-  powerpc/bpf: Validate branch ranges
-  powerpc/bpf: Fix BPF_MOD when imm == 1
-  powerpc/bpf: Fix BPF_SUB when imm == 0x80000000
-  powerpc/security: Add a helper to query stf_barrier type
-  powerpc/bpf: Emit stf barrier instruction sequences for BPF_NOSPEC
-  powerpc/bpf ppc32: Fix ALU32 BPF_ARSH operation
-  powerpc/bpf ppc32: Fix JMP32_JSET_K
-  powerpc/bpf ppc32: Do not emit zero extend instruction for 64-bit
-    BPF_END
-  powerpc/bpf ppc32: Fix BPF_SUB when imm == 0x80000000
+ arch/powerpc/include/asm/code-patching.h | 1 +
+ arch/powerpc/lib/code-patching.c         | 7 ++++++-
+ arch/powerpc/net/bpf_jit.h               | 7 +------
+ 3 files changed, 8 insertions(+), 7 deletions(-)
 
- arch/powerpc/include/asm/code-patching.h     |   1 +
- arch/powerpc/include/asm/security_features.h |   5 +
- arch/powerpc/kernel/security.c               |   5 +
- arch/powerpc/lib/code-patching.c             |   7 +-
- arch/powerpc/net/bpf_jit.h                   |  33 +++---
- arch/powerpc/net/bpf_jit64.h                 |   8 +-
- arch/powerpc/net/bpf_jit_comp.c              |   6 +-
- arch/powerpc/net/bpf_jit_comp32.c            |  16 +--
- arch/powerpc/net/bpf_jit_comp64.c            | 100 +++++++++++++++----
- 9 files changed, 139 insertions(+), 42 deletions(-)
-
-
-base-commit: cdcb1396e357bd198f81dc7fa4f5d819063abe44
+diff --git a/arch/powerpc/include/asm/code-patching.h b/arch/powerpc/include/asm/code-patching.h
+index a95f63788c6b14..4ba834599c4d4c 100644
+--- a/arch/powerpc/include/asm/code-patching.h
++++ b/arch/powerpc/include/asm/code-patching.h
+@@ -23,6 +23,7 @@
+ #define BRANCH_ABSOLUTE	0x2
+ 
+ bool is_offset_in_branch_range(long offset);
++bool is_offset_in_cond_branch_range(long offset);
+ int create_branch(struct ppc_inst *instr, const u32 *addr,
+ 		  unsigned long target, int flags);
+ int create_cond_branch(struct ppc_inst *instr, const u32 *addr,
+diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
+index f9a3019e37b43c..c5ed9882383521 100644
+--- a/arch/powerpc/lib/code-patching.c
++++ b/arch/powerpc/lib/code-patching.c
+@@ -228,6 +228,11 @@ bool is_offset_in_branch_range(long offset)
+ 	return (offset >= -0x2000000 && offset <= 0x1fffffc && !(offset & 0x3));
+ }
+ 
++bool is_offset_in_cond_branch_range(long offset)
++{
++	return offset >= -0x8000 && offset <= 0x7fff && !(offset & 0x3);
++}
++
+ /*
+  * Helper to check if a given instruction is a conditional branch
+  * Derived from the conditional checks in analyse_instr()
+@@ -280,7 +285,7 @@ int create_cond_branch(struct ppc_inst *instr, const u32 *addr,
+ 		offset = offset - (unsigned long)addr;
+ 
+ 	/* Check we can represent the target in the instruction format */
+-	if (offset < -0x8000 || offset > 0x7FFF || offset & 0x3)
++	if (!is_offset_in_cond_branch_range(offset))
+ 		return 1;
+ 
+ 	/* Mask out the flags and target, so they don't step on each other. */
+diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
+index 99fad093f43ec1..935ea95b66359e 100644
+--- a/arch/powerpc/net/bpf_jit.h
++++ b/arch/powerpc/net/bpf_jit.h
+@@ -78,11 +78,6 @@
+ #define PPC_FUNC_ADDR(d,i) do { PPC_LI32(d, i); } while(0)
+ #endif
+ 
+-static inline bool is_nearbranch(int offset)
+-{
+-	return (offset < 32768) && (offset >= -32768);
+-}
+-
+ /*
+  * The fly in the ointment of code size changing from pass to pass is
+  * avoided by padding the short branch case with a NOP.	 If code size differs
+@@ -91,7 +86,7 @@ static inline bool is_nearbranch(int offset)
+  * state.
+  */
+ #define PPC_BCC(cond, dest)	do {					      \
+-		if (is_nearbranch((dest) - (ctx->idx * 4))) {		      \
++		if (is_offset_in_cond_branch_range((long)(dest) - (ctx->idx * 4))) {	\
+ 			PPC_BCC_SHORT(cond, dest);			      \
+ 			EMIT(PPC_RAW_NOP());				      \
+ 		} else {						      \
 -- 
 2.33.0
 
