@@ -1,115 +1,101 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0437D42206D
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 10:15:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4230642220B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 11:20:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HNr4S6vmkz2yLq
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 19:15:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HNsWP1YlWz301s
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 20:20:33 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R8oXJLNf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TaBfo1H0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HNr3g0CGGz2yPV
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 19:14:55 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=R8oXJLNf; dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4HNr3f6N7pz4xbX
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 19:14:54 +1100 (AEDT)
-Received: by gandalf.ozlabs.org (Postfix)
- id 4HNr3f6KmTz4xbC; Tue,  5 Oct 2021 19:14:54 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: gandalf.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=R8oXJLNf; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ header.s=pp1 header.b=TaBfo1H0; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by gandalf.ozlabs.org (Postfix) with ESMTPS id 4HNr3f2cnJz4xb9;
- Tue,  5 Oct 2021 19:14:53 +1100 (AEDT)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1958C2OW011278; 
- Tue, 5 Oct 2021 04:14:50 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HNsVd5936z2yPR
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 20:19:53 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1958g82k024319; 
+ Tue, 5 Oct 2021 05:19:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=A/Kl7e2gSTzCXrt+H1zCaP5VbCTaG1lDxyQaGTKuQ6E=;
- b=R8oXJLNfP8kNH3r0EkmBE9C7YGSW1zFybQeSKpV5xvk2FfpxR4Hi7OfHbKKobQTbPpJG
- dWqpiorySW4rdK3r9eZ7tbnFAVwiWv8qsNIa9RAgekRFboUTiH4646+Ni461j4dYGH2/
- /IDnDATe/uHUVwTAZJ6cTvKyVB+TGs5DjNeceOrPc32AdC7sc61xYjW7IkaCPR0RX9tr
- tKSlHRxcZhTnmix7YyNWlyvXGA37tWeGtj2bCKztV2GXT85jbpKNT24eo56rtosN5SKs
- 3aVd+bvTjj1q4J5T+jRyBzS7L/6YyeWnlIAM/jwd+e2sJtvWg9n1mvs+RPFJjveInfGe jw== 
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=4KWtlySNTnqXB8CFgnNbWgTinUBqt+TDSXQNhwqkcs0=;
+ b=TaBfo1H0odQKIJBKeAPqkw8VXiyPhQMhJIR5owlTZLhHog8FXrsCVWXWXyPYHfZm+RC+
+ wFJHT5OzLobwG7Anodh4DVj2sX55UrkE6VLlyGNPziCV2DZhdgeSoFsUuBgGre3PmZHl
+ hRf17OTsO51rYn8mIdWa7cr5r2d55O+2Omnce4g5vjfrm3fHeUzcUVFr2SvNdqBqoiY+
+ VfV5MEwXQgfW75tJ1Sw496Rw5HZB3FkynwrGUOsExHc29DsK5w2R880380+yw8ehoG0f
+ EKG++wHnKtdpHhjN/7TVTdVpfAgtsHD9Zi4qIgleLvp3j7/dRD4nCMnDVp+UIeEowaXZ eQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3bgkdw8rx9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 05 Oct 2021 05:19:22 -0400
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1959I2sL025054;
+ Tue, 5 Oct 2021 05:19:22 -0400
 Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
  [169.51.49.102])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3bgjyyr1md-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3bgkdw8rw9-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 05 Oct 2021 04:14:50 -0400
+ Tue, 05 Oct 2021 05:19:21 -0400
 Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19586VnG021270;
- Tue, 5 Oct 2021 08:14:49 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma06ams.nl.ibm.com with ESMTP id 3beepjfw67-1
+ by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1959CViH022035;
+ Tue, 5 Oct 2021 09:19:18 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma06ams.nl.ibm.com with ESMTP id 3beepjgfkm-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 05 Oct 2021 08:14:48 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 19589NVs44826984
+ Tue, 05 Oct 2021 09:19:18 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1959JDuA40173884
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 5 Oct 2021 08:09:23 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DDDBF4C058;
- Tue,  5 Oct 2021 08:14:42 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CE52D4C046;
- Tue,  5 Oct 2021 08:14:38 +0000 (GMT)
-Received: from [9.43.70.175] (unknown [9.43.70.175])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  5 Oct 2021 08:14:38 +0000 (GMT)
-Message-ID: <b2844a83-d2b2-6e88-780c-3a41be882086@linux.ibm.com>
-Date: Tue, 5 Oct 2021 13:44:36 +0530
+ Tue, 5 Oct 2021 09:19:13 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4EAD8A4080;
+ Tue,  5 Oct 2021 09:19:13 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E7A96A406F;
+ Tue,  5 Oct 2021 09:19:03 +0000 (GMT)
+Received: from li-e8dccbcc-2adc-11b2-a85c-bc1f33b9b810.ibm.com.com (unknown
+ [9.43.64.84])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  5 Oct 2021 09:19:03 +0000 (GMT)
+From: Kajol Jain <kjain@linux.ibm.com>
+To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, peterz@infradead.org, mingo@redhat.com,
+ acme@kernel.org, jolsa@kernel.org, namhyung@kernel.org, ak@linux.intel.com
+Subject: [PATCH 1/4] perf: Add comment about current state of PERF_MEM_LVL_*
+ namespace and remove an extra line
+Date: Tue,  5 Oct 2021 14:48:34 +0530
+Message-Id: <20211005091837.250044-1-kjain@linux.ibm.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.1.0
-Subject: Re: [PATCH 3/3] powerpc: Set crashkernel offset to mid of RMA region
-Content-Language: en-US
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, mpe@ellerman.id.au
-References: <20211004151142.256251-1-sourabhjain@linux.ibm.com>
- <20211004151142.256251-4-sourabhjain@linux.ibm.com>
- <f13e218e-4e38-4076-672f-d555d7abfc02@linux.ibm.com>
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <f13e218e-4e38-4076-672f-d555d7abfc02@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: AjfoHP62Lh3HZ-7hkkLuGzsRw7sC1HmF
-X-Proofpoint-ORIG-GUID: AjfoHP62Lh3HZ-7hkkLuGzsRw7sC1HmF
+X-Proofpoint-ORIG-GUID: tGFMIXsCZcH_fh0aN6SIELorgBuR0UKd
+X-Proofpoint-GUID: 1wCRPklwI3u1dYJI1JF0PA0VZpJADI8p
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
  definitions=2021-10-04_05,2021-10-04_01,2020-04-07_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0
- clxscore=1015 mlxscore=0 malwarescore=0 phishscore=0 priorityscore=1501
- suspectscore=0 lowpriorityscore=0 mlxlogscore=999 bulkscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2109230001 definitions=main-2110050046
+ mlxscore=0 spamscore=0
+ suspectscore=0 impostorscore=0 lowpriorityscore=0 malwarescore=0
+ phishscore=0 priorityscore=1501 clxscore=1011 mlxlogscore=999 bulkscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2109230001 definitions=main-2110050052
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -121,71 +107,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@ozlabs.org, Abdul haleem <abdhalee@linux.vnet.ibm.com>,
- linux-kernel@vger.kernel.org, hbathini@linux.ibm.com,
- mahesh@linux.vnet.ibm.com
+Cc: mark.rutland@arm.com, songliubraving@fb.com, atrajeev@linux.vnet.ibm.com,
+ daniel@iogearbox.net, rnsastry@linux.ibm.com,
+ alexander.shishkin@linux.intel.com, kjain@linux.ibm.com, ast@kernel.org,
+ linux-perf-users@vger.kernel.org, yao.jin@linux.intel.com, maddy@linux.ibm.com,
+ paulus@samba.org, kan.liang@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Add a comment about PERF_MEM_LVL_* namespace being depricated
+to some extent in favour of added PERF_MEM_{LVLNUM_,REMOTE_,SNOOPX_}
+fields.
 
-On 04/10/21 21:36, Aneesh Kumar K.V wrote:
-> On 10/4/21 20:41, Sourabh Jain wrote:
->> On large config LPARs (having 192 and more cores), Linux fails to boot
->> due to insufficient memory in the first memory block. It is due to the
->> reserve crashkernel area starts at 128MB offset by default and which
->> doesn't leave enough space in the first memory block to accommodate
->> memory for other essential system resources.
->>
->> Given that the RMA region size can be 512MB or more, setting the
->> crashkernel offset to mid of RMA size will leave enough space to
->> kernel to allocate memory for other system resources in the first
->> memory block.
->>
->> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
->> Reported-and-tested-by: Abdul haleem <abdhalee@linux.vnet.ibm.com>
->> ---
->>   arch/powerpc/kernel/rtas.c |  3 +++
->>   arch/powerpc/kexec/core.c  | 13 +++++++++----
->>   2 files changed, 12 insertions(+), 4 deletions(-)
->>
->> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
->> index ff80bbad22a5..ce5e62bb4d8e 100644
->> --- a/arch/powerpc/kernel/rtas.c
->> +++ b/arch/powerpc/kernel/rtas.c
->> @@ -1235,6 +1235,9 @@ int __init early_init_dt_scan_rtas(unsigned 
->> long node,
->>       entryp = of_get_flat_dt_prop(node, "linux,rtas-entry", NULL);
->>       sizep  = of_get_flat_dt_prop(node, "rtas-size", NULL);
->>   +    if (of_get_flat_dt_prop(node, "ibm,hypertas-functions", NULL))
->> +        powerpc_firmware_features |= FW_FEATURE_LPAR;
->> +
->
-> The equivalent check that we currently do more than checking 
-> ibm,hypertas-functions.
->
->     if (!strcmp(uname, "rtas") || !strcmp(uname, "rtas@0")) {
->         prop = of_get_flat_dt_prop(node, "ibm,hypertas-functions",
->                        &len);
->         if (prop) {
->             powerpc_firmware_features |= FW_FEATURE_LPAR;
->             fw_hypertas_feature_init(prop, len);
->         }
->
->
-> also do we expect other firmware features to be set along with 
-> FW_FEATURE_LPAR?
+Remove an extra line present in perf_mem__lvl_scnprintf function.
 
-This patch needs to move crash kernel reservation to mid point of rma 
-size for LPAR in reserve_crashkernel() function. Since 
-reserve_crashkernel() is called too early even before 
-powerpc_firmware_features is set with FW_FEATURE_LPAR, the check for if 
-(firmware_has_feature(FW_FEATURE_LPAR)) fails and hence we only need to 
-make sure that we set this flag early during early_init_dt_scan_rtas().
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+---
+ include/uapi/linux/perf_event.h       | 8 +++++++-
+ tools/include/uapi/linux/perf_event.h | 8 +++++++-
+ tools/perf/util/mem-events.c          | 1 -
+ 3 files changed, 14 insertions(+), 3 deletions(-)
 
-The rest of the LPAR specific initialization isn't required at this 
-point and will be still done during pseries_probe_fw_features() as usual.
-
-Thanks,
-Sourabh Jain
+diff --git a/include/uapi/linux/perf_event.h b/include/uapi/linux/perf_event.h
+index f92880a15645..e1701e9c7858 100644
+--- a/include/uapi/linux/perf_event.h
++++ b/include/uapi/linux/perf_event.h
+@@ -1241,7 +1241,13 @@ union perf_mem_data_src {
+ #define PERF_MEM_OP_EXEC	0x10 /* code (execution) */
+ #define PERF_MEM_OP_SHIFT	0
+ 
+-/* memory hierarchy (memory level, hit or miss) */
++/*
++ * PERF_MEM_LVL_* namespace being depricated to some extent in the
++ * favour of newer composite PERF_MEM_{LVLNUM_,REMOTE_,SNOOPX_} fields.
++ * Supporting this namespace inorder to not break defined ABIs.
++ *
++ * memory hierarchy (memory level, hit or miss)
++ */
+ #define PERF_MEM_LVL_NA		0x01  /* not available */
+ #define PERF_MEM_LVL_HIT	0x02  /* hit level */
+ #define PERF_MEM_LVL_MISS	0x04  /* miss level  */
+diff --git a/tools/include/uapi/linux/perf_event.h b/tools/include/uapi/linux/perf_event.h
+index f92880a15645..e1701e9c7858 100644
+--- a/tools/include/uapi/linux/perf_event.h
++++ b/tools/include/uapi/linux/perf_event.h
+@@ -1241,7 +1241,13 @@ union perf_mem_data_src {
+ #define PERF_MEM_OP_EXEC	0x10 /* code (execution) */
+ #define PERF_MEM_OP_SHIFT	0
+ 
+-/* memory hierarchy (memory level, hit or miss) */
++/*
++ * PERF_MEM_LVL_* namespace being depricated to some extent in the
++ * favour of newer composite PERF_MEM_{LVLNUM_,REMOTE_,SNOOPX_} fields.
++ * Supporting this namespace inorder to not break defined ABIs.
++ *
++ * memory hierarchy (memory level, hit or miss)
++ */
+ #define PERF_MEM_LVL_NA		0x01  /* not available */
+ #define PERF_MEM_LVL_HIT	0x02  /* hit level */
+ #define PERF_MEM_LVL_MISS	0x04  /* miss level  */
+diff --git a/tools/perf/util/mem-events.c b/tools/perf/util/mem-events.c
+index f0e75df72b80..ff7289e28192 100644
+--- a/tools/perf/util/mem-events.c
++++ b/tools/perf/util/mem-events.c
+@@ -320,7 +320,6 @@ int perf_mem__lvl_scnprintf(char *out, size_t sz, struct mem_info *mem_info)
+ 	/* already taken care of */
+ 	m &= ~(PERF_MEM_LVL_HIT|PERF_MEM_LVL_MISS);
+ 
+-
+ 	if (mem_info && mem_info->data_src.mem_remote) {
+ 		strcat(out, "Remote ");
+ 		l += 7;
+-- 
+2.26.2
 
