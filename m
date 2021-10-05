@@ -1,81 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3E98422AF2
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 16:23:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0167A422EFE
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 19:19:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HP0F84Rczz2ypR
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Oct 2021 01:23:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HP48D5x9Dz2yyh
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Oct 2021 04:19:40 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=G6WOlcyf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=SAKUQo0n;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=2607:f8b0:4864:20::c2c;
- helo=mail-oo1-xc2c.google.com; envelope-from=skhan@linuxfoundation.org;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::532;
+ helo=mail-pg1-x532.google.com; envelope-from=naveennaidu479@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
- header.a=rsa-sha256 header.s=google header.b=G6WOlcyf; 
- dkim-atps=neutral
-Received: from mail-oo1-xc2c.google.com (mail-oo1-xc2c.google.com
- [IPv6:2607:f8b0:4864:20::c2c])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=SAKUQo0n; dkim-atps=neutral
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com
+ [IPv6:2607:f8b0:4864:20::532])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HP0DQ72gdz2xY2
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Oct 2021 01:23:01 +1100 (AEDT)
-Received: by mail-oo1-xc2c.google.com with SMTP id
- b5-20020a4ac285000000b0029038344c3dso6451741ooq.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 Oct 2021 07:23:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linuxfoundation.org; s=google;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=xF+jNwW5BFEV+lIRF79mZl5w3T2WmTQ1n+ANOqGSM58=;
- b=G6WOlcyfrBgIu0kBXl6Bx3ZoUEQr6/41sXdy6lq/sSgNafvyAemd+dwNdapXnV3vQ4
- UKifj/kxPStJlaVPMTA9ab+lLDZY4sQ2+f2wY++qX7vRBaVpW5zNTqa9fFNe98irLV3S
- GVWYWVhmPK8KnUJNQ+LADA8ROn56XNvBR+c+g=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HP47X5Xm0z2yPY
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Oct 2021 04:19:03 +1100 (AEDT)
+Received: by mail-pg1-x532.google.com with SMTP id r201so14477369pgr.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 Oct 2021 10:19:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=qQT+mDvkkQCJQfW4l8MXueOtWGmReSv26PNLqJ69eIE=;
+ b=SAKUQo0n36vAvd2dP1867PQKEdhRlgvmbuzGuIjn6ExEt33l2DZ+FZeddFfsxZhPoN
+ pE1xkI3/fiwkKoL3lO3xSRKeT39B5otGFTRCa9aZtDn1KSLn8LY32Q3jEUGqnrGQhrRf
+ FEtTYTJWYMEm+plrrqi7vMw6tb1+3M+HUHAEaCbcIwP/maFCEilzUAFRDi4o/D4gskpb
+ dHH2tz7jl/EJDxM1lPpu8WUPW8FJtFq2xv+1kXuWmLX4IEXmoFtix8X8sQDIXBkTXUg6
+ X/01cjlj1ILLP2ZCI0eSAjTkX/SUAk97sQ0ISZoae2hjQQVoyJioUA2bq18o/TxQ8bFD
+ viIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=xF+jNwW5BFEV+lIRF79mZl5w3T2WmTQ1n+ANOqGSM58=;
- b=wYM+RetsWqrJEkBqkvITg6Iz9DKPM4DeKnlTMGFdS2gG+/14c1IRL7szi79KY2lwI+
- xMiTzOMFaZDjEXkK/5pNXdXNOP09Ipyu1YTFLK65VUUFEBEPboUmASpTp5e3BDzeFHRV
- aNwFjjX2ZgGwUYFa9NzhmI/ggWn/4vH7jEnB8OyTWp/Imyuc2SH2JqhuqHJJPTQ6i6dG
- CS2LBDBzSndVnYZ2T48rzz2dKs0TtrMEwxspGQuEv58Bnt6GSvXmrrJBhChzscDQUHc4
- fl9GSoxA0jXzrdrraP/RXDZeDheTpfVxfcQUOYQsncJUV9aHSl7R9eOu6Rr2YcY0aQ/7
- sPoQ==
-X-Gm-Message-State: AOAM533ha6Uo9Aw/x+wEps8ygukvT1by/07/tqDQ5ZWpTPoNyIjN+xMH
- pkgoc4M0SN51JwIr5VCxxQAPZg==
-X-Google-Smtp-Source: ABdhPJyBcGscPewH1ZEk7sJd92chljhW3DetsHnRNw1RAHBxKccwA91AIJhkvrbu0pKqg5g+Lc7jUQ==
-X-Received: by 2002:a05:6820:358:: with SMTP id
- m24mr13754323ooe.34.1633443777284; 
- Tue, 05 Oct 2021 07:22:57 -0700 (PDT)
-Received: from [192.168.1.112] (c-24-9-64-241.hsd1.co.comcast.net.
- [24.9.64.241])
- by smtp.gmail.com with ESMTPSA id v9sm1382374oth.62.2021.10.05.07.22.55
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 05 Oct 2021 07:22:56 -0700 (PDT)
-Subject: Re: [PATCH v1 2/6] mm/memory_hotplug: remove
- CONFIG_MEMORY_HOTPLUG_SPARSE
-To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
-References: <20210929143600.49379-1-david@redhat.com>
- <20210929143600.49379-3-david@redhat.com>
-From: Shuah Khan <skhan@linuxfoundation.org>
-Message-ID: <0489ea97-0a78-0299-335a-ca1166bb2735@linuxfoundation.org>
-Date: Tue, 5 Oct 2021 08:22:54 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ bh=qQT+mDvkkQCJQfW4l8MXueOtWGmReSv26PNLqJ69eIE=;
+ b=De8l0sHe4aXkhETquKAWjJ62Ut2veMllpoNCRdCsCZqcxwefxxVcQPOSIIdnEb6HdA
+ yZkYpDIlqA1SifpCzDJWJxYvUlQ9xG9YdZyL0t6LBjKrsgElvxSi26c552QGtLirRtnl
+ XmCJm4YlY2sc/2yFUw2Y6qYN+xmCZN/rCMdEvZ34n7YVLMz+KNvHIgfdX47R/DXOZ2eM
+ 7eUx/W4D4y1g/GYuRbWBzQkrJ4DNjRx4j46OV2z7rTQmUJwiCkw5sAMEaMXz8fzYq+sN
+ i1RFnpY1u1lA0QSI1FUikXHypTG9K0rfdN1SGCkfo55pUEUq1Mc5dYfMFpbYWdnQ8wEp
+ Hl4A==
+X-Gm-Message-State: AOAM531jXXrEPiwUXdVPBbR2FHbVelN9NxUD803W+dME9upGsfvRD5Vd
+ 9DvM9O/5OPV63KwUSLe458M=
+X-Google-Smtp-Source: ABdhPJzEWfjabqzm399k9sgiMDMfZMs8fGUj9h1G1NasJnjVQm0jliPuqYwmVa/JBUHJf7aVDXzsGQ==
+X-Received: by 2002:a63:5717:: with SMTP id l23mr1322508pgb.87.1633454340207; 
+ Tue, 05 Oct 2021 10:19:00 -0700 (PDT)
+Received: from localhost.localdomain ([2406:7400:63:f69:1127:b4ce:ef67:b718])
+ by smtp.gmail.com with ESMTPSA id
+ f25sm18476722pge.7.2021.10.05.10.18.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 05 Oct 2021 10:18:59 -0700 (PDT)
+From: Naveen Naidu <naveennaidu479@gmail.com>
+To: bhelgaas@google.com,
+	ruscur@russell.cc,
+	oohall@gmail.com
+Subject: [PATCH v4 0/8] Fix long standing AER Error Handling Issues 
+Date: Tue,  5 Oct 2021 22:48:06 +0530
+Message-Id: <cover.1633453452.git.naveennaidu479@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <20210929143600.49379-3-david@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,63 +80,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, Jason Wang <jasowang@redhat.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- virtualization@lists.linux-foundation.org, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, linux-kselftest@vger.kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>,
- Alex Shi <alexs@kernel.org>, Jonathan Corbet <corbet@lwn.net>, x86@kernel.org,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
- Thomas Gleixner <tglx@linutronix.de>, Oscar Salvador <osalvador@suse.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-doc@vger.kernel.org,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Mike Rapoport <rppt@kernel.org>
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Naveen Naidu <naveennaidu479@gmail.com>, skhan@linuxfoundation.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel-mentees@lists.linuxfoundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 9/29/21 8:35 AM, David Hildenbrand wrote:
-> CONFIG_MEMORY_HOTPLUG depends on CONFIG_SPARSEMEM, so there is no need for
-> CONFIG_MEMORY_HOTPLUG_SPARSE anymore; adjust all instances to use
-> CONFIG_MEMORY_HOTPLUG and remove CONFIG_MEMORY_HOTPLUG_SPARSE.
-> 
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->   arch/powerpc/include/asm/machdep.h            |  2 +-
->   arch/powerpc/kernel/setup_64.c                |  2 +-
->   arch/powerpc/platforms/powernv/setup.c        |  4 ++--
->   arch/powerpc/platforms/pseries/setup.c        |  2 +-
->   drivers/base/Makefile                         |  2 +-
->   drivers/base/node.c                           |  9 ++++-----
->   drivers/virtio/Kconfig                        |  2 +-
->   include/linux/memory.h                        | 18 +++++++-----------
->   include/linux/node.h                          |  4 ++--
->   lib/Kconfig.debug                             |  2 +-
->   mm/Kconfig                                    |  4 ----
->   mm/memory_hotplug.c                           |  2 --
->   tools/testing/selftests/memory-hotplug/config |  1 -
->   13 files changed, 21 insertions(+), 33 deletions(-)
-> 
+This patch series aims at fixing some of the AER error handling issues
+we have.
 
->   {
-> diff --git a/tools/testing/selftests/memory-hotplug/config b/tools/testing/selftests/memory-hotplug/config
-> index a7e8cd5bb265..1eef042a31e1 100644
-> --- a/tools/testing/selftests/memory-hotplug/config
-> +++ b/tools/testing/selftests/memory-hotplug/config
-> @@ -1,5 +1,4 @@
->   CONFIG_MEMORY_HOTPLUG=y
-> -CONFIG_MEMORY_HOTPLUG_SPARSE=y
->   CONFIG_NOTIFIER_ERROR_INJECTION=y
->   CONFIG_MEMORY_NOTIFIER_ERROR_INJECT=m
->   CONFIG_MEMORY_HOTREMOVE=y
-> 
+Currently we have the following issues:
+ - Confusing message in aer_print_error()
+ - aer_err_info not being initialized completely in DPC path before
+   we print the AER logs
+ - A bug [1] in clearing of AER registers in the native AER path
 
-For Kselftest change:
+[1] https://lore.kernel.org/linux-pci/20151229155822.GA17321@localhost/
 
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+The primary aim of this patch series is to converge the APEI path and the
+native AER error handling paths. In our current code, we find that we
+have two different behaviours (especially when it comes to clearing of
+the AER registers) for the same functionality.
 
-thanks,
--- Shuah
+This patch series, tries to bring the same semantics and hence more
+commonanlity between the APEI part of code and the native OS
+handling of AER errors.
+
+PATCH 1:
+  - Fixes the first issue
+
+PATCH 2 - 4:
+  - Fixes the second issue
+  - "Patch 3/8" is dependent on "Patch 2/8" in the series
+
+PATCH 5 - 7
+  - Deals with converging the various paths and brings more
+    commonality between them
+  - "Patch 6/8" depends on "Patch 1/8"
+
+PATCH 8:
+  -  Adds extra information in AER error logs.
+
+Thanks,
+Naveen Naidu
+
+Changelog
+=========
+
+v4:
+  - Implement review comments
+  - Make "Patch 1/8" commit message more meaningful
+  - Fix the code comment error detected by kernel test robot 
+    in "Patch 6/8"
+
+v2 and v3:
+  - Fix up mail formatting and include the appropriate receipients for
+    the patch.
+
+Naveen Naidu (8):
+ [PATCH v4 1/8] PCI/AER: Remove ID from aer_agent_string[]
+ [PATCH v4 2/8] PCI: Cleanup struct aer_err_info
+ [PATCH v4 3/8] PCI/DPC: Initialize info->id in dpc_process_error()
+ [PATCH v4 4/8] PCI/DPC: Use pci_aer_clear_status() in dpc_process_error()
+ [PATCH v4 5/8] PCI/DPC: Converge EDR and DPC Path of clearing AER registers
+ [PATCH v4 6/8] PCI/AER: Clear error device AER registers in aer_irq()
+ [PATCH v4 7/8] PCI/ERR: Remove redundant clearing of AER register in pcie_do_recovery()
+ [PATCH v4 8/8] PCI/AER: Include DEVCTL in aer_print_error()
+
+ drivers/pci/pci.h      |  23 +++-
+ drivers/pci/pcie/aer.c | 269 ++++++++++++++++++++++++++++-------------
+ drivers/pci/pcie/dpc.c |   9 +-
+ drivers/pci/pcie/err.c |   9 +-
+ 4 files changed, 209 insertions(+), 101 deletions(-)
+
+-- 
+2.25.1
+
