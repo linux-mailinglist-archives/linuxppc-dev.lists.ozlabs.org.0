@@ -1,56 +1,110 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36D1B421E74
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 07:53:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F6A5421E76
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 07:55:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HNmwV0gMWz2ynJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 16:53:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HNmyC1V4Zz2ypB
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 16:54:59 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ka3iPqs5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sF932pDS;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HNmvt3Twbz2yMy
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 16:52:58 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HNmxV5KxSz2xXP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 16:54:22 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=ka3iPqs5; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4HNmvr0YzQz4xbT;
- Tue,  5 Oct 2021 16:52:55 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1633413176;
- bh=6fFfGXnlkv8ChMdtcWF8kZ8uQuOaYZS2CMAl1vECsNA=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=ka3iPqs5QAU4Sp2SvzYlRkIdxNFkGMRHoxNhK0NhauTdY9BpCx7fAqn6M8eectADe
- 2lTKbCbysnQ3spJhhIBvYbNyCXUTYe3jyAmxXTOuzISHctbq14gL+iGhmIsDyN/0aG
- 2YXw2ifDKt3o7FNA6SbH22XUyh3nEeFYUSIuox9urLn9Vz2DRIdTquQ9F5FyL0YgUE
- HB8XnRRYHMEcWF1wu/Fk3aCgS2Ycq6fmy9WNi8hrfsLnMLK6IiG3icGMmjpmS0KHWJ
- FnB1tGXgLGN4TpDLdyuyWIUpRMz0orBW4/1C1qT4TTu5LU3rXM+6KHfeKU/qW4h/18
- qYH4TJpCjuWEg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, acme@kernel.org,
- jolsa@kernel.org
-Subject: Re: [V2 1/4] powerpc/perf: Refactor the code definition of perf reg
- extended mask
-In-Reply-To: <20210930122055.1390-2-atrajeev@linux.vnet.ibm.com>
-References: <20210930122055.1390-1-atrajeev@linux.vnet.ibm.com>
- <20210930122055.1390-2-atrajeev@linux.vnet.ibm.com>
-Date: Tue, 05 Oct 2021 16:52:52 +1100
-Message-ID: <87sfxgnhl7.fsf@mpe.ellerman.id.au>
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=sF932pDS; dkim-atps=neutral
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4HNmxV4xdpz4xbX
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 16:54:22 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+ id 4HNmxV4vWGz4xbV; Tue,  5 Oct 2021 16:54:22 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=sF932pDS; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by gandalf.ozlabs.org (Postfix) with ESMTPS id 4HNmxV0v4tz4xbT;
+ Tue,  5 Oct 2021 16:54:21 +1100 (AEDT)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1955BUTi020200; 
+ Tue, 5 Oct 2021 01:54:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : reply-to : references : mime-version : content-type
+ : in-reply-to; s=pp1; bh=zL9jjSWewjRs17S5msFtSiMv6zE6VPs9IRLqdj9vZvU=;
+ b=sF932pDS/QMXkkMgZqXRkF8sBDPT6eHtB0DEMt2AGpZWEU3IV1jpZtCxyUcYixTbFG+A
+ CXHy7O7MhKv6DQueFrMyKyJX6sKmXV1Lz3OuHLIfv5LijxAfqSg5n9o5fh6Yds3fKIHf
+ OjXlCH4MmjEZIHXho0Ss2n8SbxTTmSJMNAp0FgvKuIEIiGHoBZjLgfNZAh+mlJRg9Tr/
+ e1y2iodZCoBsO0TPAIbkd8zNJUXZ7V+2KSsTjgjVEYuX8kJja0viZjmuTQ7lfqwkaMXZ
+ N9DTKYBrUL5WjchKOfuE8BjAyhsKF+r6q/rx0CT7kW71rmde7tNr+404Ss/dimOEJQBj LA== 
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3bggbd8n2e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 05 Oct 2021 01:54:19 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1955cjwI002779;
+ Tue, 5 Oct 2021 05:54:17 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma03fra.de.ibm.com with ESMTP id 3bef29chg9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 05 Oct 2021 05:54:17 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1955sD2C5374696
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 5 Oct 2021 05:54:13 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9B4A34C046;
+ Tue,  5 Oct 2021 05:54:13 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7FC3C4C050;
+ Tue,  5 Oct 2021 05:54:11 +0000 (GMT)
+Received: from in.ibm.com (unknown [9.43.121.93])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Tue,  5 Oct 2021 05:54:11 +0000 (GMT)
+Date: Tue, 5 Oct 2021 11:24:08 +0530
+From: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH 1/3] fixup mmu_features immediately after getting cpu pa
+ features.
+Message-ID: <20211005055408.flthbpp2nfwkygmm@in.ibm.com>
+References: <20211004151142.256251-1-sourabhjain@linux.ibm.com>
+ <20211004151142.256251-2-sourabhjain@linux.ibm.com>
+ <e67acb9b-dd8e-767a-b57b-f12b3b0fd44d@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e67acb9b-dd8e-767a-b57b-f12b3b0fd44d@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: I9WnqRAN5NRq7AxwnNlQqXYK-fbZ5vYy
+X-Proofpoint-GUID: I9WnqRAN5NRq7AxwnNlQqXYK-fbZ5vYy
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
+ definitions=2021-10-04_05,2021-10-04_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ suspectscore=0 lowpriorityscore=0 adultscore=0 spamscore=0
+ priorityscore=1501 clxscore=1011 bulkscore=0 mlxlogscore=999 phishscore=0
+ mlxscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2109230001 definitions=main-2110050030
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,78 +116,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kjain@linux.ibm.com, maddy@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, rnsastry@linux.ibm.com
+Reply-To: mahesh@linux.ibm.com
+Cc: linuxppc-dev@ozlabs.org, mahesh@linux.vnet.ibm.com,
+ linux-kernel@vger.kernel.org, Sourabh Jain <sourabhjain@linux.ibm.com>,
+ Abdul haleem <abdhalee@linux.vnet.ibm.com>, hbathini@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Athira Rajeev <atrajeev@linux.vnet.ibm.com> writes:
-> PERF_REG_PMU_MASK_300 and PERF_REG_PMU_MASK_31 defines the mask
-> value for extended registers. Current definition of these mask values
-> uses hex constant and does not use registers by name, making it less
-> readable. Patch refactor the macro values by or'ing together the actual
-> register value constants. Also include PERF_REG_EXTENDED_MAX as
-> part of enum definition.
->
-> Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> ---
->  arch/powerpc/include/uapi/asm/perf_regs.h | 21 +++++++++++++--------
->  1 file changed, 13 insertions(+), 8 deletions(-)
->
-> diff --git a/arch/powerpc/include/uapi/asm/perf_regs.h b/arch/powerpc/inc=
-lude/uapi/asm/perf_regs.h
-> index 578b3ee86105..fb1d8a9b4393 100644
-> --- a/arch/powerpc/include/uapi/asm/perf_regs.h
-> +++ b/arch/powerpc/include/uapi/asm/perf_regs.h
-> @@ -61,27 +61,32 @@ enum perf_event_powerpc_regs {
->  	PERF_REG_POWERPC_PMC4,
->  	PERF_REG_POWERPC_PMC5,
->  	PERF_REG_POWERPC_PMC6,
-> -	/* Max regs without the extended regs */
-> +	/* Max mask value for interrupt regs w/o extended regs */
->  	PERF_REG_POWERPC_MAX =3D PERF_REG_POWERPC_MMCRA + 1,
-> +	/* Max mask value for interrupt regs including extended regs */
-> +	PERF_REG_EXTENDED_MAX =3D PERF_REG_POWERPC_PMC6 + 1,
->  };
->=20=20
->  #define PERF_REG_PMU_MASK	((1ULL << PERF_REG_POWERPC_MAX) - 1)
->=20=20
-> -/* Exclude MMCR3, SIER2, SIER3 for CPU_FTR_ARCH_300 */
-> -#define	PERF_EXCLUDE_REG_EXT_300	(7ULL << PERF_REG_POWERPC_MMCR3)
-> -
->  /*
->   * PERF_REG_EXTENDED_MASK value for CPU_FTR_ARCH_300
->   * includes 9 SPRS from MMCR0 to PMC6 excluding the
-> - * unsupported SPRS in PERF_EXCLUDE_REG_EXT_300.
-> + * unsupported SPRS MMCR3, SIER2 and SIER3.
->   */
-> -#define PERF_REG_PMU_MASK_300   ((0xfffULL << PERF_REG_POWERPC_MMCR0) - =
-PERF_EXCLUDE_REG_EXT_300)
-> +#define PERF_REG_PMU_MASK_300	\
-> +	((1ul << PERF_REG_POWERPC_MMCR0) | (1ul << PERF_REG_POWERPC_MMCR1) | \
-> +	(1ul << PERF_REG_POWERPC_MMCR2) | (1ul << PERF_REG_POWERPC_PMC1) | \
-> +	(1ul << PERF_REG_POWERPC_PMC2) | (1ul << PERF_REG_POWERPC_PMC3) | \
-> +	(1ul << PERF_REG_POWERPC_PMC4) | (1ul << PERF_REG_POWERPC_PMC5) | \
-> +	(1ul << PERF_REG_POWERPC_PMC6))
+On 2021-10-04 21:02:21 Mon, Aneesh Kumar K.V wrote:
+> On 10/4/21 20:41, Sourabh Jain wrote:
+> > From: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+> > 
+> > On system with radix support available, early_radix_enabled() starts
+> > returning true for a small window (until mmu_early_init_devtree() is
+> > called) even when radix mode disabled on kernel command line. This causes
+> > ppc64_bolted_size() to return ULONG_MAX in HPT mode instead of supported
+> > segment size, during boot cpu paca allocation.
+> > 
+> > With kernel command line = "... disable_radix":
+> > 
+> > early_init_devtree:			  <- early_radix_enabled() = false
+> >    early_init_dt_scan_cpus:		  <- early_radix_enabled() = false
+> >        ...
+> >        check_cpu_pa_features:		  <- early_radix_enabled() = false
+> >        ...				^ <- early_radix_enabled() = TRUE
+> >        allocate_paca:			| <- early_radix_enabled() = TRUE
+> >            ...                           |
+> >            ppc64_bolted_size:		| <- early_radix_enabled() = TRUE
+> >                if (early_radix_enabled())| <- early_radix_enabled() = TRUE
+> >                    return ULONG_MAX;     |
+> >        ...                               |
+> >    ...					| <- early_radix_enabled() = TRUE
+> >    ...					| <- early_radix_enabled() = TRUE
+> >    mmu_early_init_devtree()              V
+> >    ...					  <- early_radix_enabled() = false
+> > 
+> > So far we have not seen any issue because allocate_paca() takes minimum of
+> > ppc64_bolted_size and rma_size while allocating paca. However it is better
+> > to close this window by fixing up the mmu features as early as possible.
+> > This fixes early_radix_enabled() and ppc64_bolted_size() to return valid
+> > values in radix disable mode. This patch will help subsequent patch to
+> > depend on early_radix_enabled() check while detecting supported segment
+> > size in HPT mode.
+> > 
+> > Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+> > Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+> > Reported-and-tested-by: Abdul haleem <abdhalee@linux.vnet.ibm.com>
+> > ---
+> >   arch/powerpc/include/asm/book3s/64/mmu.h | 1 +
+> >   arch/powerpc/include/asm/mmu.h           | 1 +
+> >   arch/powerpc/kernel/prom.c               | 1 +
+> >   arch/powerpc/mm/init_64.c                | 5 ++++-
+> >   4 files changed, 7 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/arch/powerpc/include/asm/book3s/64/mmu.h b/arch/powerpc/include/asm/book3s/64/mmu.h
+> > index c02f42d1031e..69a89fa1330d 100644
+> > --- a/arch/powerpc/include/asm/book3s/64/mmu.h
+> > +++ b/arch/powerpc/include/asm/book3s/64/mmu.h
+> > @@ -197,6 +197,7 @@ extern int mmu_vmemmap_psize;
+> >   extern int mmu_io_psize;
+> >   /* MMU initialization */
+> > +void mmu_cpu_feature_fixup(void);
+> >   void mmu_early_init_devtree(void);
+> >   void hash__early_init_devtree(void);
+> >   void radix__early_init_devtree(void);
+> > diff --git a/arch/powerpc/include/asm/mmu.h b/arch/powerpc/include/asm/mmu.h
+> > index 8abe8e42e045..c8eafd401fe9 100644
+> > --- a/arch/powerpc/include/asm/mmu.h
+> > +++ b/arch/powerpc/include/asm/mmu.h
+> > @@ -401,6 +401,7 @@ extern void early_init_mmu(void);
+> >   extern void early_init_mmu_secondary(void);
+> >   extern void setup_initial_memory_limit(phys_addr_t first_memblock_base,
+> >   				       phys_addr_t first_memblock_size);
+> > +static inline void mmu_cpu_feature_fixup(void) { }
+> >   static inline void mmu_early_init_devtree(void) { }
+> >   static inline void pkey_early_init_devtree(void) {}
+> > diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+> > index 2e67588f6f6e..1727a3abe6c1 100644
+> > --- a/arch/powerpc/kernel/prom.c
+> > +++ b/arch/powerpc/kernel/prom.c
+> > @@ -380,6 +380,7 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
+> >   		check_cpu_pa_features(node);
+> >   	}
+> > +	mmu_cpu_feature_fixup();
+> 
+> can you do that call inside check_cpu_pa_features? or is it because we have
+> the same issue with baremetal platforms?
 
-These all need to be unsigned long long. Otherwise when building on big
-endian (which defaults to 32-bit), we see errors such as:
+Yup same issue exist on baremetal as well in case of dt_cpu_ftrs_in_use
+is true. Hence calling it after the if (!dt_cpu_ftrs_in_use) code block
+takes care of both pseries and baremetal platforms.
 
-  In file included from /home/michael/linux/tools/perf/arch/powerpc/include=
-/perf_regs.h:7:0,
-                   from arch/powerpc/util/../../../util/perf_regs.h:30,
-                   from arch/powerpc/util/perf_regs.c:7:
-  arch/powerpc/util/perf_regs.c: In function =E2=80=98arch__intr_reg_mask=
-=E2=80=99:
-  /home/michael/linux/tools/arch/powerpc/include/uapi/asm/perf_regs.h:78:8:=
- error: left shift count >=3D width of type [-Werror=3Dshift-count-overflow]
-    ((1ul << PERF_REG_POWERPC_MMCR0) | (1ul << PERF_REG_POWERPC_MMCR1) | \
-          ^
-  arch/powerpc/util/perf_regs.c:206:19: note: in expansion of macro =E2=80=
-=98PERF_REG_PMU_MASK_300=E2=80=99
-     extended_mask =3D PERF_REG_PMU_MASK_300;
-                     ^
+> 
+> Can we also rename this to indicate we are sanitizing the feature flag based
+> on kernel command line.  Something like
+> 
+> /* Update cpu features based on kernel command line */
+> update_cpu_features();
 
-cheers
+Sure will do.
+
+Thanks for your review.
+-Mahesh.
