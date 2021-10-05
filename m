@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60E2C422231
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 11:22:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DC824222AC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 11:50:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HNsYv1xQDz3cDY
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 20:22:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HNt9P2sjkz304r
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 20:50:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=M7YPzYEZ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Sd/EXhwZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,78 +18,81 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=M7YPzYEZ; dkim-atps=neutral
+ header.s=pp1 header.b=Sd/EXhwZ; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HNsWF1QjWz3035
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 20:20:24 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HNt8c0K7Zz2yJF
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 20:49:19 +1100 (AEDT)
 Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1957aojb010394; 
- Tue, 5 Oct 2021 05:19:59 -0400
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1959ZCaP010497; 
+ Tue, 5 Oct 2021 05:48:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=4enNdl2kR8LMd3UN5l3K5mtS1CQB7Mo+IxOA3PfIPWA=;
- b=M7YPzYEZFSRxu4pLEsYs1DYKjwjRslVZ3PjGOknXW5gfgyP4PAVL2z8A0KnwrncRDyjN
- EIQd10i0TNzInzv1KXx5nq0ts8Xx60I0paiIUo5UBm5K1dbvnrHDemnR98ohdDsMNyAy
- WbUJ5pjqdprwq9Bt5YixWiY+65Wo8Z10y2UtRUDNNRPe8a5pzZkIeG+K0llJItTp62Jd
- erWYYt80oryzR4zjqBSP85ysFoDgdFtHTSuMBPKjdFm4UOXkiVLGU+H6rXHIh6NLxMmR
- BpSQkw9jyDgmHE7vpzw6ZEdM2r/1VhYTNSEntgCJYQ1ujCHfEg7mx5AYv7aborXp1ATR bg== 
+ h=subject : to : cc :
+ references : from : message-id : date : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=eO4uXlRS6S9nvlj+QSvAE+fS6kbSQnna5E/0txyYWFg=;
+ b=Sd/EXhwZRgvDbqICy1h0YtwbgRT1G6m+1jRKD12GZRwmRrxrsYpdGqURzXZu/Wc9zZA9
+ 6t3bFBPw90tHh+9w4kAXjs9RPJqu3znkkHZfAIIA6vgjbhTzYFUrvVu2tTDm7J0nlSe7
+ pyflPhWmrP3WxeoZaBGeTDZuFrazJGqTUsemgrUnYQ7wQiJQMYzLNYVzdGccWDAEoIDi
+ Vpr7Ef1aZmqqc3DSnlHCqmri1OO6fXZjl0ehmWorBhU3PSVlrFHfjcSQ1phpr6R04mHs
+ fFgNmbn/0mgql4NL0lf5Op7uuxOj55H3+yL3Q9YVYlIz6/bdbIFfanHUKeFO1CSXAjHS ew== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3bghr0k4td-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3bghr0kquh-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 05 Oct 2021 05:19:59 -0400
+ Tue, 05 Oct 2021 05:48:54 -0400
 Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1958xDGA021006;
- Tue, 5 Oct 2021 05:19:58 -0400
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.70])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3bghr0k4t2-1
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1959mjUo031724;
+ Tue, 5 Oct 2021 05:48:53 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3bghr0kqu3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 05 Oct 2021 05:19:58 -0400
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1959DFv8025259;
- Tue, 5 Oct 2021 09:19:56 GMT
+ Tue, 05 Oct 2021 05:48:53 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1959lB7P026575;
+ Tue, 5 Oct 2021 09:48:51 GMT
 Received: from b06cxnps3075.portsmouth.uk.ibm.com
  (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma01fra.de.ibm.com with ESMTP id 3bef29pbb4-1
+ by ppma03ams.nl.ibm.com with ESMTP id 3bef2a0qk6-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 05 Oct 2021 09:19:56 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ Tue, 05 Oct 2021 09:48:51 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
  by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 1959JpU239387440
+ 1959mlbD26214722
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 5 Oct 2021 09:19:51 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5169BA406F;
- Tue,  5 Oct 2021 09:19:51 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 19EBEA4080;
- Tue,  5 Oct 2021 09:19:44 +0000 (GMT)
-Received: from li-e8dccbcc-2adc-11b2-a85c-bc1f33b9b810.ibm.com.com (unknown
- [9.43.64.84])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  5 Oct 2021 09:19:43 +0000 (GMT)
-From: Kajol Jain <kjain@linux.ibm.com>
+ Tue, 5 Oct 2021 09:48:47 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2B1DFA406B;
+ Tue,  5 Oct 2021 09:48:47 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B471EA404D;
+ Tue,  5 Oct 2021 09:48:41 +0000 (GMT)
+Received: from li-e8dccbcc-2adc-11b2-a85c-bc1f33b9b810.ibm.com (unknown
+ [9.43.64.84]) by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  5 Oct 2021 09:48:41 +0000 (GMT)
+Subject: Re: [PATCH 1/4] perf: Add comment about current state of
+ PERF_MEM_LVL_* namespace and remove an extra line
 To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
  linux-kernel@vger.kernel.org, peterz@infradead.org, mingo@redhat.com,
  acme@kernel.org, jolsa@kernel.org, namhyung@kernel.org, ak@linux.intel.com
-Subject: [PATCH 4/4] powerpc/perf: Fix data source encodings for L2.1 and L3.1
- accesses
-Date: Tue,  5 Oct 2021 14:48:37 +0530
-Message-Id: <20211005091837.250044-4-kjain@linux.ibm.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20211005091837.250044-1-kjain@linux.ibm.com>
 References: <20211005091837.250044-1-kjain@linux.ibm.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From: kajoljain <kjain@linux.ibm.com>
+Message-ID: <b069104c-73ee-6210-16d4-00bb0087933d@linux.ibm.com>
+Date: Tue, 5 Oct 2021 15:18:40 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
+In-Reply-To: <20211005091837.250044-1-kjain@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: IaifetT0ByICvxcnB09ZVfnIwt83bn2C
-X-Proofpoint-GUID: qVhqqRJsv84Z3zLGOYD5D7sq9rG5DgoX
+X-Proofpoint-ORIG-GUID: Orcyn_HibsoF6e3Oq47juoF6G2yo0bl8
+X-Proofpoint-GUID: WOz0dxa4UOPomjWx1ZQWLyfAl9OiOzJw
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
  definitions=2021-10-04_05,2021-10-04_01,2020-04-07_01
@@ -98,7 +101,7 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501 suspectscore=0 mlxscore=0 clxscore=1015 adultscore=0
  bulkscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0 spamscore=0
  phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2109230001 definitions=main-2110050052
+ engine=8.12.0-2109230001 definitions=main-2110050054
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,88 +115,102 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: mark.rutland@arm.com, songliubraving@fb.com, atrajeev@linux.vnet.ibm.com,
  daniel@iogearbox.net, rnsastry@linux.ibm.com,
- alexander.shishkin@linux.intel.com, kjain@linux.ibm.com, ast@kernel.org,
+ alexander.shishkin@linux.intel.com, ast@kernel.org,
  linux-perf-users@vger.kernel.org, yao.jin@linux.intel.com, maddy@linux.ibm.com,
  paulus@samba.org, kan.liang@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fix the data source encodings to represent L2.1/L3.1(another core's
-L2/L3 on the same chip) accesses properly for power10 and older
-plaforms.
+Hi,
+  Sorry I missed to update correct version details.
 
-Add new macros(LEVEL/REM) which can be used to add mem_lvl_num and remote
-field data inside perf_mem_data_src structure.
+Link to the previous patch-set, where discussion related to addition of
+new data source encoding field 'mem_hops' happened:
 
-Result in power9 system with patch changes:
+https://lkml.org/lkml/2021/9/4/37
 
-localhost:~/linux/tools/perf # ./perf mem report | grep Remote
-     0.01%             1  236           Remote core, same chip L3 or L3 hit  [.] 0x0000000000002dd0                producer_consumer   [.] 0x00007fffadd4cc10        
-anon               HitM          N/A                     No       N/A        0              0            
-     0.01%             1  208           Remote core, same chip L3 or L3 hit  [.] 0x0000000000002dd0                producer_consumer   [.] 0x00007fff9dd33710        
-anon               HitM          N/A                     No       N/A        0              0            
-     0.00%             1  176           Remote core, same chip L3 or L3 hit  [.] 0x0000000000002dd0                producer_consumer   [.] 0x00007fff9b22c290        
-anon               HitM          N/A                     No       N/A        0              0 
+Changelog:
 
-Fixes: 79e96f8f930d ("powerpc/perf: Export memory hierarchy info to user
-space")
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
----
- arch/powerpc/perf/isa207-common.c | 26 +++++++++++++++++++++-----
- arch/powerpc/perf/isa207-common.h |  2 ++
- 2 files changed, 23 insertions(+), 5 deletions(-)
+- Rather then adding new macros for L2.1/L3.1 (same chip, different
+core) entries as part of field lvlnum, we are introducing new field
+called 'mem_hops' which can be used to get hops
+level data(intra-chip/package or inter-chip/off-package details).
+As suggested by Peter Zijlstra.
 
-diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
-index f92bf5f6b74f..7ea873ab2e6f 100644
---- a/arch/powerpc/perf/isa207-common.c
-+++ b/arch/powerpc/perf/isa207-common.c
-@@ -238,11 +238,27 @@ static inline u64 isa207_find_source(u64 idx, u32 sub_idx)
- 		ret |= P(SNOOP, HIT);
- 		break;
- 	case 5:
--		ret = PH(LVL, REM_CCE1);
--		if ((sub_idx == 0) || (sub_idx == 2) || (sub_idx == 4))
--			ret |= P(SNOOP, HIT);
--		else if ((sub_idx == 1) || (sub_idx == 3) || (sub_idx == 5))
--			ret |= P(SNOOP, HITM);
-+		if (cpu_has_feature(CPU_FTR_ARCH_31)) {
-+			ret = REM | P(HOPS, 0);
-+
-+			if (sub_idx == 0 || sub_idx == 4)
-+				ret |= PH(LVL, L2) | LEVEL(L2) | P(SNOOP, HIT);
-+			else if (sub_idx == 1 || sub_idx == 5)
-+				ret |= PH(LVL, L2) | LEVEL(L2) | P(SNOOP, HITM);
-+			else if (sub_idx == 2 || sub_idx == 6)
-+				ret |= PH(LVL, L3) | LEVEL(L3) | P(SNOOP, HIT);
-+			else if (sub_idx == 3 || sub_idx == 7)
-+				ret |= PH(LVL, L3) | LEVEL(L3) | P(SNOOP, HITM);
-+		} else {
-+			if (sub_idx == 0)
-+				ret = PH(LVL, L2) | LEVEL(L2) | REM | P(SNOOP, HIT) | P(HOPS, 0);
-+			else if (sub_idx == 1)
-+				ret = PH(LVL, L2) | LEVEL(L2) | REM | P(SNOOP, HITM) | P(HOPS, 0);
-+			else if (sub_idx == 2 || sub_idx == 4)
-+				ret = PH(LVL, L3) | LEVEL(L3) | REM | P(SNOOP, HIT) | P(HOPS, 0);
-+			else if (sub_idx == 3 || sub_idx == 5)
-+				ret = PH(LVL, L3) | LEVEL(L3) | REM | P(SNOOP, HITM) | P(HOPS, 0);
-+		}
- 		break;
- 	case 6:
- 		ret = PH(LVL, REM_CCE2);
-diff --git a/arch/powerpc/perf/isa207-common.h b/arch/powerpc/perf/isa207-common.h
-index 4a2cbc3dc047..ff122603989b 100644
---- a/arch/powerpc/perf/isa207-common.h
-+++ b/arch/powerpc/perf/isa207-common.h
-@@ -273,6 +273,8 @@
- #define P(a, b)				PERF_MEM_S(a, b)
- #define PH(a, b)			(P(LVL, HIT) | P(a, b))
- #define PM(a, b)			(P(LVL, MISS) | P(a, b))
-+#define LEVEL(x)			P(LVLNUM, x)
-+#define REM				P(REMOTE, REMOTE)
- 
- int isa207_get_constraint(u64 event, unsigned long *maskp, unsigned long *valp, u64 event_config1);
- int isa207_compute_mmcr(u64 event[], int n_ev,
--- 
-2.26.2
+- Using OnChip to denote data accesses from 'another core of same chip'
+  is not too clear. Update it to 'remote core, same chip' as pointed by
+  Michael Ellerman.
 
+- Update the fix patch of correcting data source encodings to use new
+added field 'mem_hops'.
+
+Thanks,
+Kajol Jain
+
+
+On 10/5/21 2:48 PM, Kajol Jain wrote:
+> Add a comment about PERF_MEM_LVL_* namespace being depricated
+> to some extent in favour of added PERF_MEM_{LVLNUM_,REMOTE_,SNOOPX_}
+> fields.
+> 
+> Remove an extra line present in perf_mem__lvl_scnprintf function.
+> 
+> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+> ---
+>  include/uapi/linux/perf_event.h       | 8 +++++++-
+>  tools/include/uapi/linux/perf_event.h | 8 +++++++-
+>  tools/perf/util/mem-events.c          | 1 -
+>  3 files changed, 14 insertions(+), 3 deletions(-)
+> 
+> diff --git a/include/uapi/linux/perf_event.h b/include/uapi/linux/perf_event.h
+> index f92880a15645..e1701e9c7858 100644
+> --- a/include/uapi/linux/perf_event.h
+> +++ b/include/uapi/linux/perf_event.h
+> @@ -1241,7 +1241,13 @@ union perf_mem_data_src {
+>  #define PERF_MEM_OP_EXEC	0x10 /* code (execution) */
+>  #define PERF_MEM_OP_SHIFT	0
+>  
+> -/* memory hierarchy (memory level, hit or miss) */
+> +/*
+> + * PERF_MEM_LVL_* namespace being depricated to some extent in the
+> + * favour of newer composite PERF_MEM_{LVLNUM_,REMOTE_,SNOOPX_} fields.
+> + * Supporting this namespace inorder to not break defined ABIs.
+> + *
+> + * memory hierarchy (memory level, hit or miss)
+> + */
+>  #define PERF_MEM_LVL_NA		0x01  /* not available */
+>  #define PERF_MEM_LVL_HIT	0x02  /* hit level */
+>  #define PERF_MEM_LVL_MISS	0x04  /* miss level  */
+> diff --git a/tools/include/uapi/linux/perf_event.h b/tools/include/uapi/linux/perf_event.h
+> index f92880a15645..e1701e9c7858 100644
+> --- a/tools/include/uapi/linux/perf_event.h
+> +++ b/tools/include/uapi/linux/perf_event.h
+> @@ -1241,7 +1241,13 @@ union perf_mem_data_src {
+>  #define PERF_MEM_OP_EXEC	0x10 /* code (execution) */
+>  #define PERF_MEM_OP_SHIFT	0
+>  
+> -/* memory hierarchy (memory level, hit or miss) */
+> +/*
+> + * PERF_MEM_LVL_* namespace being depricated to some extent in the
+> + * favour of newer composite PERF_MEM_{LVLNUM_,REMOTE_,SNOOPX_} fields.
+> + * Supporting this namespace inorder to not break defined ABIs.
+> + *
+> + * memory hierarchy (memory level, hit or miss)
+> + */
+>  #define PERF_MEM_LVL_NA		0x01  /* not available */
+>  #define PERF_MEM_LVL_HIT	0x02  /* hit level */
+>  #define PERF_MEM_LVL_MISS	0x04  /* miss level  */
+> diff --git a/tools/perf/util/mem-events.c b/tools/perf/util/mem-events.c
+> index f0e75df72b80..ff7289e28192 100644
+> --- a/tools/perf/util/mem-events.c
+> +++ b/tools/perf/util/mem-events.c
+> @@ -320,7 +320,6 @@ int perf_mem__lvl_scnprintf(char *out, size_t sz, struct mem_info *mem_info)
+>  	/* already taken care of */
+>  	m &= ~(PERF_MEM_LVL_HIT|PERF_MEM_LVL_MISS);
+>  
+> -
+>  	if (mem_info && mem_info->data_src.mem_remote) {
+>  		strcat(out, "Remote ");
+>  		l += 7;
+> 
