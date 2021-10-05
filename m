@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BDE7421E28
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 07:41:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8141421E66
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 07:47:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HNmfq2L9vz2yb9
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 16:41:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HNmn853Kkz2ywQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 16:47:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -14,47 +14,47 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HNmfJ6mW6z2yPT
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 16:41:10 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HNmmk5tv6z2yNQ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Oct 2021 16:46:45 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4HNmf626VTz9sVN;
- Tue,  5 Oct 2021 07:41:02 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4HNmmf3g9gz9sVN;
+ Tue,  5 Oct 2021 07:46:42 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id d37MVdPNSDZD; Tue,  5 Oct 2021 07:41:02 +0200 (CEST)
+ with ESMTP id WUUh7mSj-d3s; Tue,  5 Oct 2021 07:46:42 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4HNmf60tT5z9sV4;
- Tue,  5 Oct 2021 07:41:02 +0200 (CEST)
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4HNmmf2SGlz9sV4;
+ Tue,  5 Oct 2021 07:46:42 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 027308B770;
- Tue,  5 Oct 2021 07:41:02 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3894C8B770;
+ Tue,  5 Oct 2021 07:46:42 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id VDza1x_r6ywe; Tue,  5 Oct 2021 07:41:01 +0200 (CEST)
+ with ESMTP id Dn0FEY3zgrb3; Tue,  5 Oct 2021 07:46:42 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.204.122])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3AEE08B765;
- Tue,  5 Oct 2021 07:41:01 +0200 (CEST)
-Subject: Re: [PATCH 6/9] powerpc/bpf: Fix BPF_SUB when imm == 0x80000000
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 620958B765;
+ Tue,  5 Oct 2021 07:46:41 +0200 (CEST)
+Subject: Re: [PATCH 4/9] powerpc/bpf: Handle large branch ranges with BPF_EXIT
 To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
  Alexei Starovoitov <alexei.starovoitov@gmail.com>,
  Daniel Borkmann <daniel@iogearbox.net>,
  Johan Almbladh <johan.almbladh@anyfinetworks.com>,
  Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
 References: <cover.1633104510.git.naveen.n.rao@linux.vnet.ibm.com>
- <1912a409447071f46ac6cc957ce8edea0e5232b7.1633104510.git.naveen.n.rao@linux.vnet.ibm.com>
- <43626c62-9a3a-bbba-8cbc-11efb0468b4b@csgroup.eu>
- <1633371242.5ghdfjua6t.naveen@linux.ibm.com>
+ <ebc0317ce465cb4f8d6fe485ab468ac5bda7c48f.1633104510.git.naveen.n.rao@linux.vnet.ibm.com>
+ <e37766fd-8c52-6961-39a8-2de44a769204@csgroup.eu>
+ <1633371632.j9hqy0kjhu.naveen@linux.ibm.com>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <3965e96b-431f-ef00-d902-122163f6e9e0@csgroup.eu>
-Date: Tue, 5 Oct 2021 07:40:58 +0200
+Message-ID: <a63a7b97-08cd-b93e-bc12-d17cd6e94229@csgroup.eu>
+Date: Tue, 5 Oct 2021 07:46:38 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
 MIME-Version: 1.0
-In-Reply-To: <1633371242.5ghdfjua6t.naveen@linux.ibm.com>
+In-Reply-To: <1633371632.j9hqy0kjhu.naveen@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr-FR
 Content-Transfer-Encoding: 8bit
@@ -76,104 +76,123 @@ Sender: "Linuxppc-dev"
 
 
 
-Le 04/10/2021 à 20:18, Naveen N. Rao a écrit :
+Le 04/10/2021 à 20:24, Naveen N. Rao a écrit :
 > Christophe Leroy wrote:
 >>
 >>
 >> Le 01/10/2021 à 23:14, Naveen N. Rao a écrit :
->>> We aren't handling subtraction involving an immediate value of
->>> 0x80000000 properly. Fix the same.
+>>> In some scenarios, it is possible that the program epilogue is outside
+>>> the branch range for a BPF_EXIT instruction. Instead of rejecting such
+>>> programs, emit an indirect branch. We track the size of the bpf program
+>>> emitted after the initial run and do a second pass since BPF_EXIT can
+>>> end up emitting different number of instructions depending on the
+>>> program size.
 >>>
->>> Fixes: 156d0e290e969c ("powerpc/ebpf/jit: Implement JIT compiler for 
->>> extended BPF")
+>>> Suggested-by: Jordan Niethe <jniethe5@gmail.com>
 >>> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
 >>> ---
->>>   arch/powerpc/net/bpf_jit_comp64.c | 16 ++++++++--------
->>>   1 file changed, 8 insertions(+), 8 deletions(-)
+>>>   arch/powerpc/net/bpf_jit.h        |  3 +++
+>>>   arch/powerpc/net/bpf_jit_comp.c   | 22 +++++++++++++++++++++-
+>>>   arch/powerpc/net/bpf_jit_comp32.c |  2 +-
+>>>   arch/powerpc/net/bpf_jit_comp64.c |  2 +-
+>>>   4 files changed, 26 insertions(+), 3 deletions(-)
 >>>
->>> diff --git a/arch/powerpc/net/bpf_jit_comp64.c 
->>> b/arch/powerpc/net/bpf_jit_comp64.c
->>> index ffb7a2877a8469..4641a50e82d50d 100644
->>> --- a/arch/powerpc/net/bpf_jit_comp64.c
->>> +++ b/arch/powerpc/net/bpf_jit_comp64.c
->>> @@ -333,15 +333,15 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 
+>>> diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
+>>> index 89bd744c2bffd4..4023de1698b9f5 100644
+>>> --- a/arch/powerpc/net/bpf_jit.h
+>>> +++ b/arch/powerpc/net/bpf_jit.h
+>>> @@ -126,6 +126,7 @@
+>>>   #define SEEN_FUNC    0x20000000 /* might call external helpers */
+>>>   #define SEEN_TAILCALL    0x40000000 /* uses tail calls */
+>>> +#define SEEN_BIG_PROG    0x80000000 /* large prog, >32MB */
+>>>   #define SEEN_VREG_MASK    0x1ff80000 /* Volatile registers r3-r12 */
+>>>   #define SEEN_NVREG_MASK    0x0003ffff /* Non volatile registers 
+>>> r14-r31 */
+>>> @@ -179,6 +180,8 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 
 >>> *image, struct codegen_context *
->>>           case BPF_ALU | BPF_SUB | BPF_K: /* (u32) dst -= (u32) imm */
->>>           case BPF_ALU64 | BPF_ADD | BPF_K: /* dst += imm */
->>>           case BPF_ALU64 | BPF_SUB | BPF_K: /* dst -= imm */
->>> -            if (BPF_OP(code) == BPF_SUB)
->>> -                imm = -imm;
->>> -            if (imm) {
->>> -                if (imm >= -32768 && imm < 32768)
->>> -                    EMIT(PPC_RAW_ADDI(dst_reg, dst_reg, IMM_L(imm)));
->>> -                else {
->>> -                    PPC_LI32(b2p[TMP_REG_1], imm);
->>> +            if (imm > -32768 && imm < 32768) {
->>> +                EMIT(PPC_RAW_ADDI(dst_reg, dst_reg,
->>> +                    BPF_OP(code) == BPF_SUB ? IMM_L(-imm) : 
->>> IMM_L(imm)));
->>> +            } else {
->>> +                PPC_LI32(b2p[TMP_REG_1], imm);
->>> +                if (BPF_OP(code) == BPF_SUB)
->>> +                    EMIT(PPC_RAW_SUB(dst_reg, dst_reg, 
->>> b2p[TMP_REG_1]));
->>> +                else
->>>                       EMIT(PPC_RAW_ADD(dst_reg, dst_reg, 
->>> b2p[TMP_REG_1]));
->>> -                }
->>>               }
->>>               goto bpf_alu32_trunc;
+>>>   void bpf_jit_build_prologue(u32 *image, struct codegen_context *ctx);
+>>>   void bpf_jit_build_epilogue(u32 *image, struct codegen_context *ctx);
+>>>   void bpf_jit_realloc_regs(struct codegen_context *ctx);
+>>> +int bpf_jit_emit_exit_insn(u32 *image, struct codegen_context *ctx,
+>>> +                    int tmp_reg, unsigned long exit_addr);
+>>>   #endif
+>>> diff --git a/arch/powerpc/net/bpf_jit_comp.c 
+>>> b/arch/powerpc/net/bpf_jit_comp.c
+>>> index fcbf7a917c566e..3204872fbf2738 100644
+>>> --- a/arch/powerpc/net/bpf_jit_comp.c
+>>> +++ b/arch/powerpc/net/bpf_jit_comp.c
+>>> @@ -72,6 +72,21 @@ static int bpf_jit_fixup_subprog_calls(struct 
+>>> bpf_prog *fp, u32 *image,
+>>>       return 0;
+>>>   }
+>>> +int bpf_jit_emit_exit_insn(u32 *image, struct codegen_context *ctx,
+>>> +                    int tmp_reg, unsigned long exit_addr)
+>>> +{
+>>> +    if (!(ctx->seen & SEEN_BIG_PROG) && 
+>>> is_offset_in_branch_range(exit_addr)) {
+>>> +        PPC_JMP(exit_addr);
+>>> +    } else {
+>>> +        ctx->seen |= SEEN_BIG_PROG;
+>>> +        PPC_FUNC_ADDR(tmp_reg, (unsigned long)image + exit_addr);
+>>> +        EMIT(PPC_RAW_MTCTR(tmp_reg));
+>>> +        EMIT(PPC_RAW_BCTR());
+>>> +    }
+>>> +
+>>> +    return 0;
+>>> +}
+>>> +
+>>>   struct powerpc64_jit_data {
+>>>       struct bpf_binary_header *header;
+>>>       u32 *addrs;
+>>> @@ -155,12 +170,17 @@ struct bpf_prog *bpf_int_jit_compile(struct 
+>>> bpf_prog *fp)
+>>>           goto out_addrs;
+>>>       }
+>>> +    if (!is_offset_in_branch_range((long)cgctx.idx * 4))
+>>> +        cgctx.seen |= SEEN_BIG_PROG;
+>>> +
+>>>       /*
+>>>        * If we have seen a tail call, we need a second pass.
+>>>        * This is because bpf_jit_emit_common_epilogue() is called
+>>>        * from bpf_jit_emit_tail_call() with a not yet stable ctx->seen.
+>>> +     * We also need a second pass if we ended up with too large
+>>> +     * a program so as to fix branches.
+>>>        */
+>>> -    if (cgctx.seen & SEEN_TAILCALL) {
+>>> +    if (cgctx.seen & (SEEN_TAILCALL | SEEN_BIG_PROG)) {
+>>>           cgctx.idx = 0;
+>>>           if (bpf_jit_build_body(fp, 0, &cgctx, addrs, false)) {
+>>>               fp = org_fp;
+>>> diff --git a/arch/powerpc/net/bpf_jit_comp32.c 
+>>> b/arch/powerpc/net/bpf_jit_comp32.c
+>>> index a74d52204f8da2..d2a67574a23066 100644
+>>> --- a/arch/powerpc/net/bpf_jit_comp32.c
+>>> +++ b/arch/powerpc/net/bpf_jit_comp32.c
+>>> @@ -852,7 +852,7 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 
+>>> *image, struct codegen_context *
+>>>                * we'll just fall through to the epilogue.
+>>>                */
+>>>               if (i != flen - 1)
+>>> -                PPC_JMP(exit_addr);
+>>> +                bpf_jit_emit_exit_insn(image, ctx, tmp_reg, exit_addr);
 >>
->> There is now so few code common to both BPF_ADD and BPF_SUB that you 
->> should make them different cases.
->>
->> While at it, why not also use ADDIS if imm is 32 bits ? That would be 
->> an ADDIS/ADDI instead of LIS/ORI/ADD
+>> On ppc32, if you use tmp_reg you must flag it. But I think you could 
+>> use r0 instead.
 > 
-> Sure. I wanted to limit the change for this fix. We can do a separate 
-> patch to optimize code generation for BPF_ADD.
+> Indeed. Can we drop tracking of the temp registers and using them while
+> remapping registers? Are you seeing significant benefits with re-use of 
+> those temp registers?
 > 
 
-Sure, this second part was just a thought, I agree it should be another 
-patch.
+I'm not sure to follow you.
 
-My main comment here is to split stuff and make it a different case, I 
-don't think it increases the change much, and IMO it is easier to read:
+On ppc32, all volatile registers are used for function arguments, so 
+temp registers are necessarily non-volatile so we track them as all 
+non-volatile registers we use.
 
-diff --git a/arch/powerpc/net/bpf_jit_comp64.c 
-b/arch/powerpc/net/bpf_jit_comp64.c
-index ffb7a2877a84..39226d88c558 100644
---- a/arch/powerpc/net/bpf_jit_comp64.c
-+++ b/arch/powerpc/net/bpf_jit_comp64.c
-@@ -330,11 +330,7 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 
-*image, struct codegen_context *
-  			EMIT(PPC_RAW_SUB(dst_reg, dst_reg, src_reg));
-  			goto bpf_alu32_trunc;
-  		case BPF_ALU | BPF_ADD | BPF_K: /* (u32) dst += (u32) imm */
--		case BPF_ALU | BPF_SUB | BPF_K: /* (u32) dst -= (u32) imm */
-  		case BPF_ALU64 | BPF_ADD | BPF_K: /* dst += imm */
--		case BPF_ALU64 | BPF_SUB | BPF_K: /* dst -= imm */
--			if (BPF_OP(code) == BPF_SUB)
--				imm = -imm;
-  			if (imm) {
-  				if (imm >= -32768 && imm < 32768)
-  					EMIT(PPC_RAW_ADDI(dst_reg, dst_reg, IMM_L(imm)));
-@@ -344,6 +340,17 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 
-*image, struct codegen_context *
-  				}
-  			}
-  			goto bpf_alu32_trunc;
-+		case BPF_ALU | BPF_SUB | BPF_K: /* (u32) dst -= (u32) imm */
-+		case BPF_ALU64 | BPF_SUB | BPF_K: /* dst -= imm */
-+			if (imm) {
-+				if (-imm >= -32768 && -imm < 32768) {
-+					EMIT(PPC_RAW_ADDI(dst_reg, dst_reg, IMM_L(-imm)));
-+				} else {
-+					PPC_LI32(b2p[TMP_REG_1], imm);
-+					EMIT(PPC_RAW_SUB(dst_reg, dst_reg, b2p[TMP_REG_1]));
-+				}
-+			}
-+			goto bpf_alu32_trunc;
-  		case BPF_ALU | BPF_MUL | BPF_X: /* (u32) dst *= (u32) src */
-  		case BPF_ALU64 | BPF_MUL | BPF_X: /* dst *= src */
-  			if (BPF_CLASS(code) == BPF_ALU)
+I think saving on stack only the non-volatile registers we use provides 
+real benefit, otherwise you wouldn't have implemented it would you ?
+
+Anyway here you should use _R0 instead of tmp_reg.
+
+Christophe
