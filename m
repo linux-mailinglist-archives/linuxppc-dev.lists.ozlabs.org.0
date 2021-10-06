@@ -2,68 +2,100 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 549E6423FB4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Oct 2021 16:01:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D913F423FD4
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Oct 2021 16:08:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HPbjS1c7Pz3bXY
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 01:01:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HPbsS5lgRz2xY2
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 01:08:44 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ionos.com header.i=@ionos.com header.a=rsa-sha256 header.s=google header.b=M1lfx0kL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BH0nUUhA;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Void lookup limit
- of 2 exceeded) smtp.mailfrom=ionos.com (client-ip=2a00:1450:4864:20::535;
- helo=mail-ed1-x535.google.com; envelope-from=jinpu.wang@ionos.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ionos.com header.i=@ionos.com header.a=rsa-sha256
- header.s=google header.b=M1lfx0kL; dkim-atps=neutral
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com
- [IPv6:2a00:1450:4864:20::535])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=BH0nUUhA; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HPbhm2GJRz2yYJ
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Oct 2021 01:01:09 +1100 (AEDT)
-Received: by mail-ed1-x535.google.com with SMTP id f9so10445732edx.4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Oct 2021 07:01:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ionos.com; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=35EUUIGUPuPs3VKMXkEpOsYeHNYeLxuc/OClkXfI9o0=;
- b=M1lfx0kLa1W2L5C/VBerqruuYLo7NFTWMlkHFHmg7yM3G3D5DzadveotHBvrw8+oxN
- zbzkd3AtxMOAIKvzWDdVi/hmgVc2Pf0d9/LcU+SLicaeSL/gXP693EkxIhyiuQOdqnrs
- 4Q6JIq6gUneoEqF4gEOSUXdA43Dki3Uj7zyeAe8LuQpsdwWOcxtk4gzEvBLsheOkZbcI
- t7y6hYJKxAXIQ2Alp1xZexaVLHCU5aaOnB1JaEJmYDMN676yH6DJ9PQd1fZpCskpnk1U
- omnIbKInlTuBq1BwhpN19h8JD+l2shatYOTcVtwNcLxAb7xwsDOYzaaAmJmU2bgATIBW
- nzDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=35EUUIGUPuPs3VKMXkEpOsYeHNYeLxuc/OClkXfI9o0=;
- b=LZ5m7B2GemGtYtqWQDK2Wqj8yXzsNrGyWDSQVxH4ut9geiKkCmcLD7Fal/MiEyIgIO
- Gxkw4B4rn1D6BHHkNi4QGiOez/ZNCcxAemTPMUV6bVThWoUTLWnWtF8SIXpwJcZkgw5u
- FpWp1VJESy1vX1nGe2bI5zzlwsQzxoqp2z4+nq8VQWbzlBrDsFHAkwXSs/SXgs6MMMsL
- 0unVmP5usbzuTNRmt85abTolCPv6qiIAu4/iU2sMV9jtCa0Xdg08zgfK4dl2X+t4N53L
- lY74IVhuDZ8annj6sOxGGuySMK9KFmJJN/haO7OUyxnF76EmyOiI68CLogXGV3n+D5Ra
- gL/g==
-X-Gm-Message-State: AOAM533Ry+ft5tsmt/O3NPwMQDiIfKfoYEvgSnj+t7FL9FtNQ4rNuc6Q
- dhyN9Mfru8eZHmeEyei7vJj0iybO3MB7a119ca7Xcg==
-X-Google-Smtp-Source: ABdhPJyxL32NpITVFTiruqI0fg5s2SIaIwN+uNZ4Qmf3DRbji2E37Xp76Z5397gMi4zmZmazD5lwqNQd/C4wN3/WNP0=
-X-Received: by 2002:a17:906:5d6:: with SMTP id
- t22mr32911283ejt.98.1633528845665; 
- Wed, 06 Oct 2021 07:00:45 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HPbrj0ywcz2yb9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Oct 2021 01:08:04 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 196DX84K031779; 
+ Wed, 6 Oct 2021 10:07:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=2/CwbrDYEROWm2F23M/a6pNb6yR5dyy0cPVcUz17CEw=;
+ b=BH0nUUhA/gI1aX10c/jBcUXVSTW/dC2yBdKF4IpvYn+O0+6YMACLjf/+rcXdfper3Ige
+ /JKsHPTBpHrnEYf3Bv/V4dBDYgmWCZooLSMJhPtGygh9gAJl3sTTa4PmN8qlF42SmtqS
+ lhkJoop2lPkrU9ajIfIJeWrTFCPn5cpRq9WcnMtZHf5q0WlN06hudnRQCi08+0cCgNa0
+ kOHQEIzXLna46Ec1zfizP/DooXg1ybH/pNef0mtBX3M8zMI36j2kVO9VlRj/kehdo3kw
+ kqMXqigBpbRSA9cBpHWMm9YKaG410s80RfMO8tr+WA8H0obAtScHYZcJP7eObWTOE4WE 1A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3bhcscgwpy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 06 Oct 2021 10:07:32 -0400
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 196DcCqr019251;
+ Wed, 6 Oct 2021 10:07:32 -0400
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3bhcscgwp5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 06 Oct 2021 10:07:31 -0400
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 196E7PBd030189;
+ Wed, 6 Oct 2021 14:07:30 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma01fra.de.ibm.com with ESMTP id 3bef2a3gnt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 06 Oct 2021 14:07:30 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 196E7Nrg44040580
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 6 Oct 2021 14:07:23 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EE826A4071;
+ Wed,  6 Oct 2021 14:07:22 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5B98DA4064;
+ Wed,  6 Oct 2021 14:07:14 +0000 (GMT)
+Received: from li-e8dccbcc-2adc-11b2-a85c-bc1f33b9b810.ibm.com.com (unknown
+ [9.43.124.20])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed,  6 Oct 2021 14:07:14 +0000 (GMT)
+From: Kajol Jain <kjain@linux.ibm.com>
+To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, peterz@infradead.org, mingo@redhat.com,
+ acme@kernel.org, jolsa@kernel.org, namhyung@kernel.org, ak@linux.intel.com
+Subject: [PATCH v3 0/4] Add mem_hops field in perf_mem_data_src structure
+Date: Wed,  6 Oct 2021 19:36:50 +0530
+Message-Id: <20211006140654.298352-1-kjain@linux.ibm.com>
+X-Mailer: git-send-email 2.27.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: zEICujVBASsRaBRDmaZOFLcwjaibtFJk
+X-Proofpoint-GUID: gJ9cnBL_oY3bFs55H4fWf606s5flQpHX
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-References: <20211006132104.105288-1-sohaib.amhmd@gmail.com>
-In-Reply-To: <20211006132104.105288-1-sohaib.amhmd@gmail.com>
-From: Jinpu Wang <jinpu.wang@ionos.com>
-Date: Wed, 6 Oct 2021 16:00:35 +0200
-Message-ID: <CAMGffEm65An5K0cuNRTVHCO1voBs6AvsqJ1US=cFP3fddSpmZQ@mail.gmail.com>
-Subject: Re: [PATCH] docs: typo fixes in Documentation/ABI/
-To: Sohaib Mohamed <sohaib.amhmd@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
+ definitions=2021-10-06_03,2021-10-06_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 spamscore=0
+ clxscore=1015 phishscore=0 mlxlogscore=999 priorityscore=1501
+ lowpriorityscore=0 adultscore=0 bulkscore=0 malwarescore=0 impostorscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2109230001 definitions=main-2110060089
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,180 +107,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Daejun Park <daejun7.park@samsung.com>, Gioh Kim <gi-oh.kim@ionos.com>,
- Can Guo <cang@codeaurora.org>, Bean Huo <beanhuo@micron.com>,
- Fabrice Gasnier <fabrice.gasnier@st.com>, Jonathan Corbet <corbet@lwn.net>,
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Lukas Bulwahn <lukas.bulwahn@gmail.com>,
- Zhang Rui <rui.zhang@intel.com>, Jack Wang <jinpu.wang@cloud.ionos.com>,
- Andrew Donnellan <ajd@linux.ibm.com>, Avri Altman <avri.altman@wdc.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Adrian Hunter <adrian.hunter@intel.com>, Carlos Bilbao <bilbao@vt.edu>,
- Jens Axboe <axboe@kernel.dk>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- open list <linux-kernel@vger.kernel.org>,
- Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: mark.rutland@arm.com, songliubraving@fb.com, atrajeev@linux.vnet.ibm.com,
+ daniel@iogearbox.net, rnsastry@linux.ibm.com,
+ alexander.shishkin@linux.intel.com, kjain@linux.ibm.com, ast@kernel.org,
+ linux-perf-users@vger.kernel.org, yao.jin@linux.intel.com, maddy@linux.ibm.com,
+ paulus@samba.org, kan.liang@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 6, 2021 at 3:21 PM Sohaib Mohamed <sohaib.amhmd@gmail.com> wrote:
->
-> All these changes are about to remove repeated words from severals place in the Documentation/ABI/ directory:
->
+Patch set adds a new field called 'mem_hops' in the perf_mem_data_src structure
+which can be used to represent intra-node/package or inter-node/off-package
+details. This field is of size 3 bits where PERF_MEM_HOPS_{NA, 0..6} value
+can be used to present different hop levels data.
 
->
-> - In file testing/sysfs-class-rnbd-client:131: "as as the"
->
-> - In file testing/sysfs-class-rtrs-client:81: "the the name"
->
-> - In file testing/sysfs-class-rtrs-server:27: "the the name"
-For all 3 rtrs/rnbd changes, all look good to me.
-Acked-by: Jack Wang <jinpu.wang@ionos.com>
+Patch 1 of the patch-set adds a comment about current state of
+PERF_MEM_LVL_* namespace and remove an extra line present in
+perf_mem__lvl_scnprintf function.
 
-Thanks!
->  Documentation/ABI/stable/sysfs-module                     | 2 +-
->  Documentation/ABI/testing/sysfs-bus-rapidio               | 2 +-
->  Documentation/ABI/testing/sysfs-class-cxl                 | 4 ++--
->  Documentation/ABI/testing/sysfs-class-rnbd-client         | 2 +-
->  Documentation/ABI/testing/sysfs-class-rtrs-client         | 2 +-
->  Documentation/ABI/testing/sysfs-class-rtrs-server         | 2 +-
->  Documentation/ABI/testing/sysfs-devices-platform-ACPI-TAD | 2 +-
->  Documentation/ABI/testing/sysfs-devices-power             | 2 +-
->  Documentation/ABI/testing/sysfs-driver-ufs                | 2 +-
->  Documentation/ABI/testing/sysfs-firmware-acpi             | 2 +-
->  10 files changed, 11 insertions(+), 11 deletions(-)
->
-> diff --git a/Documentation/ABI/stable/sysfs-module b/Documentation/ABI/stable/sysfs-module
-> index 560b4a3278df..41b1f16e8795 100644
-> --- a/Documentation/ABI/stable/sysfs-module
-> +++ b/Documentation/ABI/stable/sysfs-module
-> @@ -38,7 +38,7 @@ What:         /sys/module/<MODULENAME>/srcversion
->  Date:          Jun 2005
->  Description:
->                 If the module source has MODULE_VERSION, this file will contain
-> -               the checksum of the the source code.
-> +               the checksum of the source code.
->
->  What:          /sys/module/<MODULENAME>/version
->  Date:          Jun 2005
-> diff --git a/Documentation/ABI/testing/sysfs-bus-rapidio b/Documentation/ABI/testing/sysfs-bus-rapidio
-> index f8b6728dac10..9e8fbff99b75 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-rapidio
-> +++ b/Documentation/ABI/testing/sysfs-bus-rapidio
-> @@ -95,7 +95,7 @@ Contact:      Matt Porter <mporter@kernel.crashing.org>,
->                 Alexandre Bounine <alexandre.bounine@idt.com>
->  Description:
->                 (RO) returns name of previous device (switch) on the path to the
-> -               device that that owns this attribute
-> +               device that owns this attribute
->
->  What:          /sys/bus/rapidio/devices/<nn>:<d>:<iiii>/modalias
->  Date:          Jul, 2013
-> diff --git a/Documentation/ABI/testing/sysfs-class-cxl b/Documentation/ABI/testing/sysfs-class-cxl
-> index 3c77677e0ca7..594fda254130 100644
-> --- a/Documentation/ABI/testing/sysfs-class-cxl
-> +++ b/Documentation/ABI/testing/sysfs-class-cxl
-> @@ -103,8 +103,8 @@ What:           /sys/class/cxl/<afu>/api_version_compatible
->  Date:           September 2014
->  Contact:        linuxppc-dev@lists.ozlabs.org
->  Description:    read only
-> -                Decimal value of the the lowest version of the userspace API
-> -                this this kernel supports.
-> +                Decimal value of the lowest version of the userspace API
-> +                this kernel supports.
->  Users:         https://github.com/ibm-capi/libcxl
->
->
-> diff --git a/Documentation/ABI/testing/sysfs-class-rnbd-client b/Documentation/ABI/testing/sysfs-class-rnbd-client
-> index 0b5997ab3365..e6cdc851952c 100644
-> --- a/Documentation/ABI/testing/sysfs-class-rnbd-client
-> +++ b/Documentation/ABI/testing/sysfs-class-rnbd-client
-> @@ -128,6 +128,6 @@ Description:        For each device mapped on the client a new symbolic link is created
->                 The <device_id> of each device is created as follows:
->
->                 - If the 'device_path' provided during mapping contains slashes ("/"),
-> -                 they are replaced by exclamation mark ("!") and used as as the
-> +                 they are replaced by exclamation mark ("!") and used as the
->                   <device_id>. Otherwise, the <device_id> will be the same as the
->                   "device_path" provided.
-> diff --git a/Documentation/ABI/testing/sysfs-class-rtrs-client b/Documentation/ABI/testing/sysfs-class-rtrs-client
-> index 49a4157c7bf1..fecc59d1b96f 100644
-> --- a/Documentation/ABI/testing/sysfs-class-rtrs-client
-> +++ b/Documentation/ABI/testing/sysfs-class-rtrs-client
-> @@ -78,7 +78,7 @@ What:         /sys/class/rtrs-client/<session-name>/paths/<src@dst>/hca_name
->  Date:          Feb 2020
->  KernelVersion: 5.7
->  Contact:       Jack Wang <jinpu.wang@cloud.ionos.com> Danil Kipnis <danil.kipnis@cloud.ionos.com>
-> -Description:   RO, Contains the the name of HCA the connection established on.
-> +Description:   RO, Contains the name of HCA the connection established on.
->
->  What:          /sys/class/rtrs-client/<session-name>/paths/<src@dst>/hca_port
->  Date:          Feb 2020
-> diff --git a/Documentation/ABI/testing/sysfs-class-rtrs-server b/Documentation/ABI/testing/sysfs-class-rtrs-server
-> index 3b6d5b067df0..b08601d80409 100644
-> --- a/Documentation/ABI/testing/sysfs-class-rtrs-server
-> +++ b/Documentation/ABI/testing/sysfs-class-rtrs-server
-> @@ -24,7 +24,7 @@ What:         /sys/class/rtrs-server/<session-name>/paths/<src@dst>/hca_name
->  Date:          Feb 2020
->  KernelVersion: 5.7
->  Contact:       Jack Wang <jinpu.wang@cloud.ionos.com> Danil Kipnis <danil.kipnis@cloud.ionos.com>
-> -Description:   RO, Contains the the name of HCA the connection established on.
-> +Description:   RO, Contains the name of HCA the connection established on.
->
->  What:          /sys/class/rtrs-server/<session-name>/paths/<src@dst>/hca_port
->  Date:          Feb 2020
-> diff --git a/Documentation/ABI/testing/sysfs-devices-platform-ACPI-TAD b/Documentation/ABI/testing/sysfs-devices-platform-ACPI-TAD
-> index f7b360a61b21..bc44bc903bc8 100644
-> --- a/Documentation/ABI/testing/sysfs-devices-platform-ACPI-TAD
-> +++ b/Documentation/ABI/testing/sysfs-devices-platform-ACPI-TAD
-> @@ -74,7 +74,7 @@ Description:
->
->                 Reads also cause the AC alarm timer status to be reset.
->
-> -               Another way to reset the the status of the AC alarm timer is to
-> +               Another way to reset the status of the AC alarm timer is to
->                 write (the number) 0 to this file.
->
->                 If the status return value indicates that the timer has expired,
-> diff --git a/Documentation/ABI/testing/sysfs-devices-power b/Documentation/ABI/testing/sysfs-devices-power
-> index 1b2a2d41ff80..54195530e97a 100644
-> --- a/Documentation/ABI/testing/sysfs-devices-power
-> +++ b/Documentation/ABI/testing/sysfs-devices-power
-> @@ -303,5 +303,5 @@ Date:               Apr 2010
->  Contact:       Dominik Brodowski <linux@dominikbrodowski.net>
->  Description:
->                 Reports the runtime PM children usage count of a device, or
-> -               0 if the the children will be ignored.
-> +               0 if the children will be ignored.
->
-> diff --git a/Documentation/ABI/testing/sysfs-driver-ufs b/Documentation/ABI/testing/sysfs-driver-ufs
-> index 863cc4897277..57aec11a573f 100644
-> --- a/Documentation/ABI/testing/sysfs-driver-ufs
-> +++ b/Documentation/ABI/testing/sysfs-driver-ufs
-> @@ -983,7 +983,7 @@ Description:        This file shows the amount of data that the host plans to
->  What:          /sys/class/scsi_device/*/device/dyn_cap_needed
->  Date:          February 2018
->  Contact:       Stanislav Nijnikov <stanislav.nijnikov@wdc.com>
-> -Description:   This file shows the The amount of physical memory needed
-> +Description:   This file shows The amount of physical memory needed
->                 to be removed from the physical memory resources pool of
->                 the particular logical unit. The full information about
->                 the attribute could be found at UFS specifications 2.1.
-> diff --git a/Documentation/ABI/testing/sysfs-firmware-acpi b/Documentation/ABI/testing/sysfs-firmware-acpi
-> index 819939d858c9..39173375c53a 100644
-> --- a/Documentation/ABI/testing/sysfs-firmware-acpi
-> +++ b/Documentation/ABI/testing/sysfs-firmware-acpi
-> @@ -112,7 +112,7 @@ Description:
->                 OS context.  GPE 0x12, for example, would vector
->                 to a level or edge handler called _L12 or _E12.
->                 The handler may do its business and return.
-> -               Or the handler may send send a Notify event
-> +               Or the handler may send a Notify event
->                 to a Linux device driver registered on an ACPI device,
->                 such as a battery, or a processor.
->
-> --
-> 2.25.1
->
+Patch 2 & 3 adds tool and kernel side changes to add mem_hops field.
+
+Patch 4 of the patch-set fix the data source encodings to represent
+L2.1/L3.1 cache access data for powerpc platform.
+
+Changelog:
+v2 -> v3
+- Since added field HOPS related to NUMA, update the data presented
+  by HOPS_0 to denotes accesses from 'remote core, same node' as
+  suggested by Peter Zijlstra.
+
+- Link to the patchset v2: https://lkml.org/lkml/2021/10/5/271
+
+v1 -> v2:
+- Rather then adding new macros for L2.1/L3.1 (same chip, different
+  core) entries as part of field lvlnum, we are introducing new field
+  called 'mem_hops' which can be used to get hops
+  level data(intra-chip/package or inter-chip/off-package details).
+  As suggested by Peter Zijlstra.
+
+- Using OnChip to denote data accesses from 'another core of same chip'
+  is not too clear. Update it to 'remote core, same chip' as pointed by
+  Michael Ellerman.
+
+- Update the fix patch of correcting data source encodings to use new
+  added field 'mem_hops'
+
+- Link to the patchset v1: https://lkml.org/lkml/2021/9/4/37
+
+Kajol Jain (4):
+  perf: Add comment about current state of PERF_MEM_LVL_* namespace and
+    remove an extra line
+  perf: Add mem_hops field in perf_mem_data_src structure
+  tools/perf: Add mem_hops field in perf_mem_data_src structure
+  powerpc/perf: Fix data source encodings for L2.1 and L3.1 accesses
+
+ arch/powerpc/perf/isa207-common.c     | 26 +++++++++++++++++++++-----
+ arch/powerpc/perf/isa207-common.h     |  2 ++
+ include/uapi/linux/perf_event.h       | 19 ++++++++++++++++---
+ tools/include/uapi/linux/perf_event.h | 19 ++++++++++++++++---
+ tools/perf/util/mem-events.c          | 20 ++++++++++++++++++--
+ 5 files changed, 73 insertions(+), 13 deletions(-)
+
+-- 
+2.26.2
+
