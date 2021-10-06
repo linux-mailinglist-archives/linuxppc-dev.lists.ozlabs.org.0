@@ -1,48 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD1C6424353
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Oct 2021 18:48:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04ABE424358
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Oct 2021 18:49:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HPgQG53lVz3f0Q
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 03:48:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HPgQk6lNRz3c66
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 03:49:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.167.174;
- helo=mail-oi1-f174.google.com; envelope-from=robherring2@gmail.com;
- receiver=<UNKNOWN>)
-Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com
- [209.85.167.174])
+ smtp.mailfrom=gmail.com (client-ip=209.85.210.53; helo=mail-ot1-f53.google.com;
+ envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com
+ [209.85.210.53])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HPgJb00v5z3002
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Oct 2021 03:43:58 +1100 (AEDT)
-Received: by mail-oi1-f174.google.com with SMTP id w206so4863660oiw.4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Oct 2021 09:43:58 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HPgJc6sggz305g
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Oct 2021 03:44:00 +1100 (AEDT)
+Received: by mail-ot1-f53.google.com with SMTP id
+ l16-20020a9d6a90000000b0053b71f7dc83so3845139otq.7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Oct 2021 09:44:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=hDUPVdWmFpBgvCkQTCBoljrAdHSMkkZBVQWsyUTyf5E=;
- b=T3sNDcRgi+trCRAJeewkOsY3b44AN1Wlc+p6DEES31dyVXrX8JQnFhMcXL5KLTv2n6
- 0XFs+to4cuVYnnSER1t5df7loRafnVH2pEc9gC/Mr5QbrwDNiud5MaqIy2pDWNgKLEQR
- iY99R0M4Wb260LQi0X25q5/HZZUZJ9QSBPVeqs1DZpI9csdkDes9DxhCTI7v+RhX/cGZ
- J/QNBhIe9oTlUFajI/uQ/9G9OAKH7NShka0atA/zO0IxZYQHxff/Ghm81GWS1+9ELx41
- pZ+YXJR8k+dtSfw2zC5bOATour1USWkWa/4X0uUQ9nS3O5wiEjOl6x/rXBH7+L7Nzvrg
- fA4g==
-X-Gm-Message-State: AOAM530+jtODr3JMqcAMdOdhUUwXNB3RwilVyQsS6k9ybxrqMrOA82YY
- l0d40CmvyQa2v1SmSgTTpw==
-X-Google-Smtp-Source: ABdhPJzdKu+vPdU6QOPaibRhZZ8V3BXWev73rJIyB9NkWGThVarWr5zcXuesMdXl3XDSlz8SwXuIcg==
-X-Received: by 2002:a54:4f8f:: with SMTP id g15mr7727342oiy.178.1633538636692; 
- Wed, 06 Oct 2021 09:43:56 -0700 (PDT)
+ bh=ODdwkiH4tXq9GvyXH7/gt65PfkKCS+62hrrbhfBOAKY=;
+ b=ieUI63ZStvvzjfMIDuzRmLJgZo9ItUVh4qSL8ZW3iUCs/cbf1U8dUc3/23r+3OhXnp
+ 6gXkVVkXfdQWANR+edTdMPs/oAOWnfvgPz/AVNIcyWZCg1ISNA3JvYr+ddDGolzvqQ4V
+ 8MZwA9wP78ps3Ircy9AZwwfL03UvQzVYJBp9aAG+FRKKCTp6BTbLV1ohDAHaStdeYsmA
+ sX/2+WBkK0aOjXtXToLgtpq2KBXcQGdPQJw4phTlvyMBCinRP14hxNqDGg1dD3uC4TsI
+ dd7UftTPgNQasD8kPu5VLuhPwed8oS7lVbsspYSWGAWXSU5LqemSDtdcfIevKOio+yVv
+ J/aA==
+X-Gm-Message-State: AOAM530BUQ1wKe/NjiTlhcALSO4aWhy55qEzTUvbi8oeWZdVoqjJaNpz
+ SIEBkI0J51gaQnflvilEDg==
+X-Google-Smtp-Source: ABdhPJyKbg8/vmyrEytsmwBD61hnJT/KfL8RD1L+0+jj33vwvFOqRG7dPOrAYWXK5lnk+W9TvgzSoQ==
+X-Received: by 2002:a05:6830:1ad3:: with SMTP id
+ r19mr19253078otc.98.1633538638626; 
+ Wed, 06 Oct 2021 09:43:58 -0700 (PDT)
 Received: from xps15.herring.priv (66-90-148-213.dyn.grandenetworks.net.
  [66.90.148.213])
- by smtp.googlemail.com with ESMTPSA id s29sm4236628otg.60.2021.10.06.09.43.55
+ by smtp.googlemail.com with ESMTPSA id s29sm4236628otg.60.2021.10.06.09.43.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Oct 2021 09:43:56 -0700 (PDT)
+ Wed, 06 Oct 2021 09:43:57 -0700 (PDT)
 From: Rob Herring <robh@kernel.org>
 To: Russell King <linux@armlinux.org.uk>, James Morse <james.morse@arm.com>,
  Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
@@ -53,9 +54,9 @@ To: Russell King <linux@armlinux.org.uk>, James Morse <james.morse@arm.com>,
  Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
  Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
  x86@kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH 11/12] cacheinfo: Allow for >32-bit cache 'id'
-Date: Wed,  6 Oct 2021 11:43:31 -0500
-Message-Id: <20211006164332.1981454-12-robh@kernel.org>
+Subject: [PATCH 12/12] cacheinfo: Set cache 'id' based on DT data
+Date: Wed,  6 Oct 2021 11:43:32 -0500
+Message-Id: <20211006164332.1981454-13-robh@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20211006164332.1981454-1-robh@kernel.org>
 References: <20211006164332.1981454-1-robh@kernel.org>
@@ -86,56 +87,63 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In preparation to set the cache 'id' based on the CPU h/w ids, allow for
-64-bit bit 'id' value. The only case that needs this is arm64, so
-unsigned long is sufficient.
+Use the minimum CPU h/w id of the CPUs associated with the cache for the
+cache 'id'. This will provide a stable id value for a given system. As
+we need to check all possible CPUs, we can't use the shared_cpu_map
+which is just online CPUs. As there's not a cache to CPUs mapping in DT,
+we have to walk all CPU nodes and then walk cache levels.
 
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: "Rafael J. Wysocki" <rafael@kernel.org>
 Signed-off-by: Rob Herring <robh@kernel.org>
 ---
- drivers/base/cacheinfo.c  | 8 +++++++-
- include/linux/cacheinfo.h | 2 +-
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ drivers/base/cacheinfo.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
 diff --git a/drivers/base/cacheinfo.c b/drivers/base/cacheinfo.c
-index dad296229161..66d10bdb863b 100644
+index 66d10bdb863b..44547fd96f72 100644
 --- a/drivers/base/cacheinfo.c
 +++ b/drivers/base/cacheinfo.c
-@@ -366,13 +366,19 @@ static ssize_t file_name##_show(struct device *dev,		\
- 	return sysfs_emit(buf, "%u\n", this_leaf->object);	\
+@@ -136,6 +136,31 @@ static bool cache_node_is_unified(struct cacheinfo *this_leaf,
+ 	return of_property_read_bool(np, "cache-unified");
  }
  
--show_one(id, id);
- show_one(level, level);
- show_one(coherency_line_size, coherency_line_size);
- show_one(number_of_sets, number_of_sets);
- show_one(physical_line_partition, physical_line_partition);
- show_one(ways_of_associativity, ways_of_associativity);
- 
-+static ssize_t id_show(struct device *dev, struct device_attribute *attr, char *buf)
++static void cache_of_set_id(struct cacheinfo *this_leaf, struct device_node *np)
 +{
-+	struct cacheinfo *this_leaf = dev_get_drvdata(dev);
++	struct device_node *cpu;
++	unsigned long min_id = ~0UL;
 +
-+	return sysfs_emit(buf, "%lu\n", this_leaf->id);
++	for_each_of_cpu_node(cpu) {
++		struct device_node *cache_node = cpu;
++		u64 id = of_get_cpu_hwid(cache_node, 0);
++
++		while ((cache_node = of_find_next_cache_node(cache_node))) {
++			if ((cache_node == np) && (id < min_id)) {
++				min_id = id;
++				of_node_put(cache_node);
++				break;
++			}
++			of_node_put(cache_node);
++		}
++	}
++
++	if (min_id != ~0UL) {
++		this_leaf->id = min_id;
++		this_leaf->attributes |= CACHE_ID;
++	}
 +}
 +
- static ssize_t size_show(struct device *dev,
- 			 struct device_attribute *attr, char *buf)
+ static void cache_of_set_props(struct cacheinfo *this_leaf,
+ 			       struct device_node *np)
  {
-diff --git a/include/linux/cacheinfo.h b/include/linux/cacheinfo.h
-index 2f909ed084c6..b2e7f3e40204 100644
---- a/include/linux/cacheinfo.h
-+++ b/include/linux/cacheinfo.h
-@@ -48,7 +48,7 @@ extern unsigned int coherency_max_size;
-  * keeping, the remaining members form the core properties of the cache
-  */
- struct cacheinfo {
--	unsigned int id;
-+	unsigned long id;
- 	enum cache_type type;
- 	unsigned int level;
- 	unsigned int coherency_line_size;
+@@ -151,6 +176,7 @@ static void cache_of_set_props(struct cacheinfo *this_leaf,
+ 	cache_get_line_size(this_leaf, np);
+ 	cache_nr_sets(this_leaf, np);
+ 	cache_associativity(this_leaf);
++	cache_of_set_id(this_leaf, np);
+ }
+ 
+ static int cache_setup_of_node(unsigned int cpu)
 -- 
 2.30.2
 
