@@ -1,105 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D9CF423216
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Oct 2021 22:33:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEF604235B9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Oct 2021 04:12:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HP8Rn2S5pz2ypb
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Oct 2021 07:33:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HPHzL4MrMz2yyj
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Oct 2021 13:12:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qU1ypXIm;
+	dkim=pass (2048-bit key; secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=hv2oKxRG;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=qU1ypXIm; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HP8JN62FSz307L
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Oct 2021 07:27:00 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 195K4TwE006938; 
- Tue, 5 Oct 2021 16:26:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=mHZM+8sfCvSOETZtZksE+aG+w8FMfYUNC7iEu3POcOI=;
- b=qU1ypXImbecAlvSLctqt1Db5fPnhPR+lqK4vL3k+vjwL8mbezEcV6YSgBIFQlx8ugtxt
- ourEgg0jV3j99itHu4hx3C26mpDaRpO99ZzxFSShbZO7d3P5Qf+MgZMIhcyAiCL2lJMI
- pi6KmXDBKzkdYUR50ydzj2fsg/TA7txPNdF53nNDyH68MFU4jFhjHmCO4Ijw5N0v9L8s
- uRYSQz6vP1WCJqdh3kd1SWGRE6PuSkFlxwlH0t/eM+x/Ocpj0WHKsvEASK/qR/82MtTU
- ggp59e9gAZWXYM1J/uw46H7vCPxyV/DK6PX68YuUW4QhagWB+pYaqEF9PPogVDFdU7kK 4A== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3bgs36y44s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 05 Oct 2021 16:26:39 -0400
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 195KKS0R002966;
- Tue, 5 Oct 2021 16:26:39 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3bgs36y43y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 05 Oct 2021 16:26:39 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 195KIn4K013018;
- Tue, 5 Oct 2021 20:26:36 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma04ams.nl.ibm.com with ESMTP id 3bef2ax1r7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 05 Oct 2021 20:26:36 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 195KQYHo6357536
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 5 Oct 2021 20:26:34 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 17DC1AE04D;
- Tue,  5 Oct 2021 20:26:34 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A61DDAE053;
- Tue,  5 Oct 2021 20:26:30 +0000 (GMT)
-Received: from naverao1-tp.ibm.com (unknown [9.43.5.112])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  5 Oct 2021 20:26:30 +0000 (GMT)
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Jordan Niethe <jniethe5@gmail.com>, Daniel Borkmann <daniel@iogearbox.net>,
- Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Johan Almbladh <johan.almbladh@anyfinetworks.com>,
- Song Liu <songliubraving@fb.com>
-Subject: [PATCH v2 10/10] powerpc/bpf ppc32: Fix BPF_SUB when imm == 0x80000000
-Date: Wed,  6 Oct 2021 01:55:29 +0530
-Message-Id: <7135360a0cdf70adedbccf9863128b8daef18764.1633464148.git.naveen.n.rao@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HPHyl1pK4z2xr4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Oct 2021 13:12:15 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
+ header.s=201707 header.b=hv2oKxRG; dkim-atps=neutral
+Received: by gandalf.ozlabs.org (Postfix, from userid 1010)
+ id 4HPHyl0jzWz4xbP; Wed,  6 Oct 2021 13:12:15 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
+ s=201707; t=1633486335;
+ bh=Y8EIfZGeynOigqULIjhBSM4nEZDVsGoKGIQz5Y8SVYU=;
+ h=From:To:Cc:Subject:Date:From;
+ b=hv2oKxRGbo22pkulj9Lc7eJNhkvhc+j3abZBWZ8nA1SmNlkA8Q8dTz8LFW7gM0dOB
+ Bt4kK382P4pzBkFAOhGs0la2MftWlMNce6E3wwkmUZ+6oOl4LiuuMHkA0wgj8eD6EK
+ gytB4UjQQ3sQYzaU7H0ViEFZVCgdfqeI3QEfocSh4MC6I8Gsz36T9YO6uKEOs0ww7Z
+ AbyJ62g09meuFxzmmNiDJHu0KToeVZ1EjULRJrZDG3U4wyFRLFb48q1r5ECmGvqljl
+ 7cVZKzct9JlwmLOIpa0xdi8RE359sSk7vlbmHoxDW1/mjInkM5R8KSvEAtqU4Ncpdo
+ X2kU6BbtMp3Rw==
+From: Anton Blanchard <anton@ozlabs.org>
+To: alistair@popple.id.au, joel@jms.id.au, andrew@aj.id.au, clg@kaod.org,
+ mikey@neuling.org, jk@codeconstruct.com.au
+Subject: [RFC 1/5] ipmi:bt-bmc: Separate out ASPEED specific bits
+Date: Wed,  6 Oct 2021 13:12:01 +1100
+Message-Id: <20211006021205.2579057-1-anton@ozlabs.org>
 X-Mailer: git-send-email 2.31.1
-In-Reply-To: <cover.1633464148.git.naveen.n.rao@linux.vnet.ibm.com>
-References: <cover.1633464148.git.naveen.n.rao@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: RZ0L1NcKFxcU4p3k6fmtrbcmFvv_Vfm-
-X-Proofpoint-ORIG-GUID: t7YJsAiuSAtcp-GB4HaMGRnT0o7QiUqs
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
- definitions=2021-10-05_04,2021-10-04_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 mlxscore=0
- phishscore=0 adultscore=0 suspectscore=0 bulkscore=0 mlxlogscore=999
- clxscore=1015 malwarescore=0 lowpriorityscore=0 priorityscore=1501
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2109230001 definitions=main-2110050117
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,32 +54,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Special case handling of the smallest 32-bit negative number for BPF_SUB.
+Most of the IPMI BT BMC driver is architecture agnostic - it deals with
+architected registers and behaviour in the IPMI specification.
 
-Fixes: 51c66ad849a703 ("powerpc/bpf: Implement extended BPF on PPC32")
-Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+Separate out the few ASPEED specific bits into their own functions
+so we can use this driver on other architectures.
+
+Signed-off-by: Anton Blanchard <anton@ozlabs.org>
 ---
- arch/powerpc/net/bpf_jit_comp32.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/char/ipmi/bt-bmc.c | 26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
 
-diff --git a/arch/powerpc/net/bpf_jit_comp32.c b/arch/powerpc/net/bpf_jit_comp32.c
-index 68dc8a8231de04..0da31d41d41310 100644
---- a/arch/powerpc/net/bpf_jit_comp32.c
-+++ b/arch/powerpc/net/bpf_jit_comp32.c
-@@ -357,7 +357,7 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
- 				PPC_LI32(_R0, imm);
- 				EMIT(PPC_RAW_ADDC(dst_reg, dst_reg, _R0));
- 			}
--			if (imm >= 0)
-+			if (imm >= 0 || (BPF_OP(code) == BPF_SUB && imm == 0x80000000))
- 				EMIT(PPC_RAW_ADDZE(dst_reg_h, dst_reg_h));
- 			else
- 				EMIT(PPC_RAW_ADDME(dst_reg_h, dst_reg_h));
+diff --git a/drivers/char/ipmi/bt-bmc.c b/drivers/char/ipmi/bt-bmc.c
+index 6e3d247b55d1..f85fafc96ef6 100644
+--- a/drivers/char/ipmi/bt-bmc.c
++++ b/drivers/char/ipmi/bt-bmc.c
+@@ -39,6 +39,7 @@
+ #define   BT_CR2_IRQ_H2B	0x01
+ #define   BT_CR2_IRQ_HBUSY	0x40
+ #define BT_CR3		0xc
++
+ #define BT_CTRL		0x10
+ #define   BT_CTRL_B_BUSY		0x80
+ #define   BT_CTRL_H_BUSY		0x40
+@@ -372,7 +373,7 @@ static void poll_timer(struct timer_list *t)
+ 	add_timer(&bt_bmc->poll_timer);
+ }
+ 
+-static irqreturn_t bt_bmc_irq(int irq, void *arg)
++static irqreturn_t aspeed_bt_bmc_irq(int irq, void *arg)
+ {
+ 	struct bt_bmc *bt_bmc = arg;
+ 	u32 reg;
+@@ -393,7 +394,7 @@ static irqreturn_t bt_bmc_irq(int irq, void *arg)
+ 	return IRQ_HANDLED;
+ }
+ 
+-static int bt_bmc_config_irq(struct bt_bmc *bt_bmc,
++static int aspeed_bt_bmc_config_irq(struct bt_bmc *bt_bmc,
+ 			     struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+@@ -403,7 +404,7 @@ static int bt_bmc_config_irq(struct bt_bmc *bt_bmc,
+ 	if (bt_bmc->irq < 0)
+ 		return bt_bmc->irq;
+ 
+-	rc = devm_request_irq(dev, bt_bmc->irq, bt_bmc_irq, IRQF_SHARED,
++	rc = devm_request_irq(dev, bt_bmc->irq, aspeed_bt_bmc_irq, IRQF_SHARED,
+ 			      DEVICE_NAME, bt_bmc);
+ 	if (rc < 0) {
+ 		dev_warn(dev, "Unable to request IRQ %d\n", bt_bmc->irq);
+@@ -424,6 +425,16 @@ static int bt_bmc_config_irq(struct bt_bmc *bt_bmc,
+ 	return rc;
+ }
+ 
++static void aspeed_enable_bt(struct bt_bmc *bt_bmc)
++{
++	regmap_write(bt_bmc->map, bt_bmc->offset + BT_CR0,
++		     (BT_IO_BASE << BT_CR0_IO_BASE) |
++		     (BT_IRQ << BT_CR0_IRQ) |
++		     BT_CR0_EN_CLR_SLV_RDP |
++		     BT_CR0_EN_CLR_SLV_WRP |
++		     BT_CR0_ENABLE_IBT);
++}
++
+ static int bt_bmc_probe(struct platform_device *pdev)
+ {
+ 	struct bt_bmc *bt_bmc;
+@@ -472,7 +483,7 @@ static int bt_bmc_probe(struct platform_device *pdev)
+ 		return rc;
+ 	}
+ 
+-	bt_bmc_config_irq(bt_bmc, pdev);
++	aspeed_bt_bmc_config_irq(bt_bmc, pdev);
+ 
+ 	if (bt_bmc->irq >= 0) {
+ 		dev_info(dev, "Using IRQ %d\n", bt_bmc->irq);
+@@ -483,12 +494,7 @@ static int bt_bmc_probe(struct platform_device *pdev)
+ 		add_timer(&bt_bmc->poll_timer);
+ 	}
+ 
+-	regmap_write(bt_bmc->map, bt_bmc->offset + BT_CR0,
+-		     (BT_IO_BASE << BT_CR0_IO_BASE) |
+-		     (BT_IRQ << BT_CR0_IRQ) |
+-		     BT_CR0_EN_CLR_SLV_RDP |
+-		     BT_CR0_EN_CLR_SLV_WRP |
+-		     BT_CR0_ENABLE_IBT);
++	aspeed_enable_bt(bt_bmc);
+ 
+ 	clr_b_busy(bt_bmc);
+ 
 -- 
-2.33.0
+2.31.1
 
