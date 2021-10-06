@@ -2,48 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AE3942434A
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Oct 2021 18:47:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01E6B42434B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Oct 2021 18:48:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HPgNk05gnz3cJD
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 03:47:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HPgPB64H8z3dpS
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 03:47:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.46; helo=mail-ot1-f46.google.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.161.45; helo=mail-oo1-f45.google.com;
  envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com
- [209.85.210.46])
+Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com
+ [209.85.161.45])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HPgJT3FPXz2ywS
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Oct 2021 03:43:53 +1100 (AEDT)
-Received: by mail-ot1-f46.google.com with SMTP id
- r43-20020a05683044ab00b0054716b40005so3860236otv.4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Oct 2021 09:43:53 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HPgJW29VQz3053
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Oct 2021 03:43:55 +1100 (AEDT)
+Received: by mail-oo1-f45.google.com with SMTP id
+ w9-20020a4adec9000000b002b696945457so525062oou.10
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Oct 2021 09:43:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=YhacG1oflfweV+ZMxYJrdhD3dQtCOWEVKc3UA01qLrg=;
- b=TK2qng1g9S95pYnfOD1bA7TpL1IVe43sOx3zk/rh6Qd8u5fsa1jawkEKucqUwlScKe
- 0MTTz9kGZWXMoOIw8GhPUH1UEgccmeoyqYOl8uAETWEdH6tKaDGvsaSKBWYn+v3rm2wb
- KKLGyWAVf2swTJUYlT6umGyMse7cgyEgAgJ4w56aV9YNouCxpWmynwHXhPrJFA3/SxJG
- N65FoE4Bu8nn28xONQL/WllpYQ3eWd931jQta1N/rg+EJNp7dqIbP5MUc1jNrhWk1b2P
- wTA+39NFGBnp9jV8VhY/hF0GlgpMOvsPu8f95lfJqWBC0j44GnwQ1THcpbxG3S0tU0u/
- A7Ag==
-X-Gm-Message-State: AOAM530rjB/5rs79xP2a/gjlU83gyxXuRW0txZe0cpqMTxeFxUKuGKLX
- 17fWptP0wqdJB/Eu8dFejw==
-X-Google-Smtp-Source: ABdhPJzJQ2R5CEfp/bAtXtoCRQDaDF5B6RqZA1flXSsxFu0kVfpgeNfjZq0OKrhuVdseg2/0PDqWlg==
-X-Received: by 2002:a05:6830:455:: with SMTP id
- d21mr20503877otc.300.1633538631080; 
- Wed, 06 Oct 2021 09:43:51 -0700 (PDT)
+ bh=qVDBxu87TJi7lJ0TsvF77hW6cToukGJnTBFK4bAPEHE=;
+ b=lDMywqzDoduj0F5CrdYXWcq4Z0x2mAxy4uZ5km3xe0CaIUxPxQa4JAs/nzNwWdF/bX
+ 0niELS8zwEazuEKNIRCuLRAvg+0/LYk7QZi6jPy8eyn/61I0P3BI3SgoqdpodkDul4gX
+ IufnmEcpcXM1ohKoVFs6PYf4fPuGqFSIt/BGOEmdIMu58/y9EAY98JlzDI+Eu1GIz58Z
+ oqDCCKI10LV71CZ920pNOrOVr9Wb9IlXM3vb+/s5PJ/tbK6Qz2dwk36Wpaluv7CSws5A
+ 9cRUc4pPqz+pFzu3FXgm7QdIfHUerSmfkfr5f4kZCxoCCjDxvnG648qfWFERfZuRdc+h
+ URsQ==
+X-Gm-Message-State: AOAM532nhmnl3BziJMqrFj2PKq7VAFWk5DqfNUzrdBTNL4gmJ9SWU2ix
+ 8wuoT+c7uCbtMNygBQ96PQ==
+X-Google-Smtp-Source: ABdhPJwSo3vtevHig5e6wcfYzHn+p/9LVu6izXiBqHPOZc+ml50aXK5vctwJYkE3EswfiMHjHBf9ng==
+X-Received: by 2002:a4a:e597:: with SMTP id o23mr6391984oov.96.1633538632948; 
+ Wed, 06 Oct 2021 09:43:52 -0700 (PDT)
 Received: from xps15.herring.priv (66-90-148-213.dyn.grandenetworks.net.
  [66.90.148.213])
- by smtp.googlemail.com with ESMTPSA id s29sm4236628otg.60.2021.10.06.09.43.48
+ by smtp.googlemail.com with ESMTPSA id s29sm4236628otg.60.2021.10.06.09.43.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Oct 2021 09:43:49 -0700 (PDT)
+ Wed, 06 Oct 2021 09:43:52 -0700 (PDT)
 From: Rob Herring <robh@kernel.org>
 To: Russell King <linux@armlinux.org.uk>, James Morse <james.morse@arm.com>,
  Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
@@ -54,9 +53,9 @@ To: Russell King <linux@armlinux.org.uk>, James Morse <james.morse@arm.com>,
  Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
  Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
  x86@kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH 08/12] riscv: Use of_get_cpu_hwid()
-Date: Wed,  6 Oct 2021 11:43:28 -0500
-Message-Id: <20211006164332.1981454-9-robh@kernel.org>
+Subject: [PATCH 09/12] sh: Use of_get_cpu_hwid()
+Date: Wed,  6 Oct 2021 11:43:29 -0500
+Message-Id: <20211006164332.1981454-10-robh@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20211006164332.1981454-1-robh@kernel.org>
 References: <20211006164332.1981454-1-robh@kernel.org>
@@ -90,29 +89,30 @@ Sender: "Linuxppc-dev"
 Replace open coded parsing of CPU nodes' 'reg' property with
 of_get_cpu_hwid().
 
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: linux-riscv@lists.infradead.org
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Rich Felker <dalias@libc.org>
+Cc: linux-sh@vger.kernel.org
 Signed-off-by: Rob Herring <robh@kernel.org>
 ---
- arch/riscv/kernel/cpu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/sh/boards/of-generic.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/riscv/kernel/cpu.c b/arch/riscv/kernel/cpu.c
-index 6d59e6906fdd..f13b2c9ea912 100644
---- a/arch/riscv/kernel/cpu.c
-+++ b/arch/riscv/kernel/cpu.c
-@@ -22,7 +22,8 @@ int riscv_of_processor_hartid(struct device_node *node)
- 		return -ENODEV;
- 	}
+diff --git a/arch/sh/boards/of-generic.c b/arch/sh/boards/of-generic.c
+index 921d76fc3358..f7f3e618e85b 100644
+--- a/arch/sh/boards/of-generic.c
++++ b/arch/sh/boards/of-generic.c
+@@ -62,9 +62,8 @@ static void sh_of_smp_probe(void)
+ 	init_cpu_possible(cpumask_of(0));
  
--	if (of_property_read_u32(node, "reg", &hart)) {
-+	hart = of_get_cpu_hwid(node, 0);
-+	if (hart == ~0U) {
- 		pr_warn("Found CPU without hart ID\n");
- 		return -ENODEV;
- 	}
+ 	for_each_of_cpu_node(np) {
+-		const __be32 *cell = of_get_property(np, "reg", NULL);
+-		u64 id = -1;
+-		if (cell) id = of_read_number(cell, of_n_addr_cells(np));
++		u64 id = of_get_cpu_hwid(np, 0);
++
+ 		if (id < NR_CPUS) {
+ 			if (!method)
+ 				of_property_read_string(np, "enable-method", &method);
 -- 
 2.30.2
 
