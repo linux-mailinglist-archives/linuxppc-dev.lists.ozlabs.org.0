@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 062BC423E43
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Oct 2021 14:55:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E092423E3B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Oct 2021 14:54:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HPZDX6n2cz3fHK
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Oct 2021 23:55:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HPZCS73Kgz3f6s
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Oct 2021 23:54:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,43 +16,44 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HPZ5n63sBz3cD3
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Oct 2021 23:49:17 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HPZ5d5jCQz3cCD
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Oct 2021 23:49:09 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4HPZ4f1fC6z9sWY;
- Wed,  6 Oct 2021 14:48:18 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4HPZ4c3VHdz9sWW;
+ Wed,  6 Oct 2021 14:48:16 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id XBLjyxwTsNXj; Wed,  6 Oct 2021 14:48:18 +0200 (CEST)
+ with ESMTP id qhsKQIDTT592; Wed,  6 Oct 2021 14:48:16 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4HPZ4N09qKz9sWb;
- Wed,  6 Oct 2021 14:48:04 +0200 (CEST)
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4HPZ4M5Nyrz9sWX;
+ Wed,  6 Oct 2021 14:48:03 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E041C8B763;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id AE3BA8B763;
  Wed,  6 Oct 2021 14:48:03 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id hC2XFVORmZk3; Wed,  6 Oct 2021 14:48:03 +0200 (CEST)
+ with ESMTP id rp_wG5VhQVu8; Wed,  6 Oct 2021 14:48:03 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.204.229])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id BBA5F8B794;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id AC5448B78F;
  Wed,  6 Oct 2021 14:48:02 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 196Clpq0579416
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 196Clppw579416
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
  Wed, 6 Oct 2021 14:47:52 +0200
 Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 196Chr1C579283;
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 196Chr4B579284;
  Wed, 6 Oct 2021 14:43:53 +0200
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
  christophe.leroy@csgroup.eu using -f
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v1 03/15] powerpc/kuap: Add a generic intermediate layer
-Date: Wed,  6 Oct 2021 14:43:36 +0200
-Message-Id: <bbf356e4102191bebb912df74542de7602268391.1633523837.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v1 04/15] powerpc/kuap: Check KUAP activation in generic
+ functions
+Date: Wed,  6 Oct 2021 14:43:37 +0200
+Message-Id: <ed4ba2fd6754466abae7271f2e6d8c0d897794ac.1633523837.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <cover.1633523837.git.christophe.leroy@csgroup.eu>
 References: <cover.1633523837.git.christophe.leroy@csgroup.eu>
@@ -74,343 +75,377 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Make the following functions generic to all platforms.
-- bad_kuap_fault()
-- kuap_assert_locked()
-- kuap_save_and_lock() (PPC32 only)
-- kuap_kernel_restore()
-- kuap_get_and_assert_locked()
+Today, every platform checks that KUAP is not de-activated
+before doing the real job.
 
-And for all platforms except book3s/64
-- allow_user_access()
-- prevent_user_access()
-- prevent_user_access_return()
-- restore_user_access()
-
-Prepend __ in front of the name of platform specific ones.
-
-For now the generic just calls the platform specific, but
-next patch will move redundant parts of specific functions
-into the generic one.
+Move the verification out of platform specific functions.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/book3s/32/kup.h     | 22 +++---
- arch/powerpc/include/asm/book3s/64/kup.h     | 10 ++-
- arch/powerpc/include/asm/kup.h               | 71 +++++++++++++++++---
- arch/powerpc/include/asm/nohash/32/kup-8xx.h | 20 +++---
- 4 files changed, 86 insertions(+), 37 deletions(-)
+ arch/powerpc/include/asm/book3s/32/kup.h     | 34 +++-------------
+ arch/powerpc/include/asm/book3s/64/kup.h     | 41 ++++++++++----------
+ arch/powerpc/include/asm/kup.h               | 26 +++++++++++++
+ arch/powerpc/include/asm/nohash/32/kup-8xx.h | 28 +------------
+ 4 files changed, 53 insertions(+), 76 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/book3s/32/kup.h b/arch/powerpc/include/asm/book3s/32/kup.h
-index f03fe357471f..c49fbe0418be 100644
+index c49fbe0418be..d2685fa09fed 100644
 --- a/arch/powerpc/include/asm/book3s/32/kup.h
 +++ b/arch/powerpc/include/asm/book3s/32/kup.h
-@@ -80,7 +80,7 @@ static inline void kuap_unlock(unsigned long addr, bool ool)
- 		kuap_unlock_all_ool();
- }
+@@ -16,11 +16,6 @@ extern struct static_key_false disable_kuep_key;
  
--static inline void kuap_save_and_lock(struct pt_regs *regs)
-+static inline void __kuap_save_and_lock(struct pt_regs *regs)
+ extern s32 patch__kuep_lock, patch__kuep_unlock;
+ 
+-static __always_inline bool kuap_is_disabled(void)
+-{
+-	return !IS_ENABLED(CONFIG_PPC_KUAP) || static_branch_unlikely(&disable_kuap_key);
+-}
+-
+ static __always_inline bool kuep_is_disabled(void)
+ {
+ 	return !IS_ENABLED(CONFIG_PPC_KUEP) || static_branch_unlikely(&disable_kuep_key);
+@@ -33,6 +28,11 @@ static __always_inline bool kuep_is_disabled(void)
+ #define KUAP_NONE	(~0UL)
+ #define KUAP_ALL	(~1UL)
+ 
++static __always_inline bool kuap_is_disabled(void)
++{
++	return static_branch_unlikely(&disable_kuap_key);
++}
++
+ static inline void kuap_lock_one(unsigned long addr)
+ {
+ 	mtsr(mfsr(addr) | SR_KS, addr);
+@@ -84,9 +84,6 @@ static inline void __kuap_save_and_lock(struct pt_regs *regs)
  {
  	unsigned long kuap = current->thread.kuap;
  
-@@ -99,7 +99,7 @@ static inline void kuap_user_restore(struct pt_regs *regs)
- {
- }
- 
--static inline void kuap_kernel_restore(struct pt_regs *regs, unsigned long kuap)
-+static inline void __kuap_kernel_restore(struct pt_regs *regs, unsigned long kuap)
- {
- 	if (kuap_is_disabled())
+-	if (kuap_is_disabled())
+-		return;
+-
+ 	regs->kuap = kuap;
+ 	if (unlikely(kuap == KUAP_NONE))
  		return;
-@@ -109,7 +109,7 @@ static inline void kuap_kernel_restore(struct pt_regs *regs, unsigned long kuap)
+@@ -101,9 +98,6 @@ static inline void kuap_user_restore(struct pt_regs *regs)
+ 
+ static inline void __kuap_kernel_restore(struct pt_regs *regs, unsigned long kuap)
+ {
+-	if (kuap_is_disabled())
+-		return;
+-
+ 	current->thread.kuap = regs->kuap;
+ 
  	kuap_unlock(regs->kuap, false);
- }
- 
--static inline unsigned long kuap_get_and_assert_locked(void)
-+static inline unsigned long __kuap_get_and_assert_locked(void)
+@@ -113,9 +107,6 @@ static inline unsigned long __kuap_get_and_assert_locked(void)
  {
  	unsigned long kuap = current->thread.kuap;
  
-@@ -121,13 +121,13 @@ static inline unsigned long kuap_get_and_assert_locked(void)
+-	if (kuap_is_disabled())
+-		return KUAP_NONE;
+-
+ 	WARN_ON_ONCE(IS_ENABLED(CONFIG_PPC_KUAP_DEBUG) && kuap != KUAP_NONE);
+ 
  	return kuap;
- }
- 
--static inline void kuap_assert_locked(void)
-+static inline void __kuap_assert_locked(void)
+@@ -129,9 +120,6 @@ static inline void __kuap_assert_locked(void)
+ static __always_inline void __allow_user_access(void __user *to, const void __user *from,
+ 						u32 size, unsigned long dir)
  {
--	kuap_get_and_assert_locked();
-+	__kuap_get_and_assert_locked();
- }
+-	if (kuap_is_disabled())
+-		return;
+-
+ 	BUILD_BUG_ON(!__builtin_constant_p(dir));
  
--static __always_inline void allow_user_access(void __user *to, const void __user *from,
--					      u32 size, unsigned long dir)
-+static __always_inline void __allow_user_access(void __user *to, const void __user *from,
-+						u32 size, unsigned long dir)
- {
- 	if (kuap_is_disabled())
- 		return;
-@@ -141,7 +141,7 @@ static __always_inline void allow_user_access(void __user *to, const void __user
- 	kuap_unlock_one((__force u32)to);
- }
- 
--static __always_inline void prevent_user_access(unsigned long dir)
-+static __always_inline void __prevent_user_access(unsigned long dir)
+ 	if (!(dir & KUAP_WRITE))
+@@ -145,9 +133,6 @@ static __always_inline void __prevent_user_access(unsigned long dir)
  {
  	u32 kuap = current->thread.kuap;
  
-@@ -157,7 +157,7 @@ static __always_inline void prevent_user_access(unsigned long dir)
- 	kuap_lock(kuap, true);
- }
+-	if (kuap_is_disabled())
+-		return;
+-
+ 	BUILD_BUG_ON(!__builtin_constant_p(dir));
  
--static inline unsigned long prevent_user_access_return(void)
-+static inline unsigned long __prevent_user_access_return(void)
+ 	if (!(dir & KUAP_WRITE))
+@@ -161,9 +146,6 @@ static inline unsigned long __prevent_user_access_return(void)
  {
  	unsigned long flags = current->thread.kuap;
  
-@@ -172,7 +172,7 @@ static inline unsigned long prevent_user_access_return(void)
- 	return flags;
- }
+-	if (kuap_is_disabled())
+-		return KUAP_NONE;
+-
+ 	if (flags != KUAP_NONE) {
+ 		current->thread.kuap = KUAP_NONE;
+ 		kuap_lock(flags, true);
+@@ -174,9 +156,6 @@ static inline unsigned long __prevent_user_access_return(void)
  
--static inline void restore_user_access(unsigned long flags)
-+static inline void __restore_user_access(unsigned long flags)
+ static inline void __restore_user_access(unsigned long flags)
  {
- 	if (kuap_is_disabled())
- 		return;
-@@ -184,7 +184,7 @@ static inline void restore_user_access(unsigned long flags)
- }
- 
- static inline bool
--bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
-+__bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
+-	if (kuap_is_disabled())
+-		return;
+-
+ 	if (flags != KUAP_NONE) {
+ 		current->thread.kuap = flags;
+ 		kuap_unlock(flags, true);
+@@ -188,9 +167,6 @@ __bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
  {
  	unsigned long kuap = regs->kuap;
  
+-	if (kuap_is_disabled())
+-		return false;
+-
+ 	if (!is_write || kuap == KUAP_ALL)
+ 		return false;
+ 	if (kuap == KUAP_NONE)
 diff --git a/arch/powerpc/include/asm/book3s/64/kup.h b/arch/powerpc/include/asm/book3s/64/kup.h
-index 170339969b7c..03d61c5205a4 100644
+index 03d61c5205a4..9f2099790658 100644
 --- a/arch/powerpc/include/asm/book3s/64/kup.h
 +++ b/arch/powerpc/include/asm/book3s/64/kup.h
-@@ -268,8 +268,7 @@ static inline void kuap_user_restore(struct pt_regs *regs)
+@@ -229,6 +229,11 @@ static inline u64 current_thread_iamr(void)
+ 
+ #ifdef CONFIG_PPC_KUAP
+ 
++static __always_inline bool kuap_is_disabled(void)
++{
++	return !mmu_has_feature(MMU_FTR_BOOK3S_KUAP);
++}
++
+ static inline void kuap_user_restore(struct pt_regs *regs)
+ {
+ 	bool restore_amr = false, restore_iamr = false;
+@@ -270,36 +275,32 @@ static inline void kuap_user_restore(struct pt_regs *regs)
+ 
+ static inline void __kuap_kernel_restore(struct pt_regs *regs, unsigned long amr)
+ {
+-	if (mmu_has_feature(MMU_FTR_BOOK3S_KUAP)) {
+-		if (unlikely(regs->amr != amr)) {
+-			isync();
+-			mtspr(SPRN_AMR, regs->amr);
+-			/*
+-			 * No isync required here because we are about to rfi
+-			 * back to previous context before any user accesses
+-			 * would be made, which is a CSI.
+-			 */
+-		}
+-	}
++	if (likely(regs->amr == amr))
++		return;
++
++	isync();
++	mtspr(SPRN_AMR, regs->amr);
+ 	/*
++	 * No isync required here because we are about to rfi
++	 * back to previous context before any user accesses
++	 * would be made, which is a CSI.
++	 *
+ 	 * No need to restore IAMR when returning to kernel space.
  	 */
  }
  
--static inline void kuap_kernel_restore(struct pt_regs *regs,
--					   unsigned long amr)
-+static inline void __kuap_kernel_restore(struct pt_regs *regs, unsigned long amr)
+ static inline unsigned long __kuap_get_and_assert_locked(void)
  {
- 	if (mmu_has_feature(MMU_FTR_BOOK3S_KUAP)) {
- 		if (unlikely(regs->amr != amr)) {
-@@ -287,7 +286,7 @@ static inline void kuap_kernel_restore(struct pt_regs *regs,
- 	 */
+-	if (mmu_has_feature(MMU_FTR_BOOK3S_KUAP)) {
+-		unsigned long amr = mfspr(SPRN_AMR);
+-		if (IS_ENABLED(CONFIG_PPC_KUAP_DEBUG)) /* kuap_check_amr() */
+-			WARN_ON_ONCE(amr != AMR_KUAP_BLOCKED);
+-		return amr;
+-	}
+-	return 0;
++	unsigned long amr = mfspr(SPRN_AMR);
++
++	if (IS_ENABLED(CONFIG_PPC_KUAP_DEBUG)) /* kuap_check_amr() */
++		WARN_ON_ONCE(amr != AMR_KUAP_BLOCKED);
++	return amr;
  }
  
--static inline unsigned long kuap_get_and_assert_locked(void)
-+static inline unsigned long __kuap_get_and_assert_locked(void)
+ static inline void __kuap_assert_locked(void)
  {
- 	if (mmu_has_feature(MMU_FTR_BOOK3S_KUAP)) {
- 		unsigned long amr = mfspr(SPRN_AMR);
-@@ -298,7 +297,7 @@ static inline unsigned long kuap_get_and_assert_locked(void)
- 	return 0;
- }
- 
--static inline void kuap_assert_locked(void)
-+static inline void __kuap_assert_locked(void)
- {
- 	if (IS_ENABLED(CONFIG_PPC_KUAP_DEBUG) && mmu_has_feature(MMU_FTR_BOOK3S_KUAP))
+-	if (IS_ENABLED(CONFIG_PPC_KUAP_DEBUG) && mmu_has_feature(MMU_FTR_BOOK3S_KUAP))
++	if (IS_ENABLED(CONFIG_PPC_KUAP_DEBUG))
  		WARN_ON_ONCE(mfspr(SPRN_AMR) != AMR_KUAP_BLOCKED);
-@@ -339,8 +338,7 @@ static inline void set_kuap(unsigned long value)
- 	isync();
  }
  
--static inline bool bad_kuap_fault(struct pt_regs *regs, unsigned long address,
--				  bool is_write)
-+static inline bool __bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
+@@ -340,8 +341,6 @@ static inline void set_kuap(unsigned long value)
+ 
+ static inline bool __bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
  {
- 	if (!mmu_has_feature(MMU_FTR_BOOK3S_KUAP))
- 		return false;
+-	if (!mmu_has_feature(MMU_FTR_BOOK3S_KUAP))
+-		return false;
+ 	/*
+ 	 * For radix this will be a storage protection fault (DSISR_PROTFAULT).
+ 	 * For hash this will be a key fault (DSISR_KEYFAULT)
 diff --git a/arch/powerpc/include/asm/kup.h b/arch/powerpc/include/asm/kup.h
-index 34ff86e3686e..3dbd3f77b413 100644
+index 3dbd3f77b413..3a7e2ca9f6ee 100644
 --- a/arch/powerpc/include/asm/kup.h
 +++ b/arch/powerpc/include/asm/kup.h
-@@ -44,17 +44,17 @@ void setup_kuap(bool disabled);
+@@ -43,6 +43,8 @@ void setup_kuap(bool disabled);
+ #else
  static inline void setup_kuap(bool disabled) { }
  
++static __always_inline bool kuap_is_disabled(void) { return true; }
++
  static inline bool
--bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
-+__bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
+ __bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
  {
- 	return false;
+@@ -81,23 +83,35 @@ bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
+ 
+ static __always_inline void kuap_assert_locked(void)
+ {
++	if (kuap_is_disabled())
++		return;
++
+ 	__kuap_assert_locked();
  }
  
--static inline void kuap_assert_locked(void) { }
--static inline void kuap_save_and_lock(struct pt_regs *regs) { }
-+static inline void __kuap_assert_locked(void) { }
-+static inline void __kuap_save_and_lock(struct pt_regs *regs) { }
- static inline void kuap_user_restore(struct pt_regs *regs) { }
--static inline void kuap_kernel_restore(struct pt_regs *regs, unsigned long amr) { }
-+static inline void __kuap_kernel_restore(struct pt_regs *regs, unsigned long amr) { }
- 
--static inline unsigned long kuap_get_and_assert_locked(void)
-+static inline unsigned long __kuap_get_and_assert_locked(void)
+ #ifdef CONFIG_PPC32
+ static __always_inline void kuap_save_and_lock(struct pt_regs *regs)
  {
- 	return 0;
++	if (kuap_is_disabled())
++		return;
++
+ 	__kuap_save_and_lock(regs);
  }
-@@ -65,14 +65,65 @@ static inline unsigned long kuap_get_and_assert_locked(void)
-  * platforms.
-  */
- #ifndef CONFIG_PPC_BOOK3S_64
--static inline void allow_user_access(void __user *to, const void __user *from,
--				     unsigned long size, unsigned long dir) { }
--static inline void prevent_user_access(unsigned long dir) { }
--static inline unsigned long prevent_user_access_return(void) { return 0UL; }
--static inline void restore_user_access(unsigned long flags) { }
-+static inline void __allow_user_access(void __user *to, const void __user *from,
-+				       unsigned long size, unsigned long dir) { }
-+static inline void __prevent_user_access(unsigned long dir) { }
-+static inline unsigned long __prevent_user_access_return(void) { return 0UL; }
-+static inline void __restore_user_access(unsigned long flags) { }
+ #endif
+ 
+ static __always_inline void kuap_kernel_restore(struct pt_regs *regs, unsigned long amr)
+ {
++	if (kuap_is_disabled())
++		return;
++
+ 	__kuap_kernel_restore(regs, amr);
+ }
+ 
+ static __always_inline unsigned long kuap_get_and_assert_locked(void)
+ {
++	if (kuap_is_disabled())
++		return 0;
++
+ 	return __kuap_get_and_assert_locked();
+ }
+ 
+@@ -105,21 +119,33 @@ static __always_inline unsigned long kuap_get_and_assert_locked(void)
+ static __always_inline void allow_user_access(void __user *to, const void __user *from,
+ 				     unsigned long size, unsigned long dir)
+ {
++	if (kuap_is_disabled())
++		return;
++
+ 	__allow_user_access(to, from, size, dir);
+ }
+ 
+ static __always_inline void prevent_user_access(unsigned long dir)
+ {
++	if (kuap_is_disabled())
++		return;
++
+ 	__prevent_user_access(dir);
+ }
+ 
+ static __always_inline unsigned long prevent_user_access_return(void)
+ {
++	if (kuap_is_disabled())
++		return 0;
++
+ 	return __prevent_user_access_return();
+ }
+ 
+ static __always_inline void restore_user_access(unsigned long flags)
+ {
++	if (kuap_is_disabled())
++		return;
++
+ 	__restore_user_access(flags);
+ }
  #endif /* CONFIG_PPC_BOOK3S_64 */
- #endif /* CONFIG_PPC_KUAP */
- 
-+static __always_inline bool
-+bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
-+{
-+	return __bad_kuap_fault(regs, address, is_write);
-+}
-+
-+static __always_inline void kuap_assert_locked(void)
-+{
-+	__kuap_assert_locked();
-+}
-+
-+#ifdef CONFIG_PPC32
-+static __always_inline void kuap_save_and_lock(struct pt_regs *regs)
-+{
-+	__kuap_save_and_lock(regs);
-+}
-+#endif
-+
-+static __always_inline void kuap_kernel_restore(struct pt_regs *regs, unsigned long amr)
-+{
-+	__kuap_kernel_restore(regs, amr);
-+}
-+
-+static __always_inline unsigned long kuap_get_and_assert_locked(void)
-+{
-+	return __kuap_get_and_assert_locked();
-+}
-+
-+#ifndef CONFIG_PPC_BOOK3S_64
-+static __always_inline void allow_user_access(void __user *to, const void __user *from,
-+				     unsigned long size, unsigned long dir)
-+{
-+	__allow_user_access(to, from, size, dir);
-+}
-+
-+static __always_inline void prevent_user_access(unsigned long dir)
-+{
-+	__prevent_user_access(dir);
-+}
-+
-+static __always_inline unsigned long prevent_user_access_return(void)
-+{
-+	return __prevent_user_access_return();
-+}
-+
-+static __always_inline void restore_user_access(unsigned long flags)
-+{
-+	__restore_user_access(flags);
-+}
-+#endif /* CONFIG_PPC_BOOK3S_64 */
-+
- static __always_inline void setup_kup(void)
- {
- 	setup_kuep(disable_kuep);
 diff --git a/arch/powerpc/include/asm/nohash/32/kup-8xx.h b/arch/powerpc/include/asm/nohash/32/kup-8xx.h
-index 882a0bc7887a..a5db84164afd 100644
+index a5db84164afd..74f15c386476 100644
 --- a/arch/powerpc/include/asm/nohash/32/kup-8xx.h
 +++ b/arch/powerpc/include/asm/nohash/32/kup-8xx.h
-@@ -20,7 +20,7 @@ static __always_inline bool kuap_is_disabled(void)
- 	return static_branch_unlikely(&disable_kuap_key);
- }
+@@ -22,9 +22,6 @@ static __always_inline bool kuap_is_disabled(void)
  
--static inline void kuap_save_and_lock(struct pt_regs *regs)
-+static inline void __kuap_save_and_lock(struct pt_regs *regs)
+ static inline void __kuap_save_and_lock(struct pt_regs *regs)
  {
- 	if (kuap_is_disabled())
- 		return;
-@@ -33,7 +33,7 @@ static inline void kuap_user_restore(struct pt_regs *regs)
- {
+-	if (kuap_is_disabled())
+-		return;
+-
+ 	regs->kuap = mfspr(SPRN_MD_AP);
+ 	mtspr(SPRN_MD_AP, MD_APG_KUAP);
  }
+@@ -35,9 +32,6 @@ static inline void kuap_user_restore(struct pt_regs *regs)
  
--static inline void kuap_kernel_restore(struct pt_regs *regs, unsigned long kuap)
-+static inline void __kuap_kernel_restore(struct pt_regs *regs, unsigned long kuap)
+ static inline void __kuap_kernel_restore(struct pt_regs *regs, unsigned long kuap)
  {
- 	if (kuap_is_disabled())
- 		return;
-@@ -41,7 +41,7 @@ static inline void kuap_kernel_restore(struct pt_regs *regs, unsigned long kuap)
+-	if (kuap_is_disabled())
+-		return;
+-
  	mtspr(SPRN_MD_AP, regs->kuap);
  }
  
--static inline unsigned long kuap_get_and_assert_locked(void)
-+static inline unsigned long __kuap_get_and_assert_locked(void)
+@@ -45,9 +39,6 @@ static inline unsigned long __kuap_get_and_assert_locked(void)
  {
  	unsigned long kuap;
  
-@@ -56,14 +56,14 @@ static inline unsigned long kuap_get_and_assert_locked(void)
- 	return kuap;
+-	if (kuap_is_disabled())
+-		return MD_APG_INIT;
+-
+ 	kuap = mfspr(SPRN_MD_AP);
+ 
+ 	if (IS_ENABLED(CONFIG_PPC_KUAP_DEBUG))
+@@ -58,24 +49,18 @@ static inline unsigned long __kuap_get_and_assert_locked(void)
+ 
+ static inline void __kuap_assert_locked(void)
+ {
+-	if (IS_ENABLED(CONFIG_PPC_KUAP_DEBUG) && !kuap_is_disabled())
+-		kuap_get_and_assert_locked();
++	if (IS_ENABLED(CONFIG_PPC_KUAP_DEBUG))
++		__kuap_get_and_assert_locked();
  }
  
--static inline void kuap_assert_locked(void)
-+static inline void __kuap_assert_locked(void)
+ static inline void __allow_user_access(void __user *to, const void __user *from,
+ 				       unsigned long size, unsigned long dir)
  {
- 	if (IS_ENABLED(CONFIG_PPC_KUAP_DEBUG) && !kuap_is_disabled())
- 		kuap_get_and_assert_locked();
- }
- 
--static inline void allow_user_access(void __user *to, const void __user *from,
--				     unsigned long size, unsigned long dir)
-+static inline void __allow_user_access(void __user *to, const void __user *from,
-+				       unsigned long size, unsigned long dir)
- {
- 	if (kuap_is_disabled())
- 		return;
-@@ -71,7 +71,7 @@ static inline void allow_user_access(void __user *to, const void __user *from,
+-	if (kuap_is_disabled())
+-		return;
+-
  	mtspr(SPRN_MD_AP, MD_APG_INIT);
  }
  
--static inline void prevent_user_access(unsigned long dir)
-+static inline void __prevent_user_access(unsigned long dir)
+ static inline void __prevent_user_access(unsigned long dir)
  {
- 	if (kuap_is_disabled())
- 		return;
-@@ -79,7 +79,7 @@ static inline void prevent_user_access(unsigned long dir)
+-	if (kuap_is_disabled())
+-		return;
+-
  	mtspr(SPRN_MD_AP, MD_APG_KUAP);
  }
  
--static inline unsigned long prevent_user_access_return(void)
-+static inline unsigned long __prevent_user_access_return(void)
+@@ -83,9 +68,6 @@ static inline unsigned long __prevent_user_access_return(void)
  {
  	unsigned long flags;
  
-@@ -93,7 +93,7 @@ static inline unsigned long prevent_user_access_return(void)
- 	return flags;
- }
+-	if (kuap_is_disabled())
+-		return MD_APG_INIT;
+-
+ 	flags = mfspr(SPRN_MD_AP);
  
--static inline void restore_user_access(unsigned long flags)
-+static inline void __restore_user_access(unsigned long flags)
+ 	mtspr(SPRN_MD_AP, MD_APG_KUAP);
+@@ -95,18 +77,12 @@ static inline unsigned long __prevent_user_access_return(void)
+ 
+ static inline void __restore_user_access(unsigned long flags)
  {
- 	if (kuap_is_disabled())
- 		return;
-@@ -102,7 +102,7 @@ static inline void restore_user_access(unsigned long flags)
+-	if (kuap_is_disabled())
+-		return;
+-
+ 	mtspr(SPRN_MD_AP, flags);
  }
  
  static inline bool
--bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
-+__bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
+ __bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
  {
- 	if (kuap_is_disabled())
- 		return false;
+-	if (kuap_is_disabled())
+-		return false;
+-
+ 	return !((regs->kuap ^ MD_APG_KUAP) & 0xff000000);
+ }
+ 
 -- 
 2.31.1
 
