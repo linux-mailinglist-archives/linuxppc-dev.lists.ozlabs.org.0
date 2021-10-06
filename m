@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FF19424339
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Oct 2021 18:45:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1B10424337
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Oct 2021 18:45:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HPgLh2RB4z3cZK
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 03:45:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HPgLB4R2nz2yy3
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 03:45:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.50; helo=mail-ot1-f50.google.com;
- envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com
- [209.85.210.50])
+ smtp.mailfrom=gmail.com (client-ip=209.85.167.177;
+ helo=mail-oi1-f177.google.com; envelope-from=robherring2@gmail.com;
+ receiver=<UNKNOWN>)
+Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com
+ [209.85.167.177])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HPgJM07CCz2yhd
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Oct 2021 03:43:45 +1100 (AEDT)
-Received: by mail-ot1-f50.google.com with SMTP id
- l16-20020a9d6a90000000b0053b71f7dc83so3843845otq.7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Oct 2021 09:43:45 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HPgJM04Frz2ygB
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Oct 2021 03:43:46 +1100 (AEDT)
+Received: by mail-oi1-f177.google.com with SMTP id w206so4862679oiw.4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Oct 2021 09:43:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=nz2VNzL+ydy4chpa3d7bE/r1R6JeAbCb1Q1l6nn9BO4=;
- b=iF1JqYUr45OwqobUtRzLNMyNmX39J5ar1E/4wcQUcT7otfJggDjEP4jrrrqZ97EtQe
- kCDs8U3S+2TpAcxpubIfBpqNN0jEH+ZqD6vj5kohHtynG+pPj6/s9EVF0rIFsvbUcmo3
- X+PR/kiUar2EoPkEzciWZD8zDv6l0EfCdwev5BM++DCKWHwtUmy+VCOLZn34QmZPcZ6A
- 1aDVtsQXTWhcnP6RiNL1diQ8UyouYmR+RpcwIJLwsPwsPXq3S57yrCid6I/mzTn77z7/
- Hhc0RRHYZ+NyOc6KVwJG5dhZzMTuvocZDZFULMxmuV4Jql0tUPSHqw5DtZaS7VuEN2Wx
- Peeg==
-X-Gm-Message-State: AOAM5315JtgHlIwu7P6LlRYuOxshZHnus3Bvxe9yLdc23fwA8C3JjVHF
- L52CdlJ34wnPztSX7u8EhQ==
-X-Google-Smtp-Source: ABdhPJzkVUe2NQ95hrntc6XfGtsZUf11mFfAeFqW0+ilFUDkOjdRegXB0ef4DYKZYBjYmsjM+kfXAg==
-X-Received: by 2002:a9d:6ac7:: with SMTP id m7mr20566678otq.49.1633538622946; 
- Wed, 06 Oct 2021 09:43:42 -0700 (PDT)
+ bh=CN2tRnfV0nmrSbuDbyHoypag3neEaofRCNv6xL7Eiog=;
+ b=3wep7S3yM5JjPRxoZjXCAnqOjEqAkpZOKnRmMlIm+Yek1eCKDcz9h92x1qvEv2K7XC
+ H2pu/mlTwDddKHTr/E50zhfjL1MzxzKmG2ZaoKmvJDzt6dCh/0xS45sKUdAjIwaoOC7/
+ 358bOLlGeCfk3FejMP405i+h/LxLs8iRD/xKX22rimvANOcWTbPcQOGt3Ifhy7rBFmKo
+ IcF32LD6i3WEtFctI+GtO+83m+HXo7GkdocyGWKcMz+zgorZpiTVJvs/cgcIHpTBCRUO
+ T8uNYj4tnXvi2lyFXzeUTquV1pvBgMsnkgz1GWe2OTd0z++BT0kSxLKPFJv4F3mess3x
+ +ocw==
+X-Gm-Message-State: AOAM530XRKSh9JUdXWsM/zjAziSLSaQ7riVMGAiAMyvAZFFLamOEDcAu
+ hz3DLRlXr15aTsjv/HjGHw==
+X-Google-Smtp-Source: ABdhPJz/z+8TSD/WdWHkwOUMUF3/lnf5Mt7uWOPSGKwTcm1xutcPl6qw5jPqaYPZiNT3CeLWfPqlWg==
+X-Received: by 2002:aca:30c9:: with SMTP id w192mr7839682oiw.93.1633538624646; 
+ Wed, 06 Oct 2021 09:43:44 -0700 (PDT)
 Received: from xps15.herring.priv (66-90-148-213.dyn.grandenetworks.net.
  [66.90.148.213])
- by smtp.googlemail.com with ESMTPSA id s29sm4236628otg.60.2021.10.06.09.43.41
+ by smtp.googlemail.com with ESMTPSA id s29sm4236628otg.60.2021.10.06.09.43.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Oct 2021 09:43:42 -0700 (PDT)
+ Wed, 06 Oct 2021 09:43:44 -0700 (PDT)
 From: Rob Herring <robh@kernel.org>
 To: Russell King <linux@armlinux.org.uk>, James Morse <james.morse@arm.com>,
  Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
@@ -53,9 +53,9 @@ To: Russell King <linux@armlinux.org.uk>, James Morse <james.morse@arm.com>,
  Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
  Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
  x86@kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH 04/12] arm64: Use of_get_cpu_hwid()
-Date: Wed,  6 Oct 2021 11:43:24 -0500
-Message-Id: <20211006164332.1981454-5-robh@kernel.org>
+Subject: [PATCH 05/12] csky: Use of_get_cpu_hwid()
+Date: Wed,  6 Oct 2021 11:43:25 -0500
+Message-Id: <20211006164332.1981454-6-robh@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20211006164332.1981454-1-robh@kernel.org>
 References: <20211006164332.1981454-1-robh@kernel.org>
@@ -86,69 +86,38 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Replace the open coded parsing of CPU nodes' 'reg' property with
+Replace open coded parsing of CPU nodes 'reg' property with
 of_get_cpu_hwid().
 
-This change drops an error message for missing 'reg' property, but that
-should not be necessary as the DT tools will ensure 'reg' is present.
-
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
+Cc: Guo Ren <guoren@kernel.org>
+Cc: linux-csky@vger.kernel.org
 Signed-off-by: Rob Herring <robh@kernel.org>
 ---
- arch/arm64/kernel/smp.c | 31 ++-----------------------------
- 1 file changed, 2 insertions(+), 29 deletions(-)
+ arch/csky/kernel/smp.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/kernel/smp.c b/arch/arm64/kernel/smp.c
-index 6f6ff072acbd..c5cebc406d24 100644
---- a/arch/arm64/kernel/smp.c
-+++ b/arch/arm64/kernel/smp.c
-@@ -466,33 +466,6 @@ void __init smp_prepare_boot_cpu(void)
- 	kasan_init_hw_tags();
- }
+diff --git a/arch/csky/kernel/smp.c b/arch/csky/kernel/smp.c
+index e2993539af8e..6bb38bc2f39b 100644
+--- a/arch/csky/kernel/smp.c
++++ b/arch/csky/kernel/smp.c
+@@ -180,15 +180,13 @@ void __init setup_smp_ipi(void)
+ void __init setup_smp(void)
+ {
+ 	struct device_node *node = NULL;
+-	int cpu;
++	unsigned int cpu;
  
--static u64 __init of_get_cpu_mpidr(struct device_node *dn)
--{
--	const __be32 *cell;
--	u64 hwid;
+ 	for_each_of_cpu_node(node) {
+ 		if (!of_device_is_available(node))
+ 			continue;
+ 
+-		if (of_property_read_u32(node, "reg", &cpu))
+-			continue;
 -
--	/*
--	 * A cpu node with missing "reg" property is
--	 * considered invalid to build a cpu_logical_map
--	 * entry.
--	 */
--	cell = of_get_property(dn, "reg", NULL);
--	if (!cell) {
--		pr_err("%pOF: missing reg property\n", dn);
--		return INVALID_HWID;
--	}
--
--	hwid = of_read_number(cell, of_n_addr_cells(dn));
--	/*
--	 * Non affinity bits must be set to 0 in the DT
--	 */
--	if (hwid & ~MPIDR_HWID_BITMASK) {
--		pr_err("%pOF: invalid reg property\n", dn);
--		return INVALID_HWID;
--	}
--	return hwid;
--}
--
- /*
-  * Duplicate MPIDRs are a recipe for disaster. Scan all initialized
-  * entries and check for duplicates. If any is found just ignore the
-@@ -656,9 +629,9 @@ static void __init of_parse_and_init_cpus(void)
- 	struct device_node *dn;
++		cpu = of_get_cpu_hwid(node, 0);
+ 		if (cpu >= NR_CPUS)
+ 			continue;
  
- 	for_each_of_cpu_node(dn) {
--		u64 hwid = of_get_cpu_mpidr(dn);
-+		u64 hwid = of_get_cpu_hwid(dn, 0);
- 
--		if (hwid == INVALID_HWID)
-+		if (hwid & ~MPIDR_HWID_BITMASK)
- 			goto next;
- 
- 		if (is_mpidr_duplicate(cpu_count, hwid)) {
 -- 
 2.30.2
 
