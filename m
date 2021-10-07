@@ -2,104 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F0C942503A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 11:39:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E9B74251FA
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 13:28:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HQ5rp09W4z3069
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 20:39:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HQ8GY35j8z306M
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 22:28:53 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZwlvK3uS;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZwlvK3uS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=DOGfBEHe;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=ZwlvK3uS; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZwlvK3uS; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [170.10.133.124])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HQ5r35YWbz2xv8
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Oct 2021 20:39:15 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1633599552;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=YLM20CrNDiSc8ANWHfJkU17zM0jd+LCsGgIfHq5T3Hk=;
- b=ZwlvK3uSyX0kLru7cPg1Wq3+yb8s52FdoEIgjJMh0mSzQN0Z3sGqR+GWwIvSUYACIBAqdu
- B/PzT/S7zO2YRxHN+enVTllSQC8Gqf2os4OBAg9EIiRycuehw0B3isf+JkNh5YEglcczrJ
- qtzJrYdzO8p7533mtdQv4xZrhQ+x68U=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1633599552;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=YLM20CrNDiSc8ANWHfJkU17zM0jd+LCsGgIfHq5T3Hk=;
- b=ZwlvK3uSyX0kLru7cPg1Wq3+yb8s52FdoEIgjJMh0mSzQN0Z3sGqR+GWwIvSUYACIBAqdu
- B/PzT/S7zO2YRxHN+enVTllSQC8Gqf2os4OBAg9EIiRycuehw0B3isf+JkNh5YEglcczrJ
- qtzJrYdzO8p7533mtdQv4xZrhQ+x68U=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-5-E2OMnUOkMp2fbaBLLCc73g-1; Thu, 07 Oct 2021 05:36:08 -0400
-X-MC-Unique: E2OMnUOkMp2fbaBLLCc73g-1
-Received: by mail-ed1-f69.google.com with SMTP id
- c7-20020a05640227c700b003d27f41f1d4so5293883ede.16
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Oct 2021 02:36:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:subject:to:cc:references:from:organization
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=YLM20CrNDiSc8ANWHfJkU17zM0jd+LCsGgIfHq5T3Hk=;
- b=k/pTB6DBHRiAFLvBlGHDsaPJB4HhAflxVr+jUkaOMR/mtV/2VNg8Apwow2emAa0o0b
- MdbtJdolMWLOgpTaKUN3NqsnVVrCdev8sJ+wsV/CF2Ddq3qJs7Y5XtJEGArDOybJTu82
- WWt7kJwtKVwFg/8o3hb18BNoaa8qO/t3fjudzKwapC2b9FWAU46L+qwGchCo3djPTpj7
- rwaKOiFxIEC+CsB4rD98NdMJci6M+mkSM23RyM5yBF8A9Oc5SQTLZ+dhrkKtBCnlzIfN
- 5K2uXlWDofQZgRGWMsK6WrZgIGHRLEEVzFrxMrBks2nbeFPa/uDH/XMoZg8JQt3Cpqtd
- FLCw==
-X-Gm-Message-State: AOAM5335fgxD6CBGB8TPq+xu+rhWkUXec2jxaE69hE9en8RunYUXJsuE
- cqHrQThi7h2Jis+0OwojY94LezQpw8WNzs2B1yrMWTnYq6uVej29B7w7xYstfOA3w6wErLXDvCW
- cmIJ/DHbgmTh+L1/68nExL89c2g==
-X-Received: by 2002:adf:a118:: with SMTP id o24mr3898239wro.15.1633598859309; 
- Thu, 07 Oct 2021 02:27:39 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwTkTGQO7OWYf67tE5FRQkAoLSad774DWcZLIKG1RX8coeD4jn+lqAsFsAow6Xbu9zf7PRTow==
-X-Received: by 2002:adf:a118:: with SMTP id o24mr3898207wro.15.1633598859138; 
- Thu, 07 Oct 2021 02:27:39 -0700 (PDT)
-Received: from [192.168.3.132] (p5b0c6886.dip0.t-ipconnect.de. [91.12.104.134])
- by smtp.gmail.com with ESMTPSA id l17sm23582725wrx.24.2021.10.07.02.27.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Oct 2021 02:27:38 -0700 (PDT)
-Subject: Re: [PATCH v1 6/6] x86: remove memory hotplug support on X86_32
-To: Oscar Salvador <osalvador@suse.de>
-References: <20210929143600.49379-1-david@redhat.com>
- <20210929143600.49379-7-david@redhat.com>
- <YV66zoLEP3niIHEu@localhost.localdomain>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Message-ID: <565bdc3e-04b2-8eff-181c-d4dcf82e0e40@redhat.com>
-Date: Thu, 7 Oct 2021 11:27:37 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HQ8Fs586qz2yfZ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Oct 2021 22:28:17 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=DOGfBEHe; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4HQ8Fp4Lgmz4xR9;
+ Thu,  7 Oct 2021 22:28:14 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1633606095;
+ bh=6XmEiUcJBUQ8ZFQRxDdulMZQn/HEizswWC5HCbgLKv4=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=DOGfBEHeWO47bjBBHSHsqxFr8+O8sec9YHMOV06w07chkyLOXFhiy33LfNn5VlWDC
+ cKjYQVSHWpXovo4+4sITrz7gih9V9V4AXN2Wcdazpm+o5eAgii7U43m1xogcjaQacD
+ qjhiWYCHziZAWNYDXzUAGSREejHv2cc/u5ySDu+uRZC81Uxd2+WmbuUTmnYW0Po+TB
+ Sf5ivALvgxG2JTs/QmsZ6tIHV9JvFkIFw91QNK2C7Fl7c8uzlqWsCWXqGN8kCJuve4
+ jwITcpfEw9wlw82uh2lulpy0eFqLA76uFzeA8+J4vJxxk8fxUBIynWjzD9Opa3CuYE
+ mEmRv4WpkTXKw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH] video: fbdev: use memset_io() instead of memset()
+In-Reply-To: <884a54f1e5cb774c1d9b4db780209bee5d4f6718.1631712563.git.christophe.leroy@csgroup.eu>
+References: <884a54f1e5cb774c1d9b4db780209bee5d4f6718.1631712563.git.christophe.leroy@csgroup.eu>
+Date: Thu, 07 Oct 2021 22:28:10 +1100
+Message-ID: <87lf35nkfp.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <YV66zoLEP3niIHEu@localhost.localdomain>
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,37 +59,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, Jason Wang <jasowang@redhat.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- virtualization@lists.linux-foundation.org, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, linux-kselftest@vger.kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>,
- Alex Shi <alexs@kernel.org>, Jonathan Corbet <corbet@lwn.net>, x86@kernel.org,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Mike Rapoport <rppt@kernel.org>
+Cc: linux-fbdev@vger.kernel.org, Finn Thain <fthain@linux-m68k.org>,
+ Stan Johnson <userm57@yahoo.com>, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 07.10.21 11:15, Oscar Salvador wrote:
-> On Wed, Sep 29, 2021 at 04:36:00PM +0200, David Hildenbrand wrote:
->> CONFIG_MEMORY_HOTPLUG was marked BROKEN over one year and we just
->> restricted it to 64 bit. Let's remove the unused x86 32bit implementation
->> and simplify the Kconfig.
->>
->> Signed-off-by: David Hildenbrand <david@redhat.com>
-> 
-> Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> While investigating a lockup at startup on Powerbook 3400C, it was
+> identified that the fbdev driver generates alignment exception at
+> startup:
+...
+>
+> Use fb_memset() instead of memset(). fb_memset() is defined as
+> memset_io() for powerpc.
+>
+> Fixes: 8c8709334cec ("[PATCH] ppc32: Remove CONFIG_PMAC_PBOOK")
+> Reported-by: Stan Johnson <userm57@yahoo.com>
+> Cc: Finn Thain <fthain@linux-m68k.org>
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+>  drivers/video/fbdev/chipsfb.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks for the review Oscar!
+Looks like drivers/video/fbdev is orphaned, so I'll pick this up via
+powerpc.
 
--- 
-Thanks,
-
-David / dhildenb
-
+cheers
