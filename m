@@ -1,108 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B40F5424AE3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 02:10:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3146424BCC
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 04:25:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HPsCd3nlRz30J3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 11:10:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HPwD243Mdz309K
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 13:25:54 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=exep+GLZ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=fVpVXChA;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52f;
+ helo=mail-pg1-x52f.google.com; envelope-from=f.fainelli@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=exep+GLZ; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=fVpVXChA; dkim-atps=neutral
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com
+ [IPv6:2607:f8b0:4864:20::52f])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HPsBt577Zz2yKJ
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Oct 2021 11:09:42 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 196N6cMw024113; 
- Wed, 6 Oct 2021 20:09:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=NghlO+jDH5H1KC7mat4T3H28xnmH4VAEkQ/xmasyNS4=;
- b=exep+GLZYXlIUF+fboOCasktpCbm6hj/Ik2uGBCBUb2gWeaVJXsXbxCdcR2+JlLd36M5
- /+bVyGE9cvH/KfAVeDZetF/08KaeZjayyYwQE9omJUzkSBkT70F8b2NUSIBeIGMJuqV2
- AbeqlYW/ejP/+tHUjtQ7iwYtRSjBb5Fdc1r5J0jCw68XIjoAsXEgiPqYQr2DwM9RIw9L
- FpWZGoA8HZg917LbCNSKAb32dybhUHYCFGqCWoYpXGTIusoW4nUw/UZYgnaPkQyoCnSP
- GGCpc/XrF43h+eeoi7xBBKru6z7b791A6/iDCKXLFnjdLVGFLHlUo4BcZsroXpignvIC Ug== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3bhgqhxsq8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 06 Oct 2021 20:09:39 -0400
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 19700dvi024605;
- Wed, 6 Oct 2021 20:09:38 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3bhgqhxsq1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 06 Oct 2021 20:09:38 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19706vU8011680;
- Thu, 7 Oct 2021 00:09:37 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma04ams.nl.ibm.com with ESMTP id 3bef2ba9hy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 07 Oct 2021 00:09:37 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 19704BxU56361386
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 7 Oct 2021 00:04:11 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 713804203F;
- Thu,  7 Oct 2021 00:09:34 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 17B3742042;
- Thu,  7 Oct 2021 00:09:34 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu,  7 Oct 2021 00:09:34 +0000 (GMT)
-Received: from [9.102.33.41] (unknown [9.102.33.41])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 2DBA3600B3;
- Thu,  7 Oct 2021 11:09:32 +1100 (AEDT)
-Subject: Re: [PATCH] Documentation: Fix typo in testing/sysfs-class-cxl
-To: Sohaib Mohamed <sohaib.amhmd@gmail.com>
-References: <20211006155017.135592-1-sohaib.amhmd@gmail.com>
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Message-ID: <bc74b269-6c93-d1fc-0f3c-f078ec70bd35@linux.ibm.com>
-Date: Thu, 7 Oct 2021 11:09:31 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HPwCG5Wf5z2yPV
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Oct 2021 13:25:13 +1100 (AEDT)
+Received: by mail-pg1-x52f.google.com with SMTP id m21so4165897pgu.13
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Oct 2021 19:25:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=message-id:date:mime-version:user-agent:subject:content-language:to
+ :cc:references:from:in-reply-to:content-transfer-encoding;
+ bh=6Fbp2oLqg5VLyJhPP2UoprEyUpjt3vE+k1k8NDwLMpk=;
+ b=fVpVXChAwZh74Yak5ikdgyaoheURY4K/ccbznO6zTnIB1AbJR+bIgOAW5/cSxWFoOZ
+ cY0eBdVYRQP1/jK52zezVr0uzpqaKqL4UT7RQvBZyhmKIcoiByFnE72l/T/lAzTh60PX
+ 2ZZ2YfXaMMnXi99HoWBLG5uUJUaMAp+mwPmSs0A9L0wSZq5MBqIGrLe/fQpBMPOxvPnK
+ 4rfWTUo7RKXBeIwus/mUrNTfwOqbla5PIcLbJRJuwd6IvqLGvZcPe9NmM60QdmCBRqmR
+ sMF0mjWUQFOWNx2GTwfCL5Ktgovulw8+KnJ+87QvW6vVfTE6IVfRZKsoah2Gd8VJ0NWK
+ +Eww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+ :content-language:to:cc:references:from:in-reply-to
+ :content-transfer-encoding;
+ bh=6Fbp2oLqg5VLyJhPP2UoprEyUpjt3vE+k1k8NDwLMpk=;
+ b=7iJEfkhuOSq8IqhPcrBPImfm4kvNkpxCZ/VRqmxdAB7Pt2NR3AkWPTV5q9pksWGhmS
+ gnIbA8auUiDHiPPY5/BKu9bi5D+fAzbD50ukMgy/Q2LELagV/hXBmaqaDDqeahYB5lN5
+ eaykOdzNa5pviR7u3/T3MUbhh4bNIdG0IlpYvgnothWV31ECM8r+1q2lMAcy/wdi+lOx
+ HROS+32L/BRJ/1pLrBBxcfRUfcT2M4EvM8Kd0hVlNzif4G2wjYsFIcXUWMjxi3c+rv56
+ VNAZdJ6poL6DN9Rejzb0QD62nPtOK6vwuu41wYueB6t3ql2sFdu0dna9ux5U3r7uwDVM
+ TR2A==
+X-Gm-Message-State: AOAM530iwcEFT/Hs1erqtZa54B9sJbLFb6hy4tmNoh2ucG2hTXk73WrD
+ bVUCAm6c0i352msd3Tzia0A=
+X-Google-Smtp-Source: ABdhPJys1HdOqewyun+C+iToAvx9hnErbBSMfwtBGQraooU+JJaijDbgzG5Y0UhUonum+9KpDmz8JA==
+X-Received: by 2002:a63:ed4a:: with SMTP id m10mr1303051pgk.448.1633573509317; 
+ Wed, 06 Oct 2021 19:25:09 -0700 (PDT)
+Received: from [10.230.29.137] ([192.19.223.252])
+ by smtp.gmail.com with ESMTPSA id g23sm22285369pfu.71.2021.10.06.19.24.54
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 06 Oct 2021 19:25:08 -0700 (PDT)
+Message-ID: <1a15bbef-cf3d-33c6-b6c1-3dd607d71d1d@gmail.com>
+Date: Wed, 6 Oct 2021 19:24:50 -0700
 MIME-Version: 1.0
-In-Reply-To: <20211006155017.135592-1-sohaib.amhmd@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.1.2
+Subject: Re: [PATCH 00/12] DT: CPU h/w id parsing clean-ups and cacheinfo id
+ support
 Content-Language: en-US
+To: Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ James Morse <james.morse@arm.com>, Catalin Marinas
+ <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Guo Ren <guoren@kernel.org>, Jonas Bonn <jonas@southpole.se>,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ Stafford Horne <shorne@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
+ x86@kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <20211006164332.1981454-1-robh@kernel.org>
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20211006164332.1981454-1-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: tw1kv9MER9trXFDQHDBkrZhu0rJ2lpr9
-X-Proofpoint-ORIG-GUID: 7ezZjb9dQkzGDxfZ3MjE3xunKYYerdrX
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
- definitions=2021-10-06_04,2021-10-06_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 mlxscore=0
- lowpriorityscore=0 bulkscore=0 spamscore=0 priorityscore=1501
- impostorscore=0 suspectscore=0 adultscore=0 mlxlogscore=927 phishscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2109230001 definitions=main-2110060148
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -114,21 +93,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Scott Branden <sbranden@broadcom.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ linux-sh@vger.kernel.org, Ray Jui <rjui@broadcom.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
+ linux-csky@vger.kernel.org, openrisc@lists.librecores.org,
+ Ingo Molnar <mingo@redhat.com>, Paul Mackerras <paulus@samba.org>,
+ Borislav Petkov <bp@alien8.de>, bcm-kernel-feedback-list@broadcom.com,
+ Thomas Gleixner <tglx@linutronix.de>, Frank Rowand <frowand.list@gmail.com>,
+ linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/10/21 2:50 am, Sohaib Mohamed wrote:
-> Remove repeated words: "the the lowest" and "this this kernel"
+
+
+On 10/6/2021 9:43 AM, Rob Herring wrote:
+> The first 10 patches add a new function, of_get_cpu_hwid(), which parses
+> CPU DT node 'reg' property, and then use it to replace all the open
+> coded versions of parsing CPU node 'reg' properties.
 > 
-> Signed-off-by: Sohaib Mohamed <sohaib.amhmd@gmail.com>
+> The last 2 patches add support for populating the cacheinfo 'id' on DT
+> platforms. The minimum associated CPU hwid is used for the id. The id is
+> optional, but necessary for resctrl which is being adapted for Arm MPAM.
+> 
+> Tested on arm64. Compile tested on arm, x86 and powerpc.
 
-Thanks for catching this.
+On ARM and ARM64:
 
-Acked-by: Andrew Donnellan <ajd@linux.ibm.com>
+Tested-by: Florian Fainelli <f.fainelli@gmail.com>
 
+lscpu -C continues to work on ARM64 as before with cache properties 
+provided in the FDT.
 -- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
+Florian
