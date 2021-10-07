@@ -2,70 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3146424BCC
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 04:25:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 076A6424BCD
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 04:26:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HPwD243Mdz309K
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 13:25:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HPwDm6QHDz2ywK
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 13:26:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=fVpVXChA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Sp/MggvY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52f;
- helo=mail-pg1-x52f.google.com; envelope-from=f.fainelli@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62b;
+ helo=mail-pl1-x62b.google.com; envelope-from=f.fainelli@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=fVpVXChA; dkim-atps=neutral
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com
- [IPv6:2607:f8b0:4864:20::52f])
+ header.s=20210112 header.b=Sp/MggvY; dkim-atps=neutral
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com
+ [IPv6:2607:f8b0:4864:20::62b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HPwCG5Wf5z2yPV
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Oct 2021 13:25:13 +1100 (AEDT)
-Received: by mail-pg1-x52f.google.com with SMTP id m21so4165897pgu.13
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Oct 2021 19:25:13 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HPwCK6ZLMz2yPV
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Oct 2021 13:25:17 +1100 (AEDT)
+Received: by mail-pl1-x62b.google.com with SMTP id n11so2496703plf.4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Oct 2021 19:25:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=message-id:date:mime-version:user-agent:subject:content-language:to
  :cc:references:from:in-reply-to:content-transfer-encoding;
- bh=6Fbp2oLqg5VLyJhPP2UoprEyUpjt3vE+k1k8NDwLMpk=;
- b=fVpVXChAwZh74Yak5ikdgyaoheURY4K/ccbznO6zTnIB1AbJR+bIgOAW5/cSxWFoOZ
- cY0eBdVYRQP1/jK52zezVr0uzpqaKqL4UT7RQvBZyhmKIcoiByFnE72l/T/lAzTh60PX
- 2ZZ2YfXaMMnXi99HoWBLG5uUJUaMAp+mwPmSs0A9L0wSZq5MBqIGrLe/fQpBMPOxvPnK
- 4rfWTUo7RKXBeIwus/mUrNTfwOqbla5PIcLbJRJuwd6IvqLGvZcPe9NmM60QdmCBRqmR
- sMF0mjWUQFOWNx2GTwfCL5Ktgovulw8+KnJ+87QvW6vVfTE6IVfRZKsoah2Gd8VJ0NWK
- +Eww==
+ bh=wdvJk6D1ViEBYH6uB0AwglzPFWNo7cbOO7fkxMbJ9dA=;
+ b=Sp/MggvYZ1fkKseKOIqheZEqgIYO9U7l3Fb+F7r4AF1HJvKza55doAM4VFHekfLjFx
+ l0h9QKBGfCRkc0EqNboiOVTNmHzg/SEEuLqwArpOJayKxQme+kLkxEIGqZgvnMWmieNx
+ fhuC+ZFrD2D0fjMPYFbqmZAg8gVdJN6nAW585b1RLttDiggeBCq69kYRXGKHA2qSZytw
+ hSaCB+BvsDGvSowzyJ3w/Myei9Krute/Mf+n+VyS3y75NZoqIH2HR+hkZeD1eiqFJV9a
+ +rouVDBNrFLQuldI1V/ceTpSLwESV/R60I9q1ajynvnJIpy9PEOAXakMQE5+aA6KEYjv
+ CNsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
  :content-language:to:cc:references:from:in-reply-to
  :content-transfer-encoding;
- bh=6Fbp2oLqg5VLyJhPP2UoprEyUpjt3vE+k1k8NDwLMpk=;
- b=7iJEfkhuOSq8IqhPcrBPImfm4kvNkpxCZ/VRqmxdAB7Pt2NR3AkWPTV5q9pksWGhmS
- gnIbA8auUiDHiPPY5/BKu9bi5D+fAzbD50ukMgy/Q2LELagV/hXBmaqaDDqeahYB5lN5
- eaykOdzNa5pviR7u3/T3MUbhh4bNIdG0IlpYvgnothWV31ECM8r+1q2lMAcy/wdi+lOx
- HROS+32L/BRJ/1pLrBBxcfRUfcT2M4EvM8Kd0hVlNzif4G2wjYsFIcXUWMjxi3c+rv56
- VNAZdJ6poL6DN9Rejzb0QD62nPtOK6vwuu41wYueB6t3ql2sFdu0dna9ux5U3r7uwDVM
- TR2A==
-X-Gm-Message-State: AOAM530iwcEFT/Hs1erqtZa54B9sJbLFb6hy4tmNoh2ucG2hTXk73WrD
- bVUCAm6c0i352msd3Tzia0A=
-X-Google-Smtp-Source: ABdhPJys1HdOqewyun+C+iToAvx9hnErbBSMfwtBGQraooU+JJaijDbgzG5Y0UhUonum+9KpDmz8JA==
-X-Received: by 2002:a63:ed4a:: with SMTP id m10mr1303051pgk.448.1633573509317; 
- Wed, 06 Oct 2021 19:25:09 -0700 (PDT)
+ bh=wdvJk6D1ViEBYH6uB0AwglzPFWNo7cbOO7fkxMbJ9dA=;
+ b=xXRjrlUEgL9ryi0Yu7Kowb/6SDZyeu2W2DQwPX2mlGnXYFLF5yBxuTGe3YTdRl+J1R
+ kd9caDWBwbMUjOcZ0ARplM010N42QG8jD3+Hh8gneH4XINYn7WG0ho9gQxy7aalr7mCx
+ kTXwQG1xp+vk30VvKczlMN8scn4R8uvuuXWaJUi5aS6lgaQSo6geUW6AV9GciwB/7zG7
+ hwJl1P/WUprjhttbZB7mh41vgZQjTdGGMOT68umvIo66sia69Vv+FBWRIiF0SBqwXIrj
+ +Uc4IxSP/z2OANXiAAIoUKIcgtPpHTOHEtSD15G6BlbE8iuvkpnRKDTPuNaFBPssKM02
+ nTFw==
+X-Gm-Message-State: AOAM532PJ9MjRsNkOE1mug4WleBE1aRrE8161uP5UlleJsk4OBRNy4LS
+ q9rnVOHd48JeoJEgO2yo9T0=
+X-Google-Smtp-Source: ABdhPJwHRb5SJb8sNMUH9CwZYyScBHBUSvA5u2yjHWxgkKCOzGkTQ5PtC45GQtM+mqCrbUx1dMutLQ==
+X-Received: by 2002:a17:90a:8b8d:: with SMTP id
+ z13mr2492694pjn.214.1633573515375; 
+ Wed, 06 Oct 2021 19:25:15 -0700 (PDT)
 Received: from [10.230.29.137] ([192.19.223.252])
- by smtp.gmail.com with ESMTPSA id g23sm22285369pfu.71.2021.10.06.19.24.54
+ by smtp.gmail.com with ESMTPSA id k14sm22015549pgg.92.2021.10.06.19.25.01
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 06 Oct 2021 19:25:08 -0700 (PDT)
-Message-ID: <1a15bbef-cf3d-33c6-b6c1-3dd607d71d1d@gmail.com>
-Date: Wed, 6 Oct 2021 19:24:50 -0700
+ Wed, 06 Oct 2021 19:25:14 -0700 (PDT)
+Message-ID: <ad0c1e14-62f9-0b9c-0b84-d31a213d53de@gmail.com>
+Date: Wed, 6 Oct 2021 19:24:58 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.1.2
-Subject: Re: [PATCH 00/12] DT: CPU h/w id parsing clean-ups and cacheinfo id
- support
+Subject: Re: [PATCH 03/12] ARM: broadcom: Use of_get_cpu_hwid()
 Content-Language: en-US
 To: Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
  James Morse <james.morse@arm.com>, Catalin Marinas
@@ -78,8 +78,9 @@ To: Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
  Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
  x86@kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 References: <20211006164332.1981454-1-robh@kernel.org>
+ <20211006164332.1981454-4-robh@kernel.org>
 From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20211006164332.1981454-1-robh@kernel.org>
+In-Reply-To: <20211006164332.1981454-4-robh@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -109,21 +110,16 @@ Sender: "Linuxppc-dev"
 
 
 On 10/6/2021 9:43 AM, Rob Herring wrote:
-> The first 10 patches add a new function, of_get_cpu_hwid(), which parses
-> CPU DT node 'reg' property, and then use it to replace all the open
-> coded versions of parsing CPU node 'reg' properties.
+> Replace open coded parsing of CPU nodes 'reg' property with
+> of_get_cpu_hwid().
 > 
-> The last 2 patches add support for populating the cacheinfo 'id' on DT
-> platforms. The minimum associated CPU hwid is used for the id. The id is
-> optional, but necessary for resctrl which is being adapted for Arm MPAM.
-> 
-> Tested on arm64. Compile tested on arm, x86 and powerpc.
+> Cc: Florian Fainelli <f.fainelli@gmail.com>
+> Cc: Ray Jui <rjui@broadcom.com>
+> Cc: Scott Branden <sbranden@broadcom.com>
+> Cc: bcm-kernel-feedback-list@broadcom.com
+> Cc: Russell King <linux@armlinux.org.uk>
+> Signed-off-by: Rob Herring <robh@kernel.org>
 
-On ARM and ARM64:
-
-Tested-by: Florian Fainelli <f.fainelli@gmail.com>
-
-lscpu -C continues to work on ARM64 as before with cache properties 
-provided in the FDT.
+Acked-by: Florian Fainelli <f.fainelli@gmail.com>
 -- 
 Florian
