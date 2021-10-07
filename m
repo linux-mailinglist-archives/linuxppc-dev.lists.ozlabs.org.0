@@ -2,102 +2,102 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 402DB42548B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 15:46:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91DFF42549C
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 15:48:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HQCJr149Vz3bhC
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Oct 2021 00:46:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HQCMs3DJhz30J5
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Oct 2021 00:48:41 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JljdMGOo;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FWPeX95A;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eL2KlNIq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=lvivier@redhat.com;
+ smtp.mailfrom=us.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=pc@us.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=JljdMGOo; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=FWPeX95A; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=eL2KlNIq; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HQCJ46xbGz2ymb
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Oct 2021 00:45:22 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1633614317;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=6usspG94A1kNlqd/WFrWFDCc16P7tAqSAi+n+Gy8zoU=;
- b=JljdMGOo7E0/vxc0zmUW1Si13ii92oiuGtCr7zPsYZYcs2KLRgBJcyOfs6LD6G3uNq81GW
- ATZ1RiuwEfCAgCw2ciT4tjEVzvm8EVaUfpBsW0EmazXUBYJ0EegzP6BwqkBzr5hXyipHlz
- HNXabuiwL8XsblUICuik7du4DjacDAA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1633614318;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=6usspG94A1kNlqd/WFrWFDCc16P7tAqSAi+n+Gy8zoU=;
- b=FWPeX95ARzuRE9XEbWHMuNFqAJYLUonkIFEyZKI5tOn3MQvTRDjPixBbLtYS1Xs4o1mIZ/
- kG00kwnIOVqJ+0GbJjEveQ8EDBuP0KLkXQQ1y8lrybsv0FvBF9NxGXR/uDZGPIPEHnQ4UO
- r5xRo2R3y3N7PimRROL2hVvy7gl+yUA=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-519-nyWWuFm8OPCLgFZbKzQocQ-1; Thu, 07 Oct 2021 09:45:16 -0400
-X-MC-Unique: nyWWuFm8OPCLgFZbKzQocQ-1
-Received: by mail-wr1-f69.google.com with SMTP id
- v15-20020adfa1cf000000b00160940b17a2so4731704wrv.19
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Oct 2021 06:45:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
- :content-language:to:cc:references:from:in-reply-to
- :content-transfer-encoding;
- bh=6usspG94A1kNlqd/WFrWFDCc16P7tAqSAi+n+Gy8zoU=;
- b=0fsZ7/mK0nfIm+OJMiNGw1fVKdlmBgWtlaA0WCX5+iKggXwPwEwgdJkdHhlJtXC/Bc
- f66QGOdMOpyWJIoipymsuj+CyH8uqCsSFGnqaw/7afI/ETNBXy3qQp7neNtrk4131MAs
- dIeGUzaaVgjK3ihu3RhMv9Th7/Wz7UiLYdSGUdd1u2EnlMahvcVdW76Bc7KQ0rWc1VtY
- roiSCU0x6MLvKD4hR8mIDP/DTyugRIlHEur3GCRGYJsVOGyOo2oEaKovYldGHnecaPVb
- w1llGOBAvv9N8Q6IMkH2SnpKD7VXpc0GLhi0R/Kds1OVnsXToww98E8J43zZ2jlpqBzI
- aFRQ==
-X-Gm-Message-State: AOAM530S4+d9jhJePsXW/6AxUMeF4F9Q2phMxiJlrLe89pgmrIFCbHnN
- bO/GvG1dZvrq802ZxlkHlPy5CYnS+MKy1Zky8c0qdLfkvkpfIkV8ascAqBqdRVaiVZNQvgIOWlR
- xsMiYqzULIifoz79F2SYa3Y6SrA==
-X-Received: by 2002:adf:bb08:: with SMTP id r8mr5750701wrg.222.1633614315039; 
- Thu, 07 Oct 2021 06:45:15 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJx5grJqb2V1AulhcQfdWUkwxLsq/AzMT1s5kA3HVmlm1/7Jko50u59wnpZfc6iu0gGMemasiQ==
-X-Received: by 2002:adf:bb08:: with SMTP id r8mr5750665wrg.222.1633614314742; 
- Thu, 07 Oct 2021 06:45:14 -0700 (PDT)
-Received: from [192.168.100.42] ([82.142.3.114])
- by smtp.gmail.com with ESMTPSA id a81sm1300665wmd.30.2021.10.07.06.45.13
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Oct 2021 06:45:14 -0700 (PDT)
-Message-ID: <1bc32339-b786-99bd-d49c-ad19ac7ce29b@redhat.com>
-Date: Thu, 7 Oct 2021 15:45:13 +0200
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HQCM546lrz2ymb
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Oct 2021 00:48:01 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 197D7OKe030374; 
+ Thu, 7 Oct 2021 09:47:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=FiAyj+X+y5/IyCfXO7F3VRxntxo6XoOu/dw9JbbDB2Y=;
+ b=eL2KlNIqIUV8C0YgFryIw4rMR8gpwCRD6gLX/1MuxBdEAZmfHqp7C0+tm1iVbm3DNUUR
+ QARL+q4F5KeLIt2XZLKOQIoknFMkg9aaaffi2KlmPCTw5VlHiMCVppjnF/EivKEmkKSC
+ kAj8/h1eV47hr5+wheFw27XR1gCjwQrb1PXZ7He9UjnbR8OGZeM5xwpaXy3e2GFvMMXQ
+ U13sXSmBsJos7M3hLSzuV62VRxgpxgeCb5b/J5wtUQSLkYPdeW6IIhD3tPehV/KCmUrY
+ fYB+AKCfK46+2z/y1TKNCJBqik+c++pPLrT/TGHBFyT+oKdLgqeU0BKgd6XCmKcAACpi Jg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3bhksyadhy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 07 Oct 2021 09:47:56 -0400
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 197D8ASZ003008;
+ Thu, 7 Oct 2021 09:47:56 -0400
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3bhksyadhu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 07 Oct 2021 09:47:56 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 197DcAiT012729;
+ Thu, 7 Oct 2021 13:47:55 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma04dal.us.ibm.com with ESMTP id 3bef2dhaka-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 07 Oct 2021 13:47:55 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 197Dls5B44892634
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 7 Oct 2021 13:47:54 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D0B77C607F;
+ Thu,  7 Oct 2021 13:47:53 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B11AEC6063;
+ Thu,  7 Oct 2021 13:47:52 +0000 (GMT)
+Received: from li-24c3614c-2adc-11b2-a85c-85f334518bdb.ibm.com (unknown
+ [9.160.40.117])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTPS;
+ Thu,  7 Oct 2021 13:47:52 +0000 (GMT)
+Date: Thu, 7 Oct 2021 08:47:50 -0500
+From: "Paul A. Clarke" <pc@us.ibm.com>
+To: Kajol Jain <kjain@linux.ibm.com>
+Subject: Re: [PATCH] perf vendor events power10: Add metric events json file
+ for power10 platform
+Message-ID: <20211007134750.GA243632@li-24c3614c-2adc-11b2-a85c-85f334518bdb.ibm.com>
+References: <20211006073119.276340-1-kjain@linux.ibm.com>
+ <20211006173248.GA7389@li-24c3614c-2adc-11b2-a85c-85f334518bdb.ibm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.1.0
-Subject: Re: [PATCH] KVM: PPC: Defer vtime accounting 'til after IRQ handling
-To: Greg Kurz <groug@kaod.org>
-References: <20211006073745.82109-1-lvivier@redhat.com>
- <20211006124204.4741bb5c@bahia.huguette>
-From: Laurent Vivier <lvivier@redhat.com>
-In-Reply-To: <20211006124204.4741bb5c@bahia.huguette>
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=lvivier@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211006173248.GA7389@li-24c3614c-2adc-11b2-a85c-85f334518bdb.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Smn2mgYwX25dnRXqKmiHLNPLX2XAYLvY
+X-Proofpoint-ORIG-GUID: bxvGvEuneP8OjqU1yMDF0RuGYm4V-sJu
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
+ definitions=2021-10-07_01,2021-10-07_02,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 mlxlogscore=999
+ priorityscore=1501 malwarescore=0 suspectscore=0 mlxscore=0 spamscore=0
+ clxscore=1015 bulkscore=0 adultscore=0 lowpriorityscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2109230001
+ definitions=main-2110070092
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,128 +109,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
- kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: maddy@linux.vnet.ibm.com, rnsastry@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, acme@kernel.org,
+ linux-perf-users@vger.kernel.org, atrajeev@linux.vnet.ibm.com,
+ jolsa@redhat.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 06/10/2021 12:42, Greg Kurz wrote:
-> On Wed,  6 Oct 2021 09:37:45 +0200
-> Laurent Vivier <lvivier@redhat.com> wrote:
+On Wed, Oct 06, 2021 at 12:32:48PM -0500, Paul A. Clarke wrote:
+> > +    {
+> > +        "BriefDescription": "Average cycles per instruction when the instruction finishes at dispatch",
 > 
->> Commit 61bd0f66ff92 has moved guest_enter() out of the interrupt
->> protected area to be able to have updated tick counters, but
->> commit 112665286d08 moved back to this area to avoid wrong
->> context warning (or worse).
->>
->> None of them are correct, to fix the problem port to POWER
->> the x86 fix 160457140187 ("KVM: x86: Defer vtime accounting 'til
->> after IRQ handling"):
->>
->> "Defer the call to account guest time until after servicing any IRQ(s)
->>   that happened in the guest or immediately after VM-Exit.  Tick-based
->>   accounting of vCPU time relies on PF_VCPU being set when the tick IRQ
->>   handler runs, and IRQs are blocked throughout the main sequence of
->>   vcpu_enter_guest(), including the call into vendor code to actually
->>   enter and exit the guest."
->>
->> Link: https://bugzilla.redhat.com/show_bug.cgi?id=2009312
->> Fixes: 61bd0f66ff92 ("KVM: PPC: Book3S HV: Fix guest time accounting with VIRT_CPU_ACCOUNTING_GEN")
-> 
-> This patch was merged in linux 4.16 and thus is on the 4.16.y
-> stable branch and it was backported to stable 4.14.y. It would
-> make sense to Cc: stable # v4.14 also, but...
-> 
->> Fixes: 112665286d08 ("KVM: PPC: Book3S HV: Context tracking exit guest context before enabling irqs")
-> 
-> ... this one, which was merged in linux 5.12, was never backported
-> anywhere because it wasn't considered as a fix, as commented here:
-> 
-> https://lore.kernel.org/linuxppc-dev/1610793296.fjhomer31g.astroid@bobo.none/
-> 
-> AFAICT commit 61bd0f66ff92 was never mentioned anywhere in a bug. The
-> first Fixes: tag thus looks a bit misleading. I'd personally drop it
-> and Cc: stable # v5.12.
->
+> I'm not sure what that means.
 
-Ok, I update the comment.
+After doing a bit of research, I think it might be a bit more clear as:
+"Average cycles per instruction when the NTF instruction finishes at dispatch"
 
->> Cc: npiggin@gmail.com
->>
->> Signed-off-by: Laurent Vivier <lvivier@redhat.com>
->> ---
->>   arch/powerpc/kvm/book3s_hv.c | 10 ++++++----
->>   1 file changed, 6 insertions(+), 4 deletions(-)
->>
->> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
->> index 2acb1c96cfaf..43e1ce853785 100644
->> --- a/arch/powerpc/kvm/book3s_hv.c
->> +++ b/arch/powerpc/kvm/book3s_hv.c
->> @@ -3695,6 +3695,8 @@ static noinline void kvmppc_run_core(struct kvmppc_vcore *vc)
->>   
->>   	srcu_read_unlock(&vc->kvm->srcu, srcu_idx);
->>   
->> +	context_tracking_guest_exit();
->> +
->>   	set_irq_happened(trap);
->>   
->>   	spin_lock(&vc->lock);
->> @@ -3726,9 +3728,8 @@ static noinline void kvmppc_run_core(struct kvmppc_vcore *vc)
->>   
->>   	kvmppc_set_host_core(pcpu);
->>   
->> -	guest_exit_irqoff();
->> -
-> 
-> 
-> Change looks ok but it might be a bit confusing for the
-> occasional reader that guest_enter_irqoff() isn't matched
-> by a guest_exit_irqoff().
-> 
->>   	local_irq_enable();
->> +	vtime_account_guest_exit();
->>   
-> 
-> Maybe add a comment like in x86 ?
-> 
+> > +        "MetricExpr": "PM_EXEC_STALL_FIN_AT_DISP / PM_RUN_INST_CMPL",
+> > +        "MetricGroup": "CPI",
+> > +        "MetricName": "FIN_AT_DISP_STALL_CPI"
+> > +    },
 
-done
-
->>   	/* Let secondaries go back to the offline loop */
->>   	for (i = 0; i < controlled_threads; ++i) {
->> @@ -4506,13 +4507,14 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
->>   
->>   	srcu_read_unlock(&kvm->srcu, srcu_idx);
->>   
->> +	context_tracking_guest_exit();
->> +
->>   	set_irq_happened(trap);
->>   
->>   	kvmppc_set_host_core(pcpu);
->>   
->> -	guest_exit_irqoff();
->> -
->>   	local_irq_enable();
->> +	vtime_account_guest_exit();
->>   
->>   	cpumask_clear_cpu(pcpu, &kvm->arch.cpu_in_guest);
->>   
-> 
-> Same remarks. FWIW a followup was immediately added to x86 to
-> encapsulate the enter/exit logic in common helpers :
-> 
-> ommit bc908e091b3264672889162733020048901021fb
-> Author: Sean Christopherson <seanjc@google.com>
-> Date:   Tue May 4 17:27:35 2021 -0700
-> 
->      KVM: x86: Consolidate guest enter/exit logic to common helpers
-> 
-> This makes the code nicer. Maybe do something similar for POWER ?
-
-I don't like to modify kernel code when it's not needed. I just want to fix a bug, if 
-someone wants this nicer I let this to him...
-
-Thanks,
-Laurent
-
+PC
