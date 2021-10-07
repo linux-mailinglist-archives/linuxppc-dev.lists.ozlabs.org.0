@@ -1,76 +1,105 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BBF4424FE2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 11:16:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F0C942503A
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 11:39:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HQ5L035Fsz3bj6
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 20:16:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HQ5rp09W4z3069
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 20:39:54 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Lw7uvG7z;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=8xCq5Ego;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZwlvK3uS;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZwlvK3uS;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.29; helo=smtp-out2.suse.de;
- envelope-from=osalvador@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
- header.s=susede2_rsa header.b=Lw7uvG7z; 
- dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
- header.s=susede2_ed25519 header.b=8xCq5Ego; 
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=ZwlvK3uS; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZwlvK3uS; 
  dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HQ5KJ3KVqz2xX2
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Oct 2021 20:16:04 +1100 (AEDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id C5D96203F6;
- Thu,  7 Oct 2021 09:16:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1633598161; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HQ5r35YWbz2xv8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Oct 2021 20:39:15 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1633599552;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CxQ0ZV9cOOlrG2jRElhDboOH1/ncgOGYv8QD9De0aOg=;
- b=Lw7uvG7zBKms7sqR9dWZKsIPebzq3igxLuZw//KJ82jkCbX/WVCIt+ohnaMwcuCzgj/X1o
- 5LlB2SJRb5Ft6RYdOCD+LQrhcspETJZ1NLEHzDutE/2DBaNkPZs15JDb3Rep0F/TldZLNc
- Z2meDzCll9YQpTWNJgF3nkYIoYernHw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1633598161;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ bh=YLM20CrNDiSc8ANWHfJkU17zM0jd+LCsGgIfHq5T3Hk=;
+ b=ZwlvK3uSyX0kLru7cPg1Wq3+yb8s52FdoEIgjJMh0mSzQN0Z3sGqR+GWwIvSUYACIBAqdu
+ B/PzT/S7zO2YRxHN+enVTllSQC8Gqf2os4OBAg9EIiRycuehw0B3isf+JkNh5YEglcczrJ
+ qtzJrYdzO8p7533mtdQv4xZrhQ+x68U=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1633599552;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CxQ0ZV9cOOlrG2jRElhDboOH1/ncgOGYv8QD9De0aOg=;
- b=8xCq5EgoVY5xRbt7QHo29GOnRCfknfEkb/GRje1CC6D7omn0OivrSNXVnP7veEnFhiakWa
- e7XgNEG+K5LURCDg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 5941613A98;
- Thu,  7 Oct 2021 09:16:00 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id dPciE9C6XmHkLgAAMHmgww
- (envelope-from <osalvador@suse.de>); Thu, 07 Oct 2021 09:16:00 +0000
-Date: Thu, 7 Oct 2021 11:15:58 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: David Hildenbrand <david@redhat.com>
+ bh=YLM20CrNDiSc8ANWHfJkU17zM0jd+LCsGgIfHq5T3Hk=;
+ b=ZwlvK3uSyX0kLru7cPg1Wq3+yb8s52FdoEIgjJMh0mSzQN0Z3sGqR+GWwIvSUYACIBAqdu
+ B/PzT/S7zO2YRxHN+enVTllSQC8Gqf2os4OBAg9EIiRycuehw0B3isf+JkNh5YEglcczrJ
+ qtzJrYdzO8p7533mtdQv4xZrhQ+x68U=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-5-E2OMnUOkMp2fbaBLLCc73g-1; Thu, 07 Oct 2021 05:36:08 -0400
+X-MC-Unique: E2OMnUOkMp2fbaBLLCc73g-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ c7-20020a05640227c700b003d27f41f1d4so5293883ede.16
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Oct 2021 02:36:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:subject:to:cc:references:from:organization
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=YLM20CrNDiSc8ANWHfJkU17zM0jd+LCsGgIfHq5T3Hk=;
+ b=k/pTB6DBHRiAFLvBlGHDsaPJB4HhAflxVr+jUkaOMR/mtV/2VNg8Apwow2emAa0o0b
+ MdbtJdolMWLOgpTaKUN3NqsnVVrCdev8sJ+wsV/CF2Ddq3qJs7Y5XtJEGArDOybJTu82
+ WWt7kJwtKVwFg/8o3hb18BNoaa8qO/t3fjudzKwapC2b9FWAU46L+qwGchCo3djPTpj7
+ rwaKOiFxIEC+CsB4rD98NdMJci6M+mkSM23RyM5yBF8A9Oc5SQTLZ+dhrkKtBCnlzIfN
+ 5K2uXlWDofQZgRGWMsK6WrZgIGHRLEEVzFrxMrBks2nbeFPa/uDH/XMoZg8JQt3Cpqtd
+ FLCw==
+X-Gm-Message-State: AOAM5335fgxD6CBGB8TPq+xu+rhWkUXec2jxaE69hE9en8RunYUXJsuE
+ cqHrQThi7h2Jis+0OwojY94LezQpw8WNzs2B1yrMWTnYq6uVej29B7w7xYstfOA3w6wErLXDvCW
+ cmIJ/DHbgmTh+L1/68nExL89c2g==
+X-Received: by 2002:adf:a118:: with SMTP id o24mr3898239wro.15.1633598859309; 
+ Thu, 07 Oct 2021 02:27:39 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwTkTGQO7OWYf67tE5FRQkAoLSad774DWcZLIKG1RX8coeD4jn+lqAsFsAow6Xbu9zf7PRTow==
+X-Received: by 2002:adf:a118:: with SMTP id o24mr3898207wro.15.1633598859138; 
+ Thu, 07 Oct 2021 02:27:39 -0700 (PDT)
+Received: from [192.168.3.132] (p5b0c6886.dip0.t-ipconnect.de. [91.12.104.134])
+ by smtp.gmail.com with ESMTPSA id l17sm23582725wrx.24.2021.10.07.02.27.37
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 07 Oct 2021 02:27:38 -0700 (PDT)
 Subject: Re: [PATCH v1 6/6] x86: remove memory hotplug support on X86_32
-Message-ID: <YV66zoLEP3niIHEu@localhost.localdomain>
+To: Oscar Salvador <osalvador@suse.de>
 References: <20210929143600.49379-1-david@redhat.com>
  <20210929143600.49379-7-david@redhat.com>
+ <YV66zoLEP3niIHEu@localhost.localdomain>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+Message-ID: <565bdc3e-04b2-8eff-181c-d4dcf82e0e40@redhat.com>
+Date: Thu, 7 Oct 2021 11:27:37 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210929143600.49379-7-david@redhat.com>
+In-Reply-To: <YV66zoLEP3niIHEu@localhost.localdomain>
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,98 +128,20 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 29, 2021 at 04:36:00PM +0200, David Hildenbrand wrote:
-> CONFIG_MEMORY_HOTPLUG was marked BROKEN over one year and we just
-> restricted it to 64 bit. Let's remove the unused x86 32bit implementation
-> and simplify the Kconfig.
+On 07.10.21 11:15, Oscar Salvador wrote:
+> On Wed, Sep 29, 2021 at 04:36:00PM +0200, David Hildenbrand wrote:
+>> CONFIG_MEMORY_HOTPLUG was marked BROKEN over one year and we just
+>> restricted it to 64 bit. Let's remove the unused x86 32bit implementation
+>> and simplify the Kconfig.
+>>
+>> Signed-off-by: David Hildenbrand <david@redhat.com>
 > 
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+> Reviewed-by: Oscar Salvador <osalvador@suse.de>
 
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-
-> ---
->  arch/x86/Kconfig      |  6 +++---
->  arch/x86/mm/init_32.c | 31 -------------------------------
->  2 files changed, 3 insertions(+), 34 deletions(-)
-> 
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index ab83c22d274e..85f4762429f1 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -62,7 +62,7 @@ config X86
->  	select ARCH_32BIT_OFF_T			if X86_32
->  	select ARCH_CLOCKSOURCE_INIT
->  	select ARCH_ENABLE_HUGEPAGE_MIGRATION if X86_64 && HUGETLB_PAGE && MIGRATION
-> -	select ARCH_ENABLE_MEMORY_HOTPLUG if X86_64 || (X86_32 && HIGHMEM)
-> +	select ARCH_ENABLE_MEMORY_HOTPLUG if X86_64
->  	select ARCH_ENABLE_MEMORY_HOTREMOVE if MEMORY_HOTPLUG
->  	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if (PGTABLE_LEVELS > 2) && (X86_64 || X86_PAE)
->  	select ARCH_ENABLE_THP_MIGRATION if X86_64 && TRANSPARENT_HUGEPAGE
-> @@ -1615,7 +1615,7 @@ config ARCH_SELECT_MEMORY_MODEL
->  
->  config ARCH_MEMORY_PROBE
->  	bool "Enable sysfs memory/probe interface"
-> -	depends on X86_64 && MEMORY_HOTPLUG
-> +	depends on MEMORY_HOTPLUG
->  	help
->  	  This option enables a sysfs memory/probe interface for testing.
->  	  See Documentation/admin-guide/mm/memory-hotplug.rst for more information.
-> @@ -2395,7 +2395,7 @@ endmenu
->  
->  config ARCH_HAS_ADD_PAGES
->  	def_bool y
-> -	depends on X86_64 && ARCH_ENABLE_MEMORY_HOTPLUG
-> +	depends on ARCH_ENABLE_MEMORY_HOTPLUG
->  
->  config ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE
->  	def_bool y
-> diff --git a/arch/x86/mm/init_32.c b/arch/x86/mm/init_32.c
-> index bd90b8fe81e4..5cd7ea6d645c 100644
-> --- a/arch/x86/mm/init_32.c
-> +++ b/arch/x86/mm/init_32.c
-> @@ -779,37 +779,6 @@ void __init mem_init(void)
->  	test_wp_bit();
->  }
->  
-> -#ifdef CONFIG_MEMORY_HOTPLUG
-> -int arch_add_memory(int nid, u64 start, u64 size,
-> -		    struct mhp_params *params)
-> -{
-> -	unsigned long start_pfn = start >> PAGE_SHIFT;
-> -	unsigned long nr_pages = size >> PAGE_SHIFT;
-> -	int ret;
-> -
-> -	/*
-> -	 * The page tables were already mapped at boot so if the caller
-> -	 * requests a different mapping type then we must change all the
-> -	 * pages with __set_memory_prot().
-> -	 */
-> -	if (params->pgprot.pgprot != PAGE_KERNEL.pgprot) {
-> -		ret = __set_memory_prot(start, nr_pages, params->pgprot);
-> -		if (ret)
-> -			return ret;
-> -	}
-> -
-> -	return __add_pages(nid, start_pfn, nr_pages, params);
-> -}
-> -
-> -void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
-> -{
-> -	unsigned long start_pfn = start >> PAGE_SHIFT;
-> -	unsigned long nr_pages = size >> PAGE_SHIFT;
-> -
-> -	__remove_pages(start_pfn, nr_pages, altmap);
-> -}
-> -#endif
-> -
->  int kernel_set_to_readonly __read_mostly;
->  
->  static void mark_nxdata_nx(void)
-> -- 
-> 2.31.1
-> 
-> 
+Thanks for the review Oscar!
 
 -- 
-Oscar Salvador
-SUSE Labs
+Thanks,
+
+David / dhildenb
+
