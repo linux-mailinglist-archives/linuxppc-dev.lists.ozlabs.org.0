@@ -2,75 +2,107 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E62714249EC
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 00:38:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B40F5424AE3
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 02:10:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HPq9S5pbQz2ywY
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 09:38:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HPsCd3nlRz30J3
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 11:10:21 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=FIrtOed5;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=exep+GLZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635;
- helo=mail-pl1-x635.google.com; envelope-from=shorne@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=FIrtOed5; dkim-atps=neutral
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com
- [IPv6:2607:f8b0:4864:20::635])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=exep+GLZ; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HPq8q0SmCz2yL7
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Oct 2021 09:37:46 +1100 (AEDT)
-Received: by mail-pl1-x635.google.com with SMTP id x4so2643926pln.5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Oct 2021 15:37:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=u2ABEJkCd1WJjIKZz+HrMsC2GEgILkJNEDXWHfmz6WM=;
- b=FIrtOed5QowKUvESH0rG0wvV+3jKddQCuuIuBfhHRTk8T8VmPDFwv1/sTJAAFMgoXe
- HXkN7YWXjhF/zrR2F/U+/MkjdMr28Eiiif61PM8lgdzeGlwKVNoy3cZO3oVwxlf1y4Qq
- ML0Zxd6olLxMEd7tbUGjRpK/R7cb1ynklKOEnOsKGuHS+AR9eM3gQhrSgwrpbIXxDltH
- O/Ru0l0Mwm5WP0mW7srNV2jrlVjnmHbcXmHAwvScFtyDBwPixATxWKZZPvwE9Leemq7b
- /FuyLrO0jdPkAaWnvyISUJPK4unL1H92dmReVh6yyqBPX6EVv7yFmcldM3IfxchdNGsR
- dHOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=u2ABEJkCd1WJjIKZz+HrMsC2GEgILkJNEDXWHfmz6WM=;
- b=u3RhE3MOPkTJd5rYNFFRjfQcmn5iidWxp1V5cexCH5FXTG9I1687Ui2nOP95cVTtzp
- CCAXrzMZxBqH3cLY2EhfGGJwtYxKfcZ1003dsuea4TEXyj6vwIiHd2ZZNjtOquV2RdfX
- 2lAy5gi5rzRzHW8sUNQMD1wG8m+f0eBuOM9trAIF9ZNLyqmOHp6+G9MDapZ48lmoD0BD
- ugn+SjuNEOylHnE7KKwnw0dYFY+oDVwaqi5TJQuRrGRl+ze1U9pDcDSIzI8aoPLklYJJ
- a6FQgmZSM3W06iYql3Zr6n+NDIbt8iEJGmUWLkeibJ79nqISC95RTlXQcDRglxk4HIlh
- JyFA==
-X-Gm-Message-State: AOAM5314vcR7oaLOmv1SCgN1nv+PgU+DORCln9mv7LE7g6NOE4Y18HJe
- iGmEdLhKHSIcOi2ohaqVXfY=
-X-Google-Smtp-Source: ABdhPJz4BaWTMOr4ZP31Nn4C5AszSnkpRS3L0Y1gfKAehJA2FRUXByCD1kztbcVi2shP0MV6GW1oQQ==
-X-Received: by 2002:a17:90b:1804:: with SMTP id
- lw4mr830200pjb.174.1633559862671; 
- Wed, 06 Oct 2021 15:37:42 -0700 (PDT)
-Received: from localhost ([2409:10:24a0:4700:e8ad:216a:2a9d:6d0c])
- by smtp.gmail.com with ESMTPSA id c18sm20848814pge.69.2021.10.06.15.37.41
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Oct 2021 15:37:41 -0700 (PDT)
-Date: Thu, 7 Oct 2021 07:37:39 +0900
-From: Stafford Horne <shorne@gmail.com>
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Subject: Re: [PATCH 06/12] openrisc: Use of_get_cpu_hwid()
-Message-ID: <YV4lM/YJ4V4EAlZb@antec>
-References: <20211006164332.1981454-1-robh@kernel.org>
- <20211006164332.1981454-7-robh@kernel.org> <YV4KkAC2p9D4yCnH@antec>
- <20211006212728.GM10333@gate.crashing.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HPsBt577Zz2yKJ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Oct 2021 11:09:42 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 196N6cMw024113; 
+ Wed, 6 Oct 2021 20:09:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=NghlO+jDH5H1KC7mat4T3H28xnmH4VAEkQ/xmasyNS4=;
+ b=exep+GLZYXlIUF+fboOCasktpCbm6hj/Ik2uGBCBUb2gWeaVJXsXbxCdcR2+JlLd36M5
+ /+bVyGE9cvH/KfAVeDZetF/08KaeZjayyYwQE9omJUzkSBkT70F8b2NUSIBeIGMJuqV2
+ AbeqlYW/ejP/+tHUjtQ7iwYtRSjBb5Fdc1r5J0jCw68XIjoAsXEgiPqYQr2DwM9RIw9L
+ FpWZGoA8HZg917LbCNSKAb32dybhUHYCFGqCWoYpXGTIusoW4nUw/UZYgnaPkQyoCnSP
+ GGCpc/XrF43h+eeoi7xBBKru6z7b791A6/iDCKXLFnjdLVGFLHlUo4BcZsroXpignvIC Ug== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3bhgqhxsq8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 06 Oct 2021 20:09:39 -0400
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 19700dvi024605;
+ Wed, 6 Oct 2021 20:09:38 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3bhgqhxsq1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 06 Oct 2021 20:09:38 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19706vU8011680;
+ Thu, 7 Oct 2021 00:09:37 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma04ams.nl.ibm.com with ESMTP id 3bef2ba9hy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 07 Oct 2021 00:09:37 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 19704BxU56361386
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 7 Oct 2021 00:04:11 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 713804203F;
+ Thu,  7 Oct 2021 00:09:34 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 17B3742042;
+ Thu,  7 Oct 2021 00:09:34 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  7 Oct 2021 00:09:34 +0000 (GMT)
+Received: from [9.102.33.41] (unknown [9.102.33.41])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 2DBA3600B3;
+ Thu,  7 Oct 2021 11:09:32 +1100 (AEDT)
+Subject: Re: [PATCH] Documentation: Fix typo in testing/sysfs-class-cxl
+To: Sohaib Mohamed <sohaib.amhmd@gmail.com>
+References: <20211006155017.135592-1-sohaib.amhmd@gmail.com>
+From: Andrew Donnellan <ajd@linux.ibm.com>
+Message-ID: <bc74b269-6c93-d1fc-0f3c-f078ec70bd35@linux.ibm.com>
+Date: Thu, 7 Oct 2021 11:09:31 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211006212728.GM10333@gate.crashing.org>
+In-Reply-To: <20211006155017.135592-1-sohaib.amhmd@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: tw1kv9MER9trXFDQHDBkrZhu0rJ2lpr9
+X-Proofpoint-ORIG-GUID: 7ezZjb9dQkzGDxfZ3MjE3xunKYYerdrX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
+ definitions=2021-10-06_04,2021-10-06_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 mlxscore=0
+ lowpriorityscore=0 bulkscore=0 spamscore=0 priorityscore=1501
+ impostorscore=0 suspectscore=0 adultscore=0 mlxlogscore=927 phishscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2109230001 definitions=main-2110060148
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,56 +114,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>, x86@kernel.org,
- Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
- linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
- Jonas Bonn <jonas@southpole.se>, Rob Herring <robh@kernel.org>,
- Florian Fainelli <f.fainelli@gmail.com>, Frank Rowand <frowand.list@gmail.com>,
- linux-sh@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
- linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
- bcm-kernel-feedback-list@broadcom.com, James Morse <james.morse@arm.com>,
- devicetree@vger.kernel.org, Albert Ou <aou@eecs.berkeley.edu>,
- Ray Jui <rjui@broadcom.com>,
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>,
- Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>,
- linux-arm-kernel@lists.infradead.org, Scott Branden <sbranden@broadcom.com>,
- Yoshinori Sato <ysato@users.osdn.me>, linux-kernel@vger.kernel.org,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Segher,
-
-On Wed, Oct 06, 2021 at 04:27:28PM -0500, Segher Boessenkool wrote:
-> On Thu, Oct 07, 2021 at 05:44:00AM +0900, Stafford Horne wrote:
-> > You have defined of_get_cpu_hwid to return u64, will this create compiler
-> > warnings when since we are storing a u64 into a u32?
-> > 
-> > It seems only if we make with W=3.
+On 7/10/21 2:50 am, Sohaib Mohamed wrote:
+> Remove repeated words: "the the lowest" and "this this kernel"
 > 
-> Yes.  This is done by -Wconversion, "Warn for implicit conversions that
-> may alter a value."
+> Signed-off-by: Sohaib Mohamed <sohaib.amhmd@gmail.com>
 
-Yeah, that is what I found out when I looked into it.
+Thanks for catching this.
 
-> > I thought we usually warned on this.
-> 
-> This warning is not in -Wall or -Wextra either, it suffers too much from
-> false positives.  It is very natural to just ignore the high bits of
-> modulo types (which is what "unsigned" types *are*).  Or the bits that
-> "fall off" on a conversion.  The C standard makes this required
-> behaviour, it is useful, and it is the only convenient way of getting
-> this!
+Acked-by: Andrew Donnellan <ajd@linux.ibm.com>
 
-Thanks for the background, It does make sense. I guess I was confused with java
-which requires casting when you store to a smaller size.  I.e.
-
-    Test.java:5: error: incompatible types: possible lossy conversion from int to short
-	s = i;
-
--Stafford
+-- 
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
