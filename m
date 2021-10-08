@@ -2,57 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58B5F4266EF
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Oct 2021 11:32:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02214426869
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Oct 2021 13:02:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HQjdr1ZFnz3c5v
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Oct 2021 20:32:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HQld66TFrz3c4Y
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Oct 2021 22:02:02 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ecgb6jGX;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HQjdQ2HTtz2yg7
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Oct 2021 20:32:07 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4HQjdH3yG8z9sSf;
- Fri,  8 Oct 2021 11:32:03 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id T4S85OpdD_zq; Fri,  8 Oct 2021 11:32:03 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4HQjdH39KQz9sSc;
- Fri,  8 Oct 2021 11:32:03 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 52B5D8B780;
- Fri,  8 Oct 2021 11:32:03 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id mSXYidsJtltQ; Fri,  8 Oct 2021 11:32:03 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.202.75])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id DE3D08B763;
- Fri,  8 Oct 2021 11:32:02 +0200 (CEST)
-Subject: Re: [PATCH v6 19/22] powerpc/book3s64/hash/kuap: Enable kuap on hash
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-References: <20201125051634.509286-1-aneesh.kumar@linux.ibm.com>
- <20201125051634.509286-20-aneesh.kumar@linux.ibm.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <b2ab09a4-7f30-deee-e983-9459d93cb9b3@csgroup.eu>
-Date: Fri, 8 Oct 2021 11:32:03 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HQlcR42fRz2ynt
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Oct 2021 22:01:27 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=ecgb6jGX; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4HQlcH5cyHz4xbV;
+ Fri,  8 Oct 2021 22:01:19 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1633690887;
+ bh=B4qzHAigKKJHhzM+dPDATq6BWHA36ShynfcFOX354Uw=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=ecgb6jGX08YbAx5B1reNn4h/kU3Gen7kievibOO69w+92xKGfimzG9blAbi2wPVuT
+ bzRQvpw1Gsq6L5OISVmfgRGEMrtpfffTD3SxPCSAMjCA7BaSe9z1Uwt8UhxvwagCXt
+ RG8jZ9yVbHmz/oZlWgdyytG8dpN+zilnWPdwvHzOrKK+z9cUFtnbh9EiaF6DvYThDq
+ y+nA3s2Jr7OnqG1H9G2arDaiYJ9T+Ocn4v009hMVegWkEyhfV3tBa+fnPnVWJ1bKT9
+ NTxKKbhG9DIb5b2JYg+QufFs7CUHZN2G28KnkHe3XTX54qxanjx0qe1ihehNmLNt3p
+ OX9W1GxfbYAzQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ James Morse <james.morse@arm.com>, Catalin Marinas
+ <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Guo Ren
+ <guoren@kernel.org>, Jonas Bonn <jonas@southpole.se>, Stefan Kristiansson
+ <stefan.kristiansson@saunalahti.fi>, Stafford Horne <shorne@gmail.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Yoshinori Sato
+ <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
+ x86@kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH 07/12] powerpc: Use of_get_cpu_hwid()
+In-Reply-To: <20211006164332.1981454-8-robh@kernel.org>
+References: <20211006164332.1981454-1-robh@kernel.org>
+ <20211006164332.1981454-8-robh@kernel.org>
+Date: Fri, 08 Oct 2021 22:01:15 +1100
+Message-ID: <8735pbok5g.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20201125051634.509286-20-aneesh.kumar@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr-FR
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,52 +68,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sandipan Das <sandipan@linux.ibm.com>
+Cc: devicetree@vger.kernel.org, Florian Fainelli <f.fainelli@gmail.com>,
+ Scott Branden <sbranden@broadcom.com>, "Rafael J.
+ Wysocki" <rafael@kernel.org>, linux-sh@vger.kernel.org,
+ Ray Jui <rjui@broadcom.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
+ openrisc@lists.librecores.org, linuxppc-dev@lists.ozlabs.org,
+ Ingo Molnar <mingo@redhat.com>, Paul Mackerras <paulus@samba.org>,
+ Borislav Petkov <bp@alien8.de>, bcm-kernel-feedback-list@broadcom.com,
+ Thomas Gleixner <tglx@linutronix.de>, Frank Rowand <frowand.list@gmail.com>,
+ linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 25/11/2020 à 06:16, Aneesh Kumar K.V a écrit :
-> Reviewed-by: Sandipan Das <sandipan@linux.ibm.com>
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Rob Herring <robh@kernel.org> writes:
+> Replace open coded parsing of CPU nodes' 'reg' property with
+> of_get_cpu_hwid().
+>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Signed-off-by: Rob Herring <robh@kernel.org>
 > ---
->   arch/powerpc/mm/book3s64/pkeys.c | 7 ++++++-
->   1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/mm/book3s64/pkeys.c b/arch/powerpc/mm/book3s64/pkeys.c
-> index f747d66cc87d..84f8664ffc47 100644
-> --- a/arch/powerpc/mm/book3s64/pkeys.c
-> +++ b/arch/powerpc/mm/book3s64/pkeys.c
-> @@ -257,7 +257,12 @@ void __init setup_kuep(bool disabled)
->   #ifdef CONFIG_PPC_KUAP
->   void __init setup_kuap(bool disabled)
->   {
-> -	if (disabled || !early_radix_enabled())
-> +	if (disabled)
-> +		return;
-> +	/*
-> +	 * On hash if PKEY feature is not enabled, disable KUAP too.
-> +	 */
-> +	if (!early_radix_enabled() && !early_mmu_has_feature(MMU_FTR_PKEY))
+>  arch/powerpc/kernel/smp.c | 7 +------
+>  1 file changed, 1 insertion(+), 6 deletions(-)
+>
+> diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+> index 9cc7d3dbf439..d96b0e361a73 100644
+> --- a/arch/powerpc/kernel/smp.c
+> +++ b/arch/powerpc/kernel/smp.c
+> @@ -1313,18 +1313,13 @@ int __cpu_up(unsigned int cpu, struct task_struct *tidle)
+>  int cpu_to_core_id(int cpu)
+>  {
+>  	struct device_node *np;
+> -	const __be32 *reg;
+>  	int id = -1;
+>  
+>  	np = of_get_cpu_node(cpu, NULL);
+>  	if (!np)
+>  		goto out;
+>  
+> -	reg = of_get_property(np, "reg", NULL);
+> -	if (!reg)
+> -		goto out;
+> -
+> -	id = be32_to_cpup(reg);
+> +	id = of_get_cpu_hwid(np, 0);
+>  out:
+>  	of_node_put(np);
+>  	return id;
 
-pkey_early_init_devtree() bails out without setting MMU_FTR_PKEY with 
-the following:
+This looks OK to me.
 
-	/*
-	 * Only P7 and above supports SPRN_AMR update with MSR[PR] = 1
-	 */
-	if (!early_cpu_has_feature(CPU_FTR_ARCH_206))
-		return;
+All the systems I can find have a /cpus/#address-cells of 1, so the
+change to use of_n_addr_cells() in of_get_cpu_hwid() should be fine.
 
+I booted it on a bunch of systems with no issues.
 
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>
 
-Why would it be impossible to do KUAP in that case ? KUAP doesn't 
-require updating SPRN_AMR with MSR[PR] = 1
-
-
->   		return;
->   
->   	if (smp_processor_id() == boot_cpuid) {
-> 
+cheers
