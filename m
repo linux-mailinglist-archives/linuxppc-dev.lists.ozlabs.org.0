@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A9DE426B9D
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Oct 2021 15:24:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71AC8426BA2
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Oct 2021 15:25:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HQpny0nWLz3c6l
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Oct 2021 00:24:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HQppp2r9bz3cMT
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Oct 2021 00:25:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
@@ -14,23 +14,26 @@ Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HQpnV21vwz2yKB
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Oct 2021 00:24:30 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HQpnW2N1rz2yKB
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Oct 2021 00:24:31 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+ id 4HQpnW2B9Zz4xqN; Sat,  9 Oct 2021 00:24:31 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4HQpnT0cp5z4xbR;
- Sat,  9 Oct 2021 00:24:29 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4HQpnW1dlDz4xbZ;
+ Sat,  9 Oct 2021 00:24:31 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>
-In-Reply-To: <0d0c4d0f050a637052287c09ba521bad960a2790.1631715131.git.christophe.leroy@csgroup.eu>
-References: <0d0c4d0f050a637052287c09ba521bad960a2790.1631715131.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/32s: Fix kuap_kernel_restore()
-Message-Id: <163369938390.3568929.9026666512859787724.b4-ty@ellerman.id.au>
-Date: Sat, 09 Oct 2021 00:23:03 +1100
+To: Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@ozlabs.org>
+In-Reply-To: <163215558252.413351.8600189949820258982.stgit@jupiter>
+References: <163215558252.413351.8600189949820258982.stgit@jupiter>
+Subject: Re: [PATCH] pseries/eeh: fix the kdump kernel crash during
+ eeh_pseries_init
+Message-Id: <163369938495.3568929.12290439076854349761.b4-ty@ellerman.id.au>
+Date: Sat, 09 Oct 2021 00:23:04 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -45,30 +48,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stan Johnson <userm57@yahoo.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Finn Thain <fthain@linux-m68k.org>
+Cc: Oliver O'Halloran <oohall@gmail.com>,
+ Wen Xiong <wenxiong@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 15 Sep 2021 16:12:24 +0200, Christophe Leroy wrote:
-> At interrupt exit, kuap_kernel_restore() calls kuap_unclok() with the
-> value contained in regs->kuap. However, when regs->kuap contains
-> 0xffffffff it means that KUAP was not unlocked so calling
-> kuap_unlock() is unrelevant and results in jeopardising the contents
-> of kernel space segment registers.
-> 
-> So check that regs->kuap doesn't contain KUAP_NONE before calling
-> kuap_unlock(). In the meantime it also means that if KUAP has not
-> been correcly locked back at interrupt exit, it must be locked
-> before continuing. This is done by checking the content of
-> current->thread.kuap which was returned by kuap_get_and_assert_locked()
+On Mon, 20 Sep 2021 22:03:26 +0530, Mahesh Salgaonkar wrote:
+> On pseries lpar when an empty slot is assigned to partition OR on single
+> lpar mode, kdump kernel crashes during issuing PHB reset. In the kdump
+> scenario, we traverse all PHBs and issue reset using the pe_config_addr of
+> first child device present under each PHB. However the code assumes that
+> none of the PHB slot can be empty and uses list_first_entry() to get first
+> child device under PHB. Since list_first_entry() expect list to be not
+> empty, it returns invalid pci_dn entry and ends up accessing NULL phb
+> pointer under pci_dn->phb causing kdump kernel crash.
 > 
 > [...]
 
 Applied to powerpc/fixes.
 
-[1/1] powerpc/32s: Fix kuap_kernel_restore()
-      https://git.kernel.org/powerpc/c/d93f9e23744b7bf11a98b2ddb091d129482ae179
+[1/1] pseries/eeh: fix the kdump kernel crash during eeh_pseries_init
+      https://git.kernel.org/powerpc/c/eb8257a12192f43ffd41bd90932c39dade958042
 
 cheers
