@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22D0642778E
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Oct 2021 07:37:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67550427792
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Oct 2021 07:37:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HRDMc0Hdsz3c5d
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Oct 2021 16:37:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HRDN41ztdz3c7Z
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Oct 2021 16:37:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -14,25 +14,27 @@ Authentication-Results: lists.ozlabs.org;
  (client-ip=217.140.110.172; helo=foss.arm.com;
  envelope-from=valentin.schneider@arm.com; receiver=<UNKNOWN>)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4HQmnl1VnZz2yYl
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Oct 2021 22:54:32 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTP id 4HQmnq0748z2yp5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Oct 2021 22:54:38 +1100 (AEDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 63C00D6E;
- Fri,  8 Oct 2021 04:54:29 -0700 (PDT)
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4833D113E;
+ Fri,  8 Oct 2021 04:54:37 -0700 (PDT)
 Received: from e113632-lin.cambridge.arm.com (e113632-lin.cambridge.arm.com
  [10.1.196.57])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id B0B9C3F766;
- Fri,  8 Oct 2021 04:54:21 -0700 (PDT)
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 9C70F3F766;
+ Fri,  8 Oct 2021 04:54:29 -0700 (PDT)
 From: Valentin Schneider <valentin.schneider@arm.com>
 To: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
  linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
  linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
  sparclinux@vger.kernel.org
-Subject: [PATCH 0/2] sched: cleanup CONFIG_SCHED_MC & friends
-Date: Fri,  8 Oct 2021 12:53:45 +0100
-Message-Id: <20211008115347.425234-1-valentin.schneider@arm.com>
+Subject: [PATCH 1/2] sched: Move Kconfig.preempt to sched/Kconfig
+Date: Fri,  8 Oct 2021 12:53:46 +0100
+Message-Id: <20211008115347.425234-2-valentin.schneider@arm.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20211008115347.425234-1-valentin.schneider@arm.com>
+References: <20211008115347.425234-1-valentin.schneider@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Mailman-Approved-At: Sat, 09 Oct 2021 16:36:15 +1100
@@ -85,48 +87,46 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi folks,
+Kconfig.preempt already contains more than just preemption configs (see
+CONFIG_SCHED_CORE), and a subsequent patch will introduce more
+scheduler-specific configs.
 
-This stems from Barry introducing a new CONFIG_SCHED_CLUSTER which highlighted
-the current state of similar Kconfigs isn't great:
-  http://lore.kernel.org/r/CAGsJ_4xZD0sG0Df666f0bvHOzuPMjnw0dN_mArER5k1pJ6LPLw@mail.gmail.com
+Move the file to the scheduler directory.
 
-The changes happen all in one big patch; the alternative would be to have one
-patch per arch that adds the ARCH_SUPPORTS_SCHED_* selection, then a final patch
-that adds the generic definitions and removes the arch ones (which I can do if
-that's a preferred approach).
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
+---
+ init/Kconfig                              | 2 +-
+ kernel/{Kconfig.preempt => sched/Kconfig} | 2 --
+ 2 files changed, 1 insertion(+), 3 deletions(-)
+ rename kernel/{Kconfig.preempt => sched/Kconfig} (99%)
 
-Briefly tested by setting ARCH=foo and playing around with menuconfig.
-
-Based on top of Peter's queue:
-  git://git.kernel.org/pub/scm/linux/kernel/git/peterz/queue.git -b sched/next
-
-Patches are also available at:
-  https://git.gitlab.arm.com/linux-arm/linux-vs.git -b mainline/sched/topo_kconfig_cleanup
-
-Cheers,
-Valentin
-
-Valentin Schneider (2):
-  sched: Move Kconfig.preempt to sched/Kconfig
-  sched: Centralize SCHED_{SMT, MC, CLUSTER} definitions
-
- arch/arm/Kconfig                          | 18 ++--------
- arch/arm64/Kconfig                        | 26 ++------------
- arch/ia64/Kconfig                         |  9 +----
- arch/mips/Kconfig                         | 10 +-----
- arch/parisc/Kconfig                       |  9 +----
- arch/powerpc/Kconfig                      |  9 +----
- arch/s390/Kconfig                         |  8 ++---
- arch/sh/Kconfig                           |  1 +
- arch/sh/mm/Kconfig                        |  9 -----
- arch/sparc/Kconfig                        | 20 ++---------
- arch/x86/Kconfig                          | 26 ++------------
- init/Kconfig                              |  2 +-
- kernel/{Kconfig.preempt => sched/Kconfig} | 41 +++++++++++++++++++++++
- 13 files changed, 59 insertions(+), 129 deletions(-)
- rename kernel/{Kconfig.preempt => sched/Kconfig} (79%)
-
---
+diff --git a/init/Kconfig b/init/Kconfig
+index 11f8a845f259..4caedc821b06 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -460,7 +460,7 @@ config AUDITSYSCALL
+ source "kernel/irq/Kconfig"
+ source "kernel/time/Kconfig"
+ source "kernel/bpf/Kconfig"
+-source "kernel/Kconfig.preempt"
++source "kernel/sched/Kconfig"
+ 
+ menu "CPU/Task time and stats accounting"
+ 
+diff --git a/kernel/Kconfig.preempt b/kernel/sched/Kconfig
+similarity index 99%
+rename from kernel/Kconfig.preempt
+rename to kernel/sched/Kconfig
+index 60f1bfc3c7b2..c8b8e12c9c9c 100644
+--- a/kernel/Kconfig.preempt
++++ b/kernel/sched/Kconfig
+@@ -131,5 +131,3 @@ config SCHED_CORE
+ 	  SCHED_CORE is default disabled. When it is enabled and unused,
+ 	  which is the likely usage by Linux distributions, there should
+ 	  be no measurable impact on performance.
+-
+-
+-- 
 2.25.1
 
