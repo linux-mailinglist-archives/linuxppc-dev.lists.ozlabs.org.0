@@ -1,62 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02214426869
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Oct 2021 13:02:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 713B4426BA3
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Oct 2021 15:26:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HQld66TFrz3c4Y
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Oct 2021 22:02:02 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ecgb6jGX;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HQpqF38zkz3cVF
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Oct 2021 00:26:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HQlcR42fRz2ynt
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Oct 2021 22:01:27 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=ecgb6jGX; 
- dkim-atps=neutral
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HQpnX53KFz2yKB
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Oct 2021 00:24:32 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4HQlcH5cyHz4xbV;
- Fri,  8 Oct 2021 22:01:19 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1633690887;
- bh=B4qzHAigKKJHhzM+dPDATq6BWHA36ShynfcFOX354Uw=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=ecgb6jGX08YbAx5B1reNn4h/kU3Gen7kievibOO69w+92xKGfimzG9blAbi2wPVuT
- bzRQvpw1Gsq6L5OISVmfgRGEMrtpfffTD3SxPCSAMjCA7BaSe9z1Uwt8UhxvwagCXt
- RG8jZ9yVbHmz/oZlWgdyytG8dpN+zilnWPdwvHzOrKK+z9cUFtnbh9EiaF6DvYThDq
- y+nA3s2Jr7OnqG1H9G2arDaiYJ9T+Ocn4v009hMVegWkEyhfV3tBa+fnPnVWJ1bKT9
- NTxKKbhG9DIb5b2JYg+QufFs7CUHZN2G28KnkHe3XTX54qxanjx0qe1ihehNmLNt3p
- OX9W1GxfbYAzQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
- James Morse <james.morse@arm.com>, Catalin Marinas
- <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Guo Ren
- <guoren@kernel.org>, Jonas Bonn <jonas@southpole.se>, Stefan Kristiansson
- <stefan.kristiansson@saunalahti.fi>, Stafford Horne <shorne@gmail.com>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Yoshinori Sato
- <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
- x86@kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH 07/12] powerpc: Use of_get_cpu_hwid()
-In-Reply-To: <20211006164332.1981454-8-robh@kernel.org>
-References: <20211006164332.1981454-1-robh@kernel.org>
- <20211006164332.1981454-8-robh@kernel.org>
-Date: Fri, 08 Oct 2021 22:01:15 +1100
-Message-ID: <8735pbok5g.fsf@mpe.ellerman.id.au>
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4HQpnW597zz4xqN;
+ Sat,  9 Oct 2021 00:24:31 +1100 (AEDT)
+From: Michael Ellerman <patch-notifications@ellerman.id.au>
+To: Song Liu <songliubraving@fb.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Jordan Niethe <jniethe5@gmail.com>,
+ Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+ "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Johan Almbladh <johan.almbladh@anyfinetworks.com>,
+ Daniel Borkmann <daniel@iogearbox.net>
+In-Reply-To: <cover.1633464148.git.naveen.n.rao@linux.vnet.ibm.com>
+References: <cover.1633464148.git.naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2 00/10] powerpc/bpf: Various fixes
+Message-Id: <163369937665.3568929.6807087799195929903.b4-ty@ellerman.id.au>
+Date: Sat, 09 Oct 2021 00:22:56 +1100
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,65 +49,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Florian Fainelli <f.fainelli@gmail.com>,
- Scott Branden <sbranden@broadcom.com>, "Rafael J.
- Wysocki" <rafael@kernel.org>, linux-sh@vger.kernel.org,
- Ray Jui <rjui@broadcom.com>, "H. Peter Anvin" <hpa@zytor.com>,
- linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
- openrisc@lists.librecores.org, linuxppc-dev@lists.ozlabs.org,
- Ingo Molnar <mingo@redhat.com>, Paul Mackerras <paulus@samba.org>,
- Borislav Petkov <bp@alien8.de>, bcm-kernel-feedback-list@broadcom.com,
- Thomas Gleixner <tglx@linutronix.de>, Frank Rowand <frowand.list@gmail.com>,
- linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+Cc: bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Rob Herring <robh@kernel.org> writes:
-> Replace open coded parsing of CPU nodes' 'reg' property with
-> of_get_cpu_hwid().
->
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
->  arch/powerpc/kernel/smp.c | 7 +------
->  1 file changed, 1 insertion(+), 6 deletions(-)
->
-> diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-> index 9cc7d3dbf439..d96b0e361a73 100644
-> --- a/arch/powerpc/kernel/smp.c
-> +++ b/arch/powerpc/kernel/smp.c
-> @@ -1313,18 +1313,13 @@ int __cpu_up(unsigned int cpu, struct task_struct *tidle)
->  int cpu_to_core_id(int cpu)
->  {
->  	struct device_node *np;
-> -	const __be32 *reg;
->  	int id = -1;
->  
->  	np = of_get_cpu_node(cpu, NULL);
->  	if (!np)
->  		goto out;
->  
-> -	reg = of_get_property(np, "reg", NULL);
-> -	if (!reg)
-> -		goto out;
-> -
-> -	id = be32_to_cpup(reg);
-> +	id = of_get_cpu_hwid(np, 0);
->  out:
->  	of_node_put(np);
->  	return id;
+On Wed, 6 Oct 2021 01:55:19 +0530, Naveen N. Rao wrote:
+> This is v2 of the series posted at:
+> http://lkml.kernel.org/r/cover.1633104510.git.naveen.n.rao@linux.vnet.ibm.com
+> 
+> Only patches from v1 that need to go into powerpc/fixes are included.
+> Other patches will be posted as a separate series for inclusion into
+> powerpc/next.
+> 
+> [...]
 
-This looks OK to me.
+Applied to powerpc/fixes.
 
-All the systems I can find have a /cpus/#address-cells of 1, so the
-change to use of_n_addr_cells() in of_get_cpu_hwid() should be fine.
-
-I booted it on a bunch of systems with no issues.
-
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+[01/10] powerpc/lib: Add helper to check if offset is within conditional branch range
+        https://git.kernel.org/powerpc/c/4549c3ea3160fa8b3f37dfe2f957657bb265eda9
+[02/10] powerpc/bpf: Validate branch ranges
+        https://git.kernel.org/powerpc/c/3832ba4e283d7052b783dab8311df7e3590fed93
+[03/10] powerpc/bpf: Fix BPF_MOD when imm == 1
+        https://git.kernel.org/powerpc/c/8bbc9d822421d9ac8ff9ed26a3713c9afc69d6c8
+[04/10] powerpc/bpf: Fix BPF_SUB when imm == 0x80000000
+        https://git.kernel.org/powerpc/c/5855c4c1f415ca3ba1046e77c0b3d3dfc96c9025
+[05/10] powerpc/security: Add a helper to query stf_barrier type
+        https://git.kernel.org/powerpc/c/030905920f32e91a52794937f67434ac0b3ea41a
+[06/10] powerpc/bpf: Emit stf barrier instruction sequences for BPF_NOSPEC
+        https://git.kernel.org/powerpc/c/b7540d62509453263604a155bf2d5f0ed450cba2
+[07/10] powerpc/bpf ppc32: Fix ALU32 BPF_ARSH operation
+        https://git.kernel.org/powerpc/c/c9b8da77f22d28348d1f89a6c4d3fec102e9b1c4
+[08/10] powerpc/bpf ppc32: Fix JMP32_JSET_K
+        https://git.kernel.org/powerpc/c/e8278d44443207bb6609c7b064073f353e6f4978
+[09/10] powerpc/bpf ppc32: Do not emit zero extend instruction for 64-bit BPF_END
+        https://git.kernel.org/powerpc/c/48164fccdff6d5cc11308126c050bd25a329df25
+[10/10] powerpc/bpf ppc32: Fix BPF_SUB when imm == 0x80000000
+        https://git.kernel.org/powerpc/c/548b762763b885b81850db676258df47c55dd5f9
 
 cheers
