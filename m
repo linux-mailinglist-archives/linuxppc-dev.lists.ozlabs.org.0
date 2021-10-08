@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2158426E81
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Oct 2021 18:17:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0223F426E86
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Oct 2021 18:18:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HQtd366dzz3c7v
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Oct 2021 03:17:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HQtds6Xksz3cC6
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Oct 2021 03:18:09 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GqZe7Ws9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=s5I3jKTs;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,95 +17,94 @@ Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HQtbW47F2z2xvc
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Oct 2021 03:16:07 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HQtbb5WTBz2xvc
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Oct 2021 03:16:11 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=GqZe7Ws9; dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4HQtbW44CJz4xqN
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Oct 2021 03:16:07 +1100 (AEDT)
+ header.s=pp1 header.b=s5I3jKTs; dkim-atps=neutral
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4HQtbb5Q0xz4xqN
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Oct 2021 03:16:11 +1100 (AEDT)
 Received: by gandalf.ozlabs.org (Postfix)
- id 4HQtbW42YSz4xbZ; Sat,  9 Oct 2021 03:16:07 +1100 (AEDT)
+ id 4HQtbb5Ml4z4xbZ; Sat,  9 Oct 2021 03:16:11 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: gandalf.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=GqZe7Ws9; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ header.s=pp1 header.b=s5I3jKTs; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by gandalf.ozlabs.org (Postfix) with ESMTPS id 4HQtbW1jXLz4xbV;
- Sat,  9 Oct 2021 03:16:07 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 198Fx9R3021441; 
- Fri, 8 Oct 2021 12:16:05 -0400
+ by gandalf.ozlabs.org (Postfix) with ESMTPS id 4HQtbb2S21z4xbG;
+ Sat,  9 Oct 2021 03:16:11 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 198Ehg6i025714; 
+ Fri, 8 Oct 2021 12:16:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=DsySnbhbJjdecykZ87cAKVg25yIoSWTsmeF5yUHMUpQ=;
- b=GqZe7Ws988+sC3nlBYKMyQUlaPTRMGRtp7Z5cppNE7Eoku7jV56ZAU3qEV30WYvPDxrj
- XmtwAhB5P8+xmEAaSajYrdDFMiuaZT7qxfX8WOeeaiWpqnsS6e0QGwGgqPKMAr6ylyVY
- 9Ky4Hg1t6R8MsbPBFUqfstcuxXxsGL1fAYI2r14qrjazbqBrTbAFTwpC6RqSRYwdxspC
- LmtfXeJY8iIVplghwlbmH1USQbX0Uhpy4f7c0YOZokm3RgDEPOoASUJqCzrksBXcEdnn
- Y6h09dJyNEM5SEzXuu1F9eox5nWjq5aqwEusWDQ1ygqfIoB2E6ERY17b9EzRQhKNz34/ bw== 
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.70])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3bjq3jbspw-1
+ bh=npvkGEPGqKwEoUSC4SyInPdrQa1CL4fDAiEEVRVxIec=;
+ b=s5I3jKTsbpZB6FNw7w6sfg5d8ETf69NJEudBpJ4uvopHr3xaEDr5+f6tuhBQejXJWJfT
+ GD1I0Im5VwiXfJdUYxj+abDg7w71gGNPF60qSeny5DC7TXrAcBjqbMS7ceQRKFpNxtku
+ 9uXYYUIkAXHsmnnojHpcd0HG+Nt8jJmAisbevXS4EJKj2PvFP66cF8+wRwdYhl+xqBER
+ wSJhjc8c/iLm3xNITuzkhtT6URL2gp1gr+W8ly/L1Y50F28D29DjoXUGmzRRZbXSm7UZ
+ OgSv7IRDEcEfGYthHGRTN/QB3J5QVbF+vllfvBlvZ1BbiYm5vaHPN3GYjsdsuwyFLsW0 /Q== 
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3bjr0ka6pt-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Oct 2021 12:16:05 -0400
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 198GC3fi015310;
- Fri, 8 Oct 2021 16:16:02 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma01fra.de.ibm.com with ESMTP id 3bef2ar1se-1
+ Fri, 08 Oct 2021 12:16:08 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 198GCFgq024891;
+ Fri, 8 Oct 2021 16:16:06 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma06ams.nl.ibm.com with ESMTP id 3bhepdd1s2-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Oct 2021 16:16:02 +0000
+ Fri, 08 Oct 2021 16:16:06 +0000
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com
  (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 198GAZa161538704
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 198GG29v41288108
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 8 Oct 2021 16:10:35 GMT
+ Fri, 8 Oct 2021 16:16:02 GMT
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F39F1A405C;
- Fri,  8 Oct 2021 16:15:58 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 994F0A405F;
+ Fri,  8 Oct 2021 16:16:02 +0000 (GMT)
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A0337A4068;
- Fri,  8 Oct 2021 16:15:56 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 42A06A4064;
+ Fri,  8 Oct 2021 16:16:00 +0000 (GMT)
 Received: from sjain014.ibmuc.com (unknown [9.43.25.237])
  by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri,  8 Oct 2021 16:15:56 +0000 (GMT)
+ Fri,  8 Oct 2021 16:15:59 +0000 (GMT)
 From: Sourabh Jain <sourabhjain@linux.ibm.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 1/3] fixup mmu_features immediately after getting cpu pa
- features.
-Date: Fri,  8 Oct 2021 21:45:50 +0530
-Message-Id: <20211008161552.211262-2-sourabhjain@linux.ibm.com>
+Subject: [PATCH 2/3] Remove 256MB limit restriction for boot cpu paca
+ allocation
+Date: Fri,  8 Oct 2021 21:45:51 +0530
+Message-Id: <20211008161552.211262-3-sourabhjain@linux.ibm.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20211008161552.211262-1-sourabhjain@linux.ibm.com>
 References: <20211008161552.211262-1-sourabhjain@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: fWeDQOiHLBdikGtX9XS1990TSqhDJc7f
-X-Proofpoint-GUID: fWeDQOiHLBdikGtX9XS1990TSqhDJc7f
+X-Proofpoint-ORIG-GUID: 9Ecs3A52HdQMsydqFbPnbcFvIt_CczOi
+X-Proofpoint-GUID: 9Ecs3A52HdQMsydqFbPnbcFvIt_CczOi
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
  definitions=2021-10-08_04,2021-10-07_02,2020-04-07_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 impostorscore=0
- malwarescore=0 bulkscore=0 priorityscore=1501 clxscore=1015 phishscore=0
- mlxlogscore=860 adultscore=0 suspectscore=0 lowpriorityscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2109230001
- definitions=main-2110080092
+ phishscore=0 spamscore=0
+ clxscore=1015 impostorscore=0 suspectscore=0 bulkscore=0
+ priorityscore=1501 mlxscore=0 malwarescore=0 adultscore=0 mlxlogscore=999
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2109230001 definitions=main-2110080092
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -126,106 +125,78 @@ Sender: "Linuxppc-dev"
 
 From: Mahesh Salgaonkar <mahesh@linux.ibm.com>
 
-On system with radix support available, early_radix_enabled() starts
-returning true for a small window (until mmu_early_init_devtree() is
-called) even when radix mode disabled on kernel command line. This causes
-ppc64_bolted_size() to return ULONG_MAX in HPT mode instead of supported
-segment size, during boot cpu paca allocation.
+At the time when we detect and allocate paca for boot cpu, we havn't yet
+detected mmu feature of 1T segments support (not until
+mmu_early_init_devtree() call). This causes ppc64_bolted_size() to return
+256MB as limit forcing boot cpu paca allocation below 256MB always.
 
-Withi kernel command line = "... disable_radix":
+This works fine for kdump kernel boot as long as crashkernel reservation is
+at offset below 256MB. But when we move kdump offset to 256MB or above,
+kdump kernel fails to allocate paca for boot cpu below 256MB and crashes in
+allocate_paca().
 
-early_init_devtree:			  <- early_radix_enabled() = false
-  early_init_dt_scan_cpus:		  <- early_radix_enabled() = false
-      ...
-      check_cpu_pa_features:		  <- early_radix_enabled() = false
-      ...				^ <- early_radix_enabled() = TRUE
-      allocate_paca:			| <- early_radix_enabled() = TRUE
-          ...                           |
-          ppc64_bolted_size:		| <- early_radix_enabled() = TRUE
-              if (early_radix_enabled())| <- early_radix_enabled() = TRUE
-                  return ULONG_MAX;     |
-      ...                               |
-  ...					| <- early_radix_enabled() = TRUE
-  ...					| <- early_radix_enabled() = TRUE
-  mmu_early_init_devtree()              V
-  ...					  <- early_radix_enabled() = false
-
-So far we have not seen any issue because allocate_paca() takes minimum of
-ppc64_bolted_size and rma_size while allocating paca. However it is better
-to close this window by fixing up the mmu features as early as possible.
-This fixes early_radix_enabled() and ppc64_bolted_size() to return valid
-values in radix disable mode. This patch will help subsequent patch to
-depend on early_radix_enabled() check while detecting supported segment
-size in HPT mode.
+Moving the detection of segment sizes just before paca allocation for boot
+cpu removes this restriction of 256MB limit. This allows kdump kernel to
+successfully boot and capture vmcore.
 
 Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
 Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
 Reported-and-tested-by: Abdul haleem <abdhalee@linux.vnet.ibm.com>
 ---
  arch/powerpc/include/asm/book3s/64/mmu.h | 1 +
- arch/powerpc/include/asm/mmu.h           | 1 +
- arch/powerpc/kernel/prom.c               | 2 ++
- arch/powerpc/mm/init_64.c                | 5 ++++-
- 4 files changed, 8 insertions(+), 1 deletion(-)
+ arch/powerpc/kernel/prom.c               | 6 ++++++
+ arch/powerpc/mm/book3s64/hash_utils.c    | 5 ++++-
+ 3 files changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/arch/powerpc/include/asm/book3s/64/mmu.h b/arch/powerpc/include/asm/book3s/64/mmu.h
-index c02f42d1031e..d60be5051d60 100644
+index d60be5051d60..9b05a84313bb 100644
 --- a/arch/powerpc/include/asm/book3s/64/mmu.h
 +++ b/arch/powerpc/include/asm/book3s/64/mmu.h
-@@ -197,6 +197,7 @@ extern int mmu_vmemmap_psize;
- extern int mmu_io_psize;
- 
+@@ -199,6 +199,7 @@ extern int mmu_io_psize;
  /* MMU initialization */
-+void update_cpu_features(void);
+ void update_cpu_features(void);
  void mmu_early_init_devtree(void);
++void hash__early_detect_seg_size(void);
  void hash__early_init_devtree(void);
  void radix__early_init_devtree(void);
-diff --git a/arch/powerpc/include/asm/mmu.h b/arch/powerpc/include/asm/mmu.h
-index 8abe8e42e045..5eb494ea85d7 100644
---- a/arch/powerpc/include/asm/mmu.h
-+++ b/arch/powerpc/include/asm/mmu.h
-@@ -401,6 +401,7 @@ extern void early_init_mmu(void);
- extern void early_init_mmu_secondary(void);
- extern void setup_initial_memory_limit(phys_addr_t first_memblock_base,
- 				       phys_addr_t first_memblock_size);
-+static inline void update_cpu_features(void) { }
- static inline void mmu_early_init_devtree(void) { }
- 
- static inline void pkey_early_init_devtree(void) {}
+ #ifdef CONFIG_PPC_PKEY
 diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-index 2e67588f6f6e..889c909e4ed4 100644
+index 889c909e4ed4..5da2bfff4dea 100644
 --- a/arch/powerpc/kernel/prom.c
 +++ b/arch/powerpc/kernel/prom.c
-@@ -380,6 +380,8 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
- 		check_cpu_pa_features(node);
- 	}
- 
-+	/* Update cpu features based on kernel command line */
-+	update_cpu_features();
+@@ -385,6 +385,12 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
  	identical_pvr_fixup(node);
  	init_mmu_slb_size(node);
  
-diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
-index 386be136026e..19680b42898f 100644
---- a/arch/powerpc/mm/init_64.c
-+++ b/arch/powerpc/mm/init_64.c
-@@ -437,12 +437,15 @@ static void __init early_check_vec5(void)
- 	}
- }
++#ifdef CONFIG_PPC_BOOK3S_64
++	/* Initialize segment sizes */
++	if (!early_radix_enabled())
++		hash__early_detect_seg_size();
++#endif
++
+ #ifdef CONFIG_PPC64
+ 	if (nthreads == 1)
+ 		cur_cpu_spec->cpu_features &= ~CPU_FTR_SMT;
+diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+index c145776d3ae5..ef4fc6bb1b30 100644
+--- a/arch/powerpc/mm/book3s64/hash_utils.c
++++ b/arch/powerpc/mm/book3s64/hash_utils.c
+@@ -1020,11 +1020,14 @@ static void __init htab_initialize(void)
+ #undef KB
+ #undef MB
  
--void __init mmu_early_init_devtree(void)
-+void __init update_cpu_features(void)
+-void __init hash__early_init_devtree(void)
++void __init hash__early_detect_seg_size(void)
  {
- 	/* Disable radix mode based on kernel command line. */
- 	if (disable_radix)
- 		cur_cpu_spec->mmu_features &= ~MMU_FTR_TYPE_RADIX;
+ 	/* Initialize segment sizes */
+ 	of_scan_flat_dt(htab_dt_scan_seg_sizes, NULL);
 +}
  
-+void __init mmu_early_init_devtree(void)
++void __init hash__early_init_devtree(void)
 +{
- 	/*
- 	 * Check /chosen/ibm,architecture-vec-5 if running as a guest.
- 	 * When running bare-metal, we can use radix if we like
+ 	/* Initialize page sizes */
+ 	htab_scan_page_sizes();
+ }
 -- 
 2.31.1
 
