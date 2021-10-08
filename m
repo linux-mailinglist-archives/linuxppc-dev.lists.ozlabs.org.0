@@ -2,42 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C72B425B17
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Oct 2021 20:45:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 324AC4262AA
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Oct 2021 05:00:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HQKxz3RTjz3c61
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Oct 2021 05:45:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HQXxz1Kxwz30RC
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Oct 2021 14:00:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
- helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org;
- receiver=<UNKNOWN>)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 4HQKxV1x26z2ypL
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Oct 2021 05:44:44 +1100 (AEDT)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 197Ihdq8011954;
- Thu, 7 Oct 2021 13:43:39 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 197IhbO3011953;
- Thu, 7 Oct 2021 13:43:37 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Thu, 7 Oct 2021 13:43:37 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: "Paul A. Clarke" <pc@us.ibm.com>
-Subject: Re: [PATCH] perf vendor events power10: Add metric events json file
- for power10 platform
-Message-ID: <20211007184337.GN10333@gate.crashing.org>
-References: <20211006073119.276340-1-kjain@linux.ibm.com>
- <20211006173248.GA7389@li-24c3614c-2adc-11b2-a85c-85f334518bdb.ibm.com>
- <20211007134750.GA243632@li-24c3614c-2adc-11b2-a85c-85f334518bdb.ibm.com>
-Mime-Version: 1.0
+ smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mga06.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HQXxX3nw1z2yYl
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Oct 2021 14:00:26 +1100 (AEDT)
+X-IronPort-AV: E=McAfee;i="6200,9189,10130"; a="287303035"
+X-IronPort-AV: E=Sophos;i="5.85,356,1624345200"; d="scan'208";a="287303035"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+ by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Oct 2021 19:59:22 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.85,356,1624345200"; d="scan'208";a="489280430"
+Received: from lkp-server01.sh.intel.com (HELO 72c3bd3cf19c) ([10.239.97.150])
+ by orsmga008.jf.intel.com with ESMTP; 07 Oct 2021 19:59:20 -0700
+Received: from kbuild by 72c3bd3cf19c with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1mYg6S-0007rm-57; Fri, 08 Oct 2021 02:59:20 +0000
+Date: Fri, 08 Oct 2021 10:58:22 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ eb8257a12192f43ffd41bd90932c39dade958042
+Message-ID: <615fb3ce.mkr5XBnH9rLjQjXf%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211007134750.GA243632@li-24c3614c-2adc-11b2-a85c-85f334518bdb.ibm.com>
-User-Agent: Mutt/1.4.2.3i
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,29 +50,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maddy@linux.vnet.ibm.com, rnsastry@linux.ibm.com,
- Kajol Jain <kjain@linux.ibm.com>, jolsa@redhat.com,
- linux-kernel@vger.kernel.org, acme@kernel.org,
- linux-perf-users@vger.kernel.org, atrajeev@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Oct 07, 2021 at 08:47:50AM -0500, Paul A. Clarke wrote:
-> On Wed, Oct 06, 2021 at 12:32:48PM -0500, Paul A. Clarke wrote:
-> > > +    {
-> > > +        "BriefDescription": "Average cycles per instruction when the instruction finishes at dispatch",
-> > 
-> > I'm not sure what that means.
-> 
-> After doing a bit of research, I think it might be a bit more clear as:
-> "Average cycles per instruction when the NTF instruction finishes at dispatch"
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: eb8257a12192f43ffd41bd90932c39dade958042  pseries/eeh: Fix the kdump kernel crash during eeh_pseries_init
 
-Is "next to finish" some defined and/or sensible term in this context?
-Or do you mean NTC here?  Or what :-)
+elapsed time: 731m
 
-Instructions do not finish in order at all generally.
+configs tested: 96
+configs skipped: 96
 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Segher
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+powerpc                   motionpro_defconfig
+arc                 nsimosci_hs_smp_defconfig
+m68k                          atari_defconfig
+powerpc                      ppc40x_defconfig
+powerpc                     stx_gp3_defconfig
+m68k                          multi_defconfig
+sh                          landisk_defconfig
+sh                         microdev_defconfig
+powerpc                       ppc64_defconfig
+mips                          ath25_defconfig
+arm                         orion5x_defconfig
+arm                          collie_defconfig
+powerpc                         ps3_defconfig
+h8300                            allyesconfig
+powerpc                      pcm030_defconfig
+powerpc                      pasemi_defconfig
+powerpc64                           defconfig
+mips                       capcella_defconfig
+arm                     davinci_all_defconfig
+sh                          polaris_defconfig
+xtensa                          iss_defconfig
+arm                       multi_v4t_defconfig
+powerpc                     ksi8560_defconfig
+mips                        bcm63xx_defconfig
+x86_64               randconfig-c001-20211003
+i386                 randconfig-c001-20211003
+arm                  randconfig-c002-20211003
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nds32                               defconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+nios2                            allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+parisc                              defconfig
+parisc                           allyesconfig
+s390                                defconfig
+s390                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                             allyesconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                           allnoconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+x86_64               randconfig-a015-20211004
+x86_64               randconfig-a012-20211004
+x86_64               randconfig-a016-20211004
+x86_64               randconfig-a014-20211004
+x86_64               randconfig-a013-20211004
+x86_64               randconfig-a011-20211004
+i386                 randconfig-a013-20211004
+i386                 randconfig-a016-20211004
+i386                 randconfig-a014-20211004
+i386                 randconfig-a011-20211004
+i386                 randconfig-a012-20211004
+i386                 randconfig-a015-20211004
+riscv                    nommu_k210_defconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-a003-20211004
+x86_64               randconfig-a005-20211004
+x86_64               randconfig-a001-20211004
+x86_64               randconfig-a002-20211004
+x86_64               randconfig-a004-20211004
+x86_64               randconfig-a006-20211004
+i386                 randconfig-a001-20211004
+i386                 randconfig-a003-20211004
+i386                 randconfig-a005-20211004
+i386                 randconfig-a002-20211004
+i386                 randconfig-a004-20211004
+i386                 randconfig-a006-20211004
+hexagon              randconfig-r045-20211007
+hexagon              randconfig-r041-20211007
+s390                 randconfig-r044-20211007
+riscv                randconfig-r042-20211007
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
