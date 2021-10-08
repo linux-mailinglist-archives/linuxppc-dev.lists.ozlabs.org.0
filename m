@@ -1,69 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF32E426412
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Oct 2021 07:29:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF5C542643A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Oct 2021 07:48:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HQcFN5WFnz3bjT
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Oct 2021 16:29:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HQcfp6Q6hz2yX8
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Oct 2021 16:48:02 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=DmZ3bBlJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=XpyXzMin;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::433;
- helo=mail-pf1-x433.google.com; envelope-from=dja@axtens.net;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=DmZ3bBlJ; dkim-atps=neutral
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com
- [IPv6:2607:f8b0:4864:20::433])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HQcDl077Kz2yLv
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Oct 2021 16:28:52 +1100 (AEDT)
-Received: by mail-pf1-x433.google.com with SMTP id q19so6738607pfl.4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Oct 2021 22:28:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=fRVqtB6tjc3sxvXUb6FPScwW0I2W4WcKV6lwQWDcLCc=;
- b=DmZ3bBlJOasNrb5KADrKm87TITN3NDKvTs+ZM+h0mGXkGv8yuRH2ITtU6l5wtXhJjg
- FfXvz1XmlILKnNdcoQHrztrjUkxDw9bI/71PS/u7zk6yXUGxC9JyEnUgqvMXsL1R6UVP
- W0gU+aQx7Ag7ey4mpODEmfcC+xaMjYqzxZ81E=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=fRVqtB6tjc3sxvXUb6FPScwW0I2W4WcKV6lwQWDcLCc=;
- b=S5QyC/OQOpwWcWV8dPiTKACoBbwqTU7VQ6/MeW93yjjwfLWgT+zwi6ajiBD0GGfgMF
- 7CigY018wtyOdb4HmMvdDOlr5wYrSSknW+EELWv3F6HQq4m7d4jm2HLZcz0ZAb8c0Kjt
- C90x3eHp6JfonO8vnUh91GsqASlJJ3s4erdtSJcOELA5FwRwiNA7eFLrtWT3mZKMZVMN
- PiKK/hDcrhAnri5wJDdfYv5omziP/v47/Mjyi0yflkoA7MT7QEC71vn244qgS8roXyhP
- eRMXdLWXICoRt13xWsebpbqDTNbY/+uf+tfW4wd9+uzQoC5e87lCUpekFt8qeMLBqOpB
- 1ptQ==
-X-Gm-Message-State: AOAM533tK2cKyzVIt30GMpwdX+gC/ucac0zNYyT9+IUgcoIVT1tdAHu6
- eLZ1TzfSReSqgPGDAkb8uNlqHQ==
-X-Google-Smtp-Source: ABdhPJxuoOzh1q8JULgfQ5PGm/uIRI18M05Ij8xii/s2kVbwq4ah888VH5topVgKX2VkoUWDB325lw==
-X-Received: by 2002:aa7:8294:0:b0:44c:c0b:d94c with SMTP id
- s20-20020aa78294000000b0044c0c0bd94cmr8323003pfm.24.1633670929752; 
- Thu, 07 Oct 2021 22:28:49 -0700 (PDT)
-Received: from localhost ([2001:4479:e300:600:b4a4:1577:dca8:77b9])
- by smtp.gmail.com with ESMTPSA id l18sm1130657pfu.202.2021.10.07.22.28.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Oct 2021 22:28:49 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: Kai Song <songkai01@inspur.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] powerpc/eeh:Fix docstrings in eeh
-In-Reply-To: <20211004085842.255813-1-songkai01@inspur.com>
-References: <20211004085842.255813-1-songkai01@inspur.com>
-Date: Fri, 08 Oct 2021 16:28:46 +1100
-Message-ID: <87czog9jap.fsf@linkitivity.dja.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HQcfB3xKSz2yHH
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Oct 2021 16:47:30 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=XpyXzMin; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4HQcf93ct9z4xbR;
+ Fri,  8 Oct 2021 16:47:29 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+ s=201702; t=1633672049;
+ bh=U17KFfh/lVCjqArE6dEYZBHZFpmg+ajrOeLK3EhRQQo=;
+ h=Date:From:To:Cc:Subject:From;
+ b=XpyXzMinRoJbQ97ACLhntFAvRN40RMDjj4zkh1ksJgBg0RBQvfaWSrV5cNMsCpeG0
+ cWF1pITleJW4GVSAkVCOL0hkfXD0nMqMXtv8Dxh0YOwXzIljK9mWaz8cJcuLl5BtP/
+ c1DTp/u6cXy2tIAnI4qku/RRywMq+3jSbYCPTruikAyt5Q/lDt9Uh8i9QgLbxY8dU3
+ so+3dFAAS52v/Hfc6/QB32Y5EFGiiBhIZBOTRrkWpqMj5WJUjyNC5YYys+oLmQOe8V
+ DCsm4w2jxyj6z/aVCpQFv8F9GzI5xkH8i3do1Z7/xyvbNImtKH6QeFiVzJiLg1VVSZ
+ 3FruARCwyKqKg==
+Date: Fri, 8 Oct 2021 16:47:28 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Michael Ellerman <mpe@ellerman.id.au>, PowerPC
+ <linuxppc-dev@lists.ozlabs.org>
+Subject: linux-next: build warnings in Linus' tree
+Message-ID: <20211008164728.30e3d3a3@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; boundary="Sig_/lFGGsKOdKiBlptVO7HeVFbX";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,121 +59,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: paulus@samba.org, Kai Song <songkai01@inspur.com>, oohall@gmail.com,
- linux-kernel@vger.kernel.org
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Kai,
+--Sig_/lFGGsKOdKiBlptVO7HeVFbX
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your patch! I have 3 very minor tweaks and I am otherwise
-very happy with it.
+Hi all,
 
-Firstly, in your commit name, there should be a space between
-"powerpc/eeh:" and "Fix docstrings". You might also want to say "in
-eeh.c" rather than "in eeh" because there is eeh code in a number of
-other files too.
+After merging the origin tree, today's linux-next build (powerpc
+allyesconfig) produced these warnings (along with many others):
 
-> We fix the following warnings when building kernel with W=1:
-> arch/powerpc/kernel/eeh.c:598: warning: Function parameter or member 'function' not described in 'eeh_pci_enable'
-> arch/powerpc/kernel/eeh.c:774: warning: Function parameter or member 'edev' not described in 'eeh_set_dev_freset'
-> arch/powerpc/kernel/eeh.c:774: warning: expecting prototype for eeh_set_pe_freset(). Prototype was for eeh_set_dev_freset() instead
-> arch/powerpc/kernel/eeh.c:814: warning: Function parameter or member 'include_passed' not described in 'eeh_pe_reset_full'
-> arch/powerpc/kernel/eeh.c:944: warning: Function parameter or member 'ops' not described in 'eeh_init'
-> arch/powerpc/kernel/eeh.c:1451: warning: Function parameter or member 'include_passed' not described in 'eeh_pe_reset'
-> arch/powerpc/kernel/eeh.c:1526: warning: Function parameter or member 'func' not described in 'eeh_pe_inject_err'
-> arch/powerpc/kernel/eeh.c:1526: warning: Excess function parameter 'function' described in 'eeh_pe_inject_err'
->
-> Signed-off-by: Kai Song <songkai01@inspur.com>
-> ---
->  arch/powerpc/kernel/eeh.c | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-> index e9b597ed423c..57a6868a41ab 100644
-> --- a/arch/powerpc/kernel/eeh.c
-> +++ b/arch/powerpc/kernel/eeh.c
-> @@ -589,6 +589,7 @@ EXPORT_SYMBOL(eeh_check_failure);
->  /**
->   * eeh_pci_enable - Enable MMIO or DMA transfers for this slot
->   * @pe: EEH PE
-> + * @function : EEH function
-I don't think there should be a space between '@function' and ':'.
+arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): /pc=
+i@f0000d00: missing ranges for PCI bridge (or not a bridge)
+arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): /pc=
+i@f0000d00: missing ranges for PCI bridge (or not a bridge)
+arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): /pc=
+i@f0000d00: missing ranges for PCI bridge (or not a bridge)
+arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): /pc=
+i@f0000d00: missing ranges for PCI bridge (or not a bridge)
+arch/powerpc/boot/dts/mpc5200b.dtsi:182.18-186.5: Warning (spi_bus_bridge):=
+ /soc5200@f0000000/psc@2000: node name for SPI buses should be 'spi'
+arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): /pc=
+i@f0000d00: missing ranges for PCI bridge (or not a bridge)
+arch/powerpc/boot/dts/mpc5200b.dtsi:182.18-186.5: Warning (spi_bus_bridge):=
+ /soc5200@f0000000/psc@2000: node name for SPI buses should be 'spi'
+arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): /pc=
+i@f0000d00: missing ranges for PCI bridge (or not a bridge)
+arch/powerpc/boot/dts/mpc5200b.dtsi:182.18-186.5: Warning (spi_bus_bridge):=
+ /soc5200@f0000000/psc@2000: node name for SPI buses should be 'spi'
+arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): /pc=
+i@f0000d00: missing ranges for PCI bridge (or not a bridge)
+arch/powerpc/boot/dts/mpc5200b.dtsi:182.18-186.5: Warning (spi_bus_bridge):=
+ /soc5200@f0000000/psc@2000: node name for SPI buses should be 'spi'
+arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): /pc=
+i@f0000d00: missing ranges for PCI bridge (or not a bridge)
+arch/powerpc/boot/dts/mpc5200b.dtsi:182.18-186.5: Warning (spi_bus_bridge):=
+ /soc5200@f0000000/psc@2000: node name for SPI buses should be 'spi'
+arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): /pc=
+i@f0000d00: missing ranges for PCI bridge (or not a bridge)
+arch/powerpc/boot/dts/mpc5200b.dtsi:182.18-186.5: Warning (spi_bus_bridge):=
+ /soc5200@f0000000/psc@2000: node name for SPI buses should be 'spi'
+arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): /pc=
+i@f0000d00: missing ranges for PCI bridge (or not a bridge)
 
-I know the parameter is called 'function' and I think "EEH function" was
-a good guess for the docstring. However, if we look at the way
-'function' is used, it is compared with EEH_OPT_xxx constants, and then
-it's passed to eeh_ops->set_option(), eeh_pci_enable() is also called in
-eeh_pe_set_option() with a parameter called 'option'. So I think maybe
-'function' should be described as the "EEH option"?
+Given that arch/powerpc/boot/dts/mpc5200b.dtsi is oncluded by several
+other dts files, fixing this one file would go quite a long way to
+silencing our allyesoncig build.  Unfotunatley, I have no idea how to
+fix this file (ad maybe some fo the interactions it has with other files).
 
-This is still very unsatisfactory but it's not the fault of your patch -
-the EEH codebase is very messy and it's worth fixing the W=1 warnings
-even if we don't fully clean up the EEH codebase.
+--=20
+Cheers,
+Stephen Rothwell
 
-> - * eeh_set_pe_freset - Check the required reset for the indicated device
-> - * @data: EEH device
-> + * eeh_set_dev_freset - Check the required reset for the indicated device
-> + * @edev: EEH device
->   * @flag: return value
->   *
+--Sig_/lFGGsKOdKiBlptVO7HeVFbX
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
-This is good.
+-----BEGIN PGP SIGNATURE-----
 
->  /**
->   * eeh_pe_reset_full - Complete a full reset process on the indicated PE
->   * @pe: EEH PE
-> + * @include_passed: include passed-through devices?
->   *
->   * This function executes a full reset procedure on a PE, including setting
->   * the appropriate flags, performing a fundamental or hot reset, and then
-> @@ -937,6 +939,7 @@ static struct notifier_block eeh_device_nb = {
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmFf23AACgkQAVBC80lX
+0GyiaQgAkIu26Mo/xDN8vIDzAja0d9yMJhmH4hbeTVWJInd9127E7rJcqZxMdjQb
+G7EC3zBbs/dttnbsfR0cOxxmN0OkyHHxcYfW+MnLesH0M1bCe2Gy5lB10mtEtP9p
+L/f2jrPepH6CeyEUkeu7TcKX9Pg20EgPwCqehkl4S9A8E+K3ndSGjLuYfijfQVOx
+BJNTUoJCmAQVy0/tQgV0E9/47P962ol1Kd+avV9S0rb/HyY+fKt+WCxTT6anmJpl
+cya8MxkQmOzDQMwN1HjFjq/k7aRr8hUWh4ABUCO3Sl/bOGQIZlYYkcbiAmiHFPjp
+FpldIPHqYQDS9Hp+0p1w6AzPbeEvZA==
+=7yck
+-----END PGP SIGNATURE-----
 
-This is OK.
-
- 
->  /**
->   * eeh_init - System wide EEH initialization
-> + * @ops: struct to trace EEH operation callback functions
-
-I think "@ops: platform-specific functions for EEH operations" is
-probably clearer?
-
->   *
->   * It's the platform's job to call this from an arch_initcall().
->   */
-> @@ -1442,6 +1445,7 @@ static int eeh_pe_reenable_devices(struct eeh_pe *pe, bool include_passed)
->   * eeh_pe_reset - Issue PE reset according to specified type
->   * @pe: EEH PE
->   * @option: reset type
-> + * @include_passed: include passed-through devices?
->   *
-
-This is OK.
-
->   * The routine is called to reset the specified PE with the
->   * indicated type, either fundamental reset or hot reset.
-> @@ -1513,12 +1517,12 @@ EXPORT_SYMBOL_GPL(eeh_pe_configure);
->   * eeh_pe_inject_err - Injecting the specified PCI error to the indicated PE
->   * @pe: the indicated PE
->   * @type: error type
-> - * @function: error function
-> + * @func: error function
-
-This is good.
-
->   * @addr: address
->   * @mask: address mask
->   *
->   * The routine is called to inject the specified PCI error, which
-> - * is determined by @type and @function, to the indicated PE for
-> + * is determined by @type and @func, to the indicated PE for
-
-This is good.
-
-When you resend, you can include:
- Reviewed-by: Daniel Axtens <dja@axtens.net>
-
-Kind regards,
-Daniel
+--Sig_/lFGGsKOdKiBlptVO7HeVFbX--
