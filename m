@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0223F426E86
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Oct 2021 18:18:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85C59426E87
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Oct 2021 18:19:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HQtds6Xksz3cC6
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Oct 2021 03:18:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HQtfq36s2z3c54
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Oct 2021 03:18:59 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=s5I3jKTs;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=q5A7f3BT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,94 +17,93 @@ Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HQtbb5WTBz2xvc
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Oct 2021 03:16:11 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HQtbg0Bpzz2yKB
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Oct 2021 03:16:15 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=s5I3jKTs; dkim-atps=neutral
+ header.s=pp1 header.b=q5A7f3BT; dkim-atps=neutral
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4HQtbb5Q0xz4xqN
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Oct 2021 03:16:11 +1100 (AEDT)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4HQtbf6xptz4xqP
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Oct 2021 03:16:14 +1100 (AEDT)
 Received: by gandalf.ozlabs.org (Postfix)
- id 4HQtbb5Ml4z4xbZ; Sat,  9 Oct 2021 03:16:11 +1100 (AEDT)
+ id 4HQtbf6sTpz4xqN; Sat,  9 Oct 2021 03:16:14 +1100 (AEDT)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: gandalf.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=s5I3jKTs; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ header.s=pp1 header.b=q5A7f3BT; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by gandalf.ozlabs.org (Postfix) with ESMTPS id 4HQtbb2S21z4xbG;
- Sat,  9 Oct 2021 03:16:11 +1100 (AEDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 198Ehg6i025714; 
- Fri, 8 Oct 2021 12:16:08 -0400
+ by gandalf.ozlabs.org (Postfix) with ESMTPS id 4HQtbf4Z8Fz4xbZ;
+ Sat,  9 Oct 2021 03:16:14 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 198FC65x001569; 
+ Fri, 8 Oct 2021 12:16:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=npvkGEPGqKwEoUSC4SyInPdrQa1CL4fDAiEEVRVxIec=;
- b=s5I3jKTsbpZB6FNw7w6sfg5d8ETf69NJEudBpJ4uvopHr3xaEDr5+f6tuhBQejXJWJfT
- GD1I0Im5VwiXfJdUYxj+abDg7w71gGNPF60qSeny5DC7TXrAcBjqbMS7ceQRKFpNxtku
- 9uXYYUIkAXHsmnnojHpcd0HG+Nt8jJmAisbevXS4EJKj2PvFP66cF8+wRwdYhl+xqBER
- wSJhjc8c/iLm3xNITuzkhtT6URL2gp1gr+W8ly/L1Y50F28D29DjoXUGmzRRZbXSm7UZ
- OgSv7IRDEcEfGYthHGRTN/QB3J5QVbF+vllfvBlvZ1BbiYm5vaHPN3GYjsdsuwyFLsW0 /Q== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3bjr0ka6pt-1
+ bh=EBuZXpjgIRsL/OAJ688dtWrAgWHEkN9CyLAn+u+O9PY=;
+ b=q5A7f3BT2ouBGZWcWsIBbjucz9g5/LtfGzjGnseXtdfSsPmvsm0QRJGEPcaXbdPLpe5I
+ i7XU71TKhJ0+zXk0t/RLWyMjxs5COFE4oxodj6zUNLP9SqSDjmHG1iUpxgpEq7Ljhan1
+ SS8bJQl4oLEW+gIHwWNDu7CTQ2ytmjteB4xdAXKU6fXDm61NGEoG4smWyhBD5F44763L
+ 7EXQ86tTFXiOzaMRgRaeR8ltm1qs9dpzWyUvZw8HZhjQAZUkbIiaSHq5FzYqn6QvzpR2
+ bRRydPvL2L2/rn0RKkKQwexlIXYH8hcBQKXqtZ1doTHIkGSqqbFvWb0eRNRxJ4JEe4tg Yw== 
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3bjrdp9fxd-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Oct 2021 12:16:08 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 198GCFgq024891;
- Fri, 8 Oct 2021 16:16:06 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma06ams.nl.ibm.com with ESMTP id 3bhepdd1s2-1
+ Fri, 08 Oct 2021 12:16:12 -0400
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 198GClDE017130;
+ Fri, 8 Oct 2021 16:16:09 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma06fra.de.ibm.com with ESMTP id 3beepkg7y9-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Oct 2021 16:16:06 +0000
+ Fri, 08 Oct 2021 16:16:08 +0000
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com
  (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 198GG29v41288108
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 198GAcrc59572512
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 8 Oct 2021 16:16:02 GMT
+ Fri, 8 Oct 2021 16:10:38 GMT
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 994F0A405F;
- Fri,  8 Oct 2021 16:16:02 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 41A76A405F;
+ Fri,  8 Oct 2021 16:16:05 +0000 (GMT)
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 42A06A4064;
- Fri,  8 Oct 2021 16:16:00 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 155AAA405C;
+ Fri,  8 Oct 2021 16:16:03 +0000 (GMT)
 Received: from sjain014.ibmuc.com (unknown [9.43.25.237])
  by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri,  8 Oct 2021 16:15:59 +0000 (GMT)
+ Fri,  8 Oct 2021 16:16:02 +0000 (GMT)
 From: Sourabh Jain <sourabhjain@linux.ibm.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 2/3] Remove 256MB limit restriction for boot cpu paca
- allocation
-Date: Fri,  8 Oct 2021 21:45:51 +0530
-Message-Id: <20211008161552.211262-3-sourabhjain@linux.ibm.com>
+Subject: [PATCH 3/3] powerpc: Set crashkernel offset to mid of RMA region
+Date: Fri,  8 Oct 2021 21:45:52 +0530
+Message-Id: <20211008161552.211262-4-sourabhjain@linux.ibm.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20211008161552.211262-1-sourabhjain@linux.ibm.com>
 References: <20211008161552.211262-1-sourabhjain@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 9Ecs3A52HdQMsydqFbPnbcFvIt_CczOi
-X-Proofpoint-GUID: 9Ecs3A52HdQMsydqFbPnbcFvIt_CczOi
+X-Proofpoint-GUID: _vbWghwOCy6BUQmFBiVRp5FcFQJfByF8
+X-Proofpoint-ORIG-GUID: _vbWghwOCy6BUQmFBiVRp5FcFQJfByF8
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
  definitions=2021-10-08_04,2021-10-07_02,2020-04-07_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  phishscore=0 spamscore=0
- clxscore=1015 impostorscore=0 suspectscore=0 bulkscore=0
- priorityscore=1501 mlxscore=0 malwarescore=0 adultscore=0 mlxlogscore=999
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2109230001 definitions=main-2110080092
+ impostorscore=0 mlxscore=0 adultscore=0 priorityscore=1501
+ lowpriorityscore=0 suspectscore=0 malwarescore=0 clxscore=1015
+ mlxlogscore=999 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2109230001 definitions=main-2110080092
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -117,86 +116,79 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Abdul haleem <abdhalee@linux.vnet.ibm.com>, mahesh@linux.vnet.ibm.com,
- Mahesh Salgaonkar <mahesh@linux.ibm.com>, linuxppc-dev@ozlabs.org,
- aneesh.kumar@linux.ibm.com, hbathini@linux.ibm.com
+ linuxppc-dev@ozlabs.org, aneesh.kumar@linux.ibm.com, hbathini@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+On large config LPARs (having 192 and more cores), Linux fails to boot
+due to insufficient memory in the first memblock. It is due to the
+memory reservation for the crash kernel which starts at 128MB offset of
+the first memblock. This memory reservation for the crash kernel doesn't
+leave enough space in the first memblock to accommodate other essential
+system resources.
 
-At the time when we detect and allocate paca for boot cpu, we havn't yet
-detected mmu feature of 1T segments support (not until
-mmu_early_init_devtree() call). This causes ppc64_bolted_size() to return
-256MB as limit forcing boot cpu paca allocation below 256MB always.
+The crash kernel start address was set to 128MB offset by default to
+ensure that the crash kernel get some memory below the RMA region which
+is used to be of size 256MB. But given that the RMA region size can be
+512MB or more, setting the crash kernel offset to mid of RMA size will
+leave enough space for kernel to allocate memory for other system
+resources.
 
-This works fine for kdump kernel boot as long as crashkernel reservation is
-at offset below 256MB. But when we move kdump offset to 256MB or above,
-kdump kernel fails to allocate paca for boot cpu below 256MB and crashes in
-allocate_paca().
+Since the above crash kernel offset change is only applicable to the LPAR
+platform, the LPAR feature detection is pushed before the crash kernel
+reservation. The rest of LPAR specific initialization will still
+be done during pseries_probe_fw_features as usual.
 
-Moving the detection of segment sizes just before paca allocation for boot
-cpu removes this restriction of 256MB limit. This allows kdump kernel to
-successfully boot and capture vmcore.
-
-Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
 Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
 Reported-and-tested-by: Abdul haleem <abdhalee@linux.vnet.ibm.com>
 ---
- arch/powerpc/include/asm/book3s/64/mmu.h | 1 +
- arch/powerpc/kernel/prom.c               | 6 ++++++
- arch/powerpc/mm/book3s64/hash_utils.c    | 5 ++++-
- 3 files changed, 11 insertions(+), 1 deletion(-)
+ arch/powerpc/kernel/rtas.c |  4 ++++
+ arch/powerpc/kexec/core.c  | 15 +++++++++++----
+ 2 files changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/mmu.h b/arch/powerpc/include/asm/book3s/64/mmu.h
-index d60be5051d60..9b05a84313bb 100644
---- a/arch/powerpc/include/asm/book3s/64/mmu.h
-+++ b/arch/powerpc/include/asm/book3s/64/mmu.h
-@@ -199,6 +199,7 @@ extern int mmu_io_psize;
- /* MMU initialization */
- void update_cpu_features(void);
- void mmu_early_init_devtree(void);
-+void hash__early_detect_seg_size(void);
- void hash__early_init_devtree(void);
- void radix__early_init_devtree(void);
- #ifdef CONFIG_PPC_PKEY
-diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-index 889c909e4ed4..5da2bfff4dea 100644
---- a/arch/powerpc/kernel/prom.c
-+++ b/arch/powerpc/kernel/prom.c
-@@ -385,6 +385,12 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
- 	identical_pvr_fixup(node);
- 	init_mmu_slb_size(node);
+diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+index ff80bbad22a5..a49137727370 100644
+--- a/arch/powerpc/kernel/rtas.c
++++ b/arch/powerpc/kernel/rtas.c
+@@ -1235,6 +1235,10 @@ int __init early_init_dt_scan_rtas(unsigned long node,
+ 	entryp = of_get_flat_dt_prop(node, "linux,rtas-entry", NULL);
+ 	sizep  = of_get_flat_dt_prop(node, "rtas-size", NULL);
  
-+#ifdef CONFIG_PPC_BOOK3S_64
-+	/* Initialize segment sizes */
-+	if (!early_radix_enabled())
-+		hash__early_detect_seg_size();
-+#endif
++	/* need this feature to decide the crashkernel offset */
++	if (of_get_flat_dt_prop(node, "ibm,hypertas-functions", NULL))
++		powerpc_firmware_features |= FW_FEATURE_LPAR;
 +
+ 	if (basep && entryp && sizep) {
+ 		rtas.base = *basep;
+ 		rtas.entry = *entryp;
+diff --git a/arch/powerpc/kexec/core.c b/arch/powerpc/kexec/core.c
+index 48525e8b5730..71b1bfdadd76 100644
+--- a/arch/powerpc/kexec/core.c
++++ b/arch/powerpc/kexec/core.c
+@@ -147,11 +147,18 @@ void __init reserve_crashkernel(void)
+ 	if (!crashk_res.start) {
  #ifdef CONFIG_PPC64
- 	if (nthreads == 1)
- 		cur_cpu_spec->cpu_features &= ~CPU_FTR_SMT;
-diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-index c145776d3ae5..ef4fc6bb1b30 100644
---- a/arch/powerpc/mm/book3s64/hash_utils.c
-+++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -1020,11 +1020,14 @@ static void __init htab_initialize(void)
- #undef KB
- #undef MB
- 
--void __init hash__early_init_devtree(void)
-+void __init hash__early_detect_seg_size(void)
- {
- 	/* Initialize segment sizes */
- 	of_scan_flat_dt(htab_dt_scan_seg_sizes, NULL);
-+}
- 
-+void __init hash__early_init_devtree(void)
-+{
- 	/* Initialize page sizes */
- 	htab_scan_page_sizes();
- }
+ 		/*
+-		 * On 64bit we split the RMO in half but cap it at half of
+-		 * a small SLB (128MB) since the crash kernel needs to place
+-		 * itself and some stacks to be in the first segment.
++		 * On the LPAR platform place the crash kernel to mid of
++		 * RMA size (512MB or more) to ensure the crash kernel
++		 * gets enough space to place itself and some stack to be
++		 * in the first segment. At the same time normal kernel
++		 * also get enough space to allocate memory for essential
++		 * system resource in the first segment. Keep the crash
++		 * kernel starts at 128MB offset on other platforms.
+ 		 */
+-		crashk_res.start = min(0x8000000ULL, (ppc64_rma_size / 2));
++		if (firmware_has_feature(FW_FEATURE_LPAR))
++			crashk_res.start = ppc64_rma_size / 2;
++		else
++			crashk_res.start = min(0x8000000ULL, (ppc64_rma_size / 2));
+ #else
+ 		crashk_res.start = KDUMP_KERNELBASE;
+ #endif
 -- 
 2.31.1
 
