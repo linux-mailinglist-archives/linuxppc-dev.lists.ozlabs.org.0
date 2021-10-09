@@ -1,63 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53A124277AF
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Oct 2021 08:11:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD867427865
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Oct 2021 11:24:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HRF7l6MjHz3bfl
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Oct 2021 17:11:47 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=Q0RJ3AaL;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HRKQS5k5dz3c8w
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Oct 2021 20:24:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=81.169.146.164;
- helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=Q0RJ3AaL; 
- dkim-atps=neutral
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de
- [81.169.146.164])
+ smtp.mailfrom=molgen.mpg.de (client-ip=141.14.17.11; helo=mx1.molgen.mpg.de;
+ envelope-from=pmenzel@molgen.mpg.de; receiver=<UNKNOWN>)
+Received: from mx1.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HRF7305hqz2yYJ
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Oct 2021 17:11:08 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1633759847;
- s=strato-dkim-0002; d=xenosoft.de;
- h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
- From:Subject:Sender;
- bh=JVWe11piAfJAdJymevoTxJyW/bmqebDGO4Tn3HRu4b4=;
- b=Q0RJ3AaLtlsUYxULnfHfBH9qDpEuvo7yTdNE0iYvtrjgog/pvh4+8+3tEqCOHBcBaa
- hESf15Um2Ws0E3aXKjhDvFaVu5v4k3VLf/njeI0Qhd9b1/HOlYoJ1s1mTwY3hkXG822A
- 7hVFryIvLIAbrOvYRp0EK/HhQkm0xI3Zi/FOJ7JEKoymWd1WIDYMn0SfENkAeStOFMcI
- zPiwK8z2VMP3FUh5TX0BLeMcCC2Wle8dudSP7XJTD/AOw7YYzTFfO9jnpdeE4c2Gy1ww
- TL4FHG/tH7lcWdJKdruYBQ01xnUU3FGOqwhrCFsqElmZ1TXbMNM+fnjAtD7yRn3c33Lt
- NEgg==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6Kxrf+5Dj7x4QgaM9fNtIXuaJFHrSAKNftmKoHNgA/QJNkOVJjQPPQ=="
-X-RZG-CLASS-ID: mo00
-Received: from smtpclient.apple by smtp.strato.de (RZmta 47.33.8 AUTH)
- with ESMTPSA id I00cdex996Ak4d2
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Sat, 9 Oct 2021 08:10:46 +0200 (CEST)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-Mime-Version: 1.0 (1.0)
-Subject: Re: Add Apple M1 support to PASemi i2c driver
-Date: Sat, 9 Oct 2021 08:10:45 +0200
-Message-Id: <F5C910BA-665C-4744-BAAE-9B3ED80974A0@xenosoft.de>
-References: <CAOesGMgnx6P=J--bygw=vcL1b4mQbdACBX+Mwc7BtmEmMtP7KA@mail.gmail.com>
-In-Reply-To: <CAOesGMgnx6P=J--bygw=vcL1b4mQbdACBX+Mwc7BtmEmMtP7KA@mail.gmail.com>
-To: Olof Johansson <olof@lixom.net>
-X-Mailer: iPhone Mail (19A348)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HRKPx4LQfz2yJM
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Oct 2021 20:24:18 +1100 (AEDT)
+Received: from [192.168.0.2] (ip5f5aef39.dynamic.kabel-deutschland.de
+ [95.90.239.57])
+ (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested) (Authenticated sender: pmenzel)
+ by mx.molgen.mpg.de (Postfix) with ESMTPSA id ECA9861E5FE00;
+ Sat,  9 Oct 2021 11:24:09 +0200 (CEST)
+Subject: Re: [PATCH 1/2] firmware: include drivers/firmware/Kconfig
+ unconditionally
+To: Arnd Bergmann <arnd@kernel.org>,
+ Bjorn Andersson <bjorn.andersson@linaro.org>
+References: <20210928075216.4193128-1-arnd@kernel.org>
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+Message-ID: <9dedf9bb-5377-9f2c-cbb1-2a57b40493da@molgen.mpg.de>
+Date: Sat, 9 Oct 2021 11:24:09 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
+MIME-Version: 1.0
+In-Reply-To: <20210928075216.4193128-1-arnd@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,76 +51,222 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux ARM Mailing List <linux-arm-kernel@lists.infradead.org>,
- Darren Stevens <darren@stevens-zone.net>, Arnd Bergmann <arnd@arndb.de>,
- Sven Peter <sven@svenpeter.dev>, Hector Martin <marcan@marcan.st>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Wolfram Sang <wsa@kernel.org>, Paul Mackerras <paulus@samba.org>,
- linux-i2c@vger.kernel.org, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- mohamed.mediouni@caramail.com, Matthew Leaman <matthew@a-eon.biz>,
- Stan Skowronek <stan@corellium.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "R.T.Dickinson" <rtd@a-eon.com>,
- Alyssa Rosenzweig <alyssa@rosenzweig.io>,
- Mark Kettenis <mark.kettenis@xs4all.nl>
+Cc: linux-ia64@vger.kernel.org, Geert Uytterhoeven <geert+renesas@glider.be>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Linus Walleij <linus.walleij@linaro.org>, linux-kernel@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, linux-riscv@lists.infradead.org,
+ Will Deacon <will@kernel.org>, Helge Deller <deller@gmx.de>, x86@kernel.org,
+ Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>,
+ linux-mips@vger.kernel.org, Albert Ou <aou@eecs.berkeley.edu>,
+ Charles Keepax <ckeepax@opensource.cirrus.com>, Arnd Bergmann <arnd@arndb.de>,
+ Simon Trimmer <simont@opensource.cirrus.com>, Mark Brown <broonie@kernel.org>,
+ Borislav Petkov <bp@alien8.de>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Liam Girdwood <lgirdwood@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Olof,
+[Cc: +linuxppc-dev@lists.ozlabs.org]
 
-Thank you for the hint.
-
-I think I have found them.
-
-Link: https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=3D26610=
-4
-
-Mbox: https://patchwork.ozlabs.org/series/266104/mbox/
-
-$ wget -O mbox https://patchwork.ozlabs.org/series/266104/mbox/
-$ git am mbox
-
-Thanks,
-Christian
-
-On 8. Oct 2021, at 22:47, Olof Johansson <olof@lixom.net> wrote:
-
-=EF=BB=BFChristian,
-
-Self-service available on lore:
-https://lore.kernel.org/all/20211008163532.75569-1-sven@svenpeter.dev/
-
-There are links on there to download a whole thread as an mbox if needed.
+Dear Arnd,
 
 
--Olof
+Am 28.09.21 um 09:50 schrieb Arnd Bergmann:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> Compile-testing drivers that require access to a firmware layer
+> fails when that firmware symbol is unavailable. This happened
+> twice this week:
+> 
+>   - My proposed to change to rework the QCOM_SCM firmware symbol
+>     broke on ppc64 and others.
+> 
+>   - The cs_dsp firmware patch added device specific firmware loader
+>     into drivers/firmware, which broke on the same set of
+>     architectures.
+> 
+> We should probably do the same thing for other subsystems as well,
+> but fix this one first as this is a dependency for other patches
+> getting merged.
+> 
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Liam Girdwood <lgirdwood@gmail.com>
+> Cc: Charles Keepax <ckeepax@opensource.cirrus.com>
+> Cc: Simon Trimmer <simont@opensource.cirrus.com>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+> Not sure how we'd want to merge this patch, if two other things
+> need it. I'd prefer to merge it along with the QCOM_SCM change
+> through the soc tree, but that leaves the cirrus firmware broken
+> unless we also merge it the same way (rather than through ASoC
+> as it is now).
+> 
+> Alternatively, we can try to find a different home for the Cirrus
+> firmware to decouple the two problems. I'd argue that it's actually
+> misplaced here, as drivers/firmware is meant for kernel code that
+> interfaces with system firmware, not for device drivers to load
+> their own firmware blobs from user space.
+> ---
+>   arch/arm/Kconfig    | 2 --
+>   arch/arm64/Kconfig  | 2 --
+>   arch/ia64/Kconfig   | 2 --
+>   arch/mips/Kconfig   | 2 --
+>   arch/parisc/Kconfig | 2 --
+>   arch/riscv/Kconfig  | 2 --
+>   arch/x86/Kconfig    | 2 --
+>   drivers/Kconfig     | 2 ++
+>   8 files changed, 2 insertions(+), 14 deletions(-)
+> 
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index ad96f3dd7e83..194d10bbff9e 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -1993,8 +1993,6 @@ config ARCH_HIBERNATION_POSSIBLE
+>   
+>   endmenu
+>   
+> -source "drivers/firmware/Kconfig"
+> -
+>   if CRYPTO
+>   source "arch/arm/crypto/Kconfig"
+>   endif
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index ebb49585a63f..8749517482ae 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -1931,8 +1931,6 @@ source "drivers/cpufreq/Kconfig"
+>   
+>   endmenu
+>   
+> -source "drivers/firmware/Kconfig"
+> -
+>   source "drivers/acpi/Kconfig"
+>   
+>   source "arch/arm64/kvm/Kconfig"
+> diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
+> index 045792cde481..1e33666fa679 100644
+> --- a/arch/ia64/Kconfig
+> +++ b/arch/ia64/Kconfig
+> @@ -388,8 +388,6 @@ config CRASH_DUMP
+>   	  help
+>   	    Generate crash dump after being started by kexec.
+>   
+> -source "drivers/firmware/Kconfig"
+> -
+>   endmenu
+>   
+>   menu "Power management and ACPI options"
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index 771ca53af06d..6b8f591c5054 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -3316,8 +3316,6 @@ source "drivers/cpuidle/Kconfig"
+>   
+>   endmenu
+>   
+> -source "drivers/firmware/Kconfig"
+> -
+>   source "arch/mips/kvm/Kconfig"
+>   
+>   source "arch/mips/vdso/Kconfig"
+> diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+> index 4742b6f169b7..27a8b49af11f 100644
+> --- a/arch/parisc/Kconfig
+> +++ b/arch/parisc/Kconfig
+> @@ -384,6 +384,4 @@ config KEXEC_FILE
+>   
+>   endmenu
+>   
+> -source "drivers/firmware/Kconfig"
+> -
+>   source "drivers/parisc/Kconfig"
+> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> index 301a54233c7e..6a6fa9e976d5 100644
+> --- a/arch/riscv/Kconfig
+> +++ b/arch/riscv/Kconfig
+> @@ -561,5 +561,3 @@ menu "Power management options"
+>   source "kernel/power/Kconfig"
+>   
+>   endmenu
+> -
+> -source "drivers/firmware/Kconfig"
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index e5ba8afd29a0..5dcec5f13a82 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -2834,8 +2834,6 @@ config HAVE_ATOMIC_IOMAP
+>   	def_bool y
+>   	depends on X86_32
+>   
+> -source "drivers/firmware/Kconfig"
+> -
+>   source "arch/x86/kvm/Kconfig"
+>   
+>   source "arch/x86/Kconfig.assembler"
+> diff --git a/drivers/Kconfig b/drivers/Kconfig
+> index 30d2db37cc87..0d399ddaa185 100644
+> --- a/drivers/Kconfig
+> +++ b/drivers/Kconfig
+> @@ -17,6 +17,8 @@ source "drivers/bus/Kconfig"
+>   
+>   source "drivers/connector/Kconfig"
+>   
+> +source "drivers/firmware/Kconfig"
+> +
+>   source "drivers/gnss/Kconfig"
+>   
+>   source "drivers/mtd/Kconfig"
+> 
 
-On Fri, Oct 8, 2021 at 1:20 PM Christian Zigotzky
-<chzigotzky@xenosoft.de> wrote:
+With this change, I have the new entries below in my .config:
 
-Hi Michael,
+```
+$ diff -u .config.old .config
+--- .config.old 2021-10-07 11:38:39.544000000 +0200
++++ .config     2021-10-09 10:02:03.156000000 +0200
+@@ -1992,6 +1992,25 @@
 
-Do you have a mbox link for the v2 changes?
+  CONFIG_CONNECTOR=y
+  CONFIG_PROC_EVENTS=y
++
++#
++# Firmware Drivers
++#
++
++#
++# ARM System Control and Management Interface Protocol
++#
++# end of ARM System Control and Management Interface Protocol
++
++# CONFIG_FIRMWARE_MEMMAP is not set
++# CONFIG_GOOGLE_FIRMWARE is not set
++
++#
++# Tegra firmware driver
++#
++# end of Tegra firmware driver
++# end of Firmware Drivers
++
+  # CONFIG_GNSS is not set
+  CONFIG_MTD=m
+  # CONFIG_MTD_TESTS is not set
+```
 
-I would like to test them on my AmigaOne X1000.
+No idea if the entries could be hidden for platforms not supporting them.
 
-Thanks,
-Christian
+         ARM System Control and Management Interface Protocol  ----
+     [ ] Add firmware-provided memory map to sysfs
+     [ ] Google Firmware Drivers  ----
+         Tegra firmware driver  ----
 
-On 27. Sep 2021, at 09:58, Michael Ellerman <mpe@ellerman.id.au> wrote:
 
-=EF=BB=BFChristian, the whole series is downloadable as a single mbox here:
+Kind regards,
 
-https://patchwork.ozlabs.org/series/264134/mbox/
-
-Save that to a file and apply with `git am`.
-
-eg:
-
-$ wget -O mbox https://patchwork.ozlabs.org/series/264134/mbox/
-$ git am mbox
-
-It applies cleanly on v5.15-rc3.
-
-cheers=
-
+Paul
