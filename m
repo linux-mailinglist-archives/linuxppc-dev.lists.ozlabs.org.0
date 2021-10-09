@@ -2,49 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C555427380
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Oct 2021 00:13:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BE784276D8
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Oct 2021 05:12:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HR2X81kQJz3bXP
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Oct 2021 09:13:44 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NfOQ1Byd;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HR99N2zBcz3c8k
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Oct 2021 14:12:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=NfOQ1Byd; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=209.85.160.177;
+ helo=mail-qt1-f177.google.com; envelope-from=pku.leo@gmail.com;
+ receiver=<UNKNOWN>)
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com
+ [209.85.160.177])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HR2WX6K1Lz2xXh
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Oct 2021 09:13:12 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8320760FC1;
- Fri,  8 Oct 2021 22:13:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1633731189;
- bh=wNgDKDIIK358RGjNmCHeTM6eGu9i1NUq2a4Cx1Zn5ec=;
- h=Date:From:To:Cc:Subject:In-Reply-To:From;
- b=NfOQ1BydTGGErjNKi2rvvo23VwEfRECB5hinU3fTD/YWGT9/wIoxtnDy0UMOb9F4Z
- Tzo85ZiIClqd9Br3sFdFgZc04avS7YFvKqBTXL1DiIl4OuLjBm9qY2WvQp8l+8T0B5
- AthcCY3b9E2A3C/eMVa0xojj/6onvABaY40UGivKWe/p1obD6p8Y4Bun00Fgp1s8zp
- RGlUjv6rmc5Hni8/2Ju6cxQJcUjT0b7O9dwy0Z94iGg1CuBBYqPTMaPsBt0GNoUzlI
- HXbK/hR3Bd6/t9zuyP1NSYD6n8jVOsNG5w7uN4sQ0R/gVLZtxJfARJL0iO21pHUVd9
- vv+eJeOuhHiyg==
-Date: Fri, 8 Oct 2021 17:13:08 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Niklas Schnelle <schnelle@linux.ibm.com>
-Subject: Re: [PATCH v3] PCI: Move pci_dev_is/assign_added() to pci.h
-Message-ID: <20211008221308.GA1383868@bhelgaas>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HR98t1pxWz2ypR
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Oct 2021 14:12:29 +1100 (AEDT)
+Received: by mail-qt1-f177.google.com with SMTP id r17so6095569qtx.10
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 08 Oct 2021 20:12:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=RZSR3JWmSBMwGLbANGREyXBTPWcaZYMU43ykvJz+HmI=;
+ b=qKo3FpZuW5lUa90O5vQBvJAkrUjGtZjZffLl2ftjIu/7jd3XQwClSKgpMM38d0m4x3
+ hd5VA4vyc6OLQ6t9VXU+nycycbaifwkHSBvZM2A2OFS2F5LSta/9ujyZrgJjHvey9mYh
+ U8VkTW+sl5J2IXMvj23xQRRM3KKikIc036r6WpLZEDzBWbk8JKXf17ty/MA2mnM2l4gS
+ Hrdsf267u0KbHr7444I0e8QcZQUMqScSPVcOpkNyOcQa3cdyjFRD1XS4e7LSQX53eTGG
+ 1/uL+z+3dPdz4oSzA5T1YXZSlf4ieznv1/Nq5Xj7I1z0GT948xBMaExrTVC1DXvqo9CT
+ 8iYQ==
+X-Gm-Message-State: AOAM532KIO1Tn6l9claLAOXgjVM6GPjFG5F9fxYtStIRxZxRxUTRkTQm
+ vrIZaRgZBxh+YRYiWbqtzwDrV0IiFDo=
+X-Google-Smtp-Source: ABdhPJwcNUFcrrBNpVRQ6BAFMaiCwWIe3wXU/rdpMen5sy4P5UBBntgmuFSw9gA/gnfdIEAI8YGj8Q==
+X-Received: by 2002:ac8:3d42:: with SMTP id u2mr2060903qtf.346.1633749145872; 
+ Fri, 08 Oct 2021 20:12:25 -0700 (PDT)
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com.
+ [209.85.222.178])
+ by smtp.gmail.com with ESMTPSA id bj31sm1087058qkb.43.2021.10.08.20.12.25
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 08 Oct 2021 20:12:25 -0700 (PDT)
+Received: by mail-qk1-f178.google.com with SMTP id ay35so2652039qkb.10
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 08 Oct 2021 20:12:25 -0700 (PDT)
+X-Received: by 2002:a37:b842:: with SMTP id i63mr5942720qkf.262.1633749145064; 
+ Fri, 08 Oct 2021 20:12:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210720150145.640727-1-schnelle@linux.ibm.com>
+References: <20211001000924.15421-1-leoyang.li@nxp.com>
+ <20211001000924.15421-3-leoyang.li@nxp.com>
+ <YVsrYp3kZNmB1CIu@robh.at.kernel.org>
+In-Reply-To: <YVsrYp3kZNmB1CIu@robh.at.kernel.org>
+From: Li Yang <leoyang.li@nxp.com>
+Date: Fri, 8 Oct 2021 22:12:13 -0500
+X-Gmail-Original-Message-ID: <CADRPPNSqJJ3RObHLVmpcg71Gz6jXi+Qa3kv-Z2oyBHzv4qcx_g@mail.gmail.com>
+Message-ID: <CADRPPNSqJJ3RObHLVmpcg71Gz6jXi+Qa3kv-Z2oyBHzv4qcx_g@mail.gmail.com>
+Subject: Re: [PATCH 2/5] memory: fsl_ifc: populate child devices without
+ relying on simple-bus
+To: Rob Herring <robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,34 +72,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- linux-pci@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ lkml <linux-kernel@vger.kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 20, 2021 at 05:01:45PM +0200, Niklas Schnelle wrote:
-> The helper function pci_dev_is_added() from drivers/pci/pci.h is used in
-> PCI arch code of both s390 and powerpc leading to awkward relative
-> includes. Move it to the global include/linux/pci.h and get rid of these
-> includes just for that one function.
-> 
-> Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-> ---
-> Since v1 (and bad v2):
-> - Fixed accidental removal of PCI_DPC_RECOVERED, PCI_DPC_RECOVERING
->   defines and also move these to include/linux/pci.h
-> 
->  arch/powerpc/platforms/powernv/pci-sriov.c |  3 ---
->  arch/powerpc/platforms/pseries/setup.c     |  1 -
->  arch/s390/pci/pci_sysfs.c                  |  2 --
->  drivers/pci/hotplug/acpiphp_glue.c         |  1 -
->  drivers/pci/pci.h                          | 15 ---------------
->  include/linux/pci.h                        | 15 +++++++++++++++
->  6 files changed, 15 insertions(+), 22 deletions(-)
+On Mon, Oct 4, 2021 at 12:14 PM Rob Herring <robh@kernel.org> wrote:
+>
+> On Thu, Sep 30, 2021 at 07:09:21PM -0500, Li Yang wrote:
+> > After we update the binding to not use simple-bus compatible for the
+> > controller, we need the driver to populate the child devices explicitly.
+> >
+> > Signed-off-by: Li Yang <leoyang.li@nxp.com>
+> > ---
+> >  drivers/memory/fsl_ifc.c | 9 +++++++++
+> >  1 file changed, 9 insertions(+)
+> >
+> > diff --git a/drivers/memory/fsl_ifc.c b/drivers/memory/fsl_ifc.c
+> > index d062c2f8250f..251d713cd50b 100644
+> > --- a/drivers/memory/fsl_ifc.c
+> > +++ b/drivers/memory/fsl_ifc.c
+> > @@ -88,6 +88,7 @@ static int fsl_ifc_ctrl_remove(struct platform_device *dev)
+> >  {
+> >       struct fsl_ifc_ctrl *ctrl = dev_get_drvdata(&dev->dev);
+> >
+> > +     of_platform_depopulate(&dev->dev);
+> >       free_irq(ctrl->nand_irq, ctrl);
+> >       free_irq(ctrl->irq, ctrl);
+> >
+> > @@ -285,6 +286,14 @@ static int fsl_ifc_ctrl_probe(struct platform_device *dev)
+> >               }
+> >       }
+> >
+> > +     /* legacy dts may still use "simple-bus" compatible */
+> > +     if (!of_device_is_compatible(dev->dev.of_node, "simple-bus")) {
+> > +             ret = of_platform_populate(dev->dev.of_node, NULL, NULL,
+> > +                                             &dev->dev);
+>
+> There's no need to make this conditional. of_platform_populate() is safe
+> to call multiple times. If that doesn't work, it's a bug.
 
-I dropped this one because I think a subsequent patch removed the use
-in arch/powerpc, so if you still need this, it probably needs to be
-updated to at least drop those hunks.
+I think that it is probably an optimization to avoid re-populate the
+bus for legacy device trees.  But it might be cleaner to just
+re-populate anyway?
+
+Regards,
+Leo
