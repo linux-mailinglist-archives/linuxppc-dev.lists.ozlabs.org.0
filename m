@@ -1,43 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E9E9427C2F
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Oct 2021 18:46:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53387427C6F
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Oct 2021 19:49:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HRWD53cjvz3cH5
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Oct 2021 03:46:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HRXdH0cf1z3c6q
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Oct 2021 04:49:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mga06.intel.com;
- envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN>)
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HRWCC6jVLz2yKT
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Oct 2021 03:45:43 +1100 (AEDT)
-X-IronPort-AV: E=McAfee;i="6200,9189,10132"; a="287555359"
-X-IronPort-AV: E=Sophos;i="5.85,360,1624345200"; d="scan'208";a="287555359"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
- by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Oct 2021 09:44:51 -0700
-X-IronPort-AV: E=Sophos;i="5.85,360,1624345200"; d="scan'208";a="546557593"
-Received: from dwillia2-desk3.jf.intel.com (HELO
- dwillia2-desk3.amr.corp.intel.com) ([10.54.39.25])
- by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Oct 2021 09:44:51 -0700
-Subject: [PATCH v3 10/10] ocxl: Use pci core's DVSEC functionality
-From: Dan Williams <dan.j.williams@intel.com>
-To: linux-cxl@vger.kernel.org
-Date: Sat, 09 Oct 2021 09:44:50 -0700
-Message-ID: <163379789065.692348.7117946955275586530.stgit@dwillia2-desk3.amr.corp.intel.com>
-In-Reply-To: <163379783658.692348.16064992154261275220.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <163379783658.692348.16064992154261275220.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: StGit/0.18-3-g996c
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=ghiti.fr
+ (client-ip=217.70.178.240; helo=mslow1.mail.gandi.net;
+ envelope-from=alex@ghiti.fr; receiver=<UNKNOWN>)
+X-Greylist: delayed 1587 seconds by postgrey-1.36 at boromir;
+ Sun, 10 Oct 2021 04:49:32 AEDT
+Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HRXcr1sk0z2xtw
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Oct 2021 04:49:30 +1100 (AEDT)
+Received: from relay5-d.mail.gandi.net (unknown [217.70.183.197])
+ by mslow1.mail.gandi.net (Postfix) with ESMTP id A1021CDDE1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Oct 2021 17:20:47 +0000 (UTC)
+Received: (Authenticated sender: alex@ghiti.fr)
+ by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 938581C0002;
+ Sat,  9 Oct 2021 17:20:20 +0000 (UTC)
+Subject: Re: [PATCH v7 1/3] riscv: Introduce CONFIG_RELOCATABLE
+To: Alexandre Ghiti <alexandre.ghiti@canonical.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-riscv@lists.infradead.org
+References: <20211009171259.2515351-1-alexandre.ghiti@canonical.com>
+ <20211009171259.2515351-2-alexandre.ghiti@canonical.com>
+From: Alexandre ghiti <alex@ghiti.fr>
+Message-ID: <a6223864-7263-5450-0890-0f05a137d8c2@ghiti.fr>
+Date: Sat, 9 Oct 2021 19:20:20 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20211009171259.2515351-2-alexandre.ghiti@canonical.com>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,71 +57,196 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ben Widawsky <ben.widawsky@intel.com>, Andrew Donnellan <ajd@linux.ibm.com>,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- hch@lst.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Ben Widawsky <ben.widawsky@intel.com>
+Arf, I have sent this patchset with the wrong email address. @Palmer
+tell me if you want me to resend it correctly.
 
-Reduce maintenance burden of DVSEC query implementation by using the
-centralized PCI core implementation.
+Thanks,
 
-There are two obvious places to simply drop in the new core
-implementation. There remains find_dvsec_from_pos() which would benefit
-from using a core implementation. As that change is less trivial it is
-reserved for later.
+Alex
 
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Andrew Donnellan <ajd@linux.ibm.com>
-Acked-by: Frederic Barrat <fbarrat@linux.ibm.com> (v1)
-Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
-Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- arch/powerpc/platforms/powernv/ocxl.c |    3 ++-
- drivers/misc/ocxl/config.c            |   13 +------------
- 2 files changed, 3 insertions(+), 13 deletions(-)
-
-diff --git a/arch/powerpc/platforms/powernv/ocxl.c b/arch/powerpc/platforms/powernv/ocxl.c
-index 9105efcf242a..28b009b46464 100644
---- a/arch/powerpc/platforms/powernv/ocxl.c
-+++ b/arch/powerpc/platforms/powernv/ocxl.c
-@@ -107,7 +107,8 @@ static int get_max_afu_index(struct pci_dev *dev, int *afu_idx)
- 	int pos;
- 	u32 val;
- 
--	pos = find_dvsec_from_pos(dev, OCXL_DVSEC_FUNC_ID, 0);
-+	pos = pci_find_dvsec_capability(dev, PCI_VENDOR_ID_IBM,
-+					OCXL_DVSEC_FUNC_ID);
- 	if (!pos)
- 		return -ESRCH;
- 
-diff --git a/drivers/misc/ocxl/config.c b/drivers/misc/ocxl/config.c
-index a68738f38252..e401a51596b9 100644
---- a/drivers/misc/ocxl/config.c
-+++ b/drivers/misc/ocxl/config.c
-@@ -33,18 +33,7 @@
- 
- static int find_dvsec(struct pci_dev *dev, int dvsec_id)
- {
--	int vsec = 0;
--	u16 vendor, id;
--
--	while ((vsec = pci_find_next_ext_capability(dev, vsec,
--						    OCXL_EXT_CAP_ID_DVSEC))) {
--		pci_read_config_word(dev, vsec + OCXL_DVSEC_VENDOR_OFFSET,
--				&vendor);
--		pci_read_config_word(dev, vsec + OCXL_DVSEC_ID_OFFSET, &id);
--		if (vendor == PCI_VENDOR_ID_IBM && id == dvsec_id)
--			return vsec;
--	}
--	return 0;
-+	return pci_find_dvsec_capability(dev, PCI_VENDOR_ID_IBM, dvsec_id);
- }
- 
- static int find_dvsec_afu_ctrl(struct pci_dev *dev, u8 afu_idx)
-
+On 10/9/21 7:12 PM, Alexandre Ghiti wrote:
+> From: Alexandre Ghiti <alex@ghiti.fr>
+>
+> This config allows to compile 64b kernel as PIE and to relocate it at
+> any virtual address at runtime: this paves the way to KASLR.
+> Runtime relocation is possible since relocation metadata are embedded into
+> the kernel.
+>
+> Note that relocating at runtime introduces an overhead even if the
+> kernel is loaded at the same address it was linked at and that the compiler
+> options are those used in arm64 which uses the same RELA relocation
+> format.
+>
+> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+> ---
+>  arch/riscv/Kconfig              | 12 ++++++++
+>  arch/riscv/Makefile             |  7 +++--
+>  arch/riscv/kernel/vmlinux.lds.S |  6 ++++
+>  arch/riscv/mm/Makefile          |  4 +++
+>  arch/riscv/mm/init.c            | 54 ++++++++++++++++++++++++++++++++-
+>  5 files changed, 80 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> index ea16fa2dd768..043ba92559fa 100644
+> --- a/arch/riscv/Kconfig
+> +++ b/arch/riscv/Kconfig
+> @@ -213,6 +213,18 @@ config PGTABLE_LEVELS
+>  config LOCKDEP_SUPPORT
+>  	def_bool y
+>  
+> +config RELOCATABLE
+> +	bool
+> +	depends on MMU && 64BIT && !XIP_KERNEL
+> +	help
+> +          This builds a kernel as a Position Independent Executable (PIE),
+> +          which retains all relocation metadata required to relocate the
+> +          kernel binary at runtime to a different virtual address than the
+> +          address it was linked at.
+> +          Since RISCV uses the RELA relocation format, this requires a
+> +          relocation pass at runtime even if the kernel is loaded at the
+> +          same address it was linked at.
+> +
+>  source "arch/riscv/Kconfig.socs"
+>  source "arch/riscv/Kconfig.erratas"
+>  
+> diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
+> index 0eb4568fbd29..2f509915f246 100644
+> --- a/arch/riscv/Makefile
+> +++ b/arch/riscv/Makefile
+> @@ -9,9 +9,12 @@
+>  #
+>  
+>  OBJCOPYFLAGS    := -O binary
+> -LDFLAGS_vmlinux :=
+> +ifeq ($(CONFIG_RELOCATABLE),y)
+> +	LDFLAGS_vmlinux += -shared -Bsymbolic -z notext -z norelro
+> +	KBUILD_CFLAGS += -fPIE
+> +endif
+>  ifeq ($(CONFIG_DYNAMIC_FTRACE),y)
+> -	LDFLAGS_vmlinux := --no-relax
+> +	LDFLAGS_vmlinux += --no-relax
+>  	KBUILD_CPPFLAGS += -DCC_USING_PATCHABLE_FUNCTION_ENTRY
+>  	CC_FLAGS_FTRACE := -fpatchable-function-entry=8
+>  endif
+> diff --git a/arch/riscv/kernel/vmlinux.lds.S b/arch/riscv/kernel/vmlinux.lds.S
+> index 5104f3a871e3..862a8c09723c 100644
+> --- a/arch/riscv/kernel/vmlinux.lds.S
+> +++ b/arch/riscv/kernel/vmlinux.lds.S
+> @@ -133,6 +133,12 @@ SECTIONS
+>  
+>  	BSS_SECTION(PAGE_SIZE, PAGE_SIZE, 0)
+>  
+> +	.rela.dyn : ALIGN(8) {
+> +		__rela_dyn_start = .;
+> +		*(.rela .rela*)
+> +		__rela_dyn_end = .;
+> +	}
+> +
+>  #ifdef CONFIG_EFI
+>  	. = ALIGN(PECOFF_SECTION_ALIGNMENT);
+>  	__pecoff_data_virt_size = ABSOLUTE(. - __pecoff_text_end);
+> diff --git a/arch/riscv/mm/Makefile b/arch/riscv/mm/Makefile
+> index 7ebaef10ea1b..2d33ec574bbb 100644
+> --- a/arch/riscv/mm/Makefile
+> +++ b/arch/riscv/mm/Makefile
+> @@ -1,6 +1,10 @@
+>  # SPDX-License-Identifier: GPL-2.0-only
+>  
+>  CFLAGS_init.o := -mcmodel=medany
+> +ifdef CONFIG_RELOCATABLE
+> +CFLAGS_init.o += -fno-pie
+> +endif
+> +
+>  ifdef CONFIG_FTRACE
+>  CFLAGS_REMOVE_init.o = $(CC_FLAGS_FTRACE)
+>  CFLAGS_REMOVE_cacheflush.o = $(CC_FLAGS_FTRACE)
+> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+> index c0cddf0fc22d..42041c12d496 100644
+> --- a/arch/riscv/mm/init.c
+> +++ b/arch/riscv/mm/init.c
+> @@ -20,6 +20,9 @@
+>  #include <linux/dma-map-ops.h>
+>  #include <linux/crash_dump.h>
+>  #include <linux/hugetlb.h>
+> +#ifdef CONFIG_RELOCATABLE
+> +#include <linux/elf.h>
+> +#endif
+>  
+>  #include <asm/fixmap.h>
+>  #include <asm/tlbflush.h>
+> @@ -103,7 +106,7 @@ static void __init print_vm_layout(void)
+>  	print_mlm("lowmem", (unsigned long)PAGE_OFFSET,
+>  		  (unsigned long)high_memory);
+>  #ifdef CONFIG_64BIT
+> -	print_mlm("kernel", (unsigned long)KERNEL_LINK_ADDR,
+> +	print_mlm("kernel", (unsigned long)kernel_map.virt_addr,
+>  		  (unsigned long)ADDRESS_SPACE_END);
+>  #endif
+>  }
+> @@ -518,6 +521,44 @@ static __init pgprot_t pgprot_from_va(uintptr_t va)
+>  #error "setup_vm() is called from head.S before relocate so it should not use absolute addressing."
+>  #endif
+>  
+> +#ifdef CONFIG_RELOCATABLE
+> +extern unsigned long __rela_dyn_start, __rela_dyn_end;
+> +
+> +static void __init relocate_kernel(void)
+> +{
+> +	Elf64_Rela *rela = (Elf64_Rela *)&__rela_dyn_start;
+> +	/*
+> +	 * This holds the offset between the linked virtual address and the
+> +	 * relocated virtual address.
+> +	 */
+> +	uintptr_t reloc_offset = kernel_map.virt_addr - KERNEL_LINK_ADDR;
+> +	/*
+> +	 * This holds the offset between kernel linked virtual address and
+> +	 * physical address.
+> +	 */
+> +	uintptr_t va_kernel_link_pa_offset = KERNEL_LINK_ADDR - kernel_map.phys_addr;
+> +
+> +	for ( ; rela < (Elf64_Rela *)&__rela_dyn_end; rela++) {
+> +		Elf64_Addr addr = (rela->r_offset - va_kernel_link_pa_offset);
+> +		Elf64_Addr relocated_addr = rela->r_addend;
+> +
+> +		if (rela->r_info != R_RISCV_RELATIVE)
+> +			continue;
+> +
+> +		/*
+> +		 * Make sure to not relocate vdso symbols like rt_sigreturn
+> +		 * which are linked from the address 0 in vmlinux since
+> +		 * vdso symbol addresses are actually used as an offset from
+> +		 * mm->context.vdso in VDSO_OFFSET macro.
+> +		 */
+> +		if (relocated_addr >= KERNEL_LINK_ADDR)
+> +			relocated_addr += reloc_offset;
+> +
+> +		*(Elf64_Addr *)addr = relocated_addr;
+> +	}
+> +}
+> +#endif /* CONFIG_RELOCATABLE */
+> +
+>  #ifdef CONFIG_XIP_KERNEL
+>  static void __init create_kernel_page_table(pgd_t *pgdir,
+>  					    __always_unused bool early)
+> @@ -625,6 +666,17 @@ asmlinkage void __init setup_vm(uintptr_t dtb_pa)
+>  	BUG_ON((kernel_map.virt_addr + kernel_map.size) > ADDRESS_SPACE_END - SZ_4K);
+>  #endif
+>  
+> +#ifdef CONFIG_RELOCATABLE
+> +	/*
+> +	 * Early page table uses only one PGDIR, which makes it possible
+> +	 * to map PGDIR_SIZE aligned on PGDIR_SIZE: if the relocation offset
+> +	 * makes the kernel cross over a PGDIR_SIZE boundary, raise a bug
+> +	 * since a part of the kernel would not get mapped.
+> +	 */
+> +	BUG_ON(PGDIR_SIZE - (kernel_map.virt_addr & (PGDIR_SIZE - 1)) < kernel_map.size);
+> +	relocate_kernel();
+> +#endif
+> +
+>  	pt_ops.alloc_pte = alloc_pte_early;
+>  	pt_ops.get_pte_virt = get_pte_virt_early;
+>  #ifndef __PAGETABLE_PMD_FOLDED
