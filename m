@@ -2,38 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 110574277A2
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Oct 2021 07:39:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8E72427710
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Oct 2021 06:05:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HRDQX6VTQz3dbh
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Oct 2021 16:39:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HRBKn5ct8z3c5S
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Oct 2021 15:05:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=valentin.schneider@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4HQsPv1T20z2ynt
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Oct 2021 02:22:41 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EDF7F6D;
- Fri,  8 Oct 2021 08:22:37 -0700 (PDT)
-Received: from e113632-lin (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9B44F3F66F;
- Fri,  8 Oct 2021 08:22:29 -0700 (PDT)
-From: Valentin Schneider <valentin.schneider@arm.com>
-To: Barry Song <21cnbao@gmail.com>
-Subject: Re: [PATCH 2/2] sched: Centralize SCHED_{SMT, MC, CLUSTER} definitions
-In-Reply-To: <CAGsJ_4wqtcOdsFDzR98PFbjxRyTqzf7P3p3erup84SXESYonYw@mail.gmail.com>
-References: <20211008115347.425234-1-valentin.schneider@arm.com>
- <20211008115347.425234-3-valentin.schneider@arm.com>
- <CAGsJ_4wqtcOdsFDzR98PFbjxRyTqzf7P3p3erup84SXESYonYw@mail.gmail.com>
-Date: Fri, 08 Oct 2021 16:22:27 +0100
-Message-ID: <87bl3zlex8.mognet@arm.com>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mga06.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HRBKL3tb4z2yp4
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Oct 2021 15:04:47 +1100 (AEDT)
+X-IronPort-AV: E=McAfee;i="6200,9189,10131"; a="287513357"
+X-IronPort-AV: E=Sophos;i="5.85,360,1624345200"; d="scan'208";a="287513357"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+ by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Oct 2021 21:03:42 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.85,360,1624345200"; d="scan'208";a="546458843"
+Received: from lkp-server02.sh.intel.com (HELO 1950922c5479) ([10.239.97.151])
+ by fmsmga004.fm.intel.com with ESMTP; 08 Oct 2021 21:03:38 -0700
+Received: from kbuild by 1950922c5479 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1mZ3aE-000179-20; Sat, 09 Oct 2021 04:03:38 +0000
+Date: Sat, 09 Oct 2021 12:03:00 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:next-test] BUILD SUCCESS
+ f9473a65719e59c45f1638cc04db7c80de8fcc1a
+Message-ID: <61611474.4O+0Q7OHNA+kSf7k%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Mailman-Approved-At: Sat, 09 Oct 2021 16:36:15 +1100
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,88 +50,189 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, Mark Rutland <mark.rutland@arm.com>,
- Kefeng Wang <wangkefeng.wang@huawei.com>, Rich Felker <dalias@libc.org>,
- linux-ia64@vger.kernel.org, Geert Uytterhoeven <geert+renesas@glider.be>,
- linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Linus Walleij <linus.walleij@linaro.org>, David Hildenbrand <david@redhat.com>,
- x86 <x86@kernel.org>, linux-mips@vger.kernel.org,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Hugh Dickins <hughd@google.com>, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
- Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
- linux-s390@vger.kernel.org, Vincent Guittot <vincent.guittot@linaro.org>,
- Arnd Bergmann <arnd@arndb.de>, Yoshinori Sato <ysato@users.sourceforge.jp>,
- YiFei Zhu <yifeifz2@illinois.edu>, Helge Deller <deller@gmx.de>,
- Aubrey Li <aubrey.li@linux.intel.com>,
- Daniel Bristot de Oliveira <bristot@redhat.com>,
- Russell King <linux@armlinux.org.uk>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Mel Gorman <mgorman@suse.de>, Masahiro Yamada <masahiroy@kernel.org>,
- Frederic Weisbecker <frederic@kernel.org>, Kees Cook <keescook@chromium.org>,
- Vasily Gorbik <gor@linux.ibm.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Vlastimil Babka <vbabka@suse.cz>, Vipin Sharma <vipinsh@google.com>,
- Heiko Carstens <hca@linux.ibm.com>,
- Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- Steven Rostedt <rostedt@goodmis.org>, Nathan Chancellor <nathan@kernel.org>,
- Borislav Petkov <bp@alien8.de>, Sergei Trofimovich <slyfox@gentoo.org>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Thomas Gleixner <tglx@linutronix.de>, Michal Hocko <mhocko@kernel.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- LAK <linux-arm-kernel@lists.infradead.org>,
- Barry Song <song.bao.hua@hisilicon.com>, Ben Segall <bsegall@google.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Daniel Borkmann <daniel@iogearbox.net>, linux-parisc@vger.kernel.org,
- Chris Down <chris@chrisdown.name>, linuxppc-dev@lists.ozlabs.org,
- Randy Dunlap <rdunlap@infradead.org>,
- Nick Desaulniers <ndesaulniers@google.com>,
- LKML <linux-kernel@vger.kernel.org>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Andrew Morton <akpm@linux-foundation.org>,
- Tim Chen <tim.c.chen@linux.intel.com>, "David S. Miller" <davem@davemloft.net>,
- Mike Rapoport <rppt@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 09/10/21 01:37, Barry Song wrote:
-> On Sat, Oct 9, 2021 at 12:54 AM Valentin Schneider
-> <valentin.schneider@arm.com> wrote:
->>
->> Barry recently introduced a new CONFIG_SCHED_CLUSTER, and discussions
->> around that highlighted that every architecture redefines its own help text
->> and dependencies for CONFIG_SCHED_SMT and CONFIG_SCHED_MC.
->>
->> Move the definition of those to scheduler's Kconfig to centralize help text
->> and generic dependencies (i.e. SMP). Make them depend on a matching
->> ARCH_SUPPORTS_SCHED_* which the architectures can select with the relevant
->> architecture-specific dependency.
->>
->> s390 uses its own topology table (set_sched_topology()) and doesn't seem to
->> cope without SCHED_MC or SCHED_SMT, so those remain untogglable.
->>
->
-> Hi Valentin,
-> Thanks!
-> I believe this is a cleaner way for Kconfig itself. But I am not quite sure this
-> is always beneficial of all platforms. It would be perfect if the patch has no
-> side effects and doesn't change the existing behaviour. But it has side effects
-> by changing the default N to Y on a couple of platforms.
->
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
+branch HEAD: f9473a65719e59c45f1638cc04db7c80de8fcc1a  powerpc/pseries/cpuhp: remove obsolete comment from pseries_cpu_die
 
-So x86 has it default yes, and a lot of others (e.g. arm64) have it default
-no.
+elapsed time: 830m
 
-IMO you don't gain much by disabling them. SCHED_MC and SCHED_CLUSTER only
-control the presence of a sched_domain_topology_level - if it's useless it
-gets degenerated at domain build time. Some valid reasons for not using
-them is if the architecture defines its own topology table (e.g. powerpc
-has CACHE and MC levels which are not gated behind any CONFIG).
+configs tested: 161
+configs skipped: 4
 
-SCHED_SMT has an impact on code generated in sched/core.c, but that is also
-gated by a static key.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-So I'd say having them default yes is sensible. I'd even say we should
-change the "If unsure say N here." to "Y".
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                 randconfig-c001-20211008
+s390                          debug_defconfig
+parisc                generic-32bit_defconfig
+m68k                       bvme6000_defconfig
+arm                            hisi_defconfig
+sh                            hp6xx_defconfig
+arc                         haps_hs_defconfig
+mips                    maltaup_xpa_defconfig
+mips                          rb532_defconfig
+riscv             nommu_k210_sdcard_defconfig
+xtensa                          iss_defconfig
+powerpc                 mpc85xx_cds_defconfig
+powerpc                     akebono_defconfig
+mips                  cavium_octeon_defconfig
+sh                          rsk7269_defconfig
+sh                               alldefconfig
+arm                        oxnas_v6_defconfig
+arm                         orion5x_defconfig
+m68k                         amcore_defconfig
+arm                      pxa255-idp_defconfig
+mips                            gpr_defconfig
+mips                         rt305x_defconfig
+arm                            zeus_defconfig
+arm                         socfpga_defconfig
+arm                           corgi_defconfig
+sh                          rsk7264_defconfig
+xtensa                    xip_kc705_defconfig
+nds32                             allnoconfig
+powerpc                 mpc8560_ads_defconfig
+mips                       lemote2f_defconfig
+m68k                        stmark2_defconfig
+sh                          sdk7786_defconfig
+powerpc                       holly_defconfig
+arm                     am200epdkit_defconfig
+sh                            migor_defconfig
+powerpc                      pasemi_defconfig
+mips                       rbtx49xx_defconfig
+powerpc                   currituck_defconfig
+ia64                             alldefconfig
+arm                         bcm2835_defconfig
+powerpc                 mpc832x_mds_defconfig
+arm                            xcep_defconfig
+mips                           rs90_defconfig
+mips                        bcm63xx_defconfig
+mips                malta_qemu_32r6_defconfig
+powerpc                          g5_defconfig
+arm                        keystone_defconfig
+riscv                               defconfig
+mips                         tb0219_defconfig
+arc                            hsdk_defconfig
+sh                        apsh4ad0a_defconfig
+mips                  decstation_64_defconfig
+sh                        sh7785lcr_defconfig
+m68k                         apollo_defconfig
+openrisc                            defconfig
+powerpc                      arches_defconfig
+sh                   secureedge5410_defconfig
+m68k                            mac_defconfig
+xtensa                       common_defconfig
+powerpc                   lite5200b_defconfig
+powerpc                      cm5200_defconfig
+arm                       multi_v4t_defconfig
+arm                        multi_v7_defconfig
+powerpc                 mpc836x_rdk_defconfig
+xtensa                generic_kc705_defconfig
+mips                         db1xxx_defconfig
+arm                          ep93xx_defconfig
+powerpc                   microwatt_defconfig
+arm                           u8500_defconfig
+h8300                    h8300h-sim_defconfig
+arm                           viper_defconfig
+mips                 decstation_r4k_defconfig
+powerpc                 mpc837x_rdb_defconfig
+arm                         s3c6400_defconfig
+arm                        realview_defconfig
+powerpc                     tqm8560_defconfig
+x86_64               randconfig-c001-20211008
+arm                  randconfig-c002-20211008
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+parisc                           allyesconfig
+s390                                defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                             allyesconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+powerpc                          allyesconfig
+x86_64               randconfig-a015-20211008
+x86_64               randconfig-a012-20211008
+x86_64               randconfig-a016-20211008
+x86_64               randconfig-a013-20211008
+x86_64               randconfig-a011-20211008
+x86_64               randconfig-a014-20211008
+i386                 randconfig-a013-20211008
+i386                 randconfig-a016-20211008
+i386                 randconfig-a014-20211008
+i386                 randconfig-a011-20211008
+i386                 randconfig-a012-20211008
+i386                 randconfig-a015-20211008
+arc                  randconfig-r043-20211008
+s390                 randconfig-r044-20211008
+riscv                randconfig-r042-20211008
+riscv                    nommu_k210_defconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+riscv                            allyesconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-c007-20211008
+i386                 randconfig-c001-20211008
+arm                  randconfig-c002-20211008
+s390                 randconfig-c005-20211008
+powerpc              randconfig-c003-20211008
+riscv                randconfig-c006-20211008
+mips                 randconfig-c004-20211008
+x86_64               randconfig-a003-20211008
+x86_64               randconfig-a005-20211008
+x86_64               randconfig-a001-20211008
+x86_64               randconfig-a002-20211008
+x86_64               randconfig-a004-20211008
+x86_64               randconfig-a006-20211008
+i386                 randconfig-a001-20211008
+i386                 randconfig-a003-20211008
+i386                 randconfig-a005-20211008
+i386                 randconfig-a004-20211008
+i386                 randconfig-a002-20211008
+i386                 randconfig-a006-20211008
+hexagon              randconfig-r045-20211008
+hexagon              randconfig-r041-20211008
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
