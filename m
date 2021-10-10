@@ -1,60 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9862428299
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Oct 2021 19:18:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D1854283C8
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Oct 2021 23:27:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HS7t73PS9z304s
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Oct 2021 04:18:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HSFQB4M3Kz305H
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Oct 2021 08:27:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sBMXhqZB;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=mcgfXPRR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=pr-tracker-bot@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=sBMXhqZB; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HS7sP3NbCz2y8R
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Oct 2021 04:17:29 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPS id 8B83960F5B;
- Sun, 10 Oct 2021 17:17:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1633886245;
- bh=eJh/Av348J6EXyMqmxnJs3hSOaKCBJlq1t7N4KMNZq8=;
- h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
- b=sBMXhqZBZKFvSSSEj6hyBoV4GdAAE7gFB/iM5o80Ljzd4EZ1niyINxNDRgOwgOqJS
- HSL1ZhAAn7Q4M4V4rj9vJVqgFhuP+/iarlz0vBbSTmmQKIVB0GX5nySGx4cbkNWlhK
- R3YtgSfLNvpYDrVYTXnF7m029Sdc4XfYJw/w55AVztm6Q/PjT57//TF9WrgOLYi0AL
- LvHhsv0e4jttt0DEhkyp+A4XA1HSIKegfs26ud0MF5Vwk2lgV+6m3O+A4ru5whkqaL
- LouebD2JqkpQiEKkdOI8sm4GG4f4CxXSUe8sdnqHqusCcg5GzIvLNLj7LB32mZVc7r
- clx+UR05hNrzg==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain
- [127.0.0.1])
- by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 8111B60A38;
- Sun, 10 Oct 2021 17:17:25 +0000 (UTC)
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.15-3 tag
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <87y271m5ft.fsf@mpe.ellerman.id.au>
-References: <87y271m5ft.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <87y271m5ft.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
- tags/powerpc-5.15-3
-X-PR-Tracked-Commit-Id: eb8257a12192f43ffd41bd90932c39dade958042
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: efb52a7d9511df818391f1afa459507425833438
-Message-Id: <163388624552.22826.643587179414757295.pr-tracker-bot@kernel.org>
-Date: Sun, 10 Oct 2021 17:17:25 +0000
-To: Michael Ellerman <mpe@ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HSFPS231hz2xY5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Oct 2021 08:27:08 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=mcgfXPRR; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4HSFPQ0CpGz4xb9;
+ Mon, 11 Oct 2021 08:27:06 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+ s=201702; t=1633901226;
+ bh=Tdpa6xnFc3ophnWEiOl1ld3ry0k/KgAZC1Myk8IqKNE=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=mcgfXPRRZC7Eo3EhA1j7l7YmgqLE0qefC1LBZanrPS/alYfJN861aigEFznukuT/R
+ BSpO420gbDzloZGrULJ81Wqcf4m8zgWHFBfTeh7VHlEHo+Zg/AeuRFKF122XzhHILZ
+ kfmSlcvhoEzxk2+kGYAzdksFUk0ZhTLqvDGmHfulpWl9OqU8tLzFcttjXL+KPuZq/T
+ npDi8IuqVpLVlS+szraSwypKUFpu3exd/JjPq3Nsvbmcecx+FjyD2d9ox5isCGmyik
+ RNnpb2KlGPh9+xNkSLwkFovpNk12BDMJ0ugHUjr6Dg18Em22YiqKad4XJU1/ctksUu
+ mcTZHDJMk3BFw==
+Date: Mon, 11 Oct 2021 08:27:04 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Michael Ellerman <mpe@ellerman.id.au>, PowerPC
+ <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: linux-next: build warnings in Linus' tree
+Message-ID: <20211011082704.3cff4568@canb.auug.org.au>
+In-Reply-To: <20211008164728.30e3d3a3@canb.auug.org.au>
+References: <20211008164728.30e3d3a3@canb.auug.org.au>
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="Sig_/xIyb51QYuHZd2a6dL62QVXX";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,23 +61,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: songliubraving@fb.com, johan.almbladh@anyfinetworks.com, aik@ozlabs.ru,
- linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, linux-kernel@vger.kernel.org,
- mahesh@linux.ibm.com, clg@kaod.org, naveen.n.rao@linux.vnet.ibm.com,
- Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Rob Herring <robh+dt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pull request you sent on Sun, 10 Oct 2021 23:26:30 +1100:
+--Sig_/xIyb51QYuHZd2a6dL62QVXX
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.15-3
+Hi all,
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/efb52a7d9511df818391f1afa459507425833438
+[Cc'ing Rob]
 
-Thank you!
+Rob: these warnings have been there for a long time ...
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+On Fri, 8 Oct 2021 16:47:28 +1100 Stephen Rothwell <sfr@canb.auug.org.au> w=
+rote:
+>
+> Hi all,
+>=20
+> After merging the origin tree, today's linux-next build (powerpc
+> allyesconfig) produced these warnings (along with many others):
+>=20
+> arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): /=
+pci@f0000d00: missing ranges for PCI bridge (or not a bridge)
+> arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): /=
+pci@f0000d00: missing ranges for PCI bridge (or not a bridge)
+> arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): /=
+pci@f0000d00: missing ranges for PCI bridge (or not a bridge)
+> arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): /=
+pci@f0000d00: missing ranges for PCI bridge (or not a bridge)
+> arch/powerpc/boot/dts/mpc5200b.dtsi:182.18-186.5: Warning (spi_bus_bridge=
+): /soc5200@f0000000/psc@2000: node name for SPI buses should be 'spi'
+> arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): /=
+pci@f0000d00: missing ranges for PCI bridge (or not a bridge)
+> arch/powerpc/boot/dts/mpc5200b.dtsi:182.18-186.5: Warning (spi_bus_bridge=
+): /soc5200@f0000000/psc@2000: node name for SPI buses should be 'spi'
+> arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): /=
+pci@f0000d00: missing ranges for PCI bridge (or not a bridge)
+> arch/powerpc/boot/dts/mpc5200b.dtsi:182.18-186.5: Warning (spi_bus_bridge=
+): /soc5200@f0000000/psc@2000: node name for SPI buses should be 'spi'
+> arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): /=
+pci@f0000d00: missing ranges for PCI bridge (or not a bridge)
+> arch/powerpc/boot/dts/mpc5200b.dtsi:182.18-186.5: Warning (spi_bus_bridge=
+): /soc5200@f0000000/psc@2000: node name for SPI buses should be 'spi'
+> arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): /=
+pci@f0000d00: missing ranges for PCI bridge (or not a bridge)
+> arch/powerpc/boot/dts/mpc5200b.dtsi:182.18-186.5: Warning (spi_bus_bridge=
+): /soc5200@f0000000/psc@2000: node name for SPI buses should be 'spi'
+> arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): /=
+pci@f0000d00: missing ranges for PCI bridge (or not a bridge)
+> arch/powerpc/boot/dts/mpc5200b.dtsi:182.18-186.5: Warning (spi_bus_bridge=
+): /soc5200@f0000000/psc@2000: node name for SPI buses should be 'spi'
+> arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge): /=
+pci@f0000d00: missing ranges for PCI bridge (or not a bridge)
+>=20
+> Given that arch/powerpc/boot/dts/mpc5200b.dtsi is oncluded by several
+> other dts files, fixing this one file would go quite a long way to
+> silencing our allyesoncig build.  Unfotunatley, I have no idea how to
+> fix this file (ad maybe some fo the interactions it has with other files).
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/xIyb51QYuHZd2a6dL62QVXX
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmFjWqgACgkQAVBC80lX
+0GxbWQf+NO+y1FHCcKtadFk+9aCdVAiB5cYV5hPoHV65SuG78Ye4TEu8yhF3pO46
+EMJ0h9CsatqseqR5dnTqS58wXWqhdGXy4IW0C8zvygeDUFLTSSEVCNp4WmrAKeya
+YD0iEzIAbmNjEwoV9eLh2uJGMaKHf0DvKaBHSjavhVpZf2wAT3nsYF3B+0nT/U61
+px5hq0/aAYkrl3gLySfNeAxwzZQ02evyMqPKhuuA+DF6knKX21mIRFRNCvfSnN8n
+E1AY72UmJeuFXce5XEiwquZ2ULAJCVwPEFyhApX0d27zi65MbcREMlogzWkoMcZQ
+Hej0NkhOhbDH8JpPGM3JVn8DIkWEyA==
+=8c1M
+-----END PGP SIGNATURE-----
+
+--Sig_/xIyb51QYuHZd2a6dL62QVXX--
