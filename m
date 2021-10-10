@@ -1,45 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D5E7427DD8
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Oct 2021 00:16:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 798DC427F44
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Oct 2021 07:34:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HRfYB6lFFz3c98
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Oct 2021 09:16:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HRrGD3rNvz2yP6
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Oct 2021 16:34:28 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=smXj9SNP;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=fail (SPF fail - not authorized)
- smtp.mailfrom=canonical.com (client-ip=217.70.178.231;
- helo=relay11.mail.gandi.net; envelope-from=alexandre.ghiti@canonical.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
  receiver=<UNKNOWN>)
-X-Greylist: delayed 61 seconds by postgrey-1.36 at boromir;
- Sun, 10 Oct 2021 04:16:32 AEDT
-Received: from relay11.mail.gandi.net (relay11.mail.gandi.net [217.70.178.231])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
+ header.a=rsa-sha256 header.s=korg header.b=smXj9SNP; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HRWtm1T5Rz2xsW
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Oct 2021 04:16:31 +1100 (AEDT)
-Received: (Authenticated sender: alex@ghiti.fr)
- by relay11.mail.gandi.net (Postfix) with ESMTPSA id 60F97100004;
- Sat,  9 Oct 2021 17:16:27 +0000 (UTC)
-From: Alexandre Ghiti <alexandre.ghiti@canonical.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- linux-riscv@lists.infradead.org
-Subject: [PATCH v7 3/3] riscv: Check relocations at compile time
-Date: Sat,  9 Oct 2021 19:12:59 +0200
-Message-Id: <20211009171259.2515351-4-alexandre.ghiti@canonical.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20211009171259.2515351-1-alexandre.ghiti@canonical.com>
-References: <20211009171259.2515351-1-alexandre.ghiti@canonical.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HRrFX3dt6z2yNL
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Oct 2021 16:33:51 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 06EC960F57;
+ Sun, 10 Oct 2021 05:33:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+ s=korg; t=1633844027;
+ bh=fFtb1mrI1ST0Z8ENmJv/UKksOGpmgzo0n0USEL4Xz6g=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=smXj9SNPXY/VYJ7AwIAIvQr4XCStM2hHJtZQ52RReVdA1DR3fY6BMbjoILsiYXcwh
+ LzZBmcysuTwVBN1I7oual3OdQG2egw9nzEpa0t649Lm+Cwnop68l+yIPNjj2bTErdx
+ 9Ws+cgeAupflqf4h+gvutPzjmvOuBurPcGpE1nhM=
+Date: Sun, 10 Oct 2021 07:33:42 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Xianting Tian <xianting.tian@linux.alibaba.com>
+Subject: Re: [PATCH v10 2/3] tty: hvc: pass DMA capable memory to put_chars()
+Message-ID: <YWJ7NuapWOZ4QirJ@kroah.com>
+References: <20211009114829.1071021-1-xianting.tian@linux.alibaba.com>
+ <20211009114829.1071021-3-xianting.tian@linux.alibaba.com>
+ <YWGD8y9VfBIQBu2h@kroah.com>
+ <3516c58c-e8e6-2e5a-2bc8-ad80e2124d37@linux.alibaba.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Sun, 10 Oct 2021 09:16:02 +1100
+In-Reply-To: <3516c58c-e8e6-2e5a-2bc8-ad80e2124d37@linux.alibaba.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,103 +59,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anup Patel <anup@brainfault.org>, Alexandre Ghiti <alex@ghiti.fr>
+Cc: arnd@arndb.de, amit@kernel.org, jirislaby@kernel.org,
+ shile.zhang@linux.alibaba.com, linux-kernel@vger.kernel.org,
+ virtualization@lists.linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
+ osandov@fb.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Alexandre Ghiti <alex@ghiti.fr>
+On Sat, Oct 09, 2021 at 11:45:23PM +0800, Xianting Tian wrote:
+> 
+> 在 2021/10/9 下午7:58, Greg KH 写道:
+> > Did you look at the placement using pahole as to how this structure now
+> > looks?
+> 
+> thanks for all your commnts. for this one, do you mean I need to remove the
+> blank line?  thanks
+>
 
-Relocating kernel at runtime is done very early in the boot process, so
-it is not convenient to check for relocations there and react in case a
-relocation was not expected.
+No, I mean to use the tool 'pahole' to see the structure layout that you
+just created and determine if it really is the best way to add these new
+fields, especially as you are adding huge buffers with odd alignment.
 
-There exists a script in scripts/ that extracts the relocations from
-vmlinux that is then used at postlink to check the relocations.
+thanks,
 
-Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
-Reviewed-by: Anup Patel <anup@brainfault.org>
----
- arch/riscv/Makefile.postlink     | 36 ++++++++++++++++++++++++++++++++
- arch/riscv/tools/relocs_check.sh | 26 +++++++++++++++++++++++
- 2 files changed, 62 insertions(+)
- create mode 100644 arch/riscv/Makefile.postlink
- create mode 100755 arch/riscv/tools/relocs_check.sh
-
-diff --git a/arch/riscv/Makefile.postlink b/arch/riscv/Makefile.postlink
-new file mode 100644
-index 000000000000..bf2b2bca1845
---- /dev/null
-+++ b/arch/riscv/Makefile.postlink
-@@ -0,0 +1,36 @@
-+# SPDX-License-Identifier: GPL-2.0
-+# ===========================================================================
-+# Post-link riscv pass
-+# ===========================================================================
-+#
-+# Check that vmlinux relocations look sane
-+
-+PHONY := __archpost
-+__archpost:
-+
-+-include include/config/auto.conf
-+include scripts/Kbuild.include
-+
-+quiet_cmd_relocs_check = CHKREL  $@
-+cmd_relocs_check = 							\
-+	$(CONFIG_SHELL) $(srctree)/arch/riscv/tools/relocs_check.sh "$(OBJDUMP)" "$(NM)" "$@"
-+
-+# `@true` prevents complaint when there is nothing to be done
-+
-+vmlinux: FORCE
-+	@true
-+ifdef CONFIG_RELOCATABLE
-+	$(call if_changed,relocs_check)
-+endif
-+
-+%.ko: FORCE
-+	@true
-+
-+clean:
-+	@true
-+
-+PHONY += FORCE clean
-+
-+FORCE:
-+
-+.PHONY: $(PHONY)
-diff --git a/arch/riscv/tools/relocs_check.sh b/arch/riscv/tools/relocs_check.sh
-new file mode 100755
-index 000000000000..baeb2e7b2290
---- /dev/null
-+++ b/arch/riscv/tools/relocs_check.sh
-@@ -0,0 +1,26 @@
-+#!/bin/sh
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+# Based on powerpc relocs_check.sh
-+
-+# This script checks the relocations of a vmlinux for "suspicious"
-+# relocations.
-+
-+if [ $# -lt 3 ]; then
-+        echo "$0 [path to objdump] [path to nm] [path to vmlinux]" 1>&2
-+        exit 1
-+fi
-+
-+bad_relocs=$(
-+${srctree}/scripts/relocs_check.sh "$@" |
-+	# These relocations are okay
-+	#	R_RISCV_RELATIVE
-+	grep -F -w -v 'R_RISCV_RELATIVE'
-+)
-+
-+if [ -z "$bad_relocs" ]; then
-+	exit 0
-+fi
-+
-+num_bad=$(echo "$bad_relocs" | wc -l)
-+echo "WARNING: $num_bad bad relocations"
-+echo "$bad_relocs"
--- 
-2.30.2
-
+greg k-h
