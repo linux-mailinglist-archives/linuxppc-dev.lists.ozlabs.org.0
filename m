@@ -1,52 +1,103 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B136428139
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Oct 2021 14:27:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09E4742817A
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Oct 2021 15:18:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HS1Qf2LGwz2yS3
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Oct 2021 23:27:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HS2YR4n7Bz2yZv
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Oct 2021 00:18:19 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=StkHLogs;
+	dkim=pass (2048-bit key; unprotected) header.d=svenpeter.dev header.i=@svenpeter.dev header.a=rsa-sha256 header.s=fm2 header.b=DhNcIVMI;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=RzM0HPVd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (unknown
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=svenpeter.dev (client-ip=66.111.4.229;
+ helo=new3-smtp.messagingengine.com; envelope-from=sven@svenpeter.dev;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=svenpeter.dev header.i=@svenpeter.dev
+ header.a=rsa-sha256 header.s=fm2 header.b=DhNcIVMI; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.a=rsa-sha256 header.s=fm1 header.b=RzM0HPVd; 
+ dkim-atps=neutral
+Received: from new3-smtp.messagingengine.com (new3-smtp.messagingengine.com
+ [66.111.4.229])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HS1Q05Htdz2xtD
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Oct 2021 23:26:48 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=StkHLogs; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4HS1Pj3jwKz4xbV;
- Sun, 10 Oct 2021 23:26:33 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1633868796;
- bh=2SCtlclSeJAdn42vIADSqNqIlvZP/SXox9aUhdHwUe8=;
- h=From:To:Cc:Subject:Date:From;
- b=StkHLogs6xa0KHrETSr+PQju0YwvURe4HeTimC9313Lq5SLOeWKgX6yQSkxeaoKM+
- l1BpDedw8uWbkw3d4yxNPt+/FS8pwEifFXXWgyiqEENUvJdTXiaYhqeB6ExBXB3gKS
- vq54vESD3IgFEosmeszZxOGI+GiuvClH/5Zem72luwj3fAwg/51mQn4YUiRONDB3AC
- 18lZOZV4bPg4pmzhgSg5jzHnEqZ5j/mncegGrxQ024ziAW/vtlEU3+GCzJeW5hFUmy
- nHFuCVCsuw9xVsrSGMj/3rHeDa0TRP7T9w07uJOGRTU8rWL2SGK9PykKhnhEv3wutu
- tkojioV8vEVSQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.15-3 tag
-Date: Sun, 10 Oct 2021 23:26:30 +1100
-Message-ID: <87y271m5ft.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HS2Xg5w9Qz2xvP
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Oct 2021 00:17:39 +1100 (AEDT)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+ by mailnew.nyi.internal (Postfix) with ESMTP id 9AA465813DF;
+ Sun, 10 Oct 2021 09:17:33 -0400 (EDT)
+Received: from imap47 ([10.202.2.97])
+ by compute1.internal (MEProxy); Sun, 10 Oct 2021 09:17:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=svenpeter.dev;
+ h=mime-version:message-id:in-reply-to:references:date:from:to
+ :subject:content-type; s=fm2; bh=PZzCauLMg+BrkHj2XOFWZVMQnGqma2A
+ ScnwJBV9s9iw=; b=DhNcIVMIQtKhVLEHBMdEwWrO4/yG77/WbP9bdVOJ9z+Go+z
+ zDbMiSh/Ju0mi1Hf1aRekwKad5MzSe6/Py58MHcJLb/yvS7lMecNVQ6Kp0WbwddK
+ mpLHD4yoGw7jP33mq5FiekMIDA5ewuq+r0NxTXo5fdOOuUfeOiaX4+G+aBjgIIAc
+ ZqgTrZwdd8+q1OggoBNKHj+CbCvXFIW4Yb9iqjaf61O1fGSmwvcyrIH9g5AqgG2d
+ ibaQDwZnTH6q00PrpIasQ6wLrrC9IPVJuod8Pdp24Z//QYgXpY0tQSCFFIi6xstP
+ 0wykkcoit6h7VJG20oa5uaNgUjl7+vlbqP+UtWA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to:x-me-proxy
+ :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=PZzCau
+ LMg+BrkHj2XOFWZVMQnGqma2AScnwJBV9s9iw=; b=RzM0HPVdCNHxIVk6uoKWMj
+ NEcFX/28d2QVSY+N3nXylCE49oF2/eS03fy6Xx/+zLOsPRlra++XAVg2/AGe7kll
+ kfmjl8qAB0/Eo+odjTfArJMD7+GxZyAbwaAi7ng/FTYuIhD9z9zYVrlg2LwIVVo0
+ v+ZK4iSR2AvcO5TwlKbLRoP54ymm4i7Q7f+1q4hRkmH0xtAOqG+DkO5446KNHI+o
+ sfosM8sI5LncZLXm9wIlfwRkA2M4sX+zruOrSU3uByYM0szOdqKKel4qRV78yqha
+ KugGjBv4rYbidCr8E+bQbG7DILiVgY1wCfFum24dj6Duaauz5Ay/loJAW0mglisw
+ ==
+X-ME-Sender: <xms:6-diYcaY8IQGFzUCnIBpN8qBrg0dr7vPQxJUMh5EBeYGS5kGZ2y-Tg>
+ <xme:6-diYXYMMZbtZFw364QR8ozyRJAKx2PdI6Yxx37PFNjFPAtce4M2_IDJwUmYPFDMt
+ RmRzy0PAELxw-AwGEI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrvddtgedgieefucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+ cujfgurhepofgfggfkjghffffhvffutgesthdtredtreertdenucfhrhhomhepfdfuvhgv
+ nhcurfgvthgvrhdfuceoshhvvghnsehsvhgvnhhpvghtvghrrdguvghvqeenucggtffrrg
+ htthgvrhhnpefgieegieffuefhtedtjefgteejteefleefgfefgfdvvddtgffhffduhedv
+ feekffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+ hsvhgvnhesshhvvghnphgvthgvrhdruggvvh
+X-ME-Proxy: <xmx:6-diYW-qPMwEgRwAKNbuMc_OZumIUo9ck5tujTpacDsSp_-5E8x4Ug>
+ <xmx:6-diYWq3KxyF9GdOZk0DRP57cprlnKjRKhAA8xj1wmehIsQ5MG5W1Q>
+ <xmx:6-diYXoYYoP627gKSfndkdzNDH51CZUg7ev5-hBmGREPxDpbeuB3sA>
+ <xmx:7ediYda2l88nnPG6TKaSSy02F32Jms1DUEUtQyxNmmDflm2q9C-Eeg>
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+ id 7C5092740061; Sun, 10 Oct 2021 09:17:31 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.5.0-alpha0-1331-g5ae342296a-fm-20211005.001-g5ae34229
+Mime-Version: 1.0
+Message-Id: <11d8f784-c90a-4e6c-9abd-564cb5241cb7@www.fastmail.com>
+In-Reply-To: <8a8afc73-3756-a305-ce5f-70b4bce6999f@xenosoft.de>
+References: <20211008163532.75569-1-sven@svenpeter.dev>
+ <YWFqr4uQGlNgnT1z@ninjato> <8a8afc73-3756-a305-ce5f-70b4bce6999f@xenosoft.de>
+Date: Sun, 10 Oct 2021 15:17:11 +0200
+From: "Sven Peter" <sven@svenpeter.dev>
+To: "Christian Zigotzky" <chzigotzky@xenosoft.de>,
+ "Wolfram Sang" <wsa@kernel.org>, "Michael Ellerman" <mpe@ellerman.id.au>,
+ "Benjamin Herrenschmidt" <benh@kernel.crashing.org>,
+ "Paul Mackerras" <paulus@samba.org>, "Olof Johansson" <olof@lixom.net>,
+ "Arnd Bergmann" <arnd@arndb.de>, "Hector Martin" <marcan@marcan.st>,
+ "Mohamed Mediouni" <mohamed.mediouni@caramail.com>,
+ "Stan Skowronek" <stan@corellium.com>,
+ "Mark Kettenis" <mark.kettenis@xs4all.nl>,
+ "Alyssa Rosenzweig" <alyssa@rosenzweig.io>,
+ linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-i2c@vger.kernel.org,
+ linux-kernel@vger.kernel.org, "R.T.Dickinson" <rtd@a-eon.com>,
+ "Matthew Leaman" <matthew@a-eon.biz>,
+ "Darren Stevens" <darren@stevens-zone.net>
+Subject: Re: [PATCH v2 00/11] Add Apple M1 support to PASemi i2c driver
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,141 +109,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: songliubraving@fb.com, johan.almbladh@anyfinetworks.com, aik@ozlabs.ru,
- npiggin@gmail.com, linux-kernel@vger.kernel.org, mahesh@linux.ibm.com,
- clg@kaod.org, naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+On Sat, Oct 9, 2021, at 15:57, Christian Zigotzky wrote:
+> On 09 October 2021 at 12:10 pm, Wolfram Sang wrote:
+>>> I still don't have access to any old PASemi hardware but the changes from
+>>> v1 are pretty small and I expect them to still work. Would still be nice
+>>> if someone with access to such hardware could give this a quick test.
+>> Looks good to me. I will wait a few more days so that people can report
+>> their tests. But it will be in the next merge window.
+>>
+> Series v2:
+>
+> Tested-by: Christian Zigotzky <chzigotzky@xenosoft.de> [1]
 
-Hi Linus,
+thanks a lot, glad to hear everything works on P.A Semi CPUs as well!
 
-Please pull some more powerpc fixes for 5.15.
+And regarding that git am issue you wrote about: I think I based this series on
+torvald's tree instead of 5.15-rc4 and there have been some changes to at least
+MAINTAINERS. It'll probably apply cleanly to 5.15-rc5 but if that happens again
+in the future you can try
 
-A bit of a big batch, partly because I didn't send any last week, and also =
-just because
-the BPF fixes happened to land this week.
+  git am -3 mbox
 
-cheers
-
-
-The following changes since commit e4e737bb5c170df6135a127739a9e6148ee3da82:
-
-  Linux 5.15-rc2 (2021-09-19 17:28:22 -0700)
-
-are available in the git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/po=
-werpc-5.15-3
-
-for you to fetch changes up to eb8257a12192f43ffd41bd90932c39dade958042:
-
-  pseries/eeh: Fix the kdump kernel crash during eeh_pseries_init (2021-10-=
-07 23:37:22 +1100)
-
-- ------------------------------------------------------------------
-powerpc fixes for 5.15 #3
-
-Fix a regression hit by the IPR SCSI driver, introduced by the recent addit=
-ion of MSI
-domains on pseries.
-
-A big series including 8 BPF fixes, some with potential security impact and=
- the rest
-various code generation issues.
-
-Fix our program check assembler entry path, which was accidentally jumping =
-into a gas
-macro and generating strange stack frames, which could confuse find_bug().
-
-A couple of fixes, and related changes, to fix corner cases in our machine =
-check handling.
-
-Fix our DMA IOMMU ops, which were not always returning the optimal DMA mask=
-, leading to
-at least one device falling back to 32-bit DMA when it shouldn't.
-
-A fix for KUAP handling on 32-bit Book3S.
-
-Fix crashes seen when kdumping on some pseries systems.
-
-Thanks to: Naveen N. Rao, Nicholas Piggin, Alexey Kardashevskiy, C=C3=A9dri=
-c Le Goater,
-Christophe Leroy, Mahesh Salgaonkar, Abdul Haleem, Christoph Hellwig, Johan=
- Almbladh, Stan
-Johnson.
-
-- ------------------------------------------------------------------
-Alexey Kardashevskiy (1):
-      powerpc/iommu: Report the correct most efficient DMA mask for PCI dev=
-ices
-
-Christophe Leroy (1):
-      powerpc/32s: Fix kuap_kernel_restore()
-
-C=C3=A9dric Le Goater (1):
-      powerpc/pseries/msi: Add an empty irq_write_msi_msg() handler
-
-Mahesh Salgaonkar (1):
-      pseries/eeh: Fix the kdump kernel crash during eeh_pseries_init
-
-Naveen N. Rao (10):
-      powerpc/lib: Add helper to check if offset is within conditional bran=
-ch range
-      powerpc/bpf: Validate branch ranges
-      powerpc/bpf: Fix BPF_MOD when imm =3D=3D 1
-      powerpc/bpf: Fix BPF_SUB when imm =3D=3D 0x80000000
-      powerpc/security: Add a helper to query stf_barrier type
-      powerpc/bpf: Emit stf barrier instruction sequences for BPF_NOSPEC
-      powerpc/bpf ppc32: Fix ALU32 BPF_ARSH operation
-      powerpc/bpf ppc32: Fix JMP32_JSET_K
-      powerpc/bpf ppc32: Do not emit zero extend instruction for 64-bit BPF=
-_END
-      powerpc/bpf ppc32: Fix BPF_SUB when imm =3D=3D 0x80000000
-
-Nicholas Piggin (5):
-      powerpc/64s: fix program check interrupt emergency stack path
-      powerpc/traps: do not enable irqs in _exception
-      powerpc/64: warn if local irqs are enabled in NMI or hardirq context
-      powerpc/64/interrupt: Reconcile soft-mask state in NMI and fix false =
-BUG
-      powerpc/64s: Fix unrecoverable MCE calling async handler from NMI
+instead. It'll try to do a three way merge if the patch doesn't apply cleanly.
 
 
- arch/powerpc/include/asm/book3s/32/kup.h     |   8 ++
- arch/powerpc/include/asm/code-patching.h     |   1 +
- arch/powerpc/include/asm/interrupt.h         |  18 ++--
- arch/powerpc/include/asm/security_features.h |   5 +
- arch/powerpc/kernel/dma-iommu.c              |   9 ++
- arch/powerpc/kernel/exceptions-64s.S         |  25 +++--
- arch/powerpc/kernel/irq.c                    |   6 ++
- arch/powerpc/kernel/security.c               |   5 +
- arch/powerpc/kernel/traps.c                  |  43 +++++----
- arch/powerpc/lib/code-patching.c             |   7 +-
- arch/powerpc/net/bpf_jit.h                   |  33 ++++---
- arch/powerpc/net/bpf_jit64.h                 |   8 +-
- arch/powerpc/net/bpf_jit_comp.c              |   6 +-
- arch/powerpc/net/bpf_jit_comp32.c            |  16 ++--
- arch/powerpc/net/bpf_jit_comp64.c            | 100 ++++++++++++++++----
- arch/powerpc/platforms/pseries/eeh_pseries.c |   4 +
- arch/powerpc/platforms/pseries/msi.c         |  15 +++
- 17 files changed, 234 insertions(+), 75 deletions(-)
------BEGIN PGP SIGNATURE-----
+Sven
 
-iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmFi26IACgkQUevqPMjh
-pYCMSxAAh40nmRryws4rJ6R6UQlp5eKKAitlFo5y/P3h/qNzu5kelwkS93tog5CA
-9i/uznMlyu3jpauHiDaeZCU0WYBqs3AL3qE11pHeG4HkGCCQ/D5eX3KxFRYuqbWh
-mfGvgRGxr4Rew3ACgQ/eUGwU9DkzmAr49CX9/5MR8chpNzeERpPMcq4jolEjkfJl
-Jf74WoIhHkuDMXFWVC8Aj6AKuQM+Ia9bXhSAFUIk2yjKRdADFgnR8stjzebW8B5v
-rSJ9WWNFt97UcgpTcvE+0gEuXFdD3cR16Ov6ObdZjsT1Y3ubC9jTZXy/pO8+YZbq
-jjGjNfxp7eWr6umgd2bhO5RKDwu/PbKvhM3l8OPQxOkoGK4L8trPm2IGEFjVyV/1
-/vhMa439vbPtT7eItmXEuEqgouUCzwA11Du7KhZu+IkdWyJCXsRzkExTI+rYGAYU
-nokOmE6A9VI4sgqLXAOxVSWDQSURhBfXx5cGeu9sdWNZ1V/F1TCi9kslE4eSlJie
-NjT5X1rEnM4HDMBKuiSkmu2GzcCAP5IktrkzAmWt1CbFWtLqdOExTmQGR/3DNMwp
-SniCYTgAw9GdGz46Zkiprr1X8fEqyrGBY6kjrAJ6Yior2Oy5GxU23w7UmE5iddFx
-jXsVMOh6dWIvJlhkeFEjLed3NezkpQuKehM0inOcAiPcCpnZhYc=3D
-=3DhYTj
------END PGP SIGNATURE-----
