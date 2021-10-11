@@ -2,55 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DA28428596
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Oct 2021 05:28:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EB33428776
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Oct 2021 09:11:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HSPQf4y4fz302G
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Oct 2021 14:28:42 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=a4YjLDMT;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HSVMF1Ffrz3bjR
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Oct 2021 18:11:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kaod.org (client-ip=79.137.123.220;
+ helo=smtpout2.mo529.mail-out.ovh.net; envelope-from=clg@kaod.org;
+ receiver=<UNKNOWN>)
+X-Greylist: delayed 504 seconds by postgrey-1.36 at boromir;
+ Mon, 11 Oct 2021 18:10:42 AEDT
+Received: from smtpout2.mo529.mail-out.ovh.net
+ (smtpout2.mo529.mail-out.ovh.net [79.137.123.220])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HSPPz0qVpz2xbB
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Oct 2021 14:28:07 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=a4YjLDMT; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4HSPPx6yqyz4xbT;
- Mon, 11 Oct 2021 14:28:05 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1633922886;
- bh=3baH5QewyQbCgQVzBWlsDgB/cVMlKpnWUxMHk+PnPd8=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=a4YjLDMTWaR17budh/yrDuLZjrrqdz505tFQGLFWeywekecn1lP4OZC0vMqTcMUOO
- JJY9iXLkKZ+rBkwdORGXv7mQUic4YfD48sBx+pJOvY7n2siwhOewIKm7vDyHREIvYG
- TVAFT7FAcF/x5mVGumOGZuC1i59eD5v/vPgUDulihJVwJ2TnHkuFC6qloPnWEeFV2p
- S88/pzJvmDqTuByB/GNtzfFyaoWl77ibA3D9MPXThxZYhdf9pTQvwX+ZYzJvXYePCH
- Sfznxwk2ZFNixb26i93NxbAnijY7NnXLqZwg3FKtJpQZKqa3ky0Qm0IgNayPAKzN41
- ov7Zracz5CX3w==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, "Aneesh Kumar K.V"
- <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v6 19/22] powerpc/book3s64/hash/kuap: Enable kuap on hash
-In-Reply-To: <b2ab09a4-7f30-deee-e983-9459d93cb9b3@csgroup.eu>
-References: <20201125051634.509286-1-aneesh.kumar@linux.ibm.com>
- <20201125051634.509286-20-aneesh.kumar@linux.ibm.com>
- <b2ab09a4-7f30-deee-e983-9459d93cb9b3@csgroup.eu>
-Date: Mon, 11 Oct 2021 14:28:05 +1100
-Message-ID: <87v924me9m.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HSVLp4Pwcz2yPv
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Oct 2021 18:10:42 +1100 (AEDT)
+Received: from mxplan5.mail.ovh.net (unknown [10.109.156.216])
+ by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 0EC30C3BBB9B;
+ Mon, 11 Oct 2021 09:02:09 +0200 (CEST)
+Received: from kaod.org (37.59.142.95) by DAG4EX1.mxp5.local (172.16.2.31)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.14; Mon, 11 Oct
+ 2021 09:02:09 +0200
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-95G0010762b5aa-8db3-4685-afb6-69febc946e19,
+ 044DEDDE8B0E05FD49EE52B84AFD98BA54CEE260) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 82.64.250.170
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH] powerpc/xive: Discard disabled interrupts in
+ get_irqchip_state()
+Date: Mon, 11 Oct 2021 09:02:03 +0200
+Message-ID: <20211011070203.99726-1-clg@kaod.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [37.59.142.95]
+X-ClientProxiedBy: DAG3EX1.mxp5.local (172.16.2.21) To DAG4EX1.mxp5.local
+ (172.16.2.31)
+X-Ovh-Tracer-GUID: 1fcd0286-05cf-4e09-8d7f-6cb5e00e2edd
+X-Ovh-Tracer-Id: 16244765333835647968
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvtddrvddthedgudduvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecunecujfgurhephffvufffkffogggtgfhisehtkeertdertdejnecuhfhrohhmpeevrogurhhitgcunfgvucfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepfedvuedtvdeikeekuefhkedujeejgffggffhtefglefgveevfeeghfdvgedtleevnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrdelheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehmgihplhgrnhehrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtoheptghlgheskhgrohgurdhorhhg
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,57 +61,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sandipan Das <sandipan@linux.ibm.com>
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Le 25/11/2020 =C3=A0 06:16, Aneesh Kumar K.V a =C3=A9crit=C2=A0:
->> Reviewed-by: Sandipan Das <sandipan@linux.ibm.com>
->> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->> ---
->>   arch/powerpc/mm/book3s64/pkeys.c | 7 ++++++-
->>   1 file changed, 6 insertions(+), 1 deletion(-)
->>=20
->> diff --git a/arch/powerpc/mm/book3s64/pkeys.c b/arch/powerpc/mm/book3s64=
-/pkeys.c
->> index f747d66cc87d..84f8664ffc47 100644
->> --- a/arch/powerpc/mm/book3s64/pkeys.c
->> +++ b/arch/powerpc/mm/book3s64/pkeys.c
->> @@ -257,7 +257,12 @@ void __init setup_kuep(bool disabled)
->>   #ifdef CONFIG_PPC_KUAP
->>   void __init setup_kuap(bool disabled)
->>   {
->> -	if (disabled || !early_radix_enabled())
->> +	if (disabled)
->> +		return;
->> +	/*
->> +	 * On hash if PKEY feature is not enabled, disable KUAP too.
->> +	 */
->> +	if (!early_radix_enabled() && !early_mmu_has_feature(MMU_FTR_PKEY))
->
-> pkey_early_init_devtree() bails out without setting MMU_FTR_PKEY with=20
-> the following:
->
-> 	/*
-> 	 * Only P7 and above supports SPRN_AMR update with MSR[PR] =3D 1
-> 	 */
-> 	if (!early_cpu_has_feature(CPU_FTR_ARCH_206))
-> 		return;
->
->
->
-> Why would it be impossible to do KUAP in that case ? KUAP doesn't=20
-> require updating SPRN_AMR with MSR[PR] =3D 1
+When an interrupt is passed through, the KVM XIVE device calls the
+set_vcpu_affinity() handler which raises the P bit to mask the
+interrupt and to catch any in-flight interrupts while routing the
+interrupt to the guest.
 
-You're right, it would be possible to do KUAP in that case.
+On the guest side, drivers (like some Intels) can request at probe
+time some MSIs and call synchronize_irq() to check that there are no
+in flight interrupts. This will call the XIVE get_irqchip_state()
+handler which will always return true as the interrupt P bit has been
+set on the host side and lock the CPU in an infinite loop.
 
-That's an artifact of KUAP being implemented using PKEYs on hash. For
-the PKEYs user-visible API we want AMR to be user controlled.
+Fix that by discarding disabled interrupts in get_irqchip_state().
 
-It's possible we could untangle all that, allowing KUAP to be
-implemented on earlier CPUs, but I'm not sure it's going to be high on
-anyone's todo list.
+Fixes: da15c03b047d ("powerpc/xive: Implement get_irqchip_state method for XIVE to fix shutdown race")
+Cc: stable@vger.kernel.org#v5.4+
+Signed-off-by: Cédric Le Goater <clg@kaod.org>
+---
+ arch/powerpc/sysdev/xive/common.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-cheers
+diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
+index c732ce5a3e1a..c5d75c02ad8b 100644
+--- a/arch/powerpc/sysdev/xive/common.c
++++ b/arch/powerpc/sysdev/xive/common.c
+@@ -945,7 +945,8 @@ static int xive_get_irqchip_state(struct irq_data *data,
+ 		 * interrupt to be inactive in that case.
+ 		 */
+ 		*state = (pq != XIVE_ESB_INVALID) && !xd->stale_p &&
+-			(xd->saved_p || !!(pq & XIVE_ESB_VAL_P));
++			(xd->saved_p || (!!(pq & XIVE_ESB_VAL_P) &&
++			 !irqd_irq_disabled(data)));
+ 		return 0;
+ 	default:
+ 		return -EINVAL;
+-- 
+2.31.1
+
