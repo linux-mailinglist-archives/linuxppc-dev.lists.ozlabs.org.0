@@ -2,64 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AA97428A82
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Oct 2021 12:05:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B21E428C4F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Oct 2021 13:45:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HSZDh17qPz2yMH
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Oct 2021 21:05:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HScS668Rzz2yR8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Oct 2021 22:45:42 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VzxgnSPV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=PZ/QHbWB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=wsa@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=VzxgnSPV; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HSZCy6WsSz2xXt
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Oct 2021 21:05:02 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 82B4660F21;
- Mon, 11 Oct 2021 10:04:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1633946700;
- bh=MhtMFlXjkISdgITPxUEBlvVPLOfKHnzQ8IBsF632QRU=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=VzxgnSPV3d1xsqgadBy3rD2iAbUfUWKokuDtJaKMCudZS3akAute3IcteSot1V/F/
- RtkHzLgzyAPzfbaEvrQkfcxHaa4kBpcVnqyqfHEix/pc/oB1eirIKygY98WZcHCI3r
- fL11Zp4aLcjKrd6M6oHilOniZHUKEoVhFoC2W2wq4wVXGINRUvvm2ANd/r3NzwkzRX
- yCSS4cCsUiVeqsaBYsU9tni2cj3L6Mhelkv8N7YhJ173rJZPVVnpFT01GyoLAlYZ8k
- ++qDsUWAIwdH3MuH1ZKYUvZW8PKbH3Ug2GlBryDrqqR0C0b+moB5suS/PnMKUzjSQU
- RIWC16sSOyoog==
-Date: Mon, 11 Oct 2021 12:04:56 +0200
-From: Wolfram Sang <wsa@kernel.org>
-To: Sven Peter <sven@svenpeter.dev>
-Subject: Re: [PATCH v2 00/11] Add Apple M1 support to PASemi i2c driver
-Message-ID: <YWQMSG0U1Ae4pTCD@kunai>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
- Sven Peter <sven@svenpeter.dev>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Olof Johansson <olof@lixom.net>,
- Christian Zigotzky <chzigotzky@xenosoft.de>,
- Arnd Bergmann <arnd@arndb.de>, Hector Martin <marcan@marcan.st>,
- Mohamed Mediouni <mohamed.mediouni@caramail.com>,
- Stan Skowronek <stan@corellium.com>,
- Mark Kettenis <mark.kettenis@xs4all.nl>,
- Alyssa Rosenzweig <alyssa@rosenzweig.io>,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20211008163532.75569-1-sven@svenpeter.dev>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HScRT5ykMz2xsr
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Oct 2021 22:45:09 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=PZ/QHbWB; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4HScRR643mz4xR9;
+ Mon, 11 Oct 2021 22:45:07 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1633952708;
+ bh=IjhMIjzKBBboUXog9iqPZXcpuN4N7iT1KpGd5Afe8NI=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=PZ/QHbWBx5NyghaIV0Nufql4K5adtNiuWzHIp6oFIN05tuUJz18nHCUXmy31vl+IN
+ bPd8ta2t6RO2FyiJp+3p5rnyl4AWZ2USPx9WG4mhRuhMRCkSKwQboadnoa6YoEoCnY
+ YTy4l7cwDKRsTFjxb7+FJMhX+cdMU3VHFktkLiUJeGFoXbVz9lX6DmEQK3cHsUy8ni
+ 6WvrPZ/bNDXginnyN5NmNvQI2LwvKGM5VqgvEZyLcNwj6f8tojlstqDaOlmDX/hBFI
+ SSJggRR7+w/Y5Y7PyZszANWg+CGJNdTzJ98hLnaShHuVQzsdoiTxszaHnrqgYHHKX/
+ /Z+geOUULwbEQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2 3/3] powerpc/numa: Fill distance_lookup_table for
+ offline nodes
+In-Reply-To: <20210923175748.GC2004@linux.vnet.ibm.com>
+References: <20210821102535.169643-1-srikar@linux.vnet.ibm.com>
+ <20210821102535.169643-4-srikar@linux.vnet.ibm.com>
+ <875yvsba4q.fsf@mpe.ellerman.id.au>
+ <20210901102206.GO21942@linux.vnet.ibm.com>
+ <871r5fmth6.fsf@mpe.ellerman.id.au>
+ <20210923175748.GC2004@linux.vnet.ibm.com>
+Date: Mon, 11 Oct 2021 22:45:04 +1100
+Message-ID: <87pmsbn5tr.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="+fGTgqFSVJmj/Oq2"
-Content-Disposition: inline
-In-Reply-To: <20211008163532.75569-1-sven@svenpeter.dev>
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,119 +64,223 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, Hector Martin <marcan@marcan.st>,
- linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linux-arm-kernel@lists.infradead.org,
- Christian Zigotzky <chzigotzky@xenosoft.de>, Olof Johansson <olof@lixom.net>,
- Mohamed Mediouni <mohamed.mediouni@caramail.com>,
- Mark Kettenis <mark.kettenis@xs4all.nl>, linuxppc-dev@lists.ozlabs.org,
- Alyssa Rosenzweig <alyssa@rosenzweig.io>, Stan Skowronek <stan@corellium.com>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ Gautham R Shenoy <ego@linux.vnet.ibm.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ kernel test robot <lkp@intel.com>, Peter Zijlstra <peterz@infradead.org>,
+ Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>,
+ Valentin Schneider <valentin.schneider@arm.com>,
+ Laurent Dufour <ldufour@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
+> * Michael Ellerman <mpe@ellerman.id.au> [2021-09-23 21:17:25]:
+>
+>> Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
+>> > * Michael Ellerman <mpe@ellerman.id.au> [2021-08-26 23:36:53]:
+>> >
+>> >> Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
+>> >> > Scheduler expects unique number of node distances to be available at
+>> >> > boot.
+>> ...
+>> >
+>> >> > Fake the offline node's distance_lookup_table entries so that all
+>> >> > possible node distances are updated.
+>> >>
+>> >> Does this work if we have a single node offline at boot?
+>> >>
+>> >
+>> > It should.
+>> >
+>> >> Say we start with:
+>> >>
+>> >> node distances:
+>> >> node   0   1
+>> >>   0:  10  20
+>> >>   1:  20  10
+>> >>
+>> >> And node 2 is offline at boot. We can only initialise that nodes entries
+>> >> in the distance_lookup_table:
+>> >>
+>> >> 		while (i--)
+>> >> 			distance_lookup_table[node][i] = node;
+>> >>
+>> >> By filling them all with 2 that causes node_distance(2, X) to return the
+>> >> maximum distance for all other nodes X, because we won't break out of
+>> >> the loop in __node_distance():
+>> >>
+>> >> 	for (i = 0; i < distance_ref_points_depth; i++) {
+>> >> 		if (distance_lookup_table[a][i] == distance_lookup_table[b][i])
+>> >> 			break;
+>> >>
+>> >> 		/* Double the distance for each NUMA level */
+>> >> 		distance *= 2;
+>> >> 	}
+>> >>
+>> >> If distance_ref_points_depth was 4 we'd return 160.
+>> >
+>> > As you already know, distance 10, 20, .. are defined by Powerpc, form1
+>> > affinity. PAPR doesn't define actual distances, it only provides us the
+>> > associativity. If there are distance_ref_points_depth is 4,
+>> > (distance_ref_points_depth doesn't take local distance into consideration)
+>> > 10, 20, 40, 80, 160.
+>> >
+>> >>
+>> >> That'd leave us with 3 unique distances at boot, 10, 20, 160.
+>> >>
+>> >
+>> > So if there are unique distances, then the distances as per the current
+>> > code has to be 10, 20, 40, 80.. I dont see a way in which we have a break in
+>> > the series. like having 160 without 80.
+>>
+>> I'm confused what you mean there.
+>
+> At the outset, if we have a better probable solution, do let me know, I am
+> willing to try that too.
 
---+fGTgqFSVJmj/Oq2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I don't have one in mind no, I'm just trying to satisfy myself that this
+solution will work in all cases we're likely to encounter.
 
-On Fri, Oct 08, 2021 at 06:35:21PM +0200, Sven Peter wrote:
-> Hi,
->=20
-> v1: https://lore.kernel.org/linux-i2c/20210926095847.38261-1-sven@svenpet=
-er.dev/
->=20
-> Changes for v2:
->  - Added reviewed-by/acks
->  - Switched from ioport_map to pci_iomap as suggested by Arnd Bergmann
->  - Renamed i2c-pasemi-apple.c to i2c-pasemi-platform.c as suggested by
->    Wolfram Sang
->  - Replaced the ioport number in the adapter name with dev_name to be
->    able to identify separate busses in e.g. i2cdetect.
->=20
-> I still don't have access to any old PASemi hardware but the changes from
-> v1 are pretty small and I expect them to still work. Would still be nice
-> if someone with access to such hardware could give this a quick test.
->=20
->=20
-> And for those who didn't see v1 the (almost) unchanged original cover let=
-ter:
->=20
-> This series adds support for the I2C controller found on Apple Silicon Ma=
-cs
-> which has quite a bit of history:
->=20
-> Apple bought P.A. Semi in 2008 and it looks like a part of its legacy con=
-tinues
-> to live on in the M1. This controller has actually been used since at lea=
-st the
-> iPhone 4S and hasn't changed much since then.
-> Essentially, there are only a few differences that matter:
->=20
-> 	- The controller no longer is a PCI device
-> 	- Starting at some iPhone an additional bit in one register
->           must be set in order to start transmissions.
-> 	- The reference clock and hence the clock dividers are different
->=20
-> In order to add support for a platform device I first replaced PCI-specif=
-ic
-> bits and split out the PCI driver to its own file. Then I added support
-> to make the clock divider configurable and converted the driver to use
-> managed device resources to make it a bit simpler.
->=20
-> The Apple and PASemi driver will never be compiled in the same kernel
-> since the Apple one will run on arm64 while the original PASemi driver
-> will only be useful on powerpc.
-> I've thus followed the octeon (mips)/thunderx(arm64) approach to do the
-> split: I created a -core.c file which contains the shared logic and just
-> compile that one for both the PASemi and the new Apple driver.
->=20
->=20
-> Best,
->=20
-> Sven
->=20
-> Sven Peter (11):
->   dt-bindings: i2c: Add Apple I2C controller bindings
->   i2c: pasemi: Use io{read,write}32
->   i2c: pasemi: Use dev_name instead of port number
->   i2c: pasemi: Remove usage of pci_dev
->   i2c: pasemi: Split off common probing code
->   i2c: pasemi: Split pci driver to its own file
->   i2c: pasemi: Move common reset code to own function
->   i2c: pasemi: Allow to configure bus frequency
->   i2c: pasemi: Refactor _probe to use devm_*
->   i2c: pasemi: Add Apple platform driver
->   i2c: pasemi: Set enable bit for Apple variant
->=20
->  .../devicetree/bindings/i2c/apple,i2c.yaml    |  61 +++++++++
->  MAINTAINERS                                   |   2 +
->  drivers/i2c/busses/Kconfig                    |  11 ++
->  drivers/i2c/busses/Makefile                   |   3 +
+>> If we have a node that's offline at boot then we get 160 for that node,
+>> that's just the result of having no info for it, so we never break out
+>> of the for loop.
+>>
+>> So if we have two nodes, one hop apart, and then an offline node we get
+>> 10, 20, 160.
+>>
+>> Or if you're using depth = 3 then it's 10, 20, 80.
+>
+> My understanding is as below:
+>
+> device-tree provides the max hops by way of
+> ibm,associativity-reference-points. This is mapped to
+> distance_ref_points_depth in Linux-powerpc.
+>
+> Now Linux-powerpc encodes hops as (dis-regarding local distance) 20, 40, 80,
+> 160, 320 ...
+> So if the distance_ref_points_depth is 3, then the hops are 20, 40, 80.
+>
+> Do you disagree?
 
-Applied to for-next with MAINTAINER bits dropped and added tags from
-Olof and Christian, thanks!
+I'm not sure. You didn't really address my point.
+
+You said that we can't have 160 without 80 (for depth = 4).
+
+I gave an example where we could see a gap in the used distance values,
+ie. 10, 20, 80 for a depth of 3.
+
+Which is not to say that distance 40 doesn't exist in that scenario,
+rather that it's not used by any node.
 
 
---+fGTgqFSVJmj/Oq2
-Content-Type: application/pgp-signature; name="signature.asc"
+>> >> But when node 2 comes online it might introduce more than 1 new distance
+>> >> value, eg. it could be that the actual distances are:
+>> >>
+>> >> node distances:
+>> >> node   0   1   2
+>> >>   0:  10  20  40
+>> >>   1:  20  10  80
+>> >>   2:  40  80  10
+>> >>
+>> >> ie. we now have 4 distances, 10, 20, 40, 80.
+>> >>
+>> >> What am I missing?
+>> >
+>> > As I said above, I am not sure how we can have a break in the series.
+>> > If distance_ref_points_depth is 3, the distances has to be 10,20,40,80 as
+>> > atleast for form1 affinity.
+>>
+>> I agree for depth 3 we have to see 10, 20, 40, 80. But nothing
+>> guarantees we see each value (other than 10).
+>
+> The hop distances are not from the device-tree, the device-tree only gives
+> us the max hops possible. Linux-powerpc is actually hard-coding the
+> distances which each hop distance being 2x the previous.
 
------BEGIN PGP SIGNATURE-----
+Yes. I guess I was sloppy to say "see each value", I didn't mean we see
+those values directly in the device-tree.
 
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmFkDEgACgkQFA3kzBSg
-KbYBZQ//R2NlpZBhdguawShOq4BTwGe34GDgvlznaOlspRRxCXY3iMfSb4jxgUOO
-KiPnV7UTVnN4dxTljhNU0W+yFs77FMip/EBJKXGiwytIP1N5OP8K3sjSY3uNsnfh
-LvWmV12hypUbyzxqc2bW9KmTCtm8W4+GsOZ0WNWiSmhzmx9qxq+n5E3Am28s/30y
-dsH0FEQINGgjTuirrmocN2RmUpaN7B3tsiQ16xlzqf+5eNMnML0UD6g+9v2idxzx
-XTcfiBy9v5aSPaJoSuqyCvUMi7svhKpM/uZtzp9R9qKHwFj3wejOQdhizzMj+QxL
-VpMFmkOKIEDQLd0USIqLt29tNjSlTymxROvZKbhAHf42yiiMaIl1TC+0jOn+I2u4
-52x40XiqNGjiAuHDnh9f/wMQ9d48gHDOWV1rLzz8F+FQxfGWjAW6CfOSLwDBy0cZ
-MtD3iedjZQPEnF4cGtfRqeqqOMCc0jvqq80+0fu0pbp7ZoByZSgIkI93U7vwjTJP
-OB1uuZTgttfELfSmUlyGX5vk86yfKFQo51kDTU1QU9Hl4kIXjGYFsH6QhN+PNbPO
-GkxGdkbjhGubqdIIRqOO/YMWt3S5Kwl4Eo1XY0vaERY9F2quGcuy++9RSOU7iRxw
-8An28pOesmGiDqTHnjmInNjoXpXW4Ix6ePzN2+n9eceZ0HAeIPM=
-=FU0D
------END PGP SIGNATURE-----
+> So we may not see any nodes at a particular hop, but we know maximum hops.
+> And if distance_ref_points_depth is 3, then hops are 20, 40, 80 only.
 
---+fGTgqFSVJmj/Oq2--
+OK, so we agree that "we may not see any nodes at a particular hop".
+
+Which is what I was trying to say above.
+
+>> We can have two nodes one hop apart, so we have 10 and 20, then a third
+>> node is added 3 hops away, so we get 10, 20, 80.
+>>
+>
+>> The real problem is that the third node could be 3 hops from node 0
+>> and 2 hops from node 1, and so the addition of the third node causes
+>> two new distance values (40 & 80) to be required.
+>
+> So here the max hops as given by device-tree is 3. So we know that we are
+> looking for max-distance of 80 by way of distance_ref_points_depth.
+>
+> Even if the 3rd node was at 4 hops, we would already know the max distance
+> of 160, by way of distance_ref_points_depth.
+
+I agree we know that the max value is, and therefore the total number of
+possible distance values.
+
+But I think there are topologies where we can not represent all the
+possible distances in the distance table.
+
+> However in the most unlikely scenarios where the number of possible
+> nodes are less than the distance_ref_points_depth(aka max hops) +
+> there are CPUless/memoryless nodes we may not have initialized to the
+> right distances.
+
+OK, so I think you're saying you agree that there are situations where
+we might not be able to represent all the distances.
+
+But you say that's an "unlikely scenario", why is it unlikely?
+
+If you can convince me it's 100% unlikely then maybe we can forget about
+it :)
+
+>> I think maybe what you're saying is that in practice we don't see setups
+>> like that. But I don't know if I'm happy with a solution that doesn't
+>> work in the general case, and relies on the particular properties of our
+>> current set of systems.
+>
+> But our current set of systems are having a problem (Systems can likely
+> crash on adding a CPU to a node.)
+
+Yes I agree that's bad, but also we don't want to merge a solution (and
+presumably backport it everywhere) if it doesn't work for some cases.
+
+> The only other way I can think of is the previous approach were we ask
+> scheduler hook which tells how many unique node distances are
+> possible. But then it was stuck down because, we didnt want to add a
+> hook just for one arch.
+
+OK.
+
+> However isn't this is much much better than the current situation we are in?
+> i.e This is not going to cause any regression for the other setups.
+
+Yes that's true. But equally if we can find a 100% solution that would
+save us having to fix the same issue again in future.
+
+>> Possibly we just need to detect that case and WARN about it. The only
+>> problem is we won't know until the system is already up and running, ie.
+>> we can't know at boot that the onlining of the third node will cause 2
+>> new distance values to be added.
+>
+> Yes, We should be able to detect this very easily.
+> At the end of the function (v2 or v3) if cur_depth != max_depth then we
+> havent initialized all possible node distances.
+
+The only issue is what do we do when we detect that case?
+
+We can't BUG/panic, because we don't know for sure that the offline
+nodes will cause new distance values to be needed. So the system might
+be completely fine, all we know is it might not be. If we print a scary
+warning we'll end up with bugs filed for that.
+
+cheers
