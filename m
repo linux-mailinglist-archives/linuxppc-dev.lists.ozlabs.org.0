@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B91BA429359
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Oct 2021 17:28:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB4A842936E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Oct 2021 17:31:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HSjPF2Xxwz3bj6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 02:28:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HSjSj3q8zz3cHh
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 02:31:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,34 +16,34 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HSjMX1Skvz302D
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Oct 2021 02:27:03 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HSjN91PKNz3c87
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Oct 2021 02:27:37 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4HSjM60kFTz9sTt;
- Mon, 11 Oct 2021 17:26:42 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4HSjMF1RRrz9sV7;
+ Mon, 11 Oct 2021 17:26:49 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id lpc87tCjePsn; Mon, 11 Oct 2021 17:26:42 +0200 (CEST)
+ with ESMTP id umJ9Xn2erhzq; Mon, 11 Oct 2021 17:26:49 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4HSjM306xpz9sTv;
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4HSjM31Fq6z9sV3;
  Mon, 11 Oct 2021 17:26:39 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D0F4B8B781;
- Mon, 11 Oct 2021 17:26:38 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0125A8B763;
+ Mon, 11 Oct 2021 17:26:39 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id FCFafly78UJw; Mon, 11 Oct 2021 17:26:38 +0200 (CEST)
+ with ESMTP id WBvjFUbYAN9h; Mon, 11 Oct 2021 17:26:38 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.25.230.103])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3C3928B775;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4D4B68B77B;
  Mon, 11 Oct 2021 17:26:38 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 19BFQVK61585015
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 19BFQVY71585019
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
  Mon, 11 Oct 2021 17:26:31 +0200
 Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 19BFQVMT1585014;
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 19BFQVMB1585018;
  Mon, 11 Oct 2021 17:26:31 +0200
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
  christophe.leroy@csgroup.eu using -f
@@ -55,17 +55,18 @@ To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Helge Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>,
  Kees Cook <keescook@chromium.org>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH v1 03/10] ia64: Rename 'ip' to 'addr' in 'struct fdesc'
-Date: Mon, 11 Oct 2021 17:25:30 +0200
-Message-Id: <a2443adcd006cb8004fe0602e2f8c43c30a7c504.1633964380.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v1 04/10] asm-generic: Use
+ HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR to define associated stubs
+Date: Mon, 11 Oct 2021 17:25:31 +0200
+Message-Id: <8db2a3ca2b26a8325c671baa3e0492914597f079.1633964380.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <cover.1633964380.git.christophe.leroy@csgroup.eu>
 References: <cover.1633964380.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1633965928; l=2059; s=20211009;
- h=from:subject:message-id; bh=PGO0Yoa+ISrjfPBIV3GEiwZmxw/DXeNvwbCh6qfsug4=;
- b=cgrpQ62h24nXp2tUTQrQ6YSTpEYxdZNJoo7BGekONGRAPmLuzaQN1I7icT2eRh0h812tcM0JUaQ7
- I5onQa/1C0/A4ktzYQy/kEA/V4tZngnaX8zM71D8s46KjWgtbfWf
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1633965928; l=3340; s=20211009;
+ h=from:subject:message-id; bh=SPVLyJjLfChbgP4tYSRx0kEiNfUiuVbKX2eYIS2gkUc=;
+ b=v+IbhdjvUUahsBXN0rUeT+nQakizAVo7ckShYCKS7dYpYbN+Xm1gXVpDw0I4PIDjW8+ua8fm/6aE
+ 1W19h1MxC/3917+ocYEmuomSVJNbefsW+vOFnX+5OLjzJWYxyw6F
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
  pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
@@ -87,72 +88,101 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There are three architectures with function descriptors, try to
-have common names for the address they contain in order to
-refactor some functions into generic functions later.
-
-powerpc has 'funcaddr'
-ia64 has 'ip'
-parisc has 'addr'
-
-Vote for 'addr' and update 'struct fdesc' accordingly.
+Use HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR instead of 'dereference_function_descriptor'
+to know whether arch has function descriptors.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/ia64/include/asm/elf.h      | 2 +-
- arch/ia64/include/asm/sections.h | 2 +-
- arch/ia64/kernel/module.c        | 6 +++---
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ arch/ia64/include/asm/sections.h    | 4 ++--
+ arch/parisc/include/asm/sections.h  | 6 ++++--
+ arch/powerpc/include/asm/sections.h | 6 ++++--
+ include/asm-generic/sections.h      | 3 ++-
+ 4 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/arch/ia64/include/asm/elf.h b/arch/ia64/include/asm/elf.h
-index 6629301a2620..2ef5f9966ad1 100644
---- a/arch/ia64/include/asm/elf.h
-+++ b/arch/ia64/include/asm/elf.h
-@@ -226,7 +226,7 @@ struct got_entry {
-  * Layout of the Function Descriptor
-  */
- struct fdesc {
--	uint64_t ip;
-+	uint64_t addr;
- 	uint64_t gp;
- };
- 
 diff --git a/arch/ia64/include/asm/sections.h b/arch/ia64/include/asm/sections.h
-index 3a033d2008b3..35f24e52149a 100644
+index 35f24e52149a..80f5868afb06 100644
 --- a/arch/ia64/include/asm/sections.h
 +++ b/arch/ia64/include/asm/sections.h
-@@ -35,7 +35,7 @@ static inline void *dereference_function_descriptor(void *ptr)
- 	struct fdesc *desc = ptr;
- 	void *p;
+@@ -7,6 +7,8 @@
+  *	David Mosberger-Tang <davidm@hpl.hp.com>
+  */
  
--	if (!get_kernel_nofault(p, (void *)&desc->ip))
-+	if (!get_kernel_nofault(p, (void *)&desc->addr))
- 		ptr = p;
- 	return ptr;
- }
-diff --git a/arch/ia64/kernel/module.c b/arch/ia64/kernel/module.c
-index 2cba53c1da82..4f6400cbf79e 100644
---- a/arch/ia64/kernel/module.c
-+++ b/arch/ia64/kernel/module.c
-@@ -602,15 +602,15 @@ get_fdesc (struct module *mod, uint64_t value, int *okp)
- 		return value;
++#define HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR 1
++
+ #include <linux/elf.h>
+ #include <linux/uaccess.h>
+ #include <asm-generic/sections.h>
+@@ -27,8 +29,6 @@ extern char __start_gate_brl_fsys_bubble_down_patchlist[], __end_gate_brl_fsys_b
+ extern char __start_unwind[], __end_unwind[];
+ extern char __start_ivt_text[], __end_ivt_text[];
  
- 	/* Look for existing function descriptor. */
--	while (fdesc->ip) {
--		if (fdesc->ip == value)
-+	while (fdesc->addr) {
-+		if (fdesc->addr == value)
- 			return (uint64_t)fdesc;
- 		if ((uint64_t) ++fdesc >= mod->arch.opd->sh_addr + mod->arch.opd->sh_size)
- 			BUG();
- 	}
+-#define HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR 1
+-
+ #undef dereference_function_descriptor
+ static inline void *dereference_function_descriptor(void *ptr)
+ {
+diff --git a/arch/parisc/include/asm/sections.h b/arch/parisc/include/asm/sections.h
+index bb52aea0cb21..2e781ee19b66 100644
+--- a/arch/parisc/include/asm/sections.h
++++ b/arch/parisc/include/asm/sections.h
+@@ -2,6 +2,10 @@
+ #ifndef _PARISC_SECTIONS_H
+ #define _PARISC_SECTIONS_H
  
- 	/* Create new one */
--	fdesc->ip = value;
-+	fdesc->addr = value;
- 	fdesc->gp = mod->arch.gp;
- 	return (uint64_t) fdesc;
- }
++#ifdef CONFIG_64BIT
++#define HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR 1
++#endif
++
+ /* nothing to see, move along */
+ #include <asm-generic/sections.h>
+ 
+@@ -9,8 +13,6 @@ extern char __alt_instructions[], __alt_instructions_end[];
+ 
+ #ifdef CONFIG_64BIT
+ 
+-#define HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR 1
+-
+ #undef dereference_function_descriptor
+ void *dereference_function_descriptor(void *);
+ 
+diff --git a/arch/powerpc/include/asm/sections.h b/arch/powerpc/include/asm/sections.h
+index 32e7035863ac..b7f1ba04e756 100644
+--- a/arch/powerpc/include/asm/sections.h
++++ b/arch/powerpc/include/asm/sections.h
+@@ -8,6 +8,10 @@
+ 
+ #define arch_is_kernel_initmem_freed arch_is_kernel_initmem_freed
+ 
++#ifdef PPC64_ELF_ABI_v1
++#define HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR 1
++#endif
++
+ #include <asm-generic/sections.h>
+ 
+ extern bool init_mem_is_free;
+@@ -69,8 +73,6 @@ static inline int overlaps_kernel_text(unsigned long start, unsigned long end)
+ 
+ #ifdef PPC64_ELF_ABI_v1
+ 
+-#define HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR 1
+-
+ #undef dereference_function_descriptor
+ static inline void *dereference_function_descriptor(void *ptr)
+ {
+diff --git a/include/asm-generic/sections.h b/include/asm-generic/sections.h
+index d16302d3eb59..1db5cfd69817 100644
+--- a/include/asm-generic/sections.h
++++ b/include/asm-generic/sections.h
+@@ -59,7 +59,8 @@ extern char __noinstr_text_start[], __noinstr_text_end[];
+ extern __visible const void __nosave_begin, __nosave_end;
+ 
+ /* Function descriptor handling (if any).  Override in asm/sections.h */
+-#ifndef dereference_function_descriptor
++#ifdef HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR
++#else
+ #define dereference_function_descriptor(p) ((void *)(p))
+ #define dereference_kernel_function_descriptor(p) ((void *)(p))
+ #endif
 -- 
 2.31.1
 
