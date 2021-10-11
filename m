@@ -1,36 +1,34 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A82C9428CB1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Oct 2021 14:09:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71FE9428CCA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Oct 2021 14:12:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HSczL0yZTz3cP0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Oct 2021 23:09:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HSd3S0pRsz3f31
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Oct 2021 23:12:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HScxh37xhz2xsv
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Oct 2021 23:07:52 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HScxs12R5z304m
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Oct 2021 23:08:01 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4HScxh2Qzzz4xqN;
- Mon, 11 Oct 2021 23:07:52 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4HScxs05F1z4xqg;
+ Mon, 11 Oct 2021 23:08:00 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Paul Mackerras <paulus@samba.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <b2e52934e5a500f149e6d94db3cfa0569bc35081.1630657402.git.christophe.leroy@csgroup.eu>
-References: <b2e52934e5a500f149e6d94db3cfa0569bc35081.1630657402.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/powermac: Remove stale declaration of pmac_md
-Message-Id: <163395399888.4094789.11186435934463842789.b4-ty@ellerman.id.au>
-Date: Mon, 11 Oct 2021 23:06:38 +1100
+To: Niklas Schnelle <schnelle@linux.ibm.com>,
+ Bjorn Helgaas <bhelgaas@google.com>
+In-Reply-To: <20210910141940.2598035-1-schnelle@linux.ibm.com>
+References: <20210910141940.2598035-1-schnelle@linux.ibm.com>
+Subject: Re: [PATCH 0/1] Arch use of pci_dev_is_added()
+Message-Id: <163395400023.4094789.2020698522524936572.b4-ty@ellerman.id.au>
+Date: Mon, 11 Oct 2021 23:06:40 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -45,18 +43,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 3 Sep 2021 08:23:52 +0000 (UTC), Christophe Leroy wrote:
-> pmac_md doesn't exist anymore, remove stall declaration.
+On Fri, 10 Sep 2021 16:19:39 +0200, Niklas Schnelle wrote:
+> In my proposal to make pci_dev_is_added() more regularly usable by arch code
+> you mentioned[0] that you believe the uses in arch/powerpc are not necessary
+> anymore. From code reading I agree and so does Oliver O'Halloran[1].
 > 
+> So as promised here is a patch removing them. I only compile tested this as
+> I don't have access to a powerpc system.
+> 
+> [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/powermac: Remove stale declaration of pmac_md
-      https://git.kernel.org/powerpc/c/9d7fb0643a156a5dddd887814e1263b648501cb0
+[1/1] powerpc: Drop superfluous pci_dev_is_added() calls
+      https://git.kernel.org/powerpc/c/452f145eca73945222923525a7eba59cf37909cc
 
 cheers
