@@ -1,70 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F7334295E1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Oct 2021 19:38:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1A9F429687
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Oct 2021 20:09:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HSmHV0RMhz300b
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 04:38:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HSmyw2Phkz304J
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 05:09:28 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=HwHRRV+S;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Br70NNJ3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62d;
- helo=mail-pl1-x62d.google.com; envelope-from=naveennaidu479@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1034;
+ helo=mail-pj1-x1034.google.com; envelope-from=naveennaidu479@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=HwHRRV+S; dkim-atps=neutral
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com
- [IPv6:2607:f8b0:4864:20::62d])
+ header.s=20210112 header.b=Br70NNJ3; dkim-atps=neutral
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com
+ [IPv6:2607:f8b0:4864:20::1034])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HSmGr0lmYz2xgP
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Oct 2021 04:38:11 +1100 (AEDT)
-Received: by mail-pl1-x62d.google.com with SMTP id v20so4718256plo.7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Oct 2021 10:38:11 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HSmyJ3y57z2xss
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Oct 2021 05:08:55 +1100 (AEDT)
+Received: by mail-pj1-x1034.google.com with SMTP id oa4so13142942pjb.2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Oct 2021 11:08:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=WTDymu/kK4gMRJAHOJpsOJeHyCsZ/lww9DjrtPbDpJ4=;
- b=HwHRRV+S/RE+GIDbxexsfa91uds8RaTJQMPwbLhyAkzd491qats0xSsaC4mhiRl6Jq
- gXXjtWMCRFCl24UDsqtfCnqLD1Cbtd/93S7HO5AgB4ueGG4bEHV+hcSl1HJMqS26/8sA
- AKDOYmV4WnzsAqwxPmP3185eWqTzwnWRl2QPIf3ODwukpfqNg79k8CXYXbmjBmwmlM7H
- JLjBNNDOGJ+Mxf3ToELn+xPiqYpbj9hM9X5kn0apcvp1wMCYCAV20W1pQqigoIPr8oqY
- TGxAUPwne4Rec2JXIdYu17BaZHyNtS6uIqjuojEWOKeCG+TbAaPT/AAhWcUg9ysN4hhq
- wH4g==
+ bh=tHENHhkpkZLornjDw8P+cbQvSFGcu3v2lE8jdyEkvRc=;
+ b=Br70NNJ34I4Yegy0eEKartu/w5zPNCFTVWKFcc+0SH9riN481Yw03dpvxVCyDtFDXl
+ SAGytifw3UMmpq3lnw8ankHQcppUplykvHGQN3JYCCcGRPSFfUvVibqUQWk6LKV4jSAx
+ vwuTdXxOL0wPIJfLv2QZAKykGNtc07syqHF+0tjqKVLvwKPqq21ziVPb/FpNrBNI1gwA
+ kWniU6LOcTTwgTMTNq5y8zxlj65oBXev1Y4/2VArihAVHVhSq82Ax4vyAq0S1YGr0b1t
+ nbpb5I7m3Gm1ep5Ukn4lB4YDMTGjThfuBcygzwFGLdlN0zU2wX+Q7ZyxL3t82eKCMNPD
+ vogg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=WTDymu/kK4gMRJAHOJpsOJeHyCsZ/lww9DjrtPbDpJ4=;
- b=RY4ai3FVI9fxt+yewpJ1OFufs6N4WmOOfwLCUXofjOi3ftLGD+8Dzmd4PaF+JyKOBO
- 7APV0mAV4+nvJaypW0Q/UJcmbgK/KbQqHc5oOLHCF7YMMYxQpZrCJr2qeDj4sEpE5ka4
- PBYJZQBQ5oL5N7Ey8UcrC+Yi1WjqmXV6c3roNJzo/5jzd+VtqUiIyKqSO12qOSQWhXAv
- +INIXqmKYkz3wOrK9vPnptf56Hx6cVzaNw+HhiL/MyHDpYOTKxrOxHECOUp7W3ardNKK
- fhqQb1BaX+pIc+NEDg5tyN7xFYMr0W8UvsPyvFHDYggjBWmLo9/LGnNLM3XOvi7ZIPvc
- TdhA==
-X-Gm-Message-State: AOAM531Awo6ansTSH+ourEGh3+qMmqsAP+ZnY5AQldfYI4p+7skLq3zk
- qAWkRiVbr9T7fGH/Eo1Uu2c=
-X-Google-Smtp-Source: ABdhPJxEBdoXamrVCKeesJUkEsfNWnP0PDrt34jLeyC7FqCvn2xqaY1LwruNHL9Qwq4e9o9alifRPA==
-X-Received: by 2002:a17:90a:67c1:: with SMTP id
- g1mr335114pjm.177.1633973888608; 
- Mon, 11 Oct 2021 10:38:08 -0700 (PDT)
+ bh=tHENHhkpkZLornjDw8P+cbQvSFGcu3v2lE8jdyEkvRc=;
+ b=yFP48UGcCagK1Zw/1FTUNexcXUhOsleIA/fPUpvOHKcbIbBmqCBaLp3/k05cLV02WN
+ Lp1/91JOgQ8Vr9abtUKHB5l4Pjjge/SBTd5uVAMaCH81kk58I8E9GHR7ZignYKgW+XGp
+ MSbfY4cLna/XHRVjdDy5LHnnaD1gsGCHs884gNeDLJN+8fulUwk6QPcaaEB9G2mOhkLu
+ 2yTURIFOKoQskJiyM4sGuzfhZi66E1VxEOUJi0eFqz3fRjPM5R+ovQ5BZlVZ//lZS815
+ 94HR8qHNLvkpQswJP4dgnws5p5LinyzXGhMZUABZ4D182qRICzNAz6mjKcPQ41L6ZE9/
+ oQyw==
+X-Gm-Message-State: AOAM532yUgv8KcCnKyTCBqMPzRGpS0JIgVxEJko8kGHEbR0ss/azfAqR
+ JECPCsmn0upsjPLd56d23oc=
+X-Google-Smtp-Source: ABdhPJxg6bu3T2mprP33rb4kjg4OQn9iK/yPDYAEI5T0dMHwN1Br2zmBANHMy1ks/11wEZhbExnAkg==
+X-Received: by 2002:a17:90a:9f95:: with SMTP id
+ o21mr515839pjp.21.1633975733419; 
+ Mon, 11 Oct 2021 11:08:53 -0700 (PDT)
 Received: from localhost.localdomain ([2406:7400:63:9f95:848b:7cc8:d852:ad42])
  by smtp.gmail.com with ESMTPSA id
- c12sm8456919pfc.161.2021.10.11.10.38.04
+ u74sm8480423pfc.87.2021.10.11.11.08.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Oct 2021 10:38:08 -0700 (PDT)
+ Mon, 11 Oct 2021 11:08:53 -0700 (PDT)
 From: Naveen Naidu <naveennaidu479@gmail.com>
 To: bhelgaas@google.com
-Subject: [PATCH 01/22] PCI: Add PCI_ERROR_RESPONSE and it's related defintions
-Date: Mon, 11 Oct 2021 23:07:53 +0530
-Message-Id: <5b4ba38fa56c7625d391383a3aed47dea6726946.1633972263.git.naveennaidu479@gmail.com>
+Subject: [PATCH 17/22] PCI/DPC: Use RESPONSE_IS_PCI_ERROR() to check read from
+ hardware
+Date: Mon, 11 Oct 2021 23:38:27 +0530
+Message-Id: <8de64c63fa1559929c83a94a0da8e8f42f0b5377.1633972263.git.naveennaidu479@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1633972263.git.naveennaidu479@gmail.com>
 References: <cover.1633972263.git.naveennaidu479@gmail.com>
@@ -81,13 +82,11 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-samsung-soc@vger.kernel.org, linux-rockchip@lists.infradead.org,
- linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- Naveen Naidu <naveennaidu479@gmail.com>, bcm-kernel-feedback-list@broadcom.com,
- linux-mediatek@lists.infradead.org,
- linux-kernel-mentees@lists.linuxfoundation.org,
- linux-arm-kernel@lists.infradead.org
+Cc: linux-pci@vger.kernel.org,
+ "open list:PCI ENHANCED ERROR HANDLING EEH FOR POWERPC"
+ <linuxppc-dev@lists.ozlabs.org>, linux-kernel@vger.kernel.org,
+ Naveen Naidu <naveennaidu479@gmail.com>, Oliver O'Halloran <oohall@gmail.com>,
+ linux-kernel-mentees@lists.linuxfoundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
@@ -96,37 +95,41 @@ An MMIO read from a PCI device that doesn't exist or doesn't respond
 causes a PCI error.  There's no real data to return to satisfy the
 CPU read, so most hardware fabricates ~0 data.
 
-Add a PCI_ERROR_RESPONSE definition for that and use it where
-appropriate to make these checks consistent and easier to find.
+Use RESPONSE_IS_PCI_ERROR() to check the response we get when we read
+data from hardware.
 
-Also add helper definitions SET_PCI_ERROR_RESPONSE and
-RESPONSE_IS_PCI_ERROR to make the code more readable.
+This helps unify PCI error response checking and make error checks
+consistent and easier to find.
+
+Compile tested only.
 
 Signed-off-by: Naveen Naidu <naveennaidu479@gmail.com>
 ---
- include/linux/pci.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/pci/pcie/dpc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index cd8aa6fce204..928c589bb5c4 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -154,6 +154,15 @@ enum pci_interrupt_pin {
- /* The number of legacy PCI INTx interrupts */
- #define PCI_NUM_INTX	4
+diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
+index c556e7beafe3..561c44d9429c 100644
+--- a/drivers/pci/pcie/dpc.c
++++ b/drivers/pci/pcie/dpc.c
+@@ -79,7 +79,7 @@ static bool dpc_completed(struct pci_dev *pdev)
+ 	u16 status;
  
-+/*
-+ * Reading from a device that doesn't respond typically returns ~0.  A
-+ * successful read from a device may also return ~0, so you need additional
-+ * information to reliably identify errors.
-+ */
-+#define PCI_ERROR_RESPONSE			(~0ULL)
-+#define SET_PCI_ERROR_RESPONSE(val)	(*val = ((typeof(*val)) PCI_ERROR_RESPONSE))
-+#define RESPONSE_IS_PCI_ERROR(val)	(*val == ((typeof(*val)) PCI_ERROR_RESPONSE))
-+
- /*
-  * pci_power_t values must match the bits in the Capabilities PME_Support
-  * and Control/Status PowerState fields in the Power Management capability.
+ 	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_STATUS, &status);
+-	if ((status != 0xffff) && (status & PCI_EXP_DPC_STATUS_TRIGGER))
++	if ((!RESPONSE_IS_PCI_ERROR(&status)) && (status & PCI_EXP_DPC_STATUS_TRIGGER))
+ 		return false;
+ 
+ 	if (test_bit(PCI_DPC_RECOVERING, &pdev->priv_flags))
+@@ -312,7 +312,7 @@ static irqreturn_t dpc_irq(int irq, void *context)
+ 
+ 	pci_read_config_word(pdev, cap + PCI_EXP_DPC_STATUS, &status);
+ 
+-	if (!(status & PCI_EXP_DPC_STATUS_INTERRUPT) || status == (u16)(~0))
++	if (!(status & PCI_EXP_DPC_STATUS_INTERRUPT) || RESPONSE_IS_PCI_ERROR(&status))
+ 		return IRQ_NONE;
+ 
+ 	pci_write_config_word(pdev, cap + PCI_EXP_DPC_STATUS,
 -- 
 2.25.1
 
