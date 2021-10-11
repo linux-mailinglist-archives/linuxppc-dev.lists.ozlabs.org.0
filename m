@@ -2,72 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B42504289C5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Oct 2021 11:38:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0322E428A17
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Oct 2021 11:46:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HSYd5006Gz2yXc
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Oct 2021 20:38:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HSYq14Pk0z2ywc
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Oct 2021 20:46:53 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=i59HQEsR;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hR14YdOB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=wsa@kernel.org; receiver=<UNKNOWN>)
+ envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=i59HQEsR; 
+ header.s=k20201202 header.b=hR14YdOB; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HSYcR4dp9z2yJT
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Oct 2021 20:37:43 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7D06360EDF;
- Mon, 11 Oct 2021 09:37:40 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HSYpL0S4jz2xXB
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Oct 2021 20:46:17 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7E39260F43
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Oct 2021 09:46:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1633945061;
- bh=YyuuSg4+Xw1WBeodqUV8qTEhir5tsvWm6bEneSlHOmM=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=i59HQEsRw6XeL+wWM/VpKT61n1VUj0RezFOCjc+1AthZno/w4EKiQ4PAZfRzpXHbs
- rRtiFU/s5A2ARGgjZqjyUtCPpPmvI7itUB8+OIkU69WuIAbfy6uYeC/NzCvk0WRrQN
- Z3xsGY1KDeSChYzBHmLDiFnJG6I14FlxtXTV57f3XxFvj5mqCevNecNIqdbBq2LdJo
- 5REpks8Dc6RbBI0lCZE9EGHhPL4YGrBAGb+qCtVqFszz0ycd76ybGzMPwrfwDLCaZy
- eIWNHd2cCloOSxOhnhPsp2XpAniAjsWuvMcU/feK35TSsS070j7U2Vuoy6LwcEl8hf
- WFrunQPR7oIWQ==
-Date: Mon, 11 Oct 2021 11:37:36 +0200
-From: Wolfram Sang <wsa@kernel.org>
-To: Hector Martin <marcan@marcan.st>
-Subject: Re: [PATCH v2 00/11] Add Apple M1 support to PASemi i2c driver
-Message-ID: <YWQF4D40a/qpfM3/@kunai>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
- Hector Martin <marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>,
- Christian Zigotzky <chzigotzky@xenosoft.de>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Olof Johansson <olof@lixom.net>,
- Arnd Bergmann <arnd@arndb.de>,
- Mohamed Mediouni <mohamed.mediouni@caramail.com>,
- Stan Skowronek <stan@corellium.com>,
- Mark Kettenis <mark.kettenis@xs4all.nl>,
- Alyssa Rosenzweig <alyssa@rosenzweig.io>,
- linux-arm-kernel@lists.infradead.org,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
- "R.T.Dickinson" <rtd@a-eon.com>, Matthew Leaman <matthew@a-eon.biz>,
- Darren Stevens <darren@stevens-zone.net>
-References: <20211008163532.75569-1-sven@svenpeter.dev>
- <YWFqr4uQGlNgnT1z@ninjato>
- <8a8afc73-3756-a305-ce5f-70b4bce6999f@xenosoft.de>
- <11d8f784-c90a-4e6c-9abd-564cb5241cb7@www.fastmail.com>
- <YWP71c8cXlE3PcIo@kunai>
- <5ae30425-d6d4-5688-36e3-58cc6c6ff264@marcan.st>
+ s=k20201202; t=1633945575;
+ bh=qRyh8ehsFmtn9ig4J8UbiRrew6heVcGUFCDbxxmKZf8=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=hR14YdOBybFf5arZDs0f5DTqL6oR83P1/SqbLyNrJwFHJBLTWaQazeIMc9uvTN1P8
+ hAJqlZo6mlDfyVaItk+Gi7YQ6+xNmx+znUVD17u7+ezaHXrH34IV6jliAyYty27gK6
+ 2mJ0yYTHSWgVF+AO4LndCnRGcw4aDl9YdAaPanPAX3GDErqHtLO7iqAtTk0e2u7D6d
+ 7XHOe1RxkdihQ8rXcjEn1LyF918Jy6+gc6Tia4YX9/YFhMiQYAATwHxBriDyPRaPet
+ xFver0G8OWX4Feq7uBsjBvSONLORuv0Fvdhgu6mrQdkDyNHT/6mP5a5/9dczhqsYKi
+ kUx/6+qsAs0Cg==
+Received: by mail-wr1-f54.google.com with SMTP id g25so7672169wrb.2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Oct 2021 02:46:15 -0700 (PDT)
+X-Gm-Message-State: AOAM530A8sPI9ydGyvnPg+z9Mi6y76dcWro6qJQP7BVkig7keOCgaQ6T
+ XJDbm6r8/qdQiRdF/NeKIOeOl28k3wc2y9Q77oU=
+X-Google-Smtp-Source: ABdhPJyHs3mE6IoiFv5FE4vcliRHFQyxAEDWB/Wlg8v0WqzlUPkK8zWA+LhRJS54ay+HCTZiOLGsUmbAhjIFcqWae2k=
+X-Received: by 2002:adf:b1c4:: with SMTP id r4mr23576993wra.428.1633945563612; 
+ Mon, 11 Oct 2021 02:46:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="5TP+rHLVHtolMC1P"
-Content-Disposition: inline
-In-Reply-To: <5ae30425-d6d4-5688-36e3-58cc6c6ff264@marcan.st>
+References: <20210928075216.4193128-1-arnd@kernel.org>
+ <9dedf9bb-5377-9f2c-cbb1-2a57b40493da@molgen.mpg.de>
+ <CAMuHMdXspk27xd95YAsXa73ES8rfKxii3RUEtsBtxQTk9qLztA@mail.gmail.com>
+In-Reply-To: <CAMuHMdXspk27xd95YAsXa73ES8rfKxii3RUEtsBtxQTk9qLztA@mail.gmail.com>
+From: Arnd Bergmann <arnd@kernel.org>
+Date: Mon, 11 Oct 2021 11:45:47 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a3s5tu8MfdtXpoCeA8rrAUD3sscCMqLaoUVdUY9G-9AvQ@mail.gmail.com>
+Message-ID: <CAK8P3a3s5tu8MfdtXpoCeA8rrAUD3sscCMqLaoUVdUY9G-9AvQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] firmware: include drivers/firmware/Kconfig
+ unconditionally
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,57 +67,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, Arnd Bergmann <arnd@arndb.de>,
- Sven Peter <sven@svenpeter.dev>, linux-kernel@vger.kernel.org,
- linux-i2c@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- linux-arm-kernel@lists.infradead.org,
- Christian Zigotzky <chzigotzky@xenosoft.de>, Olof Johansson <olof@lixom.net>,
- Mohamed Mediouni <mohamed.mediouni@caramail.com>,
- "R.T.Dickinson" <rtd@a-eon.com>, Mark Kettenis <mark.kettenis@xs4all.nl>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Matthew Leaman <matthew@a-eon.biz>, Alyssa Rosenzweig <alyssa@rosenzweig.io>,
- Stan Skowronek <stan@corellium.com>
+Cc: "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Bjorn Andersson <bjorn.andersson@linaro.org>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ "H. Peter Anvin" <hpa@zytor.com>,
+ linux-riscv <linux-riscv@lists.infradead.org>, Will Deacon <will@kernel.org>,
+ Helge Deller <deller@gmx.de>, the arch/x86 maintainers <x86@kernel.org>,
+ Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ Paul Menzel <pmenzel@molgen.mpg.de>, Albert Ou <aou@eecs.berkeley.edu>,
+ Charles Keepax <ckeepax@opensource.cirrus.com>, Arnd Bergmann <arnd@arndb.de>,
+ Simon Trimmer <simont@opensource.cirrus.com>, Mark Brown <broonie@kernel.org>,
+ Borislav Petkov <bp@alien8.de>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Parisc List <linux-parisc@vger.kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Liam Girdwood <lgirdwood@gmail.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Mon, Oct 11, 2021 at 10:42 AM Geert Uytterhoeven
+<geert@linux-m68k.org> wrote:
+> On Sat, Oct 9, 2021 at 11:24 AM Paul Menzel <pmenzel@molgen.mpg.de> wrote:
+> > Am 28.09.21 um 09:50 schrieb Arnd Bergmann:
+> > > From: Arnd Bergmann <arnd@arndb.de>
+> > +#
+> > +# ARM System Control and Management Interface Protocol
+> > +#
+> > +# end of ARM System Control and Management Interface Protocol
+> > +
+> > +# CONFIG_FIRMWARE_MEMMAP is not set
+> > +# CONFIG_GOOGLE_FIRMWARE is not set
+> > +
+> > +#
+> > +# Tegra firmware driver
+> > +#
+> > +# end of Tegra firmware driver
+> > +# end of Firmware Drivers
+> > +
+> >   # CONFIG_GNSS is not set
+> >   CONFIG_MTD=m
+> >   # CONFIG_MTD_TESTS is not set
+> > ```
+> >
+> > No idea if the entries could be hidden for platforms not supporting them.
+> >
+> >          ARM System Control and Management Interface Protocol  ----
+> >      [ ] Add firmware-provided memory map to sysfs
+> >      [ ] Google Firmware Drivers  ----
+> >          Tegra firmware driver  ----
+>
+> GOOGLE_FIRMWARE should probably depend on something.
+> I highly doubt Google is running servers on e.g. h8300 and nds32.
 
---5TP+rHLVHtolMC1P
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+GOOGLE_FIRMWARE is only the 'menuconfig' option that contains
+the other options, but on architectures that have neither CONFIG_OF
+nor CONFIG_ACPI, this is empty.  Most architectures of course
+do support or require CONFIG_OF, so it's unclear whether we should
+show the options for coreboot. Since it's a software-only driver, I
+would tend to keep showing it, given that coreboot can be ported
+to every architecture. The DT binding [1] seems to be neither
+Google nor Arm specific.
 
+CONFIG_FIRMWARE_MEMMAP in turn can be used for
+anything that has memory hotplug, and in theory additional
+drivers that register with this interface.
 
-> > Because MAINTAINER dependencies can be a bit nasty, I suggest I drop the
-> > MAINTAINER additions for now and we add them later. Then, you can add
-> > the pasemi-core as well. D'accord?
-> >=20
->=20
-> We can just split the MAINTAINERS changes into a separate patch and I can
-> push that one through the SoC tree, along with other MAINTAINERS updates.
-> Does that work for everyone?
+I'd lean towards "leave as is" for both, to avoid having to
+change the dependencies again whenever something else
+can use these.
 
-That would also work for me. Thank you!
+        Arnd
 
-
---5TP+rHLVHtolMC1P
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmFkBdwACgkQFA3kzBSg
-KbYFeRAAn3V00WXZcUzFlKUIvdYT0C7Yni7P6e8BRdY0CYPcLdAQdT588ZDnztXb
-F1+gVrKcGjcSW0PH9Poor5cE1bH3BtCWl3bM0lVC3QXPSLEA23ZjO/WA+mWDLnNM
-y08LX6qn0jNDSf7MEgWCkKA7gpYTmxwZr4+hanflNHp2V+imR1vp803p59rSpX4+
-ZO+bm4HBy3A0VvTU26uzIbOJgpn5cO9vdZ6bLdw4Q6CdYmr1rq3p0mytsPEnnIOz
-gDuacJ9HwN3xmRa1cdMhXOKTgdryn6ZAEqyfaW5rgiM2dL9ZTumEUkJyHXcc1sMS
-QQqvQnY3zzhyLyEJsLPLMJnQQHGwUyMFX4D5R54tO1s0ne6iNIcOdWMsfAcrOb8b
-YWaikNAw3oQ392V6g/iXPUfMppY9O1f47gZkLMHuHZV5XusPm84qyYIlysgyyf3d
-Qwg5nFywlOFxYtySkxfje/OLREkzZoVOQXaxi/kC3IQiWDtoxU9NYMu7blXrJa71
-/kEe4lftTRBKib/iRahLb0ZOOiBI2Zpd0IiY3z5/Edhp9TY4akDHFOBOGZ66p8Af
-P/3TDcr7XZ/10fBZA/2biB4a5/hVKbnUTMBkXjqhNYN4lQA4VbuFB4+KvXJXrf4y
-Lsy0yB+hE2CIa7sRFrjGBPjPZTjvuYg1VONj3P/VUS4KDw02Uss=
-=z66C
------END PGP SIGNATURE-----
-
---5TP+rHLVHtolMC1P--
+[1] Documentation/devicetree/bindings/firmware/coreboot.txt
