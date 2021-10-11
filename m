@@ -1,57 +1,99 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 617C2428D1D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Oct 2021 14:35:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE5B3428D91
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Oct 2021 15:10:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HSdY31lthz2ynX
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Oct 2021 23:35:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HSfKn3sTDz2yQM
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 00:10:21 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=nOX9tCVv;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IsIZcsWR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HSdXQ48QPz2xtP
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Oct 2021 23:34:30 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=nOX9tCVv; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4HSdXP6lyHz4xbV;
- Mon, 11 Oct 2021 23:34:29 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1633955670;
- bh=Pld4FcBdbZ8l2lR1F6AV89j7hjbvSY580vLcCkY0cI8=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=nOX9tCVvIiFBvD43OScgAqd1FuwY1/NjKUp5CIJUlhprD/P8lw1NyNpeLNCpAPQ7T
- zYvYhtxoWuVDMLJRlq2gr05BbBSbKvT+5V1G60mpdLTwEZo1WM5ghO1DVYh22sLMNX
- V1duah6VqbvN3Ouf2OrfTZzya+thj69XHESG8uYp+irchxWBK7ih3mHezYIHcMy/3j
- g3iO+UP9tweq4bscpFlHnUcOhcWLclWnF6jy1boB5WcS9Y7gJB89f1I+ITLSnMdSe7
- qGZRYhMBuRe1tqRbGY+S43xx/cFnVZZHGkoVHBy5DmalDUHVzYkUHPvKahAY2qGEmO
- yulNJ2dv4QeGA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nathan Lynch <nathanl@linux.ibm.com>, Daniel Henrique Barboza
- <danielhb413@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2 4/4] powerpc/pseries/cpuhp: remove obsolete comment
- from pseries_cpu_die
-In-Reply-To: <87k0izfux7.fsf@linux.ibm.com>
-References: <20210927201933.76786-1-nathanl@linux.ibm.com>
- <20210927201933.76786-5-nathanl@linux.ibm.com>
- <4479e869-1c98-4473-262c-3aeb37b8fca2@gmail.com>
- <87h7e40wac.fsf@mpe.ellerman.id.au> <87k0izfux7.fsf@linux.ibm.com>
-Date: Mon, 11 Oct 2021 23:34:28 +1100
-Message-ID: <87mtnfn3jf.fsf@mpe.ellerman.id.au>
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=IsIZcsWR; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HSfK128zgz2yMH
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Oct 2021 00:09:40 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19BB01J4025744; 
+ Mon, 11 Oct 2021 09:09:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=arQSQCAv8lW3Ss7oeZqk+VMGoUu3E2m5PdKWLOGDHzM=;
+ b=IsIZcsWROLdLcdbamY8V6WbsrQnaeOrUone8emnC9lrSApaxN7SRLud1FfoHXyFEGRNT
+ K27A9bPxxQj0bqgfC6KA+is0EuKQz0+CtIKnXa/afStTds7gA59KJ27sK2BCmvp2/Xcw
+ Y//MMtOKJtkyoKyKz3G0DAWpGmhWb3ZFKhSjFCQeaU29YYcHKhpbcFi68p3l0RzzlYOc
+ AzlHvatc9Tm/tQFOxmxsm9U/MRxpSrCMDF2Bc3u4k06MgB0CTfompDWzOf23JRAdnUln
+ d8iAWh93PeSEsSL0nZcP/McKdfKObPpVApKTMtX9krZRHOUINqAolFbVhHr8RLkICyh9 1g== 
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3bmhhuxn44-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 11 Oct 2021 09:09:32 -0400
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19BD2eRO009184;
+ Mon, 11 Oct 2021 13:09:30 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma06fra.de.ibm.com with ESMTP id 3bk2bj4yuf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 11 Oct 2021 13:09:29 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 19BD3pUo33817048
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 11 Oct 2021 13:03:51 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 66FF4A4066;
+ Mon, 11 Oct 2021 13:09:24 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 91B02A4068;
+ Mon, 11 Oct 2021 13:09:20 +0000 (GMT)
+Received: from li-e8dccbcc-2adc-11b2-a85c-bc1f33b9b810.ibm.com (unknown
+ [9.43.84.42])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 11 Oct 2021 13:09:20 +0000 (GMT)
+Subject: Re: [V3 0/4] powerpc/perf: Add instruction and data address registers
+ to extended regs
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, mpe@ellerman.id.au,
+ acme@kernel.org, jolsa@kernel.org
+References: <20211007065505.27809-1-atrajeev@linux.vnet.ibm.com>
+From: kajoljain <kjain@linux.ibm.com>
+Message-ID: <f9064648-adba-92f9-08bc-52ad179de357@linux.ibm.com>
+Date: Mon, 11 Oct 2021 18:39:18 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20211007065505.27809-1-atrajeev@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: C8sN5U5SPyOcG0hmXEEgorvk7aX3ejpY
+X-Proofpoint-GUID: C8sN5U5SPyOcG0hmXEEgorvk7aX3ejpY
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
+ definitions=2021-10-11_04,2021-10-07_02,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 spamscore=0
+ mlxscore=0 malwarescore=0 adultscore=0 impostorscore=0 mlxlogscore=999
+ priorityscore=1501 clxscore=1015 bulkscore=0 phishscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2109230001 definitions=main-2110110076
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,127 +105,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tyreld@linux.ibm.com, ldufour@linux.ibm.com, aneesh.kumar@linux.ibm.com
+Cc: maddy@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ rnsastry@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nathan Lynch <nathanl@linux.ibm.com> writes:
-> Michael Ellerman <mpe@ellerman.id.au> writes:
->> Daniel Henrique Barboza <danielhb413@gmail.com> writes:
->>> This is enough to say that we can't easily see the history behind this comment.
->>> I also believe that we're better of without it since it doesn't make sense
->>> with the current codebase.
->>
->> It was added by the original CPU hotplug commit for ppc64::
->>
->> https://github.com/mpe/linux-fullhistory/commit/0e9fd9441cd2113b67b14e739267c9e69761489b
->>
->>
->> The code was fairly similar:
->>
->> void __cpu_die(unsigned int cpu)
->> {
->> 	int tries;
->> 	int cpu_status;
->> 	unsigned int pcpu = get_hard_smp_processor_id(cpu);
->>
->> 	for (tries = 0; tries < 5; tries++) {
->> 		cpu_status = query_cpu_stopped(pcpu);
->>
->> 		if (cpu_status == 0)
->> 			break;
->> 		set_current_state(TASK_UNINTERRUPTIBLE);
->> 		schedule_timeout(HZ);
->> 	}
->> 	if (cpu_status != 0) {
->> 		printk("Querying DEAD? cpu %i (%i) shows %i\n",
->> 		       cpu, pcpu, cpu_status);
->> 	}
->>
->> 	/* Isolation and deallocation are definatly done by
->> 	 * drslot_chrp_cpu.  If they were not they would be
->> 	 * done here.  Change isolate state to Isolate and
->> 	 * change allocation-state to Unusable.
->> 	 */
->> 	paca[cpu].xProcStart = 0;
->>
->> 	/* So we can recognize if it fails to come up next time. */
->> 	cpu_callin_map[cpu] = 0;
->> }
->>
->>
->> drslot_chrp_cpu() still exists in drmgr:
->>
->>   https://github.com/ibm-power-utilities/powerpc-utils/blob/e798c4a09fbf0fa0f421e624cfa366a6c405c9fe/src/drmgr/drslot_chrp_cpu.c#L406
->>
->>
->> I agree the comment is no longer meaningful and can be removed.
->
-> Thanks for providing this background.
->
->> It might be good to then add a comment explaining why we need to set
->> cpu_start = 0.
->
-> Sure, I can take that as a follow-up. Or perhaps it should be moved to
-> the online path.
-
-Yeah possibly.
-
->> It's not immediately clear why we need to. When we bring a CPU back
->> online in smp_pSeries_kick_cpu() we ask RTAS to start it and then
->> immediately set cpu_start = 1, ie. there isn't a separate step that sets
->> cpu_start = 1 for hotplugged CPUs.
->
-> Hmm I'm not following the distinction you seem to be drawing between
-> bringing a CPU back online and a hotplugged CPU. kick_cpu is used in all
-> cases AFAIK.
-
-Yeah that wasn't very clear, reading it back I have half confused myself.
-
-At boot we need the paca->cpu_start flag because some CPUs can be
-spinning in generic_secondary_common_init, in head_64.S.
-
-ie. they're not in RTAS, they're spinning in kernel code, and the only
-thing that stops them coming "online" in the Linux sense is
-paca->cpu_start.
-
-You can see that in pseries/smp.c:
-
-static inline int smp_startup_cpu(unsigned int lcpu)
-{
-	...
-	if (cpumask_test_cpu(lcpu, of_spin_mask))
-		/* Already started by OF and sitting in spin loop */
-		return 1;
 
 
-We also hit that case when kexec'ing, where all the secondaries come in
-that way.
+On 10/7/21 12:25 PM, Athira Rajeev wrote:
+> Patch set adds PMU registers namely Sampled Instruction Address Register
+> (SIAR) and Sampled Data Address Register (SDAR) as part of extended regs
+> in PowerPC. These registers provides the instruction/data address and
+> adding these to extended regs helps in debug purposes.
+> 
+> Patch 1/4 and 2/4 refactors the existing macro definition of
+> PERF_REG_PMU_MASK_300 and PERF_REG_PMU_MASK_31 to make it more
+> readable.
+> Patch 3/4 adds SIAR and SDAR as part of the extended regs mask.
+> Patch 4/4 includes perf tools side changes to add the SPRs to
+> sample_reg_mask to use with -I? option.
+> 
+> Changelog:
+> Change from v2 -> v3:
+> Addressed review comments from Michael Ellerman
+> - Fixed the macro definition to use "unsigned long long"
+>   which otherwise will cause build error with perf on
+>   32-bit.
+> - Added Reviewed-by from Daniel Axtens for patch3.
+> 
+> Change from v1 -> v2:
+> Addressed review comments from Michael Ellerman
+> - Refactored the perf reg extended mask value macros for
+>   PERF_REG_PMU_MASK_300 and PERF_REG_PMU_MASK_31 to
+>   make it more readable. Also moved PERF_REG_EXTENDED_MAX
+>   along with enum definition similar to PERF_REG_POWERPC_MAX.
+> 
+> Athira Rajeev (4):
+>   powerpc/perf: Refactor the code definition of perf reg extended mask
+>   tools/perf: Refactor the code definition of perf reg extended mask in
+>     tools side header file
+>   powerpc/perf: Expose instruction and data address registers as part of
+>     extended regs
+>   tools/perf: Add perf tools support to expose instruction and data
+>     address registers as part of extended regs
 
+Patch-set looks good to me.
 
-On the other hand when we offline a CPU, we set paca->cpu_start = 0, in
-pseries_cpu_die(), and then we return the CPU to RTAS.
+Reviewed-by: Kajol Jain<kjain@linux.ibm.com>
 
-The only way it *should* come back online is via smp_pSeries_kick_cpu(),
-which calls smp_startup_cpu() to bring the CPU out of RTAS, and then
-smp_pSeries_kick_cpu() immediately sets cpu_start = 1.
-
-So the sequence is:
-
-	CPU goes offline from Linux POV
-	paca->cpu_start = 0;
-        CPU offline in RTAS
-        ...
-        CPU brought out of RTAS
-	paca->cpu_start = 1;
-	CPU comes back online from Linux POV
-
-
-But I guess I kind of answered my own question above, where I said
-*should*. Clearing paca->cpu_start when we offline the CPU gives us a
-little bit of backup if the CPU comes out of RTAS unexpectedly. ie. it
-would then spin on paca->cpu_start, rather than spontaneously coming
-back into Linux when we weren't expecting it.
-
-cheers
+Thanks,
+Kajol Jain
+> 
+>  arch/powerpc/include/uapi/asm/perf_regs.h     | 28 ++++++++++++-------
+>  arch/powerpc/perf/perf_regs.c                 |  4 +++
+>  .../arch/powerpc/include/uapi/asm/perf_regs.h | 28 ++++++++++++-------
+>  tools/perf/arch/powerpc/include/perf_regs.h   |  2 ++
+>  tools/perf/arch/powerpc/util/perf_regs.c      |  2 ++
+>  5 files changed, 44 insertions(+), 20 deletions(-)
+> 
