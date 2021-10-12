@@ -1,68 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D91FB429EBC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 09:35:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA2F8429F30
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 10:02:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HT6sP2vMzz2ymb
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 18:35:53 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Qiq8iA5U;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HT7Sb2fXtz30gd
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 19:02:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::533;
- helo=mail-ed1-x533.google.com; envelope-from=naresh.kamboju@linaro.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=Qiq8iA5U; dkim-atps=neutral
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com
- [IPv6:2a00:1450:4864:20::533])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=217.72.192.75; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.75])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HT6rj1Skjz2yPG
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Oct 2021 18:35:14 +1100 (AEDT)
-Received: by mail-ed1-x533.google.com with SMTP id d3so49914927edp.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Oct 2021 00:35:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=0LdgTQXaIMFK90MNm2LnmaoXjv7Xz1qZCtdN0PVVc54=;
- b=Qiq8iA5ULEqujdzoJDRiufJoirupCSn8sZCgDe767gWHWs0sgPrEVPSs6Qg2ThZQzw
- ditUsjX+68E/QYrCxf1k6wkDf4vIBlcWKBbTkz0Mefc9MVMXlQ/euRUbR7ashmrrxrvr
- tggvc0sIY9OUkq1N1QoaWRKBFs5m+XerdEjwnlqgrTnYaA3ImTDG6vnrKY7AbaNgeDCo
- nnP424+10CuNHb7Rp7Q8q8bPFBbjBCUHEWkhIh5sCUj+FYEYoeWXtIqg6i2VX++knvCg
- YC0h09cOVwdX1QBAcjRHmW2dLsGI+e+6JhlJdu8hoIwKjd3CLzpO5fSp9kWh5bDHankt
- MAMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=0LdgTQXaIMFK90MNm2LnmaoXjv7Xz1qZCtdN0PVVc54=;
- b=tovk5JCiJUBb0lsfwpwsgUeAqi8isWwW+hK2b+qXr3WUhAyFk/JOxv6SB4fbTpIzXk
- 8spVfchhGtzi3YDS03jLPg9tZeIxZwfyJverHqZqsLDYMA9L2AHzDJ/ohUG6xx5Hitp5
- vg6kKLje+vWLEJsnHhFLT/wnCIw3N5gYAGDi29t+bjI1MlchXEmv4HiD2b61PseKaWc9
- 7TuUWTmp8AYI/mKvd5acFgXWHAPnMxOv3eJb43NRR1ccAzmW+7v4Do41lztapPl+9AiK
- ayPH1Q1aKNeWKndTXR/JM5uEp0dpGWHhGDRcs0P7SsiSACc10nhEK1Yot3cz3Tlf1cWH
- f/Cw==
-X-Gm-Message-State: AOAM530lv3JYnkpLnujTG1ZLR5pI91S+TCP3WQ6+TtIXdphqREUQDLq4
- X68XhsWlk980qVLA2o2H5NzklF9bvrpxTFJ5RNRNiw==
-X-Google-Smtp-Source: ABdhPJwCt53XHpRv0O60+/zV2VTB2O0ZJQiUr07Ip2Ze2mcCpt8//Lsk0vB2lrIScioA4EveNy3rJQRIEtb4pBNUe50=
-X-Received: by 2002:a17:906:c302:: with SMTP id
- s2mr30057500ejz.499.1634024105733; 
- Tue, 12 Oct 2021 00:35:05 -0700 (PDT)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HT7S55h9bz2xtb
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Oct 2021 19:02:27 +1100 (AEDT)
+Received: from mail-wr1-f47.google.com ([209.85.221.47]) by
+ mrelayeu.kundenserver.de (mreue109 [213.165.67.113]) with ESMTPSA (Nemesis)
+ id 1MLR5h-1mIoTm05g3-00IR0T for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Oct
+ 2021 10:02:21 +0200
+Received: by mail-wr1-f47.google.com with SMTP id m22so64291218wrb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Oct 2021 01:02:20 -0700 (PDT)
+X-Gm-Message-State: AOAM530rtGqwoDqlOwxtnJ74C26hC7C5pPxchvd5GFA5mYVKYP6vCx7n
+ M0HTxnnFEypkfWgPRsOH8GuOO/GVXR3Sp2UBTEg=
+X-Google-Smtp-Source: ABdhPJwnvZ0Y6Hum+PqySTSqvTb9cKPN3NBY9WwyA3F69Xi/jCmvpemQKNAXUmqZQmtOtxFaHVKwRHP1wYX1RAaUqTk=
+X-Received: by 2002:adf:ab46:: with SMTP id r6mr29708426wrc.71.1634025739862; 
+ Tue, 12 Oct 2021 01:02:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <20211012064436.577746139@linuxfoundation.org>
-In-Reply-To: <20211012064436.577746139@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Tue, 12 Oct 2021 13:04:54 +0530
-Message-ID: <CA+G9fYt3vmhvuoFJ6p49DHiFE60oBeWUwuSLrh7vXwr=8_rpfg@mail.gmail.com>
-Subject: Re: [PATCH 5.4 00/52] 5.4.153-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <cover.1633964380.git.christophe.leroy@csgroup.eu>
+ <8ff3ec195d695033b652e9971fba2dc5528f7151.1633964380.git.christophe.leroy@csgroup.eu>
+ <878ryy7m6v.fsf@mpe.ellerman.id.au>
+In-Reply-To: <878ryy7m6v.fsf@mpe.ellerman.id.au>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Tue, 12 Oct 2021 10:02:03 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a09azJ0fshthGeOqK92uaYJ+m39Yg1=YQav=n9n_PNt5w@mail.gmail.com>
+Message-ID: <CAK8P3a09azJ0fshthGeOqK92uaYJ+m39Yg1=YQav=n9n_PNt5w@mail.gmail.com>
+Subject: Re: [PATCH v1 01/10] powerpc: Move 'struct ppc64_opd_entry' back into
+ asm/elf.h
+To: Michael Ellerman <mpe@ellerman.id.au>
 Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:C/pME6omKt2fIzHLFfmGEVomthrdyhhQPBVq3drUAB+TwWGSDae
+ dZHfau2ldByWi7SDolUI0bkklHLJ4KIES1gDeuYjXtDfP9siAG3kPlewpb8Zgzf/Hq0BPRq
+ wMI7cFBw/mN3UuFTcrVeY2vwnMKKpE+yLu+T8Jy8S7JvYLcaFRoNvlijlJ5MdsubeC/S2sR
+ SheA2jXRBXFmcVmO+qHzg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:6doHbmA0GD4=:hoObciW6nrqo4zBA6Rtqyz
+ Vl3ujpabA+ljpNix3pBKK2URpr62zyaO2vNkdkVGUbxvgOhL+v82J8svWUeu5P0HP4fPu/Z5l
+ SG8HMXE3S+JxNerKHql1TfdQ8KbN9HpUfwepPDUOmBZp4Y4pZJst+RSxuHeuBA1Zj42rkHrkf
+ UrrQP4Zb3D5m50Shn9Q6LwTUOzeZ98CyGDRAVsdzWeEyB8GdtIf0OuFeZiAX9tRlCyZ9qu63C
+ o8bg9m+ouUoAQ66q+FFJAYNXOtlz+HZE9Dqk4E4Vw5DXo4yXuNxGcc16dqMtGHcHh3ApmBs7w
+ SiA9RhyXEgSA3zPsqHdeo0m6Ild8iSgNbqgtRKZXIFb7vJ2ix483hUSWHZlXMT2UgElCeD3s6
+ hWTiUvyWZxZmhxcUIqrMgN9ID2QNA+NLMPy3feBLlu877H2vpI/Ph3M4xs2p0HYkT+x6Q26Al
+ tuCFjwou3VDBUrwvVsrp5+0D/yWZ6XViOWVjjr2hxJlDmAzjz4O2J3zoO6+8DFUyMkipmF8PH
+ SCivynjOBMQxS8dJdMj7RuRRjPSojwmoCDEVxCZnVLJRCcV9Y3njt5sMVZAp0pcNkvLYaiGf1
+ 3SDgII6RJags6eolX9TTn7MIeNEauY4h3PrK4Ixndic4CW3RrfmerM6BjkRUW5Nr2b2rBMGmB
+ Rv4BQfE/eYXOU2ax3M5828BKiSxcSntW4IjOAW1wGoff5irL3K4dL5JKY3yYxtzT1/jc+dIYx
+ w6g1+vxNLPrQ2J6QvBSgYvAaCWTPjIjfg7Bjfv8e4aCRhOtkHV6EA5HyV8YPJgXYmGfktu0NQ
+ 7U8zv7ErBHc8NBx8YpajbsfXzHwham/R9i9PXUhauzb6QwcK/Gaw3zjaOYYal2mrPAvyzRo9j
+ 62yi90KII7JOlahw8Z6g==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,74 +73,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Song Liu <songliubraving@fb.com>, Florian Fainelli <f.fainelli@gmail.com>,
- bpf <bpf@vger.kernel.org>, Johan Almbladh <johan.almbladh@anyfinetworks.com>,
- Pavel Machek <pavel@denx.de>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- open list <linux-kernel@vger.kernel.org>, lkft-triage@lists.linaro.org,
- Jon Hunter <jonathanh@nvidia.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- linux-stable <stable@vger.kernel.org>, patches@kernelci.org,
- Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
- "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- Guenter Roeck <linux@roeck-us.net>
+Cc: linux-arch <linux-arch@vger.kernel.org>, linux-ia64@vger.kernel.org,
+ Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
+ Helge Deller <deller@gmx.de>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Linux-MM <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
+ Parisc List <linux-parisc@vger.kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 12 Oct 2021 at 12:16, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Tue, Oct 12, 2021 at 9:10 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
+> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> > 'struct ppc64_opd_entry' doesn't belong to uapi/asm/elf.h
+> > But it was by mistake added outside of __KERNEL__ section,
+> > therefore commit c3617f72036c ("UAPI: (Scripted) Disintegrate
+> > arch/powerpc/include/asm") moved it to uapi/asm/elf.h
 >
-> This is the start of the stable review cycle for the 5.4.153 release.
-> There are 52 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+> ... it's been visible to userspace since the first commit moved it, ~13
+> years ago in 2008, v2.6.27.
 >
-> Responses should be made by Thu, 14 Oct 2021 06:44:25 +0000.
-> Anything received after that time might be too late.
+> > Move it back into asm/elf.h, this brings it back in line with
+> > IA64 and PARISC architectures.
 >
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.153-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
-> and the diffstat can be found below.
+> Removing it from the uapi header risks breaking userspace, I doubt
+> anything uses it, but who knows.
 >
-> thanks,
->
-> greg k-h
+> Given how long it's been there I think it's a bit risky to remove it :/
 
-stable rc 5.4.153-rc2 Powerpc build failed.
+I would not be too worried about it. While we should absolutely
+never break existing binaries, changing the visibility of internal
+structures in header files only breaks compiling applications
+that do rely on these entries, and they really should not be using
+this in the first place.
 
-In file included from arch/powerpc/net/bpf_jit64.h:11,
-                 from arch/powerpc/net/bpf_jit_comp64.c:19:
-arch/powerpc/net/bpf_jit_comp64.c: In function 'bpf_jit_build_body':
-arch/powerpc/net/bpf_jit.h:32:9: error: expected expression before 'do'
-   32 |         do { if (d) { (d)[idx] = instr; } idx++; } while (0)
-      |         ^~
-arch/powerpc/net/bpf_jit.h:33:33: note: in expansion of macro 'PLANT_INSTR'
-   33 | #define EMIT(instr)             PLANT_INSTR(image, ctx->idx, instr)
-      |                                 ^~~~~~~~~~~
-arch/powerpc/net/bpf_jit_comp64.c:415:41: note: in expansion of macro 'EMIT'
-  415 |                                         EMIT(PPC_LI(dst_reg, 0));
-      |                                         ^~~~
-arch/powerpc/net/bpf_jit.h:33:33: note: in expansion of macro 'PLANT_INSTR'
-   33 | #define EMIT(instr)             PLANT_INSTR(image, ctx->idx, instr)
-      |                                 ^~~~~~~~~~~
-arch/powerpc/net/bpf_jit.h:41:33: note: in expansion of macro 'EMIT'
-   41 | #define PPC_ADDI(d, a, i)       EMIT(PPC_INST_ADDI |
-___PPC_RT(d) |           \
-      |                                 ^~~~
-arch/powerpc/net/bpf_jit.h:44:33: note: in expansion of macro 'PPC_ADDI'
-   44 | #define PPC_LI(r, i)            PPC_ADDI(r, 0, i)
-      |                                 ^~~~~~~~
-arch/powerpc/net/bpf_jit_comp64.c:415:46: note: in expansion of macro 'PPC_LI'
-  415 |                                         EMIT(PPC_LI(dst_reg, 0));
-      |                                              ^~~~~~
-make[3]: *** [scripts/Makefile.build:262:
-arch/powerpc/net/bpf_jit_comp64.o] Error 1
-make[3]: Target '__build' not remade because of errors.
-
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
--- 
-Linaro LKFT
-https://lkft.linaro.org
+        Arnd
