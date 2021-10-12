@@ -1,68 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 328144299C4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 01:22:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF62B429AD3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 03:14:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HSvvy3hGZz2yyj
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 10:22:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HSyPl3TjKz2yxx
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 12:14:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256 header.s=google header.b=cWQWbnf5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=e9b+HF2v;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::834;
- helo=mail-qt1-x834.google.com; envelope-from=joel.stan@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1033;
+ helo=mail-pj1-x1033.google.com; envelope-from=joel.stan@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256
- header.s=google header.b=cWQWbnf5; dkim-atps=neutral
-Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com
- [IPv6:2607:f8b0:4864:20::834])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=e9b+HF2v; dkim-atps=neutral
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com
+ [IPv6:2607:f8b0:4864:20::1033])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HSvvH4bP5z2xr3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Oct 2021 10:21:45 +1100 (AEDT)
-Received: by mail-qt1-x834.google.com with SMTP id i1so16762052qtr.6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Oct 2021 16:21:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jms.id.au; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=LwU5By0Gzei8sVThx0In3OGporfMt9E0ai5ng3WmKEA=;
- b=cWQWbnf55Oue5k2YJvqAYcGepYyUY93Ql/ZUhxPocuggxAQlTNtXb2lYPXowxh7ao7
- t3j7lgO0vkAPC2f70TZLDUKZ07ApZ3xUiSMR+x+SxSNiWQS9AJ80oopFoHKV9He8x0a5
- LREa079JiNRS7Kl23f2MJ4grMbDZhLiIwkQio=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HSyP20spgz2xr1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Oct 2021 12:14:13 +1100 (AEDT)
+Received: by mail-pj1-x1033.google.com with SMTP id
+ ls14-20020a17090b350e00b001a00e2251c8so1264398pjb.4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Oct 2021 18:14:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=sender:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=utrzWVO0hGP4H8SndNrG1vloicTmgmliN+ZiIfp9fnw=;
+ b=e9b+HF2v3xZHlMafSt50P8q59zttsovpCGh3pLwNvh3DIAEw15p0PZCVzb6cDfxX+x
+ hi40hz9rfnJogGw+nAEX/e/YXZpbjDZB/7hqU55O4sLejWsa86OrcA3P/lOwHge8tKZO
+ 60B/C3SxX4NOsGxIry13XM9FhTu5eeWlDc9Zn9jGHG+FZvKK0RlcjWlQEu6fD4yc8mxn
+ 6U/H8kwXkDxc563RWZjIIkRYCWOFBlcmMS7iQAAHWYs0fXYyr7o7sj6E254boinqW+td
+ OxLZxSEPDUqG/hoHkoFEsnEYcSDQ5dk9zB7OcVfyZwsztLZrDoUGvHYjJOz2NKU9IsUZ
+ SP3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=LwU5By0Gzei8sVThx0In3OGporfMt9E0ai5ng3WmKEA=;
- b=NmUnyZr8plhyKdbQIAPQOI4xtAMaCt7V+DRNAcLoG04Lz8T/SfjxaOmChmwB9sKYMi
- wEBPYNxzPYB3+M38uXenVgAaLEyKf1dUhmqeJ/TK6k9hoBoVKwloqEIh3mspGwau3LIv
- 8m3Jm3pdL4WkcwLgJAy/bg1mvKOEe+yy3PY0IUuxwgXun+Yzy225mEaKTjUVK6BKwrVa
- 78iS9I6Py49BPiw1/k4zfEBG/uPV4/r+HDaf9muXkcW4IDxJiBpuz9GVkhXjqPsPW5PV
- da/cqm5/xpLJ6ZwJLWx9wSvXPA/qB5xoHedIVz1BVl1+TR4zRi/VvHWHDr4q2g49G7gF
- uvrg==
-X-Gm-Message-State: AOAM5302G16ApbLvP+/Ups7QgaEBRpJXqKHghE6TN4s9/M083FKPtc/J
- HkIT68VfODGpFjJWH3601Fh6lqiGqzlhfEePnwS3DohJ
-X-Google-Smtp-Source: ABdhPJz8kck099ftO2MD01RmuZga2UNKj/zXoGxQ4VBitiI4vFvwwm/4QQFaDyKJ8XiVDdwm5pYyPCe2EvkY45auzFw=
-X-Received: by 2002:a05:622a:1451:: with SMTP id
- v17mr4038899qtx.25.1633994502918; 
- Mon, 11 Oct 2021 16:21:42 -0700 (PDT)
-MIME-Version: 1.0
-References: <20211011070356.99952-1-clg@kaod.org>
-In-Reply-To: <20211011070356.99952-1-clg@kaod.org>
+ h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+ :mime-version:content-transfer-encoding;
+ bh=utrzWVO0hGP4H8SndNrG1vloicTmgmliN+ZiIfp9fnw=;
+ b=QVSuy1hrkMR30u1V7V8dGgz1a5v6oeGW3NwJ5tc8kesnPwTvi2RnNcT5AMQ0Vv8sfW
+ iwZV31aKlIXJKFFNCkl61AA3L7imBxkKcK8m8FsyE1d/G2V1WBk3/wps1jjHIJIHUoho
+ XFpaGWD1V4ofJxO3fNLANMt/lR+UuwDyU/4sCdva/bJcBbZFAe5XWdkC026ePl9WfSHZ
+ to1Dfst66MqDAsmdTVBTeuICgsT9mRzpAr2nb5Py4N992Y0VgI22OqI1rwW0Q8i/T3sE
+ c87YwB/2m+0ypAHCNNIyAZ/7P+6MZIOVW6R8kQiQuj/OW6RmfqqQjNJCGp9Mtz57Eq8Q
+ psng==
+X-Gm-Message-State: AOAM532AskGNfTn82e63+cnOgK9WqR0Ago3j8dhZ11pzOBUJFW2rdJtB
+ KGtpgry6k+HDqduuFZZ+DBU=
+X-Google-Smtp-Source: ABdhPJwIBf0O3rtGPYy1unRKMSzqUYRhGZGRbWukcFceDxzMLssRJ38u/9+6Nad0e8zahm5C34zN+A==
+X-Received: by 2002:a17:90b:17c9:: with SMTP id
+ me9mr2668263pjb.197.1634001248842; 
+ Mon, 11 Oct 2021 18:14:08 -0700 (PDT)
+Received: from localhost.localdomain ([45.124.203.19])
+ by smtp.gmail.com with ESMTPSA id 184sm9031470pfw.49.2021.10.11.18.14.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 11 Oct 2021 18:14:07 -0700 (PDT)
 From: Joel Stanley <joel@jms.id.au>
-Date: Mon, 11 Oct 2021 23:21:30 +0000
-Message-ID: <CACPK8Xe_fTSHNF6gkhohv3LH3aHWVBsWNKy=cCpBXFnETmou4A@mail.gmail.com>
-Subject: Re: [PATCH] powerpc/boot: Use CONFIG_PPC_POWERNV to compile OPAL
- support
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Jordan Niethe <jniethe5@gmail.com>
+Subject: [PATCH] powerpc/s64: Clarify that radix lacks DEBUG_PAGEALLOC
+Date: Tue, 12 Oct 2021 11:43:50 +1030
+Message-Id: <20211012011350.395767-1-joel@jms.id.au>
+X-Mailer: git-send-email 2.33.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,53 +79,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 11 Oct 2021 at 07:42, C=C3=A9dric Le Goater <clg@kaod.org> wrote:
->
-> CONFIG_PPC64_BOOT_WRAPPER is selected by CPU_LITTLE_ENDIAN which is
-> used to compile support for other platforms such as Microwatt. There
-> is no need for OPAL calls on these.
->
-> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
+The page_alloc.c code will call into __kernel_map_pages when
+DEBUG_PAGEALLOC is configured and enabled.
 
-Reviewed-by: Joel Stanley <joel@jms.id.au>
+As the implementation assumes hash, this should crash spectacularly if
+not for a bit of luck in __kernel_map_pages. In this function
+linear_map_hash_count is always zero, the for loop exits without doing
+any damage.
 
-> ---
->  arch/powerpc/boot/serial.c | 2 +-
->  arch/powerpc/boot/Makefile | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/powerpc/boot/serial.c b/arch/powerpc/boot/serial.c
-> index 9a19e5905485..54d2522be485 100644
-> --- a/arch/powerpc/boot/serial.c
-> +++ b/arch/powerpc/boot/serial.c
-> @@ -132,7 +132,7 @@ int serial_console_init(void)
->         else if (dt_is_compatible(devp, "fsl,mpc5200-psc-uart"))
->                 rc =3D mpc5200_psc_console_init(devp, &serial_cd);
->  #endif
-> -#ifdef CONFIG_PPC64_BOOT_WRAPPER
-> +#ifdef CONFIG_PPC_POWERNV
->         else if (dt_is_compatible(devp, "ibm,opal-console-raw"))
->                 rc =3D opal_console_init(devp, &serial_cd);
->  #endif
-> diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
-> index 089ee3ea55c8..9993c6256ad2 100644
-> --- a/arch/powerpc/boot/Makefile
-> +++ b/arch/powerpc/boot/Makefile
-> @@ -123,7 +123,7 @@ src-wlib-y :=3D string.S crt0.S stdio.c decompress.c =
-main.c \
->                 oflib.c ofconsole.c cuboot.c
->
->  src-wlib-$(CONFIG_PPC_MPC52xx) +=3D mpc52xx-psc.c
-> -src-wlib-$(CONFIG_PPC64_BOOT_WRAPPER) +=3D opal-calls.S opal.c
-> +src-wlib-$(CONFIG_PPC_POWERNV) +=3D opal-calls.S opal.c
->  ifndef CONFIG_PPC64_BOOT_WRAPPER
->  src-wlib-y +=3D crtsavres.S
->  endif
-> --
-> 2.31.1
->
+There are no other platforms that determine if they support
+debug_pagealloc at runtime. Instead of adding code to mm/page_alloc.c to
+do that, this change turns the map/unmap into a noop when in radix
+mode and prints a warning once.
+
+Signed-off-by: Joel Stanley <joel@jms.id.au>
+---
+I noticed this when I was looking at adding kfence support a while back.
+I've put that work aside and jpn has since gotten further than me, but I
+think this is a fix worth considering.
+
+ arch/powerpc/include/asm/book3s/64/hash.h |  2 ++
+ arch/powerpc/mm/book3s64/hash_utils.c     |  2 +-
+ arch/powerpc/mm/book3s64/pgtable.c        | 12 ++++++++++++
+ 3 files changed, 15 insertions(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/include/asm/book3s/64/hash.h b/arch/powerpc/include/asm/book3s/64/hash.h
+index d959b0195ad9..674fe0e890dc 100644
+--- a/arch/powerpc/include/asm/book3s/64/hash.h
++++ b/arch/powerpc/include/asm/book3s/64/hash.h
+@@ -255,6 +255,8 @@ int hash__create_section_mapping(unsigned long start, unsigned long end,
+ 				 int nid, pgprot_t prot);
+ int hash__remove_section_mapping(unsigned long start, unsigned long end);
+ 
++void hash__kernel_map_pages(struct page *page, int numpages, int enable);
++
+ #endif /* !__ASSEMBLY__ */
+ #endif /* __KERNEL__ */
+ #endif /* _ASM_POWERPC_BOOK3S_64_HASH_H */
+diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+index c145776d3ae5..cfd45245d009 100644
+--- a/arch/powerpc/mm/book3s64/hash_utils.c
++++ b/arch/powerpc/mm/book3s64/hash_utils.c
+@@ -1988,7 +1988,7 @@ static void kernel_unmap_linear_page(unsigned long vaddr, unsigned long lmi)
+ 				     mmu_kernel_ssize, 0);
+ }
+ 
+-void __kernel_map_pages(struct page *page, int numpages, int enable)
++void hash__kernel_map_pages(struct page *page, int numpages, int enable)
+ {
+ 	unsigned long flags, vaddr, lmi;
+ 	int i;
+diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
+index 9e16c7b1a6c5..0aefc272cd03 100644
+--- a/arch/powerpc/mm/book3s64/pgtable.c
++++ b/arch/powerpc/mm/book3s64/pgtable.c
+@@ -526,3 +526,15 @@ static int __init pgtable_debugfs_setup(void)
+ 	return 0;
+ }
+ arch_initcall(pgtable_debugfs_setup);
++
++#ifdef CONFIG_DEBUG_PAGEALLOC
++void __kernel_map_pages(struct page *page, int numpages, int enable)
++{
++	if (radix_enabled()) {
++		pr_warn_once("DEBUG_PAGEALLOC not supported in radix mode\n");
++		return;
++	}
++
++	hash__kernel_map_pages(page, numpages, enable);
++}
++#endif
+-- 
+2.33.0
+
