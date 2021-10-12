@@ -2,51 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C469942A846
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 17:30:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46C2742A85A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 17:35:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HTKPB1zRwz3053
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 02:30:38 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pgxa5ioP;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HTKVs0Lbfz3053
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 02:35:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=jarkko@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=pgxa5ioP; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=209.85.167.169;
+ helo=mail-oi1-f169.google.com; envelope-from=robherring2@gmail.com;
+ receiver=<UNKNOWN>)
+Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com
+ [209.85.167.169])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HTKNX3hVnz2y6F
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Oct 2021 02:30:04 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C843160F3A;
- Tue, 12 Oct 2021 15:30:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1634052601;
- bh=JpF6An/Riv/dMcUkrhm8JSEkFKJMUWfWjMUX6PwjxwE=;
- h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
- b=pgxa5ioPEQcnUN4WhfnouRG3+p0X4c1Fi/dcxyxpGiHcKIBi06OUe7KEFSmwQnEj4
- 9CKnSJy3J9R8HsExGL6hXZYoLmQ+sxuj4KL+EPjfyAuG3d13IiqBOrlo2oRzAIULso
- 7eZcbjqZAQHghUA65lYc4vOS4QvnxbPN9TqnzCdpZ2F78zYQZ3vA1KBEw6oEPOiXlj
- BirBxvEBgeoRDGprFFcSgTdznJV5JOklg4yzuG54yHVd4/JPB5YLqe4vUo/oXTu9MU
- 2SX9eh/7lEHihPPkibIqfDcSq1xls9O6cJkqA/IH7wtdWXeMiD5WDE+PFMWDpceM8l
- 8yCsauCyBBbfA==
-Message-ID: <31619f2f192a4f1584e458f468422cf6e8f7542f.camel@kernel.org>
-Subject: Re: [PATCH] tpm: ibmvtpm: Make use of dma_alloc_coherent()
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Cai Huoqing <caihuoqing@baidu.com>
-Date: Tue, 12 Oct 2021 18:29:58 +0300
-In-Reply-To: <20211010160147.590-1-caihuoqing@baidu.com>
-References: <20211010160147.590-1-caihuoqing@baidu.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.40.0-1 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HTKVG5KVQz2xt0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Oct 2021 02:35:02 +1100 (AEDT)
+Received: by mail-oi1-f169.google.com with SMTP id z11so29582989oih.1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Oct 2021 08:35:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=exGC19vpAAysmqGvVVE7bM5k+Cl2pwNPFYFRusywanc=;
+ b=3q4GEjsxUA+Ihm/CGA6hWOig2hRLufieB95V5rpUxsE7tF6dOaawPwIfXNJosVayGW
+ 1GqVGV+GssqViEsHFSa4FkN8tHe0czq05WhD7tEzyZc0mfNaXbncu5acLERq9kkaV36S
+ pI2jhV6KmBlNkByIeDmXuGc8CnHaMAQBUqIlMCL2nAoJbWwtX2a26qgkbv4KFX8k4mvT
+ LtRbFnJEv/1smPg+KV2VdpmYtcLsGYMsfY965SOiusnha6TrXiNQT0beIFQJYViFhfNL
+ 4Ue5oXYZ/PA/ucMKSjIu1jiFFRbA79R44nrmE42PKY7P99OggeAnio0WSRL9X4V03toZ
+ dZFw==
+X-Gm-Message-State: AOAM533deMTw3AcAdVs6Y/0kzbu0GK/bvZsJPhTjDtYLo5X/ZuRnh3CH
+ dIbSyKtChjvM9qHbR/duUQ==
+X-Google-Smtp-Source: ABdhPJw5rAwUUES9vxY2m8lx6nTuKxiAhYQq6nNZ9fhSvr6Lza4hBKdMgyMoHhW/7TUWmoCpdLlesA==
+X-Received: by 2002:aca:5f09:: with SMTP id t9mr4059930oib.157.1634052897891; 
+ Tue, 12 Oct 2021 08:34:57 -0700 (PDT)
+Received: from xps15.herring.priv (66-90-148-213.dyn.grandenetworks.net.
+ [66.90.148.213])
+ by smtp.googlemail.com with ESMTPSA id r4sm2443234oti.27.2021.10.12.08.34.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 12 Oct 2021 08:34:57 -0700 (PDT)
+From: Rob Herring <robh@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>, Anatolij Gustschin <agust@denx.de>
+Subject: [RFC PATCH] powerpc: dts: Remove MPC5xxx platforms
+Date: Tue, 12 Oct 2021 10:34:56 -0500
+Message-Id: <20211012153456.2844193-1-robh@kernel.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,33 +62,3936 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
- Paul Mackerras <paulus@samba.org>, Peter Huewe <peterhuewe@gmx.de>,
- linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org
+Cc: devicetree@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+ Stephen Rothwell <sfr@canb.auug.org.au>, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2021-10-11 at 00:01 +0800, Cai Huoqing wrote:
-> Replacing kmalloc/kfree/get_zeroed_page/free_page/dma_map_single/
-  ~~~~~~~~~
-  Replace
+The mpc5xxx platforms have had dts warnings for some time which no one
+seems to care to fix, so let's just remove the dts files.
 
-> dma_unmap_single() with dma_alloc_coherent/dma_free_coherent()
-> helps to reduce code size, and simplify the code, and coherent
-> DMA will not clear the cache every time.
->=20
-> Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
+According to Arnd:
+"Specifically, MPC5200B has a 15 year lifetime, which ends in
+11 months from now. The original bplan/Genesi Efika 5K2 was
+quite popular at the time it came out, and there are probably
+still some of those hanging around, but they came with Open
+Firmware rather than relying on the dts files that ship with the
+kernel.
 
-If this does not do functionally anything useful, there's no
-reason to apply this.
+Grant Likely was the original maintainer for MPC52xx until 2011,
+Anatolij Gustschin is still listed as maintainer since then but hasn't
+been active in it for a while either. Anatolij can probably best judge
+which of these boards are still in going to be used with future kernels,
+but I suspect once you start removing bits from 52xx, the newer
+but less common 512x platform can go away as well."
 
-It is also missing information why the substitution is possible.
+Cc: Anatolij Gustschin <agust@denx.de>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+Sending this out as a feeler to see if anyone cares. If anyone does, 
+please fix the warnings.
 
-Field tested code is better than clean code, i.e. we don not
-risk at having possible new regressions just for a bit nicer
-layout...
+ arch/powerpc/boot/Makefile           |   5 -
+ arch/powerpc/boot/dts/a3m071.dts     | 138 -------
+ arch/powerpc/boot/dts/a4m072.dts     | 147 --------
+ arch/powerpc/boot/dts/ac14xx.dts     | 395 --------------------
+ arch/powerpc/boot/dts/cm5200.dts     |  85 -----
+ arch/powerpc/boot/dts/lite5200b.dts  | 157 --------
+ arch/powerpc/boot/dts/media5200.dts  | 142 --------
+ arch/powerpc/boot/dts/motionpro.dts  | 132 -------
+ arch/powerpc/boot/dts/mpc5121.dtsi   | 526 ---------------------------
+ arch/powerpc/boot/dts/mpc5121ads.dts | 174 ---------
+ arch/powerpc/boot/dts/mpc5125twr.dts | 293 ---------------
+ arch/powerpc/boot/dts/mpc5200b.dtsi  | 288 ---------------
+ arch/powerpc/boot/dts/mucmc52.dts    | 222 -----------
+ arch/powerpc/boot/dts/o2d.dts        |  43 ---
+ arch/powerpc/boot/dts/o2d.dtsi       | 118 ------
+ arch/powerpc/boot/dts/o2d300.dts     |  48 ---
+ arch/powerpc/boot/dts/o2dnt2.dts     |  44 ---
+ arch/powerpc/boot/dts/o2i.dts        |  29 --
+ arch/powerpc/boot/dts/o2mnt.dts      |  29 --
+ arch/powerpc/boot/dts/o3dnt.dts      |  44 ---
+ arch/powerpc/boot/dts/pcm030.dts     | 106 ------
+ arch/powerpc/boot/dts/pcm032.dts     | 183 ----------
+ arch/powerpc/boot/dts/pdm360ng.dts   | 195 ----------
+ arch/powerpc/boot/dts/uc101.dts      | 152 --------
+ 24 files changed, 3695 deletions(-)
+ delete mode 100644 arch/powerpc/boot/dts/a3m071.dts
+ delete mode 100644 arch/powerpc/boot/dts/a4m072.dts
+ delete mode 100644 arch/powerpc/boot/dts/ac14xx.dts
+ delete mode 100644 arch/powerpc/boot/dts/cm5200.dts
+ delete mode 100644 arch/powerpc/boot/dts/lite5200b.dts
+ delete mode 100644 arch/powerpc/boot/dts/media5200.dts
+ delete mode 100644 arch/powerpc/boot/dts/motionpro.dts
+ delete mode 100644 arch/powerpc/boot/dts/mpc5121.dtsi
+ delete mode 100644 arch/powerpc/boot/dts/mpc5121ads.dts
+ delete mode 100644 arch/powerpc/boot/dts/mpc5125twr.dts
+ delete mode 100644 arch/powerpc/boot/dts/mpc5200b.dtsi
+ delete mode 100644 arch/powerpc/boot/dts/mucmc52.dts
+ delete mode 100644 arch/powerpc/boot/dts/o2d.dts
+ delete mode 100644 arch/powerpc/boot/dts/o2d.dtsi
+ delete mode 100644 arch/powerpc/boot/dts/o2d300.dts
+ delete mode 100644 arch/powerpc/boot/dts/o2dnt2.dts
+ delete mode 100644 arch/powerpc/boot/dts/o2i.dts
+ delete mode 100644 arch/powerpc/boot/dts/o2mnt.dts
+ delete mode 100644 arch/powerpc/boot/dts/o3dnt.dts
+ delete mode 100644 arch/powerpc/boot/dts/pcm030.dts
+ delete mode 100644 arch/powerpc/boot/dts/pcm032.dts
+ delete mode 100644 arch/powerpc/boot/dts/pdm360ng.dts
+ delete mode 100644 arch/powerpc/boot/dts/uc101.dts
 
-/Jarkko
-
+diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
+index 6900d0ac2421..15ee0c2c6a3e 100644
+--- a/arch/powerpc/boot/Makefile
++++ b/arch/powerpc/boot/Makefile
+@@ -308,11 +308,6 @@ image-$(CONFIG_PPC_EP88XC)		+= dtbImage.ep88xc
+ image-$(CONFIG_PPC_ADDER875)		+= cuImage.adder875-uboot \
+ 					   dtbImage.adder875-redboot
+ 
+-# Board ports in arch/powerpc/platform/52xx/Kconfig
+-image-$(CONFIG_PPC_LITE5200)		+= cuImage.lite5200
+-image-$(CONFIG_PPC_LITE5200)		+= cuImage.lite5200b
+-image-$(CONFIG_PPC_MEDIA5200)		+= cuImage.media5200
+-
+ # Board ports in arch/powerpc/platform/82xx/Kconfig
+ image-$(CONFIG_MPC8272_ADS)		+= cuImage.mpc8272ads
+ image-$(CONFIG_PQ2FADS)			+= cuImage.pq2fads
+diff --git a/arch/powerpc/boot/dts/a3m071.dts b/arch/powerpc/boot/dts/a3m071.dts
+deleted file mode 100644
+index 034cfd8aa95b..000000000000
+--- a/arch/powerpc/boot/dts/a3m071.dts
++++ /dev/null
+@@ -1,138 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * a3m071 board Device Tree Source
+- *
+- * Copyright 2012 Stefan Roese <sr@denx.de>
+- *
+- * Copyright (C) 2011 DENX Software Engineering GmbH
+- * Heiko Schocher <hs@denx.de>
+- *
+- * Copyright (C) 2007 Semihalf
+- * Marian Balakowicz <m8@semihalf.com>
+- */
+-
+-/include/ "mpc5200b.dtsi"
+-
+-&gpt0 { fsl,has-wdt; };
+-
+-/ {
+-	model = "anonymous,a3m071";
+-	compatible = "anonymous,a3m071";
+-
+-	soc5200@f0000000 {
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-		compatible = "fsl,mpc5200b-immr";
+-		ranges = <0 0xf0000000 0x0000c000>;
+-		reg = <0xf0000000 0x00000100>;
+-		bus-frequency = <0>; /* From boot loader */
+-		system-frequency = <0>; /* From boot loader */
+-
+-		spi@f00 {
+-			status = "disabled";
+-		};
+-
+-		usb: usb@1000 {
+-			status = "disabled";
+-		};
+-
+-		psc@2000 {
+-			compatible = "fsl,mpc5200b-psc-uart","fsl,mpc5200-psc-uart";
+-			reg = <0x2000 0x100>;
+-			interrupts = <2 1 0>;
+-		};
+-
+-		psc@2200 {
+-			status = "disabled";
+-		};
+-
+-		psc@2400 {
+-			status = "disabled";
+-		};
+-
+-		psc@2600 {
+-			status = "disabled";
+-		};
+-
+-		psc@2800 {
+-			status = "disabled";
+-		};
+-
+-		psc@2c00 {		// PSC6
+-			compatible = "fsl,mpc5200b-psc-uart","fsl,mpc5200-psc-uart";
+-			reg = <0x2c00 0x100>;
+-			interrupts = <2 4 0>;
+-		};
+-
+-		ethernet@3000 {
+-			phy-handle = <&phy0>;
+-		};
+-
+-		mdio@3000 {
+-			phy0: ethernet-phy@3 {
+-				reg = <0x03>;
+-			};
+-		};
+-
+-		ata@3a00 {
+-			status = "disabled";
+-		};
+-
+-		i2c@3d00 {
+-			status = "disabled";
+-		};
+-
+-		i2c@3d40 {
+-			status = "disabled";
+-		};
+-	};
+-
+-	localbus {
+-		compatible = "fsl,mpc5200b-lpb","simple-bus";
+-		#address-cells = <2>;
+-		#size-cells = <1>;
+-		ranges = <0 0 0xfc000000 0x02000000
+-			  3 0 0xe9000000 0x00080000
+-			  5 0 0xe8000000 0x00010000>;
+-
+-		flash@0,0 {
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			reg = <0 0x0 0x02000000>;
+-			compatible = "cfi-flash";
+-			bank-width = <2>;
+-			partition@0 {
+-				label = "u-boot";
+-				reg = <0x00000000 0x00040000>;
+-				read-only;
+-			};
+-			partition@40000 {
+-				label = "env";
+-				reg = <0x00040000 0x00020000>;
+-			};
+-			partition@60000 {
+-				label = "dtb";
+-				reg = <0x00060000 0x00020000>;
+-			};
+-			partition@80000 {
+-				label = "kernel";
+-				reg = <0x00080000 0x00500000>;
+-			};
+-			partition@580000 {
+-				label = "root";
+-				reg = <0x00580000 0x00A80000>;
+-			};
+-		};
+-
+-		fpga@3,0 {
+-			compatible = "anonymous,a3m071-fpga";
+-			reg = <3 0x0 0x00080000
+-			       5 0x0 0x00010000>;
+-			interrupts = <0 0 3>;  /* level low */
+-		};
+-	};
+-
+-	pci@f0000d00 {
+-		status = "disabled";
+-	};
+-};
+diff --git a/arch/powerpc/boot/dts/a4m072.dts b/arch/powerpc/boot/dts/a4m072.dts
+deleted file mode 100644
+index a9cef5726422..000000000000
+--- a/arch/powerpc/boot/dts/a4m072.dts
++++ /dev/null
+@@ -1,147 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * a4m072 board Device Tree Source
+- *
+- * Copyright (C) 2011 DENX Software Engineering GmbH
+- * Heiko Schocher <hs@denx.de>
+- *
+- * Copyright (C) 2007 Semihalf
+- * Marian Balakowicz <m8@semihalf.com>
+- */
+-
+-/include/ "mpc5200b.dtsi"
+-
+-&gpt0 { fsl,has-wdt; };
+-&gpt3 { gpio-controller; };
+-&gpt4 { gpio-controller; };
+-&gpt5 { gpio-controller; };
+-
+-/ {
+-	model = "anonymous,a4m072";
+-	compatible = "anonymous,a4m072";
+-
+-	soc5200@f0000000 {
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-		compatible = "fsl,mpc5200b-immr";
+-		ranges = <0 0xf0000000 0x0000c000>;
+-		reg = <0xf0000000 0x00000100>;
+-		bus-frequency = <0>; /* From boot loader */
+-		system-frequency = <0>; /* From boot loader */
+-
+-		cdm@200 {
+-			fsl,init-ext-48mhz-en = <0x0>;
+-			fsl,init-fd-enable = <0x01>;
+-			fsl,init-fd-counters = <0x3333>;
+-		};
+-
+-		spi@f00 {
+-			status = "disabled";
+-		};
+-
+-		psc@2000 {
+-			compatible = "fsl,mpc5200b-psc-uart","fsl,mpc5200-psc-uart";
+-			reg = <0x2000 0x100>;
+-			interrupts = <2 1 0>;
+-		};
+-
+-		psc@2200 {
+-			compatible = "fsl,mpc5200b-psc-uart","fsl,mpc5200-psc-uart";
+-			reg = <0x2200 0x100>;
+-			interrupts = <2 2 0>;
+-		};
+-
+-		psc@2400 {
+-			compatible = "fsl,mpc5200b-psc-uart","fsl,mpc5200-psc-uart";
+-			reg = <0x2400 0x100>;
+-			interrupts = <2 3 0>;
+-		};
+-
+-		psc@2600 {
+-			status = "disabled";
+-		};
+-
+-		psc@2800 {
+-			status = "disabled";
+-		};
+-
+-		psc@2c00 {
+-			compatible = "fsl,mpc5200b-psc-uart","fsl,mpc5200-psc-uart";
+-			reg = <0x2c00 0x100>;
+-			interrupts = <2 4 0>;
+-		};
+-
+-		ethernet@3000 {
+-			phy-handle = <&phy0>;
+-		};
+-
+-		mdio@3000 {
+-			phy0: ethernet-phy@1f {
+-				reg = <0x1f>;
+-				interrupts = <1 2 0>; /* IRQ 2 active low */
+-			};
+-		};
+-
+-		i2c@3d00 {
+-			status = "disabled";
+-		};
+-
+-		i2c@3d40 {
+-			hwmon@2e {
+-				compatible = "nsc,lm87";
+-				reg = <0x2e>;
+-			};
+-			rtc@51 {
+-				compatible = "nxp,rtc8564";
+-				reg = <0x51>;
+-			};
+-		};
+-	};
+-
+-	localbus {
+-		compatible = "fsl,mpc5200b-lpb","simple-bus";
+-		#address-cells = <2>;
+-		#size-cells = <1>;
+-		ranges = <0 0 0xfe000000 0x02000000
+-			  1 0 0x62000000 0x00400000
+-			  2 0 0x64000000 0x00200000
+-			  3 0 0x66000000 0x01000000
+-			  6 0 0x68000000 0x01000000
+-			  7 0 0x6a000000 0x00000004>;
+-
+-		flash@0,0 {
+-			compatible = "cfi-flash";
+-			reg = <0 0 0x02000000>;
+-			bank-width = <2>;
+-			#size-cells = <1>;
+-			#address-cells = <1>;
+-		};
+-		sram0@1,0 {
+-			compatible = "mtd-ram";
+-			reg = <1 0x00000 0x00400000>;
+-			bank-width = <2>;
+-		};
+-	};
+-
+-	pci@f0000d00 {
+-		#interrupt-cells = <1>;
+-		#size-cells = <2>;
+-		#address-cells = <3>;
+-		device_type = "pci";
+-		compatible = "fsl,mpc5200-pci";
+-		reg = <0xf0000d00 0x100>;
+-		interrupt-map-mask = <0xf800 0 0 7>;
+-		interrupt-map = <
+-				 /* IDSEL 0x16 */
+-				 0xc000 0 0 1 &mpc5200_pic 1 3 3
+-				 0xc000 0 0 2 &mpc5200_pic 1 3 3
+-				 0xc000 0 0 3 &mpc5200_pic 1 3 3
+-				 0xc000 0 0 4 &mpc5200_pic 1 3 3>;
+-		clock-frequency = <0>; /* From boot loader */
+-		interrupts = <2 8 0 2 9 0 2 10 0>;
+-		bus-range = <0 0>;
+-		ranges = <0x42000000 0 0x80000000 0x80000000 0 0x10000000
+-			  0x02000000 0 0x90000000 0x90000000 0 0x10000000
+-			  0x01000000 0 0x00000000 0xa0000000 0 0x01000000>;
+-	};
+-};
+diff --git a/arch/powerpc/boot/dts/ac14xx.dts b/arch/powerpc/boot/dts/ac14xx.dts
+deleted file mode 100644
+index 5d8877e1f4ad..000000000000
+--- a/arch/powerpc/boot/dts/ac14xx.dts
++++ /dev/null
+@@ -1,395 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * Device Tree Source for the MPC5121e based ac14xx board
+- *
+- * Copyright 2012 Anatolij Gustschin <agust@denx.de>
+- */
+-
+-
+-#include "mpc5121.dtsi"
+-
+-/ {
+-	model = "ac14xx";
+-	compatible = "ifm,ac14xx", "fsl,mpc5121";
+-	#address-cells = <1>;
+-	#size-cells = <1>;
+-
+-	aliases {
+-		serial0 = &serial0;
+-		serial1 = &serial7;
+-		spi4 = &spi4;
+-		spi5 = &spi5;
+-	};
+-
+-	cpus {
+-		PowerPC,5121@0 {
+-			timebase-frequency = <40000000>;	/*  40 MHz (csb/4) */
+-			bus-frequency = <160000000>;		/* 160 MHz csb bus */
+-			clock-frequency = <400000000>;		/* 400 MHz ppc core */
+-		};
+-	};
+-
+-	memory {
+-		reg = <0x00000000 0x10000000>;			/* 256MB at 0 */
+-	};
+-
+-	nfc@40000000 {
+-		status = "disabled";
+-	};
+-
+-	localbus@80000020 {
+-		ranges = <0x0 0x0 0xfc000000 0x04000000	/* CS0: NOR flash */
+-			  0x1 0x0 0xe0000000 0x00010000 /* CS1: FRAM */
+-			  0x2 0x0 0xe0100000 0x00080000 /* CS2: asi1 */
+-			  0x3 0x0 0xe0300000 0x00020000 /* CS3: comm */
+-			  0x5 0x0 0xe0400000 0x00010000 /* CS5: safety */
+-			  0x6 0x0 0xe0200000 0x00080000>; /* CS6: asi2 */
+-
+-		flash@0,0 {
+-			compatible = "cfi-flash";
+-			reg = <0 0x00000000 0x04000000>;
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			bank-width = <2>;
+-			device-width = <2>;
+-
+-			partition@0 {
+-				label = "dtb-kernel-production";
+-				reg = <0x00000000 0x00400000>;
+-			};
+-			partition@1 {
+-				label = "filesystem-production";
+-				reg = <0x00400000 0x03400000>;
+-			};
+-
+-			partition@2 {
+-				label = "recovery";
+-				reg = <0x03800000 0x00700000>;
+-			};
+-
+-			partition@3 {
+-				label = "uboot-code";
+-				reg = <0x03f00000 0x00040000>;
+-			};
+-			partition@4 {
+-				label = "uboot-env1";
+-				reg = <0x03f40000 0x00020000>;
+-			};
+-			partition@5 {
+-				label = "uboot-env2";
+-				reg = <0x03f60000 0x00020000>;
+-			};
+-		};
+-
+-		fram@1,0 {
+-			compatible = "ifm,ac14xx-fram", "linux,uio-pdrv-genirq";
+-			reg = <1 0x00000000 0x00010000>;
+-		};
+-
+-		asi@2,0 {
+-			/* masters mapping: CS, CS offset, size */
+-			reg = <2 0x00000000 0x00080000
+-			       6 0x00000000 0x00080000>;
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			compatible = "ifm,ac14xx-asi-fpga";
+-			gpios = <
+-				&gpio_pic 26 0	/* prog */
+-				&gpio_pic 27 0	/* done */
+-				&gpio_pic 10 0	/* reset */
+-				>;
+-
+-			master@1 {
+-				interrupts = <20 0x2>;
+-				interrupt-parent = <&gpio_pic>;
+-				chipselect = <2 0x00009000 0x00009100>;
+-				label = "AS-i master 1";
+-			};
+-
+-			master@2 {
+-				interrupts = <21 0x2>;
+-				interrupt-parent = <&gpio_pic>;
+-				chipselect = <6 0x00009000 0x00009100>;
+-				label = "AS-i master 2";
+-			};
+-		};
+-
+-		netx@3,0 {
+-			compatible = "ifm,netx";
+-			reg = <0x3 0x00000000 0x00020000>;
+-			chipselect = <3 0x00101140 0x00203100>;
+-			interrupts = <17 0x8>;
+-			gpios = <&gpio_pic 15 0>;
+-		};
+-
+-		safety@5,0 {
+-			compatible = "ifm,safety";
+-			reg = <0x5 0x00000000 0x00010000>;
+-			chipselect = <5 0x00009000 0x00009100>;
+-			interrupts = <22 0x2>;
+-			interrupt-parent = <&gpio_pic>;
+-			gpios = <
+-				&gpio_pic 12 0	/* prog */
+-				&gpio_pic 11 0	/* done */
+-				>;
+-		};
+-	};
+-
+-	clocks {
+-		osc {
+-			clock-frequency = <25000000>;
+-		};
+-	};
+-
+-	soc@80000000 {
+-		bus-frequency = <80000000>;	/* 80 MHz ips bus */
+-
+-		clock@f00 {
+-			compatible = "fsl,mpc5121rev2-clock", "fsl,mpc5121-clock";
+-		};
+-
+-		/*
+-		 * GPIO PIC:
+-		 * interrupts cell = <pin nr, sense>
+-		 * sense == 8: Level, low assertion
+-		 * sense == 2: Edge, high-to-low change
+-		 */
+-		gpio_pic: gpio@1100 {
+-			gpio-controller;
+-			#gpio-cells = <2>;
+-			interrupt-controller;
+-			#interrupt-cells = <2>;
+-		};
+-
+-		sdhc@1500 {
+-			cd-gpios = <&gpio_pic 23 0>;	/* card detect */
+-			wp-gpios = <&gpio_pic 24 0>;	/* write protect */
+-			wp-inverted;			/* WP active high */
+-		};
+-
+-		i2c@1700 {
+-			/* use Fast-mode */
+-			clock-frequency = <400000>;
+-
+-			at24@30 {
+-				compatible = "atmel,24c01";
+-				reg = <0x30>;
+-			};
+-
+-			at24@31 {
+-				compatible = "atmel,24c01";
+-				reg = <0x31>;
+-			};
+-
+-			temp@48 {
+-				compatible = "ad,ad7414";
+-				reg = <0x48>;
+-			};
+-
+-			at24@50 {
+-				compatible = "atmel,24c01";
+-				reg = <0x50>;
+-			};
+-
+-			at24@51 {
+-				compatible = "atmel,24c01";
+-				reg = <0x51>;
+-			};
+-
+-			at24@52 {
+-				compatible = "atmel,24c01";
+-				reg = <0x52>;
+-			};
+-
+-			at24@53 {
+-				compatible = "atmel,24c01";
+-				reg = <0x53>;
+-			};
+-
+-			at24@54 {
+-				compatible = "atmel,24c01";
+-				reg = <0x54>;
+-			};
+-
+-			at24@55 {
+-				compatible = "atmel,24c01";
+-				reg = <0x55>;
+-			};
+-
+-			at24@56 {
+-				compatible = "atmel,24c01";
+-				reg = <0x56>;
+-			};
+-
+-			at24@57 {
+-				compatible = "atmel,24c01";
+-				reg = <0x57>;
+-			};
+-
+-			rtc@68 {
+-				compatible = "st,m41t00";
+-				reg = <0x68>;
+-			};
+-		};
+-
+-		axe_pic: axe-base@2000 {
+-			compatible = "fsl,mpc5121-axe-base";
+-			reg = <0x2000 0x100>;
+-			interrupts = <42 0x8>;
+-			interrupt-controller;
+-			#interrupt-cells = <2>;
+-		};
+-
+-		axe-app {
+-			compatible = "fsl,mpc5121-axe-app";
+-			interrupt-parent = <&axe_pic>;
+-			interrupts = <
+-					/* soft interrupts */
+-					0 0x0	1 0x0	2 0x0	3 0x0
+-					4 0x0	5 0x0	6 0x0	7 0x0
+-					/* fifo interrupts */
+-					8 0x0	9 0x0	10 0x0	11 0x0
+-				>;
+-		};
+-
+-		display@2100 {
+-			edid = [00 FF FF FF FF FF FF 00 14 94 00 00 00 00 00 00
+-				0A 12 01 03 80 1C 23 78 CA 88 FF 94 52 54 8E 27
+-				1E 4C 50 00 00 00 01 01 01 01 01 01 01 01 01 01
+-				01 01 01 01 01 01 FB 00 B0 14 00 DC 05 00 08 04
+-				21 00 1C 23 00 00 00 18 00 00 00 FD 00 38 3C 1F
+-				3C 01 0A 20 20 20 20 20 20 20 00 00 00 FC 00 45
+-				54 30 31 38 30 30 33 44 4D 55 0A 0A 00 00 00 10
+-				00 41 30 30 30 30 30 30 30 30 30 30 30 31 00 D5];
+-		};
+-
+-		can@2300 {
+-			status = "disabled";
+-		};
+-
+-		can@2380 {
+-			status = "disabled";
+-		};
+-
+-		viu@2400 {
+-			status = "disabled";
+-		};
+-
+-		mdio@2800 {
+-			phy0: ethernet-phy@1f {
+-				compatible = "smsc,lan8700";
+-				reg = <0x1f>;
+-			};
+-		};
+-
+-		enet: ethernet@2800 {
+-			phy-handle = <&phy0>;
+-		};
+-
+-		usb@3000 {
+-			status = "disabled";
+-		};
+-
+-		usb@4000 {
+-			status = "disabled";
+-		};
+-
+-		/* PSC3 serial port A, aka ttyPSC0 */
+-		serial0: psc@11300 {
+-			compatible = "fsl,mpc5121-psc-uart", "fsl,mpc5121-psc";
+-			fsl,rx-fifo-size = <512>;
+-			fsl,tx-fifo-size = <512>;
+-		};
+-
+-		/* PSC4 in SPI mode */
+-		spi4: psc@11400 {
+-			compatible = "fsl,mpc5121-psc-spi", "fsl,mpc5121-psc";
+-			fsl,rx-fifo-size = <768>;
+-			fsl,tx-fifo-size = <768>;
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			num-cs = <1>;
+-			cs-gpios = <&gpio_pic 25 0>;
+-
+-			flash: m25p128@0 {
+-				compatible = "st,m25p128";
+-				spi-max-frequency = <20000000>;
+-				reg = <0>;
+-				#address-cells = <1>;
+-				#size-cells = <1>;
+-
+-				partition@0 {
+-					label = "spi-flash0";
+-					reg = <0x00000000 0x01000000>;
+-				};
+-			};
+-		};
+-
+-		/* PSC5 in SPI mode */
+-		spi5: psc@11500 {
+-			compatible = "fsl,mpc5121-psc-spi", "fsl,mpc5121-psc";
+-			fsl,mode = "spi-master";
+-			fsl,rx-fifo-size = <128>;
+-			fsl,tx-fifo-size = <128>;
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-
+-			lcd@0 {
+-				compatible = "ilitek,ili922x";
+-				reg = <0>;
+-				spi-max-frequency = <100000>;
+-				spi-cpol;
+-				spi-cpha;
+-			};
+-		};
+-
+-		/* PSC7 serial port C, aka ttyPSC2 */
+-		serial7: psc@11700 {
+-			compatible = "fsl,mpc5121-psc-uart", "fsl,mpc5121-psc";
+-			fsl,rx-fifo-size = <512>;
+-			fsl,tx-fifo-size = <512>;
+-		};
+-
+-		matrix_keypad@0 {
+-			compatible = "gpio-matrix-keypad";
+-			debounce-delay-ms = <5>;
+-			col-scan-delay-us = <1>;
+-			gpio-activelow;
+-			col-gpios-binary;
+-			col-switch-delay-ms = <200>;
+-
+-			col-gpios = <&gpio_pic 1 0>;	/* pin1 */
+-
+-			row-gpios = <&gpio_pic 2 0	/* pin2 */
+-				     &gpio_pic 3 0	/* pin3 */
+-				     &gpio_pic 4 0>;	/* pin4 */
+-
+-			linux,keymap = <0x0000006e	/* FN LEFT */
+-					0x01000067	/* UP */
+-					0x02000066	/* FN RIGHT */
+-					0x00010069	/* LEFT */
+-					0x0101006a	/* DOWN */
+-					0x0201006c>;	/* RIGHT */
+-		};
+-	};
+-
+-	leds {
+-		compatible = "gpio-leds";
+-
+-		backlight {
+-			label = "backlight";
+-			gpios = <&gpio_pic 0 0>;
+-			default-state = "keep";
+-		};
+-		green {
+-			label = "green";
+-			gpios = <&gpio_pic 18 0>;
+-			default-state = "keep";
+-		};
+-		red {
+-			label = "red";
+-			gpios = <&gpio_pic 19 0>;
+-			default-state = "keep";
+-		};
+-	};
+-};
+diff --git a/arch/powerpc/boot/dts/cm5200.dts b/arch/powerpc/boot/dts/cm5200.dts
+deleted file mode 100644
+index 66cae7be60c4..000000000000
+--- a/arch/powerpc/boot/dts/cm5200.dts
++++ /dev/null
+@@ -1,85 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * CM5200 board Device Tree Source
+- *
+- * Copyright (C) 2007 Semihalf
+- * Marian Balakowicz <m8@semihalf.com>
+- */
+-
+-/include/ "mpc5200b.dtsi"
+-
+-&gpt0 { fsl,has-wdt; };
+-
+-/ {
+-	model = "schindler,cm5200";
+-	compatible = "schindler,cm5200";
+-
+-	soc5200@f0000000 {
+-		can@900 {
+-			status = "disabled";
+-		};
+-
+-		can@980 {
+-			status = "disabled";
+-		};
+-
+-		psc@2000 {		// PSC1
+-			compatible = "fsl,mpc5200b-psc-uart","fsl,mpc5200-psc-uart";
+-		};
+-
+-		psc@2200 {		// PSC2
+-			compatible = "fsl,mpc5200b-psc-uart","fsl,mpc5200-psc-uart";
+-		};
+-
+-		psc@2400 {		// PSC3
+-			compatible = "fsl,mpc5200b-psc-uart","fsl,mpc5200-psc-uart";
+-		};
+-
+-		psc@2600 {		// PSC4
+-			status = "disabled";
+-		};
+-
+-		psc@2800 {		// PSC5
+-			status = "disabled";
+-		};
+-
+-		psc@2c00 {		// PSC6
+-			compatible = "fsl,mpc5200b-psc-uart","fsl,mpc5200-psc-uart";
+-		};
+-
+-		ethernet@3000 {
+-			phy-handle = <&phy0>;
+-		};
+-
+-		mdio@3000 {
+-			phy0: ethernet-phy@0 {
+-				reg = <0>;
+-			};
+-		};
+-
+-		ata@3a00 {
+-			status = "disabled";
+-		};
+-
+-		i2c@3d00 {
+-			status = "disabled";
+-		};
+-
+-	};
+-
+-	pci@f0000d00 {
+-		status = "disabled";
+-	};
+-
+-	localbus {
+-		// 16-bit flash device at LocalPlus Bus CS0
+-		flash@0,0 {
+-			compatible = "cfi-flash";
+-			reg = <0 0 0x2000000>;
+-			bank-width = <2>;
+-			device-width = <2>;
+-			#size-cells = <1>;
+-			#address-cells = <1>;
+-		};
+-	};
+-};
+diff --git a/arch/powerpc/boot/dts/lite5200b.dts b/arch/powerpc/boot/dts/lite5200b.dts
+deleted file mode 100644
+index 2b86c81f9048..000000000000
+--- a/arch/powerpc/boot/dts/lite5200b.dts
++++ /dev/null
+@@ -1,157 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * Lite5200B board Device Tree Source
+- *
+- * Copyright 2006-2007 Secret Lab Technologies Ltd.
+- * Grant Likely <grant.likely@secretlab.ca>
+- */
+-
+-/include/ "mpc5200b.dtsi"
+-
+-&gpt0 { fsl,has-wdt; };
+-&gpt2 { gpio-controller; };
+-&gpt3 { gpio-controller; };
+-
+-/ {
+-	model = "fsl,lite5200b";
+-	compatible = "fsl,lite5200b";
+-
+-	leds {
+-		compatible = "gpio-leds";
+-		tmr2 {
+-			gpios = <&gpt2 0 1>;
+-		};
+-		tmr3 {
+-			gpios = <&gpt3 0 1>;
+-			linux,default-trigger = "heartbeat";
+-		};
+-		led1 { gpios = <&gpio_wkup 2 1>; };
+-		led2 { gpios = <&gpio_simple 3 1>; };
+-		led3 { gpios = <&gpio_wkup 3 1>; };
+-		led4 { gpios = <&gpio_simple 2 1>; };
+-	};
+-
+-	memory {
+-		reg = <0x00000000 0x10000000>;	// 256MB
+-	};
+-
+-	soc5200@f0000000 {
+-		psc@2000 {		// PSC1
+-			compatible = "fsl,mpc5200b-psc-uart","fsl,mpc5200-psc-uart";
+-			cell-index = <0>;
+-		};
+-
+-		psc@2200 {		// PSC2
+-			status = "disabled";
+-		};
+-
+-		psc@2400 {		// PSC3
+-			status = "disabled";
+-		};
+-
+-		psc@2600 {		// PSC4
+-			status = "disabled";
+-		};
+-
+-		psc@2800 {		// PSC5
+-			status = "disabled";
+-		};
+-
+-		psc@2c00 {		// PSC6
+-			status = "disabled";
+-		};
+-
+-		// PSC2 in ac97 mode example
+-		//ac97@2200 {		// PSC2
+-		//	compatible = "fsl,mpc5200b-psc-ac97","fsl,mpc5200-psc-ac97";
+-		//	cell-index = <1>;
+-		//};
+-
+-		// PSC3 in CODEC mode example
+-		//i2s@2400 {		// PSC3
+-		//	compatible = "fsl,mpc5200b-psc-i2s"; //not 5200 compatible
+-		//	cell-index = <2>;
+-		//};
+-
+-		// PSC6 in spi mode example
+-		//spi@2c00 {		// PSC6
+-		//	compatible = "fsl,mpc5200b-psc-spi","fsl,mpc5200-psc-spi";
+-		//	cell-index = <5>;
+-		//};
+-
+-		ethernet@3000 {
+-			phy-handle = <&phy0>;
+-		};
+-
+-		mdio@3000 {
+-			phy0: ethernet-phy@0 {
+-				reg = <0>;
+-			};
+-		};
+-
+-		i2c@3d40 {
+-			eeprom@50 {
+-				compatible = "atmel,24c02";
+-				reg = <0x50>;
+-			};
+-		};
+-
+-		sram@8000 {
+-			compatible = "fsl,mpc5200b-sram","fsl,mpc5200-sram";
+-			reg = <0x8000 0x4000>;
+-		};
+-	};
+-
+-	pci@f0000d00 {
+-		interrupt-map-mask = <0xf800 0 0 7>;
+-		interrupt-map = <0xc000 0 0 1 &mpc5200_pic 0 0 3 // 1st slot
+-				 0xc000 0 0 2 &mpc5200_pic 1 1 3
+-				 0xc000 0 0 3 &mpc5200_pic 1 2 3
+-				 0xc000 0 0 4 &mpc5200_pic 1 3 3
+-
+-				 0xc800 0 0 1 &mpc5200_pic 1 1 3 // 2nd slot
+-				 0xc800 0 0 2 &mpc5200_pic 1 2 3
+-				 0xc800 0 0 3 &mpc5200_pic 1 3 3
+-				 0xc800 0 0 4 &mpc5200_pic 0 0 3>;
+-		clock-frequency = <0>; // From boot loader
+-		interrupts = <2 8 0 2 9 0 2 10 0>;
+-		bus-range = <0 0>;
+-		ranges = <0x42000000 0 0x80000000 0x80000000 0 0x20000000
+-			  0x02000000 0 0xa0000000 0xa0000000 0 0x10000000
+-			  0x01000000 0 0x00000000 0xb0000000 0 0x01000000>;
+-	};
+-
+-	localbus {
+-		ranges = <0 0 0xfe000000 0x02000000>;
+-
+-		flash@0,0 {
+-			compatible = "cfi-flash";
+-			reg = <0 0 0x02000000>;
+-			bank-width = <1>;
+-			#size-cells = <1>;
+-			#address-cells = <1>;
+-
+-			partition@0 {
+-				label = "kernel";
+-				reg = <0x00000000 0x00200000>;
+-			};
+-			partition@200000 {
+-				label = "rootfs";
+-				reg = <0x00200000 0x01d00000>;
+-			};
+-			partition@1f00000 {
+-				label = "u-boot";
+-				reg = <0x01f00000 0x00060000>;
+-			};
+-			partition@1f60000 {
+-				label = "u-boot-env";
+-				reg = <0x01f60000 0x00020000>;
+-			};
+-			partition@1f80000 {
+-				label = "dtb";
+-				reg = <0x01f80000 0x00080000>;
+-			};
+-		};
+-	};
+-
+-};
+diff --git a/arch/powerpc/boot/dts/media5200.dts b/arch/powerpc/boot/dts/media5200.dts
+deleted file mode 100644
+index 61cae9dcddef..000000000000
+--- a/arch/powerpc/boot/dts/media5200.dts
++++ /dev/null
+@@ -1,142 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * Freescale Media5200 board Device Tree Source
+- *
+- * Copyright 2009 Secret Lab Technologies Ltd.
+- * Grant Likely <grant.likely@secretlab.ca>
+- * Steven Cavanagh <scavanagh@secretlab.ca>
+- */
+-
+-/include/ "mpc5200b.dtsi"
+-
+-&gpt0 { fsl,has-wdt; };
+-
+-/ {
+-	model = "fsl,media5200";
+-	compatible = "fsl,media5200";
+-
+-	aliases {
+-		console = &console;
+-		ethernet0 = &eth0;
+-	};
+-
+-	chosen {
+-		stdout-path = &console;
+-	};
+-
+-	cpus {
+-		PowerPC,5200@0 {
+-			timebase-frequency = <33000000>;	// 33 MHz, these were configured by U-Boot
+-			bus-frequency = <132000000>;		// 132 MHz
+-			clock-frequency = <396000000>;		// 396 MHz
+-		};
+-	};
+-
+-	memory {
+-		reg = <0x00000000 0x08000000>;	// 128MB RAM
+-	};
+-
+-	soc5200@f0000000 {
+-		bus-frequency = <132000000>;// 132 MHz
+-
+-		psc@2000 {	// PSC1
+-			status = "disabled";
+-		};
+-
+-		psc@2200 {	// PSC2
+-			status = "disabled";
+-		};
+-
+-		psc@2400 {	// PSC3
+-			status = "disabled";
+-		};
+-
+-		psc@2600 {	// PSC4
+-			status = "disabled";
+-		};
+-
+-		psc@2800 {	// PSC5
+-			status = "disabled";
+-		};
+-
+-		// PSC6 in uart mode
+-		console: psc@2c00 {		// PSC6
+-			compatible = "fsl,mpc5200b-psc-uart","fsl,mpc5200-psc-uart";
+-		};
+-
+-		ethernet@3000 {
+-			phy-handle = <&phy0>;
+-		};
+-
+-		mdio@3000 {
+-			phy0: ethernet-phy@0 {
+-				reg = <0>;
+-			};
+-		};
+-
+-		usb@1000 {
+-			reg = <0x1000 0x100>;
+-		};
+-	};
+-
+-	pci@f0000d00 {
+-		interrupt-map-mask = <0xf800 0 0 7>;
+-		interrupt-map = <0xc000 0 0 1 &media5200_fpga 0 2 // 1st slot
+-				 0xc000 0 0 2 &media5200_fpga 0 3
+-				 0xc000 0 0 3 &media5200_fpga 0 4
+-				 0xc000 0 0 4 &media5200_fpga 0 5
+-
+-				 0xc800 0 0 1 &media5200_fpga 0 3 // 2nd slot
+-				 0xc800 0 0 2 &media5200_fpga 0 4
+-				 0xc800 0 0 3 &media5200_fpga 0 5
+-				 0xc800 0 0 4 &media5200_fpga 0 2
+-
+-				 0xd000 0 0 1 &media5200_fpga 0 4 // miniPCI
+-				 0xd000 0 0 2 &media5200_fpga 0 5
+-
+-				 0xe000 0 0 1 &media5200_fpga 0 5 // CoralIP
+-				>;
+-		ranges = <0x42000000 0 0x80000000 0x80000000 0 0x20000000
+-			  0x02000000 0 0xa0000000 0xa0000000 0 0x10000000
+-			  0x01000000 0 0x00000000 0xb0000000 0 0x01000000>;
+-		interrupt-parent = <&mpc5200_pic>;
+-	};
+-
+-	localbus {
+-		ranges = < 0 0 0xfc000000 0x02000000
+-			   1 0 0xfe000000 0x02000000
+-			   2 0 0xf0010000 0x00010000
+-			   3 0 0xf0020000 0x00010000 >;
+-		flash@0,0 {
+-			compatible = "amd,am29lv28ml", "cfi-flash";
+-			reg = <0 0x0 0x2000000>;                // 32 MB
+-			bank-width = <4>;                       // Width in bytes of the flash bank
+-			device-width = <2>;                     // Two devices on each bank
+-		};
+-
+-		flash@1,0 {
+-			compatible = "amd,am29lv28ml", "cfi-flash";
+-			reg = <1 0 0x2000000>;                  // 32 MB
+-			bank-width = <4>;                       // Width in bytes of the flash bank
+-			device-width = <2>;                     // Two devices on each bank
+-		};
+-
+-		media5200_fpga: fpga@2,0 {
+-			compatible = "fsl,media5200-fpga";
+-			interrupt-controller;
+-			#interrupt-cells = <2>;	// 0:bank 1:id; no type field
+-			reg = <2 0 0x10000>;
+-
+-			interrupt-parent = <&mpc5200_pic>;
+-			interrupts = <0 0 3	// IRQ bank 0
+-			              1 1 3>;	// IRQ bank 1
+-		};
+-
+-		uart@3,0 {
+-			compatible = "ti,tl16c752bpt";
+-			reg = <3 0 0x10000>;
+-			interrupt-parent = <&media5200_fpga>;
+-			interrupts = <0 0  0 1>; // 2 irqs
+-		};
+-	};
+-};
+diff --git a/arch/powerpc/boot/dts/motionpro.dts b/arch/powerpc/boot/dts/motionpro.dts
+deleted file mode 100644
+index c23676093da8..000000000000
+--- a/arch/powerpc/boot/dts/motionpro.dts
++++ /dev/null
+@@ -1,132 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * Motion-PRO board Device Tree Source
+- *
+- * Copyright (C) 2007 Semihalf
+- * Marian Balakowicz <m8@semihalf.com>
+- */
+-
+-/include/ "mpc5200b.dtsi"
+-
+-&gpt0 { fsl,has-wdt; };
+-&gpt6 { // Motion-PRO status LED
+-	compatible = "promess,motionpro-led";
+-	label = "motionpro-statusled";
+-	blink-delay = <100>; // 100 msec
+-};
+-&gpt7 { // Motion-PRO ready LED
+-	compatible = "promess,motionpro-led";
+-	label = "motionpro-readyled";
+-};
+-
+-/ {
+-	model = "promess,motionpro";
+-	compatible = "promess,motionpro";
+-
+-	soc5200@f0000000 {
+-		can@900 {
+-			status = "disabled";
+-		};
+-
+-		psc@2000 {		// PSC1
+-			compatible = "fsl,mpc5200b-psc-uart","fsl,mpc5200-psc-uart";
+-		};
+-
+-		// PSC2 in spi master mode 
+-		psc@2200 {		// PSC2
+-			compatible = "fsl,mpc5200b-psc-spi","fsl,mpc5200-psc-spi";
+-			cell-index = <1>;
+-		};
+-
+-		psc@2400 {		// PSC3
+-			status = "disabled";
+-		};
+-
+-		psc@2600 {		// PSC4
+-			status = "disabled";
+-		};
+-
+-		psc@2800 {		// PSC5
+-			compatible = "fsl,mpc5200b-psc-uart","fsl,mpc5200-psc-uart";
+-		};
+-
+-		psc@2c00 {		// PSC6
+-			status = "disabled";
+-		};
+-
+-		ethernet@3000 {
+-			phy-handle = <&phy0>;
+-		};
+-
+-		mdio@3000 {
+-			phy0: ethernet-phy@2 {
+-				reg = <2>;
+-			};
+-		};
+-
+-		i2c@3d00 {
+-			status = "disabled";
+-		};
+-
+-		i2c@3d40 {
+-			rtc@68 {
+-				compatible = "dallas,ds1339";
+-				reg = <0x68>;
+-			};
+-		};
+-
+-		sram@8000 {
+-			compatible = "fsl,mpc5200b-sram","fsl,mpc5200-sram";
+-			reg = <0x8000 0x4000>;
+-		};
+-	};
+-
+-	pci@f0000d00 {
+-		status = "disabled";
+-	};
+-
+-	localbus {
+-		ranges = <0 0 0xff000000 0x01000000
+-			  1 0 0x50000000 0x00010000
+-			  2 0 0x50010000 0x00010000
+-			  3 0 0x50020000 0x00010000>;
+-
+-		// 8-bit DualPort SRAM on LocalPlus Bus CS1
+-		kollmorgen@1,0 {
+-			compatible = "promess,motionpro-kollmorgen";
+-			reg = <1 0 0x10000>;
+-			interrupts = <1 1 0>;
+-		};
+-
+-		// 8-bit board CPLD on LocalPlus Bus CS2
+-		cpld@2,0 {
+-			compatible = "promess,motionpro-cpld";
+-			reg = <2 0 0x10000>;
+-		};
+-
+-		// 8-bit custom Anybus Module on LocalPlus Bus CS3
+-		anybus@3,0 {
+-			compatible = "promess,motionpro-anybus";
+-			reg = <3 0 0x10000>;
+-		};
+-		pro_module_general@3,0 {
+-			compatible = "promess,pro_module_general";
+-			reg = <3 0 3>;
+-		};
+-		pro_module_dio@3,800 {
+-			compatible = "promess,pro_module_dio";
+-			reg = <3 0x800 2>;
+-		};
+-
+-		// 16-bit flash device at LocalPlus Bus CS0
+-		flash@0,0 {
+-			compatible = "cfi-flash";
+-			reg = <0 0 0x01000000>;
+-			bank-width = <2>;
+-			device-width = <2>;
+-			#size-cells = <1>;
+-			#address-cells = <1>;
+-		};
+-
+-	};
+-};
+diff --git a/arch/powerpc/boot/dts/mpc5121.dtsi b/arch/powerpc/boot/dts/mpc5121.dtsi
+deleted file mode 100644
+index 3f66b91a8e3c..000000000000
+--- a/arch/powerpc/boot/dts/mpc5121.dtsi
++++ /dev/null
+@@ -1,526 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * base MPC5121 Device Tree Source
+- *
+- * Copyright 2007-2008 Freescale Semiconductor Inc.
+- */
+-
+-#include <dt-bindings/clock/mpc512x-clock.h>
+-
+-/dts-v1/;
+-
+-/ {
+-	model = "mpc5121";
+-	compatible = "fsl,mpc5121";
+-	#address-cells = <1>;
+-	#size-cells = <1>;
+-        interrupt-parent = <&ipic>;
+-
+-	aliases {
+-		ethernet0 = &eth0;
+-		pci = &pci;
+-	};
+-
+-	cpus {
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-
+-		PowerPC,5121@0 {
+-			device_type = "cpu";
+-			reg = <0>;
+-			d-cache-line-size = <0x20>;	/* 32 bytes */
+-			i-cache-line-size = <0x20>;	/* 32 bytes */
+-			d-cache-size = <0x8000>;	/* L1, 32K */
+-			i-cache-size = <0x8000>;	/* L1, 32K */
+-			timebase-frequency = <49500000>;/* 49.5 MHz (csb/4) */
+-			bus-frequency = <198000000>;	/* 198 MHz csb bus */
+-			clock-frequency = <396000000>;	/* 396 MHz ppc core */
+-		};
+-	};
+-
+-	memory {
+-		device_type = "memory";
+-		reg = <0x00000000 0x10000000>;	/* 256MB at 0 */
+-	};
+-
+-	mbx@20000000 {
+-		compatible = "fsl,mpc5121-mbx";
+-		reg = <0x20000000 0x4000>;
+-		interrupts = <66 0x8>;
+-		clocks = <&clks MPC512x_CLK_MBX_BUS>,
+-			 <&clks MPC512x_CLK_MBX_3D>,
+-			 <&clks MPC512x_CLK_MBX>;
+-		clock-names = "mbx-bus", "mbx-3d", "mbx";
+-	};
+-
+-	sram@30000000 {
+-		compatible = "fsl,mpc5121-sram";
+-		reg = <0x30000000 0x20000>;	/* 128K at 0x30000000 */
+-	};
+-
+-	nfc@40000000 {
+-		compatible = "fsl,mpc5121-nfc";
+-		reg = <0x40000000 0x100000>;	/* 1M at 0x40000000 */
+-		interrupts = <6 8>;
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-		clocks = <&clks MPC512x_CLK_NFC>;
+-		clock-names = "ipg";
+-	};
+-
+-	localbus@80000020 {
+-		compatible = "fsl,mpc5121-localbus";
+-		#address-cells = <2>;
+-		#size-cells = <1>;
+-		reg = <0x80000020 0x40>;
+-		ranges = <0x0 0x0 0xfc000000 0x04000000>;
+-	};
+-
+-	clocks {
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-
+-		osc: osc {
+-			compatible = "fixed-clock";
+-			#clock-cells = <0>;
+-			clock-frequency = <33000000>;
+-		};
+-	};
+-
+-	soc@80000000 {
+-		compatible = "fsl,mpc5121-immr";
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-		ranges = <0x0 0x80000000 0x400000>;
+-		reg = <0x80000000 0x400000>;
+-		bus-frequency = <66000000>;	/* 66 MHz ips bus */
+-
+-
+-		/*
+-		 * IPIC
+-		 * interrupts cell = <intr #, sense>
+-		 * sense values match linux IORESOURCE_IRQ_* defines:
+-		 * sense == 8: Level, low assertion
+-		 * sense == 2: Edge, high-to-low change
+-		 */
+-		ipic: interrupt-controller@c00 {
+-			compatible = "fsl,mpc5121-ipic", "fsl,ipic";
+-			interrupt-controller;
+-			#address-cells = <0>;
+-			#interrupt-cells = <2>;
+-			reg = <0xc00 0x100>;
+-		};
+-
+-		/* Watchdog timer */
+-		wdt@900 {
+-			compatible = "fsl,mpc5121-wdt";
+-			reg = <0x900 0x100>;
+-		};
+-
+-		/* Real time clock */
+-		rtc@a00 {
+-			compatible = "fsl,mpc5121-rtc";
+-			reg = <0xa00 0x100>;
+-			interrupts = <79 0x8 80 0x8>;
+-		};
+-
+-		/* Reset module */
+-		reset@e00 {
+-			compatible = "fsl,mpc5121-reset";
+-			reg = <0xe00 0x100>;
+-		};
+-
+-		/* Clock control */
+-		clks: clock@f00 {
+-			compatible = "fsl,mpc5121-clock";
+-			reg = <0xf00 0x100>;
+-			#clock-cells = <1>;
+-			clocks = <&osc>;
+-			clock-names = "osc";
+-		};
+-
+-		/* Power Management Controller */
+-		pmc@1000{
+-			compatible = "fsl,mpc5121-pmc";
+-			reg = <0x1000 0x100>;
+-			interrupts = <83 0x8>;
+-		};
+-
+-		gpio@1100 {
+-			compatible = "fsl,mpc5121-gpio";
+-			reg = <0x1100 0x100>;
+-			interrupts = <78 0x8>;
+-		};
+-
+-		can@1300 {
+-			compatible = "fsl,mpc5121-mscan";
+-			reg = <0x1300 0x80>;
+-			interrupts = <12 0x8>;
+-			clocks = <&clks MPC512x_CLK_BDLC>,
+-				 <&clks MPC512x_CLK_IPS>,
+-				 <&clks MPC512x_CLK_SYS>,
+-				 <&clks MPC512x_CLK_REF>,
+-				 <&clks MPC512x_CLK_MSCAN0_MCLK>;
+-			clock-names = "ipg", "ips", "sys", "ref", "mclk";
+-		};
+-
+-		can@1380 {
+-			compatible = "fsl,mpc5121-mscan";
+-			reg = <0x1380 0x80>;
+-			interrupts = <13 0x8>;
+-			clocks = <&clks MPC512x_CLK_BDLC>,
+-				 <&clks MPC512x_CLK_IPS>,
+-				 <&clks MPC512x_CLK_SYS>,
+-				 <&clks MPC512x_CLK_REF>,
+-				 <&clks MPC512x_CLK_MSCAN1_MCLK>;
+-			clock-names = "ipg", "ips", "sys", "ref", "mclk";
+-		};
+-
+-		sdhc@1500 {
+-			compatible = "fsl,mpc5121-sdhc";
+-			reg = <0x1500 0x100>;
+-			interrupts = <8 0x8>;
+-			dmas = <&dma0 30>;
+-			dma-names = "rx-tx";
+-			clocks = <&clks MPC512x_CLK_IPS>,
+-				 <&clks MPC512x_CLK_SDHC>;
+-			clock-names = "ipg", "per";
+-		};
+-
+-		i2c@1700 {
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			compatible = "fsl,mpc5121-i2c", "fsl-i2c";
+-			reg = <0x1700 0x20>;
+-			interrupts = <9 0x8>;
+-			clocks = <&clks MPC512x_CLK_I2C>;
+-			clock-names = "ipg";
+-		};
+-
+-		i2c@1720 {
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			compatible = "fsl,mpc5121-i2c", "fsl-i2c";
+-			reg = <0x1720 0x20>;
+-			interrupts = <10 0x8>;
+-			clocks = <&clks MPC512x_CLK_I2C>;
+-			clock-names = "ipg";
+-		};
+-
+-		i2c@1740 {
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			compatible = "fsl,mpc5121-i2c", "fsl-i2c";
+-			reg = <0x1740 0x20>;
+-			interrupts = <11 0x8>;
+-			clocks = <&clks MPC512x_CLK_I2C>;
+-			clock-names = "ipg";
+-		};
+-
+-		i2ccontrol@1760 {
+-			compatible = "fsl,mpc5121-i2c-ctrl";
+-			reg = <0x1760 0x8>;
+-		};
+-
+-		axe@2000 {
+-			compatible = "fsl,mpc5121-axe";
+-			reg = <0x2000 0x100>;
+-			interrupts = <42 0x8>;
+-			clocks = <&clks MPC512x_CLK_AXE>;
+-			clock-names = "ipg";
+-		};
+-
+-		display@2100 {
+-			compatible = "fsl,mpc5121-diu";
+-			reg = <0x2100 0x100>;
+-			interrupts = <64 0x8>;
+-			clocks = <&clks MPC512x_CLK_DIU>;
+-			clock-names = "ipg";
+-		};
+-
+-		can@2300 {
+-			compatible = "fsl,mpc5121-mscan";
+-			reg = <0x2300 0x80>;
+-			interrupts = <90 0x8>;
+-			clocks = <&clks MPC512x_CLK_BDLC>,
+-				 <&clks MPC512x_CLK_IPS>,
+-				 <&clks MPC512x_CLK_SYS>,
+-				 <&clks MPC512x_CLK_REF>,
+-				 <&clks MPC512x_CLK_MSCAN2_MCLK>;
+-			clock-names = "ipg", "ips", "sys", "ref", "mclk";
+-		};
+-
+-		can@2380 {
+-			compatible = "fsl,mpc5121-mscan";
+-			reg = <0x2380 0x80>;
+-			interrupts = <91 0x8>;
+-			clocks = <&clks MPC512x_CLK_BDLC>,
+-				 <&clks MPC512x_CLK_IPS>,
+-				 <&clks MPC512x_CLK_SYS>,
+-				 <&clks MPC512x_CLK_REF>,
+-				 <&clks MPC512x_CLK_MSCAN3_MCLK>;
+-			clock-names = "ipg", "ips", "sys", "ref", "mclk";
+-		};
+-
+-		viu@2400 {
+-			compatible = "fsl,mpc5121-viu";
+-			reg = <0x2400 0x400>;
+-			interrupts = <67 0x8>;
+-			clocks = <&clks MPC512x_CLK_VIU>;
+-			clock-names = "ipg";
+-		};
+-
+-		mdio@2800 {
+-			compatible = "fsl,mpc5121-fec-mdio";
+-			reg = <0x2800 0x800>;
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			clocks = <&clks MPC512x_CLK_FEC>;
+-			clock-names = "per";
+-		};
+-
+-		eth0: ethernet@2800 {
+-			device_type = "network";
+-			compatible = "fsl,mpc5121-fec";
+-			reg = <0x2800 0x800>;
+-			local-mac-address = [ 00 00 00 00 00 00 ];
+-			interrupts = <4 0x8>;
+-			clocks = <&clks MPC512x_CLK_FEC>;
+-			clock-names = "per";
+-		};
+-
+-		/* USB1 using external ULPI PHY */
+-		usb@3000 {
+-			compatible = "fsl,mpc5121-usb2-dr";
+-			reg = <0x3000 0x600>;
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			interrupts = <43 0x8>;
+-			dr_mode = "otg";
+-			phy_type = "ulpi";
+-			clocks = <&clks MPC512x_CLK_USB1>;
+-			clock-names = "ipg";
+-		};
+-
+-		/* USB0 using internal UTMI PHY */
+-		usb@4000 {
+-			compatible = "fsl,mpc5121-usb2-dr";
+-			reg = <0x4000 0x600>;
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			interrupts = <44 0x8>;
+-			dr_mode = "otg";
+-			phy_type = "utmi_wide";
+-			clocks = <&clks MPC512x_CLK_USB2>;
+-			clock-names = "ipg";
+-		};
+-
+-		/* IO control */
+-		ioctl@a000 {
+-			compatible = "fsl,mpc5121-ioctl";
+-			reg = <0xA000 0x1000>;
+-		};
+-
+-		/* LocalPlus controller */
+-		lpc@10000 {
+-			compatible = "fsl,mpc5121-lpc";
+-			reg = <0x10000 0x100>;
+-		};
+-
+-		sclpc@10100 {
+-			compatible = "fsl,mpc512x-lpbfifo";
+-			reg = <0x10100 0x50>;
+-			interrupts = <7 0x8>;
+-			dmas = <&dma0 26>;
+-			dma-names = "rx-tx";
+-		};
+-
+-		pata@10200 {
+-			compatible = "fsl,mpc5121-pata";
+-			reg = <0x10200 0x100>;
+-			interrupts = <5 0x8>;
+-			clocks = <&clks MPC512x_CLK_PATA>;
+-			clock-names = "ipg";
+-		};
+-
+-		/* 512x PSCs are not 52xx PSC compatible */
+-
+-		/* PSC0 */
+-		psc@11000 {
+-			compatible = "fsl,mpc5121-psc";
+-			reg = <0x11000 0x100>;
+-			interrupts = <40 0x8>;
+-			fsl,rx-fifo-size = <16>;
+-			fsl,tx-fifo-size = <16>;
+-			clocks = <&clks MPC512x_CLK_PSC0>,
+-				 <&clks MPC512x_CLK_PSC0_MCLK>;
+-			clock-names = "ipg", "mclk";
+-		};
+-
+-		/* PSC1 */
+-		psc@11100 {
+-			compatible = "fsl,mpc5121-psc";
+-			reg = <0x11100 0x100>;
+-			interrupts = <40 0x8>;
+-			fsl,rx-fifo-size = <16>;
+-			fsl,tx-fifo-size = <16>;
+-			clocks = <&clks MPC512x_CLK_PSC1>,
+-				 <&clks MPC512x_CLK_PSC1_MCLK>;
+-			clock-names = "ipg", "mclk";
+-		};
+-
+-		/* PSC2 */
+-		psc@11200 {
+-			compatible = "fsl,mpc5121-psc";
+-			reg = <0x11200 0x100>;
+-			interrupts = <40 0x8>;
+-			fsl,rx-fifo-size = <16>;
+-			fsl,tx-fifo-size = <16>;
+-			clocks = <&clks MPC512x_CLK_PSC2>,
+-				 <&clks MPC512x_CLK_PSC2_MCLK>;
+-			clock-names = "ipg", "mclk";
+-		};
+-
+-		/* PSC3 */
+-		psc@11300 {
+-			compatible = "fsl,mpc5121-psc-uart", "fsl,mpc5121-psc";
+-			reg = <0x11300 0x100>;
+-			interrupts = <40 0x8>;
+-			fsl,rx-fifo-size = <16>;
+-			fsl,tx-fifo-size = <16>;
+-			clocks = <&clks MPC512x_CLK_PSC3>,
+-				 <&clks MPC512x_CLK_PSC3_MCLK>;
+-			clock-names = "ipg", "mclk";
+-		};
+-
+-		/* PSC4 */
+-		psc@11400 {
+-			compatible = "fsl,mpc5121-psc-uart", "fsl,mpc5121-psc";
+-			reg = <0x11400 0x100>;
+-			interrupts = <40 0x8>;
+-			fsl,rx-fifo-size = <16>;
+-			fsl,tx-fifo-size = <16>;
+-			clocks = <&clks MPC512x_CLK_PSC4>,
+-				 <&clks MPC512x_CLK_PSC4_MCLK>;
+-			clock-names = "ipg", "mclk";
+-		};
+-
+-		/* PSC5 */
+-		psc@11500 {
+-			compatible = "fsl,mpc5121-psc";
+-			reg = <0x11500 0x100>;
+-			interrupts = <40 0x8>;
+-			fsl,rx-fifo-size = <16>;
+-			fsl,tx-fifo-size = <16>;
+-			clocks = <&clks MPC512x_CLK_PSC5>,
+-				 <&clks MPC512x_CLK_PSC5_MCLK>;
+-			clock-names = "ipg", "mclk";
+-		};
+-
+-		/* PSC6 */
+-		psc@11600 {
+-			compatible = "fsl,mpc5121-psc";
+-			reg = <0x11600 0x100>;
+-			interrupts = <40 0x8>;
+-			fsl,rx-fifo-size = <16>;
+-			fsl,tx-fifo-size = <16>;
+-			clocks = <&clks MPC512x_CLK_PSC6>,
+-				 <&clks MPC512x_CLK_PSC6_MCLK>;
+-			clock-names = "ipg", "mclk";
+-		};
+-
+-		/* PSC7 */
+-		psc@11700 {
+-			compatible = "fsl,mpc5121-psc";
+-			reg = <0x11700 0x100>;
+-			interrupts = <40 0x8>;
+-			fsl,rx-fifo-size = <16>;
+-			fsl,tx-fifo-size = <16>;
+-			clocks = <&clks MPC512x_CLK_PSC7>,
+-				 <&clks MPC512x_CLK_PSC7_MCLK>;
+-			clock-names = "ipg", "mclk";
+-		};
+-
+-		/* PSC8 */
+-		psc@11800 {
+-			compatible = "fsl,mpc5121-psc";
+-			reg = <0x11800 0x100>;
+-			interrupts = <40 0x8>;
+-			fsl,rx-fifo-size = <16>;
+-			fsl,tx-fifo-size = <16>;
+-			clocks = <&clks MPC512x_CLK_PSC8>,
+-				 <&clks MPC512x_CLK_PSC8_MCLK>;
+-			clock-names = "ipg", "mclk";
+-		};
+-
+-		/* PSC9 */
+-		psc@11900 {
+-			compatible = "fsl,mpc5121-psc";
+-			reg = <0x11900 0x100>;
+-			interrupts = <40 0x8>;
+-			fsl,rx-fifo-size = <16>;
+-			fsl,tx-fifo-size = <16>;
+-			clocks = <&clks MPC512x_CLK_PSC9>,
+-				 <&clks MPC512x_CLK_PSC9_MCLK>;
+-			clock-names = "ipg", "mclk";
+-		};
+-
+-		/* PSC10 */
+-		psc@11a00 {
+-			compatible = "fsl,mpc5121-psc";
+-			reg = <0x11a00 0x100>;
+-			interrupts = <40 0x8>;
+-			fsl,rx-fifo-size = <16>;
+-			fsl,tx-fifo-size = <16>;
+-			clocks = <&clks MPC512x_CLK_PSC10>,
+-				 <&clks MPC512x_CLK_PSC10_MCLK>;
+-			clock-names = "ipg", "mclk";
+-		};
+-
+-		/* PSC11 */
+-		psc@11b00 {
+-			compatible = "fsl,mpc5121-psc";
+-			reg = <0x11b00 0x100>;
+-			interrupts = <40 0x8>;
+-			fsl,rx-fifo-size = <16>;
+-			fsl,tx-fifo-size = <16>;
+-			clocks = <&clks MPC512x_CLK_PSC11>,
+-				 <&clks MPC512x_CLK_PSC11_MCLK>;
+-			clock-names = "ipg", "mclk";
+-		};
+-
+-		pscfifo@11f00 {
+-			compatible = "fsl,mpc5121-psc-fifo";
+-			reg = <0x11f00 0x100>;
+-			interrupts = <40 0x8>;
+-			clocks = <&clks MPC512x_CLK_PSC_FIFO>;
+-			clock-names = "ipg";
+-		};
+-
+-		dma0: dma@14000 {
+-			compatible = "fsl,mpc5121-dma";
+-			reg = <0x14000 0x1800>;
+-			interrupts = <65 0x8>;
+-			#dma-cells = <1>;
+-		};
+-	};
+-
+-	pci: pci@80008500 {
+-		compatible = "fsl,mpc5121-pci";
+-		device_type = "pci";
+-		interrupts = <1 0x8>;
+-		clock-frequency = <0>;
+-		#address-cells = <3>;
+-		#size-cells = <2>;
+-		#interrupt-cells = <1>;
+-		clocks = <&clks MPC512x_CLK_PCI>;
+-		clock-names = "ipg";
+-
+-		reg = <0x80008500 0x100	/* internal registers */
+-		       0x80008300 0x8>;	/* config space access registers */
+-		bus-range = <0x0 0x0>;
+-		ranges = <0x42000000 0x0 0xa0000000 0xa0000000 0x0 0x10000000
+-			  0x02000000 0x0 0xb0000000 0xb0000000 0x0 0x10000000
+-			  0x01000000 0x0 0x00000000 0x84000000 0x0 0x01000000>;
+-	};
+-};
+diff --git a/arch/powerpc/boot/dts/mpc5121ads.dts b/arch/powerpc/boot/dts/mpc5121ads.dts
+deleted file mode 100644
+index b407a50ee622..000000000000
+--- a/arch/powerpc/boot/dts/mpc5121ads.dts
++++ /dev/null
+@@ -1,174 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * MPC5121E ADS Device Tree Source
+- *
+- * Copyright 2007-2008 Freescale Semiconductor Inc.
+- */
+-
+-#include "mpc5121.dtsi"
+-
+-/ {
+-	model = "mpc5121ads";
+-	compatible = "fsl,mpc5121ads", "fsl,mpc5121";
+-
+-	nfc@40000000 {
+-		/*
+-		 * ADS has two Hynix 512MB Nand flash chips in a single
+-		 * stacked package.
+-		 */
+-		chips = <2>;
+-
+-		nand@0 {
+-			label = "nand";
+-			reg = <0x00000000 0x40000000>;	/* 512MB + 512MB */
+-		};
+-	};
+-
+-	localbus@80000020 {
+-		ranges = <0x0 0x0 0xfc000000 0x04000000
+-			  0x2 0x0 0x82000000 0x00008000>;
+-
+-		flash@0,0 {
+-			compatible = "cfi-flash";
+-			reg = <0 0x0 0x4000000>;
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			bank-width = <4>;
+-			device-width = <2>;
+-
+-			protected@0 {
+-				label = "protected";
+-				reg = <0x00000000 0x00040000>;  // first sector is protected
+-				read-only;
+-			};
+-			filesystem@40000 {
+-				label = "filesystem";
+-				reg = <0x00040000 0x03c00000>;  // 60M for filesystem
+-			};
+-			kernel@3c40000 {
+-				label = "kernel";
+-				reg = <0x03c40000 0x00280000>;  // 2.5M for kernel
+-			};
+-			device-tree@3ec0000 {
+-				label = "device-tree";
+-				reg = <0x03ec0000 0x00040000>;  // one sector for device tree
+-			};
+-			u-boot@3f00000 {
+-				label = "u-boot";
+-				reg = <0x03f00000 0x00100000>;  // 1M for u-boot
+-				read-only;
+-			};
+-		};
+-
+-		board-control@2,0 {
+-			compatible = "fsl,mpc5121ads-cpld";
+-			reg = <0x2 0x0 0x8000>;
+-		};
+-
+-		cpld_pic: pic@2,a {
+-			compatible = "fsl,mpc5121ads-cpld-pic";
+-			interrupt-controller;
+-			#interrupt-cells = <2>;
+-			reg = <0x2 0xa 0x5>;
+-			/* irq routing:
+-			 * all irqs but touch screen are routed to irq0 (ipic 48)
+-			 * touch screen is statically routed to irq1 (ipic 17)
+-			 * so don't use it here
+-			 */
+-			interrupts = <48 0x8>;
+-		};
+-	};
+-
+-	soc@80000000 {
+-
+-		i2c@1700 {
+-			fsl,preserve-clocking;
+-
+-			hwmon@4a {
+-				compatible = "adi,ad7414";
+-				reg = <0x4a>;
+-			};
+-
+-			eeprom@50 {
+-				compatible = "atmel,24c32";
+-				reg = <0x50>;
+-			};
+-
+-			rtc@68 {
+-				compatible = "st,m41t62";
+-				reg = <0x68>;
+-			};
+-		};
+-
+-		eth0: ethernet@2800 {
+-			phy-handle = <&phy0>;
+-		};
+-
+-		can@2300 {
+-			status = "disabled";
+-		};
+-
+-		can@2380 {
+-			status = "disabled";
+-		};
+-
+-		viu@2400 {
+-			status = "disabled";
+-		};
+-
+-		mdio@2800 {
+-			phy0: ethernet-phy@0 {
+-				reg = <1>;
+-			};
+-		};
+-
+-		/* mpc5121ads only uses USB0 */
+-		usb@3000 {
+-			status = "disabled";
+-		};
+-
+-		/* USB0 using internal UTMI PHY */
+-		usb@4000 {
+-			dr_mode = "host";
+-			fsl,invert-drvvbus;
+-			fsl,invert-pwr-fault;
+-		};
+-
+-		/* PSC3 serial port A aka ttyPSC0 */
+-		psc@11300 {
+-			compatible = "fsl,mpc5121-psc-uart", "fsl,mpc5121-psc";
+-		};
+-
+-		/* PSC4 serial port B aka ttyPSC1 */
+-		psc@11400 {
+-			compatible = "fsl,mpc5121-psc-uart", "fsl,mpc5121-psc";
+-		};
+-
+-		/* PSC5 in ac97 mode */
+-		ac97: psc@11500 {
+-			compatible = "fsl,mpc5121-psc-ac97", "fsl,mpc5121-psc";
+-			fsl,mode = "ac97-slave";
+-			fsl,rx-fifo-size = <384>;
+-			fsl,tx-fifo-size = <384>;
+-		};
+-	};
+-
+-	pci: pci@80008500 {
+-		interrupt-map-mask = <0xf800 0x0 0x0 0x7>;
+-		interrupt-map = <
+-				/* IDSEL 0x15 - Slot 1 PCI */
+-				 0xa800 0x0 0x0 0x1 &cpld_pic 0x0 0x8
+-				 0xa800 0x0 0x0 0x2 &cpld_pic 0x1 0x8
+-				 0xa800 0x0 0x0 0x3 &cpld_pic 0x2 0x8
+-				 0xa800 0x0 0x0 0x4 &cpld_pic 0x3 0x8
+-
+-				/* IDSEL 0x16 - Slot 2 MiniPCI */
+-				 0xb000 0x0 0x0 0x1 &cpld_pic 0x4 0x8
+-				 0xb000 0x0 0x0 0x2 &cpld_pic 0x5 0x8
+-
+-				/* IDSEL 0x17 - Slot 3 MiniPCI */
+-				 0xb800 0x0 0x0 0x1 &cpld_pic 0x6 0x8
+-				 0xb800 0x0 0x0 0x2 &cpld_pic 0x7 0x8
+-				>;
+-	};
+-};
+diff --git a/arch/powerpc/boot/dts/mpc5125twr.dts b/arch/powerpc/boot/dts/mpc5125twr.dts
+deleted file mode 100644
+index 0bd2acc0401d..000000000000
+--- a/arch/powerpc/boot/dts/mpc5125twr.dts
++++ /dev/null
+@@ -1,293 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * STx/Freescale ADS5125 MPC5125 silicon
+- *
+- * Copyright (C) 2009 Freescale Semiconductor Inc. All rights reserved.
+- *
+- * Reworked by Matteo Facchinetti (engineering@sirius-es.it)
+- * Copyright (C) 2013 Sirius Electronic Systems
+- */
+-
+-#include <dt-bindings/clock/mpc512x-clock.h>
+-
+-/dts-v1/;
+-
+-/ {
+-	model = "mpc5125twr"; // In BSP "mpc5125ads"
+-	compatible = "fsl,mpc5125ads", "fsl,mpc5125";
+-	#address-cells = <1>;
+-	#size-cells = <1>;
+-	interrupt-parent = <&ipic>;
+-
+-	aliases {
+-		gpio0 = &gpio0;
+-		gpio1 = &gpio1;
+-		ethernet0 = &eth0;
+-	};
+-
+-	cpus {
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-
+-		PowerPC,5125@0 {
+-			device_type = "cpu";
+-			reg = <0>;
+-			d-cache-line-size = <0x20>;	// 32 bytes
+-			i-cache-line-size = <0x20>;	// 32 bytes
+-			d-cache-size = <0x8000>;	// L1, 32K
+-			i-cache-size = <0x8000>;	// L1, 32K
+-			timebase-frequency = <49500000>;// 49.5 MHz (csb/4)
+-			bus-frequency = <198000000>;	// 198 MHz csb bus
+-			clock-frequency = <396000000>;	// 396 MHz ppc core
+-		};
+-	};
+-
+-	memory {
+-		device_type = "memory";
+-		reg = <0x00000000 0x10000000>;	// 256MB at 0
+-	};
+-
+-	sram@30000000 {
+-		compatible = "fsl,mpc5121-sram";
+-		reg = <0x30000000 0x08000>;		// 32K at 0x30000000
+-	};
+-
+-	clocks {
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-
+-		osc: osc {
+-			compatible = "fixed-clock";
+-			#clock-cells = <0>;
+-			clock-frequency = <33000000>;
+-		};
+-	};
+-
+-	soc@80000000 {
+-		compatible = "fsl,mpc5121-immr";
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-		ranges = <0x0 0x80000000 0x400000>;
+-		reg = <0x80000000 0x400000>;
+-		bus-frequency = <66000000>;	// 66 MHz ips bus
+-
+-		// IPIC
+-		// interrupts cell = <intr #, sense>
+-		// sense values match linux IORESOURCE_IRQ_* defines:
+-		// sense == 8: Level, low assertion
+-		// sense == 2: Edge, high-to-low change
+-		//
+-		ipic: interrupt-controller@c00 {
+-			compatible = "fsl,mpc5121-ipic", "fsl,ipic";
+-			interrupt-controller;
+-			#address-cells = <0>;
+-			#interrupt-cells = <2>;
+-			reg = <0xc00 0x100>;
+-		};
+-
+-		rtc@a00 {	// Real time clock
+-			compatible = "fsl,mpc5121-rtc";
+-			reg = <0xa00 0x100>;
+-			interrupts = <79 0x8 80 0x8>;
+-		};
+-
+-		reset@e00 {	// Reset module
+-			compatible = "fsl,mpc5125-reset";
+-			reg = <0xe00 0x100>;
+-		};
+-
+-		clks: clock@f00 {	// Clock control
+-			compatible = "fsl,mpc5121-clock";
+-			reg = <0xf00 0x100>;
+-			#clock-cells = <1>;
+-			clocks = <&osc>;
+-			clock-names = "osc";
+-		};
+-
+-		pmc@1000{  // Power Management Controller
+-			compatible = "fsl,mpc5121-pmc";
+-			reg = <0x1000 0x100>;
+-			interrupts = <83 0x2>;
+-		};
+-
+-		gpio0: gpio@1100 {
+-			compatible = "fsl,mpc5125-gpio";
+-			reg = <0x1100 0x080>;
+-			interrupts = <78 0x8>;
+-		};
+-
+-		gpio1: gpio@1180 {
+-			compatible = "fsl,mpc5125-gpio";
+-			reg = <0x1180 0x080>;
+-			interrupts = <86 0x8>;
+-		};
+-
+-		can@1300 { // CAN rev.2
+-			compatible = "fsl,mpc5121-mscan";
+-			interrupts = <12 0x8>;
+-			reg = <0x1300 0x80>;
+-			clocks = <&clks MPC512x_CLK_BDLC>,
+-				 <&clks MPC512x_CLK_IPS>,
+-				 <&clks MPC512x_CLK_SYS>,
+-				 <&clks MPC512x_CLK_REF>,
+-				 <&clks MPC512x_CLK_MSCAN0_MCLK>;
+-			clock-names = "ipg", "ips", "sys", "ref", "mclk";
+-		};
+-
+-		can@1380 {
+-			compatible = "fsl,mpc5121-mscan";
+-			interrupts = <13 0x8>;
+-			reg = <0x1380 0x80>;
+-			clocks = <&clks MPC512x_CLK_BDLC>,
+-				 <&clks MPC512x_CLK_IPS>,
+-				 <&clks MPC512x_CLK_SYS>,
+-				 <&clks MPC512x_CLK_REF>,
+-				 <&clks MPC512x_CLK_MSCAN1_MCLK>;
+-			clock-names = "ipg", "ips", "sys", "ref", "mclk";
+-		};
+-
+-		sdhc@1500 {
+-			compatible = "fsl,mpc5121-sdhc";
+-			interrupts = <8 0x8>;
+-			reg = <0x1500 0x100>;
+-			clocks = <&clks MPC512x_CLK_IPS>,
+-				 <&clks MPC512x_CLK_SDHC>;
+-			clock-names = "ipg", "per";
+-		};
+-
+-		i2c@1700 {
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			compatible = "fsl,mpc5121-i2c", "fsl-i2c";
+-			reg = <0x1700 0x20>;
+-			interrupts = <0x9 0x8>;
+-			clocks = <&clks MPC512x_CLK_I2C>;
+-			clock-names = "ipg";
+-		};
+-
+-		i2c@1720 {
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			compatible = "fsl,mpc5121-i2c", "fsl-i2c";
+-			reg = <0x1720 0x20>;
+-			interrupts = <0xa 0x8>;
+-			clocks = <&clks MPC512x_CLK_I2C>;
+-			clock-names = "ipg";
+-		};
+-
+-		i2c@1740 {
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			compatible = "fsl,mpc5121-i2c", "fsl-i2c";
+-			reg = <0x1740 0x20>;
+-			interrupts = <0xb 0x8>;
+-			clocks = <&clks MPC512x_CLK_I2C>;
+-			clock-names = "ipg";
+-		};
+-
+-		i2ccontrol@1760 {
+-			compatible = "fsl,mpc5121-i2c-ctrl";
+-			reg = <0x1760 0x8>;
+-		};
+-
+-		diu@2100 {
+-			compatible = "fsl,mpc5121-diu";
+-			reg = <0x2100 0x100>;
+-			interrupts = <64 0x8>;
+-			clocks = <&clks MPC512x_CLK_DIU>;
+-			clock-names = "ipg";
+-		};
+-
+-		mdio@2800 {
+-			compatible = "fsl,mpc5121-fec-mdio";
+-			reg = <0x2800 0x800>;
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			phy0: ethernet-phy@0 {
+-				reg = <1>;
+-			};
+-		};
+-
+-		eth0: ethernet@2800 {
+-			compatible = "fsl,mpc5125-fec";
+-			reg = <0x2800 0x800>;
+-			local-mac-address = [ 00 00 00 00 00 00 ];
+-			interrupts = <4 0x8>;
+-			phy-handle = < &phy0 >;
+-			phy-connection-type = "rmii";
+-			clocks = <&clks MPC512x_CLK_FEC>;
+-			clock-names = "per";
+-		};
+-
+-		// IO control
+-		ioctl@a000 {
+-			compatible = "fsl,mpc5125-ioctl";
+-			reg = <0xA000 0x1000>;
+-		};
+-
+-		// disable USB1 port
+-		// TODO:
+-		// correct pinmux config and fix USB3320 ulpi dependency
+-		// before re-enabling it
+-		usb@3000 {
+-			compatible = "fsl,mpc5121-usb2-dr";
+-			reg = <0x3000 0x400>;
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			interrupts = <43 0x8>;
+-			dr_mode = "host";
+-			phy_type = "ulpi";
+-			clocks = <&clks MPC512x_CLK_USB1>;
+-			clock-names = "ipg";
+-			status = "disabled";
+-		};
+-
+-		sclpc@10100 {
+-			compatible = "fsl,mpc512x-lpbfifo";
+-			reg = <0x10100 0x50>;
+-			interrupts = <7 0x8>;
+-			dmas = <&dma0 26>;
+-			dma-names = "rx-tx";
+-		};
+-
+-		// 5125 PSCs are not 52xx or 5121 PSC compatible
+-		// PSC1 uart0 aka ttyPSC0
+-		serial@11100 {
+-			compatible = "fsl,mpc5125-psc-uart", "fsl,mpc5125-psc";
+-			reg = <0x11100 0x100>;
+-			interrupts = <40 0x8>;
+-			fsl,rx-fifo-size = <16>;
+-			fsl,tx-fifo-size = <16>;
+-			clocks = <&clks MPC512x_CLK_PSC1>,
+-				 <&clks MPC512x_CLK_PSC1_MCLK>;
+-			clock-names = "ipg", "mclk";
+-		};
+-
+-		// PSC9 uart1 aka ttyPSC1
+-		serial@11900 {
+-			compatible = "fsl,mpc5125-psc-uart", "fsl,mpc5125-psc";
+-			reg = <0x11900 0x100>;
+-			interrupts = <40 0x8>;
+-			fsl,rx-fifo-size = <16>;
+-			fsl,tx-fifo-size = <16>;
+-			clocks = <&clks MPC512x_CLK_PSC9>,
+-				 <&clks MPC512x_CLK_PSC9_MCLK>;
+-			clock-names = "ipg", "mclk";
+-		};
+-
+-		pscfifo@11f00 {
+-			compatible = "fsl,mpc5121-psc-fifo";
+-			reg = <0x11f00 0x100>;
+-			interrupts = <40 0x8>;
+-			clocks = <&clks MPC512x_CLK_PSC_FIFO>;
+-			clock-names = "ipg";
+-		};
+-
+-		dma0: dma@14000 {
+-			compatible = "fsl,mpc5121-dma"; // BSP name: "mpc512x-dma2"
+-			reg = <0x14000 0x1800>;
+-			interrupts = <65 0x8>;
+-			#dma-cells = <1>;
+-		};
+-	};
+-};
+diff --git a/arch/powerpc/boot/dts/mpc5200b.dtsi b/arch/powerpc/boot/dts/mpc5200b.dtsi
+deleted file mode 100644
+index 648fe31795f4..000000000000
+--- a/arch/powerpc/boot/dts/mpc5200b.dtsi
++++ /dev/null
+@@ -1,288 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * base MPC5200b Device Tree Source
+- *
+- * Copyright (C) 2010 SecretLab
+- * Grant Likely <grant@secretlab.ca>
+- * John Bonesio <bones@secretlab.ca>
+- */
+-
+-/dts-v1/;
+-
+-/ {
+-	model = "fsl,mpc5200b";
+-	compatible = "fsl,mpc5200b";
+-	#address-cells = <1>;
+-	#size-cells = <1>;
+-	interrupt-parent = <&mpc5200_pic>;
+-
+-	cpus {
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-
+-		powerpc: PowerPC,5200@0 {
+-			device_type = "cpu";
+-			reg = <0>;
+-			d-cache-line-size = <32>;
+-			i-cache-line-size = <32>;
+-			d-cache-size = <0x4000>;	// L1, 16K
+-			i-cache-size = <0x4000>;	// L1, 16K
+-			timebase-frequency = <0>;	// from bootloader
+-			bus-frequency = <0>;		// from bootloader
+-			clock-frequency = <0>;		// from bootloader
+-		};
+-	};
+-
+-	memory: memory {
+-		device_type = "memory";
+-		reg = <0x00000000 0x04000000>;	// 64MB
+-	};
+-
+-	soc: soc5200@f0000000 {
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-		compatible = "fsl,mpc5200b-immr";
+-		ranges = <0 0xf0000000 0x0000c000>;
+-		reg = <0xf0000000 0x00000100>;
+-		bus-frequency = <0>;		// from bootloader
+-		system-frequency = <0>;		// from bootloader
+-
+-		cdm@200 {
+-			compatible = "fsl,mpc5200b-cdm","fsl,mpc5200-cdm";
+-			reg = <0x200 0x38>;
+-		};
+-
+-		mpc5200_pic: interrupt-controller@500 {
+-			// 5200 interrupts are encoded into two levels;
+-			interrupt-controller;
+-			#interrupt-cells = <3>;
+-			compatible = "fsl,mpc5200b-pic","fsl,mpc5200-pic";
+-			reg = <0x500 0x80>;
+-		};
+-
+-		gpt0: timer@600 {	// General Purpose Timer
+-			compatible = "fsl,mpc5200b-gpt","fsl,mpc5200-gpt";
+-			#gpio-cells = <2>;  // Add 'gpio-controller;' to enable gpio mode
+-			reg = <0x600 0x10>;
+-			interrupts = <1 9 0>;
+-			// add 'fsl,has-wdt' to enable watchdog
+-		};
+-
+-		gpt1: timer@610 {	// General Purpose Timer
+-			compatible = "fsl,mpc5200b-gpt","fsl,mpc5200-gpt";
+-			#gpio-cells = <2>;  // Add 'gpio-controller;' to enable gpio mode
+-			reg = <0x610 0x10>;
+-			interrupts = <1 10 0>;
+-		};
+-
+-		gpt2: timer@620 {	// General Purpose Timer
+-			compatible = "fsl,mpc5200b-gpt","fsl,mpc5200-gpt";
+-			#gpio-cells = <2>;  // Add 'gpio-controller;' to enable gpio mode
+-			reg = <0x620 0x10>;
+-			interrupts = <1 11 0>;
+-		};
+-
+-		gpt3: timer@630 {	// General Purpose Timer
+-			compatible = "fsl,mpc5200b-gpt","fsl,mpc5200-gpt";
+-			#gpio-cells = <2>;  // Add 'gpio-controller;' to enable gpio mode
+-			reg = <0x630 0x10>;
+-			interrupts = <1 12 0>;
+-		};
+-
+-		gpt4: timer@640 {	// General Purpose Timer
+-			compatible = "fsl,mpc5200b-gpt","fsl,mpc5200-gpt";
+-			#gpio-cells = <2>;  // Add 'gpio-controller;' to enable gpio mode
+-			reg = <0x640 0x10>;
+-			interrupts = <1 13 0>;
+-		};
+-
+-		gpt5: timer@650 {	// General Purpose Timer
+-			compatible = "fsl,mpc5200b-gpt","fsl,mpc5200-gpt";
+-			#gpio-cells = <2>;  // Add 'gpio-controller;' to enable gpio mode
+-			reg = <0x650 0x10>;
+-			interrupts = <1 14 0>;
+-		};
+-
+-		gpt6: timer@660 {	// General Purpose Timer
+-			compatible = "fsl,mpc5200b-gpt","fsl,mpc5200-gpt";
+-			#gpio-cells = <2>;  // Add 'gpio-controller;' to enable gpio mode
+-			reg = <0x660 0x10>;
+-			interrupts = <1 15 0>;
+-		};
+-
+-		gpt7: timer@670 {	// General Purpose Timer
+-			compatible = "fsl,mpc5200b-gpt","fsl,mpc5200-gpt";
+-			#gpio-cells = <2>;  // Add 'gpio-controller;' to enable gpio mode
+-			reg = <0x670 0x10>;
+-			interrupts = <1 16 0>;
+-		};
+-
+-		rtc@800 {	// Real time clock
+-			compatible = "fsl,mpc5200b-rtc","fsl,mpc5200-rtc";
+-			reg = <0x800 0x100>;
+-			interrupts = <1 5 0 1 6 0>;
+-		};
+-
+-		can@900 {
+-			compatible = "fsl,mpc5200b-mscan","fsl,mpc5200-mscan";
+-			interrupts = <2 17 0>;
+-			reg = <0x900 0x80>;
+-		};
+-
+-		can@980 {
+-			compatible = "fsl,mpc5200b-mscan","fsl,mpc5200-mscan";
+-			interrupts = <2 18 0>;
+-			reg = <0x980 0x80>;
+-		};
+-
+-		gpio_simple: gpio@b00 {
+-			compatible = "fsl,mpc5200b-gpio","fsl,mpc5200-gpio";
+-			reg = <0xb00 0x40>;
+-			interrupts = <1 7 0>;
+-			gpio-controller;
+-			#gpio-cells = <2>;
+-		};
+-
+-		gpio_wkup: gpio@c00 {
+-			compatible = "fsl,mpc5200b-gpio-wkup","fsl,mpc5200-gpio-wkup";
+-			reg = <0xc00 0x40>;
+-			interrupts = <1 8 0 0 3 0>;
+-			gpio-controller;
+-			#gpio-cells = <2>;
+-		};
+-
+-		spi@f00 {
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			compatible = "fsl,mpc5200b-spi","fsl,mpc5200-spi";
+-			reg = <0xf00 0x20>;
+-			interrupts = <2 13 0 2 14 0>;
+-		};
+-
+-		usb: usb@1000 {
+-			compatible = "fsl,mpc5200b-ohci","fsl,mpc5200-ohci","ohci-be";
+-			reg = <0x1000 0xff>;
+-			interrupts = <2 6 0>;
+-		};
+-
+-		dma-controller@1200 {
+-			compatible = "fsl,mpc5200b-bestcomm","fsl,mpc5200-bestcomm";
+-			reg = <0x1200 0x80>;
+-			interrupts = <3 0 0  3 1 0  3 2 0  3 3 0
+-			              3 4 0  3 5 0  3 6 0  3 7 0
+-			              3 8 0  3 9 0  3 10 0  3 11 0
+-			              3 12 0  3 13 0  3 14 0  3 15 0>;
+-		};
+-
+-		xlb@1f00 {
+-			compatible = "fsl,mpc5200b-xlb","fsl,mpc5200-xlb";
+-			reg = <0x1f00 0x100>;
+-		};
+-
+-		psc1: psc@2000 {		// PSC1
+-			compatible = "fsl,mpc5200b-psc","fsl,mpc5200-psc";
+-			reg = <0x2000 0x100>;
+-			interrupts = <2 1 0>;
+-		};
+-
+-		psc2: psc@2200 {		// PSC2
+-			compatible = "fsl,mpc5200b-psc","fsl,mpc5200-psc";
+-			reg = <0x2200 0x100>;
+-			interrupts = <2 2 0>;
+-		};
+-
+-		psc3: psc@2400 {		// PSC3
+-			compatible = "fsl,mpc5200b-psc","fsl,mpc5200-psc";
+-			reg = <0x2400 0x100>;
+-			interrupts = <2 3 0>;
+-		};
+-
+-		psc4: psc@2600 {		// PSC4
+-			compatible = "fsl,mpc5200b-psc","fsl,mpc5200-psc";
+-			reg = <0x2600 0x100>;
+-			interrupts = <2 11 0>;
+-		};
+-
+-		psc5: psc@2800 {		// PSC5
+-			compatible = "fsl,mpc5200b-psc","fsl,mpc5200-psc";
+-			reg = <0x2800 0x100>;
+-			interrupts = <2 12 0>;
+-		};
+-
+-		psc6: psc@2c00 {		// PSC6
+-			compatible = "fsl,mpc5200b-psc","fsl,mpc5200-psc";
+-			reg = <0x2c00 0x100>;
+-			interrupts = <2 4 0>;
+-		};
+-
+-		eth0: ethernet@3000 {
+-			compatible = "fsl,mpc5200b-fec","fsl,mpc5200-fec";
+-			reg = <0x3000 0x400>;
+-			local-mac-address = [ 00 00 00 00 00 00 ];
+-			interrupts = <2 5 0>;
+-		};
+-
+-		mdio@3000 {
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			compatible = "fsl,mpc5200b-mdio","fsl,mpc5200-mdio";
+-			reg = <0x3000 0x400>;	// fec range, since we need to setup fec interrupts
+-			interrupts = <2 5 0>;	// these are for "mii command finished", not link changes & co.
+-		};
+-
+-		ata@3a00 {
+-			compatible = "fsl,mpc5200b-ata","fsl,mpc5200-ata";
+-			reg = <0x3a00 0x100>;
+-			interrupts = <2 7 0>;
+-		};
+-
+-		sclpc@3c00 {
+-			compatible = "fsl,mpc5200-lpbfifo";
+-			reg = <0x3c00 0x60>;
+-			interrupts = <2 23 0>;
+-		};
+-
+-		i2c@3d00 {
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			compatible = "fsl,mpc5200b-i2c","fsl,mpc5200-i2c","fsl-i2c";
+-			reg = <0x3d00 0x40>;
+-			interrupts = <2 15 0>;
+-		};
+-
+-		i2c@3d40 {
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			compatible = "fsl,mpc5200b-i2c","fsl,mpc5200-i2c","fsl-i2c";
+-			reg = <0x3d40 0x40>;
+-			interrupts = <2 16 0>;
+-		};
+-
+-		sram@8000 {
+-			compatible = "fsl,mpc5200b-sram","fsl,mpc5200-sram";
+-			reg = <0x8000 0x4000>;
+-		};
+-	};
+-
+-	pci: pci@f0000d00 {
+-		#interrupt-cells = <1>;
+-		#size-cells = <2>;
+-		#address-cells = <3>;
+-		device_type = "pci";
+-		compatible = "fsl,mpc5200b-pci","fsl,mpc5200-pci";
+-		reg = <0xf0000d00 0x100>;
+-		// interrupt-map-mask = need to add
+-		// interrupt-map = need to add
+-		clock-frequency = <0>; // From boot loader
+-		interrupts = <2 8 0 2 9 0 2 10 0>;
+-		bus-range = <0 0>;
+-		// ranges = need to add
+-	};
+-
+-	localbus: localbus {
+-		compatible = "fsl,mpc5200b-lpb","fsl,mpc5200-lpb","simple-bus";
+-		#address-cells = <2>;
+-		#size-cells = <1>;
+-		ranges = <0 0 0xfc000000 0x2000000>;
+-	};
+-};
+diff --git a/arch/powerpc/boot/dts/mucmc52.dts b/arch/powerpc/boot/dts/mucmc52.dts
+deleted file mode 100644
+index c6c66306308d..000000000000
+--- a/arch/powerpc/boot/dts/mucmc52.dts
++++ /dev/null
+@@ -1,222 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * Manroland mucmc52 board Device Tree Source
+- *
+- * Copyright (C) 2009 DENX Software Engineering GmbH
+- * Heiko Schocher <hs@denx.de>
+- * Copyright 2006-2007 Secret Lab Technologies Ltd.
+- */
+-
+-/include/ "mpc5200b.dtsi"
+-
+-/* Timer pins that need to be in GPIO mode */
+-&gpt0 { gpio-controller; };
+-&gpt1 { gpio-controller; };
+-&gpt2 { gpio-controller; };
+-&gpt3 { gpio-controller; };
+-
+-/* Disabled timers */
+-&gpt4 { status = "disabled"; };
+-&gpt5 { status = "disabled"; };
+-&gpt6 { status = "disabled"; };
+-&gpt7 { status = "disabled"; };
+-
+-/ {
+-	model = "manroland,mucmc52";
+-	compatible = "manroland,mucmc52";
+-
+-	soc5200@f0000000 {
+-		rtc@800 {
+-			status = "disabled";
+-		};
+-
+-		can@900 {
+-			status = "disabled";
+-		};
+-
+-		can@980 {
+-			status = "disabled";
+-		};
+-
+-		spi@f00 {
+-			status = "disabled";
+-		};
+-
+-		usb@1000 {
+-			status = "disabled";
+-		};
+-
+-		psc@2000 {		// PSC1
+-			compatible = "fsl,mpc5200b-psc-uart","fsl,mpc5200-psc-uart";
+-		};
+-
+-		psc@2200 {		// PSC2
+-			compatible = "fsl,mpc5200b-psc-uart","fsl,mpc5200-psc-uart";
+-		};
+-
+-		psc@2400 {		// PSC3
+-			status = "disabled";
+-		};
+-
+-		psc@2600 {		// PSC4
+-			status = "disabled";
+-		};
+-
+-		psc@2800 {		// PSC5
+-			status = "disabled";
+-		};
+-
+-		psc@2c00 {		// PSC6
+-			compatible = "fsl,mpc5200b-psc-uart","fsl,mpc5200-psc-uart";
+-		};
+-
+-		ethernet@3000 {
+-			phy-handle = <&phy0>;
+-		};
+-
+-		mdio@3000 {
+-			phy0: ethernet-phy@0 {
+-				compatible = "intel,lxt971";
+-				reg = <0>;
+-			};
+-		};
+-
+-		i2c@3d00 {
+-			status = "disabled";
+-		};
+-
+-		i2c@3d40 {
+-			hwmon@2c {
+-				compatible = "ad,adm9240";
+-				reg = <0x2c>;
+-			};
+-			rtc@51 {
+-				compatible = "nxp,pcf8563";
+-				reg = <0x51>;
+-			};
+-		};
+-	};
+-
+-	pci@f0000d00 {
+-		interrupt-map-mask = <0xf800 0 0 7>;
+-		interrupt-map = <
+-				/* IDSEL 0x10 */
+-				0x8000 0 0 1 &mpc5200_pic 0 3 3
+-				0x8000 0 0 2 &mpc5200_pic 0 3 3
+-				0x8000 0 0 3 &mpc5200_pic 0 2 3
+-				0x8000 0 0 4 &mpc5200_pic 0 1 3
+-				>;
+-		ranges = <0x42000000 0 0x60000000 0x60000000 0 0x10000000
+-			  0x02000000 0 0x90000000 0x90000000 0 0x10000000
+-			  0x01000000 0 0x00000000 0xa0000000 0 0x01000000>;
+-	};
+-
+-	localbus {
+-		ranges = <0 0 0xff800000 0x00800000
+-			  1 0 0x80000000 0x00800000
+-			  3 0 0x80000000 0x00800000>;
+-
+-		flash@0,0 {
+-			compatible = "cfi-flash";
+-			reg = <0 0 0x00800000>;
+-			bank-width = <4>;
+-			device-width = <2>;
+-			#size-cells = <1>;
+-			#address-cells = <1>;
+-			partition@0 {
+-				label = "DTS";
+-				reg = <0x0 0x00100000>;
+-			};
+-			partition@100000 {
+-				label = "Kernel";
+-				reg = <0x100000 0x00200000>;
+-			};
+-			partition@300000 {
+-				label = "RootFS";
+-				reg = <0x00300000 0x00200000>;
+-			};
+-			partition@500000 {
+-				label = "user";
+-				reg = <0x00500000 0x00200000>;
+-			};
+-			partition@700000 {
+-				label = "U-Boot";
+-				reg = <0x00700000 0x00040000>;
+-			};
+-			partition@740000 {
+-				label = "Env";
+-				reg = <0x00740000 0x00020000>;
+-			};
+-			partition@760000 {
+-				label = "red. Env";
+-				reg = <0x00760000 0x00020000>;
+-			};
+-			partition@780000 {
+-				label = "reserve";
+-				reg = <0x00780000 0x00080000>;
+-			};
+-		};
+-
+-		simple100: gpio-controller-100@3,600100 {
+-			compatible = "manroland,mucmc52-aux-gpio";
+-			reg = <3 0x00600100 0x1>;
+-			gpio-controller;
+-			#gpio-cells = <2>;
+-		};
+-		simple104: gpio-controller-104@3,600104 {
+-			compatible = "manroland,mucmc52-aux-gpio";
+-			reg = <3 0x00600104 0x1>;
+-			gpio-controller;
+-			#gpio-cells = <2>;
+-		};
+-		simple200: gpio-controller-200@3,600200 {
+-			compatible = "manroland,mucmc52-aux-gpio";
+-			reg = <3 0x00600200 0x1>;
+-			gpio-controller;
+-			#gpio-cells = <2>;
+-		};
+-		simple201: gpio-controller-201@3,600201 {
+-			compatible = "manroland,mucmc52-aux-gpio";
+-			reg = <3 0x00600201 0x1>;
+-			gpio-controller;
+-			#gpio-cells = <2>;
+-		};
+-		simple202: gpio-controller-202@3,600202 {
+-			compatible = "manroland,mucmc52-aux-gpio";
+-			reg = <3 0x00600202 0x1>;
+-			gpio-controller;
+-			#gpio-cells = <2>;
+-		};
+-		simple203: gpio-controller-203@3,600203 {
+-			compatible = "manroland,mucmc52-aux-gpio";
+-			reg = <3 0x00600203 0x1>;
+-			gpio-controller;
+-			#gpio-cells = <2>;
+-		};
+-		simple204: gpio-controller-204@3,600204 {
+-			compatible = "manroland,mucmc52-aux-gpio";
+-			reg = <3 0x00600204 0x1>;
+-			gpio-controller;
+-			#gpio-cells = <2>;
+-		};
+-		simple206: gpio-controller-206@3,600206 {
+-			compatible = "manroland,mucmc52-aux-gpio";
+-			reg = <3 0x00600206 0x1>;
+-			gpio-controller;
+-			#gpio-cells = <2>;
+-		};
+-		simple207: gpio-controller-207@3,600207 {
+-			compatible = "manroland,mucmc52-aux-gpio";
+-			reg = <3 0x00600207 0x1>;
+-			gpio-controller;
+-			#gpio-cells = <2>;
+-		};
+-		simple20f: gpio-controller-20f@3,60020f {
+-			compatible = "manroland,mucmc52-aux-gpio";
+-			reg = <3 0x0060020f 0x1>;
+-			gpio-controller;
+-			#gpio-cells = <2>;
+-		};
+-
+-	};
+-};
+diff --git a/arch/powerpc/boot/dts/o2d.dts b/arch/powerpc/boot/dts/o2d.dts
+deleted file mode 100644
+index 24a46f65e529..000000000000
+--- a/arch/powerpc/boot/dts/o2d.dts
++++ /dev/null
+@@ -1,43 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * O2D Device Tree Source
+- *
+- * Copyright (C) 2012 DENX Software Engineering
+- * Anatolij Gustschin <agust@denx.de>
+- */
+-
+-/include/ "o2d.dtsi"
+-
+-/ {
+-	model = "ifm,o2d";
+-	compatible = "ifm,o2d";
+-
+-	memory {
+-		reg = <0x00000000 0x08000000>;  // 128MB
+-	};
+-
+-	localbus {
+-		ranges = <0 0 0xfc000000 0x02000000
+-			  3 0 0xe3000000 0x00100000>;
+-
+-		flash@0,0 {
+-			compatible = "cfi-flash";
+-			reg = <0 0 0x02000000>;
+-			bank-width = <2>;
+-			device-width = <2>;
+-			#size-cells = <1>;
+-			#address-cells = <1>;
+-
+-			partition@60000 {
+-				label = "kernel";
+-				reg = <0x00060000 0x00260000>;
+-				read-only;
+-			};
+-			/* o2d specific partitions */
+-			partition@2c0000 {
+-				label = "o2d user defined";
+-				reg = <0x002c0000 0x01d40000>;
+-			};
+-		};
+-	};
+-};
+diff --git a/arch/powerpc/boot/dts/o2d.dtsi b/arch/powerpc/boot/dts/o2d.dtsi
+deleted file mode 100644
+index 6661955a2be4..000000000000
+--- a/arch/powerpc/boot/dts/o2d.dtsi
++++ /dev/null
+@@ -1,118 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * O2D base Device Tree Source
+- *
+- * Copyright (C) 2012 DENX Software Engineering
+- * Anatolij Gustschin <agust@denx.de>
+- */
+-
+-/include/ "mpc5200b.dtsi"
+-
+-&gpt0 {
+-	gpio-controller;
+-	fsl,has-wdt;
+-	fsl,wdt-on-boot = <0>;
+-};
+-&gpt1 { gpio-controller; };
+-
+-/ {
+-	model = "ifm,o2d";
+-	compatible = "ifm,o2d";
+-
+-	memory {
+-		reg = <0x00000000 0x04000000>;	// 64MB
+-	};
+-
+-	soc5200@f0000000 {
+-
+-		rtc@800 {
+-			status = "disabled";
+-		};
+-
+-		psc@2000 {		// PSC1
+-			compatible = "fsl,mpc5200b-psc-spi","fsl,mpc5200-psc-spi";
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			cell-index = <0>;
+-
+-			spidev@0 {
+-				compatible = "spidev";
+-				spi-max-frequency = <250000>;
+-				reg = <0>;
+-			};
+-		};
+-
+-		psc@2200 {		// PSC2
+-			status = "disabled";
+-		};
+-
+-		psc@2400 {		// PSC3
+-			status = "disabled";
+-		};
+-
+-		psc@2600 {		// PSC4
+-			compatible = "fsl,mpc5200b-psc-uart","fsl,mpc5200-psc-uart";
+-		};
+-
+-		psc@2800 {		// PSC5
+-			compatible = "fsl,mpc5200b-psc-uart","fsl,mpc5200-psc-uart";
+-		};
+-
+-		psc@2c00 {		// PSC6
+-			status = "disabled";
+-		};
+-
+-		ethernet@3000 {
+-			phy-handle = <&phy0>;
+-		};
+-
+-		mdio@3000 {
+-			phy0: ethernet-phy@0 {
+-				reg = <0>;
+-			};
+-		};
+-	};
+-
+-	localbus {
+-		ranges = <0 0 0xff000000 0x01000000
+-			  3 0 0xe3000000 0x00100000>;
+-
+-		// flash device at LocalPlus Bus CS0
+-		flash@0,0 {
+-			compatible = "cfi-flash";
+-			reg = <0 0 0x01000000>;
+-			bank-width = <1>;
+-			device-width = <2>;
+-			#size-cells = <1>;
+-			#address-cells = <1>;
+-			no-unaligned-direct-access;
+-
+-			/* common layout for all machines */
+-			partition@0 {
+-				label = "u-boot";
+-				reg = <0x00000000 0x00040000>;
+-				read-only;
+-			};
+-			partition@40000 {
+-				label = "env";
+-				reg = <0x00040000 0x00020000>;
+-				read-only;
+-			};
+-		};
+-
+-		csi@3,0 {
+-			compatible = "ifm,o2d-csi";
+-			reg = <3 0 0x00100000>;
+-			ifm,csi-clk-handle = <&gpt7>;
+-			gpios = <&gpio_simple 23 0	/* imag_capture */
+-				 &gpio_simple 26 0	/* imag_reset */
+-				 &gpio_simple 29 0>;	/* imag_master_en */
+-
+-			interrupts = <1 1 2>;		/* IRQ1, edge falling */
+-
+-			ifm,csi-addr-bus-width = <24>;
+-			ifm,csi-data-bus-width = <8>;
+-			ifm,csi-wait-cycles = <0>;
+-		};
+-	};
+-};
+diff --git a/arch/powerpc/boot/dts/o2d300.dts b/arch/powerpc/boot/dts/o2d300.dts
+deleted file mode 100644
+index 55a25b700bed..000000000000
+--- a/arch/powerpc/boot/dts/o2d300.dts
++++ /dev/null
+@@ -1,48 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * O2D300 Device Tree Source
+- *
+- * Copyright (C) 2012 DENX Software Engineering
+- * Anatolij Gustschin <agust@denx.de>
+- */
+-
+-/include/ "o2d.dtsi"
+-
+-/ {
+-	model = "ifm,o2d300";
+-	compatible = "ifm,o2d";
+-
+-	localbus {
+-		ranges = <0 0 0xfc000000 0x02000000
+-			  3 0 0xe3000000 0x00100000>;
+-		flash@0,0 {
+-			compatible = "cfi-flash";
+-			reg = <0 0 0x02000000>;
+-			bank-width = <2>;
+-			device-width = <2>;
+-			#size-cells = <1>;
+-			#address-cells = <1>;
+-
+-			partition@40000 {
+-				label = "env_1";
+-				reg = <0x00040000 0x00020000>;
+-				read-only;
+-			};
+-			partition@60000 {
+-				label = "env_2";
+-				reg = <0x00060000 0x00020000>;
+-				read-only;
+-			};
+-			partition@80000 {
+-				label = "kernel";
+-				reg = <0x00080000 0x00260000>;
+-				read-only;
+-			};
+-			/* o2d300 specific partitions */
+-			partition@2e0000 {
+-				label = "o2d300 user defined";
+-				reg = <0x002e0000 0x01d20000>;
+-			};
+-		};
+-	};
+-};
+diff --git a/arch/powerpc/boot/dts/o2dnt2.dts b/arch/powerpc/boot/dts/o2dnt2.dts
+deleted file mode 100644
+index eeba7f5507d5..000000000000
+--- a/arch/powerpc/boot/dts/o2dnt2.dts
++++ /dev/null
+@@ -1,44 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * O2DNT2 Device Tree Source
+- *
+- * Copyright (C) 2012 DENX Software Engineering
+- * Anatolij Gustschin <agust@denx.de>
+- */
+-
+-/include/ "o2d.dtsi"
+-
+-/ {
+-	model = "ifm,o2dnt2";
+-	compatible = "ifm,o2d";
+-
+-	memory {
+-		reg = <0x00000000 0x08000000>;  // 128MB
+-	};
+-
+-	localbus {
+-		ranges = <0 0 0xfc000000 0x02000000
+-			  3 0 0xe3000000 0x00100000>;
+-
+-		flash@0,0 {
+-			compatible = "cfi-flash";
+-			reg = <0 0 0x02000000>;
+-			bank-width = <2>;
+-			device-width = <2>;
+-			#size-cells = <1>;
+-			#address-cells = <1>;
+-
+-			partition@60000 {
+-				label = "kernel";
+-				reg = <0x00060000 0x00260000>;
+-				read-only;
+-			};
+-
+-			/* o2dnt2 specific partitions */
+-			partition@2c0000 {
+-				label = "o2dnt2 user defined";
+-				reg = <0x002c0000 0x01d40000>;
+-			};
+-		};
+-	};
+-};
+diff --git a/arch/powerpc/boot/dts/o2i.dts b/arch/powerpc/boot/dts/o2i.dts
+deleted file mode 100644
+index 3fb2e0ad7387..000000000000
+--- a/arch/powerpc/boot/dts/o2i.dts
++++ /dev/null
+@@ -1,29 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * O2I Device Tree Source
+- *
+- * Copyright (C) 2012 DENX Software Engineering
+- * Anatolij Gustschin <agust@denx.de>
+- */
+-
+-/include/ "o2d.dtsi"
+-
+-/ {
+-	model = "ifm,o2i";
+-	compatible = "ifm,o2d";
+-
+-	localbus {
+-		flash@0,0 {
+-			partition@60000 {
+-				label = "kernel";
+-				reg = <0x00060000 0x00260000>;
+-				read-only;
+-			};
+-			/* o2i specific partitions */
+-			partition@2c0000 {
+-				label = "o2i user defined";
+-				reg = <0x002c0000 0x00d40000>;
+-			};
+-		};
+-	};
+-};
+diff --git a/arch/powerpc/boot/dts/o2mnt.dts b/arch/powerpc/boot/dts/o2mnt.dts
+deleted file mode 100644
+index c5e0ba6e8f2b..000000000000
+--- a/arch/powerpc/boot/dts/o2mnt.dts
++++ /dev/null
+@@ -1,29 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * O2MNT Device Tree Source
+- *
+- * Copyright (C) 2012 DENX Software Engineering
+- * Anatolij Gustschin <agust@denx.de>
+- */
+-
+-/include/ "o2d.dtsi"
+-
+-/ {
+-	model = "ifm,o2mnt";
+-	compatible = "ifm,o2d";
+-
+-	localbus {
+-		flash@0,0 {
+-			partition@60000 {
+-				label = "kernel";
+-				reg = <0x00060000 0x00260000>;
+-				read-only;
+-			};
+-			/* add o2mnt specific partitions */
+-			partition@2c0000 {
+-				label = "o2mnt user defined";
+-				reg = <0x002c0000 0x00d40000>;
+-			};
+-		};
+-	};
+-};
+diff --git a/arch/powerpc/boot/dts/o3dnt.dts b/arch/powerpc/boot/dts/o3dnt.dts
+deleted file mode 100644
+index fd00396b0593..000000000000
+--- a/arch/powerpc/boot/dts/o3dnt.dts
++++ /dev/null
+@@ -1,44 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * O3DNT Device Tree Source
+- *
+- * Copyright (C) 2012 DENX Software Engineering
+- * Anatolij Gustschin <agust@denx.de>
+- */
+-
+-/include/ "o2d.dtsi"
+-
+-/ {
+-	model = "ifm,o3dnt";
+-	compatible = "ifm,o2d";
+-
+-	memory {
+-		reg = <0x00000000 0x04000000>;  // 64MB
+-	};
+-
+-	localbus {
+-		ranges = <0 0 0xfc000000 0x01000000
+-			  3 0 0xe3000000 0x00100000>;
+-
+-		flash@0,0 {
+-			compatible = "cfi-flash";
+-			reg = <0 0 0x01000000>;
+-			bank-width = <2>;
+-			device-width = <2>;
+-			#size-cells = <1>;
+-			#address-cells = <1>;
+-
+-			partition@60000 {
+-				label = "kernel";
+-				reg = <0x00060000 0x00260000>;
+-				read-only;
+-			};
+-
+-			/* o3dnt specific partitions */
+-			partition@2c0000 {
+-				label = "o3dnt user defined";
+-				reg = <0x002c0000 0x00d40000>;
+-			};
+-		};
+-	};
+-};
+diff --git a/arch/powerpc/boot/dts/pcm030.dts b/arch/powerpc/boot/dts/pcm030.dts
+deleted file mode 100644
+index b1bc731f7afd..000000000000
+--- a/arch/powerpc/boot/dts/pcm030.dts
++++ /dev/null
+@@ -1,106 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * phyCORE-MPC5200B-tiny (pcm030) board Device Tree Source
+- *
+- * Copyright 2006 Pengutronix
+- * Sascha Hauer <s.hauer@pengutronix.de>
+- * Copyright 2007 Pengutronix
+- * Juergen Beisert <j.beisert@pengutronix.de>
+- */
+-
+-/include/ "mpc5200b.dtsi"
+-
+-&gpt0 { fsl,has-wdt; };
+-&gpt2 { gpio-controller; };
+-&gpt3 { gpio-controller; };
+-&gpt4 { gpio-controller; };
+-&gpt5 { gpio-controller; };
+-&gpt6 { gpio-controller; };
+-&gpt7 { gpio-controller; };
+-
+-/ {
+-	model = "phytec,pcm030";
+-	compatible = "phytec,pcm030";
+-
+-	soc5200@f0000000 {
+-		audioplatform: psc@2000 { /* PSC1 in ac97 mode */
+-			compatible = "mpc5200b-psc-ac97","fsl,mpc5200b-psc-ac97";
+-			cell-index = <0>;
+-		};
+-
+-		/* PSC2 port is used by CAN1/2 */
+-		psc@2200 {
+-			status = "disabled";
+-		};
+-
+-		psc@2400 { /* PSC3 in UART mode */
+-			compatible = "fsl,mpc5200b-psc-uart","fsl,mpc5200-psc-uart";
+-		};
+-
+-		/* PSC4 is ??? */
+-		psc@2600 {
+-			status = "disabled";
+-		};
+-
+-		/* PSC5 is ??? */
+-		psc@2800 {
+-			status = "disabled";
+-		};
+-
+-		psc@2c00 { /* PSC6 in UART mode */
+-			compatible = "fsl,mpc5200b-psc-uart","fsl,mpc5200-psc-uart";
+-		};
+-
+-		ethernet@3000 {
+-			phy-handle = <&phy0>;
+-		};
+-
+-		mdio@3000 {
+-			phy0: ethernet-phy@0 {
+-				reg = <0>;
+-			};
+-		};
+-
+-		i2c@3d40 {
+-			rtc@51 {
+-				compatible = "nxp,pcf8563";
+-				reg = <0x51>;
+-			};
+-			eeprom@52 {
+-				compatible = "catalyst,24c32", "atmel,24c32";
+-				reg = <0x52>;
+-				pagesize = <32>;
+-			};
+-		};
+-
+-		sram@8000 {
+-			compatible = "fsl,mpc5200b-sram","fsl,mpc5200-sram";
+-			reg = <0x8000 0x4000>;
+-		};
+-	};
+-
+-	pci@f0000d00 {
+-		interrupt-map-mask = <0xf800 0 0 7>;
+-		interrupt-map = <0xc000 0 0 1 &mpc5200_pic 0 0 3 // 1st slot
+-				 0xc000 0 0 2 &mpc5200_pic 1 1 3
+-				 0xc000 0 0 3 &mpc5200_pic 1 2 3
+-				 0xc000 0 0 4 &mpc5200_pic 1 3 3
+-
+-				 0xc800 0 0 1 &mpc5200_pic 1 1 3 // 2nd slot
+-				 0xc800 0 0 2 &mpc5200_pic 1 2 3
+-				 0xc800 0 0 3 &mpc5200_pic 1 3 3
+-				 0xc800 0 0 4 &mpc5200_pic 0 0 3>;
+-		ranges = <0x42000000 0 0x80000000 0x80000000 0 0x20000000
+-			  0x02000000 0 0xa0000000 0xa0000000 0 0x10000000
+-			  0x01000000 0 0x00000000 0xb0000000 0 0x01000000>;
+-	};
+-
+-	localbus {
+-		status = "disabled";
+-	};
+-
+-	sound {
+-		compatible = "phytec,pcm030-audio-fabric";
+-		asoc-platform = <&audioplatform>;
+-	};
+-};
+diff --git a/arch/powerpc/boot/dts/pcm032.dts b/arch/powerpc/boot/dts/pcm032.dts
+deleted file mode 100644
+index 780e13d99e7b..000000000000
+--- a/arch/powerpc/boot/dts/pcm032.dts
++++ /dev/null
+@@ -1,183 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * phyCORE-MPC5200B-IO (pcm032) board Device Tree Source
+- *
+- * Copyright (C) 2006-2009 Pengutronix
+- * Sascha Hauer, Juergen Beisert, Wolfram Sang <kernel@pengutronix.de>
+- */
+-
+-/include/ "mpc5200b.dtsi"
+-
+-&gpt0 { fsl,has-wdt; };
+-&gpt2 { gpio-controller; };
+-&gpt3 { gpio-controller; };
+-&gpt4 { gpio-controller; };
+-&gpt5 { gpio-controller; };
+-&gpt6 { gpio-controller; };
+-&gpt7 { gpio-controller; };
+-
+-/ {
+-	model = "phytec,pcm032";
+-	compatible = "phytec,pcm032";
+-
+-	memory {
+-		reg = <0x00000000 0x08000000>;	// 128MB
+-	};
+-
+-	soc5200@f0000000 {
+-		psc@2000 {	/* PSC1 is ac97 */
+-			compatible = "fsl,mpc5200b-psc-ac97","fsl,mpc5200-psc-ac97";
+-			cell-index = <0>;
+-		};
+-
+-		/* PSC2 port is used by CAN1/2 */
+-		psc@2200 {
+-			status = "disabled";
+-		};
+-
+-		psc@2400 { /* PSC3 in UART mode */
+-			compatible = "fsl,mpc5200b-psc-uart","fsl,mpc5200-psc-uart";
+-		};
+-
+-		/* PSC4 is ??? */
+-		psc@2600 {
+-			status = "disabled";
+-		};
+-
+-		/* PSC5 is ??? */
+-		psc@2800 {
+-			status = "disabled";
+-		};
+-
+-		psc@2c00 { /* PSC6 in UART mode */
+-			compatible = "fsl,mpc5200b-psc-uart","fsl,mpc5200-psc-uart";
+-		};
+-
+-		ethernet@3000 {
+-			phy-handle = <&phy0>;
+-		};
+-
+-		mdio@3000 {
+-			phy0: ethernet-phy@0 {
+-				reg = <0>;
+-			};
+-		};
+-
+-		i2c@3d40 {
+-			rtc@51 {
+-				compatible = "nxp,pcf8563";
+-				reg = <0x51>;
+-			};
+-			eeprom@52 {
+-				compatible = "catalyst,24c32", "atmel,24c32";
+-				reg = <0x52>;
+-				pagesize = <32>;
+-			};
+-		};
+-	};
+-
+-	pci@f0000d00 {
+-		interrupt-map-mask = <0xf800 0 0 7>;
+-		interrupt-map = <0xc000 0 0 1 &mpc5200_pic 0 0 3 // 1st slot
+-				 0xc000 0 0 2 &mpc5200_pic 1 1 3
+-				 0xc000 0 0 3 &mpc5200_pic 1 2 3
+-				 0xc000 0 0 4 &mpc5200_pic 1 3 3
+-
+-				 0xc800 0 0 1 &mpc5200_pic 1 1 3 // 2nd slot
+-				 0xc800 0 0 2 &mpc5200_pic 1 2 3
+-				 0xc800 0 0 3 &mpc5200_pic 1 3 3
+-				 0xc800 0 0 4 &mpc5200_pic 0 0 3>;
+-		ranges = <0x42000000 0 0x80000000 0x80000000 0 0x20000000
+-			  0x02000000 0 0xa0000000 0xa0000000 0 0x10000000
+-			  0x01000000 0 0x00000000 0xb0000000 0 0x01000000>;
+-	};
+-
+-	localbus {
+-		ranges = <0 0 0xfe000000 0x02000000
+-			  1 0 0xfc000000 0x02000000
+-			  2 0 0xfbe00000 0x00200000
+-			  3 0 0xf9e00000 0x02000000
+-			  4 0 0xf7e00000 0x02000000
+-			  5 0 0xe6000000 0x02000000
+-			  6 0 0xe8000000 0x02000000
+-			  7 0 0xea000000 0x02000000>;
+-
+-		flash@0,0 {
+-			compatible = "cfi-flash";
+-			reg = <0 0 0x02000000>;
+-			bank-width = <4>;
+-			#size-cells = <1>;
+-			#address-cells = <1>;
+-
+-			partition@0 {
+-				label = "ubootl";
+-				reg = <0x00000000 0x00040000>;
+-			};
+-			partition@40000 {
+-				label = "kernel";
+-				reg = <0x00040000 0x001c0000>;
+-			};
+-			partition@200000 {
+-				label = "jffs2";
+-				reg = <0x00200000 0x01d00000>;
+-			};
+-			partition@1f00000 {
+-				label = "uboot";
+-				reg = <0x01f00000 0x00040000>;
+-			};
+-			partition@1f40000 {
+-				label = "env";
+-				reg = <0x01f40000 0x00040000>;
+-			};
+-			partition@1f80000 {
+-				label = "oftree";
+-				reg = <0x01f80000 0x00040000>;
+-			};
+-			partition@1fc0000 {
+-				label = "space";
+-				reg = <0x01fc0000 0x00040000>;
+-			};
+-		};
+-
+-		sram@2,0 {
+-			compatible = "mtd-ram";
+-			reg = <2 0 0x00200000>;
+-			bank-width = <2>;
+-		};
+-
+-		/*
+-		 * example snippets for FPGA
+-		 *
+-		 * fpga@3,0 {
+-		 *	 compatible = "fpga_driver";
+-		 *	 reg = <3 0 0x02000000>;
+-		 *	 bank-width = <4>;
+-		 * };
+-		 *
+-		 * fpga@4,0 {
+-		 *	 compatible = "fpga_driver";
+-		 *	 reg = <4 0 0x02000000>;
+-		 *	 bank-width = <4>;
+-		 * };
+-		 */
+-
+-		/*
+-		 * example snippets for free chipselects
+-		 *
+-		 * device@5,0 {
+-		 *	 compatible = "custom_driver";
+-		 *	 reg = <5 0 0x02000000>;
+-		 * };
+-		 *
+-		 * device@6,0 {
+-		 *	 compatible = "custom_driver";
+-		 *	 reg = <6 0 0x02000000>;
+-		 * };
+-		 *
+-		 * device@7,0 {
+-		 *	 compatible = "custom_driver";
+-		 *	 reg = <7 0 0x02000000>;
+-		 * };
+-		 */
+-	};
+-};
+diff --git a/arch/powerpc/boot/dts/pdm360ng.dts b/arch/powerpc/boot/dts/pdm360ng.dts
+deleted file mode 100644
+index 67c3b9db75d7..000000000000
+--- a/arch/powerpc/boot/dts/pdm360ng.dts
++++ /dev/null
+@@ -1,195 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * Device Tree Source for IFM PDM360NG.
+- *
+- * Copyright 2009 - 2010 DENX Software Engineering.
+- * Anatolij Gustschin <agust@denx.de>
+- *
+- * Based on MPC5121E ADS dts.
+- * Copyright 2008 Freescale Semiconductor Inc.
+- */
+-
+-#include "mpc5121.dtsi"
+-
+-/ {
+-	model = "pdm360ng";
+-	compatible = "ifm,pdm360ng", "fsl,mpc5121";
+-	#address-cells = <1>;
+-	#size-cells = <1>;
+-	interrupt-parent = <&ipic>;
+-
+-	memory {
+-		device_type = "memory";
+-		reg = <0x00000000 0x20000000>;	// 512MB at 0
+-	};
+-
+-	nfc@40000000 {
+-		bank-width = <0x1>;
+-		chips = <0x1>;
+-
+-		partition@0 {
+-			label = "nand0";
+-			reg = <0x0 0x40000000>;
+-		};
+-	};
+-
+-	localbus@80000020 {
+-		ranges = <0x0 0x0 0xf0000000 0x10000000   /* Flash */
+-			  0x2 0x0 0x50040000 0x00020000>; /* CS2: MRAM */
+-
+-		flash@0,0 {
+-			compatible = "amd,s29gl01gp", "cfi-flash";
+-			reg = <0 0x00000000 0x08000000
+-			       0 0x08000000 0x08000000>;
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			bank-width = <4>;
+-			device-width = <2>;
+-
+-			partition@0 {
+-				label = "u-boot";
+-				reg = <0x00000000 0x00080000>;
+-				read-only;
+-			};
+-			partition@80000 {
+-				label = "environment";
+-				reg = <0x00080000 0x00080000>;
+-				read-only;
+-			};
+-			partition@100000 {
+-				label = "splash-image";
+-				reg = <0x00100000 0x00080000>;
+-				read-only;
+-			};
+-			partition@180000 {
+-				label = "device-tree";
+-				reg = <0x00180000 0x00040000>;
+-			};
+-			partition@1c0000 {
+-				label = "kernel";
+-				reg = <0x001c0000 0x00500000>;
+-			};
+-			partition@6c0000 {
+-				label = "filesystem";
+-				reg = <0x006c0000 0x07940000>;
+-			};
+-		};
+-
+-		mram0@2,0 {
+-			compatible = "mtd-ram";
+-			reg = <2 0x00000 0x10000>;
+-			bank-width = <2>;
+-		};
+-
+-		mram1@2,10000 {
+-			compatible = "mtd-ram";
+-			reg = <2 0x010000 0x10000>;
+-			bank-width = <2>;
+-		};
+-	};
+-
+-	soc@80000000 {
+-
+-		i2c@1700 {
+-			fsl,preserve-clocking;
+-
+-			eeprom@50 {
+-				compatible = "atmel,24c01";
+-				reg = <0x50>;
+-			};
+-
+-			rtc@68 {
+-				compatible = "st,m41t00";
+-				reg = <0x68>;
+-			};
+-		};
+-
+-		i2c@1720 {
+-			status = "disabled";
+-		};
+-
+-		i2c@1740 {
+-			fsl,preserve-clocking;
+-		};
+-
+-		ethernet@2800 {
+-			phy-handle = <&phy0>;
+-		};
+-
+-		mdio@2800 {
+-			phy0: ethernet-phy@1f {
+-				compatible = "smsc,lan8700";
+-				reg = <0x1f>;
+-			};
+-		};
+-
+-		/* USB1 using external ULPI PHY */
+-		usb@3000 {
+-			dr_mode = "host";
+-		};
+-
+-		/* USB0 using internal UTMI PHY */
+-		usb@4000 {
+-			fsl,invert-pwr-fault;
+-		};
+-
+-		psc@11000 {
+-			compatible = "fsl,mpc5121-psc-uart", "fsl,mpc5121-psc";
+-		};
+-
+-		psc@11100 {
+-			compatible = "fsl,mpc5121-psc-uart", "fsl,mpc5121-psc";
+-		};
+-
+-		psc@11200 {
+-			compatible = "fsl,mpc5121-psc-uart", "fsl,mpc5121-psc";
+-		};
+-
+-		psc@11300 {
+-			compatible = "fsl,mpc5121-psc-uart", "fsl,mpc5121-psc";
+-		};
+-
+-		psc@11400 {
+-			compatible = "fsl,mpc5121-psc-uart", "fsl,mpc5121-psc";
+-		};
+-
+-		psc@11500 {
+-			status = "disabled";
+-		};
+-
+-		psc@11600 {
+-			compatible = "fsl,mpc5121-psc-uart", "fsl,mpc5121-psc";
+-		};
+-
+-		psc@11700 {
+-			status = "disabled";
+-		};
+-
+-		psc@11800 {
+-			compatible = "fsl,mpc5121-psc-uart", "fsl,mpc5121-psc";
+-		};
+-
+-		psc@11900 {
+-			compatible = "fsl,mpc5121-psc-spi", "fsl,mpc5121-psc";
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-
+-			/* ADS7845 touch screen controller */
+-			ts@0 {
+-				compatible = "ti,ads7846";
+-				reg = <0x0>;
+-				spi-max-frequency = <3000000>;
+-				/* pen irq is GPIO25 */
+-				interrupts = <78 0x8>;
+-			};
+-		};
+-
+-		psc@11a00 {
+-			status = "disabled";
+-		};
+-
+-		psc@11b00 {
+-			compatible = "fsl,mpc5121-psc-uart", "fsl,mpc5121-psc";
+-		};
+-	};
+-};
+diff --git a/arch/powerpc/boot/dts/uc101.dts b/arch/powerpc/boot/dts/uc101.dts
+deleted file mode 100644
+index 2e34d019178b..000000000000
+--- a/arch/powerpc/boot/dts/uc101.dts
++++ /dev/null
+@@ -1,152 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * Manroland uc101 board Device Tree Source
+- *
+- * Copyright (C) 2009 DENX Software Engineering GmbH
+- * Heiko Schocher <hs@denx.de>
+- * Copyright 2006-2007 Secret Lab Technologies Ltd.
+- */
+-
+-/include/ "mpc5200b.dtsi"
+-
+-&gpt0 { gpio-controller; };
+-&gpt1 { gpio-controller; };
+-&gpt2 { gpio-controller; };
+-&gpt3 { gpio-controller; };
+-&gpt4 { gpio-controller; };
+-&gpt5 { gpio-controller; };
+-&gpt6 { gpio-controller; };
+-&gpt7 { gpio-controller; };
+-
+-/ {
+-	model = "manroland,uc101";
+-	compatible = "manroland,uc101";
+-
+-	soc5200@f0000000 {
+-		rtc@800 {
+-			status = "disabled";
+-		};
+-
+-		can@900 {
+-			status = "disabled";
+-		};
+-
+-		can@980 {
+-			status = "disabled";
+-		};
+-
+-		spi@f00 {
+-			status = "disabled";
+-		};
+-
+-		usb@1000 {
+-			status = "disabled";
+-		};
+-
+-		psc@2000 {	// PSC1
+-			compatible = "fsl,mpc5200b-psc-uart","fsl,mpc5200-psc-uart";
+-		};
+-
+-		psc@2200 {	// PSC2
+-			compatible = "fsl,mpc5200b-psc-uart","fsl,mpc5200-psc-uart";
+-		};
+-
+-		psc@2400 {	// PSC3
+-			status = "disabled";
+-		};
+-
+-		psc@2600 {	// PSC4
+-			status = "disabled";
+-		};
+-
+-		psc@2800 {	// PSC5
+-			status = "disabled";
+-		};
+-
+-		psc@2c00 {	// PSC6
+-			compatible = "fsl,mpc5200b-psc-uart","fsl,mpc5200-psc-uart";
+-		};
+-
+-		ethernet@3000 {
+-			phy-handle = <&phy0>;
+-		};
+-
+-		mdio@3000 {
+-			phy0: ethernet-phy@0 {
+-				compatible = "intel,lxt971";
+-				reg = <0>;
+-			};
+-		};
+-
+-		i2c@3d00 {
+-			status = "disabled";
+-		};
+-
+-		i2c@3d40 {
+-			fsl,preserve-clocking;
+-			clock-frequency = <400000>;
+-
+-			hwmon@2c {
+-				compatible = "ad,adm9240";
+-				reg = <0x2c>;
+-			};
+-			rtc@51 {
+-				compatible = "nxp,pcf8563";
+-				reg = <0x51>;
+-			};
+-		};
+-	};
+-
+-	pci@f0000d00 {
+-		status = "disabled";
+-	};
+-
+-	localbus {
+-		ranges = <0 0 0xff800000 0x00800000
+-			  1 0 0x80000000 0x00800000
+-			  3 0 0x80000000 0x00800000>;
+-
+-		flash@0,0 {
+-			compatible = "cfi-flash";
+-			reg = <0 0 0x00800000>;
+-			bank-width = <2>;
+-			device-width = <2>;
+-			#size-cells = <1>;
+-			#address-cells = <1>;
+-
+-			partition@0 {
+-				label = "DTS";
+-				reg = <0x0 0x00100000>;
+-			};
+-			partition@100000 {
+-				label = "Kernel";
+-				reg = <0x100000 0x00200000>;
+-			};
+-			partition@300000 {
+-				label = "RootFS";
+-				reg = <0x00300000 0x00200000>;
+-			};
+-			partition@500000 {
+-				label = "user";
+-				reg = <0x00500000 0x00200000>;
+-			};
+-			partition@700000 {
+-				label = "U-Boot";
+-				reg = <0x00700000 0x00040000>;
+-			};
+-			partition@740000 {
+-				label = "Env";
+-				reg = <0x00740000 0x00010000>;
+-			};
+-			partition@750000 {
+-				label = "red. Env";
+-				reg = <0x00750000 0x00010000>;
+-			};
+-			partition@760000 {
+-				label = "reserve";
+-				reg = <0x00760000 0x000a0000>;
+-			};
+-		};
+-
+-	};
+-};
+-- 
+2.30.2
 
