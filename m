@@ -1,41 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 563BF42A46A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 14:29:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA0C142A4B8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 14:39:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HTFNX6cvHz2yPG
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 23:29:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HTFbQ1HSzz3cFy
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 23:39:14 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cyGjr5WC;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=yp9m=pa=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=cyGjr5WC; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HTFN705rdz2xrq
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Oct 2021 23:29:26 +1100 (AEDT)
-Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com
- [66.24.58.225])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 8122460E74;
- Tue, 12 Oct 2021 12:29:21 +0000 (UTC)
-Date: Tue, 12 Oct 2021 08:29:20 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Miroslav Benes <mbenes@suse.cz>
-Subject: Re: [PATCH 1/2] ftrace: disable preemption on the testing of recursion
-Message-ID: <20211012082920.1f8d6557@gandalf.local.home>
-In-Reply-To: <alpine.LSU.2.21.2110121421260.3394@pobox.suse.cz>
-References: <8c7de46d-9869-aa5e-2bb9-5dbc2eda395e@linux.alibaba.com>
- <a8756482-024c-c858-b3d1-1ffa9a5eb3f7@linux.alibaba.com>
- <alpine.LSU.2.21.2110121421260.3394@pobox.suse.cz>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HTFXv71Zlz2yQH
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Oct 2021 23:37:03 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19CB4EVX025551; 
+ Tue, 12 Oct 2021 08:36:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=N/oQw61XSfsHTPLzRuzCMqE363lBiTZg1nWSHVzFm2o=;
+ b=cyGjr5WCW3bIjs6qjBqvt/aNfG5/tHXDimYPreaDNSsGPmMZmocfBNjc866diugqoC4d
+ jL1LkFIqHS6ulXQek+3R/froEUT57vAbF2mVYtewbNuBcp+AkuURxz+6M07GX86hGIg0
+ 2OvtY6yKBr3GZQQLY6GoppjmQhpbyqiggAegWEZfR3yoKcxEOuwcFrnZCH2EvD8Wrixc
+ qY/T21V6IRATCQrAMuGJvS8Xq2whajMliN3bW6nqbFPSf2nnjuO7Czm6x0Vs0RACP7dh
+ CClvY7B5xpacoyivKlWBExgIRJP6cZOAuLQszjM+yRWFRvuajeSe0r52ZTYiKjMLov/i 1A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3bn0x2v2m1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 12 Oct 2021 08:36:42 -0400
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 19CCINrQ002407;
+ Tue, 12 Oct 2021 08:36:40 -0400
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3bn0x2v2j1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 12 Oct 2021 08:36:40 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19CCDqpS029292;
+ Tue, 12 Oct 2021 12:31:37 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma06ams.nl.ibm.com with ESMTP id 3bk2bj8hkj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 12 Oct 2021 12:31:36 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 19CCVNAW52494830
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 12 Oct 2021 12:31:23 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2C037A405E;
+ Tue, 12 Oct 2021 12:31:23 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E167FA407D;
+ Tue, 12 Oct 2021 12:31:07 +0000 (GMT)
+Received: from hbathini-workstation.ibm.com.com (unknown [9.43.27.69])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 12 Oct 2021 12:31:07 +0000 (GMT)
+From: Hari Bathini <hbathini@linux.ibm.com>
+To: naveen.n.rao@linux.ibm.com, christophe.leroy@csgroup.eu,
+ mpe@ellerman.id.au, ast@kernel.org, daniel@iogearbox.net
+Subject: [RESEND PATCH v4 0/8] bpf powerpc: Add BPF_PROBE_MEM support in
+ powerpc JIT compiler
+Date: Tue, 12 Oct 2021 18:00:48 +0530
+Message-Id: <20211012123056.485795-1-hbathini@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: J7roR7WtHHmlrd6HhJXQVmO527xKLI8E
+X-Proofpoint-GUID: LuoesbDpX86Vlo3-kzooh5QvXBj9_-HF
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-10-12_03,2021-10-12_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 clxscore=1015
+ mlxlogscore=866 adultscore=0 malwarescore=0 phishscore=0
+ priorityscore=1501 bulkscore=0 lowpriorityscore=0 suspectscore=0
+ impostorscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2109230001 definitions=main-2110120073
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,65 +106,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?UTF-8?B?546L6LSH?= <yun.wang@linux.alibaba.com>,
- "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Guo Ren <guoren@kernel.org>, Jisheng Zhang <jszhang@kernel.org>,
- "H. Peter Anvin" <hpa@zytor.com>, live-patching@vger.kernel.org,
- linux-riscv@lists.infradead.org, Paul Mackerras <paulus@samba.org>,
- Joe Lawrence <joe.lawrence@redhat.com>, Helge Deller <deller@gmx.de>,
- x86@kernel.org, linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
- Petr Mladek <pmladek@suse.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Jiri Kosina <jikos@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Borislav Petkov <bp@alien8.de>, Josh Poimboeuf <jpoimboe@redhat.com>,
- Thomas Gleixner <tglx@linutronix.de>, linux-parisc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Colin Ian King <colin.king@canonical.com>, linuxppc-dev@lists.ozlabs.org
+Cc: songliubraving@fb.com, netdev@vger.kernel.org, john.fastabend@gmail.com,
+ andrii@kernel.org, kpsingh@kernel.org, paulus@samba.org, yhs@fb.com,
+ bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, kafai@fb.com,
+ Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 12 Oct 2021 14:24:43 +0200 (CEST)
-Miroslav Benes <mbenes@suse.cz> wrote:
+Patch #1 & #2 are simple cleanup patches. Patch #3 refactors JIT
+compiler code with the aim to simplify adding BPF_PROBE_MEM support.
+Patch #4 introduces PPC_RAW_BRANCH() macro instead of open coding
+branch instruction. Patch #5 & #7 add BPF_PROBE_MEM support for PPC64
+& PPC32 JIT compilers respectively. Patch #6 & #8 handle bad userspace
+pointers for PPC64 & PPC32 cases respectively.
 
-> > +++ b/kernel/livepatch/patch.c
-> > @@ -52,11 +52,6 @@ static void notrace klp_ftrace_handler(unsigned long ip,
-> >  	bit = ftrace_test_recursion_trylock(ip, parent_ip);
-> >  	if (WARN_ON_ONCE(bit < 0))
-> >  		return;
-> > -	/*
-> > -	 * A variant of synchronize_rcu() is used to allow patching functions
-> > -	 * where RCU is not watching, see klp_synchronize_transition().
-> > -	 */
-> > -	preempt_disable_notrace();
-> > 
-> >  	func = list_first_or_null_rcu(&ops->func_stack, struct klp_func,
-> >  				      stack_node);
-> > @@ -120,7 +115,6 @@ static void notrace klp_ftrace_handler(unsigned long ip,
-> >  	klp_arch_set_pc(fregs, (unsigned long)func->new_func);
-> > 
-> >  unlock:
-> > -	preempt_enable_notrace();
-> >  	ftrace_test_recursion_unlock(bit);
-> >  }  
-> 
-> I don't like this change much. We have preempt_disable there not because 
-> of ftrace_test_recursion, but because of RCU. ftrace_test_recursion was 
-> added later. Yes, it would work with the change, but it would also hide 
-> things which should not be hidden in my opinion.
 
-Agreed, but I believe the change is fine, but requires a nice comment to
-explain what you said above.
+Resending v4 after rebasing the series on top of bpf fix patches
+posted by Naveen:
 
-Thus, before the "ftrace_test_recursion_trylock()" we need:
+  - https://patchwork.ozlabs.org/project/linuxppc-dev/cover/cover.1633464148.git.naveen.n.rao@linux.vnet.ibm.com/
+    ("[v2,00/10] powerpc/bpf: Various fixes")
 
-	/*
-	 * The ftrace_test_recursion_trylock() will disable preemption,
-	 * which is required for the variant of synchronize_rcu() that is
-	 * used to allow patching functions where RCU is not watching.
-	 * See klp_synchronize_transition() for more details.
-	 */
+Also, added Reviewed-by tag from Christophe for patches #3, #5, #6, #7 & #8.
 
--- Steve
+
+Hari Bathini (4):
+  bpf powerpc: refactor JIT compiler code
+  powerpc/ppc-opcode: introduce PPC_RAW_BRANCH() macro
+  bpf ppc32: Add BPF_PROBE_MEM support for JIT
+  bpf ppc32: Access only if addr is kernel address
+
+Ravi Bangoria (4):
+  bpf powerpc: Remove unused SEEN_STACK
+  bpf powerpc: Remove extra_pass from bpf_jit_build_body()
+  bpf ppc64: Add BPF_PROBE_MEM support for JIT
+  bpf ppc64: Access only if addr is kernel address
+
+ arch/powerpc/include/asm/ppc-opcode.h |   2 +
+ arch/powerpc/net/bpf_jit.h            |  17 ++++-
+ arch/powerpc/net/bpf_jit_comp.c       |  68 +++++++++++++++--
+ arch/powerpc/net/bpf_jit_comp32.c     | 101 ++++++++++++++++++++++----
+ arch/powerpc/net/bpf_jit_comp64.c     |  72 ++++++++++++++----
+ 5 files changed, 219 insertions(+), 41 deletions(-)
+
+-- 
+2.31.1
+
