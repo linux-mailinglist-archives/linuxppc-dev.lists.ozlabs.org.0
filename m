@@ -1,100 +1,101 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08C2F42A48B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 14:34:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42B8F42A495
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 14:36:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HTFTc3z5gz3bhm
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 23:34:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HTFX76XXHz305J
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 23:36:23 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TdsYUyEc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BCojWLS2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=TdsYUyEc; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ header.s=pp1 header.b=BCojWLS2; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HTFS35lTLz2yWN
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Oct 2021 23:32:51 +1100 (AEDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19CAgPAS013150; 
- Tue, 12 Oct 2021 08:32:31 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HTFT808T7z305j
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Oct 2021 23:33:47 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19CABsEh031675; 
+ Tue, 12 Oct 2021 08:33:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=CqFXZneJPht/nn5GQ3+tRXE1/32B4G/e1aRS2zO7rkY=;
- b=TdsYUyEcLWOy5XDuq7OTHSBYSm/lHhtfJ9/NSAZXc12GdVjH4y471kSc99Whk8/WuquW
- SIJrjPd8gJUurgaCJqaJpLMKDAdriisnItCeSX1RT0kZpey9tG3qi3wnrRy+93NoNoTz
- OAswRFosuEE4YUms1T71QCos9N3dky2m5ScyOzp9WtwckbY8jM3HRrHipIhzm1j+FnLE
- IJ39rZ+RmwQyNdvtrlYadq3ya85fmYAAZTrSZ90igSub6a2DGosoXHw+/i5AHglvhgIw
- y3qtoO2JC4QX+2As5U5ijXGPkwqswnhUWA++jVyoB3bUS/Nt7dvv/EtOM6VShiVNV6St jw== 
+ bh=7lLGOPrKMF4bMgW8S8jgti9NsKuoNlLN502s+7L2K8s=;
+ b=BCojWLS2KPURznKKcGZ4ZnocbZfO3DHtUqMotu6YIlibDQVY+8iWenhEgl730jDYshlY
+ 4U/F0sk7Tss4xPk/sKzJXPzJ959Cear7TK5DEy8IUXgWORQBEX3KcK+kA03FWO14XdM3
+ Ivhfnw/NrPujNOP4BjGrOkVQY1iUDsNKymR7xtTyN6Jm8c8fM6AVZ6WLMJu3pR94Xw5Z
+ 7XOXFdJTPfGXb+uOv9AO2CyyslouS7e9c6gDPK4aZ7u1V4trKvGFtiP3wHxNP/x+SkR0
+ i9g+JENSCIp9Eb7UAqIDmwt2FGoODHokX9gb3WZGzbQSeENz/C0c2FjVRVCrW+9ss0g0 kA== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3bn66qnybr-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3bn8d1339g-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Oct 2021 08:32:30 -0400
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 19CC9jDf030132;
- Tue, 12 Oct 2021 08:32:30 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3bn66qnyb2-1
+ Tue, 12 Oct 2021 08:33:27 -0400
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 19CCHU4R021930;
+ Tue, 12 Oct 2021 08:33:26 -0400
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3bn8d1338n-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Oct 2021 08:32:30 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19CCDNWd029519;
- Tue, 12 Oct 2021 12:32:28 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma03ams.nl.ibm.com with ESMTP id 3bk2q9gcfv-1
+ Tue, 12 Oct 2021 08:33:26 -0400
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19CCX81j005779;
+ Tue, 12 Oct 2021 12:33:23 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma01fra.de.ibm.com with ESMTP id 3bk2q9er6y-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Oct 2021 12:32:27 +0000
+ Tue, 12 Oct 2021 12:33:23 +0000
 Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
  [9.149.105.59])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 19CCWGp249938936
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 19CCQtoI48562544
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 12 Oct 2021 12:32:16 GMT
+ Tue, 12 Oct 2021 12:26:55 GMT
 Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0B34AA407E;
- Tue, 12 Oct 2021 12:32:16 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 77E6FA4070;
+ Tue, 12 Oct 2021 12:32:31 +0000 (GMT)
 Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4B02FA4072;
- Tue, 12 Oct 2021 12:32:00 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 68AB6A4040;
+ Tue, 12 Oct 2021 12:32:17 +0000 (GMT)
 Received: from hbathini-workstation.ibm.com.com (unknown [9.43.27.69])
  by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 12 Oct 2021 12:31:59 +0000 (GMT)
+ Tue, 12 Oct 2021 12:32:16 +0000 (GMT)
 From: Hari Bathini <hbathini@linux.ibm.com>
 To: naveen.n.rao@linux.ibm.com, christophe.leroy@csgroup.eu,
  mpe@ellerman.id.au, ast@kernel.org, daniel@iogearbox.net
-Subject: [RESEND PATCH v4 3/8] bpf powerpc: refactor JIT compiler code
-Date: Tue, 12 Oct 2021 18:00:51 +0530
-Message-Id: <20211012123056.485795-4-hbathini@linux.ibm.com>
+Subject: [RESEND PATCH v4 4/8] powerpc/ppc-opcode: introduce PPC_RAW_BRANCH()
+ macro
+Date: Tue, 12 Oct 2021 18:00:52 +0530
+Message-Id: <20211012123056.485795-5-hbathini@linux.ibm.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20211012123056.485795-1-hbathini@linux.ibm.com>
 References: <20211012123056.485795-1-hbathini@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: vSaUOpWQQOFHiBbcdio9f_hHYIKZ8Jcd
-X-Proofpoint-GUID: rHPW4ZzJJI2fYJDFUgRGIEfGGCYI0hkE
+X-Proofpoint-ORIG-GUID: UvKzsD3V1mmCWBCl6Rhu_bne70frRXHE
+X-Proofpoint-GUID: 5ZY2ykKOhDr1DPItQiJdhTGOsc_a_wBy
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
  definitions=2021-10-12_03,2021-10-12_01,2020-04-07_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- spamscore=0 impostorscore=0 suspectscore=0 bulkscore=0 phishscore=0
- clxscore=1015 mlxlogscore=999 priorityscore=1501 mlxscore=0 adultscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ bulkscore=0 impostorscore=0
+ lowpriorityscore=0 mlxscore=0 mlxlogscore=935 priorityscore=1501
+ malwarescore=0 phishscore=0 clxscore=1015 adultscore=0 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2109230001 definitions=main-2110120073
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -115,131 +116,46 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Refactor powerpc LDX JITing code to simplify adding BPF_PROBE_MEM
-support.
+Define and use PPC_RAW_BRANCH() macro instead of open coding it. This
+macro is used while adding BPF_PROBE_MEM support.
 
 Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
 Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
 
-Changes in v4:
-* Dropped the default case in the switch statement for bpf size.
-* Dropped explicit fallthrough statement for empty switch cases.
+* No changes in v4.
 
 
- arch/powerpc/net/bpf_jit_comp32.c | 33 ++++++++++++++++++-------------
- arch/powerpc/net/bpf_jit_comp64.c | 31 +++++++++++++++++------------
- 2 files changed, 37 insertions(+), 27 deletions(-)
+ arch/powerpc/include/asm/ppc-opcode.h | 2 ++
+ arch/powerpc/net/bpf_jit.h            | 2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/net/bpf_jit_comp32.c b/arch/powerpc/net/bpf_jit_comp32.c
-index 903f945601c0..8b2ac1c27f1f 100644
---- a/arch/powerpc/net/bpf_jit_comp32.c
-+++ b/arch/powerpc/net/bpf_jit_comp32.c
-@@ -284,6 +284,7 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
- 		u32 src_reg = bpf_to_ppc(ctx, insn[i].src_reg);
- 		u32 src_reg_h = src_reg - 1;
- 		u32 tmp_reg = bpf_to_ppc(ctx, TMP_REG);
-+		u32 size = BPF_SIZE(code);
- 		s16 off = insn[i].off;
- 		s32 imm = insn[i].imm;
- 		bool func_addr_fixed;
-@@ -812,23 +813,27 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
- 		 * BPF_LDX
- 		 */
- 		case BPF_LDX | BPF_MEM | BPF_B: /* dst = *(u8 *)(ul) (src + off) */
--			EMIT(PPC_RAW_LBZ(dst_reg, src_reg, off));
--			if (!fp->aux->verifier_zext)
--				EMIT(PPC_RAW_LI(dst_reg_h, 0));
--			break;
- 		case BPF_LDX | BPF_MEM | BPF_H: /* dst = *(u16 *)(ul) (src + off) */
--			EMIT(PPC_RAW_LHZ(dst_reg, src_reg, off));
--			if (!fp->aux->verifier_zext)
--				EMIT(PPC_RAW_LI(dst_reg_h, 0));
--			break;
- 		case BPF_LDX | BPF_MEM | BPF_W: /* dst = *(u32 *)(ul) (src + off) */
--			EMIT(PPC_RAW_LWZ(dst_reg, src_reg, off));
--			if (!fp->aux->verifier_zext)
--				EMIT(PPC_RAW_LI(dst_reg_h, 0));
--			break;
- 		case BPF_LDX | BPF_MEM | BPF_DW: /* dst = *(u64 *)(ul) (src + off) */
--			EMIT(PPC_RAW_LWZ(dst_reg_h, src_reg, off));
--			EMIT(PPC_RAW_LWZ(dst_reg, src_reg, off + 4));
-+			switch (size) {
-+			case BPF_B:
-+				EMIT(PPC_RAW_LBZ(dst_reg, src_reg, off));
-+				break;
-+			case BPF_H:
-+				EMIT(PPC_RAW_LHZ(dst_reg, src_reg, off));
-+				break;
-+			case BPF_W:
-+				EMIT(PPC_RAW_LWZ(dst_reg, src_reg, off));
-+				break;
-+			case BPF_DW:
-+				EMIT(PPC_RAW_LWZ(dst_reg_h, src_reg, off));
-+				EMIT(PPC_RAW_LWZ(dst_reg, src_reg, off + 4));
-+				break;
-+			}
-+
-+			if (size != BPF_DW && !fp->aux->verifier_zext)
-+				EMIT(PPC_RAW_LI(dst_reg_h, 0));
- 			break;
+diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include/asm/ppc-opcode.h
+index baea657bc868..f50213e2a3e0 100644
+--- a/arch/powerpc/include/asm/ppc-opcode.h
++++ b/arch/powerpc/include/asm/ppc-opcode.h
+@@ -566,6 +566,8 @@
+ #define PPC_RAW_MTSPR(spr, d)		(0x7c0003a6 | ___PPC_RS(d) | __PPC_SPR(spr))
+ #define PPC_RAW_EIEIO()			(0x7c0006ac)
  
- 		/*
-diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
-index b25bf9b11b9d..ad852f15ca61 100644
---- a/arch/powerpc/net/bpf_jit_comp64.c
-+++ b/arch/powerpc/net/bpf_jit_comp64.c
-@@ -311,6 +311,7 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
- 		u32 code = insn[i].code;
- 		u32 dst_reg = b2p[insn[i].dst_reg];
- 		u32 src_reg = b2p[insn[i].src_reg];
-+		u32 size = BPF_SIZE(code);
- 		s16 off = insn[i].off;
- 		s32 imm = insn[i].imm;
- 		bool func_addr_fixed;
-@@ -778,25 +779,29 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
- 		 */
- 		/* dst = *(u8 *)(ul) (src + off) */
- 		case BPF_LDX | BPF_MEM | BPF_B:
--			EMIT(PPC_RAW_LBZ(dst_reg, src_reg, off));
--			if (insn_is_zext(&insn[i + 1]))
--				addrs[++i] = ctx->idx * 4;
--			break;
- 		/* dst = *(u16 *)(ul) (src + off) */
- 		case BPF_LDX | BPF_MEM | BPF_H:
--			EMIT(PPC_RAW_LHZ(dst_reg, src_reg, off));
--			if (insn_is_zext(&insn[i + 1]))
--				addrs[++i] = ctx->idx * 4;
--			break;
- 		/* dst = *(u32 *)(ul) (src + off) */
- 		case BPF_LDX | BPF_MEM | BPF_W:
--			EMIT(PPC_RAW_LWZ(dst_reg, src_reg, off));
--			if (insn_is_zext(&insn[i + 1]))
--				addrs[++i] = ctx->idx * 4;
--			break;
- 		/* dst = *(u64 *)(ul) (src + off) */
- 		case BPF_LDX | BPF_MEM | BPF_DW:
--			PPC_BPF_LL(dst_reg, src_reg, off);
-+			switch (size) {
-+			case BPF_B:
-+				EMIT(PPC_RAW_LBZ(dst_reg, src_reg, off));
-+				break;
-+			case BPF_H:
-+				EMIT(PPC_RAW_LHZ(dst_reg, src_reg, off));
-+				break;
-+			case BPF_W:
-+				EMIT(PPC_RAW_LWZ(dst_reg, src_reg, off));
-+				break;
-+			case BPF_DW:
-+				PPC_BPF_LL(dst_reg, src_reg, off);
-+				break;
-+			}
++#define PPC_RAW_BRANCH(addr)		(PPC_INST_BRANCH | ((addr) & 0x03fffffc))
 +
-+			if (size != BPF_DW && insn_is_zext(&insn[i + 1]))
-+				addrs[++i] = ctx->idx * 4;
- 			break;
+ /* Deal with instructions that older assemblers aren't aware of */
+ #define	PPC_BCCTR_FLUSH		stringify_in_c(.long PPC_INST_BCCTR_FLUSH)
+ #define	PPC_CP_ABORT		stringify_in_c(.long PPC_RAW_CP_ABORT)
+diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
+index 7145b651fc2a..6a945f6211f4 100644
+--- a/arch/powerpc/net/bpf_jit.h
++++ b/arch/powerpc/net/bpf_jit.h
+@@ -31,7 +31,7 @@
+ 			pr_err_ratelimited("Branch offset 0x%lx (@%u) out of range\n", offset, ctx->idx);			\
+ 			return -ERANGE;					      \
+ 		}							      \
+-		EMIT(PPC_INST_BRANCH | (offset & 0x03fffffc));		      \
++		EMIT(PPC_RAW_BRANCH(offset));				      \
+ 	} while (0)
  
- 		/*
+ /* blr; (unconditional 'branch' with link) to absolute address */
 -- 
 2.31.1
 
