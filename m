@@ -1,57 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB4CF429D6D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 08:02:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99093429D77
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 08:05:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HT4nq3Tcwz2yn9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 17:02:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HT4rs2040z2yYS
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 17:05:17 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=gmx.net header.i=@gmx.net header.a=rsa-sha256 header.s=badeba3b8450 header.b=ff8FjRke;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=gmx.de
+ (client-ip=212.227.15.18; helo=mout.gmx.net; envelope-from=deller@gmx.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=gmx.net header.i=@gmx.net header.a=rsa-sha256
+ header.s=badeba3b8450 header.b=ff8FjRke; 
+ dkim-atps=neutral
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HT4nP3jWXz2yPM
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Oct 2021 17:02:14 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4HT4nH3nTgz9sTc;
- Tue, 12 Oct 2021 08:02:11 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id xx_QPrtQlJSE; Tue, 12 Oct 2021 08:02:11 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4HT4nH2q5Wz9sSN;
- Tue, 12 Oct 2021 08:02:11 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0AD238B76E;
- Tue, 12 Oct 2021 08:02:11 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id IgLcf_gTW2O7; Tue, 12 Oct 2021 08:02:10 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (po18920.idsi0.si.c-s.fr
- [192.168.202.149])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 8EEB98B763;
- Tue, 12 Oct 2021 08:02:10 +0200 (CEST)
-Subject: Re: [PATCH] powerpc/s64: Clarify that radix lacks DEBUG_PAGEALLOC
-To: Joel Stanley <joel@jms.id.au>, Jordan Niethe <jniethe5@gmail.com>
-References: <20211012011350.395767-1-joel@jms.id.au>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <3d078c92-7a87-bd88-51d2-3fcf0abf3c84@csgroup.eu>
-Date: Tue, 12 Oct 2021 08:02:10 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HT4r81bx5z2xXb
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Oct 2021 17:04:39 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+ s=badeba3b8450; t=1634018618;
+ bh=t9NgUWQCN+x3V7Hp4Nfn0+U2T6Ph1w/p+Efg9vnjBf8=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=ff8FjRkeCGbDpe/67S+poZ4/cjMzIGK70KzKAoKGGO3UvGG+Ix7k9hOGT/JA5zFVb
+ b0wSwWqJ8dMxsjQlVFW3HytK5O2ttt/GMmp/w5AxEKZod1TvXVGZhceo9V7kW7X6iz
+ hClSRgqyy8hhts09vENLoYs8936bTXAsRMicxeAY=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.128.177]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mplc7-1n5vBn0vWP-00q9gl; Tue, 12
+ Oct 2021 08:03:38 +0200
+Message-ID: <91b38fce-8a5c-ccc7-fba5-b75b9769d4fc@gmx.de>
+Date: Tue, 12 Oct 2021 08:02:53 +0200
 MIME-Version: 1.0
-In-Reply-To: <20211012011350.395767-1-joel@jms.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr-FR
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.1.0
+Subject: Re: [PATCH v1 04/10] asm-generic: Use
+ HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR to define associated stubs
+Content-Language: en-US
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Arnd Bergmann <arnd@arndb.de>, Kees Cook <keescook@chromium.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <cover.1633964380.git.christophe.leroy@csgroup.eu>
+ <8db2a3ca2b26a8325c671baa3e0492914597f079.1633964380.git.christophe.leroy@csgroup.eu>
+From: Helge Deller <deller@gmx.de>
+In-Reply-To: <8db2a3ca2b26a8325c671baa3e0492914597f079.1633964380.git.christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:3FVNBuFx64HT0tuoJYG2SIgMIMfL8fXzN53XykVw2JLzU6FqL0B
+ 47lugWj6rkUtNsiz8tcSM75G3rrpuahDYFok+XAuxw63YZr0F3Nhdr2cn7g/FuAFNgPo2yC
+ CK5N7YfnT66ssXgewYk+lLdJFDOEy4prM32Gprx7BezR9iX89W0jxYI1RVQZpS0fcrDSbsr
+ e0AtWhnfZqeJ2pYoyvi6A==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:umUw8efNMTI=:/9tlCPWVCKekVvKKamGFwj
+ BsaJeIoRtjZCIzQfUGtUOy4GhMdkFU78x6mufwb1nMvsoc7NzTz8Q9gP0yAMU7CGYWq2JxYKN
+ KlVEg2hQJjl70wBfi5acPN0BuvbZBUj5hO2+w04TTvnUfmsDJ5rZ5s5s+XxUK1l+rd5r5ZLYP
+ 3QtzM2rz3+1qdNSOhvX7E3erRQkCijzBY/8rbNtm+QTfHiI7iq1TKJkIGxXjKPdSKHajjC9yd
+ RLdQGEIUVJpGCZfNDQQ1qDpn1bX83xhpFzZG22mXow6Du//OvXPejMza7rcsqLAJOlXNFw7YI
+ 2+98mFao5Cm2br+C+xQvtJKTFkhilgseoNe5cdpFQNWfqhlF6Buf3vMrQcroYBTtGEY0qZY5z
+ caVBMhqD0jjhDWo5rBeHIUTjkf7Xts6TqygocHWFmFatrtHqLmz3CcViihdysH99uzMB5wQJ3
+ zWcRj83iI2U6tIvgo4b5Dq5EtI6tWmFbib8nowxMiSbMpREz+yajuBBAIZyicGjZ55D/Oh7/m
+ swqmY0o0ObRMbrIwTxqy9uHn9RL86+ng4I0V7Qx53qGKp+QfKAzOBhlhuL4iywFYrJhloX1zr
+ MfXWy3vpu0zrMos+Nn5xMiFvbvbxEnjQe7EoUMnaRNMmsvQ0w7y0H4eB3C9Z8b8NLs2s15q8O
+ v7gh8pNHpJYWHy4nFkvBVZxKDjAO/uD0oYyhAl5bVuoIcmxRA9UY4d0o2+kyC6vZ1TZTYrJDk
+ ta2bQLCEG+2xpDnOHJAMXSfdgWdpXeVu0wU+Xkx/NG1xweXLZ8/wcnOYH9JvTJjvWI8CzUcme
+ 6So+BaIoAa/L3qjJZvf5eBIaPEg6RELwFbj+f/k+jXImqEP4Lv5TkXZN5TJPsYmeqz3KbIKRv
+ aBxuKiJNOBszOzO9VQWnHjxLXwClcL+tjwXNS3XwX8UEU8VrsmzWpMMZOW3nTJ2nwzDjzWQWx
+ BGOQ0y8GPQD+KVYUN628i7hwI6ntwrNiecBM4JjoWqV/ZT9rsaIS4dasc+sUpXJasDDp26unL
+ sDC01ifkzZiOzrrT/B31TP0moswG49S/dABdQ4qrLmnrxnobAtogIGonFxz2l341BK4NOCN+S
+ /UisBwh5D8+KG4=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,106 +91,123 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 12/10/2021 à 03:13, Joel Stanley a écrit :
-> The page_alloc.c code will call into __kernel_map_pages when
-> DEBUG_PAGEALLOC is configured and enabled.
-> 
-> As the implementation assumes hash, this should crash spectacularly if
-> not for a bit of luck in __kernel_map_pages. In this function
-> linear_map_hash_count is always zero, the for loop exits without doing
-> any damage.
-> 
-> There are no other platforms that determine if they support
-> debug_pagealloc at runtime. Instead of adding code to mm/page_alloc.c to
-> do that, this change turns the map/unmap into a noop when in radix
-> mode and prints a warning once.
-> 
-> Signed-off-by: Joel Stanley <joel@jms.id.au>
+On 10/11/21 17:25, Christophe Leroy wrote:
+> Use HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR instead of 'dereference_functio=
+n_descriptor'
+> to know whether arch has function descriptors.
+>
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 > ---
-> I noticed this when I was looking at adding kfence support a while back.
-> I've put that work aside and jpn has since gotten further than me, but I
-> think this is a fix worth considering.
-> 
->   arch/powerpc/include/asm/book3s/64/hash.h |  2 ++
->   arch/powerpc/mm/book3s64/hash_utils.c     |  2 +-
->   arch/powerpc/mm/book3s64/pgtable.c        | 12 ++++++++++++
->   3 files changed, 15 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/include/asm/book3s/64/hash.h b/arch/powerpc/include/asm/book3s/64/hash.h
-> index d959b0195ad9..674fe0e890dc 100644
-> --- a/arch/powerpc/include/asm/book3s/64/hash.h
-> +++ b/arch/powerpc/include/asm/book3s/64/hash.h
-> @@ -255,6 +255,8 @@ int hash__create_section_mapping(unsigned long start, unsigned long end,
->   				 int nid, pgprot_t prot);
->   int hash__remove_section_mapping(unsigned long start, unsigned long end);
->   
-> +void hash__kernel_map_pages(struct page *page, int numpages, int enable);
+>  arch/ia64/include/asm/sections.h    | 4 ++--
+>  arch/parisc/include/asm/sections.h  | 6 ++++--
+>  arch/powerpc/include/asm/sections.h | 6 ++++--
+>  include/asm-generic/sections.h      | 3 ++-
+>  4 files changed, 12 insertions(+), 7 deletions(-)
+>
+> diff --git a/arch/ia64/include/asm/sections.h b/arch/ia64/include/asm/se=
+ctions.h
+> index 35f24e52149a..80f5868afb06 100644
+> --- a/arch/ia64/include/asm/sections.h
+> +++ b/arch/ia64/include/asm/sections.h
+> @@ -7,6 +7,8 @@
+>   *	David Mosberger-Tang <davidm@hpl.hp.com>
+>   */
+>
+> +#define HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR 1
 > +
->   #endif /* !__ASSEMBLY__ */
->   #endif /* __KERNEL__ */
->   #endif /* _ASM_POWERPC_BOOK3S_64_HASH_H */
-> diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-> index c145776d3ae5..cfd45245d009 100644
-> --- a/arch/powerpc/mm/book3s64/hash_utils.c
-> +++ b/arch/powerpc/mm/book3s64/hash_utils.c
-> @@ -1988,7 +1988,7 @@ static void kernel_unmap_linear_page(unsigned long vaddr, unsigned long lmi)
->   				     mmu_kernel_ssize, 0);
->   }
->   
-> -void __kernel_map_pages(struct page *page, int numpages, int enable)
-> +void hash__kernel_map_pages(struct page *page, int numpages, int enable)
->   {
->   	unsigned long flags, vaddr, lmi;
->   	int i;
-> diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-> index 9e16c7b1a6c5..0aefc272cd03 100644
-> --- a/arch/powerpc/mm/book3s64/pgtable.c
-> +++ b/arch/powerpc/mm/book3s64/pgtable.c
-> @@ -526,3 +526,15 @@ static int __init pgtable_debugfs_setup(void)
->   	return 0;
->   }
->   arch_initcall(pgtable_debugfs_setup);
-> +
-> +#ifdef CONFIG_DEBUG_PAGEALLOC
-> +void __kernel_map_pages(struct page *page, int numpages, int enable)
-> +{
-> +	if (radix_enabled()) {
-> +		pr_warn_once("DEBUG_PAGEALLOC not supported in radix mode\n");
-> +		return;
-> +	}
-> +
-> +	hash__kernel_map_pages(page, numpages, enable);
-> +}
-
-I think it would be better to do similar to most other functions (like 
-map_kernel_page() for instance):
-
-In arch/powerpc/include/asm/book3s/64/pgtable.h do:
-
-static inline void __kernel_map_pages(struct page *page, int numpages, 
-int enable)
-{
-	if (radix_enabled())
-		radix__kernel_map_pages(...);
-	else
-		hash__kernel_map_pages(...);
-}
-
-Then in arch/powerpc/include/asm/book3s/64/radix.h do (or in 
-/arch/powerpc/mm/book3s64/radix_pgtable.c in you prefer ?):
-
-static inline void radix__kernel_map_pages(struct page *page, int 
-numpages, int enable)
-{
-	pr_warn_once("DEBUG_PAGEALLOC not supported in radix mode\n");
-}
-
+>  #include <linux/elf.h>
+>  #include <linux/uaccess.h>
+>  #include <asm-generic/sections.h>
+> @@ -27,8 +29,6 @@ extern char __start_gate_brl_fsys_bubble_down_patchlis=
+t[], __end_gate_brl_fsys_b
+>  extern char __start_unwind[], __end_unwind[];
+>  extern char __start_ivt_text[], __end_ivt_text[];
+>
+> -#define HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR 1
+> -
+>  #undef dereference_function_descriptor
+>  static inline void *dereference_function_descriptor(void *ptr)
+>  {
+> diff --git a/arch/parisc/include/asm/sections.h b/arch/parisc/include/as=
+m/sections.h
+> index bb52aea0cb21..2e781ee19b66 100644
+> --- a/arch/parisc/include/asm/sections.h
+> +++ b/arch/parisc/include/asm/sections.h
+> @@ -2,6 +2,10 @@
+>  #ifndef _PARISC_SECTIONS_H
+>  #define _PARISC_SECTIONS_H
+>
+> +#ifdef CONFIG_64BIT
+> +#define HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR 1
 > +#endif
-> 
+> +
+>  /* nothing to see, move along */
+>  #include <asm-generic/sections.h>
+>
+> @@ -9,8 +13,6 @@ extern char __alt_instructions[], __alt_instructions_en=
+d[];
+>
+>  #ifdef CONFIG_64BIT
+>
+> -#define HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR 1
+> -
+>  #undef dereference_function_descriptor
+>  void *dereference_function_descriptor(void *);
+>
+> diff --git a/arch/powerpc/include/asm/sections.h b/arch/powerpc/include/=
+asm/sections.h
+> index 32e7035863ac..b7f1ba04e756 100644
+> --- a/arch/powerpc/include/asm/sections.h
+> +++ b/arch/powerpc/include/asm/sections.h
+> @@ -8,6 +8,10 @@
+>
+>  #define arch_is_kernel_initmem_freed arch_is_kernel_initmem_freed
+>
+> +#ifdef PPC64_ELF_ABI_v1
+> +#define HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR 1
+> +#endif
+> +
+>  #include <asm-generic/sections.h>
+>
+>  extern bool init_mem_is_free;
+> @@ -69,8 +73,6 @@ static inline int overlaps_kernel_text(unsigned long s=
+tart, unsigned long end)
+>
+>  #ifdef PPC64_ELF_ABI_v1
+>
+> -#define HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR 1
+> -
+>  #undef dereference_function_descriptor
+>  static inline void *dereference_function_descriptor(void *ptr)
+>  {
+> diff --git a/include/asm-generic/sections.h b/include/asm-generic/sectio=
+ns.h
+> index d16302d3eb59..1db5cfd69817 100644
+> --- a/include/asm-generic/sections.h
+> +++ b/include/asm-generic/sections.h
+> @@ -59,7 +59,8 @@ extern char __noinstr_text_start[], __noinstr_text_end=
+[];
+>  extern __visible const void __nosave_begin, __nosave_end;
+>
+>  /* Function descriptor handling (if any).  Override in asm/sections.h *=
+/
+> -#ifndef dereference_function_descriptor
+> +#ifdef HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR
+> +#else
+
+why not
+#ifndef HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR
+instead of #if/#else ?
+
+>  #define dereference_function_descriptor(p) ((void *)(p))
+>  #define dereference_kernel_function_descriptor(p) ((void *)(p))
+>  #endif
+>
+
