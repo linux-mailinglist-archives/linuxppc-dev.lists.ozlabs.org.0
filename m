@@ -2,72 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF62B429AD3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 03:14:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09A15429B20
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 03:44:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HSyPl3TjKz2yxx
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 12:14:51 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=e9b+HF2v;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HSz3X3NQxz2yYx
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 12:44:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1033;
- helo=mail-pj1-x1033.google.com; envelope-from=joel.stan@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=e9b+HF2v; dkim-atps=neutral
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com
- [IPv6:2607:f8b0:4864:20::1033])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HSyP20spgz2xr1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Oct 2021 12:14:13 +1100 (AEDT)
-Received: by mail-pj1-x1033.google.com with SMTP id
- ls14-20020a17090b350e00b001a00e2251c8so1264398pjb.4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Oct 2021 18:14:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=sender:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=utrzWVO0hGP4H8SndNrG1vloicTmgmliN+ZiIfp9fnw=;
- b=e9b+HF2v3xZHlMafSt50P8q59zttsovpCGh3pLwNvh3DIAEw15p0PZCVzb6cDfxX+x
- hi40hz9rfnJogGw+nAEX/e/YXZpbjDZB/7hqU55O4sLejWsa86OrcA3P/lOwHge8tKZO
- 60B/C3SxX4NOsGxIry13XM9FhTu5eeWlDc9Zn9jGHG+FZvKK0RlcjWlQEu6fD4yc8mxn
- 6U/H8kwXkDxc563RWZjIIkRYCWOFBlcmMS7iQAAHWYs0fXYyr7o7sj6E254boinqW+td
- OxLZxSEPDUqG/hoHkoFEsnEYcSDQ5dk9zB7OcVfyZwsztLZrDoUGvHYjJOz2NKU9IsUZ
- SP3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
- :mime-version:content-transfer-encoding;
- bh=utrzWVO0hGP4H8SndNrG1vloicTmgmliN+ZiIfp9fnw=;
- b=QVSuy1hrkMR30u1V7V8dGgz1a5v6oeGW3NwJ5tc8kesnPwTvi2RnNcT5AMQ0Vv8sfW
- iwZV31aKlIXJKFFNCkl61AA3L7imBxkKcK8m8FsyE1d/G2V1WBk3/wps1jjHIJIHUoho
- XFpaGWD1V4ofJxO3fNLANMt/lR+UuwDyU/4sCdva/bJcBbZFAe5XWdkC026ePl9WfSHZ
- to1Dfst66MqDAsmdTVBTeuICgsT9mRzpAr2nb5Py4N992Y0VgI22OqI1rwW0Q8i/T3sE
- c87YwB/2m+0ypAHCNNIyAZ/7P+6MZIOVW6R8kQiQuj/OW6RmfqqQjNJCGp9Mtz57Eq8Q
- psng==
-X-Gm-Message-State: AOAM532AskGNfTn82e63+cnOgK9WqR0Ago3j8dhZ11pzOBUJFW2rdJtB
- KGtpgry6k+HDqduuFZZ+DBU=
-X-Google-Smtp-Source: ABdhPJwIBf0O3rtGPYy1unRKMSzqUYRhGZGRbWukcFceDxzMLssRJ38u/9+6Nad0e8zahm5C34zN+A==
-X-Received: by 2002:a17:90b:17c9:: with SMTP id
- me9mr2668263pjb.197.1634001248842; 
- Mon, 11 Oct 2021 18:14:08 -0700 (PDT)
-Received: from localhost.localdomain ([45.124.203.19])
- by smtp.gmail.com with ESMTPSA id 184sm9031470pfw.49.2021.10.11.18.14.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Oct 2021 18:14:07 -0700 (PDT)
-From: Joel Stanley <joel@jms.id.au>
-To: Jordan Niethe <jniethe5@gmail.com>
-Subject: [PATCH] powerpc/s64: Clarify that radix lacks DEBUG_PAGEALLOC
-Date: Tue, 12 Oct 2021 11:43:50 +1030
-Message-Id: <20211012011350.395767-1-joel@jms.id.au>
-X-Mailer: git-send-email 2.33.0
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com;
+ envelope-from=liushixin2@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HSz352jJzz2xrH
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Oct 2021 12:43:41 +1100 (AEDT)
+Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.56])
+ by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4HSz1W0phzz8tZh;
+ Tue, 12 Oct 2021 09:42:23 +0800 (CST)
+Received: from dggpemm100009.china.huawei.com (7.185.36.113) by
+ dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.8; Tue, 12 Oct 2021 09:43:28 +0800
+Received: from [10.174.179.24] (10.174.179.24) by
+ dggpemm100009.china.huawei.com (7.185.36.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.8; Tue, 12 Oct 2021 09:43:28 +0800
+Subject: Re: [PATCH] powerpc: don't select KFENCE on platform PPC_FSL_BOOK3E
+To: Marco Elver <elver@google.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras
+ <paulus@samba.org>
+References: <20210924063927.1341241-1-liushixin2@huawei.com>
+From: Liu Shixin <liushixin2@huawei.com>
+Message-ID: <77ce95e4-1af1-6536-5f0c-a573c648801a@huawei.com>
+Date: Tue, 12 Oct 2021 09:43:21 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.7.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210924063927.1341241-1-liushixin2@huawei.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.179.24]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpemm100009.china.huawei.com (7.185.36.113)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,81 +57,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The page_alloc.c code will call into __kernel_map_pages when
-DEBUG_PAGEALLOC is configured and enabled.
+kindly ping.
 
-As the implementation assumes hash, this should crash spectacularly if
-not for a bit of luck in __kernel_map_pages. In this function
-linear_map_hash_count is always zero, the for loop exits without doing
-any damage.
 
-There are no other platforms that determine if they support
-debug_pagealloc at runtime. Instead of adding code to mm/page_alloc.c to
-do that, this change turns the map/unmap into a noop when in radix
-mode and prints a warning once.
-
-Signed-off-by: Joel Stanley <joel@jms.id.au>
----
-I noticed this when I was looking at adding kfence support a while back.
-I've put that work aside and jpn has since gotten further than me, but I
-think this is a fix worth considering.
-
- arch/powerpc/include/asm/book3s/64/hash.h |  2 ++
- arch/powerpc/mm/book3s64/hash_utils.c     |  2 +-
- arch/powerpc/mm/book3s64/pgtable.c        | 12 ++++++++++++
- 3 files changed, 15 insertions(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/include/asm/book3s/64/hash.h b/arch/powerpc/include/asm/book3s/64/hash.h
-index d959b0195ad9..674fe0e890dc 100644
---- a/arch/powerpc/include/asm/book3s/64/hash.h
-+++ b/arch/powerpc/include/asm/book3s/64/hash.h
-@@ -255,6 +255,8 @@ int hash__create_section_mapping(unsigned long start, unsigned long end,
- 				 int nid, pgprot_t prot);
- int hash__remove_section_mapping(unsigned long start, unsigned long end);
- 
-+void hash__kernel_map_pages(struct page *page, int numpages, int enable);
-+
- #endif /* !__ASSEMBLY__ */
- #endif /* __KERNEL__ */
- #endif /* _ASM_POWERPC_BOOK3S_64_HASH_H */
-diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-index c145776d3ae5..cfd45245d009 100644
---- a/arch/powerpc/mm/book3s64/hash_utils.c
-+++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -1988,7 +1988,7 @@ static void kernel_unmap_linear_page(unsigned long vaddr, unsigned long lmi)
- 				     mmu_kernel_ssize, 0);
- }
- 
--void __kernel_map_pages(struct page *page, int numpages, int enable)
-+void hash__kernel_map_pages(struct page *page, int numpages, int enable)
- {
- 	unsigned long flags, vaddr, lmi;
- 	int i;
-diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-index 9e16c7b1a6c5..0aefc272cd03 100644
---- a/arch/powerpc/mm/book3s64/pgtable.c
-+++ b/arch/powerpc/mm/book3s64/pgtable.c
-@@ -526,3 +526,15 @@ static int __init pgtable_debugfs_setup(void)
- 	return 0;
- }
- arch_initcall(pgtable_debugfs_setup);
-+
-+#ifdef CONFIG_DEBUG_PAGEALLOC
-+void __kernel_map_pages(struct page *page, int numpages, int enable)
-+{
-+	if (radix_enabled()) {
-+		pr_warn_once("DEBUG_PAGEALLOC not supported in radix mode\n");
-+		return;
-+	}
-+
-+	hash__kernel_map_pages(page, numpages, enable);
-+}
-+#endif
--- 
-2.33.0
+On 2021/9/24 14:39, Liu Shixin wrote:
+> On platform PPC_FSL_BOOK3E, all lowmem is managed by tlbcam. That means
+> we didn't really map the kfence pool with page granularity. Therefore,
+> if KFENCE is enabled, the system will hit the following panic:
+>
+>     BUG: Kernel NULL pointer dereference on read at 0x00000000
+>     Faulting instruction address: 0xc01de598
+>     Oops: Kernel access of bad area, sig: 11 [#1]
+>     BE PAGE_SIZE=4K SMP NR_CPUS=4 MPC8544 DS
+>     Dumping ftrace buffer:
+>        (ftrace buffer empty)
+>     Modules linked in:
+>     CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.12.0-rc3+ #298
+>     NIP:  c01de598 LR: c08ae9c4 CTR: 00000000
+>     REGS: c0b4bea0 TRAP: 0300   Not tainted  (5.12.0-rc3+)
+>     MSR:  00021000 <CE,ME>  CR: 24000228  XER: 20000000
+>     DEAR: 00000000 ESR: 00000000
+>     GPR00: c08ae9c4 c0b4bf60 c0ad64e0 ef720000 00021000 00000000 00000000 00000200
+>     GPR08: c0ad5000 00000000 00000000 00000004 00000000 008fbb30 00000000 00000000
+>     GPR16: 00000000 00000000 00000000 00000000 c0000000 00000000 00000000 00000000
+>     GPR24: c08ca004 c08ca004 c0b6a0e0 c0b60000 c0b58f00 c0850000 c08ca000 ef720000
+>     NIP [c01de598] kfence_protect+0x44/0x6c
+>     LR [c08ae9c4] kfence_init+0xfc/0x2a4
+>     Call Trace:
+>     [c0b4bf60] [efffe160] 0xefffe160 (unreliable)
+>     [c0b4bf70] [c08ae9c4] kfence_init+0xfc/0x2a4
+>     [c0b4bfb0] [c0894d3c] start_kernel+0x3bc/0x574
+>     [c0b4bff0] [c0000470] set_ivor+0x14c/0x188
+>     Instruction dump:
+>     7c0802a6 8109d594 546a653a 90010014 54630026 39200000 7d48502e 2c0a0000
+>     41820010 554a0026 5469b53a 7d295214 <81490000> 38831000 554a003c 91490000
+>     random: get_random_bytes called from print_oops_end_marker+0x40/0x78 with crng_init=0
+>     ---[ end trace 0000000000000000 ]---
+>
+> Signed-off-by: Liu Shixin <liushixin2@huawei.com>
+> ---
+>  arch/powerpc/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index d46db0bfb998..cffd57bcb5e4 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -185,7 +185,7 @@ config PPC
+>  	select HAVE_ARCH_KASAN			if PPC32 && PPC_PAGE_SHIFT <= 14
+>  	select HAVE_ARCH_KASAN_VMALLOC		if PPC32 && PPC_PAGE_SHIFT <= 14
+>  	select HAVE_ARCH_KGDB
+> -	select HAVE_ARCH_KFENCE			if PPC32
+> +	select HAVE_ARCH_KFENCE			if PPC32 && !PPC_FSL_BOOK3E
+>  	select HAVE_ARCH_MMAP_RND_BITS
+>  	select HAVE_ARCH_MMAP_RND_COMPAT_BITS	if COMPAT
+>  	select HAVE_ARCH_NVRAM_OPS
 
