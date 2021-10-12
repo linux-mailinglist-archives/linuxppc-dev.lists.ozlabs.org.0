@@ -2,56 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C54F7429B4D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 04:09:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B42F429BEC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 05:24:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HSzcs3K2Pz300x
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 13:09:33 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=JOVVwsUf;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HT1Gl16z0z306h
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 14:23:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HSzcC2pNSz2xy3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Oct 2021 13:08:59 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=JOVVwsUf; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4HSzcB30wCz4xbc;
- Tue, 12 Oct 2021 13:08:58 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1634004538;
- bh=hzcHFArt94zy363Gzhk7t10ot1lGPm8IAL6s4wImyCc=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=JOVVwsUfORu9PY7ma0fPedRzQxhk7QXd0AJrZ0JblugIjzl2isW6Y21f8YJ94OgVe
- plHnW8dcsdZOwQhajUHBotDHm/EtfgOT94xWFVu3vqTvpl6xjgUmBZQT7iyyYknFT1
- XaymkcVsdHgoALaIW/0efoF5xxRIDW2XqDm1mfm0TYAMd4nEGAijnK7wzkXFfc6mF5
- pBNylazJAscSKJjkCl+d59LkhoU5ckjAi5Z8nt8vZJX1/bBFlIjA+ioJoIz7jgCF4Q
- PGi//H0HsQwQpDPZuUVUjfH9yfrGeBnCysoyhkQeKso6wWfyt/M+zwLNW3gnAgBIAJ
- +PnmIrCuR6zBg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Fabiano Rosas <farosas@linux.ibm.com>, Nicholas Piggin
- <npiggin@gmail.com>, kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v3 02/52] powerpc/64s: guard optional TIDR SPR with CPU
- ftr test
-In-Reply-To: <87v9235rl2.fsf@linux.ibm.com>
-References: <20211004160049.1338837-1-npiggin@gmail.com>
- <20211004160049.1338837-3-npiggin@gmail.com>
- <87v9235rl2.fsf@linux.ibm.com>
-Date: Tue, 12 Oct 2021 13:08:57 +1100
-Message-ID: <87k0ijm1ty.fsf@mpe.ellerman.id.au>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=baidu.com (client-ip=111.206.215.185; helo=baidu.com;
+ envelope-from=caihuoqing@baidu.com; receiver=<UNKNOWN>)
+Received: from baidu.com (mx24.baidu.com [111.206.215.185])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4HT1GG0fcMz2xXh
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Oct 2021 14:23:30 +1100 (AEDT)
+Received: from BC-Mail-Ex12.internal.baidu.com (unknown [172.31.51.52])
+ by Forcepoint Email with ESMTPS id 963E031DEB67981EA3BC;
+ Tue, 12 Oct 2021 11:23:24 +0800 (CST)
+Received: from BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) by
+ BC-Mail-Ex12.internal.baidu.com (172.31.51.52) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2242.12; Tue, 12 Oct 2021 11:23:24 +0800
+Received: from LAPTOP-UKSR4ENP.internal.baidu.com (172.31.63.8) by
+ BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2308.14; Tue, 12 Oct 2021 11:23:23 +0800
+From: Cai Huoqing <caihuoqing@baidu.com>
+To: <caihuoqing@baidu.com>
+Subject: [PATCH v2] scsi: ibmvscsi: Use dma_alloc_noncoherent() instead of
+ get_zeroed_page/dma_map_single()
+Date: Tue, 12 Oct 2021 11:23:16 +0800
+Message-ID: <20211012032317.2360-1-caihuoqing@baidu.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-Originating-IP: [172.31.63.8]
+X-ClientProxiedBy: BC-Mail-Ex12.internal.baidu.com (172.31.51.52) To
+ BJHW-MAIL-EX27.internal.baidu.com (10.127.64.42)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,52 +49,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, linux-scsi@vger.kernel.org,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ "James E.J. Bottomley" <jejb@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fabiano Rosas <farosas@linux.ibm.com> writes:
-> Nicholas Piggin <npiggin@gmail.com> writes:
->
->> The TIDR SPR only exists on POWER9. Avoid accessing it when the
->> feature bit for it is not set.
->
-> Not related to this patch, but how does this work with compat mode? A P9
-> compat mode guest would get an invalid instruction when trying to access
-> this SPR?
+Replacing get_zeroed_page/free_page/dma_map_single/dma_unmap_single()
+with dma_alloc_noncoherent/dma_free_noncoherent() helps to reduce
+code size, and simplify the code, and the hardware can keeep DMA
+coherent itself.
 
-Good question.
+Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
+---
+v1->v2:
+	*Change to dma_alloc/free_noncoherent from dma_alloc/free_coherent.
+	*Update changelog.
 
-I assume you're talking about P9 compat mode on P10.
+ drivers/scsi/ibmvscsi/ibmvfc.c   | 16 ++++------------
+ drivers/scsi/ibmvscsi/ibmvscsi.c | 29 +++++++++--------------------
+ 2 files changed, 13 insertions(+), 32 deletions(-)
 
-In general compat mode only applies to userspace, because it's
-implemented by setting the PCR which only (mostly?) applies to PR=3D1.
+diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
+index 1f1586ad48fe..6e95fd02fd25 100644
+--- a/drivers/scsi/ibmvscsi/ibmvfc.c
++++ b/drivers/scsi/ibmvscsi/ibmvfc.c
+@@ -869,8 +869,8 @@ static void ibmvfc_free_queue(struct ibmvfc_host *vhost,
+ {
+ 	struct device *dev = vhost->dev;
+ 
+-	dma_unmap_single(dev, queue->msg_token, PAGE_SIZE, DMA_BIDIRECTIONAL);
+-	free_page((unsigned long)queue->msgs.handle);
++	dma_free_noncoherent(dev, PAGE_SIZE, queue->msgs.handle,
++			     queue->msg_token, DMA_BIDIRECTIONAL);
+ 	queue->msgs.handle = NULL;
+ 
+ 	ibmvfc_free_event_pool(vhost, queue);
+@@ -5663,19 +5663,11 @@ static int ibmvfc_alloc_queue(struct ibmvfc_host *vhost,
+ 		return -ENOMEM;
+ 	}
+ 
+-	queue->msgs.handle = (void *)get_zeroed_page(GFP_KERNEL);
++	queue->msgs.handle = dma_alloc_noncoherent(dev, PAGE_SIZE, &queue->msg_token,
++						   DMA_BIDIRECTIONAL, GFP_KERNEL);
+ 	if (!queue->msgs.handle)
+ 		return -ENOMEM;
+ 
+-	queue->msg_token = dma_map_single(dev, queue->msgs.handle, PAGE_SIZE,
+-					  DMA_BIDIRECTIONAL);
+-
+-	if (dma_mapping_error(dev, queue->msg_token)) {
+-		free_page((unsigned long)queue->msgs.handle);
+-		queue->msgs.handle = NULL;
+-		return -ENOMEM;
+-	}
+-
+ 	queue->cur = 0;
+ 	queue->fmt = fmt;
+ 	queue->size = PAGE_SIZE / fmt_size;
+diff --git a/drivers/scsi/ibmvscsi/ibmvscsi.c b/drivers/scsi/ibmvscsi/ibmvscsi.c
+index ea8e01f49cba..68409c298c74 100644
+--- a/drivers/scsi/ibmvscsi/ibmvscsi.c
++++ b/drivers/scsi/ibmvscsi/ibmvscsi.c
+@@ -151,10 +151,8 @@ static void ibmvscsi_release_crq_queue(struct crq_queue *queue,
+ 			msleep(100);
+ 		rc = plpar_hcall_norets(H_FREE_CRQ, vdev->unit_address);
+ 	} while ((rc == H_BUSY) || (H_IS_LONG_BUSY(rc)));
+-	dma_unmap_single(hostdata->dev,
+-			 queue->msg_token,
+-			 queue->size * sizeof(*queue->msgs), DMA_BIDIRECTIONAL);
+-	free_page((unsigned long)queue->msgs);
++	dma_free_noncoherent(hostdata->dev, PAGE_SIZE,
++			     queue->msgs, queue->msg_token, DMA_BIDIRECTIONAL);
+ }
+ 
+ /**
+@@ -331,18 +329,12 @@ static int ibmvscsi_init_crq_queue(struct crq_queue *queue,
+ 	int retrc;
+ 	struct vio_dev *vdev = to_vio_dev(hostdata->dev);
+ 
+-	queue->msgs = (struct viosrp_crq *)get_zeroed_page(GFP_KERNEL);
+-
+-	if (!queue->msgs)
+-		goto malloc_failed;
+ 	queue->size = PAGE_SIZE / sizeof(*queue->msgs);
+-
+-	queue->msg_token = dma_map_single(hostdata->dev, queue->msgs,
+-					  queue->size * sizeof(*queue->msgs),
+-					  DMA_BIDIRECTIONAL);
+-
+-	if (dma_mapping_error(hostdata->dev, queue->msg_token))
+-		goto map_failed;
++	queue->msgs = dma_alloc_noncoherent(hostdata->dev,
++					    PAGE_SIZE, &queue->msg_token,
++					    DMA_BIDIRECTIONAL, GFP_KERNEL);
++	if (!queue->msg)
++		goto malloc_failed;
+ 
+ 	gather_partition_info();
+ 	set_adapter_info(hostdata);
+@@ -395,11 +387,8 @@ static int ibmvscsi_init_crq_queue(struct crq_queue *queue,
+ 		rc = plpar_hcall_norets(H_FREE_CRQ, vdev->unit_address);
+ 	} while ((rc == H_BUSY) || (H_IS_LONG_BUSY(rc)));
+       reg_crq_failed:
+-	dma_unmap_single(hostdata->dev,
+-			 queue->msg_token,
+-			 queue->size * sizeof(*queue->msgs), DMA_BIDIRECTIONAL);
+-      map_failed:
+-	free_page((unsigned long)queue->msgs);
++	dma_free_noncoherent(hostdata->dev, PAGE_SIZE, queue->msg,
++			     queue->msg_token, DMA_BIDIRECTIONAL);
+       malloc_failed:
+ 	return -1;
+ }
+-- 
+2.25.1
 
-I don't think there's any special casing in the ISA for the TIDR, so I
-think it just falls into the unimplemented SPR case for mt/fspr.
-
-That's documented in Book III section 5.4.4, in particular on page 1171
-it says:
-
-  Execution of this instruction specifying an SPR number
-  that is undefined for the implementation causes one of
-  the following.
-  =E2=80=A2 if spr[0]=3D0:
-    - if MSR[PR]=3D1: Hypervisor Emulation Assistance interrupt
-    - if MSR[PR]=3D0: Hypervisor Emulation Assistance interrupt for SPR
-      0,4,5, and 6, and no operation (i.e., the instruction is treated
-      as a no-op) when LPCR[EVIRT]=3D0 and Hypervisor Emulation Assistance
-      interrupt when LPCR[EVIRT]=3D1 for all other SPRs
-
-Linux doesn't set EVIRT, and I assume neither does phyp, so it behaves
-like a nop.
-
-We actually use that behaviour in xmon to detect that an SPR is not
-implemented, by noticing that the mfspr has no effect on the target
-register, see dump_one_spr().
-
-We should really write some docs on compat mode in the linuxppc wiki
-and/or Documentation ;)
-
-cheers
