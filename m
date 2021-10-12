@@ -2,49 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEE1C42A10C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 11:29:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CDC942A277
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 12:41:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HT9NK0k4gz2ypB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 20:29:21 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=Af/9zwXN;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HTBzZ2JT8z305X
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 21:41:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
- header.a=rsa-sha256 header.s=korg header.b=Af/9zwXN; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HT9Mb2xGhz2xs3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Oct 2021 20:28:42 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6E16360F92;
- Tue, 12 Oct 2021 09:28:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
- s=korg; t=1634030919;
- bh=w6tJ0j7GZyF9EA8+IbdyJH2ct/ziottLxIdQqKTGRqU=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=Af/9zwXNiRPkvFTna55wceL8kexV3DRj4NlW8pN/pyovPyCs5nA2v/56fiiRDIU+c
- HM3Yu00NmTQF5P/KOHjXwMKD/VP0O/X3b0SCsoNdDpQFnkr/DDBxo1KFcNTaVuCVAK
- CleWg31dMcxiLmuLVt6pU/08nVbn/1ukk2C4m0v8=
-Date: Tue, 12 Oct 2021 11:28:36 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Naresh Kamboju <naresh.kamboju@linaro.org>
-Subject: Re: [PATCH 5.4 00/52] 5.4.153-rc2 review
-Message-ID: <YWVVRDEDdaIQYKlX@kroah.com>
-References: <20211012064436.577746139@linuxfoundation.org>
- <CA+G9fYt3vmhvuoFJ6p49DHiFE60oBeWUwuSLrh7vXwr=8_rpfg@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HTBz359RQz2yJy
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Oct 2021 21:41:01 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4HTByx4BnRz9sVK;
+ Tue, 12 Oct 2021 12:40:57 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id VQB6d9Ka3zca; Tue, 12 Oct 2021 12:40:57 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4HTByx3Dk3z9sVF;
+ Tue, 12 Oct 2021 12:40:57 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 559578B770;
+ Tue, 12 Oct 2021 12:40:57 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id znLH9-9lxJwi; Tue, 12 Oct 2021 12:40:57 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.202.154])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 1E7718B763;
+ Tue, 12 Oct 2021 12:40:57 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 19CAekBX1755822
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+ Tue, 12 Oct 2021 12:40:46 +0200
+Received: (from chleroy@localhost)
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 19CAegQt1755821;
+ Tue, 12 Oct 2021 12:40:42 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
+ christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH] powerpc: Set max_mapnr correctly
+Date: Tue, 12 Oct 2021 12:40:37 +0200
+Message-Id: <77d99037782ac4b3c3b0124fc4ae80ce7b760b05.1634035228.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+G9fYt3vmhvuoFJ6p49DHiFE60oBeWUwuSLrh7vXwr=8_rpfg@mail.gmail.com>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1634035236; l=874; s=20211009;
+ h=from:subject:message-id; bh=n9w/eJduhSwMHOhWBmX4XH+picWww91P1yn9wgz5lm8=;
+ b=lxrjCZXZd4LnrftiiFXwlidGxe/m3FGSye7KaSn8pBSzhzM20+6BkCEJ9xZKNf673SuWttjB1dbH
+ BoShmtbzAAMXRTffhQ5XoMgU8/y7oJhAtewlmOpGHDyw8QEwH2bU
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
+ pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,77 +73,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Song Liu <songliubraving@fb.com>, Florian Fainelli <f.fainelli@gmail.com>,
- bpf <bpf@vger.kernel.org>, Johan Almbladh <johan.almbladh@anyfinetworks.com>,
- Pavel Machek <pavel@denx.de>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- open list <linux-kernel@vger.kernel.org>, lkft-triage@lists.linaro.org,
- Jon Hunter <jonathanh@nvidia.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- linux-stable <stable@vger.kernel.org>, patches@kernelci.org,
- Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
- "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- Guenter Roeck <linux@roeck-us.net>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Oct 12, 2021 at 01:04:54PM +0530, Naresh Kamboju wrote:
-> On Tue, 12 Oct 2021 at 12:16, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > This is the start of the stable review cycle for the 5.4.153 release.
-> > There are 52 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Thu, 14 Oct 2021 06:44:25 +0000.
-> > Anything received after that time might be too late.
-> >
-> > The whole patch series can be found in one patch at:
-> >         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.153-rc2.gz
-> > or in the git tree and branch at:
-> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
-> > and the diffstat can be found below.
-> >
-> > thanks,
-> >
-> > greg k-h
-> 
-> stable rc 5.4.153-rc2 Powerpc build failed.
-> 
-> In file included from arch/powerpc/net/bpf_jit64.h:11,
->                  from arch/powerpc/net/bpf_jit_comp64.c:19:
-> arch/powerpc/net/bpf_jit_comp64.c: In function 'bpf_jit_build_body':
-> arch/powerpc/net/bpf_jit.h:32:9: error: expected expression before 'do'
->    32 |         do { if (d) { (d)[idx] = instr; } idx++; } while (0)
->       |         ^~
-> arch/powerpc/net/bpf_jit.h:33:33: note: in expansion of macro 'PLANT_INSTR'
->    33 | #define EMIT(instr)             PLANT_INSTR(image, ctx->idx, instr)
->       |                                 ^~~~~~~~~~~
-> arch/powerpc/net/bpf_jit_comp64.c:415:41: note: in expansion of macro 'EMIT'
->   415 |                                         EMIT(PPC_LI(dst_reg, 0));
->       |                                         ^~~~
-> arch/powerpc/net/bpf_jit.h:33:33: note: in expansion of macro 'PLANT_INSTR'
->    33 | #define EMIT(instr)             PLANT_INSTR(image, ctx->idx, instr)
->       |                                 ^~~~~~~~~~~
-> arch/powerpc/net/bpf_jit.h:41:33: note: in expansion of macro 'EMIT'
->    41 | #define PPC_ADDI(d, a, i)       EMIT(PPC_INST_ADDI |
-> ___PPC_RT(d) |           \
->       |                                 ^~~~
-> arch/powerpc/net/bpf_jit.h:44:33: note: in expansion of macro 'PPC_ADDI'
->    44 | #define PPC_LI(r, i)            PPC_ADDI(r, 0, i)
->       |                                 ^~~~~~~~
-> arch/powerpc/net/bpf_jit_comp64.c:415:46: note: in expansion of macro 'PPC_LI'
->   415 |                                         EMIT(PPC_LI(dst_reg, 0));
->       |                                              ^~~~~~
-> make[3]: *** [scripts/Makefile.build:262:
-> arch/powerpc/net/bpf_jit_comp64.o] Error 1
-> make[3]: Target '__build' not remade because of errors.
-> 
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+max_mapnr is used by virt_addr_valid() to check if a linear
+address is valid.
 
-Ok, I'm just going to go delete this patch from the queue now...
+It must only include lowmem PFNs, like other architectures.
 
-Thanks for the quick report.
+Problem detected on a system with 1G mem (Only 768M are mapped), with
+CONFIG_DEBUG_VIRTUAL and CONFIG_TEST_DEBUG_VIRTUAL, it didn't report
+virt_to_phys(VMALLOC_START), VMALLOC_START being 0xf1000000.
 
-greg k-h
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/mm/mem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+index c3c4e31462ec..889f36b55df9 100644
+--- a/arch/powerpc/mm/mem.c
++++ b/arch/powerpc/mm/mem.c
+@@ -256,7 +256,7 @@ void __init mem_init(void)
+ #endif
+ 
+ 	high_memory = (void *) __va(max_low_pfn * PAGE_SIZE);
+-	set_max_mapnr(max_pfn);
++	set_max_mapnr(max_low_pfn);
+ 
+ 	kasan_late_init();
+ 
+-- 
+2.31.1
+
