@@ -2,39 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E49C642A4CC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 14:44:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 194BA42A778
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 16:40:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HTFhv40Phz2yw7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Oct 2021 23:43:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HTJHf3zFZz2ysq
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 01:40:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=yp9m=pa=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HTFhT44tNz2xWt
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Oct 2021 23:43:37 +1100 (AEDT)
-Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com
- [66.24.58.225])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id A316660E97;
- Tue, 12 Oct 2021 12:43:32 +0000 (UTC)
-Date: Tue, 12 Oct 2021 08:43:31 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: =?UTF-8?B?546L6LSH?= <yun.wang@linux.alibaba.com>
-Subject: Re: [PATCH 1/2] ftrace: disable preemption on the testing of recursion
-Message-ID: <20211012084331.06b8dd23@gandalf.local.home>
-In-Reply-To: <a8756482-024c-c858-b3d1-1ffa9a5eb3f7@linux.alibaba.com>
-References: <8c7de46d-9869-aa5e-2bb9-5dbc2eda395e@linux.alibaba.com>
- <a8756482-024c-c858-b3d1-1ffa9a5eb3f7@linux.alibaba.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=212.227.126.134; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.134])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HTJH94Rytz2yHJ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Oct 2021 01:40:19 +1100 (AEDT)
+Received: from mail-wr1-f47.google.com ([209.85.221.47]) by
+ mrelayeu.kundenserver.de (mreue010 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1M4ahC-1mZkS01ZEU-001gcU for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Oct
+ 2021 16:40:14 +0200
+Received: by mail-wr1-f47.google.com with SMTP id r18so67748783wrg.6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Oct 2021 07:40:13 -0700 (PDT)
+X-Gm-Message-State: AOAM5329ZrJDwkQdaZENlf0kCUZz6uCofPG3oaMhbMQRTBU5hQj74Ngj
+ iikW1BqHLhHlcbYWpQQgYSSGr401NDkrPsZ/el8=
+X-Google-Smtp-Source: ABdhPJwsX00JvLV147YNI/vITnilDiDSyCMYaOBQxpBe5IV6UNyEVoOL9Nc4pFKmxwenTCCaRUt2Gu+9DapKCFiP6aE=
+X-Received: by 2002:a1c:2358:: with SMTP id j85mr5978288wmj.1.1634049612821;
+ Tue, 12 Oct 2021 07:40:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+References: <20211008164728.30e3d3a3@canb.auug.org.au>
+ <20211011082704.3cff4568@canb.auug.org.au>
+ <CAL_JsqJE_GHnehBz-71BOGXfjm6q2p0u6FQA5KwO8zK_i1LpMQ@mail.gmail.com>
+In-Reply-To: <CAL_JsqJE_GHnehBz-71BOGXfjm6q2p0u6FQA5KwO8zK_i1LpMQ@mail.gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Tue, 12 Oct 2021 16:39:56 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a1EcNuxT-w-8w-HDr2+idsP=vFZ3Cn27fX7o56GOuu_Cg@mail.gmail.com>
+Message-ID: <CAK8P3a1EcNuxT-w-8w-HDr2+idsP=vFZ3Cn27fX7o56GOuu_Cg@mail.gmail.com>
+Subject: Re: linux-next: build warnings in Linus' tree
+To: Rob Herring <robh+dt@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:hv55MgxvPlgvFyi3O5rZZmf/t2QikeY9DQ8ptJ70SIB2RyxtOB2
+ uF86Qf8q0qcGuvPaME515yxzhqjLJ5CNYReVOEtPfJqTSI042rplBkWzBSok9RsV0oXt/Qg
+ huGzPEzqjVUvXmqakENL3yoLIdZezsv25vksTS5pz7hfxJw90Odl+a84iUgG7YcZFwTVEEa
+ ulNCGnF4UyOuK4fCjcvkg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:uOJrQmVua+U=:S9ROvkUz3bumQZKmbadXLC
+ 82ZgkgzPVZRrm4AtgzPGXJOgn4A4w2OI8sIYgFPEKPi8W5HU1AlF1SYA+qaK8kw4LGw5CLJRd
+ UZajG44KGX7yqAvTgXF3ORTvDd3mVSFGJ52IndwzHlar9RTiRUyFhsHHAxAdmIE7MYgkJf1fx
+ 9zEWlckmjqgsNuoejIiFCh78iAXKzhpT+FZ1cRZ6e90Iai5oEmDPH0Cd6VDbnREpZRxyX1zLI
+ GMNAVSOnRJhtdg0u5zMpSfbARbs/yV55ag9pgdu6qgJPbzGR2SGUDc223OnAsF224WXgG2AZ4
+ YCYCfVgJVvGWFm/ohMYFfRUjebSg5Cy9Dn5WhMQcVJTaWQCiU7RTrp7tzVNy/O96DHuCBF/CJ
+ dzVMi/Ttm3YBiUPFFCgfPkn0NIHzqS5AONqj65JxmFjv4YUKWnRPRSqsbOMhYVoMydsH3sf4d
+ +jrWLJOCMNzm92tBxCxX8OMZ/WcK8D+HARyPsUyzIngYfjq3p8NNAmeABfGCIiOrSHk7udwhg
+ BFsDBhNsuVKhdRn9ohd8IG0X5akKEnjStraSz14SHibh2MJ8StQGc63VKtDo6CNFTrXpRP4ie
+ ksNkj7pkwkJB1Aw3BO8D9UTqdHCuKikJtGYgoFO5mn8Sgj5+W4TVUYe8M+e0HN6Xh+auWLAfs
+ YK4YhuvGByJ/EIloT6M3kPE+GUJlZbObqvks24Oz1TwIDOUqxItaXB8cQtAQSN3oE6zMkTWFv
+ xNe61ZyPDSi8V3VJDYtpAwtdF3oWZdOODdiO3A==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,76 +70,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
- Paul Walmsley <paul.walmsley@sifive.com>, "James E.J.
- Bottomley" <James.Bottomley@HansenPartnership.com>, Guo Ren <guoren@kernel.org>,
- Jisheng Zhang <jszhang@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
- live-patching@vger.kernel.org, linux-riscv@lists.infradead.org,
- Miroslav Benes <mbenes@suse.cz>, Paul Mackerras <paulus@samba.org>,
- Joe Lawrence <joe.lawrence@redhat.com>, Helge Deller <deller@gmx.de>,
- x86@kernel.org, linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
- Petr Mladek <pmladek@suse.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Jiri Kosina <jikos@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Borislav Petkov <bp@alien8.de>, Josh Poimboeuf <jpoimboe@redhat.com>,
- Thomas Gleixner <tglx@linutronix.de>, linux-parisc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Colin Ian King <colin.king@canonical.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>, Arnd Bergmann <arnd@arndb.de>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Anatolij Gustschin <agust@denx.de>, PowerPC <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 12 Oct 2021 13:40:08 +0800
-=E7=8E=8B=E8=B4=87 <yun.wang@linux.alibaba.com> wrote:
+On Mon, Oct 11, 2021 at 10:42 PM Rob Herring <robh+dt@kernel.org> wrote:
+> On Sun, Oct 10, 2021 at 4:27 PM Stephen Rothwell <sfr@canb.auug.org.au> wrote:
+> FYI, u-boot removed mpc5xxx support in 2017, so maybe there's
+> similarly not a need to keep them in the kernel? It does appear NXP
+> will still sell you the parts though the last BSP was 2009.
 
-> --- a/include/linux/trace_recursion.h
-> +++ b/include/linux/trace_recursion.h
-> @@ -214,7 +214,14 @@ static __always_inline void trace_clear_recursion(in=
-t bit)
->  static __always_inline int ftrace_test_recursion_trylock(unsigned long i=
-p,
->  							 unsigned long parent_ip)
->  {
-> -	return trace_test_and_set_recursion(ip, parent_ip, TRACE_FTRACE_START, =
-TRACE_FTRACE_MAX);
-> +	int bit;
-> +
-> +	preempt_disable_notrace();
+Specifically, MPC5200B has a 15 year lifetime, which ends in
+11 months from now. The original bplan/Genesi Efika 5K2 was
+quite popular at the time it came out, and there are probably
+still some of those hanging around, but they came with Open
+Firmware rather than relying on the dts files that ship with the
+kernel.
 
-The recursion test does not require preemption disabled, it uses the task
-struct, not per_cpu variables, so you should not disable it before the test.
+Grant Likely was the original maintainer for MPC52xx until 2011,
+Anatolij Gustschin is still listed as maintainer since then but hasn't
+been active in it for a while either. Anatolij can probably best judge
+which of these boards are still in going to be used with future kernels,
+but I suspect once you start removing bits from 52xx, the newer
+but less common 512x platform can go away as well.
 
-	bit =3D trace_test_and_set_recursion(ip, parent_ip, TRACE_FTRACE_START, TR=
-ACE_FTRACE_MAX);
-	if (bit >=3D 0)
-		preempt_disable_notrace();
-
-And if the bit is zero, it means a recursion check was already done by
-another caller (ftrace handler does the check, followed by calling perf),
-and you really don't even need to disable preemption in that case.
-
-	if (bit > 0)
-		preempt_disable_notrace();
-
-And on the unlock, have:
-
- static __always_inline void ftrace_test_recursion_unlock(int bit)
- {
-	if (bit)
-		preempt_enable_notrace();
- 	trace_clear_recursion(bit);
- }
-
-But maybe that's over optimizing ;-)
-
--- Steve
-
-
-> +	bit =3D trace_test_and_set_recursion(ip, parent_ip, TRACE_FTRACE_START,=
- TRACE_FTRACE_MAX);
-> +	if (bit < 0)
-> +		preempt_enable_notrace();
-> +
-> +	return bit;
->  }
-
+         Arnd
