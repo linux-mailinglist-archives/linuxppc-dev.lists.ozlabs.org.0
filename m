@@ -2,53 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB90A42B78B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 08:38:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 483C642B83B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 08:59:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HTjY54hMyz30GN
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 17:38:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HTk1G67Dpz30Bl
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 17:59:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=tjArxxti;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=iYoXg2tr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::536;
+ helo=mail-pg1-x536.google.com; envelope-from=keescook@chromium.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=iYoXg2tr; dkim-atps=neutral
+Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com
+ [IPv6:2607:f8b0:4864:20::536])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HTjXN0lC2z2xX2
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Oct 2021 17:38:12 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.a=rsa-sha256 header.s=201702 header.b=tjArxxti; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4HTjXK2t0qz4xbG;
- Wed, 13 Oct 2021 17:38:09 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
- s=201702; t=1634107091;
- bh=vG5wu8rK/bYN0SCJfvAhVNcO15ZTCrwihNZzPlGYioU=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=tjArxxtiWKW8QOQvHragrEHJbtBkAH6yvJiBrlCtpKo/Jvxv34mapJ9Bk9B7iT5Xu
- gHv9bYuIQ0YQpAYePJAC42B3GQEACJrC0vFeeJ9jUlGYXru4RHoODwhA6tNYJ1QsE4
- qIqSxq6Gbx0cjLzqskoflQpITzbv8NeKPLpb1UPueCrm6TM9mVdmJDeKwnMTWLcJ6t
- 8cOA5cuh+NmKK3Jl2D7VAA5VEi0rwAIwx5rTMDnqb8ujb/NjkN2dFC8/TCgJkM6vHJ
- hDkGDeVBrlYYIEsfAPr1kjfKBJ5KwiGiKyDFlhCIJzNlY5ebt8QmgzkosjPGKGz30m
- M7qszNN/ZDtXw==
-Date: Wed, 13 Oct 2021 17:38:08 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Rob Herring <robh@kernel.org>
-Subject: Re: [RFC PATCH] powerpc: dts: Remove MPC5xxx platforms
-Message-ID: <20211013173808.7ab92035@canb.auug.org.au>
-In-Reply-To: <20211012153456.2844193-1-robh@kernel.org>
-References: <20211012153456.2844193-1-robh@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HTk0Z68Zpz2xt5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Oct 2021 17:59:08 +1100 (AEDT)
+Received: by mail-pg1-x536.google.com with SMTP id a73so1451521pge.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Oct 2021 23:59:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=Ah8mNtDhQsWbV9KwnesQGFpsH5Aqgy4h8sZPRodsuTQ=;
+ b=iYoXg2tr5uR+0Nm6/7bv2feTzNboP5MoWc+N3Mcwv2iDRVw0pFvhxWOd61gJnNH9su
+ tIqFIxnUdQlKPtmJqrQ8BNteu39zfQaWMQasygpt32FcCdo7pqlDFdgKgPrXyx3AptwM
+ zkZxhWFgsqIFBb3TLt1dhhopIbTg0apkRywBY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=Ah8mNtDhQsWbV9KwnesQGFpsH5Aqgy4h8sZPRodsuTQ=;
+ b=IN8GTM5T6kgILEehb8l+dUG+FeWyIIqljwhH16qjrjSz6K7iw41dLzsMOwioXk4Aeo
+ ykhg2ySpFjpofaAOw3mgSrqDzGeXmXrTpjXU5K5SGsDA3J2IQ2AwHV6gMK+zdQE7f77T
+ EtNgPQUv2lzjvXErLyJA8DjewspGMXoCQL8wpIbZSI1aTZOpHJoO8ec74QMVYUadZSuD
+ QGB6O80C+h6h9wAPSJ9l4R2LZTCXM7ldYiaFU3JrwbmfIWItHPgXO6MFWcs0E67VqCUj
+ JRiVA7EfHh4g2hqiTF4GeE17Jbajlrcz1XJcXb9ZLaCT9/4JBjFMZ5pDFgtXV8oqczyn
+ j/pQ==
+X-Gm-Message-State: AOAM532sVtmWpzNTJ2u5HE7KV30SfvgK6RlLjoTzgVpSGbDLrXZaFxVy
+ KU610hfaEHng99BXwmP4Yl/JuQ==
+X-Google-Smtp-Source: ABdhPJzillT6hQ4qfjxKjNb7ySoarsV30yXxp2Jky0yj9b4NY2jS3CPORXAf7y3D7ilwslclDlQbpA==
+X-Received: by 2002:a62:188c:0:b0:44d:6660:212b with SMTP id
+ 134-20020a62188c000000b0044d6660212bmr1056541pfy.8.1634108343817; 
+ Tue, 12 Oct 2021 23:59:03 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+ by smtp.gmail.com with ESMTPSA id n21sm1086528pfv.115.2021.10.12.23.59.03
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 12 Oct 2021 23:59:03 -0700 (PDT)
+Date: Tue, 12 Oct 2021 23:59:02 -0700
+From: Kees Cook <keescook@chromium.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v1 01/10] powerpc: Move 'struct ppc64_opd_entry' back
+ into asm/elf.h
+Message-ID: <202110122358.4AFDC0BC7@keescook>
+References: <cover.1633964380.git.christophe.leroy@csgroup.eu>
+ <8ff3ec195d695033b652e9971fba2dc5528f7151.1633964380.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/hNT9L3ZDbI5k34wFOdCx2dr";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8ff3ec195d695033b652e9971fba2dc5528f7151.1633964380.git.christophe.leroy@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,79 +79,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Anatolij Gustschin <agust@denx.de>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
+ linux-parisc@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Helge Deller <deller@gmx.de>,
+ linux-kernel@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/hNT9L3ZDbI5k34wFOdCx2dr
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On Mon, Oct 11, 2021 at 05:25:28PM +0200, Christophe Leroy wrote:
+> 'struct ppc64_opd_entry' doesn't belong to uapi/asm/elf.h
+> 
+> It was initially in module_64.c and commit 2d291e902791 ("Fix compile
+> failure with non modular builds") moved it into asm/elf.h
+> 
+> But it was by mistake added outside of __KERNEL__ section,
+> therefore commit c3617f72036c ("UAPI: (Scripted) Disintegrate
+> arch/powerpc/include/asm") moved it to uapi/asm/elf.h
+> 
+> Move it back into asm/elf.h, this brings it back in line with
+> IA64 and PARISC architectures.
+> 
+> Fixes: 2d291e902791 ("Fix compile failure with non modular builds")
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-Hi Rob,
+I'd agree with Arnd: this is a reasonable cleanup and nothing should be
+using it.
 
-On Tue, 12 Oct 2021 10:34:56 -0500 Rob Herring <robh@kernel.org> wrote:
->
-> The mpc5xxx platforms have had dts warnings for some time which no one
-> seems to care to fix, so let's just remove the dts files.
->=20
-> According to Arnd:
-> "Specifically, MPC5200B has a 15 year lifetime, which ends in
-> 11 months from now. The original bplan/Genesi Efika 5K2 was
-> quite popular at the time it came out, and there are probably
-> still some of those hanging around, but they came with Open
-> Firmware rather than relying on the dts files that ship with the
-> kernel.
->=20
-> Grant Likely was the original maintainer for MPC52xx until 2011,
-> Anatolij Gustschin is still listed as maintainer since then but hasn't
-> been active in it for a while either. Anatolij can probably best judge
-> which of these boards are still in going to be used with future kernels,
-> but I suspect once you start removing bits from 52xx, the newer
-> but less common 512x platform can go away as well."
->=20
-> Cc: Anatolij Gustschin <agust@denx.de>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Stephen Rothwell <sfr@canb.auug.org.au>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
-> Sending this out as a feeler to see if anyone cares. If anyone does,=20
-> please fix the warnings.
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
-Thanks.  However .. :-)
-
-FATAL ERROR: Couldn't open "mpc5200b.dtsi": No such file or directory
-make[2]: *** [/home/sfr/next/next/scripts/Makefile.lib:358: arch/powerpc/bo=
-ot/dts/digsy_mtc.dtb] Error 1
-
-$ grep -wrl mpc5200b.dtsi
-arch/powerpc/boot/dts/digsy_mtc.dts
-
-missed one :-)
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/hNT9L3ZDbI5k34wFOdCx2dr
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmFmftAACgkQAVBC80lX
-0GySTgf/SwHWqYw3xEIGHbUBCpLmTzIJWw0cXaAN8VFo6Lpsb/H7xKz/Cu3fUYyX
-Z7veE1EKdxvZfcnE4rwSHEL8TvtLp3U3yAls5foblypO301bXEISgNaYxAHKSKeV
-S7D0KIY0U8fcSaM0HrBhwxTECEBGJtSwf2K/I81GlIKO8h+dt6ajec974Ku8mMMc
-LWukJfatx9F0Ex7prCIlJA1S/gnw8RO7x0GTaF8mM4ULay59UQbn2W+5W0MEs58g
-zyQFj8yL5OqaV6ZlzPhGIKQc1DLTPlQLvI7iuF2CxDKomoHvTPSiGqRtd/p3qnrt
-KR+wol1v6zuUZu7DClfczJuiGJ3vnw==
-=oWcO
------END PGP SIGNATURE-----
-
---Sig_/hNT9L3ZDbI5k34wFOdCx2dr--
+-- 
+Kees Cook
