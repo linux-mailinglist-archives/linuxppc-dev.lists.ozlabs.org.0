@@ -2,76 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B37642B9E9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 10:08:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5D0A42B9F5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 10:11:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HTlXP67rGz301F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 19:08:21 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=TZU2b0lO;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HTlcM3cKbz3c4b
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 19:11:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.52;
- helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=TZU2b0lO; 
- dkim-atps=neutral
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de
- [85.215.255.52])
+ smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.130;
+ helo=out30-130.freemail.mail.aliyun.com;
+ envelope-from=yun.wang@linux.alibaba.com; receiver=<UNKNOWN>)
+Received: from out30-130.freemail.mail.aliyun.com
+ (out30-130.freemail.mail.aliyun.com [115.124.30.130])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HTlWl4hRcz2yPk
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Oct 2021 19:07:45 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1634112408;
- s=strato-dkim-0002; d=xenosoft.de;
- h=In-Reply-To:Date:Message-ID:References:To:From:Subject:Cc:Date:From:
- Subject:Sender;
- bh=SIdqttAv8VY7+GPnyA9vyn4IVdFg1Dkp5cQAN7dWsbA=;
- b=TZU2b0lOnmLfKHi2inaQ528J4Rm8TEj1TfhwkuQBKmTf1uB7NhnT8yTKEsZA2ErZvB
- yPCprch6lE9F1gB27JLaStHAbV340zYe/MRN9wYqvCGgZw+W3qy2R6axfc51pp35dUh1
- WM5njfwXe8B8LKfgXSfWJHEPNAsFtJ4YCoz3+mqe3tdbqPJkcgQpu7urHH3kyjJtSuWL
- J2RjhXdaP9hCqx58oZOyvVERKr3AMANNAqmg0k0B9rJZC6Y45Ot7koo6oFgyrF3obhUk
- +WbO6sr7BoHUznPxjUYK1Nd7yQG554TzF0YWA4PIL9L0/igCESNAbZcZb08pPsx/Pcvy
- akFQ==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPgFJ9KSk6V3+Pov4y9Nnu4lP5KR8g=="
-X-RZG-CLASS-ID: mo00
-Received: from Christians-iMac.fritz.box by smtp.strato.de (RZmta 47.34.1 AUTH)
- with ESMTPSA id z02498x9D86kgmG
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Wed, 13 Oct 2021 10:06:46 +0200 (CEST)
-Subject: Re: [PATCH v2 00/11] Add Apple M1 support to PASemi i2c driver
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-To: Wolfram Sang <wsa@kernel.org>, Sven Peter <sven@svenpeter.dev>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Olof Johansson <olof@lixom.net>,
- Arnd Bergmann <arnd@arndb.de>, Hector Martin <marcan@marcan.st>,
- Mohamed Mediouni <mohamed.mediouni@caramail.com>,
- Stan Skowronek <stan@corellium.com>, Mark Kettenis
- <mark.kettenis@xs4all.nl>, Alyssa Rosenzweig <alyssa@rosenzweig.io>,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
- "R.T.Dickinson" <rtd@a-eon.com>, Matthew Leaman <matthew@a-eon.biz>,
- Darren Stevens <darren@stevens-zone.net>
-References: <20211008163532.75569-1-sven@svenpeter.dev>
- <YWFqr4uQGlNgnT1z@ninjato> <8a8afc73-3756-a305-ce5f-70b4bce6999f@xenosoft.de>
-Message-ID: <df424385-92af-3fad-f50b-c64897e991e8@xenosoft.de>
-Date: Wed, 13 Oct 2021 10:06:45 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HTlbx0L9hz2xXK
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Oct 2021 19:11:22 +1100 (AEDT)
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R641e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04423; MF=yun.wang@linux.alibaba.com;
+ NM=1; PH=DS; RN=31; SR=0; TI=SMTPD_---0UrfoBuS_1634112670; 
+Received: from testdeMacBook-Pro.local(mailfrom:yun.wang@linux.alibaba.com
+ fp:SMTPD_---0UrfoBuS_1634112670) by smtp.aliyun-inc.com(127.0.0.1);
+ Wed, 13 Oct 2021 16:11:12 +0800
+Subject: Re: [RESEND PATCH v2 1/2] ftrace: disable preemption between
+ ftrace_test_recursion_trylock/unlock()
+To: Miroslav Benes <mbenes@suse.cz>
+References: <b1d7fe43-ce84-0ed7-32f7-ea1d12d0b716@linux.alibaba.com>
+ <75ee86ac-02f2-d687-ab1e-9c8c33032495@linux.alibaba.com>
+ <alpine.LSU.2.21.2110130948120.5647@pobox.suse.cz>
+From: =?UTF-8?B?546L6LSH?= <yun.wang@linux.alibaba.com>
+Message-ID: <d5fbd49a-55c5-a9f5-6600-707c8d749312@linux.alibaba.com>
+Date: Wed, 13 Oct 2021 16:11:10 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:78.0)
  Gecko/20100101 Thunderbird/78.14.0
 MIME-Version: 1.0
-In-Reply-To: <8a8afc73-3756-a305-ce5f-70b4bce6999f@xenosoft.de>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: de-DE
+In-Reply-To: <alpine.LSU.2.21.2110130948120.5647@pobox.suse.cz>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,34 +53,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Guo Ren <guoren@kernel.org>, Jisheng Zhang <jszhang@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, live-patching@vger.kernel.org,
+ linux-riscv@lists.infradead.org, Paul Mackerras <paulus@samba.org>,
+ Joe Lawrence <joe.lawrence@redhat.com>, Helge Deller <deller@gmx.de>,
+ x86@kernel.org, linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+ Petr Mladek <pmladek@suse.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Jiri Kosina <jikos@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Borislav Petkov <bp@alien8.de>, Nicholas Piggin <npiggin@gmail.com>,
+ Josh Poimboeuf <jpoimboe@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Palmer Dabbelt <palmer@dabbelt.com>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Colin Ian King <colin.king@canonical.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 09 October 2021 at 03:57 pm, Christian Zigotzky wrote:
- > On 09 October 2021 at 12:10 pm, Wolfram Sang wrote:
- >>> I still don't have access to any old PASemi hardware but the 
-changes from
- >>> v1 are pretty small and I expect them to still work. Would still be 
-nice
- >>> if someone with access to such hardware could give this a quick test.
- >> Looks good to me. I will wait a few more days so that people can report
- >> their tests. But it will be in the next merge window.
- >>
- > Series v2:
- >
- > Tested-by: Christian Zigotzky <chzigotzky@xenosoft.de> [1]
- >
- > - Christian
- >
- > [1] 
-https://forum.hyperion-entertainment.com/viewtopic.php?p=54213#p54213
 
-Series v2:
 
-Tested-by: Damien Stewart (Hypex) [1]
+On 2021/10/13 下午3:55, Miroslav Benes wrote:
+>> diff --git a/include/linux/trace_recursion.h b/include/linux/trace_recursion.h
+>> index a9f9c57..101e1fb 100644
+>> --- a/include/linux/trace_recursion.h
+>> +++ b/include/linux/trace_recursion.h
+>> @@ -208,13 +208,29 @@ static __always_inline void trace_clear_recursion(int bit)
+>>   * Use this for ftrace callbacks. This will detect if the function
+>>   * tracing recursed in the same context (normal vs interrupt),
+>>   *
+>> + * The ftrace_test_recursion_trylock() will disable preemption,
+>> + * which is required for the variant of synchronize_rcu() that is
+>> + * used to allow patching functions where RCU is not watching.
+>> + * See klp_synchronize_transition() for more details.
+>> + *
+> 
+> I think that you misunderstood. Steven proposed to put the comment before 
+> ftrace_test_recursion_trylock() call site in klp_ftrace_handler().
 
-- Christian
+Oh, I see... thanks for pointing out :-)
 
-[1] https://forum.hyperion-entertainment.com/viewtopic.php?p=54217#p54217
+> 
+>>   * Returns: -1 if a recursion happened.
+[snip]
+>>  }
+> 
+> Side note... the comment will eventually conflict with peterz's 
+> https://lore.kernel.org/all/20210929152429.125997206@infradead.org/.
 
+Steven, would you like to share your opinion on this patch?
+
+If klp_synchronize_transition() will be removed anyway, the comments
+will be meaningless and we can just drop it :-P
+
+Regards,
+Michael Wang
+
+
+> 
+> Miroslav
+> 
