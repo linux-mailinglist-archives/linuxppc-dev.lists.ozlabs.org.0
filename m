@@ -1,72 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECC6842B85B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 09:03:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A11742B860
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 09:03:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HTk583sFmz3cCM
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 18:03:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HTk5t4ksqz3cYp
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 18:03:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=NwHbNYol;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=Yu/d1w7s;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::42f;
- helo=mail-pf1-x42f.google.com; envelope-from=keescook@chromium.org;
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::102e;
+ helo=mail-pj1-x102e.google.com; envelope-from=keescook@chromium.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=NwHbNYol; dkim-atps=neutral
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com
- [IPv6:2607:f8b0:4864:20::42f])
+ header.s=google header.b=Yu/d1w7s; dkim-atps=neutral
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com
+ [IPv6:2607:f8b0:4864:20::102e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HTk483PWvz30KC
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Oct 2021 18:02:16 +1100 (AEDT)
-Received: by mail-pf1-x42f.google.com with SMTP id k26so1618711pfi.5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Oct 2021 00:02:16 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HTk4j0Tsvz3cPp
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Oct 2021 18:02:44 +1100 (AEDT)
+Received: by mail-pj1-x102e.google.com with SMTP id
+ d13-20020a17090ad3cd00b0019e746f7bd4so3723474pjw.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Oct 2021 00:02:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
  h=date:from:to:cc:subject:message-id:references:mime-version
  :content-disposition:in-reply-to;
- bh=QziJyzXzUKzLt0mT/rAcGmhri2bByqLuVs1mVf2Iq0g=;
- b=NwHbNYolt/EJuuhUNh3gFlhBeQ9ofBjeVTMrGlBvl7Dpq4nY5SGQ+7bZVHVSCPSCvz
- N4ue7iEr/SejEm3Z7dmljFY3Ydw+WZXeuot6L8HdKKtMDeoRppIKuFuYaENN6G0icj3X
- 75yWvw4ksMlAy3h2kzjPtg6nuTPvWkdSEorqM=
+ bh=efB3Lcg8IS6RzUiO27f4O4XhGBeoDlQrvifyp9iElT0=;
+ b=Yu/d1w7scx0araRrouwcPv6x4zAyT5UDwg8br0GJKxvpbtbYX8o2X/sT0DZJj85xPu
+ GeOG1cedBC9ir+WJzzTn0DlJjTcSrRwmj6JY0uqPzF+FpwjUp67IJwMyMJy7Xmdg24ud
+ 6JNdT8Dwc4xpSiQj6cf4wp2M/y/7wOCbdXf/M=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:in-reply-to;
- bh=QziJyzXzUKzLt0mT/rAcGmhri2bByqLuVs1mVf2Iq0g=;
- b=OXExOHGByWnOR3ByJhVHFhEnrz+eGt51VtEwyW3iLGn0tJHJjYymk2bTvkyp8VoGXr
- ec06vRe0olGLgTq1eI50NEvo10PYcRvVW0W1k1dYdVMXdFssOZJhmb0vwYv6os8EBsC6
- h2dPLF0A5oCTmXAIoVHRu3kApwN8y71b7h9QIyU/K6EAb8k9xJ94Fys7B6faFjkxVekI
- hPYW4YHOgEV1Kg6MUK2D1WUcdfhP8hBEgwQCl76dXE93ltHJh3ZAo/gYix9GtUUUf5fh
- ETU9UxMKfQNtV+30kAs0y2MpFlCcpegUgVwMf2ddKvfV35XhEPsTERYa5iboecx8xUjY
- /3nQ==
-X-Gm-Message-State: AOAM532JZGrib2VJrGyUWML99tCQpywmM6bQqPBfZC7EE19KW2NhWOEx
- fYgoBmD4KuwWMwRFOyZtmmgERQ==
-X-Google-Smtp-Source: ABdhPJyWYEWyfQBfcC/0yIP+D80JqXxmyV0v/CWpa3mlnRn6oeLJSgdmS6Po11cAfGz1rlakmHlfMA==
-X-Received: by 2002:a63:ed13:: with SMTP id d19mr26247213pgi.430.1634108533970; 
- Wed, 13 Oct 2021 00:02:13 -0700 (PDT)
+ bh=efB3Lcg8IS6RzUiO27f4O4XhGBeoDlQrvifyp9iElT0=;
+ b=BNgIDz0NIhF/4Fdlupkt3kXKkWWJVf4P4v56jrbUju4yseoblN/6OsTXeFqiQ0TCwr
+ gtud194kQc7lwQNfQSKQ4rhHWTYldFJGVkl+UP3VhoFysxN2xEvDhdd2UVekRyYo9u0R
+ zslShPX6IFfZObHQiiWThdQPKO6DHG8mLnYD6ZLmuIaQs4rt3itpIU/nCUwU/vWUNmOj
+ ndVs00i+QdYW5RAvsMCJ24UY4j1yhzYHBqQz1CRSUUdJj1Z+CMgv/1DYOVaxeDn1mET3
+ CoRHpNAx4Hc9T/IyRaLXsWpl1FO/8XrF/bacIFXvuHmybqqVnHLPy+1CUIKRIGV7Y8BD
+ zxQw==
+X-Gm-Message-State: AOAM530ycnYh95WqIv262VOLjLjS/Y5UeLJNSTFTGUSIIuYIZ11IwV9Q
+ QiLOwVcmcs8QQjKkmv0MY5HESg==
+X-Google-Smtp-Source: ABdhPJx2yhgK3ntHhywGbHAC8jYO6ehQsn+GhjQrHT7BjbF3OFKwU6TjoJG8lD6XMAvpgbQCPNEisw==
+X-Received: by 2002:a17:90b:17cc:: with SMTP id
+ me12mr11443156pjb.147.1634108562933; 
+ Wed, 13 Oct 2021 00:02:42 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id k14sm7556115pgt.8.2021.10.13.00.02.13
+ by smtp.gmail.com with ESMTPSA id u19sm3124045pgo.73.2021.10.13.00.02.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 13 Oct 2021 00:02:13 -0700 (PDT)
-Date: Wed, 13 Oct 2021 00:02:12 -0700
+ Wed, 13 Oct 2021 00:02:42 -0700 (PDT)
+Date: Wed, 13 Oct 2021 00:02:41 -0700
 From: Kees Cook <keescook@chromium.org>
 To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v1 06/10] asm-generic: Refactor
- dereference_[kernel]_function_descriptor()
-Message-ID: <202110130002.A7C0A86@keescook>
+Subject: Re: [PATCH v1 07/10] lkdtm: Force do_nothing() out of line
+Message-ID: <202110130002.0FC7878252@keescook>
 References: <cover.1633964380.git.christophe.leroy@csgroup.eu>
- <c215b244a19a07327ec81bf99f3c5f89c68af7b4.1633964380.git.christophe.leroy@csgroup.eu>
+ <b353a85e50ac336c385b46459a5fc43f4a6171ac.1633964380.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c215b244a19a07327ec81bf99f3c5f89c68af7b4.1633964380.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <b353a85e50ac336c385b46459a5fc43f4a6171ac.1633964380.git.christophe.leroy@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,172 +90,17 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Oct 11, 2021 at 05:25:33PM +0200, Christophe Leroy wrote:
-> dereference_function_descriptor() and
-> dereference_kernel_function_descriptor() are identical on the
-> three architectures implementing them.
+On Mon, Oct 11, 2021 at 05:25:34PM +0200, Christophe Leroy wrote:
+> LKDTM tests display that the run do_nothing() at a given
+> address, but in reality do_nothing() is inlined into the
+> caller.
 > 
-> Make it common.
+> Force it out of line so that it really runs text at the
+> displayed address.
 > 
 > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->  arch/ia64/include/asm/sections.h    | 19 -------------------
->  arch/parisc/include/asm/sections.h  |  9 ---------
->  arch/parisc/kernel/process.c        | 21 ---------------------
->  arch/powerpc/include/asm/sections.h | 23 -----------------------
->  include/asm-generic/sections.h      | 18 ++++++++++++++++++
->  5 files changed, 18 insertions(+), 72 deletions(-)
 
-A diffstat to love. :)
-
-Reviewed-by: Kees Cook <keescook@chromium.org>
-
-
-> 
-> diff --git a/arch/ia64/include/asm/sections.h b/arch/ia64/include/asm/sections.h
-> index 929b5c535620..d9addaea8339 100644
-> --- a/arch/ia64/include/asm/sections.h
-> +++ b/arch/ia64/include/asm/sections.h
-> @@ -30,23 +30,4 @@ extern char __start_gate_brl_fsys_bubble_down_patchlist[], __end_gate_brl_fsys_b
->  extern char __start_unwind[], __end_unwind[];
->  extern char __start_ivt_text[], __end_ivt_text[];
->  
-> -#undef dereference_function_descriptor
-> -static inline void *dereference_function_descriptor(void *ptr)
-> -{
-> -	struct fdesc *desc = ptr;
-> -	void *p;
-> -
-> -	if (!get_kernel_nofault(p, (void *)&desc->addr))
-> -		ptr = p;
-> -	return ptr;
-> -}
-> -
-> -#undef dereference_kernel_function_descriptor
-> -static inline void *dereference_kernel_function_descriptor(void *ptr)
-> -{
-> -	if (ptr < (void *)__start_opd || ptr >= (void *)__end_opd)
-> -		return ptr;
-> -	return dereference_function_descriptor(ptr);
-> -}
-> -
->  #endif /* _ASM_IA64_SECTIONS_H */
-> diff --git a/arch/parisc/include/asm/sections.h b/arch/parisc/include/asm/sections.h
-> index 329e80f7af0a..b041fb32a300 100644
-> --- a/arch/parisc/include/asm/sections.h
-> +++ b/arch/parisc/include/asm/sections.h
-> @@ -12,13 +12,4 @@ typedef Elf64_Fdesc funct_descr_t;
->  
->  extern char __alt_instructions[], __alt_instructions_end[];
->  
-> -#ifdef CONFIG_64BIT
-> -
-> -#undef dereference_function_descriptor
-> -void *dereference_function_descriptor(void *);
-> -
-> -#undef dereference_kernel_function_descriptor
-> -void *dereference_kernel_function_descriptor(void *);
-> -#endif
-> -
->  #endif
-> diff --git a/arch/parisc/kernel/process.c b/arch/parisc/kernel/process.c
-> index 38ec4ae81239..7382576b52a8 100644
-> --- a/arch/parisc/kernel/process.c
-> +++ b/arch/parisc/kernel/process.c
-> @@ -266,27 +266,6 @@ get_wchan(struct task_struct *p)
->  	return 0;
->  }
->  
-> -#ifdef CONFIG_64BIT
-> -void *dereference_function_descriptor(void *ptr)
-> -{
-> -	Elf64_Fdesc *desc = ptr;
-> -	void *p;
-> -
-> -	if (!get_kernel_nofault(p, (void *)&desc->addr))
-> -		ptr = p;
-> -	return ptr;
-> -}
-> -
-> -void *dereference_kernel_function_descriptor(void *ptr)
-> -{
-> -	if (ptr < (void *)__start_opd ||
-> -			ptr >= (void *)__end_opd)
-> -		return ptr;
-> -
-> -	return dereference_function_descriptor(ptr);
-> -}
-> -#endif
-> -
->  static inline unsigned long brk_rnd(void)
->  {
->  	return (get_random_int() & BRK_RND_MASK) << PAGE_SHIFT;
-> diff --git a/arch/powerpc/include/asm/sections.h b/arch/powerpc/include/asm/sections.h
-> index d0d5287fa568..8f8e95f234e2 100644
-> --- a/arch/powerpc/include/asm/sections.h
-> +++ b/arch/powerpc/include/asm/sections.h
-> @@ -72,29 +72,6 @@ static inline int overlaps_kernel_text(unsigned long start, unsigned long end)
->  		(unsigned long)_stext < end;
->  }
->  
-> -#ifdef PPC64_ELF_ABI_v1
-> -
-> -#undef dereference_function_descriptor
-> -static inline void *dereference_function_descriptor(void *ptr)
-> -{
-> -	struct ppc64_opd_entry *desc = ptr;
-> -	void *p;
-> -
-> -	if (!get_kernel_nofault(p, (void *)&desc->addr))
-> -		ptr = p;
-> -	return ptr;
-> -}
-> -
-> -#undef dereference_kernel_function_descriptor
-> -static inline void *dereference_kernel_function_descriptor(void *ptr)
-> -{
-> -	if (ptr < (void *)__start_opd || ptr >= (void *)__end_opd)
-> -		return ptr;
-> -
-> -	return dereference_function_descriptor(ptr);
-> -}
-> -#endif /* PPC64_ELF_ABI_v1 */
-> -
->  #endif
->  
->  #endif /* __KERNEL__ */
-> diff --git a/include/asm-generic/sections.h b/include/asm-generic/sections.h
-> index 436412d94054..5baaf9d7c671 100644
-> --- a/include/asm-generic/sections.h
-> +++ b/include/asm-generic/sections.h
-> @@ -60,6 +60,24 @@ extern __visible const void __nosave_begin, __nosave_end;
->  
->  /* Function descriptor handling (if any).  Override in asm/sections.h */
->  #ifdef HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR
-> +static inline void *dereference_function_descriptor(void *ptr)
-> +{
-> +	funct_descr_t *desc = ptr;
-> +	void *p;
-> +
-> +	if (!get_kernel_nofault(p, (void *)&desc->addr))
-> +		ptr = p;
-> +	return ptr;
-> +}
-> +
-> +static inline void *dereference_kernel_function_descriptor(void *ptr)
-> +{
-> +	if (ptr < (void *)__start_opd || ptr >= (void *)__end_opd)
-> +		return ptr;
-> +
-> +	return dereference_function_descriptor(ptr);
-> +}
-> +
->  #else
->  #define dereference_function_descriptor(p) ((void *)(p))
->  #define dereference_kernel_function_descriptor(p) ((void *)(p))
-> -- 
-> 2.31.1
-> 
+Acked-by: Kees Cook <keescook@chromium.org>
 
 -- 
 Kees Cook
