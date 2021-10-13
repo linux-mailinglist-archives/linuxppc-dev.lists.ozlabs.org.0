@@ -1,104 +1,99 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1064842BB94
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 11:30:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81B8542BC98
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 12:17:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HTnMX4nMmz3bXR
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 20:30:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HTpNx0Nm2z301s
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 21:17:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=P4YhDaHJ;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=P4YhDaHJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OtS+X/2w;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=lvivier@redhat.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=P4YhDaHJ; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=P4YhDaHJ; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=OtS+X/2w; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HTnLr6y64z2yQm
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Oct 2021 20:30:11 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1634117406;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ZjFKZdAkzPM6kA0DElv7KLx9JGj1opCMkKpXv5IVjds=;
- b=P4YhDaHJEuKvp10tgKg3+Kxf8olg4BF6lOGkPG/UOMmsu/Nh+v/iYL/+L6jZ53jzuRqvrQ
- +vSWvHoSbnGaLMNiQD/YIC+AWMXbLgmCYA7HHQp4H6XRdTf9eywRbkF8dm5YAM+qo4WJLj
- XDFn54+buUZ5Pl4MgLTmzasKIuIkslg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1634117406;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ZjFKZdAkzPM6kA0DElv7KLx9JGj1opCMkKpXv5IVjds=;
- b=P4YhDaHJEuKvp10tgKg3+Kxf8olg4BF6lOGkPG/UOMmsu/Nh+v/iYL/+L6jZ53jzuRqvrQ
- +vSWvHoSbnGaLMNiQD/YIC+AWMXbLgmCYA7HHQp4H6XRdTf9eywRbkF8dm5YAM+qo4WJLj
- XDFn54+buUZ5Pl4MgLTmzasKIuIkslg=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-340-YOt3-vc3Pw66f8R8i79afg-1; Wed, 13 Oct 2021 05:30:04 -0400
-X-MC-Unique: YOt3-vc3Pw66f8R8i79afg-1
-Received: by mail-wr1-f72.google.com with SMTP id
- 75-20020adf82d1000000b00160cbb0f800so1454396wrc.22
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Oct 2021 02:30:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
- :content-language:to:cc:references:from:in-reply-to
- :content-transfer-encoding;
- bh=ZjFKZdAkzPM6kA0DElv7KLx9JGj1opCMkKpXv5IVjds=;
- b=Yb9ASjXnYE1U3cqH6VzK8m1f3Ip5QSwOPQyDVrWbXGMIelIjgMvzh/rIcoh9hH9Sas
- +n/ax3ivgwWxlmnMpE+psTlFIcjCPciVqmTzb3LplFfm76UFrlOcDLojF26q6sC4nI4c
- HjZUkRl1vEM5adLbzB/Oi+deD1Nz7MRF+jaktEsKNC0ZoWAu1Gac//DrnHsTfBfYRYDx
- sGabYjkOKDE0ZySgJym2SIjxziiRXOjCf0lYJ7rO5HKoM7mQpDCbJDqo6r45zBv2u21k
- hm4I9M224d3/xsK3ub4cSMLexjPBav6xf5MTE5kPE0nZmGj8yOFgiMZCfU4Rvyef83Zn
- pNeA==
-X-Gm-Message-State: AOAM530yZ1LCTdOpKcnkOazZ6e/2IaX2MX0gXrLiIp1QQ2wXhfOwhF+d
- 9L4+HQ+SGoGDuEWmsmMujJ5d4tgjk/3qL+mOPg6umTE9eLq89+G7uKVmH7GCRRG/u7gPSXmplHY
- E/jFkTQjELOC5Tvvu4xkT+pFcpg==
-X-Received: by 2002:a1c:c906:: with SMTP id f6mr11752836wmb.136.1634117402776; 
- Wed, 13 Oct 2021 02:30:02 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJw9gTLzJcIp/yrU6EoIVb6qauYFuyxecxt8Qxs8z4PtL5mkOqc+Jp//TvYKtW53QKGayzslJQ==
-X-Received: by 2002:a1c:c906:: with SMTP id f6mr11752794wmb.136.1634117402420; 
- Wed, 13 Oct 2021 02:30:02 -0700 (PDT)
-Received: from [192.168.100.42] ([82.142.24.54])
- by smtp.gmail.com with ESMTPSA id e16sm11103886wrw.17.2021.10.13.02.30.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 13 Oct 2021 02:30:02 -0700 (PDT)
-Message-ID: <d7f59d0e-eac2-7978-4067-9258c8b1aefe@redhat.com>
-Date: Wed, 13 Oct 2021 11:30:00 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.1.0
-Subject: Re: [PATCH v2] KVM: PPC: Defer vtime accounting 'til after IRQ
- handling
-To: Michael Ellerman <mpe@ellerman.id.au>, kvm-ppc@vger.kernel.org
-References: <20211007142856.41205-1-lvivier@redhat.com>
- <875yu17rxk.fsf@mpe.ellerman.id.au>
-From: Laurent Vivier <lvivier@redhat.com>
-In-Reply-To: <875yu17rxk.fsf@mpe.ellerman.id.au>
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=lvivier@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HTpN622r5z2yNQ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Oct 2021 21:16:21 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19DAArcs021580; 
+ Wed, 13 Oct 2021 06:15:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=z2tQ+mWwWACtmx/l9uuunVaTh/+pU7Z8rwc0mPpXfKU=;
+ b=OtS+X/2w7KD7cCMmTUquol+ikNsrAfDjyR2yVeBO9fje77dX6ok6GVwJRuSc8+QTpENh
+ cYy/jL+lPG9QzI8ZNcBlLM67uCJHXiD4a2EsWn3N/kH4WrLA1bggWmd85Y1mdf5tRo00
+ AJegUrgo/3f0lsnAJ/rIHVrfB9JD4hXWuZ7j4bKTW/8g4Jkwtd49NwUuJPVgeXr6M/rE
+ +rQYbVtSEHS/NwRZKD2AE8NKBHBCFg8NsBc5OFTxKzDoEvMko7wUibeF8gJjsCzZTKQS
+ Qf6Jo+oVHcyTLgy//m5pBDiQ/foes3V9qdymnojG8xvRfYsR5Cw8V82Sq2RCzIS6A7Gp rA== 
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3bnr79ev4j-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 13 Oct 2021 06:15:45 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19DA7xxw012393;
+ Wed, 13 Oct 2021 10:15:42 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma06ams.nl.ibm.com with ESMTP id 3bk2bjhp30-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 13 Oct 2021 10:15:42 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 19DAFU2460031438
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 13 Oct 2021 10:15:30 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0F1EA42061;
+ Wed, 13 Oct 2021 10:15:30 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 452364204F;
+ Wed, 13 Oct 2021 10:15:19 +0000 (GMT)
+Received: from li-e8dccbcc-2adc-11b2-a85c-bc1f33b9b810.ibm.com (unknown
+ [9.43.58.186]) by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 13 Oct 2021 10:15:18 +0000 (GMT)
+Subject: Re: [PATCH v5 0/4] Add perf interface to expose nvdimm
+To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, nvdimm@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, peterz@infradead.org,
+ dan.j.williams@intel.com, ira.weiny@intel.com, vishal.l.verma@intel.com
+References: <20210928124200.146331-1-kjain@linux.ibm.com>
+From: kajoljain <kjain@linux.ibm.com>
+Message-ID: <b54072ad-4d71-ff6d-7c63-0c1395e1d8f8@linux.ibm.com>
+Date: Wed, 13 Oct 2021 15:45:15 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
+In-Reply-To: <20210928124200.146331-1-kjain@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: lZK93NSGcp_ji9b4QDMhQ68IFa4Zh-Jb
+X-Proofpoint-ORIG-GUID: lZK93NSGcp_ji9b4QDMhQ68IFa4Zh-Jb
 Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-10-13_03,2021-10-13_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015
+ lowpriorityscore=0 mlxlogscore=999 malwarescore=0 adultscore=0
+ suspectscore=0 bulkscore=0 spamscore=0 phishscore=0 mlxscore=0
+ priorityscore=1501 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2109230001 definitions=main-2110130068
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,94 +105,139 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: santosh@fossix.org, maddy@linux.ibm.com, rnsastry@linux.ibm.com,
+ aneesh.kumar@linux.ibm.com, atrajeev@linux.vnet.ibm.com, vaibhav@linux.ibm.com,
+ tglx@linutronix.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 13/10/2021 01:18, Michael Ellerman wrote:
-> Laurent Vivier <lvivier@redhat.com> writes:
->> Commit 112665286d08 moved guest_exit() in the interrupt protected
->> area to avoid wrong context warning (or worse), but the tick counter
->> cannot be updated and the guest time is accounted to the system time.
->>
->> To fix the problem port to POWER the x86 fix
->> 160457140187 ("Defer vtime accounting 'til after IRQ handling"):
->>
->> "Defer the call to account guest time until after servicing any IRQ(s)
->>   that happened in the guest or immediately after VM-Exit.  Tick-based
->>   accounting of vCPU time relies on PF_VCPU being set when the tick IRQ
->>   handler runs, and IRQs are blocked throughout the main sequence of
->>   vcpu_enter_guest(), including the call into vendor code to actually
->>   enter and exit the guest."
->>
->> Fixes: 112665286d08 ("KVM: PPC: Book3S HV: Context tracking exit guest context before enabling irqs")
->> Cc: npiggin@gmail.com
->> Cc: <stable@vger.kernel.org> # 5.12
->> Signed-off-by: Laurent Vivier <lvivier@redhat.com>
->> ---
->>
->> Notes:
->>      v2: remove reference to commit 61bd0f66ff92
->>          cc stable 5.12
->>          add the same comment in the code as for x86
->>
->>   arch/powerpc/kvm/book3s_hv.c | 24 ++++++++++++++++++++----
->>   1 file changed, 20 insertions(+), 4 deletions(-)
->>
->> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
->> index 2acb1c96cfaf..a694d1a8f6ce 100644
->> --- a/arch/powerpc/kvm/book3s_hv.c
->> +++ b/arch/powerpc/kvm/book3s_hv.c
-> ...
->> @@ -4506,13 +4514,21 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
->>   
->>   	srcu_read_unlock(&kvm->srcu, srcu_idx);
->>   
->> +	context_tracking_guest_exit();
->> +
->>   	set_irq_happened(trap);
->>   
->>   	kvmppc_set_host_core(pcpu);
->>   
->> -	guest_exit_irqoff();
->> -
->>   	local_irq_enable();
->> +	/*
->> +	 * Wait until after servicing IRQs to account guest time so that any
->> +	 * ticks that occurred while running the guest are properly accounted
->> +	 * to the guest.  Waiting until IRQs are enabled degrades the accuracy
->> +	 * of accounting via context tracking, but the loss of accuracy is
->> +	 * acceptable for all known use cases.
->> +	 */
->> +	vtime_account_guest_exit();
-> 
-> This pops a warning for me, running guest(s) on Power8:
->   
->    [  270.745303][T16661] ------------[ cut here ]------------
->    [  270.745374][T16661] WARNING: CPU: 72 PID: 16661 at arch/powerpc/kernel/time.c:311 vtime_account_kernel+0xe0/0xf0
-
-Thank you, I missed that...
-
-My patch is wrong, I have to add vtime_account_guest_exit() before the local_irq_enable().
-
-arch/powerpc/kernel/time.c
-
-  305 static unsigned long vtime_delta(struct cpu_accounting_data *acct,
-  306                                  unsigned long *stime_scaled,
-  307                                  unsigned long *steal_time)
-  308 {
-  309         unsigned long now, stime;
-  310
-  311         WARN_ON_ONCE(!irqs_disabled());
-...
-
-But I don't understand how ticks can be accounted now if irqs are still disabled.
-
-Not sure it is as simple as expected...
+Hi Dan,
+   Any comments on this patch-set?
 
 Thanks,
-Laurent
+Kajol Jain
 
+On 9/28/21 6:11 PM, Kajol Jain wrote:
+> Patchset adds performance stats reporting support for nvdimm.
+> Added interface includes support for pmu register/unregister
+> functions. A structure is added called nvdimm_pmu to be used for
+> adding arch/platform specific data such as cpumask, nvdimm device
+> pointer and pmu event functions like event_init/add/read/del.
+> User could use the standard perf tool to access perf events
+> exposed via pmu.
+> 
+> Interface also defines supported event list, config fields for the
+> event attributes and their corresponding bit values which are exported
+> via sysfs. Patch 3 exposes IBM pseries platform nmem* device
+> performance stats using this interface.
+> 
+> Result from power9 pseries lpar with 2 nvdimm device:
+> 
+> Ex: List all event by perf list
+> 
+> command:# perf list nmem
+> 
+>   nmem0/cache_rh_cnt/                                [Kernel PMU event]
+>   nmem0/cache_wh_cnt/                                [Kernel PMU event]
+>   nmem0/cri_res_util/                                [Kernel PMU event]
+>   nmem0/ctl_res_cnt/                                 [Kernel PMU event]
+>   nmem0/ctl_res_tm/                                  [Kernel PMU event]
+>   nmem0/fast_w_cnt/                                  [Kernel PMU event]
+>   nmem0/host_l_cnt/                                  [Kernel PMU event]
+>   nmem0/host_l_dur/                                  [Kernel PMU event]
+>   nmem0/host_s_cnt/                                  [Kernel PMU event]
+>   nmem0/host_s_dur/                                  [Kernel PMU event]
+>   nmem0/med_r_cnt/                                   [Kernel PMU event]
+>   nmem0/med_r_dur/                                   [Kernel PMU event]
+>   nmem0/med_w_cnt/                                   [Kernel PMU event]
+>   nmem0/med_w_dur/                                   [Kernel PMU event]
+>   nmem0/mem_life/                                    [Kernel PMU event]
+>   nmem0/poweron_secs/                                [Kernel PMU event]
+>   ...
+>   nmem1/mem_life/                                    [Kernel PMU event]
+>   nmem1/poweron_secs/                                [Kernel PMU event]
+> 
+> Patch1:
+>         Introduces the nvdimm_pmu structure
+> Patch2:
+>         Adds common interface to add arch/platform specific data
+>         includes nvdimm device pointer, pmu data along with
+>         pmu event functions. It also defines supported event list
+>         and adds attribute groups for format, events and cpumask.
+>         It also adds code for cpu hotplug support.
+> Patch3:
+>         Add code in arch/powerpc/platform/pseries/papr_scm.c to expose
+>         nmem* pmu. It fills in the nvdimm_pmu structure with pmu name,
+>         capabilities, cpumask and event functions and then registers
+>         the pmu by adding callbacks to register_nvdimm_pmu.
+> Patch4:
+>         Sysfs documentation patch
+> 
+> Changelog
+> ---
+> v4 -> v5:
+> - Remove multiple variables defined in nvdimm_pmu structure include
+>   name and pmu functions(event_int/add/del/read) as they are just
+>   used to copy them again in pmu variable. Now we are directly doing
+>   this step in arch specific code as suggested by Dan Williams.
+> 
+> - Remove attribute group field from nvdimm pmu structure and
+>   defined these attribute groups in common interface which
+>   includes format, event list along with cpumask as suggested by
+>   Dan Williams.
+>   Since we added static defination for attrbute groups needed in
+>   common interface, removes corresponding code from papr.
+> 
+> - Add nvdimm pmu event list with event codes in the common interface.
+> 
+> - Remove Acked-by/Reviewed-by/Tested-by tags as code is refactored
+>   to handle review comments from Dan.
+> 
+> - Make nvdimm_pmu_free_hotplug_memory function static as reported
+>   by kernel test robot, also add corresponding Reported-by tag.
+> 
+> - Link to the patchset v4: https://lkml.org/lkml/2021/9/3/45
+> 
+> v3 -> v4
+> - Rebase code on top of current papr_scm code without any logical
+>   changes.
+> 
+> - Added Acked-by tag from Peter Zijlstra and Reviewed by tag
+>   from Madhavan Srinivasan.
+> 
+> - Link to the patchset v3: https://lkml.org/lkml/2021/6/17/605
+> 
+> v2 -> v3
+> - Added Tested-by tag.
+> 
+> - Fix nvdimm mailing list in the ABI Documentation.
+> 
+> - Link to the patchset v2: https://lkml.org/lkml/2021/6/14/25
+> 
+> v1 -> v2
+> - Fix hotplug code by adding pmu migration call
+>   incase current designated cpu got offline. As
+>   pointed by Peter Zijlstra.
+> 
+> - Removed the retun -1 part from cpu hotplug offline
+>   function.
+> 
+> - Link to the patchset v1: https://lkml.org/lkml/2021/6/8/500
+> 
+> Kajol Jain (4):
+>   drivers/nvdimm: Add nvdimm pmu structure
+>   drivers/nvdimm: Add perf interface to expose nvdimm performance stats
+>   powerpc/papr_scm: Add perf interface support
+>   docs: ABI: sysfs-bus-nvdimm: Document sysfs event format entries for
+>     nvdimm pmu
+> 
+>  Documentation/ABI/testing/sysfs-bus-nvdimm |  35 +++
+>  arch/powerpc/include/asm/device.h          |   5 +
+>  arch/powerpc/platforms/pseries/papr_scm.c  | 225 ++++++++++++++
+>  drivers/nvdimm/Makefile                    |   1 +
+>  drivers/nvdimm/nd_perf.c                   | 328 +++++++++++++++++++++
+>  include/linux/nd.h                         |  41 +++
+>  6 files changed, 635 insertions(+)
+>  create mode 100644 drivers/nvdimm/nd_perf.c
+> 
