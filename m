@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F24542CDF4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 00:29:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A467A42CEEA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 00:59:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HV6dp02tXz305G
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 09:29:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HV7K01J5Xz2ywQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 09:59:48 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=denx.de header.i=@denx.de header.a=rsa-sha256 header.s=phobos-20191101 header.b=O2yxj5YJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=denx.de header.i=@denx.de header.a=rsa-sha256 header.s=phobos-20191101 header.b=KpYq53aV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,45 +18,37 @@ Authentication-Results: lists.ozlabs.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=denx.de header.i=@denx.de header.a=rsa-sha256
- header.s=phobos-20191101 header.b=O2yxj5YJ; 
+ header.s=phobos-20191101 header.b=KpYq53aV; 
  dkim-atps=neutral
 Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HV6d92Zxqz2xjR
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 09:28:45 +1100 (AEDT)
-Received: from crub (pd95f1d7c.dip0.t-ipconnect.de [217.95.29.124])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HV7JK0gm3z2yMg
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 09:59:11 +1100 (AEDT)
+Received: from crub.agik.hopto.org (pd95f1d7c.dip0.t-ipconnect.de
+ [217.95.29.124])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
  (No client certificate requested)
  (Authenticated sender: agust@denx.de)
- by phobos.denx.de (Postfix) with ESMTPSA id F3BB283373;
- Thu, 14 Oct 2021 00:28:41 +0200 (CEST)
+ by phobos.denx.de (Postfix) with ESMTPSA id 962AF83637;
+ Thu, 14 Oct 2021 00:59:05 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
- s=phobos-20191101; t=1634164122;
- bh=B95QcUf/6Ga2ClYCUrSKCql07sscyHZ8N2t2fDd9q4E=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=O2yxj5YJplBDn7B4TvhzKFB2cDRdsBlEC7Nxxc2iw9SfUWaSbxID+ps/Lv0KYPTOF
- mmDEhp3zOnc4Y/lA1IQzMbsZ8NerLrxhcH+J3EzK9v4QskddcU09A+twroelmRDKQK
- XHhBiHy7ERjRCEEbKnbVdV376YxYA/hqwZ+goDDO03IUhUjLiL8An8h9DDMTOEbHIc
- vK/ks/Ja54i12Nn8h/aebDv8s+MAseoLbgroMaCHxGkZxvF4pSJMrUZ5CVDvJfXJDw
- umZaP2sp1BxKzxLWh900CkSQDYTfC64G0v9csYeYaAjufVAS6X+L8FfZK9z8z6CHnw
- t6yAuHHayXfMg==
-Date: Thu, 14 Oct 2021 00:28:41 +0200
+ s=phobos-20191101; t=1634165946;
+ bh=SeAa2jyjc7PWtTZOmeNlHFKytMn9TpnrK/xPF2MC5dc=;
+ h=From:To:Cc:Subject:Date:From;
+ b=KpYq53aVHyNIf0rM4fDbMA5Rd5A09mj4fU5gKNf5uZg8iSPzBb4hbIeJtnf5goKdj
+ TxifS5dsiJv7JRSDLSLF6wGCdb8klqm9Wy+mWtyrl7Gy7iPnRSQ4LnjKgzB+D3YrFK
+ Ykm7RQrKrosqjbgAajlvd4Jk/amBhJx146c5i9/2TCi0cgl0UR+X/ujqzdS2Y0DhXj
+ QSVJD5Hj7dclGuC7nFWGjHgJqlyXpXbyqA17kWJjknn3jUn+lSZXGae+pkRC/jniiS
+ 7BV3XQ2FkFXuupas1AYG6xNuS54wSoCL4eKKv0Y8SOBE8zJ/qV4NFE3cCFLLxNIJtB
+ 5N4APjRRapMqg==
 From: Anatolij Gustschin <agust@denx.de>
-To: Rob Herring <robh+dt@kernel.org>
-Subject: Re: linux-next: build warnings in Linus' tree
-Message-ID: <20211014002841.7c4ccf2f@crub>
-In-Reply-To: <CAL_JsqJSqqYya-xe8YQs0-0KTF3LzwkyGD_2dUxQY9SKVV7RMw@mail.gmail.com>
-References: <20211008164728.30e3d3a3@canb.auug.org.au>
- <20211011082704.3cff4568@canb.auug.org.au>
- <CAL_JsqJE_GHnehBz-71BOGXfjm6q2p0u6FQA5KwO8zK_i1LpMQ@mail.gmail.com>
- <CAK8P3a1EcNuxT-w-8w-HDr2+idsP=vFZ3Cn27fX7o56GOuu_Cg@mail.gmail.com>
- <20211014001232.3becbe99@crub>
- <CAL_JsqJSqqYya-xe8YQs0-0KTF3LzwkyGD_2dUxQY9SKVV7RMw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/5200: dts: fix psc node warning
+Date: Thu, 14 Oct 2021 00:59:04 +0200
+Message-Id: <20211013225904.1548-1-agust@denx.de>
+X-Mailer: git-send-email 2.17.1
 X-Virus-Scanned: clamav-milter 0.103.2 at phobos.denx.de
 X-Virus-Status: Clean
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -70,26 +62,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- PowerPC <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Arnd Bergmann <arnd@arndb.de>
+Cc: devicetree@vger.kernel.org, Stephen Rothwell <sfr@canb.auug.org.au>,
+ linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+ Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 13 Oct 2021 17:17:25 -0500
-Rob Herring robh+dt@kernel.org wrote:
-...
->In general, you shouldn't need to be changing the drivers. Can you
->tell me which warnings need driver changes?
+Fix build warning:
+Warning (spi_bus_bridge): /soc5200@f0000000/psc@2000: node name for SPI buses should be 'spi'
 
-ethernet and mdio drivers share registers, so they use same unit-address:
+Signed-off-by: Anatolij Gustschin <agust@denx.de>
+---
+ arch/powerpc/boot/dts/motionpro.dts | 4 ++++
+ arch/powerpc/boot/dts/o2d.dtsi      | 6 +++++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-arch/powerpc/boot/dts/tqm5200.dts:127.17-133.5: Warning (unique_unit_address): /soc5200@f0000000/ethernet@3000: duplicate unit-address (also used in node /soc5200@f0000000/mdio@3000)
+diff --git a/arch/powerpc/boot/dts/motionpro.dts b/arch/powerpc/boot/dts/motionpro.dts
+index 09f0eaa4ad49..cc217ddd50a0 100644
+--- a/arch/powerpc/boot/dts/motionpro.dts
++++ b/arch/powerpc/boot/dts/motionpro.dts
+@@ -19,6 +19,8 @@
+ 	label = "motionpro-readyled";
+ };
+ 
++/delete-node/ &psc2;
++
+ / {
+ 	model = "promess,motionpro";
+ 	compatible = "promess,motionpro";
+@@ -35,6 +37,8 @@
+ 		// PSC2 in spi master mode 
+ 		psc@2200 {		// PSC2
+ 			compatible = "fsl,mpc5200b-psc-spi","fsl,mpc5200-psc-spi";
++			reg = <0x2200 0x100>;
++			interrupts = <2 2 0>;
+ 			cell-index = <1>;
+ 		};
+ 
+diff --git a/arch/powerpc/boot/dts/o2d.dtsi b/arch/powerpc/boot/dts/o2d.dtsi
+index 898fe08a9fd0..34a836a37084 100644
+--- a/arch/powerpc/boot/dts/o2d.dtsi
++++ b/arch/powerpc/boot/dts/o2d.dtsi
+@@ -15,6 +15,8 @@
+ };
+ &gpt1 { gpio-controller; };
+ 
++/delete-node/ &psc1;
++
+ / {
+ 	model = "ifm,o2d";
+ 	compatible = "ifm,o2d";
+@@ -29,8 +31,10 @@
+ 			status = "disabled";
+ 		};
+ 
+-		psc@2000 {		// PSC1
++		spi@2000 {		// PSC1
+ 			compatible = "fsl,mpc5200b-psc-spi","fsl,mpc5200-psc-spi";
++			reg = <0x2000 0x100>;
++			interrupts = <2 1 0>;
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+ 			cell-index = <0>;
+-- 
+2.17.1
 
-arch/powerpc/boot/dts/mpc5200b.dtsi:218.23-223.5: Warning (unique_unit_address): /soc5200@f0000000/ethernet@3000: duplicate unit-address (also used in node /soc5200@f0000000/mdio@3000)
-  also defined at arch/powerpc/boot/dts/digsy_mtc.dts:60.17-62.5
-
-Anatolij
