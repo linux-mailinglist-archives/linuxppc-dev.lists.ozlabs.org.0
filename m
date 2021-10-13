@@ -2,45 +2,37 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D649942B281
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 04:05:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE65642B2A2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 04:28:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HTbTw38mdz30Qr
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 13:05:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HTc0J1Y0wz3bW6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 13:28:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.43;
- helo=out30-43.freemail.mail.aliyun.com;
- envelope-from=yun.wang@linux.alibaba.com; receiver=<UNKNOWN>)
-Received: from out30-43.freemail.mail.aliyun.com
- (out30-43.freemail.mail.aliyun.com [115.124.30.43])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=7yos=pb=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HTbTQ20JHz2yL7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Oct 2021 13:05:11 +1100 (AEDT)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R171e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04394; MF=yun.wang@linux.alibaba.com;
- NM=1; PH=DS; RN=31; SR=0; TI=SMTPD_---0UrdlKN._1634090692; 
-Received: from testdeMacBook-Pro.local(mailfrom:yun.wang@linux.alibaba.com
- fp:SMTPD_---0UrdlKN._1634090692) by smtp.aliyun-inc.com(127.0.0.1);
- Wed, 13 Oct 2021 10:04:54 +0800
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HTbzp2CS1z2xKY
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Oct 2021 13:28:06 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 17A2560F11;
+ Wed, 13 Oct 2021 02:28:00 +0000 (UTC)
+Date: Tue, 12 Oct 2021 22:27:58 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: =?UTF-8?B?546L6LSH?= <yun.wang@linux.alibaba.com>
 Subject: Re: [PATCH 1/2] ftrace: disable preemption on the testing of recursion
-To: Steven Rostedt <rostedt@goodmis.org>
+Message-ID: <20211012222758.1a029157@oasis.local.home>
+In-Reply-To: <74090798-7d93-0713-982c-6f0247118d20@linux.alibaba.com>
 References: <8c7de46d-9869-aa5e-2bb9-5dbc2eda395e@linux.alibaba.com>
  <a8756482-024c-c858-b3d1-1ffa9a5eb3f7@linux.alibaba.com>
- <20211012084331.06b8dd23@gandalf.local.home>
-From: =?UTF-8?B?546L6LSH?= <yun.wang@linux.alibaba.com>
-Message-ID: <1eab20c1-d69b-f94b-92ff-4329d0aff6a2@linux.alibaba.com>
-Date: Wed, 13 Oct 2021 10:04:52 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:78.0)
- Gecko/20100101 Thunderbird/78.14.0
+ <alpine.LSU.2.21.2110121421260.3394@pobox.suse.cz>
+ <74090798-7d93-0713-982c-6f0247118d20@linux.alibaba.com>
+X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20211012084331.06b8dd23@gandalf.local.home>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,66 +63,38 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed, 13 Oct 2021 09:50:17 +0800
+=E7=8E=8B=E8=B4=87 <yun.wang@linux.alibaba.com> wrote:
+
+> >> -	preempt_enable_notrace();
+> >>  	ftrace_test_recursion_unlock(bit);
+> >>  } =20
+> >=20
+> > I don't like this change much. We have preempt_disable there not becaus=
+e=20
+> > of ftrace_test_recursion, but because of RCU. ftrace_test_recursion was=
+=20
+> > added later. Yes, it would work with the change, but it would also hide=
+=20
+> > things which should not be hidden in my opinion. =20
+>=20
+> Not very sure about the backgroup stories, but just found this in
+> 'Documentation/trace/ftrace-uses.rst':
+>=20
+>   Note, on success,
+>   ftrace_test_recursion_trylock() will disable preemption, and the
+>   ftrace_test_recursion_unlock() will enable it again (if it was previous=
+ly
+>   enabled).
+
+Right that part is to be fixed by what you are adding here.
+
+The point that Miroslav is complaining about is that the preemption
+disabling is special in this case, and not just from the recursion
+point of view, which is why the comment is still required.
+
+-- Steve
 
 
-On 2021/10/12 下午8:43, Steven Rostedt wrote:
-> On Tue, 12 Oct 2021 13:40:08 +0800
-> 王贇 <yun.wang@linux.alibaba.com> wrote:
-> 
->> --- a/include/linux/trace_recursion.h
->> +++ b/include/linux/trace_recursion.h
->> @@ -214,7 +214,14 @@ static __always_inline void trace_clear_recursion(int bit)
->>  static __always_inline int ftrace_test_recursion_trylock(unsigned long ip,
->>  							 unsigned long parent_ip)
->>  {
->> -	return trace_test_and_set_recursion(ip, parent_ip, TRACE_FTRACE_START, TRACE_FTRACE_MAX);
->> +	int bit;
->> +
->> +	preempt_disable_notrace();
-> 
-> The recursion test does not require preemption disabled, it uses the task
-> struct, not per_cpu variables, so you should not disable it before the test.
-> 
-> 	bit = trace_test_and_set_recursion(ip, parent_ip, TRACE_FTRACE_START, TRACE_FTRACE_MAX);
-> 	if (bit >= 0)
-> 		preempt_disable_notrace();
-> 
-> And if the bit is zero, it means a recursion check was already done by
-> another caller (ftrace handler does the check, followed by calling perf),
-> and you really don't even need to disable preemption in that case.
-> 
-> 	if (bit > 0)
-> 		preempt_disable_notrace();
-> 
-> And on the unlock, have:
-> 
->  static __always_inline void ftrace_test_recursion_unlock(int bit)
->  {
-> 	if (bit)
-> 		preempt_enable_notrace();
->  	trace_clear_recursion(bit);
->  }
-> 
-> But maybe that's over optimizing ;-)
-
-I see, while the user can still check smp_processor_id() after trylock
-return bit 0...
-
-I guess Peter's point at very beginning is to prevent such cases, since
-kernel for production will not have preemption debug on, and such issue
-won't get report but could cause trouble which really hard to trace down
-, way to eliminate such issue once for all sounds attractive, isn't it?
-
-Regards,
-Michael Wang
-
-> 
-> -- Steve
-> 
-> 
->> +	bit = trace_test_and_set_recursion(ip, parent_ip, TRACE_FTRACE_START, TRACE_FTRACE_MAX);
->> +	if (bit < 0)
->> +		preempt_enable_notrace();
->> +
->> +	return bit;
->>  }
+>=20
+> Seems like this lock pair was supposed to take care the preemtion itself?
