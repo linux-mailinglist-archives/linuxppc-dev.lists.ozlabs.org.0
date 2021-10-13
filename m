@@ -2,53 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73D3A42B1BF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 03:01:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A52A42B25E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 03:47:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HTZ3t0bnJz3ddy
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 12:01:30 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=B4eQCSY/;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HTb4Z5FFCz3086
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 12:47:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=B4eQCSY/; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.133;
+ helo=out30-133.freemail.mail.aliyun.com;
+ envelope-from=yun.wang@linux.alibaba.com; receiver=<UNKNOWN>)
+Received: from out30-133.freemail.mail.aliyun.com
+ (out30-133.freemail.mail.aliyun.com [115.124.30.133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HTYyk17gnz3c8v
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Oct 2021 11:57:02 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 02F1E60F38;
- Wed, 13 Oct 2021 00:56:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1634086620;
- bh=/KC2OKpQbjlEYX3CkEckNXdgHfX4T7wob+fNzJx7h/k=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=B4eQCSY/zJ2CH+JBMVpj5xy8Aq3gO9X6/Wgx4JUMthWS5gx0XPQsofqeKDZ+/X8LR
- joGqgjWSwwFJ7HdWlVFP7za8O0yogv2PnSAXM2yvVSf40scZIZ9iEqBkP0aKyKaRk0
- EP9lkv1TmKrGI1SI64J7FiZO4H9K2pKl0K8JlynNdhM7lACEnbYSMAO/FCCUe/Spb5
- V98sqAQa9Fl0DJkAJ3J6FujLKBvX6ni1Ety8m2i0eBtKuLByIY4sCpBE+NZ8cG4qGo
- +j8zW+lS6nH+X9+auIePmiZfmDrCFU+AfA/qmfhxW05z+eIAJmdR4P+jNvVRl2TpP6
- bEbw2niyX/4+w==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 2/2] powerpc/security: Add a helper to query
- stf_barrier type
-Date: Tue, 12 Oct 2021 20:56:54 -0400
-Message-Id: <20211013005654.700769-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211013005654.700769-1-sashal@kernel.org>
-References: <20211013005654.700769-1-sashal@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HTb433Wz3z2yHC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Oct 2021 12:46:41 +1100 (AEDT)
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R861e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04357; MF=yun.wang@linux.alibaba.com;
+ NM=1; PH=DS; RN=31; SR=0; TI=SMTPD_---0UrdGZLQ_1634089590; 
+Received: from testdeMacBook-Pro.local(mailfrom:yun.wang@linux.alibaba.com
+ fp:SMTPD_---0UrdGZLQ_1634089590) by smtp.aliyun-inc.com(127.0.0.1);
+ Wed, 13 Oct 2021 09:46:32 +0800
+Subject: Re: [PATCH 2/2] ftrace: prevent preemption in
+ perf_ftrace_function_call()
+To: Peter Zijlstra <peterz@infradead.org>
+References: <8c7de46d-9869-aa5e-2bb9-5dbc2eda395e@linux.alibaba.com>
+ <7ec34e08-a357-58d6-2ce4-c7472d8b0381@linux.alibaba.com>
+ <YWVvfBybqjKuifum@hirez.programming.kicks-ass.net>
+From: =?UTF-8?B?546L6LSH?= <yun.wang@linux.alibaba.com>
+Message-ID: <1193d016-ec4d-2b29-4d33-5a04ca85c14d@linux.alibaba.com>
+Date: Wed, 13 Oct 2021 09:45:45 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:78.0)
+ Gecko/20100101 Thunderbird/78.14.0
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
+In-Reply-To: <YWVvfBybqjKuifum@hirez.programming.kicks-ass.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -61,61 +53,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, lihuafei1@huawei.com, aik@ozlabs.ru,
- npiggin@gmail.com, aneesh.kumar@linux.ibm.com,
- "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, dja@axtens.net
+Cc: Paul Walmsley <paul.walmsley@sifive.com>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Guo Ren <guoren@kernel.org>, Jisheng Zhang <jszhang@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, live-patching@vger.kernel.org,
+ linux-riscv@lists.infradead.org, Miroslav Benes <mbenes@suse.cz>,
+ Paul Mackerras <paulus@samba.org>, Joe Lawrence <joe.lawrence@redhat.com>,
+ Helge Deller <deller@gmx.de>, x86@kernel.org, linux-csky@vger.kernel.org,
+ Ingo Molnar <mingo@redhat.com>, Petr Mladek <pmladek@suse.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Jiri Kosina <jikos@kernel.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Borislav Petkov <bp@alien8.de>,
+ Nicholas Piggin <npiggin@gmail.com>, Josh Poimboeuf <jpoimboe@redhat.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-parisc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Colin Ian King <colin.king@canonical.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
 
-[ Upstream commit 030905920f32e91a52794937f67434ac0b3ea41a ]
 
-Add a helper to return the stf_barrier type for the current processor.
+On 2021/10/12 下午7:20, Peter Zijlstra wrote:
+> On Tue, Oct 12, 2021 at 01:40:31PM +0800, 王贇 wrote:
+> 
+>> diff --git a/kernel/trace/trace_event_perf.c b/kernel/trace/trace_event_perf.c
+>> index 6aed10e..33c2f76 100644
+>> --- a/kernel/trace/trace_event_perf.c
+>> +++ b/kernel/trace/trace_event_perf.c
+>> @@ -441,12 +441,19 @@ void perf_trace_buf_update(void *record, u16 type)
+>>  	if (!rcu_is_watching())
+>>  		return;
+>>
+>> +	/*
+>> +	 * Prevent CPU changing from now on. rcu must
+>> +	 * be in watching if the task was migrated and
+>> +	 * scheduled.
+>> +	 */
+>> +	preempt_disable_notrace();
+>> +
+>>  	if ((unsigned long)ops->private != smp_processor_id())
+>> -		return;
+>> +		goto out;
+>>
+>>  	bit = ftrace_test_recursion_trylock(ip, parent_ip);
+>>  	if (bit < 0)
+>> -		return;
+>> +		goto out;
+>>
+>>  	event = container_of(ops, struct perf_event, ftrace_ops);
+>>
+> 
+> This seems rather daft, wouldn't it be easier to just put that check
+> under the recursion thing?
 
-Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/3bd5d7f96ea1547991ac2ce3137dc2b220bae285.1633464148.git.naveen.n.rao@linux.vnet.ibm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/powerpc/include/asm/security_features.h | 5 +++++
- arch/powerpc/kernel/security.c               | 5 +++++
- 2 files changed, 10 insertions(+)
+In case if the condition matched, extra lock/unlock will be introduced,
+but I guess that's acceptable since this seems unlikely to happen :-P
 
-diff --git a/arch/powerpc/include/asm/security_features.h b/arch/powerpc/include/asm/security_features.h
-index 3b45a64e491e..a673416da388 100644
---- a/arch/powerpc/include/asm/security_features.h
-+++ b/arch/powerpc/include/asm/security_features.h
-@@ -39,6 +39,11 @@ static inline bool security_ftr_enabled(unsigned long feature)
- 	return !!(powerpc_security_features & feature);
- }
- 
-+#ifdef CONFIG_PPC_BOOK3S_64
-+enum stf_barrier_type stf_barrier_type_get(void);
-+#else
-+static inline enum stf_barrier_type stf_barrier_type_get(void) { return STF_BARRIER_NONE; }
-+#endif
- 
- // Features indicating support for Spectre/Meltdown mitigations
- 
-diff --git a/arch/powerpc/kernel/security.c b/arch/powerpc/kernel/security.c
-index 45778c83038f..ac9a2498efe7 100644
---- a/arch/powerpc/kernel/security.c
-+++ b/arch/powerpc/kernel/security.c
-@@ -249,6 +249,11 @@ static int __init handle_no_stf_barrier(char *p)
- 
- early_param("no_stf_barrier", handle_no_stf_barrier);
- 
-+enum stf_barrier_type stf_barrier_type_get(void)
-+{
-+	return stf_enabled_flush_types;
-+}
-+
- /* This is the generic flag used by other architectures */
- static int __init handle_ssbd(char *p)
- {
--- 
-2.33.0
+Will move the check in v2.
 
+Regards,
+Michael Wang
+
+> 
