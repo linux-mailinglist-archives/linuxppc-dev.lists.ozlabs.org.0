@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBAC342B1BD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 03:00:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC7D042B1BE
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 03:00:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HTZ2V3XDdz305G
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 12:00:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HTZ3B1qG9z3dYX
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 12:00:54 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=g7058hQY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KPfGOBwa;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,35 +17,35 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=g7058hQY; 
+ header.s=k20201202 header.b=KPfGOBwa; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HTYyP11yHz3c71
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Oct 2021 11:56:45 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id BC64660EB4;
- Wed, 13 Oct 2021 00:56:41 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HTYyb59Ztz30Bl
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Oct 2021 11:56:55 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8BC006109E;
+ Wed, 13 Oct 2021 00:56:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1634086602;
- bh=sgZkco8fLQdzPtHZhHs4Bu9AcUVfHeWOR+grmPeD2qQ=;
+ s=k20201202; t=1634086613;
+ bh=XkNICrx/CARGWkSUAp287RuUq27QvtIo7Wv371x+kMI=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=g7058hQYsfgNasbMOOZF4jZfcyEYn6xUcaG5rrRm3yN67fArm02KUIHPWWX/UTToH
- vLeL4+hVDWnb2AImTFAycrafUeJHMvmI3s4RzbMQ6XaKj/nCaBo9BjR2b4HTZZ3pMi
- JPdFYblZvaT58cLIpEc1SI5c3Rrlx2Gmu77nF2kRWw7dbyWbgJZ1rMBmDYaa8COv9b
- pm5whkOHtUIeGLsljL3hs4zoq8wAeEvRiiVf/3C0hhrhCpUDvx+LtbbkPajwmEBggC
- ntebEGuTO0tifAgn0UlhUJBAw8bdhZrfFtz7ALTI0Fe5ocs/PIbo2vhDg7Hqwtqjo+
- pzyRML7yiOfbw==
+ b=KPfGOBwa5wSon73bbteghYZZGETyQEX2MCIkuQu8u6X2WH1f6IojPxqy/y8qxHSFq
+ xU9eRO0bSCh68Vlue1J9/pyES7lypWlZid3dbRE6p41lOP7d7G3cjSo12Q1V+6Y57t
+ ok+zNUFye3JLjJ9Agx7O0O8f9u/zXdzl2w+wPMuelIrl7I1L0WeVXWit8S8IVjWvx6
+ /jTUYIpIURd9JEBv0NbDW7B6rvWC/4ROY949TK53teA8TWj09c7/FgvEp6VIcEaFOq
+ BhliSHCAj4A++ssCsfd9hmF4mv9LF3jl8Wiwk6XocrCiDLaa7mDOu/sII8FarC0WF8
+ KWJugHSJoxBuQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 5/5] powerpc/security: Add a helper to query
+Subject: [PATCH AUTOSEL 4.9 4/4] powerpc/security: Add a helper to query
  stf_barrier type
-Date: Tue, 12 Oct 2021 20:56:31 -0400
-Message-Id: <20211013005631.700631-5-sashal@kernel.org>
+Date: Tue, 12 Oct 2021 20:56:43 -0400
+Message-Id: <20211013005644.700705-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211013005631.700631-1-sashal@kernel.org>
-References: <20211013005631.700631-1-sashal@kernel.org>
+In-Reply-To: <20211013005644.700705-1-sashal@kernel.org>
+References: <20211013005644.700705-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -61,8 +61,9 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, lihuafei1@huawei.com, npiggin@gmail.com,
- aneesh.kumar@linux.ibm.com, "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+Cc: Sasha Levin <sashal@kernel.org>, lihuafei1@huawei.com, aik@ozlabs.ru,
+ npiggin@gmail.com, aneesh.kumar@linux.ibm.com,
+ "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
  linuxppc-dev@lists.ozlabs.org, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
@@ -100,10 +101,10 @@ index 3b45a64e491e..a673416da388 100644
  // Features indicating support for Spectre/Meltdown mitigations
  
 diff --git a/arch/powerpc/kernel/security.c b/arch/powerpc/kernel/security.c
-index b3f540c9f410..75a5277ef7b8 100644
+index ff85fc800183..df42f020e703 100644
 --- a/arch/powerpc/kernel/security.c
 +++ b/arch/powerpc/kernel/security.c
-@@ -248,6 +248,11 @@ static int __init handle_no_stf_barrier(char *p)
+@@ -249,6 +249,11 @@ static int __init handle_no_stf_barrier(char *p)
  
  early_param("no_stf_barrier", handle_no_stf_barrier);
  
