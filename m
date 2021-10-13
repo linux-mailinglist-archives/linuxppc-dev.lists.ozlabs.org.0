@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AFFB42BA9A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 10:35:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E818F42BAE3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 10:51:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HTm7y0cWtz3c6P
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 19:35:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HTmVY3K6Xz3bW6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 19:51:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -18,32 +18,43 @@ Received: from out30-132.freemail.mail.aliyun.com
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HTm7R5RW5z2xtN
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Oct 2021 19:35:13 +1100 (AEDT)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R551e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04426; MF=yun.wang@linux.alibaba.com;
- NM=1; PH=DS; RN=31; SR=0; TI=SMTPD_---0UrfYNmw_1634114093; 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HTmV41fLlz2yPx
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Oct 2021 19:51:22 +1100 (AEDT)
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R501e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04423; MF=yun.wang@linux.alibaba.com;
+ NM=1; PH=DS; RN=31; SR=0; TI=SMTPD_---0UrfYR3s_1634115063; 
 Received: from testdeMacBook-Pro.local(mailfrom:yun.wang@linux.alibaba.com
- fp:SMTPD_---0UrfYNmw_1634114093) by smtp.aliyun-inc.com(127.0.0.1);
- Wed, 13 Oct 2021 16:34:55 +0800
-Subject: Re: [RESEND PATCH v2 1/2] ftrace: disable preemption between
- ftrace_test_recursion_trylock/unlock()
-To: Miroslav Benes <mbenes@suse.cz>
-References: <b1d7fe43-ce84-0ed7-32f7-ea1d12d0b716@linux.alibaba.com>
- <75ee86ac-02f2-d687-ab1e-9c8c33032495@linux.alibaba.com>
- <alpine.LSU.2.21.2110130948120.5647@pobox.suse.cz>
- <d5fbd49a-55c5-a9f5-6600-707c8d749312@linux.alibaba.com>
- <alpine.LSU.2.21.2110131022590.5647@pobox.suse.cz>
+ fp:SMTPD_---0UrfYR3s_1634115063) by smtp.aliyun-inc.com(127.0.0.1);
+ Wed, 13 Oct 2021 16:51:04 +0800
+To: Guo Ren <guoren@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Ingo Molnar <mingo@redhat.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Josh Poimboeuf <jpoimboe@redhat.com>, Jiri Kosina <jikos@kernel.org>,
+ Miroslav Benes <mbenes@suse.cz>, Petr Mladek <pmladek@suse.com>,
+ Joe Lawrence <joe.lawrence@redhat.com>,
+ Colin Ian King <colin.king@canonical.com>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Jisheng Zhang <jszhang@kernel.org>,
+ linux-csky@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, live-patching@vger.kernel.org
 From: =?UTF-8?B?546L6LSH?= <yun.wang@linux.alibaba.com>
-Message-ID: <861d81d6-e202-09f3-f0be-6c77205f9d34@linux.alibaba.com>
-Date: Wed, 13 Oct 2021 16:34:53 +0800
+Subject: [PATCH v3 0/2] fix & prevent the missing preemption disabling
+Message-ID: <609b565a-ed6e-a1da-f025-166691b5d994@linux.alibaba.com>
+Date: Wed, 13 Oct 2021 16:51:03 +0800
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:78.0)
  Gecko/20100101 Thunderbird/78.14.0
 MIME-Version: 1.0
-In-Reply-To: <alpine.LSU.2.21.2110131022590.5647@pobox.suse.cz>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,44 +66,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Guo Ren <guoren@kernel.org>, Jisheng Zhang <jszhang@kernel.org>,
- "H. Peter Anvin" <hpa@zytor.com>, live-patching@vger.kernel.org,
- linux-riscv@lists.infradead.org, Paul Mackerras <paulus@samba.org>,
- Joe Lawrence <joe.lawrence@redhat.com>, Helge Deller <deller@gmx.de>,
- x86@kernel.org, linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
- Petr Mladek <pmladek@suse.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Jiri Kosina <jikos@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Borislav Petkov <bp@alien8.de>, Nicholas Piggin <npiggin@gmail.com>,
- Josh Poimboeuf <jpoimboe@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
- linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Masami Hiramatsu <mhiramat@kernel.org>,
- Colin Ian King <colin.king@canonical.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+The testing show that perf_ftrace_function_call() are using smp_processor_id()
+with preemption enabled, all the checking on CPU could be wrong after preemption.
 
+As Peter point out, the section between ftrace_test_recursion_trylock/unlock()
+pair require the preemption to be disabled as 'Documentation/trace/ftrace-uses.rst'
+explained, but currently the work is done outside of the helpers.
 
-On 2021/10/13 下午4:25, Miroslav Benes wrote:
->>> Side note... the comment will eventually conflict with peterz's 
->>> https://lore.kernel.org/all/20210929152429.125997206@infradead.org/.
->>
->> Steven, would you like to share your opinion on this patch?
->>
->> If klp_synchronize_transition() will be removed anyway, the comments
->> will be meaningless and we can just drop it :-P
-> 
-> The comment will still be needed in some form. We will handle it depending 
-> on what gets merged first. peterz's patches are not ready yet.
+Patch 1/2 will make sure preemption disabled after trylock() succeed,
+patch 2/2 will do smp_processor_id() checking after trylock to address the
+issue.
 
-Ok, then I'll move it before trylock() inside klp_ftrace_handler() anyway.
+v1: https://lore.kernel.org/all/8c7de46d-9869-aa5e-2bb9-5dbc2eda395e@linux.alibaba.com/
+v2: https://lore.kernel.org/all/b1d7fe43-ce84-0ed7-32f7-ea1d12d0b716@linux.alibaba.com/
 
-Regards,
-Michael Wang
+Michael Wang (2):
+  ftrace: disable preemption between ftrace_test_recursion_trylock/unlock()
+  ftrace: do CPU checking after preemption disabled
 
-> 
-> Miroslav
-> 
+ arch/csky/kernel/probes/ftrace.c     |  2 --
+ arch/parisc/kernel/ftrace.c          |  2 --
+ arch/powerpc/kernel/kprobes-ftrace.c |  2 --
+ arch/riscv/kernel/probes/ftrace.c    |  2 --
+ arch/x86/kernel/kprobes/ftrace.c     |  2 --
+ include/linux/trace_recursion.h      | 17 ++++++++++++++++-
+ kernel/livepatch/patch.c             | 13 +++++++------
+ kernel/trace/trace_event_perf.c      |  6 +++---
+ kernel/trace/trace_functions.c       |  5 -----
+ 9 files changed, 26 insertions(+), 25 deletions(-)
+
+-- 
+1.8.3.1
+
