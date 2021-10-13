@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC7D042B1BE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 03:00:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73D3A42B1BF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 03:01:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HTZ3B1qG9z3dYX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 12:00:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HTZ3t0bnJz3ddy
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 12:01:30 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KPfGOBwa;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=B4eQCSY/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,35 +17,35 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=KPfGOBwa; 
+ header.s=k20201202 header.b=B4eQCSY/; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HTYyb59Ztz30Bl
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Oct 2021 11:56:55 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8BC006109E;
- Wed, 13 Oct 2021 00:56:52 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HTYyk17gnz3c8v
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Oct 2021 11:57:02 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 02F1E60F38;
+ Wed, 13 Oct 2021 00:56:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1634086613;
- bh=XkNICrx/CARGWkSUAp287RuUq27QvtIo7Wv371x+kMI=;
+ s=k20201202; t=1634086620;
+ bh=/KC2OKpQbjlEYX3CkEckNXdgHfX4T7wob+fNzJx7h/k=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=KPfGOBwa5wSon73bbteghYZZGETyQEX2MCIkuQu8u6X2WH1f6IojPxqy/y8qxHSFq
- xU9eRO0bSCh68Vlue1J9/pyES7lypWlZid3dbRE6p41lOP7d7G3cjSo12Q1V+6Y57t
- ok+zNUFye3JLjJ9Agx7O0O8f9u/zXdzl2w+wPMuelIrl7I1L0WeVXWit8S8IVjWvx6
- /jTUYIpIURd9JEBv0NbDW7B6rvWC/4ROY949TK53teA8TWj09c7/FgvEp6VIcEaFOq
- BhliSHCAj4A++ssCsfd9hmF4mv9LF3jl8Wiwk6XocrCiDLaa7mDOu/sII8FarC0WF8
- KWJugHSJoxBuQ==
+ b=B4eQCSY/zJ2CH+JBMVpj5xy8Aq3gO9X6/Wgx4JUMthWS5gx0XPQsofqeKDZ+/X8LR
+ joGqgjWSwwFJ7HdWlVFP7za8O0yogv2PnSAXM2yvVSf40scZIZ9iEqBkP0aKyKaRk0
+ EP9lkv1TmKrGI1SI64J7FiZO4H9K2pKl0K8JlynNdhM7lACEnbYSMAO/FCCUe/Spb5
+ V98sqAQa9Fl0DJkAJ3J6FujLKBvX6ni1Ety8m2i0eBtKuLByIY4sCpBE+NZ8cG4qGo
+ +j8zW+lS6nH+X9+auIePmiZfmDrCFU+AfA/qmfhxW05z+eIAJmdR4P+jNvVRl2TpP6
+ bEbw2niyX/4+w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 4/4] powerpc/security: Add a helper to query
+Subject: [PATCH AUTOSEL 4.4 2/2] powerpc/security: Add a helper to query
  stf_barrier type
-Date: Tue, 12 Oct 2021 20:56:43 -0400
-Message-Id: <20211013005644.700705-4-sashal@kernel.org>
+Date: Tue, 12 Oct 2021 20:56:54 -0400
+Message-Id: <20211013005654.700769-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211013005644.700705-1-sashal@kernel.org>
-References: <20211013005644.700705-1-sashal@kernel.org>
+In-Reply-To: <20211013005654.700769-1-sashal@kernel.org>
+References: <20211013005654.700769-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -101,7 +101,7 @@ index 3b45a64e491e..a673416da388 100644
  // Features indicating support for Spectre/Meltdown mitigations
  
 diff --git a/arch/powerpc/kernel/security.c b/arch/powerpc/kernel/security.c
-index ff85fc800183..df42f020e703 100644
+index 45778c83038f..ac9a2498efe7 100644
 --- a/arch/powerpc/kernel/security.c
 +++ b/arch/powerpc/kernel/security.c
 @@ -249,6 +249,11 @@ static int __init handle_no_stf_barrier(char *p)
