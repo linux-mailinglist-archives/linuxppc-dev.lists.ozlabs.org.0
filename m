@@ -2,72 +2,103 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95A3E42BBAE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 11:33:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1064842BB94
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 11:30:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HTnQx24QGz3c6q
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 20:33:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HTnMX4nMmz3bXR
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Oct 2021 20:30:48 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=evc4kDT+;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=P4YhDaHJ;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=P4YhDaHJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::535;
- helo=mail-ed1-x535.google.com; envelope-from=andy.shevchenko@gmail.com;
+ smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=lvivier@redhat.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=evc4kDT+; dkim-atps=neutral
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com
- [IPv6:2a00:1450:4864:20::535])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=P4YhDaHJ; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=P4YhDaHJ; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HTnHf3vSfz2ymP
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Oct 2021 20:27:24 +1100 (AEDT)
-Received: by mail-ed1-x535.google.com with SMTP id z20so7341548edc.13
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Oct 2021 02:27:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=+/MfPZS60YJ0eap0AJdMs6gge+XO+BZUvon0pBTzNGA=;
- b=evc4kDT+QZNhO898nkNWsOvYd5uoHISP2WxjXfUrXPc/LAvzY9eu3qYsrzHLMiVRP3
- 7ek8KrGpW83pP3+71f6NoTqJUNew57wgLSdZESolUuO3w3SjswV4oNuZrRCsx5d2Sz6Z
- U6Dil/exw/Z01VwoZLKDTI9+cXYT6HoMhvbPnOyg97B0PkHUENz49VLf5qJ3twBM3fy6
- bHXGjIYLA3Q6jVCBIp04R0UFvkX24frr6ijNGP3vuZmaos7c/PDqm98vd8l9QZ2VLZ00
- 0EBJxe8ZaQK4AqNo/Rk1lDSww7yrEMjrcnUEwQvCtD2OBAhLhOYcZrSIMXdkiq7GrIG/
- lN/g==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HTnLr6y64z2yQm
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Oct 2021 20:30:11 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1634117406;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZjFKZdAkzPM6kA0DElv7KLx9JGj1opCMkKpXv5IVjds=;
+ b=P4YhDaHJEuKvp10tgKg3+Kxf8olg4BF6lOGkPG/UOMmsu/Nh+v/iYL/+L6jZ53jzuRqvrQ
+ +vSWvHoSbnGaLMNiQD/YIC+AWMXbLgmCYA7HHQp4H6XRdTf9eywRbkF8dm5YAM+qo4WJLj
+ XDFn54+buUZ5Pl4MgLTmzasKIuIkslg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1634117406;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZjFKZdAkzPM6kA0DElv7KLx9JGj1opCMkKpXv5IVjds=;
+ b=P4YhDaHJEuKvp10tgKg3+Kxf8olg4BF6lOGkPG/UOMmsu/Nh+v/iYL/+L6jZ53jzuRqvrQ
+ +vSWvHoSbnGaLMNiQD/YIC+AWMXbLgmCYA7HHQp4H6XRdTf9eywRbkF8dm5YAM+qo4WJLj
+ XDFn54+buUZ5Pl4MgLTmzasKIuIkslg=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-340-YOt3-vc3Pw66f8R8i79afg-1; Wed, 13 Oct 2021 05:30:04 -0400
+X-MC-Unique: YOt3-vc3Pw66f8R8i79afg-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ 75-20020adf82d1000000b00160cbb0f800so1454396wrc.22
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Oct 2021 02:30:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=+/MfPZS60YJ0eap0AJdMs6gge+XO+BZUvon0pBTzNGA=;
- b=CAovqLFK/ssD81qSwUimhm4cOKNOkBZdIzsM/XaeBtCSswn88C4kepfJB9mVG5dfSb
- MDXGfudtFhhjoiquHVEF1JYzuivLk2mq0WB4QSy8/mr0/G5nUwmWs5BLCBWbylCwCzE4
- /ZCZTR2mSOAKI49rkOmwad8Qik7FiWFTM+aur6cMeSfHAOe1pJDj+Nudk/oR4EcDaWt3
- QtYe8c2D6BAXQ50nkB5EpeF+g/10L5Q10hPF+oBsVxbuKeaFeHdK1IbsBqoOzwQdIeq9
- ISMBMDYoUaPY5EIVtwVEomBPbXCNoUlJf85cTroRIYNu0mGyWqOd2CD4xefN1IC+/MY/
- HHSw==
-X-Gm-Message-State: AOAM532kDt/b+bLVuw2THUZxcy2w+Hi+d+M76SLGrlixOTya3tfUS77s
- FmMZq5oVytoLbfpe6pj8sjI6xZcZcvshqa1MfgY=
-X-Google-Smtp-Source: ABdhPJzL0SqFZyZBLTfBNcE8CpMsywyY4boERpEcXyUfc9yUq7Z2mLOKk/hnon0PQ/WXXVk02NgEbEHqrWvW2H64g2s=
-X-Received: by 2002:a17:907:7601:: with SMTP id
- jx1mr40092015ejc.69.1634117238956; 
- Wed, 13 Oct 2021 02:27:18 -0700 (PDT)
+ h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+ :content-language:to:cc:references:from:in-reply-to
+ :content-transfer-encoding;
+ bh=ZjFKZdAkzPM6kA0DElv7KLx9JGj1opCMkKpXv5IVjds=;
+ b=Yb9ASjXnYE1U3cqH6VzK8m1f3Ip5QSwOPQyDVrWbXGMIelIjgMvzh/rIcoh9hH9Sas
+ +n/ax3ivgwWxlmnMpE+psTlFIcjCPciVqmTzb3LplFfm76UFrlOcDLojF26q6sC4nI4c
+ HjZUkRl1vEM5adLbzB/Oi+deD1Nz7MRF+jaktEsKNC0ZoWAu1Gac//DrnHsTfBfYRYDx
+ sGabYjkOKDE0ZySgJym2SIjxziiRXOjCf0lYJ7rO5HKoM7mQpDCbJDqo6r45zBv2u21k
+ hm4I9M224d3/xsK3ub4cSMLexjPBav6xf5MTE5kPE0nZmGj8yOFgiMZCfU4Rvyef83Zn
+ pNeA==
+X-Gm-Message-State: AOAM530yZ1LCTdOpKcnkOazZ6e/2IaX2MX0gXrLiIp1QQ2wXhfOwhF+d
+ 9L4+HQ+SGoGDuEWmsmMujJ5d4tgjk/3qL+mOPg6umTE9eLq89+G7uKVmH7GCRRG/u7gPSXmplHY
+ E/jFkTQjELOC5Tvvu4xkT+pFcpg==
+X-Received: by 2002:a1c:c906:: with SMTP id f6mr11752836wmb.136.1634117402776; 
+ Wed, 13 Oct 2021 02:30:02 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJw9gTLzJcIp/yrU6EoIVb6qauYFuyxecxt8Qxs8z4PtL5mkOqc+Jp//TvYKtW53QKGayzslJQ==
+X-Received: by 2002:a1c:c906:: with SMTP id f6mr11752794wmb.136.1634117402420; 
+ Wed, 13 Oct 2021 02:30:02 -0700 (PDT)
+Received: from [192.168.100.42] ([82.142.24.54])
+ by smtp.gmail.com with ESMTPSA id e16sm11103886wrw.17.2021.10.13.02.30.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 13 Oct 2021 02:30:02 -0700 (PDT)
+Message-ID: <d7f59d0e-eac2-7978-4067-9258c8b1aefe@redhat.com>
+Date: Wed, 13 Oct 2021 11:30:00 +0200
 MIME-Version: 1.0
-References: <20211004125935.2300113-1-u.kleine-koenig@pengutronix.de>
- <20211012233212.GA1806189@bhelgaas>
-In-Reply-To: <20211012233212.GA1806189@bhelgaas>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 13 Oct 2021 12:26:42 +0300
-Message-ID: <CAHp75Vd0uYEdfB0XaQuUV34V91qJdHR5ARku1hX_TCJLJHEjxQ@mail.gmail.com>
-Subject: Re: [PATCH v6 00/11] PCI: Drop duplicated tracking of a pci_dev's
- bound driver
-To: Bjorn Helgaas <helgaas@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Mailman-Approved-At: Wed, 13 Oct 2021 20:30:31 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.1.0
+Subject: Re: [PATCH v2] KVM: PPC: Defer vtime accounting 'til after IRQ
+ handling
+To: Michael Ellerman <mpe@ellerman.id.au>, kvm-ppc@vger.kernel.org
+References: <20211007142856.41205-1-lvivier@redhat.com>
+ <875yu17rxk.fsf@mpe.ellerman.id.au>
+From: Laurent Vivier <lvivier@redhat.com>
+In-Reply-To: <875yu17rxk.fsf@mpe.ellerman.id.au>
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=lvivier@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,228 +110,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
- Mark Rutland <mark.rutland@arm.com>,
- Sathya Prakash <sathya.prakash@broadcom.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Alexander Duyck <alexanderduyck@fb.com>,
- "maintainer:X86 ARCHITECTURE \(32-BIT AND 64-BIT\)" <x86@kernel.org>,
- qat-linux@intel.com, oss-drivers@corigine.com,
- Oliver O'Halloran <oohall@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>,
- Jiri Olsa <jolsa@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
- Marco Chiappero <marco.chiappero@intel.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- linux-scsi <linux-scsi@vger.kernel.org>,
- =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
- Jesse Brandeburg <jesse.brandeburg@intel.com>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- linux-pci <linux-pci@vger.kernel.org>,
- "open list:TI WILINK WIRELES..." <linux-wireless@vger.kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Yisen Zhuang <yisen.zhuang@huawei.com>,
- Suganath Prabu Subramani <suganath-prabu.subramani@broadcom.com>,
- Fiona Trahe <fiona.trahe@intel.com>, Andrew Donnellan <ajd@linux.ibm.com>,
- Arnd Bergmann <arnd@arndb.de>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- Ido Schimmel <idosch@nvidia.com>,
- =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- Simon Horman <simon.horman@corigine.com>,
- "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT"
- <linuxppc-dev@lists.ozlabs.org>, Arnaldo Carvalho de Melo <acme@kernel.org>,
- Jack Xu <jack.xu@intel.com>, Borislav Petkov <bp@alien8.de>,
- Michael Buesch <m@bues.ch>, Jiri Pirko <jiri@nvidia.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Namhyung Kim <namhyung@kernel.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Juergen Gross <jgross@suse.com>, Salil Mehta <salil.mehta@huawei.com>,
- Sreekanth Reddy <sreekanth.reddy@broadcom.com>, xen-devel@lists.xenproject.org,
- Vadym Kochan <vkochan@marvell.com>, MPT-FusionLinux.pdl@broadcom.com,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- USB <linux-usb@vger.kernel.org>, Wojciech Ziemba <wojciech.ziemba@intel.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Mathias Nyman <mathias.nyman@intel.com>, Zhou Wang <wangzhou1@hisilicon.com>,
- linux-crypto <linux-crypto@vger.kernel.org>,
- Sascha Hauer <kernel@pengutronix.de>, netdev <netdev@vger.kernel.org>,
- Frederic Barrat <fbarrat@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
- Tomaszx Kowalik <tomaszx.kowalik@intel.com>,
- Taras Chornyi <tchornyi@marvell.com>, "David S. Miller" <davem@davemloft.net>,
- linux-perf-users@vger.kernel.org
+Cc: Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 13, 2021 at 2:33 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> On Mon, Oct 04, 2021 at 02:59:24PM +0200, Uwe Kleine-K=C3=B6nig wrote:
+On 13/10/2021 01:18, Michael Ellerman wrote:
+> Laurent Vivier <lvivier@redhat.com> writes:
+>> Commit 112665286d08 moved guest_exit() in the interrupt protected
+>> area to avoid wrong context warning (or worse), but the tick counter
+>> cannot be updated and the guest time is accounted to the system time.
+>>
+>> To fix the problem port to POWER the x86 fix
+>> 160457140187 ("Defer vtime accounting 'til after IRQ handling"):
+>>
+>> "Defer the call to account guest time until after servicing any IRQ(s)
+>>   that happened in the guest or immediately after VM-Exit.  Tick-based
+>>   accounting of vCPU time relies on PF_VCPU being set when the tick IRQ
+>>   handler runs, and IRQs are blocked throughout the main sequence of
+>>   vcpu_enter_guest(), including the call into vendor code to actually
+>>   enter and exit the guest."
+>>
+>> Fixes: 112665286d08 ("KVM: PPC: Book3S HV: Context tracking exit guest context before enabling irqs")
+>> Cc: npiggin@gmail.com
+>> Cc: <stable@vger.kernel.org> # 5.12
+>> Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+>> ---
+>>
+>> Notes:
+>>      v2: remove reference to commit 61bd0f66ff92
+>>          cc stable 5.12
+>>          add the same comment in the code as for x86
+>>
+>>   arch/powerpc/kvm/book3s_hv.c | 24 ++++++++++++++++++++----
+>>   1 file changed, 20 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+>> index 2acb1c96cfaf..a694d1a8f6ce 100644
+>> --- a/arch/powerpc/kvm/book3s_hv.c
+>> +++ b/arch/powerpc/kvm/book3s_hv.c
+> ...
+>> @@ -4506,13 +4514,21 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+>>   
+>>   	srcu_read_unlock(&kvm->srcu, srcu_idx);
+>>   
+>> +	context_tracking_guest_exit();
+>> +
+>>   	set_irq_happened(trap);
+>>   
+>>   	kvmppc_set_host_core(pcpu);
+>>   
+>> -	guest_exit_irqoff();
+>> -
+>>   	local_irq_enable();
+>> +	/*
+>> +	 * Wait until after servicing IRQs to account guest time so that any
+>> +	 * ticks that occurred while running the guest are properly accounted
+>> +	 * to the guest.  Waiting until IRQs are enabled degrades the accuracy
+>> +	 * of accounting via context tracking, but the loss of accuracy is
+>> +	 * acceptable for all known use cases.
+>> +	 */
+>> +	vtime_account_guest_exit();
+> 
+> This pops a warning for me, running guest(s) on Power8:
+>   
+>    [  270.745303][T16661] ------------[ cut here ]------------
+>    [  270.745374][T16661] WARNING: CPU: 72 PID: 16661 at arch/powerpc/kernel/time.c:311 vtime_account_kernel+0xe0/0xf0
 
-> I split some of the bigger patches apart so they only touched one
-> driver or subsystem at a time.  I also updated to_pci_driver() so it
-> returns NULL when given NULL, which makes some of the validations
-> quite a bit simpler, especially in the PM code in pci-driver.c.
+Thank you, I missed that...
 
-It's a bit unusual. Other to_*_dev() are not NULL-aware IIRC.
+My patch is wrong, I have to add vtime_account_guest_exit() before the local_irq_enable().
 
-Below are some comments as well.
+arch/powerpc/kernel/time.c
 
+  305 static unsigned long vtime_delta(struct cpu_accounting_data *acct,
+  306                                  unsigned long *stime_scaled,
+  307                                  unsigned long *steal_time)
+  308 {
+  309         unsigned long now, stime;
+  310
+  311         WARN_ON_ONCE(!irqs_disabled());
 ...
 
->  static bool match_id(struct pci_dev *pdev, unsigned short vendor, unsign=
-ed short device)
->  {
-> +       struct pci_driver *drv =3D to_pci_driver(pdev->dev.driver);
->         const struct pci_device_id *id;
->
->         if (pdev->vendor =3D=3D vendor && pdev->device =3D=3D device)
->                 return true;
+But I don't understand how ticks can be accounted now if irqs are still disabled.
 
-> +       for (id =3D drv ? drv->id_table : NULL; id && id->vendor; id++)
-> +               if (id->vendor =3D=3D vendor && id->device =3D=3D device)
+Not sure it is as simple as expected...
 
-> +                       break;
+Thanks,
+Laurent
 
-return true;
-
->         return id && id->vendor;
-
-return false;
-
->  }
-
-...
-
-> +                       afu_result =3D err_handler->error_detected(afu_de=
-v,
-> +                                                                state);
-
-One line?
-
-...
-
->         device_lock(&vf_dev->dev);
-> -       if (vf_dev->dev.driver) {
-> +       if (to_pci_driver(vf_dev->dev.driver)) {
-
-Hmm...
-
-...
-
-> +               if (!pci_dev->state_saved && pci_dev->current_state !=3D =
-PCI_D0
-
-> +                   && pci_dev->current_state !=3D PCI_UNKNOWN) {
-
-Can we keep && on the previous line?
-
-> +                       pci_WARN_ONCE(pci_dev, pci_dev->current_state !=
-=3D prev,
-> +                                     "PCI PM: Device state not saved by =
-%pS\n",
-> +                                     drv->suspend);
->                 }
-
-...
-
-> +       return drv && drv->resume ?
-> +                       drv->resume(pci_dev) : pci_pm_reenable_device(pci=
-_dev);
-
-One line?
-
-...
-
-> +       struct pci_driver *drv =3D to_pci_driver(dev->dev.driver);
->         const struct pci_error_handlers *err_handler =3D
-> -                       dev->dev.driver ? to_pci_driver(dev->dev.driver)-=
->err_handler : NULL;
-> +                       drv ? drv->err_handler : NULL;
-
-Isn't dev->driver =3D=3D to_pci_driver(dev->dev.driver)?
-
-...
-
-> +       struct pci_driver *drv =3D to_pci_driver(dev->dev.driver);
->         const struct pci_error_handlers *err_handler =3D
-> -                       dev->dev.driver ? to_pci_driver(dev->dev.driver)-=
->err_handler : NULL;
-> +                       drv ? drv->err_handler : NULL;
-
-Ditto.
-
-...
-
->         device_lock(&dev->dev);
-> +       pdrv =3D to_pci_driver(dev->dev.driver);
->         if (!pci_dev_set_io_state(dev, state) ||
-> -               !dev->dev.driver ||
-> -               !(pdrv =3D to_pci_driver(dev->dev.driver))->err_handler |=
-|
-
-> +               !pdrv ||
-> +               !pdrv->err_handler ||
-
-One line now?
-
->                 !pdrv->err_handler->error_detected) {
-
-Or this and the previous line?
-
-...
-
-> +       pdrv =3D to_pci_driver(dev->dev.driver);
-> +       if (!pdrv ||
-> +               !pdrv->err_handler ||
->                 !pdrv->err_handler->mmio_enabled)
->                 goto out;
-
-Ditto.
-
-...
-
-> +       pdrv =3D to_pci_driver(dev->dev.driver);
-> +       if (!pdrv ||
-> +               !pdrv->err_handler ||
->                 !pdrv->err_handler->slot_reset)
->                 goto out;
-
-Ditto.
-
-...
-
->         if (!pci_dev_set_io_state(dev, pci_channel_io_normal) ||
-> -               !dev->dev.driver ||
-> -               !(pdrv =3D to_pci_driver(dev->dev.driver))->err_handler |=
-|
-> +               !pdrv ||
-> +               !pdrv->err_handler ||
->                 !pdrv->err_handler->resume)
->                 goto out;
-
-Ditto.
-
-> -       result =3D PCI_ERS_RESULT_NONE;
->
->         pcidev =3D pci_get_domain_bus_and_slot(domain, bus, devfn);
->         if (!pcidev || !pcidev->dev.driver) {
->                 dev_err(&pdev->xdev->dev, "device or AER driver is NULL\n=
-");
->                 pci_dev_put(pcidev);
-> -               return result;
-> +               return PCI_ERS_RESULT_NONE;
->         }
->         pdrv =3D to_pci_driver(pcidev->dev.driver);
-
-What about splitting the conditional to two with clear error message
-in each and use pci_err() in the second one?
-
-...
-
->                 default:
->                         dev_err(&pdev->xdev->dev,
-> -                               "bad request in aer recovery "
-> -                               "operation!\n");
-> +                               "bad request in AER recovery operation!\n=
-");
-
-Stray change? Or is it in a separate patch in your tree?
-
---=20
-With Best Regards,
-Andy Shevchenko
