@@ -2,68 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B224342E0F3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 20:16:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AFD742E207
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 21:26:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HVczD2nDtz2ypf
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 05:16:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HVfXJ5HKvz30R1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 06:26:24 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=bb3x+Vj+;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fmK5trA1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::133;
- helo=mail-lf1-x133.google.com; envelope-from=ndesaulniers@google.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20210112 header.b=bb3x+Vj+; dkim-atps=neutral
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com
- [IPv6:2a00:1450:4864:20::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=fmK5trA1; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HVcyX3wqZz2yPL
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 05:15:30 +1100 (AEDT)
-Received: by mail-lf1-x133.google.com with SMTP id u18so29852716lfd.12
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 11:15:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=nNs+G0jVD2dj+3QPCBepQC7w71O0qpj+2enPjKIhfHo=;
- b=bb3x+Vj+uVIsxGXCp/tCicQgGOOTKP0OfRO57tDFOuoQtwrTfQsKCmS4Dn98dBUHnL
- IsDY1cOB29uxQCGfA3SzIQojrPsGf2lvtFN2djaHlxgWSV1BPUlifpG4WoPVDJPfIvnH
- 2Sj/poRRd3zSkPly80whiTnHAWTBZGXnYuum9q4ZGl2kUj9N0hILg0xGyJOA5o0CQB7r
- fKiJkRDoPsOnwJG2HT1vvNAK0pwDnQj3E54mNCNmEPRKnnzjxD/OB9ZeXoSfxYAhi0ec
- vrhhQvq2n5KrZ3bNBNm4/w8HFP1m7PKB2UuGM9excovNE1ufpulANm00q110V3jOH43K
- j1Zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=nNs+G0jVD2dj+3QPCBepQC7w71O0qpj+2enPjKIhfHo=;
- b=dovliePTCvlBmH36vySaCDoo1lh9RMm8oho8tcI3BYwhHnH7fh0ufPFf7jxWD6ekcc
- YcporEIKNdorPhQTNwrhWK1mE+BzmO4ZSUcgFjSt/dsrjqcX7n5rUBrzNvgODu4Xux3Y
- 3UCLhF1XZhyAd6LYxolZRt09GvA7WjObNNblezzHq2IkqJ3EM9PJFYn6/NgBgwdg/TL4
- XFQiaHTsQvMThALwPt7+HSX5gL4Xlal/JVkElGykk+dmTnRkf92udU9JNiyFfmg0JSFA
- PRvjLo/UB2r+eB00bAC3raHtvODrshx8JbH9KaAfUi+UjDWf95CMs8rIu1xsx8pPcL36
- ps/Q==
-X-Gm-Message-State: AOAM5338vU+4waa4Ei5KLutA1b0EdpHSaINKT3O/JLbkm+r7M+GSz1yQ
- 3t9k4QdPrYD3rvxatTgdYYwJzHultpXN/LWwndeFAbNqH72Wmw==
-X-Google-Smtp-Source: ABdhPJzw201p0Me8UoPJUf744ySbtQZUgFia2EVV686wg86DCCgGVrC7sAVDFcRLxkbXWJScchfCQIH9656aZEsjSLY=
-X-Received: by 2002:a2e:8695:: with SMTP id l21mr7244959lji.339.1634235321228; 
- Thu, 14 Oct 2021 11:15:21 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HVfWV1QnXz2yNf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 06:25:41 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19EHlw7K022386; 
+ Thu, 14 Oct 2021 15:25:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : content-type :
+ mime-version; s=pp1; bh=T+FTQs9iC3vHNPf7SovINCy/F5ijYl2mOFuFPVuo+m8=;
+ b=fmK5trA1WcDRh89vftUEbaYc4LjT13bWDgpCHbpTAHJmiaOVq2wL7kKpy4bOc74ajVMZ
+ awr6WQ1yL0BX14Js9Vi2pifEIcPtniFv8eaZVCiSWr42bg2wnxeqzCaurNHOmuUFXiCN
+ YtC48atOTq2dq9ASO+lnaHmcgy9fCgVudSiKSR1dg9RRGwK0K0FUZ3KzwW8XQ5RNbzZ1
+ cf0u4aAY+gfCptZYzu4andUr5M7LrMkbEOa49vVeYDAnYer99yKQfOPFO34zf1OrHNej
+ ka/v9g0DXHYALdA9MSbPcDl8faF0MX5e39gCVPAbXWxb9ZFggHX6Ijk+wdhCvKoiG3oy hQ== 
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3bps921xy3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 14 Oct 2021 15:25:36 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19EJHofj016595;
+ Thu, 14 Oct 2021 19:25:35 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma04dal.us.ibm.com with ESMTP id 3bkeq8smdh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 14 Oct 2021 19:25:35 +0000
+Received: from b03ledav003.gho.boulder.ibm.com
+ (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 19EJPXeA47644970
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 14 Oct 2021 19:25:33 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 677916A054;
+ Thu, 14 Oct 2021 19:25:33 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 447F06A051;
+ Thu, 14 Oct 2021 19:25:33 +0000 (GMT)
+Received: from localhost (unknown [9.211.53.229])
+ by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu, 14 Oct 2021 19:25:33 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Cai Huoqing <caihuoqing@baidu.com>
+Subject: Re: [PATCH v2] scsi: ibmvscsi: Use dma_alloc_noncoherent() instead
+ of get_zeroed_page/dma_map_single()
+In-Reply-To: <20211012032317.2360-1-caihuoqing@baidu.com>
+References: <20211012032317.2360-1-caihuoqing@baidu.com>
+Date: Thu, 14 Oct 2021 14:25:32 -0500
+Message-ID: <878ryvz9w3.fsf@linux.ibm.com>
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Fwemt4NK7GdPjxbk-RoXEt7GPzNnhFpZ
+X-Proofpoint-GUID: Fwemt4NK7GdPjxbk-RoXEt7GPzNnhFpZ
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-References: <20211014024424.528848-1-mpe@ellerman.id.au>
-In-Reply-To: <20211014024424.528848-1-mpe@ellerman.id.au>
-From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Thu, 14 Oct 2021 11:15:09 -0700
-Message-ID: <CAKwvOdkcWCFEWxjwPcABA=6qWas+wuVcdDS=T1Oh-j81fYxxFg@mail.gmail.com>
-Subject: Re: [PATCH] powerpc/dcr: Use cmplwi instead of 3-argument cmpli
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-10-14_10,2021-10-14_02,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 mlxlogscore=849
+ lowpriorityscore=0 spamscore=0 clxscore=1011 priorityscore=1501
+ suspectscore=0 malwarescore=0 phishscore=0 mlxscore=0 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2109230001 definitions=main-2110140107
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,81 +99,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: llvm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, linux-scsi@vger.kernel.org,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ "James E.J. Bottomley" <jejb@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 13, 2021 at 7:44 PM Michael Ellerman <mpe@ellerman.id.au> wrote=
-:
->
-> In dcr-low.S we use cmpli with three arguments, instead of four
-> arguments as defined in the ISA:
->
->         cmpli   cr0,r3,1024
->
-> This appears to be a PPC440-ism, looking at the "PPC440x5 CPU Core
-> User=E2=80=99s Manual" it shows cmpli having no L field, but implied to b=
-e 0 due
-> to the core being 32-bit. It mentions that the ISA defines four
-> arguments and recommends using cmplwi.
->
-> dcr-low.S is only built 32-bit, because it is only built when
-> DCR_NATIVE=3Dy, which is only selected by 40x and 44x. Looking at the
-> generated code (with gcc/gas) we see cmplwi as expected.
->
-> Although gas is happy with the 3-argument version when building for
-> 32-bit, the LLVM assembler is not and errors out with:
->
->   arch/powerpc/sysdev/dcr-low.S:27:10: error: invalid operand for instruc=
-tion
->    cmpli 0,%r3,1024; ...
->            ^
->
-> Switching to the four argument version avoids any confusion when reading
-> the ISA, fixes the issue with the LLVM assembler, and also means the
-> code could be built 64-bit in future (though that's very unlikely).
-
-Thank you Michael.  We've definitely run into a few cases where GAS
-allowed for various short-hand forms of various instructions (a fair
-amount of recent work was around 32b ARM and THUMB parity in LLVM).
-LLVM's assembler is mostly generated from a high level description of
-the instruction formats, so it's not always as flexible as a hand
-written parser would be. (There is a mix of hand written arch specific
-parsing, but most of the parser is arch agnostic, and all of the
-instruction descriptions are described in an LLVM specific high level
-language called tablegen which generates C++ that is used by the
-assembler, but also the disassembler, the compiler, and even the
-linker if need be).
-
-Link: https://github.com/ClangBuiltLinux/linux/issues/1419
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-
-> Reported-by: Nick Desaulniers <ndesaulniers@google.com>
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> ---
->  arch/powerpc/sysdev/dcr-low.S | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/sysdev/dcr-low.S b/arch/powerpc/sysdev/dcr-low.=
-S
-> index efeeb1b885a1..329b9c4ae542 100644
-> --- a/arch/powerpc/sysdev/dcr-low.S
-> +++ b/arch/powerpc/sysdev/dcr-low.S
-> @@ -11,7 +11,7 @@
->  #include <asm/export.h>
->
->  #define DCR_ACCESS_PROLOG(table) \
-> -       cmpli   cr0,r3,1024;     \
-> +       cmplwi  cr0,r3,1024;     \
->         rlwinm  r3,r3,4,18,27;   \
->         lis     r5,table@h;      \
->         ori     r5,r5,table@l;   \
-> --
-> 2.25.1
->
+Cai Huoqing <caihuoqing@baidu.com> writes:
+> @@ -331,18 +329,12 @@ static int ibmvscsi_init_crq_queue(struct crq_queue *queue,
+>  	int retrc;
+>  	struct vio_dev *vdev = to_vio_dev(hostdata->dev);
+>  
+> -	queue->msgs = (struct viosrp_crq *)get_zeroed_page(GFP_KERNEL);
+> -
+> -	if (!queue->msgs)
+> -		goto malloc_failed;
+>  	queue->size = PAGE_SIZE / sizeof(*queue->msgs);
+> -
+> -	queue->msg_token = dma_map_single(hostdata->dev, queue->msgs,
+> -					  queue->size * sizeof(*queue->msgs),
+> -					  DMA_BIDIRECTIONAL);
+> -
+> -	if (dma_mapping_error(hostdata->dev, queue->msg_token))
+> -		goto map_failed;
+> +	queue->msgs = dma_alloc_noncoherent(hostdata->dev,
+> +					    PAGE_SIZE, &queue->msg_token,
+> +					    DMA_BIDIRECTIONAL, GFP_KERNEL);
+> +	if (!queue->msg)
+> +		goto malloc_failed;
 
 
---=20
-Thanks,
-~Nick Desaulniers
+This version appears to retain the build breakage from v1 which was
+reported here:
+
+https://lore.kernel.org/linuxppc-dev/202110121452.nWPHZeZg-lkp@intel.com/
+
+   drivers/scsi/ibmvscsi/ibmvscsi.c: In function 'ibmvscsi_init_crq_queue':
+>> drivers/scsi/ibmvscsi/ibmvscsi.c:334:21: error: 'struct crq_queue' has no member named 'msg'; did you mean 'msgs'?
+     334 |         if (!queue->msg)
+         |                     ^~~
+         |                     msgs
+   drivers/scsi/ibmvscsi/ibmvscsi.c:388:60: error: 'struct crq_queue' has no member named 'msg'; did you mean 'msgs'?
+     388 |         dma_free_coherent(hostdata->dev, PAGE_SIZE, queue->msg, queue->msg_token);
+         |                                                            ^~~
+         |                                                            msgs
+
