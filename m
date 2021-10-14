@@ -1,68 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15C7642D355
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 09:15:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B3AE42D373
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 09:21:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HVLJT4BVrz3bj5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 18:15:05 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256 header.s=google header.b=HCVS7hkp;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HVLRK5WKBz2xsy
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 18:21:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::830;
- helo=mail-qt1-x830.google.com; envelope-from=joel.stan@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256
- header.s=google header.b=HCVS7hkp; dkim-atps=neutral
-Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com
- [IPv6:2607:f8b0:4864:20::830])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HVLHm3g6Dz2xsr
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 18:14:27 +1100 (AEDT)
-Received: by mail-qt1-x830.google.com with SMTP id r17so4931008qtx.10
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 00:14:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jms.id.au; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=7IosRj4N8IWq7SJUgSwHlNjeQhG16TW+4l/PW/XKnLs=;
- b=HCVS7hkpNYFilNaESKJtxZ96jYoOv5ZzyrAnEnxJQ7Ym1i//kA4F9Swu6BC3oO0Nnf
- usSGq7x6+v1gQnZjl9Vhz/Dr0I+FvEZMX+lYgGzxm//pOrl8MY0XbJHw0fTYPzvJ0WKK
- NLljxIbGiTfrZmb8mniN+8tITmKM8LolFYoTY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=7IosRj4N8IWq7SJUgSwHlNjeQhG16TW+4l/PW/XKnLs=;
- b=Fft2drl1nW2sp2ZwAiIk1WZ6yhNaulNSV07Bb+QjFyyrlUDhB0hPGVbleDaKWBaa8d
- AcwgyXp1hNmQLAFQjc4habENkzKmk1kwv0lLGbOB0Ve6zZU4vFb0fdH5w/pAgxzqFsxd
- DoSL/wOFebmY0bUstR6DqhPIU/d52grjTIvDzQex4mt1mavNiytmCnSim+sy3cgYOUXK
- RjBQ++23ndH8HSZEPGLHQ5ZoZWei6TwePElpOnBA/o672kcOyipHJElN5Ygc91O+LY1m
- Y+zPpqrHSg7vuUMD2Ul3+sLRwwSQEuMUKAjDFBgtY2wGsaZ7NcZ15J24GgfAG/GFaWML
- PXAg==
-X-Gm-Message-State: AOAM530Q1hcR1SElRybxvA2hHoOtvgdBo/QqqmPL08LgmoWLAOvjSubo
- BKuEb6HoY2ZUm24KP1JEEVoC6q7YXPpBlLyFjymnZsXu
-X-Google-Smtp-Source: ABdhPJwG65k3eyxwbwMc0AdFmRNe134zwmdbJm4t8YIsyROR2WP5Zzf6O7lTAvPfKuxfNaT9M2TQLbmUBGwM8jUP1sc=
-X-Received: by 2002:a05:622a:1451:: with SMTP id
- v17mr4567432qtx.25.1634195663344; 
- Thu, 14 Oct 2021 00:14:23 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HVLQw01H4z2xsr
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 18:20:38 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4HVLQp2MNRz9sSL;
+ Thu, 14 Oct 2021 09:20:34 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id jxIK-CDZ4PWD; Thu, 14 Oct 2021 09:20:34 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4HVLQp1W5Tz9sSK;
+ Thu, 14 Oct 2021 09:20:34 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 1D58A8B788;
+ Thu, 14 Oct 2021 09:20:34 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id SMTWv46bj1yk; Thu, 14 Oct 2021 09:20:34 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.202.231])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id EDB608B763;
+ Thu, 14 Oct 2021 09:20:32 +0200 (CEST)
+Subject: Re: [PATCH v1 04/10] asm-generic: Use
+ HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR to define associated stubs
+To: Kees Cook <keescook@chromium.org>
+References: <cover.1633964380.git.christophe.leroy@csgroup.eu>
+ <8db2a3ca2b26a8325c671baa3e0492914597f079.1633964380.git.christophe.leroy@csgroup.eu>
+ <202110122359.E59B90A@keescook>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <dbce3a00-2f1a-bb6d-98b5-5f73c14dad9d@csgroup.eu>
+Date: Thu, 14 Oct 2021 09:20:32 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-References: <20211013233133.728484-1-joel@jms.id.au>
- <e738798a-7b78-d598-0e6b-507e12712727@csgroup.eu>
-In-Reply-To: <e738798a-7b78-d598-0e6b-507e12712727@csgroup.eu>
-From: Joel Stanley <joel@jms.id.au>
-Date: Thu, 14 Oct 2021 07:14:11 +0000
-Message-ID: <CACPK8XcEq+a5p4gY_Zi7dL1S1QqCd2x1fy9d-e-Szu+OyoFAVQ@mail.gmail.com>
-Subject: Re: [PATCH] powerpc/64s: Default to 64K pages for 64 bit book3s
-To: LEROY Christophe <christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <202110122359.E59B90A@keescook>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr-FR
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,68 +65,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
+ linux-parisc@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Helge Deller <deller@gmx.de>,
+ linux-kernel@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 14 Oct 2021 at 07:03, LEROY Christophe
-<christophe.leroy@csgroup.eu> wrote:
->
->
->
-> Le 14/10/2021 =C3=A0 01:31, Joel Stanley a =C3=A9crit :
-> > For 64-bit book3s the default should be 64K as that's what modern CPUs
-> > are designed for.
-> >
-> > The following defconfigs already set CONFIG_PPC_64K_PAGES:
-> >
-> >   cell_defconfig
-> >   pasemi_defconfig
-> >   powernv_defconfig
-> >   ppc64_defconfig
-> >   pseries_defconfig
-> >   skiroot_defconfig
-> >
-> > The have the option removed from the defconfig, as it is now the
-> > default.
-> >
-> > The defconfigs that now need to set CONFIG_PPC_4K_PAGES to maintain
-> > their existing behaviour are:
-> >
-> >   g5_defconfig
-> >   maple_defconfig
-> >   microwatt_defconfig
-> >   ps3_defconfig
-> >
-> > Link: https://github.com/linuxppc/issues/issues/109
-> > Signed-off-by: Joel Stanley <joel@jms.id.au>
-> > ---
-> >   arch/powerpc/Kconfig                     | 1 +
-> >   arch/powerpc/configs/cell_defconfig      | 1 -
-> >   arch/powerpc/configs/g5_defconfig        | 1 +
-> >   arch/powerpc/configs/maple_defconfig     | 1 +
-> >   arch/powerpc/configs/microwatt_defconfig | 2 +-
-> >   arch/powerpc/configs/pasemi_defconfig    | 1 -
-> >   arch/powerpc/configs/powernv_defconfig   | 1 -
-> >   arch/powerpc/configs/ppc64_defconfig     | 1 -
-> >   arch/powerpc/configs/ps3_defconfig       | 1 +
-> >   arch/powerpc/configs/pseries_defconfig   | 1 -
-> >   arch/powerpc/configs/skiroot_defconfig   | 1 -
-> >   11 files changed, 5 insertions(+), 7 deletions(-)
-> >
->
-> > diff --git a/arch/powerpc/configs/microwatt_defconfig b/arch/powerpc/co=
-nfigs/microwatt_defconfig
-> > index 9465209b8c5b..556ec5eec684 100644
-> > --- a/arch/powerpc/configs/microwatt_defconfig
-> > +++ b/arch/powerpc/configs/microwatt_defconfig
-> > @@ -1,7 +1,6 @@
-> >   # CONFIG_SWAP is not set
-> >   # CONFIG_CROSS_MEMORY_ATTACH is not set
-> >   CONFIG_HIGH_RES_TIMERS=3Dy
-> > -CONFIG_PREEMPT_VOLUNTARY=3Dy
->
-> This seems unrelated.
 
-It is, thanks for catching that.
+
+Le 13/10/2021 à 09:00, Kees Cook a écrit :
+> On Mon, Oct 11, 2021 at 05:25:31PM +0200, Christophe Leroy wrote:
+>> Use HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR instead of 'dereference_function_descriptor'
+>> to know whether arch has function descriptors.
+>>
+>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> 
+> I'd mention the intentionally-empty #if/#else in the commit log, as I,
+> like Helge, mentally tripped over it in the review. :)
+> 
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> 
+
+Ok, I did it in v2.
+
+I also renamed it HAVE_FUNCTION_DESCRIPTORS because behind the fact that 
+it has some functions to dereference function descriptor, the main fact 
+is that they have and use function descriptors.
+
+Christophe
