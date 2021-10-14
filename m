@@ -1,51 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE12F42D0AA
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 04:45:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DD4842D297
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 08:27:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HVDK6245Wz3bXj
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 13:45:14 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=UPWUMDS1;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HVKFW0ZnWz3dj2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 17:27:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HVDJT06HHz2xtT
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 13:44:41 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=UPWUMDS1; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4HVDJS4kJrz4xb9;
- Thu, 14 Oct 2021 13:44:40 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1634179480;
- bh=PJyjoGNcjS93x8RYvVywazb6un3RK0YsMmizeepswDY=;
- h=From:To:Cc:Subject:Date:From;
- b=UPWUMDS1GCxIexe+jVNpYFsLBDqcNppe0vTFclInfZRuWbooJM4JYQrNULQVLd7iD
- 8FX2FN1GD6AMU0jWrOA1cdTknPuLYHh3zjZtqPff/pYfJfA3mvcaCRdVP9fTRxUnOs
- AuNsO5/2Tu9YsX7WMJjo52nR1oLP//r31ThGW9PY4OPdrpHHF9Cg4hKcaDIzc1K2Qx
- LzU4khzgyRaKl+pltybdcZcD2STsCcwvRxejePjvuDWEDqt4SnYkbZwZp6cSZ3X+sA
- Ni82gfXxAZunlncc7fjW8RNam5sqaTthzlD7gsQtrfHmikM3vUDacyLKRvAkdTfHED
- M2QOgPBWPaxkg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH] powerpc/dcr: Use cmplwi instead of 3-argument cmpli
-Date: Thu, 14 Oct 2021 13:44:24 +1100
-Message-Id: <20211014024424.528848-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.25.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HVKBK4Bnyz3c87
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 17:24:41 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4HVK9c0vCCz9sSX;
+ Thu, 14 Oct 2021 08:24:04 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id LiGzj5s01Skc; Thu, 14 Oct 2021 08:24:04 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4HVK9X6CGLz9sSg;
+ Thu, 14 Oct 2021 08:24:00 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id BED538B788;
+ Thu, 14 Oct 2021 08:24:00 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 2RVU6yhCvY2z; Thu, 14 Oct 2021 08:24:00 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.202.231])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 728758B763;
+ Thu, 14 Oct 2021 08:24:00 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 19E5oP5w2265994
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+ Thu, 14 Oct 2021 07:50:25 +0200
+Received: (from chleroy@localhost)
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 19E5oLaE2265993;
+ Thu, 14 Oct 2021 07:50:21 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
+ christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>,
+ Kees Cook <keescook@chromium.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH v2 00/13] Fix LKDTM for PPC64/IA64/PARISC
+Date: Thu, 14 Oct 2021 07:49:49 +0200
+Message-Id: <cover.1634190022.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1634190595; l=2563; s=20211009;
+ h=from:subject:message-id; bh=cNLqnGC16keQp9TRMu9i7mx7estWUR7e+YxBH3wdm44=;
+ b=JsOuva0v9GOX4ctr1bves2MuJ2oHLBxyn3WTGDx0mB/I/UH42HwXFV/G31u6m2c2QubqytaXKHqK
+ LpR2P9uYAHzCae/tI99AK9953llR4YtYtl/K03JU4bfxOY+c+LLu
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
+ pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -58,55 +78,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ndesaulniers@google.com
+Cc: linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In dcr-low.S we use cmpli with three arguments, instead of four
-arguments as defined in the ISA:
+PPC64/IA64/PARISC have function descriptors. LKDTM doesn't work
+on those three architectures because LKDTM messes up function
+descriptors with functions.
 
-	cmpli	cr0,r3,1024
+This series does some cleanup in the three architectures and
+refactors function descriptors so that it can then easily use it
+in a generic way in LKDTM.
 
-This appears to be a PPC440-ism, looking at the "PPC440x5 CPU Core
-User’s Manual" it shows cmpli having no L field, but implied to be 0 due
-to the core being 32-bit. It mentions that the ISA defines four
-arguments and recommends using cmplwi.
+Patch 8 is not absolutely necessary but it is a good trivial cleanup.
 
-dcr-low.S is only built 32-bit, because it is only built when
-DCR_NATIVE=y, which is only selected by 40x and 44x. Looking at the
-generated code (with gcc/gas) we see cmplwi as expected.
+Changes in v2:
+- Addressed received comments
+- Moved dereference_[kernel]_function_descriptor() out of line
+- Added patches to remove func_descr_t and func_desc_t in powerpc
+- Using func_desc_t instead of funct_descr_t
+- Renamed HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR to HAVE_FUNCTION_DESCRIPTORS
+- Added a new lkdtm test to check protection of function descriptors
 
-Although gas is happy with the 3-argument version when building for
-32-bit, the LLVM assembler is not and errors out with:
+Christophe Leroy (13):
+  powerpc: Move 'struct ppc64_opd_entry' back into asm/elf.h
+  powerpc: Rename 'funcaddr' to 'addr' in 'struct ppc64_opd_entry'
+  powerpc: Remove func_descr_t
+  powerpc: Prepare func_desc_t for refactorisation
+  ia64: Rename 'ip' to 'addr' in 'struct fdesc'
+  asm-generic: Use HAVE_FUNCTION_DESCRIPTORS to define associated stubs
+  asm-generic: Define 'func_desc_t' to commonly describe function
+    descriptors
+  asm-generic: Refactor dereference_[kernel]_function_descriptor()
+  lkdtm: Force do_nothing() out of line
+  lkdtm: Really write into kernel text in WRITE_KERN
+  lkdtm: Fix lkdtm_EXEC_RODATA()
+  lkdtm: Fix execute_[user]_location()
+  lkdtm: Add a test for function descriptors protection
 
-  arch/powerpc/sysdev/dcr-low.S:27:10: error: invalid operand for instruction
-   cmpli 0,%r3,1024; ...
-           ^
+ arch/ia64/include/asm/elf.h              |  2 +-
+ arch/ia64/include/asm/sections.h         | 25 ++-------
+ arch/ia64/kernel/module.c                |  6 +--
+ arch/parisc/include/asm/sections.h       | 17 +++---
+ arch/parisc/kernel/process.c             | 21 --------
+ arch/powerpc/include/asm/code-patching.h |  2 +-
+ arch/powerpc/include/asm/elf.h           |  6 +++
+ arch/powerpc/include/asm/sections.h      | 30 ++---------
+ arch/powerpc/include/asm/types.h         |  6 ---
+ arch/powerpc/include/uapi/asm/elf.h      |  8 ---
+ arch/powerpc/kernel/module_64.c          | 38 +++++--------
+ arch/powerpc/kernel/signal_64.c          |  8 +--
+ drivers/misc/lkdtm/core.c                |  1 +
+ drivers/misc/lkdtm/lkdtm.h               |  1 +
+ drivers/misc/lkdtm/perms.c               | 68 ++++++++++++++++++++----
+ include/asm-generic/sections.h           | 13 ++++-
+ include/linux/kallsyms.h                 |  2 +-
+ kernel/extable.c                         | 23 +++++++-
+ 18 files changed, 138 insertions(+), 139 deletions(-)
 
-Switching to the four argument version avoids any confusion when reading
-the ISA, fixes the issue with the LLVM assembler, and also means the
-code could be built 64-bit in future (though that's very unlikely).
-
-Reported-by: Nick Desaulniers <ndesaulniers@google.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/sysdev/dcr-low.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/sysdev/dcr-low.S b/arch/powerpc/sysdev/dcr-low.S
-index efeeb1b885a1..329b9c4ae542 100644
---- a/arch/powerpc/sysdev/dcr-low.S
-+++ b/arch/powerpc/sysdev/dcr-low.S
-@@ -11,7 +11,7 @@
- #include <asm/export.h>
- 
- #define DCR_ACCESS_PROLOG(table) \
--	cmpli	cr0,r3,1024;	 \
-+	cmplwi	cr0,r3,1024;	 \
- 	rlwinm  r3,r3,4,18,27;   \
- 	lis     r5,table@h;      \
- 	ori     r5,r5,table@l;   \
 -- 
-2.25.1
+2.31.1
 
