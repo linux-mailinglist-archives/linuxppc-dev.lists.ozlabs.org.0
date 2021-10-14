@@ -2,74 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D21242E3C6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 23:46:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED0B942E3F3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 00:08:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HVjdN5wtMz3c5S
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 08:46:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HVk7n2Kw7z3c5v
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 09:08:53 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=XqUQLpCs;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JgkB8ht6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::535;
- helo=mail-pg1-x535.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=XqUQLpCs; dkim-atps=neutral
-Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com
- [IPv6:2607:f8b0:4864:20::535])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=JgkB8ht6; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HVjck4Rcdz2yLV
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 08:45:25 +1100 (AEDT)
-Received: by mail-pg1-x535.google.com with SMTP id 66so6715023pgc.9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 14:45:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=4GrPc7FGyCnCD/UjuDxp/izjM7wkRrx7pBgnvNh8AfA=;
- b=XqUQLpCs2S/h/ceVWU2JHhlb+0n6xx80AR84zM1fbTXyJpTTdz7naNXuSISe0OmVPh
- NjZ/D/TD0ZH2RQIVG7s4CPqlOO1tq69oTkrFSh1I9LXUEVLqPBgSqyhAGps/jJj4ZA4P
- vglf7c8/7+vfhlwsZ4SeyOpGpkDyS0m7q2pnE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=4GrPc7FGyCnCD/UjuDxp/izjM7wkRrx7pBgnvNh8AfA=;
- b=GVNDIH7qeiGnL2VLjcYxT86RvorvAtGVO6H+8fCRztWfUrW8Tm356i/IUEW6uYELAv
- jsa/nDb27FsL43XkUXvaMm9e15WvtReV6IzrMNlBd4wRMN3IhqnfMHFXctZuY9hf4iHa
- oVgEG2aDOXfK4nc8TmjC6jyBzZvj6lli4OY7O/W52CMjWWNVHB2f0neRVPAfsopgyhg2
- 4jzQsECjJYdboAUlDq4TtXzkWQL0OuHhCjF2ovgFPERqrMzWAPdTgP9LMJhg6VDFsVSe
- siEZOzND//C4uIHq2gBkwnHcUOub0zO43Sc/lvtMbKW0cun8DsA5LZA7z0WbuBIlfVAm
- 6PRA==
-X-Gm-Message-State: AOAM532UsFMjVm4S7QMAy6cj+saJsmxVKWHuWvpOapnh0ZZRFaYKobSr
- Uq2v5tpCCuSCtUIRrYWENxNPbg==
-X-Google-Smtp-Source: ABdhPJxS8/zOn3bSDjYQg+GZqWOsdaDA+H+My597hv01n1JtKvTgaMjIuZ//mrufBDPiNL/OIH5zxA==
-X-Received: by 2002:a63:dc42:: with SMTP id f2mr6272407pgj.152.1634247922841; 
- Thu, 14 Oct 2021 14:45:22 -0700 (PDT)
-Received: from localhost ([2001:4479:e300:600:4901:2fb9:ed97:3a3e])
- by smtp.gmail.com with ESMTPSA id s62sm3366448pgc.5.2021.10.14.14.45.21
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Oct 2021 14:45:22 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael
- Ellerman <mpe@ellerman.id.au>, Andrew Morton <akpm@linux-foundation.org>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, Helge
- Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>, Kees Cook
- <keescook@chromium.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH v2 02/13] powerpc: Rename 'funcaddr' to 'addr' in
- 'struct ppc64_opd_entry'
-In-Reply-To: <49f59a8bf2c4d95cfaa03bd3dd3c1569822ad6ba.1634190022.git.christophe.leroy@csgroup.eu>
-References: <cover.1634190022.git.christophe.leroy@csgroup.eu>
- <49f59a8bf2c4d95cfaa03bd3dd3c1569822ad6ba.1634190022.git.christophe.leroy@csgroup.eu>
-Date: Fri, 15 Oct 2021 08:45:19 +1100
-Message-ID: <877def46xc.fsf@dja-thinkpad.axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HVk6y5w7yz2xXf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 09:08:10 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19EKbnfb002347; 
+ Thu, 14 Oct 2021 18:07:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=gcqkgO7usWMi/qHhToo/mTrw8IHuIq/Ug6jZaEWgIVI=;
+ b=JgkB8ht6SbLw8x+QDKzhIbQVIdeBiEzFQ60lTjaL8bJVj3Z46OuiJ3m3qdM0pI9wM2Pb
+ NTjd6xlcVa8T/oHlBLvduAsy55dlEHVY4lJTWPkNIRI7fMKNSCmAyLWy3CtJjv9KgmuL
+ BjkXLsK9+WrzPaFhOf5Dhxgg8fZRxizWFBpfU570sWXq3Ifea+5qjV3qvou7nwmm+cxr
+ 8Fht8Zr3BhNaq4K/MZ9iicdH0eXmRCfgLxVyq4qwkFXWO7FqGuCv1ur56DG+xmJVUNmE
+ SwmJdTFBanFY3MTB7+GNskmWwanPLtaFYvsZwkeTkcpk58qOjHJpDIe5Y2Cc7oz4lkLq Hg== 
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3bpurn1t36-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 14 Oct 2021 18:07:58 -0400
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19ELppN7027402;
+ Thu, 14 Oct 2021 22:07:58 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
+ [9.57.198.24]) by ppma05wdc.us.ibm.com with ESMTP id 3bk2qctmj4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 14 Oct 2021 22:07:58 +0000
+Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
+ [9.57.199.108])
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 19EM7vlP42598748
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 14 Oct 2021 22:07:57 GMT
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 942BDB206B;
+ Thu, 14 Oct 2021 22:07:57 +0000 (GMT)
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 70016B2067;
+ Thu, 14 Oct 2021 22:07:56 +0000 (GMT)
+Received: from oc6857751186.ibm.com (unknown [9.65.220.106])
+ by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu, 14 Oct 2021 22:07:56 +0000 (GMT)
+Subject: Re: [PATCH v2] scsi: ibmvscsi: Use dma_alloc_noncoherent() instead of
+ get_zeroed_page/dma_map_single()
+To: Cai Huoqing <caihuoqing@baidu.com>
+References: <20211012032317.2360-1-caihuoqing@baidu.com>
+From: Tyrel Datwyler <tyreld@linux.ibm.com>
+Message-ID: <0a2ef145-b84f-129a-c915-50f32aeeaa1d@linux.ibm.com>
+Date: Thu, 14 Oct 2021 15:07:55 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20211012032317.2360-1-caihuoqing@baidu.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: _j95V1l7K9Lv-zgNFqw8wQ1RBemS559Q
+X-Proofpoint-ORIG-GUID: _j95V1l7K9Lv-zgNFqw8wQ1RBemS559Q
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-10-14_11,2021-10-14_02,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 spamscore=0
+ suspectscore=0 impostorscore=0 adultscore=0 lowpriorityscore=0
+ clxscore=1011 bulkscore=0 priorityscore=1501 mlxlogscore=999 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2109230001 definitions=main-2110140123
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,100 +102,130 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
- linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+Cc: "Martin K. Petersen" <martin.petersen@oracle.com>,
+ linux-scsi@vger.kernel.org, "James E.J. Bottomley" <jejb@linux.ibm.com>,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+On 10/11/21 8:23 PM, Cai Huoqing wrote:
+> Replacing get_zeroed_page/free_page/dma_map_single/dma_unmap_single()
+> with dma_alloc_noncoherent/dma_free_noncoherent() helps to reduce
+> code size, and simplify the code, and the hardware can keeep DMA
+> coherent itsel
+Not sure why the switch from coherent in v1 to noncoherent in v2. I think that
+was unnecessary and I believe requires explicit synchronization via
+dma_sync_single_{for_device|for_cpu} calls.
 
-> There are three architectures with function descriptors, try to
-> have common names for the address they contain in order to
-> refactor some functions into generic functions later.
->
-> powerpc has 'funcaddr'
-> ia64 has 'ip'
-> parisc has 'addr'
->
-> Vote for 'addr' and update 'struct ppc64_opd_entry' accordingly.
+Further, as both kernel-bot and Nathan have already pointed out this doesn't
+even compile.
 
-I would have picked 'funcaddr', but at least 'addr' is better than 'ip'!
-And I agree that consistency, and then making things generic is worthwhile.
+-Tyrel
 
-I grepped the latest powerpc/next for uses of 'funcaddr'. There were 5,
-your patch changes all 5.
-
-The series passes build tests and this patch has no checkpatch or other
-style concerns.
-
-On that basis:
-Reviewed-by: Daniel Axtens <dja@axtens.net>
-
-Kind regards,
-Daniel
-
-> Reviewed-by: Kees Cook <keescook@chromium.org>
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> 
+> Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
 > ---
->  arch/powerpc/include/asm/elf.h      | 2 +-
->  arch/powerpc/include/asm/sections.h | 2 +-
->  arch/powerpc/kernel/module_64.c     | 6 +++---
->  3 files changed, 5 insertions(+), 5 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/elf.h b/arch/powerpc/include/asm/elf.h
-> index a4406714c060..bb0f278f9ed4 100644
-> --- a/arch/powerpc/include/asm/elf.h
-> +++ b/arch/powerpc/include/asm/elf.h
-> @@ -178,7 +178,7 @@ void relocate(unsigned long final_address);
->  
->  /* There's actually a third entry here, but it's unused */
->  struct ppc64_opd_entry {
-> -	unsigned long funcaddr;
-> +	unsigned long addr;
->  	unsigned long r2;
->  };
->  
-> diff --git a/arch/powerpc/include/asm/sections.h b/arch/powerpc/include/asm/sections.h
-> index 6e4af4492a14..32e7035863ac 100644
-> --- a/arch/powerpc/include/asm/sections.h
-> +++ b/arch/powerpc/include/asm/sections.h
-> @@ -77,7 +77,7 @@ static inline void *dereference_function_descriptor(void *ptr)
->  	struct ppc64_opd_entry *desc = ptr;
->  	void *p;
->  
-> -	if (!get_kernel_nofault(p, (void *)&desc->funcaddr))
-> +	if (!get_kernel_nofault(p, (void *)&desc->addr))
->  		ptr = p;
->  	return ptr;
->  }
-> diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/module_64.c
-> index 6baa676e7cb6..82908c9be627 100644
-> --- a/arch/powerpc/kernel/module_64.c
-> +++ b/arch/powerpc/kernel/module_64.c
-> @@ -72,11 +72,11 @@ static func_desc_t func_desc(unsigned long addr)
->  }
->  static unsigned long func_addr(unsigned long addr)
+> v1->v2:
+> 	*Change to dma_alloc/free_noncoherent from dma_alloc/free_coherent.
+> 	*Update changelog.
+> 
+>  drivers/scsi/ibmvscsi/ibmvfc.c   | 16 ++++------------
+>  drivers/scsi/ibmvscsi/ibmvscsi.c | 29 +++++++++--------------------
+>  2 files changed, 13 insertions(+), 32 deletions(-)
+> 
+> diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
+> index 1f1586ad48fe..6e95fd02fd25 100644
+> --- a/drivers/scsi/ibmvscsi/ibmvfc.c
+> +++ b/drivers/scsi/ibmvscsi/ibmvfc.c
+> @@ -869,8 +869,8 @@ static void ibmvfc_free_queue(struct ibmvfc_host *vhost,
 >  {
-> -	return func_desc(addr).funcaddr;
-> +	return func_desc(addr).addr;
->  }
->  static unsigned long stub_func_addr(func_desc_t func)
->  {
-> -	return func.funcaddr;
-> +	return func.addr;
->  }
->  static unsigned int local_entry_offset(const Elf64_Sym *sym)
->  {
-> @@ -187,7 +187,7 @@ static int relacmp(const void *_x, const void *_y)
->  static unsigned long get_stubs_size(const Elf64_Ehdr *hdr,
->  				    const Elf64_Shdr *sechdrs)
->  {
-> -	/* One extra reloc so it's always 0-funcaddr terminated */
-> +	/* One extra reloc so it's always 0-addr terminated */
->  	unsigned long relocs = 1;
->  	unsigned i;
+>  	struct device *dev = vhost->dev;
 >  
-> -- 
-> 2.31.1
+> -	dma_unmap_single(dev, queue->msg_token, PAGE_SIZE, DMA_BIDIRECTIONAL);
+> -	free_page((unsigned long)queue->msgs.handle);
+> +	dma_free_noncoherent(dev, PAGE_SIZE, queue->msgs.handle,
+> +			     queue->msg_token, DMA_BIDIRECTIONAL);
+>  	queue->msgs.handle = NULL;
+>  
+>  	ibmvfc_free_event_pool(vhost, queue);
+> @@ -5663,19 +5663,11 @@ static int ibmvfc_alloc_queue(struct ibmvfc_host *vhost,
+>  		return -ENOMEM;
+>  	}
+>  
+> -	queue->msgs.handle = (void *)get_zeroed_page(GFP_KERNEL);
+> +	queue->msgs.handle = dma_alloc_noncoherent(dev, PAGE_SIZE, &queue->msg_token,
+> +						   DMA_BIDIRECTIONAL, GFP_KERNEL);
+>  	if (!queue->msgs.handle)
+>  		return -ENOMEM;
+>  
+> -	queue->msg_token = dma_map_single(dev, queue->msgs.handle, PAGE_SIZE,
+> -					  DMA_BIDIRECTIONAL);
+> -
+> -	if (dma_mapping_error(dev, queue->msg_token)) {
+> -		free_page((unsigned long)queue->msgs.handle);
+> -		queue->msgs.handle = NULL;
+> -		return -ENOMEM;
+> -	}
+> -
+>  	queue->cur = 0;
+>  	queue->fmt = fmt;
+>  	queue->size = PAGE_SIZE / fmt_size;
+> diff --git a/drivers/scsi/ibmvscsi/ibmvscsi.c b/drivers/scsi/ibmvscsi/ibmvscsi.c
+> index ea8e01f49cba..68409c298c74 100644
+> --- a/drivers/scsi/ibmvscsi/ibmvscsi.c
+> +++ b/drivers/scsi/ibmvscsi/ibmvscsi.c
+> @@ -151,10 +151,8 @@ static void ibmvscsi_release_crq_queue(struct crq_queue *queue,
+>  			msleep(100);
+>  		rc = plpar_hcall_norets(H_FREE_CRQ, vdev->unit_address);
+>  	} while ((rc == H_BUSY) || (H_IS_LONG_BUSY(rc)));
+> -	dma_unmap_single(hostdata->dev,
+> -			 queue->msg_token,
+> -			 queue->size * sizeof(*queue->msgs), DMA_BIDIRECTIONAL);
+> -	free_page((unsigned long)queue->msgs);
+> +	dma_free_noncoherent(hostdata->dev, PAGE_SIZE,
+> +			     queue->msgs, queue->msg_token, DMA_BIDIRECTIONAL);
+>  }
+>  
+>  /**
+> @@ -331,18 +329,12 @@ static int ibmvscsi_init_crq_queue(struct crq_queue *queue,
+>  	int retrc;
+>  	struct vio_dev *vdev = to_vio_dev(hostdata->dev);
+>  
+> -	queue->msgs = (struct viosrp_crq *)get_zeroed_page(GFP_KERNEL);
+> -
+> -	if (!queue->msgs)
+> -		goto malloc_failed;
+>  	queue->size = PAGE_SIZE / sizeof(*queue->msgs);
+> -
+> -	queue->msg_token = dma_map_single(hostdata->dev, queue->msgs,
+> -					  queue->size * sizeof(*queue->msgs),
+> -					  DMA_BIDIRECTIONAL);
+> -
+> -	if (dma_mapping_error(hostdata->dev, queue->msg_token))
+> -		goto map_failed;
+> +	queue->msgs = dma_alloc_noncoherent(hostdata->dev,
+> +					    PAGE_SIZE, &queue->msg_token,
+> +					    DMA_BIDIRECTIONAL, GFP_KERNEL);
+> +	if (!queue->msg)
+> +		goto malloc_failed;
+>  
+>  	gather_partition_info();
+>  	set_adapter_info(hostdata);
+> @@ -395,11 +387,8 @@ static int ibmvscsi_init_crq_queue(struct crq_queue *queue,
+>  		rc = plpar_hcall_norets(H_FREE_CRQ, vdev->unit_address);
+>  	} while ((rc == H_BUSY) || (H_IS_LONG_BUSY(rc)));
+>        reg_crq_failed:
+> -	dma_unmap_single(hostdata->dev,
+> -			 queue->msg_token,
+> -			 queue->size * sizeof(*queue->msgs), DMA_BIDIRECTIONAL);
+> -      map_failed:
+> -	free_page((unsigned long)queue->msgs);
+> +	dma_free_noncoherent(hostdata->dev, PAGE_SIZE, queue->msg,
+> +			     queue->msg_token, DMA_BIDIRECTIONAL);
+>        malloc_failed:
+>  	return -1;
+>  }
+> 
+
