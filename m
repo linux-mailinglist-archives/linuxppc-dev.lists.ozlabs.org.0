@@ -2,54 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62BE142D549
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 10:41:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA80D42D555
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 10:45:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HVNDd5q1Sz305B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 19:41:53 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=TsvQCRJ7;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HVNJr3FYGz3bj4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 19:45:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
- header.a=rsa-sha256 header.s=korg header.b=TsvQCRJ7; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HVNCz4Zs0z2yPS
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 19:41:18 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1338D60F9E;
- Thu, 14 Oct 2021 08:41:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
- s=korg; t=1634200875;
- bh=rY9vGtlLDIvkDgY0wX20Oxpih5WsKZMgiPYMwz/VsXE=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=TsvQCRJ72G2+iekhh/WK3vT5lHlv7ZD6YNQNgAj3L2thXFnBxsGvyUNRW7BamuMqV
- 1IPExSgJeQI9q0Wym4ATW8HhvO4Aw4CJX4+DsF+KHwMiO6IDjMMu0SjL/bAsfi1hLh
- r4jkVd+UWyWv+rIV5buFUYY+dM3WYR0t5NCyZNCs=
-Date: Thu, 14 Oct 2021 10:41:13 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Xianting Tian <xianting.tian@linux.alibaba.com>
-Subject: Re: [PATCH v10 2/3] tty: hvc: pass DMA capable memory to put_chars()
-Message-ID: <YWftKQ3fTb8QlM6/@kroah.com>
-References: <20211009114829.1071021-1-xianting.tian@linux.alibaba.com>
- <20211009114829.1071021-3-xianting.tian@linux.alibaba.com>
- <YWGD8y9VfBIQBu2h@kroah.com>
- <3516c58c-e8e6-2e5a-2bc8-ad80e2124d37@linux.alibaba.com>
- <YWJ7NuapWOZ4QirJ@kroah.com>
- <4dbeddb9-1068-d282-2758-55d0f788ea61@linux.alibaba.com>
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=212.227.126.130; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HVNJN5r7sz2yPS
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 19:45:07 +1100 (AEDT)
+Received: from mail-wr1-f51.google.com ([209.85.221.51]) by
+ mrelayeu.kundenserver.de (mreue012 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1Mm9NA-1n1ARK31NY-00iAOi for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct
+ 2021 10:45:02 +0200
+Received: by mail-wr1-f51.google.com with SMTP id e3so16829765wrc.11
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 01:45:02 -0700 (PDT)
+X-Gm-Message-State: AOAM530bxNH36nrMhy+fd/s1XKuy0aYUOQHa/UbucxYZrEW4C70rkdgj
+ XTsJQk3/LSO6ArKXiYFLjrXX3v8CwJPUibTLs60=
+X-Google-Smtp-Source: ABdhPJy2Q55sSkLZB6jxCTWqm25cFC7UAeGhHD3tsyQeSyokhHvq8V2pJoW6joP1ItyVfyCebQbp8k3zAHKoURn20CM=
+X-Received: by 2002:a1c:4b08:: with SMTP id y8mr4618289wma.98.1634201102285;
+ Thu, 14 Oct 2021 01:45:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4dbeddb9-1068-d282-2758-55d0f788ea61@linux.alibaba.com>
+References: <20211008164728.30e3d3a3@canb.auug.org.au>
+ <20211011082704.3cff4568@canb.auug.org.au>
+ <CAL_JsqJE_GHnehBz-71BOGXfjm6q2p0u6FQA5KwO8zK_i1LpMQ@mail.gmail.com>
+ <CAK8P3a1EcNuxT-w-8w-HDr2+idsP=vFZ3Cn27fX7o56GOuu_Cg@mail.gmail.com>
+ <20211014001232.3becbe99@crub>
+In-Reply-To: <20211014001232.3becbe99@crub>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Thu, 14 Oct 2021 10:44:46 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a0yKvZW2-XFJtPORpa=FhG+UJgk=m0O1GiC_yLw+1Pfvw@mail.gmail.com>
+Message-ID: <CAK8P3a0yKvZW2-XFJtPORpa=FhG+UJgk=m0O1GiC_yLw+1Pfvw@mail.gmail.com>
+Subject: Re: linux-next: build warnings in Linus' tree
+To: Anatolij Gustschin <agust@denx.de>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:F/6mXaCJyES9AP2fDb184ELtPWX4M+29CaOvu7zS4UN07vrPbc3
+ lh5AtFczaSYNDiVXPxh4M3zJBTwFDsrk4mmIXeEWuGBILTw3yHuCQLITAIKTTxEp3kQSwtb
+ PIPjZaC+zZV3gDOLTKpZVu4fnkqVNAYYco0qqOSmTDp+bt/jANZXxYfwbhwODjN+2sTish9
+ dyTybwUEXPd4JzKAwcN0g==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:oFczKncLlJ0=:uIsOLbaRTeig8VTDcGsR1F
+ UJfEHeT2Vk/tJBrbEq5NWTYbdnCCj2/mUg5qj+lvS+Y7lEYKcTxaJdqB6paqVu//9hn4Qwf7o
+ MTeLNuHW+rIxJCVycik5EdwpWz5aavvHL8R0CiM7KxqfuyQbPzA8gdM+mPaJ7x59Rqr9oK4ak
+ EIR/H9obONac88j2hEAtXhssjfF402V/MotRODT/B/VMgKE2WByKZ7Bf7naOq2FPCNh6NGuON
+ TgtAFuQ4dmn0PjDI/isg697IDT08tZDAsnQxFNrXhavhy325YsGh/4EblrW1Eqs6I3Mti7lUy
+ UIYLpoogjTzqgIi1hTCuT8FfUJ/MQTUOJ3VZg45FuQ6hsMojAfBRLsp/Pwl4X5ztKOGwnqvxx
+ Al4Cle0JuUVHEqPGQHSkLh4odzCzbyfdjuJMYgBhon6GZY1koN88NYUccRq+RpdP3mVaxop4f
+ RHkG9Pk+z4kmoViFYnmn/6lLyJ/UNJFq2uVmjUAO/rdTk6j7L3OH+j/FZCVeHgl485RMaewvf
+ G2XAk6ugLB96C0jU9mJTcMdbEVgdRt1oQigRXsUlR5XepwKQT7MQdha/qZiE75x+dEWLvxj+s
+ c+1S5x2Go2tnWn4eyk7dyGpBGlaRDyHiDwrY/i1JkGaZcQkaUkrZRlaFuvu08kUPm3jPEogsm
+ KahiSrJUj7CHlBCnV3/IZsqZH538jSDG+4vWq7xqr8cAaJP5JA1nWUTHELeHpfT4+PI/JHspC
+ CPm7rgZLMsPaM86x6jJrwiIS2kOCX5RWTf/D2Q==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,92 +72,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: arnd@arndb.de, amit@kernel.org, jirislaby@kernel.org,
- shile.zhang@linux.alibaba.com, linux-kernel@vger.kernel.org,
- virtualization@lists.linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
- osandov@fb.com
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>, Arnd Bergmann <arnd@arndb.de>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Rob Herring <robh+dt@kernel.org>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ PowerPC <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Oct 14, 2021 at 04:34:59PM +0800, Xianting Tian wrote:
-> 
-> 在 2021/10/10 下午1:33, Greg KH 写道:
-> > On Sat, Oct 09, 2021 at 11:45:23PM +0800, Xianting Tian wrote:
-> > > 在 2021/10/9 下午7:58, Greg KH 写道:
-> > > > Did you look at the placement using pahole as to how this structure now
-> > > > looks?
-> > > thanks for all your commnts. for this one, do you mean I need to remove the
-> > > blank line?  thanks
-> > > 
-> > No, I mean to use the tool 'pahole' to see the structure layout that you
-> > just created and determine if it really is the best way to add these new
-> > fields, especially as you are adding huge buffers with odd alignment.
-> 
-> thanks,
-> 
-> Based on your comments, I removed 'char outchar',  remian the position of
-> 'int outbuf_size' unchanged to keep outbuf_size and lock in the same cache
-> line.  Now hvc_struct change as below,
-> 
->  struct hvc_struct {
->         struct tty_port port;
->         spinlock_t lock;
->         int index;
->         int do_wakeup;
-> -       char *outbuf;
->         int outbuf_size;
->         int n_outbuf;
->         uint32_t vtermno;
-> @@ -48,6 +57,16 @@ struct hvc_struct {
->         struct work_struct tty_resize;
->         struct list_head next;
->         unsigned long flags;
-> +
-> +       /*
-> +        * the buf is used in hvc console api for putting chars,
-> +        * and also used in hvc_poll_put_char() for putting single char.
-> +        */
-> +       char cons_outbuf[N_OUTBUF] __ALIGNED__;
-> +       spinlock_t cons_outbuf_lock;
-> +
-> +       /* the buf is used for putting chars to tty */
-> +       char outbuf[] __ALIGNED__;
->  };
-> 
-> pahole for above hvc_struct as below,  is it ok for you?  do we need to pack
-> the hole? thanks
-> 
-> struct hvc_struct {
->     struct tty_port            port;                 /*     0 352 */
->     /* --- cacheline 5 boundary (320 bytes) was 32 bytes ago --- */
->     spinlock_t                 lock;                 /*   352 4 */
->     int                        index;                /*   356 4 */
->     int                        do_wakeup;            /*   360 4 */
->     int                        outbuf_size;          /*   364 4 */
->     int                        n_outbuf;             /*   368 4 */
->     uint32_t                   vtermno;              /*   372 4 */
->     const struct hv_ops  *     ops;                  /*   376 8 */
->     /* --- cacheline 6 boundary (384 bytes) --- */
->     int                        irq_requested;        /*   384 4 */
->     int                        data;                 /*   388 4 */
->     struct winsize             ws;                   /*   392 8 */
->     struct work_struct         tty_resize;           /*   400 32 */
->     struct list_head           next;                 /*   432 16 */
->     /* --- cacheline 7 boundary (448 bytes) --- */
->     long unsigned int          flags;                /*   448 8 */
-> 
->     /* XXX 56 bytes hole, try to pack */
-> 
->     /* --- cacheline 8 boundary (512 bytes) --- */
->     char                       cons_outbuf[16];      /*   512 16 */
->     spinlock_t                 cons_outbuf_lock;     /*   528 4 */
-> 
->     /* XXX 44 bytes hole, try to pack */
+On Thu, Oct 14, 2021 at 12:12 AM Anatolij Gustschin <agust@denx.de> wrote:
+> On Tue, 12 Oct 2021 16:39:56 +0200
+> Arnd Bergmann arnd@arndb.de wrote:
+> ...
+> >Grant Likely was the original maintainer for MPC52xx until 2011,
+> >Anatolij Gustschin is still listed as maintainer since then but hasn't
+> >been active in it for a while either. Anatolij can probably best judge
+> >which of these boards are still in going to be used with future kernels,
+> >but I suspect once you start removing bits from 52xx, the newer
+> >but less common 512x platform can go away as well.
+>
+> many of these boards are still used, i.e. o2d*, digsy_mtc, tqm5200.
 
-Why not move the spinlock up above the cons_outbuf?  Will that not be a
-bit better?
+Just for clarification, I assume when you say "still used" that implies
+getting updated to new kernels rather than just running the old BSPs,
+right?
 
-Anyway, this is all fine, and much better than before, thanks.
+What are the typical distro release cycles for those machines
+you list: do you move from one LTS kernel to the next each year,
+or are they getting more sporadic over time?
 
-greg k-h
+Do you expect the machines with the lowest memory such as the
+32MB digsy to stop getting kernel updates before the others?
+
+> I've sent first series to fix some warnings. Other dts fixes
+> require driver changes, so it will take some time to fix them.
+
+Thanks!
+
+      Arnd
