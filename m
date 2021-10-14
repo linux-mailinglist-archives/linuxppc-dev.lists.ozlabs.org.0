@@ -2,60 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F3B442DE01
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 17:23:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B52DD42E01B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 19:33:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HVY830rqzz3c65
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 02:23:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HVc232psJz3c66
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 04:33:31 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=ZLILYHxO;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=b4Nc5rxC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=suse.com (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
- envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
- header.s=susede1 header.b=ZLILYHxO; dkim-atps=neutral
-X-Greylist: delayed 515 seconds by postgrey-1.36 at boromir;
- Fri, 15 Oct 2021 02:22:53 AEDT
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::931;
+ helo=mail-ua1-x931.google.com; envelope-from=leobras.c@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=b4Nc5rxC; dkim-atps=neutral
+Received: from mail-ua1-x931.google.com (mail-ua1-x931.google.com
+ [IPv6:2607:f8b0:4864:20::931])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HVY7K5cRYz2yg4
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 02:22:52 +1100 (AEDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
- by smtp-out1.suse.de (Postfix) with ESMTP id 4603621A89;
- Thu, 14 Oct 2021 15:14:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
- t=1634224452; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ALOTVNu/egcVlHKjItYFDOMwJxp+I4TFEjpwx0g4g5E=;
- b=ZLILYHxOIMb36+D1zMkaQ7f9QhJIGj0VMe3lw2B87bi8pmp+oPWT8j/AlZo7s/YaiBBYxo
- DHO8JYR1TwD9iHLQmgJ9hvQf6dkOXdKyF8BeukJuevUxhdRMHZkVyqaM7jUcpNafEgM9Js
- 6KtMXgfm/vEGo6eBDp86QFxhn6m8tdk=
-Received: from suse.cz (unknown [10.100.216.66])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by relay2.suse.de (Postfix) with ESMTPS id 4CE08A3B88;
- Thu, 14 Oct 2021 15:14:10 +0000 (UTC)
-Date: Thu, 14 Oct 2021 17:14:07 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: =?utf-8?B?546L6LSH?= <yun.wang@linux.alibaba.com>
-Subject: Re: [PATCH v3 1/2] ftrace: disable preemption between
- ftrace_test_recursion_trylock/unlock()
-Message-ID: <YWhJP41cNwDphYsv@alley>
-References: <609b565a-ed6e-a1da-f025-166691b5d994@linux.alibaba.com>
- <7e4738b5-21d4-c4d0-3136-a096bbb5cd2c@linux.alibaba.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HVc1N1S14z2yPF
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 04:32:54 +1100 (AEDT)
+Received: by mail-ua1-x931.google.com with SMTP id f4so12832251uad.4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 10:32:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=message-id:subject:from:to:cc:date:in-reply-to:references
+ :user-agent:mime-version:content-transfer-encoding;
+ bh=NNLIU855d3FWPmYu6pUhg7wLsuUsKX7VYiKpRPPe7Bk=;
+ b=b4Nc5rxCC1om0hpdesQnbN8+7Hnc5yD378P5ZIuX8gCQBGWHyYQZI7eEbE0Ml3qbOO
+ pJ4L0I6vHDW6efOTv4gwn77szHRZ6cxCkJQUahE/0OELaDdLTAD2rVnBxrnhxgC6AXtU
+ nOc/kgio9SDYCrj9ynQ53MGYPkBSVObJyE1Ow60Kkr7EGImxAerBJY2WnxCuMH2GkVl9
+ k1e5n528ToVyZGb5gwJj3A++cabKLWRCRM0DFdOaKZIKXO/vOCDDrBTmK+B6SdwkS8bN
+ TAiXGcqwvWK8bbjC55ZqD812en8Z5rGCZE1jj1CPTwPJM9sdVBSOrxYarPJq88lX/AAs
+ /qqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+ :references:user-agent:mime-version:content-transfer-encoding;
+ bh=NNLIU855d3FWPmYu6pUhg7wLsuUsKX7VYiKpRPPe7Bk=;
+ b=Fll+n/mGDHIOLv5fU6H1nACk6VZdvxbtcsPvH43NjhlbRpDsov++Z+M6Amf37QhRsO
+ tfSUEQkFc+VjtHMWBq96KlZJSd62RSxvPOj1pgLA6fAKk7Wo8stCYYjHCBCyn+yTHImS
+ lQ0Fv/I1v5+gqS/eFKOwUeCDdBTPXYI0NMOhqWFXtwTEBJpkDjxsAUkbCHgewpIy/jjN
+ LHWoSjh3fy0D4dBhxzt53X5jQtm6WuslNdC9yyr8zCN3XL975KzXzwQWVIe7pXl3ZEsy
+ CKxOVrcVoD1/sAh2XX/QnErgcQcDjMrfYrDkyJv+H/6jQV2IaEcuuO4yLmb1M+gHLjef
+ x6Ug==
+X-Gm-Message-State: AOAM533Xr/dYmxaHGdf7xKSBoPuzj6aJDZp21KQa+FNqxAXXZPt6uri7
+ x1fYSyTxLzT4SWATaEjSPsw=
+X-Google-Smtp-Source: ABdhPJwEO+fPpwYjQ94fUfOQc9qKYHLagRSqUkrs3ttA+88eYNhX+twHOdUKwk2KJNogZRIXsrztNg==
+X-Received: by 2002:ab0:6d8d:: with SMTP id m13mr7661022uah.113.1634232768841; 
+ Thu, 14 Oct 2021 10:32:48 -0700 (PDT)
+Received: from ?IPv6:2804:14c:b382:8c61:6dfb:957c:fd41:44ce?
+ ([2804:14c:b382:8c61:6dfb:957c:fd41:44ce])
+ by smtp.gmail.com with ESMTPSA id q62sm2090340vkg.22.2021.10.14.10.32.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 14 Oct 2021 10:32:48 -0700 (PDT)
+Message-ID: <52f1cec812e81b45dbbc28eef3cd90cc9c0a90ae.camel@gmail.com>
+Subject: Re: [PATCH] powerpc/pseries/iommu: Add of_node_put() before break
+From: Leonardo =?ISO-8859-1?Q?Br=E1s?= <leobras.c@gmail.com>
+To: Wan Jiabing <wanjiabing@vivo.com>, Michael Ellerman
+ <mpe@ellerman.id.au>,  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Alexey Kardashevskiy <aik@ozlabs.ru>, 
+ Frederic Barrat <fbarrat@linux.ibm.com>, David Gibson
+ <david@gibson.dropbear.id.au>,  linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+Date: Thu, 14 Oct 2021 14:32:43 -0300
+In-Reply-To: <20211014075624.16344-1-wanjiabing@vivo.com>
+References: <20211014075624.16344-1-wanjiabing@vivo.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.40.4 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <7e4738b5-21d4-c4d0-3136-a096bbb5cd2c@linux.alibaba.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,167 +86,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Guo Ren <guoren@kernel.org>, Jisheng Zhang <jszhang@kernel.org>,
- "H. Peter Anvin" <hpa@zytor.com>, live-patching@vger.kernel.org,
- linux-riscv@lists.infradead.org, Miroslav Benes <mbenes@suse.cz>,
- Paul Mackerras <paulus@samba.org>, Joe Lawrence <joe.lawrence@redhat.com>,
- Helge Deller <deller@gmx.de>, x86@kernel.org, linux-csky@vger.kernel.org,
- Ingo Molnar <mingo@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Jiri Kosina <jikos@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Borislav Petkov <bp@alien8.de>, Nicholas Piggin <npiggin@gmail.com>,
- Josh Poimboeuf <jpoimboe@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
- linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Masami Hiramatsu <mhiramat@kernel.org>,
- Colin Ian King <colin.king@canonical.com>, linuxppc-dev@lists.ozlabs.org
+Cc: kael_w@yeah.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed 2021-10-13 16:51:46, 王贇 wrote:
-> As the documentation explained, ftrace_test_recursion_trylock()
-> and ftrace_test_recursion_unlock() were supposed to disable and
-> enable preemption properly, however currently this work is done
-> outside of the function, which could be missing by mistake.
+Hello Wan, thank you for this patch.
+
+
+On Thu, 2021-10-14 at 03:56 -0400, Wan Jiabing wrote:
+> Fix following coccicheck warning:
 > 
-> This path will make sure the preemption was disabled when trylock()
-> succeed, and the unlock() will enable the preemption if previously
-> enabled.
+> ./arch/powerpc/platforms/pseries/iommu.c:924:1-28: WARNING: Function
+> for_each_node_with_property should have of_node_put() before break
 > 
-> diff --git a/include/linux/trace_recursion.h b/include/linux/trace_recursion.h
-> index a9f9c57..58e474c 100644
-> --- a/include/linux/trace_recursion.h
-> +++ b/include/linux/trace_recursion.h
-> @@ -214,7 +214,18 @@ static __always_inline void trace_clear_recursion(int bit)
+> Early exits from for_each_node_with_property should decrement the
+> node reference counter.
 
-We should also update the description above the function, for example:
+Yeah, it makes sense to me. 
 
-  /**
-   * ftrace_test_recursion_trylock - tests for recursion in same context
-   *
-   * Use this for ftrace callbacks. This will detect if the function
-   * tracing recursed in the same context (normal vs interrupt),
-   *
-   * Returns: -1 if a recursion happened.
--  *           >= 0 if no recursion
-+  *           >= 0 if no recursion (success)
-+  *
-+  * Disables the preemption on success. It is just for a convenience.
-+  * Current users needed to disable the preemtion for some reasons.
-   */
+for_each_node_with_property calls of_find_node_with_property() at each
+step, which ends up calling of_node_put() after using each node.
 
+Introducing this break caused this of_node_put not to happen to the
+last node, so IIUC this patch fixes a possible issue if kzalloc() fails
+in ddw_list_new_entry().
 
->  static __always_inline int ftrace_test_recursion_trylock(unsigned long ip,
->  							 unsigned long parent_ip)
->  {
-> -	return trace_test_and_set_recursion(ip, parent_ip, TRACE_FTRACE_START, TRACE_FTRACE_MAX);
-> +	int bit;
-> +
-> +	bit = trace_test_and_set_recursion(ip, parent_ip, TRACE_FTRACE_START, TRACE_FTRACE_MAX);
-> +	/*
-> +	 * The zero bit indicate we are nested
-> +	 * in another trylock(), which means the
-> +	 * preemption already disabled.
-> +	 */
-> +	if (bit > 0)
-> +		preempt_disable_notrace();
+Another option would be s/break/continue here, but it does not make
+sense to keep trying next nodes if there is no memory to allocate for a
+struct dma_win (4 pointers).
 
-Is this safe? The preemption is disabled only when
-trace_test_and_set_recursion() was called by ftrace_test_recursion_trylock().
-
-We must either always disable the preemtion when bit >= 0.
-Or we have to disable the preemtion already in
-trace_test_and_set_recursion().
-
-
-Finally, the comment confused me a lot. The difference between nesting and
-recursion is far from clear. And the code is tricky liky like hell :-)
-I propose to add some comments, see below for a proposal.
-
-> +
-> +	return bit;
->  }
->  /**
-> @@ -222,9 +233,13 @@ static __always_inline int ftrace_test_recursion_trylock(unsigned long ip,
->   * @bit: The return of a successful ftrace_test_recursion_trylock()
->   *
->   * This is used at the end of a ftrace callback.
-> + *
-> + * Preemption will be enabled (if it was previously enabled).
->   */
->  static __always_inline void ftrace_test_recursion_unlock(int bit)
->  {
-> +	if (bit)
-
-This is not symetric with trylock(). It should be:
-
-	if (bit > 0)
-
-Anyway, trace_clear_recursion() quiently ignores bit != 0
-
-
-> +		preempt_enable_notrace();
->  	trace_clear_recursion(bit);
->  }
-
-
-Below is my proposed patch that tries to better explain the recursion
-check:
-
-From 20d69f11e2683262fa0043b803999061cbac543f Mon Sep 17 00:00:00 2001
-From: Petr Mladek <pmladek@suse.com>
-Date: Thu, 14 Oct 2021 16:57:39 +0200
-Subject: [PATCH] trace: Better describe the recursion check return values
-
-The trace recursion check might be called recursively by different
-layers of the tracing code. It is safe recursion and the check
-is even optimized for this case.
-
-The problematic recursion is when the traced function is called
-by the tracing code. This is properly detected.
-
-Try to explain this difference a better way.
-
-Signed-off-by: Petr Mladek <pmladek@suse.com>
----
- include/linux/trace_recursion.h | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/trace_recursion.h b/include/linux/trace_recursion.h
-index a9f9c5714e65..b5efb804efdf 100644
---- a/include/linux/trace_recursion.h
-+++ b/include/linux/trace_recursion.h
-@@ -159,13 +159,27 @@ extern void ftrace_record_recursion(unsigned long ip, unsigned long parent_ip);
- # define do_ftrace_record_recursion(ip, pip)	do { } while (0)
- #endif
+On the other hard, failing on allocating such small space should not
+happen often (if it will ever happen), so a 'continue' here makes code
+simpler.  
  
-+/*
-+ * trace_test_and_set_recursion() is called on several layers
-+ * of the ftrace code when handling the same ftrace entry.
-+ * These calls might be nested/recursive.
-+ *
-+ * It uses TRACE_LIST_*BITs to distinguish between this
-+ * internal recursion and recursion caused by calling
-+ * the traced function by the ftrace code.
-+ *
-+ * Returns: > 0 when no recursion
-+ *          0 when called recursively internally (safe)
-+ *	    -1 when the traced function was called recursively from
-+ *             the ftrace handler (unsafe)
-+ */
- static __always_inline int trace_test_and_set_recursion(unsigned long ip, unsigned long pip,
- 							int start, int max)
- {
- 	unsigned int val = READ_ONCE(current->trace_recursion);
- 	int bit;
- 
--	/* A previous recursion check was made */
-+	/* Called recursively internally by different ftrace code layers? */
- 	if ((val & TRACE_CONTEXT_MASK) > max)
- 		return 0;
- 
--- 
-2.26.2
+Anyway, FWIW:
+Reviewed-by: Leonardo Bras <leobras.c@gmail.com>
+
+
+Best regards,
+Leo
+
+> 
+> Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
+> ---
+>  arch/powerpc/platforms/pseries/iommu.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/platforms/pseries/iommu.c
+> b/arch/powerpc/platforms/pseries/iommu.c
+> index 269f61d519c2..c140aa683f66 100644
+> --- a/arch/powerpc/platforms/pseries/iommu.c
+> +++ b/arch/powerpc/platforms/pseries/iommu.c
+> @@ -929,8 +929,10 @@ static void find_existing_ddw_windows_named(const
+> char *name)
+>                 }
+>  
+>                 window = ddw_list_new_entry(pdn, dma64);
+> -               if (!window)
+> +               if (!window) {
+> +                       of_node_put(pdn);
+>                         break;
+> +               }
+>  
+>                 spin_lock(&dma_win_list_lock);
+>                 list_add(&window->list, &dma_win_list);
+
 
