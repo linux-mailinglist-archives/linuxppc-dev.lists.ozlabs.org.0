@@ -2,60 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB9A642D51F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 10:34:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCC1342D52B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 10:35:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HVN3x38mHz3096
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 19:34:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HVN5S2Bk5z2yYd
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 19:35:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.44;
+ helo=out30-44.freemail.mail.aliyun.com;
+ envelope-from=xianting.tian@linux.alibaba.com; receiver=<UNKNOWN>)
+Received: from out30-44.freemail.mail.aliyun.com
+ (out30-44.freemail.mail.aliyun.com [115.124.30.44])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HVN3V0jHfz2xr1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 19:33:55 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4HVN3N1VLcz9sSK;
- Thu, 14 Oct 2021 10:33:52 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id MLltOqoChzB3; Thu, 14 Oct 2021 10:33:52 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4HVN3M5L7mz9sSL;
- Thu, 14 Oct 2021 10:33:51 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A01868B788;
- Thu, 14 Oct 2021 10:33:51 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id evMA27PZM4fu; Thu, 14 Oct 2021 10:33:51 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.202.231])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 74C418B763;
- Thu, 14 Oct 2021 10:33:50 +0200 (CEST)
-Subject: Re: [RESEND PATCH v4 0/8] bpf powerpc: Add BPF_PROBE_MEM support in
- powerpc JIT compiler
-To: David Laight <David.Laight@ACULAB.COM>,
- 'Hari Bathini' <hbathini@linux.ibm.com>,
- "naveen.n.rao@linux.ibm.com" <naveen.n.rao@linux.ibm.com>,
- "mpe@ellerman.id.au" <mpe@ellerman.id.au>, "ast@kernel.org"
- <ast@kernel.org>, "daniel@iogearbox.net" <daniel@iogearbox.net>
-References: <20211012123056.485795-1-hbathini@linux.ibm.com>
- <8091e1294ad343a88aa399417ff91aee@AcuMS.aculab.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <61bc0e8e-8ab9-f837-1b44-1e193567fff7@csgroup.eu>
-Date: Thu, 14 Oct 2021 10:33:50 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HVN520yVDz2xY5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 19:35:16 +1100 (AEDT)
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R101e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04394;
+ MF=xianting.tian@linux.alibaba.com; NM=1; PH=DS; RN=9; SR=0;
+ TI=SMTPD_---0Urmp0Ip_1634200499; 
+Received: from B-LB6YLVDL-0141.local(mailfrom:xianting.tian@linux.alibaba.com
+ fp:SMTPD_---0Urmp0Ip_1634200499) by smtp.aliyun-inc.com(127.0.0.1);
+ Thu, 14 Oct 2021 16:35:00 +0800
+Subject: Re: [PATCH v10 2/3] tty: hvc: pass DMA capable memory to put_chars()
+To: Greg KH <gregkh@linuxfoundation.org>
+References: <20211009114829.1071021-1-xianting.tian@linux.alibaba.com>
+ <20211009114829.1071021-3-xianting.tian@linux.alibaba.com>
+ <YWGD8y9VfBIQBu2h@kroah.com>
+ <3516c58c-e8e6-2e5a-2bc8-ad80e2124d37@linux.alibaba.com>
+ <YWJ7NuapWOZ4QirJ@kroah.com>
+From: Xianting Tian <xianting.tian@linux.alibaba.com>
+Message-ID: <4dbeddb9-1068-d282-2758-55d0f788ea61@linux.alibaba.com>
+Date: Thu, 14 Oct 2021 16:34:59 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.10.1
 MIME-Version: 1.0
-In-Reply-To: <8091e1294ad343a88aa399417ff91aee@AcuMS.aculab.com>
+In-Reply-To: <YWJ7NuapWOZ4QirJ@kroah.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr-FR
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -68,43 +54,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "songliubraving@fb.com" <songliubraving@fb.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
- "andrii@kernel.org" <andrii@kernel.org>,
- "kpsingh@kernel.org" <kpsingh@kernel.org>,
- "paulus@samba.org" <paulus@samba.org>, "yhs@fb.com" <yhs@fb.com>,
- "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "kafai@fb.com" <kafai@fb.com>
+Cc: arnd@arndb.de, amit@kernel.org, jirislaby@kernel.org,
+ shile.zhang@linux.alibaba.com, linux-kernel@vger.kernel.org,
+ virtualization@lists.linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
+ osandov@fb.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-
-Le 14/10/2021 à 10:15, David Laight a écrit :
-> From: Hari Bathini
->> Sent: 12 October 2021 13:31
+在 2021/10/10 下午1:33, Greg KH 写道:
+> On Sat, Oct 09, 2021 at 11:45:23PM +0800, Xianting Tian wrote:
+>> 在 2021/10/9 下午7:58, Greg KH 写道:
+>>> Did you look at the placement using pahole as to how this structure now
+>>> looks?
+>> thanks for all your commnts. for this one, do you mean I need to remove the
+>> blank line?  thanks
 >>
->> Patch #1 & #2 are simple cleanup patches. Patch #3 refactors JIT
->> compiler code with the aim to simplify adding BPF_PROBE_MEM support.
->> Patch #4 introduces PPC_RAW_BRANCH() macro instead of open coding
->> branch instruction. Patch #5 & #7 add BPF_PROBE_MEM support for PPC64
->> & PPC32 JIT compilers respectively. Patch #6 & #8 handle bad userspace
->> pointers for PPC64 & PPC32 cases respectively.
-> 
-> I thought that BPF was only allowed to do fairly restricted
-> memory accesses - so WTF does it need a BPF_PROBE_MEM instruction?
-> 
+> No, I mean to use the tool 'pahole' to see the structure layout that you
+> just created and determine if it really is the best way to add these new
+> fields, especially as you are adding huge buffers with odd alignment.
+
+thanks,
+
+Based on your comments, I removed 'char outchar',  remian the position 
+of 'int outbuf_size' unchanged to keep outbuf_size and lock in the same 
+cache line.  Now hvc_struct change as below,
+
+  struct hvc_struct {
+         struct tty_port port;
+         spinlock_t lock;
+         int index;
+         int do_wakeup;
+-       char *outbuf;
+         int outbuf_size;
+         int n_outbuf;
+         uint32_t vtermno;
+@@ -48,6 +57,16 @@ struct hvc_struct {
+         struct work_struct tty_resize;
+         struct list_head next;
+         unsigned long flags;
++
++       /*
++        * the buf is used in hvc console api for putting chars,
++        * and also used in hvc_poll_put_char() for putting single char.
++        */
++       char cons_outbuf[N_OUTBUF] __ALIGNED__;
++       spinlock_t cons_outbuf_lock;
++
++       /* the buf is used for putting chars to tty */
++       char outbuf[] __ALIGNED__;
+  };
+
+pahole for above hvc_struct as below,  is it ok for you?  do we need to 
+pack the hole? thanks
+
+struct hvc_struct {
+     struct tty_port            port;                 /*     0 352 */
+     /* --- cacheline 5 boundary (320 bytes) was 32 bytes ago --- */
+     spinlock_t                 lock;                 /*   352 4 */
+     int                        index;                /*   356 4 */
+     int                        do_wakeup;            /*   360 4 */
+     int                        outbuf_size;          /*   364 4 */
+     int                        n_outbuf;             /*   368 4 */
+     uint32_t                   vtermno;              /*   372 4 */
+     const struct hv_ops  *     ops;                  /*   376 8 */
+     /* --- cacheline 6 boundary (384 bytes) --- */
+     int                        irq_requested;        /*   384 4 */
+     int                        data;                 /*   388 4 */
+     struct winsize             ws;                   /*   392 8 */
+     struct work_struct         tty_resize;           /*   400 32 */
+     struct list_head           next;                 /*   432 16 */
+     /* --- cacheline 7 boundary (448 bytes) --- */
+     long unsigned int          flags;                /*   448 8 */
+
+     /* XXX 56 bytes hole, try to pack */
+
+     /* --- cacheline 8 boundary (512 bytes) --- */
+     char                       cons_outbuf[16];      /*   512 16 */
+     spinlock_t                 cons_outbuf_lock;     /*   528 4 */
+
+     /* XXX 44 bytes hole, try to pack */
+
+     /* --- cacheline 9 boundary (576 bytes) --- */
+     char                       outbuf[0];            /*   576 0 */
+
+     /* size: 576, cachelines: 9, members: 17 */
+     /* sum members: 476, holes: 2, sum holes: 100 */
+};
 
 
-Looks like it's been added by commit 2a02759ef5f8 ("bpf: Add support for 
-BTF pointers to interpreter")
-
-They say in the log:
-
-     Pointer to BTF object is a pointer to kernel object or NULL.
-     The memory access in the interpreter has to be done via 
-probe_kernel_read
-     to avoid page faults.
+>
+> thanks,
+>
+> greg k-h
