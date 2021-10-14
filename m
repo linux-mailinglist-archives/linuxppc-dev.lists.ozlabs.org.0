@@ -2,92 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AFD742E207
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 21:26:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAB4142E343
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 23:27:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HVfXJ5HKvz30R1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 06:26:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HVjCd3wj1z3bXR
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 08:27:09 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fmK5trA1;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=nySJqlSw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::1036;
+ helo=mail-pj1-x1036.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=fmK5trA1; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=nySJqlSw; dkim-atps=neutral
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com
+ [IPv6:2607:f8b0:4864:20::1036])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HVfWV1QnXz2yNf
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 06:25:41 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19EHlw7K022386; 
- Thu, 14 Oct 2021 15:25:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : content-type :
- mime-version; s=pp1; bh=T+FTQs9iC3vHNPf7SovINCy/F5ijYl2mOFuFPVuo+m8=;
- b=fmK5trA1WcDRh89vftUEbaYc4LjT13bWDgpCHbpTAHJmiaOVq2wL7kKpy4bOc74ajVMZ
- awr6WQ1yL0BX14Js9Vi2pifEIcPtniFv8eaZVCiSWr42bg2wnxeqzCaurNHOmuUFXiCN
- YtC48atOTq2dq9ASO+lnaHmcgy9fCgVudSiKSR1dg9RRGwK0K0FUZ3KzwW8XQ5RNbzZ1
- cf0u4aAY+gfCptZYzu4andUr5M7LrMkbEOa49vVeYDAnYer99yKQfOPFO34zf1OrHNej
- ka/v9g0DXHYALdA9MSbPcDl8faF0MX5e39gCVPAbXWxb9ZFggHX6Ijk+wdhCvKoiG3oy hQ== 
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3bps921xy3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 14 Oct 2021 15:25:36 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19EJHofj016595;
- Thu, 14 Oct 2021 19:25:35 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com
- (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
- by ppma04dal.us.ibm.com with ESMTP id 3bkeq8smdh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 14 Oct 2021 19:25:35 +0000
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 19EJPXeA47644970
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 14 Oct 2021 19:25:33 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 677916A054;
- Thu, 14 Oct 2021 19:25:33 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 447F06A051;
- Thu, 14 Oct 2021 19:25:33 +0000 (GMT)
-Received: from localhost (unknown [9.211.53.229])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 14 Oct 2021 19:25:33 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Cai Huoqing <caihuoqing@baidu.com>
-Subject: Re: [PATCH v2] scsi: ibmvscsi: Use dma_alloc_noncoherent() instead
- of get_zeroed_page/dma_map_single()
-In-Reply-To: <20211012032317.2360-1-caihuoqing@baidu.com>
-References: <20211012032317.2360-1-caihuoqing@baidu.com>
-Date: Thu, 14 Oct 2021 14:25:32 -0500
-Message-ID: <878ryvz9w3.fsf@linux.ibm.com>
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Fwemt4NK7GdPjxbk-RoXEt7GPzNnhFpZ
-X-Proofpoint-GUID: Fwemt4NK7GdPjxbk-RoXEt7GPzNnhFpZ
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HVjBt4Rt2z2yLg
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 08:26:29 +1100 (AEDT)
+Received: by mail-pj1-x1036.google.com with SMTP id ls18so5727211pjb.3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 14:26:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=CLaFJ0M9ufD0uCBwTkgOwQCLYTA2acJBA4tvaXF3j60=;
+ b=nySJqlSwO+ULk3udlcOszY6Ia0XQFeH789zFbu7K9HOE2rbb+01FRBlzqYTOfLe01Y
+ UjBibChKl+lLjdMq7H2G6UmdoL4DkJBBd2xPkhVd/NnmKnnR8gnnU7EkmSiSJ0GL6yHC
+ xyAObJJcyavoFkvMN+kslHElYwm+54tEYY9dA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=CLaFJ0M9ufD0uCBwTkgOwQCLYTA2acJBA4tvaXF3j60=;
+ b=vQCVIGK8x/bIqYRCMiUa3qKfUZrGCuz84+u9Al3bYg4PMGtQNROcZslLc8V96xC9t7
+ IPHkeXSRtAteiTCVzdMFa7sQ04sWgy+7cmunHXnqOsx5MmU2onOKR+MvK0gbUTxLYUgp
+ Q78cH9uQcS4GSr3IC9jV0a/6hN3/7MR/s0uG2FYRJjZnaByFyC4Hj31xIhI6IzqQ/Yz8
+ pAbdvliGthrJisSbt6zU/u089w4sua/y4j/9ift+rS4p4cuA98QQ2A2FPih8HFpBZFIL
+ 2pyJXgVqqb4QXRwlSKe8u0C67J0ruE6UpJsN77WeWexdaD/7EZkgynCmaus6O9cTP9Hf
+ 8eDg==
+X-Gm-Message-State: AOAM5330drL6LzxeWLqtXMpWNFwfxeH923S20qds1J24p9TQfxBbx4Qt
+ 7KB43eFGM0+gylJ21UPLpxOv4w==
+X-Google-Smtp-Source: ABdhPJw845LVBzEpWwR4bMZtD/PFJA96pgIe4GSulaOTJBUImwok7XHbH5FT4bUDZgXBEMZc0+GWdQ==
+X-Received: by 2002:a17:90a:6a8f:: with SMTP id
+ u15mr22641531pjj.212.1634246786410; 
+ Thu, 14 Oct 2021 14:26:26 -0700 (PDT)
+Received: from localhost ([2001:4479:e300:600:4901:2fb9:ed97:3a3e])
+ by smtp.gmail.com with ESMTPSA id i128sm3261169pfc.47.2021.10.14.14.26.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 14 Oct 2021 14:26:25 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael
+ Ellerman <mpe@ellerman.id.au>, Andrew Morton <akpm@linux-foundation.org>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, Helge
+ Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>, Kees Cook
+ <keescook@chromium.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH v2 01/13] powerpc: Move 'struct ppc64_opd_entry' back
+ into asm/elf.h
+In-Reply-To: <42d2a571677e60082c0a5b3e52e855aa58c0b1fc.1634190022.git.christophe.leroy@csgroup.eu>
+References: <cover.1634190022.git.christophe.leroy@csgroup.eu>
+ <42d2a571677e60082c0a5b3e52e855aa58c0b1fc.1634190022.git.christophe.leroy@csgroup.eu>
+Date: Fri, 15 Oct 2021 08:26:22 +1100
+Message-ID: <87czo747sx.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-10-14_10,2021-10-14_02,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 mlxlogscore=849
- lowpriorityscore=0 spamscore=0 clxscore=1011 priorityscore=1501
- suspectscore=0 malwarescore=0 phishscore=0 mlxscore=0 bulkscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2109230001 definitions=main-2110140107
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,50 +82,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, linux-scsi@vger.kernel.org,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- "James E.J. Bottomley" <jejb@linux.ibm.com>, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linux-api@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Cai Huoqing <caihuoqing@baidu.com> writes:
-> @@ -331,18 +329,12 @@ static int ibmvscsi_init_crq_queue(struct crq_queue *queue,
->  	int retrc;
->  	struct vio_dev *vdev = to_vio_dev(hostdata->dev);
+Hi Christophe,
+
+> 'struct ppc64_opd_entry' doesn't belong to uapi/asm/elf.h
+>
+> It was initially in module_64.c and commit 2d291e902791 ("Fix compile
+> failure with non modular builds") moved it into asm/elf.h
+>
+> But it was by mistake added outside of __KERNEL__ section,
+> therefore commit c3617f72036c ("UAPI: (Scripted) Disintegrate
+> arch/powerpc/include/asm") moved it to uapi/asm/elf.h
+
+As Michael said on v1, I'm a little nervous about moving it out of uAPI
+after so long, although I do take the points of Arnd and Kees that we're
+not breaking compiled binaries, nor should people be using this struct
+to begin with...
+
+I've cc:ed the linux-api@ list.
+
+Kind regards,
+Daniel
+
+> Move it back into asm/elf.h, this brings it back in line with
+> IA64 and PARISC architectures.
+>
+> Fixes: 2d291e902791 ("Fix compile failure with non modular builds")
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+>  arch/powerpc/include/asm/elf.h      | 6 ++++++
+>  arch/powerpc/include/uapi/asm/elf.h | 8 --------
+>  2 files changed, 6 insertions(+), 8 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/elf.h b/arch/powerpc/include/asm/elf.h
+> index b8425e3cfd81..a4406714c060 100644
+> --- a/arch/powerpc/include/asm/elf.h
+> +++ b/arch/powerpc/include/asm/elf.h
+> @@ -176,4 +176,10 @@ do {									\
+>  /* Relocate the kernel image to @final_address */
+>  void relocate(unsigned long final_address);
 >  
-> -	queue->msgs = (struct viosrp_crq *)get_zeroed_page(GFP_KERNEL);
+> +/* There's actually a third entry here, but it's unused */
+> +struct ppc64_opd_entry {
+> +	unsigned long funcaddr;
+> +	unsigned long r2;
+> +};
+> +
+>  #endif /* _ASM_POWERPC_ELF_H */
+> diff --git a/arch/powerpc/include/uapi/asm/elf.h b/arch/powerpc/include/uapi/asm/elf.h
+> index 860c59291bfc..308857123a08 100644
+> --- a/arch/powerpc/include/uapi/asm/elf.h
+> +++ b/arch/powerpc/include/uapi/asm/elf.h
+> @@ -289,12 +289,4 @@ typedef elf_fpreg_t elf_vsrreghalf_t32[ELF_NVSRHALFREG];
+>  /* Keep this the last entry.  */
+>  #define R_PPC64_NUM		253
+>  
+> -/* There's actually a third entry here, but it's unused */
+> -struct ppc64_opd_entry
+> -{
+> -	unsigned long funcaddr;
+> -	unsigned long r2;
+> -};
 > -
-> -	if (!queue->msgs)
-> -		goto malloc_failed;
->  	queue->size = PAGE_SIZE / sizeof(*queue->msgs);
 > -
-> -	queue->msg_token = dma_map_single(hostdata->dev, queue->msgs,
-> -					  queue->size * sizeof(*queue->msgs),
-> -					  DMA_BIDIRECTIONAL);
-> -
-> -	if (dma_mapping_error(hostdata->dev, queue->msg_token))
-> -		goto map_failed;
-> +	queue->msgs = dma_alloc_noncoherent(hostdata->dev,
-> +					    PAGE_SIZE, &queue->msg_token,
-> +					    DMA_BIDIRECTIONAL, GFP_KERNEL);
-> +	if (!queue->msg)
-> +		goto malloc_failed;
-
-
-This version appears to retain the build breakage from v1 which was
-reported here:
-
-https://lore.kernel.org/linuxppc-dev/202110121452.nWPHZeZg-lkp@intel.com/
-
-   drivers/scsi/ibmvscsi/ibmvscsi.c: In function 'ibmvscsi_init_crq_queue':
->> drivers/scsi/ibmvscsi/ibmvscsi.c:334:21: error: 'struct crq_queue' has no member named 'msg'; did you mean 'msgs'?
-     334 |         if (!queue->msg)
-         |                     ^~~
-         |                     msgs
-   drivers/scsi/ibmvscsi/ibmvscsi.c:388:60: error: 'struct crq_queue' has no member named 'msg'; did you mean 'msgs'?
-     388 |         dma_free_coherent(hostdata->dev, PAGE_SIZE, queue->msg, queue->msg_token);
-         |                                                            ^~~
-         |                                                            msgs
-
+>  #endif /* _UAPI_ASM_POWERPC_ELF_H */
+> -- 
+> 2.31.1
