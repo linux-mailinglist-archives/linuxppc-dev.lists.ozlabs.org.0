@@ -2,46 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BACF042D5EC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 11:23:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F072642D646
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 11:41:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HVP8f1Ypbz303H
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 20:23:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HVPXp3jxnz2ywp
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 20:40:58 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=denx.de header.i=@denx.de header.a=rsa-sha256 header.s=phobos-20191101 header.b=KS4WlTHZ;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.54;
- helo=out30-54.freemail.mail.aliyun.com;
- envelope-from=yun.wang@linux.alibaba.com; receiver=<UNKNOWN>)
-Received: from out30-54.freemail.mail.aliyun.com
- (out30-54.freemail.mail.aliyun.com [115.124.30.54])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=denx.de
+ (client-ip=2a01:238:438b:c500:173d:9f52:ddab:ee01; helo=phobos.denx.de;
+ envelope-from=agust@denx.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=denx.de header.i=@denx.de header.a=rsa-sha256
+ header.s=phobos-20191101 header.b=KS4WlTHZ; 
+ dkim-atps=neutral
+Received: from phobos.denx.de (phobos.denx.de
+ [IPv6:2a01:238:438b:c500:173d:9f52:ddab:ee01])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HVP8C1RMhz2xWy
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 20:23:04 +1100 (AEDT)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R101e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04394; MF=yun.wang@linux.alibaba.com;
- NM=1; PH=DS; RN=31; SR=0; TI=SMTPD_---0UrnMW2X_1634203363; 
-Received: from testdeMacBook-Pro.local(mailfrom:yun.wang@linux.alibaba.com
- fp:SMTPD_---0UrnMW2X_1634203363) by smtp.aliyun-inc.com(127.0.0.1);
- Thu, 14 Oct 2021 17:22:45 +0800
-Subject: Re: [PATCH v3 1/2] ftrace: disable preemption between
- ftrace_test_recursion_trylock/unlock()
-To: Miroslav Benes <mbenes@suse.cz>
-References: <609b565a-ed6e-a1da-f025-166691b5d994@linux.alibaba.com>
- <7e4738b5-21d4-c4d0-3136-a096bbb5cd2c@linux.alibaba.com>
- <alpine.LSU.2.21.2110141108150.23710@pobox.suse.cz>
-From: =?UTF-8?B?546L6LSH?= <yun.wang@linux.alibaba.com>
-Message-ID: <d293a0d2-9864-3f92-a333-e29d919d5a02@linux.alibaba.com>
-Date: Thu, 14 Oct 2021 17:22:43 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:78.0)
- Gecko/20100101 Thunderbird/78.14.0
-MIME-Version: 1.0
-In-Reply-To: <alpine.LSU.2.21.2110141108150.23710@pobox.suse.cz>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HVPX62Lmwz2xtV
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 20:40:20 +1100 (AEDT)
+Received: from crub.agik.hopto.org (pd95f1d7c.dip0.t-ipconnect.de
+ [217.95.29.124])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+ (No client certificate requested)
+ (Authenticated sender: agust@denx.de)
+ by phobos.denx.de (Postfix) with ESMTPSA id DDF88832F6;
+ Thu, 14 Oct 2021 11:40:12 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+ s=phobos-20191101; t=1634204413;
+ bh=CfXKgUAUqbW22i5vzoFFXyGwzGH9oURGql0RQvjX8VE=;
+ h=From:To:Cc:Subject:Date:From;
+ b=KS4WlTHZE/8YhMVCY61Danoh4/nblIIis/y0MwLGBeHZJXR0iuB7bECY+Y1CPyBfE
+ 8z1ZRkrF4tnOOClzITl7lkbqEOg79AtfRK6+felcaWiLTgctv4bTnjbRHrnAnvt15D
+ 6W0KCT7p7FhaxuXLPyyEsBoRzzeYH99rfZNLuon3WryW2WAvlOpzo3CmgQueuSm2Ox
+ 0b1O7+gZ55mPhohQQY/yl9CAH+k8qAbhqERSLru87zg7pSlecLve7PT5HJcd4ngyyd
+ uUjqOZfQUXmgZTcDVIkaJIhaCvw1CAsnNwhEl0NEneUgOPCemiYf3nt2cv7+6dyE2S
+ Vd3BI/k3Hx1EQ==
+From: Anatolij Gustschin <agust@denx.de>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] dmaengine: bestcomm: fix system boot lockups
+Date: Thu, 14 Oct 2021 11:40:12 +0200
+Message-Id: <20211014094012.21286-1-agust@denx.de>
+X-Mailer: git-send-email 2.17.1
+X-Virus-Scanned: clamav-milter 0.103.2 at phobos.denx.de
+X-Virus-Status: Clean
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,84 +63,138 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Guo Ren <guoren@kernel.org>, Jisheng Zhang <jszhang@kernel.org>,
- "H. Peter Anvin" <hpa@zytor.com>, live-patching@vger.kernel.org,
- linux-riscv@lists.infradead.org, Paul Mackerras <paulus@samba.org>,
- Joe Lawrence <joe.lawrence@redhat.com>, Helge Deller <deller@gmx.de>,
- x86@kernel.org, linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
- Petr Mladek <pmladek@suse.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Jiri Kosina <jikos@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Borislav Petkov <bp@alien8.de>, Nicholas Piggin <npiggin@gmail.com>,
- Josh Poimboeuf <jpoimboe@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
- linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Masami Hiramatsu <mhiramat@kernel.org>,
- Colin Ian King <colin.king@canonical.com>, linuxppc-dev@lists.ozlabs.org
+Cc: dmaengine@vger.kernel.org, Vinod Koul <vkoul@kernel.org>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+memset() and memcpy() on an MMIO region like here results in a
+lockup at startup on mpc5200 platform (since this first happens
+during probing of the ATA and Ethernet drivers). Use memset_io()
+and memcpy_toio() instead.
 
+Fixes: 2f9ea1bde0d1 ("bestcomm: core bestcomm support for Freescale MPC5200")
+Cc: stable@vger.kernel.org # v5.14+
+Signed-off-by: Anatolij Gustschin <agust@denx.de>
+---
+ drivers/dma/bestcomm/ata.c      |  2 +-
+ drivers/dma/bestcomm/bestcomm.c | 22 +++++++++++-----------
+ drivers/dma/bestcomm/fec.c      |  4 ++--
+ drivers/dma/bestcomm/gen_bd.c   |  4 ++--
+ 4 files changed, 16 insertions(+), 16 deletions(-)
 
-On 2021/10/14 下午5:13, Miroslav Benes wrote:
->> diff --git a/kernel/livepatch/patch.c b/kernel/livepatch/patch.c
->> index e8029ae..b8d75fb 100644
->> --- a/kernel/livepatch/patch.c
->> +++ b/kernel/livepatch/patch.c
->> @@ -49,14 +49,16 @@ static void notrace klp_ftrace_handler(unsigned long ip,
->>
->>  	ops = container_of(fops, struct klp_ops, fops);
->>
->> +	/*
->> +	 *
-> 
-> This empty line is not useful.
-> 
->> +	 * The ftrace_test_recursion_trylock() will disable preemption,
->> +	 * which is required for the variant of synchronize_rcu() that is
->> +	 * used to allow patching functions where RCU is not watching.
->> +	 * See klp_synchronize_transition() for more details.
->> +	 */
->>  	bit = ftrace_test_recursion_trylock(ip, parent_ip);
->>  	if (WARN_ON_ONCE(bit < 0))
->>  		return;
->> -	/*
->> -	 * A variant of synchronize_rcu() is used to allow patching functions
->> -	 * where RCU is not watching, see klp_synchronize_transition().
->> -	 */
->> -	preempt_disable_notrace();
->>
->>  	func = list_first_or_null_rcu(&ops->func_stack, struct klp_func,
->>  				      stack_node);
->> @@ -120,7 +122,6 @@ static void notrace klp_ftrace_handler(unsigned long ip,
->>  	klp_arch_set_pc(fregs, (unsigned long)func->new_func);
->>
->>  unlock:
->> -	preempt_enable_notrace();
->>  	ftrace_test_recursion_unlock(bit);
->>  }
-> 
-> Acked-by: Miroslav Benes <mbenes@suse.cz>
-> 
-> for the livepatch part of the patch.
-> 
-> I would also ask you not to submit new versions so often, so that the 
-> other reviewers have time to actually review the patch set.
-> 
-> Quoting from Documentation/process/submitting-patches.rst:
-> 
-> "Wait for a minimum of one week before resubmitting or pinging reviewers - 
-> possibly longer during busy times like merge windows."
+diff --git a/drivers/dma/bestcomm/ata.c b/drivers/dma/bestcomm/ata.c
+index 2fd87f83cf90..e169f18da551 100644
+--- a/drivers/dma/bestcomm/ata.c
++++ b/drivers/dma/bestcomm/ata.c
+@@ -133,7 +133,7 @@ void bcom_ata_reset_bd(struct bcom_task *tsk)
+ 	struct bcom_ata_var *var;
+ 
+ 	/* Reset all BD */
+-	memset(tsk->bd, 0x00, tsk->num_bd * tsk->bd_size);
++	memset_io(tsk->bd, 0x00, tsk->num_bd * tsk->bd_size);
+ 
+ 	tsk->index = 0;
+ 	tsk->outdex = 0;
+diff --git a/drivers/dma/bestcomm/bestcomm.c b/drivers/dma/bestcomm/bestcomm.c
+index d91cbbe7a48f..8c42e5ca00a9 100644
+--- a/drivers/dma/bestcomm/bestcomm.c
++++ b/drivers/dma/bestcomm/bestcomm.c
+@@ -95,7 +95,7 @@ bcom_task_alloc(int bd_count, int bd_size, int priv_size)
+ 		tsk->bd = bcom_sram_alloc(bd_count * bd_size, 4, &tsk->bd_pa);
+ 		if (!tsk->bd)
+ 			goto error;
+-		memset(tsk->bd, 0x00, bd_count * bd_size);
++		memset_io(tsk->bd, 0x00, bd_count * bd_size);
+ 
+ 		tsk->num_bd = bd_count;
+ 		tsk->bd_size = bd_size;
+@@ -186,16 +186,16 @@ bcom_load_image(int task, u32 *task_image)
+ 	inc = bcom_task_inc(task);
+ 
+ 	/* Clear & copy */
+-	memset(var, 0x00, BCOM_VAR_SIZE);
+-	memset(inc, 0x00, BCOM_INC_SIZE);
++	memset_io(var, 0x00, BCOM_VAR_SIZE);
++	memset_io(inc, 0x00, BCOM_INC_SIZE);
+ 
+ 	desc_src = (u32 *)(hdr + 1);
+ 	var_src = desc_src + hdr->desc_size;
+ 	inc_src = var_src + hdr->var_size;
+ 
+-	memcpy(desc, desc_src, hdr->desc_size * sizeof(u32));
+-	memcpy(var + hdr->first_var, var_src, hdr->var_size * sizeof(u32));
+-	memcpy(inc, inc_src, hdr->inc_size * sizeof(u32));
++	memcpy_toio(desc, desc_src, hdr->desc_size * sizeof(u32));
++	memcpy_toio(var + hdr->first_var, var_src, hdr->var_size * sizeof(u32));
++	memcpy_toio(inc, inc_src, hdr->inc_size * sizeof(u32));
+ 
+ 	return 0;
+ }
+@@ -302,13 +302,13 @@ static int bcom_engine_init(void)
+ 		return -ENOMEM;
+ 	}
+ 
+-	memset(bcom_eng->tdt, 0x00, tdt_size);
+-	memset(bcom_eng->ctx, 0x00, ctx_size);
+-	memset(bcom_eng->var, 0x00, var_size);
+-	memset(bcom_eng->fdt, 0x00, fdt_size);
++	memset_io(bcom_eng->tdt, 0x00, tdt_size);
++	memset_io(bcom_eng->ctx, 0x00, ctx_size);
++	memset_io(bcom_eng->var, 0x00, var_size);
++	memset_io(bcom_eng->fdt, 0x00, fdt_size);
+ 
+ 	/* Copy the FDT for the EU#3 */
+-	memcpy(&bcom_eng->fdt[48], fdt_ops, sizeof(fdt_ops));
++	memcpy_toio(&bcom_eng->fdt[48], fdt_ops, sizeof(fdt_ops));
+ 
+ 	/* Initialize Task base structure */
+ 	for (task=0; task<BCOM_MAX_TASKS; task++)
+diff --git a/drivers/dma/bestcomm/fec.c b/drivers/dma/bestcomm/fec.c
+index 7f1fb1c999e4..d203618ac11f 100644
+--- a/drivers/dma/bestcomm/fec.c
++++ b/drivers/dma/bestcomm/fec.c
+@@ -140,7 +140,7 @@ bcom_fec_rx_reset(struct bcom_task *tsk)
+ 	tsk->index = 0;
+ 	tsk->outdex = 0;
+ 
+-	memset(tsk->bd, 0x00, tsk->num_bd * tsk->bd_size);
++	memset_io(tsk->bd, 0x00, tsk->num_bd * tsk->bd_size);
+ 
+ 	/* Configure some stuff */
+ 	bcom_set_task_pragma(tsk->tasknum, BCOM_FEC_RX_BD_PRAGMA);
+@@ -241,7 +241,7 @@ bcom_fec_tx_reset(struct bcom_task *tsk)
+ 	tsk->index = 0;
+ 	tsk->outdex = 0;
+ 
+-	memset(tsk->bd, 0x00, tsk->num_bd * tsk->bd_size);
++	memset_io(tsk->bd, 0x00, tsk->num_bd * tsk->bd_size);
+ 
+ 	/* Configure some stuff */
+ 	bcom_set_task_pragma(tsk->tasknum, BCOM_FEC_TX_BD_PRAGMA);
+diff --git a/drivers/dma/bestcomm/gen_bd.c b/drivers/dma/bestcomm/gen_bd.c
+index 906ddba6a6f5..8a24a5cbc263 100644
+--- a/drivers/dma/bestcomm/gen_bd.c
++++ b/drivers/dma/bestcomm/gen_bd.c
+@@ -142,7 +142,7 @@ bcom_gen_bd_rx_reset(struct bcom_task *tsk)
+ 	tsk->index = 0;
+ 	tsk->outdex = 0;
+ 
+-	memset(tsk->bd, 0x00, tsk->num_bd * tsk->bd_size);
++	memset_io(tsk->bd, 0x00, tsk->num_bd * tsk->bd_size);
+ 
+ 	/* Configure some stuff */
+ 	bcom_set_task_pragma(tsk->tasknum, BCOM_GEN_RX_BD_PRAGMA);
+@@ -226,7 +226,7 @@ bcom_gen_bd_tx_reset(struct bcom_task *tsk)
+ 	tsk->index = 0;
+ 	tsk->outdex = 0;
+ 
+-	memset(tsk->bd, 0x00, tsk->num_bd * tsk->bd_size);
++	memset_io(tsk->bd, 0x00, tsk->num_bd * tsk->bd_size);
+ 
+ 	/* Configure some stuff */
+ 	bcom_set_task_pragma(tsk->tasknum, BCOM_GEN_TX_BD_PRAGMA);
+-- 
+2.17.1
 
-Thanks for the Ack and suggestion, will take care from now on :-)
-
-Regards,
-Michael Wang
-
-> 
-> Thanks
-> 
-> Miroslav
-> 
