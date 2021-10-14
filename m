@@ -2,79 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B52DD42E01B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 19:33:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B224342E0F3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 20:16:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HVc232psJz3c66
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 04:33:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HVczD2nDtz2ypf
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 05:16:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=b4Nc5rxC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=bb3x+Vj+;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::931;
- helo=mail-ua1-x931.google.com; envelope-from=leobras.c@gmail.com;
+ smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::133;
+ helo=mail-lf1-x133.google.com; envelope-from=ndesaulniers@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=b4Nc5rxC; dkim-atps=neutral
-Received: from mail-ua1-x931.google.com (mail-ua1-x931.google.com
- [IPv6:2607:f8b0:4864:20::931])
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20210112 header.b=bb3x+Vj+; dkim-atps=neutral
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com
+ [IPv6:2a00:1450:4864:20::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HVc1N1S14z2yPF
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 04:32:54 +1100 (AEDT)
-Received: by mail-ua1-x931.google.com with SMTP id f4so12832251uad.4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 10:32:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :user-agent:mime-version:content-transfer-encoding;
- bh=NNLIU855d3FWPmYu6pUhg7wLsuUsKX7VYiKpRPPe7Bk=;
- b=b4Nc5rxCC1om0hpdesQnbN8+7Hnc5yD378P5ZIuX8gCQBGWHyYQZI7eEbE0Ml3qbOO
- pJ4L0I6vHDW6efOTv4gwn77szHRZ6cxCkJQUahE/0OELaDdLTAD2rVnBxrnhxgC6AXtU
- nOc/kgio9SDYCrj9ynQ53MGYPkBSVObJyE1Ow60Kkr7EGImxAerBJY2WnxCuMH2GkVl9
- k1e5n528ToVyZGb5gwJj3A++cabKLWRCRM0DFdOaKZIKXO/vOCDDrBTmK+B6SdwkS8bN
- TAiXGcqwvWK8bbjC55ZqD812en8Z5rGCZE1jj1CPTwPJM9sdVBSOrxYarPJq88lX/AAs
- /qqw==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HVcyX3wqZz2yPL
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 05:15:30 +1100 (AEDT)
+Received: by mail-lf1-x133.google.com with SMTP id u18so29852716lfd.12
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 11:15:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=nNs+G0jVD2dj+3QPCBepQC7w71O0qpj+2enPjKIhfHo=;
+ b=bb3x+Vj+uVIsxGXCp/tCicQgGOOTKP0OfRO57tDFOuoQtwrTfQsKCmS4Dn98dBUHnL
+ IsDY1cOB29uxQCGfA3SzIQojrPsGf2lvtFN2djaHlxgWSV1BPUlifpG4WoPVDJPfIvnH
+ 2Sj/poRRd3zSkPly80whiTnHAWTBZGXnYuum9q4ZGl2kUj9N0hILg0xGyJOA5o0CQB7r
+ fKiJkRDoPsOnwJG2HT1vvNAK0pwDnQj3E54mNCNmEPRKnnzjxD/OB9ZeXoSfxYAhi0ec
+ vrhhQvq2n5KrZ3bNBNm4/w8HFP1m7PKB2UuGM9excovNE1ufpulANm00q110V3jOH43K
+ j1Zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:user-agent:mime-version:content-transfer-encoding;
- bh=NNLIU855d3FWPmYu6pUhg7wLsuUsKX7VYiKpRPPe7Bk=;
- b=Fll+n/mGDHIOLv5fU6H1nACk6VZdvxbtcsPvH43NjhlbRpDsov++Z+M6Amf37QhRsO
- tfSUEQkFc+VjtHMWBq96KlZJSd62RSxvPOj1pgLA6fAKk7Wo8stCYYjHCBCyn+yTHImS
- lQ0Fv/I1v5+gqS/eFKOwUeCDdBTPXYI0NMOhqWFXtwTEBJpkDjxsAUkbCHgewpIy/jjN
- LHWoSjh3fy0D4dBhxzt53X5jQtm6WuslNdC9yyr8zCN3XL975KzXzwQWVIe7pXl3ZEsy
- CKxOVrcVoD1/sAh2XX/QnErgcQcDjMrfYrDkyJv+H/6jQV2IaEcuuO4yLmb1M+gHLjef
- x6Ug==
-X-Gm-Message-State: AOAM533Xr/dYmxaHGdf7xKSBoPuzj6aJDZp21KQa+FNqxAXXZPt6uri7
- x1fYSyTxLzT4SWATaEjSPsw=
-X-Google-Smtp-Source: ABdhPJwEO+fPpwYjQ94fUfOQc9qKYHLagRSqUkrs3ttA+88eYNhX+twHOdUKwk2KJNogZRIXsrztNg==
-X-Received: by 2002:ab0:6d8d:: with SMTP id m13mr7661022uah.113.1634232768841; 
- Thu, 14 Oct 2021 10:32:48 -0700 (PDT)
-Received: from ?IPv6:2804:14c:b382:8c61:6dfb:957c:fd41:44ce?
- ([2804:14c:b382:8c61:6dfb:957c:fd41:44ce])
- by smtp.gmail.com with ESMTPSA id q62sm2090340vkg.22.2021.10.14.10.32.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Oct 2021 10:32:48 -0700 (PDT)
-Message-ID: <52f1cec812e81b45dbbc28eef3cd90cc9c0a90ae.camel@gmail.com>
-Subject: Re: [PATCH] powerpc/pseries/iommu: Add of_node_put() before break
-From: Leonardo =?ISO-8859-1?Q?Br=E1s?= <leobras.c@gmail.com>
-To: Wan Jiabing <wanjiabing@vivo.com>, Michael Ellerman
- <mpe@ellerman.id.au>,  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Alexey Kardashevskiy <aik@ozlabs.ru>, 
- Frederic Barrat <fbarrat@linux.ibm.com>, David Gibson
- <david@gibson.dropbear.id.au>,  linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-Date: Thu, 14 Oct 2021 14:32:43 -0300
-In-Reply-To: <20211014075624.16344-1-wanjiabing@vivo.com>
-References: <20211014075624.16344-1-wanjiabing@vivo.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.40.4 
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=nNs+G0jVD2dj+3QPCBepQC7w71O0qpj+2enPjKIhfHo=;
+ b=dovliePTCvlBmH36vySaCDoo1lh9RMm8oho8tcI3BYwhHnH7fh0ufPFf7jxWD6ekcc
+ YcporEIKNdorPhQTNwrhWK1mE+BzmO4ZSUcgFjSt/dsrjqcX7n5rUBrzNvgODu4Xux3Y
+ 3UCLhF1XZhyAd6LYxolZRt09GvA7WjObNNblezzHq2IkqJ3EM9PJFYn6/NgBgwdg/TL4
+ XFQiaHTsQvMThALwPt7+HSX5gL4Xlal/JVkElGykk+dmTnRkf92udU9JNiyFfmg0JSFA
+ PRvjLo/UB2r+eB00bAC3raHtvODrshx8JbH9KaAfUi+UjDWf95CMs8rIu1xsx8pPcL36
+ ps/Q==
+X-Gm-Message-State: AOAM5338vU+4waa4Ei5KLutA1b0EdpHSaINKT3O/JLbkm+r7M+GSz1yQ
+ 3t9k4QdPrYD3rvxatTgdYYwJzHultpXN/LWwndeFAbNqH72Wmw==
+X-Google-Smtp-Source: ABdhPJzw201p0Me8UoPJUf744ySbtQZUgFia2EVV686wg86DCCgGVrC7sAVDFcRLxkbXWJScchfCQIH9656aZEsjSLY=
+X-Received: by 2002:a2e:8695:: with SMTP id l21mr7244959lji.339.1634235321228; 
+ Thu, 14 Oct 2021 11:15:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20211014024424.528848-1-mpe@ellerman.id.au>
+In-Reply-To: <20211014024424.528848-1-mpe@ellerman.id.au>
+From: Nick Desaulniers <ndesaulniers@google.com>
+Date: Thu, 14 Oct 2021 11:15:09 -0700
+Message-ID: <CAKwvOdkcWCFEWxjwPcABA=6qWas+wuVcdDS=T1Oh-j81fYxxFg@mail.gmail.com>
+Subject: Re: [PATCH] powerpc/dcr: Use cmplwi instead of 3-argument cmpli
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,70 +75,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kael_w@yeah.net
+Cc: llvm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Wan, thank you for this patch.
+On Wed, Oct 13, 2021 at 7:44 PM Michael Ellerman <mpe@ellerman.id.au> wrote=
+:
+>
+> In dcr-low.S we use cmpli with three arguments, instead of four
+> arguments as defined in the ISA:
+>
+>         cmpli   cr0,r3,1024
+>
+> This appears to be a PPC440-ism, looking at the "PPC440x5 CPU Core
+> User=E2=80=99s Manual" it shows cmpli having no L field, but implied to b=
+e 0 due
+> to the core being 32-bit. It mentions that the ISA defines four
+> arguments and recommends using cmplwi.
+>
+> dcr-low.S is only built 32-bit, because it is only built when
+> DCR_NATIVE=3Dy, which is only selected by 40x and 44x. Looking at the
+> generated code (with gcc/gas) we see cmplwi as expected.
+>
+> Although gas is happy with the 3-argument version when building for
+> 32-bit, the LLVM assembler is not and errors out with:
+>
+>   arch/powerpc/sysdev/dcr-low.S:27:10: error: invalid operand for instruc=
+tion
+>    cmpli 0,%r3,1024; ...
+>            ^
+>
+> Switching to the four argument version avoids any confusion when reading
+> the ISA, fixes the issue with the LLVM assembler, and also means the
+> code could be built 64-bit in future (though that's very unlikely).
 
+Thank you Michael.  We've definitely run into a few cases where GAS
+allowed for various short-hand forms of various instructions (a fair
+amount of recent work was around 32b ARM and THUMB parity in LLVM).
+LLVM's assembler is mostly generated from a high level description of
+the instruction formats, so it's not always as flexible as a hand
+written parser would be. (There is a mix of hand written arch specific
+parsing, but most of the parser is arch agnostic, and all of the
+instruction descriptions are described in an LLVM specific high level
+language called tablegen which generates C++ that is used by the
+assembler, but also the disassembler, the compiler, and even the
+linker if need be).
 
-On Thu, 2021-10-14 at 03:56 -0400, Wan Jiabing wrote:
-> Fix following coccicheck warning:
-> 
-> ./arch/powerpc/platforms/pseries/iommu.c:924:1-28: WARNING: Function
-> for_each_node_with_property should have of_node_put() before break
-> 
-> Early exits from for_each_node_with_property should decrement the
-> node reference counter.
+Link: https://github.com/ClangBuiltLinux/linux/issues/1419
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
 
-Yeah, it makes sense to me. 
-
-for_each_node_with_property calls of_find_node_with_property() at each
-step, which ends up calling of_node_put() after using each node.
-
-Introducing this break caused this of_node_put not to happen to the
-last node, so IIUC this patch fixes a possible issue if kzalloc() fails
-in ddw_list_new_entry().
-
-Another option would be s/break/continue here, but it does not make
-sense to keep trying next nodes if there is no memory to allocate for a
-struct dma_win (4 pointers).
-
-On the other hard, failing on allocating such small space should not
-happen often (if it will ever happen), so a 'continue' here makes code
-simpler.  
- 
-Anyway, FWIW:
-Reviewed-by: Leonardo Bras <leobras.c@gmail.com>
-
-
-Best regards,
-Leo
-
-> 
-> Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
+> Reported-by: Nick Desaulniers <ndesaulniers@google.com>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 > ---
->  arch/powerpc/platforms/pseries/iommu.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/platforms/pseries/iommu.c
-> b/arch/powerpc/platforms/pseries/iommu.c
-> index 269f61d519c2..c140aa683f66 100644
-> --- a/arch/powerpc/platforms/pseries/iommu.c
-> +++ b/arch/powerpc/platforms/pseries/iommu.c
-> @@ -929,8 +929,10 @@ static void find_existing_ddw_windows_named(const
-> char *name)
->                 }
->  
->                 window = ddw_list_new_entry(pdn, dma64);
-> -               if (!window)
-> +               if (!window) {
-> +                       of_node_put(pdn);
->                         break;
-> +               }
->  
->                 spin_lock(&dma_win_list_lock);
->                 list_add(&window->list, &dma_win_list);
+>  arch/powerpc/sysdev/dcr-low.S | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/powerpc/sysdev/dcr-low.S b/arch/powerpc/sysdev/dcr-low.=
+S
+> index efeeb1b885a1..329b9c4ae542 100644
+> --- a/arch/powerpc/sysdev/dcr-low.S
+> +++ b/arch/powerpc/sysdev/dcr-low.S
+> @@ -11,7 +11,7 @@
+>  #include <asm/export.h>
+>
+>  #define DCR_ACCESS_PROLOG(table) \
+> -       cmpli   cr0,r3,1024;     \
+> +       cmplwi  cr0,r3,1024;     \
+>         rlwinm  r3,r3,4,18,27;   \
+>         lis     r5,table@h;      \
+>         ori     r5,r5,table@l;   \
+> --
+> 2.25.1
+>
 
 
+--=20
+Thanks,
+~Nick Desaulniers
