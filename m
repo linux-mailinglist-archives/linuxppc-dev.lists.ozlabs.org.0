@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6754A42D961
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 14:34:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1027742D979
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 14:47:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HVTNv3rPHz3c4m
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 23:34:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HVThF3Pq8z3c4n
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 23:47:41 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mitKSkmw;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SXdxOowl;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,42 +17,47 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=robh+dt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=mitKSkmw; 
+ header.s=k20201202 header.b=SXdxOowl; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HVTNB3VwGz2xv8
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 23:33:46 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id ACC04610F9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 12:33:41 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HVTgZ56DKz2ynB
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 23:47:06 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4BC8460D07
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 12:47:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1634214821;
- bh=RzeylZ/P8x5KQVd3L6CJnKExKqdgjhxzj85+6UhIMm8=;
+ s=k20201202; t=1634215624;
+ bh=+d01KHTRSumOEZT8agvd8tWEcK3PRRbA5A7BnnIbdpQ=;
  h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=mitKSkmwO7I0mBydFadj8WwDCuWF6AKQkrlI/Zmy8dp0yrAuxHb6sQb5ulow+kX3J
- nXEDucY9UCi1sidz571gqyuDEJZt95BJX41TuQ8R0GCWIX2ml8dgKw+k6X47BC7Rfo
- +iotMgPaHOBrHw6VTwpzwtI8BDYOWpE8W5me3FfdfnDBQ3+e5/7wOgCV5Oi7ApKRp4
- CqEBPnay7R/suR0gi9Y1/JWuDWIAhbspEbwG7v/40aGocr/8powlPs863m9/03kuGC
- CI/zk1gto89lQmeaAmwLSghYisVKtY8HEuioTGTmUDWW3JD1Yk9JJnjWvM5PcFuZNc
- Hh7H4RahlasjQ==
-Received: by mail-ed1-f44.google.com with SMTP id y30so7130749edi.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 05:33:41 -0700 (PDT)
-X-Gm-Message-State: AOAM530K6mzIpZ+2kngmecwKWG2iesZr0oG+C2PsuUtDJaM0k8ZzFkZe
- hrF9GXYrteRCO6368l5xl/7o3iwR4Uw0f+zKaA==
-X-Google-Smtp-Source: ABdhPJz9TzvElbvIznv9o6eIIhwkZkQvDvfEK/2kZapQkBCcKpS4ncnsn5muDvV6i+hmDO5BxA6TJzf2waYTwhLdyeE=
+ b=SXdxOowlZ7aya9QAoUheTtExbJZKUXxsrsgkhJtRxFO5U/6UOhjDEbbkgc/eAhvnl
+ 8VDJy5Qls3NqYv00avhVHiihQyHEWNURxN94FMfMOwT4OzaE5ddz0lCArRUKuyjlu4
+ ypBeYZx/qfynSMviuCAUnjkQ/rvsK/ajrxAlSlJtz2MTz0o7EjUB1WE/8dDabWV5u0
+ JBfg7vG7ROz2sslGyTYewlVnw0Oj7ms/PXk1hu62BcTZutTXH5zudlJ7A1nHzWfUhz
+ xO2+keIbybqoaGgEUObO2GFdHsjYg8KhUNuD1XwsBveDBXYXZui4cqjlRssZQgwHYD
+ eE0sUkebLL2RQ==
+Received: by mail-ed1-f47.google.com with SMTP id z20so23899114edc.13
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 05:47:04 -0700 (PDT)
+X-Gm-Message-State: AOAM530GsAnF6vkGfLZvYH0O86jSo4guMZ7aQLSychwcLv/ehhv14BhW
+ L/LVbAXr9mZfBkyUD9IRx2f6w+7cKVXI+HIJrQ==
+X-Google-Smtp-Source: ABdhPJwSm3HuhEJ063Rw9UsGLNFNs045f3GLTDsPTojmKwFpUBlKoUE++pS+H7a9JGog+S1ZtaakwJ8m1wxPCvagazI=
 X-Received: by 2002:a17:906:9399:: with SMTP id
- l25mr3470036ejx.363.1634214819463; 
- Thu, 14 Oct 2021 05:33:39 -0700 (PDT)
+ l25mr3551972ejx.363.1634215622699; 
+ Thu, 14 Oct 2021 05:47:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <20211014113123.2358-1-agust@denx.de>
-In-Reply-To: <20211014113123.2358-1-agust@denx.de>
+References: <20211001000924.15421-1-leoyang.li@nxp.com>
+ <20211001000924.15421-2-leoyang.li@nxp.com>
+ <db751cb1-9107-3857-7576-644bde4c28e5@canonical.com>
+ <CADRPPNROVBp_QB=6XEgk8WF5fnEPFTSko4Nn+mm8oLM3iGTuuw@mail.gmail.com>
+ <e42fa620-810b-fdcc-c827-602a14d10d97@canonical.com>
+In-Reply-To: <e42fa620-810b-fdcc-c827-602a14d10d97@canonical.com>
 From: Rob Herring <robh+dt@kernel.org>
-Date: Thu, 14 Oct 2021 07:33:26 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqJQ8_3+pwT0a-gj5iSUSo3kYZXFraejjBGObNHpB+xcTg@mail.gmail.com>
-Message-ID: <CAL_JsqJQ8_3+pwT0a-gj5iSUSo3kYZXFraejjBGObNHpB+xcTg@mail.gmail.com>
-Subject: Re: [PATCH] powerpc/mpc512x: dts: fix PSC node warnings
-To: Anatolij Gustschin <agust@denx.de>
+Date: Thu, 14 Oct 2021 07:46:50 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqLvdFgiPLZoUzXXPmoff2u1pz5pcSdaCh9p=bh1+3PMSg@mail.gmail.com>
+Message-ID: <CAL_JsqLvdFgiPLZoUzXXPmoff2u1pz5pcSdaCh9p=bh1+3PMSg@mail.gmail.com>
+Subject: Re: [PATCH 1/5] dt-bindings: memory: fsl: convert ifc binding to yaml
+ schema
+To: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -65,101 +70,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ lkml <linux-kernel@vger.kernel.org>, Li Yang <leoyang.li@nxp.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Oct 14, 2021 at 6:31 AM Anatolij Gustschin <agust@denx.de> wrote:
+On Mon, Oct 4, 2021 at 4:31 AM Krzysztof Kozlowski
+<krzysztof.kozlowski@canonical.com> wrote:
 >
-> Fix build warnings like:
-> mpc5121.dtsi:397.13-406.5: Warning (spi_bus_bridge): /soc@80000000/psc@11400: node name for SPI buses should be 'spi'
-> mpc5121.dtsi:409.13-418.5: Warning (spi_bus_bridge): /soc@80000000/psc@11500: node name for SPI buses should be 'spi'
-> mpc5121.dtsi:457.13-466.5: Warning (spi_bus_bridge): /soc@80000000/psc@11900: node name for SPI buses should be 'spi'
+> On 01/10/2021 18:17, Li Yang wrote:
+> > On Fri, Oct 1, 2021 at 5:01 AM Krzysztof Kozlowski
+> > <krzysztof.kozlowski@canonical.com> wrote:
+> >>
 >
-> Signed-off-by: Anatolij Gustschin <agust@denx.de>
-> ---
->  arch/powerpc/boot/dts/ac14xx.dts   | 17 +++++++++++++++--
->  arch/powerpc/boot/dts/pdm360ng.dts | 11 ++++++++++-
->  2 files changed, 25 insertions(+), 3 deletions(-)
+> (...)
 >
-> diff --git a/arch/powerpc/boot/dts/ac14xx.dts b/arch/powerpc/boot/dts/ac14xx.dts
-> index 5d8877e1f4ad..662d7aa2e4e8 100644
-> --- a/arch/powerpc/boot/dts/ac14xx.dts
-> +++ b/arch/powerpc/boot/dts/ac14xx.dts
-> @@ -301,13 +301,21 @@
->                         fsl,tx-fifo-size = <512>;
->                 };
+> >>> +
+> >>> +  interrupts:
+> >>> +    minItems: 1
+> >>> +    maxItems: 2
+> >>> +    description: |
+> >>> +      IFC may have one or two interrupts.  If two interrupt specifiers are
+> >>> +      present, the first is the "common" interrupt (CM_EVTER_STAT), and the
+> >>> +      second is the NAND interrupt (NAND_EVTER_STAT).  If there is only one,
+> >>> +      that interrupt reports both types of event.
+> >>> +
+> >>> +  little-endian:
+> >>> +    $ref: '/schemas/types.yaml#/definitions/flag'
+> >>
+> >> type: boolean
+> >
+> > It will not have a true or false value, but only present or not.  Is
+> > the boolean type taking care of this too?
 >
-> +               /delete-node/ psc@11400;
-> +               /delete-node/ psc@11500;
+> boolean is for a property which does not accept values and true/false
+> depends on its presence.
+> See:
+> Documentation/devicetree/bindings/phy/lantiq,vrx200-pcie-phy.yaml
+> Documentation/devicetree/bindings/thermal/qoriq-thermal.yaml
 
-That's an odd way to fix this, and means every user of the .dtsi file
-with these nodes will have to repeat the same thing.
+They are equivalent, so either can be used.
 
-> +
->                 /* PSC4 in SPI mode */
-> -               spi4: psc@11400 {
-> +               spi4: spi@11400 {
->                         compatible = "fsl,mpc5121-psc-spi", "fsl,mpc5121-psc";
-> +                       reg = <0x11400 0x100>;
->                         fsl,rx-fifo-size = <768>;
->                         fsl,tx-fifo-size = <768>;
->                         #address-cells = <1>;
->                         #size-cells = <0>;
-> +                       interrupts = <40 0x8>;
-> +                       clocks = <&clks MPC512x_CLK_PSC4>,
-> +                                <&clks MPC512x_CLK_PSC4_MCLK>;
-> +                       clock-names = "ipg", "mclk";
->                         num-cs = <1>;
->                         cs-gpios = <&gpio_pic 25 0>;
->
-> @@ -326,13 +334,18 @@
->                 };
->
->                 /* PSC5 in SPI mode */
-> -               spi5: psc@11500 {
-> +               spi5: spi@11500 {
->                         compatible = "fsl,mpc5121-psc-spi", "fsl,mpc5121-psc";
-> +                       reg = <0x11500 0x100>;
->                         fsl,mode = "spi-master";
->                         fsl,rx-fifo-size = <128>;
->                         fsl,tx-fifo-size = <128>;
->                         #address-cells = <1>;
->                         #size-cells = <0>;
-> +                       interrupts = <40 0x8>;
-> +                       clocks = <&clks MPC512x_CLK_PSC5>,
-> +                                <&clks MPC512x_CLK_PSC5_MCLK>;
-> +                       clock-names = "ipg", "mclk";
->
->                         lcd@0 {
->                                 compatible = "ilitek,ili922x";
-> diff --git a/arch/powerpc/boot/dts/pdm360ng.dts b/arch/powerpc/boot/dts/pdm360ng.dts
-> index 67c3b9db75d7..2733d15079a9 100644
-> --- a/arch/powerpc/boot/dts/pdm360ng.dts
-> +++ b/arch/powerpc/boot/dts/pdm360ng.dts
-> @@ -169,10 +169,19 @@
->                         compatible = "fsl,mpc5121-psc-uart", "fsl,mpc5121-psc";
->                 };
->
-> -               psc@11900 {
-> +               /delete-node/ psc@11900;
-> +
-> +               spi@11900 {
->                         compatible = "fsl,mpc5121-psc-spi", "fsl,mpc5121-psc";
-> +                       reg = <0x11900 0x100>;
->                         #address-cells = <1>;
->                         #size-cells = <0>;
-> +                       interrupts = <40 0x8>;
-> +                       fsl,rx-fifo-size = <16>;
-> +                       fsl,tx-fifo-size = <16>;
-> +                       clocks = <&clks MPC512x_CLK_PSC9>,
-> +                                <&clks MPC512x_CLK_PSC9_MCLK>;
-> +                       clock-names = "ipg", "mclk";
->
->                         /* ADS7845 touch screen controller */
->                         ts@0 {
-> --
-> 2.17.1
->
+Really what is needed here is a common schema for the endianness
+properties defining the type once. Then any binding using a property
+can just do 'little-endian: true'.
+
+Rob
