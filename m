@@ -1,60 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69D6642D948
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 14:27:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6754A42D961
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 14:34:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HVTDh6gvvz3bjN
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 23:27:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HVTNv3rPHz3c4m
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Oct 2021 23:34:23 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=denx.de header.i=@denx.de header.a=rsa-sha256 header.s=phobos-20191101 header.b=QJ3AvB+s;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mitKSkmw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=denx.de
- (client-ip=85.214.62.61; helo=phobos.denx.de; envelope-from=agust@denx.de;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=robh+dt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=denx.de header.i=@denx.de header.a=rsa-sha256
- header.s=phobos-20191101 header.b=QJ3AvB+s; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=mitKSkmw; 
  dkim-atps=neutral
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HVTD22khxz2xfJ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 23:26:42 +1100 (AEDT)
-Received: from crub (pd95f1d7c.dip0.t-ipconnect.de [217.95.29.124])
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- (Authenticated sender: agust@denx.de)
- by phobos.denx.de (Postfix) with ESMTPSA id 486F283572;
- Thu, 14 Oct 2021 14:26:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
- s=phobos-20191101; t=1634214398;
- bh=h3d+7/o10dgcD7pQSvUh5MYsQC2GB4YO4Pb5D5tQVj4=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=QJ3AvB+swCyUTTe+4Apkhltx3Vjvpwrg7wbW1tD+npZGf2SJNzHhS+UURxct9CVdi
- 0HbSnlqIyuZe9aY1/Qa1X0PVNCJMwLAAZxbunFas5i7jjNvXdyM5Ed9lg6oLw+I3MR
- UU+4AUlaDZSf1UIW+BUdGhOI0tcwahiBEQ9EkMY3Ta7IiZS+aEdz3I2up5TFULRPEZ
- z7WwT7pPwV7ZtotWSHLrctaQqiznVRcSHqXTClaJNNAnjNA3ZaWDWOgZCHjvWRvvCd
- H0eyP5k641kEpNp/ig2v7agHaSwR4rKktl4K5bglZIBCFF80Wssi6/QDllKhXeSpcC
- 0VdsamN+lQzcw==
-Date: Thu, 14 Oct 2021 14:26:37 +0200
-From: Anatolij Gustschin <agust@denx.de>
-To: Stephen Rothwell <sfr@canb.auug.org.au>, Rob Herring <robh@kernel.org>
-Subject: Re: [RFC PATCH] powerpc: dts: Remove MPC5xxx platforms
-Message-ID: <20211014142637.3fda421b@crub>
-In-Reply-To: <20211013173808.7ab92035@canb.auug.org.au>
-References: <20211012153456.2844193-1-robh@kernel.org>
- <20211013173808.7ab92035@canb.auug.org.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HVTNB3VwGz2xv8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 23:33:46 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id ACC04610F9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 12:33:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1634214821;
+ bh=RzeylZ/P8x5KQVd3L6CJnKExKqdgjhxzj85+6UhIMm8=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=mitKSkmwO7I0mBydFadj8WwDCuWF6AKQkrlI/Zmy8dp0yrAuxHb6sQb5ulow+kX3J
+ nXEDucY9UCi1sidz571gqyuDEJZt95BJX41TuQ8R0GCWIX2ml8dgKw+k6X47BC7Rfo
+ +iotMgPaHOBrHw6VTwpzwtI8BDYOWpE8W5me3FfdfnDBQ3+e5/7wOgCV5Oi7ApKRp4
+ CqEBPnay7R/suR0gi9Y1/JWuDWIAhbspEbwG7v/40aGocr/8powlPs863m9/03kuGC
+ CI/zk1gto89lQmeaAmwLSghYisVKtY8HEuioTGTmUDWW3JD1Yk9JJnjWvM5PcFuZNc
+ Hh7H4RahlasjQ==
+Received: by mail-ed1-f44.google.com with SMTP id y30so7130749edi.0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 05:33:41 -0700 (PDT)
+X-Gm-Message-State: AOAM530K6mzIpZ+2kngmecwKWG2iesZr0oG+C2PsuUtDJaM0k8ZzFkZe
+ hrF9GXYrteRCO6368l5xl/7o3iwR4Uw0f+zKaA==
+X-Google-Smtp-Source: ABdhPJz9TzvElbvIznv9o6eIIhwkZkQvDvfEK/2kZapQkBCcKpS4ncnsn5muDvV6i+hmDO5BxA6TJzf2waYTwhLdyeE=
+X-Received: by 2002:a17:906:9399:: with SMTP id
+ l25mr3470036ejx.363.1634214819463; 
+ Thu, 14 Oct 2021 05:33:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.2 at phobos.denx.de
-X-Virus-Status: Clean
+References: <20211014113123.2358-1-agust@denx.de>
+In-Reply-To: <20211014113123.2358-1-agust@denx.de>
+From: Rob Herring <robh+dt@kernel.org>
+Date: Thu, 14 Oct 2021 07:33:26 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJQ8_3+pwT0a-gj5iSUSo3kYZXFraejjBGObNHpB+xcTg@mail.gmail.com>
+Message-ID: <CAL_JsqJQ8_3+pwT0a-gj5iSUSo3kYZXFraejjBGObNHpB+xcTg@mail.gmail.com>
+Subject: Re: [PATCH] powerpc/mpc512x: dts: fix PSC node warnings
+To: Anatolij Gustschin <agust@denx.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,52 +65,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: devicetree@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 13 Oct 2021 17:38:08 +1100
-Stephen Rothwell sfr@canb.auug.org.au wrote:
-
->Hi Rob,
+On Thu, Oct 14, 2021 at 6:31 AM Anatolij Gustschin <agust@denx.de> wrote:
 >
->On Tue, 12 Oct 2021 10:34:56 -0500 Rob Herring <robh@kernel.org> wrote:
->>
->> The mpc5xxx platforms have had dts warnings for some time which no one
->> seems to care to fix, so let's just remove the dts files.
->> 
->> According to Arnd:
->> "Specifically, MPC5200B has a 15 year lifetime, which ends in
->> 11 months from now. The original bplan/Genesi Efika 5K2 was
->> quite popular at the time it came out, and there are probably
->> still some of those hanging around, but they came with Open
->> Firmware rather than relying on the dts files that ship with the
->> kernel.
->> 
->> Grant Likely was the original maintainer for MPC52xx until 2011,
->> Anatolij Gustschin is still listed as maintainer since then but hasn't
->> been active in it for a while either. Anatolij can probably best judge
->> which of these boards are still in going to be used with future kernels,
->> but I suspect once you start removing bits from 52xx, the newer
->> but less common 512x platform can go away as well."
->> 
->> Cc: Anatolij Gustschin <agust@denx.de>
->> Cc: Arnd Bergmann <arnd@arndb.de>
->> Cc: Stephen Rothwell <sfr@canb.auug.org.au>
->> Cc: Michael Ellerman <mpe@ellerman.id.au>
->> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
->> Cc: Paul Mackerras <paulus@samba.org>
->> Cc: linuxppc-dev@lists.ozlabs.org
->> Signed-off-by: Rob Herring <robh@kernel.org>
->> ---
->> Sending this out as a feeler to see if anyone cares. If anyone does, 
->> please fix the warnings.
+> Fix build warnings like:
+> mpc5121.dtsi:397.13-406.5: Warning (spi_bus_bridge): /soc@80000000/psc@11400: node name for SPI buses should be 'spi'
+> mpc5121.dtsi:409.13-418.5: Warning (spi_bus_bridge): /soc@80000000/psc@11500: node name for SPI buses should be 'spi'
+> mpc5121.dtsi:457.13-466.5: Warning (spi_bus_bridge): /soc@80000000/psc@11900: node name for SPI buses should be 'spi'
+>
+> Signed-off-by: Anatolij Gustschin <agust@denx.de>
+> ---
+>  arch/powerpc/boot/dts/ac14xx.dts   | 17 +++++++++++++++--
+>  arch/powerpc/boot/dts/pdm360ng.dts | 11 ++++++++++-
+>  2 files changed, 25 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/powerpc/boot/dts/ac14xx.dts b/arch/powerpc/boot/dts/ac14xx.dts
+> index 5d8877e1f4ad..662d7aa2e4e8 100644
+> --- a/arch/powerpc/boot/dts/ac14xx.dts
+> +++ b/arch/powerpc/boot/dts/ac14xx.dts
+> @@ -301,13 +301,21 @@
+>                         fsl,tx-fifo-size = <512>;
+>                 };
+>
+> +               /delete-node/ psc@11400;
+> +               /delete-node/ psc@11500;
 
-I've sent patches to fix the warnings.
-  
-Thanks,
+That's an odd way to fix this, and means every user of the .dtsi file
+with these nodes will have to repeat the same thing.
 
-Anatolij
+> +
+>                 /* PSC4 in SPI mode */
+> -               spi4: psc@11400 {
+> +               spi4: spi@11400 {
+>                         compatible = "fsl,mpc5121-psc-spi", "fsl,mpc5121-psc";
+> +                       reg = <0x11400 0x100>;
+>                         fsl,rx-fifo-size = <768>;
+>                         fsl,tx-fifo-size = <768>;
+>                         #address-cells = <1>;
+>                         #size-cells = <0>;
+> +                       interrupts = <40 0x8>;
+> +                       clocks = <&clks MPC512x_CLK_PSC4>,
+> +                                <&clks MPC512x_CLK_PSC4_MCLK>;
+> +                       clock-names = "ipg", "mclk";
+>                         num-cs = <1>;
+>                         cs-gpios = <&gpio_pic 25 0>;
+>
+> @@ -326,13 +334,18 @@
+>                 };
+>
+>                 /* PSC5 in SPI mode */
+> -               spi5: psc@11500 {
+> +               spi5: spi@11500 {
+>                         compatible = "fsl,mpc5121-psc-spi", "fsl,mpc5121-psc";
+> +                       reg = <0x11500 0x100>;
+>                         fsl,mode = "spi-master";
+>                         fsl,rx-fifo-size = <128>;
+>                         fsl,tx-fifo-size = <128>;
+>                         #address-cells = <1>;
+>                         #size-cells = <0>;
+> +                       interrupts = <40 0x8>;
+> +                       clocks = <&clks MPC512x_CLK_PSC5>,
+> +                                <&clks MPC512x_CLK_PSC5_MCLK>;
+> +                       clock-names = "ipg", "mclk";
+>
+>                         lcd@0 {
+>                                 compatible = "ilitek,ili922x";
+> diff --git a/arch/powerpc/boot/dts/pdm360ng.dts b/arch/powerpc/boot/dts/pdm360ng.dts
+> index 67c3b9db75d7..2733d15079a9 100644
+> --- a/arch/powerpc/boot/dts/pdm360ng.dts
+> +++ b/arch/powerpc/boot/dts/pdm360ng.dts
+> @@ -169,10 +169,19 @@
+>                         compatible = "fsl,mpc5121-psc-uart", "fsl,mpc5121-psc";
+>                 };
+>
+> -               psc@11900 {
+> +               /delete-node/ psc@11900;
+> +
+> +               spi@11900 {
+>                         compatible = "fsl,mpc5121-psc-spi", "fsl,mpc5121-psc";
+> +                       reg = <0x11900 0x100>;
+>                         #address-cells = <1>;
+>                         #size-cells = <0>;
+> +                       interrupts = <40 0x8>;
+> +                       fsl,rx-fifo-size = <16>;
+> +                       fsl,tx-fifo-size = <16>;
+> +                       clocks = <&clks MPC512x_CLK_PSC9>,
+> +                                <&clks MPC512x_CLK_PSC9_MCLK>;
+> +                       clock-names = "ipg", "mclk";
+>
+>                         /* ADS7845 touch screen controller */
+>                         ts@0 {
+> --
+> 2.17.1
+>
