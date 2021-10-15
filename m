@@ -2,51 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D00B642E834
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 07:00:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E59B42E85E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 07:20:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HVvG71lzNz3bbv
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 15:59:59 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Y122mcwL;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HVvjC4B35z3c7h
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 16:19:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=gustavoars@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=Y122mcwL; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HVvFR0FlNz2yxj
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 15:59:22 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 61FCB611BD;
- Fri, 15 Oct 2021 04:59:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1634273960;
- bh=/uoHz+FQ9emMCfOnNYpHnuX4+14/9z8ccvDRKSLVoP0=;
- h=Date:From:To:Cc:Subject:From;
- b=Y122mcwLoD/b2wScp+5PQopFaEb6gR0jljnYfdJ8WTuF1/akfspve+cPzp1y3YShC
- v4gV6akOfvRasvStU+V2JIX/cgiXQE7b10eR4iLwC4EgrMeTULlG95nltbW6U4atQm
- aov3vHuN9LLbxQFeXiW4Qu1k1zRGGlD07PpvxB2KzrLLn5jy70kPO4Zrs9bOexCQKi
- ZYg06OMNThgTC4UcTqkCEvveHGrk92/2kAdEhVkh74kd4hjIIFPZUypny/G2aZ4rl7
- fQ/8rhrKbzgLPrKINnYy1i4aEUPeRzIYq79/k8QmFvJ6etlS00hdAJWF1LLLKJa2PY
- lFBD8l1U7shqQ==
-Date: Fri, 15 Oct 2021 00:03:45 -0500
-From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>,
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HVvhn0DF7z2ypg
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 16:19:35 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4HVvhh0J8Lz9sSF;
+ Fri, 15 Oct 2021 07:19:32 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id jtk3Nwe2afkT; Fri, 15 Oct 2021 07:19:31 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4HVvhg5r1Zz9sSD;
+ Fri, 15 Oct 2021 07:19:31 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A27F58B788;
+ Fri, 15 Oct 2021 07:19:31 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id tLs2964MJCL0; Fri, 15 Oct 2021 07:19:31 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.202.253])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 721608B763;
+ Fri, 15 Oct 2021 07:19:30 +0200 (CEST)
+Subject: Re: [PATCH v2 03/13] powerpc: Remove func_descr_t
+To: Daniel Axtens <dja@axtens.net>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Nicholas Piggin <npiggin@gmail.com>,
- Haren Myneni <haren@linux.ibm.com>
-Subject: [PATCH][next] powerpc/vas: Fix potential NULL pointer dereference
-Message-ID: <20211015050345.GA1161918@embeddedor>
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>,
+ Kees Cook <keescook@chromium.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <cover.1634190022.git.christophe.leroy@csgroup.eu>
+ <16eef6afbf7322d0c07760ebf827b8f9f50f7c6e.1634190022.git.christophe.leroy@csgroup.eu>
+ <874k9j45fm.fsf@dja-thinkpad.axtens.net>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <b02d5211-2f00-b303-766b-d612c1bd4402@csgroup.eu>
+Date: Fri, 15 Oct 2021 07:19:30 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+In-Reply-To: <874k9j45fm.fsf@dja-thinkpad.axtens.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr-FR
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,51 +71,167 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hardening@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-(!ptr && !ptr->foo) strikes again. :)
 
-The expression (!ptr && !ptr->foo) is bogus and in case ptr is NULL,
-it leads to a NULL pointer dereference: ptr->foo.
 
-Fix this by converting && to ||
+Le 15/10/2021 à 00:17, Daniel Axtens a écrit :
+> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> 
+>> 'func_descr_t' is redundant with 'struct ppc64_opd_entry'
+> 
+> So, if I understand the overall direction of the series, you're
+> consolidating powerpc around one single type for function descriptors,
+> and then you're creating a generic typedef so that generic code can
+> always do ((func_desc_t)x)->addr to get the address of a function out of
+> a function descriptor regardless of arch. (And regardless of whether the
+> arch uses function descriptors or not.)
 
-This issue was detected with the help of Coccinelle, and audited and
-fixed manually.
+An architecture not using function descriptors won't do much with 
+((func_desc_t *)x)->addr. This is just done to allow building stuff 
+regardless.
 
-Fixes: 1a0d0d5ed5e3 ("powerpc/vas: Add platform specific user window operations")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
----
- arch/powerpc/platforms/book3s/vas-api.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I prefer something like
 
-diff --git a/arch/powerpc/platforms/book3s/vas-api.c b/arch/powerpc/platforms/book3s/vas-api.c
-index 30172e52e16b..4d82c92ddd52 100644
---- a/arch/powerpc/platforms/book3s/vas-api.c
-+++ b/arch/powerpc/platforms/book3s/vas-api.c
-@@ -303,7 +303,7 @@ static int coproc_ioc_tx_win_open(struct file *fp, unsigned long arg)
- 		return -EINVAL;
- 	}
- 
--	if (!cp_inst->coproc->vops && !cp_inst->coproc->vops->open_win) {
-+	if (!cp_inst->coproc->vops || !cp_inst->coproc->vops->open_win) {
- 		pr_err("VAS API is not registered\n");
- 		return -EACCES;
- 	}
-@@ -373,7 +373,7 @@ static int coproc_mmap(struct file *fp, struct vm_area_struct *vma)
- 		return -EINVAL;
- 	}
- 
--	if (!cp_inst->coproc->vops && !cp_inst->coproc->vops->paste_addr) {
-+	if (!cp_inst->coproc->vops || !cp_inst->coproc->vops->paste_addr) {
- 		pr_err("%s(): VAS API is not registered\n", __func__);
- 		return -EACCES;
- 	}
--- 
-2.27.0
+	if (have_function_descriptors())
+		addr = (func_desc_t *)ptr)->addr;
+	else
+		addr = ptr;
 
+over
+
+	#ifdef HAVE_FUNCTION_DESCRIPTORS
+		addr = (func_desc_t *)ptr)->addr;
+	#else
+		addr = ptr;
+	#endif
+
+> 
+> So:
+> 
+>   - why pick ppc64_opd_entry over func_descr_t?
+
+Good question. At the begining it was because it was in UAPI headers, 
+and also because it was the one used in our 
+dereference_function_descriptor().
+
+But at the end maybe that's not the more logical choice. I need to look 
+a bit more.
+
+> 
+>   - Why not make our struct just called func_desc_t - why have a
+>     ppc64_opd_entry type or a func_descr_t typedef?
+
+Well ... you usually don't flag a struct name with _t, _t will most of 
+the time refer to a typedef.
+
+If I want to avoid typedef (I know they are deprecated in kernel coding 
+stype), it means the name of the struct must be changed in every 
+architecture and it becomes tricky and it adds more churn in them, which 
+is what I want to avoid.
+
+At the end we risk to end-up with a messy set of #ifdefs.
+
+Maybe this can be done as a second step, but I would like to minimise 
+impact in this series and focus on fixing lkdtm.
+
+
+> 
+>   - Should this patch wait until after you've made the generic
+>     func_desc_t change and move directly to that new interface? (rather
+>     than move from func_descr_t -> ppc64_opd_entry -> ...) Or is there a
+>     particular reason arch specific code should use an arch-specific
+>     struct or named type?
+
+As mentioned in kernel coding style, typedefs reduce readability, see 
+https://www.kernel.org/doc/html/latest/process/coding-style.html#typedefs
+
+But yes, we could make a step in the direction of a common 'struct 
+func_desc'. Let's see if I can do that.
+
+Thanks for your comments.
+
+Christophe
+
+> 
+>> Remove it.
+>>
+>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>> ---
+>>   arch/powerpc/include/asm/code-patching.h | 2 +-
+>>   arch/powerpc/include/asm/types.h         | 6 ------
+>>   arch/powerpc/kernel/signal_64.c          | 8 ++++----
+>>   3 files changed, 5 insertions(+), 11 deletions(-)
+>>
+>> diff --git a/arch/powerpc/include/asm/code-patching.h b/arch/powerpc/include/asm/code-patching.h
+>> index 4ba834599c4d..f3445188d319 100644
+>> --- a/arch/powerpc/include/asm/code-patching.h
+>> +++ b/arch/powerpc/include/asm/code-patching.h
+>> @@ -110,7 +110,7 @@ static inline unsigned long ppc_function_entry(void *func)
+>>   	 * function's descriptor. The first entry in the descriptor is the
+>>   	 * address of the function text.
+>>   	 */
+>> -	return ((func_descr_t *)func)->entry;
+>> +	return ((struct ppc64_opd_entry *)func)->addr;
+>>   #else
+>>   	return (unsigned long)func;
+>>   #endif
+>> diff --git a/arch/powerpc/include/asm/types.h b/arch/powerpc/include/asm/types.h
+>> index f1630c553efe..97da77bc48c9 100644
+>> --- a/arch/powerpc/include/asm/types.h
+>> +++ b/arch/powerpc/include/asm/types.h
+>> @@ -23,12 +23,6 @@
+>>   
+>>   typedef __vector128 vector128;
+>>   
+>> -typedef struct {
+>> -	unsigned long entry;
+>> -	unsigned long toc;
+>> -	unsigned long env;
+>> -} func_descr_t;
+> 
+> I was a little concerned about going from a 3-element struct to a
+> 2-element struct (as ppc64_opd_entry doesn't have an element for env) -
+> but we don't seem to take the sizeof this anywhere, nor do we use env
+> anywhere, nor do we do funky macro stuff with it in the signal handling
+> code that might implictly use the 3rd element, so I guess this will
+> work. Still, func_descr_t seems to describe the underlying ABI better
+> than ppc64_opd_entry...
+> 
+>>   #endif /* __ASSEMBLY__ */
+>>   
+>>   #endif /* _ASM_POWERPC_TYPES_H */
+>> diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/signal_64.c
+>> index 1831bba0582e..63ddbe7b108c 100644
+>> --- a/arch/powerpc/kernel/signal_64.c
+>> +++ b/arch/powerpc/kernel/signal_64.c
+>> @@ -933,11 +933,11 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
+>>   		 * descriptor is the entry address of signal and the second
+>>   		 * entry is the TOC value we need to use.
+>>   		 */
+>> -		func_descr_t __user *funct_desc_ptr =
+>> -			(func_descr_t __user *) ksig->ka.sa.sa_handler;
+>> +		struct ppc64_opd_entry __user *funct_desc_ptr =
+>> +			(struct ppc64_opd_entry __user *)ksig->ka.sa.sa_handler;
+>>   
+>> -		err |= get_user(regs->ctr, &funct_desc_ptr->entry);
+>> -		err |= get_user(regs->gpr[2], &funct_desc_ptr->toc);
+>> +		err |= get_user(regs->ctr, &funct_desc_ptr->addr);
+>> +		err |= get_user(regs->gpr[2], &funct_desc_ptr->r2);
+> 
+> Likewise, r2 seems like a worse name than toc. I guess we could clean
+> that up another time though.
+> 
+> Kind regards,
+> Daniel
+> 
+>>   	}
+>>   
+>>   	/* enter the signal handler in native-endian mode */
+>> -- 
+>> 2.31.1
