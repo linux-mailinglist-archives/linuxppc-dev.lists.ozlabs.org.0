@@ -1,75 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 941D142F76F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 17:54:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BB7B42F7E9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 18:16:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HW9n71k70z2xth
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Oct 2021 02:54:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HWBGd3hjwz3c9V
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Oct 2021 03:16:25 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=eLpDu04I;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fUxjpQpK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62e;
- helo=mail-pl1-x62e.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=robh+dt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=eLpDu04I; dkim-atps=neutral
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com
- [IPv6:2607:f8b0:4864:20::62e])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=fUxjpQpK; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HW9cf2Wpqz3cBT
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Oct 2021 02:46:58 +1100 (AEDT)
-Received: by mail-pl1-x62e.google.com with SMTP id y4so6681500plb.0
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 08:46:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=zu5KRphZeWP1V/tNwiBsxoWshA0nNYHtx7ymVNXLm7o=;
- b=eLpDu04In0LfoQXdVsRnJpz7POQ3Qj7BMIyZRlL+1DhnruYQly9oAYFTnPrTU2TbzO
- 5Pi7zsqoiKdUEC2WA9COYtzS57mDbKtU7yBVdhEaTB37Mr99+9r0Of+K9oDqvtXI0nD4
- iUkYcTrQmVWDQVBUSYn7lztRO0GAW2dxpIlTo90YSDatfYouVJI/fwGP5l3jHVgw1s9S
- nHhn+mI6XuTe23Hho/0bvLAHbEfmxXKdMereFeu1h5FKXrlBYO3mCk6UkikiSuczNaJO
- 0Ly+ZUJmknMOmDLAqzP5sJ+Ch6Opxs1KaqCbi+QtGY6muxcKFMMz6x+d4N0HO8MKaiEO
- IOjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=zu5KRphZeWP1V/tNwiBsxoWshA0nNYHtx7ymVNXLm7o=;
- b=feCpRzboRFuUivMrphti/UKJYuzU/xk4IvadurJVVmGGI0e2a7w0hdiwylNMSiDi4G
- znTGuOp+AMavbvroT0p1/AN43IIgmkU1Ai3R+aHAYGd2Zn7puWaRZ1wK2V3+I0+36kpZ
- Q7zAJkLkfdcGPY35XYdQJ8xAe78vmozHR34UPAWng/jHPm64H3LfOQ9dKJMNs4TPm26g
- hcSaTPr0lyqBAqs3d3SwUCvorKHrTpygdbEGw0FDuLQL8qmsf8y0LXl1DslRBQFMFb6U
- AFcfsSyRElHBo8bgTKfiUEwMaoZihNRccDcjWH7MR6JfB0xbzroMXXwWXE9EHCxUpoAu
- zeDw==
-X-Gm-Message-State: AOAM530t5GHCiw3G29O5CZ3g8o5ldLbQkSPlsI+6O4XrRl+2NjZrakmE
- wz9Deu0LdMGj3pZWTkNJX+1EnVkIUx8=
-X-Google-Smtp-Source: ABdhPJwTCsXpvTtY4A0he7LwD+EHaLgb1sF6NeKkgmLet/XR9PJxTkvqpJhGu0wuPzwUMwfi3x+9YA==
-X-Received: by 2002:a17:90b:388f:: with SMTP id
- mu15mr14407385pjb.28.1634312815939; 
- Fri, 15 Oct 2021 08:46:55 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com (14-203-144-177.static.tpgi.com.au.
- [14.203.144.177])
- by smtp.gmail.com with ESMTPSA id y1sm5392092pfo.104.2021.10.15.08.46.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Oct 2021 08:46:55 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v1 11/11] powerpc/microwatt: Don't select the hash MMU code
-Date: Sat, 16 Oct 2021 01:46:24 +1000
-Message-Id: <20211015154624.922960-12-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20211015154624.922960-1-npiggin@gmail.com>
-References: <20211015154624.922960-1-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HWBFx5tRBz2yNY
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Oct 2021 03:15:49 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7296261181
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 16:15:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1634314546;
+ bh=J6lMIRppIQQR2yDU8HEFtiobkHUlT4L+X3PXR/XHp8k=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=fUxjpQpKZEMfW+RRIp60SX1iX/UwmX2w7X5lIZEpj7biPSsFXPDMUQafV+MRGFMmQ
+ EL8HPMjTiB8NjmWVoshAD7lta4yw5ks7FQ5A97AWaT6RIcAyKWEtDQ6UK7wHLXbbG3
+ Z1ztXj9KpCB5OMJzlWulfrEP66XP61txqi1cOfM0ryOvkLKJse4YDrrC9cAeT803ZX
+ I1dRqcI6sM7uBu908E4buE0sgeJjzPDGbl1FQ9Mcim+RVQCz+xQivYjOcEswbqaOuG
+ 3L1+rjNW2B0Xd0lB3zf/uOnVZtTN0eV7Al82PBbYtkmb3ud3BZvtdUS/bkKYpz+Va3
+ 4TlkTUzrYEe4g==
+Received: by mail-ed1-f49.google.com with SMTP id y12so41789782eda.4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 09:15:46 -0700 (PDT)
+X-Gm-Message-State: AOAM533AeVWCHlifvGXzO+qahDcSmaxNGD0gNBndUwbPvDg1vUiZtbal
+ aQTXWH+xhoTi77K5hd+s71zVrYLtDF9bmQSuDA==
+X-Google-Smtp-Source: ABdhPJwsRQPmyqCZEJ2EspO5jNkdQ+LeDKtD0EmxJMsNFClADPbMWi8f8wb8874t+JF0p3aYra/8VjChk0VBCZZRh6M=
+X-Received: by 2002:a05:6402:84d:: with SMTP id
+ b13mr19328337edz.6.1634314544839; 
+ Fri, 15 Oct 2021 09:15:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20211014224201.24027-1-agust@denx.de>
+In-Reply-To: <20211014224201.24027-1-agust@denx.de>
+From: Rob Herring <robh+dt@kernel.org>
+Date: Fri, 15 Oct 2021 11:15:32 -0500
+X-Gmail-Original-Message-ID: <CAL_Jsq+_K9X010eKz0uwGH33h3vwwEE-+f=z9YWEdhji4yHxWg@mail.gmail.com>
+Message-ID: <CAL_Jsq+_K9X010eKz0uwGH33h3vwwEE-+f=z9YWEdhji4yHxWg@mail.gmail.com>
+Subject: Re: [PATCH v2] powerpc/mpc512x: dts: fix PSC node warnings
+To: Anatolij Gustschin <agust@denx.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,45 +65,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: devicetree@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Microwatt is radix-only, so it does not require hash MMU support.
+On Thu, Oct 14, 2021 at 5:42 PM Anatolij Gustschin <agust@denx.de> wrote:
+>
+> Rework PSC node description to fix build warnings like:
+> mpc5121.dtsi:397.13-406.5: Warning (spi_bus_bridge): /soc@80000000/psc@11400: node name for SPI buses should be 'spi'
+> mpc5121.dtsi:409.13-418.5: Warning (spi_bus_bridge): /soc@80000000/psc@11500: node name for SPI buses should be 'spi'
+> mpc5121.dtsi:457.13-466.5: Warning (spi_bus_bridge): /soc@80000000/psc@11900: node name for SPI buses should be 'spi'
 
-This saves 20kB compressed dtbImage and 56kB vmlinux size.
+Okay, I now see the block supports either spi or serial modes. I would
+handle this a bit differently that doesn't create a bunch of new .dtsi
+files.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/configs/microwatt_defconfig | 1 -
- arch/powerpc/platforms/microwatt/Kconfig | 1 -
- 2 files changed, 2 deletions(-)
+>
+> Signed-off-by: Anatolij Gustschin <agust@denx.de>
+> ---
+> Changes in v2:
+>  - extract PSC nodes to files which can be included
+>    separately and extended as needed
+>
+>  arch/powerpc/boot/dts/ac14xx.dts            | 118 ++++++++--------
+>  arch/powerpc/boot/dts/mpc5121-psc0.dtsi     |  16 +++
+>  arch/powerpc/boot/dts/mpc5121-psc1.dtsi     |  15 ++
+>  arch/powerpc/boot/dts/mpc5121-psc10.dtsi    |  15 ++
+>  arch/powerpc/boot/dts/mpc5121-psc11.dtsi    |  15 ++
+>  arch/powerpc/boot/dts/mpc5121-psc2.dtsi     |  15 ++
+>  arch/powerpc/boot/dts/mpc5121-psc3.dtsi     |  15 ++
+>  arch/powerpc/boot/dts/mpc5121-psc4-spi.dtsi |  17 +++
+>  arch/powerpc/boot/dts/mpc5121-psc4.dtsi     |  15 ++
+>  arch/powerpc/boot/dts/mpc5121-psc5-spi.dtsi |  17 +++
+>  arch/powerpc/boot/dts/mpc5121-psc5.dtsi     |  15 ++
+>  arch/powerpc/boot/dts/mpc5121-psc6.dtsi     |  15 ++
+>  arch/powerpc/boot/dts/mpc5121-psc7.dtsi     |  15 ++
+>  arch/powerpc/boot/dts/mpc5121-psc8.dtsi     |  15 ++
+>  arch/powerpc/boot/dts/mpc5121-psc9-spi.dtsi |  17 +++
+>  arch/powerpc/boot/dts/mpc5121-psc9.dtsi     |  15 ++
+>  arch/powerpc/boot/dts/mpc5121.dtsi          | 148 +-------------------
+>  arch/powerpc/boot/dts/mpc5121ads.dts        |  42 +++---
+>  arch/powerpc/boot/dts/pdm360ng.dts          | 104 +++++++-------
+>  19 files changed, 371 insertions(+), 273 deletions(-)
+>  create mode 100644 arch/powerpc/boot/dts/mpc5121-psc0.dtsi
+>  create mode 100644 arch/powerpc/boot/dts/mpc5121-psc1.dtsi
+>  create mode 100644 arch/powerpc/boot/dts/mpc5121-psc10.dtsi
+>  create mode 100644 arch/powerpc/boot/dts/mpc5121-psc11.dtsi
+>  create mode 100644 arch/powerpc/boot/dts/mpc5121-psc2.dtsi
+>  create mode 100644 arch/powerpc/boot/dts/mpc5121-psc3.dtsi
+>  create mode 100644 arch/powerpc/boot/dts/mpc5121-psc4-spi.dtsi
+>  create mode 100644 arch/powerpc/boot/dts/mpc5121-psc4.dtsi
+>  create mode 100644 arch/powerpc/boot/dts/mpc5121-psc5-spi.dtsi
+>  create mode 100644 arch/powerpc/boot/dts/mpc5121-psc5.dtsi
+>  create mode 100644 arch/powerpc/boot/dts/mpc5121-psc6.dtsi
+>  create mode 100644 arch/powerpc/boot/dts/mpc5121-psc7.dtsi
+>  create mode 100644 arch/powerpc/boot/dts/mpc5121-psc8.dtsi
+>  create mode 100644 arch/powerpc/boot/dts/mpc5121-psc9-spi.dtsi
+>  create mode 100644 arch/powerpc/boot/dts/mpc5121-psc9.dtsi
 
-diff --git a/arch/powerpc/configs/microwatt_defconfig b/arch/powerpc/configs/microwatt_defconfig
-index 6e62966730d3..7c8eb29d8afe 100644
---- a/arch/powerpc/configs/microwatt_defconfig
-+++ b/arch/powerpc/configs/microwatt_defconfig
-@@ -27,7 +27,6 @@ CONFIG_PPC_MICROWATT=y
- # CONFIG_PPC_OF_BOOT_TRAMPOLINE is not set
- CONFIG_CPU_FREQ=y
- CONFIG_HZ_100=y
--# CONFIG_PPC_MEM_KEYS is not set
- # CONFIG_SECCOMP is not set
- # CONFIG_MQ_IOSCHED_KYBER is not set
- # CONFIG_COREDUMP is not set
-diff --git a/arch/powerpc/platforms/microwatt/Kconfig b/arch/powerpc/platforms/microwatt/Kconfig
-index 823192e9d38a..5e320f49583a 100644
---- a/arch/powerpc/platforms/microwatt/Kconfig
-+++ b/arch/powerpc/platforms/microwatt/Kconfig
-@@ -5,7 +5,6 @@ config PPC_MICROWATT
- 	select PPC_XICS
- 	select PPC_ICS_NATIVE
- 	select PPC_ICP_NATIVE
--	select PPC_HASH_MMU_NATIVE if PPC_64S_HASH_MMU
- 	select PPC_UDBG_16550
- 	select ARCH_RANDOM
- 	help
--- 
-2.23.0
+[...]
 
+> diff --git a/arch/powerpc/boot/dts/mpc5121.dtsi b/arch/powerpc/boot/dts/mpc5121.dtsi
+> index 3f66b91a8e3c..21674da8beb1 100644
+> --- a/arch/powerpc/boot/dts/mpc5121.dtsi
+> +++ b/arch/powerpc/boot/dts/mpc5121.dtsi
+> @@ -87,7 +87,7 @@
+>                 };
+>         };
+>
+> -       soc@80000000 {
+> +       soc: soc@80000000 {
+>                 compatible = "fsl,mpc5121-immr";
+>                 #address-cells = <1>;
+>                 #size-cells = <1>;
+> @@ -343,152 +343,6 @@
+>                         clock-names = "ipg";
+>                 };
+>
+> -               /* 512x PSCs are not 52xx PSC compatible */
+> -
+> -               /* PSC0 */
+> -               psc@11000 {
+
+I would just put here 'serial@11000' and 'spi@11000' nodes with both
+nodes set to disabled. Then the board dts just has to change status of
+the the nodes it wants to enable (and add child nodes for spi).
+Overlapping addresses are okay if nodes are disabled.
+
+> -                       compatible = "fsl,mpc5121-psc";
+> -                       reg = <0x11000 0x100>;
+> -                       interrupts = <40 0x8>;
+> -                       fsl,rx-fifo-size = <16>;
+> -                       fsl,tx-fifo-size = <16>;
+> -                       clocks = <&clks MPC512x_CLK_PSC0>,
+> -                                <&clks MPC512x_CLK_PSC0_MCLK>;
+> -                       clock-names = "ipg", "mclk";
+> -               };
