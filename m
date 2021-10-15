@@ -2,81 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4FEC42E998
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 09:00:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D55A42E9AE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 09:07:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HVxxg4DKYz3c8J
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 18:00:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HVy5P17mwz3c5v
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 18:07:37 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=dawJA0pl;
+	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=ojxto+Qy;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::632;
- helo=mail-pl1-x632.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::435;
+ helo=mail-pf1-x435.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=dawJA0pl; dkim-atps=neutral
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com
- [IPv6:2607:f8b0:4864:20::632])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=ojxto+Qy; dkim-atps=neutral
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com
+ [IPv6:2607:f8b0:4864:20::435])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HVxx11X1Mz2ypf
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 18:00:20 +1100 (AEDT)
-Received: by mail-pl1-x632.google.com with SMTP id y1so5798465plk.10
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 00:00:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=DpMJMuOh31BW0TinR6HO0ohowzv9GzyWx4UJCZSiM/E=;
- b=dawJA0plSvi8TVzJFAb5vNAFuFXMNEP6h+yuaSvTk5WkFqLekT1lieQvF2HAsP0WEt
- 9QG4m2e0PJrKkLTucfm9iLDGPhnVdXkoUygr8xZhqgZyNgZMS8x2+JJNSUFU+whvAQLF
- JJUdu99bcNwgHbn9rZgSa7Z/xpXiXKpAzwL0j+I1UxO5S5/48isAqNMnRDnHl5y1DafR
- LnArbLoVGQJuyFg4lexUV4bCmV8fOUN0tA+6Hg4ZLdbbpLzAt14hiDEm9AwMxgRIsCoz
- svZ1tJlufDFI4dokEBZFWyEyDF6u1RfBhbUpNhCeytj6NyM2tosKujHuUPhZ7xdXfgwb
- tHZQ==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HVy4j69Q4z2yPM
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 18:06:59 +1100 (AEDT)
+Received: by mail-pf1-x435.google.com with SMTP id o133so7598912pfg.7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 00:06:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=QAED6J0HE8As0y1hRwIfafx0zMwJK9PPhb8z/iBN9hk=;
+ b=ojxto+QyXOUksiQM5BwMwvAO+Xhlj7Sfi2qBiz5rEjRdtjdlJlz3l4ws0BZqYJZ2ZT
+ Rz7B9GFavcsP6JJ1r0RT17eRJF03cmYbhjG7c6mJTHHqRnu28OGUtcBJBAgO32h2FEhX
+ g3t28TWbuK/Oc/C01ENuFa90SCfYrwYTPTp4Y=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=DpMJMuOh31BW0TinR6HO0ohowzv9GzyWx4UJCZSiM/E=;
- b=dvPHH8PuVRAPRRIg8ENxfoYBCvGLse2kYL+NuJXG7QDRT6IfJi1LHvzvLIusmp8LOx
- 2DGU+tdM26aQ2jRcKdmrPwDtRSDkVT0T7EzHw8lyPxGKbFjGxahhBiCbwsHaJezX1L8p
- Tn9oaaauhOd7overCcVUETKtb7dvaCApJjYs9n8QacSPtIr3n3SNwbY02MriZyRmrL2B
- gY1QEMwhf5vHCori7yySIXPBj6bi0oaCZq2Wy35cvmBQw0JBVkhYq6lGmldRi51IWLeg
- 1MrBoRVrMqQGynoz9F+rAADxIt7ucjDs81TQ13UI6/yJHrl5X5Q2wwsmx7ViEHs1Glr3
- OBpg==
-X-Gm-Message-State: AOAM532PKvRl9K99aNbOElWUA/ZQ/6gggpveOpuu2dMvSE0s5qdMqsbn
- vo4bI1M+6ENFAONPrTc2AvE=
-X-Google-Smtp-Source: ABdhPJxztf44YE8ddyH3Qj/Lj8a78ir7rHdM6+mqT2YW9gHvSekb8o/P4AfBjE43O9k+nVgPDYSovA==
-X-Received: by 2002:a17:90b:3588:: with SMTP id
- mm8mr26098666pjb.238.1634281215876; 
- Fri, 15 Oct 2021 00:00:15 -0700 (PDT)
-Received: from localhost (14-203-144-177.static.tpgi.com.au. [14.203.144.177])
- by smtp.gmail.com with ESMTPSA id
- c192sm4160615pfb.110.2021.10.15.00.00.14
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=QAED6J0HE8As0y1hRwIfafx0zMwJK9PPhb8z/iBN9hk=;
+ b=qHb35i2AKXkbm13Fix8+snhCHHE5y41UwF1w5vpceSDysKOIvyNv3egdoe8vyrWYD6
+ /DgV+TAShcgheKRk2sly+/pWiWq0fe0RJj30dvKQyIs8Kyv/+FTOdpWsgkRdFCfV9v5x
+ suu1dsCviQz3Zoa7/fJhQwAutALGUfF0aX3TT2lnoch1r2ceMoUt2+JmN3LI/lr6ljV1
+ gzp/34YpPviZbvib64tTnk2Lp+/gYriAGrqYUIremT1tCCMxIXOW01p6UFkeFyGFZF/6
+ if1wOaZIfHjlRoI1JpC/7z7cHBjhqam911/nkKsKK7WnXxVwnOTEn59BWQ7HfVemggn3
+ oxqw==
+X-Gm-Message-State: AOAM532vudDlq7yg8uUk9JAG0v1GNtyAVtHc7oksscbSfeZJD7Ty+ub2
+ RhqE5cCcMQEIiRVkl5+4PziY6mMc9GY=
+X-Google-Smtp-Source: ABdhPJyH0B6cEGxGt9nD6VBOgzy+tggYEphqrcOj6twBUY2zSnm6h7qgewDAcIoC7Oa8+zy1G/qNuA==
+X-Received: by 2002:aa7:8d09:0:b0:44b:fd25:dd8a with SMTP id
+ j9-20020aa78d09000000b0044bfd25dd8amr10199819pfe.41.1634281616140; 
+ Fri, 15 Oct 2021 00:06:56 -0700 (PDT)
+Received: from linkitivity.lan ([2001:4479:e300:600:757a:8144:2c27:6de9])
+ by smtp.gmail.com with ESMTPSA id e14sm3988417pga.23.2021.10.15.00.06.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Oct 2021 00:00:15 -0700 (PDT)
-Date: Fri, 15 Oct 2021 17:00:10 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 08/13] asm-generic: Refactor
- dereference_[kernel]_function_descriptor()
-To: Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>, 
- Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
- <christophe.leroy@csgroup.eu>, Helge Deller <deller@gmx.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "James E.J. Bottomley"
- <James.Bottomley@HansenPartnership.com>, Kees Cook <keescook@chromium.org>,
- Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>
-References: <cover.1634190022.git.christophe.leroy@csgroup.eu>
- <865b5c872814e3291fe7afabcc110f53b3457b56.1634190022.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <865b5c872814e3291fe7afabcc110f53b3457b56.1634190022.git.christophe.leroy@csgroup.eu>
+ Fri, 15 Oct 2021 00:06:55 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 1/2] eeh: Small refactor of eeh_handle_normal_event
+Date: Fri, 15 Oct 2021 18:06:27 +1100
+Message-Id: <20211015070628.1331635-1-dja@axtens.net>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Message-Id: <1634279175.w0z6ck2mpb.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,211 +75,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
- linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: oohall@gmail.com, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Christophe Leroy's message of October 14, 2021 3:49 pm:
-> dereference_function_descriptor() and
-> dereference_kernel_function_descriptor() are identical on the
-> three architectures implementing them.
->=20
-> Make them common and put them out-of-line in kernel/extable.c
-> which is one of the users and has similar type of functions.
+The control flow of eeh_handle_normal_event is a bit tricky.
 
-We should be moving more stuff out of extable.c (including all the
-kernel address tests). lib/kimage.c or kelf.c or something.=20
+Break out one of the error handling paths - rather than be in
+an else block, we'll make it part of the regular body of the
+function and put a 'goto out;' in the true limb of the if.
 
-It could be after your series though.
+Signed-off-by: Daniel Axtens <dja@axtens.net>
 
->=20
-> Reviewed-by: Kees Cook <keescook@chromium.org>
-> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->  arch/ia64/include/asm/sections.h    | 19 -------------------
->  arch/parisc/include/asm/sections.h  |  9 ---------
->  arch/parisc/kernel/process.c        | 21 ---------------------
->  arch/powerpc/include/asm/sections.h | 23 -----------------------
->  include/asm-generic/sections.h      |  2 ++
->  kernel/extable.c                    | 23 ++++++++++++++++++++++-
->  6 files changed, 24 insertions(+), 73 deletions(-)
->=20
-> diff --git a/arch/ia64/include/asm/sections.h b/arch/ia64/include/asm/sec=
-tions.h
-> index 1aaed8882294..96c9bb500c34 100644
-> --- a/arch/ia64/include/asm/sections.h
-> +++ b/arch/ia64/include/asm/sections.h
-> @@ -31,23 +31,4 @@ extern char __start_gate_brl_fsys_bubble_down_patchlis=
-t[], __end_gate_brl_fsys_b
->  extern char __start_unwind[], __end_unwind[];
->  extern char __start_ivt_text[], __end_ivt_text[];
-> =20
-> -#undef dereference_function_descriptor
-> -static inline void *dereference_function_descriptor(void *ptr)
-> -{
-> -	struct fdesc *desc =3D ptr;
-> -	void *p;
-> -
-> -	if (!get_kernel_nofault(p, (void *)&desc->addr))
-> -		ptr =3D p;
-> -	return ptr;
-> -}
-> -
-> -#undef dereference_kernel_function_descriptor
-> -static inline void *dereference_kernel_function_descriptor(void *ptr)
-> -{
-> -	if (ptr < (void *)__start_opd || ptr >=3D (void *)__end_opd)
-> -		return ptr;
-> -	return dereference_function_descriptor(ptr);
-> -}
-> -
->  #endif /* _ASM_IA64_SECTIONS_H */
-> diff --git a/arch/parisc/include/asm/sections.h b/arch/parisc/include/asm=
-/sections.h
-> index 37b34b357cb5..6b1fe22baaf5 100644
-> --- a/arch/parisc/include/asm/sections.h
-> +++ b/arch/parisc/include/asm/sections.h
-> @@ -13,13 +13,4 @@ typedef Elf64_Fdesc func_desc_t;
-> =20
->  extern char __alt_instructions[], __alt_instructions_end[];
-> =20
-> -#ifdef CONFIG_64BIT
-> -
-> -#undef dereference_function_descriptor
-> -void *dereference_function_descriptor(void *);
-> -
-> -#undef dereference_kernel_function_descriptor
-> -void *dereference_kernel_function_descriptor(void *);
-> -#endif
-> -
->  #endif
-> diff --git a/arch/parisc/kernel/process.c b/arch/parisc/kernel/process.c
-> index 38ec4ae81239..7382576b52a8 100644
-> --- a/arch/parisc/kernel/process.c
-> +++ b/arch/parisc/kernel/process.c
-> @@ -266,27 +266,6 @@ get_wchan(struct task_struct *p)
->  	return 0;
->  }
-> =20
-> -#ifdef CONFIG_64BIT
-> -void *dereference_function_descriptor(void *ptr)
-> -{
-> -	Elf64_Fdesc *desc =3D ptr;
-> -	void *p;
-> -
-> -	if (!get_kernel_nofault(p, (void *)&desc->addr))
-> -		ptr =3D p;
-> -	return ptr;
-> -}
-> -
-> -void *dereference_kernel_function_descriptor(void *ptr)
-> -{
-> -	if (ptr < (void *)__start_opd ||
-> -			ptr >=3D (void *)__end_opd)
-> -		return ptr;
-> -
-> -	return dereference_function_descriptor(ptr);
-> -}
-> -#endif
-> -
->  static inline unsigned long brk_rnd(void)
->  {
->  	return (get_random_int() & BRK_RND_MASK) << PAGE_SHIFT;
-> diff --git a/arch/powerpc/include/asm/sections.h b/arch/powerpc/include/a=
-sm/sections.h
-> index 1322d7b2f1a3..fbfe1957edbe 100644
-> --- a/arch/powerpc/include/asm/sections.h
-> +++ b/arch/powerpc/include/asm/sections.h
-> @@ -72,29 +72,6 @@ static inline int overlaps_kernel_text(unsigned long s=
-tart, unsigned long end)
->  		(unsigned long)_stext < end;
->  }
-> =20
-> -#ifdef PPC64_ELF_ABI_v1
-> -
-> -#undef dereference_function_descriptor
-> -static inline void *dereference_function_descriptor(void *ptr)
-> -{
-> -	struct ppc64_opd_entry *desc =3D ptr;
-> -	void *p;
-> -
-> -	if (!get_kernel_nofault(p, (void *)&desc->addr))
-> -		ptr =3D p;
-> -	return ptr;
-> -}
-> -
-> -#undef dereference_kernel_function_descriptor
-> -static inline void *dereference_kernel_function_descriptor(void *ptr)
-> -{
-> -	if (ptr < (void *)__start_opd || ptr >=3D (void *)__end_opd)
-> -		return ptr;
-> -
-> -	return dereference_function_descriptor(ptr);
-> -}
-> -#endif /* PPC64_ELF_ABI_v1 */
-> -
->  #endif
-> =20
->  #endif /* __KERNEL__ */
-> diff --git a/include/asm-generic/sections.h b/include/asm-generic/section=
-s.h
-> index cbec7d5f1678..76163883c6ff 100644
-> --- a/include/asm-generic/sections.h
-> +++ b/include/asm-generic/sections.h
-> @@ -60,6 +60,8 @@ extern __visible const void __nosave_begin, __nosave_en=
-d;
-> =20
->  /* Function descriptor handling (if any).  Override in asm/sections.h */
->  #ifdef HAVE_FUNCTION_DESCRIPTORS
-> +void *dereference_function_descriptor(void *ptr);
-> +void *dereference_kernel_function_descriptor(void *ptr);
->  #else
->  #define dereference_function_descriptor(p) ((void *)(p))
->  #define dereference_kernel_function_descriptor(p) ((void *)(p))
-> diff --git a/kernel/extable.c b/kernel/extable.c
-> index b0ea5eb0c3b4..013ccffade11 100644
-> --- a/kernel/extable.c
-> +++ b/kernel/extable.c
-> @@ -3,6 +3,7 @@
->     Copyright (C) 2001 Rusty Russell, 2002 Rusty Russell IBM.
-> =20
->  */
-> +#include <linux/elf.h>
->  #include <linux/ftrace.h>
->  #include <linux/memory.h>
->  #include <linux/extable.h>
-> @@ -159,12 +160,32 @@ int kernel_text_address(unsigned long addr)
->  }
-> =20
->  /*
-> - * On some architectures (PPC64, IA64) function pointers
-> + * On some architectures (PPC64, IA64, PARISC) function pointers
->   * are actually only tokens to some data that then holds the
->   * real function address. As a result, to find if a function
->   * pointer is part of the kernel text, we need to do some
->   * special dereferencing first.
->   */
-> +#ifdef HAVE_FUNCTION_DESCRIPTORS
-> +void *dereference_function_descriptor(void *ptr)
-> +{
-> +	func_desc_t *desc =3D ptr;
-> +	void *p;
-> +
-> +	if (!get_kernel_nofault(p, (void *)&desc->addr))
-> +		ptr =3D p;
+---
 
-I know you're just copying existing code. This seems a bit risky though.=20
-I don't think anything good could come of just treating the descriptor
-address like a function entry address if we failed to load from it for
-whatever reason.
+This doesn't really make things that much simpler to comprehend
+by itself but it makes the next patch a bit cleaner.
+---
+ arch/powerpc/kernel/eeh_driver.c | 69 ++++++++++++++++----------------
+ 1 file changed, 35 insertions(+), 34 deletions(-)
 
-Existing callers might be benign but the API is not good. It should
-give a nice fail return or BUG. If we change that then we should also
-change the name and pass the correct type to it too.
+diff --git a/arch/powerpc/kernel/eeh_driver.c b/arch/powerpc/kernel/eeh_driver.c
+index 3eff6a4888e7..cb3ac555c944 100644
+--- a/arch/powerpc/kernel/eeh_driver.c
++++ b/arch/powerpc/kernel/eeh_driver.c
+@@ -1054,45 +1054,46 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
+ 		}
+ 
+ 		pr_info("EEH: Recovery successful.\n");
+-	} else  {
+-		/*
+-		 * About 90% of all real-life EEH failures in the field
+-		 * are due to poorly seated PCI cards. Only 10% or so are
+-		 * due to actual, failed cards.
+-		 */
+-		pr_err("EEH: Unable to recover from failure from PHB#%x-PE#%x.\n"
+-		       "Please try reseating or replacing it\n",
+-			pe->phb->global_number, pe->addr);
++		goto out;
++	}
+ 
+-		eeh_slot_error_detail(pe, EEH_LOG_PERM);
++	/*
++	 * About 90% of all real-life EEH failures in the field
++	 * are due to poorly seated PCI cards. Only 10% or so are
++	 * due to actual, failed cards.
++	 */
++	pr_err("EEH: Unable to recover from failure from PHB#%x-PE#%x.\n"
++		"Please try reseating or replacing it\n",
++		pe->phb->global_number, pe->addr);
+ 
+-		/* Notify all devices that they're about to go down. */
+-		eeh_set_channel_state(pe, pci_channel_io_perm_failure);
+-		eeh_set_irq_state(pe, false);
+-		eeh_pe_report("error_detected(permanent failure)", pe,
+-			      eeh_report_failure, NULL);
++	eeh_slot_error_detail(pe, EEH_LOG_PERM);
+ 
+-		/* Mark the PE to be removed permanently */
+-		eeh_pe_state_mark(pe, EEH_PE_REMOVED);
++	/* Notify all devices that they're about to go down. */
++	eeh_set_channel_state(pe, pci_channel_io_perm_failure);
++	eeh_set_irq_state(pe, false);
++	eeh_pe_report("error_detected(permanent failure)", pe,
++		      eeh_report_failure, NULL);
+ 
+-		/*
+-		 * Shut down the device drivers for good. We mark
+-		 * all removed devices correctly to avoid access
+-		 * the their PCI config any more.
+-		 */
+-		if (pe->type & EEH_PE_VF) {
+-			eeh_pe_dev_traverse(pe, eeh_rmv_device, NULL);
+-			eeh_pe_dev_mode_mark(pe, EEH_DEV_REMOVED);
+-		} else {
+-			eeh_pe_state_clear(pe, EEH_PE_PRI_BUS, true);
+-			eeh_pe_dev_mode_mark(pe, EEH_DEV_REMOVED);
++	/* Mark the PE to be removed permanently */
++	eeh_pe_state_mark(pe, EEH_PE_REMOVED);
+ 
+-			pci_lock_rescan_remove();
+-			pci_hp_remove_devices(bus);
+-			pci_unlock_rescan_remove();
+-			/* The passed PE should no longer be used */
+-			return;
+-		}
++	/*
++	 * Shut down the device drivers for good. We mark
++	 * all removed devices correctly to avoid access
++	 * the their PCI config any more.
++	 */
++	if (pe->type & EEH_PE_VF) {
++		eeh_pe_dev_traverse(pe, eeh_rmv_device, NULL);
++		eeh_pe_dev_mode_mark(pe, EEH_DEV_REMOVED);
++	} else {
++		eeh_pe_state_clear(pe, EEH_PE_PRI_BUS, true);
++		eeh_pe_dev_mode_mark(pe, EEH_DEV_REMOVED);
++
++		pci_lock_rescan_remove();
++		pci_hp_remove_devices(bus);
++		pci_unlock_rescan_remove();
++		/* The passed PE should no longer be used */
++		return;
+ 	}
+ 
+ out:
+-- 
+2.25.1
 
-Thanks,
-Nick
