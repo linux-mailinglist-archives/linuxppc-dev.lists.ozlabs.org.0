@@ -2,60 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7870342EEF1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 12:36:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BDED42EE6B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 12:07:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HW2kF5vqwz3c8y
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 21:36:21 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=Kgq5rJkd;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HW22X1kSbz3dhf
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 21:05:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=suse.com (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
- envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
- header.s=susede1 header.b=Kgq5rJkd; dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HW2fJ4C1Tz2yKB
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 21:32:55 +1100 (AEDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
- by smtp-out1.suse.de (Postfix) with ESMTP id 8F2FE21A5F;
- Fri, 15 Oct 2021 07:29:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
- t=1634282942; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ajbOHu+rClKJMCVN9IOrg9A779y/UiP4OhkzJFOjSQ0=;
- b=Kgq5rJkdVrVP4IDhfsKBOlKRbJj/ElwH9MtJu3TB/6DSQyKaBrnGTAZEUIHTm9Wg9/R9yP
- gS+2GjVcOOgJ8gcQFMUqXpN0t0LxD5W1VSXuJRJZSg5ELwNykVEIFOvyYognnuQg7wAlZK
- xUQAgCSdgE9t8+fHmbr613MI5spEt8o=
-Received: from suse.cz (unknown [10.100.224.162])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by relay2.suse.de (Postfix) with ESMTPS id 7FDD2A3B84;
- Fri, 15 Oct 2021 07:29:01 +0000 (UTC)
-Date: Fri, 15 Oct 2021 09:28:58 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: =?utf-8?B?546L6LSH?= <yun.wang@linux.alibaba.com>
-Subject: Re: [PATCH v3 1/2] ftrace: disable preemption between
- ftrace_test_recursion_trylock/unlock()
-Message-ID: <YWktujP6DcMnRIXT@alley>
-References: <609b565a-ed6e-a1da-f025-166691b5d994@linux.alibaba.com>
- <7e4738b5-21d4-c4d0-3136-a096bbb5cd2c@linux.alibaba.com>
- <YWhJP41cNwDphYsv@alley>
- <5e907ed3-806b-b0e5-518d-d2f3b265377f@linux.alibaba.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HW20T2fwnz3cBf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 21:03:37 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4HW1zt4NkYz9sSH;
+ Fri, 15 Oct 2021 12:03:06 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 0hVFpIMcN2NA; Fri, 15 Oct 2021 12:03:06 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4HW1zp65PJz9sSJ;
+ Fri, 15 Oct 2021 12:03:02 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B22768B796;
+ Fri, 15 Oct 2021 12:03:02 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id Q9j_s-qa3qGG; Fri, 15 Oct 2021 12:03:02 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.202.255])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4579F8B78C;
+ Fri, 15 Oct 2021 12:03:02 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 19FA2qp52627023
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+ Fri, 15 Oct 2021 12:02:52 +0200
+Received: (from chleroy@localhost)
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 19FA2o9K2627022;
+ Fri, 15 Oct 2021 12:02:50 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
+ christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH v1 1/8] powerpc/booke: Disable STRICT_KERNEL_RWX,
+ DEBUG_PAGEALLOC and KFENCE
+Date: Fri, 15 Oct 2021 12:02:42 +0200
+Message-Id: <d1ad9fdd9b27da3fdfa16510bb542ed51fa6e134.1634292136.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1634292164; l=2117; s=20211009;
+ h=from:subject:message-id; bh=orZAV9z44vdowJdM+qSZlmB7rjoxxliGvHrTgsstLPU=;
+ b=JE2TmcSRg6POx2Ew2futt1VQsdtUWvLjTahpvKTVLZAfVEDwXR0cwjE0ddYvBGIRvfFxunPWMa6d
+ jaYsgzeoCOkpjdIP3OpPyDtT0NLp+nUc6alT2cLFOT+OZTqoUSR1
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
+ pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <5e907ed3-806b-b0e5-518d-d2f3b265377f@linux.alibaba.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,136 +74,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Guo Ren <guoren@kernel.org>, Jisheng Zhang <jszhang@kernel.org>,
- "H. Peter Anvin" <hpa@zytor.com>, live-patching@vger.kernel.org,
- linux-riscv@lists.infradead.org, Miroslav Benes <mbenes@suse.cz>,
- Paul Mackerras <paulus@samba.org>, Joe Lawrence <joe.lawrence@redhat.com>,
- Helge Deller <deller@gmx.de>, x86@kernel.org, linux-csky@vger.kernel.org,
- Ingo Molnar <mingo@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Jiri Kosina <jikos@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Borislav Petkov <bp@alien8.de>, Nicholas Piggin <npiggin@gmail.com>,
- Josh Poimboeuf <jpoimboe@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
- linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Masami Hiramatsu <mhiramat@kernel.org>,
- Colin Ian King <colin.king@canonical.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri 2021-10-15 11:13:08, 王贇 wrote:
-> 
-> 
-> On 2021/10/14 下午11:14, Petr Mladek wrote:
-> [snip]
-> >> -	return trace_test_and_set_recursion(ip, parent_ip, TRACE_FTRACE_START, TRACE_FTRACE_MAX);
-> >> +	int bit;
-> >> +
-> >> +	bit = trace_test_and_set_recursion(ip, parent_ip, TRACE_FTRACE_START, TRACE_FTRACE_MAX);
-> >> +	/*
-> >> +	 * The zero bit indicate we are nested
-> >> +	 * in another trylock(), which means the
-> >> +	 * preemption already disabled.
-> >> +	 */
-> >> +	if (bit > 0)
-> >> +		preempt_disable_notrace();
-> > 
-> > Is this safe? The preemption is disabled only when
-> > trace_test_and_set_recursion() was called by ftrace_test_recursion_trylock().
-> > 
-> > We must either always disable the preemtion when bit >= 0.
-> > Or we have to disable the preemtion already in
-> > trace_test_and_set_recursion().
-> 
-> Internal calling of trace_test_and_set_recursion() will disable preemption
-> on succeed, it should be safe.
+fsl_booke and 44x are not able to map kernel linear memory with
+pages, so they can't support DEBUG_PAGEALLOC and KFENCE, and
+STRICT_KERNEL_RWX is also a problem for now.
 
-trace_test_and_set_recursion() does _not_ disable preemtion!
-It works only because all callers disable the preemption.
+Enable those only on book3s (both 32 and 64 except KFENCE), 8xx and 40x.
 
-It means that the comment is wrong. It is not guarantted that the
-preemption will be disabled. It works only by chance.
+Fixes: 88df6e90fa97 ("[POWERPC] DEBUG_PAGEALLOC for 32-bit")
+Fixes: 95902e6c8864 ("powerpc/mm: Implement STRICT_KERNEL_RWX on PPC32")
+Fixes: 90cbac0e995d ("powerpc: Enable KFENCE for PPC32")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/Kconfig | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index ba5b66189358..6b9f523882c5 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -138,7 +138,7 @@ config PPC
+ 	select ARCH_HAS_PTE_SPECIAL
+ 	select ARCH_HAS_SCALED_CPUTIME		if VIRT_CPU_ACCOUNTING_NATIVE && PPC_BOOK3S_64
+ 	select ARCH_HAS_SET_MEMORY
+-	select ARCH_HAS_STRICT_KERNEL_RWX	if ((PPC_BOOK3S_64 || PPC32) && !HIBERNATION)
++	select ARCH_HAS_STRICT_KERNEL_RWX	if (PPC_BOOK3S || PPC_8xx || 40x) && !HIBERNATION
+ 	select ARCH_HAS_STRICT_MODULE_RWX	if ARCH_HAS_STRICT_KERNEL_RWX && !PPC_BOOK3S_32
+ 	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
+ 	select ARCH_HAS_UACCESS_FLUSHCACHE
+@@ -150,7 +150,7 @@ config PPC
+ 	select ARCH_OPTIONAL_KERNEL_RWX		if ARCH_HAS_STRICT_KERNEL_RWX
+ 	select ARCH_STACKWALK
+ 	select ARCH_SUPPORTS_ATOMIC_RMW
+-	select ARCH_SUPPORTS_DEBUG_PAGEALLOC	if PPC32 || PPC_BOOK3S_64
++	select ARCH_SUPPORTS_DEBUG_PAGEALLOC	if PPC_BOOK3S || PPC_8xx || 40x
+ 	select ARCH_USE_BUILTIN_BSWAP
+ 	select ARCH_USE_CMPXCHG_LOCKREF		if PPC64
+ 	select ARCH_USE_MEMTEST
+@@ -190,7 +190,7 @@ config PPC
+ 	select HAVE_ARCH_JUMP_LABEL_RELATIVE
+ 	select HAVE_ARCH_KASAN			if PPC32 && PPC_PAGE_SHIFT <= 14
+ 	select HAVE_ARCH_KASAN_VMALLOC		if PPC32 && PPC_PAGE_SHIFT <= 14
+-	select HAVE_ARCH_KFENCE			if PPC32
++	select HAVE_ARCH_KFENCE			if PPC_BOOK3S_32 || PPC_8xx || 40x
+ 	select HAVE_ARCH_KGDB
+ 	select HAVE_ARCH_MMAP_RND_BITS
+ 	select HAVE_ARCH_MMAP_RND_COMPAT_BITS	if COMPAT
+-- 
+2.31.1
 
-> We can also consider move the logical into trace_test_and_set_recursion()
-> and trace_clear_recursion(), but I'm not very sure about that... ftrace
-> internally already make sure preemption disabled
-
-How? Because it calls trace_test_and_set_recursion() via the trylock() API?
-
-
-> , what uncovered is those users who call API trylock/unlock, isn't
-> it?
-
-And this is exactly the problem. trace_test_and_set_recursion() is in
-a public header. Anyone could use it. And if anyone uses it in the
-future without the trylock() and does not disable the preemtion
-explicitely then we are lost again.
-
-And it is even more dangerous. The original code disabled the
-preemtion on various layers. As a result, the preemtion was disabled
-several times for sure. It means that the deeper layers were
-always on the safe side.
-
-With this patch, if the first trace_test_and_set_recursion() caller
-does not disable preemtion then trylock() will not disable it either
-and the entire code is procceed with preemtion enabled.
-
-
-> > Finally, the comment confused me a lot. The difference between nesting and
-> > recursion is far from clear. And the code is tricky liky like hell :-)
-> > I propose to add some comments, see below for a proposal.
-> The comments do confusing, I'll make it something like:
-> 
-> The zero bit indicate trace recursion happened, whatever
-> the recursively call was made by ftrace handler or ftrace
-> itself, the preemption already disabled.
-
-I am sorry but it is still confusing. We need to find a better way
-how to clearly explain the difference between the safe and
-unsafe recursion.
-
-My understanding is that the recursion is:
-
-  + "unsafe" when the trace code recursively enters the same trace point.
-
-  + "safe" when ftrace_test_recursion_trylock() is called recursivelly
-    while still processing the same trace entry.
-
-> >> +
-> >> +	return bit;
-> >>  }
-> >>  /**
-> >> @@ -222,9 +233,13 @@ static __always_inline int ftrace_test_recursion_trylock(unsigned long ip,
-> >>   * @bit: The return of a successful ftrace_test_recursion_trylock()
-> >>   *
-> >>   * This is used at the end of a ftrace callback.
-> >> + *
-> >> + * Preemption will be enabled (if it was previously enabled).
-> >>   */
-> >>  static __always_inline void ftrace_test_recursion_unlock(int bit)
-> >>  {
-> >> +	if (bit)
-> > 
-> > This is not symetric with trylock(). It should be:
-> > 
-> > 	if (bit > 0)
-> > 
-> > Anyway, trace_clear_recursion() quiently ignores bit != 0
-> 
-> Yes, bit == 0 should not happen in here.
-
-Yes, it "should" not happen. My point is that we could make the API
-more safe. We could do the right thing when
-ftrace_test_recursion_unlock() is called with negative @bit.
-Ideally, we should also warn about the mis-use.
-
-
-Anyway, let's wait for Steven. It seems that he found another problem
-with the API that should be solved first. The fix will probably
-also help to better understand the "safe" vs "unsafe" recursion.
-
-Best Regards,
-Petr
