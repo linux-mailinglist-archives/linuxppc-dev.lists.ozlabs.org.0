@@ -1,71 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB82742FD7B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 23:33:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95A1F42FD87
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 23:36:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HWKJc1Tj8z3cJv
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Oct 2021 08:33:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HWKN21qc6z3c8f
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Oct 2021 08:36:34 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=f8kTQ/Y/;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=i/plbNWQ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::52b;
- helo=mail-pg1-x52b.google.com; envelope-from=keescook@chromium.org;
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::102d;
+ helo=mail-pj1-x102d.google.com; envelope-from=keescook@chromium.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=f8kTQ/Y/; dkim-atps=neutral
-Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com
- [IPv6:2607:f8b0:4864:20::52b])
+ header.s=google header.b=i/plbNWQ; dkim-atps=neutral
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com
+ [IPv6:2607:f8b0:4864:20::102d])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HWKHx5DVYz2xt6
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Oct 2021 08:33:01 +1100 (AEDT)
-Received: by mail-pg1-x52b.google.com with SMTP id 75so9730705pga.3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 14:33:01 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HWKMJ6vtrz2xXc
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Oct 2021 08:35:56 +1100 (AEDT)
+Received: by mail-pj1-x102d.google.com with SMTP id
+ e5-20020a17090a804500b001a116ad95caso2699718pjw.2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 14:35:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
  h=date:from:to:cc:subject:message-id:references:mime-version
  :content-disposition:in-reply-to;
- bh=YNBNEYisZ+541asH+L6t1hZlJ/Xn9d3ughoW3yhbnMY=;
- b=f8kTQ/Y/ACr3yL4eMWtqbWU2xm18S+76EHKyee4Vqqv4SV8J6qk5BuskJbEb6Ql/TJ
- c9EbbOivEp4/Vy74Zv5n8MvM1vLyBEeJPN8m+5olTn2ub0SZO8xZlaRygBBGEjyk6s6j
- dW6pUEjVARu6NrsLidMTQLR5wt2C5k6t+XvQQ=
+ bh=fXK9I7sL2UAvUUHr680VS0N7hcJaT8a/qC/oAjWAekg=;
+ b=i/plbNWQsfMbAtipP0bedfIRhU9GtT0vQBPBSqxQOXPLHpycgRU2/2eFgrucmm2h2H
+ jyUzWsmXl3g4lj7XR6uQJW5kj6zHZDhfr5oLknCnvhs4hYYOrFP7YzLzzikPK/mnLAUp
+ qzqAv/u7xWCe7UATWzGpSateqcXcucSLev7S0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:in-reply-to;
- bh=YNBNEYisZ+541asH+L6t1hZlJ/Xn9d3ughoW3yhbnMY=;
- b=OeZMkWR5uFQN9HNdUAVJ3Ab7n7Nqfc8UJFtD6aoaM/khMgxmjQyYPGOikt0dIFq+T1
- wtabYsYfod4YqkccGfI/W3bOkdY4i3sex6h1lWK6KqrNNdrlZaDAIxlrKQ+jsYSC/y6S
- wrvXB9YPjo6MG/euqwJprBRgnK3wuXL+CXHa4B+eQV6kfH0K57xhshYOc4wDdZ/Ah8he
- PAH1VOusc6FgyecLfdJQOV8e6UDiFmk9F8tDHdt0O9ZLVapshOXpOtYz8ggLL5JbgvvB
- aeRyOkbpLplVLy93vprP3bbnNgWk2CHlQhg56B324y7dVCzfHAcLh19VdaIJpnXan3Zh
- j1jw==
-X-Gm-Message-State: AOAM533Ntq0Z1oSMu68y4pRH9n+UHOTx1+UXolAgBD2P9Hn5hFDgZq4W
- JYSQnZbMIemFkpK8XFumRm6Lcg==
-X-Google-Smtp-Source: ABdhPJzAyN+K8Hifn5n3pJa0D9tsRyoaRMolZRmu5TyHtvN6ydh9MAL1iJXdAj5PTEgi34yjsZ8kvg==
-X-Received: by 2002:a63:ef58:: with SMTP id c24mr10773001pgk.299.1634333579455; 
- Fri, 15 Oct 2021 14:32:59 -0700 (PDT)
+ bh=fXK9I7sL2UAvUUHr680VS0N7hcJaT8a/qC/oAjWAekg=;
+ b=ADphitqyV2eFj1/IGcpq0sM2/EQZkMHZaB1tJsOLUMHEeFISktjcsPw8tg70jOX+t4
+ BAGAdQPHWQqwODL4+F9djjPt3fwYKvTRWaPs6vnrlDaiSR6nKhR7oFEa6CvqVyTcK2L5
+ wLv7e0poWiDIKntZOgVt7VTCcE6Uh29gDF4AXEzmnnULTzFptbgFPgX9iUpOz5J24P/Z
+ m2k6Ulp2JzOaVpReWO6lrH3tzIXgrx11C8bzD3cZPUlwMbTXA1EOzEY75xM0f14n9m9A
+ ahzBxpOy9GO9F6RqE1ZEIEP4coz6+zjjLYmahvtD3hgfS4YyZT4Ko3Iza5WBrMjQq/dE
+ OvHQ==
+X-Gm-Message-State: AOAM530pdIqzd6skULIp8fCmYWadYIiWkdcb6E1zgheJXw45BZqxMgLZ
+ KI7VFn1OpIDbxSC/8sF+J5epzg==
+X-Google-Smtp-Source: ABdhPJzGiIkXXBmy5DDoWMNsGgWcXqtw/xBNMBOjRI4bsAE2X+6lsLV+71+RhBCvt+ERtsGfcdpHpA==
+X-Received: by 2002:a17:90b:1a86:: with SMTP id
+ ng6mr16246857pjb.120.1634333745601; 
+ Fri, 15 Oct 2021 14:35:45 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id t126sm5787900pfc.80.2021.10.15.14.32.58
+ by smtp.gmail.com with ESMTPSA id q10sm5538176pgn.31.2021.10.15.14.35.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Oct 2021 14:32:59 -0700 (PDT)
-Date: Fri, 15 Oct 2021 14:32:58 -0700
+ Fri, 15 Oct 2021 14:35:45 -0700 (PDT)
+Date: Fri, 15 Oct 2021 14:35:44 -0700
 From: Kees Cook <keescook@chromium.org>
 To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v2 11/13] lkdtm: Fix lkdtm_EXEC_RODATA()
-Message-ID: <202110151432.D8203C19@keescook>
+Subject: Re: [PATCH v2 13/13] lkdtm: Add a test for function descriptors
+ protection
+Message-ID: <202110151433.6270D717@keescook>
 References: <cover.1634190022.git.christophe.leroy@csgroup.eu>
- <44946ed0340013a52f8acdee7d6d0781f145cd6b.1634190022.git.christophe.leroy@csgroup.eu>
+ <08a3dfbc55e1c7a0a1917b22f0ca6cabd9895ab2.1634190022.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <44946ed0340013a52f8acdee7d6d0781f145cd6b.1634190022.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <08a3dfbc55e1c7a0a1917b22f0ca6cabd9895ab2.1634190022.git.christophe.leroy@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,53 +91,103 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Oct 14, 2021 at 07:50:00AM +0200, Christophe Leroy wrote:
-> Behind its location, lkdtm_EXEC_RODATA() executes
-> lkdtm_rodata_do_nothing() which is a real function,
-> not a copy of do_nothing().
+On Thu, Oct 14, 2021 at 07:50:02AM +0200, Christophe Leroy wrote:
+> Add WRITE_OPD to check that you can't modify function
+> descriptors.
 > 
-> So executes it directly instead of using execute_location().
+> Gives the following result when function descriptors are
+> not protected:
 > 
-> This is necessary because following patch will fix execute_location()
-> to use a copy of the function descriptor of do_nothing() and
-> function descriptor of lkdtm_rodata_do_nothing() might be different.
+> 	lkdtm: Performing direct entry WRITE_OPD
+> 	lkdtm: attempting bad 16 bytes write at c00000000269b358
+> 	lkdtm: FAIL: survived bad write
+> 	lkdtm: do_nothing was hijacked!
 > 
-> And fix displayed addresses by dereferencing the function descriptors.
+> Looks like a standard compiler barrier(); is not enough to force
+> GCC to use the modified function descriptor. Add to add a fake empty
+> inline assembly to force GCC to reload the function descriptor.
 > 
 > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-
-I still don't understand this -- it doesn't look needed at all given the
-changes in patch 12. (i.e. everything is using
-dereference_function_descriptor() now)
-
-Can't this patch be dropped?
-
--Kees
-
 > ---
->  drivers/misc/lkdtm/perms.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
+>  drivers/misc/lkdtm/core.c  |  1 +
+>  drivers/misc/lkdtm/lkdtm.h |  1 +
+>  drivers/misc/lkdtm/perms.c | 22 ++++++++++++++++++++++
+>  3 files changed, 24 insertions(+)
 > 
+> diff --git a/drivers/misc/lkdtm/core.c b/drivers/misc/lkdtm/core.c
+> index fe6fd34b8caf..de092aa03b5d 100644
+> --- a/drivers/misc/lkdtm/core.c
+> +++ b/drivers/misc/lkdtm/core.c
+> @@ -148,6 +148,7 @@ static const struct crashtype crashtypes[] = {
+>  	CRASHTYPE(WRITE_RO),
+>  	CRASHTYPE(WRITE_RO_AFTER_INIT),
+>  	CRASHTYPE(WRITE_KERN),
+> +	CRASHTYPE(WRITE_OPD),
+>  	CRASHTYPE(REFCOUNT_INC_OVERFLOW),
+>  	CRASHTYPE(REFCOUNT_ADD_OVERFLOW),
+>  	CRASHTYPE(REFCOUNT_INC_NOT_ZERO_OVERFLOW),
+> diff --git a/drivers/misc/lkdtm/lkdtm.h b/drivers/misc/lkdtm/lkdtm.h
+> index c212a253edde..188bd0fd6575 100644
+> --- a/drivers/misc/lkdtm/lkdtm.h
+> +++ b/drivers/misc/lkdtm/lkdtm.h
+> @@ -105,6 +105,7 @@ void __init lkdtm_perms_init(void);
+>  void lkdtm_WRITE_RO(void);
+>  void lkdtm_WRITE_RO_AFTER_INIT(void);
+>  void lkdtm_WRITE_KERN(void);
+> +void lkdtm_WRITE_OPD(void);
+>  void lkdtm_EXEC_DATA(void);
+>  void lkdtm_EXEC_STACK(void);
+>  void lkdtm_EXEC_KMALLOC(void);
 > diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
-> index 035fcca441f0..5266dc28df6e 100644
+> index 96b3ebfcb8ed..3870bc82d40d 100644
 > --- a/drivers/misc/lkdtm/perms.c
 > +++ b/drivers/misc/lkdtm/perms.c
-> @@ -153,7 +153,14 @@ void lkdtm_EXEC_VMALLOC(void)
->  
->  void lkdtm_EXEC_RODATA(void)
->  {
-> -	execute_location(lkdtm_rodata_do_nothing, CODE_AS_IS);
-> +	pr_info("attempting ok execution at %px\n",
-> +		dereference_function_descriptor(do_nothing));
-> +	do_nothing();
-> +
-> +	pr_info("attempting bad execution at %px\n",
-> +		dereference_function_descriptor(lkdtm_rodata_do_nothing));
-> +	lkdtm_rodata_do_nothing();
-> +	pr_err("FAIL: func returned\n");
+> @@ -44,6 +44,11 @@ static noinline void do_overwritten(void)
+>  	return;
 >  }
 >  
->  void lkdtm_EXEC_USERSPACE(void)
+> +static noinline void do_almost_nothing(void)
+> +{
+> +	pr_info("do_nothing was hijacked!\n");
+> +}
+> +
+>  static void *setup_function_descriptor(func_desc_t *fdesc, void *dst)
+>  {
+>  	memcpy(fdesc, do_nothing, sizeof(*fdesc));
+> @@ -143,6 +148,23 @@ void lkdtm_WRITE_KERN(void)
+>  	do_overwritten();
+>  }
+>  
+> +void lkdtm_WRITE_OPD(void)
+> +{
+> +	size_t size = sizeof(func_desc_t);
+> +	void (*func)(void) = do_nothing;
+> +
+> +	if (!have_function_descriptors()) {
+> +		pr_info("Platform doesn't have function descriptors.\n");
+
+This should be more explicit ('xfail'):
+
+	pr_info("XFAIL: platform doesn't use function descriptors.\n");
+
+> +		return;
+> +	}
+> +	pr_info("attempting bad %zu bytes write at %px\n", size, do_nothing);
+> +	memcpy(do_nothing, do_almost_nothing, size);
+> +	pr_err("FAIL: survived bad write\n");
+> +
+> +	asm("" : "=m"(func));
+
+Since this is a descriptor, I assume no icache flush is needed. Are
+function descriptors strictly dcache? (Is anything besides just a
+barrier needed?)
+
+> +	func();
+> +}
+> +
+>  void lkdtm_EXEC_DATA(void)
+>  {
+>  	execute_location(data_area, CODE_WRITE);
 > -- 
 > 2.31.1
 > 
