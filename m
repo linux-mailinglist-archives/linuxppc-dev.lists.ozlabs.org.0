@@ -2,53 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15B4B42F401
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 15:40:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC52C42F404
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 15:41:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HW6pz3JGwz3cHh
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Oct 2021 00:40:43 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=kSZ7fuFH;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HW6qR2VlHz3c6G
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Oct 2021 00:41:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HW6nj1Z6xz2xt1
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Oct 2021 00:39:37 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=kSZ7fuFH; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4HW6nh0B3Rz4xbZ;
- Sat, 16 Oct 2021 00:39:36 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1634305176;
- bh=aT+4RSZsIeEUk+iQDrJV/Xn4f0gDbD4FWrcoDbnT2aA=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=kSZ7fuFHAxMta2X5UdfEzR2fyTVtBAjrNKs5EMGNAx6xt2rgkF0n5Qtf/ETNYUMyB
- /pWKV5sLiJyIFVFLSBJzAzDhm2+sSeG6VOKHsd0+NWuGpUhx/+Lw0+9WXu6Qp4mFFQ
- IBnXo7Pl60EuFXwXQnngh4x4vcjhKURxE0IxjYI4xlEBvaR8983ftXWmONYheqbt2f
- k5TZbr2u/lxadhABYY+uzME1jaDSk4e/hxN/FWHp4otiIbadgVHO78ORdOT3ovavMj
- OUFybbsx23r/WU8SOnfT7rMqt3zl2SzYU/20WMzXa5mCupUZFx1ZLAYAGHR0D1XGEX
- xopuNgllwgQ9Q==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH 2/2] KVM: PPC: Book3S HV: Make idle_kvm_start_guest() return 0
- if it went to guest
-Date: Sat, 16 Oct 2021 00:39:29 +1100
-Message-Id: <20211015133929.832061-2-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20211015133929.832061-1-mpe@ellerman.id.au>
-References: <20211015133929.832061-1-mpe@ellerman.id.au>
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=robin.murphy@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4HW6p91CgGz3c9q
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Oct 2021 00:39:59 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E0BA4D6E;
+ Fri, 15 Oct 2021 06:39:56 -0700 (PDT)
+Received: from [10.57.95.157] (unknown [10.57.95.157])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AA6F53F694;
+ Fri, 15 Oct 2021 06:39:55 -0700 (PDT)
+Subject: Re: [PATCH] soc: fsl: dpio: protect smp_processor_id when get
+ processor id
+To: Meng.Li@windriver.com, Roy.Pledge@nxp.com, leoyang.li@nxp.com,
+ ruxandra.radulescu@nxp.com, horia.geanta@nxp.com
+References: <20211015063601.23303-1-Meng.Li@windriver.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Message-ID: <ba116805-8e41-1502-6cd4-acc1d5e5fa41@arm.com>
+Date: Fri, 15 Oct 2021 14:39:50 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20211015063601.23303-1-Meng.Li@windriver.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,73 +48,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm-ppc@vger.kernel.org, npiggin@gmail.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-We call idle_kvm_start_guest() from power7_offline() if the thread has
-been requested to enter KVM. We pass it the SRR1 value that was returned
-from power7_idle_insn() which tells us what sort of wakeup we're
-processing.
+On 2021-10-15 07:36, Meng.Li@windriver.com wrote:
+> From: Meng Li <meng.li@windriver.com>
+> 
+> When enable debug kernel configs,there will be calltrace as below:
+> 
+> BUG: using smp_processor_id() in preemptible [00000000] code: swapper/0/1
+> caller is debug_smp_processor_id+0x20/0x30
+> CPU: 6 PID: 1 Comm: swapper/0 Not tainted 5.10.63-yocto-standard #1
+> Hardware name: NXP Layerscape LX2160ARDB (DT)
+> Call trace:
+>   dump_backtrace+0x0/0x1a0
+>   show_stack+0x24/0x30
+>   dump_stack+0xf0/0x13c
+>   check_preemption_disabled+0x100/0x110
+>   debug_smp_processor_id+0x20/0x30
+>   dpaa2_io_query_fq_count+0xdc/0x154
+>   dpaa2_eth_stop+0x144/0x314
+>   __dev_close_many+0xdc/0x160
+>   __dev_change_flags+0xe8/0x220
+>   dev_change_flags+0x30/0x70
+>   ic_close_devs+0x50/0x78
+>   ip_auto_config+0xed0/0xf10
+>   do_one_initcall+0xac/0x460
+>   kernel_init_freeable+0x30c/0x378
+>   kernel_init+0x20/0x128
+>   ret_from_fork+0x10/0x38
+> 
+> Because smp_processor_id() should be invoked in preempt disable status.
+> So, add preempt_disable/enable() to protect smp_processor_id().
 
-Depending on the SRR1 value we pass in, the KVM code might enter the
-guest, or it might return to us to do some host action if the wakeup
-requires it.
+If preemption doesn't matter anyway, as the comment in the context 
+implies, then it probably makes more sense just to use 
+raw_smp_processor_id() instead.
 
-If idle_kvm_start_guest() is able to handle the wakeup, and enter the
-guest it is supposed to indicate that by returning a zero SRR1 value to
-us.
+Robin.
 
-That was the behaviour prior to commit 10d91611f426 ("powerpc/64s:
-Reimplement book3s idle code in C"), however in that commit the
-handling of SRR1 was reworked, and the zeroing behaviour was lost.
-
-Returning from idle_kvm_start_guest() without zeroing the SRR1 value can
-confuse the host offline code, causing the guest to crash and other
-weirdness.
-
-Fixes: 10d91611f426 ("powerpc/64s: Reimplement book3s idle code in C")
-Cc: stable@vger.kernel.org # v5.2+
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/kvm/book3s_hv_rmhandlers.S | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-index ec57952b60b0..eb776d0c5d8e 100644
---- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-+++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-@@ -264,6 +264,7 @@ _GLOBAL(idle_kvm_start_guest)
- 	stdu	r1, -SWITCH_FRAME_SIZE(r4)
- 	// Switch to new frame on emergency stack
- 	mr	r1, r4
-+	std	r3, 32(r1)	// Save SRR1 wakeup value
- 	SAVE_NVGPRS(r1)
- 
- 	/*
-@@ -315,6 +316,10 @@ _GLOBAL(idle_kvm_start_guest)
- 
- kvm_secondary_got_guest:
- 
-+	// About to go to guest, clear saved SRR1
-+	li	r0, 0
-+	std	r0, 32(r1)
-+
- 	/* Set HSTATE_DSCR(r13) to something sensible */
- 	ld	r6, PACA_DSCR_DEFAULT(r13)
- 	std	r6, HSTATE_DSCR(r13)
-@@ -394,8 +399,8 @@ _GLOBAL(idle_kvm_start_guest)
- 	mfspr	r4, SPRN_LPCR
- 	rlwimi	r4, r3, 0, LPCR_PECE0 | LPCR_PECE1
- 	mtspr	SPRN_LPCR, r4
--	/* set up r3 for return */
--	mfspr	r3,SPRN_SRR1
-+	// Return SRR1 wakeup value, or 0 if we went into the guest
-+	ld	r3, 32(r1)
- 	REST_NVGPRS(r1)
- 	ld	r1, 0(r1)	// Switch back to caller stack
- 	ld	r0, 16(r1)	// Reload LR
--- 
-2.25.1
-
+> Fixes: c89105c9b390 ("staging: fsl-mc: Move DPIO from staging to drivers/soc/fsl")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Meng Li <Meng.Li@windriver.com>
+> ---
+>   drivers/soc/fsl/dpio/dpio-service.c | 7 +++++--
+>   1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/soc/fsl/dpio/dpio-service.c b/drivers/soc/fsl/dpio/dpio-service.c
+> index 19f47ea9dab0..afc3b89b0fc5 100644
+> --- a/drivers/soc/fsl/dpio/dpio-service.c
+> +++ b/drivers/soc/fsl/dpio/dpio-service.c
+> @@ -58,8 +58,11 @@ static inline struct dpaa2_io *service_select_by_cpu(struct dpaa2_io *d,
+>   	 * If cpu == -1, choose the current cpu, with no guarantees about
+>   	 * potentially being migrated away.
+>   	 */
+> -	if (cpu < 0)
+> -		cpu = smp_processor_id();
+> +        if (cpu < 0) {
+> +                preempt_disable();
+> +                cpu = smp_processor_id();
+> +                preempt_enable();
+> +        }
+>   
+>   	/* If a specific cpu was requested, pick it up immediately */
+>   	return dpio_by_cpu[cpu];
+> 
