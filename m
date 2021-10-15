@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A99B42FF51
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Oct 2021 02:01:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0351C42FF4B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Oct 2021 01:58:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HWNb86M0Bz3f4h
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Oct 2021 11:01:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HWNXJ3QCNz3dp2
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Oct 2021 10:58:56 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=d3DuD+nt;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=bA1zIwdh;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,27 +18,27 @@ Authentication-Results: lists.ozlabs.org;
  envelope-from=mcgrof@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=d3DuD+nt; 
+ header.s=bombadil.20210309 header.b=bA1zIwdh; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HWNPc6jv3z3c97
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Oct 2021 10:53:08 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HWNPV67dbz306l
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Oct 2021 10:53:02 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=omBKsWTl8Q/WM0k3AiOvEAjN+m9JDz574ka/nFE6G1U=; b=d3DuD+ntkjsX5wdLWBQUee/Kd4
- Ka8WmB4Njz7ZuaQfe42890YC5Ei+XlqIQYf4otyg27DZOBzEGweA/XIOCjKPda0mlZIzkM7zD/S89
- iRhbQwv0j63NfvXxDgtGtbzvfUTCh27v8rZE+AF0P6syYrDRfKVk9jlkvpepJhtdx6+Jm1HCpnzga
- j2DB1Xq9POr6uTmUluGCTwaiWICaNRsoR0OOUh3SceEzWf+EyVjAqPcSSSigfoLZxnBoBvzU3+Qbq
- r8FvoHNO6DLtHVeHtR3K3mezUwJnnmY7WWf9Llyug1fVocMzeKBs7pTKHfPacFnLhenLwBhkZDZgh
- toPZ4UoQ==;
+ bh=7R5PYVFPXskQk20vzfFqzumtxD4zBhl8b3RLHCGuP34=; b=bA1zIwdhWBpvlfjPHf65YiWw1w
+ wNKSsZycfKU6wTo+TriKrwHhsylyC8eMhzSF0i7XqaBSV9dMtcoJk5uBzoLZCuWHqAJPs4dhdPV+q
+ S0GVi7stXEDsLti3GghX0YK306V30lxJcY2QeyKFi5sry6O3IOwJdxPd1N4J0z6KXmrD0rOVcpCn3
+ yvEnSxF2UYqoZdvec8gr0V7GX1sNtN9FOWzqjb1O5OqYYjndYWTsx0gJJlK8uyVSJ12gIWFem2lsk
+ h2GuzJdczHuexPRYg/FSSqNpsJTDLZbJXCRvYTM13PUle1YJcEgXxka426Nkl54BSAznT4EB7w/RK
+ xoviz0/Q==;
 Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2
- (Red Hat Linux)) id 1mbWzt-009C3A-7r; Fri, 15 Oct 2021 23:52:21 +0000
+ (Red Hat Linux)) id 1mbWzt-009C3D-99; Fri, 15 Oct 2021 23:52:21 +0000
 From: Luis Chamberlain <mcgrof@kernel.org>
 To: axboe@kernel.dk, geoff@infradead.org, mpe@ellerman.id.au,
  benh@kernel.crashing.org, paulus@samba.org, jim@jtan.com,
@@ -46,9 +46,9 @@ To: axboe@kernel.dk, geoff@infradead.org, mpe@ellerman.id.au,
  richard@nod.at, miquel.raynal@bootlin.com, vigneshr@ti.com,
  dan.j.williams@intel.com, vishal.l.verma@intel.com, dave.jiang@intel.com,
  ira.weiny@intel.com, kbusch@kernel.org, hch@lst.de, sagi@grimberg.me
-Subject: [PATCH 08/13] zram: add error handling support for add_disk()
-Date: Fri, 15 Oct 2021 16:52:14 -0700
-Message-Id: <20211015235219.2191207-9-mcgrof@kernel.org>
+Subject: [PATCH 09/13] z2ram: add error handling support for add_disk()
+Date: Fri, 15 Oct 2021 16:52:15 -0700
+Message-Id: <20211015235219.2191207-10-mcgrof@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20211015235219.2191207-1-mcgrof@kernel.org>
 References: <20211015235219.2191207-1-mcgrof@kernel.org>
@@ -75,37 +75,39 @@ Sender: "Linuxppc-dev"
 
 We never checked for errors on add_disk() as this function
 returned void. Now that this is fixed, use the shiny new
-error handling.
+error handling. Only the disk is cleaned up inside
+z2ram_register_disk() as the caller deals with the rest.
 
 Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 ---
- drivers/block/zram/zram_drv.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/block/z2ram.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index 0a9309a2ef54..bdbded107e6b 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -1983,7 +1983,9 @@ static int zram_add(void)
- 		blk_queue_max_write_zeroes_sectors(zram->disk->queue, UINT_MAX);
+diff --git a/drivers/block/z2ram.c b/drivers/block/z2ram.c
+index 4eef218108c6..ccc52c935faf 100644
+--- a/drivers/block/z2ram.c
++++ b/drivers/block/z2ram.c
+@@ -318,6 +318,7 @@ static const struct blk_mq_ops z2_mq_ops = {
+ static int z2ram_register_disk(int minor)
+ {
+ 	struct gendisk *disk;
++	int err;
  
- 	blk_queue_flag_set(QUEUE_FLAG_STABLE_WRITES, zram->disk->queue);
--	device_add_disk(NULL, zram->disk, zram_disk_attr_groups);
-+	ret = device_add_disk(NULL, zram->disk, zram_disk_attr_groups);
-+	if (ret)
-+		goto out_cleanup_disk;
+ 	disk = blk_mq_alloc_disk(&tag_set, NULL);
+ 	if (IS_ERR(disk))
+@@ -333,8 +334,10 @@ static int z2ram_register_disk(int minor)
+ 		sprintf(disk->disk_name, "z2ram");
  
- 	strlcpy(zram->compressor, default_compressor, sizeof(zram->compressor));
+ 	z2ram_gendisk[minor] = disk;
+-	add_disk(disk);
+-	return 0;
++	err = add_disk(disk);
++	if (err)
++		blk_cleanup_disk(disk);
++	return err;
+ }
  
-@@ -1991,6 +1993,8 @@ static int zram_add(void)
- 	pr_info("Added device: %s\n", zram->disk->disk_name);
- 	return device_id;
- 
-+out_cleanup_disk:
-+	blk_cleanup_disk(zram->disk);
- out_free_idr:
- 	idr_remove(&zram_index_idr, device_id);
- out_free_dev:
+ static int __init z2_init(void)
 -- 
 2.30.2
 
